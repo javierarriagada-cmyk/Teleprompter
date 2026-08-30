@@ -1,51 +1,56 @@
 import { useEffect, useRef, useState } from 'react'
+import useVoiceTrack from './useVoiceTrack'
 
-type ASROptions = { engine: 'whisper' | 'webspeech'; lang?: string }
+type ASROptions = { engine?: 'whisper' | 'webspeech'; lang?: string }
 
-export default function useASR(options: ASROptions) {
-  const { engine, lang = 'es-ES' } = options
-  const workerRef = useRef<Worker | null>(null)
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
-  const mediaStreamRef = useRef<MediaStream | null>(null)
+export default function useASR(options: ASROptions = {}) {
+  const { engine = 'whisper', lang = 'es-ES' } = options
   const audioCtxRef = useRef<AudioContext | null>(null)
+  const micStreamRef = useRef<MediaStream | null>(null)
+  const workletNodeRef = useRef<AudioWorkletNode | null>(null)
+  const workerRef = useRef<Worker | null>(null)
+  const speechRecognitionRef = useRef<any>(null)
 
   const [isRecording, setIsRecording] = useState(false)
   const [transcript, setTranscript] = useState('')
-  const [workerReady, setWorkerReady] = useState(false)
+  const [ready, setReady] = useState(false)
+  const [speaking, setSpeaking] = useState(false)
+
+  // voice tracking hook returns current indices for UI
+  const { setScript, updateTranscript, currentLineIndex, currentWordIndex } = useVoiceTrack()
 
   useEffect(() => {
     // create worker
-    const worker = new Worker(new URL('../workers/asr.worker.ts', import.meta.url), { type: 'module' })
-    workerRef.current = worker
-    worker.onmessage = (ev: MessageEvent) => {
+    const w = new Worker(new URL('../workers/asr.worker.ts', import.meta.url), { type: 'module' })
+    workerRef.current = w
+    w.onmessage = (ev) => {
       const msg = ev.data
-      if (msg.type === 'ready') {
-        setWorkerReady(true)
-      } else if (msg.type === 'transcript') {
-        setTranscript((t) => (t + '\n' + msg.text).trim())
-      } else if (msg.type === 'error') {
-        console.error('Worker error:', msg.error)
-      }
+      if (msg.type === 'ready') setReady(true)
+      else if (msg.type === 'transcript') {
+        setTranscript((t) => {
+          const next = (t + '\n' + msg.text).trim()
+          updateTranscript(next)
+          return next
+        })
+      } else if (msg.type === 'error') console.error('ASR worker error', msg.error)
     }
 
-    // init worker with engine/lang
-    worker.postMessage({ type: 'init', engine, lang })
+    w.postMessage({ type: 'init', engine, sampleRate: 48000 })
 
     return () => {
-      worker.terminate()
+      w.terminate()
       workerRef.current = null
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    // if engine changes, inform worker
+    // propagate engine changes
     if (workerRef.current) workerRef.current.postMessage({ type: 'set-engine', engine })
   }, [engine])
 
   async function start() {
     if (engine === 'webspeech') {
-      // fallback: use Web Speech API in main thread
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
       if (!SpeechRecognition) {
         alert('Web Speech API no disponible')
@@ -55,92 +60,112 @@ export default function useASR(options: ASROptions) {
       recognition.lang = lang
       recognition.continuous = true
       recognition.interimResults = true
-      recognition.onresult = (event: SpeechRecognitionEvent) => {
+      recognition.onresult = (event: any) => {
         let final = ''
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           const res = event.results[i]
           if (res.isFinal) final += res[0].transcript
         }
-        if (final) setTranscript((t) => (t + '\n' + final).trim())
+        if (final) {
+          setTranscript((t) => {
+            const next = (t + '\n' + final).trim()
+            updateTranscript(next)
+            return next
+          })
+        }
       }
-      recognition.onerror = (e) => console.error('SpeechRecognition error', e)
+      recognition.onerror = (e: any) => console.error('SpeechRecognition error', e)
       recognition.start()
-      // store on mediaRecorderRef to be able to stop
-      // @ts-ignore
-      mediaRecorderRef.current = recognition as any
+      speechRecognitionRef.current = recognition
       setIsRecording(true)
       return
     }
 
-    // whisper path: capture mic, MediaRecorder chunking, decode and send Float32 to worker
+    // prefer AudioWorklet for whisper
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      mediaStreamRef.current = stream
-      audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
-      const options: MediaRecorderOptions = { mimeType: 'audio/webm' }
-      const recorder = new MediaRecorder(stream, options)
-      recorder.ondataavailable = async (ev) => {
-        if (ev.data && ev.data.size > 0) {
-          try {
-            const arrayBuffer = await ev.data.arrayBuffer()
-            // decode to AudioBuffer in main thread
-            if (!audioCtxRef.current) audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
-            const audioBuffer = await audioCtxRef.current.decodeAudioData(arrayBuffer)
-            // mixdown to mono
-            const ch = audioBuffer.numberOfChannels
-            const len = audioBuffer.length
-            const res = new Float32Array(len)
-            if (ch === 1) {
-              res.set(audioBuffer.getChannelData(0))
-            } else {
-              for (let c = 0; c < ch; c++) {
-                const data = audioBuffer.getChannelData(c)
-                for (let i = 0; i < len; i++) res[i] += data[i] / ch
-              }
-            }
-            // send to worker (transfer the underlying buffer)
-            const worker = workerRef.current
-            if (worker) {
-              worker.postMessage({ type: 'audio-chunk', data: res.buffer }, [res.buffer])
-            }
-          } catch (err) {
-            console.error('decode error', err)
-          }
+      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)()
+      audioCtxRef.current = ctx
+      await ctx.audioWorklet.addModule(new URL('../workers/audio-worklet-processor.ts', import.meta.url))
+      const node = new AudioWorkletNode(ctx, 'vad-processor')
+      node.port.onmessage = (ev) => {
+        const m = ev.data
+        if (m.type === 'vad') setSpeaking(m.speaking)
+        else if (m.type === 'pcm') {
+          // forward PCM to ASR worker (transfer buffer)
+          const worker = workerRef.current
+          if (worker) worker.postMessage({ type: 'pcm', buffer: m.buffer }, [m.buffer])
         }
       }
-      recorder.onstart = () => setIsRecording(true)
-      recorder.onstop = () => setIsRecording(false)
-      recorder.start(2500) // 2.5s timeslice
-      mediaRecorderRef.current = recorder
+      workletNodeRef.current = node
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      micStreamRef.current = stream
+      const src = ctx.createMediaStreamSource(stream)
+      src.connect(node)
+      node.connect(ctx.destination) // optional - keep silent path if you don't want audio out
+      setIsRecording(true)
     } catch (err) {
-      console.error('getUserMedia error', err)
-      alert('No se pudo acceder al micrófono')
+      console.warn('AudioWorklet not available, falling back to MediaRecorder', err)
+      // fallback to MediaRecorder (simple chunking)
+      startMediaRecorderFallback()
     }
   }
 
-  function stop() {
-    // stop media recorder or speech recognition
-    const mr = mediaRecorderRef.current as any
-    if (!mr) return
-    try {
-      if (mr instanceof MediaRecorder) {
-        mr.stop()
-      } else {
-        // SpeechRecognition
-        mr.stop()
+  function startMediaRecorderFallback() {
+    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+      micStreamRef.current = stream
+      const mr = new MediaRecorder(stream, { mimeType: 'audio/webm' })
+      mr.ondataavailable = async (ev) => {
+        if (ev.data && ev.data.size > 0) {
+          const ab = await ev.data.arrayBuffer()
+          // decode to Float32 and forward to worker
+          const ctx = audioCtxRef.current || new (window.AudioContext || (window as any).webkitAudioContext)()
+          audioCtxRef.current = ctx
+          const audioBuf = await ctx.decodeAudioData(ab)
+          const ch = audioBuf.numberOfChannels
+          const len = audioBuf.length
+          const out = new Float32Array(len)
+          if (ch === 1) out.set(audioBuf.getChannelData(0))
+          else {
+            for (let c = 0; c < ch; c++) {
+              const d = audioBuf.getChannelData(c)
+              for (let i = 0; i < len; i++) out[i] += d[i] / ch
+            }
+          }
+          const w = workerRef.current
+          if (w) w.postMessage({ type: 'pcm', buffer: out.buffer }, [out.buffer])
+        }
       }
-    } catch (e) {}
-    mediaRecorderRef.current = null
-    if (mediaStreamRef.current) {
-      mediaStreamRef.current.getTracks().forEach((t) => t.stop())
-      mediaStreamRef.current = null
+      mr.start(1500)
+      setIsRecording(true)
+    })
+  }
+
+  function stop() {
+    if (speechRecognitionRef.current) {
+      try { speechRecognitionRef.current.stop() } catch {}
+      speechRecognitionRef.current = null
+    }
+    if (workletNodeRef.current) {
+      try { workletNodeRef.current.disconnect() } catch {}
+      workletNodeRef.current = null
+    }
+    if (micStreamRef.current) {
+      micStreamRef.current.getTracks().forEach((t) => t.stop())
+      micStreamRef.current = null
+    }
+    if (audioCtxRef.current) {
+      try { audioCtxRef.current.close() } catch {}
+      audioCtxRef.current = null
     }
     setIsRecording(false)
+    setSpeaking(false)
   }
 
   function clear() {
     setTranscript('')
+    updateTranscript('')
   }
 
-  return { start, stop, isRecording, transcript, clear, workerReady }
+  return { start, stop, isRecording, transcript, clear, ready, speaking, currentLineIndex, currentWordIndex, setScript }
 }
