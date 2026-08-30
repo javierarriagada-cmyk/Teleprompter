@@ -1,0 +1,4 @@
+/* Basic styles for the MVP */
+body { margin: 0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+button { cursor: pointer }
+textarea { font-family: inherit }

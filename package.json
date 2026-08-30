@@ -1,0 +1,26 @@
+{
+  "name": "teleprompter-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "fuse.js": "^6.6.2",
+    "@xenova/transformers": "^2.0.0",
+    "zustand": "^4.4.0",
+    "idb-keyval": "^6.2.0",
+    "leven": "^3.1.0"
+  },
+  "devDependencies": {
+    "vite": "^5.3.0",
+    "typescript": "^5.2.0",
+    "@types/react": "^18.2.28",
+    "@types/react-dom": "^18.2.7",
+    "vite-plugin-pwa": "^0.20.2"
+  }
+}
