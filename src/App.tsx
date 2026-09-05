@@ -42,6 +42,16 @@ export default function App({ motor }: AppProps) {
   const prompterContainerRef = useRef<HTMLDivElement | null>(null)
 
   const {
+    lineaActual,
+    palabraActual,
+    alRecibirParcial: seguidorParcial,
+    alRecibirFinal: seguidorFinal,
+    alNotificarVoz: seguidorVoz,
+    reiniciar,
+    motorAvance
+  } = useSeguidor(scriptText)
+
+  const {
     start,
     stop,
     clear,
@@ -52,41 +62,17 @@ export default function App({ motor }: AppProps) {
     dispositivoComputo,
     progresoDescarga,
     ultimoError,
-    alRecibirParcial,
-    alRecibirFraseFinal,
-    alNotificarVoz,
     motorActivo
-  } = useASR({ engine, lang: 'es-ES', motor })
-
-  const {
-    lineaActual,
-    palabraActual,
+  } = useASR({
+    engine,
+    lang: 'es-ES',
+    motor,
     alRecibirParcial: seguidorParcial,
-    alRecibirFinal: seguidorFinal,
-    alNotificarVoz: seguidorVoz,
-    reiniciar,
-    motorAvance
-  } = useSeguidor(scriptText)
+    alRecibirFraseFinal: seguidorFinal,
+    alNotificarVoz: seguidorVoz
+  })
 
   const { activo: wakeLockActivo, solicitar: solicitarWakeLock, soltar: soltarWakeLock } = useWakeLock()
-
-  useEffect(() => {
-    if (alRecibirParcial) {
-      alRecibirParcial((texto) => {
-        seguidorParcial(texto)
-      })
-    }
-    if (alRecibirFraseFinal) {
-      alRecibirFraseFinal((e: any) => {
-        seguidorFinal(e)
-      })
-    }
-    if (alNotificarVoz) {
-      alNotificarVoz((hayVoz) => {
-        seguidorVoz(hayVoz)
-      })
-    }
-  }, [alRecibirParcial, alRecibirFraseFinal, alNotificarVoz, seguidorParcial, seguidorFinal, seguidorVoz])
 
   const handleEstadoAvanceChange = useCallback((motivo: 'silencio' | 'sin-calce' | 'correa' | null, isAvanzando: boolean) => {
     setMotivoFreno(motivo)

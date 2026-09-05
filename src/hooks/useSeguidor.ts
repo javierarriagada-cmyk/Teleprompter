@@ -40,9 +40,9 @@ export function useSeguidor(guion: string) {
     const tMs = performance.now()
     motor.voz(true, tMs)
 
-    const texto = typeof fraseFinal === 'string' ? fraseFinal : fraseFinal.texto
-    const inicioMs = typeof fraseFinal === 'string' ? tMs - 1000 : (fraseFinal.inicioMs || tMs - 1000)
-    const finMs = typeof fraseFinal === 'string' ? tMs : (fraseFinal.finMs || tMs)
+    const texto = typeof fraseFinal === 'string' ? fraseFinal : (fraseFinal?.texto || '')
+    const inicioMs = typeof fraseFinal === 'string' ? tMs - 1000 : (fraseFinal?.inicioMs || tMs - 1000)
+    const finMs = typeof fraseFinal === 'string' ? tMs : (fraseFinal?.finMs || tMs)
 
     const pos = seg.avanzar(texto)
     if (pos.movio) {

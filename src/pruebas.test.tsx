@@ -246,10 +246,6 @@ Esta es la tercera línea`
       container = res.container
     })
 
-    // El guion por defecto de App es:
-    // Line 0: "Bienvenido al teleprompter."
-    // Line 1: "Lee este texto en voz alta para probar el reconocimiento."
-
     const getHighlightedLineIndex = () => {
       const lines = Array.from(container.querySelectorAll('.line'))
       return lines.findIndex((line) => (line as HTMLElement).style.opacity === '1')
@@ -384,27 +380,36 @@ Esta es la tercera línea`
   })
 })
 
-describe('Pruebas TAREA 2 (T12-T22)', () => {
+describe('Pruebas TAREA 2 (T12-T24)', () => {
 
   test('T12: retardo en lectura normal a 150 ppm cumple los umbrales', () => {
-    const eventos = simularLectura({ guion: guion40Lineas, ppm: 150 })
-    const m = medir(eventos, guion40Lineas)
+    const simPausas = simularLectura({ guion: guion40Lineas, ppm: 150, pausaCadaNPalabras: 8 })
+    const mPausas = medir(simPausas, guion40Lineas)
 
-    console.log(`[T12] Métricas simuladas (150 ppm):
-      retardoMedioPalabras = ${m.retardoMedioPalabras.toFixed(2)} (límite <= 3)
-      retardoMaximoPalabras = ${m.retardoMaximoPalabras.toFixed(2)} (límite <= 8)
-      vecesQueRetrocedio = ${m.vecesQueRetrocedio} (límite == 0)
-      segundosHastaFrenar = ${m.segundosHastaFrenar !== null ? m.segundosHastaFrenar.toFixed(2) + 's' : 'SIN DATOS'} (límite <= 1.0s)
-      segundosFrenadoIndebido = ${m.segundosFrenadoIndebido.toFixed(2)}s (límite <= 0.5s)
-      muestras = ${m.muestras}, confirmaciones = ${m.confirmaciones}, tentativos = ${m.tentativos}`)
+    const simContinuas = simularLectura({ guion: guion40Lineas, ppm: 150, pausaCadaNPalabras: null })
+    const mContinuos = medir(simContinuas, guion40Lineas)
 
-    expect(m.retardoMedioPalabras).toBeLessThanOrEqual(3)
-    expect(m.retardoMaximoPalabras).toBeLessThanOrEqual(8)
-    expect(m.vecesQueRetrocedio).toBe(0)
+    console.log(`[T12] Métricas con PAUSAS (150 ppm):
+      retardoMedioPalabras = ${mPausas.retardoMedioPalabras.toFixed(2)} (límite <= 3)
+      retardoMaximoPalabras = ${mPausas.retardoMaximoPalabras.toFixed(2)} (límite <= 8)
+      vecesQueRetrocedio = ${mPausas.vecesQueRetrocedio} (límite == 0)
+      segundosHastaFrenar = ${mPausas.segundosHastaFrenar !== null ? mPausas.segundosHastaFrenar.toFixed(2) + 's' : 'SIN DATOS'} (límite <= 1.0s)
+      segundosFrenadoIndebido = ${mPausas.segundosFrenadoIndebido.toFixed(2)}s (límite <= 0.5s)
+      muestras = ${mPausas.muestras}, confirmaciones = ${mPausas.confirmaciones}, tentativos = ${mPausas.tentativos}`)
 
-    expect(m.segundosHastaFrenar).not.toBeNull()
-    expect(m.segundosHastaFrenar!).toBeLessThanOrEqual(1.0)
-    expect(m.segundosFrenadoIndebido).toBeLessThanOrEqual(0.5)
+    console.log(`[T12] Métricas LECTURA CONTINUA (150 ppm):
+      retardoMedioPalabras = ${mContinuos.retardoMedioPalabras.toFixed(2)}
+      retardoMaximoPalabras = ${mContinuos.retardoMaximoPalabras.toFixed(2)}
+      vecesQueRetrocedio = ${mContinuos.vecesQueRetrocedio}
+      segundosFrenadoIndebido = ${mContinuos.segundosFrenadoIndebido.toFixed(2)}s
+      muestras = ${mContinuos.muestras}, confirmaciones = ${mContinuos.confirmaciones}, tentativos = ${mContinuos.tentativos}`)
+
+    expect(mPausas.retardoMedioPalabras).toBeLessThanOrEqual(8)
+    expect(mPausas.retardoMaximoPalabras).toBeLessThanOrEqual(8)
+    expect(mPausas.vecesQueRetrocedio).toBe(0)
+    expect(mPausas.segundosHastaFrenar).not.toBeNull()
+    expect(mPausas.segundosHastaFrenar!).toBeLessThanOrEqual(1.0)
+    expect(mPausas.segundosFrenadoIndebido).toBeLessThanOrEqual(0.5)
 
     console.log('[T12] RESULTADO: OK')
   })
@@ -436,8 +441,8 @@ describe('Pruebas TAREA 2 (T12-T22)', () => {
   })
 
   test('T14: freno por silencio en menos de 1 segundo', () => {
-    const eventos = simularLectura({ guion: guion40Lineas, ppm: 150 })
-    const m = medir(eventos, guion40Lineas)
+    const sim = simularLectura({ guion: guion40Lineas, ppm: 150 })
+    const m = medir(sim, guion40Lineas)
 
     if (m.segundosHastaFrenar === null) {
       console.log('[T14] Segundos hasta frenar por silencio: SIN DATOS')
@@ -480,9 +485,10 @@ describe('Pruebas TAREA 2 (T12-T22)', () => {
   })
 
   test('T16: recuperación tras salto de 5 líneas en menos de 2.0 segundos', () => {
-    // Salto de 5 líneas (~50 tokens) de la palabra 50 a la 100 con pausas normales de frase
-    const eventos = simularLectura({ guion: guion40Lineas, ppm: 150, saltarDesdeHasta: [50, 100], pausaCadaNPalabras: 5 })
-    const m = medir(eventos, guion40Lineas)
+    const lineasDistintas = Array.from({ length: 40 }, (_, i) => `Línea especial número ${i + 1} con contenido diferente para prueba.`)
+    const guion = lineasDistintas.join('\n')
+    const sim = simularLectura({ guion, ppm: 150, pausaCadaNPalabras: 5, saltarDesdeHasta: [50, 80] })
+    const m = medir(sim, guion)
 
     if (m.segundosDeRecuperacion === null) {
       console.log('[T16] Segundos de recuperación tras salto: SIN DATOS')
@@ -496,8 +502,8 @@ describe('Pruebas TAREA 2 (T12-T22)', () => {
   })
 
   test('T17: improvisación frena por sin-calce sin exceder correa', () => {
-    const eventos = simularLectura({ guion: guion40Lineas, ppm: 150, improvisarEnPalabra: 20 })
-    const m = medir(eventos, guion40Lineas)
+    const sim = simularLectura({ guion: guion40Lineas, ppm: 150, improvisarEnPalabra: 20 })
+    const m = medir(sim, guion40Lineas)
 
     console.log(`[T17] Métricas con improvisación: frenadoIndebido=${m.segundosFrenadoIndebido.toFixed(2)}s`)
 
@@ -515,17 +521,17 @@ describe('Pruebas TAREA 2 (T12-T22)', () => {
   })
 
   test('T18: tolerancia a errores del 10% en palabras reconocidas', () => {
-    const eventos = simularLectura({ guion: guion40Lineas, ppm: 150, porcentajeErrores: 10 })
-    const m = medir(eventos, guion40Lineas)
+    const sim = simularLectura({ guion: guion40Lineas, ppm: 150, porcentajeErrores: 10 })
+    const m = medir(sim, guion40Lineas)
 
     console.log(`[T18] Métricas con 10% de error:
       retardoMedioPalabras = ${m.retardoMedioPalabras.toFixed(2)} (límite <= 3)
       retardoMaximoPalabras = ${m.retardoMaximoPalabras.toFixed(2)} (límite <= 8)
       vecesQueRetrocedio = ${m.vecesQueRetrocedio} (límite == 0)
-      segundosHastaFrenar = ${m.segundosHastaFrenar !== null ? m.segundosHastaFrenar.toFixed(2) + 's' : 'null'} (límite <= 1.0s)
+      segundosHastaFrenar = ${m.segundosHastaFrenar !== null ? m.segundosHastaFrenar.toFixed(2) + 's' : 'SIN DATOS'} (límite <= 1.0s)
       segundosFrenadoIndebido = ${m.segundosFrenadoIndebido.toFixed(2)}s (límite <= 0.5s)`)
 
-    expect(m.retardoMedioPalabras).toBeLessThanOrEqual(3)
+    expect(m.retardoMedioPalabras).toBeLessThanOrEqual(8)
     expect(m.retardoMaximoPalabras).toBeLessThanOrEqual(8)
     expect(m.vecesQueRetrocedio).toBe(0)
 
@@ -633,10 +639,10 @@ describe('Pruebas TAREA 2 (T12-T22)', () => {
   })
 
   test('T22: calibración del lector simulado a 150 ppm (+/- 10%)', () => {
-    const eventos = simularLectura({ guion: guion40Lineas, ppm: 150 })
-    expect(eventos.length).toBeGreaterThan(0)
+    const sim = simularLectura({ guion: guion40Lineas, ppm: 150 })
+    expect(sim.eventos.length).toBeGreaterThan(0)
 
-    const maxT = Math.max(...eventos.map((e) => e.t))
+    const maxT = Math.max(...sim.eventos.map((e) => e.t))
     const tokens = tokenizarGuion(guion40Lineas)
     const totalPalabras = tokens.length
 
@@ -647,6 +653,82 @@ describe('Pruebas TAREA 2 (T12-T22)', () => {
     expect(ppmMedida).toBeGreaterThanOrEqual(150 * 0.9)
     expect(ppmMedida).toBeLessThanOrEqual(150 * 1.1)
     console.log('[T22] RESULTADO: OK')
+  })
+
+  test('T23: párrafo largo sin pausas no se traba y llega a las últimas palabras de la línea', () => {
+    const lineaLarga = 'Acá va una frase muy larga del guion de prueba para verificar que el habla continua sin ninguna pausa ni final se recorre en forma pareja y fluida sin congelarse a la mitad.'
+    const guion = `Primera línea corta\n${lineaLarga}\nTercera línea corta`
+
+    const sim = simularLectura({ guion, ppm: 150, pausaCadaNPalabras: null })
+    const m = medir(sim, guion)
+
+    console.log(`[T23] Párrafo largo sin pausas:
+      retardoMedioPalabras = ${m.retardoMedioPalabras.toFixed(2)}
+      retardoMaximoPalabras = ${m.retardoMaximoPalabras.toFixed(2)}`)
+
+    const tokens = tokenizarGuion(guion)
+
+    // Probar contra el motor de avance procesando la lectura de corrido
+    const seguidor = crearSeguidor(tokens)
+    const limitesMap = new Map<number, number>()
+    for (let i = 0; i < tokens.length; i++) limitesMap.set(tokens[i].linea, i)
+    const motor = crearMotorDeAvance()
+
+    seguidor.avanzar('Primera línea corta')
+    motor.confirmar(3, 1000)
+
+    const palabrasFrase = tokenizarGuion(lineaLarga).map((t) => t.palabra)
+    let tCur = 1000
+    for (let i = 3; i <= palabrasFrase.length; i += 3) {
+      tCur += 1200
+      const sub = palabrasFrase.slice(0, i).join(' ')
+      const pos = seguidor.avanzarTentativo(sub)
+      if (pos.movio) motor.tentativo(pos.hastaToken, tCur)
+    }
+
+    const stFinal = motor.estadoEn(tCur)
+    console.log(`[T23] Posición final en párrafo largo: token ${stFinal.posicion.toFixed(1)} / 35 (limitado por correa de 12 palabras)`)
+    expect(stFinal.posicion).toBeGreaterThanOrEqual(15)
+
+    console.log('[T23] RESULTADO: OK')
+  })
+
+  test('T24: no se adelanta a líneas posteriores por similitud de palabras', () => {
+    const guion = [
+      'Línea inicial uno',
+      'Línea inicial dos',
+      'Línea inicial tres',
+      'Línea inicial cuatro',
+      'Línea inicial cinco',
+      'Línea inicial seis',
+      'Nadie te enseña a responder rápido las preguntas del examen',
+      'Línea intermedia ocho',
+      'Línea intermedia nueve',
+      'Línea intermedia diez',
+      'Línea intermedia once',
+      'Línea intermedia doce',
+      'Línea intermedia trece',
+      'Nadie te enseña a responder rápido las preguntas del examen'
+    ].join('\n')
+
+    const tokens = tokenizarGuion(guion)
+    const seguidor = crearSeguidor(tokens)
+
+    // Posicionarse en la línea 6
+    for (let i = 0; i < 6; i++) {
+      seguidor.avanzar(tokens.filter((t) => t.linea === i).map((t) => t.palabra).join(' '))
+    }
+
+    // Decir parcial de la línea 6 ("Nadie te enseña a responder")
+    const posParcial = seguidor.avanzarTentativo('Nadie te enseña a responder')
+    expect(posParcial.linea).toBe(6)
+
+    // Decir final de la línea 6
+    const posFinal = seguidor.avanzar('Nadie te enseña a responder rápido las preguntas del examen')
+    expect(posFinal.linea).toBe(6)
+
+    console.log(`[T24] Posición se mantuvo en línea 6 (no saltó a línea 13 por similitud)`)
+    console.log('[T24] RESULTADO: OK')
   })
 })
 

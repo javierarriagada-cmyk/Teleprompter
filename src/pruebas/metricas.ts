@@ -1,6 +1,6 @@
 import { crearMotorDeAvance, MotorDeAvance } from '../lib/avance'
 import { crearSeguidor, tokenizarGuion } from '../lib/seguidor'
-import { EventoLector } from './lectorSimulado'
+import { ResultadoSimulacion } from './lectorSimulado'
 
 export type Metricas = {
   retardoMedioPalabras: number
@@ -14,24 +14,18 @@ export type Metricas = {
   tentativos: number                      // cuántos parciales se procesaron
 }
 
-type IntervaloFrase = {
-  tInicio: number
-  tFin: number
-  desdeToken: number
-  hastaToken: number
-}
-
 export function medir(
-  eventos: EventoLector[],
+  sim: ResultadoSimulacion,
   guion: string,
   motorCustom?: MotorDeAvance
 ): Metricas {
+  const { eventos, verdad, salto } = sim
   const tokens = tokenizarGuion(guion)
-  const seguidorAux = crearSeguidor(tokens)
   const seguidor = crearSeguidor(tokens)
+
   const motor = motorCustom ?? crearMotorDeAvance()
 
-  if (eventos.length === 0) {
+  if (eventos.length === 0 || verdad.length === 0) {
     return {
       retardoMedioPalabras: 0,
       retardoMaximoPalabras: 0,
@@ -45,53 +39,21 @@ export function medir(
     }
   }
 
-  // Detectar salto configurado en la simulación
-  let saltoDetec: { tSalto: number; tokenDestino: number } | null = null
+  function obtenerPosReal(t: number): number {
+    if (verdad.length === 0) return 0
+    if (t <= verdad[0].t) return verdad[0].token
 
-  // Pre-procesar eventos para determinar intervalos reales de lectura en tokens del guion
-  const intervalos: IntervaloFrase[] = []
-  let tInicioActual = -1
-  let tokenEsperadoPrev = -1
-
-  for (let i = 0; i < eventos.length; i++) {
-    const ev = eventos[i]
-    if (ev.tipo === 'voz' && ev.hayVoz) {
-      if (tInicioActual < 0) tInicioActual = ev.t
-    } else if (ev.tipo === 'final') {
-      const pos = seguidorAux.avanzar(ev.texto)
-      if (pos.movio) {
-        if (tokenEsperadoPrev >= 0 && pos.desdeToken - tokenEsperadoPrev > 5 && !saltoDetec) {
-          saltoDetec = { tSalto: ev.t, tokenDestino: pos.hastaToken }
-        }
-        tokenEsperadoPrev = pos.hastaToken
-        intervalos.push({
-          tInicio: tInicioActual >= 0 ? tInicioActual : ev.t - 1000,
-          tFin: ev.t,
-          desdeToken: pos.desdeToken,
-          hastaToken: pos.hastaToken
-        })
-      }
-      tInicioActual = -1
-    }
-  }
-
-  function calcularPosReal(t: number): number {
-    if (intervalos.length === 0) return 0
-    if (t < intervalos[0].tInicio) return 0
-
-    for (let i = 0; i < intervalos.length; i++) {
-      const inter = intervalos[i]
-      if (t >= inter.tInicio && t <= inter.tFin) {
-        const dur = Math.max(1, inter.tFin - inter.tInicio)
-        const prop = (t - inter.tInicio) / dur
-        const totalTokens = inter.hastaToken - inter.desdeToken + 1
-        return inter.desdeToken + prop * totalTokens
-      }
-      if (i < intervalos.length - 1 && t > inter.tFin && t < intervalos[i + 1].tInicio) {
-        return inter.hastaToken
+    for (let i = 0; i < verdad.length; i++) {
+      if (verdad[i].t >= t) {
+        if (i === 0) return verdad[0].token
+        const p1 = verdad[i - 1]
+        const p2 = verdad[i]
+        const dur = Math.max(1, p2.t - p1.t)
+        const prop = (t - p1.t) / dur
+        return p1.token + prop * (p2.token - p1.token)
       }
     }
-    return intervalos[intervalos.length - 1].hastaToken
+    return verdad[verdad.length - 1].token
   }
 
   const maxT = Math.max(...eventos.map((e) => e.t))
@@ -157,7 +119,7 @@ export function medir(
     }
 
     const st = motor.estadoEn(t)
-    const posReal = calcularPosReal(t)
+    const posReal = obtenerPosReal(t)
 
     const leyendo = t <= finLecturaT && t >= eventos[0].t
 
@@ -169,7 +131,7 @@ export function medir(
         maxRetardo = diff
       }
 
-      if (hayVozActual && !st.avanzando) {
+      if (hayVozActual && !st.avanzando && st.motivoFreno !== 'correa') {
         tiempoFrenadoIndebidoMs += stepMs
       }
     }
@@ -178,9 +140,9 @@ export function medir(
       tiempoHastaFrenarMs = t - tSaliodeVozAtEnd
     }
 
-    if (saltoDetec && t >= saltoDetec.tSalto && recuperadoMs < 0) {
-      if (Math.abs(st.posicion - saltoDetec.tokenDestino) <= 3) {
-        recuperadoMs = t - saltoDetec.tSalto
+    if (salto && t > salto.tMs + 100 && recuperadoMs < 0) {
+      if (Math.abs(st.posicion - posReal) <= 12) {
+        recuperadoMs = t - salto.tMs
       }
     }
 

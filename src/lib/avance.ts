@@ -10,7 +10,7 @@ export type ParametrosAvance = {
 export type EstadoAvance = {
   posicion: number            // en tokens, CON DECIMALES: es continua
   avanzando: boolean
-  motivoFreno: 'silencio' | 'sin-calce' | 'correa' | null
+  motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | null
   ppmEstimadas: number
 }
 
@@ -32,12 +32,18 @@ const DEFAULT_PARAMETROS: ParametrosAvance = {
   msDeCorreccion: 400
 }
 
-export function crearMotorDeAvance(p?: Partial<ParametrosAvance>): MotorDeAvance {
+export function crearMotorDeAvance(
+  p?: Partial<ParametrosAvance>,
+  limitesDeLinea?: number[]
+): MotorDeAvance {
   const params: ParametrosAvance = { ...DEFAULT_PARAMETROS, ...p }
 
   let ppmEstimadas = params.ppmInicial
   let ultimaConfirmada = 0
+  let anclaTentativa = 0
   let tUltimaConfirmacion = 0
+  let tUltimoTentativo = 0
+
   let fallosSeguidos = 0
   let hayVoz = false
   let tUltimaVozTrue = 0
@@ -50,8 +56,29 @@ export function crearMotorDeAvance(p?: Partial<ParametrosAvance>): MotorDeAvance
   let inicioGlideTiempo = 0
   let gliding = false
 
-  function ajustarPosicionTarget(token: number, tMs: number, esConfirmacion = false) {
-    const maxPermitido = ultimaConfirmada + params.correaPalabras
+  function obtenerLimiteLineaActual(refToken: number): number {
+    if (!limitesDeLinea || limitesDeLinea.length === 0) return Infinity
+    for (const lim of limitesDeLinea) {
+      if (lim >= refToken) return lim
+    }
+    return limitesDeLinea[limitesDeLinea.length - 1]
+  }
+
+  function actualizarVelocidad(tokensDelta: number, timeDeltaMs: number) {
+    if (timeDeltaMs < 150 || tokensDelta <= 0) return
+    const measuredPpm = (tokensDelta / timeDeltaMs) * 60000
+    const clamped = Math.min(400, Math.max(40, measuredPpm))
+
+    const alpha = clamped > ppmEstimadas ? 0.5 : 0.15
+    ppmEstimadas = alpha * clamped + (1 - alpha) * ppmEstimadas
+  }
+
+  function ajustarPosicionTarget(token: number, tMs: number, esConfirmacion: boolean) {
+    const refToken = Math.max(ultimaConfirmada, anclaTentativa)
+    const limiteLinea = obtenerLimiteLineaActual(refToken)
+    const maxPermitido = esConfirmacion
+      ? Math.min(ultimaConfirmada + params.correaPalabras, limiteLinea)
+      : Math.min(refToken, limiteLinea)
     const targetAcotado = Math.min(token, maxPermitido)
     const diff = token - posicionMostrada
 
@@ -63,7 +90,6 @@ export function crearMotorDeAvance(p?: Partial<ParametrosAvance>): MotorDeAvance
     }
 
     if (diff > params.correaPalabras * 2) {
-      // Salto grande instantáneo
       posicionMostrada = targetAcotado
       objetivoPosicion = targetAcotado
       gliding = false
@@ -83,30 +109,15 @@ export function crearMotorDeAvance(p?: Partial<ParametrosAvance>): MotorDeAvance
       tUltimaVozTrue = tMs
 
       if (token > ultimaConfirmada) {
-        if (tUltimaConfirmacion > 0 && tMs > tUltimaConfirmacion) {
-          const tokensDelta = token - ultimaConfirmada
-          const timeDeltaMs = tMs - tUltimaConfirmacion
-          if (timeDeltaMs >= 200) {
-            const measuredPpm = (tokensDelta / timeDeltaMs) * 60000
-            if (measuredPpm >= 40 && measuredPpm <= 400) {
-              ppmEstimadas = params.suavizadoVelocidad * measuredPpm + (1 - params.suavizadoVelocidad) * ppmEstimadas
-            } else {
-              console.warn(`[MotorDeAvance] Velocidad estimada fuera de rango (${measuredPpm.toFixed(1)} ppm), acotando a 40-400 ppm`)
-              const clamped = Math.min(400, Math.max(40, measuredPpm))
-              ppmEstimadas = params.suavizadoVelocidad * clamped + (1 - params.suavizadoVelocidad) * ppmEstimadas
-            }
-          }
-        } else if (tUltimaConfirmacion === 0 && tMs > 0) {
-          const measuredPpm = (token / tMs) * 60000
-          if (measuredPpm >= 40 && measuredPpm <= 400) {
-            ppmEstimadas = measuredPpm
-          } else {
-            ppmEstimadas = Math.min(400, Math.max(40, measuredPpm))
-          }
+        if (tUltimaConfirmacion > 0) {
+          actualizarVelocidad(token - ultimaConfirmada, tMs - tUltimaConfirmacion)
+        } else if (tMs > 0) {
+          actualizarVelocidad(token, tMs)
         }
       }
 
       ultimaConfirmada = Math.max(ultimaConfirmada, token)
+      anclaTentativa = Math.max(anclaTentativa, token)
       tUltimaConfirmacion = tMs
       fallosSeguidos = 0
 
@@ -116,7 +127,20 @@ export function crearMotorDeAvance(p?: Partial<ParametrosAvance>): MotorDeAvance
     tentativo(token: number, tMs: number) {
       hayVoz = true
       tUltimaVozTrue = tMs
-      ajustarPosicionTarget(token, tMs, false)
+
+      const maxPermitidoTentativo = ultimaConfirmada + params.correaPalabras
+      const tokenAcotado = Math.min(token, maxPermitidoTentativo)
+
+      if (tokenAcotado > anclaTentativa) {
+        const refTime = tUltimoTentativo > 0 ? tUltimoTentativo : tUltimaConfirmacion
+        if (refTime > 0) {
+          actualizarVelocidad(tokenAcotado - anclaTentativa, tMs - refTime)
+        }
+        anclaTentativa = tokenAcotado
+        tUltimoTentativo = tMs
+      }
+
+      ajustarPosicionTarget(tokenAcotado, tMs, false)
     },
 
     falloCalce(tMs: number) {
@@ -140,7 +164,6 @@ export function crearMotorDeAvance(p?: Partial<ParametrosAvance>): MotorDeAvance
       const dt = Math.max(0, tMs - tUltimaActualizacion)
       tUltimaActualizacion = tMs
 
-      // Verificar freno por sin calce
       const esSinCalce = fallosSeguidos >= params.fallosParaFrenar
       if (esSinCalce) {
         return {
@@ -151,7 +174,6 @@ export function crearMotorDeAvance(p?: Partial<ParametrosAvance>): MotorDeAvance
         }
       }
 
-      // Si no hay voz, no avanzar más
       if (!hayVoz) {
         const esSilencio = (tMs - tUltimaVozTrue) > params.msSilencioParaFrenar
         return {
@@ -162,8 +184,7 @@ export function crearMotorDeAvance(p?: Partial<ParametrosAvance>): MotorDeAvance
         }
       }
 
-      // Avance lineal continuo durante la voz
-      const v = ppmEstimadas / 60000 // tokens por milisegundo
+      const v = ppmEstimadas / 60000
       let nuevaPos = posicionMostrada + v * dt
 
       if (gliding) {
@@ -177,18 +198,22 @@ export function crearMotorDeAvance(p?: Partial<ParametrosAvance>): MotorDeAvance
         }
       }
 
-      // Regla de correa: NUNCA supera ultimaConfirmada + correaPalabras
-      const maxPermitido = ultimaConfirmada + params.correaPalabras
-      let motivoFreno: 'silencio' | 'sin-calce' | 'correa' | null = null
+      const limiteLinea = obtenerLimiteLineaActual(ultimaConfirmada)
+      const maxCorrea = ultimaConfirmada + params.correaPalabras
+
+      let motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | null = null
       let avanzando = true
 
-      if (nuevaPos >= maxPermitido) {
-        nuevaPos = maxPermitido
+      if (limitesDeLinea && limitesDeLinea.length > 0 && nuevaPos >= limiteLinea) {
+        nuevaPos = limiteLinea
+        motivoFreno = 'fin-de-linea'
+        avanzando = false
+      } else if (nuevaPos >= maxCorrea) {
+        nuevaPos = maxCorrea
         motivoFreno = 'correa'
         avanzando = false
       }
 
-      // Regla f: NUNCA RETROCEDE
       nuevaPos = Math.max(posicionMostrada, nuevaPos)
       posicionMostrada = nuevaPos
 
@@ -203,7 +228,9 @@ export function crearMotorDeAvance(p?: Partial<ParametrosAvance>): MotorDeAvance
     reiniciar() {
       ppmEstimadas = params.ppmInicial
       ultimaConfirmada = 0
+      anclaTentativa = 0
       tUltimaConfirmacion = 0
+      tUltimoTentativo = 0
       fallosSeguidos = 0
       hayVoz = false
       tUltimaVozTrue = 0

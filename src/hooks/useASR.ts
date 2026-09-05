@@ -2,8 +2,15 @@ import { useEffect, useRef, useState } from 'react'
 import { elegirMotor } from '../motor/elegirMotor'
 import { EventoFinal, IdMotor, MotorDeVoz } from '../motor/MotorDeVoz'
 
-export default function useASR(options: { engine?: IdMotor; lang?: string; motor?: MotorDeVoz } = {}) {
-  const { engine = 'whisper-local', lang = 'es-ES', motor: motorInyectado } = options
+export default function useASR(options: {
+  engine?: IdMotor
+  lang?: string
+  motor?: MotorDeVoz
+  alRecibirParcial?: (texto: string) => void
+  alRecibirFraseFinal?: (e: any) => void
+  alNotificarVoz?: (hayVoz: boolean) => void
+} = {}) {
+  const { engine = 'whisper-local', lang = 'es-ES', motor: motorInyectado, alRecibirParcial: optionParcial, alRecibirFraseFinal: optionFinal, alNotificarVoz: optionVoz } = options
   const motorRef = useRef<MotorDeVoz | null>(null)
 
   const [isRecording, setIsRecording] = useState(false)
@@ -18,6 +25,12 @@ export default function useASR(options: { engine?: IdMotor; lang?: string; motor
   const listenerParcialCbRef = useRef<((texto: string) => void) | null>(null)
   const listenerFinalCbRef = useRef<((e: EventoFinal) => void) | null>(null)
   const listenerVozCbRef = useRef<((hayVoz: boolean) => void) | null>(null)
+
+  useEffect(() => {
+    if (optionParcial) listenerParcialCbRef.current = optionParcial
+    if (optionFinal) listenerFinalCbRef.current = optionFinal
+    if (optionVoz) listenerVozCbRef.current = optionVoz
+  }, [optionParcial, optionFinal, optionVoz])
 
   useEffect(() => {
     let unsubs: Array<() => void> = []
