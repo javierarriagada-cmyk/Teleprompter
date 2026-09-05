@@ -4,29 +4,75 @@ interface ControlsBarProps {
   onStart: () => void
   onStop: () => void
   isRecording: boolean
-  speed: number
-  setSpeed: (speed: number) => void
+  fontSize: number
+  setFontSize: (size: number) => void
+  marginPercent: number
+  setMarginPercent: (margin: number) => void
   mirror: boolean
   setMirror: (mirror: boolean) => void
-  preloadOnWifi: boolean
-  setPreloadOnWifi: (preload: boolean) => void
+  onToggleFullscreen?: () => void
 }
 
-export default function ControlsBar({ onStart, onStop, isRecording, speed, setSpeed, mirror, setMirror, preloadOnWifi, setPreloadOnWifi }: ControlsBarProps) {
+export default function ControlsBar({
+  onStart,
+  onStop,
+  isRecording,
+  fontSize,
+  setFontSize,
+  marginPercent,
+  setMarginPercent,
+  mirror,
+  setMirror,
+  onToggleFullscreen
+}: ControlsBarProps) {
   return (
-    <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 12 }}>
-      <button onClick={onStart} disabled={isRecording}>Iniciar</button>
-      <button onClick={onStop} disabled={!isRecording}>Detener</button>
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap', marginTop: 12 }}>
+      <button onClick={onStart} disabled={isRecording} style={{ padding: '6px 16px', fontWeight: 'bold' }}>
+        Iniciar
+      </button>
+      <button onClick={onStop} disabled={!isRecording} style={{ padding: '6px 16px' }}>
+        Detener
+      </button>
+
       <label style={{ marginLeft: 8 }}>
-        Velocidad:
-        <input type="range" min={0.5} max={2.0} step={0.1} value={speed} onChange={(e) => setSpeed(Number(e.target.value))} />
+        Letra ({fontSize}px):
+        <input
+          type="range"
+          min={16}
+          max={96}
+          step={2}
+          value={fontSize}
+          onChange={(e) => setFontSize(Number(e.target.value))}
+          style={{ marginLeft: 6 }}
+        />
       </label>
-      <label>
-        <input type="checkbox" checked={mirror} onChange={(e) => setMirror(e.target.checked)} /> Mirror
+
+      <label style={{ marginLeft: 8 }}>
+        Margen ({marginPercent}%):
+        <input
+          type="range"
+          min={0}
+          max={40}
+          step={2}
+          value={marginPercent}
+          onChange={(e) => setMarginPercent(Number(e.target.value))}
+          style={{ marginLeft: 6 }}
+        />
       </label>
-      <label>
-        <input type="checkbox" checked={preloadOnWifi} onChange={(e) => setPreloadOnWifi(e.target.checked)} /> Preload Wi‑Fi
+
+      <label style={{ marginLeft: 8 }}>
+        <input
+          type="checkbox"
+          checked={mirror}
+          onChange={(e) => setMirror(e.target.checked)}
+        /> Espejo
       </label>
+
+      {onToggleFullscreen && (
+        <button onClick={onToggleFullscreen} style={{ marginLeft: 'auto', padding: '6px 12px' }}>
+          Pantalla Completa
+        </button>
+      )}
     </div>
   )
 }

@@ -1,89 +1,87 @@
-// ASR Worker
-// - Loads @xenova/transformers pipeline (whisper-tiny) dynamically
-// - Accepts 'pcm' messages (Float32Array buffers) to buffer and run ASR on short chunks
-// - Uses idb-keyval (if available) to cache model files
+// ASR Worker con @huggingface/transformers y segmentador VAD
+import { pipeline } from '@huggingface/transformers'
+import { crearSegmentador, Trama } from '../lib/segmentador'
 
-let pipeline: any = null
-let engine = 'whisper'
-let buffering: Float32Array[] = []
-let sampleRate = 48000 // default, will adapt if sent
-let chunkMs = 1500 // 1.5s chunks
-let overlapMs = 300
-let modelName = 'openai/whisper-tiny'
+export const MODELO = 'onnx-community/whisper-base'
+
+let asrPipeline: any = null
+let segmentador: any = null
+let sampleRate = 16000
+let dispositivoUsado: 'webgpu' | 'wasm' = 'webgpu'
 
 self.onmessage = async (ev: MessageEvent) => {
   const msg = ev.data
   try {
-    if (msg?.type === 'init') {
-      engine = msg.engine || engine
-      sampleRate = msg.sampleRate || sampleRate
-      // prepare pipeline if whisper
-      if (engine === 'whisper') await preparePipeline()
-      self.postMessage({ type: 'ready' })
-    } else if (msg?.type === 'set-engine') {
-      engine = msg.engine
-      if (engine === 'whisper') await preparePipeline()
-    } else if (msg?.type === 'pcm' || msg?.type === 'audio-chunk') {
-      // receive PCM ArrayBuffer
-      const ab: ArrayBuffer = msg.buffer || msg.data
-      if (!ab) return
-      const float32 = new Float32Array(ab)
-      buffering.push(float32)
-      // compute total length in ms
-      const totalSamples = buffering.reduce((s, b) => s + b.length, 0)
-      const totalMs = (totalSamples / sampleRate) * 1000
-      if (totalMs >= chunkMs) {
-        // assemble chunk with overlap
-        const neededSamples = Math.floor((chunkMs / 1000) * sampleRate)
-        const chunk = new Float32Array(neededSamples)
-        let offset = 0
-        while (offset < neededSamples && buffering.length) {
-          const buf = buffering.shift()!
-          const take = Math.min(buf.length, neededSamples - offset)
-          chunk.set(buf.subarray(0, take), offset)
-          if (take < buf.length) {
-            // put back remainder
-            buffering.unshift(buf.subarray(take))
-          }
-          offset += take
+    if (msg?.tipo === 'init') {
+      sampleRate = msg.sampleRate || 16000
+      const modelo = msg.modelo || MODELO
+      await cargarPipeline(modelo)
+
+      segmentador = crearSegmentador({
+        sampleRate,
+        transcribir: async (pcm) => {
+          if (!asrPipeline) return ''
+          const res = await asrPipeline(pcm, { language: 'es', task: 'transcribe' })
+          return res?.text ?? ''
+        },
+        alFinal: (e) => {
+          self.postMessage({
+            tipo: 'final',
+            texto: e.texto,
+            inicioMs: e.inicioMs,
+            finMs: e.finMs
+          })
+        },
+        alDescartar: (motivo, ms) => {
+          console.warn(`[ASR Worker] Segmento descartado: ${motivo} (${ms} ms)`)
         }
-        // keep overlap samples at start of next buffer
-        const overlapSamples = Math.floor((overlapMs / 1000) * sampleRate)
-        if (overlapSamples > 0) {
-          const tail = chunk.subarray(chunk.length - overlapSamples)
-          buffering.unshift(tail.slice(0))
-        }
-        // run ASR asynchronously
-        runASRChunk(chunk.buffer).catch((e) => {
-          self.postMessage({ type: 'error', error: String(e) })
-        })
+      })
+
+      self.postMessage({ tipo: 'listo', dispositivo: dispositivoUsado })
+    } else if (msg?.tipo === 'audio') {
+      if (segmentador && msg.pcm) {
+        const float32 = new Float32Array(msg.pcm)
+        const trama: Trama = { pcm: float32, hablando: !!msg.hablando }
+        segmentador.alimentar(trama)
       }
+    } else if (msg?.tipo === 'flush') {
+      if (segmentador) segmentador.flush()
+    } else if (msg?.tipo === 'reset') {
+      if (segmentador) segmentador.reset()
     }
-  } catch (err) {
-    self.postMessage({ type: 'error', error: String(err) })
+  } catch (err: any) {
+    self.postMessage({ tipo: 'error', mensaje: err?.message || String(err) })
   }
 }
 
-async function preparePipeline() {
-  if (pipeline) return pipeline
+async function cargarPipeline(modelo: string) {
+  if (asrPipeline) return asrPipeline
+
+  const progressCallback = (p: any) => {
+    const pct = typeof p?.progress === 'number' ? p.progress : 0
+    self.postMessage({ tipo: 'progreso', pct })
+  }
+
   try {
-    const mod = await import('@xenova/transformers')
+    dispositivoUsado = 'webgpu'
+    asrPipeline = await pipeline('automatic-speech-recognition', modelo, {
+      device: 'webgpu',
+      dtype: 'q8',
+      progress_callback: progressCallback
+    })
+    return asrPipeline
+  } catch (errWebGPU) {
+    console.warn('[ASR Worker] Falló WebGPU, reintentando con WASM:', errWebGPU)
     try {
-      if ((mod as any).env && (mod as any).env.backend) {
-        // prefer webgpu when available
-      }
-    } catch (e) {}
-    pipeline = await mod.pipeline('automatic-speech-recognition', modelName)
-    return pipeline
-  } catch (err) {
-    throw err
+      dispositivoUsado = 'wasm'
+      asrPipeline = await pipeline('automatic-speech-recognition', modelo, {
+        device: 'wasm',
+        dtype: 'q8',
+        progress_callback: progressCallback
+      })
+      return asrPipeline
+    } catch (errWasm) {
+      throw new Error(`Error al cargar el modelo Whisper tanto en WebGPU como en WASM: ${String(errWasm)}`)
+    }
   }
-}
-
-async function runASRChunk(arrayBuffer: ArrayBuffer) {
-  if (!pipeline) await preparePipeline()
-  const float32 = new Float32Array(arrayBuffer)
-  const res = await pipeline(float32)
-  const text = res?.text ?? ''
-  self.postMessage({ type: 'transcript', text })
 }
