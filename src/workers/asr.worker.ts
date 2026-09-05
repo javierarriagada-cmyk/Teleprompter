@@ -1,55 +1,87 @@
-// Worker that runs transformers.js pipeline for ASR
-// Receives Float32Array audio buffers (mono, 16k-48k sample rate depending on decode) via postMessage
+// ASR Worker con @huggingface/transformers y segmentador VAD
+import { pipeline } from '@huggingface/transformers'
+import { crearSegmentador, Trama } from '../lib/segmentador'
 
-let pipeline: any = null
-let ready = false
+export const MODELO = 'onnx-community/whisper-base'
 
-self.onmessage = async (ev) => {
+let asrPipeline: any = null
+let segmentador: any = null
+let sampleRate = 16000
+let dispositivoUsado: 'webgpu' | 'wasm' = 'webgpu'
+
+self.onmessage = async (ev: MessageEvent) => {
   const msg = ev.data
   try {
-    if (msg.type === 'init') {
-      // initial message
-      const { engine, lang } = msg
-      // prepare pipeline if engine === 'whisper'
-      if (engine === 'whisper') await preparePipeline()
-      self.postMessage({ type: 'ready' })
-    } else if (msg.type === 'set-engine') {
-      if (msg.engine === 'whisper') await preparePipeline()
-    } else if (msg.type === 'audio-chunk') {
-      // msg.data is an ArrayBuffer (transfered)
-      const ab = msg.data as ArrayBuffer
-      const float32 = new Float32Array(ab)
-      // call pipeline
-      if (!pipeline) {
-        // not ready
-        self.postMessage({ type: 'error', error: 'Pipeline not ready' })
-        return
+    if (msg?.tipo === 'init') {
+      sampleRate = msg.sampleRate || 16000
+      const modelo = msg.modelo || MODELO
+      await cargarPipeline(modelo)
+
+      segmentador = crearSegmentador({
+        sampleRate,
+        transcribir: async (pcm) => {
+          if (!asrPipeline) return ''
+          const res = await asrPipeline(pcm, { language: 'es', task: 'transcribe' })
+          return res?.text ?? ''
+        },
+        alFinal: (e) => {
+          self.postMessage({
+            tipo: 'final',
+            texto: e.texto,
+            inicioMs: e.inicioMs,
+            finMs: e.finMs
+          })
+        },
+        alDescartar: (motivo, ms) => {
+          console.warn(`[ASR Worker] Segmento descartado: ${motivo} (${ms} ms)`)
+        }
+      })
+
+      self.postMessage({ tipo: 'listo', dispositivo: dispositivoUsado })
+    } else if (msg?.tipo === 'audio') {
+      if (segmentador && msg.pcm) {
+        const float32 = new Float32Array(msg.pcm)
+        const trama: Trama = { pcm: float32, hablando: !!msg.hablando }
+        segmentador.alimentar(trama)
       }
-      try {
-        const result = await pipeline(float32)
-        const text = result?.text ?? ''
-        self.postMessage({ type: 'transcript', text })
-      } catch (err) {
-        self.postMessage({ type: 'error', error: String(err) })
-      }
+    } else if (msg?.tipo === 'flush') {
+      if (segmentador) segmentador.flush()
+    } else if (msg?.tipo === 'reset') {
+      if (segmentador) segmentador.reset()
     }
-  } catch (err) {
-    self.postMessage({ type: 'error', error: String(err) })
+  } catch (err: any) {
+    self.postMessage({ tipo: 'error', mensaje: err?.message || String(err) })
   }
 }
 
-async function preparePipeline() {
-  if (pipeline) return pipeline
+async function cargarPipeline(modelo: string) {
+  if (asrPipeline) return asrPipeline
+
+  const progressCallback = (p: any) => {
+    const pct = typeof p?.progress === 'number' ? p.progress : 0
+    self.postMessage({ tipo: 'progreso', pct })
+  }
+
   try {
-    // dynamic import
-    const mod = await import('@xenova/transformers')
-    // Optionally configure backend here (wasm/webgpu)
-    // await mod.env.start({ progress: (p:any)=>{ /* optional */ } })
-    pipeline = await mod.pipeline('automatic-speech-recognition', 'openai/whisper-tiny')
-    ready = true
-    return pipeline
-  } catch (err) {
-    self.postMessage({ type: 'error', error: 'Failed to load pipeline: ' + String(err) })
-    throw err
+    dispositivoUsado = 'webgpu'
+    asrPipeline = await pipeline('automatic-speech-recognition', modelo, {
+      device: 'webgpu',
+      dtype: 'q8',
+      progress_callback: progressCallback
+    })
+    return asrPipeline
+  } catch (errWebGPU) {
+    console.warn('[ASR Worker] Falló WebGPU, reintentando con WASM:', errWebGPU)
+    try {
+      dispositivoUsado = 'wasm'
+      asrPipeline = await pipeline('automatic-speech-recognition', modelo, {
+        device: 'wasm',
+        dtype: 'q8',
+        progress_callback: progressCallback
+      })
+      return asrPipeline
+    } catch (errWasm) {
+      throw new Error(`Error al cargar el modelo Whisper tanto en WebGPU como en WASM: ${String(errWasm)}`)
+    }
   }
 }
