@@ -26,7 +26,11 @@ export default function TeleprompterView({
     const target = lines[currentLineIndex] as HTMLElement
     if (target) {
       const top = target.offsetTop - el.clientHeight / 2 + target.clientHeight / 2
-      el.scrollTo({ top, behavior: 'smooth' })
+      if (typeof el.scrollTo === 'function') {
+        el.scrollTo({ top, behavior: 'smooth' })
+      } else {
+        el.scrollTop = top
+      }
     }
   }, [currentLineIndex])
 

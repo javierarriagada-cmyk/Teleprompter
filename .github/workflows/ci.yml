@@ -3,7 +3,10 @@ on:
   push:
     branches:
       - main
-      - feature/asr-improvements
+      - feature/asr-improvements-5251236722100455238
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -15,9 +18,6 @@ jobs:
         with:
           node-version: '18'
       - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run test
       - run: npm run build
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist

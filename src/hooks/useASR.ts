@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import { elegirMotor } from '../motor/elegirMotor'
 import { IdMotor, MotorDeVoz } from '../motor/MotorDeVoz'
 
-export default function useASR(options: { engine?: IdMotor; lang?: string } = {}) {
-  const { engine = 'whisper-local', lang = 'es-ES' } = options
+export default function useASR(options: { engine?: IdMotor; lang?: string; motor?: MotorDeVoz } = {}) {
+  const { engine = 'whisper-local', lang = 'es-ES', motor: motorInyectado } = options
   const motorRef = useRef<MotorDeVoz | null>(null)
 
   const [isRecording, setIsRecording] = useState(false)
   const [transcript, setTranscript] = useState('')
+  const [transcripcionParcial, setTranscripcionParcial] = useState('')
   const [ready, setReady] = useState(false)
   const [dispositivoComputo, setDispositivoComputo] = useState<string>('cargando')
   const [progresoDescarga, setProgresoDescarga] = useState<number>(0)
@@ -26,17 +27,32 @@ export default function useASR(options: { engine?: IdMotor; lang?: string } = {}
           await motorRef.current.detener()
         }
 
-        const m = await elegirMotor(engine)
+        const m = motorInyectado || (await elegirMotor(engine))
         motorRef.current = m
 
         unsubs.push(
+          m.onParcial((e) => {
+            setTranscripcionParcial(e.texto)
+          })
+        )
+
+        unsubs.push(
           m.onFinal((e) => {
+            setTranscripcionParcial('')
             setTranscript((prev) => (prev + '\n' + e.texto).trim())
             if (listenerFinalCbRef.current) {
               listenerFinalCbRef.current(e.texto)
             }
           })
         )
+
+        if (m.onProgreso) {
+          unsubs.push(
+            m.onProgreso((pct) => {
+              setProgresoDescarga(pct)
+            })
+          )
+        }
 
         unsubs.push(
           m.onError((err) => {
@@ -61,7 +77,7 @@ export default function useASR(options: { engine?: IdMotor; lang?: string } = {}
         motorRef.current.detener()
       }
     }
-  }, [engine])
+  }, [engine, motorInyectado])
 
   async function start() {
     if (!motorRef.current) return
@@ -92,6 +108,7 @@ export default function useASR(options: { engine?: IdMotor; lang?: string } = {}
 
   function clear() {
     setTranscript('')
+    setTranscripcionParcial('')
     setUltimoError(null)
   }
 
@@ -104,7 +121,7 @@ export default function useASR(options: { engine?: IdMotor; lang?: string } = {}
     stop,
     clear,
     isRecording,
-    transcript,
+    transcript: (transcript + (transcripcionParcial ? '\n' + transcripcionParcial : '')).trim(),
     ready,
     dispositivoComputo,
     progresoDescarga,

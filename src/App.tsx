@@ -4,9 +4,13 @@ import { useSeguidor } from './hooks/useSeguidor'
 import { useWakeLock } from './hooks/useWakeLock'
 import TeleprompterView from './components/TeleprompterView'
 import ControlsBar from './components/ControlsBar'
-import { IdMotor } from './motor/MotorDeVoz'
+import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
 
-export default function App() {
+interface AppProps {
+  motor?: MotorDeVoz
+}
+
+export default function App({ motor }: AppProps) {
   const [scriptText, setScriptText] = useState<string>(
     `Bienvenido al teleprompter.\nLee este texto en voz alta para probar el reconocimiento.`
   )
@@ -30,7 +34,7 @@ export default function App() {
     ultimoError,
     alRecibirFraseFinal,
     motorActivo
-  } = useASR({ engine, lang: 'es-ES' })
+  } = useASR({ engine, lang: 'es-ES', motor })
 
   const { lineaActual, palabraActual, alRecibirFinal, reiniciar } = useSeguidor(scriptText)
   const { activo: wakeLockActivo, solicitar: solicitarWakeLock, soltar: soltarWakeLock } = useWakeLock()

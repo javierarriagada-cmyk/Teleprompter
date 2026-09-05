@@ -1,12 +1,12 @@
 declare class AudioWorkletProcessor {
   readonly port: MessagePort
-  constructor()
+  constructor(options?: any)
 }
-declare function registerProcessor(name: string, processorCtor: new () => AudioWorkletProcessor): void
+declare function registerProcessor(name: string, processorCtor: new (options?: any) => AudioWorkletProcessor): void
 declare const currentTime: number
 
 /**
- * AudioWorkletProcessor autocontenido (sin imports) que procesa audio en bloques de 1600 muestras (100 ms a 16 kHz),
+ * AudioWorkletProcessor autocontenido (sin imports) que procesa audio en bloques de 100 ms (derivado de sampleRate),
  * calibra el piso de ruido en los primeros 500 ms, y emite mensajes con el buffer PCM y estado VAD.
  */
 class VADProcessor extends AudioWorkletProcessor {
@@ -20,11 +20,15 @@ class VADProcessor extends AudioWorkletProcessor {
   private _pisoRuidoMuestras: number
   private _pisoRuidoSum: number
   private _calibrando: boolean
+  private _tamanoBloque: number
   private _bufferAcumulado: Float32Array
   private _muestrasAcumuladas: number
 
-  constructor() {
-    super()
+  constructor(options?: any) {
+    super(options)
+    const sr = options?.processorOptions?.sampleRate || 16000
+    this._tamanoBloque = Math.floor(sr * 0.1) // 100 ms de muestras según la tasa de muestreo real
+
     this._smoothing = 0.9
     this._env = 0
     this._speaking = false
@@ -37,7 +41,7 @@ class VADProcessor extends AudioWorkletProcessor {
     this._pisoRuidoSum = 0
     this._calibrando = true
 
-    this._bufferAcumulado = new Float32Array(1600)
+    this._bufferAcumulado = new Float32Array(this._tamanoBloque)
     this._muestrasAcumuladas = 0
   }
 
@@ -55,7 +59,7 @@ class VADProcessor extends AudioWorkletProcessor {
       }
       const rms = Math.sqrt(sum / channelData.length) || 0
 
-      // Calibración del piso de ruido durante las primeras ~500 ms (aprox. 60 frames a 128 muestras/frame)
+      // Calibración del piso de ruido durante las primeras ~500 ms
       if (this._calibrando) {
         this._pisoRuidoSum += rms
         this._pisoRuidoMuestras++
@@ -83,16 +87,16 @@ class VADProcessor extends AudioWorkletProcessor {
         }
       }
 
-      // Acumular muestras para emitir en bloques de 1600 muestras (100 ms)
+      // Acumular muestras para emitir en bloques de 100 ms según el sampleRate
       let offset = 0
       while (offset < channelData.length) {
-        const espacio = 1600 - this._muestrasAcumuladas
+        const espacio = this._tamanoBloque - this._muestrasAcumuladas
         const aCopiar = Math.min(espacio, channelData.length - offset)
         this._bufferAcumulado.set(channelData.subarray(offset, offset + aCopiar), this._muestrasAcumuladas)
         this._muestrasAcumuladas += aCopiar
         offset += aCopiar
 
-        if (this._muestrasAcumuladas === 1600) {
+        if (this._muestrasAcumuladas === this._tamanoBloque) {
           const bloque = this._bufferAcumulado.slice(0)
           this.port.postMessage(
             { tipo: 'audio', pcm: bloque.buffer, hablando: this._speaking, rms: this._env },

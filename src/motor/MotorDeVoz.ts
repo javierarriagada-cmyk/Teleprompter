@@ -17,4 +17,5 @@ export interface MotorDeVoz {
   onParcial(cb: (e: EventoParcial) => void): () => void
   onFinal(cb: (e: EventoFinal) => void): () => void
   onError(cb: (e: Error) => void): () => void
+  onProgreso?(cb: (pct: number) => void): () => void
 }

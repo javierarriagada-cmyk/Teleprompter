@@ -13,6 +13,7 @@ export class MotorWhisperLocal implements MotorDeVoz {
   private listenersParcial: Array<(e: EventoParcial) => void> = []
   private listenersFinal: Array<(e: EventoFinal) => void> = []
   private listenersError: Array<(e: Error) => void> = []
+  private listenersProgreso: Array<(pct: number) => void> = []
 
   public dispositivoComputo: 'webgpu' | 'wasm' | 'cargando' = 'cargando'
   public progresoDescarga = 0
@@ -47,6 +48,7 @@ export class MotorWhisperLocal implements MotorDeVoz {
             }
           } else if (msg.tipo === 'progreso') {
             this.progresoDescarga = msg.pct || 0
+            this.listenersProgreso.forEach((cb) => cb(this.progresoDescarga))
           } else if (msg.tipo === 'final') {
             this.listenersFinal.forEach((cb) =>
               cb({ texto: msg.texto, inicioMs: msg.inicioMs, finMs: msg.finMs })
@@ -74,7 +76,9 @@ export class MotorWhisperLocal implements MotorDeVoz {
         const urlVadProcessor = new URL('../workers/vad-processor.ts?worker&url', import.meta.url).href
         await this.audioCtx.audioWorklet.addModule(urlVadProcessor)
 
-        this.workletNode = new AudioWorkletNode(this.audioCtx, 'vad-processor')
+        this.workletNode = new AudioWorkletNode(this.audioCtx, 'vad-processor', {
+          processorOptions: { sampleRate: ctxSampleRate }
+        })
         this.workletNode.port.onmessage = (ev: MessageEvent) => {
           const m = ev.data
           if (m.tipo === 'audio') {
@@ -148,6 +152,13 @@ export class MotorWhisperLocal implements MotorDeVoz {
     this.listenersError.push(cb)
     return () => {
       this.listenersError = this.listenersError.filter((l) => l !== cb)
+    }
+  }
+
+  onProgreso(cb: (pct: number) => void): () => void {
+    this.listenersProgreso.push(cb)
+    return () => {
+      this.listenersProgreso = this.listenersProgreso.filter((l) => l !== cb)
     }
   }
 }

@@ -1,4 +1,7 @@
+import React from 'react'
 import { describe, expect, test } from 'vitest'
+import { render, act } from '@testing-library/react'
+import App from './App'
 import { crearSeguidor, tokenizarGuion } from './lib/seguidor'
 import { remuestrear } from './lib/remuestrear'
 import { crearSegmentador, MS_MAX_SEGMENTO } from './lib/segmentador'
@@ -35,6 +38,30 @@ Estribillo repetido`
 
     pos = seguidor.avanzar('Estribillo repetido')
     expect(pos.linea).toBe(5)
+  })
+
+  // T1.b: seguidor acotado a ventana local (no salta a coincidencia lejana)
+  test('T1.b: seguidor acotado a ventana local no salta a coincidencia lejana', () => {
+    const lineasIntermedias = Array.from({ length: 44 }, (_, i) => `Línea intermedia ${i + 2}`)
+    const guion = [
+      'Línea inicial de prueba',
+      'PalabraA PalabraB',
+      ...lineasIntermedias,
+      'PalabraA PalabraB PalabraC PalabraD PalabraE'
+    ].join('\n')
+
+    const tokens = tokenizarGuion(guion)
+    const seguidor = crearSeguidor(tokens)
+
+    // Posicionarse en la línea 0
+    seguidor.avanzar('Línea inicial de prueba')
+
+    // Al decir una frase cuyo detalle completo está en la línea 46 (> VENTANA_ADELANTE),
+    // la ventana local sólo ve la línea 1 ("PalabraA PalabraB" = 2/5 coincidencia = 0.4 < 0.5).
+    // Por ende la ventana local no debe saltar a la línea 46.
+    const pos = seguidor.avanzar('PalabraA PalabraB PalabraC PalabraD PalabraE')
+    expect(pos.movio).toBe(false)
+    expect(pos.linea).toBe(0)
   })
 
   // T2: seguidor, no retrocede
@@ -194,32 +221,45 @@ Esta es la tercera línea`
     }
   })
 
-  // T9: integración con MotorFake
-  test('T9: integración con MotorFake avanza línea 0 -> 1 -> 2', async () => {
-    const frases = ['Línea uno de prueba', 'Línea dos de prueba', 'Línea tres de prueba']
+  // T9: integración con React App y MotorFake
+  test('T9: integración con React App y MotorFake avanza la línea resaltada en el DOM 0 -> 1 -> 2', async () => {
+    const frases = [
+      'Bienvenido al teleprompter',
+      'Lee este texto en voz alta para probar el reconocimiento',
+      'Tercera linea de prueba'
+    ]
     const motor = new MotorFake(frases)
 
-    const guion = `Línea uno de prueba
-Línea dos de prueba
-Línea tres de prueba`
+    let container: HTMLElement
 
-    const tokens = tokenizarGuion(guion)
-    const seguidor = crearSeguidor(tokens)
-
-    const posiciones: number[] = []
-
-    motor.onFinal((e) => {
-      const pos = seguidor.avanzar(e.texto)
-      posiciones.push(pos.linea)
+    await act(async () => {
+      const res = render(<App motor={motor} />)
+      container = res.container
     })
 
-    await motor.iniciar({ lang: 'es-ES' })
+    // El guion por defecto de App es:
+    // Line 0: "Bienvenido al teleprompter."
+    // Line 1: "Lee este texto en voz alta para probar el reconocimiento."
 
-    motor.emitirSiguiente() // Línea uno
-    motor.emitirSiguiente() // Línea dos
-    motor.emitirSiguiente() // Línea tres
+    const getHighlightedLineIndex = () => {
+      const lines = Array.from(container.querySelectorAll('.line'))
+      return lines.findIndex((line) => (line as HTMLElement).style.opacity === '1')
+    }
 
-    expect(posiciones).toEqual([0, 1, 2])
+    // Estado inicial: línea 0
+    expect(getHighlightedLineIndex()).toBe(0)
+
+    // Emitir frase 1
+    await act(async () => {
+      motor.emitirSiguiente()
+    })
+    expect(getHighlightedLineIndex()).toBe(0)
+
+    // Emitir frase 2
+    await act(async () => {
+      motor.emitirSiguiente()
+    })
+    expect(getHighlightedLineIndex()).toBe(1)
   })
 
   // Casos borde adicionales
