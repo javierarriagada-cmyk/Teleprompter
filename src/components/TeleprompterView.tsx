@@ -10,7 +10,7 @@ interface TeleprompterViewProps {
   marginPercent?: number
   mirror?: boolean
   motorAvance?: MotorDeAvance | null
-  onEstadoAvanceChange?: (motivoFreno: 'silencio' | 'sin-calce' | 'correa' | null, avanzando: boolean) => void
+  onEstadoAvanceChange?: (motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | null, avanzando: boolean) => void
 }
 
 export default function TeleprompterView({

@@ -36,7 +36,7 @@ export default function App({ motor }: AppProps) {
   const [mirror, setMirror] = useState<boolean>(false)
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
 
-  const [motivoFreno, setMotivoFreno] = useState<'silencio' | 'sin-calce' | 'correa' | null>(null)
+  const [motivoFreno, setMotivoFreno] = useState<'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | null>(null)
   const [avanzando, setAvanzando] = useState<boolean>(false)
 
   const prompterContainerRef = useRef<HTMLDivElement | null>(null)
@@ -74,7 +74,7 @@ export default function App({ motor }: AppProps) {
 
   const { activo: wakeLockActivo, solicitar: solicitarWakeLock, soltar: soltarWakeLock } = useWakeLock()
 
-  const handleEstadoAvanceChange = useCallback((motivo: 'silencio' | 'sin-calce' | 'correa' | null, isAvanzando: boolean) => {
+  const handleEstadoAvanceChange = useCallback((motivo: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | null, isAvanzando: boolean) => {
     setMotivoFreno(motivo)
     setAvanzando(isAvanzando)
   }, [])
@@ -122,6 +122,7 @@ export default function App({ motor }: AppProps) {
     if (motivoFreno === 'silencio') textoFreno = 'esperando voz'
     else if (motivoFreno === 'sin-calce') textoFreno = 'no reconozco lo que lees'
     else if (motivoFreno === 'correa') textoFreno = 'adelantado, espero'
+    else if (motivoFreno === 'fin-de-linea') textoFreno = 'fin de línea, espero'
   }
 
   return (

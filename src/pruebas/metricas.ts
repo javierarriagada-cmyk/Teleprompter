@@ -23,7 +23,13 @@ export function medir(
   const tokens = tokenizarGuion(guion)
   const seguidor = crearSeguidor(tokens)
 
-  const motor = motorCustom ?? crearMotorDeAvance()
+  const limitesMap = new Map<number, number>()
+  for (let i = 0; i < tokens.length; i++) {
+    limitesMap.set(tokens[i].linea, i)
+  }
+  const limitesDeLinea = Array.from(limitesMap.values()).sort((a, b) => a - b)
+
+  const motor = motorCustom ?? crearMotorDeAvance(undefined, limitesDeLinea)
 
   if (eventos.length === 0 || verdad.length === 0) {
     return {
@@ -131,7 +137,7 @@ export function medir(
         maxRetardo = diff
       }
 
-      if (hayVozActual && !st.avanzando && st.motivoFreno !== 'correa') {
+      if (hayVozActual && !st.avanzando && st.motivoFreno !== 'correa' && st.motivoFreno !== 'fin-de-linea') {
         tiempoFrenadoIndebidoMs += stepMs
       }
     }

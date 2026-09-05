@@ -12,8 +12,14 @@ export function useSeguidor(guion: string) {
 
   useEffect(() => {
     const tokens = tokenizarGuion(guion)
+    const limitesMap = new Map<number, number>()
+    for (let i = 0; i < tokens.length; i++) {
+      limitesMap.set(tokens[i].linea, i)
+    }
+    const limitesDeLinea = Array.from(limitesMap.values()).sort((a, b) => a - b)
+
     seguidorRef.current = crearSeguidor(tokens)
-    motorAvanceRef.current = crearMotorDeAvance()
+    motorAvanceRef.current = crearMotorDeAvance(undefined, limitesDeLinea)
     registroRef.current = crearRegistro()
     setPosicion({ linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
   }, [guion])

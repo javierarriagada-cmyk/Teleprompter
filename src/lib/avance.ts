@@ -128,7 +128,12 @@ export function crearMotorDeAvance(
       hayVoz = true
       tUltimaVozTrue = tMs
 
-      const maxPermitidoTentativo = ultimaConfirmada + params.correaPalabras
+      const refToken = Math.max(ultimaConfirmada, anclaTentativa)
+      const limiteLinea = obtenerLimiteLineaActual(refToken)
+      const delta = token - anclaTentativa
+      const maxPermitidoTentativo = delta <= params.correaPalabras
+        ? limiteLinea
+        : ultimaConfirmada + params.correaPalabras
       const tokenAcotado = Math.min(token, maxPermitidoTentativo)
 
       if (tokenAcotado > anclaTentativa) {
@@ -199,7 +204,9 @@ export function crearMotorDeAvance(
       }
 
       const limiteLinea = obtenerLimiteLineaActual(ultimaConfirmada)
-      const maxCorrea = ultimaConfirmada + params.correaPalabras
+      const maxCorrea = (limitesDeLinea && limitesDeLinea.length > 0)
+        ? limiteLinea
+        : (ultimaConfirmada + params.correaPalabras)
 
       let motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | null = null
       let avanzando = true

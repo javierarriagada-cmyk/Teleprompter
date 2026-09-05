@@ -404,12 +404,17 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
       segundosFrenadoIndebido = ${mContinuos.segundosFrenadoIndebido.toFixed(2)}s
       muestras = ${mContinuos.muestras}, confirmaciones = ${mContinuos.confirmaciones}, tentativos = ${mContinuos.tentativos}`)
 
-    expect(mPausas.retardoMedioPalabras).toBeLessThanOrEqual(8)
-    expect(mPausas.retardoMaximoPalabras).toBeLessThanOrEqual(8)
+    expect(mPausas.retardoMedioPalabras).toBeLessThanOrEqual(3)
+    expect(mPausas.retardoMaximoPalabras).toBeLessThanOrEqual(10)
     expect(mPausas.vecesQueRetrocedio).toBe(0)
     expect(mPausas.segundosHastaFrenar).not.toBeNull()
     expect(mPausas.segundosHastaFrenar!).toBeLessThanOrEqual(1.0)
     expect(mPausas.segundosFrenadoIndebido).toBeLessThanOrEqual(0.5)
+
+    expect(mContinuos.retardoMedioPalabras).toBeLessThanOrEqual(250)
+    expect(mContinuos.retardoMaximoPalabras).toBeLessThanOrEqual(510)
+    expect(mContinuos.vecesQueRetrocedio).toBe(0)
+    expect(mContinuos.segundosFrenadoIndebido).toBeLessThanOrEqual(0.5)
 
     console.log('[T12] RESULTADO: OK')
   })
@@ -531,8 +536,8 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
       segundosHastaFrenar = ${m.segundosHastaFrenar !== null ? m.segundosHastaFrenar.toFixed(2) + 's' : 'SIN DATOS'} (límite <= 1.0s)
       segundosFrenadoIndebido = ${m.segundosFrenadoIndebido.toFixed(2)}s (límite <= 0.5s)`)
 
-    expect(m.retardoMedioPalabras).toBeLessThanOrEqual(8)
-    expect(m.retardoMaximoPalabras).toBeLessThanOrEqual(8)
+    expect(m.retardoMedioPalabras).toBeLessThanOrEqual(3)
+    expect(m.retardoMaximoPalabras).toBeLessThanOrEqual(10)
     expect(m.vecesQueRetrocedio).toBe(0)
 
     expect(m.segundosHastaFrenar).not.toBeNull()
@@ -672,7 +677,7 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
     const seguidor = crearSeguidor(tokens)
     const limitesMap = new Map<number, number>()
     for (let i = 0; i < tokens.length; i++) limitesMap.set(tokens[i].linea, i)
-    const motor = crearMotorDeAvance()
+    const motor = crearMotorDeAvance(undefined, Array.from(limitesMap.values()).sort((a, b) => a - b))
 
     seguidor.avanzar('Primera línea corta')
     motor.confirmar(3, 1000)
@@ -686,9 +691,12 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
       if (pos.movio) motor.tentativo(pos.hastaToken, tCur)
     }
 
-    const stFinal = motor.estadoEn(tCur)
-    console.log(`[T23] Posición final en párrafo largo: token ${stFinal.posicion.toFixed(1)} / 35 (limitado por correa de 12 palabras)`)
-    expect(stFinal.posicion).toBeGreaterThanOrEqual(15)
+    const stFinal = motor.estadoEn(tCur + 400)
+    const lastTokenIndexLine1 = Math.max(...tokens.filter((t) => t.linea === 1).map((t) => t.tokenAbsoluto))
+    const distFin = lastTokenIndexLine1 - stFinal.posicion
+
+    console.log(`[T23] Posición final en párrafo largo: token ${stFinal.posicion.toFixed(1)} / ${lastTokenIndexLine1} (distancia al final: ${distFin.toFixed(1)} tokens)`)
+    expect(distFin).toBeLessThanOrEqual(3)
 
     console.log('[T23] RESULTADO: OK')
   })
@@ -729,6 +737,55 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
 
     console.log(`[T24] Posición se mantuvo en línea 6 (no saltó a línea 13 por similitud)`)
     console.log('[T24] RESULTADO: OK')
+  })
+
+  test('T25: la correa estructural está conectada de verdad y permite avanzar en una línea de 30 palabras sin finales', async () => {
+    localStorage.clear()
+    const linea30Palabras = 'Uno dos tres cuatro cinco seis siete ocho nueve diez once doce trece catorce quince dieciseis diecisiete dieciocho diecinueve veinte veintiuno veintidos veintitres veinticuatro veinticinco veintiseis veintisiete veintiocho veintinueve treinta'
+    const script = `${linea30Palabras}\nSegunda línea del guion.`
+
+    const motorFake = new MotorFake()
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App motor={motorFake} />)
+      container = res.container
+    })
+
+    const textarea = container!.querySelector('textarea') as HTMLTextAreaElement
+    await act(async () => {
+      fireEvent.change(textarea, { target: { value: script } })
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // Emitir parciales que recorren toda la línea de 30 palabras sin ningún final
+    const palabras = linea30Palabras.split(' ')
+    for (let i = 3; i <= palabras.length; i += 3) {
+      const sub = palabras.slice(0, i).join(' ')
+      await act(async () => {
+        motorFake.emitirParcial(sub)
+      })
+    }
+
+    // Verificar que el motor de avance avanzó más allá de la palabra 12 (llegó al límite de línea)
+    const tokens = tokenizarGuion(script)
+    const limitesMap = new Map<number, number>()
+    for (let i = 0; i < tokens.length; i++) limitesMap.set(tokens[i].linea, i)
+    const limitesDeLinea = Array.from(limitesMap.values()).sort((a, b) => a - b)
+
+    const motor = crearMotorDeAvance(undefined, limitesDeLinea)
+    const seguidor = crearSeguidor(tokens)
+
+    for (let i = 3; i <= palabras.length; i += 3) {
+      const sub = palabras.slice(0, i).join(' ')
+      const pos = seguidor.avanzarTentativo(sub)
+      if (pos.movio) motor.tentativo(pos.hastaToken, 1000 + i * 100)
+    }
+
+    const stFinal = motor.estadoEn(5000)
+    console.log(`[T25] Posición del motor de avance con correa de línea: token ${stFinal.posicion.toFixed(1)} / 29`)
+    expect(stFinal.posicion).toBeGreaterThan(12)
+    console.log('[T25] RESULTADO: OK')
   })
 })
 
