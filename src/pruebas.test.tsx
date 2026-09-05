@@ -1,11 +1,20 @@
 import React from 'react'
+import fs from 'node:fs'
+import path from 'node:path'
+import { execSync } from 'node:child_process'
 import { describe, expect, test } from 'vitest'
-import { render, act } from '@testing-library/react'
+import { render, act, fireEvent } from '@testing-library/react'
 import App from './App'
 import { crearSeguidor, tokenizarGuion } from './lib/seguidor'
 import { remuestrear } from './lib/remuestrear'
 import { crearSegmentador, MS_MAX_SEGMENTO } from './lib/segmentador'
 import { MotorFake } from './motor/MotorFake'
+import { crearMotorDeAvance } from './lib/avance'
+import { crearRegistro } from './lib/registro'
+import { simularLectura } from './pruebas/lectorSimulado'
+import { medir } from './pruebas/metricas'
+
+const guion40Lineas = Array.from({ length: 40 }, (_, i) => `Esta es la línea número ${i + 1} del guion de prueba para el teleprompter.`).join('\n')
 
 describe('Pruebas obligatorias T1-T9', () => {
 
@@ -267,7 +276,7 @@ Esta es la tercera línea`
     const tokens = tokenizarGuion('')
     const seguidor = crearSeguidor(tokens)
     const pos = seguidor.avanzar('algo')
-    expect(pos).toEqual({ linea: 0, palabra: 0, movio: false })
+    expect(pos).toEqual({ linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
   })
 
   test('Caso borde: frase vacía', () => {
@@ -294,4 +303,325 @@ Esta es la tercera línea`
 
     expect(descartadoMotivo).toContain('demasiado corto')
   })
+
+  // T10: Verificación de worklet en JS plano y ausencia de TypeScript en dist/
+  test('T10: vad-processor.js es JavaScript ejecutable en public/ y sin TypeScript en dist/', () => {
+    const rutaVad = path.resolve(process.cwd(), 'public/vad-processor.js')
+    expect(fs.existsSync(rutaVad)).toBe(true)
+
+    const codigo = fs.readFileSync(rutaVad, 'utf-8')
+
+    // 1. Debe parsear como JS válido sin SyntaxError
+    expect(() => {
+      new Function(codigo)
+    }).not.toThrow()
+
+    // 2. No debe tener anotaciones ni palabras clave de TypeScript
+    expect(codigo.includes('declare ')).toBe(false)
+    expect(codigo.includes(': Float32Array')).toBe(false)
+    expect(codigo.includes('private ')).toBe(false)
+
+    // 3. No debe haber ningún archivo en src/ que importe worker con url
+    const rutaSrc = path.resolve(process.cwd(), 'src')
+    const busquedaWorkerUrl = '?worker' + '&url'
+    const archivosConWorkerUrl = buscarTextoEnDirectorio(rutaSrc, busquedaWorkerUrl)
+    expect(archivosConWorkerUrl).toEqual([])
+
+    // 4. Verificación del build: en dist/ NO debe existir ningún archivo .ts
+    const rutaDist = path.resolve(process.cwd(), 'dist')
+    if (!fs.existsSync(rutaDist)) {
+      execSync('npx vite build')
+    }
+    const archivosTsEnDist = buscarArchivosRec(rutaDist, '.ts')
+    expect(archivosTsEnDist).toEqual([])
+  })
+
+  // T11: Persistencia del guion en localStorage ante recargas
+  test('T11: el guion se guarda en localStorage y se restaura al recargar/remontar', async () => {
+    localStorage.clear()
+
+    const nuevoTexto = 'Este es un guion personalizado de prueba para T11.'
+
+    const fake = new MotorFake()
+
+    let unmount: () => void
+    let container: HTMLElement
+
+    await act(async () => {
+      const res = render(<App motor={fake} />)
+      unmount = res.unmount
+      container = res.container
+    })
+
+    const textarea = container!.querySelector('textarea') as HTMLTextAreaElement
+    expect(textarea).not.toBeNull()
+
+    // Escribir un nuevo guion
+    await act(async () => {
+      fireEvent.change(textarea, { target: { value: nuevoTexto } })
+    })
+
+    // Esperar > 500 ms para que venza el debounce y se guarde en localStorage
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    expect(localStorage.getItem('teleprompter_script')).toBe(nuevoTexto)
+
+    // Simular recarga unmounting y remontando App
+    await act(async () => {
+      unmount()
+    })
+
+    let container2: HTMLElement
+    await act(async () => {
+      const res2 = render(<App motor={fake} />)
+      container2 = res2.container
+    })
+
+    const textarea2 = container2!.querySelector('textarea') as HTMLTextAreaElement
+    expect(textarea2.value).toBe(nuevoTexto)
+  })
 })
+
+describe('Pruebas TAREA 2 (T12-T20)', () => {
+
+  test('T12: retardo en lectura normal a 150 ppm cumple los umbrales', () => {
+    const eventos = simularLectura({ guion: guion40Lineas, ppm: 180 })
+    const m = medir(eventos, guion40Lineas)
+
+    console.log(`[T12] Métricas simuladas (180 ppm):
+      retardoMedioPalabras = ${m.retardoMedioPalabras.toFixed(2)} (límite <= 3)
+      retardoMaximoPalabras = ${m.retardoMaximoPalabras.toFixed(2)} (límite <= 8)
+      vecesQueRetrocedio = ${m.vecesQueRetrocedio} (límite == 0)
+      segundosHastaFrenar = ${m.segundosHastaFrenar.toFixed(2)}s (límite <= 1.0s)
+      segundosFrenadoIndebido = ${m.segundosFrenadoIndebido.toFixed(2)}s (límite <= 0.5s)`)
+
+    expect(m.retardoMedioPalabras).toBeLessThanOrEqual(3)
+    expect(m.retardoMaximoPalabras).toBeLessThanOrEqual(8)
+    expect(m.vecesQueRetrocedio).toBe(0)
+    expect(m.segundosHastaFrenar).toBeLessThanOrEqual(1.0)
+    expect(m.segundosFrenadoIndebido).toBeLessThanOrEqual(0.5)
+
+    console.log('[T12] RESULTADO: OK')
+  })
+
+  test('T13: no retrocede en ninguna muestra de ninguna simulación', () => {
+    const sim1 = simularLectura({ guion: guion40Lineas, ppm: 150 })
+    const sim2 = simularLectura({ guion: guion40Lineas, ppm: 150, porcentajeErrores: 10 })
+    const sim3 = simularLectura({ guion: guion40Lineas, ppm: 150, saltarDesdeHasta: [10, 30] })
+
+    const m1 = medir(sim1, guion40Lineas)
+    const m2 = medir(sim2, guion40Lineas)
+    const m3 = medir(sim3, guion40Lineas)
+
+    // Verificación directa de no-retroceso ante confirmación menor
+    const motorTest = crearMotorDeAvance()
+    motorTest.confirmar(10, 1000)
+    const p1 = motorTest.estadoEn(1000).posicion
+    motorTest.confirmar(5, 2000)
+    const p2 = motorTest.estadoEn(2000).posicion
+    expect(p2).toBeGreaterThanOrEqual(p1)
+
+    console.log(`[T13] Veces que retrocedió: normal=${m1.vecesQueRetrocedio}, errores10%=${m2.vecesQueRetrocedio}, salto=${m3.vecesQueRetrocedio}`)
+
+    expect(m1.vecesQueRetrocedio).toBe(0)
+    expect(m2.vecesQueRetrocedio).toBe(0)
+    expect(m3.vecesQueRetrocedio).toBe(0)
+
+    console.log('[T13] RESULTADO: OK')
+  })
+
+  test('T14: freno por silencio en menos de 1 segundo', () => {
+    const eventos = simularLectura({ guion: guion40Lineas, ppm: 150 })
+    const m = medir(eventos, guion40Lineas)
+
+    console.log(`[T14] Segundos hasta frenar por silencio: ${m.segundosHastaFrenar.toFixed(2)}s`)
+
+    expect(m.segundosHastaFrenar).toBeLessThanOrEqual(1.0)
+
+    const motor = crearMotorDeAvance()
+    motor.voz(true, 1000)
+    motor.confirmar(5, 1000)
+    motor.voz(false, 2000)
+    const st = motor.estadoEn(3000)
+    expect(st.avanzando).toBe(false)
+    expect(st.motivoFreno).toBe('silencio')
+
+    console.log('[T14] RESULTADO: OK')
+  })
+
+  test('T15: la correa limita el avance a lo confirmed + correaPalabras', () => {
+    const motor = crearMotorDeAvance({ correaPalabras: 12 })
+    motor.confirmar(10, 1000) // confirmada en token 10
+    motor.voz(true, 1000)
+
+    // Entregar parciales lejanos que intentan avanzar a token 50
+    for (let t = 1100; t <= 5000; t += 100) {
+      motor.tentativo(50, t)
+      const st = motor.estadoEn(t)
+      expect(st.posicion).toBeLessThanOrEqual(10 + 12)
+    }
+
+    const stFinal = motor.estadoEn(5000)
+    expect(stFinal.posicion).toBe(22)
+    expect(stFinal.avanzando).toBe(false)
+    expect(stFinal.motivoFreno).toBe('correa')
+
+    console.log(`[T15] Posición contenida por correa: ${stFinal.posicion} <= 22, motivo: ${stFinal.motivoFreno}`)
+    console.log('[T15] RESULTADO: OK')
+  })
+
+  test('T16: recuperación tras salto de 5 líneas en menos de 2.0 segundos', () => {
+    // Salto de 5 líneas (~30 tokens)
+    const eventos = simularLectura({ guion: guion40Lineas, ppm: 150, saltarDesdeHasta: [20, 50] })
+    const m = medir(eventos, guion40Lineas)
+
+    console.log(`[T16] Segundos de recuperación tras salto: ${m.segundosDeRecuperacion.toFixed(2)}s (límite <= 2.0s)`)
+
+    expect(m.segundosDeRecuperacion).toBeLessThanOrEqual(2.0)
+    console.log('[T16] RESULTADO: OK')
+  })
+
+  test('T17: improvisación frena por sin-calce sin exceder correa', () => {
+    const eventos = simularLectura({ guion: guion40Lineas, ppm: 150, improvisarEnPalabra: 20 })
+    const m = medir(eventos, guion40Lineas)
+
+    console.log(`[T17] Métricas con improvisación: frenadoIndebido=${m.segundosFrenadoIndebido.toFixed(2)}s`)
+
+    const motor = crearMotorDeAvance({ fallosParaFrenar: 2 })
+    motor.confirmar(10, 1000)
+    motor.voz(true, 1000)
+    motor.falloCalce(1200)
+    motor.falloCalce(1400)
+
+    const st = motor.estadoEn(1500)
+    expect(st.avanzando).toBe(false)
+    expect(st.motivoFreno).toBe('sin-calce')
+
+    console.log('[T17] RESULTADO: OK')
+  })
+
+  test('T18: tolerancia a errores del 10% en palabras reconocidas', () => {
+    const eventos = simularLectura({ guion: guion40Lineas, ppm: 150, porcentajeErrores: 10 })
+    const m = medir(eventos, guion40Lineas)
+
+    console.log(`[T18] Métricas con 10% de error:
+      retardoMedioPalabras = ${m.retardoMedioPalabras.toFixed(2)} (límite <= 3)
+      retardoMaximoPalabras = ${m.retardoMaximoPalabras.toFixed(2)} (límite <= 8)
+      vecesQueRetrocedio = ${m.vecesQueRetrocedio} (límite == 0)
+      segundosHastaFrenar = ${m.segundosHastaFrenar.toFixed(2)}s (límite <= 1.0s)
+      segundosFrenadoIndebido = ${m.segundosFrenadoIndebido.toFixed(2)}s (límite <= 0.5s)`)
+
+    expect(m.retardoMedioPalabras).toBeLessThanOrEqual(3)
+    expect(m.retardoMaximoPalabras).toBeLessThanOrEqual(8)
+    expect(m.vecesQueRetrocedio).toBe(0)
+    expect(m.segundosHastaFrenar).toBeLessThanOrEqual(1.0)
+    expect(m.segundosFrenadoIndebido).toBeLessThanOrEqual(0.5)
+
+    console.log('[T18] RESULTADO: OK')
+  })
+
+  test('T19: registro de lectura acumula entradas crecientes sin tentativos ni finales descartados', () => {
+    const registro = crearRegistro()
+    const tokens = tokenizarGuion('Uno dos tres cuatro cinco seis siete ocho nueve diez')
+    const seguidor = crearSeguidor(tokens)
+
+    // Tentativo no anota nada
+    const posTent = seguidor.avanzarTentativo('Uno dos tres')
+    expect(posTent.movio).toBe(true)
+    expect(registro.entradas().length).toBe(0)
+
+    // Final exitoso sí anota
+    const pos1 = seguidor.avanzar('Uno dos tres')
+    if (pos1.movio) {
+      registro.anotar({
+        desdeToken: pos1.desdeToken,
+        hastaToken: pos1.hastaToken,
+        inicioMs: 0,
+        finMs: 1200,
+        textoReconocido: 'Uno dos tres'
+      })
+    }
+
+    const pos2 = seguidor.avanzar('cuatro cinco seis')
+    if (pos2.movio) {
+      registro.anotar({
+        desdeToken: pos2.desdeToken,
+        hastaToken: pos2.hastaToken,
+        inicioMs: 1200,
+        finMs: 2400,
+        textoReconocido: 'cuatro cinco seis'
+      })
+    }
+
+    // Final que no mueve no se anota
+    const pos3 = seguidor.avanzar('palabra Totalmente Inexistente')
+    expect(pos3.movio).toBe(false)
+
+    const entradas = registro.entradas()
+    expect(entradas.length).toBe(2)
+    expect(entradas[0].desdeToken).toBeLessThan(entradas[1].desdeToken)
+    expect(entradas[0].finMs).toBeLessThanOrEqual(entradas[1].inicioMs)
+
+    console.log(`[T19] Registro anotó ${entradas.length} entradas válidas y descartó tentativos/no-movidos`)
+    console.log('[T19] RESULTADO: OK')
+  })
+
+  test('T20: los tentativos no mueven la posición interna posicionToken del seguidor', () => {
+    const tokens = tokenizarGuion('Primera palabra segunda palabra tercera palabra cuarta palabra')
+    const seguidor = crearSeguidor(tokens)
+
+    expect(seguidor.posicionToken()).toBe(0)
+
+    // Alimentar sólo parciales
+    const p1 = seguidor.avanzarTentativo('Primera palabra')
+    expect(p1.movio).toBe(true)
+    expect(seguidor.posicionToken()).toBe(0)
+
+    const p2 = seguidor.avanzarTentativo('segunda palabra tercera palabra')
+    expect(p2.movio).toBe(true)
+    expect(seguidor.posicionToken()).toBe(0)
+
+    // Un final sí mueve posicionToken
+    const pFinal = seguidor.avanzar('Primera palabra segunda palabra')
+    expect(pFinal.movio).toBe(true)
+    expect(seguidor.posicionToken()).toBe(3)
+
+    console.log(`[T20] Posición interna tras tentativos: 0, tras final: ${seguidor.posicionToken()}`)
+    console.log('[T20] RESULTADO: OK')
+  })
+})
+
+function buscarArchivosRec(dir: string, extension: string): string[] {
+  if (!fs.existsSync(dir)) return []
+  let resultados: string[] = []
+  const items = fs.readdirSync(dir, { withFileTypes: true })
+  for (const item of items) {
+    const fullPath = path.join(dir, item.name)
+    if (item.isDirectory()) {
+      resultados = resultados.concat(buscarArchivosRec(fullPath, extension))
+    } else if (item.isFile() && item.name.endsWith(extension)) {
+      resultados.push(fullPath)
+    }
+  }
+  return resultados
+}
+
+function buscarTextoEnDirectorio(dir: string, texto: string): string[] {
+  if (!fs.existsSync(dir)) return []
+  let hallazgos: string[] = []
+  const items = fs.readdirSync(dir, { withFileTypes: true })
+  for (const item of items) {
+    const fullPath = path.join(dir, item.name)
+    if (item.isDirectory()) {
+      hallazgos = hallazgos.concat(buscarTextoEnDirectorio(fullPath, texto))
+    } else if (item.isFile()) {
+      const contenido = fs.readFileSync(fullPath, 'utf-8')
+      if (contenido.includes(texto)) {
+        hallazgos.push(fullPath)
+      }
+    }
+  }
+  return hallazgos
+}

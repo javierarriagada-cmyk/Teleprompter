@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react'
+import { MotorDeAvance } from '../lib/avance'
+import { tokenizarGuion } from '../lib/seguidor'
 
 interface TeleprompterViewProps {
   script: string
@@ -7,6 +9,8 @@ interface TeleprompterViewProps {
   fontSize?: number
   marginPercent?: number
   mirror?: boolean
+  motorAvance?: MotorDeAvance | null
+  onEstadoAvanceChange?: (motivoFreno: 'silencio' | 'sin-calce' | 'correa' | null, avanzando: boolean) => void
 }
 
 export default function TeleprompterView({
@@ -15,11 +19,20 @@ export default function TeleprompterView({
   currentWordIndex,
   fontSize = 28,
   marginPercent = 10,
-  mirror = false
+  mirror = false,
+  motorAvance,
+  onEstadoAvanceChange
 }: TeleprompterViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const tokensRef = useRef(tokenizarGuion(script))
 
   useEffect(() => {
+    tokensRef.current = tokenizarGuion(script)
+  }, [script])
+
+  // Desplazamiento por cambio discreto de línea (fallback)
+  useEffect(() => {
+    if (motorAvance) return // Si hay motor de avance, se encarga el rAF loop
     const el = containerRef.current
     if (!el) return
     const lines = Array.from(el.querySelectorAll('.line'))
@@ -32,7 +45,39 @@ export default function TeleprompterView({
         el.scrollTop = top
       }
     }
-  }, [currentLineIndex])
+  }, [currentLineIndex, motorAvance])
+
+  // Desplazamiento continuo con requestAnimationFrame usando MotorDeAvance
+  useEffect(() => {
+    if (!motorAvance) return
+
+    let animId: number
+    const animate = () => {
+      const st = motorAvance.estadoEn(performance.now())
+      if (onEstadoAvanceChange) {
+        onEstadoAvanceChange(st.motivoFreno, st.avanzando)
+      }
+
+      const tokens = tokensRef.current
+      if (tokens.length > 0 && containerRef.current) {
+        const idx = Math.min(Math.max(0, Math.floor(st.posicion)), tokens.length - 1)
+        const t = tokens[idx]
+        if (t) {
+          const lines = Array.from(containerRef.current.querySelectorAll('.line'))
+          const target = lines[t.linea] as HTMLElement
+          if (target) {
+            const top = target.offsetTop - containerRef.current.clientHeight / 2 + target.clientHeight / 2
+            containerRef.current.scrollTop = top
+          }
+        }
+      }
+
+      animId = requestAnimationFrame(animate)
+    }
+
+    animId = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(animId)
+  }, [motorAvance, onEstadoAvanceChange])
 
   return (
     <div
