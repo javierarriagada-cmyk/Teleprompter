@@ -394,8 +394,9 @@ describe('Pruebas TAREA 2 (T12-T22)', () => {
       retardoMedioPalabras = ${m.retardoMedioPalabras.toFixed(2)} (límite <= 3)
       retardoMaximoPalabras = ${m.retardoMaximoPalabras.toFixed(2)} (límite <= 8)
       vecesQueRetrocedio = ${m.vecesQueRetrocedio} (límite == 0)
-      segundosHastaFrenar = ${m.segundosHastaFrenar !== null ? m.segundosHastaFrenar.toFixed(2) + 's' : 'null'} (límite <= 1.0s)
-      segundosFrenadoIndebido = ${m.segundosFrenadoIndebido.toFixed(2)}s (límite <= 0.5s)`)
+      segundosHastaFrenar = ${m.segundosHastaFrenar !== null ? m.segundosHastaFrenar.toFixed(2) + 's' : 'SIN DATOS'} (límite <= 1.0s)
+      segundosFrenadoIndebido = ${m.segundosFrenadoIndebido.toFixed(2)}s (límite <= 0.5s)
+      muestras = ${m.muestras}, confirmaciones = ${m.confirmaciones}, tentativos = ${m.tentativos}`)
 
     expect(m.retardoMedioPalabras).toBeLessThanOrEqual(3)
     expect(m.retardoMaximoPalabras).toBeLessThanOrEqual(8)
@@ -438,9 +439,13 @@ describe('Pruebas TAREA 2 (T12-T22)', () => {
     const eventos = simularLectura({ guion: guion40Lineas, ppm: 150 })
     const m = medir(eventos, guion40Lineas)
 
-    expect(m.segundosHastaFrenar).not.toBeNull()
-    console.log(`[T14] Segundos hasta frenar por silencio: ${m.segundosHastaFrenar!.toFixed(2)}s`)
+    if (m.segundosHastaFrenar === null) {
+      console.log('[T14] Segundos hasta frenar por silencio: SIN DATOS')
+    } else {
+      console.log(`[T14] Segundos hasta frenar por silencio: ${m.segundosHastaFrenar.toFixed(2)}s`)
+    }
 
+    expect(m.segundosHastaFrenar).not.toBeNull()
     expect(m.segundosHastaFrenar!).toBeLessThanOrEqual(1.0)
 
     const motor = crearMotorDeAvance()
@@ -479,9 +484,13 @@ describe('Pruebas TAREA 2 (T12-T22)', () => {
     const eventos = simularLectura({ guion: guion40Lineas, ppm: 150, saltarDesdeHasta: [50, 100], pausaCadaNPalabras: 5 })
     const m = medir(eventos, guion40Lineas)
 
-    expect(m.segundosDeRecuperacion).not.toBeNull()
-    console.log(`[T16] Segundos de recuperación tras salto: ${m.segundosDeRecuperacion!.toFixed(2)}s (límite <= 2.0s)`)
+    if (m.segundosDeRecuperacion === null) {
+      console.log('[T16] Segundos de recuperación tras salto: SIN DATOS')
+    } else {
+      console.log(`[T16] Segundos de recuperación tras salto: ${m.segundosDeRecuperacion.toFixed(2)}s (límite <= 2.0s)`)
+    }
 
+    expect(m.segundosDeRecuperacion).not.toBeNull()
     expect(m.segundosDeRecuperacion!).toBeLessThanOrEqual(2.0)
     console.log('[T16] RESULTADO: OK')
   })
