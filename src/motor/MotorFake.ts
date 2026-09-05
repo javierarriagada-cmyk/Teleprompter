@@ -36,6 +36,10 @@ export class MotorFake implements MotorDeVoz {
     return true
   }
 
+  emitirParcial(texto: string): void {
+    this.listenersParcial.forEach((cb) => cb({ texto }))
+  }
+
   onParcial(cb: (e: EventoParcial) => void): () => void {
     this.listenersParcial.push(cb)
     return () => {

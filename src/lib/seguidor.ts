@@ -72,7 +72,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
     if (tokens.length === 0) {
       return { linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
     }
-    const idx = Math.min(Math.max(0, pos), tokens.length - 1)
+    const idx = movio && hastaToken >= 0 ? Math.min(Math.max(0, hastaToken), tokens.length - 1) : Math.min(Math.max(0, pos), tokens.length - 1)
     const t = tokens[idx]
     return {
       linea: t.linea,

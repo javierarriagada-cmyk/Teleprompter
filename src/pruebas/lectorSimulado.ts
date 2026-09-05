@@ -20,12 +20,19 @@ export function simularLectura(o: OpcionesLectura): EventoLector[] {
   const tokens = tokenizarGuion(o.guion)
   if (tokens.length === 0) return []
 
-  const ppm = o.ppm || 150
-  const msPorPalabra = (60 / ppm) * 1000
+  const ppmTarget = o.ppm || 150
+  const totalWords = tokens.length
   const msEntreParciales = o.msEntreParciales ?? 250
   const pausaCadaNPalabras = o.pausaCadaNPalabras ?? 8
   const msDePausa = o.msDePausa ?? 500
   const porcentajeErrores = o.porcentajeErrores ?? 0
+
+  // Calibración exacta de tiempo para que la velocidad global (palabras / duracion) sea exactamente ppmTarget
+  const duracionTotalTargetMs = (totalWords / ppmTarget) * 60000
+  const numPauses = Math.max(0, Math.floor((totalWords - 1) / pausaCadaNPalabras))
+  const totalPauseTimeMs = numPauses * msDePausa
+  const netSpeechTimeMs = Math.max(100, duracionTotalTargetMs - totalPauseTimeMs)
+  const msPorPalabra = netSpeechTimeMs / totalWords
 
   let seed = 123456789
   function random() {
@@ -42,7 +49,7 @@ export function simularLectura(o: OpcionesLectura): EventoLector[] {
 
   while (idxToken < tokens.length) {
     // Salto
-    if (o.saltarDesdeHasta && idxToken === o.saltarDesdeHasta[0]) {
+    if (o.saltarDesdeHasta && idxToken >= o.saltarDesdeHasta[0] && idxToken < o.saltarDesdeHasta[1]) {
       idxToken = o.saltarDesdeHasta[1]
       if (idxToken >= tokens.length) break
     }
@@ -71,13 +78,11 @@ export function simularLectura(o: OpcionesLectura): EventoLector[] {
     const tFinFrase = tInicioFrase + duracionFrase
 
     // Emitir parciales durante la frase
-    let textoAcumulado: string[] = []
     let tParcial = tInicioFrase + msEntreParciales
-
     while (tParcial < tFinFrase) {
       const prop = (tParcial - tInicioFrase) / duracionFrase
       const numPalabrasLeidas = Math.max(1, Math.floor(prop * palabrasFrase.length))
-      textoAcumulado = palabrasFrase.slice(0, numPalabrasLeidas)
+      const textoAcumulado = palabrasFrase.slice(0, numPalabrasLeidas)
 
       eventos.push({
         t: tParcial,
@@ -104,8 +109,8 @@ export function simularLectura(o: OpcionesLectura): EventoLector[] {
     }
   }
 
-  // Ordenar eventos por tiempo y por prioridad de tipo si son simultáneos
-  const ordenTipo = { voz: 0, parcial: 1, final: 2 }
+  // Ordenar eventos por tiempo y por prioridad de tipo si son simultáneos (parcial -> final -> voz false)
+  const ordenTipo = { parcial: 0, final: 1, voz: 2 }
   eventos.sort((a, b) => {
     if (Math.abs(a.t - b.t) > 1e-5) return a.t - b.t
     return ordenTipo[a.tipo] - ordenTipo[b.tipo]

@@ -62,8 +62,8 @@ export function crearMotorDeAvance(p?: Partial<ParametrosAvance>): MotorDeAvance
       return
     }
 
-    if (esConfirmacion && diff > params.correaPalabras * 2) {
-      // Salto grande instantáneo en confirmación
+    if (diff > params.correaPalabras * 2) {
+      // Salto grande instantáneo
       posicionMostrada = targetAcotado
       objetivoPosicion = targetAcotado
       gliding = false
@@ -86,18 +86,23 @@ export function crearMotorDeAvance(p?: Partial<ParametrosAvance>): MotorDeAvance
         if (tUltimaConfirmacion > 0 && tMs > tUltimaConfirmacion) {
           const tokensDelta = token - ultimaConfirmada
           const timeDeltaMs = tMs - tUltimaConfirmacion
-          if (timeDeltaMs > 0) {
+          if (timeDeltaMs >= 200) {
             const measuredPpm = (tokensDelta / timeDeltaMs) * 60000
-            ppmEstimadas = params.suavizadoVelocidad * measuredPpm + (1 - params.suavizadoVelocidad) * ppmEstimadas
+            if (measuredPpm >= 40 && measuredPpm <= 400) {
+              ppmEstimadas = params.suavizadoVelocidad * measuredPpm + (1 - params.suavizadoVelocidad) * ppmEstimadas
+            } else {
+              console.warn(`[MotorDeAvance] Velocidad estimada fuera de rango (${measuredPpm.toFixed(1)} ppm), acotando a 40-400 ppm`)
+              const clamped = Math.min(400, Math.max(40, measuredPpm))
+              ppmEstimadas = params.suavizadoVelocidad * clamped + (1 - params.suavizadoVelocidad) * ppmEstimadas
+            }
           }
         } else if (tUltimaConfirmacion === 0 && tMs > 0) {
           const measuredPpm = (token / tMs) * 60000
-          ppmEstimadas = measuredPpm
-        }
-
-        if (ppmEstimadas < 40 || ppmEstimadas > 400) {
-          console.warn(`[MotorDeAvance] Velocidad estimada fuera de rango (${ppmEstimadas.toFixed(1)} ppm), acotando a 40-400 ppm`)
-          ppmEstimadas = Math.min(400, Math.max(40, ppmEstimadas))
+          if (measuredPpm >= 40 && measuredPpm <= 400) {
+            ppmEstimadas = measuredPpm
+          } else {
+            ppmEstimadas = Math.min(400, Math.max(40, measuredPpm))
+          }
         }
       }
 
