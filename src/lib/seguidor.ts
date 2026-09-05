@@ -6,10 +6,17 @@ export type Token = {
   indiceEnLinea: number  // índice de palabra dentro de esa línea
 }
 
-export type Posicion = { linea: number; palabra: number; movio: boolean }
+export type Posicion = {
+  linea: number
+  palabra: number
+  desdeToken: number
+  hastaToken: number
+  movio: boolean
+}
 
 export interface Seguidor {
   avanzar(fraseFinal: string): Posicion
+  avanzarTentativo(fraseParcial: string): Posicion
   reiniciar(): void
   posicionToken(): number
 }
@@ -61,13 +68,19 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
   let pos = 0
   let fallosSeguidos = 0
 
-  function obtenerPosicionRespuesta(movio: boolean): Posicion {
+  function obtenerPosicionRespuesta(movio: boolean, desdeToken = -1, hastaToken = -1): Posicion {
     if (tokens.length === 0) {
-      return { linea: 0, palabra: 0, movio: false }
+      return { linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
     }
-    const idx = Math.min(pos, tokens.length - 1)
+    const idx = Math.min(Math.max(0, pos), tokens.length - 1)
     const t = tokens[idx]
-    return { linea: t.linea, palabra: t.indiceEnLinea, movio }
+    return {
+      linea: t.linea,
+      palabra: t.indiceEnLinea,
+      desdeToken: movio ? desdeToken : idx,
+      hastaToken: movio ? hastaToken : idx,
+      movio
+    }
   }
 
   function buscarMejorOffset(frase: string[], desde: number, hasta: number): { mejorOffset: number; mejorPuntaje: number } {
@@ -106,7 +119,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
   return {
     avanzar(fraseFinal: string): Posicion {
       if (tokens.length === 0) {
-        return { linea: 0, palabra: 0, movio: false }
+        return { linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
       }
 
       const fraseNorm = normalizar(fraseFinal)
@@ -146,7 +159,10 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         }
       }
 
-      const nuevaPos = mejorOffset + frase.length - 1
+      const desdeToken = mejorOffset
+      const hastaToken = mejorOffset + frase.length - 1
+      const nuevaPos = hastaToken
+
       if (nuevaPos < pos - RETROCESO_MAX) {
         console.warn(`[Seguidor] Retroceso descartado: nuevaPos (${nuevaPos}) < pos (${pos}) - RETROCESO_MAX (${RETROCESO_MAX})`)
         return obtenerPosicionRespuesta(false)
@@ -154,7 +170,43 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
 
       pos = nuevaPos
       fallosSeguidos = 0
-      return obtenerPosicionRespuesta(true)
+      return obtenerPosicionRespuesta(true, desdeToken, hastaToken)
+    },
+
+    avanzarTentativo(fraseParcial: string): Posicion {
+      if (tokens.length === 0) {
+        return { linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
+      }
+
+      const fraseNorm = normalizar(fraseParcial)
+      if (!fraseNorm) {
+        return obtenerPosicionRespuesta(false)
+      }
+
+      const palabrasFrase = fraseNorm.split(' ').filter(Boolean)
+      const frase = palabrasFrase.slice(-MAX_PALABRAS_FRASE)
+      if (frase.length === 0) {
+        return obtenerPosicionRespuesta(false)
+      }
+
+      const desde = Math.max(0, pos - VENTANA_ATRAS)
+      const hasta = Math.min(tokens.length - 1, pos + VENTANA_ADELANTE)
+
+      const { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta)
+
+      if (mejorPuntaje < MIN_COINCIDENCIA) {
+        return obtenerPosicionRespuesta(false)
+      }
+
+      const desdeToken = mejorOffset
+      const hastaToken = mejorOffset + frase.length - 1
+      const nuevaPosCandidate = hastaToken
+
+      if (nuevaPosCandidate < pos - RETROCESO_MAX) {
+        return obtenerPosicionRespuesta(false)
+      }
+
+      return obtenerPosicionRespuesta(true, desdeToken, hastaToken)
     },
 
     reiniciar() {

@@ -1,32 +1,11 @@
-declare class AudioWorkletProcessor {
-  readonly port: MessagePort
-  constructor(options?: any)
-}
-declare function registerProcessor(name: string, processorCtor: new (options?: any) => AudioWorkletProcessor): void
-declare const currentTime: number
-
 /**
  * AudioWorkletProcessor autocontenido (sin imports) que procesa audio en bloques de 100 ms (derivado de sampleRate),
  * calibra el piso de ruido en los primeros 500 ms, y emite mensajes con el buffer PCM y estado VAD.
  */
 class VADProcessor extends AudioWorkletProcessor {
-  private _smoothing: number
-  private _env: number
-  private _speaking: boolean
-  private _startThreshold: number
-  private _stopThreshold: number
-  private _stopDelay: number
-  private _lastSpokeAt: number
-  private _pisoRuidoMuestras: number
-  private _pisoRuidoSum: number
-  private _calibrando: boolean
-  private _tamanoBloque: number
-  private _bufferAcumulado: Float32Array
-  private _muestrasAcumuladas: number
-
-  constructor(options?: any) {
+  constructor(options) {
     super(options)
-    const sr = options?.processorOptions?.sampleRate || 16000
+    const sr = (options && options.processorOptions && options.processorOptions.sampleRate) || 16000
     this._tamanoBloque = Math.floor(sr * 0.1) // 100 ms de muestras según la tasa de muestreo real
 
     this._smoothing = 0.9
@@ -45,7 +24,7 @@ class VADProcessor extends AudioWorkletProcessor {
     this._muestrasAcumuladas = 0
   }
 
-  process(inputs: Float32Array[][], _outputs: Float32Array[][], _parameters: Record<string, Float32Array>) {
+  process(inputs, _outputs, _parameters) {
     try {
       const input = inputs[0]
       if (!input || input.length === 0) return true

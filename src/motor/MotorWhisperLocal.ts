@@ -73,8 +73,9 @@ export class MotorWhisperLocal implements MotorDeVoz {
         this.audioCtx = new AudioCtxClass()
         const ctxSampleRate = this.audioCtx.sampleRate
 
-        const urlVadProcessor = new URL('../workers/vad-processor.ts?worker&url', import.meta.url).href
-        await this.audioCtx.audioWorklet.addModule(urlVadProcessor)
+        const baseUrl = (import.meta as any).env?.BASE_URL || '/'
+        const vadUrl = baseUrl.endsWith('/') ? baseUrl + 'vad-processor.js' : baseUrl + '/vad-processor.js'
+        await this.audioCtx.audioWorklet.addModule(vadUrl)
 
         this.workletNode = new AudioWorkletNode(this.audioCtx, 'vad-processor', {
           processorOptions: { sampleRate: ctxSampleRate }
