@@ -10,10 +10,25 @@ interface AppProps {
   motor?: MotorDeVoz
 }
 
+const DEFAULT_SCRIPT = `Bienvenido al teleprompter.\nLee este texto en voz alta para probar el reconocimiento.`
+
 export default function App({ motor }: AppProps) {
-  const [scriptText, setScriptText] = useState<string>(
-    `Bienvenido al teleprompter.\nLee este texto en voz alta para probar el reconocimiento.`
-  )
+  const [scriptText, setScriptText] = useState<string>(() => {
+    try {
+      const saved = localStorage.getItem('teleprompter_script')
+      if (saved !== null) return saved
+    } catch (e) {}
+    return DEFAULT_SCRIPT
+  })
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      try {
+        localStorage.setItem('teleprompter_script', scriptText)
+      } catch (e) {}
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [scriptText])
   const [engine, setEngine] = useState<IdMotor>('whisper-local')
   const [fontSize, setFontSize] = useState<number>(32)
   const [marginPercent, setMarginPercent] = useState<number>(10)
@@ -29,6 +44,7 @@ export default function App({ motor }: AppProps) {
     isRecording,
     transcript,
     ready,
+    estadoMotor,
     dispositivoComputo,
     progresoDescarga,
     ultimoError,
@@ -101,12 +117,10 @@ export default function App({ motor }: AppProps) {
       >
         <strong>Franja de Estado:</strong>
         <div style={{ marginTop: 4 }}>
-          <span>Motor Activo: <strong>{motorActivo}</strong></span>
+          <span>Estado del Motor: <strong>{estadoMotor}</strong></span>
+          <span style={{ marginLeft: 16 }}>Motor Activo: <strong>{motorActivo}</strong></span>
           {engine === 'whisper-local' && (
             <span style={{ marginLeft: 16 }}>Dispositivo: <strong>{dispositivoComputo}</strong></span>
-          )}
-          {progresoDescarga > 0 && progresoDescarga < 1 && (
-            <span style={{ marginLeft: 16 }}>Descarga Modelo: <strong>{Math.round(progresoDescarga * 100)}%</strong></span>
           )}
           <span style={{ marginLeft: 16 }}>Bloqueo Pantalla: <strong>{wakeLockActivo ? 'Sí 🔒' : 'No'}</strong></span>
         </div>
@@ -165,7 +179,7 @@ export default function App({ motor }: AppProps) {
             </div>
 
             <div style={{ marginTop: 12 }}>
-              <strong>Estado del Motor:</strong> {ready ? 'Listo ✅' : 'Cargando... ⏳'}
+              <strong>Estado del Motor:</strong> {estadoMotor}
             </div>
 
             <div style={{ marginTop: 12 }}>

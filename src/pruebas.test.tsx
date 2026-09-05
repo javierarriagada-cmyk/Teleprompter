@@ -1,6 +1,9 @@
 import React from 'react'
+import fs from 'node:fs'
+import path from 'node:path'
+import { execSync } from 'node:child_process'
 import { describe, expect, test } from 'vitest'
-import { render, act } from '@testing-library/react'
+import { render, act, fireEvent } from '@testing-library/react'
 import App from './App'
 import { crearSeguidor, tokenizarGuion } from './lib/seguidor'
 import { remuestrear } from './lib/remuestrear'
@@ -294,4 +297,116 @@ Esta es la tercera línea`
 
     expect(descartadoMotivo).toContain('demasiado corto')
   })
+
+  // T10: Verificación de worklet en JS plano y ausencia de TypeScript en dist/
+  test('T10: vad-processor.js es JavaScript ejecutable en public/ y sin TypeScript en dist/', () => {
+    const rutaVad = path.resolve(process.cwd(), 'public/vad-processor.js')
+    expect(fs.existsSync(rutaVad)).toBe(true)
+
+    const codigo = fs.readFileSync(rutaVad, 'utf-8')
+
+    // 1. Debe parsear como JS válido sin SyntaxError
+    expect(() => {
+      new Function(codigo)
+    }).not.toThrow()
+
+    // 2. No debe tener anotaciones ni palabras clave de TypeScript
+    expect(codigo.includes('declare ')).toBe(false)
+    expect(codigo.includes(': Float32Array')).toBe(false)
+    expect(codigo.includes('private ')).toBe(false)
+
+    // 3. No debe haber ningún archivo en src/ que importe worker con url
+    const rutaSrc = path.resolve(process.cwd(), 'src')
+    const busquedaWorkerUrl = '?worker' + '&url'
+    const archivosConWorkerUrl = buscarTextoEnDirectorio(rutaSrc, busquedaWorkerUrl)
+    expect(archivosConWorkerUrl).toEqual([])
+
+    // 4. Verificación del build: en dist/ NO debe existir ningún archivo .ts
+    const rutaDist = path.resolve(process.cwd(), 'dist')
+    if (!fs.existsSync(rutaDist)) {
+      execSync('npx vite build')
+    }
+    const archivosTsEnDist = buscarArchivosRec(rutaDist, '.ts')
+    expect(archivosTsEnDist).toEqual([])
+  })
+
+  // T11: Persistencia del guion en localStorage ante recargas
+  test('T11: el guion se guarda en localStorage y se restaura al recargar/remontar', async () => {
+    localStorage.clear()
+
+    const nuevoTexto = 'Este es un guion personalizado de prueba para T11.'
+
+    const fake = new MotorFake()
+
+    let unmount: () => void
+    let container: HTMLElement
+
+    await act(async () => {
+      const res = render(<App motor={fake} />)
+      unmount = res.unmount
+      container = res.container
+    })
+
+    const textarea = container!.querySelector('textarea') as HTMLTextAreaElement
+    expect(textarea).not.toBeNull()
+
+    // Escribir un nuevo guion
+    await act(async () => {
+      fireEvent.change(textarea, { target: { value: nuevoTexto } })
+    })
+
+    // Esperar > 500 ms para que venza el debounce y se guarde en localStorage
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    expect(localStorage.getItem('teleprompter_script')).toBe(nuevoTexto)
+
+    // Simular recarga unmounting y remontando App
+    await act(async () => {
+      unmount()
+    })
+
+    let container2: HTMLElement
+    await act(async () => {
+      const res2 = render(<App motor={fake} />)
+      container2 = res2.container
+    })
+
+    const textarea2 = container2!.querySelector('textarea') as HTMLTextAreaElement
+    expect(textarea2.value).toBe(nuevoTexto)
+  })
 })
+
+function buscarArchivosRec(dir: string, extension: string): string[] {
+  if (!fs.existsSync(dir)) return []
+  let resultados: string[] = []
+  const items = fs.readdirSync(dir, { withFileTypes: true })
+  for (const item of items) {
+    const fullPath = path.join(dir, item.name)
+    if (item.isDirectory()) {
+      resultados = resultados.concat(buscarArchivosRec(fullPath, extension))
+    } else if (item.isFile() && item.name.endsWith(extension)) {
+      resultados.push(fullPath)
+    }
+  }
+  return resultados
+}
+
+function buscarTextoEnDirectorio(dir: string, texto: string): string[] {
+  if (!fs.existsSync(dir)) return []
+  let hallazgos: string[] = []
+  const items = fs.readdirSync(dir, { withFileTypes: true })
+  for (const item of items) {
+    const fullPath = path.join(dir, item.name)
+    if (item.isDirectory()) {
+      hallazgos = hallazgos.concat(buscarTextoEnDirectorio(fullPath, texto))
+    } else if (item.isFile()) {
+      const contenido = fs.readFileSync(fullPath, 'utf-8')
+      if (contenido.includes(texto)) {
+        hallazgos.push(fullPath)
+      }
+    }
+  }
+  return hallazgos
+}

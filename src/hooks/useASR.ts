@@ -7,6 +7,7 @@ export default function useASR(options: { engine?: IdMotor; lang?: string; motor
   const motorRef = useRef<MotorDeVoz | null>(null)
 
   const [isRecording, setIsRecording] = useState(false)
+  const [isStarting, setIsStarting] = useState(false)
   const [transcript, setTranscript] = useState('')
   const [transcripcionParcial, setTranscripcionParcial] = useState('')
   const [ready, setReady] = useState(false)
@@ -22,7 +23,10 @@ export default function useASR(options: { engine?: IdMotor; lang?: string; motor
     async function initMotor() {
       try {
         setReady(false)
+        setIsStarting(false)
         setUltimoError(null)
+        setProgresoDescarga(0)
+        setDispositivoComputo('cargando')
         if (motorRef.current) {
           await motorRef.current.detener()
         }
@@ -60,8 +64,6 @@ export default function useASR(options: { engine?: IdMotor; lang?: string; motor
             setUltimoError(err.message)
           })
         )
-
-        setReady(true)
       } catch (err: any) {
         console.error('[useASR] Error al inicializar motor:', err)
         setUltimoError(err.message || String(err))
@@ -83,7 +85,10 @@ export default function useASR(options: { engine?: IdMotor; lang?: string; motor
     if (!motorRef.current) return
     try {
       setUltimoError(null)
+      setIsStarting(true)
       await motorRef.current.iniciar({ lang })
+      setIsStarting(false)
+      setReady(true)
       setIsRecording(true)
 
       if (motorRef.current.id === 'whisper-local') {
@@ -93,6 +98,7 @@ export default function useASR(options: { engine?: IdMotor; lang?: string; motor
     } catch (err: any) {
       console.error('[useASR] Error al iniciar grabación:', err)
       setUltimoError(err.message || String(err))
+      setIsStarting(false)
       setIsRecording(false)
     }
   }
@@ -116,6 +122,20 @@ export default function useASR(options: { engine?: IdMotor; lang?: string; motor
     listenerFinalCbRef.current = cb
   }
 
+  let estadoMotor = 'sin iniciar'
+  if (ultimoError) {
+    estadoMotor = 'error'
+  } else if (isRecording) {
+    estadoMotor = 'escuchando'
+  } else if (ready) {
+    estadoMotor = 'listo'
+  } else if (isStarting || progresoDescarga > 0) {
+    const pct = Math.round(progresoDescarga * 100)
+    estadoMotor = `descargando modelo ${pct}%`
+  } else {
+    estadoMotor = 'sin iniciar'
+  }
+
   return {
     start,
     stop,
@@ -123,6 +143,7 @@ export default function useASR(options: { engine?: IdMotor; lang?: string; motor
     isRecording,
     transcript: (transcript + (transcripcionParcial ? '\n' + transcripcionParcial : '')).trim(),
     ready,
+    estadoMotor,
     dispositivoComputo,
     progresoDescarga,
     ultimoError,
