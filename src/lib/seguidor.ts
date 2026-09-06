@@ -31,6 +31,10 @@ export const VENTANA_ADELANTE = 40
 export const MAX_PALABRAS_FRASE = 12
 export const MIN_COINCIDENCIA = 0.5
 export const MAX_FALLOS = 3
+// Palabras CONSECUTIVAS que tienen que calzar para aceptar una posicion. Es la regla que
+// separa "esta leyendo el guion" de "esta hablando de otra cosa": palabras sueltas calzan
+// por casualidad, tres seguidas no.
+export const PALABRAS_SEGUIDAS_MINIMO = 3
 export const RETROCESO_MAX = 2
 
 export const MIN_PALABRAS_PARCIAL = 3
@@ -185,6 +189,8 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
       let coincidencias = 0
       let tokensEmparejados = 0
       let currTokenIdx = offset
+      let racha = 0
+      let rachaMaxima = 0
 
       for (let i = 0; i < frase.length; i++) {
         while (currTokenIdx < tokens.length && tokens[currTokenIdx].esAcotacion) {
@@ -194,6 +200,10 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         if (currTokenIdx < tokens.length) {
           if (similar(frase[i], tokens[currTokenIdx].palabra)) {
             coincidencias++
+            racha++
+            if (racha > rachaMaxima) rachaMaxima = racha
+          } else {
+            racha = 0
           }
           tokensEmparejados++
           currTokenIdx++
@@ -202,6 +212,17 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
 
       if (frase.length === 0) continue
       let puntaje = coincidencias / frase.length
+
+      // NO basta con que coincida una fraccion de palabras sueltas: hacen falta
+      // PALABRAS_SEGUIDAS_MINIMO palabras CONSECUTIVAS. Contando palabras dispersas, un
+      // texto que no esta en el guion calza igual, porque "de", "que", "la" y "un"
+      // aparecen por todas partes; con eso, hablar de otra cosa no detenia el prompter.
+      //
+      // En frases mas cortas que ese minimo se exige que calce la frase entera.
+      const seguidasNecesarias = Math.min(PALABRAS_SEGUIDAS_MINIMO, frase.length)
+      if (rachaMaxima < seguidasNecesarias) {
+        puntaje = 0
+      }
 
       if (offset < pos) {
         const tokenDist = pos - offset
