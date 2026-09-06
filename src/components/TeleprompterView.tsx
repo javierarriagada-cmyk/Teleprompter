@@ -5,8 +5,9 @@ import { Guion } from '../datos/modelo'
 
 import { AnclajeZona, calcularBanda, opacidadDeLinea } from './banda'
 
-// El texto no se mueve hasta que el lector dijo estas palabras de la linea en curso.
-const PALABRAS_ANTES_DE_MOVER = 7
+// El texto no se mueve mientras el lector va por el primer renglon de la linea en curso:
+// el disparo es al pasar al segundo. Cuantas palabras son eso se calcula con los renglones
+// que ocupa el elemento, porque depende del tamano de letra.
 
 interface TeleprompterViewProps {
   script: Guion | string
@@ -158,8 +159,14 @@ export default function TeleprompterView({
             // adelantoMaximo palabras adelante del lector, y contando sobre ella los dos
             // numeros se anulaban: con 8 de adelanto y 7 de retencion, el texto arrancaba
             // en la tercera palabra.
+            // El disparo es al pasar al SEGUNDO RENGLON, no a una cantidad fija de
+            // palabras: cuantas palabras entran en un renglon depende del tamano de letra.
+            // Se calcula con los renglones que ocupa el elemento, que el navegador ya sabe.
+            const filas = Math.max(1, Math.round(target.clientHeight / filaPx))
+            const palabrasPorRenglon = cantidad / filas
+
             const palabrasDichas = st.ultimoCalce - primero
-            const palabrasQueMueven = Math.max(0, palabrasDichas - PALABRAS_ANTES_DE_MOVER)
+            const palabrasQueMueven = Math.max(0, palabrasDichas - palabrasPorRenglon)
 
             if (diagnostico) {
               const el = document.getElementById('diag-prompter')
@@ -225,12 +232,7 @@ export default function TeleprompterView({
           overflowY: 'auto',
           paddingLeft: `${marginPercent}%`,
           paddingRight: `${marginPercent}%`,
-          // Un renglon de aire ENCIMA de la primera linea. Con el relleno igual a topBanda,
-          // la primera linea del guion queda pegada al borde superior de la banda, y una
-          // linea contra el borde se lee como "esto esta por desaparecer" aunque no se
-          // mueva. En la practica la linea que se lee tiene que estar donde normalmente
-          // esta la segunda, con espacio arriba.
-          paddingTop: topBanda + alturaLineaPx,
+          paddingTop: topBanda,
           paddingBottom: `calc(100% - ${topBanda + altoBanda}px)`,
           transform: mirror ? 'scaleX(-1)' : 'none',
           boxSizing: 'border-box'
