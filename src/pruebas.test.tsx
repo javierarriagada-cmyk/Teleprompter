@@ -1004,6 +1004,241 @@ describe('Pruebas TAREA 3 (T27-T32)', () => {
   })
 })
 
+describe('Pruebas TAREA 4 (T33-T36)', () => {
+  // T33: biblioteca: crear dos guiones, listar, y que salgan ordenados por modificado con el mas nuevo primero. Buscar por titulo filtra.
+  test('T33: biblioteca: crear dos guiones, listar por modificado (mas nuevo primero) y buscar por titulo filtra', async () => {
+    const repo = new RepositorioMemoria()
+
+    const g1: Guion = {
+      id: 'g-33-1',
+      titulo: 'Noticias de la Mañana',
+      idioma: 'es',
+      creado: 1000,
+      modificado: 1000,
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto noticias' }]
+    }
+
+    const g2: Guion = {
+      id: 'g-33-2',
+      titulo: 'Deportes Fin de Semana',
+      idioma: 'es',
+      creado: 2000,
+      modificado: 2000,
+      bloques: [{ id: 'b2', nombre: '', texto: 'Texto deportes' }]
+    }
+
+    await repo.guardar(g1)
+    await repo.guardar(g2)
+
+    let container: HTMLElement = null!
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+    })
+
+    // Esperar fuera del act inicial a que el hook useEffect de App cargue el repo
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // Comprobar orden por modificado (g2 primero, g1 segundo)
+    const h3Elements = Array.from(container!.querySelectorAll('h3'))
+    const titulos = h3Elements.map((h) => h.textContent?.trim()).filter((t) => t !== 'Teleprompter MVP')
+    expect(titulos.length).toBe(2)
+    expect(titulos[0]).toBe('Deportes Fin de Semana')
+    expect(titulos[1]).toBe('Noticias de la Mañana')
+
+    // Filtrar por título
+    const busquedaInput = container!.querySelector('input[placeholder="Buscar por título..."]') as HTMLInputElement
+    expect(busquedaInput).not.toBeNull()
+
+    await act(async () => {
+      fireEvent.change(busquedaInput, { target: { value: 'Noticias' } })
+    })
+
+    const titulosFiltrados = Array.from(container!.querySelectorAll('h3')).map((h) => h.textContent?.trim()).filter((t) => t !== 'Teleprompter MVP')
+    expect(titulosFiltrados.length).toBe(1)
+    expect(titulosFiltrados[0]).toBe('Noticias de la Mañana')
+  })
+
+  // T34: editor: agregar tres bloques, subir el tercero, borrar el primero, y comprobar el orden resultante.
+  test('T34: editor: agregar tres bloques, subir el tercero, borrar el primero y comprobar orden resultante', async () => {
+    const repo = new RepositorioMemoria()
+    const guionPrueba: Guion = {
+      id: 'g-34',
+      titulo: 'Guion prueba bloques',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: []
+    }
+    await repo.guardar(guionPrueba)
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 200))
+    })
+
+    // Esperar a que la biblioteca cargue los guiones
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // Abrir el guión en el editor desde la biblioteca
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    expect(botonAbrir).not.toBeUndefined()
+    await act(async () => {
+      fireEvent.click(botonAbrir!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // 1. Agregar tres bloques
+    const botonAgregar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Agregar'))
+    expect(botonAgregar).not.toBeUndefined()
+
+    await act(async () => {
+      fireEvent.click(botonAgregar!)
+      fireEvent.click(botonAgregar!)
+      fireEvent.click(botonAgregar!)
+    })
+
+    // Asignar nombres a los tres bloques
+    const inputsNombre = container!.querySelectorAll('input[placeholder^="Nombre del bloque"]') as NodeListOf<HTMLInputElement>
+    expect(inputsNombre.length).toBe(3)
+
+    await act(async () => {
+      fireEvent.change(inputsNombre[0], { target: { value: 'Bloque A' } })
+      fireEvent.change(inputsNombre[1], { target: { value: 'Bloque B' } })
+      fireEvent.change(inputsNombre[2], { target: { value: 'Bloque C' } })
+    })
+
+    // Order actual: A, B, C. Subir el tercero (Bloque C) -> Order: A, C, B
+    const botonesSubir = Array.from(container!.querySelectorAll('button')).filter((b) => b.textContent === '▲')
+    expect(botonesSubir.length).toBe(3)
+
+    await act(async () => {
+      fireEvent.click(botonesSubir[2])
+    })
+
+    // Borrar el primero (Bloque A) -> Order: C, B
+    const botonesBorrar = Array.from(container!.querySelectorAll('button')).filter((b) => b.textContent === 'Borrar')
+    await act(async () => {
+      fireEvent.click(botonesBorrar[0])
+    })
+
+    const inputsFinales = Array.from(container!.querySelectorAll('input[placeholder^="Nombre del bloque"]')) as HTMLInputElement[]
+    expect(inputsFinales.length).toBe(2)
+    expect(inputsFinales[0].value).toBe('Bloque C')
+    expect(inputsFinales[1].value).toBe('Bloque B')
+  })
+
+  // T35: borrar el guion que esta abierto vuelve a la biblioteca y no lanza.
+  test('T35: borrar el guion que esta abierto vuelve a la biblioteca y no lanza', async () => {
+    const repo = new RepositorioMemoria()
+    const guionPrueba: Guion = {
+      id: 'g-35',
+      titulo: 'Guion a Borrar',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: 'Bloque Unico', texto: 'Texto de prueba' }]
+    }
+    await repo.guardar(guionPrueba)
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 200))
+    })
+
+    // Simular confirmación en window.confirm
+    const origConfirm = window.confirm
+    window.confirm = () => true
+
+    // Esperar a que cargue en la biblioteca
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // Borrar desde la biblioteca cuando es el abierto
+    const botonBorrar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Borrar')
+    expect(botonBorrar).not.toBeUndefined()
+
+    await act(async () => {
+      fireEvent.click(botonBorrar!)
+      await new Promise((r) => setTimeout(r, 200))
+    })
+
+    window.confirm = origConfirm
+
+    // Verificar que vuelve a la biblioteca mostrando el estado vacío
+    const tituloBiblioteca = container!.querySelector('h2')
+    expect(tituloBiblioteca?.textContent).toBe('Biblioteca de Guiones')
+    expect(container!.textContent).toContain('No hay ningún guión guardado')
+  })
+
+  // T36: el guardado automatico llama a `guardar` una sola vez tras varias teclas seguidas.
+  test('T36: el guardado automatico llama a guardar una sola vez tras varias teclas seguidas', async () => {
+    const repo = new RepositorioMemoria()
+    let recuentoLlamadasGuardar = 0
+    const originalGuardar = repo.guardar.bind(repo)
+    repo.guardar = async (g: Guion) => {
+      recuentoLlamadasGuardar++
+      return originalGuardar(g)
+    }
+
+    const guionPrueba: Guion = {
+      id: 'g-36',
+      titulo: 'Guion Debounce',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Inicial' }]
+    }
+    await repo.guardar(guionPrueba)
+    recuentoLlamadasGuardar = 0 // reiniciar contador tras guardado inicial
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 200))
+    })
+
+    // Abrir guion en editor
+    const botonAbrir = container!.querySelector('button') as HTMLButtonElement
+    await act(async () => {
+      fireEvent.click(botonAbrir)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const textarea = container!.querySelector('textarea') as HTMLTextAreaElement
+    expect(textarea).not.toBeNull()
+
+    // Teclear 5 veces rápidamente (cada 100ms)
+    for (let i = 1; i <= 5; i++) {
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: `Inicial + cambio ${i}` } })
+        await new Promise((r) => setTimeout(r, 100))
+      })
+    }
+
+    // Aún no han pasado los 500ms desde el último cambio
+    expect(recuentoLlamadasGuardar).toBe(0)
+
+    // Esperar a que pase el retardo de 500ms
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // Debe haber llamado a guardar exactamente 1 vez
+    expect(recuentoLlamadasGuardar).toBe(1)
+  })
+})
+
 function buscarArchivosRec(dir: string, extension: string): string[] {
   if (!fs.existsSync(dir)) return []
   let resultados: string[] = []

@@ -4,8 +4,10 @@ import { useSeguidor } from './hooks/useSeguidor'
 import { useWakeLock } from './hooks/useWakeLock'
 import TeleprompterView from './components/TeleprompterView'
 import ControlsBar from './components/ControlsBar'
+import BibliotecaView from './components/BibliotecaView'
+import EditorView from './components/EditorView'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
-import { Guion, guionNuevo } from './datos/modelo'
+import { Guion, ResumenGuion, guionNuevo } from './datos/modelo'
 import { RepositorioGuiones } from './datos/RepositorioGuiones'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
@@ -15,6 +17,8 @@ interface AppProps {
   repoOverride?: RepositorioGuiones
 }
 
+type Vista = 'biblioteca' | 'editor' | 'lectura'
+
 const DEFAULT_SCRIPT_TEXT = `Bienvenido al teleprompter.\nLee este texto en voz alta para probar el reconocimiento.`
 
 export default function App({ motor, repoOverride }: AppProps) {
@@ -22,14 +26,30 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [usandoMemoriaFallback, setUsandoMemoriaFallback] = useState<boolean>(false)
   const [errorRepositorio, setErrorRepositorio] = useState<string | null>(null)
 
-  const [guionActual, setGuionActual] = useState<Guion>(() => {
-    const g = guionNuevo('es')
-    g.titulo = 'Guion principal'
-    g.bloques = [{ id: 'b-1', nombre: '', texto: DEFAULT_SCRIPT_TEXT }]
-    return g
-  })
-
+  const [vista, setVista] = useState<Vista>('biblioteca')
+  const [guionesResumen, setGuionesResumen] = useState<ResumenGuion[]>([])
+  const [guionActual, setGuionActual] = useState<Guion | null>(null)
   const [cargado, setCargado] = useState<boolean>(false)
+
+  const cargarBiblioteca = useCallback(async () => {
+    let repo = repoRef.current
+    try {
+      const lista = await repo.listar()
+      setGuionesResumen(lista)
+    } catch (e) {
+      console.warn('[App] Error al acceder a RepositorioIndexedDB, cayendo a RepositorioMemoria:', e)
+      repo = new RepositorioMemoria()
+      repoRef.current = repo
+      setUsandoMemoriaFallback(true)
+      setErrorRepositorio('IndexedDB no está disponible; se está usando almacenamiento en memoria.')
+      try {
+        const lista = await repo.listar()
+        setGuionesResumen(lista)
+      } catch (err) {
+        console.warn('[App] Error al listar de RepositorioMemoria:', err)
+      }
+    }
+  }, [])
 
   // Cargar/Migrar al arrancar
   useEffect(() => {
@@ -64,64 +84,89 @@ export default function App({ motor, repoOverride }: AppProps) {
           try {
             localStorage.removeItem('teleprompter_script')
           } catch (e) {}
-          setGuionActual(gMigrado)
-          setCargado(true)
-          return
         } catch (e) {
           console.warn('[App] Error al migrar guion desde localStorage:', e)
           setErrorRepositorio('Falló la migración del guion desde localStorage.')
         }
       }
 
-      // 2. Abrir el guión más reciente o fallback a RepositorioMemoria
-      let guionCargado: Guion | null = null
-
-      try {
-        const lista = await repo.listar()
-        if (lista.length > 0) {
-          guionCargado = await repo.abrir(lista[0].id)
-        }
-      } catch (e) {
-        console.warn('[App] Error al acceder a RepositorioIndexedDB, cayendo a RepositorioMemoria:', e)
-        repo = new RepositorioMemoria()
-        repoRef.current = repo
-        setUsandoMemoriaFallback(true)
-        setErrorRepositorio('IndexedDB no está disponible; se está usando almacenamiento en memoria.')
-      }
-
-      if (guionCargado) {
-        setGuionActual(guionCargado)
-      } else {
-        const gInicial = guionNuevo('es')
-        gInicial.titulo = 'Guion principal'
-        gInicial.bloques = [{ id: 'b-1', nombre: '', texto: DEFAULT_SCRIPT_TEXT }]
-        try {
-          await repo.guardar(gInicial)
-          setGuionActual(gInicial)
-        } catch (e) {
-          console.warn('[App] Error al guardar guion inicial:', e)
-        }
-      }
-
+      await cargarBiblioteca()
       setCargado(true)
     }
 
     inicializar()
-  }, [])
+  }, [cargarBiblioteca])
 
-  // Auto-guardado al modificar el texto del bloque
+  // Auto-guardado debounced (500ms) al modificar guionActual
   useEffect(() => {
-    if (!cargado) return
+    if (!cargado || !guionActual) return
     const timer = setTimeout(async () => {
       try {
         await repoRef.current.guardar(guionActual)
+        await cargarBiblioteca()
       } catch (e) {
         console.warn('[App] Error al guardar guion en repositorio:', e)
         setErrorRepositorio('Error al guardar cambios en el repositorio.')
       }
     }, 500)
     return () => clearTimeout(timer)
-  }, [guionActual, cargado])
+  }, [guionActual, cargado, cargarBiblioteca])
+
+  // Manejadores de Biblioteca
+  async function handleAbrirGuion(id: string) {
+    try {
+      const g = await repoRef.current.abrir(id)
+      if (g) {
+        setGuionActual(g)
+        setVista('editor')
+      } else {
+        await cargarBiblioteca()
+      }
+    } catch (e) {
+      console.warn('[App] Error al abrir guion:', e)
+    }
+  }
+
+  async function handleCrearNuevoGuion() {
+    const nuevo = guionNuevo('es')
+    try {
+      await repoRef.current.guardar(nuevo)
+      setGuionActual(nuevo)
+      await cargarBiblioteca()
+      setVista('editor')
+    } catch (e) {
+      console.warn('[App] Error al crear nuevo guion:', e)
+    }
+  }
+
+  async function handleRenombrarGuion(id: string, nuevoTitulo: string) {
+    try {
+      const g = await repoRef.current.abrir(id)
+      if (g) {
+        g.titulo = nuevoTitulo
+        await repoRef.current.guardar(g)
+        if (guionActual && guionActual.id === id) {
+          setGuionActual({ ...g })
+        }
+        await cargarBiblioteca()
+      }
+    } catch (e) {
+      console.warn('[App] Error al renombrar guion:', e)
+    }
+  }
+
+  async function handleBorrarGuion(id: string) {
+    try {
+      await repoRef.current.borrar(id)
+      if (guionActual && guionActual.id === id) {
+        setGuionActual(null)
+        setVista('biblioteca')
+      }
+      await cargarBiblioteca()
+    } catch (e) {
+      console.warn('[App] Error al borrar guion:', e)
+    }
+  }
 
   const [engine, setEngine] = useState<IdMotor>('whisper-local')
   const [fontSize, setFontSize] = useState<number>(32)
@@ -134,6 +179,8 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const prompterContainerRef = useRef<HTMLDivElement | null>(null)
 
+  const guionParaSeguidor = guionActual || guionNuevo('es')
+
   const {
     bloqueActual,
     lineaActual,
@@ -143,7 +190,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     alNotificarVoz: seguidorVoz,
     reiniciar,
     motorAvance
-  } = useSeguidor(guionActual)
+  } = useSeguidor(guionParaSeguidor)
 
   const {
     start,
@@ -159,7 +206,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     motorActivo
   } = useASR({
     engine,
-    lang: 'es-ES',
+    lang: guionActual && guionActual.idioma ? `${guionActual.idioma}-${guionActual.idioma.toUpperCase()}` : 'es-ES',
     motor,
     alRecibirParcial: seguidorParcial,
     alRecibirFraseFinal: seguidorFinal,
@@ -211,20 +258,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     return () => document.removeEventListener('fullscreenchange', handleFSChange)
   }, [])
 
-  const primerTexto = guionActual.bloques && guionActual.bloques[0] ? guionActual.bloques[0].texto : ''
-
-  function handleTextChange(nuevoTexto: string) {
-    setGuionActual((prev) => {
-      const copiaBloques = prev.bloques && prev.bloques.length > 0 ? [...prev.bloques] : [{ id: 'b-1', nombre: '', texto: '' }]
-      copiaBloques[0] = { ...copiaBloques[0], texto: nuevoTexto }
-      return {
-        ...prev,
-        bloques: copiaBloques,
-        modificado: Date.now()
-      }
-    })
-  }
-
   let textoFreno = ''
   if (!avanzando && motivoFreno) {
     if (motivoFreno === 'silencio') textoFreno = 'esperando voz'
@@ -234,12 +267,26 @@ export default function App({ motor, repoOverride }: AppProps) {
     else if (motivoFreno === 'fin-de-bloque') textoFreno = 'fin de bloque, espero'
   }
 
-  const tituloMostrar = (guionActual.titulo && guionActual.titulo.trim()) ? guionActual.titulo : 'Sin título'
+  const tituloMostrar = (guionActual && guionActual.titulo && guionActual.titulo.trim()) ? guionActual.titulo : 'Sin título'
 
   return (
     <div style={{ padding: 16, fontFamily: 'sans-serif', maxWidth: 1200, margin: '0 auto' }}>
-      <h1>Teleprompter MVP</h1>
-      <h3 style={{ color: '#555', marginTop: -10 }}>{tituloMostrar}</h3>
+      <header style={{ borderBottom: '1px solid #eee', paddingBottom: 12, marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1 style={{ margin: 0, fontSize: 24, cursor: 'pointer' }} onClick={() => setVista('biblioteca')}>Teleprompter MVP</h1>
+          {vista !== 'biblioteca' && (
+            <h3 style={{ color: '#555', margin: '4px 0 0 0', fontSize: 16 }}>{tituloMostrar}</h3>
+          )}
+        </div>
+        {vista !== 'biblioteca' && (
+          <button
+            onClick={() => setVista('biblioteca')}
+            style={{ padding: '6px 12px', cursor: 'pointer', backgroundColor: '#f0f0f0', border: '1px solid #ccc', borderRadius: 4 }}
+          >
+            📚 Ver Biblioteca
+          </button>
+        )}
+      </header>
 
       {/* Franja de estado visible */}
       <div
@@ -284,102 +331,127 @@ export default function App({ motor, repoOverride }: AppProps) {
         )}
       </div>
 
-      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-        {!esPantallaCompleta && (
-          <div style={{ flex: 1, minWidth: 320 }}>
-            <label>
-              <strong>Guion:</strong>
-              <textarea
-                value={primerTexto}
-                onChange={(e) => handleTextChange(e.target.value)}
-                rows={12}
-                style={{ width: '100%', marginTop: 8, fontFamily: 'inherit', fontSize: 16, padding: 8 }}
-              />
-            </label>
+      {vista === 'biblioteca' && (
+        <BibliotecaView
+          guiones={guionesResumen}
+          onAbrir={handleAbrirGuion}
+          onCrearNuevo={handleCrearNuevoGuion}
+          onRenombrar={handleRenombrarGuion}
+          onBorrar={handleBorrarGuion}
+        />
+      )}
 
-            <div style={{ marginTop: 12 }}>
-              <label>
-                <strong>Motor ASR: </strong>
-                <select
-                  value={engine}
-                  onChange={(e) => setEngine(e.target.value as IdMotor)}
-                  style={{ marginLeft: 8, padding: 4 }}
-                >
-                  <option value="whisper-local">Whisper Local (On-Device WebGPU/WASM)</option>
-                  <option value="webspeech">Web Speech API (Navegador)</option>
-                  <option value="nativo">Nativo (Android - Tarea 2)</option>
-                </select>
-              </label>
-            </div>
+      {vista === 'editor' && guionActual && (
+        <EditorView
+          guion={guionActual}
+          onChangeGuion={(nuevoG) => setGuionActual(nuevoG)}
+          onVolverBiblioteca={() => setVista('biblioteca')}
+          onEntrarLectura={() => setVista('lectura')}
+        />
+      )}
 
-            <ControlsBar
-              onStart={handleStart}
-              onStop={handleStop}
-              isRecording={isRecording}
-              fontSize={fontSize}
-              setFontSize={setFontSize}
-              marginPercent={marginPercent}
-              setMarginPercent={setMarginPercent}
-              mirror={mirror}
-              setMirror={setMirror}
-              onToggleFullscreen={toggleFullscreen}
-            />
+      {vista === 'lectura' && guionActual && (
+        <div>
+          <div style={{ marginBottom: 12, display: 'flex', gap: 12, alignItems: 'center' }}>
+            <button
+              onClick={() => setVista('editor')}
+              style={{ padding: '6px 14px', cursor: 'pointer', backgroundColor: '#f0f0f0', border: '1px solid #ccc', borderRadius: 4 }}
+            >
+              ← Volver al Editor
+            </button>
+            <span style={{ color: '#666', fontSize: 14 }}>
+              Modo Lectura - <strong>{tituloMostrar}</strong>
+            </span>
+          </div>
 
-            <div style={{ marginTop: 12 }}>
-              <button onClick={handleClear} style={{ padding: '6px 12px' }}>
-                Limpiar Transcripción y Reiniciar Seguidor
-              </button>
-            </div>
+          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            {!esPantallaCompleta && (
+              <div style={{ flex: 1, minWidth: 320 }}>
+                <div style={{ marginTop: 12 }}>
+                  <label>
+                    <strong>Motor ASR: </strong>
+                    <select
+                      value={engine}
+                      onChange={(e) => setEngine(e.target.value as IdMotor)}
+                      style={{ marginLeft: 8, padding: 4 }}
+                    >
+                      <option value="whisper-local">Whisper Local (On-Device WebGPU/WASM)</option>
+                      <option value="webspeech">Web Speech API (Navegador)</option>
+                      <option value="nativo">Nativo (Android - Tarea 2)</option>
+                    </select>
+                  </label>
+                </div>
 
-            <div style={{ marginTop: 12 }}>
-              <strong>Estado del Motor:</strong> {estadoMotor}
-            </div>
+                <ControlsBar
+                  onStart={handleStart}
+                  onStop={handleStop}
+                  isRecording={isRecording}
+                  fontSize={fontSize}
+                  setFontSize={setFontSize}
+                  marginPercent={marginPercent}
+                  setMarginPercent={setMarginPercent}
+                  mirror={mirror}
+                  setMirror={setMirror}
+                  onToggleFullscreen={toggleFullscreen}
+                />
 
-            <div style={{ marginTop: 12 }}>
-              <strong>Transcripción (en vivo):</strong>
-              <div
-                style={{
-                  minHeight: 100,
-                  border: '1px solid #ddd',
-                  padding: 8,
-                  marginTop: 6,
-                  whiteSpace: 'pre-wrap',
-                  background: '#f8f8f8',
-                  borderRadius: 4,
-                  fontSize: 14
-                }}
-              >
-                {transcript || <em>— ninguna —</em>}
+                <div style={{ marginTop: 12 }}>
+                  <button onClick={handleClear} style={{ padding: '6px 12px' }}>
+                    Limpiar Transcripción y Reiniciar Seguidor
+                  </button>
+                </div>
+
+                <div style={{ marginTop: 12 }}>
+                  <strong>Estado del Motor:</strong> {estadoMotor}
+                </div>
+
+                <div style={{ marginTop: 12 }}>
+                  <strong>Transcripción (en vivo):</strong>
+                  <div
+                    style={{
+                      minHeight: 100,
+                      border: '1px solid #ddd',
+                      padding: 8,
+                      marginTop: 6,
+                      whiteSpace: 'pre-wrap',
+                      background: '#f8f8f8',
+                      borderRadius: 4,
+                      fontSize: 14
+                    }}
+                  >
+                    {transcript || <em>— ninguna —</em>}
+                  </div>
+                </div>
               </div>
+            )}
+
+            <div
+              ref={prompterContainerRef}
+              style={{
+                flex: esPantallaCompleta ? '1 1 100%' : '1 1 420px',
+                minWidth: 320,
+                height: esPantallaCompleta ? '100vh' : 480,
+                background: '#000',
+                borderRadius: esPantallaCompleta ? 0 : 6,
+                overflow: 'hidden',
+                position: 'relative'
+              }}
+            >
+              <TeleprompterView
+                script={guionActual}
+                currentBlockIndex={bloqueActual}
+                currentLineIndex={lineaActual}
+                currentWordIndex={palabraActual}
+                fontSize={fontSize}
+                marginPercent={marginPercent}
+                mirror={mirror}
+                motorAvance={motorAvance}
+                onEstadoAvanceChange={handleEstadoAvanceChange}
+              />
             </div>
           </div>
-        )}
-
-        <div
-          ref={prompterContainerRef}
-          style={{
-            flex: esPantallaCompleta ? '1 1 100%' : '1 1 420px',
-            minWidth: 320,
-            height: esPantallaCompleta ? '100vh' : 480,
-            background: '#000',
-            borderRadius: esPantallaCompleta ? 0 : 6,
-            overflow: 'hidden',
-            position: 'relative'
-          }}
-        >
-          <TeleprompterView
-            script={guionActual}
-            currentBlockIndex={bloqueActual}
-            currentLineIndex={lineaActual}
-            currentWordIndex={palabraActual}
-            fontSize={fontSize}
-            marginPercent={marginPercent}
-            mirror={mirror}
-            motorAvance={motorAvance}
-            onEstadoAvanceChange={handleEstadoAvanceChange}
-          />
         </div>
-      </div>
+      )}
     </div>
   )
 }
