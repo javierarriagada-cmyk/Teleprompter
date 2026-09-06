@@ -100,10 +100,7 @@ export default function TeleprompterView({
               ultimo++
             }
 
-            const cantidad = ultimo - primero + 1
-            const avanceEnLinea = cantidad > 0
-              ? Math.min(1, Math.max(0, (st.posicion - primero) / cantidad))
-              : 0
+            const cantidad = Math.max(1, ultimo - primero + 1)
 
             // Se interpola entre el borde de ESTA linea y el borde de la SIGUIENTE, no
             // dentro del alto de esta. Interpolar dentro del elemento reinicia la cuenta
@@ -141,23 +138,23 @@ export default function TeleprompterView({
             ) as HTMLElement | null
             const origen = elPrimero ? elPrimero.offsetTop : target.offsetTop
 
-            // Lo que se retiene es UN RENGLON, pero medido en las mismas unidades en que
-            // avanza el recorrido. El recorrido cubre el paso de linea completo, que
-            // incluye el margen entre elementos; la altura del texto de un renglon es
-            // menor. Restando la altura del texto, la cuenta se volvia positiva a poco mas
-            // de media linea: por eso el desplazamiento arrancaba en la palabra 4 o 5 de
-            // una linea de 9 en vez de esperar a la siguiente.
+            // LA REGLA ESTA EN PALABRAS, no en pixeles: el texto no se mueve hasta que el
+            // lector termino las palabras del renglon que esta leyendo. Los pixeles son
+            // solo como se dibuja despues.
             //
-            // El paso de linea dividido por la cantidad de renglones que ese elemento
-            // ocupa da el valor correcto en los dos casos: una linea de un solo renglon
-            // retiene la linea entera, y un parrafo que ocupa varios renglones retiene
-            // exactamente uno.
-            const pasoDeLinea = topSiguiente - target.offsetTop
+            // Antes esto estaba escrito en pixeles -restar la altura de un renglon al
+            // recorrido- y estaba mal por un factor: el recorrido avanza el paso de linea
+            // completo, con el margen entre elementos incluido, y la altura del texto de
+            // un renglon es menor. La resta se volvia positiva a media linea, asi que el
+            // desplazamiento arrancaba en la segunda o tercera palabra.
             const filas = Math.max(1, Math.round(target.clientHeight / filaPx))
-            const retencion = pasoDeLinea / filas
+            const palabrasPorRenglon = cantidad / filas
 
-            const recorrido = avanceEnLinea * pasoDeLinea
-            const top = (target.offsetTop - origen) + recorrido - retencion
+            const palabrasDichas = st.posicion - primero
+            const palabrasQueMueven = Math.max(0, palabrasDichas - palabrasPorRenglon)
+
+            const pasoDeLinea = topSiguiente - target.offsetTop
+            const top = (target.offsetTop - origen) + (palabrasQueMueven / cantidad) * pasoDeLinea
             containerRef.current.scrollTop = Math.max(0, top)
           }
         }
