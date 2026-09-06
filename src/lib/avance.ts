@@ -104,15 +104,15 @@ export function crearMotorDeAvance(
   }
 
   function ajustarPosicionTarget(token: number, tMs: number, esConfirmacion: boolean) {
-    const refToken = Math.max(ultimaConfirmada, anclaTentativa)
-    const limiteLinea = obtenerLimiteLineaActual(refToken)
-    const limiteBloque = obtenerLimiteBloqueActual(refToken)
-    const limiteEfectivo = Math.min(limiteLinea, limiteBloque)
-
-    const maxPermitido = esConfirmacion
-      ? Math.min(ultimaConfirmada + params.correaPalabras, limiteEfectivo)
-      : Math.min(refToken, limiteEfectivo)
-    const targetAcotado = Math.min(token, maxPermitido)
+    // El destino es la palabra que el seguidor calzo. No se recorta contra el fin de la
+    // linea ni del bloque: ese recorte hacia que el destino del deslizamiento se quedara
+    // clavado en el final del renglon o del parrafo, y el texto no se movia hasta que
+    // llegaba un final que corriera el limite. Era la tercera copia de la misma regla,
+    // despues de la de estadoEn y la de useSeguidor.
+    //
+    // Lo que impide que el prompter se vaya solo es el freno por falta de calce y el
+    // freno por adelanto sobre el ultimo calce, los dos en estadoEn.
+    const targetAcotado = token
     const diff = token - posicionMostrada
 
     if (posicionMostrada === 0 && esConfirmacion) {
