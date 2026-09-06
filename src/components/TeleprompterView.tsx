@@ -225,7 +225,12 @@ export default function TeleprompterView({
           overflowY: 'auto',
           paddingLeft: `${marginPercent}%`,
           paddingRight: `${marginPercent}%`,
-          paddingTop: topBanda,
+          // Un renglon de aire ENCIMA de la primera linea. Con el relleno igual a topBanda,
+          // la primera linea del guion queda pegada al borde superior de la banda, y una
+          // linea contra el borde se lee como "esto esta por desaparecer" aunque no se
+          // mueva. En la practica la linea que se lee tiene que estar donde normalmente
+          // esta la segunda, con espacio arriba.
+          paddingTop: topBanda + alturaLineaPx,
           paddingBottom: `calc(100% - ${topBanda + altoBanda}px)`,
           transform: mirror ? 'scaleX(-1)' : 'none',
           boxSizing: 'border-box'
