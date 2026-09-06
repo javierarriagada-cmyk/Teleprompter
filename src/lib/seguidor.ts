@@ -42,9 +42,9 @@ export const PALABRAS_SEGUIDAS_MINIMO = 3
 export const PALABRAS_SEGUIDAS_PARA_SALTAR = 6
 // Cuanto puede alejarse la recuperacion de donde esta el lector. Antes buscaba en TODO el
 // guion, y eso resolvia un caso rarisimo -saltarse a proposito al final- a cambio de que
-// una frase inventada pudiera mandar el prompter a cualquier parte. Dos parrafos de radio
+// una frase inventada pudiera mandar el prompter a cualquier parte. Cien palabras de radio
 // cubren lo que pasa de verdad: saltarse un parrafo, repetir, adelantarse un poco.
-export const RECUPERACION_TOKENS = 120
+export const RECUPERACION_TOKENS = 100
 export const RETROCESO_MAX = 2
 
 export const MIN_PALABRAS_PARCIAL = 3
