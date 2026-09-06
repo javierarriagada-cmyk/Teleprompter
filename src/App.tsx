@@ -21,6 +21,18 @@ type Vista = 'biblioteca' | 'editor' | 'lectura'
 
 const DEFAULT_SCRIPT_TEXT = `Bienvenido al teleprompter.\nLee este texto en voz alta para probar el reconocimiento.`
 
+// Guion vacio de identidad ESTABLE, para cuando no hay ninguno abierto. Tiene que vivir
+// fuera del componente: si se crea dentro, es un objeto nuevo por renderizado y provoca un
+// ciclo infinito en `useSeguidor`.
+const GUION_VACIO: Guion = {
+  id: 'vacio',
+  titulo: '',
+  idioma: 'es',
+  creado: 0,
+  modificado: 0,
+  bloques: []
+}
+
 export default function App({ motor, repoOverride }: AppProps) {
   const repoRef = useRef<RepositorioGuiones>(repoOverride || new RepositorioIndexedDB())
   const [usandoMemoriaFallback, setUsandoMemoriaFallback] = useState<boolean>(false)
@@ -179,7 +191,12 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const prompterContainerRef = useRef<HTMLDivElement | null>(null)
 
-  const guionParaSeguidor = guionActual || guionNuevo('es')
+  // GUION_VACIO es una constante de modulo, NO `guionNuevo('es')`. Llamar a `guionNuevo`
+  // aqui creaba un objeto distinto en cada renderizado -id y fechas nuevas-, y como
+  // `useSeguidor` depende de esa identidad, el efecto se re-ejecutaba, cambiaba estado, y
+  // volvia a renderizar: ciclo infinito. Solo ocurria sin ningun guion abierto, que es el
+  // estado con el que arrancan las pruebas, y mataba el proceso de vitest sin dejar error.
+  const guionParaSeguidor = guionActual || GUION_VACIO
 
   const {
     bloqueActual,
