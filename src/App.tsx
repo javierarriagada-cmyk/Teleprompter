@@ -482,8 +482,25 @@ export default function App({ motor, repoOverride }: AppProps) {
                 lineasZona={lineasZona}
                 anclajeZona={anclajeZona}
                 motorAvance={motorAvance}
+                diagnostico={verTranscripcion}
                 onEstadoAvanceChange={handleEstadoAvanceChange}
               />
+              {verTranscripcion && (
+                <div
+                  id="diag-prompter"
+                  style={{
+                    fontFamily: 'monospace',
+                    fontSize: 12,
+                    background: '#111',
+                    color: '#0f0',
+                    padding: '4px 8px',
+                    whiteSpace: 'nowrap',
+                    overflowX: 'auto'
+                  }}
+                >
+                  —
+                </div>
+              )}
             </div>
           </div>
         </div>

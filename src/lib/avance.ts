@@ -17,6 +17,7 @@ export type EstadoAvance = {
   avanzando: boolean
   motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null
   ppmEstimadas: number
+  ultimoCalce: number   // ultima palabra que el seguidor confirmo o dio por tentativa
 }
 
 export interface MotorDeAvance {
@@ -215,7 +216,8 @@ export function crearMotorDeAvance(
           posicion: posicionMostrada,
           avanzando: false,
           motivoFreno: null,
-          ppmEstimadas
+          ppmEstimadas,
+          ultimoCalce: Math.max(ultimaConfirmada, anclaTentativa)
         }
       }
 
@@ -229,7 +231,8 @@ export function crearMotorDeAvance(
           posicion: posicionMostrada,
           avanzando: false,
           motivoFreno: 'sin-calce',
-          ppmEstimadas
+          ppmEstimadas,
+          ultimoCalce: Math.max(ultimaConfirmada, anclaTentativa)
         }
       }
 
@@ -239,7 +242,8 @@ export function crearMotorDeAvance(
           posicion: posicionMostrada,
           avanzando: false,
           motivoFreno: esSilencio ? 'silencio' : null,
-          ppmEstimadas
+          ppmEstimadas,
+          ultimoCalce: Math.max(ultimaConfirmada, anclaTentativa)
         }
       }
 
@@ -281,7 +285,8 @@ export function crearMotorDeAvance(
         posicion: posicionMostrada,
         avanzando: true,
         motivoFreno: null,
-        ppmEstimadas
+        ppmEstimadas,
+        ultimoCalce: Math.max(ultimaConfirmada, anclaTentativa)
       }
     },
 

@@ -19,6 +19,7 @@ interface TeleprompterViewProps {
   lineasZona?: number
   anclajeZona?: AnclajeZona
   motorAvance?: MotorDeAvance | null
+  diagnostico?: boolean
   onEstadoAvanceChange?: (motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null, avanzando: boolean) => void
 }
 
@@ -33,6 +34,7 @@ export default function TeleprompterView({
   lineasZona = 3,
   anclajeZona = 'arriba',
   motorAvance,
+  diagnostico = false,
   onEstadoAvanceChange
 }: TeleprompterViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -151,8 +153,18 @@ export default function TeleprompterView({
             // completo, con el margen entre elementos incluido, y la altura del texto de
             // un renglon es menor. La resta se volvia positiva a media linea, asi que el
             // desplazamiento arrancaba en la segunda o tercera palabra.
-            const palabrasDichas = st.posicion - primero
+            // La retencion se cuenta sobre lo que el LECTOR dijo -el ultimo calce-, no
+            // sobre la posicion mostrada. La posicion mostrada puede ir hasta
+            // adelantoMaximo palabras adelante del lector, y contando sobre ella los dos
+            // numeros se anulaban: con 8 de adelanto y 7 de retencion, el texto arrancaba
+            // en la tercera palabra.
+            const palabrasDichas = st.ultimoCalce - primero
             const palabrasQueMueven = Math.max(0, palabrasDichas - PALABRAS_ANTES_DE_MOVER)
+
+            if (diagnostico) {
+              const el = document.getElementById('diag-prompter')
+              if (el) el.textContent = `pos=${st.posicion.toFixed(1)} calce=${st.ultimoCalce} linea=${t.linea} primero=${primero} dichas=${palabrasDichas.toFixed(1)} mueven=${palabrasQueMueven.toFixed(1)} scroll=${Math.round(containerRef.current!.scrollTop)} freno=${st.motivoFreno || "-"}`
+            }
 
             const pasoDeLinea = topSiguiente - target.offsetTop
             const top = (target.offsetTop - origen) + (palabrasQueMueven / cantidad) * pasoDeLinea
@@ -166,7 +178,7 @@ export default function TeleprompterView({
 
     animId = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(animId)
-  }, [motorAvance, onEstadoAvanceChange, topBanda, alturaLineaPx])
+  }, [motorAvance, onEstadoAvanceChange, topBanda, alturaLineaPx, diagnostico])
 
   if (!guionObj.bloques || guionObj.bloques.length === 0) {
     return (
