@@ -105,7 +105,15 @@ export default function TeleprompterView({
               ? Math.min(1, Math.max(0, (st.posicion - primero) / cantidad))
               : 0
 
-            const top = target.offsetTop + avanceEnLinea * target.clientHeight - topBanda
+            // El desplazamiento va UN RENGLON atrasado: mientras se lee un renglon el
+            // texto no se mueve, y el movimiento sirve para traer el siguiente. Sin esto,
+            // el renglon que uno esta leyendo se va subiendo bajo los ojos y no se alcanza
+            // a terminar, sobre todo con la banda anclada arriba.
+            //
+            // Va en renglones y no en palabras a proposito: cuantas palabras entran en un
+            // renglon depende del tamano de letra, un renglon es siempre un renglon.
+            const recorrido = avanceEnLinea * target.clientHeight
+            const top = target.offsetTop + Math.max(0, recorrido - alturaLineaPx) - topBanda
             containerRef.current.scrollTop = top
           }
         }
@@ -116,7 +124,7 @@ export default function TeleprompterView({
 
     animId = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(animId)
-  }, [motorAvance, onEstadoAvanceChange, topBanda])
+  }, [motorAvance, onEstadoAvanceChange, topBanda, alturaLineaPx])
 
   if (!guionObj.bloques || guionObj.bloques.length === 0) {
     return (
