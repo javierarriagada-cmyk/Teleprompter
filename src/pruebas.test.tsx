@@ -4,6 +4,7 @@ import path from 'node:path'
 import { execSync } from 'node:child_process'
 import { describe, expect, test } from 'vitest'
 import { render, act, fireEvent } from '@testing-library/react'
+import 'fake-indexeddb/auto'
 import App from './App'
 import { crearSeguidor, tokenizarGuion } from './lib/seguidor'
 import { remuestrear } from './lib/remuestrear'
@@ -13,19 +14,40 @@ import { crearMotorDeAvance } from './lib/avance'
 import { crearRegistro } from './lib/registro'
 import { simularLectura } from './pruebas/lectorSimulado'
 import { medir } from './pruebas/metricas'
+import { Guion } from './datos/modelo'
+import { RepositorioMemoria } from './datos/RepositorioMemoria'
+import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 
-const guion40Lineas = Array.from({ length: 40 }, (_, i) => `Esta es la línea número ${i + 1} del guion de prueba para el teleprompter.`).join('\n')
+function guionSimple(texto: string, titulo = 'Guion de prueba'): Guion {
+  return {
+    id: 'test-guion-' + Math.random().toString(36).substring(2, 9),
+    titulo,
+    idioma: 'es',
+    creado: Date.now(),
+    modificado: Date.now(),
+    bloques: [
+      {
+        id: 'b-1',
+        nombre: '',
+        texto
+      }
+    ]
+  }
+}
+
+const guion40LineasTexto = Array.from({ length: 40 }, (_, i) => `Esta es la línea número ${i + 1} del guion de prueba para el teleprompter.`).join('\n')
+const guion40Lineas = guionSimple(guion40LineasTexto)
 
 describe('Pruebas obligatorias T1-T9', () => {
 
   // T1: seguidor, líneas repetidas
   test('T1: seguidor, líneas repetidas no retrocede a la primera ocurrencia', () => {
-    const guion = `Primera línea
+    const guion = guionSimple(`Primera línea
 Estribillo repetido
 Línea intermedia uno
 Estribillo repetido
 Línea intermedia dos
-Estribillo repetido`
+Estribillo repetido`)
 
     const tokens = tokenizarGuion(guion)
     const seguidor = crearSeguidor(tokens)
@@ -52,22 +74,18 @@ Estribillo repetido`
   // T1.b: seguidor acotado a ventana local (no salta a coincidencia lejana)
   test('T1.b: seguidor acotado a ventana local no salta a coincidencia lejana', () => {
     const lineasIntermedias = Array.from({ length: 44 }, (_, i) => `Línea intermedia ${i + 2}`)
-    const guion = [
+    const guion = guionSimple([
       'Línea inicial de prueba',
       'PalabraA PalabraB',
       ...lineasIntermedias,
       'PalabraA PalabraB PalabraC PalabraD PalabraE'
-    ].join('\n')
+    ].join('\n'))
 
     const tokens = tokenizarGuion(guion)
     const seguidor = crearSeguidor(tokens)
 
-    // Posicionarse en la línea 0
     seguidor.avanzar('Línea inicial de prueba')
 
-    // Al decir una frase cuyo detalle completo está en la línea 46 (> VENTANA_ADELANTE),
-    // la ventana local sólo ve la línea 1 ("PalabraA PalabraB" = 2/5 coincidencia = 0.4 < 0.5).
-    // Por ende la ventana local no debe saltar a la línea 46.
     const pos = seguidor.avanzar('PalabraA PalabraB PalabraC PalabraD PalabraE')
     expect(pos.movio).toBe(false)
     expect(pos.linea).toBe(0)
@@ -75,9 +93,9 @@ Estribillo repetido`
 
   // T2: seguidor, no retrocede
   test('T2: seguidor, no retrocede ante repetición de frase anterior', () => {
-    const guion = `Hola mundo
+    const guion = guionSimple(`Hola mundo
 Esta es la segunda línea
-Esta es la tercera línea`
+Esta es la tercera línea`)
 
     const tokens = tokenizarGuion(guion)
     const seguidor = crearSeguidor(tokens)
@@ -93,7 +111,7 @@ Esta es la tercera línea`
 
   // T3: seguidor, tolerancia a acentos y variaciones
   test('T3: seguidor, tolerancia a acentos y variaciones', () => {
-    const guion = `Discutiendo sobre la filosofía de la ciencia`
+    const guion = guionSimple(`Discutiendo sobre la filosofía de la ciencia`)
     const tokens = tokenizarGuion(guion)
     const seguidor = crearSeguidor(tokens)
 
@@ -111,17 +129,15 @@ Esta es la tercera línea`
       'cuarenta', 'cuarentauno', 'cuarentados', 'cuarentatres', 'cuarentacuatro', 'cuarentacinco', 'cuarentaseis', 'cuarentasiete', 'cuarentaocho', 'cuarentanueve',
       'cincuenta', 'cincuentauno', 'cincuentados', 'cincuentatres', 'cincuentacuatro', 'cincuentacinco'
     ]
-    const guion = palabrasNum.join('\n')
+    const guion = guionSimple(palabrasNum.join('\n'))
     const tokens = tokenizarGuion(guion)
     const seguidor = crearSeguidor(tokens)
 
     seguidor.avanzar('cero')
 
-    // 2 frases que no coinciden con nada en la ventana cercana (fallos 1 y 2)
     seguidor.avanzar('inventado x')
     seguidor.avanzar('inventado y')
 
-    // 3er fallo es la palabra de la línea 50 (fuera de la ventana local 0..40), dispara recuperación global
     const pos = seguidor.avanzar('cincuenta')
     expect(pos.movio).toBe(true)
     expect(pos.linea).toBe(50)
@@ -244,6 +260,7 @@ Esta es la tercera línea`
     await act(async () => {
       const res = render(<App motor={motor} />)
       container = res.container
+      await new Promise((r) => setTimeout(r, 200))
     })
 
     const getHighlightedLineIndex = () => {
@@ -251,16 +268,13 @@ Esta es la tercera línea`
       return lines.findIndex((line) => (line as HTMLElement).style.opacity === '1')
     }
 
-    // Estado inicial: línea 0
     expect(getHighlightedLineIndex()).toBe(0)
 
-    // Emitir frase 1
     await act(async () => {
       motor.emitirSiguiente()
     })
     expect(getHighlightedLineIndex()).toBe(0)
 
-    // Emitir frase 2
     await act(async () => {
       motor.emitirSiguiente()
     })
@@ -269,14 +283,14 @@ Esta es la tercera línea`
 
   // Casos borde adicionales
   test('Caso borde: guion vacío', () => {
-    const tokens = tokenizarGuion('')
+    const tokens = tokenizarGuion(guionSimple(''))
     const seguidor = crearSeguidor(tokens)
     const pos = seguidor.avanzar('algo')
-    expect(pos).toEqual({ linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
+    expect(pos).toEqual({ bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
   })
 
   test('Caso borde: frase vacía', () => {
-    const tokens = tokenizarGuion('Hola mundo')
+    const tokens = tokenizarGuion(guionSimple('Hola mundo'))
     const seguidor = crearSeguidor(tokens)
     const pos = seguidor.avanzar('   ')
     expect(pos.movio).toBe(false)
@@ -293,7 +307,6 @@ Esta es la tercera línea`
       alDescartar: (m) => { descartadoMotivo = m }
     })
 
-    // 100 ms hablando
     segmentador.alimentar({ pcm: new Float32Array(1600), hablando: true })
     segmentador.flush()
 
@@ -307,23 +320,19 @@ Esta es la tercera línea`
 
     const codigo = fs.readFileSync(rutaVad, 'utf-8')
 
-    // 1. Debe parsear como JS válido sin SyntaxError
     expect(() => {
       new Function(codigo)
     }).not.toThrow()
 
-    // 2. No debe tener anotaciones ni palabras clave de TypeScript
     expect(codigo.includes('declare ')).toBe(false)
     expect(codigo.includes(': Float32Array')).toBe(false)
     expect(codigo.includes('private ')).toBe(false)
 
-    // 3. No debe haber ningún archivo en src/ que importe worker con url
     const rutaSrc = path.resolve(process.cwd(), 'src')
     const busquedaWorkerUrl = '?worker' + '&url'
     const archivosConWorkerUrl = buscarTextoEnDirectorio(rutaSrc, busquedaWorkerUrl)
     expect(archivosConWorkerUrl).toEqual([])
 
-    // 4. Verificación del build: en dist/ NO debe existir ningún archivo .ts
     const rutaDist = path.resolve(process.cwd(), 'dist')
     if (!fs.existsSync(rutaDist)) {
       execSync('npx vite build')
@@ -332,47 +341,42 @@ Esta es la tercera línea`
     expect(archivosTsEnDist).toEqual([])
   })
 
-  // T11: Persistencia del guion en localStorage ante recargas
-  test('T11: el guion se guarda en localStorage y se restaura al recargar/remontar', async () => {
+  // T11: Persistencia del guion en repositorio ante recargas
+  test('T11: el guion se guarda en el repositorio y se restaura al recargar/remontar', async () => {
     localStorage.clear()
 
     const nuevoTexto = 'Este es un guion personalizado de prueba para T11.'
-
     const fake = new MotorFake()
+    const repo = new RepositorioMemoria()
 
     let unmount: () => void
     let container: HTMLElement
 
     await act(async () => {
-      const res = render(<App motor={fake} />)
+      const res = render(<App motor={fake} repoOverride={repo} />)
       unmount = res.unmount
       container = res.container
+      await new Promise((r) => setTimeout(r, 200))
     })
 
     const textarea = container!.querySelector('textarea') as HTMLTextAreaElement
     expect(textarea).not.toBeNull()
 
-    // Escribir un nuevo guion
     await act(async () => {
       fireEvent.change(textarea, { target: { value: nuevoTexto } })
     })
 
-    // Esperar > 500 ms para que venza el debounce y se guarde en localStorage
     await act(async () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    expect(localStorage.getItem('teleprompter_script')).toBe(nuevoTexto)
-
-    // Simular recarga unmounting y remontando App
-    await act(async () => {
-      unmount()
-    })
+    unmount!()
 
     let container2: HTMLElement
     await act(async () => {
-      const res2 = render(<App motor={fake} />)
+      const res2 = render(<App motor={fake} repoOverride={repo} />)
       container2 = res2.container
+      await new Promise((r) => setTimeout(r, 200))
     })
 
     const textarea2 = container2!.querySelector('textarea') as HTMLTextAreaElement
@@ -383,11 +387,11 @@ Esta es la tercera línea`
 describe('Pruebas TAREA 2 (T12-T24)', () => {
 
   test('T12: retardo en lectura normal a 150 ppm cumple los umbrales', () => {
-    const simPausas = simularLectura({ guion: guion40Lineas, ppm: 150, pausaCadaNPalabras: 8 })
-    const mPausas = medir(simPausas, guion40Lineas)
+    const simPausas = simularLectura({ guion: guion40LineasTexto, ppm: 150, pausaCadaNPalabras: 8 })
+    const mPausas = medir(simPausas, guion40LineasTexto)
 
-    const simContinuas = simularLectura({ guion: guion40Lineas, ppm: 150, pausaCadaNPalabras: null })
-    const mContinuos = medir(simContinuas, guion40Lineas)
+    const simContinuas = simularLectura({ guion: guion40LineasTexto, ppm: 150, pausaCadaNPalabras: null })
+    const mContinuos = medir(simContinuas, guion40LineasTexto)
 
     console.log(`[T12] Métricas con PAUSAS (150 ppm):
       retardoMedioPalabras = ${mPausas.retardoMedioPalabras.toFixed(2)} (límite <= 3)
@@ -420,15 +424,14 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
   })
 
   test('T13: no retrocede en ninguna muestra de ninguna simulación', () => {
-    const sim1 = simularLectura({ guion: guion40Lineas, ppm: 150 })
-    const sim2 = simularLectura({ guion: guion40Lineas, ppm: 150, porcentajeErrores: 10 })
-    const sim3 = simularLectura({ guion: guion40Lineas, ppm: 150, saltarDesdeHasta: [10, 30] })
+    const sim1 = simularLectura({ guion: guion40LineasTexto, ppm: 150 })
+    const sim2 = simularLectura({ guion: guion40LineasTexto, ppm: 150, porcentajeErrores: 10 })
+    const sim3 = simularLectura({ guion: guion40LineasTexto, ppm: 150, saltarDesdeHasta: [10, 30] })
 
-    const m1 = medir(sim1, guion40Lineas)
-    const m2 = medir(sim2, guion40Lineas)
-    const m3 = medir(sim3, guion40Lineas)
+    const m1 = medir(sim1, guion40LineasTexto)
+    const m2 = medir(sim2, guion40LineasTexto)
+    const m3 = medir(sim3, guion40LineasTexto)
 
-    // Verificación directa en el motor de avance ante intento de retroceso
     const motorTest = crearMotorDeAvance()
     motorTest.confirmar(20, 1000)
     const p1 = motorTest.estadoEn(1000).posicion
@@ -446,8 +449,8 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
   })
 
   test('T14: freno por silencio en menos de 1 segundo', () => {
-    const sim = simularLectura({ guion: guion40Lineas, ppm: 150 })
-    const m = medir(sim, guion40Lineas)
+    const sim = simularLectura({ guion: guion40LineasTexto, ppm: 150 })
+    const m = medir(sim, guion40LineasTexto)
 
     if (m.segundosHastaFrenar === null) {
       console.log('[T14] Segundos hasta frenar por silencio: SIN DATOS')
@@ -469,12 +472,11 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
     console.log('[T14] RESULTADO: OK')
   })
 
-  test('T15: la correa limita el avance a lo confirmado + correaPalabras', () => {
+  test('T15: la correa limita el avance a lo confirmed + correaPalabras', () => {
     const motor = crearMotorDeAvance({ correaPalabras: 12 })
-    motor.confirmar(10, 1000) // confirmada en token 10
+    motor.confirmar(10, 1000)
     motor.voz(true, 1000)
 
-    // Entregar parciales lejanos que intentan avanzar a token 50
     for (let t = 1100; t <= 5000; t += 100) {
       motor.tentativo(50, t)
       const st = motor.estadoEn(t)
@@ -507,8 +509,8 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
   })
 
   test('T17: improvisación frena por sin-calce sin exceder correa', () => {
-    const sim = simularLectura({ guion: guion40Lineas, ppm: 150, improvisarEnPalabra: 20 })
-    const m = medir(sim, guion40Lineas)
+    const sim = simularLectura({ guion: guion40LineasTexto, ppm: 150, improvisarEnPalabra: 20 })
+    const m = medir(sim, guion40LineasTexto)
 
     console.log(`[T17] Métricas con improvisación: frenadoIndebido=${m.segundosFrenadoIndebido.toFixed(2)}s`)
 
@@ -526,8 +528,8 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
   })
 
   test('T18: tolerancia a errores del 10% en palabras reconocidas', () => {
-    const sim = simularLectura({ guion: guion40Lineas, ppm: 150, porcentajeErrores: 10 })
-    const m = medir(sim, guion40Lineas)
+    const sim = simularLectura({ guion: guion40LineasTexto, ppm: 150, porcentajeErrores: 10 })
+    const m = medir(sim, guion40LineasTexto)
 
     console.log(`[T18] Métricas con 10% de error:
       retardoMedioPalabras = ${m.retardoMedioPalabras.toFixed(2)} (límite <= 3)
@@ -549,15 +551,13 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
 
   test('T19: registro de lectura acumula entradas crecientes sin tentativos ni finales descartados', () => {
     const registro = crearRegistro()
-    const tokens = tokenizarGuion('Uno dos tres cuatro cinco seis siete ocho nueve diez')
+    const tokens = tokenizarGuion(guionSimple('Uno dos tres cuatro cinco seis siete ocho nueve diez'))
     const seguidor = crearSeguidor(tokens)
 
-    // Tentativo no anota nada
     const posTent = seguidor.avanzarTentativo('Uno dos tres')
     expect(posTent.movio).toBe(true)
     expect(registro.entradas().length).toBe(0)
 
-    // Final exitoso sí anota
     const pos1 = seguidor.avanzar('Uno dos tres')
     if (pos1.movio) {
       registro.anotar({
@@ -580,7 +580,6 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
       })
     }
 
-    // Final que no mueve no se anota
     const pos3 = seguidor.avanzar('palabra Totalmente Inexistente')
     expect(pos3.movio).toBe(false)
 
@@ -594,12 +593,11 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
   })
 
   test('T20: los tentativos no mueven la posición interna posicionToken del seguidor', () => {
-    const tokens = tokenizarGuion('Primera palabra segunda palabra tercera palabra cuarta palabra')
+    const tokens = tokenizarGuion(guionSimple('Primera palabra segunda palabra tercera palabra cuarta palabra'))
     const seguidor = crearSeguidor(tokens)
 
     expect(seguidor.posicionToken()).toBe(0)
 
-    // Alimentar sólo parciales
     const p1 = seguidor.avanzarTentativo('Primera palabra')
     expect(p1.movio).toBe(true)
     expect(seguidor.posicionToken()).toBe(0)
@@ -608,7 +606,6 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
     expect(p2.movio).toBe(true)
     expect(seguidor.posicionToken()).toBe(0)
 
-    // Un final sí mueve posicionToken
     const pFinal = seguidor.avanzar('Primera palabra segunda palabra')
     expect(pFinal.movio).toBe(true)
     expect(seguidor.posicionToken()).toBe(3)
@@ -625,6 +622,7 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
     await act(async () => {
       const res = render(<App motor={motor} />)
       container = res.container
+      await new Promise((r) => setTimeout(r, 200))
     })
 
     const getHighlightedLineIndex = () => {
@@ -634,7 +632,6 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
 
     expect(getHighlightedLineIndex()).toBe(0)
 
-    // Emitir un parcial de la segunda línea
     await act(async () => {
       motor.emitirParcial('Lee este texto en voz alta para probar el reconocimiento')
     })
@@ -644,7 +641,7 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
   })
 
   test('T22: calibración del lector simulado a 150 ppm (+/- 10%)', () => {
-    const sim = simularLectura({ guion: guion40Lineas, ppm: 150 })
+    const sim = simularLectura({ guion: guion40LineasTexto, ppm: 150 })
     expect(sim.eventos.length).toBeGreaterThan(0)
 
     const maxT = Math.max(...sim.eventos.map((e) => e.t))
@@ -662,18 +659,18 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
 
   test('T23: párrafo largo sin pausas no se traba y llega a las últimas palabras de la línea', () => {
     const lineaLarga = 'Acá va una frase muy larga del guion de prueba para verificar que el habla continua sin ninguna pausa ni final se recorre en forma pareja y fluida sin congelarse a la mitad.'
-    const guion = `Primera línea corta\n${lineaLarga}\nTercera línea corta`
+    const guionTexto = `Primera línea corta\n${lineaLarga}\nTercera línea corta`
+    const guionObj = guionSimple(guionTexto)
 
-    const sim = simularLectura({ guion, ppm: 150, pausaCadaNPalabras: null })
-    const m = medir(sim, guion)
+    const sim = simularLectura({ guion: guionTexto, ppm: 150, pausaCadaNPalabras: null })
+    const m = medir(sim, guionTexto)
 
     console.log(`[T23] Párrafo largo sin pausas:
       retardoMedioPalabras = ${m.retardoMedioPalabras.toFixed(2)}
       retardoMaximoPalabras = ${m.retardoMaximoPalabras.toFixed(2)}`)
 
-    const tokens = tokenizarGuion(guion)
+    const tokens = tokenizarGuion(guionObj)
 
-    // Probar contra el motor de avance procesando la lectura de corrido
     const seguidor = crearSeguidor(tokens)
     const limitesMap = new Map<number, number>()
     for (let i = 0; i < tokens.length; i++) limitesMap.set(tokens[i].linea, i)
@@ -682,7 +679,7 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
     seguidor.avanzar('Primera línea corta')
     motor.confirmar(3, 1000)
 
-    const palabrasFrase = tokenizarGuion(lineaLarga).map((t) => t.palabra)
+    const palabrasFrase = tokenizarGuion(guionSimple(lineaLarga)).map((t) => t.palabra)
     let tCur = 1000
     for (let i = 3; i <= palabrasFrase.length; i += 3) {
       tCur += 1200
@@ -702,7 +699,7 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
   })
 
   test('T24: no se adelanta a líneas posteriores por similitud de palabras', () => {
-    const guion = [
+    const guion = guionSimple([
       'Línea inicial uno',
       'Línea inicial dos',
       'Línea inicial tres',
@@ -717,21 +714,18 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
       'Línea intermedia doce',
       'Línea intermedia trece',
       'Nadie te enseña a responder rápido las preguntas del examen'
-    ].join('\n')
+    ].join('\n'))
 
     const tokens = tokenizarGuion(guion)
     const seguidor = crearSeguidor(tokens)
 
-    // Posicionarse en la línea 6
     for (let i = 0; i < 6; i++) {
       seguidor.avanzar(tokens.filter((t) => t.linea === i).map((t) => t.palabra).join(' '))
     }
 
-    // Decir parcial de la línea 6 ("Nadie te enseña a responder")
     const posParcial = seguidor.avanzarTentativo('Nadie te enseña a responder')
     expect(posParcial.linea).toBe(6)
 
-    // Decir final de la línea 6
     const posFinal = seguidor.avanzar('Nadie te enseña a responder rápido las preguntas del examen')
     expect(posFinal.linea).toBe(6)
 
@@ -742,7 +736,8 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
   test('T25: la correa estructural está conectada de verdad y permite avanzar en una línea de 30 palabras sin finales', async () => {
     localStorage.clear()
     const linea30Palabras = 'Uno dos tres cuatro cinco seis siete ocho nueve diez once doce trece catorce quince dieciseis diecisiete dieciocho diecinueve veinte veintiuno veintidos veintitres veinticuatro veinticinco veintiseis veintisiete veintiocho veintinueve treinta'
-    const script = `${linea30Palabras}\nSegunda línea del guion.`
+    const scriptTexto = `${linea30Palabras}\nSegunda línea del guion.`
+    const guionObj = guionSimple(scriptTexto)
 
     const motorFake = new MotorFake()
 
@@ -750,15 +745,15 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
     await act(async () => {
       const res = render(<App motor={motorFake} />)
       container = res.container
+      await new Promise((r) => setTimeout(r, 200))
     })
 
     const textarea = container!.querySelector('textarea') as HTMLTextAreaElement
     await act(async () => {
-      fireEvent.change(textarea, { target: { value: script } })
+      fireEvent.change(textarea, { target: { value: scriptTexto } })
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    // Emitir parciales que recorren toda la línea de 30 palabras sin ningún final
     const palabras = linea30Palabras.split(' ')
     for (let i = 3; i <= palabras.length; i += 3) {
       const sub = palabras.slice(0, i).join(' ')
@@ -767,8 +762,7 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
       })
     }
 
-    // Verificar que el motor de avance avanzó más allá de la palabra 12 (llegó al límite de línea)
-    const tokens = tokenizarGuion(script)
+    const tokens = tokenizarGuion(guionObj)
     const limitesMap = new Map<number, number>()
     for (let i = 0; i < tokens.length; i++) limitesMap.set(tokens[i].linea, i)
     const limitesDeLinea = Array.from(limitesMap.values()).sort((a, b) => a - b)
@@ -786,6 +780,227 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
     console.log(`[T25] Posición del motor de avance con correa de línea: token ${stFinal.posicion.toFixed(1)} / 29`)
     expect(stFinal.posicion).toBeGreaterThan(12)
     console.log('[T25] RESULTADO: OK')
+  })
+})
+
+describe('Pruebas TAREA 3 (T27-T32)', () => {
+  // T27: tokenizar con bloques
+  test('T27: tokenizar con bloques: guion de 3 bloques da los índices correctos de bloque, línea y palabra', () => {
+    const guion: Guion = {
+      id: 'g3b',
+      titulo: 'Guion tres bloques',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [
+        { id: 'b0', nombre: 'Intro', texto: 'Primera línea bloque cero\nSegunda línea bloque cero' },
+        { id: 'b1', nombre: 'Desarrollo', texto: 'Única línea bloque uno' },
+        { id: 'b2', nombre: 'Cierre', texto: 'Línea final bloque dos' }
+      ]
+    }
+
+    const tokens = tokenizarGuion(guion)
+    expect(tokens.length).toBeGreaterThan(0)
+
+    const b0Tokens = tokens.filter((t) => t.bloque === 0)
+    expect(b0Tokens[0].bloque).toBe(0)
+    expect(b0Tokens[0].linea).toBe(0)
+    expect(b0Tokens[0].indiceEnLinea).toBe(0)
+    expect(b0Tokens[0].palabra).toBe('primera')
+
+    const b0Last = b0Tokens[b0Tokens.length - 1]
+    expect(b0Last.bloque).toBe(0)
+    expect(b0Last.linea).toBe(1)
+    expect(b0Last.palabra).toBe('cero')
+
+    const b1Tokens = tokens.filter((t) => t.bloque === 1)
+    expect(b1Tokens[0].bloque).toBe(1)
+    expect(b1Tokens[0].linea).toBe(0)
+    expect(b1Tokens[0].indiceEnLinea).toBe(0)
+    expect(b1Tokens[0].palabra).toBe('única')
+
+    const b2Tokens = tokens.filter((t) => t.bloque === 2)
+    const b2Last = b2Tokens[b2Tokens.length - 1]
+    expect(b2Last.bloque).toBe(2)
+    expect(b2Last.linea).toBe(0)
+    expect(b2Last.palabra).toBe('dos')
+  })
+
+  // T28: acotaciones entre corchetes
+  test('T28: acotaciones: "Hola [mira a camara] mundo", lector dice solo "hola mundo" y seguidor llega al final', () => {
+    const guion = guionSimple('Hola [mira a camara] mundo')
+    const tokens = tokenizarGuion(guion)
+
+    const tokAcotacion = tokens.filter((t) => t.esAcotacion)
+    expect(tokAcotacion.length).toBe(3)
+
+    const seguidor = crearSeguidor(tokens)
+    const pos1 = seguidor.avanzar('hola')
+    expect(pos1.movio).toBe(true)
+
+    const pos2 = seguidor.avanzar('mundo')
+    expect(pos2.movio).toBe(true)
+    expect(pos2.hastaToken).toBe(tokens.length - 1)
+  })
+
+  // T29: corchete sin cerrar
+  test('T29: corchete sin cerrar: no lanza; tokens quedan marcados hasta fin de bloque', () => {
+    const guion = guionSimple('Inicio del bloque [acotacion abierta sin cerrar al final')
+    let warnings = 0
+    const origWarn = console.warn
+    console.warn = (...args) => {
+      warnings++
+      origWarn(...args)
+    }
+
+    let tokens: ReturnType<typeof tokenizarGuion> = []
+    expect(() => {
+      tokens = tokenizarGuion(guion)
+    }).not.toThrow()
+
+    console.warn = origWarn
+
+    expect(warnings).toBeGreaterThan(0)
+    const acotados = tokens.filter((t) => t.esAcotacion)
+    expect(acotados.length).toBeGreaterThan(0)
+    expect(acotados[acotados.length - 1].palabra).toBe('final')
+  })
+
+  // T30: RepositorioMemoria y RepositorioIndexedDB con fake-indexeddb
+  test('T30: repositorio Memoria e IndexedDB: guardar, listar, abrir, borrar', async () => {
+    const mem = new RepositorioMemoria()
+    const idb = new RepositorioIndexedDB()
+
+    const listaExistente = await idb.listar()
+    for (const item of listaExistente) {
+      await idb.borrar(item.id)
+    }
+
+    const repos = [mem, idb]
+
+    for (const repo of repos) {
+      const g1: Guion = {
+        id: 'g-1-' + Math.random(),
+        titulo: 'Guion A',
+        idioma: 'es',
+        creado: 1000,
+        modificado: 1000,
+        bloques: [{ id: 'b1', nombre: '', texto: 'Hola mundo de prueba' }]
+      }
+
+      const g2: Guion = {
+        id: 'g-2-' + Math.random(),
+        titulo: 'Guion B',
+        idioma: 'en',
+        creado: 2000,
+        modificado: 2000,
+        bloques: [{ id: 'b2', nombre: '', texto: 'Hello world test script' }]
+      }
+
+      await repo.guardar(g1)
+      await repo.guardar(g2)
+
+      const lista = await repo.listar()
+      expect(lista.length).toBe(2)
+      expect(lista[0].id).toBe(g2.id)
+      expect(lista[1].id).toBe(g1.id)
+
+      const abierto = await repo.abrir(g1.id)
+      expect(abierto).not.toBeNull()
+      expect(abierto!.titulo).toBe('Guion A')
+
+      const inexistente = await repo.abrir('id-inexistente')
+      expect(inexistente).toBeNull()
+
+      await repo.borrar(g1.id)
+      const listaTrasBorrar = await repo.listar()
+      expect(listaTrasBorrar.length).toBe(1)
+      expect(listaTrasBorrar[0].id).toBe(g2.id)
+    }
+  })
+
+  // T31: migración
+  test('T31: migración: con clave vieja en localStorage, tras arrancar hay exactamente un guión en repo y clave borrada', async () => {
+    localStorage.clear()
+    const textoViejo = 'Guion antiguo guardado en localStorage para migrar'
+    localStorage.setItem('teleprompter_script', textoViejo)
+
+    const repo = new RepositorioMemoria()
+
+    await act(async () => {
+      render(<App repoOverride={repo} />)
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const lista = await repo.listar()
+    expect(lista.length).toBe(1)
+    expect(lista[0].titulo).toBe('Guion importado')
+
+    const g = await repo.abrir(lista[0].id)
+    expect(g).not.toBeNull()
+    expect(g!.bloques[0].texto).toBe(textoViejo)
+
+    expect(localStorage.getItem('teleprompter_script')).toBeNull()
+  })
+
+  // T32: cruzar de bloque exige confirmación
+  test('T32: cruzar de bloque exige confirmación: parciales en el bloque siguiente NO mueven la posición; confirmación SÍ', async () => {
+    const fraseB0 = 'Primer bloque con palabras de prueba'
+    const fraseB1 = 'Segundo bloque al que no se llega con parciales'
+
+    const guionDosBloques: Guion = {
+      id: 'g-2b-' + Math.random(),
+      titulo: 'Dos bloques',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [
+        { id: 'b0', nombre: 'Bloque 1', texto: fraseB0 },
+        { id: 'b1', nombre: 'Bloque 2', texto: fraseB1 }
+      ]
+    }
+
+    const repo = new RepositorioMemoria()
+    await repo.guardar(guionDosBloques)
+
+    const motorFake = new MotorFake([fraseB0, fraseB1])
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App motor={motorFake} repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const getHighlightedBlockIndex = () => {
+      const lines = Array.from(container.querySelectorAll('.line'))
+      const highlighted = lines.find((line) => (line as HTMLElement).style.opacity === '1')
+      return highlighted ? parseInt(highlighted.getAttribute('data-block') || '0', 10) : 0
+    }
+
+    // Confirmar primer bloque
+    await act(async () => {
+      motorFake.emitirSiguiente()
+      await new Promise((r) => setTimeout(r, 100))
+    })
+    expect(getHighlightedBlockIndex()).toBe(0)
+
+    // Emitir parcial perteneciente al bloque 1
+    await act(async () => {
+      motorFake.emitirParcial('Segundo bloque al que no se llega')
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // Debe permanecer en el bloque 0
+    expect(getHighlightedBlockIndex()).toBe(0)
+
+    // Emitir confirmación (final) del bloque 1
+    await act(async () => {
+      motorFake.emitirSiguiente()
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    expect(getHighlightedBlockIndex()).toBe(1)
   })
 })
 

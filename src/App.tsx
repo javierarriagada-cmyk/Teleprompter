@@ -5,30 +5,123 @@ import { useWakeLock } from './hooks/useWakeLock'
 import TeleprompterView from './components/TeleprompterView'
 import ControlsBar from './components/ControlsBar'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
+import { Guion, guionNuevo } from './datos/modelo'
+import { RepositorioGuiones } from './datos/RepositorioGuiones'
+import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
+import { RepositorioMemoria } from './datos/RepositorioMemoria'
 
 interface AppProps {
   motor?: MotorDeVoz
+  repoOverride?: RepositorioGuiones
 }
 
-const DEFAULT_SCRIPT = `Bienvenido al teleprompter.\nLee este texto en voz alta para probar el reconocimiento.`
+const DEFAULT_SCRIPT_TEXT = `Bienvenido al teleprompter.\nLee este texto en voz alta para probar el reconocimiento.`
 
-export default function App({ motor }: AppProps) {
-  const [scriptText, setScriptText] = useState<string>(() => {
-    try {
-      const saved = localStorage.getItem('teleprompter_script')
-      if (saved !== null) return saved
-    } catch (e) {}
-    return DEFAULT_SCRIPT
+export default function App({ motor, repoOverride }: AppProps) {
+  const repoRef = useRef<RepositorioGuiones>(repoOverride || new RepositorioIndexedDB())
+  const [usandoMemoriaFallback, setUsandoMemoriaFallback] = useState<boolean>(false)
+  const [errorRepositorio, setErrorRepositorio] = useState<string | null>(null)
+
+  const [guionActual, setGuionActual] = useState<Guion>(() => {
+    const g = guionNuevo('es')
+    g.titulo = 'Guion principal'
+    g.bloques = [{ id: 'b-1', nombre: '', texto: DEFAULT_SCRIPT_TEXT }]
+    return g
   })
 
+  const [cargado, setCargado] = useState<boolean>(false)
+
+  // Cargar/Migrar al arrancar
   useEffect(() => {
-    const timer = setTimeout(() => {
+    let repo = repoRef.current
+
+    async function inicializar() {
+      let textoViejo: string | null = null
       try {
-        localStorage.setItem('teleprompter_script', scriptText)
-      } catch (e) {}
+        textoViejo = localStorage.getItem('teleprompter_script')
+      } catch (e) {
+      }
+
+      // 1. Si existe clave en localStorage, migrar al repositorio
+      if (textoViejo && textoViejo.trim()) {
+        const gMigrado: Guion = {
+          id: 'migrado-' + Date.now(),
+          titulo: 'Guion importado',
+          idioma: 'es',
+          creado: Date.now(),
+          modificado: Date.now(),
+          bloques: [
+            {
+              id: 'b-migrado',
+              nombre: '',
+              texto: textoViejo
+            }
+          ]
+        }
+
+        try {
+          await repo.guardar(gMigrado)
+          try {
+            localStorage.removeItem('teleprompter_script')
+          } catch (e) {}
+          setGuionActual(gMigrado)
+          setCargado(true)
+          return
+        } catch (e) {
+          console.warn('[App] Error al migrar guion desde localStorage:', e)
+          setErrorRepositorio('Falló la migración del guion desde localStorage.')
+        }
+      }
+
+      // 2. Abrir el guión más reciente o fallback a RepositorioMemoria
+      let guionCargado: Guion | null = null
+
+      try {
+        const lista = await repo.listar()
+        if (lista.length > 0) {
+          guionCargado = await repo.abrir(lista[0].id)
+        }
+      } catch (e) {
+        console.warn('[App] Error al acceder a RepositorioIndexedDB, cayendo a RepositorioMemoria:', e)
+        repo = new RepositorioMemoria()
+        repoRef.current = repo
+        setUsandoMemoriaFallback(true)
+        setErrorRepositorio('IndexedDB no está disponible; se está usando almacenamiento en memoria.')
+      }
+
+      if (guionCargado) {
+        setGuionActual(guionCargado)
+      } else {
+        const gInicial = guionNuevo('es')
+        gInicial.titulo = 'Guion principal'
+        gInicial.bloques = [{ id: 'b-1', nombre: '', texto: DEFAULT_SCRIPT_TEXT }]
+        try {
+          await repo.guardar(gInicial)
+          setGuionActual(gInicial)
+        } catch (e) {
+          console.warn('[App] Error al guardar guion inicial:', e)
+        }
+      }
+
+      setCargado(true)
+    }
+
+    inicializar()
+  }, [])
+
+  // Auto-guardado al modificar el texto del bloque
+  useEffect(() => {
+    if (!cargado) return
+    const timer = setTimeout(async () => {
+      try {
+        await repoRef.current.guardar(guionActual)
+      } catch (e) {
+        console.warn('[App] Error al guardar guion en repositorio:', e)
+        setErrorRepositorio('Error al guardar cambios en el repositorio.')
+      }
     }, 500)
     return () => clearTimeout(timer)
-  }, [scriptText])
+  }, [guionActual, cargado])
 
   const [engine, setEngine] = useState<IdMotor>('whisper-local')
   const [fontSize, setFontSize] = useState<number>(32)
@@ -36,12 +129,13 @@ export default function App({ motor }: AppProps) {
   const [mirror, setMirror] = useState<boolean>(false)
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
 
-  const [motivoFreno, setMotivoFreno] = useState<'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | null>(null)
+  const [motivoFreno, setMotivoFreno] = useState<'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null>(null)
   const [avanzando, setAvanzando] = useState<boolean>(false)
 
   const prompterContainerRef = useRef<HTMLDivElement | null>(null)
 
   const {
+    bloqueActual,
     lineaActual,
     palabraActual,
     alRecibirParcial: seguidorParcial,
@@ -49,7 +143,7 @@ export default function App({ motor }: AppProps) {
     alNotificarVoz: seguidorVoz,
     reiniciar,
     motorAvance
-  } = useSeguidor(scriptText)
+  } = useSeguidor(guionActual)
 
   const {
     start,
@@ -74,7 +168,7 @@ export default function App({ motor }: AppProps) {
 
   const { activo: wakeLockActivo, solicitar: solicitarWakeLock, soltar: soltarWakeLock } = useWakeLock()
 
-  const handleEstadoAvanceChange = useCallback((motivo: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | null, isAvanzando: boolean) => {
+  const handleEstadoAvanceChange = useCallback((motivo: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null, isAvanzando: boolean) => {
     setMotivoFreno(motivo)
     setAvanzando(isAvanzando)
   }, [])
@@ -117,28 +211,46 @@ export default function App({ motor }: AppProps) {
     return () => document.removeEventListener('fullscreenchange', handleFSChange)
   }, [])
 
+  const primerTexto = guionActual.bloques && guionActual.bloques[0] ? guionActual.bloques[0].texto : ''
+
+  function handleTextChange(nuevoTexto: string) {
+    setGuionActual((prev) => {
+      const copiaBloques = prev.bloques && prev.bloques.length > 0 ? [...prev.bloques] : [{ id: 'b-1', nombre: '', texto: '' }]
+      copiaBloques[0] = { ...copiaBloques[0], texto: nuevoTexto }
+      return {
+        ...prev,
+        bloques: copiaBloques,
+        modificado: Date.now()
+      }
+    })
+  }
+
   let textoFreno = ''
   if (!avanzando && motivoFreno) {
     if (motivoFreno === 'silencio') textoFreno = 'esperando voz'
     else if (motivoFreno === 'sin-calce') textoFreno = 'no reconozco lo que lees'
     else if (motivoFreno === 'correa') textoFreno = 'adelantado, espero'
     else if (motivoFreno === 'fin-de-linea') textoFreno = 'fin de línea, espero'
+    else if (motivoFreno === 'fin-de-bloque') textoFreno = 'fin de bloque, espero'
   }
+
+  const tituloMostrar = (guionActual.titulo && guionActual.titulo.trim()) ? guionActual.titulo : 'Sin título'
 
   return (
     <div style={{ padding: 16, fontFamily: 'sans-serif', maxWidth: 1200, margin: '0 auto' }}>
       <h1>Teleprompter MVP</h1>
+      <h3 style={{ color: '#555', marginTop: -10 }}>{tituloMostrar}</h3>
 
       {/* Franja de estado visible */}
       <div
         style={{
-          background: ultimoError ? '#ffebee' : '#e8f5e9',
-          color: ultimoError ? '#c62828' : '#2e7d32',
+          background: (ultimoError || errorRepositorio) ? '#ffebee' : '#e8f5e9',
+          color: (ultimoError || errorRepositorio) ? '#c62828' : '#2e7d32',
           padding: '10px 14px',
           borderRadius: 6,
           marginBottom: 16,
           fontSize: 14,
-          border: `1px solid ${ultimoError ? '#ef9a9a' : '#a5d6a7'}`
+          border: `1px solid ${(ultimoError || errorRepositorio) ? '#ef9a9a' : '#a5d6a7'}`
         }}
       >
         <strong>Franja de Estado:</strong>
@@ -154,10 +266,20 @@ export default function App({ motor }: AppProps) {
               Estado Avance: 🛑 {textoFreno}
             </span>
           )}
+          {usandoMemoriaFallback && (
+            <span style={{ marginLeft: 16, color: '#b71c1c', fontWeight: 'bold' }}>
+              ⚠️ Almacenamiento: En Memoria (IndexedDB no disponible)
+            </span>
+          )}
         </div>
         {ultimoError && (
           <div style={{ marginTop: 6, fontWeight: 'bold' }}>
-            Último Error: {ultimoError}
+            Último Error Motor: {ultimoError}
+          </div>
+        )}
+        {errorRepositorio && (
+          <div style={{ marginTop: 6, fontWeight: 'bold', color: '#b71c1c' }}>
+            Aviso Repositorio: {errorRepositorio}
           </div>
         )}
       </div>
@@ -168,8 +290,8 @@ export default function App({ motor }: AppProps) {
             <label>
               <strong>Guion:</strong>
               <textarea
-                value={scriptText}
-                onChange={(e) => setScriptText(e.target.value)}
+                value={primerTexto}
+                onChange={(e) => handleTextChange(e.target.value)}
                 rows={12}
                 style={{ width: '100%', marginTop: 8, fontFamily: 'inherit', fontSize: 16, padding: 8 }}
               />
@@ -246,7 +368,8 @@ export default function App({ motor }: AppProps) {
           }}
         >
           <TeleprompterView
-            script={scriptText}
+            script={guionActual}
+            currentBlockIndex={bloqueActual}
             currentLineIndex={lineaActual}
             currentWordIndex={palabraActual}
             fontSize={fontSize}
