@@ -7,7 +7,7 @@ export type ParametrosAvance = {
   msDeCorreccion: number        // 400  en cuanto se absorbe una correccion
   anticipacionPalabras: number  // 3
   msTransicion: number          // 600
-  msSinCalceParaFrenar: number  // 6000  hablando sin calzar nada
+  msSinCalceParaFrenar: number  // 3000  hablando sin calzar nada
   adelantoComodo: number        // 2   tokens de adelanto sin ningun freno
   adelantoMaximo: number        // 8   aqui la velocidad ya es cero
 }
@@ -37,7 +37,7 @@ const DEFAULT_PARAMETROS: ParametrosAvance = {
   msDeCorreccion: 400,
   anticipacionPalabras: 3,
   msTransicion: 600,
-  msSinCalceParaFrenar: 6000,
+  msSinCalceParaFrenar: 3000,
   adelantoComodo: 2,
   adelantoMaximo: 8
 }
