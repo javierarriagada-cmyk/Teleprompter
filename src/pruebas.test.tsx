@@ -255,12 +255,31 @@ Esta es la tercera línea`)
     ]
     const motor = new MotorFake(frases)
 
+    const repo = new RepositorioMemoria()
+    await repo.guardar(guionSimple(frases.join('\n')))
+
     let container: HTMLElement
 
     await act(async () => {
-      const res = render(<App motor={motor} />)
+      const res = render(<App motor={motor} repoOverride={repo} />)
       container = res.container
-      await new Promise((r) => setTimeout(r, 200))
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // Abrir guion desde biblioteca
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    expect(botonAbrir).not.toBeUndefined()
+    await act(async () => {
+      fireEvent.click(botonAbrir!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // Entrar a lectura
+    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    expect(botonLeer).not.toBeUndefined()
+    await act(async () => {
+      fireEvent.click(botonLeer!)
+      await new Promise((r) => setTimeout(r, 100))
     })
 
     const getHighlightedLineIndex = () => {
@@ -356,7 +375,15 @@ Esta es la tercera línea`)
       const res = render(<App motor={fake} repoOverride={repo} />)
       unmount = res.unmount
       container = res.container
-      await new Promise((r) => setTimeout(r, 200))
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const botonCrear = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Crear'))
+    expect(botonCrear).not.toBeUndefined()
+
+    await act(async () => {
+      fireEvent.click(botonCrear!)
+      await new Promise((r) => setTimeout(r, 100))
     })
 
     const textarea = container!.querySelector('textarea') as HTMLTextAreaElement
@@ -376,10 +403,19 @@ Esta es la tercera línea`)
     await act(async () => {
       const res2 = render(<App motor={fake} repoOverride={repo} />)
       container2 = res2.container
-      await new Promise((r) => setTimeout(r, 200))
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const botonAbrir = Array.from(container2!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    expect(botonAbrir).not.toBeUndefined()
+
+    await act(async () => {
+      fireEvent.click(botonAbrir!)
+      await new Promise((r) => setTimeout(r, 100))
     })
 
     const textarea2 = container2!.querySelector('textarea') as HTMLTextAreaElement
+    expect(textarea2).not.toBeNull()
     expect(textarea2.value).toBe(nuevoTexto)
   })
 })
@@ -616,13 +652,33 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
 
   test('T21: integración con React App y MotorFake procesa parciales y avanza el seguidor', async () => {
     localStorage.clear()
+    const textoPrueba = `Bienvenido al teleprompter\nLee este texto en voz alta para probar el reconocimiento`
+    const repo = new RepositorioMemoria()
+    await repo.guardar(guionSimple(textoPrueba))
+
     const motor = new MotorFake()
     let container: HTMLElement
 
     await act(async () => {
-      const res = render(<App motor={motor} />)
+      const res = render(<App motor={motor} repoOverride={repo} />)
       container = res.container
-      await new Promise((r) => setTimeout(r, 200))
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // Abrir guion desde biblioteca
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    expect(botonAbrir).not.toBeUndefined()
+    await act(async () => {
+      fireEvent.click(botonAbrir!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // Entrar a lectura
+    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    expect(botonLeer).not.toBeUndefined()
+    await act(async () => {
+      fireEvent.click(botonLeer!)
+      await new Promise((r) => setTimeout(r, 100))
     })
 
     const getHighlightedLineIndex = () => {
@@ -739,19 +795,32 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
     const scriptTexto = `${linea30Palabras}\nSegunda línea del guion.`
     const guionObj = guionSimple(scriptTexto)
 
+    const repo = new RepositorioMemoria()
+    await repo.guardar(guionObj)
+
     const motorFake = new MotorFake()
 
     let container: HTMLElement
     await act(async () => {
-      const res = render(<App motor={motorFake} />)
+      const res = render(<App motor={motorFake} repoOverride={repo} />)
       container = res.container
-      await new Promise((r) => setTimeout(r, 200))
+      await new Promise((r) => setTimeout(r, 600))
     })
 
-    const textarea = container!.querySelector('textarea') as HTMLTextAreaElement
+    // Abrir guion desde biblioteca
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    expect(botonAbrir).not.toBeUndefined()
     await act(async () => {
-      fireEvent.change(textarea, { target: { value: scriptTexto } })
-      await new Promise((r) => setTimeout(r, 600))
+      fireEvent.click(botonAbrir!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // Entrar a lectura
+    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    expect(botonLeer).not.toBeUndefined()
+    await act(async () => {
+      fireEvent.click(botonLeer!)
+      await new Promise((r) => setTimeout(r, 100))
     })
 
     const palabras = linea30Palabras.split(' ')
@@ -972,6 +1041,22 @@ describe('Pruebas TAREA 3 (T27-T32)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
+    // Abrir guion desde biblioteca
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    expect(botonAbrir).not.toBeUndefined()
+    await act(async () => {
+      fireEvent.click(botonAbrir!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // Entrar a lectura
+    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    expect(botonLeer).not.toBeUndefined()
+    await act(async () => {
+      fireEvent.click(botonLeer!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
     const getHighlightedBlockIndex = () => {
       const lines = Array.from(container.querySelectorAll('.line'))
       const highlighted = lines.find((line) => (line as HTMLElement).style.opacity === '1')
@@ -1078,11 +1163,6 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
     await act(async () => {
       const res = render(<App repoOverride={repo} />)
       container = res.container
-      await new Promise((r) => setTimeout(r, 200))
-    })
-
-    // Esperar a que la biblioteca cargue los guiones
-    await act(async () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
@@ -1095,14 +1175,13 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
     })
 
     // 1. Agregar tres bloques
-    const botonAgregar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Agregar'))
-    expect(botonAgregar).not.toBeUndefined()
-
-    await act(async () => {
-      fireEvent.click(botonAgregar!)
-      fireEvent.click(botonAgregar!)
-      fireEvent.click(botonAgregar!)
-    })
+    for (let i = 0; i < 3; i++) {
+      await act(async () => {
+        const btnAgregar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Agregar'))
+        expect(btnAgregar).not.toBeUndefined()
+        fireEvent.click(btnAgregar!)
+      })
+    }
 
     // Asignar nombres a los tres bloques
     const inputsNombre = container!.querySelectorAll('input[placeholder^="Nombre del bloque"]') as NodeListOf<HTMLInputElement>
@@ -1199,13 +1278,12 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       bloques: [{ id: 'b1', nombre: '', texto: 'Inicial' }]
     }
     await repo.guardar(guionPrueba)
-    recuentoLlamadasGuardar = 0 // reiniciar contador tras guardado inicial
 
     let container: HTMLElement
     await act(async () => {
       const res = render(<App repoOverride={repo} />)
       container = res.container
-      await new Promise((r) => setTimeout(r, 200))
+      await new Promise((r) => setTimeout(r, 600))
     })
 
     // Abrir guion en editor
@@ -1217,6 +1295,9 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
 
     const textarea = container!.querySelector('textarea') as HTMLTextAreaElement
     expect(textarea).not.toBeNull()
+
+    // Reiniciar contador justo antes del tecleo en el editor
+    recuentoLlamadasGuardar = 0
 
     // Teclear 5 veces rápidamente (cada 100ms)
     for (let i = 1; i <= 5; i++) {
