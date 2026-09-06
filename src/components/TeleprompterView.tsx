@@ -141,8 +141,23 @@ export default function TeleprompterView({
             ) as HTMLElement | null
             const origen = elPrimero ? elPrimero.offsetTop : target.offsetTop
 
-            const recorrido = avanceEnLinea * (topSiguiente - target.offsetTop)
-            const top = (target.offsetTop - origen) + recorrido - filaPx
+            // Lo que se retiene es UN RENGLON, pero medido en las mismas unidades en que
+            // avanza el recorrido. El recorrido cubre el paso de linea completo, que
+            // incluye el margen entre elementos; la altura del texto de un renglon es
+            // menor. Restando la altura del texto, la cuenta se volvia positiva a poco mas
+            // de media linea: por eso el desplazamiento arrancaba en la palabra 4 o 5 de
+            // una linea de 9 en vez de esperar a la siguiente.
+            //
+            // El paso de linea dividido por la cantidad de renglones que ese elemento
+            // ocupa da el valor correcto en los dos casos: una linea de un solo renglon
+            // retiene la linea entera, y un parrafo que ocupa varios renglones retiene
+            // exactamente uno.
+            const pasoDeLinea = topSiguiente - target.offsetTop
+            const filas = Math.max(1, Math.round(target.clientHeight / filaPx))
+            const retencion = pasoDeLinea / filas
+
+            const recorrido = avanceEnLinea * pasoDeLinea
+            const top = (target.offsetTop - origen) + recorrido - retencion
             containerRef.current.scrollTop = Math.max(0, top)
           }
         }
