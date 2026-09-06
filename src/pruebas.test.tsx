@@ -1360,14 +1360,20 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
 
   test('T38 ANTICIPACION. El guion de 4 lineas y la llamada a simularLectura', () => {
     const guion4LineasTexto = [
-      'Esta es la primera linea de prueba con diez palabras completas',
-      'Esta es la segunda linea de prueba con diez palabras completas',
-      'Esta es la tercera linea de prueba con diez palabras completas',
-      'Esta es la cuarta linea de prueba con diez palabras completas'
+      'Uno dos tres cuatro cinco seis siete ocho nueve diez',
+      'Once doce trece catorce quince dieciseis diecisiete dieciocho diecinueve veinte',
+      'Veintiuno veintidos veintitres veinticuatro veinticinco veintiseis veintisiete veintiocho veintinueve treinta',
+      'Treintauno treintados treintatres treintacuatro treintacinco treintaseis treintasiete treintaocho treintanueve cuarenta'
     ].join('\n')
 
+    const tokens = tokenizarGuion(guionSimple(guion4LineasTexto))
+    const limitesMap = new Map<number, number>()
+    for (let i = 0; i < tokens.length; i++) limitesMap.set(tokens[i].linea, i)
+    const limitesDeLinea = Array.from(limitesMap.values()).sort((a, b) => a - b)
+
     const sim = simularLectura({ guion: guion4LineasTexto, ppm: 150, pausaCadaNPalabras: null })
-    const m = medir(sim, guion4LineasTexto)
+    const motor = crearMotorDeAvance({ anticipacionPalabras: 3 }, limitesDeLinea)
+    const m = medir(sim, guion4LineasTexto, motor)
 
     console.log(`[T38] Métricas Anticipación:
       retardoMedioAtras = ${m.retardoMedioAtras.toFixed(2)} (límite <= 1.5)
@@ -1381,10 +1387,10 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
 
   test('T39 La misma lectura de T38, pero creando el motor con anticipacionPalabras en 0', () => {
     const guion4LineasTexto = [
-      'Esta es la primera linea de prueba con diez palabras completas',
-      'Esta es la segunda linea de prueba con diez palabras completas',
-      'Esta es la tercera linea de prueba con diez palabras completas',
-      'Esta es la cuarta linea de prueba con diez palabras completas'
+      'Uno dos tres cuatro cinco seis siete ocho nueve diez',
+      'Once doce trece catorce quince dieciseis diecisiete dieciocho diecinueve veinte',
+      'Veintiuno veintidos veintitres veinticuatro veinticinco veintiseis veintisiete veintiocho veintinueve treinta',
+      'Treintauno treintados treintatres treintacuatro treintacinco treintaseis treintasiete treintaocho treintanueve cuarenta'
     ].join('\n')
 
     const tokens = tokenizarGuion(guionSimple(guion4LineasTexto))

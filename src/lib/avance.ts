@@ -240,8 +240,13 @@ export function crearMotorDeAvance(
       }
 
       const refToken = Math.max(ultimaConfirmada, anclaTentativa)
-      const refAnticipada = refToken + params.anticipacionPalabras
-      const limiteLinea = obtenerLimiteLineaActual(refAnticipada)
+
+      const limiteLineaBase = obtenerLimiteLineaActual(refToken)
+      const limiteLineaSiguiente = obtenerLimiteLineaSiguiente(refToken)
+
+      const limiteLinea = (params.anticipacionPalabras > 0 && limitesDeLinea && limitesDeLinea.length > 0)
+        ? Math.max(limiteLineaBase, Math.min(limiteLineaSiguiente, refToken + params.anticipacionPalabras))
+        : limiteLineaBase
 
       const limiteBloque = obtenerLimiteBloqueActual(refToken)
       const maxCorrea = (limitesDeLinea && limitesDeLinea.length > 0)
