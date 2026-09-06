@@ -8,8 +8,8 @@ export type ParametrosAvance = {
   anticipacionPalabras: number  // 3
   msTransicion: number          // 600
   msSinCalceParaFrenar: number  // 6000  hablando sin calzar nada
-  adelantoComodo: number        // 6   tokens de adelanto sin ningun freno
-  adelantoMaximo: number        // 15  aqui la velocidad ya es cero
+  adelantoComodo: number        // 2   tokens de adelanto sin ningun freno
+  adelantoMaximo: number        // 8   aqui la velocidad ya es cero
 }
 
 export type EstadoAvance = {
@@ -38,8 +38,8 @@ const DEFAULT_PARAMETROS: ParametrosAvance = {
   anticipacionPalabras: 3,
   msTransicion: 600,
   msSinCalceParaFrenar: 6000,
-  adelantoComodo: 6,
-  adelantoMaximo: 15
+  adelantoComodo: 2,
+  adelantoMaximo: 8
 }
 
 export function crearMotorDeAvance(
@@ -207,8 +207,20 @@ export function crearMotorDeAvance(
       const dt = Math.max(0, tMs - tUltimaActualizacion)
       tUltimaActualizacion = tMs
 
+      // Antes del primer calce el texto no se mueve. No hay ninguna evidencia de donde
+      // esta el lector, asi que avanzar a la velocidad supuesta hace que la primera linea
+      // se vaya de pantalla antes de que alcance a leerla.
+      if (tUltimoCalce === 0) {
+        return {
+          posicion: posicionMostrada,
+          avanzando: false,
+          motivoFreno: null,
+          ppmEstimadas
+        }
+      }
+
       const hablandoSinCalzar =
-        hayVoz && tUltimoCalce > 0 && tMs - tUltimoCalce > params.msSinCalceParaFrenar
+        hayVoz && tMs - tUltimoCalce > params.msSinCalceParaFrenar
 
       const esSinCalce =
         fallosFinalesSeguidos >= params.fallosParaFrenar || hablandoSinCalzar
