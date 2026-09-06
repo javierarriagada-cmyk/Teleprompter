@@ -3,9 +3,10 @@ import { MotorDeAvance } from '../lib/avance'
 import { tokenizarGuion, Token } from '../lib/seguidor'
 import { Guion } from '../datos/modelo'
 
+import { AnclajeZona, calcularBanda, opacidadDeLinea } from './banda'
+
 // El texto no se mueve hasta que el lector dijo estas palabras de la linea en curso.
 const PALABRAS_ANTES_DE_MOVER = 7
-import { AnclajeZona, calcularBanda, opacidadDeLinea } from './banda'
 
 interface TeleprompterViewProps {
   script: Guion | string
