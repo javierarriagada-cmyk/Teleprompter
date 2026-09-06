@@ -4,6 +4,8 @@ export type OpcionesImportar = {
   maxCaracteresPorLinea?: number
 }
 
+const PORCENTAJE_MINIMO_LINEA = 0.6
+
 function generarIdBloque(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
     return crypto.randomUUID()
@@ -58,13 +60,14 @@ function tokenizarLinea(linea: string): string[] {
 /**
  * Formatea un arreglo de tokens en líneas de texto respetando maxChars
  * según el orden de preferencia de cortes:
- * 1. Fin de oración: ., ?, !, :, ;
- * 2. Fin de cláusula: ,
- * 3. Límite de palabra (espacio)
+ * 1. Fin de oración: ., ?, !, :, ; (si la línea resultante tiene al menos 60% de maxChars)
+ * 2. Fin de cláusula: , (si la línea resultante tiene al menos 60% de maxChars)
+ * 3. Límite de palabra (espacio en maxIdx)
  */
 function formatearTokensEnLineas(tokens: string[], maxChars: number): string[] {
   if (tokens.length === 0) return []
 
+  const minChars = Math.floor(maxChars * PORCENTAJE_MINIMO_LINEA)
   const lineas: string[] = []
   let tokensRestantes = [...tokens]
 
@@ -95,25 +98,27 @@ function formatearTokensEnLineas(tokens: string[], maxChars: number): string[] {
       break
     }
 
-    // Buscar el mejor punto de corte dentro de 0..maxIdx
-    // Preferencia 1: Fin de oración (., ?, !, :, ;)
+    // Buscar el mejor punto de corte dentro de 0..maxIdx que cumpla el piso del 60%
     let corteElegido = -1
     const regexOracion = /[.?!:;][)\]"']?$/
 
-    for (let i = maxIdx; i >= 0; i--) {
-      if (regexOracion.test(tokensRestantes[i])) {
-        corteElegido = i
-        break
+    // Preferencia 1: Fin de oración (., ?, !, :, ;) con longitud acumulada >= minChars
+    let lenActual = 0
+    for (let i = 0; i <= maxIdx; i++) {
+      lenActual += (i === 0 ? 0 : 1) + tokensRestantes[i].length
+      if (lenActual >= minChars && regexOracion.test(tokensRestantes[i])) {
+        corteElegido = i // tomamos la última o primera opción que cumpla >= minChars
       }
     }
 
-    // Preferencia 2: Fin de cláusula (,)
+    // Preferencia 2: Fin de cláusula (,) con longitud acumulada >= minChars
     if (corteElegido === -1) {
       const regexClausula = /[,][)\]"']?$/
-      for (let i = maxIdx; i >= 0; i--) {
-        if (regexClausula.test(tokensRestantes[i])) {
+      lenActual = 0
+      for (let i = 0; i <= maxIdx; i++) {
+        lenActual += (i === 0 ? 0 : 1) + tokensRestantes[i].length
+        if (lenActual >= minChars && regexClausula.test(tokensRestantes[i])) {
           corteElegido = i
-          break
         }
       }
     }

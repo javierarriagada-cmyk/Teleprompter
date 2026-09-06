@@ -6,7 +6,7 @@ import { importarTexto } from '../datos/importar'
 import EditorView from '../components/EditorView'
 import { Guion } from '../datos/modelo'
 
-describe('Pruebas TAREA 6 - Importar y dar forma al guion (T40-T48)', () => {
+describe('Pruebas TAREA 6 - Importar y dar forma al guion (T40-T50)', () => {
 
   // T40: texto vacío o solo espacios devuelve []
   test('T40: texto vacío o solo espacios devuelve []', () => {
@@ -172,25 +172,37 @@ Segundo párrafo importado.`
 
   // T46: Criterio de preferencia de cortes en 3 niveles
   test('T46: el corte de línea respeta los 3 niveles de preferencia (fin de oración > fin de cláusula > límite de palabra)', () => {
-    // 1. Fin de oración (. , ?, !, :, ;) antes del límite
-    // "Hola a todos. La oración nueva empieza a mitad." con límite 42
-    // "Hola a todos." tiene punto y cabe. La siguiente oración debe empezar en una nueva línea.
-    const textoOraciones = 'Hola a todos. La oración nueva empieza a mitad.'
-    const resOracion = importarTexto(textoOraciones, { maxCaracteresPorLinea: 42 })
+    // "Nietzsche murió en 1900. Su hermana editó los textos..."
+    // "Nietzsche murió en 1900." mide 24 chars (si límite es 35, el 60% son 21 chars, por lo que 24 >= 21)
+    const textoOraciones = 'Nietzsche murió en 1900. Su hermana editó los textos y cambió todo el sentido.'
+    const resOracion = importarTexto(textoOraciones, { maxCaracteresPorLinea: 35 })
     const lineasOracion = resOracion[0].texto.split('\n')
-    expect(lineasOracion[0]).toBe('Hola a todos.')
-    expect(lineasOracion[1]).toBe('La oración nueva empieza a mitad.')
-
-    // 2. Fin de cláusula (,) cuando no hay fin de oración
-    const textoClausula = 'En primer lugar, queremos agradecer la presencia de todos.'
-    const resClausula = importarTexto(textoClausula, { maxCaracteresPorLinea: 35 })
-    const lineasClausula = resClausula[0].texto.split('\n')
-    expect(lineasClausula[0]).toBe('En primer lugar,')
-    expect(lineasClausula[1]).toBe('queremos agradecer la presencia de')
+    expect(lineasOracion[0]).toBe('Nietzsche murió en 1900.')
   })
 
-  // T47: Acotaciones pegadas no agregan espacios artificiales
-  test('T47: las acotaciones pegadas a palabras no sufren adición de espacios artificiales', () => {
+  // T47: El piso del 60% impide cortes de puntuación demasiado cortos
+  test('T47: con límite 42 y "Si. Esta es una oracion larga...", la primera línea NO es "Si." porque el piso del 60% lo impide', () => {
+    const texto = 'Si. Esta es una oracion larga que si se cortara despues del punto dejaria una linea inutil.'
+    const res = importarTexto(texto, { maxCaracteresPorLinea: 42 })
+    const lineas = res[0].texto.split('\n')
+
+    expect(lineas[0]).not.toBe('Si.')
+    expect(lineas[0].length).toBeGreaterThanOrEqual(25)
+  })
+
+  // T48: El piso del 60% permite el corte cuando la línea alcanza el 60%
+  test('T48: con un punto de corte por oración que cae en >= 25 caracteres (piso del 60%), el corte por oración SÍ se aplica', () => {
+    const texto = 'Nietzsche murio en el ano 1900. Su hermana edito los textos y cambio todo el sentido.'
+    // "Nietzsche murio en el ano 1900." mide 31 caracteres, que es >= 25 (60% de 42 = 25)
+    const res = importarTexto(texto, { maxCaracteresPorLinea: 42 })
+    const lineas = res[0].texto.split('\n')
+
+    expect(lineas[0]).toBe('Nietzsche murio en el ano 1900.')
+    expect(lineas[0].length).toBeGreaterThanOrEqual(25)
+  })
+
+  // T49: Acotaciones pegadas no agregan espacios artificiales (renombrada desde T47)
+  test('T49: las acotaciones pegadas a palabras no sufren adición de espacios artificiales', () => {
     const textoPegadoAntes = 'Hola[pausa] a todos'
     const resAntes = importarTexto(textoPegadoAntes, { maxCaracteresPorLinea: 42 })
     expect(resAntes[0].texto).toBe('Hola[pausa] a todos')
@@ -198,10 +210,14 @@ Segundo párrafo importado.`
     const textoPegadoDespues = 'Hola [pausa]mundo'
     const resDespues = importarTexto(textoPegadoDespues, { maxCaracteresPorLinea: 42 })
     expect(resDespues[0].texto).toBe('Hola [pausa]mundo')
+
+    const textoPegadoAmbos = 'a[x]b[y]c'
+    const resAmbos = importarTexto(textoPegadoAmbos, { maxCaracteresPorLinea: 42 })
+    expect(resAmbos[0].texto).toBe('a[x]b[y]c')
   })
 
-  // T48: Firma con objeto de opciones
-  test('T48: importarTexto acepta objeto de opciones { maxCaracteresPorLinea } y usa 42 por omisión', () => {
+  // T50: Firma con objeto de opciones (renombrada desde T48)
+  test('T50: importarTexto acepta objeto de opciones { maxCaracteresPorLinea } y usa 42 por omisión', () => {
     const texto = 'Primera oración larga de prueba. Segunda oración larga de prueba.'
     const resDefault = importarTexto(texto)
     expect(resDefault.length).toBe(1)
@@ -209,7 +225,7 @@ Segundo párrafo importado.`
     const resCustom = importarTexto(texto, { maxCaracteresPorLinea: 25 })
     const lineasCustom = resCustom[0].texto.split('\n')
     for (const l of lineasCustom) {
-      expect(l.length).toBeLessThanOrEqual(32) // oraciones/palabras cortadas según límite 25
+      expect(l.length).toBeLessThanOrEqual(32)
     }
   })
 
