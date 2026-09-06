@@ -75,6 +75,12 @@ function similar(a: string, b: string): boolean {
 export function crearSeguidor(tokens: Token[]): Seguidor {
   let pos = 0
   let fallosSeguidos = 0
+  // Posicion que creen los parciales. NO compromete nada -solo `avanzar`, o sea los
+  // finales, mueve `pos`- pero SI mueve la ventana de busqueda de los tentativos
+  // siguientes. Sin esto, una lectura de corrido -sin pausas, o sea sin ningun final-
+  // deja la ventana clavada al principio del guion y el seguidor no vuelve a calzar
+  // nunca. Medido: 210 palabras de retardo medio en un guion de 520.
+  let posTentativa = 0
 
   function obtenerPosicionRespuesta(movio: boolean, desde?: number, hasta?: number): Posicion {
     if (tokens.length === 0) {
@@ -204,19 +210,20 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
       }
 
       const frase = palabrasFrase.slice(-MAX_PALABRAS_FRASE)
-      const tokActual = tokens[pos] || tokens[tokens.length - 1]
+      const base = Math.max(pos, posTentativa)
+      const tokActual = tokens[base] || tokens[tokens.length - 1]
       const lineaActual = tokActual.linea
       const lineaLimite = lineaActual + VENTANA_LINEAS_ADELANTE
-      let hasta = Math.min(tokens.length - 1, pos + VENTANA_ADELANTE)
+      let hasta = Math.min(tokens.length - 1, base + VENTANA_ADELANTE)
 
-      for (let i = pos; i < tokens.length; i++) {
+      for (let i = base; i < tokens.length; i++) {
         if (tokens[i].linea > lineaLimite) {
           hasta = i - 1
           break
         }
       }
 
-      const desde = Math.max(0, pos - VENTANA_ATRAS)
+      const desde = Math.max(0, base - VENTANA_ATRAS)
       hasta = Math.max(desde, hasta)
 
       const { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta)
@@ -225,10 +232,14 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         return obtenerPosicionRespuesta(false)
       }
 
-      const candPos = mejorOffset + frase.length - 1
-      if (candPos < pos - RETROCESO_MAX) {
+      // Acotado al ultimo token: `mejorOffset + frase.length - 1` puede pasarse del final
+      // cuando la frase reconocida es mas larga que lo que queda de guion.
+      const candPos = Math.min(mejorOffset + frase.length - 1, tokens.length - 1)
+      if (candPos < base - RETROCESO_MAX) {
         return obtenerPosicionRespuesta(false)
       }
+
+      posTentativa = Math.max(posTentativa, candPos)
 
       const tokCand = tokens[candPos]
       return {
@@ -242,6 +253,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
 
     reiniciar() {
       pos = 0
+      posTentativa = 0
       fallosSeguidos = 0
     },
 
