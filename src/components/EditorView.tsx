@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Guion, Bloque } from '../datos/modelo'
+import { importarTexto } from '../datos/importar'
 
 interface EditorViewProps {
   guion: Guion
@@ -23,6 +24,10 @@ export default function EditorView({
 }: EditorViewProps) {
   // Estado local para los bloques plegados (true = plegado, false = desplegado)
   const [plegados, setPlegados] = useState<Record<string, boolean>>({})
+  // Estado para el modal/sección de pegar texto
+  const [mostrarModalPegar, setMostrarModalPegar] = useState(false)
+  const [textoPegado, setTextoPegado] = useState('')
+  const [errorPegado, setErrorPegado] = useState<string | null>(null)
 
   function togglePlegado(id: string) {
     setPlegados((prev) => ({
@@ -37,6 +42,36 @@ export default function EditorView({
       titulo: nuevoTitulo,
       modificado: Date.now()
     })
+  }
+
+  function handleAceptarPegar() {
+    if (!textoPegado || !textoPegado.trim()) {
+      setErrorPegado('El texto pegado está vacío o sólo contiene espacios.')
+      return
+    }
+
+    const nuevosBloques = importarTexto(textoPegado)
+    if (nuevosBloques.length === 0) {
+      setErrorPegado('El texto pegado está vacío o sólo contiene espacios.')
+      return
+    }
+
+    const bloquesActuales = guion.bloques || []
+    onChangeGuion({
+      ...guion,
+      bloques: [...bloquesActuales, ...nuevosBloques],
+      modificado: Date.now()
+    })
+
+    setTextoPegado('')
+    setErrorPegado(null)
+    setMostrarModalPegar(false)
+  }
+
+  function handleCancelarPegar() {
+    setTextoPegado('')
+    setErrorPegado(null)
+    setMostrarModalPegar(false)
   }
 
   function handleIdiomaChange(nuevoIdioma: string) {
@@ -209,21 +244,120 @@ export default function EditorView({
       {/* Lista de Bloques */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <h3 style={{ margin: 0 }}>Bloques ({guion.bloques ? guion.bloques.length : 0})</h3>
-        <button
-          onClick={handleAgregarBloque}
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button
+            onClick={() => {
+              setErrorPegado(null)
+              setMostrarModalPegar(true)
+            }}
+            style={{
+              padding: '6px 14px',
+              backgroundColor: '#0288d1',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 4,
+              cursor: 'pointer',
+              fontWeight: 'bold'
+            }}
+          >
+            Pegar texto
+          </button>
+          <button
+            onClick={handleAgregarBloque}
+            style={{
+              padding: '6px 14px',
+              backgroundColor: '#1976d2',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 4,
+              cursor: 'pointer',
+              fontWeight: 'bold'
+            }}
+          >
+            + Agregar Bloque
+          </button>
+        </div>
+      </div>
+
+      {/* Interfaz para pegar texto */}
+      {mostrarModalPegar && (
+        <div
           style={{
-            padding: '6px 14px',
-            backgroundColor: '#1976d2',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 4,
-            cursor: 'pointer',
-            fontWeight: 'bold'
+            backgroundColor: '#f5f5f5',
+            border: '1px solid #0288d1',
+            borderRadius: 8,
+            padding: 16,
+            marginBottom: 20
           }}
         >
-          + Agregar Bloque
-        </button>
-      </div>
+          <h4 style={{ margin: '0 0 8px 0', color: '#0288d1' }}>Pegar texto para importar</h4>
+          <p style={{ margin: '0 0 12px 0', fontSize: 14, color: '#555' }}>
+            Pega aquí el texto de tu guión. Se convertirá automáticamente en bloques y líneas con el formato adecuado.
+          </p>
+          <textarea
+            value={textoPegado}
+            onChange={(e) => {
+              setTextoPegado(e.target.value)
+              if (errorPegado) setErrorPegado(null)
+            }}
+            placeholder="Pega aquí el texto completo..."
+            rows={8}
+            style={{
+              width: '100%',
+              padding: 10,
+              fontSize: 14,
+              fontFamily: 'inherit',
+              borderRadius: 4,
+              border: '1px solid #ccc',
+              boxSizing: 'border-box',
+              marginBottom: 8
+            }}
+          />
+          {errorPegado && (
+            <div
+              style={{
+                color: '#d32f2f',
+                backgroundColor: '#ffebee',
+                padding: '8px 12px',
+                borderRadius: 4,
+                marginBottom: 12,
+                fontSize: 14,
+                fontWeight: 'bold'
+              }}
+            >
+              {errorPegado}
+            </div>
+          )}
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+            <button
+              onClick={handleCancelarPegar}
+              style={{
+                padding: '6px 14px',
+                backgroundColor: '#e0e0e0',
+                border: '1px solid #ccc',
+                borderRadius: 4,
+                cursor: 'pointer'
+              }}
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={handleAceptarPegar}
+              style={{
+                padding: '6px 14px',
+                backgroundColor: '#0288d1',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 4,
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              Aceptar e importar
+            </button>
+          </div>
+        </div>
+      )}
 
       {(!guion.bloques || guion.bloques.length === 0) ? (
         <div
