@@ -1,13 +1,17 @@
 import leven from 'leven'
+import { Guion } from '../datos/modelo'
 
 export type Token = {
   palabra: string        // normalizada
-  linea: number          // índice de línea en el guion original
+  bloque: number         // índice en Guion.bloques
+  linea: number          // índice de línea DENTRO del bloque
   indiceEnLinea: number  // índice de palabra dentro de esa línea
+  esAcotacion: boolean   // indica si es una acotación entre corchetes [...]
   tokenAbsoluto: number
 }
 
 export type Posicion = {
+  bloque: number
   linea: number
   palabra: number
   desdeToken: number
@@ -42,24 +46,104 @@ export function normalizar(s: string): string {
     .trim()
 }
 
-export function tokenizarGuion(guion: string): Token[] {
-  const lineas = guion.split(/\r?\n/)
+export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
+  const guion: Guion = typeof guionEntrada === 'string' ? {
+    id: 'temp',
+    titulo: 'Temp',
+    idioma: 'es',
+    creado: 0,
+    modificado: 0,
+    bloques: [{ id: 'b1', nombre: '', texto: guionEntrada }]
+  } : guionEntrada
+
   const tokens: Token[] = []
   let tokenAbsoluto = 0
 
-  for (let l = 0; l < lineas.length; l++) {
-    const palabras = lineas[l].split(/\s+/).filter(Boolean)
-    let idxEnLinea = 0
-    for (let p = 0; p < palabras.length; p++) {
-      const norm = normalizar(palabras[p])
-      if (norm) {
-        tokens.push({
-          palabra: norm,
-          linea: l,
-          indiceEnLinea: idxEnLinea++,
-          tokenAbsoluto: tokenAbsoluto++
-        })
+  if (!guion || !guion.bloques) return tokens
+
+  for (let bIdx = 0; bIdx < guion.bloques.length; bIdx++) {
+    const bloque = guion.bloques[bIdx]
+    if (!bloque || !bloque.texto) continue
+
+    const lineas = bloque.texto.split(/\r?\n/)
+    let enAcotacion = false
+
+    for (let lIdx = 0; lIdx < lineas.length; lIdx++) {
+      const lineaTexto = lineas[lIdx]
+      let idxEnLinea = 0
+      let posInLine = 0
+
+      while (posInLine < lineaTexto.length) {
+        while (posInLine < lineaTexto.length && /\s/.test(lineaTexto[posInLine])) {
+          posInLine++
+        }
+        if (posInLine >= lineaTexto.length) break
+
+        let startWord = posInLine
+        while (posInLine < lineaTexto.length && !/\s/.test(lineaTexto[posInLine])) {
+          posInLine++
+        }
+        const fragmento = lineaTexto.substring(startWord, posInLine)
+
+        let bufferWord = ''
+        for (let i = 0; i < fragmento.length; i++) {
+          const char = fragmento[i]
+          if (char === '[') {
+            if (bufferWord) {
+              const norm = normalizar(bufferWord)
+              if (norm) {
+                tokens.push({
+                  palabra: norm,
+                  bloque: bIdx,
+                  linea: lIdx,
+                  indiceEnLinea: idxEnLinea++,
+                  esAcotacion: enAcotacion,
+                  tokenAbsoluto: tokenAbsoluto++
+                })
+              }
+              bufferWord = ''
+            }
+            enAcotacion = true
+          } else if (char === ']') {
+            if (bufferWord) {
+              const norm = normalizar(bufferWord)
+              if (norm) {
+                tokens.push({
+                  palabra: norm,
+                  bloque: bIdx,
+                  linea: lIdx,
+                  indiceEnLinea: idxEnLinea++,
+                  esAcotacion: enAcotacion,
+                  tokenAbsoluto: tokenAbsoluto++
+                })
+              }
+              bufferWord = ''
+            }
+            enAcotacion = false
+          } else {
+            bufferWord += char
+          }
+        }
+
+        if (bufferWord) {
+          const norm = normalizar(bufferWord)
+          if (norm) {
+            tokens.push({
+              palabra: norm,
+              bloque: bIdx,
+              linea: lIdx,
+              indiceEnLinea: idxEnLinea++,
+              esAcotacion: enAcotacion,
+              tokenAbsoluto: tokenAbsoluto++
+            })
+          }
+        }
       }
+    }
+
+    if (enAcotacion) {
+      console.warn(`[tokenizarGuion] Corchete abierto sin cerrar en bloque ${bIdx} (${bloque.nombre || 'sin nombre'})`)
+      enAcotacion = false
     }
   }
 
@@ -75,20 +159,16 @@ function similar(a: string, b: string): boolean {
 export function crearSeguidor(tokens: Token[]): Seguidor {
   let pos = 0
   let fallosSeguidos = 0
-  // Posicion que creen los parciales. NO compromete nada -solo `avanzar`, o sea los
-  // finales, mueve `pos`- pero SI mueve la ventana de busqueda de los tentativos
-  // siguientes. Sin esto, una lectura de corrido -sin pausas, o sea sin ningun final-
-  // deja la ventana clavada al principio del guion y el seguidor no vuelve a calzar
-  // nunca. Medido: 210 palabras de retardo medio en un guion de 520.
   let posTentativa = 0
 
   function obtenerPosicionRespuesta(movio: boolean, desde?: number, hasta?: number): Posicion {
     if (tokens.length === 0) {
-      return { linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
+      return { bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
     }
     const idx = Math.min(pos, tokens.length - 1)
     const t = tokens[idx]
     return {
+      bloque: t.bloque,
       linea: t.linea,
       palabra: t.indiceEnLinea,
       desdeToken: desde !== undefined ? desde : idx,
@@ -103,21 +183,32 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
 
     for (let offset = desde; offset <= hasta; offset++) {
       let coincidencias = 0
+      let tokensEmparejados = 0
+      let currTokenIdx = offset
+
       for (let i = 0; i < frase.length; i++) {
-        const tokenIdx = offset + i
-        if (tokenIdx >= 0 && tokenIdx < tokens.length) {
-          if (similar(frase[i], tokens[tokenIdx].palabra)) {
+        while (currTokenIdx < tokens.length && tokens[currTokenIdx].esAcotacion) {
+          currTokenIdx++
+        }
+
+        if (currTokenIdx < tokens.length) {
+          if (similar(frase[i], tokens[currTokenIdx].palabra)) {
             coincidencias++
           }
+          tokensEmparejados++
+          currTokenIdx++
         }
       }
+
+      if (frase.length === 0) continue
       let puntaje = coincidencias / frase.length
+
       if (offset < pos) {
         const tokenDist = pos - offset
         puntaje = Math.max(0, puntaje - tokenDist * PENALIZACION_POR_TOKEN)
       }
 
-      const nuevaPosCandidate = offset + frase.length - 1
+      const nuevaPosCandidate = Math.max(offset, currTokenIdx - 1)
 
       if (puntaje > mejorPuntaje) {
         mejorPuntaje = puntaje
@@ -143,7 +234,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
   return {
     avanzar(fraseFinal: string): Posicion {
       if (tokens.length === 0) {
-        return { linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
+        return { bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
       }
 
       const fraseNorm = normalizar(fraseFinal)
@@ -183,7 +274,17 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         }
       }
 
-      const nuevaPos = mejorOffset + frase.length - 1
+      let currIdx = mejorOffset
+      for (let i = 0; i < frase.length; i++) {
+        while (currIdx < tokens.length && tokens[currIdx].esAcotacion) {
+          currIdx++
+        }
+        if (i < frase.length - 1 && currIdx < tokens.length) {
+          currIdx++
+        }
+      }
+      const nuevaPos = Math.min(currIdx, tokens.length - 1)
+
       if (nuevaPos < pos - RETROCESO_MAX) {
         console.warn(`[Seguidor] Retroceso descartado: nuevaPos (${nuevaPos}) < pos (${pos}) - RETROCESO_MAX (${RETROCESO_MAX})`)
         return obtenerPosicionRespuesta(false)
@@ -196,7 +297,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
 
     avanzarTentativo(fraseParcial: string): Posicion {
       if (tokens.length === 0) {
-        return { linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
+        return { bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
       }
 
       const fraseNorm = normalizar(fraseParcial)
@@ -232,9 +333,17 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         return obtenerPosicionRespuesta(false)
       }
 
-      // Acotado al ultimo token: `mejorOffset + frase.length - 1` puede pasarse del final
-      // cuando la frase reconocida es mas larga que lo que queda de guion.
-      const candPos = Math.min(mejorOffset + frase.length - 1, tokens.length - 1)
+      let currIdx = mejorOffset
+      for (let i = 0; i < frase.length; i++) {
+        while (currIdx < tokens.length && tokens[currIdx].esAcotacion) {
+          currIdx++
+        }
+        if (i < frase.length - 1 && currIdx < tokens.length) {
+          currIdx++
+        }
+      }
+
+      const candPos = Math.min(currIdx, tokens.length - 1)
       if (candPos < base - RETROCESO_MAX) {
         return obtenerPosicionRespuesta(false)
       }
@@ -243,6 +352,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
 
       const tokCand = tokens[candPos]
       return {
+        bloque: tokCand.bloque,
         linea: tokCand.linea,
         palabra: tokCand.indiceEnLinea,
         desdeToken: mejorOffset,

@@ -10,7 +10,7 @@ export type ParametrosAvance = {
 export type EstadoAvance = {
   posicion: number            // en tokens, CON DECIMALES: es continua
   avanzando: boolean
-  motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | null
+  motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null
   ppmEstimadas: number
 }
 
@@ -34,7 +34,8 @@ const DEFAULT_PARAMETROS: ParametrosAvance = {
 
 export function crearMotorDeAvance(
   p?: Partial<ParametrosAvance>,
-  limitesDeLinea?: number[]
+  limitesDeLinea?: number[],
+  limitesDeBloque?: number[]
 ): MotorDeAvance {
   const params: ParametrosAvance = { ...DEFAULT_PARAMETROS, ...p }
 
@@ -64,11 +65,6 @@ export function crearMotorDeAvance(
     return limitesDeLinea[limitesDeLinea.length - 1]
   }
 
-  // Fin de la linea SIGUIENTE a la que contiene refToken.
-  // Existe para que un parcial que cae dentro de la linea siguiente autorice a cruzar a
-  // ella: sin esto el ancla tentativa queda topada en el final de la linea actual y una
-  // lectura de corrido -sin pausas, o sea sin ningun final- se congela ahi para siempre.
-  // Medido: 248 palabras de retardo en un guion de 40 lineas leido sin pausas.
   function obtenerLimiteLineaSiguiente(refToken: number): number {
     if (!limitesDeLinea || limitesDeLinea.length === 0) return Infinity
     for (let i = 0; i < limitesDeLinea.length; i++) {
@@ -77,6 +73,14 @@ export function crearMotorDeAvance(
       }
     }
     return limitesDeLinea[limitesDeLinea.length - 1]
+  }
+
+  function obtenerLimiteBloqueActual(refToken: number): number {
+    if (!limitesDeBloque || limitesDeBloque.length === 0) return Infinity
+    for (const lim of limitesDeBloque) {
+      if (lim >= refToken) return lim
+    }
+    return limitesDeBloque[limitesDeBloque.length - 1]
   }
 
   function actualizarVelocidad(tokensDelta: number, timeDeltaMs: number) {
@@ -91,9 +95,12 @@ export function crearMotorDeAvance(
   function ajustarPosicionTarget(token: number, tMs: number, esConfirmacion: boolean) {
     const refToken = Math.max(ultimaConfirmada, anclaTentativa)
     const limiteLinea = obtenerLimiteLineaActual(refToken)
+    const limiteBloque = obtenerLimiteBloqueActual(refToken)
+    const limiteEfectivo = Math.min(limiteLinea, limiteBloque)
+
     const maxPermitido = esConfirmacion
-      ? Math.min(ultimaConfirmada + params.correaPalabras, limiteLinea)
-      : Math.min(refToken, limiteLinea)
+      ? Math.min(ultimaConfirmada + params.correaPalabras, limiteEfectivo)
+      : Math.min(refToken, limiteEfectivo)
     const targetAcotado = Math.min(token, maxPermitido)
     const diff = token - posicionMostrada
 
@@ -145,18 +152,18 @@ export function crearMotorDeAvance(
 
       const refToken = Math.max(ultimaConfirmada, anclaTentativa)
       const limiteLinea = obtenerLimiteLineaActual(refToken)
+      const limiteBloque = obtenerLimiteBloqueActual(refToken)
       const delta = token - anclaTentativa
 
-      // Un parcial que cae DENTRO de la linea siguiente autoriza a cruzar a ella, y solo a
-      // ella: una linea por vez. Asi se lee de corrido sin necesitar finales, y a la vez un
-      // parcial mal reconocido no puede llevarse la pantalla tres lineas abajo.
-      const tope = token > limiteLinea
+      let tope = token > limiteLinea
         ? obtenerLimiteLineaSiguiente(refToken)
         : limiteLinea
 
+      tope = Math.min(tope, limiteBloque)
+
       const maxPermitidoTentativo = delta <= params.correaPalabras
         ? tope
-        : ultimaConfirmada + params.correaPalabras
+        : Math.min(ultimaConfirmada + params.correaPalabras, limiteBloque)
       const tokenAcotado = Math.min(token, maxPermitidoTentativo)
 
       if (tokenAcotado > anclaTentativa) {
@@ -213,10 +220,6 @@ export function crearMotorDeAvance(
       }
 
       const v = ppmEstimadas / 60000
-      // El avance por TIEMPO se aplica siempre. Antes esta linea quedaba pisada por el
-      // deslizamiento, y como cada parcial reiniciaba el deslizamiento con elapsed=0, la
-      // formula devolvia exactamente la posicion de partida: con parciales continuos la
-      // pantalla se congelaba. Medido: 9 palabras seguidas sin moverse ni un token.
       let nuevaPos = posicionMostrada + v * dt
 
       if (gliding) {
@@ -225,24 +228,27 @@ export function crearMotorDeAvance(
         const linearPos = inicioGlidePosicion + v * elapsed
         const targetEst = objetivoPosicion + v * elapsed
         const conDeslizamiento = linearPos + progress * (targetEst - linearPos)
-        // El deslizamiento CIERRA la brecha; nunca frena el avance por tiempo.
         nuevaPos = Math.max(nuevaPos, conDeslizamiento)
         if (progress >= 1) {
           gliding = false
         }
       }
 
-      // El tope de linea se mide desde el ancla mas adelantada -confirmada o tentativa-,
-      // no solo desde la confirmada: si no, el parcial cruza de linea y la pantalla no.
-      const limiteLinea = obtenerLimiteLineaActual(Math.max(ultimaConfirmada, anclaTentativa))
+      const refToken = Math.max(ultimaConfirmada, anclaTentativa)
+      const limiteLinea = obtenerLimiteLineaActual(refToken)
+      const limiteBloque = obtenerLimiteBloqueActual(refToken)
       const maxCorrea = (limitesDeLinea && limitesDeLinea.length > 0)
-        ? limiteLinea
+        ? Math.min(limiteLinea, limiteBloque)
         : (ultimaConfirmada + params.correaPalabras)
 
-      let motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | null = null
+      let motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null = null
       let avanzando = true
 
-      if (limitesDeLinea && limitesDeLinea.length > 0 && nuevaPos >= limiteLinea) {
+      if (limitesDeBloque && limitesDeBloque.length > 0 && nuevaPos >= limiteBloque) {
+        nuevaPos = limiteBloque
+        motivoFreno = 'fin-de-bloque'
+        avanzando = false
+      } else if (limitesDeLinea && limitesDeLinea.length > 0 && nuevaPos >= limiteLinea) {
         nuevaPos = limiteLinea
         motivoFreno = 'fin-de-linea'
         avanzando = false
