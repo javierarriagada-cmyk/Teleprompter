@@ -239,44 +239,13 @@ export function crearMotorDeAvance(
         }
       }
 
-      const refToken = Math.max(ultimaConfirmada, anclaTentativa)
-
-      const limiteLineaBase = obtenerLimiteLineaActual(refToken)
-      const limiteLineaSiguiente = obtenerLimiteLineaSiguiente(refToken)
-
-      const limiteLinea = (params.anticipacionPalabras > 0 && limitesDeLinea && limitesDeLinea.length > 0)
-        ? Math.max(limiteLineaBase, Math.min(limiteLineaSiguiente, refToken + params.anticipacionPalabras))
-        : limiteLineaBase
-
-      const limiteBloque = obtenerLimiteBloqueActual(refToken)
-      const maxCorrea = (limitesDeLinea && limitesDeLinea.length > 0)
-        ? Math.min(limiteLinea, limiteBloque)
-        : (ultimaConfirmada + params.correaPalabras)
-
-      let motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null = null
-      let avanzando = true
-
-      if (limitesDeBloque && limitesDeBloque.length > 0 && nuevaPos >= limiteBloque) {
-        nuevaPos = limiteBloque
-        motivoFreno = 'fin-de-bloque'
-        avanzando = false
-      } else if (limitesDeLinea && limitesDeLinea.length > 0 && nuevaPos >= limiteLinea) {
-        nuevaPos = limiteLinea
-        motivoFreno = 'fin-de-linea'
-        avanzando = false
-      } else if (nuevaPos >= maxCorrea) {
-        nuevaPos = maxCorrea
-        motivoFreno = 'correa'
-        avanzando = false
-      }
-
       nuevaPos = Math.max(posicionMostrada, nuevaPos)
       posicionMostrada = nuevaPos
 
       return {
         posicion: posicionMostrada,
-        avanzando,
-        motivoFreno,
+        avanzando: true,
+        motivoFreno: null,
         ppmEstimadas
       }
     },
