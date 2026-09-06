@@ -40,6 +40,11 @@ export const PALABRAS_SEGUIDAS_MINIMO = 3
 // seguidas, un guion largo ofrece coincidencias por casualidad y el prompter saltaba a
 // otro parrafo cuando el lector improvisaba.
 export const PALABRAS_SEGUIDAS_PARA_SALTAR = 6
+// Cuanto puede alejarse la recuperacion de donde esta el lector. Antes buscaba en TODO el
+// guion, y eso resolvia un caso rarisimo -saltarse a proposito al final- a cambio de que
+// una frase inventada pudiera mandar el prompter a cualquier parte. Dos parrafos de radio
+// cubren lo que pasa de verdad: saltarse un parrafo, repetir, adelantarse un poco.
+export const RECUPERACION_TOKENS = 120
 export const RETROCESO_MAX = 2
 
 export const MIN_PALABRAS_PARCIAL = 3
@@ -283,8 +288,10 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         fallosSeguidos++
         console.warn(`[Seguidor] Puntaje bajo (${mejorPuntaje.toFixed(2)} < ${MIN_COINCIDENCIA}), fallos seguidos: ${fallosSeguidos}`)
         if (fallosSeguidos >= MAX_FALLOS) {
-          console.warn('[Seguidor] Disparando búsqueda global de recuperación')
-          const resGlobal = buscarMejorOffset(frase, 0, tokens.length - 1, PALABRAS_SEGUIDAS_PARA_SALTAR)
+          console.warn('[Seguidor] Disparando recuperación acotada al entorno')
+          const desdeRec = Math.max(0, pos - RECUPERACION_TOKENS)
+          const hastaRec = Math.min(tokens.length - 1, pos + RECUPERACION_TOKENS)
+          const resGlobal = buscarMejorOffset(frase, desdeRec, hastaRec, PALABRAS_SEGUIDAS_PARA_SALTAR)
           if (resGlobal.mejorPuntaje >= MIN_COINCIDENCIA) {
             mejorOffset = resGlobal.mejorOffset
             mejorPuntaje = resGlobal.mejorPuntaje
