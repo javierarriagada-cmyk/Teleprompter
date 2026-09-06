@@ -35,6 +35,11 @@ export const MAX_FALLOS = 3
 // separa "esta leyendo el guion" de "esta hablando de otra cosa": palabras sueltas calzan
 // por casualidad, tres seguidas no.
 export const PALABRAS_SEGUIDAS_MINIMO = 3
+// Para MUDARSE a otra parte del guion -la busqueda global de recuperacion- hace falta
+// evidencia mucho mas fuerte que para seguir avanzando donde ya se esta. Con tres palabras
+// seguidas, un guion largo ofrece coincidencias por casualidad y el prompter saltaba a
+// otro parrafo cuando el lector improvisaba.
+export const PALABRAS_SEGUIDAS_PARA_SALTAR = 6
 export const RETROCESO_MAX = 2
 
 export const MIN_PALABRAS_PARCIAL = 3
@@ -181,7 +186,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
     }
   }
 
-  function buscarMejorOffset(frase: string[], desde: number, hasta: number): { mejorOffset: number; mejorPuntaje: number } {
+  function buscarMejorOffset(frase: string[], desde: number, hasta: number, seguidasMinimo: number = PALABRAS_SEGUIDAS_MINIMO): { mejorOffset: number; mejorPuntaje: number } {
     let mejorOffset = -1
     let mejorPuntaje = -1
 
@@ -219,7 +224,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
       // aparecen por todas partes; con eso, hablar de otra cosa no detenia el prompter.
       //
       // En frases mas cortas que ese minimo se exige que calce la frase entera.
-      const seguidasNecesarias = Math.min(PALABRAS_SEGUIDAS_MINIMO, frase.length)
+      const seguidasNecesarias = Math.min(seguidasMinimo, frase.length)
       if (rachaMaxima < seguidasNecesarias) {
         puntaje = 0
       }
@@ -279,7 +284,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         console.warn(`[Seguidor] Puntaje bajo (${mejorPuntaje.toFixed(2)} < ${MIN_COINCIDENCIA}), fallos seguidos: ${fallosSeguidos}`)
         if (fallosSeguidos >= MAX_FALLOS) {
           console.warn('[Seguidor] Disparando búsqueda global de recuperación')
-          const resGlobal = buscarMejorOffset(frase, 0, tokens.length - 1)
+          const resGlobal = buscarMejorOffset(frase, 0, tokens.length - 1, PALABRAS_SEGUIDAS_PARA_SALTAR)
           if (resGlobal.mejorPuntaje >= MIN_COINCIDENCIA) {
             mejorOffset = resGlobal.mejorOffset
             mejorPuntaje = resGlobal.mejorPuntaje
