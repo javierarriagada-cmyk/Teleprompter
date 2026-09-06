@@ -83,7 +83,29 @@ export default function TeleprompterView({
         if (t) {
           const target = containerRef.current.querySelector(`[data-block="${t.bloque}"][data-line="${t.linea}"]`) as HTMLElement
           if (target) {
-            const top = target.offsetTop - topBanda
+            // El desplazamiento se INTERPOLA dentro de la linea. Antes se centraba el
+            // elemento de la linea, o sea que el scroll estaba cuantizado: mientras la
+            // posicion recorria las palabras de una misma linea no se movia ni un pixel,
+            // y al cambiar de linea saltaba de golpe al elemento siguiente.
+            //
+            // Importa sobre todo cuando una linea logica es un parrafo entero que en
+            // pantalla ocupa varios renglones: sin interpolar, se lee el parrafo completo
+            // sin que el texto se mueva y despues pega el tiron.
+            let primero = idx
+            while (primero > 0 && tokens[primero - 1].linea === t.linea && tokens[primero - 1].bloque === t.bloque) {
+              primero--
+            }
+            let ultimo = idx
+            while (ultimo < tokens.length - 1 && tokens[ultimo + 1].linea === t.linea && tokens[ultimo + 1].bloque === t.bloque) {
+              ultimo++
+            }
+
+            const cantidad = ultimo - primero + 1
+            const avanceEnLinea = cantidad > 0
+              ? Math.min(1, Math.max(0, (st.posicion - primero) / cantidad))
+              : 0
+
+            const top = target.offsetTop + avanceEnLinea * target.clientHeight - topBanda
             containerRef.current.scrollTop = top
           }
         }
