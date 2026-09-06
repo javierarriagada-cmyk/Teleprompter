@@ -39,6 +39,8 @@ export default function TeleprompterView({
   onEstadoAvanceChange
 }: TeleprompterViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
+  // Palabras que entran en un renglon, medidas sobre la linea que se esta mostrando.
+  const palabrasPorRenglonRef = useRef<number>(8)
 
   const guionObj: Guion = typeof script === 'string' ? {
     id: 'temp',
@@ -85,7 +87,16 @@ export default function TeleprompterView({
 
       const tokens = tokensRef.current
       if (tokens.length > 0 && containerRef.current) {
-        const idx = Math.min(Math.max(0, Math.floor(st.posicion)), tokens.length - 1)
+        // EL ATRASO DE UN RENGLON SE APLICA UNA SOLA VEZ, sobre la posicion global.
+        //
+        // Aplicado linea por linea, con lineas de un solo renglon retener un renglon es
+        // retener la linea entera: el desplazamiento valia cero mientras se leia la linea
+        // y solo cambiaba al cambiar de linea. Eso es la cuantizacion de nuevo, y con ella
+        // los saltos que se habian sacado.
+        const palabrasPorRenglon = palabrasPorRenglonRef.current
+        const posAtrasada = st.posicion - palabrasPorRenglon
+
+        const idx = Math.min(Math.max(0, Math.floor(posAtrasada)), tokens.length - 1)
         const t = tokens[idx]
         if (t) {
           const target = containerRef.current.querySelector(`[data-block="${t.bloque}"][data-line="${t.linea}"]`) as HTMLElement
@@ -172,16 +183,19 @@ export default function TeleprompterView({
             //
             // Para que la posicion mostrada no corra muy por delante de lo que el lector
             // dijo, el adelanto del motor esta acotado en avance.ts.
-            const palabrasDichas = st.posicion - primero
-            const palabrasQueMueven = Math.max(0, palabrasDichas - palabrasPorRenglon)
+            // Cuantas palabras entran en un renglon de ESTA linea. Se guarda para el
+            // atraso global del proximo fotograma.
+            palabrasPorRenglonRef.current = cantidad / Math.max(1, Math.round(target.clientHeight / filaPx))
+
+            const dentroDeLinea = Math.min(1, Math.max(0, (posAtrasada - primero) / cantidad))
 
             if (diagnostico) {
               const el = document.getElementById('diag-prompter')
-              if (el) el.textContent = `pos=${st.posicion.toFixed(1)} calce=${st.ultimoCalce} linea=${t.linea} primero=${primero} dichas=${palabrasDichas.toFixed(1)} mueven=${palabrasQueMueven.toFixed(1)} scroll=${Math.round(containerRef.current!.scrollTop)} freno=${st.motivoFreno || "-"}`
+              if (el) el.textContent = `pos=${st.posicion.toFixed(1)} calce=${st.ultimoCalce} atrasada=${posAtrasada.toFixed(1)} porRenglon=${palabrasPorRenglonRef.current.toFixed(1)} linea=${t.linea} dentro=${dentroDeLinea.toFixed(2)} scroll=${Math.round(containerRef.current!.scrollTop)} freno=${st.motivoFreno || "-"}`
             }
 
             const pasoDeLinea = topSiguiente - target.offsetTop
-            const top = (target.offsetTop - origen) + (palabrasQueMueven / cantidad) * pasoDeLinea
+            const top = (target.offsetTop - origen) + dentroDeLinea * pasoDeLinea
             containerRef.current.scrollTop = Math.max(0, top)
           }
         }
