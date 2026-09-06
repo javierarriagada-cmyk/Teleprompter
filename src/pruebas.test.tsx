@@ -1254,24 +1254,22 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
     expect(mSin.retardoMedioAtras).toBeGreaterThanOrEqual(mCon.retardoMedioAtras)
   })
 
+  // Compartido por T51, T52 y T53: tres bloques de palabras todas distintas, para que el
+  // calce no dependa de que dos lineas se parezcan.
+  const guion3Bloques: Guion = {
+    id: 'g-t51',
+    titulo: 'Guion T51 3 bloques',
+    idioma: 'es',
+    creado: Date.now(),
+    modificado: Date.now(),
+    bloques: [
+      { id: 'b0', nombre: 'Parrafo 1', texto: 'Uno dos tres cuatro cinco seis siete ocho nueve diez once doce trece catorce quince dieciseis diecisiete dieciocho diecinueve veinte veintiuno' },
+      { id: 'b1', nombre: 'Parrafo 2', texto: 'Veintidos veintitres veinticuatro veinticinco veintiseis veintisiete veintiocho veintinueve treinta treintauno treintados treintatres treintacuatro treintacinco treintaseis treintasiete treintaocho treintanueve cuarenta cuarentauno' },
+      { id: 'b2', nombre: 'Parrafo 3', texto: 'Cuarentados cuarentatres cuarentacuatro cuarentacinco cuarentaseis cuarentasiete cuarentaocho cuarentanueve cincuenta cincuentauno cincuentados cincuentatres cincuentacuatro cincuentacinco cincuentaseis cincuentasiete cincuentaocho cincuentanueve sesenta sesentauno sesentados sesentatres' }
+    ]
+  }
+
   test('T51: Guion de 3 bloques, lectura continua a 150 ppm con parciales y sin ningun final, muestreando la posicion cada 50 ms', () => {
-    const b0Text = 'Uno dos tres cuatro cinco seis siete ocho nueve diez once doce trece catorce quince dieciseis diecisiete dieciocho diecinueve veinte veintiuno'
-    const b1Text = 'Veintidos veintitres veinticuatro veinticinco veintiseis veintisiete veintiocho veintinueve treinta treintauno treintados treintatres treintacuatro treintacinco treintaseis treintasiete treintaocho treintanueve cuarenta cuarentauno'
-    const b2Text = 'Cuarentados cuarentatres cuarentacuatro cuarentacinco cuarentaseis cuarentasiete cuarentaocho cuarentanueve cincuenta cincuentauno cincuentados cincuentatres cincuentacuatro cincuentacinco cincuentaseis cincuentasiete cincuentaocho cincuentanueve sesenta sesentauno sesentados sesentatres'
-
-    const guion3Bloques: Guion = {
-      id: 'g-t51',
-      titulo: 'Guion T51 3 bloques',
-      idioma: 'es',
-      creado: Date.now(),
-      modificado: Date.now(),
-      bloques: [
-        { id: 'b0', nombre: 'Parrafo 1', texto: b0Text },
-        { id: 'b1', nombre: 'Parrafo 2', texto: b1Text },
-        { id: 'b2', nombre: 'Parrafo 3', texto: b2Text }
-      ]
-    }
-
     const tokens = tokenizarGuion(guion3Bloques)
     const totalTokens = tokens.length
 
@@ -1354,6 +1352,116 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
     console.log(`[T51] Tiempo inmovil durante voz: ${inmovilMsVoz}ms / ${totalMsVoz}ms (${pctInmovil.toFixed(2)}%)`)
 
     expect(pctInmovil).toBeLessThan(10)
+  })
+
+  test('T52: irse del guion detiene el texto, y volver a el lo reanuda', () => {
+    const tokens = tokenizarGuion(guion3Bloques)
+    const scriptTexto = guion3Bloques.bloques.map((b) => b.texto).join('\n')
+    const sim = simularLectura({ guion: scriptTexto, ppm: 150, pausaCadaNPalabras: null })
+
+    const seguidor = crearSeguidor(tokens)
+    const limitesMap = new Map<number, number>()
+    for (let i = 0; i < tokens.length; i++) limitesMap.set(tokens[i].linea, i)
+    const limitesDeLinea = Array.from(limitesMap.values()).sort((a, b) => a - b)
+    const motor = crearMotorDeAvance(undefined, limitesDeLinea)
+
+    // Se lee normal hasta la mitad y a partir de ahi el lector improvisa: dice cosas que
+    // no estan en el guion. Se reemplaza el texto de los eventos, no se inventa un evento
+    // nuevo, para que los tiempos sigan siendo los de una persona hablando de verdad.
+    const maxT = Math.max(...sim.eventos.map((e) => e.t))
+    const tImprovisa = maxT / 2
+    const eventos = sim.eventos.map((e) =>
+      e.t >= tImprovisa && (e.tipo === 'parcial' || e.tipo === 'final')
+        ? { ...e, texto: 'zapato ventana caballo naranja bicicleta martillo pluma vidrio' }
+        : e
+    )
+
+    let eventoIdx = 0
+    let posAlImprovisar = -1
+    let posAlFinal = 0
+
+    for (let t = 0; t <= maxT + 3000; t += 50) {
+      while (eventoIdx < eventos.length && eventos[eventoIdx].t <= t) {
+        const ev = eventos[eventoIdx]
+        if (ev.tipo === 'voz') {
+          motor.voz(ev.hayVoz, ev.t)
+        } else if (ev.tipo === 'parcial') {
+          const pos = seguidor.avanzarTentativo(ev.texto)
+          if (pos.movio) motor.tentativo(pos.hastaToken, ev.t)
+          else motor.falloCalce(ev.t, true)
+        } else {
+          const pos = seguidor.avanzar(ev.texto)
+          if (pos.movio) motor.confirmar(pos.hastaToken, ev.t)
+          else motor.falloCalce(ev.t)
+        }
+        eventoIdx++
+      }
+
+      const st = motor.estadoEn(t)
+      // Se toma la posicion una vez pasado el margen de deteccion: hasta ahi es legitimo
+      // que siga avanzando, porque todavia no hay evidencia suficiente de que se fue.
+      if (posAlImprovisar < 0 && t >= tImprovisa + 7000) posAlImprovisar = st.posicion
+      posAlFinal = st.posicion
+    }
+
+    console.log(`[T52] Posición al detectar la improvisación: ${posAlImprovisar.toFixed(2)}`)
+    console.log(`[T52] Posición al final: ${posAlFinal.toFixed(2)}`)
+
+    // Detectado el desvio, el texto no puede seguir subiendo solo.
+    expect(posAlImprovisar).toBeGreaterThanOrEqual(0)
+    expect(posAlFinal).toBeLessThanOrEqual(posAlImprovisar + 0.001)
+  })
+
+  test('T53: el adelanto sobre el ultimo calce nunca supera adelantoMaximo', () => {
+    const tokens = tokenizarGuion(guion3Bloques)
+    const scriptTexto = guion3Bloques.bloques.map((b) => b.texto).join('\n')
+    const sim = simularLectura({ guion: scriptTexto, ppm: 150, pausaCadaNPalabras: null })
+
+    const seguidor = crearSeguidor(tokens)
+    const limitesMap = new Map<number, number>()
+    for (let i = 0; i < tokens.length; i++) limitesMap.set(tokens[i].linea, i)
+    const limitesDeLinea = Array.from(limitesMap.values()).sort((a, b) => a - b)
+    const motor = crearMotorDeAvance(undefined, limitesDeLinea)
+
+    const ADELANTO_MAXIMO = 15
+    let eventoIdx = 0
+    let ultimoCalce = 0
+    let peorAdelanto = 0
+
+    const eventos = sim.eventos
+    const maxT = Math.max(...eventos.map((e) => e.t))
+
+    for (let t = 0; t <= maxT + 3000; t += 50) {
+      while (eventoIdx < eventos.length && eventos[eventoIdx].t <= t) {
+        const ev = eventos[eventoIdx]
+        if (ev.tipo === 'voz') {
+          motor.voz(ev.hayVoz, ev.t)
+        } else if (ev.tipo === 'parcial') {
+          const pos = seguidor.avanzarTentativo(ev.texto)
+          if (pos.movio) {
+            motor.tentativo(pos.hastaToken, ev.t)
+            ultimoCalce = Math.max(ultimoCalce, pos.hastaToken)
+          } else {
+            motor.falloCalce(ev.t, true)
+          }
+        } else {
+          const pos = seguidor.avanzar(ev.texto)
+          if (pos.movio) {
+            motor.confirmar(pos.hastaToken, ev.t)
+            ultimoCalce = Math.max(ultimoCalce, pos.hastaToken)
+          } else {
+            motor.falloCalce(ev.t)
+          }
+        }
+        eventoIdx++
+      }
+
+      const adelanto = motor.estadoEn(t).posicion - ultimoCalce
+      if (adelanto > peorAdelanto) peorAdelanto = adelanto
+    }
+
+    console.log(`[T53] Peor adelanto sobre el último calce: ${peorAdelanto.toFixed(2)} tokens`)
+    expect(peorAdelanto).toBeLessThanOrEqual(ADELANTO_MAXIMO)
   })
 })
 

@@ -126,6 +126,10 @@ export function medir(
         if (pos.movio) {
           countTentativos++
           motor.tentativo(pos.hastaToken, ev.t)
+        } else {
+          // Igual que useSeguidor.ts:95. Si el arnes no conduce el motor como lo conduce
+          // la aplicacion, mide un camino que en la practica no ocurre.
+          motor.falloCalce(ev.t, true)
         }
       } else if (ev.tipo === 'final') {
         hayVozActual = true
