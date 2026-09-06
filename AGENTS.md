@@ -97,15 +97,21 @@ probar. Lo que caiga fuera de eso lo estas escribiendo a ciegas: dilo en el info
 
 ---
 
-## El informe
+## Al terminar
 
-1. Que quedo bien, concreto y con nombres de archivo. No cortesia.
-2. Cada punto del alcance con UNA etiqueta: **HECHO Y PROBADO**, **HECHO SIN PODER PROBAR**,
-   **NO HECHO** y por que. No hay una cuarta.
-3. Los numeros medidos, con el umbral exigido al lado. No "OK".
-4. La salida de consola de cada rotura, mostrando la prueba fallando.
-5. Los defectos nuevos que encontraste y no corregiste.
-6. Si algo del encargo te parecio equivocado, dilo. No lo cambies por tu cuenta.
+**Publica la rama y abre un pull request hacia `main`.** El CI corre solo ahi `npm ci`,
+`npx tsc --noEmit`, `npm run test` y `npm run build`, y deja la marca en verde o en rojo.
+Esa es la comprobacion que vale.
+
+Y en el informe, dos cosas y nada mas:
+
+1. **Que hiciste**, concreto y con nombres de archivo. No cortesia.
+2. **Que NO pudiste hacer**, y por que. Incluido lo que escribiste sin poder ejecutar, y
+   cualquier defecto que hayas visto y no corregido.
+
+NO hace falta que digas si las pruebas pasan ni que pegues resultados: de eso se encarga el
+CI y la revision. Si algo del encargo te parecio equivocado, dilo; no lo cambies por tu
+cuenta.
 
 ## Estilo
 
