@@ -8,8 +8,8 @@ export type ParametrosAvance = {
   anticipacionPalabras: number  // 3
   msTransicion: number          // 600
   msSinCalceParaFrenar: number  // 3000  hablando sin calzar nada
-  adelantoComodo: number        // 2   tokens de adelanto sin ningun freno
-  adelantoMaximo: number        // 8   aqui la velocidad ya es cero
+  adelantoComodo: number        // 1   tokens de adelanto sin ningun freno
+  adelantoMaximo: number        // 3   aqui la velocidad ya es cero
 }
 
 export type EstadoAvance = {
@@ -39,8 +39,8 @@ const DEFAULT_PARAMETROS: ParametrosAvance = {
   anticipacionPalabras: 3,
   msTransicion: 600,
   msSinCalceParaFrenar: 3000,
-  adelantoComodo: 2,
-  adelantoMaximo: 8
+  adelantoComodo: 1,
+  adelantoMaximo: 3
 }
 
 export function crearMotorDeAvance(

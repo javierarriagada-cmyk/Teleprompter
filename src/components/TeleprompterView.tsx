@@ -165,7 +165,14 @@ export default function TeleprompterView({
             const filas = Math.max(1, Math.round(target.clientHeight / filaPx))
             const palabrasPorRenglon = cantidad / filas
 
-            const palabrasDichas = st.ultimoCalce - primero
+            // Se cuenta sobre la posicion MOSTRADA, que es la continua: ultimoCalce solo
+            // cambia cuando el reconocedor entrega algo, y usarlo para todo el calculo
+            // devolvia el salto -el texto quieto entre calce y calce- y ademas disparaba
+            // tarde, porque el reconocedor llega despues de la voz.
+            //
+            // Para que la posicion mostrada no corra muy por delante de lo que el lector
+            // dijo, el adelanto del motor esta acotado en avance.ts.
+            const palabrasDichas = st.posicion - primero
             const palabrasQueMueven = Math.max(0, palabrasDichas - palabrasPorRenglon)
 
             if (diagnostico) {
