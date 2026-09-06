@@ -2,6 +2,9 @@ import React, { useEffect, useRef } from 'react'
 import { MotorDeAvance } from '../lib/avance'
 import { tokenizarGuion, Token } from '../lib/seguidor'
 import { Guion } from '../datos/modelo'
+
+// El texto no se mueve hasta que el lector dijo estas palabras de la linea en curso.
+const PALABRAS_ANTES_DE_MOVER = 7
 import { AnclajeZona, calcularBanda, opacidadDeLinea } from './banda'
 
 interface TeleprompterViewProps {
@@ -147,11 +150,8 @@ export default function TeleprompterView({
             // completo, con el margen entre elementos incluido, y la altura del texto de
             // un renglon es menor. La resta se volvia positiva a media linea, asi que el
             // desplazamiento arrancaba en la segunda o tercera palabra.
-            const filas = Math.max(1, Math.round(target.clientHeight / filaPx))
-            const palabrasPorRenglon = cantidad / filas
-
             const palabrasDichas = st.posicion - primero
-            const palabrasQueMueven = Math.max(0, palabrasDichas - palabrasPorRenglon)
+            const palabrasQueMueven = Math.max(0, palabrasDichas - PALABRAS_ANTES_DE_MOVER)
 
             const pasoDeLinea = topSiguiente - target.offsetTop
             const top = (target.offsetTop - origen) + (palabrasQueMueven / cantidad) * pasoDeLinea
