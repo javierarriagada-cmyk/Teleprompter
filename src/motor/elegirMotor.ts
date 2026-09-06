@@ -29,7 +29,7 @@ export async function elegirMotor(preferido?: IdMotor): Promise<MotorDeVoz> {
     }
   }
 
-  const ordenFallback: IdMotor[] = ['whisper-local', 'webspeech']
+  const ordenFallback: IdMotor[] = ['webspeech', 'whisper-local']
   for (const id of ordenFallback) {
     if (id === preferido) continue
     const candidate = motores[id]

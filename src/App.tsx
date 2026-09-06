@@ -180,7 +180,8 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }
 
-  const [engine, setEngine] = useState<IdMotor>('whisper-local')
+  const [engine, setEngine] = useState<IdMotor>('webspeech')
+  const [verTranscripcion, setVerTranscripcion] = useState<boolean>(false)
   const [fontSize, setFontSize] = useState<number>(32)
   const [marginPercent, setMarginPercent] = useState<number>(10)
   const [mirror, setMirror] = useState<boolean>(false)
@@ -227,6 +228,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     engine,
     lang: guionActual && guionActual.idioma ? `${guionActual.idioma}-${guionActual.idioma.toUpperCase()}` : 'es-ES',
     motor,
+    acumularTexto: verTranscripcion,
     alRecibirParcial: seguidorParcial,
     alRecibirFraseFinal: seguidorFinal,
     alNotificarVoz: seguidorVoz
@@ -415,36 +417,42 @@ export default function App({ motor, repoOverride }: AppProps) {
                   setLineasZona={setLineasZona}
                   anclajeZona={anclajeZona}
                   setAnclajeZona={setAnclajeZona}
+                  verTranscripcion={verTranscripcion}
+                  setVerTranscripcion={setVerTranscripcion}
                   onToggleFullscreen={toggleFullscreen}
                 />
-
-                <div style={{ marginTop: 12 }}>
-                  <button onClick={handleClear} style={{ padding: '6px 12px' }}>
-                    Limpiar Transcripción y Reiniciar Seguidor
-                  </button>
-                </div>
 
                 <div style={{ marginTop: 12 }}>
                   <strong>Estado del Motor:</strong> {estadoMotor}
                 </div>
 
-                <div style={{ marginTop: 12 }}>
-                  <strong>Transcripción (en vivo):</strong>
-                  <div
-                    style={{
-                      minHeight: 100,
-                      border: '1px solid #ddd',
-                      padding: 8,
-                      marginTop: 6,
-                      whiteSpace: 'pre-wrap',
-                      background: '#f8f8f8',
-                      borderRadius: 4,
-                      fontSize: 14
-                    }}
-                  >
-                    {transcript || <em>— ninguna —</em>}
-                  </div>
-                </div>
+                {verTranscripcion && (
+                  <>
+                    <div style={{ marginTop: 12 }}>
+                      <button onClick={handleClear} style={{ padding: '6px 12px' }}>
+                        Limpiar Transcripción y Reiniciar Seguidor
+                      </button>
+                    </div>
+
+                    <div style={{ marginTop: 12 }}>
+                      <strong>Transcripción (en vivo):</strong>
+                      <div
+                        style={{
+                          minHeight: 100,
+                          border: '1px solid #ddd',
+                          padding: 8,
+                          marginTop: 6,
+                          whiteSpace: 'pre-wrap',
+                          background: '#f8f8f8',
+                          borderRadius: 4,
+                          fontSize: 14
+                        }}
+                      >
+                        {transcript || <em>— ninguna —</em>}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             )}
 
