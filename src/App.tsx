@@ -422,18 +422,21 @@ export default function App({ motor, repoOverride }: AppProps) {
                   onToggleFullscreen={toggleFullscreen}
                 />
 
+                {/* Volver al inicio siempre visible: si el seguimiento se va a otro lugar
+                    del guion, esta es la unica salida. Estaba escondida detras del
+                    interruptor de diagnostico. */}
+                <div style={{ marginTop: 12 }}>
+                  <button onClick={handleClear} style={{ padding: '8px 16px', fontWeight: 600 }}>
+                    Volver al inicio
+                  </button>
+                </div>
+
                 <div style={{ marginTop: 12 }}>
                   <strong>Estado del Motor:</strong> {estadoMotor}
                 </div>
 
                 {verTranscripcion && (
                   <>
-                    <div style={{ marginTop: 12 }}>
-                      <button onClick={handleClear} style={{ padding: '6px 12px' }}>
-                        Limpiar Transcripción y Reiniciar Seguidor
-                      </button>
-                    </div>
-
                     <div style={{ marginTop: 12 }}>
                       <strong>Transcripción (en vivo):</strong>
                       <div
