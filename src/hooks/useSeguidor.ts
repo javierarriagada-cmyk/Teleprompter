@@ -72,25 +72,16 @@ export function useSeguidor(guionEntrada: Guion | string) {
     const pos = seg.avanzarTentativo(texto)
 
     if (pos.movio) {
-      const bConf = bloqueConfirmadoRef.current
-      const limiteBloqueActual = limitesBloqueMapRef.current.get(bConf) ?? (tokens.length - 1)
-
-      let posAcotada = pos
-      if (pos.hastaToken > limiteBloqueActual) {
-        const tokenTope = Math.min(pos.hastaToken, limiteBloqueActual)
-        const tok = tokens[tokenTope]
-        posAcotada = {
-          bloque: tok.bloque,
-          linea: tok.linea,
-          palabra: tok.indiceEnLinea,
-          desdeToken: pos.desdeToken,
-          hastaToken: tokenTope,
-          movio: true
-        }
-      }
-
-      motor.tentativo(posAcotada.hastaToken, tMs)
-      setPosicion(posAcotada)
+      // Un parcial NO se recorta al final del bloque confirmado. Ese recorte estaba aca y
+      // era la causa del sintoma "espera a que termine el parrafo entero para saltar":
+      // bloqueConfirmadoRef solo avanza con un FINAL, y leyendo de corrido los finales
+      // llegan recien cuando el lector pausa. Hasta entonces todos los parciales quedaban
+      // clavados en el ultimo token del parrafo y el texto no se movia.
+      //
+      // Lo que impide que el prompter se vaya solo no es este tope, es el freno por falta
+      // de calce en MotorDeAvance: si lo que el lector dice deja de coincidir, se detiene.
+      motor.tentativo(pos.hastaToken, tMs)
+      setPosicion(pos)
     } else {
       motor.falloCalce(tMs, true)
     }
