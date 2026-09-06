@@ -125,8 +125,24 @@ export default function TeleprompterView({
             //
             // Va en renglones y no en un numero de palabras a proposito: cuantas palabras
             // entran en un renglon depende del tamano de letra.
+            // La altura de un renglon se LEE del navegador. La estimacion fontSize * 1.4
+            // + 16 incluye el margen entre elementos, que no existe entre los renglones de
+            // un mismo parrafo.
+            const filaPx = parseFloat(getComputedStyle(target).lineHeight) || alturaLineaPx
+
+            // Todo se mide DESDE EL PRIMER RENGLON del guion, no desde el borde del
+            // contenedor. Usar offsetTop contra topBanda arrastraba el relleno superior y
+            // cualquier cosa dibujada encima -el nombre del bloque, por ejemplo-, y con
+            // eso el desplazamiento arrancaba en la segunda o tercera palabra en vez de
+            // esperar a que se termine el primer renglon.
+            const tPrimero = tokens[0]
+            const elPrimero = containerRef.current.querySelector(
+              `[data-block="${tPrimero.bloque}"][data-line="${tPrimero.linea}"]`
+            ) as HTMLElement | null
+            const origen = elPrimero ? elPrimero.offsetTop : target.offsetTop
+
             const recorrido = avanceEnLinea * (topSiguiente - target.offsetTop)
-            const top = target.offsetTop + recorrido - alturaLineaPx - topBanda
+            const top = (target.offsetTop - origen) + recorrido - filaPx
             containerRef.current.scrollTop = Math.max(0, top)
           }
         }
