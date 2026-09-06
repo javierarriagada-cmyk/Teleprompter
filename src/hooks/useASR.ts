@@ -6,12 +6,18 @@ export default function useASR(options: {
   engine?: IdMotor
   lang?: string
   motor?: MotorDeVoz
+  acumularTexto?: boolean
   alRecibirParcial?: (texto: string) => void
   alRecibirFraseFinal?: (e: any) => void
   alNotificarVoz?: (hayVoz: boolean) => void
 } = {}) {
-  const { engine = 'whisper-local', lang = 'es-ES', motor: motorInyectado, alRecibirParcial: optionParcial, alRecibirFraseFinal: optionFinal, alNotificarVoz: optionVoz } = options
+  const { engine = 'webspeech', lang = 'es-ES', motor: motorInyectado, acumularTexto = false, alRecibirParcial: optionParcial, alRecibirFraseFinal: optionFinal, alNotificarVoz: optionVoz } = options
   const motorRef = useRef<MotorDeVoz | null>(null)
+  const acumularTextoRef = useRef(acumularTexto)
+
+  useEffect(() => {
+    acumularTextoRef.current = acumularTexto
+  }, [acumularTexto])
 
   const [isRecording, setIsRecording] = useState(false)
   const [isStarting, setIsStarting] = useState(false)
@@ -51,7 +57,9 @@ export default function useASR(options: {
 
         unsubs.push(
           m.onParcial((e) => {
-            setTranscripcionParcial(e.texto)
+            if (acumularTextoRef.current) {
+              setTranscripcionParcial(e.texto)
+            }
             if (listenerVozCbRef.current) listenerVozCbRef.current(true)
             if (listenerParcialCbRef.current) listenerParcialCbRef.current(e.texto)
           })
@@ -59,8 +67,10 @@ export default function useASR(options: {
 
         unsubs.push(
           m.onFinal((e) => {
-            setTranscripcionParcial('')
-            setTranscript((prev) => (prev + '\n' + e.texto).trim())
+            if (acumularTextoRef.current) {
+              setTranscripcionParcial('')
+              setTranscript((prev) => (prev + '\n' + e.texto).trim())
+            }
             if (listenerVozCbRef.current) listenerVozCbRef.current(true)
             if (listenerFinalCbRef.current) {
               listenerFinalCbRef.current(e)

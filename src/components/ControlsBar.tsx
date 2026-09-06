@@ -14,6 +14,8 @@ interface ControlsBarProps {
   setLineasZona?: (val: number) => void
   anclajeZona?: 'arriba' | 'medio' | 'abajo'
   setAnclajeZona?: (val: 'arriba' | 'medio' | 'abajo') => void
+  verTranscripcion?: boolean
+  setVerTranscripcion?: (ver: boolean) => void
   onToggleFullscreen?: () => void
 }
 
@@ -31,6 +33,8 @@ export default function ControlsBar({
   setLineasZona,
   anclajeZona,
   setAnclajeZona,
+  verTranscripcion,
+  setVerTranscripcion,
   onToggleFullscreen
 }: ControlsBarProps) {
   return (
@@ -75,6 +79,16 @@ export default function ControlsBar({
           onChange={(e) => setMirror(e.target.checked)}
         /> Espejo
       </label>
+
+      {setVerTranscripcion !== undefined && (
+        <label style={{ marginLeft: 8 }}>
+          <input
+            type="checkbox"
+            checked={!!verTranscripcion}
+            onChange={(e) => setVerTranscripcion(e.target.checked)}
+          /> Ver transcripción en vivo
+        </label>
+      )}
 
       {setLineasZona && lineasZona !== undefined && (
         <label style={{ marginLeft: 8 }}>
