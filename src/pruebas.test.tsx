@@ -1279,7 +1279,15 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
     const sim = simularLectura({ guion: scriptTexto, ppm: 150, pausaCadaNPalabras: null })
 
     const seguidor = crearSeguidor(tokens)
-    const motor = crearMotorDeAvance()
+    const limitesMap = new Map<number, number>()
+    for (let i = 0; i < tokens.length; i++) limitesMap.set(tokens[i].linea, i)
+    const limitesDeLinea = Array.from(limitesMap.values()).sort((a, b) => a - b)
+
+    const limitesBloqueMap = new Map<number, number>()
+    for (let i = 0; i < tokens.length; i++) limitesBloqueMap.set(tokens[i].bloque, i)
+    const limitesDeBloque = Array.from(limitesBloqueMap.values()).sort((a, b) => a - b)
+
+    const motor = crearMotorDeAvance(undefined, limitesDeLinea, limitesDeBloque)
 
     let totalMsVoz = 0
     let inmovilMsVoz = 0
@@ -1334,15 +1342,15 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
     }
 
     const tokenFinalGuion = totalTokens - 1
-    const distFinal = tokenFinalGuion - ultimaPosicion
 
-    // a) la posicion final tiene que llegar a menos de 5 tokens del final del guion.
-    expect(distFinal).toBeLessThan(5)
+    // a) la posicion final tiene que estar entre el ultimo token menos 5 y el ultimo token. Nunca por encima.
+    expect(ultimaPosicion).toBeGreaterThanOrEqual(tokenFinalGuion - 5)
+    expect(ultimaPosicion).toBeLessThanOrEqual(tokenFinalGuion)
 
     // b) contar los milisegundos en que hay voz y la posicion no cambio nada respecto de la muestra anterior,
     // y dividirlos por el tiempo total con voz. Tiene que quedar bajo 10%.
     const pctInmovil = totalMsVoz > 0 ? (inmovilMsVoz / totalMsVoz) * 100 : 0
-    console.log(`[T51] Posición final: ${ultimaPosicion.toFixed(2)} / ${tokenFinalGuion} (distancia: ${distFinal.toFixed(2)} tokens)`)
+    console.log(`[T51] Posición final: ${ultimaPosicion.toFixed(2)} / ${tokenFinalGuion}`)
     console.log(`[T51] Tiempo inmovil durante voz: ${inmovilMsVoz}ms / ${totalMsVoz}ms (${pctInmovil.toFixed(2)}%)`)
 
     expect(pctInmovil).toBeLessThan(10)

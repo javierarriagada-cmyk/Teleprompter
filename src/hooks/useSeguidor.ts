@@ -91,6 +91,8 @@ export function useSeguidor(guionEntrada: Guion | string) {
 
       motor.tentativo(posAcotada.hastaToken, tMs)
       setPosicion(posAcotada)
+    } else {
+      motor.falloCalce(tMs)
     }
   }
 

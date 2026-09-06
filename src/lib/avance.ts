@@ -154,21 +154,7 @@ export function crearMotorDeAvance(
       hayVoz = true
       tUltimaVozTrue = tMs
 
-      const refToken = Math.max(ultimaConfirmada, anclaTentativa)
-      const limiteLinea = obtenerLimiteLineaActual(refToken)
-      const limiteBloque = obtenerLimiteBloqueActual(refToken)
-      const delta = token - anclaTentativa
-
-      let tope = token > limiteLinea
-        ? obtenerLimiteLineaSiguiente(refToken)
-        : limiteLinea
-
-      tope = Math.min(tope, limiteBloque)
-
-      const maxPermitidoTentativo = delta <= params.correaPalabras
-        ? tope
-        : Math.min(ultimaConfirmada + params.correaPalabras, limiteBloque)
-      const tokenAcotado = Math.min(token, maxPermitidoTentativo)
+      const tokenAcotado = token
 
       if (tokenAcotado > anclaTentativa) {
         const refTime = tUltimoTentativo > 0 ? tUltimoTentativo : tUltimaConfirmacion
@@ -223,7 +209,11 @@ export function crearMotorDeAvance(
         }
       }
 
-      const v = ppmEstimadas / 60000
+      const refToken = Math.max(ultimaConfirmada, anclaTentativa)
+      const distAdelanto = Math.max(0, posicionMostrada - refToken)
+      const factorFreno = Math.max(0, 1 - distAdelanto / 15)
+
+      let v = (ppmEstimadas / 60000) * factorFreno
       let nuevaPos = posicionMostrada + v * dt
 
       if (gliding) {
@@ -239,7 +229,14 @@ export function crearMotorDeAvance(
         }
       }
 
-      nuevaPos = Math.max(posicionMostrada, nuevaPos)
+      let maxTokenGuion = Infinity
+      if (limitesDeBloque && limitesDeBloque.length > 0) {
+        maxTokenGuion = limitesDeBloque[limitesDeBloque.length - 1]
+      } else if (limitesDeLinea && limitesDeLinea.length > 0) {
+        maxTokenGuion = limitesDeLinea[limitesDeLinea.length - 1]
+      }
+
+      nuevaPos = Math.min(maxTokenGuion, Math.max(posicionMostrada, nuevaPos))
       posicionMostrada = nuevaPos
 
       return {
