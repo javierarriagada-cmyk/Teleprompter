@@ -17,6 +17,7 @@ import { medir } from './pruebas/metricas'
 import { Guion } from './datos/modelo'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
+import { calcularBanda, opacidadDeLinea, AnclajeZona } from './components/banda'
 
 function guionSimple(texto: string, titulo = 'Guion de prueba'): Guion {
   return {
@@ -1317,6 +1318,99 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
 
     // Debe haber llamado a guardar exactamente 1 vez
     expect(recuentoLlamadasGuardar).toBe(1)
+  })
+})
+
+describe('Pruebas TAREA 5 (T37-T39)', () => {
+
+  test('T37 BANDA. Prueba de la función pura, sin DOM', () => {
+    const alturaVista = 800
+    const alturaLinea = 40
+    const lineasZona = 3
+
+    const anclajes: AnclajeZona[] = ['arriba', 'medio', 'abajo']
+
+    for (const anclaje of anclajes) {
+      const res = calcularBanda(alturaVista, alturaLinea, lineasZona, anclaje)
+      expect(res.altoBanda).toBe(120)
+
+      const lineaActualY = res.topBanda + 20 // Punto medio dentro de la primera línea de la banda
+      expect(lineaActualY).toBeGreaterThanOrEqual(res.topBanda)
+      expect(lineaActualY).toBeLessThanOrEqual(res.topBanda + res.altoBanda)
+    }
+
+    // Opacidad según distancia
+    expect(opacidadDeLinea(0)).toBe(1.0)
+    expect(opacidadDeLinea(1)).toBe(0.5)
+    expect(opacidadDeLinea(2)).toBe(0.2)
+    expect(opacidadDeLinea(3)).toBe(0.2)
+
+    // Verificación de monotonía decreciente
+    expect(opacidadDeLinea(0)).toBeGreaterThan(opacidadDeLinea(1))
+    expect(opacidadDeLinea(1)).toBeGreaterThan(opacidadDeLinea(2))
+    expect(opacidadDeLinea(2)).toBeGreaterThanOrEqual(opacidadDeLinea(3))
+
+    // Casos borde: primera y última línea
+    const resArriba = calcularBanda(800, 40, 3, 'arriba')
+    expect(resArriba.topBanda).toBe(0)
+
+    const resAbajo = calcularBanda(800, 40, 3, 'abajo')
+    expect(resAbajo.topBanda).toBe(800 - 120)
+  })
+
+  test('T38 ANTICIPACION. El guion de 4 lineas y la llamada a simularLectura', () => {
+    const guion4LineasTexto = [
+      'Uno dos tres cuatro cinco seis siete ocho nueve diez',
+      'Once doce trece catorce quince dieciseis diecisiete dieciocho diecinueve veinte',
+      'Veintiuno veintidos veintitres veinticuatro veinticinco veintiseis veintisiete veintiocho veintinueve treinta',
+      'Treintauno treintados treintatres treintacuatro treintacinco treintaseis treintasiete treintaocho treintanueve cuarenta'
+    ].join('\n')
+
+    const tokens = tokenizarGuion(guionSimple(guion4LineasTexto))
+    const limitesMap = new Map<number, number>()
+    for (let i = 0; i < tokens.length; i++) limitesMap.set(tokens[i].linea, i)
+    const limitesDeLinea = Array.from(limitesMap.values()).sort((a, b) => a - b)
+
+    const sim = simularLectura({ guion: guion4LineasTexto, ppm: 150, pausaCadaNPalabras: null })
+    const motor = crearMotorDeAvance({ anticipacionPalabras: 3 }, limitesDeLinea)
+    const m = medir(sim, guion4LineasTexto, motor)
+
+    console.log(`[T38] Métricas Anticipación:
+      retardoMedioAtras = ${m.retardoMedioAtras.toFixed(2)} (límite <= 1.5)
+      adelantoMaximo = ${m.adelantoMaximo.toFixed(2)} (límite <= 8)
+      vecesQueRetrocedio = ${m.vecesQueRetrocedio} (límite == 0)`)
+
+    expect(m.retardoMedioAtras).toBeLessThanOrEqual(1.5)
+    expect(m.adelantoMaximo).toBeLessThanOrEqual(8)
+    expect(m.vecesQueRetrocedio).toBe(0)
+  })
+
+  test('T39 La misma lectura de T38, pero creando el motor con anticipacionPalabras en 0', () => {
+    const guion4LineasTexto = [
+      'Uno dos tres cuatro cinco seis siete ocho nueve diez',
+      'Once doce trece catorce quince dieciseis diecisiete dieciocho diecinueve veinte',
+      'Veintiuno veintidos veintitres veinticuatro veinticinco veintiseis veintisiete veintiocho veintinueve treinta',
+      'Treintauno treintados treintatres treintacuatro treintacinco treintaseis treintasiete treintaocho treintanueve cuarenta'
+    ].join('\n')
+
+    const tokens = tokenizarGuion(guionSimple(guion4LineasTexto))
+    const limitesMap = new Map<number, number>()
+    for (let i = 0; i < tokens.length; i++) limitesMap.set(tokens[i].linea, i)
+    const limitesDeLinea = Array.from(limitesMap.values()).sort((a, b) => a - b)
+
+    const sim = simularLectura({ guion: guion4LineasTexto, ppm: 150, pausaCadaNPalabras: null })
+
+    const motorConAnticipacion = crearMotorDeAvance({ anticipacionPalabras: 3 }, limitesDeLinea)
+    const mCon = medir(sim, guion4LineasTexto, motorConAnticipacion)
+
+    const motorSinAnticipacion = crearMotorDeAvance({ anticipacionPalabras: 0 }, limitesDeLinea)
+    const mSin = medir(sim, guion4LineasTexto, motorSinAnticipacion)
+
+    console.log(`[T39] Comparación Anticipación ON vs OFF:
+      retardoMedioAtras ON  = ${mCon.retardoMedioAtras.toFixed(2)}
+      retardoMedioAtras OFF = ${mSin.retardoMedioAtras.toFixed(2)}`)
+
+    expect(mSin.retardoMedioAtras).toBeGreaterThan(mCon.retardoMedioAtras)
   })
 })
 

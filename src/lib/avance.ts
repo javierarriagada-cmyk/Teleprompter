@@ -5,6 +5,8 @@ export type ParametrosAvance = {
   ppmInicial: number            // 150  palabras por minuto, hasta medir
   suavizadoVelocidad: number    // 0.3  media movil exponencial
   msDeCorreccion: number        // 400  en cuanto se absorbe una correccion
+  anticipacionPalabras: number  // 3
+  msTransicion: number          // 600
 }
 
 export type EstadoAvance = {
@@ -29,7 +31,9 @@ const DEFAULT_PARAMETROS: ParametrosAvance = {
   fallosParaFrenar: 2,
   ppmInicial: 150,
   suavizadoVelocidad: 0.3,
-  msDeCorreccion: 400
+  msDeCorreccion: 400,
+  anticipacionPalabras: 3,
+  msTransicion: 600
 }
 
 export function crearMotorDeAvance(
@@ -223,8 +227,9 @@ export function crearMotorDeAvance(
       let nuevaPos = posicionMostrada + v * dt
 
       if (gliding) {
+        const duracion = Math.max(1, params.msTransicion || params.msDeCorreccion)
         const elapsed = tMs - inicioGlideTiempo
-        const progress = Math.min(1, Math.max(0, elapsed / params.msDeCorreccion))
+        const progress = Math.min(1, Math.max(0, elapsed / duracion))
         const linearPos = inicioGlidePosicion + v * elapsed
         const targetEst = objetivoPosicion + v * elapsed
         const conDeslizamiento = linearPos + progress * (targetEst - linearPos)
@@ -235,7 +240,14 @@ export function crearMotorDeAvance(
       }
 
       const refToken = Math.max(ultimaConfirmada, anclaTentativa)
-      const limiteLinea = obtenerLimiteLineaActual(refToken)
+
+      const limiteLineaBase = obtenerLimiteLineaActual(refToken)
+      const limiteLineaSiguiente = obtenerLimiteLineaSiguiente(refToken)
+
+      const limiteLinea = (params.anticipacionPalabras > 0 && limitesDeLinea && limitesDeLinea.length > 0)
+        ? Math.max(limiteLineaBase, Math.min(limiteLineaSiguiente, refToken + params.anticipacionPalabras))
+        : limiteLineaBase
+
       const limiteBloque = obtenerLimiteBloqueActual(refToken)
       const maxCorrea = (limitesDeLinea && limitesDeLinea.length > 0)
         ? Math.min(limiteLinea, limiteBloque)

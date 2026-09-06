@@ -10,6 +10,10 @@ interface ControlsBarProps {
   setMarginPercent: (margin: number) => void
   mirror: boolean
   setMirror: (mirror: boolean) => void
+  lineasZona?: number
+  setLineasZona?: (val: number) => void
+  anclajeZona?: 'arriba' | 'medio' | 'abajo'
+  setAnclajeZona?: (val: 'arriba' | 'medio' | 'abajo') => void
   onToggleFullscreen?: () => void
 }
 
@@ -23,6 +27,10 @@ export default function ControlsBar({
   setMarginPercent,
   mirror,
   setMirror,
+  lineasZona,
+  setLineasZona,
+  anclajeZona,
+  setAnclajeZona,
   onToggleFullscreen
 }: ControlsBarProps) {
   return (
@@ -67,6 +75,36 @@ export default function ControlsBar({
           onChange={(e) => setMirror(e.target.checked)}
         /> Espejo
       </label>
+
+      {setLineasZona && lineasZona !== undefined && (
+        <label style={{ marginLeft: 8 }}>
+          Líneas Zona ({lineasZona}):
+          <input
+            type="range"
+            min={1}
+            max={7}
+            step={1}
+            value={lineasZona}
+            onChange={(e) => setLineasZona(Number(e.target.value))}
+            style={{ marginLeft: 6 }}
+          />
+        </label>
+      )}
+
+      {setAnclajeZona && anclajeZona !== undefined && (
+        <label style={{ marginLeft: 8 }}>
+          Anclaje:
+          <select
+            value={anclajeZona}
+            onChange={(e) => setAnclajeZona(e.target.value as 'arriba' | 'medio' | 'abajo')}
+            style={{ marginLeft: 6 }}
+          >
+            <option value="arriba">Arriba</option>
+            <option value="medio">Medio</option>
+            <option value="abajo">Abajo</option>
+          </select>
+        </label>
+      )}
 
       {onToggleFullscreen && (
         <button onClick={onToggleFullscreen} style={{ marginLeft: 'auto', padding: '6px 12px' }}>
