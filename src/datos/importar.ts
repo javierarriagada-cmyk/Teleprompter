@@ -1,5 +1,9 @@
 import { Bloque } from './modelo'
 
+export type OpcionesImportar = {
+  maxCaracteresPorLinea?: number
+}
+
 function generarIdBloque(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
     return crypto.randomUUID()
@@ -7,52 +11,122 @@ function generarIdBloque(): string {
   return 'b-' + Date.now() + '-' + Math.random().toString(36).substring(2, 9)
 }
 
+/**
+ * Tokeniza una línea separando por espacios fuera de acotaciones cerradas [].
+ * Si hay una acotación [acotacion] o [acotacion]pegada o pegada[acotacion],
+ * se mantiene unida como un único token sin dividir los corchetes ni agregar espacios artificiales.
+ * Un corchete abierto sin cerrar no lanza error y se trata como texto normal.
+ */
 function tokenizarLinea(linea: string): string[] {
-  const tokens: string[] = []
-  // Coincide con acotaciones cerradas entre corchetes dentro de la misma línea
-  const regexCorchetes = /\[[^\]\n]+\]/g
-  let lastIndex = 0
-  let match: RegExpExecArray | null
+  const matches: { start: number; end: number }[] = []
+  const regex = /\[[^\]\n]*\]/g
+  let m: RegExpExecArray | null
 
-  while ((match = regexCorchetes.exec(linea)) !== null) {
-    const textoAntes = linea.slice(lastIndex, match.index)
-    if (textoAntes) {
-      const palabras = textoAntes.trim().split(/\s+/).filter(Boolean)
-      tokens.push(...palabras)
+  while ((m = regex.exec(linea)) !== null) {
+    matches.push({ start: m.index, end: m.index + m[0].length })
+  }
+
+  function isInsideClosedBracket(idx: number): boolean {
+    return matches.some((b) => idx >= b.start && idx < b.end)
+  }
+
+  const result: string[] = []
+  let currentToken = ''
+  let i = 0
+
+  while (i < linea.length) {
+    const ch = linea[i]
+    if (/\s/.test(ch) && !isInsideClosedBracket(i)) {
+      if (currentToken) {
+        result.push(currentToken)
+        currentToken = ''
+      }
+      i++
+    } else {
+      currentToken += ch
+      i++
     }
-    tokens.push(match[0])
-    lastIndex = regexCorchetes.lastIndex
   }
 
-  const textoRestante = linea.slice(lastIndex)
-  if (textoRestante) {
-    const palabras = textoRestante.trim().split(/\s+/).filter(Boolean)
-    tokens.push(...palabras)
+  if (currentToken) {
+    result.push(currentToken)
   }
 
-  return tokens
+  return result
 }
 
+/**
+ * Formatea un arreglo de tokens en líneas de texto respetando maxChars
+ * según el orden de preferencia de cortes:
+ * 1. Fin de oración: ., ?, !, :, ;
+ * 2. Fin de cláusula: ,
+ * 3. Límite de palabra (espacio)
+ */
 function formatearTokensEnLineas(tokens: string[], maxChars: number): string[] {
   if (tokens.length === 0) return []
-  const lineas: string[] = []
-  let lineaActual = ''
 
-  for (const token of tokens) {
-    if (!lineaActual) {
-      lineaActual = token
-    } else {
-      if (lineaActual.length + 1 + token.length <= maxChars) {
-        lineaActual += ' ' + token
+  const lineas: string[] = []
+  let tokensRestantes = [...tokens]
+
+  while (tokensRestantes.length > 0) {
+    // Si el primer token por sí solo supera maxChars, queda solo en su línea
+    if (tokensRestantes[0].length >= maxChars) {
+      lineas.push(tokensRestantes.shift()!)
+      continue
+    }
+
+    // Acumular tokens que quepan dentro de maxChars
+    let lenAcumulado = tokensRestantes[0].length
+    let maxIdx = 0
+
+    for (let i = 1; i < tokensRestantes.length; i++) {
+      const nuevoLen = lenAcumulado + 1 + tokensRestantes[i].length
+      if (nuevoLen <= maxChars) {
+        lenAcumulado = nuevoLen
+        maxIdx = i
       } else {
-        lineas.push(lineaActual)
-        lineaActual = token
+        break
       }
     }
-  }
 
-  if (lineaActual) {
-    lineas.push(lineaActual)
+    // Si entran todos los tokens restantes
+    if (maxIdx === tokensRestantes.length - 1) {
+      lineas.push(tokensRestantes.join(' '))
+      break
+    }
+
+    // Buscar el mejor punto de corte dentro de 0..maxIdx
+    // Preferencia 1: Fin de oración (., ?, !, :, ;)
+    let corteElegido = -1
+    const regexOracion = /[.?!:;][)\]"']?$/
+
+    for (let i = maxIdx; i >= 0; i--) {
+      if (regexOracion.test(tokensRestantes[i])) {
+        corteElegido = i
+        break
+      }
+    }
+
+    // Preferencia 2: Fin de cláusula (,)
+    if (corteElegido === -1) {
+      const regexClausula = /[,][)\]"']?$/
+      for (let i = maxIdx; i >= 0; i--) {
+        if (regexClausula.test(tokensRestantes[i])) {
+          corteElegido = i
+          break
+        }
+      }
+    }
+
+    // Preferencia 3: Límite de palabra (usar maxIdx completo)
+    if (corteElegido === -1) {
+      corteElegido = maxIdx
+    }
+
+    // Formar la línea con tokensRestantes[0..corteElegido]
+    const lineaActualTokens = tokensRestantes.slice(0, corteElegido + 1)
+    lineas.push(lineaActualTokens.join(' '))
+    tokensRestantes = tokensRestantes.slice(corteElegido + 1)
   }
 
   return lineas
@@ -60,15 +134,17 @@ function formatearTokensEnLineas(tokens: string[], maxChars: number): string[] {
 
 /**
  * Recibe un texto pegado y lo convierte en bloques de guión con líneas
- * de como máximo maxCaracteresPorLinea caracteres.
+ * formateadas según las opciones provistas.
  */
 export function importarTexto(
   texto: string,
-  maxCaracteresPorLinea: number = 42
+  opciones?: OpcionesImportar
 ): Bloque[] {
   if (!texto || !texto.trim()) {
     return []
   }
+
+  const maxCaracteresPorLinea = opciones?.maxCaracteresPorLinea ?? 42
 
   // Normalizar saltos de línea de Windows (\r\n) y de Mac antiguo (\r) a \n
   const textoNormalizado = texto.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim()
