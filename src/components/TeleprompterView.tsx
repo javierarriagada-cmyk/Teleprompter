@@ -105,16 +105,29 @@ export default function TeleprompterView({
               ? Math.min(1, Math.max(0, (st.posicion - primero) / cantidad))
               : 0
 
-            // El desplazamiento va UN RENGLON atrasado: mientras se lee un renglon el
-            // texto no se mueve, y el movimiento sirve para traer el siguiente. Sin esto,
-            // el renglon que uno esta leyendo se va subiendo bajo los ojos y no se alcanza
-            // a terminar, sobre todo con la banda anclada arriba.
+            // Se interpola entre el borde de ESTA linea y el borde de la SIGUIENTE, no
+            // dentro del alto de esta. Interpolar dentro del elemento reinicia la cuenta
+            // en cada cambio de linea, y como entre bloques hay margen aparecia un escalon
+            // justo al terminar el parrafo: el "saltito" al pasar de uno a otro.
             //
-            // Va en renglones y no en palabras a proposito: cuantas palabras entran en un
-            // renglon depende del tamano de letra, un renglon es siempre un renglon.
-            const recorrido = avanceEnLinea * target.clientHeight
-            const top = target.offsetTop + Math.max(0, recorrido - alturaLineaPx) - topBanda
-            containerRef.current.scrollTop = top
+            // Tomando el borde del siguiente, al llegar al final de una linea el valor
+            // coincide exactamente con el de arranque de la que sigue, y el movimiento no
+            // se corta en ningun lado.
+            const tSig = ultimo + 1 < tokens.length ? tokens[ultimo + 1] : null
+            const elSig = tSig
+              ? containerRef.current.querySelector(`[data-block="${tSig.bloque}"][data-line="${tSig.linea}"]`) as HTMLElement | null
+              : null
+            const topSiguiente = elSig ? elSig.offsetTop : target.offsetTop + target.offsetHeight
+
+            // Y el desplazamiento va UN RENGLON atrasado: mientras se lee un renglon el
+            // texto no se mueve, y el movimiento sirve para traer el siguiente. Sin esto,
+            // el renglon que uno esta leyendo se va subiendo bajo los ojos.
+            //
+            // Va en renglones y no en un numero de palabras a proposito: cuantas palabras
+            // entran en un renglon depende del tamano de letra.
+            const recorrido = avanceEnLinea * (topSiguiente - target.offsetTop)
+            const top = target.offsetTop + recorrido - alturaLineaPx - topBanda
+            containerRef.current.scrollTop = Math.max(0, top)
           }
         }
       }
