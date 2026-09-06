@@ -12,6 +12,10 @@ export type Metricas = {
   muestras: number                        // cuántas muestras de 50 ms se tomaron
   confirmaciones: number                  // cuántos finales movieron
   tentativos: number                      // cuántos parciales se procesaron
+  retardoMedioAtras: number               // posReal - posMostrada > 0
+  retardoMaximoAtras: number
+  adelantoMedio: number                   // posReal - posMostrada < 0 (magnitud positiva)
+  adelantoMaximo: number
 }
 
 export function medir(
@@ -41,7 +45,11 @@ export function medir(
       segundosHastaFrenar: null,
       muestras: 0,
       confirmaciones: 0,
-      tentativos: 0
+      tentativos: 0,
+      retardoMedioAtras: 0,
+      retardoMaximoAtras: 0,
+      adelantoMedio: 0,
+      adelantoMaximo: 0
     }
   }
 
@@ -84,6 +92,14 @@ export function medir(
   let sumRetardo = 0
   let countRetardo = 0
   let maxRetardo = 0
+
+  let sumAtras = 0
+  let countAtras = 0
+  let maxAtras = 0
+
+  let sumAdelanto = 0
+  let countAdelanto = 0
+  let maxAdelanto = 0
 
   let recuperadoMs = -1
   let hayVozActual = false
@@ -130,11 +146,27 @@ export function medir(
     const leyendo = t <= finLecturaT && t >= eventos[0].t
 
     if (leyendo) {
-      const diff = Math.abs(posReal - st.posicion)
-      sumRetardo += diff
+      const diffAbs = Math.abs(posReal - st.posicion)
+      sumRetardo += diffAbs
       countRetardo++
-      if (diff > maxRetardo) {
-        maxRetardo = diff
+      if (diffAbs > maxRetardo) {
+        maxRetardo = diffAbs
+      }
+
+      const diffConSigno = posReal - st.posicion
+      if (diffConSigno > 0) {
+        sumAtras += diffConSigno
+        countAtras++
+        if (diffConSigno > maxAtras) {
+          maxAtras = diffConSigno
+        }
+      } else if (diffConSigno < 0) {
+        const magAdelanto = -diffConSigno
+        sumAdelanto += magAdelanto
+        countAdelanto++
+        if (magAdelanto > maxAdelanto) {
+          maxAdelanto = magAdelanto
+        }
       }
 
       if (hayVozActual && !st.avanzando && st.motivoFreno !== 'correa' && st.motivoFreno !== 'fin-de-linea') {
@@ -163,6 +195,9 @@ export function medir(
   const segundosFrenadoIndebido = tiempoFrenadoIndebidoMs / 1000
   const segundosDeRecuperacion = recuperadoMs >= 0 ? recuperadoMs / 1000 : null
 
+  const retardoMedioAtras = countAtras > 0 ? sumAtras / countAtras : 0
+  const adelantoMedio = countAdelanto > 0 ? sumAdelanto / countAdelanto : 0
+
   return {
     retardoMedioPalabras,
     retardoMaximoPalabras: maxRetardo,
@@ -172,6 +207,10 @@ export function medir(
     segundosHastaFrenar,
     muestras: countMuestras,
     confirmaciones: countConfirmaciones,
-    tentativos: countTentativos
+    tentativos: countTentativos,
+    retardoMedioAtras,
+    retardoMaximoAtras: maxAtras,
+    adelantoMedio,
+    adelantoMaximo: maxAdelanto
   }
 }

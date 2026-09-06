@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { MotorDeAvance } from '../lib/avance'
 import { tokenizarGuion, Token } from '../lib/seguidor'
 import { Guion } from '../datos/modelo'
+import { AnclajeZona, calcularBanda, opacidadDeLinea } from './banda'
 
 interface TeleprompterViewProps {
   script: Guion | string
@@ -11,6 +12,8 @@ interface TeleprompterViewProps {
   fontSize?: number
   marginPercent?: number
   mirror?: boolean
+  lineasZona?: number
+  anclajeZona?: AnclajeZona
   motorAvance?: MotorDeAvance | null
   onEstadoAvanceChange?: (motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null, avanzando: boolean) => void
 }
@@ -23,6 +26,8 @@ export default function TeleprompterView({
   fontSize = 28,
   marginPercent = 10,
   mirror = false,
+  lineasZona = 3,
+  anclajeZona = 'arriba',
   motorAvance,
   onEstadoAvanceChange
 }: TeleprompterViewProps) {
@@ -43,20 +48,23 @@ export default function TeleprompterView({
     tokensRef.current = tokenizarGuion(guionObj)
   }, [script])
 
+  const alturaLineaPx = fontSize * 1.4 + 16 // fontSize * lineHeight (1.4) + vertical margin (16px)
+  const { topBanda, altoBanda } = calcularBanda(480, alturaLineaPx, lineasZona, anclajeZona, 20, 20)
+
   useEffect(() => {
     if (motorAvance) return
     const el = containerRef.current
     if (!el) return
     const target = el.querySelector(`[data-block="${currentBlockIndex}"][data-line="${currentLineIndex}"]`) as HTMLElement
     if (target) {
-      const top = target.offsetTop - el.clientHeight / 2 + target.clientHeight / 2
+      const top = target.offsetTop - topBanda
       if (typeof el.scrollTo === 'function') {
         el.scrollTo({ top, behavior: 'smooth' })
       } else {
         el.scrollTop = top
       }
     }
-  }, [currentBlockIndex, currentLineIndex, motorAvance])
+  }, [currentBlockIndex, currentLineIndex, motorAvance, topBanda])
 
   useEffect(() => {
     if (!motorAvance) return
@@ -75,7 +83,7 @@ export default function TeleprompterView({
         if (t) {
           const target = containerRef.current.querySelector(`[data-block="${t.bloque}"][data-line="${t.linea}"]`) as HTMLElement
           if (target) {
-            const top = target.offsetTop - containerRef.current.clientHeight / 2 + target.clientHeight / 2
+            const top = target.offsetTop - topBanda
             containerRef.current.scrollTop = top
           }
         }
@@ -86,7 +94,7 @@ export default function TeleprompterView({
 
     animId = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(animId)
-  }, [motorAvance, onEstadoAvanceChange])
+  }, [motorAvance, onEstadoAvanceChange, topBanda])
 
   if (!guionObj.bloques || guionObj.bloques.length === 0) {
     return (
@@ -96,6 +104,8 @@ export default function TeleprompterView({
     )
   }
 
+  let lineCountGlobal = 0
+
   return (
     <div
       style={{
@@ -104,9 +114,26 @@ export default function TeleprompterView({
         minHeight: 360,
         background: '#000',
         color: '#fff',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        position: 'relative'
       }}
     >
+      {/* Overlay Visual de la Banda de Lectura */}
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          top: topBanda,
+          height: altoBanda,
+          pointerEvents: 'none',
+          zIndex: 2,
+          background: 'rgba(255, 255, 255, 0.06)',
+          maskImage: 'linear-gradient(to bottom, transparent 0, black 12px, black calc(100% - 12px), transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0, black 12px, black calc(100% - 12px), transparent 100%)'
+        }}
+      />
+
       <div
         ref={containerRef}
         style={{
@@ -114,8 +141,8 @@ export default function TeleprompterView({
           overflowY: 'auto',
           paddingLeft: `${marginPercent}%`,
           paddingRight: `${marginPercent}%`,
-          paddingTop: '20vh',
-          paddingBottom: '40vh',
+          paddingTop: topBanda,
+          paddingBottom: `calc(100% - ${topBanda + altoBanda}px)`,
           transform: mirror ? 'scaleX(-1)' : 'none',
           boxSizing: 'border-box'
         }}
@@ -131,6 +158,20 @@ export default function TeleprompterView({
               )}
               {lineas.map((linea: string, lIdx: number) => {
                 const isCurrent = bIdx === currentBlockIndex && lIdx === currentLineIndex
+                let targetCurrentLineGlobal = 0
+                for (let b = 0; b < guionObj.bloques.length; b++) {
+                  if (b < currentBlockIndex) {
+                    targetCurrentLineGlobal += (guionObj.bloques[b].texto || '').split(/\r?\n/).length
+                  } else if (b === currentBlockIndex) {
+                    targetCurrentLineGlobal += currentLineIndex
+                    break
+                  }
+                }
+
+                const distLineas = Math.abs(lineCountGlobal - targetCurrentLineGlobal)
+                const opacidad = opacidadDeLinea(distLineas)
+                lineCountGlobal++
+
                 return (
                   <div
                     key={lIdx}
@@ -139,13 +180,13 @@ export default function TeleprompterView({
                     data-line={lIdx}
                     style={{
                       fontSize: isCurrent ? fontSize : Math.max(16, fontSize * 0.7),
-                      opacity: isCurrent ? 1 : 0.4,
+                      opacity: opacidad,
                       margin: '16px 0',
                       lineHeight: 1.4,
                       transition: 'all 200ms'
                     }}
                   >
-                    {renderFormattedLine(linea, isCurrent ? currentWordIndex : -1)}
+                    {renderFormattedLine(linea)}
                   </div>
                 )
               })}
@@ -157,7 +198,7 @@ export default function TeleprompterView({
   )
 }
 
-function renderFormattedLine(linea: string, highlightWordIdx: number) {
+function renderFormattedLine(linea: string) {
   const parts: { texto: string; esAcotacion: boolean }[] = []
   let pos = 0
   let enAcotacion = false
@@ -207,19 +248,10 @@ function renderFormattedLine(linea: string, highlightWordIdx: number) {
               if (/\s+/.test(w)) return <span key={wIdx}>{w}</span>
               if (!w) return null
 
-              const isHighlighted = globalTokenWordIdx === highlightWordIdx
               globalTokenWordIdx++
 
               return (
-                <span
-                  key={wIdx}
-                  style={{
-                    background: isHighlighted ? 'yellow' : 'transparent',
-                    color: isHighlighted ? '#000' : 'inherit',
-                    padding: isHighlighted ? '2px 4px' : 0,
-                    borderRadius: isHighlighted ? 2 : 0
-                  }}
-                >
+                <span key={wIdx}>
                   {w}
                 </span>
               )

@@ -184,6 +184,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [fontSize, setFontSize] = useState<number>(32)
   const [marginPercent, setMarginPercent] = useState<number>(10)
   const [mirror, setMirror] = useState<boolean>(false)
+  const [lineasZona, setLineasZona] = useState<number>(3)
+  const [anclajeZona, setAnclajeZona] = useState<'arriba' | 'medio' | 'abajo'>('arriba')
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
 
   const [motivoFreno, setMotivoFreno] = useState<'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null>(null)
@@ -409,6 +411,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                   setMarginPercent={setMarginPercent}
                   mirror={mirror}
                   setMirror={setMirror}
+                  lineasZona={lineasZona}
+                  setLineasZona={setLineasZona}
+                  anclajeZona={anclajeZona}
+                  setAnclajeZona={setAnclajeZona}
                   onToggleFullscreen={toggleFullscreen}
                 />
 
@@ -462,6 +468,8 @@ export default function App({ motor, repoOverride }: AppProps) {
                 fontSize={fontSize}
                 marginPercent={marginPercent}
                 mirror={mirror}
+                lineasZona={lineasZona}
+                anclajeZona={anclajeZona}
                 motorAvance={motorAvance}
                 onEstadoAvanceChange={handleEstadoAvanceChange}
               />
