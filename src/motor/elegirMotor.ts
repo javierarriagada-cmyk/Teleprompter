@@ -3,9 +3,11 @@ import { MotorFake } from './MotorFake'
 import { MotorNativo } from './MotorNativo'
 import { MotorWebSpeech } from './MotorWebSpeech'
 import { MotorWhisperLocal } from './MotorWhisperLocal'
+import { MotorVosk } from './MotorVosk'
 
 export async function elegirMotor(preferido?: IdMotor): Promise<MotorDeVoz> {
   const motores: Record<IdMotor, MotorDeVoz> = {
+    vosk: new MotorVosk(),
     'whisper-local': new MotorWhisperLocal(),
     webspeech: new MotorWebSpeech(),
     nativo: new MotorNativo(),
@@ -29,7 +31,7 @@ export async function elegirMotor(preferido?: IdMotor): Promise<MotorDeVoz> {
     }
   }
 
-  const ordenFallback: IdMotor[] = ['webspeech', 'whisper-local']
+  const ordenFallback: IdMotor[] = ['vosk', 'webspeech', 'whisper-local']
   for (const id of ordenFallback) {
     if (id === preferido) continue
     const candidate = motores[id]

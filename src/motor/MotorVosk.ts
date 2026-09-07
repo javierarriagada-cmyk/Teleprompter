@@ -1,10 +1,10 @@
 import { remuestrear } from '../lib/remuestrear'
 import { EventoFinal, EventoParcial, MotorDeVoz } from './MotorDeVoz'
-import ASRWorker from '../workers/asr.worker.ts?worker'
+import VoskWorker from '../workers/vosk.worker.ts?worker'
 
-export class MotorWhisperLocal implements MotorDeVoz {
-  readonly id = 'whisper-local'
-  readonly nombre = 'Whisper Local (On-Device WebGPU/WASM)'
+export class MotorVosk implements MotorDeVoz {
+  readonly id = 'vosk'
+  readonly nombre = 'Vosk Local (On-Device WASM)'
 
   private worker: Worker | null = null
   private audioCtx: AudioContext | null = null
@@ -16,32 +16,66 @@ export class MotorWhisperLocal implements MotorDeVoz {
   private listenersError: Array<(e: Error) => void> = []
   private listenersProgreso: Array<(pct: number) => void> = []
 
-  public dispositivoComputo: 'webgpu' | 'wasm' | 'cargando' = 'cargando'
   public progresoDescarga = 0
 
   async disponible(): Promise<boolean> {
     const tieneWorker = typeof Worker !== 'undefined'
-    const tieneAudioContext = typeof AudioContext !== 'undefined' || typeof (window as any).webkitAudioContext !== 'undefined'
+    const tieneAudioContext =
+      typeof AudioContext !== 'undefined' || typeof (window as any).webkitAudioContext !== 'undefined'
     const tieneMediaDevices = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)
     return tieneWorker && tieneAudioContext && tieneMediaDevices
+  }
+
+  async precargarModelo(): Promise<void> {
+    if (typeof Worker === 'undefined') return
+    return new Promise<void>((resolve, reject) => {
+      try {
+        const tempWorker = new VoskWorker()
+        tempWorker.onmessage = (ev: MessageEvent) => {
+          const msg = ev.data
+          if (msg.tipo === 'progreso') {
+            this.progresoDescarga = msg.pct || 0
+            this.listenersProgreso.forEach((cb) => cb(this.progresoDescarga))
+          } else if (msg.tipo === 'precargado' || msg.tipo === 'listo') {
+            tempWorker.terminate()
+            resolve()
+          } else if (msg.tipo === 'error') {
+            tempWorker.terminate()
+            const err = new Error(msg.mensaje || 'Error precargando modelo Vosk')
+            this.listenersError.forEach((cb) => cb(err))
+            reject(err)
+          }
+        }
+        tempWorker.onerror = (ev: ErrorEvent) => {
+          tempWorker.terminate()
+          const err = new Error(ev.message || 'Error en Web Worker al precargar')
+          this.listenersError.forEach((cb) => cb(err))
+          reject(err)
+        }
+        tempWorker.postMessage({ tipo: 'precargar' })
+      } catch (e: any) {
+        reject(e)
+      }
+    })
   }
 
   async iniciar(opciones: { lang: string }): Promise<void> {
     const isDisponible = await this.disponible()
     if (!isDisponible) {
-      throw new Error('Whisper Local no está disponible en este navegador o entorno (falta WebWorker/AudioContext/micrófono).')
+      throw new Error(
+        'Motor Vosk no está disponible en este navegador o entorno (falta WebWorker, AudioContext o micrófono).'
+      )
     }
 
     return new Promise<void>(async (resolve, reject) => {
       try {
-        this.worker = new ASRWorker()
+        this.worker = new VoskWorker()
 
         let resolved = false
 
         this.worker.onmessage = (ev: MessageEvent) => {
           const msg = ev.data
           if (msg.tipo === 'listo') {
-            this.dispositivoComputo = msg.dispositivo || 'webgpu'
             if (!resolved) {
               resolved = true
               resolve()
@@ -49,12 +83,14 @@ export class MotorWhisperLocal implements MotorDeVoz {
           } else if (msg.tipo === 'progreso') {
             this.progresoDescarga = msg.pct || 0
             this.listenersProgreso.forEach((cb) => cb(this.progresoDescarga))
+          } else if (msg.tipo === 'parcial') {
+            this.listenersParcial.forEach((cb) => cb({ texto: msg.texto }))
           } else if (msg.tipo === 'final') {
             this.listenersFinal.forEach((cb) =>
               cb({ texto: msg.texto, inicioMs: msg.inicioMs, finMs: msg.finMs })
             )
           } else if (msg.tipo === 'error') {
-            const err = new Error(msg.mensaje || 'Error desconocido en worker Whisper')
+            const err = new Error(msg.mensaje || 'Error desconocido en el reconocedor Vosk')
             this.listenersError.forEach((cb) => cb(err))
             if (!resolved) {
               resolved = true
@@ -63,10 +99,17 @@ export class MotorWhisperLocal implements MotorDeVoz {
           }
         }
 
+        this.worker.onerror = (ev: ErrorEvent) => {
+          const err = new Error(ev.message || 'Error en Web Worker Vosk')
+          this.listenersError.forEach((cb) => cb(err))
+          if (!resolved) {
+            resolved = true
+            reject(err)
+          }
+        }
+
         this.worker.postMessage({
-          tipo: 'init',
-          modelo: 'onnx-community/whisper-base',
-          sampleRate: 16000
+          tipo: 'init'
         })
 
         const AudioCtxClass = window.AudioContext || (window as any).webkitAudioContext
@@ -80,6 +123,7 @@ export class MotorWhisperLocal implements MotorDeVoz {
         this.workletNode = new AudioWorkletNode(this.audioCtx, 'vad-processor', {
           processorOptions: { sampleRate: ctxSampleRate }
         })
+
         this.workletNode.port.onmessage = (ev: MessageEvent) => {
           const m = ev.data
           if (m.tipo === 'audio') {
@@ -113,7 +157,7 @@ export class MotorWhisperLocal implements MotorDeVoz {
   async detener(): Promise<void> {
     if (this.worker) {
       try {
-        this.worker.postMessage({ tipo: 'flush' })
+        this.worker.postMessage({ tipo: 'detener' })
       } catch (e) {}
       this.worker.terminate()
       this.worker = null
