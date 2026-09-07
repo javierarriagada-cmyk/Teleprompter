@@ -271,7 +271,7 @@ export default function TeleprompterView({
           // de un parrafo a otro. Para separarlos a la vista va una linea en blanco en el
           // texto, que ocupa un renglon y se recorre a la misma velocidad que el resto.
           return (
-            <div key={bloque.id || bIdx} className="block-container">
+            <div key={bloque.id || bIdx} className="block-container" style={{ marginBottom: 24 }}>
               {bloque.nombre && (
                 <div style={{ fontSize: Math.max(14, fontSize * 0.5), color: '#888', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>
                   [{bloque.nombre}]
