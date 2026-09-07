@@ -19,6 +19,14 @@ export interface ControlsBarProps {
   setVerTranscripcion?: (ver: boolean) => void
   mostrarTiempo?: boolean
   setMostrarTiempo?: (mostrar: boolean) => void
+  columnaAngosta?: boolean
+  setColumnaAngosta?: (val: boolean) => void
+  colorFondo?: string
+  setColorFondo?: (val: string) => void
+  colorLetra?: string
+  setColorLetra?: (val: string) => void
+  tipoFuente?: 'sans' | 'serif'
+  setTipoFuente?: (val: 'sans' | 'serif') => void
   onToggleFullscreen?: () => void
 }
 
@@ -46,6 +54,14 @@ export default function ControlsBar({
   setVerTranscripcion,
   mostrarTiempo,
   setMostrarTiempo,
+  columnaAngosta = true,
+  setColumnaAngosta,
+  colorFondo = '#000000',
+  setColorFondo,
+  colorLetra = '#FFFFFF',
+  setColorLetra,
+  tipoFuente = 'sans',
+  setTipoFuente,
   onToggleFullscreen
 }: ControlsBarProps) {
   const [ajustesAbierto, setAjustesAbierto] = useState(false)
@@ -206,27 +222,94 @@ export default function ControlsBar({
           {/* El margen bajo a ajustes el 7 de septiembre de 2026. Con la columna angosta
               medida en caracteres casi no hace nada: solo cambia algo en el modo de ancho
               completo. Un control que ya no controla no va en la fila principal. */}
+          {/* Ancho de Columna */}
+          {setColumnaAngosta && (
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: 13, color: '#555', fontWeight: 600 }}>Columna:</span>
+              <select
+                aria-label="Ancho de columna"
+                value={columnaAngosta ? 'angosta' : 'completa'}
+                onChange={(e) => setColumnaAngosta(e.target.value === 'angosta')}
+                style={{ padding: 4 }}
+              >
+                <option value="angosta">Angosta (22ch)</option>
+                <option value="completa">Ancho completo</option>
+              </select>
+            </label>
+          )}
+
+          {/* Fondo */}
+          {setColorFondo && (
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: 13, color: '#555', fontWeight: 600 }}>Fondo:</span>
+              <select
+                aria-label="Color de fondo"
+                value={colorFondo}
+                onChange={(e) => setColorFondo(e.target.value)}
+                style={{ padding: 4 }}
+              >
+                <option value="#000000">Negro</option>
+                <option value="#16181A">Gris</option>
+                <option value="#FFFFFF">Blanco</option>
+              </select>
+            </label>
+          )}
+
+          {/* Color de Letra */}
+          {setColorLetra && (
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6, opacity: colorFondo.toUpperCase() === '#FFFFFF' ? 0.5 : 1 }}>
+              <span style={{ fontSize: 13, color: '#555', fontWeight: 600 }}>Color Letra:</span>
+              <select
+                aria-label="Color de letra"
+                value={colorFondo.toUpperCase() === '#FFFFFF' ? '#000000' : colorLetra}
+                disabled={colorFondo.toUpperCase() === '#FFFFFF'}
+                onChange={(e) => setColorLetra(e.target.value)}
+                style={{ padding: 4 }}
+              >
+                <option value="#FFFFFF">Blanco</option>
+                <option value="#F0C070">Ámbar</option>
+                <option value="#3FD173">Verde</option>
+              </select>
+            </label>
+          )}
+
+          {/* Tipografía */}
+          {setTipoFuente && (
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: 13, color: '#555', fontWeight: 600 }}>Tipografía:</span>
+              <select
+                aria-label="Tipografía"
+                value={tipoFuente}
+                onChange={(e) => setTipoFuente(e.target.value as 'sans' | 'serif')}
+                style={{ padding: 4 }}
+              >
+                <option value="sans">Source Sans 3</option>
+                <option value="serif">Source Serif 4</option>
+              </select>
+            </label>
+          )}
+
         {/* Control de Margen */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, backgroundColor: '#f9f9f9', padding: '2px 8px', borderRadius: 8, border: '1px solid #eee' }}>
-          <span style={{ fontSize: 13, color: '#555', fontWeight: 600 }}>Margen:</span>
-          <button
-            onClick={handleMargenMenos}
-            aria-label="Disminuir margen"
-            style={botonBaseStyle}
-          >
-            -
-          </button>
-          <span style={{ minWidth: 42, textAlign: 'center', fontWeight: 'bold', fontSize: 15 }}>
-            {marginPercent}%
-          </span>
-          <button
-            onClick={handleMargenMas}
-            aria-label="Aumentar margen"
-            style={botonBaseStyle}
-          >
-            +
-          </button>
-        </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, backgroundColor: '#f9f9f9', padding: '2px 8px', borderRadius: 8, border: '1px solid #eee' }}>
+            <span style={{ fontSize: 13, color: '#555', fontWeight: 600 }}>Margen:</span>
+            <button
+              onClick={handleMargenMenos}
+              aria-label="Disminuir margen"
+              style={botonBaseStyle}
+            >
+              -
+            </button>
+            <span style={{ minWidth: 42, textAlign: 'center', fontWeight: 'bold', fontSize: 15 }}>
+              {marginPercent}%
+            </span>
+            <button
+              onClick={handleMargenMas}
+              aria-label="Aumentar margen"
+              style={botonBaseStyle}
+            >
+              +
+            </button>
+          </div>
 
           <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
             <input

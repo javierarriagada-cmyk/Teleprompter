@@ -11,9 +11,12 @@ export function calcularBanda(
   lineasZona: number,
   anclajeZona: AnclajeZona,
   paddingSuperior = 0,
-  paddingInferior = 0
+  paddingInferior = 0,
+  altoLineaViva?: number
 ): ResultadoBanda {
-  const altoBanda = lineasZona * alturaLinea
+  const filaPx = alturaLinea
+  const altoViva = altoLineaViva !== undefined ? altoLineaViva : filaPx * Math.max(1, lineasZona - 2)
+  const altoBanda = altoViva + 2 * filaPx
 
   let topBanda = 0
   if (anclajeZona === 'arriba') {

@@ -96,8 +96,20 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
     })
 
     // 4. Activar el checkbox y verificar que ahora SÍ se muestra el panel con los siguientes datos
+    // En T17 los controles se ocultan al iniciar; un toque en la pantalla los devuelve
+    const prompterView = container.querySelector('[data-testid="teleprompter-view-container"]')!
     await act(async () => {
-      fireEvent.click(checkbox)
+      fireEvent.click(prompterView)
+    })
+
+    const botonAjustes2 = screen.getByText(/Ajustes/i)
+    await act(async () => {
+      fireEvent.click(botonAjustes2)
+    })
+
+    const checkboxActual = screen.getByLabelText(/Ver transcripción en vivo/i)
+    await act(async () => {
+      fireEvent.click(checkboxActual)
     })
 
     expect(screen.getByText('Transcripción (en vivo):')).not.toBeNull()
