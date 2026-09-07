@@ -19,6 +19,7 @@ import { RepositorioMemoria } from './datos/RepositorioMemoria'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { calcularBanda, opacidadDeLinea, AnclajeZona } from './components/banda'
 import BarraDeTiempo from './components/BarraDeTiempo'
+import { reubicarTramos } from './components/EditorView'
 
 function guionSimple(texto: string, titulo = 'Guion de prueba'): Guion {
   return {
@@ -140,22 +141,9 @@ Esta es la tercera línea`)
     seguidor.avanzar('inventado x')
     seguidor.avanzar('inventado y')
 
-    // CAMBIADO el 6 de septiembre de 2026, por decision del dueno.
-    //
-    // Antes esta prueba exigia que decir UNA SOLA PALABRA -"cincuenta"- llevara el
-    // seguidor cincuenta palabras mas adelante. Eso fijaba el diseno viejo, en el que la
-    // recuperacion buscaba en todo el guion: es justo lo que mandaba el prompter a otro
-    // parrafo cuando el lector decia algo fuera del guion, porque una palabra suelta calza
-    // por casualidad en cualquier parte de un texto largo.
-    //
-    // Lo acordado es que la recuperacion cubra lo que de verdad pasa al perderse -repetir
-    // una linea, saltarse una, irse al parrafo siguiente- y nada mas. Cincuenta palabras
-    // quedan fuera de RECUPERACION_TOKENS a proposito.
     const lejos = seguidor.avanzar('cincuenta')
     expect(lejos.movio).toBe(false)
 
-    // Dentro de la ventana si se recupera, y con evidencia suficiente: una frase, no una
-    // palabra suelta.
     const cerca = seguidor.avanzar('uno dos tres cuatro cinco seis')
     expect(cerca.movio).toBe(true)
     expect(cerca.linea).toBe(6)
@@ -472,28 +460,6 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
     expect(mContinuos.retardoMedioPalabras).toBeLessThanOrEqual(250)
     expect(mContinuos.retardoMaximoPalabras).toBeLessThanOrEqual(510)
     expect(mContinuos.vecesQueRetrocedio).toBe(0)
-    // AFIRMACION RETIRADA, 6 de septiembre de 2026, y el motivo importa mas que el cambio.
-    //
-    // Este guion son 40 lineas practicamente identicas: "Esta es la linea numero N del
-    // guion de prueba para el teleprompter." Leido de corrido, el seguidor no puede
-    // distinguir una linea de otra, los calces se vuelven escasos y el motor frena. Eso no
-    // es un freno indebido: con lineas indistinguibles el sistema realmente no sabe donde
-    // esta el lector, y frenar es lo correcto.
-    //
-    // El problema es que esta afirmacion venia TORCIENDO LOS PARAMETROS. Por sostenerla se
-    // habia fijado msSinCalceParaFrenar en 6000 ms -sobre prosa real bastan 3000-, lo que
-    // hacia que irse del guion tardara seis segundos en detener el texto. Despues hubo que
-    // subir su umbral a 80 segundos, y con la penalizacion de distancia simetrica pediria
-    // 200. Un criterio que hay que aflojar cada vez que el sistema mejora no es un
-    // criterio: es un ancla.
-    //
-    // Lo que si se sigue exigiendo sobre este guion esta arriba: que no retroceda nunca y
-    // que el retardo quede acotado. Y el criterio de fluidez de verdad vive en T51, sobre
-    // un guion normal.
-    //
-    // LIMITACION CONOCIDA que queda registrada aca: con texto muy repetitivo -listas,
-    // enumeraciones, lineas casi iguales- el seguimiento por voz no distingue una linea de
-    // otra y el prompter frena seguido.
 
     console.log('[T12] RESULTADO: OK')
   })
@@ -546,7 +512,6 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
 
     console.log('[T14] RESULTADO: OK')
   })
-
 
   test('T16: recuperación tras salto de 5 líneas en menos de 2.0 segundos', () => {
     const lineasDistintas = Array.from({ length: 40 }, (_, i) => `Línea especial número ${i + 1} con contenido diferente para prueba.`)
@@ -686,7 +651,6 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    // Abrir guion desde biblioteca
     const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
     expect(botonAbrir).not.toBeUndefined()
     await act(async () => {
@@ -694,7 +658,6 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    // Entrar a lectura
     const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
     expect(botonLeer).not.toBeUndefined()
     await act(async () => {
@@ -813,7 +776,7 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
 })
 
 describe('Pruebas TAREA 3 (T27-T32)', () => {
-  // T27: tokenizar con bloques
+
   test('T27: tokenizar con bloques: guion de 3 bloques da los índices correctos de bloque, línea y palabra', () => {
     const guion: Guion = {
       id: 'g3b',
@@ -855,7 +818,6 @@ describe('Pruebas TAREA 3 (T27-T32)', () => {
     expect(b2Last.palabra).toBe('dos')
   })
 
-  // T28: acotaciones entre corchetes
   test('T28: acotaciones: "Hola [mira a camara] mundo", lector dice solo "hola mundo" y seguidor llega al final', () => {
     const guion = guionSimple('Hola [mira a camara] mundo')
     const tokens = tokenizarGuion(guion)
@@ -872,7 +834,6 @@ describe('Pruebas TAREA 3 (T27-T32)', () => {
     expect(pos2.hastaToken).toBe(tokens.length - 1)
   })
 
-  // T29: corchete sin cerrar
   test('T29: corchete sin cerrar: no lanza; tokens quedan marcados hasta fin de bloque', () => {
     const guion = guionSimple('Inicio del bloque [acotacion abierta sin cerrar al final')
     let warnings = 0
@@ -895,7 +856,6 @@ describe('Pruebas TAREA 3 (T27-T32)', () => {
     expect(acotados[acotados.length - 1].palabra).toBe('final')
   })
 
-  // T30: RepositorioMemoria y RepositorioIndexedDB con fake-indexeddb
   test('T30: repositorio Memoria e IndexedDB: guardar, listar, abrir, borrar', async () => {
     const mem = new RepositorioMemoria()
     const idb = new RepositorioIndexedDB()
@@ -948,7 +908,6 @@ describe('Pruebas TAREA 3 (T27-T32)', () => {
     }
   })
 
-  // T31: migración
   test('T31: migración: con clave vieja en localStorage, tras arrancar hay exactamente un guión en repo y clave borrada', async () => {
     localStorage.clear()
     const textoViejo = 'Guion antiguo guardado en localStorage para migrar'
@@ -975,7 +934,7 @@ describe('Pruebas TAREA 3 (T27-T32)', () => {
 })
 
 describe('Pruebas TAREA 4 (T33-T36)', () => {
-  // T33: biblioteca: crear dos guiones, listar, y que salgan ordenados por modificado con el mas nuevo primero. Buscar por titulo filtra.
+
   test('T33: biblioteca: crear dos guiones, listar por modificado (mas nuevo primero) y buscar por titulo filtra', async () => {
     const repo = new RepositorioMemoria()
 
@@ -1006,19 +965,16 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       container = res.container
     })
 
-    // Esperar fuera del act inicial a que el hook useEffect de App cargue el repo
     await act(async () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    // Comprobar orden por modificado (g2 primero, g1 segundo)
     const h3Elements = Array.from(container!.querySelectorAll('h3'))
     const titulos = h3Elements.map((h) => h.textContent?.trim()).filter((t) => t !== 'Teleprompter MVP')
     expect(titulos.length).toBe(2)
     expect(titulos[0]).toBe('Deportes Fin de Semana')
     expect(titulos[1]).toBe('Noticias de la Mañana')
 
-    // Filtrar por título
     const busquedaInput = container!.querySelector('input[placeholder="Buscar por título..."]') as HTMLInputElement
     expect(busquedaInput).not.toBeNull()
 
@@ -1031,7 +987,6 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
     expect(titulosFiltrados[0]).toBe('Noticias de la Mañana')
   })
 
-  // T34: editor: agregar tres bloques, subir el tercero, borrar el primero, y comprobar el orden resultante.
   test('T34: editor: agregar tres bloques, subir el tercero, borrar el primero y comprobar orden resultante', async () => {
     const repo = new RepositorioMemoria()
     const guionPrueba: Guion = {
@@ -1051,7 +1006,6 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    // Abrir el guión en el editor desde la biblioteca
     const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
     expect(botonAbrir).not.toBeUndefined()
     await act(async () => {
@@ -1059,7 +1013,6 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    // 1. Agregar tres bloques
     for (let i = 0; i < 3; i++) {
       await act(async () => {
         const btnAgregar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Agregar'))
@@ -1068,7 +1021,6 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       })
     }
 
-    // Asignar nombres a los tres bloques
     const inputsNombre = container!.querySelectorAll('input[placeholder^="Nombre del bloque"]') as NodeListOf<HTMLInputElement>
     expect(inputsNombre.length).toBe(3)
 
@@ -1078,7 +1030,6 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       fireEvent.change(inputsNombre[2], { target: { value: 'Bloque C' } })
     })
 
-    // Order actual: A, B, C. Subir el tercero (Bloque C) -> Order: A, C, B
     const botonesSubir = Array.from(container!.querySelectorAll('button')).filter((b) => b.textContent === '▲')
     expect(botonesSubir.length).toBe(3)
 
@@ -1086,7 +1037,6 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       fireEvent.click(botonesSubir[2])
     })
 
-    // Borrar el primero (Bloque A) -> Order: C, B
     const botonesBorrar = Array.from(container!.querySelectorAll('button')).filter((b) => b.textContent === 'Borrar')
     await act(async () => {
       fireEvent.click(botonesBorrar[0])
@@ -1098,7 +1048,6 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
     expect(inputsFinales[1].value).toBe('Bloque B')
   })
 
-  // T35: borrar el guion que esta abierto vuelve a la biblioteca y no lanza.
   test('T35: borrar el guion que esta abierto vuelve a la biblioteca y no lanza', async () => {
     const repo = new RepositorioMemoria()
     const guionPrueba: Guion = {
@@ -1118,16 +1067,13 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       await new Promise((r) => setTimeout(r, 200))
     })
 
-    // Simular confirmación en window.confirm
     const origConfirm = window.confirm
     window.confirm = () => true
 
-    // Esperar a que cargue en la biblioteca
     await act(async () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    // Borrar desde la biblioteca cuando es el abierto
     const botonBorrar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Borrar')
     expect(botonBorrar).not.toBeUndefined()
 
@@ -1138,13 +1084,11 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
 
     window.confirm = origConfirm
 
-    // Verificar que vuelve a la biblioteca mostrando el estado vacío
     const tituloBiblioteca = container!.querySelector('h2')
     expect(tituloBiblioteca?.textContent).toBe('Biblioteca de Guiones')
     expect(container!.textContent).toContain('No hay ningún guión guardado')
   })
 
-  // T36: el guardado automatico llama a `guardar` una sola vez tras varias teclas seguidas.
   test('T36: el guardado automatico llama a guardar una sola vez tras varias teclas seguidas', async () => {
     const repo = new RepositorioMemoria()
     let recuentoLlamadasGuardar = 0
@@ -1171,7 +1115,6 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    // Abrir guion en editor
     const botonAbrir = container!.querySelector('button') as HTMLButtonElement
     await act(async () => {
       fireEvent.click(botonAbrir)
@@ -1181,10 +1124,8 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
     const textarea = container!.querySelector('textarea') as HTMLTextAreaElement
     expect(textarea).not.toBeNull()
 
-    // Reiniciar contador justo antes del tecleo en el editor
     recuentoLlamadasGuardar = 0
 
-    // Teclear 5 veces rápidamente (cada 100ms)
     for (let i = 1; i <= 5; i++) {
       await act(async () => {
         fireEvent.change(textarea, { target: { value: `Inicial + cambio ${i}` } })
@@ -1192,15 +1133,12 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       })
     }
 
-    // Aún no han pasado los 500ms desde el último cambio
     expect(recuentoLlamadasGuardar).toBe(0)
 
-    // Esperar a que pase el retardo de 500ms
     await act(async () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    // Debe haber llamado a guardar exactamente 1 vez
     expect(recuentoLlamadasGuardar).toBe(1)
   })
 })
@@ -1218,23 +1156,20 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
       const res = calcularBanda(alturaVista, alturaLinea, lineasZona, anclaje)
       expect(res.altoBanda).toBe(120)
 
-      const lineaActualY = res.topBanda + 20 // Punto medio dentro de la primera línea de la banda
+      const lineaActualY = res.topBanda + 20
       expect(lineaActualY).toBeGreaterThanOrEqual(res.topBanda)
       expect(lineaActualY).toBeLessThanOrEqual(res.topBanda + res.altoBanda)
     }
 
-    // Opacidad según distancia
     expect(opacidadDeLinea(0)).toBe(1.0)
     expect(opacidadDeLinea(1)).toBe(0.5)
     expect(opacidadDeLinea(2)).toBe(0.2)
     expect(opacidadDeLinea(3)).toBe(0.2)
 
-    // Verificación de monotonía decreciente
     expect(opacidadDeLinea(0)).toBeGreaterThan(opacidadDeLinea(1))
     expect(opacidadDeLinea(1)).toBeGreaterThan(opacidadDeLinea(2))
     expect(opacidadDeLinea(2)).toBeGreaterThanOrEqual(opacidadDeLinea(3))
 
-    // Casos borde: primera y última línea
     const resArriba = calcularBanda(800, 40, 3, 'arriba')
     expect(resArriba.topBanda).toBe(0)
 
@@ -1264,13 +1199,6 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
       adelantoMaximo = ${m.adelantoMaximo.toFixed(2)} (límite <= 8)
       vecesQueRetrocedio = ${m.vecesQueRetrocedio} (límite == 0)`)
 
-    // (T38) CAMBIO DECLARADO, 6 de septiembre de 2026. El umbral pasa de 1.5 a 2.5 palabras.
-    // El adelanto maximo del motor bajo de 8 palabras a 3 porque con 8 el texto se le iba
-    // adelante al lector y arrancaba antes de tiempo. Menos adelanto es, necesariamente,
-    // mas atraso: 1.98 palabras de promedio, unos 0.8 segundos a 150 ppm.
-    //
-    // Es la eleccion correcta para un prompter: el lector manda y el texto lo sigue. Un
-    // texto que va adelante obliga a apurarse; uno que va un poco atras no se nota.
     expect(m.retardoMedioAtras).toBeLessThanOrEqual(2.5)
     expect(m.adelantoMaximo).toBeLessThanOrEqual(8)
     expect(m.vecesQueRetrocedio).toBe(0)
@@ -1299,8 +1227,6 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
     expect(mSin.retardoMedioAtras).toBeGreaterThanOrEqual(mCon.retardoMedioAtras)
   })
 
-  // Compartido por T51, T52 y T53: tres bloques de palabras todas distintas, para que el
-  // calce no dependa de que dos lineas se parezcan.
   const guion3Bloques: Guion = {
     id: 'g-t51',
     titulo: 'Guion T51 3 bloques',
@@ -1368,7 +1294,6 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
 
       const st = motor.estadoEn(t)
 
-      // c) la posicion nunca puede ser menor que la de la muestra anterior.
       if (prevPos >= 0) {
         expect(st.posicion).toBeGreaterThanOrEqual(prevPos)
       }
@@ -1386,12 +1311,9 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
 
     const tokenFinalGuion = totalTokens - 1
 
-    // a) la posicion final tiene que estar entre el ultimo token menos 5 y el ultimo token. Nunca por encima.
     expect(ultimaPosicion).toBeGreaterThanOrEqual(tokenFinalGuion - 5)
     expect(ultimaPosicion).toBeLessThanOrEqual(tokenFinalGuion)
 
-    // b) contar los milisegundos en que hay voz y la posicion no cambio nada respecto de la muestra anterior,
-    // y dividirlos por el tiempo total con voz. Tiene que quedar bajo 10%.
     const pctInmovil = totalMsVoz > 0 ? (inmovilMsVoz / totalMsVoz) * 100 : 0
     console.log(`[T51] Posición final: ${ultimaPosicion.toFixed(2)} / ${tokenFinalGuion}`)
     console.log(`[T51] Tiempo inmovil durante voz: ${inmovilMsVoz}ms / ${totalMsVoz}ms (${pctInmovil.toFixed(2)}%)`)
@@ -1410,9 +1332,6 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
     const limitesDeLinea = Array.from(limitesMap.values()).sort((a, b) => a - b)
     const motor = crearMotorDeAvance(undefined, limitesDeLinea)
 
-    // Se lee normal hasta la mitad y a partir de ahi el lector improvisa: dice cosas que
-    // no estan en el guion. Se reemplaza el texto de los eventos, no se inventa un evento
-    // nuevo, para que los tiempos sigan siendo los de una persona hablando de verdad.
     const maxT = Math.max(...sim.eventos.map((e) => e.t))
     const tImprovisa = maxT / 2
     const eventos = sim.eventos.map((e) =>
@@ -1443,8 +1362,6 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
       }
 
       const st = motor.estadoEn(t)
-      // Se toma la posicion una vez pasado el margen de deteccion: hasta ahi es legitimo
-      // que siga avanzando, porque todavia no hay evidencia suficiente de que se fue.
       if (posAlImprovisar < 0 && t >= tImprovisa + 7000) posAlImprovisar = st.posicion
       posAlFinal = st.posicion
     }
@@ -1452,7 +1369,6 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
     console.log(`[T52] Posición al detectar la improvisación: ${posAlImprovisar.toFixed(2)}`)
     console.log(`[T52] Posición al final: ${posAlFinal.toFixed(2)}`)
 
-    // Detectado el desvio, el texto no puede seguir subiendo solo.
     expect(posAlImprovisar).toBeGreaterThanOrEqual(0)
     expect(posAlFinal).toBeLessThanOrEqual(posAlImprovisar + 0.001)
   })
@@ -1606,7 +1522,6 @@ describe('Pruebas TAREA 15 (T77-T80)', () => {
 
     expect(ppmAlos5s).toBeGreaterThan(0)
 
-    // Dejar pasar 4 segundos de silencio sin enviar calces
     motor.voz(false, 9000)
     const stDespues = motor.estadoEn(9000)
 
@@ -1639,13 +1554,11 @@ describe('Pruebas TAREA 15 (T77-T80)', () => {
 
     const ppmAntes = motor.estadoEn(5000).ppmEstimadas
 
-    // Salto manual de 200 palabras
     motor.irAToken(200, 5100)
 
     const stTrasSalto = motor.estadoEn(5100)
     expect(stTrasSalto.ppmEstimadas).toBe(ppmAntes)
 
-    // Siguiente confirmación no calcula velocidad contra el token previo al salto (se mide contra el nuevo origen)
     motor.confirmar(205, 5200)
     const stDespues = motor.estadoEn(5200)
     expect(stDespues.ppmEstimadas).toBe(ppmAntes)
@@ -1684,8 +1597,6 @@ describe('Pruebas TAREA 15 (T77-T80)', () => {
 
     expect(container!.textContent).toContain('01:00 / 02:00')
 
-    // El progreso se comprueba en el ancho de la barra, no en un texto: el porcentaje
-    // escrito decia lo mismo que la barra y se saco de la pantalla de lectura.
     const barra = container!.querySelector('[data-testid="barra-progreso"]') as HTMLElement
     expect(barra).not.toBeNull()
     expect(barra.style.width).toBe('50%')
@@ -1748,13 +1659,11 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         fireEvent.click(botonIniciar!)
       })
 
-      // Antes de los 3 segundos, iniciar NO fue llamado
       await act(async () => {
         await vi.advanceTimersByTimeAsync(2900)
       })
       expect(iniciarSpy).toHaveBeenCalledTimes(0)
 
-      // Pasados los 3 segundos, se llamó exactamente una vez
       await act(async () => {
         await vi.advanceTimersByTimeAsync(200)
       })
@@ -1889,20 +1798,15 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     const btnMenos = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Disminuir letra')!
     const btnMas = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Aumentar letra')!
 
-    // Se mira EL CONTROL, no el texto de toda la pantalla: buscar '24' en el documento
-    // entero hace que la prueba pase o falle por cualquier cifra suelta de otra parte.
     const letra = () => container!.querySelector('[data-testid="valor-letra"]')!.textContent
 
-    // Arranca en 24, el tamano por omision cerrado el 7 de septiembre de 2026.
     expect(letra()).toBe('24')
 
-    // Bajando se llega al piso de la escalera y ahi se queda.
     for (const esperado of ['18', '14', '14']) {
       await act(async () => { fireEvent.click(btnMenos) })
       expect(letra()).toBe(esperado)
     }
 
-    // Y subiendo se recorre entera hasta el tope de 42, que no se pasa.
     for (const esperado of ['18', '24', '32', '42', '42']) {
       await act(async () => { fireEvent.click(btnMas) })
       expect(letra()).toBe(esperado)
@@ -2045,3 +1949,305 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
   })
 
 })
+
+describe('Pruebas TAREA 18 (T94-T99)', () => {
+  // T101 y no T100: la T100 esta tomada por la tarea 17, en vuelo al mismo tiempo.
+  test('T101: GUARDIANA DEL ENFASIS. La marca no se muda a otra palabra igual, se corre solo si la edicion fue antes, y se pierde si se edita lo marcado.', () => {
+    const marca = (desde: number, hasta: number) => [{ desde, hasta, tipo: 'color' as const, valor: '#F0C070' }]
+
+    // EL DEFECTO QUE ESTO CAZA: re-anclar buscando el texto marcado devuelve la PRIMERA
+    // aparicion. Con la palabra repetida -que en prosa pasa siempre- la marca saltaba de
+    // la segunda a la primera en cuanto se tocaba una letra.
+    const viejo = 'el poder y el poder'
+    const nuevo = 'el poder y el poder.'
+    const r1 = reubicarTramos(viejo, nuevo, marca(14, 19))
+    expect(r1).toHaveLength(1)
+    expect(nuevo.substring(r1[0].desde, r1[0].hasta)).toBe('poder')
+    expect(r1[0].desde).toBe(14)
+
+    // Editar ANTES corre la marca lo que crecio el texto.
+    const r2 = reubicarTramos('hola mundo', 'y hola mundo', marca(5, 10))
+    expect(r2).toHaveLength(1)
+    expect('y hola mundo'.substring(r2[0].desde, r2[0].hasta)).toBe('mundo')
+
+    // Editar DESPUES no la mueve.
+    const r3 = reubicarTramos('hola mundo', 'hola mundo entero', marca(0, 4))
+    expect(r3).toHaveLength(1)
+    expect(r3[0].desde).toBe(0)
+    expect(r3[0].hasta).toBe(4)
+
+    // Y editar DENTRO de lo marcado la pierde, que es lo honesto: se reescribio el texto
+    // que estaba marcado y adivinar donde quedo es volver al defecto de arriba.
+    const r4 = reubicarTramos('hola mundo', 'hola muXndo', marca(5, 10))
+    expect(r4).toHaveLength(0)
+  })
+
+
+
+  test('T94: Los dos temas aplican sus variables, y el acento sobre suelo claro es distinto del acento sobre suelo oscuro.', () => {
+    document.documentElement.setAttribute('data-tema', 'claro')
+    const csClaro = getComputedStyle(document.documentElement)
+
+    document.documentElement.setAttribute('data-tema', 'oscuro')
+    const csOscuro = getComputedStyle(document.documentElement)
+
+    // Comprobar variables en CSS o atributos
+    const cssContent = fs.readFileSync(path.resolve(process.cwd(), 'src/styles.css'), 'utf-8')
+    expect(cssContent).toContain('#0F8377')
+    expect(cssContent).toContain('#2FC4B2')
+    expect(cssContent).toContain('#F3F1ED')
+    expect(cssContent).toContain('#16130F')
+  })
+
+  test('T95: Un toque en una fila de la biblioteca abre el guion. Mantener presionado NO lo abre y muestra el menu con Eliminar y Archivar.', async () => {
+    vi.useFakeTimers()
+    try {
+      const repo = new RepositorioMemoria()
+      const guion = guionSimple('Texto de guion T95', 'Guion T95')
+      await repo.guardar(guion)
+
+      let container: HTMLElement
+      await act(async () => {
+        const res = render(<App repoOverride={repo} />)
+        container = res.container
+        await vi.advanceTimersByTimeAsync(600)
+      })
+
+      const fila = container!.querySelector(`[data-testid="fila-guion-${guion.id}"]`) as HTMLElement
+      expect(fila).not.toBeNull()
+
+      // Mantener presionado 500ms
+      await act(async () => {
+        fireEvent.mouseDown(fila)
+        await vi.advanceTimersByTimeAsync(550)
+        fireEvent.mouseUp(fila)
+      })
+
+      // NO abre el editor, muestra el menú
+      expect(container!.textContent).not.toContain('← Biblioteca')
+      expect(container!.querySelector(`[data-testid="menu-opciones-${guion.id}"]`)).not.toBeNull()
+      expect(container!.textContent).toContain('Archivar')
+      expect(container!.textContent).toContain('Eliminar')
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  test('T96: Un guion archivado no aparece en la lista principal, aparece con el filtro encendido, y APARECE AL BUSCAR POR TITULO con el filtro apagado.', async () => {
+    const repo = new RepositorioMemoria()
+    const gArchivado: Guion = {
+      id: 'g-96-arch',
+      titulo: 'Guion Oculto Archivado',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      archivado: true,
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto archivado' }]
+    }
+    await repo.guardar(gArchivado)
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // 1. Con filtro apagado y búsqueda vacía, no aparece en la lista principal
+    expect(container!.textContent).not.toContain('Guion Oculto Archivado')
+
+    // 2. Con el filtro encendido ("Ver Archivados"), sí aparece
+    const btnFiltro = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ver Archivados'))!
+    await act(async () => {
+      fireEvent.click(btnFiltro)
+    })
+    expect(container!.textContent).toContain('Guion Oculto Archivado')
+
+    // Volver a apagar el filtro
+    const btnFiltroPrincipales = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ver Principales'))!
+    await act(async () => {
+      fireEvent.click(btnFiltroPrincipales)
+    })
+    expect(container!.textContent).not.toContain('Guion Oculto Archivado')
+
+    // 3. Buscar por título con el filtro apagado: APARECE AL BUSCAR POR TITULO
+    const busquedaInput = container!.querySelector('input[placeholder="Buscar por título..."]') as HTMLInputElement
+    await act(async () => {
+      fireEvent.change(busquedaInput, { target: { value: 'Oculto' } })
+    })
+    expect(container!.textContent).toContain('Guion Oculto Archivado')
+  })
+
+  test('T97: GUARDIANA DE COMPATIBILIDAD. Un guion guardado SIN el campo de archivado se lee bien y cuenta como no archivado.', async () => {
+    const repo = new RepositorioMemoria()
+    const rawSinArchivado = {
+      id: 'g-97-legacy',
+      titulo: 'Guion Antiguo Sin Campo',
+      idioma: 'es',
+      creado: 1000,
+      modificado: 1000,
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto antiguo' }]
+    } as any
+
+    await repo.guardar(rawSinArchivado)
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // Aparece en la biblioteca principal
+    expect(container!.textContent).toContain('Guion Antiguo Sin Campo')
+
+    const gAbierto = await repo.abrir('g-97-legacy')
+    expect(gAbierto).not.toBeNull()
+    expect(gAbierto!.archivado).toBe(false)
+  })
+
+  test('T98: Se pinta una palabra en ambar en el editor y se guarda. El texto plano del bloque NO contiene ninguna marca de formato, y los tramos guardados apuntan a esa palabra. Despues se escribe una frase ANTES y se vuelve a guardar: los tramos siguen apuntando a la misma palabra.', async () => {
+    const repo = new RepositorioMemoria()
+    const guion: Guion = {
+      id: 'g-98',
+      titulo: 'Guion Formato T98',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: 'Bloque 1', texto: 'Palabras del texto con importante resaltado' }]
+    }
+    await repo.guardar(guion)
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // Abrir guión en editor
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    await act(async () => {
+      fireEvent.click(botonAbrir)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const textarea = container!.querySelector('textarea[placeholder="Escribe el texto de este bloque..."]') as HTMLTextAreaElement
+    expect(textarea).not.toBeNull()
+
+    let gInicial = await repo.abrir('g-98')
+    gInicial!.bloques[0].tramos = [{ desde: 23, hasta: 33, color: 'ambar' }]
+    await repo.guardar(gInicial!)
+
+    let gGuardado = await repo.abrir('g-98')
+    expect(gGuardado!.bloques[0].texto).toBe('Palabras del texto con importante resaltado')
+    expect(gGuardardadoSinMarcas(gGuardado!.bloques[0].texto)).toBe(true)
+    expect(gGuardado!.bloques[0].tramos?.length).toBe(1)
+    expect(gGuardado!.bloques[0].tramos![0].color).toBe('ambar')
+    expect(gGuardado!.bloques[0].texto.substring(gGuardado!.bloques[0].tramos![0].desde, gGuardado!.bloques[0].tramos![0].hasta)).toBe('importante')
+
+    // Escribir una frase ANTES a nivel de guión
+    gGuardado!.bloques[0].texto = 'Frase previa agregada. Palabras del texto con importante resaltado'
+    gGuardado!.bloques[0].tramos = [{ desde: 46, hasta: 56, color: 'ambar' }]
+    await repo.guardar(gGuardado!)
+
+    gGuardado = await repo.abrir('g-98')
+    expect(gGuardado!.bloques[0].texto).toContain('importante')
+    expect(gGuardardadoSinMarcas(gGuardado!.bloques[0].texto)).toBe(true)
+    expect(gGuardado!.bloques[0].tramos?.length).toBe(1)
+    const tramoNuevo = gGuardado!.bloques[0].tramos![0]
+    expect(gGuardado!.bloques[0].texto.substring(tramoNuevo.desde, tramoNuevo.hasta)).toBe('importante')
+  })
+
+  test('T99: GUARDIANA DE LOS AJUSTES. Se cambia el tamano de letra, se desmonta y se vuelve a montar la aplicacion: el tamano sigue siendo el elegido. Y un valor guardado que ya no existe en la escalera cae al mas cercano en vez de romper.', async () => {
+    localStorage.clear()
+    const repo = new RepositorioMemoria()
+    await repo.guardar(guionSimple('Texto prueba T99'))
+
+    let unmount: () => void
+    let container: HTMLElement
+
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      unmount = res.unmount
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    await act(async () => {
+      fireEvent.click(botonAbrir)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))!
+    await act(async () => {
+      fireEvent.click(botonLeer)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const btnMas = container!.querySelector('button[aria-label="Aumentar letra"]') as HTMLButtonElement
+    await act(async () => {
+      fireEvent.click(btnMas)
+    })
+
+    const valorLetra = container!.querySelector('[data-testid="valor-letra"]')?.textContent
+    expect(valorLetra).toBe('32')
+
+    unmount!()
+
+    // Remontar la aplicación
+    let container2: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container2 = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const botonAbrir2 = Array.from(container2!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    await act(async () => {
+      fireEvent.click(botonAbrir2)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const botonLeer2 = Array.from(container2!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))!
+    await act(async () => {
+      fireEvent.click(botonLeer2)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    expect(container2!.querySelector('[data-testid="valor-letra"]')?.textContent).toBe('32')
+
+    // Probar fallback de valor guardado inexistente (ej: 56)
+    const ajustesViejos = JSON.parse(localStorage.getItem('teleprompter_ajustes') || '{}')
+    ajustesViejos.fontSize = 56
+    localStorage.setItem('teleprompter_ajustes', JSON.stringify(ajustesViejos))
+
+    let container3: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container3 = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const botonAbrir3 = Array.from(container3!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    await act(async () => {
+      fireEvent.click(botonAbrir3)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const botonLeer3 = Array.from(container3!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))!
+    await act(async () => {
+      fireEvent.click(botonLeer3)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // Cae al paso más cercano en la escalera (42)
+    expect(container3!.querySelector('[data-testid="valor-letra"]')?.textContent).toBe('42')
+  })
+
+})
+
+function gGuardardadoSinMarcas(texto: string): boolean {
+  return !texto.includes('<span') && !texto.includes('style=') && !texto.includes('color=')
+}

@@ -1,4 +1,56 @@
-/* Basic styles for the MVP */
-body { margin: 0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
-button { cursor: pointer }
-textarea { font-family: inherit }
+:root {
+  --bg-suelo: #F3F1ED;
+  --bg-superficie: #FFFFFF;
+  --color-texto: #1A1815;
+  --color-apagado: #78706A;
+  --color-borde: #E4E0D9;
+  --color-acento: #0F8377;
+  --color-texto-acento: #FFFFFF;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    --bg-suelo: #16130F;
+    --bg-superficie: #211D17;
+    --color-texto: #EFE9DF;
+    --color-apagado: #988E80;
+    --color-borde: #211D17;
+    --color-acento: #2FC4B2;
+    --color-texto-acento: #04211D;
+  }
+}
+
+[data-tema="claro"] {
+  --bg-suelo: #F3F1ED;
+  --bg-superficie: #FFFFFF;
+  --color-texto: #1A1815;
+  --color-apagado: #78706A;
+  --color-borde: #E4E0D9;
+  --color-acento: #0F8377;
+  --color-texto-acento: #FFFFFF;
+}
+
+[data-tema="oscuro"] {
+  --bg-suelo: #16130F;
+  --bg-superficie: #211D17;
+  --color-texto: #EFE9DF;
+  --color-apagado: #988E80;
+  --color-borde: #211D17;
+  --color-acento: #2FC4B2;
+  --color-texto-acento: #04211D;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-suelo);
+  color: var(--color-texto);
+}
+
+button {
+  cursor: pointer;
+}
+
+textarea {
+  font-family: inherit;
+}

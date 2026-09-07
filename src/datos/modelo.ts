@@ -1,7 +1,15 @@
+export type TramoFormato = {
+  desde: number
+  hasta: number
+  negrita?: boolean
+  color?: 'ambar' | 'celeste' | 'salvia'
+}
+
 export type Bloque = {
   id: string        // uuid
   nombre: string    // puede ir vacio
   texto: string
+  tramos?: TramoFormato[]
 }
 
 export type Guion = {
@@ -10,6 +18,7 @@ export type Guion = {
   idioma: string    // 'es', 'en', 'pt'... codigo corto. NUNCA cablear 'es'.
   creado: number    // epoch ms
   modificado: number
+  archivado?: boolean
   bloques: Bloque[]
 }
 
@@ -19,6 +28,7 @@ export type ResumenGuion = {
   idioma: string
   modificado: number
   palabras: number
+  archivado?: boolean
 }
 
 function generarUuid(): string {
@@ -40,6 +50,7 @@ export function guionNuevo(idioma: string): Guion {
     idioma,
     creado: ahora,
     modificado: ahora,
+    archivado: false,
     bloques: [
       {
         id: generarUuid(),
@@ -60,4 +71,12 @@ export function contarPalabras(g: Guion): number {
     total += palabras.length
   }
   return total
+}
+
+export function calcularDuracionTexto(palabras: number, ppm: number = 150): string {
+  if (palabras <= 0) return '0:00'
+  const totalSegundos = Math.round((palabras / ppm) * 60)
+  const mins = Math.floor(totalSegundos / 60)
+  const segs = totalSegundos % 60
+  return `${mins}:${segs.toString().padStart(2, '0')}`
 }

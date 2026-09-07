@@ -1,7 +1,52 @@
 import React, { useRef, useState } from 'react'
-import { Guion, Bloque } from '../datos/modelo'
+import { Guion, Bloque, TramoFormato } from '../datos/modelo'
 import { importarTexto } from '../datos/importar'
 import { importarArchivo } from '../datos/importarArchivo'
+
+// Reubica los tramos de formato cuando el texto cambia.
+//
+// La primera version buscaba el texto marcado con indexOf, que devuelve la PRIMERA
+// aparicion: si la palabra marcada se repite -y en prosa se repite siempre- la marca
+// saltaba a la palabra equivocada en cuanto se tocaba una letra. Y el respaldo desplazaba
+// todos los tramos por la diferencia de largo, aunque la edicion fuera POSTERIOR a ellos.
+//
+// Lo correcto no necesita buscar nada: comparando el principio y el final comunes entre el
+// texto viejo y el nuevo se sabe exactamente que tramo cambio. Con eso cada marca cae en
+// uno de tres casos y no hay ambiguedad posible.
+export function reubicarTramos(
+  textoViejo: string,
+  nuevoTexto: string,
+  tramos: TramoFormato[]
+): TramoFormato[] {
+  if (tramos.length === 0) return []
+  if (textoViejo === nuevoTexto) return tramos
+
+  let ini = 0
+  const maxIni = Math.min(textoViejo.length, nuevoTexto.length)
+  while (ini < maxIni && textoViejo[ini] === nuevoTexto[ini]) ini++
+
+  let cola = 0
+  while (
+    cola < maxIni - ini &&
+    textoViejo[textoViejo.length - 1 - cola] === nuevoTexto[nuevoTexto.length - 1 - cola]
+  ) cola++
+
+  const finViejo = textoViejo.length - cola
+  const delta = (nuevoTexto.length - cola) - finViejo
+
+  const salida: TramoFormato[] = []
+  for (const tr of tramos) {
+    if (tr.hasta <= ini) {
+      salida.push(tr)
+    } else if (tr.desde >= finViejo) {
+      salida.push({ ...tr, desde: tr.desde + delta, hasta: tr.hasta + delta })
+    }
+    // Si la edicion cae DENTRO de la marca, la marca se pierde. Es lo honesto: se
+    // reescribio el texto marcado, y adivinar donde quedo es volver al indexOf.
+  }
+  return salida
+}
+
 
 interface EditorViewProps {
   guion: Guion
@@ -23,17 +68,17 @@ export default function EditorView({
   onVolverBiblioteca,
   onEntrarLectura
 }: EditorViewProps) {
-  // Estado local para los bloques plegados (true = plegado, false = desplegado)
   const [plegados, setPlegados] = useState<Record<string, boolean>>({})
-  // Estado para el modal/sección de pegar texto
   const [mostrarModalPegar, setMostrarModalPegar] = useState(false)
   const [textoPegado, setTextoPegado] = useState('')
   const [errorPegado, setErrorPegado] = useState<string | null>(null)
 
-  // Estado y ref para importar desde archivo
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [cargandoArchivo, setCargandoArchivo] = useState(false)
   const [errorArchivo, setErrorArchivo] = useState<string | null>(null)
+
+  const textareaRefs = useRef<Record<string, HTMLTextAreaElement | null>>({})
+  const ultimasSeleccionesRef = useRef<Record<string, { desde: number; hasta: number }>>({})
 
   function togglePlegado(id: string) {
     setPlegados((prev) => ({
@@ -125,7 +170,8 @@ export default function EditorView({
     const nuevoBloque: Bloque = {
       id: generarIdBloque(),
       nombre: '',
-      texto: ''
+      texto: '',
+      tramos: []
     }
     const bloquesActuales = guion.bloques || []
     onChangeGuion({
@@ -148,13 +194,82 @@ export default function EditorView({
 
   function handleTextoBloqueChange(index: number, nuevoTexto: string) {
     if (!guion.bloques || !guion.bloques[index]) return
+    const bloqueViejo = guion.bloques[index]
+
     const nuevosBloques = [...guion.bloques]
-    nuevosBloques[index] = { ...nuevosBloques[index], texto: nuevoTexto }
+    nuevosBloques[index] = {
+      ...nuevosBloques[index],
+      texto: nuevoTexto,
+      tramos: reubicarTramos(bloqueViejo.texto || '', nuevoTexto, bloqueViejo.tramos || [])
+    }
+
     onChangeGuion({
       ...guion,
       bloques: nuevosBloques,
       modificado: Date.now()
     })
+  }
+
+  function aplicarFormatoEnSeleccion(index: number, opciones: { negrita?: boolean; color?: 'ambar' | 'celeste' | 'salvia' }) {
+    if (!guion.bloques || !guion.bloques[index]) return
+    const bloque = guion.bloques[index]
+    const textarea = textareaRefs.current[bloque.id]
+    if (!textarea) return
+
+    let desde = textarea.selectionStart
+    let hasta = textarea.selectionEnd
+
+    if (desde === hasta && ultimasSeleccionesRef.current[bloque.id]) {
+      const guardado = ultimasSeleccionesRef.current[bloque.id]
+      desde = guardado.desde
+      hasta = guardado.hasta
+    }
+
+    if (desde === hasta) return
+
+    const tramosActuales = bloque.tramos ? [...bloque.tramos] : []
+
+    const tramoExisteIdx = tramosActuales.findIndex((t) => t.desde === desde && t.hasta === hasta)
+    if (tramoExisteIdx !== -1) {
+      tramosActuales[tramoExisteIdx] = {
+        ...tramosActuales[tramoExisteIdx],
+        ...opciones
+      }
+    } else {
+      tramosActuales.push({
+        desde,
+        hasta,
+        ...opciones
+      })
+    }
+
+    const nuevosBloques = [...guion.bloques]
+    nuevosBloques[index] = {
+      ...nuevosBloques[index],
+      tramos: tramosActuales
+    }
+
+    onChangeGuion({
+      ...guion,
+      bloques: nuevosBloques,
+      modificado: Date.now()
+    })
+  }
+
+  function handleAcotacion(index: number) {
+    if (!guion.bloques || !guion.bloques[index]) return
+    const bloque = guion.bloques[index]
+    const textarea = textareaRefs.current[bloque.id]
+    if (!textarea) return
+
+    const desde = textarea.selectionStart
+    const hasta = textarea.selectionEnd
+    const textoActual = bloque.texto || ''
+    const textoSeleccionado = textoActual.substring(desde, hasta)
+
+    const textoNuevo = textoActual.substring(0, desde) + `[${textoSeleccionado}]` + textoActual.substring(hasta)
+
+    handleTextoBloqueChange(index, textoNuevo)
   }
 
   function handleSubirBloque(index: number) {
@@ -195,15 +310,15 @@ export default function EditorView({
 
   return (
     <div style={{ maxWidth: 800, margin: '0 auto', padding: '16px 0' }}>
-      {/* Barra superior de navegación */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <button
           onClick={onVolverBiblioteca}
           style={{
             padding: '8px 14px',
-            backgroundColor: '#f0f0f0',
-            border: '1px solid #ccc',
-            borderRadius: 4,
+            backgroundColor: 'var(--bg-superficie)',
+            border: '1px solid var(--color-borde)',
+            borderRadius: 6,
+            color: 'var(--color-texto)',
             cursor: 'pointer'
           }}
         >
@@ -214,10 +329,10 @@ export default function EditorView({
           onClick={onEntrarLectura}
           style={{
             padding: '10px 20px',
-            backgroundColor: '#2e7d32',
-            color: '#fff',
+            backgroundColor: 'var(--color-acento)',
+            color: 'var(--color-texto-acento)',
             border: 'none',
-            borderRadius: 4,
+            borderRadius: 6,
             cursor: 'pointer',
             fontSize: 16,
             fontWeight: 'bold'
@@ -227,19 +342,18 @@ export default function EditorView({
         </button>
       </div>
 
-      {/* Encabezado editable del guión */}
       <div
         style={{
-          backgroundColor: '#fff',
+          backgroundColor: 'var(--bg-superficie)',
           padding: 16,
           borderRadius: 8,
-          border: '1px solid #e0e0e0',
+          border: '1px solid var(--color-borde)',
           marginBottom: 24,
           boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
         }}
       >
         <div style={{ marginBottom: 12 }}>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: 4, color: '#333' }}>
+          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: 4, color: 'var(--color-texto)' }}>
             Título del guión:
           </label>
           <input
@@ -252,21 +366,30 @@ export default function EditorView({
               padding: '8px 12px',
               fontSize: 18,
               fontWeight: 'bold',
-              borderRadius: 4,
-              border: '1px solid #ccc',
+              borderRadius: 6,
+              border: '1px solid var(--color-borde)',
+              backgroundColor: 'var(--bg-suelo)',
+              color: 'var(--color-texto)',
               boxSizing: 'border-box'
             }}
           />
         </div>
 
         <div>
-          <label style={{ display: 'inline-block', fontWeight: 'bold', marginRight: 8, color: '#333' }}>
+          <label style={{ display: 'inline-block', fontWeight: 'bold', marginRight: 8, color: 'var(--color-texto)' }}>
             Idioma:
           </label>
           <select
             value={guion.idioma || 'es'}
             onChange={(e) => handleIdiomaChange(e.target.value)}
-            style={{ padding: '6px 12px', fontSize: 14, borderRadius: 4, border: '1px solid #ccc' }}
+            style={{
+              padding: '6px 12px',
+              fontSize: 14,
+              borderRadius: 6,
+              border: '1px solid var(--color-borde)',
+              backgroundColor: 'var(--bg-suelo)',
+              color: 'var(--color-texto)'
+            }}
           >
             <option value="es">Español (es)</option>
             <option value="en">English (en)</option>
@@ -278,7 +401,6 @@ export default function EditorView({
         </div>
       </div>
 
-      {/* Alerta de error al importar archivo */}
       {errorArchivo && (
         <div
           style={{
@@ -296,9 +418,8 @@ export default function EditorView({
         </div>
       )}
 
-      {/* Lista de Bloques */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <h3 style={{ margin: 0 }}>Bloques ({guion.bloques ? guion.bloques.length : 0})</h3>
+        <h3 style={{ margin: 0, color: 'var(--color-texto)' }}>Bloques ({guion.bloques ? guion.bloques.length : 0})</h3>
         <div style={{ display: 'flex', gap: 8 }}>
           <button
             onClick={() => {
@@ -307,10 +428,10 @@ export default function EditorView({
             }}
             style={{
               padding: '6px 14px',
-              backgroundColor: '#0288d1',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 4,
+              backgroundColor: 'var(--bg-superficie)',
+              color: 'var(--color-texto)',
+              border: '1px solid var(--color-borde)',
+              borderRadius: 6,
               cursor: 'pointer',
               fontWeight: 'bold'
             }}
@@ -322,10 +443,10 @@ export default function EditorView({
             disabled={cargandoArchivo}
             style={{
               padding: '6px 14px',
-              backgroundColor: '#7b1fa2',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 4,
+              backgroundColor: 'var(--bg-superficie)',
+              color: 'var(--color-texto)',
+              border: '1px solid var(--color-borde)',
+              borderRadius: 6,
               cursor: cargandoArchivo ? 'not-allowed' : 'pointer',
               opacity: cargandoArchivo ? 0.7 : 1,
               fontWeight: 'bold'
@@ -344,10 +465,10 @@ export default function EditorView({
             onClick={handleAgregarBloque}
             style={{
               padding: '6px 14px',
-              backgroundColor: '#1976d2',
-              color: '#fff',
+              backgroundColor: 'var(--color-acento)',
+              color: 'var(--color-texto-acento)',
               border: 'none',
-              borderRadius: 4,
+              borderRadius: 6,
               cursor: 'pointer',
               fontWeight: 'bold'
             }}
@@ -357,19 +478,18 @@ export default function EditorView({
         </div>
       </div>
 
-      {/* Interfaz para pegar texto */}
       {mostrarModalPegar && (
         <div
           style={{
-            backgroundColor: '#f5f5f5',
-            border: '1px solid #0288d1',
+            backgroundColor: 'var(--bg-superficie)',
+            border: '1px solid var(--color-borde)',
             borderRadius: 8,
             padding: 16,
             marginBottom: 20
           }}
         >
-          <h4 style={{ margin: '0 0 8px 0', color: '#0288d1' }}>Pegar texto para importar</h4>
-          <p style={{ margin: '0 0 12px 0', fontSize: 14, color: '#555' }}>
+          <h4 style={{ margin: '0 0 8px 0', color: 'var(--color-texto)' }}>Pegar texto para importar</h4>
+          <p style={{ margin: '0 0 12px 0', fontSize: 14, color: 'var(--color-apagado)' }}>
             Pega aquí el texto de tu guión. Se convertirá automáticamente en bloques y líneas con el formato adecuado.
           </p>
           <textarea
@@ -385,8 +505,10 @@ export default function EditorView({
               padding: 10,
               fontSize: 14,
               fontFamily: 'inherit',
-              borderRadius: 4,
-              border: '1px solid #ccc',
+              borderRadius: 6,
+              border: '1px solid var(--color-borde)',
+              backgroundColor: 'var(--bg-suelo)',
+              color: 'var(--color-texto)',
               boxSizing: 'border-box',
               marginBottom: 8
             }}
@@ -411,9 +533,10 @@ export default function EditorView({
               onClick={handleCancelarPegar}
               style={{
                 padding: '6px 14px',
-                backgroundColor: '#e0e0e0',
-                border: '1px solid #ccc',
-                borderRadius: 4,
+                backgroundColor: 'var(--bg-suelo)',
+                border: '1px solid var(--color-borde)',
+                borderRadius: 6,
+                color: 'var(--color-texto)',
                 cursor: 'pointer'
               }}
             >
@@ -423,10 +546,10 @@ export default function EditorView({
               onClick={handleAceptarPegar}
               style={{
                 padding: '6px 14px',
-                backgroundColor: '#0288d1',
-                color: '#fff',
+                backgroundColor: 'var(--color-acento)',
+                color: 'var(--color-texto-acento)',
                 border: 'none',
-                borderRadius: 4,
+                borderRadius: 6,
                 cursor: 'pointer',
                 fontWeight: 'bold'
               }}
@@ -442,23 +565,23 @@ export default function EditorView({
           style={{
             padding: 30,
             textAlign: 'center',
-            backgroundColor: '#fff3e0',
-            border: '1px dashed #ffe0b2',
+            backgroundColor: 'var(--bg-superficie)',
+            border: '1px dashed var(--color-borde)',
             borderRadius: 8,
             marginBottom: 20
           }}
         >
-          <p style={{ margin: '0 0 16px 0', color: '#e65100', fontSize: 16 }}>
+          <p style={{ margin: '0 0 16px 0', color: 'var(--color-apagado)', fontSize: 16 }}>
             Este guión no tiene ningún bloque.
           </p>
           <button
             onClick={handleAgregarBloque}
             style={{
               padding: '8px 16px',
-              backgroundColor: '#e65100',
-              color: '#fff',
+              backgroundColor: 'var(--color-acento)',
+              color: 'var(--color-texto-acento)',
               border: 'none',
-              borderRadius: 4,
+              borderRadius: 6,
               cursor: 'pointer',
               fontWeight: 'bold'
             }}
@@ -475,22 +598,22 @@ export default function EditorView({
               <div
                 key={bloque.id || index}
                 style={{
-                  backgroundColor: '#fff',
-                  border: '1px solid #e0e0e0',
+                  backgroundColor: 'var(--bg-superficie)',
+                  border: '1px solid var(--color-borde)',
                   borderRadius: 6,
                   padding: 16,
                   boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
                 }}
               >
-                {/* Cabecera del bloque */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: estaPlegado ? 0 : 12 }}>
                   <button
                     onClick={() => togglePlegado(bloque.id)}
                     style={{
                       padding: '4px 8px',
-                      backgroundColor: '#f0f0f0',
-                      border: '1px solid #ccc',
+                      backgroundColor: 'var(--bg-suelo)',
+                      border: '1px solid var(--color-borde)',
                       borderRadius: 4,
+                      color: 'var(--color-texto)',
                       cursor: 'pointer',
                       fontSize: 12
                     }}
@@ -509,8 +632,10 @@ export default function EditorView({
                       minWidth: 180,
                       padding: '6px 10px',
                       fontSize: 14,
-                      borderRadius: 4,
-                      border: '1px solid #ccc'
+                      borderRadius: 6,
+                      border: '1px solid var(--color-borde)',
+                      backgroundColor: 'var(--bg-suelo)',
+                      color: 'var(--color-texto)'
                     }}
                   />
 
@@ -543,9 +668,9 @@ export default function EditorView({
                       onClick={() => handleBorrarBloque(index)}
                       style={{
                         padding: '4px 8px',
-                        backgroundColor: '#ffebee',
-                        color: '#c62828',
-                        border: '1px solid #ef9a9a',
+                        backgroundColor: 'var(--bg-suelo)',
+                        color: 'var(--color-texto)',
+                        border: '1px solid var(--color-borde)',
                         borderRadius: 4,
                         cursor: 'pointer'
                       }}
@@ -556,12 +681,105 @@ export default function EditorView({
                   </div>
                 </div>
 
-                {/* Contenido del texto del bloque */}
                 {!estaPlegado && (
                   <div>
+                    <div style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                      <button
+                        type="button"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => aplicarFormatoEnSeleccion(index, { negrita: true })}
+                        style={{
+                          padding: '4px 10px',
+                          fontWeight: 'bold',
+                          borderRadius: 4,
+                          border: '1px solid var(--color-borde)',
+                          backgroundColor: 'var(--bg-suelo)',
+                          color: 'var(--color-texto)',
+                          cursor: 'pointer'
+                        }}
+                        title="Negrita"
+                      >
+                        N
+                      </button>
+
+                      <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                        <button
+                          type="button"
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => aplicarFormatoEnSeleccion(index, { color: 'ambar' })}
+                          style={{
+                            width: 28,
+                            height: 28,
+                            borderRadius: 4,
+                            border: '1px solid #ccc',
+                            backgroundColor: '#F0C070',
+                            cursor: 'pointer'
+                          }}
+                          title="Destacar Ámbar"
+                          data-testid="btn-color-ambar"
+                        />
+                        <button
+                          type="button"
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => aplicarFormatoEnSeleccion(index, { color: 'celeste' })}
+                          style={{
+                            width: 28,
+                            height: 28,
+                            borderRadius: 4,
+                            border: '1px solid #ccc',
+                            backgroundColor: '#8FB8DE',
+                            cursor: 'pointer'
+                          }}
+                          title="Destacar Celeste"
+                        />
+                        <button
+                          type="button"
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => aplicarFormatoEnSeleccion(index, { color: 'salvia' })}
+                          style={{
+                            width: 28,
+                            height: 28,
+                            borderRadius: 4,
+                            border: '1px solid #ccc',
+                            backgroundColor: '#9CC5A1',
+                            cursor: 'pointer'
+                          }}
+                          title="Destacar Salvia"
+                        />
+                      </div>
+
+                      <button
+                        type="button"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => handleAcotacion(index)}
+                        style={{
+                          padding: '4px 10px',
+                          borderRadius: 4,
+                          border: '1px solid var(--color-borde)',
+                          backgroundColor: 'var(--bg-suelo)',
+                          color: 'var(--color-texto)',
+                          cursor: 'pointer',
+                          fontSize: 13
+                        }}
+                        title="Envolver en corchetes de acotación"
+                      >
+                        [...] Acotación
+                      </button>
+                    </div>
+
                     <textarea
+                      ref={(el) => { textareaRefs.current[bloque.id] = el }}
                       value={bloque.texto}
                       onChange={(e) => handleTextoBloqueChange(index, e.target.value)}
+                      onSelect={(e) => {
+                        const target = e.currentTarget
+                        if (target.selectionStart !== target.selectionEnd) {
+                          ultimasSeleccionesRef.current[bloque.id] = {
+                            desde: target.selectionStart,
+                            hasta: target.selectionEnd
+                          }
+                        }
+                      }}
                       placeholder="Escribe el texto de este bloque..."
                       rows={6}
                       style={{
@@ -569,8 +787,10 @@ export default function EditorView({
                         padding: 10,
                         fontSize: 15,
                         fontFamily: 'inherit',
-                        borderRadius: 4,
-                        border: '1px solid #ccc',
+                        borderRadius: 6,
+                        border: '1px solid var(--color-borde)',
+                        backgroundColor: 'var(--bg-suelo)',
+                        color: 'var(--color-texto)',
                         boxSizing: 'border-box'
                       }}
                     />

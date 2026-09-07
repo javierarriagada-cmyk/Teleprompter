@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { IdMotor } from '../motor/MotorDeVoz'
 
 export interface ControlsBarProps {
   onStart: () => void
@@ -19,12 +20,14 @@ export interface ControlsBarProps {
   setVerTranscripcion?: (ver: boolean) => void
   mostrarTiempo?: boolean
   setMostrarTiempo?: (mostrar: boolean) => void
+  tema?: 'claro' | 'oscuro'
+  setTema?: (tema: 'claro' | 'oscuro') => void
+  engine?: IdMotor
+  setEngine?: (engine: IdMotor) => void
   onToggleFullscreen?: () => void
 }
 
-// Escalera cerrada el 7 de septiembre de 2026. Tope 42: mas grande que eso ya no se leen
-// frases sino palabras sueltas -a 42 entran unas 2,8 palabras por linea en un telefono-.
-// La escalera multiplica por 1,33, asi que al sacar los dos pasos de arriba entran dos abajo.
+// Escalera cerrada el 7 de septiembre de 2026.
 const PASOS_LETRA = [14, 18, 24, 32, 42]
 
 export default function ControlsBar({
@@ -46,6 +49,10 @@ export default function ControlsBar({
   setVerTranscripcion,
   mostrarTiempo,
   setMostrarTiempo,
+  tema,
+  setTema,
+  engine,
+  setEngine,
   onToggleFullscreen
 }: ControlsBarProps) {
   const [ajustesAbierto, setAjustesAbierto] = useState(false)
@@ -57,7 +64,6 @@ export default function ControlsBar({
     if (idx > 0) {
       setFontSize(PASOS_LETRA[idx - 1])
     } else if (idx === -1) {
-      // Si el tamaño no coincide exactamente, buscar el paso menor más cercano o clamping
       const menor = PASOS_LETRA.slice().reverse().find((p) => p < fontSize)
       if (menor !== undefined) {
         setFontSize(menor)
@@ -98,8 +104,9 @@ export default function ControlsBar({
     fontWeight: 'bold',
     cursor: 'pointer',
     borderRadius: 6,
-    border: '1px solid #ccc',
-    backgroundColor: '#f5f5f5',
+    border: '1px solid var(--color-borde)',
+    backgroundColor: 'var(--bg-suelo)',
+    color: 'var(--color-texto)',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center'
@@ -120,8 +127,8 @@ export default function ControlsBar({
             cursor: enConteoOCrabando ? 'not-allowed' : 'pointer',
             borderRadius: 6,
             border: 'none',
-            backgroundColor: enConteoOCrabando ? '#ccc' : '#2e7d32',
-            color: '#fff'
+            backgroundColor: enConteoOCrabando ? 'var(--color-borde)' : 'var(--color-acento)',
+            color: 'var(--color-texto-acento)'
           }}
         >
           Iniciar
@@ -138,7 +145,7 @@ export default function ControlsBar({
             cursor: !enConteoOCrabando ? 'not-allowed' : 'pointer',
             borderRadius: 6,
             border: 'none',
-            backgroundColor: !enConteoOCrabando ? '#ccc' : '#c62828',
+            backgroundColor: !enConteoOCrabando ? 'var(--color-borde)' : '#c62828',
             color: '#fff'
           }}
         >
@@ -146,8 +153,8 @@ export default function ControlsBar({
         </button>
 
         {/* Control de Tamaño de Letra */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, backgroundColor: '#f9f9f9', padding: '2px 8px', borderRadius: 8, border: '1px solid #eee' }}>
-          <span style={{ fontSize: 13, color: '#555', fontWeight: 600 }}>Letra:</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, backgroundColor: 'var(--bg-suelo)', padding: '2px 8px', borderRadius: 8, border: '1px solid var(--color-borde)' }}>
+          <span style={{ fontSize: 13, color: 'var(--color-apagado)', fontWeight: 600 }}>Letra:</span>
           <button
             onClick={handleLetraMenos}
             aria-label="Disminuir letra"
@@ -155,7 +162,7 @@ export default function ControlsBar({
           >
             -
           </button>
-          <span data-testid="valor-letra" style={{ minWidth: 42, textAlign: 'center', fontWeight: 'bold', fontSize: 15 }}>
+          <span data-testid="valor-letra" style={{ minWidth: 42, textAlign: 'center', fontWeight: 'bold', fontSize: 15, color: 'var(--color-texto)' }}>
             {fontSize}
           </span>
           <button
@@ -176,8 +183,9 @@ export default function ControlsBar({
             fontWeight: 600,
             cursor: 'pointer',
             borderRadius: 6,
-            border: '1px solid #ccc',
-            backgroundColor: ajustesAbierto ? '#e0e0e0' : '#f0f0f0',
+            border: '1px solid var(--color-borde)',
+            backgroundColor: ajustesAbierto ? 'var(--color-borde)' : 'var(--bg-superficie)',
+            color: 'var(--color-texto)',
             display: 'inline-flex',
             alignItems: 'center',
             gap: 6
@@ -188,7 +196,7 @@ export default function ControlsBar({
         </button>
       </div>
 
-      {/* Panel de Ajustes (cerrado por omisión, renderizado condicional) */}
+      {/* Panel de Ajustes */}
       {ajustesAbierto && (
         <div
           data-testid="panel-ajustes"
@@ -198,37 +206,33 @@ export default function ControlsBar({
             alignItems: 'center',
             flexWrap: 'wrap',
             padding: 12,
-            backgroundColor: '#f5f5f5',
+            backgroundColor: 'var(--bg-superficie)',
             borderRadius: 8,
-            border: '1px solid #ddd'
+            border: '1px solid var(--color-borde)'
           }}
         >
-          {/* El margen bajo a ajustes el 7 de septiembre de 2026. Con la columna angosta
-              medida en caracteres casi no hace nada: solo cambia algo en el modo de ancho
-              completo. Un control que ya no controla no va en la fila principal. */}
-        {/* Control de Margen */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, backgroundColor: '#f9f9f9', padding: '2px 8px', borderRadius: 8, border: '1px solid #eee' }}>
-          <span style={{ fontSize: 13, color: '#555', fontWeight: 600 }}>Margen:</span>
-          <button
-            onClick={handleMargenMenos}
-            aria-label="Disminuir margen"
-            style={botonBaseStyle}
-          >
-            -
-          </button>
-          <span style={{ minWidth: 42, textAlign: 'center', fontWeight: 'bold', fontSize: 15 }}>
-            {marginPercent}%
-          </span>
-          <button
-            onClick={handleMargenMas}
-            aria-label="Aumentar margen"
-            style={botonBaseStyle}
-          >
-            +
-          </button>
-        </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, backgroundColor: 'var(--bg-suelo)', padding: '2px 8px', borderRadius: 8, border: '1px solid var(--color-borde)' }}>
+            <span style={{ fontSize: 13, color: 'var(--color-apagado)', fontWeight: 600 }}>Margen:</span>
+            <button
+              onClick={handleMargenMenos}
+              aria-label="Disminuir margen"
+              style={botonBaseStyle}
+            >
+              -
+            </button>
+            <span style={{ minWidth: 42, textAlign: 'center', fontWeight: 'bold', fontSize: 15, color: 'var(--color-texto)' }}>
+              {marginPercent}%
+            </span>
+            <button
+              onClick={handleMargenMas}
+              aria-label="Aumentar margen"
+              style={botonBaseStyle}
+            >
+              +
+            </button>
+          </div>
 
-          <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', color: 'var(--color-texto)' }}>
             <input
               type="checkbox"
               checked={mirror}
@@ -236,8 +240,22 @@ export default function ControlsBar({
             /> Espejo
           </label>
 
+          {setTema && (
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--color-texto)' }}>
+              Tema:
+              <select
+                value={tema || 'claro'}
+                onChange={(e) => setTema(e.target.value as 'claro' | 'oscuro')}
+                style={{ padding: 4, borderRadius: 4, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+              >
+                <option value="claro">Claro</option>
+                <option value="oscuro">Oscuro</option>
+              </select>
+            </label>
+          )}
+
           {setLineasZona && lineasZona !== undefined && (
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--color-texto)' }}>
               Líneas Zona ({lineasZona}):
               <input
                 type="range"
@@ -251,12 +269,12 @@ export default function ControlsBar({
           )}
 
           {setAnclajeZona && anclajeZona !== undefined && (
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--color-texto)' }}>
               Anclaje:
               <select
                 value={anclajeZona}
                 onChange={(e) => setAnclajeZona(e.target.value as 'arriba' | 'medio' | 'abajo')}
-                style={{ padding: 4 }}
+                style={{ padding: 4, borderRadius: 4, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
               >
                 <option value="arriba">Arriba</option>
                 <option value="medio">Medio</option>
@@ -265,8 +283,24 @@ export default function ControlsBar({
             </label>
           )}
 
+          {setEngine && engine && (
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--color-texto)' }}>
+              Motor de Voz (Avanzado):
+              <select
+                value={engine}
+                onChange={(e) => setEngine(e.target.value as IdMotor)}
+                style={{ padding: 4, borderRadius: 4, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+              >
+                <option value="vosk">Vosk (Offline)</option>
+                <option value="webspeech">Web Speech API</option>
+                <option value="whisper-local">Whisper Local</option>
+                <option value="nativo">Nativo (Android)</option>
+              </select>
+            </label>
+          )}
+
           {setVerTranscripcion !== undefined && (
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', color: 'var(--color-texto)' }}>
               <input
                 type="checkbox"
                 checked={!!verTranscripcion}
@@ -276,7 +310,7 @@ export default function ControlsBar({
           )}
 
           {setMostrarTiempo !== undefined && (
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', color: 'var(--color-texto)' }}>
               <input
                 type="checkbox"
                 checked={mostrarTiempo !== false}
@@ -293,8 +327,9 @@ export default function ControlsBar({
                 padding: '6px 12px',
                 cursor: 'pointer',
                 borderRadius: 4,
-                border: '1px solid #ccc',
-                backgroundColor: '#fff'
+                border: '1px solid var(--color-borde)',
+                backgroundColor: 'var(--bg-suelo)',
+                color: 'var(--color-texto)'
               }}
             >
               Pantalla Completa
