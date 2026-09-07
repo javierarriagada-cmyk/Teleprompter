@@ -31,6 +31,10 @@ export interface Seguidor {
 export const VENTANA_ATRAS = 5
 export const VENTANA_ADELANTE = 40
 export const MAX_PALABRAS_FRASE = 12
+// Umbral por CONTEO ABSOLUTO, no por proporcion. Con una proporcion del 50%, una frase de
+// dos palabras se acepta con una sola coincidencia; con conteo, siempre hacen falta tres.
+// Es lo que hace PromptSmart segun su patente, y es mas robusto para frases cortas.
+export const MIN_PALABRAS_COINCIDENTES = 3
 export const MIN_COINCIDENCIA = 0.5
 export const MAX_FALLOS = 3
 // Palabras CONSECUTIVAS que tienen que calzar para aceptar una posicion. Es la regla que
@@ -177,6 +181,22 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
   return tokens
 }
 
+// Las palabras mas comunes del castellano. No cuentan como evidencia: aparecen en todas
+// partes, asi que calzarlas no dice nada sobre donde esta el lector.
+const PALABRAS_COMUNES = new Set([
+  'de','la','que','el','en','y','a','los','se','del','las','un','por','con','no',
+  'una','su','para','es','al','lo','como','mas','o','pero','sus','le','ha','me','si',
+  'sin','sobre','este','ya','entre','cuando','todo','esta','ser','son','dos','tambien',
+  'fue','habia','era','muy','hasta','desde','mi','porque','solo','han','yo','hay','vez',
+  'puede','todos','asi','nos','ni','parte','tiene','uno','donde','bien','mismo','ese',
+  'ahora','cada','e','otro','despues','te','otros','aunque','esa','eso','hace','otra','tan',
+  'siempre','tanto','ella','tres','nada','algo','ellos','mucho','mientras','quien','esto','pues'
+])
+
+function esComun(p: string): boolean {
+  return PALABRAS_COMUNES.has(p)
+}
+
 function similar(a: string, b: string): boolean {
   if (a === b) return true
   const tolerancia = Math.max(1, Math.floor(Math.min(a.length, b.length) / 4))
@@ -216,6 +236,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
 
     for (let offset = desde; offset <= hasta; offset++) {
       let coincidencias = 0
+      let coincidenciasConContenido = 0
       let tokensEmparejados = 0
       let currTokenIdx = offset
       let racha = 0
@@ -229,6 +250,10 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         if (currTokenIdx < tokens.length) {
           if (similar(frase[i], tokens[currTokenIdx].palabra)) {
             coincidencias++
+            // Las palabras muy comunes cuentan para la racha -si no, cualquier "de" o
+            // "que" en medio de una frase correcta la partiria- pero NO cuentan como
+            // evidencia de posicion, porque estan en todo el guion.
+            if (!esComun(tokens[currTokenIdx].palabra)) coincidenciasConContenido++
             racha++
             if (racha > rachaMaxima) rachaMaxima = racha
           } else {
@@ -240,7 +265,20 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
       }
 
       if (frase.length === 0) continue
-      let puntaje = coincidencias / frase.length
+
+      // UMBRAL POR CONTEO ABSOLUTO, no por proporcion, y con evidencia de contenido.
+      // Un puntaje proporcional aceptaba una frase de dos palabras con una sola
+      // coincidencia, y contaba igual "de" que una palabra propia del guion.
+      const suficientes = coincidencias >= Math.min(MIN_PALABRAS_COINCIDENTES, frase.length)
+
+      // Las palabras con contenido pesan al DESEMPATAR, no como requisito. Exigirlas
+      // rompia la tolerancia a errores: las palabras raras son justo las que el
+      // reconocedor falla mas, mientras que "de" y "que" las acierta siempre. Pero entre
+      // dos posiciones que calzan igual, gana la que calzo palabras del guion y no
+      // relleno del idioma.
+      let puntaje = suficientes
+        ? coincidencias / frase.length + coincidenciasConContenido * 0.01
+        : 0
 
       // NO basta con que coincida una fraccion de palabras sueltas: hacen falta
       // PALABRAS_SEGUIDAS_MINIMO palabras CONSECUTIVAS. Contando palabras dispersas, un
