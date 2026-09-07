@@ -1,6 +1,7 @@
 import { remuestrear } from '../lib/remuestrear'
 import { EventoFinal, EventoParcial, MotorDeVoz } from './MotorDeVoz'
 import VoskWorker from '../workers/vosk.worker.ts?worker'
+import { CACHE_MODELO, MODELO_URL_DEFECTO } from './modeloVosk'
 
 export class MotorVosk implements MotorDeVoz {
   readonly id = 'vosk'
@@ -24,6 +25,17 @@ export class MotorVosk implements MotorDeVoz {
       typeof AudioContext !== 'undefined' || typeof (window as any).webkitAudioContext !== 'undefined'
     const tieneMediaDevices = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)
     return tieneWorker && tieneAudioContext && tieneMediaDevices
+  }
+
+  async listo(): Promise<boolean> {
+    if (typeof caches === 'undefined') return false
+    try {
+      const cache = await caches.open(CACHE_MODELO)
+      const match = await cache.match(MODELO_URL_DEFECTO)
+      return !!match
+    } catch (e) {
+      return false
+    }
   }
 
   async precargarModelo(): Promise<void> {
