@@ -326,7 +326,7 @@ export default function App({ motor, repoOverride }: AppProps) {
         <strong>Franja de Estado:</strong>
         <div style={{ marginTop: 4 }}>
           <span>Estado del Motor: <strong>{estadoMotor}</strong></span>
-          {modoManual && <span style={{ marginLeft: 16, color: "#0a58ca", fontWeight: 600 }}>MODO MANUAL: movés vos</span>}
+          {modoManual && <span style={{ marginLeft: 16, color: "#0a58ca", fontWeight: 600 }}>MODO MANUAL: mandas tú</span>}
           <span style={{ marginLeft: 16 }}>Motor Activo: <strong>{motorActivo}</strong></span>
           {engine === 'whisper-local' && (
             <span style={{ marginLeft: 16 }}>Dispositivo: <strong>{dispositivoComputo}</strong></span>
