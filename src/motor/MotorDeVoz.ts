@@ -9,6 +9,7 @@ export interface MotorDeVoz {
 
   // comprueba capacidades reales, nunca el user-agent
   disponible(): Promise<boolean>
+  listo?(): Promise<boolean>
 
   iniciar(opciones: { lang: string }): Promise<void>
   detener(): Promise<void>

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import useASR from './hooks/useASR'
 import { useSeguidor } from './hooks/useSeguidor'
 import { useWakeLock } from './hooks/useWakeLock'
+import { usePrecargaModelo } from './hooks/usePrecargaModelo'
 import TeleprompterView from './components/TeleprompterView'
 import ControlsBar from './components/ControlsBar'
 import BibliotecaView from './components/BibliotecaView'
@@ -37,6 +38,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   const repoRef = useRef<RepositorioGuiones>(repoOverride || new RepositorioIndexedDB())
   const [usandoMemoriaFallback, setUsandoMemoriaFallback] = useState<boolean>(false)
   const [errorRepositorio, setErrorRepositorio] = useState<string | null>(null)
+
+  const { estado: estadoPrecarga, progreso: progresoPrecarga, error: errorPrecarga, reintentar: reintentarPrecarga } = usePrecargaModelo()
 
   const [vista, setVista] = useState<Vista>('biblioteca')
   const [guionesResumen, setGuionesResumen] = useState<ResumenGuion[]>([])
@@ -310,6 +313,43 @@ export default function App({ motor, repoOverride }: AppProps) {
           </button>
         )}
       </header>
+
+      {/* Indicador discreto de precarga de modelo Vosk */}
+      {(estadoPrecarga === 'descargando' || estadoPrecarga === 'error') && (
+        <div
+          style={{
+            background: estadoPrecarga === 'error' ? '#fff3cd' : '#e3f2fd',
+            color: estadoPrecarga === 'error' ? '#856404' : '#0d47a1',
+            padding: '8px 12px',
+            borderRadius: 6,
+            marginBottom: 16,
+            fontSize: 13,
+            border: `1px solid ${estadoPrecarga === 'error' ? '#ffeeba' : '#bbdefb'}`,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
+          {estadoPrecarga === 'descargando' && (
+            <span>
+              ⏬ Descargando modelo de voz para uso offline: <strong>{Math.round(progresoPrecarga * 100)}%</strong>
+            </span>
+          )}
+          {estadoPrecarga === 'error' && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, width: '100%', justifyContent: 'space-between' }}>
+              <span>
+                ⚠️ Error descargando modelo de voz Vosk: {errorPrecarga || 'Desconocido'}.
+              </span>
+              <button
+                onClick={reintentarPrecarga}
+                style={{ padding: '4px 8px', fontSize: 12, cursor: 'pointer' }}
+              >
+                Reintentar
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Franja de estado visible */}
       <div

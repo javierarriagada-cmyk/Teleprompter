@@ -37,6 +37,13 @@ export async function elegirMotor(preferido?: IdMotor): Promise<MotorDeVoz> {
     const candidate = motores[id]
     try {
       if (await candidate.disponible()) {
+        if (typeof candidate.listo === 'function') {
+          const estaListo = await candidate.listo()
+          if (!estaListo) {
+            errores[id] = 'listo() devolvió false'
+            continue
+          }
+        }
         return candidate
       } else {
         errores[id] = 'disponible() devolvió false'

@@ -1,6 +1,9 @@
 import { createModel, Model } from 'vosk-browser'
+import { CACHE_MODELO, MODELO_URL_DEFECTO } from '../motor/modeloVosk'
 
-export const MODELO_URL_DEFECTO = 'https://alphacephei.com/vosk/models/vosk-model-small-es-0.42.tar.gz'
+// Este modulo NO exporta MODELO_URL_DEFECTO a proposito: importar cualquier cosa desde
+// aca arrastra vosk-browser al paquete principal. Quien lo necesite lo toma de
+// ../motor/modeloVosk.
 
 let modelInstance: Model | null = null
 let recognizerInstance: any = null
@@ -41,7 +44,7 @@ self.onmessage = async (ev: MessageEvent) => {
 async function precargarModelo(url: string) {
   try {
     if (typeof caches !== 'undefined') {
-      const cache = await caches.open('vosk-model-v1')
+      const cache = await caches.open(CACHE_MODELO)
       const cachedResponse = await cache.match(url)
       if (cachedResponse) {
         self.postMessage({ tipo: 'progreso', pct: 1.0 })
@@ -63,7 +66,7 @@ async function cargarModeloYCrearReconocedor(url: string) {
 
   try {
     if (typeof caches !== 'undefined') {
-      const cache = await caches.open('vosk-model-v1')
+      const cache = await caches.open(CACHE_MODELO)
       const cachedResponse = await cache.match(url)
       if (cachedResponse) {
         const blob = await cachedResponse.blob()
