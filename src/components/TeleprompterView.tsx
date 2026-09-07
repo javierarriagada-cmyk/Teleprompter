@@ -21,6 +21,12 @@ interface TeleprompterViewProps {
   anclajeZona?: AnclajeZona
   motorAvance?: MotorDeAvance | null
   diagnostico?: boolean
+  columnaAngosta?: boolean
+  colorFondo?: string
+  colorLetra?: string
+  tipoFuente?: 'sans' | 'serif'
+  isRecording?: boolean
+  onToggleControles?: () => void
   // El usuario movio el texto a mano hasta esa palabra. No es una recuperacion: es
   // navegacion, y la ventana de contexto se muda con el.
   onNavegacionManual?: (token: number) => void
@@ -40,6 +46,12 @@ export default function TeleprompterView({
   anclajeZona = 'arriba',
   motorAvance,
   diagnostico = false,
+  columnaAngosta = true,
+  colorFondo = '#000000',
+  colorLetra = '#FFFFFF',
+  tipoFuente = 'sans',
+  isRecording = false,
+  onToggleControles,
   onNavegacionManual,
   onModoManualChange,
   onEstadoAvanceChange
@@ -72,8 +84,14 @@ export default function TeleprompterView({
     tokensRef.current = tokenizarGuion(guionObj)
   }, [script])
 
-  const alturaLineaPx = fontSize * 1.4 + 16 // fontSize * lineHeight (1.4) + vertical margin (16px)
-  const { topBanda, altoBanda } = calcularBanda(480, alturaLineaPx, lineasZona, anclajeZona, 20, 20)
+  const filaPx = fontSize * 1.4
+  const alturaLineaPx = filaPx + 16 // fontSize * lineHeight (1.4) + vertical margin (16px)
+  const [altoLineaViva, setAltoLineaViva] = React.useState<number>(filaPx)
+  const { topBanda, altoBanda } = calcularBanda(480, filaPx, lineasZona, anclajeZona, 20, 20, altoLineaViva)
+
+  const isWhiteBg = colorFondo.toUpperCase() === '#FFFFFF'
+  const colorTextoEfectivo = isWhiteBg ? '#000000' : colorLetra
+  const fontFamilyCss = tipoFuente === 'serif' ? '"Source Serif 4", serif' : '"Source Sans 3", sans-serif'
 
   useEffect(() => {
     if (motorAvance) return
@@ -90,8 +108,21 @@ export default function TeleprompterView({
     }
   }, [currentBlockIndex, currentLineIndex, motorAvance, topBanda])
 
+  // Medir la altura real de la linea viva para ajustar la banda
+  useEffect(() => {
+    if (!containerRef.current) return
+    const target = containerRef.current.querySelector(`[data-block="${currentBlockIndex}"][data-line="${currentLineIndex}"]`) as HTMLElement
+    if (target) {
+      const h = target.clientHeight || filaPx
+      setAltoLineaViva(h)
+    }
+  }, [currentBlockIndex, currentLineIndex, filaPx])
+
   // Deteccion de la navegacion a mano. Se miran los eventos de puntero, tacto y rueda, no
   // el scroll: el scroll tambien lo mueve el motor, y no se podria distinguir quien fue.
+  const pointerStartPosRef = useRef<{ x: number; y: number } | null>(null)
+  const isDraggingGestureRef = useRef<boolean>(false)
+
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
@@ -131,7 +162,16 @@ export default function TeleprompterView({
       return mejor
     }
 
-    function empezar() {
+    function empezar(e: Event) {
+      isDraggingGestureRef.current = false
+      if ('clientX' in (e as PointerEvent)) {
+        const pe = e as PointerEvent
+        pointerStartPosRef.current = { x: pe.clientX, y: pe.clientY }
+      } else if ('touches' in (e as TouchEvent) && (e as TouchEvent).touches.length > 0) {
+        const te = (e as TouchEvent).touches[0]
+        pointerStartPosRef.current = { x: te.clientX, y: te.clientY }
+      }
+
       if (finManualRef.current !== null) {
         window.clearTimeout(finManualRef.current)
         finManualRef.current = null
@@ -142,7 +182,37 @@ export default function TeleprompterView({
       }
     }
 
-    function terminar() {
+    function mover(e: Event) {
+      if (pointerStartPosRef.current) {
+        let cx = 0
+        let cy = 0
+        if ('clientX' in (e as PointerEvent)) {
+          const pe = e as PointerEvent
+          cx = pe.clientX
+          cy = pe.clientY
+        } else if ('touches' in (e as TouchEvent) && (e as TouchEvent).touches.length > 0) {
+          const te = (e as TouchEvent).touches[0]
+          cx = te.clientX
+          cy = te.clientY
+        }
+        const dist = Math.hypot(cx - pointerStartPosRef.current.x, cy - pointerStartPosRef.current.y)
+        if (dist > 8) {
+          isDraggingGestureRef.current = true
+        }
+      }
+    }
+
+    function terminar(e: Event) {
+      if ('type' in e && (e.type === 'wheel' || e.type === 'touchmove')) {
+        isDraggingGestureRef.current = true
+      }
+
+      if (!isDraggingGestureRef.current && onToggleControles) {
+        onToggleControles()
+      }
+
+      pointerStartPosRef.current = null
+
       if (finManualRef.current !== null) window.clearTimeout(finManualRef.current)
       finManualRef.current = window.setTimeout(() => {
         finManualRef.current = null
@@ -154,6 +224,8 @@ export default function TeleprompterView({
 
     el.addEventListener('pointerdown', empezar)
     el.addEventListener('touchstart', empezar, { passive: true })
+    el.addEventListener('pointermove', mover)
+    el.addEventListener('touchmove', mover, { passive: true })
     el.addEventListener('wheel', empezar, { passive: true })
     el.addEventListener('pointerup', terminar)
     el.addEventListener('touchend', terminar)
@@ -162,13 +234,15 @@ export default function TeleprompterView({
     return () => {
       el.removeEventListener('pointerdown', empezar)
       el.removeEventListener('touchstart', empezar)
+      el.removeEventListener('pointermove', mover)
+      el.removeEventListener('touchmove', mover)
       el.removeEventListener('wheel', empezar)
       el.removeEventListener('pointerup', terminar)
       el.removeEventListener('touchend', terminar)
       el.removeEventListener('wheel', terminar)
       if (finManualRef.current !== null) window.clearTimeout(finManualRef.current)
     }
-  }, [onNavegacionManual, onModoManualChange, alturaLineaPx])
+  }, [onNavegacionManual, onModoManualChange, alturaLineaPx, onToggleControles])
 
   useEffect(() => {
     if (!motorAvance) return
@@ -311,7 +385,7 @@ export default function TeleprompterView({
 
   if (!guionObj.bloques || guionObj.bloques.length === 0) {
     return (
-      <div style={{ background: '#000', color: '#888', padding: 20, textAlign: 'center' }}>
+      <div style={{ background: colorFondo, color: '#888', padding: 20, textAlign: 'center', fontFamily: fontFamilyCss }}>
         <em>Guión sin bloques</em>
       </div>
     )
@@ -319,20 +393,54 @@ export default function TeleprompterView({
 
   let lineCountGlobal = 0
 
+  const bgBanda = isWhiteBg
+    ? 'linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.03) 25%, rgba(0, 0, 0, 0.075) 50%, rgba(0, 0, 0, 0.03) 75%, transparent 100%)'
+    : 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.075) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%)'
+
   return (
     <div
+      data-testid="teleprompter-view-container"
+      data-columna={columnaAngosta ? 'angosta' : 'completo'}
+      data-fondo={colorFondo}
+      data-letra={colorTextoEfectivo}
+      onClick={() => {
+        if (!isDraggingGestureRef.current && onToggleControles) {
+          onToggleControles()
+        }
+      }}
       style={{
         overflow: 'hidden',
         height: '100%',
         minHeight: 360,
-        background: '#000',
-        color: '#fff',
+        background: colorFondo,
+        color: colorTextoEfectivo,
+        fontFamily: fontFamilyCss,
         boxSizing: 'border-box',
         position: 'relative'
       }}
     >
-      {/* Overlay Visual de la Banda de Lectura */}
+      {/* Punto Rojo de Estado (Grabando) */}
+      {isRecording && (
+        <div
+          data-testid="punto-grabando"
+          style={{
+            position: 'absolute',
+            top: 16,
+            right: 16,
+            width: 12,
+            height: 12,
+            borderRadius: '50%',
+            backgroundColor: '#ff2d55',
+            zIndex: 10,
+            boxShadow: '0 0 6px rgba(255, 45, 85, 0.8)'
+          }}
+          title="Grabando"
+        />
+      )}
+
+      {/* Overlay Visual de la Banda de Lectura (Luz/Sombra degradado) */}
       <div
+        data-testid="banda-lectura"
         style={{
           position: 'absolute',
           left: 0,
@@ -341,9 +449,7 @@ export default function TeleprompterView({
           height: altoBanda,
           pointerEvents: 'none',
           zIndex: 2,
-          background: 'rgba(255, 255, 255, 0.06)',
-          maskImage: 'linear-gradient(to bottom, transparent 0, black 12px, black calc(100% - 12px), transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0, black 12px, black calc(100% - 12px), transparent 100%)'
+          background: bgBanda
         }}
       />
 
@@ -360,70 +466,60 @@ export default function TeleprompterView({
           boxSizing: 'border-box'
         }}
       >
-        {guionObj.bloques.map((bloque, bIdx) => {
-          const lineas = (bloque.texto || '').split(/\r?\n/)
-          // Sin margen extra entre bloques: el ritmo vertical tiene que ser UNIFORME. Con
-          // 24 px de margen, el paso entre parrafos era de 100.8 px contra 76.8 px entre
-          // lineas, y ese excedente se recorria durante la ultima linea del parrafo: el
-          // texto subia 31% mas rapido justo ahi, que es lo que se sentia brusco al pasar
-          // de un parrafo a otro. Para separarlos a la vista va una linea en blanco en el
-          // texto, que ocupa un renglon y se recorre a la misma velocidad que el resto.
-          return (
-            <div key={bloque.id || bIdx} className="block-container" style={{ marginBottom: 24 }}>
-              {bloque.nombre && (
-                <div style={{ fontSize: Math.max(14, fontSize * 0.5), color: '#888', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>
-                  [{bloque.nombre}]
-                </div>
-              )}
-              {lineas.map((linea: string, lIdx: number) => {
-                const isCurrent = bIdx === currentBlockIndex && lIdx === currentLineIndex
-                let targetCurrentLineGlobal = 0
-                for (let b = 0; b < guionObj.bloques.length; b++) {
-                  if (b < currentBlockIndex) {
-                    targetCurrentLineGlobal += (guionObj.bloques[b].texto || '').split(/\r?\n/).length
-                  } else if (b === currentBlockIndex) {
-                    targetCurrentLineGlobal += currentLineIndex
-                    break
-                  }
-                }
-
-                const distLineas = Math.abs(lineCountGlobal - targetCurrentLineGlobal)
-                const opacidad = opacidadDeLinea(distLineas)
-                lineCountGlobal++
-
-                return (
-                  <div
-                    key={lIdx}
-                    className="line"
-                    data-block={bIdx}
-                    data-line={lIdx}
-                    style={{
-                      // TODAS las lineas al mismo cuerpo. La que se esta leyendo se
-                      // distingue por la opacidad, no por el tamano.
-                      //
-                      // Antes la actual iba a 32 px y las demas a 22.4, un 43% mas grande.
-                      // Cambiar el tamano cambia la ALTURA del elemento, y eso corre el
-                      // offsetTop de todo el guion que va debajo, que es justo el numero
-                      // con el que se calcula el desplazamiento: la geometria se movia bajo
-                      // el calculo, y encima durante los 200 ms de la transicion quedaba a
-                      // mitad de camino.
-                      //
-                      // La transicion queda solo sobre la opacidad, que no ocupa espacio y
-                      // por lo tanto no mueve nada.
-                      fontSize,
-                      opacity: opacidad,
-                      margin: '16px 0',
-                      lineHeight: 1.4,
-                      transition: 'opacity 200ms'
-                    }}
-                  >
-                    {renderFormattedLine(linea)}
+        <div
+          data-testid="columna-texto"
+          style={{
+            maxWidth: columnaAngosta ? '22ch' : '100%',
+            margin: '0 auto',
+            width: '100%'
+          }}
+        >
+          {guionObj.bloques.map((bloque, bIdx) => {
+            const lineas = (bloque.texto || '').split(/\r?\n/)
+            return (
+              <div key={bloque.id || bIdx} className="block-container" style={{ marginBottom: 24 }}>
+                {bloque.nombre && (
+                  <div style={{ fontSize: Math.max(14, fontSize * 0.5), color: '#888', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>
+                    [{bloque.nombre}]
                   </div>
-                )
-              })}
-            </div>
-          )
-        })}
+                )}
+                {lineas.map((linea: string, lIdx: number) => {
+                  let targetCurrentLineGlobal = 0
+                  for (let b = 0; b < guionObj.bloques.length; b++) {
+                    if (b < currentBlockIndex) {
+                      targetCurrentLineGlobal += (guionObj.bloques[b].texto || '').split(/\r?\n/).length
+                    } else if (b === currentBlockIndex) {
+                      targetCurrentLineGlobal += currentLineIndex
+                      break
+                    }
+                  }
+
+                  const distLineas = Math.abs(lineCountGlobal - targetCurrentLineGlobal)
+                  const opacidad = opacidadDeLinea(distLineas)
+                  lineCountGlobal++
+
+                  return (
+                    <div
+                      key={lIdx}
+                      className="line"
+                      data-block={bIdx}
+                      data-line={lIdx}
+                      style={{
+                        fontSize,
+                        opacity: opacidad,
+                        margin: '16px 0',
+                        lineHeight: 1.4,
+                        transition: 'opacity 200ms'
+                      }}
+                    >
+                      {renderFormattedLine(linea)}
+                    </div>
+                  )
+                })}
+              </div>
+            )
+          })}
+        </div>
       </div>
     </div>
   )

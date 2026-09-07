@@ -16,6 +16,9 @@ import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
 import { importarArchivo } from './datos/importarArchivo'
 
+// Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
+const MS_CONTROLES_A_LA_VISTA = 4000
+
 interface AppProps {
   motor?: MotorDeVoz
   repoOverride?: RepositorioGuiones
@@ -213,6 +216,13 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [anclajeZona, setAnclajeZona] = useState<'arriba' | 'medio' | 'abajo'>('arriba')
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
 
+  const [columnaAngosta, setColumnaAngosta] = useState<boolean>(true)
+  const [colorFondo, setColorFondo] = useState<string>('#000000')
+  const [colorLetra, setColorLetra] = useState<string>('#FFFFFF')
+  const [tipoFuente, setTipoFuente] = useState<'sans' | 'serif'>('sans')
+  const [controlesVisibles, setControlesVisibles] = useState<boolean>(true)
+  const timerControlesRef = useRef<number | null>(null)
+
   const [motivoFreno, setMotivoFreno] = useState<'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null>(null)
   const [avanzando, setAvanzando] = useState<boolean>(false)
   const [tInicioLecturaMs, setTInicioLecturaMs] = useState<number | null>(null)
@@ -276,6 +286,27 @@ export default function App({ motor, repoOverride }: AppProps) {
     alNotificarVoz: seguidorVoz
   })
 
+  // Los controles vuelven a irse solos. Un toque los trae, y si el que lee no aprieta nada
+  // se van otra vez: si se quedaran encendidos hasta el siguiente toque, bastaria con
+  // olvidarse una vez para tenerlos en pantalla el resto de la toma, que es exactamente lo
+  // que se quiso evitar al hacer que desaparecieran.
+  useEffect(() => {
+    const leyendo = isRecording || cuentaRegresiva !== null
+    if (!leyendo || !controlesVisibles) return
+
+    timerControlesRef.current = window.setTimeout(() => {
+      timerControlesRef.current = null
+      setControlesVisibles(false)
+    }, MS_CONTROLES_A_LA_VISTA)
+
+    return () => {
+      if (timerControlesRef.current !== null) {
+        window.clearTimeout(timerControlesRef.current)
+        timerControlesRef.current = null
+      }
+    }
+  }, [controlesVisibles, isRecording, cuentaRegresiva])
+
   const { activo: wakeLockActivo, solicitar: solicitarWakeLock, soltar: soltarWakeLock } = useWakeLock()
 
   const handleEstadoAvanceChange = useCallback((motivo: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null, isAvanzando: boolean) => {
@@ -287,6 +318,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     if (cuentaRegresiva !== null || isRecording) return
     await solicitarWakeLock()
 
+    setControlesVisibles(false)
     setCuentaRegresiva(3)
 
     let c = 3
@@ -487,8 +519,8 @@ export default function App({ motor, repoOverride }: AppProps) {
           </div>
 
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-            {!esPantallaCompleta && (
-              <div style={{ flex: 1, minWidth: 320 }}>
+            {!esPantallaCompleta && controlesVisibles && (
+              <div data-testid="panel-controles-lectura" style={{ flex: 1, minWidth: 320 }}>
                 <div style={{ marginTop: 12 }}>
                   <label>
                     <strong>Motor ASR: </strong>
@@ -523,6 +555,14 @@ export default function App({ motor, repoOverride }: AppProps) {
                   setVerTranscripcion={setVerTranscripcion}
                   mostrarTiempo={mostrarTiempo}
                   setMostrarTiempo={setMostrarTiempo}
+                  columnaAngosta={columnaAngosta}
+                  setColumnaAngosta={setColumnaAngosta}
+                  colorFondo={colorFondo}
+                  setColorFondo={setColorFondo}
+                  colorLetra={colorLetra}
+                  setColorLetra={setColorLetra}
+                  tipoFuente={tipoFuente}
+                  setTipoFuente={setTipoFuente}
                   onToggleFullscreen={toggleFullscreen}
                 />
 
@@ -563,10 +603,10 @@ export default function App({ motor, repoOverride }: AppProps) {
             <div
               ref={prompterContainerRef}
               style={{
-                flex: esPantallaCompleta ? '1 1 100%' : '1 1 420px',
+                flex: esPantallaCompleta || !controlesVisibles ? '1 1 100%' : '1 1 420px',
                 minWidth: 320,
                 height: esPantallaCompleta ? '100vh' : 480,
-                background: '#000',
+                background: colorFondo,
                 borderRadius: esPantallaCompleta ? 0 : 6,
                 overflow: 'hidden',
                 position: 'relative'
@@ -584,6 +624,12 @@ export default function App({ motor, repoOverride }: AppProps) {
                 anclajeZona={anclajeZona}
                 motorAvance={motorAvance}
                 diagnostico={verTranscripcion}
+                columnaAngosta={columnaAngosta}
+                colorFondo={colorFondo}
+                colorLetra={colorLetra}
+                tipoFuente={tipoFuente}
+                isRecording={isRecording || cuentaRegresiva !== null}
+                onToggleControles={() => setControlesVisibles((prev) => !prev)}
                 onNavegacionManual={irAToken}
                 onModoManualChange={setModoManual}
                 onEstadoAvanceChange={handleEstadoAvanceChange}

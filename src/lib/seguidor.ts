@@ -119,7 +119,7 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
         let bufferWord = ''
         for (let i = 0; i < fragmento.length; i++) {
           const char = fragmento[i]
-          if (char === '[') {
+          if (char === '[' || char === '(') {
             if (bufferWord) {
               const norm = normalizar(bufferWord)
               if (norm) {
@@ -135,7 +135,7 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
               bufferWord = ''
             }
             enAcotacion = true
-          } else if (char === ']') {
+          } else if (char === ']' || char === ')') {
             if (bufferWord) {
               const norm = normalizar(bufferWord)
               if (norm) {

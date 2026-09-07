@@ -812,6 +812,276 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
 
 })
 
+describe('Pruebas TAREA 17 (T88-T93)', () => {
+
+  test('T88: Con la columna angosta, el ancho del texto no supera los 22 caracteres aunque el contenedor sea mucho mas ancho. Y con la opcion de ancho completo, si lo ocupa.', async () => {
+    const motor = new MotorFake()
+    const repo = new RepositorioMemoria()
+    await repo.guardar(guionSimple('Hola mundo de prueba'))
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App motor={motor} repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    await act(async () => {
+      fireEvent.click(botonAbrir!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    await act(async () => {
+      fireEvent.click(botonLeer!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const colTexto = container!.querySelector('[data-testid="columna-texto"]') as HTMLElement
+    expect(colTexto).not.toBeNull()
+    expect(colTexto.style.maxWidth).toBe('22ch')
+
+    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes'))!
+    await act(async () => {
+      fireEvent.click(btnAjustes)
+    })
+
+    const selectColumna = container!.querySelector('select[aria-label="Ancho de columna"]') as HTMLSelectElement
+    expect(selectColumna).not.toBeNull()
+
+    await act(async () => {
+      fireEvent.change(selectColumna, { target: { value: 'completa' } })
+    })
+
+    expect(colTexto.style.maxWidth).toBe('100%')
+  })
+
+  test('T89: Los tres fondos aplican su par fondo/letra correcto, y con fondo blanco la letra es negra sin importar que color de letra este elegido.', async () => {
+    const motor = new MotorFake()
+    const repo = new RepositorioMemoria()
+    await repo.guardar(guionSimple('Hola mundo de prueba'))
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App motor={motor} repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    await act(async () => {
+      fireEvent.click(botonAbrir!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    await act(async () => {
+      fireEvent.click(botonLeer!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]') as HTMLElement
+    expect(prompterView).not.toBeNull()
+
+    // 1. Negro por omisión (#000000) con letra blanca (#FFFFFF)
+    expect(prompterView.getAttribute('data-fondo')).toBe('#000000')
+    expect(prompterView.getAttribute('data-letra')).toBe('#FFFFFF')
+
+    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes'))!
+    await act(async () => {
+      fireEvent.click(btnAjustes)
+    })
+
+    const selectFondo = container!.querySelector('select[aria-label="Color de fondo"]') as HTMLSelectElement
+    const selectLetra = container!.querySelector('select[aria-label="Color de letra"]') as HTMLSelectElement
+
+    // 2. Cambiar a Gris (#16181A) con letra Ámbar (#F0C070)
+    await act(async () => {
+      fireEvent.change(selectFondo, { target: { value: '#16181A' } })
+      fireEvent.change(selectLetra, { target: { value: '#F0C070' } })
+    })
+
+    expect(prompterView.getAttribute('data-fondo')).toBe('#16181A')
+    expect(prompterView.getAttribute('data-letra')).toBe('#F0C070')
+
+    // 3. Cambiar a Blanco (#FFFFFF) -> Letra obligatoriamente Negra (#000000)
+    await act(async () => {
+      fireEvent.change(selectFondo, { target: { value: '#FFFFFF' } })
+    })
+
+    expect(prompterView.getAttribute('data-fondo')).toBe('#FFFFFF')
+    expect(prompterView.getAttribute('data-letra')).toBe('#000000')
+  })
+
+  test('T90: GUARDIANA DE LA BANDA. Con la linea viva ocupando TRES renglones, la banda la cubre entera Y ADEMAS se extiende un renglon por arriba y otro por abajo. Es decir: alto de la banda = alto de la linea viva + dos renglones.', () => {
+    const alturaVista = 480
+    const filaPx = 20
+    const lineasZona = 3
+    const anclajeZona: AnclajeZona = 'arriba'
+    const altoLineaViva = 60 // 3 renglones
+
+    const res = calcularBanda(alturaVista, filaPx, lineasZona, anclajeZona, 20, 20, altoLineaViva)
+
+    // alto de la banda = alto de la linea viva (60px) + dos renglones (2 * 20px) = 100px
+    expect(res.altoBanda).toBe(100)
+  })
+
+  test('T91: GUARDIANA. Al arrancar la lectura los controles no estan en el documento. Un toque en la pantalla los devuelve. Y un ARRASTRE no los devuelve ni interrumpe la navegacion manual.', async () => {
+    vi.useFakeTimers()
+    try {
+      const motor = new MotorFake()
+      const repo = new RepositorioMemoria()
+      await repo.guardar(guionSimple('Hola mundo de prueba para T91'))
+
+      let container: HTMLElement
+      await act(async () => {
+        const res = render(<App motor={motor} repoOverride={repo} />)
+        container = res.container
+        await vi.advanceTimersByTimeAsync(600)
+      })
+
+      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+      await act(async () => {
+        fireEvent.click(botonAbrir!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+      await act(async () => {
+        fireEvent.click(botonLeer!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const panelAntes = container!.querySelector('[data-testid="panel-controles-lectura"]')
+      expect(panelAntes).not.toBeNull()
+
+      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')!
+      await act(async () => {
+        fireEvent.click(botonIniciar)
+        await vi.advanceTimersByTimeAsync(3100)
+      })
+
+      // Al arrancar la lectura, los controles NO estan en el documento
+      const panelDuranteLectura = container!.querySelector('[data-testid="panel-controles-lectura"]')
+      expect(panelDuranteLectura).toBeNull()
+
+      const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
+
+      // Simular arrastre (drag/scroll): pointerdown, pointermove desplazado > 8px, pointerup
+      await act(async () => {
+        fireEvent.pointerDown(prompterView, { clientX: 100, clientY: 100 })
+        fireEvent.pointerMove(prompterView, { clientX: 100, clientY: 150 })
+        fireEvent.pointerUp(prompterView, { clientX: 100, clientY: 150 })
+      })
+
+      // Un arrastre NO devuelve los controles
+      expect(container!.querySelector('[data-testid="panel-controles-lectura"]')).toBeNull()
+
+      // Un toque corto (tap / click sin desplazamiento) devuelve los controles
+      await act(async () => {
+        fireEvent.click(prompterView)
+      })
+
+      expect(container!.querySelector('[data-testid="panel-controles-lectura"]')).not.toBeNull()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  // T100 y no T94: las T94 a T99 estan tomadas por la tarea 18, en vuelo al mismo tiempo.
+  test('T100: los controles vuelven a irse solos. Un toque los trae y, sin tocar nada mas, se van otra vez.', async () => {
+    vi.useFakeTimers()
+    try {
+      const motor = new MotorFake()
+      const repo = new RepositorioMemoria()
+      await repo.guardar(guionSimple('Hola mundo de prueba para T100'))
+
+      let container: HTMLElement
+      await act(async () => {
+        const res = render(<App motor={motor} repoOverride={repo} />)
+        container = res.container
+        await vi.advanceTimersByTimeAsync(600)
+      })
+
+      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+      await act(async () => {
+        fireEvent.click(botonAbrir!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+      await act(async () => {
+        fireEvent.click(botonLeer!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')!
+      await act(async () => {
+        fireEvent.click(botonIniciar)
+        await vi.advanceTimersByTimeAsync(3100)
+      })
+
+      const panel = () => container!.querySelector('[data-testid="panel-controles-lectura"]')
+      expect(panel()).toBeNull()
+
+      const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
+
+      // Un toque los devuelve. Se usa el mismo gesto que la T91, que es el que la vista
+      // reconoce como toque corto.
+      await act(async () => {
+        fireEvent.click(prompterView)
+      })
+      expect(panel()).not.toBeNull()
+
+      // Y sin tocar nada mas, se van otra vez. Sin esto, basta olvidarse una vez para
+      // tenerlos encendidos el resto de la toma.
+      await act(async () => { await vi.advanceTimersByTimeAsync(4200) })
+      expect(panel()).toBeNull()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+
+  test('T92: Un guion con "hola (esto no se dice) mundo" produce tokens donde las palabras de adentro del parentesis vienen con esAcotacion true, y "hola" y "mundo" con false. Y un guion con comillas -«asi»- NO marca nada como acotacion.', () => {
+    const tokensParentesis = tokenizarGuion('hola (esto no se dice) mundo')
+
+    const tokHola = tokensParentesis.find((t) => t.palabra === 'hola')!
+    const tokMundo = tokensParentesis.find((t) => t.palabra === 'mundo')!
+    const tokEsto = tokensParentesis.find((t) => t.palabra === 'esto')!
+    const tokNo = tokensParentesis.find((t) => t.palabra === 'no')!
+    const tokSe = tokensParentesis.find((t) => t.palabra === 'se')!
+    const tokDice = tokensParentesis.find((t) => t.palabra === 'dice')!
+
+    expect(tokHola.esAcotacion).toBe(false)
+    expect(tokMundo.esAcotacion).toBe(false)
+    expect(tokEsto.esAcotacion).toBe(true)
+    expect(tokNo.esAcotacion).toBe(true)
+    expect(tokSe.esAcotacion).toBe(true)
+    expect(tokDice.esAcotacion).toBe(true)
+
+    const tokensComillas = tokenizarGuion('hola «asi» mundo "cita"')
+    for (const tok of tokensComillas) {
+      expect(tok.esAcotacion).toBe(false)
+    }
+  })
+
+  test('T93: GUARDIANA DEL DESPLAZAMIENTO. Leyendo el codigo fuente con fs, comprobar que en TeleprompterView.tsx sigue existiendo la asignacion a scrollTop y que sigue restandose una fila en pixeles.', () => {
+    const rutaTeleprompter = path.resolve(process.cwd(), 'src/components/TeleprompterView.tsx')
+    expect(fs.existsSync(rutaTeleprompter)).toBe(true)
+
+    const codigoTeleprompter = fs.readFileSync(rutaTeleprompter, 'utf-8')
+
+    // Verificar la asignación a scrollTop
+    expect(codigoTeleprompter).toContain('containerRef.current.scrollTop')
+
+    // Verificar la resta de una fila en píxeles (- filaPx)
+    expect(codigoTeleprompter).toContain('- filaPx')
+  })
+
+})
+
 describe('Pruebas TAREA 3 (T27-T32)', () => {
   // T27: tokenizar con bloques
   test('T27: tokenizar con bloques: guion de 3 bloques da los índices correctos de bloque, línea y palabra', () => {
@@ -1798,6 +2068,12 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         await vi.advanceTimersByTimeAsync(1000)
       })
 
+      // En T17 los controles se ocultan al iniciar; un toque en la pantalla los devuelve
+      const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
+      await act(async () => {
+        fireEvent.click(prompterView)
+      })
+
       const botonDetener = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Detener')
       expect(botonDetener).not.toBeUndefined()
 
@@ -1986,6 +2262,12 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       })
 
       expect(container!.querySelector('div[aria-label="tiempo transcurrido y total estimado"]')).not.toBeNull()
+
+      // En T17 los controles se ocultan al iniciar; un toque en la pantalla los devuelve
+      const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
+      await act(async () => {
+        fireEvent.click(prompterView)
+      })
 
       const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes'))!
       await act(async () => {
