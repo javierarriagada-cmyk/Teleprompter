@@ -1,10 +1,22 @@
 import { EventoFinal, EventoParcial, MotorDeVoz } from './MotorDeVoz'
 
+// Cuanto tiene que durar un reconocedor para que su cierre cuente como normal y no como
+// fallo. Chrome cierra solo tras unos segundos de silencio, asi que un cierre despues de
+// este rato es el ciclo sano de la API. Uno inmediato, en cambio, es que algo no anda:
+// el microfono se desconecto, se revoco el permiso, no hay red.
+const MS_DE_VIDA_SANA = 5000
+
 export class MotorWebSpeech implements MotorDeVoz {
   readonly id = 'webspeech'
   readonly nombre = 'Web Speech API (Navegador)'
 
   private recognition: any = null
+  private queremosEscuchar = false
+  private reconexionesSeguidas = 0
+  private opciones: { lang: string } = { lang: 'es-ES' }
+  private timerReconexion: any = null
+  private tUltimoArranque = 0
+
   private listenersParcial: Array<(e: EventoParcial) => void> = []
   private listenersFinal: Array<(e: EventoFinal) => void> = []
   private listenersError: Array<(e: Error) => void> = []
@@ -60,6 +72,40 @@ export class MotorWebSpeech implements MotorDeVoz {
   }
 
   async iniciar(opciones: { lang: string }): Promise<void> {
+    this.opciones = opciones
+    this.reconexionesSeguidas = 0
+    if (this.timerReconexion) {
+      clearTimeout(this.timerReconexion)
+      this.timerReconexion = null
+    }
+
+    this.queremosEscuchar = true
+    this.recognition = this.crearReconocedor(this.opciones)
+    this.arrancar()
+  }
+
+  // Un solo lugar donde se llama start(), para que la marca de tiempo no se olvide en
+  // ninguno de los dos caminos (arranque y reconexion).
+  private arrancar(): void {
+    this.tUltimoArranque = Date.now()
+    this.recognition.start()
+  }
+
+  async detener(): Promise<void> {
+    this.queremosEscuchar = false
+    if (this.timerReconexion) {
+      clearTimeout(this.timerReconexion)
+      this.timerReconexion = null
+    }
+    if (this.recognition) {
+      try {
+        this.recognition.stop()
+      } catch (e) {}
+      this.recognition = null
+    }
+  }
+
+  private crearReconocedor(opciones: { lang: string }): any {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
     if (!SpeechRecognition) {
       throw new Error('Web Speech API no está soportada en este navegador.')
@@ -71,6 +117,7 @@ export class MotorWebSpeech implements MotorDeVoz {
     rec.interimResults = true
 
     rec.onresult = (event: any) => {
+      this.reconexionesSeguidas = 0
       let finalStr = ''
       let interimStr = ''
       const ahora = Date.now()
@@ -93,21 +140,55 @@ export class MotorWebSpeech implements MotorDeVoz {
     }
 
     rec.onerror = (event: any) => {
-      const err = new Error(`Error en Web Speech API: ${event.error}`)
-      this.listenersError.forEach((cb) => cb(err))
+      const errorType = event?.error
+      if (errorType === 'not-allowed' || errorType === 'service-not-allowed') {
+        this.queremosEscuchar = false
+        const err = new Error(`Error en Web Speech API: ${errorType}`)
+        this.listenersError.forEach((cb) => cb(err))
+      }
+      // Errores normales ('no-speech', 'aborted', 'network', etc.) no se emiten por onError
+      // para permitir que onend realice la reconexión.
     }
 
-    this.recognition = rec
-    rec.start()
-  }
+    rec.onend = () => {
+      if (!this.queremosEscuchar) {
+        return
+      }
 
-  async detener(): Promise<void> {
-    if (this.recognition) {
-      try {
-        this.recognition.stop()
-      } catch (e) {}
-      this.recognition = null
+      // Un reconocedor que estuvo vivo un rato normal y se cerro solo NO es un fallo: es
+      // Chrome cerrando por silencio, que pasa todo el tiempo cuando el que lee hace una
+      // pausa. Sin esta distincion, seis pausas seguidas -menos de un minuto callado-
+      // matan el motor y el lector vuelve a encontrarse con un error.
+      if (Date.now() - this.tUltimoArranque >= MS_DE_VIDA_SANA) {
+        this.reconexionesSeguidas = 0
+      }
+
+      this.reconexionesSeguidas++
+      if (this.reconexionesSeguidas >= 6) {
+        this.queremosEscuchar = false
+        const err = new Error('El reconocimiento de voz se detuvo tras varios intentos sin respuesta. Por favor vuelva a iniciarlo.')
+        this.listenersError.forEach((cb) => cb(err))
+        return
+      }
+
+      this.timerReconexion = setTimeout(() => {
+        this.timerReconexion = null
+        if (!this.queremosEscuchar) return
+
+        try {
+          this.arrancar()
+        } catch (e) {
+          try {
+            this.recognition = this.crearReconocedor(opciones)
+            this.arrancar()
+          } catch (err2) {
+            // Ignorar
+          }
+        }
+      }, 250)
     }
+
+    return rec
   }
 
   onParcial(cb: (e: EventoParcial) => void): () => void {
