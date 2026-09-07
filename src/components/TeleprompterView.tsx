@@ -21,6 +21,10 @@ interface TeleprompterViewProps {
   anclajeZona?: AnclajeZona
   motorAvance?: MotorDeAvance | null
   diagnostico?: boolean
+  // El usuario movio el texto a mano hasta esa palabra. No es una recuperacion: es
+  // navegacion, y la ventana de contexto se muda con el.
+  onNavegacionManual?: (token: number) => void
+  onModoManualChange?: (manual: boolean) => void
   onEstadoAvanceChange?: (motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null, avanzando: boolean) => void
 }
 
@@ -36,9 +40,20 @@ export default function TeleprompterView({
   anclajeZona = 'arriba',
   motorAvance,
   diagnostico = false,
+  onNavegacionManual,
+  onModoManualChange,
   onEstadoAvanceChange
 }: TeleprompterViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
+
+  // MODO MANUAL. Mientras el usuario arrastra la barra o el dedo, la voz suelta el control
+  // del desplazamiento: si no, el bucle de animacion le devuelve el scroll a su lugar
+  // sesenta veces por segundo y mover el texto a mano es imposible.
+  //
+  // Al soltar, se mira que palabra quedo en la banda de lectura y esa pasa a ser la
+  // posicion del seguidor: la ventana de contexto se muda con el movimiento.
+  const modoManualRef = useRef(false)
+  const finManualRef = useRef<number | null>(null)
   // Palabras que entran en un renglon, medidas sobre la linea que se esta mostrando.
   const palabrasPorRenglonRef = useRef<number>(8)
 
@@ -74,6 +89,86 @@ export default function TeleprompterView({
       }
     }
   }, [currentBlockIndex, currentLineIndex, motorAvance, topBanda])
+
+  // Deteccion de la navegacion a mano. Se miran los eventos de puntero, tacto y rueda, no
+  // el scroll: el scroll tambien lo mueve el motor, y no se podria distinguir quien fue.
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+
+    const MS_PARA_SOLTAR = 350
+
+    function tokenEnLaBanda(): number {
+      const tokens = tokensRef.current
+      const cont = containerRef.current
+      if (!cont || tokens.length === 0) return 0
+
+      const tPrimero = tokens[0]
+      const elPrimero = cont.querySelector(
+        `[data-block="${tPrimero.bloque}"][data-line="${tPrimero.linea}"]`
+      ) as HTMLElement | null
+      const origen = elPrimero ? elPrimero.offsetTop : 0
+
+      // Se invierte la cuenta del desplazamiento: donde quedo el scroll, mas el renglon de
+      // atraso, es el punto del texto que esta en la banda de lectura.
+      const buscado = cont.scrollTop + origen + alturaLineaPx
+
+      let mejor = 0
+      let mejorDist = Infinity
+      const vistas = new Set<string>()
+      for (let i = 0; i < tokens.length; i++) {
+        const clave = `${tokens[i].bloque}-${tokens[i].linea}`
+        if (vistas.has(clave)) continue
+        vistas.add(clave)
+        const elLinea = cont.querySelector(`[data-block="${tokens[i].bloque}"][data-line="${tokens[i].linea}"]`) as HTMLElement | null
+        if (!elLinea) continue
+        const d = Math.abs(elLinea.offsetTop - buscado)
+        if (d < mejorDist) {
+          mejorDist = d
+          mejor = i
+        }
+      }
+      return mejor
+    }
+
+    function empezar() {
+      if (finManualRef.current !== null) {
+        window.clearTimeout(finManualRef.current)
+        finManualRef.current = null
+      }
+      if (!modoManualRef.current) {
+        modoManualRef.current = true
+        if (onModoManualChange) onModoManualChange(true)
+      }
+    }
+
+    function terminar() {
+      if (finManualRef.current !== null) window.clearTimeout(finManualRef.current)
+      finManualRef.current = window.setTimeout(() => {
+        finManualRef.current = null
+        modoManualRef.current = false
+        if (onModoManualChange) onModoManualChange(false)
+        if (onNavegacionManual) onNavegacionManual(tokenEnLaBanda())
+      }, MS_PARA_SOLTAR)
+    }
+
+    el.addEventListener('pointerdown', empezar)
+    el.addEventListener('touchstart', empezar, { passive: true })
+    el.addEventListener('wheel', empezar, { passive: true })
+    el.addEventListener('pointerup', terminar)
+    el.addEventListener('touchend', terminar)
+    el.addEventListener('wheel', terminar, { passive: true })
+
+    return () => {
+      el.removeEventListener('pointerdown', empezar)
+      el.removeEventListener('touchstart', empezar)
+      el.removeEventListener('wheel', empezar)
+      el.removeEventListener('pointerup', terminar)
+      el.removeEventListener('touchend', terminar)
+      el.removeEventListener('wheel', terminar)
+      if (finManualRef.current !== null) window.clearTimeout(finManualRef.current)
+    }
+  }, [onNavegacionManual, onModoManualChange, alturaLineaPx])
 
   useEffect(() => {
     if (!motorAvance) return
@@ -199,7 +294,10 @@ export default function TeleprompterView({
             const pasoDeLinea = topSiguiente - target.offsetTop
             const continuo = (target.offsetTop - origen) + dentroDeLinea * pasoDeLinea
             const top = continuo - filaPx
-            containerRef.current.scrollTop = Math.max(0, top)
+            // Mientras el usuario manda, la voz no escribe el scroll.
+            if (!modoManualRef.current) {
+              containerRef.current.scrollTop = Math.max(0, top)
+            }
           }
         }
       }

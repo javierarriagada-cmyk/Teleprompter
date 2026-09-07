@@ -130,6 +130,23 @@ export function useSeguidor(guionEntrada: Guion | string) {
     }
   }
 
+  // El usuario movio el texto a mano hasta cierta palabra: la ventana de contexto se muda
+  // con el. No es una recuperacion: es navegacion deliberada.
+  function irAToken(token: number) {
+    const seg = seguidorRef.current
+    const motor = motorAvanceRef.current
+    const tokens = tokensRef.current
+    if (!seg || !motor || tokens.length === 0) return
+
+    const destino = Math.max(0, Math.min(token, tokens.length - 1))
+    seg.irAToken(destino)
+    motor.irAToken(destino, performance.now())
+
+    const t = tokens[destino]
+    bloqueConfirmadoRef.current = t.bloque
+    setPosicion({ bloque: t.bloque, linea: t.linea, palabra: t.indiceEnLinea, desdeToken: destino, hastaToken: destino, movio: true })
+  }
+
   function reiniciar() {
     if (seguidorRef.current) seguidorRef.current.reiniciar()
     if (motorAvanceRef.current) motorAvanceRef.current.reiniciar()
@@ -146,6 +163,7 @@ export function useSeguidor(guionEntrada: Guion | string) {
     alRecibirParcial,
     alRecibirFinal,
     alNotificarVoz,
+    irAToken,
     reiniciar,
     motorAvance: motorAvanceRef.current,
     registro: registroRef.current

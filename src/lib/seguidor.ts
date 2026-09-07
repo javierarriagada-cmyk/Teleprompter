@@ -22,6 +22,8 @@ export type Posicion = {
 export interface Seguidor {
   avanzar(fraseFinal: string): Posicion
   avanzarTentativo(fraseParcial: string): Posicion
+  // El usuario movio el texto a mano: la ventana de contexto se muda con el.
+  irAToken(token: number): void
   reiniciar(): void
   posicionToken(): number
 }
@@ -458,6 +460,16 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         hastaToken: candPos,
         movio: true
       }
+    },
+
+    irAToken(token: number) {
+      const destino = Math.max(0, Math.min(token, Math.max(0, tokens.length - 1)))
+      pos = destino
+      posTentativa = destino
+      fallosSeguidos = 0
+      fallosParcialesSeguidos = 0
+      ultimoParcial = ''
+      pendientes = []
     },
 
     reiniciar() {

@@ -182,6 +182,7 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const [engine, setEngine] = useState<IdMotor>('webspeech')
   const [verTranscripcion, setVerTranscripcion] = useState<boolean>(false)
+  const [modoManual, setModoManual] = useState<boolean>(false)
   const [fontSize, setFontSize] = useState<number>(32)
   const [marginPercent, setMarginPercent] = useState<number>(10)
   const [mirror, setMirror] = useState<boolean>(false)
@@ -209,6 +210,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     alRecibirFinal: seguidorFinal,
     alNotificarVoz: seguidorVoz,
     reiniciar,
+    irAToken,
     motorAvance
   } = useSeguidor(guionParaSeguidor)
 
@@ -324,6 +326,7 @@ export default function App({ motor, repoOverride }: AppProps) {
         <strong>Franja de Estado:</strong>
         <div style={{ marginTop: 4 }}>
           <span>Estado del Motor: <strong>{estadoMotor}</strong></span>
+          {modoManual && <span style={{ marginLeft: 16, color: "#0a58ca", fontWeight: 600 }}>MODO MANUAL: movés vos</span>}
           <span style={{ marginLeft: 16 }}>Motor Activo: <strong>{motorActivo}</strong></span>
           {engine === 'whisper-local' && (
             <span style={{ marginLeft: 16 }}>Dispositivo: <strong>{dispositivoComputo}</strong></span>
@@ -483,6 +486,8 @@ export default function App({ motor, repoOverride }: AppProps) {
                 anclajeZona={anclajeZona}
                 motorAvance={motorAvance}
                 diagnostico={verTranscripcion}
+                onNavegacionManual={irAToken}
+                onModoManualChange={setModoManual}
                 onEstadoAvanceChange={handleEstadoAvanceChange}
               />
               {verTranscripcion && (

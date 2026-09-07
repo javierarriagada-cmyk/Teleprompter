@@ -26,6 +26,7 @@ export interface MotorDeAvance {
   falloCalce(tMs: number, esParcial?: boolean): void  // el seguidor no calzo
   voz(hayVoz: boolean, tMs: number): void       // del VAD o del motor
   estadoEn(tMs: number): EstadoAvance           // que mostrar AHORA
+  irAToken(token: number, tMs: number): void    // el usuario movio el texto a mano
   reiniciar(): void
 }
 
@@ -288,6 +289,20 @@ export function crearMotorDeAvance(
         ppmEstimadas,
         ultimoCalce: Math.max(ultimaConfirmada, anclaTentativa)
       }
+    },
+
+    irAToken(token: number, tMs: number) {
+      const destino = Math.max(0, token)
+      posicionMostrada = destino
+      objetivoPosicion = destino
+      ultimaConfirmada = destino
+      anclaTentativa = destino
+      gliding = false
+      fallosFinalesSeguidos = 0
+      tUltimoCalce = tMs
+      tUltimaConfirmacion = tMs
+      tUltimoTentativo = 0
+      tUltimaActualizacion = tMs
     },
 
     reiniciar() {
