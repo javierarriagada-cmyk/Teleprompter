@@ -159,6 +159,7 @@ export function useSeguidor(guionEntrada: Guion | string) {
     bloqueActual: posicion.bloque,
     lineaActual: posicion.linea,
     palabraActual: posicion.palabra,
+    totalTokens: tokensRef.current.length,
     movio: posicion.movio,
     alRecibirParcial,
     alRecibirFinal,

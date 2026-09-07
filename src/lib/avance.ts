@@ -4,6 +4,7 @@ export type ParametrosAvance = {
   fallosParaFrenar: number      // 2
   ppmInicial: number            // 150  palabras por minuto, hasta medir
   suavizadoVelocidad: number    // 0.3  media movil exponencial
+  msVentanaVelocidad: number    // 3000 ventana de tiempo real
   msDeCorreccion: number        // 400  en cuanto se absorbe una correccion
   anticipacionPalabras: number  // 3
   msTransicion: number          // 600
@@ -36,6 +37,7 @@ const DEFAULT_PARAMETROS: ParametrosAvance = {
   fallosParaFrenar: 2,
   ppmInicial: 150,
   suavizadoVelocidad: 0.3,
+  msVentanaVelocidad: 3000,
   msDeCorreccion: 400,
   anticipacionPalabras: 3,
   msTransicion: 600,
@@ -52,6 +54,7 @@ export function crearMotorDeAvance(
   const params: ParametrosAvance = { ...DEFAULT_PARAMETROS, ...p }
 
   let ppmEstimadas = params.ppmInicial
+  let muestrasVelocidad: Array<{ tMs: number; token: number }> = []
   let ultimaConfirmada = 0
   let anclaTentativa = 0
   let tUltimaConfirmacion = 0
@@ -96,12 +99,24 @@ export function crearMotorDeAvance(
     return limitesDeBloque[limitesDeBloque.length - 1]
   }
 
-  function actualizarVelocidad(tokensDelta: number, timeDeltaMs: number) {
-    if (timeDeltaMs < 150 || tokensDelta <= 0) return
-    const measuredPpm = (tokensDelta / timeDeltaMs) * 60000
+  function actualizarVelocidad(token: number, tMs: number) {
+    muestrasVelocidad.push({ tMs, token })
+    const limiteTiempo = tMs - params.msVentanaVelocidad
+    muestrasVelocidad = muestrasVelocidad.filter((m) => m.tMs >= limiteTiempo)
+
+    if (muestrasVelocidad.length < 2) return
+
+    const masViejo = muestrasVelocidad[0]
+    const masNuevo = muestrasVelocidad[muestrasVelocidad.length - 1]
+    const dt = masNuevo.tMs - masViejo.tMs
+    const dToken = masNuevo.token - masViejo.token
+
+    if (dt < 1500 || dToken <= 0) return
+
+    const measuredPpm = (dToken / dt) * 60000
     const clamped = Math.min(400, Math.max(40, measuredPpm))
 
-    const alpha = clamped > ppmEstimadas ? 0.5 : 0.15
+    const alpha = params.suavizadoVelocidad
     ppmEstimadas = alpha * clamped + (1 - alpha) * ppmEstimadas
   }
 
@@ -144,11 +159,7 @@ export function crearMotorDeAvance(
       tUltimaVozTrue = tMs
 
       if (token > ultimaConfirmada) {
-        if (tUltimaConfirmacion > 0) {
-          actualizarVelocidad(token - ultimaConfirmada, tMs - tUltimaConfirmacion)
-        } else if (tMs > 0) {
-          actualizarVelocidad(token, tMs)
-        }
+        actualizarVelocidad(token, tMs)
       }
 
       ultimaConfirmada = Math.max(ultimaConfirmada, token)
@@ -167,10 +178,7 @@ export function crearMotorDeAvance(
       const tokenAcotado = token
 
       if (tokenAcotado > anclaTentativa) {
-        const refTime = tUltimoTentativo > 0 ? tUltimoTentativo : tUltimaConfirmacion
-        if (refTime > 0) {
-          actualizarVelocidad(tokenAcotado - anclaTentativa, tMs - refTime)
-        }
+        actualizarVelocidad(tokenAcotado, tMs)
         anclaTentativa = tokenAcotado
         tUltimoTentativo = tMs
       }
@@ -303,10 +311,12 @@ export function crearMotorDeAvance(
       tUltimaConfirmacion = tMs
       tUltimoTentativo = 0
       tUltimaActualizacion = tMs
+      muestrasVelocidad = []
     },
 
     reiniciar() {
       ppmEstimadas = params.ppmInicial
+      muestrasVelocidad = []
       ultimaConfirmada = 0
       anclaTentativa = 0
       tUltimaConfirmacion = 0
