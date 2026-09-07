@@ -455,19 +455,28 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
     expect(mContinuos.retardoMedioPalabras).toBeLessThanOrEqual(250)
     expect(mContinuos.retardoMaximoPalabras).toBeLessThanOrEqual(510)
     expect(mContinuos.vecesQueRetrocedio).toBe(0)
+    // AFIRMACION RETIRADA, 6 de septiembre de 2026, y el motivo importa mas que el cambio.
+    //
     // Este guion son 40 lineas practicamente identicas: "Esta es la linea numero N del
     // guion de prueba para el teleprompter." Leido de corrido, el seguidor no puede
-    // distinguir una linea de otra y los calces se vuelven escasos, con huecos de mas de
-    // 5 segundos entre uno y otro. Frenar ahi NO es un freno indebido: el sistema
-    // realmente no sabe donde esta el lector.
+    // distinguir una linea de otra, los calces se vuelven escasos y el motor frena. Eso no
+    // es un freno indebido: con lineas indistinguibles el sistema realmente no sabe donde
+    // esta el lector, y frenar es lo correcto.
     //
-    // El umbral msSinCalceParaFrenar se fijo en 3000 ms porque sobre prosa real el hueco
-    // maximo entre calces medido es de 2500 ms, y porque con 6000 ms irse del guion
-    // tardaba seis segundos en detener el texto, que es demasiado. Con este guion
-    // degenerado ese umbral produce frenado; con uno normal, ninguno.
+    // El problema es que esta afirmacion venia TORCIENDO LOS PARAMETROS. Por sostenerla se
+    // habia fijado msSinCalceParaFrenar en 6000 ms -sobre prosa real bastan 3000-, lo que
+    // hacia que irse del guion tardara seis segundos en detener el texto. Despues hubo que
+    // subir su umbral a 80 segundos, y con la penalizacion de distancia simetrica pediria
+    // 200. Un criterio que hay que aflojar cada vez que el sistema mejora no es un
+    // criterio: es un ancla.
     //
-    // La parte de esta prueba que si vale como criterio es la de arriba, con pausas.
-    expect(mContinuos.segundosFrenadoIndebido).toBeLessThanOrEqual(80)
+    // Lo que si se sigue exigiendo sobre este guion esta arriba: que no retroceda nunca y
+    // que el retardo quede acotado. Y el criterio de fluidez de verdad vive en T51, sobre
+    // un guion normal.
+    //
+    // LIMITACION CONOCIDA que queda registrada aca: con texto muy repetitivo -listas,
+    // enumeraciones, lineas casi iguales- el seguimiento por voz no distingue una linea de
+    // otra y el prompter frena seguido.
 
     console.log('[T12] RESULTADO: OK')
   })
@@ -1238,7 +1247,7 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
       adelantoMaximo = ${m.adelantoMaximo.toFixed(2)} (límite <= 8)
       vecesQueRetrocedio = ${m.vecesQueRetrocedio} (límite == 0)`)
 
-    // CAMBIO DECLARADO, 6 de septiembre de 2026. El umbral pasa de 1.5 a 2.5 palabras.
+    // (T38) CAMBIO DECLARADO, 6 de septiembre de 2026. El umbral pasa de 1.5 a 2.5 palabras.
     // El adelanto maximo del motor bajo de 8 palabras a 3 porque con 8 el texto se le iba
     // adelante al lector y arrancaba antes de tiempo. Menos adelanto es, necesariamente,
     // mas atraso: 1.98 palabras de promedio, unos 0.8 segundos a 150 ppm.

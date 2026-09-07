@@ -234,10 +234,14 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         puntaje = 0
       }
 
-      if (offset < pos) {
-        const tokenDist = pos - offset
-        puntaje = Math.max(0, puntaje - tokenDist * PENALIZACION_POR_TOKEN)
-      }
+      // La distancia se penaliza EN LOS DOS SENTIDOS: entre dos lugares que calzan igual
+      // de bien, gana el mas cercano a donde se cree que va el lector.
+      //
+      // Antes solo se penalizaba hacia atras, asi que una frase suelta que pegara tres
+      // palabras seguidas treinta palabras mas adelante ganaba y el prompter se iba ahi.
+      // Es lo que pasaba al decir algo que no estaba en el guion: continuaba en otro lado.
+      const tokenDist = Math.abs(pos - offset)
+      puntaje = Math.max(0, puntaje - tokenDist * PENALIZACION_POR_TOKEN)
 
       const nuevaPosCandidate = Math.max(offset, currTokenIdx - 1)
 
