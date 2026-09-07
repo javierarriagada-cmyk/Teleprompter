@@ -1,4 +1,3 @@
-import mammoth from 'mammoth'
 import { Bloque } from './modelo'
 import { importarTexto, OpcionesImportar } from './importar'
 
@@ -16,6 +15,51 @@ export function extraerTituloArchivo(nombreArchivo: string): string {
   if (!nombreArchivo) return 'Sin titulo'
   const sinExtension = nombreArchivo.replace(/\.(txt|md|docx)$/i, '').trim()
   return sinExtension.length > 0 ? sinExtension : 'Sin titulo'
+}
+
+/**
+ * Limpia marcas de sintaxis Markdown para obtener texto plano apto para lectura en voz alta.
+ * Elimina encabezados (#), énfasis (**negrita**, *cursiva*, _cursiva_), viñetas de lista (- *, 1.),
+ * citas (>), enlaces [texto](url) dejando solo el texto sin corchetes, código en línea y reglas horizontales.
+ */
+export function limpiarMarkdown(markdown: string): string {
+  if (!markdown) return ''
+
+  const lineas = markdown.split(/\r?\n/)
+  const lineasProcesadas: string[] = []
+
+  for (let linea of lineas) {
+    // 1. Eliminar regla horizontal (---, ***, ___ en la línea)
+    if (/^\s*(---|[*]{3,}|_{3,})\s*$/.test(linea)) {
+      continue
+    }
+
+    // 2. Encabezados (# Título, ## Subtítulo)
+    linea = linea.replace(/^\s*#+\s+/, '')
+
+    // 3. Citas (> Cita)
+    linea = linea.replace(/^\s*>\s+/, '')
+
+    // 4. Elementos de lista (- ítem, * ítem, 1. ítem)
+    linea = linea.replace(/^\s*[-*+]\s+/, '')
+    linea = linea.replace(/^\s*\d+\.\s+/, '')
+
+    // 5. Enlaces [texto](url) -> texto (elimina corchetes y url)
+    linea = linea.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+
+    // 6. Código en línea `código` -> código
+    linea = linea.replace(/`([^`]+)`/g, '$1')
+
+    // 7. Negrita y cursiva
+    linea = linea.replace(/\*\*([^*]+)\*\*/g, '$1')
+    linea = linea.replace(/__([^_]+)__/g, '$1')
+    linea = linea.replace(/\*([^*]+)\*/g, '$1')
+    linea = linea.replace(/_([^_]+)_/g, '$1')
+
+    lineasProcesadas.push(linea)
+  }
+
+  return lineasProcesadas.join('\n')
 }
 
 function leerTextoConFileReader(file: File): Promise<string> {
@@ -38,7 +82,8 @@ function leerArrayBufferConFileReader(file: File): Promise<ArrayBuffer> {
 
 /**
  * Importa un archivo (.txt, .md, .docx) extrayendo su título y convirtiendo su contenido
- * en bloques de guión mediante `importarTexto`.
+ * en bloques de guión mediante `importarTexto`. Carga `mammoth` de forma dinámica únicamente
+ * cuando se lee un archivo .docx para no engrosar el paquete principal.
  */
 export async function importarArchivo(
   file: File,
@@ -56,12 +101,19 @@ export async function importarArchivo(
   const extension = match[1].toLowerCase()
   let texto = ''
 
-  if (extension === 'txt' || extension === 'md') {
+  if (extension === 'txt') {
     if (typeof file.text === 'function') {
       texto = await file.text()
     } else {
       texto = await leerTextoConFileReader(file)
     }
+  } else if (extension === 'md') {
+    if (typeof file.text === 'function') {
+      texto = await file.text()
+    } else {
+      texto = await leerTextoConFileReader(file)
+    }
+    texto = limpiarMarkdown(texto)
   } else if (extension === 'docx') {
     let arrayBuffer: ArrayBuffer
     if (typeof file.arrayBuffer === 'function') {
@@ -71,6 +123,8 @@ export async function importarArchivo(
     }
 
     try {
+      // Importación dinámica para que mammoth solo se cargue al abrir un .docx
+      const mammoth = (await import('mammoth')).default
       const res = await new Promise<{ value: string }>((resolve, reject) => {
         try {
           mammoth.extractRawText({ arrayBuffer }).then(resolve, reject)

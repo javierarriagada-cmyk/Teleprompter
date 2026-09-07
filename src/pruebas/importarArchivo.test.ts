@@ -6,11 +6,10 @@ import { importarArchivo, extraerTituloArchivo } from '../datos/importarArchivo'
 import EditorView from '../components/EditorView'
 import { Guion } from '../datos/modelo'
 
-describe('Pruebas TAREA 12 - Importar guiones desde archivo (T63-T66)', () => {
+describe('Pruebas TAREA 12 - Importar guiones desde archivo (T63-T68)', () => {
 
-  // T63: Importar archivo .txt y .md y extracción de título sin extensión
-  test('T63: importarArchivo lee archivos .txt y .md y extrae el título del nombre del archivo sin extensión', async () => {
-    // Archivo .txt con título normal
+  // T63: Importar archivo .txt y extracción de título sin extensión
+  test('T63: importarArchivo lee archivos .txt y extrae el título del nombre del archivo sin extensión', async () => {
     const contenidoTxt = `Primer párrafo del discurso.
 
 Segundo párrafo del discurso.`
@@ -22,14 +21,6 @@ Segundo párrafo del discurso.`
     expect(resTxt.bloques[0].texto).toContain('Primer párrafo')
     expect(resTxt.bloques[1].texto).toContain('Segundo párrafo')
 
-    // Archivo .md con extensión en mayúsculas
-    const contenidoMd = 'Texto en markdown de prueba.'
-    const archivoMd = new File([contenidoMd], 'capitulo1.MD', { type: 'text/markdown' })
-
-    const resMd = await importarArchivo(archivoMd)
-    expect(resMd.titulo).toBe('capitulo1')
-    expect(resMd.bloques.length).toBe(1)
-
     // Caso de título vacío (ej. ".txt")
     expect(extraerTituloArchivo('.txt')).toBe('Sin titulo')
     const archivoSinTitulo = new File(['Texto simple.'], '.txt', { type: 'text/plain' })
@@ -40,14 +31,34 @@ Segundo párrafo del discurso.`
     expect(extraerTituloArchivo('mi.guion.v2.txt')).toBe('mi.guion.v2')
   })
 
-  // T64: Reconocimiento de extensión .docx y error ante contenido inválido
-  test('T64: importarArchivo reconoce extensión .docx y lanza error si el contenido es inválido', async () => {
-    const contenidoInvalido = 'Este texto no es un archivo zip de docx válido'
-    const archivoDocx = new File([contenidoInvalido], 'documento_prueba.docx', {
-      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    })
+  // T64: Importar .md limpiando sintaxis Markdown (Sabina) y comprobando que no quedan corchetes
+  test('T64: importarArchivo procesa .md limpiando marcas de Markdown y eliminando corchetes de enlaces', async () => {
+    const contenidoMd = `# El silencio
+Sabina pidio **al reves**.
+- No a Dios.
+- No a Cristo.
+> A la Virgen.
+Ver el [video completo](https://ejemplo.com/v).`
 
-    await expect(importarArchivo(archivoDocx)).rejects.toThrow()
+    const archivoMd = new File([contenidoMd], 'sabina.md', { type: 'text/markdown' })
+    const res = await importarArchivo(archivoMd)
+
+    expect(res.titulo).toBe('sabina')
+    expect(res.bloques.length).toBe(1)
+
+    const textoResultado = res.bloques[0].texto
+
+    // Sin almohadillas, sin asteriscos, sin guiones de lista, sin comilla de cita
+    expect(textoResultado).not.toContain('#')
+    expect(textoResultado).not.toContain('*')
+    expect(textoResultado).not.toContain('- No')
+    expect(textoResultado).not.toContain('> ')
+    expect(textoResultado).toContain('video completo')
+    expect(textoResultado).not.toContain('https://ejemplo.com/v')
+
+    // COMPROBACIÓN CRÍTICA: NO debe quedar ningún corchete '[' ni ']'
+    expect(textoResultado).not.toContain('[')
+    expect(textoResultado).not.toContain(']')
   })
 
   // T65: Formato de archivo no soportado produce error explicativo
@@ -59,11 +70,39 @@ Segundo párrafo del discurso.`
     await expect(importarArchivo(archivoPng)).rejects.toThrow(/Formato de archivo no soportado/)
   })
 
-  // T66: Integración UI en EditorView (botón "Abrir archivo", deshabilitado mientras lee, agrega al final sin reemplazar)
-  test('T66: en EditorView, "Abrir archivo" agrega bloques al final sin tocar los existentes y resguarda ante errores', async () => {
+  // T66: Archivo vacío o con solo espacios devuelve cero bloques y no lanza
+  test('T66: archivo vacío o con solo espacios devuelve cero bloques y no lanza', async () => {
+    const archivoVacio = new File([''], 'vacio.txt', { type: 'text/plain' })
+    let resVacio: Awaited<ReturnType<typeof importarArchivo>> | null = null
+
+    await expect((async () => {
+      resVacio = await importarArchivo(archivoVacio)
+    })()).resolves.not.toThrow()
+
+    expect(resVacio).not.toBeNull()
+    expect(resVacio!.titulo).toBe('vacio')
+    expect(resVacio!.bloques).toEqual([])
+
+    const archivoEspacios = new File(['   \n\n\t   '], 'espacios.md', { type: 'text/markdown' })
+    const resEspacios = await importarArchivo(archivoEspacios)
+    expect(resEspacios.bloques).toEqual([])
+  })
+
+  // T67: Reconocimiento de extensión .docx y error ante contenido inválido (anterior T64)
+  test('T67: importarArchivo reconoce extensión .docx y lanza error si el contenido es inválido', async () => {
+    const contenidoInvalido = 'Este texto no es un archivo zip de docx válido'
+    const archivoDocx = new File([contenidoInvalido], 'documento_prueba.docx', {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    })
+
+    await expect(importarArchivo(archivoDocx)).rejects.toThrow()
+  })
+
+  // T68: Integración UI en EditorView (anterior T66)
+  test('T68: en EditorView, "Abrir archivo" agrega bloques al final sin tocar los existentes y resguarda ante errores', async () => {
     let guionEstado: Guion = {
-      id: 'g-t66',
-      titulo: 'Guion T66 Original',
+      id: 'g-t68',
+      titulo: 'Guion T68 Original',
       idioma: 'es',
       creado: Date.now(),
       modificado: Date.now(),
@@ -115,7 +154,7 @@ Bloque importado B.`
     expect(guionEstado.bloques[1].texto).toBe('Bloque importado A.')
     expect(guionEstado.bloques[2].texto).toBe('Bloque importado B.')
     // Mantener título previo porque no estaba vacío ni era 'Sin título'
-    expect(guionEstado.titulo).toBe('Guion T66 Original')
+    expect(guionEstado.titulo).toBe('Guion T68 Original')
 
     // 2. Simular un error (archivo con extensión .pdf no soportada)
     const archivoErróneo = new File(['test'], 'archivo_malo.pdf', { type: 'application/pdf' })
