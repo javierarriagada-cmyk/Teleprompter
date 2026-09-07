@@ -2735,4 +2735,159 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
     expect(btnLeerFijoTrasScroll).not.toBeNull()
   })
 
+  test('T108: Un guion con "hola (esto no se dice) mundo" se DIBUJA con las palabras de adentro del parentesis atenuadas, igual que con corchetes. Comprobar los dos signos en la misma prueba.', async () => {
+    const guion: Guion = {
+      id: 'g-t108',
+      titulo: 'Guion T108',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{
+        id: 'b1',
+        nombre: '',
+        texto: 'hola (esto no se dice) y [esto tampoco] mundo'
+      }]
+    }
+
+    const repo = new RepositorioMemoria()
+    await repo.guardar(guion)
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    await act(async () => {
+      fireEvent.click(botonAbrir)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLElement
+    await act(async () => {
+      fireEvent.click(botonLeer)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const spans = Array.from(container!.querySelectorAll('.line span')) as HTMLElement[]
+
+    const spanParen = spans.find((s) => s.textContent?.includes('esto no se dice'))
+    expect(spanParen).not.toBeUndefined()
+    expect(spanParen!.style.opacity).toBe('0.5')
+    expect(spanParen!.style.fontStyle).toBe('italic')
+
+    const spanCorchete = spans.find((s) => s.textContent?.includes('esto tampoco'))
+    expect(spanCorchete).not.toBeUndefined()
+    expect(spanCorchete!.style.opacity).toBe('0.5')
+    expect(spanCorchete!.style.fontStyle).toBe('italic')
+
+    const spanHola = spans.find((s) => s.textContent === 'hola ')
+    if (spanHola) {
+      expect(spanHola.style.opacity).not.toBe('0.5')
+    }
+  })
+
+  test('T109: GUARDIANA. Buscando en el codigo con fs, comprobar que ningun archivo de src/components/ ni de src/datos/ detecta acotaciones mirando solo el corchete. Si en un archivo aparece la comparacion con \'[\' para marcar acotacion, tiene que aparecer tambien la del \'(\'.', () => {
+    const directorios = [
+      path.resolve(process.cwd(), 'src/components'),
+      path.resolve(process.cwd(), 'src/datos')
+    ]
+
+    const archivosConBuscadorAcotacion: string[] = []
+
+    for (const dir of directorios) {
+      const archivos = buscarArchivosRec(dir, '.ts').concat(buscarArchivosRec(dir, '.tsx'))
+      for (const archivo of archivos) {
+        const contenido = fs.readFileSync(archivo, 'utf-8')
+
+        const detectaCorchete = contenido.includes("[']") ||
+          contenido.includes("'['") ||
+          contenido.includes('`[`') ||
+          /\[\^\\\]/.test(contenido) ||
+          /\\\[\[\^\\\]/.test(contenido)
+
+        if (detectaCorchete) {
+          const detectaParentesis = contenido.includes("'('") ||
+            contenido.includes('`(`') ||
+            contenido.includes('\\(') ||
+            /\([^)\n]*\)/.test(contenido)
+
+          if (!detectaParentesis) {
+            archivosConBuscadorAcotacion.push(archivo)
+          }
+        }
+      }
+    }
+
+    expect(archivosConBuscadorAcotacion).toEqual([])
+  })
+
+  test('T110: La busqueda por titulo sigue funcionando sin haber cargado ningun guion completo, y la busqueda dentro del texto encuentra una frase que no esta en el titulo.', async () => {
+    const repo = new RepositorioMemoria()
+
+    const g1: Guion = {
+      id: 'g-110-1',
+      titulo: 'Reporte Semanal Especial',
+      idioma: 'es',
+      creado: 1000,
+      modificado: 1000,
+      bloques: [{ id: 'b1', nombre: '', texto: 'Hoy explicamos el tema de finanzas.' }]
+    }
+
+    const g2: Guion = {
+      id: 'g-110-2',
+      titulo: 'Boletín General',
+      idioma: 'es',
+      creado: 2000,
+      modificado: 2000,
+      bloques: [{ id: 'b2', nombre: '', texto: 'Información confidencial sobre la expedición espacial.' }]
+    }
+
+    await repo.guardar(g1)
+    await repo.guardar(g2)
+
+    for (let i = 3; i <= 9; i++) {
+      await repo.guardar({
+        id: `g-110-${i}`,
+        titulo: `Guion Adicional ${i}`,
+        idioma: 'es',
+        creado: 500,
+        modificado: 500,
+        bloques: [{ id: `b${i}`, nombre: '', texto: 'Contenido ordinario.' }]
+      })
+    }
+
+    const abrirSpy = vi.spyOn(repo, 'abrir')
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const busquedaInput = container!.querySelector('input[data-testid="input-busqueda-biblioteca"]') as HTMLInputElement
+    expect(busquedaInput).not.toBeNull()
+
+    // 1. Buscar por título "Semanal" -> debe encontrarlo de inmediato
+    await act(async () => {
+      fireEvent.change(busquedaInput, { target: { value: 'Semanal' } })
+    })
+
+    expect(container!.textContent).toContain('Reporte Semanal Especial')
+    expect(container!.textContent).not.toContain('Boletín General')
+
+    // 2. Buscar por texto interno "expedición espacial" -> no está en el título, lo encuentra tras cargar
+    await act(async () => {
+      fireEvent.change(busquedaInput, { target: { value: 'expedición espacial' } })
+      await new Promise((r) => setTimeout(r, 300))
+    })
+
+    expect(container!.textContent).toContain('Boletín General')
+    expect(container!.textContent).not.toContain('Reporte Semanal Especial')
+    expect(abrirSpy).toHaveBeenCalled()
+  })
+
 })

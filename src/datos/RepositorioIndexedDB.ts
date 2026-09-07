@@ -56,8 +56,7 @@ export class RepositorioIndexedDB implements RepositorioGuiones {
             idioma: g.idioma,
             modificado: g.modificado,
             palabras: contarPalabras(g),
-            archivado: Boolean(g.archivado),
-            textoCompleto: g.bloques ? g.bloques.map((b) => b.texto || '').join(' ') : ''
+            archivado: Boolean(g.archivado)
           }))
           resumenes.sort((a, b) => b.modificado - a.modificado)
           resolve(resumenes)

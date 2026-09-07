@@ -561,6 +561,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           onRenombrar={handleRenombrarGuion}
           onBorrar={handleBorrarGuion}
           onArchivar={handleArchivarGuion}
+          onBuscarGuionCompleto={(id) => repoRef.current.abrir(id)}
         />
       )}
 

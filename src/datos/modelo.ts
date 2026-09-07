@@ -29,7 +29,6 @@ export type ResumenGuion = {
   modificado: number
   palabras: number
   archivado?: boolean
-  textoCompleto?: string
 }
 
 function generarUuid(): string {
@@ -67,7 +66,10 @@ export function contarPalabras(g: Guion): number {
   if (!g || !g.bloques) return 0
   for (const b of g.bloques) {
     if (!b.texto) continue
-    const sinAcotaciones = b.texto.replace(/\[[^\]]*\]/g, ' ').replace(/\[.*$/g, ' ')
+    const sinAcotaciones = b.texto
+      .replace(/\[[^\]]*\]/g, ' ')
+      .replace(/\([^)]*\)/g, ' ')
+      .replace(/[\[\(].*$/g, ' ')
     const palabras = sinAcotaciones.trim().split(/\s+/).filter(Boolean)
     total += palabras.length
   }
