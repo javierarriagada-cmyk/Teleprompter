@@ -181,22 +181,6 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
   return tokens
 }
 
-// Las palabras mas comunes del castellano. No cuentan como evidencia: aparecen en todas
-// partes, asi que calzarlas no dice nada sobre donde esta el lector.
-const PALABRAS_COMUNES = new Set([
-  'de','la','que','el','en','y','a','los','se','del','las','un','por','con','no',
-  'una','su','para','es','al','lo','como','mas','o','pero','sus','le','ha','me','si',
-  'sin','sobre','este','ya','entre','cuando','todo','esta','ser','son','dos','tambien',
-  'fue','habia','era','muy','hasta','desde','mi','porque','solo','han','yo','hay','vez',
-  'puede','todos','asi','nos','ni','parte','tiene','uno','donde','bien','mismo','ese',
-  'ahora','cada','e','otro','despues','te','otros','aunque','esa','eso','hace','otra','tan',
-  'siempre','tanto','ella','tres','nada','algo','ellos','mucho','mientras','quien','esto','pues'
-])
-
-function esComun(p: string): boolean {
-  return PALABRAS_COMUNES.has(p)
-}
-
 function similar(a: string, b: string): boolean {
   if (a === b) return true
   const tolerancia = Math.max(1, Math.floor(Math.min(a.length, b.length) / 4))
@@ -204,6 +188,30 @@ function similar(a: string, b: string): boolean {
 }
 
 export function crearSeguidor(tokens: Token[]): Seguidor {
+  // CUANTO VALE CADA PALABRA COMO EVIDENCIA, SEGUN ESTE GUION.
+  //
+  // Una palabra que aparece quince veces en el texto no dice casi nada sobre donde esta el
+  // lector: calzarla es casi gratis. Una que aparece una sola vez lo ubica sin ambiguedad.
+  //
+  // PromptSmart aproxima esto descartando las 70 palabras mas comunes del castellano. Es
+  // una lista fija: no sabe que "Nietzsche" repetido quince veces en ESTE guion es mala
+  // evidencia aunque sea rarisimo en el idioma, ni que "silencio" dicho una sola vez vale
+  // oro. La frecuencia dentro del propio texto es la medida correcta, se calcula sola y
+  // funciona en cualquier idioma sin mantener ninguna lista.
+  //
+  // El peso es 1 / raiz de la frecuencia: una palabra unica vale 1, una repetida cuatro
+  // veces vale la mitad, una repetida dieciseis vale un cuarto. La raiz evita que una
+  // palabra muy repetida quede en cero y deje de contar del todo.
+  const frecuencia = new Map<string, number>()
+  for (const t of tokens) {
+    if (t.esAcotacion) continue
+    frecuencia.set(t.palabra, (frecuencia.get(t.palabra) || 0) + 1)
+  }
+  function pesoDe(palabra: string): number {
+    const n = frecuencia.get(palabra) || 1
+    return 1 / Math.sqrt(n)
+  }
+
   let pos = 0
   let fallosSeguidos = 0
   let posTentativa = 0
@@ -236,7 +244,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
 
     for (let offset = desde; offset <= hasta; offset++) {
       let coincidencias = 0
-      let coincidenciasConContenido = 0
+      let evidencia = 0
       let tokensEmparejados = 0
       let currTokenIdx = offset
       let racha = 0
@@ -253,7 +261,9 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
             // Las palabras muy comunes cuentan para la racha -si no, cualquier "de" o
             // "que" en medio de una frase correcta la partiria- pero NO cuentan como
             // evidencia de posicion, porque estan en todo el guion.
-            if (!esComun(tokens[currTokenIdx].palabra)) coincidenciasConContenido++
+            // Cuanto pesa esta coincidencia como evidencia, segun lo rara que sea la
+            // palabra en ESTE guion.
+            evidencia += pesoDe(tokens[currTokenIdx].palabra)
             racha++
             if (racha > rachaMaxima) rachaMaxima = racha
           } else {
@@ -271,13 +281,13 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
       // coincidencia, y contaba igual "de" que una palabra propia del guion.
       const suficientes = coincidencias >= Math.min(MIN_PALABRAS_COINCIDENTES, frase.length)
 
-      // Las palabras con contenido pesan al DESEMPATAR, no como requisito. Exigirlas
-      // rompia la tolerancia a errores: las palabras raras son justo las que el
-      // reconocedor falla mas, mientras que "de" y "que" las acierta siempre. Pero entre
-      // dos posiciones que calzan igual, gana la que calzo palabras del guion y no
-      // relleno del idioma.
+      // La evidencia pesa al DESEMPATAR, no como requisito. Exigir palabras raras rompia
+      // la tolerancia a errores, y por una razon que conviene no olvidar: las palabras
+      // raras son justo las que el reconocedor falla mas, mientras que "de" y "que" las
+      // acierta siempre. Pero entre dos posiciones que calzan igual de bien, gana la que
+      // calzo palabras que en este guion aparecen pocas veces.
       let puntaje = suficientes
-        ? coincidencias / frase.length + coincidenciasConContenido * 0.01
+        ? coincidencias / frase.length + evidencia * 0.02
         : 0
 
       // NO basta con que coincida una fraccion de palabras sueltas: hacen falta
