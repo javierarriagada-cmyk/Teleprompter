@@ -45,6 +45,11 @@ export const PALABRAS_SEGUIDAS_PARA_SALTAR = 6
 // una frase inventada pudiera mandar el prompter a cualquier parte. Cien palabras de radio
 // cubren lo que pasa de verdad: saltarse un parrafo, repetir, adelantarse un poco.
 export const RECUPERACION_TOKENS = 100
+// Cuantas palabras nuevas sin calzar se guardan mientras el seguidor esta perdido. Con la
+// bolsa mas grande, lo que el lector dijo fuera del guion queda adentro mas tiempo y le
+// exige mas palabras limpias para reenganchar. Medido: con 5 alcanzan TRES palabras
+// seguidas, con 6 hacen falta cuatro, con 8 hacen falta seis.
+export const MAX_PENDIENTES = 5
 export const RETROCESO_MAX = 2
 
 export const MIN_PALABRAS_PARCIAL = 3
@@ -174,6 +179,12 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
   let pos = 0
   let fallosSeguidos = 0
   let posTentativa = 0
+  // Ultimo parcial visto, normalizado, para saber que parte es nueva.
+  let ultimoParcial = ''
+  // Palabras nuevas todavia sin calzar. Las viejas se caen solas.
+  let pendientes: string[] = []
+  // Parciales seguidos sin calzar. Al pasar de MAX_FALLOS se entra en recuperacion.
+  let fallosParcialesSeguidos = 0
 
   function obtenerPosicionRespuesta(movio: boolean, desde?: number, hasta?: number): Posicion {
     if (tokens.length === 0) {
@@ -268,6 +279,10 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
 
   return {
     avanzar(fraseFinal: string): Posicion {
+      // Un FINAL cierra la intervencion: el acumulado del parcial arranca de cero.
+      ultimoParcial = ''
+      pendientes = []
+
       if (tokens.length === 0) {
         return { bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
       }
@@ -342,11 +357,48 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         return obtenerPosicionRespuesta(false)
       }
 
-      const palabrasFrase = fraseNorm.split(' ').filter(Boolean)
-      if (palabrasFrase.length === 0) {
+      // SOLO SE EVALUAN LAS PALABRAS NUEVAS.
+      //
+      // El parcial de Web Speech es acumulativo: no entrega la palabra recien dicha sino
+      // todo lo que va de la intervencion, cada vez mas largo. Tomando las ultimas doce de
+      // ese acumulado, lo que el lector dijo fuera del guion volvia a entrar en la cuenta
+      // una y otra vez, hundiendo el puntaje hasta que su propia longitud lo empujaba
+      // afuera. Por eso, despues de improvisar, ni leyendo un parrafo entero reenganchaba.
+      //
+      // Lo ya evaluado y descartado no se vuelve a considerar. Las palabras nuevas se
+      // acumulan en una bolsa chica donde las viejas se caen a medida que entran otras, y
+      // un calce la vacia.
+      const palabrasAhora = fraseNorm.split(' ').filter(Boolean)
+      if (palabrasAhora.length === 0) {
         return obtenerPosicionRespuesta(false)
       }
 
+      let nuevas: string[]
+      if (ultimoParcial && fraseNorm.startsWith(ultimoParcial)) {
+        nuevas = fraseNorm.slice(ultimoParcial.length).split(' ').filter(Boolean)
+      } else {
+        // El reconocedor se corrigio a si mismo y reescribio lo anterior: se evalua todo.
+        nuevas = palabrasAhora
+        pendientes = []
+      }
+      ultimoParcial = fraseNorm
+
+      if (nuevas.length > 0) {
+        pendientes = pendientes.concat(nuevas).slice(-MAX_PENDIENTES)
+      }
+
+      // MIENTRAS VIENE CALZANDO se usa el contexto completo: mas palabras ubican mejor.
+      // Solo cuando varios parciales seguidos fallan -el lector se fue del guion- el
+      // seguidor deja de confiar en lo acumulado y mira unicamente lo nuevo.
+      const enRecuperacion = fallosParcialesSeguidos >= MAX_FALLOS
+      const palabrasAEvaluar = enRecuperacion ? pendientes : palabrasAhora
+
+      if (enRecuperacion && palabrasAEvaluar.length < PALABRAS_SEGUIDAS_MINIMO) {
+        fallosParcialesSeguidos++
+        return obtenerPosicionRespuesta(false)
+      }
+
+      const palabrasFrase = palabrasAEvaluar
       const frase = palabrasFrase.slice(-MAX_PALABRAS_FRASE)
       const base = Math.max(pos, posTentativa)
       const tokActual = tokens[base] || tokens[tokens.length - 1]
@@ -367,6 +419,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
       const { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta)
 
       if (mejorPuntaje < MIN_COINCIDENCIA) {
+        fallosParcialesSeguidos++
         return obtenerPosicionRespuesta(false)
       }
 
@@ -382,10 +435,13 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
 
       const candPos = Math.min(currIdx, tokens.length - 1)
       if (candPos < base - RETROCESO_MAX) {
+        fallosParcialesSeguidos++
         return obtenerPosicionRespuesta(false)
       }
 
       posTentativa = Math.max(posTentativa, candPos)
+      pendientes = []
+      fallosParcialesSeguidos = 0
 
       const tokCand = tokens[candPos]
       return {
@@ -402,6 +458,8 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
       pos = 0
       posTentativa = 0
       fallosSeguidos = 0
+      ultimoParcial = ''
+      pendientes = []
     },
 
     posicionToken() {
