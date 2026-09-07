@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Guion, Bloque } from '../datos/modelo'
 import { importarTexto } from '../datos/importar'
+import { importarArchivo } from '../datos/importarArchivo'
 
 interface EditorViewProps {
   guion: Guion
@@ -28,6 +29,11 @@ export default function EditorView({
   const [mostrarModalPegar, setMostrarModalPegar] = useState(false)
   const [textoPegado, setTextoPegado] = useState('')
   const [errorPegado, setErrorPegado] = useState<string | null>(null)
+
+  // Estado y ref para importar desde archivo
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [cargandoArchivo, setCargandoArchivo] = useState(false)
+  const [errorArchivo, setErrorArchivo] = useState<string | null>(null)
 
   function togglePlegado(id: string) {
     setPlegados((prev) => ({
@@ -72,6 +78,39 @@ export default function EditorView({
     setTextoPegado('')
     setErrorPegado(null)
     setMostrarModalPegar(false)
+  }
+
+  async function handleSeleccionarArchivo(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    e.target.value = ''
+    setCargandoArchivo(true)
+    setErrorArchivo(null)
+
+    try {
+      const resultado = await importarArchivo(file)
+      if (resultado.bloques.length === 0) {
+        throw new Error('El archivo no contiene texto importable.')
+      }
+
+      const bloquesActuales = guion.bloques || []
+      const tituloNuevo = (!guion.titulo || !guion.titulo.trim() || guion.titulo === 'Sin título')
+        ? resultado.titulo
+        : guion.titulo
+
+      onChangeGuion({
+        ...guion,
+        titulo: tituloNuevo,
+        bloques: [...bloquesActuales, ...resultado.bloques],
+        modificado: Date.now()
+      })
+    } catch (err: any) {
+      const mensaje = err?.message || 'Error al importar el archivo'
+      setErrorArchivo(mensaje)
+    } finally {
+      setCargandoArchivo(false)
+    }
   }
 
   function handleIdiomaChange(nuevoIdioma: string) {
@@ -153,8 +192,6 @@ export default function EditorView({
       modificado: Date.now()
     })
   }
-
-  const tituloMostrar = guion.titulo && guion.titulo.trim() ? guion.titulo : 'Sin título'
 
   return (
     <div style={{ maxWidth: 800, margin: '0 auto', padding: '16px 0' }}>
@@ -241,6 +278,24 @@ export default function EditorView({
         </div>
       </div>
 
+      {/* Alerta de error al importar archivo */}
+      {errorArchivo && (
+        <div
+          style={{
+            color: '#d32f2f',
+            backgroundColor: '#ffebee',
+            border: '1px solid #ef9a9a',
+            padding: '10px 14px',
+            borderRadius: 6,
+            marginBottom: 16,
+            fontSize: 14,
+            fontWeight: 'bold'
+          }}
+        >
+          ⚠️ Error al abrir archivo: {errorArchivo}
+        </div>
+      )}
+
       {/* Lista de Bloques */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <h3 style={{ margin: 0 }}>Bloques ({guion.bloques ? guion.bloques.length : 0})</h3>
@@ -262,6 +317,29 @@ export default function EditorView({
           >
             Pegar texto
           </button>
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={cargandoArchivo}
+            style={{
+              padding: '6px 14px',
+              backgroundColor: '#7b1fa2',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 4,
+              cursor: cargandoArchivo ? 'not-allowed' : 'pointer',
+              opacity: cargandoArchivo ? 0.7 : 1,
+              fontWeight: 'bold'
+            }}
+          >
+            {cargandoArchivo ? 'Leyendo archivo...' : 'Abrir archivo'}
+          </button>
+          <input
+            type="file"
+            ref={fileInputRef}
+            accept=".txt,.md,.docx"
+            onChange={handleSeleccionarArchivo}
+            style={{ display: 'none' }}
+          />
           <button
             onClick={handleAgregarBloque}
             style={{
