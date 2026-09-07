@@ -40,11 +40,17 @@ export const PALABRAS_SEGUIDAS_MINIMO = 3
 // seguidas, un guion largo ofrece coincidencias por casualidad y el prompter saltaba a
 // otro parrafo cuando el lector improvisaba.
 export const PALABRAS_SEGUIDAS_PARA_SALTAR = 6
-// Cuanto puede alejarse la recuperacion de donde esta el lector. Antes buscaba en TODO el
-// guion, y eso resolvia un caso rarisimo -saltarse a proposito al final- a cambio de que
-// una frase inventada pudiera mandar el prompter a cualquier parte. Cien palabras de radio
-// cubren lo que pasa de verdad: saltarse un parrafo, repetir, adelantarse un poco.
-export const RECUPERACION_TOKENS = 100
+// Cuanto puede alejarse la recuperacion de donde va el lector.
+//
+// Cubre lo que de verdad pasa cuando alguien se pierde leyendo: repetir la linea en curso
+// -unas 8 palabras atras-, saltarse una linea -unas 8 adelante- o irse al parrafo siguiente
+// -20 o 30 adelante-. Deja fuera el caso de saltarse a otra parte del guion, que se decidio
+// no servir: el riesgo de un salto equivocado no lo compensa.
+//
+// Antes eran 100, un numero que no salio de ninguna medicion sino de estimar un parrafo en
+// 60 palabras. Cuanto mas ancha la ventana, mas lugares donde una frase inventada puede
+// pegar seis palabras seguidas por casualidad y llevarse el prompter a otro lado.
+export const RECUPERACION_TOKENS = 40
 // Cuantas palabras nuevas sin calzar se guardan mientras el seguidor esta perdido. Con la
 // bolsa mas grande, lo que el lector dijo fuera del guion queda adentro mas tiempo y le
 // exige mas palabras limpias para reenganchar. Medido: con 5 alcanzan TRES palabras

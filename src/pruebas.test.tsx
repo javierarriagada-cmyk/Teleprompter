@@ -139,9 +139,25 @@ Esta es la tercera línea`)
     seguidor.avanzar('inventado x')
     seguidor.avanzar('inventado y')
 
-    const pos = seguidor.avanzar('cincuenta')
-    expect(pos.movio).toBe(true)
-    expect(pos.linea).toBe(50)
+    // CAMBIADO el 6 de septiembre de 2026, por decision del dueno.
+    //
+    // Antes esta prueba exigia que decir UNA SOLA PALABRA -"cincuenta"- llevara el
+    // seguidor cincuenta palabras mas adelante. Eso fijaba el diseno viejo, en el que la
+    // recuperacion buscaba en todo el guion: es justo lo que mandaba el prompter a otro
+    // parrafo cuando el lector decia algo fuera del guion, porque una palabra suelta calza
+    // por casualidad en cualquier parte de un texto largo.
+    //
+    // Lo acordado es que la recuperacion cubra lo que de verdad pasa al perderse -repetir
+    // una linea, saltarse una, irse al parrafo siguiente- y nada mas. Cincuenta palabras
+    // quedan fuera de RECUPERACION_TOKENS a proposito.
+    const lejos = seguidor.avanzar('cincuenta')
+    expect(lejos.movio).toBe(false)
+
+    // Dentro de la ventana si se recupera, y con evidencia suficiente: una frase, no una
+    // palabra suelta.
+    const cerca = seguidor.avanzar('uno dos tres cuatro cinco seis')
+    expect(cerca.movio).toBe(true)
+    expect(cerca.linea).toBe(6)
   })
 
   // T5: remuestrear
