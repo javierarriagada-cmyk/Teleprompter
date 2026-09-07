@@ -151,8 +151,21 @@ export function importarTexto(
 
   const maxCaracteresPorLinea = opciones?.maxCaracteresPorLinea ?? 42
 
-  // Normalizar saltos de línea de Windows (\r\n) y de Mac antiguo (\r) a \n
-  const textoNormalizado = texto.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim()
+  // Limpiar texto al pegar/importar:
+  // 1. Espacios duros (\u00A0) pasan a espacios normales
+  // 2. Guiones blandos (\u00AD) se eliminan
+  // 3. Tres o más saltos de línea seguidos quedan en dos
+  // 4. Espacios/tabuladores al final de cada línea se eliminan
+  // NO se tocan comillas ni saltos de línea simples.
+  let textoLimpio = texto
+    .replace(/\u00A0/g, ' ')
+    .replace(/\u00AD/g, '')
+    .replace(/[ \t]+$/gm, '')
+
+  textoLimpio = textoLimpio.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+  textoLimpio = textoLimpio.replace(/\n{3,}/g, '\n\n').trim()
+
+  const textoNormalizado = textoLimpio
 
   // Separar en párrafos (un párrafo por cada separación de una o más líneas en blanco)
   const parrafos = textoNormalizado.split(/\n\s*\n+/).filter((p) => p.trim().length > 0)

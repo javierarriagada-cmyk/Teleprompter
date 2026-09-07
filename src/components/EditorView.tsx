@@ -309,7 +309,7 @@ export default function EditorView({
   }
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', padding: '16px 0' }}>
+    <div style={{ maxWidth: 800, margin: '0 auto', padding: '16px 0 100px 0' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <button
           onClick={onVolverBiblioteca}
@@ -323,22 +323,6 @@ export default function EditorView({
           }}
         >
           ← Biblioteca
-        </button>
-
-        <button
-          onClick={onEntrarLectura}
-          style={{
-            padding: '10px 20px',
-            backgroundColor: 'var(--color-acento)',
-            color: 'var(--color-texto-acento)',
-            border: 'none',
-            borderRadius: 6,
-            cursor: 'pointer',
-            fontSize: 16,
-            fontWeight: 'bold'
-          }}
-        >
-          ▶ Leer Guión
         </button>
       </div>
 
@@ -465,9 +449,9 @@ export default function EditorView({
             onClick={handleAgregarBloque}
             style={{
               padding: '6px 14px',
-              backgroundColor: 'var(--color-acento)',
-              color: 'var(--color-texto-acento)',
-              border: 'none',
+              backgroundColor: 'var(--bg-superficie)',
+              color: 'var(--color-texto)',
+              border: '1px solid var(--color-borde)',
               borderRadius: 6,
               cursor: 'pointer',
               fontWeight: 'bold'
@@ -546,9 +530,9 @@ export default function EditorView({
               onClick={handleAceptarPegar}
               style={{
                 padding: '6px 14px',
-                backgroundColor: 'var(--color-acento)',
-                color: 'var(--color-texto-acento)',
-                border: 'none',
+                backgroundColor: 'var(--bg-superficie)',
+                color: 'var(--color-texto)',
+                border: '1px solid var(--color-borde)',
                 borderRadius: 6,
                 cursor: 'pointer',
                 fontWeight: 'bold'
@@ -578,9 +562,9 @@ export default function EditorView({
             onClick={handleAgregarBloque}
             style={{
               padding: '8px 16px',
-              backgroundColor: 'var(--color-acento)',
-              color: 'var(--color-texto-acento)',
-              border: 'none',
+              backgroundColor: 'var(--bg-superficie)',
+              color: 'var(--color-texto)',
+              border: '1px solid var(--color-borde)',
               borderRadius: 6,
               cursor: 'pointer',
               fontWeight: 'bold'
@@ -801,6 +785,45 @@ export default function EditorView({
           })}
         </div>
       )}
+
+      {/* Botón de Leer Guión Fijo Abajo - El más grande de la pantalla y el único acentuado */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 16,
+          left: 0,
+          right: 0,
+          display: 'flex',
+          justifyContent: 'center',
+          pointerEvents: 'none',
+          zIndex: 100
+        }}
+      >
+        <button
+          onClick={onEntrarLectura}
+          data-testid="btn-leer-guion-fijo"
+          style={{
+            pointerEvents: 'auto',
+            width: 'calc(100% - 32px)',
+            maxWidth: 760,
+            padding: '16px 24px',
+            fontSize: 20,
+            fontWeight: 'bold',
+            backgroundColor: 'var(--color-acento)',
+            color: 'var(--color-texto-acento)',
+            border: 'none',
+            borderRadius: 12,
+            cursor: 'pointer',
+            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 10
+          }}
+        >
+          ▶ Leer Guión
+        </button>
+      </div>
     </div>
   )
 }

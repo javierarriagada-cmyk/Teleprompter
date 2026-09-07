@@ -29,6 +29,7 @@ export type ResumenGuion = {
   modificado: number
   palabras: number
   archivado?: boolean
+  textoCompleto?: string
 }
 
 function generarUuid(): string {

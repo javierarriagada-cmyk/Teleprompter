@@ -14,7 +14,8 @@ export class RepositorioMemoria implements RepositorioGuiones {
         idioma: g.idioma,
         modificado: g.modificado,
         palabras: contarPalabras(g),
-        archivado: Boolean(g.archivado)
+        archivado: Boolean(g.archivado),
+        textoCompleto: g.bloques ? g.bloques.map((b) => b.texto || '').join(' ') : ''
       })
     }
     lista.sort((a, b) => b.modificado - a.modificado)
