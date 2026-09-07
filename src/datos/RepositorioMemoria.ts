@@ -13,7 +13,8 @@ export class RepositorioMemoria implements RepositorioGuiones {
         titulo: g.titulo || 'Sin título',
         idioma: g.idioma,
         modificado: g.modificado,
-        palabras: contarPalabras(g)
+        palabras: contarPalabras(g),
+        archivado: Boolean(g.archivado)
       })
     }
     lista.sort((a, b) => b.modificado - a.modificado)
@@ -23,7 +24,9 @@ export class RepositorioMemoria implements RepositorioGuiones {
   async abrir(id: string): Promise<Guion | null> {
     const original = this.guionesMap.get(id)
     if (!original) return null
-    return JSON.parse(JSON.stringify(original))
+    const copia: Guion = JSON.parse(JSON.stringify(original))
+    copia.archivado = Boolean(copia.archivado)
+    return copia
   }
 
   async guardar(g: Guion): Promise<void> {
@@ -34,7 +37,9 @@ export class RepositorioMemoria implements RepositorioGuiones {
     }
     this.ultimoModificado = ahora
     copia.modificado = ahora
+    copia.archivado = Boolean(copia.archivado)
     g.modificado = ahora
+    g.archivado = copia.archivado
     this.guionesMap.set(copia.id, copia)
   }
 

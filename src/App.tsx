@@ -26,14 +26,37 @@ interface AppProps {
 
 type Vista = 'biblioteca' | 'editor' | 'lectura'
 
-// Guion vacio de identidad ESTABLE, para cuando no hay ninguno abierto.
 const GUION_VACIO: Guion = {
   id: 'vacio',
   titulo: '',
   idioma: 'es',
   creado: 0,
   modificado: 0,
+  archivado: false,
   bloques: []
+}
+
+const PASOS_LETRA = [14, 18, 24, 32, 42]
+
+function cargarAjustesGuardados() {
+  try {
+    const raw = localStorage.getItem('teleprompter_ajustes')
+    if (raw) {
+      return JSON.parse(raw)
+    }
+  } catch (e) {
+  }
+  return null
+}
+
+function ajustarFuenteValida(val: any): number {
+  const num = Number(val)
+  if (isNaN(num)) return 24
+  if (PASOS_LETRA.includes(num)) return num
+  const masCercano = PASOS_LETRA.reduce((prev, curr) =>
+    Math.abs(curr - num) < Math.abs(prev - num) ? curr : prev
+  )
+  return masCercano
 }
 
 export default function App({ motor, repoOverride }: AppProps) {
@@ -47,6 +70,46 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [guionesResumen, setGuionesResumen] = useState<ResumenGuion[]>([])
   const [guionActual, setGuionActual] = useState<Guion | null>(null)
   const [cargado, setCargado] = useState<boolean>(false)
+
+  // Ajustes persistentes
+  const ajustesPrevios = cargarAjustesGuardados() || {}
+
+  const [engine, setEngine] = useState<IdMotor>(ajustesPrevios.engine || 'webspeech')
+  const [verTranscripcion, setVerTranscripcion] = useState<boolean>(Boolean(ajustesPrevios.verTranscripcion))
+  const [mostrarTiempo, setMostrarTiempo] = useState<boolean>(ajustesPrevios.mostrarTiempo !== undefined ? Boolean(ajustesPrevios.mostrarTiempo) : true)
+  const [fontSize, setFontSize] = useState<number>(ajustarFuenteValida(ajustesPrevios.fontSize))
+  const [marginPercent, setMarginPercent] = useState<number>(ajustesPrevios.marginPercent !== undefined ? Number(ajustesPrevios.marginPercent) : 10)
+  const [mirror, setMirror] = useState<boolean>(Boolean(ajustesPrevios.mirror))
+  const [lineasZona, setLineasZona] = useState<number>(ajustesPrevios.lineasZona !== undefined ? Number(ajustesPrevios.lineasZona) : 3)
+  const [anclajeZona, setAnclajeZona] = useState<'arriba' | 'medio' | 'abajo'>(ajustesPrevios.anclajeZona || 'arriba')
+  const [tema, setTema] = useState<'claro' | 'oscuro'>(ajustesPrevios.tema || 'claro')
+
+  const [modoManual, setModoManual] = useState<boolean>(false)
+  const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
+
+  // Sincronizar tema con documentElement
+  useEffect(() => {
+    document.documentElement.setAttribute('data-tema', tema)
+  }, [tema])
+
+  // Guardar ajustes en localStorage ante cambios
+  useEffect(() => {
+    try {
+      const objetoAjustes = {
+        fontSize,
+        marginPercent,
+        mirror,
+        lineasZona,
+        anclajeZona,
+        mostrarTiempo,
+        verTranscripcion,
+        tema,
+        engine
+      }
+      localStorage.setItem('teleprompter_ajustes', JSON.stringify(objetoAjustes))
+    } catch (e) {
+    }
+  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine])
 
   const cargarBiblioteca = useCallback(async () => {
     let repo = repoRef.current
@@ -79,7 +142,6 @@ export default function App({ motor, repoOverride }: AppProps) {
       } catch (e) {
       }
 
-      // 1. Si existe clave en localStorage, migrar al repositorio
       if (textoViejo && textoViejo.trim()) {
         const gMigrado: Guion = {
           id: 'migrado-' + Date.now(),
@@ -87,6 +149,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           idioma: 'es',
           creado: Date.now(),
           modificado: Date.now(),
+          archivado: false,
           bloques: [
             {
               id: 'b-migrado',
@@ -129,7 +192,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     return () => clearTimeout(timer)
   }, [guionActual, cargado, cargarBiblioteca])
 
-  // Manejadores de Biblioteca
   async function handleAbrirGuion(id: string) {
     try {
       const g = await repoRef.current.abrir(id)
@@ -165,6 +227,7 @@ export default function App({ motor, repoOverride }: AppProps) {
         idioma: 'es',
         creado: Date.now(),
         modificado: Date.now(),
+        archivado: false,
         bloques: res.bloques
       }
       await repoRef.current.guardar(nuevo)
@@ -205,16 +268,21 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }
 
-  const [engine, setEngine] = useState<IdMotor>('webspeech')
-  const [verTranscripcion, setVerTranscripcion] = useState<boolean>(false)
-  const [mostrarTiempo, setMostrarTiempo] = useState<boolean>(true)
-  const [modoManual, setModoManual] = useState<boolean>(false)
-  const [fontSize, setFontSize] = useState<number>(24)
-  const [marginPercent, setMarginPercent] = useState<number>(10)
-  const [mirror, setMirror] = useState<boolean>(false)
-  const [lineasZona, setLineasZona] = useState<number>(3)
-  const [anclajeZona, setAnclajeZona] = useState<'arriba' | 'medio' | 'abajo'>('arriba')
-  const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
+  async function handleArchivarGuion(id: string, archivado: boolean) {
+    try {
+      const g = await repoRef.current.abrir(id)
+      if (g) {
+        g.archivado = archivado
+        await repoRef.current.guardar(g)
+        if (guionActual && guionActual.id === id) {
+          setGuionActual({ ...g })
+        }
+        await cargarBiblioteca()
+      }
+    } catch (e) {
+      console.warn('[App] Error al archivar/desarchivar guion:', e)
+    }
+  }
 
   const [columnaAngosta, setColumnaAngosta] = useState<boolean>(true)
   const [colorFondo, setColorFondo] = useState<string>('#000000')
@@ -386,24 +454,24 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   return (
     <div style={{ padding: 16, fontFamily: 'sans-serif', maxWidth: 1200, margin: '0 auto' }}>
-      <header style={{ borderBottom: '1px solid #eee', paddingBottom: 12, marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <header style={{ borderBottom: '1px solid var(--color-borde)', paddingBottom: 12, marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h1 style={{ margin: 0, fontSize: 24, cursor: 'pointer' }} onClick={() => setVista('biblioteca')}>Teleprompter MVP</h1>
+          <h1 style={{ margin: 0, fontSize: 24, cursor: 'pointer', color: 'var(--color-texto)' }} onClick={() => setVista('biblioteca')}>Teleprompter MVP</h1>
           {vista !== 'biblioteca' && (
-            <h3 style={{ color: '#555', margin: '4px 0 0 0', fontSize: 16 }}>{tituloMostrar}</h3>
+            <h3 style={{ color: 'var(--color-apagado)', margin: '4px 0 0 0', fontSize: 16 }}>{tituloMostrar}</h3>
           )}
         </div>
         {vista !== 'biblioteca' && (
           <button
             onClick={() => setVista('biblioteca')}
-            style={{ padding: '6px 12px', cursor: 'pointer', backgroundColor: '#f0f0f0', border: '1px solid #ccc', borderRadius: 4 }}
+            style={{ padding: '6px 12px', cursor: 'pointer', backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)', borderRadius: 6, color: 'var(--color-texto)' }}
           >
             📚 Ver Biblioteca
           </button>
         )}
       </header>
 
-      {/* Indicador discreto de precarga de modelo Vosk */}
+      {/* Indicador de precarga de modelo Vosk */}
       {(estadoPrecarga === 'descargando' || estadoPrecarga === 'error') && (
         <div
           style={{
@@ -443,19 +511,19 @@ export default function App({ motor, repoOverride }: AppProps) {
       {/* Franja de estado visible */}
       <div
         style={{
-          background: (ultimoError || errorRepositorio) ? '#ffebee' : '#e8f5e9',
-          color: (ultimoError || errorRepositorio) ? '#c62828' : '#2e7d32',
+          background: (ultimoError || errorRepositorio) ? '#ffebee' : 'var(--bg-superficie)',
+          color: (ultimoError || errorRepositorio) ? '#c62828' : 'var(--color-texto)',
           padding: '10px 14px',
           borderRadius: 6,
           marginBottom: 16,
           fontSize: 14,
-          border: `1px solid ${(ultimoError || errorRepositorio) ? '#ef9a9a' : '#a5d6a7'}`
+          border: `1px solid ${(ultimoError || errorRepositorio) ? '#ef9a9a' : 'var(--color-borde)'}`
         }}
       >
         <strong>Franja de Estado:</strong>
         <div style={{ marginTop: 4 }}>
           <span>Estado del Motor: <strong>{estadoMotor}</strong></span>
-          {modoManual && <span style={{ marginLeft: 16, color: "#0a58ca", fontWeight: 600 }}>MODO MANUAL: mandas tú</span>}
+          {modoManual && <span style={{ marginLeft: 16, color: 'var(--color-acento)', fontWeight: 600 }}>MODO MANUAL: mandas tú</span>}
           <span style={{ marginLeft: 16 }}>Motor Activo: <strong>{motorActivo}</strong></span>
           {engine === 'whisper-local' && (
             <span style={{ marginLeft: 16 }}>Dispositivo: <strong>{dispositivoComputo}</strong></span>
@@ -492,6 +560,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           onImportarArchivo={handleImportarArchivo}
           onRenombrar={handleRenombrarGuion}
           onBorrar={handleBorrarGuion}
+          onArchivar={handleArchivarGuion}
         />
       )}
 
@@ -509,11 +578,11 @@ export default function App({ motor, repoOverride }: AppProps) {
           <div style={{ marginBottom: 12, display: 'flex', gap: 12, alignItems: 'center' }}>
             <button
               onClick={() => setVista('editor')}
-              style={{ padding: '6px 14px', cursor: 'pointer', backgroundColor: '#f0f0f0', border: '1px solid #ccc', borderRadius: 4 }}
+              style={{ padding: '6px 14px', cursor: 'pointer', backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)', borderRadius: 6, color: 'var(--color-texto)' }}
             >
               ← Volver al Editor
             </button>
-            <span style={{ color: '#666', fontSize: 14 }}>
+            <span style={{ color: 'var(--color-apagado)', fontSize: 14 }}>
               Modo Lectura - <strong>{tituloMostrar}</strong>
             </span>
           </div>
@@ -521,20 +590,6 @@ export default function App({ motor, repoOverride }: AppProps) {
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
             {!esPantallaCompleta && controlesVisibles && (
               <div data-testid="panel-controles-lectura" style={{ flex: 1, minWidth: 320 }}>
-                <div style={{ marginTop: 12 }}>
-                  <label>
-                    <strong>Motor ASR: </strong>
-                    <select
-                      value={engine}
-                      onChange={(e) => setEngine(e.target.value as IdMotor)}
-                      style={{ marginLeft: 8, padding: 4 }}
-                    >
-                      <option value="whisper-local">Whisper Local (On-Device WebGPU/WASM)</option>
-                      <option value="webspeech">Web Speech API (Navegador)</option>
-                      <option value="nativo">Nativo (Android - Tarea 2)</option>
-                    </select>
-                  </label>
-                </div>
 
                 <ControlsBar
                   onStart={handleStart}
@@ -563,32 +618,37 @@ export default function App({ motor, repoOverride }: AppProps) {
                   setColorLetra={setColorLetra}
                   tipoFuente={tipoFuente}
                   setTipoFuente={setTipoFuente}
+                  tema={tema}
+                  setTema={setTema}
+                  engine={engine}
+                  setEngine={setEngine}
                   onToggleFullscreen={toggleFullscreen}
                 />
 
                 <div style={{ marginTop: 12 }}>
-                  <button onClick={handleClear} style={{ padding: '8px 16px', fontWeight: 600 }}>
+                  <button onClick={handleClear} style={{ padding: '8px 16px', fontWeight: 600, backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)', borderRadius: 6, color: 'var(--color-texto)', cursor: 'pointer' }}>
                     Volver al inicio
                   </button>
                 </div>
 
-                <div style={{ marginTop: 12 }}>
+                <div style={{ marginTop: 12, color: 'var(--color-texto)' }}>
                   <strong>Estado del Motor:</strong> {estadoMotor}
                 </div>
 
                 {verTranscripcion && (
                   <>
                     <div style={{ marginTop: 12 }}>
-                      <strong>Transcripción (en vivo):</strong>
+                      <strong style={{ color: 'var(--color-texto)' }}>Transcripción (en vivo):</strong>
                       <div
                         style={{
                           minHeight: 100,
-                          border: '1px solid #ddd',
+                          border: '1px solid var(--color-borde)',
                           padding: 8,
                           marginTop: 6,
                           whiteSpace: 'pre-wrap',
-                          background: '#f8f8f8',
-                          borderRadius: 4,
+                          background: 'var(--bg-suelo)',
+                          color: 'var(--color-texto)',
+                          borderRadius: 6,
                           fontSize: 14
                         }}
                       >

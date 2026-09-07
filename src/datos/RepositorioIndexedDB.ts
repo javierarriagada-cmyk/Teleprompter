@@ -55,7 +55,8 @@ export class RepositorioIndexedDB implements RepositorioGuiones {
             titulo: g.titulo || 'Sin título',
             idioma: g.idioma,
             modificado: g.modificado,
-            palabras: contarPalabras(g)
+            palabras: contarPalabras(g),
+            archivado: Boolean(g.archivado)
           }))
           resumenes.sort((a, b) => b.modificado - a.modificado)
           resolve(resumenes)
@@ -77,7 +78,15 @@ export class RepositorioIndexedDB implements RepositorioGuiones {
 
         request.onerror = () => reject(request.error)
         request.onsuccess = () => {
-          resolve(request.result || null)
+          const g: Guion | undefined = request.result
+          if (!g) {
+            resolve(null)
+            return
+          }
+          resolve({
+            ...g,
+            archivado: Boolean(g.archivado)
+          })
         }
       })
     } catch (e) {
@@ -95,6 +104,7 @@ export class RepositorioIndexedDB implements RepositorioGuiones {
       }
       this.ultimoModificado = ahora
       g.modificado = ahora
+      g.archivado = Boolean(g.archivado)
       return new Promise((resolve, reject) => {
         const tx = db.transaction(STORE_NAME, 'readwrite')
         const store = tx.objectStore(STORE_NAME)
