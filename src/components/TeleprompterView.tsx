@@ -264,8 +264,14 @@ export default function TeleprompterView({
       >
         {guionObj.bloques.map((bloque, bIdx) => {
           const lineas = (bloque.texto || '').split(/\r?\n/)
+          // Sin margen extra entre bloques: el ritmo vertical tiene que ser UNIFORME. Con
+          // 24 px de margen, el paso entre parrafos era de 100.8 px contra 76.8 px entre
+          // lineas, y ese excedente se recorria durante la ultima linea del parrafo: el
+          // texto subia 31% mas rapido justo ahi, que es lo que se sentia brusco al pasar
+          // de un parrafo a otro. Para separarlos a la vista va una linea en blanco en el
+          // texto, que ocupa un renglon y se recorre a la misma velocidad que el resto.
           return (
-            <div key={bloque.id || bIdx} className="block-container" style={{ marginBottom: 24 }}>
+            <div key={bloque.id || bIdx} className="block-container">
               {bloque.nombre && (
                 <div style={{ fontSize: Math.max(14, fontSize * 0.5), color: '#888', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>
                   [{bloque.nombre}]
