@@ -24,6 +24,35 @@ export type OpcionesLectura = {
   porcentajeErrores?: number     // % de palabras que el reconocedor entrega mal
 }
 
+// COMO SE EQUIVOCA UN RECONOCEDOR DE VOZ.
+//
+// Antes esto agregaba una "x" al final de la palabra. Eso no es un error de
+// reconocimiento, es un error de tipeo, y hacia que la prueba de tolerancia a errores no
+// midiera nada: una letra de mas la absorbe cualquier comparacion por distancia, asi que
+// daba lo mismo un 0% que un 20% de error.
+//
+// Un reconocedor no agrega letras: CONFUNDE PALABRAS QUE SUENAN PARECIDO. En castellano se
+// equivoca con b y v, con s, z y c, con ll e y, se come las haches, y se come las eses
+// finales. Estos son los errores que hay que tolerar, y son los unicos que valen para
+// decidir si una comparacion sirve.
+function conErrorDeReconocimiento(w: string, random: () => number): string {
+  const cambios: [RegExp, string][] = [
+    [/b/, 'v'], [/v/, 'b'],
+    [/s/, 'z'], [/z/, 's'], [/c([ei])/, 's$1'],
+    [/ll/, 'y'], [/y/, 'll'],
+    [/^h/, ''], [/^([aeiou])/, 'h$1'],
+    [/j/, 'g'], [/g([ei])/, 'j$1'],
+    [/s$/, '']
+  ]
+  const aplicables = cambios.filter(([re]) => re.test(w))
+  if (aplicables.length === 0) {
+    // Sin sustitucion fonetica posible: se cambia una vocal, que tambien pasa.
+    return w.replace(/[aeiou]/, (v) => (v === 'e' ? 'i' : v === 'o' ? 'u' : 'e'))
+  }
+  const [re, por] = aplicables[Math.floor(random() * aplicables.length) % aplicables.length]
+  return w.replace(re, por)
+}
+
 export function simularLectura(o: OpcionesLectura): ResultadoSimulacion {
   const tokens = tokenizarGuion(o.guion)
   if (tokens.length === 0) {
@@ -92,7 +121,7 @@ export function simularLectura(o: OpcionesLectura): ResultadoSimulacion {
       for (let i = idxToken; i < finChunk; i++) {
         let w = tokens[i].palabra
         if (porcentajeErrores > 0 && random() * 100 < porcentajeErrores) {
-          w = w + 'x'
+          w = conErrorDeReconocimiento(w, random)
         }
         palabrasFrase.push(w)
       }
