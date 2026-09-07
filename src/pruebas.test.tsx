@@ -18,6 +18,7 @@ import { Guion } from './datos/modelo'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { calcularBanda, opacidadDeLinea, AnclajeZona } from './components/banda'
+import BarraDeTiempo from './components/BarraDeTiempo'
 
 function guionSimple(texto: string, titulo = 'Guion de prueba'): Guion {
   return {
@@ -1523,6 +1524,174 @@ function buscarArchivosRec(dir: string, extension: string): string[] {
   }
   return resultados
 }
+
+describe('Pruebas TAREA 15 (T77-T80)', () => {
+
+  test('T77: velocidad estimada en lectura a 150 ppm constantes es estable y libre de saltos', () => {
+    const guion = guion40LineasTexto
+    const sim = simularLectura({ guion, ppm: 150 })
+    const tokens = tokenizarGuion(guion40Lineas)
+    const seguidor = crearSeguidor(tokens)
+    const motor = crearMotorDeAvance()
+
+    const maxT = Math.max(...sim.eventos.map((e) => e.t))
+    let eventoIdx = 0
+
+    const MUESTRAS_PPM: { t: number; ppm: number }[] = []
+
+    for (let t = 0; t <= maxT; t += 100) {
+      while (eventoIdx < sim.eventos.length && sim.eventos[eventoIdx].t <= t) {
+        const ev = sim.eventos[eventoIdx]
+        if (ev.tipo === 'voz') {
+          motor.voz(ev.hayVoz, ev.t)
+        } else if (ev.tipo === 'parcial') {
+          const pos = seguidor.avanzarTentativo(ev.texto)
+          if (pos.movio) motor.tentativo(pos.hastaToken, ev.t)
+          else motor.falloCalce(ev.t, true)
+        } else if (ev.tipo === 'final') {
+          const pos = seguidor.avanzar(ev.texto)
+          if (pos.movio) motor.confirmar(pos.hastaToken, ev.t)
+          else motor.falloCalce(ev.t)
+        }
+        eventoIdx++
+      }
+
+      const st = motor.estadoEn(t)
+      MUESTRAS_PPM.push({ t, ppm: st.ppmEstimadas })
+    }
+
+    const muestrasFiltradas = MUESTRAS_PPM.filter((m) => m.t >= 3000)
+    expect(muestrasFiltradas.length).toBeGreaterThan(0)
+
+    console.log('[T77] Muestras PPM (primeras 20 tras 3s):', muestrasFiltradas.slice(0, 20).map((m) => Math.round(m.ppm)))
+    console.log('[T77] Detalle muestras en t=3000..5000:', MUESTRAS_PPM.filter(m => m.t >= 3000 && m.t <= 5000))
+
+    for (let i = 0; i < muestrasFiltradas.length; i++) {
+      const ppm = muestrasFiltradas[i].ppm
+      expect(ppm).toBeGreaterThanOrEqual(127)
+      expect(ppm).toBeLessThanOrEqual(172)
+
+      if (i > 0) {
+        const dif = Math.abs(ppm - muestrasFiltradas[i - 1].ppm)
+        expect(dif).toBeLessThanOrEqual(20)
+      }
+    }
+  })
+
+  test('T78: silencio durante 4 segundos conserva el último valor bueno de ppmEstimadas', () => {
+    const guion = guion40LineasTexto
+    const sim = simularLectura({ guion, ppm: 150, pausaCadaNPalabras: null })
+    const tokens = tokenizarGuion(guion40Lineas)
+    const seguidor = crearSeguidor(tokens)
+    const motor = crearMotorDeAvance()
+
+    let eventoIdx = 0
+    let ppmAlos5s = 0
+
+    for (let t = 0; t <= 5000; t += 100) {
+      while (eventoIdx < sim.eventos.length && sim.eventos[eventoIdx].t <= t) {
+        const ev = sim.eventos[eventoIdx]
+        if (ev.tipo === 'voz') motor.voz(ev.hayVoz, ev.t)
+        else if (ev.tipo === 'parcial') {
+          const pos = seguidor.avanzarTentativo(ev.texto)
+          if (pos.movio) motor.tentativo(pos.hastaToken, ev.t)
+        } else if (ev.tipo === 'final') {
+          const pos = seguidor.avanzar(ev.texto)
+          if (pos.movio) motor.confirmar(pos.hastaToken, ev.t)
+        }
+        eventoIdx++
+      }
+      ppmAlos5s = motor.estadoEn(t).ppmEstimadas
+    }
+
+    expect(ppmAlos5s).toBeGreaterThan(0)
+
+    // Dejar pasar 4 segundos de silencio sin enviar calces
+    motor.voz(false, 9000)
+    const stDespues = motor.estadoEn(9000)
+
+    expect(stDespues.ppmEstimadas).toBe(ppmAlos5s)
+    expect(stDespues.ppmEstimadas).not.toBe(0)
+  })
+
+  test('T79: irAToken vacía la ventana de medición y no dispara la velocidad estimada', () => {
+    const guion = guion40LineasTexto
+    const sim = simularLectura({ guion, ppm: 150 })
+    const tokens = tokenizarGuion(guion40Lineas)
+    const seguidor = crearSeguidor(tokens)
+    const motor = crearMotorDeAvance()
+
+    let eventoIdx = 0
+    for (let t = 0; t <= 5000; t += 100) {
+      while (eventoIdx < sim.eventos.length && sim.eventos[eventoIdx].t <= t) {
+        const ev = sim.eventos[eventoIdx]
+        if (ev.tipo === 'parcial') {
+          const pos = seguidor.avanzarTentativo(ev.texto)
+          if (pos.movio) motor.tentativo(pos.hastaToken, ev.t)
+        } else if (ev.tipo === 'final') {
+          const pos = seguidor.avanzar(ev.texto)
+          if (pos.movio) motor.confirmar(pos.hastaToken, ev.t)
+        }
+        eventoIdx++
+      }
+      motor.estadoEn(t)
+    }
+
+    const ppmAntes = motor.estadoEn(5000).ppmEstimadas
+
+    // Salto manual de 200 palabras
+    motor.irAToken(200, 5100)
+
+    const stTrasSalto = motor.estadoEn(5100)
+    expect(stTrasSalto.ppmEstimadas).toBe(ppmAntes)
+
+    // Siguiente confirmación no calcula velocidad contra el token previo al salto (se mide contra el nuevo origen)
+    motor.confirmar(205, 5200)
+    const stDespues = motor.estadoEn(5200)
+    expect(stDespues.ppmEstimadas).toBe(ppmAntes)
+  })
+
+  test('T80: BarraDeTiempo muestra "01:00 / 02:00" y la barra al 50%', async () => {
+    const motorAvanceFalso = {
+      confirmar: () => {},
+      tentativo: () => {},
+      falloCalce: () => {},
+      voz: () => {},
+      estadoEn: () => ({
+        posicion: 150,
+        avanzando: true,
+        motivoFreno: null,
+        ppmEstimadas: 150,
+        ultimoCalce: 150
+      }),
+      irAToken: () => {},
+      reiniciar: () => {}
+    }
+
+    const tInicio = performance.now() - 60000
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(
+        <BarraDeTiempo
+          motorAvance={motorAvanceFalso}
+          totalTokens={300}
+          tInicioLecturaMs={tInicio}
+        />
+      )
+      container = res.container
+    })
+
+    expect(container!.textContent).toContain('01:00 / 02:00')
+
+    // El progreso se comprueba en el ancho de la barra, no en un texto: el porcentaje
+    // escrito decia lo mismo que la barra y se saco de la pantalla de lectura.
+    const barra = container!.querySelector('[data-testid="barra-progreso"]') as HTMLElement
+    expect(barra).not.toBeNull()
+    expect(barra.style.width).toBe('50%')
+  })
+
+})
 
 function buscarTextoEnDirectorio(dir: string, texto: string): string[] {
   if (!fs.existsSync(dir)) return []

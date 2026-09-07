@@ -4,6 +4,7 @@ import { useSeguidor } from './hooks/useSeguidor'
 import { useWakeLock } from './hooks/useWakeLock'
 import { usePrecargaModelo } from './hooks/usePrecargaModelo'
 import TeleprompterView from './components/TeleprompterView'
+import BarraDeTiempo from './components/BarraDeTiempo'
 import ControlsBar from './components/ControlsBar'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
@@ -195,6 +196,7 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const [motivoFreno, setMotivoFreno] = useState<'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null>(null)
   const [avanzando, setAvanzando] = useState<boolean>(false)
+  const [tInicioLecturaMs, setTInicioLecturaMs] = useState<number | null>(null)
 
   const prompterContainerRef = useRef<HTMLDivElement | null>(null)
 
@@ -209,6 +211,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     bloqueActual,
     lineaActual,
     palabraActual,
+    totalTokens,
     alRecibirParcial: seguidorParcial,
     alRecibirFinal: seguidorFinal,
     alNotificarVoz: seguidorVoz,
@@ -247,11 +250,13 @@ export default function App({ motor, repoOverride }: AppProps) {
   }, [])
 
   async function handleStart() {
+    setTInicioLecturaMs(performance.now())
     await solicitarWakeLock()
     await start()
   }
 
   async function handleStop() {
+    setTInicioLecturaMs(null)
     await stop()
     await soltarWakeLock()
   }
@@ -548,6 +553,12 @@ export default function App({ motor, repoOverride }: AppProps) {
               )}
             </div>
           </div>
+
+          <BarraDeTiempo
+            motorAvance={motorAvance}
+            totalTokens={totalTokens}
+            tInicioLecturaMs={tInicioLecturaMs}
+          />
         </div>
       )}
     </div>
