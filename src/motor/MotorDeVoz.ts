@@ -1,7 +1,7 @@
 export type EventoParcial = { texto: string }
 export type EventoFinal = { texto: string; inicioMs: number; finMs: number }
 
-export type IdMotor = 'webspeech' | 'whisper-local' | 'nativo' | 'fake'
+export type IdMotor = 'vosk' | 'webspeech' | 'whisper-local' | 'nativo' | 'fake'
 
 export interface MotorDeVoz {
   readonly id: IdMotor
