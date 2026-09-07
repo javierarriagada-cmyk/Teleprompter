@@ -8,11 +8,13 @@ import BarraDeTiempo from './components/BarraDeTiempo'
 import ControlsBar from './components/ControlsBar'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
+import CuentaRegresiva from './components/CuentaRegresiva'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
 import { Guion, ResumenGuion, guionNuevo } from './datos/modelo'
 import { RepositorioGuiones } from './datos/RepositorioGuiones'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
+import { importarArchivo } from './datos/importarArchivo'
 
 interface AppProps {
   motor?: MotorDeVoz
@@ -21,11 +23,7 @@ interface AppProps {
 
 type Vista = 'biblioteca' | 'editor' | 'lectura'
 
-const DEFAULT_SCRIPT_TEXT = `Bienvenido al teleprompter.\nLee este texto en voz alta para probar el reconocimiento.`
-
-// Guion vacio de identidad ESTABLE, para cuando no hay ninguno abierto. Tiene que vivir
-// fuera del componente: si se crea dentro, es un objeto nuevo por renderizado y provoca un
-// ciclo infinito en `useSeguidor`.
+// Guion vacio de identidad ESTABLE, para cuando no hay ninguno abierto.
 const GUION_VACIO: Guion = {
   id: 'vacio',
   titulo: '',
@@ -155,6 +153,26 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }
 
+  async function handleImportarArchivo(file: File) {
+    try {
+      const res = await importarArchivo(file)
+      const nuevo: Guion = {
+        id: 'g-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7),
+        titulo: res.titulo,
+        idioma: 'es',
+        creado: Date.now(),
+        modificado: Date.now(),
+        bloques: res.bloques
+      }
+      await repoRef.current.guardar(nuevo)
+      setGuionActual(nuevo)
+      await cargarBiblioteca()
+      setVista('editor')
+    } catch (e) {
+      console.warn('[App] Error al importar archivo:', e)
+    }
+  }
+
   async function handleRenombrarGuion(id: string, nuevoTitulo: string) {
     try {
       const g = await repoRef.current.abrir(id)
@@ -186,8 +204,9 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const [engine, setEngine] = useState<IdMotor>('webspeech')
   const [verTranscripcion, setVerTranscripcion] = useState<boolean>(false)
+  const [mostrarTiempo, setMostrarTiempo] = useState<boolean>(true)
   const [modoManual, setModoManual] = useState<boolean>(false)
-  const [fontSize, setFontSize] = useState<number>(32)
+  const [fontSize, setFontSize] = useState<number>(24)
   const [marginPercent, setMarginPercent] = useState<number>(10)
   const [mirror, setMirror] = useState<boolean>(false)
   const [lineasZona, setLineasZona] = useState<number>(3)
@@ -197,14 +216,31 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [motivoFreno, setMotivoFreno] = useState<'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null>(null)
   const [avanzando, setAvanzando] = useState<boolean>(false)
   const [tInicioLecturaMs, setTInicioLecturaMs] = useState<number | null>(null)
+  const [cuentaRegresiva, setCuentaRegresiva] = useState<number | null>(null)
 
+  const timerCuentaRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const prompterContainerRef = useRef<HTMLDivElement | null>(null)
 
-  // GUION_VACIO es una constante de modulo, NO `guionNuevo('es')`. Llamar a `guionNuevo`
-  // aqui creaba un objeto distinto en cada renderizado -id y fechas nuevas-, y como
-  // `useSeguidor` depende de esa identidad, el efecto se re-ejecutaba, cambiaba estado, y
-  // volvia a renderizar: ciclo infinito. Solo ocurria sin ningun guion abierto, que es el
-  // estado con el que arrancan las pruebas, y mataba el proceso de vitest sin dejar error.
+  const cancelarCuentaRegresiva = useCallback(() => {
+    if (timerCuentaRef.current !== null) {
+      clearInterval(timerCuentaRef.current)
+      timerCuentaRef.current = null
+    }
+    setCuentaRegresiva(null)
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      cancelarCuentaRegresiva()
+    }
+  }, [cancelarCuentaRegresiva])
+
+  useEffect(() => {
+    if (vista !== 'lectura') {
+      cancelarCuentaRegresiva()
+    }
+  }, [vista, cancelarCuentaRegresiva])
+
   const guionParaSeguidor = guionActual || GUION_VACIO
 
   const {
@@ -226,10 +262,8 @@ export default function App({ motor, repoOverride }: AppProps) {
     clear,
     isRecording,
     transcript,
-    ready,
     estadoMotor,
     dispositivoComputo,
-    progresoDescarga,
     ultimoError,
     motorActivo
   } = useASR({
@@ -250,12 +284,30 @@ export default function App({ motor, repoOverride }: AppProps) {
   }, [])
 
   async function handleStart() {
-    setTInicioLecturaMs(performance.now())
+    if (cuentaRegresiva !== null || isRecording) return
     await solicitarWakeLock()
-    await start()
+
+    setCuentaRegresiva(3)
+
+    let c = 3
+    timerCuentaRef.current = setInterval(() => {
+      c -= 1
+      if (c > 0) {
+        setCuentaRegresiva(c)
+      } else {
+        if (timerCuentaRef.current !== null) {
+          clearInterval(timerCuentaRef.current)
+          timerCuentaRef.current = null
+        }
+        setCuentaRegresiva(null)
+        setTInicioLecturaMs(performance.now())
+        start()
+      }
+    }, 1000)
   }
 
   async function handleStop() {
+    cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
     await stop()
     await soltarWakeLock()
@@ -405,6 +457,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           guiones={guionesResumen}
           onAbrir={handleAbrirGuion}
           onCrearNuevo={handleCrearNuevoGuion}
+          onImportarArchivo={handleImportarArchivo}
           onRenombrar={handleRenombrarGuion}
           onBorrar={handleBorrarGuion}
         />
@@ -455,6 +508,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                   onStart={handleStart}
                   onStop={handleStop}
                   isRecording={isRecording}
+                  cuentaRegresiva={cuentaRegresiva}
                   fontSize={fontSize}
                   setFontSize={setFontSize}
                   marginPercent={marginPercent}
@@ -467,12 +521,11 @@ export default function App({ motor, repoOverride }: AppProps) {
                   setAnclajeZona={setAnclajeZona}
                   verTranscripcion={verTranscripcion}
                   setVerTranscripcion={setVerTranscripcion}
+                  mostrarTiempo={mostrarTiempo}
+                  setMostrarTiempo={setMostrarTiempo}
                   onToggleFullscreen={toggleFullscreen}
                 />
 
-                {/* Volver al inicio siempre visible: si el seguimiento se va a otro lugar
-                    del guion, esta es la unica salida. Estaba escondida detras del
-                    interruptor de diagnostico. */}
                 <div style={{ marginTop: 12 }}>
                   <button onClick={handleClear} style={{ padding: '8px 16px', fontWeight: 600 }}>
                     Volver al inicio
@@ -535,6 +588,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                 onModoManualChange={setModoManual}
                 onEstadoAvanceChange={handleEstadoAvanceChange}
               />
+              <CuentaRegresiva valor={cuentaRegresiva} />
               {verTranscripcion && (
                 <div
                   id="diag-prompter"
@@ -554,11 +608,13 @@ export default function App({ motor, repoOverride }: AppProps) {
             </div>
           </div>
 
-          <BarraDeTiempo
-            motorAvance={motorAvance}
-            totalTokens={totalTokens}
-            tInicioLecturaMs={tInicioLecturaMs}
-          />
+          {mostrarTiempo && (
+            <BarraDeTiempo
+              motorAvance={motorAvance}
+              totalTokens={totalTokens}
+              tInicioLecturaMs={tInicioLecturaMs}
+            />
+          )}
         </div>
       )}
     </div>

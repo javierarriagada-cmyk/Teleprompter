@@ -2,7 +2,7 @@ import React from 'react'
 import fs from 'node:fs'
 import path from 'node:path'
 import { execSync } from 'node:child_process'
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 import { render, act, fireEvent } from '@testing-library/react'
 import 'fake-indexeddb/auto'
 import App from './App'
@@ -1710,3 +1710,338 @@ function buscarTextoEnDirectorio(dir: string, texto: string): string[] {
   }
   return hallazgos
 }
+
+describe('Pruebas TAREA 16 (T81-T87)', () => {
+
+  test('T81: Se aprieta empezar. Antes de los tres segundos, start() del motor NO se llamó. Pasados los tres, se llamó exactamente una vez.', async () => {
+    vi.useFakeTimers()
+    try {
+      const motor = new MotorFake()
+      const iniciarSpy = vi.spyOn(motor, 'iniciar')
+
+      const repo = new RepositorioMemoria()
+      await repo.guardar(guionSimple('Hola mundo de prueba'))
+
+      let container: HTMLElement
+      await act(async () => {
+        const res = render(<App motor={motor} repoOverride={repo} />)
+        container = res.container
+        await vi.advanceTimersByTimeAsync(600)
+      })
+
+      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+      await act(async () => {
+        fireEvent.click(botonAbrir!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+      await act(async () => {
+        fireEvent.click(botonLeer!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')
+      expect(botonIniciar).not.toBeUndefined()
+
+      await act(async () => {
+        fireEvent.click(botonIniciar!)
+      })
+
+      // Antes de los 3 segundos, iniciar NO fue llamado
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(2900)
+      })
+      expect(iniciarSpy).toHaveBeenCalledTimes(0)
+
+      // Pasados los 3 segundos, se llamó exactamente una vez
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(200)
+      })
+      expect(iniciarSpy).toHaveBeenCalledTimes(1)
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  test('T82: GUARDIANA. Se aprieta empezar y, con la cuenta corriendo, se aprieta detener. Pasan cinco segundos y start() NO se llamó NUNCA.', async () => {
+    vi.useFakeTimers()
+    try {
+      const motor = new MotorFake()
+      const iniciarSpy = vi.spyOn(motor, 'iniciar')
+
+      const repo = new RepositorioMemoria()
+      await repo.guardar(guionSimple('Hola mundo de prueba'))
+
+      let container: HTMLElement
+      await act(async () => {
+        const res = render(<App motor={motor} repoOverride={repo} />)
+        container = res.container
+        await vi.advanceTimersByTimeAsync(600)
+      })
+
+      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+      await act(async () => {
+        fireEvent.click(botonAbrir!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+      await act(async () => {
+        fireEvent.click(botonLeer!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')
+      await act(async () => {
+        fireEvent.click(botonIniciar!)
+        await vi.advanceTimersByTimeAsync(1000)
+      })
+
+      const botonDetener = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Detener')
+      expect(botonDetener).not.toBeUndefined()
+
+      await act(async () => {
+        fireEvent.click(botonDetener!)
+      })
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(5000)
+      })
+
+      expect(iniciarSpy).toHaveBeenCalledTimes(0)
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  test('T83: tInicioLecturaMs corresponde al arranque de la lectura, no al del botón: entre los dos hay al menos los tres segundos de la cuenta.', async () => {
+    vi.useFakeTimers()
+    try {
+      const motor = new MotorFake()
+      const repo = new RepositorioMemoria()
+      await repo.guardar(guionSimple('Hola mundo de prueba'))
+
+      let container: HTMLElement
+      await act(async () => {
+        const res = render(<App motor={motor} repoOverride={repo} />)
+        container = res.container
+        await vi.advanceTimersByTimeAsync(600)
+      })
+
+      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+      await act(async () => {
+        fireEvent.click(botonAbrir!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+      await act(async () => {
+        fireEvent.click(botonLeer!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      expect(container!.querySelector('div[aria-label="tiempo transcurrido y total estimado"]')).toBeNull()
+
+      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')
+      await act(async () => {
+        fireEvent.click(botonIniciar!)
+      })
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(2000)
+      })
+      expect(container!.querySelector('div[aria-label="tiempo transcurrido y total estimado"]')).toBeNull()
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1100)
+      })
+      expect(container!.querySelector('div[aria-label="tiempo transcurrido y total estimado"]')).not.toBeNull()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  test('T84: Los botones de letra recorren los cinco pasos 14, 18, 24, 32, 42 y no se salen: en 42, más no hace nada; en 14, menos no hace nada.', async () => {
+    const motor = new MotorFake()
+    const repo = new RepositorioMemoria()
+    await repo.guardar(guionSimple('Hola mundo de prueba'))
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App motor={motor} repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    await act(async () => {
+      fireEvent.click(botonAbrir!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    await act(async () => {
+      fireEvent.click(botonLeer!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const btnMenos = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Disminuir letra')!
+    const btnMas = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Aumentar letra')!
+
+    // Se mira EL CONTROL, no el texto de toda la pantalla: buscar '24' en el documento
+    // entero hace que la prueba pase o falle por cualquier cifra suelta de otra parte.
+    const letra = () => container!.querySelector('[data-testid="valor-letra"]')!.textContent
+
+    // Arranca en 24, el tamano por omision cerrado el 7 de septiembre de 2026.
+    expect(letra()).toBe('24')
+
+    // Bajando se llega al piso de la escalera y ahi se queda.
+    for (const esperado of ['18', '14', '14']) {
+      await act(async () => { fireEvent.click(btnMenos) })
+      expect(letra()).toBe(esperado)
+    }
+
+    // Y subiendo se recorre entera hasta el tope de 42, que no se pasa.
+    for (const esperado of ['18', '24', '32', '42', '42']) {
+      await act(async () => { fireEvent.click(btnMas) })
+      expect(letra()).toBe(esperado)
+    }
+  })
+
+  test('T85: Con ajustes cerrado -el estado inicial-, los controles de espejo, anclaje y líneas de zona NO están en el documento. Al abrir ajustes, aparecen. Al cerrar, se van.', async () => {
+    const motor = new MotorFake()
+    const repo = new RepositorioMemoria()
+    await repo.guardar(guionSimple('Hola mundo de prueba'))
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App motor={motor} repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    await act(async () => {
+      fireEvent.click(botonAbrir!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    await act(async () => {
+      fireEvent.click(botonLeer!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    expect(container!.querySelector('div[data-testid="panel-ajustes"]')).toBeNull()
+    expect(container!.textContent).not.toContain('Anclaje:')
+
+    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes'))!
+    await act(async () => {
+      fireEvent.click(btnAjustes)
+    })
+
+    expect(container!.querySelector('div[data-testid="panel-ajustes"]')).not.toBeNull()
+    expect(container!.textContent).toContain('Anclaje:')
+    expect(container!.textContent).toContain('Espejo')
+
+    await act(async () => {
+      fireEvent.click(btnAjustes)
+    })
+
+    expect(container!.querySelector('div[data-testid="panel-ajustes"]')).toBeNull()
+    expect(container!.textContent).not.toContain('Anclaje:')
+  })
+
+  test('T86: Con "Mostrar tiempo" apagado, BarraDeTiempo no se renderiza; encendido, sí.', async () => {
+    vi.useFakeTimers()
+    try {
+      const motor = new MotorFake()
+      const repo = new RepositorioMemoria()
+      await repo.guardar(guionSimple('Hola mundo de prueba'))
+
+      let container: HTMLElement
+      await act(async () => {
+        const res = render(<App motor={motor} repoOverride={repo} />)
+        container = res.container
+        await vi.advanceTimersByTimeAsync(600)
+      })
+
+      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+      await act(async () => {
+        fireEvent.click(botonAbrir!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+      await act(async () => {
+        fireEvent.click(botonLeer!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')
+      await act(async () => {
+        fireEvent.click(botonIniciar!)
+        await vi.advanceTimersByTimeAsync(3100)
+      })
+
+      expect(container!.querySelector('div[aria-label="tiempo transcurrido y total estimado"]')).not.toBeNull()
+
+      const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes'))!
+      await act(async () => {
+        fireEvent.click(btnAjustes)
+      })
+
+      const chkTiempo = Array.from(container!.querySelectorAll('input[type="checkbox"]')).find(
+        (input) => input.parentElement?.textContent?.includes('Mostrar tiempo')
+      ) as HTMLInputElement
+      expect(chkTiempo).not.toBeUndefined()
+
+      await act(async () => {
+        fireEvent.click(chkTiempo)
+      })
+
+      expect(container!.querySelector('div[aria-label="tiempo transcurrido y total estimado"]')).toBeNull()
+
+      await act(async () => {
+        fireEvent.click(chkTiempo)
+      })
+
+      expect(container!.querySelector('div[aria-label="tiempo transcurrido y total estimado"]')).not.toBeNull()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  test('T87: En la biblioteca vacía, "Importar archivo" con un .txt de dos párrafos crea un guión nuevo, con el título sacado del nombre del archivo y los dos bloques.', async () => {
+    const repo = new RepositorioMemoria()
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    expect(container!.textContent).toContain('No hay ningún guión guardado')
+
+    const inputArchivo = container!.querySelector('input[data-testid="input-importar-archivo"]') as HTMLInputElement
+    expect(inputArchivo).not.toBeNull()
+
+    const contenido = 'Primer párrafo del guion importado.\n\nSegundo párrafo del guion importado.'
+    const file = new File([contenido], 'MiGuionNuevo.txt', { type: 'text/plain' })
+
+    await act(async () => {
+      fireEvent.change(inputArchivo, { target: { files: [file] } })
+      await new Promise((r) => setTimeout(r, 300))
+    })
+
+    expect(container!.textContent).toContain('MiGuionNuevo')
+
+    const textareas = Array.from(container!.querySelectorAll('textarea'))
+    expect(textareas.length).toBe(2)
+    expect(textareas[0].value).toContain('Primer párrafo del guion importado.')
+    expect(textareas[1].value).toContain('Segundo párrafo del guion importado.')
+  })
+
+})

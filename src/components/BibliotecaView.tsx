@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { ResumenGuion } from '../datos/modelo'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
   onAbrir: (id: string) => void
   onCrearNuevo: () => void
+  onImportarArchivo: (file: File) => void
   onRenombrar: (id: string, nuevoTitulo: string) => void
   onBorrar: (id: string) => void
 }
@@ -13,12 +14,14 @@ export default function BibliotecaView({
   guiones,
   onAbrir,
   onCrearNuevo,
+  onImportarArchivo,
   onRenombrar,
   onBorrar
 }: BibliotecaViewProps) {
   const [busqueda, setBusqueda] = useState('')
   const [editandoId, setEditandoId] = useState<string | null>(null)
   const [tituloEditado, setTituloEditado] = useState('')
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const guionesFiltrados = guiones.filter((g) => {
     const tituloNormalizado = (g.titulo || 'Sin título').toLowerCase()
@@ -42,24 +45,61 @@ export default function BibliotecaView({
     }
   }
 
+  function handleClicImportar() {
+    fileInputRef.current?.click()
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (file) {
+      onImportarArchivo(file)
+      e.target.value = ''
+    }
+  }
+
   return (
     <div style={{ padding: '16px 0', maxWidth: 800, margin: '0 auto' }}>
+      <input
+        type="file"
+        ref={fileInputRef}
+        accept=".txt,.md,.docx"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+        data-testid="input-importar-archivo"
+      />
+
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <h2 style={{ margin: 0 }}>Biblioteca de Guiones</h2>
-        <button
-          onClick={onCrearNuevo}
-          style={{
-            padding: '8px 16px',
-            backgroundColor: '#1976d2',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 4,
-            cursor: 'pointer',
-            fontWeight: 'bold'
-          }}
-        >
-          + Crear Guión
-        </button>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button
+            onClick={onCrearNuevo}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#1976d2',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 4,
+              cursor: 'pointer',
+              fontWeight: 'bold'
+            }}
+          >
+            + Crear Guión
+          </button>
+          <button
+            onClick={handleClicImportar}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#0288d1',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 4,
+              cursor: 'pointer',
+              fontWeight: 'bold'
+            }}
+          >
+            Importar archivo
+          </button>
+        </div>
       </div>
 
       <div style={{ marginBottom: 20 }}>
@@ -93,21 +133,38 @@ export default function BibliotecaView({
           <p style={{ fontSize: 18, color: '#666', marginBottom: 20 }}>
             No hay ningún guión guardado.
           </p>
-          <button
-            onClick={onCrearNuevo}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#2e7d32',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 4,
-              cursor: 'pointer',
-              fontSize: 16,
-              fontWeight: 'bold'
-            }}
-          >
-            Crear el primer guión
-          </button>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+            <button
+              onClick={onCrearNuevo}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#2e7d32',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 4,
+                cursor: 'pointer',
+                fontSize: 16,
+                fontWeight: 'bold'
+              }}
+            >
+              Crear el primer guión
+            </button>
+            <button
+              onClick={handleClicImportar}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#0288d1',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 4,
+                cursor: 'pointer',
+                fontSize: 16,
+                fontWeight: 'bold'
+              }}
+            >
+              Importar archivo
+            </button>
+          </div>
         </div>
       ) : guionesFiltrados.length === 0 ? (
         <div style={{ padding: 20, textAlign: 'center', color: '#666' }}>

@@ -68,6 +68,12 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
     // 1. Confirmar que por omision NO se muestra el panel "Transcripción (en vivo)"
     expect(screen.queryByText('Transcripción (en vivo):')).toBeNull()
 
+    // Abrir panel de Ajustes
+    const botonAjustes = screen.getByText(/Ajustes/i)
+    await act(async () => {
+      fireEvent.click(botonAjustes)
+    })
+
     // 2. Comprobar que el checkbox "Ver transcripción en vivo" esta desmarcado por omision
     const checkbox = screen.getByLabelText(/Ver transcripción en vivo/i) as HTMLInputElement
     expect(checkbox.checked).toBe(false)
