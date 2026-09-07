@@ -1,5 +1,6 @@
 import { remuestrear } from '../lib/remuestrear'
 import { EventoFinal, EventoParcial, MotorDeVoz } from './MotorDeVoz'
+import VoskWorker from '../workers/vosk.worker.ts?worker'
 
 export class MotorVosk implements MotorDeVoz {
   readonly id = 'vosk'
@@ -25,6 +26,39 @@ export class MotorVosk implements MotorDeVoz {
     return tieneWorker && tieneAudioContext && tieneMediaDevices
   }
 
+  async precargarModelo(): Promise<void> {
+    if (typeof Worker === 'undefined') return
+    return new Promise<void>((resolve, reject) => {
+      try {
+        const tempWorker = new VoskWorker()
+        tempWorker.onmessage = (ev: MessageEvent) => {
+          const msg = ev.data
+          if (msg.tipo === 'progreso') {
+            this.progresoDescarga = msg.pct || 0
+            this.listenersProgreso.forEach((cb) => cb(this.progresoDescarga))
+          } else if (msg.tipo === 'precargado' || msg.tipo === 'listo') {
+            tempWorker.terminate()
+            resolve()
+          } else if (msg.tipo === 'error') {
+            tempWorker.terminate()
+            const err = new Error(msg.mensaje || 'Error precargando modelo Vosk')
+            this.listenersError.forEach((cb) => cb(err))
+            reject(err)
+          }
+        }
+        tempWorker.onerror = (ev: ErrorEvent) => {
+          tempWorker.terminate()
+          const err = new Error(ev.message || 'Error en Web Worker al precargar')
+          this.listenersError.forEach((cb) => cb(err))
+          reject(err)
+        }
+        tempWorker.postMessage({ tipo: 'precargar' })
+      } catch (e: any) {
+        reject(e)
+      }
+    })
+  }
+
   async iniciar(opciones: { lang: string }): Promise<void> {
     const isDisponible = await this.disponible()
     if (!isDisponible) {
@@ -35,8 +69,7 @@ export class MotorVosk implements MotorDeVoz {
 
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const workerUrl = new URL('../workers/vosk.worker.ts', import.meta.url)
-        this.worker = new Worker(workerUrl, { type: 'module' })
+        this.worker = new VoskWorker()
 
         let resolved = false
 

@@ -1,5 +1,6 @@
 import { remuestrear } from '../lib/remuestrear'
 import { EventoFinal, EventoParcial, MotorDeVoz } from './MotorDeVoz'
+import ASRWorker from '../workers/asr.worker.ts?worker'
 
 export class MotorWhisperLocal implements MotorDeVoz {
   readonly id = 'whisper-local'
@@ -33,8 +34,7 @@ export class MotorWhisperLocal implements MotorDeVoz {
 
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const workerUrl = new URL('../workers/asr.worker.ts', import.meta.url)
-        this.worker = new Worker(workerUrl, { type: 'module' })
+        this.worker = new ASRWorker()
 
         let resolved = false
 

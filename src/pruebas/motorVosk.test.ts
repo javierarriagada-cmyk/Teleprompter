@@ -1,10 +1,12 @@
+import fs from 'fs'
+import path from 'path'
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest'
 import { elegirMotor } from '../motor/elegirMotor'
 import { MotorVosk } from '../motor/MotorVosk'
 import { MotorWebSpeech } from '../motor/MotorWebSpeech'
 import { MotorWhisperLocal } from '../motor/MotorWhisperLocal'
 
-describe('Pruebas T60-T62 (Motor Vosk)', () => {
+describe('Pruebas T60-T63 (Motor Vosk)', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
   })
@@ -52,5 +54,19 @@ describe('Pruebas T60-T62 (Motor Vosk)', () => {
     vi.spyOn(motor, 'disponible').mockResolvedValue(false)
 
     await expect(motor.iniciar({ lang: 'es-ES' })).rejects.toThrow(/no está disponible/i)
+  })
+
+  test('T63: GUARDIANA DEL BUILD: ningun archivo en src/motor/ instancia un Worker usando new URL(..., import.meta.url)', () => {
+    const motorDir = path.resolve(__dirname, '../motor')
+    const archivos = fs.readdirSync(motorDir)
+
+    for (const archivo of archivos) {
+      if (archivo.endsWith('.ts') || archivo.endsWith('.tsx')) {
+        const rutaCompleta = path.join(motorDir, archivo)
+        const contenido = fs.readFileSync(rutaCompleta, 'utf-8')
+
+        expect(contenido).not.toMatch(/new\s+URL\s*\(\s*['"][^'"]*worker[^'"]*['"]\s*,\s*import\.meta\.url\s*\)/i)
+      }
+    }
   })
 })

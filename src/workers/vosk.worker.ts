@@ -8,13 +8,20 @@ let recognizerInstance: any = null
 self.onmessage = async (ev: MessageEvent) => {
   const msg = ev.data
   try {
-    if (msg?.tipo === 'init') {
+    if (msg?.tipo === 'precargar') {
+      const modelUrl = msg.modelUrl || MODELO_URL_DEFECTO
+      await precargarModelo(modelUrl)
+    } else if (msg?.tipo === 'init') {
       const modelUrl = msg.modelUrl || MODELO_URL_DEFECTO
       await cargarModeloYCrearReconocedor(modelUrl)
     } else if (msg?.tipo === 'audio') {
       if (recognizerInstance && msg.pcm) {
         const float32 = new Float32Array(msg.pcm)
-        recognizerInstance.acceptWaveformFloat(float32, 16000)
+        if (typeof recognizerInstance.acceptWaveformFloat === 'function') {
+          recognizerInstance.acceptWaveformFloat(float32, 16000)
+        } else if (typeof recognizerInstance.acceptWaveform === 'function') {
+          recognizerInstance.acceptWaveform(float32)
+        }
       }
     } else if (msg?.tipo === 'detener') {
       if (recognizerInstance) {
@@ -28,6 +35,26 @@ self.onmessage = async (ev: MessageEvent) => {
     }
   } catch (err: any) {
     self.postMessage({ tipo: 'error', mensaje: err?.message || String(err) })
+  }
+}
+
+async function precargarModelo(url: string) {
+  try {
+    if (typeof caches !== 'undefined') {
+      const cache = await caches.open('vosk-model-v1')
+      const cachedResponse = await cache.match(url)
+      if (cachedResponse) {
+        self.postMessage({ tipo: 'progreso', pct: 1.0 })
+        self.postMessage({ tipo: 'precargado' })
+        return
+      }
+      await descargarYCachearModelo(url, cache)
+    } else {
+      await descargarYCachearModelo(url, null)
+    }
+    self.postMessage({ tipo: 'precargado' })
+  } catch (e: any) {
+    self.postMessage({ tipo: 'error', mensaje: e?.message || String(e) })
   }
 }
 

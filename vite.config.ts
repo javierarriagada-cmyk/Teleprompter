@@ -17,6 +17,9 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt'],
+      workbox: {
+        globIgnores: ['**/*.worker-*.js', '**/*.wasm']
+      },
       manifest: {
         id: 'com.teleprompter.app',
         name: 'Teleprompter MVP',
