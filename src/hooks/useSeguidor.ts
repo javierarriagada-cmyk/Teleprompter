@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { crearSeguidor, Posicion, tokenizarGuion } from '../lib/seguidor'
 import { crearMotorDeAvance, MotorDeAvance } from '../lib/avance'
 import { crearRegistro, RegistroDeLectura } from '../lib/registro'
+import { anotar } from '../lib/diagnostico'
 import { EventoFinal } from '../motor/MotorDeVoz'
 import { Guion } from '../datos/modelo'
 
@@ -70,6 +71,7 @@ export function useSeguidor(guionEntrada: Guion | string) {
     const tMs = performance.now()
     motor.voz(true, tMs)
     const pos = seg.avanzarTentativo(texto)
+    anotar({ tipo: 'calce', token: pos.movio ? pos.hastaToken : null, texto })
 
     if (pos.movio) {
       // Un parcial NO se recorta al final del bloque confirmado. Ese recorte estaba aca y
@@ -101,6 +103,8 @@ export function useSeguidor(guionEntrada: Guion | string) {
     const finMs = typeof fraseFinal === 'string' ? tMs : (fraseFinal?.finMs || tMs)
 
     const pos = seg.avanzar(texto)
+    anotar({ tipo: 'calce', token: pos.movio ? pos.hastaToken : null, texto })
+
     if (pos.movio) {
       bloqueConfirmadoRef.current = pos.bloque
       motor.confirmar(pos.hastaToken, tMs)

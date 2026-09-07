@@ -93,10 +93,16 @@ export default function TeleprompterView({
         // retener la linea entera: el desplazamiento valia cero mientras se leia la linea
         // y solo cambiaba al cambiar de linea. Eso es la cuantizacion de nuevo, y con ella
         // los saltos que se habian sacado.
-        const palabrasPorRenglon = palabrasPorRenglonRef.current
-        const posAtrasada = st.posicion - palabrasPorRenglon
-
-        const idx = Math.min(Math.max(0, Math.floor(posAtrasada)), tokens.length - 1)
+        // EL ATRASO DE UN RENGLON SE RESTA EN PIXELES, AL FINAL, no en palabras sobre la
+        // posicion. Medido: en palabras da hasta 30 px de escalon al cruzar de linea,
+        // porque cuantas palabras entran en un renglon cambia de una linea a otra y el
+        // atraso cambia de golpe. Un renglon mide siempre lo mismo; restarlo en pixeles da
+        // cero saltos.
+        //
+        // Ademas, calcular el atraso en palabras a partir de la linea cerraba un lazo -el
+        // atraso decide la linea y la linea decide el atraso- que hacia temblar el
+        // desplazamiento 11 px en fotogramas alternos, 238 veces en una lectura.
+        const idx = Math.min(Math.max(0, Math.floor(st.posicion)), tokens.length - 1)
         const t = tokens[idx]
         if (t) {
           const target = containerRef.current.querySelector(`[data-block="${t.bloque}"][data-line="${t.linea}"]`) as HTMLElement
@@ -183,19 +189,16 @@ export default function TeleprompterView({
             //
             // Para que la posicion mostrada no corra muy por delante de lo que el lector
             // dijo, el adelanto del motor esta acotado en avance.ts.
-            // Cuantas palabras entran en un renglon de ESTA linea. Se guarda para el
-            // atraso global del proximo fotograma.
-            palabrasPorRenglonRef.current = cantidad / Math.max(1, Math.round(target.clientHeight / filaPx))
-
-            const dentroDeLinea = Math.min(1, Math.max(0, (posAtrasada - primero) / cantidad))
+            const dentroDeLinea = Math.min(1, Math.max(0, (st.posicion - primero) / cantidad))
 
             if (diagnostico) {
               const el = document.getElementById('diag-prompter')
-              if (el) el.textContent = `pos=${st.posicion.toFixed(1)} calce=${st.ultimoCalce} atrasada=${posAtrasada.toFixed(1)} porRenglon=${palabrasPorRenglonRef.current.toFixed(1)} linea=${t.linea} dentro=${dentroDeLinea.toFixed(2)} scroll=${Math.round(containerRef.current!.scrollTop)} freno=${st.motivoFreno || "-"}`
+              if (el) el.textContent = `pos=${st.posicion.toFixed(1)} calce=${st.ultimoCalce} linea=${t.linea} dentro=${dentroDeLinea.toFixed(2)} scroll=${Math.round(containerRef.current!.scrollTop)} freno=${st.motivoFreno || "-"}`
             }
 
             const pasoDeLinea = topSiguiente - target.offsetTop
-            const top = (target.offsetTop - origen) + dentroDeLinea * pasoDeLinea
+            const continuo = (target.offsetTop - origen) + dentroDeLinea * pasoDeLinea
+            const top = continuo - filaPx
             containerRef.current.scrollTop = Math.max(0, top)
           }
         }

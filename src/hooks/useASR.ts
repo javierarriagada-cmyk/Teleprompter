@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { elegirMotor } from '../motor/elegirMotor'
 import { EventoFinal, IdMotor, MotorDeVoz } from '../motor/MotorDeVoz'
+import { anotar } from '../lib/diagnostico'
 
 export default function useASR(options: {
   engine?: IdMotor
@@ -57,6 +58,7 @@ export default function useASR(options: {
 
         unsubs.push(
           m.onParcial((e) => {
+            anotar({ tipo: 'oyo', texto: e.texto, final: false })
             if (acumularTextoRef.current) {
               setTranscripcionParcial(e.texto)
             }
@@ -67,6 +69,7 @@ export default function useASR(options: {
 
         unsubs.push(
           m.onFinal((e) => {
+            anotar({ tipo: 'oyo', texto: e.texto, final: true })
             if (acumularTextoRef.current) {
               setTranscripcionParcial('')
               setTranscript((prev) => (prev + '\n' + e.texto).trim())
