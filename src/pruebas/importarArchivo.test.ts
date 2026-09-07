@@ -6,10 +6,13 @@ import { importarArchivo, extraerTituloArchivo } from '../datos/importarArchivo'
 import EditorView from '../components/EditorView'
 import { Guion } from '../datos/modelo'
 
-describe('Pruebas TAREA 12 - Importar guiones desde archivo (T63-T68)', () => {
+describe('Pruebas TAREA 12 - Importar guiones desde archivo (T64-T68 y T75)', () => {
 
-  // T63: Importar archivo .txt y extracción de título sin extensión
-  test('T63: importarArchivo lee archivos .txt y extrae el título del nombre del archivo sin extensión', async () => {
+  // T75: Importar archivo .txt y extracción de título sin extensión.
+  // Se llamaba T63. Renumerada al mergear: esta rama se abrió antes de que entrara el
+  // motor Vosk, que ya se había llevado la T63 para su guardiana del build. Dos pruebas
+  // con el mismo número hacen imposible saber qué encargo pidió cuál.
+  test('T75: importarArchivo lee archivos .txt y extrae el título del nombre del archivo sin extensión', async () => {
     const contenidoTxt = `Primer párrafo del discurso.
 
 Segundo párrafo del discurso.`
@@ -59,6 +62,47 @@ Ver el [video completo](https://ejemplo.com/v).`
     // COMPROBACIÓN CRÍTICA: NO debe quedar ningún corchete '[' ni ']'
     expect(textoResultado).not.toContain('[')
     expect(textoResultado).not.toContain(']')
+
+    // Las otras formas de escribir un enlace en Markdown, que dejaban corchetes vivos y
+    // por lo tanto acotaciones falsas que el lector nunca dice en voz alta.
+    const contenidoOtrosEnlaces = `Ver el [video completo][1] ahora.
+Mira ![una foto](https://x.com/a.png) aca.
+
+[1]: https://ejemplo.com/v`
+    const archivoOtros = new File([contenidoOtrosEnlaces], 'enlaces.md', { type: 'text/markdown' })
+    const resOtros = await importarArchivo(archivoOtros)
+    const textoOtros = resOtros.bloques.map((b) => b.texto).join('\n')
+
+    expect(textoOtros).toContain('video completo')   // enlace por referencia [texto][1]
+    expect(textoOtros).toContain('una foto')         // imagen, sin el signo de admiración
+    expect(textoOtros).not.toContain('!')
+    expect(textoOtros).not.toContain('ejemplo.com')  // la línea de definición se elimina
+    expect(textoOtros).not.toContain('[')
+    expect(textoOtros).not.toContain(']')
+  })
+
+  // T64b: lo que la limpieza NO debe tocar. Va junto a la T64 porque es su otra mitad:
+  // sin esta, la forma más fácil de pasar la T64 es borrar todos los corchetes, y eso
+  // borraría las acotaciones, que en este proyecto son justamente corchetes.
+  test('T64b: la limpieza de Markdown respeta las acotaciones y no suelda palabras', async () => {
+    const contenido = `Hola [respirar] mundo.
+El archivo se llama el_mundo_entero hoy.
+**Fuerte** y [pausa] despues.`
+    const archivo = new File([contenido], 'acotaciones.md', { type: 'text/markdown' })
+    const res = await importarArchivo(archivo)
+    const texto = res.bloques.map((b) => b.texto).join('\n')
+
+    // Las acotaciones son del guion, no de Markdown: se quedan tal cual.
+    expect(texto).toContain('[respirar]')
+    expect(texto).toContain('[pausa]')
+
+    // Los guiones bajos dentro de una palabra no son énfasis: si se los trata como tal,
+    // el_mundo_entero queda elmundoentero y el lector lee una palabra que no existe.
+    expect(texto).toContain('el_mundo_entero')
+
+    // Y el énfasis de verdad sí se limpia.
+    expect(texto).toContain('Fuerte')
+    expect(texto).not.toContain('**')
   })
 
   // T65: Formato de archivo no soportado produce error explicativo

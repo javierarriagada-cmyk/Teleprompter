@@ -34,6 +34,13 @@ export function limpiarMarkdown(markdown: string): string {
       continue
     }
 
+    // 1b. Definición de enlace por referencia:  [1]: https://ejemplo.com
+    // Se elimina la línea entera. Se exige que apunte a una URL para no borrar una
+    // acotación legítima que empiece la línea, como "[pausa]: y sigue".
+    if (/^\s*\[[^\]]+\]:\s*(https?:\/\/|www\.|\/)\S*\s*$/i.test(linea)) {
+      continue
+    }
+
     // 2. Encabezados (# Título, ## Subtítulo)
     linea = linea.replace(/^\s*#+\s+/, '')
 
@@ -44,17 +51,28 @@ export function limpiarMarkdown(markdown: string): string {
     linea = linea.replace(/^\s*[-*+]\s+/, '')
     linea = linea.replace(/^\s*\d+\.\s+/, '')
 
-    // 5. Enlaces [texto](url) -> texto (elimina corchetes y url)
-    linea = linea.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    // 5. Imágenes ![alt](url) -> alt. Va antes que los enlaces: si se limpia el enlace
+    // primero, queda el signo de admiración suelto.
+    linea = linea.replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+
+    // 5b. Enlaces [texto](url) -> texto (elimina corchetes y url)
+    linea = linea.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+
+    // 5c. Enlaces por referencia [texto][1] -> texto. Sin esto quedan DOS corchetes por
+    // enlace, o sea dos acotaciones, y el lector no dice ninguna de las dos.
+    linea = linea.replace(/\[([^\]]+)\]\[[^\]]*\]/g, '$1')
 
     // 6. Código en línea `código` -> código
     linea = linea.replace(/`([^`]+)`/g, '$1')
 
     // 7. Negrita y cursiva
     linea = linea.replace(/\*\*([^*]+)\*\*/g, '$1')
-    linea = linea.replace(/__([^_]+)__/g, '$1')
     linea = linea.replace(/\*([^*]+)\*/g, '$1')
-    linea = linea.replace(/_([^_]+)_/g, '$1')
+
+    // El guion bajo solo es énfasis en el borde de una palabra. Sin esta condición,
+    // el_mundo_entero queda elmundoentero: las palabras se sueldan.
+    linea = linea.replace(/(^|[^A-Za-z0-9_áéíóúüñÁÉÍÓÚÜÑ])__([^_]+)__($|[^A-Za-z0-9_áéíóúüñÁÉÍÓÚÜÑ])/g, '$1$2$3')
+    linea = linea.replace(/(^|[^A-Za-z0-9_áéíóúüñÁÉÍÓÚÜÑ])_([^_]+)_($|[^A-Za-z0-9_áéíóúüñÁÉÍÓÚÜÑ])/g, '$1$2$3')
 
     lineasProcesadas.push(linea)
   }
