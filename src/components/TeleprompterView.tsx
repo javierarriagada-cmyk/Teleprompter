@@ -300,11 +300,23 @@ export default function TeleprompterView({
                     data-block={bIdx}
                     data-line={lIdx}
                     style={{
-                      fontSize: isCurrent ? fontSize : Math.max(16, fontSize * 0.7),
+                      // TODAS las lineas al mismo cuerpo. La que se esta leyendo se
+                      // distingue por la opacidad, no por el tamano.
+                      //
+                      // Antes la actual iba a 32 px y las demas a 22.4, un 43% mas grande.
+                      // Cambiar el tamano cambia la ALTURA del elemento, y eso corre el
+                      // offsetTop de todo el guion que va debajo, que es justo el numero
+                      // con el que se calcula el desplazamiento: la geometria se movia bajo
+                      // el calculo, y encima durante los 200 ms de la transicion quedaba a
+                      // mitad de camino.
+                      //
+                      // La transicion queda solo sobre la opacidad, que no ocupa espacio y
+                      // por lo tanto no mueve nada.
+                      fontSize,
                       opacity: opacidad,
                       margin: '16px 0',
                       lineHeight: 1.4,
-                      transition: 'all 200ms'
+                      transition: 'opacity 200ms'
                     }}
                   >
                     {renderFormattedLine(linea)}
