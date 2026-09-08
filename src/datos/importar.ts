@@ -1,4 +1,5 @@
 import { Bloque } from './modelo'
+import { REGEX_ACOTACION } from '../lib/acotaciones'
 
 export type OpcionesImportar = {
   maxCaracteresPorLinea?: number
@@ -21,7 +22,7 @@ function generarIdBloque(): string {
  */
 function tokenizarLinea(linea: string): string[] {
   const matches: { start: number; end: number }[] = []
-  const regex = /\[[^\]\n]*\]/g
+  const regex = new RegExp(REGEX_ACOTACION.source, REGEX_ACOTACION.flags)
   let m: RegExpExecArray | null
 
   while ((m = regex.exec(linea)) !== null) {

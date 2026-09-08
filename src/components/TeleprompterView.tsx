@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { MotorDeAvance } from '../lib/avance'
 import { tokenizarGuion, Token } from '../lib/seguidor'
 import { Guion } from '../datos/modelo'
+import { esCaracterApertura, esCaracterCierre } from '../lib/acotaciones'
 
 import { AnclajeZona, calcularBanda, opacidadDeLinea } from './banda'
 
@@ -544,10 +545,10 @@ function renderFormattedLine(
   const isBracket = new Array<boolean>(linea.length).fill(false)
   let inBracket = false
   for (let i = 0; i < linea.length; i++) {
-    if (linea[i] === '[') {
+    if (esCaracterApertura(linea[i])) {
       inBracket = true
       isBracket[i] = true
-    } else if (linea[i] === ']') {
+    } else if (esCaracterCierre(linea[i])) {
       isBracket[i] = true
       inBracket = false
     } else {

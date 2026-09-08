@@ -61,14 +61,15 @@ export function guionNuevo(idioma: string): Guion {
   }
 }
 
+import { REGEX_ACOTACION } from '../lib/acotaciones'
+
 export function contarPalabras(g: Guion): number {
   let total = 0
   if (!g || !g.bloques) return 0
   for (const b of g.bloques) {
     if (!b.texto) continue
     const sinAcotaciones = b.texto
-      .replace(/\[[^\]]*\]/g, ' ')
-      .replace(/\([^)]*\)/g, ' ')
+      .replace(new RegExp(REGEX_ACOTACION.source, REGEX_ACOTACION.flags), ' ')
       .replace(/[\[\(].*$/g, ' ')
     const palabras = sinAcotaciones.trim().split(/\s+/).filter(Boolean)
     total += palabras.length

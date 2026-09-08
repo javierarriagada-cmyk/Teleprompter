@@ -2789,39 +2789,68 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
     }
   })
 
-  test('T109: GUARDIANA. Buscando en el codigo con fs, comprobar que ningun archivo de src/components/ ni de src/datos/ detecta acotaciones mirando solo el corchete. Si en un archivo aparece la comparacion con \'[\' para marcar acotacion, tiene que aparecer tambien la del \'(\'.', () => {
+  test('T109: GUARDIANA DE REGLA UNICA DE ACOTACIONES. Leyendo el codigo con fs, comprobar que ningun archivo de src/lib, src/components ni src/datos (salvo acotaciones.ts) contiene la comparacion de un caracter contra corchetes o parentesis para decidir acotaciones.', () => {
     const directorios = [
+      path.resolve(process.cwd(), 'src/lib'),
       path.resolve(process.cwd(), 'src/components'),
       path.resolve(process.cwd(), 'src/datos')
     ]
 
-    const archivosConBuscadorAcotacion: string[] = []
+    const moduloAcotaciones = path.resolve(process.cwd(), 'src/lib/acotaciones.ts')
+    const archivosConReglaDuplicada: string[] = []
 
     for (const dir of directorios) {
       const archivos = buscarArchivosRec(dir, '.ts').concat(buscarArchivosRec(dir, '.tsx'))
       for (const archivo of archivos) {
+        if (path.resolve(archivo) === moduloAcotaciones) continue
+
         const contenido = fs.readFileSync(archivo, 'utf-8')
 
-        const detectaCorchete = contenido.includes("[']") ||
-          contenido.includes("'['") ||
-          contenido.includes('`[`') ||
-          /\[\^\\\]/.test(contenido) ||
-          /\\\[\[\^\\\]/.test(contenido)
+        const tieneComparacionCaracter = /===\s*['"`][\[\]()]['"`]/.test(contenido) ||
+          /==\s*['"`][\[\]()]['"`]/.test(contenido) ||
+          /['"`][\[\]()]['"`]\s*===/.test(contenido) ||
+          /['"`][\[\]()]['"`]\s*==/.test(contenido)
 
-        if (detectaCorchete) {
-          const detectaParentesis = contenido.includes("'('") ||
-            contenido.includes('`(`') ||
-            contenido.includes('\\(') ||
-            /\([^)\n]*\)/.test(contenido)
-
-          if (!detectaParentesis) {
-            archivosConBuscadorAcotacion.push(archivo)
-          }
+        if (tieneComparacionCaracter) {
+          archivosConReglaDuplicada.push(path.relative(process.cwd(), archivo))
         }
       }
     }
 
-    expect(archivosConBuscadorAcotacion).toEqual([])
+    expect(archivosConReglaDuplicada).toEqual([])
+  })
+
+  test('T111: Un guion con corchetes y otro con parentesis producen EXACTAMENTE los mismos tokens marcados como acotacion en el tokenizador.', () => {
+    const textoCorchetes = 'Hola [esto es una acotacion] mundo'
+    const textoParentesis = 'Hola (esto es una acotacion) mundo'
+
+    const tokensCorchetes = tokenizarGuion(textoCorchetes)
+    const tokensParentesis = tokenizarGuion(textoParentesis)
+
+    expect(tokensCorchetes).toHaveLength(tokensParentesis.length)
+
+    for (let i = 0; i < tokensCorchetes.length; i++) {
+      const tCor = tokensCorchetes[i]
+      const tPar = tokensParentesis[i]
+
+      expect(tCor.palabra).toBe(tPar.palabra)
+      expect(tCor.esAcotacion).toBe(tPar.esAcotacion)
+      expect(tCor.bloque).toBe(tPar.bloque)
+      expect(tCor.linea).toBe(tPar.linea)
+      expect(tCor.indiceEnLinea).toBe(tPar.indiceEnLinea)
+    }
+
+    const acotadosCor = tokensCorchetes.filter((t) => t.esAcotacion).map((t) => t.palabra)
+    const acotadosPar = tokensParentesis.filter((t) => t.esAcotacion).map((t) => t.palabra)
+
+    expect(acotadosCor).toEqual(['esto', 'es', 'una', 'acotacion'])
+    expect(acotadosPar).toEqual(['esto', 'es', 'una', 'acotacion'])
+
+    const noAcotadosCor = tokensCorchetes.filter((t) => !t.esAcotacion).map((t) => t.palabra)
+    const noAcotadosPar = tokensParentesis.filter((t) => !t.esAcotacion).map((t) => t.palabra)
+
+    expect(noAcotadosCor).toEqual(['hola', 'mundo'])
+    expect(noAcotadosPar).toEqual(['hola', 'mundo'])
   })
 
   test('T110: La busqueda por titulo sigue funcionando sin haber cargado ningun guion completo, y la busqueda dentro del texto encuentra una frase que no esta en el titulo.', async () => {
