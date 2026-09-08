@@ -293,6 +293,7 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const [motivoFreno, setMotivoFreno] = useState<'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null>(null)
   const [avanzando, setAvanzando] = useState<boolean>(false)
+  const [estadoModo, setEstadoModo] = useState<'SIGUIENDO' | 'BUSCANDO' | 'DETENIDO'>('SIGUIENDO')
   const [tInicioLecturaMs, setTInicioLecturaMs] = useState<number | null>(null)
   const [cuentaRegresiva, setCuentaRegresiva] = useState<number | null>(null)
 
@@ -377,9 +378,14 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const { activo: wakeLockActivo, solicitar: solicitarWakeLock, soltar: soltarWakeLock } = useWakeLock()
 
-  const handleEstadoAvanceChange = useCallback((motivo: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null, isAvanzando: boolean) => {
+  const handleEstadoAvanceChange = useCallback((
+    motivo: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null,
+    isAvanzando: boolean,
+    estado?: 'SIGUIENDO' | 'BUSCANDO' | 'DETENIDO'
+  ) => {
     setMotivoFreno(motivo)
     setAvanzando(isAvanzando)
+    if (estado) setEstadoModo(estado)
   }, [])
 
   async function handleStart() {
@@ -442,7 +448,11 @@ export default function App({ motor, repoOverride }: AppProps) {
   }, [])
 
   let textoFreno = ''
-  if (!avanzando && motivoFreno) {
+  if (estadoModo === 'BUSCANDO') {
+    textoFreno = 'Buscando tu posición...'
+  } else if (estadoModo === 'DETENIDO') {
+    textoFreno = 'Detenido'
+  } else if (!avanzando && motivoFreno) {
     if (motivoFreno === 'silencio') textoFreno = 'esperando voz'
     else if (motivoFreno === 'sin-calce') textoFreno = 'no reconozco lo que lees'
     else if (motivoFreno === 'correa') textoFreno = 'adelantado, espero'

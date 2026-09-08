@@ -1,13 +1,9 @@
 import React, { useEffect, useRef } from 'react'
-import { MotorDeAvance } from '../lib/avance'
+import { MotorDeAvance, EstadoModo } from '../lib/avance'
 import { tokenizarGuion, Token } from '../lib/seguidor'
 import { Guion } from '../datos/modelo'
 
 import { AnclajeZona, calcularBanda, opacidadDeLinea } from './banda'
-
-// El texto no se mueve mientras el lector va por el primer renglon de la linea en curso:
-// el disparo es al pasar al segundo. Cuantas palabras son eso se calcula con los renglones
-// que ocupa el elemento, porque depende del tamano de letra.
 
 interface TeleprompterViewProps {
   script: Guion | string
@@ -31,7 +27,11 @@ interface TeleprompterViewProps {
   // navegacion, y la ventana de contexto se muda con el.
   onNavegacionManual?: (token: number) => void
   onModoManualChange?: (manual: boolean) => void
-  onEstadoAvanceChange?: (motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null, avanzando: boolean) => void
+  onEstadoAvanceChange?: (
+    motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null,
+    avanzando: boolean,
+    estado?: EstadoModo
+  ) => void
 }
 
 export default function TeleprompterView({
@@ -66,8 +66,8 @@ export default function TeleprompterView({
   // posicion del seguidor: la ventana de contexto se muda con el movimiento.
   const modoManualRef = useRef(false)
   const finManualRef = useRef<number | null>(null)
-  // Palabras que entran en un renglon, medidas sobre la linea que se esta mostrando.
-  const palabrasPorRenglonRef = useRef<number>(8)
+  const [textoEstadoLector, setTextoEstadoLector] = React.useState<string | null>(null)
+  const tInicioBuscandoRef = useRef<number | null>(null)
 
   const guionObj: Guion = typeof script === 'string' ? {
     id: 'temp',
@@ -249,9 +249,27 @@ export default function TeleprompterView({
 
     let animId: number
     const animate = () => {
-      const st = motorAvance.estadoEn(performance.now())
+      const tAhora = performance.now()
+      const st = motorAvance.estadoEn(tAhora)
       if (onEstadoAvanceChange) {
-        onEstadoAvanceChange(st.motivoFreno, st.avanzando)
+        onEstadoAvanceChange(st.motivoFreno, st.avanzando, st.estado)
+      }
+
+      if (st.estado === 'BUSCANDO') {
+        if (tInicioBuscandoRef.current === null) {
+          tInicioBuscandoRef.current = tAhora
+        }
+        if (tAhora - tInicioBuscandoRef.current >= 1000) {
+          setTextoEstadoLector('Buscando tu posición')
+        } else {
+          setTextoEstadoLector(null)
+        }
+      } else if (st.estado === 'DETENIDO') {
+        tInicioBuscandoRef.current = null
+        setTextoEstadoLector('Detenido')
+      } else {
+        tInicioBuscandoRef.current = null
+        setTextoEstadoLector(null)
       }
 
       const tokens = tokensRef.current
@@ -345,12 +363,6 @@ export default function TeleprompterView({
             // adelantoMaximo palabras adelante del lector, y contando sobre ella los dos
             // numeros se anulaban: con 8 de adelanto y 7 de retencion, el texto arrancaba
             // en la tercera palabra.
-            // El disparo es al pasar al SEGUNDO RENGLON, no a una cantidad fija de
-            // palabras: cuantas palabras entran en un renglon depende del tamano de letra.
-            // Se calcula con los renglones que ocupa el elemento, que el navegador ya sabe.
-            const filas = Math.max(1, Math.round(target.clientHeight / filaPx))
-            const palabrasPorRenglon = cantidad / filas
-
             // Se cuenta sobre la posicion MOSTRADA, que es la continua: ultimoCalce solo
             // cambia cuando el reconocedor entrega algo, y usarlo para todo el calculo
             // devolvia el salto -el texto quieto entre calce y calce- y ademas disparaba
@@ -452,6 +464,24 @@ export default function TeleprompterView({
           background: bgBanda
         }}
       />
+
+      {/* Indicador sobrio de estado para el lector */}
+      {textoEstadoLector && (
+        <div
+          data-testid="indicador-estado-lector"
+          style={{
+            position: 'absolute',
+            bottom: 12,
+            left: 16,
+            fontSize: 13,
+            color: isWhiteBg ? 'rgba(0, 0, 0, 0.45)' : 'rgba(255, 255, 255, 0.45)',
+            pointerEvents: 'none',
+            zIndex: 5
+          }}
+        >
+          {textoEstadoLector}
+        </div>
+      )}
 
       <div
         ref={containerRef}

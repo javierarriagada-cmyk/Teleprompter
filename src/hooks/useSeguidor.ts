@@ -70,7 +70,8 @@ export function useSeguidor(guionEntrada: Guion | string) {
 
     const tMs = performance.now()
     motor.voz(true, tMs)
-    const pos = seg.avanzarTentativo(texto)
+    const st = motor.estadoEn(tMs)
+    const pos = seg.avanzarTentativo(texto, tMs, st.ppmEstimadas, st.tUltimoCalceMs)
     anotar({ tipo: 'calce', token: pos.movio ? pos.hastaToken : null, texto })
 
     if (pos.movio) {
@@ -102,7 +103,8 @@ export function useSeguidor(guionEntrada: Guion | string) {
     const inicioMs = typeof fraseFinal === 'string' ? tMs - 1000 : (fraseFinal?.inicioMs || tMs - 1000)
     const finMs = typeof fraseFinal === 'string' ? tMs : (fraseFinal?.finMs || tMs)
 
-    const pos = seg.avanzar(texto)
+    const st = motor.estadoEn(tMs)
+    const pos = seg.avanzar(texto, tMs, st.ppmEstimadas, st.tUltimoCalceMs)
     anotar({ tipo: 'calce', token: pos.movio ? pos.hastaToken : null, texto })
 
     if (pos.movio) {

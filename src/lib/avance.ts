@@ -1,3 +1,10 @@
+// Siete palabras. Lo pidio Javier el 6 de septiembre de 2026 leyendo a camara.
+// NO reemplazar por una derivacion de renglones, tamano de letra ni ancho de
+// columna: ya se hizo una vez y se desfondó al cambiar la tipografia.
+export const PALABRAS_PARA_ARRANCAR = 7
+
+export type EstadoModo = 'SIGUIENDO' | 'BUSCANDO' | 'DETENIDO'
+
 export type ParametrosAvance = {
   correaPalabras: number        // 12
   msSilencioParaFrenar: number  // 600
@@ -5,10 +12,9 @@ export type ParametrosAvance = {
   ppmInicial: number            // 150  palabras por minuto, hasta medir
   suavizadoVelocidad: number    // 0.3  media movil exponencial
   msVentanaVelocidad: number    // 3000 ventana de tiempo real
-  msDeCorreccion: number        // 400  en cuanto se absorbe una correccion
+  msDeBusquedaCiega: number     // 2500 hablando sin calzar (desacelerando)
   anticipacionPalabras: number  // 3
-  msTransicion: number          // 600
-  msSinCalceParaFrenar: number  // 3000  hablando sin calzar nada
+  msSinCalceParaFrenar: number  // 2500
   adelantoComodo: number        // 1   tokens de adelanto sin ningun freno
   adelantoMaximo: number        // 3   aqui la velocidad ya es cero
 }
@@ -16,9 +22,11 @@ export type ParametrosAvance = {
 export type EstadoAvance = {
   posicion: number            // en tokens, CON DECIMALES: es continua
   avanzando: boolean
+  estado: EstadoModo
   motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null
   ppmEstimadas: number
   ultimoCalce: number   // ultima palabra que el seguidor confirmo o dio por tentativa
+  tUltimoCalceMs: number // marca de tiempo ms de la ultima confirmacion/tentativo
 }
 
 export interface MotorDeAvance {
@@ -38,10 +46,9 @@ const DEFAULT_PARAMETROS: ParametrosAvance = {
   ppmInicial: 150,
   suavizadoVelocidad: 0.3,
   msVentanaVelocidad: 3000,
-  msDeCorreccion: 400,
+  msDeBusquedaCiega: 2500,
   anticipacionPalabras: 3,
-  msTransicion: 600,
-  msSinCalceParaFrenar: 3000,
+  msSinCalceParaFrenar: 2500,
   adelantoComodo: 1,
   adelantoMaximo: 3
 }
@@ -68,10 +75,8 @@ export function crearMotorDeAvance(
   let posicionMostrada = 0
   let tUltimaActualizacion = 0
 
-  let objetivoPosicion = 0
-  let inicioGlidePosicion = 0
-  let inicioGlideTiempo = 0
-  let gliding = false
+  let palabrasConfirmadasDesdeArranque = 0
+  let arranqueCumplido = false
 
   function obtenerLimiteLineaActual(refToken: number): number {
     if (!limitesDeLinea || limitesDeLinea.length === 0) return Infinity
@@ -120,35 +125,14 @@ export function crearMotorDeAvance(
     ppmEstimadas = alpha * clamped + (1 - alpha) * ppmEstimadas
   }
 
-  function ajustarPosicionTarget(token: number, tMs: number, esConfirmacion: boolean) {
-    // El destino es la palabra que el seguidor calzo. No se recorta contra el fin de la
-    // linea ni del bloque: ese recorte hacia que el destino del deslizamiento se quedara
-    // clavado en el final del renglon o del parrafo, y el texto no se movia hasta que
-    // llegaba un final que corriera el limite. Era la tercera copia de la misma regla,
-    // despues de la de estadoEn y la de useSeguidor.
-    //
-    // Lo que impide que el prompter se vaya solo es el freno por falta de calce y el
-    // freno por adelanto sobre el ultimo calce, los dos en estadoEn.
-    const targetAcotado = token
-    const diff = token - posicionMostrada
-
-    if (posicionMostrada === 0 && esConfirmacion) {
-      posicionMostrada = targetAcotado
-      objetivoPosicion = targetAcotado
-      gliding = false
-      return
-    }
-
-    if (diff > params.correaPalabras * 2) {
-      posicionMostrada = targetAcotado
-      objetivoPosicion = targetAcotado
-      gliding = false
-    } else if (targetAcotado > posicionMostrada) {
-      if (!gliding || targetAcotado !== objetivoPosicion) {
-        inicioGlidePosicion = posicionMostrada
-        objetivoPosicion = targetAcotado
-        inicioGlideTiempo = tMs
-        gliding = true
+  function registrarAvanceArranque(tokenActual: number, tokenPrevio: number) {
+    if (!arranqueCumplido) {
+      const delta = (tokenPrevio === 0 && tokenActual >= 0 && palabrasConfirmadasDesdeArranque === 0)
+        ? tokenActual + 1
+        : Math.max(1, tokenActual - tokenPrevio)
+      palabrasConfirmadasDesdeArranque += delta
+      if (palabrasConfirmadasDesdeArranque >= PALABRAS_PARA_ARRANCAR) {
+        arranqueCumplido = true
       }
     }
   }
@@ -157,46 +141,41 @@ export function crearMotorDeAvance(
     confirmar(token: number, tMs: number) {
       hayVoz = true
       tUltimaVozTrue = tMs
+      if (tUltimaActualizacion === 0) {
+        tUltimaActualizacion = tMs
+      }
 
       if (token > ultimaConfirmada) {
         actualizarVelocidad(token, tMs)
       }
+      registrarAvanceArranque(token, ultimaConfirmada)
 
       ultimaConfirmada = Math.max(ultimaConfirmada, token)
       anclaTentativa = Math.max(anclaTentativa, token)
       tUltimaConfirmacion = tMs
       fallosFinalesSeguidos = 0
       tUltimoCalce = tMs
-
-      ajustarPosicionTarget(token, tMs, true)
     },
 
     tentativo(token: number, tMs: number) {
       hayVoz = true
       tUltimaVozTrue = tMs
-
-      const tokenAcotado = token
-
-      if (tokenAcotado > anclaTentativa) {
-        actualizarVelocidad(tokenAcotado, tMs)
-        anclaTentativa = tokenAcotado
-        tUltimoTentativo = tMs
+      if (tUltimaActualizacion === 0) {
+        tUltimaActualizacion = tMs
       }
 
-      // Un parcial que SI calzo dice que el lector esta en el guion. Sin esto, leyendo de
-      // corrido -donde llegan parciales y casi ningun final- nada limpiaba el estado de
-      // fallo y el motor terminaba frenando por sin-calce en medio de una lectura buena.
+      if (token > anclaTentativa) {
+        actualizarVelocidad(token, tMs)
+        anclaTentativa = token
+        tUltimoTentativo = tMs
+      }
+      registrarAvanceArranque(token, anclaTentativa)
+
       tUltimoCalce = tMs
       fallosFinalesSeguidos = 0
-
-      ajustarPosicionTarget(tokenAcotado, tMs, false)
     },
 
     falloCalce(tMs: number, esParcial?: boolean) {
-      // Un final que no calza es evidencia fuerte y se cuenta. Un parcial que no calza no
-      // se cuenta: el reconocedor entrega texto provisional y se corrige solo, asi que
-      // fallar es normal aun leyendo bien. Lo que si importa de un parcial fallido es que
-      // NO actualiza tUltimoCalce, y de ese silencio se encarga msSinCalceParaFrenar.
       if (!esParcial) fallosFinalesSeguidos++
       hayVoz = true
       tUltimaVozTrue = tMs
@@ -217,67 +196,118 @@ export function crearMotorDeAvance(
       const dt = Math.max(0, tMs - tUltimaActualizacion)
       tUltimaActualizacion = tMs
 
-      // Antes del primer calce el texto no se mueve. No hay ninguna evidencia de donde
-      // esta el lector, asi que avanzar a la velocidad supuesta hace que la primera linea
-      // se vaya de pantalla antes de que alcance a leerla.
-      if (tUltimoCalce === 0) {
-        return {
-          posicion: posicionMostrada,
-          avanzando: false,
-          motivoFreno: null,
-          ppmEstimadas,
-          ultimoCalce: Math.max(ultimaConfirmada, anclaTentativa)
-        }
-      }
+      const refToken = Math.max(ultimaConfirmada, anclaTentativa)
 
-      const hablandoSinCalzar =
-        hayVoz && tMs - tUltimoCalce > params.msSinCalceParaFrenar
-
-      const esSinCalce =
-        fallosFinalesSeguidos >= params.fallosParaFrenar || hablandoSinCalzar
-      if (esSinCalce) {
-        return {
-          posicion: posicionMostrada,
-          avanzando: false,
-          motivoFreno: 'sin-calce',
-          ppmEstimadas,
-          ultimoCalce: Math.max(ultimaConfirmada, anclaTentativa)
-        }
-      }
-
+      // Evaluacion de Silencio
       if (!hayVoz) {
         const esSilencio = (tMs - tUltimaVozTrue) > params.msSilencioParaFrenar
-        return {
-          posicion: posicionMostrada,
-          avanzando: false,
-          motivoFreno: esSilencio ? 'silencio' : null,
-          ppmEstimadas,
-          ultimoCalce: Math.max(ultimaConfirmada, anclaTentativa)
+        if (esSilencio) {
+          return {
+            posicion: posicionMostrada,
+            avanzando: false,
+            estado: 'DETENIDO',
+            motivoFreno: 'silencio',
+            ppmEstimadas,
+            ultimoCalce: refToken,
+            tUltimoCalceMs: tUltimoCalce
+          }
         }
       }
 
-      const refToken = Math.max(ultimaConfirmada, anclaTentativa)
-      const distAdelanto = Math.max(0, posicionMostrada - refToken)
-      const comodo = params.adelantoComodo
-      const maximo = Math.max(comodo + 1, params.adelantoMaximo)
-      const factorFreno = distAdelanto <= comodo
-        ? 1
-        : Math.max(0, 1 - (distAdelanto - comodo) / (maximo - comodo))
+      const dtSinCalce = tMs - tUltimoCalce
+      const vBase = ppmEstimadas / 60000
+      const vMax = 3 * vBase
 
-      let v = (ppmEstimadas / 60000) * factorFreno
-      let nuevaPos = posicionMostrada + v * dt
+      const esSinCalce = fallosFinalesSeguidos >= params.fallosParaFrenar || (hayVoz && dtSinCalce > params.msSinCalceParaFrenar)
 
-      if (gliding) {
-        const duracion = Math.max(1, params.msTransicion || params.msDeCorreccion)
-        const elapsed = tMs - inicioGlideTiempo
-        const progress = Math.min(1, Math.max(0, elapsed / duracion))
-        const linearPos = inicioGlidePosicion + v * elapsed
-        const targetEst = objetivoPosicion + v * elapsed
-        const conDeslizamiento = linearPos + progress * (targetEst - linearPos)
-        nuevaPos = Math.max(nuevaPos, conDeslizamiento)
-        if (progress >= 1) {
-          gliding = false
+      if (esSinCalce) {
+        const dtBuscando = dtSinCalce
+        if (dtBuscando < params.msDeBusquedaCiega) {
+          // 3. BUSCANDO: dejó de calzar. El texto NO se congela: sigue avanzando a la velocidad
+          // PREDICHA pero FRENANDO (desacelerando) hasta detenerse en msDeBusquedaCiega.
+          const progress = Math.min(1, dtBuscando / params.msDeBusquedaCiega)
+          const factorDesaceleracion = Math.max(0, 1 - progress)
+
+          const distAdelanto = Math.max(0, posicionMostrada - refToken)
+          const comodo = params.adelantoComodo
+          const maximo = Math.max(comodo + 1, params.adelantoMaximo)
+          const factorFreno = distAdelanto <= comodo
+            ? 1
+            : Math.max(0, 1 - (distAdelanto - comodo) / (maximo - comodo))
+
+          const v = arranqueCumplido ? vBase * factorDesaceleracion * factorFreno : 0
+          let nuevaPos = posicionMostrada + v * dt
+
+          let maxTokenGuion = Infinity
+          if (limitesDeBloque && limitesDeBloque.length > 0) {
+            maxTokenGuion = limitesDeBloque[limitesDeBloque.length - 1]
+          } else if (limitesDeLinea && limitesDeLinea.length > 0) {
+            maxTokenGuion = limitesDeLinea[limitesDeLinea.length - 1]
+          }
+
+          nuevaPos = Math.min(maxTokenGuion, Math.max(posicionMostrada, nuevaPos))
+          posicionMostrada = nuevaPos
+
+          return {
+            posicion: posicionMostrada,
+            avanzando: v > 0,
+            estado: 'BUSCANDO',
+            motivoFreno: 'sin-calce',
+            ppmEstimadas,
+            ultimoCalce: refToken,
+            tUltimoCalceMs: tUltimoCalce
+          }
+        } else {
+          // DETENIDO: pasó el margen y no encontró
+          return {
+            posicion: posicionMostrada,
+            avanzando: false,
+            estado: 'DETENIDO',
+            motivoFreno: 'sin-calce',
+            ppmEstimadas,
+            ultimoCalce: refToken,
+            tUltimoCalceMs: tUltimoCalce
+          }
         }
+      }
+
+      // SIGUIENDO: calza y avanza.
+      let vEffective = vBase
+      const dist = refToken - posicionMostrada
+
+      if (dist > 0) {
+        // La posicion mostrada recupera/avanza hacia refToken a una velocidad acotada (hasta 3x)
+        const vCatchup = Math.min(vMax, dt > 0 ? dist / dt : vMax)
+        vEffective = Math.max(vBase, vCatchup)
+      } else if (dist < -1.0) {
+        // Solo retrocede si refToken esta mas de 1.0 token atras (para evitar micro-oscilaciones)
+        const vBack = Math.min(vMax, dt > 0 ? Math.abs(dist) / dt : vMax)
+        vEffective = -vBack
+      } else if (dist < 0) {
+        vEffective = 0
+      }
+
+      const distAdelanto = Math.max(0, posicionMostrada - refToken)
+      if (distAdelanto > params.adelantoComodo) {
+        const comodo = params.adelantoComodo
+        const maximo = Math.max(comodo + 1, params.adelantoMaximo)
+        const factorFreno = distAdelanto <= comodo
+          ? 1
+          : Math.max(0, 1 - (distAdelanto - comodo) / (maximo - comodo))
+        vEffective = vEffective * factorFreno
+      }
+
+      // 4. EL ARRANQUE: SIETE PALABRAS, UNA SOLA VEZ
+      // El texto NO se mueve hasta que se confirmaron 7 palabras DESDE QUE EMPEZO LA LECTURA.
+      if (!arranqueCumplido || tUltimoCalce === 0) {
+        vEffective = 0
+      }
+
+      let nuevaPos = posicionMostrada + vEffective * dt
+      if (dist > 0) {
+        nuevaPos = Math.min(refToken, nuevaPos)
+      } else if (dist < -1.0) {
+        nuevaPos = Math.max(refToken, nuevaPos)
       }
 
       let maxTokenGuion = Infinity
@@ -287,31 +317,33 @@ export function crearMotorDeAvance(
         maxTokenGuion = limitesDeLinea[limitesDeLinea.length - 1]
       }
 
-      nuevaPos = Math.min(maxTokenGuion, Math.max(posicionMostrada, nuevaPos))
+      nuevaPos = Math.min(maxTokenGuion, Math.max(0, nuevaPos))
       posicionMostrada = nuevaPos
 
       return {
         posicion: posicionMostrada,
-        avanzando: true,
+        avanzando: arranqueCumplido,
+        estado: 'SIGUIENDO',
         motivoFreno: null,
         ppmEstimadas,
-        ultimoCalce: Math.max(ultimaConfirmada, anclaTentativa)
+        ultimoCalce: refToken,
+        tUltimoCalceMs: tUltimoCalce
       }
     },
 
     irAToken(token: number, tMs: number) {
       const destino = Math.max(0, token)
       posicionMostrada = destino
-      objetivoPosicion = destino
       ultimaConfirmada = destino
       anclaTentativa = destino
-      gliding = false
       fallosFinalesSeguidos = 0
       tUltimoCalce = tMs
       tUltimaConfirmacion = tMs
       tUltimoTentativo = 0
-      tUltimaActualizacion = tMs
+      tUltimaActualizacion = 0
       muestrasVelocidad = []
+      palabrasConfirmadasDesdeArranque = 0
+      arranqueCumplido = false
     },
 
     reiniciar() {
@@ -327,10 +359,8 @@ export function crearMotorDeAvance(
       tUltimaVozTrue = 0
       posicionMostrada = 0
       tUltimaActualizacion = 0
-      objetivoPosicion = 0
-      inicioGlidePosicion = 0
-      inicioGlideTiempo = 0
-      gliding = false
+      palabrasConfirmadasDesdeArranque = 0
+      arranqueCumplido = false
     }
   }
 }
