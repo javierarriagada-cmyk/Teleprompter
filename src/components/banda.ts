@@ -31,8 +31,9 @@ export function calcularBanda(
 }
 
 export function opacidadDeLinea(distanciaLineas: number): number {
-  const dist = Math.abs(distanciaLineas)
-  if (dist === 0) return 1.0
-  if (dist === 1) return 0.5
-  return 0.2
+  if (distanciaLineas === 0) return 1.0
+  if (distanciaLineas === 1) return 0.60
+  if (distanciaLineas > 1) return 0.32
+  if (distanciaLineas === -1) return 0.30
+  return 0.12
 }

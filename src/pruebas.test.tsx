@@ -20,6 +20,7 @@ import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { calcularBanda, opacidadDeLinea, AnclajeZona } from './components/banda'
 import BarraDeTiempo from './components/BarraDeTiempo'
 import { reubicarTramos } from './components/EditorView'
+import { importarTexto } from './datos/importar'
 
 function guionSimple(texto: string, titulo = 'Guion de prueba'): Guion {
   return {
@@ -1226,6 +1227,16 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       bloques: [{ id: 'b2', nombre: '', texto: 'Texto deportes' }]
     }
 
+    for (let i = 3; i <= 9; i++) {
+      await repo.guardar({
+        id: `g-33-${i}`,
+        titulo: `Otro Guion ${i}`,
+        idioma: 'es',
+        creado: 500,
+        modificado: 500,
+        bloques: [{ id: `b${i}`, nombre: '', texto: 'Texto' }]
+      })
+    }
     await repo.guardar(g1)
     await repo.guardar(g2)
 
@@ -1241,11 +1252,11 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
 
     const h3Elements = Array.from(container!.querySelectorAll('h3'))
     const titulos = h3Elements.map((h) => h.textContent?.trim()).filter((t) => t !== 'Teleprompter MVP')
-    expect(titulos.length).toBe(2)
+    expect(titulos.length).toBe(9)
     expect(titulos[0]).toBe('Deportes Fin de Semana')
     expect(titulos[1]).toBe('Noticias de la Mañana')
 
-    const busquedaInput = container!.querySelector('input[placeholder="Buscar por título..."]') as HTMLInputElement
+    const busquedaInput = container!.querySelector('input[data-testid="input-busqueda-biblioteca"]') as HTMLInputElement
     expect(busquedaInput).not.toBeNull()
 
     await act(async () => {
@@ -1432,13 +1443,14 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
     }
 
     expect(opacidadDeLinea(0)).toBe(1.0)
-    expect(opacidadDeLinea(1)).toBe(0.5)
-    expect(opacidadDeLinea(2)).toBe(0.2)
-    expect(opacidadDeLinea(3)).toBe(0.2)
+    expect(opacidadDeLinea(1)).toBe(0.60)
+    expect(opacidadDeLinea(2)).toBe(0.32)
+    expect(opacidadDeLinea(-1)).toBe(0.30)
+    expect(opacidadDeLinea(-2)).toBe(0.12)
 
     expect(opacidadDeLinea(0)).toBeGreaterThan(opacidadDeLinea(1))
     expect(opacidadDeLinea(1)).toBeGreaterThan(opacidadDeLinea(2))
-    expect(opacidadDeLinea(2)).toBeGreaterThanOrEqual(opacidadDeLinea(3))
+    expect(opacidadDeLinea(-1)).toBeGreaterThan(opacidadDeLinea(-2))
 
     const resArriba = calcularBanda(800, 40, 3, 'arriba')
     expect(resArriba.topBanda).toBe(0)
@@ -2327,6 +2339,16 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       bloques: [{ id: 'b1', nombre: '', texto: 'Texto archivado' }]
     }
     await repo.guardar(gArchivado)
+    for (let i = 1; i <= 9; i++) {
+      await repo.guardar({
+        id: `g-96-${i}`,
+        titulo: `Guion Principal ${i}`,
+        idioma: 'es',
+        creado: 100,
+        modificado: 100,
+        bloques: [{ id: `b${i}`, nombre: '', texto: 'Texto' }]
+      })
+    }
 
     let container: HTMLElement
     await act(async () => {
@@ -2353,7 +2375,7 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
     expect(container!.textContent).not.toContain('Guion Oculto Archivado')
 
     // 3. Buscar por título con el filtro apagado: APARECE AL BUSCAR POR TITULO
-    const busquedaInput = container!.querySelector('input[placeholder="Buscar por título..."]') as HTMLInputElement
+    const busquedaInput = container!.querySelector('input[data-testid="input-busqueda-biblioteca"]') as HTMLInputElement
     await act(async () => {
       fireEvent.change(busquedaInput, { target: { value: 'Oculto' } })
     })
@@ -2533,3 +2555,368 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
 function gGuardardadoSinMarcas(texto: string): boolean {
   return !texto.includes('<span') && !texto.includes('style=') && !texto.includes('color=')
 }
+
+describe('Pruebas TAREA 19 (T102-T107)', () => {
+
+  test('T102: Un bloque con un tramo de color en una palabra se dibuja en la pantalla de lectura con esa palabra en ese color, y el texto que tokeniza el seguidor NO contiene ninguna marca de formato.', async () => {
+    const guion: Guion = {
+      id: 'g-t102',
+      titulo: 'Guion T102',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{
+        id: 'b1',
+        nombre: '',
+        texto: 'Hola mundo especial de prueba',
+        tramos: [{ desde: 11, hasta: 19, color: 'ambar' }]
+      }]
+    }
+
+    const repo = new RepositorioMemoria()
+    await repo.guardar(guion)
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    await act(async () => {
+      fireEvent.click(botonAbrir)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLElement
+    await act(async () => {
+      fireEvent.click(botonLeer)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const spans = Array.from(container!.querySelectorAll('.line span'))
+    const spanEspecial = spans.find((s) => s.textContent === 'especial') as HTMLElement
+    expect(spanEspecial).not.toBeNull()
+    expect(spanEspecial.style.color).toBe('rgb(240, 192, 112)')
+
+    const tokens = tokenizarGuion(guion)
+    expect(tokens.map((t) => t.palabra)).toEqual(['hola', 'mundo', 'especial', 'de', 'prueba'])
+    for (const t of tokens) {
+      expect(t.palabra).not.toContain('#')
+      expect(t.palabra).not.toContain('<')
+    }
+  })
+
+  test('T103: GUARDIANA DE LA ATENUACION. La linea siguiente se dibuja MAS visible que la anterior.', () => {
+    const opSiguiente = opacidadDeLinea(1)
+    const opAnterior = opacidadDeLinea(-1)
+
+    expect(opSiguiente).toBe(0.60)
+    expect(opAnterior).toBe(0.30)
+    expect(opSiguiente).toBeGreaterThan(opAnterior)
+  })
+
+  test('T104: GUARDIANA. Con los controles a la vista, el alto del area de texto es MENOR que con los controles escondidos. Nunca queda texto por debajo de un control.', async () => {
+    vi.useFakeTimers()
+    try {
+      const motor = new MotorFake()
+      const repo = new RepositorioMemoria()
+      await repo.guardar(guionSimple('Línea 1\nLínea 2\nLínea 3'))
+
+      let container: HTMLElement
+      await act(async () => {
+        const res = render(<App motor={motor} repoOverride={repo} />)
+        container = res.container
+        await vi.advanceTimersByTimeAsync(600)
+      })
+
+      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+      await act(async () => {
+        fireEvent.click(botonAbrir)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLElement
+      await act(async () => {
+        fireEvent.click(botonLeer)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const prompterContainerConControles = container!.querySelector('[data-testid="teleprompter-view-container"]')?.parentElement as HTMLElement
+      expect(prompterContainerConControles).not.toBeNull()
+      const flexConControles = prompterContainerConControles.style.flex
+
+      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')!
+      await act(async () => {
+        fireEvent.click(botonIniciar)
+        await vi.advanceTimersByTimeAsync(3100)
+      })
+
+      const prompterContainerSinControles = container!.querySelector('[data-testid="teleprompter-view-container"]')?.parentElement as HTMLElement
+      expect(prompterContainerSinControles).not.toBeNull()
+      const flexSinControles = prompterContainerSinControles.style.flex
+
+      expect(flexSinControles).toBe('1 1 100%')
+      expect(flexConControles).not.toBe(flexSinControles)
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  test('T105: La busqueda no esta en el documento con ocho guiones o menos, y si esta con nueve.', async () => {
+    const repo8 = new RepositorioMemoria()
+    for (let i = 1; i <= 8; i++) {
+      await repo8.guardar(guionSimple(`Contenido ${i}`, `Guion ${i}`))
+    }
+
+    let container8: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo8} />)
+      container8 = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    expect(container8!.querySelector('[data-testid="input-busqueda-biblioteca"]')).toBeNull()
+
+    const repo9 = new RepositorioMemoria()
+    for (let i = 1; i <= 9; i++) {
+      await repo9.guardar(guionSimple(`Contenido ${i}`, `Guion ${i}`))
+    }
+
+    let container9: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo9} />)
+      container9 = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    expect(container9!.querySelector('[data-testid="input-busqueda-biblioteca"]')).not.toBeNull()
+  })
+
+  test('T106: Pegar un texto con espacios duros, guiones blandos y cuatro saltos de linea seguidos deja espacios normales, sin guiones blandos y con dos saltos. Y las comillas del texto quedan intactas.', () => {
+    const textoConBasura = 'Hola\u00A0mundo «con comillas» e in\u00ADvisibles.   \n\n\n\nSegunda "frase" importante.'
+    const bloques = importarTexto(textoConBasura)
+
+    expect(bloques).toHaveLength(2)
+    const textoResultado = bloques.map((b) => b.texto).join('\n\n')
+
+    expect(textoResultado).not.toContain('\u00A0')
+    expect(textoResultado).not.toContain('\u00AD')
+    expect(textoResultado).not.toContain('\n\n\n')
+    expect(textoResultado).toContain('«con comillas»')
+    expect(textoResultado).toContain('"frase"')
+  })
+
+  test('T107: El boton de leer sigue en el documento despues de desplazar el editor hasta el final de un guion largo.', async () => {
+    const repo = new RepositorioMemoria()
+    const guionLargo = guionSimple(Array.from({ length: 30 }, (_, i) => `Línea de bloque largo número ${i + 1}`).join('\n\n'))
+    await repo.guardar(guionLargo)
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    await act(async () => {
+      fireEvent.click(botonAbrir)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const btnLeerFijo = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLElement
+    expect(btnLeerFijo).not.toBeNull()
+
+    window.scrollTo(0, 5000)
+
+    const btnLeerFijoTrasScroll = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLElement
+    expect(btnLeerFijoTrasScroll).not.toBeNull()
+  })
+
+  test('T108: Un guion con "hola (esto no se dice) mundo" se DIBUJA con las palabras de adentro del parentesis atenuadas, igual que con corchetes. Comprobar los dos signos en la misma prueba.', async () => {
+    const guion: Guion = {
+      id: 'g-t108',
+      titulo: 'Guion T108',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{
+        id: 'b1',
+        nombre: '',
+        texto: 'hola (esto no se dice) y [esto tampoco] mundo'
+      }]
+    }
+
+    const repo = new RepositorioMemoria()
+    await repo.guardar(guion)
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    await act(async () => {
+      fireEvent.click(botonAbrir)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLElement
+    await act(async () => {
+      fireEvent.click(botonLeer)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const spans = Array.from(container!.querySelectorAll('.line span')) as HTMLElement[]
+
+    const spanParen = spans.find((s) => s.textContent?.includes('esto no se dice'))
+    expect(spanParen).not.toBeUndefined()
+    expect(spanParen!.style.opacity).toBe('0.5')
+    expect(spanParen!.style.fontStyle).toBe('italic')
+
+    const spanCorchete = spans.find((s) => s.textContent?.includes('esto tampoco'))
+    expect(spanCorchete).not.toBeUndefined()
+    expect(spanCorchete!.style.opacity).toBe('0.5')
+    expect(spanCorchete!.style.fontStyle).toBe('italic')
+
+    const spanHola = spans.find((s) => s.textContent === 'hola ')
+    if (spanHola) {
+      expect(spanHola.style.opacity).not.toBe('0.5')
+    }
+  })
+
+  test('T109: GUARDIANA DE REGLA UNICA DE ACOTACIONES. Leyendo el codigo con fs, comprobar que ningun archivo de src/lib, src/components ni src/datos (salvo acotaciones.ts) contiene la comparacion de un caracter contra corchetes o parentesis para decidir acotaciones.', () => {
+    const directorios = [
+      path.resolve(process.cwd(), 'src/lib'),
+      path.resolve(process.cwd(), 'src/components'),
+      path.resolve(process.cwd(), 'src/datos')
+    ]
+
+    const moduloAcotaciones = path.resolve(process.cwd(), 'src/lib/acotaciones.ts')
+    const archivosConReglaDuplicada: string[] = []
+
+    for (const dir of directorios) {
+      const archivos = buscarArchivosRec(dir, '.ts').concat(buscarArchivosRec(dir, '.tsx'))
+      for (const archivo of archivos) {
+        if (path.resolve(archivo) === moduloAcotaciones) continue
+
+        const contenido = fs.readFileSync(archivo, 'utf-8')
+
+        const tieneComparacionCaracter = /===\s*['"`][\[\]()]['"`]/.test(contenido) ||
+          /==\s*['"`][\[\]()]['"`]/.test(contenido) ||
+          /['"`][\[\]()]['"`]\s*===/.test(contenido) ||
+          /['"`][\[\]()]['"`]\s*==/.test(contenido)
+
+        if (tieneComparacionCaracter) {
+          archivosConReglaDuplicada.push(path.relative(process.cwd(), archivo))
+        }
+      }
+    }
+
+    expect(archivosConReglaDuplicada).toEqual([])
+  })
+
+  test('T111: Un guion con corchetes y otro con parentesis producen EXACTAMENTE los mismos tokens marcados como acotacion en el tokenizador.', () => {
+    const textoCorchetes = 'Hola [esto es una acotacion] mundo'
+    const textoParentesis = 'Hola (esto es una acotacion) mundo'
+
+    const tokensCorchetes = tokenizarGuion(textoCorchetes)
+    const tokensParentesis = tokenizarGuion(textoParentesis)
+
+    expect(tokensCorchetes).toHaveLength(tokensParentesis.length)
+
+    for (let i = 0; i < tokensCorchetes.length; i++) {
+      const tCor = tokensCorchetes[i]
+      const tPar = tokensParentesis[i]
+
+      expect(tCor.palabra).toBe(tPar.palabra)
+      expect(tCor.esAcotacion).toBe(tPar.esAcotacion)
+      expect(tCor.bloque).toBe(tPar.bloque)
+      expect(tCor.linea).toBe(tPar.linea)
+      expect(tCor.indiceEnLinea).toBe(tPar.indiceEnLinea)
+    }
+
+    const acotadosCor = tokensCorchetes.filter((t) => t.esAcotacion).map((t) => t.palabra)
+    const acotadosPar = tokensParentesis.filter((t) => t.esAcotacion).map((t) => t.palabra)
+
+    expect(acotadosCor).toEqual(['esto', 'es', 'una', 'acotacion'])
+    expect(acotadosPar).toEqual(['esto', 'es', 'una', 'acotacion'])
+
+    const noAcotadosCor = tokensCorchetes.filter((t) => !t.esAcotacion).map((t) => t.palabra)
+    const noAcotadosPar = tokensParentesis.filter((t) => !t.esAcotacion).map((t) => t.palabra)
+
+    expect(noAcotadosCor).toEqual(['hola', 'mundo'])
+    expect(noAcotadosPar).toEqual(['hola', 'mundo'])
+  })
+
+  test('T110: La busqueda por titulo sigue funcionando sin haber cargado ningun guion completo, y la busqueda dentro del texto encuentra una frase que no esta en el titulo.', async () => {
+    const repo = new RepositorioMemoria()
+
+    const g1: Guion = {
+      id: 'g-110-1',
+      titulo: 'Reporte Semanal Especial',
+      idioma: 'es',
+      creado: 1000,
+      modificado: 1000,
+      bloques: [{ id: 'b1', nombre: '', texto: 'Hoy explicamos el tema de finanzas.' }]
+    }
+
+    const g2: Guion = {
+      id: 'g-110-2',
+      titulo: 'Boletín General',
+      idioma: 'es',
+      creado: 2000,
+      modificado: 2000,
+      bloques: [{ id: 'b2', nombre: '', texto: 'Información confidencial sobre la expedición espacial.' }]
+    }
+
+    await repo.guardar(g1)
+    await repo.guardar(g2)
+
+    for (let i = 3; i <= 9; i++) {
+      await repo.guardar({
+        id: `g-110-${i}`,
+        titulo: `Guion Adicional ${i}`,
+        idioma: 'es',
+        creado: 500,
+        modificado: 500,
+        bloques: [{ id: `b${i}`, nombre: '', texto: 'Contenido ordinario.' }]
+      })
+    }
+
+    const abrirSpy = vi.spyOn(repo, 'abrir')
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(<App repoOverride={repo} />)
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const busquedaInput = container!.querySelector('input[data-testid="input-busqueda-biblioteca"]') as HTMLInputElement
+    expect(busquedaInput).not.toBeNull()
+
+    // 1. Buscar por título "Semanal" -> debe encontrarlo de inmediato
+    await act(async () => {
+      fireEvent.change(busquedaInput, { target: { value: 'Semanal' } })
+    })
+
+    expect(container!.textContent).toContain('Reporte Semanal Especial')
+    expect(container!.textContent).not.toContain('Boletín General')
+
+    // 2. Buscar por texto interno "expedición espacial" -> no está en el título, lo encuentra tras cargar
+    await act(async () => {
+      fireEvent.change(busquedaInput, { target: { value: 'expedición espacial' } })
+      await new Promise((r) => setTimeout(r, 300))
+    })
+
+    expect(container!.textContent).toContain('Boletín General')
+    expect(container!.textContent).not.toContain('Reporte Semanal Especial')
+    expect(abrirSpy).toHaveBeenCalled()
+  })
+
+})

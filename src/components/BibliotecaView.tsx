@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react'
-import { ResumenGuion, calcularDuracionTexto } from '../datos/modelo'
+import React, { useEffect, useRef, useState } from 'react'
+import { Guion, ResumenGuion, calcularDuracionTexto } from '../datos/modelo'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -9,6 +9,7 @@ interface BibliotecaViewProps {
   onRenombrar?: (id: string, nuevoTitulo: string) => void
   onBorrar: (id: string) => void
   onArchivar: (id: string, archivado: boolean) => void
+  onBuscarGuionCompleto?: (id: string) => Promise<Guion | null>
 }
 
 export default function BibliotecaView({
@@ -18,21 +19,64 @@ export default function BibliotecaView({
   onImportarArchivo,
   onRenombrar,
   onBorrar,
-  onArchivar
+  onArchivar,
+  onBuscarGuionCompleto
 }: BibliotecaViewProps) {
   const [busqueda, setBusqueda] = useState('')
   const [mostrarArchivados, setMostrarArchivados] = useState(false)
   const [menuId, setMenuId] = useState<string | null>(null)
+  const [mapaTextos, setMapaTextos] = useState<Record<string, string>>({})
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const timerHoldRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const fueLongPressRef = useRef<boolean>(false)
 
-  const guionesFiltrados = guiones.filter((g) => {
-    const tituloNormalizado = (g.titulo || 'Sin título').toLowerCase()
-    const coincideBusqueda = tituloNormalizado.includes(busqueda.toLowerCase())
+  const hayMasDeOcho = guiones.length > 8
 
-    if (busqueda.trim() !== '') {
+  useEffect(() => {
+    const query = busqueda.toLowerCase().trim()
+    if (!query || !onBuscarGuionCompleto) return
+
+    let cancelado = false
+    const inicio = performance.now()
+
+    // Cargar en demanda el texto completo de los guiones que no estén ya cargados
+    const idsFaltantes = guiones.filter((g) => !(g.id in mapaTextos)).map((g) => g.id)
+
+    if (idsFaltantes.length > 0) {
+      Promise.all(
+        idsFaltantes.map(async (id) => {
+          const g = await onBuscarGuionCompleto(id)
+          const texto = g && g.bloques ? g.bloques.map((b) => b.texto || '').join(' ') : ''
+          return { id, texto }
+        })
+      ).then((resultados) => {
+        if (cancelado) return
+        const fin = performance.now()
+        console.log(`[BusquedaTexto] Cargar ${resultados.length} guiones demoró ${(fin - inicio).toFixed(2)} ms`)
+        setMapaTextos((prev) => {
+          const nuevo = { ...prev }
+          for (const res of resultados) {
+            nuevo[res.id] = res.texto
+          }
+          return nuevo
+        })
+      })
+    }
+
+    return () => {
+      cancelado = true
+    }
+  }, [busqueda, guiones, onBuscarGuionCompleto, mapaTextos])
+
+  const guionesFiltrados = guiones.filter((g) => {
+    const query = busqueda.toLowerCase().trim()
+    const tituloNormalizado = (g.titulo || 'Sin título').toLowerCase()
+    const textoNormalizado = (mapaTextos[g.id] || '').toLowerCase()
+
+    const coincideBusqueda = query === '' || tituloNormalizado.includes(query) || textoNormalizado.includes(query)
+
+    if (query !== '') {
       return coincideBusqueda
     }
 
@@ -130,22 +174,25 @@ export default function BibliotecaView({
       </div>
 
       <div style={{ display: 'flex', gap: 12, marginBottom: 20, alignItems: 'center' }}>
-        <input
-          type="text"
-          placeholder="Buscar por título..."
-          value={busqueda}
-          onChange={(e) => setBusqueda(e.target.value)}
-          style={{
-            flex: 1,
-            padding: '10px 12px',
-            fontSize: 16,
-            borderRadius: 6,
-            border: '1px solid var(--color-borde)',
-            backgroundColor: 'var(--bg-superficie)',
-            color: 'var(--color-texto)',
-            boxSizing: 'border-box'
-          }}
-        />
+        {hayMasDeOcho && (
+          <input
+            type="text"
+            placeholder="Buscar por título o texto..."
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            data-testid="input-busqueda-biblioteca"
+            style={{
+              flex: 1,
+              padding: '10px 12px',
+              fontSize: 16,
+              borderRadius: 6,
+              border: '1px solid var(--color-borde)',
+              backgroundColor: 'var(--bg-superficie)',
+              color: 'var(--color-texto)',
+              boxSizing: 'border-box'
+            }}
+          />
+        )}
 
         <button
           onClick={() => setMostrarArchivados(!mostrarArchivados)}
@@ -158,10 +205,11 @@ export default function BibliotecaView({
             cursor: 'pointer',
             fontSize: 14,
             fontWeight: 500,
-            whiteSpace: 'nowrap'
+            whiteSpace: 'nowrap',
+            marginLeft: hayMasDeOcho ? 0 : 'auto'
           }}
         >
-          {mostrarArchivados ? '📁 Ver Principales' : '📦 Ver Archivados'}
+          {mostrarArchivados ? 'Ver Principales' : 'Ver Archivados'}
         </button>
       </div>
 

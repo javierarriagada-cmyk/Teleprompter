@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { MotorDeAvance } from '../lib/avance'
 import { tokenizarGuion, Token } from '../lib/seguidor'
 import { Guion } from '../datos/modelo'
+import { esCaracterApertura, esCaracterCierre } from '../lib/acotaciones'
 
 import { AnclajeZona, calcularBanda, opacidadDeLinea } from './banda'
 
@@ -476,6 +477,8 @@ export default function TeleprompterView({
         >
           {guionObj.bloques.map((bloque, bIdx) => {
             const lineas = (bloque.texto || '').split(/\r?\n/)
+            let charOffset = 0
+
             return (
               <div key={bloque.id || bIdx} className="block-container" style={{ marginBottom: 24 }}>
                 {bloque.nombre && (
@@ -484,6 +487,13 @@ export default function TeleprompterView({
                   </div>
                 )}
                 {lineas.map((linea: string, lIdx: number) => {
+                  const lineStart = charOffset
+                  let newlineLen = 1
+                  if (bloque.texto && bloque.texto.substring(lineStart + linea.length, lineStart + linea.length + 2) === '\r\n') {
+                    newlineLen = 2
+                  }
+                  charOffset = lineStart + linea.length + newlineLen
+
                   let targetCurrentLineGlobal = 0
                   for (let b = 0; b < guionObj.bloques.length; b++) {
                     if (b < currentBlockIndex) {
@@ -494,7 +504,7 @@ export default function TeleprompterView({
                     }
                   }
 
-                  const distLineas = Math.abs(lineCountGlobal - targetCurrentLineGlobal)
+                  const distLineas = lineCountGlobal - targetCurrentLineGlobal
                   const opacidad = opacidadDeLinea(distLineas)
                   lineCountGlobal++
 
@@ -512,7 +522,7 @@ export default function TeleprompterView({
                         transition: 'opacity 200ms'
                       }}
                     >
-                      {renderFormattedLine(linea)}
+                      {renderFormattedLine(linea, lineStart, bloque.tramos)}
                     </div>
                   )
                 })}
@@ -525,64 +535,120 @@ export default function TeleprompterView({
   )
 }
 
-function renderFormattedLine(linea: string) {
-  const parts: { texto: string; esAcotacion: boolean }[] = []
-  let pos = 0
-  let enAcotacion = false
-  let currentBuffer = ''
+function renderFormattedLine(
+  linea: string,
+  lineaStart: number = 0,
+  tramos: import('../datos/modelo').TramoFormato[] = []
+) {
+  if (!linea) return null
 
-  while (pos < linea.length) {
-    const char = linea[pos]
-    if (char === '[') {
-      if (currentBuffer) {
-        parts.push({ texto: currentBuffer, esAcotacion: enAcotacion })
-        currentBuffer = ''
-      }
-      enAcotacion = true
-      currentBuffer += char
-    } else if (char === ']') {
-      currentBuffer += char
-      parts.push({ texto: currentBuffer, esAcotacion: enAcotacion })
-      currentBuffer = ''
-      enAcotacion = false
+  const isBracket = new Array<boolean>(linea.length).fill(false)
+  let inBracket = false
+  for (let i = 0; i < linea.length; i++) {
+    if (esCaracterApertura(linea[i])) {
+      inBracket = true
+      isBracket[i] = true
+    } else if (esCaracterCierre(linea[i])) {
+      isBracket[i] = true
+      inBracket = false
     } else {
-      currentBuffer += char
+      isBracket[i] = inBracket
     }
-    pos++
   }
 
-  if (currentBuffer) {
-    parts.push({ texto: currentBuffer, esAcotacion: enAcotacion })
+  const COLOR_MAP: Record<string, string> = {
+    ambar: '#F0C070',
+    celeste: '#8FB8DE',
+    salvia: '#9CC5A1'
   }
 
-  let globalTokenWordIdx = 0
+  type CharAttr = {
+    esAcotacion: boolean
+    negrita: boolean
+    color?: string
+  }
+
+  const attrs: CharAttr[] = []
+  for (let i = 0; i < linea.length; i++) {
+    const globalIdx = lineaStart + i
+    let negrita = false
+    let colorName: 'ambar' | 'celeste' | 'salvia' | undefined = undefined
+
+    for (const tr of tramos) {
+      if (globalIdx >= tr.desde && globalIdx < tr.hasta) {
+        if (tr.negrita) negrita = true
+        if (tr.color) colorName = tr.color
+      }
+    }
+
+    attrs.push({
+      esAcotacion: isBracket[i],
+      negrita,
+      color: colorName ? COLOR_MAP[colorName] : undefined
+    })
+  }
+
+  type SpanGroup = {
+    text: string
+    attr: CharAttr
+  }
+
+  const spans: SpanGroup[] = []
+  let currText = ''
+  let currAttr: CharAttr | null = null
+
+  for (let i = 0; i < linea.length; i++) {
+    const a = attrs[i]
+    if (
+      !currAttr ||
+      currAttr.esAcotacion !== a.esAcotacion ||
+      currAttr.negrita !== a.negrita ||
+      currAttr.color !== a.color
+    ) {
+      if (currText && currAttr) {
+        spans.push({ text: currText, attr: currAttr })
+      }
+      currText = linea[i]
+      currAttr = a
+    } else {
+      currText += linea[i]
+    }
+  }
+  if (currText && currAttr) {
+    spans.push({ text: currText, attr: currAttr })
+  }
 
   return (
     <>
-      {parts.map((p, pIdx) => {
-        if (p.esAcotacion) {
+      {spans.map((sp, idx) => {
+        if (sp.attr.esAcotacion) {
           return (
-            <span key={pIdx} style={{ opacity: 0.5, fontStyle: 'italic', color: '#aaa', margin: '0 2px' }}>
-              {p.texto}
+            <span
+              key={idx}
+              style={{
+                opacity: 0.5,
+                fontStyle: 'italic',
+                color: '#aaa',
+                margin: '0 2px',
+                fontWeight: sp.attr.negrita ? 'bold' : 'normal'
+              }}
+            >
+              {sp.text}
             </span>
           )
         }
 
-        const words = p.texto.split(/(\s+)/)
+        const style: React.CSSProperties = {}
+        if (sp.attr.negrita) {
+          style.fontWeight = 'bold'
+        }
+        if (sp.attr.color) {
+          style.color = sp.attr.color
+        }
+
         return (
-          <span key={pIdx}>
-            {words.map((w, wIdx) => {
-              if (/\s+/.test(w)) return <span key={wIdx}>{w}</span>
-              if (!w) return null
-
-              globalTokenWordIdx++
-
-              return (
-                <span key={wIdx}>
-                  {w}
-                </span>
-              )
-            })}
+          <span key={idx} style={Object.keys(style).length > 0 ? style : undefined}>
+            {sp.text}
           </span>
         )
       })}
