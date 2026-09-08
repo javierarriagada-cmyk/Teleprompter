@@ -1,10 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
-import { crearSeguidor, Posicion, tokenizarGuion } from '../lib/seguidor'
+import { crearSeguidor, MIN_PALABRAS_COINCIDENTES, Posicion, tokenizarGuion } from '../lib/seguidor'
 import { crearMotorDeAvance, MotorDeAvance } from '../lib/avance'
 import { crearRegistro, RegistroDeLectura } from '../lib/registro'
 import { anotar } from '../lib/diagnostico'
 import { EventoFinal } from '../motor/MotorDeVoz'
 import { Guion } from '../datos/modelo'
+
+// Cuantas palabras tiene que traer un final del reconocedor para que, si no calza, eso cuente
+// como evidencia de que el lector se perdio. Es el mismo minimo con el que el seguidor puede
+// puntuar una frase: por debajo de eso no es que el lector este en otro lado, es que no hay
+// con que decidir.
+const PALABRAS_PARA_QUE_UN_FALLO_CUENTE = MIN_PALABRAS_COINCIDENTES
+
+function contarPalabras(texto: string): number {
+  return texto.trim().split(/\s+/).filter(Boolean).length
+}
 
 export function useSeguidor(guionEntrada: Guion | string) {
   const [posicion, setPosicion] = useState<Posicion>({ bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
@@ -120,10 +130,22 @@ export function useSeguidor(guionEntrada: Guion | string) {
         })
       }
       setPosicion(pos)
-    } else {
+    } else if (contarPalabras(texto) >= PALABRAS_PARA_QUE_UN_FALLO_CUENTE) {
       console.warn(`[Seguidor] Final no movió para texto "${texto}"`)
       motor.falloCalce(tMs)
     }
+    // Y SI EL FINAL ERA CORTO, NO PASA NADA. Ni confirma ni falla: es NEUTRO.
+    //
+    // Esto es lo que arregla que apareciera "Buscando tu posicion" cada dos o tres palabras
+    // leyendo perfecto. Android emite finales de una o dos palabras todo el tiempo -"si",
+    // "bueno", "y entonces"-, y con menos de tres palabras reconocibles el seguidor no tiene
+    // con que puntuar, asi que devolvia movio:false. Aca se contaba como fallo, y dos de esos
+    // seguidos hacian que el motor se declarara perdido.
+    //
+    // No poder sacar informacion de algo NO ES lo mismo que recibir informacion que contradice
+    // donde creemos estar. Lo primero no dice nada y no debe mover ninguna decision; lo segundo
+    // si, y para eso queda el contador. Si de verdad se perdio y ademas se callo, el camino por
+    // TIEMPO -msSinCalceParaFrenar- lo agarra igual.
   }
 
   function alNotificarVoz(hayVoz: boolean) {

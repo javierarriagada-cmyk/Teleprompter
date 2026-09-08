@@ -74,6 +74,12 @@ export function crearMotorDeAvance(
 
   let posicionMostrada = 0
   let tUltimaActualizacion = 0
+  let blancoMonotono = 0
+  // LA VELOCIDAD ES ESTADO, NO UNA CUENTA DE CADA CUADRO. Esto es lo que le da inercia al
+  // motor: sin esto la velocidad puede saltar de 0 a 3x entre dos cuadros, y eso es lo que
+  // se ve como un tiron aunque la velocidad nunca pase del tope.
+  let vActual = 0
+  let tInicioBuscando = 0
 
   let palabrasConfirmadasDesdeArranque = 0
   let arranqueCumplido = false
@@ -123,6 +129,16 @@ export function crearMotorDeAvance(
 
     const alpha = params.suavizadoVelocidad
     ppmEstimadas = alpha * clamped + (1 - alpha) * ppmEstimadas
+  }
+
+  // LA CORREA, EN UN SOLO LUGAR. Cuanto puede correr el texto por delante de donde estas:
+  // libre hasta adelantoComodo, frenando hasta adelantoMaximo, y ahi quieto. Los dos numeros
+  // los ajusto Javier leyendo a camara.
+  function frenoDeCorrea(adelanto: number): number {
+    const comodo = params.adelantoComodo
+    const maximo = Math.max(comodo + 1, params.adelantoMaximo)
+    if (adelanto <= comodo) return 1
+    return Math.max(0, 1 - (adelanto - comodo) / (maximo - comodo))
   }
 
   function registrarAvanceArranque(tokenActual: number, tokenPrevio: number) {
@@ -197,117 +213,154 @@ export function crearMotorDeAvance(
       tUltimaActualizacion = tMs
 
       const refToken = Math.max(ultimaConfirmada, anclaTentativa)
-
-      // Evaluacion de Silencio
-      if (!hayVoz) {
-        const esSilencio = (tMs - tUltimaVozTrue) > params.msSilencioParaFrenar
-        if (esSilencio) {
-          return {
-            posicion: posicionMostrada,
-            avanzando: false,
-            estado: 'DETENIDO',
-            motivoFreno: 'silencio',
-            ppmEstimadas,
-            ultimoCalce: refToken,
-            tUltimoCalceMs: tUltimoCalce
-          }
-        }
-      }
-
       const dtSinCalce = tMs - tUltimoCalce
       const vBase = ppmEstimadas / 60000
       const vMax = 3 * vBase
 
-      const esSinCalce = fallosFinalesSeguidos >= params.fallosParaFrenar || (hayVoz && dtSinCalce > params.msSinCalceParaFrenar)
+      // EL BLANCO ES DONDE ESTAS AHORA, NO DONDE TE OYERON.
+      //
+      // refToken es la ultima palabra que el reconocedor confirmo, y llega TARDE: entre que
+      // la dijiste y que nos la entrego pasaron entre 300 y 800 ms, y en el telefono mas.
+      // Mientras tanto seguiste hablando. Apuntarle a refToken es apuntarle al pasado.
+      //
+      // Y hay algo peor que el atraso: refToken es una ESCALERA. Salta de 14 a 15 a 17 en
+      // rafagas. Si la posicion mostrada persigue una escalera, se mueve como una escalera:
+      // corre, la alcanza, y se queda muerta hasta el proximo escalon. Medido el 8 de
+      // septiembre de 2026 con la sonda: 54 cuadros de 80 completamente quietos, el texto
+      // detenido el 68% del tiempo. Eso son los saltitos que reporto Javier.
+      //
+      // El blanco, en cambio, se mueve SOLO y de forma continua, porque es una recta en el
+      // tiempo. Persiguiendo una recta, la posicion mostrada avanza parejo.
+      //
+      // Y NO BAJA NUNCA. El termino que extrapola se reinicia cada vez que llega un calce
+      // nuevo, asi que el blanco crudo es un diente de sierra: sube durante 600 ms y cae de
+      // golpe cuando el reconocedor entrega. Como refToken es un Math.max y no baja jamas,
+      // esa caida es un artefacto de la cuenta, no algo que haya pasado en la sala. Dejarla
+      // pasar hacia el movimiento hacia atras. Se corrigio el mismo dia que se escribio,
+      // porque la prueba T13 la agarro.
+      // Y LA PREDICCION TIENE TECHO: adelantoMaximo palabras por delante de lo ultimo que de
+      // verdad oimos. Extrapolar cubre el atraso del reconocedor, que son unas decimas. Si
+      // hace cinco segundos que no calza, seguir extrapolando no es predecir: es inventar una
+      // posicion que no tiene nada que ver con lo que la persona esta diciendo. El techo es el
+      // numero que ya ajusto Javier leyendo a camara, no uno nuevo, y deja escrito el
+      // invariante: EL TEXTO NUNCA SE PONE MAS DE TRES PALABRAS ADELANTE DE LA ULTIMA QUE
+      // OIMOS.
+      const comodo = params.adelantoComodo
+      const maximo = Math.max(comodo + 1, params.adelantoMaximo)
+      const blancoCrudo = tUltimoCalce === 0
+        ? refToken
+        : refToken + Math.min(maximo, vBase * (tMs - tUltimoCalce))
+      blancoMonotono = Math.max(blancoMonotono, blancoCrudo)
+      const blanco = blancoMonotono
 
-      if (esSinCalce) {
-        const dtBuscando = dtSinCalce
-        if (dtBuscando < params.msDeBusquedaCiega) {
-          // 3. BUSCANDO: dejó de calzar. El texto NO se congela: sigue avanzando a la velocidad
-          // PREDICHA pero FRENANDO (desacelerando) hasta detenerse en msDeBusquedaCiega.
-          const progress = Math.min(1, dtBuscando / params.msDeBusquedaCiega)
-          const factorDesaceleracion = Math.max(0, 1 - progress)
+      // ─── QUE ESTADO, Y A QUE VELOCIDAD QUIERE IR ────────────────────────────────────
+      //
+      // Cada estado NO mueve el texto. Solo declara la velocidad a la que querria ir. El
+      // movimiento pasa una sola vez, mas abajo. Antes cada rama integraba por su cuenta y
+      // por eso las transiciones eran escalones.
+      let estado: EstadoModo
+      let motivoFreno: EstadoAvance['motivoFreno']
+      let vObjetivo: number
 
-          const distAdelanto = Math.max(0, posicionMostrada - refToken)
-          const comodo = params.adelantoComodo
-          const maximo = Math.max(comodo + 1, params.adelantoMaximo)
-          const factorFreno = distAdelanto <= comodo
-            ? 1
-            : Math.max(0, 1 - (distAdelanto - comodo) / (maximo - comodo))
+      const enSilencio = !hayVoz && (tMs - tUltimaVozTrue) > params.msSilencioParaFrenar
 
-          const v = arranqueCumplido ? vBase * factorDesaceleracion * factorFreno : 0
-          let nuevaPos = posicionMostrada + v * dt
-
-          let maxTokenGuion = Infinity
-          if (limitesDeBloque && limitesDeBloque.length > 0) {
-            maxTokenGuion = limitesDeBloque[limitesDeBloque.length - 1]
-          } else if (limitesDeLinea && limitesDeLinea.length > 0) {
-            maxTokenGuion = limitesDeLinea[limitesDeLinea.length - 1]
-          }
-
-          nuevaPos = Math.min(maxTokenGuion, Math.max(posicionMostrada, nuevaPos))
-          posicionMostrada = nuevaPos
-
-          return {
-            posicion: posicionMostrada,
-            avanzando: v > 0,
-            estado: 'BUSCANDO',
-            motivoFreno: 'sin-calce',
-            ppmEstimadas,
-            ultimoCalce: refToken,
-            tUltimoCalceMs: tUltimoCalce
-          }
+      // DOS MANERAS DE DARSE CUENTA DE QUE SE PERDIO, Y SON DISTINTAS.
+      //
+      // fallosFinalesSeguidos es EVIDENCIA EN CONTRA: llegaron palabras de verdad y no se
+      // pudieron ubicar en ninguna parte de la ventana. Eso se sabe altiro y esperar seria
+      // desperdiciar informacion.
+      //
+      // dtSinCalce es AUSENCIA DE EVIDENCIA: pasa el tiempo hablando y no llega nada que sirva.
+      // Eso recien significa algo cuando se sostiene.
+      //
+      // El defecto que reporto Javier -"cada dos o tres palabras lo esta buscando si sabe
+      // exactamente donde vamos"- era que las dos se estaban mezclando: useSeguidor llamaba a
+      // falloCalce igual para un final del que no se puede sacar nada -"si", "bueno", que
+      // Android emite todo el tiempo- que para uno con frase entera que no calza. Dos finales
+      // cortos seguidos y el motor se declaraba perdido leyendo perfecto. La separacion se
+      // arreglo en useSeguidor, que es donde se sabe la diferencia; la regla de aca esta bien.
+      //
+      // Lo que si estaba roto aca: msSinCalceParaFrenar y msDeBusquedaCiega valen los dos 2500
+      // y se comparaban los dos contra dtSinCalce, asi que por tiempo se saltaba BUSCANDO y se
+      // caia derecho en DETENIDO. El segundo ahora se cuenta DESDE que se entro a BUSCANDO,
+      // que es lo que su nombre dice.
+      if (enSilencio) {
+        estado = 'DETENIDO'
+        motivoFreno = 'silencio'
+        vObjetivo = 0
+      } else if (dtSinCalce > params.msSinCalceParaFrenar) {
+        // Paso el margen entero sin poder calzar nada. Se detiene y lo dice.
+        estado = 'DETENIDO'
+        motivoFreno = 'sin-calce'
+        vObjetivo = 0
+        tInicioBuscando = 0
+      } else if (fallosFinalesSeguidos >= params.fallosParaFrenar) {
+        estado = 'BUSCANDO'
+        motivoFreno = 'sin-calce'
+        // EL RELOJ DE LA BUSQUEDA ARRANCA CUANDO ARRANCA LA BUSQUEDA. Parece obvio y me
+        // equivoque en esto hace un rato: lo hice contar desde un instante fijo, y como a
+        // BUSCANDO se puede entrar de dos maneras distintas, el reloj quedaba corriendo desde
+        // antes de haber entrado.
+        if (tInicioBuscando === 0) tInicioBuscando = tMs
+        const dtBuscando = tMs - tInicioBuscando
+        const desaceleracion = Math.max(0, 1 - dtBuscando / params.msDeBusquedaCiega)
+        vObjetivo = vBase * desaceleracion * frenoDeCorrea(posicionMostrada - blanco)
+      } else {
+        tInicioBuscando = 0
+        estado = 'SIGUIENDO'
+        motivoFreno = null
+        const dist = blanco - posicionMostrada
+        if (dist > 0) {
+          // RECUPERAR SIN TIRON. Antes era `min(vMax, dist/dt)`: con dt de 16 ms, dist/dt es
+          // enorme y saturaba en vMax SIEMPRE, o sea que toda recuperacion era una corrida a
+          // 3x que empezaba y terminaba de golpe. Ahora la velocidad extra es proporcional a
+          // lo que falta: llega a 3x recien cuando falta la correa entera, y se apaga sola a
+          // medida que se acerca. No hace falta una constante nueva: el 3x y la correa ya
+          // estaban, y de los dos sale la pendiente.
+          vObjetivo = Math.min(vMax, vBase + (dist * (vMax - vBase)) / maximo)
         } else {
-          // DETENIDO: pasó el margen y no encontró
-          return {
-            posicion: posicionMostrada,
-            avanzando: false,
-            estado: 'DETENIDO',
-            motivoFreno: 'sin-calce',
-            ppmEstimadas,
-            ultimoCalce: refToken,
-            tUltimoCalceMs: tUltimoCalce
-          }
+          // El texto va adelante tuyo. NO SE DETIENE de golpe: sigue a tu ritmo, cada vez mas
+          // despacio, y llega a cero recien en adelantoMaximo. Estos dos numeros los ajusto
+          // Javier leyendo a camara y no se tocan.
+          vObjetivo = vBase * frenoDeCorrea(-dist)
         }
-      }
-
-      // SIGUIENDO: calza y avanza.
-      let vEffective = vBase
-      const dist = refToken - posicionMostrada
-
-      if (dist > 0) {
-        // La posicion mostrada recupera/avanza hacia refToken a una velocidad acotada (hasta 3x)
-        const vCatchup = Math.min(vMax, dt > 0 ? dist / dt : vMax)
-        vEffective = Math.max(vBase, vCatchup)
-      } else if (dist < -1.0) {
-        // Solo retrocede si refToken esta mas de 1.0 token atras (para evitar micro-oscilaciones)
-        const vBack = Math.min(vMax, dt > 0 ? Math.abs(dist) / dt : vMax)
-        vEffective = -vBack
-      } else if (dist < 0) {
-        vEffective = 0
-      }
-
-      const distAdelanto = Math.max(0, posicionMostrada - refToken)
-      if (distAdelanto > params.adelantoComodo) {
-        const comodo = params.adelantoComodo
-        const maximo = Math.max(comodo + 1, params.adelantoMaximo)
-        const factorFreno = distAdelanto <= comodo
-          ? 1
-          : Math.max(0, 1 - (distAdelanto - comodo) / (maximo - comodo))
-        vEffective = vEffective * factorFreno
       }
 
       // 4. EL ARRANQUE: SIETE PALABRAS, UNA SOLA VEZ
       // El texto NO se mueve hasta que se confirmaron 7 palabras DESDE QUE EMPEZO LA LECTURA.
       if (!arranqueCumplido || tUltimoCalce === 0) {
-        vEffective = 0
+        vObjetivo = 0
       }
 
-      let nuevaPos = posicionMostrada + vEffective * dt
-      if (dist > 0) {
-        nuevaPos = Math.min(refToken, nuevaPos)
-      } else if (dist < -1.0) {
-        nuevaPos = Math.max(refToken, nuevaPos)
+      // ─── EL UNICO LUGAR DONDE LA VELOCIDAD CAMBIA Y EL TEXTO SE MUEVE ───────────────
+      //
+      // LO QUE EL OJO LEE NO ES VELOCIDAD, SON CAMBIOS DE VELOCIDAD. En la tarea 20 pusimos
+      // tope a la velocidad -3x- y eso mato los teletransportes, pero la velocidad seguia
+      // recalculandose de cero en cada cuadro, asi que podia pasar de 0 a 3x y volver a 0 de
+      // un cuadro al siguiente. Aceleracion infinita en los dos extremos. Un auto que salta de
+      // 0 a 60 y vuelve al instante se siente violento aunque 60 sea una velocidad modesta.
+      // Eso era "por que hace movimientos bruscos si todo deberia ser suavidad".
+      //
+      // El motor ahora tiene INERCIA: la velocidad es un estado que persiste entre cuadros y
+      // solo puede cambiar a un ritmo acotado. Con esto TODA transicion sale suave -entrar y
+      // salir de BUSCANDO, detenerse por silencio, corregir despues de una rafaga- sin ningun
+      // caso especial para cada una.
+      //
+      // El tiempo de suavizado NO es una constante nueva: es lo que tarda el lector en decir
+      // adelantoComodo palabras a su propio ritmo. A 150 ppm son 400 ms; si lee mas rapido, el
+      // motor responde mas rapido. Se ajusta solo a la persona.
+      const msSuavizado = Math.max(1, comodo / vBase)
+      const cambioMaximo = (vMax / msSuavizado) * dt
+      const diferencia = vObjetivo - vActual
+      vActual += Math.max(-cambioMaximo, Math.min(cambioMaximo, diferencia))
+      if (vActual < 0) vActual = 0
+
+      let nuevaPos = posicionMostrada + vActual * dt
+      // Sin pasarse del blanco en el mismo cuadro. Esto NO es un techo: el blanco se corre
+      // solo, asi que aterrizar encima de el es seguir avanzando a tu ritmo, no quedarse
+      // quieto. El techo viejo era contra refToken, que es una escalera, y ahi si mataba.
+      if (blanco > posicionMostrada) {
+        nuevaPos = Math.min(blanco, nuevaPos)
       }
 
       let maxTokenGuion = Infinity
@@ -322,9 +375,9 @@ export function crearMotorDeAvance(
 
       return {
         posicion: posicionMostrada,
-        avanzando: arranqueCumplido,
-        estado: 'SIGUIENDO',
-        motivoFreno: null,
+        avanzando: vActual > 0,
+        estado,
+        motivoFreno,
         ppmEstimadas,
         ultimoCalce: refToken,
         tUltimoCalceMs: tUltimoCalce
@@ -334,6 +387,8 @@ export function crearMotorDeAvance(
     irAToken(token: number, tMs: number) {
       const destino = Math.max(0, token)
       posicionMostrada = destino
+      blancoMonotono = destino
+      vActual = 0
       ultimaConfirmada = destino
       anclaTentativa = destino
       fallosFinalesSeguidos = 0
@@ -358,6 +413,8 @@ export function crearMotorDeAvance(
       hayVoz = false
       tUltimaVozTrue = 0
       posicionMostrada = 0
+      blancoMonotono = 0
+      vActual = 0
       tUltimaActualizacion = 0
       palabrasConfirmadasDesdeArranque = 0
       arranqueCumplido = false

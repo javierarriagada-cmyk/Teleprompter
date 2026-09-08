@@ -500,7 +500,14 @@ export default function TeleprompterView({
         <div
           data-testid="columna-texto"
           style={{
-            maxWidth: columnaAngosta ? '22ch' : '100%',
+            // EL fontSize VA ACA A PROPOSITO, aunque cada linea ponga el suyo: la unidad
+            // 'ch' se mide contra el tamano de letra DEL ELEMENTO QUE LLEVA LA REGLA. Sin
+            // esto heredaba 16 px y 22ch daba 176 px en vez de 264: la columna quedaba un
+            // tercio mas angosta de lo especificado y entraban dos palabras por renglon.
+            fontSize,
+            // En ancho completo tampoco puede pegarse al borde: 90% deja un 5% por lado,
+            // que es el minimo que pidio Javier mirandolo.
+            maxWidth: columnaAngosta ? '22ch' : '90%',
             margin: '0 auto',
             width: '100%'
           }}

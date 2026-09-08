@@ -822,7 +822,9 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.change(selectColumna, { target: { value: 'completa' } })
     })
 
-    expect(colTexto.style.maxWidth).toBe('100%')
+    // 90% y no 100%: en ancho completo el texto tampoco puede pegarse al borde. Deja un
+    // 5% por lado, que es el minimo que pidio Javier mirando la pantalla.
+    expect(colTexto.style.maxWidth).toBe('90%')
   })
 
   test('T89: Los tres fondos aplican su par fondo/letra correcto, y con fondo blanco la letra es negra sin importar que color de letra este elegido.', async () => {
@@ -882,7 +884,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     expect(prompterView.getAttribute('data-letra')).toBe('#000000')
   })
 
-  test('T90: GUARDIANA DE LA BANDA. Con la linea viva ocupando TRES renglones, la banda la cubre entera Y ADEMAS se extiende un renglon por arriba y otro por abajo. Es decir: alto de la banda = alto de la linea viva + dos renglones.', () => {
+  test('T90: GUARDIANA DE LA BANDA. La banda mide TRES RENGLONES siempre, sin importar cuantos renglones ocupe la linea viva.', () => {
     const alturaVista = 480
     const filaPx = 20
     const lineasZona = 3
@@ -891,8 +893,17 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
 
     const res = calcularBanda(alturaVista, filaPx, lineasZona, anclajeZona, 20, 20, altoLineaViva)
 
-    // alto de la banda = alto de la linea viva (60px) + dos renglones (2 * 20px) = 100px
-    expect(res.altoBanda).toBe(100)
+    // TRES renglones: 3 * 20px = 60px. NO depende de altoLineaViva.
+    //
+    // La regla anterior era "alto de la linea viva + dos renglones", y la escribi yo
+    // suponiendo que una linea del guion ocupa uno o dos renglones. Con la columna angosta
+    // ocupa tres o cuatro, y la banda llegaba a cinco renglones: marcaba el parrafo entero
+    // en vez del renglon que se esta leyendo. Se lee renglon por renglon.
+    expect(res.altoBanda).toBe(60)
+
+    // Y no cambia aunque la linea viva sea mucho mas alta.
+    const resLineaLarga = calcularBanda(alturaVista, filaPx, lineasZona, anclajeZona, 20, 20, 200)
+    expect(resLineaLarga.altoBanda).toBe(60)
   })
 
   test('T91: GUARDIANA. Al arrancar la lectura los controles no estan en el documento. Un toque en la pantalla los devuelve. Y un ARRASTRE no los devuelve ni interrumpe la navegacion manual.', async () => {
@@ -1656,7 +1667,18 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
     console.log(`[T52] Posición al final: ${posAlFinal.toFixed(2)}`)
 
     expect(posAlImprovisar).toBeGreaterThanOrEqual(0)
-    expect(posAlFinal).toBeLessThanOrEqual(posAlImprovisar + 0.001)
+    // LA TOLERANCIA PASO DE 0.001 A 1.0 PALABRA EL 8 DE SEPTIEMBRE DE 2026, Y ESTO DICE POR
+    // QUE. El 0.001 no medía "el texto está detenido": medía "la posición es exactamente el
+    // último calce". Estaba clavada ahí por un techo, `Math.min(refToken, nuevaPos)`, que era
+    // el defecto que hacía que el texto anduviera a saltitos. Sacado el techo, la posición es
+    // continua y un calce espurio del reconocedor contra el balbuceo la deja correr una
+    // fracción de palabra.
+    //
+    // Lo que se sigue exigiendo es lo que le importa al que lee: irse del guión DETIENE el
+    // texto. Medido con esta simulación son 0.33 palabras en diez segundos de balbuceo. Un
+    // margen de una palabra deja pasar eso y sigue agarrando una fuga: sin el techo de la
+    // predicción esta misma prueba da 4.90 y se pone roja. Comprobado quitándolo.
+    expect(posAlFinal).toBeLessThanOrEqual(posAlImprovisar + 1.0)
   })
 
   test('T53: el adelanto sobre el ultimo calce nunca supera adelantoMaximo', () => {
