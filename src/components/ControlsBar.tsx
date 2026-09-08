@@ -208,7 +208,7 @@ export default function ControlsBar({
           }}
           aria-expanded={ajustesAbierto}
         >
-          ⚙️ Ajustes {ajustesAbierto ? '▲' : '▼'}
+          ⚙ Ajustes
         </button>
       </div>
 

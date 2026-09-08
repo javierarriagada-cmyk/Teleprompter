@@ -476,7 +476,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             onClick={() => setVista('biblioteca')}
             style={{ padding: '6px 12px', cursor: 'pointer', backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)', borderRadius: 6, color: 'var(--color-texto)' }}
           >
-            📚 Ver Biblioteca
+            Ver Biblioteca
           </button>
         )}
       </header>
@@ -538,10 +538,10 @@ export default function App({ motor, repoOverride }: AppProps) {
           {engine === 'whisper-local' && (
             <span style={{ marginLeft: 16 }}>Dispositivo: <strong>{dispositivoComputo}</strong></span>
           )}
-          <span style={{ marginLeft: 16 }}>Bloqueo Pantalla: <strong>{wakeLockActivo ? 'Sí 🔒' : 'No'}</strong></span>
+          <span style={{ marginLeft: 16 }}>Bloqueo Pantalla: <strong>{wakeLockActivo ? 'Sí' : 'No'}</strong></span>
           {textoFreno && (
             <span style={{ marginLeft: 16, color: '#d84315', fontWeight: 'bold' }}>
-              Estado Avance: 🛑 {textoFreno}
+              Estado Avance: {textoFreno}
             </span>
           )}
           {usandoMemoriaFallback && (
@@ -571,6 +571,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           onRenombrar={handleRenombrarGuion}
           onBorrar={handleBorrarGuion}
           onArchivar={handleArchivarGuion}
+          onBuscarGuionCompleto={(id) => repoRef.current.abrir(id)}
         />
       )}
 

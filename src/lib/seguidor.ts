@@ -1,5 +1,6 @@
 import leven from 'leven'
 import { Guion } from '../datos/modelo'
+import { esCaracterApertura, esCaracterCierre } from './acotaciones'
 
 export type Token = {
   palabra: string        // normalizada
@@ -92,7 +93,7 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
         let bufferWord = ''
         for (let i = 0; i < fragmento.length; i++) {
           const char = fragmento[i]
-          if (char === '[' || char === '(') {
+          if (esCaracterApertura(char)) {
             if (bufferWord) {
               const norm = normalizar(bufferWord)
               if (norm) {
@@ -108,7 +109,7 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
               bufferWord = ''
             }
             enAcotacion = true
-          } else if (char === ']' || char === ')') {
+          } else if (esCaracterCierre(char)) {
             if (bufferWord) {
               const norm = normalizar(bufferWord)
               if (norm) {
