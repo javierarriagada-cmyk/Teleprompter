@@ -9,6 +9,8 @@ export type Token = {
   indiceEnLinea: number  // índice de palabra dentro de esa línea
   esAcotacion: boolean   // indica si es una acotación entre corchetes [...]
   tokenAbsoluto: number
+  desdeChar: number      // indice del primer caracter del token en bloque.texto
+  hastaChar: number      // indice siguiente al ultimo (medio abierto)
 }
 
 export type Posicion = {
@@ -72,6 +74,7 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
 
     const lineas = bloque.texto.split(/\r?\n/)
     let enAcotacion = false
+    let lineaOffset = 0
 
     for (let lIdx = 0; lIdx < lineas.length; lIdx++) {
       const lineaTexto = lineas[lIdx]
@@ -91,8 +94,10 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
         const fragmento = lineaTexto.substring(startWord, posInLine)
 
         let bufferWord = ''
+        let bufferStartInLine = startWord
         for (let i = 0; i < fragmento.length; i++) {
           const char = fragmento[i]
+          const charInLine = startWord + i
           if (esCaracterApertura(char)) {
             if (bufferWord) {
               const norm = normalizar(bufferWord)
@@ -103,7 +108,9 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
                   linea: lIdx,
                   indiceEnLinea: idxEnLinea++,
                   esAcotacion: enAcotacion,
-                  tokenAbsoluto: tokenAbsoluto++
+                  tokenAbsoluto: tokenAbsoluto++,
+                  desdeChar: lineaOffset + bufferStartInLine,
+                  hastaChar: lineaOffset + charInLine
                 })
               }
               bufferWord = ''
@@ -119,13 +126,18 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
                   linea: lIdx,
                   indiceEnLinea: idxEnLinea++,
                   esAcotacion: enAcotacion,
-                  tokenAbsoluto: tokenAbsoluto++
+                  tokenAbsoluto: tokenAbsoluto++,
+                  desdeChar: lineaOffset + bufferStartInLine,
+                  hastaChar: lineaOffset + charInLine
                 })
               }
               bufferWord = ''
             }
             enAcotacion = false
           } else {
+            if (!bufferWord) {
+              bufferStartInLine = charInLine
+            }
             bufferWord += char
           }
         }
@@ -139,10 +151,19 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
               linea: lIdx,
               indiceEnLinea: idxEnLinea++,
               esAcotacion: enAcotacion,
-              tokenAbsoluto: tokenAbsoluto++
+              tokenAbsoluto: tokenAbsoluto++,
+              desdeChar: lineaOffset + bufferStartInLine,
+              hastaChar: lineaOffset + posInLine
             })
           }
         }
+      }
+
+      lineaOffset += lineaTexto.length
+      if (bloque.texto.substring(lineaOffset, lineaOffset + 2) === '\r\n') {
+        lineaOffset += 2
+      } else if (bloque.texto.substring(lineaOffset, lineaOffset + 1) === '\n') {
+        lineaOffset += 1
       }
     }
 
