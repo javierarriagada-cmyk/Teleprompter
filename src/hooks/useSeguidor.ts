@@ -85,17 +85,9 @@ export function useSeguidor(guionEntrada: Guion | string) {
     anotar({ tipo: 'calce', token: pos.movio ? pos.hastaToken : null, texto })
 
     if (pos.movio) {
-      // Un parcial NO se recorta al final del bloque confirmado. Ese recorte estaba aca y
-      // era la causa del sintoma "espera a que termine el parrafo entero para saltar":
-      // bloqueConfirmadoRef solo avanza con un FINAL, y leyendo de corrido los finales
-      // llegan recien cuando el lector pausa. Hasta entonces todos los parciales quedaban
-      // clavados en el ultimo token del parrafo y el texto no se movia.
-      //
-      // Lo que impide que el prompter se vaya solo no es este tope, es el freno por falta
-      // de calce en MotorDeAvance: si lo que el lector dice deja de coincidir, se detiene.
       motor.tentativo(pos.hastaToken, tMs)
       setPosicion(pos)
-    } else {
+    } else if (contarPalabras(texto) >= PALABRAS_PARA_QUE_UN_FALLO_CUENTE) {
       motor.falloCalce(tMs, true)
     }
   }

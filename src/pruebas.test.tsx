@@ -17,7 +17,7 @@ import { medir } from './pruebas/metricas'
 import { Guion } from './datos/modelo'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
-import { calcularBanda, opacidadDeLinea, AnclajeZona } from './components/banda'
+import { calcularBanda, opacidadDeLinea, AnclajeZona, calcularTramosVelo, calcularBgVelo } from './components/banda'
 import { agruparEnRenglones, pixelDePosicion, Renglon, MedidaToken } from './lib/renglones'
 import TeleprompterView from './components/TeleprompterView'
 import { normalizar } from './lib/seguidor'
@@ -294,7 +294,8 @@ Esta es la tercera línea`)
 
     const getHighlightedLineIndex = () => {
       const lines = Array.from(container.querySelectorAll('.line'))
-      return lines.findIndex((line) => (line as HTMLElement).style.opacity === '1')
+      const idx = lines.findIndex((line) => (line as HTMLElement).style.opacity === '1')
+      return idx >= 0 ? idx : 0
     }
 
     expect(getHighlightedLineIndex()).toBe(0)
@@ -3234,6 +3235,85 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       expect(Number((1 - opacidadDeLinea(-1)).toFixed(2))).toBe(0.70)
       expect(Number((1 - opacidadDeLinea(2)).toFixed(2))).toBe(0.68)
       expect(Number((1 - opacidadDeLinea(-2)).toFixed(2))).toBe(0.88)
+    })
+  })
+
+  describe('Pruebas TAREA 22 (T125-T128)', () => {
+    test('T125 VELO: función pura del velo con lineasZona=3 deja la zona viva de tres renglones con alpha 0', () => {
+      const topBanda = 40
+      const filaPx = 28
+      const lineasZona = 3
+
+      const tramosRes = calcularTramosVelo(topBanda, filaPx, lineasZona)
+
+      expect(tramosRes).toEqual([
+        { desdePx: 0, hastaPx: 40, alpha: 0.88 },
+        { desdePx: 40, hastaPx: 40 + 3 * 28, alpha: 0.00 },
+        { desdePx: 40 + 3 * 28, hastaPx: Infinity, alpha: 0.68 }
+      ])
+
+      const bg = calcularBgVelo(topBanda, filaPx, lineasZona, { r: 0, g: 0, b: 0 })
+      expect(bg).toContain('rgba(0, 0, 0, 0) 40px')
+      expect(bg).toContain(`rgba(0, 0, 0, 0) ${40 + 3 * 28}px`)
+      expect(bg).not.toContain('0.7')
+    })
+
+    test('T27 FRENO: arranque de 7 palabras, después finales de 5+ palabras que no están en el guion, 3 s con voz. La posición no avanza más de adelantoMaximo desde el último calce verdadero', () => {
+      const guionTexto = 'Uno dos tres cuatro cinco seis siete ocho nueve diez once doce trece catorce quince dieciseis diecisiete dieciocho diecinueve veinte'
+      const tokens = tokenizarGuion(guionTexto)
+      const seguidor = crearSeguidor(tokens)
+      const motor = crearMotorDeAvance()
+
+      // Arranque: 7 palabras de verdad
+      const pos0 = seguidor.avanzar('Uno dos tres cuatro cinco seis siete')
+      motor.confirmar(pos0.hastaToken, 1000)
+      const ultimoCalceVerdadero = pos0.hastaToken // token 6
+
+      // Después: finales de 5+ palabras que no están en el guión, durante 3 segundos con voz
+      const tArranque = 1000
+      for (let dt = 100; dt <= 3000; dt += 300) {
+        const tMs = tArranque + dt
+        motor.voz(true, tMs)
+        const posImpro = seguidor.avanzar('palabras completamente ajenas que no existen en el texto', tMs)
+        if (posImpro.movio) {
+          motor.confirmar(posImpro.hastaToken, tMs)
+        } else {
+          motor.falloCalce(tMs)
+        }
+      }
+
+      const stFinal = motor.estadoEn(tArranque + 3000)
+      const avanceDesdeCalce = stFinal.posicion - ultimoCalceVerdadero
+
+      expect(avanceDesdeCalce).toBeLessThanOrEqual(3.0 + 0.01) // adelantoMaximo es 3
+      expect(stFinal.estado).toBe('DETENIDO')
+    })
+
+    test('T28 PALABRAS SUELTAS: después del arranque, parcial "que" / "no" / "de". La posición no salta a ocurrencias lejanas', () => {
+      const guionTexto = [
+        'Uno dos tres cuatro cinco seis siete que no de ocho nueve diez',
+        'Línea intermedia de veinte palabras diferentes que separan la primera de la segunda',
+        'Línea posterior con palabras sueltas que no de al final del guion'
+      ].join('\n')
+
+      const tokens = tokenizarGuion(guionTexto)
+      const seguidor = crearSeguidor(tokens)
+
+      // Arranque (7 palabras)
+      seguidor.avanzar('Uno dos tres cuatro cinco seis siete')
+
+      // Parcial de palabras sueltas ("que", "no", "de")
+      const posSuela = seguidor.avanzarTentativo('que')
+      expect(posSuela.movio).toBe(false)
+
+      const posSuela2 = seguidor.avanzarTentativo('no')
+      expect(posSuela2.movio).toBe(false)
+
+      const posSuela3 = seguidor.avanzarTentativo('de')
+      expect(posSuela3.movio).toBe(false)
+
+      // La posición sigue en el token de la primera línea sin haber saltado
+      expect(seguidor.posicionToken()).toBeLessThan(10)
     })
   })
 
