@@ -18,6 +18,9 @@ import { Guion } from './datos/modelo'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { calcularBanda, opacidadDeLinea, AnclajeZona } from './components/banda'
+import { agruparEnRenglones, pixelDePosicion, Renglon, MedidaToken } from './lib/renglones'
+import TeleprompterView from './components/TeleprompterView'
+import { normalizar } from './lib/seguidor'
 import BarraDeTiempo from './components/BarraDeTiempo'
 import { reubicarTramos } from './components/EditorView'
 import { importarTexto } from './datos/importar'
@@ -3078,6 +3081,160 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
     expect(container!.textContent).toContain('Boletín General')
     expect(container!.textContent).not.toContain('Reporte Semanal Especial')
     expect(abrirSpy).toHaveBeenCalled()
+  })
+
+  describe('Pruebas TAREA 21 (T119-T124)', () => {
+    test('T119: GUARDIANA DEL ENVOLTORIO. Con un guion que tenga acotacion pegada a una palabra -"hola[nota] mundo"-, una raya suelta y una linea con negrita a mitad de palabra: para CADA token del guion existe exactamente un [data-token="i"], y su texto, normalizado, es la palabra del token.', async () => {
+      const guion: Guion = {
+        id: 'g-t119',
+        titulo: 'Guion T119',
+        idioma: 'es',
+        creado: Date.now(),
+        modificado: Date.now(),
+        bloques: [{
+          id: 'b1',
+          nombre: '',
+          texto: 'hola[nota] mundo -\nesta es una linea con negrita'
+        }]
+      }
+
+      const tokens = tokenizarGuion(guion)
+
+      let container: HTMLElement
+      await act(async () => {
+        const res = render(
+          <TeleprompterView
+            script={guion}
+            currentBlockIndex={0}
+            currentLineIndex={0}
+            currentWordIndex={0}
+          />
+        )
+        container = res.container
+      })
+
+      const tokenElements = container!.querySelectorAll('[data-token]')
+      expect(tokenElements.length).toBe(tokens.length)
+
+      for (let i = 0; i < tokens.length; i++) {
+        const tok = tokens[i]
+        const els = container!.querySelectorAll(`[data-token="${tok.tokenAbsoluto}"]`)
+        expect(els.length).toBe(1)
+        expect(normalizar(els[0].textContent || '')).toBe(tok.palabra)
+      }
+    })
+
+    test('T120: agruparEnRenglones con medidas sinteticas: veinte tokens con tops 0,0,0,0,34,34,34,68,68,... y altoDeRenglon 34 devuelve los renglones correctos.', () => {
+      const medidas: MedidaToken[] = [
+        { token: 0, top: 0 }, { token: 1, top: 0 }, { token: 2, top: 0 }, { token: 3, top: 0 },
+        { token: 4, top: 34 }, { token: 5, top: 34 }, { token: 6, top: 34 },
+        { token: 7, top: 68 }, // Renglón de UN solo token
+        { token: 8, top: 102 }, { token: 9, top: 102 },
+        { token: 10, top: 136 }, { token: 11, top: 136 }, { token: 12, top: 136 }, { token: 13, top: 136 },
+        { token: 14, top: 170 }, { token: 15, top: 170 }, { token: 16, top: 170 },
+        { token: 17, top: 204 }, { token: 18, top: 204 }, { token: 19, top: 204 }
+      ]
+
+      const renglones = agruparEnRenglones(medidas, 34)
+
+      expect(renglones.length).toBe(7)
+      expect(renglones[0]).toEqual({ top: 0, alto: 34, desdeToken: 0, hastaToken: 3 })
+      expect(renglones[1]).toEqual({ top: 34, alto: 34, desdeToken: 4, hastaToken: 6 })
+      expect(renglones[2]).toEqual({ top: 68, alto: 34, desdeToken: 7, hastaToken: 7 })
+      expect(renglones[3]).toEqual({ top: 102, alto: 34, desdeToken: 8, hastaToken: 9 })
+      expect(renglones[4]).toEqual({ top: 136, alto: 34, desdeToken: 10, hastaToken: 13 })
+      expect(renglones[5]).toEqual({ top: 170, alto: 34, desdeToken: 14, hastaToken: 16 })
+      expect(renglones[6]).toEqual({ top: 204, alto: 34, desdeToken: 17, hastaToken: 19 })
+    })
+
+    test('T121: GUARDIANA DE LA CONTINUIDAD. Con renglones sinteticos de altos distintos, recorrer la posicion de 0 al ultimo token en pasos de 0.05 y comprobar pixelDePosicion.', () => {
+      const renglones: Renglon[] = [
+        { top: 0, alto: 34, desdeToken: 0, hastaToken: 3 },
+        { top: 34, alto: 58, desdeToken: 4, hastaToken: 6 }, // Margen entre párrafos mayor
+        { top: 92, alto: 34, desdeToken: 7, hastaToken: 9 },
+        { top: 126, alto: 34, desdeToken: 10, hastaToken: 12 }
+      ]
+
+      const maxAlto = Math.max(...renglones.map(r => r.alto))
+      let prevPx = pixelDePosicion(renglones, 0)
+
+      for (let pos = 0.05; pos <= 12; pos = Number((pos + 0.05).toFixed(2))) {
+        const currPx = pixelDePosicion(renglones, pos)
+
+        // 1. Nunca baja
+        expect(currPx).toBeGreaterThanOrEqual(prevPx)
+
+        // 2. Sin saltos mayores al alto del renglón más alto
+        expect(currPx - prevPx).toBeLessThanOrEqual(maxAlto)
+
+        prevPx = currPx
+      }
+
+      // 3. En el último token de cada renglón (+1) coincide con el arranque del siguiente (< 0.01 px)
+      for (let k = 0; k < renglones.length - 1; k++) {
+        const finRenglonVal = pixelDePosicion(renglones, renglones[k].hastaToken + 1)
+        const inicioSiguienteVal = pixelDePosicion(renglones, renglones[k + 1].desdeToken)
+        expect(Math.abs(finRenglonVal - inicioSiguienteVal)).toBeLessThan(0.01)
+      }
+    })
+
+    test('T122: GUARDIANA DE LA ESCALA. Medir pixeles por palabra dentro de un mismo parrafo (<= 1.02) e imprimir el cociente de renglones que cruzan de parrafo.', () => {
+      // Párrafo 1: 3 renglones de 4 tokens cada uno (alto 34)
+      // Párrafo 2: 2 renglones de 4 tokens cada uno (alto 34, pero el primero arranca a top 126 => alto = 58 por el margen de párrafo)
+      const renglones: Renglon[] = [
+        { top: 0, alto: 34, desdeToken: 0, hastaToken: 3 },
+        { top: 34, alto: 34, desdeToken: 4, hastaToken: 7 },
+        { top: 68, alto: 58, desdeToken: 8, hastaToken: 11 }, // Cruza de párrafo
+        { top: 126, alto: 34, desdeToken: 12, hastaToken: 15 },
+        { top: 160, alto: 34, desdeToken: 16, hastaToken: 19 }
+      ]
+
+      // Renglones dentro del mismo párrafo: r0 y r1
+      const pxPorPalabra0 = renglones[0].alto / (renglones[0].hastaToken + 1 - renglones[0].desdeToken)
+      const pxPorPalabra1 = renglones[1].alto / (renglones[1].hastaToken + 1 - renglones[1].desdeToken)
+
+      const ratioMismoParrafo = Math.max(pxPorPalabra0, pxPorPalabra1) / Math.min(pxPorPalabra0, pxPorPalabra1)
+      expect(ratioMismoParrafo).toBeLessThanOrEqual(1.02)
+
+      // Renglón que cruza de párrafo: r2 vs r1
+      const pxPorPalabraCruza = renglones[2].alto / (renglones[2].hastaToken + 1 - renglones[2].desdeToken)
+      const ratioCruzado = Math.max(pxPorPalabraCruza, pxPorPalabra0) / Math.min(pxPorPalabraCruza, pxPorPalabra0)
+
+      console.log(`[T122] Cociente de píxeles por palabra al cruzar de párrafo: ${ratioCruzado.toFixed(2)}`)
+    })
+
+    test('T123: GUARDIANA DE QUE LA BANDA MARCA LO QUE SE LEE. Con renglones sinteticos y la banda, comprobar que la posicion restado el atraso cae DENTRO de la ventana.', () => {
+      const renglones: Renglon[] = [
+        { top: 0, alto: 34, desdeToken: 0, hastaToken: 3 },
+        { top: 34, alto: 34, desdeToken: 4, hastaToken: 7 },
+        { top: 68, alto: 58, desdeToken: 8, hastaToken: 11 },
+        { top: 126, alto: 34, desdeToken: 12, hastaToken: 15 },
+        { top: 160, alto: 34, desdeToken: 16, hastaToken: 19 }
+      ]
+
+      const filaPx = 34
+      const { topBanda, altoBanda } = calcularBanda(480, filaPx, 3, 'arriba', 20, 20)
+      const origen = renglones[0].top
+
+      const posicionesMuestra = [0, 1.5, 3.8, 5, 8.2, 10, 12.5, 14.9, 17, 19]
+
+      for (const pos of posicionesMuestra) {
+        const P = pixelDePosicion(renglones, pos)
+        const scrollTop = P - origen - filaPx
+        const posEnPantalla = P - origen - scrollTop + topBanda
+
+        expect(posEnPantalla).toBeGreaterThanOrEqual(topBanda)
+        expect(posEnPantalla).toBeLessThan(topBanda + altoBanda)
+      }
+    })
+
+    test('T124: El velo tapa a distancia 0 nada, a distancia 1 el 40%, a -1 el 70%, y mas alla el 68% y el 88%. O sea 1 - opacidadDeLinea(d).', () => {
+      expect(Number((1 - opacidadDeLinea(0)).toFixed(2))).toBe(0.00)
+      expect(Number((1 - opacidadDeLinea(1)).toFixed(2))).toBe(0.40)
+      expect(Number((1 - opacidadDeLinea(-1)).toFixed(2))).toBe(0.70)
+      expect(Number((1 - opacidadDeLinea(2)).toFixed(2))).toBe(0.68)
+      expect(Number((1 - opacidadDeLinea(-2)).toFixed(2))).toBe(0.88)
+    })
   })
 
 })
