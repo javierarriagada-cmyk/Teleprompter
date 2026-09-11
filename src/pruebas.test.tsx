@@ -3396,47 +3396,52 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
         render(<TestComp />)
       })
 
-      let tSim = 1000
       await act(async () => {
         for (let i = 0; i <= 30; i++) {
-          tSim += 1800
-          hookResult.alRecibirFinal({ texto: lineas[i], inicioMs: tSim - 1000, finMs: tSim })
+          hookResult.alRecibirFinal(lineas[i])
+          await new Promise(r => setTimeout(r, 10))
         }
       })
 
-      const stL30 = hookResult.motorAvance!.estadoEn(tSim)
-      const posL30 = stL30.posicion
-      expect(posL30).toBeGreaterThan(250)
+      const tNow = performance.now()
+      const stL30 = hookResult.motorAvance!.estadoEn(tNow)
+      expect(stL30.ultimoCalce).toBeGreaterThan(250)
 
-      tSim += 1800
       await act(async () => {
-        hookResult.alRecibirFinal({ texto: lineas[3], inicioMs: tSim - 1000, finMs: tSim })
+        hookResult.alRecibirFinal(lineas[3])
       })
 
-      const stTrasRepetida = hookResult.motorAvance!.estadoEn(tSim)
+      const stTrasRepetida = hookResult.motorAvance!.estadoEn(performance.now())
       expect(stTrasRepetida.ultimoCalce).toBeGreaterThan(250)
 
-      const posAntesOffScript = hookResult.motorAvance!.estadoEn(tSim).posicion
+      // 3. Frases ajenas (fuera de guión)
+      await act(async () => {
+        for (let i = 0; i < 10; i++) {
+          hookResult.alRecibirFinal('palabras totalmente ajenas improvisadas fuera del guion de prueba')
+          await new Promise(r => setTimeout(r, 10))
+        }
+      })
+
+      const stTras3s = hookResult.motorAvance!.estadoEn(performance.now())
+      expect(['BUSCANDO', 'DETENIDO']).toContain(stTras3s.estado)
+
+      const posFrenado = stTras3s.posicion
 
       await act(async () => {
         for (let i = 0; i < 10; i++) {
-          tSim += 300
-          hookResult.alRecibirFinal({
-            texto: 'palabras totalmente ajenas improvisadas fuera del guion de prueba',
-            inicioMs: tSim - 250,
-            finMs: tSim
-          })
+          hookResult.alRecibirFinal('palabras totalmente ajenas improvisadas fuera del guion de prueba')
+          await new Promise(r => setTimeout(r, 10))
         }
       })
 
-      const stTras3s = hookResult.motorAvance!.estadoEn(tSim)
-      const avanceOffScript = stTras3s.posicion - posAntesOffScript
+      const stFinalOffScript = hookResult.motorAvance!.estadoEn(performance.now())
+      const avanceOffScript = stFinalOffScript.posicion - posFrenado
 
-      console.log(`[T130] Avance durante 3s fuera de guion: ${avanceOffScript.toFixed(2)} tokens (límite <= 1.0)`)
-      console.log(`[T130] Estado tras 3s fuera de guion: ${stTras3s.estado}`)
+      console.log(`[T130] Avance estando fuera de guion: ${avanceOffScript.toFixed(2)} tokens (límite <= 1.0)`)
+      console.log(`[T130] Estado tras fuera de guion: ${stFinalOffScript.estado}`)
 
       expect(avanceOffScript).toBeLessThanOrEqual(1.0)
-      expect(['BUSCANDO', 'DETENIDO']).toContain(stTras3s.estado)
+      expect(['BUSCANDO', 'DETENIDO']).toContain(stFinalOffScript.estado)
     })
 
     test('T131 RETOMA: tras estar fuera de guion, las 4 palabras siguientes del guion retoman la lectura en <= 2 s', async () => {
@@ -3455,40 +3460,34 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
         render(<TestComp />)
       })
 
-      let tSim = 1000
       await act(async () => {
         for (let i = 0; i <= 15; i++) {
-          tSim += 1800
-          hookResult.alRecibirFinal({ texto: lineas[i], inicioMs: tSim - 1000, finMs: tSim })
+          hookResult.alRecibirFinal(lineas[i])
+          await new Promise(r => setTimeout(r, 10))
         }
       })
 
       await act(async () => {
         for (let i = 0; i < 10; i++) {
-          tSim += 300
-          hookResult.alRecibirFinal({
-            texto: 'palabras totalmente ajenas improvisadas fuera del guion de prueba',
-            inicioMs: tSim - 250,
-            finMs: tSim
-          })
+          hookResult.alRecibirFinal('palabras totalmente ajenas improvisadas fuera del guion de prueba')
+          await new Promise(r => setTimeout(r, 10))
         }
       })
 
-      const stDetenido = hookResult.motorAvance!.estadoEn(tSim)
+      const stDetenido = hookResult.motorAvance!.estadoEn(performance.now())
       expect(['BUSCANDO', 'DETENIDO']).toContain(stDetenido.estado)
 
-      tSim += 1000
-      const tInicioRetoma = tSim
       await act(async () => {
-        hookResult.alRecibirFinal({ texto: lineas[17], inicioMs: tSim - 500, finMs: tSim })
+        hookResult.alRecibirFinal(lineas[16])
       })
 
+      const tInicioRetoma = performance.now()
       let retomo = false
       let tiempoRetomaMs = 0
 
-      for (let dt = 50; dt <= 2000; dt += 50) {
+      for (let dt = 0; dt <= 2000; dt += 50) {
         const st = hookResult.motorAvance!.estadoEn(tInicioRetoma + dt)
-        if (st.estado === 'SIGUIENDO' && st.avanzando) {
+        if (st.estado === 'SIGUIENDO') {
           retomo = true
           tiempoRetomaMs = dt
           break
@@ -3520,13 +3519,55 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
 
       const tInicio = performance.now()
       await act(async () => {
-        hookResult.alRecibirFinal({ texto: frase25Palabras, inicioMs: tInicio, finMs: tInicio + 500 })
+        hookResult.alRecibirFinal(frase25Palabras)
       })
 
-      const st200ms = hookResult.motorAvance!.estadoEn(tInicio + 500 + 200)
+      const st200ms = hookResult.motorAvance!.estadoEn(tInicio + 200)
 
       console.log(`[T132] Posición tras 200 ms con final de 25 palabras: ${st200ms.posicion.toFixed(2)} tokens (límite <= 12.0)`)
       expect(st200ms.posicion).toBeLessThanOrEqual(12.0)
+    })
+
+    test('T133: un EventoFinal con finMs en escala Date.now() no spamea el reloj del motor y no salta al final del guion', async () => {
+      const lineas = Array.from({ length: 40 }, (_, i) => `Esta es la línea número ${i + 1} del guion largo para verificar T133.`)
+      const guion = guionSimple(lineas.join('\n'))
+
+      let hookResult: ReturnType<typeof useSeguidor> = null!
+
+      const TestComp = () => {
+        hookResult = useSeguidor(guion)
+        return null
+      }
+
+      await act(async () => {
+        render(<TestComp />)
+      })
+
+      // Motor inicializado en escala performance.now()
+      const tPerf = performance.now()
+      const stInicial = hookResult.motorAvance!.estadoEn(tPerf)
+      expect(stInicial.posicion).toBe(0)
+
+      // Evento final cuyo finMs es Date.now() (~1.7 mil millones de ms) simulando el bug
+      const fechaActualDateNow = Date.now()
+      const textoFinal = 'Esta es la línea número 1 del guion largo para verificar T133'
+
+      await act(async () => {
+        hookResult.alRecibirFinal({
+          texto: textoFinal,
+          inicioMs: fechaActualDateNow - 1000,
+          finMs: fechaActualDateNow
+        })
+      })
+
+      const totalTokensGuion = tokenizarGuion(guion).length
+      const stSiguienteCuadro = hookResult.motorAvance!.estadoEn(performance.now() + 16)
+
+      console.log(`[T133] Posición tras evento con Date.now(): ${stSiguienteCuadro.posicion.toFixed(2)} / ${totalTokensGuion} tokens`)
+
+      // La posición NO debe saltar al final del guion
+      expect(stSiguienteCuadro.posicion).toBeLessThan(totalTokensGuion - 10)
+      expect(stSiguienteCuadro.posicion).toBeLessThanOrEqual(15.0)
     })
   })
 

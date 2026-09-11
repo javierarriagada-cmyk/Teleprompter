@@ -108,8 +108,8 @@ export function useSeguidor(guionEntrada: Guion | string) {
     }
 
     if (pos.movio && enVentana) {
-      const idxActual = Math.min(tokensRef.current.length - 1, Math.max(0, Math.floor(st.posicion)))
-      const limiteSiguiente = obtenerLimiteLineaSiguiente(idxActual, limitesDeLineaRef.current)
+      const ref = Math.max(st.ultimoCalce, Math.floor(st.posicion))
+      const limiteSiguiente = obtenerLimiteLineaSiguiente(ref, limitesDeLineaRef.current)
       const tokenCapped = Math.min(pos.hastaToken, limiteSiguiente)
 
       motor.tentativo(tokenCapped, tMs)
@@ -125,12 +125,12 @@ export function useSeguidor(guionEntrada: Guion | string) {
     const reg = registroRef.current
     if (!seg || !motor) return
 
-    const tMs = typeof fraseFinal === 'string' ? performance.now() : (fraseFinal?.finMs || performance.now())
+    const tMs = performance.now()
     motor.voz(true, tMs)
 
     const texto = typeof fraseFinal === 'string' ? fraseFinal : (fraseFinal?.texto || '')
     const inicioMs = typeof fraseFinal === 'string' ? tMs - 1000 : (fraseFinal?.inicioMs || tMs - 1000)
-    const finMs = tMs
+    const finMs = typeof fraseFinal === 'string' ? tMs : (fraseFinal?.finMs || tMs)
 
     const st = motor.estadoEn(tMs)
     const pos = seg.avanzar(texto, tMs, st.ppmEstimadas, st.tUltimoCalceMs)
@@ -145,8 +145,8 @@ export function useSeguidor(guionEntrada: Guion | string) {
     }
 
     if (pos.movio && enVentana) {
-      const idxActual = Math.min(tokensRef.current.length - 1, Math.max(0, Math.floor(st.posicion)))
-      const limiteSiguiente = obtenerLimiteLineaSiguiente(idxActual, limitesDeLineaRef.current)
+      const ref = Math.max(st.ultimoCalce, Math.floor(st.posicion))
+      const limiteSiguiente = obtenerLimiteLineaSiguiente(ref, limitesDeLineaRef.current)
       const tokenCapped = Math.min(pos.hastaToken, limiteSiguiente)
 
       bloqueConfirmadoRef.current = pos.bloque

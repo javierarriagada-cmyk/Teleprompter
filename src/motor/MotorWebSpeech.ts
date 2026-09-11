@@ -119,7 +119,7 @@ export class MotorWebSpeech implements MotorDeVoz {
     rec.onresult = (event: any) => {
       this.reconexionesSeguidas = 0
       let interimStr = ''
-      const ahora = Date.now()
+      const ahora = performance.now()
 
       for (let i = event.resultIndex; i < event.results.length; ++i) {
         const res = event.results[i]
