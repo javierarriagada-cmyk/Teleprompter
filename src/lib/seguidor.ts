@@ -9,6 +9,8 @@ export type Token = {
   indiceEnLinea: number  // índice de palabra dentro de esa línea
   esAcotacion: boolean   // indica si es una acotación entre corchetes [...]
   tokenAbsoluto: number
+  desdeChar: number      // indice del primer caracter del token en bloque.texto
+  hastaChar: number      // indice siguiente al ultimo (medio abierto)
 }
 
 export type Posicion = {
@@ -21,8 +23,8 @@ export type Posicion = {
 }
 
 export interface Seguidor {
-  avanzar(fraseFinal: string): Posicion
-  avanzarTentativo(fraseParcial: string): Posicion
+  avanzar(fraseFinal: string, tMs?: number, ppmEstimadas?: number, tUltimoCalce?: number): Posicion
+  avanzarTentativo(fraseParcial: string, tMs?: number, ppmEstimadas?: number, tUltimoCalce?: number): Posicion
   // El usuario movio el texto a mano: la ventana de contexto se muda con el.
   irAToken(token: number): void
   reiniciar(): void
@@ -32,38 +34,11 @@ export interface Seguidor {
 export const VENTANA_ATRAS = 5
 export const VENTANA_ADELANTE = 40
 export const MAX_PALABRAS_FRASE = 12
-// Umbral por CONTEO ABSOLUTO, no por proporcion. Con una proporcion del 50%, una frase de
-// dos palabras se acepta con una sola coincidencia; con conteo, siempre hacen falta tres.
-// Es lo que hace PromptSmart segun su patente, y es mas robusto para frases cortas.
 export const MIN_PALABRAS_COINCIDENTES = 3
 export const MIN_COINCIDENCIA = 0.5
 export const MAX_FALLOS = 3
-// Palabras CONSECUTIVAS que tienen que calzar para aceptar una posicion. Es la regla que
-// separa "esta leyendo el guion" de "esta hablando de otra cosa": palabras sueltas calzan
-// por casualidad, tres seguidas no.
 export const PALABRAS_SEGUIDAS_MINIMO = 3
-// Para MUDARSE a otra parte del guion -la busqueda global de recuperacion- hace falta
-// evidencia mucho mas fuerte que para seguir avanzando donde ya se esta. Con tres palabras
-// seguidas, un guion largo ofrece coincidencias por casualidad y el prompter saltaba a
-// otro parrafo cuando el lector improvisaba.
-export const PALABRAS_SEGUIDAS_PARA_SALTAR = 6
-// Cuanto puede alejarse la recuperacion de donde va el lector.
-//
-// Cubre lo que de verdad pasa cuando alguien se pierde leyendo: repetir la linea en curso
-// -unas 8 palabras atras-, saltarse una linea -unas 8 adelante- o irse al parrafo siguiente
-// -20 o 30 adelante-. Deja fuera el caso de saltarse a otra parte del guion, que se decidio
-// no servir: el riesgo de un salto equivocado no lo compensa.
-//
-// Antes eran 100, un numero que no salio de ninguna medicion sino de estimar un parrafo en
-// 60 palabras. Cuanto mas ancha la ventana, mas lugares donde una frase inventada puede
-// pegar seis palabras seguidas por casualidad y llevarse el prompter a otro lado.
-export const RECUPERACION_TOKENS = 40
-// Cuantas palabras nuevas sin calzar se guardan mientras el seguidor esta perdido. Con la
-// bolsa mas grande, lo que el lector dijo fuera del guion queda adentro mas tiempo y le
-// exige mas palabras limpias para reenganchar. Medido: con 5 alcanzan TRES palabras
-// seguidas, con 6 hacen falta cuatro, con 8 hacen falta seis.
 export const MAX_PENDIENTES = 5
-export const RETROCESO_MAX = 2
 
 export const MIN_PALABRAS_PARCIAL = 3
 export const MIN_PALABRAS_SEGUIDAS = 3
@@ -99,6 +74,7 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
 
     const lineas = bloque.texto.split(/\r?\n/)
     let enAcotacion = false
+    let lineaOffset = 0
 
     for (let lIdx = 0; lIdx < lineas.length; lIdx++) {
       const lineaTexto = lineas[lIdx]
@@ -118,8 +94,10 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
         const fragmento = lineaTexto.substring(startWord, posInLine)
 
         let bufferWord = ''
+        let bufferStartInLine = startWord
         for (let i = 0; i < fragmento.length; i++) {
           const char = fragmento[i]
+          const charInLine = startWord + i
           if (esCaracterApertura(char)) {
             if (bufferWord) {
               const norm = normalizar(bufferWord)
@@ -130,7 +108,9 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
                   linea: lIdx,
                   indiceEnLinea: idxEnLinea++,
                   esAcotacion: enAcotacion,
-                  tokenAbsoluto: tokenAbsoluto++
+                  tokenAbsoluto: tokenAbsoluto++,
+                  desdeChar: lineaOffset + bufferStartInLine,
+                  hastaChar: lineaOffset + charInLine
                 })
               }
               bufferWord = ''
@@ -146,13 +126,18 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
                   linea: lIdx,
                   indiceEnLinea: idxEnLinea++,
                   esAcotacion: enAcotacion,
-                  tokenAbsoluto: tokenAbsoluto++
+                  tokenAbsoluto: tokenAbsoluto++,
+                  desdeChar: lineaOffset + bufferStartInLine,
+                  hastaChar: lineaOffset + charInLine
                 })
               }
               bufferWord = ''
             }
             enAcotacion = false
           } else {
+            if (!bufferWord) {
+              bufferStartInLine = charInLine
+            }
             bufferWord += char
           }
         }
@@ -166,10 +151,19 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
               linea: lIdx,
               indiceEnLinea: idxEnLinea++,
               esAcotacion: enAcotacion,
-              tokenAbsoluto: tokenAbsoluto++
+              tokenAbsoluto: tokenAbsoluto++,
+              desdeChar: lineaOffset + bufferStartInLine,
+              hastaChar: lineaOffset + posInLine
             })
           }
         }
+      }
+
+      lineaOffset += lineaTexto.length
+      if (bloque.texto.substring(lineaOffset, lineaOffset + 2) === '\r\n') {
+        lineaOffset += 2
+      } else if (bloque.texto.substring(lineaOffset, lineaOffset + 1) === '\n') {
+        lineaOffset += 1
       }
     }
 
@@ -189,20 +183,6 @@ function similar(a: string, b: string): boolean {
 }
 
 export function crearSeguidor(tokens: Token[]): Seguidor {
-  // CUANTO VALE CADA PALABRA COMO EVIDENCIA, SEGUN ESTE GUION.
-  //
-  // Una palabra que aparece quince veces en el texto no dice casi nada sobre donde esta el
-  // lector: calzarla es casi gratis. Una que aparece una sola vez lo ubica sin ambiguedad.
-  //
-  // PromptSmart aproxima esto descartando las 70 palabras mas comunes del castellano. Es
-  // una lista fija: no sabe que "Nietzsche" repetido quince veces en ESTE guion es mala
-  // evidencia aunque sea rarisimo en el idioma, ni que "silencio" dicho una sola vez vale
-  // oro. La frecuencia dentro del propio texto es la medida correcta, se calcula sola y
-  // funciona en cualquier idioma sin mantener ninguna lista.
-  //
-  // El peso es 1 / raiz de la frecuencia: una palabra unica vale 1, una repetida cuatro
-  // veces vale la mitad, una repetida dieciseis vale un cuarto. La raiz evita que una
-  // palabra muy repetida quede en cero y deje de contar del todo.
   const frecuencia = new Map<string, number>()
   for (const t of tokens) {
     if (t.esAcotacion) continue
@@ -216,11 +196,8 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
   let pos = 0
   let fallosSeguidos = 0
   let posTentativa = 0
-  // Ultimo parcial visto, normalizado, para saber que parte es nueva.
   let ultimoParcial = ''
-  // Palabras nuevas todavia sin calzar. Las viejas se caen solas.
   let pendientes: string[] = []
-  // Parciales seguidos sin calzar. Al pasar de MAX_FALLOS se entra en recuperacion.
   let fallosParcialesSeguidos = 0
 
   function obtenerPosicionRespuesta(movio: boolean, desde?: number, hasta?: number): Posicion {
@@ -239,14 +216,29 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
     }
   }
 
-  function buscarMejorOffset(frase: string[], desde: number, hasta: number, seguidasMinimo: number = PALABRAS_SEGUIDAS_MINIMO): { mejorOffset: number; mejorPuntaje: number } {
+  function calcularPosPredicha(tMs?: number, ppmEstimadas?: number, tUltimoCalce?: number): number {
+    const posActual = Math.max(pos, posTentativa)
+    if (tMs !== undefined && ppmEstimadas !== undefined && tUltimoCalce !== undefined && tUltimoCalce > 0 && tMs >= tUltimoCalce) {
+      const dtSeg = (tMs - tUltimoCalce) / 1000
+      const velocidadTokensSeg = (ppmEstimadas / 60)
+      return posActual + velocidadTokensSeg * dtSeg
+    }
+    return posActual
+  }
+
+  function buscarMejorOffset(
+    frase: string[],
+    desde: number,
+    hasta: number,
+    posPredicha: number,
+    seguidasMinimo: number = PALABRAS_SEGUIDAS_MINIMO
+  ): { mejorOffset: number; mejorPuntaje: number } {
     let mejorOffset = -1
     let mejorPuntaje = -1
 
     for (let offset = desde; offset <= hasta; offset++) {
       let coincidencias = 0
       let evidencia = 0
-      let tokensEmparejados = 0
       let currTokenIdx = offset
       let racha = 0
       let rachaMaxima = 0
@@ -259,74 +251,40 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         if (currTokenIdx < tokens.length) {
           if (similar(frase[i], tokens[currTokenIdx].palabra)) {
             coincidencias++
-            // Las palabras muy comunes cuentan para la racha -si no, cualquier "de" o
-            // "que" en medio de una frase correcta la partiria- pero NO cuentan como
-            // evidencia de posicion, porque estan en todo el guion.
-            // Cuanto pesa esta coincidencia como evidencia, segun lo rara que sea la
-            // palabra en ESTE guion.
             evidencia += pesoDe(tokens[currTokenIdx].palabra)
             racha++
             if (racha > rachaMaxima) rachaMaxima = racha
           } else {
             racha = 0
           }
-          tokensEmparejados++
           currTokenIdx++
         }
       }
 
       if (frase.length === 0) continue
 
-      // UMBRAL POR CONTEO ABSOLUTO, no por proporcion, y con evidencia de contenido.
-      // Un puntaje proporcional aceptaba una frase de dos palabras con una sola
-      // coincidencia, y contaba igual "de" que una palabra propia del guion.
       const suficientes = coincidencias >= Math.min(MIN_PALABRAS_COINCIDENTES, frase.length)
 
-      // La evidencia pesa al DESEMPATAR, no como requisito. Exigir palabras raras rompia
-      // la tolerancia a errores, y por una razon que conviene no olvidar: las palabras
-      // raras son justo las que el reconocedor falla mas, mientras que "de" y "que" las
-      // acierta siempre. Pero entre dos posiciones que calzan igual de bien, gana la que
-      // calzo palabras que en este guion aparecen pocas veces.
       let puntaje = suficientes
         ? coincidencias / frase.length + evidencia * 0.02
         : 0
 
-      // NO basta con que coincida una fraccion de palabras sueltas: hacen falta
-      // PALABRAS_SEGUIDAS_MINIMO palabras CONSECUTIVAS. Contando palabras dispersas, un
-      // texto que no esta en el guion calza igual, porque "de", "que", "la" y "un"
-      // aparecen por todas partes; con eso, hablar de otra cosa no detenia el prompter.
-      //
-      // En frases mas cortas que ese minimo se exige que calce la frase entera.
       const seguidasNecesarias = Math.min(seguidasMinimo, frase.length)
       if (rachaMaxima < seguidasNecesarias) {
         puntaje = 0
       }
 
-      // La distancia se penaliza EN LOS DOS SENTIDOS: entre dos lugares que calzan igual
-      // de bien, gana el mas cercano a donde se cree que va el lector.
-      //
-      // Antes solo se penalizaba hacia atras, asi que una frase suelta que pegara tres
-      // palabras seguidas treinta palabras mas adelante ganaba y el prompter se iba ahi.
-      // Es lo que pasaba al decir algo que no estaba en el guion: continuaba en otro lado.
-      const tokenDist = Math.abs(pos - offset)
+      // 1. LA BUSQUEDA SE CENTRA EN DONDE DEBERIAS ESTAR (posPredicha)
+      const tokenDist = Math.abs(posPredicha - offset)
       puntaje = Math.max(0, puntaje - tokenDist * PENALIZACION_POR_TOKEN)
-
-      const nuevaPosCandidate = Math.max(offset, currTokenIdx - 1)
 
       if (puntaje > mejorPuntaje) {
         mejorPuntaje = puntaje
         mejorOffset = offset
       } else if (Math.abs(puntaje - mejorPuntaje) < 1e-5 && mejorOffset >= 0) {
-        if (offset >= pos && mejorOffset < pos) {
+        if (Math.abs(offset - posPredicha) < Math.abs(mejorOffset - posPredicha)) {
           mejorPuntaje = puntaje
           mejorOffset = offset
-        } else {
-          const prevCandidatePos = mejorOffset + frase.length - 1
-          const esPrevInvalido = prevCandidatePos < pos - RETROCESO_MAX
-          const esNuevoValido = nuevaPosCandidate >= pos - RETROCESO_MAX
-          if (esPrevInvalido && esNuevoValido) {
-            mejorOffset = offset
-          }
         }
       }
     }
@@ -335,8 +293,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
   }
 
   return {
-    avanzar(fraseFinal: string): Posicion {
-      // Un FINAL cierra la intervencion: el acumulado del parcial arranca de cero.
+    avanzar(fraseFinal: string, tMs?: number, ppmEstimadas?: number, tUltimoCalce?: number): Posicion {
       ultimoParcial = ''
       pendientes = []
 
@@ -355,32 +312,18 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         return obtenerPosicionRespuesta(false)
       }
 
-      const desde = Math.max(0, pos - VENTANA_ATRAS)
-      const hasta = Math.min(tokens.length - 1, pos + VENTANA_ADELANTE)
+      const posPredicha = calcularPosPredicha(tMs, ppmEstimadas, tUltimoCalce)
+      const basePos = Math.round(posPredicha)
+      const posMinima = Math.min(Math.round(pos), basePos)
 
-      let { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta)
+      const desde = Math.max(0, posMinima - VENTANA_ATRAS)
+      const hasta = Math.min(tokens.length - 1, basePos + VENTANA_ADELANTE)
+
+      const { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta, posPredicha)
 
       if (mejorPuntaje < MIN_COINCIDENCIA) {
         fallosSeguidos++
-        console.warn(`[Seguidor] Puntaje bajo (${mejorPuntaje.toFixed(2)} < ${MIN_COINCIDENCIA}), fallos seguidos: ${fallosSeguidos}`)
-        if (fallosSeguidos >= MAX_FALLOS) {
-          console.warn('[Seguidor] Disparando recuperación acotada al entorno')
-          const desdeRec = Math.max(0, pos - RECUPERACION_TOKENS)
-          const hastaRec = Math.min(tokens.length - 1, pos + RECUPERACION_TOKENS)
-          const resGlobal = buscarMejorOffset(frase, desdeRec, hastaRec, PALABRAS_SEGUIDAS_PARA_SALTAR)
-          if (resGlobal.mejorPuntaje >= MIN_COINCIDENCIA) {
-            mejorOffset = resGlobal.mejorOffset
-            mejorPuntaje = resGlobal.mejorPuntaje
-            fallosSeguidos = 0
-            console.warn(`[Seguidor] Recuperación global exitosa con puntaje ${mejorPuntaje.toFixed(2)} en offset ${mejorOffset}`)
-          } else {
-            console.warn('[Seguidor] Recuperación global fallida')
-            fallosSeguidos = 0
-            return obtenerPosicionRespuesta(false)
-          }
-        } else {
-          return obtenerPosicionRespuesta(false)
-        }
+        return obtenerPosicionRespuesta(false)
       }
 
       let currIdx = mejorOffset
@@ -392,19 +335,15 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
           currIdx++
         }
       }
-      const nuevaPos = Math.min(currIdx, tokens.length - 1)
+      const candPos = Math.min(currIdx, tokens.length - 1)
 
-      if (nuevaPos < pos - RETROCESO_MAX) {
-        console.warn(`[Seguidor] Retroceso descartado: nuevaPos (${nuevaPos}) < pos (${pos}) - RETROCESO_MAX (${RETROCESO_MAX})`)
-        return obtenerPosicionRespuesta(false)
-      }
-
-      pos = nuevaPos
+      pos = candPos
+      posTentativa = candPos
       fallosSeguidos = 0
-      return obtenerPosicionRespuesta(true, mejorOffset, nuevaPos)
+      return obtenerPosicionRespuesta(true, mejorOffset, candPos)
     },
 
-    avanzarTentativo(fraseParcial: string): Posicion {
+    avanzarTentativo(fraseParcial: string, tMs?: number, ppmEstimadas?: number, tUltimoCalce?: number): Posicion {
       if (tokens.length === 0) {
         return { bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
       }
@@ -414,17 +353,6 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         return obtenerPosicionRespuesta(false)
       }
 
-      // SOLO SE EVALUAN LAS PALABRAS NUEVAS.
-      //
-      // El parcial de Web Speech es acumulativo: no entrega la palabra recien dicha sino
-      // todo lo que va de la intervencion, cada vez mas largo. Tomando las ultimas doce de
-      // ese acumulado, lo que el lector dijo fuera del guion volvia a entrar en la cuenta
-      // una y otra vez, hundiendo el puntaje hasta que su propia longitud lo empujaba
-      // afuera. Por eso, despues de improvisar, ni leyendo un parrafo entero reenganchaba.
-      //
-      // Lo ya evaluado y descartado no se vuelve a considerar. Las palabras nuevas se
-      // acumulan en una bolsa chica donde las viejas se caen a medida que entran otras, y
-      // un calce la vacia.
       const palabrasAhora = fraseNorm.split(' ').filter(Boolean)
       if (palabrasAhora.length === 0) {
         return obtenerPosicionRespuesta(false)
@@ -434,7 +362,6 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
       if (ultimoParcial && fraseNorm.startsWith(ultimoParcial)) {
         nuevas = fraseNorm.slice(ultimoParcial.length).split(' ').filter(Boolean)
       } else {
-        // El reconocedor se corrigio a si mismo y reescribio lo anterior: se evalua todo.
         nuevas = palabrasAhora
         pendientes = []
       }
@@ -444,9 +371,6 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         pendientes = pendientes.concat(nuevas).slice(-MAX_PENDIENTES)
       }
 
-      // MIENTRAS VIENE CALZANDO se usa el contexto completo: mas palabras ubican mejor.
-      // Solo cuando varios parciales seguidos fallan -el lector se fue del guion- el
-      // seguidor deja de confiar en lo acumulado y mira unicamente lo nuevo.
       const enRecuperacion = fallosParcialesSeguidos >= MAX_FALLOS
       const palabrasAEvaluar = enRecuperacion ? pendientes : palabrasAhora
 
@@ -457,9 +381,11 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
 
       const palabrasFrase = palabrasAEvaluar
       const frase = palabrasFrase.slice(-MAX_PALABRAS_FRASE)
-      const base = Math.max(pos, posTentativa)
+
+      const posPredicha = calcularPosPredicha(tMs, ppmEstimadas, tUltimoCalce)
+      const base = Math.max(Math.round(posPredicha), Math.round(posTentativa))
       const tokActual = tokens[base] || tokens[tokens.length - 1]
-      const lineaActual = tokActual.linea
+      const lineaActual = tokActual ? tokActual.linea : 0
       const lineaLimite = lineaActual + VENTANA_LINEAS_ADELANTE
       let hasta = Math.min(tokens.length - 1, base + VENTANA_ADELANTE)
 
@@ -470,10 +396,11 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         }
       }
 
-      const desde = Math.max(0, base - VENTANA_ATRAS)
+      const posMinima = Math.min(Math.round(posTentativa), Math.round(posPredicha))
+      const desde = Math.max(0, posMinima - VENTANA_ATRAS)
       hasta = Math.max(desde, hasta)
 
-      const { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta)
+      const { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta, posPredicha)
 
       if (mejorPuntaje < MIN_COINCIDENCIA) {
         fallosParcialesSeguidos++
@@ -491,16 +418,13 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
       }
 
       const candPos = Math.min(currIdx, tokens.length - 1)
-      if (candPos < base - RETROCESO_MAX) {
-        fallosParcialesSeguidos++
-        return obtenerPosicionRespuesta(false)
-      }
 
       posTentativa = Math.max(posTentativa, candPos)
       pendientes = []
       fallosParcialesSeguidos = 0
 
-      const tokCand = tokens[candPos]
+      const idxRes = Math.min(Math.round(candPos), tokens.length - 1)
+      const tokCand = tokens[idxRes]
       return {
         bloque: tokCand.bloque,
         linea: tokCand.linea,

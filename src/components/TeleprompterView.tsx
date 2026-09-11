@@ -1,14 +1,11 @@
 import React, { useEffect, useRef } from 'react'
-import { MotorDeAvance } from '../lib/avance'
+import { MotorDeAvance, EstadoModo } from '../lib/avance'
 import { tokenizarGuion, Token } from '../lib/seguidor'
 import { Guion } from '../datos/modelo'
 import { esCaracterApertura, esCaracterCierre } from '../lib/acotaciones'
+import { agruparEnRenglones, pixelDePosicion, Renglon, MedidaToken } from '../lib/renglones'
 
 import { AnclajeZona, calcularBanda, opacidadDeLinea } from './banda'
-
-// El texto no se mueve mientras el lector va por el primer renglon de la linea en curso:
-// el disparo es al pasar al segundo. Cuantas palabras son eso se calcula con los renglones
-// que ocupa el elemento, porque depende del tamano de letra.
 
 interface TeleprompterViewProps {
   script: Guion | string
@@ -28,18 +25,33 @@ interface TeleprompterViewProps {
   tipoFuente?: 'sans' | 'serif'
   isRecording?: boolean
   onToggleControles?: () => void
-  // El usuario movio el texto a mano hasta esa palabra. No es una recuperacion: es
-  // navegacion, y la ventana de contexto se muda con el.
   onNavegacionManual?: (token: number) => void
   onModoManualChange?: (manual: boolean) => void
-  onEstadoAvanceChange?: (motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null, avanzando: boolean) => void
+  onEstadoAvanceChange?: (
+    motivoFreno: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null,
+    avanzando: boolean,
+    estado?: EstadoModo
+  ) => void
+}
+
+function hexToRgb(hex: string): { r: number; g: number; b: number } {
+  let clean = hex.replace('#', '').trim()
+  if (clean.length === 3) {
+    clean = clean.split('').map(c => c + c).join('')
+  }
+  const num = parseInt(clean, 16)
+  if (isNaN(num)) return { r: 0, g: 0, b: 0 }
+  return {
+    r: (num >> 16) & 255,
+    g: (num >> 8) & 255,
+    b: num & 255
+  }
 }
 
 export default function TeleprompterView({
   script,
   currentBlockIndex = 0,
   currentLineIndex,
-  currentWordIndex,
   fontSize = 28,
   marginPercent = 10,
   mirror = false,
@@ -59,16 +71,10 @@ export default function TeleprompterView({
 }: TeleprompterViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
 
-  // MODO MANUAL. Mientras el usuario arrastra la barra o el dedo, la voz suelta el control
-  // del desplazamiento: si no, el bucle de animacion le devuelve el scroll a su lugar
-  // sesenta veces por segundo y mover el texto a mano es imposible.
-  //
-  // Al soltar, se mira que palabra quedo en la banda de lectura y esa pasa a ser la
-  // posicion del seguidor: la ventana de contexto se muda con el movimiento.
   const modoManualRef = useRef(false)
   const finManualRef = useRef<number | null>(null)
-  // Palabras que entran en un renglon, medidas sobre la linea que se esta mostrando.
-  const palabrasPorRenglonRef = useRef<number>(8)
+  const [textoEstadoLector, setTextoEstadoLector] = React.useState<string | null>(null)
+  const tInicioBuscandoRef = useRef<number | null>(null)
 
   const guionObj: Guion = typeof script === 'string' ? {
     id: 'temp',
@@ -86,13 +92,42 @@ export default function TeleprompterView({
   }, [script])
 
   const filaPx = fontSize * 1.4
-  const alturaLineaPx = filaPx + 16 // fontSize * lineHeight (1.4) + vertical margin (16px)
+  const alturaLineaPx = filaPx + 16
   const [altoLineaViva, setAltoLineaViva] = React.useState<number>(filaPx)
   const { topBanda, altoBanda } = calcularBanda(480, filaPx, lineasZona, anclajeZona, 20, 20, altoLineaViva)
 
   const isWhiteBg = colorFondo.toUpperCase() === '#FFFFFF'
   const colorTextoEfectivo = isWhiteBg ? '#000000' : colorLetra
   const fontFamilyCss = tipoFuente === 'serif' ? '"Source Serif 4", serif' : '"Source Sans 3", sans-serif'
+
+  const renglonesRef = useRef<Renglon[]>([])
+  const origenRef = useRef<number>(0)
+
+  const recalcularGeometria = React.useCallback(() => {
+    const container = containerRef.current
+    if (!container) return
+    const els = container.querySelectorAll('[data-token]')
+    const medidas: MedidaToken[] = Array.from(els).map(el => ({
+      token: Number((el as HTMLElement).dataset.token),
+      top: (el as HTMLElement).offsetTop
+    }))
+    const r = agruparEnRenglones(medidas, filaPx)
+    renglonesRef.current = r
+    origenRef.current = medidas.length > 0 ? medidas[0].top : 0
+  }, [filaPx])
+
+  useEffect(() => {
+    recalcularGeometria()
+    const container = containerRef.current
+    if (!container) return
+    if (typeof ResizeObserver !== 'undefined') {
+      const observer = new ResizeObserver(() => {
+        recalcularGeometria()
+      })
+      observer.observe(container)
+      return () => observer.disconnect()
+    }
+  }, [script, fontSize, columnaAngosta, marginPercent, recalcularGeometria])
 
   useEffect(() => {
     if (motorAvance) return
@@ -109,7 +144,6 @@ export default function TeleprompterView({
     }
   }, [currentBlockIndex, currentLineIndex, motorAvance, topBanda])
 
-  // Medir la altura real de la linea viva para ajustar la banda
   useEffect(() => {
     if (!containerRef.current) return
     const target = containerRef.current.querySelector(`[data-block="${currentBlockIndex}"][data-line="${currentLineIndex}"]`) as HTMLElement
@@ -119,8 +153,6 @@ export default function TeleprompterView({
     }
   }, [currentBlockIndex, currentLineIndex, filaPx])
 
-  // Deteccion de la navegacion a mano. Se miran los eventos de puntero, tacto y rueda, no
-  // el scroll: el scroll tambien lo mueve el motor, y no se podria distinguir quien fue.
   const pointerStartPosRef = useRef<{ x: number; y: number } | null>(null)
   const isDraggingGestureRef = useRef<boolean>(false)
 
@@ -135,32 +167,24 @@ export default function TeleprompterView({
       const cont = containerRef.current
       if (!cont || tokens.length === 0) return 0
 
-      const tPrimero = tokens[0]
-      const elPrimero = cont.querySelector(
-        `[data-block="${tPrimero.bloque}"][data-line="${tPrimero.linea}"]`
-      ) as HTMLElement | null
-      const origen = elPrimero ? elPrimero.offsetTop : 0
+      const origen = origenRef.current
+      const buscado = cont.scrollTop + origen + filaPx
 
-      // Se invierte la cuenta del desplazamiento: donde quedo el scroll, mas el renglon de
-      // atraso, es el punto del texto que esta en la banda de lectura.
-      const buscado = cont.scrollTop + origen + alturaLineaPx
-
-      let mejor = 0
-      let mejorDist = Infinity
-      const vistas = new Set<string>()
-      for (let i = 0; i < tokens.length; i++) {
-        const clave = `${tokens[i].bloque}-${tokens[i].linea}`
-        if (vistas.has(clave)) continue
-        vistas.add(clave)
-        const elLinea = cont.querySelector(`[data-block="${tokens[i].bloque}"][data-line="${tokens[i].linea}"]`) as HTMLElement | null
-        if (!elLinea) continue
-        const d = Math.abs(elLinea.offsetTop - buscado)
-        if (d < mejorDist) {
-          mejorDist = d
-          mejor = i
+      const renglones = renglonesRef.current
+      if (renglones.length > 0) {
+        let mejorToken = 0
+        let mejorDist = Infinity
+        for (const r of renglones) {
+          const d = Math.abs(r.top - buscado)
+          if (d < mejorDist) {
+            mejorDist = d
+            mejorToken = r.desdeToken
+          }
         }
+        return mejorToken
       }
-      return mejor
+
+      return 0
     }
 
     function empezar(e: Event) {
@@ -243,138 +267,52 @@ export default function TeleprompterView({
       el.removeEventListener('wheel', terminar)
       if (finManualRef.current !== null) window.clearTimeout(finManualRef.current)
     }
-  }, [onNavegacionManual, onModoManualChange, alturaLineaPx, onToggleControles])
+  }, [onNavegacionManual, onModoManualChange, alturaLineaPx, onToggleControles, filaPx])
 
   useEffect(() => {
     if (!motorAvance) return
 
     let animId: number
     const animate = () => {
-      const st = motorAvance.estadoEn(performance.now())
+      const tAhora = performance.now()
+      const st = motorAvance.estadoEn(tAhora)
       if (onEstadoAvanceChange) {
-        onEstadoAvanceChange(st.motivoFreno, st.avanzando)
+        onEstadoAvanceChange(st.motivoFreno, st.avanzando, st.estado)
       }
 
-      const tokens = tokensRef.current
-      if (tokens.length > 0 && containerRef.current) {
-        // EL ATRASO DE UN RENGLON SE APLICA UNA SOLA VEZ, sobre la posicion global.
-        //
-        // Aplicado linea por linea, con lineas de un solo renglon retener un renglon es
-        // retener la linea entera: el desplazamiento valia cero mientras se leia la linea
-        // y solo cambiaba al cambiar de linea. Eso es la cuantizacion de nuevo, y con ella
-        // los saltos que se habian sacado.
-        // EL ATRASO DE UN RENGLON SE RESTA EN PIXELES, AL FINAL, no en palabras sobre la
-        // posicion. Medido: en palabras da hasta 30 px de escalon al cruzar de linea,
-        // porque cuantas palabras entran en un renglon cambia de una linea a otra y el
-        // atraso cambia de golpe. Un renglon mide siempre lo mismo; restarlo en pixeles da
-        // cero saltos.
-        //
-        // Ademas, calcular el atraso en palabras a partir de la linea cerraba un lazo -el
-        // atraso decide la linea y la linea decide el atraso- que hacia temblar el
-        // desplazamiento 11 px en fotogramas alternos, 238 veces en una lectura.
-        const idx = Math.min(Math.max(0, Math.floor(st.posicion)), tokens.length - 1)
-        const t = tokens[idx]
-        if (t) {
-          const target = containerRef.current.querySelector(`[data-block="${t.bloque}"][data-line="${t.linea}"]`) as HTMLElement
-          if (target) {
-            // El desplazamiento se INTERPOLA dentro de la linea. Antes se centraba el
-            // elemento de la linea, o sea que el scroll estaba cuantizado: mientras la
-            // posicion recorria las palabras de una misma linea no se movia ni un pixel,
-            // y al cambiar de linea saltaba de golpe al elemento siguiente.
-            //
-            // Importa sobre todo cuando una linea logica es un parrafo entero que en
-            // pantalla ocupa varios renglones: sin interpolar, se lee el parrafo completo
-            // sin que el texto se mueva y despues pega el tiron.
-            let primero = idx
-            while (primero > 0 && tokens[primero - 1].linea === t.linea && tokens[primero - 1].bloque === t.bloque) {
-              primero--
-            }
-            let ultimo = idx
-            while (ultimo < tokens.length - 1 && tokens[ultimo + 1].linea === t.linea && tokens[ultimo + 1].bloque === t.bloque) {
-              ultimo++
-            }
-
-            const cantidad = Math.max(1, ultimo - primero + 1)
-
-            // Se interpola entre el borde de ESTA linea y el borde de la SIGUIENTE, no
-            // dentro del alto de esta. Interpolar dentro del elemento reinicia la cuenta
-            // en cada cambio de linea, y como entre bloques hay margen aparecia un escalon
-            // justo al terminar el parrafo: el "saltito" al pasar de uno a otro.
-            //
-            // Tomando el borde del siguiente, al llegar al final de una linea el valor
-            // coincide exactamente con el de arranque de la que sigue, y el movimiento no
-            // se corta en ningun lado.
-            const tSig = ultimo + 1 < tokens.length ? tokens[ultimo + 1] : null
-            const elSig = tSig
-              ? containerRef.current.querySelector(`[data-block="${tSig.bloque}"][data-line="${tSig.linea}"]`) as HTMLElement | null
-              : null
-            const topSiguiente = elSig ? elSig.offsetTop : target.offsetTop + target.offsetHeight
-
-            // Y el desplazamiento va UN RENGLON atrasado: mientras se lee un renglon el
-            // texto no se mueve, y el movimiento sirve para traer el siguiente. Sin esto,
-            // el renglon que uno esta leyendo se va subiendo bajo los ojos.
-            //
-            // Va en renglones y no en un numero de palabras a proposito: cuantas palabras
-            // entran en un renglon depende del tamano de letra.
-            // La altura de un renglon se LEE del navegador. La estimacion fontSize * 1.4
-            // + 16 incluye el margen entre elementos, que no existe entre los renglones de
-            // un mismo parrafo.
-            const filaPx = parseFloat(getComputedStyle(target).lineHeight) || alturaLineaPx
-
-            // Todo se mide DESDE EL PRIMER RENGLON del guion, no desde el borde del
-            // contenedor. Usar offsetTop contra topBanda arrastraba el relleno superior y
-            // cualquier cosa dibujada encima -el nombre del bloque, por ejemplo-, y con
-            // eso el desplazamiento arrancaba en la segunda o tercera palabra en vez de
-            // esperar a que se termine el primer renglon.
-            const tPrimero = tokens[0]
-            const elPrimero = containerRef.current.querySelector(
-              `[data-block="${tPrimero.bloque}"][data-line="${tPrimero.linea}"]`
-            ) as HTMLElement | null
-            const origen = elPrimero ? elPrimero.offsetTop : target.offsetTop
-
-            // LA REGLA ESTA EN PALABRAS, no en pixeles: el texto no se mueve hasta que el
-            // lector termino las palabras del renglon que esta leyendo. Los pixeles son
-            // solo como se dibuja despues.
-            //
-            // Antes esto estaba escrito en pixeles -restar la altura de un renglon al
-            // recorrido- y estaba mal por un factor: el recorrido avanza el paso de linea
-            // completo, con el margen entre elementos incluido, y la altura del texto de
-            // un renglon es menor. La resta se volvia positiva a media linea, asi que el
-            // desplazamiento arrancaba en la segunda o tercera palabra.
-            // La retencion se cuenta sobre lo que el LECTOR dijo -el ultimo calce-, no
-            // sobre la posicion mostrada. La posicion mostrada puede ir hasta
-            // adelantoMaximo palabras adelante del lector, y contando sobre ella los dos
-            // numeros se anulaban: con 8 de adelanto y 7 de retencion, el texto arrancaba
-            // en la tercera palabra.
-            // El disparo es al pasar al SEGUNDO RENGLON, no a una cantidad fija de
-            // palabras: cuantas palabras entran en un renglon depende del tamano de letra.
-            // Se calcula con los renglones que ocupa el elemento, que el navegador ya sabe.
-            const filas = Math.max(1, Math.round(target.clientHeight / filaPx))
-            const palabrasPorRenglon = cantidad / filas
-
-            // Se cuenta sobre la posicion MOSTRADA, que es la continua: ultimoCalce solo
-            // cambia cuando el reconocedor entrega algo, y usarlo para todo el calculo
-            // devolvia el salto -el texto quieto entre calce y calce- y ademas disparaba
-            // tarde, porque el reconocedor llega despues de la voz.
-            //
-            // Para que la posicion mostrada no corra muy por delante de lo que el lector
-            // dijo, el adelanto del motor esta acotado en avance.ts.
-            const dentroDeLinea = Math.min(1, Math.max(0, (st.posicion - primero) / cantidad))
-
-            if (diagnostico) {
-              const el = document.getElementById('diag-prompter')
-              if (el) el.textContent = `pos=${st.posicion.toFixed(1)} calce=${st.ultimoCalce} linea=${t.linea} dentro=${dentroDeLinea.toFixed(2)} scroll=${Math.round(containerRef.current!.scrollTop)} freno=${st.motivoFreno || "-"}`
-            }
-
-            const pasoDeLinea = topSiguiente - target.offsetTop
-            const continuo = (target.offsetTop - origen) + dentroDeLinea * pasoDeLinea
-            const top = continuo - filaPx
-            // Mientras el usuario manda, la voz no escribe el scroll.
-            if (!modoManualRef.current) {
-              containerRef.current.scrollTop = Math.max(0, top)
-            }
-          }
+      if (st.estado === 'BUSCANDO') {
+        if (tInicioBuscandoRef.current === null) {
+          tInicioBuscandoRef.current = tAhora
         }
+        if (tAhora - tInicioBuscandoRef.current >= 1000) {
+          setTextoEstadoLector('Buscando tu posición')
+        } else {
+          setTextoEstadoLector(null)
+        }
+      } else if (st.estado === 'DETENIDO') {
+        tInicioBuscandoRef.current = null
+        setTextoEstadoLector('Detenido')
+      } else {
+        tInicioBuscandoRef.current = null
+        setTextoEstadoLector(null)
+      }
+
+      let renglones = renglonesRef.current
+      if (renglones.length === 0) {
+        recalcularGeometria()
+        renglones = renglonesRef.current
+      }
+
+      const origen = origenRef.current
+      const top = Math.max(0, pixelDePosicion(renglones, st.posicion) - origen - filaPx)
+
+      if (diagnostico && containerRef.current) {
+        const el = document.getElementById('diag-prompter')
+        if (el) el.textContent = `pos=${st.posicion.toFixed(1)} calce=${st.ultimoCalce} scroll=${Math.round(top)} freno=${st.motivoFreno || "-"}`
+      }
+
+      if (!modoManualRef.current && containerRef.current) {
+        containerRef.current.scrollTop = top
       }
 
       animId = requestAnimationFrame(animate)
@@ -382,7 +320,7 @@ export default function TeleprompterView({
 
     animId = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(animId)
-  }, [motorAvance, onEstadoAvanceChange, topBanda, alturaLineaPx, diagnostico])
+  }, [motorAvance, onEstadoAvanceChange, topBanda, filaPx, diagnostico, recalcularGeometria])
 
   if (!guionObj.bloques || guionObj.bloques.length === 0) {
     return (
@@ -392,11 +330,15 @@ export default function TeleprompterView({
     )
   }
 
-  let lineCountGlobal = 0
-
   const bgBanda = isWhiteBg
     ? 'linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.03) 25%, rgba(0, 0, 0, 0.075) 50%, rgba(0, 0, 0, 0.03) 75%, transparent 100%)'
     : 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.075) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%)'
+
+  const rgbFondo = hexToRgb(colorFondo)
+  const cVelo = (alpha: number) => `rgba(${rgbFondo.r}, ${rgbFondo.g}, ${rgbFondo.b}, ${alpha})`
+  const bgVelo = `linear-gradient(to bottom, ${cVelo(0.88)} 0px, ${cVelo(0.88)} ${topBanda}px, ${cVelo(0.70)} ${topBanda}px, ${cVelo(0.70)} ${topBanda + filaPx}px, ${cVelo(0.00)} ${topBanda + filaPx}px, ${cVelo(0.00)} ${topBanda + 2 * filaPx}px, ${cVelo(0.40)} ${topBanda + 2 * filaPx}px, ${cVelo(0.40)} ${topBanda + 3 * filaPx}px, ${cVelo(0.68)} ${topBanda + 3 * filaPx}px, ${cVelo(0.68)} 100%)`
+
+  const allTokens = tokensRef.current
 
   return (
     <div
@@ -454,6 +396,39 @@ export default function TeleprompterView({
         }}
       />
 
+      {/* Velo de opacidad asimétrica según la distancia en renglones a la banda */}
+      <div
+        data-testid="velo-lectura"
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          pointerEvents: 'none',
+          zIndex: 3,
+          background: bgVelo
+        }}
+      />
+
+      {/* Indicador sobrio de estado para el lector */}
+      {textoEstadoLector && (
+        <div
+          data-testid="indicador-estado-lector"
+          style={{
+            position: 'absolute',
+            bottom: 12,
+            left: 16,
+            fontSize: 13,
+            color: isWhiteBg ? 'rgba(0, 0, 0, 0.45)' : 'rgba(255, 255, 255, 0.45)',
+            pointerEvents: 'none',
+            zIndex: 5
+          }}
+        >
+          {textoEstadoLector}
+        </div>
+      )}
+
       <div
         ref={containerRef}
         style={{
@@ -470,7 +445,8 @@ export default function TeleprompterView({
         <div
           data-testid="columna-texto"
           style={{
-            maxWidth: columnaAngosta ? '22ch' : '100%',
+            fontSize,
+            maxWidth: columnaAngosta ? '22ch' : '90%',
             margin: '0 auto',
             width: '100%'
           }}
@@ -494,19 +470,7 @@ export default function TeleprompterView({
                   }
                   charOffset = lineStart + linea.length + newlineLen
 
-                  let targetCurrentLineGlobal = 0
-                  for (let b = 0; b < guionObj.bloques.length; b++) {
-                    if (b < currentBlockIndex) {
-                      targetCurrentLineGlobal += (guionObj.bloques[b].texto || '').split(/\r?\n/).length
-                    } else if (b === currentBlockIndex) {
-                      targetCurrentLineGlobal += currentLineIndex
-                      break
-                    }
-                  }
-
-                  const distLineas = lineCountGlobal - targetCurrentLineGlobal
-                  const opacidad = opacidadDeLinea(distLineas)
-                  lineCountGlobal++
+                  const lineTokens = allTokens.filter(t => t.bloque === bIdx && t.linea === lIdx)
 
                   return (
                     <div
@@ -516,13 +480,11 @@ export default function TeleprompterView({
                       data-line={lIdx}
                       style={{
                         fontSize,
-                        opacity: opacidad,
                         margin: '16px 0',
-                        lineHeight: 1.4,
-                        transition: 'opacity 200ms'
+                        lineHeight: 1.4
                       }}
                     >
-                      {renderFormattedLine(linea, lineStart, bloque.tramos)}
+                      {renderFormattedLine(linea, lineStart, lineTokens, bloque.tramos)}
                     </div>
                   )
                 })}
@@ -538,6 +500,7 @@ export default function TeleprompterView({
 function renderFormattedLine(
   linea: string,
   lineaStart: number = 0,
+  lineTokens: Token[] = [],
   tramos: import('../datos/modelo').TramoFormato[] = []
 ) {
   if (!linea) return null
@@ -588,40 +551,54 @@ function renderFormattedLine(
     })
   }
 
-  type SpanGroup = {
-    text: string
-    attr: CharAttr
+  // Segmentar la línea en tramos de acotación (esAcotacion) y no-acotación
+  type SegmentoAcotacion = {
+    esAcotacion: boolean
+    startInLine: number
+    endInLine: number
   }
 
-  const spans: SpanGroup[] = []
-  let currText = ''
-  let currAttr: CharAttr | null = null
+  const segmentos: SegmentoAcotacion[] = []
+  let segStart = 0
+  let segInAcotacion = isBracket[0] || false
 
-  for (let i = 0; i < linea.length; i++) {
-    const a = attrs[i]
-    if (
-      !currAttr ||
-      currAttr.esAcotacion !== a.esAcotacion ||
-      currAttr.negrita !== a.negrita ||
-      currAttr.color !== a.color
-    ) {
-      if (currText && currAttr) {
-        spans.push({ text: currText, attr: currAttr })
-      }
-      currText = linea[i]
-      currAttr = a
-    } else {
-      currText += linea[i]
+  for (let i = 1; i < linea.length; i++) {
+    if (isBracket[i] !== segInAcotacion) {
+      segmentos.push({
+        esAcotacion: segInAcotacion,
+        startInLine: segStart,
+        endInLine: i
+      })
+      segStart = i
+      segInAcotacion = isBracket[i]
     }
   }
-  if (currText && currAttr) {
-    spans.push({ text: currText, attr: currAttr })
-  }
+  segmentos.push({
+    esAcotacion: segInAcotacion,
+    startInLine: segStart,
+    endInLine: linea.length
+  })
 
   return (
     <>
-      {spans.map((sp, idx) => {
-        if (sp.attr.esAcotacion) {
+      {segmentos.map((seg, idx) => {
+        const segText = linea.substring(seg.startInLine, seg.endInLine)
+        const segGlobalStart = lineaStart + seg.startInLine
+        const segGlobalEnd = lineaStart + seg.endInLine
+
+        const segTokens = lineTokens
+          .filter(t => t.desdeChar >= segGlobalStart && t.hastaChar <= segGlobalEnd)
+          .sort((a, b) => a.desdeChar - b.desdeChar)
+
+        const content = renderSegmentContent(
+          segText,
+          segGlobalStart,
+          seg.startInLine,
+          segTokens,
+          attrs
+        )
+
+        if (seg.esAcotacion) {
           return (
             <span
               key={idx}
@@ -629,29 +606,109 @@ function renderFormattedLine(
                 opacity: 0.5,
                 fontStyle: 'italic',
                 color: '#aaa',
-                margin: '0 2px',
-                fontWeight: sp.attr.negrita ? 'bold' : 'normal'
+                margin: '0 2px'
               }}
             >
-              {sp.text}
+              {content}
             </span>
           )
         }
 
-        const style: React.CSSProperties = {}
-        if (sp.attr.negrita) {
-          style.fontWeight = 'bold'
-        }
-        if (sp.attr.color) {
-          style.color = sp.attr.color
-        }
-
-        return (
-          <span key={idx} style={Object.keys(style).length > 0 ? style : undefined}>
-            {sp.text}
-          </span>
-        )
+        return <React.Fragment key={idx}>{content}</React.Fragment>
       })}
     </>
+  )
+}
+
+function renderSegmentContent(
+  text: string,
+  globalStart: number,
+  localStartInLine: number,
+  tokens: Token[],
+  attrs: { esAcotacion: boolean; negrita: boolean; color?: string }[]
+) {
+  const globalEnd = globalStart + text.length
+  const nodes: React.ReactNode[] = []
+  let currGlobal = globalStart
+
+  for (const tok of tokens) {
+    if (tok.desdeChar > currGlobal) {
+      const segText = text.substring(currGlobal - globalStart, tok.desdeChar - globalStart)
+      const offsetInLine = localStartInLine + (currGlobal - globalStart)
+      nodes.push(renderNonTokenText(`nt-${currGlobal}`, segText, offsetInLine, attrs))
+    }
+
+    const tokText = text.substring(tok.desdeChar - globalStart, tok.hastaChar - globalStart)
+    const tokAttr = attrs[localStartInLine + (tok.desdeChar - globalStart)] || { esAcotacion: false, negrita: false }
+
+    const style: React.CSSProperties = {}
+    if (tokAttr.negrita) style.fontWeight = 'bold'
+    if (tokAttr.color) style.color = tokAttr.color
+
+    nodes.push(
+      <span
+        key={`tok-${tok.tokenAbsoluto}`}
+        data-token={tok.tokenAbsoluto}
+        style={Object.keys(style).length > 0 ? style : undefined}
+      >
+        {tokText}
+      </span>
+    )
+
+    currGlobal = tok.hastaChar
+  }
+
+  if (currGlobal < globalEnd) {
+    const segText = text.substring(currGlobal - globalStart, globalEnd - globalStart)
+    const offsetInLine = localStartInLine + (currGlobal - globalStart)
+    nodes.push(renderNonTokenText(`nt-${currGlobal}`, segText, offsetInLine, attrs))
+  }
+
+  return <>{nodes}</>
+}
+
+function renderNonTokenText(
+  keyPrefix: string,
+  text: string,
+  offsetInLine: number,
+  attrs: { esAcotacion: boolean; negrita: boolean; color?: string }[]
+) {
+  if (!text) return null
+
+  type Group = { text: string; negrita: boolean; color?: string }
+  const groups: Group[] = []
+  let currText = ''
+  let currNeg = attrs[offsetInLine]?.negrita || false
+  let currCol = attrs[offsetInLine]?.color
+
+  for (let i = 0; i < text.length; i++) {
+    const a = attrs[offsetInLine + i] || { negrita: false }
+    if (a.negrita !== currNeg || a.color !== currCol) {
+      if (currText) groups.push({ text: currText, negrita: currNeg, color: currCol })
+      currText = text[i]
+      currNeg = a.negrita
+      currCol = a.color
+    } else {
+      currText += text[i]
+    }
+  }
+  if (currText) groups.push({ text: currText, negrita: currNeg, color: currCol })
+
+  return (
+    <React.Fragment key={keyPrefix}>
+      {groups.map((g, idx) => {
+        const style: React.CSSProperties = {}
+        if (g.negrita) style.fontWeight = 'bold'
+        if (g.color) style.color = g.color
+
+        return Object.keys(style).length > 0 ? (
+          <span key={idx} style={style}>
+            {g.text}
+          </span>
+        ) : (
+          <React.Fragment key={idx}>{g.text}</React.Fragment>
+        )
+      })}
+    </React.Fragment>
   )
 }
