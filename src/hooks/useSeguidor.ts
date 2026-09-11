@@ -23,6 +23,7 @@ export function useSeguidor(guionEntrada: Guion | string) {
   const registroRef = useRef<RegistroDeLectura | null>(null)
 
   const tokensRef = useRef<ReturnType<typeof tokenizarGuion>>([])
+  const tokenLineaGlobalRef = useRef<number[]>([])
   const limitesBloqueMapRef = useRef<Map<number, number>>(new Map())
   const bloqueConfirmadoRef = useRef<number>(0)
 
@@ -52,15 +53,24 @@ export function useSeguidor(guionEntrada: Guion | string) {
 
     const limitesLineaMap = new Map<string, number>()
     const limitesBloqueMap = new Map<number, number>()
+    const lineasMap = new Map<string, number>()
+    let globalLineIndex = 0
+    const tokenLineaGlobal: number[] = new Array(tokens.length)
 
     for (let i = 0; i < tokens.length; i++) {
       const t = tokens[i]
       const claveLinea = `${t.bloque}-${t.linea}`
       limitesLineaMap.set(claveLinea, i)
       limitesBloqueMap.set(t.bloque, i)
+
+      if (!lineasMap.has(claveLinea)) {
+        lineasMap.set(claveLinea, globalLineIndex++)
+      }
+      tokenLineaGlobal[i] = lineasMap.get(claveLinea)!
     }
 
     limitesBloqueMapRef.current = limitesBloqueMap
+    tokenLineaGlobalRef.current = tokenLineaGlobal
 
     const limitesDeLinea = Array.from(limitesLineaMap.values()).sort((a, b) => a - b)
     const limitesDeBloque = Array.from(limitesBloqueMap.values()).sort((a, b) => a - b)
@@ -84,7 +94,16 @@ export function useSeguidor(guionEntrada: Guion | string) {
     const pos = seg.avanzarTentativo(texto, tMs, st.ppmEstimadas, st.tUltimoCalceMs)
     anotar({ tipo: 'calce', token: pos.movio ? pos.hastaToken : null, texto })
 
-    if (pos.movio) {
+    const tokenMapa = tokenLineaGlobalRef.current
+    let enVentana = false
+    if (pos.movio && tokenMapa.length > 0) {
+      const idxActual = Math.min(tokens.length - 1, Math.max(0, Math.floor(st.posicion)))
+      const lineaActual = tokenMapa[idxActual] ?? 0
+      const lineaMatch = tokenMapa[pos.hastaToken] ?? 0
+      enVentana = lineaMatch >= lineaActual - 1 && lineaMatch <= lineaActual + 3
+    }
+
+    if (pos.movio && enVentana) {
       motor.tentativo(pos.hastaToken, tMs)
       setPosicion(pos)
     } else if (contarPalabras(texto) >= PALABRAS_PARA_QUE_UN_FALLO_CUENTE) {
@@ -98,18 +117,27 @@ export function useSeguidor(guionEntrada: Guion | string) {
     const reg = registroRef.current
     if (!seg || !motor) return
 
-    const tMs = performance.now()
+    const tMs = typeof fraseFinal === 'string' ? performance.now() : (fraseFinal?.finMs || performance.now())
     motor.voz(true, tMs)
 
     const texto = typeof fraseFinal === 'string' ? fraseFinal : (fraseFinal?.texto || '')
     const inicioMs = typeof fraseFinal === 'string' ? tMs - 1000 : (fraseFinal?.inicioMs || tMs - 1000)
-    const finMs = typeof fraseFinal === 'string' ? tMs : (fraseFinal?.finMs || tMs)
+    const finMs = tMs
 
     const st = motor.estadoEn(tMs)
     const pos = seg.avanzar(texto, tMs, st.ppmEstimadas, st.tUltimoCalceMs)
     anotar({ tipo: 'calce', token: pos.movio ? pos.hastaToken : null, texto })
 
-    if (pos.movio) {
+    const tokenMapa = tokenLineaGlobalRef.current
+    let enVentana = false
+    if (pos.movio && tokenMapa.length > 0) {
+      const idxActual = Math.min(tokensRef.current.length - 1, Math.max(0, Math.floor(st.posicion)))
+      const lineaActual = tokenMapa[idxActual] ?? 0
+      const lineaMatch = tokenMapa[pos.hastaToken] ?? 0
+      enVentana = lineaMatch >= lineaActual - 1 && lineaMatch <= lineaActual + 3
+    }
+
+    if (pos.movio && enVentana) {
       bloqueConfirmadoRef.current = pos.bloque
       motor.confirmar(pos.hastaToken, tMs)
       if (reg) {
@@ -123,7 +151,7 @@ export function useSeguidor(guionEntrada: Guion | string) {
       }
       setPosicion(pos)
     } else if (contarPalabras(texto) >= PALABRAS_PARA_QUE_UN_FALLO_CUENTE) {
-      console.warn(`[Seguidor] Final no movió para texto "${texto}"`)
+      console.warn(`[Seguidor] Final no movió o cayó fuera de ventana para texto "${texto}"`)
       motor.falloCalce(tMs)
     }
     // Y SI EL FINAL ERA CORTO, NO PASA NADA. Ni confirma ni falla: es NEUTRO.

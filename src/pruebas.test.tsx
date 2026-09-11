@@ -7,6 +7,7 @@ import { render, act, fireEvent } from '@testing-library/react'
 import 'fake-indexeddb/auto'
 import App from './App'
 import { crearSeguidor, tokenizarGuion } from './lib/seguidor'
+import { useSeguidor } from './hooks/useSeguidor'
 import { remuestrear } from './lib/remuestrear'
 import { crearSegmentador, MS_MAX_SEGMENTO } from './lib/segmentador'
 import { MotorFake } from './motor/MotorFake'
@@ -3314,6 +3315,182 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
 
       // La posición sigue en el token de la primera línea sin haber saltado
       expect(seguidor.posicionToken()).toBeLessThan(10)
+    })
+  })
+
+  describe('Pruebas TAREA 23 (T129-T131)', () => {
+    test('T129 DESLIZ: 20 palabras con finales 600 ms tarde. Entre muestras cada 200 ms el salto <= 2 tokens', () => {
+      const guionTexto = Array.from({ length: 20 }, (_, i) => `PalabraNumero${i + 1}`).join(' ')
+      const tokens = tokenizarGuion(guionTexto)
+      const seguidor = crearSeguidor(tokens)
+      const motor = crearMotorDeAvance()
+
+      const duracionLecturaMs = 20 * 400
+      const latenciaMs = 600
+
+      const eventosFinales: Array<{ tEntrega: number; texto: string }> = []
+      for (let i = 3; i <= 20; i += 3) {
+        const tDijo = i * 400
+        const tEntrega = tDijo + latenciaMs
+        const subFrase = tokens.slice(i - 3, i).map(t => t.palabra).join(' ')
+        eventosFinales.push({ tEntrega, texto: subFrase })
+      }
+
+      let maxSaltoEn200ms = 0
+      let posAnterior = 0
+      let evIdx = 0
+
+      for (let t = 0; t <= duracionLecturaMs + latenciaMs + 1000; t += 50) {
+        motor.voz(t <= duracionLecturaMs, t)
+
+        while (evIdx < eventosFinales.length && eventosFinales[evIdx].tEntrega <= t) {
+          const ev = eventosFinales[evIdx]
+          const pos = seguidor.avanzar(ev.texto, ev.tEntrega)
+          if (pos.movio) {
+            motor.confirmar(pos.hastaToken, ev.tEntrega)
+          }
+          evIdx++
+        }
+
+        const st = motor.estadoEn(t)
+
+        if (t > 0 && t % 200 === 0) {
+          const salto = st.posicion - posAnterior
+          if (salto > maxSaltoEn200ms) {
+            maxSaltoEn200ms = salto
+          }
+          posAnterior = st.posicion
+        }
+      }
+
+      console.log(`[T129] Máximo salto en 200 ms: ${maxSaltoEn200ms.toFixed(2)} tokens (límite <= 2.0)`)
+      expect(maxSaltoEn200ms).toBeLessThanOrEqual(2.0)
+    })
+
+    test('T130 ANCLA Y FUERA DE GUION: frase de línea 3 no mueve ancla en línea 30. 3s de frases ajenas avanza <= 1 token y entra a BUSCANDO o DETENIDO', async () => {
+      const lineas = Array.from({ length: 35 }, (_, i) => {
+        if (i === 3 || i === 30) return 'Esta es la frase repetida de prueba especial en la linea'
+        return `Esta es la línea número ${i + 1} con contenido diferente para la prueba`
+      })
+      const guion = guionSimple(lineas.join('\n'))
+
+      let hookResult: ReturnType<typeof import('./hooks/useSeguidor').useSeguidor> = null!
+
+      const TestComp = () => {
+        const seg = useSeguidor(guion)
+        hookResult = seg
+        return null
+      }
+
+      await act(async () => {
+        render(<TestComp />)
+      })
+
+      let tSim = 1000
+      await act(async () => {
+        for (let i = 0; i <= 30; i++) {
+          tSim += 1800
+          hookResult.alRecibirFinal({ texto: lineas[i], inicioMs: tSim - 1000, finMs: tSim })
+        }
+      })
+
+      const stL30 = hookResult.motorAvance!.estadoEn(tSim)
+      const posL30 = stL30.posicion
+      expect(posL30).toBeGreaterThan(250)
+
+      tSim += 1800
+      await act(async () => {
+        hookResult.alRecibirFinal({ texto: lineas[3], inicioMs: tSim - 1000, finMs: tSim })
+      })
+
+      const stTrasRepetida = hookResult.motorAvance!.estadoEn(tSim)
+      expect(stTrasRepetida.ultimoCalce).toBeGreaterThan(250)
+
+      const posAntesOffScript = hookResult.motorAvance!.estadoEn(tSim).posicion
+
+      await act(async () => {
+        for (let i = 0; i < 10; i++) {
+          tSim += 300
+          hookResult.alRecibirFinal({
+            texto: 'palabras totalmente ajenas improvisadas fuera del guion de prueba',
+            inicioMs: tSim - 250,
+            finMs: tSim
+          })
+        }
+      })
+
+      const stTras3s = hookResult.motorAvance!.estadoEn(tSim)
+      const avanceOffScript = stTras3s.posicion - posAntesOffScript
+
+      console.log(`[T130] Avance durante 3s fuera de guion: ${avanceOffScript.toFixed(2)} tokens (límite <= 1.0)`)
+      console.log(`[T130] Estado tras 3s fuera de guion: ${stTras3s.estado}`)
+
+      expect(avanceOffScript).toBeLessThanOrEqual(1.0)
+      expect(['BUSCANDO', 'DETENIDO']).toContain(stTras3s.estado)
+    })
+
+    test('T131 RETOMA: tras estar fuera de guion, las 4 palabras siguientes del guion retoman la lectura en <= 2 s', async () => {
+      const lineas = Array.from({ length: 35 }, (_, i) => `Esta es la línea número ${i + 1} con contenido diferente para la prueba`)
+      const guion = guionSimple(lineas.join('\n'))
+
+      let hookResult: ReturnType<typeof import('./hooks/useSeguidor').useSeguidor> = null!
+
+      const TestComp = () => {
+        const seg = useSeguidor(guion)
+        hookResult = seg
+        return null
+      }
+
+      await act(async () => {
+        render(<TestComp />)
+      })
+
+      let tSim = 1000
+      await act(async () => {
+        for (let i = 0; i <= 15; i++) {
+          tSim += 1800
+          hookResult.alRecibirFinal({ texto: lineas[i], inicioMs: tSim - 1000, finMs: tSim })
+        }
+      })
+
+      await act(async () => {
+        for (let i = 0; i < 10; i++) {
+          tSim += 300
+          hookResult.alRecibirFinal({
+            texto: 'palabras totalmente ajenas improvisadas fuera del guion de prueba',
+            inicioMs: tSim - 250,
+            finMs: tSim
+          })
+        }
+      })
+
+      const stDetenido = hookResult.motorAvance!.estadoEn(tSim)
+      expect(['BUSCANDO', 'DETENIDO']).toContain(stDetenido.estado)
+
+      const tokensL16 = tokenizarGuion(guionSimple(lineas[16]))
+      const cuatroPalabrasSig = tokensL16.slice(0, 4).map(t => t.palabra).join(' ')
+
+      tSim += 1000
+      const tInicioRetoma = tSim
+      await act(async () => {
+        hookResult.alRecibirFinal({ texto: cuatroPalabrasSig, inicioMs: tSim - 500, finMs: tSim })
+      })
+
+      let retomo = false
+      let tiempoRetomaMs = 0
+
+      for (let dt = 50; dt <= 2000; dt += 50) {
+        const st = hookResult.motorAvance!.estadoEn(tInicioRetoma + dt)
+        if (st.estado === 'SIGUIENDO' && st.avanzando) {
+          retomo = true
+          tiempoRetomaMs = dt
+          break
+        }
+      }
+
+      console.log(`[T131] Retomó en ${tiempoRetomaMs} ms (retomo=${retomo})`)
+      expect(retomo).toBe(true)
+      expect(tiempoRetomaMs).toBeLessThanOrEqual(2000)
     })
   })
 
