@@ -3365,6 +3365,16 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
 
       console.log(`[T129] Máximo salto en 200 ms: ${maxSaltoEn200ms.toFixed(2)} tokens (límite <= 2.0)`)
       expect(maxSaltoEn200ms).toBeLessThanOrEqual(2.0)
+
+      // C3 GUARDIANA DEL DESLIZ: confirmar un token 10 puestos más adelante NO teletransporta posicionMostrada en 16 ms
+      const tNow = duracionLecturaMs + latenciaMs + 2000
+      const posPreCalce = motor.estadoEn(tNow).posicion
+      motor.confirmar(posPreCalce + 10, tNow)
+      const stNextFrame = motor.estadoEn(tNow + 16)
+      const saltoEn16ms = stNextFrame.posicion - posPreCalce
+
+      console.log(`[T129] Salto en 16 ms tras confirmar 10 tokens adelante: ${saltoEn16ms.toFixed(3)} tokens (límite <= 2.0)`)
+      expect(saltoEn16ms).toBeLessThanOrEqual(2.0)
     })
 
     test('T130 ANCLA Y FUERA DE GUION: frase de línea 3 no mueve ancla en línea 30. 3s de frases ajenas avanza <= 1 token y entra a BUSCANDO o DETENIDO', async () => {

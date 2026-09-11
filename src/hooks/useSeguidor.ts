@@ -23,7 +23,6 @@ export function useSeguidor(guionEntrada: Guion | string) {
   const registroRef = useRef<RegistroDeLectura | null>(null)
 
   const tokensRef = useRef<ReturnType<typeof tokenizarGuion>>([])
-  const tokenLineaGlobalRef = useRef<number[]>([])
   const limitesBloqueMapRef = useRef<Map<number, number>>(new Map())
   const bloqueConfirmadoRef = useRef<number>(0)
 
@@ -70,7 +69,6 @@ export function useSeguidor(guionEntrada: Guion | string) {
     }
 
     limitesBloqueMapRef.current = limitesBloqueMap
-    tokenLineaGlobalRef.current = tokenLineaGlobal
 
     const limitesDeLinea = Array.from(limitesLineaMap.values()).sort((a, b) => a - b)
     const limitesDeBloque = Array.from(limitesBloqueMap.values()).sort((a, b) => a - b)
@@ -94,13 +92,12 @@ export function useSeguidor(guionEntrada: Guion | string) {
     const pos = seg.avanzarTentativo(texto, tMs, st.ppmEstimadas, st.tUltimoCalceMs)
     anotar({ tipo: 'calce', token: pos.movio ? pos.hastaToken : null, texto })
 
-    const tokenMapa = tokenLineaGlobalRef.current
     let enVentana = false
-    if (pos.movio && tokenMapa.length > 0) {
-      const idxActual = Math.min(tokens.length - 1, Math.max(0, Math.floor(st.posicion)))
-      const lineaActual = tokenMapa[idxActual] ?? 0
-      const lineaMatch = tokenMapa[pos.hastaToken] ?? 0
-      enVentana = lineaMatch >= lineaActual - 1 && lineaMatch <= lineaActual + 3
+    if (pos.movio && tokens.length > 0) {
+      const ref = Math.max(st.ultimoCalce, Math.floor(st.posicion))
+      const posMin = Math.max(0, ref - 10)
+      const posMax = ref + 40
+      enVentana = pos.hastaToken >= posMin && pos.hastaToken <= posMax
     }
 
     if (pos.movio && enVentana) {
@@ -128,13 +125,12 @@ export function useSeguidor(guionEntrada: Guion | string) {
     const pos = seg.avanzar(texto, tMs, st.ppmEstimadas, st.tUltimoCalceMs)
     anotar({ tipo: 'calce', token: pos.movio ? pos.hastaToken : null, texto })
 
-    const tokenMapa = tokenLineaGlobalRef.current
     let enVentana = false
-    if (pos.movio && tokenMapa.length > 0) {
-      const idxActual = Math.min(tokensRef.current.length - 1, Math.max(0, Math.floor(st.posicion)))
-      const lineaActual = tokenMapa[idxActual] ?? 0
-      const lineaMatch = tokenMapa[pos.hastaToken] ?? 0
-      enVentana = lineaMatch >= lineaActual - 1 && lineaMatch <= lineaActual + 3
+    if (pos.movio && tokensRef.current.length > 0) {
+      const ref = Math.max(st.ultimoCalce, Math.floor(st.posicion))
+      const posMin = Math.max(0, ref - 10)
+      const posMax = ref + 40
+      enVentana = pos.hastaToken >= posMin && pos.hastaToken <= posMax
     }
 
     if (pos.movio && enVentana) {

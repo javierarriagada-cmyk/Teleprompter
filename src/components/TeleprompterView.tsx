@@ -480,8 +480,7 @@ export default function TeleprompterView({
                       style={{
                         fontSize,
                         margin: '16px 0',
-                        lineHeight: 1.4,
-                        opacity: lIdx === currentLineIndex ? 1 : opacidadDeLinea(lIdx - currentLineIndex)
+                        lineHeight: 1.4
                       }}
                     >
                       {renderFormattedLine(linea, lineStart, lineTokens, bloque.tramos)}
