@@ -130,7 +130,7 @@ export default function TeleprompterView({
   }, [script, fontSize, columnaAngosta, marginPercent, recalcularGeometria])
 
   useEffect(() => {
-    if (motorAvance) return
+    if (motorAvance || isRecording) return
     const el = containerRef.current
     if (!el) return
     const target = el.querySelector(`[data-block="${currentBlockIndex}"][data-line="${currentLineIndex}"]`) as HTMLElement
@@ -142,7 +142,7 @@ export default function TeleprompterView({
         el.scrollTop = top
       }
     }
-  }, [currentBlockIndex, currentLineIndex, motorAvance, topBanda])
+  }, [currentBlockIndex, currentLineIndex, motorAvance, isRecording, topBanda])
 
   useEffect(() => {
     if (!containerRef.current) return

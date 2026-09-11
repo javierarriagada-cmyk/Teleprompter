@@ -16,13 +16,25 @@ function contarPalabras(texto: string): number {
   return texto.trim().split(/\s+/).filter(Boolean).length
 }
 
+function obtenerLimiteLineaSiguiente(idx: number, limites: number[]): number {
+  if (!limites || limites.length === 0) return idx + 20
+  for (let i = 0; i < limites.length; i++) {
+    if (limites[i] >= idx) {
+      return i + 1 < limites.length ? limites[i + 1] : limites[i]
+    }
+  }
+  return limites[limites.length - 1]
+}
+
 export function useSeguidor(guionEntrada: Guion | string) {
   const [posicion, setPosicion] = useState<Posicion>({ bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
+  const [motorAvance, setMotorAvance] = useState<MotorDeAvance | null>(null)
   const seguidorRef = useRef<ReturnType<typeof crearSeguidor> | null>(null)
   const motorAvanceRef = useRef<MotorDeAvance | null>(null)
   const registroRef = useRef<RegistroDeLectura | null>(null)
 
   const tokensRef = useRef<ReturnType<typeof tokenizarGuion>>([])
+  const limitesDeLineaRef = useRef<number[]>([])
   const limitesBloqueMapRef = useRef<Map<number, number>>(new Map())
   const bloqueConfirmadoRef = useRef<number>(0)
 
@@ -52,29 +64,24 @@ export function useSeguidor(guionEntrada: Guion | string) {
 
     const limitesLineaMap = new Map<string, number>()
     const limitesBloqueMap = new Map<number, number>()
-    const lineasMap = new Map<string, number>()
-    let globalLineIndex = 0
-    const tokenLineaGlobal: number[] = new Array(tokens.length)
 
     for (let i = 0; i < tokens.length; i++) {
       const t = tokens[i]
       const claveLinea = `${t.bloque}-${t.linea}`
       limitesLineaMap.set(claveLinea, i)
       limitesBloqueMap.set(t.bloque, i)
-
-      if (!lineasMap.has(claveLinea)) {
-        lineasMap.set(claveLinea, globalLineIndex++)
-      }
-      tokenLineaGlobal[i] = lineasMap.get(claveLinea)!
     }
 
     limitesBloqueMapRef.current = limitesBloqueMap
 
     const limitesDeLinea = Array.from(limitesLineaMap.values()).sort((a, b) => a - b)
+    limitesDeLineaRef.current = limitesDeLinea
     const limitesDeBloque = Array.from(limitesBloqueMap.values()).sort((a, b) => a - b)
 
+    const motor = crearMotorDeAvance(undefined, limitesDeLinea, limitesDeBloque)
     seguidorRef.current = crearSeguidor(tokens)
-    motorAvanceRef.current = crearMotorDeAvance(undefined, limitesDeLinea, limitesDeBloque)
+    motorAvanceRef.current = motor
+    setMotorAvance(motor)
     registroRef.current = crearRegistro()
     bloqueConfirmadoRef.current = 0
     setPosicion({ bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
@@ -93,7 +100,7 @@ export function useSeguidor(guionEntrada: Guion | string) {
     anotar({ tipo: 'calce', token: pos.movio ? pos.hastaToken : null, texto })
 
     let enVentana = false
-    if (pos.movio && tokens.length > 0) {
+    if (pos.movio && tokensRef.current.length > 0) {
       const ref = Math.max(st.ultimoCalce, Math.floor(st.posicion))
       const posMin = Math.max(0, ref - 10)
       const posMax = ref + 40
@@ -101,8 +108,12 @@ export function useSeguidor(guionEntrada: Guion | string) {
     }
 
     if (pos.movio && enVentana) {
-      motor.tentativo(pos.hastaToken, tMs)
-      setPosicion(pos)
+      const idxActual = Math.min(tokensRef.current.length - 1, Math.max(0, Math.floor(st.posicion)))
+      const limiteSiguiente = obtenerLimiteLineaSiguiente(idxActual, limitesDeLineaRef.current)
+      const tokenCapped = Math.min(pos.hastaToken, limiteSiguiente)
+
+      motor.tentativo(tokenCapped, tMs)
+      setPosicion({ ...pos, hastaToken: tokenCapped })
     } else if (contarPalabras(texto) >= PALABRAS_PARA_QUE_UN_FALLO_CUENTE) {
       motor.falloCalce(tMs, true)
     }
@@ -134,18 +145,22 @@ export function useSeguidor(guionEntrada: Guion | string) {
     }
 
     if (pos.movio && enVentana) {
+      const idxActual = Math.min(tokensRef.current.length - 1, Math.max(0, Math.floor(st.posicion)))
+      const limiteSiguiente = obtenerLimiteLineaSiguiente(idxActual, limitesDeLineaRef.current)
+      const tokenCapped = Math.min(pos.hastaToken, limiteSiguiente)
+
       bloqueConfirmadoRef.current = pos.bloque
-      motor.confirmar(pos.hastaToken, tMs)
+      motor.confirmar(tokenCapped, tMs)
       if (reg) {
         reg.anotar({
           desdeToken: pos.desdeToken,
-          hastaToken: pos.hastaToken,
+          hastaToken: tokenCapped,
           inicioMs,
           finMs,
           textoReconocido: texto
         })
       }
-      setPosicion(pos)
+      setPosicion({ ...pos, hastaToken: tokenCapped })
     } else if (contarPalabras(texto) >= PALABRAS_PARA_QUE_UN_FALLO_CUENTE) {
       console.warn(`[Seguidor] Final no movió o cayó fuera de ventana para texto "${texto}"`)
       motor.falloCalce(tMs)
@@ -206,7 +221,7 @@ export function useSeguidor(guionEntrada: Guion | string) {
     alNotificarVoz,
     irAToken,
     reiniciar,
-    motorAvance: motorAvanceRef.current,
+    motorAvance,
     registro: registroRef.current
   }
 }

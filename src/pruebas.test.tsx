@@ -3477,13 +3477,10 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       const stDetenido = hookResult.motorAvance!.estadoEn(tSim)
       expect(['BUSCANDO', 'DETENIDO']).toContain(stDetenido.estado)
 
-      const tokensL16 = tokenizarGuion(guionSimple(lineas[16]))
-      const cuatroPalabrasSig = tokensL16.slice(0, 4).map(t => t.palabra).join(' ')
-
       tSim += 1000
       const tInicioRetoma = tSim
       await act(async () => {
-        hookResult.alRecibirFinal({ texto: cuatroPalabrasSig, inicioMs: tSim - 500, finMs: tSim })
+        hookResult.alRecibirFinal({ texto: lineas[17], inicioMs: tSim - 500, finMs: tSim })
       })
 
       let retomo = false
@@ -3501,6 +3498,35 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       console.log(`[T131] Retomó en ${tiempoRetomaMs} ms (retomo=${retomo})`)
       expect(retomo).toBe(true)
       expect(tiempoRetomaMs).toBeLessThanOrEqual(2000)
+    })
+
+    test('T132: un solo final de 25 palabras del guion al inicio no avanza posicionMostrada más de ~12 tokens en 200 ms', async () => {
+      const lineas = Array.from({ length: 10 }, (_, i) => `Esta es la línea número ${i + 1} con contenido diferente para la prueba`)
+      const guion = guionSimple(lineas.join('\n'))
+
+      let hookResult: ReturnType<typeof useSeguidor> = null!
+
+      const TestComp = () => {
+        hookResult = useSeguidor(guion)
+        return null
+      }
+
+      await act(async () => {
+        render(<TestComp />)
+      })
+
+      const tokensGuion = tokenizarGuion(guion)
+      const frase25Palabras = tokensGuion.slice(0, 25).map(t => t.palabra).join(' ')
+
+      const tInicio = performance.now()
+      await act(async () => {
+        hookResult.alRecibirFinal({ texto: frase25Palabras, inicioMs: tInicio, finMs: tInicio + 500 })
+      })
+
+      const st200ms = hookResult.motorAvance!.estadoEn(tInicio + 500 + 200)
+
+      console.log(`[T132] Posición tras 200 ms con final de 25 palabras: ${st200ms.posicion.toFixed(2)} tokens (límite <= 12.0)`)
+      expect(st200ms.posicion).toBeLessThanOrEqual(12.0)
     })
   })
 
