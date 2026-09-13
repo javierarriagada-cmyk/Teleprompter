@@ -463,3 +463,52 @@ describe('Pruebas TAREA 29 (T158)', () => {
     }
   })
 })
+
+describe('Pruebas TAREA 30 (T159)', () => {
+  // T159 GUARDIANA DE QUE EL FINAL DEL GUION LLEGUE A LA BARRA.
+  //
+  // Javier, despues de leer el guion entero por primera vez: "cuando llegue al final del
+  // guion tuve que seguir leyendo hacia abajo y ya no siguio subiendo, y es obvio por que se
+  // le acabo el texto que arrastrar".
+  //
+  // El contenedor reservaba abajo calc(100% - ...), y los porcentajes en padding se calculan
+  // sobre el ANCHO. Con eso el ultimo renglon no puede subir hasta la barra y hay que leer
+  // hacia abajo, fuera de la zona clara, justo en el cierre.
+  //
+  // Se comprueba sobre el contenedor montado: el espacio reservado abajo tiene que alcanzar
+  // para que el ultimo renglon llegue a topBanda + MARGEN_RENGLONES_ARRIBA renglones.
+  test('T159 El espacio reservado despues del ultimo renglon alcanza para que llegue a la barra de lectura, para varios altos de pantalla y tamanos de letra.', () => {
+    const origClientHeight = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'clientHeight')
+    const guion = guionSimple(Array.from({ length: 40 }, (_, i) => 'pa' + i).join(' '))
+
+    try {
+      for (const altoReal of [480, 720, 1000]) {
+        for (const fontSize of [24, 40]) {
+          Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', {
+            configurable: true, get() { return altoReal }
+          })
+          const { container, unmount } = render(
+            <TeleprompterView script={guion} currentLineIndex={0} currentWordIndex={0}
+              anclajeZona="arriba" fontSize={fontSize} />
+          )
+          const cont = container.querySelector('[data-testid="contenedor-lectura"]') as HTMLElement
+          const filaPx = fontSize * 1.4
+          const topBanda = 20   // anclaje 'arriba' con paddingSuperior 20
+
+          const reservado = parseFloat(cont.style.paddingBottom)
+          // lo que hace falta: el ultimo renglon queda a filaPx del fondo del contenido, y
+          // tiene que poder subir hasta topBanda + margen.
+          const necesario = altoReal - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx
+
+          expect(reservado).toBeGreaterThanOrEqual(necesario - 0.001)
+          // y no de mas: reservar el alto entero deja un hueco negro gigante al final
+          expect(reservado).toBeLessThanOrEqual(altoReal)
+          unmount()
+        }
+      }
+    } finally {
+      if (origClientHeight) Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', origClientHeight)
+      else delete (window.HTMLElement.prototype as any).clientHeight
+    }
+  })
+})

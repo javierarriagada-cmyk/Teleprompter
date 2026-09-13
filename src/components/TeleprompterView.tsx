@@ -589,7 +589,23 @@ export default function TeleprompterView({
           paddingLeft: `${marginPercent}%`,
           paddingRight: `${marginPercent}%`,
           paddingTop: topBanda,
-          paddingBottom: `calc(100% - ${topBanda + altoBanda}px)`,
+          // EL ULTIMO RENGLON TIENE QUE PODER LLEGAR A LA BARRA DE LECTURA.
+          //
+          // Decia calc(100% - ...), y LOS PORCENTAJES EN padding SE CALCULAN SOBRE EL ANCHO
+          // del contenedor, no sobre el alto. En un telefono ese 100% son unos 400 px de
+          // ancho y no los 700 y pico de alto que hacen falta: el mismo error de unidad que
+          // el alto de pantalla clavado en 480.
+          //
+          // Javier lo reporto el 13 de septiembre de 2026 despues de leer el guion entero:
+          // "cuando llegue al final del guion tuve que seguir leyendo hacia abajo y ya no
+          // siguio subiendo, y es obvio por que se le acabo el texto que arrastrar".
+          //
+          // Cuanto hace falta reservar, exacto: para que el ultimo renglon aparezca a la
+          // altura de la barra -que esta en topBanda + MARGEN_RENGLONES_ARRIBA renglones- el
+          // desplazamiento tiene que poder llegar a (ultimoTop - origen) - margen. El tope
+          // que permite el navegador es scrollHeight - alto del contenedor. Despejando queda
+          // esto, y sale del alto MEDIDO, no de una constante.
+          paddingBottom: `${Math.max(0, altoContenedor - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx)}px`,
           transform: mirror ? 'scaleX(-1)' : 'none',
           boxSizing: 'border-box'
         }}
