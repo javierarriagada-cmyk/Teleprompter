@@ -375,6 +375,12 @@ export function crearMotorDeAvance(
         maxTokenGuion = limitesDeLinea[limitesDeLinea.length - 1]
       }
 
+      // EL TEXTO NUNCA SE MUESTRA MAS DE adelantoMaximo PALABRAS POR DELANTE DE LA ULTIMA
+      // PALABRA QUE EL RECONOCEDOR UBICO EN EL GUION.
+      if (arranqueCumplido && tUltimoCalce > 0) {
+        nuevaPos = Math.min(refToken + params.adelantoMaximo, nuevaPos)
+      }
+
       nuevaPos = Math.min(maxTokenGuion, Math.max(0, nuevaPos))
       posicionMostrada = nuevaPos
 

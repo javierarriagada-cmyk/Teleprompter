@@ -139,10 +139,10 @@ export function repetirLectura(corpus: Corpus): ResultadoRepeticion {
   const serie: ResultadoRepeticion['serie'] = []
   const stepMs = 16
 
-  for (let t = 0; t <= maxMs; t += stepMs) {
+  for (let t = 0; t <= maxMs + stepMs; t += stepMs) {
     while (eventoIdx < eventosOyo.length && eventosOyo[eventoIdx].ms <= t) {
       const ev = eventosOyo[eventoIdx]
-      const res = ev.final ? procesarFinal(cond, ev.texto, ev.ms) : procesarParcial(cond, ev.texto, ev.ms)
+      const res = ev.final ? procesarFinal(cond, ev.texto, t) : procesarParcial(cond, ev.texto, t)
       if (res !== null) {
         ubicados++
       }

@@ -14,6 +14,7 @@ import { leerCorpus, repetirLectura } from '../lib/repetidor'
 import { crearSeguidor, tokenizarGuion } from '../lib/seguidor'
 import { crearMotorDeAvance } from '../lib/avance'
 import { procesarFinal, procesarParcial } from '../lib/conduccion'
+import { useSeguidor } from '../hooks/useSeguidor'
 
 // Un grabador de mentira que NO dispara onstart solo. Asi se puede mirar el rato que hay
 // entre "pedi grabar" y "empezo a grabar", que es justo donde vive el defecto que esta
@@ -277,22 +278,72 @@ describe('Corpus de medicion del motor (paso 1 del plan)', () => {
     const corpus = leerCorpus(contenido)
 
     const res = repetirLectura(corpus)
-    // adelantoMaximo <= adelantoMaximoParam (3) + 0.2
-    expect(res.adelantoMaximo).toBeLessThanOrEqual(3.2)
+    // adelantoMaximo <= adelantoMaximoParam (3) + 0.1
+    expect(res.adelantoMaximo).toBeLessThanOrEqual(3.1)
   })
 
-  test('T142: GUARDIANA DE QUE EL ARNES MIDA EL CAMINO DE VERDAD', () => {
+  test('T142: GUARDIANA DE QUE EL ARNES MIDA EL CAMINO DE VERDAD', async () => {
     const guionTexto = 'uno dos tres cuatro cinco seis siete ocho nueve diez'
-    const tokens = tokenizarGuion(guionTexto)
-    const seguidor = crearSeguidor(tokens)
-    const motor = crearMotorDeAvance()
-    const cond = { seguidor, motor, tokens, limitesDeLinea: [] }
+    const guion = {
+      id: 'g-142',
+      titulo: 'Guion T142',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: guionTexto }]
+    }
 
-    const resParcial = procesarParcial(cond, 'uno dos tres', 1000)
-    expect(resParcial).not.toBeNull()
+    const entradas: Array<{ ms: number; texto: string; final: boolean }> = [
+      { ms: 1000, texto: 'uno dos tres', final: false },
+      { ms: 2000, texto: 'cuatro cinco seis', final: true },
+      { ms: 3000, texto: 'siete ocho nueve diez', final: true }
+    ]
 
-    const resFinal = procesarFinal(cond, 'cuatro cinco seis', 2000)
-    expect(resFinal).not.toBeNull()
+    // Camino A: Repeticion por el arnes (repetirLectura con Corpus sintético)
+    const corpusSintetico = {
+      guion: guionTexto,
+      motor: 'Fake',
+      eventos: entradas.map((e) => ({
+        ms: e.ms,
+        tipo: 'oyo' as const,
+        texto: e.texto,
+        final: e.final
+      }))
+    }
+    const resArnes = repetirLectura(corpusSintetico)
+
+    // Camino B: useSeguidor en la aplicacion real
+    let hookResult: ReturnType<typeof useSeguidor> = null!
+
+    const TestComp = () => {
+      hookResult = useSeguidor(guion)
+      return null
+    }
+
+    await act(async () => {
+      render(React.createElement(TestComp, null))
+    })
+
+    const ubicadosApp: number[] = []
+    await act(async () => {
+      for (const ev of entradas) {
+        if (ev.final) {
+          hookResult.alRecibirFinal(ev.texto)
+        } else {
+          hookResult.alRecibirParcial(ev.texto)
+        }
+        const st = hookResult.motorAvance?.estadoEn(performance.now())
+        if (st && st.ultimoCalce > 0) ubicadosApp.push(st.ultimoCalce)
+      }
+    })
+
+    // Extraer calces no nulos del arnes para comparar la secuencia exacta de tokens ubicados
+    const calcesArnes = resArnes.serie.filter((s) => s.calce > 0).map((s) => s.calce)
+    const calcesUnicosArnes = Array.from(new Set(calcesArnes))
+
+    // Comparar la secuencia de calces entre el arnes y el hook
+    expect(calcesUnicosArnes).toEqual(ubicadosApp)
+    expect(calcesUnicosArnes).toEqual([2, 5, 9])
   })
 
   test('T143: EL CORPUS MEJORA', () => {
