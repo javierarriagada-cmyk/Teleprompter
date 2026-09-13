@@ -417,18 +417,28 @@ export default function App({ motor, repoOverride }: AppProps) {
     // segundos quedan de margen y ninguna palabra del comienzo se corta. Todo va al mismo
     // reloj igual, asi que el margen no estorba.
     //
+    // Y VA SIN await, A PROPOSITO. Esto lo escribi mal la primera vez y rompio la lectura
+    // entera: puse `await iniciarGrabacion(...)` justo aca, antes de la cuenta regresiva.
+    // Pedir el microfono puede quedarse esperando -el cartel de permiso, un microfono
+    // ocupado-, y con el await la cuenta regresiva no arrancaba, el motor no se encendia
+    // nunca y no se movia nada. Javier: "no avanza nada y desde el principio aparece abajo
+    // detenido". Escribi en el comentario de abajo que medir no puede impedir leer y
+    // programe justo lo contrario.
+    //
+    // Ahora la grabacion arranca EN PARALELO: la lectura empieza igual pase lo que pase con
+    // el microfono. Si el permiso tarda dos segundos, se pierden los dos primeros segundos
+    // de audio y nada mas; para eso estan los tres segundos de cuenta regresiva de margen.
+    //
     // Si no se puede grabar -permiso negado, navegador sin microfono-, la lectura sigue
     // igual. Medir no puede impedir leer; el motivo queda a la vista en el panel.
     if (medirLectura) {
-      try {
-        await iniciarGrabacion({
-          guionTitulo: guionActual ? guionActual.titulo : '(sin guion)',
-          guionTexto: guionActual ? guionActual.bloques.map((b) => b.texto).join('\n') : '',
-          motor: motorActivo
-        })
-      } catch (e) {
+      iniciarGrabacion({
+        guionTitulo: guionActual ? guionActual.titulo : '(sin guion)',
+        guionTexto: guionActual ? guionActual.bloques.map((b) => b.texto).join('\n') : '',
+        motor: motorActivo
+      }).catch(() => {
         // El panel muestra el motivo. La lectura no se interrumpe.
-      }
+      })
     }
 
     setControlesVisibles(false)

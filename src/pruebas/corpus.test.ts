@@ -170,4 +170,55 @@ describe('Corpus de medicion del motor (paso 1 del plan)', () => {
     GrabadorFalso.ultimo!.dispararOnstart()
     expect(estadoGrabador()).toBe('grabando')
   })
+
+  test('T138: GUARDIANA DE QUE MEDIR NO PUEDA IMPEDIR LEER. Si el microfono nunca contesta, la lectura arranca igual.', async () => {
+    // El microfono que se queda pensando para siempre: el cartel de permiso que la persona
+    // no contesta, o un microfono tomado por otra cosa. getUserMedia devuelve una promesa
+    // que no se resuelve nunca.
+    ;(globalThis as any).MediaRecorder = GrabadorFalso as any
+    Object.defineProperty(globalThis.navigator, 'mediaDevices', {
+      configurable: true,
+      value: { getUserMedia: vi.fn().mockReturnValue(new Promise(() => {})) }
+    })
+
+    const repo = new RepositorioMemoria()
+    const guion: Guion = {
+      id: 'g-138',
+      titulo: 'Guion T138',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b-138', nombre: '', texto: 'una dos tres cuatro cinco seis siete ocho' }]
+    }
+    await repo.guardar(guion)
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(React.createElement(App, { motor: new MotorFake(), repoOverride: repo }))
+      container = res.container
+      await new Promise((r) => setTimeout(r, 400))
+    })
+
+    const abrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    await act(async () => {
+      fireEvent.click(abrir!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+    const leer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    await act(async () => {
+      fireEvent.click(leer!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const iniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')
+    await act(async () => {
+      fireEvent.click(iniciar!)
+      await new Promise((r) => setTimeout(r, 200))
+    })
+
+    // ESTE ES EL CONTRATO. Con el await puesto antes de la cuenta regresiva, esto queda en
+    // null y no arranca nada: es el defecto que Javier vio como "no avanza nada y desde el
+    // principio aparece abajo detenido".
+    expect(container!.querySelector('[data-testid="cuenta-regresiva"]')).not.toBeNull()
+  })
 })
