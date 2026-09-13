@@ -1,5 +1,12 @@
+import React from 'react'
 import { describe, expect, test, vi, afterEach } from 'vitest'
-import { iniciarGrabacion, detenerGrabacion, estadoGrabador, registroComoTexto } from '../lib/grabadorCorpus'
+import { render, act, fireEvent } from '@testing-library/react'
+import 'fake-indexeddb/auto'
+import App from '../App'
+import { MotorFake } from '../motor/MotorFake'
+import { RepositorioMemoria } from '../datos/RepositorioMemoria'
+import { Guion } from '../datos/modelo'
+import { iniciarGrabacion, detenerGrabacion, estadoGrabador, registroComoTexto, reiniciarGrabadorParaPruebas } from '../lib/grabadorCorpus'
 import { anotar, cantidadEntradas, activarDiagnostico } from '../lib/diagnostico'
 
 // Un grabador de mentira que NO dispara onstart solo. Asi se puede mirar el rato que hay
@@ -50,6 +57,7 @@ function prepararNavegador() {
 describe('Corpus de medicion del motor (paso 1 del plan)', () => {
   afterEach(() => {
     activarDiagnostico(false)
+    reiniciarGrabadorParaPruebas()
     vi.restoreAllMocks()
   })
 
@@ -108,5 +116,58 @@ describe('Corpus de medicion del motor (paso 1 del plan)', () => {
     expect(texto).toContain('Web Speech API (Navegador)')
     // Y la capa que faltaba: lo que la pantalla estaba mostrando.
     expect(texto).toContain('pos=12.50')
+  })
+
+  test('T137: GUARDIANA DE QUE MEDIR NO SEA UN BOTON APARTE. Apretar Iniciar arranca tambien la grabacion de medicion.', async () => {
+    prepararNavegador()
+
+    const repo = new RepositorioMemoria()
+    const guion: Guion = {
+      id: 'g-137',
+      titulo: 'Guion T137',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b-137', nombre: '', texto: 'una dos tres cuatro cinco seis siete ocho' }]
+    }
+    await repo.guardar(guion)
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(React.createElement(App, { motor: new MotorFake(), repoOverride: repo }))
+      container = res.container
+      await new Promise((r) => setTimeout(r, 400))
+    })
+
+    const abrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    await act(async () => {
+      fireEvent.click(abrir!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const leer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    await act(async () => {
+      fireEvent.click(leer!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // Antes de apretar nada, no hay ninguna grabacion en curso.
+    expect(estadoGrabador()).toBe('inactivo')
+
+    const iniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')
+    expect(iniciar).toBeDefined()
+
+    await act(async () => {
+      fireEvent.click(iniciar!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // Y aca esta el contrato: un solo boton. Si alguien vuelve a separar medir de leer,
+    // esto queda en 'inactivo' y la prueba se cae. La grabacion arranca ANTES de la cuenta
+    // regresiva, para que el comienzo de la lectura no quede cortado.
+    expect(estadoGrabador()).not.toBe('inactivo')
+
+    GrabadorFalso.ultimo!.dispararOnstart()
+    expect(estadoGrabador()).toBe('grabando')
   })
 })

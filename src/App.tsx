@@ -8,6 +8,7 @@ import BarraDeTiempo from './components/BarraDeTiempo'
 import ControlsBar from './components/ControlsBar'
 import { PanelCorpus } from './components/PanelCorpus'
 import { bloquearRecargaAutomatica } from './lib/actualizacion'
+import { iniciarGrabacion, detenerGrabacion } from './lib/grabadorCorpus'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
 import CuentaRegresiva from './components/CuentaRegresiva'
@@ -86,6 +87,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [anclajeZona, setAnclajeZona] = useState<'arriba' | 'medio' | 'abajo'>(ajustesPrevios.anclajeZona || 'arriba')
   const [tema, setTema] = useState<'claro' | 'oscuro'>(ajustesPrevios.tema || 'claro')
 
+  // Mientras estemos arreglando el motor, toda lectura se mide. Se puede apagar si
+  // alguna vez estorba, pero la omision es medir.
+  const [medirLectura, setMedirLectura] = useState<boolean>(true)
   const [modoManual, setModoManual] = useState<boolean>(false)
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
 
@@ -400,6 +404,33 @@ export default function App({ motor, repoOverride }: AppProps) {
     if (cuentaRegresiva !== null || isRecording) return
     await solicitarWakeLock()
 
+    // MEDIR ES PARTE DE LEER, NO UN BOTON APARTE.
+    //
+    // Tener "Grabar" separado de "Iniciar" no era una incomodidad, era una trampa: grabar
+    // sin arrancar el motor da audio sin nada que medir, y arrancar el motor sin grabar
+    // deja el cero del reloj tarde y pierde el principio de la lectura. Las dos maneras de
+    // equivocarse producen una grabacion inutil, y eso recien se descubre al analizarla.
+    // Lo dijo Javier el 13 de septiembre de 2026: "por que el boton de grabar con el de
+    // iniciar no son el mismo".
+    //
+    // El audio arranca ACA, al principio de la cuenta regresiva, no al final: esos tres
+    // segundos quedan de margen y ninguna palabra del comienzo se corta. Todo va al mismo
+    // reloj igual, asi que el margen no estorba.
+    //
+    // Si no se puede grabar -permiso negado, navegador sin microfono-, la lectura sigue
+    // igual. Medir no puede impedir leer; el motivo queda a la vista en el panel.
+    if (medirLectura) {
+      try {
+        await iniciarGrabacion({
+          guionTitulo: guionActual ? guionActual.titulo : '(sin guion)',
+          guionTexto: guionActual ? guionActual.bloques.map((b) => b.texto).join('\n') : '',
+          motor: motorActivo
+        })
+      } catch (e) {
+        // El panel muestra el motivo. La lectura no se interrumpe.
+      }
+    }
+
     setControlesVisibles(false)
     setCuentaRegresiva(3)
 
@@ -424,6 +455,9 @@ export default function App({ motor, repoOverride }: AppProps) {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
     await stop()
+    // El audio se corta DESPUES del motor, no antes: si se cortara primero, los ultimos
+    // calces quedarian anotados con un milisegundo que ya no existe en el archivo.
+    await detenerGrabacion()
     await soltarWakeLock()
   }
 
@@ -610,11 +644,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             {!esPantallaCompleta && controlesVisibles && (
               <div data-testid="panel-controles-lectura" style={{ flex: 1, minWidth: 320 }}>
 
-                <PanelCorpus
-                  guionTitulo={guionActual ? guionActual.titulo : '(sin guion)'}
-                  guionTexto={guionActual ? guionActual.bloques.map((b) => b.texto).join('\n') : ''}
-                  motor={motorActivo}
-                />
+                <PanelCorpus medir={medirLectura} setMedir={setMedirLectura} />
 
                 <ControlsBar
                   onStart={handleStart}

@@ -232,3 +232,18 @@ export function descargarCorpus(): void {
 export function hayCorpus(): boolean {
   return !!audioBlob
 }
+
+// El grabador guarda su estado a nivel de modulo -es uno solo por pagina, como el
+// microfono-, asi que entre una prueba y la siguiente ese estado queda vivo y la segunda
+// hereda lo que dejo la primera. Esto lo borra. No lo usa la aplicacion.
+export function reiniciarGrabadorParaPruebas(): void {
+  estadoActual = 'inactivo'
+  grabador = null
+  pistas = []
+  trozos = []
+  audioBlob = null
+  tipoAudio = ''
+  metadatos = null
+  inicioReloj = ''
+  ultimoError = ''
+}
