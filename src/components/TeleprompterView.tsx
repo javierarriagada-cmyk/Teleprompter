@@ -8,6 +8,18 @@ import { anotar } from '../lib/diagnostico'
 
 import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
 
+export const MARGEN_RENGLONES_ARRIBA = 1
+
+export function calcularScrollTop(
+  pixelPos: number,
+  origen: number,
+  topBanda: number,
+  filaPx: number,
+  margenRenglonesArriba = MARGEN_RENGLONES_ARRIBA
+): number {
+  return Math.max(0, pixelPos - origen - topBanda - margenRenglonesArriba * filaPx)
+}
+
 interface TeleprompterViewProps {
   script: Guion | string
   currentBlockIndex?: number
@@ -305,7 +317,10 @@ export default function TeleprompterView({
       }
 
       const origen = origenRef.current
-      const top = Math.max(0, pixelDePosicion(renglones, st.posicion) - origen - filaPx)
+      const top = Math.max(
+        0,
+        pixelDePosicion(renglones, st.posicion) - origen - topBanda - MARGEN_RENGLONES_ARRIBA * filaPx
+      )
 
       if (diagnostico && containerRef.current) {
         const el = document.getElementById('diag-prompter')
