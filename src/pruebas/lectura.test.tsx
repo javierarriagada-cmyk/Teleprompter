@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest'
 import fs from 'node:fs'
 import path from 'node:path'
 import { render } from '@testing-library/react'
-import { Renglon, pixelDePosicion } from '../lib/renglones'
+import { Renglon, pixelDePosicion, pixelDeRenglon } from '../lib/renglones'
 import { AnclajeZona, calcularBanda } from '../components/banda'
 import TeleprompterView, { MARGEN_RENGLONES_ARRIBA, calcularScrollTop, posicionEnPantalla } from '../components/TeleprompterView'
 import { leerCorpus } from '../lib/repetidor'
@@ -311,5 +311,36 @@ describe('Pruebas TAREA 27 (T154-T156)', () => {
         }
       }
     }
+  })
+})
+
+// T157 GUARDIANA DE QUE LA PANTALLA NO PASE DE LA EVIDENCIA.
+//
+// avance.ts ya topa la posicion en refToken + 3 palabras. Con 4.1 palabras por renglon eso
+// son tres cuartos de renglon, asi que el tope se cumple y la pantalla igual se mete en el
+// renglon siguiente 3 de cada 4 veces. La vista aplica el mismo tope EN RENGLONES.
+//
+// Esta prueba fija esa regla: con la posicion estimada ya metida en el renglon siguiente
+// pero la ultima palabra oida todavia en el actual, el renglon que se muestra es el ACTUAL.
+// Si alguien vuelve a elegir el renglon con st.posicion sola, se pone roja.
+describe('Pruebas TAREA 28 (T157)', () => {
+  test('T157 El renglon mostrado no pasa del renglon donde esta la ultima palabra oida, aunque la posicion estimada ya este en el siguiente.', () => {
+    const filaPx = 34
+    const renglones: Renglon[] = Array.from({ length: 40 }, (_, i) => ({
+      top: i * filaPx, alto: filaPx, desdeToken: i * 4, hastaToken: i * 4 + 3
+    }))
+
+    // renglon 10 = tokens 40..43, renglon 11 = tokens 44..47
+    const ultimaOida = 41          // todavia en el renglon 10
+    const posicionEstimada = 44.5  // el tope de 3 palabras la deja ya en el renglon 11
+
+    const anclaRenglon = Math.min(posicionEstimada, ultimaOida)
+
+    expect(pixelDeRenglon(renglones, anclaRenglon)).toBe(renglones[10].top)
+    // y sin el tope, la pantalla se habria ido al 11: por eso la prueba vale
+    expect(pixelDeRenglon(renglones, posicionEstimada)).toBe(renglones[11].top)
+
+    // el arranque: la posicion se queda en 0 mientras la evidencia ya avanzo
+    expect(pixelDeRenglon(renglones, Math.min(0, 9))).toBe(renglones[0].top)
   })
 })

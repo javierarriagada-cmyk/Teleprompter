@@ -375,8 +375,27 @@ export default function TeleprompterView({
       // desde la primera palabra: el renglon que se esta leyendo se iba subiendo mientras se
       // lo leia. Con pixelDeRenglon la pantalla se queda quieta durante todo el renglon y se
       // mueve una sola vez al cruzar al siguiente.
+      // Y NO PASA DEL RENGLON DONDE ESTA LA ULTIMA PALABRA QUE SE OYO.
+      //
+      // avance.ts ya tiene este invariante escrito, y en mayusculas: "EL TEXTO NUNCA SE
+      // MUESTRA MAS DE adelantoMaximo PALABRAS POR DELANTE DE LA ULTIMA PALABRA QUE EL
+      // RECONOCEDOR UBICO EN EL GUION", con adelantoMaximo = 3. Se cumple siempre.
+      //
+      // El problema es la UNIDAD. Tres palabras de adelanto, con los 4.1 palabras por
+      // renglon medidos en la lectura de Javier, son tres cuartos de renglon: si la ultima
+      // palabra oida cae en cualquiera de las tres ultimas posiciones de un renglon -3 de
+      // cada 4 palabras- la pantalla ya tiene permiso para estar en el siguiente. El tope se
+      // respeta y el renglon se va igual.
+      //
+      // Aca se aplica el mismo tope en renglones: el renglon mostrado es el de la evidencia,
+      // no el de la posicion estimada. Si no te oyo, no se mueve.
+      //
+      // El min con st.posicion NO es una precaucion de mas: durante el arranque de 7
+      // palabras, y en silencio, y en DETENIDO, es posicion la que se queda quieta mientras
+      // ultimoCalce sigue avanzando. Sin ese min, el texto se movia durante el arranque.
+      const anclaRenglon = Math.min(st.posicion, st.ultimoCalce)
       const topObjetivo = calcularScrollTop(
-        pixelDeRenglon(renglones, st.posicion),
+        pixelDeRenglon(renglones, anclaRenglon),
         origen,
         filaPx
       )
