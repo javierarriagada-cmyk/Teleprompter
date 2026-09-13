@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, Bloque, TramoFormato, contarPalabras, calcularDuracionTexto } from '../datos/modelo'
 import { importarTexto } from '../datos/importar'
 import { importarArchivo } from '../datos/importarArchivo'
@@ -57,6 +58,8 @@ export default function EditorView({
 }: EditorViewProps) {
   const [plegados, setPlegados] = useState<Record<string, boolean>>({})
   const [menuOpcionesAbierto, setMenuOpcionesAbierto] = useState(false)
+  // se cierra tocando afuera o con Escape, no solo con el mismo boton
+  const refMenuOpciones = useCerrarAfuera(menuOpcionesAbierto, () => setMenuOpcionesAbierto(false))
   const [mostrarModalPegar, setMostrarModalPegar] = useState(false)
   const [textoPegado, setTextoPegado] = useState('')
   const [errorPegado, setErrorPegado] = useState<string | null>(null)
@@ -339,7 +342,7 @@ export default function EditorView({
         </button>
 
         {/* Menu contextual superior ⋯ */}
-        <div style={{ position: 'relative' }}>
+        <div ref={refMenuOpciones} style={{ position: 'relative' }}>
           <button
             onClick={() => setMenuOpcionesAbierto(!menuOpcionesAbierto)}
             data-testid="btn-menu-opciones-editor"

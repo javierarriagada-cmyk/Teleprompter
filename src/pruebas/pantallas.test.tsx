@@ -189,3 +189,84 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T149-T153)', () => {
     expect(screen.getByText(/Franja de Estado/i)).not.toBeNull()
   })
 })
+
+// T160 GUARDIANA DE QUE UN MENU ABIERTO SE CIERRE TOCANDO AFUERA.
+//
+// Javier lo reporto el 13 de septiembre de 2026 sobre el menu ⋯ del editor: "al abrir esos
+// botoncitos arriba, muy bien puestos, no se cierran si presiono en el texto". Y planteo el
+// criterio que hace que esto valga la pena: "existe un conjunto de ese tipo de elementos,
+// casi por coherencia de uso que se podrian resolver al buscar en la aplicacion".
+//
+// En un telefono nadie vuelve a buscar el mismo boton para cerrar: se toca afuera. Un menu
+// que solo se cierra con el boton que lo abrio tapa el texto hasta que el usuario descubre
+// el truco.
+//
+// Son TRES en toda la aplicacion y los tres usan el mismo hook, useCerrarAfuera: el ⋯ del
+// editor, el ⋯ de la biblioteca y el de cada fila. Esta prueba los recorre, mas Escape.
+describe('Pruebas TAREA 31 (T160)', () => {
+  const guionEditor: Guion = {
+    id: 'g-menu', titulo: 'Guion de prueba', idioma: 'es', creado: 1, modificado: 1,
+    bloques: [{ id: 'b1', nombre: '', texto: 'Texto del guion.' }]
+  }
+  const guionesBiblioteca = [
+    { id: 'g1', titulo: 'Uno', idioma: 'es', modificado: 2, creado: 1, palabras: 10, archivado: false }
+  ]
+
+  test('T160: los menus del editor y de la biblioteca se cierran al tocar afuera y con Escape.', () => {
+    // 1. el ⋯ del editor
+    {
+      const { unmount } = render(
+        React.createElement(EditorView, {
+          guion: guionEditor, onChangeGuion: () => {}, onVolverBiblioteca: () => {}, onEntrarLectura: () => {}
+        })
+      )
+      fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+      expect(screen.queryByText('Pegar texto')).not.toBeNull()
+
+      fireEvent.pointerDown(document.body)
+      expect(screen.queryByText('Pegar texto')).toBeNull()
+
+      // y con Escape
+      fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+      expect(screen.queryByText('Pegar texto')).not.toBeNull()
+      fireEvent.keyDown(document, { key: 'Escape' })
+      expect(screen.queryByText('Pegar texto')).toBeNull()
+      unmount()
+    }
+
+    // 2. el ⋯ de la biblioteca
+    {
+      const { unmount } = render(
+        React.createElement(BibliotecaView, {
+          guiones: guionesBiblioteca, onAbrir: () => {}, onCrearNuevo: () => {},
+          onImportarArchivo: () => {}, onBorrar: () => {}, onArchivar: () => {}
+        })
+      )
+      const btn = screen.getByTestId('btn-menu-superior-biblioteca')
+      fireEvent.click(btn)
+      const abierto = document.body.textContent || ''
+      expect(abierto).toContain('Importar archivo')
+
+      fireEvent.pointerDown(document.body)
+      expect(document.body.textContent || '').not.toContain('Importar archivo')
+      unmount()
+    }
+
+    // 3. el menu de cada fila, que se abre con clic derecho o toque largo
+    {
+      const { unmount } = render(
+        React.createElement(BibliotecaView, {
+          guiones: guionesBiblioteca, onAbrir: () => {}, onCrearNuevo: () => {},
+          onImportarArchivo: () => {}, onBorrar: () => {}, onArchivar: () => {}
+        })
+      )
+      const fila = screen.getByText('Uno')
+      fireEvent.contextMenu(fila)
+      expect(screen.queryByTestId('menu-opciones-g1')).not.toBeNull()
+
+      fireEvent.pointerDown(document.body)
+      expect(screen.queryByTestId('menu-opciones-g1')).toBeNull()
+      unmount()
+    }
+  })
+})

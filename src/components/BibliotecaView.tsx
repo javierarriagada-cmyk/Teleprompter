@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, ResumenGuion } from '../datos/modelo'
 
 interface BibliotecaViewProps {
@@ -53,6 +54,10 @@ export default function BibliotecaView({
   const [mostrarArchivados, setMostrarArchivados] = useState(false)
   const [menuId, setMenuId] = useState<string | null>(null)
   const [menuSuperiorAbierto, setMenuSuperiorAbierto] = useState(false)
+  // se cierra tocando afuera o con Escape, no solo con el mismo boton
+  const refMenuSuperior = useCerrarAfuera(menuSuperiorAbierto, () => setMenuSuperiorAbierto(false))
+  // el menu de cada fila, que se abre con toque largo, se cierra igual que los demas
+  const refMenuFila = useCerrarAfuera(menuId !== null, () => setMenuId(null))
   const [mapaTextos, setMapaTextos] = useState<Record<string, string>>({})
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -224,7 +229,7 @@ export default function BibliotecaView({
         </div>
 
         {/* Menú superior derecho ⋯ */}
-        <div style={{ position: 'relative' }}>
+        <div ref={refMenuSuperior} style={{ position: 'relative' }}>
           <button
             onClick={() => setMenuSuperiorAbierto(!menuSuperiorAbierto)}
             data-testid="btn-menu-superior-biblioteca"
@@ -386,6 +391,7 @@ export default function BibliotecaView({
 
                 {menuId === g.id && (
                   <div
+                    ref={refMenuFila}
                     data-testid={`menu-opciones-${g.id}`}
                     onClick={(e) => e.stopPropagation()}
                     style={{
