@@ -1,3 +1,59 @@
+TELEPROMPTER - ESTADO DEL MOTOR
+
+=====================================================================
+0. RESUELTO EL 13 DE SEPTIEMBRE DE 2026
+=====================================================================
+
+Javier leyo el guion completo. Era la primera vez en dos semanas.
+
+Sus palabras: "lei completo el guion. algunas cosas podriamos mejorarlas pero se
+pudo leer bien".
+
+LO QUE LO RESOLVIO, en orden de cuanto peso:
+
+  1. EL RENGLON QUE SE ESTA LEYENDO NO SE MUEVE HASTA QUE SE TERMINA.
+     pixelDePosicion reparte el alto del renglon entre sus palabras, asi que decir
+     un renglon desplazaba la pantalla un renglon entero, repartido DESDE LA
+     PRIMERA PALABRA: el renglon se subia mientras se lo leia y llegaba al borde
+     de arriba antes de terminarlo. La vista usa pixelDeRenglon, y el cambio se
+     desliza en unos 200 ms para no traer de vuelta los saltitos.
+     Lo describio Javier dos veces antes de que yo lo entendiera: "no se mueve
+     cuando finalizo ese renglon sino antes".
+
+  2. EL TEXTO NO ENTRA A UN RENGLON SIN PRUEBA DE QUE EL LECTOR LLEGO.
+     avance.ts ya topaba la posicion en refToken + 3 palabras, con el invariante
+     escrito en mayusculas. El problema era la unidad: 3 palabras son tres cuartos
+     de renglon, asi que el tope se cumplia y el renglon se iba igual. La vista
+     elige el renglon con min(posicion, ultimoCalce): el mismo tope, en renglones.
+     La idea es de Javier.
+
+  3. topBanda SE RESTABA DOS VECES. El contenedor tiene paddingTop: topBanda y
+     calcularScrollTop lo restaba otra vez. Medido montando el DOM: el renglon
+     vivo caia 5.8 renglones fuera de la ventana con letra de 24.
+
+  4. LA VENTANA SE CALCULABA CON 480 PIXELES DE ALTO CLAVADOS, en cualquier
+     telefono. Ahora sale de container.clientHeight.
+
+  5. EL RENGLON VIVO ES EL PRIMERO DE LA VENTANA, no el del medio. Desde que el
+     renglon lo manda la evidencia la marca va DETRAS del lector, asi que los dos
+     renglones claros tienen que quedar HACIA ADELANTE.
+
+  6. La pantalla de lectura ocupaba un recuadro de 480 px fijos -unos seis
+     renglones- con el titulo de la app y la franja de diagnostico encima. Ahora
+     el texto es la pantalla.
+
+  7. El motor por omision era Web Speech, que en el telefono de Javier no anda.
+     Ahora es Vosk, que es con el que se midio todo.
+
+GUARDADO POR T157 y T158. T158 monta la vista y esta comprobada rompiendo: con
+cualquiera de los dos cambios deshecho, se pone roja.
+
+EL MOTOR NUNCA FUE LA CAUSA. Todo lo de abajo, que se escribio con el problema
+abierto, sigue siendo cierto como medicion y quedo como registro de lo que se
+probo y se descarto.
+
+=====================================================================
+
 TELEPROMPTER - ESTADO REAL AL 13 DE SEPTIEMBRE DE 2026
 Para que quien siga no vuelva a empezar de cero.
 Esto son mediciones y hechos del codigo. Las teorias estan marcadas como tales.
