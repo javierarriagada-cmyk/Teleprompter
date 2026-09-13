@@ -31,6 +31,7 @@ export interface Seguidor {
   posicionToken(): number
 }
 
+// Margen extra de tokens que se suma al largo de la frase al buscar hacia atras
 export const VENTANA_ATRAS = 5
 export const VENTANA_ADELANTE = 40
 export const MAX_PALABRAS_FRASE = 12
@@ -316,7 +317,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
       const basePos = Math.round(posPredicha)
       const posMinima = Math.min(Math.round(pos), basePos)
 
-      const desde = Math.max(0, posMinima - VENTANA_ATRAS)
+      const desde = Math.max(0, posMinima - (frase.length + VENTANA_ATRAS))
       const hasta = Math.min(tokens.length - 1, basePos + VENTANA_ADELANTE)
 
       const { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta, posPredicha)
@@ -397,7 +398,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
       }
 
       const posMinima = Math.min(Math.round(posTentativa), Math.round(posPredicha))
-      const desde = Math.max(0, posMinima - VENTANA_ATRAS)
+      const desde = Math.max(0, posMinima - (frase.length + VENTANA_ATRAS))
       hasta = Math.max(desde, hasta)
 
       const { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta, posPredicha)

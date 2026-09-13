@@ -1,4 +1,6 @@
 import React from 'react'
+import fs from 'node:fs'
+import path from 'node:path'
 import { describe, expect, test, vi, afterEach } from 'vitest'
 import { render, act, fireEvent } from '@testing-library/react'
 import 'fake-indexeddb/auto'
@@ -8,6 +10,11 @@ import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { Guion } from '../datos/modelo'
 import { iniciarGrabacion, detenerGrabacion, estadoGrabador, registroComoTexto, reiniciarGrabadorParaPruebas } from '../lib/grabadorCorpus'
 import { anotar, cantidadEntradas, activarDiagnostico } from '../lib/diagnostico'
+import { leerCorpus, repetirLectura } from '../lib/repetidor'
+import { crearSeguidor, tokenizarGuion } from '../lib/seguidor'
+import { crearMotorDeAvance } from '../lib/avance'
+import { procesarFinal, procesarParcial } from '../lib/conduccion'
+import { useSeguidor } from '../hooks/useSeguidor'
 
 // Un grabador de mentira que NO dispara onstart solo. Asi se puede mirar el rato que hay
 // entre "pedi grabar" y "empezo a grabar", que es justo donde vive el defecto que esta
@@ -220,5 +227,137 @@ describe('Corpus de medicion del motor (paso 1 del plan)', () => {
     // null y no arranca nada: es el defecto que Javier vio como "no avanza nada y desde el
     // principio aparece abajo detenido".
     expect(container!.querySelector('[data-testid="cuenta-regresiva"]')).not.toBeNull()
+  })
+
+  test('T139: leerCorpus saca del archivo el guion, el motor y los eventos, y NO lee las lineas de calce.', () => {
+    const rutaCorpus = path.resolve(process.cwd(), 'src/pruebas/corpus/lectura-2026-09-12-2311.txt')
+    const contenido = fs.readFileSync(rutaCorpus, 'utf-8')
+    const corpus = leerCorpus(contenido)
+
+    expect(corpus.guion).toContain('Enero de 1969. Sale un disco que se llama Hombre.')
+    expect(corpus.motor).toContain('Vosk Local')
+
+    const eventosOyo = corpus.eventos.filter((e) => e.tipo === 'oyo')
+    expect(eventosOyo.length).toBe(389)
+
+    const finales = eventosOyo.filter((e) => e.tipo === 'oyo' && e.final)
+    expect(finales.length).toBe(3)
+
+    // Verificar que las líneas de tipo 'calce' no fueron leídas como eventos
+    const calces = (corpus.eventos as any[]).filter((e) => e.tipo === 'calce')
+    expect(calces.length).toBe(0)
+  })
+
+  test('T140: GUARDIANA DE LA VENTANA HACIA ATRAS', () => {
+    // Guion de 50 palabras.
+    // Frase larga de 12 palabras ubicada en los tokens 25 a 36.
+    const palabras = Array.from({ length: 50 }, (_, i) => `palabra${i + 1}`)
+    const fraseLarga = ['es', 'el', 'mas', 'largo', 'cuatro', 'minutos', 'de', 'un', 'hombre', 'de', 'treinta', 'y']
+    for (let i = 0; i < fraseLarga.length; i++) {
+      palabras[25 + i] = fraseLarga[i]
+    }
+    const guionTexto = palabras.join(' ')
+
+    const tokens = tokenizarGuion(guionTexto)
+    const seguidor = crearSeguidor(tokens)
+
+    // El seguidor avanza hasta la palabra 40.
+    seguidor.avanzar(palabras.slice(0, 40).join(' '))
+
+    // Ahora se recibe la frase larga que empieza en el token 25 (15 tokens atras de la posicion actual 40).
+    // Con la ventana fija de 5 atras (posMinima - 5 = 35), el offset 25 queda fuera de la ventana.
+    // Con posMinima - (frase.length + VENTANA_ATRAS) = 40 - (12 + 5) = 23, el offset 25 SI queda dentro.
+    const pos = seguidor.avanzar(fraseLarga.join(' '))
+    expect(pos.movio).toBe(true)
+    expect(pos.desdeToken).toBe(25)
+  })
+
+  test('T141: GUARDIANA DEL ADELANTO', () => {
+    const rutaCorpus = path.resolve(process.cwd(), 'src/pruebas/corpus/lectura-2026-09-12-2311.txt')
+    const contenido = fs.readFileSync(rutaCorpus, 'utf-8')
+    const corpus = leerCorpus(contenido)
+
+    const res = repetirLectura(corpus)
+    // adelantoMaximo <= adelantoMaximoParam (3) + 0.1
+    expect(res.adelantoMaximo).toBeLessThanOrEqual(3.1)
+  })
+
+  test('T142: GUARDIANA DE QUE EL ARNES MIDA EL CAMINO DE VERDAD', async () => {
+    const guionTexto = 'uno dos tres cuatro cinco seis siete ocho nueve diez'
+    const guion = {
+      id: 'g-142',
+      titulo: 'Guion T142',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: guionTexto }]
+    }
+
+    const entradas: Array<{ ms: number; texto: string; final: boolean }> = [
+      { ms: 1000, texto: 'uno dos tres', final: false },
+      { ms: 2000, texto: 'cuatro cinco seis', final: true },
+      { ms: 3000, texto: 'siete ocho nueve diez', final: true }
+    ]
+
+    // Camino A: Repeticion por el arnes (repetirLectura con Corpus sintético)
+    const corpusSintetico = {
+      guion: guionTexto,
+      motor: 'Fake',
+      eventos: entradas.map((e) => ({
+        ms: e.ms,
+        tipo: 'oyo' as const,
+        texto: e.texto,
+        final: e.final
+      }))
+    }
+    const resArnes = repetirLectura(corpusSintetico)
+
+    // Camino B: useSeguidor en la aplicacion real
+    let hookResult: ReturnType<typeof useSeguidor> = null!
+
+    const TestComp = () => {
+      hookResult = useSeguidor(guion)
+      return null
+    }
+
+    await act(async () => {
+      render(React.createElement(TestComp, null))
+    })
+
+    const ubicadosApp: number[] = []
+    await act(async () => {
+      for (const ev of entradas) {
+        if (ev.final) {
+          hookResult.alRecibirFinal(ev.texto)
+        } else {
+          hookResult.alRecibirParcial(ev.texto)
+        }
+        const st = hookResult.motorAvance?.estadoEn(performance.now())
+        if (st && st.ultimoCalce > 0) ubicadosApp.push(st.ultimoCalce)
+      }
+    })
+
+    // Extraer calces no nulos del arnes para comparar la secuencia exacta de tokens ubicados
+    const calcesArnes = resArnes.serie.filter((s) => s.calce > 0).map((s) => s.calce)
+    const calcesUnicosArnes = Array.from(new Set(calcesArnes))
+
+    // Comparar la secuencia de calces entre el arnes y el hook
+    expect(calcesUnicosArnes).toEqual(ubicadosApp)
+    expect(calcesUnicosArnes).toEqual([2, 5, 9])
+  })
+
+  test('T143: EL CORPUS MEJORA', () => {
+    const rutaCorpus = path.resolve(process.cwd(), 'src/pruebas/corpus/lectura-2026-09-12-2311.txt')
+    const contenido = fs.readFileSync(rutaCorpus, 'utf-8')
+    const corpus = leerCorpus(contenido)
+
+    const res = repetirLectura(corpus)
+    console.log(`[T143] RESULTADOS CORPUS:
+      porcentaje ubicado: ${res.porcentajeUbicados.toFixed(2)}%
+      adelanto maximo:    ${res.adelantoMaximo.toFixed(2)} palabras
+      adelanto medio:     ${res.adelantoMedio.toFixed(2)} palabras
+      cuadros quietos:    ${res.cuadrosQuietos} / ${res.totalCuadros}`)
+
+    expect(res.porcentajeUbicados).toBeGreaterThanOrEqual(60.0)
   })
 })
