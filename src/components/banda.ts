@@ -78,15 +78,28 @@ export function calcularBanda(
 // leer cae siempre fuera de ella. Lo que VIENE tiene que quedarse legible varios renglones
 // hacia abajo; lo que YA PASO se apaga rapido, porque ahi no hay nada que leer.
 //
-// La escala es deliberadamente asimetrica: cuatro renglones utiles hacia adelante, uno
-// hacia atras. No es una banda: es una rampa.
+// PERO LA ZONA LEGIBLE TIENE QUE SEGUIR SIENDO CHICA, Y ESO MANDA.
+//
+// Javier lo corrigio el mismo dia, y tiene razon: "si es varios renglones ya nos alejamos
+// del ojo de la camara, yo se que es algo mas pero no varios renglones".
+//
+// El teleprompter existe para que la persona MIRE EL LENTE. Si la zona legible abarca
+// cuatro o cinco renglones, el ojo recorre un area grande y se despega de la camara: se
+// nota en el video y arruina la toma. Una version anterior de esta funcion abria la rampa a
+// cinco renglones y estaba mal por eso.
+//
+// El arreglo del problema que reporto -leer en un renglon apagado- NO era ensanchar la
+// zona: era que el renglon SIGUIENTE, que es donde caen los ojos, estuviera tan claro como
+// el vivo. Dos renglones claros son unos 70 px: el ojo se mueve dentro de eso y no se va del
+// lente.
+//
+// Asimetrica igual: hacia adelante hay algo mas de margen que hacia atras, porque atras no
+// hay nada que leer.
 export function opacidadDeLinea(distanciaLineas: number): number {
   if (distanciaLineas === 0) return 1.0
   if (distanciaLineas === 1) return 1.0
-  if (distanciaLineas === 2) return 0.88
-  if (distanciaLineas === 3) return 0.70
-  if (distanciaLineas === 4) return 0.50
-  if (distanciaLineas > 4) return 0.30
+  if (distanciaLineas === 2) return 0.55
+  if (distanciaLineas > 2) return 0.22
   if (distanciaLineas === -1) return 0.35
   return 0.12
 }

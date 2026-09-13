@@ -1495,7 +1495,7 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
 
     expect(opacidadDeLinea(0)).toBe(1.0)
     expect(opacidadDeLinea(1)).toBe(1.0)
-    expect(opacidadDeLinea(2)).toBe(0.88)
+    expect(opacidadDeLinea(2)).toBe(0.55)
     // 0.45 desde el 13 de septiembre de 2026, no 0.30. El renglon ya leido subio de
     // visibilidad porque es donde la persona de verdad tiene los ojos cuando el texto se
     // adelanta medio renglon. Sigue por debajo del siguiente -0.60-, asi que la asimetria
@@ -3284,7 +3284,7 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       expect(Number((1 - opacidadDeLinea(0)).toFixed(2))).toBe(0.00)
       expect(Number((1 - opacidadDeLinea(1)).toFixed(2))).toBe(0.00)
       expect(Number((1 - opacidadDeLinea(-1)).toFixed(2))).toBe(0.65)
-      expect(Number((1 - opacidadDeLinea(2)).toFixed(2))).toBe(0.12)
+      expect(Number((1 - opacidadDeLinea(2)).toFixed(2))).toBe(0.45)
       expect(Number((1 - opacidadDeLinea(-2)).toFixed(2))).toBe(0.88)
     })
   })
