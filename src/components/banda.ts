@@ -62,12 +62,32 @@ export function calcularBanda(
 // ESTO NO SE ARREGLA EN EL MOTOR. Adelantar la posicion para "mostrar antes" fue el error
 // que costo dos semanas: corre el ancla y se pierde de vista donde estas. Mostrar por
 // delante es de la pantalla.
+// LA MARCA NUNCA VA A ESTAR DONDE SE ESTA MIRANDO, Y HAY QUE DISENAR CON ESO.
+//
+// Se suman dos retrasos y ninguno se puede eliminar:
+//
+//   1. El reconocedor entrega cada palabra unas decimas despues de que se dijo.
+//   2. El ojo va una o dos palabras POR DELANTE de la voz. Es fisiologico y es lo que
+//      permite leer de corrido.
+//
+// El motor solo puede oir la voz. Asi que la marca esta, siempre, dos o tres palabras
+// detras de donde estan los ojos. Javier lo razono el 13 de septiembre de 2026 mejor que
+// yo: si el ojo va antes, el atraso efectivo es peor que el medido.
+//
+// POR ESO NO PUEDE SER UNA VENTANA DE TRES RENGLONES CENTRADA EN LA VOZ: lo que se va a
+// leer cae siempre fuera de ella. Lo que VIENE tiene que quedarse legible varios renglones
+// hacia abajo; lo que YA PASO se apaga rapido, porque ahi no hay nada que leer.
+//
+// La escala es deliberadamente asimetrica: cuatro renglones utiles hacia adelante, uno
+// hacia atras. No es una banda: es una rampa.
 export function opacidadDeLinea(distanciaLineas: number): number {
   if (distanciaLineas === 0) return 1.0
   if (distanciaLineas === 1) return 1.0
-  if (distanciaLineas === 2) return 0.55
-  if (distanciaLineas > 2) return 0.28
-  if (distanciaLineas === -1) return 0.40
+  if (distanciaLineas === 2) return 0.88
+  if (distanciaLineas === 3) return 0.70
+  if (distanciaLineas === 4) return 0.50
+  if (distanciaLineas > 4) return 0.30
+  if (distanciaLineas === -1) return 0.35
   return 0.12
 }
 
