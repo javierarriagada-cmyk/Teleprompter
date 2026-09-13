@@ -3,12 +3,16 @@ import { MotorDeAvance, EstadoModo } from '../lib/avance'
 import { tokenizarGuion, Token } from '../lib/seguidor'
 import { Guion } from '../datos/modelo'
 import { esCaracterApertura, esCaracterCierre } from '../lib/acotaciones'
-import { agruparEnRenglones, pixelDePosicion, Renglon, MedidaToken } from '../lib/renglones'
+import { agruparEnRenglones, pixelDePosicion, pixelDeRenglon, Renglon, MedidaToken } from '../lib/renglones'
 import { anotar } from '../lib/diagnostico'
 
 import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
 
 export const MARGEN_RENGLONES_ARRIBA = 1   // el renglon vivo es el del medio de la banda
+
+// Cuanto tarda la pantalla en pasar de un renglon al siguiente. Constante de tiempo de un
+// acercamiento exponencial: con 70 ms, el renglon se recorre casi entero en unos 200.
+export const MS_DESLIZAR = 70
 
 // TOPBANDA SE RESTABA DOS VECES, Y ESO SACABA EL RENGLON VIVO DE LA VENTANA.
 //
@@ -157,6 +161,8 @@ export default function TeleprompterView({
 
   const renglonesRef = useRef<Renglon[]>([])
   const origenRef = useRef<number>(0)
+  const scrollSuaveRef = useRef<number | null>(null)
+  const ultimoCuadroRef = useRef<number | null>(null)
 
   const recalcularGeometria = React.useCallback(() => {
     const container = containerRef.current
@@ -363,11 +369,34 @@ export default function TeleprompterView({
       const origen = origenRef.current
       // LA CUENTA VIVE EN UN SOLO LUGAR. Aca estaba repetida a mano, asi que la funcion
       // calcularScrollTop -la que miran las pruebas- no era la que corria en la pantalla.
-      const top = calcularScrollTop(
-        pixelDePosicion(renglones, st.posicion),
+      //
+      // Y EL BLANCO ES EL PIXEL DEL RENGLON, NO EL INTERPOLADO. Con pixelDePosicion, decir
+      // las cuatro palabras de un renglon desplazaba la pantalla un renglon entero repartido
+      // desde la primera palabra: el renglon que se esta leyendo se iba subiendo mientras se
+      // lo leia. Con pixelDeRenglon la pantalla se queda quieta durante todo el renglon y se
+      // mueve una sola vez al cruzar al siguiente.
+      const topObjetivo = calcularScrollTop(
+        pixelDeRenglon(renglones, st.posicion),
         origen,
         filaPx
       )
+
+      // Y ESE CAMBIO SE DESLIZA, NO SALTA.
+      //
+      // El movimiento continuo se puso en su momento para matar los saltitos que Javier
+      // reporto el primer dia -68% de los cuadros congelados y tirones entre medio-. Si el
+      // desplazamiento cambia de golpe un renglon, vuelve eso.
+      //
+      // Aca el blanco cambia una vez por renglon y la pantalla lo alcanza con un acercamiento
+      // exponencial: MS_DESLIZAR es la constante de tiempo, asi que un renglon se recorre en
+      // algo mas de 200 ms. Regular, siempre igual, y sin parar en el medio.
+      const dtCuadro = ultimoCuadroRef.current === null ? 16 : Math.min(100, tAhora - ultimoCuadroRef.current)
+      ultimoCuadroRef.current = tAhora
+      if (scrollSuaveRef.current === null) scrollSuaveRef.current = topObjetivo
+      const acercamiento = 1 - Math.exp(-dtCuadro / MS_DESLIZAR)
+      scrollSuaveRef.current += (topObjetivo - scrollSuaveRef.current) * acercamiento
+      if (Math.abs(topObjetivo - scrollSuaveRef.current) < 0.5) scrollSuaveRef.current = topObjetivo
+      const top = scrollSuaveRef.current
 
       if (diagnostico && containerRef.current) {
         const el = document.getElementById('diag-prompter')
