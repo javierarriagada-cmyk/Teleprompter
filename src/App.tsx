@@ -104,6 +104,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [medirLectura, setMedirLectura] = useState<boolean>(true)
   const [modoManual, setModoManual] = useState<boolean>(false)
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
+  const [mostrarDiagnostico, setMostrarDiagnostico] = useState<boolean>(false)
 
   // Sincronizar tema con documentElement
   useEffect(() => {
@@ -537,26 +538,6 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   return (
     <div style={{ padding: vista === 'lectura' ? 0 : 16, fontFamily: 'sans-serif', maxWidth: vista === 'lectura' ? 'none' : 1200, margin: '0 auto' }}>
-      {/* EN LECTURA NO HAY CABECERA. El titulo de la app y el boton de biblioteca se comian
-          un pedazo de la pantalla justo cuando el texto es lo unico que importa. */}
-      {vista !== 'lectura' && (
-        <header style={{ borderBottom: '1px solid var(--color-borde)', paddingBottom: 12, marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div>
-            <h1 style={{ margin: 0, fontSize: 24, cursor: 'pointer', color: 'var(--color-texto)' }} onClick={() => setVista('biblioteca')}>Teleprompter MVP</h1>
-            {vista !== 'biblioteca' && (
-              <h3 style={{ color: 'var(--color-apagado)', margin: '4px 0 0 0', fontSize: 16 }}>{tituloMostrar}</h3>
-            )}
-          </div>
-          {vista !== 'biblioteca' && (
-            <button
-              onClick={() => setVista('biblioteca')}
-              style={{ padding: '6px 12px', cursor: 'pointer', backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)', borderRadius: 6, color: 'var(--color-texto)' }}
-            >
-              Ver Biblioteca
-            </button>
-          )}
-        </header>
-      )}
 
       {/* Indicador de precarga de modelo Vosk */}
       {(estadoPrecarga === 'descargando' || estadoPrecarga === 'error') && (
@@ -595,49 +576,52 @@ export default function App({ motor, repoOverride }: AppProps) {
         </div>
       )}
 
-      {/* Franja de estado visible */}
-      <div
-        style={{
-          background: (ultimoError || errorRepositorio) ? '#ffebee' : 'var(--bg-superficie)',
-          color: (ultimoError || errorRepositorio) ? '#c62828' : 'var(--color-texto)',
-          padding: '10px 14px',
-          borderRadius: 6,
-          marginBottom: 16,
-          fontSize: 14,
-          border: `1px solid ${(ultimoError || errorRepositorio) ? '#ef9a9a' : 'var(--color-borde)'}`
-        }}
-      >
-        <strong>Franja de Estado:</strong>
-        <div style={{ marginTop: 4 }}>
-          <span>Estado del Motor: <strong>{estadoMotor}</strong></span>
-          {modoManual && <span style={{ marginLeft: 16, color: 'var(--color-acento)', fontWeight: 600 }}>MODO MANUAL: mandas tú</span>}
-          <span style={{ marginLeft: 16 }}>Motor Activo: <strong>{motorActivo}</strong></span>
-          {engine === 'whisper-local' && (
-            <span style={{ marginLeft: 16 }}>Dispositivo: <strong>{dispositivoComputo}</strong></span>
+      {/* Franja de estado escondida por omision - se activa mediante toque largo en el resumen de la biblioteca */}
+      {mostrarDiagnostico && (
+        <div
+          data-testid="franja-de-estado-diagnostico"
+          style={{
+            background: (ultimoError || errorRepositorio) ? '#ffebee' : 'var(--bg-superficie)',
+            color: (ultimoError || errorRepositorio) ? '#c62828' : 'var(--color-texto)',
+            padding: '10px 14px',
+            borderRadius: 6,
+            marginBottom: 16,
+            fontSize: 14,
+            border: `1px solid ${(ultimoError || errorRepositorio) ? '#ef9a9a' : 'var(--color-borde)'}`
+          }}
+        >
+          <strong>Franja de Estado:</strong>
+          <div style={{ marginTop: 4 }}>
+            <span>Estado del Motor: <strong>{estadoMotor}</strong></span>
+            {modoManual && <span style={{ marginLeft: 16, color: 'var(--color-acento)', fontWeight: 600 }}>MODO MANUAL: mandas tú</span>}
+            <span style={{ marginLeft: 16 }}>Motor Activo: <strong>{motorActivo}</strong></span>
+            {engine === 'whisper-local' && (
+              <span style={{ marginLeft: 16 }}>Dispositivo: <strong>{dispositivoComputo}</strong></span>
+            )}
+            <span style={{ marginLeft: 16 }}>Bloqueo Pantalla: <strong>{wakeLockActivo ? 'Sí' : 'No'}</strong></span>
+            {textoFreno && (
+              <span style={{ marginLeft: 16, color: '#d84315', fontWeight: 'bold' }}>
+                Estado Avance: {textoFreno}
+              </span>
+            )}
+            {usandoMemoriaFallback && (
+              <span style={{ marginLeft: 16, color: '#b71c1c', fontWeight: 'bold' }}>
+                ⚠️ Almacenamiento: En Memoria (IndexedDB no disponible)
+              </span>
+            )}
+          </div>
+          {ultimoError && (
+            <div style={{ marginTop: 6, fontWeight: 'bold' }}>
+              Último Error Motor: {ultimoError}
+            </div>
           )}
-          <span style={{ marginLeft: 16 }}>Bloqueo Pantalla: <strong>{wakeLockActivo ? 'Sí' : 'No'}</strong></span>
-          {textoFreno && (
-            <span style={{ marginLeft: 16, color: '#d84315', fontWeight: 'bold' }}>
-              Estado Avance: {textoFreno}
-            </span>
-          )}
-          {usandoMemoriaFallback && (
-            <span style={{ marginLeft: 16, color: '#b71c1c', fontWeight: 'bold' }}>
-              ⚠️ Almacenamiento: En Memoria (IndexedDB no disponible)
-            </span>
+          {errorRepositorio && (
+            <div style={{ marginTop: 6, fontWeight: 'bold', color: '#b71c1c' }}>
+              Aviso Repositorio: {errorRepositorio}
+            </div>
           )}
         </div>
-        {ultimoError && (
-          <div style={{ marginTop: 6, fontWeight: 'bold' }}>
-            Último Error Motor: {ultimoError}
-          </div>
-        )}
-        {errorRepositorio && (
-          <div style={{ marginTop: 6, fontWeight: 'bold', color: '#b71c1c' }}>
-            Aviso Repositorio: {errorRepositorio}
-          </div>
-        )}
-      </div>
+      )}
 
       {vista === 'biblioteca' && (
         <BibliotecaView
@@ -649,6 +633,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           onBorrar={handleBorrarGuion}
           onArchivar={handleArchivarGuion}
           onBuscarGuionCompleto={(id) => repoRef.current.abrir(id)}
+          onToggleDiagnostico={() => setMostrarDiagnostico((prev) => !prev)}
         />
       )}
 

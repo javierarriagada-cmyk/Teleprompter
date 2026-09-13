@@ -140,12 +140,18 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
 
     await expect(elegirMotor()).rejects.toThrow(/Ningún motor de voz está disponible/i)
 
-    // 4. Franja de estado en App muestra el mensaje de error cuando falla el motor
+    // 4. Franja de estado en App muestra el mensaje de error cuando falla el motor (activando primero el diagnóstico)
     const repo = new RepositorioMemoria()
     render(React.createElement(App, { repoOverride: repo }))
 
     await act(async () => {
       await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // La franja de diagnóstico se activa tocando/haciendo clic en el resumen del encabezado
+    const resumen = screen.getByTestId('resumen-encabezado-biblioteca')
+    await act(async () => {
+      fireEvent.click(resumen)
     })
 
     expect(screen.getByText(/Franja de Estado:/i)).not.toBeNull()

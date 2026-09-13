@@ -267,7 +267,8 @@ Esta es la tercera línea`)
     const motor = new MotorFake(frases)
 
     const repo = new RepositorioMemoria()
-    await repo.guardar(guionSimple(frases.join('\n')))
+    const g = guionSimple(frases.join('\n'))
+    await repo.guardar(g)
 
     let container: HTMLElement
 
@@ -277,26 +278,35 @@ Esta es la tercera línea`)
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    // Abrir guion desde biblioteca
-    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
-    expect(botonAbrir).not.toBeUndefined()
+    // Abrir guion desde biblioteca haciendo clic en la fila
+    const filaGuion = container!.querySelector(`[data-testid="fila-guion-${g.id}"]`) as HTMLElement
+    expect(filaGuion).not.toBeNull()
     await act(async () => {
-      fireEvent.click(botonAbrir!)
+      fireEvent.click(filaGuion)
       await new Promise((r) => setTimeout(r, 100))
     })
 
     // Entrar a lectura
-    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
-    expect(botonLeer).not.toBeUndefined()
+    const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLElement
+    expect(botonLeer).not.toBeNull()
     await act(async () => {
-      fireEvent.click(botonLeer!)
+      fireEvent.click(botonLeer)
       await new Promise((r) => setTimeout(r, 100))
     })
 
     const getHighlightedLineIndex = () => {
-      const lines = Array.from(container.querySelectorAll('.line'))
-      const idx = lines.findIndex((line) => (line as HTMLElement).style.opacity === '1')
-      return idx >= 0 ? idx : 0
+      const prompterEl = container.querySelector('[data-testid="teleprompter-view-container"]')
+      if (!prompterEl) return 0
+      const key = Object.keys(prompterEl).find((k) => k.startsWith('__reactFiber$') || k.startsWith('__reactInternalInstance$'))
+      if (!key) return 0
+      let fiber = (prompterEl as any)[key]
+      while (fiber) {
+        if (fiber.memoizedProps && typeof fiber.memoizedProps.currentLineIndex === 'number') {
+          return fiber.memoizedProps.currentLineIndex
+        }
+        fiber = fiber.return
+      }
+      return 0
     }
 
     expect(getHighlightedLineIndex()).toBe(0)
@@ -390,11 +400,11 @@ Esta es la tercera línea`)
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonCrear = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Crear'))
-    expect(botonCrear).not.toBeUndefined()
+    const botonCrear = container!.querySelector('[data-testid="btn-crear-guion-flotante"]') as HTMLElement
+    expect(botonCrear).not.toBeNull()
 
     await act(async () => {
-      fireEvent.click(botonCrear!)
+      fireEvent.click(botonCrear)
       await new Promise((r) => setTimeout(r, 100))
     })
 
@@ -409,6 +419,9 @@ Esta es la tercera línea`)
       await new Promise((r) => setTimeout(r, 600))
     })
 
+    const listaGuiones = await repo.listar()
+    const guionCreadoId = listaGuiones[0].id
+
     unmount!()
 
     let container2: HTMLElement
@@ -418,11 +431,11 @@ Esta es la tercera línea`)
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir = Array.from(container2!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
-    expect(botonAbrir).not.toBeUndefined()
+    const filaGuion = container2!.querySelector(`[data-testid="fila-guion-${guionCreadoId}"]`) as HTMLElement
+    expect(filaGuion).not.toBeNull()
 
     await act(async () => {
-      fireEvent.click(botonAbrir!)
+      fireEvent.click(filaGuion)
       await new Promise((r) => setTimeout(r, 100))
     })
 
@@ -650,7 +663,8 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
     localStorage.clear()
     const textoPrueba = `Bienvenido al teleprompter\nLee este texto en voz alta para probar el reconocimiento`
     const repo = new RepositorioMemoria()
-    await repo.guardar(guionSimple(textoPrueba))
+    const g = guionSimple(textoPrueba)
+    await repo.guardar(g)
 
     const motor = new MotorFake()
     let container: HTMLElement
@@ -661,23 +675,33 @@ describe('Pruebas TAREA 2 (T12-T24)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
-    expect(botonAbrir).not.toBeUndefined()
+    const filaGuion = container!.querySelector(`[data-testid="fila-guion-${g.id}"]`) as HTMLElement
+    expect(filaGuion).not.toBeNull()
     await act(async () => {
-      fireEvent.click(botonAbrir!)
+      fireEvent.click(filaGuion)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
-    expect(botonLeer).not.toBeUndefined()
+    const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLElement
+    expect(botonLeer).not.toBeNull()
     await act(async () => {
-      fireEvent.click(botonLeer!)
+      fireEvent.click(botonLeer)
       await new Promise((r) => setTimeout(r, 100))
     })
 
     const getHighlightedLineIndex = () => {
-      const lines = Array.from(container.querySelectorAll('.line'))
-      return lines.findIndex((line) => (line as HTMLElement).style.opacity === '1')
+      const prompterEl = container.querySelector('[data-testid="teleprompter-view-container"]')
+      if (!prompterEl) return 0
+      const key = Object.keys(prompterEl).find((k) => k.startsWith('__reactFiber$') || k.startsWith('__reactInternalInstance$'))
+      if (!key) return 0
+      let fiber = (prompterEl as any)[key]
+      while (fiber) {
+        if (fiber.memoizedProps && typeof fiber.memoizedProps.currentLineIndex === 'number') {
+          return fiber.memoizedProps.currentLineIndex
+        }
+        fiber = fiber.return
+      }
+      return 0
     }
 
     expect(getHighlightedLineIndex()).toBe(0)
@@ -1313,8 +1337,12 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const h3Elements = Array.from(container!.querySelectorAll('h3'))
-    const titulos = h3Elements.map((h) => h.textContent?.trim()).filter((t) => t !== 'Teleprompter MVP')
+    const obtenerTitulosVisibles = () => {
+      const divs = Array.from(container!.querySelectorAll('.texto-titulo'))
+      return divs.map((d) => d.textContent?.trim() || '').filter((t) => t.length > 0)
+    }
+
+    const titulos = obtenerTitulosVisibles()
     expect(titulos.length).toBe(9)
     expect(titulos[0]).toBe('Deportes Fin de Semana')
     expect(titulos[1]).toBe('Noticias de la Mañana')
@@ -1326,7 +1354,7 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       fireEvent.change(busquedaInput, { target: { value: 'Noticias' } })
     })
 
-    const titulosFiltrados = Array.from(container!.querySelectorAll('h3')).map((h) => h.textContent?.trim()).filter((t) => t !== 'Teleprompter MVP')
+    const titulosFiltrados = obtenerTitulosVisibles()
     expect(titulosFiltrados.length).toBe(1)
     expect(titulosFiltrados[0]).toBe('Noticias de la Mañana')
   })
@@ -1339,7 +1367,9 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       idioma: 'es',
       creado: Date.now(),
       modificado: Date.now(),
-      bloques: []
+      bloques: [
+        { id: 'b1', nombre: '', texto: 'Bloque A' }
+      ]
     }
     await repo.guardar(guionPrueba)
 
@@ -1350,29 +1380,40 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
-    expect(botonAbrir).not.toBeUndefined()
+    const filaGuion = container!.querySelector('[data-testid="fila-guion-g-34"]') as HTMLElement
+    expect(filaGuion).not.toBeNull()
     await act(async () => {
-      fireEvent.click(botonAbrir!)
+      fireEvent.click(filaGuion)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    for (let i = 0; i < 3; i++) {
-      await act(async () => {
-        const btnAgregar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Agregar'))
-        expect(btnAgregar).not.toBeUndefined()
-        fireEvent.click(btnAgregar!)
-      })
-    }
-
-    const inputsNombre = container!.querySelectorAll('input[placeholder^="Nombre del bloque"]') as NodeListOf<HTMLInputElement>
-    expect(inputsNombre.length).toBe(3)
-
+    // Pegar texto para importar dos bloques adicionales (B y C)
+    const btnMenu = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
+    expect(btnMenu).not.toBeNull()
     await act(async () => {
-      fireEvent.change(inputsNombre[0], { target: { value: 'Bloque A' } })
-      fireEvent.change(inputsNombre[1], { target: { value: 'Bloque B' } })
-      fireEvent.change(inputsNombre[2], { target: { value: 'Bloque C' } })
+      fireEvent.click(btnMenu)
     })
+
+    const btnPegar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Pegar texto')!
+    await act(async () => {
+      fireEvent.click(btnPegar)
+    })
+
+    const textareaModal = container!.querySelector('textarea[placeholder="Pega aquí el texto completo..."]') as HTMLTextAreaElement
+    await act(async () => {
+      fireEvent.change(textareaModal, { target: { value: 'Bloque B\n\nBloque C' } })
+    })
+
+    const btnAceptar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Aceptar e importar')!
+    await act(async () => {
+      fireEvent.click(btnAceptar)
+    })
+
+    const textareas = Array.from(container!.querySelectorAll('textarea[placeholder="Escribe el texto..."]')) as HTMLTextAreaElement[]
+    expect(textareas.length).toBe(3)
+    expect(textareas[0].value).toBe('Bloque A')
+    expect(textareas[1].value).toBe('Bloque B')
+    expect(textareas[2].value).toBe('Bloque C')
 
     const botonesSubir = Array.from(container!.querySelectorAll('button')).filter((b) => b.textContent === '▲')
     expect(botonesSubir.length).toBe(3)
@@ -1381,15 +1422,15 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       fireEvent.click(botonesSubir[2])
     })
 
-    const botonesBorrar = Array.from(container!.querySelectorAll('button')).filter((b) => b.textContent === 'Borrar')
+    const botonesBorrar = Array.from(container!.querySelectorAll('button')).filter((b) => b.textContent === '✕')
     await act(async () => {
       fireEvent.click(botonesBorrar[0])
     })
 
-    const inputsFinales = Array.from(container!.querySelectorAll('input[placeholder^="Nombre del bloque"]')) as HTMLInputElement[]
-    expect(inputsFinales.length).toBe(2)
-    expect(inputsFinales[0].value).toBe('Bloque C')
-    expect(inputsFinales[1].value).toBe('Bloque B')
+    const textareasFinales = Array.from(container!.querySelectorAll('textarea[placeholder="Escribe el texto..."]')) as HTMLTextAreaElement[]
+    expect(textareasFinales.length).toBe(2)
+    expect(textareasFinales[0].value).toBe('Bloque C')
+    expect(textareasFinales[1].value).toBe('Bloque B')
   })
 
   test('T35: borrar el guion que esta abierto vuelve a la biblioteca y no lanza', async () => {
@@ -1428,9 +1469,8 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
 
     window.confirm = origConfirm
 
-    const tituloBiblioteca = container!.querySelector('h2')
-    expect(tituloBiblioteca?.textContent).toBe('Biblioteca de Guiones')
-    expect(container!.textContent).toContain('No hay ningún guión guardado')
+    expect(container!.textContent).toContain('Guiones')
+    expect(container!.textContent).toContain('Acá van a estar tus guiones.')
   })
 
   test('T36: el guardado automatico llama a guardar una sola vez tras varias teclas seguidas', async () => {
@@ -1459,9 +1499,11 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir = container!.querySelector('button') as HTMLButtonElement
+    const filaGuion = container!.querySelector('[data-testid="fila-guion-g-36"]') as HTMLElement
+    expect(filaGuion).not.toBeNull()
+
     await act(async () => {
-      fireEvent.click(botonAbrir)
+      fireEvent.click(filaGuion)
       await new Promise((r) => setTimeout(r, 100))
     })
 
@@ -2305,7 +2347,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    expect(container!.textContent).toContain('No hay ningún guión guardado')
+    expect(container!.textContent).toContain('Acá van a estar tus guiones.')
 
     const inputArchivo = container!.querySelector('input[data-testid="input-importar-archivo"]') as HTMLInputElement
     expect(inputArchivo).not.toBeNull()
@@ -2318,7 +2360,9 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await new Promise((r) => setTimeout(r, 300))
     })
 
-    expect(container!.textContent).toContain('MiGuionNuevo')
+    const inputTitulo = container!.querySelector('[data-testid="input-titulo-guion"]') as HTMLInputElement
+    expect(inputTitulo).not.toBeNull()
+    expect(inputTitulo.value).toBe('MiGuionNuevo')
 
     const textareas = Array.from(container!.querySelectorAll('textarea'))
     expect(textareas.length).toBe(2)
@@ -2444,14 +2488,23 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
     // 1. Con filtro apagado y búsqueda vacía, no aparece en la lista principal
     expect(container!.textContent).not.toContain('Guion Oculto Archivado')
 
-    // 2. Con el filtro encendido ("Ver Archivados"), sí aparece
+    // 2. Con el filtro encendido ("Ver Archivados"), sí aparece (desplegando primero el menú ⋯)
+    const btnMenu = container!.querySelector('[data-testid="btn-menu-superior-biblioteca"]') as HTMLElement
+    expect(btnMenu).not.toBeNull()
+    await act(async () => {
+      fireEvent.click(btnMenu)
+    })
+
     const btnFiltro = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ver Archivados'))!
     await act(async () => {
       fireEvent.click(btnFiltro)
     })
     expect(container!.textContent).toContain('Guion Oculto Archivado')
 
-    // Volver a apagar el filtro
+    // Volver a apagar el filtro (desplegando el menú ⋯ de nuevo)
+    await act(async () => {
+      fireEvent.click(btnMenu)
+    })
     const btnFiltroPrincipales = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ver Principales'))!
     await act(async () => {
       fireEvent.click(btnFiltroPrincipales)
@@ -2513,14 +2566,15 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    // Abrir guión en editor
-    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    // Abrir guión en editor haciendo clic en la fila
+    const filaGuion = container!.querySelector('[data-testid="fila-guion-g-98"]') as HTMLElement
+    expect(filaGuion).not.toBeNull()
     await act(async () => {
-      fireEvent.click(botonAbrir)
+      fireEvent.click(filaGuion)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const textarea = container!.querySelector('textarea[placeholder="Escribe el texto de este bloque..."]') as HTMLTextAreaElement
+    const textarea = container!.querySelector('textarea[placeholder="Escribe el texto..."]') as HTMLTextAreaElement
     expect(textarea).not.toBeNull()
 
     let gInicial = await repo.abrir('g-98')
