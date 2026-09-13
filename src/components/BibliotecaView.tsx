@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Guion, ResumenGuion, calcularDuracionTexto } from '../datos/modelo'
+import { Guion, ResumenGuion } from '../datos/modelo'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -10,6 +10,32 @@ interface BibliotecaViewProps {
   onBorrar: (id: string) => void
   onArchivar: (id: string, archivado: boolean) => void
   onBuscarGuionCompleto?: (id: string) => Promise<Guion | null>
+  onToggleDiagnostico?: () => void
+}
+
+export function formatearFechaNatural(timestamp: number): string {
+  if (!timestamp) return ''
+  const ahora = new Date()
+  const fecha = new Date(timestamp)
+
+  const inicioAhora = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate()).getTime()
+  const inicioFecha = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()).getTime()
+  const diffDias = Math.round((inicioAhora - inicioFecha) / (1000 * 60 * 60 * 24))
+
+  if (diffDias === 0) return 'hoy'
+  if (diffDias === 1) return 'ayer'
+  if (diffDias > 1 && diffDias <= 6) return `hace ${diffDias} días`
+  if (diffDias > 6 && diffDias <= 13) return 'hace 1 semana'
+  if (diffDias > 13 && diffDias <= 27) return `hace ${Math.floor(diffDias / 7)} semanas`
+
+  const dia = fecha.getDate()
+  const mes = fecha.getMonth() + 1
+  return `${dia}/${mes}`
+}
+
+export function calcularMinutosLectura(guiones: ResumenGuion[]): number {
+  const totalPalabras = guiones.reduce((acc, g) => acc + (g.palabras || 0), 0)
+  return Math.round(totalPalabras / 150)
 }
 
 export default function BibliotecaView({
@@ -20,16 +46,21 @@ export default function BibliotecaView({
   onRenombrar,
   onBorrar,
   onArchivar,
-  onBuscarGuionCompleto
+  onBuscarGuionCompleto,
+  onToggleDiagnostico
 }: BibliotecaViewProps) {
   const [busqueda, setBusqueda] = useState('')
   const [mostrarArchivados, setMostrarArchivados] = useState(false)
   const [menuId, setMenuId] = useState<string | null>(null)
+  const [menuSuperiorAbierto, setMenuSuperiorAbierto] = useState(false)
   const [mapaTextos, setMapaTextos] = useState<Record<string, string>>({})
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const timerHoldRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const fueLongPressRef = useRef<boolean>(false)
+
+  const timerDiagRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const fueLongPressDiagRef = useRef<boolean>(false)
 
   const hayMasDeOcho = guiones.length > 8
 
@@ -40,7 +71,6 @@ export default function BibliotecaView({
     let cancelado = false
     const inicio = performance.now()
 
-    // Cargar en demanda el texto completo de los guiones que no estén ya cargados
     const idsFaltantes = guiones.filter((g) => !(g.id in mapaTextos)).map((g) => g.id)
 
     if (idsFaltantes.length > 0) {
@@ -117,6 +147,7 @@ export default function BibliotecaView({
   }
 
   function handleClicImportar() {
+    setMenuSuperiorAbierto(false)
     fileInputRef.current?.click()
   }
 
@@ -128,8 +159,36 @@ export default function BibliotecaView({
     }
   }
 
+  // Toque largo sobre el resumen para alternar diagnostico
+  function handleDiagTouchStart() {
+    fueLongPressDiagRef.current = false
+    if (timerDiagRef.current) clearTimeout(timerDiagRef.current)
+    timerDiagRef.current = setTimeout(() => {
+      fueLongPressDiagRef.current = true
+      if (onToggleDiagnostico) onToggleDiagnostico()
+    }, 500)
+  }
+
+  function handleDiagTouchEnd() {
+    if (timerDiagRef.current) {
+      clearTimeout(timerDiagRef.current)
+      timerDiagRef.current = null
+    }
+  }
+
+  function handleDiagClick() {
+    if (fueLongPressDiagRef.current) {
+      fueLongPressDiagRef.current = false
+      return
+    }
+    if (onToggleDiagnostico) onToggleDiagnostico()
+  }
+
+  const minsLectura = calcularMinutosLectura(guiones)
+  const textoResumen = `${guiones.length} ${guiones.length === 1 ? 'guión' : 'guiones'} · ${minsLectura} minutos de lectura`
+
   return (
-    <div style={{ padding: '16px 0', maxWidth: 800, margin: '0 auto' }}>
+    <div style={{ padding: '16px', maxWidth: 800, margin: '0 auto', position: 'relative', minHeight: '80vh' }}>
       <input
         type="file"
         ref={fileInputRef}
@@ -139,129 +198,136 @@ export default function BibliotecaView({
         data-testid="input-importar-archivo"
       />
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <h2 style={{ margin: 0 }}>Biblioteca de Guiones</h2>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button
-            onClick={onCrearNuevo}
+      {/* Encabezado */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'var(--aire-4)' }}>
+        <div>
+          <h1 className="texto-display" style={{ margin: 0, color: 'var(--color-texto)' }}>
+            Guiones
+          </h1>
+          <div
+            className="texto-meta"
+            data-testid="resumen-encabezado-biblioteca"
+            onTouchStart={handleDiagTouchStart}
+            onTouchEnd={handleDiagTouchEnd}
+            onMouseDown={handleDiagTouchStart}
+            onMouseUp={handleDiagTouchEnd}
+            onClick={handleDiagClick}
             style={{
-              padding: '8px 16px',
-              backgroundColor: 'var(--color-acento)',
-              color: 'var(--color-texto-acento)',
+              color: 'var(--color-apagado)',
+              marginTop: 'var(--aire-1)',
+              cursor: 'pointer',
+              userSelect: 'none'
+            }}
+          >
+            {textoResumen}
+          </div>
+        </div>
+
+        {/* Menú superior derecho ⋯ */}
+        <div style={{ position: 'relative' }}>
+          <button
+            onClick={() => setMenuSuperiorAbierto(!menuSuperiorAbierto)}
+            data-testid="btn-menu-superior-biblioteca"
+            style={{
+              background: 'transparent',
               border: 'none',
-              borderRadius: 6,
-              cursor: 'pointer',
-              fontWeight: 'bold'
-            }}
-          >
-            + Crear Guión
-          </button>
-          <button
-            onClick={handleClicImportar}
-            style={{
-              padding: '8px 16px',
-              backgroundColor: 'var(--bg-superficie)',
+              fontSize: 22,
               color: 'var(--color-texto)',
-              border: '1px solid var(--color-borde)',
-              borderRadius: 6,
-              cursor: 'pointer',
-              fontWeight: 'bold'
+              padding: '4px 8px',
+              cursor: 'pointer'
             }}
+            title="Opciones"
           >
-            Importar archivo
+            ⋯
           </button>
+
+          {menuSuperiorAbierto && (
+            <div
+              style={{
+                position: 'absolute',
+                top: '100%',
+                right: 0,
+                backgroundColor: 'var(--bg-superficie)',
+                border: '1px solid var(--color-borde)',
+                borderRadius: 'var(--redondeo)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                zIndex: 50,
+                minWidth: 160,
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+            >
+              <button
+                onClick={() => {
+                  setMostrarArchivados(!mostrarArchivados)
+                  setMenuSuperiorAbierto(false)
+                }}
+                style={{
+                  padding: '12px 16px',
+                  textAlign: 'left',
+                  background: 'transparent',
+                  border: 'none',
+                  borderBottom: '1px solid var(--color-borde)',
+                  color: 'var(--color-texto)',
+                  fontSize: 'var(--texto-cuerpo)',
+                  cursor: 'pointer'
+                }}
+              >
+                {mostrarArchivados ? 'Ver Principales' : 'Ver Archivados'}
+              </button>
+              <button
+                onClick={handleClicImportar}
+                style={{
+                  padding: '12px 16px',
+                  textAlign: 'left',
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--color-texto)',
+                  fontSize: 'var(--texto-cuerpo)',
+                  cursor: 'pointer'
+                }}
+              >
+                Importar archivo
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: 12, marginBottom: 20, alignItems: 'center' }}>
-        {hayMasDeOcho && (
+      {/* Buscador: sin borde, fondo bg-suelo y redondeo */}
+      {hayMasDeOcho && (
+        <div style={{ marginBottom: 'var(--aire-4)' }}>
           <input
             type="text"
-            placeholder="Buscar por título o texto..."
+            placeholder="Buscar"
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
             data-testid="input-busqueda-biblioteca"
             style={{
-              flex: 1,
-              padding: '10px 12px',
-              fontSize: 16,
-              borderRadius: 6,
-              border: '1px solid var(--color-borde)',
-              backgroundColor: 'var(--bg-superficie)',
+              width: '100%',
+              padding: '12px 16px',
+              fontSize: 'var(--texto-cuerpo)',
+              borderRadius: 'var(--redondeo)',
+              border: 'none',
+              backgroundColor: 'var(--bg-suelo)',
               color: 'var(--color-texto)',
-              boxSizing: 'border-box'
+              boxSizing: 'border-box',
+              outline: 'none'
             }}
           />
-        )}
+        </div>
+      )}
 
-        <button
-          onClick={() => setMostrarArchivados(!mostrarArchivados)}
-          style={{
-            padding: '10px 14px',
-            backgroundColor: mostrarArchivados ? 'var(--color-borde)' : 'var(--bg-superficie)',
-            color: 'var(--color-texto)',
-            border: '1px solid var(--color-borde)',
-            borderRadius: 6,
-            cursor: 'pointer',
-            fontSize: 14,
-            fontWeight: 500,
-            whiteSpace: 'nowrap',
-            marginLeft: hayMasDeOcho ? 0 : 'auto'
-          }}
-        >
-          {mostrarArchivados ? 'Ver Principales' : 'Ver Archivados'}
-        </button>
-      </div>
-
+      {/* Lista de guiones */}
       {guiones.length === 0 ? (
-        <div
-          style={{
-            padding: 40,
-            textAlign: 'center',
-            backgroundColor: 'var(--bg-superficie)',
-            borderRadius: 8,
-            border: '1px dashed var(--color-borde)',
-            marginTop: 20
-          }}
-        >
-          <p style={{ fontSize: 18, color: 'var(--color-apagado)', marginBottom: 20 }}>
-            No hay ningún guión guardado.
+        <div style={{ textAlign: 'center', padding: 'var(--aire-5) 0' }}>
+          <p className="texto-cuerpo" style={{ color: 'var(--color-apagado)', margin: 0 }}>
+            Acá van a estar tus guiones.
           </p>
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
-            <button
-              onClick={onCrearNuevo}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: 'var(--color-acento)',
-                color: 'var(--color-texto-acento)',
-                border: 'none',
-                borderRadius: 6,
-                cursor: 'pointer',
-                fontSize: 16,
-                fontWeight: 'bold'
-              }}
-            >
-              Crear el primer guión
-            </button>
-            <button
-              onClick={handleClicImportar}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: 'var(--bg-superficie)',
-                color: 'var(--color-texto)',
-                border: '1px solid var(--color-borde)',
-                borderRadius: 6,
-                cursor: 'pointer',
-                fontSize: 16,
-                fontWeight: 'bold'
-              }}
-            >
-              Importar archivo
-            </button>
-          </div>
         </div>
       ) : guionesFiltrados.length === 0 ? (
-        <div style={{ padding: 20, textAlign: 'center', color: 'var(--color-apagado)' }}>
+        <div style={{ padding: 'var(--aire-4)', textAlign: 'center', color: 'var(--color-apagado)' }} className="texto-meta">
           {busqueda.trim()
             ? `No se encontraron guiones que coincidan con "${busqueda}".`
             : mostrarArchivados
@@ -269,15 +335,13 @@ export default function BibliotecaView({
             : 'No hay guiones en la lista principal.'}
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           {guionesFiltrados.map((g, index) => {
             const tituloMostrar = g.titulo && g.titulo.trim() ? g.titulo : 'Sin título'
-            const duracion = calcularDuracionTexto(g.palabras, 150)
-            const fechaMod = new Date(g.modificado).toLocaleString('es', {
-              dateStyle: 'short',
-              timeStyle: 'short'
-            })
-            const esBiemvenida = (index === 0 && guiones.length === 1 && (g.titulo === 'Guion importado' || g.titulo === 'Sin título'))
+            const mins = Math.max(1, Math.round((g.palabras || 0) / 150))
+            const fechaNat = formatearFechaNatural(g.modificado)
+            const metaTexto = `${mins} min · ${fechaNat}`
+            const esUltima = index === guionesFiltrados.length - 1
 
             return (
               <div
@@ -291,17 +355,13 @@ export default function BibliotecaView({
                 onTouchEnd={handleTouchEnd}
                 onContextMenu={(e) => handleContextMenu(e, g.id)}
                 style={{
-                  position: 'relative',
-                  padding: 16,
-                  backgroundColor: 'var(--bg-superficie)',
-                  borderRadius: 6,
-                  border: `1px solid ${esBiemvenida ? 'var(--color-acento)' : 'var(--color-borde)'}`,
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                  padding: '14px 0',
+                  borderBottom: esUltima ? 'none' : '1px solid var(--color-borde)',
                   cursor: 'pointer',
                   userSelect: 'none'
                 }}
               >
-                {/* Botones ocultos para compatibilidad con pruebas automatizadas T9-T87 */}
+                {/* Botones ocultos para compatibilidad con pruebas T9-T87 */}
                 <button style={{ display: 'none' }} onClick={() => onAbrir(g.id)}>
                   Abrir
                 </button>
@@ -315,22 +375,12 @@ export default function BibliotecaView({
                   Borrar
                 </button>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div>
-                    <h3
-                      style={{
-                        margin: '0 0 6px 0',
-                        color: 'var(--color-texto)',
-                        fontSize: 18,
-                        fontWeight: 600
-                      }}
-                    >
-                      {tituloMostrar} {g.archivado && <span style={{ fontSize: 13, color: 'var(--color-apagado)' }}>(Archivado)</span>}
-                    </h3>
-                    <div style={{ fontSize: 13, color: 'var(--color-apagado)', display: 'flex', gap: 16 }}>
-                      <span>Duración: <strong>{duracion}</strong></span>
-                      <span>Modificado: {fechaMod}</span>
-                    </div>
+                <div>
+                  <div className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-1)' }}>
+                    {tituloMostrar} {g.archivado && <span style={{ fontSize: 13, color: 'var(--color-apagado)' }}>(Archivado)</span>}
+                  </div>
+                  <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
+                    {metaTexto}
                   </div>
                 </div>
 
@@ -339,12 +389,11 @@ export default function BibliotecaView({
                     data-testid={`menu-opciones-${g.id}`}
                     onClick={(e) => e.stopPropagation()}
                     style={{
-                      marginTop: 12,
-                      paddingTop: 12,
-                      borderTop: '1px solid var(--color-borde)',
+                      marginTop: 'var(--aire-2)',
+                      paddingTop: 'var(--aire-2)',
                       display: 'flex',
-                      gap: 8,
-                      justifyContent: 'flex-end'
+                      gap: 'var(--aire-2)',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     <button
@@ -356,9 +405,10 @@ export default function BibliotecaView({
                         padding: '6px 12px',
                         backgroundColor: 'var(--bg-suelo)',
                         color: 'var(--color-texto)',
-                        border: '1px solid var(--color-borde)',
-                        borderRadius: 4,
-                        cursor: 'pointer'
+                        border: 'none',
+                        borderRadius: 'var(--aire-2)',
+                        cursor: 'pointer',
+                        fontSize: 'var(--texto-meta)'
                       }}
                     >
                       {g.archivado ? 'Desarchivar' : 'Archivar'}
@@ -375,9 +425,10 @@ export default function BibliotecaView({
                         padding: '6px 12px',
                         backgroundColor: 'var(--bg-suelo)',
                         color: 'var(--color-texto)',
-                        border: '1px solid var(--color-borde)',
-                        borderRadius: 4,
-                        cursor: 'pointer'
+                        border: 'none',
+                        borderRadius: 'var(--aire-2)',
+                        cursor: 'pointer',
+                        fontSize: 'var(--texto-meta)'
                       }}
                     >
                       Eliminar
@@ -389,7 +440,8 @@ export default function BibliotecaView({
                         backgroundColor: 'transparent',
                         color: 'var(--color-apagado)',
                         border: 'none',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        fontSize: 'var(--texto-meta)'
                       }}
                     >
                       Cerrar
@@ -401,6 +453,29 @@ export default function BibliotecaView({
           })}
         </div>
       )}
+
+      {/* Botón Flotante CREAR */}
+      <button
+        onClick={onCrearNuevo}
+        data-testid="btn-crear-guion-flotante"
+        style={{
+          position: 'fixed',
+          bottom: 24,
+          right: 24,
+          backgroundColor: 'var(--color-acento)',
+          color: 'var(--color-texto-acento)',
+          border: 'none',
+          borderRadius: 24,
+          padding: '14px 22px',
+          fontSize: 'var(--texto-cuerpo)',
+          fontWeight: 600,
+          cursor: 'pointer',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
+          zIndex: 100
+        }}
+      >
+        + Nuevo
+      </button>
     </div>
   )
 }
