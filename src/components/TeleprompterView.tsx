@@ -8,6 +8,50 @@ import { anotar } from '../lib/diagnostico'
 
 import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
 
+export const MARGEN_RENGLONES_ARRIBA = 1   // el renglon vivo es el del medio de la banda
+
+// TOPBANDA SE RESTABA DOS VECES, Y ESO SACABA EL RENGLON VIVO DE LA VENTANA.
+//
+// El contenedor que hace scroll tiene paddingTop: topBanda (mas abajo, donde se arma).
+// Ese padding existe para que la primera linea del guion arranque ya dentro de la ventana
+// clara sin tener que desplazar nada.
+//
+// Pero origen es el offsetTop del primer token, y offsetTop SE MIDE DESDE EL BORDE DEL
+// CONTENEDOR, asi que ya trae ese padding adentro. Restar topBanda otra vez aca desplaza de
+// menos: el texto queda topBanda pixeles mas abajo de donde deberia.
+//
+// Medido el 13 de septiembre de 2026 montando el DOM de verdad en el navegador, con la
+// palabra 144 del guion que leyo Javier -el renglon exacto donde reporto que se le escapa-:
+//
+//   pantalla 480, letra 24   la ventana clara va de y=190 a y=290
+//                            el renglon vivo deberia caer en y=223 y caia en y=418
+//                            = 5.8 renglones FUERA de la ventana
+//   pantalla 720, letra 32   4.2 renglones fuera
+//   pantalla 720, letra 40   3.1 renglones fuera
+//
+// Y explica por que "al principio se lee bien": al arrancar, este Math.max clava el scroll
+// en 0, y con el padding el texto empieza JUSTO dentro de la ventana. El desfase aparece
+// recien cuando el texto empieza a desplazarse, y de ahi no se va mas.
+//
+// Javier venia diciendo hace dos semanas que terminaba leyendo fuera de la zona marcada.
+// Yo busque la causa en el motor: la posicion en palabras estaba bien todo el tiempo -0.13
+// palabras de error en esa misma palabra 144-. El defecto estaba en la unica capa que nunca
+// habia medido, entre la palabra y el pixel.
+//
+// ESTO NO LO AGARRABA NINGUNA PRUEBA porque T144 y T146 llaman a esta funcion con renglones
+// inventados y nunca montan el contenedor con su padding: comprueban la formula contra si
+// misma. La prueba que hace falta monta el DOM.
+export function calcularScrollTop(
+  pixelPos: number,
+  origen: number,
+  topBanda: number,
+  filaPx: number,
+  margenRenglonesArriba = MARGEN_RENGLONES_ARRIBA
+): number {
+  void topBanda   // lo pone el paddingTop del contenedor, no esta cuenta
+  return Math.max(0, pixelPos - origen - margenRenglonesArriba * filaPx)
+}
+
 interface TeleprompterViewProps {
   script: Guion | string
   currentBlockIndex?: number
@@ -305,7 +349,14 @@ export default function TeleprompterView({
       }
 
       const origen = origenRef.current
-      const top = Math.max(0, pixelDePosicion(renglones, st.posicion) - origen - filaPx)
+      // LA CUENTA VIVE EN UN SOLO LUGAR. Aca estaba repetida a mano, asi que la funcion
+      // calcularScrollTop -la que miran las pruebas- no era la que corria en la pantalla.
+      const top = calcularScrollTop(
+        pixelDePosicion(renglones, st.posicion),
+        origen,
+        topBanda,
+        filaPx
+      )
 
       if (diagnostico && containerRef.current) {
         const el = document.getElementById('diag-prompter')

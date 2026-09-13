@@ -8,7 +8,7 @@ import EditorView from '../components/EditorView'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { Guion } from '../datos/modelo'
 
-describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T144-T148)', () => {
+describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T149-T153)', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
   })
@@ -17,7 +17,7 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T144-T148)', () => {
     vi.restoreAllMocks()
   })
 
-  test('T144: En la biblioteca con tres guiones, TOCAR LA FILA abre el guion. Y no existe ningún botón "Abrir": la fila es el botón.', async () => {
+  test('T149: En la biblioteca con tres guiones, TOCAR LA FILA abre el guion. Y no existe ningún botón "Abrir": la fila es el botón.', async () => {
     let guionAbiertoId: string | null = null
     const guiones = [
       { id: 'g1', titulo: 'Guión Uno', idioma: 'es', modificado: Date.now() - 3600000, palabras: 100 },
@@ -51,7 +51,7 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T144-T148)', () => {
     expect(guionAbiertoId).toBe('g2')
   })
 
-  test('T145: Mantener apretada una fila muestra archivar y borrar. Un toque corto NO los muestra: abre el guion.', async () => {
+  test('T150: Mantener apretada una fila muestra archivar y borrar. Un toque corto NO los muestra: abre el guion.', async () => {
     let guionAbiertoId: string | null = null
     let guionBorradoId: string | null = null
     const guiones = [
@@ -88,10 +88,10 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T144-T148)', () => {
     expect(screen.getByText('Eliminar')).not.toBeNull()
   })
 
-  test('T146: GUARDIANA DEL TITULO. En el editor, el titulo del guion se dibuja con el tamano de display y NO existe ninguna etiqueta con el texto "Título del guión". Editarlo cambia el guion.', async () => {
+  test('T151: GUARDIANA DEL TITULO. En el editor, el titulo del guion se dibuja con el tamano de display y NO existe ninguna etiqueta con el texto "Título del guión". Editarlo cambia el guion.', async () => {
     let guionModificado: Guion | null = null
     const guionInicial: Guion = {
-      id: 'g-t146',
+      id: 'g-t151',
       titulo: 'Título Original',
       idioma: 'es',
       creado: Date.now(),
@@ -126,9 +126,9 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T144-T148)', () => {
     expect((guionModificado as unknown as Guion).titulo).toBe('Título Nuevo')
   })
 
-  test('T147: GUARDIANA DE LA BARRA CONTEXTUAL. Sin texto seleccionado, los botones de negrita y color NO estan en el documento. Con texto seleccionado, si.', async () => {
+  test('T152: GUARDIANA DE LA BARRA CONTEXTUAL. Sin texto seleccionado, los botones de negrita y color NO estan en el documento. Con texto seleccionado, si.', async () => {
     const guion: Guion = {
-      id: 'g-t147',
+      id: 'g-t152',
       titulo: 'Guion Barra Contextual',
       idioma: 'es',
       creado: Date.now(),
@@ -159,10 +159,10 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T144-T148)', () => {
     expect(screen.getByTestId('btn-color-ambar')).not.toBeNull()
   })
 
-  test('T148: GUARDIANA DEL DIAGNOSTICO. Con el interruptor apagado -que es lo de omision-, el texto "Franja de Estado" NO esta en el documento en ninguna de las dos pantallas. Encendido, si.', async () => {
+  test('T153: GUARDIANA DEL DIAGNOSTICO. Con el interruptor apagado -que es lo de omision-, el texto "Franja de Estado" NO esta en el documento en ninguna de las dos pantallas. Encendido, si.', async () => {
     const repo = new RepositorioMemoria()
     const guion: Guion = {
-      id: 'g-t148',
+      id: 'g-t153',
       titulo: 'Guion Diagnostico',
       idioma: 'es',
       creado: Date.now(),

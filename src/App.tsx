@@ -100,6 +100,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [medirLectura, setMedirLectura] = useState<boolean>(true)
   const [modoManual, setModoManual] = useState<boolean>(false)
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
+  const [mostrarDiagnostico, setMostrarDiagnostico] = useState<boolean>(false)
 
   // Sincronizar tema con documentElement
   useEffect(() => {
@@ -571,49 +572,52 @@ export default function App({ motor, repoOverride }: AppProps) {
         </div>
       )}
 
-      {/* Franja de estado visible */}
-      <div
-        style={{
-          background: (ultimoError || errorRepositorio) ? '#ffebee' : 'var(--bg-superficie)',
-          color: (ultimoError || errorRepositorio) ? '#c62828' : 'var(--color-texto)',
-          padding: '10px 14px',
-          borderRadius: 6,
-          marginBottom: 16,
-          fontSize: 14,
-          border: `1px solid ${(ultimoError || errorRepositorio) ? '#ef9a9a' : 'var(--color-borde)'}`
-        }}
-      >
-        <strong>Franja de Estado:</strong>
-        <div style={{ marginTop: 4 }}>
-          <span>Estado del Motor: <strong>{estadoMotor}</strong></span>
-          {modoManual && <span style={{ marginLeft: 16, color: 'var(--color-acento)', fontWeight: 600 }}>MODO MANUAL: mandas tú</span>}
-          <span style={{ marginLeft: 16 }}>Motor Activo: <strong>{motorActivo}</strong></span>
-          {engine === 'whisper-local' && (
-            <span style={{ marginLeft: 16 }}>Dispositivo: <strong>{dispositivoComputo}</strong></span>
+      {/* Franja de estado escondida por omision - se activa mediante toque largo en el resumen de la biblioteca */}
+      {mostrarDiagnostico && (
+        <div
+          data-testid="franja-de-estado-diagnostico"
+          style={{
+            background: (ultimoError || errorRepositorio) ? '#ffebee' : 'var(--bg-superficie)',
+            color: (ultimoError || errorRepositorio) ? '#c62828' : 'var(--color-texto)',
+            padding: '10px 14px',
+            borderRadius: 6,
+            marginBottom: 16,
+            fontSize: 14,
+            border: `1px solid ${(ultimoError || errorRepositorio) ? '#ef9a9a' : 'var(--color-borde)'}`
+          }}
+        >
+          <strong>Franja de Estado:</strong>
+          <div style={{ marginTop: 4 }}>
+            <span>Estado del Motor: <strong>{estadoMotor}</strong></span>
+            {modoManual && <span style={{ marginLeft: 16, color: 'var(--color-acento)', fontWeight: 600 }}>MODO MANUAL: mandas tú</span>}
+            <span style={{ marginLeft: 16 }}>Motor Activo: <strong>{motorActivo}</strong></span>
+            {engine === 'whisper-local' && (
+              <span style={{ marginLeft: 16 }}>Dispositivo: <strong>{dispositivoComputo}</strong></span>
+            )}
+            <span style={{ marginLeft: 16 }}>Bloqueo Pantalla: <strong>{wakeLockActivo ? 'Sí' : 'No'}</strong></span>
+            {textoFreno && (
+              <span style={{ marginLeft: 16, color: '#d84315', fontWeight: 'bold' }}>
+                Estado Avance: {textoFreno}
+              </span>
+            )}
+            {usandoMemoriaFallback && (
+              <span style={{ marginLeft: 16, color: '#b71c1c', fontWeight: 'bold' }}>
+                ⚠️ Almacenamiento: En Memoria (IndexedDB no disponible)
+              </span>
+            )}
+          </div>
+          {ultimoError && (
+            <div style={{ marginTop: 6, fontWeight: 'bold' }}>
+              Último Error Motor: {ultimoError}
+            </div>
           )}
-          <span style={{ marginLeft: 16 }}>Bloqueo Pantalla: <strong>{wakeLockActivo ? 'Sí' : 'No'}</strong></span>
-          {textoFreno && (
-            <span style={{ marginLeft: 16, color: '#d84315', fontWeight: 'bold' }}>
-              Estado Avance: {textoFreno}
-            </span>
-          )}
-          {usandoMemoriaFallback && (
-            <span style={{ marginLeft: 16, color: '#b71c1c', fontWeight: 'bold' }}>
-              ⚠️ Almacenamiento: En Memoria (IndexedDB no disponible)
-            </span>
+          {errorRepositorio && (
+            <div style={{ marginTop: 6, fontWeight: 'bold', color: '#b71c1c' }}>
+              Aviso Repositorio: {errorRepositorio}
+            </div>
           )}
         </div>
-        {ultimoError && (
-          <div style={{ marginTop: 6, fontWeight: 'bold' }}>
-            Último Error Motor: {ultimoError}
-          </div>
-        )}
-        {errorRepositorio && (
-          <div style={{ marginTop: 6, fontWeight: 'bold', color: '#b71c1c' }}>
-            Aviso Repositorio: {errorRepositorio}
-          </div>
-        )}
-      </div>
+      )}
 
       {vista === 'biblioteca' && (
         <BibliotecaView

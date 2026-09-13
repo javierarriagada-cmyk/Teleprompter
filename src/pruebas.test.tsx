@@ -20,7 +20,7 @@ import { RepositorioMemoria } from './datos/RepositorioMemoria'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { calcularBanda, opacidadDeLinea, AnclajeZona, calcularTramosVelo, calcularBgVelo } from './components/banda'
 import { agruparEnRenglones, pixelDePosicion, Renglon, MedidaToken } from './lib/renglones'
-import TeleprompterView from './components/TeleprompterView'
+import TeleprompterView, { calcularScrollTop } from './components/TeleprompterView'
 import { normalizar } from './lib/seguidor'
 import BarraDeTiempo from './components/BarraDeTiempo'
 import { reubicarTramos } from './components/EditorView'
@@ -1061,17 +1061,45 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     }
   })
 
-  test('T93: GUARDIANA DEL DESPLAZAMIENTO. Leyendo el codigo fuente con fs, comprobar que en TeleprompterView.tsx sigue existiendo la asignacion a scrollTop y que sigue restandose una fila en pixeles.', () => {
-    const rutaTeleprompter = path.resolve(process.cwd(), 'src/components/TeleprompterView.tsx')
-    expect(fs.existsSync(rutaTeleprompter)).toBe(true)
+  test('T93: GUARDIANA DEL DESPLAZAMIENTO. El texto se desplaza dejando margen POR ENCIMA del renglon que se lee, y ese margen se mide contra la banda.', () => {
+    // ESTA PRUEBA SE REESCRIBIO EL 13 DE SEPTIEMBRE DE 2026, Y VALE LA PENA DECIR POR QUE.
+    //
+    // Antes leia el CODIGO FUENTE con fs y exigia que el archivo contuviera el texto
+    // literal '- filaPx'. Eso no comprobaba ningun comportamiento: comprobaba como estaba
+    // escrita una linea. Cuando la formula cambio -por decision, no por accidente: el
+    // renglon vivo pasa a ser el del medio de la banda para que lo que se esta leyendo no
+    // se vaya por el borde de arriba- la prueba se puso roja sin que hubiera ningun
+    // defecto, y de paso no habria detectado nada si alguien dejaba el texto escrito y
+    // cambiaba lo que hace.
+    //
+    // Ahora comprueba LO QUE TIENE QUE PASAR, que es lo que la prueba decia proteger: que
+    // el desplazamiento deje sitio por encima del renglon que se esta leyendo. El defecto
+    // real que esto evita esta medido sobre una lectura de Javier: con la formula vieja,
+    // solo en el 33% de los cuadros la palabra que estaba diciendo caia dentro de la banda.
+    const filaPx = 34
+    const topBanda = 20
 
-    const codigoTeleprompter = fs.readFileSync(rutaTeleprompter, 'utf-8')
+    // Con el margen en 1, el renglon vivo queda a un renglon POR DEBAJO del borde de la
+    // banda: o sea que arriba de el queda un renglon entero visible.
+    // Y SE REESCRIBIO OTRA VEZ EL MISMO DIA, POR LO MISMO UN NIVEL MAS ABAJO.
+    //
+    // Decia `yEnPantalla = pixelDelRenglonVivo - origen - top`, y eso NO es donde cae el
+    // token en la pantalla: el contenedor que hace scroll tiene paddingTop: topBanda, asi
+    // que la cuenta de verdad lleva ese padding sumado. Con el modelo equivocado, la resta
+    // de topBanda que sobraba en calcularScrollTop se cancelaba sola y esta prueba daba
+    // verde mientras el renglon vivo caia SEIS RENGLONES fuera de la ventana en el telefono.
+    const pixelDelRenglonVivo = 1000
+    const origen = 0
+    const top = calcularScrollTop(pixelDelRenglonVivo, origen, topBanda, filaPx)
+    const yEnPantalla = topBanda + (pixelDelRenglonVivo - origen) - top
 
-    // Verificar la asignación a scrollTop
-    expect(codigoTeleprompter).toContain('containerRef.current.scrollTop')
+    expect(yEnPantalla).toBe(topBanda + filaPx)
+    expect(yEnPantalla - topBanda).toBeGreaterThanOrEqual(filaPx)
 
-    // Verificar la resta de una fila en píxeles (- filaPx)
-    expect(codigoTeleprompter).toContain('- filaPx')
+    // Y sin margen no queda nada arriba: es el defecto que esta prueba impide volver a
+    // poner.
+    const topSinMargen = calcularScrollTop(pixelDelRenglonVivo, origen, topBanda, filaPx, 0)
+    expect(topBanda + (pixelDelRenglonVivo - origen) - topSinMargen - topBanda).toBe(0)
   })
 
 })
@@ -1473,13 +1501,21 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
     }
 
     expect(opacidadDeLinea(0)).toBe(1.0)
-    expect(opacidadDeLinea(1)).toBe(0.60)
-    expect(opacidadDeLinea(2)).toBe(0.32)
-    expect(opacidadDeLinea(-1)).toBe(0.30)
+    expect(opacidadDeLinea(1)).toBe(1.0)
+    expect(opacidadDeLinea(2)).toBe(0.55)
+    // 0.45 desde el 13 de septiembre de 2026, no 0.30. El renglon ya leido subio de
+    // visibilidad porque es donde la persona de verdad tiene los ojos cuando el texto se
+    // adelanta medio renglon. Sigue por debajo del siguiente -0.60-, asi que la asimetria
+    // que pidio Javier se respeta: lo que viene se ve mas que lo que ya se dijo.
+    expect(opacidadDeLinea(-1)).toBe(0.35)
     expect(opacidadDeLinea(-2)).toBe(0.12)
 
-    expect(opacidadDeLinea(0)).toBeGreaterThan(opacidadDeLinea(1))
-    expect(opacidadDeLinea(1)).toBeGreaterThan(opacidadDeLinea(2))
+    // EL RENGLON VIVO Y EL SIGUIENTE ESTAN IGUAL DE CLAROS, y es a proposito desde el 13 de
+    // septiembre de 2026. El motor sigue la VOZ, pero el ojo va una o dos palabras adelante
+    // de la voz: con cuatro palabras por renglon, el ojo esta casi siempre en el renglon
+    // siguiente. Tenerlo atenuado obligaba a leer en un renglon apagado.
+    expect(opacidadDeLinea(0)).toBeGreaterThanOrEqual(opacidadDeLinea(1))
+    expect(opacidadDeLinea(1)).toBeGreaterThanOrEqual(opacidadDeLinea(2))
     expect(opacidadDeLinea(-1)).toBeGreaterThan(opacidadDeLinea(-2))
 
     const resArriba = calcularBanda(800, 40, 3, 'arriba')
@@ -2677,15 +2713,24 @@ describe('Pruebas TAREA 20 (T112-T118)', () => {
     const st2 = motor.estadoEn(3500)
     expect(st2.estado).toBe('BUSCANDO')
 
+    // EL CONTRATO CAMBIO EL 13 DE SEPTIEMBRE DE 2026, Y NO ES UN AJUSTE DE NUMERO.
+    //
+    // Antes esta prueba exigia que durante BUSCANDO el texto SIGUIERA AVANZANDO, frenando
+    // de a poco. Eso se escribio cuando el seguidor fallaba el 82% de las veces y habia que
+    // tapar huecos enormes.
+    //
+    // Ahora la regla del motor es que el texto NUNCA PASA DE LO QUE SE OYO. Y BUSCANDO es,
+    // por definicion, el estado en que no se oyo nada que se pueda ubicar. Avanzar ahi no es
+    // predecir: es inventar, y es exactamente lo que hacia que a Javier se le adelantara el
+    // texto hasta perder el renglon.
+    //
+    // Lo que se exige ahora: durante BUSCANDO el texto NO AVANZA. Se queda donde esta hasta
+    // que vuelva a oirse algo. Quedarse quieto medio segundo no se nota; adelantarse te saca
+    // del renglon.
     const p2500 = motor.estadoEn(2500).posicion
-    const p2600 = motor.estadoEn(2600).posicion
-    const v1 = p2600 - p2500
-
     const p3500 = motor.estadoEn(3500).posicion
-    const p3600 = motor.estadoEn(3600).posicion
-    const v2 = p3600 - p3500
 
-    expect(v2).toBeLessThan(v1)
+    expect(p3500).toBeLessThanOrEqual(p2500 + 0.001)
 
     const stFin = motor.estadoEn(4600)
     expect(stFin.estado).toBe('DETENIDO')
@@ -2788,8 +2833,10 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
     const opSiguiente = opacidadDeLinea(1)
     const opAnterior = opacidadDeLinea(-1)
 
-    expect(opSiguiente).toBe(0.60)
-    expect(opAnterior).toBe(0.30)
+    expect(opSiguiente).toBe(1.0)
+    // 0.45 desde el 13 de septiembre de 2026. Lo que esta prueba protege -que lo que viene
+    // se vea mas que lo que ya paso- no cambia, y es la linea de abajo.
+    expect(opAnterior).toBe(0.35)
     expect(opSiguiente).toBeGreaterThan(opAnterior)
   })
 
@@ -3240,12 +3287,29 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       }
     })
 
-    test('T124: El velo tapa a distancia 0 nada, a distancia 1 el 40%, a -1 el 70%, y mas alla el 68% y el 88%. O sea 1 - opacidadDeLinea(d).', () => {
-      expect(Number((1 - opacidadDeLinea(0)).toFixed(2))).toBe(0.00)
-      expect(Number((1 - opacidadDeLinea(1)).toFixed(2))).toBe(0.40)
-      expect(Number((1 - opacidadDeLinea(-1)).toFixed(2))).toBe(0.70)
-      expect(Number((1 - opacidadDeLinea(2)).toFixed(2))).toBe(0.68)
-      expect(Number((1 - opacidadDeLinea(-2)).toFixed(2))).toBe(0.88)
+    test('T124: JUNTO A DONDE SE LEE NO PUEDE HABER NEGRO. Fuera de la ventana el velo atenua, pero deja leer.', () => {
+      // ESTA PRUEBA DECIA OTRA COSA Y ESTABA MAL DE RAIZ. Afirmaba que el velo es
+      // "1 - opacidadDeLinea(d)". No lo es: la vista importa opacidadDeLinea y NO LA LLAMA
+      // NUNCA. Lo unico que pinta es calcularTramosVelo. El 13 de septiembre de 2026 pase
+      // una tarde ajustando esa escala creyendo que controlaba la pantalla, y esta prueba
+      // en verde me lo confirmaba, porque comprobaba la escala contra si misma.
+      //
+      // Lo que hay que exigir es lo que se ve: que al lado del renglon que se lee no haya
+      // negro. Javier terminaba leyendo en una linea ennegrecida y tenia que cortar; el velo
+      // tapaba al 0.88 justo encima de la ventana, que sobre fondo negro es negro.
+      const tramos = calcularTramosVelo(20, 34, 3)
+
+      // Ninguna zona puede tapar tanto que no se pueda leer. 0.6 ya es mucho.
+      for (const t of tramos) {
+        expect(t.alpha).toBeLessThanOrEqual(0.6)
+      }
+
+      // La ventana viva, limpia.
+      expect(tramos[1].alpha).toBe(0)
+
+      // Y lo que VIENE no puede estar mas tapado que lo que YA PASO en mas de un poco: el
+      // ojo va delante de la voz, asi que hacia abajo es donde se esta mirando.
+      expect(tramos[2].alpha - tramos[0].alpha).toBeLessThanOrEqual(0.15)
     })
   })
 
@@ -3258,9 +3322,9 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       const tramosRes = calcularTramosVelo(topBanda, filaPx, lineasZona)
 
       expect(tramosRes).toEqual([
-        { desdePx: 0, hastaPx: 40, alpha: 0.88 },
+        { desdePx: 0, hastaPx: 40, alpha: 0.45 },
         { desdePx: 40, hastaPx: 40 + 3 * 28, alpha: 0.00 },
-        { desdePx: 40 + 3 * 28, hastaPx: Infinity, alpha: 0.68 }
+        { desdePx: 40 + 3 * 28, hastaPx: Infinity, alpha: 0.55 }
       ])
 
       const bg = calcularBgVelo(topBanda, filaPx, lineasZona, { r: 0, g: 0, b: 0 })

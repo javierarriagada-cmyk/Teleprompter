@@ -1,30 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { crearSeguidor, MIN_PALABRAS_COINCIDENTES, Posicion, tokenizarGuion } from '../lib/seguidor'
+import { crearSeguidor, Posicion, tokenizarGuion, Token } from '../lib/seguidor'
 import { crearMotorDeAvance, MotorDeAvance } from '../lib/avance'
 import { crearRegistro, RegistroDeLectura } from '../lib/registro'
-import { anotar } from '../lib/diagnostico'
 import { EventoFinal } from '../motor/MotorDeVoz'
 import { Guion } from '../datos/modelo'
-
-// Cuantas palabras tiene que traer un final del reconocedor para que, si no calza, eso cuente
-// como evidencia de que el lector se perdio. Es el mismo minimo con el que el seguidor puede
-// puntuar una frase: por debajo de eso no es que el lector este en otro lado, es que no hay
-// con que decidir.
-const PALABRAS_PARA_QUE_UN_FALLO_CUENTE = MIN_PALABRAS_COINCIDENTES
-
-function contarPalabras(texto: string): number {
-  return texto.trim().split(/\s+/).filter(Boolean).length
-}
-
-function obtenerLimiteLineaSiguiente(idx: number, limites: number[]): number {
-  if (!limites || limites.length === 0) return idx + 20
-  for (let i = 0; i < limites.length; i++) {
-    if (limites[i] >= idx) {
-      return i + 1 < limites.length ? limites[i + 1] : limites[i]
-    }
-  }
-  return limites[limites.length - 1]
-}
+import { Conduccion, procesarFinal, procesarParcial } from '../lib/conduccion'
 
 export function useSeguidor(guionEntrada: Guion | string) {
   const [posicion, setPosicion] = useState<Posicion>({ bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
@@ -33,7 +13,7 @@ export function useSeguidor(guionEntrada: Guion | string) {
   const motorAvanceRef = useRef<MotorDeAvance | null>(null)
   const registroRef = useRef<RegistroDeLectura | null>(null)
 
-  const tokensRef = useRef<ReturnType<typeof tokenizarGuion>>([])
+  const tokensRef = useRef<Token[]>([])
   const limitesDeLineaRef = useRef<number[]>([])
   const limitesBloqueMapRef = useRef<Map<number, number>>(new Map())
   const bloqueConfirmadoRef = useRef<number>(0)
@@ -87,96 +67,53 @@ export function useSeguidor(guionEntrada: Guion | string) {
     setPosicion({ bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
   }, [guionEntrada])
 
-  function alRecibirParcial(texto: string) {
+  function obtenerConduccion(): Conduccion | null {
     const seg = seguidorRef.current
     const motor = motorAvanceRef.current
-    const tokens = tokensRef.current
-    if (!seg || !motor || tokens.length === 0) return
+    if (!seg || !motor) return null
+    return {
+      seguidor: seg,
+      motor,
+      tokens: tokensRef.current,
+      limitesDeLinea: limitesDeLineaRef.current
+    }
+  }
+
+  function alRecibirParcial(texto: string) {
+    const cond = obtenerConduccion()
+    if (!cond) return
 
     const tMs = performance.now()
-    motor.voz(true, tMs)
-    const st = motor.estadoEn(tMs)
-    const pos = seg.avanzarTentativo(texto, tMs, st.ppmEstimadas, st.tUltimoCalceMs)
-    anotar({ tipo: 'calce', token: pos.movio ? pos.hastaToken : null, texto })
-
-    let enVentana = false
-    if (pos.movio && tokensRef.current.length > 0) {
-      const ref = Math.max(st.ultimoCalce, Math.floor(st.posicion))
-      const posMin = Math.max(0, ref - 10)
-      const posMax = ref + 40
-      enVentana = pos.hastaToken >= posMin && pos.hastaToken <= posMax
-    }
-
-    if (pos.movio && enVentana) {
-      const ref = Math.max(st.ultimoCalce, Math.floor(st.posicion))
-      const limiteSiguiente = obtenerLimiteLineaSiguiente(ref, limitesDeLineaRef.current)
-      const tokenCapped = Math.min(pos.hastaToken, limiteSiguiente)
-
-      motor.tentativo(tokenCapped, tMs)
-      setPosicion({ ...pos, hastaToken: tokenCapped })
-    } else if (contarPalabras(texto) >= PALABRAS_PARA_QUE_UN_FALLO_CUENTE) {
-      motor.falloCalce(tMs, true)
+    const pos = procesarParcial(cond, texto, tMs)
+    if (pos) {
+      setPosicion(pos)
     }
   }
 
   function alRecibirFinal(fraseFinal: string | EventoFinal) {
-    const seg = seguidorRef.current
-    const motor = motorAvanceRef.current
+    const cond = obtenerConduccion()
     const reg = registroRef.current
-    if (!seg || !motor) return
+    if (!cond) return
 
     const tMs = performance.now()
-    motor.voz(true, tMs)
-
     const texto = typeof fraseFinal === 'string' ? fraseFinal : (fraseFinal?.texto || '')
     const inicioMs = typeof fraseFinal === 'string' ? tMs - 1000 : (fraseFinal?.inicioMs || tMs - 1000)
     const finMs = typeof fraseFinal === 'string' ? tMs : (fraseFinal?.finMs || tMs)
 
-    const st = motor.estadoEn(tMs)
-    const pos = seg.avanzar(texto, tMs, st.ppmEstimadas, st.tUltimoCalceMs)
-    anotar({ tipo: 'calce', token: pos.movio ? pos.hastaToken : null, texto })
-
-    let enVentana = false
-    if (pos.movio && tokensRef.current.length > 0) {
-      const ref = Math.max(st.ultimoCalce, Math.floor(st.posicion))
-      const posMin = Math.max(0, ref - 10)
-      const posMax = ref + 40
-      enVentana = pos.hastaToken >= posMin && pos.hastaToken <= posMax
-    }
-
-    if (pos.movio && enVentana) {
-      const ref = Math.max(st.ultimoCalce, Math.floor(st.posicion))
-      const limiteSiguiente = obtenerLimiteLineaSiguiente(ref, limitesDeLineaRef.current)
-      const tokenCapped = Math.min(pos.hastaToken, limiteSiguiente)
-
+    const pos = procesarFinal(cond, texto, tMs)
+    if (pos) {
       bloqueConfirmadoRef.current = pos.bloque
-      motor.confirmar(tokenCapped, tMs)
       if (reg) {
         reg.anotar({
           desdeToken: pos.desdeToken,
-          hastaToken: tokenCapped,
+          hastaToken: pos.hastaToken,
           inicioMs,
           finMs,
           textoReconocido: texto
         })
       }
-      setPosicion({ ...pos, hastaToken: tokenCapped })
-    } else if (contarPalabras(texto) >= PALABRAS_PARA_QUE_UN_FALLO_CUENTE) {
-      console.warn(`[Seguidor] Final no movió o cayó fuera de ventana para texto "${texto}"`)
-      motor.falloCalce(tMs)
+      setPosicion(pos)
     }
-    // Y SI EL FINAL ERA CORTO, NO PASA NADA. Ni confirma ni falla: es NEUTRO.
-    //
-    // Esto es lo que arregla que apareciera "Buscando tu posicion" cada dos o tres palabras
-    // leyendo perfecto. Android emite finales de una o dos palabras todo el tiempo -"si",
-    // "bueno", "y entonces"-, y con menos de tres palabras reconocibles el seguidor no tiene
-    // con que puntuar, asi que devolvia movio:false. Aca se contaba como fallo, y dos de esos
-    // seguidos hacian que el motor se declarara perdido.
-    //
-    // No poder sacar informacion de algo NO ES lo mismo que recibir informacion que contradice
-    // donde creemos estar. Lo primero no dice nada y no debe mover ninguna decision; lo segundo
-    // si, y para eso queda el contador. Si de verdad se perdio y ademas se callo, el camino por
-    // TIEMPO -msSinCalceParaFrenar- lo agarra igual.
   }
 
   function alNotificarVoz(hayVoz: boolean) {
@@ -185,8 +122,6 @@ export function useSeguidor(guionEntrada: Guion | string) {
     }
   }
 
-  // El usuario movio el texto a mano hasta cierta palabra: la ventana de contexto se muda
-  // con el. No es una recuperacion: es navegacion deliberada.
   function irAToken(token: number) {
     const seg = seguidorRef.current
     const motor = motorAvanceRef.current

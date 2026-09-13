@@ -3,6 +3,10 @@
 // columna: ya se hizo una vez y se desfondó al cambiar la tipografia.
 export const PALABRAS_PARA_ARRANCAR = 7
 
+// Cuanto tarda el reconocedor en entregar una palabra desde que se dijo. Es lo unico que
+// hay que compensar para apuntar a donde esta la persona.
+export const MS_RETRASO_RECONOCEDOR = 400
+
 export type EstadoModo = 'SIGUIENDO' | 'BUSCANDO' | 'DETENIDO'
 
 export type ParametrosAvance = {
@@ -74,7 +78,6 @@ export function crearMotorDeAvance(
 
   let posicionMostrada = 0
   let tUltimaActualizacion = 0
-  let blancoMonotono = 0
   // LA VELOCIDAD ES ESTADO, NO UNA CUENTA DE CADA CUADRO. Esto es lo que le da inercia al
   // motor: sin esto la velocidad puede saltar de 0 a 3x entre dos cuadros, y eso es lo que
   // se ve como un tiron aunque la velocidad nunca pase del tope.
@@ -134,6 +137,7 @@ export function crearMotorDeAvance(
   // LA CORREA, EN UN SOLO LUGAR. Cuanto puede correr el texto por delante de donde estas:
   // libre hasta adelantoComodo, frenando hasta adelantoMaximo, y ahi quieto. Los dos numeros
   // los ajusto Javier leyendo a camara.
+  // INVARIANTE: EL TEXTO NUNCA SE MUESTRA MAS DE adelantoMaximo PALABRAS POR DELANTE DE LA ULTIMA PALABRA QUE EL RECONOCEDOR UBICO EN EL GUION.
   function frenoDeCorrea(adelanto: number): number {
     const comodo = params.adelantoComodo
     const maximo = Math.max(comodo + 1, params.adelantoMaximo)
@@ -247,11 +251,30 @@ export function crearMotorDeAvance(
       // OIMOS.
       const comodo = params.adelantoComodo
       const maximo = Math.max(comodo + 1, params.adelantoMaximo)
-      const blancoCrudo = tUltimoCalce === 0
+      // EL BLANCO ES DONDE CREEMOS QUE ESTA LA PERSONA. NO ES UN MAXIMO PERMITIDO.
+      //
+      // Aca estaba el defecto que hacia que el texto se le adelantara a Javier lectura tras
+      // lectura, y no se veia porque estaba escrito como si fuera una precaucion:
+      //
+      //     refToken + Math.min(maximo, vBase * (tMs - tUltimoCalce))
+      //
+      // La extrapolacion estaba topada por LA CORREA -3 palabras- en vez de por el retraso
+      // real del reconocedor. Como entre un calce y el siguiente pasa mas de un segundo, ese
+      // termino llegaba SIEMPRE al tope. O sea que el motor apuntaba, todo el tiempo, a tres
+      // palabras mas alla de lo ultimo que habia oido. Medido sobre cuatro lecturas reales:
+      // el 59% del tiempo el texto estaba entre 2 y 3 palabras adelante, y justo antes de
+      // cada calce nuevo el adelanto promediaba 2.21. No se adelantaba a veces: iba tan
+      // adelante como se le permitia, siempre.
+      //
+      // La correa nunca fue un limite de seguridad. Era el destino.
+      //
+      // Lo que hay que extrapolar es el RETRASO DEL RECONOCEDOR: entre que la persona dice
+      // una palabra y el reconocedor la entrega pasan unas decimas. Eso, y nada mas, es lo
+      // que hay que compensar para apuntar a donde de verdad esta. La correa vuelve a ser lo
+      // que decia ser: un limite que casi nunca se toca.
+      const blanco = tUltimoCalce === 0
         ? refToken
-        : refToken + Math.min(maximo, vBase * (tMs - tUltimoCalce))
-      blancoMonotono = Math.max(blancoMonotono, blancoCrudo)
-      const blanco = blancoMonotono
+        : refToken + vBase * Math.min(MS_RETRASO_RECONOCEDOR, tMs - tUltimoCalce)
 
       // ─── QUE ESTADO, Y A QUE VELOCIDAD QUIERE IR ────────────────────────────────────
       //
@@ -309,7 +332,7 @@ export function crearMotorDeAvance(
         if (tInicioBuscando === 0) tInicioBuscando = tMs
         const dtBuscando = tMs - tInicioBuscando
         const desaceleracion = Math.max(0, 1 - dtBuscando / params.msDeBusquedaCiega)
-        vObjetivo = vBase * desaceleracion * frenoDeCorrea(posicionMostrada - blanco)
+        vObjetivo = vBase * desaceleracion * frenoDeCorrea(posicionMostrada - refToken)
       } else {
         tInicioBuscando = 0
         estado = 'SIGUIENDO'
@@ -325,9 +348,8 @@ export function crearMotorDeAvance(
           vObjetivo = Math.min(vMax, vBase + (dist * (vMax - vBase)) / maximo)
         } else {
           // El texto va adelante tuyo. NO SE DETIENE de golpe: sigue a tu ritmo, cada vez mas
-          // despacio, y llega a cero recien en adelantoMaximo. Estos dos numeros los ajusto
-          // Javier leyendo a camara y no se tocan.
-          vObjetivo = vBase * frenoDeCorrea(-dist)
+          // despacio, y llega a cero recien en adelantoMaximo. Medido SIEMPRE contra refToken.
+          vObjetivo = vBase * frenoDeCorrea(posicionMostrada - refToken)
         }
       }
 
@@ -361,18 +383,46 @@ export function crearMotorDeAvance(
       if (vActual < 0) vActual = 0
 
       let nuevaPos = posicionMostrada + vActual * dt
-      // Sin pasarse del blanco en el mismo cuadro. Esto NO es un techo: el blanco se corre
-      // solo, asi que aterrizar encima de el es seguir avanzando a tu ritmo, no quedarse
-      // quieto. El techo viejo era contra refToken, que es una escalera, y ahi si mataba.
-      if (blanco > posicionMostrada) {
-        nuevaPos = Math.min(blanco, nuevaPos)
-      }
+
+      // EL TEXTO NO SE ADELANTA A LA EVIDENCIA. NUNCA.
+      //
+      // Antes este tope se aplicaba SOLO cuando el blanco estaba adelante -if (blanco >
+      // posicionMostrada)-. O sea que si la posicion ya iba adelante del blanco, seguia
+      // corriendo libre hasta chocar con la correa. Y corria a la velocidad ESTIMADA, que al
+      // empezar vale 150 palabras por minuto porque todavia no se midio nada. Javier lee a
+      // unas 100. Desde la primera palabra el texto iba un 50% mas rapido que el, y por eso
+      // preguntaba por que se movia mientras el seguia en el primer renglon.
+      //
+      // El avance por tiempo existe para TAPAR LOS HUECOS entre calce y calce, no para
+      // correr por su cuenta. Se puso cuando el seguidor fallaba el 82% de las veces y habia
+      // huecos enormes; ahora falla el 10% y los calces llegan siete veces por segundo, asi
+      // que los huecos son cortos y no hace falta ninguna carrera libre.
+      //
+      // El blanco ya es "donde creemos que estas" -la ultima palabra oida mas el retraso del
+      // reconocedor-. Pasarlo no es predecir: es inventar.
+      nuevaPos = Math.min(blanco, nuevaPos)
+
+      // PERO NUNCA HACIA ATRAS. El blanco BAJA cada vez que llega un calce nuevo: el termino
+      // que compensa el retraso se reinicia y el blanco cae hasta una palabra de golpe. Si
+      // se recortara contra eso sin mas, el texto retrocederia. Lo comprobo la prueba T13 en
+      // el acto: 82 retrocesos en una lectura simulada.
+      //
+      // Cuando el blanco queda por detras, el texto NO retrocede: SE QUEDA QUIETO hasta que
+      // el blanco lo alcanza. Quedarse quieto medio segundo no se nota; retroceder una
+      // palabra te saca del renglon.
+      nuevaPos = Math.max(posicionMostrada, nuevaPos)
 
       let maxTokenGuion = Infinity
       if (limitesDeBloque && limitesDeBloque.length > 0) {
         maxTokenGuion = limitesDeBloque[limitesDeBloque.length - 1]
       } else if (limitesDeLinea && limitesDeLinea.length > 0) {
         maxTokenGuion = limitesDeLinea[limitesDeLinea.length - 1]
+      }
+
+      // EL TEXTO NUNCA SE MUESTRA MAS DE adelantoMaximo PALABRAS POR DELANTE DE LA ULTIMA
+      // PALABRA QUE EL RECONOCEDOR UBICO EN EL GUION.
+      if (arranqueCumplido && tUltimoCalce > 0) {
+        nuevaPos = Math.min(refToken + params.adelantoMaximo, nuevaPos)
       }
 
       nuevaPos = Math.min(maxTokenGuion, Math.max(0, nuevaPos))
@@ -392,7 +442,6 @@ export function crearMotorDeAvance(
     irAToken(token: number, tMs: number) {
       const destino = Math.max(0, token)
       posicionMostrada = destino
-      blancoMonotono = destino
       vActual = 0
       ultimaConfirmada = destino
       anclaTentativa = destino
@@ -418,7 +467,6 @@ export function crearMotorDeAvance(
       hayVoz = false
       tUltimaVozTrue = 0
       posicionMostrada = 0
-      blancoMonotono = 0
       vActual = 0
       tUltimaActualizacion = 0
       palabrasConfirmadasDesdeArranque = 0
