@@ -823,13 +823,13 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
     await act(async () => {
       fireEvent.click(botonAbrir!)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
     await act(async () => {
       fireEvent.click(botonLeer!)
       await new Promise((r) => setTimeout(r, 100))
@@ -878,13 +878,13 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
     await act(async () => {
       fireEvent.click(botonAbrir!)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
     await act(async () => {
       fireEvent.click(botonLeer!)
       await new Promise((r) => setTimeout(r, 100))
@@ -959,13 +959,13 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
         await vi.advanceTimersByTimeAsync(600)
       })
 
-      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+      const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
       await act(async () => {
         fireEvent.click(botonAbrir!)
         await vi.advanceTimersByTimeAsync(100)
       })
 
-      const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+      const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
         await vi.advanceTimersByTimeAsync(100)
@@ -1022,13 +1022,13 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
         await vi.advanceTimersByTimeAsync(600)
       })
 
-      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+      const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
       await act(async () => {
         fireEvent.click(botonAbrir!)
         await vi.advanceTimersByTimeAsync(100)
       })
 
-      const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+      const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
         await vi.advanceTimersByTimeAsync(100)
@@ -1404,7 +1404,7 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       fireEvent.change(textareaModal, { target: { value: 'Bloque B\n\nBloque C' } })
     })
 
-    const btnAceptar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Aceptar e importar')!
+    const btnAceptar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Importar')!
     await act(async () => {
       fireEvent.click(btnAceptar)
     })
@@ -1459,7 +1459,17 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonBorrar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Borrar')
+    // Se borra desde el menu de la fila, que se abre con toque largo o clic derecho. Antes
+    // esta prueba apretaba un boton "Borrar" INVISIBLE que estaba puesto solo para que ella
+    // pasara: la pantalla nueva no lo tiene y la prueba no comprobaba nada de lo que ve el
+    // usuario.
+    const fila = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
+    expect(fila).not.toBeNull()
+    await act(async () => {
+      fireEvent.contextMenu(fila)
+      await new Promise((r) => setTimeout(r, 50))
+    })
+    const botonBorrar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Eliminar')
     expect(botonBorrar).not.toBeUndefined()
 
     await act(async () => {
@@ -2048,13 +2058,13 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         await vi.advanceTimersByTimeAsync(600)
       })
 
-      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+      const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
       await act(async () => {
         fireEvent.click(botonAbrir!)
         await vi.advanceTimersByTimeAsync(100)
       })
 
-      const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+      const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
         await vi.advanceTimersByTimeAsync(100)
@@ -2097,13 +2107,13 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         await vi.advanceTimersByTimeAsync(600)
       })
 
-      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+      const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
       await act(async () => {
         fireEvent.click(botonAbrir!)
         await vi.advanceTimersByTimeAsync(100)
       })
 
-      const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+      const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
         await vi.advanceTimersByTimeAsync(100)
@@ -2152,13 +2162,13 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         await vi.advanceTimersByTimeAsync(600)
       })
 
-      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+      const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
       await act(async () => {
         fireEvent.click(botonAbrir!)
         await vi.advanceTimersByTimeAsync(100)
       })
 
-      const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+      const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
         await vi.advanceTimersByTimeAsync(100)
@@ -2197,13 +2207,13 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
     await act(async () => {
       fireEvent.click(botonAbrir!)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
     await act(async () => {
       fireEvent.click(botonLeer!)
       await new Promise((r) => setTimeout(r, 100))
@@ -2239,13 +2249,13 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
     await act(async () => {
       fireEvent.click(botonAbrir!)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
     await act(async () => {
       fireEvent.click(botonLeer!)
       await new Promise((r) => setTimeout(r, 100))
@@ -2285,13 +2295,13 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         await vi.advanceTimersByTimeAsync(600)
       })
 
-      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+      const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
       await act(async () => {
         fireEvent.click(botonAbrir!)
         await vi.advanceTimersByTimeAsync(100)
       })
 
-      const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+      const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
         await vi.advanceTimersByTimeAsync(100)
@@ -2616,13 +2626,13 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
     await act(async () => {
       fireEvent.click(botonAbrir)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const botonLeer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))!
+    const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement
     await act(async () => {
       fireEvent.click(botonLeer)
       await new Promise((r) => setTimeout(r, 100))
@@ -2646,13 +2656,13 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir2 = Array.from(container2!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    const botonAbrir2 = container2!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
     await act(async () => {
       fireEvent.click(botonAbrir2)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const botonLeer2 = Array.from(container2!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))!
+    const botonLeer2 = container2!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement
     await act(async () => {
       fireEvent.click(botonLeer2)
       await new Promise((r) => setTimeout(r, 100))
@@ -2672,13 +2682,13 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir3 = Array.from(container3!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    const botonAbrir3 = container3!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
     await act(async () => {
       fireEvent.click(botonAbrir3)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const botonLeer3 = Array.from(container3!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))!
+    const botonLeer3 = container3!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement
     await act(async () => {
       fireEvent.click(botonLeer3)
       await new Promise((r) => setTimeout(r, 100))
@@ -2863,7 +2873,7 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
     await act(async () => {
       fireEvent.click(botonAbrir)
       await new Promise((r) => setTimeout(r, 100))
@@ -2913,7 +2923,7 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
         await vi.advanceTimersByTimeAsync(600)
       })
 
-      const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+      const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
       await act(async () => {
         fireEvent.click(botonAbrir)
         await vi.advanceTimersByTimeAsync(100)
@@ -3002,7 +3012,7 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
     await act(async () => {
       fireEvent.click(botonAbrir)
       await new Promise((r) => setTimeout(r, 100))
@@ -3041,7 +3051,7 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonAbrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')!
+    const botonAbrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
     await act(async () => {
       fireEvent.click(botonAbrir)
       await new Promise((r) => setTimeout(r, 100))

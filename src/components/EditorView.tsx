@@ -354,7 +354,7 @@ export default function EditorView({
               padding: '4px 8px',
               cursor: 'pointer'
             }}
-            title="Opciones del guión"
+            title="Opciones"
           >
             ⋯
           </button>
@@ -498,7 +498,7 @@ export default function EditorView({
             marginBottom: 20
           }}
         >
-          <h4 style={{ margin: '0 0 8px 0', color: 'var(--color-texto)' }}>Pegar texto para importar</h4>
+          <h4 style={{ margin: '0 0 8px 0', color: 'var(--color-texto)' }}>Pegar texto</h4>
           <p style={{ margin: '0 0 12px 0', fontSize: 14, color: 'var(--color-apagado)' }}>
             Pega aquí el texto de tu guión. Se convertirá automáticamente en bloques y líneas con el formato adecuado.
           </p>
@@ -564,7 +564,7 @@ export default function EditorView({
                 fontWeight: 'bold'
               }}
             >
-              Aceptar e importar
+              Importar
             </button>
           </div>
         </div>
@@ -730,7 +730,7 @@ export default function EditorView({
                               backgroundColor: '#F0C070',
                               cursor: 'pointer'
                             }}
-                            title="Destacar Ámbar"
+                            title="Ámbar"
                             data-testid="btn-color-ambar"
                           />
                           <button
@@ -745,7 +745,7 @@ export default function EditorView({
                               backgroundColor: '#8FB8DE',
                               cursor: 'pointer'
                             }}
-                            title="Destacar Celeste"
+                            title="Celeste"
                           />
                           <button
                             type="button"
@@ -759,7 +759,7 @@ export default function EditorView({
                               backgroundColor: '#9CC5A1',
                               cursor: 'pointer'
                             }}
-                            title="Destacar Salvia"
+                            title="Salvia"
                           />
                         </div>
 
@@ -776,7 +776,7 @@ export default function EditorView({
                             cursor: 'pointer',
                             fontSize: 12
                           }}
-                          title="Envolver en corchetes de acotación"
+                          title="Acotación"
                         >
                           [...] Acotación
                         </button>
@@ -849,11 +849,7 @@ export default function EditorView({
             gap: 8
           }}
         >
-          ▶ Leer en voz alta
-        </button>
-        {/* Boton invisible para compatibilidad con pruebas que buscan "▶ Leer Guión" */}
-        <button style={{ display: 'none' }} onClick={onEntrarLectura}>
-          ▶ Leer Guión
+          ▶ Leer
         </button>
       </div>
     </div>

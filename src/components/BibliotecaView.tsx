@@ -366,19 +366,7 @@ export default function BibliotecaView({
                   userSelect: 'none'
                 }}
               >
-                {/* Botones ocultos para compatibilidad con pruebas T9-T87 */}
-                <button style={{ display: 'none' }} onClick={() => onAbrir(g.id)}>
-                  Abrir
-                </button>
-                <button
-                  style={{ display: 'none' }}
-                  onClick={() => {
-                    const confirmacion = window.confirm(`¿Estás seguro de borrar el guión "${tituloMostrar}"?`)
-                    if (confirmacion) onBorrar(g.id)
-                  }}
-                >
-                  Borrar
-                </button>
+                
 
                 <div>
                   <div className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-1)' }}>

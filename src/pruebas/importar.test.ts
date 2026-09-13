@@ -143,7 +143,7 @@ Línea tres`
     })
 
     // Intentar aceptar con texto vacío o solo espacios
-    const btnAceptar = Array.from(document.querySelectorAll('button')).find((b) => b.textContent === 'Aceptar e importar')
+    const btnAceptar = Array.from(document.querySelectorAll('button')).find((b) => b.textContent === 'Importar')
     expect(btnAceptar).not.toBeUndefined()
 
     await act(async () => {

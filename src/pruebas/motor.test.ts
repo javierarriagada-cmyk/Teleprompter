@@ -60,7 +60,7 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
       fireEvent.click(itemGuion)
     })
 
-    const botonLectura = screen.getByText('▶ Leer Guión')
+    const botonLectura = screen.getByTestId('btn-leer-guion-fijo')
     await act(async () => {
       fireEvent.click(botonLectura)
     })

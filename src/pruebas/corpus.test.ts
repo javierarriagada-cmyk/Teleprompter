@@ -146,13 +146,13 @@ describe('Corpus de medicion del motor (paso 1 del plan)', () => {
       await new Promise((r) => setTimeout(r, 400))
     })
 
-    const abrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    const abrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
     await act(async () => {
       fireEvent.click(abrir!)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const leer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    const leer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
     await act(async () => {
       fireEvent.click(leer!)
       await new Promise((r) => setTimeout(r, 100))
@@ -206,12 +206,12 @@ describe('Corpus de medicion del motor (paso 1 del plan)', () => {
       await new Promise((r) => setTimeout(r, 400))
     })
 
-    const abrir = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Abrir')
+    const abrir = container!.querySelector('[data-testid^="fila-guion"]') as HTMLElement
     await act(async () => {
       fireEvent.click(abrir!)
       await new Promise((r) => setTimeout(r, 100))
     })
-    const leer = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Leer Guión'))
+    const leer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
     await act(async () => {
       fireEvent.click(leer!)
       await new Promise((r) => setTimeout(r, 100))
