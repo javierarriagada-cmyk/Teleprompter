@@ -7,6 +7,7 @@ import TeleprompterView from './components/TeleprompterView'
 import BarraDeTiempo from './components/BarraDeTiempo'
 import ControlsBar from './components/ControlsBar'
 import { PanelCorpus } from './components/PanelCorpus'
+import { bloquearRecargaAutomatica } from './lib/actualizacion'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
 import CuentaRegresiva from './components/CuentaRegresiva'
@@ -376,6 +377,12 @@ export default function App({ motor, repoOverride }: AppProps) {
       }
     }
   }, [controlesVisibles, isRecording, cuentaRegresiva])
+
+  // Mientras se esta leyendo, la version nueva espera. Recargar a alguien que esta leyendo a
+  // camara le arruina la toma; la actualizacion se aplica sola en cuanto termina.
+  useEffect(() => {
+    bloquearRecargaAutomatica('leyendo', isRecording || cuentaRegresiva !== null)
+  }, [isRecording, cuentaRegresiva])
 
   const { activo: wakeLockActivo, solicitar: solicitarWakeLock, soltar: soltarWakeLock } = useWakeLock()
 

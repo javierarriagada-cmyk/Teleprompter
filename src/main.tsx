@@ -16,5 +16,11 @@ import '@fontsource/source-serif-4/latin-ext-600.css'
 import App from './App'
 import './styles.css'
 
+import { instalarRecargaAlActualizar } from './lib/actualizacion'
+
+// Antes de dibujar nada: si el telefono tenia guardada una version vieja y acaba de llegar
+// una nueva, que se aplique sola en vez de esperar a una segunda carga que nadie hace.
+instalarRecargaAlActualizar()
+
 const el = document.getElementById('root')!
 createRoot(el).render(<App />)

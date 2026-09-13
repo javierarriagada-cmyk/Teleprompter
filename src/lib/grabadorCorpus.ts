@@ -44,6 +44,7 @@
 // desfase parejo, se corrige con un corrimiento y se anota aca.
 
 import { activarDiagnostico, comoTexto, cantidadEntradas } from './diagnostico'
+import { bloquearRecargaAutomatica } from './actualizacion'
 
 export type EstadoGrabador = 'inactivo' | 'pidiendo-permiso' | 'grabando' | 'listo' | 'error'
 
@@ -125,6 +126,7 @@ export async function iniciarGrabacion(meta: MetadatosCorpus): Promise<void> {
       // ACA, Y SOLO ACA, ARRANCA EL RELOJ COMPARTIDO. Ver la nota de arriba.
       inicioReloj = new Date().toISOString()
       activarDiagnostico(true)
+      bloquearRecargaAutomatica('grabando-corpus', true)
       estadoActual = 'grabando'
     }
 
@@ -136,6 +138,7 @@ export async function iniciarGrabacion(meta: MetadatosCorpus): Promise<void> {
     grabador.onstop = () => {
       audioBlob = new Blob(trozos, { type: tipoAudio || 'audio/webm' })
       activarDiagnostico(false)
+      bloquearRecargaAutomatica('grabando-corpus', false)
       for (const p of pistas) {
         try { p.stop() } catch (e) {}
       }
