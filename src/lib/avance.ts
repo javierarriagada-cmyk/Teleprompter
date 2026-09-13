@@ -3,6 +3,10 @@
 // columna: ya se hizo una vez y se desfondó al cambiar la tipografia.
 export const PALABRAS_PARA_ARRANCAR = 7
 
+// Cuanto tarda el reconocedor en entregar una palabra desde que se dijo. Es lo unico que
+// hay que compensar para apuntar a donde esta la persona.
+export const MS_RETRASO_RECONOCEDOR = 400
+
 export type EstadoModo = 'SIGUIENDO' | 'BUSCANDO' | 'DETENIDO'
 
 export type ParametrosAvance = {
@@ -73,8 +77,7 @@ export function crearMotorDeAvance(
   let tUltimaVozTrue = 0
 
   let posicionMostrada = 0
-  let tUltimaActualizacion = 0
-  let blancoMonotono = 0
+  let tUltimaActualizacion = 0
   // LA VELOCIDAD ES ESTADO, NO UNA CUENTA DE CADA CUADRO. Esto es lo que le da inercia al
   // motor: sin esto la velocidad puede saltar de 0 a 3x entre dos cuadros, y eso es lo que
   // se ve como un tiron aunque la velocidad nunca pase del tope.
@@ -248,11 +251,30 @@ export function crearMotorDeAvance(
       // OIMOS.
       const comodo = params.adelantoComodo
       const maximo = Math.max(comodo + 1, params.adelantoMaximo)
-      const blancoCrudo = tUltimoCalce === 0
+      // EL BLANCO ES DONDE CREEMOS QUE ESTA LA PERSONA. NO ES UN MAXIMO PERMITIDO.
+      //
+      // Aca estaba el defecto que hacia que el texto se le adelantara a Javier lectura tras
+      // lectura, y no se veia porque estaba escrito como si fuera una precaucion:
+      //
+      //     refToken + Math.min(maximo, vBase * (tMs - tUltimoCalce))
+      //
+      // La extrapolacion estaba topada por LA CORREA -3 palabras- en vez de por el retraso
+      // real del reconocedor. Como entre un calce y el siguiente pasa mas de un segundo, ese
+      // termino llegaba SIEMPRE al tope. O sea que el motor apuntaba, todo el tiempo, a tres
+      // palabras mas alla de lo ultimo que habia oido. Medido sobre cuatro lecturas reales:
+      // el 59% del tiempo el texto estaba entre 2 y 3 palabras adelante, y justo antes de
+      // cada calce nuevo el adelanto promediaba 2.21. No se adelantaba a veces: iba tan
+      // adelante como se le permitia, siempre.
+      //
+      // La correa nunca fue un limite de seguridad. Era el destino.
+      //
+      // Lo que hay que extrapolar es el RETRASO DEL RECONOCEDOR: entre que la persona dice
+      // una palabra y el reconocedor la entrega pasan unas decimas. Eso, y nada mas, es lo
+      // que hay que compensar para apuntar a donde de verdad esta. La correa vuelve a ser lo
+      // que decia ser: un limite que casi nunca se toca.
+      const blanco = tUltimoCalce === 0
         ? refToken
-        : refToken + Math.min(maximo, vBase * (tMs - tUltimoCalce))
-      blancoMonotono = Math.max(blancoMonotono, blancoCrudo)
-      const blanco = blancoMonotono
+        : refToken + vBase * Math.min(MS_RETRASO_RECONOCEDOR, tMs - tUltimoCalce)
 
       // ─── QUE ESTADO, Y A QUE VELOCIDAD QUIERE IR ────────────────────────────────────
       //
@@ -397,8 +419,7 @@ export function crearMotorDeAvance(
 
     irAToken(token: number, tMs: number) {
       const destino = Math.max(0, token)
-      posicionMostrada = destino
-      blancoMonotono = destino
+      posicionMostrada = destino
       vActual = 0
       ultimaConfirmada = destino
       anclaTentativa = destino
@@ -423,8 +444,7 @@ export function crearMotorDeAvance(
       tUltimoCalce = 0
       hayVoz = false
       tUltimaVozTrue = 0
-      posicionMostrada = 0
-      blancoMonotono = 0
+      posicionMostrada = 0
       vActual = 0
       tUltimaActualizacion = 0
       palabrasConfirmadasDesdeArranque = 0
