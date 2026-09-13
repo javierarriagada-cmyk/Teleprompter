@@ -8,7 +8,25 @@ import { anotar } from '../lib/diagnostico'
 
 import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
 
-export const MARGEN_RENGLONES_ARRIBA = 1   // el renglon vivo es el del medio de la banda
+// EL RENGLON VIVO ES EL PRIMERO DE LA VENTANA, Y LOS DOS CLAROS QUEDAN HACIA ADELANTE.
+//
+// Estuvo en 1 -el vivo al medio, un renglon claro arriba y uno abajo- mientras la marca iba
+// POR DELANTE del lector: con el texto adelantado, el renglon que se estaba leyendo quedaba
+// arriba de la marca y hacia falta espacio claro ahi.
+//
+// Desde que el renglon mostrado lo manda la evidencia -la ultima palabra que el reconocedor
+// ubico en el guion, no la posicion estimada- la marca va un poco ATRAS del lector, porque
+// el reconocedor tarda unas decimas y ademas el ojo va una o dos palabras por delante de la
+// voz. Javier lo reporto el 13 de septiembre de 2026 leyendo con esa version: "ahora se
+// queda usualmente en el cuarto renglon". Con la ventana de tres y el vivo al medio, el
+// cuarto cae justo afuera por un renglon.
+//
+// Con el margen en 0 la ventana cubre el renglon vivo y los DOS siguientes, que es hacia
+// donde va el ojo. Arriba no se pierde nada: ahi ya se leyo.
+//
+// LA ZONA CLARA SIGUE MIDIENDO TRES RENGLONES. No se ensancha: esa es la condicion de
+// Javier para no despegar el ojo del lente de la camara. Lo que cambia es donde esta.
+export const MARGEN_RENGLONES_ARRIBA = 0
 
 // Cuanto tarda la pantalla en pasar de un renglon al siguiente. Constante de tiempo de un
 // acercamiento exponencial: con 70 ms, el renglon se recorre casi entero en unos 200.
@@ -564,6 +582,7 @@ export default function TeleprompterView({
 
       <div
         ref={containerRef}
+        data-testid="contenedor-lectura"
         style={{
           height: '100%',
           overflowY: 'auto',

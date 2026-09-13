@@ -46,12 +46,21 @@ describe('Pruebas TAREA 26 (T144-T146)', () => {
       const yEnPantalla = posicionEnPantalla(pPos, origen, topBanda, topScroll)
 
       // 1. Cae DENTRO de la banda
-      expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda)
+      expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda - 1e-9)   // flotantes: con el margen en 0 da topBanda exacto
       expect(yEnPantalla).toBeLessThan(topBanda + altoBanda)
 
       // 2. Queda al menos un renglón entero de espacio POR ENCIMA de él (dentro de la banda)
+      // Antes exigia UN RENGLON ENTERO arriba, que era el valor que tenia
+      // MARGEN_RENGLONES_ARRIBA ese dia. Fijar el numero en vez del parametro convierte una
+      // decision en una ley: al mover el renglon vivo al primer hueco de la ventana -porque
+      // desde que el renglon lo manda la evidencia la marca va DETRAS del lector, no
+      // delante- esta prueba se ponia roja sin que hubiera ningun defecto.
+      //
+      // Lo que protege de verdad es que el renglon vivo NO SE VAYA POR ARRIBA de la ventana,
+      // y eso se comprueba igual con el margen en cero.
       const espacioArriba = yEnPantalla - topBanda
-      expect(espacioArriba).toBeGreaterThanOrEqual(filaPx - 0.001)
+      expect(espacioArriba).toBeGreaterThanOrEqual(MARGEN_RENGLONES_ARRIBA * filaPx - 0.001)
+      expect(espacioArriba).toBeGreaterThanOrEqual(0)
     }
   })
 
@@ -105,7 +114,13 @@ describe('Pruebas TAREA 26 (T144-T146)', () => {
       }
 
       // Cálculo DESPUÉS (fórmula nueva usando la función oficial calcularScrollTop)
-      const topScrollDespues = calcularScrollTop(pPos, origen, filaPx)
+      // LA REGLA QUE DE VERDAD CORRE HOY. Decia pixelDePosicion(c.posicion), que era el
+      // desplazamiento interpolado guiado por la posicion estimada sola. La vista usa el
+      // pixel DEL RENGLON y lo elige con min(posicion, ultimoCalce): no entra a un renglon
+      // sin prueba de que el lector llego. Esta prueba medía una combinacion que ya no es
+      // el producto.
+      const anclaRenglon = Math.min(c.posicion, c.calce)
+      const topScrollDespues = calcularScrollTop(pixelDeRenglon(renglones, anclaRenglon), origen, filaPx)
       const yCalceDespues = posicionEnPantalla(pCalce, origen, topBanda, topScrollDespues)
 
       if (yCalceDespues >= topBanda && yCalceDespues < topBanda + altoBanda) {
@@ -152,7 +167,7 @@ describe('Pruebas TAREA 26 (T144-T146)', () => {
         expect(Math.abs(offsetEnBanda - MARGEN_RENGLONES_ARRIBA * filaPx)).toBeLessThan(0.001)
 
         // Queda dentro de la banda
-        expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda)
+        expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda - 1e-9)   // flotantes: con el margen en 0 da topBanda exacto
         expect(yEnPantalla).toBeLessThan(topBanda + altoBanda)
       }
     }
@@ -302,7 +317,7 @@ describe('Pruebas TAREA 27 (T154-T156)', () => {
             const yEnPantalla = posicionEnPantalla(pPos, origen, topBanda, topScroll)
 
             // Cae dentro de la ventana
-            expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda)
+            expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda - 1e-9)   // flotantes: con el margen en 0 da topBanda exacto
             expect(yEnPantalla).toBeLessThan(topBanda + altoBanda)
 
             // Cae a exactamente MARGEN_RENGLONES_ARRIBA * filaPx de su borde de arriba
@@ -342,5 +357,109 @@ describe('Pruebas TAREA 28 (T157)', () => {
 
     // el arranque: la posicion se queda en 0 mientras la evidencia ya avanzo
     expect(pixelDeRenglon(renglones, Math.min(0, 9))).toBe(renglones[0].top)
+  })
+})
+
+// T158 GUARDIANA DE QUE EL RENGLON NO SE MUEVA MIENTRAS SE LEE.
+//
+// Este es el cambio que el 13 de septiembre de 2026 dejo a Javier terminar un renglon por
+// primera vez en dos semanas, y no estaba guardado por nada.
+//
+// pixelDePosicion reparte el alto del renglon entre sus palabras: decir las cuatro palabras
+// de un renglon desplazaba la pantalla un renglon entero, repartido desde la PRIMERA. El
+// renglon que se estaba leyendo se subia mientras se lo leia y llegaba al borde de arriba
+// antes de terminarlo. Javier lo describio asi: "no se mueve cuando finalizo ese renglon
+// sino antes".
+//
+// La vista usa pixelDeRenglon: todas las palabras de un renglon dan EL MISMO desplazamiento.
+//
+// T145 no sirve para esto: da 100% con las dos versiones, asi que no distingue. Esta si.
+describe('Pruebas TAREA 29 (T158)', () => {
+  // T158 GUARDIANA DE QUE EL RENGLON NO SE MUEVA MIENTRAS SE LEE.
+  //
+  // Este es el cambio que el 13 de septiembre de 2026 dejo a Javier terminar un renglon por
+  // primera vez en dos semanas. pixelDePosicion reparte el alto del renglon entre sus
+  // palabras: decir las cuatro palabras de un renglon desplazaba la pantalla un renglon
+  // entero, repartido desde la PRIMERA. El renglon que se estaba leyendo se subia mientras
+  // se lo leia. Javier: "no se mueve cuando finalizo ese renglon sino antes".
+  //
+  // ESTA PRUEBA EJERCITA LA VISTA, NO LA FORMULA. El primer intento llamaba a
+  // calcularScrollTop(pixelDeRenglon(...)) directo y pasaba IGUAL con el defecto puesto,
+  // porque no tocaba el cableado. Se descubrio rompiendo, que es para lo unico que sirve
+  // romper.
+  //
+  // jsdom no calcula layout y offsetTop devuelve 0 para todo, asi que se falsea: cuatro
+  // palabras por renglon, que es lo medido en la lectura de Javier.
+  test('T158 Con la vista montada y la voz avanzando dentro de un mismo renglon, el desplazamiento NO cambia; cambia una sola vez al cruzar al siguiente.', async () => {
+    const FILA = 24 * 1.4
+    const origClientHeight = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'clientHeight')
+    const origOffsetTop = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'offsetTop')
+
+    const guion = guionSimple(Array.from({ length: 60 }, (_, i) => 'pa' + i).join(' '))
+
+    function motorFalso(posicion: number, ultimoCalce: number) {
+      return {
+        confirmar() {}, tentativo() {}, falloCalce() {}, voz() {}, irAToken() {}, reiniciar() {},
+        estadoEn: () => ({
+          posicion, avanzando: true, estado: 'SIGUIENDO' as const, motivoFreno: null,
+          ppmEstimadas: 120, ultimoCalce, tUltimoCalceMs: 1
+        })
+      }
+    }
+
+    async function desplazamientoCon(posicion: number, ultimoCalce: number): Promise<number> {
+      const { container, unmount } = render(
+        <TeleprompterView
+          script={guion} currentLineIndex={0} currentWordIndex={0}
+          anclajeZona="arriba" fontSize={24} columnaAngosta={false}
+          motorAvance={motorFalso(posicion, ultimoCalce) as any}
+        />
+      )
+      // el desplazamiento se aplica dentro del lazo de animacion: hay que dejar correr un cuadro
+      await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))
+      const cont = container.querySelector('[data-testid="contenedor-lectura"]') as HTMLElement
+      const top = cont ? cont.scrollTop : -1
+      unmount()
+      return top
+    }
+
+    try {
+      Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', { configurable: true, get() { return 720 } })
+      // cuatro palabras por renglon
+      Object.defineProperty(window.HTMLElement.prototype, 'offsetTop', {
+        configurable: true,
+        get(this: HTMLElement) {
+          const t = this.dataset && this.dataset.token
+          return t === undefined ? 0 : Math.floor(Number(t) / 4) * FILA
+        }
+      })
+
+      // renglon 5 = tokens 20..23. La voz recorre el renglon entero.
+      const dentroDelRenglon: number[] = []
+      for (const tok of [20, 21, 22, 23]) dentroDelRenglon.push(await desplazamientoCon(tok, tok))
+      for (const d of dentroDelRenglon) {
+        expect(d).toBe(dentroDelRenglon[0])
+      }
+
+      // al cruzar al siguiente cambia, y cambia exactamente un renglon
+      const alCruzar = await desplazamientoCon(24, 24)
+      expect(alCruzar - dentroDelRenglon[0]).toBeCloseTo(FILA, 4)
+
+      // Y NO ENTRA A UN RENGLON SIN PRUEBA DE QUE EL LECTOR LLEGO.
+      //
+      // La posicion estimada ya esta en el renglon 6 -el tope de avance.ts la deja hasta 3
+      // palabras por delante de lo oido, y con 4 palabras por renglon eso cruza casi
+      // siempre- pero la ultima palabra que el reconocedor ubico sigue en el 5. El
+      // desplazamiento tiene que quedarse en el 5.
+      //
+      // Sin el min con ultimoCalce esto se va al renglon siguiente y la prueba se pone roja.
+      const posicionAdelantada = await desplazamientoCon(24.5, 22)
+      expect(posicionAdelantada).toBe(dentroDelRenglon[0])
+    } finally {
+      if (origClientHeight) Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', origClientHeight)
+      else delete (window.HTMLElement.prototype as any).clientHeight
+      if (origOffsetTop) Object.defineProperty(window.HTMLElement.prototype, 'offsetTop', origOffsetTop)
+      else delete (window.HTMLElement.prototype as any).offsetTop
+    }
   })
 })
