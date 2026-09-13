@@ -582,6 +582,7 @@ export default function TeleprompterView({
 
       <div
         ref={containerRef}
+        data-testid="contenedor-lectura"
         style={{
           height: '100%',
           overflowY: 'auto',
