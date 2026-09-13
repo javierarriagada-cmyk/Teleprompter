@@ -127,7 +127,14 @@ Línea tres`
       })
     )
 
-    // Abrir la interfaz de pegar texto
+    // Abrir menú de opciones del editor y luego pegar texto
+    const btnMenuEditor = document.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
+    expect(btnMenuEditor).not.toBeNull()
+
+    await act(async () => {
+      fireEvent.click(btnMenuEditor)
+    })
+
     const btnPegar = Array.from(document.querySelectorAll('button')).find((b) => b.textContent === 'Pegar texto')
     expect(btnPegar).not.toBeUndefined()
 

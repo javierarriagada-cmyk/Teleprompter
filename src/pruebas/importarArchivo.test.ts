@@ -170,6 +170,14 @@ El archivo se llama el_mundo_entero hoy.
       })
     )
 
+    // Abrir menú de opciones del editor
+    const btnMenuEditor = document.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
+    expect(btnMenuEditor).not.toBeNull()
+
+    await act(async () => {
+      fireEvent.click(btnMenuEditor)
+    })
+
     // Verificar que existe el botón "Abrir archivo"
     const btnAbrir = Array.from(document.querySelectorAll('button')).find((b) => b.textContent === 'Abrir archivo')
     expect(btnAbrir).not.toBeUndefined()

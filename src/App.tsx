@@ -633,6 +633,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           onBorrar={handleBorrarGuion}
           onArchivar={handleArchivarGuion}
           onBuscarGuionCompleto={(id) => repoRef.current.abrir(id)}
+          onToggleDiagnostico={() => setMostrarDiagnostico((prev) => !prev)}
         />
       )}
 
