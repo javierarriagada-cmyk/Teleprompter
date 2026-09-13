@@ -533,22 +533,6 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   return (
     <div style={{ padding: 16, fontFamily: 'sans-serif', maxWidth: 1200, margin: '0 auto' }}>
-      <header style={{ borderBottom: '1px solid var(--color-borde)', paddingBottom: 12, marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
-          <h1 style={{ margin: 0, fontSize: 24, cursor: 'pointer', color: 'var(--color-texto)' }} onClick={() => setVista('biblioteca')}>Teleprompter MVP</h1>
-          {vista !== 'biblioteca' && (
-            <h3 style={{ color: 'var(--color-apagado)', margin: '4px 0 0 0', fontSize: 16 }}>{tituloMostrar}</h3>
-          )}
-        </div>
-        {vista !== 'biblioteca' && (
-          <button
-            onClick={() => setVista('biblioteca')}
-            style={{ padding: '6px 12px', cursor: 'pointer', backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)', borderRadius: 6, color: 'var(--color-texto)' }}
-          >
-            Ver Biblioteca
-          </button>
-        )}
-      </header>
 
       {/* Indicador de precarga de modelo Vosk */}
       {(estadoPrecarga === 'descargando' || estadoPrecarga === 'error') && (
