@@ -134,6 +134,7 @@ export function crearMotorDeAvance(
   // LA CORREA, EN UN SOLO LUGAR. Cuanto puede correr el texto por delante de donde estas:
   // libre hasta adelantoComodo, frenando hasta adelantoMaximo, y ahi quieto. Los dos numeros
   // los ajusto Javier leyendo a camara.
+  // INVARIANTE: EL TEXTO NUNCA SE MUESTRA MAS DE adelantoMaximo PALABRAS POR DELANTE DE LA ULTIMA PALABRA QUE EL RECONOCEDOR UBICO EN EL GUION.
   function frenoDeCorrea(adelanto: number): number {
     const comodo = params.adelantoComodo
     const maximo = Math.max(comodo + 1, params.adelantoMaximo)
@@ -309,7 +310,7 @@ export function crearMotorDeAvance(
         if (tInicioBuscando === 0) tInicioBuscando = tMs
         const dtBuscando = tMs - tInicioBuscando
         const desaceleracion = Math.max(0, 1 - dtBuscando / params.msDeBusquedaCiega)
-        vObjetivo = vBase * desaceleracion * frenoDeCorrea(posicionMostrada - blanco)
+        vObjetivo = vBase * desaceleracion * frenoDeCorrea(posicionMostrada - refToken)
       } else {
         tInicioBuscando = 0
         estado = 'SIGUIENDO'
@@ -325,9 +326,8 @@ export function crearMotorDeAvance(
           vObjetivo = Math.min(vMax, vBase + (dist * (vMax - vBase)) / maximo)
         } else {
           // El texto va adelante tuyo. NO SE DETIENE de golpe: sigue a tu ritmo, cada vez mas
-          // despacio, y llega a cero recien en adelantoMaximo. Estos dos numeros los ajusto
-          // Javier leyendo a camara y no se tocan.
-          vObjetivo = vBase * frenoDeCorrea(-dist)
+          // despacio, y llega a cero recien en adelantoMaximo. Medido SIEMPRE contra refToken.
+          vObjetivo = vBase * frenoDeCorrea(posicionMostrada - refToken)
         }
       }
 
