@@ -87,6 +87,14 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [anclajeZona, setAnclajeZona] = useState<'arriba' | 'medio' | 'abajo'>(ajustesPrevios.anclajeZona || 'arriba')
   const [tema, setTema] = useState<'claro' | 'oscuro'>(ajustesPrevios.tema || 'claro')
 
+  // COLUMNA ANCHA POR OMISION. Estaba en angosta y Javier lo pregunto el 13 de septiembre
+  // de 2026: la angosta es una opcion para quien la quiera, no el punto de partida. En un
+  // telefono la angosta deja tres o cuatro palabras por renglon y obliga a saltar de linea
+  // todo el tiempo. Y ahora la eleccion se recuerda, como el resto de los ajustes.
+  const [columnaAngosta, setColumnaAngosta] = useState<boolean>(
+    ajustesPrevios.columnaAngosta !== undefined ? Boolean(ajustesPrevios.columnaAngosta) : false
+  )
+
   // Mientras estemos arreglando el motor, toda lectura se mide. Se puede apagar si
   // alguna vez estorba, pero la omision es medir.
   const [medirLectura, setMedirLectura] = useState<boolean>(true)
@@ -110,12 +118,13 @@ export default function App({ motor, repoOverride }: AppProps) {
         mostrarTiempo,
         verTranscripcion,
         tema,
-        engine
+        engine,
+        columnaAngosta
       }
       localStorage.setItem('teleprompter_ajustes', JSON.stringify(objetoAjustes))
     } catch (e) {
     }
-  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine])
+  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta])
 
   const cargarBiblioteca = useCallback(async () => {
     let repo = repoRef.current
@@ -290,7 +299,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }
 
-  const [columnaAngosta, setColumnaAngosta] = useState<boolean>(true)
   const [colorFondo, setColorFondo] = useState<string>('#000000')
   const [colorLetra, setColorLetra] = useState<string>('#FFFFFF')
   const [tipoFuente, setTipoFuente] = useState<'sans' | 'serif'>('sans')
@@ -469,6 +477,15 @@ export default function App({ motor, repoOverride }: AppProps) {
     // calces quedarian anotados con un milisegundo que ya no existe en el archivo.
     await detenerGrabacion()
     await soltarWakeLock()
+
+    // LOS CONTROLES VUELVEN AL PARAR, sin tener que tocar la pantalla.
+    //
+    // Volver con el toque ya existia -onToggleControles, que TeleprompterView dispara y que
+    // sabe distinguir un toque de un arrastre; lo cuida T91-. Esto es otra cosa: al APRETAR
+    // DETENER la lectura termino, y lo primero que uno quiere ver es justamente lo que hay
+    // ahi -que quedo grabado, como sigue-. Pedirle un toque de mas en ese momento es pedirle
+    // que adivine que los controles se traen tocando.
+    setControlesVisibles(true)
   }
 
   function handleClear() {

@@ -45,8 +45,9 @@
 
 import { activarDiagnostico, comoTexto, cantidadEntradas } from './diagnostico'
 import { bloquearRecargaAutomatica } from './actualizacion'
+import { guardarLectura } from './almacenCorpus'
 
-export type EstadoGrabador = 'inactivo' | 'pidiendo-permiso' | 'grabando' | 'listo' | 'error'
+export type EstadoGrabador = 'inactivo' | 'pidiendo-permiso' | 'grabando' | 'guardando' | 'listo' | 'error'
 
 export type MetadatosCorpus = {
   guionTitulo: string
@@ -64,6 +65,8 @@ let tipoAudio = ''
 let metadatos: MetadatosCorpus | null = null
 let inicioReloj = ''
 let ultimoError = ''
+let tArranqueMs = 0
+let promesaGuardado: Promise<void> | null = null
 
 export function estadoGrabador(): EstadoGrabador {
   return estadoActual
@@ -97,6 +100,8 @@ export async function iniciarGrabacion(meta: MetadatosCorpus): Promise<void> {
   if (estadoActual === 'grabando') return
 
   ultimoError = ''
+  tArranqueMs = 0
+  promesaGuardado = null
   audioBlob = null
   trozos = []
   metadatos = meta
@@ -125,6 +130,7 @@ export async function iniciarGrabacion(meta: MetadatosCorpus): Promise<void> {
     grabador.onstart = () => {
       // ACA, Y SOLO ACA, ARRANCA EL RELOJ COMPARTIDO. Ver la nota de arriba.
       inicioReloj = new Date().toISOString()
+      tArranqueMs = performance.now()
       activarDiagnostico(true)
       bloquearRecargaAutomatica('grabando-corpus', true)
       estadoActual = 'grabando'
@@ -137,13 +143,44 @@ export async function iniciarGrabacion(meta: MetadatosCorpus): Promise<void> {
 
     grabador.onstop = () => {
       audioBlob = new Blob(trozos, { type: tipoAudio || 'audio/webm' })
+      const textoRegistro = registroComoTexto()
+      const segundos = Math.round((performance.now() - tArranqueMs) / 1000)
       activarDiagnostico(false)
-      bloquearRecargaAutomatica('grabando-corpus', false)
       for (const p of pistas) {
         try { p.stop() } catch (e) {}
       }
       pistas = []
-      estadoActual = 'listo'
+      estadoActual = 'guardando'
+
+      // SE GUARDA APENAS TERMINA, SIN ESPERAR A QUE NADIE APRIETE NADA.
+      //
+      // El 13 de septiembre de 2026 se perdieron dos o tres lecturas de Javier porque la
+      // grabacion vivia solo en memoria y el boton para bajarla estaba dentro de los
+      // controles, que se esconden al leer y no volvian nunca. Una lectura leida en voz
+      // alta no se puede repetir a voluntad: cuesta minutos de una persona, no un clic.
+      // Asi que se guarda sola, y bajarla despues es opcional.
+      promesaGuardado = guardarLectura({
+        id: `${Date.now()}`,
+        fecha: Date.now(),
+        guionTitulo: meta.guionTitulo,
+        motor: meta.motor,
+        audio: audioBlob,
+        extension: tipoAudio.includes('mp4') ? 'm4a' : tipoAudio.includes('ogg') ? 'ogg' : 'webm',
+        registro: textoRegistro,
+        segundos
+      })
+        .then(() => {
+          estadoActual = 'listo'
+        })
+        .catch((e) => {
+          ultimoError = 'la lectura se grabó pero no se pudo guardar: ' + (e && e.message ? e.message : String(e))
+          estadoActual = 'listo'
+        })
+        .finally(() => {
+          // La recarga se suelta DESPUES de guardar, no antes: si se soltara antes, una
+          // actualizacion pendiente podria recargar la pagina justo mientras se escribe.
+          bloquearRecargaAutomatica('grabando-corpus', false)
+        })
     }
 
     grabador.start(1000)
@@ -170,6 +207,16 @@ export async function detenerGrabacion(): Promise<void> {
     }
   })
   grabador = null
+
+  // Y NO SE VUELVE HASTA QUE LA LECTURA ESTA GUARDADA.
+  //
+  // La primera version devolvia apenas paraba el grabador y dejaba el guardado corriendo
+  // por su cuenta. Eso es una promesa rota: quien llama a detenerGrabacion() y espera cree
+  // que al volver ya esta todo a salvo, y no lo estaba. Peor todavia con la recarga
+  // automatica de por medio, que podia aplicarse justo en el hueco.
+  if (promesaGuardado) {
+    await promesaGuardado
+  }
 }
 
 // El texto que acompana al audio. Va aparte y en texto plano a proposito: tiene que poder
@@ -246,4 +293,5 @@ export function reiniciarGrabadorParaPruebas(): void {
   metadatos = null
   inicioReloj = ''
   ultimoError = ''
+  promesaGuardado = null
 }

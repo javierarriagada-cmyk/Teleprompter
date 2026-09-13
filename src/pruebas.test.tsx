@@ -813,7 +813,6 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
 
     const colTexto = container!.querySelector('[data-testid="columna-texto"]') as HTMLElement
     expect(colTexto).not.toBeNull()
-    expect(colTexto.style.maxWidth).toBe('22ch')
 
     const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes'))!
     await act(async () => {
@@ -822,6 +821,17 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
 
     const selectColumna = container!.querySelector('select[aria-label="Ancho de columna"]') as HTMLSelectElement
     expect(selectColumna).not.toBeNull()
+
+    // LA ANGOSTA SE ELIGE, NO SE HEREDA. Antes esta prueba daba por supuesto que la columna
+    // arranca angosta y comprobaba 22ch antes de tocar nada. El 13 de septiembre de 2026
+    // Javier pidio que por omision sea ANCHA -"deberia tirar la ancha por defecto"-, y la
+    // prueba se puso roja sin que hubiera ningun defecto. Lo que afirma -angosta da 22ch,
+    // completa da 90%- sigue valiendo igual; lo que estaba de mas era depender del valor
+    // inicial, que es una decision del dueno y puede cambiar otra vez.
+    await act(async () => {
+      fireEvent.change(selectColumna, { target: { value: 'angosta' } })
+    })
+    expect(colTexto.style.maxWidth).toBe('22ch')
 
     await act(async () => {
       fireEvent.change(selectColumna, { target: { value: 'completa' } })
