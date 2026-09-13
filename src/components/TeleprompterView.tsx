@@ -8,7 +8,7 @@ import { anotar } from '../lib/diagnostico'
 
 import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
 
-export const MARGEN_RENGLONES_ARRIBA = 1
+export const MARGEN_RENGLONES_ARRIBA = 1   // el renglon vivo es el del medio de la banda
 
 export function calcularScrollTop(
   pixelPos: number,

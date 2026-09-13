@@ -3280,12 +3280,29 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       }
     })
 
-    test('T124: El velo tapa a distancia 0 nada, a distancia 1 el 40%, a -1 el 70%, y mas alla el 68% y el 88%. O sea 1 - opacidadDeLinea(d).', () => {
-      expect(Number((1 - opacidadDeLinea(0)).toFixed(2))).toBe(0.00)
-      expect(Number((1 - opacidadDeLinea(1)).toFixed(2))).toBe(0.00)
-      expect(Number((1 - opacidadDeLinea(-1)).toFixed(2))).toBe(0.65)
-      expect(Number((1 - opacidadDeLinea(2)).toFixed(2))).toBe(0.45)
-      expect(Number((1 - opacidadDeLinea(-2)).toFixed(2))).toBe(0.88)
+    test('T124: JUNTO A DONDE SE LEE NO PUEDE HABER NEGRO. Fuera de la ventana el velo atenua, pero deja leer.', () => {
+      // ESTA PRUEBA DECIA OTRA COSA Y ESTABA MAL DE RAIZ. Afirmaba que el velo es
+      // "1 - opacidadDeLinea(d)". No lo es: la vista importa opacidadDeLinea y NO LA LLAMA
+      // NUNCA. Lo unico que pinta es calcularTramosVelo. El 13 de septiembre de 2026 pase
+      // una tarde ajustando esa escala creyendo que controlaba la pantalla, y esta prueba
+      // en verde me lo confirmaba, porque comprobaba la escala contra si misma.
+      //
+      // Lo que hay que exigir es lo que se ve: que al lado del renglon que se lee no haya
+      // negro. Javier terminaba leyendo en una linea ennegrecida y tenia que cortar; el velo
+      // tapaba al 0.88 justo encima de la ventana, que sobre fondo negro es negro.
+      const tramos = calcularTramosVelo(20, 34, 3)
+
+      // Ninguna zona puede tapar tanto que no se pueda leer. 0.6 ya es mucho.
+      for (const t of tramos) {
+        expect(t.alpha).toBeLessThanOrEqual(0.6)
+      }
+
+      // La ventana viva, limpia.
+      expect(tramos[1].alpha).toBe(0)
+
+      // Y lo que VIENE no puede estar mas tapado que lo que YA PASO en mas de un poco: el
+      // ojo va delante de la voz, asi que hacia abajo es donde se esta mirando.
+      expect(tramos[2].alpha - tramos[0].alpha).toBeLessThanOrEqual(0.15)
     })
   })
 
@@ -3298,9 +3315,9 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       const tramosRes = calcularTramosVelo(topBanda, filaPx, lineasZona)
 
       expect(tramosRes).toEqual([
-        { desdePx: 0, hastaPx: 40, alpha: 0.88 },
+        { desdePx: 0, hastaPx: 40, alpha: 0.45 },
         { desdePx: 40, hastaPx: 40 + 3 * 28, alpha: 0.00 },
-        { desdePx: 40 + 3 * 28, hastaPx: Infinity, alpha: 0.68 }
+        { desdePx: 40 + 3 * 28, hastaPx: Infinity, alpha: 0.55 }
       ])
 
       const bg = calcularBgVelo(topBanda, filaPx, lineasZona, { r: 0, g: 0, b: 0 })

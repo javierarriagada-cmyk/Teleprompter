@@ -113,12 +113,34 @@ export interface TramoVelo {
 export function calcularTramosVelo(topBanda: number, filaPx: number, lineasZona = 3): TramoVelo[] {
   const altoZona = lineasZona * filaPx
   return [
-    { desdePx: 0, hastaPx: topBanda, alpha: 0.88 },
+    { desdePx: 0, hastaPx: topBanda, alpha: 0.45 },
     { desdePx: topBanda, hastaPx: topBanda + altoZona, alpha: 0.00 },
-    { desdePx: topBanda + altoZona, hastaPx: Infinity, alpha: 0.68 }
+    { desdePx: topBanda + altoZona, hastaPx: Infinity, alpha: 0.55 }
   ]
 }
 
+// ESTO ES LO QUE DE VERDAD SE VE. opacidadDeLinea esta importada en la vista pero NO SE
+// LLAMA: el 13 de septiembre de 2026 estuve una tarde ajustando esa escala creyendo que
+// controlaba la pantalla, y no controla nada. Lo unico que pinta es esta funcion.
+//
+// LO QUE ESTABA MAL: arriba de la ventana clara el velo saltaba a 0.88, que sobre fondo
+// negro es negro. Y arriba del renglon vivo hay UN SOLO renglon claro. O sea que cualquier
+// desfase de un renglon -el margen entre parrafos, o simplemente que el ojo va delante de
+// la voz- dejaba a Javier leyendo en negro: "termino leyendo en la linea ennegrecida, asi
+// que no pude leer mas".
+//
+// Medido sobre su lectura, el motor la seguia con 0.08 palabras de error medio sobre 703
+// puntos. No era el motor: era que al lado de donde se lee habia negro.
+//
+// AHORA NO HAY NEGRO EN NINGUNA PARTE CERCA. Lo de afuera de la ventana se atenua lo
+// suficiente para guiar el ojo y no tanto como para castigar estar medio renglon corrido:
+//
+//   arriba de la ventana   0.45   se lee, pero claramente es lo ya dicho
+//   la ventana             0.00   limpia
+//   abajo de la ventana    0.55   se lee, y es lo que viene
+//
+// La ventana sigue midiendo tres renglones: la zona clara tiene que ser CHICA para no
+// despegar el ojo del lente de la camara. Lo que cambia es que afuera ya no es un pozo.
 export function calcularBgVelo(
   topBanda: number,
   filaPx: number,
@@ -127,5 +149,5 @@ export function calcularBgVelo(
 ): string {
   const cVelo = (alpha: number) => `rgba(${rgbFondo.r}, ${rgbFondo.g}, ${rgbFondo.b}, ${alpha})`
   const altoZona = lineasZona * filaPx
-  return `linear-gradient(to bottom, ${cVelo(0.88)} 0px, ${cVelo(0.88)} ${topBanda}px, ${cVelo(0.00)} ${topBanda}px, ${cVelo(0.00)} ${topBanda + altoZona}px, ${cVelo(0.68)} ${topBanda + altoZona}px, ${cVelo(0.68)} 100%)`
+  return `linear-gradient(to bottom, ${cVelo(0.45)} 0px, ${cVelo(0.45)} ${topBanda}px, ${cVelo(0.00)} ${topBanda}px, ${cVelo(0.00)} ${topBanda + altoZona}px, ${cVelo(0.55)} ${topBanda + altoZona}px, ${cVelo(0.55)} 100%)`
 }
