@@ -118,24 +118,23 @@ export class MotorWebSpeech implements MotorDeVoz {
 
     rec.onresult = (event: any) => {
       this.reconexionesSeguidas = 0
-      let finalStr = ''
       let interimStr = ''
-      const ahora = Date.now()
+      const ahora = performance.now()
 
       for (let i = event.resultIndex; i < event.results.length; ++i) {
         const res = event.results[i]
         if (res.isFinal) {
-          finalStr += res[0].transcript
+          const textFinal = res[0] && res[0].transcript ? res[0].transcript.trim() : ''
+          if (textFinal) {
+            this.listenersFinal.forEach((cb) => cb({ texto: textFinal, inicioMs: ahora - 1000, finMs: ahora }))
+          }
         } else {
-          interimStr += res[0].transcript
+          interimStr += res[0] && res[0].transcript ? res[0].transcript : ''
         }
       }
 
       if (interimStr) {
         this.listenersParcial.forEach((cb) => cb({ texto: interimStr }))
-      }
-      if (finalStr) {
-        this.listenersFinal.forEach((cb) => cb({ texto: finalStr, inicioMs: ahora - 1000, finMs: ahora }))
       }
     }
 

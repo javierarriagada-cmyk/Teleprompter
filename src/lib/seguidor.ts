@@ -354,7 +354,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
       }
 
       const palabrasAhora = fraseNorm.split(' ').filter(Boolean)
-      if (palabrasAhora.length === 0) {
+      if (palabrasAhora.length < 2) {
         return obtenerPosicionRespuesta(false)
       }
 

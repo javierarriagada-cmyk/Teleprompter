@@ -49,3 +49,29 @@ export function opacidadDeLinea(distanciaLineas: number): number {
   if (distanciaLineas === -1) return 0.30
   return 0.12
 }
+
+export interface TramoVelo {
+  desdePx: number
+  hastaPx: number
+  alpha: number
+}
+
+export function calcularTramosVelo(topBanda: number, filaPx: number, lineasZona = 3): TramoVelo[] {
+  const altoZona = lineasZona * filaPx
+  return [
+    { desdePx: 0, hastaPx: topBanda, alpha: 0.88 },
+    { desdePx: topBanda, hastaPx: topBanda + altoZona, alpha: 0.00 },
+    { desdePx: topBanda + altoZona, hastaPx: Infinity, alpha: 0.68 }
+  ]
+}
+
+export function calcularBgVelo(
+  topBanda: number,
+  filaPx: number,
+  lineasZona: number,
+  rgbFondo: { r: number; g: number; b: number }
+): string {
+  const cVelo = (alpha: number) => `rgba(${rgbFondo.r}, ${rgbFondo.g}, ${rgbFondo.b}, ${alpha})`
+  const altoZona = lineasZona * filaPx
+  return `linear-gradient(to bottom, ${cVelo(0.88)} 0px, ${cVelo(0.88)} ${topBanda}px, ${cVelo(0.00)} ${topBanda}px, ${cVelo(0.00)} ${topBanda + altoZona}px, ${cVelo(0.68)} ${topBanda + altoZona}px, ${cVelo(0.68)} 100%)`
+}

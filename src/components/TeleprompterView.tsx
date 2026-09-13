@@ -5,7 +5,7 @@ import { Guion } from '../datos/modelo'
 import { esCaracterApertura, esCaracterCierre } from '../lib/acotaciones'
 import { agruparEnRenglones, pixelDePosicion, Renglon, MedidaToken } from '../lib/renglones'
 
-import { AnclajeZona, calcularBanda, opacidadDeLinea } from './banda'
+import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
 
 interface TeleprompterViewProps {
   script: Guion | string
@@ -130,7 +130,7 @@ export default function TeleprompterView({
   }, [script, fontSize, columnaAngosta, marginPercent, recalcularGeometria])
 
   useEffect(() => {
-    if (motorAvance) return
+    if (motorAvance || isRecording) return
     const el = containerRef.current
     if (!el) return
     const target = el.querySelector(`[data-block="${currentBlockIndex}"][data-line="${currentLineIndex}"]`) as HTMLElement
@@ -142,7 +142,7 @@ export default function TeleprompterView({
         el.scrollTop = top
       }
     }
-  }, [currentBlockIndex, currentLineIndex, motorAvance, topBanda])
+  }, [currentBlockIndex, currentLineIndex, motorAvance, isRecording, topBanda])
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -335,8 +335,7 @@ export default function TeleprompterView({
     : 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.075) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%)'
 
   const rgbFondo = hexToRgb(colorFondo)
-  const cVelo = (alpha: number) => `rgba(${rgbFondo.r}, ${rgbFondo.g}, ${rgbFondo.b}, ${alpha})`
-  const bgVelo = `linear-gradient(to bottom, ${cVelo(0.88)} 0px, ${cVelo(0.88)} ${topBanda}px, ${cVelo(0.70)} ${topBanda}px, ${cVelo(0.70)} ${topBanda + filaPx}px, ${cVelo(0.00)} ${topBanda + filaPx}px, ${cVelo(0.00)} ${topBanda + 2 * filaPx}px, ${cVelo(0.40)} ${topBanda + 2 * filaPx}px, ${cVelo(0.40)} ${topBanda + 3 * filaPx}px, ${cVelo(0.68)} ${topBanda + 3 * filaPx}px, ${cVelo(0.68)} 100%)`
+  const bgVelo = calcularBgVelo(topBanda, filaPx, lineasZona, rgbFondo)
 
   const allTokens = tokensRef.current
 

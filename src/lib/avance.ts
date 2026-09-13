@@ -288,6 +288,11 @@ export function crearMotorDeAvance(
         estado = 'DETENIDO'
         motivoFreno = 'silencio'
         vObjetivo = 0
+      } else if (!arranqueCumplido || tUltimoCalce === 0) {
+        estado = 'DETENIDO'
+        motivoFreno = 'sin-calce'
+        vObjetivo = 0
+        tInicioBuscando = 0
       } else if (dtSinCalce > params.msSinCalceParaFrenar) {
         // Paso el margen entero sin poder calzar nada. Se detiene y lo dice.
         estado = 'DETENIDO'

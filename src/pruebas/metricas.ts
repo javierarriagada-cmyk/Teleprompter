@@ -173,7 +173,7 @@ export function medir(
         }
       }
 
-      if (hayVozActual && !st.avanzando && st.motivoFreno !== 'correa' && st.motivoFreno !== 'fin-de-linea') {
+      if (hayVozActual && !st.avanzando && st.motivoFreno !== 'correa' && st.motivoFreno !== 'fin-de-linea' && st.motivoFreno !== 'sin-calce') {
         tiempoFrenadoIndebidoMs += stepMs
       }
     }
