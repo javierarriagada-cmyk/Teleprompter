@@ -28,7 +28,7 @@ export function calcularBanda(
   // Se lee RENGLON POR RENGLON, no parrafo por parrafo. La banda marca donde esta el ojo,
   // y el ojo esta en un renglon. El parametro altoLineaViva queda sin uso a proposito.
   void altoLineaViva
-  const altoBanda = 3 * filaPx
+  const altoBanda = RENGLONES_CLAROS * filaPx
 
   let topBanda = 0
   if (anclajeZona === 'arriba') {
@@ -104,6 +104,30 @@ export function opacidadDeLinea(distanciaLineas: number): number {
   return 0.12
 }
 
+// LA ZONA CLARA SON CUATRO RENGLONES, Y NO LA ELIGE EL USUARIO.
+//
+// Habia un deslizador de 1 a 7 en los ajustes, y estaba roto a medias: calcularBanda recibia
+// lineasZona y lo IGNORABA -la banda media 3 renglones clavados- mientras el velo si le
+// hacia caso. Con el deslizador en 1, la ventana clara quedaba de un solo renglon y tapaba
+// los dos de adelante, que es exactamente donde va el ojo desde que el renglon vivo es el
+// primero de la ventana. Ese control podia deshacer lo que hizo que Javier pudiera leer un
+// guion entero.
+//
+// Javier lo corto el 13 de septiembre de 2026: "lo de la zona lo definimos nosotros, no lo
+// dejamos al usuario".
+export const RENGLONES_CLAROS = 4
+
+// HOLGURA PARA QUE NINGUN RENGLON QUEDE PARTIDO.
+//
+// Los parrafos llevan 16 px de margen, asi que la grilla de renglones se corre en cada salto
+// de parrafo y un borde del velo cae a mitad de un renglon. Javier: "el renglon cuatro
+// siempre aparece dividido la mitad medio tapado y el primero tambien por sombra, cuando
+// esas cuatro lineas seria mejor aparecieran claras".
+//
+// Es exactamente el margen entre parrafos: alcanza para absorber el corrimiento y no alcanza
+// para aclarar un renglon entero de mas.
+export const HOLGURA_VELO = 16
+
 export interface TramoVelo {
   desdePx: number
   hastaPx: number
@@ -139,15 +163,23 @@ export function calcularTramosVelo(topBanda: number, filaPx: number, lineasZona 
 //   la ventana             0.00   limpia
 //   abajo de la ventana    0.55   se lee, y es lo que viene
 //
-// La ventana sigue midiendo tres renglones: la zona clara tiene que ser CHICA para no
-// despegar el ojo del lente de la camara. Lo que cambia es que afuera ya no es un pozo.
+// La ventana mide RENGLONES_CLAROS renglones mas la holgura: chica, para no despegar el ojo
+// del lente de la camara, pero sin que ningun renglon quede partido en un borde.
+//
+// Y SALE DE calcularTramosVelo, no de una copia. Antes las dos funciones repetian la misma
+// cuenta a mano: se podia cambiar una y dejar la otra, que es como se llega a que la prueba
+// mire una cosa y la pantalla pinte otra.
 export function calcularBgVelo(
   topBanda: number,
   filaPx: number,
-  lineasZona: number,
   rgbFondo: { r: number; g: number; b: number }
 ): string {
-  const cVelo = (alpha: number) => `rgba(${rgbFondo.r}, ${rgbFondo.g}, ${rgbFondo.b}, ${alpha})`
-  const altoZona = lineasZona * filaPx
-  return `linear-gradient(to bottom, ${cVelo(0.45)} 0px, ${cVelo(0.45)} ${topBanda}px, ${cVelo(0.00)} ${topBanda}px, ${cVelo(0.00)} ${topBanda + altoZona}px, ${cVelo(0.55)} ${topBanda + altoZona}px, ${cVelo(0.55)} 100%)`
+  const cVelo = (a: number) => `rgba(${rgbFondo.r}, ${rgbFondo.g}, ${rgbFondo.b}, ${a})`
+  const [arriba, ventana, abajo] = calcularTramosVelo(topBanda, filaPx)
+  return (
+    `linear-gradient(to bottom, ` +
+    `${cVelo(arriba.alpha)} 0px, ${cVelo(arriba.alpha)} ${arriba.hastaPx}px, ` +
+    `${cVelo(ventana.alpha)} ${ventana.desdePx}px, ${cVelo(ventana.alpha)} ${ventana.hastaPx}px, ` +
+    `${cVelo(abajo.alpha)} ${abajo.desdePx}px, ${cVelo(abajo.alpha)} 100%)`
+  )
 }

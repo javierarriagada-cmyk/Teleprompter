@@ -341,19 +341,12 @@ export default function ControlsBar({
             </label>
           )}
 
-          {setLineasZona && lineasZona !== undefined && (
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--color-texto)' }}>
-              Líneas Zona ({lineasZona}):
-              <input
-                type="range"
-                min={1}
-                max={7}
-                step={1}
-                value={lineasZona}
-                onChange={(e) => setLineasZona(Number(e.target.value))}
-              />
-            </label>
-          )}
+          {/* El deslizador de "Lineas Zona" se quito el 13 de septiembre de 2026. Estaba roto a
+              medias -calcularBanda lo ignoraba y el velo le hacia caso- y en 1 tapaba los
+              renglones de adelante, que es donde va el ojo. La zona clara la define
+              RENGLONES_CLAROS en banda.ts. Javier: "lo de la zona lo definimos nosotros, no lo
+              dejamos al usuario". */}
+
 
           {setAnclajeZona && anclajeZona !== undefined && (
             <label style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--color-texto)' }}>

@@ -483,7 +483,7 @@ export default function TeleprompterView({
     : 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.075) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%)'
 
   const rgbFondo = hexToRgb(colorFondo)
-  const bgVelo = calcularBgVelo(topBanda, filaPx, lineasZona, rgbFondo)
+  const bgVelo = calcularBgVelo(topBanda, filaPx, rgbFondo)
 
   const allTokens = tokensRef.current
 

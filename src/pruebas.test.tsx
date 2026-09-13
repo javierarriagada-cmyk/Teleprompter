@@ -18,7 +18,7 @@ import { medir } from './pruebas/metricas'
 import { Guion } from './datos/modelo'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
-import { calcularBanda, opacidadDeLinea, AnclajeZona, calcularTramosVelo, calcularBgVelo } from './components/banda'
+import { calcularBanda, opacidadDeLinea, AnclajeZona, calcularTramosVelo, calcularBgVelo, RENGLONES_CLAROS } from './components/banda'
 import { agruparEnRenglones, pixelDePosicion, Renglon, MedidaToken } from './lib/renglones'
 import TeleprompterView, { MARGEN_RENGLONES_ARRIBA, calcularScrollTop, posicionEnPantalla } from './components/TeleprompterView'
 import { normalizar } from './lib/seguidor'
@@ -923,7 +923,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     expect(prompterView.getAttribute('data-letra')).toBe('#000000')
   })
 
-  test('T90: GUARDIANA DE LA BANDA. La banda mide TRES RENGLONES siempre, sin importar cuantos renglones ocupe la linea viva.', () => {
+  test('T90: GUARDIANA DE LA BANDA. La banda mide RENGLONES_CLAROS RENGLONES siempre, sin importar cuantos renglones ocupe la linea viva.', () => {
     const alturaVista = 480
     const filaPx = 20
     const lineasZona = 3
@@ -932,17 +932,19 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
 
     const res = calcularBanda(alturaVista, filaPx, lineasZona, anclajeZona, 20, 20, altoLineaViva)
 
-    // TRES renglones: 3 * 20px = 60px. NO depende de altoLineaViva.
+    // La banda mide RENGLONES_CLAROS renglones. NO depende de altoLineaViva.
+    // Estaba escrito como 60 -tres renglones de 20-, o sea el valor y no el parametro: al
+    // pasar la zona clara a cuatro renglones se ponia roja sin que hubiera defecto.
     //
     // La regla anterior era "alto de la linea viva + dos renglones", y la escribi yo
     // suponiendo que una linea del guion ocupa uno o dos renglones. Con la columna angosta
     // ocupa tres o cuatro, y la banda llegaba a cinco renglones: marcaba el parrafo entero
     // en vez del renglon que se esta leyendo. Se lee renglon por renglon.
-    expect(res.altoBanda).toBe(60)
+    expect(res.altoBanda).toBe(RENGLONES_CLAROS * 20)
 
     // Y no cambia aunque la linea viva sea mucho mas alta.
     const resLineaLarga = calcularBanda(alturaVista, filaPx, lineasZona, anclajeZona, 20, 20, 200)
-    expect(resLineaLarga.altoBanda).toBe(60)
+    expect(resLineaLarga.altoBanda).toBe(RENGLONES_CLAROS * 20)
   })
 
   test('T91: GUARDIANA. Al arrancar la lectura los controles no estan en el documento. Un toque en la pantalla los devuelve. Y un ARRASTRE no los devuelve ni interrumpe la navegacion manual.', async () => {
@@ -1550,7 +1552,7 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
 
     for (const anclaje of anclajes) {
       const res = calcularBanda(alturaVista, alturaLinea, lineasZona, anclaje)
-      expect(res.altoBanda).toBe(120)
+      expect(res.altoBanda).toBe(RENGLONES_CLAROS * 40)
 
       const lineaActualY = res.topBanda + 20
       expect(lineaActualY).toBeGreaterThanOrEqual(res.topBanda)
@@ -1579,7 +1581,7 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
     expect(resArriba.topBanda).toBe(0)
 
     const resAbajo = calcularBanda(800, 40, 3, 'abajo')
-    expect(resAbajo.topBanda).toBe(800 - 120)
+    expect(resAbajo.topBanda).toBe(800 - RENGLONES_CLAROS * 40)   // el alto de la banda, no un numero
   })
 
   test('T38 ANTICIPACION. El guion de 4 lineas y la llamada a simularLectura', () => {
@@ -3366,7 +3368,7 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       // Lo que hay que exigir es lo que se ve: que al lado del renglon que se lee no haya
       // negro. Javier terminaba leyendo en una linea ennegrecida y tenia que cortar; el velo
       // tapaba al 0.88 justo encima de la ventana, que sobre fondo negro es negro.
-      const tramos = calcularTramosVelo(20, 34, 3)
+      const tramos = calcularTramosVelo(20, 34)
 
       // Ninguna zona puede tapar tanto que no se pueda leer. 0.6 ya es mucho.
       for (const t of tramos) {
@@ -3388,7 +3390,7 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       const filaPx = 28
       const lineasZona = 3
 
-      const tramosRes = calcularTramosVelo(topBanda, filaPx, lineasZona)
+      const tramosRes = calcularTramosVelo(topBanda, filaPx)
 
       expect(tramosRes).toEqual([
         { desdePx: 0, hastaPx: 40, alpha: 0.45 },
@@ -3396,7 +3398,7 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
         { desdePx: 40 + 3 * 28, hastaPx: Infinity, alpha: 0.55 }
       ])
 
-      const bg = calcularBgVelo(topBanda, filaPx, lineasZona, { r: 0, g: 0, b: 0 })
+      const bg = calcularBgVelo(topBanda, filaPx, { r: 0, g: 0, b: 0 })
       expect(bg).toContain('rgba(0, 0, 0, 0) 40px')
       expect(bg).toContain(`rgba(0, 0, 0, 0) ${40 + 3 * 28}px`)
       expect(bg).not.toContain('0.7')

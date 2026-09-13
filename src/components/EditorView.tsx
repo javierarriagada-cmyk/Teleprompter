@@ -811,6 +811,28 @@ export default function EditorView({
               </div>
             )
           })}
+
+          {/* AGREGAR BLOQUE CUANDO YA HAY BLOQUES.
+              El unico boton para agregar estaba dentro de la pantalla vacia -"Agregar primer
+              bloque"-, asi que en cuanto el guion tenia un bloque no habia manera de sumar
+              otro. No era un texto de mas: era una funcion que faltaba desde la tarea 25. */}
+          <button
+            onClick={handleAgregarBloque}
+            data-testid="btn-agregar-bloque"
+            className="texto-cuerpo"
+            style={{
+              marginTop: 'var(--aire-4)',
+              padding: 'var(--aire-2) var(--aire-3)',
+              backgroundColor: 'transparent',
+              color: 'var(--color-apagado)',
+              border: '1px dashed var(--color-borde)',
+              borderRadius: 'var(--redondeo)',
+              cursor: 'pointer',
+              width: '100%'
+            }}
+          >
+            + Agregar bloque
+          </button>
         </div>
       )}
 

@@ -4,7 +4,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { render } from '@testing-library/react'
 import { Renglon, pixelDePosicion, pixelDeRenglon } from '../lib/renglones'
-import { AnclajeZona, calcularBanda } from '../components/banda'
+import { AnclajeZona, calcularBanda, RENGLONES_CLAROS } from '../components/banda'
 import TeleprompterView, { MARGEN_RENGLONES_ARRIBA, calcularScrollTop, posicionEnPantalla } from '../components/TeleprompterView'
 import { leerCorpus } from '../lib/repetidor'
 import { tokenizarGuion } from '../lib/seguidor'
@@ -247,7 +247,7 @@ describe('Pruebas TAREA 27 (T154-T156)', () => {
         expect(banda).not.toBeNull()
 
         const filaPx = 24 * 1.4
-        const altoBandaEsperado = 3 * filaPx
+        const altoBandaEsperado = RENGLONES_CLAROS * filaPx
         const topEsperado = (altoReal - altoBandaEsperado) / 2
 
         expect(parseFloat(banda.style.top)).toBeCloseTo(topEsperado, 4)
