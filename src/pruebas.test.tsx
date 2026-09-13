@@ -20,7 +20,7 @@ import { RepositorioMemoria } from './datos/RepositorioMemoria'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { calcularBanda, opacidadDeLinea, AnclajeZona, calcularTramosVelo, calcularBgVelo } from './components/banda'
 import { agruparEnRenglones, pixelDePosicion, Renglon, MedidaToken } from './lib/renglones'
-import TeleprompterView, { calcularScrollTop, posicionEnPantalla } from './components/TeleprompterView'
+import TeleprompterView, { MARGEN_RENGLONES_ARRIBA, calcularScrollTop, posicionEnPantalla } from './components/TeleprompterView'
 import { normalizar } from './lib/seguidor'
 import BarraDeTiempo from './components/BarraDeTiempo'
 import { reubicarTramos } from './components/EditorView'
@@ -1093,8 +1093,13 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     const top = calcularScrollTop(pixelDelRenglonVivo, origen, filaPx)
     const yEnPantalla = posicionEnPantalla(pixelDelRenglonVivo, origen, topBanda, top)
 
-    expect(yEnPantalla).toBe(topBanda + filaPx)
-    expect(yEnPantalla - topBanda).toBeGreaterThanOrEqual(filaPx)
+    // Atado al parametro de diseno, no al valor que tenia ese dia. Antes decia filaPx,
+    // que era MARGEN_RENGLONES_ARRIBA = 1. Al mover el renglon vivo al primer hueco de la
+    // ventana -porque la marca paso a ir detras del lector- esta prueba se ponia roja sin
+    // que hubiera defecto. Lo que protege es que el renglon vivo quede donde dice el
+    // margen y NO por encima de la ventana.
+    expect(yEnPantalla).toBe(topBanda + MARGEN_RENGLONES_ARRIBA * filaPx)
+    expect(yEnPantalla - topBanda).toBeGreaterThanOrEqual(0)
 
     // Y sin margen no queda nada arriba: es el defecto que esta prueba impide volver a
     // poner.

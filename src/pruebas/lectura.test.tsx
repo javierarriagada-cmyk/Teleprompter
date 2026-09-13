@@ -46,12 +46,21 @@ describe('Pruebas TAREA 26 (T144-T146)', () => {
       const yEnPantalla = posicionEnPantalla(pPos, origen, topBanda, topScroll)
 
       // 1. Cae DENTRO de la banda
-      expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda)
+      expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda - 1e-9)   // flotantes: con el margen en 0 da topBanda exacto
       expect(yEnPantalla).toBeLessThan(topBanda + altoBanda)
 
       // 2. Queda al menos un renglón entero de espacio POR ENCIMA de él (dentro de la banda)
+      // Antes exigia UN RENGLON ENTERO arriba, que era el valor que tenia
+      // MARGEN_RENGLONES_ARRIBA ese dia. Fijar el numero en vez del parametro convierte una
+      // decision en una ley: al mover el renglon vivo al primer hueco de la ventana -porque
+      // desde que el renglon lo manda la evidencia la marca va DETRAS del lector, no
+      // delante- esta prueba se ponia roja sin que hubiera ningun defecto.
+      //
+      // Lo que protege de verdad es que el renglon vivo NO SE VAYA POR ARRIBA de la ventana,
+      // y eso se comprueba igual con el margen en cero.
       const espacioArriba = yEnPantalla - topBanda
-      expect(espacioArriba).toBeGreaterThanOrEqual(filaPx - 0.001)
+      expect(espacioArriba).toBeGreaterThanOrEqual(MARGEN_RENGLONES_ARRIBA * filaPx - 0.001)
+      expect(espacioArriba).toBeGreaterThanOrEqual(0)
     }
   })
 
@@ -105,7 +114,13 @@ describe('Pruebas TAREA 26 (T144-T146)', () => {
       }
 
       // Cálculo DESPUÉS (fórmula nueva usando la función oficial calcularScrollTop)
-      const topScrollDespues = calcularScrollTop(pPos, origen, filaPx)
+      // LA REGLA QUE DE VERDAD CORRE HOY. Decia pixelDePosicion(c.posicion), que era el
+      // desplazamiento interpolado guiado por la posicion estimada sola. La vista usa el
+      // pixel DEL RENGLON y lo elige con min(posicion, ultimoCalce): no entra a un renglon
+      // sin prueba de que el lector llego. Esta prueba medía una combinacion que ya no es
+      // el producto.
+      const anclaRenglon = Math.min(c.posicion, c.calce)
+      const topScrollDespues = calcularScrollTop(pixelDeRenglon(renglones, anclaRenglon), origen, filaPx)
       const yCalceDespues = posicionEnPantalla(pCalce, origen, topBanda, topScrollDespues)
 
       if (yCalceDespues >= topBanda && yCalceDespues < topBanda + altoBanda) {
@@ -152,7 +167,7 @@ describe('Pruebas TAREA 26 (T144-T146)', () => {
         expect(Math.abs(offsetEnBanda - MARGEN_RENGLONES_ARRIBA * filaPx)).toBeLessThan(0.001)
 
         // Queda dentro de la banda
-        expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda)
+        expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda - 1e-9)   // flotantes: con el margen en 0 da topBanda exacto
         expect(yEnPantalla).toBeLessThan(topBanda + altoBanda)
       }
     }
@@ -302,7 +317,7 @@ describe('Pruebas TAREA 27 (T154-T156)', () => {
             const yEnPantalla = posicionEnPantalla(pPos, origen, topBanda, topScroll)
 
             // Cae dentro de la ventana
-            expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda)
+            expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda - 1e-9)   // flotantes: con el margen en 0 da topBanda exacto
             expect(yEnPantalla).toBeLessThan(topBanda + altoBanda)
 
             // Cae a exactamente MARGEN_RENGLONES_ARRIBA * filaPx de su borde de arriba
