@@ -4,6 +4,7 @@ import { tokenizarGuion, Token } from '../lib/seguidor'
 import { Guion } from '../datos/modelo'
 import { esCaracterApertura, esCaracterCierre } from '../lib/acotaciones'
 import { agruparEnRenglones, pixelDePosicion, Renglon, MedidaToken } from '../lib/renglones'
+import { anotar } from '../lib/diagnostico'
 
 import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
 
@@ -310,6 +311,25 @@ export default function TeleprompterView({
         const el = document.getElementById('diag-prompter')
         if (el) el.textContent = `pos=${st.posicion.toFixed(1)} calce=${st.ultimoCalce} scroll=${Math.round(top)} freno=${st.motivoFreno || "-"}`
       }
+
+      // LA TERCERA CAPA DEL CORPUS: que estaba mostrando la pantalla en este instante.
+      //
+      // diagnostico.ts define esta capa desde hace tiempo pero NADIE LA ESCRIBIA: se
+      // guardaba lo que oyo el reconocedor y donde calzo el seguidor, y no lo unico que
+      // el lector ve de verdad. Sin esta linea no hay con que hacer la resta que mide el
+      // motor -posicion mostrada menos posicion realmente dicha-, que es el numero del
+      // paso 2 del plan.
+      //
+      // Va aca, DESPUES de calcular top y ANTES de escribirlo, para que quede anotado el
+      // mismo valor que se dibuja. No cuesta nada mientras el diagnostico este apagado:
+      // anotar() devuelve en la primera linea si no esta activo.
+      anotar({
+        tipo: 'cuadro',
+        posicion: st.posicion,
+        calce: st.ultimoCalce,
+        scroll: Math.round(top),
+        freno: st.motivoFreno || '-'
+      })
 
       if (!modoManualRef.current && containerRef.current) {
         containerRef.current.scrollTop = top

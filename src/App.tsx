@@ -6,6 +6,7 @@ import { usePrecargaModelo } from './hooks/usePrecargaModelo'
 import TeleprompterView from './components/TeleprompterView'
 import BarraDeTiempo from './components/BarraDeTiempo'
 import ControlsBar from './components/ControlsBar'
+import { PanelCorpus } from './components/PanelCorpus'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
 import CuentaRegresiva from './components/CuentaRegresiva'
@@ -601,6 +602,12 @@ export default function App({ motor, repoOverride }: AppProps) {
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
             {!esPantallaCompleta && controlesVisibles && (
               <div data-testid="panel-controles-lectura" style={{ flex: 1, minWidth: 320 }}>
+
+                <PanelCorpus
+                  guionTitulo={guionActual ? guionActual.titulo : '(sin guion)'}
+                  guionTexto={guionActual ? guionActual.bloques.map((b) => b.texto).join('\n') : ''}
+                  motor={motorActivo}
+                />
 
                 <ControlsBar
                   onStart={handleStart}
