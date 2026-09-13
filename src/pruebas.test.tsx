@@ -2702,15 +2702,24 @@ describe('Pruebas TAREA 20 (T112-T118)', () => {
     const st2 = motor.estadoEn(3500)
     expect(st2.estado).toBe('BUSCANDO')
 
+    // EL CONTRATO CAMBIO EL 13 DE SEPTIEMBRE DE 2026, Y NO ES UN AJUSTE DE NUMERO.
+    //
+    // Antes esta prueba exigia que durante BUSCANDO el texto SIGUIERA AVANZANDO, frenando
+    // de a poco. Eso se escribio cuando el seguidor fallaba el 82% de las veces y habia que
+    // tapar huecos enormes.
+    //
+    // Ahora la regla del motor es que el texto NUNCA PASA DE LO QUE SE OYO. Y BUSCANDO es,
+    // por definicion, el estado en que no se oyo nada que se pueda ubicar. Avanzar ahi no es
+    // predecir: es inventar, y es exactamente lo que hacia que a Javier se le adelantara el
+    // texto hasta perder el renglon.
+    //
+    // Lo que se exige ahora: durante BUSCANDO el texto NO AVANZA. Se queda donde esta hasta
+    // que vuelva a oirse algo. Quedarse quieto medio segundo no se nota; adelantarse te saca
+    // del renglon.
     const p2500 = motor.estadoEn(2500).posicion
-    const p2600 = motor.estadoEn(2600).posicion
-    const v1 = p2600 - p2500
-
     const p3500 = motor.estadoEn(3500).posicion
-    const p3600 = motor.estadoEn(3600).posicion
-    const v2 = p3600 - p3500
 
-    expect(v2).toBeLessThan(v1)
+    expect(p3500).toBeLessThanOrEqual(p2500 + 0.001)
 
     const stFin = motor.estadoEn(4600)
     expect(stFin.estado).toBe('DETENIDO')

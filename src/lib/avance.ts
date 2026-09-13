@@ -77,7 +77,7 @@ export function crearMotorDeAvance(
   let tUltimaVozTrue = 0
 
   let posicionMostrada = 0
-  let tUltimaActualizacion = 0
+  let tUltimaActualizacion = 0
   // LA VELOCIDAD ES ESTADO, NO UNA CUENTA DE CADA CUADRO. Esto es lo que le da inercia al
   // motor: sin esto la velocidad puede saltar de 0 a 3x entre dos cuadros, y eso es lo que
   // se ve como un tiron aunque la velocidad nunca pase del tope.
@@ -383,12 +383,34 @@ export function crearMotorDeAvance(
       if (vActual < 0) vActual = 0
 
       let nuevaPos = posicionMostrada + vActual * dt
-      // Sin pasarse del blanco en el mismo cuadro. Esto NO es un techo: el blanco se corre
-      // solo, asi que aterrizar encima de el es seguir avanzando a tu ritmo, no quedarse
-      // quieto. El techo viejo era contra refToken, que es una escalera, y ahi si mataba.
-      if (blanco > posicionMostrada) {
-        nuevaPos = Math.min(blanco, nuevaPos)
-      }
+
+      // EL TEXTO NO SE ADELANTA A LA EVIDENCIA. NUNCA.
+      //
+      // Antes este tope se aplicaba SOLO cuando el blanco estaba adelante -if (blanco >
+      // posicionMostrada)-. O sea que si la posicion ya iba adelante del blanco, seguia
+      // corriendo libre hasta chocar con la correa. Y corria a la velocidad ESTIMADA, que al
+      // empezar vale 150 palabras por minuto porque todavia no se midio nada. Javier lee a
+      // unas 100. Desde la primera palabra el texto iba un 50% mas rapido que el, y por eso
+      // preguntaba por que se movia mientras el seguia en el primer renglon.
+      //
+      // El avance por tiempo existe para TAPAR LOS HUECOS entre calce y calce, no para
+      // correr por su cuenta. Se puso cuando el seguidor fallaba el 82% de las veces y habia
+      // huecos enormes; ahora falla el 10% y los calces llegan siete veces por segundo, asi
+      // que los huecos son cortos y no hace falta ninguna carrera libre.
+      //
+      // El blanco ya es "donde creemos que estas" -la ultima palabra oida mas el retraso del
+      // reconocedor-. Pasarlo no es predecir: es inventar.
+      nuevaPos = Math.min(blanco, nuevaPos)
+
+      // PERO NUNCA HACIA ATRAS. El blanco BAJA cada vez que llega un calce nuevo: el termino
+      // que compensa el retraso se reinicia y el blanco cae hasta una palabra de golpe. Si
+      // se recortara contra eso sin mas, el texto retrocederia. Lo comprobo la prueba T13 en
+      // el acto: 82 retrocesos en una lectura simulada.
+      //
+      // Cuando el blanco queda por detras, el texto NO retrocede: SE QUEDA QUIETO hasta que
+      // el blanco lo alcanza. Quedarse quieto medio segundo no se nota; retroceder una
+      // palabra te saca del renglon.
+      nuevaPos = Math.max(posicionMostrada, nuevaPos)
 
       let maxTokenGuion = Infinity
       if (limitesDeBloque && limitesDeBloque.length > 0) {
@@ -419,7 +441,7 @@ export function crearMotorDeAvance(
 
     irAToken(token: number, tMs: number) {
       const destino = Math.max(0, token)
-      posicionMostrada = destino
+      posicionMostrada = destino
       vActual = 0
       ultimaConfirmada = destino
       anclaTentativa = destino
@@ -444,7 +466,7 @@ export function crearMotorDeAvance(
       tUltimoCalce = 0
       hayVoz = false
       tUltimaVozTrue = 0
-      posicionMostrada = 0
+      posicionMostrada = 0
       vActual = 0
       tUltimaActualizacion = 0
       palabrasConfirmadasDesdeArranque = 0
