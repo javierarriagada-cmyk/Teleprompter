@@ -151,4 +151,49 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
     expect(screen.getByText(/Franja de Estado:/i)).not.toBeNull()
     expect(screen.getByText(/Último Error Motor:/i)).not.toBeNull()
   })
+
+  test('T134: GUARDIANA DEL MOTOR POR OMISION. Sin permiso de microfono todavia, Web Speech SIGUE estando disponible y no se arranca ninguna sesion para averiguarlo.', async () => {
+    // Se simula el navegador de alguien que entra por primera vez: la interfaz existe,
+    // pero el permiso no se dio, asi que cualquier intento de arrancar contesta
+    // 'not-allowed'. Es exactamente el estado de un telefono al abrir el sitio publicado.
+    const arranques: string[] = []
+
+    class ReconocedorSinPermiso {
+      lang = ''
+      onerror: ((e: any) => void) | null = null
+      onstart: (() => void) | null = null
+      start() {
+        arranques.push('start')
+        setTimeout(() => {
+          if (this.onerror) this.onerror({ error: 'not-allowed' })
+        }, 0)
+      }
+      stop() {}
+      abort() {}
+    }
+
+    const previo = (window as any).SpeechRecognition
+    ;(window as any).SpeechRecognition = ReconocedorSinPermiso as any
+
+    try {
+      const motor = new MotorWebSpeech()
+
+      // 1. Se considera DISPONIBLE: el navegador sabe hacerlo. Que no haya permiso todavia
+      //    no es lo mismo que que no se pueda.
+      expect(await motor.disponible()).toBe(true)
+
+      // 2. Y no se arranco ninguna sesion para averiguarlo. Esto es lo que evitaba que el
+      //    cartel del microfono saltara al cargar la pagina, antes de que la persona
+      //    apretara nada.
+      expect(arranques).toEqual([])
+
+      // 3. La consecuencia que importa: elegirMotor se queda en Web Speech y NO cae en
+      //    Whisper Local, que se baja el modelo entero desde Hugging Face.
+      vi.spyOn(MotorWhisperLocal.prototype, 'disponible').mockResolvedValue(true)
+      const elegido = await elegirMotor()
+      expect(elegido.id).toBe('webspeech')
+    } finally {
+      ;(window as any).SpeechRecognition = previo
+    }
+  })
 })

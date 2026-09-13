@@ -21,54 +21,30 @@ export class MotorWebSpeech implements MotorDeVoz {
   private listenersFinal: Array<(e: EventoFinal) => void> = []
   private listenersError: Array<(e: Error) => void> = []
 
+  // DISPONIBLE ES "EL NAVEGADOR SABE HACER ESTO", NO "YA ME DIERON PERMISO".
+  //
+  // Antes esta funcion ARRANCABA UNA SESION DE RECONOCIMIENTO DE VERDAD solo para probar, y
+  // devolvia false si el navegador contestaba 'not-allowed'. Pero 'not-allowed' en la
+  // primera visita no significa que el navegador no sepa: significa QUE TODAVIA NADIE
+  // PIDIO EL MICROFONO. El permiso se pide cuando la persona aprieta grabar, no al abrir.
+  //
+  // La consecuencia era seria y se veia en el sitio publicado: alguien entra por primera
+  // vez, todavia no dio permiso, Web Speech se descarta, y elegirMotor cae en el siguiente
+  // de la lista, que es Whisper Local. Whisper Local se baja whisper-base entero desde
+  // Hugging Face. O sea que el que entraba por primera vez se llevaba una descarga enorme
+  // a espaldas suyas, sin un aviso, en vez de usar el reconocedor del telefono que no pesa
+  // nada.
+  //
+  // Y ademas disparaba el cartel de permiso del microfono AL CARGAR LA PAGINA, antes de
+  // que la persona hubiera hecho nada.
+  //
+  // Ahora se responde lo que la pregunta dice: si la interfaz existe, el motor esta
+  // disponible. Si despues, al empezar a grabar de verdad, el permiso se niega o el
+  // servicio falla, eso se informa ahi -que es donde la persona entiende por que se lo
+  // estan preguntando- en vez de cambiarle el motor sin decirle nada.
   async disponible(): Promise<boolean> {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-    if (!SpeechRecognition) return false
-
-    return new Promise((resolve) => {
-      let resolved = false
-      try {
-        const testRec = new SpeechRecognition()
-        testRec.lang = 'es-ES'
-
-        const timeout = setTimeout(() => {
-          if (!resolved) {
-            resolved = true
-            try { testRec.abort() } catch (e) {}
-            resolve(true)
-          }
-        }, 1500)
-
-        testRec.onerror = (event: any) => {
-          if (!resolved) {
-            resolved = true
-            clearTimeout(timeout)
-            try { testRec.abort() } catch (e) {}
-            if (event.error === 'service-not-allowed' || event.error === 'not-allowed') {
-              resolve(false)
-            } else {
-              resolve(true)
-            }
-          }
-        }
-
-        testRec.onstart = () => {
-          if (!resolved) {
-            resolved = true
-            clearTimeout(timeout)
-            try { testRec.stop() } catch (e) {}
-            resolve(true)
-          }
-        }
-
-        testRec.start()
-      } catch (err) {
-        if (!resolved) {
-          resolved = true
-          resolve(false)
-        }
-      }
-    })
+    return !!SpeechRecognition
   }
 
   async iniciar(opciones: { lang: string }): Promise<void> {

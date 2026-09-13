@@ -7,6 +7,7 @@ import { MotorVosk } from '../motor/MotorVosk'
 import { MotorWebSpeech } from '../motor/MotorWebSpeech'
 import { MotorWhisperLocal } from '../motor/MotorWhisperLocal'
 import { usePrecargaModelo } from '../hooks/usePrecargaModelo'
+import { CACHE_MODELO, MODELO_URL_DEFECTO } from '../motor/modeloVosk'
 
 describe('Pruebas T60-T63, T69-T71 y T76 (Motor Vosk y Precarga)', () => {
   beforeEach(() => {
@@ -132,8 +133,15 @@ describe('Pruebas T60-T63, T69-T71 y T76 (Motor Vosk y Precarga)', () => {
       matchMock.mockResolvedValue(undefined)
       const listoSinModelo = await motor.listo()
       expect(listoSinModelo).toBe(false)
-      expect(openMock).toHaveBeenCalledWith('vosk-model-v1')
-      expect(matchMock).toHaveBeenCalledWith('https://alphacephei.com/vosk/models/vosk-model-small-es-0.42.tar.gz')
+      // Se comprueba contra las constantes IMPORTADAS, no contra una copia escrita a mano.
+      // Antes la direccion estaba copiada aca, asi que la prueba no afirmaba "consulta la
+      // cache con la direccion del modelo" sino "la direccion es esta cadena": al cambiar
+      // el modelo de servidor -el 12 de septiembre de 2026, porque el anterior daba 404 y
+      // ademas no permitia la descarga desde otro dominio- la prueba se puso roja sin que
+      // hubiera ningun defecto. Una prueba que hay que editar cada vez que cambia un valor
+      // legitimo no esta protegiendo nada, solo estorbando.
+      expect(openMock).toHaveBeenCalledWith(CACHE_MODELO)
+      expect(matchMock).toHaveBeenCalledWith(MODELO_URL_DEFECTO)
 
       matchMock.mockResolvedValue(new Response('dummy'))
       const listoConModelo = await motor.listo()
