@@ -20,7 +20,7 @@ import { RepositorioMemoria } from './datos/RepositorioMemoria'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { calcularBanda, opacidadDeLinea, AnclajeZona, calcularTramosVelo, calcularBgVelo } from './components/banda'
 import { agruparEnRenglones, pixelDePosicion, Renglon, MedidaToken } from './lib/renglones'
-import TeleprompterView, { calcularScrollTop } from './components/TeleprompterView'
+import TeleprompterView, { calcularScrollTop, posicionEnPantalla } from './components/TeleprompterView'
 import { normalizar } from './lib/seguidor'
 import BarraDeTiempo from './components/BarraDeTiempo'
 import { reubicarTramos } from './components/EditorView'
@@ -1090,16 +1090,16 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     // verde mientras el renglon vivo caia SEIS RENGLONES fuera de la ventana en el telefono.
     const pixelDelRenglonVivo = 1000
     const origen = 0
-    const top = calcularScrollTop(pixelDelRenglonVivo, origen, topBanda, filaPx)
-    const yEnPantalla = topBanda + (pixelDelRenglonVivo - origen) - top
+    const top = calcularScrollTop(pixelDelRenglonVivo, origen, filaPx)
+    const yEnPantalla = posicionEnPantalla(pixelDelRenglonVivo, origen, topBanda, top)
 
     expect(yEnPantalla).toBe(topBanda + filaPx)
     expect(yEnPantalla - topBanda).toBeGreaterThanOrEqual(filaPx)
 
     // Y sin margen no queda nada arriba: es el defecto que esta prueba impide volver a
     // poner.
-    const topSinMargen = calcularScrollTop(pixelDelRenglonVivo, origen, topBanda, filaPx, 0)
-    expect(topBanda + (pixelDelRenglonVivo - origen) - topSinMargen - topBanda).toBe(0)
+    const topSinMargen = calcularScrollTop(pixelDelRenglonVivo, origen, filaPx, 0)
+    expect(posicionEnPantalla(pixelDelRenglonVivo, origen, topBanda, topSinMargen) - topBanda).toBe(0)
   })
 
 })
