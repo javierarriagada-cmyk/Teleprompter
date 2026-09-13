@@ -512,3 +512,41 @@ describe('Pruebas TAREA 30 (T159)', () => {
     }
   })
 })
+
+describe('Pruebas TAREA 33 (T162)', () => {
+  // T162 GUARDIANA DE LA ALINEACION SEGUN EL ANCHO DE COLUMNA.
+  //
+  // En angosta el renglon tiene 22 caracteres y la bandera derecha queda muy marcada: el
+  // bloque se lee corrido aunque la caja este centrada. Javier: "en angosta no esta centrado
+  // el texto, sigue orientado desde la izquierda". En ancho completo es al reves: el renglon
+  // es largo y centrar obliga a buscar donde empieza cada linea.
+  //
+  // Las dos mitades importan. Por eso la prueba comprueba las dos, no solo la que se pidio.
+  test('T162 El texto va centrado en columna angosta y a la izquierda en ancho completo, y la caja queda centrada en los dos casos.', () => {
+    const origClientHeight = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'clientHeight')
+    const guion = guionSimple('Enero de 1969. Sale un disco que se llama Hombre. Doce cortes.')
+    try {
+      Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', {
+        configurable: true, get() { return 720 }
+      })
+
+      for (const angosta of [true, false]) {
+        const { container, unmount } = render(
+          <TeleprompterView script={guion} currentLineIndex={0} currentWordIndex={0}
+            anclajeZona="arriba" fontSize={24} columnaAngosta={angosta} />
+        )
+        const col = container.querySelector('[data-testid="columna-texto"]') as HTMLElement
+        expect(col).not.toBeNull()
+
+        expect(col.style.textAlign).toBe(angosta ? 'center' : 'left')
+        // y la caja sigue centrada en los dos, que es lo que ya estaba bien
+        expect(col.style.margin).toBe('0px auto')
+        expect(col.style.maxWidth).toBe(angosta ? '22ch' : '90%')
+        unmount()
+      }
+    } finally {
+      if (origClientHeight) Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', origClientHeight)
+      else delete (window.HTMLElement.prototype as any).clientHeight
+    }
+  })
+})

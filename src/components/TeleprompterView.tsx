@@ -616,7 +616,24 @@ export default function TeleprompterView({
             fontSize,
             maxWidth: columnaAngosta ? '22ch' : '90%',
             margin: '0 auto',
-            width: '100%'
+            width: '100%',
+            // EN COLUMNA ANGOSTA EL TEXTO VA CENTRADO.
+            //
+            // La caja ya estaba centrada -medido en la app publicada, pantalla de 375: 56 px
+            // de hueco a cada lado- pero el texto adentro iba a la izquierda. Con renglones
+            // de 22 caracteres la bandera derecha queda muy marcada y el bloque se lee
+            // corrido. Javier, 13 de septiembre de 2026: "en angosta no esta centrado el
+            // texto, sigue orientado desde la izquierda".
+            //
+            // Es lo habitual en un teleprompter: con el renglon corto, centrar mantiene el
+            // ojo anclado en el medio, que es donde esta el lente de la camara.
+            //
+            // SOLO EN ANGOSTA. En ancho completo el renglon es largo y centrar ahi obliga a
+            // buscar donde empieza cada linea.
+            //
+            // NO TOCA LA GEOMETRIA DE LA LECTURA: agruparEnRenglones y pixelDeRenglon miran
+            // offsetTop, que es vertical. Centrar mueve el texto a lo ancho y nada mas.
+            textAlign: columnaAngosta ? 'center' : 'left'
           }}
         >
           {guionObj.bloques.map((bloque, bIdx) => {
