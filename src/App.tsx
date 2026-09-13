@@ -77,7 +77,11 @@ export default function App({ motor, repoOverride }: AppProps) {
   // Ajustes persistentes
   const ajustesPrevios = cargarAjustesGuardados() || {}
 
-  const [engine, setEngine] = useState<IdMotor>(ajustesPrevios.engine || 'webspeech')
+  // VOSK POR OMISION. Web Speech estaba de omision y es lo que se abria en el telefono de
+  // Javier, donde no funciona: entrega frases enteras en las pausas y no los parciales
+  // densos con los que el motor fue medido. Leia con un reconocedor distinto del que
+  // estabamos midiendo y ninguno de los dos lo sabia.
+  const [engine, setEngine] = useState<IdMotor>(ajustesPrevios.engine || 'vosk')
   const [verTranscripcion, setVerTranscripcion] = useState<boolean>(Boolean(ajustesPrevios.verTranscripcion))
   const [mostrarTiempo, setMostrarTiempo] = useState<boolean>(ajustesPrevios.mostrarTiempo !== undefined ? Boolean(ajustesPrevios.mostrarTiempo) : true)
   const [fontSize, setFontSize] = useState<number>(ajustarFuenteValida(ajustesPrevios.fontSize))
@@ -532,23 +536,27 @@ export default function App({ motor, repoOverride }: AppProps) {
   const tituloMostrar = (guionActual && guionActual.titulo && guionActual.titulo.trim()) ? guionActual.titulo : 'Sin título'
 
   return (
-    <div style={{ padding: 16, fontFamily: 'sans-serif', maxWidth: 1200, margin: '0 auto' }}>
-      <header style={{ borderBottom: '1px solid var(--color-borde)', paddingBottom: 12, marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
-          <h1 style={{ margin: 0, fontSize: 24, cursor: 'pointer', color: 'var(--color-texto)' }} onClick={() => setVista('biblioteca')}>Teleprompter MVP</h1>
+    <div style={{ padding: vista === 'lectura' ? 0 : 16, fontFamily: 'sans-serif', maxWidth: vista === 'lectura' ? 'none' : 1200, margin: '0 auto' }}>
+      {/* EN LECTURA NO HAY CABECERA. El titulo de la app y el boton de biblioteca se comian
+          un pedazo de la pantalla justo cuando el texto es lo unico que importa. */}
+      {vista !== 'lectura' && (
+        <header style={{ borderBottom: '1px solid var(--color-borde)', paddingBottom: 12, marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h1 style={{ margin: 0, fontSize: 24, cursor: 'pointer', color: 'var(--color-texto)' }} onClick={() => setVista('biblioteca')}>Teleprompter MVP</h1>
+            {vista !== 'biblioteca' && (
+              <h3 style={{ color: 'var(--color-apagado)', margin: '4px 0 0 0', fontSize: 16 }}>{tituloMostrar}</h3>
+            )}
+          </div>
           {vista !== 'biblioteca' && (
-            <h3 style={{ color: 'var(--color-apagado)', margin: '4px 0 0 0', fontSize: 16 }}>{tituloMostrar}</h3>
+            <button
+              onClick={() => setVista('biblioteca')}
+              style={{ padding: '6px 12px', cursor: 'pointer', backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)', borderRadius: 6, color: 'var(--color-texto)' }}
+            >
+              Ver Biblioteca
+            </button>
           )}
-        </div>
-        {vista !== 'biblioteca' && (
-          <button
-            onClick={() => setVista('biblioteca')}
-            style={{ padding: '6px 12px', cursor: 'pointer', backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)', borderRadius: 6, color: 'var(--color-texto)' }}
-          >
-            Ver Biblioteca
-          </button>
-        )}
-      </header>
+        </header>
+      )}
 
       {/* Indicador de precarga de modelo Vosk */}
       {(estadoPrecarga === 'descargando' || estadoPrecarga === 'error') && (
@@ -655,17 +663,21 @@ export default function App({ motor, repoOverride }: AppProps) {
 
       {vista === 'lectura' && guionActual && (
         <div>
-          <div style={{ marginBottom: 12, display: 'flex', gap: 12, alignItems: 'center' }}>
-            <button
-              onClick={() => setVista('editor')}
-              style={{ padding: '6px 14px', cursor: 'pointer', backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)', borderRadius: 6, color: 'var(--color-texto)' }}
-            >
-              ← Volver al Editor
-            </button>
-            <span style={{ color: 'var(--color-apagado)', fontSize: 14 }}>
-              Modo Lectura - <strong>{tituloMostrar}</strong>
-            </span>
-          </div>
+          {/* La fila de volver solo mientras los controles estan a la vista. Al leer se
+              esconde con ellos: no hay nada que tocar y ocupa alto. */}
+          {controlesVisibles && !esPantallaCompleta && (
+            <div style={{ padding: '10px 12px 8px', display: 'flex', gap: 12, alignItems: 'center' }}>
+              <button
+                onClick={() => setVista('editor')}
+                style={{ padding: '6px 14px', cursor: 'pointer', backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)', borderRadius: 6, color: 'var(--color-texto)' }}
+              >
+                ← Volver al Editor
+              </button>
+              <span style={{ color: 'var(--color-apagado)', fontSize: 14 }}>
+                Modo Lectura - <strong>{tituloMostrar}</strong>
+              </span>
+            </div>
+          )}
 
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
             {!esPantallaCompleta && controlesVisibles && (
@@ -747,7 +759,15 @@ export default function App({ motor, repoOverride }: AppProps) {
               style={{
                 flex: esPantallaCompleta || !controlesVisibles ? '1 1 100%' : '1 1 420px',
                 minWidth: 320,
-                height: esPantallaCompleta ? '100vh' : 480,
+                // EL TEXTO ES LA PANTALLA. Aca habia 480 pixeles fijos salvo en pantalla
+                // completa, y eso es lo que se abria en el telefono: un recuadro con unos
+                // seis renglones, de los cuales tres son la ventana clara. Con ese alto,
+                // cualquier corrimiento de un renglon te deja fuera del guion.
+                // Con la pantalla entera entran quince o veinte y un renglon de desfase
+                // deja de sacarte. dvh y no vh: en el telefono la barra del navegador se
+                // esconde al desplazar y vh se queda con el alto viejo.
+                height: esPantallaCompleta || !controlesVisibles ? '100dvh' : '65dvh',
+                minHeight: 480,
                 background: colorFondo,
                 borderRadius: esPantallaCompleta ? 0 : 6,
                 overflow: 'hidden',
