@@ -42,11 +42,32 @@ export function calcularBanda(
   return { topBanda, altoBanda }
 }
 
+// LA FRANJA CLARA CUBRE DONDE ESTA EL OJO, NO DONDE ESTA LA VOZ.
+//
+// Al leer en voz alta, el ojo va una o dos palabras POR DELANTE de lo que se esta diciendo.
+// No es un defecto de nadie: es como funciona leer, y por eso se puede leer de corrido.
+//
+// El motor sigue la VOZ -es lo unico que puede oir-, asi que el renglon que el motor marca
+// como vivo es donde esta la voz. Con cuatro palabras por renglon, el ojo esta casi siempre
+// en el RENGLON SIGUIENTE. Ese renglon estaba en 0.60, atenuado.
+//
+// Javier lo reporto asi el 13 de septiembre de 2026, despues de que el motor dejara de
+// adelantarse -adelanto medio 0.17 palabras, ya no era eso-: "sigo teniendo que leer en la
+// linea que se esta borrando, asi que no pude leer mas".
+//
+// Por eso el renglon siguiente pasa a estar TAN CLARO COMO EL VIVO. La franja clara son dos
+// renglones: donde esta la voz y donde esta el ojo. Lo que viene despues se atenua, y lo ya
+// leido queda legible pero apagado, para poder volver la vista sin que compita.
+//
+// ESTO NO SE ARREGLA EN EL MOTOR. Adelantar la posicion para "mostrar antes" fue el error
+// que costo dos semanas: corre el ancla y se pierde de vista donde estas. Mostrar por
+// delante es de la pantalla.
 export function opacidadDeLinea(distanciaLineas: number): number {
   if (distanciaLineas === 0) return 1.0
-  if (distanciaLineas === 1) return 0.60
-  if (distanciaLineas > 1) return 0.32
-  if (distanciaLineas === -1) return 0.45
+  if (distanciaLineas === 1) return 1.0
+  if (distanciaLineas === 2) return 0.55
+  if (distanciaLineas > 2) return 0.28
+  if (distanciaLineas === -1) return 0.40
   return 0.12
 }
 

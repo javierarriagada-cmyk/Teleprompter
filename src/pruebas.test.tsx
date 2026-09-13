@@ -1494,16 +1494,20 @@ describe('Pruebas TAREA 5 (T37-T39)', () => {
     }
 
     expect(opacidadDeLinea(0)).toBe(1.0)
-    expect(opacidadDeLinea(1)).toBe(0.60)
-    expect(opacidadDeLinea(2)).toBe(0.32)
+    expect(opacidadDeLinea(1)).toBe(1.0)
+    expect(opacidadDeLinea(2)).toBe(0.55)
     // 0.45 desde el 13 de septiembre de 2026, no 0.30. El renglon ya leido subio de
     // visibilidad porque es donde la persona de verdad tiene los ojos cuando el texto se
     // adelanta medio renglon. Sigue por debajo del siguiente -0.60-, asi que la asimetria
     // que pidio Javier se respeta: lo que viene se ve mas que lo que ya se dijo.
-    expect(opacidadDeLinea(-1)).toBe(0.45)
+    expect(opacidadDeLinea(-1)).toBe(0.40)
     expect(opacidadDeLinea(-2)).toBe(0.12)
 
-    expect(opacidadDeLinea(0)).toBeGreaterThan(opacidadDeLinea(1))
+    // EL RENGLON VIVO Y EL SIGUIENTE ESTAN IGUAL DE CLAROS, y es a proposito desde el 13 de
+    // septiembre de 2026. El motor sigue la VOZ, pero el ojo va una o dos palabras adelante
+    // de la voz: con cuatro palabras por renglon, el ojo esta casi siempre en el renglon
+    // siguiente. Tenerlo atenuado obligaba a leer en un renglon apagado.
+    expect(opacidadDeLinea(0)).toBeGreaterThanOrEqual(opacidadDeLinea(1))
     expect(opacidadDeLinea(1)).toBeGreaterThan(opacidadDeLinea(2))
     expect(opacidadDeLinea(-1)).toBeGreaterThan(opacidadDeLinea(-2))
 
@@ -2822,10 +2826,10 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
     const opSiguiente = opacidadDeLinea(1)
     const opAnterior = opacidadDeLinea(-1)
 
-    expect(opSiguiente).toBe(0.60)
+    expect(opSiguiente).toBe(1.0)
     // 0.45 desde el 13 de septiembre de 2026. Lo que esta prueba protege -que lo que viene
     // se vea mas que lo que ya paso- no cambia, y es la linea de abajo.
-    expect(opAnterior).toBe(0.45)
+    expect(opAnterior).toBe(0.40)
     expect(opSiguiente).toBeGreaterThan(opAnterior)
   })
 
@@ -3278,9 +3282,9 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
 
     test('T124: El velo tapa a distancia 0 nada, a distancia 1 el 40%, a -1 el 70%, y mas alla el 68% y el 88%. O sea 1 - opacidadDeLinea(d).', () => {
       expect(Number((1 - opacidadDeLinea(0)).toFixed(2))).toBe(0.00)
-      expect(Number((1 - opacidadDeLinea(1)).toFixed(2))).toBe(0.40)
-      expect(Number((1 - opacidadDeLinea(-1)).toFixed(2))).toBe(0.55)   // el velo tapa 1 - 0.45
-      expect(Number((1 - opacidadDeLinea(2)).toFixed(2))).toBe(0.68)
+      expect(Number((1 - opacidadDeLinea(1)).toFixed(2))).toBe(0.00)
+      expect(Number((1 - opacidadDeLinea(-1)).toFixed(2))).toBe(0.60)   // el velo tapa 1 - 0.40
+      expect(Number((1 - opacidadDeLinea(2)).toFixed(2))).toBe(0.45)
       expect(Number((1 - opacidadDeLinea(-2)).toFixed(2))).toBe(0.88)
     })
   })
