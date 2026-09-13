@@ -44,12 +44,19 @@ export const MARGEN_RENGLONES_ARRIBA = 1   // el renglon vivo es el del medio de
 export function calcularScrollTop(
   pixelPos: number,
   origen: number,
-  topBanda: number,
   filaPx: number,
   margenRenglonesArriba = MARGEN_RENGLONES_ARRIBA
 ): number {
-  void topBanda   // lo pone el paddingTop del contenedor, no esta cuenta
   return Math.max(0, pixelPos - origen - margenRenglonesArriba * filaPx)
+}
+
+export function posicionEnPantalla(
+  pixelPos: number,
+  origen: number,
+  topBanda: number,
+  scrollTop: number
+): number {
+  return topBanda + (pixelPos - origen) - scrollTop
 }
 
 interface TeleprompterViewProps {
@@ -139,7 +146,10 @@ export default function TeleprompterView({
   const filaPx = fontSize * 1.4
   const alturaLineaPx = filaPx + 16
   const [altoLineaViva, setAltoLineaViva] = React.useState<number>(filaPx)
-  const { topBanda, altoBanda } = calcularBanda(480, filaPx, lineasZona, anclajeZona, 20, 20, altoLineaViva)
+  const [altoContenedor, setAltoContenedor] = React.useState<number>(0)
+  const { topBanda, altoBanda } = altoContenedor > 0
+    ? calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, 20, 20, altoLineaViva)
+    : { topBanda: 0, altoBanda: 0 }
 
   const isWhiteBg = colorFondo.toUpperCase() === '#FFFFFF'
   const colorTextoEfectivo = isWhiteBg ? '#000000' : colorLetra
@@ -151,6 +161,8 @@ export default function TeleprompterView({
   const recalcularGeometria = React.useCallback(() => {
     const container = containerRef.current
     if (!container) return
+    const alto = container.clientHeight || 0
+    setAltoContenedor(alto)
     const els = container.querySelectorAll('[data-token]')
     const medidas: MedidaToken[] = Array.from(els).map(el => ({
       token: Number((el as HTMLElement).dataset.token),
@@ -354,7 +366,6 @@ export default function TeleprompterView({
       const top = calcularScrollTop(
         pixelDePosicion(renglones, st.posicion),
         origen,
-        topBanda,
         filaPx
       )
 
@@ -382,7 +393,7 @@ export default function TeleprompterView({
         freno: st.motivoFreno || '-'
       })
 
-      if (!modoManualRef.current && containerRef.current) {
+      if (!modoManualRef.current && containerRef.current && altoContenedor > 0) {
         containerRef.current.scrollTop = top
       }
 
@@ -452,34 +463,38 @@ export default function TeleprompterView({
       )}
 
       {/* Overlay Visual de la Banda de Lectura (Luz/Sombra degradado) */}
-      <div
-        data-testid="banda-lectura"
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          top: topBanda,
-          height: altoBanda,
-          pointerEvents: 'none',
-          zIndex: 2,
-          background: bgBanda
-        }}
-      />
+      {altoContenedor > 0 && (
+        <div
+          data-testid="banda-lectura"
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: topBanda,
+            height: altoBanda,
+            pointerEvents: 'none',
+            zIndex: 2,
+            background: bgBanda
+          }}
+        />
+      )}
 
       {/* Velo de opacidad asimétrica según la distancia en renglones a la banda */}
-      <div
-        data-testid="velo-lectura"
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-          pointerEvents: 'none',
-          zIndex: 3,
-          background: bgVelo
-        }}
-      />
+      {altoContenedor > 0 && (
+        <div
+          data-testid="velo-lectura"
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            pointerEvents: 'none',
+            zIndex: 3,
+            background: bgVelo
+          }}
+        />
+      )}
 
       {/* Indicador sobrio de estado para el lector */}
       {textoEstadoLector && (

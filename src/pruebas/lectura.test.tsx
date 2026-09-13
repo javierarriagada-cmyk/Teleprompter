@@ -1,25 +1,24 @@
+import React from 'react'
 import { describe, expect, test } from 'vitest'
 import fs from 'node:fs'
 import path from 'node:path'
+import { render } from '@testing-library/react'
 import { Renglon, pixelDePosicion } from '../lib/renglones'
 import { AnclajeZona, calcularBanda } from '../components/banda'
-import { MARGEN_RENGLONES_ARRIBA, calcularScrollTop } from '../components/TeleprompterView'
+import TeleprompterView, { MARGEN_RENGLONES_ARRIBA, calcularScrollTop, posicionEnPantalla } from '../components/TeleprompterView'
 import { leerCorpus } from '../lib/repetidor'
 import { tokenizarGuion } from '../lib/seguidor'
+import { Guion } from '../datos/modelo'
 
-// DONDE CAE UN TOKEN EN LA PANTALLA. Hay que modelar el contenedor entero, no la resta sola.
-//
-// El contenedor que hace scroll tiene paddingTop: topBanda, y origen es el offsetTop del
-// primer token, que YA TRAE ese padding adentro. Asi que la posicion en pantalla es:
-//
-//     topBanda  +  (cuanto baja el token desde el primero)  -  cuanto se desplazo
-//
-// T144 y T146 hacian `pPos - topScroll`, que se saltea el padding. Con esa cuenta la resta
-// de topBanda repetida en calcularScrollTop se cancelaba sola y las dos pruebas daban verde
-// con el renglon vivo cayendo SEIS RENGLONES fuera de la ventana en la pantalla de verdad.
-// Comprobaban la formula contra si misma.
-function enPantalla(pPos: number, origen: number, topBanda: number, topScroll: number): number {
-  return topBanda + (pPos - origen) - topScroll
+function guionSimple(texto: string): Guion {
+  return {
+    id: 'test-guion-' + Math.random().toString(36).substring(2, 9),
+    titulo: 'Guion de prueba',
+    idioma: 'es',
+    creado: Date.now(),
+    modificado: Date.now(),
+    bloques: [{ id: 'b-1', nombre: '', texto }]
+  }
 }
 
 describe('Pruebas TAREA 26 (T144-T146)', () => {
@@ -43,8 +42,8 @@ describe('Pruebas TAREA 26 (T144-T146)', () => {
 
     for (const pos of posicionesMuestra) {
       const pPos = pixelDePosicion(renglones, pos)
-      const topScroll = calcularScrollTop(pPos, origen, topBanda, filaPx)
-      const yEnPantalla = enPantalla(pPos, origen, topBanda, topScroll)
+      const topScroll = calcularScrollTop(pPos, origen, filaPx)
+      const yEnPantalla = posicionEnPantalla(pPos, origen, topBanda, topScroll)
 
       // 1. Cae DENTRO de la banda
       expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda)
@@ -99,15 +98,15 @@ describe('Pruebas TAREA 26 (T144-T146)', () => {
 
       // Cálculo ANTES (fórmula vieja: topScroll = pPos - origen - filaPx)
       const topScrollAntes = Math.max(0, pPos - origen - filaPx)
-      const yCalceAntes = enPantalla(pCalce, origen, topBanda, topScrollAntes)
+      const yCalceAntes = posicionEnPantalla(pCalce, origen, topBanda, topScrollAntes)
 
       if (yCalceAntes >= topBanda && yCalceAntes < topBanda + altoBanda) {
         dentroAntes++
       }
 
       // Cálculo DESPUÉS (fórmula nueva usando la función oficial calcularScrollTop)
-      const topScrollDespues = calcularScrollTop(pPos, origen, topBanda, filaPx)
-      const yCalceDespues = enPantalla(pCalce, origen, topBanda, topScrollDespues)
+      const topScrollDespues = calcularScrollTop(pPos, origen, filaPx)
+      const yCalceDespues = posicionEnPantalla(pCalce, origen, topBanda, topScrollDespues)
 
       if (yCalceDespues >= topBanda && yCalceDespues < topBanda + altoBanda) {
         dentroDespues++
@@ -145,8 +144,8 @@ describe('Pruebas TAREA 26 (T144-T146)', () => {
 
       for (const pos of posicionesMuestra) {
         const pPos = pixelDePosicion(renglones, pos)
-        const topScroll = calcularScrollTop(pPos, origen, topBanda, filaPx)
-        const yEnPantalla = enPantalla(pPos, origen, topBanda, topScroll)
+        const topScroll = calcularScrollTop(pPos, origen, filaPx)
+        const yEnPantalla = posicionEnPantalla(pPos, origen, topBanda, topScroll)
 
         // La distancia desde topBanda a la línea viva comprende exactamente MARGEN_RENGLONES_ARRIBA de espacio arriba (middle line of band)
         const offsetEnBanda = yEnPantalla - topBanda
@@ -188,8 +187,8 @@ describe('Pruebas TAREA 26 (T144-T146)', () => {
         // posiciones ya bien entrado el guion, donde el scroll dejo de estar clavado en 0
         for (const pos of [120, 160, 200.5, 240]) {
           const pPos = pixelDePosicion(renglones, pos)
-          const topScroll = calcularScrollTop(pPos, origen, topBanda, filaPx)
-          const y = enPantalla(pPos, origen, topBanda, topScroll)
+          const topScroll = calcularScrollTop(pPos, origen, filaPx)
+          const y = posicionEnPantalla(pPos, origen, topBanda, topScroll)
 
           expect(y - topBanda).toBeCloseTo(MARGEN_RENGLONES_ARRIBA * filaPx, 6)
         }
@@ -197,22 +196,120 @@ describe('Pruebas TAREA 26 (T144-T146)', () => {
     }
   })
 
-  // T148 GUARDIANA DE QUE topBanda NO PARTICIPE DE LA CUENTA.
-  // Directa y brutal: mover la banda no puede mover el desplazamiento. Si alguien reintroduce
-  // la resta, estos dos numeros dejan de ser iguales.
-  test('T148 El desplazamiento no depende de donde este la banda: con la misma posicion y dos anclajes distintos, calcularScrollTop devuelve lo mismo.', () => {
-    const filaPx = 34
-    const renglones: Renglon[] = Array.from({ length: 80 }, (_, i) => ({
-      top: i * filaPx, alto: filaPx, desdeToken: i * 4, hastaToken: i * 4 + 3
-    }))
-    const origen = renglones[0].top
-    const pPos = pixelDePosicion(renglones, 200)
+  // T148 se borró: topBanda ya no está en la firma de calcularScrollTop y TypeScript impide pasarlo.
+})
 
-    const arriba = calcularBanda(480, filaPx, 3, 'arriba', 20, 20).topBanda
-    const abajo = calcularBanda(480, filaPx, 3, 'abajo', 20, 20).topBanda
-    expect(arriba).not.toBeCloseTo(abajo, 1)   // la prueba solo sirve si de verdad difieren
+describe('Pruebas TAREA 27 (T154-T156)', () => {
+  test('T154 Con alturas de contenedor de 360, 720 y 1000, y anclaje "medio": el borde de arriba de la ventana queda centrado respecto del ALTO REAL, no de 480.', () => {
+    const origClientHeight = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'clientHeight')
+    const guion = guionSimple('Línea 1\nLínea 2\nLínea 3')
 
-    expect(calcularScrollTop(pPos, origen, arriba, filaPx))
-      .toBeCloseTo(calcularScrollTop(pPos, origen, abajo, filaPx), 6)
+    try {
+      // 1. Verificar que cuando clientHeight es 0, no se dibuja la banda ni el velo
+      Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', {
+        configurable: true,
+        get() { return 0 }
+      })
+      const { container: containerCero, unmount: unmountCero } = render(
+        <TeleprompterView script={guion} currentLineIndex={0} currentWordIndex={0} anclajeZona="medio" fontSize={24} />
+      )
+      expect(containerCero.querySelector('[data-testid="banda-lectura"]')).toBeNull()
+      expect(containerCero.querySelector('[data-testid="velo-lectura"]')).toBeNull()
+      unmountCero()
+
+      // 2. Probar con alturas reales 360, 720 y 1000 con anclaje 'medio'
+      for (const altoReal of [360, 720, 1000]) {
+        Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', {
+          configurable: true,
+          get() { return altoReal }
+        })
+
+        const { container, unmount } = render(
+          <TeleprompterView script={guion} currentLineIndex={0} currentWordIndex={0} anclajeZona="medio" fontSize={24} />
+        )
+
+        const banda = container.querySelector('[data-testid="banda-lectura"]') as HTMLElement
+        expect(banda).not.toBeNull()
+
+        const filaPx = 24 * 1.4
+        const altoBandaEsperado = 3 * filaPx
+        const topEsperado = (altoReal - altoBandaEsperado) / 2
+
+        expect(parseFloat(banda.style.top)).toBeCloseTo(topEsperado, 4)
+        unmount()
+      }
+    } finally {
+      if (origClientHeight) {
+        Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', origClientHeight)
+      } else {
+        delete (window.HTMLElement.prototype as any).clientHeight
+      }
+    }
+  })
+
+  test('T155 Con anclaje "abajo" y alto real 720: el borde de abajo de la ventana queda a paddingInferior del borde de abajo del contenedor.', () => {
+    const origClientHeight = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'clientHeight')
+    const guion = guionSimple('Línea 1\nLínea 2\nLínea 3')
+
+    try {
+      const altoReal = 720
+      const paddingInferior = 20
+      Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', {
+        configurable: true,
+        get() { return altoReal }
+      })
+
+      const { container, unmount } = render(
+        <TeleprompterView script={guion} currentLineIndex={0} currentWordIndex={0} anclajeZona="abajo" fontSize={24} />
+      )
+
+      const banda = container.querySelector('[data-testid="banda-lectura"]') as HTMLElement
+      expect(banda).not.toBeNull()
+
+      const topBanda = parseFloat(banda.style.top)
+      const altoBanda = parseFloat(banda.style.height)
+      const distanciaAlBordeInferior = altoReal - (topBanda + altoBanda)
+
+      expect(distanciaAlBordeInferior).toBeCloseTo(paddingInferior, 4)
+      unmount()
+    } finally {
+      if (origClientHeight) {
+        Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', origClientHeight)
+      } else {
+        delete (window.HTMLElement.prototype as any).clientHeight
+      }
+    }
+  })
+
+  test('T156 Para cada combinación de alto real (360, 720), tamaño de letra (24, 40) y anclaje (arriba, medio, abajo): posicionEnPantalla del renglón vivo cae dentro de la ventana y a exactamente MARGEN_RENGLONES_ARRIBA * filaPx de su borde de arriba.', () => {
+    for (const altoReal of [360, 720]) {
+      for (const fontSize of [24, 40]) {
+        const filaPx = fontSize * 1.4
+        const renglones: Renglon[] = Array.from({ length: 80 }, (_, i) => ({
+          top: i * filaPx,
+          alto: filaPx,
+          desdeToken: i * 4,
+          hastaToken: i * 4 + 3
+        }))
+        const origen = renglones[0].top
+
+        for (const anclaje of ['arriba', 'medio', 'abajo'] as AnclajeZona[]) {
+          const { topBanda, altoBanda } = calcularBanda(altoReal, filaPx, 3, anclaje, 20, 20)
+
+          for (const pos of [100, 150, 200]) {
+            const pPos = pixelDePosicion(renglones, pos)
+            const topScroll = calcularScrollTop(pPos, origen, filaPx)
+            const yEnPantalla = posicionEnPantalla(pPos, origen, topBanda, topScroll)
+
+            // Cae dentro de la ventana
+            expect(yEnPantalla).toBeGreaterThanOrEqual(topBanda)
+            expect(yEnPantalla).toBeLessThan(topBanda + altoBanda)
+
+            // Cae a exactamente MARGEN_RENGLONES_ARRIBA * filaPx de su borde de arriba
+            expect(yEnPantalla - topBanda).toBeCloseTo(MARGEN_RENGLONES_ARRIBA * filaPx, 6)
+          }
+        }
+      }
+    }
   })
 })
