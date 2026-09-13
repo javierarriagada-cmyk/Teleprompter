@@ -1081,10 +1081,17 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
 
     // Con el margen en 1, el renglon vivo queda a un renglon POR DEBAJO del borde de la
     // banda: o sea que arriba de el queda un renglon entero visible.
+    // Y SE REESCRIBIO OTRA VEZ EL MISMO DIA, POR LO MISMO UN NIVEL MAS ABAJO.
+    //
+    // Decia `yEnPantalla = pixelDelRenglonVivo - origen - top`, y eso NO es donde cae el
+    // token en la pantalla: el contenedor que hace scroll tiene paddingTop: topBanda, asi
+    // que la cuenta de verdad lleva ese padding sumado. Con el modelo equivocado, la resta
+    // de topBanda que sobraba en calcularScrollTop se cancelaba sola y esta prueba daba
+    // verde mientras el renglon vivo caia SEIS RENGLONES fuera de la ventana en el telefono.
     const pixelDelRenglonVivo = 1000
     const origen = 0
     const top = calcularScrollTop(pixelDelRenglonVivo, origen, topBanda, filaPx)
-    const yEnPantalla = pixelDelRenglonVivo - origen - top
+    const yEnPantalla = topBanda + (pixelDelRenglonVivo - origen) - top
 
     expect(yEnPantalla).toBe(topBanda + filaPx)
     expect(yEnPantalla - topBanda).toBeGreaterThanOrEqual(filaPx)
@@ -1092,7 +1099,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     // Y sin margen no queda nada arriba: es el defecto que esta prueba impide volver a
     // poner.
     const topSinMargen = calcularScrollTop(pixelDelRenglonVivo, origen, topBanda, filaPx, 0)
-    expect(pixelDelRenglonVivo - origen - topSinMargen - topBanda).toBe(0)
+    expect(topBanda + (pixelDelRenglonVivo - origen) - topSinMargen - topBanda).toBe(0)
   })
 
 })
