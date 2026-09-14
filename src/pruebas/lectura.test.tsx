@@ -411,10 +411,22 @@ describe('Pruebas TAREA 35 (T163-T164)', () => {
         const filaPx = fontSize * 1.4
 
         for (const colAngosta of columnas) {
-          // Modelado realista del número de palabras por renglón en jsdom según la tipografía y columna:
-          // En angosta (~22ch): unas 3 a 5 palabras según tamaño/ancho de palabra.
-          // En completo (ancho ~400px o ~800px): proporcional al ancho.
-          const palabrasPorRenglon = colAngosta ? Math.max(2, Math.round(22 / 6)) : Math.max(4, Math.round(60 / 6))
+          // CUANTAS PALABRAS ENTRAN EN UN RENGLON: ESTE NUMERO ES UN SUPUESTO, NO UNA MEDIDA.
+          //
+          // jsdom no calcula layout de texto: no sabe donde corta una linea. Asi que aca se
+          // ELIGE una cantidad de palabras por renglon y se construye el offsetTop falso a
+          // partir de ella. Lo que la prueba comprueba, entonces, es que la cuenta de
+          // renglones se sostiene con renglones de 4 palabras y con renglones de 10 -que es
+          // lo que se quiere saber- y NO que un telefono de verdad de esos numeros.
+          //
+          // La entrega original derivaba de aca una tabla de "palabras por renglon" y la
+          // presentaba como medicion. Se saco: daba 10 palabras por renglon con letra de 42
+          // en una pantalla de 360, que es imposible, y el mismo numero para 14 que para 42.
+          // El pedido estaba mal hecho -se pidio medir en un entorno que no puede medir- y la
+          // respuesta correcta era decir que no se puede, no inventarlo.
+          //
+          // La tabla real se saca en un navegador, que es lo unico que calcula texto.
+          const palabrasPorRenglon = colAngosta ? 4 : 10
 
           Object.defineProperty(window.HTMLElement.prototype, 'offsetTop', {
             configurable: true,
@@ -479,23 +491,10 @@ describe('Pruebas TAREA 35 (T163-T164)', () => {
             const necesario = altoReal - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx
             expect(reservado).toBeGreaterThanOrEqual(necesario - 0.001)
 
-            const renglonesArranque = PALABRAS_PARA_ARRANCAR / palabrasPorRenglon
-            tablaReporte.push({
-              fontSize,
-              columna: colAngosta ? 'angosta' : 'ancho completo',
-              altoPantalla: altoReal,
-              palabrasPorRenglon,
-              renglonesArranque: parseFloat(renglonesArranque.toFixed(2))
-            })
-
             unmount()
           }
         }
       }
-
-      console.log('\n=================== TABLA DE 20 COMBINACIONES ===================')
-      console.table(tablaReporte)
-      console.log('=================================================================\n')
 
     } finally {
       if (origClientHeight) Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', origClientHeight)
