@@ -22,7 +22,7 @@ import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './b
 //                     septiembre de 2026: "reacciono bastante bien, pero hacia el final
 //                     estaba leyendo en el primer renglon", que es el borde de arriba: cero
 //                     holgura hacia atras.
-//   1, ventana de 4   ESCRITO Y REVERTIDO SIN PROBAR, el 14 de septiembre de 2026. Se iba a
+//   1, ventana de 4   PUESTO el 14 de septiembre de 2026, despues de que el arreglo del area
 //                     subir junto con el arreglo de la alineacion del area segura, y dos
 //                     cambios a la vez no dejan saber cual fue. Javier: "dale con la 1, sube
 //                     solo la alineacion". Queda como el proximo movimiento SI despues del
@@ -31,7 +31,7 @@ import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './b
 // SI ESTE NUMERO SE VUELVE A MOVER CON UNA SOLA LECTURA, hay que parar y medir en vez de
 // ajustar: tres lecturas distintas pueden pedir tres valores, y ahi estariamos afinando a
 // una sesion y no a una regla.
-export const MARGEN_RENGLONES_ARRIBA = 0
+export const MARGEN_RENGLONES_ARRIBA = 1
 
 // Cuanto tarda la pantalla en pasar de un renglon al siguiente. Constante de tiempo de un
 // acercamiento exponencial: con 70 ms, el renglon se recorre casi entero en unos 200.
