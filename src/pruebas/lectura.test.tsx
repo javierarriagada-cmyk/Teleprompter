@@ -348,22 +348,32 @@ describe('Pruebas TAREA 35 (T163-T164)', () => {
           const filaPx = fontSize * 1.4
           const topBanda = 20
 
-          const pBottomStr = cont.style.paddingBottom
-          expect(pBottomStr).toContain('calc(')
-          expect(pBottomStr).toContain('safe-area-inset-bottom')
-
-          const match = pBottomStr.match(/calc\(([\d.]+)px/)
-          expect(match).not.toBeNull()
-          const reservado = parseFloat(match![1])
+          const reservado = parseFloat(cont.style.paddingBottom)
           const necesario = altoReal - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx
 
           expect(reservado).toBeGreaterThanOrEqual(necesario - 0.001)
           expect(reservado).toBeLessThanOrEqual(altoReal)
 
-          // Verificar top y paddings laterales con env 0 (jsdom los normaliza manteniendo las variables CSS)
-          expect(cont.style.paddingTop).toContain('safe-area-inset-top')
-          expect(cont.style.paddingLeft).toContain('safe-area-inset-left')
-          expect(cont.style.paddingRight).toContain('safe-area-inset-right')
+          // EL AREA SEGURA VA EN LA SUPERFICIE ENTERA, NO EN EL TEXTO SOLO.
+          //
+          // La entrega original la sumaba al paddingTop del contenedor que hace scroll -o
+          // sea, al TEXTO- mientras la banda se dibuja en top: topBanda y el velo se calcula
+          // con topBanda, los dos sin area segura. En un telefono con muesca eso corria el
+          // texto hacia abajo respecto de la ventana clara, y el renglon vivo dejaba de caer
+          // donde la ventana decia. Javier lo detecto comparando dos lecturas: "algo cambio
+          // de la lectura anterior, no estaba subiendo a leer al primer renglon".
+          //
+          // Ahora va en el contenedor de afuera, que es el que tiene la banda, el velo y el
+          // texto adentro: se corren los tres juntos y siguen alineados.
+          const superficie = container.querySelector('[data-testid="teleprompter-view-container"]') as HTMLElement
+          expect(superficie.style.paddingTop).toContain('safe-area-inset-top')
+          expect(superficie.style.paddingBottom).toContain('safe-area-inset-bottom')
+          expect(superficie.style.paddingLeft).toContain('safe-area-inset-left')
+          expect(superficie.style.paddingRight).toContain('safe-area-inset-right')
+
+          // y el contenedor del texto NO la lleva: si la llevara, se correria solo
+          expect(cont.style.paddingTop).not.toContain('safe-area')
+          expect(cont.style.paddingLeft).not.toContain('safe-area')
 
           unmount()
         }

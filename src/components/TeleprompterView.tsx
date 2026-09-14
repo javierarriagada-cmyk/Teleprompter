@@ -8,24 +8,6 @@ import { anotar } from '../lib/diagnostico'
 
 import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
 
-// EL RENGLON VIVO ES EL PRIMERO DE LA VENTANA, Y LOS DOS CLAROS QUEDAN HACIA ADELANTE.
-//
-// Estuvo en 1 -el vivo al medio, un renglon claro arriba y uno abajo- mientras la marca iba
-// POR DELANTE del lector: con el texto adelantado, el renglon que se estaba leyendo quedaba
-// arriba de la marca y hacia falta espacio claro ahi.
-//
-// Desde que el renglon mostrado lo manda la evidencia -la ultima palabra que el reconocedor
-// ubico en el guion, no la posicion estimada- la marca va un poco ATRAS del lector, porque
-// el reconocedor tarda unas decimas y ademas el ojo va una o dos palabras por delante de la
-// voz. Javier lo reporto el 13 de septiembre de 2026 leyendo con esa version: "ahora se
-// queda usualmente en el cuarto renglon". Con la ventana de tres y el vivo al medio, el
-// cuarto cae justo afuera por un renglon.
-//
-// Con el margen en 0 la ventana cubre el renglon vivo y los DOS siguientes, que es hacia
-// donde va el ojo. Arriba no se pierde nada: ahi ya se leyo.
-//
-// LA ZONA CLARA SIGUE MIDIENDO TRES RENGLONES. No se ensancha: esa es la condicion de
-// Javier para no despegar el ojo del lente de la camara. Lo que cambia es donde esta.
 // UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
 //
 // Este numero se movio tres veces y conviene tener la historia junta:
@@ -40,12 +22,16 @@ import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './b
 //                     septiembre de 2026: "reacciono bastante bien, pero hacia el final
 //                     estaba leyendo en el primer renglon", que es el borde de arriba: cero
 //                     holgura hacia atras.
-//   1, ventana de 4   esto. Un renglon arriba y DOS adelante. La ventana no crece, se corre.
+//   1, ventana de 4   ESCRITO Y REVERTIDO SIN PROBAR, el 14 de septiembre de 2026. Se iba a
+//                     subir junto con el arreglo de la alineacion del area segura, y dos
+//                     cambios a la vez no dejan saber cual fue. Javier: "dale con la 1, sube
+//                     solo la alineacion". Queda como el proximo movimiento SI despues del
+//                     arreglo sigue leyendo en el primer renglon.
 //
 // SI ESTE NUMERO SE VUELVE A MOVER CON UNA SOLA LECTURA, hay que parar y medir en vez de
 // ajustar: tres lecturas distintas pueden pedir tres valores, y ahi estariamos afinando a
 // una sesion y no a una regla.
-export const MARGEN_RENGLONES_ARRIBA = 1
+export const MARGEN_RENGLONES_ARRIBA = 0
 
 // Cuanto tarda la pantalla en pasar de un renglon al siguiente. Constante de tiempo de un
 // acercamiento exponencial: con 70 ms, el renglon se recorre casi entero en unos 200.
@@ -512,6 +498,32 @@ export default function TeleprompterView({
         overflow: 'hidden',
         height: '100%',
         minHeight: 360,
+        // EL AREA SEGURA SE APLICA UNA SOLA VEZ, Y AQUI: A TODA LA SUPERFICIE DE LECTURA.
+        //
+        // La tarea 35 se la sumo al paddingTop del contenedor que hace scroll, que es solo el
+        // TEXTO. La banda se dibuja en top: topBanda y el velo se calcula con topBanda, los
+        // dos SIN area segura. Resultado: en un telefono con muesca o barra de estado, el
+        // texto quedaba corrido hacia abajo respecto de la ventana clara por exactamente esos
+        // pixeles -del orden de un renglon-, y el renglon vivo dejaba de caer donde la ventana
+        // decia.
+        //
+        // Javier lo detecto comparando dos lecturas: "algo cambio de la lectura anterior, no
+        // estaba subiendo a leer al primer renglon".
+        //
+        // Es la misma forma de error de todo este arreglo: DOS LUGARES CALCULANDO LA MISMA
+        // POSICION Y UNO SOLO ACTUALIZADO. Igual que topBanda restado dos veces, que el tope
+        // del motor en palabras mientras la pantalla iba en renglones, que el 90% multiplicado
+        // por el margen.
+        //
+        // Poniendola aca, la banda, el velo y el texto se corren JUNTOS y siguen alineados.
+        //
+        // Va envuelta en calc() a proposito: jsdom descarta un env() suelto -lo deja en cadena
+        // vacia- y adentro de calc() lo conserva. Es CSS valido igual y permite que la prueba
+        // pueda comprobar que esta puesta.
+        paddingTop: 'calc(env(safe-area-inset-top, 0px))',
+        paddingBottom: 'calc(env(safe-area-inset-bottom, 0px))',
+        paddingLeft: 'calc(env(safe-area-inset-left, 0px))',
+        paddingRight: 'calc(env(safe-area-inset-right, 0px))',
         background: colorFondo,
         color: colorTextoEfectivo,
         fontFamily: fontFamilyCss,
@@ -596,9 +608,9 @@ export default function TeleprompterView({
         style={{
           height: '100%',
           overflowY: 'auto',
-          paddingLeft: `calc(${marginPercent}% + env(safe-area-inset-left, 0px))`,
-          paddingRight: `calc(${marginPercent}% + env(safe-area-inset-right, 0px))`,
-          paddingTop: `calc(${topBanda}px + env(safe-area-inset-top, 0px))`,
+          paddingLeft: `${marginPercent}%`,
+          paddingRight: `${marginPercent}%`,
+          paddingTop: topBanda,
           // EL ULTIMO RENGLON TIENE QUE PODER LLEGAR A LA BARRA DE LECTURA.
           //
           // Decia calc(100% - ...), y LOS PORCENTAJES EN padding SE CALCULAN SOBRE EL ANCHO
@@ -615,7 +627,7 @@ export default function TeleprompterView({
           // desplazamiento tiene que poder llegar a (ultimoTop - origen) - margen. El tope
           // que permite el navegador es scrollHeight - alto del contenedor. Despejando queda
           // esto, y sale del alto MEDIDO, no de una constante.
-          paddingBottom: `calc(${Math.max(0, altoContenedor - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx)}px + env(safe-area-inset-bottom, 0px))`,
+          paddingBottom: `${Math.max(0, altoContenedor - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx)}px`,
           transform: mirror ? 'scaleX(-1)' : 'none',
           boxSizing: 'border-box'
         }}
