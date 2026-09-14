@@ -99,3 +99,12 @@ app/src/main/assets/public
 app/src/main/assets/capacitor.config.json
 app/src/main/assets/capacitor.plugins.json
 app/src/main/res/xml/config.xml
+
+# EL MODELO DE VOSK NO VA A GIT.
+#
+# Son 57 MB desempaquetados. Metidos en el historial engordan cada clonacion
+# para siempre y no se pueden sacar despues sin reescribir el historial.
+#
+# Se baja con: npm run modelo
+# y queda en app/src/main/assets/model-es
+app/src/main/assets/model-es/
