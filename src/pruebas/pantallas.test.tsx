@@ -7,6 +7,7 @@ import BibliotecaView from '../components/BibliotecaView'
 import EditorView from '../components/EditorView'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { Guion } from '../datos/modelo'
+import { MotorFake } from '../motor/MotorFake'
 
 describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T149-T153)', () => {
   beforeEach(() => {
@@ -268,6 +269,167 @@ describe('Pruebas TAREA 31 (T160)', () => {
       expect(screen.queryByTestId('menu-opciones-g1')).toBeNull()
       unmount()
     }
+  })
+})
+
+describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
+  beforeEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  test('T163 - Al apretar el boton de leer del editor se entra a la lectura Y el motor arranca: no hace falta apretar nada mas. Con el motor falso, start() se llama despues de la cuenta regresiva.', async () => {
+    vi.useFakeTimers()
+    try {
+      const motor = new MotorFake()
+      const iniciarSpy = vi.spyOn(motor, 'iniciar')
+      const repo = new RepositorioMemoria()
+      const guion = {
+        id: 'g-t163',
+        titulo: 'Guion T163',
+        idioma: 'es',
+        creado: Date.now(),
+        modificado: Date.now(),
+        bloques: [{ id: 'b1', nombre: '', texto: 'Texto de lectura automatica para T163' }]
+      }
+      await repo.guardar(guion)
+
+      render(<App motor={motor} repoOverride={repo} />)
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(600)
+      })
+
+      const fila = screen.getByTestId('fila-guion-g-t163')
+      await act(async () => {
+        fireEvent.click(fila)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      const btnLeer = screen.getByTestId('btn-leer-guion-fijo')
+      await act(async () => {
+        fireEvent.click(btnLeer)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      expect(screen.getByTestId('teleprompter-view-container')).not.toBeNull()
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(2800)
+      })
+      expect(iniciarSpy).toHaveBeenCalledTimes(0)
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(500)
+      })
+      expect(iniciarSpy).toHaveBeenCalledTimes(1)
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  test('T164 - Al entrar a la lectura NO estan en el documento: el panel de corpus, el selector de motor, ni la franja de estado del motor. El texto si.', async () => {
+    const motor = new MotorFake()
+    const repo = new RepositorioMemoria()
+    const guion = {
+      id: 'g-t164',
+      titulo: 'Guion T164',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto visible en la toma T164' }]
+    }
+    await repo.guardar(guion)
+
+    render(<App motor={motor} repoOverride={repo} />)
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const fila = screen.getByTestId('fila-guion-g-t164')
+    await act(async () => {
+      fireEvent.click(fila)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const btnLeer = screen.getByTestId('btn-leer-guion-fijo')
+    await act(async () => {
+      fireEvent.click(btnLeer)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    expect(screen.queryByTestId('panel-corpus')).toBeNull()
+    expect(screen.queryByLabelText('Motor de Voz (Avanzado)')).toBeNull()
+    expect(screen.queryByTestId('franja-de-estado-diagnostico')).toBeNull()
+
+    expect(screen.getByTestId('teleprompter-view-container')).not.toBeNull()
+    expect(screen.getByTestId('columna-texto')).not.toBeNull()
+    expect(screen.getByText('Texto')).not.toBeNull()
+  })
+
+  test('T165 - Un toque trae la barra minima: estan el control de letra y el de salir, y NO estan el selector de motor ni el panel de corpus.', async () => {
+    const motor = new MotorFake()
+    const repo = new RepositorioMemoria()
+    const guion = {
+      id: 'g-t165',
+      titulo: 'Guion T165',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto para T165' }]
+    }
+    await repo.guardar(guion)
+
+    render(<App motor={motor} repoOverride={repo} />)
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    const fila = screen.getByTestId('fila-guion-g-t165')
+    await act(async () => {
+      fireEvent.click(fila)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const btnLeer = screen.getByTestId('btn-leer-guion-fijo')
+    await act(async () => {
+      fireEvent.click(btnLeer)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    expect(screen.queryByTestId('panel-controles-lectura')).toBeNull()
+
+    const prompterView = screen.getByTestId('teleprompter-view-container')
+    await act(async () => {
+      fireEvent.click(prompterView)
+    })
+
+    expect(screen.getByTestId('panel-controles-lectura')).not.toBeNull()
+    expect(screen.getByTestId('valor-letra')).not.toBeNull()
+    expect(screen.getByText('← Volver al Editor')).not.toBeNull()
+
+    expect(screen.queryByTestId('panel-corpus')).toBeNull()
+    expect(screen.queryByLabelText('Motor de Voz (Avanzado)')).toBeNull()
+  })
+
+  test('T166 - El panel de corpus se puede abrir desde la biblioteca.', async () => {
+    const repo = new RepositorioMemoria()
+    render(<App repoOverride={repo} />)
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    expect(screen.queryByTestId('panel-corpus')).toBeNull()
+
+    const btnMenu = screen.getByTestId('btn-menu-superior-biblioteca')
+    await act(async () => {
+      fireEvent.click(btnMenu)
+    })
+
+    const btnCorpus = screen.getByTestId('btn-abrir-corpus')
+    await act(async () => {
+      fireEvent.click(btnCorpus)
+    })
+
+    expect(screen.getByTestId('panel-corpus')).not.toBeNull()
   })
 })
 

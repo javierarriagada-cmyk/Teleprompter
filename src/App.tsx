@@ -310,7 +310,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [colorFondo, setColorFondo] = useState<string>('#000000')
   const [colorLetra, setColorLetra] = useState<string>('#FFFFFF')
   const [tipoFuente, setTipoFuente] = useState<'sans' | 'serif'>('sans')
-  const [controlesVisibles, setControlesVisibles] = useState<boolean>(true)
+  const [controlesVisibles, setControlesVisibles] = useState<boolean>(false)
   const timerControlesRef = useRef<number | null>(null)
 
   const [motivoFreno, setMotivoFreno] = useState<'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null>(null)
@@ -477,6 +477,34 @@ export default function App({ motor, repoOverride }: AppProps) {
     }, 1000)
   }
 
+  async function handleEntrarLectura() {
+    setVista('lectura')
+    setControlesVisibles(false)
+    await handleStart()
+  }
+
+  function handleLetraMenos() {
+    const idx = PASOS_LETRA.indexOf(fontSize)
+    if (idx > 0) {
+      setFontSize(PASOS_LETRA[idx - 1])
+    } else if (idx === -1) {
+      const menor = PASOS_LETRA.slice().reverse().find((p) => p < fontSize)
+      if (menor !== undefined) setFontSize(menor)
+      else setFontSize(PASOS_LETRA[0])
+    }
+  }
+
+  function handleLetraMas() {
+    const idx = PASOS_LETRA.indexOf(fontSize)
+    if (idx >= 0 && idx < PASOS_LETRA.length - 1) {
+      setFontSize(PASOS_LETRA[idx + 1])
+    } else if (idx === -1) {
+      const mayor = PASOS_LETRA.find((p) => p > fontSize)
+      if (mayor !== undefined) setFontSize(mayor)
+      else setFontSize(PASOS_LETRA[PASOS_LETRA.length - 1])
+    }
+  }
+
   async function handleStop() {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
@@ -637,6 +665,8 @@ export default function App({ motor, repoOverride }: AppProps) {
           onArchivar={handleArchivarGuion}
           onBuscarGuionCompleto={(id) => repoRef.current.abrir(id)}
           onToggleDiagnostico={() => setMostrarDiagnostico((prev) => !prev)}
+          medirLectura={medirLectura}
+          setMedirLectura={setMedirLectura}
         />
       )}
 
@@ -645,163 +675,156 @@ export default function App({ motor, repoOverride }: AppProps) {
           guion={guionActual}
           onChangeGuion={(nuevoG) => setGuionActual(nuevoG)}
           onVolverBiblioteca={() => setVista('biblioteca')}
-          onEntrarLectura={() => setVista('lectura')}
+          onEntrarLectura={handleEntrarLectura}
+          marginPercent={marginPercent}
+          setMarginPercent={setMarginPercent}
+          mirror={mirror}
+          setMirror={setMirror}
+          anclajeZona={anclajeZona}
+          setAnclajeZona={setAnclajeZona}
+          verTranscripcion={verTranscripcion}
+          setVerTranscripcion={setVerTranscripcion}
+          mostrarTiempo={mostrarTiempo}
+          setMostrarTiempo={setMostrarTiempo}
+          columnaAngosta={columnaAngosta}
+          setColumnaAngosta={setColumnaAngosta}
+          colorFondo={colorFondo}
+          setColorFondo={setColorFondo}
+          colorLetra={colorLetra}
+          setColorLetra={setColorLetra}
+          tipoFuente={tipoFuente}
+          setTipoFuente={setTipoFuente}
+          tema={tema}
+          setTema={setTema}
+          engine={engine}
+          setEngine={setEngine}
         />
       )}
 
       {vista === 'lectura' && guionActual && (
-        <div>
-          {/* La fila de volver solo mientras los controles estan a la vista. Al leer se
-              esconde con ellos: no hay nada que tocar y ocupa alto. */}
-          {controlesVisibles && !esPantallaCompleta && (
-            <div style={{ padding: '10px 12px 8px', display: 'flex', gap: 12, alignItems: 'center' }}>
+        <div style={{ position: 'relative', width: '100%', height: '100dvh', overflow: 'hidden' }}>
+          {controlesVisibles && (
+            <div
+              data-testid="panel-controles-lectura"
+              style={{
+                position: 'absolute',
+                top: 16,
+                left: 16,
+                right: 16,
+                zIndex: 100,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                border: '1px solid var(--color-borde)',
+                borderRadius: 12,
+                padding: '8px 16px',
+                color: '#fff',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
+                backdropFilter: 'blur(8px)'
+              }}
+            >
               <button
-                onClick={() => setVista('editor')}
-                style={{ padding: '6px 14px', cursor: 'pointer', backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)', borderRadius: 6, color: 'var(--color-texto)' }}
+                onClick={async () => {
+                  await handleStop()
+                  setVista('editor')
+                }}
+                style={{
+                  padding: '8px 14px',
+                  cursor: 'pointer',
+                  backgroundColor: 'var(--bg-suelo)',
+                  border: '1px solid var(--color-borde)',
+                  borderRadius: 6,
+                  color: 'var(--color-texto)',
+                  fontWeight: 600,
+                  fontSize: 14
+                }}
               >
                 ← Volver al Editor
               </button>
-              <span style={{ color: 'var(--color-apagado)', fontSize: 14 }}>
-                Modo Lectura - <strong>{tituloMostrar}</strong>
-              </span>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ fontSize: 13, color: '#aaa', fontWeight: 600 }}>Letra:</span>
+                <button
+                  onClick={handleLetraMenos}
+                  aria-label="Disminuir letra"
+                  style={{
+                    width: 36,
+                    height: 36,
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    borderRadius: 6,
+                    border: '1px solid var(--color-borde)',
+                    backgroundColor: 'var(--bg-suelo)',
+                    color: 'var(--color-texto)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  -
+                </button>
+                <span data-testid="valor-letra" style={{ minWidth: 32, textAlign: 'center', fontWeight: 'bold', fontSize: 15, color: '#fff' }}>
+                  {fontSize}
+                </span>
+                <button
+                  onClick={handleLetraMas}
+                  aria-label="Aumentar letra"
+                  style={{
+                    width: 36,
+                    height: 36,
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    borderRadius: 6,
+                    border: '1px solid var(--color-borde)',
+                    backgroundColor: 'var(--bg-suelo)',
+                    color: 'var(--color-texto)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  +
+                </button>
+              </div>
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-            {!esPantallaCompleta && controlesVisibles && (
-              <div data-testid="panel-controles-lectura" style={{ flex: 1, minWidth: 320 }}>
-
-                <PanelCorpus medir={medirLectura} setMedir={setMedirLectura} />
-
-                <ControlsBar
-                  onStart={handleStart}
-                  onStop={handleStop}
-                  isRecording={isRecording}
-                  cuentaRegresiva={cuentaRegresiva}
-                  fontSize={fontSize}
-                  setFontSize={setFontSize}
-                  marginPercent={marginPercent}
-                  setMarginPercent={setMarginPercent}
-                  mirror={mirror}
-                  setMirror={setMirror}
-                  lineasZona={lineasZona}
-                  setLineasZona={setLineasZona}
-                  anclajeZona={anclajeZona}
-                  setAnclajeZona={setAnclajeZona}
-                  verTranscripcion={verTranscripcion}
-                  setVerTranscripcion={setVerTranscripcion}
-                  mostrarTiempo={mostrarTiempo}
-                  setMostrarTiempo={setMostrarTiempo}
-                  columnaAngosta={columnaAngosta}
-                  setColumnaAngosta={setColumnaAngosta}
-                  colorFondo={colorFondo}
-                  setColorFondo={setColorFondo}
-                  colorLetra={colorLetra}
-                  setColorLetra={setColorLetra}
-                  tipoFuente={tipoFuente}
-                  setTipoFuente={setTipoFuente}
-                  tema={tema}
-                  setTema={setTema}
-                  engine={engine}
-                  setEngine={setEngine}
-                  onToggleFullscreen={toggleFullscreen}
-                />
-
-                <div style={{ marginTop: 12 }}>
-                  <button onClick={handleClear} style={{ padding: '8px 16px', fontWeight: 600, backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)', borderRadius: 6, color: 'var(--color-texto)', cursor: 'pointer' }}>
-                    Volver al inicio
-                  </button>
-                </div>
-
-                <div style={{ marginTop: 12, color: 'var(--color-texto)' }}>
-                  <strong>Estado del Motor:</strong> {estadoMotor}
-                </div>
-
-                {verTranscripcion && (
-                  <>
-                    <div style={{ marginTop: 12 }}>
-                      <strong style={{ color: 'var(--color-texto)' }}>Transcripción (en vivo):</strong>
-                      <div
-                        style={{
-                          minHeight: 100,
-                          border: '1px solid var(--color-borde)',
-                          padding: 8,
-                          marginTop: 6,
-                          whiteSpace: 'pre-wrap',
-                          background: 'var(--bg-suelo)',
-                          color: 'var(--color-texto)',
-                          borderRadius: 6,
-                          fontSize: 14
-                        }}
-                      >
-                        {transcript || <em>— ninguna —</em>}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-
-            <div
-              ref={prompterContainerRef}
-              style={{
-                flex: esPantallaCompleta || !controlesVisibles ? '1 1 100%' : '1 1 420px',
-                minWidth: 320,
-                // EL TEXTO ES LA PANTALLA. Aca habia 480 pixeles fijos salvo en pantalla
-                // completa, y eso es lo que se abria en el telefono: un recuadro con unos
-                // seis renglones, de los cuales tres son la ventana clara. Con ese alto,
-                // cualquier corrimiento de un renglon te deja fuera del guion.
-                // Con la pantalla entera entran quince o veinte y un renglon de desfase
-                // deja de sacarte. dvh y no vh: en el telefono la barra del navegador se
-                // esconde al desplazar y vh se queda con el alto viejo.
-                height: esPantallaCompleta || !controlesVisibles ? '100dvh' : '65dvh',
-                minHeight: 480,
-                background: colorFondo,
-                borderRadius: esPantallaCompleta ? 0 : 6,
-                overflow: 'hidden',
-                position: 'relative'
-              }}
-            >
-              <TeleprompterView
-                script={guionActual}
-                currentBlockIndex={bloqueActual}
-                currentLineIndex={lineaActual}
-                currentWordIndex={palabraActual}
-                fontSize={fontSize}
-                marginPercent={marginPercent}
-                mirror={mirror}
-                lineasZona={lineasZona}
-                anclajeZona={anclajeZona}
-                motorAvance={motorAvance}
-                diagnostico={verTranscripcion}
-                columnaAngosta={columnaAngosta}
-                colorFondo={colorFondo}
-                colorLetra={colorLetra}
-                tipoFuente={tipoFuente}
-                isRecording={isRecording || cuentaRegresiva !== null}
-                onToggleControles={() => setControlesVisibles((prev) => !prev)}
-                onNavegacionManual={irAToken}
-                onModoManualChange={setModoManual}
-                onEstadoAvanceChange={handleEstadoAvanceChange}
-              />
-              <CuentaRegresiva valor={cuentaRegresiva} />
-              {verTranscripcion && (
-                <div
-                  id="diag-prompter"
-                  style={{
-                    fontFamily: 'monospace',
-                    fontSize: 12,
-                    background: '#111',
-                    color: '#0f0',
-                    padding: '4px 8px',
-                    whiteSpace: 'nowrap',
-                    overflowX: 'auto'
-                  }}
-                >
-                  —
-                </div>
-              )}
-            </div>
+          <div
+            ref={prompterContainerRef}
+            style={{
+              width: '100%',
+              height: '100dvh',
+              background: colorFondo,
+              overflow: 'hidden',
+              position: 'relative'
+            }}
+          >
+            <TeleprompterView
+              script={guionActual}
+              currentBlockIndex={bloqueActual}
+              currentLineIndex={lineaActual}
+              currentWordIndex={palabraActual}
+              fontSize={fontSize}
+              marginPercent={marginPercent}
+              mirror={mirror}
+              lineasZona={lineasZona}
+              anclajeZona={anclajeZona}
+              motorAvance={motorAvance}
+              diagnostico={verTranscripcion}
+              columnaAngosta={columnaAngosta}
+              colorFondo={colorFondo}
+              colorLetra={colorLetra}
+              tipoFuente={tipoFuente}
+              isRecording={isRecording || cuentaRegresiva !== null}
+              onToggleControles={() => setControlesVisibles((prev) => !prev)}
+              onNavegacionManual={irAToken}
+              onModoManualChange={setModoManual}
+              onEstadoAvanceChange={handleEstadoAvanceChange}
+            />
+            <CuentaRegresiva valor={cuentaRegresiva} />
           </div>
 
           {mostrarTiempo && (
