@@ -152,26 +152,17 @@ describe('Corpus de medicion del motor (paso 1 del plan)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const leer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
-    await act(async () => {
-      fireEvent.click(leer!)
-      await new Promise((r) => setTimeout(r, 100))
-    })
-
-    // Antes de apretar nada, no hay ninguna grabacion en curso.
+    // Antes de apretar Leer, no hay ninguna grabacion en curso.
     expect(estadoGrabador()).toBe('inactivo')
 
-    const iniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')
-    expect(iniciar).toBeDefined()
-
+    const leerBtn = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
     await act(async () => {
-      fireEvent.click(iniciar!)
+      fireEvent.click(leerBtn!)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    // Y aca esta el contrato: un solo boton. Si alguien vuelve a separar medir de leer,
-    // esto queda en 'inactivo' y la prueba se cae. La grabacion arranca ANTES de la cuenta
-    // regresiva, para que el comienzo de la lectura no quede cortado.
+    // Y aca esta el contrato: apretar Leer arranca la grabacion junto con la lectura.
+    // La grabacion arranca ANTES de la cuenta regresiva, para que el comienzo de la lectura no quede cortado.
     expect(estadoGrabador()).not.toBe('inactivo')
 
     GrabadorFalso.ultimo!.dispararOnstart()
@@ -214,12 +205,6 @@ describe('Corpus de medicion del motor (paso 1 del plan)', () => {
     const leer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
     await act(async () => {
       fireEvent.click(leer!)
-      await new Promise((r) => setTimeout(r, 100))
-    })
-
-    const iniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')
-    await act(async () => {
-      fireEvent.click(iniciar!)
       await new Promise((r) => setTimeout(r, 200))
     })
 

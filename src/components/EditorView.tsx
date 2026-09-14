@@ -3,6 +3,7 @@ import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, Bloque, TramoFormato, contarPalabras, calcularDuracionTexto } from '../datos/modelo'
 import { importarTexto } from '../datos/importar'
 import { importarArchivo } from '../datos/importarArchivo'
+import { IdMotor } from '../motor/MotorDeVoz'
 
 export function reubicarTramos(
   textoViejo: string,
@@ -41,6 +42,28 @@ interface EditorViewProps {
   onChangeGuion: (nuevoGuion: Guion) => void
   onVolverBiblioteca: () => void
   onEntrarLectura: () => void
+  marginPercent?: number
+  setMarginPercent?: (m: number) => void
+  mirror?: boolean
+  setMirror?: (m: boolean) => void
+  anclajeZona?: 'arriba' | 'medio' | 'abajo'
+  setAnclajeZona?: (a: 'arriba' | 'medio' | 'abajo') => void
+  verTranscripcion?: boolean
+  setVerTranscripcion?: (v: boolean) => void
+  mostrarTiempo?: boolean
+  setMostrarTiempo?: (v: boolean) => void
+  columnaAngosta?: boolean
+  setColumnaAngosta?: (v: boolean) => void
+  colorFondo?: string
+  setColorFondo?: (c: string) => void
+  colorLetra?: string
+  setColorLetra?: (c: string) => void
+  tipoFuente?: 'sans' | 'serif'
+  setTipoFuente?: (f: 'sans' | 'serif') => void
+  tema?: 'claro' | 'oscuro'
+  setTema?: (t: 'claro' | 'oscuro') => void
+  engine?: IdMotor
+  setEngine?: (e: IdMotor) => void
 }
 
 function generarIdBloque(): string {
@@ -54,10 +77,33 @@ export default function EditorView({
   guion,
   onChangeGuion,
   onVolverBiblioteca,
-  onEntrarLectura
+  onEntrarLectura,
+  marginPercent = 5,
+  setMarginPercent,
+  mirror = false,
+  setMirror,
+  anclajeZona = 'arriba',
+  setAnclajeZona,
+  verTranscripcion = false,
+  setVerTranscripcion,
+  mostrarTiempo = true,
+  setMostrarTiempo,
+  columnaAngosta = false,
+  setColumnaAngosta,
+  colorFondo = '#000000',
+  setColorFondo,
+  colorLetra = '#FFFFFF',
+  setColorLetra,
+  tipoFuente = 'sans',
+  setTipoFuente,
+  tema = 'claro',
+  setTema,
+  engine = 'vosk',
+  setEngine
 }: EditorViewProps) {
   const [plegados, setPlegados] = useState<Record<string, boolean>>({})
   const [menuOpcionesAbierto, setMenuOpcionesAbierto] = useState(false)
+  const [mostrarModalAjustes, setMostrarModalAjustes] = useState(false)
   // se cierra tocando afuera o con Escape, no solo con el mismo boton
   const refMenuOpciones = useCerrarAfuera(menuOpcionesAbierto, () => setMenuOpcionesAbierto(false))
   const [mostrarModalPegar, setMostrarModalPegar] = useState(false)
@@ -433,12 +479,31 @@ export default function EditorView({
                   textAlign: 'left',
                   background: 'transparent',
                   border: 'none',
+                  borderBottom: '1px solid var(--color-borde)',
                   color: 'var(--color-texto)',
                   fontSize: 'var(--texto-cuerpo)',
                   cursor: cargandoArchivo ? 'not-allowed' : 'pointer'
                 }}
               >
                 {cargandoArchivo ? 'Leyendo archivo...' : 'Abrir archivo'}
+              </button>
+
+              <button
+                onClick={() => {
+                  setMenuOpcionesAbierto(false)
+                  setMostrarModalAjustes(true)
+                }}
+                style={{
+                  padding: '12px 16px',
+                  textAlign: 'left',
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--color-texto)',
+                  fontSize: 'var(--texto-cuerpo)',
+                  cursor: 'pointer'
+                }}
+              >
+                ⚙ Ajustes del Teleprompter
               </button>
             </div>
           )}
@@ -470,6 +535,244 @@ export default function EditorView({
       <div className="texto-meta" style={{ color: 'var(--color-apagado)', marginBottom: 'var(--aire-4)' }}>
         {resumenMeta}
       </div>
+
+      {/* Modal de Ajustes del Teleprompter */}
+      {mostrarModalAjustes && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.7)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 200,
+            padding: 16
+          }}
+          onClick={() => setMostrarModalAjustes(false)}
+        >
+          <div
+            data-testid="panel-ajustes"
+            style={{
+              backgroundColor: 'var(--bg-superficie)',
+              color: 'var(--color-texto)',
+              padding: 20,
+              borderRadius: 'var(--redondeo)',
+              maxWidth: 500,
+              width: '100%',
+              maxHeight: '85vh',
+              overflowY: 'auto',
+              boxSizing: 'border-box'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <h3 style={{ margin: 0 }}>⚙ Ajustes del Teleprompter</h3>
+              <button
+                onClick={() => setMostrarModalAjustes(false)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--color-texto)',
+                  fontSize: 18,
+                  cursor: 'pointer'
+                }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {setColumnaAngosta && (
+                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: 14, fontWeight: 600 }}>Columna:</span>
+                  <select
+                    aria-label="Ancho de columna"
+                    value={columnaAngosta ? 'angosta' : 'completa'}
+                    onChange={(e) => setColumnaAngosta(e.target.value === 'angosta')}
+                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                  >
+                    <option value="angosta">Angosta (22ch)</option>
+                    <option value="completa">Ancho completo</option>
+                  </select>
+                </label>
+              )}
+
+              {setColorFondo && (
+                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: 14, fontWeight: 600 }}>Fondo:</span>
+                  <select
+                    aria-label="Color de fondo"
+                    value={colorFondo}
+                    onChange={(e) => setColorFondo(e.target.value)}
+                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                  >
+                    <option value="#000000">Negro</option>
+                    <option value="#16181A">Gris</option>
+                    <option value="#FFFFFF">Blanco</option>
+                  </select>
+                </label>
+              )}
+
+              {setColorLetra && (
+                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', opacity: colorFondo.toUpperCase() === '#FFFFFF' ? 0.5 : 1 }}>
+                  <span style={{ fontSize: 14, fontWeight: 600 }}>Color Letra:</span>
+                  <select
+                    aria-label="Color de letra"
+                    value={colorFondo.toUpperCase() === '#FFFFFF' ? '#000000' : colorLetra}
+                    disabled={colorFondo.toUpperCase() === '#FFFFFF'}
+                    onChange={(e) => setColorLetra(e.target.value)}
+                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                  >
+                    <option value="#FFFFFF">Blanco</option>
+                    <option value="#F0C070">Ámbar</option>
+                    <option value="#3FD173">Verde</option>
+                  </select>
+                </label>
+              )}
+
+              {setTipoFuente && (
+                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: 14, fontWeight: 600 }}>Tipografía:</span>
+                  <select
+                    aria-label="Tipografía"
+                    value={tipoFuente}
+                    onChange={(e) => setTipoFuente(e.target.value as 'sans' | 'serif')}
+                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                  >
+                    <option value="sans">Source Sans 3</option>
+                    <option value="serif">Source Serif 4</option>
+                  </select>
+                </label>
+              )}
+
+              {setMarginPercent && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: 14, fontWeight: 600 }}>Margen:</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <button
+                      onClick={() => setMarginPercent(Math.max(0, marginPercent - 5))}
+                      aria-label="Disminuir margen"
+                      style={{ padding: '4px 12px', fontSize: 16, cursor: 'pointer', borderRadius: 4, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                    >
+                      -
+                    </button>
+                    <span style={{ fontWeight: 'bold', minWidth: 36, textAlign: 'center' }}>{marginPercent}%</span>
+                    <button
+                      onClick={() => setMarginPercent(Math.min(40, marginPercent + 5))}
+                      aria-label="Aumentar margen"
+                      style={{ padding: '4px 12px', fontSize: 16, cursor: 'pointer', borderRadius: 4, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {setMirror && (
+                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                  <span style={{ fontSize: 14, fontWeight: 600 }}>Espejo:</span>
+                  <input
+                    type="checkbox"
+                    checked={mirror}
+                    onChange={(e) => setMirror(e.target.checked)}
+                    style={{ width: 18, height: 18 }}
+                  />
+                </label>
+              )}
+
+              {setTema && (
+                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: 14, fontWeight: 600 }}>Tema:</span>
+                  <select
+                    value={tema}
+                    onChange={(e) => setTema(e.target.value as 'claro' | 'oscuro')}
+                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                  >
+                    <option value="claro">Claro</option>
+                    <option value="oscuro">Oscuro</option>
+                  </select>
+                </label>
+              )}
+
+              {setAnclajeZona && (
+                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: 14, fontWeight: 600 }}>Anclaje:</span>
+                  <select
+                    value={anclajeZona}
+                    onChange={(e) => setAnclajeZona(e.target.value as 'arriba' | 'medio' | 'abajo')}
+                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                  >
+                    <option value="arriba">Arriba</option>
+                    <option value="medio">Medio</option>
+                    <option value="abajo">Abajo</option>
+                  </select>
+                </label>
+              )}
+
+              {setEngine && (
+                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: 14, fontWeight: 600 }}>Motor de Voz (Avanzado):</span>
+                  <select
+                    value={engine}
+                    onChange={(e) => setEngine(e.target.value as IdMotor)}
+                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                  >
+                    <option value="vosk">Vosk (Offline)</option>
+                    <option value="webspeech">Web Speech API</option>
+                    <option value="whisper-local">Whisper Local</option>
+                    <option value="nativo">Nativo (Android)</option>
+                  </select>
+                </label>
+              )}
+
+              {setVerTranscripcion && (
+                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                  <span style={{ fontSize: 14, fontWeight: 600 }}>Ver transcripción en vivo:</span>
+                  <input
+                    type="checkbox"
+                    checked={verTranscripcion}
+                    onChange={(e) => setVerTranscripcion(e.target.checked)}
+                    style={{ width: 18, height: 18 }}
+                  />
+                </label>
+              )}
+
+              {setMostrarTiempo && (
+                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                  <span style={{ fontSize: 14, fontWeight: 600 }}>Mostrar tiempo:</span>
+                  <input
+                    type="checkbox"
+                    checked={mostrarTiempo}
+                    onChange={(e) => setMostrarTiempo(e.target.checked)}
+                    style={{ width: 18, height: 18 }}
+                  />
+                </label>
+              )}
+            </div>
+
+            <div style={{ marginTop: 24, textAlign: 'right' }}>
+              <button
+                onClick={() => setMostrarModalAjustes(false)}
+                style={{
+                  padding: '8px 18px',
+                  backgroundColor: 'var(--color-acento)',
+                  color: 'var(--color-texto-acento)',
+                  border: 'none',
+                  borderRadius: 6,
+                  fontWeight: 'bold',
+                  cursor: 'pointer'
+                }}
+              >
+                Listo
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {errorArchivo && (
         <div

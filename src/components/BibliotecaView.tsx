@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, ResumenGuion } from '../datos/modelo'
+import { PanelCorpus } from './PanelCorpus'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -12,6 +13,8 @@ interface BibliotecaViewProps {
   onArchivar: (id: string, archivado: boolean) => void
   onBuscarGuionCompleto?: (id: string) => Promise<Guion | null>
   onToggleDiagnostico?: () => void
+  medirLectura?: boolean
+  setMedirLectura?: (medir: boolean) => void
 }
 
 export function formatearFechaNatural(timestamp: number): string {
@@ -48,10 +51,13 @@ export default function BibliotecaView({
   onBorrar,
   onArchivar,
   onBuscarGuionCompleto,
-  onToggleDiagnostico
+  onToggleDiagnostico,
+  medirLectura = true,
+  setMedirLectura = () => {}
 }: BibliotecaViewProps) {
   const [busqueda, setBusqueda] = useState('')
   const [mostrarArchivados, setMostrarArchivados] = useState(false)
+  const [mostrarPanelCorpus, setMostrarPanelCorpus] = useState(false)
   const [menuId, setMenuId] = useState<string | null>(null)
   const [menuSuperiorAbierto, setMenuSuperiorAbierto] = useState(false)
   // se cierra tocando afuera o con Escape, no solo con el mismo boton
@@ -288,12 +294,31 @@ export default function BibliotecaView({
                   textAlign: 'left',
                   background: 'transparent',
                   border: 'none',
+                  borderBottom: '1px solid var(--color-borde)',
                   color: 'var(--color-texto)',
                   fontSize: 'var(--texto-cuerpo)',
                   cursor: 'pointer'
                 }}
               >
                 Importar archivo
+              </button>
+              <button
+                data-testid="btn-abrir-corpus"
+                onClick={() => {
+                  setMostrarPanelCorpus(true)
+                  setMenuSuperiorAbierto(false)
+                }}
+                style={{
+                  padding: '12px 16px',
+                  textAlign: 'left',
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--color-texto)',
+                  fontSize: 'var(--texto-cuerpo)',
+                  cursor: 'pointer'
+                }}
+              >
+                Medición / Panel Corpus
               </button>
             </div>
           )}
@@ -445,6 +470,58 @@ export default function BibliotecaView({
               </div>
             )
           })}
+        </div>
+      )}
+
+      {/* Modal de PanelCorpus */}
+      {mostrarPanelCorpus && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.7)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 200,
+            padding: 16
+          }}
+          onClick={() => setMostrarPanelCorpus(false)}
+        >
+          <div
+            style={{
+              backgroundColor: 'var(--bg-superficie)',
+              color: 'var(--color-texto)',
+              padding: 20,
+              borderRadius: 'var(--redondeo)',
+              maxWidth: 600,
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              boxSizing: 'border-box'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <h3 style={{ margin: 0 }}>Medición / Panel de Corpus</h3>
+              <button
+                onClick={() => setMostrarPanelCorpus(false)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--color-texto)',
+                  fontSize: 18,
+                  cursor: 'pointer'
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            <PanelCorpus medir={medirLectura ?? true} setMedir={setMedirLectura ?? (() => {})} />
+          </div>
         </div>
       )}
 

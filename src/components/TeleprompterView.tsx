@@ -361,16 +361,7 @@ export default function TeleprompterView({
         onEstadoAvanceChange(st.motivoFreno, st.avanzando, st.estado)
       }
 
-      if (st.estado === 'BUSCANDO') {
-        if (tInicioBuscandoRef.current === null) {
-          tInicioBuscandoRef.current = tAhora
-        }
-        if (tAhora - tInicioBuscandoRef.current >= 1000) {
-          setTextoEstadoLector('Buscando tu posición')
-        } else {
-          setTextoEstadoLector(null)
-        }
-      } else if (st.estado === 'DETENIDO') {
+      if (st.estado === 'DETENIDO') {
         tInicioBuscandoRef.current = null
         setTextoEstadoLector('Detenido')
       } else {

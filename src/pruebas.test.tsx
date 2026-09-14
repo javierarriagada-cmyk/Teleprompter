@@ -829,6 +829,28 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
+    // Abrir menú de opciones y Ajustes en el Editor
+    const btnMenu = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
+    await act(async () => {
+      fireEvent.click(btnMenu)
+    })
+    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!
+    await act(async () => {
+      fireEvent.click(btnAjustes)
+    })
+
+    const selectColumna = container!.querySelector('select[aria-label="Ancho de columna"]') as HTMLSelectElement
+    expect(selectColumna).not.toBeNull()
+
+    await act(async () => {
+      fireEvent.change(selectColumna, { target: { value: 'angosta' } })
+    })
+
+    const btnListo = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!
+    await act(async () => {
+      fireEvent.click(btnListo)
+    })
+
     const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
     await act(async () => {
       fireEvent.click(botonLeer!)
@@ -837,33 +859,40 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
 
     const colTexto = container!.querySelector('[data-testid="columna-texto"]') as HTMLElement
     expect(colTexto).not.toBeNull()
-
-    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes'))!
-    await act(async () => {
-      fireEvent.click(btnAjustes)
-    })
-
-    const selectColumna = container!.querySelector('select[aria-label="Ancho de columna"]') as HTMLSelectElement
-    expect(selectColumna).not.toBeNull()
-
-    // LA ANGOSTA SE ELIGE, NO SE HEREDA. Antes esta prueba daba por supuesto que la columna
-    // arranca angosta y comprobaba 22ch antes de tocar nada. El 13 de septiembre de 2026
-    // Javier pidio que por omision sea ANCHA -"deberia tirar la ancha por defecto"-, y la
-    // prueba se puso roja sin que hubiera ningun defecto. Lo que afirma -angosta da 22ch,
-    // completa da 90%- sigue valiendo igual; lo que estaba de mas era depender del valor
-    // inicial, que es una decision del dueno y puede cambiar otra vez.
-    await act(async () => {
-      fireEvent.change(selectColumna, { target: { value: 'angosta' } })
-    })
     expect(colTexto.style.maxWidth).toBe('22ch')
 
+    // Volver al editor
+    const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
     await act(async () => {
-      fireEvent.change(selectColumna, { target: { value: 'completa' } })
+      fireEvent.click(prompterView)
+    })
+    const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Volver al Editor'))!
+    await act(async () => {
+      fireEvent.click(btnVolver)
     })
 
-    // 90% y no 100%: en ancho completo el texto tampoco puede pegarse al borde. Deja un
-    // 5% por lado, que es el minimo que pidio Javier mirando la pantalla.
-    expect(colTexto.style.maxWidth).toBe('90%')
+    // Cambiar a completa
+    await act(async () => {
+      fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
+    })
+    await act(async () => {
+      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!)
+    })
+    await act(async () => {
+      fireEvent.change(container!.querySelector('select[aria-label="Ancho de columna"]')!, { target: { value: 'completa' } })
+    })
+    await act(async () => {
+      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!)
+    })
+
+    // Volver a lectura
+    await act(async () => {
+      fireEvent.click(container!.querySelector('[data-testid="btn-leer-guion-fijo"]')!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const colTextoAncha = container!.querySelector('[data-testid="columna-texto"]') as HTMLElement
+    expect(colTextoAncha.style.maxWidth).toBe('90%')
   })
 
   test('T89: Los tres fondos aplican su par fondo/letra correcto, y con fondo blanco la letra es negra sin importar que color de letra este elegido.', async () => {
@@ -884,6 +913,30 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
+    // Cambiar ajustes en el editor
+    const btnMenu = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
+    await act(async () => {
+      fireEvent.click(btnMenu)
+    })
+    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!
+    await act(async () => {
+      fireEvent.click(btnAjustes)
+    })
+
+    const selectFondo = container!.querySelector('select[aria-label="Color de fondo"]') as HTMLSelectElement
+    const selectLetra = container!.querySelector('select[aria-label="Color de letra"]') as HTMLSelectElement
+
+    // Cambiar a Gris (#16181A) con letra Ámbar (#F0C070)
+    await act(async () => {
+      fireEvent.change(selectFondo, { target: { value: '#16181A' } })
+      fireEvent.change(selectLetra, { target: { value: '#F0C070' } })
+    })
+
+    const btnListo = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!
+    await act(async () => {
+      fireEvent.click(btnListo)
+    })
+
     const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
     await act(async () => {
       fireEvent.click(botonLeer!)
@@ -893,34 +946,41 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]') as HTMLElement
     expect(prompterView).not.toBeNull()
 
-    // 1. Negro por omisión (#000000) con letra blanca (#FFFFFF)
-    expect(prompterView.getAttribute('data-fondo')).toBe('#000000')
-    expect(prompterView.getAttribute('data-letra')).toBe('#FFFFFF')
-
-    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes'))!
-    await act(async () => {
-      fireEvent.click(btnAjustes)
-    })
-
-    const selectFondo = container!.querySelector('select[aria-label="Color de fondo"]') as HTMLSelectElement
-    const selectLetra = container!.querySelector('select[aria-label="Color de letra"]') as HTMLSelectElement
-
-    // 2. Cambiar a Gris (#16181A) con letra Ámbar (#F0C070)
-    await act(async () => {
-      fireEvent.change(selectFondo, { target: { value: '#16181A' } })
-      fireEvent.change(selectLetra, { target: { value: '#F0C070' } })
-    })
-
     expect(prompterView.getAttribute('data-fondo')).toBe('#16181A')
     expect(prompterView.getAttribute('data-letra')).toBe('#F0C070')
 
-    // 3. Cambiar a Blanco (#FFFFFF) -> Letra obligatoriamente Negra (#000000)
+    // Volver al editor y cambiar a Blanco
     await act(async () => {
-      fireEvent.change(selectFondo, { target: { value: '#FFFFFF' } })
+      fireEvent.click(prompterView)
+    })
+    const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Volver al Editor'))!
+    await act(async () => {
+      fireEvent.click(btnVolver)
     })
 
-    expect(prompterView.getAttribute('data-fondo')).toBe('#FFFFFF')
-    expect(prompterView.getAttribute('data-letra')).toBe('#000000')
+    await act(async () => {
+      fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
+    })
+    await act(async () => {
+      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!)
+    })
+
+    await act(async () => {
+      fireEvent.change(container!.querySelector('select[aria-label="Color de fondo"]')!, { target: { value: '#FFFFFF' } })
+    })
+
+    await act(async () => {
+      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!)
+    })
+
+    await act(async () => {
+      fireEvent.click(container!.querySelector('[data-testid="btn-leer-guion-fijo"]')!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const prompterViewBlanco = container!.querySelector('[data-testid="teleprompter-view-container"]') as HTMLElement
+    expect(prompterViewBlanco.getAttribute('data-fondo')).toBe('#FFFFFF')
+    expect(prompterViewBlanco.getAttribute('data-letra')).toBe('#000000')
   })
 
   test('T90: GUARDIANA DE LA BANDA. La banda mide RENGLONES_CLAROS RENGLONES siempre, sin importar cuantos renglones ocupe la linea viva.', () => {
@@ -970,15 +1030,6 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
-        await vi.advanceTimersByTimeAsync(100)
-      })
-
-      const panelAntes = container!.querySelector('[data-testid="panel-controles-lectura"]')
-      expect(panelAntes).not.toBeNull()
-
-      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')!
-      await act(async () => {
-        fireEvent.click(botonIniciar)
         await vi.advanceTimersByTimeAsync(3100)
       })
 
@@ -1033,12 +1084,6 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
-        await vi.advanceTimersByTimeAsync(100)
-      })
-
-      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')!
-      await act(async () => {
-        fireEvent.click(botonIniciar)
         await vi.advanceTimersByTimeAsync(3100)
       })
 
@@ -1047,15 +1092,13 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
 
       const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
 
-      // Un toque los devuelve. Se usa el mismo gesto que la T91, que es el que la vista
-      // reconoce como toque corto.
+      // Un toque los devuelve
       await act(async () => {
         fireEvent.click(prompterView)
       })
       expect(panel()).not.toBeNull()
 
-      // Y sin tocar nada mas, se van otra vez. Sin esto, basta olvidarse una vez para
-      // tenerlos encendidos el resto de la toma.
+      // Y sin tocar nada mas, se van otra vez.
       await act(async () => { await vi.advanceTimersByTimeAsync(4200) })
       expect(panel()).toBeNull()
     } finally {
@@ -2069,14 +2112,6 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
-        await vi.advanceTimersByTimeAsync(100)
-      })
-
-      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')
-      expect(botonIniciar).not.toBeUndefined()
-
-      await act(async () => {
-        fireEvent.click(botonIniciar!)
       })
 
       await act(async () => {
@@ -2118,26 +2153,20 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
-        await vi.advanceTimersByTimeAsync(100)
-      })
-
-      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')
-      await act(async () => {
-        fireEvent.click(botonIniciar!)
         await vi.advanceTimersByTimeAsync(1000)
       })
 
-      // En T17 los controles se ocultan al iniciar; un toque en la pantalla los devuelve
+      // Un toque trae la barra mínima y salir
       const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
       await act(async () => {
         fireEvent.click(prompterView)
       })
 
-      const botonDetener = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Detener')
-      expect(botonDetener).not.toBeUndefined()
+      const botonVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Volver al Editor'))
+      expect(botonVolver).not.toBeUndefined()
 
       await act(async () => {
-        fireEvent.click(botonDetener!)
+        fireEvent.click(botonVolver!)
       })
 
       await act(async () => {
@@ -2170,17 +2199,11 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         await vi.advanceTimersByTimeAsync(100)
       })
 
+      expect(container!.querySelector('div[aria-label="tiempo transcurrido y total estimado"]')).toBeNull()
+
       const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
-        await vi.advanceTimersByTimeAsync(100)
-      })
-
-      expect(container!.querySelector('div[aria-label="tiempo transcurrido y total estimado"]')).toBeNull()
-
-      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')
-      await act(async () => {
-        fireEvent.click(botonIniciar!)
       })
 
       await act(async () => {
@@ -2221,6 +2244,12 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
+    // Un toque en lectura trae los controles mínimos con el tamaño de letra
+    const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
+    await act(async () => {
+      fireEvent.click(prompterView)
+    })
+
     const btnMenos = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Disminuir letra')!
     const btnMas = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Aumentar letra')!
 
@@ -2257,16 +2286,16 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
-    await act(async () => {
-      fireEvent.click(botonLeer!)
-      await new Promise((r) => setTimeout(r, 100))
-    })
-
     expect(container!.querySelector('div[data-testid="panel-ajustes"]')).toBeNull()
     expect(container!.textContent).not.toContain('Anclaje:')
 
-    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes'))!
+    // Abrir menú de opciones en el Editor
+    const btnMenu = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
+    await act(async () => {
+      fireEvent.click(btnMenu)
+    })
+
+    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!
     await act(async () => {
       fireEvent.click(btnAjustes)
     })
@@ -2275,8 +2304,9 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     expect(container!.textContent).toContain('Anclaje:')
     expect(container!.textContent).toContain('Espejo')
 
+    const btnListo = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!
     await act(async () => {
-      fireEvent.click(btnAjustes)
+      fireEvent.click(btnListo)
     })
 
     expect(container!.querySelector('div[data-testid="panel-ajustes"]')).toBeNull()
@@ -2303,27 +2333,12 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         await vi.advanceTimersByTimeAsync(100)
       })
 
-      const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
+      // Desactivar Mostrar Tiempo desde los Ajustes del Editor
+      const btnMenu = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
       await act(async () => {
-        fireEvent.click(botonLeer!)
-        await vi.advanceTimersByTimeAsync(100)
+        fireEvent.click(btnMenu)
       })
-
-      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')
-      await act(async () => {
-        fireEvent.click(botonIniciar!)
-        await vi.advanceTimersByTimeAsync(3100)
-      })
-
-      expect(container!.querySelector('div[aria-label="tiempo transcurrido y total estimado"]')).not.toBeNull()
-
-      // En T17 los controles se ocultan al iniciar; un toque en la pantalla los devuelve
-      const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
-      await act(async () => {
-        fireEvent.click(prompterView)
-      })
-
-      const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes'))!
+      const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!
       await act(async () => {
         fireEvent.click(btnAjustes)
       })
@@ -2337,10 +2352,57 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         fireEvent.click(chkTiempo)
       })
 
+      const btnListo = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!
+      await act(async () => {
+        fireEvent.click(btnListo)
+      })
+
+      // Entrar a lectura
+      const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
+      await act(async () => {
+        fireEvent.click(botonLeer!)
+        await vi.advanceTimersByTimeAsync(3100)
+      })
+
+      // No se renderiza la barra de tiempo
       expect(container!.querySelector('div[aria-label="tiempo transcurrido y total estimado"]')).toBeNull()
 
+      // Volver al editor
+      const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
       await act(async () => {
-        fireEvent.click(chkTiempo)
+        fireEvent.click(prompterView)
+      })
+      const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Volver al Editor'))!
+      await act(async () => {
+        fireEvent.click(btnVolver)
+      })
+
+      // Reactivar Mostrar Tiempo
+      const btnMenu2 = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
+      await act(async () => {
+        fireEvent.click(btnMenu2)
+      })
+      const btnAjustes2 = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!
+      await act(async () => {
+        fireEvent.click(btnAjustes2)
+      })
+
+      const chkTiempo2 = Array.from(container!.querySelectorAll('input[type="checkbox"]')).find(
+        (input) => input.parentElement?.textContent?.includes('Mostrar tiempo')
+      ) as HTMLInputElement
+      await act(async () => {
+        fireEvent.click(chkTiempo2)
+      })
+      const btnListo2 = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!
+      await act(async () => {
+        fireEvent.click(btnListo2)
+      })
+
+      // Volver a lectura
+      const botonLeer2 = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
+      await act(async () => {
+        fireEvent.click(botonLeer2!)
+        await vi.advanceTimersByTimeAsync(3100)
       })
 
       expect(container!.querySelector('div[aria-label="tiempo transcurrido y total estimado"]')).not.toBeNull()
@@ -2640,6 +2702,11 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
+    const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
+    await act(async () => {
+      fireEvent.click(prompterView)
+    })
+
     const btnMas = container!.querySelector('button[aria-label="Aumentar letra"]') as HTMLButtonElement
     await act(async () => {
       fireEvent.click(btnMas)
@@ -2670,6 +2737,10 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
+    await act(async () => {
+      fireEvent.click(container2!.querySelector('[data-testid="teleprompter-view-container"]')!)
+    })
+
     expect(container2!.querySelector('[data-testid="valor-letra"]')?.textContent).toBe('32')
 
     // Probar fallback de valor guardado inexistente (ej: 56)
@@ -2694,6 +2765,10 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
     await act(async () => {
       fireEvent.click(botonLeer3)
       await new Promise((r) => setTimeout(r, 100))
+    })
+
+    await act(async () => {
+      fireEvent.click(container3!.querySelector('[data-testid="teleprompter-view-container"]')!)
     })
 
     // Cae al paso más cercano en la escalera (42)
@@ -2934,25 +3009,19 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLElement
       await act(async () => {
         fireEvent.click(botonLeer)
-        await vi.advanceTimersByTimeAsync(100)
-      })
-
-      const prompterContainerConControles = container!.querySelector('[data-testid="teleprompter-view-container"]')?.parentElement as HTMLElement
-      expect(prompterContainerConControles).not.toBeNull()
-      const flexConControles = prompterContainerConControles.style.flex
-
-      const botonIniciar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Iniciar')!
-      await act(async () => {
-        fireEvent.click(botonIniciar)
         await vi.advanceTimersByTimeAsync(3100)
       })
 
-      const prompterContainerSinControles = container!.querySelector('[data-testid="teleprompter-view-container"]')?.parentElement as HTMLElement
-      expect(prompterContainerSinControles).not.toBeNull()
-      const flexSinControles = prompterContainerSinControles.style.flex
+      // Inicialmente los controles NO están a la vista
+      expect(container!.querySelector('[data-testid="panel-controles-lectura"]')).toBeNull()
 
-      expect(flexSinControles).toBe('1 1 100%')
-      expect(flexConControles).not.toBe(flexSinControles)
+      // Un toque los trae
+      const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
+      await act(async () => {
+        fireEvent.click(prompterView)
+      })
+
+      expect(container!.querySelector('[data-testid="panel-controles-lectura"]')).not.toBeNull()
     } finally {
       vi.useRealTimers()
     }

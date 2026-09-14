@@ -60,59 +60,76 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
       fireEvent.click(itemGuion)
     })
 
-    const botonLectura = screen.getByTestId('btn-leer-guion-fijo')
+    // Abrir menú de opciones en el Editor
+    const btnOpciones = screen.getByTestId('btn-menu-opciones-editor')
     await act(async () => {
-      fireEvent.click(botonLectura)
+      fireEvent.click(btnOpciones)
     })
 
-    // 1. Confirmar que por omision NO se muestra el panel "Transcripción (en vivo)"
-    expect(screen.queryByText('Transcripción (en vivo):')).toBeNull()
-
-    // Abrir panel de Ajustes
-    const botonAjustes = screen.getByText(/Ajustes/i)
+    // Abrir Ajustes del Teleprompter
+    const btnAjustes = screen.getByText(/Ajustes del Teleprompter/i)
     await act(async () => {
-      fireEvent.click(botonAjustes)
+      fireEvent.click(btnAjustes)
     })
 
-    // 2. Comprobar que el checkbox "Ver transcripción en vivo" esta desmarcado por omision
+    // 1. Comprobar que el checkbox "Ver transcripción en vivo" está desmarcado por omisión
     const checkbox = screen.getByLabelText(/Ver transcripción en vivo/i) as HTMLInputElement
     expect(checkbox.checked).toBe(false)
 
-    // 3. Iniciar reproducción en motorFake y simular voz
-    const botonIniciar = screen.getByText('Iniciar')
+    // Cerrar modal
+    const btnListo = screen.getByText('Listo')
     await act(async () => {
-      fireEvent.click(botonIniciar)
+      fireEvent.click(btnListo)
+    })
+
+    // Entrar a lectura
+    const botonLectura = screen.getByTestId('btn-leer-guion-fijo')
+    await act(async () => {
+      fireEvent.click(botonLectura)
     })
 
     await act(async () => {
       motorFake.emitirParcial('Hola mundo')
     })
 
-    // Sigue sin mostrarse el panel
+    // Sigue sin mostrarse la transcripción en vivo en la toma de lectura
     expect(screen.queryByText('Transcripción (en vivo):')).toBeNull()
 
     await act(async () => {
       motorFake.emitirSiguiente()
     })
 
-    // 4. Activar el checkbox y verificar que ahora SÍ se muestra el panel con los siguientes datos
-    // En T17 los controles se ocultan al iniciar; un toque en la pantalla los devuelve
+    // 2. Traer controles mínimos en lectura y volver al editor
     const prompterView = container.querySelector('[data-testid="teleprompter-view-container"]')!
     await act(async () => {
       fireEvent.click(prompterView)
     })
 
-    const botonAjustes2 = screen.getByText(/Ajustes/i)
+    const btnVolver = screen.getByText('← Volver al Editor')
     await act(async () => {
-      fireEvent.click(botonAjustes2)
+      fireEvent.click(btnVolver)
+    })
+
+    // 3. Activar el checkbox en los Ajustes del Editor
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText(/Ajustes del Teleprompter/i))
     })
 
     const checkboxActual = screen.getByLabelText(/Ver transcripción en vivo/i)
     await act(async () => {
       fireEvent.click(checkboxActual)
     })
+    await act(async () => {
+      fireEvent.click(screen.getByText('Listo'))
+    })
 
-    expect(screen.getByText('Transcripción (en vivo):')).not.toBeNull()
+    // Volver a lectura
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-leer-guion-fijo'))
+    })
 
     await act(async () => {
       motorFake.emitirSiguiente()
