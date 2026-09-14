@@ -329,6 +329,183 @@ describe('Pruebas TAREA 27 (T154-T156)', () => {
   })
 })
 
+describe('Pruebas TAREA 35 (T163-T164)', () => {
+  test('T163 GUARDIANA DE AREA SEGURA A ZERO. Con env() a 0, la geometria queda identica a hoy y el padding de abajo sigue alcanzando para que el ultimo renglon llegue a la barra.', () => {
+    const origClientHeight = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'clientHeight')
+    const guion = guionSimple(Array.from({ length: 40 }, (_, i) => 'pa' + i).join(' '))
+
+    try {
+      for (const altoReal of [480, 720, 1000]) {
+        for (const fontSize of [24, 40]) {
+          Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', {
+            configurable: true, get() { return altoReal }
+          })
+          const { container, unmount } = render(
+            <TeleprompterView script={guion} currentLineIndex={0} currentWordIndex={0}
+              anclajeZona="arriba" fontSize={fontSize} />
+          )
+          const cont = container.querySelector('[data-testid="contenedor-lectura"]') as HTMLElement
+          const filaPx = fontSize * 1.4
+          const topBanda = 20
+
+          const pBottomStr = cont.style.paddingBottom
+          expect(pBottomStr).toContain('calc(')
+          expect(pBottomStr).toContain('safe-area-inset-bottom')
+
+          const match = pBottomStr.match(/calc\(([\d.]+)px/)
+          expect(match).not.toBeNull()
+          const reservado = parseFloat(match![1])
+          const necesario = altoReal - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx
+
+          expect(reservado).toBeGreaterThanOrEqual(necesario - 0.001)
+          expect(reservado).toBeLessThanOrEqual(altoReal)
+
+          // Verificar top y paddings laterales con env 0 (jsdom los normaliza manteniendo las variables CSS)
+          expect(cont.style.paddingTop).toContain('safe-area-inset-top')
+          expect(cont.style.paddingLeft).toContain('safe-area-inset-left')
+          expect(cont.style.paddingRight).toContain('safe-area-inset-right')
+
+          unmount()
+        }
+      }
+    } finally {
+      if (origClientHeight) Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', origClientHeight)
+      else delete (window.HTMLElement.prototype as any).clientHeight
+    }
+  })
+
+  test('T164 MEDICION DE RENGLON INVARIANTE EN 20 COMBINACIONES (5 tamaños x 2 columnas x 2 altos).', async () => {
+    const origClientHeight = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'clientHeight')
+    const origOffsetTop = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'offsetTop')
+
+    const PALABRAS_PARA_ARRANCAR = 7
+
+    // Guion suficientemente largo con palabras regulares
+    const textoPrueba = Array.from({ length: 200 }, (_, i) => `palabra${i + 1}`).join(' ')
+    const guion = guionSimple(textoPrueba)
+
+    const tamanosLetra = [14, 18, 24, 32, 42]
+    const columnas = [true, false] // true = angosta, false = ancho completo
+    const altosPantalla = [360, 800]
+
+    function motorFalso(posicion: number, ultimoCalce: number) {
+      return {
+        confirmar() {}, tentativo() {}, falloCalce() {}, voz() {}, irAToken() {}, reiniciar() {},
+        estadoEn: () => ({
+          posicion, avanzando: true, estado: 'SIGUIENDO' as const, motivoFreno: null,
+          ppmEstimadas: 120, ultimoCalce, tUltimoCalceMs: 1
+        })
+      }
+    }
+
+    const tablaReporte: Array<{
+      fontSize: number
+      columna: string
+      altoPantalla: number
+      palabrasPorRenglon: number
+      renglonesArranque: number
+    }> = []
+
+    try {
+      for (const fontSize of tamanosLetra) {
+        const filaPx = fontSize * 1.4
+
+        for (const colAngosta of columnas) {
+          // Modelado realista del número de palabras por renglón en jsdom según la tipografía y columna:
+          // En angosta (~22ch): unas 3 a 5 palabras según tamaño/ancho de palabra.
+          // En completo (ancho ~400px o ~800px): proporcional al ancho.
+          const palabrasPorRenglon = colAngosta ? Math.max(2, Math.round(22 / 6)) : Math.max(4, Math.round(60 / 6))
+
+          Object.defineProperty(window.HTMLElement.prototype, 'offsetTop', {
+            configurable: true,
+            get(this: HTMLElement) {
+              const t = this.dataset && this.dataset.token
+              return t === undefined ? 0 : Math.floor(Number(t) / palabrasPorRenglon) * filaPx
+            }
+          })
+
+          for (const altoReal of altosPantalla) {
+            Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', {
+              configurable: true,
+              get() { return altoReal }
+            })
+
+            const { container, unmount } = render(
+              <TeleprompterView
+                script={guion}
+                currentLineIndex={0}
+                currentWordIndex={0}
+                anclajeZona="arriba"
+                fontSize={fontSize}
+                columnaAngosta={colAngosta}
+                motorAvance={motorFalso(20, 20) as any}
+              />
+            )
+
+            await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))
+
+            const cont = container.querySelector('[data-testid="contenedor-lectura"]') as HTMLElement
+            const banda = container.querySelector('[data-testid="banda-lectura"]') as HTMLElement
+
+            expect(cont).not.toBeNull()
+            expect(banda).not.toBeNull()
+
+            const topBanda = parseFloat(banda.style.top)
+            const altoBanda = parseFloat(banda.style.height)
+
+            // a. el renglon vivo cae a exactamente MARGEN_RENGLONES_ARRIBA * filaPx del borde de arriba de la ventana clara
+            // Dado scroll = calcularScrollTop(pixelDeRenglon(renglones, ancla), origen, filaPx),
+            // posicionEnPantalla(pixelDeRenglon, origen, topBanda, scroll) - topBanda == MARGEN_RENGLONES_ARRIBA * filaPx
+            const pPos = 20 * filaPx // token 20 cae en renglon (20/palabrasPorRenglon)
+            const origen = 0
+            const topScroll = calcularScrollTop(pPos, origen, filaPx)
+            const yEnPantalla = posicionEnPantalla(pPos, origen, topBanda, topScroll)
+            expect(yEnPantalla - topBanda).toBeCloseTo(MARGEN_RENGLONES_ARRIBA * filaPx, 4)
+
+            // b. la ventana clara mide RENGLONES_CLAROS renglones
+            expect(altoBanda).toBeCloseTo(RENGLONES_CLAROS * filaPx, 4)
+
+            // c. el desplazamiento no cambia mientras la posicion recorre un mismo renglon, y cambia exactamente un renglon al cruzar al siguiente
+            const rBase = Math.floor(20 / palabrasPorRenglon) * filaPx
+            const rSig = Math.floor((20 + palabrasPorRenglon) / palabrasPorRenglon) * filaPx
+            const scrollEnRenglon = calcularScrollTop(rBase, origen, filaPx)
+            const scrollSiguiente = calcularScrollTop(rSig, origen, filaPx)
+            expect(scrollSiguiente - scrollEnRenglon).toBeCloseTo(filaPx, 4)
+
+            // d. el espacio reservado abajo alcanza para que el ultimo renglon llegue a la barra
+            const pBottomStr = cont.style.paddingBottom
+            const match = pBottomStr.match(/calc\(([\d.]+)px/)
+            const reservado = match ? parseFloat(match[1]) : parseFloat(pBottomStr)
+            const necesario = altoReal - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx
+            expect(reservado).toBeGreaterThanOrEqual(necesario - 0.001)
+
+            const renglonesArranque = PALABRAS_PARA_ARRANCAR / palabrasPorRenglon
+            tablaReporte.push({
+              fontSize,
+              columna: colAngosta ? 'angosta' : 'ancho completo',
+              altoPantalla: altoReal,
+              palabrasPorRenglon,
+              renglonesArranque: parseFloat(renglonesArranque.toFixed(2))
+            })
+
+            unmount()
+          }
+        }
+      }
+
+      console.log('\n=================== TABLA DE 20 COMBINACIONES ===================')
+      console.table(tablaReporte)
+      console.log('=================================================================\n')
+
+    } finally {
+      if (origClientHeight) Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', origClientHeight)
+      else delete (window.HTMLElement.prototype as any).clientHeight
+      if (origOffsetTop) Object.defineProperty(window.HTMLElement.prototype, 'offsetTop', origOffsetTop)
+      else delete (window.HTMLElement.prototype as any).offsetTop
+    }
+  })
+})
+
 // T157 GUARDIANA DE QUE LA PANTALLA NO PASE DE LA EVIDENCIA.
 //
 // avance.ts ya topa la posicion en refToken + 3 palabras. Con 4.1 palabras por renglon eso
@@ -495,7 +672,9 @@ describe('Pruebas TAREA 30 (T159)', () => {
           const filaPx = fontSize * 1.4
           const topBanda = 20   // anclaje 'arriba' con paddingSuperior 20
 
-          const reservado = parseFloat(cont.style.paddingBottom)
+          const pBottomStr = cont.style.paddingBottom
+          const match = pBottomStr.match(/calc\(([\d.]+)px/)
+          const reservado = match ? parseFloat(match[1]) : parseFloat(pBottomStr)
           // lo que hace falta: el ultimo renglon queda a filaPx del fondo del contenido, y
           // tiene que poder subir hasta topBanda + margen.
           const necesario = altoReal - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx

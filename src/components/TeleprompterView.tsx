@@ -586,9 +586,9 @@ export default function TeleprompterView({
         style={{
           height: '100%',
           overflowY: 'auto',
-          paddingLeft: `${marginPercent}%`,
-          paddingRight: `${marginPercent}%`,
-          paddingTop: topBanda,
+          paddingLeft: `calc(${marginPercent}% + env(safe-area-inset-left, 0px))`,
+          paddingRight: `calc(${marginPercent}% + env(safe-area-inset-right, 0px))`,
+          paddingTop: `calc(${topBanda}px + env(safe-area-inset-top, 0px))`,
           // EL ULTIMO RENGLON TIENE QUE PODER LLEGAR A LA BARRA DE LECTURA.
           //
           // Decia calc(100% - ...), y LOS PORCENTAJES EN padding SE CALCULAN SOBRE EL ANCHO
@@ -605,7 +605,7 @@ export default function TeleprompterView({
           // desplazamiento tiene que poder llegar a (ultimoTop - origen) - margen. El tope
           // que permite el navegador es scrollHeight - alto del contenedor. Despejando queda
           // esto, y sale del alto MEDIDO, no de una constante.
-          paddingBottom: `${Math.max(0, altoContenedor - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx)}px`,
+          paddingBottom: `calc(${Math.max(0, altoContenedor - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx)}px + env(safe-area-inset-bottom, 0px))`,
           transform: mirror ? 'scaleX(-1)' : 'none',
           boxSizing: 'border-box'
         }}
