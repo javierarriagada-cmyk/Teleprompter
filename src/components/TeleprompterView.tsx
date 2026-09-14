@@ -26,7 +26,26 @@ import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './b
 //
 // LA ZONA CLARA SIGUE MIDIENDO TRES RENGLONES. No se ensancha: esa es la condicion de
 // Javier para no despegar el ojo del lente de la camara. Lo que cambia es donde esta.
-export const MARGEN_RENGLONES_ARRIBA = 0
+// UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
+//
+// Este numero se movio tres veces y conviene tener la historia junta:
+//
+//   1, ventana de 3   el vivo al medio. Servia mientras la marca iba POR DELANTE del lector.
+//                     Javier terminaba leyendo en la linea que se borraba.
+//   0, ventana de 3   desde que el renglon lo manda la evidencia, la marca va un poco ATRAS
+//                     -el reconocedor tarda unas decimas, y el ojo va delante de la voz-, asi
+//                     que los dos claros tenian que quedar hacia adelante. Javier: "ahora se
+//                     queda usualmente en el cuarto renglon".
+//   0, ventana de 4   la ventana crecio a cuatro renglones. Javier, leyendo entero el 13 de
+//                     septiembre de 2026: "reacciono bastante bien, pero hacia el final
+//                     estaba leyendo en el primer renglon", que es el borde de arriba: cero
+//                     holgura hacia atras.
+//   1, ventana de 4   esto. Un renglon arriba y DOS adelante. La ventana no crece, se corre.
+//
+// SI ESTE NUMERO SE VUELVE A MOVER CON UNA SOLA LECTURA, hay que parar y medir en vez de
+// ajustar: tres lecturas distintas pueden pedir tres valores, y ahi estariamos afinando a
+// una sesion y no a una regla.
+export const MARGEN_RENGLONES_ARRIBA = 1
 
 // Cuanto tarda la pantalla en pasar de un renglon al siguiente. Constante de tiempo de un
 // acercamiento exponencial: con 70 ms, el renglon se recorre casi entero en unos 200.
