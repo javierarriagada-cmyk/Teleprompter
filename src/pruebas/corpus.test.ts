@@ -111,7 +111,7 @@ describe('Corpus de medicion del motor (paso 1 del plan)', () => {
       motor: 'Web Speech API (Navegador)'
     })
     GrabadorFalso.ultimo!.dispararOnstart()
-    anotar({ tipo: 'cuadro', posicion: 12.5, calce: 12, scroll: 340, freno: '-' })
+    anotar({ tipo: 'cuadro', posicion: 12.5, calce: 12, scroll: 340, freno: '-', trabado: 3 })
     await detenerGrabacion()
 
     const texto = registroComoTexto()

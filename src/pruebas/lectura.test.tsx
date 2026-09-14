@@ -3,9 +3,9 @@ import { describe, expect, test } from 'vitest'
 import fs from 'node:fs'
 import path from 'node:path'
 import { render } from '@testing-library/react'
-import { Renglon, pixelDePosicion, pixelDeRenglon } from '../lib/renglones'
+import { Renglon, pixelDePosicion, pixelDeRenglon, indiceDeRenglon } from '../lib/renglones'
 import { AnclajeZona, calcularBanda, RENGLONES_CLAROS } from '../components/banda'
-import TeleprompterView, { MARGEN_RENGLONES_ARRIBA, calcularScrollTop, posicionEnPantalla } from '../components/TeleprompterView'
+import TeleprompterView, { MARGEN_RENGLONES_ARRIBA, calcularScrollTop, posicionEnPantalla, avanzarTrabado } from '../components/TeleprompterView'
 import { leerCorpus } from '../lib/repetidor'
 import { tokenizarGuion } from '../lib/seguidor'
 import { Guion } from '../datos/modelo'
@@ -325,6 +325,207 @@ describe('Pruebas TAREA 27 (T154-T156)', () => {
           }
         }
       }
+    }
+  })
+})
+
+describe('Pruebas TAREA 36 (T167-T170)', () => {
+  // T167: Con PALABRAS_DE_SEGURIDAD = 0 explicito, avanzarTrabado devuelve SIEMPRE idxAncla.
+  test('T167 Con PALABRAS_DE_SEGURIDAD = 0, avanzarTrabado devuelve SIEMPRE idxAncla, para una secuencia de posiciones que recorra varios renglones.', () => {
+    const FILA = 33.6
+    const renglones: Renglon[] = Array.from({ length: 10 }, (_, i) => ({
+      top: i * FILA, alto: FILA, desdeToken: i * 4, hastaToken: i * 4 + 3
+    }))
+
+    let trabado: number | null = null
+    // Recorremos token por token de 0 a 35 (9 renglones) pasando 0 explícitamente
+    for (let token = 0; token < 36; token++) {
+      const idxAncla = indiceDeRenglon(renglones, token)
+      trabado = avanzarTrabado(trabado, idxAncla, token, renglones, 0)
+      expect(trabado).toBe(idxAncla)
+    }
+  })
+
+  // T168: Con 2 y renglones de 4 palabras: mientras la evidencia recorre las dos primeras palabras del renglon siguiente el trabado NO cambia, y cambia al llegar a la tercera.
+  test('T168 Con PALABRAS_DE_SEGURIDAD = 2 y renglones de 4 palabras: el trabado no avanza con las dos primeras palabras del renglon siguiente y avanza al llegar a la tercera.', () => {
+    const FILA = 33.6
+    const renglones: Renglon[] = [
+      { top: 0, alto: FILA, desdeToken: 0, hastaToken: 3 },      // R0: tokens 0..3 (4 palabras)
+      { top: FILA, alto: FILA, desdeToken: 4, hastaToken: 7 },   // R1: tokens 4..7 (4 palabras)
+      { top: 2 * FILA, alto: FILA, desdeToken: 8, hastaToken: 11 } // R2: tokens 8..11 (4 palabras)
+    ]
+
+    let trabado: number | null = 0
+
+    // Avanzamos por el renglon 1
+    // Token 4 (palabra 1 de R1): Math.floor(4) - 4 = 0 < min(2, 3) = 2 -> se queda en R0
+    trabado = avanzarTrabado(trabado, 1, 4.0, renglones)
+    expect(trabado).toBe(0)
+
+    // Token 5 (palabra 2 de R1): Math.floor(5) - 4 = 1 < 2 -> se queda en R0
+    trabado = avanzarTrabado(trabado, 1, 5.0, renglones)
+    expect(trabado).toBe(0)
+
+    // Token 6 (palabra 3 de R1): Math.floor(6) - 4 = 2 >= 2 -> avanza a R1
+    trabado = avanzarTrabado(trabado, 1, 6.0, renglones)
+    expect(trabado).toBe(1)
+  })
+
+  // T169: El techo y el piso: si la evidencia se va dos renglones o mas, el trabado queda en idxAncla - 1. Si retrocede, queda en idxAncla. Y con un renglon de UNA palabra en el medio, lo cruza.
+  test('T169 El techo y el piso: salto de 2+ renglones da idxAncla - 1, retroceso da idxAncla, y con renglon de 1 palabra en el medio lo cruza.', () => {
+    const FILA = 33.6
+    const renglones: Renglon[] = [
+      { top: 0, alto: FILA, desdeToken: 0, hastaToken: 3 },         // R0: 4 palabras (0..3)
+      { top: FILA, alto: FILA, desdeToken: 4, hastaToken: 4 },      // R1: 1 palabra (4..4)
+      { top: 2 * FILA, alto: FILA, desdeToken: 5, hastaToken: 8 },  // R2: 4 palabras (5..8)
+      { top: 3 * FILA, alto: FILA, desdeToken: 9, hastaToken: 12 }  // R3: 4 palabras (9..12)
+    ]
+
+    // 1. Salto de 2+ renglones: trabado en 0, idxAncla = 3 -> idxAncla - 1 = 2
+    expect(avanzarTrabado(0, 3, 9.0, renglones, 2)).toBe(2)
+
+    // 2. Retroceso: trabado en 2, idxAncla = 0 -> idxAncla = 0
+    expect(avanzarTrabado(2, 0, 1.0, renglones, 2)).toBe(0)
+
+    // 3. Renglon R1 de 1 sola palabra (palabrasRenglon = 1, umbral = min(2, 0) = 0):
+    // Estando en R0 (trabado = 0), al entrar a R1 (idxAncla = 1, token = 4):
+    // palabrasAdentro = 4 - 4 = 0 >= 0 -> avanza a R1 sin quedarse trabado
+    const trabadoConUnaPalabra = avanzarTrabado(0, 1, 4.0, renglones, 2)
+    expect(trabadoConUnaPalabra).toBe(1)
+  })
+
+  // T170: Sobre la vista montada: el scrollTop no cambia mientras la posicion recorre las dos primeras palabras de un renglon, y cambia despues.
+  test('T170 Sobre la vista montada: el scrollTop no cambia mientras la posicion recorre las dos primeras palabras de un renglon, y cambia despues.', async () => {
+    const FILA = 24 * 1.4
+    const origClientHeight = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'clientHeight')
+    const origOffsetTop = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'offsetTop')
+
+    const guion = guionSimple(Array.from({ length: 60 }, (_, i) => 'pa' + i).join(' '))
+
+    function motorFalso(posicion: number, ultimoCalce: number) {
+      return {
+        confirmar() {}, tentativo() {}, falloCalce() {}, voz() {}, irAToken() {}, reiniciar() {},
+        estadoEn: () => ({
+          posicion, avanzando: true, estado: 'SIGUIENDO' as const, motivoFreno: null,
+          ppmEstimadas: 120, ultimoCalce, tUltimoCalceMs: 1
+        })
+      }
+    }
+
+    try {
+      Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', { configurable: true, get() { return 720 } })
+      // cuatro palabras por renglon
+      Object.defineProperty(window.HTMLElement.prototype, 'offsetTop', {
+        configurable: true,
+        get(this: HTMLElement) {
+          const t = this.dataset && this.dataset.token
+          return t === undefined ? 0 : Math.floor(Number(t) / 4) * FILA
+        }
+      })
+
+      const { container, rerender, unmount } = render(
+        <TeleprompterView
+          script={guion} currentLineIndex={0} currentWordIndex={0}
+          anclajeZona="arriba" fontSize={24} columnaAngosta={false}
+          motorAvance={motorFalso(7, 7) as any}
+        />
+      )
+
+      async function esperarCuadros() {
+        await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))
+        await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))
+        await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))
+      }
+
+      await esperarCuadros()
+      const cont = container.querySelector('[data-testid="contenedor-lectura"]') as HTMLElement
+      const scrollBase = cont.scrollTop // R1 (token 7), trabado = 1, scroll = 0
+
+      // Token 8 (palabra 1 de R2): no avanza trabado (sigue en 1)
+      rerender(
+        <TeleprompterView
+          script={guion} currentLineIndex={0} currentWordIndex={0}
+          anclajeZona="arriba" fontSize={24} columnaAngosta={false}
+          motorAvance={motorFalso(8, 8) as any}
+        />
+      )
+      await esperarCuadros()
+      expect(cont.scrollTop).toBe(scrollBase)
+
+      // Token 9 (palabra 2 de R2): no avanza trabado (sigue en 1)
+      rerender(
+        <TeleprompterView
+          script={guion} currentLineIndex={0} currentWordIndex={0}
+          anclajeZona="arriba" fontSize={24} columnaAngosta={false}
+          motorAvance={motorFalso(9, 9) as any}
+        />
+      )
+      await esperarCuadros()
+      expect(cont.scrollTop).toBe(scrollBase)
+
+      // Token 10 (palabra 3 de R2): avanza trabado a 2, scroll cambia
+      rerender(
+        <TeleprompterView
+          script={guion} currentLineIndex={0} currentWordIndex={0}
+          anclajeZona="arriba" fontSize={24} columnaAngosta={false}
+          motorAvance={motorFalso(10, 10) as any}
+        />
+      )
+      await esperarCuadros()
+      expect(cont.scrollTop).toBeGreaterThan(scrollBase)
+
+      unmount()
+    } finally {
+      if (origClientHeight) Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', origClientHeight)
+      else delete (window.HTMLElement.prototype as any).clientHeight
+      if (origOffsetTop) Object.defineProperty(window.HTMLElement.prototype, 'offsetTop', origOffsetTop)
+      else delete (window.HTMLElement.prototype as any).offsetTop
+    }
+  })
+
+  // T171 - GUARDIANA DEL BUCLE CON GUION SIN PALABRAS. Se monta TeleprompterView con un guion que tiene un bloque de texto vacio y un motor falso, se dejan pasar varios cuadros de animacion y NO se registra ningun error.
+  test('T171 - GUARDIANA DEL BUCLE CON GUION SIN PALABRAS. Se monta TeleprompterView con un guion que tiene un bloque de texto vacio y un motor falso, se dejan pasar varios cuadros de animacion y NO se registra ningun error.', async () => {
+    const origClientHeight = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'clientHeight')
+
+    const guionVacio = guionSimple('')
+
+    function motorFalso(posicion: number, ultimoCalce: number) {
+      return {
+        confirmar() {}, tentativo() {}, falloCalce() {}, voz() {}, irAToken() {}, reiniciar() {},
+        estadoEn: () => ({
+          posicion, avanzando: true, estado: 'SIGUIENDO' as const, motivoFreno: null,
+          ppmEstimadas: 120, ultimoCalce, tUltimoCalceMs: 1
+        })
+      }
+    }
+
+    const errores: ErrorEvent[] = []
+    const onError = (e: ErrorEvent) => { errores.push(e) }
+    window.addEventListener('error', onError)
+
+    try {
+      Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', { configurable: true, get() { return 720 } })
+
+      const { unmount } = render(
+        <TeleprompterView
+          script={guionVacio} currentLineIndex={0} currentWordIndex={0}
+          anclajeZona="arriba" fontSize={24} columnaAngosta={false}
+          motorAvance={motorFalso(0, 0) as any}
+        />
+      )
+
+      // Dejar correr varios cuadros de animacion
+      await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))
+      await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))
+      await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))
+
+      expect(errores).toHaveLength(0)
+
+      unmount()
+    } finally {
+      window.removeEventListener('error', onError)
+      if (origClientHeight) Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', origClientHeight)
+      else delete (window.HTMLElement.prototype as any).clientHeight
     }
   })
 })

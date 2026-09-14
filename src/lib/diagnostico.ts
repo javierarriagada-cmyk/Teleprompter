@@ -18,7 +18,7 @@
 export type EntradaDiagnostico =
   | { ms: number; tipo: 'oyo'; texto: string; final: boolean }
   | { ms: number; tipo: 'calce'; token: number | null; texto: string }
-  | { ms: number; tipo: 'cuadro'; posicion: number; calce: number; scroll: number; freno: string }
+  | { ms: number; tipo: 'cuadro'; posicion: number; calce: number; scroll: number; freno: string; trabado: number }
 
 const MAX_ENTRADAS = 60000
 
@@ -62,7 +62,7 @@ export function comoTexto(): string {
       filas.push(`${e.ms}\tcalce\t${e.token === null ? 'NO CALZO' : 'token ' + e.token}: ${e.texto}`)
     } else {
       filas.push(
-        `${e.ms}\tcuadro\tpos=${e.posicion.toFixed(2)} calce=${e.calce} scroll=${e.scroll} freno=${e.freno}`
+        `${e.ms}\tcuadro\tpos=${e.posicion.toFixed(2)} calce=${e.calce} scroll=${e.scroll} freno=${e.freno} trabado=${e.trabado}`
       )
     }
   }

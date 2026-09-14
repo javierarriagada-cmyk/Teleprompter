@@ -74,7 +74,7 @@ export function agruparEnRenglones(
 //
 // NO se toca pixelDePosicion: la usan las pruebas del corpus para reconstruir donde caia
 // cada palabra, y ahi la interpolacion es lo correcto.
-export function pixelDeRenglon(
+export function indiceDeRenglon(
   renglones: Renglon[],
   posicion: number
 ): number {
@@ -87,7 +87,15 @@ export function pixelDeRenglon(
   if (idx === -1) {
     idx = tokenBase < renglones[0].desdeToken ? 0 : renglones.length - 1
   }
-  return renglones[idx].top
+  return idx
+}
+
+export function pixelDeRenglon(
+  renglones: Renglon[],
+  posicion: number
+): number {
+  if (renglones.length === 0) return 0
+  return renglones[indiceDeRenglon(renglones, posicion)].top
 }
 
 export function pixelDePosicion(
