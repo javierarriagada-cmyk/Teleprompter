@@ -196,7 +196,9 @@ export default function BibliotecaView({
   }
 
   const minsLectura = calcularMinutosLectura(guiones)
-  const textoResumen = `${guiones.length} ${guiones.length === 1 ? 'guión' : 'guiones'} · ${minsLectura} minutos de lectura`
+  const textoResumen = guiones.length === 0
+    ? '0 guiones'
+    : `${guiones.length} ${guiones.length === 1 ? 'guión' : 'guiones'} · ${minsLectura} ${minsLectura === 1 ? 'minuto' : 'minutos'} de lectura`
 
   return (
     <div style={{ padding: '16px', maxWidth: 800, margin: '0 auto', position: 'relative', minHeight: '80vh' }}>

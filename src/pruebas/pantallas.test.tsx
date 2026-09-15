@@ -470,3 +470,119 @@ describe('Pruebas TAREA 32 (T161)', () => {
     expect(document.querySelectorAll('textarea').length).toBe(2)
   })
 })
+
+describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)', () => {
+  test('T180 - Con un guion vacio, el editor NO dice "1 min". Con texto, si muestra la duracion.', () => {
+    const guionVacio: Guion = {
+      id: 'g-vacio',
+      titulo: 'Guión Vacío',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: []
+    }
+
+    const { unmount } = render(
+      React.createElement(EditorView, {
+        guion: guionVacio,
+        onChangeGuion: () => {},
+        onVolverBiblioteca: () => {},
+        onEntrarLectura: () => {}
+      })
+    )
+
+    expect(screen.getByText('0 palabras')).not.toBeNull()
+    expect(screen.queryByText(/1 min/i)).toBeNull()
+    unmount()
+
+    const guionConTexto: Guion = {
+      id: 'g-texto',
+      titulo: 'Guión Con Texto',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Este guión tiene varias palabras para probar la duración estimada en minutos.' }]
+    }
+
+    render(
+      React.createElement(EditorView, {
+        guion: guionConTexto,
+        onChangeGuion: () => {},
+        onVolverBiblioteca: () => {},
+        onEntrarLectura: () => {}
+      })
+    )
+
+    expect(screen.getByText(/12 palabras · 1 min/i)).not.toBeNull()
+  })
+
+  test('T181 - Con la biblioteca vacia NO aparece "0 minutos de lectura". Y con un solo minuto dice "minuto", no "minutos".', () => {
+    const { unmount } = render(
+      React.createElement(BibliotecaView, {
+        guiones: [],
+        onAbrir: () => {},
+        onCrearNuevo: () => {},
+        onImportarArchivo: () => {},
+        onBorrar: () => {},
+        onArchivar: () => {}
+      })
+    )
+
+    const resumenVacio = screen.getByTestId('resumen-encabezado-biblioteca')
+    expect(resumenVacio.textContent).toBe('0 guiones')
+    expect(resumenVacio.textContent).not.toContain('0 minutos de lectura')
+    unmount()
+
+    const guionesUnMinuto = [
+      { id: 'g1', titulo: 'Guión Corto', idioma: 'es', modificado: Date.now(), palabras: 100 }
+    ]
+
+    render(
+      React.createElement(BibliotecaView, {
+        guiones: guionesUnMinuto,
+        onAbrir: () => {},
+        onCrearNuevo: () => {},
+        onImportarArchivo: () => {},
+        onBorrar: () => {},
+        onArchivar: () => {}
+      })
+    )
+
+    const resumenUnMinuto = screen.getByTestId('resumen-encabezado-biblioteca')
+    expect(resumenUnMinuto.textContent).toContain('1 minuto de lectura')
+    expect(resumenUnMinuto.textContent).not.toContain('1 minutos de lectura')
+  })
+
+  test('T182 - El menu del editor NO contiene el caracter ⚙, y el boton de ajustes SIGUE encontrandose por el texto "Ajustes del Teleprompter".', () => {
+    const guion: Guion = {
+      id: 'g-t182',
+      titulo: 'Guión T182',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto del guión' }]
+    }
+
+    const { container } = render(
+      React.createElement(EditorView, {
+        guion,
+        onChangeGuion: () => {},
+        onVolverBiblioteca: () => {},
+        onEntrarLectura: () => {}
+      })
+    )
+
+    const btnMenu = screen.getByTestId('btn-menu-opciones-editor')
+    fireEvent.click(btnMenu)
+
+    // No debe contener el caracter ⚙ en el menú desplegable
+    expect(container.textContent).not.toContain('⚙')
+
+    // El botón de ajustes sigue encontrándose por textContent includes 'Ajustes del Teleprompter'
+    const btnAjustes = Array.from(container.querySelectorAll('button')).find((b) =>
+      b.textContent?.includes('Ajustes del Teleprompter')
+    )
+    expect(btnAjustes).not.toBeUndefined()
+    expect(btnAjustes?.textContent?.trim()).toBe('Ajustes del Teleprompter')
+  })
+})
