@@ -24,7 +24,7 @@
 // major version 69". Con el 17 falla mas adelante, en Capacitor: "invalid source
 // release: 21". El punto justo es JAVA 21, y por eso se busca ese y no el que
 // venga en el PATH.
-import { execFileSync } from 'node:child_process'
+import { execFileSync, execSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import os from 'node:os'
@@ -98,14 +98,52 @@ console.log(`\nListo: ${APK}  (${mb} MB)`)
 
 if (process.argv.includes('poner')) {
   const adb = path.join(sdk, 'platform-tools', 'adb' + (win ? '.exe' : ''))
-  console.log('\nInstalando en el dispositivo conectado...')
+
+  // A CUAL DE LOS DOS. Con el emulador y el telefono conectados a la vez, adb
+  // install falla con "more than one device". Por eso se elige:
+  //
+  //   npm run apk -- poner              a lo unico que haya, o al telefono si hay dos
+  //   npm run apk -- poner emulador     al emulador
+  //   npm run apk -- poner telefono     al telefono, por wifi o por cable
+  //
+  // El telefono es el que manda por omision: el emulador sirve para mirar pantallas,
+  // pero el motor solo se mide en el aparato de verdad -su microfono, su procesador
+  // y su red-.
+  let lista = []
   try {
-    correr(adb, ['install', '-r', APK], RAIZ)
-    correr(adb, ['shell', 'monkey', '-p', 'com.teleprompter.app', '-c', 'android.intent.category.LAUNCHER', '1'], RAIZ)
-    console.log('Instalado y abierto.')
-  } catch {
-    console.error('\nNo se pudo instalar. Hay algo conectado?')
+    lista = execSync(`"${adb}" devices`, { encoding: 'utf8' })
+      .split('\n').slice(1)
+      .map((l) => l.trim().split(/\s+/))
+      .filter((p) => p[1] === 'device')
+      .map((p) => p[0])
+  } catch {}
+
+  const quiere = process.argv.includes('emulador') ? 'emulador'
+    : process.argv.includes('telefono') ? 'telefono'
+    : null
+
+  const emuladores = lista.filter((d) => d.startsWith('emulator-'))
+  const telefonos = lista.filter((d) => !d.startsWith('emulator-'))
+
+  let destino = null
+  if (quiere === 'emulador') destino = emuladores[0]
+  else if (quiere === 'telefono') destino = telefonos[0]
+  else destino = telefonos[0] || emuladores[0]
+
+  if (!destino) {
+    console.error('\nNo hay ningun dispositivo conectado.')
     console.error(`Comprobalo con:  "${adb}" devices`)
-    console.error('Si es tu telefono, necesita Depuracion USB activada.')
+    console.error('El telefono necesita Depuracion inalambrica activada y estar en la misma red.')
+    process.exit(1)
+  }
+
+  const cual = destino.startsWith('emulator-') ? 'el emulador' : 'el telefono'
+  console.log(`\nInstalando en ${cual} (${destino})...`)
+  try {
+    correr(adb, ['-s', destino, 'install', '-r', APK], RAIZ)
+    correr(adb, ['-s', destino, 'shell', 'monkey', '-p', 'com.teleprompter.app', '-c', 'android.intent.category.LAUNCHER', '1'], RAIZ)
+    console.log(`Instalado y abierto en ${cual}.`)
+  } catch {
+    console.error(`\nNo se pudo instalar en ${destino}.`)
   }
 }
