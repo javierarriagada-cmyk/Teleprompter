@@ -1,0 +1,56 @@
+GRABAR CON LA CAMARA
+Direccion de producto dicha por Javier el 15 de septiembre de 2026.
+NO ES UN ENCARGO. No se toca hasta que se decida abrirlo.
+
+
+LO QUE PIDIO, EN SUS PALABRAS
+
+"el teleprompter tiene que poder grabar, para quienes quieren hacerlo con la
+camara frontal o con la que da para el otro lado, y nuestras letras deben
+aparecer por sobre la camara o con la opcion de que la camara solo ocupe un
+recuadro mas pequeno para que se puedan guiar como ellos estan"
+
+De ahi salen cuatro cosas concretas:
+
+  1. La aplicacion graba video con la camara del telefono.
+  2. Las dos camaras: la frontal y la de atras.
+  3. El texto se dibuja ENCIMA de la imagen de la camara.
+  4. Y hay una segunda forma: la camara en un RECUADRO MAS CHICO, para que el que
+     lee se vea a si mismo y se guie con como esta quedando.
+
+Y antes, el 15 de septiembre tambien: "nosotros si vamos a grabar, es un paso que
+solo tenemos pendiente".
+
+
+QUE CAMBIA DE LO QUE YA ESTA RAZONADO
+
+Esto no es una funcion al costado: mueve cosas que ya estaban decididas. Se anota
+para no re-derivarlo despues.
+
+  a. LA PANTALLA DE LECTURA DEJA DE SER SOLO TEXTO. Aparecen la vista de camara,
+     el control de grabar y el video que queda. Ninguno de los catorce pasos del
+     documento del circuito -docs/circuito.html- contempla una camara: ahi el
+     telefono es solo teleprompter y la camara es otra. CUANDO SE ABRA ESTO, EL
+     CIRCUITO SE REHACE CON LA CAMARA ADENTRO, no se le agrega un paso al lado.
+
+  b. REVIVE LA VENTANA FLOTANTE, POR EL OTRO LADO. Estaba descartada porque dos
+     aplicaciones no pueden tomar el microfono a la vez en Android: la que pierde
+     recibe silencio, no un error. Pero si grabamos nosotros no hay segunda
+     aplicacion -somos la camara-, asi que ese impedimento desaparece. El
+     problema pasa a ser otro: que el texto conviva con la vista previa.
+
+  c. LA HAPTICA SE VUELVE MAS DELICADA, NO MENOS. El motor de vibracion hace
+     ruido y ahora ese ruido entra en el audio del video, que es el producto y no
+     una grabacion de medicion que se tira. La regla de la tarea 45 -no vibra
+     nada durante la lectura salvo Pausa y Salir- queda igual de vigente o mas.
+
+  d. Y CAMBIA PARA QUE SIRVEN LAS CAPTURAS DE LA COMPETENCIA. Una aplicacion que
+     graba es comparable con la nuestra. Una que no graba resuelve un problema
+     mas facil y sus decisiones de pantalla hay que descontarlas.
+
+
+LO QUE NO ESTA DECIDIDO
+
+Todo lo demas: donde va el control de grabar, que pasa con el video despues, si
+el recuadro chico se puede mover, que resolucion, donde se guarda. No se propone
+nada hasta que Javier lo abra.
