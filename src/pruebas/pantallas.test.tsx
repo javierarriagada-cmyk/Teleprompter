@@ -44,6 +44,7 @@ import EditorView from '../components/EditorView'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { Guion } from '../datos/modelo'
 import { MotorFake } from '../motor/MotorFake'
+import { MotorVosk } from '../motor/MotorVosk'
 
 describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T149-T153)', () => {
   beforeEach(() => {
@@ -913,11 +914,11 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     expect(selectEngine).not.toBeNull()
     expect(screen.getByText('Ver transcripción en vivo')).not.toBeNull()
 
-    // Cambiar motor a Web Speech API
+    // Cambiar motor a Nativo (Android)
     await act(async () => {
-      fireEvent.change(selectEngine, { target: { value: 'webspeech' } })
+      fireEvent.change(selectEngine, { target: { value: 'nativo' } })
     })
-    expect(selectEngine.value).toBe('webspeech')
+    expect(selectEngine.value).toBe('nativo')
 
     // Cerrar menú Biblioteca
     await act(async () => {
@@ -1118,5 +1119,28 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
     const btnLeerTexto = screen.getByTestId('btn-leer-guion-fijo') as HTMLButtonElement
     expect(btnLeerTexto.disabled).toBe(false)
     expect(btnLeerTexto.textContent).toBe('▶ Leer')
+  })
+
+  test('T191 - GUARDIANA DEL AJUSTE VIEJO. Con engine "webspeech" guardado en localStorage -o cualquier valor que ya no existe-, la aplicacion abre y termina con un motor valido. No queda sin motor ni lanza.', async () => {
+    localStorage.clear()
+    localStorage.setItem('teleprompter_ajustes', JSON.stringify({ engine: 'webspeech' }))
+
+    vi.spyOn(MotorVosk.prototype, 'disponible').mockResolvedValue(true)
+
+    const repo = new RepositorioMemoria()
+    render(React.createElement(App, { repoOverride: repo }))
+
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // Activar diagnóstico
+    const resumen = screen.getByTestId('resumen-encabezado-biblioteca')
+    await act(async () => {
+      fireEvent.click(resumen)
+    })
+
+    const diagnostico = screen.getByTestId('franja-de-estado-diagnostico')
+    expect(diagnostico.textContent).not.toContain('webspeech')
   })
 })

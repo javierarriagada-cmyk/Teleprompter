@@ -7,7 +7,6 @@ import { useWakeLock } from './hooks/useWakeLock'
 import { usePrecargaModelo } from './hooks/usePrecargaModelo'
 import TeleprompterView from './components/TeleprompterView'
 import BarraDeTiempo from './components/BarraDeTiempo'
-import ControlsBar from './components/ControlsBar'
 import { PanelCorpus } from './components/PanelCorpus'
 import { bloquearRecargaAutomatica } from './lib/actualizacion'
 import { iniciarGrabacion, detenerGrabacion } from './lib/grabadorCorpus'
@@ -42,6 +41,14 @@ const GUION_VACIO: Guion = {
 }
 
 const PASOS_LETRA = [14, 18, 24, 32, 42]
+const MOTORES_VALIDOS: IdMotor[] = ['vosk', 'nativo', 'fake']
+
+function sanitizarEngine(rawEngine: any): IdMotor {
+  if (rawEngine && MOTORES_VALIDOS.includes(rawEngine)) {
+    return rawEngine
+  }
+  return Capacitor.isNativePlatform() ? 'nativo' : 'vosk'
+}
 
 function cargarAjustesGuardados() {
   try {
@@ -102,9 +109,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   // lo sabia. Por eso la omision no se elige por comodidad, se elige por lo que el
   // motor necesita para funcionar como fue medido.
   //
-  // La eleccion guardada del usuario manda sobre todo esto: el selector sigue ahi.
+  // La eleccion guardada del usuario manda sobre todo esto (siempre que sea un motor valido).
   const [engine, setEngine] = useState<IdMotor>(
-    ajustesPrevios.engine || (Capacitor.isNativePlatform() ? 'nativo' : 'vosk')
+    sanitizarEngine(ajustesPrevios.engine)
   )
   const [verTranscripcion, setVerTranscripcion] = useState<boolean>(Boolean(ajustesPrevios.verTranscripcion))
   const [mostrarTiempo, setMostrarTiempo] = useState<boolean>(ajustesPrevios.mostrarTiempo !== undefined ? Boolean(ajustesPrevios.mostrarTiempo) : true)
@@ -392,7 +399,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     isRecording,
     transcript,
     estadoMotor,
-    dispositivoComputo,
     ultimoError,
     motorActivo
   } = useASR({
@@ -727,9 +733,6 @@ export default function App({ motor, repoOverride }: AppProps) {
             <span>Estado del Motor: <strong>{estadoMotor}</strong></span>
             {modoManual && <span style={{ marginLeft: 16, color: 'var(--color-acento)', fontWeight: 600 }}>MODO MANUAL: mandas tú</span>}
             <span style={{ marginLeft: 16 }}>Motor Activo: <strong>{motorActivo}</strong></span>
-            {engine === 'whisper-local' && (
-              <span style={{ marginLeft: 16 }}>Dispositivo: <strong>{dispositivoComputo}</strong></span>
-            )}
             <span style={{ marginLeft: 16 }}>Bloqueo Pantalla: <strong>{wakeLockActivo ? 'Sí' : 'No'}</strong></span>
             {textoFreno && (
               <span style={{ marginLeft: 16, color: '#d84315', fontWeight: 'bold' }}>
