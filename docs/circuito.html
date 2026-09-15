@@ -1,0 +1,592 @@
+<title>El circuito, paso por paso</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --papel: #F4F2ED;
+    --papel-2: #EAE7DF;
+    --tinta: #15191A;
+    --tinta-2: #5E6663;
+    --verde: #0E6B59;
+    --verde-claro: #E3EEEA;
+    --oxido: #A8481A;
+    --oxido-claro: #F3E5DC;
+    --linea: #D8D3C7;
+    --sombra: 0 1px 2px rgba(21,25,26,.05);
+    --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --sans: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --papel: #141716;
+      --papel-2: #1D2220;
+      --tinta: #E8E6DF;
+      --tinta-2: #9AA29E;
+      --verde: #5FBFA6;
+      --verde-claro: #16302A;
+      --oxido: #E08A5C;
+      --oxido-claro: #33211A;
+      --linea: #2C3331;
+      --sombra: 0 1px 2px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --papel: #141716;
+    --papel-2: #1D2220;
+    --tinta: #E8E6DF;
+    --tinta-2: #9AA29E;
+    --verde: #5FBFA6;
+    --verde-claro: #16302A;
+    --oxido: #E08A5C;
+    --oxido-claro: #33211A;
+    --linea: #2C3331;
+    --sombra: 0 1px 2px rgba(0,0,0,.3);
+  }
+
+  body {
+    background: var(--papel);
+    color: var(--tinta);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .hoja {
+    max-width: 780px;
+    margin: 0 auto;
+    padding-block: 56px 96px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.1rem, 6vw, 3.1rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -.015em;
+    margin: 0 0 .5rem;
+    text-wrap: balance;
+  }
+  .bajada {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    color: var(--tinta-2);
+    margin: 0 0 2.5rem;
+    text-wrap: balance;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    margin: 4rem 0 .4rem;
+    padding-top: 1.6rem;
+    border-top: 2px solid var(--tinta);
+    text-wrap: balance;
+  }
+  h2 .num {
+    display: block;
+    font-family: var(--sans);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--verde);
+    margin-bottom: .35rem;
+  }
+  h3 {
+    font-family: var(--sans);
+    font-size: 1.02rem;
+    font-weight: 700;
+    margin: 2.2rem 0 .5rem;
+  }
+  p { margin: 0 0 1rem; }
+  .intro { color: var(--tinta-2); margin-bottom: 2rem; }
+  strong { font-weight: 700; }
+  code {
+    font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+    font-size: .85em;
+    background: var(--papel-2);
+    padding: .1em .35em;
+    border-radius: 3px;
+  }
+
+  /* --- el piso medido --- */
+  .piso {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px;
+    background: var(--linea);
+    border: 1px solid var(--linea);
+    margin: 2rem 0;
+  }
+  .piso div {
+    background: var(--papel);
+    padding: 1.1rem 1.2rem;
+  }
+  .piso .cifra {
+    font-family: var(--serif);
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1;
+    display: block;
+    font-variant-numeric: tabular-nums;
+  }
+  .piso .que {
+    font-size: .88rem;
+    color: var(--tinta-2);
+    margin-top: .4rem;
+    display: block;
+  }
+
+  /* --- gramatica --- */
+  .regla {
+    border-left: 3px solid var(--verde);
+    padding: .1rem 0 .1rem 1.1rem;
+    margin: 1.6rem 0;
+  }
+  .regla .t {
+    font-weight: 700;
+    display: block;
+    margin-bottom: .15rem;
+  }
+  .regla .d { color: var(--tinta-2); font-size: .95rem; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .92rem;
+    margin: 1.4rem 0;
+  }
+  .tabla-caja { overflow-x: auto; }
+  th {
+    text-align: left;
+    font-size: .7rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--tinta-2);
+    font-weight: 700;
+    padding: 0 .9rem .5rem 0;
+    border-bottom: 1px solid var(--tinta);
+    white-space: nowrap;
+  }
+  td {
+    padding: .6rem .9rem .6rem 0;
+    border-bottom: 1px solid var(--linea);
+    vertical-align: top;
+  }
+  td code { white-space: nowrap; }
+  .dur { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* --- los pasos del circuito --- */
+  .paso {
+    border: 1px solid var(--linea);
+    background: var(--papel);
+    box-shadow: var(--sombra);
+    margin: 1.4rem 0;
+  }
+  .paso > header {
+    padding: .9rem 1.1rem;
+    border-bottom: 1px solid var(--linea);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: .55rem;
+  }
+  .paso .n {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--verde);
+    font-variant-numeric: tabular-nums;
+  }
+  .paso .nombre { font-weight: 700; font-size: 1.05rem; }
+  .paso dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 8.2rem 1fr;
+  }
+  .paso dt {
+    font-size: .68rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--tinta-2);
+    padding: .75rem 0 .75rem 1.1rem;
+    border-bottom: 1px solid var(--linea);
+  }
+  .paso dd {
+    margin: 0;
+    padding: .7rem 1.1rem .7rem .6rem;
+    border-bottom: 1px solid var(--linea);
+    font-size: .95rem;
+  }
+  .paso dl > dt:last-of-type, .paso dl > dd:last-of-type { border-bottom: 0; }
+  .paso dt.hoy { color: var(--oxido); }
+  .paso dd.hoy { color: var(--oxido); background: var(--oxido-claro); }
+  @media (max-width: 560px) {
+    .paso dl { grid-template-columns: 1fr; }
+    .paso dt { padding: .7rem 1.1rem 0; border-bottom: 0; }
+    .paso dd { padding: .1rem 1.1rem .7rem; }
+    .paso dd.hoy { background: transparent; }
+  }
+
+  .grupo {
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--tinta-2);
+    margin: 2.6rem 0 .2rem;
+    padding-bottom: .4rem;
+    border-bottom: 1px solid var(--linea);
+  }
+
+  .nota {
+    background: var(--verde-claro);
+    padding: 1.1rem 1.2rem;
+    margin: 1.8rem 0;
+    font-size: .95rem;
+  }
+  .nota .t { font-weight: 700; display: block; margin-bottom: .2rem; }
+
+  .cita {
+    font-family: var(--serif);
+    font-size: 1.08rem;
+    font-style: italic;
+    border-left: 2px solid var(--linea);
+    padding-left: 1.1rem;
+    margin: 1.5rem 0;
+    color: var(--tinta-2);
+  }
+  .cita b { font-style: normal; color: var(--tinta); }
+
+  ol.orden { padding-left: 0; list-style: none; counter-reset: o; margin: 1.5rem 0; }
+  ol.orden li {
+    counter-increment: o;
+    display: grid;
+    grid-template-columns: 2.4rem 1fr;
+    gap: .8rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--linea);
+  }
+  ol.orden li::before {
+    content: counter(o);
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--verde);
+    line-height: 1.1;
+  }
+  ol.orden .t { font-weight: 700; display: block; }
+  ol.orden .d { color: var(--tinta-2); font-size: .94rem; }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--linea);
+    font-size: .85rem;
+    color: var(--tinta-2);
+  }
+</style>
+
+<div class="hoja">
+
+<h1>El circuito, paso por paso</h1>
+<p class="bajada">Qué se mueve, cuánto dura, qué dice y qué se siente en cada uno de los catorce pasos que da una persona desde que abre la aplicación hasta que la cierra.</p>
+
+<p class="intro">El documento anterior —<em>el estado real</em>— inventarió las diez pantallas y miró cómo lo resuelven los que saben. Este es el nivel de arriba: la especificación. No describe pantallas sino <strong>lo que pasa entre una y otra</strong>, que es donde una aplicación se siente terminada o se siente un prototipo. Cada paso trae lo que hay hoy, medido, y lo que debería haber, con números que Jules puede ejecutar sin inventar nada.</p>
+
+<h2><span class="num">El piso</span>De dónde partimos, medido</h2>
+
+<p>Antes de proponer, la cuenta real. Buscando <code>transition</code>, <code>animation</code>, <code>@keyframes</code> y <code>Haptics</code> en todo <code>src/</code>:</p>
+
+<div class="piso">
+  <div><span class="cifra">2</span><span class="que">transiciones en toda la aplicación: el ancho de una barra de progreso y un color de borde al pasar el dedo</span></div>
+  <div><span class="cifra">0</span><span class="que">háptica. Ni una vibración en ningún control, en ninguna pantalla</span></div>
+  <div><span class="cifra">0</span><span class="que">transiciones entre pantallas. La biblioteca desaparece y el editor aparece en el mismo cuadro</span></div>
+</div>
+
+<p>Las pantallas cambian así: <code>{vista === 'biblioteca' &amp;&amp; (…)}</code>. Se reemplaza el contenido y listo. No es que la transición esté mal hecha: <strong>no existe</strong>. Por eso la aplicación se siente una sucesión de láminas y no un lugar por el que uno se mueve.</p>
+
+<div class="nota">
+  <span class="t">Por qué esto no es estética</span>
+  Una transición no adorna: <strong>dice de dónde venís y cómo volver</strong>. Cuando el editor entra desde la derecha, la mano aprende sin que nadie le explique que atrás se vuelve hacia la derecha. Cuando aparece de golpe, cada pantalla es un lugar nuevo sin relación con el anterior, y el usuario tiene que acordarse en vez de saber.
+</div>
+
+<h2><span class="num">La gramática</span>Dos curvas, cuatro duraciones, tres reglas</h2>
+
+<p>Para que esto no se decida de nuevo en cada tarea, el movimiento tiene vocabulario cerrado. Todo lo que se mueva en la aplicación sale de acá. Son los valores de Material 3, que es el sistema del sistema operativo en el que vivimos.</p>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Curva</th><th>Valor</th><th>Para qué</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Enfática que entra</strong></td><td><code>cubic-bezier(.05,.7,.1,1)</code></td><td>Algo que importa aparece: una pantalla, un panel, la cuenta regresiva. Arranca rápido y se posa.</td></tr>
+    <tr><td><strong>Enfática que sale</strong></td><td><code>cubic-bezier(.3,0,.8,.15)</code></td><td>Algo que importa se va. Sale despacio y se acelera: se lo ve irse.</td></tr>
+    <tr><td><strong>Estándar</strong></td><td><code>cubic-bezier(.2,0,0,1)</code></td><td>Todo lo demás: colores, opacidades, cosas chicas.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Duración</th><th>Para qué</th></tr></thead>
+  <tbody>
+    <tr><td class="dur"><strong>100 ms</strong></td><td>Respuesta al dedo: un color que cambia, un botón que se hunde. Por debajo de esto no se percibe; por encima se siente lento.</td></tr>
+    <tr><td class="dur"><strong>200 ms</strong></td><td>Algo chico aparece o desaparece en su lugar: los controles de la lectura, un menú.</td></tr>
+    <tr><td class="dur"><strong>300 ms</strong></td><td>Un panel que se levanta: Ajustes, el panel de medición.</td></tr>
+    <tr><td class="dur"><strong>400 ms</strong></td><td>Una pantalla entera que entra o sale. Es el único caso que llega acá.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="regla">
+  <span class="t">1. La dirección cuenta la profundidad</span>
+  <span class="d">Ir más adentro entra <strong>desde la derecha</strong>; volver sale <strong>hacia la derecha</strong>. La biblioteca es el nivel 1, el editor el 2, la lectura el 3. Un panel no navega: <strong>se levanta desde abajo</strong> y se va para abajo, porque no es otro lugar sino algo que se puso encima de éste.</span>
+</div>
+
+<div class="regla">
+  <span class="t">2. Lo que entra viene de donde va a quedar</span>
+  <span class="d">Nada aparece en el centro y se expande. Un panel que vive abajo entra desde abajo. Un menú que cuelga de los tres puntos crece <strong>desde los tres puntos</strong>, no desde el medio de la pantalla.</span>
+</div>
+
+<div class="regla">
+  <span class="t">3. Durante la toma no se mueve nada, salvo el texto</span>
+  <span class="d">Ésta es la regla inversa y manda sobre las otras dos. Adentro de la lectura, todo movimiento que no sea el texto avanzando compite con el que lee y le roba el ojo del lente. Los controles no se deslizan: aparecen y desaparecen en su sitio. Nada rebota, nada escala, nada destella.</span>
+</div>
+
+<h2><span class="num">El circuito</span>Los catorce pasos</h2>
+
+<p class="intro">Cada paso trae cinco líneas. <strong>Hoy</strong> es lo que pasa ahora, verificado en el código o en las capturas del teléfono de Javier. <strong>Se mueve</strong>, <strong>dura</strong>, <strong>dice</strong> y <strong>se siente</strong> son la especificación.</p>
+
+<p class="grupo">Arranque</p>
+
+<section class="paso">
+  <header><span class="n">01</span><span class="nombre">Abrir la aplicación → la biblioteca</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">Pantalla en blanco y después todo de golpe, en un cuadro. No hay nada entre el ícono que se toca y la lista.</dd>
+    <dt>Se mueve</dt><dd>El contenido entra desde abajo 12&nbsp;px y aparece. Escalonado: primero el título, 40&nbsp;ms después el subtítulo, 40&nbsp;ms después la lista o el estado vacío. El escalonado es lo que convierte tres cosas en una secuencia y hace que el ojo aterrice en el título.</dd>
+    <dt>Dura</dt><dd class="dur">300&nbsp;ms, enfática que entra.</dd>
+    <dt>Dice</dt><dd>Si es la primera vez, acá es donde la aplicación se presenta. <strong>Las palabras son de Javier y están pendientes.</strong></dd>
+    <dt>Se siente</dt><dd>Nada. Abrir una aplicación no es una acción que necesite confirmarse.</dd>
+  </dl>
+</section>
+
+<section class="paso">
+  <header><span class="n">02</span><span class="nombre">El cartel de la descarga del modelo</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">Una barra azul arriba: «Descargando modelo de voz para uso offline: 59%». Aparece y desaparece de golpe y está contada como una molestia técnica.</dd>
+    <dt>Se mueve</dt><dd>Baja desde arriba al aparecer, sube al terminar. Al llegar a 100% no se desvanece: se queda 1,5&nbsp;s diciendo que terminó y recién ahí se va.</dd>
+    <dt>Dura</dt><dd class="dur">300&nbsp;ms para entrar y salir, estándar.</dd>
+    <dt>Dice</dt><dd><strong>Una promesa, no un trámite.</strong> Hoy informa de un proceso; tiene que informar de lo que ganás: que después de esto la aplicación sigue tu voz sin internet y sin gastar datos. Es el único momento en que el usuario tolera esperar, y lo estamos gastando en decirle un porcentaje.</dd>
+    <dt>Se siente</dt><dd>Un toque suave al terminar: <code>impact Light</code>. Terminó algo que estaba esperando.</dd>
+  </dl>
+</section>
+
+<p class="grupo">Moverse por la aplicación</p>
+
+<section class="paso">
+  <header><span class="n">03</span><span class="nombre">Biblioteca → editor, por «+ Nuevo»</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">Cambio instantáneo. El botón no acusa recibo del toque.</dd>
+    <dt>Se mueve</dt><dd>El editor entra desde la derecha cubriendo la biblioteca; la biblioteca se corre un 20% hacia la izquierda y se atenúa. No se va del todo: se queda debajo, que es lo que hace sentir que sigue estando ahí.</dd>
+    <dt>Dura</dt><dd class="dur">400&nbsp;ms, enfática que entra.</dd>
+    <dt>Dice</dt><dd>El guion nuevo abre con el cursor puesto y el teclado arriba. Un guion nuevo existe para escribir en él.</dd>
+    <dt>Se siente</dt><dd><code>impact Light</code> al tocar el botón. No al terminar la transición: <strong>al tocar</strong>. La confirmación es del dedo, no del resultado.</dd>
+  </dl>
+</section>
+
+<section class="paso">
+  <header><span class="n">04</span><span class="nombre">Biblioteca → editor, tocando un guion</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">Instantáneo, igual que el anterior. Los dos caminos se sienten idénticos aunque uno crea algo y el otro abre algo que ya existe.</dd>
+    <dt>Se mueve</dt><dd>Igual que el 03. Misma dirección, misma duración: son la misma clase de paso y tienen que sentirse iguales.</dd>
+    <dt>Dura</dt><dd class="dur">400&nbsp;ms, enfática que entra.</dd>
+    <dt>Dice</dt><dd>Abre sin teclado y sin cursor: se abre para leer lo que hay, no para escribir.</dd>
+    <dt>Se siente</dt><dd><code>impact Light</code> al tocar la fila.</dd>
+  </dl>
+</section>
+
+<section class="paso">
+  <header><span class="n">05</span><span class="nombre">Editor → biblioteca, hacia atrás</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">Instantáneo. Y hay un problema de fondo más grande que la transición: <strong>al volver, el guion se guarda solo y nada lo dice.</strong> Javier: <em>«no me trago eso de que vuelvo a edición y se guarda solo»</em>.</dd>
+    <dt>Se mueve</dt><dd>El editor sale hacia la derecha; la biblioteca vuelve de su 20% a su lugar. Exactamente el 03 al revés — eso es lo que enseña que atrás es a la derecha.</dd>
+    <dt>Dura</dt><dd class="dur">400&nbsp;ms, enfática que sale.</dd>
+    <dt>Dice</dt><dd>Si hubo cambios, la biblioteca lo confirma al recibirlo: un aviso breve abajo, «Guardado», 2&nbsp;s. No un cartel que haya que cerrar. El guardado automático está bien; <strong>lo que está mal es que sea invisible.</strong></dd>
+    <dt>Se siente</dt><dd>Nada. Volver atrás es lo más frecuente que hace un usuario y no se confirma lo frecuente.</dd>
+  </dl>
+</section>
+
+<p class="grupo">Los paneles: se levantan, no navegan</p>
+
+<section class="paso">
+  <header><span class="n">06</span><span class="nombre">El menú de los tres puntos</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">Aparece entero, de golpe, ya desplegado.</dd>
+    <dt>Se mueve</dt><dd>Crece <strong>desde la esquina de los tres puntos</strong>: de 0,9 a 1 de escala con el origen en esa esquina, entrando en opacidad. Se cierra al revés, más rápido.</dd>
+    <dt>Dura</dt><dd class="dur">200&nbsp;ms al abrir, 150&nbsp;ms al cerrar, estándar. Cerrar siempre es más rápido que abrir: ya no interesa.</dd>
+    <dt>Dice</dt><dd>Sin cambios de texto.</dd>
+    <dt>Se siente</dt><dd><code>impact Light</code> al abrirlo. Al elegir una opción, <code>selectionChanged()</code>.</dd>
+  </dl>
+</section>
+
+<section class="paso">
+  <header><span class="n">07</span><span class="nombre">Editor → Ajustes</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">Instantáneo. Y con diez controles, dos de los cuales deciden lo mismo — eso lo arregla la tarea 44, que está en curso.</dd>
+    <dt>Se mueve</dt><dd>Sube desde abajo hasta su altura, con un velo oscuro detrás que entra en simultáneo. No es otra pantalla: es algo que se puso encima del editor y el editor tiene que seguir viéndose.</dd>
+    <dt>Dura</dt><dd class="dur">300&nbsp;ms al subir, 250&nbsp;ms al bajar, enfática.</dd>
+    <dt>Dice</dt><dd>Cada grupo dice para qué sirve, no cómo se llama. Javier: <em>«cuando se meten a ajustes se debe sentir claro y fácil»</em>.</dd>
+    <dt>Se siente</dt><dd>Acá está el grueso de la háptica de la aplicación. Elegir «Angosto», «Serif», «Abajo» o una pareja de color: <code>selectionChanged()</code>. Marcar Espejo o Mostrar tiempo: <code>impact Light</code>. Llegar al tope del tamaño de letra: <code>impact Light</code> seco — <strong>hoy apretás y no pasa nada, y no sabés si se rompió o si llegaste al límite.</strong></dd>
+  </dl>
+</section>
+
+<section class="paso">
+  <header><span class="n">08</span><span class="nombre">El panel de medición</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">Instantáneo. Es una herramienta nuestra, no del usuario.</dd>
+    <dt>Se mueve</dt><dd>Igual que Ajustes: sube desde abajo. Misma clase, mismo movimiento.</dd>
+    <dt>Dura</dt><dd class="dur">300&nbsp;ms, enfática.</dd>
+    <dt>Dice</dt><dd>Sin cambios. No es pantalla de producto.</dd>
+    <dt>Se siente</dt><dd>Lo mismo que cualquier control: confirmación al tocar.</dd>
+  </dl>
+</section>
+
+<p class="grupo">La toma</p>
+
+<section class="paso">
+  <header><span class="n">09</span><span class="nombre">«Leer» → la cuenta regresiva</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">Cambia de golpe a la cuenta. Y la barra «Leer» está tan pegada al sistema que <strong>un toque puede caer en el botón de Inicio</strong> — lo arregla la tarea 43.</dd>
+    <dt>Se mueve</dt><dd><strong>Éste es el momento más importante de la aplicación</strong> y hoy no existe. Es el paso de preparar a grabar. Todo lo que no es el texto se va —barras, botones, fondo claro— en 200&nbsp;ms; el fondo pasa a negro en 300&nbsp;ms; el número entra desde 1,3 de escala hasta 1. Cada segundo, el número siguiente reemplaza al anterior con la misma escala. Nada más se mueve.</dd>
+    <dt>Dura</dt><dd class="dur">500&nbsp;ms el apagado completo, y después tres segundos de cuenta.</dd>
+    <dt>Dice</dt><dd>Nada escrito. El número solo. Cualquier palabra acá es ruido.</dd>
+    <dt>Se siente</dt><dd><code>impact Medium</code> al apretar Leer — más fuerte que cualquier otro control, porque es el único que empieza a grabar. Después, <code>impact Light</code> en el 3, en el 2 y en el 1, y <code>impact Heavy</code> al llegar a cero. <strong>Y acá se puede:</strong> el audio arranca al principio de la cuenta, así que esos tres segundos son margen y no tienen voz. El zumbido cae en un tramo que no se usa.</dd>
+  </dl>
+</section>
+
+<section class="paso">
+  <header><span class="n">10</span><span class="nombre">La cuenta regresiva → la lectura</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">El número desaparece y el texto está ahí.</dd>
+    <dt>Se mueve</dt><dd>El número se va en 150&nbsp;ms. El texto <strong>ya está puesto</strong> desde antes, debajo del número: no entra, se descubre. Que el texto apareciera en este momento sería exactamente el movimiento que la regla 3 prohíbe.</dd>
+    <dt>Dura</dt><dd class="dur">150&nbsp;ms, estándar.</dd>
+    <dt>Dice</dt><dd>Nada.</dd>
+    <dt>Se siente</dt><dd>Nada. Ya vibró en el cero.</dd>
+  </dl>
+</section>
+
+<section class="paso">
+  <header><span class="n">11</span><span class="nombre">Durante la lectura: los controles</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">Se ocultan solos y vuelven al tocar, pero aparecen y desaparecen de golpe. Y quedan debajo de la barra del sistema — tarea 43.</dd>
+    <dt>Se mueve</dt><dd>Sólo la opacidad, en su sitio, sin deslizamiento. Regla 3: nada que compita con el texto.</dd>
+    <dt>Dura</dt><dd class="dur">200&nbsp;ms al aparecer, 400&nbsp;ms al irse. <strong>Se van más lento de lo que vienen</strong>, que es lo contrario de la regla general: un control que desaparece de golpe se siente como un error, y acá el usuario no lo está mirando.</dd>
+    <dt>Dice</dt><dd>Sin cambios.</dd>
+    <dt>Se siente</dt><dd><code>impact Light</code> en Pausa y en Salir. <strong>Y nada más en toda la lectura.</strong> Ni por renglón, ni por bloque, ni por estado del motor.</dd>
+  </dl>
+</section>
+
+<section class="paso">
+  <header><span class="n">12</span><span class="nombre">Se acabó el guion</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">El texto se termina y la pantalla se queda como está. <strong>Hay que mirarlo en el teléfono</strong>: es el único paso de los catorce que no tengo capturado.</dd>
+    <dt>Se mueve</dt><dd>El velo se levanta y el guion entero queda legible. Terminó la restricción, se devuelve el texto.</dd>
+    <dt>Dura</dt><dd class="dur">400&nbsp;ms, enfática.</dd>
+    <dt>Dice</dt><dd>Que terminó y que se guardó la grabación, con su duración. Es el cierre de un trabajo y hoy no existe.</dd>
+    <dt>Se siente</dt><dd><code>notification Success</code>. El único de toda la aplicación: es el final de la tarea para la que existe.</dd>
+  </dl>
+</section>
+
+<section class="paso">
+  <header><span class="n">13</span><span class="nombre">«Salir» → el editor</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">Vuelve al editor sin decir nada. Javier, después de una lectura: <em>«volví, y no sé si algo se pudo grabar»</em>. <strong>Terminó de grabar y no supo si tenía el archivo.</strong></dd>
+    <dt>Se mueve</dt><dd>El negro se va, el editor entra desde la derecha. Sale del nivel 3 al 2, en la misma dirección que el 05.</dd>
+    <dt>Dura</dt><dd class="dur">400&nbsp;ms, enfática que sale.</dd>
+    <dt>Dice</dt><dd><strong>«Grabado: 4:12».</strong> Ésta es la línea que falta y es la más importante del documento: el usuario acaba de producir algo y tiene que saber que existe y dónde está.</dd>
+    <dt>Se siente</dt><dd><code>impact Medium</code> al tocar Salir: es el gemelo de Leer, el que termina de grabar.</dd>
+  </dl>
+</section>
+
+<p class="grupo">Salir</p>
+
+<section class="paso">
+  <header><span class="n">14</span><span class="nombre">Atrás en la biblioteca → cerrar</span></header>
+  <dl>
+    <dt class="hoy">Hoy</dt><dd class="hoy">Cierra directo. Resuelto en la tarea 41: antes el gesto de atrás destruía una grabación en curso sin avisar.</dd>
+    <dt>Se mueve</dt><dd>Nada. Cerrar la aplicación lo anima el sistema, no nosotros.</dd>
+    <dt>Dura</dt><dd class="dur">—</dd>
+    <dt>Dice</dt><dd>Nada. Pedir confirmación para cerrar una aplicación sin trabajo pendiente es tratar mal al usuario.</dd>
+    <dt>Se siente</dt><dd>Nada.</dd>
+  </dl>
+</section>
+
+<h2><span class="num">La háptica</span>Confirma el tacto, no avisa del motor</h2>
+
+<p>Hubo que corregir esto en el camino y la corrección es la parte que importa. La primera propuesta era un sistema de avisos: «enganchó», «te perdió». Javier lo rechazó con una frase que ordena todo el capítulo:</p>
+
+<p class="cita">«de nuevo vamos a perpetuar reglas basadas en el puto error»<b> — 15 de septiembre de 2026</b></p>
+
+<p>Tiene razón, y hasta el fondo: un aviso de «te perdí» convierte un defecto del motor en una función, y una vez que la función existe, el motor que se corre deja de ser un problema y pasa a ser <em>el comportamiento normal, con su vibración</em>. «Enganchó» es lo mismo: sólo hace falta porque el motor tarda trece palabras en encontrarte.</p>
+
+<p><strong>La háptica de una aplicación bien hecha no avisa nada: confirma el tacto.</strong> Es lo que hace que una pantalla se sienta un objeto y no un dibujo. Son cuatro capas y ninguna habla del motor.</p>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Capa</th><th>Cuándo</th><th>Qué se llama</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Confirmar el toque</strong></td><td>Elegir una opción en Ajustes: Ancho, Tipografía, Dónde leés, la pareja de color.</td><td><code>selectionChanged()</code></td></tr>
+    <tr><td></td><td>Marcar una casilla, abrir un menú, tocar un guion, «+ Nuevo».</td><td><code>impact Light</code></td></tr>
+    <tr><td><strong>Cambio de estado real</strong></td><td>Apretar Leer. Apretar Salir. Los dos extremos de una toma.</td><td><code>impact Medium</code></td></tr>
+    <tr><td></td><td>El cero de la cuenta regresiva.</td><td><code>impact Heavy</code></td></tr>
+    <tr><td></td><td>Se acabó el guion.</td><td><code>notification Success</code></td></tr>
+    <tr><td><strong>Los límites</strong></td><td>El tamaño de letra llegó a su tope. El final de la lista de guiones.</td><td><code>impact Light</code></td></tr>
+    <tr><td><strong>Los gestos</strong></td><td>Arrastrar el texto a mano desengancha el seguidor: un toque al enganchar el dedo y otro al soltar.</td><td><code>selectionStart()</code> / <code>selectionEnd()</code></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="nota">
+  <span class="t">La restricción física, que decide dónde se puede</span>
+  El motor de vibración <strong>hace ruido</strong> y el teléfono está grabando. Por eso durante la lectura no vibra nada salvo Pausa y Salir, que el usuario ya decidió tocar. Y por eso la cuenta regresiva sí puede: el audio arranca al principio de la cuenta, así que esos tres segundos son margen sin voz y el zumbido cae donde no molesta.
+</div>
+
+<p><strong>Se puede apagar</strong>, y el interruptor va al menú de los tres puntos de la biblioteca, junto a Tema — es preferencia de la aplicación, no de la toma. Meterlo en Ajustes contradiría la tarea 44, que justo está bajando el panel de diez controles a siete.</p>
+
+<h2><span class="num">La voz</span>Los cinco momentos en que la aplicación se queda muda</h2>
+
+<p>Una transición dice de dónde venís. Las palabras dicen qué pasó. Hoy faltan en los cinco momentos en que algo ocurre de verdad:</p>
+
+<ol class="orden">
+  <li><span class="t">Terminaste de grabar y no sabés si tenés el archivo</span><span class="d">Paso 13. Es el peor de los cinco: el usuario produjo algo y la aplicación no se lo confirma. «Grabado: 4:12».</span></li>
+  <li><span class="t">El guion se guardó solo y nadie lo dijo</span><span class="d">Paso 05. El guardado automático está bien; lo que está mal es que sea invisible y haya que confiar.</span></li>
+  <li><span class="t">La primera vez, la aplicación no cuenta qué hace</span><span class="d">Paso 01. Hay veinte teleprompters en la tienda y ninguno sigue la voz. Es el momento de mayor atención y el de menor información. <strong>Las palabras son de Javier.</strong></span></li>
+  <li><span class="t">La descarga está contada como molestia y es una promesa</span><span class="d">Paso 02. Es el único momento en que el usuario acepta esperar, y lo gastamos en un porcentaje.</span></li>
+  <li><span class="t">Se acabó el guion y no pasa nada</span><span class="d">Paso 12.</span></li>
+</ol>
+
+<h2><span class="num">El orden</span>En qué se convierte esto</h2>
+
+<p>Tres encargos, en este orden, y ninguno se manda hasta que estén fusionadas la 43 y la 44 — las tres tocan <code>App.tsx</code>.</p>
+
+<ol class="orden">
+  <li><span class="t">El movimiento del circuito</span><span class="d">La gramática en un solo archivo —las dos curvas, las cuatro duraciones— y los pasos 01, 03, 04, 05, 06, 07, 08, 13. Es un solo trabajo porque es una sola regla aplicada ocho veces; partirlo es garantizar que la novena pantalla vuelva a inventarla.</span></li>
+  <li><span class="t">La toma: el apagado, la cuenta y el cierre</span><span class="d">Los pasos 09, 10, 11 y 12. Va aparte porque es el único lugar donde manda la regla inversa, y porque toca <code>TeleprompterView</code>, que tiene la geometría que costó afinar.</span></li>
+  <li><span class="t">La háptica completa, con su interruptor</span><span class="d">Las cuatro capas de una vez. Va última porque cada vibración cuelga de un control, y los controles se terminan de mover en los dos encargos anteriores.</span></li>
+</ol>
+
+<p>Y lo que <strong>no</strong> entra en ninguno: la marca invertida de lectura, la flecha del renglón, los bloques. Están congelados con su motivo en <code>docs/pendientes.txt</code>.</p>
+
+<div class="nota">
+  <span class="t">La condición que vale para los tres</span>
+  Ninguno se reporta terminado sin haberlo visto en el dispositivo virtual <code>motog86</code>, creado el 15 de septiembre: 1220×2712 a densidad 450, tres botones de navegación y perforación de cámara. Es la copia del teléfono de Javier. Verde en las pruebas no es evidencia de nada de lo que hay en este documento.
+</div>
+
+<footer>
+  Teleprompter · 15 de septiembre de 2026 · Continúa <em>El estado real</em>, que inventarió las diez pantallas. Lo congelado y su motivo están en <code>docs/pendientes.txt</code>.
+</footer>
+
+</div>
