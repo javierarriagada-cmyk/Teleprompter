@@ -1,0 +1,379 @@
+TAREA 46 - EL ESTANDAR VISUAL, LA DESCARGA INUTIL Y EL GUION DE BIENVENIDA
+
+PARTIR DE: main (4905551 o posterior). Rama nueva: tarea-46-el-estandar.
+PR contra main. AGENTS.md en la raiz.
+
+Hay una etiqueta punto-bueno-2026-09-14. No la toques.
+
+Las tareas 43, 44 y 45 YA ESTAN FUSIONADAS en main. Parti de main y nada mas.
+
+AL PUBLICAR: usa un nombre de rama que no exista todavia. El boton de publicar
+viene fallando cuando la rama ya existe.
+
+
+POR QUE ESTE ENCARGO EXISTE
+
+Se midio el codigo, no se opino. Buscando colores, tamanos, espaciados y radios
+en los componentes de src/:
+
+    218   usos de las fichas de src/styles.css
+     90   colores escritos a mano, salteandose las fichas
+      8   tamanos de letra distintos, donde la escala declara 5
+     11   valores de espaciado distintos, donde la escala declara 5
+      0   veces que se usa el radio declarado de 14 px
+
+EL DIAGNOSTICO NO ES "NO HAY IDENTIDAD". La identidad esta declarada en
+src/styles.css y nadie la respeta. Eso no se arregla inventando una paleta: se
+arregla haciendo que el sistema sea el UNICO camino.
+
+Es lo que hace que una pantalla se sienta armada a mano aunque nadie sepa
+senalar por que: los espacios no riman y los tamanos no se repiten.
+
+
+PARTE 1 - QUE EL SISTEMA SEA EL UNICO CAMINO
+
+1.a  LA ESCALA TIPOGRAFICA. Cinco pasos y ninguno mas, en src/styles.css:
+
+         --texto-display    28 / 1.12   serif 700, letter-spacing -0.02em
+         --texto-titulo     18 / 1.3    serif 600
+         --texto-cuerpo     15 / 1.6    sans 400
+         --texto-meta       13 / 1.4    sans 400
+         --texto-etiqueta   11 / 1.2    sans 700, letter-spacing 0.16em
+
+     LA REGLA QUE LAS ORDENA: la serif nombra, la sans opera. La serif es para
+     el nombre de una cosa -el titulo de la pantalla, el titulo de un guion-. La
+     sans es para todo lo instrumental: etiquetas, botones, contadores, ajustes.
+
+     COMO SE MAPEA LO QUE HAY HOY:
+
+         22  ->  display   (el titulo "Guiones" y el del editor)
+         18  ->  titulo
+         16  ->  titulo
+         15  ->  cuerpo
+         14  ->  cuerpo    (es el mas repetido de la aplicacion: 14 veces)
+         13  ->  meta
+         12  ->  meta      (salvo si es una etiqueta en mayusculas: etiqueta)
+
+1.b  EL ESPACIADO. Cinco valores, todos multiplos de 4:
+
+         --aire-1    4     entre un icono y su palabra
+         --aire-2    8     entre cosas del mismo grupo
+         --aire-3   12     el aire adentro de un control
+         --aire-4   20     entre una fila y la siguiente, y el margen de pantalla
+         --aire-5   32     entre un grupo y otro
+
+     COMO SE MAPEA LO QUE HAY HOY:
+
+         0   ->  0    (queda)
+         4   ->  4
+         6   ->  8
+         8   ->  8
+         10  ->  8 si separa cosas del mismo grupo; 12 si es aire adentro
+         12  ->  12
+         14  ->  12
+         16  ->  20 si separa bloques; 12 si es aire adentro de un control
+         20  ->  20
+         24  ->  20
+         30  ->  32
+
+     EL 16 ES EL CAMBIO MAS VISIBLE: aparece trece veces. DECI EN EL INFORME
+     cuales pasaron a 20 y cuales a 12, con el archivo y la linea.
+
+1.c  LOS RADIOS. Dos, no cuatro:
+
+         --redondeo         10     superficies: tarjetas, campos, paneles
+         --redondeo-pildora 999    pildoras: el boton principal, los botones de
+                                   elegir entre opciones, el tiempo de grabacion
+
+     Los 4, 6, 12 y 24 de hoy se van. El --redondeo declarado de 14 pasa a 10.
+
+1.d  LOS COLORES. Los seis que ya estan en styles.css se quedan tal cual. Se
+     agrega uno solo:
+
+         --color-grabando   #D92B2B
+
+     NO es color de marca: es el rojo de las camaras y por eso no se elige ni se
+     cambia. Aparece en DOS lugares y en ninguno mas: el punto que dice que esta
+     grabando y el tiempo transcurrido.
+
+     Y LA REGLA DEL ACENTO, que es la que sostiene todo: el verde --color-acento
+     es el UNICO color saturado de la aplicacion y por eso significa "esto
+     actua". Un boton que hace algo, una opcion elegida, una casilla marcada.
+     Nada mas lleva verde: ni un titulo, ni un icono decorativo, ni un borde.
+
+1.e  LOS 90 COLORES ESCRITOS A MANO pasan a usar las fichas, en estos archivos:
+
+         src/App.tsx                       25 colores a mano
+         src/components/EditorView.tsx     26
+         src/components/PanelCorpus.tsx    12
+         src/components/BibliotecaView.tsx  3
+         src/components/BarraDeTiempo.tsx   3
+
+     Si alguno no tiene ficha equivalente, USA LA MAS CERCANA Y DECILO EN EL
+     INFORME. No agregues fichas nuevas sin decir por que.
+
+
+LAS EXCEPCIONES, Y SON LAS UNICAS
+
+    src/components/TeleprompterView.tsx    NO ENTRA EN NADA DE LA PARTE 1.
+    src/components/banda.ts                idem.
+
+    Sus colores son los que ELIGE EL USUARIO -las parejas de fondo y letra- y los
+    del velo, que se calculan en el momento. Su tamano de letra tambien es del
+    usuario: entre 14 y 42, y es la decision mas importante que toma. La escala
+    gobierna la aplicacion; la lectura es de quien lee.
+
+    src/components/CuentaRegresiva.tsx     el 120 px del numero queda como esta.
+                                           No es texto, es una cifra a pantalla.
+
+
+PARTE 2 - LA DESCARGA DE 34,4 MB QUE NO LE SIRVE A NADIE
+
+src/hooks/usePrecargaModelo.ts corre asi:
+
+    useEffect(() => {
+      ejecutarPrecarga()
+    }, [ejecutarPrecarga])
+
+SIN NINGUNA CONDICION. Al montar App, siempre. No mira la plataforma ni el motor
+elegido: instancia MotorVosk -el WASM- y baja su modelo, 34,4 MB, de
+ccoreilly.github.io.
+
+Y en el APK el motor por omision es NATIVO -sanitizarEngine en App.tsx devuelve
+'nativo' cuando Capacitor.isNativePlatform()- y ese motor LLEVA EL MODELO ADENTRO
+DEL APK. Por eso mismo dejamos de bajar 34 MB en cada lectura, en la tarea de
+motor nativo.
+
+O SEA: la primera vez que alguien abre la aplicacion en Android baja 34,4 MB que
+no va a usar nunca, y mira un cartel contandole el progreso de algo inutil.
+
+QUE HACER
+
+    NO LO BORRES. Si alguien elige "Vosk (WASM)" a mano en el menu de la
+    biblioteca, la descarga SI hace falta.
+
+    Lo que corresponde es que la precarga se dispare SOLO CUANDO EL MOTOR EN USO
+    SEA 'vosk'. El hook pasa a recibir el motor elegido:
+
+        usePrecargaModelo(engine: IdMotor)
+
+    y su efecto depende de eso: con 'vosk' precarga; con 'nativo' o 'fake' queda
+    en 'inactivo' y no instancia MotorVosk ni toca la red.
+
+    Y SE TIENE QUE DISPARAR AL CAMBIAR EL MOTOR, no solo al montar: si alguien
+    esta en nativo y elige vosk, la descarga arranca ahi.
+
+    El cartel de progreso no se toca: sigue apareciendo cuando el estado es
+    'descargando' o 'error'. Lo que cambia es cuando ocurre.
+
+
+PARTE 3 - EL GUION DE BIENVENIDA, Y LA PANTALLA VACIA QUE DESAPARECE
+
+Hoy la biblioteca vacia dice "Aca van a estar tus guiones", que repite el titulo
+de la pantalla con mas palabras y no cuenta que hace la aplicacion.
+
+LO QUE HACE LA COMPETENCIA, Y ES MEJOR QUE CUALQUIER FRASE: no escriben un cartel
+mejor, ELIMINAN LA PANTALLA VACIA poniendo un guion de ejemplo. Ese guion, leido
+en voz alta, es el que explica el producto.
+
+En nuestro caso vale mas todavia: lo que nos distingue NO SE PUEDE VER, solo se
+puede experimentar leyendo en voz alta. Una frase no lo demuestra; un guion que
+avanza solo mientras la persona habla, si, en treinta segundos y sin que nadie se
+lo explique.
+
+QUE HACER
+
+  3.a  LA PRIMERA VEZ que se abre la aplicacion, la biblioteca trae un guion ya
+       creado, titulado "Bienvenida", con este texto EXACTO -cada parrafo es un
+       bloque-:
+
+           Hola. Lee esto en voz alta, con o sin apuro, como prefieras.
+
+           Ahora fíjate en el texto. Se está moviendo solo, al ritmo en que
+           hablas, sin que toques nada.
+
+           Te acompaña para darte la comodidad y la tranquilidad que necesitas.
+           Queremos que toda tu concentración esté donde debe estar. Cuando
+           quieras, puedes recorrer los ajustes y dejar la experiencia a tu
+           medida.
+
+           Nuestra tarea es que puedas mirar la cámara y no la pantalla. No
+           tienes que memorizar. No tienes que apurarte para alcanzar el texto.
+           Puedes transmitir la emoción que quieras, en el momento que quieras.
+
+           Sirve para grabar un video, dar una clase o preparar una entrevista.
+
+           Cuando termines, borra esto y escribe tu propio guion.
+
+       RESPETA LOS ACENTOS Y LAS ENES. El texto va tal cual, con "fíjate",
+       "está", "acompaña", "concentración", "cámara", "emoción". Ya paso en este
+       repositorio que se copiaron titulos sin acentos desde un encargo.
+
+  3.b  SE PONE UNA SOLA VEZ Y NO VUELVE. Si la persona lo borra, no se vuelve a
+       crear nunca. Guarda una marca en localStorage -por ejemplo
+       teleprompter_bienvenida_puesta- y comprobala antes de crear.
+
+  3.c  OJO, ESTO ES LO QUE MAS FACIL SE ROMPE: NO se crea cuando App recibe
+       repoOverride. Decenas de pruebas montan App con RepositorioMemoria y
+       esperan una biblioteca vacia; si el guion aparece ahi, se rompen todas.
+
+       La condicion es: repoOverride NO fue provisto Y la marca de localStorage
+       no existe.
+
+  3.d  LA FRASE "Aca van a estar tus guiones" SE BORRA Y NO SE REEMPLAZA POR
+       NADA. Si la biblioteca queda vacia -porque la persona borro todo-, el
+       centro de la pantalla queda vacio y el boton "+ Nuevo" es lo unico que
+       hay. Ya sabe que hace la aplicacion: la leyo.
+
+       Deci en el informe que pruebas miraban esa frase y como las actualizaste.
+
+
+PARTE 4 - EL ESCALONADO DEL ARRANQUE
+
+Al abrir la aplicacion, la biblioteca entra con la animacion 'inicial' de la
+tarea 45 -solo opacidad, sin desplazamiento-. Eso esta bien y no se toca.
+
+Lo que falta es que sus partes no entren todas juntas: primero el titulo, 40 ms
+despues el subtitulo, 40 ms despues la lista o el vacio. Cada una con
+MS_PANTALLA y CURVA_ENTRA, de src/components/movimiento.tsx.
+
+El escalonado es lo que hace que el ojo aterrice en el titulo en vez de en toda
+la pantalla a la vez.
+
+SOLO EN EL PRIMER MONTAJE. Volviendo del editor a la biblioteca NO se escalona:
+ahi la pantalla ya se conoce y el escalonado se siente lento.
+
+Y con movimientoApagado() en true, nada de esto ocurre: entran juntas y sin
+animacion, como hoy.
+
+
+LO QUE NO ENTRA EN ESTA TAREA, Y POR QUE
+
+EL APAGADO ANTES DE LA CUENTA REGRESIVA. Estaba en el documento del circuito,
+paso 09: que todo lo que no es texto se vaya en 200 ms antes de que el fondo pase
+a negro.
+
+NO SE HACE ACA. Para que el editor se desvanezca hace falta que siga montado
+mientras la lectura aparece, y eso significa dos pantallas montadas a la vez.
+Es la decision de arquitectura que tomamos en la tarea 45 y que sigue en pie: dos
+TeleprompterView vivos, cada uno con su bucle y su enganche al motor de voz, no
+valen una animacion.
+
+Queda anotado como abierto. No lo implementes ni lo propongas.
+
+
+LO QUE NO SE TOCA
+
+   src/lib/                    todo el directorio: el motor no entra en esto
+   src/motor/                  todo
+   src/components/banda.ts     nada
+   android/                    nada
+
+   De src/hooks/ SOLO usePrecargaModelo.ts, y solo para la parte 2.
+
+   De TeleprompterView.tsx: NADA. Ni la geometria de lectura -el renglon trabado,
+   avanzarTrabado, MARGEN_RENGLONES_ARRIBA, MS_DESLIZAR, calcularScrollTop,
+   calcularBanda, el velo, los paddings- ni sus colores ni sus tamanos. Esta
+   exceptuado del sistema a proposito.
+
+   Y NO TOQUES lo que dejaron las tareas 43, 44 y 45: los calc(16px + env(...)),
+   los tres botones de Ancho, las parejas de color, sanitizarColores, <Pantalla>,
+   onAnimationEnd, src/haptica.ts ni las pruebas T192 a T208.
+
+   OJO CON LOS 16 DEL AREA SEGURA: los calc(16px + env(safe-area-inset-*, 0px))
+   de la raiz, de la barra de controles, del punto de grabacion y del indicador
+   de estado NO son espaciado del sistema. Son el area segura y el 16 se queda.
+   Si los cambias, T192, T193 y T194 se ponen rojas.
+
+   Comprobalo con git diff --stat y ponelo en el informe.
+
+
+PRUEBAS
+
+   Numerar desde T209. T1 a T208 estan usados.
+
+   T209 - GUARDIANA DEL SISTEMA. Ningun componente puede escribir un color, un
+          tamano de letra, un espaciado o un radio a mano.
+
+          Se comprueba LEYENDO LOS ARCHIVOS, sin montar nada, igual que T207.
+          Mira como esta hecha T207 en src/pruebas/tarea45.test.tsx y hacelo
+          igual.
+
+          Archivos que revisa:
+              src/App.tsx
+              src/components/BibliotecaView.tsx
+              src/components/EditorView.tsx
+              src/components/PanelCorpus.tsx
+              src/components/BarraDeTiempo.tsx
+
+          Lo que no puede aparecer:
+              un color en hexadecimal o en rgb/rgba
+              fontSize con un numero que no sea 11, 13, 15, 18 o 28
+              borderRadius con un numero que no sea 10 o 999
+              padding, margin o gap con un numero que no sea 0, 4, 8, 12, 20 o 32
+
+          EXCEPCIONES que la prueba tiene que dejar pasar, y ninguna mas:
+              los calc(16px + env(safe-area-inset-*)) del area segura
+              TeleprompterView.tsx y banda.ts, que no estan en la lista
+              CuentaRegresiva.tsx, que no esta en la lista
+
+          Que la prueba NOMBRE el archivo y la linea de cada infraccion. Una
+          guardiana que solo dice "fallo" no sirve para arreglar nada.
+
+   T210 - LA DESCARGA NO ARRANCA CON EL MOTOR NATIVO. Con
+          Capacitor.isNativePlatform() devolviendo true -o sea, motor 'nativo' por
+          omision-, el estado de precarga se queda en 'inactivo' y NO se instancia
+          MotorVosk. Con el motor 'vosk', si arranca.
+
+   T211 - EL GUION DE BIENVENIDA SE PONE UNA VEZ. Sin la marca en localStorage y
+          sin repoOverride, la biblioteca arranca con un guion titulado
+          "Bienvenida". Con la marca puesta, NO aparece aunque la biblioteca este
+          vacia.
+
+   T212 - EL ESCALONADO. En el primer montaje, el titulo, el subtitulo y la lista
+          tienen retardos distintos y crecientes. Volviendo del editor, los tres
+          tienen retardo cero.
+
+   COMPROBALAS ROMPIENDO, estas dos:
+
+     - Para T209: escribi a proposito un color en hexadecimal en EditorView.tsx y
+       verifica que T209 se pone ROJA Y NOMBRA ESE ARCHIVO. Despues sacalo.
+     - Para T210: saca la condicion del motor y deja la precarga corriendo
+       siempre, y verifica que T210 se pone ROJA. Despues devolvela.
+
+     PONE EL RESULTADO TEXTUAL EN EL INFORME, las dos.
+
+   TIENEN QUE SEGUIR VERDES SIN TOCARLAS: T84 -los cinco pasos de letra-, T87 -la
+   importacion desde la biblioteca vacia-, T159 -el ultimo renglon llega a la
+   barra-, T162, T163, y T192 a T208. Si alguna se pone roja, rompiste algo de
+   una tarea anterior.
+
+   LAS PRUEBAS QUE MIRABAN "Aca van a estar tus guiones" se actualizan. Eso no es
+   saltearlas: la frase se borro a proposito. Deci cuales tocaste.
+
+
+AL TERMINAR
+
+   npx tsc --noEmit limpio.
+   npx vitest run: hoy son 194 de 194. Al terminar, 198 de 198.
+   No se borra ni se saltea ninguna prueba.
+
+   PROHIBIDO agregar elementos ocultos con display:none para sostener una prueba
+   vieja: ya paso en este repositorio, fueron tres botones invisibles sosteniendo
+   dieciocho pruebas.
+
+   NO COMMITEES dev_server.log ni ningun registro de tu propio servidor. Paso en
+   la tarea 44.
+
+   INFORME, en este orden:
+
+     1. Las cuatro partes, una por una.
+     2. EL MAPEO DEL 16: cuales pasaron a 20 y cuales a 12, con archivo y linea.
+     3. Si alguna ficha no alcanzaba para algun color, cual y que pusiste.
+     4. El git diff --stat completo.
+     5. El numero exacto de pruebas pasadas y falladas, y de cuanto partiste.
+     6. El resultado de romper T209 y T210, textual.
+     7. Que pruebas actualizaste por la frase borrada.
+
+   El telefono no lo ves desde la VM: no digas que "ahora se ve mejor". Deci que
+   cambiaste.
