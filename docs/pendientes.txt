@@ -1,0 +1,174 @@
+PENDIENTES DEL TELEPROMPTER
+Lo que quedo abierto y por que. Actualizado el 15 de septiembre de 2026.
+
+Esto NO es una lista de tareas. Es lo que todavia no se puede encargar porque
+falta una decision, una medicion, o las dos.
+
+
+================================================================================
+1. INVERTIR LA MARCA DE LECTURA
+   Estado: ANOTADO PARA MEDIR. No hay propuesta concreta todavia.
+================================================================================
+
+DE QUE SE TRATA
+
+Hoy la pantalla de lectura APAGA todo salvo una ventana:
+
+    arriba de la ventana    velo 0.45
+    la ventana              velo 0.00
+    abajo de la ventana     velo 0.55
+
+Invertirlo seria lo contrario: todo el texto legible, y una banda apenas
+perceptible detras de los renglones vivos. Es lo que hace PromptSmart -captura que
+mostro Javier el 15 de septiembre-: pinta una franja sobre las lineas actuales y
+deja el resto igual de claro.
+
+POR QUE PODRIA SERVIR
+
+Si el motor se corre, con la banda se pierde la REFERENCIA pero no el TEXTO: se
+sigue leyendo porque todo se lee. Con el velo, si se corre, el lector se queda a
+oscuras. Eso ya paso, el 13 de septiembre de 2026: "termino leyendo en la linea
+ennegrecida, asi que no pude leer mas".
+
+POR QUE NO SE ENCARGO
+
+  a. CONTRADICE UNA DECISION YA TOMADA. El velo existe para que el ojo no se
+     despegue del lente de la camara: mientras menos texto claro, menos recorre la
+     mirada. Javier lo dijo el 13 de septiembre: "si es varios renglones ya nos
+     alejamos del ojo de la camara". Invertirlo significa que todo se lee y el ojo
+     puede irse mas lejos. Es un intercambio, no una mejora gratis.
+
+  b. TOCA LO QUE MAS COSTO AFINAR. La banda, el velo y el renglon trabado son lo
+     unico que hizo que Javier pudiera leer un guion entero.
+
+  c. Y SOBRE TODO: NO HAY PROPUESTA CONCRETA. Javier, el 15 de septiembre:
+     "dejemoslo anotado para medirlo despues, porque no he visto en concreto que
+     propones". Tiene razon. Lo que hay es una direccion, no un diseno.
+
+QUE HARIA FALTA ANTES DE ENCARGAR
+
+  - Un diseno concreto: cuantos renglones lleva la banda, con que opacidad, que
+    pasa con los 0.45 y 0.55 de hoy -si se van del todo o se suavizan-, y si la
+    banda se dibuja detras del texto o como un borde.
+  - Y DOS LECTURAS DEL MISMO GUION, una con velo y otra con banda, comparando el
+    corpus. Es la unica forma de saber si mejora o si solo cambia.
+
+
+================================================================================
+2. QUE DICE LA APLICACION LA PRIMERA VEZ
+   Estado: ESPERANDO LAS PALABRAS DE JAVIER.
+================================================================================
+
+La biblioteca vacia dice "Aca van a estar tus guiones" y ocupa una pantalla entera
+para decir que esta vacia.
+
+No dice lo unico que nos distingue: que el texto se mueve solo, siguiendo la voz,
+sin tocar nada. Hay veinte teleprompters en la tienda y ninguno hace eso.
+
+La practica establecida es que el estado vacio ENSEÑA que hace la aplicacion y
+empuja a una accion concreta. Es el momento de mayor atencion y el de menor
+informacion.
+
+NO LO ESCRIBO YO. Es la voz del producto y es de Javier.
+
+
+================================================================================
+3. LA HAPTICA
+   Estado: APROBADA EN PRINCIPIO, SIN DISEÑAR.
+================================================================================
+
+Mientras lee, la persona NO MIRA LA PANTALLA: mira el lente. Cualquier aviso
+visual llega a un ojo que no esta ahi.
+
+Queda un canal: el tacto. Una vibracion corta cuando el motor engancha la voz;
+otra distinta si la pierde. No se mira, no sale en el video, no interrumpe.
+
+Es posible hoy: Capacitor tiene plugin oficial -@capacitor/haptics- con estilos de
+impacto y patrones propios.
+
+QUE FALTA DECIDIR: que eventos vibran y con que patron. Y sobre todo, si se puede
+apagar -hay gente a la que la vibracion le molesta-. Javier: "cambia como se
+siente leer y eso lo decide el que lee".
+
+
+================================================================================
+4. LOS BLOQUES
+   Estado: CONGELADO POR DECISION DE JAVIER.
+================================================================================
+
+El modelo tiene un campo `nombre` en cada bloque y la pantalla de lectura YA LO
+MUESTRA entre corchetes -TeleprompterView.tsx:715-. El editor nunca deja
+escribirlo: handleAgregarBloque crea nombre: '' y no hay campo.
+
+La funcion esta a medio construir: la mitad de abajo sin la mitad de arriba.
+
+Javier, el 15 de septiembre: "mientras no definamos cual puede ser una utilidad
+del bloque que no implique un desgaste innecesario para la experiencia del
+usuario dejemoslo como esta".
+
+Es una pregunta de producto, no de codigo. No se resuelve construyendo.
+
+
+================================================================================
+5. LA FLECHA QUE MARCA EL RENGLON
+   Estado: DESCARTADA HASTA QUE EL MOTOR LA MEREZCA.
+================================================================================
+
+PromptSmart tiene un puntero que marca la linea actual -y se puede quitar, o sea
+que ni ellos lo dan por bueno para todos-.
+
+Javier lo descarto con un argumento que hay que conservar: "no lo hemos abarcado
+porque aun no llegamos a un seguidor de voz que sea perfecto, entonces mal podemos
+decir vas en este renglon, si aun se nos sube o baja en la lectura real".
+
+Y hay algo peor que solo prometer de mas: una flecha HARIA VISIBLE el error. Hoy
+el borde del velo es difuso y el corrimiento se disimula; con una flecha se veria
+exactamente cuanto se equivoco el motor.
+
+No se retoma hasta que el seguidor no se corra.
+
+
+================================================================================
+6. LOS DOS RENGLONES CLAROS
+   Estado: SIN MEDIR.
+================================================================================
+
+RENGLONES_CLAROS vale 4 y el velo ya se arreglo para usar esa constante. Pero en
+el telefono de Javier -capturado el 15 de septiembre- la zona clara abarca dos
+renglones y medio, no cuatro.
+
+Puede tener que ver con el area segura -si el alto del contenedor la incluye, la
+cuenta de la banda sale corrida- o puede ser otra cosa.
+
+Se le pidio a la tarea 43 que NO lo arreglara y que solo reportara lo que
+observara. Es una medicion aparte.
+
+
+================================================================================
+7. EL HORIZONTAL
+   Estado: NUNCA PROBADO.
+================================================================================
+
+Grabar a camara con el telefono acostado es la mitad de los casos reales y la
+aplicacion nunca se probo asi. Ni siquiera sabemos que pasa.
+
+Con el area segura resuelta en los cuatro bordes -tarea 43- es lo primero que
+habria que mirar.
+
+
+================================================================================
+8. EL EMULADOR NO ES EL TELEFONO
+   Estado: PENDIENTE, Y ES UNA TRAMPA ACTIVA.
+================================================================================
+
+    el telefono de Javier    1220 x 2712    densidad 450
+    el emulador que usamos   1080 x 2400    densidad 420
+
+Un 5% mas chico en unidades reales. Durante semanas se juzgaron anchos, tamanos de
+letra y proporciones ahi, y por eso varias cosas que se veian bien aparecian
+encimadas en la mano de Javier.
+
+MIENTRAS NO EXISTA UN DISPOSITIVO VIRTUAL CON LAS MEDIDAS EXACTAS, ninguna
+decision sobre proporciones vale hasta verla en el telefono.
+
+Se crea con avdmanager y un perfil a medida. Es corto y no se hizo.

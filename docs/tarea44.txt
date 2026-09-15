@@ -1,0 +1,206 @@
+TAREA 44 - LOS AJUSTES, DE DIEZ CONTROLES A SIETE
+
+PARTIR DE: main. Rama nueva: tarea-44-ajustes-recorte.
+PR contra main. AGENTS.md en la raiz.
+
+ATENCION AL PUNTO DE PARTIDA: si la rama tarea-43-area-segura todavia no esta
+fusionada en main, PARTI DE ELLA y no de main. Las dos tocan App.tsx y
+EditorView.tsx. Decilo en el informe: de donde partiste.
+
+Hay una etiqueta punto-bueno-2026-09-14. No la toques.
+
+ESTO ES PANTALLA, NO MOTOR. Si al terminar el texto se mueve distinto, algo salio
+mal. Y NINGUNA CAPACIDAD SE PIERDE: todo lo que hoy se puede hacer se sigue
+pudiendo hacer. Lo que cambia es que deja de haber dos caminos para lo mismo y
+combinaciones que no sirven.
+
+
+POR QUE
+
+Javier lo dijo mirando el panel: "en ajustes aun tenemos exceso". Y despues lo
+preciso: "el asunto es que cuando se meten a ajustes se debe sentir claro y facil".
+
+Diez controles, y de esos:
+  - DOS deciden lo mismo -Columna y Margen, los dos deciden cuanto texto entra
+    por renglon-
+  - DOS permiten combinaciones ilegibles -Fondo negro con Color de letra negro
+    esta a un toque de distancia, justo antes de grabar-
+  - UNO no es de esta pantalla -Tema es el claro/oscuro de la biblioteca y el
+    editor, no de la toma-
+
+
+PARTE 1 - "ANCHO" REEMPLAZA A COLUMNA Y MARGEN
+
+Hoy hay dos controles: columnaAngosta -booleano- y marginPercent -numero con
+- y +-. Se puede llegar al mismo ancho por dos caminos distintos.
+
+QUE HACER
+
+    Un solo control, TRES BOTONES que se ven, no una lista:
+
+        Ancho      columna completa, margen 5%
+        Medio      columna completa, margen 12%
+        Angosto    columna angosta,  margen 5%
+
+    El 5% NO ES UN AJUSTE FINO. Javier: "lo del ajuste fino no fue algo que quise
+    dejar como ajuste fino, sino como el que se aplique por defecto al dejar uno u
+    otro". Es el valor que viene puesto, no una perilla.
+
+    POR DENTRO NO CAMBIA NADA. columnaAngosta y marginPercent siguen existiendo
+    como estado en App.tsx y siguen llegando a TeleprompterView igual que hoy: el
+    control nuevo mueve los dos a la vez. NO toques como TeleprompterView los usa.
+
+    El 12% del paso "Medio" es el unico numero nuevo. Si alguna prueba existente
+    depende del 5%, que siga: "Ancho" es el valor por omision.
+
+
+PARTE 2 - "FONDO Y LETRA", EN PAREJAS
+
+Hoy son dos listas: colorFondo y colorLetra, independientes.
+
+QUE HACER
+
+    Un solo control con TRES PAREJAS, que se eligen viendolas -un cuadradito con
+    el fondo y una "Aa" con el color de la letra-:
+
+        negro con blanco    #000000 / #FFFFFF    el de hoy, por omision
+        negro con ambar     #000000 / #F5C24B    lo usa la television: cansa
+                                                 menos la vista en tomas largas
+        blanco con negro    #FFFFFF / #000000    para grabar con mucha luz
+
+    POR DENTRO, IGUAL: colorFondo y colorLetra siguen siendo dos estados y siguen
+    llegando a TeleprompterView como hoy. La pareja mueve los dos juntos.
+
+    Si el valor guardado en localStorage no coincide con ninguna pareja -alguien
+    con una combinacion vieja-, que caiga en negro con blanco y no rompa. Es lo
+    mismo que se hizo con el motor en sanitizarEngine, en App.tsx: mirá como esta
+    hecho ahi.
+
+
+PARTE 3 - TIPOGRAFIA: DOS BOTONES, NO UNA LISTA
+
+Ya hay dos opciones y las dos son decisiones reales -la sans se lee mejor de un
+vistazo, la serif de corrido-. Lo unico que cambia es que dejan de estar
+escondidas en un desplegable.
+
+        Sans     Source Sans 3    por omision
+        Serif    Source Serif 4
+
+NO agregues tipografias. NO cambies los valores 'sans' y 'serif'.
+
+
+PARTE 4 - "ANCLAJE" PASA A LLAMARSE "DONDE LEES"
+
+Es el mismo control -anclajeZona, con arriba/medio/abajo- con otro nombre y como
+botones en vez de lista.
+
+    Anclaje no dice nada. Ese control decide a que altura de la pantalla queda el
+    renglon que se esta leyendo, o sea cuanto sube o baja la mirada respecto del
+    lente de la camara. Es de las cosas mas importantes del panel y tiene el peor
+    nombre.
+
+    Los valores por dentro -'arriba', 'medio', 'abajo'- NO CAMBIAN. Solo la
+    etiqueta y la forma del control.
+
+
+PARTE 5 - "TEMA" SE MUDA, NO SE BORRA
+
+tema es el claro/oscuro de TODA la aplicacion: pone data-tema en documentElement
+(App.tsx, linea 145 aprox). No tiene nada que ver con la toma.
+
+    Sale del panel de Ajustes del teleprompter y se va al menu ⋯ de la BIBLIOTECA,
+    donde ya viven las otras cosas que son de la aplicacion y no de la lectura.
+
+    SIGUE FUNCIONANDO IGUAL. Si se pierde, la aplicacion queda sin modo oscuro.
+
+
+PARTE 6 - LAS CASILLAS QUE FALTAN PINTAR
+
+Espejo y Mostrar tiempo se quedan donde estan, como casillas, en el grupo "La
+toma". Mostrar tiempo va DEBAJO de Espejo.
+
+    Espejo se queda aunque Javier no lo use: hay gente que lee de plataformas con
+    vidrio y lo necesita. Sacar una opcion porque uno no la usa es decidir por los
+    demas.
+
+    Y hay casillas que siguen siendo AZULES -las del navegador- en
+    BibliotecaView.tsx y en PanelCorpus.tsx. En EditorView ya se corrigieron con
+    accentColor: 'var(--color-acento)'. Aplicá lo mismo en esos dos. Es el unico
+    azul de toda la aplicacion.
+
+
+COMO QUEDA EL PANEL
+
+    CÓMO SE VE EL TEXTO
+      Tamaño de letra     −  24  +
+      Ancho               Ancho · Medio · Angosto
+      Tipografía          Sans · Serif
+
+    LA TOMA
+      Fondo y letra       tres parejas, elegidas viendolas
+      Dónde leés          Arriba · Medio · Abajo
+      Espejo              casilla
+      Mostrar tiempo      casilla
+
+    Siete controles. Cero listas desplegables.
+
+
+NO TOCAR
+
+   src/lib/       todo el directorio: el motor no entra en esto
+   src/motor/     idem
+   src/hooks/     idem
+   src/components/banda.ts    nada
+   android/                   nada
+
+   Y de TeleprompterView, NADA: ni la geometria, ni como recibe o usa
+   marginPercent, columnaAngosta, colorFondo, colorLetra, tipoFuente y
+   anclajeZona. Esas seis props siguen existiendo y llegando igual. Lo unico que
+   cambia es la pantalla desde donde se eligen.
+
+   Comprobalo con git diff --stat: TeleprompterView.tsx NO tiene que aparecer.
+
+
+PRUEBAS
+
+   Numerar desde T195. T1 a T194 estan usados -T192 a T194 son de la tarea 43, que
+   puede no estar fusionada-. Si esos numeros ya existen donde partiste, arranca
+   despues del ultimo y decilo en el informe.
+
+   T195 - "Ancho" mueve columna y margen a la vez: los tres pasos dan tres anchos
+          distintos, y "Ancho" deja margen 5% y columna completa.
+   T196 - Las parejas de color mueven fondo y letra juntos, y NO existe forma de
+          elegir una combinacion donde fondo y letra sean iguales.
+   T197 - GUARDIANA DEL AJUSTE VIEJO. Con una combinacion de colores guardada en
+          localStorage que ya no existe, la aplicacion abre con negro sobre blanco
+          y no lanza.
+   T198 - "Tema" NO esta en el panel de Ajustes y SI esta en la biblioteca, y
+          sigue cambiando el modo oscuro.
+
+   COMPROBALAS ROMPIENDO. Para T196: permiti que las dos listas vuelvan a ser
+   independientes y verifica que se pone ROJA. Para T197: saca la validacion del
+   color guardado y verifica que se pone ROJA. Despues deja las dos bien.
+   PONE EL RESULTADO TEXTUAL EN EL INFORME, las dos.
+
+   T84 -los cinco pasos de letra- y T162 -el ancho por omision- tienen que seguir
+   VERDES. Si T162 se pone roja, cambiaste el valor por omision del margen.
+
+
+AL TERMINAR
+
+   npx tsc --noEmit limpio.
+   npx vitest run con CERO fallas. Deci el numero exacto y de cuanto partiste.
+   Las pruebas que buscaban los controles viejos por su etiqueta -"Columna:",
+   "Margen:", "Anclaje:", "Fondo:", "Color Letra:"- se ACTUALIZAN a los nuevos.
+   Eso no es saltearlas: es que el control cambio de nombre. Deci cuales tocaste.
+
+   PROHIBIDO agregar elementos ocultos con display:none para sostener una prueba
+   vieja: ya paso en este repositorio, fueron tres botones invisibles sosteniendo
+   dieciocho pruebas.
+
+   Informe: las seis partes, una por una. El git diff --stat. El numero exacto de
+   pruebas. El resultado de romper T196 y T197, textual. Y cuales pruebas viejas
+   actualizaste por el cambio de etiquetas.
+
+   El telefono no lo ves desde la VM: no digas que "se ve mejor". Deci que
+   cambiaste.

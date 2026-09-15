@@ -1,0 +1,529 @@
+<title>Teleprompter: el estado real</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300..700;1,400&family=Source+Serif+4:opsz,wght@8..60,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --fondo: #131210;
+    --fondo-2: #1B1917;
+    --borde: #2D2A26;
+    --texto: #EAE6DE;
+    --texto-2: #9A948A;
+    --verde: #33A492;
+    --brasa: #D45F45;
+    --ambar: #D9A441;
+    --serif: "Source Serif 4", Georgia, serif;
+    --sans: "Source Sans 3", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--fondo); color: var(--texto); font-family: var(--sans);
+         font-size: 17px; line-height: 1.62; margin: 0; -webkit-font-smoothing: antialiased; }
+  .w { max-width: 1160px; margin: 0 auto; padding: 0 24px 120px; }
+
+  header { padding: 76px 0 40px; border-bottom: 1px solid var(--borde); }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(34px, 5.5vw, 56px);
+       line-height: 1.06; letter-spacing: -0.022em; margin: 0 0 20px; text-wrap: balance; }
+  .bajada { font-size: 19.5px; color: var(--texto-2); max-width: 64ch; margin: 0 0 30px; }
+  .ficha { display: flex; flex-wrap: wrap; gap: 8px 30px; font-family: var(--mono);
+           font-size: 13px; color: var(--texto-2); }
+  .ficha b { color: var(--texto); font-weight: 500; }
+
+  .parte { margin-top: 86px; }
+  .rotulo { font-family: var(--mono); font-size: 12px; letter-spacing: 0.17em;
+            text-transform: uppercase; color: var(--verde); margin: 0 0 10px; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(27px, 3.5vw, 36px);
+       line-height: 1.12; margin: 0 0 16px; letter-spacing: -0.016em; }
+  .intro { color: var(--texto-2); max-width: 68ch; margin: 0 0 40px; }
+
+  /* medidas */
+  .medidas { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0 10px; }
+  .med { background: var(--fondo-2); border-radius: 12px; padding: 24px 26px;
+         border-top: 3px solid var(--borde); }
+  .med.real { border-top-color: var(--verde); }
+  .med.falso { border-top-color: var(--brasa); }
+  .med h3 { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--texto-2); margin: 0 0 14px; font-weight: 500; }
+  .cifra { font-family: var(--mono); font-size: 25px; letter-spacing: -0.01em; margin-bottom: 4px; }
+  .med p { margin: 12px 0 0; font-size: 15.5px; color: var(--texto-2); }
+
+  /* pantallas */
+  .pantalla { display: grid; grid-template-columns: 286px 1fr; gap: 42px;
+              padding: 40px 0; border-top: 1px solid var(--borde); align-items: start; }
+  .pantalla:first-of-type { border-top: none; }
+  .marco { background: #000; border: 1px solid var(--borde); border-radius: 20px;
+           padding: 5px; position: sticky; top: 22px; }
+  .marco img { display: block; width: 100%; border-radius: 16px; }
+  .pie { font-family: var(--mono); font-size: 11px; color: var(--texto-2);
+         text-align: center; padding: 9px 4px 0; }
+
+  .num { font-family: var(--mono); font-size: 13px; color: var(--verde); letter-spacing: 0.1em; }
+  h3.tit { font-family: var(--serif); font-size: 26px; font-weight: 600;
+           margin: 4px 0 8px; letter-spacing: -0.012em; }
+  .rol { color: var(--texto-2); margin: 0 0 24px; max-width: 58ch; }
+
+  .obs { display: flex; flex-direction: column; gap: 14px; }
+  .o { display: grid; grid-template-columns: 90px 1fr; gap: 16px; padding: 15px 18px;
+       background: var(--fondo-2); border-radius: 10px; border-left: 3px solid var(--borde); }
+  .o.grave { border-left-color: var(--brasa); }
+  .o.medio { border-left-color: var(--ambar); }
+  .o.bien  { border-left-color: var(--verde); }
+  .et { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+        text-transform: uppercase; padding-top: 4px; line-height: 1.6; }
+  .grave .et { color: var(--brasa); }
+  .medio .et { color: var(--ambar); }
+  .bien .et  { color: var(--verde); }
+  .o p { margin: 0; }
+  .o p + p { margin-top: 7px; color: var(--texto-2); font-size: 15.5px; }
+
+  code { font-family: var(--mono); font-size: 0.86em; background: #262320;
+         padding: 2px 6px; border-radius: 4px; color: #D6CDA6; }
+
+  /* el problema transversal */
+  .caja { background: var(--fondo-2); border: 1px solid var(--borde);
+          border-radius: 14px; padding: 30px 32px; margin-top: 30px; }
+  .caja h3 { font-family: var(--serif); font-size: 24px; margin: 0 0 14px; font-weight: 600; }
+  .sintomas { list-style: none; padding: 0; margin: 20px 0 0; }
+  .sintomas li { padding: 11px 0 11px 30px; border-top: 1px solid var(--borde);
+                 position: relative; font-size: 16px; }
+  .sintomas li::before { content: '→'; position: absolute; left: 0; color: var(--brasa);
+                         font-family: var(--mono); }
+
+  /* nivel */
+  .nivel { display: flex; flex-direction: column; }
+  .falta { padding: 30px 0; border-top: 1px solid var(--borde); }
+  .falta h3 { font-family: var(--serif); font-size: 22px; margin: 0 0 12px; font-weight: 600; }
+  .falta > p { margin: 0 0 12px; max-width: 70ch; }
+  .falta .hoy { color: var(--texto-2); font-size: 16px; max-width: 70ch; margin: 0; }
+  .falta .hoy b { color: var(--brasa); font-weight: 600; }
+
+  .cierre { margin-top: 64px; padding: 26px 28px; border: 1px solid var(--borde);
+            border-radius: 12px; background: var(--fondo-2); color: var(--texto-2);
+            font-size: 16.5px; max-width: 76ch; }
+  .cierre b { color: var(--texto); }
+  .cierre p { margin: 0 0 12px; }
+  .cierre p:last-child { margin-bottom: 0; }
+
+  @media (max-width: 880px) {
+    .pantalla { grid-template-columns: 1fr; gap: 22px; }
+    .marco { position: static; max-width: 286px; }
+    .medidas { grid-template-columns: 1fr; }
+    .o { grid-template-columns: 1fr; gap: 5px; }
+    .et { padding-top: 0; }
+  }
+</style>
+
+<div class="w">
+
+<header>
+  <h1>Teleprompter: el estado real</h1>
+  <p class="bajada">Todas las pantallas que existen hoy, capturadas del teléfono de Javier y no de un emulador. El circuito completo, lo que falla en cada paso, y qué separa esto de una aplicación terminada.</p>
+  <div class="ficha">
+    <span>15 de septiembre de 2026</span>
+    <span><b>moto g86 power 5G</b> · Android 16</span>
+    <span>APK desde <b>main</b></span>
+    <span>177 de 177 pruebas</span>
+  </div>
+</header>
+
+<!-- ───────────── PARTE 1 ───────────── -->
+<section class="parte">
+  <p class="rotulo">Parte uno</p>
+  <h2>El aparato, que no era el que mirábamos</h2>
+  <p class="intro">Antes de discutir una sola pantalla hay que decir esto, porque invalida buena parte de lo que veníamos evaluando: el emulador con el que estuvimos ajustando tamaños y proporciones no tiene las medidas del teléfono de Javier.</p>
+
+  <div class="medidas">
+    <div class="med real">
+      <h3>El teléfono de verdad</h3>
+      <div class="cifra">1220 × 2712</div>
+      <div class="cifra">densidad 450</div>
+      <p>Barra de estado arriba y barra de navegación de tres botones abajo. Las dos ocupan espacio que la aplicación no está descontando.</p>
+    </div>
+    <div class="med falso">
+      <h3>El emulador que usábamos</h3>
+      <div class="cifra">1080 × 2400</div>
+      <div class="cifra">densidad 420</div>
+      <p>Un 5% más angosto y más bajo en unidades reales. Lo que ahí entraba justo, en el teléfono se sale.</p>
+    </div>
+  </div>
+  <p class="intro" style="margin-top:26px">Eso explica por qué varias cosas que se veían bien del lado de acá, en la mano de Javier aparecen encimadas o cortadas. <b>Se arregla creando un dispositivo virtual con las medidas exactas</b>, y hasta entonces cualquier juicio sobre proporciones hecho en el emulador hay que confirmarlo en el teléfono.</p>
+</section>
+
+<!-- ───────────── PARTE 2 ───────────── -->
+<section class="parte">
+  <p class="rotulo">Parte dos</p>
+  <h2>El circuito, paso por paso</h2>
+  <p class="intro">Diez pantallas, en el orden en que las recorre alguien que abre la aplicación. Todas capturadas del teléfono, con la aplicación al día.</p>
+
+  <div class="pantalla">
+    <div>
+      <div class="marco"><img src="img/01.png" alt="Biblioteca con dos guiones, titulo Guiones pegado a la barra de estado y boton Nuevo abajo a la derecha"></div>
+      <p class="pie">01 · biblioteca</p>
+    </div>
+    <div>
+      <p class="num">PASO 01</p>
+      <h3 class="tit">La biblioteca</h3>
+      <p class="rol">La puerta de entrada. Lista de guiones, un menú y un botón para crear.</p>
+      <div class="obs">
+        <div class="o grave"><span class="et">Grave</span><div>
+          <p><strong>«Guiones» se superpone con la barra de estado.</strong></p>
+          <p>Las letras del título están a la misma altura que el reloj del sistema. No es que quede apretado: se pisan.</p>
+        </div></div>
+        <div class="o grave"><span class="et">Grave</span><div>
+          <p><strong>«+ Nuevo» queda debajo de la barra de navegación.</strong></p>
+          <p>Su mitad inferior no se puede tocar: el dedo cae en los botones de Android.</p>
+        </div></div>
+        <div class="o medio"><span class="et">Vacío</span><div>
+          <p><strong>Dos guiones y media pantalla en blanco.</strong></p>
+          <p>Los dos se llaman «Sin título» y se distinguen solo por la duración. Nada invita a nombrarlos.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pantalla">
+    <div>
+      <div class="marco"><img src="img/02.png" alt="Menu de la biblioteca con Ver Archivados, Importar archivo, Motor de voz, Ver transcripcion en vivo y Medicion Panel Corpus"></div>
+      <p class="pie">02 · menú de la biblioteca</p>
+    </div>
+    <div>
+      <p class="num">PASO 02</p>
+      <h3 class="tit">El menú de la biblioteca</h3>
+      <p class="rol">Cinco entradas detrás de los tres puntos.</p>
+      <div class="obs">
+        <div class="o medio"><span class="et">Mezcla</span><div>
+          <p><strong>Dos cosas del usuario y tres nuestras, en la misma lista.</strong></p>
+          <p><em>Ver archivados</em> e <em>Importar archivo</em> son del que usa la app. <em>Motor de voz</em>, <em>Ver transcripción</em> y <em>Medición</em> son instrumentos para arreglar el motor. Están juntas y se ven igual.</p>
+        </div></div>
+        <div class="o medio"><span class="et">Ajeno</span><div>
+          <p><strong>La casilla es azul.</strong></p>
+          <p>Es la que trae el navegador. Es el único azul de toda la aplicación y no pertenece a la paleta. En los Ajustes ya se corrigió; acá no.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pantalla">
+    <div>
+      <div class="marco"><img src="img/03.png" alt="Panel de medicion y corpus, con una casilla azul Medir esta lectura y nada mas"></div>
+      <p class="pie">03 · medición</p>
+    </div>
+    <div>
+      <p class="num">PASO 03</p>
+      <h3 class="tit">El panel de medición</h3>
+      <p class="rol">Donde se graba y se descarga el corpus con el que se afina el motor.</p>
+      <div class="obs">
+        <div class="o bien"><span class="et">Correcto</span><div>
+          <p><strong>Ya no está en los Ajustes.</strong></p>
+          <p>Es un instrumento nuestro y vive con los otros instrumentos. Ese fue el criterio y se cumplió.</p>
+        </div></div>
+        <div class="o medio"><span class="et">Ajeno</span><div>
+          <p><strong>Aparece como una tarjeta en el medio de la nada.</strong></p>
+          <p>No está anclado ni arriba ni abajo: flota. Y la casilla vuelve a ser la azul del navegador.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pantalla">
+    <div>
+      <div class="marco"><img src="img/04.png" alt="Editor con el guion cargado, titulo subrayado, contador de palabras y barra verde Leer abajo"></div>
+      <p class="pie">04 · editor</p>
+    </div>
+    <div>
+      <p class="num">PASO 04</p>
+      <h3 class="tit">El editor</h3>
+      <p class="rol">Donde se escribe o se pega el guion. 2.623 palabras en este caso.</p>
+      <div class="obs">
+        <div class="o bien"><span class="et">Correcto</span><div>
+          <p><strong>El título se ve que es un campo.</strong></p>
+          <p>El subrayado alcanza. Antes parecía un encabezado impreso y por eso el guion sigue llamándose «Sin título».</p>
+        </div></div>
+        <div class="o grave"><span class="et">Grave</span><div>
+          <p><strong>La barra «Leer» está cortada por la barra de navegación.</strong></p>
+          <p>Comprobado de la peor manera: al tocarla por comando, el toque cayó en el botón de inicio de Android y salió de la aplicación. Si le pasa a un comando con coordenadas exactas, le pasa a un dedo.</p>
+        </div></div>
+        <div class="o medio"><span class="et">Sin uso</span><div>
+          <p><strong>«+ Agregar bloque» sigue sin explicarse.</strong></p>
+          <p>Decisión ya tomada: se queda como está hasta definir para qué sirve un bloque sin costarle nada al que lee.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pantalla">
+    <div>
+      <div class="marco"><img src="img/05.png" alt="Menu del editor con Idioma, Pegar texto, Abrir archivo y Ajustes, separados en tres grupos"></div>
+      <p class="pie">05 · menú del editor</p>
+    </div>
+    <div>
+      <p class="num">PASO 05</p>
+      <h3 class="tit">El menú del editor</h3>
+      <p class="rol">Idioma, dos acciones, y la puerta a los Ajustes.</p>
+      <div class="obs">
+        <div class="o bien"><span class="et">Correcto</span><div>
+          <p><strong>Ya dice «Ajustes», sin el engranaje y sin la palabra sobrante.</strong></p>
+          <p>Y las tres clases de cosa están separadas con líneas: el ajuste arriba, las acciones en el medio, la puerta abajo.</p>
+        </div></div>
+        <div class="o bien"><span class="et">Resuelto</span><div>
+          <p><strong>El idioma pertenece al guion, no a la aplicación.</strong></p>
+          <p>Estaba anotado como incoherencia y no lo es: se guarda en el guion, viaja con el texto. Su lugar es este.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pantalla">
+    <div>
+      <div class="marco"><img src="img/06.png" alt="Panel de Ajustes con tres grupos: Como se ve el texto, Colores y La toma"></div>
+      <p class="pie">06 · ajustes</p>
+    </div>
+    <div>
+      <p class="num">PASO 06</p>
+      <h3 class="tit">Los ajustes</h3>
+      <p class="rol">Diez controles repartidos en tres grupos con título.</p>
+      <div class="obs">
+        <div class="o bien"><span class="et">Correcto</span><div>
+          <p><strong>Es la pantalla mejor resuelta de la aplicación.</strong></p>
+          <p>Tres grupos, el tamaño de letra arriba de todo —es el que más se cambia—, dos opciones se eligen viéndolas las dos, y una sola salida.</p>
+        </div></div>
+        <div class="o medio"><span class="et">Pendiente</span><div>
+          <p><strong>Quedan cuatro listas desplegables.</strong></p>
+          <p>Fondo, Color de letra, Tipografía y Anclaje. Tienen más de dos opciones, así que la lista se justifica — pero ninguna deja ver el resultado antes de elegir.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pantalla">
+    <div>
+      <div class="marco"><img src="img/07.png" alt="Cuenta regresiva: un numero 1 grande y translucido dibujado encima del texto"></div>
+      <p class="pie">07 · cuenta regresiva</p>
+    </div>
+    <div>
+      <p class="num">PASO 07</p>
+      <h3 class="tit">La cuenta regresiva</h3>
+      <p class="rol">Tres segundos entre apretar Leer y empezar a hablar.</p>
+      <div class="obs">
+        <div class="o grave"><span class="et">Grave</span><div>
+          <p><strong>El número se dibuja encima del texto.</strong></p>
+          <p>El «1» translúcido cae sobre los renglones y los dos quedan ilegibles. Es el momento en que la persona busca dónde empezar a leer.</p>
+        </div></div>
+        <div class="o grave"><span class="et">Miente</span><div>
+          <p><strong>Dice «Detenido» antes de que empieces.</strong></p>
+          <p>El único aviso de que el motor no está siguiendo aparece durante la cuenta, cuando todavía no tiene que seguir nada. Le enseña a la persona a ignorarlo.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pantalla">
+    <div>
+      <div class="marco"><img src="img/08.png" alt="Pantalla de lectura: texto blanco sobre negro, dos renglones claros arriba y el resto atenuado"></div>
+      <p class="pie">08 · lectura</p>
+    </div>
+    <div>
+      <p class="num">PASO 08</p>
+      <h3 class="tit">La lectura</h3>
+      <p class="rol">La toma. Es la única pantalla que el producto existe para dar.</p>
+      <div class="obs">
+        <div class="o grave"><span class="et">Grave</span><div>
+          <p><strong>Se ven dos renglones claros, no cuatro.</strong></p>
+          <p>La constante dice <code>RENGLONES_CLAROS = 4</code> y el velo se arregló para usarla. En el teléfono, la zona clara abarca dos renglones y medio. Hay que medirlo: puede ser que el alto del contenedor incluya el área segura y la cuenta salga corrida.</p>
+        </div></div>
+        <div class="o grave"><span class="et">Grave</span><div>
+          <p><strong>«Detenido» se dibuja encima del texto.</strong></p>
+          <p>Tapa el renglón «que nos quiere le pasamos la». Subimos su contraste para que se lea, y al hacerlo se volvió un estorbo.</p>
+        </div></div>
+        <div class="o grave"><span class="et">Grave</span><div>
+          <p><strong>El último renglón queda debajo de la barra de navegación.</strong></p>
+          <p>El texto sigue por detrás del sistema. En un teleprompter, perder un renglón por el borde es perder la frase.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pantalla">
+    <div>
+      <div class="marco"><img src="img/09.png" alt="Lectura con la barra de controles abajo: Salir, Pausa y el tamano de letra, tapados por la barra de navegacion"></div>
+      <p class="pie">09 · controles de lectura</p>
+    </div>
+    <div>
+      <p class="num">PASO 09</p>
+      <h3 class="tit">Los controles de la lectura</h3>
+      <p class="rol">Un toque los trae. Salir, Pausa y el tamaño de letra.</p>
+      <div class="obs">
+        <div class="o bien"><span class="et">Correcto</span><div>
+          <p><strong>Ya no tapan el primer renglón.</strong></p>
+          <p>La barra bajó al pie y el texto no se mueve ni un pixel al aparecer. Era el objetivo y se cumplió.</p>
+        </div></div>
+        <div class="o grave"><span class="et">Creado</span><div>
+          <p><strong>Pero ahora chocan con la barra de navegación.</strong></p>
+          <p>«Salir» y «Pausa» quedan debajo del sistema y apenas se pueden tocar. Al bajar la barra resolvimos un problema y creamos otro, porque esta pantalla nunca descontó el espacio del sistema abajo.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pantalla">
+    <div>
+      <div class="marco"><img src="img/10.png" alt="De vuelta en el editor despues de salir de la lectura con el gesto de atras"></div>
+      <p class="pie">10 · la vuelta</p>
+    </div>
+    <div>
+      <p class="num">PASO 10</p>
+      <h3 class="tit">La vuelta al editor</h3>
+      <p class="rol">Se sale con el botón Salir o con el gesto de atrás de Android.</p>
+      <div class="obs">
+        <div class="o bien"><span class="et">Correcto</span><div>
+          <p><strong>El gesto de atrás ya no se lleva la lectura.</strong></p>
+          <p>Comprobado en este recorrido: se salió con el gesto y volvió al editor pasando por el guardado. Hasta ayer ese camino perdía la grabación entera sin avisar.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── PARTE 3 ───────────── -->
+<section class="parte">
+  <p class="rotulo">Parte tres</p>
+  <h2>Una sola causa, siete síntomas</h2>
+  <p class="intro">Casi todo lo marcado como grave arriba no son siete problemas: son uno solo, repetido. La aplicación no descuenta el espacio que ocupa el sistema operativo.</p>
+
+  <div class="caja">
+    <h3>El área segura está en una sola pantalla</h3>
+    <p>En la tarea 35 se agregó <code>env(safe-area-inset-*)</code> <strong>solo a la superficie de lectura</strong>. La biblioteca y el editor quedaron con un margen fijo de 16 píxeles, que no sabe que existen ni la muesca ni la barra de navegación.</p>
+    <p style="margin-top:14px;color:var(--texto-2)">Y en la lectura está aplicado al contenedor, pero la barra de controles se posiciona por encima de él, así que tampoco lo respeta.</p>
+    <ul class="sintomas">
+      <li>«Guiones» pisando el reloj del sistema</li>
+      <li>«+ Nuevo» con la mitad inferior intocable</li>
+      <li>«Leer» tan pegado al sistema que el toque cae en el botón de inicio</li>
+      <li>El texto del editor dibujándose sobre la barra de estado al abrir el teclado</li>
+      <li>El último renglón de la lectura por detrás de la barra de navegación</li>
+      <li>«Salir» y «Pausa» debajo del sistema</li>
+      <li>El punto rojo de grabación cortado por el borde superior</li>
+    </ul>
+    <p style="margin-top:22px"><strong>Se arregla en un lugar y se caen los siete.</strong> Javier ya decidió que va en los cuatro bordes, no solo arriba: en horizontal, la muesca queda al costado.</p>
+  </div>
+</section>
+
+<!-- ───────────── PARTE 4 ───────────── -->
+<section class="parte">
+  <p class="rotulo">Parte cuatro</p>
+  <h2>Qué falta para que parezca terminada</h2>
+  <p class="intro">Lo de arriba son defectos: cosas rotas que se arreglan. Esto es otra cosa — lo que separa una aplicación que funciona de una que alguien pagaría. Va sin adornos.</p>
+
+  <div class="nivel">
+    <div class="falta">
+      <h3>No hay una identidad, hay valores por omisión</h3>
+      <p>El verde, la tipografía serif de los títulos, los grises: ninguno se eligió. Fueron apareciendo. Una aplicación terminada tiene una paleta decidida, dos tipografías con un motivo, y una escala de tamaños que se repite en todas las pantallas.</p>
+      <p class="hoy"><b>Se nota en:</b> las casillas azules del navegador conviviendo con el verde propio, y en que cada pantalla tiene su propio criterio de espaciado.</p>
+    </div>
+
+    <div class="falta">
+      <h3>Nada le cuenta a nadie qué hace esto</h3>
+      <p>Al abrir por primera vez hay una lista vacía y una frase. No dice que el texto se mueve solo siguiendo tu voz, que es lo único que distingue a este producto de los otros veinte teleprompters de la tienda.</p>
+      <p class="hoy"><b>Se nota en:</b> la biblioteca vacía, que ocupa una pantalla entera para decir que está vacía.</p>
+    </div>
+
+    <div class="falta">
+      <h3>La aplicación no responde al tacto</h3>
+      <p>Los botones no se hunden, los paneles aparecen de golpe, nada confirma que se tocó. En un teléfono eso se lee como que la aplicación está trabada o es lenta, aunque no lo esté.</p>
+      <p class="hoy"><b>Se nota en:</b> los ajustes, que aparecen y desaparecen sin transición; y en que no hay forma de saber si «Leer» registró el toque hasta que cambia la pantalla.</p>
+    </div>
+
+    <div class="falta">
+      <h3>Todo pesa lo mismo</h3>
+      <p>En cada pantalla, el elemento más importante debería verse primero. Hoy, en la lectura, lo único que importa es el texto — y compiten con él un punto rojo, un cartel de estado y una barra. En el editor, la barra verde a ancho completo pesa más que el guion.</p>
+      <p class="hoy"><b>Se nota en:</b> que «Detenido» tapa texto justamente en la pantalla donde el texto es el producto.</p>
+    </div>
+
+    <div class="falta">
+      <h3>Errores que solo existen en la consola</h3>
+      <p>Si el motor falla, <code>useASR</code> escribe el error en la consola del navegador. En un teléfono eso no lo ve nadie: la persona queda mirando una pantalla que no hace nada, sin saber si es ella o la aplicación.</p>
+      <p class="hoy"><b>Se nota en:</b> toda la tarde del 14 de septiembre, persiguiendo a ciegas por qué el motor no arrancaba.</p>
+    </div>
+
+    <div class="falta">
+      <h3>No hay horizontal</h3>
+      <p>Grabar a cámara con el teléfono acostado es la mitad de los casos reales, y la aplicación nunca se probó así. Con el área segura resuelta en los cuatro bordes, es lo primero que habría que mirar.</p>
+      <p class="hoy"><b>Se nota en:</b> que ni siquiera sabemos qué pasa — no está medido.</p>
+    </div>
+  </div>
+
+  <div class="cierre">
+    <p><b>Y una advertencia sobre el método.</b> Todo lo de la parte uno pasó porque durante semanas se juzgaron proporciones en un emulador con otras medidas. Mientras no exista un dispositivo virtual igual al teléfono, ninguna decisión sobre tamaños vale hasta verla en el teléfono.</p>
+  </div>
+</section>
+
+<!-- ───────────── PARTE 5 ───────────── -->
+<section class="parte">
+  <p class="rotulo">Parte cinco</p>
+  <h2>Cómo lo hacen los que saben, y qué de eso nos sirve</h2>
+  <p class="intro">Antes de copiar nada hay que decir algo que no aparece en ninguna guía, porque es de este producto: <strong>esta aplicación tiene dos mundos con reglas opuestas.</strong> Lo que la hace buena en uno la arruina en el otro.</p>
+
+  <div class="medidas">
+    <div class="med real">
+      <h3>Fuera de la lectura</h3>
+      <div class="cifra" style="font-family:var(--serif);font-size:21px;letter-spacing:0">Biblioteca · editor · ajustes</div>
+      <p>Acá valen las reglas de cualquier aplicación buena: el movimiento explica qué pasó, cada toque responde, y los estados vacíos enseñan. Es donde la persona <em>mira la pantalla</em>.</p>
+    </div>
+    <div class="med falso">
+      <h3>Dentro de la lectura</h3>
+      <div class="cifra" style="font-family:var(--serif);font-size:21px;letter-spacing:0">La toma</div>
+      <p>Acá la regla se invierte. La persona <strong>mira el lente de la cámara</strong>, habla, y se está grabando. Todo lo que se mueve, aparece o parpadea y no es el texto es un defecto que sale en el video.</p>
+    </div>
+  </div>
+
+  <div class="nivel" style="margin-top:20px">
+
+    <div class="falta">
+      <h3>El movimiento tiene gramática, no es decoración</h3>
+      <p>Material Design define <strong>dos curvas y cuatro duraciones</strong>, y la regla es de física, no de gusto: lo que entra desacelera, lo que sale acelera. Una transición de móvil ronda los <strong>300&nbsp;ms</strong>; una de pantalla completa llega a <strong>375&nbsp;ms</strong>. Más lento se siente pesado; más rápido no se alcanza a leer qué pasó.</p>
+      <p>La actualización de 2026 —Material Expressive— va más lejos y convierte el movimiento en un <em>token</em> de primer orden, con resortes distintos según la jerarquía: la acción principal se mueve distinto que el fondo.</p>
+      <p class="hoy"><b>Qué nos sirve:</b> una tabla chica —dos curvas, tres duraciones— escrita una vez y respetada en todas las pantallas de afuera. <b>Hoy no existe ninguna:</b> los paneles aparecen de golpe porque nadie decidió que no.</p>
+    </div>
+
+    <div class="falta">
+      <h3>Cada control tiene cuatro partes, y a los nuestros les falta una</h3>
+      <p>Dan Saffer desarma cualquier interacción chica en <strong>disparador, reglas, respuesta, y bucles y modos</strong>. Su frase resume el asunto: <em>«la diferencia entre un producto que amás y uno que tolerás suele estar en las microinteracciones».</em></p>
+      <p>Nuestros controles tienen disparador y reglas —se tocan y hacen algo— pero casi ninguno tiene <strong>respuesta</strong>: nada confirma que el toque llegó. En un teléfono eso se lee como lentitud, aunque la aplicación sea instantánea.</p>
+      <p class="hoy"><b>Se nota en:</b> apretar «Leer» y no saber si registró hasta que cambia la pantalla entera.</p>
+    </div>
+
+    <div class="falta">
+      <h3>El estado vacío es la primera clase, no un cartel de error</h3>
+      <p>La práctica establecida es clara: la pantalla vacía <strong>enseña qué hace la aplicación</strong> y empuja a una acción concreta. Es el momento de mayor atención y el de menor información.</p>
+      <p class="hoy"><b>Hoy decimos:</b> «Acá van a estar tus guiones». <b>No decimos lo único que nos distingue:</b> que el texto se mueve solo, siguiendo tu voz, sin tocar nada. Hay veinte teleprompters en la tienda y ninguno hace eso.</p>
+    </div>
+
+    <div class="falta">
+      <h3>La emoción, acá, no es adorno: es el único canal que queda</h3>
+      <p>Y este es el hallazgo que no viene de ninguna guía, sino de nuestro caso. <strong>Mientras lee, la persona no mira la pantalla.</strong> Está mirando el lente. Cualquier aviso visual —un cartel, un color, un punto— llega a un ojo que no está ahí.</p>
+      <p>Queda un canal: <strong>el tacto</strong>. Una vibración corta cuando el motor engancha tu voz; otra distinta, más grave, si te pierde. Se percibe sin mirar, no sale en el video y no interrumpe la lectura.</p>
+      <p class="hoy"><b>Es posible hoy:</b> Capacitor tiene plugin oficial de háptica con estilos de impacto y patrones propios. <b>Es la mejor idea de esta investigación</b> y es específica de este producto: en una aplicación que se mira, no serviría de nada.</p>
+    </div>
+
+    <div class="falta">
+      <h3>La regla inversa, para la toma</h3>
+      <p>Todo lo anterior <strong>se apaga</strong> al entrar a leer. Nada anima, nada aparece con una transición bonita, nada llama la atención. El único movimiento permitido es el del texto, y tiene que ser regular y previsible: ya nos costó un mes conseguirlo.</p>
+      <p>Las transiciones que sí valen están <strong>en el borde</strong>: el instante de entrar a la toma y el de salir. Ahí es donde la persona todavía mira la pantalla, y es el último momento antes de actuar frente a una cámara. Es el lugar exacto donde una aplicación puede dar confianza o quitarla.</p>
+      <p class="hoy"><b>Hoy ese borde es:</b> un número translúcido dibujado encima del texto y un cartel que dice «Detenido» antes de que empieces.</p>
+    </div>
+
+    <div class="falta">
+      <h3>Y lo que hay que respetar aunque no se vea</h3>
+      <p>Toda animación necesita su apagado: quien tenga activado <em>reducir movimiento</em> en su teléfono debe ver la aplicación quieta. No es un detalle de cortesía — para algunas personas el movimiento produce mareo real.</p>
+      <p class="hoy"><b>Se resuelve con una línea</b> —<code>prefers-reduced-motion</code>— pero solo si está escrita desde el principio, no agregada después a veinte animaciones.</p>
+    </div>
+
+  </div>
+
+  <div class="cierre">
+    <p><b>Lo que hay que definir antes de encargar nada.</b> Tres cosas, y son de Javier:</p>
+    <p>— <b>La tabla de movimiento.</b> Dos curvas y tres duraciones, decididas una vez. Sin eso, cada tarea inventa las suyas y en tres meses hay quince.</p>
+    <p>— <b>Qué dice la aplicación la primera vez.</b> Una frase que explique que el texto sigue tu voz. Es la única pantalla donde se puede decir.</p>
+    <p>— <b>Si vamos con la háptica.</b> Es la idea más fuerte de toda esta investigación, pero cambia cómo se siente leer y eso lo decide el que lee.</p>
+    <p style="margin-top:16px"><b>Lo que este documento no hace.</b> No propone un orden de trabajo ni encarga nada. Es el mapa: lo que hay, en el aparato real, y hacia dónde subirlo. Qué se hace primero se decide con esto delante.</p>
+  </div>
+</section>
+
+</div>

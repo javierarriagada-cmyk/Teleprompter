@@ -1,0 +1,240 @@
+<title>Ajustes: de diez a seis</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300..700&family=Source+Serif+4:opsz,wght@8..60,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --fondo: #131210; --fondo-2: #1B1917; --borde: #2D2A26;
+    --texto: #EAE6DE; --texto-2: #9A948A;
+    --verde: #33A492; --brasa: #D45F45;
+    /* los colores reales de la aplicacion */
+    --app-papel: #F2F0EB; --app-tinta: #1A1815; --app-acento: #0F8377;
+    --app-borde: #DCD8D0; --app-suelo: #FFFFFF; --app-apagado: #8A857C;
+    --serif: "Source Serif 4", Georgia, serif;
+    --sans: "Source Sans 3", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--fondo); color: var(--texto); font-family: var(--sans);
+         font-size: 17px; line-height: 1.6; margin: 0; -webkit-font-smoothing: antialiased; }
+  .w { max-width: 1080px; margin: 0 auto; padding: 0 24px 100px; }
+
+  header { padding: 64px 0 34px; border-bottom: 1px solid var(--borde); }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(30px, 5vw, 46px);
+       line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 16px; }
+  .bajada { color: var(--texto-2); max-width: 60ch; margin: 0; font-size: 18px; }
+
+  .par { display: grid; grid-template-columns: 1fr 1fr; gap: 46px; margin-top: 54px; }
+  .col h2 { font-family: var(--mono); font-size: 12px; letter-spacing: 0.15em;
+            text-transform: uppercase; margin: 0 0 6px; }
+  .col.antes h2 { color: var(--brasa); }
+  .col.desp h2 { color: var(--verde); }
+  .col .sub { color: var(--texto-2); font-size: 15px; margin: 0 0 20px; }
+
+  /* el telefono, en la proporcion real de un moto g86: 1220 x 2712 */
+  .tel { width: 100%; max-width: 330px; margin: 0 auto; aspect-ratio: 1220 / 2712;
+         background: #000; border-radius: 26px; padding: 6px; position: relative;
+         box-shadow: 0 18px 50px rgba(0,0,0,.5); }
+  .pant { width: 100%; height: 100%; border-radius: 21px; overflow: hidden;
+          background: var(--app-papel); position: relative;
+          display: flex; flex-direction: column; justify-content: flex-end; }
+
+  .velo { position: absolute; inset: 0; background: rgba(0,0,0,.45); }
+
+  .hoja { position: relative; background: var(--app-suelo); border-radius: 14px 14px 0 0;
+          padding: 16px 15px 18px; color: var(--app-tinta); font-size: 9px;
+          max-height: 88%; overflow: hidden; }
+  .hoja-tit { display: flex; justify-content: space-between; align-items: center;
+              margin-bottom: 13px; }
+  .hoja-tit b { font-family: var(--serif); font-size: 15px; font-weight: 600; }
+  .hoja-tit span { color: var(--app-apagado); font-size: 13px; }
+
+  .grupo { font-family: var(--sans); font-size: 7.5px; letter-spacing: .09em;
+           text-transform: uppercase; color: var(--app-apagado);
+           margin: 13px 0 7px; font-weight: 600; }
+  .grupo:first-of-type { margin-top: 0; }
+
+  .fila { display: flex; justify-content: space-between; align-items: center;
+          gap: 8px; margin-bottom: 8px; }
+  .fila > .et { font-weight: 600; font-size: 9px; }
+
+  .lista { background: var(--app-papel); border: 1px solid var(--app-borde);
+           border-radius: 4px; padding: 3px 7px; font-size: 8.5px; color: var(--app-tinta);
+           display: flex; align-items: center; gap: 5px; }
+  .lista::after { content: '⌄'; color: var(--app-apagado); font-size: 9px; line-height: 0.6; }
+
+  .paso { display: flex; gap: 3px; align-items: center; }
+  .paso .b { background: var(--app-papel); border: 1px solid var(--app-borde);
+             border-radius: 4px; width: 17px; text-align: center; padding: 2px 0; font-size: 9px; }
+  .paso .v { font-weight: 700; font-size: 9.5px; min-width: 20px; text-align: center; }
+
+  .ops { display: flex; gap: 3px; }
+  .ops .o { border: 1px solid var(--app-borde); background: var(--app-papel);
+            border-radius: 4px; padding: 3px 7px; font-size: 8.5px; }
+  .ops .o.on { background: var(--app-acento); color: #fff; border-color: var(--app-acento);
+               font-weight: 700; }
+
+  .cas { width: 11px; height: 11px; border: 1.5px solid var(--app-borde);
+         border-radius: 2px; background: var(--app-suelo); }
+  .cas.on { background: var(--app-acento); border-color: var(--app-acento); position: relative; }
+  .cas.on::after { content: '✓'; color: #fff; font-size: 8px; position: absolute;
+                   left: 1px; top: -2px; }
+  .cas.azul { background: #1a73e8; border-color: #1a73e8; position: relative; }
+  .cas.azul::after { content: '✓'; color: #fff; font-size: 8px; position: absolute;
+                     left: 1px; top: -2px; }
+
+  /* las parejas de color */
+  .parejas { display: flex; gap: 4px; }
+  .pj { width: 30px; height: 19px; border-radius: 4px; border: 1px solid var(--app-borde);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 8px; font-weight: 700; }
+  .pj.on { outline: 2px solid var(--app-acento); outline-offset: 1px; border-color: transparent; }
+  .pj.nb { background: #000; color: #fff; }
+  .pj.na { background: #000; color: #F5C24B; }
+  .pj.bn { background: #fff; color: #000; }
+
+  .cuenta { font-family: var(--mono); font-size: 12px; color: var(--texto-2);
+            text-align: center; margin-top: 16px; }
+  .cuenta b { color: var(--texto); }
+
+  /* notas */
+  .notas { margin-top: 70px; padding-top: 34px; border-top: 1px solid var(--borde); }
+  .notas h2 { font-family: var(--serif); font-size: 27px; margin: 0 0 26px; font-weight: 600; }
+  .nota { padding: 22px 0; border-top: 1px solid var(--borde); }
+  .nota:first-of-type { border-top: none; padding-top: 0; }
+  .nota h3 { font-family: var(--serif); font-size: 20px; margin: 0 0 9px; font-weight: 600; }
+  .nota p { margin: 0 0 8px; max-width: 72ch; }
+  .nota p:last-child { margin-bottom: 0; }
+  .nota .q { color: var(--texto-2); font-size: 15.5px; }
+  code { font-family: var(--mono); font-size: .86em; background: #262320;
+         padding: 2px 6px; border-radius: 4px; color: #D6CDA6; }
+
+  @media (max-width: 820px) { .par { grid-template-columns: 1fr; gap: 44px; } }
+</style>
+
+<div class="w">
+
+<header>
+  <h1>Ajustes: de diez a seis</h1>
+  <p class="bajada">El panel como está hoy y como quedaría, en la proporción real del moto g86 — 1220 × 2712. Nada se pierde: lo que sale es porque estaba repetido o porque no era de esta pantalla.</p>
+</header>
+
+<div class="par">
+
+  <!-- ANTES -->
+  <div class="col antes">
+    <h2>Hoy</h2>
+    <p class="sub">Diez controles. Tres deciden el color, dos deciden el ancho, y uno no es de la toma.</p>
+    <div class="tel"><div class="pant">
+      <div class="velo"></div>
+      <div class="hoja">
+        <div class="hoja-tit"><b>Ajustes</b><span>✕</span></div>
+
+        <div class="grupo">Cómo se ve el texto</div>
+        <div class="fila"><span class="et">Tamaño de letra:</span>
+          <span class="paso"><span class="b">−</span><span class="v">24</span><span class="b">+</span></span></div>
+        <div class="fila"><span class="et">Columna:</span>
+          <span class="ops"><span class="o on">Ancho completo</span><span class="o">Angosta</span></span></div>
+        <div class="fila"><span class="et">Margen:</span>
+          <span class="paso"><span class="b">−</span><span class="v">5%</span><span class="b">+</span></span></div>
+        <div class="fila"><span class="et">Tipografía:</span>
+          <span class="lista">Source Sans 3</span></div>
+
+        <div class="grupo">Colores</div>
+        <div class="fila"><span class="et">Fondo:</span><span class="lista">Negro</span></div>
+        <div class="fila"><span class="et">Color de letra:</span><span class="lista">Blanco</span></div>
+        <div class="fila"><span class="et">Tema:</span>
+          <span class="ops"><span class="o on">Claro</span><span class="o">Oscuro</span></span></div>
+
+        <div class="grupo">La toma</div>
+        <div class="fila"><span class="et">Espejo:</span><span class="cas"></span></div>
+        <div class="fila"><span class="et">Anclaje:</span><span class="lista">Arriba</span></div>
+        <div class="fila"><span class="et">Mostrar tiempo:</span><span class="cas azul"></span></div>
+      </div>
+    </div></div>
+    <p class="cuenta"><b>10</b> controles · <b>4</b> listas desplegables</p>
+  </div>
+
+  <!-- DESPUES -->
+  <div class="col desp">
+    <h2>Propuesto</h2>
+    <p class="sub">Seis. Ninguno se pisa con otro, y ninguna combinación puede dejar la pantalla ilegible.</p>
+    <div class="tel"><div class="pant">
+      <div class="velo"></div>
+      <div class="hoja">
+        <div class="hoja-tit"><b>Ajustes</b><span>✕</span></div>
+
+        <div class="grupo">Cómo se ve el texto</div>
+        <div class="fila"><span class="et">Tamaño de letra:</span>
+          <span class="paso"><span class="b">−</span><span class="v">24</span><span class="b">+</span></span></div>
+        <div class="fila"><span class="et">Ancho:</span>
+          <span class="ops"><span class="o on">Ancho</span><span class="o">Medio</span><span class="o">Angosto</span></span></div>
+        <div class="fila"><span class="et">Tipografía:</span>
+          <span class="ops"><span class="o on">Sans</span><span class="o">Serif</span></span></div>
+
+        <div class="grupo">La toma</div>
+        <div class="fila"><span class="et">Fondo y letra:</span>
+          <span class="parejas">
+            <span class="pj nb on">Aa</span><span class="pj na">Aa</span><span class="pj bn">Aa</span>
+          </span></div>
+        <div class="fila"><span class="et">Dónde leés:</span>
+          <span class="ops"><span class="o on">Arriba</span><span class="o">Medio</span></span></div>
+        <div class="fila"><span class="et">Espejo:</span><span class="cas"></span></div>
+        <div class="fila"><span class="et">Mostrar tiempo:</span><span class="cas on"></span></div>
+      </div>
+    </div></div>
+    <p class="cuenta"><b>7</b> controles · <b>0</b> listas desplegables</p>
+  </div>
+
+</div>
+
+<!-- notas -->
+<section class="notas">
+  <h2>Qué cambia, uno por uno</h2>
+
+  <div class="nota">
+    <h3>Ancho reemplaza a Columna y Margen</h3>
+    <p>Los dos deciden lo mismo: cuánto texto entra por renglón. Hoy se puede llegar al mismo ancho por dos caminos y ninguno dice cuál es cuál.</p>
+    <p class="q">Tres pasos nombrados, y cada uno trae su margen ya puesto — el 5% que elegiste no era un ajuste fino, era el valor que debe venir de fábrica. Así deja de ser una perilla y pasa a ser una decisión.</p>
+  </div>
+
+  <div class="nota">
+    <h3>Fondo y letra, en parejas que se ven</h3>
+    <p>Dos listas separadas permiten elegir negro sobre negro. Nadie quiere eso, pero está a un toque de distancia justo antes de grabar.</p>
+    <p class="q">Tres parejas armadas, elegidas viéndolas: <b>negro con blanco</b> —lo de hoy—, <b>negro con ámbar</b>, que es lo que usa la televisión porque cansa menos la vista en tomas largas, y <b>blanco con negro</b> para grabar con mucha luz alrededor.</p>
+  </div>
+
+  <div class="nota">
+    <h3>Tipografía se queda, pero como dos botones</h3>
+    <p>No es un menú de relleno: son dos decisiones reales. La <b>sans</b> se lee mejor de un vistazo y a distancia, que es lo que hace un teleprompter. La <b>serif</b> se lee mejor de corrido, en textos largos.</p>
+    <p class="q">Lo que cambia es que dejan de estar escondidas en una lista: dos opciones se eligen viéndolas las dos.</p>
+  </div>
+
+  <div class="nota">
+    <h3>«Anclaje» pasa a llamarse «Dónde leés»</h3>
+    <p>Anclaje no dice nada. Ese control decide a qué altura de la pantalla queda el renglón que estás leyendo — o sea, cuánto sube o baja tu mirada respecto del lente de la cámara. Es de las cosas más importantes del panel y tiene el peor nombre.</p>
+  </div>
+
+  <div class="nota">
+    <h3>Tema sale del panel</h3>
+    <p>No es de la toma: es el claro/oscuro de la biblioteca y el editor. Estar acá es lo que hace que uno lo cambie esperando que cambie la lectura, y no pase nada.</p>
+    <p class="q">No se borra. Se muda a donde corresponde: los ajustes de la aplicación.</p>
+  </div>
+
+  <div class="nota">
+    <h3>Espejo se queda</h3>
+    <p>Aunque vos leas del teléfono directo, hay gente que usa plataformas con vidrio y lo necesita — igual que el horizontal. Sacar una opción porque uno no la usa es decidir por los demás.</p>
+    <p class="q">El problema nunca fue que hubiera opciones: fue que entrar a Ajustes no se siente claro.</p>
+  </div>
+
+  <div class="nota">
+    <h3>Mostrar tiempo se queda, y vale más de lo que parecía</h3>
+    <p>Lo dejé fuera de la primera propuesta porque no sabíamos qué mostraba. Javier lo pidió de vuelta y, al mirar el código, tenía razón: <b>no es un reloj</b>.</p>
+    <p class="q">Calcula cuánto te falta usando <b>tu ritmo real de lectura</b>, el que el motor viene midiendo: cuenta las palabras que quedan, las divide por tus palabras por minuto y estima cuánto va a durar el video en total. Para grabar con una duración objetivo, eso es información que ninguna otra pantalla da.</p>
+  </div>
+
+  <div class="nota">
+    <h3>Y una casilla que no es nuestra</h3>
+    <p>En el panel de hoy, la casilla de <em>Mostrar tiempo</em> es azul: es la que trae el navegador, y es el único azul de toda la aplicación. En los Ajustes ya se corrigió con <code>accentColor</code>; queda igual en la biblioteca y en el panel de medición.</p>
+  </div>
+</section>
+
+</div>

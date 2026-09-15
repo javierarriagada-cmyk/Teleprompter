@@ -1,0 +1,156 @@
+TAREA 43 - EL SISTEMA OPERATIVO NO PUEDE METERSE EN LA PANTALLA
+
+PARTIR DE: main (a3cb7bf o posterior). Rama nueva: tarea-43-area-segura.
+PR contra main. AGENTS.md en la raiz.
+
+Hay una etiqueta punto-bueno-2026-09-14. No la toques.
+
+ESTO ES UN SOLO DEFECTO CON SIETE SINTOMAS. No son siete arreglos: es uno, en tres
+lugares. Si al terminar el texto se mueve distinto, algo salio mal.
+
+
+LO QUE PASA, VISTO EN EL TELEFONO DE JAVIER
+
+Capturado el 15 de septiembre de 2026 en un moto g86 power 5G -1220x2712,
+densidad 450, con barra de estado arriba y barra de navegacion de tres botones
+abajo-:
+
+    - el titulo "Guiones" se SUPERPONE con el reloj del sistema
+    - "+ Nuevo" tiene la mitad de abajo debajo de la barra de navegacion
+    - la barra "Leer" del editor esta tan pegada al sistema que UN TOQUE EN ELLA
+      CAE EN EL BOTON DE INICIO. Comprobado: instalando por adb y tocando con
+      coordenadas exactas, la aplicacion se cerro. Si le pasa a un comando, le
+      pasa a un dedo.
+    - al abrir el teclado, el texto del editor se DIBUJA ENCIMA de la barra de
+      estado
+    - el ultimo renglon de la lectura queda por detras de la barra de navegacion
+    - "Salir" y "Pausa" quedan debajo del sistema y apenas se pueden tocar
+    - el punto rojo de grabacion queda cortado por el borde de arriba
+
+NO SE VE EN EL EMULADOR. El que usabamos es 1080x2400 densidad 420: un 5% mas
+chico en unidades reales. Por eso paso desapercibido.
+
+
+LA CAUSA, EN TRES LUGARES
+
+1. index.html YA TIENE viewport-fit=cover, asi que env() devuelve valores reales.
+   Eso no hay que tocarlo. El problema es donde NO se usan.
+
+2. src/App.tsx, alrededor de la linea 678, la raiz de toda la aplicacion:
+
+       padding: vista === 'lectura' ? 0 : 16
+
+   Dieciseis pixeles fijos. La biblioteca y el editor no saben que existen la
+   muesca ni la barra de navegacion. El area segura se aplico SOLO a la superficie
+   de lectura, en la tarea 35.
+
+3. src/App.tsx, el panel data-testid="panel-controles-lectura":
+
+       position: 'absolute', bottom: 16, left: 16, right: 16
+
+   Esta posicionado contra el contenedor de 100dvh, que NO tiene area segura, y no
+   contra la superficie de lectura, que SI la tiene. Por eso choca con la barra de
+   navegacion aunque la lectura este bien resuelta.
+
+
+QUE HACER
+
+  A. LA RAIZ. Que el padding de biblioteca y editor sume el area segura en los
+     CUATRO bordes. Javier lo decidio asi y el motivo es el horizontal: acostado,
+     la muesca queda al costado.
+
+     Los 16 px actuales se SUMAN, no se reemplazan:
+
+         paddingTop: 'calc(16px + env(safe-area-inset-top, 0px))'
+
+     y lo mismo en los otros tres. En lectura sigue en 0: esa pantalla se maneja
+     sola.
+
+  B. LA BARRA DE CONTROLES. Que su bottom sume el area segura:
+
+         bottom: 'calc(16px + env(safe-area-inset-bottom, 0px))'
+
+     y lo mismo con left y right, para el horizontal.
+
+  C. EL PUNTO ROJO Y "Detenido", en TeleprompterView. Los dos estan posicionados
+     por encima de la superficie que si tiene area segura. Comproba si quedan
+     dentro de ella; si no, aplicales lo mismo.
+
+     NO cambies su texto, ni sus data-testid, ni cuando aparecen.
+
+CON env() A CERO -un navegador de escritorio, o jsdom- TODO TIENE QUE QUEDAR
+EXACTAMENTE COMO ESTA HOY. Es la unica forma de que las pruebas existentes sigan
+teniendo sentido.
+
+
+LO QUE NO SE TOCA
+
+   src/lib/       todo el directorio: el motor no entra en esto
+   src/motor/     idem
+   src/hooks/     idem
+   src/components/banda.ts    nada
+
+   Y de TeleprompterView, NADA de la geometria de lectura: el renglon trabado,
+   avanzarTrabado, PALABRAS_DE_SEGURIDAD, MARGEN_RENGLONES_ARRIBA, MS_DESLIZAR,
+   calcularScrollTop, calcularBanda, el velo, los paddings del contenedor de
+   texto. Lo unico que se toca de ese archivo es la posicion del punto de
+   grabacion y la del indicador de estado, si hiciera falta.
+
+   OJO ESPECIAL: el paddingBottom del contenedor de lectura lleva esta cuenta
+
+       Math.max(0, altoContenedor - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx)
+
+   y es la que permite que el ultimo renglon del guion llegue a la barra de
+   lectura. Lo fija T159. NO LA TOQUES: si la cambias, el final del guion vuelve a
+   quedar fuera de alcance.
+
+   Comprobalo con git diff --stat y ponelo en el informe.
+
+
+UNA COSA QUE NO HAY QUE ARREGLAR TODAVIA
+
+En la pantalla de lectura se ven DOS renglones claros y RENGLONES_CLAROS vale 4.
+Puede tener que ver con esto -si el alto del contenedor incluye el area segura, la
+cuenta de la banda sale corrida- o puede ser otra cosa.
+
+NO LO ARREGLES EN ESTA TAREA. Si al terminar lo ves cambiado, decilo en el informe
+con lo que observaste. Es una medicion aparte y la decision no es tuya.
+
+
+PRUEBAS
+
+   Numerar desde T192. T1 a T191 estan usados.
+
+   T192 - GUARDIANA DEL CERO. Con env() a 0, la geometria de biblioteca, editor y
+          lectura queda IDENTICA a la de hoy. Es la que protege a las 177 pruebas
+          existentes.
+   T193 - La raiz de biblioteca y editor usa env(safe-area-inset-*) en los cuatro
+          bordes, sumado a los 16 px, no en lugar de ellos.
+   T194 - La barra de controles de lectura descuenta el area segura de abajo.
+
+   jsdom borra env() a secas pero lo conserva adentro de calc(), que es justamente
+   por lo que la tarea 35 lo escribio asi. Mira como lo comprueba T163 en
+   src/pruebas/lectura.test.tsx y hacelo igual.
+
+   COMPROBALAS ROMPIENDO: saca el env() de la barra de controles y verifica que
+   T194 se pone ROJA; devolve el padding de la raiz a 16 fijo y verifica que T193
+   se pone ROJA. Despues deja las dos bien. PONE EL RESULTADO TEXTUAL EN EL
+   INFORME, las dos.
+
+   T159 -el ultimo renglon llega a la barra de lectura- tiene que seguir VERDE sin
+   tocarla. Si se pone roja, tocaste el paddingBottom del contenedor.
+
+
+AL TERMINAR
+
+   npx tsc --noEmit limpio.
+   npx vitest run: hoy son 177 de 177. Al terminar, 180 de 180.
+   No se borra ni se saltea ninguna prueba. PROHIBIDO agregar elementos ocultos
+   con display:none para sostener una prueba vieja: ya paso en este repositorio.
+
+   Informe: los tres lugares, uno por uno. El git diff --stat. El numero exacto de
+   pruebas pasadas y falladas. El resultado de romper T193 y T194, textual. Y lo
+   que hayas observado de los renglones claros, sin arreglarlo.
+
+   El telefono no lo ves desde la VM: no digas que "ahora se ve mejor". Deci que
+   cambiaste.
