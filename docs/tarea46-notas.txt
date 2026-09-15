@@ -58,5 +58,15 @@ a grabar y es el momento mas importante de la aplicacion.
 
 4. LAS PALABRAS DE LA BIBLIOTECA VACIA
 
-Siguen siendo de Javier. Hoy dice "Aca van a estar tus guiones" y no cuenta lo
-unico que nos distingue: que el texto se mueve solo siguiendo la voz.
+Siguen siendo de Javier. Hoy dice "Aca van a estar tus guiones" y no cuenta que
+el texto se mueve solo siguiendo la voz.
+
+OJO, CORREGIDO EL 15 DE SEPTIEMBRE: yo le habia pedido a Javier que escribiera
+ese texto diciendo que somos los unicos que seguimos la voz. ES FALSO y habria
+quedado una mentira en el producto. PromptSmart, Teleprompter.com y VoicePrompter
+lo hacen. Ver docs/competencia-el-mercado.txt.
+
+Y hay una segunda cosa a tener en cuenta antes de escribirlo: la competencia que
+graba NO resuelve esto con un texto mejor, sino cambiando QUE PANTALLA VA
+PRIMERO. Abren en un boton grande de grabar, no en la lista de guiones. Ver
+docs/competencia-saturncube.txt, punto 1.

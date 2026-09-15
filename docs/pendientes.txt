@@ -62,8 +62,19 @@ QUE HARIA FALTA ANTES DE ENCARGAR
 La biblioteca vacia dice "Aca van a estar tus guiones" y ocupa una pantalla entera
 para decir que esta vacia.
 
-No dice lo unico que nos distingue: que el texto se mueve solo, siguiendo la voz,
-sin tocar nada. Hay veinte teleprompters en la tienda y ninguno hace eso.
+No dice que el texto se mueve solo, siguiendo la voz, sin tocar nada.
+
+CORREGIDO EL 15 DE SEPTIEMBRE DE 2026. Aca decia "hay veinte teleprompters en la
+tienda y ninguno hace eso". ES FALSO: PromptSmart, Teleprompter.com y
+VoicePrompter siguen la voz, y el primero hace mas de diez anos. Ver
+docs/competencia-el-mercado.txt.
+
+Seguir la voz no es la diferencia: es el precio de entrada. LA DIFERENCIA ES QUE
+A TODOS SE LES CORRE -a PromptSmart, medido por terceros, se le corre 5 a 10
+palabras con ruido de fondo, y su forma de recuperarse es que el que lee toque la
+pantalla-. La promesa que nos queda es que no te perdemos, y que si te perdemos
+no te das cuenta. ESO TODAVIA NO LO CUMPLIMOS, asi que tampoco se puede escribir
+en la pantalla.
 
 La practica establecida es que el estado vacio ENSEÑA que hace la aplicacion y
 empuja a una accion concreta. Es el momento de mayor atencion y el de menor

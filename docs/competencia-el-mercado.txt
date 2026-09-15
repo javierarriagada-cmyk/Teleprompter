@@ -1,0 +1,142 @@
+EL MERCADO DE LOS TELEPROMPTERS, MIRADO DE VERDAD
+Investigado el 15 de septiembre de 2026, a pedido de Javier.
+
+NO ES UN ENCARGO. Alimenta el documento del circuito cuando se retome.
+
+
+==============================================================================
+1. LA CORRECCION QUE ORDENA TODO LO DEMAS
+==============================================================================
+
+VENIAMOS DICIENDO QUE SOMOS LOS UNICOS QUE SEGUIMOS LA VOZ. ES FALSO.
+
+Esta escrito en tres lugares nuestros -docs/pendientes.txt, docs/estado.html y
+docs/circuito.html-: "hay veinte teleprompters en la tienda y ninguno hace eso".
+No es cierto, y lo peor es que se lo pedi a Javier como argumento para escribir
+el texto de la biblioteca vacia. Habria escrito una mentira en el producto.
+
+QUIEN SIGUE LA VOZ, HOY:
+
+  PromptSmart          VoiceTrack. Es quien popularizo la idea, hace mas de
+                       diez anos.
+  Teleprompter.com     VoiceGlide. En iOS, macOS, Android y web.
+  VoicePrompter        seguimiento de la palabra sobre el guion entero,
+                       procesamiento en el aparato, y es codigo abierto.
+
+Asi que el seguidor de voz NO ES LA DIFERENCIA. Es el precio de entrada.
+
+
+==============================================================================
+2. Y SIN EMBARGO, ACA ESTA LA OPORTUNIDAD: A TODOS SE LES CORRE
+==============================================================================
+
+Lo medido por terceros sobre PromptSmart, que es el mejor de los tres:
+
+  - acierta en el 80% de las tomas EN UNA SALA SILENCIOSA
+  - con ruido de fondo, se corre 5 a 10 palabras o mas
+  - un ventilador de techo ya lo empeora de forma notoria
+  - se pierde cuando el que lee hace una pausa para pensar, se traba en una
+    frase, o acelera por nervios -o sea, cuando lee como lee cualquiera-
+  - y para volver a engancharlo hay que TOCAR LA PANTALLA, cosa que el propio
+    que lo probo describe como que "en parte anula el sentido" de que sea
+    manos libres
+
+Hay usuarios de PromptSmart diciendo que una actualizacion les rompio el
+seguimiento y dejaron la aplicacion, y que "muchas veces no agarra las palabras".
+
+ESTO ES EXACTAMENTE NUESTRO PROBLEMA: las dos lecturas de Javier se cortaron en
+la misma palabra, la 335 de 541.
+
+LA CONCLUSION, Y ES LA MAS IMPORTANTE DE TODA LA INVESTIGACION:
+
+  Lo dificil es dificil para todos, y NADIE RESOLVIO LA RECUPERACION. La
+  respuesta de la competencia a que el motor se pierda es "toca la pantalla para
+  recalibrar", que es admitir la derrota.
+
+  La promesa no es "seguimos tu voz" -eso ya lo dicen tres-. La promesa es
+  QUE NO TE PERDEMOS, Y SI TE PERDEMOS NO TE DAS CUENTA.
+
+Y valida lo que dijo Javier el 15 de septiembre cuando rechazo el aviso de "te
+perdi": "de nuevo vamos a perpetuar reglas basadas en el puto error". La
+competencia hizo justamente eso y su propia resena lo llama una derrota.
+
+
+==============================================================================
+3. LO QUE COBRAN
+==============================================================================
+
+  PromptSmart Pro      US$ 9,99 al mes, o US$ 99,96 al ano
+  Teleprompter.com     US$ 7,50 al mes en plan anual -US$ 90 al ano-
+  BIGVU                gratis con marca de agua; despues 19, 29 y 49 al mes
+
+El rubro sostiene suscripciones de 8 a 10 dolares por mes, y los planes gratuitos
+estan mutilados a proposito -marca de agua en el video exportado-.
+
+La aplicacion que tiene Javier instalada -SaturnCube- es gratis con avisos de
+video y sin registro: es el piso del mercado.
+
+
+==============================================================================
+4. CONTRA QUIEN COMPETIMOS DE VERDAD
+==============================================================================
+
+Hay dos mercados distintos y conviene no confundirlos:
+
+  LOS QUE SIGUEN LA VOZ         PromptSmart, Teleprompter.com, VoicePrompter.
+                                Son nuestros competidores reales.
+
+  LA FABRICA DE CONTENIDO       BIGVU, con 12 millones de usuarios: escritor de
+                                guiones con IA, correccion de la mirada,
+                                subtitulos automaticos, kit de marca y
+                                publicacion directa a las redes. Es otro
+                                producto: el teleprompter es una pieza adentro.
+
+  EL PISO GRATUITO              SaturnCube y parecidos: desplazamiento por
+                                reloj, grabacion, avisos.
+
+
+==============================================================================
+5. LA VENTANA FLOTANTE: POR QUE ELLOS PUEDEN
+==============================================================================
+
+Nano Teleprompter, VoicePrompter y el de Norton Five flotan el guion ENCIMA de
+otras aplicaciones de camara. Yo habia concluido que no se podia, porque dos
+aplicaciones no pueden tomar el microfono a la vez en Android.
+
+La conclusion sigue en pie, y ahora se entiende por que ellos si pueden: UNA
+VENTANA FLOTANTE QUE AVANZA POR RELOJ NO NECESITA EL MICROFONO. El conflicto
+existe solo si el prompter flotante quiere seguir la voz mientras otra
+aplicacion graba el audio.
+
+Queda por comprobar si alguno de ellos sigue la voz estando flotando. Si ninguno
+lo hace, el impedimento es real y es de la plataforma.
+
+
+==============================================================================
+6. LO QUE HACEN Y NOSOTROS NO
+==============================================================================
+
+Sin juicio todavia sobre si nos sirve. Solo el inventario:
+
+  - grabar video, camara frontal y trasera        -ya decidido, ver grabar.txt-
+  - horizontal ademas de vertical
+  - microfono externo, mando bluetooth, teclado y pedal
+  - subtitulos automaticos
+  - correccion de la mirada -para que parezca que mirabas el lente-
+  - escritor de guiones con IA
+  - sincronizacion entre aparatos
+  - grabacion hasta 4K
+  - espejo para vidrio de teleprompter                  -esto SI lo tenemos-
+
+
+==============================================================================
+FUENTES
+==============================================================================
+
+  play.google.com/store/apps/details?id=com.saturncube.teleprompter
+  teleprompter.com/blog/best-teleprompter-apps-for-android
+  teleprompter.com/blog/voice-scroll-teleprompter-app-new-feature
+  teleprompter.works/blog/promptsmart-pro-review/
+  promptsmart.com
+  sharespeak.co/teleprompter-pricing-comparison
+  voiceprompter.app/blog/best-teleprompter-app-for-android.html
