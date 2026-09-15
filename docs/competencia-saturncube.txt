@@ -1,0 +1,99 @@
+LA COMPETENCIA: Teleprompter v4.2.0, de SaturnCube Technologies
+Siete capturas del telefono de Javier, 15 de septiembre de 2026.
+Las imagenes estan en docs/competencia/.
+
+NO ES UN ENCARGO. Javier lo cerro asi: "eso con lo pendiente anterior lo dejamos
+para despues de que terminemos todo lo que estamos haciendo".
+
+ESTA APLICACION GRABA VIDEO, asi que sus decisiones de pantalla SI son
+comparables con las nuestras. Ver docs/grabar.txt.
+
+
+LAS SIETE PANTALLAS
+
+  1-lista-de-guiones     buscador, tarjetas con titulo, adelanto y fecha, y los
+                         botones de editar y borrar visibles en cada fila
+  2-grabando-1.5x        el texto ENCIMA de la camara, ocupando el tercio de
+                         arriba; abajo la barra de grabacion
+  3-grabando-1.0x        la misma, con otra velocidad y otro tiempo
+  4-setup                el guion y los ajustes de lectura en un solo scroll
+  5-cuenta-regresiva     numero en un anillo, "Get Ready!" y "Camera ready!
+                         Recording starts soon..."
+  6-inicio               "Ready to create?" y un boton enorme: Start Recording
+  7-ajustes              solo cosas de la aplicacion: idioma, calificar, soporte,
+                         privacidad, terminos, notificaciones
+
+
+LO QUE RESUELVE UN PROBLEMA QUE TENEMOS
+
+1. LA PRIMERA PANTALLA ES UNA ACCION, NO UNA LISTA.
+   Abre en "Teleprompter - Ready to create?" con un boton enorme de Start
+   Recording. Los guiones quedan abajo, en "Manage Scripts".
+
+   La nuestra abre en la biblioteca, que la primera vez es una pagina en blanco
+   avisando que esta vacia. ELLOS NO LO RESUELVEN ESCRIBIENDO UN TEXTO MEJOR:
+   LO RESUELVEN CAMBIANDO QUE PANTALLA VA PRIMERO.
+
+   Esto toca directamente el punto 4 de docs/tarea46-notas.txt -las palabras de
+   la biblioteca vacia-. Conviene pensarlo antes de escribir ese texto.
+
+2. EL TIEMPO TRANSCURRIDO ES IMPOSIBLE DE NO VER: una pildora roja al centro de
+   la barra, "00:24". Nosotros lo tenemos como una casilla que se puede apagar.
+   Si el producto pasa a grabar video, cuanto llevas deja de ser un adorno.
+
+3. EL MEDIDOR DE NIVEL DE AUDIO -las barritas violetas, abajo a la derecha-.
+   Es la idea mas inteligente de las siete capturas. Contesta la pregunta que el
+   que graba se hace siempre: me esta escuchando?
+
+   Y NO ES LO MISMO QUE "EL MOTOR TE PERDIO", que Javier rechazo el 15 de
+   septiembre. Esto muestra el nivel que entra por el microfono, un hecho fisico;
+   no dice nada del seguidor ni disculpa que se corra. En el nuestro ademas avisa
+   de algo real: con el nivel en cero, el motor no puede andar, y eso no es culpa
+   del motor.
+
+4. CAMBIAR DE CAMARA con un boton en la barra de grabacion. Es justo lo que pidio
+   Javier: frontal y trasera.
+
+5. LA CUENTA REGRESIVA DICE ALGO: "Get Ready!" y "Camera ready! Recording starts
+   soon...". ESTO CONTRADICE ALGO QUE ESCRIBI YO en docs/circuito.html, paso 09:
+   puse que ahi cualquier palabra es ruido. Viendolo, no estoy tan seguro:
+   confirmar que la camara esta lista es la ansiedad real del que va a grabar.
+   Queda como punto a discutir, no como cambio.
+
+
+LO QUE ES SUYO PORQUE SU PRODUCTO ES OTRO. NO SE COPIA.
+
+  EL CONTROL DE VELOCIDAD -menos, 1.0X, mas- durante la grabacion. Su texto
+  avanza por reloj, asi que la velocidad es el corazon de su producto. En el
+  nuestro seria admitir que el seguidor no sirve. Es el ejemplo mas claro de algo
+  que se ve bien y no debemos tomar.
+
+  LA LINEA CON EL TILDE que marca donde vas. Funciona porque su texto baja a
+  velocidad constante: la linea esta quieta y el texto pasa. En el nuestro es la
+  flecha que Javier ya descarto, y por el mismo motivo -ver docs/pendientes.txt,
+  punto 5-.
+
+
+LO QUE TENEMOS MEJOR, Y CONVIENE NO PERDERLO
+
+  Su pantalla Setup apila el guion, el tamano, el interlineado, la velocidad y el
+  color en un solo scroll. Es exactamente el monton del que salimos en la tarea
+  44, que bajo nuestro panel de diez controles a siete.
+
+  Y su lista muestra los botones de editar y borrar en cada fila, siempre, aunque
+  casi nunca se usen.
+
+  Lo suyo se ve moderno por los degradados y los brillos, no por estar mejor
+  ordenado.
+
+
+LO QUE DIJO JAVIER, Y QUE NO ES LO MISMO QUE DIJE YO
+
+  "me gustan los elementos que notaste, esta muy inteligente. tambien en el
+  diseno tiene cosas valiosas".
+
+  O sea: el diseno le parece que aporta, no solo la funcionalidad. Yo fui mas
+  critico -degradados y brillos como identidad, y la pantalla de inicio con
+  fichas de Instagram, calificar y notificaciones, que es mobiliario de
+  crecimiento y no producto-. CUANDO SE ABRA ESTO, LA VOZ QUE MANDA ES LA DE
+  JAVIER, no la mia.
