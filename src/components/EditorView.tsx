@@ -118,6 +118,7 @@ export default function EditorView({
   const ultimasSeleccionesRef = useRef<Record<string, { desde: number; hasta: number }>>({})
   const [bloqueSeleccionado, setBloqueSeleccionado] = useState<string | null>(null)
   const [hayTextoSeleccionado, setHayTextoSeleccionado] = useState(false)
+  const [tituloEnfocado, setTituloEnfocado] = useState(false)
 
   function togglePlegado(id: string) {
     setPlegados((prev) => ({
@@ -357,7 +358,9 @@ export default function EditorView({
 
   const numPalabras = contarPalabras(guion)
   const numMinutos = Math.round(numPalabras / 150)
-  const resumenMeta = `${numPalabras.toLocaleString('es')} palabras · ${numMinutos > 0 ? numMinutos : 1} min`
+  const resumenMeta = numPalabras === 0
+    ? `${numPalabras.toLocaleString('es')} palabras`
+    : `${numPalabras.toLocaleString('es')} palabras · ${numMinutos > 0 ? numMinutos : 1} min`
 
   const hayMasDeUnBloque = guion.bloques && guion.bloques.length > 1
 
@@ -448,45 +451,47 @@ export default function EditorView({
                 </select>
               </div>
 
-              <button
-                onClick={() => {
-                  setMenuOpcionesAbierto(false)
-                  setErrorPegado(null)
-                  setMostrarModalPegar(true)
-                }}
-                style={{
-                  padding: '12px 16px',
-                  textAlign: 'left',
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: '1px solid var(--color-borde)',
-                  color: 'var(--color-texto)',
-                  fontSize: 'var(--texto-cuerpo)',
-                  cursor: 'pointer'
-                }}
-              >
-                Pegar texto
-              </button>
+              <div style={{ borderBottom: '1px solid var(--color-borde)' }}>
+                <button
+                  onClick={() => {
+                    setMenuOpcionesAbierto(false)
+                    setErrorPegado(null)
+                    setMostrarModalPegar(true)
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px',
+                    textAlign: 'left',
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'var(--color-texto)',
+                    fontSize: 'var(--texto-cuerpo)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Pegar texto
+                </button>
 
-              <button
-                onClick={() => {
-                  setMenuOpcionesAbierto(false)
-                  fileInputRef.current?.click()
-                }}
-                disabled={cargandoArchivo}
-                style={{
-                  padding: '12px 16px',
-                  textAlign: 'left',
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: '1px solid var(--color-borde)',
-                  color: 'var(--color-texto)',
-                  fontSize: 'var(--texto-cuerpo)',
-                  cursor: cargandoArchivo ? 'not-allowed' : 'pointer'
-                }}
-              >
-                {cargandoArchivo ? 'Leyendo archivo...' : 'Abrir archivo'}
-              </button>
+                <button
+                  onClick={() => {
+                    setMenuOpcionesAbierto(false)
+                    fileInputRef.current?.click()
+                  }}
+                  disabled={cargandoArchivo}
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px',
+                    textAlign: 'left',
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'var(--color-texto)',
+                    fontSize: 'var(--texto-cuerpo)',
+                    cursor: cargandoArchivo ? 'not-allowed' : 'pointer'
+                  }}
+                >
+                  {cargandoArchivo ? 'Leyendo archivo...' : 'Abrir archivo'}
+                </button>
+              </div>
 
               <button
                 onClick={() => {
@@ -503,7 +508,7 @@ export default function EditorView({
                   cursor: 'pointer'
                 }}
               >
-                ⚙ Ajustes del Teleprompter
+                Ajustes del Teleprompter
               </button>
             </div>
           )}
@@ -516,17 +521,22 @@ export default function EditorView({
           type="text"
           value={guion.titulo}
           onChange={(e) => handleTituloChange(e.target.value)}
+          onFocus={() => setTituloEnfocado(true)}
+          onBlur={() => setTituloEnfocado(false)}
           placeholder="Sin título"
           className="texto-display"
           data-testid="input-titulo-guion"
           style={{
             width: '100%',
-            padding: 0,
+            padding: '4px 8px',
             border: 'none',
+            borderBottom: tituloEnfocado ? '2px solid var(--color-acento)' : '1px solid var(--color-borde)',
             outline: 'none',
-            backgroundColor: 'transparent',
+            backgroundColor: tituloEnfocado ? 'var(--bg-suelo)' : 'transparent',
             color: 'var(--color-texto)',
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
+            borderRadius: '4px 4px 0 0',
+            transition: 'border-color 0.2s, background-color 0.2s'
           }}
         />
       </div>
