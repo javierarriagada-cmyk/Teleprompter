@@ -1,0 +1,62 @@
+NOTAS PARA LA TAREA 46
+Se van acumulando hasta que cierre la 45. No es un encargo todavia.
+
+
+1. LA DESCARGA DE 34,4 MB QUE NO LE SIRVE A NADIE
+   CONFIRMADO leyendo el codigo el 15 de septiembre de 2026.
+
+src/hooks/usePrecargaModelo.ts corre asi:
+
+    useEffect(() => {
+      ejecutarPrecarga()
+    }, [ejecutarPrecarga])
+
+SIN NINGUNA CONDICION. Al montar App, siempre. No mira la plataforma ni el motor
+elegido: instancia MotorVosk -el WASM- y baja su modelo.
+
+    MODELO_URL_DEFECTO = https://ccoreilly.github.io/vosk-browser/models/vosk-model-small-es-0.3.tar.gz
+    34,4 MB
+
+Y en el APK el motor por omision es NATIVO -sanitizarEngine en App.tsx devuelve
+'nativo' cuando Capacitor.isNativePlatform()-, y ese motor lleva el modelo
+adentro del APK. Por eso mismo dejamos de bajar 34 MB en cada lectura.
+
+O SEA: la primera vez que alguien abre la aplicacion en Android, baja 34,4 MB
+que no va a usar nunca, y mira un cartel contandole el progreso de algo inutil.
+
+EL ARREGLO NO ES BORRAR. Si alguien elige Vosk WASM a mano en el menu de la
+biblioteca, la descarga si hace falta. Lo que corresponde es que LA PRECARGA SE
+DISPARE SOLO CUANDO EL MOTOR EN USO SEA 'vosk' -que en Android es casi nunca-, y
+que se dispare al cambiarlo, no solo al montar.
+
+Y UNA SEGUNDA COSA, del mismo hallazgo: esos 34 MB salen de ccoreilly.github.io,
+el GitHub Pages personal del autor de vosk-browser. Para un producto que va a
+Play, la primera impresion depende de que a un tercero no se le caiga la pagina
+ni se le acabe la cuota.
+
+CONSECUENCIA PARA EL CARTEL: Javier eligio que el mejor cartel es el que no
+existe. Las tres versiones de texto que se escribieron quedan guardadas por si
+la descarga sobrevive para el caso de Vosk WASM, pero dejan de ser lo primero.
+
+
+2. EL ESCALONADO DEL ARRANQUE -paso 01 del documento del circuito-
+
+El documento pedia que al abrir entren primero el titulo, 40 ms despues el
+subtitulo, 40 ms despues la lista. La tarea 45 hizo la pantalla entera
+deslizandose como un bloque.
+
+No esta mal, pero no es lo que dice el documento: el escalonado es lo que hace
+que el ojo aterrice en el titulo en vez de en toda la pantalla a la vez.
+
+
+3. EL APAGADO ANTES DE LA CUENTA REGRESIVA -paso 09-
+
+La tarea 45 pedia dos cosas y entrego una: el fondo pasa a su color, pero TODO LO
+QUE NO ES TEXTO tenia que irse en 200 ms antes de eso. Ese es el paso de preparar
+a grabar y es el momento mas importante de la aplicacion.
+
+
+4. LAS PALABRAS DE LA BIBLIOTECA VACIA
+
+Siguen siendo de Javier. Hoy dice "Aca van a estar tus guiones" y no cuenta lo
+unico que nos distingue: que el texto se mueve solo siguiendo la voz.
