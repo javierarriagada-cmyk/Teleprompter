@@ -3,6 +3,8 @@ import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, ResumenGuion } from '../datos/modelo'
 import { IdMotor } from '../motor/MotorDeVoz'
 import { PanelCorpus } from './PanelCorpus'
+import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave } from '../haptica'
+import { movimientoApagado, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL } from './movimiento'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -75,6 +77,7 @@ export default function BibliotecaView({
   const [mostrarPanelCorpus, setMostrarPanelCorpus] = useState(false)
   const [menuId, setMenuId] = useState<string | null>(null)
   const [menuSuperiorAbierto, setMenuSuperiorAbierto] = useState(false)
+  const [vibracion, setVibracion] = useState<boolean>(vibracionHabilitada())
   // se cierra tocando afuera o con Escape, no solo con el mismo boton
   const refMenuSuperior = useCerrarAfuera(menuSuperiorAbierto, () => setMenuSuperiorAbierto(false))
   // el menu de cada fila, que se abre con toque largo, se cierra igual que los demas
@@ -164,6 +167,7 @@ export default function BibliotecaView({
       fueLongPressRef.current = false
       return
     }
+    hapticaToqueSuave()
     onAbrir(g.id)
   }
 
@@ -271,7 +275,10 @@ export default function BibliotecaView({
         {/* Menú superior derecho ⋯ */}
         <div ref={refMenuSuperior} style={{ position: 'relative' }}>
           <button
-            onClick={() => setMenuSuperiorAbierto(!menuSuperiorAbierto)}
+            onClick={() => {
+              hapticaToqueSuave()
+              setMenuSuperiorAbierto(!menuSuperiorAbierto)
+            }}
             data-testid="btn-menu-superior-biblioteca"
             style={{
               background: 'transparent',
@@ -300,7 +307,11 @@ export default function BibliotecaView({
                 minWidth: 160,
                 overflow: 'hidden',
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'column',
+                transformOrigin: 'top right',
+                animation: movimientoApagado()
+                  ? 'none'
+                  : `menuCreceEsquina ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
               }}
             >
               <button
@@ -409,7 +420,26 @@ export default function BibliotecaView({
                   <input
                     type="checkbox"
                     checked={verTranscripcion}
-                    onChange={(e) => setVerTranscripcion?.(e.target.checked)}
+                    onChange={(e) => {
+                      hapticaToqueSuave()
+                      setVerTranscripcion?.(e.target.checked)
+                    }}
+                    style={{ width: 16, height: 16, accentColor: 'var(--color-acento)' }}
+                  />
+                </label>
+              </div>
+
+              <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--color-borde)' }}>
+                <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}>
+                  <span>Vibración</span>
+                  <input
+                    type="checkbox"
+                    checked={vibracion}
+                    onChange={(e) => {
+                      setVibracion(e.target.checked)
+                      guardarVibracionHabilitada(e.target.checked)
+                      hapticaToqueSuave()
+                    }}
                     style={{ width: 16, height: 16, accentColor: 'var(--color-acento)' }}
                   />
                 </label>
@@ -614,7 +644,10 @@ export default function BibliotecaView({
               width: '100%',
               maxHeight: '90vh',
               overflowY: 'auto',
-              boxSizing: 'border-box'
+              boxSizing: 'border-box',
+              animation: movimientoApagado()
+                ? 'none'
+                : `panelSube ${MS_PANEL}ms ${CURVA_ENTRA} forwards`
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -640,7 +673,10 @@ export default function BibliotecaView({
 
       {/* Botón Flotante CREAR */}
       <button
-        onClick={onCrearNuevo}
+        onClick={() => {
+          hapticaToqueSuave()
+          onCrearNuevo()
+        }}
         data-testid="btn-crear-guion-flotante"
         style={{
           position: 'fixed',
