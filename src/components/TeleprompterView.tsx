@@ -128,6 +128,7 @@ interface TeleprompterViewProps {
   colorLetra?: string
   tipoFuente?: 'sans' | 'serif'
   isRecording?: boolean
+  enPausa?: boolean
   onToggleControles?: () => void
   onNavegacionManual?: (token: number) => void
   onModoManualChange?: (manual: boolean) => void
@@ -168,6 +169,7 @@ export default function TeleprompterView({
   colorLetra = '#FFFFFF',
   tipoFuente = 'sans',
   isRecording = false,
+  enPausa = false,
   onToggleControles,
   onNavegacionManual,
   onModoManualChange,
@@ -383,6 +385,12 @@ export default function TeleprompterView({
   }, [onNavegacionManual, onModoManualChange, alturaLineaPx, onToggleControles, filaPx])
 
   useEffect(() => {
+    if (enPausa) {
+      setTextoEstadoLector('En pausa')
+    }
+  }, [enPausa])
+
+  useEffect(() => {
     if (!motorAvance) return
 
     let animId: number
@@ -393,7 +401,9 @@ export default function TeleprompterView({
         onEstadoAvanceChange(st.motivoFreno, st.avanzando, st.estado)
       }
 
-      if (st.estado === 'DETENIDO') {
+      if (enPausa) {
+        setTextoEstadoLector('En pausa')
+      } else if (st.estado === 'DETENIDO') {
         tInicioBuscandoRef.current = null
         setTextoEstadoLector('Detenido')
       } else {
@@ -627,7 +637,7 @@ export default function TeleprompterView({
           data-testid="indicador-estado-lector"
           style={{
             position: 'absolute',
-            bottom: 12,
+            bottom: 80,
             left: 16,
             fontSize: 13,
             color: isWhiteBg ? 'rgba(0, 0, 0, 0.45)' : 'rgba(255, 255, 255, 0.45)',

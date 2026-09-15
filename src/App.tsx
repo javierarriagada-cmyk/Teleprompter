@@ -318,6 +318,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [estadoModo, setEstadoModo] = useState<'SIGUIENDO' | 'BUSCANDO' | 'DETENIDO'>('SIGUIENDO')
   const [tInicioLecturaMs, setTInicioLecturaMs] = useState<number | null>(null)
   const [cuentaRegresiva, setCuentaRegresiva] = useState<number | null>(null)
+  const [enPausa, setEnPausa] = useState<boolean>(false)
 
   const timerCuentaRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const prompterContainerRef = useRef<HTMLDivElement | null>(null)
@@ -418,6 +419,7 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   async function handleStart() {
     if (cuentaRegresiva !== null || isRecording) return
+    setEnPausa(false)
     await solicitarWakeLock()
 
     // MEDIR ES PARTE DE LEER, NO UN BOTON APARTE.
@@ -508,6 +510,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   async function handleStop() {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
+    setEnPausa(false)
     await stop()
     // El audio se corta DESPUES del motor, no antes: si se cortara primero, los ultimos
     // calces quedarian anotados con un milisegundo que ya no existe en el archivo.
@@ -527,6 +530,16 @@ export default function App({ motor, repoOverride }: AppProps) {
   function handleClear() {
     clear()
     reiniciar()
+  }
+
+  const handleTogglePausa = async () => {
+    if (enPausa) {
+      setEnPausa(false)
+      await start()
+    } else {
+      setEnPausa(true)
+      await stop()
+    }
   }
 
   function toggleFullscreen() {
@@ -708,7 +721,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               data-testid="panel-controles-lectura"
               style={{
                 position: 'absolute',
-                top: 16,
+                bottom: 16,
                 left: 16,
                 right: 16,
                 zIndex: 100,
@@ -724,24 +737,43 @@ export default function App({ motor, repoOverride }: AppProps) {
                 backdropFilter: 'blur(8px)'
               }}
             >
-              <button
-                onClick={async () => {
-                  await handleStop()
-                  setVista('editor')
-                }}
-                style={{
-                  padding: '8px 14px',
-                  cursor: 'pointer',
-                  backgroundColor: 'var(--bg-suelo)',
-                  border: '1px solid var(--color-borde)',
-                  borderRadius: 6,
-                  color: 'var(--color-texto)',
-                  fontWeight: 600,
-                  fontSize: 14
-                }}
-              >
-                ← Volver al Editor
-              </button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <button
+                  onClick={async () => {
+                    await handleStop()
+                    setVista('editor')
+                  }}
+                  style={{
+                    padding: '8px 14px',
+                    cursor: 'pointer',
+                    backgroundColor: 'var(--bg-suelo)',
+                    border: '1px solid var(--color-borde)',
+                    borderRadius: 6,
+                    color: 'var(--color-texto)',
+                    fontWeight: 600,
+                    fontSize: 14
+                  }}
+                >
+                  ← Salir
+                </button>
+
+                <button
+                  data-testid="btn-pausa-lectura"
+                  onClick={handleTogglePausa}
+                  style={{
+                    padding: '8px 14px',
+                    cursor: 'pointer',
+                    backgroundColor: 'var(--bg-suelo)',
+                    border: '1px solid var(--color-borde)',
+                    borderRadius: 6,
+                    color: 'var(--color-texto)',
+                    fontWeight: 600,
+                    fontSize: 14
+                  }}
+                >
+                  {enPausa ? 'Seguir' : 'Pausa'}
+                </button>
+              </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span style={{ fontSize: 13, color: '#aaa', fontWeight: 600 }}>Letra:</span>
@@ -819,6 +851,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               colorLetra={colorLetra}
               tipoFuente={tipoFuente}
               isRecording={isRecording || cuentaRegresiva !== null}
+              enPausa={enPausa}
               onToggleControles={() => setControlesVisibles((prev) => !prev)}
               onNavegacionManual={irAToken}
               onModoManualChange={setModoManual}

@@ -404,7 +404,7 @@ describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
 
     expect(screen.getByTestId('panel-controles-lectura')).not.toBeNull()
     expect(screen.getByTestId('valor-letra')).not.toBeNull()
-    expect(screen.getByText('← Volver al Editor')).not.toBeNull()
+    expect(screen.getByText('← Salir')).not.toBeNull()
 
     expect(screen.queryByTestId('panel-corpus')).toBeNull()
     expect(screen.queryByLabelText('Motor de Voz (Avanzado)')).toBeNull()

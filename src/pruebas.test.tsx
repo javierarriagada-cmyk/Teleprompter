@@ -866,7 +866,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     await act(async () => {
       fireEvent.click(prompterView)
     })
-    const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Volver al Editor'))!
+    const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Salir'))!
     await act(async () => {
       fireEvent.click(btnVolver)
     })
@@ -953,7 +953,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     await act(async () => {
       fireEvent.click(prompterView)
     })
-    const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Volver al Editor'))!
+    const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Salir'))!
     await act(async () => {
       fireEvent.click(btnVolver)
     })
@@ -2162,7 +2162,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         fireEvent.click(prompterView)
       })
 
-      const botonVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Volver al Editor'))
+      const botonVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Salir'))
       expect(botonVolver).not.toBeUndefined()
 
       await act(async () => {
@@ -2372,7 +2372,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await act(async () => {
         fireEvent.click(prompterView)
       })
-      const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Volver al Editor'))!
+      const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Salir'))!
       await act(async () => {
         fireEvent.click(btnVolver)
       })
@@ -3454,22 +3454,24 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
   })
 
   describe('Pruebas TAREA 22 (T125-T128)', () => {
-    test('T125 VELO: función pura del velo con lineasZona=3 deja la zona viva de tres renglones con alpha 0', () => {
+    test('T125 VELO: función pura del velo aclara RENGLONES_CLAROS cuatro renglones más holgura con alpha 0', () => {
       const topBanda = 40
       const filaPx = 28
-      const lineasZona = 3
 
       const tramosRes = calcularTramosVelo(topBanda, filaPx)
 
+      // topBanda = 40, RENGLONES_CLAROS = 4, HOLGURA_VELO = 16
+      // desdeClaro = Math.max(0, 40 - 16) = 24
+      // hastaClaro = 40 + 4 * 28 + 16 = 168
       expect(tramosRes).toEqual([
-        { desdePx: 0, hastaPx: 40, alpha: 0.45 },
-        { desdePx: 40, hastaPx: 40 + 3 * 28, alpha: 0.00 },
-        { desdePx: 40 + 3 * 28, hastaPx: Infinity, alpha: 0.55 }
+        { desdePx: 0, hastaPx: 24, alpha: 0.45 },
+        { desdePx: 24, hastaPx: 168, alpha: 0.00 },
+        { desdePx: 168, hastaPx: Infinity, alpha: 0.55 }
       ])
 
       const bg = calcularBgVelo(topBanda, filaPx, { r: 0, g: 0, b: 0 })
-      expect(bg).toContain('rgba(0, 0, 0, 0) 40px')
-      expect(bg).toContain(`rgba(0, 0, 0, 0) ${40 + 3 * 28}px`)
+      expect(bg).toContain('rgba(0, 0, 0, 0) 24px')
+      expect(bg).toContain('rgba(0, 0, 0, 0) 168px')
       expect(bg).not.toContain('0.7')
     })
 

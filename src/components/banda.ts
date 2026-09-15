@@ -134,12 +134,13 @@ export interface TramoVelo {
   alpha: number
 }
 
-export function calcularTramosVelo(topBanda: number, filaPx: number, lineasZona = 3): TramoVelo[] {
-  const altoZona = lineasZona * filaPx
+export function calcularTramosVelo(topBanda: number, filaPx: number): TramoVelo[] {
+  const desdeClaro = Math.max(0, topBanda - HOLGURA_VELO)
+  const hastaClaro = topBanda + RENGLONES_CLAROS * filaPx + HOLGURA_VELO
   return [
-    { desdePx: 0, hastaPx: topBanda, alpha: 0.45 },
-    { desdePx: topBanda, hastaPx: topBanda + altoZona, alpha: 0.00 },
-    { desdePx: topBanda + altoZona, hastaPx: Infinity, alpha: 0.55 }
+    { desdePx: 0, hastaPx: desdeClaro, alpha: 0.45 },
+    { desdePx: desdeClaro, hastaPx: hastaClaro, alpha: 0.00 },
+    { desdePx: hastaClaro, hastaPx: Infinity, alpha: 0.55 }
   ]
 }
 
