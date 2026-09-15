@@ -1,0 +1,146 @@
+TAREA 45 - CORRECCION 1. MISMA RAMA.
+
+Revise la entrega corriendola y mirandola en un dispositivo con las medidas
+reales del telefono -1220x2712, densidad 450, tres botones, perforacion-.
+
+LO QUE ESTA BIEN, y no es cortesia:
+
+  - 191 de 191, tsc limpio.
+  - TeleprompterView.tsx NO aparece en el diff: la geometria de lectura quedo
+    intacta, que era la frontera mas importante del encargo.
+  - El paquete sube de 251,25 kB a 255,15 kB. El plugin pesa 4 kB.
+  - styles.css ya existia y solo le agregaste los keyframes. Sin riesgo con el
+    tema claro/oscuro.
+  - La haptica de los limites del tamano de letra esta bien hecha, incluidos los
+    dos casos de valor guardado fuera de la escalera.
+  - La direccion funciona en los dos sentidos: entrar al editor da "adentro" y
+    volver da "atras". Lo comprobe leyendo el DOM en el aparato.
+  - T199 SE PONE ROJA cuando le saco el guardia de movimientoApagado. Esa
+    guardiana sirve.
+
+HAY DOS DEFECTOS. El segundo es el grave.
+
+
+DEFECTO 1 - T202 NO SIRVE. QUEDO VERDE CON EL DEFECTO PUESTO.
+
+La comprobe rompiendo, como pedia el encargo. En TeleprompterView, en el bucle
+de animacion, guarde el valor de renglonTrabadoRef.current antes de llamar a
+avanzarTrabado y agregue justo despues:
+
+    if (trabadoAntes !== renglonTrabadoRef.current) hapticaToqueSuave()
+
+Eso es exactamente el defecto que T202 existe para atrapar: una vibracion en
+cada cambio de renglon durante la lectura. T202 PASO IGUAL.
+
+LA CAUSA: T202 nunca entra a la vista de lectura. Entra al editor, reinicia los
+contadores y emite las parciales ahi. El seguidor y el renglon trabado solo
+corren dentro de TeleprompterView, asi que la prueba no puede ver nada de lo que
+pasa durante una lectura. Comprueba una pantalla donde el defecto no puede
+ocurrir.
+
+QUE TIENE QUE HACER T202:
+
+  1. Entrar a la lectura de verdad: apretar Leer y dejar pasar la cuenta
+     regresiva. Mira como lo hace T163 en src/pruebas/pantallas.test.tsx.
+  2. Reiniciar los contadores de Haptics DESPUES de la cuenta regresiva, porque
+     el cero de la cuenta vibra a proposito y es correcto.
+  3. Con la lectura andando, emitir parciales que hagan avanzar el texto VARIOS
+     RENGLONES. El guion de la prueba tiene que ser lo bastante largo para que el
+     renglon trabado cambie mas de una vez.
+  4. Recien ahi comprobar que selectionChanged, impact y notification siguen en
+     cero.
+
+VOLVE A COMPROBARLA ROMPIENDO con el mismo defecto de arriba y PEGA LA SALIDA DE
+VITEST. Si no se pone roja, no esta terminada.
+
+
+DEFECTO 2 - EL ENVOLTORIO DE <Pantalla> ROMPIO EL LAYOUT DEL EDITOR
+
+LA BARRA "Leer" DEJO DE ESTAR ABAJO. Antes vivia pegada al borde inferior de la
+pantalla. Ahora flota justo debajo de "+ Agregar bloque", a un 40% de la altura,
+con dos tercios de pantalla vacios abajo.
+
+Esto NO se ve en las pruebas porque jsdom no tiene layout: offsetTop y
+clientHeight devuelven 0 y ninguna prueba mide alturas. Se ve en el aparato.
+
+LA CAUSA, medida en el telefono leyendo el DOM:
+
+    el padre del envoltorio:  display block, alto 496.8px
+    el envoltorio:            display block, alto 496.8px, min-height 0
+    el hijo (raiz del editor): display block, alto 380.8px
+
+    y la ventana mide 868 de alto.
+
+<Pantalla> mete un <div> nuevo entre la raiz de App y la raiz de la vista. Ese
+div es display:block con min-height 0, asi que corta la cadena de altura de la
+que colgaba la barra "Leer" para quedar abajo.
+
+EL ENCARGO YA LO ADVERTIA: "envolver los tres bloques NO puede cambiar lo que hay
+adentro".
+
+QUE HACER
+
+    NO AGREGUES UN ELEMENTO NUEVO AL ARBOL. Aplica la animacion sobre la raiz
+    que la vista ya tiene, con React.cloneElement, sumando el style de animacion
+    y el data-pantalla-direccion al elemento que ya estaba:
+
+        export function Pantalla({ direccion, children }) {
+          if (movimientoApagado()) return <>{children}</>
+          const hijo = React.Children.only(children)
+          return React.cloneElement(hijo, {
+            'data-pantalla-direccion': direccion,
+            style: {
+              ...(hijo.props.style || {}),
+              animation: `${nombreAnimacion} ${MS_PANTALLA}ms ${CURVA_ENTRA} forwards`
+            }
+          })
+        }
+
+    Si alguna de las tres vistas no expone un unico elemento raiz que acepte
+    style, arreglalo ahi, no agregando un div.
+
+    NO uses display:contents en un div envoltorio: elimina la caja y con ella la
+    animacion.
+
+PRUEBA NUEVA, T206 - EL ENVOLTORIO NO AGREGA NINGUN NIVEL AL ARBOL.
+
+    Con el movimiento encendido, la cantidad de elementos entre la raiz de App y
+    la raiz de la vista tiene que ser la MISMA que con movimientoApagado() en
+    true. Contala en los dos estados y compara.
+
+    Dicho de otro modo: el elemento que lleva data-pantalla-direccion tiene que
+    ser la raiz de la vista, no un elemento agregado.
+
+    COMPROBALA ROMPIENDO: volve a la version con <div> envoltorio y verifica que
+    T206 se pone ROJA. Pega la salida.
+
+
+DEFECTO 3, MENOR - LA BIBLIOTECA ENTRA DESDE LA DERECHA AL ABRIR LA APLICACION
+
+Al arrancar no se viene de ningun lado, y sin embargo la biblioteca entra
+deslizandose desde la derecha, como si se hubiera entrado mas adentro de algo.
+
+En el PRIMER montaje no hay nivel anterior: la vista tiene que aparecer SIN
+desplazamiento, solo con la opacidad de 0 a 1 en MS_PANTALLA. El deslizamiento
+empieza a aplicarse recien a partir del segundo cambio de vista.
+
+
+Y SIGUEN FALTANDO DEL INFORME TRES COSAS QUE PEDI
+
+  a. El git diff --stat completo.
+  b. El tamano del paquete antes y despues, dicho por vos. Yo lo medi, pero el
+     encargo lo pedia en el informe y la proxima vez puede no coincidir.
+  c. LO QUE OBSERVASTE SOBRE EL FIN DEL GUION, parte 3.d. Era mirar y reportar
+     sin construir: si existe algun estado, bandera o evento que indique que el
+     texto se acabo, como se llama y donde vive; y si no existe ninguno, decilo.
+     No lo contestaste.
+
+
+AL TERMINAR
+
+  npx tsc --noEmit limpio.
+  npx vitest run: quedan 192 de 192 con T206.
+  El resultado de romper T202 y T206, textual.
+  Y las tres cosas del informe que faltan.
+
+  NO TOQUES NADA MAS. El resto de la entrega esta bien.
