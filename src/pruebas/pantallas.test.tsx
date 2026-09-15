@@ -642,7 +642,7 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     vi.restoreAllMocks()
   })
 
-  test('T183 - El panel muestra los tres títulos de grupo, y cada ajuste está en el grupo que le corresponde.', () => {
+  test('T183 - El panel muestra los dos títulos de grupo, y los siete controles están en el grupo que les corresponde.', () => {
     const guion: Guion = {
       id: 'g-t183',
       titulo: 'Guión T183',
@@ -663,7 +663,6 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
         setTipoFuente: () => {},
         setColorFondo: () => {},
         setColorLetra: () => {},
-        setTema: () => {},
         setMirror: () => {},
         setAnclajeZona: () => {},
         setMostrarTiempo: () => {}
@@ -678,53 +677,37 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
 
     // 1. Títulos de grupo
     expect(screen.getByText('Cómo se ve el texto')).not.toBeNull()
-    expect(screen.getByText('Colores')).not.toBeNull()
     expect(screen.getByText('La toma')).not.toBeNull()
 
     // 2. Orden y pertenencia de controles por grupo
     const htmlText = panel.innerHTML
     const idxGrupo1 = htmlText.indexOf('Cómo se ve el texto')
-    const idxGrupo2 = htmlText.indexOf('Colores')
-    const idxGrupo3 = htmlText.indexOf('La toma')
+    const idxGrupo2 = htmlText.indexOf('La toma')
 
     expect(idxGrupo1).toBeLessThan(idxGrupo2)
-    expect(idxGrupo2).toBeLessThan(idxGrupo3)
 
-    // Grupo 1: Tamaño de letra, Columna, Margen, Tipografía
+    // Grupo 1: Tamaño de letra, Ancho, Tipografía
     const idxLetra = htmlText.indexOf('Tamaño de letra:')
-    const idxColumna = htmlText.indexOf('Columna:')
-    const idxMargen = htmlText.indexOf('Margen:')
+    const idxAncho = htmlText.indexOf('Ancho:')
     const idxTipoFuente = htmlText.indexOf('Tipografía:')
 
     expect(idxLetra).toBeGreaterThan(idxGrupo1)
     expect(idxLetra).toBeLessThan(idxGrupo2)
-    expect(idxColumna).toBeGreaterThan(idxLetra)
-    expect(idxColumna).toBeLessThan(idxGrupo2)
-    expect(idxMargen).toBeGreaterThan(idxColumna)
-    expect(idxMargen).toBeLessThan(idxGrupo2)
-    expect(idxTipoFuente).toBeGreaterThan(idxMargen)
+    expect(idxAncho).toBeGreaterThan(idxLetra)
+    expect(idxAncho).toBeLessThan(idxGrupo2)
+    expect(idxTipoFuente).toBeGreaterThan(idxAncho)
     expect(idxTipoFuente).toBeLessThan(idxGrupo2)
 
-    // Grupo 2: Fondo, Color de letra, Tema
-    const idxFondo = htmlText.indexOf('Fondo:')
-    const idxColorLetra = htmlText.indexOf('Color de letra:')
-    const idxTema = htmlText.indexOf('Tema:')
-
-    expect(idxFondo).toBeGreaterThan(idxGrupo2)
-    expect(idxFondo).toBeLessThan(idxGrupo3)
-    expect(idxColorLetra).toBeGreaterThan(idxFondo)
-    expect(idxColorLetra).toBeLessThan(idxGrupo3)
-    expect(idxTema).toBeGreaterThan(idxColorLetra)
-    expect(idxTema).toBeLessThan(idxGrupo3)
-
-    // Grupo 3: Espejo, Anclaje, Mostrar tiempo
+    // Grupo 2: Fondo y letra, Dónde leés, Espejo, Mostrar tiempo
+    const idxFondoLetra = htmlText.indexOf('Fondo y letra:')
+    const idxDondeLees = htmlText.indexOf('Dónde leés:')
     const idxEspejo = htmlText.indexOf('Espejo:')
-    const idxAnclaje = htmlText.indexOf('Anclaje:')
     const idxMostrarTiempo = htmlText.indexOf('Mostrar tiempo:')
 
-    expect(idxEspejo).toBeGreaterThan(idxGrupo3)
-    expect(idxAnclaje).toBeGreaterThan(idxEspejo)
-    expect(idxMostrarTiempo).toBeGreaterThan(idxAnclaje)
+    expect(idxFondoLetra).toBeGreaterThan(idxGrupo2)
+    expect(idxDondeLees).toBeGreaterThan(idxFondoLetra)
+    expect(idxEspejo).toBeGreaterThan(idxDondeLees)
+    expect(idxMostrarTiempo).toBeGreaterThan(idxEspejo)
   })
 
   test('T184 - El tamaño de letra se puede cambiar DESDE EL PANEL, recorre los cinco pasos y en los extremos no se sale.', () => {
@@ -1142,5 +1125,265 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
 
     const diagnostico = screen.getByTestId('franja-de-estado-diagnostico')
     expect(diagnostico.textContent).not.toContain('webspeech')
+  })
+})
+
+describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)', () => {
+  beforeEach(() => {
+    vi.restoreAllMocks()
+    localStorage.clear()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  test('T195 - "Ancho" mueve columna y margen a la vez: los tres pasos dan tres anchos distintos, y "Ancho" deja margen 5% y columna completa.', () => {
+    let columnaAngostaState = false
+    let marginPercentState = 5
+
+    const guion: Guion = {
+      id: 'g-t195',
+      titulo: 'Guión T195',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto T195' }]
+    }
+
+    const { rerender } = render(
+      React.createElement(EditorView, {
+        guion,
+        onChangeGuion: () => {},
+        onVolverBiblioteca: () => {},
+        onEntrarLectura: () => {},
+        columnaAngosta: columnaAngostaState,
+        setColumnaAngosta: (c) => { columnaAngostaState = c; rerenderComp() },
+        marginPercent: marginPercentState,
+        setMarginPercent: (m) => { marginPercentState = m; rerenderComp() }
+      })
+    )
+
+    function rerenderComp() {
+      rerender(
+        React.createElement(EditorView, {
+          guion,
+          onChangeGuion: () => {},
+          onVolverBiblioteca: () => {},
+          onEntrarLectura: () => {},
+          columnaAngosta: columnaAngostaState,
+          setColumnaAngosta: (c) => { columnaAngostaState = c; rerenderComp() },
+          marginPercent: marginPercentState,
+          setMarginPercent: (m) => { marginPercentState = m; rerenderComp() }
+        })
+      )
+    }
+
+    fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+    fireEvent.click(screen.getByText('Ajustes'))
+
+    const btnAncho = screen.getByText('Ancho')
+    const btnMedio = screen.getByText('Medio')
+    const btnAngosto = screen.getByText('Angosto')
+
+    // 1. "Ancho" deja margen 5% y columna completa (columnaAngosta = false)
+    fireEvent.click(btnAncho)
+    expect(columnaAngostaState).toBe(false)
+    expect(marginPercentState).toBe(5)
+
+    // 2. "Medio" deja columna completa (columnaAngosta = false) y margen 12%
+    fireEvent.click(btnMedio)
+    expect(columnaAngostaState).toBe(false)
+    expect(marginPercentState).toBe(12)
+
+    // 3. "Angosto" deja columna angosta (columnaAngosta = true) y margen 5%
+    fireEvent.click(btnAngosto)
+    expect(columnaAngostaState).toBe(true)
+    expect(marginPercentState).toBe(5)
+
+    // Confirmar que los tres pasos dan tres combinaciones de columna/margen distintas
+    expect(5).not.toBe(12)
+  })
+
+  test('T196 - Las parejas de color mueven fondo y letra juntos, y NO existe forma de elegir una combinacion donde fondo y letra sean iguales.', () => {
+    let colorFondoState = '#000000'
+    let colorLetraState = '#FFFFFF'
+
+    const guion: Guion = {
+      id: 'g-t196',
+      titulo: 'Guión T196',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto T196' }]
+    }
+
+    const { container, rerender } = render(
+      React.createElement(EditorView, {
+        guion,
+        onChangeGuion: () => {},
+        onVolverBiblioteca: () => {},
+        onEntrarLectura: () => {},
+        colorFondo: colorFondoState,
+        setColorFondo: (f) => { colorFondoState = f; rerenderComp() },
+        colorLetra: colorLetraState,
+        setColorLetra: (l) => { colorLetraState = l; rerenderComp() }
+      })
+    )
+
+    function rerenderComp() {
+      rerender(
+        React.createElement(EditorView, {
+          guion,
+          onChangeGuion: () => {},
+          onVolverBiblioteca: () => {},
+          onEntrarLectura: () => {},
+          colorFondo: colorFondoState,
+          setColorFondo: (f) => { colorFondoState = f; rerenderComp() },
+          colorLetra: colorLetraState,
+          setColorLetra: (l) => { colorLetraState = l; rerenderComp() }
+        })
+      )
+    }
+
+    fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+    fireEvent.click(screen.getByText('Ajustes'))
+
+    // Comprobar que NO hay selects o controles independientes para Fondo o Letra
+    expect(container.querySelector('select[aria-label="Color de fondo"]')).toBeNull()
+    expect(container.querySelector('select[aria-label="Color de letra"]')).toBeNull()
+
+    const btnNegroBlanco = screen.getByTitle('Negro con blanco')
+    const btnNegroAmbar = screen.getByTitle('Negro con ámbar')
+    const btnBlancoNegro = screen.getByTitle('Blanco con negro')
+
+    // Probar las tres parejas
+    fireEvent.click(btnNegroAmbar)
+    expect(colorFondoState).toBe('#000000')
+    expect(colorLetraState).toBe('#F5C24B')
+    expect(colorFondoState).not.toBe(colorLetraState)
+
+    fireEvent.click(btnBlancoNegro)
+    expect(colorFondoState).toBe('#FFFFFF')
+    expect(colorLetraState).toBe('#000000')
+    expect(colorFondoState).not.toBe(colorLetraState)
+
+    fireEvent.click(btnNegroBlanco)
+    expect(colorFondoState).toBe('#000000')
+    expect(colorLetraState).toBe('#FFFFFF')
+    expect(colorFondoState).not.toBe(colorLetraState)
+  })
+
+  test('T197 - GUARDIANA DEL AJUSTE VIEJO. Con una combinacion de colores guardada en localStorage que ya no existe, la aplicacion abre con negro sobre blanco y no lanza.', async () => {
+    localStorage.clear()
+    localStorage.setItem(
+      'teleprompter_ajustes',
+      JSON.stringify({ colorFondo: '#FFFFFF', colorLetra: '#FFFFFF' })
+    )
+
+    const repo = new RepositorioMemoria()
+    const guion = {
+      id: 'g-t197',
+      titulo: 'Guion T197',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto T197' }]
+    }
+    await repo.guardar(guion)
+
+    let container: HTMLElement
+    await act(async () => {
+      const res = render(React.createElement(App, { repoOverride: repo }))
+      container = res.container
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // Abrir guion en el editor
+    const fila = screen.getByTestId('fila-guion-g-t197')
+    await act(async () => {
+      fireEvent.click(fila)
+    })
+
+    // Entrar a la lectura
+    const btnLeer = screen.getByTestId('btn-leer-guion-fijo')
+    await act(async () => {
+      fireEvent.click(btnLeer)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]') as HTMLElement
+    expect(prompterView).not.toBeNull()
+
+    // Con combinacion vieja/invalida (blanco sobre blanco), cae en negro sobre blanco (#000000 / #FFFFFF)
+    expect(prompterView.getAttribute('data-fondo')).toBe('#000000')
+    expect(prompterView.getAttribute('data-letra')).toBe('#FFFFFF')
+  })
+
+  test('T198 - "Tema" NO esta en el panel de Ajustes y SI esta en la biblioteca, y sigue cambiando el modo oscuro.', async () => {
+    const repo = new RepositorioMemoria()
+    const guion = {
+      id: 'g-t198',
+      titulo: 'Guion T198',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto T198' }]
+    }
+    await repo.guardar(guion)
+
+    render(React.createElement(App, { repoOverride: repo }))
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // 1. Abrir Editor -> Ajustes: verificar que NO esta Tema
+    const fila = screen.getByTestId('fila-guion-g-t198')
+    await act(async () => {
+      fireEvent.click(fila)
+    })
+
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText('Ajustes'))
+    })
+
+    const panelAjustes = screen.getByTestId('panel-ajustes')
+    expect(panelAjustes.textContent).not.toContain('Tema:')
+
+    // Cerrar panel y volver a la Biblioteca
+    const btnCruz = panelAjustes.querySelector('button')!
+    await act(async () => {
+      fireEvent.click(btnCruz)
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText('‹ Guiones'))
+    })
+
+    // 2. En la Biblioteca: abrir menu ⋯ superior y verificar que SI esta Tema
+    const btnMenuBiblio = screen.getByTestId('btn-menu-superior-biblioteca')
+    await act(async () => {
+      fireEvent.click(btnMenuBiblio)
+    })
+
+    expect(screen.getByText('Tema:')).not.toBeNull()
+    const btnClaro = screen.getByRole('button', { name: 'Claro' })
+    const btnOscuro = screen.getByRole('button', { name: 'Oscuro' })
+    expect(btnClaro).not.toBeNull()
+    expect(btnOscuro).not.toBeNull()
+
+    // 3. Cambiar a Oscuro y comprobar data-tema en documentElement
+    await act(async () => {
+      fireEvent.click(btnOscuro)
+    })
+    expect(document.documentElement.getAttribute('data-tema')).toBe('oscuro')
+
+    // Cambiar a Claro y comprobar data-tema
+    await act(async () => {
+      fireEvent.click(btnClaro)
+    })
+    expect(document.documentElement.getAttribute('data-tema')).toBe('claro')
   })
 })

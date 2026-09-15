@@ -1,0 +1,11 @@
+
+> teleprompter-mvp@0.2.0 dev
+> vite
+
+
+  VITE v5.4.21  ready in 292 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+4:21:07 PM [vite] ✨ new dependencies optimized: vosk-browser
+4:21:07 PM [vite] ✨ optimized dependencies changed. reloading

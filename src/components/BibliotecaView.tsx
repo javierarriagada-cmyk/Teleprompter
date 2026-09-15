@@ -20,6 +20,8 @@ interface BibliotecaViewProps {
   setEngine?: (engine: IdMotor) => void
   verTranscripcion?: boolean
   setVerTranscripcion?: (ver: boolean) => void
+  tema?: 'claro' | 'oscuro'
+  setTema?: (tema: 'claro' | 'oscuro') => void
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
 }
 
@@ -64,6 +66,8 @@ export default function BibliotecaView({
   setEngine,
   verTranscripcion = false,
   setVerTranscripcion,
+  tema = 'claro',
+  setTema,
   onRegistrarCerrarModal
 }: BibliotecaViewProps) {
   const [busqueda, setBusqueda] = useState('')
@@ -358,13 +362,55 @@ export default function BibliotecaView({
               </div>
 
               <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--color-borde)' }}>
+                <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 4 }}>
+                  Tema:
+                </label>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <button
+                    type="button"
+                    onClick={() => setTema?.('claro')}
+                    style={{
+                      padding: '4px 10px',
+                      fontSize: 'var(--texto-meta)',
+                      borderRadius: 4,
+                      border: '1px solid var(--color-borde)',
+                      backgroundColor: tema === 'claro' ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                      color: tema === 'claro' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                      fontWeight: tema === 'claro' ? 'bold' : 'normal',
+                      cursor: 'pointer',
+                      flex: 1
+                    }}
+                  >
+                    Claro
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTema?.('oscuro')}
+                    style={{
+                      padding: '4px 10px',
+                      fontSize: 'var(--texto-meta)',
+                      borderRadius: 4,
+                      border: '1px solid var(--color-borde)',
+                      backgroundColor: tema === 'oscuro' ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                      color: tema === 'oscuro' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                      fontWeight: tema === 'oscuro' ? 'bold' : 'normal',
+                      cursor: 'pointer',
+                      flex: 1
+                    }}
+                  >
+                    Oscuro
+                  </button>
+                </div>
+              </div>
+
+              <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--color-borde)' }}>
                 <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}>
                   <span>Ver transcripción en vivo</span>
                   <input
                     type="checkbox"
                     checked={verTranscripcion}
                     onChange={(e) => setVerTranscripcion?.(e.target.checked)}
-                    style={{ width: 16, height: 16 }}
+                    style={{ width: 16, height: 16, accentColor: 'var(--color-acento)' }}
                   />
                 </label>
               </div>

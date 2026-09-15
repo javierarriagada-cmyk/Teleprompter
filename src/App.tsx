@@ -43,6 +43,24 @@ const GUION_VACIO: Guion = {
 const PASOS_LETRA = [14, 18, 24, 32, 42]
 const MOTORES_VALIDOS: IdMotor[] = ['vosk', 'nativo', 'fake']
 
+export const PAREJAS_COLOR = [
+  { fondo: '#000000', letra: '#FFFFFF' },
+  { fondo: '#000000', letra: '#F5C24B' },
+  { fondo: '#FFFFFF', letra: '#000000' }
+]
+
+export function sanitizarColores(rawFondo: any, rawLetra: any): { colorFondo: string; colorLetra: string } {
+  if (typeof rawFondo === 'string' && typeof rawLetra === 'string') {
+    const f = rawFondo.toUpperCase()
+    const l = rawLetra.toUpperCase()
+    const coincide = PAREJAS_COLOR.find((p) => p.fondo.toUpperCase() === f && p.letra.toUpperCase() === l)
+    if (coincide) {
+      return { colorFondo: coincide.fondo, colorLetra: coincide.letra }
+    }
+  }
+  return { colorFondo: '#000000', colorLetra: '#FFFFFF' }
+}
+
 function sanitizarEngine(rawEngine: any): IdMotor {
   if (rawEngine && MOTORES_VALIDOS.includes(rawEngine)) {
     return rawEngine
@@ -133,6 +151,13 @@ export default function App({ motor, repoOverride }: AppProps) {
     ajustesPrevios.columnaAngosta !== undefined ? Boolean(ajustesPrevios.columnaAngosta) : false
   )
 
+  const coloresIniciales = sanitizarColores(ajustesPrevios.colorFondo, ajustesPrevios.colorLetra)
+  const [colorFondo, setColorFondo] = useState<string>(coloresIniciales.colorFondo)
+  const [colorLetra, setColorLetra] = useState<string>(coloresIniciales.colorLetra)
+  const [tipoFuente, setTipoFuente] = useState<'sans' | 'serif'>(
+    ajustesPrevios.tipoFuente === 'serif' ? 'serif' : 'sans'
+  )
+
   // Mientras estemos arreglando el motor, toda lectura se mide. Se puede apagar si
   // alguna vez estorba, pero la omision es medir.
   const [medirLectura, setMedirLectura] = useState<boolean>(true)
@@ -158,12 +183,15 @@ export default function App({ motor, repoOverride }: AppProps) {
         verTranscripcion,
         tema,
         engine,
-        columnaAngosta
+        columnaAngosta,
+        colorFondo,
+        colorLetra,
+        tipoFuente
       }
       localStorage.setItem('teleprompter_ajustes', JSON.stringify(objetoAjustes))
     } catch (e) {
     }
-  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta])
+  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente])
 
   const cargarBiblioteca = useCallback(async () => {
     let repo = repoRef.current
@@ -338,9 +366,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }
 
-  const [colorFondo, setColorFondo] = useState<string>('#000000')
-  const [colorLetra, setColorLetra] = useState<string>('#FFFFFF')
-  const [tipoFuente, setTipoFuente] = useState<'sans' | 'serif'>('sans')
   const [controlesVisibles, setControlesVisibles] = useState<boolean>(false)
   const timerControlesRef = useRef<number | null>(null)
 
@@ -775,6 +800,8 @@ export default function App({ motor, repoOverride }: AppProps) {
           setEngine={setEngine}
           verTranscripcion={verTranscripcion}
           setVerTranscripcion={setVerTranscripcion}
+          tema={tema}
+          setTema={setTema}
           onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
         />
       )}
