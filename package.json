@@ -11,7 +11,8 @@
     "cap:sync": "cap sync",
     "cap:open": "cap open android",
     "cap:build": "cap build android",
-    "modelo": "node scripts/bajar-modelo.mjs"
+    "modelo": "node scripts/bajar-modelo.mjs",
+    "apk": "node scripts/apk.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.1",
