@@ -21,7 +21,7 @@ export function movimientoApagado(): boolean {
 }
 
 interface PantallaProps {
-  direccion: 'adentro' | 'atras'
+  direccion: 'adentro' | 'atras' | 'inicial'
   children: React.ReactNode
 }
 
@@ -30,16 +30,19 @@ export function Pantalla({ direccion, children }: PantallaProps) {
     return <>{children}</>
   }
 
-  const nombreAnimacion = direccion === 'adentro' ? 'pantallaEntraAdentro' : 'pantallaEntraAtras'
+  const hijo = React.Children.only(children) as React.ReactElement<any>
+  const nombreAnimacion =
+    direccion === 'inicial'
+      ? 'pantallaEntraInicial'
+      : direccion === 'adentro'
+      ? 'pantallaEntraAdentro'
+      : 'pantallaEntraAtras'
 
-  return (
-    <div
-      data-pantalla-direccion={direccion}
-      style={{
-        animation: `${nombreAnimacion} ${MS_PANTALLA}ms ${CURVA_ENTRA} forwards`
-      }}
-    >
-      {children}
-    </div>
-  )
+  return React.cloneElement(hijo, {
+    'data-pantalla-direccion': direccion,
+    style: {
+      ...(hijo.props.style || {}),
+      animation: `${nombreAnimacion} ${MS_PANTALLA}ms ${CURVA_ENTRA} forwards`
+    }
+  })
 }

@@ -97,6 +97,15 @@ button {
   cursor: pointer;
 }
 
+@keyframes pantallaEntraInicial {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes pantallaEntraAdentro {
   from {
     transform: translateX(24px);

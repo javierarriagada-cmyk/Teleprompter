@@ -70,6 +70,8 @@ interface EditorViewProps {
   engine?: IdMotor
   setEngine?: (e: IdMotor) => void
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
+  'data-pantalla-direccion'?: string
+  style?: React.CSSProperties
 }
 
 function generarIdBloque(): string {
@@ -109,7 +111,9 @@ export default function EditorView({
   setTema,
   engine = 'vosk',
   setEngine,
-  onRegistrarCerrarModal
+  onRegistrarCerrarModal,
+  'data-pantalla-direccion': dataPantallaDireccion,
+  style
 }: EditorViewProps) {
   const [plegados, setPlegados] = useState<Record<string, boolean>>({})
   const [menuOpcionesAbierto, setMenuOpcionesAbierto] = useState(false)
@@ -396,7 +400,10 @@ export default function EditorView({
   const hayMasDeUnBloque = guion.bloques && guion.bloques.length > 1
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', padding: '16px 16px 100px 16px', position: 'relative' }}>
+    <div
+      data-pantalla-direccion={dataPantallaDireccion}
+      style={{ maxWidth: 800, margin: '0 auto', padding: '16px 16px 100px 16px', position: 'relative', ...style }}
+    >
       <input
         type="file"
         ref={fileInputRef}

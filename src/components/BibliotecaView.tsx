@@ -25,6 +25,8 @@ interface BibliotecaViewProps {
   tema?: 'claro' | 'oscuro'
   setTema?: (tema: 'claro' | 'oscuro') => void
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
+  'data-pantalla-direccion'?: string
+  style?: React.CSSProperties
 }
 
 export function formatearFechaNatural(timestamp: number): string {
@@ -70,7 +72,9 @@ export default function BibliotecaView({
   setVerTranscripcion,
   tema = 'claro',
   setTema,
-  onRegistrarCerrarModal
+  onRegistrarCerrarModal,
+  'data-pantalla-direccion': dataPantallaDireccion,
+  style
 }: BibliotecaViewProps) {
   const [busqueda, setBusqueda] = useState('')
   const [mostrarArchivados, setMostrarArchivados] = useState(false)
@@ -237,7 +241,10 @@ export default function BibliotecaView({
     : `${guiones.length} ${guiones.length === 1 ? 'guión' : 'guiones'} · ${minsLectura} ${minsLectura === 1 ? 'minuto' : 'minutos'} de lectura`
 
   return (
-    <div style={{ padding: '16px', maxWidth: 800, margin: '0 auto', position: 'relative', minHeight: '80vh' }}>
+    <div
+      data-pantalla-direccion={dataPantallaDireccion}
+      style={{ padding: '16px', maxWidth: 800, margin: '0 auto', position: 'relative', minHeight: '80vh', ...style }}
+    >
       <input
         type="file"
         ref={fileInputRef}

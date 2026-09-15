@@ -99,7 +99,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   const { estado: estadoPrecarga, progreso: progresoPrecarga, error: errorPrecarga, reintentar: reintentarPrecarga } = usePrecargaModelo()
 
   const [vista, setVista] = useState<Vista>('biblioteca')
-  const prevNivelRef = useRef<number>(1)
+  const prevVistaRef = useRef<Vista | null>(null)
+  const [direccion, setDireccion] = useState<'adentro' | 'atras' | 'inicial'>('inicial')
   const guionModificadoRef = useRef<boolean>(false)
   const [avisoTexto, setAvisoTexto] = useState<string | null>(null)
   const timerAvisoRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -119,12 +120,14 @@ export default function App({ motor, repoOverride }: AppProps) {
     return 3
   }
 
-  const nivelActual = getNivelVista(vista)
-  const direccion: 'adentro' | 'atras' = nivelActual >= prevNivelRef.current ? 'adentro' : 'atras'
-
   useEffect(() => {
-    prevNivelRef.current = nivelActual
-  }, [nivelActual])
+    if (prevVistaRef.current !== null && prevVistaRef.current !== vista) {
+      const prevNivel = getNivelVista(prevVistaRef.current)
+      const actualNivel = getNivelVista(vista)
+      setDireccion(actualNivel >= prevNivel ? 'adentro' : 'atras')
+    }
+    prevVistaRef.current = vista
+  }, [vista])
 
   const [guionesResumen, setGuionesResumen] = useState<ResumenGuion[]>([])
   const [guionActual, setGuionActual] = useState<Guion | null>(null)

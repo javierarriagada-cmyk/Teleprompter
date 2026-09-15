@@ -49,7 +49,7 @@ import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { Guion } from '../datos/modelo'
 import { MotorFake } from '../motor/MotorFake'
 
-describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T205)', () => {
+describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T206)', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
     localStorage.clear()
@@ -95,14 +95,14 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T205)', () => {
         await new Promise((r) => setTimeout(r, 200))
       })
 
-      // Con movimiento apagado, Pantalla no agrega div envoltorio con animación
+      // Con movimiento apagado, Pantalla no agrega atributo de dirección
       expect(container.querySelector('[data-pantalla-direccion]')).toBeNull()
     } finally {
       window.matchMedia = originalMatchMedia
     }
   })
 
-  test('T200 - LA DIRECCION. Yendo de biblioteca a editor, el envoltorio entra desde la derecha (adentro); volviendo de editor a biblioteca, desde la izquierda (atras).', async () => {
+  test('T200 - LA DIRECCION. Yendo de biblioteca a editor, la pantalla entra con adentro; volviendo de editor a biblioteca, con atras.', async () => {
     const repo = new RepositorioMemoria()
     const guion: Guion = {
       id: 'g-t200',
@@ -119,10 +119,10 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T205)', () => {
       await new Promise((r) => setTimeout(r, 200))
     })
 
-    // 1. Inicialmente en biblioteca
+    // 1. Inicialmente en biblioteca (al arrancar la app es 'inicial')
     let pantallaDiv = container.querySelector('[data-pantalla-direccion]')
     expect(pantallaDiv).not.toBeNull()
-    expect(pantallaDiv?.getAttribute('data-pantalla-direccion')).toBe('adentro')
+    expect(pantallaDiv?.getAttribute('data-pantalla-direccion')).toBe('inicial')
 
     // 2. Abrir editor (nivel 1 -> nivel 2 = adentro)
     const fila = screen.getByTestId('fila-guion-g-t200')
@@ -198,43 +198,77 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T205)', () => {
   })
 
   test('T202 - LA HAPTICA NO HABLA DEL MOTOR. Con el motor falso, durante una lectura completa -enganchar, avanzar renglones, perder la voz- NO se llama a Haptics ni una sola vez.', async () => {
-    const motor = new MotorFake()
-    const repo = new RepositorioMemoria()
-    const guion: Guion = {
-      id: 'g-t202',
-      titulo: 'Guion T202',
-      idioma: 'es',
-      creado: Date.now(),
-      modificado: Date.now(),
-      bloques: [{ id: 'b1', nombre: '', texto: 'Primera linea de texto para probar motor fake' }]
+    vi.useFakeTimers()
+    try {
+      const motor = new MotorFake()
+      const repo = new RepositorioMemoria()
+      const guion: Guion = {
+        id: 'g-t202',
+        titulo: 'Guion T202',
+        idioma: 'es',
+        creado: Date.now(),
+        modificado: Date.now(),
+        bloques: [
+          {
+            id: 'b1',
+            nombre: '',
+            texto:
+              'Primera linea del guion largo para avanzar renglones.\n' +
+              'Segunda linea del guion largo para avanzar mas renglones.\n' +
+              'Tercera linea del guion largo para confirmar avance.\n' +
+              'Cuarta linea del guion largo para ver si cambia el trabado.'
+          }
+        ]
+      }
+      await repo.guardar(guion)
+
+      render(<App motor={motor} repoOverride={repo} />)
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(600)
+      })
+
+      // Entrar al editor
+      const fila = screen.getByTestId('fila-guion-g-t202')
+      await act(async () => {
+        fireEvent.click(fila)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      // Apretar Leer
+      const btnLeer = screen.getByTestId('btn-leer-guion-fijo')
+      await act(async () => {
+        fireEvent.click(btnLeer)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      // Pasar la cuenta regresiva (3s)
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(3500)
+      })
+
+      // Reiniciar los contadores de Haptics DESPUÉS de la cuenta regresiva
+      hapticsCalls.selectionChanged = 0
+      hapticsCalls.impact = []
+      hapticsCalls.notification = 0
+
+      // Con la lectura andando, emitir parciales de voz que hagan avanzar varios renglones
+      await act(async () => {
+        motor.emitirParcial('Primera linea del guion largo para avanzar renglones.')
+        await vi.advanceTimersByTimeAsync(1000)
+        motor.emitirParcial('Segunda linea del guion largo para avanzar mas renglones.')
+        await vi.advanceTimersByTimeAsync(1000)
+        motor.emitirParcial('Tercera linea del guion largo para confirmar avance.')
+        await vi.advanceTimersByTimeAsync(1000)
+        motor.emitirParcial('palabras improvisadas ajenas fuera de guion')
+        await vi.advanceTimersByTimeAsync(1000)
+      })
+
+      expect(hapticsCalls.selectionChanged).toBe(0)
+      expect(hapticsCalls.impact.length).toBe(0)
+      expect(hapticsCalls.notification).toBe(0)
+    } finally {
+      vi.useRealTimers()
     }
-    await repo.guardar(guion)
-
-    render(<App motor={motor} repoOverride={repo} />)
-    await act(async () => {
-      await new Promise((r) => setTimeout(r, 200))
-    })
-
-    // Entrar al editor
-    const fila = screen.getByTestId('fila-guion-g-t202')
-    await act(async () => {
-      fireEvent.click(fila)
-    })
-
-    // Reiniciar contadores antes de simular motor
-    hapticsCalls.selectionChanged = 0
-    hapticsCalls.impact = []
-    hapticsCalls.notification = 0
-
-    // Simular voz / avance en el motor
-    act(() => {
-      motor.emitirParcial('primera linea de texto')
-      motor.emitirParcial('palabras improvisadas ajenas fuera de guion')
-    })
-
-    expect(hapticsCalls.selectionChanged).toBe(0)
-    expect(hapticsCalls.impact.length).toBe(0)
-    expect(hapticsCalls.notification).toBe(0)
   })
 
   test('T203 - LA HAPTICA CONFIRMA EL TOQUE. Al elegir una opcion de Ancho se llama a selectionChanged una vez. Al apretar Leer, a impact con Medium.', async () => {
@@ -409,6 +443,65 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T205)', () => {
       expect(screen.queryByTestId('aviso-flotante')).toBeNull()
     } finally {
       vi.useRealTimers()
+    }
+  })
+
+  test('T206 - EL ENVOLTORIO NO AGREGA NINGUN NIVEL AL ARBOL. El elemento que lleva data-pantalla-direccion es la raiz de la vista, no un elemento agregado.', async () => {
+    const repo1 = new RepositorioMemoria()
+    const guion: Guion = {
+      id: 'g-t206',
+      titulo: 'Guion T206',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto T206' }]
+    }
+    await repo1.guardar(guion)
+
+    // Estado 1: Con movimiento encendido
+    const res1 = render(<App repoOverride={repo1} />)
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 200))
+    })
+
+    const rootApp1 = res1.container.firstElementChild as HTMLElement
+    const elementoDireccion = rootApp1.querySelector('[data-pantalla-direccion]') as HTMLElement
+    expect(elementoDireccion).not.toBeNull()
+
+    // El elemento con data-pantalla-direccion debe ser la raíz propia de la vista (posee maxWidth 800px) y no un div wrapper
+    expect(elementoDireccion.parentElement).toBe(rootApp1)
+    expect(elementoDireccion.style.maxWidth).toBe('800px')
+
+    // Estado 2: Con movimiento apagado
+    const originalMatchMedia = window.matchMedia
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query.includes('prefers-reduced-motion: reduce'),
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn()
+    }))
+
+    try {
+      res1.unmount()
+      const repo2 = new RepositorioMemoria()
+      await repo2.guardar(guion)
+
+      const res2 = render(<App repoOverride={repo2} />)
+      await act(async () => {
+        await new Promise((r) => setTimeout(r, 200))
+      })
+
+      const rootApp2 = res2.container.firstElementChild as HTMLElement
+
+      // La cantidad de hijos/niveles entre la raíz de App y la raíz de la vista es exactamente la misma
+      expect(rootApp1.children.length).toBe(rootApp2.children.length)
+      expect(rootApp1.firstElementChild?.tagName).toBe(rootApp2.firstElementChild?.tagName)
+    } finally {
+      window.matchMedia = originalMatchMedia
     }
   })
 })
