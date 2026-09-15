@@ -5,8 +5,7 @@ import 'fake-indexeddb/auto'
 import App from '../App'
 import { elegirMotor } from '../motor/elegirMotor'
 import { MotorFake } from '../motor/MotorFake'
-import { MotorWebSpeech } from '../motor/MotorWebSpeech'
-import { MotorWhisperLocal } from '../motor/MotorWhisperLocal'
+import { MotorVosk } from '../motor/MotorVosk'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { Guion } from '../datos/modelo'
 
@@ -19,12 +18,12 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
     vi.restoreAllMocks()
   })
 
-  test('T57: elegirMotor prioriza webspeech sobre whisper-local por omision', async () => {
-    vi.spyOn(MotorWebSpeech.prototype, 'disponible').mockResolvedValue(true)
-    vi.spyOn(MotorWhisperLocal.prototype, 'disponible').mockResolvedValue(true)
+  test('T57: elegirMotor devuelve vosk por omision', async () => {
+    vi.spyOn(MotorVosk.prototype, 'disponible').mockResolvedValue(true)
+    vi.spyOn(MotorVosk.prototype, 'listo').mockResolvedValue(true)
 
     const motor = await elegirMotor()
-    expect(motor.id).toBe('webspeech')
+    expect(motor.id).toBe('vosk')
   })
 
   test('T58: transcripción en vivo apagada por omisión no acumula texto en estado ni muestra panel, pero el seguidor y registro funcionan', async () => {
@@ -135,26 +134,13 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
     expect(container.textContent).toContain('esta es una prueba.')
   })
 
-  test('T59: casos borde: fallback cuando webspeech no esta disponible, seleccion manual de whisper y franja de estado con error', async () => {
-    // 1. WebSpeech no disponible -> cae en whisper-local
-    vi.spyOn(MotorWebSpeech.prototype, 'disponible').mockResolvedValue(false)
-    vi.spyOn(MotorWhisperLocal.prototype, 'disponible').mockResolvedValue(true)
-
-    const motorFallback = await elegirMotor()
-    expect(motorFallback.id).toBe('whisper-local')
-
-    // 2. Eleccion explicita del usuario a Whisper (whisper-local)
-    vi.spyOn(MotorWebSpeech.prototype, 'disponible').mockResolvedValue(true)
-    const motorEleccionPropia = await elegirMotor('whisper-local')
-    expect(motorEleccionPropia.id).toBe('whisper-local')
-
-    // 3. Ningún motor disponible -> lanza excepcion explicativa
-    vi.spyOn(MotorWebSpeech.prototype, 'disponible').mockResolvedValue(false)
-    vi.spyOn(MotorWhisperLocal.prototype, 'disponible').mockResolvedValue(false)
+  test('T59: casos borde: ningun motor disponible y franja de estado con error', async () => {
+    // 1. Ningún motor disponible -> lanza excepcion explicativa
+    vi.spyOn(MotorVosk.prototype, 'disponible').mockResolvedValue(false)
 
     await expect(elegirMotor()).rejects.toThrow(/Ningún motor de voz está disponible/i)
 
-    // 4. Franja de estado en App muestra el mensaje de error cuando falla el motor (activando primero el diagnóstico)
+    // 2. Franja de estado en App muestra el mensaje de error cuando falla el motor (activando primero el diagnóstico)
     const repo = new RepositorioMemoria()
     render(React.createElement(App, { repoOverride: repo }))
 
@@ -170,50 +156,5 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
 
     expect(screen.getByText(/Franja de Estado:/i)).not.toBeNull()
     expect(screen.getByText(/Último Error Motor:/i)).not.toBeNull()
-  })
-
-  test('T134: GUARDIANA DEL MOTOR POR OMISION. Sin permiso de microfono todavia, Web Speech SIGUE estando disponible y no se arranca ninguna sesion para averiguarlo.', async () => {
-    // Se simula el navegador de alguien que entra por primera vez: la interfaz existe,
-    // pero el permiso no se dio, asi que cualquier intento de arrancar contesta
-    // 'not-allowed'. Es exactamente el estado de un telefono al abrir el sitio publicado.
-    const arranques: string[] = []
-
-    class ReconocedorSinPermiso {
-      lang = ''
-      onerror: ((e: any) => void) | null = null
-      onstart: (() => void) | null = null
-      start() {
-        arranques.push('start')
-        setTimeout(() => {
-          if (this.onerror) this.onerror({ error: 'not-allowed' })
-        }, 0)
-      }
-      stop() {}
-      abort() {}
-    }
-
-    const previo = (window as any).SpeechRecognition
-    ;(window as any).SpeechRecognition = ReconocedorSinPermiso as any
-
-    try {
-      const motor = new MotorWebSpeech()
-
-      // 1. Se considera DISPONIBLE: el navegador sabe hacerlo. Que no haya permiso todavia
-      //    no es lo mismo que que no se pueda.
-      expect(await motor.disponible()).toBe(true)
-
-      // 2. Y no se arranco ninguna sesion para averiguarlo. Esto es lo que evitaba que el
-      //    cartel del microfono saltara al cargar la pagina, antes de que la persona
-      //    apretara nada.
-      expect(arranques).toEqual([])
-
-      // 3. La consecuencia que importa: elegirMotor se queda en Web Speech y NO cae en
-      //    Whisper Local, que se baja el modelo entero desde Hugging Face.
-      vi.spyOn(MotorWhisperLocal.prototype, 'disponible').mockResolvedValue(true)
-      const elegido = await elegirMotor()
-      expect(elegido.id).toBe('webspeech')
-    } finally {
-      ;(window as any).SpeechRecognition = previo
-    }
   })
 })

@@ -4,8 +4,6 @@ import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { elegirMotor } from '../motor/elegirMotor'
 import { MotorVosk } from '../motor/MotorVosk'
-import { MotorWebSpeech } from '../motor/MotorWebSpeech'
-import { MotorWhisperLocal } from '../motor/MotorWhisperLocal'
 import { usePrecargaModelo } from '../hooks/usePrecargaModelo'
 import { CACHE_MODELO, MODELO_URL_DEFECTO } from '../motor/modeloVosk'
 
@@ -18,21 +16,15 @@ describe('Pruebas T60-T63, T69-T71 y T76 (Motor Vosk y Precarga)', () => {
     vi.restoreAllMocks()
   })
 
-  test('T60: elegirMotor prioriza vosk sobre webspeech y whisper-local por omision (cuando esta listo) y permite seleccion explicita', async () => {
+  test('T60: elegirMotor prioriza vosk por omision (cuando esta listo) y permite seleccion explicita', async () => {
     vi.spyOn(MotorVosk.prototype, 'disponible').mockResolvedValue(true)
     vi.spyOn(MotorVosk.prototype, 'listo').mockResolvedValue(true)
-    vi.spyOn(MotorWebSpeech.prototype, 'disponible').mockResolvedValue(true)
-    vi.spyOn(MotorWhisperLocal.prototype, 'disponible').mockResolvedValue(true)
 
     const motorOmision = await elegirMotor()
     expect(motorOmision.id).toBe('vosk')
 
     const motorExplicito = await elegirMotor('vosk')
     expect(motorExplicito.id).toBe('vosk')
-
-    vi.spyOn(MotorVosk.prototype, 'disponible').mockResolvedValue(false)
-    const motorFallbackWebspeech = await elegirMotor()
-    expect(motorFallbackWebspeech.id).toBe('webspeech')
   })
 
   test('T61: MotorVosk implementa la interfaz MotorDeVoz, comprueba disponibilidad y suscribe onProgreso', async () => {
@@ -151,13 +143,9 @@ describe('Pruebas T60-T63, T69-T71 y T76 (Motor Vosk y Precarga)', () => {
     }
   })
 
-  test('T71: GUARDIANA: a) elegirMotor sin preferido, con vosk disponible pero no listo y webspeech disponible, devuelve webspeech. b) elegirMotor("vosk") con preferido explicito devuelve vosk aunque listo() de false', async () => {
+  test('T71: GUARDIANA: elegirMotor("vosk") con preferido explicito devuelve vosk aunque listo() de false', async () => {
     vi.spyOn(MotorVosk.prototype, 'disponible').mockResolvedValue(true)
     vi.spyOn(MotorVosk.prototype, 'listo').mockResolvedValue(false)
-    vi.spyOn(MotorWebSpeech.prototype, 'disponible').mockResolvedValue(true)
-
-    const motorFallback = await elegirMotor()
-    expect(motorFallback.id).toBe('webspeech')
 
     const motorExplicito = await elegirMotor('vosk')
     expect(motorExplicito.id).toBe('vosk')

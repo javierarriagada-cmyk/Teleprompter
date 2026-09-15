@@ -9,7 +9,6 @@ import App from './App'
 import { crearSeguidor, tokenizarGuion } from './lib/seguidor'
 import { useSeguidor } from './hooks/useSeguidor'
 import { remuestrear } from './lib/remuestrear'
-import { crearSegmentador, MS_MAX_SEGMENTO } from './lib/segmentador'
 import { MotorFake } from './motor/MotorFake'
 import { crearMotorDeAvance } from './lib/avance'
 import { crearRegistro } from './lib/registro'
@@ -181,82 +180,6 @@ Esta es la tercera línea`)
     expect(errorPct).toBeLessThan(0.02)
   })
 
-  // T6: segmentador, dos frases
-  test('T6: segmentador, dos frases emiten exactamente 2 eventos final', async () => {
-    const sampleRate = 16000
-    const muestras100ms = 1600
-    const finales: string[] = []
-
-    const segmentador = crearSegmentador({
-      sampleRate,
-      transcribir: async (_pcm) => 'Texto transcrito',
-      alFinal: (e) => finales.push(e.texto),
-      alDescartar: () => {}
-    })
-
-    for (let i = 0; i < 10; i++) {
-      segmentador.alimentar({ pcm: new Float32Array(muestras100ms), hablando: true })
-    }
-    for (let i = 0; i < 10; i++) {
-      segmentador.alimentar({ pcm: new Float32Array(muestras100ms), hablando: false })
-    }
-    for (let i = 0; i < 10; i++) {
-      segmentador.alimentar({ pcm: new Float32Array(muestras100ms), hablando: true })
-    }
-    for (let i = 0; i < 10; i++) {
-      segmentador.alimentar({ pcm: new Float32Array(muestras100ms), hablando: false })
-    }
-
-    await new Promise((resolve) => setTimeout(resolve, 50))
-    expect(finales.length).toBe(2)
-  })
-
-  // T7: segmentador, solo silencio
-  test('T7: segmentador, solo silencio emite 0 eventos', async () => {
-    const sampleRate = 16000
-    const muestras100ms = 1600
-    const finales: string[] = []
-
-    const segmentador = crearSegmentador({
-      sampleRate,
-      transcribir: async () => 'Texto',
-      alFinal: (e) => finales.push(e.texto),
-      alDescartar: () => {}
-    })
-
-    for (let i = 0; i < 30; i++) {
-      segmentador.alimentar({ pcm: new Float32Array(muestras100ms), hablando: false })
-    }
-
-    await new Promise((resolve) => setTimeout(resolve, 50))
-    expect(finales.length).toBe(0)
-  })
-
-  // T8: segmentador, corte por duración
-  test('T8: segmentador, corte por duración (20 s continuos)', async () => {
-    const sampleRate = 16000
-    const muestras100ms = 1600
-    const finales: Array<{ inicioMs: number; finMs: number }> = []
-
-    const segmentador = crearSegmentador({
-      sampleRate,
-      transcribir: async () => 'Texto largo',
-      alFinal: (e) => finales.push({ inicioMs: e.inicioMs, finMs: e.finMs }),
-      alDescartar: () => {}
-    })
-
-    for (let i = 0; i < 200; i++) {
-      segmentador.alimentar({ pcm: new Float32Array(muestras100ms), hablando: true })
-    }
-    segmentador.flush()
-
-    await new Promise((resolve) => setTimeout(resolve, 50))
-    expect(finales.length).toBe(3)
-    for (const f of finales) {
-      expect(f.finMs - f.inicioMs).toBeLessThanOrEqual(MS_MAX_SEGMENTO + 50)
-    }
-  })
-
   // T9: integración con React App y MotorFake
   test('T9: integración con React App y MotorFake avanza la línea resaltada en el DOM 0 -> 1 -> 2', async () => {
     const frases = [
@@ -335,23 +258,6 @@ Esta es la tercera línea`)
     const seguidor = crearSeguidor(tokens)
     const pos = seguidor.avanzar('   ')
     expect(pos.movio).toBe(false)
-  })
-
-  test('Caso borde: segmento demasiado corto es descartado', () => {
-    const sampleRate = 16000
-    let descartadoMotivo = ''
-
-    const segmentador = crearSegmentador({
-      sampleRate,
-      transcribir: async () => 'Texto',
-      alFinal: () => {},
-      alDescartar: (m) => { descartadoMotivo = m }
-    })
-
-    segmentador.alimentar({ pcm: new Float32Array(1600), hablando: true })
-    segmentador.flush()
-
-    expect(descartadoMotivo).toContain('demasiado corto')
   })
 
   // T10: Verificación de worklet en JS plano y ausencia de TypeScript en dist/

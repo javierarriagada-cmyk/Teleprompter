@@ -352,8 +352,6 @@ export default function BibliotecaView({
                     }}
                   >
                     <option value="vosk">Vosk (Offline)</option>
-                    <option value="webspeech">Web Speech API</option>
-                    <option value="whisper-local">Whisper Local</option>
                     <option value="nativo">Nativo (Android)</option>
                   </select>
                 </label>

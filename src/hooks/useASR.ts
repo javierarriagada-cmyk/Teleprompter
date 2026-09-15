@@ -12,7 +12,7 @@ export default function useASR(options: {
   alRecibirFraseFinal?: (e: any) => void
   alNotificarVoz?: (hayVoz: boolean) => void
 } = {}) {
-  const { engine = 'webspeech', lang = 'es-ES', motor: motorInyectado, acumularTexto = false, alRecibirParcial: optionParcial, alRecibirFraseFinal: optionFinal, alNotificarVoz: optionVoz } = options
+  const { engine = 'vosk', lang = 'es-ES', motor: motorInyectado, acumularTexto = false, alRecibirParcial: optionParcial, alRecibirFraseFinal: optionFinal, alNotificarVoz: optionVoz } = options
   const motorRef = useRef<MotorDeVoz | null>(null)
   const acumularTextoRef = useRef(acumularTexto)
 
@@ -25,7 +25,6 @@ export default function useASR(options: {
   const [transcript, setTranscript] = useState('')
   const [transcripcionParcial, setTranscripcionParcial] = useState('')
   const [ready, setReady] = useState(false)
-  const [dispositivoComputo, setDispositivoComputo] = useState<string>('cargando')
   const [progresoDescarga, setProgresoDescarga] = useState<number>(0)
   const [ultimoError, setUltimoError] = useState<string | null>(null)
 
@@ -48,7 +47,6 @@ export default function useASR(options: {
         setIsStarting(false)
         setUltimoError(null)
         setProgresoDescarga(0)
-        setDispositivoComputo('cargando')
         if (motorRef.current) {
           await motorRef.current.detener()
         }
@@ -121,11 +119,6 @@ export default function useASR(options: {
       setIsStarting(false)
       setReady(true)
       setIsRecording(true)
-
-      if (motorRef.current.id === 'whisper-local') {
-        const m = motorRef.current as any
-        setDispositivoComputo(m.dispositivoComputo || 'webgpu')
-      }
     } catch (err: any) {
       console.error('[useASR] Error al iniciar grabación:', err)
       setUltimoError(err.message || String(err))
@@ -189,7 +182,6 @@ export default function useASR(options: {
     transcript: (transcript + (transcripcionParcial ? '\n' + transcripcionParcial : '')).trim(),
     ready,
     estadoMotor,
-    dispositivoComputo,
     progresoDescarga,
     ultimoError,
     alRecibirParcial,
