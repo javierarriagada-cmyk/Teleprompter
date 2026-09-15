@@ -605,7 +605,7 @@ export default function EditorView({
               {/* Grupo 1: COMO SE VE EL TEXTO */}
               <div>
                 <h4 style={{ margin: '0 0 12px 0', fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-apagado)' }}>
-                  COMO SE VE EL TEXTO
+                  Cómo se ve el texto
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                   {/* Tamano de letra */}
@@ -714,7 +714,7 @@ export default function EditorView({
               {/* Grupo 2: COLORES */}
               <div>
                 <h4 style={{ margin: '0 0 12px 0', fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-apagado)' }}>
-                  COLORES
+                  Colores
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                   {/* Fondo */}
@@ -796,7 +796,7 @@ export default function EditorView({
               {/* Grupo 3: LA TOMA */}
               <div>
                 <h4 style={{ margin: '0 0 12px 0', fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-apagado)' }}>
-                  LA TOMA
+                  La toma
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                   {/* Espejo */}
@@ -807,7 +807,10 @@ export default function EditorView({
                         type="checkbox"
                         checked={mirror}
                         onChange={(e) => setMirror(e.target.checked)}
-                        style={{ width: 18, height: 18 }}
+                        // accentColor pinta la casilla con el verde de la aplicacion. Sin
+                        // esto queda el azul que trae el navegador, que es el unico azul
+                        // de toda la pantalla y no pertenece a la paleta.
+                        style={{ width: 18, height: 18, accentColor: 'var(--color-acento)' }}
                       />
                     </label>
                   )}
@@ -836,7 +839,7 @@ export default function EditorView({
                         type="checkbox"
                         checked={mostrarTiempo}
                         onChange={(e) => setMostrarTiempo(e.target.checked)}
-                        style={{ width: 18, height: 18 }}
+                        style={{ width: 18, height: 18, accentColor: 'var(--color-acento)' }}
                       />
                     </label>
                   )}

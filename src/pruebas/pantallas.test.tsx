@@ -640,15 +640,15 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     expect(panel).not.toBeNull()
 
     // 1. Títulos de grupo
-    expect(screen.getByText('COMO SE VE EL TEXTO')).not.toBeNull()
-    expect(screen.getByText('COLORES')).not.toBeNull()
-    expect(screen.getByText('LA TOMA')).not.toBeNull()
+    expect(screen.getByText('Cómo se ve el texto')).not.toBeNull()
+    expect(screen.getByText('Colores')).not.toBeNull()
+    expect(screen.getByText('La toma')).not.toBeNull()
 
     // 2. Orden y pertenencia de controles por grupo
     const htmlText = panel.innerHTML
-    const idxGrupo1 = htmlText.indexOf('COMO SE VE EL TEXTO')
-    const idxGrupo2 = htmlText.indexOf('COLORES')
-    const idxGrupo3 = htmlText.indexOf('LA TOMA')
+    const idxGrupo1 = htmlText.indexOf('Cómo se ve el texto')
+    const idxGrupo2 = htmlText.indexOf('Colores')
+    const idxGrupo3 = htmlText.indexOf('La toma')
 
     expect(idxGrupo1).toBeLessThan(idxGrupo2)
     expect(idxGrupo2).toBeLessThan(idxGrupo3)
