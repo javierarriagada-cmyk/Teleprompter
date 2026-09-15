@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { IdMotor } from '../motor/MotorDeVoz'
 import { MotorVosk } from '../motor/MotorVosk'
 
 export type EstadoPrecarga = 'inactivo' | 'descargando' | 'listo' | 'error'
 
-export function usePrecargaModelo(): {
+export function usePrecargaModelo(engine: IdMotor = 'vosk'): {
   estado: EstadoPrecarga
   progreso: number // 0 a 1
   error: string | null
@@ -15,6 +16,11 @@ export function usePrecargaModelo(): {
   const motorRef = useRef<MotorVosk | null>(null)
 
   const ejecutarPrecarga = useCallback(async () => {
+    if (engine !== 'vosk') {
+      setEstado('inactivo')
+      return
+    }
+
     setEstado('descargando')
     setError(null)
     setProgreso(0)
@@ -42,15 +48,21 @@ export function usePrecargaModelo(): {
       setError(err?.message || 'Error al precargar el modelo')
       setEstado('error')
     }
-  }, [])
+  }, [engine])
 
   useEffect(() => {
-    ejecutarPrecarga()
-  }, [ejecutarPrecarga])
+    if (engine === 'vosk') {
+      ejecutarPrecarga()
+    } else {
+      setEstado('inactivo')
+    }
+  }, [engine, ejecutarPrecarga])
 
   const reintentar = useCallback(() => {
-    ejecutarPrecarga()
-  }, [ejecutarPrecarga])
+    if (engine === 'vosk') {
+      ejecutarPrecarga()
+    }
+  }, [engine, ejecutarPrecarga])
 
   return {
     estado,

@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useRef, useState } from 'react'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
-import { Guion, Bloque, TramoFormato, contarPalabras, calcularDuracionTexto } from '../datos/modelo'
+import { Guion, Bloque, TramoFormato, contarPalabras, calcularDuracionTexto, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
 import { importarTexto } from '../datos/importar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { IdMotor } from '../motor/MotorDeVoz'
@@ -102,9 +102,9 @@ export default function EditorView({
   setMostrarTiempo,
   columnaAngosta = false,
   setColumnaAngosta,
-  colorFondo = '#000000',
+  colorFondo = PAREJAS_COLOR[0].fondo,
   setColorFondo,
-  colorLetra = '#FFFFFF',
+  colorLetra = PAREJAS_COLOR[0].letra,
   setColorLetra,
   tipoFuente = 'sans',
   setTipoFuente,
@@ -405,7 +405,7 @@ export default function EditorView({
     <div
       data-pantalla-direccion={dataPantallaDireccion}
       onAnimationEnd={onAnimationEnd}
-      style={{ maxWidth: 800, margin: '0 auto', padding: '16px 16px 100px 16px', position: 'relative', ...style }}
+      style={{ maxWidth: 800, margin: '0 auto', padding: 'var(--aire-4) var(--aire-4) 100px var(--aire-4)', position: 'relative', ...style }}
     >
       <input
         type="file"
@@ -442,9 +442,9 @@ export default function EditorView({
             style={{
               background: 'transparent',
               border: 'none',
-              fontSize: 22,
+              fontSize: 'var(--texto-display)',
               color: 'var(--color-texto)',
-              padding: '4px 8px',
+              padding: 'var(--aire-1) var(--aire-2)',
               cursor: 'pointer'
             }}
             title="Opciones"
@@ -461,7 +461,6 @@ export default function EditorView({
                 backgroundColor: 'var(--bg-superficie)',
                 border: '1px solid var(--color-borde)',
                 borderRadius: 'var(--redondeo)',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                 zIndex: 50,
                 minWidth: 180,
                 overflow: 'hidden',
@@ -473,8 +472,8 @@ export default function EditorView({
                   : `menuCreceEsquina ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
               }}
             >
-              <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--color-borde)' }}>
-                <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 4 }}>
+              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-borde)' }}>
+                <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
                   Idioma:
                 </label>
                 <select
@@ -482,9 +481,9 @@ export default function EditorView({
                   onChange={(e) => handleIdiomaChange(e.target.value)}
                   style={{
                     width: '100%',
-                    padding: '4px 8px',
+                    padding: 'var(--aire-1) var(--aire-2)',
                     fontSize: 'var(--texto-meta)',
-                    borderRadius: 4,
+                    borderRadius: 'var(--redondeo)',
                     border: '1px solid var(--color-borde)',
                     backgroundColor: 'var(--bg-suelo)',
                     color: 'var(--color-texto)'
@@ -508,7 +507,7 @@ export default function EditorView({
                   }}
                   style={{
                     width: '100%',
-                    padding: '12px 16px',
+                    padding: 'var(--aire-3) var(--aire-4)',
                     textAlign: 'left',
                     background: 'transparent',
                     border: 'none',
@@ -528,7 +527,7 @@ export default function EditorView({
                   disabled={cargandoArchivo}
                   style={{
                     width: '100%',
-                    padding: '12px 16px',
+                    padding: 'var(--aire-3) var(--aire-4)',
                     textAlign: 'left',
                     background: 'transparent',
                     border: 'none',
@@ -547,7 +546,7 @@ export default function EditorView({
                   setMostrarModalAjustes(true)
                 }}
                 style={{
-                  padding: '12px 16px',
+                  padding: 'var(--aire-3) var(--aire-4)',
                   textAlign: 'left',
                   background: 'transparent',
                   border: 'none',
@@ -576,14 +575,14 @@ export default function EditorView({
           data-testid="input-titulo-guion"
           style={{
             width: '100%',
-            padding: '4px 8px',
+            padding: 'var(--aire-1) var(--aire-2)',
             border: 'none',
             borderBottom: tituloEnfocado ? '2px solid var(--color-acento)' : '1px solid var(--color-borde)',
             outline: 'none',
             backgroundColor: tituloEnfocado ? 'var(--bg-suelo)' : 'transparent',
             color: 'var(--color-texto)',
             boxSizing: 'border-box',
-            borderRadius: '4px 4px 0 0',
+            borderRadius: 'var(--redondeo) var(--redondeo) 0 0',
             transition: 'border-color 0.2s, background-color 0.2s'
           }}
         />
@@ -603,12 +602,12 @@ export default function EditorView({
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.7)',
+            backgroundColor: 'var(--bg-suelo)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 200,
-            padding: 16
+            padding: 'var(--aire-4)'
           }}
           onClick={() => setMostrarModalAjustes(false)}
         >
@@ -617,7 +616,7 @@ export default function EditorView({
             style={{
               backgroundColor: 'var(--bg-superficie)',
               color: 'var(--color-texto)',
-              padding: 20,
+              padding: 'var(--aire-4)',
               borderRadius: 'var(--redondeo)',
               maxWidth: 500,
               width: '100%',
@@ -630,15 +629,15 @@ export default function EditorView({
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-              <h3 style={{ margin: 0 }}>Ajustes</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-4)' }}>
+              <h3 className="texto-titulo" style={{ margin: 0 }}>Ajustes</h3>
               <button
                 onClick={() => setMostrarModalAjustes(false)}
                 style={{
                   background: 'transparent',
                   border: 'none',
                   color: 'var(--color-texto)',
-                  fontSize: 18,
+                  fontSize: 'var(--texto-titulo)',
                   cursor: 'pointer'
                 }}
               >
@@ -646,29 +645,29 @@ export default function EditorView({
               </button>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-4)' }}>
               {/* Grupo 1: CÓMO SE VE EL TEXTO */}
               <div>
-                <h4 style={{ margin: '0 0 12px 0', fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-apagado)' }}>
+                <h4 className="texto-etiqueta" style={{ margin: '0 0 var(--aire-3) 0', color: 'var(--color-apagado)' }}>
                   Cómo se ve el texto
                 </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-3)' }}>
                   {/* Tamaño de letra */}
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: 14, fontWeight: 600 }}>Tamaño de letra:</span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Tamaño de letra:</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)' }}>
                       <button
                         onClick={onLetraMenos}
                         aria-label="Disminuir letra panel"
-                        style={{ padding: '4px 12px', fontSize: 16, cursor: 'pointer', borderRadius: 4, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                        style={{ padding: 'var(--aire-1) var(--aire-3)', fontSize: 'var(--texto-titulo)', cursor: 'pointer', borderRadius: 'var(--redondeo)', border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
                       >
                         -
                       </button>
-                      <span data-testid="valor-letra-panel" style={{ fontWeight: 'bold', minWidth: 28, textAlign: 'center' }}>{fontSize}</span>
+                      <span data-testid="valor-letra-panel" className="texto-cuerpo" style={{ fontWeight: 'bold', minWidth: 28, textAlign: 'center' }}>{fontSize}</span>
                       <button
                         onClick={onLetraMas}
                         aria-label="Aumentar letra panel"
-                        style={{ padding: '4px 12px', fontSize: 16, cursor: 'pointer', borderRadius: 4, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                        style={{ padding: 'var(--aire-1) var(--aire-3)', fontSize: 'var(--texto-titulo)', cursor: 'pointer', borderRadius: 'var(--redondeo)', border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
                       >
                         +
                       </button>
@@ -678,8 +677,8 @@ export default function EditorView({
                   {/* Ancho */}
                   {(setColumnaAngosta || setMarginPercent) && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: 14, fontWeight: 600 }}>Ancho:</span>
-                      <div style={{ display: 'flex', gap: 6 }}>
+                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Ancho:</span>
+                      <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
                         <button
                           type="button"
                           onClick={() => {
@@ -688,8 +687,8 @@ export default function EditorView({
                             setMarginPercent?.(5)
                           }}
                           style={{
-                            padding: '6px 12px',
-                            borderRadius: 6,
+                            padding: 'var(--aire-2) var(--aire-3)',
+                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: (!columnaAngosta && marginPercent !== 12) ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: (!columnaAngosta && marginPercent !== 12) ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -707,8 +706,8 @@ export default function EditorView({
                             setMarginPercent?.(12)
                           }}
                           style={{
-                            padding: '6px 12px',
-                            borderRadius: 6,
+                            padding: 'var(--aire-2) var(--aire-3)',
+                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: (!columnaAngosta && marginPercent === 12) ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: (!columnaAngosta && marginPercent === 12) ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -726,8 +725,8 @@ export default function EditorView({
                             setMarginPercent?.(5)
                           }}
                           style={{
-                            padding: '6px 12px',
-                            borderRadius: 6,
+                            padding: 'var(--aire-2) var(--aire-3)',
+                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: columnaAngosta ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: columnaAngosta ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -744,8 +743,8 @@ export default function EditorView({
                   {/* Tipografía */}
                   {setTipoFuente && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: 14, fontWeight: 600 }}>Tipografía:</span>
-                      <div style={{ display: 'flex', gap: 6 }}>
+                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Tipografía:</span>
+                      <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
                         <button
                           type="button"
                           onClick={() => {
@@ -753,8 +752,8 @@ export default function EditorView({
                             setTipoFuente('sans')
                           }}
                           style={{
-                            padding: '6px 12px',
-                            borderRadius: 6,
+                            padding: 'var(--aire-2) var(--aire-3)',
+                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: tipoFuente === 'sans' ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: tipoFuente === 'sans' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -771,8 +770,8 @@ export default function EditorView({
                             setTipoFuente('serif')
                           }}
                           style={{
-                            padding: '6px 12px',
-                            borderRadius: 6,
+                            padding: 'var(--aire-2) var(--aire-3)',
+                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: tipoFuente === 'serif' ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: tipoFuente === 'serif' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -790,19 +789,19 @@ export default function EditorView({
 
               {/* Grupo 2: LA TOMA */}
               <div>
-                <h4 style={{ margin: '0 0 12px 0', fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-apagado)' }}>
+                <h4 className="texto-etiqueta" style={{ margin: '0 0 var(--aire-3) 0', color: 'var(--color-apagado)' }}>
                   La toma
                 </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-3)' }}>
                   {/* Fondo y letra */}
                   {setColorFondo && setColorLetra && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: 14, fontWeight: 600 }}>Fondo y letra:</span>
-                      <div style={{ display: 'flex', gap: 8 }}>
+                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Fondo y letra:</span>
+                      <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
                         {[
-                          { fondo: '#000000', letra: '#FFFFFF', label: 'Negro con blanco' },
-                          { fondo: '#000000', letra: '#F5C24B', label: 'Negro con ámbar' },
-                          { fondo: '#FFFFFF', letra: '#000000', label: 'Blanco con negro' }
+                          { fondo: PAREJAS_COLOR[0].fondo, letra: PAREJAS_COLOR[0].letra, label: 'Negro con blanco' },
+                          { fondo: PAREJAS_COLOR[1].fondo, letra: PAREJAS_COLOR[1].letra, label: 'Negro con ámbar' },
+                          { fondo: PAREJAS_COLOR[2].fondo, letra: PAREJAS_COLOR[2].letra, label: 'Blanco con negro' }
                         ].map((p, idx) => {
                           const activo = colorFondo.toUpperCase() === p.fondo.toUpperCase() && colorLetra.toUpperCase() === p.letra.toUpperCase()
                           return (
@@ -816,8 +815,8 @@ export default function EditorView({
                                 setColorLetra(p.letra)
                               }}
                               style={{
-                                padding: 4,
-                                borderRadius: 6,
+                                padding: 'var(--aire-1)',
+                                borderRadius: 'var(--redondeo)',
                                 border: activo ? '2px solid var(--color-acento)' : '1px solid var(--color-borde)',
                                 backgroundColor: 'var(--bg-suelo)',
                                 cursor: 'pointer',
@@ -830,15 +829,15 @@ export default function EditorView({
                                 style={{
                                   width: 28,
                                   height: 28,
-                                  borderRadius: 4,
+                                  borderRadius: 'var(--aire-1)',
                                   backgroundColor: p.fondo,
                                   color: p.letra,
                                   display: 'flex',
                                   alignItems: 'center',
                                   justifyContent: 'center',
                                   fontWeight: 'bold',
-                                  fontSize: 13,
-                                  border: p.fondo === '#FFFFFF' ? '1px solid #ccc' : '1px solid #444'
+                                  fontSize: 'var(--texto-meta)',
+                                  border: '1px solid var(--color-borde)'
                                 }}
                               >
                                 Aa
@@ -853,8 +852,8 @@ export default function EditorView({
                   {/* Dónde lees */}
                   {setAnclajeZona && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: 14, fontWeight: 600 }}>Dónde lees:</span>
-                      <div style={{ display: 'flex', gap: 6 }}>
+                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Dónde lees:</span>
+                      <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
                         <button
                           type="button"
                           onClick={() => {
@@ -862,8 +861,8 @@ export default function EditorView({
                             setAnclajeZona('arriba')
                           }}
                           style={{
-                            padding: '6px 12px',
-                            borderRadius: 6,
+                            padding: 'var(--aire-2) var(--aire-3)',
+                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: anclajeZona === 'arriba' ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: anclajeZona === 'arriba' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -880,8 +879,8 @@ export default function EditorView({
                             setAnclajeZona('medio')
                           }}
                           style={{
-                            padding: '6px 12px',
-                            borderRadius: 6,
+                            padding: 'var(--aire-2) var(--aire-3)',
+                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: anclajeZona === 'medio' ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: anclajeZona === 'medio' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -898,8 +897,8 @@ export default function EditorView({
                             setAnclajeZona('abajo')
                           }}
                           style={{
-                            padding: '6px 12px',
-                            borderRadius: 6,
+                            padding: 'var(--aire-2) var(--aire-3)',
+                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: anclajeZona === 'abajo' ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: anclajeZona === 'abajo' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -916,7 +915,7 @@ export default function EditorView({
                   {/* Espejo */}
                   {setMirror && (
                     <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
-                      <span style={{ fontSize: 14, fontWeight: 600 }}>Espejo:</span>
+                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Espejo:</span>
                       <input
                         type="checkbox"
                         checked={mirror}
@@ -932,7 +931,7 @@ export default function EditorView({
                   {/* Mostrar tiempo */}
                   {setMostrarTiempo && (
                     <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
-                      <span style={{ fontSize: 14, fontWeight: 600 }}>Mostrar tiempo:</span>
+                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Mostrar tiempo:</span>
                       <input
                         type="checkbox"
                         checked={mostrarTiempo}
@@ -954,13 +953,13 @@ export default function EditorView({
       {errorArchivo && (
         <div
           style={{
-            color: '#d32f2f',
-            backgroundColor: '#ffebee',
-            border: '1px solid #ef9a9a',
-            padding: '10px 14px',
-            borderRadius: 6,
-            marginBottom: 16,
-            fontSize: 14,
+            color: 'var(--color-grabando)',
+            backgroundColor: 'var(--bg-suelo)',
+            border: '1px solid var(--color-borde)',
+            padding: 'var(--aire-2) var(--aire-3)',
+            borderRadius: 'var(--redondeo)',
+            marginBottom: 'var(--aire-4)',
+            fontSize: 'var(--texto-cuerpo)',
             fontWeight: 'bold'
           }}
         >
@@ -974,15 +973,15 @@ export default function EditorView({
             backgroundColor: 'var(--bg-superficie)',
             border: '1px solid var(--color-borde)',
             borderRadius: 'var(--redondeo)',
-            padding: 16,
-            marginBottom: 20,
+            padding: 'var(--aire-4)',
+            marginBottom: 'var(--aire-4)',
             animation: movimientoApagado()
               ? 'none'
               : `panelSube ${MS_PANEL}ms ${CURVA_ENTRA} forwards`
           }}
         >
-          <h4 style={{ margin: '0 0 8px 0', color: 'var(--color-texto)' }}>Pegar texto</h4>
-          <p style={{ margin: '0 0 12px 0', fontSize: 14, color: 'var(--color-apagado)' }}>
+          <h4 className="texto-titulo" style={{ margin: '0 0 var(--aire-2) 0', color: 'var(--color-texto)' }}>Pegar texto</h4>
+          <p className="texto-cuerpo" style={{ margin: '0 0 var(--aire-3) 0', color: 'var(--color-apagado)' }}>
             Pega aquí el texto de tu guión. Se convertirá automáticamente en bloques y líneas con el formato adecuado.
           </p>
           <textarea
@@ -995,40 +994,40 @@ export default function EditorView({
             rows={8}
             style={{
               width: '100%',
-              padding: 10,
-              fontSize: 14,
+              padding: 'var(--aire-2) var(--aire-3)',
+              fontSize: 'var(--texto-cuerpo)',
               fontFamily: 'inherit',
-              borderRadius: 6,
+              borderRadius: 'var(--redondeo)',
               border: '1px solid var(--color-borde)',
               backgroundColor: 'var(--bg-suelo)',
               color: 'var(--color-texto)',
               boxSizing: 'border-box',
-              marginBottom: 8
+              marginBottom: 'var(--aire-2)'
             }}
           />
           {errorPegado && (
             <div
               style={{
-                color: '#d32f2f',
-                backgroundColor: '#ffebee',
-                padding: '8px 12px',
-                borderRadius: 4,
-                marginBottom: 12,
-                fontSize: 14,
+                color: 'var(--color-grabando)',
+                backgroundColor: 'var(--bg-suelo)',
+                padding: 'var(--aire-2) var(--aire-3)',
+                borderRadius: 'var(--redondeo)',
+                marginBottom: 'var(--aire-3)',
+                fontSize: 'var(--texto-cuerpo)',
                 fontWeight: 'bold'
               }}
             >
               {errorPegado}
             </div>
           )}
-          <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+          <div style={{ display: 'flex', gap: 'var(--aire-2)', justifyContent: 'flex-end' }}>
             <button
               onClick={handleCancelarPegar}
               style={{
-                padding: '6px 14px',
+                padding: 'var(--aire-2) var(--aire-3)',
                 backgroundColor: 'var(--bg-suelo)',
                 border: 'none',
-                borderRadius: 6,
+                borderRadius: 'var(--redondeo)',
                 color: 'var(--color-texto)',
                 cursor: 'pointer'
               }}
@@ -1038,11 +1037,11 @@ export default function EditorView({
             <button
               onClick={handleAceptarPegar}
               style={{
-                padding: '6px 14px',
+                padding: 'var(--aire-2) var(--aire-3)',
                 backgroundColor: 'var(--bg-superficie)',
                 color: 'var(--color-texto)',
                 border: '1px solid var(--color-borde)',
-                borderRadius: 6,
+                borderRadius: 'var(--redondeo)',
                 cursor: 'pointer',
                 fontWeight: 'bold'
               }}
@@ -1057,22 +1056,22 @@ export default function EditorView({
       {(!guion.bloques || guion.bloques.length === 0) ? (
         <div
           style={{
-            padding: 30,
+            padding: 'var(--aire-5) 0',
             textAlign: 'center',
-            marginBottom: 20
+            marginBottom: 'var(--aire-4)'
           }}
         >
-          <p className="texto-cuerpo" style={{ color: 'var(--color-apagado)', marginBottom: 16 }}>
+          <p className="texto-cuerpo" style={{ color: 'var(--color-apagado)', marginBottom: 'var(--aire-4)' }}>
             Este guión no tiene ningún texto.
           </p>
           <button
             onClick={handleAgregarBloque}
             style={{
-              padding: '8px 16px',
+              padding: 'var(--aire-2) var(--aire-4)',
               backgroundColor: 'var(--bg-superficie)',
               color: 'var(--color-texto)',
               border: '1px solid var(--color-borde)',
-              borderRadius: 6,
+              borderRadius: 'var(--redondeo)',
               cursor: 'pointer',
               fontWeight: 'bold'
             }}
@@ -1094,19 +1093,19 @@ export default function EditorView({
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 8,
-                      marginBottom: estaPlegado ? 0 : 8
+                      gap: 'var(--aire-2)',
+                      marginBottom: estaPlegado ? 0 : 'var(--aire-2)'
                     }}
                   >
                     <button
                       onClick={() => togglePlegado(bloque.id)}
                       style={{
-                        padding: '2px 6px',
+                        padding: 'var(--aire-1) var(--aire-2)',
                         backgroundColor: 'transparent',
                         border: 'none',
                         color: 'var(--color-apagado)',
                         cursor: 'pointer',
-                        fontSize: 12
+                        fontSize: 'var(--texto-meta)'
                       }}
                       title={estaPlegado ? 'Desplegar bloque' : 'Plegar bloque'}
                     >
@@ -1117,12 +1116,12 @@ export default function EditorView({
                       Bloque #{index + 1}
                     </span>
 
-                    <div style={{ display: 'flex', gap: 4, marginLeft: 'auto' }}>
+                    <div style={{ display: 'flex', gap: 'var(--aire-1)', marginLeft: 'auto' }}>
                       <button
                         onClick={() => handleSubirBloque(index)}
                         disabled={index === 0}
                         style={{
-                          padding: '2px 6px',
+                          padding: 'var(--aire-1) var(--aire-2)',
                           background: 'transparent',
                           border: 'none',
                           color: 'var(--color-apagado)',
@@ -1137,7 +1136,7 @@ export default function EditorView({
                         onClick={() => handleBajarBloque(index)}
                         disabled={index === guion.bloques.length - 1}
                         style={{
-                          padding: '2px 6px',
+                          padding: 'var(--aire-1) var(--aire-2)',
                           background: 'transparent',
                           border: 'none',
                           color: 'var(--color-apagado)',
@@ -1151,7 +1150,7 @@ export default function EditorView({
                       <button
                         onClick={() => handleBorrarBloque(index)}
                         style={{
-                          padding: '2px 6px',
+                          padding: 'var(--aire-1) var(--aire-2)',
                           background: 'transparent',
                           border: 'none',
                           color: 'var(--color-apagado)',
@@ -1173,13 +1172,13 @@ export default function EditorView({
                         data-testid={`barra-formato-${bloque.id}`}
                         style={{
                           display: 'flex',
-                          gap: 8,
-                          marginBottom: 8,
+                          gap: 'var(--aire-2)',
+                          marginBottom: 'var(--aire-2)',
                           alignItems: 'center',
                           backgroundColor: 'var(--bg-superficie)',
-                          padding: '4px 8px',
-                          borderRadius: 6,
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                          padding: 'var(--aire-1) var(--aire-2)',
+                          borderRadius: 'var(--redondeo)',
+                          border: '1px solid var(--color-borde)'
                         }}
                       >
                         <button
@@ -1187,9 +1186,9 @@ export default function EditorView({
                           onMouseDown={(e) => e.preventDefault()}
                           onClick={() => aplicarFormatoEnSeleccion(index, { negrita: true })}
                           style={{
-                            padding: '4px 10px',
+                            padding: 'var(--aire-1) var(--aire-2)',
                             fontWeight: 'bold',
-                            borderRadius: 4,
+                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: 'var(--bg-suelo)',
                             color: 'var(--color-texto)',
@@ -1200,7 +1199,7 @@ export default function EditorView({
                           N
                         </button>
 
-                        <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                        <div style={{ display: 'flex', gap: 'var(--aire-1)', alignItems: 'center' }}>
                           <button
                             type="button"
                             onMouseDown={(e) => e.preventDefault()}
@@ -1208,9 +1207,9 @@ export default function EditorView({
                             style={{
                               width: 26,
                               height: 26,
-                              borderRadius: 4,
-                              border: '1px solid #ccc',
-                              backgroundColor: '#F0C070',
+                              borderRadius: 'var(--redondeo)',
+                              border: '1px solid var(--color-borde)',
+                              backgroundColor: COLORES_TRAMO.ambar,
                               cursor: 'pointer'
                             }}
                             title="Ámbar"
@@ -1223,9 +1222,9 @@ export default function EditorView({
                             style={{
                               width: 26,
                               height: 26,
-                              borderRadius: 4,
-                              border: '1px solid #ccc',
-                              backgroundColor: '#8FB8DE',
+                              borderRadius: 'var(--redondeo)',
+                              border: '1px solid var(--color-borde)',
+                              backgroundColor: COLORES_TRAMO.celeste,
                               cursor: 'pointer'
                             }}
                             title="Celeste"
@@ -1237,9 +1236,9 @@ export default function EditorView({
                             style={{
                               width: 26,
                               height: 26,
-                              borderRadius: 4,
-                              border: '1px solid #ccc',
-                              backgroundColor: '#9CC5A1',
+                              borderRadius: 'var(--redondeo)',
+                              border: '1px solid var(--color-borde)',
+                              backgroundColor: COLORES_TRAMO.salvia,
                               cursor: 'pointer'
                             }}
                             title="Salvia"
@@ -1251,13 +1250,13 @@ export default function EditorView({
                           onMouseDown={(e) => e.preventDefault()}
                           onClick={() => handleAcotacion(index)}
                           style={{
-                            padding: '4px 8px',
-                            borderRadius: 4,
+                            padding: 'var(--aire-1) var(--aire-2)',
+                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: 'var(--bg-suelo)',
                             color: 'var(--color-texto)',
                             cursor: 'pointer',
-                            fontSize: 12
+                            fontSize: 'var(--texto-meta)'
                           }}
                           title="Acotación"
                         >
@@ -1278,7 +1277,7 @@ export default function EditorView({
                       style={{
                         width: '100%',
                         padding: 0,
-                        fontSize: 18,
+                        fontSize: 'var(--texto-titulo)',
                         lineHeight: 1.6,
                         fontFamily: '"Source Serif 4", serif',
                         border: 'none',
@@ -1340,20 +1339,19 @@ export default function EditorView({
             pointerEvents: 'auto',
             width: 'calc(100% - 32px)',
             maxWidth: 400,
-            padding: '14px 24px',
+            padding: 'var(--aire-3) var(--aire-4)',
             fontSize: 'var(--texto-cuerpo)',
             fontWeight: 600,
             backgroundColor: numPalabras === 0 ? 'var(--bg-superficie)' : 'var(--color-acento)',
             color: numPalabras === 0 ? 'var(--color-apagado)' : 'var(--color-texto-acento)',
-            border: numPalabras === 0 ? '1px solid var(--color-borde)' : 'none',
-            borderRadius: 24,
+            borderRadius: 'var(--redondeo-pildora)',
             cursor: numPalabras === 0 ? 'not-allowed' : 'pointer',
             opacity: numPalabras === 0 ? 0.7 : 1,
-            boxShadow: numPalabras === 0 ? 'none' : '0 4px 14px rgba(0, 0, 0, 0.25)',
+            border: '1px solid var(--color-borde)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 8
+            gap: 'var(--aire-2)'
           }}
         >
           {numPalabras === 0 ? '▶ Leer — Escribe algo para leer' : '▶ Leer'}

@@ -1,28 +1,28 @@
-export type TramoFormato = {
+export interface TramoFormato {
   desde: number
   hasta: number
   negrita?: boolean
   color?: 'ambar' | 'celeste' | 'salvia'
 }
 
-export type Bloque = {
-  id: string        // uuid
-  nombre: string    // puede ir vacio
+export interface Bloque {
+  id: string
+  nombre: string
   texto: string
   tramos?: TramoFormato[]
 }
 
-export type Guion = {
+export interface Guion {
   id: string
   titulo: string
-  idioma: string    // 'es', 'en', 'pt'... codigo corto. NUNCA cablear 'es'.
-  creado: number    // epoch ms
+  idioma: string
+  creado: number
   modificado: number
   archivado?: boolean
   bloques: Bloque[]
 }
 
-export type ResumenGuion = {
+export interface ResumenGuion {
   id: string
   titulo: string
   idioma: string
@@ -31,21 +31,22 @@ export type ResumenGuion = {
   archivado?: boolean
 }
 
-function generarUuid(): string {
-  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-    return crypto.randomUUID()
-  }
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0
-    const v = c === 'x' ? r : (r & 0x3) | 0x8
-    return v.toString(16)
-  })
+export const PAREJAS_COLOR = [
+  { fondo: '#000000', letra: '#FFFFFF' },
+  { fondo: '#000000', letra: '#F5C24B' },
+  { fondo: '#FFFFFF', letra: '#000000' }
+]
+
+export const COLORES_TRAMO = {
+  ambar: '#F0C070',
+  celeste: '#8FB8DE',
+  salvia: '#9CC5A1'
 }
 
-export function guionNuevo(idioma: string): Guion {
+export function guionNuevo(idioma = 'es'): Guion {
   const ahora = Date.now()
   return {
-    id: generarUuid(),
+    id: 'g-' + ahora + '-' + Math.random().toString(36).substring(2, 7),
     titulo: 'Sin título',
     idioma,
     creado: ahora,
@@ -53,7 +54,7 @@ export function guionNuevo(idioma: string): Guion {
     archivado: false,
     bloques: [
       {
-        id: generarUuid(),
+        id: 'b-' + ahora + '-1',
         nombre: '',
         texto: ''
       }
@@ -61,26 +62,19 @@ export function guionNuevo(idioma: string): Guion {
   }
 }
 
-import { REGEX_ACOTACION } from '../lib/acotaciones'
-
-export function contarPalabras(g: Guion): number {
+export function contarPalabras(guion: Guion): number {
+  if (!guion || !guion.bloques) return 0
   let total = 0
-  if (!g || !g.bloques) return 0
-  for (const b of g.bloques) {
-    if (!b.texto) continue
-    const sinAcotaciones = b.texto
-      .replace(new RegExp(REGEX_ACOTACION.source, REGEX_ACOTACION.flags), ' ')
-      .replace(/[\[\(].*$/g, ' ')
-    const palabras = sinAcotaciones.trim().split(/\s+/).filter(Boolean)
-    total += palabras.length
+  for (const b of guion.bloques) {
+    if (b && b.texto) {
+      const palabras = b.texto.trim().split(/\s+/).filter((p) => p.length > 0)
+      total += palabras.length
+    }
   }
   return total
 }
 
-export function calcularDuracionTexto(palabras: number, ppm: number = 150): string {
-  if (palabras <= 0) return '0:00'
-  const totalSegundos = Math.round((palabras / ppm) * 60)
-  const mins = Math.floor(totalSegundos / 60)
-  const segs = totalSegundos % 60
-  return `${mins}:${segs.toString().padStart(2, '0')}`
+export function calcularDuracionTexto(palabras: number, ppm = 150): number {
+  if (palabras <= 0) return 0
+  return Math.round((palabras / ppm) * 60)
 }

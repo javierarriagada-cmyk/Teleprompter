@@ -4,7 +4,7 @@ import { Guion, ResumenGuion } from '../datos/modelo'
 import { IdMotor } from '../motor/MotorDeVoz'
 import { PanelCorpus } from './PanelCorpus'
 import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave } from '../haptica'
-import { movimientoApagado, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL } from './movimiento'
+import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL } from './movimiento'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -55,6 +55,12 @@ export function calcularMinutosLectura(guiones: ResumenGuion[]): number {
   return Math.round(totalPalabras / 150)
 }
 
+let esPrimerMontajeBiblioteca = true
+
+export function resetearPrimerMontajeBiblioteca() {
+  esPrimerMontajeBiblioteca = true
+}
+
 export default function BibliotecaView({
   guiones,
   onAbrir,
@@ -91,6 +97,14 @@ export default function BibliotecaView({
   const [mapaTextos, setMapaTextos] = useState<Record<string, string>>({})
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  const [esInicial, setEsInicial] = useState<boolean>(esPrimerMontajeBiblioteca)
+
+  useEffect(() => {
+    if (esPrimerMontajeBiblioteca) {
+      esPrimerMontajeBiblioteca = false
+    }
+  }, [])
+
   const timerHoldRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const fueLongPressRef = useRef<boolean>(false)
 
@@ -104,7 +118,6 @@ export default function BibliotecaView({
     if (!query || !onBuscarGuionCompleto) return
 
     let cancelado = false
-    const inicio = performance.now()
 
     const idsFaltantes = guiones.filter((g) => !(g.id in mapaTextos)).map((g) => g.id)
 
@@ -117,8 +130,6 @@ export default function BibliotecaView({
         })
       ).then((resultados) => {
         if (cancelado) return
-        const fin = performance.now()
-        console.log(`[BusquedaTexto] Cargar ${resultados.length} guiones demoró ${(fin - inicio).toFixed(2)} ms`)
         setMapaTextos((prev) => {
           const nuevo = { ...prev }
           for (const res of resultados) {
@@ -242,11 +253,32 @@ export default function BibliotecaView({
     ? '0 guiones'
     : `${guiones.length} ${guiones.length === 1 ? 'guión' : 'guiones'} · ${minsLectura} ${minsLectura === 1 ? 'minuto' : 'minutos'} de lectura`
 
+  const animacionTituloStyle: React.CSSProperties = (esInicial && !movimientoApagado())
+    ? {
+        animation: `pantallaEntraInicial ${MS_PANTALLA}ms ${CURVA_ENTRA} forwards`,
+        animationDelay: '0ms'
+      }
+    : {}
+
+  const animacionSubtituloStyle: React.CSSProperties = (esInicial && !movimientoApagado())
+    ? {
+        animation: `pantallaEntraInicial ${MS_PANTALLA}ms ${CURVA_ENTRA} forwards`,
+        animationDelay: '40ms'
+      }
+    : {}
+
+  const animacionListaStyle: React.CSSProperties = (esInicial && !movimientoApagado())
+    ? {
+        animation: `pantallaEntraInicial ${MS_PANTALLA}ms ${CURVA_ENTRA} forwards`,
+        animationDelay: '80ms'
+      }
+    : {}
+
   return (
     <div
       data-pantalla-direccion={dataPantallaDireccion}
       onAnimationEnd={onAnimationEnd}
-      style={{ padding: '16px', maxWidth: 800, margin: '0 auto', position: 'relative', minHeight: '80vh', ...style }}
+      style={{ padding: 'var(--aire-4)', maxWidth: 800, margin: '0 auto', position: 'relative', minHeight: '80vh', ...style }}
     >
       <input
         type="file"
@@ -260,12 +292,18 @@ export default function BibliotecaView({
       {/* Encabezado */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'var(--aire-4)' }}>
         <div>
-          <h1 className="texto-display" style={{ margin: 0, color: 'var(--color-texto)' }}>
+          <h1
+            className="texto-display"
+            data-testid="titulo-biblioteca"
+            data-retardo-escalonado={esInicial && !movimientoApagado() ? 0 : 0}
+            style={{ margin: 0, color: 'var(--color-texto)', ...animacionTituloStyle }}
+          >
             Guiones
           </h1>
           <div
             className="texto-meta"
             data-testid="resumen-encabezado-biblioteca"
+            data-retardo-escalonado={esInicial && !movimientoApagado() ? 40 : 0}
             onTouchStart={handleDiagTouchStart}
             onTouchEnd={handleDiagTouchEnd}
             onMouseDown={handleDiagTouchStart}
@@ -275,7 +313,8 @@ export default function BibliotecaView({
               color: 'var(--color-apagado)',
               marginTop: 'var(--aire-1)',
               cursor: 'pointer',
-              userSelect: 'none'
+              userSelect: 'none',
+              ...animacionSubtituloStyle
             }}
           >
             {textoResumen}
@@ -293,9 +332,9 @@ export default function BibliotecaView({
             style={{
               background: 'transparent',
               border: 'none',
-              fontSize: 22,
+              fontSize: 'var(--texto-display)',
               color: 'var(--color-texto)',
-              padding: '4px 8px',
+              padding: 'var(--aire-1) var(--aire-2)',
               cursor: 'pointer'
             }}
             title="Opciones"
@@ -312,7 +351,6 @@ export default function BibliotecaView({
                 backgroundColor: 'var(--bg-superficie)',
                 border: '1px solid var(--color-borde)',
                 borderRadius: 'var(--redondeo)',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                 zIndex: 50,
                 minWidth: 160,
                 overflow: 'hidden',
@@ -330,7 +368,7 @@ export default function BibliotecaView({
                   setMenuSuperiorAbierto(false)
                 }}
                 style={{
-                  padding: '12px 16px',
+                  padding: 'var(--aire-3) var(--aire-4)',
                   textAlign: 'left',
                   background: 'transparent',
                   border: 'none',
@@ -345,7 +383,7 @@ export default function BibliotecaView({
               <button
                 onClick={handleClicImportar}
                 style={{
-                  padding: '12px 16px',
+                  padding: 'var(--aire-3) var(--aire-4)',
                   textAlign: 'left',
                   background: 'transparent',
                   border: 'none',
@@ -358,8 +396,8 @@ export default function BibliotecaView({
                 Importar archivo
               </button>
 
-              <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--color-borde)' }}>
-                <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 4 }}>
+              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-borde)' }}>
+                <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
                   Motor de voz:
                   <select
                     aria-label="Motor de Voz"
@@ -367,10 +405,10 @@ export default function BibliotecaView({
                     onChange={(e) => setEngine?.(e.target.value as IdMotor)}
                     style={{
                       width: '100%',
-                      marginTop: 4,
-                      padding: '4px 8px',
+                      marginTop: 'var(--aire-1)',
+                      padding: 'var(--aire-1) var(--aire-2)',
                       fontSize: 'var(--texto-meta)',
-                      borderRadius: 4,
+                      borderRadius: 'var(--redondeo)',
                       border: '1px solid var(--color-borde)',
                       backgroundColor: 'var(--bg-suelo)',
                       color: 'var(--color-texto)'
@@ -382,18 +420,18 @@ export default function BibliotecaView({
                 </label>
               </div>
 
-              <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--color-borde)' }}>
-                <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 4 }}>
+              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-borde)' }}>
+                <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
                   Tema:
                 </label>
-                <div style={{ display: 'flex', gap: 6 }}>
+                <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
                   <button
                     type="button"
                     onClick={() => setTema?.('claro')}
                     style={{
-                      padding: '4px 10px',
+                      padding: 'var(--aire-1) var(--aire-2)',
                       fontSize: 'var(--texto-meta)',
-                      borderRadius: 4,
+                      borderRadius: 'var(--redondeo)',
                       border: '1px solid var(--color-borde)',
                       backgroundColor: tema === 'claro' ? 'var(--color-acento)' : 'var(--bg-suelo)',
                       color: tema === 'claro' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -408,9 +446,9 @@ export default function BibliotecaView({
                     type="button"
                     onClick={() => setTema?.('oscuro')}
                     style={{
-                      padding: '4px 10px',
+                      padding: 'var(--aire-1) var(--aire-2)',
                       fontSize: 'var(--texto-meta)',
-                      borderRadius: 4,
+                      borderRadius: 'var(--redondeo)',
                       border: '1px solid var(--color-borde)',
                       backgroundColor: tema === 'oscuro' ? 'var(--color-acento)' : 'var(--bg-suelo)',
                       color: tema === 'oscuro' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -424,7 +462,7 @@ export default function BibliotecaView({
                 </div>
               </div>
 
-              <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--color-borde)' }}>
+              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-borde)' }}>
                 <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}>
                   <span>Ver transcripción en vivo</span>
                   <input
@@ -439,7 +477,7 @@ export default function BibliotecaView({
                 </label>
               </div>
 
-              <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--color-borde)' }}>
+              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-borde)' }}>
                 <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}>
                   <span>Vibración</span>
                   <input
@@ -462,7 +500,7 @@ export default function BibliotecaView({
                   setMenuSuperiorAbierto(false)
                 }}
                 style={{
-                  padding: '12px 16px',
+                  padding: 'var(--aire-3) var(--aire-4)',
                   textAlign: 'left',
                   background: 'transparent',
                   border: 'none',
@@ -489,7 +527,7 @@ export default function BibliotecaView({
             data-testid="input-busqueda-biblioteca"
             style={{
               width: '100%',
-              padding: '12px 16px',
+              padding: 'var(--aire-3) var(--aire-4)',
               fontSize: 'var(--texto-cuerpo)',
               borderRadius: 'var(--redondeo)',
               border: 'none',
@@ -502,15 +540,21 @@ export default function BibliotecaView({
         </div>
       )}
 
-      {/* Lista de guiones */}
+      {/* Lista de guiones o Vacío */}
       {guiones.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 'var(--aire-5) 0' }}>
-          <p className="texto-cuerpo" style={{ color: 'var(--color-apagado)', margin: 0 }}>
-            Acá van a estar tus guiones.
-          </p>
+        <div
+          data-testid="lista-guiones-biblioteca"
+          data-retardo-escalonado={esInicial && !movimientoApagado() ? 80 : 0}
+          style={{ textAlign: 'center', padding: 'var(--aire-5) 0', ...animacionListaStyle }}
+        >
         </div>
       ) : guionesFiltrados.length === 0 ? (
-        <div style={{ padding: 'var(--aire-4)', textAlign: 'center', color: 'var(--color-apagado)' }} className="texto-meta">
+        <div
+          data-testid="lista-guiones-biblioteca"
+          data-retardo-escalonado={esInicial && !movimientoApagado() ? 80 : 0}
+          style={{ padding: 'var(--aire-4)', textAlign: 'center', color: 'var(--color-apagado)', ...animacionListaStyle }}
+          className="texto-meta"
+        >
           {busqueda.trim()
             ? `No se encontraron guiones que coincidan con "${busqueda}".`
             : mostrarArchivados
@@ -518,7 +562,11 @@ export default function BibliotecaView({
             : 'No hay guiones en la lista principal.'}
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div
+          data-testid="lista-guiones-biblioteca"
+          data-retardo-escalonado={esInicial && !movimientoApagado() ? 80 : 0}
+          style={{ display: 'flex', flexDirection: 'column', ...animacionListaStyle }}
+        >
           {guionesFiltrados.map((g, index) => {
             const tituloMostrar = g.titulo && g.titulo.trim() ? g.titulo : 'Sin título'
             const mins = Math.max(1, Math.round((g.palabras || 0) / 150))
@@ -538,17 +586,15 @@ export default function BibliotecaView({
                 onTouchEnd={handleTouchEnd}
                 onContextMenu={(e) => handleContextMenu(e, g.id)}
                 style={{
-                  padding: '14px 0',
+                  padding: 'var(--aire-3) 0',
                   borderBottom: esUltima ? 'none' : '1px solid var(--color-borde)',
                   cursor: 'pointer',
                   userSelect: 'none'
                 }}
               >
-                
-
                 <div>
                   <div className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-1)' }}>
-                    {tituloMostrar} {g.archivado && <span style={{ fontSize: 13, color: 'var(--color-apagado)' }}>(Archivado)</span>}
+                    {tituloMostrar} {g.archivado && <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)' }}>(Archivado)</span>}
                   </div>
                   <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
                     {metaTexto}
@@ -574,11 +620,11 @@ export default function BibliotecaView({
                         setMenuId(null)
                       }}
                       style={{
-                        padding: '6px 12px',
+                        padding: 'var(--aire-2) var(--aire-3)',
                         backgroundColor: 'var(--bg-suelo)',
                         color: 'var(--color-texto)',
                         border: 'none',
-                        borderRadius: 'var(--aire-2)',
+                        borderRadius: 'var(--redondeo)',
                         cursor: 'pointer',
                         fontSize: 'var(--texto-meta)'
                       }}
@@ -594,11 +640,11 @@ export default function BibliotecaView({
                         setMenuId(null)
                       }}
                       style={{
-                        padding: '6px 12px',
+                        padding: 'var(--aire-2) var(--aire-3)',
                         backgroundColor: 'var(--bg-suelo)',
                         color: 'var(--color-texto)',
                         border: 'none',
-                        borderRadius: 'var(--aire-2)',
+                        borderRadius: 'var(--redondeo)',
                         cursor: 'pointer',
                         fontSize: 'var(--texto-meta)'
                       }}
@@ -608,7 +654,7 @@ export default function BibliotecaView({
                     <button
                       onClick={() => setMenuId(null)}
                       style={{
-                        padding: '6px 12px',
+                        padding: 'var(--aire-2) var(--aire-3)',
                         backgroundColor: 'transparent',
                         color: 'var(--color-apagado)',
                         border: 'none',
@@ -635,12 +681,12 @@ export default function BibliotecaView({
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.7)',
+            backgroundColor: 'var(--bg-suelo)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 200,
-            padding: 16
+            padding: 'var(--aire-4)'
           }}
           onClick={() => setMostrarPanelCorpus(false)}
         >
@@ -648,7 +694,7 @@ export default function BibliotecaView({
             style={{
               backgroundColor: 'var(--bg-superficie)',
               color: 'var(--color-texto)',
-              padding: 20,
+              padding: 'var(--aire-4)',
               borderRadius: 'var(--redondeo)',
               maxWidth: 600,
               width: '100%',
@@ -661,15 +707,15 @@ export default function BibliotecaView({
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-              <h3 style={{ margin: 0 }}>Medición / Panel de Corpus</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-3)' }}>
+              <h3 className="texto-titulo" style={{ margin: 0 }}>Medición / Panel de Corpus</h3>
               <button
                 onClick={() => setMostrarPanelCorpus(false)}
                 style={{
                   background: 'transparent',
                   border: 'none',
                   color: 'var(--color-texto)',
-                  fontSize: 18,
+                  fontSize: 'var(--texto-titulo)',
                   cursor: 'pointer'
                 }}
               >
@@ -690,17 +736,16 @@ export default function BibliotecaView({
         data-testid="btn-crear-guion-flotante"
         style={{
           position: 'fixed',
-          bottom: 24,
-          right: 24,
+          bottom: 'var(--aire-5)',
+          right: 'var(--aire-5)',
           backgroundColor: 'var(--color-acento)',
           color: 'var(--color-texto-acento)',
-          border: 'none',
-          borderRadius: 24,
-          padding: '14px 22px',
+          borderRadius: 'var(--redondeo-pildora)',
+          padding: 'var(--aire-3) var(--aire-4)',
           fontSize: 'var(--texto-cuerpo)',
           fontWeight: 600,
           cursor: 'pointer',
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
+          border: '1px solid var(--color-borde)',
           zIndex: 100
         }}
       >
