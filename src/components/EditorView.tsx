@@ -4,6 +4,8 @@ import { Guion, Bloque, TramoFormato, contarPalabras, calcularDuracionTexto } fr
 import { importarTexto } from '../datos/importar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { IdMotor } from '../motor/MotorDeVoz'
+import { hapticaSeleccion, hapticaToqueSuave } from '../haptica'
+import { movimientoApagado, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL } from './movimiento'
 
 export function reubicarTramos(
   textoViejo: string,
@@ -68,6 +70,9 @@ interface EditorViewProps {
   engine?: IdMotor
   setEngine?: (e: IdMotor) => void
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
+  'data-pantalla-direccion'?: string
+  style?: React.CSSProperties
+  onAnimationEnd?: (e: React.AnimationEvent) => void
 }
 
 function generarIdBloque(): string {
@@ -107,7 +112,10 @@ export default function EditorView({
   setTema,
   engine = 'vosk',
   setEngine,
-  onRegistrarCerrarModal
+  onRegistrarCerrarModal,
+  'data-pantalla-direccion': dataPantallaDireccion,
+  style,
+  onAnimationEnd
 }: EditorViewProps) {
   const [plegados, setPlegados] = useState<Record<string, boolean>>({})
   const [menuOpcionesAbierto, setMenuOpcionesAbierto] = useState(false)
@@ -394,7 +402,11 @@ export default function EditorView({
   const hayMasDeUnBloque = guion.bloques && guion.bloques.length > 1
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', padding: '16px 16px 100px 16px', position: 'relative' }}>
+    <div
+      data-pantalla-direccion={dataPantallaDireccion}
+      onAnimationEnd={onAnimationEnd}
+      style={{ maxWidth: 800, margin: '0 auto', padding: '16px 16px 100px 16px', position: 'relative', ...style }}
+    >
       <input
         type="file"
         ref={fileInputRef}
@@ -422,7 +434,10 @@ export default function EditorView({
         {/* Menu contextual superior ⋯ */}
         <div ref={refMenuOpciones} style={{ position: 'relative' }}>
           <button
-            onClick={() => setMenuOpcionesAbierto(!menuOpcionesAbierto)}
+            onClick={() => {
+              hapticaToqueSuave()
+              setMenuOpcionesAbierto(!menuOpcionesAbierto)
+            }}
             data-testid="btn-menu-opciones-editor"
             style={{
               background: 'transparent',
@@ -451,7 +466,11 @@ export default function EditorView({
                 minWidth: 180,
                 overflow: 'hidden',
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'column',
+                transformOrigin: 'top right',
+                animation: movimientoApagado()
+                  ? 'none'
+                  : `menuCreceEsquina ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
               }}
             >
               <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--color-borde)' }}>
@@ -604,7 +623,10 @@ export default function EditorView({
               width: '100%',
               maxHeight: '85vh',
               overflowY: 'auto',
-              boxSizing: 'border-box'
+              boxSizing: 'border-box',
+              animation: movimientoApagado()
+                ? 'none'
+                : `panelSube ${MS_PANEL}ms ${CURVA_ENTRA} forwards`
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -661,6 +683,7 @@ export default function EditorView({
                         <button
                           type="button"
                           onClick={() => {
+                            hapticaSeleccion()
                             setColumnaAngosta?.(false)
                             setMarginPercent?.(5)
                           }}
@@ -679,6 +702,7 @@ export default function EditorView({
                         <button
                           type="button"
                           onClick={() => {
+                            hapticaSeleccion()
                             setColumnaAngosta?.(false)
                             setMarginPercent?.(12)
                           }}
@@ -697,6 +721,7 @@ export default function EditorView({
                         <button
                           type="button"
                           onClick={() => {
+                            hapticaSeleccion()
                             setColumnaAngosta?.(true)
                             setMarginPercent?.(5)
                           }}
@@ -723,7 +748,10 @@ export default function EditorView({
                       <div style={{ display: 'flex', gap: 6 }}>
                         <button
                           type="button"
-                          onClick={() => setTipoFuente('sans')}
+                          onClick={() => {
+                            hapticaSeleccion()
+                            setTipoFuente('sans')
+                          }}
                           style={{
                             padding: '6px 12px',
                             borderRadius: 6,
@@ -738,7 +766,10 @@ export default function EditorView({
                         </button>
                         <button
                           type="button"
-                          onClick={() => setTipoFuente('serif')}
+                          onClick={() => {
+                            hapticaSeleccion()
+                            setTipoFuente('serif')
+                          }}
                           style={{
                             padding: '6px 12px',
                             borderRadius: 6,
@@ -780,6 +811,7 @@ export default function EditorView({
                               type="button"
                               title={p.label}
                               onClick={() => {
+                                hapticaSeleccion()
                                 setColorFondo(p.fondo)
                                 setColorLetra(p.letra)
                               }}
@@ -825,7 +857,10 @@ export default function EditorView({
                       <div style={{ display: 'flex', gap: 6 }}>
                         <button
                           type="button"
-                          onClick={() => setAnclajeZona('arriba')}
+                          onClick={() => {
+                            hapticaSeleccion()
+                            setAnclajeZona('arriba')
+                          }}
                           style={{
                             padding: '6px 12px',
                             borderRadius: 6,
@@ -840,7 +875,10 @@ export default function EditorView({
                         </button>
                         <button
                           type="button"
-                          onClick={() => setAnclajeZona('medio')}
+                          onClick={() => {
+                            hapticaSeleccion()
+                            setAnclajeZona('medio')
+                          }}
                           style={{
                             padding: '6px 12px',
                             borderRadius: 6,
@@ -855,7 +893,10 @@ export default function EditorView({
                         </button>
                         <button
                           type="button"
-                          onClick={() => setAnclajeZona('abajo')}
+                          onClick={() => {
+                            hapticaSeleccion()
+                            setAnclajeZona('abajo')
+                          }}
                           style={{
                             padding: '6px 12px',
                             borderRadius: 6,
@@ -879,7 +920,10 @@ export default function EditorView({
                       <input
                         type="checkbox"
                         checked={mirror}
-                        onChange={(e) => setMirror(e.target.checked)}
+                        onChange={(e) => {
+                          hapticaToqueSuave()
+                          setMirror(e.target.checked)
+                        }}
                         style={{ width: 18, height: 18, accentColor: 'var(--color-acento)' }}
                       />
                     </label>
@@ -892,7 +936,10 @@ export default function EditorView({
                       <input
                         type="checkbox"
                         checked={mostrarTiempo}
-                        onChange={(e) => setMostrarTiempo(e.target.checked)}
+                        onChange={(e) => {
+                          hapticaToqueSuave()
+                          setMostrarTiempo(e.target.checked)
+                        }}
                         style={{ width: 18, height: 18, accentColor: 'var(--color-acento)' }}
                       />
                     </label>
@@ -928,7 +975,10 @@ export default function EditorView({
             border: '1px solid var(--color-borde)',
             borderRadius: 'var(--redondeo)',
             padding: 16,
-            marginBottom: 20
+            marginBottom: 20,
+            animation: movimientoApagado()
+              ? 'none'
+              : `panelSube ${MS_PANEL}ms ${CURVA_ENTRA} forwards`
           }}
         >
           <h4 style={{ margin: '0 0 8px 0', color: 'var(--color-texto)' }}>Pegar texto</h4>

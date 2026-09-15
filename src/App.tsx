@@ -13,6 +13,8 @@ import { iniciarGrabacion, detenerGrabacion } from './lib/grabadorCorpus'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
 import CuentaRegresiva from './components/CuentaRegresiva'
+import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL } from './components/movimiento'
+import { hapticaToqueMedio, hapticaToqueSuave } from './haptica'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
 import { Guion, ResumenGuion, guionNuevo } from './datos/modelo'
 import { RepositorioGuiones } from './datos/RepositorioGuiones'
@@ -97,6 +99,36 @@ export default function App({ motor, repoOverride }: AppProps) {
   const { estado: estadoPrecarga, progreso: progresoPrecarga, error: errorPrecarga, reintentar: reintentarPrecarga } = usePrecargaModelo()
 
   const [vista, setVista] = useState<Vista>('biblioteca')
+  const prevVistaRef = useRef<Vista | null>(null)
+  const [direccion, setDireccion] = useState<'adentro' | 'atras' | 'inicial'>('inicial')
+  const guionModificadoRef = useRef<boolean>(false)
+  const [avisoTexto, setAvisoTexto] = useState<string | null>(null)
+  const timerAvisoRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const mostrarAviso = useCallback((msg: string) => {
+    if (timerAvisoRef.current) clearTimeout(timerAvisoRef.current)
+    setAvisoTexto(msg)
+    timerAvisoRef.current = setTimeout(() => {
+      setAvisoTexto(null)
+      timerAvisoRef.current = null
+    }, 2000)
+  }, [])
+
+  const getNivelVista = (v: Vista): number => {
+    if (v === 'biblioteca') return 1
+    if (v === 'editor') return 2
+    return 3
+  }
+
+  useEffect(() => {
+    if (prevVistaRef.current !== null && prevVistaRef.current !== vista) {
+      const prevNivel = getNivelVista(prevVistaRef.current)
+      const actualNivel = getNivelVista(vista)
+      setDireccion(actualNivel >= prevNivel ? 'adentro' : 'atras')
+    }
+    prevVistaRef.current = vista
+  }, [vista])
+
   const [guionesResumen, setGuionesResumen] = useState<ResumenGuion[]>([])
   const [guionActual, setGuionActual] = useState<Guion | null>(null)
   const [cargado, setCargado] = useState<boolean>(false)
@@ -538,6 +570,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   }
 
   async function handleEntrarLectura() {
+    hapticaToqueMedio()
     setVista('lectura')
     setControlesVisibles(false)
     await handleStart()
@@ -547,10 +580,15 @@ export default function App({ motor, repoOverride }: AppProps) {
     const idx = PASOS_LETRA.indexOf(fontSize)
     if (idx > 0) {
       setFontSize(PASOS_LETRA[idx - 1])
+    } else if (idx === 0) {
+      hapticaToqueSuave()
     } else if (idx === -1) {
       const menor = PASOS_LETRA.slice().reverse().find((p) => p < fontSize)
       if (menor !== undefined) setFontSize(menor)
-      else setFontSize(PASOS_LETRA[0])
+      else {
+        setFontSize(PASOS_LETRA[0])
+        hapticaToqueSuave()
+      }
     }
   }
 
@@ -558,10 +596,15 @@ export default function App({ motor, repoOverride }: AppProps) {
     const idx = PASOS_LETRA.indexOf(fontSize)
     if (idx >= 0 && idx < PASOS_LETRA.length - 1) {
       setFontSize(PASOS_LETRA[idx + 1])
+    } else if (idx === PASOS_LETRA.length - 1) {
+      hapticaToqueSuave()
     } else if (idx === -1) {
       const mayor = PASOS_LETRA.find((p) => p > fontSize)
       if (mayor !== undefined) setFontSize(mayor)
-      else setFontSize(PASOS_LETRA[PASOS_LETRA.length - 1])
+      else {
+        setFontSize(PASOS_LETRA[PASOS_LETRA.length - 1])
+        hapticaToqueSuave()
+      }
     }
   }
 
@@ -794,61 +837,74 @@ export default function App({ motor, repoOverride }: AppProps) {
       )}
 
       {vista === 'biblioteca' && (
-        <BibliotecaView
-          guiones={guionesResumen}
-          onAbrir={handleAbrirGuion}
-          onCrearNuevo={handleCrearNuevoGuion}
-          onImportarArchivo={handleImportarArchivo}
-          onRenombrar={handleRenombrarGuion}
-          onBorrar={handleBorrarGuion}
-          onArchivar={handleArchivarGuion}
-          onBuscarGuionCompleto={(id) => repoRef.current.abrir(id)}
-          onToggleDiagnostico={() => setMostrarDiagnostico((prev) => !prev)}
-          medirLectura={medirLectura}
-          setMedirLectura={setMedirLectura}
-          engine={engine}
-          setEngine={setEngine}
-          verTranscripcion={verTranscripcion}
-          setVerTranscripcion={setVerTranscripcion}
-          tema={tema}
-          setTema={setTema}
-          onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
-        />
+        <Pantalla direccion={direccion}>
+          <BibliotecaView
+            guiones={guionesResumen}
+            onAbrir={handleAbrirGuion}
+            onCrearNuevo={handleCrearNuevoGuion}
+            onImportarArchivo={handleImportarArchivo}
+            onRenombrar={handleRenombrarGuion}
+            onBorrar={handleBorrarGuion}
+            onArchivar={handleArchivarGuion}
+            onBuscarGuionCompleto={(id) => repoRef.current.abrir(id)}
+            onToggleDiagnostico={() => setMostrarDiagnostico((prev) => !prev)}
+            medirLectura={medirLectura}
+            setMedirLectura={setMedirLectura}
+            engine={engine}
+            setEngine={setEngine}
+            verTranscripcion={verTranscripcion}
+            setVerTranscripcion={setVerTranscripcion}
+            tema={tema}
+            setTema={setTema}
+            onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
+          />
+        </Pantalla>
       )}
 
       {vista === 'editor' && guionActual && (
-        <EditorView
-          guion={guionActual}
-          onChangeGuion={(nuevoG) => setGuionActual(nuevoG)}
-          onVolverBiblioteca={() => setVista('biblioteca')}
-          onEntrarLectura={handleEntrarLectura}
-          fontSize={fontSize}
-          onLetraMenos={handleLetraMenos}
-          onLetraMas={handleLetraMas}
-          marginPercent={marginPercent}
-          setMarginPercent={setMarginPercent}
-          mirror={mirror}
-          setMirror={setMirror}
-          anclajeZona={anclajeZona}
-          setAnclajeZona={setAnclajeZona}
-          verTranscripcion={verTranscripcion}
-          setVerTranscripcion={setVerTranscripcion}
-          mostrarTiempo={mostrarTiempo}
-          setMostrarTiempo={setMostrarTiempo}
-          columnaAngosta={columnaAngosta}
-          setColumnaAngosta={setColumnaAngosta}
-          colorFondo={colorFondo}
-          setColorFondo={setColorFondo}
-          colorLetra={colorLetra}
-          setColorLetra={setColorLetra}
-          tipoFuente={tipoFuente}
-          setTipoFuente={setTipoFuente}
-          tema={tema}
-          setTema={setTema}
-          engine={engine}
-          setEngine={setEngine}
-          onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
-        />
+        <Pantalla direccion={direccion}>
+          <EditorView
+            guion={guionActual}
+            onChangeGuion={(nuevoG) => {
+              guionModificadoRef.current = true
+              setGuionActual(nuevoG)
+            }}
+            onVolverBiblioteca={() => {
+              if (guionModificadoRef.current) {
+                mostrarAviso('Guardado')
+                guionModificadoRef.current = false
+              }
+              setVista('biblioteca')
+            }}
+            onEntrarLectura={handleEntrarLectura}
+            fontSize={fontSize}
+            onLetraMenos={handleLetraMenos}
+            onLetraMas={handleLetraMas}
+            marginPercent={marginPercent}
+            setMarginPercent={setMarginPercent}
+            mirror={mirror}
+            setMirror={setMirror}
+            anclajeZona={anclajeZona}
+            setAnclajeZona={setAnclajeZona}
+            verTranscripcion={verTranscripcion}
+            setVerTranscripcion={setVerTranscripcion}
+            mostrarTiempo={mostrarTiempo}
+            setMostrarTiempo={setMostrarTiempo}
+            columnaAngosta={columnaAngosta}
+            setColumnaAngosta={setColumnaAngosta}
+            colorFondo={colorFondo}
+            setColorFondo={setColorFondo}
+            colorLetra={colorLetra}
+            setColorLetra={setColorLetra}
+            tipoFuente={tipoFuente}
+            setTipoFuente={setTipoFuente}
+            tema={tema}
+            setTema={setTema}
+            engine={engine}
+            setEngine={setEngine}
+            onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
+          />
+        </Pantalla>
       )}
 
       {vista === 'lectura' && guionActual && (
@@ -856,6 +912,8 @@ export default function App({ motor, repoOverride }: AppProps) {
           {controlesVisibles && (
             <div
               data-testid="panel-controles-lectura"
+              data-duracion-entra={MS_CHICO}
+              data-duracion-sale={MS_PANTALLA}
               style={{
                 position: 'absolute',
                 bottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
@@ -871,13 +929,29 @@ export default function App({ motor, repoOverride }: AppProps) {
                 padding: '8px 16px',
                 color: '#fff',
                 boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
-                backdropFilter: 'blur(8px)'
+                backdropFilter: 'blur(8px)',
+                animation: movimientoApagado()
+                  ? 'none'
+                  : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`,
+                transition: movimientoApagado()
+                  ? 'none'
+                  : `opacity ${MS_CHICO}ms ${CURVA_NORMAL}`
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <button
                   onClick={async () => {
+                    hapticaToqueMedio()
+                    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
                     await handleStop()
+                    if (duracionMs !== null && duracionMs > 0) {
+                      const totalSeg = Math.floor(duracionMs / 1000)
+                      const mins = Math.floor(totalSeg / 60)
+                      const segs = String(totalSeg % 60).padStart(2, '0')
+                      mostrarAviso(`Grabado: ${mins}:${segs}`)
+                    } else {
+                      mostrarAviso('Grabado')
+                    }
                     setVista('editor')
                   }}
                   style={{
@@ -968,7 +1042,8 @@ export default function App({ motor, repoOverride }: AppProps) {
               height: '100dvh',
               background: colorFondo,
               overflow: 'hidden',
-              position: 'relative'
+              position: 'relative',
+              transition: movimientoApagado() ? 'none' : `background-color ${MS_PANEL}ms ${CURVA_NORMAL}`
             }}
           >
             <TeleprompterView
@@ -1004,6 +1079,31 @@ export default function App({ motor, repoOverride }: AppProps) {
               tInicioLecturaMs={tInicioLecturaMs}
             />
           )}
+        </div>
+      )}
+
+      {/* Toast / Aviso Breve */}
+      {avisoTexto && (
+        <div
+          data-testid="aviso-flotante"
+          style={{
+            position: 'fixed',
+            bottom: 32,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            backgroundColor: 'rgba(30, 30, 30, 0.95)',
+            color: '#ffffff',
+            padding: '10px 20px',
+            borderRadius: 20,
+            fontSize: 14,
+            fontWeight: 600,
+            boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+            zIndex: 999,
+            pointerEvents: 'none',
+            animation: movimientoApagado() ? 'none' : `panelSube ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+          }}
+        >
+          {avisoTexto}
         </div>
       )}
     </div>
