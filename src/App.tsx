@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Capacitor } from '@capacitor/core'
 import useASR from './hooks/useASR'
 import { useSeguidor } from './hooks/useSeguidor'
 import { useWakeLock } from './hooks/useWakeLock'
@@ -77,11 +78,33 @@ export default function App({ motor, repoOverride }: AppProps) {
   // Ajustes persistentes
   const ajustesPrevios = cargarAjustesGuardados() || {}
 
-  // VOSK POR OMISION. Web Speech estaba de omision y es lo que se abria en el telefono de
-  // Javier, donde no funciona: entrega frases enteras en las pausas y no los parciales
-  // densos con los que el motor fue medido. Leia con un reconocedor distinto del que
-  // estabamos midiendo y ninguno de los dos lo sabia.
-  const [engine, setEngine] = useState<IdMotor>(ajustesPrevios.engine || 'vosk')
+  // EL MOTOR POR OMISION LO DECIDE EL ENTORNO.
+  //
+  // Corriendo como APK: VOSK NATIVO. El modelo viaja adentro de la aplicacion y la
+  // biblioteca es codigo compilado, asi que no se baja nada y no se arma nada al
+  // apretar Leer.
+  //
+  // Corriendo en un navegador: Vosk WASM, que es lo unico que hay ahi.
+  //
+  // POR QUE NO SE DEJA VOSK WASM DE OMISION TAMBIEN EN ANDROID. Porque baja 34 MB
+  // en CADA lectura. Comprobado el 14 de septiembre de 2026 poniendo el telefono en
+  // modo avion: no arranca. En el corpus se ve el efecto -el reconocedor no entrega
+  // nada durante los primeros 11 a 13 segundos y la primera palabra que ubica es la
+  // 13 o la 15 del guion-, y Javier leia tres renglones a ciegas cada vez.
+  //
+  // Antes de esto habia que elegir "Nativo (Android)" a mano en el selector. Javier
+  // lo hizo y por eso funciono; cualquier otra persona arrancaba con el WASM.
+  //
+  // Y ANTES DE VOSK, la omision era Web Speech, que en su telefono entrega frases
+  // enteras en las pausas y no los parciales densos con los que el motor fue medido:
+  // leia con un reconocedor distinto del que estabamos midiendo y ninguno de los dos
+  // lo sabia. Por eso la omision no se elige por comodidad, se elige por lo que el
+  // motor necesita para funcionar como fue medido.
+  //
+  // La eleccion guardada del usuario manda sobre todo esto: el selector sigue ahi.
+  const [engine, setEngine] = useState<IdMotor>(
+    ajustesPrevios.engine || (Capacitor.isNativePlatform() ? 'nativo' : 'vosk')
+  )
   const [verTranscripcion, setVerTranscripcion] = useState<boolean>(Boolean(ajustesPrevios.verTranscripcion))
   const [mostrarTiempo, setMostrarTiempo] = useState<boolean>(ajustesPrevios.mostrarTiempo !== undefined ? Boolean(ajustesPrevios.mostrarTiempo) : true)
   const [fontSize, setFontSize] = useState<number>(ajustarFuenteValida(ajustesPrevios.fontSize))

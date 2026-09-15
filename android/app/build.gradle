@@ -22,7 +22,35 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            assets.srcDirs += "$buildDir/generated/assets"
+        }
+    }
 }
+
+// EL uuid DEL MODELO. ESTO NO ES OPCIONAL Y NO SE ADIVINA.
+//
+// StorageService.unpack copia el modelo desde los assets a la memoria interna del
+// telefono la primera vez, y despues compara este uuid para saber si tiene que
+// volver a copiarlo. Sin el archivo, o no copia nunca o copia en cada arranque.
+//
+// Esta sacado del ejemplo oficial de Vosk para Android -alphacep/vosk-android-demo,
+// modulo models-, que es el unico lugar donde esta escrito. No aparece en la
+// documentacion.
+tasks.register('genUUID') {
+    def uuid = UUID.randomUUID().toString()
+    def odir = file("$buildDir/generated/assets/model-es")
+    def ofile = file("$odir/uuid")
+    outputs.file(ofile)
+    doLast {
+        mkdir odir
+        ofile.text = uuid
+    }
+}
+
+preBuild.dependsOn(genUUID)
 
 repositories {
     flatDir{
@@ -36,6 +64,17 @@ dependencies {
     implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
     implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
     implementation project(':capacitor-android')
+
+    // VOSK NATIVO. La biblioteca oficial, de los mismos autores de Vosk, Apache 2.0.
+    //
+    // Es lo que reemplaza a Vosk WASM en Android. La version web baja 34 MB por
+    // internet CADA VEZ que se aprieta Leer -comprobado el 14 de septiembre de 2026
+    // poniendo el telefono en modo avion: no arranca- y despues tarda en armar el
+    // modelo adentro del navegador. Aca el modelo viaja en el APK y la biblioteca
+    // es codigo compilado: no se baja nada y no se arma nada en tiempo de ejecucion.
+    implementation 'com.alphacephei:vosk-android:0.3.75@aar'
+    implementation 'net.java.dev.jna:jna:5.13.0@aar'
+
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"

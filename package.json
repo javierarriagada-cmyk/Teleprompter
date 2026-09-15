@@ -10,7 +10,8 @@
     "test": "vitest run",
     "cap:sync": "cap sync",
     "cap:open": "cap open android",
-    "cap:build": "cap build android"
+    "cap:build": "cap build android",
+    "modelo": "node scripts/bajar-modelo.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.1",
