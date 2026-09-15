@@ -580,17 +580,25 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   })
 
+  // EL GESTO DE ATRAS DE ANDROID.
+  //
+  // Antes de esto no habia ningun manejo del gesto en todo el proyecto, y durante
+  // la lectura se llevaba la grabacion entera: se iba de la aplicacion sin pasar
+  // por handleStop, asi que detenerGrabacion no corria y la lectura se perdia sin
+  // ningun aviso.
+  //
+  // ACA NO SE EXPONE NINGUN ATAJO PARA PROBAR. La primera version colgaba este
+  // mismo handler de window.__simularBotonAtras para que las pruebas lo llamaran.
+  // Ademas de viajar en el APK, eso hacia que la prueba tocara una COPIA y nunca
+  // comprobara que estuviera conectada al gesto: borrando el addListener de abajo,
+  // el gesto quedaba muerto y T188 seguia verde. La prueba finge el plugin -ver el
+  // vi.mock de pantallas.test.tsx- y captura ESTE listener.
   useEffect(() => {
     let listenerHandle: any = null
     const handler = () => {
       if (handleVolverAtrasRef.current) {
         handleVolverAtrasRef.current()
       }
-    }
-
-    // Exponer hook para entorno de pruebas (jsdom) donde el plugin de Capacitor es simulado
-    if (typeof window !== 'undefined') {
-      (window as any).__simularBotonAtras = handler
     }
 
     const sub = CapacitorApp.addListener('backButton', handler)
@@ -601,9 +609,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
 
     return () => {
-      if (typeof window !== 'undefined') {
-        delete (window as any).__simularBotonAtras
-      }
       if (listenerHandle && typeof listenerHandle.remove === 'function') {
         listenerHandle.remove()
       }

@@ -2,6 +2,42 @@ import React from 'react'
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest'
 import { render, act, fireEvent, screen } from '@testing-library/react'
 import 'fake-indexeddb/auto'
+
+// EL PLUGIN DE ANDROID, FINGIDO ACA Y NO EN LA APLICACION.
+//
+// jsdom no tiene Capacitor, asi que el gesto de atras no existe al probar. La
+// primera version resolvio eso dejando que la APLICACION colgara su propia funcion
+// de window.__simularBotonAtras para que la prueba la llamara.
+//
+// Eso tenia dos problemas. El chico: ese atajo viajaba en el APK, codigo que
+// existe solo para que una prueba sea posible. El grave: la prueba llamaba a una
+// COPIA de la funcion y nunca comprobaba que estuviera conectada al gesto real.
+// Comprobado el 15 de septiembre de 2026 borrando la linea del addListener: el
+// gesto quedaba desconectado -en el telefono la lectura se habria perdido- y T188
+// seguia VERDE.
+//
+// Asi, en cambio, se captura el listener que la aplicacion registra de verdad. Si
+// alguien borra el addListener, no hay listener que capturar y la prueba falla.
+const listenersAtras: Array<() => void> = []
+vi.mock('@capacitor/app', () => ({
+  App: {
+    addListener: (evento: string, cb: () => void) => {
+      if (evento === 'backButton') listenersAtras.push(cb)
+      return Promise.resolve({ remove: () => {} })
+    },
+    exitApp: vi.fn()
+  }
+}))
+
+// Dispara el gesto de atras como lo haria Android: por el listener registrado.
+async function simularGestoAtras() {
+  expect(listenersAtras.length).toBeGreaterThan(0)
+  await act(async () => {
+    listenersAtras[listenersAtras.length - 1]()
+    await Promise.resolve()
+  })
+}
+
 import App from '../App'
 import BibliotecaView from '../components/BibliotecaView'
 import EditorView from '../components/EditorView'
@@ -988,13 +1024,8 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
     // Confirmar que estamos en lectura
     expect(screen.getByTestId('teleprompter-view-container')).not.toBeNull()
 
-    // Simular el gesto de atrás con la función expuesta en window
-    const simularAtras = (window as any).__simularBotonAtras
-    expect(typeof simularAtras).toBe('function')
-
-    await act(async () => {
-      await simularAtras()
-    })
+    await simularGestoAtras()
+    await act(async () => { await new Promise((r) => setTimeout(r, 50)) })
 
     // Verificar que detenerGrabacion se haya llamado y estemos de vuelta en el editor
     expect(spyDetener).toHaveBeenCalled()
@@ -1034,13 +1065,7 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
 
     expect(screen.getByTestId('panel-ajustes')).not.toBeNull()
 
-    // Simular el gesto de atrás con la función expuesta en window
-    const simularAtras = (window as any).__simularBotonAtras
-    expect(typeof simularAtras).toBe('function')
-
-    await act(async () => {
-      await simularAtras()
-    })
+    await simularGestoAtras()
 
     // El modal de Ajustes se cierra, pero SE MANTIENE en la vista del editor
     expect(screen.queryByTestId('panel-ajustes')).toBeNull()
