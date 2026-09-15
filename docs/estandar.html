@@ -1,0 +1,434 @@
+<title>El estándar visual</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --papel: #F4F2ED;
+    --papel-2: #EAE7DF;
+    --tinta: #15191A;
+    --tinta-2: #5E6663;
+    --verde: #0E6B59;
+    --verde-claro: #E3EEEA;
+    --oxido: #A8481A;
+    --oxido-claro: #F3E5DC;
+    --linea: #D8D3C7;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --sans: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --papel: #141716; --papel-2: #1D2220; --tinta: #E8E6DF; --tinta-2: #9AA29E;
+      --verde: #5FBFA6; --verde-claro: #16302A; --oxido: #E08A5C; --oxido-claro: #33211A;
+      --linea: #2C3331;
+    }
+  }
+  :root[data-theme="dark"] {
+    --papel: #141716; --papel-2: #1D2220; --tinta: #E8E6DF; --tinta-2: #9AA29E;
+    --verde: #5FBFA6; --verde-claro: #16302A; --oxido: #E08A5C; --oxido-claro: #33211A;
+    --linea: #2C3331;
+  }
+
+  body { background: var(--papel); color: var(--tinta); font-family: var(--sans); font-size: 17px; line-height: 1.6; margin: 0; }
+  .hoja { max-width: 800px; margin: 0 auto; padding-block: 56px 96px; padding-left: 20px; padding-right: 20px; }
+
+  h1 { font-family: var(--serif); font-size: clamp(2.1rem, 6vw, 3.1rem); font-weight: 700; line-height: 1.08; letter-spacing: -.015em; margin: 0 0 .5rem; text-wrap: balance; }
+  .bajada { font-family: var(--serif); font-size: 1.2rem; color: var(--tinta-2); margin: 0 0 2.5rem; text-wrap: balance; }
+  h2 { font-family: var(--serif); font-size: 1.75rem; font-weight: 700; letter-spacing: -.01em; margin: 4rem 0 .4rem; padding-top: 1.6rem; border-top: 2px solid var(--tinta); text-wrap: balance; }
+  h2 .num { display: block; font-family: var(--sans); font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--verde); margin-bottom: .35rem; }
+  h3 { font-family: var(--sans); font-size: 1.02rem; font-weight: 700; margin: 2.2rem 0 .5rem; }
+  p { margin: 0 0 1rem; }
+  .intro { color: var(--tinta-2); margin-bottom: 2rem; }
+  code { font-family: var(--mono); font-size: .85em; background: var(--papel-2); padding: .1em .35em; border-radius: 3px; }
+
+  .tabla-caja { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; margin: 1.4rem 0; }
+  th { text-align: left; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-2); font-weight: 700; padding: 0 .9rem .5rem 0; border-bottom: 1px solid var(--tinta); white-space: nowrap; }
+  td { padding: .6rem .9rem .6rem 0; border-bottom: 1px solid var(--linea); vertical-align: top; }
+  .num-col { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .mal { color: var(--oxido); font-weight: 600; }
+  .bien { color: var(--verde); font-weight: 600; }
+
+  .cifras { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--linea); border: 1px solid var(--linea); margin: 2rem 0; }
+  .cifras div { background: var(--papel); padding: 1.1rem 1.2rem; }
+  .cifras .n { font-family: var(--serif); font-size: 2.4rem; font-weight: 700; line-height: 1; display: block; font-variant-numeric: tabular-nums; }
+  .cifras .q { font-size: .86rem; color: var(--tinta-2); margin-top: .4rem; display: block; }
+
+  .nota { background: var(--verde-claro); padding: 1.1rem 1.2rem; margin: 1.8rem 0; font-size: .95rem; }
+  .nota .t { font-weight: 700; display: block; margin-bottom: .2rem; }
+  .alerta { background: var(--oxido-claro); padding: 1.1rem 1.2rem; margin: 1.8rem 0; font-size: .95rem; }
+  .alerta .t { font-weight: 700; display: block; margin-bottom: .2rem; color: var(--oxido); }
+
+  .cita { font-family: var(--serif); font-size: 1.08rem; font-style: italic; border-left: 2px solid var(--linea); padding-left: 1.1rem; margin: 1.5rem 0; color: var(--tinta-2); }
+  .cita b { font-style: normal; color: var(--tinta); }
+
+  /* muestras */
+  .muestra { border: 1px solid var(--linea); background: var(--papel); margin: 1.5rem 0; }
+  .muestra > .cab { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--tinta-2); padding: .7rem 1.1rem; border-bottom: 1px solid var(--linea); }
+  .muestra > .cuerpo { padding: 1.4rem 1.1rem; }
+
+  .fila-tipo { display: grid; grid-template-columns: 5.6rem 1fr; gap: 1rem; align-items: baseline; padding: .7rem 0; border-bottom: 1px solid var(--linea); }
+  .fila-tipo:last-child { border-bottom: 0; }
+  .fila-tipo .meta { font-size: .72rem; color: var(--tinta-2); font-variant-numeric: tabular-nums; line-height: 1.35; }
+  .fila-tipo .meta b { display: block; color: var(--tinta); font-size: .8rem; }
+
+  .esp-display { font-family: var(--serif); font-size: 28px; font-weight: 700; line-height: 1.12; letter-spacing: -.02em; }
+  .esp-titulo  { font-family: var(--serif); font-size: 18px; font-weight: 600; line-height: 1.3; }
+  .esp-cuerpo  { font-size: 15px; line-height: 1.6; }
+  .esp-meta    { font-size: 13px; color: var(--tinta-2); }
+  .esp-etiq    { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .16em; color: var(--tinta-2); }
+
+  .paleta { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .7rem; }
+  .ficha { border: 1px solid var(--linea); }
+  .ficha .tapa { height: 62px; }
+  .ficha .pie { padding: .55rem .7rem; font-size: .76rem; }
+  .ficha .pie b { display: block; font-size: .84rem; margin-bottom: .1rem; }
+  .ficha .pie code { background: transparent; padding: 0; font-size: .74rem; color: var(--tinta-2); }
+
+  .escalera { display: flex; align-items: flex-end; gap: .55rem; flex-wrap: wrap; }
+  .escalera div { background: var(--verde); }
+  .escalera span { display: block; font-size: .68rem; color: var(--tinta-2); text-align: center; margin-top: .3rem; font-variant-numeric: tabular-nums; }
+
+  ol.orden { padding-left: 0; list-style: none; counter-reset: o; margin: 1.5rem 0; }
+  ol.orden li { counter-increment: o; display: grid; grid-template-columns: 2.4rem 1fr; gap: .8rem; padding: 1rem 0; border-bottom: 1px solid var(--linea); }
+  ol.orden li::before { content: counter(o); font-family: var(--serif); font-size: 1.5rem; font-weight: 700; color: var(--verde); line-height: 1.1; }
+  ol.orden .t { font-weight: 700; display: block; }
+  ol.orden .d { color: var(--tinta-2); font-size: .94rem; }
+
+  footer { margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--linea); font-size: .85rem; color: var(--tinta-2); }
+</style>
+
+<div class="hoja">
+
+<h1>El estándar visual</h1>
+<p class="bajada">Qué separa esta aplicación de un prototipo, medido sobre el código que existe hoy — y las decisiones que hacen falta para cruzar esa línea.</p>
+
+<p class="intro">Es el tercer documento. El primero —<em>el estado real</em>— inventarió las diez pantallas. El segundo —<em>el circuito</em>— especificó qué se mueve entre una y otra. Éste es sobre lo que se ve quieto: la tipografía, el color, el espacio y la forma. Y sobre algo que ninguno de los dos anteriores miró: <strong>cómo se ve esto en la tienda</strong>, que es donde se decide si alguien lo instala.</p>
+
+<h2><span class="num">La medición</span>El diagnóstico que teníamos era equivocado</h2>
+
+<p>El primer documento decía: <em>«no hay una identidad, hay valores por omisión; el verde, la serif de los títulos, los grises: ninguno se eligió»</em>. Fui a comprobarlo antes de proponer nada, y <strong>es falso</strong>.</p>
+
+<p>Existe un sistema declarado en <code>src/styles.css</code>: siete colores con nombre, cinco tamaños de letra, cinco de espaciado y un radio. Está escrito y es razonable. El problema es otro:</p>
+
+<div class="cifras">
+  <div><span class="n">218</span><span class="q">usos de las fichas del sistema en los componentes</span></div>
+  <div><span class="n">90</span><span class="q">colores escritos a mano, salteándose el sistema</span></div>
+  <div><span class="n">0</span><span class="q">veces que se usa el radio declarado de 14 px</span></div>
+</div>
+
+<p><strong>La identidad está declarada y nadie la respeta.</strong> Eso no es lo mismo que no tenerla, y se arregla de otra manera: no hay que inventar una paleta, hay que hacer que la que existe se cumpla — y corregirla donde la realidad ya la desmintió.</p>
+
+<h3>La escala tipográfica existe y no la usa nadie</h3>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Declarado en <code>styles.css</code></th><th>Realmente usado en las pantallas</th></tr></thead>
+  <tbody>
+    <tr><td class="num-col">27 · 17 · 15 · 12 · 11</td><td class="num-col mal">12 · 13 · 14 · 15 · 16 · 18 · 22</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>De los cinco tamaños declarados, los componentes usan dos. Y agregan cinco que no están en ninguna parte. <strong>El tamaño más repetido de toda la aplicación es 14 px —aparece catorce veces— y no pertenece a la escala.</strong> Es el cuerpo de texto de facto, elegido por nadie.</p>
+
+<h3>El espaciado tiene once valores donde deberían ser cinco</h3>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Declarado</th><th>Realmente usado</th></tr></thead>
+  <tbody>
+    <tr><td class="num-col">4 · 8 · 14 · 18 · 28</td><td class="num-col mal">0 · 4 · 6 · 8 · 10 · 12 · 14 · 16 · 20 · 24 · 30</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Once valores distintos. El 18 y el 28 declarados casi no aparecen; el 16 aparece trece veces y no está declarado. <strong>Esto es lo que hace que una pantalla se sienta «armada a mano»</strong> aunque nadie sepa señalar por qué: los espacios entre cosas no riman.</p>
+
+<h3>Y los radios</h3>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Declarado</th><th>Realmente usado</th></tr></thead>
+  <tbody>
+    <tr><td class="num-col">14</td><td class="num-col mal">4 · 6 · 12 · 24</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="alerta">
+  <span class="t">La conclusión, que cambia el trabajo</span>
+  No hace falta un rediseño. Hace falta <strong>una escala corta que se cumpla</strong>, y que el sistema sea el único camino: mientras se pueda escribir <code>fontSize: 13</code> a mano, alguien lo va a escribir. Es un problema de disciplina, no de gusto — y por eso se puede encargar y se puede comprobar con una prueba.
+</div>
+
+<h2><span class="num">La decisión</span>La tipografía, con su motivo</h2>
+
+<p>Las dos familias que ya están puestas se quedan, pero por una razón, no por inercia. <strong>Source Serif 4 para los nombres de las cosas</strong> —el título de la pantalla, el título de un guion—: una serif dice «esto es un texto que alguien escribió», y es exactamente lo que un guion es. <strong>Source Sans 3 para todo lo demás</strong>: etiquetas, botones, contadores, ajustes. Eso es instrumental y tiene que desaparecer de la vista.</p>
+
+<p>La regla que ordena todo el resto: <strong>la serif nombra, la sans opera.</strong></p>
+
+<div class="muestra">
+  <div class="cab">Cinco tamaños, y ninguno más</div>
+  <div class="cuerpo">
+    <div class="fila-tipo">
+      <div class="meta"><b>Display</b>28 / 1.12<br>serif 700</div>
+      <div class="esp-display">Guiones</div>
+    </div>
+    <div class="fila-tipo">
+      <div class="meta"><b>Título</b>18 / 1.3<br>serif 600</div>
+      <div class="esp-titulo">El hombre que no quiso reír</div>
+    </div>
+    <div class="fila-tipo">
+      <div class="meta"><b>Cuerpo</b>15 / 1.6<br>sans 400</div>
+      <div class="esp-cuerpo">Acá va el texto que se lee de corrido: un mensaje, una explicación, el contenido de un ajuste.</div>
+    </div>
+    <div class="fila-tipo">
+      <div class="meta"><b>Meta</b>13 / 1.4<br>sans 400</div>
+      <div class="esp-meta">4 min · hace dos días</div>
+    </div>
+    <div class="fila-tipo">
+      <div class="meta"><b>Etiqueta</b>11 / 1.2<br>sans 700, +.16em</div>
+      <div class="esp-etiq">Cómo se ve el texto</div>
+    </div>
+  </div>
+</div>
+
+<p>Cinco pasos, cada uno con un trabajo distinto. <strong>Se van: 12, 14, 16 y 22.</strong> El cambio que más se va a notar es el cuerpo, que pasa de 14 a 15 — catorce es el tamaño de los pies de foto de Android, no el de un texto que alguien lee en la mano.</p>
+
+<div class="nota">
+  <span class="t">La excepción, y es la única</span>
+  El tamaño de letra de la <strong>pantalla de lectura</strong> no entra en esta escala y no debe entrar: lo elige el que lee, entre 14 y 42, y es la decisión más importante que toma. La escala gobierna la aplicación; la lectura es del usuario.
+</div>
+
+<h2><span class="num">La decisión</span>El color, y por qué es casi todo gris</h2>
+
+<p>La paleta actual se queda, con los valores que ya están en <code>styles.css</code>. Lo que cambia es que pasa a tener un motivo, y sobre todo <strong>un límite</strong>.</p>
+
+<div class="muestra">
+  <div class="cab">Modo claro</div>
+  <div class="cuerpo">
+    <div class="paleta">
+      <div class="ficha"><div class="tapa" style="background:#F3F1ED"></div><div class="pie"><b>Suelo</b><code>#F3F1ED</code></div></div>
+      <div class="ficha"><div class="tapa" style="background:#FFFFFF; border-bottom:1px solid #E4E0D9"></div><div class="pie"><b>Superficie</b><code>#FFFFFF</code></div></div>
+      <div class="ficha"><div class="tapa" style="background:#1A1815"></div><div class="pie"><b>Tinta</b><code>#1A1815</code></div></div>
+      <div class="ficha"><div class="tapa" style="background:#78706A"></div><div class="pie"><b>Apagado</b><code>#78706A</code></div></div>
+      <div class="ficha"><div class="tapa" style="background:#E4E0D9"></div><div class="pie"><b>Borde</b><code>#E4E0D9</code></div></div>
+      <div class="ficha"><div class="tapa" style="background:#0F8377"></div><div class="pie"><b>Acento</b><code>#0F8377</code></div></div>
+    </div>
+  </div>
+</div>
+
+<p>Seis colores, y cinco son grises cálidos. <strong>El verde es el único color saturado de toda la aplicación y por eso significa algo: «esto actúa».</strong> Un botón que hace algo, una opción elegida, una casilla marcada. Nada más lleva verde — ni un título, ni un ícono decorativo, ni un borde.</p>
+
+<p>Esa es la regla que lo sostiene: <strong>si el acento aparece en todas partes, deja de indicar nada</strong>, y la pantalla vuelve a ser un montón de cosas del mismo peso. Es el defecto que ya tenemos anotado del documento uno: <em>«todo pesa lo mismo»</em>.</p>
+
+<h3>Y un segundo color, que no es decoración</h3>
+
+<p>El rojo de grabación. No pertenece a la paleta de marca: pertenece al <strong>lenguaje universal de las cámaras</strong>, y por eso no se elige ni se cambia. Aparece en dos lugares y en ninguno más: el punto que dice que está grabando, y el tiempo transcurrido.</p>
+
+<div class="muestra">
+  <div class="cab">Semántico — no es acento, es estado</div>
+  <div class="cuerpo">
+    <div class="paleta" style="max-width:300px">
+      <div class="ficha"><div class="tapa" style="background:#D92B2B"></div><div class="pie"><b>Grabando</b><code>#D92B2B</code></div></div>
+    </div>
+  </div>
+</div>
+
+<h2><span class="num">La decisión</span>El espacio y la forma</h2>
+
+<p>Once valores de espaciado pasan a cinco, todos múltiplos de 4. Es lo que hace que los espacios rimen sin que nadie lo note.</p>
+
+<div class="muestra">
+  <div class="cab">La escalera del espacio</div>
+  <div class="cuerpo">
+    <div class="escalera">
+      <div style="width:4px;height:4px"></div><div style="width:8px;height:8px"></div><div style="width:12px;height:12px"></div><div style="width:20px;height:20px"></div><div style="width:32px;height:32px"></div>
+    </div>
+    <div style="display:flex;gap:.55rem;align-items:flex-start;margin-top:.1rem">
+      <span style="width:4px;font-size:.68rem;color:var(--tinta-2)">4</span>
+      <span style="width:8px;font-size:.68rem;color:var(--tinta-2)">8</span>
+      <span style="width:12px;font-size:.68rem;color:var(--tinta-2)">12</span>
+      <span style="width:20px;font-size:.68rem;color:var(--tinta-2)">20</span>
+      <span style="width:32px;font-size:.68rem;color:var(--tinta-2)">32</span>
+    </div>
+    <table style="margin-top:1.2rem">
+      <tbody>
+        <tr><td class="num-col"><b>4</b></td><td>entre un ícono y su palabra</td></tr>
+        <tr><td class="num-col"><b>8</b></td><td>entre cosas del mismo grupo — dos botones que se eligen entre sí</td></tr>
+        <tr><td class="num-col"><b>12</b></td><td>el aire adentro de un control</td></tr>
+        <tr><td class="num-col"><b>20</b></td><td>entre una fila de ajuste y la siguiente, y el margen de la pantalla</td></tr>
+        <tr><td class="num-col"><b>32</b></td><td>entre un grupo y otro — «La toma» y «Cómo se ve el texto»</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<p>Y la forma: <strong>dos radios, no cuatro.</strong> <code>10</code> para todo lo que es una superficie —tarjetas, campos, paneles, botones rectangulares— y <code>999</code> para lo que es una píldora: el botón principal, el tiempo de grabación, los botones de elegir entre opciones. Los 4, 6, 12 y 24 de hoy se van.</p>
+
+<h2><span class="num">El lenguaje</span>Cinco piezas, y todo se arma con eso</h2>
+
+<p>Una aplicación se siente terminada cuando la segunda pantalla usa las mismas piezas que la primera. Estas cinco cubren las diez que tenemos.</p>
+
+<div class="muestra">
+  <div class="cab">1 · La fila de un guion</div>
+  <div class="cuerpo" style="background:var(--papel-2)">
+    <div style="background:#FFF;border:1px solid #E4E0D9;border-radius:10px;padding:12px 12px;max-width:380px">
+      <div style="font-family:var(--serif);font-size:18px;font-weight:600;line-height:1.3;color:#1A1815">El hombre que no quiso reír</div>
+      <div style="font-size:13px;color:#78706A;margin-top:4px">4 min · hace dos días</div>
+    </div>
+  </div>
+</div>
+
+<p>Sin botones de editar ni borrar a la vista — la competencia los deja visibles en cada fila y es ruido permanente por una acción que casi nunca se hace. Se llega por el gesto de siempre, manteniendo apretado.</p>
+
+<div class="muestra">
+  <div class="cab">2 · Elegir entre pocas opciones</div>
+  <div class="cuerpo" style="background:var(--papel-2)">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span style="background:#0F8377;color:#FFF;border-radius:999px;padding:8px 16px;font-size:15px;font-weight:600">Ancho</span>
+      <span style="background:#FFF;color:#1A1815;border:1px solid #E4E0D9;border-radius:999px;padding:8px 16px;font-size:15px">Medio</span>
+      <span style="background:#FFF;color:#1A1815;border:1px solid #E4E0D9;border-radius:999px;padding:8px 16px;font-size:15px">Angosto</span>
+    </div>
+  </div>
+</div>
+
+<p>Es lo que ya quedó en la tarea 44 y funciona: las opciones se ven todas, no se esconden en una lista. Lo único que cambia es que ahora la píldora, el 8 entre botones y el verde vienen del sistema.</p>
+
+<div class="muestra">
+  <div class="cab">3 · Un grupo de ajustes</div>
+  <div class="cuerpo" style="background:var(--papel-2)">
+    <div style="background:#FFF;border:1px solid #E4E0D9;border-radius:10px;padding:20px;max-width:380px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:#78706A;margin-bottom:12px">La toma</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:15px;padding:8px 0">Espejo<span style="width:22px;height:22px;border:1px solid #E4E0D9;border-radius:6px;background:#FFF"></span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:15px;padding:8px 0">Mostrar tiempo<span style="width:22px;height:22px;border-radius:6px;background:#0F8377"></span></div>
+    </div>
+  </div>
+</div>
+
+<div class="muestra">
+  <div class="cab">4 · La acción principal</div>
+  <div class="cuerpo" style="background:var(--papel-2)">
+    <div style="background:#0F8377;color:#FFF;border-radius:999px;padding:14px 24px;font-size:15px;font-weight:700;text-align:center;max-width:380px">Leer</div>
+    <div style="height:8px"></div>
+    <div style="background:#FFF;color:#78706A;border:1px solid #E4E0D9;border-radius:999px;padding:14px 24px;font-size:15px;font-weight:700;text-align:center;max-width:380px">Leer — Escribe algo para leer</div>
+  </div>
+</div>
+
+<p>Una sola acción principal por pantalla, y cuando no se puede hacer, <strong>dice por qué</strong> en vez de desaparecer o quedarse muda. Eso ya está bien resuelto y hay que conservarlo.</p>
+
+<div class="muestra">
+  <div class="cab">5 · El aviso que se va solo</div>
+  <div class="cuerpo" style="background:var(--papel-2)">
+    <div style="background:#1A1815;color:#F3F1ED;border-radius:10px;padding:12px 20px;font-size:15px;max-width:240px">Grabado · 4:12</div>
+  </div>
+</div>
+
+<p>Dos segundos, abajo, sin botón de cerrar. Es la pieza que hoy no existe y que hace falta en los cinco momentos en que la aplicación se queda muda — está en el segundo documento.</p>
+
+<h2><span class="num">La tienda</span>Nuestra mejor pantalla es la peor foto</h2>
+
+<p>Acá hay un problema que ningún documento anterior miró, y es el que decide si alguien nos instala.</p>
+
+<p class="cita">«todo entra primero por la vista, y en eso tenemos que ser los mejores. luego de eso ya cuando te prueban se ratifica con un motor excelente»<b> — Javier, 15 de septiembre de 2026</b></p>
+
+<p>Tiene razón, y contra nosotros: <strong>la pantalla de lectura —la que mejor funciona, la que costó semanas afinar— es texto claro sobre negro con casi todo velado.</strong> Funciona perfecto para el que lee y no se entiende en una captura. La de la competencia es una cara, luz, el texto encima de la cámara y un botón rojo: se lee en medio segundo sin leer una palabra.</p>
+
+<div class="alerta">
+  <span class="t">Y el motor no se puede fotografiar</span>
+  Lo único que de verdad nos distingue —que el texto sigue la voz— <strong>es invisible en una imagen quieta</strong>. Una captura de nuestra lectura y una de un teleprompter que baja por reloj son idénticas. Nadie instala por el motor: instala por lo que ve, y el motor decide si se queda. Los usuarios de PromptSmart que encontramos no se fueron porque se viera feo: se fueron porque una actualización les rompió el seguimiento.
+</div>
+
+<p>De ahí salen dos cosas que <strong>son decisiones de producto, no de marketing</strong>:</p>
+
+<ol class="orden">
+  <li><span class="t">La grabación con cámara deja de ser una función y pasa a ser la carátula</span><span class="d">Con la cámara adentro, la pantalla principal muestra una persona hablando con su texto encima. Eso es fotografiable. Sin cámara, nuestra mejor captura es un rectángulo negro con texto gris.</span></li>
+  <li><span class="t">Hay que inventar cómo se ve el seguimiento en una imagen quieta</span><span class="d">El velo y la banda son la única señal visible de que algo está siguiendo la voz. Hoy están diseñados para no distraer al que lee, que es lo correcto. Pero en una captura no dicen nada. Es un problema abierto y no tiene solución todavía.</span></li>
+</ol>
+
+<h2><span class="num">Las pantallas</span>Qué cambia en cada una de las diez</h2>
+
+<p class="intro">Un sistema que no se baja a pantallas concretas no sirve. Acá está lo que cambia en cada una, juntando lo de este documento con lo que quedó abierto en los dos anteriores y con lo que aprendimos mirando a la competencia que graba.</p>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Pantalla</th><th>Qué cambia</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><b>1 · Biblioteca</b></td>
+      <td>La fila pasa a la pieza única: título en serif 18, meta en 13, radio 10, sin botones de editar y borrar a la vista. <b>Y queda abierta la pregunta grande:</b> la competencia que graba no abre en la lista sino en un botón de acción. Si la cámara entra, esto se decide de nuevo.</td>
+    </tr>
+    <tr>
+      <td><b>2 · Menú de la biblioteca</b></td>
+      <td>Ya vive ahí lo que es de la aplicación y no de la toma —Tema, y la Vibración de la tarea 45—. Sólo aplicar el sistema, y que crezca desde los tres puntos.</td>
+    </tr>
+    <tr>
+      <td><b>3 · Panel de medición</b></td>
+      <td>Es herramienta nuestra, no producto. Sólo el sistema, para que no desentone si alguien la abre.</td>
+    </tr>
+    <tr>
+      <td><b>4 · Editor</b></td>
+      <td>El cuerpo de texto sube de 14 a 15. La barra «Leer» pasa a píldora y a la acción principal del sistema. Los doce colores a mano de este archivo pasan a fichas.</td>
+    </tr>
+    <tr>
+      <td><b>5 · Menú del editor</b></td>
+      <td>Crece desde su esquina. El idioma, que hoy es una lista desplegable adentro del menú, es el último desplegable que queda en toda la aplicación.</td>
+    </tr>
+    <tr>
+      <td><b>6 · Ajustes</b></td>
+      <td>La estructura ya quedó bien en la tarea 44 —siete controles, cero listas—. Lo que falta es el espaciado: los grupos separados por 32, las filas por 20, y las etiquetas de grupo a 11 con su interletrado.</td>
+    </tr>
+    <tr>
+      <td><b>7 · Cuenta regresiva</b></td>
+      <td>El número entra con su animación, ya especificado. <b>Abierto:</b> hoy no dice nada y yo escribí que cualquier palabra ahí es ruido. La competencia dice «Cámara lista, la grabación empieza ya» y viéndolo no estoy seguro de haber tenido razón — confirmar que la cámara anda es la ansiedad real del que va a grabar.</td>
+    </tr>
+    <tr>
+      <td><b>8 · Lectura</b></td>
+      <td><b>La geometría no se toca</b>: el renglón trabado, la banda y el velo están afinados contra lecturas reales. Lo que se suma es el tiempo transcurrido siempre visible —píldora roja, como en las cámaras— y el <b>medidor de nivel de micrófono</b>, que contesta «¿me está escuchando?» sin hablar del seguidor. Los colores los sigue eligiendo el usuario.</td>
+    </tr>
+    <tr>
+      <td><b>9 · Controles de la lectura</b></td>
+      <td>Píldoras del sistema, y el rojo sólo en el punto de grabación y el tiempo. Cuando entre la cámara, acá va el botón de darla vuelta.</td>
+    </tr>
+    <tr>
+      <td><b>10 · Vuelta al editor</b></td>
+      <td>Aparece el aviso que hoy no existe: <b>«Grabado · 4:12»</b>, dos segundos, sin botón de cerrar. Es la línea que más falta de toda la aplicación.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Las cinco cosas que sacamos de la competencia, ubicadas</h3>
+
+<ol class="orden">
+  <li><span class="t">Abrir en una acción, no en una lista</span><span class="d">Pantalla 1. Es la única que no se puede decidir todavía: depende de si la cámara entra. Con cámara, el botón grande tiene sentido; sin cámara, abrir en «grabar» sería prometer algo que no hacemos.</span></li>
+  <li><span class="t">El tiempo transcurrido, imposible de no ver</span><span class="d">Pantallas 8 y 9. Hoy es una casilla que se puede apagar. Si el producto graba, cuánto llevás deja de ser opcional.</span></li>
+  <li><span class="t">El medidor de nivel de micrófono</span><span class="d">Pantalla 8. La idea más inteligente de las siete capturas, y <b>no contradice la regla</b>: muestra el nivel que entra, un hecho físico, no el estado del seguidor. Con el nivel en cero el motor no puede andar, y eso no es culpa del motor.</span></li>
+  <li><span class="t">Cambiar de cámara con un botón</span><span class="d">Pantalla 9, cuando la cámara entre. Frontal y trasera, ya pedido.</span></li>
+  <li><span class="t">Que la cuenta regresiva diga que la cámara está lista</span><span class="d">Pantalla 7. A discutir, contra lo que escribí en el segundo documento.</span></li>
+</ol>
+
+<div class="alerta">
+  <span class="t">Y lo que miramos y decidimos NO tomar</span>
+  El <b>control de velocidad</b> durante la grabación: su texto avanza por reloj, así que la velocidad es el corazón de su producto; en el nuestro sería admitir que el seguidor no sirve. Y la <b>línea que marca dónde vas</b>: les funciona porque su texto baja a velocidad constante. En el nuestro es la flecha ya descartada — mientras el seguidor se corra, marcar el renglón exacto hace visible el error en vez de taparlo.
+</div>
+
+<h2><span class="num">El orden</span>En qué se convierte esto</h2>
+
+<p>Todo lo de arriba es una tarea sola y es de las más fáciles de encargar, porque no tiene ambigüedad: son números.</p>
+
+<ol class="orden">
+  <li><span class="t">Que el sistema sea el único camino</span><span class="d">Las cinco fichas de tipografía, los cinco espacios, los dos radios y los seis colores quedan en <code>styles.css</code>, y los 90 colores escritos a mano y los tamaños fuera de escala pasan a usarlos. <strong>Con una prueba que falle si alguien vuelve a escribir un color o un tamaño a mano</strong> — se comprueba leyendo los archivos, igual que T207.</span></li>
+  <li><span class="t">Las cinco piezas</span><span class="d">La fila, el grupo de opciones, el grupo de ajustes, la acción principal y el aviso. Una vez cada una, y las diez pantallas armadas con eso.</span></li>
+  <li><span class="t">Lo de la tienda</span><span class="d">Espera a que la cámara esté adentro. Antes de eso no hay nada que fotografiar.</span></li>
+</ol>
+
+<div class="nota">
+  <span class="t">Lo que no entra acá</span>
+  El motor. Este documento es sobre lo que se ve quieto, y eso decide la instalación, no la permanencia. Los tres documentos juntos —las pantallas, el movimiento, el estándar— hacen que esto deje de parecer un prototipo. <strong>Que además sea el mejor lo decide otra cosa: que el corpus no se corte en la palabra 335.</strong>
+</div>
+
+<footer>
+  Teleprompter · 15 de septiembre de 2026 · Tercer documento. Los dos anteriores: <em>El estado real</em> y <em>El circuito, paso por paso</em>. Las cifras salen de medir <code>src/</code> con el código de ese día.
+</footer>
+
+</div>
