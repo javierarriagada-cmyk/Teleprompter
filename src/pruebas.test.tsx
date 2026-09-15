@@ -1,4 +1,4 @@
-import React from 'react'
+﻿import React from 'react'
 import fs from 'node:fs'
 import path from 'node:path'
 import { execSync } from 'node:child_process'
@@ -2193,7 +2193,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     })
 
     expect(container!.querySelector('div[data-testid="panel-ajustes"]')).toBeNull()
-    expect(container!.textContent).not.toContain('Dónde leés:')
+    expect(container!.textContent).not.toContain('Dónde lees:')
 
     // Abrir menú de opciones en el Editor
     const btnMenu = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
@@ -2207,7 +2207,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     })
 
     expect(container!.querySelector('div[data-testid="panel-ajustes"]')).not.toBeNull()
-    expect(container!.textContent).toContain('Dónde leés:')
+    expect(container!.textContent).toContain('Dónde lees:')
     expect(container!.textContent).toContain('Espejo')
 
     const btnCerrar = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
@@ -2216,7 +2216,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     })
 
     expect(container!.querySelector('div[data-testid="panel-ajustes"]')).toBeNull()
-    expect(container!.textContent).not.toContain('Dónde leés:')
+    expect(container!.textContent).not.toContain('Dónde lees:')
   })
 
   test('T86: Con "Mostrar tiempo" apagado, BarraDeTiempo no se renderiza; encendido, sí.', async () => {

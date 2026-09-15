@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+﻿import React, { useEffect, useRef, useState } from 'react'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, Bloque, TramoFormato, contarPalabras, calcularDuracionTexto } from '../datos/modelo'
 import { importarTexto } from '../datos/importar'
@@ -818,10 +818,10 @@ export default function EditorView({
                     </div>
                   )}
 
-                  {/* Dónde leés */}
+                  {/* Dónde lees */}
                   {setAnclajeZona && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: 14, fontWeight: 600 }}>Dónde leés:</span>
+                      <span style={{ fontSize: 14, fontWeight: 600 }}>Dónde lees:</span>
                       <div style={{ display: 'flex', gap: 6 }}>
                         <button
                           type="button"

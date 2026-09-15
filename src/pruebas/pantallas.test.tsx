@@ -698,9 +698,9 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     expect(idxTipoFuente).toBeGreaterThan(idxAncho)
     expect(idxTipoFuente).toBeLessThan(idxGrupo2)
 
-    // Grupo 2: Fondo y letra, Dónde leés, Espejo, Mostrar tiempo
+    // Grupo 2: Fondo y letra, Dónde lees, Espejo, Mostrar tiempo
     const idxFondoLetra = htmlText.indexOf('Fondo y letra:')
-    const idxDondeLees = htmlText.indexOf('Dónde leés:')
+    const idxDondeLees = htmlText.indexOf('Dónde lees:')
     const idxEspejo = htmlText.indexOf('Espejo:')
     const idxMostrarTiempo = htmlText.indexOf('Mostrar tiempo:')
 
