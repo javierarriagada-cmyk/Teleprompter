@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, Bloque, TramoFormato, contarPalabras, calcularDuracionTexto } from '../datos/modelo'
 import { importarTexto } from '../datos/importar'
@@ -67,6 +67,7 @@ interface EditorViewProps {
   setTema?: (t: 'claro' | 'oscuro') => void
   engine?: IdMotor
   setEngine?: (e: IdMotor) => void
+  onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
 }
 
 function generarIdBloque(): string {
@@ -105,7 +106,8 @@ export default function EditorView({
   tema = 'claro',
   setTema,
   engine = 'vosk',
-  setEngine
+  setEngine,
+  onRegistrarCerrarModal
 }: EditorViewProps) {
   const [plegados, setPlegados] = useState<Record<string, boolean>>({})
   const [menuOpcionesAbierto, setMenuOpcionesAbierto] = useState(false)
@@ -367,6 +369,27 @@ export default function EditorView({
   const resumenMeta = numPalabras === 0
     ? `${numPalabras.toLocaleString('es')} palabras`
     : `${numPalabras.toLocaleString('es')} palabras · ${numMinutos > 0 ? numMinutos : 1} min`
+
+  useEffect(() => {
+    if (onRegistrarCerrarModal) {
+      onRegistrarCerrarModal(() => {
+        if (mostrarModalAjustes) {
+          setMostrarModalAjustes(false)
+          return true
+        }
+        if (mostrarModalPegar) {
+          setMostrarModalPegar(false)
+          return true
+        }
+        return false
+      })
+    }
+    return () => {
+      if (onRegistrarCerrarModal) {
+        onRegistrarCerrarModal(null)
+      }
+    }
+  }, [mostrarModalAjustes, mostrarModalPegar, onRegistrarCerrarModal])
 
   const hayMasDeUnBloque = guion.bloques && guion.bloques.length > 1
 
@@ -1230,6 +1253,7 @@ export default function EditorView({
       >
         <button
           onClick={onEntrarLectura}
+          disabled={numPalabras === 0}
           data-testid="btn-leer-guion-fijo"
           style={{
             pointerEvents: 'auto',
@@ -1238,19 +1262,20 @@ export default function EditorView({
             padding: '14px 24px',
             fontSize: 'var(--texto-cuerpo)',
             fontWeight: 600,
-            backgroundColor: 'var(--color-acento)',
-            color: 'var(--color-texto-acento)',
-            border: 'none',
+            backgroundColor: numPalabras === 0 ? 'var(--bg-superficie)' : 'var(--color-acento)',
+            color: numPalabras === 0 ? 'var(--color-apagado)' : 'var(--color-texto-acento)',
+            border: numPalabras === 0 ? '1px solid var(--color-borde)' : 'none',
             borderRadius: 24,
-            cursor: 'pointer',
-            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)',
+            cursor: numPalabras === 0 ? 'not-allowed' : 'pointer',
+            opacity: numPalabras === 0 ? 0.7 : 1,
+            boxShadow: numPalabras === 0 ? 'none' : '0 4px 14px rgba(0, 0, 0, 0.25)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: 8
           }}
         >
-          ▶ Leer
+          {numPalabras === 0 ? '▶ Leer — Escribe algo para leer' : '▶ Leer'}
         </button>
       </div>
     </div>

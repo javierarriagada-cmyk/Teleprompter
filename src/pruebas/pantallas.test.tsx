@@ -941,3 +941,157 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     expect(screen.queryByTestId('panel-ajustes')).toBeNull()
   })
 })
+
+describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-T190)', () => {
+  beforeEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  test('T188 - GUARDIANA DE LA LECTURA. Durante la lectura, el gesto de atras llama a detenerGrabacion, igual que el boton Salir. La lectura no se pierde.', async () => {
+    const grabadorModule = await import('../lib/grabadorCorpus')
+    const spyDetener = vi.spyOn(grabadorModule, 'detenerGrabacion')
+
+    const motor = new MotorFake()
+    const repo = new RepositorioMemoria()
+    const guion: Guion = {
+      id: 'g-t188',
+      titulo: 'Guion T188',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Un dos tres cuatro cinco seis siete palabras en este guion' }]
+    }
+    await repo.guardar(guion)
+
+    render(React.createElement(App, { motor, repoOverride: repo }))
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 200))
+    })
+
+    // Entrar al guion en el editor
+    const fila = screen.getByTestId('fila-guion-g-t188')
+    await act(async () => {
+      fireEvent.click(fila)
+    })
+
+    // Entrar a la lectura
+    const btnLeer = screen.getByTestId('btn-leer-guion-fijo')
+    await act(async () => {
+      fireEvent.click(btnLeer)
+      await new Promise((r) => setTimeout(r, 200))
+    })
+
+    // Confirmar que estamos en lectura
+    expect(screen.getByTestId('teleprompter-view-container')).not.toBeNull()
+
+    // Simular el gesto de atrás con la función expuesta en window
+    const simularAtras = (window as any).__simularBotonAtras
+    expect(typeof simularAtras).toBe('function')
+
+    await act(async () => {
+      await simularAtras()
+    })
+
+    // Verificar que detenerGrabacion se haya llamado y estemos de vuelta en el editor
+    expect(spyDetener).toHaveBeenCalled()
+    expect(screen.getByTestId('input-titulo-guion')).not.toBeNull()
+  })
+
+  test('T189 - Con un modal abierto, el gesto de atras cierra el modal y NO sale de la pantalla de atras.', async () => {
+    const repo = new RepositorioMemoria()
+    const guion: Guion = {
+      id: 'g-t189',
+      titulo: 'Guion T189',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto del guion T189' }]
+    }
+    await repo.guardar(guion)
+
+    render(React.createElement(App, { repoOverride: repo }))
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 200))
+    })
+
+    // Entrar al editor
+    const fila = screen.getByTestId('fila-guion-g-t189')
+    await act(async () => {
+      fireEvent.click(fila)
+    })
+
+    // Abrir modal de Ajustes
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText('Ajustes'))
+    })
+
+    expect(screen.getByTestId('panel-ajustes')).not.toBeNull()
+
+    // Simular el gesto de atrás con la función expuesta en window
+    const simularAtras = (window as any).__simularBotonAtras
+    expect(typeof simularAtras).toBe('function')
+
+    await act(async () => {
+      await simularAtras()
+    })
+
+    // El modal de Ajustes se cierra, pero SE MANTIENE en la vista del editor
+    expect(screen.queryByTestId('panel-ajustes')).toBeNull()
+    expect(screen.getByTestId('input-titulo-guion')).not.toBeNull()
+  })
+
+  test('T190 - Con un guion vacio, "Leer" esta deshabilitado. Con texto, habilitado.', () => {
+    const guionVacio: Guion = {
+      id: 'g-vacio-t190',
+      titulo: 'Guion Vacio T190',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: []
+    }
+
+    const { unmount } = render(
+      React.createElement(EditorView, {
+        guion: guionVacio,
+        onChangeGuion: () => {},
+        onVolverBiblioteca: () => {},
+        onEntrarLectura: () => {}
+      })
+    )
+
+    const btnLeerVacio = screen.getByTestId('btn-leer-guion-fijo') as HTMLButtonElement
+    expect(btnLeerVacio.disabled).toBe(true)
+    expect(btnLeerVacio.textContent).toContain('Escribe algo para leer')
+
+    unmount()
+
+    const guionConTexto: Guion = {
+      id: 'g-con-texto-t190',
+      titulo: 'Guion Con Texto T190',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Hola mundo' }]
+    }
+
+    render(
+      React.createElement(EditorView, {
+        guion: guionConTexto,
+        onChangeGuion: () => {},
+        onVolverBiblioteca: () => {},
+        onEntrarLectura: () => {}
+      })
+    )
+
+    const btnLeerTexto = screen.getByTestId('btn-leer-guion-fijo') as HTMLButtonElement
+    expect(btnLeerTexto.disabled).toBe(false)
+    expect(btnLeerTexto.textContent).toBe('▶ Leer')
+  })
+})

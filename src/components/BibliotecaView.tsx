@@ -20,6 +20,7 @@ interface BibliotecaViewProps {
   setEngine?: (engine: IdMotor) => void
   verTranscripcion?: boolean
   setVerTranscripcion?: (ver: boolean) => void
+  onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
 }
 
 export function formatearFechaNatural(timestamp: number): string {
@@ -62,7 +63,8 @@ export default function BibliotecaView({
   engine = 'vosk',
   setEngine,
   verTranscripcion = false,
-  setVerTranscripcion
+  setVerTranscripcion,
+  onRegistrarCerrarModal
 }: BibliotecaViewProps) {
   const [busqueda, setBusqueda] = useState('')
   const [mostrarArchivados, setMostrarArchivados] = useState(false)
@@ -203,6 +205,23 @@ export default function BibliotecaView({
     }
     if (onToggleDiagnostico) onToggleDiagnostico()
   }
+
+  useEffect(() => {
+    if (onRegistrarCerrarModal) {
+      onRegistrarCerrarModal(() => {
+        if (mostrarPanelCorpus) {
+          setMostrarPanelCorpus(false)
+          return true
+        }
+        return false
+      })
+    }
+    return () => {
+      if (onRegistrarCerrarModal) {
+        onRegistrarCerrarModal(null)
+      }
+    }
+  }, [mostrarPanelCorpus, onRegistrarCerrarModal])
 
   const minsLectura = calcularMinutosLectura(guiones)
   const textoResumen = guiones.length === 0

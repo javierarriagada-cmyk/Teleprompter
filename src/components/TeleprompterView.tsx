@@ -639,8 +639,9 @@ export default function TeleprompterView({
             position: 'absolute',
             bottom: 80,
             left: 16,
-            fontSize: 13,
-            color: isWhiteBg ? 'rgba(0, 0, 0, 0.45)' : 'rgba(255, 255, 255, 0.45)',
+            fontSize: 15,
+            fontWeight: 600,
+            color: isWhiteBg ? 'rgba(0, 0, 0, 0.85)' : 'rgba(255, 255, 255, 0.85)',
             pointerEvents: 'none',
             zIndex: 5
           }}

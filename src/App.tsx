@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Capacitor } from '@capacitor/core'
+import { App as CapacitorApp } from '@capacitor/app'
 import useASR from './hooks/useASR'
 import { useSeguidor } from './hooks/useSeguidor'
 import { useWakeLock } from './hooks/useWakeLock'
@@ -343,6 +344,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [cuentaRegresiva, setCuentaRegresiva] = useState<number | null>(null)
   const [enPausa, setEnPausa] = useState<boolean>(false)
 
+  // Referencia para la función que cierra el modal abierto si existe
+  const cerrarModalRef = useRef<(() => boolean) | null>(null)
+
   const timerCuentaRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const prompterContainerRef = useRef<HTMLDivElement | null>(null)
 
@@ -550,6 +554,62 @@ export default function App({ motor, repoOverride }: AppProps) {
     setControlesVisibles(true)
   }
 
+  // Ref para manejar el evento de botón de atrás en Android
+  const handleVolverAtrasRef = useRef<() => Promise<void> | void>(() => {})
+  useEffect(() => {
+    handleVolverAtrasRef.current = async () => {
+      // 1. Si hay un modal abierto, cerrarlo
+      if (cerrarModalRef.current && cerrarModalRef.current()) {
+        return
+      }
+      // 2. Durante la lectura, hacer exactamente lo mismo que "Salir": handleStop y volver al editor
+      if (vista === 'lectura') {
+        await handleStop()
+        setVista('editor')
+        return
+      }
+      // 3. En el editor, volver a la biblioteca
+      if (vista === 'editor') {
+        setVista('biblioteca')
+        return
+      }
+      // 4. En la biblioteca, salir de la aplicación
+      if (vista === 'biblioteca') {
+        CapacitorApp.exitApp()
+      }
+    }
+  })
+
+  useEffect(() => {
+    let listenerHandle: any = null
+    const handler = () => {
+      if (handleVolverAtrasRef.current) {
+        handleVolverAtrasRef.current()
+      }
+    }
+
+    // Exponer hook para entorno de pruebas (jsdom) donde el plugin de Capacitor es simulado
+    if (typeof window !== 'undefined') {
+      (window as any).__simularBotonAtras = handler
+    }
+
+    const sub = CapacitorApp.addListener('backButton', handler)
+    if (sub && typeof sub.then === 'function') {
+      sub.then((h: any) => { listenerHandle = h })
+    } else {
+      listenerHandle = sub
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        delete (window as any).__simularBotonAtras
+      }
+      if (listenerHandle && typeof listenerHandle.remove === 'function') {
+        listenerHandle.remove()
+      }
+    }
+  }, [])
+
   function handleClear() {
     clear()
     reiniciar()
@@ -707,6 +767,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           setEngine={setEngine}
           verTranscripcion={verTranscripcion}
           setVerTranscripcion={setVerTranscripcion}
+          onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
         />
       )}
 
@@ -741,6 +802,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           setTema={setTema}
           engine={engine}
           setEngine={setEngine}
+          onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
         />
       )}
 
