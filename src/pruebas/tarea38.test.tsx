@@ -72,7 +72,7 @@ describe('Pruebas TAREA 38 (T176-T179)', () => {
     const panelControles = screen.getByTestId('panel-controles-lectura')
     expect(panelControles).not.toBeNull()
 
-    expect(panelControles.style.bottom).toBe('16px')
+    expect(panelControles.style.bottom).toContain('16px')
     expect(panelControles.style.top).not.toBe('16px')
   })
 

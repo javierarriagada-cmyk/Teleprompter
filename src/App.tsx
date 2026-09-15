@@ -675,7 +675,17 @@ export default function App({ motor, repoOverride }: AppProps) {
   const tituloMostrar = (guionActual && guionActual.titulo && guionActual.titulo.trim()) ? guionActual.titulo : 'Sin título'
 
   return (
-    <div style={{ padding: vista === 'lectura' ? 0 : 16, fontFamily: 'sans-serif', maxWidth: vista === 'lectura' ? 'none' : 1200, margin: '0 auto' }}>
+    <div
+      style={{
+        paddingTop: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-top, 0px))',
+        paddingBottom: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-bottom, 0px))',
+        paddingLeft: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-left, 0px))',
+        paddingRight: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-right, 0px))',
+        fontFamily: 'sans-serif',
+        maxWidth: vista === 'lectura' ? 'none' : 1200,
+        margin: '0 auto'
+      }}
+    >
 
       {/* Indicador de precarga de modelo Vosk */}
       {(estadoPrecarga === 'descargando' || estadoPrecarga === 'error') && (
@@ -821,9 +831,9 @@ export default function App({ motor, repoOverride }: AppProps) {
               data-testid="panel-controles-lectura"
               style={{
                 position: 'absolute',
-                bottom: 16,
-                left: 16,
-                right: 16,
+                bottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+                left: 'calc(16px + env(safe-area-inset-left, 0px))',
+                right: 'calc(16px + env(safe-area-inset-right, 0px))',
                 zIndex: 100,
                 display: 'flex',
                 justifyContent: 'space-between',
