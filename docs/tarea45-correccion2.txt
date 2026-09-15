@@ -1,0 +1,139 @@
+TAREA 45 - CORRECCION 2. MISMA RAMA.
+
+Revise tu entrega corregida corriendola y mirandola en un dispositivo con las
+medidas reales del telefono. El cloneElement quedo bien: comprobe leyendo el DOM
+que la animacion va sobre la raiz de la vista y que no hay ningun elemento
+agregado al arbol. T206 esta bien hecha.
+
+Pero la barra "Leer" SIGUE sin estar abajo, y ahora se ve que arrastro otra cosa
+mas: EL PANEL DE AJUSTES TAMBIEN ESTA ROTO. Su velo oscuro cubre solo el 40% de
+arriba de la pantalla en vez de la pantalla entera, y el panel queda centrado
+adentro de ese recuadro.
+
+Son DOS SINTOMAS DE UNA SOLA CAUSA, y no era el envoltorio.
+
+
+LA CAUSA, MEDIDA EN EL APARATO
+
+Leyendo el estilo calculado de la raiz de la vista, con la animacion ya
+terminada:
+
+    transform: matrix(1, 0, 0, 1, 0, 0)
+
+La animacion lleva animation-fill-mode: forwards, asi que el
+transform: translateX(0) del ULTIMO FOTOGRAMA queda aplicado para siempre.
+
+Y un elemento con transform distinto de none SE CONVIERTE EN EL BLOQUE
+CONTENEDOR de todos sus descendientes position: fixed. Es comportamiento normal
+de CSS, no un defecto del navegador.
+
+En EditorView hay dos elementos fixed que dependian de la pantalla:
+
+    la barra "Leer"        position: fixed, bottom: 24   -linea 1320 aprox-
+    el velo de Ajustes     position: fixed, top/left/right: 0  -linea 596 aprox-
+
+Los dos dejaron de anclarse a la pantalla y pasaron a anclarse a la raiz del
+editor, que mide 380 px de una ventana de 868.
+
+NINGUNA PRUEBA PUEDE VER ESTO: jsdom no calcula posiciones. Se ve mirando.
+
+
+QUE HACER - QUITAR LA ANIMACION CUANDO TERMINA
+
+No alcanza con cambiar el ultimo fotograma a transform: none, porque durante los
+400 ms de la animacion los elementos fixed siguen atrapados y saltan a su sitio
+al terminar. Eso se ve.
+
+Lo que corresponde es que <Pantalla> SE SAQUE LA ANIMACION SOLA al terminar, y
+el transform vuelva a none:
+
+    export function Pantalla({ direccion, children }: PantallaProps) {
+      const [animando, setAnimando] = React.useState(() => !movimientoApagado())
+
+      if (movimientoApagado() || !animando) {
+        return <>{children}</>
+      }
+
+      const hijo = React.Children.only(children) as React.ReactElement<any>
+      const nombreAnimacion = ...  // como esta ahora
+
+      return React.cloneElement(hijo, {
+        'data-pantalla-direccion': direccion,
+        onAnimationEnd: () => setAnimando(false),
+        style: {
+          ...(hijo.props.style || {}),
+          animation: `${nombreAnimacion} ${MS_PANTALLA}ms ${CURVA_ENTRA} forwards`
+        }
+      })
+    }
+
+    Cuidado con dos cosas:
+
+      1. Al volver a <>{children}</> el elemento pierde data-pantalla-direccion.
+         Eso esta bien y es lo correcto: terminada la animacion no queda rastro.
+         Pero T200 y T206 miran ese atributo, asi que tienen que mirarlo MIENTRAS
+         la animacion corre, no despues. Si hace falta, ajustalas.
+
+      2. onAnimationEnd viaja como prop, igual que style. BibliotecaView y
+         EditorView tienen que ponerlo en su elemento raiz, de la misma forma en
+         que ya reciben y aplican style. Son dos lineas en cada uno.
+
+    REVISA TAMBIEN LOS PANELES Y LOS MENUS. panelSube, menuCreceEsquina y
+    cuentaRegresivaEntra tambien terminan en un transform y tambien llevan
+    forwards. Si alguno de esos elementos tiene descendientes position: fixed,
+    tiene el mismo problema. Decilo en el informe, y arreglalo igual si lo tiene.
+
+
+PRUEBA NUEVA, T208
+
+    IMPORTANTE CON LA NUMERACION: T207 YA EXISTE. La agregue yo al final de
+    src/pruebas/tarea45.test.tsx mientras revisaba, y es la guardiana de la
+    frontera del motor -ningun archivo de src/lib, src/motor, src/hooks ni
+    TeleprompterView.tsx puede importar ni nombrar la haptica-. NO LA BORRES, NO
+    LA RENUMERES Y NO LA DUPLIQUES. Tu prueba nueva es la T208.
+
+    Y por si tu copia no la tiene: la suite queda en 194 de 194 al terminar
+    -193 con T207 mas la tuya-. Si tu punto de partida eran 192, deci el numero
+    que te de a vos y no te preocupes por cuadrarlo con el mio.
+
+    T208 - NO QUEDA TRANSFORM DESPUES DE LA ANIMACION.
+
+      Entrar al editor con el movimiento encendido. Comprobar que mientras la
+      animacion corre, la raiz de la vista tiene animation en su estilo. Despues
+      disparar el evento de fin de animacion con fireEvent.animationEnd sobre ese
+      elemento, y comprobar que YA NO tiene animation NI transform en su estilo.
+
+      Esto si se puede comprobar en jsdom: no hace falta layout, solo leer el
+      estilo del elemento.
+
+    COMPROBALA ROMPIENDO: hace que Pantalla NO se saque la animacion al terminar
+    -que ignore onAnimationEnd- y verifica que T208 se pone ROJA. Pega la salida
+    de vitest.
+
+
+POR QUE ESTO IMPORTA MAS DE LO QUE PARECE
+
+No es una animacion fea: es que la aplicacion tiene DOS PANTALLAS ROTAS. La barra
+para empezar a leer no esta donde corresponde y el panel de ajustes se dibuja
+dentro de un recuadro. Las dos se ven en cuanto alguien abre la aplicacion.
+
+
+AL TERMINAR
+
+  npx tsc --noEmit limpio.
+  npx vitest run sin fallas. Deci el numero exacto y de cuanto partiste.
+  El resultado de romper T208, textual.
+  Lo que hayas encontrado sobre panelSube, menuCreceEsquina y cuentaRegresivaEntra.
+
+  Y SIGUEN FALTANDO DEL INFORME, POR TERCERA VEZ:
+
+    a. El git diff --stat completo.
+    b. QUE OBSERVASTE SOBRE EL FIN DEL GUION, parte 3.d del encargo original. Era
+       mirar y reportar sin construir: si existe algun estado, bandera o evento
+       que indique que el texto se acabo, como se llama y donde vive; y si no
+       existe ninguno, decilo. No lo contestaste ninguna de las dos veces.
+
+  NO TE PREOCUPES POR PUBLICAR. El boton falla porque la rama ya existe en
+  GitHub. Yo bajo el parche por la API. Vos termina el trabajo y decilo.
+
+  NO TOQUES NADA MAS. El resto de la entrega esta bien.
