@@ -505,6 +505,29 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     }
   })
 
+  // POR QUE ESTA PRUEBA EXISTE, Y POR QUE ES ESTATICA Y NO DINAMICA.
+  //
+  // T202 monta la lectura de verdad y comprueba que no vibre nada mientras esta en
+  // pantalla llegando voz. Eso lo hace bien. Lo que NO puede comprobar es el caso que
+  // mas importa: QUE NO VIBRE AL CAMBIAR DE RENGLON.
+  //
+  // El renglon trabado avanza dentro de un requestAnimationFrame, y en jsdom -con o sin
+  // relojes falsos- ese bucle no corre. Medido el 15 de septiembre de 2026 plantando el
+  // MISMO defecto en dos lugares distintos de TeleprompterView:
+  //
+  //     vibracion en el cuerpo del componente    -> T202 ROJA
+  //     vibracion adentro del bucle de animacion -> T202 VERDE
+  //
+  // O sea que cualquier prueba dinamica es ciega justo donde haria falta. Por eso la
+  // garantia se da al reves y sin ejecutar nada: EL CAMINO DEL MOTOR NO PUEDE NI
+  // SIQUIERA ALCANZAR LA HAPTICA. Si no la importa, no puede llamarla.
+  //
+  // Y cubre la clase entera, no un caso: da igual donde se ponga la llamada adentro de
+  // esos archivos.
+  //
+  // COMPROBADA ROMPIENDO, con el defecto que T202 no ve: se pone roja y nombra
+  // components/TeleprompterView.tsx. SI ALGUIEN LA BORRA PORQUE "T202 YA CUBRE ESTO",
+  // esta equivocado y arriba esta la medicion.
   test('T207 - GUARDIANA DE LA FRONTERA DEL MOTOR. Ningún archivo de src/lib, src/motor, src/hooks ni TeleprompterView.tsx puede importar ni nombrar la haptica.', async () => {
     const fs = await import('fs')
     const path = await import('path')
