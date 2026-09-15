@@ -16,7 +16,7 @@ import CuentaRegresiva from './components/CuentaRegresiva'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL } from './components/movimiento'
 import { hapticaToqueMedio, hapticaToqueSuave } from './haptica'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
-import { Guion, ResumenGuion, guionNuevo } from './datos/modelo'
+import { Guion, ResumenGuion, guionNuevo, PAREJAS_COLOR } from './datos/modelo'
 import { RepositorioGuiones } from './datos/RepositorioGuiones'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
@@ -45,11 +45,7 @@ const GUION_VACIO: Guion = {
 const PASOS_LETRA = [14, 18, 24, 32, 42]
 const MOTORES_VALIDOS: IdMotor[] = ['vosk', 'nativo', 'fake']
 
-export const PAREJAS_COLOR = [
-  { fondo: '#000000', letra: '#FFFFFF' },
-  { fondo: '#000000', letra: '#F5C24B' },
-  { fondo: '#FFFFFF', letra: '#000000' }
-]
+export { PAREJAS_COLOR }
 
 export function sanitizarColores(rawFondo: any, rawLetra: any): { colorFondo: string; colorLetra: string } {
   if (typeof rawFondo === 'string' && typeof rawLetra === 'string') {
@@ -60,7 +56,7 @@ export function sanitizarColores(rawFondo: any, rawLetra: any): { colorFondo: st
       return { colorFondo: coincide.fondo, colorLetra: coincide.letra }
     }
   }
-  return { colorFondo: '#000000', colorLetra: '#FFFFFF' }
+  return { colorFondo: PAREJAS_COLOR[0].fondo, colorLetra: PAREJAS_COLOR[0].letra }
 }
 
 function sanitizarEngine(rawEngine: any): IdMotor {
@@ -95,8 +91,6 @@ export default function App({ motor, repoOverride }: AppProps) {
   const repoRef = useRef<RepositorioGuiones>(repoOverride || new RepositorioIndexedDB())
   const [usandoMemoriaFallback, setUsandoMemoriaFallback] = useState<boolean>(false)
   const [errorRepositorio, setErrorRepositorio] = useState<string | null>(null)
-
-  const { estado: estadoPrecarga, progreso: progresoPrecarga, error: errorPrecarga, reintentar: reintentarPrecarga } = usePrecargaModelo()
 
   const [vista, setVista] = useState<Vista>('biblioteca')
   const prevVistaRef = useRef<Vista | null>(null)
@@ -197,6 +191,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
   const [mostrarDiagnostico, setMostrarDiagnostico] = useState<boolean>(false)
 
+  const { estado: estadoPrecarga, progreso: progresoPrecarga, error: errorPrecarga, reintentar: reintentarPrecarga } = usePrecargaModelo(engine)
+
   // Sincronizar tema con documentElement
   useEffect(() => {
     document.documentElement.setAttribute('data-tema', tema)
@@ -247,9 +243,17 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   // Cargar/Migrar al arrancar
   useEffect(() => {
-    let repo = repoRef.current
-
     async function inicializar() {
+      // Verificar si el repositorio funciona o caer a fallback si no está disponible
+      try {
+        await repoRef.current.listar()
+      } catch (e) {
+        console.warn('[App] Error al acceder a RepositorioIndexedDB, cayendo a RepositorioMemoria:', e)
+        repoRef.current = new RepositorioMemoria()
+        setUsandoMemoriaFallback(true)
+        setErrorRepositorio('IndexedDB no está disponible; se está usando almacenamiento en memoria.')
+      }
+
       let textoViejo: string | null = null
       try {
         textoViejo = localStorage.getItem('teleprompter_script')
@@ -274,7 +278,7 @@ export default function App({ motor, repoOverride }: AppProps) {
         }
 
         try {
-          await repo.guardar(gMigrado)
+          await repoRef.current.guardar(gMigrado)
           try {
             localStorage.removeItem('teleprompter_script')
           } catch (e) {}
@@ -284,12 +288,74 @@ export default function App({ motor, repoOverride }: AppProps) {
         }
       }
 
+      // GUION DE BIENVENIDA: Se crea una sola vez la primera vez que se abre la aplicacion.
+      // Se omite si repoOverride fue provisto (evita romper pruebas con RepositorioMemoria).
+      if (!repoOverride) {
+        let yaPuesta = false
+        try {
+          yaPuesta = localStorage.getItem('teleprompter_bienvenida_puesta') === 'true'
+        } catch (e) {}
+
+        if (!yaPuesta) {
+          try {
+            localStorage.setItem('teleprompter_bienvenida_puesta', 'true')
+          } catch (e) {}
+
+          const guionBienvenida: Guion = {
+            id: 'bienvenida-' + Date.now(),
+            titulo: 'Bienvenida',
+            idioma: 'es',
+            creado: Date.now(),
+            modificado: Date.now(),
+            archivado: false,
+            bloques: [
+              {
+                id: 'b-bienvenida-1',
+                nombre: '',
+                texto: 'Hola. Lee esto en voz alta, con o sin apuro, como prefieras.'
+              },
+              {
+                id: 'b-bienvenida-2',
+                nombre: '',
+                texto: 'Ahora fíjate en el texto. Se está moviendo solo, al ritmo en que hablas, sin que toques nada.'
+              },
+              {
+                id: 'b-bienvenida-3',
+                nombre: '',
+                texto: 'Te acompaña para darte la comodidad y la tranquilidad que necesitas. Queremos que toda tu concentración esté donde debe estar. Cuando quieras, puedes recorrer los ajustes y dejar la experiencia a tu medida.'
+              },
+              {
+                id: 'b-bienvenida-4',
+                nombre: '',
+                texto: 'Nuestra tarea es que puedas mirar la cámara y no la pantalla. No tienes que memorizar. No tienes que apurarte para alcanzar el texto. Puedes transmitir la emoción que quieras, en el momento que quieras.'
+              },
+              {
+                id: 'b-bienvenida-5',
+                nombre: '',
+                texto: 'Sirve para grabar un video, dar una clase o preparar una entrevista.'
+              },
+              {
+                id: 'b-bienvenida-6',
+                nombre: '',
+                texto: 'Cuando termines, borra esto y escribe tu propio guion.'
+              }
+            ]
+          }
+
+          try {
+            await repoRef.current.guardar(guionBienvenida)
+          } catch (e) {
+            console.warn('[App] Error al crear guion de bienvenida:', e)
+          }
+        }
+      }
+
       await cargarBiblioteca()
       setCargado(true)
     }
 
     inicializar()
-  }, [cargarBiblioteca])
+  }, [cargarBiblioteca, repoOverride])
 
   // Auto-guardado debounced (500ms) al modificar guionActual
   useEffect(() => {
@@ -759,13 +825,13 @@ export default function App({ motor, repoOverride }: AppProps) {
       {(estadoPrecarga === 'descargando' || estadoPrecarga === 'error') && (
         <div
           style={{
-            background: estadoPrecarga === 'error' ? '#fff3cd' : '#e3f2fd',
-            color: estadoPrecarga === 'error' ? '#856404' : '#0d47a1',
-            padding: '8px 12px',
-            borderRadius: 6,
-            marginBottom: 16,
-            fontSize: 13,
-            border: `1px solid ${estadoPrecarga === 'error' ? '#ffeeba' : '#bbdefb'}`,
+            background: 'var(--bg-suelo)',
+            color: estadoPrecarga === 'error' ? 'var(--color-grabando)' : 'var(--color-texto)',
+            padding: 'var(--aire-2) var(--aire-3)',
+            borderRadius: 'var(--redondeo)',
+            marginBottom: 'var(--aire-4)',
+            fontSize: 'var(--texto-meta)',
+            border: '1px solid var(--color-borde)',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
@@ -777,13 +843,13 @@ export default function App({ motor, repoOverride }: AppProps) {
             </span>
           )}
           {estadoPrecarga === 'error' && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, width: '100%', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)', width: '100%', justifyContent: 'space-between' }}>
               <span>
                 ⚠️ Error descargando modelo de voz Vosk: {errorPrecarga || 'Desconocido'}.
               </span>
               <button
                 onClick={reintentarPrecarga}
-                style={{ padding: '4px 8px', fontSize: 12, cursor: 'pointer' }}
+                style={{ padding: 'var(--aire-1) var(--aire-2)', fontSize: 'var(--texto-meta)', cursor: 'pointer' }}
               >
                 Reintentar
               </button>
@@ -797,39 +863,39 @@ export default function App({ motor, repoOverride }: AppProps) {
         <div
           data-testid="franja-de-estado-diagnostico"
           style={{
-            background: (ultimoError || errorRepositorio) ? '#ffebee' : 'var(--bg-superficie)',
-            color: (ultimoError || errorRepositorio) ? '#c62828' : 'var(--color-texto)',
-            padding: '10px 14px',
-            borderRadius: 6,
-            marginBottom: 16,
-            fontSize: 14,
-            border: `1px solid ${(ultimoError || errorRepositorio) ? '#ef9a9a' : 'var(--color-borde)'}`
+            background: (ultimoError || errorRepositorio) ? 'var(--bg-suelo)' : 'var(--bg-superficie)',
+            color: (ultimoError || errorRepositorio) ? 'var(--color-grabando)' : 'var(--color-texto)',
+            padding: 'var(--aire-2) var(--aire-3)',
+            borderRadius: 'var(--redondeo)',
+            marginBottom: 'var(--aire-4)',
+            fontSize: 'var(--texto-meta)',
+            border: '1px solid var(--color-borde)'
           }}
         >
           <strong>Franja de Estado:</strong>
-          <div style={{ marginTop: 4 }}>
+          <div style={{ marginTop: 'var(--aire-1)' }}>
             <span>Estado del Motor: <strong>{estadoMotor}</strong></span>
-            {modoManual && <span style={{ marginLeft: 16, color: 'var(--color-acento)', fontWeight: 600 }}>MODO MANUAL: mandas tú</span>}
-            <span style={{ marginLeft: 16 }}>Motor Activo: <strong>{motorActivo}</strong></span>
-            <span style={{ marginLeft: 16 }}>Bloqueo Pantalla: <strong>{wakeLockActivo ? 'Sí' : 'No'}</strong></span>
+            {modoManual && <span style={{ marginLeft: 'var(--aire-4)', color: 'var(--color-acento)', fontWeight: 600 }}>MODO MANUAL: mandas tú</span>}
+            <span style={{ marginLeft: 'var(--aire-4)' }}>Motor Activo: <strong>{motorActivo}</strong></span>
+            <span style={{ marginLeft: 'var(--aire-4)' }}>Bloqueo Pantalla: <strong>{wakeLockActivo ? 'Sí' : 'No'}</strong></span>
             {textoFreno && (
-              <span style={{ marginLeft: 16, color: '#d84315', fontWeight: 'bold' }}>
+              <span style={{ marginLeft: 'var(--aire-4)', color: 'var(--color-grabando)', fontWeight: 'bold' }}>
                 Estado Avance: {textoFreno}
               </span>
             )}
             {usandoMemoriaFallback && (
-              <span style={{ marginLeft: 16, color: '#b71c1c', fontWeight: 'bold' }}>
+              <span style={{ marginLeft: 'var(--aire-4)', color: 'var(--color-grabando)', fontWeight: 'bold' }}>
                 ⚠️ Almacenamiento: En Memoria (IndexedDB no disponible)
               </span>
             )}
           </div>
           {ultimoError && (
-            <div style={{ marginTop: 6, fontWeight: 'bold' }}>
+            <div style={{ marginTop: 'var(--aire-2)', fontWeight: 'bold' }}>
               Último Error Motor: {ultimoError}
             </div>
           )}
           {errorRepositorio && (
-            <div style={{ marginTop: 6, fontWeight: 'bold', color: '#b71c1c' }}>
+            <div style={{ marginTop: 'var(--aire-2)', fontWeight: 'bold', color: 'var(--color-grabando)' }}>
               Aviso Repositorio: {errorRepositorio}
             </div>
           )}
@@ -923,13 +989,11 @@ export default function App({ motor, repoOverride }: AppProps) {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                backgroundColor: 'var(--bg-superficie)',
                 border: '1px solid var(--color-borde)',
-                borderRadius: 12,
-                padding: '8px 16px',
-                color: '#fff',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
-                backdropFilter: 'blur(8px)',
+                borderRadius: 'var(--redondeo)',
+                padding: 'var(--aire-2) var(--aire-3)',
+                color: 'var(--color-texto)',
                 animation: movimientoApagado()
                   ? 'none'
                   : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`,
@@ -938,7 +1002,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                   : `opacity ${MS_CHICO}ms ${CURVA_NORMAL}`
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)' }}>
                 <button
                   onClick={async () => {
                     hapticaToqueMedio()
@@ -955,14 +1019,14 @@ export default function App({ motor, repoOverride }: AppProps) {
                     setVista('editor')
                   }}
                   style={{
-                    padding: '8px 14px',
+                    padding: 'var(--aire-2) var(--aire-3)',
                     cursor: 'pointer',
                     backgroundColor: 'var(--bg-suelo)',
                     border: '1px solid var(--color-borde)',
-                    borderRadius: 6,
+                    borderRadius: 'var(--redondeo)',
                     color: 'var(--color-texto)',
                     fontWeight: 600,
-                    fontSize: 14
+                    fontSize: 'var(--texto-cuerpo)'
                   }}
                 >
                   ← Salir
@@ -972,32 +1036,32 @@ export default function App({ motor, repoOverride }: AppProps) {
                   data-testid="btn-pausa-lectura"
                   onClick={handleTogglePausa}
                   style={{
-                    padding: '8px 14px',
+                    padding: 'var(--aire-2) var(--aire-3)',
                     cursor: 'pointer',
                     backgroundColor: 'var(--bg-suelo)',
                     border: '1px solid var(--color-borde)',
-                    borderRadius: 6,
+                    borderRadius: 'var(--redondeo)',
                     color: 'var(--color-texto)',
                     fontWeight: 600,
-                    fontSize: 14
+                    fontSize: 'var(--texto-cuerpo)'
                   }}
                 >
                   {enPausa ? 'Seguir' : 'Pausa'}
                 </button>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ fontSize: 13, color: '#aaa', fontWeight: 600 }}>Letra:</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)' }}>
+                <span className="texto-meta" style={{ color: 'var(--color-apagado)', fontWeight: 600 }}>Letra:</span>
                 <button
                   onClick={handleLetraMenos}
                   aria-label="Disminuir letra"
                   style={{
-                    width: 36,
-                    height: 36,
-                    fontSize: 18,
+                    width: 32,
+                    height: 32,
+                    fontSize: 'var(--texto-titulo)',
                     fontWeight: 'bold',
                     cursor: 'pointer',
-                    borderRadius: 6,
+                    borderRadius: 'var(--redondeo)',
                     border: '1px solid var(--color-borde)',
                     backgroundColor: 'var(--bg-suelo)',
                     color: 'var(--color-texto)',
@@ -1008,19 +1072,19 @@ export default function App({ motor, repoOverride }: AppProps) {
                 >
                   -
                 </button>
-                <span data-testid="valor-letra" style={{ minWidth: 32, textAlign: 'center', fontWeight: 'bold', fontSize: 15, color: '#fff' }}>
+                <span data-testid="valor-letra" style={{ minWidth: 32, textAlign: 'center', fontWeight: 'bold', fontSize: 'var(--texto-cuerpo)', color: 'var(--color-texto)' }}>
                   {fontSize}
                 </span>
                 <button
                   onClick={handleLetraMas}
                   aria-label="Aumentar letra"
                   style={{
-                    width: 36,
-                    height: 36,
-                    fontSize: 18,
+                    width: 32,
+                    height: 32,
+                    fontSize: 'var(--texto-titulo)',
                     fontWeight: 'bold',
                     cursor: 'pointer',
-                    borderRadius: 6,
+                    borderRadius: 'var(--redondeo)',
                     border: '1px solid var(--color-borde)',
                     backgroundColor: 'var(--bg-suelo)',
                     color: 'var(--color-texto)',
@@ -1088,16 +1152,16 @@ export default function App({ motor, repoOverride }: AppProps) {
           data-testid="aviso-flotante"
           style={{
             position: 'fixed',
-            bottom: 32,
+            bottom: 'var(--aire-5)',
             left: '50%',
             transform: 'translateX(-50%)',
-            backgroundColor: 'rgba(30, 30, 30, 0.95)',
-            color: '#ffffff',
-            padding: '10px 20px',
-            borderRadius: 20,
-            fontSize: 14,
+            backgroundColor: 'var(--bg-superficie)',
+            color: 'var(--color-texto)',
+            border: '1px solid var(--color-borde)',
+            padding: 'var(--aire-2) var(--aire-3)',
+            borderRadius: 'var(--redondeo-pildora)',
+            fontSize: 'var(--texto-cuerpo)',
             fontWeight: 600,
-            boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
             zIndex: 999,
             pointerEvents: 'none',
             animation: movimientoApagado() ? 'none' : `panelSube ${MS_CHICO}ms ${CURVA_ENTRA} forwards`

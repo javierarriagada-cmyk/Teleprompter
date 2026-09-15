@@ -1,162 +1,178 @@
-// EL PANEL DE LA MEDICION. Paso 1 del plan del motor.
-//
-// Muestra las lecturas que YA ESTAN GUARDADAS, no la que se acaba de hacer. Eso es a
-// proposito y viene de un error caro: el 13 de septiembre de 2026 Javier grabo dos o tres
-// lecturas y se perdieron todas, porque vivian en memoria y el unico boton para bajarlas
-// estaba adentro de los controles, que se escondian al leer y no volvian nunca.
-//
-// Una lectura en voz alta cuesta minutos de una persona y no se repite a voluntad. Asi que
-// ahora se guarda sola al terminar, sobrevive a recargas y a cerrar la pestana, y este
-// panel solo sirve para bajarla cuando se pueda. Si alguien no baja nada, no se pierde
-// nada.
-//
-// No va a la version que se publique: es la herramienta con la que se junta el material
-// para medir el motor.
+import React, { useEffect, useState } from 'react'
+import {
+  listarLecturas,
+  ResumenLectura
+} from '../lib/almacenCorpus'
+import {
+  detenerGrabacion,
+  estadoGrabador
+} from '../lib/grabadorCorpus'
 
-import React from 'react'
-import { errorGrabador, estadoGrabador } from '../lib/grabadorCorpus'
-import { borrarLectura, leerLectura, listarLecturas, ResumenLectura } from '../lib/almacenCorpus'
-
-type Props = {
+interface PanelCorpusProps {
   medir: boolean
-  setMedir: (v: boolean) => void
+  setMedir: (medir: boolean) => void
 }
 
-function bajar(blob: Blob, nombre: string) {
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = nombre
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
-}
+export function PanelCorpus({ medir, setMedir }: PanelCorpusProps) {
+  const [archivos, setArchivos] = useState<ResumenLectura[]>([])
+  const [cargando, setCargando] = useState<boolean>(true)
+  const [mensaje, setMensaje] = useState<string | null>(null)
+  const [grabandoActual, setGrabandoActual] = useState<boolean>(estadoGrabador() === 'grabando')
 
-function nombreDe(l: ResumenLectura): string {
-  const f = new Date(l.fecha)
-  const dd = (n: number) => String(n).padStart(2, '0')
-  return `lectura-${f.getFullYear()}-${dd(f.getMonth() + 1)}-${dd(f.getDate())}-${dd(f.getHours())}${dd(f.getMinutes())}`
-}
-
-export function PanelCorpus({ medir, setMedir }: Props) {
-  const [lecturas, setLecturas] = React.useState<ResumenLectura[]>([])
-  const estado = estadoGrabador()
-
-  const refrescar = React.useCallback(() => {
-    listarLecturas().then(setLecturas).catch(() => setLecturas([]))
-  }, [])
-
-  // El estado del grabador vive fuera de React -lo cambian los eventos del navegador-, asi
-  // que se consulta a ritmo lento. Cada segundo alcanza para un cartel y no compite con el
-  // lazo de animacion de la lectura, que corre a sesenta por segundo.
-  React.useEffect(() => {
-    refrescar()
-    const id = setInterval(refrescar, 1000)
-    return () => clearInterval(id)
-  }, [refrescar])
-
-  const grabando = estado === 'grabando' || estado === 'pidiendo-permiso' || estado === 'guardando'
-
-  async function bajarPar(l: ResumenLectura) {
-    const completa = await leerLectura(l.id)
-    if (!completa) return
-    const base = nombreDe(l)
-    bajar(completa.audio, `${base}.${completa.extension}`)
-    bajar(new Blob([completa.registro], { type: 'text/plain;charset=utf-8' }), `${base}.txt`)
+  async function actualizarLista() {
+    setCargando(true)
+    try {
+      const lista = await listarLecturas()
+      setArchivos(lista)
+    } catch (e: any) {
+      setMensaje('Error al listar lecturas de corpus: ' + (e?.message || e))
+    } finally {
+      setCargando(false)
+    }
   }
 
-  async function borrar(l: ResumenLectura) {
-    await borrarLectura(l.id)
-    refrescar()
+  useEffect(() => {
+    actualizarLista()
+    const interval = setInterval(() => {
+      setGrabandoActual(estadoGrabador() === 'grabando')
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  async function handleForzarGuardado() {
+    setMensaje('Guardando corpus en segundo plano...')
+    try {
+      await detenerGrabacion()
+      setMensaje('Corpus guardado exitosamente.')
+      await actualizarLista()
+    } catch (e: any) {
+      setMensaje('Error al guardar corpus: ' + (e?.message || e))
+    }
   }
 
   return (
     <div
       data-testid="panel-corpus"
-      style={{ border: '1px solid #444', borderRadius: 6, padding: 12, marginBottom: 16, background: '#1a1a1a' }}
+      style={{
+        border: '1px solid var(--color-borde)',
+        borderRadius: 'var(--redondeo)',
+        padding: 'var(--aire-3)',
+        marginBottom: 'var(--aire-4)',
+        backgroundColor: 'var(--bg-suelo)'
+      }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-2)' }}>
+        <h4 style={{ margin: 0, fontSize: 'var(--texto-titulo)', color: 'var(--color-texto)' }}>
+          Panel de Medición y Corpus
+        </h4>
+        {grabandoActual && (
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 'var(--aire-1)',
+              backgroundColor: 'var(--bg-suelo)',
+              color: 'var(--color-grabando)',
+              padding: 'var(--aire-1) var(--aire-2)',
+              borderRadius: 'var(--redondeo-pildora)',
+              fontSize: 'var(--texto-meta)',
+              fontWeight: 'bold',
+              border: '1px solid var(--color-borde)'
+            }}
+          >
+            <span
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                backgroundColor: 'var(--color-grabando)',
+                display: 'inline-block'
+              }}
+            />
+            GRABANDO CORPUS
+          </span>
+        )}
+      </div>
+
+      <div style={{ marginBottom: 'var(--aire-3)' }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', cursor: 'pointer', fontSize: 'var(--texto-cuerpo)', color: 'var(--color-texto)' }}>
           <input
-            data-testid="medir-lectura"
             type="checkbox"
             checked={medir}
             onChange={(e) => setMedir(e.target.checked)}
-            disabled={grabando}
-            style={{ accentColor: 'var(--color-acento)' }}
           />
-          <span style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: 1, color: '#9aa' }}>
-            Medir esta lectura
-          </span>
+          <strong>Medir y guardar audio/eventos automáticamente al leer</strong>
         </label>
-
-        <span data-testid="estado-corpus" style={{ fontSize: 13, color: grabando ? '#e66' : '#9aa' }}>
-          {estado === 'grabando' && '● Grabando junto con la lectura'}
-          {estado === 'pidiendo-permiso' && 'Pidiendo el micrófono…'}
-          {estado === 'guardando' && 'Guardando la lectura…'}
-          {estado === 'error' && `No se pudo grabar: ${errorGrabador()}. La lectura funciona igual.`}
-          {(estado === 'inactivo' || estado === 'listo') &&
-            'Al apretar Iniciar se graba junto con lo que el motor va mostrando. Se guarda sola.'}
-        </span>
+        <div style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', marginTop: 'var(--aire-1)', marginLeft: 'var(--aire-4)' }}>
+          Al estar activo, cada lectura grabará audio PCM y métricas de avance para evaluar el motor offline.
+        </div>
       </div>
 
-      {lecturas.length > 0 && (
-        <div style={{ marginTop: 12 }}>
-          <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: 1, color: '#9aa', marginBottom: 6 }}>
-            Lecturas guardadas ({lecturas.length})
-          </div>
-          <div data-testid="lista-lecturas" style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {lecturas.map((l) => (
-              <div
-                key={l.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 10,
-                  flexWrap: 'wrap',
-                  padding: '6px 8px',
-                  borderRadius: 4,
-                  background: '#222'
-                }}
-              >
-                <span style={{ fontSize: 13, color: '#ddd', flex: 1, minWidth: 160 }}>
-                  {new Date(l.fecha).toLocaleString()} · {l.segundos}s ·{' '}
-                  {Math.round(l.bytesAudio / 1024)} kB · {l.motor}
-                </span>
-                <button
-                  data-testid="boton-descargar-corpus"
-                  onClick={() => bajarPar(l)}
-                  style={{
-                    padding: '8px 12px',
-                    borderRadius: 4,
-                    border: '1px solid #2a7',
-                    cursor: 'pointer',
-                    background: 'transparent',
-                    color: '#2a7',
-                    fontWeight: 600
-                  }}
-                >
-                  Bajar los dos archivos
-                </button>
-                <button
-                  onClick={() => borrar(l)}
-                  style={{
-                    padding: '8px 10px',
-                    borderRadius: 4,
-                    border: '1px solid #666',
-                    cursor: 'pointer',
-                    background: 'transparent',
-                    color: '#999'
-                  }}
-                >
-                  Borrar
-                </button>
-              </div>
-            ))}
-          </div>
+      {mensaje && (
+        <div
+          style={{
+            padding: 'var(--aire-2)',
+            backgroundColor: 'var(--bg-suelo)',
+            border: '1px solid var(--color-borde)',
+            borderRadius: 'var(--redondeo)',
+            marginBottom: 'var(--aire-2)',
+            fontSize: 'var(--texto-meta)',
+            color: 'var(--color-texto)'
+          }}
+        >
+          {mensaje}
         </div>
       )}
+
+      <div style={{ display: 'flex', gap: 'var(--aire-2)', marginBottom: 'var(--aire-3)' }}>
+        <button
+          onClick={handleForzarGuardado}
+          style={{
+            padding: 'var(--aire-2) var(--aire-3)',
+            fontSize: 'var(--texto-meta)',
+            borderRadius: 'var(--redondeo)',
+            border: '1px solid var(--color-borde)',
+            backgroundColor: 'var(--bg-superficie)',
+            color: 'var(--color-texto)',
+            cursor: 'pointer'
+          }}
+        >
+          Forzar Procesado y Guardado
+        </button>
+        <button
+          onClick={actualizarLista}
+          style={{
+            padding: 'var(--aire-2) var(--aire-3)',
+            fontSize: 'var(--texto-meta)',
+            borderRadius: 'var(--redondeo)',
+            border: '1px solid var(--color-borde)',
+            backgroundColor: 'var(--bg-superficie)',
+            color: 'var(--color-texto)',
+            cursor: 'pointer'
+          }}
+        >
+          Refrescar Lista ({archivos.length})
+        </button>
+      </div>
+
+      <div>
+        <div style={{ fontWeight: 'bold', fontSize: 'var(--texto-meta)', marginBottom: 'var(--aire-1)', color: 'var(--color-texto)' }}>
+          Lecturas guardadas en IndexedDB ({archivos.length}):
+        </div>
+        {cargando ? (
+          <div style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)' }}>Cargando lista...</div>
+        ) : archivos.length === 0 ? (
+          <div style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)' }}>No hay lecturas de corpus guardadas aún.</div>
+        ) : (
+          <ul style={{ margin: 0, paddingLeft: 'var(--aire-4)', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)', maxHeight: 150, overflowY: 'auto' }}>
+            {archivos.map((rec) => (
+              <li key={rec.id} style={{ marginBottom: 'var(--aire-1)' }}>
+                <code>{rec.guionTitulo} ({rec.segundos}s, {rec.motor})</code>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   )
 }

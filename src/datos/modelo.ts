@@ -5,6 +5,29 @@ export type TramoFormato = {
   color?: 'ambar' | 'celeste' | 'salvia'
 }
 
+// LAS TRES PAREJAS DE FONDO Y LETRA DE LA LECTURA, y los tres colores con que se
+// puede pintar un tramo de texto.
+//
+// Viven aca y no en styles.css a proposito: NO SON TEMA, SON DATO. El usuario los
+// elige, se guardan con sus ajustes y se dibujan sobre la superficie de lectura,
+// que esta exceptuada del sistema visual justamente porque sus colores son suyos.
+//
+// PAREJAS_COLOR estaba en App.tsx hasta la tarea 46 y se movio aca porque tambien
+// la necesita EditorView para dibujar los cuadraditos donde se eligen. Una sola
+// fuente de la verdad: si se agrega una pareja, se agrega aca y en ningun otro
+// lado. sanitizarColores, en App.tsx, la usa para descartar combinaciones viejas.
+export const PAREJAS_COLOR = [
+  { fondo: '#000000', letra: '#FFFFFF' },
+  { fondo: '#000000', letra: '#F5C24B' },
+  { fondo: '#FFFFFF', letra: '#000000' }
+]
+
+export const COLORES_TRAMO = {
+  ambar: '#F0C070',
+  celeste: '#8FB8DE',
+  salvia: '#9CC5A1'
+}
+
 export type Bloque = {
   id: string        // uuid
   nombre: string    // puede ir vacio
