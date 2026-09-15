@@ -84,6 +84,7 @@ export function PanelCorpus({ medir, setMedir }: Props) {
             checked={medir}
             onChange={(e) => setMedir(e.target.checked)}
             disabled={grabando}
+            style={{ accentColor: 'var(--color-acento)' }}
           />
           <span style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: 1, color: '#9aa' }}>
             Medir esta lectura

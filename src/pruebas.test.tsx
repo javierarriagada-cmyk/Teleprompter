@@ -745,7 +745,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(btnAjustes)
     })
 
-    const btnAngosta = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Angosta')!
+    const btnAngosta = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Angosto')!
     expect(btnAngosta).not.toBeUndefined()
 
     await act(async () => {
@@ -785,7 +785,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!)
     })
     await act(async () => {
-      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Ancho completo')!)
+      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Ancho')!)
     })
     await act(async () => {
       fireEvent.click(container!.querySelector('[data-testid="panel-ajustes"] button')!)
@@ -829,13 +829,12 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(btnAjustes)
     })
 
-    const selectFondo = container!.querySelector('select[aria-label="Color de fondo"]') as HTMLSelectElement
-    const selectLetra = container!.querySelector('select[aria-label="Color de letra"]') as HTMLSelectElement
+    const btnAmbar = container!.querySelector('button[title="Negro con ámbar"]') as HTMLButtonElement
+    expect(btnAmbar).not.toBeNull()
 
-    // Cambiar a Gris (#16181A) con letra Ámbar (#F0C070)
+    // Cambiar a Negro con Ámbar (#000000 / #F5C24B)
     await act(async () => {
-      fireEvent.change(selectFondo, { target: { value: '#16181A' } })
-      fireEvent.change(selectLetra, { target: { value: '#F0C070' } })
+      fireEvent.click(btnAmbar)
     })
 
     const btnCerrar = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
@@ -852,10 +851,10 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]') as HTMLElement
     expect(prompterView).not.toBeNull()
 
-    expect(prompterView.getAttribute('data-fondo')).toBe('#16181A')
-    expect(prompterView.getAttribute('data-letra')).toBe('#F0C070')
+    expect(prompterView.getAttribute('data-fondo')).toBe('#000000')
+    expect(prompterView.getAttribute('data-letra')).toBe('#F5C24B')
 
-    // Volver al editor y cambiar a Blanco
+    // Volver al editor y cambiar a Blanco con negro
     await act(async () => {
       fireEvent.click(prompterView)
     })
@@ -871,8 +870,9 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!)
     })
 
+    const btnBlanco = container!.querySelector('button[title="Blanco con negro"]') as HTMLButtonElement
     await act(async () => {
-      fireEvent.change(container!.querySelector('select[aria-label="Color de fondo"]')!, { target: { value: '#FFFFFF' } })
+      fireEvent.click(btnBlanco)
     })
 
     await act(async () => {
@@ -2193,7 +2193,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     })
 
     expect(container!.querySelector('div[data-testid="panel-ajustes"]')).toBeNull()
-    expect(container!.textContent).not.toContain('Anclaje:')
+    expect(container!.textContent).not.toContain('Dónde leés:')
 
     // Abrir menú de opciones en el Editor
     const btnMenu = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
@@ -2207,7 +2207,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     })
 
     expect(container!.querySelector('div[data-testid="panel-ajustes"]')).not.toBeNull()
-    expect(container!.textContent).toContain('Anclaje:')
+    expect(container!.textContent).toContain('Dónde leés:')
     expect(container!.textContent).toContain('Espejo')
 
     const btnCerrar = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
@@ -2216,7 +2216,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     })
 
     expect(container!.querySelector('div[data-testid="panel-ajustes"]')).toBeNull()
-    expect(container!.textContent).not.toContain('Anclaje:')
+    expect(container!.textContent).not.toContain('Dónde leés:')
   })
 
   test('T86: Con "Mostrar tiempo" apagado, BarraDeTiempo no se renderiza; encendido, sí.', async () => {
