@@ -834,21 +834,21 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     await act(async () => {
       fireEvent.click(btnMenu)
     })
-    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!
+    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!
     await act(async () => {
       fireEvent.click(btnAjustes)
     })
 
-    const selectColumna = container!.querySelector('select[aria-label="Ancho de columna"]') as HTMLSelectElement
-    expect(selectColumna).not.toBeNull()
+    const btnAngosta = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Angosta')!
+    expect(btnAngosta).not.toBeUndefined()
 
     await act(async () => {
-      fireEvent.change(selectColumna, { target: { value: 'angosta' } })
+      fireEvent.click(btnAngosta)
     })
 
-    const btnListo = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!
+    const btnCerrar = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
     await act(async () => {
-      fireEvent.click(btnListo)
+      fireEvent.click(btnCerrar)
     })
 
     const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
@@ -876,13 +876,13 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
     })
     await act(async () => {
-      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!)
+      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!)
     })
     await act(async () => {
-      fireEvent.change(container!.querySelector('select[aria-label="Ancho de columna"]')!, { target: { value: 'completa' } })
+      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Ancho completo')!)
     })
     await act(async () => {
-      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!)
+      fireEvent.click(container!.querySelector('[data-testid="panel-ajustes"] button')!)
     })
 
     // Volver a lectura
@@ -918,7 +918,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     await act(async () => {
       fireEvent.click(btnMenu)
     })
-    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!
+    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!
     await act(async () => {
       fireEvent.click(btnAjustes)
     })
@@ -932,9 +932,9 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.change(selectLetra, { target: { value: '#F0C070' } })
     })
 
-    const btnListo = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!
+    const btnCerrar = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
     await act(async () => {
-      fireEvent.click(btnListo)
+      fireEvent.click(btnCerrar)
     })
 
     const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
@@ -962,7 +962,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
     })
     await act(async () => {
-      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!)
+      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!)
     })
 
     await act(async () => {
@@ -970,7 +970,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     })
 
     await act(async () => {
-      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!)
+      fireEvent.click(container!.querySelector('[data-testid="panel-ajustes"] button')!)
     })
 
     await act(async () => {
@@ -2295,7 +2295,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       fireEvent.click(btnMenu)
     })
 
-    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!
+    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!
     await act(async () => {
       fireEvent.click(btnAjustes)
     })
@@ -2304,9 +2304,9 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     expect(container!.textContent).toContain('Anclaje:')
     expect(container!.textContent).toContain('Espejo')
 
-    const btnListo = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!
+    const btnCerrar = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
     await act(async () => {
-      fireEvent.click(btnListo)
+      fireEvent.click(btnCerrar)
     })
 
     expect(container!.querySelector('div[data-testid="panel-ajustes"]')).toBeNull()
@@ -2338,7 +2338,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await act(async () => {
         fireEvent.click(btnMenu)
       })
-      const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!
+      const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!
       await act(async () => {
         fireEvent.click(btnAjustes)
       })
@@ -2352,9 +2352,9 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         fireEvent.click(chkTiempo)
       })
 
-      const btnListo = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!
+      const btnCerrar = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
       await act(async () => {
-        fireEvent.click(btnListo)
+        fireEvent.click(btnCerrar)
       })
 
       // Entrar a lectura
@@ -2382,7 +2382,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await act(async () => {
         fireEvent.click(btnMenu2)
       })
-      const btnAjustes2 = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ajustes del Teleprompter'))!
+      const btnAjustes2 = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!
       await act(async () => {
         fireEvent.click(btnAjustes2)
       })
@@ -2393,9 +2393,9 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await act(async () => {
         fireEvent.click(chkTiempo2)
       })
-      const btnListo2 = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Listo')!
+      const btnCerrar2 = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
       await act(async () => {
-        fireEvent.click(btnListo2)
+        fireEvent.click(btnCerrar2)
       })
 
       // Volver a lectura

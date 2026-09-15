@@ -42,6 +42,9 @@ interface EditorViewProps {
   onChangeGuion: (nuevoGuion: Guion) => void
   onVolverBiblioteca: () => void
   onEntrarLectura: () => void
+  fontSize?: number
+  onLetraMenos?: () => void
+  onLetraMas?: () => void
   marginPercent?: number
   setMarginPercent?: (m: number) => void
   mirror?: boolean
@@ -78,6 +81,9 @@ export default function EditorView({
   onChangeGuion,
   onVolverBiblioteca,
   onEntrarLectura,
+  fontSize = 24,
+  onLetraMenos,
+  onLetraMas,
   marginPercent = 5,
   setMarginPercent,
   mirror = false,
@@ -508,7 +514,7 @@ export default function EditorView({
                   cursor: 'pointer'
                 }}
               >
-                Ajustes del Teleprompter
+                Ajustes
               </button>
             </div>
           )}
@@ -546,7 +552,7 @@ export default function EditorView({
         {resumenMeta}
       </div>
 
-      {/* Modal de Ajustes del Teleprompter */}
+      {/* Modal de Ajustes */}
       {mostrarModalAjustes && (
         <div
           style={{
@@ -579,8 +585,8 @@ export default function EditorView({
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <h3 style={{ margin: 0 }}>⚙ Ajustes del Teleprompter</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+              <h3 style={{ margin: 0 }}>Ajustes</h3>
               <button
                 onClick={() => setMostrarModalAjustes(false)}
                 style={{
@@ -595,190 +601,247 @@ export default function EditorView({
               </button>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              {setColumnaAngosta && (
-                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 14, fontWeight: 600 }}>Columna:</span>
-                  <select
-                    aria-label="Ancho de columna"
-                    value={columnaAngosta ? 'angosta' : 'completa'}
-                    onChange={(e) => setColumnaAngosta(e.target.value === 'angosta')}
-                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
-                  >
-                    <option value="angosta">Angosta (22ch)</option>
-                    <option value="completa">Ancho completo</option>
-                  </select>
-                </label>
-              )}
-
-              {setColorFondo && (
-                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 14, fontWeight: 600 }}>Fondo:</span>
-                  <select
-                    aria-label="Color de fondo"
-                    value={colorFondo}
-                    onChange={(e) => setColorFondo(e.target.value)}
-                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
-                  >
-                    <option value="#000000">Negro</option>
-                    <option value="#16181A">Gris</option>
-                    <option value="#FFFFFF">Blanco</option>
-                  </select>
-                </label>
-              )}
-
-              {setColorLetra && (
-                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', opacity: colorFondo.toUpperCase() === '#FFFFFF' ? 0.5 : 1 }}>
-                  <span style={{ fontSize: 14, fontWeight: 600 }}>Color Letra:</span>
-                  <select
-                    aria-label="Color de letra"
-                    value={colorFondo.toUpperCase() === '#FFFFFF' ? '#000000' : colorLetra}
-                    disabled={colorFondo.toUpperCase() === '#FFFFFF'}
-                    onChange={(e) => setColorLetra(e.target.value)}
-                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
-                  >
-                    <option value="#FFFFFF">Blanco</option>
-                    <option value="#F0C070">Ámbar</option>
-                    <option value="#3FD173">Verde</option>
-                  </select>
-                </label>
-              )}
-
-              {setTipoFuente && (
-                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 14, fontWeight: 600 }}>Tipografía:</span>
-                  <select
-                    aria-label="Tipografía"
-                    value={tipoFuente}
-                    onChange={(e) => setTipoFuente(e.target.value as 'sans' | 'serif')}
-                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
-                  >
-                    <option value="sans">Source Sans 3</option>
-                    <option value="serif">Source Serif 4</option>
-                  </select>
-                </label>
-              )}
-
-              {setMarginPercent && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 14, fontWeight: 600 }}>Margen:</span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <button
-                      onClick={() => setMarginPercent(Math.max(0, marginPercent - 5))}
-                      aria-label="Disminuir margen"
-                      style={{ padding: '4px 12px', fontSize: 16, cursor: 'pointer', borderRadius: 4, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
-                    >
-                      -
-                    </button>
-                    <span style={{ fontWeight: 'bold', minWidth: 36, textAlign: 'center' }}>{marginPercent}%</span>
-                    <button
-                      onClick={() => setMarginPercent(Math.min(40, marginPercent + 5))}
-                      aria-label="Aumentar margen"
-                      style={{ padding: '4px 12px', fontSize: 16, cursor: 'pointer', borderRadius: 4, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
-                    >
-                      +
-                    </button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              {/* Grupo 1: COMO SE VE EL TEXTO */}
+              <div>
+                <h4 style={{ margin: '0 0 12px 0', fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-apagado)' }}>
+                  COMO SE VE EL TEXTO
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                  {/* Tamano de letra */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: 14, fontWeight: 600 }}>Tamaño de letra:</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <button
+                        onClick={onLetraMenos}
+                        aria-label="Disminuir letra panel"
+                        style={{ padding: '4px 12px', fontSize: 16, cursor: 'pointer', borderRadius: 4, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                      >
+                        -
+                      </button>
+                      <span data-testid="valor-letra-panel" style={{ fontWeight: 'bold', minWidth: 28, textAlign: 'center' }}>{fontSize}</span>
+                      <button
+                        onClick={onLetraMas}
+                        aria-label="Aumentar letra panel"
+                        style={{ padding: '4px 12px', fontSize: 16, cursor: 'pointer', borderRadius: 4, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
+
+                  {/* Columna */}
+                  {setColumnaAngosta && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: 14, fontWeight: 600 }}>Columna:</span>
+                      <div style={{ display: 'flex', gap: 6 }}>
+                        <button
+                          type="button"
+                          onClick={() => setColumnaAngosta(false)}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: 6,
+                            border: '1px solid var(--color-borde)',
+                            backgroundColor: !columnaAngosta ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                            color: !columnaAngosta ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                            fontWeight: !columnaAngosta ? 'bold' : 'normal',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Ancho completo
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setColumnaAngosta(true)}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: 6,
+                            border: '1px solid var(--color-borde)',
+                            backgroundColor: columnaAngosta ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                            color: columnaAngosta ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                            fontWeight: columnaAngosta ? 'bold' : 'normal',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Angosta
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Margen */}
+                  {setMarginPercent && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: 14, fontWeight: 600 }}>Margen:</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <button
+                          onClick={() => setMarginPercent(Math.max(0, marginPercent - 5))}
+                          aria-label="Disminuir margen"
+                          style={{ padding: '4px 12px', fontSize: 16, cursor: 'pointer', borderRadius: 4, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                        >
+                          -
+                        </button>
+                        <span style={{ fontWeight: 'bold', minWidth: 36, textAlign: 'center' }}>{marginPercent}%</span>
+                        <button
+                          onClick={() => setMarginPercent(Math.min(40, marginPercent + 5))}
+                          aria-label="Aumentar margen"
+                          style={{ padding: '4px 12px', fontSize: 16, cursor: 'pointer', borderRadius: 4, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Tipografia */}
+                  {setTipoFuente && (
+                    <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: 14, fontWeight: 600 }}>Tipografía:</span>
+                      <select
+                        aria-label="Tipografía"
+                        value={tipoFuente}
+                        onChange={(e) => setTipoFuente(e.target.value as 'sans' | 'serif')}
+                        style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                      >
+                        <option value="sans">Source Sans 3</option>
+                        <option value="serif">Source Serif 4</option>
+                      </select>
+                    </label>
+                  )}
                 </div>
-              )}
+              </div>
 
-              {setMirror && (
-                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
-                  <span style={{ fontSize: 14, fontWeight: 600 }}>Espejo:</span>
-                  <input
-                    type="checkbox"
-                    checked={mirror}
-                    onChange={(e) => setMirror(e.target.checked)}
-                    style={{ width: 18, height: 18 }}
-                  />
-                </label>
-              )}
+              {/* Grupo 2: COLORES */}
+              <div>
+                <h4 style={{ margin: '0 0 12px 0', fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-apagado)' }}>
+                  COLORES
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                  {/* Fondo */}
+                  {setColorFondo && (
+                    <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: 14, fontWeight: 600 }}>Fondo:</span>
+                      <select
+                        aria-label="Color de fondo"
+                        value={colorFondo}
+                        onChange={(e) => setColorFondo(e.target.value)}
+                        style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                      >
+                        <option value="#000000">Negro</option>
+                        <option value="#16181A">Gris</option>
+                        <option value="#FFFFFF">Blanco</option>
+                      </select>
+                    </label>
+                  )}
 
-              {setTema && (
-                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 14, fontWeight: 600 }}>Tema:</span>
-                  <select
-                    value={tema}
-                    onChange={(e) => setTema(e.target.value as 'claro' | 'oscuro')}
-                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
-                  >
-                    <option value="claro">Claro</option>
-                    <option value="oscuro">Oscuro</option>
-                  </select>
-                </label>
-              )}
+                  {/* Color de letra */}
+                  {setColorLetra && (
+                    <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', opacity: colorFondo.toUpperCase() === '#FFFFFF' ? 0.5 : 1 }}>
+                      <span style={{ fontSize: 14, fontWeight: 600 }}>Color de letra:</span>
+                      <select
+                        aria-label="Color de letra"
+                        value={colorFondo.toUpperCase() === '#FFFFFF' ? '#000000' : colorLetra}
+                        disabled={colorFondo.toUpperCase() === '#FFFFFF'}
+                        onChange={(e) => setColorLetra(e.target.value)}
+                        style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                      >
+                        <option value="#FFFFFF">Blanco</option>
+                        <option value="#F0C070">Ámbar</option>
+                        <option value="#3FD173">Verde</option>
+                      </select>
+                    </label>
+                  )}
 
-              {setAnclajeZona && (
-                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 14, fontWeight: 600 }}>Anclaje:</span>
-                  <select
-                    value={anclajeZona}
-                    onChange={(e) => setAnclajeZona(e.target.value as 'arriba' | 'medio' | 'abajo')}
-                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
-                  >
-                    <option value="arriba">Arriba</option>
-                    <option value="medio">Medio</option>
-                    <option value="abajo">Abajo</option>
-                  </select>
-                </label>
-              )}
+                  {/* Tema */}
+                  {setTema && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: 14, fontWeight: 600 }}>Tema:</span>
+                      <div style={{ display: 'flex', gap: 6 }}>
+                        <button
+                          type="button"
+                          onClick={() => setTema('claro')}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: 6,
+                            border: '1px solid var(--color-borde)',
+                            backgroundColor: tema === 'claro' ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                            color: tema === 'claro' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                            fontWeight: tema === 'claro' ? 'bold' : 'normal',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Claro
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setTema('oscuro')}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: 6,
+                            border: '1px solid var(--color-borde)',
+                            backgroundColor: tema === 'oscuro' ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                            color: tema === 'oscuro' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                            fontWeight: tema === 'oscuro' ? 'bold' : 'normal',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Oscuro
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
 
-              {setEngine && (
-                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 14, fontWeight: 600 }}>Motor de Voz (Avanzado):</span>
-                  <select
-                    value={engine}
-                    onChange={(e) => setEngine(e.target.value as IdMotor)}
-                    style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
-                  >
-                    <option value="vosk">Vosk (Offline)</option>
-                    <option value="webspeech">Web Speech API</option>
-                    <option value="whisper-local">Whisper Local</option>
-                    <option value="nativo">Nativo (Android)</option>
-                  </select>
-                </label>
-              )}
+              {/* Grupo 3: LA TOMA */}
+              <div>
+                <h4 style={{ margin: '0 0 12px 0', fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-apagado)' }}>
+                  LA TOMA
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                  {/* Espejo */}
+                  {setMirror && (
+                    <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                      <span style={{ fontSize: 14, fontWeight: 600 }}>Espejo:</span>
+                      <input
+                        type="checkbox"
+                        checked={mirror}
+                        onChange={(e) => setMirror(e.target.checked)}
+                        style={{ width: 18, height: 18 }}
+                      />
+                    </label>
+                  )}
 
-              {setVerTranscripcion && (
-                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
-                  <span style={{ fontSize: 14, fontWeight: 600 }}>Ver transcripción en vivo:</span>
-                  <input
-                    type="checkbox"
-                    checked={verTranscripcion}
-                    onChange={(e) => setVerTranscripcion(e.target.checked)}
-                    style={{ width: 18, height: 18 }}
-                  />
-                </label>
-              )}
+                  {/* Anclaje */}
+                  {setAnclajeZona && (
+                    <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: 14, fontWeight: 600 }}>Anclaje:</span>
+                      <select
+                        value={anclajeZona}
+                        onChange={(e) => setAnclajeZona(e.target.value as 'arriba' | 'medio' | 'abajo')}
+                        style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
+                      >
+                        <option value="arriba">Arriba</option>
+                        <option value="medio">Medio</option>
+                        <option value="abajo">Abajo</option>
+                      </select>
+                    </label>
+                  )}
 
-              {setMostrarTiempo && (
-                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
-                  <span style={{ fontSize: 14, fontWeight: 600 }}>Mostrar tiempo:</span>
-                  <input
-                    type="checkbox"
-                    checked={mostrarTiempo}
-                    onChange={(e) => setMostrarTiempo(e.target.checked)}
-                    style={{ width: 18, height: 18 }}
-                  />
-                </label>
-              )}
-            </div>
-
-            <div style={{ marginTop: 24, textAlign: 'right' }}>
-              <button
-                onClick={() => setMostrarModalAjustes(false)}
-                style={{
-                  padding: '8px 18px',
-                  backgroundColor: 'var(--color-acento)',
-                  color: 'var(--color-texto-acento)',
-                  border: 'none',
-                  borderRadius: 6,
-                  fontWeight: 'bold',
-                  cursor: 'pointer'
-                }}
-              >
-                Listo
-              </button>
+                  {/* Mostrar tiempo */}
+                  {setMostrarTiempo && (
+                    <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                      <span style={{ fontSize: 14, fontWeight: 600 }}>Mostrar tiempo:</span>
+                      <input
+                        type="checkbox"
+                        checked={mostrarTiempo}
+                        onChange={(e) => setMostrarTiempo(e.target.checked)}
+                        style={{ width: 18, height: 18 }}
+                      />
+                    </label>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>

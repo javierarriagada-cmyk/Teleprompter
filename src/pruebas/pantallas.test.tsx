@@ -553,7 +553,7 @@ describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)
     expect(resumenUnMinuto.textContent).not.toContain('1 minutos de lectura')
   })
 
-  test('T182 - El menu del editor NO contiene el caracter ⚙, y el boton de ajustes SIGUE encontrandose por el texto "Ajustes del Teleprompter".', () => {
+  test('T182 - El menu del editor NO contiene el caracter ⚙, y el boton de ajustes dice "Ajustes".', () => {
     const guion: Guion = {
       id: 'g-t182',
       titulo: 'Guión T182',
@@ -568,7 +568,16 @@ describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)
         guion,
         onChangeGuion: () => {},
         onVolverBiblioteca: () => {},
-        onEntrarLectura: () => {}
+        onEntrarLectura: () => {},
+        setColumnaAngosta: () => {},
+        setMarginPercent: () => {},
+        setTipoFuente: () => {},
+        setColorFondo: () => {},
+        setColorLetra: () => {},
+        setTema: () => {},
+        setMirror: () => {},
+        setAnclajeZona: () => {},
+        setMostrarTiempo: () => {}
       })
     )
 
@@ -578,11 +587,357 @@ describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)
     // No debe contener el caracter ⚙ en el menú desplegable
     expect(container.textContent).not.toContain('⚙')
 
-    // El botón de ajustes sigue encontrándose por textContent includes 'Ajustes del Teleprompter'
+    // El botón de ajustes dice exactamente 'Ajustes'
     const btnAjustes = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Ajustes del Teleprompter')
+      b.textContent?.trim() === 'Ajustes'
     )
     expect(btnAjustes).not.toBeUndefined()
-    expect(btnAjustes?.textContent?.trim()).toBe('Ajustes del Teleprompter')
+    expect(btnAjustes?.textContent?.trim()).toBe('Ajustes')
+  })
+})
+
+describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () => {
+  beforeEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  test('T183 - El panel muestra los tres títulos de grupo, y cada ajuste está en el grupo que le corresponde.', () => {
+    const guion: Guion = {
+      id: 'g-t183',
+      titulo: 'Guión T183',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto del guión' }]
+    }
+
+    render(
+      React.createElement(EditorView, {
+        guion,
+        onChangeGuion: () => {},
+        onVolverBiblioteca: () => {},
+        onEntrarLectura: () => {},
+        setColumnaAngosta: () => {},
+        setMarginPercent: () => {},
+        setTipoFuente: () => {},
+        setColorFondo: () => {},
+        setColorLetra: () => {},
+        setTema: () => {},
+        setMirror: () => {},
+        setAnclajeZona: () => {},
+        setMostrarTiempo: () => {}
+      })
+    )
+
+    fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+    fireEvent.click(screen.getByText('Ajustes'))
+
+    const panel = screen.getByTestId('panel-ajustes')
+    expect(panel).not.toBeNull()
+
+    // 1. Títulos de grupo
+    expect(screen.getByText('COMO SE VE EL TEXTO')).not.toBeNull()
+    expect(screen.getByText('COLORES')).not.toBeNull()
+    expect(screen.getByText('LA TOMA')).not.toBeNull()
+
+    // 2. Orden y pertenencia de controles por grupo
+    const htmlText = panel.innerHTML
+    const idxGrupo1 = htmlText.indexOf('COMO SE VE EL TEXTO')
+    const idxGrupo2 = htmlText.indexOf('COLORES')
+    const idxGrupo3 = htmlText.indexOf('LA TOMA')
+
+    expect(idxGrupo1).toBeLessThan(idxGrupo2)
+    expect(idxGrupo2).toBeLessThan(idxGrupo3)
+
+    // Grupo 1: Tamaño de letra, Columna, Margen, Tipografía
+    const idxLetra = htmlText.indexOf('Tamaño de letra:')
+    const idxColumna = htmlText.indexOf('Columna:')
+    const idxMargen = htmlText.indexOf('Margen:')
+    const idxTipoFuente = htmlText.indexOf('Tipografía:')
+
+    expect(idxLetra).toBeGreaterThan(idxGrupo1)
+    expect(idxLetra).toBeLessThan(idxGrupo2)
+    expect(idxColumna).toBeGreaterThan(idxLetra)
+    expect(idxColumna).toBeLessThan(idxGrupo2)
+    expect(idxMargen).toBeGreaterThan(idxColumna)
+    expect(idxMargen).toBeLessThan(idxGrupo2)
+    expect(idxTipoFuente).toBeGreaterThan(idxMargen)
+    expect(idxTipoFuente).toBeLessThan(idxGrupo2)
+
+    // Grupo 2: Fondo, Color de letra, Tema
+    const idxFondo = htmlText.indexOf('Fondo:')
+    const idxColorLetra = htmlText.indexOf('Color de letra:')
+    const idxTema = htmlText.indexOf('Tema:')
+
+    expect(idxFondo).toBeGreaterThan(idxGrupo2)
+    expect(idxFondo).toBeLessThan(idxGrupo3)
+    expect(idxColorLetra).toBeGreaterThan(idxFondo)
+    expect(idxColorLetra).toBeLessThan(idxGrupo3)
+    expect(idxTema).toBeGreaterThan(idxColorLetra)
+    expect(idxTema).toBeLessThan(idxGrupo3)
+
+    // Grupo 3: Espejo, Anclaje, Mostrar tiempo
+    const idxEspejo = htmlText.indexOf('Espejo:')
+    const idxAnclaje = htmlText.indexOf('Anclaje:')
+    const idxMostrarTiempo = htmlText.indexOf('Mostrar tiempo:')
+
+    expect(idxEspejo).toBeGreaterThan(idxGrupo3)
+    expect(idxAnclaje).toBeGreaterThan(idxEspejo)
+    expect(idxMostrarTiempo).toBeGreaterThan(idxAnclaje)
+  })
+
+  test('T184 - El tamaño de letra se puede cambiar DESDE EL PANEL, recorre los cinco pasos y en los extremos no se sale.', () => {
+    let size = 24
+    function handleMenos() {
+      const pasos = [14, 18, 24, 32, 42]
+      const idx = pasos.indexOf(size)
+      if (idx > 0) size = pasos[idx - 1]
+    }
+    function handleMas() {
+      const pasos = [14, 18, 24, 32, 42]
+      const idx = pasos.indexOf(size)
+      if (idx >= 0 && idx < pasos.length - 1) size = pasos[idx + 1]
+    }
+
+    const guion: Guion = {
+      id: 'g-t184',
+      titulo: 'Guión T184',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto del guión' }]
+    }
+
+    const { rerender } = render(
+      React.createElement(EditorView, {
+        guion,
+        onChangeGuion: () => {},
+        onVolverBiblioteca: () => {},
+        onEntrarLectura: () => {},
+        fontSize: size,
+        onLetraMenos: () => { handleMenos(); rerenderComp() },
+        onLetraMas: () => { handleMas(); rerenderComp() }
+      })
+    )
+
+    function rerenderComp() {
+      rerender(
+        React.createElement(EditorView, {
+          guion,
+          onChangeGuion: () => {},
+          onVolverBiblioteca: () => {},
+          onEntrarLectura: () => {},
+          fontSize: size,
+          onLetraMenos: () => { handleMenos(); rerenderComp() },
+          onLetraMas: () => { handleMas(); rerenderComp() }
+        })
+      )
+    }
+
+    fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+    fireEvent.click(screen.getByText('Ajustes'))
+
+    const btnMenos = screen.getByLabelText('Disminuir letra panel')
+    const btnMas = screen.getByLabelText('Aumentar letra panel')
+    const valSpan = screen.getByTestId('valor-letra-panel')
+
+    expect(valSpan.textContent).toBe('24')
+
+    // Bajar a 18 -> 14 -> inteto extra
+    fireEvent.click(btnMenos)
+    expect(valSpan.textContent).toBe('18')
+    fireEvent.click(btnMenos)
+    expect(valSpan.textContent).toBe('14')
+    fireEvent.click(btnMenos)
+    expect(valSpan.textContent).toBe('14')
+
+    // Subir a 18 -> 24 -> 32 -> 42 -> intento extra
+    fireEvent.click(btnMas)
+    expect(valSpan.textContent).toBe('18')
+    fireEvent.click(btnMas)
+    expect(valSpan.textContent).toBe('24')
+    fireEvent.click(btnMas)
+    expect(valSpan.textContent).toBe('32')
+    fireEvent.click(btnMas)
+    expect(valSpan.textContent).toBe('42')
+    fireEvent.click(btnMas)
+    expect(valSpan.textContent).toBe('42')
+  })
+
+  test('T185 - El mismo valor se ve reflejado en la barra de lectura y en el panel: no son dos estados distintos.', async () => {
+    const repo = new RepositorioMemoria()
+    const guion = {
+      id: 'g-t185',
+      titulo: 'Guion T185',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto de prueba para T185' }]
+    }
+    await repo.guardar(guion)
+
+    render(<App repoOverride={repo} />)
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // Abrir guión en editor
+    const fila = screen.getByTestId('fila-guion-g-t185')
+    await act(async () => {
+      fireEvent.click(fila)
+    })
+
+    // Abrir Ajustes desde el Editor
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText('Ajustes'))
+    })
+
+    // Cambiar tamaño de letra en el panel de 24 a 32 (+1 paso)
+    const btnMasPanel = screen.getByLabelText('Aumentar letra panel')
+    await act(async () => {
+      fireEvent.click(btnMasPanel)
+    })
+    expect(screen.getByTestId('valor-letra-panel').textContent).toBe('32')
+
+    // Cerrar panel tocando ✕
+    const btnCerrar = screen.getByTestId('panel-ajustes').querySelector('button')!
+    await act(async () => {
+      fireEvent.click(btnCerrar)
+    })
+
+    // Entrar a lectura
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-leer-guion-fijo'))
+    })
+
+    // Traer barra de lectura
+    const prompterView = screen.getByTestId('teleprompter-view-container')
+    await act(async () => {
+      fireEvent.click(prompterView)
+    })
+
+    // Comprobar que en la barra de lectura el tamaño es 32
+    expect(screen.getByTestId('valor-letra').textContent).toBe('32')
+
+    // Cambiar tamaño en la barra de lectura a 42 (+1 paso)
+    const btnMasLectura = screen.getByLabelText('Aumentar letra')
+    await act(async () => {
+      fireEvent.click(btnMasLectura)
+    })
+    expect(screen.getByTestId('valor-letra').textContent).toBe('42')
+
+    // Salir de lectura al editor
+    const btnSalir = screen.getByText('← Salir')
+    await act(async () => {
+      fireEvent.click(btnSalir)
+    })
+
+    // Reabrir Ajustes en el Editor y comprobar que muestra 42
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText('Ajustes'))
+    })
+
+    expect(screen.getByTestId('valor-letra-panel').textContent).toBe('42')
+  })
+
+  test('T186 - El selector de motor y la transcripcion en vivo YA NO estan en el panel, y SI estan en la biblioteca, y el selector sigue cambiando el motor.', async () => {
+    const repo = new RepositorioMemoria()
+    const guion = {
+      id: 'g-t186',
+      titulo: 'Guion T186',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto T186' }]
+    }
+    await repo.guardar(guion)
+
+    render(<App repoOverride={repo} />)
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 600))
+    })
+
+    // 1. En la Biblioteca: abrir menú ⋯ y verificar que SI están Motor de voz y Transcripción en vivo
+    const btnMenuBiblio = screen.getByTestId('btn-menu-superior-biblioteca')
+    await act(async () => {
+      fireEvent.click(btnMenuBiblio)
+    })
+
+    const selectEngine = screen.getByLabelText('Motor de Voz') as HTMLSelectElement
+    expect(selectEngine).not.toBeNull()
+    expect(screen.getByText('Ver transcripción en vivo')).not.toBeNull()
+
+    // Cambiar motor a Web Speech API
+    await act(async () => {
+      fireEvent.change(selectEngine, { target: { value: 'webspeech' } })
+    })
+    expect(selectEngine.value).toBe('webspeech')
+
+    // Cerrar menú Biblioteca
+    await act(async () => {
+      fireEvent.pointerDown(document.body)
+    })
+
+    // 2. Abrir Editor -> Ajustes: verificar que NO están selector de motor ni transcripción en vivo
+    const fila = screen.getByTestId('fila-guion-g-t186')
+    await act(async () => {
+      fireEvent.click(fila)
+    })
+
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText('Ajustes'))
+    })
+
+    expect(screen.queryByLabelText('Motor de Voz')).toBeNull()
+    expect(screen.queryByLabelText('Motor de Voz (Avanzado)')).toBeNull()
+    expect(screen.queryByText('Ver transcripción en vivo')).toBeNull()
+  })
+
+  test('T187 - El panel se cierra con la ✕ y NO hay boton "Listo".', () => {
+    const guion: Guion = {
+      id: 'g-t187',
+      titulo: 'Guión T187',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto del guión' }]
+    }
+
+    render(
+      React.createElement(EditorView, {
+        guion,
+        onChangeGuion: () => {},
+        onVolverBiblioteca: () => {},
+        onEntrarLectura: () => {}
+      })
+    )
+
+    fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+    fireEvent.click(screen.getByText('Ajustes'))
+
+    expect(screen.getByTestId('panel-ajustes')).not.toBeNull()
+
+    // No existe botón "Listo"
+    expect(screen.queryByText('Listo')).toBeNull()
+
+    // El panel tiene la ✕ y al hacer clic se cierra
+    const btnCruz = screen.getByTestId('panel-ajustes').querySelector('button')!
+    expect(btnCruz.textContent).toBe('✕')
+
+    fireEvent.click(btnCruz)
+    expect(screen.queryByTestId('panel-ajustes')).toBeNull()
   })
 })

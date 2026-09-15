@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, ResumenGuion } from '../datos/modelo'
+import { IdMotor } from '../motor/MotorDeVoz'
 import { PanelCorpus } from './PanelCorpus'
 
 interface BibliotecaViewProps {
@@ -15,6 +16,10 @@ interface BibliotecaViewProps {
   onToggleDiagnostico?: () => void
   medirLectura?: boolean
   setMedirLectura?: (medir: boolean) => void
+  engine?: IdMotor
+  setEngine?: (engine: IdMotor) => void
+  verTranscripcion?: boolean
+  setVerTranscripcion?: (ver: boolean) => void
 }
 
 export function formatearFechaNatural(timestamp: number): string {
@@ -53,7 +58,11 @@ export default function BibliotecaView({
   onBuscarGuionCompleto,
   onToggleDiagnostico,
   medirLectura = true,
-  setMedirLectura = () => {}
+  setMedirLectura = () => {},
+  engine = 'vosk',
+  setEngine,
+  verTranscripcion = false,
+  setVerTranscripcion
 }: BibliotecaViewProps) {
   const [busqueda, setBusqueda] = useState('')
   const [mostrarArchivados, setMostrarArchivados] = useState(false)
@@ -304,6 +313,45 @@ export default function BibliotecaView({
               >
                 Importar archivo
               </button>
+
+              <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--color-borde)' }}>
+                <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 4 }}>
+                  Motor de voz:
+                  <select
+                    aria-label="Motor de Voz"
+                    value={engine}
+                    onChange={(e) => setEngine?.(e.target.value as IdMotor)}
+                    style={{
+                      width: '100%',
+                      marginTop: 4,
+                      padding: '4px 8px',
+                      fontSize: 'var(--texto-meta)',
+                      borderRadius: 4,
+                      border: '1px solid var(--color-borde)',
+                      backgroundColor: 'var(--bg-suelo)',
+                      color: 'var(--color-texto)'
+                    }}
+                  >
+                    <option value="vosk">Vosk (Offline)</option>
+                    <option value="webspeech">Web Speech API</option>
+                    <option value="whisper-local">Whisper Local</option>
+                    <option value="nativo">Nativo (Android)</option>
+                  </select>
+                </label>
+              </div>
+
+              <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--color-borde)' }}>
+                <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}>
+                  <span>Ver transcripción en vivo</span>
+                  <input
+                    type="checkbox"
+                    checked={verTranscripcion}
+                    onChange={(e) => setVerTranscripcion?.(e.target.checked)}
+                    style={{ width: 16, height: 16 }}
+                  />
+                </label>
+              </div>
+
               <button
                 data-testid="btn-abrir-corpus"
                 onClick={() => {

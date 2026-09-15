@@ -50,36 +50,28 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
 
     const { container } = render(React.createElement(App, { motor: motorFake, repoOverride: repo }))
 
-    // Abrir guion en editor y entrar a modo lectura
     await act(async () => {
       await new Promise((r) => setTimeout(r, 50))
     })
 
-    const itemGuion = screen.getByText('Guion T58')
+    // 1. Comprobar que en la biblioteca, el checkbox "Ver transcripción en vivo" está desmarcado por omisión
+    const btnMenuBiblio = screen.getByTestId('btn-menu-superior-biblioteca')
     await act(async () => {
-      fireEvent.click(itemGuion)
+      fireEvent.click(btnMenuBiblio)
     })
 
-    // Abrir menú de opciones en el Editor
-    const btnOpciones = screen.getByTestId('btn-menu-opciones-editor')
-    await act(async () => {
-      fireEvent.click(btnOpciones)
-    })
-
-    // Abrir Ajustes del Teleprompter
-    const btnAjustes = screen.getByText(/Ajustes del Teleprompter/i)
-    await act(async () => {
-      fireEvent.click(btnAjustes)
-    })
-
-    // 1. Comprobar que el checkbox "Ver transcripción en vivo" está desmarcado por omisión
     const checkbox = screen.getByLabelText(/Ver transcripción en vivo/i) as HTMLInputElement
     expect(checkbox.checked).toBe(false)
 
-    // Cerrar modal
-    const btnListo = screen.getByText('Listo')
+    // Cerrar menú biblioteca tocando afuera
     await act(async () => {
-      fireEvent.click(btnListo)
+      fireEvent.pointerDown(document.body)
+    })
+
+    // Abrir guion en editor y entrar a modo lectura
+    const itemGuion = screen.getByText('Guion T58')
+    await act(async () => {
+      fireEvent.click(itemGuion)
     })
 
     // Entrar a lectura
@@ -110,20 +102,25 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
       fireEvent.click(btnVolver)
     })
 
-    // 3. Activar el checkbox en los Ajustes del Editor
+    // 3. Activar el checkbox en la Biblioteca
+    const btnSalir = screen.getByText('‹ Guiones')
     await act(async () => {
-      fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+      fireEvent.click(btnSalir)
     })
+
     await act(async () => {
-      fireEvent.click(screen.getByText(/Ajustes del Teleprompter/i))
+      fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
     })
 
     const checkboxActual = screen.getByLabelText(/Ver transcripción en vivo/i)
     await act(async () => {
       fireEvent.click(checkboxActual)
     })
+
+    // Volver a abrir el guion
+    const itemGuion2 = screen.getByText('Guion T58')
     await act(async () => {
-      fireEvent.click(screen.getByText('Listo'))
+      fireEvent.click(itemGuion2)
     })
 
     // Volver a lectura

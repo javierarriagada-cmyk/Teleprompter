@@ -703,6 +703,10 @@ export default function App({ motor, repoOverride }: AppProps) {
           onToggleDiagnostico={() => setMostrarDiagnostico((prev) => !prev)}
           medirLectura={medirLectura}
           setMedirLectura={setMedirLectura}
+          engine={engine}
+          setEngine={setEngine}
+          verTranscripcion={verTranscripcion}
+          setVerTranscripcion={setVerTranscripcion}
         />
       )}
 
@@ -712,6 +716,9 @@ export default function App({ motor, repoOverride }: AppProps) {
           onChangeGuion={(nuevoG) => setGuionActual(nuevoG)}
           onVolverBiblioteca={() => setVista('biblioteca')}
           onEntrarLectura={handleEntrarLectura}
+          fontSize={fontSize}
+          onLetraMenos={handleLetraMenos}
+          onLetraMas={handleLetraMas}
           marginPercent={marginPercent}
           setMarginPercent={setMarginPercent}
           mirror={mirror}
