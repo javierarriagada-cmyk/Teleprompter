@@ -584,8 +584,8 @@ export default function TeleprompterView({
           data-testid="punto-grabando"
           style={{
             position: 'absolute',
-            top: 16,
-            right: 16,
+            top: 'calc(16px + env(safe-area-inset-top, 0px))',
+            right: 'calc(16px + env(safe-area-inset-right, 0px))',
             width: 12,
             height: 12,
             borderRadius: '50%',
@@ -637,8 +637,8 @@ export default function TeleprompterView({
           data-testid="indicador-estado-lector"
           style={{
             position: 'absolute',
-            bottom: 80,
-            left: 16,
+            bottom: 'calc(80px + env(safe-area-inset-bottom, 0px))',
+            left: 'calc(16px + env(safe-area-inset-left, 0px))',
             fontSize: 15,
             fontWeight: 600,
             color: isWhiteBg ? 'rgba(0, 0, 0, 0.85)' : 'rgba(255, 255, 255, 0.85)',

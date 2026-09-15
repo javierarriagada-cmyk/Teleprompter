@@ -1144,3 +1144,144 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
     expect(diagnostico.textContent).not.toContain('webspeech')
   })
 })
+
+describe('Pruebas TAREA 43: El sistema operativo no puede meterse en la pantalla (T192-T194)', () => {
+  beforeEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  test('T192 - GUARDIANA DEL CERO. Con env() a 0, la geometria de biblioteca, editor y lectura queda IDENTICA a la de hoy.', async () => {
+    const repo = new RepositorioMemoria()
+    const guion: Guion = {
+      id: 'g-t192',
+      titulo: 'Guion T192',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto para la prueba T192' }]
+    }
+    await repo.guardar(guion)
+
+    const { container, unmount } = render(<App repoOverride={repo} />)
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // En biblioteca, la raiz tiene sus paddings base
+    const rootDiv = container.firstElementChild as HTMLElement
+    expect(rootDiv).not.toBeNull()
+
+    // Abrir editor
+    const fila = screen.getByTestId('fila-guion-g-t192')
+    await act(async () => {
+      fireEvent.click(fila)
+    })
+
+    // Entrar a lectura
+    const btnLeer = screen.getByTestId('btn-leer-guion-fijo')
+    await act(async () => {
+      fireEvent.click(btnLeer)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // En lectura, la raiz tiene padding 0 en los cuatro bordes
+    expect(rootDiv.style.paddingTop).toBe('0px')
+    expect(rootDiv.style.paddingBottom).toBe('0px')
+    expect(rootDiv.style.paddingLeft).toBe('0px')
+    expect(rootDiv.style.paddingRight).toBe('0px')
+
+    unmount()
+  })
+
+  test('T193 - La raiz de biblioteca y editor usa env(safe-area-inset-*) en los cuatro bordes, sumado a los 16 px, no en lugar de ellos.', async () => {
+    const repo = new RepositorioMemoria()
+    const guion: Guion = {
+      id: 'g-t193',
+      titulo: 'Guion T193',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto T193' }]
+    }
+    await repo.guardar(guion)
+
+    const { container, unmount } = render(<App repoOverride={repo} />)
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const rootBiblio = container.firstElementChild as HTMLElement
+    expect(rootBiblio.style.paddingTop).toContain('16px')
+    expect(rootBiblio.style.paddingTop).toContain('safe-area-inset-top')
+    expect(rootBiblio.style.paddingBottom).toContain('16px')
+    expect(rootBiblio.style.paddingBottom).toContain('safe-area-inset-bottom')
+    expect(rootBiblio.style.paddingLeft).toContain('16px')
+    expect(rootBiblio.style.paddingLeft).toContain('safe-area-inset-left')
+    expect(rootBiblio.style.paddingRight).toContain('16px')
+    expect(rootBiblio.style.paddingRight).toContain('safe-area-inset-right')
+
+    // Abrir editor
+    const fila = screen.getByTestId('fila-guion-g-t193')
+    await act(async () => {
+      fireEvent.click(fila)
+    })
+
+    const rootEditor = container.firstElementChild as HTMLElement
+    expect(rootEditor.style.paddingTop).toContain('16px')
+    expect(rootEditor.style.paddingTop).toContain('safe-area-inset-top')
+    expect(rootEditor.style.paddingBottom).toContain('16px')
+    expect(rootEditor.style.paddingBottom).toContain('safe-area-inset-bottom')
+    expect(rootEditor.style.paddingLeft).toContain('16px')
+    expect(rootEditor.style.paddingLeft).toContain('safe-area-inset-left')
+    expect(rootEditor.style.paddingRight).toContain('16px')
+    expect(rootEditor.style.paddingRight).toContain('safe-area-inset-right')
+
+    unmount()
+  })
+
+  test('T194 - La barra de controles de lectura descuenta el area segura de abajo.', async () => {
+    const repo = new RepositorioMemoria()
+    const guion: Guion = {
+      id: 'g-t194',
+      titulo: 'Guion T194',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto T194' }]
+    }
+    await repo.guardar(guion)
+
+    const { unmount } = render(<App repoOverride={repo} />)
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    const fila = screen.getByTestId('fila-guion-g-t194')
+    await act(async () => {
+      fireEvent.click(fila)
+    })
+
+    const btnLeer = screen.getByTestId('btn-leer-guion-fijo')
+    await act(async () => {
+      fireEvent.click(btnLeer)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
+    // Traer controles con un toque
+    const prompterView = screen.getByTestId('teleprompter-view-container')
+    await act(async () => {
+      fireEvent.click(prompterView)
+    })
+
+    const panel = screen.getByTestId('panel-controles-lectura') as HTMLElement
+    expect(panel).not.toBeNull()
+    expect(panel.style.bottom).toContain('16px')
+    expect(panel.style.bottom).toContain('safe-area-inset-bottom')
+    expect(panel.style.left).toContain('16px')
+    expect(panel.style.left).toContain('safe-area-inset-left')
+    expect(panel.style.right).toContain('16px')
+    expect(panel.style.right).toContain('safe-area-inset-right')
+
+    unmount()
+  })
+})
