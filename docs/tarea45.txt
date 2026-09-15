@@ -1,0 +1,418 @@
+TAREA 45 - LA APLICACION SE MUEVE Y SE SIENTE
+
+PARTIR DE: main (482539d o posterior). Rama nueva: tarea-45-movimiento-y-haptica.
+PR contra main. AGENTS.md en la raiz.
+
+Hay una etiqueta punto-bueno-2026-09-14. No la toques.
+
+Las tareas 43 y 44 YA ESTAN FUSIONADAS en main. Parti de main y nada mas.
+
+
+POR QUE ESTE ENCARGO EXISTE
+
+Se busco en todo src/ por transition, animation, keyframes y Haptics. El
+resultado, medido:
+
+    2 transiciones en toda la aplicacion -el ancho de una barra de progreso y
+      un color de borde-
+    0 haptica, en cualquier pantalla, en cualquier control
+    0 transiciones entre pantallas
+
+Las pantallas se reemplazan asi: {vista === 'biblioteca' && (...)}. Desaparece
+una y aparece la otra en el mismo cuadro. Por eso la aplicacion se siente una
+sucesion de laminas y no un lugar por el que uno se mueve.
+
+ESTO NO ES ADORNO. Una transicion dice de donde venis y como volver: cuando el
+editor entra desde la derecha, la mano aprende sin que nadie le explique que
+atras se vuelve hacia la derecha. Y la haptica confirma que el toque entro, que
+hoy no se sabe.
+
+VA TODO EN UN SOLO ENCARGO porque las seis partes tocan los mismos cuatro
+archivos. Partirlo garantiza conflictos.
+
+
+UNA DECISION DE ARQUITECTURA, YA TOMADA. NO LA CAMBIES.
+
+LAS PANTALLAS SE ANIMAN SOLO AL ENTRAR, NUNCA AL SALIR.
+
+Animar la salida obliga a tener las dos pantallas montadas a la vez. Eso
+significa dos TeleprompterView vivos, cada uno con su bucle de animacion y su
+enganche al motor de voz. No vale el riesgo por una animacion.
+
+La pantalla que se va, se va de golpe. La que llega, entra animada. Alcanza
+para ensenar la direccion, que es para lo que existe.
+
+Si te parece que quedaria mejor con las dos animadas: NO. Esta decidido y el
+motivo esta escrito arriba.
+
+
+PARTE 0 - LA GRAMATICA EN UN SOLO ARCHIVO
+
+Archivo NUEVO: src/components/movimiento.ts
+
+Nadie vuelve a escribir un cubic-bezier a mano en este proyecto. Todo lo que se
+mueva sale de aca. Son los valores de Material 3, que es el sistema del sistema
+operativo en el que vivimos.
+
+    export const CURVA_ENTRA  = 'cubic-bezier(0.05, 0.7, 0.1, 1)'
+    export const CURVA_SALE   = 'cubic-bezier(0.3, 0, 0.8, 0.15)'
+    export const CURVA_NORMAL = 'cubic-bezier(0.2, 0, 0, 1)'
+
+    export const MS_DEDO     = 100   // respuesta al toque: un color, un hundido
+    export const MS_CHICO    = 200   // algo chico aparece en su lugar
+    export const MS_PANEL    = 300   // un panel que se levanta
+    export const MS_PANTALLA = 400   // una pantalla entera
+
+Y una funcion que decide si hay que moverse o no:
+
+    export function movimientoApagado(): boolean
+
+Devuelve true cuando el usuario pidio menos movimiento en su telefono. Se
+comprueba con:
+
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+Tiene que devolver false sin lanzar cuando matchMedia no existe -jsdom-.
+
+CUANDO movimientoApagado() DEVUELVE true, TODAS LAS DURACIONES VALEN 0 y no se
+aplica ningun desplazamiento. La aplicacion queda exactamente como esta hoy.
+Eso no es un caso raro: hay gente a la que el movimiento le da mareo, y es
+ademas lo que hace que las 184 pruebas actuales sigan teniendo sentido.
+
+
+PARTE 1 - LAS PANTALLAS ENTRAN, Y LA DIRECCION CUENTA LA PROFUNDIDAD
+
+Los tres niveles de la aplicacion:
+
+    1. biblioteca
+    2. editor
+    3. lectura
+
+Ir a un nivel mas hondo: la pantalla nueva entra DESDE LA DERECHA.
+Volver a un nivel mas alto: la pantalla nueva entra DESDE LA IZQUIERDA.
+
+Eso es lo unico que hace falta para que la mano aprenda el mapa.
+
+QUE HACER
+
+    Un componente nuevo en src/components/movimiento.ts o al lado, como
+    prefieras:
+
+        <Pantalla direccion="adentro" | "atras">{children}</Pantalla>
+
+    Al montarse, anima a sus hijos: de translateX(+24px) y opacidad 0 hasta
+    translateX(0) y opacidad 1 si la direccion es "adentro"; desde -24px si es
+    "atras". MS_PANTALLA con CURVA_ENTRA.
+
+    24 PIXELES, NO LA PANTALLA ENTERA. Un desplazamiento chico se lee igual de
+    bien y no marea. El que se corre 300 px es el que se nota de mas.
+
+    En App.tsx, envolver los tres bloques de vista con <Pantalla>, y calcular la
+    direccion comparando el nivel anterior con el nuevo. Guarda el nivel
+    anterior en un useRef, no en estado: no tiene que provocar un redibujo.
+
+    Si movimientoApagado() devuelve true, <Pantalla> dibuja a sus hijos sin
+    envoltorio y sin estilos. Ni una transicion.
+
+OJO CON ESTO: envolver los tres bloques NO puede cambiar lo que hay adentro. Si
+alguna prueba busca container.firstElementChild esperando la raiz de App, el
+envoltorio nuevo va ADENTRO de esa raiz, no afuera. Comprobalo: T192, T193 y
+T163 miran la raiz.
+
+
+PARTE 2 - LOS PANELES SE LEVANTAN, LOS MENUS CRECEN DESDE SU ESQUINA
+
+Un panel no es otra pantalla: es algo que se puso encima de esta. Por eso no
+viene de los costados sino de abajo.
+
+QUE HACER
+
+    2.a  EL PANEL DE AJUSTES y EL PANEL DE MEDICION (PanelCorpus).
+
+         Entran subiendo: de translateY(+16px) y opacidad 0 a translateY(0) y
+         opacidad 1. MS_PANEL con CURVA_ENTRA.
+
+         El velo oscuro de atras entra en opacidad al mismo tiempo, MS_PANEL con
+         CURVA_NORMAL.
+
+    2.b  LOS MENUS DE LOS TRES PUNTOS -biblioteca y editor-.
+
+         Crecen DESDE LA ESQUINA DE LOS TRES PUNTOS: transform-origin en la
+         esquina superior derecha, de scale(0.92) y opacidad 0 a scale(1) y
+         opacidad 1. MS_CHICO con CURVA_ENTRA.
+
+         El transform-origin es la mitad del efecto. Un menu que crece desde su
+         centro parece que aparece de la nada; uno que crece desde el boton que
+         lo abrio parece que salio de ahi.
+
+    Los paneles y los menus SE CIERRAN DE GOLPE, como hoy. Ver la decision de
+    arquitectura de arriba: aplica igual.
+
+
+PARTE 3 - LA TOMA
+
+Aca manda una REGLA INVERSA que pisa a las dos anteriores:
+
+    DURANTE LA LECTURA NO SE MUEVE NADA SALVO EL TEXTO.
+
+Todo movimiento que no sea el texto avanzando compite con el que lee y le roba
+el ojo del lente de la camara. Nada rebota, nada escala, nada destella.
+
+QUE HACER
+
+    3.a  EL APAGADO. Al entrar a la vista de lectura, el fondo pasa a su color
+         -que hoy es negro por omision- en MS_PANEL con CURVA_NORMAL, en vez de
+         aparecer de golpe.
+
+         La vista de lectura NO lleva <Pantalla>. No se desplaza: se enciende.
+
+    3.b  LA CUENTA REGRESIVA. Cada numero entra de scale(1.25) y opacidad 0 a
+         scale(1) y opacidad 1, en MS_CHICO con CURVA_ENTRA. El numero anterior
+         desaparece de golpe.
+
+         NO cambies los tres segundos, ni cuando arranca la grabacion, ni el
+         data-testid="cuenta-regresiva". Solo como se dibuja.
+
+    3.c  LOS CONTROLES DE LA LECTURA. Hoy aparecen y desaparecen de golpe. Pasan
+         a transicion de OPACIDAD SOLAMENTE, en su sitio, sin ningun
+         desplazamiento -regla inversa-.
+
+             aparecen:  MS_CHICO    (200)
+             se van:    MS_PANTALLA (400)
+
+         SE VAN MAS LENTO DE LO QUE VIENEN, al reves de la regla general. Un
+         control que desaparece de golpe se siente un error, y el que lee no
+         esta mirando la pantalla.
+
+         Tienen que seguir estando en el documento cuando estan ocultos o
+         dejando de estarlo, exactamente como hoy: no cambies la condicion de
+         montado si hoy se desmontan, ni la inventes si hoy no.
+
+    3.d  QUE SE ACABO EL GUION: NO LO CONSTRUYAS.
+
+         Queremos que al terminar el guion el velo se levante y quede todo
+         legible. Pero no sabemos si hoy existe alguna senal de "se termino".
+
+         NO LO IMPLEMENTES. Miralo y decilo en el informe: si hay algun estado,
+         bandera o evento que indique que el texto se acabo, como se llama y
+         donde vive; y si no hay ninguno, decilo tambien. Es una decision de
+         producto y no es tuya.
+
+
+PARTE 4 - LA HAPTICA: CONFIRMA EL TACTO, NO AVISA DEL MOTOR
+
+Dependencia nueva: @capacitor/haptics, que es el plugin oficial.
+
+Archivo NUEVO: src/haptica.ts, con una funcion por cada caso. Ningun componente
+llama al plugin directamente.
+
+REGLA QUE ORDENA TODO EL CAPITULO, y no es negociable:
+
+    LA HAPTICA NO AVISA NADA SOBRE EL MOTOR DE VOZ.
+
+    Nada de vibrar cuando el seguidor engancha, cuando se pierde, cuando cambia
+    de renglon o cuando cambia de bloque. Un aviso de "te perdi" convierte un
+    defecto en una funcion, y una vez que la funcion existe, el motor que se
+    corre deja de ser un problema y pasa a ser el comportamiento normal, con su
+    vibracion.
+
+    Si se te ocurre una vibracion util que hable del estado del seguidor: NO.
+
+QUE VIBRA, EXACTAMENTE
+
+    Capa 1 - confirmar el toque
+
+        1. Elegir una opcion en Ajustes -Ancho, Tipografia, Donde lees, una
+           pareja de color-:            Haptics.selectionChanged()
+        2. Marcar o desmarcar una casilla -Espejo, Mostrar tiempo, Ver
+           transcripcion-:              Haptics.impact({ style: ImpactStyle.Light })
+        3. Abrir un menu de tres puntos: ImpactStyle.Light
+        4. Tocar un guion en la lista:   ImpactStyle.Light
+        5. "+ Nuevo":                    ImpactStyle.Light
+
+    Capa 2 - cambio de estado real
+
+        6. Apretar "Leer":               ImpactStyle.Medium
+        7. Apretar "Salir" de la lectura: ImpactStyle.Medium
+        8. El CERO de la cuenta regresiva: ImpactStyle.Heavy
+
+        Leer y Salir son los dos extremos de una toma y son los unicos controles
+        que valen un golpe mas fuerte que el resto.
+
+    Capa 3 - los limites
+
+        9. El tamano de letra llego a 14 o a 42 y se aprieta otra vez:
+                                          ImpactStyle.Light
+
+           HOY APRETAS Y NO PASA ABSOLUTAMENTE NADA, y no se sabe si se rompio o
+           si se llego al tope. T84 fija esos cinco pasos; no los cambies.
+
+    Capa 4 - nada mas
+
+        DURANTE LA LECTURA NO VIBRA NADA, salvo Pausa y Salir, que el usuario ya
+        decidio tocar.
+
+LA RESTRICCION FISICA, QUE DECIDE DONDE SE PUEDE
+
+    El motor de vibracion HACE RUIDO y el telefono esta grabando. Por eso
+    durante la lectura no vibra nada.
+
+    Y por eso la cuenta regresiva SI puede: la grabacion arranca al PRINCIPIO de
+    la cuenta -esta explicado en el comentario de App.tsx, alrededor de la linea
+    467-, asi que esos tres segundos son margen sin voz y el zumbido cae donde no
+    molesta.
+
+    No agregues vibraciones en ningun otro momento con el microfono abierto.
+
+EL INTERRUPTOR
+
+    Un ajuste "Vibracion", encendido por omision, que va al MENU DE LOS TRES
+    PUNTOS DE LA BIBLIOTECA, junto a Tema.
+
+    NO va al panel de Ajustes. Es preferencia de la aplicacion, no de la toma, y
+    la tarea 44 acaba de bajar ese panel de diez controles a siete.
+
+    Se guarda en localStorage con el resto de los ajustes. Si el valor guardado
+    no es un booleano, queda encendido.
+
+QUE NO PUEDE PASAR
+
+    Llamar al plugin fuera de Android tiene que ser inofensivo. Envolve todo en
+    una comprobacion de Capacitor.isNativePlatform() y en try/catch: si el
+    plugin falla, la aplicacion NO se cae y no imprime nada en consola. En las
+    pruebas -jsdom- ninguna llamada puede lanzar.
+
+
+PARTE 5 - LAS DOS LINEAS QUE LA APLICACION NO DICE
+
+    5.a  AL SALIR DE LA LECTURA: "Grabado: 4:12", con la duracion real.
+
+         ESTA ES LA MAS IMPORTANTE DE TODO EL ENCARGO. Javier, despues de una
+         lectura entera: "volvi, y no se si algo se pudo grabar". Termino de
+         producir algo y la aplicacion no se lo confirmo.
+
+         Un aviso breve abajo, 2 segundos, que se va solo. NO un cartel que haya
+         que cerrar.
+
+         Si por lo que sea no hay duracion disponible, que diga "Grabado" a
+         secas. Nunca un cartel vacio ni "Grabado: null".
+
+    5.b  AL VOLVER DEL EDITOR A LA BIBLIOTECA CON CAMBIOS: "Guardado".
+
+         El guardado automatico esta bien. Lo que esta mal es que sea invisible:
+         Javier dijo "no me trago eso de que vuelvo a edicion y se guarda solo".
+
+         Mismo aviso breve de 2 segundos. Solo si hubo cambios.
+
+    NO agregues ningun otro texto nuevo. En particular NO toques lo que dice la
+    biblioteca vacia: esas palabras son de Javier y estan pendientes.
+
+
+LO QUE NO SE TOCA
+
+    src/lib/                    todo el directorio
+    src/motor/                  todo
+    src/hooks/                  todo
+    src/components/banda.ts     nada
+    android/                    nada, salvo lo que agregue solo el plugin
+
+    Y DE TeleprompterView, NADA DE LA GEOMETRIA DE LECTURA: el renglon trabado,
+    avanzarTrabado, PALABRAS_DE_SEGURIDAD, MARGEN_RENGLONES_ARRIBA, MS_DESLIZAR,
+    calcularScrollTop, calcularBanda, el velo, los paddings del contenedor de
+    texto, y el paddingBottom con la cuenta
+
+        Math.max(0, altoContenedor - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx)
+
+    que es la que permite que el ultimo renglon llegue a la barra de lectura. La
+    fija T159.
+
+    Lo unico que se toca de ese archivo es el color de fondo del contenedor
+    -3.a- y la opacidad de los controles -3.c-.
+
+    Y NO TOQUES lo que dejaron las tareas 43 y 44: los calc(16px + env(...)) de
+    la raiz, de la barra de controles, del punto rojo y del indicador de estado;
+    ni los tres botones de Ancho, ni las parejas de color, ni sanitizarColores.
+
+    Comprobalo con git diff --stat y ponelo en el informe.
+
+
+PRUEBAS
+
+    Numerar desde T199. T1 a T198 estan usados.
+
+    T199 - MOVIMIENTO APAGADO. Con prefers-reduced-motion simulado en true, la
+           biblioteca, el editor y la lectura NO tienen ninguna transicion ni
+           ningun transform. La geometria queda IDENTICA a la de hoy. Es la
+           guardiana de las 184 pruebas existentes.
+
+    T200 - LA DIRECCION. Yendo de biblioteca a editor, el envoltorio entra desde
+           la derecha; volviendo de editor a biblioteca, desde la izquierda. Los
+           dos signos son distintos.
+
+    T201 - LA REGLA INVERSA. Los controles de la lectura cambian SOLO en
+           opacidad: su estilo no tiene ningun translate ni ningun scale. Y se
+           van mas lento de lo que vienen: la duracion de salida es mayor que la
+           de entrada.
+
+    T202 - LA HAPTICA NO HABLA DEL MOTOR. Con el motor falso, durante una
+           lectura completa -enganchar, avanzar renglones, perder la voz- NO se
+           llama a Haptics ni una sola vez. Mockea @capacitor/haptics y conta las
+           llamadas: tienen que ser cero.
+
+    T203 - LA HAPTICA CONFIRMA EL TOQUE. Al elegir una opcion de Ancho se llama
+           a selectionChanged una vez. Al apretar Leer, a impact con Medium.
+
+    T204 - EL INTERRUPTOR. Con la vibracion apagada, ninguno de los toques de
+           T203 llama al plugin. Y el ajuste sobrevive a desmontar y volver a
+           montar la aplicacion.
+
+    T205 - "Grabado" APARECE Y SE VA. Al salir de la lectura, el aviso esta en el
+           documento; dos segundos despues, ya no.
+
+    COMPROBALAS ROMPIENDO, estas dos:
+
+      - Para T202: agrega a proposito una llamada a Haptics cuando el seguidor
+        cambia de renglon, y verifica que T202 se pone ROJA.
+      - Para T199: hace que <Pantalla> ignore movimientoApagado() y anime
+        siempre, y verifica que T199 se pone ROJA.
+
+      Despues deja las dos bien. PONE EL RESULTADO TEXTUAL EN EL INFORME.
+
+    TIENEN QUE SEGUIR VERDES SIN TOCARLAS: T84 -los cinco pasos de letra-, T159
+    -el ultimo renglon llega a la barra-, T163 -el motor arranca al entrar a la
+    lectura-, T192 a T194 -el area segura, tarea 43-, y T195 a T198 -los ajustes,
+    tarea 44-. Si alguna se pone roja, rompiste algo de una tarea anterior.
+
+
+AL TERMINAR
+
+    npx tsc --noEmit limpio.
+    npx vitest run: hoy son 184 de 184. Al terminar, 191 de 191.
+    No se borra ni se saltea ninguna prueba.
+
+    PROHIBIDO agregar elementos ocultos con display:none para sostener una
+    prueba vieja: ya paso en este repositorio, fueron tres botones invisibles
+    sosteniendo dieciocho pruebas.
+
+    EL TAMANO DEL PAQUETE. Esta tarea agrega una dependencia. Corre npm run build
+    y deci en el informe el tamano del archivo principal de dist/assets, antes y
+    despues. Ya paso dos veces en este repositorio que una entrega pasaba todas
+    las pruebas y triplicaba el paquete.
+
+    NO COMMITEES dev_server.log ni ningun registro de tu propio servidor. Paso en
+    la tarea 44.
+
+    INFORME, en este orden:
+
+      1. Las seis partes, una por una, diciendo que cambiaste.
+      2. El git diff --stat completo.
+      3. El numero exacto de pruebas pasadas y falladas, y de cuanto partiste.
+      4. El resultado de romper T202 y T199, textual.
+      5. El tamano del paquete antes y despues.
+      6. LO QUE OBSERVASTE SOBRE EL FIN DEL GUION -parte 3.d-, sin haberlo
+         construido.
+
+    El telefono no lo ves desde la VM: no digas que "ahora se ve mejor". Deci que
+    cambiaste.
