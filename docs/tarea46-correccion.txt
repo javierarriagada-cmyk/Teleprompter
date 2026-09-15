@@ -1,0 +1,185 @@
+TAREA 46 - CORRECCION 1. MISMA RAMA.
+
+Baje tu parche de las actividades y lo corri. EL COMMIT QUE PUBLICASTE ESTA
+VACIO -cero archivos-, asi que el trabajo no llego al repositorio; el parche si
+estaba en la sesion y de ahi lo saque.
+
+LO QUE ESTA BIEN, y no es cortesia:
+
+  - T209 FUNCIONA DE VERDAD. Le plante un color a mano en EditorView y se puso
+    roja nombrando archivo, linea y el texto exacto:
+
+        src/components/EditorView.tsx:85 -> Color hexadecimal no permitido:
+        '#BADA55' en "const COLOR_PLANTADO = '#BADA55'"
+
+    Es la parte grande del encargo y esta bien resuelta.
+
+  - tsc limpio.
+  - El guion de bienvenida tiene el texto correcto, con todos los acentos.
+  - La precarga condicionada al motor esta bien planteada.
+
+HAY CINCO DEFECTOS. El primero tira todo abajo.
+
+
+DEFECTO 1 - cargarBiblioteca() YA NO SE LLAMA AL ARRANCAR. 54 PRUEBAS ROJAS.
+
+    npx vitest run  ->  54 fallidas de 198
+
+En src/App.tsx, el efecto de arranque -la funcion inicializar()- hace esto:
+
+    await repoRef.current.listar()      <- llama a listar y TIRA EL RESULTADO
+
+...y despues nunca llama a cargarBiblioteca(). Antes terminaba llamandola. Por
+eso guionesResumen se queda vacio para siempre y la biblioteca no muestra nada.
+
+Lo comprobe con tus propios console.log:
+
+    [BibliotecaViewDebug] guiones: [] guionesFiltrados: []
+
+Se rompe todo lo que monta App y busca un guion: T58, T137, T138, T177, T178,
+T179, T200 a T205, y tu propia T211.
+
+QUE HACER: que inicializar() termine llamando a await cargarBiblioteca(), despues
+de la migracion y despues de crear el guion de bienvenida. Y sacar el
+listar() suelto del principio, que no sirve para nada salvo detectar que
+IndexedDB no anda -si lo necesitas para eso, dejalo, pero la carga tiene que
+ocurrir igual-.
+
+AL TERMINAR TIENEN QUE SER 198 DE 198, CERO FALLIDAS.
+
+
+DEFECTO 2 - OCHO LLAMADAS DE DEPURACION QUE VIAJAN EN PRODUCCION
+
+    src/App.tsx:198                    [cargarBibliotecaDebug]
+    src/App.tsx:221                    [AppInitDebug]
+    src/App.tsx:270, 315, 317, 322     [BienvenidaDebug]  x4
+    src/components/BibliotecaView.tsx:256   [BibliotecaViewDebug]
+    src/datos/RepositorioIndexedDB.ts:51, 56, 70   [RepositorioIndexedDBDebug] x3
+
+Sacalas todas. Son rastros de tu propia depuracion y quedan en el APK.
+
+Y OJO: RepositorioIndexedDB.ts NO ESTABA EN EL ALCANCE de esta tarea. Si lo
+tocaste solo para poner esos logs, devolvelo como estaba. Si lo tocaste por otra
+cosa, deci por que en el informe.
+
+Los console.warn que ya existian en main -los de "Error al acceder a
+RepositorioIndexedDB" y parecidos- se quedan: esos son manejo de error, no
+depuracion.
+
+
+DEFECTO 3 - EL ESCALONADO NO EXISTE. ES UN ATRIBUTO PARA QUE PASE LA PRUEBA.
+
+En BibliotecaView agregaste esto en cuatro lugares:
+
+    data-retardo-escalonado={esInicial && !movimientoApagado() ? 40 : 0}
+
+Y NADA MAS. No hay ningun animationDelay, ninguna animacion, ningun retardo
+real aplicado a nada. Lo busque: la palabra animationDelay no aparece en el
+archivo.
+
+O sea que el titulo, el subtitulo y la lista siguen entrando todos juntos,
+exactamente como antes, y lo unico que cambio es que ahora hay un atributo que
+T212 lee y da por bueno.
+
+ESTO ES LO QUE EL ENCARGO PROHIBE EXPLICITAMENTE: agregar elementos o atributos
+para sostener una prueba en vez de hacer el trabajo. Ya paso en este repositorio
+con tres botones invisibles que sostenian dieciocho pruebas.
+
+Y ademas el primero es absurdo: `esInicial && !movimientoApagado() ? 0 : 0`
+devuelve 0 en los dos casos.
+
+QUE HACER
+
+    El escalonado tiene que ser REAL. Cada una de las tres partes -titulo,
+    subtitulo, lista o vacio- entra con la animacion de opacidad y con un
+    animationDelay distinto:
+
+        titulo      0 ms
+        subtitulo   40 ms
+        lista       80 ms
+
+    Usa MS_PANTALLA y CURVA_ENTRA de src/components/movimiento.tsx, igual que el
+    resto. Con movimientoApagado() en true: sin animacion y sin retardo, los tres
+    juntos, como hoy.
+
+    Y SOLO EN EL PRIMER MONTAJE. Volviendo del editor, retardo cero en los tres.
+
+    T212 SE REESCRIBE para comprobar el RETARDO REAL en el estilo del elemento
+    -animationDelay- y no un atributo inventado. El data-retardo-escalonado se
+    puede quedar como ayuda para encontrar los elementos, pero la prueba tiene
+    que mirar el estilo.
+
+    COMPROBALA ROMPIENDO: saca el animationDelay y deja el atributo, y verifica
+    que T212 se pone ROJA. Pega la salida. Si con el atributo puesto y el retardo
+    sacado la prueba pasa, no esta terminada.
+
+
+DEFECTO 4 - BORRASTE 99 LINEAS DE COMENTARIO
+
+Contadas sobre el diff de App.tsx, EditorView.tsx y BibliotecaView.tsx:
+
+    99 lineas de comentario borradas
+     3 agregadas
+
+Entre las borradas esta la que explica POR QUE EL MOTOR POR OMISION ES EL QUE ES
+-que en Android va Vosk nativo porque el WASM baja 34 MB en cada lectura,
+comprobado en modo avion el 14 de septiembre-. Eso costo una semana de
+averiguar y no esta escrito en ningun otro lado.
+
+Tambien borraste las que explican por que se mide toda lectura, y varias mas.
+
+ESOS COMENTARIOS SON LA MEMORIA DEL PROYECTO. Sin ellos, dentro de un mes alguien
+cambia el motor por omision "porque parece raro" y perdemos la semana de nuevo.
+
+QUE HACER: restituilos TODOS. Si alguno quedo obsoleto porque el codigo que
+describia cambio, actualizalo, pero no lo borres. Y deci en el informe cual
+actualizaste y por que.
+
+REGLA PARA DE ACA EN ADELANTE: un cambio de estilos no borra comentarios. Si
+estas moviendo un bloque de codigo, el comentario se mueve con el.
+
+
+DEFECTO 5 - TOCASTE LA CAPA DE DATOS PARA ACOMODAR UNA PRUEBA
+
+En src/datos/RepositorioIndexedDB.ts, aparte de los tres logs, cambiaste esto:
+
+    -    request.onsuccess = () => resolve()
+    +    request.onsuccess = () => setTimeout(resolve, 0)
+
+Eso aplaza un tick la resolucion de guardar(). No lo pediste vos ni lo pedi yo:
+parece un parche para que el guion de bienvenida estuviera guardado antes de que
+corriera tu propia prueba T211.
+
+CAMBIAR LA CAPA DE DATOS PARA QUE UNA PRUEBA LLEGUE A TIEMPO ES EXACTAMENTE AL
+REVES. El defecto real es el 1 -que cargarBiblioteca() no se llama-, y con eso
+arreglado esta espera deja de hacer falta.
+
+QUE HACER: devolve src/datos/RepositorioIndexedDB.ts EXACTAMENTE como estaba en
+main. Ni el setTimeout ni los logs. Ese archivo no estaba en el alcance de esta
+tarea.
+
+Si despues de arreglar el defecto 1 tu prueba T211 falla por tiempos, el arreglo
+va EN LA PRUEBA -esperando con findByText, que ya usas- y NUNCA en el
+repositorio.
+
+
+AL TERMINAR
+
+   npx tsc --noEmit limpio.
+   npx vitest run: 198 de 198, cero fallidas. Deci el numero exacto.
+   El resultado de romper T212, textual.
+   La cuenta de comentarios restituidos.
+   El git diff --stat completo.
+
+   Y CUANDO PUBLIQUES: comproba que el commit tiene archivos adentro. El anterior
+   salio VACIO, cero archivos, y tuve que sacar el parche de las actividades de la
+   sesion. Si el boton falla, publica en una rama con OTRO NOMBRE y decime cual.
+
+   NO TOQUES NADA MAS. T209, T210 y el guion de bienvenida estan bien y no hay
+   que rehacerlos.
+
+   Y UNA COSA SOBRE COMO TRABAJAR, que sale de los defectos 3 y 5: cuando una
+   prueba no pasa, el arreglo va en el codigo que la prueba mira o en la prueba
+   misma. NUNCA en un atributo puesto para que la prueba lo lea, ni en una capa
+   que no estaba en el alcance. Las dos veces que pasa en el mismo encargo deja
+   de ser un descuido.
