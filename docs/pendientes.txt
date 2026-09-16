@@ -183,3 +183,48 @@ MIENTRAS NO EXISTA UN DISPOSITIVO VIRTUAL CON LAS MEDIDAS EXACTAS, ninguna
 decision sobre proporciones vale hasta verla en el telefono.
 
 Se crea con avdmanager y un perfil a medida. Es corto y no se hizo.
+
+
+================================================================
+EL ESPEJO DEL ARRANQUE LLEGA TARDE, Y SIGO ESTA MAL DIBUJADO
+================================================================
+
+Javier lo vio en el telefono el 16 de septiembre de 2026, con la tarea 51 ya
+instalada: "no se ve, aparecio una vez despues que ya habia aparecido sin
+guiones". O sea que el espejo no es un espejo: es una capa que llega tarde,
+encima de una biblioteca que ya estaba a la vista.
+
+LA CAUSA, SOSPECHADA Y NO COMPROBADA: el reloj del espejo arranca cuando React
+monta el componente, y eso pasa DETRAS de la pantalla nativa. Sus 1000 ms corren
+mientras el arranque todavia esta encima, asi que cuando el arranque se levanta
+-a los 1790, que es 1540 de marca mas 250 de sostenido- el espejo ya se
+desmonto. Lo que se ve tarde es la cola.
+
+EL ARREGLO NO ES DE DIBUJO: el espejo tiene que empezar a contar CUANDO LA
+PANTALLA NATIVA SE VA, no cuando el componente se monta. Hoy nadie le avisa: el
+puente va en un solo sentido -la web le dice a Android "ya pinte"- y hace falta
+el sentido contrario.
+
+LA FORMA MAS LIMPIA, sin agregar eventos nuevos: que ArranquePlugin.listo() NO
+RESUELVA su promesa hasta que el desvanecido de salida termino. El plugin guarda
+el PluginCall y lo resuelve adentro del setOnExitAnimationListener, en el
+withEndAction que ya existe. En la web, App hace await de la misma llamada que ya
+hace hoy, y recien entonces monta el espejo. Un solo camino, sin evento nuevo que
+mantener.
+
+Tamano: chico-mediano. Toca ArranquePlugin.java, MainActivity.java y el montaje
+del espejo en App.tsx. Es un cambio del contrato del relevo, asi que va a Jules.
+
+Y LO SEGUNDO, QUE ES DE DISENO: las cuatro letras de SIGO son paths dibujados a
+mano. Javier: "me gustaria que sigo estuviera escrito esteticamente mejor".
+Cuatro letras dibujadas a mano casi nunca ganan contra una tipografia disenada, y
+nosotros ya cargamos la nuestra: Source Serif 4, que es la fuente de display del
+sistema visual. SIGO en esa fuente ES la marca.
+
+    La forma de escribirlo sin perder el trazo: dibujar el texto con la fuente de
+    verdad y revelarlo de izquierda a derecha con una mascara, en vez de animar
+    stroke-dashoffset sobre contornos hechos a mano. Se escribe igual y las
+    letras son las correctas.
+
+    Lo que NO hay que hacer es una animacion de opacidad: eso no es escribir, es
+    aparecer, y se nota.
