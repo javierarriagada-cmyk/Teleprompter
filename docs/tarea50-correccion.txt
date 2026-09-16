@@ -1,0 +1,180 @@
+CORRECCION DE LA TAREA 50
+
+NO VUELVAS A CLONAR main. Segui sobre tu misma rama, encima de lo que ya
+entregaste. En la tarea 47 una correccion volvio a clonar y perdio todo el
+trabajo de Android de la primera vuelta.
+
+
+LO QUE REVISE Y ESTA BIEN
+
+Corri el conjunto completo: 229 de 229 verdes, tsc limpio.
+
+Rompi T245 a mano -corri el punto 80 px a la derecha- y se puso ROJA. Esa
+guardiana sirve.
+
+Comprobe ademas, uno por uno:
+
+  - El punto esta en 285,168: a la derecha del centro y arriba del eje de R2,
+    como se pidio. Y cae adentro del circulo con margen (97 de 144).
+  - La jerarquia de la splash quedo por color: R1, R4 y R5 en trazo_apagado,
+    R2 y R3 en trazo. Correcto.
+  - La retencion espera las dos cosas y el tope de 2500 sigue soltando igual.
+  - La imposicion del oscuro tiene su marca en localStorage, asi que es una
+    vez y no todas. Correcto.
+  - Los cambios en T217, T228, T229 y T231 son consecuencia legitima de la
+    tarea nueva, no un ablandamiento. Bien hechos.
+  - T214, la guardiana de contraste, quedo intacta y pasa con el acento hueso.
+
+Son cuatro cosas. Las dos primeras son de las que no se negocian.
+
+
+================================================================
+1. TOCASTE LA CAPA DE DATOS, Y ESTABA PROHIBIDO POR ESCRITO
+================================================================
+
+En src/datos/RepositorioIndexedDB.ts y src/datos/RepositorioMemoria.ts
+cambiaste:
+
+    titulo: g.titulo || 'Sin título'    ->    titulo: g.titulo || 'Guion nuevo'
+
+El encargo decia, textual:
+
+    "NO le agregues un campo de extracto a ResumenGuion ni al repositorio. NO
+     llames a onBuscarGuionCompleto desde la lista. La capa de datos no se toca
+     en esta tarea; si te parece que conviene, decilo en el informe y NO lo
+     hagas."
+
+Y ademas esta mal puesto, que es lo que importa mas que la regla: el
+repositorio NO DECIDE ETIQUETAS DE INTERFAZ. Ese valor viaja adentro del
+ResumenGuion a todo el que lo use -la busqueda, la tarjeta de portada, lo que
+venga despues-, y todos reciben 'Guion nuevo' como si fuera un titulo de
+verdad. Un guion sin titulo deja de poder distinguirse de uno que se llama asi.
+
+QUE HACER
+
+    Deja los dos repositorios EXACTAMENTE como estaban, con 'Sin título'.
+
+    Mejor todavia, si queres hacerlo bien: que el repositorio devuelva el
+    titulo vacio tal cual es -cadena vacia- y que la decision de que mostrar
+    viva en la vista. Pero eso es un cambio de la capa de datos, asi que
+    PROPONELO EN EL INFORME Y NO LO HAGAS.
+
+    La etiqueta "Guion nuevo" se decide en BibliotecaView, al dibujar la fila:
+    si el titulo esta vacio o dice 'Sin título', se muestra 'Guion nuevo'.
+
+    Y T251 tiene que comprobar eso: que la fila DIBUJA 'Guion nuevo', no que el
+    repositorio lo devuelve.
+
+
+================================================================
+2. TOCASTE TeleprompterView, Y NO FUE PARA OCULTAR NADA
+================================================================
+
+En src/components/TeleprompterView.tsx cambiaste:
+
+    } else if (st.estado === 'DETENIDO') {
+    } else if (st.estado === 'DETENIDO' && st.tUltimoCalceMs > 0) {
+
+Dos cosas, y la segunda es peor que la primera:
+
+PRIMERO, ESE ARCHIVO ESTA PROHIBIDO desde la tarea 43 y lo repite cada encargo:
+"Y DE TeleprompterView: NADA". Se ajusto a mano contra defectos que solo se ven
+leyendo en voz alta y ninguna prueba los atrapa.
+
+SEGUNDO, ESO NO ES OCULTAR EL CARTEL DURANTE LA CUENTA. Es cambiar CUANDO el
+lector dice que esta detenido, usando un campo del motor -tUltimoCalceMs- para
+decidirlo. El efecto no se limita a los tres segundos de la cuenta: mientras el
+motor NUNCA haya calzado una palabra, el cartel no aparece nunca. Alguien
+empieza a leer, el reconocedor no lo agarra, y la aplicacion ya no le dice que
+esta detenida. Le sacaste la unica señal que tenia.
+
+El encargo decia: "Esto es visibilidad de interfaz alrededor de CuentaRegresiva
+y del cartel de estado. NO TOQUES EL MOTOR."
+
+QUE HACER
+
+    Deja TeleprompterView EXACTAMENTE como estaba. Revertí esa linea y sacá el
+    comentario que agregaste arriba de containerRef, que ademas quedo a
+    doscientas lineas del codigo que describe.
+
+    El cartel se oculta DESDE AFUERA: mientras cuentaRegresiva no sea null, App
+    no pinta el cartel de estado. Un booleano de interfaz, no una condicion
+    sobre el estado del motor.
+
+    Si el cartel se dibuja adentro de TeleprompterView y no hay forma de
+    apagarlo desde afuera sin tocarlo, PARA Y DECILO EN EL INFORME con lo que
+    propones. No lo resuelvas por tu cuenta adentro de ese archivo.
+
+    Y T250 tiene que seguir verde con la solucion de afuera.
+
+
+================================================================
+3. EN TEMA CLARO LA MARCA QUEDA INVISIBLE, Y ESTO ES CULPA MIA
+================================================================
+
+android/app/src/main/res/values/colors.xml quedo asi:
+
+    fondo_arranque   #151312   (negro)
+    marca_trazo      #1A1815   (casi negro)
+
+O sea: marca casi negra sobre fondo negro. Es el mismo defecto del 30% que esta
+tarea existe para arreglar, en otra forma.
+
+LA CULPA ES DEL ENCARGO, NO TUYA. Yo escribi "recorda que values/ es el CLARO",
+y al mismo tiempo la parte 1 convirtio el mundo en oscuro siempre. Las dos
+cosas no pueden ser verdad. Lo aclaro:
+
+    EL ARRANQUE ES NEGRO SIEMPRE, igual que la aplicacion.
+
+    values/colors.xml y values-night/colors.xml quedan IDENTICOS:
+
+        fondo_arranque       #151312
+        marca_trazo          #E7E1DE
+        marca_trazo_apagado  #8A837C
+        marca_punto          #E11D2E
+
+    No hay version clara de la marca. Si mañana vuelve el tema claro, se
+    resuelve entonces.
+
+Y agrega una prueba, T252: los dos colors.xml definen los mismos cuatro nombres
+con los mismos cuatro valores. Que la proxima vez lo agarre una guardiana y no
+Javier mirando el telefono.
+
+
+================================================================
+4. UN LITERAL DONDE HAY UNA FICHA
+================================================================
+
+En los dos styles.xml pusiste:
+
+    <item name="android:background">#151312</item>
+
+Hay un recurso que ya vale eso. Usa @color/fondo_arranque en los dos. Si mañana
+cambia el negro, cambia en un solo sitio.
+
+
+================================================================
+LO QUE NO SE TOCA, RECORDATORIO
+================================================================
+
+   src/motor/     todo
+   src/hooks/     todo
+   src/lib/       todo
+   src/datos/     todo  -punto 1-
+   src/components/TeleprompterView.tsx   nada  -punto 2-
+   haptica.ts
+
+   Y no deshagas lo que ya quedo bien de esta misma tarea: el punto a la
+   derecha, la jerarquia por color, la retencion que espera las dos cosas, la
+   marca del oscuro impuesto, y los tiempos de 1540 ms.
+
+
+AL TERMINAR
+
+   tsc limpio. El conjunto en 229 o mas -T252 suma una-.
+
+   INFORME:
+     1. Que revertiste en src/datos/ y en TeleprompterView, y como quedo el
+        cartel de estado apagado desde afuera.
+     2. Los dos colors.xml, pegados enteros.
+     3. git diff --stat.
