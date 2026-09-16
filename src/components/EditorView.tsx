@@ -458,28 +458,8 @@ export default function EditorView({
 
   const hayMasDeUnBloque = guion.bloques && guion.bloques.length > 1
 
-  function handleContainerScroll(e: React.UIEvent<HTMLDivElement>) {
-    const currentScrollTop = e.currentTarget.scrollTop
-    const diff = currentScrollTop - ultimoScrollTopRef.current
-
-    if (diff > 5) {
-      setBarraLeerVisible(false)
-    } else if (diff < -5) {
-      setBarraLeerVisible(true)
-    }
-
-    ultimoScrollTopRef.current = currentScrollTop
-
-    if (timerScrollStopRef.current) clearTimeout(timerScrollStopRef.current)
-    timerScrollStopRef.current = setTimeout(() => {
-      setBarraLeerVisible(true)
-    }, 300)
-  }
-
   return (
     <div
-      data-testid="contenedor-editor-scroll"
-      onScroll={handleContainerScroll}
       data-pantalla-direccion={dataPantallaDireccion}
       onAnimationEnd={onAnimationEnd}
       style={{ maxWidth: 800, margin: '0 auto', padding: 'var(--aire-4) var(--aire-4) calc(100px + env(safe-area-inset-bottom, 0px)) var(--aire-4)', position: 'relative', ...style }}

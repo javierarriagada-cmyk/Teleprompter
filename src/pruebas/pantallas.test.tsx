@@ -218,8 +218,8 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T149-T153)', () => {
     // 1. En la biblioteca, por omisión (interruptor apagado), NO existe "Franja de Estado"
     expect(screen.queryByText(/Franja de Estado/i)).toBeNull()
 
-    // 2. Encendido mediante el toque en el resumen de biblioteca, SÍ aparece
-    const resumen = screen.getByTestId('resumen-encabezado-biblioteca')
+    // 2. Encendido mediante el toque en el título de la tarjeta de portada, SÍ aparece
+    const resumen = screen.getByTestId('titulo-tarjeta-lectura')
     await act(async () => {
       fireEvent.click(resumen)
     })
@@ -553,41 +553,20 @@ describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)
     expect(screen.getByText(/12 palabras · 1 min/i)).not.toBeNull()
   })
 
-  test('T181 - Con la biblioteca vacia NO aparece "0 minutos de lectura". Y con un solo minuto dice "minuto", no "minutos".', () => {
-    const { unmount } = render(
-      React.createElement(BibliotecaView, {
-        guiones: [],
-        onAbrir: () => {},
-        onCrearNuevo: () => {},
-        onImportarArchivo: () => {},
-        onBorrar: () => {},
-        onArchivar: () => {}
-      })
-    )
+  test('T181 - Con la biblioteca vacia NO aparece "0 minutos de lectura". Y con un solo minuto dice "minuto", no "minutos".', async () => {
+    const { formatearTextoResumen } = await import('../components/BibliotecaView')
 
-    const resumenVacio = screen.getByTestId('resumen-encabezado-biblioteca')
-    expect(resumenVacio.textContent).toBe('0 guiones')
-    expect(resumenVacio.textContent).not.toContain('0 minutos de lectura')
-    unmount()
+    const textoVacio = formatearTextoResumen([])
+    expect(textoVacio).toBe('0 guiones')
+    expect(textoVacio).not.toContain('0 minutos de lectura')
 
     const guionesUnMinuto = [
       { id: 'g1', titulo: 'Guión Corto', idioma: 'es', modificado: Date.now(), palabras: 100 }
     ]
 
-    render(
-      React.createElement(BibliotecaView, {
-        guiones: guionesUnMinuto,
-        onAbrir: () => {},
-        onCrearNuevo: () => {},
-        onImportarArchivo: () => {},
-        onBorrar: () => {},
-        onArchivar: () => {}
-      })
-    )
-
-    const resumenUnMinuto = screen.getByTestId('resumen-encabezado-biblioteca')
-    expect(resumenUnMinuto.textContent).toContain('1 minuto de lectura')
-    expect(resumenUnMinuto.textContent).not.toContain('1 minutos de lectura')
+    const textoUnMinuto = formatearTextoResumen(guionesUnMinuto)
+    expect(textoUnMinuto).toContain('1 minuto de lectura')
+    expect(textoUnMinuto).not.toContain('1 minutos de lectura')
   })
 
   test('T182 - El menu del editor NO contiene el caracter ⚙, y el boton de ajustes dice "Ajustes".', () => {
@@ -1118,7 +1097,7 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
     })
 
     // Activar diagnóstico
-    const resumen = screen.getByTestId('resumen-encabezado-biblioteca')
+    const resumen = screen.getByTestId('titulo-tarjeta-lectura')
     await act(async () => {
       fireEvent.click(resumen)
     })

@@ -148,8 +148,8 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    // La franja de diagnóstico se activa tocando/haciendo clic en el resumen del encabezado
-    const resumen = screen.getByTestId('resumen-encabezado-biblioteca')
+    // La franja de diagnóstico se activa tocando/haciendo clic en el título de la tarjeta de portada
+    const resumen = screen.getByTestId('titulo-tarjeta-lectura')
     await act(async () => {
       fireEvent.click(resumen)
     })

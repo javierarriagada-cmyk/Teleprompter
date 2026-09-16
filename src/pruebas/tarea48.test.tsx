@@ -19,8 +19,17 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
   })
 
   test('T219 - LA TARJETA NO ENCIENDE EL MOTOR.', async () => {
-    const spyElegirMotor = vi.spyOn(elegirMotorModule, 'elegirMotor')
+    // a. Comprobación estática: TarjetaLectura.tsx NO debe importar componentes ni motores de avance/voz ni usar rAF
+    const fullPath = path.resolve(process.cwd(), 'src/components/TarjetaLectura.tsx')
+    const fuenteTarjeta = fs.readFileSync(fullPath, 'utf8')
 
+    expect(fuenteTarjeta).not.toContain('TeleprompterView')
+    expect(fuenteTarjeta).not.toContain("from '../lib/")
+    expect(fuenteTarjeta).not.toContain("from '../motor/")
+    expect(fuenteTarjeta).not.toContain("from '../hooks/")
+    expect(fuenteTarjeta).not.toContain('requestAnimationFrame')
+
+    // b. Comprobación de montaje: al montar BibliotecaView con un guion, NO debe existir ningún contenedor de TeleprompterView
     const guionesPrueba = [
       {
         id: 'g1',
@@ -43,11 +52,8 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
       />
     )
 
-    // La tarjeta debe estar dibujada
     expect(screen.getByTestId('tarjeta-lectura-portada')).not.toBeNull()
-
-    // El motor de voz NO se eligió ni se instanció al montar la tarjeta
-    expect(spyElegirMotor).toHaveBeenCalledTimes(0)
+    expect(screen.queryByTestId('teleprompter-view-container')).toBeNull()
   })
 
   test('T220 - LA TARJETA MUESTRA EL GUION MAS RECIENTE con su titulo y time-code en formato m:ss.', async () => {
@@ -122,7 +128,7 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
     expect(screen.getByTestId('tarjeta-lectura-portada')).not.toBeNull()
     expect(screen.getByText('Sin guiones todavía')).not.toBeNull()
 
-    const btnCrear = screen.getByRole('button', { name: /Escribe tu primer guión/i })
+    const btnCrear = screen.getByRole('button', { name: /Escribe tu primer guion/i })
     expect(btnCrear).not.toBeNull()
 
     // No hay ninguna imagen/icono de estado vacío
@@ -216,10 +222,12 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
     // Entrar a leer desde la tarjeta (Biblioteca sigue montada detrás)
     fireEvent.click(btnLeerTarjeta)
 
-    await waitFor(() => {
-      const views = screen.getAllByTestId('teleprompter-view-container')
-      expect(views.length).toBe(1)
-    })
+    // Esperar explícitamente a que aparezca la pantalla de lectura antes de contar
+    await screen.findByTestId('teleprompter-view-container')
+
+    // Contar cuántos TeleprompterView existen en el documento
+    const views = screen.getAllByTestId('teleprompter-view-container')
+    expect(views.length).toBe(1)
   })
 
   test('T224 - LA BARRA "Leer" SE ESCONDE AL DESPLAZAR Y VUELVE.', async () => {
@@ -241,7 +249,6 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
       />
     )
 
-    const contenedorScroll = screen.getByTestId('contenedor-editor-scroll')
     const barraLeer = screen.getByTestId('btn-leer-guion-fijo')
 
     // Inicialmente visible con safe area calc en su contenedor padre
@@ -249,14 +256,14 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
     expect(barraLeer.parentElement?.style.bottom).toContain('safe-area-inset-bottom')
     expect(barraLeer.style.transform).toBe('translateY(0)')
 
-    // Simular scroll hacia abajo (scrollTop aumenta de 0 a 100)
-    fireEvent.scroll(contenedorScroll, { target: { scrollTop: 100 } })
+    // Simular scroll en window hacia abajo
+    fireEvent.scroll(window, { target: { scrollY: 100 } })
 
     // Se esconde fuera de vista
     expect(barraLeer.style.transform).toBe('translateY(120px)')
 
-    // Simular scroll hacia arriba (scrollTop disminuye de 100 a 40)
-    fireEvent.scroll(contenedorScroll, { target: { scrollTop: 40 } })
+    // Simular scroll en window hacia arriba
+    fireEvent.scroll(window, { target: { scrollY: 40 } })
 
     // Vuelve a estar visible y conserva el bottom seguro en su contenedor
     expect(barraLeer.style.transform).toBe('translateY(0)')

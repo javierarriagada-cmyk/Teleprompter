@@ -1,14 +1,19 @@
 import React from 'react'
-import { ResumenGuion } from '../datos/modelo'
-import { PAREJAS_COLOR } from '../datos/modelo'
+import { ResumenGuion, PAREJAS_COLOR } from '../datos/modelo'
 import { movimientoApagado } from './movimiento'
 
 interface TarjetaLecturaProps {
   guionResumen?: ResumenGuion
   textoCompleto?: string
   esInicial?: boolean
-  onLeer: () => void
+  onLeer: (rect?: DOMRect) => void
   onCrearNuevo: () => void
+  onDiagTouchStart?: () => void
+  onDiagTouchEnd?: () => void
+  onDiagClick?: () => void
+  tipoFuente?: 'sans' | 'serif'
+  colorFondo?: string
+  colorLetra?: string
 }
 
 function formatearDuracion(palabras: number): string {
@@ -25,9 +30,16 @@ export default function TarjetaLectura({
   textoCompleto,
   esInicial = false,
   onLeer,
-  onCrearNuevo
+  onCrearNuevo,
+  onDiagTouchStart,
+  onDiagTouchEnd,
+  onDiagClick,
+  tipoFuente = 'sans',
+  colorFondo = PAREJAS_COLOR[0].fondo,
+  colorLetra = PAREJAS_COLOR[0].letra
 }: TarjetaLecturaProps) {
-  const parejaColor = PAREJAS_COLOR[0] || { fondo: '#000000', letra: '#FFFFFF' }
+  const cardRef = React.useRef<HTMLDivElement>(null)
+  const parejaColor = { fondo: colorFondo, letra: colorLetra }
   const hayGuion = Boolean(guionResumen)
 
   const palabras = guionResumen?.palabras || 0
@@ -53,14 +65,16 @@ export default function TarjetaLectura({
         }
       : {}
 
+  const fuentefamily = tipoFuente === 'serif' ? '"Source Serif 4", serif' : '"Source Sans 3", sans-serif'
+
   return (
     <div
+      ref={cardRef}
       data-testid="tarjeta-lectura-portada"
+      className="tarjeta-lectura-borde-iluminado"
       style={{
-        backgroundColor: '#000000',
+        backgroundColor: parejaColor.fondo,
         borderRadius: 24,
-        borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
         padding: 'var(--aire-4)',
         position: 'relative',
         display: 'flex',
@@ -101,47 +115,9 @@ export default function TarjetaLectura({
           justifyContent: 'center'
         }}
       >
-        {/* Velo Superior */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 35,
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 100%)',
-            zIndex: 3,
-            pointerEvents: 'none'
-          }}
-        />
-
-        {/* Velo Inferior */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: 35,
-            background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 100%)',
-            zIndex: 3,
-            pointerEvents: 'none'
-          }}
-        />
-
-        {/* Dos renglones claros en el centro (Banda de Lectura) */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: 0,
-            right: 0,
-            transform: 'translateY(-50%)',
-            height: 56,
-            zIndex: 1,
-            pointerEvents: 'none'
-          }}
-        />
+        {/* Velo Superior e Inferior */}
+        <div className="tarjeta-lectura-velo-superior" />
+        <div className="tarjeta-lectura-velo-inferior" />
 
         {/* Bloque de Texto de Lectura */}
         {hayGuion ? (
@@ -152,25 +128,16 @@ export default function TarjetaLectura({
               padding: '0 var(--aire-2)',
               fontSize: 18,
               lineHeight: 1.4,
-              fontFamily: 'var(--fuente-sans)',
+              fontFamily: fuentefamily,
               color: parejaColor.letra,
               ...animacionTextoStyle
             }}
           >
-            {lineasTexto.length > 0 ? (
-              lineasTexto.slice(0, 8).map((linea, idx) => (
-                <div key={idx} style={{ marginBottom: 4, opacity: idx >= 1 && idx <= 3 ? 1 : 0.45 }}>
-                  {linea}
-                </div>
-              ))
-            ) : (
-              <>
-                <div style={{ opacity: 0.45 }}>Reciente lectura en teleprompter...</div>
-                <div style={{ opacity: 1 }}>Preparado para iniciar la toma en cámara.</div>
-                <div style={{ opacity: 1 }}>El texto avanzará automáticamente según tu voz.</div>
-                <div style={{ opacity: 0.45 }}>Mantén un ritmo claro y constante.</div>
-              </>
-            )}
+            {lineasTexto.slice(0, 8).map((linea, idx) => (
+              <div key={idx} style={{ marginBottom: 4, opacity: idx >= 1 && idx <= 2 ? 1 : 0.45 }}>
+                {linea}
+              </div>
+            ))}
           </div>
         ) : (
           /* Estado Vacío: Cursor Parpadeando sin iconos ni ilustraciones */
@@ -191,7 +158,7 @@ export default function TarjetaLectura({
                 width: 2,
                 height: 24,
                 backgroundColor: 'var(--color-acento)',
-                animation: 'parpadeoCursor 1s infinite'
+                animation: movimientoApagado() ? 'none' : 'parpadeoCursor 1s infinite'
               }}
             />
           </div>
@@ -201,6 +168,12 @@ export default function TarjetaLectura({
       {/* Zona Inferior: Título de 44px y Botón de Acción */}
       <div style={{ zIndex: 5, display: 'flex', flexDirection: 'column', gap: 'var(--aire-3)' }}>
         <h2
+          data-testid="titulo-tarjeta-lectura"
+          onTouchStart={onDiagTouchStart}
+          onTouchEnd={onDiagTouchEnd}
+          onMouseDown={onDiagTouchStart}
+          onMouseUp={onDiagTouchEnd}
+          onClick={onDiagClick}
           style={{
             margin: 0,
             fontSize: 44,
@@ -210,7 +183,9 @@ export default function TarjetaLectura({
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
-            letterSpacing: '-0.02em'
+            letterSpacing: '-0.02em',
+            cursor: 'pointer',
+            userSelect: 'none'
           }}
           title={tituloText}
         >
@@ -219,7 +194,10 @@ export default function TarjetaLectura({
 
         {hayGuion ? (
           <button
-            onClick={onLeer}
+            onClick={() => {
+              const rect = cardRef.current?.getBoundingClientRect()
+              onLeer(rect)
+            }}
             className="btn-deformable"
             style={{
               width: '100%',
@@ -256,7 +234,7 @@ export default function TarjetaLectura({
               justifyContent: 'center'
             }}
           >
-            Escribe tu primer guión
+            Escribe tu primer guion
           </button>
         )}
       </div>

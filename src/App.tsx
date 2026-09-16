@@ -13,7 +13,7 @@ import { iniciarGrabacion, detenerGrabacion } from './lib/grabadorCorpus'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
 import CuentaRegresiva from './components/CuentaRegresiva'
-import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL } from './components/movimiento'
+import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
 import { hapticaToqueMedio, hapticaToqueSuave } from './haptica'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
 import { Guion, ResumenGuion, guionNuevo, PAREJAS_COLOR } from './datos/modelo'
@@ -94,6 +94,7 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const [vista, setVista] = useState<Vista>('biblioteca')
   const origenLecturaRef = useRef<'biblioteca' | 'editor'>('editor')
+  const [rectTarjeta, setRectTarjeta] = useState<DOMRect | null>(null)
   const prevVistaRef = useRef<Vista | null>(null)
   const [direccion, setDireccion] = useState<'adentro' | 'atras' | 'inicial'>('inicial')
   const guionModificadoRef = useRef<boolean>(false)
@@ -647,20 +648,21 @@ export default function App({ motor, repoOverride }: AppProps) {
     }, 1000)
   }
 
-  async function handleEntrarLectura(origen: 'biblioteca' | 'editor' = 'editor') {
+  async function handleEntrarLectura(origen: 'biblioteca' | 'editor' = 'editor', rect?: DOMRect) {
     origenLecturaRef.current = origen
+    setRectTarjeta(rect || null)
     hapticaToqueMedio()
     setVista('lectura')
     setControlesVisibles(false)
     await handleStart()
   }
 
-  async function handleLeerDirecto(id: string) {
+  async function handleLeerDirecto(id: string, rect?: DOMRect) {
     try {
       const g = await repoRef.current.abrir(id)
       if (g) {
         setGuionActual(g)
-        await handleEntrarLectura('biblioteca')
+        await handleEntrarLectura('biblioteca', rect)
       }
     } catch (e) {
       console.warn('[App] Error al abrir directo para lectura:', e)
@@ -948,6 +950,9 @@ export default function App({ motor, repoOverride }: AppProps) {
             setVerTranscripcion={setVerTranscripcion}
             tema={tema}
             setTema={setTema}
+              tipoFuente={tipoFuente}
+              colorFondo={colorFondo}
+              colorLetra={colorLetra}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
             style={{
               filter: vista === 'lectura' ? 'brightness(0.15)' : 'none',
@@ -1004,7 +1009,26 @@ export default function App({ motor, repoOverride }: AppProps) {
       )}
 
       {vista === 'lectura' && guionActual && (
-        <div style={{ position: 'relative', width: '100%', height: '100dvh', overflow: 'hidden' }}>
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100dvh',
+            zIndex: 150,
+            overflow: 'hidden',
+            borderRadius: 0,
+            transformOrigin: 'top left',
+            animation: !movimientoApagado() && origenLecturaRef.current === 'biblioteca' && rectTarjeta
+              ? `transformacionTarjetaLectura ${MS_PANTALLA}ms ${CURVA_RESORTE} forwards`
+              : 'none',
+            '--tarjeta-top': rectTarjeta ? `${rectTarjeta.top}px` : '0px',
+            '--tarjeta-left': rectTarjeta ? `${rectTarjeta.left}px` : '0px',
+            '--tarjeta-width': rectTarjeta ? `${rectTarjeta.width}px` : '100%',
+            '--tarjeta-height': rectTarjeta ? `${rectTarjeta.height}px` : '100dvh'
+          } as React.CSSProperties}
+        >
           {controlesVisibles && (
             <div
               data-testid="panel-controles-lectura"

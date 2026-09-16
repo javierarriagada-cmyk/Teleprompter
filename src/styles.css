@@ -153,6 +153,58 @@ button {
   }
 }
 
+@keyframes transformacionTarjetaLectura {
+  from {
+    top: var(--tarjeta-top, 0px);
+    left: var(--tarjeta-left, 0px);
+    width: var(--tarjeta-width, 100%);
+    height: var(--tarjeta-height, 100dvh);
+    border-radius: 24px;
+  }
+  to {
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0px;
+  }
+}
+
+@keyframes parpadeoCursor {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.tarjeta-lectura-velo-superior {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 35px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.tarjeta-lectura-velo-inferior {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 35px;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.tarjeta-lectura-borde-iluminado {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
 /* Deformacion de botones en Material 3 Expressive */
 button.btn-deformable,
 .btn-deformable {

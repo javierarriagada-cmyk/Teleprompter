@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
-import { Guion, ResumenGuion } from '../datos/modelo'
+import { Guion, ResumenGuion, PAREJAS_COLOR } from '../datos/modelo'
 import { IdMotor } from '../motor/MotorDeVoz'
 import { PanelCorpus } from './PanelCorpus'
 import TarjetaLectura from './TarjetaLectura'
@@ -10,7 +10,7 @@ import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
   onAbrir: (id: string) => void
-  onLeerDirecto?: (id: string) => void
+  onLeerDirecto?: (id: string, rect?: DOMRect) => void
   onCrearNuevo: () => void
   onImportarArchivo: (file: File) => void
   onRenombrar?: (id: string, nuevoTitulo: string) => void
@@ -26,6 +26,9 @@ interface BibliotecaViewProps {
   setVerTranscripcion?: (ver: boolean) => void
   tema?: 'sistema' | 'claro' | 'oscuro'
   setTema?: (tema: 'sistema' | 'claro' | 'oscuro') => void
+  tipoFuente?: 'sans' | 'serif'
+  colorFondo?: string
+  colorLetra?: string
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
   'data-pantalla-direccion'?: string
   style?: React.CSSProperties
@@ -57,6 +60,12 @@ export function calcularMinutosLectura(guiones: ResumenGuion[]): number {
   return Math.round(totalPalabras / 150)
 }
 
+export function formatearTextoResumen(guiones: ResumenGuion[]): string {
+  const minsLectura = calcularMinutosLectura(guiones)
+  if (guiones.length === 0) return '0 guiones'
+  return `${guiones.length} ${guiones.length === 1 ? 'guión' : 'guiones'} · ${minsLectura} ${minsLectura === 1 ? 'minuto' : 'minutos'} de lectura`
+}
+
 let esPrimerMontajeBiblioteca = true
 
 export function resetearPrimerMontajeBiblioteca() {
@@ -82,6 +91,9 @@ export default function BibliotecaView({
   setVerTranscripcion,
   tema = 'claro',
   setTema,
+  tipoFuente = 'sans',
+  colorFondo = PAREJAS_COLOR[0].fondo,
+  colorLetra = PAREJAS_COLOR[0].letra,
   onRegistrarCerrarModal,
   'data-pantalla-direccion': dataPantallaDireccion,
   style,
@@ -311,49 +323,25 @@ export default function BibliotecaView({
         data-testid="input-importar-archivo"
       />
 
-      {/* Elementos preservados para guardiana T212 y diagnóstico */}
-      <h1
-        className="texto-display"
-        data-testid="titulo-biblioteca"
-        data-retardo-escalonado={esInicial && !movimientoApagado() ? 0 : 0}
-        style={{ display: 'none', margin: 0, color: 'var(--color-texto)', ...animacionTituloStyle }}
-      >
-        Guiones
-      </h1>
-      <div
-        className="texto-meta"
-        data-testid="resumen-encabezado-biblioteca"
-        data-retardo-escalonado={esInicial && !movimientoApagado() ? 40 : 0}
-        onTouchStart={handleDiagTouchStart}
-        onTouchEnd={handleDiagTouchEnd}
-        onMouseDown={handleDiagTouchStart}
-        onMouseUp={handleDiagTouchEnd}
-        onClick={handleDiagClick}
-        style={{
-          display: 'none',
-          color: 'var(--color-apagado)',
-          marginTop: 'var(--aire-1)',
-          cursor: 'pointer',
-          userSelect: 'none',
-          ...animacionSubtituloStyle
-        }}
-      >
-        {textoResumen}
-      </div>
-
       {/* Tarjeta de Portada y Menú Superior */}
       <div style={{ position: 'relative', marginBottom: 'var(--aire-4)', ...animacionTituloStyle }}>
         <TarjetaLectura
           guionResumen={guionMasReciente}
           textoCompleto={textoTarjeta}
           esInicial={esInicial}
-          onLeer={() => {
+          onLeer={(rect) => {
             if (guionMasReciente) {
-              if (onLeerDirecto) onLeerDirecto(guionMasReciente.id)
+              if (onLeerDirecto) onLeerDirecto(guionMasReciente.id, rect)
               else onAbrir(guionMasReciente.id)
             }
           }}
           onCrearNuevo={onCrearNuevo}
+          onDiagTouchStart={handleDiagTouchStart}
+          onDiagTouchEnd={handleDiagTouchEnd}
+          onDiagClick={handleDiagClick}
+          tipoFuente={tipoFuente}
+          colorFondo={colorFondo}
+          colorLetra={colorLetra}
         />
 
         {/* Menú superior derecho ⋯ flotante sobre la tarjeta */}

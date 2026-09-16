@@ -1448,7 +1448,7 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
 
     window.confirm = origConfirm
 
-    expect(container!.textContent).toContain('Guiones')
+    expect(container!.querySelector('[data-testid="btn-menu-superior-biblioteca"]')).not.toBeNull()
   })
 
   test('T36: el guardado automatico llama a guardar una sola vez tras varias teclas seguidas', async () => {
@@ -2344,7 +2344,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    expect(container!.textContent).toContain('Guiones')
+    expect(container!.querySelector('[data-testid="btn-menu-superior-biblioteca"]')).not.toBeNull()
 
     const inputArchivo = container!.querySelector('input[data-testid="input-importar-archivo"]') as HTMLInputElement
     expect(inputArchivo).not.toBeNull()

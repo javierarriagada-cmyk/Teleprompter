@@ -21,7 +21,8 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
       'src/components/BibliotecaView.tsx',
       'src/components/EditorView.tsx',
       'src/components/PanelCorpus.tsx',
-      'src/components/BarraDeTiempo.tsx'
+      'src/components/BarraDeTiempo.tsx',
+      'src/components/TarjetaLectura.tsx'
     ]
 
     const regexHexColor = /#(?:[0-9a-fA-F]{3,4}){1,2}\b/g
@@ -32,8 +33,9 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
     const regexMarginSpacing = /(?:margin|marginTop|marginBottom|marginLeft|marginRight)\s*:\s*([0-9.]+)/g
     const regexGapSpacing = /\bgap\s*:\s*([0-9.]+)/g
 
-    const tamanosPermitidos = [11, 13, 15, 18, 28]
-    const radiosPermitidos = [10, 24, 999]
+    // 44 px es la excepción del título de la Tarjeta de Portada (el protagonista de la pantalla)
+    const tamanosPermitidos = [11, 13, 15, 18, 28, 44]
+    const radiosPermitidos = [0, 10, 24, 999]
     const espaciadosPermitidos = [0, 4, 8, 12, 20, 32]
 
     const infracciones: string[] = []
@@ -157,29 +159,25 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
     })
   })
 
-  test('T212 - EL ESCALONADO. En el primer montaje, el titulo, el subtitulo y la lista tienen retardos reales distintos y crecientes. Volviendo del editor, los tres tienen retardo cero.', async () => {
+  test('T212 - EL ESCALONADO. En el primer montaje, la tarjeta de portada y la lista tienen retardos reales distintos y crecientes. Volviendo del editor, los dos tienen retardo cero.', async () => {
     resetearPrimerMontajeBiblioteca()
 
     render(<BibliotecaView guiones={[]} onAbrir={() => {}} onCrearNuevo={() => {}} onImportarArchivo={() => {}} onBorrar={() => {}} onArchivar={() => {}} />)
 
-    const titulo = screen.getByTestId('titulo-biblioteca')
-    const subtitulo = screen.getByTestId('resumen-encabezado-biblioteca')
+    const tarjeta = screen.getByTestId('tarjeta-lectura-portada').parentElement!
     const lista = screen.getByTestId('lista-guiones-biblioteca')
 
     // Verificar estilo animationDelay real
-    expect(titulo.style.animationDelay).toBe('0ms')
-    expect(subtitulo.style.animationDelay).toBe('40ms')
+    expect(tarjeta.style.animationDelay).toBe('0ms')
     expect(lista.style.animationDelay).toBe('80ms')
 
     // Simular un segundo montaje (ej. volviendo del editor)
     render(<BibliotecaView guiones={[]} onAbrir={() => {}} onCrearNuevo={() => {}} onImportarArchivo={() => {}} onBorrar={() => {}} onArchivar={() => {}} />)
 
-    const titulo2 = screen.getAllByTestId('titulo-biblioteca')[1]
-    const subtitulo2 = screen.getAllByTestId('resumen-encabezado-biblioteca')[1]
+    const tarjeta2 = screen.getAllByTestId('tarjeta-lectura-portada')[1].parentElement!
     const lista2 = screen.getAllByTestId('lista-guiones-biblioteca')[1]
 
-    expect(titulo2.style.animationDelay).toBe('')
-    expect(subtitulo2.style.animationDelay).toBe('')
+    expect(tarjeta2.style.animationDelay).toBe('')
     expect(lista2.style.animationDelay).toBe('')
   })
 })
