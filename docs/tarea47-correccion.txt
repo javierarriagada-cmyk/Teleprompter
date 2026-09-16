@@ -1,0 +1,215 @@
+TAREA 47 - CORRECCION 1. MISMA RAMA.
+
+El commit que publicaste estaba VACIO otra vez -su unico contenido era un
+duplicado de un commit mio que ya estaba en main-. El parche real lo saque de las
+actividades de la sesion. Ya no lo tomo como problema tuyo: de aca en adelante lo
+saco siempre de ahi.
+
+
+LO QUE ESTA BIEN, y lo comprobe corriendo y mirando:
+
+  - 202 de 202, tsc limpio.
+  - TeleprompterView SOLO cambio el color del punto de grabacion. La geometria
+    de lectura quedo intacta, que era la frontera mas importante.
+  - T213 y T214 SE PONEN ROJAS de verdad. T214 ademas atrapa el numero exacto:
+    con el rojo de texto en #E11D2E da 3.8956 y exige 4.5. Esa prueba es buena.
+  - EL ICONO FUNCIONA. Lo mire en el lanzador del emulador: los cinco renglones
+    se leen, los dos encendidos se distinguen, y la mascara circular no corta
+    nada. La zona segura quedo bien.
+  - El nombre: Sigo en strings.xml y en capacitor.config.ts, y el identificador
+    del paquete intacto como se pidio.
+  - Las barras del sistema se oscurecieron.
+  - El scroll sin barra, hecho.
+
+HAY OCHO DEFECTOS. EL PRIMERO ES MIO, NO TUYO.
+
+
+DEFECTO 1 - LA APLICACION NUNCA SIGUE AL TEMA DEL TELEFONO. Y FALTO EN EL ENCARGO.
+
+Puse el emulador en modo oscuro, borre los datos y abri la aplicacion:
+SALIO CLARA.
+
+La causa esta en App.tsx:
+
+    const [tema, setTema] = useState(ajustesPrevios.tema || 'claro')
+
+y un efecto que siempre estampa data-tema en documentElement. Como data-tema
+SIEMPRE esta puesto, la consulta @media (prefers-color-scheme: dark) de
+styles.css NUNCA se aplica.
+
+O sea que TODO EL MUNDO OSCURO QUE ACABAS DE CONSTRUIR ES INALCANZABLE salvo que
+alguien entre al menu y lo elija a mano. Las nueve fichas nuevas, los dos rojos,
+todo.
+
+ESTO NO ESTABA EN EL ENCARGO Y ES CULPA MIA: especifique los tonos y no la
+conducta. Lo agrego ahora.
+
+QUE HACER
+
+    El tema pasa a tener TRES estados, no dos:
+
+        'sistema'  <- el nuevo valor por omision
+        'claro'
+        'oscuro'
+
+    Con 'sistema' NO SE ESTAMPA data-tema en documentElement. Se saca el
+    atributo, y ahi la consulta @media decide, que es justo para lo que
+    styles.css ya esta escrito.
+
+    Con 'claro' u 'oscuro' se estampa como hoy y gana sobre el sistema.
+
+    En el menu de la biblioteca, el control pasa de dos botones a tres:
+    Sistema · Claro · Oscuro, con Sistema elegido por omision.
+
+    Y sanitiza el valor guardado como se hace con el motor en sanitizarEngine:
+    si no es uno de los tres, cae en 'sistema'.
+
+    NOTA, no hace falta que hagas nada: quien ya tenga la aplicacion instalada
+    tiene 'claro' guardado y va a seguir en claro hasta que lo cambie. Como
+    todavia no publicamos, no importa.
+
+
+DEFECTO 2 - LA PARTE 6 ESTA A MEDIAS: DECLARASTE EL SISTEMA Y NO LO USASTE
+
+Buscando en los componentes:
+
+    --bg-fila           declarada, usada por NADIE
+    --bg-panel          declarada, usada por NADIE
+    --bg-menu           declarada, usada por NADIE
+    --color-separador   declarada, usada por NADIE
+
+En todo src/components/ cambiaron TRES LINEAS en total. O sea que la escala de
+superficies existe en styles.css y ningun componente la usa.
+
+Y eso es exactamente el defecto que esta tarea venia a arreglar. El diagnostico
+que la origino decia: "la identidad esta declarada y nadie la respeta".
+
+QUE HACER - lo que decia la parte 6 y no se hizo:
+
+    a. Las FILAS de la biblioteca pasan a --bg-fila.
+    b. Las TARJETAS y contenedores pasan a --bg-superficie.
+    c. Los PANELES y modales -Ajustes, Pegar texto, PanelCorpus- pasan a
+       --bg-panel.
+    d. Los MENUS de tres puntos pasan a --bg-menu.
+    e. Las LINEAS DIVISORIAS pasan a --color-separador.
+    f. Y donde una tarjeta o un panel hoy lleva `border`, SE LE SACA EL BORDE.
+       La profundidad viene del escalon de superficie, no del borde. El
+       --color-borde queda SOLO para el contorno de un control cuyo limite tiene
+       que percibirse: un campo de texto.
+    g. La linea de un pixel mas clara en el BORDE SUPERIOR de las tarjetas y
+       paneles: rgba(255,255,255,.06). Cuesta una linea y es lo que hace que un
+       rectangulo parezca un objeto apoyado.
+
+    DECI EN EL INFORME cuantos lugares cambiaste de cada uno.
+
+
+DEFECTO 3 - CURVA_RESORTE DECLARADA Y SIN USAR
+
+Esta en movimiento.tsx y el unico lugar que la usa es .btn-deformable en el CSS.
+
+La parte 8.a pedia que fuera EN LOS OBJETOS:
+
+    - la tarjeta / los paneles que suben  ->  panelSube
+    - el numero de la cuenta regresiva    ->  cuentaRegresivaEntra
+    - los menus que crecen                ->  menuCreceEsquina
+
+Hoy esos tres siguen con CURVA_ENTRA. Ponele el resorte a los tres.
+
+Y NO al texto ni a los controles de lectura, que siguen solo en opacidad.
+
+
+DEFECTO 4 - T215 ES DECORATIVA
+
+T215 comprueba esto:
+
+    expect(contenidoCSS.includes('cubic-bezier(.34, 1.3, .64, 1)')).toBe(true)
+
+O sea: que la cadena aparezca EN ALGUN LADO del archivo. Pasa en verde con el
+resorte sin usar en ningun objeto, porque lo usa el boton.
+
+Comprueba la mitad negativa -que los controles de lectura no lo usen- y no
+comprueba la positiva.
+
+QUE HACER: que T215 verifique que el resorte esta EN CADA UNO de los tres
+keyframes de objetos -panelSube, cuentaRegresivaEntra, menuCreceEsquina- y NO en
+panelControlesEntra.
+
+COMPROBALA ROMPIENDO: sacale el resorte a uno solo de los tres y verifica que se
+pone ROJA. Pega la salida.
+
+
+DEFECTO 5 - --color-grabando-texto NO EXISTE EN EL TEMA BASE
+
+En styles.css, el bloque :root -que es el que aplica cuando el telefono esta en
+claro y no hay data-tema- tiene:
+
+    --color-grabando: #D92B2B     <- el valor VIEJO
+    y NO tiene --color-grabando-texto
+
+Y BarraDeTiempo.tsx usa var(--color-grabando-texto). En el caso base esa variable
+no existe, asi que el tiempo de grabacion pierde su color.
+
+QUE HACER: que :root tenga los dos rojos con los valores nuevos, igual que los
+otros bloques. Una ficha NUNCA puede existir solo adentro de una consulta de
+medios o de un [data-tema]: ese es el defecto clasico de los temas.
+
+
+DEFECTO 6 - LAS CUATRO FICHAS NUEVAS TAMPOCO EXISTEN EN CLARO
+
+--bg-fila, --bg-panel, --bg-menu y --color-separador estan SOLO en los bloques
+oscuros. En :root y en [data-tema="claro"] no estan.
+
+Cuando arregles el defecto 2 y los componentes empiecen a usarlas, en tema claro
+no van a existir y esas superficies van a quedar transparentes.
+
+QUE HACER: darles su valor claro en :root y en [data-tema="claro"]. Sugerencia,
+para que el escalon exista igual en claro:
+
+    --bg-fila          #FAF9F6
+    --bg-superficie    #FFFFFF
+    --bg-panel         #FFFFFF
+    --bg-menu          #FFFFFF
+    --color-separador  #E4E0D9
+
+    En claro la elevacion se expresa al reves que en oscuro: la superficie sube
+    hacia el blanco y el suelo queda mas gris. Por eso varias coinciden en
+    #FFFFFF y la diferencia la hace el suelo, que ya es #F3F1ED.
+
+
+DEFECTO 7 - EL BOTON QUE SE DEFORMA ESTA EN UN SOLO LUGAR
+
+En EditorView se agrego className="btn-deformable" en UNA linea.
+
+La parte 8.b pedia que fuera en la accion principal -el boton Leer- Y en los
+botones de elegir entre opciones de Ajustes: Ancho, Tipografia, Donde lees, y las
+parejas de color.
+
+Ponelo en todos esos, y deci en el informe cuantos son.
+
+
+DEFECTO 8, MENOR - EL SELECTOR DE MOTOR SE CORTA
+
+En el menu de la biblioteca dice "Nativo (Androi" con la palabra cortada. Es del
+ancho del desplegable. Arreglalo achicando el texto de la opcion o dandole mas
+lugar: "Nativo" alcanza.
+
+
+AL TERMINAR
+
+   npx tsc --noEmit limpio.
+   npx vitest run sin fallas. Deci el numero exacto.
+   El resultado de romper T215 -ya arreglada-, textual.
+   Cuantos lugares cambiaste en el defecto 2 y cuantos botones en el 7.
+
+   PRUEBA NUEVA, T217 - EL TEMA SIGUE AL SISTEMA POR OMISION.
+   Sin nada guardado, el tema vale 'sistema' y documentElement NO tiene el
+   atributo data-tema. Al elegir 'oscuro' aparece con ese valor, y al volver a
+   'sistema' desaparece de nuevo.
+
+   COMPROBALA ROMPIENDO: hace que 'sistema' estampe data-tema="claro" y verifica
+   que se pone ROJA.
+
+   NO agregues elementos ni atributos inventados para sostener una prueba, no
+   dejes console.log, y NO BORRES COMENTARIOS.
+
+   Y cuando publiques, comproba que el commit tenga archivos adentro.
