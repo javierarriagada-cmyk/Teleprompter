@@ -148,6 +148,89 @@
   Comprobar el dominio —hace falta uno para la política de privacidad que Play exige— y, si se va a registrar, la búsqueda en INAPI. <strong>Y adentro de la aplicación todavía queda lenguaje de prototipo</strong>: el paquete se llama <code>teleprompter-mvp</code> y la primera pantalla dice «Guiones». Con la portada nueva ese título desaparece solo — la tarjeta ocupa su lugar.
 </div>
 
+<h2><span class="num">El sistema oscuro</span>Los tonos, medidos</h2>
+
+<p class="intro">Esta sección reemplaza lo que decía antes. Lo anterior citaba <strong>Material 2</strong> —los <code>#121212</code> y las capas de elevación por opacidad, que son la guía de 2019—. <strong>Material 3 los reemplazó por contenedores de superficie</strong>, y Expressive se construye encima de eso. Acá está el sistema como corresponde, calculado y comprobado contra la norma.</p>
+
+<h3>Primero, el defecto que apareció al medir</h3>
+
+<p>Nuestro tema oscuro de hoy tiene un problema que explica algo que se venía sintiendo sin poder nombrar:</p>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Par</th><th>Contraste</th><th></th></tr></thead>
+  <tbody>
+    <tr><td>texto sobre el suelo</td><td>15,33</td><td>bien</td></tr>
+    <tr><td>apagado sobre el suelo</td><td>5,75</td><td>bien</td></tr>
+    <tr><td>acento sobre el suelo</td><td>8,52</td><td>bien</td></tr>
+    <tr><td><b>borde sobre el suelo</b></td><td><b style="color:var(--oxido)">1,10</b></td><td><b style="color:var(--oxido)">invisible</b></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Y no es un desajuste: <code>--color-borde</code> y <code>--bg-superficie</code> <strong>son el mismo hexadecimal</strong>, <code>#211D17</code>. O sea que una tarjeta con borde apoyada sobre el suelo tiene un borde del mismo color que ella misma. <strong>Por eso en oscuro todo se ve plano</strong> — no hay ni sombra, ni borde, ni escalón.</p>
+
+<h3>La escala, por tonos</h3>
+
+<p>Matiz 62 —el cálido de nuestra paleta— con el croma <strong>escalado por tono</strong>: a luminancia muy baja, un croma que arriba se ve neutro abajo se ve marrón. Ése es un detalle de oficio que no está en ninguna guía.</p>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Rol</th><th>Tono</th><th>Hex</th><th>vs. suelo</th></tr></thead>
+  <tbody>
+    <tr><td><b>superficie</b> — el suelo de todo</td><td>6</td><td><code>#151312</code></td><td>—</td></tr>
+    <tr><td><b>contenedor-bajo</b> — filas de lista</td><td>10</td><td><code>#1E1B19</code></td><td>1,08</td></tr>
+    <tr><td><b>contenedor</b> — tarjetas</td><td>12</td><td><code>#221F1D</code></td><td>1,13</td></tr>
+    <tr><td><b>contenedor-alto</b> — paneles y modales</td><td>17</td><td><code>#2D2927</code></td><td>1,29</td></tr>
+    <tr><td><b>contenedor-más-alto</b> — menús</td><td>22</td><td><code>#383432</code></td><td>1,50</td></tr>
+    <tr><td><b>separador</b> — líneas divisorias</td><td>30</td><td><code>#4B4643</code></td><td>1,99</td></tr>
+    <tr><td><b>contorno</b> — bordes de control</td><td>60</td><td><code>#968F8B</code></td><td>5,82</td></tr>
+    <tr><td><b>texto-apagado</b></td><td>80</td><td><code>#CAC5C2</code></td><td>10,83</td></tr>
+    <tr><td><b>texto</b></td><td>90</td><td><code>#E7E1DE</code></td><td>14,31</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="nota">
+  <span class="t">La regla que sale de esos números</span>
+  <strong>La profundidad viene del escalón de superficie, no de sombras ni de bordes.</strong> Los saltos son de 1,08 a 1,50 — se leen como capas, no como contraste. Un borde sólo aparece donde el límite de un control <em>tiene</em> que percibirse, y ahí va el contorno de tono 60, que da 5,82 y cumple con holgura.
+</div>
+
+<h3>Dos cosas que un chequeo automático marcaría mal, y no lo están</h3>
+
+<p><strong>El separador da 1,99 y eso está bien.</strong> La norma de contraste no textual —WCAG 1.4.11, 3:1— aplica a <strong>controles y gráficos que significan algo</strong>, no a una línea divisoria decorativa. Subirle el brillo para "pasar" un chequeo que no le corresponde es lo que llena de rayas grises una pantalla oscura.</p>
+
+<p><strong>Y los escalones de 1,08 tampoco fallan</strong>: no están ahí para contrastar sino para separar planos. En una pantalla OLED en penumbra —que es donde se usa esto— 1,13 es un escalón perfectamente visible.</p>
+
+<h3>El rojo: el punto y el time-code no pueden ser el mismo</h3>
+
+<p>Acá los números corrigen a la recomendación externa, que proponía <code>#E11D2E</code>:</p>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Rojo</th><th>vs. suelo</th><th>Punto (gráfico, pide 3,0)</th><th>Time-code (texto, pide 4,5)</th></tr></thead>
+  <tbody>
+    <tr><td><code>#E11D2E</code></td><td>3,90</td><td>pasa</td><td style="color:var(--oxido)"><b>no pasa</b></td></tr>
+    <tr><td><code>#FF5A5A</code></td><td>6,05</td><td>pasa</td><td>pasa</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Entonces: <strong>el punto de grabación lleva el rojo saturado de cámara</strong> —es un gráfico y con 3,90 cumple— <strong>y el time-code lleva un rojo más claro del mismo matiz</strong>, porque es texto y alguien lo tiene que leer de reojo mientras habla.</p>
+
+<p>No es un compromiso: <strong>es exactamente lo que hacen los monitores de transmisión</strong>. La luz de tally es saturada y los números son legibles. Dos rojos, un solo significado.</p>
+
+<h3>Y la lectura no entra en esta tabla</h3>
+
+<p>La superficie de lectura <strong>no es interfaz, es contenido</strong>, a 24–42 px y con los colores que elige el usuario. Ahí no gobiernan las reglas de arriba.</p>
+
+<p>Pero aparece una pregunta que vale medir: la pareja por omisión es <code>#000000</code> con <code>#FFFFFF</code> — 21:1, el contraste máximo posible. <strong>Y el contraste máximo no es el óptimo para leer</strong>: blanco puro sobre negro puro produce <em>halación</em>, un halo que hace que las letras parezcan sangrar, y afecta sobre todo a quien tiene astigmatismo — una de cada tres personas.</p>
+
+<div class="alerta">
+  <span class="t">Esto no se cambia por lo que diga un artículo</span>
+  Se mide como todo lo demás en este proyecto: <strong>dos lecturas del mismo guion</strong>, una con la pareja de hoy y otra con una suavizada —<code>#0A0A0A</code> con <code>#F2F0EC</code>, que da 18,4:1— y se compara el corpus. Si no mueve el número, se queda como está. La pareja de hoy la eligió Javier mirando, y eso vale más que una recomendación general.
+</div>
+
 <h2><span class="num">El ícono</span>Lo único que se ve antes de instalar</h2>
 
 <p>La marca no puede ser un micrófono —lo usa toda aplicación de voz— ni un botón de play. Tiene que ser <strong>lo que hacemos y nadie más</strong>: renglones de texto apagados, y una ventana de dos renglones encendida.</p>
@@ -522,11 +605,13 @@
 
 <p>Nuestro paso más grande es 28. El nombre del guion, en la tarjeta, debería estar en <strong>44</strong> — más grande que cualquier otra cosa del producto, cortado si hace falta. No porque haga falta leerlo: porque <strong>ese guion es el protagonista de la pantalla y tiene que pesar como tal</strong>.</p>
 
-<h3>3 · Luz, no degradados</h3>
+<h3>3 · Profundidad — y acá me corrijo a mí mismo</h3>
 
-<p>Hoy todo es negro plano sobre negro plano: una sola capa. La profundidad no se consigue con degradados de colores —eso es lo que abarata a la competencia— sino con <strong>una fuente de luz</strong>.</p>
+<p>Esto decía antes: «una fuente de luz, la tarjeta con una sombra real debajo». <strong>Sobre oscuro eso no funciona</strong> — una sombra sobre un fondo casi negro es invisible, y es justamente por eso que Material expresa la elevación de otra manera.</p>
 
-<p>Una sola, arriba a la izquierda, coherente en toda la aplicación: la tarjeta apenas más clara que el suelo, con una sombra real debajo y un borde de un píxel más claro en su canto superior. Es lo que hace que un rectángulo deje de ser un rectángulo y pase a ser <strong>un objeto apoyado sobre algo</strong>.</p>
+<p>La profundidad viene <strong>al revés de lo que escribí</strong>: la tarjeta es <em>más clara</em> que el suelo, no más oscura con sombra. Los escalones están calculados en la sección del sistema oscuro —1,08 para una fila, 1,13 para una tarjeta, 1,29 para un panel— y ésos son los que hacen que un rectángulo deje de ser un rectángulo y pase a ser un objeto apoyado sobre algo.</p>
+
+<p>Lo único que sobrevive de la idea original es el canto: <strong>una línea de un píxel más clara en el borde superior</strong> de la tarjeta, que es como se ve un objeto iluminado desde arriba. Eso sí se percibe sobre oscuro, y cuesta una línea.</p>
 
 <h3>4 · Que se vea que escucha</h3>
 
@@ -701,7 +786,8 @@
   <thead><tr><th>Qué</th><th>Cuánto</th></tr></thead>
   <tbody>
     <tr><td><b>El tema oscuro por omisión</b></td><td><b>Una línea.</b> El tema ya existe y funciona: cambia cuál viene puesto.</td></tr>
-    <tr><td><b>Las fichas de color en oscuro</b></td><td>Ya están declaradas en <code>styles.css</code>. Hay que revisarlas mirando, no leyendo.</td></tr>
+    <tr><td><b>Las fichas de color en oscuro</b></td><td><b>Cambian: hoy son cuatro y pasan a nueve.</b> La escala por tonos está calculada en la sección del sistema oscuro, con los hexadecimales puestos. Y se arregla el borde invisible, que hoy es el mismo hex que la superficie.</td></tr>
+    <tr><td><b>Los dos rojos</b></td><td>Chico, y está medido: saturado para el punto, más claro para el time-code.</td></tr>
     <tr><td><b>El ícono y el arranque</b></td><td>Chico. Un SVG, los tamaños que pide Android, y la pantalla de arranque de la plataforma.</td></tr>
     <tr><td><b>La tarjeta de la portada</b></td><td><b>Lo más grande.</b> Es dibujar la lectura en chico y quieta dentro de la biblioteca.</td></tr>
     <tr><td><b>La transformación al entrar a leer</b></td><td>Mediano, y es el que más se siente. Se escribe sobre la gramática de la tarea 45.</td></tr>
