@@ -3,6 +3,7 @@ import React from 'react'
 export const CURVA_ENTRA = 'cubic-bezier(0.05, 0.7, 0.1, 1)'
 export const CURVA_SALE = 'cubic-bezier(0.3, 0, 0.8, 0.15)'
 export const CURVA_NORMAL = 'cubic-bezier(0.2, 0, 0, 1)'
+export const CURVA_RESORTE = 'cubic-bezier(.34, 1.3, .64, 1)'
 
 export const MS_DEDO = 100 // respuesta al toque: un color, un hundido
 export const MS_CHICO = 200 // algo chico aparece en su lugar

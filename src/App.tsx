@@ -167,7 +167,11 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [mirror, setMirror] = useState<boolean>(Boolean(ajustesPrevios.mirror))
   const [lineasZona, setLineasZona] = useState<number>(ajustesPrevios.lineasZona !== undefined ? Number(ajustesPrevios.lineasZona) : 3)
   const [anclajeZona, setAnclajeZona] = useState<'arriba' | 'medio' | 'abajo'>(ajustesPrevios.anclajeZona || 'arriba')
-  const [tema, setTema] = useState<'claro' | 'oscuro'>(ajustesPrevios.tema || 'claro')
+  const [tema, setTema] = useState<'sistema' | 'claro' | 'oscuro'>(
+    ajustesPrevios.tema === 'claro' || ajustesPrevios.tema === 'oscuro' || ajustesPrevios.tema === 'sistema'
+      ? ajustesPrevios.tema
+      : 'sistema'
+  )
 
   // COLUMNA ANCHA POR OMISION. Estaba en angosta y Javier lo pregunto el 13 de septiembre
   // de 2026: la angosta es una opcion para quien la quiera, no el punto de partida. En un
@@ -195,7 +199,11 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   // Sincronizar tema con documentElement
   useEffect(() => {
-    document.documentElement.setAttribute('data-tema', tema)
+    if (tema === 'claro' || tema === 'oscuro') {
+      document.documentElement.setAttribute('data-tema', tema)
+    } else {
+      document.documentElement.removeAttribute('data-tema')
+    }
   }, [tema])
 
   // Guardar ajustes en localStorage ante cambios
