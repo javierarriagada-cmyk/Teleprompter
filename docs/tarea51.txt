@@ -1,0 +1,219 @@
+TAREA 51 - EL NOMBRE APARECE
+
+PARTIR DE: main. Rama nueva: tarea-51-el-nombre-aparece.
+SI TRABAJAS DESPUES DE UNA CORRECCION, NO VUELVAS A CLONAR main. Segui en tu rama.
+
+NO se toca src/motor/, src/lib/, src/hooks/, TeleprompterView.tsx ni haptica.ts.
+NO se toca el AVD del arranque: marca_arranque.xml, marca_arranque_animada.xml y
+los animator/ se quedan EXACTAMENTE como estan.
+
+
+POR QUE
+
+Javier miro la aplicacion instalada el 16 de septiembre de 2026 y dijo esto:
+
+    "La palabra Sigo no aparece. Splash = barras. Escritorio = Sigo en texto del
+     launcher, simbolo ajeno. Adentro = nada. La marca sigue siendo un
+     teleapuntador anonimo."
+
+Tiene razon y se puede comprobar: el unico sitio donde se lee el nombre es la
+etiqueta que dibuja Android debajo del icono, que la escribe el sistema, no
+nosotros. La aplicacion nunca dice como se llama.
+
+Y lo segundo:
+
+    "La entrada sigue corta. ~2 s y ya estas en la lista. El dibujo se entiende;
+     no hay sostenido."
+
+Las dos cosas se resuelven en el mismo sitio, y la idea es de el: UN FOTOGRAMA
+ESPEJO EN EL WEBVIEW. Adentro del navegador no existe el tope de 1000 ms de la
+pantalla de arranque de Android ni las limitaciones de un AnimatedVectorDrawable.
+La marca sigue viva ahi, con todo el tiempo que necesite, y ahi se escribe el
+nombre.
+
+
+============================================================
+PARTE 1 - EL FOTOGRAMA ESPEJO
+============================================================
+
+Componente nuevo: src/components/Entrada.tsx. Puramente presentacional.
+
+QUE ES: una capa fija, a pantalla completa, fondo #151312, que dibuja LOS MISMOS
+CINCO RENGLONES en EL MISMO SITIO Y AL MISMO TAMANO que la marca que acaba de
+dibujar el arranque nativo, con el punto rojo ya encendido.
+
+Se monta desde el primer pintado de App, ANTES que la biblioteca. La pantalla de
+arranque nativa se desvanece encima de ella, asi que el relevo no se ve: lo que
+habia y lo que queda son el mismo dibujo.
+
+QUE PASA SI NO CALZA: se ve un salto, y es peor que no tener espejo. Por eso las
+medidas van calculadas y no a ojo.
+
+LAS MEDIDAS, Y ESTA ES LA PARTE QUE NO SE IMPROVISA
+
+    El dibujo nativo vive en un lienzo de 432 unidades. Android lo muestra a
+    288 dp cuando el icono NO lleva color de fondo, que es nuestro caso -no
+    tenemos windowSplashScreenIconBackgroundColor-.
+
+        factor = 288 / 432 = 0.6667 px de CSS por unidad
+
+    En el WebView de Android, 1 px de CSS es 1 dp. Asi que cada medida del vector
+    se multiplica por 0.6667.
+
+    El centro del dibujo nativo es el CENTRO DE LA PANTALLA. Todo se posiciona
+    como desplazamiento respecto de ese centro, no desde arriba ni desde la
+    izquierda.
+
+    Grosor del trazo: 20 unidades -> 13.3 px. Puntas redondas.
+
+    Los cinco renglones, con sus desplazamientos respecto del centro:
+
+        renglon   x desde   x hasta    y        color
+        R1        -42.7     +58.7     -53.3     apagado   #8A837C
+        R2        -69.3     +34.7     -26.7     lleno     #E7E1DE
+        R3        -69.3     +58.7       0       lleno     #E7E1DE
+        R4        -69.3     +24.0     +26.7     apagado   #8A837C
+        R5        -69.3     +48.0     +53.3     apagado   #8A837C
+
+    El punto: centro en (+46.0, -32.0) respecto del centro de la pantalla, radio
+    8.7 px, color #E11D2E, YA ENCENDIDO. No vuelve a parpadear: el parpadeo ya
+    ocurrio en el arranque nativo y repetirlo delata el relevo.
+
+    Todos esos numeros salen de multiplicar por 0.6667 las coordenadas de
+    marca_arranque.xml menos 216. Si cambias el vector, recalculalos; no los
+    copies a mano de otro sitio.
+
+    COMPROBALO CON UNA CUENTA, NO MIRANDO: la prueba T254 recalcula el factor y
+    las cinco posiciones desde el propio marca_arranque.xml y las compara con lo
+    que dibuja el componente. Asi, si alguien mueve el vector, la prueba avisa.
+
+EL SOSTENIDO
+
+    El espejo se queda QUIETO 250 ms con el punto encendido antes de hacer nada
+    mas. Eso es lo que Javier pide: que la marca se termine de leer en vez de
+    completarse y desaparecer en el mismo instante.
+
+
+============================================================
+PARTE 2 - SE ESCRIBE EL NOMBRE
+============================================================
+
+Despues del sostenido, y SIN que los renglones se muevan de su sitio:
+
+    SIGO se escribe debajo de la marca, letra por letra, con trazo.
+
+COMO
+
+    Un <svg> con las cuatro letras como TRAZOS -paths con stroke, sin relleno- y
+    la animacion clasica de escritura: stroke-dasharray igual al largo del trazo
+    y stroke-dashoffset de ese largo a 0. Es el equivalente en web del
+    trimPathEnd que usa el arranque nativo, y por eso se ve de la misma familia.
+
+    En mayusculas. Color #E7E1DE. Grosor coherente con el de los renglones: la
+    marca y el nombre tienen que parecer escritos por la misma mano, asi que el
+    trazo de las letras va entre 0.8 y 1.0 veces el de los renglones.
+
+    Las cuatro letras en cascada, 180 ms cada una, escalonadas 90 ms. Cierra en
+    450 ms.
+
+    NO uses una fuente con un <text> y le pongas una animacion de opacidad. Eso
+    no es escribir, es aparecer, y se nota. Las letras son trazos.
+
+    NO pongas "Teleprompter", ni un lema, ni el punto rojo en la O. El punto ya
+    esta arriba, en la marca; ponerlo dos veces lo gasta.
+
+DESPUES
+
+    Todo el espejo -renglones, punto y nombre- se desvanece en 300 ms y aparece
+    la biblioteca, que ya esta montada debajo.
+
+    Total del espejo: 250 de sostenido + 450 de escritura + 300 de salida = 1000 ms.
+
+CON movimientoApagado() EN TRUE
+
+    El espejo NO se monta. La biblioteca aparece directo. Nada de esto es
+    informacion: es presentacion, y quien pidio menos movimiento no la necesita.
+
+    Y HAY UN TOPE, igual que en el arranque nativo: si por lo que sea el espejo
+    no llega a desmontarse, a los 2000 ms se va solo. Una capa que tapa la
+    aplicacion para siempre es peor que no tener entrada.
+
+
+============================================================
+PARTE 3 - EL EDITOR DEJA DE SER UN DOCUMENTO
+============================================================
+
+Javier, sobre lo primero que se ve al tocar la tarjeta:
+
+    "Sigue siendo un documento: Sin titulo, + Agregar bloque, Leer fantasma al
+     fondo. Congelado el modelo de bloques esta bien; el titulo vacio y el bloque
+     punteado en el centro, no. Un campo y un cursor alcanzan."
+
+EL MODELO DE BLOQUES NO SE TOCA. Cada parrafo sigue siendo un bloque. Lo que
+cambia es lo que se ve cuando el guion esta VACIO:
+
+  1. EL TITULO. Hoy el campo trae escrito "Sin título" como texto de verdad, asi
+     que hay que borrarlo para escribir el propio. En un guion recien creado el
+     campo va VACIO, con el cursor puesto y el teclado abierto. Su marca de
+     posicion -el texto gris- dice "Titulo", y desaparece al escribir.
+
+     OJO: guionNuevo, en src/datos/modelo.ts, es quien pone 'Sin título'. NO LO
+     TOQUES: la capa de datos esta congelada y otras pruebas dependen de ese
+     valor. El editor muestra el campo vacio cuando el titulo vale 'Sin título',
+     y al escribir guarda lo que se escriba.
+
+  2. EL BLOQUE PUNTEADO. Con el guion vacio no se dibuja el recuadro de puntos ni
+     el boton "+ Agregar bloque" en el centro. Hay un campo de texto y un cursor.
+     El boton de agregar bloque vuelve a aparecer en cuanto hay texto.
+
+  3. LA PILDORA LEER FANTASMA. Con cero palabras hoy queda una pildora apagada al
+     fondo que no hace nada. Con el guion vacio NO SE DIBUJA. Aparece cuando hay
+     algo que leer.
+
+     Esto reemplaza al estado deshabilitado: T190 comprueba hoy que este
+     deshabilitada con un guion vacio. Reescribila para que compruebe que NO ESTA
+     en el documento, y decilo en el informe.
+
+
+============================================================
+PRUEBAS
+============================================================
+
+Numerar desde T254. T1 a T253 estan usados.
+
+  T254 - EL ESPEJO CALZA CON EL ARRANQUE. Leyendo marca_arranque.xml, calcular
+         factor = 288/432 y las cinco posiciones de renglon como
+         (coordenada - 216) * factor. Comparar con las que usa Entrada.tsx, con
+         una tolerancia de 0.5 px. Si alguien mueve el vector y no el espejo, ROJA.
+
+  T255 - EL NOMBRE SE ESCRIBE, NO APARECE. Los trazos de las letras usan
+         stroke-dashoffset. Ningun elemento del nombre se anima solo con opacity.
+
+  T256 - EL ESPEJO SE VA. Montando App, el espejo esta al principio y NO esta en
+         el documento despues de 1000 ms. Y con movimientoApagado() en true no se
+         monta nunca.
+
+         COMPROBALA ROMPIENDO: saca el desmontaje y verifica que se pone ROJA.
+         Despues dejala bien. PONE EL RESULTADO TEXTUAL EN EL INFORME.
+
+  T257 - EL EDITOR VACIO NO TIENE NI TITULO ESCRITO NI BLOQUE PUNTEADO NI
+         PILDORA. Con un guion recien creado: el campo de titulo esta vacio, no
+         hay boton de agregar bloque, y btn-leer-guion-fijo NO esta en el
+         documento. Con texto, los tres vuelven.
+
+
+============================================================
+AL TERMINAR
+============================================================
+
+   tsc limpio. El conjunto en 231 o mas.
+
+   INFORME:
+     1. Las tres partes, una por una.
+     2. Los numeros que te dieron las cuentas del espejo, para comparar con los
+        de este encargo.
+     3. Que hiciste con T190.
+     4. El resultado textual de romper T256.
+     5. git diff --stat.
+
+   NO digas que "se ve mejor": desde la VM no lo ves. Deci que cambiaste.

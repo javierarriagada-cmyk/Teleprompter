@@ -13,7 +13,10 @@ import com.getcapacitor.BridgeActivity;
 public class MainActivity extends BridgeActivity {
     private static boolean listoParaMostrar = false;
     private static long inicioActivityMs = 0;
-    private static final long DURACION_MARCA_MS = 1540;
+    // 1540 es cuando el punto termina de encenderse. Los 250 de mas son el SOSTENIDO:
+    // el punto se queda quieto y prendido un cuarto de segundo antes de soltar. Sin eso
+    // la marca se completa y desaparece en el mismo instante, y no se alcanza a leer.
+    private static final long DURACION_MARCA_MS = 1540 + 250;
 
     public static void notificarListo() {
         listoParaMostrar = true;

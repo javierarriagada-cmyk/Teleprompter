@@ -126,7 +126,7 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
 
     // La tarjeta sigue en el documento
     expect(screen.getByTestId('tarjeta-lectura-portada')).not.toBeNull()
-    expect(screen.getByText('Sin guiones todavía')).not.toBeNull()
+    expect(screen.getByText('Sin guiones')).not.toBeNull()
 
     const btnCrear = screen.getByRole('button', { name: /Escribe tu primer guion/i })
     expect(btnCrear).not.toBeNull()

@@ -48,7 +48,10 @@ export default function TarjetaLectura({
     ? guionResumen?.titulo && guionResumen.titulo.trim()
       ? guionResumen.titulo
       : 'Sin título'
-    : 'Sin guiones todavía'
+    // "Sin guiones todavía" no entra a 44 px y se cortaba en "Sin guiones to...".
+    // El titulo de la portada es de una sola linea a proposito; entonces el texto se
+    // ajusta al sitio que hay, no al reves.
+    : 'Sin guiones'
 
   const lineasTexto = textoCompleto
     ? textoCompleto.split('\n').filter((l) => l.trim().length > 0)
