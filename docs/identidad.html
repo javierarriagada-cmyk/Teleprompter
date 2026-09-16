@@ -233,58 +233,115 @@
 
 <h2><span class="num">El ícono</span>Lo único que se ve antes de instalar</h2>
 
-<p>La marca no puede ser un micrófono —lo usa toda aplicación de voz— ni un botón de play. Tiene que ser <strong>lo que hacemos y nadie más</strong>: renglones de texto apagados, y una ventana de dos renglones encendida.</p>
+<p>La marca no puede ser un micrófono —lo usa toda aplicación de voz— ni un botón de play. Tiene que ser <strong>lo que hacemos y nadie más</strong>: renglones de texto apagados, y una ventana de dos renglones encendida. Es nuestra pantalla de lectura reducida a su mínima expresión.</p>
 
-<p>Es nuestra pantalla de lectura reducida a su mínima expresión. Se lee a 48 píxeles y no se parece a nada de la tienda.</p>
+<h3>El nombre no va en el ícono</h3>
 
-<div class="iconos">
+<p>Tres razones y ninguna es de gusto. <strong>Android ya escribe «Sigo» debajo</strong> — ponerlo adentro lo duplica. <strong>A 48 píxeles cuatro letras son ilegibles</strong> y sólo ensucian. Y <strong>Play desaconseja texto en el ícono</strong>, porque compite con el nombre de la ficha.</p>
+
+<p>Además no hace falta: la marca ya dice el producto. Y el nombre dice lo mismo que la marca — la ventana sigue.</p>
+
+<h3>La zona segura, que es donde estaba el error</h3>
+
+<div class="alerta">
+  <span class="t">El dibujo anterior se salía, y con ciertas máscaras se habría cortado</span>
+  Un ícono adaptable de Android es un lienzo de <strong>108 dp</strong>, del cual el sistema recorta con la máscara que tenga el teléfono — círculo, cuadrado redondeado, trébol. <strong>Sólo se garantiza visible un círculo central de 66 dp</strong>, o sea un cuadrado útil de unos 46×46. Mi versión anterior ponía los renglones de <code>x=20</code> a <code>x=88</code>: <strong>22 dp fuera de la zona segura de cada lado.</strong>
+</div>
+
+<div class="iconos" style="align-items:flex-start">
   <div class="ic-caja">
-    <svg width="112" height="112" viewBox="0 0 108 108" aria-label="Icono a 112 px">
-      <rect width="108" height="108" rx="24" fill="#0B0C0C"/>
-      <rect x="20" y="26" width="68" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-      <rect x="20" y="41" width="52" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-      <rect x="20" y="56" width="68" height="7" rx="3.5" fill="#FFFFFF"/>
-      <rect x="20" y="71" width="44" height="7" rx="3.5" fill="#FFFFFF"/>
-      <rect x="20" y="86" width="60" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+    <svg width="150" height="150" viewBox="0 0 108 108" aria-label="El icono con la zona segura marcada">
+      <rect width="108" height="108" fill="#151312"/>
+      <circle cx="54" cy="54" r="33" fill="none" stroke="#10A88E" stroke-width="1" stroke-dasharray="3 3" opacity=".9"/>
+      <rect x="31" y="31" width="46" height="46" fill="none" stroke="#10A88E" stroke-width=".6" opacity=".45"/>
+      <rect x="31" y="31" width="46" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+      <rect x="31" y="41" width="36" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+      <rect x="31" y="51" width="46" height="5" rx="2.5" fill="#E7E1DE"/>
+      <rect x="31" y="61" width="30" height="5" rx="2.5" fill="#E7E1DE"/>
+      <rect x="31" y="71" width="42" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
     </svg>
-    <div class="et">112 px</div>
+    <div class="et">la zona segura, 66 dp</div>
   </div>
   <div class="ic-caja">
-    <svg width="72" height="72" viewBox="0 0 108 108" aria-label="Icono a 72 px">
-      <rect width="108" height="108" rx="24" fill="#0B0C0C"/>
-      <rect x="20" y="26" width="68" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-      <rect x="20" y="41" width="52" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-      <rect x="20" y="56" width="68" height="7" rx="3.5" fill="#FFFFFF"/>
-      <rect x="20" y="71" width="44" height="7" rx="3.5" fill="#FFFFFF"/>
-      <rect x="20" y="86" width="60" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+    <svg width="112" height="112" viewBox="0 0 108 108" aria-label="Con mascara de cuadrado redondeado">
+      <defs><clipPath id="m1"><rect width="108" height="108" rx="26"/></clipPath></defs>
+      <g clip-path="url(#m1)">
+        <rect width="108" height="108" fill="#151312"/>
+        <rect x="31" y="31" width="46" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+        <rect x="31" y="41" width="36" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+        <rect x="31" y="51" width="46" height="5" rx="2.5" fill="#E7E1DE"/>
+        <rect x="31" y="61" width="30" height="5" rx="2.5" fill="#E7E1DE"/>
+        <rect x="31" y="71" width="42" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+      </g>
     </svg>
-    <div class="et">72 px</div>
+    <div class="et">máscara cuadrada</div>
   </div>
   <div class="ic-caja">
-    <svg width="48" height="48" viewBox="0 0 108 108" aria-label="Icono a 48 px">
-      <rect width="108" height="108" rx="24" fill="#0B0C0C"/>
-      <rect x="20" y="26" width="68" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-      <rect x="20" y="41" width="52" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-      <rect x="20" y="56" width="68" height="7" rx="3.5" fill="#FFFFFF"/>
-      <rect x="20" y="71" width="44" height="7" rx="3.5" fill="#FFFFFF"/>
-      <rect x="20" y="86" width="60" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+    <svg width="112" height="112" viewBox="0 0 108 108" aria-label="Con mascara circular">
+      <defs><clipPath id="m2"><circle cx="54" cy="54" r="54"/></clipPath></defs>
+      <g clip-path="url(#m2)">
+        <rect width="108" height="108" fill="#151312"/>
+        <rect x="31" y="31" width="46" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+        <rect x="31" y="41" width="36" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+        <rect x="31" y="51" width="46" height="5" rx="2.5" fill="#E7E1DE"/>
+        <rect x="31" y="61" width="30" height="5" rx="2.5" fill="#E7E1DE"/>
+        <rect x="31" y="71" width="42" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+      </g>
     </svg>
-    <div class="et">48 px</div>
+    <div class="et">máscara circular</div>
   </div>
   <div class="ic-caja">
-    <svg width="112" height="112" viewBox="0 0 108 108" aria-label="Variante con la ventana en verde">
-      <rect width="108" height="108" rx="24" fill="#0B0C0C"/>
-      <rect x="20" y="26" width="68" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-      <rect x="20" y="41" width="52" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-      <rect x="20" y="56" width="68" height="7" rx="3.5" fill="#10A88E"/>
-      <rect x="20" y="71" width="44" height="7" rx="3.5" fill="#10A88E"/>
-      <rect x="20" y="86" width="60" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+    <svg width="48" height="48" viewBox="0 0 108 108" aria-label="A 48 pixeles">
+      <defs><clipPath id="m3"><rect width="108" height="108" rx="26"/></clipPath></defs>
+      <g clip-path="url(#m3)">
+        <rect width="108" height="108" fill="#151312"/>
+        <rect x="31" y="31" width="46" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+        <rect x="31" y="41" width="36" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+        <rect x="31" y="51" width="46" height="5" rx="2.5" fill="#E7E1DE"/>
+        <rect x="31" y="61" width="30" height="5" rx="2.5" fill="#E7E1DE"/>
+        <rect x="31" y="71" width="42" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+      </g>
     </svg>
-    <div class="et">variante</div>
+    <div class="et">48 px · la prueba real</div>
+  </div>
+  <div class="ic-caja">
+    <svg width="112" height="112" viewBox="0 0 108 108" aria-label="Capa monocroma para iconos tematizados">
+      <defs><clipPath id="m4"><rect width="108" height="108" rx="26"/></clipPath></defs>
+      <g clip-path="url(#m4)">
+        <rect width="108" height="108" fill="#C9C3BC"/>
+        <rect x="31" y="31" width="46" height="5" rx="2.5" fill="#2A241F" opacity=".35"/>
+        <rect x="31" y="41" width="36" height="5" rx="2.5" fill="#2A241F" opacity=".35"/>
+        <rect x="31" y="51" width="46" height="5" rx="2.5" fill="#2A241F"/>
+        <rect x="31" y="61" width="30" height="5" rx="2.5" fill="#2A241F"/>
+        <rect x="31" y="71" width="42" height="5" rx="2.5" fill="#2A241F" opacity=".3"/>
+      </g>
+    </svg>
+    <div class="et">tematizado, Android 13+</div>
   </div>
 </div>
 
-<p><strong>La variante verde es para discutir.</strong> El blanco dice la verdad —así se ve el texto vivo— y el verde se reconoce mejor entre otros íconos oscuros. Mi voto es el blanco: el verde ya significa «esto actúa» adentro de la aplicación, y usarlo acá le quita filo.</p>
+<h3>Los tres archivos que hay que entregar</h3>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Capa</th><th>Qué lleva</th></tr></thead>
+  <tbody>
+    <tr><td><b>Fondo</b><br><code>ic_launcher_background</code></td><td>Un color plano: <code>#151312</code>, el mismo suelo de la aplicación. Sin degradado, sin borde: la máscara del teléfono le da la forma.</td></tr>
+    <tr><td><b>Frente</b><br><code>ic_launcher_foreground</code></td><td>Los cinco renglones, dentro del cuadro de 46×46 centrado. Los dos vivos en <code>#E7E1DE</code> opacos, los tres apagados al 30%.</td></tr>
+    <tr><td><b>Monocromo</b><br><code>ic_launcher_monochrome</code></td><td><b>Lo que casi nadie hace.</b> Desde Android 13 el sistema puede teñir el ícono con el color del fondo de pantalla. Sin esta capa, el nuestro queda como un cuadrado plano entre íconos que sí se adaptan — y se nota.</td></tr>
+    <tr><td><b>Ficha de Play</b></td><td>512×512 PNG, 32 bits, <b>sin transparencia</b>. Play le aplica su propio redondeo. Es el mismo dibujo, con el fondo pintado.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="nota">
+  <span class="t">Por qué los renglones apagados están al 30% y no al 16%</span>
+  A 48 px el 16% desaparece, y lo que queda son dos barras blancas — que se leen como un signo igual o un menú, no como texto. Al 30% <strong>la composición sigue diciendo «renglones de texto, dos encendidos»</strong> incluso cuando es del tamaño de una uña. Ese número sale de mirarlo chico, no de una guía.
+</div>
+
+<p>Y los anchos de los renglones son desparejos —46, 36, 46, 30, 42— <strong>a propósito</strong>: cinco barras iguales son una grilla; cinco desparejas son un párrafo.</p>
+
+<p><strong>El blanco quedó decidido</strong>, y no la variante verde: el verde ya significa «esto actúa» adentro de la aplicación, y usarlo en la marca le quita filo. El blanco además dice la verdad — así se ve el texto vivo.</p>
 
 <h2><span class="num">El arranque</span>Del ícono a la biblioteca, sin un solo destello</h2>
 
@@ -296,12 +353,12 @@
     <div class="tel" style="background:#0B0C0C">
       <div class="sis"><span>12:09</span><span>▂▄ ▮</span></div>
       <div class="z" style="display:flex;align-items:center;justify-content:center">
-        <svg width="54" height="54" viewBox="0 0 108 108">
-          <rect x="20" y="26" width="68" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-          <rect x="20" y="41" width="52" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-          <rect x="20" y="56" width="68" height="7" rx="3.5" fill="#FFFFFF"/>
-          <rect x="20" y="71" width="44" height="7" rx="3.5" fill="#FFFFFF"/>
-          <rect x="20" y="86" width="60" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+        <svg width="62" height="62" viewBox="0 0 108 108">
+          <rect x="31" y="31" width="46" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+          <rect x="31" y="41" width="36" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+          <rect x="31" y="51" width="46" height="5" rx="2.5" fill="#E7E1DE"/>
+          <rect x="31" y="61" width="30" height="5" rx="2.5" fill="#E7E1DE"/>
+          <rect x="31" y="71" width="42" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
         </svg>
       </div>
       <div class="nav"><i></i><i style="border-radius:999px"></i><i></i></div>
@@ -653,15 +710,15 @@
 
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.4rem;margin:1.8rem 0;align-items:center">
   <div style="background:#0B0C0C;border-radius:18px;padding:34px;display:flex;align-items:center;justify-content:center">
-    <svg width="120" height="120" viewBox="0 0 108 108" aria-label="La marca en movimiento: la ventana clara baja por los renglones">
-      <rect x="20" y="26" width="68" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-      <rect x="20" y="41" width="52" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-      <rect x="20" y="56" width="68" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-      <rect x="20" y="71" width="44" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
-      <rect x="20" y="86" width="60" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+    <svg width="130" height="130" viewBox="0 0 108 108" aria-label="La marca en movimiento: la ventana clara baja por los renglones">
+      <rect x="31" y="31" width="46" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+      <rect x="31" y="41" width="36" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+      <rect x="31" y="51" width="46" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+      <rect x="31" y="61" width="30" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
+      <rect x="31" y="71" width="42" height="5" rx="2.5" fill="#E7E1DE" opacity=".3"/>
       <g class="marca-ventana">
-        <rect x="20" y="26" width="68" height="7" rx="3.5" fill="#FFFFFF"/>
-        <rect x="20" y="41" width="52" height="7" rx="3.5" fill="#FFFFFF"/>
+        <rect x="31" y="31" width="46" height="5" rx="2.5" fill="#E7E1DE"/>
+        <rect x="31" y="41" width="36" height="5" rx="2.5" fill="#E7E1DE"/>
       </g>
     </svg>
   </div>
@@ -728,7 +785,7 @@
   .marca-ventana { animation: bajaVentana 4.5s cubic-bezier(.34,1.3,.64,1) infinite; }
   @keyframes bajaVentana {
     0%, 12% { transform: translateY(0); }
-    46%, 88% { transform: translateY(45px); }
+    46%, 88% { transform: translateY(30px); }
     100% { transform: translateY(0); }
   }
   @media (prefers-reduced-motion: reduce) { .marca-ventana { animation: none; transform: translateY(30px); } }
@@ -788,7 +845,7 @@
     <tr><td><b>El tema oscuro por omisión</b></td><td><b>Una línea.</b> El tema ya existe y funciona: cambia cuál viene puesto.</td></tr>
     <tr><td><b>Las fichas de color en oscuro</b></td><td><b>Cambian: hoy son cuatro y pasan a nueve.</b> La escala por tonos está calculada en la sección del sistema oscuro, con los hexadecimales puestos. Y se arregla el borde invisible, que hoy es el mismo hex que la superficie.</td></tr>
     <tr><td><b>Los dos rojos</b></td><td>Chico, y está medido: saturado para el punto, más claro para el time-code.</td></tr>
-    <tr><td><b>El ícono y el arranque</b></td><td>Chico. Un SVG, los tamaños que pide Android, y la pantalla de arranque de la plataforma.</td></tr>
+    <tr><td><b>El ícono y el arranque</b></td><td>Chico y está especificado: <b>tres capas</b> —fondo, frente y monocromo— más el PNG de 512 para Play. Todo dentro del cuadro seguro de 46×46.</td></tr>
     <tr><td><b>La tarjeta de la portada</b></td><td><b>Lo más grande.</b> Es dibujar la lectura en chico y quieta dentro de la biblioteca.</td></tr>
     <tr><td><b>La transformación al entrar a leer</b></td><td>Mediano, y es el que más se siente. Se escribe sobre la gramática de la tarea 45.</td></tr>
     <tr><td><b>Los resortes</b></td><td><b>Chico.</b> Son tres curvas nuevas en <code>movimiento.tsx</code>, al lado de las que ya están.</td></tr>
