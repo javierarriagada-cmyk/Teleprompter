@@ -461,7 +461,7 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     // Estado 1: Con movimiento encendido
     const res1 = render(<App repoOverride={repo1} />)
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 200))
+      await new Promise((r) => setTimeout(r, 1100))
     })
 
     const rootApp1 = res1.container.firstElementChild as HTMLElement
