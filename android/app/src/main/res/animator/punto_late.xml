@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <objectAnimator
+        android:propertyName="fillAlpha"
+        android:valueFrom="0"
+        android:valueTo="1"
+        android:duration="80"
+        android:startOffset="560"
+        android:valueType="floatType"
+        android:interpolator="@android:anim/linear_interpolator" />
+    <objectAnimator
+        android:propertyName="fillAlpha"
+        android:valueFrom="1"
+        android:valueTo="0"
+        android:duration="70"
+        android:startOffset="640"
+        android:valueType="floatType"
+        android:interpolator="@android:anim/linear_interpolator" />
+    <objectAnimator
+        android:propertyName="fillAlpha"
+        android:valueFrom="0"
+        android:valueTo="0"
+        android:duration="60"
+        android:startOffset="710"
+        android:valueType="floatType"
+        android:interpolator="@android:anim/linear_interpolator" />
+    <objectAnimator
+        android:propertyName="fillAlpha"
+        android:valueFrom="0"
+        android:valueTo="1"
+        android:duration="70"
+        android:startOffset="770"
+        android:valueType="floatType"
+        android:interpolator="@android:anim/linear_interpolator" />
+    <objectAnimator
+        android:propertyName="fillAlpha"
+        android:valueFrom="1"
+        android:valueTo="0"
+        android:duration="70"
+        android:startOffset="840"
+        android:valueType="floatType"
+        android:interpolator="@android:anim/linear_interpolator" />
+    <objectAnimator
+        android:propertyName="fillAlpha"
+        android:valueFrom="0"
+        android:valueTo="1"
+        android:duration="70"
+        android:startOffset="910"
+        android:valueType="floatType"
+        android:interpolator="@android:anim/linear_interpolator" />
+</set>

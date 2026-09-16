@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="fondo_arranque">#151312</color>
+    <color name="marca_trazo">#E7E1DE</color>
+    <color name="marca_punto">#E11D2E</color>
+</resources>

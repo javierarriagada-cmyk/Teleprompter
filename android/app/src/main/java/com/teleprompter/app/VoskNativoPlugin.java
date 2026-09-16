@@ -82,6 +82,12 @@ public class VoskNativoPlugin extends Plugin implements RecognitionListener {
         call.resolve(r);
     }
 
+    @PluginMethod
+    public void listo(PluginCall call) {
+        MainActivity.notificarListo();
+        call.resolve();
+    }
+
     /**
      * Copia el modelo a la memoria interna la primera vez y lo deja cargado.
      *
