@@ -13,6 +13,7 @@ import { iniciarGrabacion, detenerGrabacion } from './lib/grabadorCorpus'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
 import CuentaRegresiva from './components/CuentaRegresiva'
+import { Entrada } from './components/Entrada'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
 import { hapticaToqueMedio, hapticaToqueSuave } from './haptica'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
@@ -92,6 +93,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [usandoMemoriaFallback, setUsandoMemoriaFallback] = useState<boolean>(false)
   const [errorRepositorio, setErrorRepositorio] = useState<string | null>(null)
 
+  const [mostrarEntrada, setMostrarEntrada] = useState<boolean>(!movimientoApagado())
   const [vista, setVista] = useState<Vista>('biblioteca')
   const origenLecturaRef = useRef<'biblioteca' | 'editor'>('editor')
   const [rectTarjeta, setRectTarjeta] = useState<DOMRect | null>(null)
@@ -933,6 +935,10 @@ export default function App({ motor, repoOverride }: AppProps) {
         margin: '0 auto'
       }}
     >
+
+      {mostrarEntrada && (
+        <Entrada onFinish={() => setMostrarEntrada(false)} />
+      )}
 
       {/* Indicador de precarga de modelo Vosk */}
       {(estadoPrecarga === 'descargando' || estadoPrecarga === 'error') && (
