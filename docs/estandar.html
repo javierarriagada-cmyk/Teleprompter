@@ -354,8 +354,8 @@
   <thead><tr><th>Pantalla</th><th>Qué cambia</th></tr></thead>
   <tbody>
     <tr>
-      <td><b>1 · Biblioteca</b></td>
-      <td>La fila pasa a la pieza única: título en serif 18, meta en 13, radio 10, sin botones de editar y borrar a la vista. <b>Y queda abierta la pregunta grande:</b> la competencia que graba no abre en la lista sino en un botón de acción. Si la cámara entra, esto se decide de nuevo.</td>
+      <td><b>1 · Biblioteca</b><br><span style="color:var(--oxido);font-size:.85em;font-weight:600">REESCRITO</span></td>
+      <td><b>Deja de ser una lista y pasa a ser la cara del producto.</b> Arriba, ocupando más de la mitad de la pantalla, una tarjeta negra con el guion en el que estabas <b>dibujado como se va a ver cuando lo leas</b> —la tipografía de lectura, la ventana clara, el velo— y un solo botón: Leer. Debajo, el resto de los guiones en una lista tranquila, y «+ Nuevo» como acción secundaria.<br><br>Con eso se resuelven de una vez los cuatro defectos que este documento venía listando por separado: <b>una sola cosa manda</b>, los guiones <b>dejan de verse como archivos</b>, <b>el negro entra a la aplicación</b> en vez de vivir encerrado detrás de un botón, y <b>aparece la imagen que falta</b> — que no es una foto: es el texto.<br><br>Está dibujado en el cuarto documento, <em>La cara del producto</em>. <b>Abierto:</b> qué muestra la tarjeta si alguien borra todos sus guiones.</td>
     </tr>
     <tr>
       <td><b>2 · Menú de la biblioteca</b></td>
@@ -367,7 +367,7 @@
     </tr>
     <tr>
       <td><b>4 · Editor</b></td>
-      <td>El cuerpo de texto sube de 14 a 15. La barra «Leer» pasa a píldora y a la acción principal del sistema. Los doce colores a mano de este archivo pasan a fichas.</td>
+      <td>El cuerpo de texto sube de 14 a 15. La barra «Leer» pasa a píldora y a la acción principal del sistema. Los doce colores a mano de este archivo pasan a fichas.<br><br><b>Agregado el 15 de septiembre:</b> lo que se pega entra en <b>un solo bloque</b> —antes se partía uno por párrafo y el editor los dibujaba numerados, con botones de mover y borrar que nadie pidió— y el cuadro de texto <b>crece con lo que tiene adentro</b>. Estaba fijo en 374 px con 720 de contenido: la mitad del guion quedaba en un scroll adentro de otro scroll.</td>
     </tr>
     <tr>
       <td><b>5 · Menú del editor</b></td>
@@ -397,10 +397,21 @@
 </table>
 </div>
 
+<h3>La transición que vale por todas las demás</h3>
+
+<p>Hay un movimiento que no está en ninguna de las diez filas porque no pertenece a una pantalla sino a <strong>el paso entre dos</strong>, y es el que más caro hace sentir a una aplicación: <strong>la tarjeta de la biblioteca no lleva a la pantalla de lectura, se convierte en ella.</strong></p>
+
+<p>El texto que estabas mirando en chico es el mismo que queda en grande, en el mismo sitio. No hay corte: hay acercamiento. Android lo llama <em>transformación de contenedor</em>, y es lo que convierte dos pantallas en un solo lugar. Se escribe con la gramática que ya dejó la tarea 45 en <code>movimiento.tsx</code> — no empieza de cero.</p>
+
+<div class="nota">
+  <span class="t">Y una corrección de marco, que sale de investigar el 15 de septiembre</span>
+  Google cambió su propio sistema en 2025: <strong>Material 3 Expressive</strong>, con investigación sobre 18.000 participantes, y va deliberadamente en contra del minimalismo plano — el color dirige la atención en vez de decorar, <strong>la forma carga la identidad</strong>, y el movimiento tiene física en lugar de curvas. Nosotros adoptamos las curvas de la generación anterior y nada más. Nuestro radio de 10 en todo es correcto y anónimo: <strong>no dice nada de nosotros</strong>. Una aplicación que sigue las reglas de 2021 en un teléfono de 2026 se ve prolija y vieja al mismo tiempo.
+</div>
+
 <h3>Las cinco cosas que sacamos de la competencia, ubicadas</h3>
 
 <ol class="orden">
-  <li><span class="t">Abrir en una acción, no en una lista</span><span class="d">Pantalla 1. Es la única que no se puede decidir todavía: depende de si la cámara entra. Con cámara, el botón grande tiene sentido; sin cámara, abrir en «grabar» sería prometer algo que no hacemos.</span></li>
+  <li><span class="t">Abrir en una acción, no en una lista</span><span class="d">Pantalla 1. <b>Resuelto, y sin depender de la cámara.</b> Yo había escrito que esto no se podía decidir hasta que la cámara entrara, porque abrir en «grabar» sería prometer lo que no hacemos. Estaba pensando corto: la acción con la que abrimos no es grabar, <b>es leer</b> — y eso sí lo hacemos, y es lo único que nadie más hace igual. La tarjeta de la fila 1 es esa acción.</span></li>
   <li><span class="t">El tiempo transcurrido, imposible de no ver</span><span class="d">Pantallas 8 y 9. Hoy es una casilla que se puede apagar. Si el producto graba, cuánto llevás deja de ser opcional.</span></li>
   <li><span class="t">El medidor de nivel de micrófono</span><span class="d">Pantalla 8. La idea más inteligente de las siete capturas, y <b>no contradice la regla</b>: muestra el nivel que entra, un hecho físico, no el estado del seguidor. Con el nivel en cero el motor no puede andar, y eso no es culpa del motor.</span></li>
   <li><span class="t">Cambiar de cámara con un botón</span><span class="d">Pantalla 9, cuando la cámara entre. Frontal y trasera, ya pedido.</span></li>
@@ -417,9 +428,10 @@
 <p>Todo lo de arriba es una tarea sola y es de las más fáciles de encargar, porque no tiene ambigüedad: son números.</p>
 
 <ol class="orden">
-  <li><span class="t">Que el sistema sea el único camino</span><span class="d">Las cinco fichas de tipografía, los cinco espacios, los dos radios y los seis colores quedan en <code>styles.css</code>, y los 90 colores escritos a mano y los tamaños fuera de escala pasan a usarlos. <strong>Con una prueba que falle si alguien vuelve a escribir un color o un tamaño a mano</strong> — se comprueba leyendo los archivos, igual que T207.</span></li>
+  <li><span class="t">Que el sistema sea el único camino</span><span class="d"><b>HECHO — tarea 46.</b> Las cinco fichas de tipografía, los cinco espacios, los dos radios y los seis colores quedan en <code>styles.css</code>, y los 90 colores escritos a mano pasaron a usarlos. T209 falla si alguien vuelve a escribir un color o un tamaño a mano, y nombra el archivo y la línea.</span></li>
+  <li><span class="t">La cara del producto</span><span class="d"><b>LO SIGUIENTE, y es el salto.</b> La tarjeta de lectura en la portada, las filas mostrando texto en vez de fechas, y la transformación de contenedor al entrar a leer. Dibujado en el cuarto documento. No necesita la cámara ni el motor.</span></li>
   <li><span class="t">Las cinco piezas</span><span class="d">La fila, el grupo de opciones, el grupo de ajustes, la acción principal y el aviso. Una vez cada una, y las diez pantallas armadas con eso.</span></li>
-  <li><span class="t">Lo de la tienda</span><span class="d">Espera a que la cámara esté adentro. Antes de eso no hay nada que fotografiar.</span></li>
+  <li><span class="t">Lo de la tienda</span><span class="d"><b>Se adelanta.</b> Creía que había que esperar a la cámara porque «no hay nada que fotografiar». Con la portada nueva sí lo hay: negro, texto grande, ventana clara — y no se parece a ningún otro teleprómpter de la tienda, porque los demás fotografían su interfaz y nosotros fotografiamos la lectura. La cara humana sigue esperando a la cámara.</span></li>
 </ol>
 
 <div class="nota">

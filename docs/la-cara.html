@@ -1,0 +1,265 @@
+<title>La cara del producto</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --papel: #F4F2ED; --papel-2: #EAE7DF; --tinta: #15191A; --tinta-2: #5E6663;
+    --verde: #0E6B59; --verde-claro: #E3EEEA; --oxido: #A8481A; --oxido-claro: #F3E5DC;
+    --linea: #D8D3C7;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --sans: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --papel: #141716; --papel-2: #1D2220; --tinta: #E8E6DF; --tinta-2: #9AA29E;
+      --verde: #5FBFA6; --verde-claro: #16302A; --oxido: #E08A5C; --oxido-claro: #33211A;
+      --linea: #2C3331;
+    }
+  }
+  :root[data-theme="dark"] {
+    --papel: #141716; --papel-2: #1D2220; --tinta: #E8E6DF; --tinta-2: #9AA29E;
+    --verde: #5FBFA6; --verde-claro: #16302A; --oxido: #E08A5C; --oxido-claro: #33211A;
+    --linea: #2C3331;
+  }
+
+  body { background: var(--papel); color: var(--tinta); font-family: var(--sans); font-size: 17px; line-height: 1.6; margin: 0; }
+  .hoja { max-width: 820px; margin: 0 auto; padding-block: 56px 96px; padding-left: 20px; padding-right: 20px; }
+
+  h1 { font-family: var(--serif); font-size: clamp(2.1rem, 6vw, 3.1rem); font-weight: 700; line-height: 1.08; letter-spacing: -.015em; margin: 0 0 .5rem; text-wrap: balance; }
+  .bajada { font-family: var(--serif); font-size: 1.2rem; color: var(--tinta-2); margin: 0 0 2.5rem; text-wrap: balance; }
+  h2 { font-family: var(--serif); font-size: 1.75rem; font-weight: 700; letter-spacing: -.01em; margin: 4rem 0 .4rem; padding-top: 1.6rem; border-top: 2px solid var(--tinta); text-wrap: balance; }
+  h2 .num { display: block; font-family: var(--sans); font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--verde); margin-bottom: .35rem; }
+  h3 { font-family: var(--sans); font-size: 1.02rem; font-weight: 700; margin: 2.2rem 0 .5rem; }
+  p { margin: 0 0 1rem; }
+  .intro { color: var(--tinta-2); margin-bottom: 2rem; }
+  code { font-family: var(--mono); font-size: .85em; background: var(--papel-2); padding: .1em .35em; border-radius: 3px; }
+
+  .nota { background: var(--verde-claro); padding: 1.1rem 1.2rem; margin: 1.8rem 0; font-size: .95rem; }
+  .nota .t { font-weight: 700; display: block; margin-bottom: .2rem; }
+  .alerta { background: var(--oxido-claro); padding: 1.1rem 1.2rem; margin: 1.8rem 0; font-size: .95rem; }
+  .alerta .t { font-weight: 700; display: block; margin-bottom: .2rem; color: var(--oxido); }
+  .cita { font-family: var(--serif); font-size: 1.08rem; font-style: italic; border-left: 2px solid var(--linea); padding-left: 1.1rem; margin: 1.5rem 0; color: var(--tinta-2); }
+  .cita b { font-style: normal; color: var(--tinta); }
+
+  /* ---------- los telefonos ---------- */
+  .par { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.6rem; margin: 2rem 0; }
+  .col > .rotulo { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; margin-bottom: .6rem; }
+  .col.hoy > .rotulo { color: var(--oxido); }
+  .col.prop > .rotulo { color: var(--verde); }
+
+  .tel {
+    width: 100%; max-width: 290px; aspect-ratio: 434 / 868;
+    border: 1px solid var(--linea); border-radius: 18px; overflow: hidden;
+    display: flex; flex-direction: column; position: relative;
+    font-size: 10px;
+  }
+  .tel .barra-sis { height: 5.5%; display: flex; align-items: center; justify-content: space-between; padding: 0 9px; font-size: 7.5px; flex: 0 0 auto; }
+  .tel .nav-sis { height: 4.5%; display: flex; align-items: center; justify-content: center; gap: 34px; flex: 0 0 auto; }
+  .tel .nav-sis i { width: 7px; height: 7px; border-radius: 1px; display: block; }
+  .tel .lienzo { flex: 1 1 auto; position: relative; overflow: hidden; }
+
+  /* pantalla de hoy */
+  .hoy-fondo { background: #F0EFEA; color: #1A1815; }
+  .hoy-fondo .barra-sis, .hoy-fondo .nav-sis { background: #F7F7F5; color: #5E6663; }
+  .hoy-fondo .nav-sis i { background: #8A8A86; }
+  .h-tit { font-family: var(--serif); font-size: 19px; font-weight: 700; margin: 0; }
+  .h-sub { font-size: 8.5px; color: #78706A; margin-top: 1px; }
+  .h-fila-tit { font-family: var(--serif); font-size: 12.5px; font-weight: 600; }
+  .h-fila-meta { font-size: 8.5px; color: #78706A; margin-top: 1px; }
+  .h-pill { position: absolute; right: 12px; bottom: 12px; background: #0F8377; color: #fff; font-size: 9px; font-weight: 600; padding: 7px 13px; border-radius: 999px; }
+
+  /* pantalla propuesta */
+  .prop-fondo { background: #0B0C0C; color: #EDEAE3; }
+  .prop-fondo .barra-sis { background: #0B0C0C; color: #8A8F8C; }
+  .prop-fondo .nav-sis { background: #0B0C0C; }
+  .prop-fondo .nav-sis i { background: #4A4F4D; }
+
+  .tarjeta {
+    margin: 10px; border-radius: 20px; background: #000; overflow: hidden;
+    position: relative; height: 56%;
+    box-shadow: 0 10px 26px rgba(0,0,0,.45);
+  }
+  .tarjeta .texto { padding: 15px 14px 0; font-family: var(--serif); font-size: 12.5px; line-height: 1.5; color: rgba(255,255,255,.34); }
+  .tarjeta .texto .vivo { color: #fff; }
+  .tarjeta .velo-ab { position: absolute; left: 0; right: 0; bottom: 0; height: 46%; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, #000 72%); }
+  .tarjeta .pie { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 14px 13px; }
+  .tarjeta .nombre { font-size: 9px; color: rgba(255,255,255,.55); margin-bottom: 7px; letter-spacing: .04em; }
+  .tarjeta .leer { background: #10A88E; color: #04231D; font-size: 11px; font-weight: 700; padding: 9px 0; border-radius: 999px; text-align: center; }
+
+  .lista-osc { padding: 2px 14px 0; }
+  .lista-osc .enc { font-size: 7.5px; letter-spacing: .16em; text-transform: uppercase; color: #6E736F; margin: 6px 0 7px; font-weight: 700; }
+  .lista-osc .fila { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.07); }
+  .lista-osc .fila .n { font-family: var(--serif); font-size: 11.5px; color: #E6E2DA; }
+  .lista-osc .fila .m { font-size: 8px; color: #6E736F; }
+  .prop-mas { position: absolute; right: 12px; bottom: 10px; width: 26px; height: 26px; border-radius: 999px; background: rgba(255,255,255,.1); color: #EDEAE3; display: flex; align-items: center; justify-content: center; font-size: 14px; line-height: 1; }
+
+  .pie-dibujo { font-size: .84rem; color: var(--tinta-2); margin-top: .7rem; }
+
+  /* secuencia de la transicion */
+  .secuencia { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1.6rem 0; }
+  .paso-t { }
+  .paso-t .marco { aspect-ratio: 434 / 620; border: 1px solid var(--linea); border-radius: 12px; background: #0B0C0C; position: relative; overflow: hidden; }
+  .paso-t .cuad { position: absolute; background: #000; border: 1px solid rgba(255,255,255,.14); }
+  .paso-t .et { font-size: .74rem; color: var(--tinta-2); margin-top: .45rem; }
+  .paso-t .et b { display: block; color: var(--tinta); font-size: .8rem; }
+
+  ol.orden { padding-left: 0; list-style: none; counter-reset: o; margin: 1.5rem 0; }
+  ol.orden li { counter-increment: o; display: grid; grid-template-columns: 2.4rem 1fr; gap: .8rem; padding: 1rem 0; border-bottom: 1px solid var(--linea); }
+  ol.orden li::before { content: counter(o); font-family: var(--serif); font-size: 1.5rem; font-weight: 700; color: var(--verde); line-height: 1.1; }
+  ol.orden .t { font-weight: 700; display: block; }
+  ol.orden .d { color: var(--tinta-2); font-size: .94rem; }
+
+  .tabla-caja { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; margin: 1.4rem 0; }
+  th { text-align: left; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-2); font-weight: 700; padding: 0 .9rem .5rem 0; border-bottom: 1px solid var(--tinta); white-space: nowrap; }
+  td { padding: .6rem .9rem .6rem 0; border-bottom: 1px solid var(--linea); vertical-align: top; }
+
+  footer { margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--linea); font-size: .85rem; color: var(--tinta-2); }
+</style>
+
+<div class="hoja">
+
+<h1>La cara del producto</h1>
+<p class="bajada">La aplicación no se parece a lo que hace. Abre como un archivador y lo único que la distingue —el texto que avanza solo, en negro— vive escondido detrás de un botón.</p>
+
+<p class="intro">Es el cuarto documento. Los tres anteriores midieron las pantallas, el movimiento entre ellas y el sistema visual. Todos describen <em>el piso</em>: hacen que esto deje de parecer un prototipo. Ninguno contesta la pregunta que importa para la tienda — <strong>qué hace que alguien la vea y la quiera instalar</strong>. Éste sí, y no necesita la cámara.</p>
+
+<h2><span class="num">El diagnóstico</span>Abrimos mostrando dónde guardamos, no qué hacemos</h2>
+
+<p class="cita">«esa portada de mierda que dice Guiones»<b> — Javier, 15 de septiembre de 2026</b></p>
+
+<p>Tiene razón y el problema no es la palabra. Mirá lo que hay en esa pantalla: un título que nombra una carpeta, un contador, filas con fecha, y un botón para crear. <strong>Eso es una aplicación de notas.</strong> Cualquier aplicación de notas.</p>
+
+<p>Y mientras tanto, lo que de verdad tenemos —texto blanco sobre negro que se mueve solo mientras hablás, con la ventana clara que te sigue— <strong>existe en una sola pantalla y sólo aparece después de apretar Leer</strong>. Es nuestra mejor imagen y está detrás de una puerta.</p>
+
+<div class="alerta">
+  <span class="t">La frase que resume todo el documento</span>
+  Tenemos exactamente una imagen buena en todo el producto, y la escondimos. Todo lo demás es un documento claro que podría ser de cualquiera.
+</div>
+
+<h2><span class="num">La propuesta</span>Que lo primero que se vea sea la lectura</h2>
+
+<p>La portada no muestra una lista de archivos: muestra <strong>el guion en el que estabas, dibujado como se va a ver cuando lo leas</strong>, en negro, con su ventana clara. No es una miniatura ni una ilustración: es la pantalla de lectura, en chico y quieta.</p>
+
+<div class="par">
+  <div class="col hoy">
+    <div class="rotulo">Hoy</div>
+    <div class="tel hoy-fondo">
+      <div class="barra-sis"><span>12:09</span><span>▂▄ ▮</span></div>
+      <div class="lienzo" style="padding:14px 13px 0">
+        <div class="h-tit">Guiones</div>
+        <div class="h-sub">1 guión · 1 minuto de lectura</div>
+        <div style="height:18px"></div>
+        <div class="h-fila-tit">Bienvenida</div>
+        <div class="h-fila-meta">1 min · hoy</div>
+        <div class="h-pill">+ Nuevo</div>
+      </div>
+      <div class="nav-sis"><i></i><i style="border-radius:999px"></i><i></i></div>
+    </div>
+    <p class="pie-dibujo">Ocho elementos del mismo peso. Lo más grande de la pantalla es una etiqueta de carpeta.</p>
+  </div>
+
+  <div class="col prop">
+    <div class="rotulo">Propuesta</div>
+    <div class="tel prop-fondo">
+      <div class="barra-sis"><span>12:09</span><span>▂▄ ▮</span></div>
+      <div class="lienzo">
+        <div class="tarjeta">
+          <div class="texto">
+            <span style="color:rgba(255,255,255,.18)">Hola. Lee esto en voz alta, con o sin apuro, como prefieras.</span><br><br>
+            <span class="vivo">Ahora fíjate en el texto. Se está moviendo solo, al ritmo en que hablas,</span><br>
+            <span style="color:rgba(255,255,255,.3)">sin que toques nada.</span>
+          </div>
+          <div class="velo-ab"></div>
+          <div class="pie">
+            <div class="nombre">Bienvenida · 1 min</div>
+            <div class="leer">▶ Leer</div>
+          </div>
+        </div>
+        <div class="lista-osc">
+          <div class="enc">Tus guiones</div>
+          <div class="fila"><span class="n">Nietzsche y la risa</span><span class="m">4 min</span></div>
+          <div class="fila"><span class="n">Carta a un amigo</span><span class="m">2 min</span></div>
+        </div>
+        <div class="prop-mas">+</div>
+      </div>
+      <div class="nav-sis"><i></i><i style="border-radius:999px"></i><i></i></div>
+    </div>
+    <p class="pie-dibujo">Una sola cosa manda, y esa cosa <em>es</em> el producto funcionando.</p>
+  </div>
+</div>
+
+<h3>Los cuatro problemas que resuelve de una vez</h3>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>El problema</th><th>Cómo lo resuelve la tarjeta</th></tr></thead>
+  <tbody>
+    <tr><td><b>Todo pesa lo mismo</b><br><span style="color:var(--tinta-2)">está en el primer documento</span></td><td>La tarjeta ocupa más de la mitad de la pantalla. Todo lo demás baja de rango sin que haya que achicarlo.</td></tr>
+    <tr><td><b>Los guiones se ven como archivos</b></td><td>Deja de mostrar título y fecha: muestra el texto, en la tipografía con la que se va a leer.</td></tr>
+    <tr><td><b>El negro vive encerrado</b></td><td>La identidad del producto entra en la primera pantalla, no después de apretar un botón.</td></tr>
+    <tr><td><b>No hay una sola imagen</b></td><td>Sigue sin haber una foto — y ya no hace falta. <b>La imagen es el texto.</b></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="nota">
+  <span class="t">Y resuelve el problema de la tienda, que era el peor</span>
+  La primera captura de Play deja de ser un rectángulo blanco con una lista. Pasa a ser negro, con texto grande y una ventana clara — <strong>se entiende en medio segundo y no se parece a ningún otro teleprómpter de la tienda</strong>, porque los otros muestran una interfaz y nosotros mostramos la lectura.
+</div>
+
+<h2><span class="num">El movimiento</span>La tarjeta no lleva a la pantalla: se convierte en ella</h2>
+
+<p>Acá está la mitad del salto, y es la que no se puede dibujar quieta.</p>
+
+<p>Hoy apretás y una pantalla reemplaza a la otra. Lo que corresponde es que <strong>la tarjeta crezca hasta ocupar todo</strong> — el texto que estabas mirando es el mismo texto que queda, en el mismo sitio, más grande. No hay corte: hay continuidad. El que mira entiende que no fue a otro lado, sino que se acercó.</p>
+
+<div class="secuencia">
+  <div class="paso-t">
+    <div class="marco"><div class="cuad" style="left:8%;top:6%;right:8%;height:52%;border-radius:12px"></div></div>
+    <div class="et"><b>0 ms</b>La tarjeta, donde estaba.</div>
+  </div>
+  <div class="paso-t">
+    <div class="marco"><div class="cuad" style="left:4%;top:3%;right:4%;height:72%;border-radius:9px"></div></div>
+    <div class="et"><b>200 ms</b>Crece desde su propio sitio.</div>
+  </div>
+  <div class="paso-t">
+    <div class="marco"><div class="cuad" style="left:0;top:0;right:0;bottom:0;border-radius:0"></div></div>
+    <div class="et"><b>400 ms</b>Ya es la pantalla de lectura.</div>
+  </div>
+</div>
+
+<p>Es lo que Android llama <em>transformación de contenedor</em> y es, con diferencia, el movimiento que más caro hace sentir a una aplicación. No es un adorno: <strong>es lo que convierte dos pantallas en un solo lugar.</strong></p>
+
+<div class="nota">
+  <span class="t">Y el sistema ya está puesto para hacerlo</span>
+  La tarea 45 dejó la gramática del movimiento en <code>src/components/movimiento.tsx</code> — las curvas, las duraciones, el respeto por quien pidió menos movimiento. Esto se escribe con lo que ya hay, no empieza de cero.
+</div>
+
+<h2><span class="num">La investigación</span>Google cambió su propio sistema, y va en esta dirección</h2>
+
+<p>En 2025 Google lanzó <strong>Material 3 Expressive</strong>, con investigación sobre más de 18.000 participantes. No es un retoque: es un giro en contra del minimalismo plano en el que estamos parados.</p>
+
+<ol class="orden">
+  <li><span class="t">El color dirige la atención, no decora</span><span class="d">Deja de ser paleta y pasa a señalar qué importa. Es exactamente la regla que ya escribimos: un solo color saturado, y significa «esto actúa».</span></li>
+  <li><span class="t">La forma carga la identidad</span><span class="d">Agregaron 35 formas nuevas y transformación entre formas. Nuestro radio de 10 en todo es correcto y anónimo: no dice nada de nosotros.</span></li>
+  <li><span class="t">El movimiento tiene física</span><span class="d">Resortes en vez de curvas, para que la interacción se sienta viva. Nosotros usamos las curvas de Material 3, que es la generación anterior.</span></li>
+</ol>
+
+<p>Lo importante para nosotros: <strong>la plataforma se movió hacia lo expresivo y nosotros nos quedamos en lo correcto.</strong> Una aplicación que sigue las reglas de 2021 en un teléfono de 2026 se ve prolija y vieja al mismo tiempo.</p>
+
+<h2><span class="num">Lo que falta</span>Lo que esto no arregla</h2>
+
+<p>Para que no quede como promesa entera:</p>
+
+<ol class="orden">
+  <li><span class="t">La cara humana sigue faltando</span><span class="d">La competencia muestra una persona hablando. Nosotros vamos a mostrar texto hermoso. Es mejor que hoy y sigue siendo texto: la cara llega con la cámara.</span></li>
+  <li><span class="t">Si el motor se corre, ahora se nota más</span><span class="d">Al poner la lectura en la portada, la calidad del seguidor pasa a ser lo primero que se ve. Este documento sube la apuesta del motor, no la baja.</span></li>
+  <li><span class="t">Y hay una decisión de producto adentro</span><span class="d">¿Qué muestra la tarjeta la primera vez, cuando no hay un guion anterior? Hoy la respuesta es el guion de bienvenida, y funciona. Pero si alguien lo borra y no tiene ninguno, la tarjeta se queda sin qué mostrar. Hay que resolverlo antes de encargar.</span></li>
+</ol>
+
+<footer>
+  Teleprompter · 15 de septiembre de 2026 · Cuarto documento. Los anteriores: <em>El estado real</em>, <em>El circuito, paso por paso</em> y <em>El estándar visual</em>. El motor y la cámara están detenidos por decisión de Javier.
+</footer>
+
+</div>
