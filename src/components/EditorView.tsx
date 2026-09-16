@@ -5,7 +5,7 @@ import { importarTexto } from '../datos/importar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { IdMotor } from '../motor/MotorDeVoz'
 import { hapticaSeleccion, hapticaToqueSuave } from '../haptica'
-import { movimientoApagado, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './movimiento'
+import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
 
 export function reubicarTramos(
   textoViejo: string,
@@ -160,6 +160,38 @@ export default function EditorView({
   const [bloqueSeleccionado, setBloqueSeleccionado] = useState<string | null>(null)
   const [hayTextoSeleccionado, setHayTextoSeleccionado] = useState(false)
   const [tituloEnfocado, setTituloEnfocado] = useState(false)
+  const [barraLeerVisible, setBarraLeerVisible] = useState(true)
+  const ultimoScrollTopRef = useRef<number>(0)
+  const timerScrollStopRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    function handleScroll() {
+      const currentScrollTop = window.scrollY || document.documentElement.scrollTop || 0
+      const diff = currentScrollTop - ultimoScrollTopRef.current
+
+      if (diff > 5) {
+        // Desplazamiento hacia abajo: esconder rapido con curva de salida
+        setBarraLeerVisible(false)
+      } else if (diff < -5) {
+        // Desplazamiento hacia arriba: volver
+        setBarraLeerVisible(true)
+      }
+
+      ultimoScrollTopRef.current = currentScrollTop
+
+      if (timerScrollStopRef.current) clearTimeout(timerScrollStopRef.current)
+      timerScrollStopRef.current = setTimeout(() => {
+        // Al parar de desplazar, la barra vuelve
+        setBarraLeerVisible(true)
+      }, 300)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (timerScrollStopRef.current) clearTimeout(timerScrollStopRef.current)
+    }
+  }, [])
 
   function togglePlegado(id: string) {
     setPlegados((prev) => ({
@@ -1377,7 +1409,13 @@ export default function EditorView({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 'var(--aire-2)'
+            gap: 'var(--aire-2)',
+            transform: barraLeerVisible ? 'translateY(0)' : 'translateY(120px)',
+            transition: movimientoApagado()
+              ? 'none'
+              : barraLeerVisible
+              ? `transform ${MS_CHICO}ms ${CURVA_RESORTE}`
+              : `transform ${MS_DEDO}ms ${CURVA_SALE}`
           }}
         >
           {numPalabras === 0 ? '▶ Leer — Escribe algo para leer' : '▶ Leer'}

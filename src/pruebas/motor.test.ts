@@ -68,7 +68,7 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
     })
 
     // Abrir guion en editor y entrar a modo lectura
-    const itemGuion = screen.getByText('Guion T58')
+    const itemGuion = screen.getByTestId('fila-guion-g-58')
     await act(async () => {
       fireEvent.click(itemGuion)
     })
@@ -117,7 +117,7 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
     })
 
     // Volver a abrir el guion
-    const itemGuion2 = screen.getByText('Guion T58')
+    const itemGuion2 = screen.getByTestId('fila-guion-g-58')
     await act(async () => {
       fireEvent.click(itemGuion2)
     })
@@ -148,8 +148,8 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    // La franja de diagnóstico se activa tocando/haciendo clic en el resumen del encabezado
-    const resumen = screen.getByTestId('resumen-encabezado-biblioteca')
+    // La franja de diagnóstico se activa tocando/haciendo clic en el título de la tarjeta de portada
+    const resumen = screen.getByTestId('titulo-tarjeta-lectura')
     await act(async () => {
       fireEvent.click(resumen)
     })

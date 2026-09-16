@@ -13,7 +13,7 @@ import { iniciarGrabacion, detenerGrabacion } from './lib/grabadorCorpus'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
 import CuentaRegresiva from './components/CuentaRegresiva'
-import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL } from './components/movimiento'
+import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
 import { hapticaToqueMedio, hapticaToqueSuave } from './haptica'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
 import { Guion, ResumenGuion, guionNuevo, PAREJAS_COLOR } from './datos/modelo'
@@ -93,6 +93,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [errorRepositorio, setErrorRepositorio] = useState<string | null>(null)
 
   const [vista, setVista] = useState<Vista>('biblioteca')
+  const origenLecturaRef = useRef<'biblioteca' | 'editor'>('editor')
+  const [rectTarjeta, setRectTarjeta] = useState<DOMRect | null>(null)
   const prevVistaRef = useRef<Vista | null>(null)
   const [direccion, setDireccion] = useState<'adentro' | 'atras' | 'inicial'>('inicial')
   const guionModificadoRef = useRef<boolean>(false)
@@ -646,11 +648,25 @@ export default function App({ motor, repoOverride }: AppProps) {
     }, 1000)
   }
 
-  async function handleEntrarLectura() {
+  async function handleEntrarLectura(origen: 'biblioteca' | 'editor' = 'editor', rect?: DOMRect) {
+    origenLecturaRef.current = origen
+    setRectTarjeta(rect || null)
     hapticaToqueMedio()
     setVista('lectura')
     setControlesVisibles(false)
     await handleStart()
+  }
+
+  async function handleLeerDirecto(id: string, rect?: DOMRect) {
+    try {
+      const g = await repoRef.current.abrir(id)
+      if (g) {
+        setGuionActual(g)
+        await handleEntrarLectura('biblioteca', rect)
+      }
+    } catch (e) {
+      console.warn('[App] Error al abrir directo para lectura:', e)
+    }
   }
 
   function handleLetraMenos() {
@@ -713,10 +729,10 @@ export default function App({ motor, repoOverride }: AppProps) {
       if (cerrarModalRef.current && cerrarModalRef.current()) {
         return
       }
-      // 2. Durante la lectura, hacer exactamente lo mismo que "Salir": handleStop y volver al editor
+      // 2. Durante la lectura, hacer exactamente lo mismo que "Salir": handleStop y volver al origen
       if (vista === 'lectura') {
         await handleStop()
-        setVista('editor')
+        setVista(origenLecturaRef.current)
         return
       }
       // 3. En el editor, volver a la biblioteca
@@ -819,6 +835,24 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const tituloMostrar = (guionActual && guionActual.titulo && guionActual.titulo.trim()) ? guionActual.titulo : 'Sin título'
 
+  // LA TARJETA SE CONVIERTE EN LA PANTALLA DE LECTURA -parte 4 de la tarea 48-.
+  //
+  // La medicion es una sola, en el toque: BibliotecaView manda el rectangulo de la
+  // tarjeta y aca se traduce a los cuatro huecos que pide inset(). El motivo de
+  // recortar en vez de agrandar esta escrito arriba de @keyframes revelarLectura.
+  const huecoTarjeta = (rectTarjeta && typeof window !== 'undefined')
+    ? {
+        arriba: Math.max(0, rectTarjeta.top),
+        izquierda: Math.max(0, rectTarjeta.left),
+        derecha: Math.max(0, window.innerWidth - rectTarjeta.right),
+        abajo: Math.max(0, window.innerHeight - rectTarjeta.bottom)
+      }
+    : null
+
+  const hayTransformacionDeTarjeta = !movimientoApagado()
+    && origenLecturaRef.current === 'biblioteca'
+    && huecoTarjeta !== null
+
   return (
     <div
       style={{
@@ -913,11 +947,12 @@ export default function App({ motor, repoOverride }: AppProps) {
         </div>
       )}
 
-      {vista === 'biblioteca' && (
+      {(vista === 'biblioteca' || (vista === 'lectura' && origenLecturaRef.current === 'biblioteca')) && (
         <Pantalla direccion={direccion}>
           <BibliotecaView
             guiones={guionesResumen}
             onAbrir={handleAbrirGuion}
+            onLeerDirecto={handleLeerDirecto}
             onCrearNuevo={handleCrearNuevoGuion}
             onImportarArchivo={handleImportarArchivo}
             onRenombrar={handleRenombrarGuion}
@@ -933,7 +968,18 @@ export default function App({ motor, repoOverride }: AppProps) {
             setVerTranscripcion={setVerTranscripcion}
             tema={tema}
             setTema={setTema}
+              tipoFuente={tipoFuente}
+              colorFondo={colorFondo}
+              colorLetra={colorLetra}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
+            style={{
+              // La biblioteca se oscurece MIENTRAS crece la ventana, no de golpe: un
+              // apagon instantaneo se lee como un corte, que es justo lo que la
+              // transformacion existe para evitar.
+              filter: vista === 'lectura' ? 'brightness(0.15)' : 'none',
+              transition: movimientoApagado() ? 'none' : `filter ${MS_PANTALLA}ms ${CURVA_ENTRA}`,
+              pointerEvents: vista === 'lectura' ? 'none' : 'auto'
+            }}
           />
         </Pantalla>
       )}
@@ -953,7 +999,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               }
               setVista('biblioteca')
             }}
-            onEntrarLectura={handleEntrarLectura}
+            onEntrarLectura={() => handleEntrarLectura('editor')}
             fontSize={fontSize}
             onLetraMenos={handleLetraMenos}
             onLetraMas={handleLetraMas}
@@ -985,7 +1031,27 @@ export default function App({ motor, repoOverride }: AppProps) {
       )}
 
       {vista === 'lectura' && guionActual && (
-        <div style={{ position: 'relative', width: '100%', height: '100dvh', overflow: 'hidden' }}>
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100dvh',
+            zIndex: 150,
+            overflow: 'hidden',
+            borderRadius: 0,
+            animation: hayTransformacionDeTarjeta
+              ? `revelarLectura ${MS_PANTALLA}ms ${CURVA_ENTRA}`
+              : 'none',
+            // Los cuatro huecos que hay entre el borde de la pantalla y la tarjeta:
+            // eso es el recorte del que arranca la ventana.
+            '--tarjeta-arriba': huecoTarjeta ? `${huecoTarjeta.arriba}px` : '0px',
+            '--tarjeta-derecha': huecoTarjeta ? `${huecoTarjeta.derecha}px` : '0px',
+            '--tarjeta-abajo': huecoTarjeta ? `${huecoTarjeta.abajo}px` : '0px',
+            '--tarjeta-izquierda': huecoTarjeta ? `${huecoTarjeta.izquierda}px` : '0px'
+          } as React.CSSProperties}
+        >
           {controlesVisibles && (
             <div
               data-testid="panel-controles-lectura"
@@ -1027,7 +1093,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                     } else {
                       mostrarAviso('Grabado')
                     }
-                    setVista('editor')
+                    setVista(origenLecturaRef.current)
                   }}
                   style={{
                     padding: 'var(--aire-2) var(--aire-3)',
@@ -1144,6 +1210,23 @@ export default function App({ motor, repoOverride }: AppProps) {
               onModoManualChange={setModoManual}
               onEstadoAvanceChange={handleEstadoAvanceChange}
             />
+            {/* EL RELEVO del texto chico de la tarjeta al texto grande de la lectura.
+                Es un velo del mismo color de fondo que se desvanece por encima, NO un
+                envoltorio alrededor de TeleprompterView: envolverlo mete un elemento
+                entre el contenedor y la superficie de lectura, y hay pruebas que suben
+                por el arbol desde ahi. Un hermano no cambia ese camino. */}
+            {hayTransformacionDeTarjeta && (
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  backgroundColor: colorFondo,
+                  pointerEvents: 'none',
+                  animation: `veloRelevoSale ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                }}
+              />
+            )}
             <CuentaRegresiva valor={cuentaRegresiva} />
           </div>
 

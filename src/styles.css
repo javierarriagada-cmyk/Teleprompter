@@ -134,12 +134,111 @@ button {
   }
 }
 
-/* Ocultar scrollbar en todo el documento */
-* {
+/* Ocultar scrollbar únicamente en la superficie de lectura */
+[data-testid="teleprompter-view-container"],
+[data-testid="teleprompter-view-container"] * {
   scrollbar-width: none;
 }
-*::-webkit-scrollbar {
+[data-testid="teleprompter-view-container"]::-webkit-scrollbar,
+[data-testid="teleprompter-view-container"] *::-webkit-scrollbar {
   display: none;
+}
+
+@keyframes avanceTextoTarjeta {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-30px);
+  }
+}
+
+/* LA TARJETA SE CONVIERTE EN LA PANTALLA DE LECTURA.
+ *
+ * La primera version de la tarea 48 animaba top, left, width y height. Se ve bien
+ * en el escritorio y se traba en un telefono de gama media, porque al cambiar el
+ * ANCHO en cada cuadro el navegador tiene que volver a repartir el guion entero en
+ * renglones. Sesenta veces por segundo. Es lo mas caro que hay, y encima es el
+ * primer movimiento que ve alguien que abre la aplicacion.
+ *
+ * Aca la pantalla de lectura esta desde el primer cuadro EN SU TAMANO FINAL, y lo
+ * que crece es la ventana por la que se la ve: clip-path. El texto nunca cambia de
+ * ancho, asi que nunca se vuelve a repartir. Y el radio viaja adentro de la misma
+ * propiedad -inset(... round ...)-, asi que la esquina se endereza sincronizada con
+ * el crecimiento sin coordinar dos animaciones.
+ *
+ * Es el container transform de Material, y esta hecho asi por este mismo motivo.
+ *
+ * SIN forwards A PROPOSITO: el estado final -inset(0 0 0 0 round 0)- se ve igual
+ * que no tener clip-path, asi que al terminar el elemento vuelve solo a su estilo
+ * quieto y no queda nada pegado. En la tarea 45 un animation-fill-mode: forwards
+ * dejo un transform que convirtio al elemento en bloque contenedor de sus hijos
+ * fijos y costo una sesion encontrarlo.
+ *
+ * LA CURVA ES CURVA_ENTRA, NO CURVA_RESORTE. Un resorte pasa de largo y vuelve, y
+ * aca pasarse de largo es recortar menos que nada: invisible. Con resorte, el ultimo
+ * tercio de la animacion no se ve. Esto llega y se asienta: desacelera.
+ */
+@keyframes revelarLectura {
+  from {
+    clip-path: inset(
+      var(--tarjeta-arriba, 0px) var(--tarjeta-derecha, 0px)
+      var(--tarjeta-abajo, 0px) var(--tarjeta-izquierda, 0px)
+      round 24px
+    );
+  }
+  to {
+    clip-path: inset(0px 0px 0px 0px round 0px);
+  }
+}
+
+/* El relevo entre el texto chico de la tarjeta y el texto grande de la lectura.
+ * Los dos fondos son el mismo -la tarjeta usa la pareja de color de lectura-, asi
+ * que lo unico que cambia adentro del rectangulo es el texto. Sin esto, en el primer
+ * cuadro el texto chico se reemplaza de golpe por el grande: eso es el corte que la
+ * tarea pedia que no existiera. */
+@keyframes veloRelevoSale {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes parpadeoCursor {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.tarjeta-lectura-velo-superior {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 35px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.tarjeta-lectura-velo-inferior {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 35px;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.tarjeta-lectura-borde-iluminado {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 /* Deformacion de botones en Material 3 Expressive */

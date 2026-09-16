@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
-import { Guion, ResumenGuion } from '../datos/modelo'
+import { Guion, ResumenGuion, PAREJAS_COLOR } from '../datos/modelo'
 import { IdMotor } from '../motor/MotorDeVoz'
 import { PanelCorpus } from './PanelCorpus'
+import TarjetaLectura from './TarjetaLectura'
 import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './movimiento'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
   onAbrir: (id: string) => void
+  onLeerDirecto?: (id: string, rect?: DOMRect) => void
   onCrearNuevo: () => void
   onImportarArchivo: (file: File) => void
   onRenombrar?: (id: string, nuevoTitulo: string) => void
@@ -24,6 +26,9 @@ interface BibliotecaViewProps {
   setVerTranscripcion?: (ver: boolean) => void
   tema?: 'sistema' | 'claro' | 'oscuro'
   setTema?: (tema: 'sistema' | 'claro' | 'oscuro') => void
+  tipoFuente?: 'sans' | 'serif'
+  colorFondo?: string
+  colorLetra?: string
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
   'data-pantalla-direccion'?: string
   style?: React.CSSProperties
@@ -55,6 +60,12 @@ export function calcularMinutosLectura(guiones: ResumenGuion[]): number {
   return Math.round(totalPalabras / 150)
 }
 
+export function formatearTextoResumen(guiones: ResumenGuion[]): string {
+  const minsLectura = calcularMinutosLectura(guiones)
+  if (guiones.length === 0) return '0 guiones'
+  return `${guiones.length} ${guiones.length === 1 ? 'guión' : 'guiones'} · ${minsLectura} ${minsLectura === 1 ? 'minuto' : 'minutos'} de lectura`
+}
+
 let esPrimerMontajeBiblioteca = true
 
 export function resetearPrimerMontajeBiblioteca() {
@@ -64,6 +75,7 @@ export function resetearPrimerMontajeBiblioteca() {
 export default function BibliotecaView({
   guiones,
   onAbrir,
+  onLeerDirecto,
   onCrearNuevo,
   onImportarArchivo,
   onRenombrar,
@@ -79,6 +91,9 @@ export default function BibliotecaView({
   setVerTranscripcion,
   tema = 'claro',
   setTema,
+  tipoFuente = 'sans',
+  colorFondo = PAREJAS_COLOR[0].fondo,
+  colorLetra = PAREJAS_COLOR[0].letra,
   onRegistrarCerrarModal,
   'data-pantalla-direccion': dataPantallaDireccion,
   style,
@@ -98,6 +113,25 @@ export default function BibliotecaView({
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [esInicial, setEsInicial] = useState<boolean>(esPrimerMontajeBiblioteca)
+
+  const guionMasReciente = guiones.length > 0 ? guiones[0] : undefined
+  const [textoTarjeta, setTextoTarjeta] = useState<string>('')
+
+  useEffect(() => {
+    if (!guionMasReciente || !onBuscarGuionCompleto) {
+      setTextoTarjeta('')
+      return
+    }
+    let cancelado = false
+    onBuscarGuionCompleto(guionMasReciente.id).then((g) => {
+      if (cancelado) return
+      const t = g && g.bloques ? g.bloques.map((b) => b.texto || '').join('\n') : ''
+      setTextoTarjeta(t)
+    })
+    return () => {
+      cancelado = true
+    }
+  }, [guionMasReciente?.id, onBuscarGuionCompleto])
 
   useEffect(() => {
     if (esPrimerMontajeBiblioteca) {
@@ -289,40 +323,29 @@ export default function BibliotecaView({
         data-testid="input-importar-archivo"
       />
 
-      {/* Encabezado */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'var(--aire-4)' }}>
-        <div>
-          <h1
-            className="texto-display"
-            data-testid="titulo-biblioteca"
-            data-retardo-escalonado={esInicial && !movimientoApagado() ? 0 : 0}
-            style={{ margin: 0, color: 'var(--color-texto)', ...animacionTituloStyle }}
-          >
-            Guiones
-          </h1>
-          <div
-            className="texto-meta"
-            data-testid="resumen-encabezado-biblioteca"
-            data-retardo-escalonado={esInicial && !movimientoApagado() ? 40 : 0}
-            onTouchStart={handleDiagTouchStart}
-            onTouchEnd={handleDiagTouchEnd}
-            onMouseDown={handleDiagTouchStart}
-            onMouseUp={handleDiagTouchEnd}
-            onClick={handleDiagClick}
-            style={{
-              color: 'var(--color-apagado)',
-              marginTop: 'var(--aire-1)',
-              cursor: 'pointer',
-              userSelect: 'none',
-              ...animacionSubtituloStyle
-            }}
-          >
-            {textoResumen}
-          </div>
-        </div>
+      {/* Tarjeta de Portada y Menú Superior */}
+      <div style={{ position: 'relative', marginBottom: 'var(--aire-4)', ...animacionTituloStyle }}>
+        <TarjetaLectura
+          guionResumen={guionMasReciente}
+          textoCompleto={textoTarjeta}
+          esInicial={esInicial}
+          onLeer={(rect) => {
+            if (guionMasReciente) {
+              if (onLeerDirecto) onLeerDirecto(guionMasReciente.id, rect)
+              else onAbrir(guionMasReciente.id)
+            }
+          }}
+          onCrearNuevo={onCrearNuevo}
+          onDiagTouchStart={handleDiagTouchStart}
+          onDiagTouchEnd={handleDiagTouchEnd}
+          onDiagClick={handleDiagClick}
+          tipoFuente={tipoFuente}
+          colorFondo={colorFondo}
+          colorLetra={colorLetra}
+        />
 
-        {/* Menú superior derecho ⋯ */}
-        <div ref={refMenuSuperior} style={{ position: 'relative' }}>
+        {/* Menú superior derecho ⋯ flotante sobre la tarjeta */}
+        <div ref={refMenuSuperior} style={{ position: 'absolute', top: 'var(--aire-2)', right: 'var(--aire-2)', zIndex: 20 }}>
           <button
             onClick={() => {
               hapticaToqueSuave()
@@ -747,29 +770,34 @@ export default function BibliotecaView({
         </div>
       )}
 
-      {/* Botón Flotante CREAR */}
+      {/* Botón Flotante CREAR secundario circular */}
       <button
         onClick={() => {
           hapticaToqueSuave()
           onCrearNuevo()
         }}
         data-testid="btn-crear-guion-flotante"
+        title="Crear nuevo guion"
         style={{
           position: 'fixed',
           bottom: 'var(--aire-5)',
           right: 'var(--aire-5)',
-          backgroundColor: 'var(--color-acento)',
-          color: 'var(--color-texto-acento)',
+          backgroundColor: 'var(--bg-superficie)',
+          color: 'var(--color-texto)',
           borderRadius: 'var(--redondeo-pildora)',
-          padding: 'var(--aire-3) var(--aire-4)',
-          fontSize: 'var(--texto-cuerpo)',
+          width: 44,
+          height: 44,
+          fontSize: 'var(--texto-titulo)',
           fontWeight: 600,
           cursor: 'pointer',
           border: '1px solid var(--color-borde)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           zIndex: 100
         }}
       >
-        + Nuevo
+        +
       </button>
     </div>
   )
