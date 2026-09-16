@@ -1,0 +1,406 @@
+CORRECCION DE LA TAREA 48
+
+ANTES QUE NADA, Y ES LO MAS IMPORTANTE DE ESTE MENSAJE:
+
+    NO VUELVAS A CLONAR main. NO EMPIECES DE CERO.
+
+    Segui trabajando SOBRE TU MISMA RAMA, encima de lo que ya entregaste. En la
+    tarea 47 la correccion volvio a clonar main y perdio todo el trabajo de
+    Android de la primera vuelta; lo tuve que combinar a mano. Si esta vuelta
+    vuelve a pasar, se pierde la tarjeta entera.
+
+    De publicar no te preocupes: los commits salen vacios y yo saco el parche de
+    las actividades. Vos trabaja y avisa.
+
+
+LO QUE REVISE Y ESTA BIEN
+
+    Corri el conjunto completo: 211 de 211 verdes, tsc limpio.
+
+    Rompi T222 a mano -haciendo que siempre vuelva al editor- y se puso ROJA.
+    Rompi T225 a mano -devolviendo la regla a `*`- y se puso ROJA.
+    Esas dos son guardianas de verdad. Bien hechas.
+
+    Las partes 1, 2, 3 y 5.b estan, con los defectos que enumero abajo.
+
+Ahora, los doce puntos. El 1 y el 2 son los grandes.
+
+
+================================================================
+1. LA PARTE 4 NO ESTA HECHA
+================================================================
+
+El encargo pedia que la tarjeta SE CONVIERTA en la pantalla de lectura:
+
+    "Crece desde su propio sitio hasta ocupar todo, y su radio va de 24 a 0
+     durante el mismo movimiento: la esquina se estira y se endereza."
+
+Lo unico que entregaste es que la biblioteca se queda atras con
+filter: brightness(0.15). Eso es la MITAD de la parte 4 -la mitad facil-.
+
+No hay crecimiento, el radio nunca va de 24 a 0, y MS_PANTALLA con CURVA_RESORTE
+no se usa para esto en ningun lado. Lo verifique buscando en todo src/.
+
+Era el centro de la tarea: es lo que convierte dos pantallas en un solo lugar.
+
+QUE HACER
+
+    Cuando se aprieta Leer en la tarjeta, el contenedor de la lectura arranca
+    EN LA POSICION Y EL TAMANO QUE TIENE LA TARJETA y crece hasta ocupar todo,
+    con el radio pasando de 24 a 0 en el mismo movimiento.
+
+    MS_PANTALLA con CURVA_RESORTE, de src/components/movimiento.tsx.
+
+    Para saber de donde arranca: medi la tarjeta con getBoundingClientRect() en
+    el momento del toque y pasa esas cuatro medidas al contenedor de la lectura
+    como estado inicial de la animacion. Una sola medicion, en el toque, no un
+    bucle.
+
+    Con movimientoApagado() en true: sin transformacion, la lectura aparece
+    directo como hoy.
+
+    Y OJO CON LA FRONTERA, que no cambio: la biblioteca sigue montada detras,
+    pero TeleprompterView hay UNO SOLO, siempre. Nunca dos.
+
+    OJO TAMBIEN CON filter. Un filter distinto de `none` convierte al elemento
+    en el bloque contenedor de sus descendientes con position: fixed. La
+    biblioteca tiene un boton fixed -el de crear-. Hoy no molesta porque esta
+    oscurecido, pero si en algun momento el contenedor de la lectura queda
+    adentro de ese arbol, se rompe. Manten la lectura FUERA del arbol que lleva
+    el filter.
+
+    Esto ya nos paso en la tarea 45 con un transform que dejaba
+    animation-fill-mode: forwards, y costo una sesion entera encontrarlo.
+
+
+================================================================
+2. VOLVISTE A ESCONDER ELEMENTOS PARA SOSTENER UNA PRUEBA
+================================================================
+
+En BibliotecaView.tsx quedo esto, con tu propio comentario al lado:
+
+    {/* Elementos preservados para guardiana T212 y diagnostico */}
+    <h1 ... style={{ display: 'none', ... }}>Guiones</h1>
+    <div ... style={{ display: 'none', ... }}>{textoResumen}</div>
+
+El encargo decia dos cosas, las dos textuales:
+
+    "EL TITULO 'Guiones' Y EL CONTADOR SE VAN."
+
+    "PROHIBIDO agregar elementos ocultos ni atributos inventados para sostener
+     una prueba. Ya paso dos veces: tres botones invisibles sosteniendo dieciocho
+     pruebas, y un data-retardo-escalonado que no aplicaba ningun retardo."
+
+Es la tercera vez. Entiendo POR QUE lo hiciste -sacarlos toca seis pruebas de
+tareas viejas- y por eso te doy la salida exacta de cada una. No es un problema
+de criterio tuyo: es que hacia falta decidirlo, y lo decido yo aca.
+
+BORRA LOS DOS ELEMENTOS. Y despues:
+
+ 2.a  EL GESTO DEL DIAGNOSTICO se muda al TITULO DE LA TARJETA -el h2 de 44
+      pixeles-. Mismos manejadores que tenia el contador
+      (handleDiagTouchStart / handleDiagTouchEnd / handleDiagClick), tal cual,
+      movidos de lugar. Elijo el titulo y no el time-code porque el titulo esta
+      SIEMPRE, incluso con la biblioteca vacia.
+
+      Las tres pruebas que solo lo usaban como interruptor pasan a tocar ahi:
+          src/pruebas/motor.test.ts:152
+          src/pruebas/pantallas.test.tsx:222
+          src/pruebas/pantallas.test.tsx:1121
+
+ 2.b  EL TEXTO DEL CONTADOR deja de estar en la pantalla, pero la regla de
+      singular y plural que cuida -"0 guiones", "1 minuto de lectura" y no
+      "1 minutos"- NO se pierde.
+
+      Saca la funcion que arma ese texto a una funcion pura EXPORTADA de
+      BibliotecaView.tsx, y que estas dos pruebas la llamen directo en vez de
+      leer el DOM:
+          src/pruebas/pantallas.test.tsx:568
+          src/pruebas/pantallas.test.tsx:588
+
+      Asi la guardiana sigue viva sin un elemento escondido sosteniendola. Es
+      la diferencia entre las dos cosas: una prueba puede comprobar una funcion,
+      lo que no puede es obligar a la pantalla a llevar algo que no se ve.
+
+ 2.c  T212 -EL ESCALONADO- se reescribe para los elementos que EXISTEN: la
+      TARJETA y la LISTA. Dos elementos, retardos reales, distintos y
+      crecientes en el primer montaje; cero al volver del editor. Igual que
+      antes, con dos en vez de tres.
+
+      Y el retardo tiene que APLICARSE de verdad, no solo aparecer en un
+      atributo. Eso ya lo comprobaste en la tarea 46; mantenelo.
+
+
+================================================================
+3. T219 NO SIRVE. NO COMPRUEBA NADA
+================================================================
+
+Esto lo medi, no lo supongo.
+
+Meti un <TeleprompterView> entero adentro de TarjetaLectura.tsx y corri la
+prueba. RESULTADO TEXTUAL:
+
+    ✓ T219 - LA TARJETA NO ENCIENDE EL MOTOR.
+
+VERDE. Con la tarjeta montando el componente que la prueba existe para prohibir.
+
+El motivo: T219 espia elegirMotor, y elegirMotor solo se llama desde
+src/hooks/useASR.ts, que solo lo usa App.tsx. Montando BibliotecaView sola,
+elegirMotor da cero llamadas SIEMPRE, haya o no un TeleprompterView adentro.
+La prueba mira un lugar por donde el defecto no pasa.
+
+Ya nos habia pasado igual en la tarea 45 con T202, y la salida fue T207: una
+guardiana ESTATICA, que lee el archivo.
+
+REESCRIBI T219 CON DOS COMPROBACIONES:
+
+    a. ESTATICA: leyendo src/components/TarjetaLectura.tsx, que NO importe
+       TeleprompterView, ni nada de src/lib/, src/motor/ ni src/hooks/, ni
+       nombre requestAnimationFrame.
+
+    b. DE MONTAJE: montando BibliotecaView con un guion, que NO exista ningun
+       [data-testid="teleprompter-view-container"] en el documento.
+
+    Y COMPROBALA ROMPIENDO otra vez: metele un TeleprompterView a la tarjeta,
+    verifica que se pone ROJA, sacalo, y PONE EL RESULTADO TEXTUAL EN EL INFORME.
+
+
+================================================================
+4. T223 TAMPOCO SIRVE, POR OTRO MOTIVO
+================================================================
+
+Con dos TeleprompterView vivos en el documento, T223 tambien quedo VERDE en esa
+misma corrida.
+
+El motivo es distinto y vale la pena entenderlo: waitFor reintenta hasta que la
+afirmacion se cumple, y "que haya exactamente uno" YA SE CUMPLE en el primer
+intento -cuando todavia monto uno solo-. waitFor devuelve enseguida y nunca ve
+el segundo. Una afirmacion que ya es cierta al empezar no se puede esperar con
+waitFor.
+
+REESCRIBILA: primero espera a que la lectura este montada -findByTestId-, y
+RECIEN AHI conta cuantos hay. Si queres cubrir tambien el durante, conta despues
+de que termine la transformacion.
+
+
+================================================================
+5. EL CURSOR DE LA PORTADA VACIA NO PARPADEA
+================================================================
+
+TarjetaLectura.tsx pide:
+
+    animation: 'parpadeoCursor 1s infinite'
+
+y esos keyframes NO EXISTEN en src/styles.css ni en ningun lado. Lo busque en
+todo src/. O sea que la animacion no corre y el cursor es una rayita quieta.
+
+Es el unico elemento de la parte 3, y es lo primero que ve alguien que abre la
+aplicacion por primera vez en su vida.
+
+Escribi los keyframes. Y que el parpadeo respete movimientoApagado().
+
+Esto es exactamente lo que el encargo llamaba PROHIBIDO DECLARAR SIN USAR, dado
+vuelta: usar algo que no esta declarado. Las dos mitades tienen que cerrar.
+
+
+================================================================
+6. LA TARJETA NO ESTA EN LA TIPOGRAFIA DE LECTURA
+================================================================
+
+El bloque de texto pide fontFamily: 'var(--fuente-sans)'. Esa ficha NO EXISTE en
+src/styles.css. Cae en la fuente de la aplicacion.
+
+Y la parte 1 decia: "es la pantalla de lectura, en chico y quieta". Si la
+tipografia no es la de lectura, no es la pantalla de lectura: es una nota con
+fondo negro.
+
+Toma la tipografia de la MISMA fuente de la verdad que usa TeleprompterView para
+elegir entre sans y serif -el ajuste tipoFuente-, sin tocar TeleprompterView.
+Si esa eleccion hoy vive en App.tsx, pasala por props hasta la tarjeta.
+
+
+================================================================
+7. LOS DOS RENGLONES CLAROS SON UN DIV VACIO
+================================================================
+
+Hay un div con position absolute, height 56 y zIndex 1 en el centro de la
+tarjeta que NO DIBUJA NADA: no tiene fondo, ni borde, ni contenido.
+
+Y el resalte que se ve esta falseado aparte, con opacity segun el indice:
+
+    opacity: idx >= 1 && idx <= 3 ? 1 : 0.45
+
+Son TRES renglones, no dos, y no tienen nada que ver con la banda.
+
+Es otra vez declarar sin usar. Arreglalo de una de las dos maneras, la que te
+parezca mas limpia, pero que la cosa que se ve y la cosa que se declara sean la
+misma:
+
+    o el div de la banda dibuja de verdad y el resalte sale de estar adentro,
+    o el div se va y el resalte queda donde esta, con DOS renglones.
+
+En los dos casos: DOS. Como dice el encargo y como se ve al leer.
+
+
+================================================================
+8. LA TARJETA IGNORA LA PAREJA DE COLOR QUE ELIGIO EL USUARIO
+================================================================
+
+El encargo decia: "Los colores son los que el usuario eligio para leer -las
+parejas de PAREJAS_COLOR-, no los del tema."
+
+La tarjeta tiene el fondo clavado en '#000000' y siempre agarra
+PAREJAS_COLOR[0]. Si el usuario eligio fondo blanco con letra negra, o negro con
+ambar, la portada le miente sobre como va a leer.
+
+Pasa la pareja elegida desde App hasta la tarjeta y usa parejaColor.fondo para
+el fondo, no un literal.
+
+
+================================================================
+9. HAY TEXTO INVENTADO ADENTRO DEL PRODUCTO
+================================================================
+
+Cuando el texto completo todavia no llego, la tarjeta muestra cuatro renglones
+escritos por vos:
+
+    "Reciente lectura en teleprompter..."
+    "Preparado para iniciar la toma en camara."
+    "El texto avanzara automaticamente segun tu voz."
+    "Manten un ritmo claro y constante."
+
+Sacalos. Tres motivos, y el tercero es el que importa:
+
+    a. El encargo decia que mientras carga aparece la tarjeta con su fondo, su
+       forma y su titulo, y "lo unico que aparece despues es el texto". Cuatro
+       renglones de relleno son un cartel de cargando disfrazado.
+
+    b. No es el guion del usuario. Es una demostracion falsa en el lugar donde
+       tendria que estar su trabajo.
+
+    c. "El texto avanzara automaticamente segun tu voz" es una promesa sobre el
+       motor, que hoy esta detenido por decision de Javier. La aplicacion no
+       puede prometer lo que todavia no cumple.
+
+Mientras no hay texto: el fondo, la forma y el titulo. Nada mas. Y cuando llega
+el texto, entra el texto.
+
+
+================================================================
+10. LA TARJETA SE ESCAPA DE T209
+================================================================
+
+T209 revisa una LISTA FIJA de cinco archivos y TarjetaLectura.tsx no esta en
+ella. Le agregaste el radio 24 a radiosPermitidos, y eso no cambia nada: ese
+archivo no se mira.
+
+O sea que el componente nuevo -el mas visible de la aplicacion- tiene
+hexadecimales, rgba y medidas fuera de la escalera sin que ninguna guardiana los
+vea. La regla existe y el archivo nuevo nacio afuera.
+
+QUE HACER
+
+    a. AGREGA 'src/components/TarjetaLectura.tsx' a la lista de T209.
+
+    b. Con eso se va a poner ROJA. Resolve las infracciones DE VERDAD:
+
+       - Los degradados de los velos y la linea del borde superior se van a
+         src/styles.css como clases. Ahi viven bien: ya hay una regla con
+         rgba(255,255,255,0.06) para .tarjeta-superficie.
+
+       - El fondo sale de la pareja de color (punto 8), no de un literal.
+
+       - Los espaciados y el radio, de las fichas.
+
+    c. EL 44 DEL TITULO ES LA EXCEPCION, y es a proposito: el encargo lo pidio
+       porque ese guion es el protagonista de la pantalla. Agregalo a
+       tamanosPermitidos CON UN COMENTARIO que diga que es el titulo de la
+       tarjeta de portada y por que. Eso es lo que el encargo pedia que hicieras
+       "Y DECILO": declararlo en la lista, no dejarlo fuera del alcance.
+
+    d. Y decime en el informe cuantas infracciones aparecieron al agregar el
+       archivo. Ese numero me interesa.
+
+
+================================================================
+11. EN EL EDITOR HAY DOS CAMINOS DE SCROLL Y LA PRUEBA MIRA EL MUERTO
+================================================================
+
+EditorView.tsx quedo con dos:
+
+    un addEventListener('scroll') sobre window
+    un onScroll sobre el contenedor, con data-testid="contenedor-editor-scroll"
+
+Los dos escriben el mismo ultimoScrollTopRef.
+
+En la aplicacion real el contenedor no tiene overflow, asi que el que se desplaza
+es la ventana: handleContainerScroll NO CORRE NUNCA. Y T224 lo dispara a mano
+con fireEvent.scroll sobre ese contenedor. La prueba comprueba el camino que en
+el telefono no se usa.
+
+Deja UN SOLO camino -el de window, que es el que de verdad ocurre- y que T224
+pruebe ese. El data-testid del contenedor, si deja de hacer falta, se va.
+
+Lo demas de 5.a esta bien: la barra se esconde con la curva de salida, vuelve con
+CURVA_RESORTE y con el temporizador al parar, y conserva el calc con
+env(safe-area-inset-bottom) cuando esta visible. Eso no lo toques.
+
+
+================================================================
+12. "guion" VA SIN TILDE
+================================================================
+
+La tarjeta dice "Escribe tu primer guión" y hay algun "guión" mas. En toda la
+aplicacion se escribe SIN TILDE: es monosilabo. Revisa lo que agregaste en esta
+tarea y dejalo parejo con el resto -"Guiones", "guion"-.
+
+Esto es en la PANTALLA. En las pruebas y los comentarios da igual.
+
+
+================================================================
+LO QUE NO SE TOCA, IGUAL QUE ANTES
+================================================================
+
+   src/lib/       todo
+   src/motor/     todo
+   src/hooks/     todo
+   src/components/banda.ts
+   android/
+
+   Y DE TeleprompterView: NADA. Ni la geometria de lectura, ni los colores, ni
+   los tamanos. Si la parte 4 te tienta a tocarlo, no: el contenedor que crece
+   es de afuera, TeleprompterView va adentro sin enterarse.
+
+   No rompas lo que dejaron las tareas 43 a 47: los calc con env(), los siete
+   controles de Ajustes, <Pantalla>, onAnimationEnd, la haptica, el guion de
+   bienvenida, el tema de tres estados, las nueve fichas del oscuro, los dos
+   rojos, los resortes.
+
+   NO BORRES COMENTARIOS. Si moves un bloque -y en el punto 2.a moves uno-, el
+   comentario se mueve con el.
+
+
+================================================================
+AL TERMINAR
+================================================================
+
+   npx tsc --noEmit limpio.
+   npx vitest run: hoy quedaron 211. Al terminar tienen que seguir siendo 211 o
+   mas -T212 se reescribe, no se borra; T219 y T223 se reescriben, no se borran-.
+   Si el numero baja, decime exactamente cual prueba desaparecio y por que.
+
+   INFORME, en este orden:
+
+     1. La parte 4: como quedo la transformacion y de donde saca las medidas.
+     2. Los dos elementos escondidos: que borraste y donde quedo cada una de las
+        seis pruebas.
+     3. T219 reescrita, y EL RESULTADO TEXTUAL DE ROMPERLA.
+     4. T223 reescrita.
+     5. Los puntos 5 a 9, uno por uno, en una linea cada uno.
+     6. Cuantas infracciones aparecieron al meter la tarjeta en T209 y como las
+        resolviste.
+     7. El git diff --stat completo.
+     8. El numero de pruebas.
+
+   El telefono no lo ves desde la VM: no digas que "se ve mejor". Deci que
+   cambiaste, que yo lo miro en un aparato con las medidas reales.
