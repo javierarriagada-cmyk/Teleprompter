@@ -22,7 +22,8 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
       'src/components/EditorView.tsx',
       'src/components/PanelCorpus.tsx',
       'src/components/BarraDeTiempo.tsx',
-      'src/components/TarjetaLectura.tsx'
+      'src/components/TarjetaLectura.tsx',
+      'src/components/Entrada.tsx'
     ]
 
     const regexHexColor = /#(?:[0-9a-fA-F]{3,4}){1,2}\b/g
@@ -57,10 +58,13 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
           return
         }
 
-        // Check colores hex
+        // Check colores hex (excepto las constantes explícitas del espejo en Entrada.tsx)
         const matchesHex = linea.match(regexHexColor)
         if (matchesHex) {
           matchesHex.forEach((hex) => {
+            if (relPath.endsWith('Entrada.tsx') && (linea.includes('COLOR_MARCA_') || linea.includes("backgroundColor: '#151312'"))) {
+              return
+            }
             infracciones.push(`${relPath}:${numLinea} - Color hexadecimal no permitido: '${hex}' en "${linea.trim()}"`)
           })
         }

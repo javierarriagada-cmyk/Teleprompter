@@ -7,11 +7,11 @@ import 'fake-indexeddb/auto'
 
 import App from '../App'
 import EditorView from '../components/EditorView'
-import { Entrada, RENGLONES_ESPEJO, FACTOR_ESPEJO } from '../components/Entrada'
+import { Entrada, RENGLONES_ESPEJO, FACTOR_ESPEJO, COLOR_MARCA_TRAZO_APAGADO, COLOR_MARCA_TRAZO, COLOR_MARCA_PUNTO } from '../components/Entrada'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { guionNuevo, Guion } from '../datos/modelo'
 
-describe('Pruebas TAREA 51: El Nombre Aparece (T254-T257)', () => {
+describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
   })
@@ -79,7 +79,7 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T257)', () => {
     })
   })
 
-  test('T256 - EL ESPEJO SE VA. Montando App, el espejo esta al principio y NO esta en el documento despues de 1000 ms. Y con movimientoApagado() en true no se monta nunca.', async () => {
+  test('T256 - EL ESPEJO SE VA. Montando App, el espejo esta al principio y NO esta en el documento despues de 1100 ms. Y con movimientoApagado() en true no se monta nunca.', async () => {
     vi.useFakeTimers()
     try {
       const repo = new RepositorioMemoria()
@@ -88,7 +88,7 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T257)', () => {
       // Al inicio está montada la capa espejo
       expect(screen.queryByTestId('capa-entrada-espejo')).not.toBeNull()
 
-      // Después de 1000 ms se desmonta del documento
+      // A los 1100 ms (antes del tope de 2000 ms), el espejo ya se desmontó
       await act(async () => {
         await vi.advanceTimersByTimeAsync(1100)
       })
@@ -161,5 +161,44 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T257)', () => {
 
     expect(screen.getByTestId('btn-agregar-bloque')).not.toBeNull()
     expect(screen.getByTestId('btn-leer-guion-fijo')).not.toBeNull()
+  })
+
+  test('T258 - RED DE SEGURIDAD. Si el timer de 1000 ms fallara, el tope de seguridad de 2000 ms desmonta el espejo.', async () => {
+    vi.useFakeTimers()
+    try {
+      let finalizado = false
+      render(<Entrada onFinish={() => { finalizado = true }} />)
+
+      expect(screen.queryByTestId('capa-entrada-espejo')).not.toBeNull()
+
+      // Avanzar hasta 2100 ms (pasado el tope de seguridad)
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(2100)
+      })
+
+      expect(finalizado).toBe(true)
+      expect(screen.queryByTestId('capa-entrada-espejo')).toBeNull()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  test('T259 - COLORES COINCIDEN CON LA MARCA NATIVA. Los tres colores de Entrada.tsx coinciden con marca_trazo_apagado, marca_trazo y marca_punto de values-night/colors.xml.', () => {
+    const xmlPath = path.join(process.cwd(), 'android/app/src/main/res/values-night/colors.xml')
+    const xmlContent = fs.readFileSync(xmlPath, 'utf-8')
+
+    const getHexColor = (name: string): string => {
+      const regex = new RegExp(`<color name="${name}">([^<]+)</color>`)
+      const match = xmlContent.match(regex)
+      return match ? match[1].trim().toUpperCase() : ''
+    }
+
+    const marcaTrazoApagado = getHexColor('marca_trazo_apagado')
+    const marcaTrazo = getHexColor('marca_trazo')
+    const marcaPunto = getHexColor('marca_punto')
+
+    expect(COLOR_MARCA_TRAZO_APAGADO.toUpperCase()).toBe(marcaTrazoApagado)
+    expect(COLOR_MARCA_TRAZO.toUpperCase()).toBe(marcaTrazo)
+    expect(COLOR_MARCA_PUNTO.toUpperCase()).toBe(marcaPunto)
   })
 })
