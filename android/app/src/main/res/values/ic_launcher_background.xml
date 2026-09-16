@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_launcher_background">#151312</color>
-    <color name="fondo_arranque">#F3F1ED</color>
-    <color name="marca_trazo">#1A1815</color>
-    <color name="marca_punto">#E11D2E</color>
 </resources>

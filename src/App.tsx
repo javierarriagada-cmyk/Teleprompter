@@ -373,7 +373,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     if (cargado && Capacitor.isNativePlatform()) {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          registerPlugin<any>('VoskNativo').listo().catch(() => {})
+          registerPlugin<any>('Arranque').listo().catch(() => {})
         })
       })
     }
