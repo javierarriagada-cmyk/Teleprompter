@@ -1,0 +1,31 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Bar 1: y=31, w=46 -->
+    <path
+        android:fillColor="#E7E1DE"
+        android:fillAlpha="0.30"
+        android:pathData="M33.5,31h41a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-41a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
+    <!-- Bar 2: y=41, w=36 -->
+    <path
+        android:fillColor="#E7E1DE"
+        android:fillAlpha="0.30"
+        android:pathData="M33.5,41h31a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-31a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
+    <!-- Bar 3: y=51, w=46 (la ventana) -->
+    <path
+        android:fillColor="#E7E1DE"
+        android:fillAlpha="1.00"
+        android:pathData="M33.5,51h41a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-41a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
+    <!-- Bar 4: y=61, w=30 (la ventana) -->
+    <path
+        android:fillColor="#E7E1DE"
+        android:fillAlpha="1.00"
+        android:pathData="M33.5,61h25a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-25a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
+    <!-- Bar 5: y=71, w=42 -->
+    <path
+        android:fillColor="#E7E1DE"
+        android:fillAlpha="0.30"
+        android:pathData="M33.5,71h37a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-37a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
+</vector>

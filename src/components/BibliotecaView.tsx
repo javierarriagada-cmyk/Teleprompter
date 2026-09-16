@@ -4,7 +4,7 @@ import { Guion, ResumenGuion } from '../datos/modelo'
 import { IdMotor } from '../motor/MotorDeVoz'
 import { PanelCorpus } from './PanelCorpus'
 import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave } from '../haptica'
-import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL } from './movimiento'
+import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './movimiento'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -22,8 +22,8 @@ interface BibliotecaViewProps {
   setEngine?: (engine: IdMotor) => void
   verTranscripcion?: boolean
   setVerTranscripcion?: (ver: boolean) => void
-  tema?: 'claro' | 'oscuro'
-  setTema?: (tema: 'claro' | 'oscuro') => void
+  tema?: 'sistema' | 'claro' | 'oscuro'
+  setTema?: (tema: 'sistema' | 'claro' | 'oscuro') => void
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
   'data-pantalla-direccion'?: string
   style?: React.CSSProperties
@@ -348,8 +348,7 @@ export default function BibliotecaView({
                 position: 'absolute',
                 top: '100%',
                 right: 0,
-                backgroundColor: 'var(--bg-superficie)',
-                border: '1px solid var(--color-borde)',
+                backgroundColor: 'var(--bg-menu)',
                 borderRadius: 'var(--redondeo)',
                 zIndex: 50,
                 minWidth: 160,
@@ -359,7 +358,7 @@ export default function BibliotecaView({
                 transformOrigin: 'top right',
                 animation: movimientoApagado()
                   ? 'none'
-                  : `menuCreceEsquina ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                  : `menuCreceEsquina ${MS_CHICO}ms ${CURVA_RESORTE} forwards`
               }}
             >
               <button
@@ -372,7 +371,7 @@ export default function BibliotecaView({
                   textAlign: 'left',
                   background: 'transparent',
                   border: 'none',
-                  borderBottom: '1px solid var(--color-borde)',
+                  borderBottom: '1px solid var(--color-separador)',
                   color: 'var(--color-texto)',
                   fontSize: 'var(--texto-cuerpo)',
                   cursor: 'pointer'
@@ -396,7 +395,7 @@ export default function BibliotecaView({
                 Importar archivo
               </button>
 
-              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-borde)' }}>
+              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
                 <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
                   Motor de voz:
                   <select
@@ -415,16 +414,33 @@ export default function BibliotecaView({
                     }}
                   >
                     <option value="vosk">Vosk (Offline)</option>
-                    <option value="nativo">Nativo (Android)</option>
+                    <option value="nativo">Nativo</option>
                   </select>
                 </label>
               </div>
 
-              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-borde)' }}>
+              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
                 <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
                   Tema:
                 </label>
                 <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
+                  <button
+                    type="button"
+                    onClick={() => setTema?.('sistema')}
+                    style={{
+                      padding: 'var(--aire-1) var(--aire-2)',
+                      fontSize: 'var(--texto-meta)',
+                      borderRadius: 'var(--redondeo)',
+                      border: '1px solid var(--color-borde)',
+                      backgroundColor: tema === 'sistema' ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                      color: tema === 'sistema' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                      fontWeight: tema === 'sistema' ? 'bold' : 'normal',
+                      cursor: 'pointer',
+                      flex: 1
+                    }}
+                  >
+                    Sistema
+                  </button>
                   <button
                     type="button"
                     onClick={() => setTema?.('claro')}
@@ -462,7 +478,7 @@ export default function BibliotecaView({
                 </div>
               </div>
 
-              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-borde)' }}>
+              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
                 <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}>
                   <span>Ver transcripción en vivo</span>
                   <input
@@ -477,7 +493,7 @@ export default function BibliotecaView({
                 </label>
               </div>
 
-              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-borde)' }}>
+              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
                 <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}>
                   <span>Vibración</span>
                   <input
@@ -586,8 +602,11 @@ export default function BibliotecaView({
                 onTouchEnd={handleTouchEnd}
                 onContextMenu={(e) => handleContextMenu(e, g.id)}
                 style={{
-                  padding: 'var(--aire-3) 0',
-                  borderBottom: esUltima ? 'none' : '1px solid var(--color-borde)',
+                  padding: 'var(--aire-3) var(--aire-3)',
+                  backgroundColor: 'var(--bg-fila)',
+                  borderRadius: 'var(--redondeo)',
+                  marginBottom: 'var(--aire-2)',
+                  borderBottom: 'none',
                   cursor: 'pointer',
                   userSelect: 'none'
                 }}
@@ -691,8 +710,9 @@ export default function BibliotecaView({
           onClick={() => setMostrarPanelCorpus(false)}
         >
           <div
+            className="panel-superficie"
             style={{
-              backgroundColor: 'var(--bg-superficie)',
+              backgroundColor: 'var(--bg-panel)',
               color: 'var(--color-texto)',
               padding: 'var(--aire-4)',
               borderRadius: 'var(--redondeo)',
@@ -703,7 +723,7 @@ export default function BibliotecaView({
               boxSizing: 'border-box',
               animation: movimientoApagado()
                 ? 'none'
-                : `panelSube ${MS_PANEL}ms ${CURVA_ENTRA} forwards`
+                : `panelSube ${MS_PANEL}ms ${CURVA_RESORTE} forwards`
             }}
             onClick={(e) => e.stopPropagation()}
           >
