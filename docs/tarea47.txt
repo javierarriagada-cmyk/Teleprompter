@@ -1,0 +1,377 @@
+TAREA 47 - EL MUNDO OSCURO: EL NOMBRE, EL ICONO, EL ARRANQUE Y LOS TONOS
+
+PARTIR DE: main (f8c000d o posterior). Rama nueva: tarea-47-mundo-oscuro.
+PR contra main. AGENTS.md en la raiz.
+
+Hay una etiqueta punto-bueno-2026-09-14. No la toques.
+
+AL PUBLICAR: usa un nombre de rama que no exista. El boton viene fallando y la
+vez pasada publico un commit VACIO. Comproba que el commit tenga archivos
+adentro y decime con que nombre quedo.
+
+
+POR QUE
+
+La aplicacion se llama "Teleprompter", su icono es un cuadrado blanco y la
+primera pantalla dice "Guiones". Eso no es un producto, es un prototipo prolijo.
+
+Esta tarea NO REDISEÑA NINGUNA PANTALLA. Pone las que hay en su identidad. Es lo
+que mas cambia el producto por unidad de trabajo, justamente porque no mueve
+nada de sitio.
+
+Lo que si es un rediseño -la portada con la tarjeta de lectura- va en la 48 y
+NO entra aca.
+
+Todo esto esta dibujado y decidido en docs/identidad.html.
+
+
+PARTE 1 - EL NOMBRE
+
+El producto se llama SIGO. En la tienda va a figurar como "Sigo Teleprompter".
+
+  1.a  capacitor.config.ts          appName: 'Sigo'
+  1.b  android/app/src/main/res/values/strings.xml
+           app_name                 Sigo
+           title_activity_main      Sigo
+  1.c  package.json                 name: "sigo"   (hoy dice teleprompter-mvp)
+  1.d  El titulo del documento web, si en algun lado dice Teleprompter.
+
+NO TOQUES EL IDENTIFICADOR DEL PAQUETE. Sigue siendo com.teleprompter.app, y
+tambien los strings package_name y custom_url_scheme. Cambiarlo despues de
+publicar en Play es imposible -queda otra aplicacion distinta- y esa decision la
+toma Javier antes de la primera subida, no ahora.
+
+
+PARTE 2 - EL ICONO
+
+Hoy el fondo del icono es #FFFFFF -de ahi el cuadrado blanco en el lanzador- y
+NO HAY CAPA MONOCROMA.
+
+LA MARCA: cinco renglones de texto, los dos del medio encendidos y los otros tres
+apagados. Es la pantalla de lectura reducida al minimo. SIN LETRAS: Android ya
+escribe "Sigo" debajo.
+
+LA ZONA SEGURA, Y ES DONDE SE EQUIVOCA TODO EL MUNDO. El lienzo es de 108 dp y el
+telefono recorta con la mascara que tenga -circulo, cuadrado redondeado, trebol-.
+Solo se garantiza visible un circulo central de 66 dp, o sea UN CUADRO UTIL DE
+46x46 CENTRADO. Todo el dibujo va ahi adentro.
+
+    Las cinco barras, en el lienzo de 108, alto 5, radio 2.5:
+
+        x=31  y=31  ancho 46   opacidad 0.30
+        x=31  y=41  ancho 36   opacidad 0.30
+        x=31  y=51  ancho 46   opacidad 1.00     <- la ventana
+        x=31  y=61  ancho 30   opacidad 1.00     <- la ventana
+        x=31  y=71  ancho 42   opacidad 0.30
+
+    Color de las barras: #E7E1DE
+    Fondo:               #151312
+
+    LOS ANCHOS SON DESPAREJOS A PROPOSITO: cinco barras iguales son una grilla,
+    cinco desparejas son un parrafo. No los emparejes.
+
+    Y LOS APAGADOS VAN A 0.30, no mas bajo: a 48 px una opacidad menor
+    desaparece y quedan dos barras blancas que se leen como un signo igual.
+
+QUE HACER
+
+  2.a  android/app/src/main/res/values/ic_launcher_background.xml
+           el color pasa de #FFFFFF a #151312
+
+  2.b  El frente pasa a ser un VECTOR, no PNGs por densidad:
+           drawable/ic_launcher_foreground.xml con las cinco barras
+       y se borran los ic_launcher_foreground.png de cada mipmap-*dpi.
+
+  2.c  AGREGAR LA CAPA MONOCROMA en mipmap-anydpi-v26/ic_launcher.xml:
+
+           <adaptive-icon>
+               <background android:drawable="@color/ic_launcher_background"/>
+               <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+               <monochrome android:drawable="@drawable/ic_launcher_monochrome"/>
+           </adaptive-icon>
+
+       El monocromo es el mismo dibujo en un solo color -el sistema lo tiñe-, con
+       las mismas opacidades. Desde Android 13 el telefono puede pintar los
+       iconos con el color del fondo de pantalla; sin esta capa el nuestro queda
+       como un cuadrado plano entre iconos que si se adaptan.
+
+       Hacer lo mismo en ic_launcher_round.xml.
+
+  2.d  Los ic_launcher.png y ic_launcher_round.png de cada mipmap son el respaldo
+       para Android 7 y anteriores. Regeneralos con la marca nueva sobre #151312.
+
+  2.e  DEJA EN docs/ UN ARCHIVO ic-play-512.png: 512x512, 32 bits, SIN
+       TRANSPARENCIA, con el fondo pintado. Es el que pide la ficha de Play.
+
+
+PARTE 3 - EL ARRANQUE
+
+Hoy: AppTheme.NoActionBarLaunch hereda de Theme.SplashScreen pero usa
+android:background="@drawable/splash", que es el metodo viejo y trae los PNG por
+densidad de Capacitor. Por eso hay un destello.
+
+QUE HACER
+
+    Configurar la pantalla de arranque como corresponde en Android 12+:
+
+        <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
+            <item name="windowSplashScreenBackground">@color/fondo_arranque</item>
+            <item name="windowSplashScreenAnimatedIcon">@drawable/ic_marca</item>
+            <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
+        </style>
+
+    fondo_arranque = #151312, el mismo suelo de la aplicacion.
+    ic_marca = la marca sola, sin fondo, la misma del icono.
+
+    SIN UNA SOLA PALABRA en la pantalla de arranque.
+
+    Los drawable-port-* y drawable-land-* con splash.png quedan sin uso: borralos
+    y decilo en el informe.
+
+    LA ANIMACION DE LA MARCA -que la ventana clara baje por los renglones- NO
+    ENTRA EN ESTA TAREA. Se hace con AnimatedVectorDrawable y merece su propia
+    vuelta. Dejalo quieto.
+
+
+PARTE 4 - LAS BARRAS DEL SISTEMA
+
+Hoy la franja de arriba y la de abajo se ven CLARAS en todas las capturas. En una
+aplicacion oscura eso es un destello que delata.
+
+OJO, Y ESTO ES IMPORTANTE: apuntamos a targetSdk 36 -Android 16-. Ahi
+android:statusBarColor y android:navigationBarColor ESTAN OBSOLETOS Y SE IGNORAN:
+el sistema fuerza borde a borde y dibuja las barras transparentes.
+
+QUE HACER
+
+    Que las barras sean transparentes de verdad y que se vea el fondo de la
+    aplicacion por debajo, y que los iconos del sistema -reloj, bateria- tomen el
+    claro o el oscuro segun el tema.
+
+    En el tema, lo que SI sigue valiendo en SDK 36:
+        android:windowLightStatusBar
+        android:windowLightNavigationBar
+    y que se resuelvan por DayNight, para que sigan al tema del telefono.
+
+    NO AGREGUES @capacitor/status-bar sin decirlo. Si despues de probarlo resulta
+    que hace falta, decilo en el informe con el motivo y el tamaño que agrega, y
+    lo decidimos. No lo metas de una.
+
+    ESTO NO SE PUEDE COMPROBAR CON UNA PRUEBA: no hay barras del sistema en jsdom.
+    Deci exactamente que atributos pusiste y en que archivo, que yo lo miro en el
+    aparato.
+
+
+PARTE 5 - EL TECLADO
+
+Cuando alguien escribe un guion, EL TECLADO OCUPA MEDIA PANTALLA. Un teclado
+blanco sobre una aplicacion oscura mata toda la identidad en un segundo, y es lo
+que pasa hoy.
+
+QUE HACER
+
+    Declarar el esquema de color del documento para que el WebView se lo informe
+    al teclado:
+
+        :root { color-scheme: light dark; }
+
+    y que siga al tema, igual que el resto.
+
+    COMPROBALO EN EL EMULADOR abriendo el editor con el tema oscuro puesto, y
+    DECI EN EL INFORME si el teclado salio oscuro. Si con eso no alcanza, deci
+    que probaste y que paso. NO INVENTES una solucion con un plugin nuevo sin
+    consultarlo.
+
+
+PARTE 6 - EL SISTEMA OSCURO: LOS TONOS
+
+Hay un defecto medido en src/styles.css:
+
+    --color-borde y --bg-superficie son EL MISMO HEXADECIMAL, #211D17.
+
+O sea que una tarjeta con borde apoyada sobre el suelo tiene un borde de su
+propio color. Contraste 1.10 contra el suelo: INVISIBLE. Por eso en oscuro todo
+se ve plano: no hay ni sombra, ni borde, ni escalon.
+
+QUE HACER
+
+    Reemplazar las fichas oscuras por esta escala. Son tonos de Material 3 en
+    nuestro matiz calido, con el croma escalado por tono -a luminancia baja un
+    croma que arriba se ve neutro abajo se ve marron-:
+
+        --bg-suelo              #151312    tono 6    el suelo de todo
+        --bg-fila               #1E1B19    tono 10   filas de lista
+        --bg-superficie         #221F1D    tono 12   tarjetas
+        --bg-panel              #2D2927    tono 17   paneles y modales
+        --bg-menu               #383432    tono 22   menus
+        --color-separador       #4B4643    tono 30   lineas divisorias
+        --color-borde           #968F8B    tono 60   bordes de control
+        --color-apagado         #CAC5C2    tono 80   texto secundario
+        --color-texto           #E7E1DE    tono 90   texto
+
+    LA REGLA QUE ORDENA ESTO: la profundidad viene DEL ESCALON DE SUPERFICIE, no
+    de sombras ni de bordes. Una sombra sobre casi negro es invisible. Una
+    tarjeta se ve elevada porque es MAS CLARA que el suelo, y nada mas.
+
+    Entonces: donde hoy una tarjeta o un panel lleva `border`, se le saca el
+    borde y se le pone su superficie. El --color-borde de tono 60 queda SOLO para
+    el contorno de un control cuyo limite tiene que percibirse -un campo de
+    texto-, y el --color-separador para las lineas divisorias entre filas.
+
+    Y UN DETALLE QUE SE NOTA Y CUESTA UNA LINEA: la tarjeta lleva una linea de un
+    pixel mas clara en su BORDE SUPERIOR -rgba(255,255,255,.06)-, que es como se
+    ve un objeto iluminado desde arriba.
+
+    EL TEMA CLARO NO SE TOCA. Sus fichas quedan como estan.
+
+    DOS COSAS QUE UN CHEQUEO AUTOMATICO MARCARIA MAL Y ESTAN BIEN:
+    el separador da 1.99 contra el suelo, y los escalones de superficie dan 1.08
+    a 1.50. No "los arregles" subiendoles el brillo. La norma de contraste no
+    textual -WCAG 1.4.11, 3:1- aplica a controles y graficos que significan algo,
+    NO a lineas divisorias ni a planos de fondo.
+
+
+PARTE 7 - LOS DOS ROJOS
+
+Hoy hay uno: --color-grabando #D92B2B. Medido contra el suelo nuevo da 3.90.
+
+Eso alcanza para un GRAFICO -la norma pide 3.0- y NO alcanza para un TEXTO -pide
+4.5-. Y el tiempo de grabacion es texto.
+
+QUE HACER
+
+    --color-grabando        #E11D2E    el punto. Es un grafico: 3.90 cumple.
+    --color-grabando-texto  #FF5A5A    el tiempo. Es texto: 6.05 cumple.
+
+    No es un compromiso: es lo que hacen los monitores de transmision, donde la
+    luz de tally es saturada y las cifras son legibles.
+
+    Y EN LA PANTALLA DE LECTURA NO HAY OTRO COLOR QUE ESE ROJO. Ni acento verde,
+    ni nada. Mientras alguien lee, la aplicacion no tiene color.
+
+
+PARTE 8 - EL MOVIMIENTO Y LOS CONTROLES
+
+  8.a  LOS RESORTES. En src/components/movimiento.tsx, al lado de las curvas que
+       ya estan, agregar:
+
+           export const CURVA_RESORTE = 'cubic-bezier(.34, 1.3, .64, 1)'
+
+       Se pasa un 3% y vuelve. Va en los OBJETOS: la tarjeta que se abre, los
+       paneles que suben, el numero de la cuenta regresiva.
+
+       NO VA EN EL TEXTO. El texto que rebota se lee peor, y esto es un producto
+       para leer. Los controles de lectura siguen entrando y saliendo solo en
+       opacidad, como los dejo la tarea 45.
+
+       El rebote es del 3%, no del 20%. Si se nota como rebote, esta mal: tiene
+       que notarse como que la cosa PESA.
+
+  8.b  LOS BOTONES SE DEFORMAN AL TOCARSE. Hoy son pildoras planas que cambian de
+       color, que es de 2015. La firma de Material 3 Expressive es que la forma
+       cambia bajo el dedo:
+
+           en reposo    radio 999   escala 1
+           apretado     radio 14    escalaY 0.94, un poco mas ancho
+           al soltar    vuelve con CURVA_RESORTE
+
+       Va en la accion principal -el boton Leer- y en los botones de elegir entre
+       opciones de Ajustes. La haptica ya esta puesta desde la tarea 45: no la
+       toques, solo se suma la deformacion.
+
+  8.c  EL SCROLL SIN BARRA. Nunca, en ninguna pantalla.
+           scrollbar-width: none
+           y el pseudo-elemento de WebKit en cero.
+
+
+LO QUE NO SE TOCA
+
+   src/lib/       todo el directorio: el motor no entra en esto
+   src/motor/     todo
+   src/hooks/     todo
+   src/components/banda.ts    nada
+
+   Y DE TeleprompterView: NADA de la geometria de lectura -el renglon trabado,
+   avanzarTrabado, MARGEN_RENGLONES_ARRIBA, MS_DESLIZAR, calcularScrollTop,
+   calcularBanda, el velo, los paddings- ni los colores que elige el usuario. Lo
+   unico que puede cambiar ahi es el rojo del punto y del tiempo, por la parte 7.
+
+   LA PAREJA DE COLORES DE LA LECTURA NO SE TOCA. Sigue siendo #000000 con
+   #FFFFFF por omision. Hay una duda abierta sobre si conviene suavizarla, y se
+   va a resolver MIDIENDO con dos lecturas, no en esta tarea.
+
+   Y no toques lo que dejaron las tareas 43 a 46: los calc(16px + env(...)), los
+   siete controles de Ajustes, <Pantalla>, onAnimationEnd, src/haptica.ts, el
+   guion de bienvenida, ni las pruebas T192 a T212.
+
+   Comprobalo con git diff --stat y ponelo en el informe.
+
+
+PRUEBAS
+
+   Numerar desde T213. T1 a T212 estan usados.
+
+   T213 - LAS FICHAS NUEVAS EXISTEN Y LA VIEJA ROTA NO. Leyendo src/styles.css:
+          estan las nueve fichas del tema oscuro con los hexadecimales de la
+          parte 6, y --color-borde YA NO vale lo mismo que --bg-superficie.
+          Se comprueba leyendo el archivo, como T207 y T209.
+
+   T214 - EL CONTRASTE SE CUMPLE. Calculando la relacion de contraste sobre los
+          valores de styles.css: texto sobre suelo >= 4.5, texto sobre tarjeta
+          >= 4.5, apagado sobre tarjeta >= 4.5, contorno sobre suelo >= 3.0, y el
+          rojo de TEXTO sobre suelo >= 4.5.
+
+          La formula es la de WCAG: luminancia relativa con el canal linealizado.
+          Ponela en la prueba, no importes una libreria.
+
+   T215 - EL RESORTE NO TOCA EL TEXTO. CURVA_RESORTE existe y se usa en la
+          tarjeta, los paneles y la cuenta regresiva; y NO aparece en el estilo de
+          los controles de lectura, que siguen solo en opacidad. Sin romper T201.
+
+   T216 - EL BOTON SE DEFORMA. La accion principal tiene un radio en reposo y
+          otro distinto al estar apretada, y vuelve al soltar.
+
+   COMPROBALAS ROMPIENDO, estas dos:
+
+     - Para T213: volve a poner --color-borde igual a --bg-superficie y verifica
+       que se pone ROJA.
+     - Para T214: baja el rojo del texto a #E11D2E y verifica que T214 se pone
+       ROJA por no llegar a 4.5.
+
+     Despues deja las dos bien. PONE EL RESULTADO TEXTUAL EN EL INFORME.
+
+   T209 -la guardiana del sistema visual, de la tarea 46- TIENE QUE SEGUIR VERDE.
+   Si agregas fichas nuevas, actualiza su lista de valores permitidos; eso no es
+   saltearla, es que el sistema crecio. Deci que cambiaste.
+
+
+AL TERMINAR
+
+   npx tsc --noEmit limpio.
+   npx vitest run: hoy son 198 de 198. Al terminar, 202 de 202.
+
+   PROHIBIDO agregar elementos ocultos ni atributos inventados para sostener una
+   prueba. Ya paso dos veces en este repositorio: tres botones invisibles
+   sosteniendo dieciocho pruebas, y un data-retardo-escalonado que no aplicaba
+   ningun retardo.
+
+   NO COMMITEES dev_server.log ni ningun registro de tu propia depuracion, y NO
+   DEJES console.log. Paso en las tareas 44 y 46.
+
+   NO BORRES COMENTARIOS. Si moves un bloque de codigo, el comentario se mueve con
+   el. En la tarea 46 se borraron 99 lineas de comentario, entre ellas la que
+   explica por que el motor por omision es el que es.
+
+   INFORME, en este orden:
+
+     1. Las ocho partes, una por una.
+     2. QUE ATRIBUTOS PUSISTE PARA LAS BARRAS DEL SISTEMA y en que archivo.
+     3. SI EL TECLADO SALIO OSCURO en el emulador, y que probaste.
+     4. Que archivos de splash borraste.
+     5. El git diff --stat completo.
+     6. El numero exacto de pruebas, y de cuanto partiste.
+     7. El resultado de romper T213 y T214, textual.
+     8. Que cambiaste de T209 y por que.
+
+   El telefono no lo ves desde la VM: no digas que "se ve mejor". Deci que
+   cambiaste, que yo lo miro en un aparato con las medidas reales.
