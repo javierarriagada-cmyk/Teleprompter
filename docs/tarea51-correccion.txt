@@ -1,0 +1,180 @@
+CORRECCION DE LA TAREA 51
+
+NO VUELVAS A CLONAR main. Segui sobre tu misma rama, encima de lo que entregaste.
+
+
+LO QUE REVISE Y ESTA BIEN
+
+235 de 235 verdes, tsc limpio. Ningun archivo prohibido: el AVD, el motor,
+src/lib/, src/hooks/, TeleprompterView y haptica quedaron intactos.
+
+Y lo mejor de la entrega: EL ESPEJO CALZA DE VERDAD. Las cinco posiciones no
+estan escritas a mano, se calculan como (coordenada - 216) * 288/432 desde el
+vector, y T254 las recalcula leyendo marca_arranque.xml. Si alguien mueve la
+marca y no el espejo, esa prueba avisa. Asi se hace.
+
+El editor vacio quedo como se pidio: campo vacio con "Título" de marca de
+posicion, sin bloque punteado y sin pildora fantasma.
+
+Cuatro cosas. La primera es de fondo.
+
+
+================================================================
+1. LAS LETRAS SE DIBUJAN CON UN BUCLE DE JAVASCRIPT
+================================================================
+
+En src/components/Entrada.tsx las cuatro letras se animan con un
+requestAnimationFrame que llama a setProgresoLetras en CADA CUADRO:
+
+    const tick = () => {
+      ...
+      setProgresoLetras({ S: ..., I: ..., G: ..., O: ... })
+      if (transcurridos < 1000) animId = requestAnimationFrame(tick)
+    }
+
+Eso es SESENTA REDIBUJADOS DE REACT POR SEGUNDO durante 450 ms, en el momento
+exacto en que la aplicacion esta arrancando y la biblioteca se esta montando
+detras. Es el peor instante posible para ocupar el hilo principal.
+
+Y va contra lo que este proyecto viene haciendo a proposito. En la tarea 48 se
+cambio la transformacion de la tarjeta de animar width/height a animar
+clip-path, justamente para no volver a repartir el texto en cada cuadro. En la
+50 los tiempos del arranque se movieron a animadores declarativos. El encargo
+decia, textual: "Es el equivalente en web del trimPathEnd que usa el arranque
+nativo". trimPathEnd es declarativo; esto no.
+
+QUE HACER
+
+    Las letras se animan CON CSS, sin una linea de JavaScript:
+
+        @keyframes escribirLetra {
+          from { stroke-dashoffset: 100; }
+          to   { stroke-dashoffset: 0; }
+        }
+
+    Cada letra lleva pathLength="100" -eso ya lo hiciste bien- y su propia
+    animacion con retardo:
+
+        S   180ms, retardo 250
+        I   180ms, retardo 340
+        G   180ms, retardo 430
+        O   180ms, retardo 520
+                          cierra en 700
+
+    Curva: la de entrada del sistema, CURVA_ENTRA de src/components/movimiento.tsx.
+
+    Sin forwards si el estado final es el mismo que el quieto; si necesitas
+    forwards, acordate de la trampa de la tarea 45 y dejalo comentado.
+
+Y SACA LOS TIMERS DUPLICADOS
+
+    Hoy conviven el bucle de rAF Y cuatro setTimeout que hacen lo mismo, con
+    este comentario:
+
+        "Timers para entornos con fake timers (Vitest) donde requestAnimationFrame
+         no avanza solo con advanceTimersByTimeAsync"
+
+    O sea: codigo de produccion puesto para que una prueba pase. Eso esta
+    prohibido por escrito en todos los encargos desde la tarea 43.
+
+    Con CSS el problema desaparece: jsdom no corre animaciones, asi que no hay
+    nada que avanzar. Queda UN SOLO temporizador, el del desmontaje, mas el tope.
+
+
+================================================================
+2. T256 NO COMPRUEBA NADA, Y LO MEDI
+================================================================
+
+Le saque el desmontaje de los 1000 ms y corri la prueba. RESULTADO TEXTUAL:
+
+    Tests  1 passed | 3 skipped (4)
+
+VERDE. Con el desmontaje borrado.
+
+El motivo: el tope de seguridad de los 2000 ms desmonta igual, asi que la prueba
+no distingue "la entrada termino cuando tenia que terminar" de "la red de
+emergencia la atrapo". La red esta tapando que el mecanismo no funcione, que es
+exactamente para lo que NO sirve una red.
+
+QUE HACER
+
+    T256 comprueba el desmontaje ANTES del tope. Con el reloj falso: a los
+    1100 ms el espejo YA NO ESTA en el documento. Si sigue ahi, roja -y a los
+    1100 el tope de 2000 todavia no llego, asi que no puede taparlo-.
+
+    Y agrega una segunda mitad, que es lo que hace util una guardiana de este
+    tipo: que el tope SI funcione cuando el mecanismo falla. Rompe el camino
+    normal a proposito dentro de la prueba -por ejemplo con una prop de
+    laboratorio no, mejor: comprobalo con el desmontaje real y deja el tope
+    cubierto por una prueba aparte, T258, montando el componente y adelantando
+    2100 ms-.
+
+    COMPROBALA ROMPIENDO OTRA VEZ: saca el desmontaje de los 1000 y verifica que
+    AHORA SI se pone roja. PONE EL RESULTADO TEXTUAL EN EL INFORME.
+
+
+================================================================
+3. Entrada.tsx SE ESCAPA DE T209
+================================================================
+
+El componente lleva #8A837C, #E7E1DE y #E11D2E escritos a mano, y no esta en la
+lista de archivos que revisa T209. Es el mismo agujero que tuvo TarjetaLectura
+en la tarea 48: el archivo nuevo nace fuera del alcance de la guardiana.
+
+ACA HAY UNA DIFERENCIA Y POR ESO NO TE PIDO LO MISMO QUE ALLA. Esos tres colores
+NO son los del tema de la aplicacion: son los del recurso de Android, porque el
+espejo tiene que ser identico a lo que acaba de dibujar el arranque nativo. Si
+los tomas de las fichas CSS, el dia que el tema cambie el espejo deja de calzar.
+
+QUE HACER
+
+    Agregalos a T209 igual, y declara la excepcion donde se pueda leer: los tres
+    literales van juntos, en constantes con nombre, arriba del archivo, con un
+    comentario que diga que son copia de values-night/colors.xml y por que no
+    salen de las fichas.
+
+    Y agrega T259: esos tres valores son IGUALES a marca_trazo_apagado,
+    marca_trazo y marca_punto de values-night/colors.xml, leyendo el XML. Si
+    alguien cambia el color de la marca nativa, el espejo se entera.
+
+
+================================================================
+4. T190 PERDIO UNA COMPROBACION Y UN COMENTARIO
+================================================================
+
+La reescribiste bien -ahora comprueba que la pildora NO ESTA con el guion
+vacio-, pero en la mitad de "con texto" quedo asi:
+
+    expect(btnLeerTexto).not.toBeNull()
+
+Eso no comprueba nada: getByTestId ya lanza si el elemento no esta. Devolvé la
+comprobacion de que ESTA HABILITADA, que es lo que esa mitad cuidaba.
+
+Y borraste el comentario que explicaba por que la pildora dejo de decir
+"Escribe algo para leer". NO SE BORRAN COMENTARIOS: si el codigo que describian
+cambio, el comentario se actualiza, no se saca.
+
+
+================================================================
+LO QUE NO SE TOCA
+================================================================
+
+   El AVD del arranque: marca_arranque.xml, marca_arranque_animada.xml y
+   animator/ entero.
+   src/motor/, src/lib/, src/hooks/, TeleprompterView.tsx, haptica.ts,
+   src/datos/.
+
+   Y no deshagas lo que ya quedo bien: las cuentas del espejo y T254, el editor
+   vacio, y el sostenido de 250 ms.
+
+
+AL TERMINAR
+
+   tsc limpio. El conjunto en 235 o mas -T258 y T259 suman dos-.
+
+   INFORME:
+     1. Como quedaron las letras en CSS, con los cuatro retardos.
+     2. Que timers borraste.
+     3. El resultado textual de romper T256, ahora que tiene que ponerse roja.
+     4. Los tres colores y de donde salen.
+     5. git diff --stat.
