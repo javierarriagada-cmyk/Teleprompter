@@ -1,0 +1,398 @@
+TAREA 50 - UN SOLO MUNDO
+
+PARTIR DE: main. Rama nueva: tarea-50-un-solo-mundo.
+SI TRABAJAS DESPUES DE UNA CORRECCION, NO VUELVAS A CLONAR main. Segui en tu rama.
+
+Esta tarea es de piel y de marca. NO se toca src/motor/. NO se toca haptica.ts.
+NO se cambian umbrales de voz, VAD, ni Web Speech.
+Las pruebas de src/ tienen que seguir pasando y tsc limpio.
+
+
+POR QUE EXISTE
+
+En el telefono de Javier (Moto G86, 16 de septiembre de 2026) se ve esto, en
+este orden:
+
+  1. En el escritorio el icono es un cuadrado negro. Tres barras del
+     ic_launcher_foreground van a fillAlpha 0.30 sobre #151312: no existen a
+     48 px. El punto rojo no esta en el icono.
+
+  2. La splash dibuja cinco barras IGUALES, todas blancas, punto a la IZQUIERDA
+     del primer renglon. El icono si tiene jerarquia; la splash la perdio. Eso
+     salio de la tarea 49, que prohibio el alpha bajo para que no se repitiera
+     el 30% invisible, y termino aplanando el dibujo. La jerarquia vuelve, pero
+     por COLOR, no por alpha.
+
+  3. La biblioteca y el editor salen en papel (#F3F1ED). La lectura es negra.
+     El tema por omision es "sistema" y el Moto esta en claro.
+
+  4. Leer es una pastilla teal. Ese color es el de una app de notas. El unico
+     acento que el producto se gano es el tally #E11D2E.
+
+Hasta que esos cuatro no sean un solo mundo, no hay "se ve cara".
+
+
+LO QUE YA ESTA Y NO SE DESHACE
+
+  - Tokens oscuros en styles.css (data-tema="oscuro" y prefers-color-scheme).
+  - Tarjeta de portada + clip-path revelarLectura (tarea 48). No reescribas esa
+    animacion. No vuelvas a animar width/height del guion.
+  - ArranquePlugin + installSplashScreen + tope 2500 + fade 250 (tarea 49). No
+    toques ese contrato mas alla de lo que dice la PARTE 3.
+  - Cuatro hapticas. No las toques. No las dupliques.
+  - app_name ya dice Sigo. No lo cambies.
+
+  Hoy la prueba mas alta es T231. De T232 a T239 quedan sin usar a proposito.
+
+
+============================================================
+PARTE 1 - EL MUNDO ES OSCURO SIEMPRE
+============================================================
+
+1. En App.tsx el valor por omision de tema deja de ser "sistema". Pasa a
+   "oscuro".
+
+   Si en localStorage hay "claro" o "sistema" guardado de una sesion vieja,
+   IGUAL arranca "oscuro" ESTA VEZ. Y OJO CON ESTO, QUE ES LA PARTE QUE SE HACE
+   MAL: "esta vez" necesita su propia marca en localStorage -por ejemplo
+   teleprompter_oscuro_impuesto- que se pone la primera vez y se mira antes de
+   pisar. Sin esa marca no es "una vez", es "siempre", y a quien elija claro a
+   mano se lo volvemos a cambiar en cada arranque.
+
+   El selector de tema en Ajustes sigue existiendo y no se rediseña. Lo que
+   elija el usuario DESPUES de la imposicion, manda.
+
+2. document.documentElement queda con data-tema="oscuro" desde el primer paint.
+   No hay un frame en papel.
+
+3. Android, en values/ y values-night/:
+
+     AppTheme.NoActionBar: parent DayNight.NoActionBar
+     android:windowLightStatusBar = false
+     android:windowLightNavigationBar = false
+
+   NO PONGAS android:statusBarColor NI android:navigationBarColor. Estan
+   obsoletos desde la API 35 y se IGNORAN en aplicaciones que apuntan a 35 o
+   mas. Nosotros apuntamos a 36. El borde a borde es obligatorio y las barras
+   toman el color de lo que se dibuja detras.
+
+   Lo que si hay que hacer: que el fondo de la activity y del WebView sea
+   #151312, para que eso que se ve detras de las barras sea nuestro negro. Hoy
+   AppTheme.NoActionBar tiene android:background = @null.
+
+   Nada de barra gris debajo del + como en el video.
+
+4. :root en styles.css -el bloque SIN media query- pasa a llevar los tokens
+   OSCUROS. El bloque [data-tema="claro"] conserva el papel. Asi, aunque alguien
+   olvide el atributo, la aplicacion no nace blanca.
+
+   El bloque @media (prefers-color-scheme: dark) queda redundante. Sacalo o
+   dejalo, pero que no contradiga a :root.
+
+Comprobado en el telefono: abrir de frio, sin tocar Ajustes, biblioteca negra,
+editor negro, lectura negra, barras de sistema negras. Cero flash papel entre
+splash y WebView.
+
+
+============================================================
+PARTE 2 - UN SOLO ACENTO
+============================================================
+
+El teal (#0F8377 / #2FC4B2) deja de ser el color de accion.
+
+En oscuro:
+    --color-acento:         #E7E1DE
+    --color-texto-acento:   #151312
+    --color-grabando:       #E11D2E    (no se toca)
+    --color-grabando-texto: #FF5A5A    (no se toca)
+
+En claro -por si alguien lo prende-: el acento tambien es hueso sobre oscuro, no
+verde. No inventes un tercer color.
+
+CONSECUENCIAS QUE TENES QUE RECORRER, no "ya va a heredar":
+
+  - Pastilla Leer en la tarjeta de portada.
+  - Pastilla Leer del editor (la que se esconde al desplazar: se queda donde
+    esta y como esta, solo cambia el color).
+  - Chips seleccionados de Ajustes (Ancho / Sans / Arriba / etc.).
+  - El + flotante.
+  - Cualquier boton que hoy use var(--color-acento).
+
+Como se ve una pastilla primaria en oscuro: fondo #E7E1DE, texto #151312.
+Como se ve una pastilla en reposo: fondo transparente, borde
+rgba(231,225,222,0.16), texto #E7E1DE.
+
+EL ROJO NO SE USA EN BOTONES. El rojo es el tally y nada mas.
+
+No agregues sombras de color. No agregues degradados de moda. El pelo de luz
+arriba de las tarjetas ya existe (border-top: 1px solid rgba(255,255,255,0.06)).
+Dejalo.
+
+OJO CON T214, la guardiana de contraste de la tarea 47: comprueba relaciones
+WCAG con los tokens del tema oscuro. Si el acento nuevo la pone roja, NO la
+ablandes: decilo en el informe con los numeros.
+
+
+============================================================
+PARTE 3 - LA MARCA ES UNA SOLA, Y SE VE
+============================================================
+
+Tres sitios, el mismo dibujo: icono, splash quieta, splash que se escribe.
+
+Cinco renglones. Los dos del medio son la ventana (mas claros, un poco mas
+largos). Los de arriba y abajo son mas cortos y un paso mas apagados. El punto
+rojo va A LA DERECHA y UN POCO ARRIBA del segundo renglon: el mismo sitio mental
+que el tally de la lectura.
+
+NO es un degradado "al medio". Es jerarquia.
+
+----- ICONO (ic_launcher_foreground.xml, ic_marca.xml, monochrome) -----
+
+Lienzo 108. El dibujo vive dentro del cuadrado seguro ~18..90.
+
+Barras en fill, no stroke, para que a 48 px no se mueran:
+
+    R1 y R5: fill #E7E1DE fillAlpha 0.62
+    R2 y R3: fill #E7E1DE fillAlpha 1.00    (la ventana)
+    R4:      fill #E7E1DE fillAlpha 0.62
+
+    Si pones 0.30 otra vez queda el cuadrado negro del video. 0.62 sobre
+    #151312 SE VE.
+
+Largos distintos, alineados a la izquierda, como un parrafo.
+
+Agrega el punto: circulo #E11D2E, radio ~4.5, a la DERECHA de R2, 1.5 a 2
+unidades por encima de su eje. Tiene que caber entero en el cuadrado seguro.
+
+Fondo del icono: #151312. Ya esta. No lo vuelvas a #F3F1ED.
+
+En el monochrome no va el rojo: esa capa es de un solo color por definicion.
+El punto ahi va en el mismo color que el resto, o no va. Decilo en el informe.
+
+----- SPLASH (marca_arranque.xml, lienzo 432) -----
+
+Circulo interior: centro 216,216 radio 144. Todo punto de todo trazo, MAS la
+mitad del grosor, MAS el radio del punto, cae adentro. Si no, T245 se pone roja.
+
+Cinco strokes, cap redondo, grosor 18 a 20.
+
+    R1 y R5: stroke @color/marca_trazo_apagado   (token nuevo, #8A837C)
+    R2 y R3: stroke @color/marca_trazo           (ya existe, #E7E1DE)
+    R4:      stroke @color/marca_trazo_apagado
+
+    marca_trazo_apagado va en values/ Y en values-night/, igual que los otros
+    tres. Recorda que values/ es el CLARO: ahi el trazo apagado es la version
+    apagada del #1A1815, no del hueso.
+
+El punto: fill @color/marca_punto, fillAlpha 0 al arrancar. Posicion: a la
+DERECHA de R2, un poco arriba. NO a la izquierda de R1. Eso es lo que Javier
+pidio despues de ver el video.
+
+NADIE QUEDA INVISIBLE: ningun trazo de la splash usa alpha por debajo de 1 salvo
+el punto, que arranca en 0 porque lo enciende la animacion. La jerarquia va por
+COLOR (trazo vs trazo_apagado), no por alpha.
+
+----- LA ANIMACION, Y ACA ESTA EL DEFECTO QUE HAY QUE ARREGLAR -----
+
+HOY LA MARCA NO SE VE, Y NO ES PORQUE ESTE MAL DIBUJADA.
+
+La pantalla de arranque se suelta cuando Arranque.listo avisa o a los 2500 ms,
+lo que pase PRIMERO. Si la biblioteca pinta en 400 ms, la marca se corta a los
+400 y nadie la vio nunca. Con una marca mas larga, peor.
+
+LA RETENCION TIENE QUE ESPERAR LAS DOS COSAS:
+
+    no se suelta hasta que (la aplicacion aviso que pinto) Y (la animacion
+    termino), o hasta el tope de 2500 ms, lo que pase primero.
+
+    Para saber cuando termino la animacion: guarda el instante en que arranca la
+    activity y compara contra la duracion total de la marca. No hace falta
+    enganchar callbacks del AnimatedVectorDrawable.
+
+    El tope de 2500 se queda como esta y NO se sube. Una splash que no se va es
+    peor que un corte.
+
+SOBRE windowSplashScreenAnimationDuration: el maximo documentado en telefonos
+son 1000 ms. NO lo pongas en 2000: puede quedar recortado sin que nos enteremos.
+Dejalo en 1000, y que la marca dure lo que dure segun la tabla de abajo; lo que
+sostiene el tiempo en pantalla es la retencion del punto anterior, no este
+atributo.
+
+    Si al probarlo ves que en tu entorno el sistema SI respeta un valor mayor,
+    decilo en el informe con lo que observaste. No lo cambies por las dudas.
+
+LOS TIEMPOS. Los cinco trazos se escriben en cascada y cierran en 1000 ms:
+
+    animador      propiedad      de -> a   duracion   retardo   termina
+    escribir_1    trimPathEnd    0 -> 1      400         0        400
+    escribir_2    trimPathEnd    0 -> 1      400       150        550
+    escribir_3    trimPathEnd    0 -> 1      400       300        700
+    escribir_4    trimPathEnd    0 -> 1      400       450        850
+    escribir_5    trimPathEnd    0 -> 1      400       600       1000
+
+    Curva de los trazos: @android:interpolator/decelerate_quad. Nada de lineal.
+
+EL PUNTO late como tally de camara, dos ciclos, y TERMINA ENCENDIDO. Empieza
+DESPUES de que el ultimo trazo cerro:
+
+    paso   de -> a   duracion   retardo   termina
+      1    0 -> 1       70       1020      1090
+      2    1 -> 0       70       1090      1160
+      3    0 -> 0       80       1160      1240   (hueco, se ve el apagon)
+      4    0 -> 1       70       1240      1310
+      5    1 -> 0       70       1310      1380
+      6    0 -> 0       80       1380      1460   (hueco)
+      7    0 -> 1       80       1460      1540   y se queda en 1
+
+    Interpolador del punto: lineal. Un tally no tiene resorte.
+    El paso 3 y el paso 6 existen para que el apagon se vea. No los saques para
+    "simplificar".
+
+    Total de la marca: 1540 ms. Ese es el numero que la retencion tiene que
+    esperar.
+
+punto_late.xml se reescribe. Los escribir_N.xml alargan duracion y escalonan
+retardos. marca_arranque_animada.xml sigue apuntando a los seis nombres; si el
+punto ya se llamaba punto, no lo renombres al pedo.
+
+
+============================================================
+PARTE 4 - LA CUENTA ES UN ESCENARIO, NO UN STICKER
+============================================================
+
+En el video, con el guion notarial, el 3 y el 1 se montan encima del texto y
+abajo sigue diciendo "Detenido".
+
+Durante los tres segundos de cuenta:
+
+  - El guion no se lee. O el texto esta en opacity 0, o hay un velo #151312
+    opaco detras del numero. No se ve parrafo atravesado por un 3.
+  - "Detenido" / "Escuchando" / cualquier estado del motor NO se pinta hasta que
+    la cuenta termina.
+  - El numero sigue usando la animacion que ya tiene (cuentaRegresivaEntra). No
+    inventes otra.
+
+NO TOQUES EL MOTOR. Esto es visibilidad de interfaz alrededor de CuentaRegresiva
+y del cartel de estado.
+
+
+============================================================
+PARTE 5 - LA BIBLIOTECA NO PARECE UN BLOC
+============================================================
+
+No rehagas el diseño. Tres cosas, y se siente otra aplicacion:
+
+1. UN GUION SIN TITULO NO SE LISTA CINCO VECES COMO "Sin titulo".
+
+   OJO, QUE ACA HAY UNA TRAMPA: BibliotecaView recibe ResumenGuion[], y el
+   resumen NO TRAE EL TEXTO. Por eso la lista es rapida. Abrir cada guion para
+   sacarle la primera linea seria abrir la biblioteca entera en cada arranque.
+
+   LO QUE HAY QUE HACER, y es lo unico que acepto: la fila sin titulo dice
+   "Guion nuevo", con la meta que ya existe (tiempo, fecha). Nada mas.
+
+   NO le agregues un campo de extracto a ResumenGuion ni al repositorio. NO
+   llames a onBuscarGuionCompleto desde la lista. La capa de datos no se toca en
+   esta tarea; si te parece que conviene, decilo en el informe y NO lo hagas.
+
+   La tarjeta grande de portada SI tiene el texto -ya lo pide para dibujar la
+   preview-, asi que ahi, si no hay titulo, puede mostrar la primera linea del
+   cuerpo recortada. Solo ahi.
+
+   No inventes titulos con el motor ni con IA.
+
+2. LA TARJETA GRANDE VACIA no es un rectangulo mudo. Si no hay texto, muestra la
+   marca chica -las cinco lineas, quietas, sin punto lateando- centrada, al 40%
+   de opacidad, y debajo "Guion nuevo".
+
+   Si hay texto, se queda como esta: preview mas velos. No animes la preview; ya
+   existe avanceTextoTarjeta y no se toca.
+
+   OJO: hoy la tarjeta vacia muestra un cursor parpadeando, que puso la tarea
+   48. Si la marca chica lo reemplaza, decilo en el informe; no dejes los dos.
+
+3. El + flotante hereda el acento nuevo (hueso, no teal). Radio y posicion se
+   quedan.
+
+No toques "cada parrafo es un bloque". Javier lo dejo congelado.
+
+
+============================================================
+LO QUE NO ENTRA
+============================================================
+
+src/motor/ entero, haptica.ts, la camara, el horizontal, los umbrales de voz.
+No bajes PALABRAS_SEGUIDAS_MINIMO ni PARA_SALTAR.
+No rediseñes Ajustes: solo heredan color.
+No agregues onboarding, tooltip, ni "Sigo" escrito en la splash.
+La marca son las lineas. El nombre esta en el escritorio.
+
+
+============================================================
+PRUEBAS QUE TENES QUE DEJAR
+============================================================
+
+Numerar desde T240. T1 a T231 estan usados.
+
+  T240 - OSCURO AL ABRIR. Sin nada en localStorage, el tema inicial es oscuro y
+         document.documentElement tiene data-tema="oscuro".
+
+  T241 - :root -sin atributo y sin media query- define --bg-suelo #151312 y
+         --color-acento #E7E1DE. No #F3F1ED ni #0F8377.
+
+  T242 - Ningun fillAlpha de ic_launcher_foreground ni de ic_marca esta por
+         debajo de 0.60.
+
+  T243 - ic_launcher_foreground e ic_marca contienen un path del punto con fill
+         #E11D2E. marca_arranque.xml tambien.
+
+  T244 - En marca_arranque.xml el centro del punto tiene x MAYOR que el x medio
+         del lienzo (216). Si queda a la izquierda, ROJA.
+
+  T245 - EL DIBUJO ESTA ADENTRO DEL CIRCULO. Lienzo 432. Todo punto de todo
+         trazo mas la mitad del grosor, y el punto mas su radio, caen en centro
+         216,216 radio 144.
+
+         COMPROBALA ROMPIENDO: corre el punto 80 px a la derecha y verifica que
+         se pone ROJA. Despues dejala bien. PONE EL RESULTADO TEXTUAL EN EL
+         INFORME.
+
+  T246 - NADIE QUEDA INVISIBLE EN LA SPLASH. Ningun stroke de marca_arranque.xml
+         tiene strokeAlpha por debajo de 1. El punto arranca en 0.
+
+  T247 - LA ANIMACION Y EL ATRIBUTO NO SE CONTRADICEN.
+         windowSplashScreenAnimationDuration es 1000, y el retardo del primer
+         animador del punto es mayor que retardo mas duracion del ultimo trazo.
+
+  T248 - EL TALLY TERMINA ENCENDIDO. El ultimo objectAnimator de punto_late deja
+         fillAlpha en 1.
+
+  T249 - LA RETENCION ESPERA LAS DOS COSAS. Leyendo MainActivity: la condicion
+         de retencion mira el aviso de la aplicacion Y el fin de la animacion, y
+         existe el tope que suelta igual.
+
+  T250 - DURANTE LA CUENTA NO HAY CARTEL DE ESTADO. Con la cuenta activa, el
+         nodo que muestra "Detenido" o su equivalente no esta en el arbol
+         visible.
+
+  T251 - LA FILA SIN TITULO DICE "Guion nuevo". Y BibliotecaView NO llama a
+         onBuscarGuionCompleto para dibujar la lista.
+
+
+============================================================
+AL TERMINAR
+============================================================
+
+Pruebas de src/ en verde. tsc limpio.
+
+INFORME:
+  1. Las cinco partes, una por una: que archivo tocaste y que no.
+  2. Si tocaste src/motor/, haptica.ts o la capa de datos, decilo. No deberias.
+  3. Que paso con T214, la guardiana de contraste, con el acento nuevo.
+  4. Que hiciste con el punto en la capa monochrome.
+  5. Que paso con el cursor parpadeante de la tarjeta vacia.
+  6. El resultado textual de romper T245.
+  7. git diff --stat.
+  8. El valor por omision del tema, antes y despues.
+
+NO digas que "se ve mas cara": desde la VM no lo ves. Deci que cambiaste.
