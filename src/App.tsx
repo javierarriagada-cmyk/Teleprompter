@@ -93,6 +93,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [errorRepositorio, setErrorRepositorio] = useState<string | null>(null)
 
   const [vista, setVista] = useState<Vista>('biblioteca')
+  const origenLecturaRef = useRef<'biblioteca' | 'editor'>('editor')
   const prevVistaRef = useRef<Vista | null>(null)
   const [direccion, setDireccion] = useState<'adentro' | 'atras' | 'inicial'>('inicial')
   const guionModificadoRef = useRef<boolean>(false)
@@ -646,11 +647,24 @@ export default function App({ motor, repoOverride }: AppProps) {
     }, 1000)
   }
 
-  async function handleEntrarLectura() {
+  async function handleEntrarLectura(origen: 'biblioteca' | 'editor' = 'editor') {
+    origenLecturaRef.current = origen
     hapticaToqueMedio()
     setVista('lectura')
     setControlesVisibles(false)
     await handleStart()
+  }
+
+  async function handleLeerDirecto(id: string) {
+    try {
+      const g = await repoRef.current.abrir(id)
+      if (g) {
+        setGuionActual(g)
+        await handleEntrarLectura('biblioteca')
+      }
+    } catch (e) {
+      console.warn('[App] Error al abrir directo para lectura:', e)
+    }
   }
 
   function handleLetraMenos() {
@@ -713,10 +727,10 @@ export default function App({ motor, repoOverride }: AppProps) {
       if (cerrarModalRef.current && cerrarModalRef.current()) {
         return
       }
-      // 2. Durante la lectura, hacer exactamente lo mismo que "Salir": handleStop y volver al editor
+      // 2. Durante la lectura, hacer exactamente lo mismo que "Salir": handleStop y volver al origen
       if (vista === 'lectura') {
         await handleStop()
-        setVista('editor')
+        setVista(origenLecturaRef.current)
         return
       }
       // 3. En el editor, volver a la biblioteca
@@ -913,11 +927,12 @@ export default function App({ motor, repoOverride }: AppProps) {
         </div>
       )}
 
-      {vista === 'biblioteca' && (
+      {(vista === 'biblioteca' || (vista === 'lectura' && origenLecturaRef.current === 'biblioteca')) && (
         <Pantalla direccion={direccion}>
           <BibliotecaView
             guiones={guionesResumen}
             onAbrir={handleAbrirGuion}
+            onLeerDirecto={handleLeerDirecto}
             onCrearNuevo={handleCrearNuevoGuion}
             onImportarArchivo={handleImportarArchivo}
             onRenombrar={handleRenombrarGuion}
@@ -934,6 +949,10 @@ export default function App({ motor, repoOverride }: AppProps) {
             tema={tema}
             setTema={setTema}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
+            style={{
+              filter: vista === 'lectura' ? 'brightness(0.15)' : 'none',
+              pointerEvents: vista === 'lectura' ? 'none' : 'auto'
+            }}
           />
         </Pantalla>
       )}
@@ -953,7 +972,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               }
               setVista('biblioteca')
             }}
-            onEntrarLectura={handleEntrarLectura}
+            onEntrarLectura={() => handleEntrarLectura('editor')}
             fontSize={fontSize}
             onLetraMenos={handleLetraMenos}
             onLetraMas={handleLetraMas}
@@ -1027,7 +1046,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                     } else {
                       mostrarAviso('Grabado')
                     }
-                    setVista('editor')
+                    setVista(origenLecturaRef.current)
                   }}
                   style={{
                     padding: 'var(--aire-2) var(--aire-3)',

@@ -134,12 +134,23 @@ button {
   }
 }
 
-/* Ocultar scrollbar en todo el documento */
-* {
+/* Ocultar scrollbar únicamente en la superficie de lectura */
+[data-testid="teleprompter-view-container"],
+[data-testid="teleprompter-view-container"] * {
   scrollbar-width: none;
 }
-*::-webkit-scrollbar {
+[data-testid="teleprompter-view-container"]::-webkit-scrollbar,
+[data-testid="teleprompter-view-container"] *::-webkit-scrollbar {
   display: none;
+}
+
+@keyframes avanceTextoTarjeta {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-30px);
+  }
 }
 
 /* Deformacion de botones en Material 3 Expressive */

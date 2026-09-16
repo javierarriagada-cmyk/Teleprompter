@@ -298,7 +298,7 @@ describe('Pruebas TAREA 31 (T160)', () => {
           onImportarArchivo: () => {}, onBorrar: () => {}, onArchivar: () => {}
         })
       )
-      const fila = screen.getByText('Uno')
+      const fila = screen.getByTestId('fila-guion-g1')
       fireEvent.contextMenu(fila)
       expect(screen.queryByTestId('menu-opciones-g1')).not.toBeNull()
 
