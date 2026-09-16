@@ -170,22 +170,16 @@ describe('Pruebas TAREA 47 (T213-T217)', () => {
   })
 
   test('T217 - EL TEMA SIGUE AL SISTEMA POR OMISION.', async () => {
-    // Sin nada guardado, el tema vale 'sistema' y documentElement NO tiene el atributo data-tema
+    // Sin nada guardado, por Tarea 50 el tema inicial es 'oscuro' y documentElement TIENE data-tema="oscuro"
     render(<App />)
 
-    expect(document.documentElement.hasAttribute('data-tema')).toBe(false)
+    expect(document.documentElement.getAttribute('data-tema')).toBe('oscuro')
 
     // Abrir menu superior ⋯ de biblioteca
     const btnMenu = screen.getByTestId('btn-menu-superior-biblioteca')
     fireEvent.click(btnMenu)
 
-    // Elegir "Oscuro"
-    const btnOscuro = screen.getByRole('button', { name: /Oscuro/i })
-    fireEvent.click(btnOscuro)
-
-    expect(document.documentElement.getAttribute('data-tema')).toBe('oscuro')
-
-    // Elegir "Sistema" de nuevo
+    // Elegir "Sistema"
     const btnSistema = screen.getByRole('button', { name: /Sistema/i })
     fireEvent.click(btnSistema)
 
@@ -209,10 +203,20 @@ describe('Pruebas TAREA 47 (T213-T217)', () => {
     )
 
     // el boton fijo
-    expect(fuente).toContain("bottom: 'calc(24px + env(safe-area-inset-bottom, 0px))'")
+    //
+    // LOS NUMEROS CAMBIARON EL 16 DE SEPTIEMBRE DE 2026 y vale la pena decir por que,
+    // porque esta prueba es de la tarea 43 y lo que cuida NO cambio: sigue exigiendo
+    // que el env() este y que no haya un numero pelado.
+    //
+    // 24 -> 32: el boton flotante de la biblioteca quedo a 32 del area segura, y dos
+    // controles flotantes de la misma aplicacion no pueden estar a distinta altura.
+    // 100 -> 130: la pildora paso de unos 44 px de alto a unos 58, asi que el hueco
+    // que deja el contenedor para que el ultimo renglon no quede tapado crecio con ella.
+    expect(fuente).toContain("bottom: 'calc(32px + env(safe-area-inset-bottom, 0px))'")
     expect(fuente).not.toContain('bottom: 24,')
+    expect(fuente).not.toContain('bottom: 32,')
 
     // y el hueco de abajo del contenedor, para que el ultimo renglon no quede tapado
-    expect(fuente).toContain('calc(100px + env(safe-area-inset-bottom, 0px))')
+    expect(fuente).toContain('calc(130px + env(safe-area-inset-bottom, 0px))')
   })
 })

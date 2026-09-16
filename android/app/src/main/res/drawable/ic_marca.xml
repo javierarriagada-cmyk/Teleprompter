@@ -6,26 +6,31 @@
     <!-- Bar 1: y=31, w=46 -->
     <path
         android:fillColor="#E7E1DE"
-        android:fillAlpha="0.30"
+        android:fillAlpha="0.62"
         android:pathData="M33.5,31h41a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-41a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
-    <!-- Bar 2: y=41, w=36 -->
+    <!-- Bar 2: y=41, w=36 (la ventana) -->
     <path
         android:fillColor="#E7E1DE"
-        android:fillAlpha="0.30"
+        android:fillAlpha="1.00"
         android:pathData="M33.5,41h31a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-31a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
     <!-- Bar 3: y=51, w=46 (la ventana) -->
     <path
         android:fillColor="#E7E1DE"
         android:fillAlpha="1.00"
         android:pathData="M33.5,51h41a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-41a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
-    <!-- Bar 4: y=61, w=30 (la ventana) -->
+    <!-- Bar 4: y=61, w=30 -->
     <path
         android:fillColor="#E7E1DE"
-        android:fillAlpha="1.00"
+        android:fillAlpha="0.62"
         android:pathData="M33.5,61h25a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-25a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
     <!-- Bar 5: y=71, w=42 -->
     <path
         android:fillColor="#E7E1DE"
-        android:fillAlpha="0.30"
+        android:fillAlpha="0.62"
         android:pathData="M33.5,71h37a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-37a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
+    <!-- Punto Tally: circulo #E11D2E a la DERECHA de R2 (x=73.5, y=41.5, radio=4.5) -->
+    <path
+        android:name="punto"
+        android:fillColor="#E11D2E"
+        android:pathData="M73.5,41.5 m-4.5,0 a4.5,4.5 0 1,0 9,0 a4.5,4.5 0 1,0 -9,0" />
 </vector>

@@ -462,7 +462,7 @@ export default function EditorView({
     <div
       data-pantalla-direccion={dataPantallaDireccion}
       onAnimationEnd={onAnimationEnd}
-      style={{ maxWidth: 800, margin: '0 auto', padding: 'var(--aire-4) var(--aire-4) calc(100px + env(safe-area-inset-bottom, 0px)) var(--aire-4)', position: 'relative', ...style }}
+      style={{ maxWidth: 800, margin: '0 auto', padding: 'var(--aire-4) var(--aire-4) calc(130px + env(safe-area-inset-bottom, 0px)) var(--aire-4)', position: 'relative', ...style }}
     >
       <input
         type="file"
@@ -1380,7 +1380,7 @@ export default function EditorView({
       <div
         style={{
           position: 'fixed',
-          bottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+          bottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
           left: 0,
           right: 0,
           display: 'flex',
@@ -1397,8 +1397,12 @@ export default function EditorView({
             pointerEvents: 'auto',
             width: 'calc(100% - 32px)',
             maxWidth: 400,
-            padding: 'var(--aire-3) var(--aire-4)',
-            fontSize: 'var(--texto-cuerpo)',
+            // 20 de relleno arriba y abajo, no 12: con 12 la pildora quedaba en unos
+            // 44 px, que es el MINIMO tocable, para la accion principal de la pantalla.
+            // Y la letra a 18, la misma que usa la pildora Leer de la tarjeta de
+            // portada: es el mismo boton y no puede tener dos tamaños segun donde este.
+            padding: 'var(--aire-4)',
+            fontSize: 'var(--texto-titulo)',
             fontWeight: 600,
             backgroundColor: numPalabras === 0 ? 'var(--bg-superficie)' : 'var(--color-acento)',
             color: numPalabras === 0 ? 'var(--color-apagado)' : 'var(--color-texto-acento)',
@@ -1418,7 +1422,10 @@ export default function EditorView({
               : `transform ${MS_DEDO}ms ${CURVA_SALE}`
           }}
         >
-          {numPalabras === 0 ? '▶ Leer — Escribe algo para leer' : '▶ Leer'}
+          {/* Sin el "— Escribe algo para leer" del guion vacio: la pantalla ya lo dice
+              tres veces -el contador en 0 palabras, el "Escribe el texto..." del bloque
+              y el propio boton apagado-. Un boton dice que hace, no por que no se puede. */}
+          ▶ Leer
         </button>
       </div>
     </div>

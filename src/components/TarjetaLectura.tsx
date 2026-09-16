@@ -140,27 +140,49 @@ export default function TarjetaLectura({
             ))}
           </div>
         ) : (
-          /* Estado Vacío: Cursor Parpadeando sin iconos ni ilustraciones */
+          /* ESTADO VACIO: LA MARCA, QUIETA. Parte 5.2 de la tarea 50.
+           *
+           * Reemplaza al cursor parpadeante que puso la tarea 48. El cursor decia
+           * "escribi aca", que es lo que dice cualquier bloc de notas; la marca dice
+           * de quien es la aplicacion. Y es la regla que la tarea 48 dejo escrita:
+           * UNA SOLA CLASE DE OBJETO EN LA PORTADA, llena o vacia. El estado vacio no
+           * trae un mundo nuevo -un icono, una ilustracion, una familia distinta-
+           * justo en el momento de menos informacion.
+           *
+           * Son los mismos cinco renglones del icono y del arranque, con la misma
+           * jerarquia: los dos del medio son la ventana. Quietos y al 40%: es una
+           * marca de agua, no un adorno que late. El punto rojo NO va: el punto es el
+           * tally, y aca no se esta grabando nada. */
           <div
+            data-testid="marca-tarjeta-vacia"
+            aria-hidden="true"
             style={{
               position: 'relative',
               zIndex: 2,
               padding: '0 var(--aire-2)',
               display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              height: '100%'
+              gap: 'var(--aire-1)',
+              height: '100%',
+              opacity: 0.4
             }}
           >
-            <span
-              style={{
-                display: 'inline-block',
-                width: 2,
-                height: 24,
-                backgroundColor: 'var(--color-acento)',
-                animation: movimientoApagado() ? 'none' : 'parpadeoCursor 1s infinite'
-              }}
-            />
+            {[96, 74, 96, 62, 86].map((ancho, idx) => (
+              <span
+                key={idx}
+                style={{
+                  display: 'block',
+                  width: ancho,
+                  height: 6,
+                  borderRadius: 'var(--redondeo-pildora)',
+                  alignSelf: 'flex-start',
+                  backgroundColor: parejaColor.letra,
+                  opacity: idx === 1 || idx === 2 ? 1 : 0.55
+                }}
+              />
+            ))}
           </div>
         )}
       </div>

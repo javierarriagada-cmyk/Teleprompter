@@ -1,51 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Paso 1: 0 -> 1 (dur: 70, start: 1020, end: 1090) -->
+    <objectAnimator
+        android:propertyName="fillAlpha"
+        android:valueFrom="0"
+        android:valueTo="1"
+        android:duration="70"
+        android:startOffset="1020"
+        android:valueType="floatType"
+        android:interpolator="@android:anim/linear_interpolator" />
+    <!-- Paso 2: 1 -> 0 (dur: 70, start: 1090, end: 1160) -->
+    <objectAnimator
+        android:propertyName="fillAlpha"
+        android:valueFrom="1"
+        android:valueTo="0"
+        android:duration="70"
+        android:startOffset="1090"
+        android:valueType="floatType"
+        android:interpolator="@android:anim/linear_interpolator" />
+    <!-- Paso 3: 0 -> 0 (dur: 80, start: 1160, end: 1240) hueco -->
+    <objectAnimator
+        android:propertyName="fillAlpha"
+        android:valueFrom="0"
+        android:valueTo="0"
+        android:duration="80"
+        android:startOffset="1160"
+        android:valueType="floatType"
+        android:interpolator="@android:anim/linear_interpolator" />
+    <!-- Paso 4: 0 -> 1 (dur: 70, start: 1240, end: 1310) -->
+    <objectAnimator
+        android:propertyName="fillAlpha"
+        android:valueFrom="0"
+        android:valueTo="1"
+        android:duration="70"
+        android:startOffset="1240"
+        android:valueType="floatType"
+        android:interpolator="@android:anim/linear_interpolator" />
+    <!-- Paso 5: 1 -> 0 (dur: 70, start: 1310, end: 1380) -->
+    <objectAnimator
+        android:propertyName="fillAlpha"
+        android:valueFrom="1"
+        android:valueTo="0"
+        android:duration="70"
+        android:startOffset="1310"
+        android:valueType="floatType"
+        android:interpolator="@android:anim/linear_interpolator" />
+    <!-- Paso 6: 0 -> 0 (dur: 80, start: 1380, end: 1460) hueco -->
+    <objectAnimator
+        android:propertyName="fillAlpha"
+        android:valueFrom="0"
+        android:valueTo="0"
+        android:duration="80"
+        android:startOffset="1380"
+        android:valueType="floatType"
+        android:interpolator="@android:anim/linear_interpolator" />
+    <!-- Paso 7: 0 -> 1 (dur: 80, start: 1460, end: 1540) se queda en 1 -->
     <objectAnimator
         android:propertyName="fillAlpha"
         android:valueFrom="0"
         android:valueTo="1"
         android:duration="80"
-        android:startOffset="560"
-        android:valueType="floatType"
-        android:interpolator="@android:anim/linear_interpolator" />
-    <objectAnimator
-        android:propertyName="fillAlpha"
-        android:valueFrom="1"
-        android:valueTo="0"
-        android:duration="70"
-        android:startOffset="640"
-        android:valueType="floatType"
-        android:interpolator="@android:anim/linear_interpolator" />
-    <objectAnimator
-        android:propertyName="fillAlpha"
-        android:valueFrom="0"
-        android:valueTo="0"
-        android:duration="60"
-        android:startOffset="710"
-        android:valueType="floatType"
-        android:interpolator="@android:anim/linear_interpolator" />
-    <objectAnimator
-        android:propertyName="fillAlpha"
-        android:valueFrom="0"
-        android:valueTo="1"
-        android:duration="70"
-        android:startOffset="770"
-        android:valueType="floatType"
-        android:interpolator="@android:anim/linear_interpolator" />
-    <objectAnimator
-        android:propertyName="fillAlpha"
-        android:valueFrom="1"
-        android:valueTo="0"
-        android:duration="70"
-        android:startOffset="840"
-        android:valueType="floatType"
-        android:interpolator="@android:anim/linear_interpolator" />
-    <objectAnimator
-        android:propertyName="fillAlpha"
-        android:valueFrom="0"
-        android:valueTo="1"
-        android:duration="70"
-        android:startOffset="910"
+        android:startOffset="1460"
         android:valueType="floatType"
         android:interpolator="@android:anim/linear_interpolator" />
 </set>

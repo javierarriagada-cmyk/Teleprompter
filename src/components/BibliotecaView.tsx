@@ -607,7 +607,7 @@ export default function BibliotecaView({
           style={{ display: 'flex', flexDirection: 'column', ...animacionListaStyle }}
         >
           {guionesFiltrados.map((g, index) => {
-            const tituloMostrar = g.titulo && g.titulo.trim() ? g.titulo : 'Sin título'
+            const tituloMostrar = (g.titulo && g.titulo.trim() && g.titulo !== 'Sin título') ? g.titulo : 'Guion nuevo'
             const mins = Math.max(1, Math.round((g.palabras || 0) / 150))
             const fechaNat = formatearFechaNatural(g.modificado)
             const metaTexto = `${mins} min · ${fechaNat}`
@@ -780,14 +780,22 @@ export default function BibliotecaView({
         title="Crear nuevo guion"
         style={{
           position: 'fixed',
-          bottom: 'var(--aire-5)',
-          right: 'var(--aire-5)',
+          // EL AREA SEGURA. Este boton se quedo afuera de la tarea 43, que se la sumo
+          // al relleno de la raiz y a la barra de controles de la lectura. Con el
+          // borde a borde obligatorio del SDK 36, 32 px se miden desde el borde FISICO
+          // de la pantalla, asi que la barra de navegacion se lo come casi entero.
+          // Javier lo vio en el telefono el 16 de septiembre de 2026.
+          bottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
+          right: 'calc(32px + env(safe-area-inset-right, 0px))',
           backgroundColor: 'var(--bg-superficie)',
           color: 'var(--color-texto)',
           borderRadius: 'var(--redondeo-pildora)',
-          width: 44,
-          height: 44,
-          fontSize: 'var(--texto-titulo)',
+          // 56, la medida de siempre para un boton flotante. Estaba en 44, que es el
+          // MINIMO tocable: la tarea 48 lo hizo secundario -Leer paso a ser la accion
+          // principal- y secundario se confundio con apretado.
+          width: 56,
+          height: 56,
+          fontSize: 'var(--texto-display)',
           fontWeight: 600,
           cursor: 'pointer',
           border: '1px solid var(--color-borde)',

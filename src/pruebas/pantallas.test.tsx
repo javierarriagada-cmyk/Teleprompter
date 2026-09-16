@@ -1056,7 +1056,11 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
 
     const btnLeerVacio = screen.getByTestId('btn-leer-guion-fijo') as HTMLButtonElement
     expect(btnLeerVacio.disabled).toBe(true)
-    expect(btnLeerVacio.textContent).toContain('Escribe algo para leer')
+    // El 16 de septiembre de 2026 se saco el "— Escribe algo para leer": la pantalla
+    // ya lo dice tres veces -el contador en 0 palabras, el "Escribe el texto..." del
+    // bloque y el propio boton apagado-. Lo que esta prueba cuida, que el boton este
+    // DESHABILITADO con un guion vacio, no cambio.
+    expect(btnLeerVacio.textContent?.trim()).toBe('▶ Leer')
 
     unmount()
 

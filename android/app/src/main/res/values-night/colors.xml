@@ -2,5 +2,6 @@
 <resources>
     <color name="fondo_arranque">#151312</color>
     <color name="marca_trazo">#E7E1DE</color>
+    <color name="marca_trazo_apagado">#8A837C</color>
     <color name="marca_punto">#E11D2E</color>
 </resources>

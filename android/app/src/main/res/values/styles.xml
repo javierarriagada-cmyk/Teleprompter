@@ -12,9 +12,20 @@
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:background">@null</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar">true</item>
+        <!-- EL MUNDO ES OSCURO SIEMPRE, tarea 50. La aplicacion ya no sigue al tema
+             del telefono, asi que este values/ -el claro del sistema- lleva los
+             mismos valores que values-night/.
+
+             El fondo NO es @null: es lo que se ve DETRAS de las barras de sistema.
+             Desde targetSdk 35 android:statusBarColor y navigationBarColor se
+             ignoran y el borde a borde es obligatorio, asi que la unica manera de
+             que esas barras sean negras es que lo que hay debajo sea negro.
+
+             windowLight*Bar en false pide iconos CLAROS de sistema, que es lo que
+             se lee sobre nuestro negro. -->
+        <item name="android:background">@color/fondo_arranque</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
     </style>
 
 

@@ -169,11 +169,24 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [mirror, setMirror] = useState<boolean>(Boolean(ajustesPrevios.mirror))
   const [lineasZona, setLineasZona] = useState<number>(ajustesPrevios.lineasZona !== undefined ? Number(ajustesPrevios.lineasZona) : 3)
   const [anclajeZona, setAnclajeZona] = useState<'arriba' | 'medio' | 'abajo'>(ajustesPrevios.anclajeZona || 'arriba')
-  const [tema, setTema] = useState<'sistema' | 'claro' | 'oscuro'>(
-    ajustesPrevios.tema === 'claro' || ajustesPrevios.tema === 'oscuro' || ajustesPrevios.tema === 'sistema'
-      ? ajustesPrevios.tema
-      : 'sistema'
-  )
+  const [tema, setTema] = useState<'sistema' | 'claro' | 'oscuro'>(() => {
+    let yaImpuesto = false
+    try {
+      yaImpuesto = localStorage.getItem('teleprompter_oscuro_impuesto') === 'true'
+    } catch (e) {}
+
+    if (!yaImpuesto) {
+      try {
+        localStorage.setItem('teleprompter_oscuro_impuesto', 'true')
+      } catch (e) {}
+      return 'oscuro'
+    }
+
+    if (ajustesPrevios.tema === 'claro' || ajustesPrevios.tema === 'oscuro' || ajustesPrevios.tema === 'sistema') {
+      return ajustesPrevios.tema
+    }
+    return 'oscuro'
+  })
 
   // COLUMNA ANCHA POR OMISION. Estaba en angosta y Javier lo pregunto el 13 de septiembre
   // de 2026: la angosta es una opcion para quien la quiera, no el punto de partida. En un
@@ -420,6 +433,50 @@ export default function App({ motor, repoOverride }: AppProps) {
     } catch (e) {
       console.warn('[App] Error al crear nuevo guion:', e)
     }
+  }
+
+  // UN GUION QUE NO SE ESCRIBIO NO SE GUARDA.
+  //
+  // handleCrearNuevoGuion lo guarda en el repositorio ANTES de abrir el editor, para
+  // que el guardado automatico tenga contra que guardar desde la primera tecla. El
+  // efecto de eso es que apretar "+" y volver atras sin escribir nada deja un guion
+  // fantasma. Javier abrio la biblioteca el 16 de septiembre de 2026 y tenia cuatro
+  // "Sin titulo" seguidos, todos de haber entrado y salido.
+  //
+  // No se arregla al entrar -guardar mas tarde obliga a inventar un estado a medias
+  // entre "no existe" y "existe"-. Se arregla al salir: si no hay titulo y no hay
+  // texto, no hay nada que conservar.
+  //
+  // OJO: guionNuevo NO deja el titulo vacio, lo deja en 'Sin título'. Comparar contra
+  // la cadena vacia no alcanza.
+  function guionSinEscribir(g: Guion | null): boolean {
+    if (!g) return false
+    const titulo = (g.titulo || '').trim()
+    if (titulo !== '' && titulo !== 'Sin título') return false
+    return (g.bloques || []).every((b) => !b.texto || b.texto.trim() === '')
+  }
+
+  // Los dos caminos de vuelta -el boton y el gesto de atras de Android- pasan por
+  // aca. Arreglar uno solo deja el fantasma entrando por el otro.
+  async function salirDelEditor() {
+    const g = guionActual
+    if (guionSinEscribir(g)) {
+      guionModificadoRef.current = false
+      setGuionActual(null)
+      try {
+        await repoRef.current.borrar(g!.id)
+        await cargarBiblioteca()
+      } catch (e) {
+        console.warn('[App] Error al descartar un guion sin escribir:', e)
+      }
+      setVista('biblioteca')
+      return
+    }
+    if (guionModificadoRef.current) {
+      mostrarAviso('Guardado')
+      guionModificadoRef.current = false
+    }
+    setVista('biblioteca')
   }
 
   async function handleImportarArchivo(file: File) {
@@ -746,9 +803,9 @@ export default function App({ motor, repoOverride }: AppProps) {
         setVista(origenLecturaRef.current)
         return
       }
-      // 3. En el editor, volver a la biblioteca
+      // 3. En el editor, volver a la biblioteca -descartando el guion si no se escribio
       if (vista === 'editor') {
-        setVista('biblioteca')
+        await salirDelEditor()
         return
       }
       // 4. En la biblioteca, salir de la aplicación
@@ -1003,13 +1060,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               guionModificadoRef.current = true
               setGuionActual(nuevoG)
             }}
-            onVolverBiblioteca={() => {
-              if (guionModificadoRef.current) {
-                mostrarAviso('Guardado')
-                guionModificadoRef.current = false
-              }
-              setVista('biblioteca')
-            }}
+            onVolverBiblioteca={() => { salirDelEditor() }}
             onEntrarLectura={() => handleEntrarLectura('editor')}
             fontSize={fontSize}
             onLetraMenos={handleLetraMenos}
@@ -1235,6 +1286,32 @@ export default function App({ motor, repoOverride }: AppProps) {
                   backgroundColor: colorFondo,
                   pointerEvents: 'none',
                   animation: `veloRelevoSale ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                }}
+              />
+            )}
+            {/* LA CUENTA ES UN ESCENARIO, NO UN STICKER -parte 4 de la tarea 50-.
+                Mientras corren los tres segundos, el guion no se lee y el cartel de
+                estado del motor no se ve: un parrafo atravesado por un 3, con
+                "Detenido" abajo, es lo que hacia que la cuenta pareciera pegada
+                encima en vez de ser un momento propio.
+
+                Es un velo hermano, del mismo color de fondo, NO un cambio adentro de
+                TeleprompterView: ese archivo esta congelado desde la tarea 43, y el
+                cartel es suyo. Tapar desde afuera no le toca una linea.
+
+                El zIndex 6 no es decorativo: el cartel de estado esta en 5 y la
+                cuenta en 10. Seis es el unico hueco que tapa el cartel sin tapar el
+                numero. */}
+            {cuentaRegresiva !== null && (
+              <div
+                data-testid="velo-cuenta-regresiva"
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  backgroundColor: colorFondo,
+                  pointerEvents: 'none',
+                  zIndex: 6
                 }}
               />
             )}

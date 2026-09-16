@@ -3,7 +3,7 @@
     android:propertyName="trimPathEnd"
     android:valueFrom="0"
     android:valueTo="1"
-    android:duration="260"
-    android:startOffset="210"
+    android:duration="400"
+    android:startOffset="450"
     android:valueType="floatType"
     android:interpolator="@android:interpolator/decelerate_quad" />

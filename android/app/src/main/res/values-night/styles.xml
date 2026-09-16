@@ -3,7 +3,9 @@
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:background">@null</item>
+        <!-- Mismo motivo que en values/styles.xml: el fondo es lo que se ve detras
+             de las barras de sistema, y statusBarColor ya no existe en SDK 36. -->
+        <item name="android:background">@color/fondo_arranque</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
     </style>

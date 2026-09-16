@@ -2404,7 +2404,7 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
 
 
 
-  test('T94: Los dos temas aplican sus variables, y el acento sobre suelo claro es distinto del acento sobre suelo oscuro.', () => {
+  test('T94: Los dos temas aplican sus variables, y el acento nuevo es hueso sobre oscuro.', () => {
     document.documentElement.setAttribute('data-tema', 'claro')
     const csClaro = getComputedStyle(document.documentElement)
 
@@ -2413,8 +2413,7 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
 
     // Comprobar variables en CSS o atributos
     const cssContent = fs.readFileSync(path.resolve(process.cwd(), 'src/styles.css'), 'utf-8')
-    expect(cssContent).toContain('#0F8377')
-    expect(cssContent).toContain('#2FC4B2')
+    expect(cssContent).toContain('#E7E1DE')
     expect(cssContent).toContain('#F3F1ED')
     expect(cssContent).toContain('#151312')
   })

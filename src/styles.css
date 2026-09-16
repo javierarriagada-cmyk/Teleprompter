@@ -1,16 +1,16 @@
 :root {
-  color-scheme: light dark;
-  --bg-suelo: #F3F1ED;
-  --bg-fila: #FAF9F6;
-  --bg-superficie: #FFFFFF;
-  --bg-panel: #FFFFFF;
-  --bg-menu: #FFFFFF;
-  --color-separador: #E4E0D9;
-  --color-texto: #1A1815;
-  --color-apagado: #78706A;
-  --color-borde: #E4E0D9;
-  --color-acento: #0F8377;
-  --color-texto-acento: #FFFFFF;
+  color-scheme: dark light;
+  --bg-suelo: #151312;
+  --bg-fila: #1E1B19;
+  --bg-superficie: #221F1D;
+  --bg-panel: #2D2927;
+  --bg-menu: #383432;
+  --color-separador: #4B4643;
+  --color-borde: #968F8B;
+  --color-apagado: #CAC5C2;
+  --color-texto: #E7E1DE;
+  --color-acento: #E7E1DE;
+  --color-texto-acento: #151312;
   --color-grabando: #E11D2E;
   --color-grabando-texto: #FF5A5A;
 
@@ -29,24 +29,6 @@
   --redondeo-pildora: 999px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-tema="claro"]) {
-    --bg-suelo: #151312;
-    --bg-fila: #1E1B19;
-    --bg-superficie: #221F1D;
-    --bg-panel: #2D2927;
-    --bg-menu: #383432;
-    --color-separador: #4B4643;
-    --color-borde: #968F8B;
-    --color-apagado: #CAC5C2;
-    --color-texto: #E7E1DE;
-    --color-acento: #2FC4B2;
-    --color-texto-acento: #04211D;
-    --color-grabando: #E11D2E;
-    --color-grabando-texto: #FF5A5A;
-  }
-}
-
 [data-tema="claro"] {
   --bg-suelo: #F3F1ED;
   --bg-fila: #FAF9F6;
@@ -57,8 +39,8 @@
   --color-texto: #1A1815;
   --color-apagado: #78706A;
   --color-borde: #E4E0D9;
-  --color-acento: #0F8377;
-  --color-texto-acento: #FFFFFF;
+  --color-acento: #E7E1DE;
+  --color-texto-acento: #151312;
   --color-grabando: #E11D2E;
   --color-grabando-texto: #FF5A5A;
 }
@@ -73,8 +55,8 @@
   --color-borde: #968F8B;
   --color-apagado: #CAC5C2;
   --color-texto: #E7E1DE;
-  --color-acento: #2FC4B2;
-  --color-texto-acento: #04211D;
+  --color-acento: #E7E1DE;
+  --color-texto-acento: #151312;
   --color-grabando: #E11D2E;
   --color-grabando-texto: #FF5A5A;
 }
@@ -206,14 +188,8 @@ button {
   }
 }
 
-@keyframes parpadeoCursor {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
+/* parpadeoCursor se fue con la tarea 50: el cursor de la portada vacia lo
+ * reemplazo la marca quieta, y no quedaba nadie usando estos keyframes. */
 
 .tarjeta-lectura-velo-superior {
   position: absolute;

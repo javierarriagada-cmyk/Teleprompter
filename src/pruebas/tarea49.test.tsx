@@ -117,8 +117,7 @@ describe('Pruebas TAREA 49 - La Entrada: La Marca se Escribe (T226-T231)', () =>
     }
 
     expect(targetsFound, 'Se esperaban 6 targets animados').toBe(6)
-    expect(maxEndTime, 'Duracion total retardo+duracion debe ser <= 1000 ms').toBeLessThanOrEqual(1000)
-    expect(maxEndTime, 'Duracion max esperada es 980 ms').toBe(980)
+    expect(maxEndTime, 'Duracion total retardo+duracion Tarea 50 debe ser 1540 ms').toBe(1540)
   })
 
   test('T229 - EL PUNTO VA DESPUES', () => {
@@ -142,7 +141,7 @@ describe('Pruebas TAREA 49 - La Entrada: La Marca se Escribe (T226-T231)', () =>
     }
 
     const endLine5 = startLine5 + durLine5
-    expect(endLine5).toBe(540)
+    expect(endLine5).toBe(1000)
 
     const puntoLateXml = fs.readFileSync(path.join(pathAnimatorDir, 'punto_late.xml'), 'utf-8')
     const firstPuntoMatch = /<objectAnimator[\s\S]*?startOffset="(\d+)"/.exec(puntoLateXml)
@@ -150,7 +149,7 @@ describe('Pruebas TAREA 49 - La Entrada: La Marca se Escribe (T226-T231)', () =>
 
     const startPunto = parseInt(firstPuntoMatch![1], 10)
     expect(startPunto, 'Retardo del punto debe ser mayor que el fin del ultimo trazo').toBeGreaterThan(endLine5)
-    expect(startPunto).toBe(560)
+    expect(startPunto).toBe(1020)
   })
 
   test('T230 - LA RETENCION TIENE TOPE', () => {
@@ -166,7 +165,7 @@ describe('Pruebas TAREA 49 - La Entrada: La Marca se Escribe (T226-T231)', () =>
     const puntoLateXml = fs.readFileSync(path.join(pathAnimatorDir, 'punto_late.xml'), 'utf-8')
     const animators = puntoLateXml.match(/<objectAnimator[\s\S]*?\/>/g)
     expect(animators, 'Se esperaban animadores de punto').not.toBeNull()
-    expect(animators!.length).toBe(6)
+    expect(animators!.length).toBe(7)
 
     const lastAnimator = animators![animators!.length - 1]
     expect(lastAnimator).toContain('valueTo="1"')

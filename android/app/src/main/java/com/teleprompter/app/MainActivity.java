@@ -12,6 +12,8 @@ import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
     private static boolean listoParaMostrar = false;
+    private static long inicioActivityMs = 0;
+    private static final long DURACION_MARCA_MS = 1540;
 
     public static void notificarListo() {
         listoParaMostrar = true;
@@ -20,9 +22,14 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         listoParaMostrar = false;
+        inicioActivityMs = System.currentTimeMillis();
 
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
-        splashScreen.setKeepOnScreenCondition(() -> !listoParaMostrar);
+        splashScreen.setKeepOnScreenCondition(() -> {
+            long transcurrido = System.currentTimeMillis() - inicioActivityMs;
+            boolean animacionTerminada = transcurrido >= DURACION_MARCA_MS;
+            return !(listoParaMostrar && animacionTerminada);
+        });
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> listoParaMostrar = true, 2500);
 

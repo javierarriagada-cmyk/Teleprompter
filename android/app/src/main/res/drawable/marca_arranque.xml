@@ -6,7 +6,7 @@
     android:viewportHeight="432">
     <path
         android:name="linea1"
-        android:strokeColor="@color/marca_trazo"
+        android:strokeColor="@color/marca_trazo_apagado"
         android:strokeWidth="20"
         android:strokeLineCap="round"
         android:trimPathEnd="0"
@@ -27,14 +27,14 @@
         android:pathData="M112,216 L304,216" />
     <path
         android:name="linea4"
-        android:strokeColor="@color/marca_trazo"
+        android:strokeColor="@color/marca_trazo_apagado"
         android:strokeWidth="20"
         android:strokeLineCap="round"
         android:trimPathEnd="0"
         android:pathData="M112,256 L252,256" />
     <path
         android:name="linea5"
-        android:strokeColor="@color/marca_trazo"
+        android:strokeColor="@color/marca_trazo_apagado"
         android:strokeWidth="20"
         android:strokeLineCap="round"
         android:trimPathEnd="0"
@@ -43,5 +43,5 @@
         android:name="punto"
         android:fillColor="@color/marca_punto"
         android:fillAlpha="0"
-        android:pathData="M120,136 m-13,0 a13,13 0 1,0 26,0 a13,13 0 1,0 -26,0" />
+        android:pathData="M285,168 m-13,0 a13,13 0 1,0 26,0 a13,13 0 1,0 -26,0" />
 </vector>
