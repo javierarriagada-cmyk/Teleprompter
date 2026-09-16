@@ -191,4 +191,28 @@ describe('Pruebas TAREA 47 (T213-T217)', () => {
 
     expect(document.documentElement.hasAttribute('data-tema')).toBe(false)
   })
+
+  // T218 - LA BARRA "Leer" DEL EDITOR DESCUENTA EL AREA SEGURA.
+  //
+  // Este boton se quedo afuera de la tarea 43 por un olvido en el encargo: ahi se
+  // arreglaron el relleno de la raiz de App y la barra de controles de la lectura,
+  // y este siguio con bottom fijo en 24. En un telefono con barra de navegacion la
+  // pildora se mete debajo del sistema, que es el mismo sintoma que hacia que un
+  // toque en Leer cayera en el boton de Inicio.
+  //
+  // jsdom borra env() a secas pero lo conserva adentro de calc(), que es por lo que
+  // la tarea 35 lo escribio asi. Igual que T194.
+  test('T218 - LA BARRA "Leer" DEL EDITOR DESCUENTA EL AREA SEGURA DE ABAJO, y el hueco del contenedor tambien.', () => {
+    const fuente = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/components/EditorView.tsx'),
+      'utf8'
+    )
+
+    // el boton fijo
+    expect(fuente).toContain("bottom: 'calc(24px + env(safe-area-inset-bottom, 0px))'")
+    expect(fuente).not.toContain('bottom: 24,')
+
+    // y el hueco de abajo del contenedor, para que el ultimo renglon no quede tapado
+    expect(fuente).toContain('calc(100px + env(safe-area-inset-bottom, 0px))')
+  })
 })
