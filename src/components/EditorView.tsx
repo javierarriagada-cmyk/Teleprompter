@@ -430,7 +430,7 @@ export default function EditorView({
     <div
       data-pantalla-direccion={dataPantallaDireccion}
       onAnimationEnd={onAnimationEnd}
-      style={{ maxWidth: 800, margin: '0 auto', padding: 'var(--aire-4) var(--aire-4) 100px var(--aire-4)', position: 'relative', ...style }}
+      style={{ maxWidth: 800, margin: '0 auto', padding: 'var(--aire-4) var(--aire-4) calc(100px + env(safe-area-inset-bottom, 0px)) var(--aire-4)', position: 'relative', ...style }}
     >
       <input
         type="file"
@@ -1348,7 +1348,7 @@ export default function EditorView({
       <div
         style={{
           position: 'fixed',
-          bottom: 24,
+          bottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
           left: 0,
           right: 0,
           display: 'flex',
