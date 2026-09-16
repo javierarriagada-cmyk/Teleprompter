@@ -75,6 +75,31 @@ interface EditorViewProps {
   onAnimationEnd?: (e: React.AnimationEvent) => void
 }
 
+// EL CUADRO DE TEXTO CRECE CON LO QUE TIENE ADENTRO.
+//
+// Antes el alto salia de rows={lineas logicas + 2}, y eso cuenta los saltos de
+// linea que escribio el autor, NO las lineas que quedan despues de que el texto
+// se acomoda al ancho de la pantalla. Un parrafo largo sin saltos ocupa una linea
+// logica y seis visuales.
+//
+// Medido en el telefono el 15 de septiembre de 2026 con el guion de bienvenida:
+// el cuadro media 374 px de alto y su contenido 720. La mitad del guion quedaba
+// escondida en un scroll adentro de otro scroll, que es de lo peor que se puede
+// hacer en una pantalla de telefono.
+//
+// No se notaba mientras lo pegado se partia en un bloque por parrafo -cada bloque
+// era corto-. Al pasar a un solo bloque, aparece con cualquier guion de verdad.
+//
+// En jsdom scrollHeight vale 0 porque no hay maquetado: por eso solo se aplica
+// cuando da mayor que cero, y las pruebas siguen viendo el textarea como antes.
+function ajustarAltoTextarea(el: HTMLTextAreaElement | null): void {
+  if (!el) return
+  el.style.height = 'auto'
+  if (el.scrollHeight > 0) {
+    el.style.height = el.scrollHeight + 'px'
+  }
+}
+
 function generarIdBloque(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
     return crypto.randomUUID()
@@ -1266,14 +1291,14 @@ export default function EditorView({
                     )}
 
                     <textarea
-                      ref={(el) => { textareaRefs.current[bloque.id] = el }}
+                      ref={(el) => { textareaRefs.current[bloque.id] = el; ajustarAltoTextarea(el) }}
                       value={bloque.texto}
-                      onChange={(e) => handleTextoBloqueChange(index, e.target.value)}
+                      onChange={(e) => { handleTextoBloqueChange(index, e.target.value); ajustarAltoTextarea(e.target) }}
                       onSelect={(e) => handleTextareaSelect(bloque.id, e.currentTarget)}
                       onKeyUp={(e) => handleTextareaSelect(bloque.id, e.currentTarget)}
                       onMouseUp={(e) => handleTextareaSelect(bloque.id, e.currentTarget)}
                       placeholder="Escribe el texto..."
-                      rows={Math.max(6, Math.min(20, (bloque.texto || '').split('\n').length + 2))}
+                      rows={3}
                       style={{
                         width: '100%',
                         padding: 0,
@@ -1285,7 +1310,8 @@ export default function EditorView({
                         backgroundColor: 'transparent',
                         color: 'var(--color-texto)',
                         boxSizing: 'border-box',
-                        resize: 'none'
+                        resize: 'none',
+                        overflowY: 'hidden'
                       }}
                     />
                   </div>
