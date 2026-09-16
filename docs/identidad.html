@@ -226,8 +226,9 @@
             <span style="color:rgba(255,255,255,.28)">al ritmo en que hablas.</span>
           </div>
           <div class="vel"></div>
+          <div style="position:absolute;right:10px;top:9px;font-family:var(--mono);font-size:7.5px;color:rgba(255,255,255,.4);letter-spacing:.08em">01:12</div>
           <div class="pie">
-            <div class="nom">Bienvenida · 1 min</div>
+            <div style="font-family:var(--serif);font-size:17px;font-weight:700;line-height:1.05;color:#fff;margin-bottom:7px">Bienvenida</div>
             <div class="leer verde-px">▶ Leer</div>
           </div>
         </div>
@@ -459,8 +460,9 @@
         <div class="vivo-velo-arriba"></div>
         <div class="vivo-velo-abajo"></div>
       </div>
+      <div style="position:absolute;right:15px;top:13px;font-family:var(--mono);font-size:10.5px;color:rgba(255,255,255,.42);letter-spacing:.08em;z-index:3">01:12</div>
       <div style="position:absolute;left:0;right:0;bottom:0;padding:0 16px 15px;z-index:3">
-        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:9px">Bienvenida · 1 min</div>
+        <div style="font-family:var(--serif);font-size:24px;font-weight:700;line-height:1.05;color:#fff;margin-bottom:10px">Bienvenida</div>
         <div style="background:#10A88E;color:#04231D;font-size:13px;font-weight:700;padding:11px 0;border-radius:999px;text-align:center">▶ Leer</div>
       </div>
     </div>
@@ -556,9 +558,9 @@
         <span style="color:#fff">Ahora fíjate en el texto. Se está moviendo solo,</span><br>al ritmo en que hablas, sin que toques nada.
       </div>
       <div style="position:absolute;left:0;right:0;bottom:0;height:55%;background:linear-gradient(to top,#000 40%,rgba(0,0,0,0))"></div>
+      <div style="position:absolute;right:12px;top:11px;font-family:var(--mono);font-size:9.5px;color:rgba(255,255,255,.42);letter-spacing:.08em">01:12</div>
       <div style="position:absolute;left:0;right:0;bottom:0;padding:0 14px 13px">
-        <div style="font-family:var(--serif);font-size:26px;font-weight:700;line-height:1.05;color:#fff;margin-bottom:8px">Bienvenida</div>
-        <div style="font-size:9px;color:rgba(255,255,255,.45);margin-bottom:10px">119 palabras · 1 min</div>
+        <div style="font-family:var(--serif);font-size:26px;font-weight:700;line-height:1.05;color:#fff;margin-bottom:11px">Bienvenida</div>
         <div style="background:#10A88E;color:#04231D;font-size:12px;font-weight:700;padding:10px 0;border-radius:999px;text-align:center">▶ Leer</div>
       </div>
     </div>
@@ -605,6 +607,51 @@
   @media (prefers-reduced-motion: reduce) { .marca-ventana { animation: none; transform: translateY(30px); } }
 </style>
 
+<h2><span class="num">La revisión</span>Cinco cosas que faltaban, y cuatro que no tomamos</h2>
+
+<p class="intro">El 15 de septiembre Javier trajo una recomendación externa para contrastar. Cinco puntos eran mejores que los de este documento —dos estaban directamente pasados por alto— y cuatro están equivocados para nuestro caso. Queda escrito con el veredicto de cada uno, porque dentro de un mes nadie se acuerda de por qué se descartó algo.</p>
+
+<h3>Lo que entra, y estaba faltando</h3>
+
+<ol class="orden">
+  <li><span class="t">El teclado hereda el negro</span><span class="d"><b>Es el punto más importante de toda la revisión.</b> Cuando alguien escribe, el teclado ocupa media pantalla: uno blanco sobre una aplicación negra destruye la tesis en un segundo. Este documento dibujó el editor sin el teclado puesto. Se controla desde el tema del WebView.</span></li>
+  <li><span class="t">Las barras del sistema, del mismo negro</span><span class="d">En todas las capturas de hoy la franja de arriba y la de abajo son claras. En una aplicación oscura eso es un destello que delata. No estaba en ningún documento.</span></li>
+  <li><span class="t">Un time-code, no una etiqueta</span><span class="d">La tarjeta decía «Bienvenida · 1 min», que es lenguaje de aplicación de notas. Un <code>01:12</code> en la esquina, en monoespaciada, es lenguaje de monitor de cámara — que es lo que queremos parecer.</span></li>
+  <li><span class="t">El scroll sin barra, nunca</span><span class="d">Cuesta una línea y se nota.</span></li>
+  <li><span class="t">La biblioteca se queda atrás, oscurecida, no se desmonta</span><span class="d"><b>Y esto corrige una regla mía que estaba escrita demasiado ancha.</b> En la tarea 45 puse que no se montan dos pantallas a la vez. El peligro real eran <em>dos TeleprompterView vivos</em>, cada uno con su bucle y su enganche al motor de voz. La biblioteca quieta detrás de la lectura no tiene ese problema, y dejarla ahí es lo que convierte el paso en continuidad de un objeto en vez de un cambio de pantalla.</span></li>
+</ol>
+
+<h3>Lo que no tomamos, y por qué</h3>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Lo que propone</th><th>Por qué no</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><b>«Dos hápticas, no doce»</b></td>
+      <td>Coincidimos en lo importante: nada vibra al cambiar de renglón, y eso lo guardan T202 y T207. Pero sacar la confirmación al tocar un control es otra cosa — es lo que hace que el dedo sepa que el toque entró, y lo hacen Android e iOS por sistema. <b>Deshace trabajo entregado y comprobado a cambio de un argumento de gusto.</b></td>
+    </tr>
+    <tr>
+      <td><b>Cambiar el verde «porque la tienda está llena de apps teal»</b></td>
+      <td>Afirmación sin evidencia. La competencia que miramos con capturas es violeta y azul. Y el verde ya está aplicado en toda la aplicación desde la tarea 46.</td>
+    </tr>
+    <tr>
+      <td><b>«Escribí. El texto te sigue.»</b></td>
+      <td>Es voseo, y está decidido que en pantalla va español neutro. Y esa pantalla <b>ya no existe</b>: la biblioteca vacía se resolvió con el guion de bienvenida, que demuestra el producto en vez de describirlo.</td>
+    </tr>
+    <tr>
+      <td><b>Texto quieto en la tarjeta</b></td>
+      <td>Acá discrepamos de frente, y la salida es una tercera: <b>que se mueva una vez al abrir y se detenga.</b> Demuestra el producto sin convertirse en un adorno que late para siempre.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="alerta">
+  <span class="t">Y una que hay que medir, no decidir</span>
+  Propone 280–360 ms para los objetos grandes. <strong>Nosotros usamos 400</strong>, y lo puse yo tomándolo de la especificación de Material para pantalla completa — está en el borde lento. No se decide por gusto: se prueban los dos en el <code>motog86</code> y se mira.
+</div>
+
 <h2><span class="num">El costo</span>Qué de esto es trabajo y qué es una línea</h2>
 
 <div class="tabla-caja">
@@ -625,6 +672,9 @@
     <tr><td><b>La marca que se mueve al arrancar</b></td><td>Chico. Android acepta un ícono animado en la pantalla de arranque.</td></tr>
     <tr><td><b>Los botones que se deforman</b></td><td><b>Lo más barato y lo que más se siente.</b> La háptica ya está puesta desde la tarea 45.</td></tr>
     <tr><td><b>La pila en vez de la lista</b></td><td><b>Grande, y es una decisión de producto antes que de diseño.</b> Se cambia encontrar rápido por ver hermoso.</td></tr>
+    <tr><td><b>El teclado oscuro</b></td><td>Chico, y es de los que más se notan. Va en el tema del WebView.</td></tr>
+    <tr><td><b>Las barras del sistema en negro</b></td><td>Chico. Y hoy son claras en todas las pantallas.</td></tr>
+    <tr><td><b>El time-code y el scroll sin barra</b></td><td>Dos líneas entre los dos.</td></tr>
     <tr><td><b>El radio de 24 que se endereza</b></td><td>Va junto con la transformación: es el mismo movimiento.</td></tr>
     <tr><td><b>«Grabado · 4:12»</b></td><td>Ya está hecho, de la tarea 45.</td></tr>
   </tbody>
