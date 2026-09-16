@@ -96,6 +96,26 @@ correr(path.join(ANDROID, win ? 'gradlew.bat' : 'gradlew'), ['assembleDebug', '-
 const mb = (fs.statSync(APK).size / 1048576).toFixed(1)
 console.log(`\nListo: ${APK}  (${mb} MB)`)
 
+// Y UNA COPIA EN EL ESCRITORIO, con el nombre del producto.
+//
+// El APK de verdad vive enterrado en android/app/build/outputs/apk/debug/, que no
+// es una ruta que nadie se acuerde ni encuentre para pasarla al telefono por
+// cable o por Drive. Javier lo pidio el 15 de septiembre de 2026: que quede
+// tambien en el Escritorio.
+//
+// Si el Escritorio no existe -otro sistema, otro usuario-, no pasa nada: se avisa
+// y se sigue. Nunca hace fallar la construccion.
+try {
+  const escritorio = path.join(os.homedir(), 'Desktop')
+  if (fs.existsSync(escritorio)) {
+    const copia = path.join(escritorio, 'Sigo.apk')
+    fs.copyFileSync(APK, copia)
+    console.log(`Copia en el Escritorio: ${copia}`)
+  }
+} catch (e) {
+  console.log(`(no se pudo dejar la copia en el Escritorio: ${e.message})`)
+}
+
 if (process.argv.includes('poner')) {
   const adb = path.join(sdk, 'platform-tools', 'adb' + (win ? '.exe' : ''))
 
