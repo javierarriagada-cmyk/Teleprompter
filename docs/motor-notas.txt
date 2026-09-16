@@ -1,0 +1,75 @@
+NOTAS PARA CUANDO ENTREMOS AL MOTOR
+Se van acumulando. NO es un encargo. El motor y la camara estan detenidos por
+decision de Javier hasta terminar lo visual.
+
+
+1. EL PUNTO DE PARTIDA, QUE NO ES TOCAR EL MOTOR
+   Esta en la memoria como plan vigente: MEDIR ANTES DE TOCAR. Ningun cambio
+   entra si no mueve el numero sobre las grabaciones.
+
+   Lo concreto de la primera vuelta:
+
+     a. Correr las grabaciones de Javier contra el motor, FUERA de la aplicacion,
+        y sacar un numero por lectura: en que palabra se corrio, cuanto, y con
+        que venia antes.
+     b. Mirar la palabra 335. Las dos lecturas de Javier se cortaron en la misma
+        -335 de 541- y que se corten en el mismo punto no es mala suerte: es algo
+        del guion o del motor que se puede encontrar.
+     c. Recien ahi proponer un cambio, y comprobarlo moviendo ese numero.
+
+   Las grabaciones estan en el Escritorio de Javier y en Drive.
+
+
+2. EL RECONOCEDOR DE ANDROID -SpeechRecognizer-: EVALUADO EL 15 DE SEPTIEMBRE
+   Javier trajo una recomendacion externa para usarlo en vez de Vosk.
+
+   LO PRIMERO: esa recomendacion NO ESTA ESCRITA SOBRE NUESTRO PROYECTO. Menciona
+   asr.worker.ts, audio-worklet-processor.ts, useVoiceTrack.tsx, alignWords y
+   fuse.js. Comprobado: NINGUNO EXISTE. Usamos leven, no fuse.js, y nunca tuvimos
+   un AudioWorklet calculando RMS. Lo unico que coincide es useASR.ts, que es un
+   nombre comun.
+
+   DOS DE SUS TRES VENTAJAS YA LAS COBRAMOS:
+     - "te ahorras el modelo de 40 MB": ya lo hicimos, MotorNativo lleva el modelo
+       adentro del APK, y la tarea 46 apaga la descarga cuando el motor no es WASM
+     - "no necesitas el AudioWorklet": nunca lo tuvimos
+
+   Y OJO CON LA QUE PRESENTA COMO VENTAJA PRINCIPAL:
+
+       "Procesamiento de VAD integrado: Android se encarga de la deteccion de
+        silencio y corte de frases"
+
+   ESO PARA NOSOTROS ES EL DEFECTO, NO LA VENTAJA. El SpeechRecognizer esta hecho
+   para dictado y comandos cortos: detecta silencio y TERMINA LA SESION. Nuestro
+   lector hace pausas para respirar, para pensar y para dar enfasis. Todo el motor
+   esta construido alrededor de alguien que se detiene.
+
+   Y HAY UN ANTECEDENTE QUE YA NOS MORDIO, escrito en los comentarios de App.tsx:
+   cuando la omision era Web Speech, ese reconocedor entregaba FRASES ENTERAS EN
+   LAS PAUSAS en vez de parciales densos. Estabamos midiendo un motor y leyendo
+   con otro, y ninguno de los dos lo sabia.
+
+   DONDE SI TIENE RAZON, Y ES LO VALIOSO: el alineador no sabe de donde vienen las
+   palabras, y en nuestro caso eso YA ES CIERTO POR DISEÑO. MotorDeVoz es una
+   interfaz y detras hay MotorVosk, MotorNativo y MotorFake. Agregar un cuarto
+   -MotorAndroid- no toca seguidor.ts, ni conduccion.ts, ni avance.ts.
+
+   CONCLUSION: el experimento es barato, y por eso vale hacerlo. Mismo guion,
+   mismo corpus, los dos motores, y que decida el numero. Si el corte por silencio
+   lo mata, se ve en la primera lectura. NO SE ADOPTA SIN MEDIR.
+
+
+3. LA PAREJA DE COLORES DE LA LECTURA
+   La de omision es #000000 con #FFFFFF: 21:1, el contraste maximo posible. Y el
+   maximo no es el optimo para leer: blanco puro sobre negro puro produce
+   HALACION -un halo que hace que las letras parezcan sangrar- y afecta sobre todo
+   a quien tiene astigmatismo, una de cada tres personas.
+
+   NO SE CAMBIA POR LO QUE DIGA UN ARTICULO. Dos lecturas del mismo guion, una con
+   la pareja de hoy y otra con #0A0A0A sobre #F2F0EC -18,4:1-, y se compara el
+   corpus. Si no mueve el numero, se queda como esta: la eligio Javier mirando.
+
+
+4. LOS DOS RENGLONES CLAROS
+   RENGLONES_CLAROS vale 4 y en el telefono se ven dos y medio. Sin medir desde el
+   15 de septiembre. Puede tener que ver con el area segura o puede ser otra cosa.
