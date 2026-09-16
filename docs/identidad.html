@@ -1,0 +1,456 @@
+<title>La identidad completa</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --papel: #F4F2ED; --papel-2: #EAE7DF; --tinta: #15191A; --tinta-2: #5E6663;
+    --verde: #0E6B59; --verde-claro: #E3EEEA; --oxido: #A8481A; --oxido-claro: #F3E5DC;
+    --linea: #D8D3C7;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --sans: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --papel: #141716; --papel-2: #1D2220; --tinta: #E8E6DF; --tinta-2: #9AA29E;
+      --verde: #5FBFA6; --verde-claro: #16302A; --oxido: #E08A5C; --oxido-claro: #33211A;
+      --linea: #2C3331;
+    }
+  }
+  :root[data-theme="dark"] {
+    --papel: #141716; --papel-2: #1D2220; --tinta: #E8E6DF; --tinta-2: #9AA29E;
+    --verde: #5FBFA6; --verde-claro: #16302A; --oxido: #E08A5C; --oxido-claro: #33211A;
+    --linea: #2C3331;
+  }
+
+  body { background: var(--papel); color: var(--tinta); font-family: var(--sans); font-size: 17px; line-height: 1.6; margin: 0; }
+  .hoja { max-width: 860px; margin: 0 auto; padding-block: 56px 96px; padding-left: 20px; padding-right: 20px; }
+
+  h1 { font-family: var(--serif); font-size: clamp(2.1rem, 6vw, 3.1rem); font-weight: 700; line-height: 1.08; letter-spacing: -.015em; margin: 0 0 .5rem; text-wrap: balance; }
+  .bajada { font-family: var(--serif); font-size: 1.2rem; color: var(--tinta-2); margin: 0 0 2.5rem; text-wrap: balance; }
+  h2 { font-family: var(--serif); font-size: 1.75rem; font-weight: 700; letter-spacing: -.01em; margin: 4rem 0 .4rem; padding-top: 1.6rem; border-top: 2px solid var(--tinta); text-wrap: balance; }
+  h2 .num { display: block; font-family: var(--sans); font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--verde); margin-bottom: .35rem; }
+  h3 { font-family: var(--sans); font-size: 1.02rem; font-weight: 700; margin: 2.4rem 0 .5rem; }
+  p { margin: 0 0 1rem; }
+  .intro { color: var(--tinta-2); margin-bottom: 2rem; }
+  code { font-family: var(--mono); font-size: .85em; background: var(--papel-2); padding: .1em .35em; border-radius: 3px; }
+
+  .nota { background: var(--verde-claro); padding: 1.1rem 1.2rem; margin: 1.8rem 0; font-size: .95rem; }
+  .nota .t { font-weight: 700; display: block; margin-bottom: .2rem; }
+  .alerta { background: var(--oxido-claro); padding: 1.1rem 1.2rem; margin: 1.8rem 0; font-size: .95rem; }
+  .alerta .t { font-weight: 700; display: block; margin-bottom: .2rem; color: var(--oxido); }
+
+  /* ------- iconos ------- */
+  .iconos { display: flex; align-items: flex-end; gap: 1.6rem; flex-wrap: wrap; margin: 1.6rem 0; }
+  .ic-caja { text-align: center; }
+  .ic-caja .et { font-size: .72rem; color: var(--tinta-2); margin-top: .5rem; font-variant-numeric: tabular-nums; }
+
+  /* ------- telefonos ------- */
+  .rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1.4rem 1.2rem; margin: 1.8rem 0; }
+  .celda .rot { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--tinta-2); margin-bottom: .5rem; }
+  .celda .des { font-size: .82rem; color: var(--tinta-2); margin-top: .6rem; line-height: 1.5; }
+
+  .tel { width: 100%; aspect-ratio: 434 / 868; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; background: #0B0C0C; color: #EDEAE3; position: relative; border: 1px solid #232725; }
+  .tel .sis { height: 5%; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; font-size: 6.5px; color: #767B78; flex: 0 0 auto; }
+  .tel .nav { height: 4.2%; display: flex; align-items: center; justify-content: center; gap: 28px; flex: 0 0 auto; }
+  .tel .nav i { width: 6px; height: 6px; background: #3D4240; display: block; border-radius: 1px; }
+  .tel .z { flex: 1 1 auto; position: relative; overflow: hidden; }
+
+  .t-enc { font-size: 6.5px; letter-spacing: .16em; text-transform: uppercase; color: #6E736F; font-weight: 700; }
+  .t-ser { font-family: var(--serif); }
+  .verde-px { background: #10A88E; color: #04231D; }
+
+  .tarjeta { margin: 8px; border-radius: 18px; background: #000; overflow: hidden; position: relative; height: 54%; }
+  .tarjeta .tx { padding: 12px 11px 0; font-family: var(--serif); font-size: 10.5px; line-height: 1.5; color: rgba(255,255,255,.2); }
+  .tarjeta .tx .vivo { color: #fff; }
+  .tarjeta .vel { position: absolute; left: 0; right: 0; bottom: 0; height: 48%; background: linear-gradient(to bottom, rgba(0,0,0,0), #000 70%); }
+  .tarjeta .pie { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 11px 10px; }
+  .tarjeta .nom { font-size: 7.5px; color: rgba(255,255,255,.5); margin-bottom: 6px; }
+  .tarjeta .leer { font-size: 9.5px; font-weight: 700; padding: 7px 0; border-radius: 999px; text-align: center; }
+
+  .filas { padding: 0 11px; }
+  .filas .f { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.07); }
+  .filas .f .n { font-family: var(--serif); font-size: 10px; color: #E6E2DA; }
+  .filas .f .m { font-size: 7px; color: #6E736F; }
+
+  .fab { position: absolute; right: 10px; bottom: 9px; width: 23px; height: 23px; border-radius: 999px; background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center; font-size: 13px; line-height: 1; }
+
+  footer { margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--linea); font-size: .85rem; color: var(--tinta-2); }
+
+  ol.orden { padding-left: 0; list-style: none; counter-reset: o; margin: 1.5rem 0; }
+  ol.orden li { counter-increment: o; display: grid; grid-template-columns: 2.4rem 1fr; gap: .8rem; padding: 1rem 0; border-bottom: 1px solid var(--linea); }
+  ol.orden li::before { content: counter(o); font-family: var(--serif); font-size: 1.5rem; font-weight: 700; color: var(--verde); line-height: 1.1; }
+  ol.orden .t { font-weight: 700; display: block; }
+  ol.orden .d { color: var(--tinta-2); font-size: .94rem; }
+
+  .tabla-caja { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; margin: 1.4rem 0; }
+  th { text-align: left; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-2); font-weight: 700; padding: 0 .9rem .5rem 0; border-bottom: 1px solid var(--tinta); white-space: nowrap; }
+  td { padding: .6rem .9rem .6rem 0; border-bottom: 1px solid var(--linea); vertical-align: top; }
+</style>
+
+<div class="hoja">
+
+<h1>La identidad completa</h1>
+<p class="bajada">El ícono, el arranque y las diez pantallas — con una sola decisión de fondo que las ordena a todas.</p>
+
+<p class="intro">El cuarto documento dibujó la portada. Éste baja esa idea a todo el producto: lo que se ve en la tienda antes de instalar, lo que aparece al tocar el ícono, y cada pantalla del recorrido. Sigue sin necesitar la cámara ni tocar el motor.</p>
+
+<h2><span class="num">La decisión</span>La aplicación es oscura</h2>
+
+<p>Hoy el producto tiene <strong>una costura en el medio</strong>: la biblioteca, el editor y los ajustes son un documento blanco, y la lectura es negra. Abrís en blanco, apretás Leer y la pantalla se apaga de golpe. Son dos aplicaciones pegadas.</p>
+
+<p>Y la mitad blanca es la que no se parece a nada nuestro. <strong>Es por eso que se ve como una aplicación de notas: porque literalmente es una aplicación de notas hasta que apretás un botón.</strong></p>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th></th><th>Hoy</th><th>Propuesta</th></tr></thead>
+  <tbody>
+    <tr><td><b>Ícono y tienda</b></td><td>por omisión</td><td>negro</td></tr>
+    <tr><td><b>Arranque</b></td><td>blanco</td><td>negro</td></tr>
+    <tr><td><b>Biblioteca, editor, ajustes</b></td><td>blanco</td><td>negro</td></tr>
+    <tr><td><b>Lectura</b></td><td>negro</td><td>negro</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Tres razones, y ninguna es de gusto:</p>
+
+<ol class="orden">
+  <li><span class="t">Es lo que hace el producto</span><span class="d">Una herramienta para filmar, usada con luz controlada y mirando un lente. No es una aplicación de escritorio para redactar: se escribe una vez y se lee muchas.</span></li>
+  <li><span class="t">Borra la costura</span><span class="d">Del ícono a la lectura no hay un solo cambio de mundo. Ese seguimiento sin saltos es, en la práctica, lo que la gente llama «se siente cara».</span></li>
+  <li><span class="t">Y no cuesta casi nada</span><span class="d">El tema claro/oscuro ya existe y funciona —lo movimos al menú de la biblioteca en la tarea 44—. Esto es cambiar cuál viene puesto, no escribir uno nuevo. <b>El claro se queda para quien lo prefiera.</b></span></li>
+</ol>
+
+<h2><span class="num">El ícono</span>Lo único que se ve antes de instalar</h2>
+
+<p>La marca no puede ser un micrófono —lo usa toda aplicación de voz— ni un botón de play. Tiene que ser <strong>lo que hacemos y nadie más</strong>: renglones de texto apagados, y una ventana de dos renglones encendida.</p>
+
+<p>Es nuestra pantalla de lectura reducida a su mínima expresión. Se lee a 48 píxeles y no se parece a nada de la tienda.</p>
+
+<div class="iconos">
+  <div class="ic-caja">
+    <svg width="112" height="112" viewBox="0 0 108 108" aria-label="Icono a 112 px">
+      <rect width="108" height="108" rx="24" fill="#0B0C0C"/>
+      <rect x="20" y="26" width="68" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+      <rect x="20" y="41" width="52" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+      <rect x="20" y="56" width="68" height="7" rx="3.5" fill="#FFFFFF"/>
+      <rect x="20" y="71" width="44" height="7" rx="3.5" fill="#FFFFFF"/>
+      <rect x="20" y="86" width="60" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+    </svg>
+    <div class="et">112 px</div>
+  </div>
+  <div class="ic-caja">
+    <svg width="72" height="72" viewBox="0 0 108 108" aria-label="Icono a 72 px">
+      <rect width="108" height="108" rx="24" fill="#0B0C0C"/>
+      <rect x="20" y="26" width="68" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+      <rect x="20" y="41" width="52" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+      <rect x="20" y="56" width="68" height="7" rx="3.5" fill="#FFFFFF"/>
+      <rect x="20" y="71" width="44" height="7" rx="3.5" fill="#FFFFFF"/>
+      <rect x="20" y="86" width="60" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+    </svg>
+    <div class="et">72 px</div>
+  </div>
+  <div class="ic-caja">
+    <svg width="48" height="48" viewBox="0 0 108 108" aria-label="Icono a 48 px">
+      <rect width="108" height="108" rx="24" fill="#0B0C0C"/>
+      <rect x="20" y="26" width="68" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+      <rect x="20" y="41" width="52" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+      <rect x="20" y="56" width="68" height="7" rx="3.5" fill="#FFFFFF"/>
+      <rect x="20" y="71" width="44" height="7" rx="3.5" fill="#FFFFFF"/>
+      <rect x="20" y="86" width="60" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+    </svg>
+    <div class="et">48 px</div>
+  </div>
+  <div class="ic-caja">
+    <svg width="112" height="112" viewBox="0 0 108 108" aria-label="Variante con la ventana en verde">
+      <rect width="108" height="108" rx="24" fill="#0B0C0C"/>
+      <rect x="20" y="26" width="68" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+      <rect x="20" y="41" width="52" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+      <rect x="20" y="56" width="68" height="7" rx="3.5" fill="#10A88E"/>
+      <rect x="20" y="71" width="44" height="7" rx="3.5" fill="#10A88E"/>
+      <rect x="20" y="86" width="60" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+    </svg>
+    <div class="et">variante</div>
+  </div>
+</div>
+
+<p><strong>La variante verde es para discutir.</strong> El blanco dice la verdad —así se ve el texto vivo— y el verde se reconoce mejor entre otros íconos oscuros. Mi voto es el blanco: el verde ya significa «esto actúa» adentro de la aplicación, y usarlo acá le quita filo.</p>
+
+<h2><span class="num">El arranque</span>Del ícono a la biblioteca, sin un solo destello</h2>
+
+<p>Hoy Android muestra un fondo blanco mientras carga. Con la aplicación oscura, ese blanco es un fogonazo en la cara: lo primero que hace el producto es parpadear.</p>
+
+<div class="rejilla">
+  <div class="celda">
+    <div class="rot">1 · Se toca el ícono</div>
+    <div class="tel" style="background:#0B0C0C">
+      <div class="sis"><span>12:09</span><span>▂▄ ▮</span></div>
+      <div class="z" style="display:flex;align-items:center;justify-content:center">
+        <svg width="54" height="54" viewBox="0 0 108 108">
+          <rect x="20" y="26" width="68" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+          <rect x="20" y="41" width="52" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+          <rect x="20" y="56" width="68" height="7" rx="3.5" fill="#FFFFFF"/>
+          <rect x="20" y="71" width="44" height="7" rx="3.5" fill="#FFFFFF"/>
+          <rect x="20" y="86" width="60" height="7" rx="3.5" fill="#FFFFFF" opacity=".16"/>
+        </svg>
+      </div>
+      <div class="nav"><i></i><i style="border-radius:999px"></i><i></i></div>
+    </div>
+    <div class="des">La marca sola sobre el mismo negro. Dura lo que dura cargar, ni un cuadro más.</div>
+  </div>
+
+  <div class="celda">
+    <div class="rot">2 · La tarjeta llega</div>
+    <div class="tel">
+      <div class="sis"><span>12:09</span><span>▂▄ ▮</span></div>
+      <div class="z">
+        <div class="tarjeta" style="opacity:.55">
+          <div class="tx"><span class="vivo">Ahora fíjate en el texto.</span></div>
+          <div class="vel"></div>
+        </div>
+      </div>
+      <div class="nav"><i></i><i style="border-radius:999px"></i><i></i></div>
+    </div>
+    <div class="des">La marca se va y la tarjeta entra en su lugar, escalonada: primero ella, después la lista.</div>
+  </div>
+
+  <div class="celda">
+    <div class="rot">3 · La biblioteca</div>
+    <div class="tel">
+      <div class="sis"><span>12:09</span><span>▂▄ ▮</span></div>
+      <div class="z">
+        <div class="tarjeta">
+          <div class="tx">
+            <span style="color:rgba(255,255,255,.14)">Hola. Lee esto en voz alta, con o sin apuro.</span><br><br>
+            <span class="vivo">Ahora fíjate en el texto. Se está moviendo solo,</span><br>
+            <span style="color:rgba(255,255,255,.28)">al ritmo en que hablas.</span>
+          </div>
+          <div class="vel"></div>
+          <div class="pie">
+            <div class="nom">Bienvenida · 1 min</div>
+            <div class="leer verde-px">▶ Leer</div>
+          </div>
+        </div>
+        <div class="filas">
+          <div class="f"><span class="n">Nietzsche y la risa</span><span class="m">4 min</span></div>
+          <div class="f"><span class="n">Carta a un amigo</span><span class="m">2 min</span></div>
+        </div>
+        <div class="fab">+</div>
+      </div>
+      <div class="nav"><i></i><i style="border-radius:999px"></i><i></i></div>
+    </div>
+    <div class="des">El fondo nunca cambió de color. No hubo transición porque no hubo dos mundos.</div>
+  </div>
+</div>
+
+<div class="nota">
+  <span class="t">Esto es Android, no un invento</span>
+  Se configura con la pantalla de arranque que trae la plataforma —fondo, ícono y nada más—. Lo único que hay que decidir es el color, y ya está decidido: el mismo negro de todo lo demás.
+</div>
+
+<h2><span class="num">El recorrido</span>Las pantallas, una por una</h2>
+
+<div class="rejilla">
+
+  <div class="celda">
+    <div class="rot">Editor</div>
+    <div class="tel">
+      <div class="sis"><span>12:09</span><span>▂▄ ▮</span></div>
+      <div class="z" style="padding:11px 11px 0">
+        <div style="font-size:7.5px;color:#6E736F">‹ Guiones</div>
+        <div class="t-ser" style="font-size:15px;font-weight:700;margin-top:8px">Bienvenida</div>
+        <div style="font-size:7px;color:#6E736F;margin-top:2px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08)">119 palabras · 1 min</div>
+        <div class="t-ser" style="font-size:10.5px;line-height:1.6;color:#DCD8D0;margin-top:9px">
+          Hola. Lee esto en voz alta, con o sin apuro, como prefieras.<br><br>Ahora fíjate en el texto. Se está moviendo solo, al ritmo en que hablas.
+        </div>
+        <div style="position:absolute;left:11px;right:11px;bottom:10px" class="leer verde-px">▶ Leer</div>
+      </div>
+      <div class="nav"><i></i><i style="border-radius:999px"></i><i></i></div>
+    </div>
+    <div class="des">El texto ya se escribe en la tipografía y el fondo con que se va a leer. <b>Escribir y leer dejan de ser dos lugares distintos.</b></div>
+  </div>
+
+  <div class="celda">
+    <div class="rot">Ajustes</div>
+    <div class="tel">
+      <div class="sis"><span>12:09</span><span>▂▄ ▮</span></div>
+      <div class="z" style="background:rgba(0,0,0,.55)">
+        <div style="position:absolute;left:8px;right:8px;bottom:8px;background:#171A19;border-radius:18px;padding:12px 12px 14px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;font-weight:700">Ajustes</span><span style="font-size:11px;color:#6E736F">✕</span></div>
+          <div class="t-enc" style="margin:11px 0 7px">Cómo se ve el texto</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:9px;padding:3px 0">Tamaño<span style="color:#9AA29E">−&nbsp; 24 &nbsp;+</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:9px;padding:5px 0">Ancho
+            <span style="display:flex;gap:4px"><i style="font-style:normal;font-size:7.5px;padding:3px 7px;border-radius:999px" class="verde-px">Ancho</i><i style="font-style:normal;font-size:7.5px;padding:3px 7px;border-radius:999px;background:rgba(255,255,255,.08);color:#C9C5BD">Medio</i></span>
+          </div>
+          <div class="t-enc" style="margin:11px 0 7px">La toma</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:9px;padding:3px 0">Fondo y letra
+            <span style="display:flex;gap:4px"><i style="width:13px;height:13px;border-radius:4px;background:#000;border:1px solid #10A88E;display:block"></i><i style="width:13px;height:13px;border-radius:4px;background:#000;display:block"></i><i style="width:13px;height:13px;border-radius:4px;background:#fff;display:block"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="nav"><i></i><i style="border-radius:999px"></i><i></i></div>
+    </div>
+    <div class="des">Sube desde abajo sobre un velo. Los siete controles de la tarea 44 quedan igual: sólo cambia el mundo en que viven.</div>
+  </div>
+
+  <div class="celda">
+    <div class="rot">La cuenta</div>
+    <div class="tel" style="background:#000">
+      <div class="sis" style="background:#000"><span>12:09</span><span>▂▄ ▮</span></div>
+      <div class="z" style="display:flex;align-items:center;justify-content:center;background:#000">
+        <div class="t-ser" style="font-size:52px;font-weight:700;color:#fff;line-height:1">3</div>
+      </div>
+      <div class="nav" style="background:#000"><i></i><i style="border-radius:999px"></i><i></i></div>
+    </div>
+    <div class="des">Todo lo demás se apagó. El número entra creciendo y no hay una sola palabra en pantalla.</div>
+  </div>
+
+  <div class="celda">
+    <div class="rot">Lectura</div>
+    <div class="tel" style="background:#000">
+      <div class="sis" style="background:#000"><span></span><span></span></div>
+      <div class="z" style="background:#000;padding:0 11px">
+        <div class="t-ser" style="font-size:12px;line-height:1.55;padding-top:18px">
+          <div style="color:rgba(255,255,255,.2)">Hola. Lee esto en voz alta, con o sin apuro, como prefieras.</div>
+          <div style="color:#fff;margin-top:8px">Ahora fíjate en el texto. Se está moviendo solo, al ritmo en que hablas,</div>
+          <div style="color:rgba(255,255,255,.16);margin-top:8px">sin que toques nada. Te acompaña para darte la comodidad</div>
+        </div>
+        <div style="position:absolute;right:11px;top:10px;width:6px;height:6px;border-radius:999px;background:#D92B2B"></div>
+      </div>
+      <div class="nav" style="background:#000"><i></i><i style="border-radius:999px"></i><i></i></div>
+    </div>
+    <div class="des">No cambia nada: ya era así. <b>Ahora el resto de la aplicación se parece a ella</b>, y no al revés.</div>
+  </div>
+
+  <div class="celda">
+    <div class="rot">Los controles</div>
+    <div class="tel" style="background:#000">
+      <div class="sis" style="background:#000"><span></span><span></span></div>
+      <div class="z" style="background:#000;padding:0 11px">
+        <div class="t-ser" style="font-size:12px;line-height:1.55;padding-top:18px">
+          <div style="color:rgba(255,255,255,.2)">Hola. Lee esto en voz alta, con o sin apuro.</div>
+          <div style="color:#fff;margin-top:8px">Ahora fíjate en el texto. Se está moviendo solo,</div>
+        </div>
+        <div style="position:absolute;left:11px;right:11px;bottom:10px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:8.5px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.1)">Salir</span>
+          <span style="font-size:8.5px;padding:6px 12px;border-radius:999px;background:#D92B2B;color:#fff">● 4:12</span>
+          <span style="font-size:8.5px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.1)">Pausa</span>
+        </div>
+      </div>
+      <div class="nav" style="background:#000"><i></i><i style="border-radius:999px"></i><i></i></div>
+    </div>
+    <div class="des">El tiempo pasa a ser imposible de no ver, en el rojo de las cámaras. Aparecen y se van sólo en opacidad.</div>
+  </div>
+
+  <div class="celda">
+    <div class="rot">La vuelta</div>
+    <div class="tel">
+      <div class="sis"><span>12:13</span><span>▂▄ ▮</span></div>
+      <div class="z" style="padding:11px 11px 0">
+        <div style="font-size:7.5px;color:#6E736F">‹ Guiones</div>
+        <div class="t-ser" style="font-size:15px;font-weight:700;margin-top:8px">Bienvenida</div>
+        <div style="font-size:7px;color:#6E736F;margin-top:2px">119 palabras · 1 min</div>
+        <div style="position:absolute;left:11px;right:11px;bottom:36px;background:#E9E5DD;color:#15191A;border-radius:10px;padding:7px 11px;font-size:9px">Grabado · 4:12</div>
+      </div>
+      <div class="nav"><i></i><i style="border-radius:999px"></i><i></i></div>
+    </div>
+    <div class="des">La línea que hoy no existe y es la que más falta: terminaste de producir algo y la aplicación te lo confirma.</div>
+  </div>
+
+</div>
+
+<h2><span class="num">La tienda</span>Lo que se ve antes de instalar</h2>
+
+<p>Con esto, las capturas de Play dejan de ser un problema pendiente. La primera es <strong>la portada</strong>: negro, texto grande, ventana clara. La segunda es <strong>la lectura</strong>. Ninguna muestra una interfaz — las dos muestran el producto haciendo lo suyo.</p>
+
+<p>Y ahí está la diferencia que se ve en medio segundo: <strong>los demás fotografían botones, nosotros fotografiamos texto que se lee.</strong></p>
+
+<div class="alerta">
+  <span class="t">Lo que sigue faltando, dicho sin adornar</span>
+  Una cara humana. La competencia muestra a alguien hablando y eso conecta más rápido que cualquier tipografía. Llega con la cámara y no antes. Lo que esto consigue es que, cuando la cámara llegue, <strong>caiga sobre un producto con identidad en vez de sobre un prototipo prolijo</strong>.
+</div>
+
+<h2><span class="num">Lo expresivo</span>Material 3 Expressive, bajado a nuestro producto</h2>
+
+<p>Google cambió su propio sistema en 2025, después de investigar con más de 18.000 participantes, y el cambio va deliberadamente <strong>en contra del minimalismo plano en el que estamos parados</strong>. Nosotros tomamos de Material 3 sólo las curvas del movimiento —la generación anterior— y nada más.</p>
+
+<p>Son tres cosas y las tres se pueden bajar a números.</p>
+
+<h3>1 · El movimiento deja de ser una curva y pasa a ser un resorte</h3>
+
+<p>Ésta es, de todo el documento, <strong>la que más hace que algo se sienta caro</strong>. Una curva llega a destino y se detiene. Un resorte llega, se pasa apenas, y se acomoda. El ojo lee lo segundo como materia y lo primero como dibujo.</p>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Dónde</th><th>Hoy</th><th>Propuesta</th></tr></thead>
+  <tbody>
+    <tr><td><b>La tarjeta que se abre</b></td><td><code>cubic-bezier(.05,.7,.1,1)</code></td><td><code>cubic-bezier(.34,1.3,.64,1)</code><br><span style="color:var(--tinta-2)">se pasa un 3% y vuelve</span></td></tr>
+    <tr><td><b>Los paneles que suben</b></td><td>la misma curva</td><td>el mismo resorte, más corto</td></tr>
+    <tr><td><b>El número de la cuenta</b></td><td>escala 1,25 → 1</td><td>1,25 → 0,97 → 1</td></tr>
+    <tr><td><b>Todo lo que es texto</b></td><td>—</td><td><b>sin resorte.</b> El texto que rebota se lee peor, y esto es un producto para leer.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p class="intro">El rebote es de un 3%, no de un 20%. Si se nota como rebote, está mal: tiene que notarse como que la cosa <em>pesa</em>.</p>
+
+<h3>2 · La forma carga la identidad, y la nuestra no dice nada</h3>
+
+<p>Tenemos radio 10 en absolutamente todo. Es correcto y es anónimo — el mismo que trae cualquier aplicación por omisión. Expressive agregó 35 formas nuevas justamente porque <strong>la forma es lo que se reconoce sin leer</strong>.</p>
+
+<p>La propuesta no es llenar de formas raras. Es que <strong>un solo objeto tenga una forma que sea nuestra</strong>: la tarjeta de lectura, con un radio grande —24— que no comparte con nada más. Todo lo demás se queda en 10.</p>
+
+<div class="nota">
+  <span class="t">Y acá aparece el detalle que vale todo el capítulo</span>
+  Cuando la tarjeta crece hasta convertirse en la pantalla de lectura, <strong>su radio se va de 24 a 0 durante el mismo movimiento</strong>. La esquina se estira y se endereza. Eso es la transformación de forma que agregó Expressive, y es exactamente el tipo de detalle que nadie sabe nombrar y todos sienten.
+</div>
+
+<h3>3 · El color señala, no decora</h3>
+
+<p>Ésta ya la teníamos escrita y por una vez estábamos adelante: un solo color saturado, y significa «esto actúa». Expressive dice lo mismo con otras palabras.</p>
+
+<p>Lo único que se agrega es el rojo de grabación —que no es nuestro, es el de las cámaras— y la regla de que <strong>en la pantalla de lectura no hay ni verde ni rojo salvo el punto y el tiempo</strong>. Mientras alguien lee, la aplicación no tiene color.</p>
+
+<h3>Y lo que decidimos NO tomar de Expressive</h3>
+
+<p>Su gusto por los colores vivos y los fondos saturados. Eso sirve para un reloj o una aplicación de mensajes. <strong>Acá el producto es un texto que alguien tiene que leer en voz alta sin equivocarse</strong>, y todo color que no signifique algo es ruido encima del texto.</p>
+
+<p>Tomamos la física, la forma y el criterio del color. Dejamos la fiesta.</p>
+
+<h2><span class="num">Por qué se ve caro</span>Las cinco cosas, juntas</h2>
+
+<p>Nada de esto es un efecto. Es lo que produce la sensación:</p>
+
+<ol class="orden">
+  <li><span class="t">No hay costuras</span><span class="d">Del ícono a la lectura, un solo mundo. Ningún destello blanco, ningún cambio de reglas a mitad de camino. Lo barato se delata en los saltos.</span></li>
+  <li><span class="t">Una sola cosa manda por pantalla</span><span class="d">Y las demás bajan de rango sin achicarse. Ocho elementos del mismo peso es lo que hace que algo parezca una plantilla.</span></li>
+  <li><span class="t">Las cosas pesan</span><span class="d">El resorte del 3%. Se acomodan en vez de aparecer.</span></li>
+  <li><span class="t">Un objeto tiene forma propia</span><span class="d">La tarjeta, con su radio de 24 que no comparte con nada, y que se endereza al abrirse.</span></li>
+  <li><span class="t">El color es escaso</span><span class="d">Dos colores en toda la aplicación, y los dos significan algo. La abundancia de color es lo que abarata.</span></li>
+</ol>
+
+<h2><span class="num">El costo</span>Qué de esto es trabajo y qué es una línea</h2>
+
+<div class="tabla-caja">
+<table>
+  <thead><tr><th>Qué</th><th>Cuánto</th></tr></thead>
+  <tbody>
+    <tr><td><b>El tema oscuro por omisión</b></td><td><b>Una línea.</b> El tema ya existe y funciona: cambia cuál viene puesto.</td></tr>
+    <tr><td><b>Las fichas de color en oscuro</b></td><td>Ya están declaradas en <code>styles.css</code>. Hay que revisarlas mirando, no leyendo.</td></tr>
+    <tr><td><b>El ícono y el arranque</b></td><td>Chico. Un SVG, los tamaños que pide Android, y la pantalla de arranque de la plataforma.</td></tr>
+    <tr><td><b>La tarjeta de la portada</b></td><td><b>Lo más grande.</b> Es dibujar la lectura en chico y quieta dentro de la biblioteca.</td></tr>
+    <tr><td><b>La transformación al entrar a leer</b></td><td>Mediano, y es el que más se siente. Se escribe sobre la gramática de la tarea 45.</td></tr>
+    <tr><td><b>Los resortes</b></td><td><b>Chico.</b> Son tres curvas nuevas en <code>movimiento.tsx</code>, al lado de las que ya están.</td></tr>
+    <tr><td><b>El radio de 24 que se endereza</b></td><td>Va junto con la transformación: es el mismo movimiento.</td></tr>
+    <tr><td><b>«Grabado · 4:12»</b></td><td>Ya está hecho, de la tarea 45.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Lo que no entra: la cámara, el motor, el horizontal. Y una decisión de producto que hay que resolver antes de encargar — <strong>qué muestra la tarjeta si alguien borra todos sus guiones</strong>.</p>
+
+<footer>
+  Teleprompter · 15 de septiembre de 2026 · Quinto documento. Los anteriores: <em>El estado real</em>, <em>El circuito, paso por paso</em>, <em>El estándar visual</em> y <em>La cara del producto</em>.
+</footer>
+
+</div>
