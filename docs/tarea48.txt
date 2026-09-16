@@ -1,0 +1,348 @@
+﻿TAREA 48 - LA PORTADA: LA TARJETA DE LECTURA Y LA TRANSFORMACION
+
+PARTIR DE: main (c8af942 o posterior). Rama nueva: tarea-48-la-portada.
+PR contra main. AGENTS.md en la raiz.
+
+Hay una etiqueta punto-bueno-2026-09-14. No la toques.
+
+SOBRE PUBLICAR: los ultimos dos commits que publicaste salieron VACIOS y tuve que
+sacar el parche de las actividades de la sesion. No te preocupes por eso, yo lo
+saco de ahi. Lo unico que te pido: SI VUELVES A TRABAJAR DESPUES DE UNA
+CORRECCION, NO VUELVAS A CLONAR main. En la tarea 47 la correccion perdio todo el
+trabajo de Android de la primera vuelta y tuve que combinar los dos parches a
+mano.
+
+
+POR QUE
+
+Hoy la aplicacion abre en un archivador: un titulo que dice "Guiones", un
+contador, filas con fecha. Eso es una aplicacion de notas.
+
+Y lo unico que nos distingue -texto que avanza solo mientras hablas, en negro,
+con la ventana clara- existe en UNA SOLA PANTALLA y solo aparece despues de
+apretar un boton. Es nuestra mejor imagen y esta detras de una puerta.
+
+Esta tarea la trae al frente. Esta dibujada en docs/identidad.html.
+
+
+PARTE 1 - LA TARJETA DE PORTADA
+
+En la biblioteca, ARRIBA DE TODO y ocupando algo mas de la mitad del alto, una
+tarjeta que muestra el guion mas reciente DIBUJADO COMO SE VA A VER CUANDO SE
+LEA: fondo negro, la tipografia de lectura, el velo arriba y abajo, y dos
+renglones claros en el medio.
+
+    No es una vista previa ni una miniatura de notas: es la pantalla de lectura,
+    en chico y quieta.
+
+COMO SE ARMA, Y ESTO ES LO MAS IMPORTANTE DE LA TAREA:
+
+    UN COMPONENTE NUEVO Y AUTONOMO. src/components/TarjetaLectura.tsx.
+
+    NO REUTILICES TeleprompterView NI NADA DE src/lib/. Ese componente monta el
+    motor de avance, un bucle de requestAnimationFrame y el enganche al
+    reconocedor de voz. Dibujar una tarjeta NO puede encender nada de eso.
+
+    La tarjeta es puramente presentacional: recibe un texto y unos colores, y
+    dibuja. Sin estado del motor, sin scroll, sin medicion de renglones.
+
+    Si te parece que conviene reutilizar TeleprompterView: NO. Esta decidido y el
+    motivo esta escrito arriba.
+
+DE DONDE SALE EL TEXTO
+
+    BibliotecaView recibe `guiones: ResumenGuion[]`, que NO trae el texto. Para
+    conseguirlo esta `onBuscarGuionCompleto(id)`, que ya existe y devuelve una
+    promesa con el Guion entero -lo usa la busqueda dentro del texto-.
+
+    La tarjeta pide el guion mas reciente por ahi, una sola vez.
+
+    MIENTRAS CARGA, la tarjeta YA ESTA: con su fondo, su forma y su titulo. Lo
+    unico que aparece despues es el texto. NUNCA un hueco, ni un cartel de
+    "cargando", ni un salto de tamaño.
+
+QUE LLEVA LA TARJETA
+
+    a. EL TEXTO, con el velo. Los primeros renglones del guion en la tipografia
+       de lectura, atenuados arriba y abajo, con dos renglones claros. Los
+       colores son los que el usuario eligio para leer -las parejas de
+       PAREJAS_COLOR-, no los del tema.
+
+    b. EL TIME-CODE, arriba a la derecha: la duracion estimada del guion en
+       formato m:ss, en tipografia monoespaciada, chico y discreto.
+       Ejemplo: 01:12. NO una etiqueta de "1 min".
+
+    c. EL TITULO DEL GUION, abajo, EN 44 PIXELES. Es el elemento mas grande de
+       toda la aplicacion y esta puesto asi a proposito: ese guion es el
+       protagonista de la pantalla y tiene que pesar como tal. Si no entra, se
+       corta con puntos suspensivos en una sola linea.
+
+    d. EL BOTON LEER, abajo, de ancho completo, con el acento.
+
+LA FORMA
+
+    Radio 24, que NO comparte con nada mas de la aplicacion. Es el unico objeto
+    con forma propia. Todo lo demas se queda en --redondeo.
+
+    Y una linea de un pixel mas clara en el BORDE SUPERIOR
+    -rgba(255,255,255,.06)-, que es como se ve un objeto iluminado desde arriba.
+
+DEBAJO DE LA TARJETA
+
+    El resto de los guiones, en la lista tranquila que ya existe. Sin buscador si
+    hay pocos -eso ya funciona asi-. Y el boton "+ Nuevo" pasa a ser secundario:
+    deja de ser una pildora verde grande y pasa a un boton circular discreto,
+    porque la accion principal de la pantalla ahora es Leer.
+
+    EL TITULO "Guiones" Y EL CONTADOR SE VAN. La tarjeta ocupa su lugar y decir
+    "Guiones" arriba de una lista de guiones no agrega nada.
+
+
+PARTE 2 - EL TEXTO SE MUEVE UNA VEZ
+
+Al abrir la biblioteca, el texto de la tarjeta AVANZA como avanzaria leyendolo
+-despacio, unos seis segundos- y SE DETIENE.
+
+    No es un adorno que late para siempre: es el producto demostrandose. En los
+    primeros segundos, quien abre la aplicacion ya entendio que hace, sin leer
+    una palabra de explicacion.
+
+    Se hace con una animacion de CSS sobre el bloque de texto, `forwards`, que
+    corre UNA VEZ. NO con el motor de voz, NO con un bucle, NO con un temporizador
+    de JavaScript.
+
+    Con movimientoApagado() en true, el texto queda quieto en su posicion final.
+    Sin animacion.
+
+    Y NO se repite al volver del editor a la biblioteca: solo en el primer
+    montaje, igual que el escalonado de la tarea 46.
+
+
+PARTE 3 - LA PORTADA SIN GUIONES
+
+Cuando no hay ningun guion, LA TARJETA NO DESAPARECE.
+
+    Mismo negro, mismo radio, misma superficie de lectura — pero adentro, en vez
+    de un guion, el cursor parpadeando sobre el vacio. El titulo dice
+    "Sin guiones todavia" en el gris apagado, y el boton dice
+    "Escribe tu primer guion" y crea uno.
+
+    LA REGLA, que vale para todo lo que venga: UNA SOLA CLASE DE OBJETO EN LA
+    PORTADA, LLENA O VACIA. El estado vacio no trae un mundo nuevo -un circulo
+    gris, una ilustracion, un icono de otra familia- justo en el momento de menor
+    informacion.
+
+    NO pongas un icono ni una ilustracion. Es la misma tarjeta, esperando.
+
+
+PARTE 4 - LA TRANSFORMACION AL ENTRAR A LEER
+
+Cuando se aprieta Leer en la tarjeta, la tarjeta NO LLEVA a la pantalla de
+lectura: SE CONVIERTE en ella.
+
+    Crece desde su propio sitio hasta ocupar todo, y su radio va de 24 a 0
+    durante el mismo movimiento: la esquina se estira y se endereza.
+
+    El texto que se estaba mirando en chico es el mismo que queda en grande.
+    No hay corte: hay acercamiento.
+
+    MS_PANTALLA con CURVA_RESORTE, de src/components/movimiento.tsx.
+
+    Y LA BIBLIOTECA SE QUEDA ATRAS, OSCURECIDA, NO SE DESMONTA. Eso es lo que
+    convierte dos pantallas en un solo lugar.
+
+    OJO CON ESTO, QUE ES LA FRONTERA: que la biblioteca siga montada detras es
+    seguro. Lo que NO puede pasar nunca es que haya DOS TeleprompterView vivos a
+    la vez, porque cada uno enciende su bucle de animacion y su enganche al
+    motor. Uno solo, siempre.
+
+    Con movimientoApagado() en true: sin transformacion, la lectura aparece
+    directo como hoy.
+
+EL CAMBIO DE NAVEGACION QUE ESTO TRAE, Y HAY QUE HACERLO BIEN
+
+    Hoy el camino es: biblioteca -> tocar un guion -> editor -> Leer -> lectura.
+
+    Con la tarjeta aparece un camino nuevo: biblioteca -> Leer -> lectura,
+    SALTEANDO EL EDITOR. Hay que cargar el guion completo y entrar a leer.
+
+    Y AL VOLVER, TIENE QUE VOLVER DE DONDE VINO:
+
+        si entro desde la tarjeta      ->  vuelve a la BIBLIOTECA
+        si entro desde el editor       ->  vuelve al EDITOR, como hoy
+
+    Esto afecta a handleVolverAtras en App.tsx, que hoy manda siempre al editor
+    -lo puso la tarea 41 para que el gesto de atras no destruyera una grabacion-.
+    NO ROMPAS ESO: el gesto tiene que seguir deteniendo la grabacion antes de
+    volver. Lo unico que cambia es a donde vuelve.
+
+    Guarda de donde se entro en un useRef, no en estado: no tiene que provocar un
+    redibujo.
+
+    Y el boton "Salir" de los controles de lectura hace lo mismo que el gesto.
+
+
+PARTE 5 - EL EDITOR CON UN GUION LARGO
+
+Javier lo vio mirando el editor el 16 de septiembre de 2026. Son dos cosas y las
+dos son de la misma escena: alguien recorriendo un guion de mil palabras.
+
+  5.a  LA BARRA "Leer" TAPA EL TEXTO TODO EL TIEMPO.
+
+       Es position: fixed, asi que esta clavada al borde de la pantalla. El final
+       del guion no queda tapado -el contenedor tiene 100 px de hueco abajo para
+       eso- pero MIENTRAS SE RECORRE EL TEXTO, la pildora flota permanentemente
+       encima de un renglon. Ese renglon no se puede leer nunca.
+
+       QUE HACER: que la barra SE ESCONDA AL DESPLAZAR HACIA ABAJO y VUELVA al
+       parar o al desplazar hacia arriba.
+
+           se va:    con la curva de salida, rapido
+           vuelve:   con CURVA_RESORTE, y vuelve tambien si se deja de mover
+
+       Es lo que hace cualquier aplicacion de lectura: le devuelve la pantalla
+       entera al texto y el boton sigue a un gesto de distancia.
+
+       NO LA SAQUES DEL AREA SEGURA. Cuando esta visible sigue en
+       calc(24px + env(safe-area-inset-bottom, 0px)), como quedo. Esconderla es
+       moverla fuera de la pantalla, no meterla debajo del sistema.
+
+       Y el hueco de abajo del contenedor SE QUEDA: el final del guion tiene que
+       seguir alcanzable aunque la barra este visible.
+
+  5.b  LA BARRITA DEL SCROLL VUELVE, SALVO EN LA LECTURA.
+
+       La tarea 47 puso esto en styles.css:
+
+           * { scrollbar-width: none; }
+           *::-webkit-scrollbar { ... }
+
+       O sea que apago el indicador de desplazamiento EN TODA LA APLICACION. Fue
+       un error mio: lo tome de una recomendacion externa que decia "el scroll no
+       tiene barra, nunca" y lo acepte sin discutirlo.
+
+       Para contenido corto esta bien. PARA UN GUION DE MIL PALABRAS ES UN ERROR:
+       sin esa barrita, quien escribe no tiene idea de cuanto falta ni donde
+       esta.
+
+       QUE HACER: que la regla deje de ser universal y se aplique SOLO A LA
+       SUPERFICIE DE LECTURA, donde efectivamente nada puede distraer. En el
+       editor y en la biblioteca vuelve el indicador de la plataforma, que
+       aparece al desplazar y se desvanece solo al parar.
+
+       La regla no es "nunca": es "no mientras se lee".
+
+
+LO QUE NO ENTRA EN ESTA TAREA
+
+    LA PILA. Esta dibujada en docs/identidad.html -los guiones como tarjetas que
+    se pasan de costado- y ES UNA DECISION DE PRODUCTO QUE JAVIER NO TOMO: se
+    cambia encontrar rapido por ver hermoso, y con treinta guiones una pila es
+    peor que una lista. NO la implementes ni la propongas.
+
+    LA ANIMACION DE LA MARCA AL ARRANCAR. Merece su propia vuelta.
+
+    LA CAMARA Y EL MOTOR. Detenidos por decision de Javier.
+
+
+LO QUE NO SE TOCA
+
+   src/lib/       todo el directorio
+   src/motor/     todo
+   src/hooks/     todo
+   src/components/banda.ts    nada
+   android/                   nada
+
+   Y DE TeleprompterView: NADA. Ni la geometria de lectura -el renglon trabado,
+   avanzarTrabado, MARGEN_RENGLONES_ARRIBA, MS_DESLIZAR, calcularScrollTop,
+   calcularBanda, el velo, los paddings-, ni los colores, ni los tamaños. La
+   tarjeta es un componente aparte y no lo toca.
+
+   Y no rompas lo que dejaron las tareas 43 a 47: los calc(16px + env(...)) y el
+   calc(24px + env(...)) del editor, los siete controles de Ajustes, <Pantalla>,
+   onAnimationEnd, la haptica, el guion de bienvenida, el tema de tres estados,
+   las nueve fichas del sistema oscuro, los dos rojos, los resortes, ni las
+   pruebas T192 a T218.
+
+   Comprobalo con git diff --stat y ponelo en el informe.
+
+
+PRUEBAS
+
+   Numerar desde T219. T1 a T218 estan usados.
+
+   T219 - LA TARJETA NO ENCIENDE EL MOTOR. Montando la biblioteca con un guion,
+          la tarjeta se dibuja y NO se instancia ningun motor de avance ni se
+          pide el microfono. Comprobalo mockeando el motor y contando: cero
+          llamadas.
+
+   T220 - LA TARJETA MUESTRA EL GUION MAS RECIENTE, con su titulo y su time-code
+          en formato m:ss. Y mientras el texto no llego, la tarjeta YA ESTA en el
+          documento -no hay hueco ni cartel de cargando-.
+
+   T221 - SIN GUIONES, LA TARJETA SIGUE. Con la biblioteca vacia, la tarjeta esta
+          en el documento, dice "Sin guiones todavia" y su boton crea un guion.
+          NO hay ningun icono ni ilustracion de estado vacio.
+
+   T222 - VUELVE DE DONDE VINO. Entrando a leer DESDE LA TARJETA y apretando
+          Salir, se vuelve a la BIBLIOTECA. Entrando desde el EDITOR y apretando
+          Salir, se vuelve al EDITOR. Y en los dos casos la grabacion se detiene
+          antes -sin romper T179, la guardiana de la grabacion-.
+
+   T223 - UN SOLO TeleprompterView. Durante la transformacion, con la biblioteca
+          todavia montada detras, hay EXACTAMENTE UNO en el documento. Nunca dos.
+
+   T224 - LA BARRA "Leer" SE ESCONDE AL DESPLAZAR Y VUELVE. En el editor,
+          simulando un desplazamiento hacia abajo, la barra queda fuera de vista;
+          al parar o al desplazar hacia arriba, vuelve. Y CUANDO ESTA VISIBLE, su
+          bottom sigue llevando el calc con env(safe-area-inset-bottom) -sin
+          romper T218-.
+
+   T225 - LA BARRITA DEL SCROLL SOLO SE APAGA EN LA LECTURA. Leyendo
+          src/styles.css: la regla que oculta el indicador NO se aplica con el
+          selector universal `*`, y el selector que la lleva es el de la
+          superficie de lectura.
+
+   COMPROBALAS ROMPIENDO, estas tres:
+
+     - Para T219: hace que la tarjeta use TeleprompterView y verifica que se pone
+       ROJA.
+     - Para T222: hace que siempre vuelva al editor y verifica que se pone ROJA.
+     - Para T225: volve a poner la regla en `*` y verifica que se pone ROJA.
+
+     Despues deja las dos bien. PONE EL RESULTADO TEXTUAL EN EL INFORME.
+
+   T209 -la guardiana del sistema visual- y T213, T214 -las del tema oscuro-
+   TIENEN QUE SEGUIR VERDES. El radio 24 de la tarjeta es un valor nuevo: si T209
+   lo rechaza, agregalo a su lista de permitidos Y DECILO, en vez de usar otro
+   radio.
+
+
+AL TERMINAR
+
+   npx tsc --noEmit limpio.
+   npx vitest run: hoy son 204 de 204. Al terminar, 211 de 211.
+
+   PROHIBIDO agregar elementos ocultos ni atributos inventados para sostener una
+   prueba. Ya paso dos veces: tres botones invisibles sosteniendo dieciocho
+   pruebas, y un data-retardo-escalonado que no aplicaba ningun retardo.
+
+   Y PROHIBIDO DECLARAR SIN USAR. En la tarea 47 se declararon cuatro fichas de
+   superficie y una curva de resorte que ningun componente usaba, y las pruebas
+   pasaban igual. Si algo se declara, se usa, y la prueba comprueba el uso.
+
+   NO dejes console.log. NO commitees registros de tu servidor. NO BORRES
+   COMENTARIOS: si moves un bloque, el comentario se mueve con el.
+
+   INFORME, en este orden:
+
+     1. Las cinco partes, una por una.
+     2. Como resolviste que la tarjeta consiga el texto sin encender el motor.
+     3. Como quedo el cambio de navegacion y donde guardaste de donde se entro.
+     4. El git diff --stat completo.
+     5. El numero exacto de pruebas, y de cuanto partiste.
+     6. El resultado de romper T219 y T222, textual.
+     7. Si tocaste T209, que cambiaste y por que.
+
+   El telefono no lo ves desde la VM: no digas que "se ve mejor". Deci que
+   cambiaste, que yo lo miro en un aparato con las medidas reales.
