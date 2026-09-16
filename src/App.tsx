@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Capacitor } from '@capacitor/core'
+import { Capacitor, registerPlugin } from '@capacitor/core'
 import { App as CapacitorApp } from '@capacitor/app'
 import useASR from './hooks/useASR'
 import { useSeguidor } from './hooks/useSeguidor'
@@ -369,6 +369,17 @@ export default function App({ motor, repoOverride }: AppProps) {
 
     inicializar()
   }, [cargarBiblioteca, repoOverride])
+
+  // Plan A: Avisar al splash screen nativo de Android que la biblioteca ya se pinto.
+  useEffect(() => {
+    if (cargado && Capacitor.isNativePlatform()) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          registerPlugin<any>('Arranque').listo().catch(() => {})
+        })
+      })
+    }
+  }, [cargado])
 
   // Auto-guardado debounced (500ms) al modificar guionActual
   useEffect(() => {

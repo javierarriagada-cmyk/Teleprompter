@@ -20,7 +20,8 @@
 
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/fondo_arranque</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_marca</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/marca_arranque_animada</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
     </style>
 </resources>

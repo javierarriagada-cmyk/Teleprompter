@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="432dp"
+    android:height="432dp"
+    android:viewportWidth="432"
+    android:viewportHeight="432">
+    <path
+        android:name="linea1"
+        android:strokeColor="@color/marca_trazo"
+        android:strokeWidth="20"
+        android:strokeLineCap="round"
+        android:trimPathEnd="0"
+        android:pathData="M152,136 L304,136" />
+    <path
+        android:name="linea2"
+        android:strokeColor="@color/marca_trazo"
+        android:strokeWidth="20"
+        android:strokeLineCap="round"
+        android:trimPathEnd="0"
+        android:pathData="M112,176 L268,176" />
+    <path
+        android:name="linea3"
+        android:strokeColor="@color/marca_trazo"
+        android:strokeWidth="20"
+        android:strokeLineCap="round"
+        android:trimPathEnd="0"
+        android:pathData="M112,216 L304,216" />
+    <path
+        android:name="linea4"
+        android:strokeColor="@color/marca_trazo"
+        android:strokeWidth="20"
+        android:strokeLineCap="round"
+        android:trimPathEnd="0"
+        android:pathData="M112,256 L252,256" />
+    <path
+        android:name="linea5"
+        android:strokeColor="@color/marca_trazo"
+        android:strokeWidth="20"
+        android:strokeLineCap="round"
+        android:trimPathEnd="0"
+        android:pathData="M112,296 L288,296" />
+    <path
+        android:name="punto"
+        android:fillColor="@color/marca_punto"
+        android:fillAlpha="0"
+        android:pathData="M120,136 m-13,0 a13,13 0 1,0 26,0 a13,13 0 1,0 -26,0" />
+</vector>

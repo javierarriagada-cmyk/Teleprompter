@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/marca_arranque">
+    <target android:name="linea1" android:animation="@animator/escribir_1" />
+    <target android:name="linea2" android:animation="@animator/escribir_2" />
+    <target android:name="linea3" android:animation="@animator/escribir_3" />
+    <target android:name="linea4" android:animation="@animator/escribir_4" />
+    <target android:name="linea5" android:animation="@animator/escribir_5" />
+    <target android:name="punto"  android:animation="@animator/punto_late" />
+</animated-vector>
