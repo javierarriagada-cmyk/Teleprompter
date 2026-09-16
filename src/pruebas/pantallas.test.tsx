@@ -1035,7 +1035,7 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
     expect(screen.getByTestId('input-titulo-guion')).not.toBeNull()
   })
 
-  test('T190 - Con un guion vacio, "Leer" esta deshabilitado. Con texto, habilitado.', () => {
+  test('T190 - Con un guion vacio, "btn-leer-guion-fijo" NO esta en el documento. Con texto, SI esta.', () => {
     const guionVacio: Guion = {
       id: 'g-vacio-t190',
       titulo: 'Guion Vacio T190',
@@ -1054,13 +1054,8 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
       })
     )
 
-    const btnLeerVacio = screen.getByTestId('btn-leer-guion-fijo') as HTMLButtonElement
-    expect(btnLeerVacio.disabled).toBe(true)
-    // El 16 de septiembre de 2026 se saco el "— Escribe algo para leer": la pantalla
-    // ya lo dice tres veces -el contador en 0 palabras, el "Escribe el texto..." del
-    // bloque y el propio boton apagado-. Lo que esta prueba cuida, que el boton este
-    // DESHABILITADO con un guion vacio, no cambio.
-    expect(btnLeerVacio.textContent?.trim()).toBe('▶ Leer')
+    // Con guión vacío NO está el botón btn-leer-guion-fijo en el DOM
+    expect(screen.queryByTestId('btn-leer-guion-fijo')).toBeNull()
 
     unmount()
 
@@ -1083,7 +1078,7 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
     )
 
     const btnLeerTexto = screen.getByTestId('btn-leer-guion-fijo') as HTMLButtonElement
-    expect(btnLeerTexto.disabled).toBe(false)
+    expect(btnLeerTexto).not.toBeNull()
     expect(btnLeerTexto.textContent).toBe('▶ Leer')
   })
 
