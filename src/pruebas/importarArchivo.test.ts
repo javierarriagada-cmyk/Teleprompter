@@ -20,9 +20,10 @@ Segundo párrafo del discurso.`
 
     const resTxt = await importarArchivo(archivoTxt)
     expect(resTxt.titulo).toBe('discurso_bienvenida')
-    expect(resTxt.bloques.length).toBe(2)
+    // UN SOLO BLOQUE, con los dos parrafos adentro. Ver el comentario de T41.
+    expect(resTxt.bloques.length).toBe(1)
     expect(resTxt.bloques[0].texto).toContain('Primer párrafo')
-    expect(resTxt.bloques[1].texto).toContain('Segundo párrafo')
+    expect(resTxt.bloques[0].texto).toContain('Segundo párrafo')
 
     // Caso de título vacío (ej. ".txt")
     expect(extraerTituloArchivo('.txt')).toBe('Sin titulo')
@@ -201,10 +202,10 @@ Bloque importado B.`
       expect(llamadasChange).toBe(1)
     })
 
-    expect(guionEstado.bloques.length).toBe(3)
+    // Lo importado entra en UN bloque, sin tocar el que ya estaba. Ver T41.
+    expect(guionEstado.bloques.length).toBe(2)
     expect(guionEstado.bloques[0].id).toBe('b-base')
-    expect(guionEstado.bloques[1].texto).toBe('Bloque importado A.')
-    expect(guionEstado.bloques[2].texto).toBe('Bloque importado B.')
+    expect(guionEstado.bloques[1].texto).toBe('Bloque importado A.\n\nBloque importado B.')
     // Mantener título previo porque no estaba vacío ni era 'Sin título'
     expect(guionEstado.titulo).toBe('Guion T68 Original')
 
@@ -222,7 +223,7 @@ Bloque importado B.`
     // No debe haber llamado a onChangeGuion de nuevo
     expect(llamadasChange).toBe(1)
     // Los bloques existentes no se alteran
-    expect(guionEstado.bloques.length).toBe(3)
+    expect(guionEstado.bloques.length).toBe(2)
   })
 
 })

@@ -171,7 +171,23 @@ export function importarTexto(
   // Separar en párrafos (un párrafo por cada separación de una o más líneas en blanco)
   const parrafos = textoNormalizado.split(/\n\s*\n+/).filter((p) => p.trim().length > 0)
 
-  const bloques: Bloque[] = []
+  // UN SOLO BLOQUE, AUNQUE HAYA VEINTE PARRAFOS.
+  //
+  // Hasta el 15 de septiembre de 2026 esto devolvia UN BLOQUE POR PARRAFO, y el
+  // editor dibuja cada bloque con su encabezado numerado y sus botones de mover y
+  // borrar. Resultado: alguien pegaba un guion de cinco parrafos y le aparecia
+  // partido en cinco "Bloque #N" que no habia pedido ni entendia.
+  //
+  // Javier, viendolo: "por que si alguien pega un guion se le aparece dividido en
+  // bloques".
+  //
+  // LOS PARRAFOS NO SE PIERDEN: quedan separados por una linea en blanco adentro
+  // del mismo bloque, y la pantalla de lectura respeta los saltos de linea del
+  // autor, asi que se lee exactamente igual que antes.
+  //
+  // Los bloques siguen existiendo en el modelo y se pueden agregar a mano con
+  // "+ Agregar bloque". Lo que dejo de pasar es que aparezcan solos.
+  const lineasDelGuion: string[] = []
 
   for (const parrafo of parrafos) {
     const lineasFisicas = parrafo.split('\n')
@@ -184,13 +200,21 @@ export function importarTexto(
     }
 
     if (lineasFormateadas.length > 0) {
-      bloques.push({
-        id: generarIdBloque(),
-        nombre: '',
-        texto: lineasFormateadas.join('\n')
-      })
+      // una linea en blanco entre parrafo y parrafo, salvo antes del primero
+      if (lineasDelGuion.length > 0) lineasDelGuion.push('')
+      lineasDelGuion.push(...lineasFormateadas)
     }
   }
+
+  if (lineasDelGuion.length === 0) return []
+
+  const bloques: Bloque[] = [
+    {
+      id: generarIdBloque(),
+      nombre: '',
+      texto: lineasDelGuion.join('\n')
+    }
+  ]
 
   return bloques
 }

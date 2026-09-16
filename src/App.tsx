@@ -308,36 +308,34 @@ export default function App({ motor, repoOverride }: AppProps) {
             creado: Date.now(),
             modificado: Date.now(),
             archivado: false,
+            // UN SOLO BLOQUE, NO SEIS.
+            //
+            // El encargo de la tarea 46 decia "cada parrafo es un bloque" y fue un error
+            // mio: el editor dibuja cada bloque con su encabezado numerado y sus botones
+            // de mover y borrar, asi que lo PRIMERO que veia alguien al instalar eran
+            // seis "Bloque #N" -justamente la funcion que Javier dejo congelada hasta
+            // definir para que sirve-.
+            //
+            // No hace falta: la pantalla de lectura respeta los saltos de linea del
+            // autor, asi que un bloque con los parrafos separados por una linea en blanco
+            // se lee exactamente igual y el editor queda limpio.
             bloques: [
               {
                 id: 'b-bienvenida-1',
                 nombre: '',
-                texto: 'Hola. Lee esto en voz alta, con o sin apuro, como prefieras.'
-              },
-              {
-                id: 'b-bienvenida-2',
-                nombre: '',
-                texto: 'Ahora fíjate en el texto. Se está moviendo solo, al ritmo en que hablas, sin que toques nada.'
-              },
-              {
-                id: 'b-bienvenida-3',
-                nombre: '',
-                texto: 'Te acompaña para darte la comodidad y la tranquilidad que necesitas. Queremos que toda tu concentración esté donde debe estar. Cuando quieras, puedes recorrer los ajustes y dejar la experiencia a tu medida.'
-              },
-              {
-                id: 'b-bienvenida-4',
-                nombre: '',
-                texto: 'Nuestra tarea es que puedas mirar la cámara y no la pantalla. No tienes que memorizar. No tienes que apurarte para alcanzar el texto. Puedes transmitir la emoción que quieras, en el momento que quieras.'
-              },
-              {
-                id: 'b-bienvenida-5',
-                nombre: '',
-                texto: 'Sirve para grabar un video, dar una clase o preparar una entrevista.'
-              },
-              {
-                id: 'b-bienvenida-6',
-                nombre: '',
-                texto: 'Cuando termines, borra esto y escribe tu propio guion.'
+                texto: [
+                  'Hola. Lee esto en voz alta, con o sin apuro, como prefieras.',
+                  '',
+                  'Ahora fíjate en el texto. Se está moviendo solo, al ritmo en que hablas, sin que toques nada.',
+                  '',
+                  'Te acompaña para darte la comodidad y la tranquilidad que necesitas. Queremos que toda tu concentración esté donde debe estar. Cuando quieras, puedes recorrer los ajustes y dejar la experiencia a tu medida.',
+                  '',
+                  'Nuestra tarea es que puedas mirar la cámara y no la pantalla. No tienes que memorizar. No tienes que apurarte para alcanzar el texto. Puedes transmitir la emoción que quieras, en el momento que quieras.',
+                  '',
+                  'Sirve para grabar un video, dar una clase o preparar una entrevista.',
+                  '',
+                  'Cuando termines, borra esto y escribe tu propio guion.'
+                ].join('\n')
               }
             ]
           }

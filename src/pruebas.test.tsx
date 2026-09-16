@@ -1350,14 +1350,32 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       fireEvent.click(btnPegar)
     })
 
+    // DOS PEGADOS, NO UNO. Desde el 15 de septiembre de 2026 lo importado entra en
+    // UN bloque -ver T41-, asi que pegar "Bloque B\n\nBloque C" de una vez daria un
+    // solo bloque con los dos adentro. Esta prueba no es de importar: es de subir y
+    // borrar bloques, asi que se crean de a uno y lo que comprueba queda igual.
     const textareaModal = container!.querySelector('textarea[placeholder="Pega aquí el texto completo..."]') as HTMLTextAreaElement
     await act(async () => {
-      fireEvent.change(textareaModal, { target: { value: 'Bloque B\n\nBloque C' } })
+      fireEvent.change(textareaModal, { target: { value: 'Bloque B' } })
     })
 
     const btnAceptar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Importar')!
     await act(async () => {
       fireEvent.click(btnAceptar)
+    })
+
+    await act(async () => {
+      fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement)
+    })
+    await act(async () => {
+      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Pegar texto')!)
+    })
+    const textareaModal2 = container!.querySelector('textarea[placeholder="Pega aquí el texto completo..."]') as HTMLTextAreaElement
+    await act(async () => {
+      fireEvent.change(textareaModal2, { target: { value: 'Bloque C' } })
+    })
+    await act(async () => {
+      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Importar')!)
     })
 
     const textareas = Array.from(container!.querySelectorAll('textarea[placeholder="Escribe el texto..."]')) as HTMLTextAreaElement[]
@@ -2343,10 +2361,11 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     expect(inputTitulo).not.toBeNull()
     expect(inputTitulo.value).toBe('MiGuionNuevo')
 
+    // UN SOLO CUADRO DE TEXTO con los dos parrafos adentro. Ver T41.
     const textareas = Array.from(container!.querySelectorAll('textarea'))
-    expect(textareas.length).toBe(2)
+    expect(textareas.length).toBe(1)
     expect(textareas[0].value).toContain('Primer párrafo del guion importado.')
-    expect(textareas[1].value).toContain('Segundo párrafo del guion importado.')
+    expect(textareas[0].value).toContain('Segundo párrafo del guion importado.')
   })
 
 })
@@ -2966,8 +2985,10 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
     const textoConBasura = 'Hola\u00A0mundo «con comillas» e in\u00ADvisibles.   \n\n\n\nSegunda "frase" importante.'
     const bloques = importarTexto(textoConBasura)
 
-    expect(bloques).toHaveLength(2)
-    const textoResultado = bloques.map((b) => b.texto).join('\n\n')
+    // UN SOLO BLOQUE con los dos parrafos adentro. Ver el comentario de T41 en
+    // src/pruebas/importar.test.ts: lo importado dejo de partirse en bloques.
+    expect(bloques).toHaveLength(1)
+    const textoResultado = bloques[0].texto
 
     expect(textoResultado).not.toContain('\u00A0')
     expect(textoResultado).not.toContain('\u00AD')

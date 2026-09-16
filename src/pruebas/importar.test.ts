@@ -15,8 +15,11 @@ describe('Pruebas TAREA 6 - Importar y dar forma al guion (T40-T50)', () => {
     expect(importarTexto('\n\n  \t \n')).toEqual([])
   })
 
-  // T41: separación por párrafos y tratamiento de 3+ líneas en blanco
-  test('T41: un solo párrafo devuelve 1 bloque; 3+ líneas en blanco cuentan como 1 separador', () => {
+  // T41: TODO LO IMPORTADO ENTRA EN UN SOLO BLOQUE, y los parrafos quedan separados
+  // por una linea en blanco adentro. Cambiado el 15 de septiembre de 2026: antes
+  // devolvia un bloque por parrafo y el editor los dibujaba numerados, asi que quien
+  // pegaba un guion de cinco parrafos veia cinco "Bloque #N" que no habia pedido.
+  test('T41: todo lo importado entra en UN bloque, con los parrafos separados por una linea en blanco; 3+ saltos cuentan como 1 separador', () => {
     const unParrafo = 'Este es un único párrafo sin saltos de línea dobles.'
     const res1 = importarTexto(unParrafo)
     expect(res1.length).toBe(1)
@@ -33,10 +36,14 @@ Segundo párrafo separado por dos saltos.
 Tercer párrafo separado por cuatro saltos.`
 
     const res2 = importarTexto(tresParrafosConMuchasLineas)
-    expect(res2.length).toBe(3)
+    expect(res2.length).toBe(1)
     expect(res2[0].texto).toContain('Primer párrafo')
-    expect(res2[1].texto).toContain('Segundo párrafo')
-    expect(res2[2].texto).toContain('Tercer párrafo')
+    expect(res2[0].texto).toContain('Segundo párrafo')
+    expect(res2[0].texto).toContain('Tercer párrafo')
+
+    // los parrafos no se pegan entre si: queda una linea en blanco separandolos
+    const lineas = res2[0].texto.split('\n')
+    expect(lineas.filter((l) => l.trim() === '').length).toBe(2)
   })
 
   // T42: largo de líneas max 42 caracteres y palabras largas no se parten
@@ -170,11 +177,10 @@ Segundo párrafo importado.`
       fireEvent.click(btnAceptar!)
     })
 
-    // Debe haber agregado los 2 bloques al bloque existente (total = 3 bloques)
-    expect(guionEstado.bloques.length).toBe(3)
+    // Lo pegado entra en UN bloque nuevo, sin tocar el que ya estaba (total = 2)
+    expect(guionEstado.bloques.length).toBe(2)
     expect(guionEstado.bloques[0].id).toBe('b-existente')
-    expect(guionEstado.bloques[1].texto).toBe('Primer párrafo importado.')
-    expect(guionEstado.bloques[2].texto).toBe('Segundo párrafo importado.')
+    expect(guionEstado.bloques[1].texto).toBe('Primer párrafo importado.\n\nSegundo párrafo importado.')
   })
 
   // T46: Criterio de preferencia de cortes en 3 niveles
