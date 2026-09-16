@@ -303,7 +303,12 @@ export default function App({ motor, repoOverride }: AppProps) {
 
           const guionBienvenida: Guion = {
             id: 'bienvenida-' + Date.now(),
-            titulo: 'Bienvenida',
+            // "Hola" y no "Bienvenida": Javier, el 15 de septiembre de 2026, "me parece
+            // muy formal". Y hace eco con la primera linea del propio guion.
+            // La marca de localStorage sigue llamandose teleprompter_bienvenida_puesta a
+            // proposito: si se le cambia el nombre, a quien ya lo tenia le aparece un
+            // segundo guion.
+            titulo: 'Hola',
             idioma: 'es',
             creado: Date.now(),
             modificado: Date.now(),

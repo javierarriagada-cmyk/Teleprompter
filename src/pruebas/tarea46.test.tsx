@@ -138,8 +138,11 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
     // Render sin repoOverride y sin marca en localStorage: crea guion de bienvenida
     const { unmount } = render(<App />)
 
+    // Se titula "Hola" y no "Bienvenida" desde el 15 de septiembre de 2026: Javier lo
+    // encontro "muy formal". La marca de localStorage conserva el nombre viejo a
+    // proposito, para no re-crear el guion a quien ya lo tenia.
     await waitFor(async () => {
-      expect(await screen.findByText('Bienvenida')).not.toBeNull()
+      expect(await screen.findByText('Hola')).not.toBeNull()
     })
 
     expect(localStorage.getItem('teleprompter_bienvenida_puesta')).toBe('true')
@@ -148,7 +151,7 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
     // Segunda apertura con marca puesta: no vuelve a crear ni duplica
     render(<App />)
     await waitFor(() => {
-      const listaGuiones = screen.getAllByText('Bienvenida')
+      const listaGuiones = screen.getAllByText('Hola')
       expect(listaGuiones.length).toBe(1)
     })
   })
