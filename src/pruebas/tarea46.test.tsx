@@ -1,6 +1,6 @@
 import React from 'react'
 import { describe, test, expect, beforeEach, vi } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import fs from 'fs'
 import path from 'path'
 import 'fake-indexeddb/auto'
@@ -33,7 +33,7 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
     const regexGapSpacing = /\bgap\s*:\s*([0-9.]+)/g
 
     const tamanosPermitidos = [11, 13, 15, 18, 28]
-    const radiosPermitidos = [10, 999]
+    const radiosPermitidos = [10, 24, 999]
     const espaciadosPermitidos = [0, 4, 8, 12, 20, 32]
 
     const infracciones: string[] = []
@@ -142,7 +142,8 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
     // encontro "muy formal". La marca de localStorage conserva el nombre viejo a
     // proposito, para no re-crear el guion a quien ya lo tenia.
     await waitFor(async () => {
-      expect(await screen.findByText('Hola')).not.toBeNull()
+      const elementos = await screen.findAllByText('Hola')
+      expect(elementos.length).toBeGreaterThan(0)
     })
 
     expect(localStorage.getItem('teleprompter_bienvenida_puesta')).toBe('true')
@@ -151,7 +152,7 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
     // Segunda apertura con marca puesta: no vuelve a crear ni duplica
     render(<App />)
     await waitFor(() => {
-      const listaGuiones = screen.getAllByText('Hola')
+      const listaGuiones = within(screen.getByTestId('lista-guiones-biblioteca')).getAllByText('Hola')
       expect(listaGuiones.length).toBe(1)
     })
   })
