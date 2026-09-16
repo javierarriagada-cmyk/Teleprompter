@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { hapticaToqueFuerte } from '../haptica'
-import { movimientoApagado, MS_CHICO, CURVA_ENTRA } from './movimiento'
+import { movimientoApagado, MS_CHICO, CURVA_RESORTE } from './movimiento'
 
 interface CuentaRegresivaProps {
   valor: number | null // 3, 2, 1; null = no mostrar nada
@@ -46,7 +46,7 @@ export default function CuentaRegresiva({ valor }: CuentaRegresivaProps) {
           lineHeight: 1,
           animation: movimientoApagado()
             ? 'none'
-            : `cuentaRegresivaEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+            : `cuentaRegresivaEntra ${MS_CHICO}ms ${CURVA_RESORTE} forwards`
         }}
       >
         {valor}

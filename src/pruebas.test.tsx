@@ -2416,7 +2416,7 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
     expect(cssContent).toContain('#0F8377')
     expect(cssContent).toContain('#2FC4B2')
     expect(cssContent).toContain('#F3F1ED')
-    expect(cssContent).toContain('#16130F')
+    expect(cssContent).toContain('#151312')
   })
 
   test('T95: Un toque en una fila de la biblioteca abre el guion. Mantener presionado NO lo abre y muestra el menu con Eliminar y Archivar.', async () => {

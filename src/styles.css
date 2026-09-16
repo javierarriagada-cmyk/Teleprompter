@@ -1,12 +1,18 @@
 :root {
+  color-scheme: light dark;
   --bg-suelo: #F3F1ED;
+  --bg-fila: #FAF9F6;
   --bg-superficie: #FFFFFF;
+  --bg-panel: #FFFFFF;
+  --bg-menu: #FFFFFF;
+  --color-separador: #E4E0D9;
   --color-texto: #1A1815;
   --color-apagado: #78706A;
   --color-borde: #E4E0D9;
   --color-acento: #0F8377;
   --color-texto-acento: #FFFFFF;
-  --color-grabando: #D92B2B;
+  --color-grabando: #E11D2E;
+  --color-grabando-texto: #FF5A5A;
 
   --texto-display: 28px;
   --texto-titulo: 18px;
@@ -25,37 +31,52 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-tema="claro"]) {
-    --bg-suelo: #16130F;
-    --bg-superficie: #211D17;
-    --color-texto: #EFE9DF;
-    --color-apagado: #988E80;
-    --color-borde: #211D17;
+    --bg-suelo: #151312;
+    --bg-fila: #1E1B19;
+    --bg-superficie: #221F1D;
+    --bg-panel: #2D2927;
+    --bg-menu: #383432;
+    --color-separador: #4B4643;
+    --color-borde: #968F8B;
+    --color-apagado: #CAC5C2;
+    --color-texto: #E7E1DE;
     --color-acento: #2FC4B2;
     --color-texto-acento: #04211D;
-    --color-grabando: #D92B2B;
+    --color-grabando: #E11D2E;
+    --color-grabando-texto: #FF5A5A;
   }
 }
 
 [data-tema="claro"] {
   --bg-suelo: #F3F1ED;
+  --bg-fila: #FAF9F6;
   --bg-superficie: #FFFFFF;
+  --bg-panel: #FFFFFF;
+  --bg-menu: #FFFFFF;
+  --color-separador: #E4E0D9;
   --color-texto: #1A1815;
   --color-apagado: #78706A;
   --color-borde: #E4E0D9;
   --color-acento: #0F8377;
   --color-texto-acento: #FFFFFF;
-  --color-grabando: #D92B2B;
+  --color-grabando: #E11D2E;
+  --color-grabando-texto: #FF5A5A;
 }
 
 [data-tema="oscuro"] {
-  --bg-suelo: #16130F;
-  --bg-superficie: #211D17;
-  --color-texto: #EFE9DF;
-  --color-apagado: #988E80;
-  --color-borde: #211D17;
+  --bg-suelo: #151312;
+  --bg-fila: #1E1B19;
+  --bg-superficie: #221F1D;
+  --bg-panel: #2D2927;
+  --bg-menu: #383432;
+  --color-separador: #4B4643;
+  --color-borde: #968F8B;
+  --color-apagado: #CAC5C2;
+  --color-texto: #E7E1DE;
   --color-acento: #2FC4B2;
   --color-texto-acento: #04211D;
-  --color-grabando: #D92B2B;
+  --color-grabando: #E11D2E;
+  --color-grabando-texto: #FF5A5A;
 }
 
 body {
@@ -111,6 +132,42 @@ button {
   to {
     opacity: 1;
   }
+}
+
+/* Ocultar scrollbar en todo el documento */
+* {
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* Deformacion de botones en Material 3 Expressive */
+button.btn-deformable,
+.btn-deformable {
+  border-radius: var(--redondeo-pildora);
+  transform: scale(1) scaleY(1);
+  transition: border-radius 200ms cubic-bezier(.34, 1.3, .64, 1), transform 200ms cubic-bezier(.34, 1.3, .64, 1);
+}
+
+button.btn-deformable:active,
+.btn-deformable:active {
+  border-radius: 14px;
+  transform: scaleY(0.94);
+  transition: border-radius 100ms ease-out, transform 100ms ease-out;
+}
+
+/* Clases y animaciones con CURVA_RESORTE */
+.tarjeta-superficie,
+.panel-superficie {
+  animation-timing-function: cubic-bezier(.34, 1.3, .64, 1);
+}
+
+[data-tema="oscuro"] .tarjeta-superficie,
+[data-tema="oscuro"] .panel-superficie,
+:root:not([data-tema="claro"]) .tarjeta-superficie,
+:root:not([data-tema="claro"]) .panel-superficie {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 @keyframes pantallaEntraAdentro {

@@ -5,7 +5,7 @@ import { importarTexto } from '../datos/importar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { IdMotor } from '../motor/MotorDeVoz'
 import { hapticaSeleccion, hapticaToqueSuave } from '../haptica'
-import { movimientoApagado, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL } from './movimiento'
+import { movimientoApagado, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './movimiento'
 
 export function reubicarTramos(
   textoViejo: string,
@@ -65,8 +65,8 @@ interface EditorViewProps {
   setColorLetra?: (c: string) => void
   tipoFuente?: 'sans' | 'serif'
   setTipoFuente?: (f: 'sans' | 'serif') => void
-  tema?: 'claro' | 'oscuro'
-  setTema?: (t: 'claro' | 'oscuro') => void
+  tema?: 'sistema' | 'claro' | 'oscuro'
+  setTema?: (t: 'sistema' | 'claro' | 'oscuro') => void
   engine?: IdMotor
   setEngine?: (e: IdMotor) => void
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
@@ -483,8 +483,7 @@ export default function EditorView({
                 position: 'absolute',
                 top: '100%',
                 right: 0,
-                backgroundColor: 'var(--bg-superficie)',
-                border: '1px solid var(--color-borde)',
+                backgroundColor: 'var(--bg-menu)',
                 borderRadius: 'var(--redondeo)',
                 zIndex: 50,
                 minWidth: 180,
@@ -494,10 +493,10 @@ export default function EditorView({
                 transformOrigin: 'top right',
                 animation: movimientoApagado()
                   ? 'none'
-                  : `menuCreceEsquina ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                  : `menuCreceEsquina ${MS_CHICO}ms ${CURVA_RESORTE} forwards`
               }}
             >
-              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-borde)' }}>
+              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
                 <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
                   Idioma:
                 </label>
@@ -523,7 +522,7 @@ export default function EditorView({
                 </select>
               </div>
 
-              <div style={{ borderBottom: '1px solid var(--color-borde)' }}>
+              <div style={{ borderBottom: '1px solid var(--color-separador)' }}>
                 <button
                   onClick={() => {
                     setMenuOpcionesAbierto(false)
@@ -638,8 +637,9 @@ export default function EditorView({
         >
           <div
             data-testid="panel-ajustes"
+            className="panel-superficie"
             style={{
-              backgroundColor: 'var(--bg-superficie)',
+              backgroundColor: 'var(--bg-panel)',
               color: 'var(--color-texto)',
               padding: 'var(--aire-4)',
               borderRadius: 'var(--redondeo)',
@@ -650,7 +650,7 @@ export default function EditorView({
               boxSizing: 'border-box',
               animation: movimientoApagado()
                 ? 'none'
-                : `panelSube ${MS_PANEL}ms ${CURVA_ENTRA} forwards`
+                : `panelSube ${MS_PANEL}ms ${CURVA_RESORTE} forwards`
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -706,6 +706,7 @@ export default function EditorView({
                       <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
                         <button
                           type="button"
+                          className="btn-deformable"
                           onClick={() => {
                             hapticaSeleccion()
                             setColumnaAngosta?.(false)
@@ -713,7 +714,6 @@ export default function EditorView({
                           }}
                           style={{
                             padding: 'var(--aire-2) var(--aire-3)',
-                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: (!columnaAngosta && marginPercent !== 12) ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: (!columnaAngosta && marginPercent !== 12) ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -725,6 +725,7 @@ export default function EditorView({
                         </button>
                         <button
                           type="button"
+                          className="btn-deformable"
                           onClick={() => {
                             hapticaSeleccion()
                             setColumnaAngosta?.(false)
@@ -732,7 +733,6 @@ export default function EditorView({
                           }}
                           style={{
                             padding: 'var(--aire-2) var(--aire-3)',
-                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: (!columnaAngosta && marginPercent === 12) ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: (!columnaAngosta && marginPercent === 12) ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -744,6 +744,7 @@ export default function EditorView({
                         </button>
                         <button
                           type="button"
+                          className="btn-deformable"
                           onClick={() => {
                             hapticaSeleccion()
                             setColumnaAngosta?.(true)
@@ -751,7 +752,6 @@ export default function EditorView({
                           }}
                           style={{
                             padding: 'var(--aire-2) var(--aire-3)',
-                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: columnaAngosta ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: columnaAngosta ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -772,13 +772,13 @@ export default function EditorView({
                       <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
                         <button
                           type="button"
+                          className="btn-deformable"
                           onClick={() => {
                             hapticaSeleccion()
                             setTipoFuente('sans')
                           }}
                           style={{
                             padding: 'var(--aire-2) var(--aire-3)',
-                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: tipoFuente === 'sans' ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: tipoFuente === 'sans' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -790,13 +790,13 @@ export default function EditorView({
                         </button>
                         <button
                           type="button"
+                          className="btn-deformable"
                           onClick={() => {
                             hapticaSeleccion()
                             setTipoFuente('serif')
                           }}
                           style={{
                             padding: 'var(--aire-2) var(--aire-3)',
-                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: tipoFuente === 'serif' ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: tipoFuente === 'serif' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -833,6 +833,7 @@ export default function EditorView({
                             <button
                               key={idx}
                               type="button"
+                              className="btn-deformable"
                               title={p.label}
                               onClick={() => {
                                 hapticaSeleccion()
@@ -841,7 +842,6 @@ export default function EditorView({
                               }}
                               style={{
                                 padding: 'var(--aire-1)',
-                                borderRadius: 'var(--redondeo)',
                                 border: activo ? '2px solid var(--color-acento)' : '1px solid var(--color-borde)',
                                 backgroundColor: 'var(--bg-suelo)',
                                 cursor: 'pointer',
@@ -881,13 +881,13 @@ export default function EditorView({
                       <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
                         <button
                           type="button"
+                          className="btn-deformable"
                           onClick={() => {
                             hapticaSeleccion()
                             setAnclajeZona('arriba')
                           }}
                           style={{
                             padding: 'var(--aire-2) var(--aire-3)',
-                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: anclajeZona === 'arriba' ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: anclajeZona === 'arriba' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -899,13 +899,13 @@ export default function EditorView({
                         </button>
                         <button
                           type="button"
+                          className="btn-deformable"
                           onClick={() => {
                             hapticaSeleccion()
                             setAnclajeZona('medio')
                           }}
                           style={{
                             padding: 'var(--aire-2) var(--aire-3)',
-                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: anclajeZona === 'medio' ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: anclajeZona === 'medio' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -917,13 +917,13 @@ export default function EditorView({
                         </button>
                         <button
                           type="button"
+                          className="btn-deformable"
                           onClick={() => {
                             hapticaSeleccion()
                             setAnclajeZona('abajo')
                           }}
                           style={{
                             padding: 'var(--aire-2) var(--aire-3)',
-                            borderRadius: 'var(--redondeo)',
                             border: '1px solid var(--color-borde)',
                             backgroundColor: anclajeZona === 'abajo' ? 'var(--color-acento)' : 'var(--bg-suelo)',
                             color: anclajeZona === 'abajo' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
@@ -1002,7 +1002,7 @@ export default function EditorView({
             marginBottom: 'var(--aire-4)',
             animation: movimientoApagado()
               ? 'none'
-              : `panelSube ${MS_PANEL}ms ${CURVA_ENTRA} forwards`
+              : `panelSube ${MS_PANEL}ms ${CURVA_RESORTE} forwards`
           }}
         >
           <h4 className="texto-titulo" style={{ margin: '0 0 var(--aire-2) 0', color: 'var(--color-texto)' }}>Pegar texto</h4>
