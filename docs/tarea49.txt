@@ -1,0 +1,325 @@
+TAREA 49 - LA ENTRADA: LA MARCA SE ESCRIBE
+
+Para Jules. Partir de main. Rama nueva: tarea-49-la-entrada.
+
+Si trabajas despues de una correccion, no vuelvas a clonar main. Segui en tu rama.
+
+Todo esto es Android nativo. NO se toca src/ salvo el Plan A de la parte 3, y solo
+si lo declaras primero en el informe.
+
+
+LO QUE YA ESTA MEDIDO (no lo vuelvas a medir)
+
+En el Moto G86 Power 5G de Javier:
+
+  1. android/app/src/main/res/drawable/ic_marca.xml es un <vector> a secas, no un
+     <animated-vector>. No se mueve nada porque no hay nada que mover.
+
+  2. Tres de cinco renglones tienen android:fillAlpha="0.30". Fondo de arranque
+     #151312. 30% de #E7E1DE sobre ese negro no se ve en el telefono. En el icono
+     de la app si, porque ahi hay fondo claro.
+
+  3. MainActivity.java nunca llama a installSplashScreen(). La dependencia
+     androidx.core:core-splashscreen esta en build.gradle y no se usa. Sin eso no
+     hay setKeepOnScreenCondition ni setOnExitAnimationListener: el sistema suelta
+     cuando quiere, el WebView todavia no pinto, y eso es el corte.
+
+  4. Para icono animado el lienzo es 432 y el dibujo vive en el circulo interior
+     de 288 (4x el 108/72 del adaptativo). El actual es lienzo 108 con dibujo de
+     46: invisible y chico.
+
+Tope de windowSplashScreenAnimationDuration en telefonos: 1000 ms. En Android 13+
+la duracion la toma el propio AnimatedVectorDrawable. Ninguna cadena
+retardo+duracion puede pasar de 1000.
+
+DOS COSAS DEL REPOSITORIO QUE TE AHORRAN UN ERROR DE COMPILACION:
+
+  - android/app/src/main/res/values-night/ YA EXISTE, con un styles.xml adentro.
+    No la crees: agrega ahi lo que falte.
+
+  - El color fondo_arranque NO esta en un colors.xml. Esta adentro de
+    android/app/src/main/res/values/ic_launcher_background.xml. Si lo defines de
+    nuevo en otro archivo del mismo values/, no compila.
+
+  - El tema de arranque se llama AppTheme.NoActionBarLaunch, en
+    android/app/src/main/res/values/styles.xml. La version de core-splashscreen
+    es 1.2.0.
+
+
+QUE TIENE QUE SENTIRSE
+
+Negro. Los renglones se escriben, uno detras del otro, como texto. Cuando
+terminan, un punto rojo al inicio del primer renglon parpadea como la luz REC de
+una camara: encendido, apagado, encendido, apagado, encendido - y se queda
+prendido. Despues la splash se desvanece sobre la biblioteca, que ya esta
+dibujada. No hay slide. No hay fogonazo.
+
+La marca que se escribe son los renglones. No pongas la palabra "Sigo" dentro del
+circulo de 288: no entra en un tamano que se lea. Si queres la palabra, va quieta
+abajo con windowSplashScreenBrandingImage (parte 2b). Si no hay un wordmark
+limpio, no inventes uno.
+
+
+PARTE 1 - LA MARCA REDIBUJADA PARA EL ARRANQUE
+
+Archivo nuevo: android/app/src/main/res/drawable/marca_arranque.xml
+
+NO toques ic_marca.xml ni los ic_launcher_*. Esos son el icono de la aplicacion y
+estan bien.
+
+Los renglones son trazos con punta redonda (strokeLineCap="round"), no rectangulos
+rellenos. Un trazo se escribe con trimPathEnd; un relleno no.
+
+Lienzo 432x432. Circulo visible: centro 216,216, radio 144. Todo punto de todo
+trazo, mas la mitad del grosor, tiene que caer adentro de ese circulo.
+
+    <vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="432dp" android:height="432dp"
+        android:viewportWidth="432" android:viewportHeight="432">
+        <path android:name="linea1"
+            android:strokeColor="@color/marca_trazo"
+            android:strokeWidth="20" android:strokeLineCap="round"
+            android:trimPathEnd="0"
+            android:pathData="M152,136 L304,136" />
+        <path android:name="linea2"
+            android:strokeColor="@color/marca_trazo"
+            android:strokeWidth="20" android:strokeLineCap="round"
+            android:trimPathEnd="0"
+            android:pathData="M112,176 L268,176" />
+        <path android:name="linea3"
+            android:strokeColor="@color/marca_trazo"
+            android:strokeWidth="20" android:strokeLineCap="round"
+            android:trimPathEnd="0"
+            android:pathData="M112,216 L304,216" />
+        <path android:name="linea4"
+            android:strokeColor="@color/marca_trazo"
+            android:strokeWidth="20" android:strokeLineCap="round"
+            android:trimPathEnd="0"
+            android:pathData="M112,256 L252,256" />
+        <path android:name="linea5"
+            android:strokeColor="@color/marca_trazo"
+            android:strokeWidth="20" android:strokeLineCap="round"
+            android:trimPathEnd="0"
+            android:pathData="M112,296 L288,296" />
+        <path android:name="punto"
+            android:fillColor="@color/marca_punto"
+            android:fillAlpha="0"
+            android:pathData="M120,136 m-13,0 a13,13 0 1,0 26,0 a13,13 0 1,0 -26,0" />
+    </vector>
+
+Todos los renglones al 100%. Ningun strokeAlpha ni fillAlpha < 1 en los trazos.
+Sobre negro, el 30% no existe.
+
+El punto rojo va arriba, al principio del primer renglon (por eso linea1 empieza
+en x=152). Lo pidio Javier. Es el punto de grabar donde empieza el texto.
+
+El punto SI arranca en fillAlpha="0". Lo enciende la animacion. T227 no se aplica
+al punto.
+
+Los colores salen de recursos, no van escritos a mano.
+
+EL SPLASH SIGUE EL DEFAULT DE LA APP, NO EL DEL SISTEMA A CIEGAS. No hagas splash
+papel -> app negra. Eso es el fogonazo al reves.
+
+La aplicacion sigue al tema del sistema por omision, asi que van los dos mundos:
+
+    values/         (claro)
+      fondo_arranque  #F3F1ED
+      marca_trazo     #1A1815
+      marca_punto     #E11D2E
+
+    values-night/   (oscuro)
+      fondo_arranque  #151312
+      marca_trazo     #E7E1DE
+      marca_punto     #E11D2E
+
+Recorda que fondo_arranque hoy vive en values/ic_launcher_background.xml y que
+values-night/ ya existe. El punto es #E11D2E en los dos: es el rojo de grabar.
+
+
+PARTE 2 - LA MARCA SE ESCRIBE Y EL PUNTO LATE COMO CAMARA
+
+Archivo nuevo: android/app/src/main/res/drawable/marca_arranque_animada.xml
+
+    <animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:drawable="@drawable/marca_arranque">
+        <target android:name="linea1" android:animation="@animator/escribir_1" />
+        <target android:name="linea2" android:animation="@animator/escribir_2" />
+        <target android:name="linea3" android:animation="@animator/escribir_3" />
+        <target android:name="linea4" android:animation="@animator/escribir_4" />
+        <target android:name="linea5" android:animation="@animator/escribir_5" />
+        <target android:name="punto"  android:animation="@animator/punto_late" />
+    </animated-vector>
+
+TIEMPOS. Esta tabla es la que vale. La cadena mas larga cierra en 980 ms.
+
+TRAZOS - se escriben, uno detras del otro:
+
+    animador      propiedad      de -> a   duracion   retardo   termina
+    escribir_1    trimPathEnd    0 -> 1      260         0        260
+    escribir_2    trimPathEnd    0 -> 1      260        70        330
+    escribir_3    trimPathEnd    0 -> 1      260       140        400
+    escribir_4    trimPathEnd    0 -> 1      260       210        470
+    escribir_5    trimPathEnd    0 -> 1      260       280        540
+
+PUNTO - tally de camara. Encendido / apagado seco. Termina encendido.
+
+    paso   de -> a    duracion   retardo   termina   que se lee
+      1    0 -> 1        80        560       640     se enciende
+      2    1 -> 0        70        640       710     se apaga
+      3    0 -> 0        60        710       770     oscuro (intervalo del tally)
+      4    0 -> 1        70        770       840     segundo flash
+      5    1 -> 0        70        840       910     se apaga
+      6    0 -> 1        70        910       980     se enciende y se queda
+
+ORDEN INNEGOCIABLE: el ultimo trazo termina en 540 -> el punto no existe hasta
+560 -> dos apagones completos -> ultimo estado 1.
+
+    Interpolador de los trazos: @android:interpolator/decelerate_quad
+    Interpolador del punto: lineal. Un tally no tiene resorte.
+
+    El fillAlpha del punto SI va a 0. Las camaras se apagan del todo. Eso no es el
+    error del 30% en los renglones.
+
+    No uses valle 0.55. Se lee LED enfermo, no REC.
+    No agregues un tercer flash. En 1000 ms, tres veces parece aviso de bateria.
+    No animes el tamano del punto. No le pongas glow. No le pongas scale.
+
+Cada animador de trazo es su archivo en android/app/src/main/res/animator/
+(escribir_1.xml ... escribir_5.xml): objectAnimator, propertyName="trimPathEnd",
+valueType="floatType".
+
+punto_late.xml es un <set> de los seis pasos de arriba sobre fillAlpha. El paso 3
+(0 -> 0, 60 ms) existe para que el intervalo oscuro se vea; no lo saques para
+"simplificar".
+
+En el tema de arranque (AppTheme.NoActionBarLaunch):
+
+    windowSplashScreenAnimatedIcon      -> @drawable/marca_arranque_animada
+    windowSplashScreenAnimationDuration -> 1000
+    windowSplashScreenBackground        -> @color/fondo_arranque
+
+
+PARTE 2b - LA PALABRA, SI VA
+
+windowSplashScreenBrandingImage acepta una imagen estatica abajo del icono.
+Android no la anima.
+
+  - Si existe un wordmark limpio, o lo podes hacer en un vector/PNG chico: la
+    palabra Sigo sola, serif, color @color/marca_trazo, fondo transparente, sin
+    slogan, sin "Teleprompter".
+  - Si no hay wordmark, no inventes uno. Deja el atributo sin setear. Los
+    renglones ya son la marca.
+
+No dibujes "Sigo" como paths adentro de marca_arranque.xml.
+
+
+PARTE 3 - QUE NO HAYA CORTE
+
+En MainActivity.java, ANTES de super.onCreate:
+
+    SplashScreen splashScreen = androidx.core.splashscreen.SplashScreen.installSplashScreen(this);
+
+Hoy el registro de VoskNativoPlugin tambien va antes de super.onCreate porque
+Capacitor lo pide asi. Los dos conviven. NO muevas el registro del plugin ni
+borres su comentario.
+
+RETENCION:
+
+    splashScreen.setKeepOnScreenCondition(() -> !listoParaMostrar);
+
+listoParaMostrar arranca en false. Pasa a true cuando la aplicacion pinto de
+verdad (contenido de la biblioteca), no cuando existe el WebView.
+
+TOPE OBLIGATORIO: a los 2500 ms soltas igual, haya o no aviso. Una splash que no
+se va es peor que un corte.
+
+COMO SE ENTERA (elegi uno y declaralo en el informe):
+
+  - Plan A (el correcto): plugin Capacitor de un solo metodo. src/ lo llama cuando
+    la biblioteca ya se dibujo. Eso toca src/ (una linea despues del primer
+    paint). Si lo haces, anuncialo en el informe y toca lo minimo.
+
+  - Plan B (si no queres tocar src/ en este PR): no hay aviso. Soltas a
+    1000-1200 ms + fade. Peor que A, mejor que el corte actual. No inventes un
+    onPageFinished y lo llames "ya pinto": llega antes de React.
+
+SALIDA, setOnExitAnimationListener:
+
+  - La splash se desvanece sobre la app, que ya esta dibujada debajo.
+  - 250 ms, alpha 1 -> 0, decelerate. Al terminar, splashScreenView.remove().
+  - NADA de deslizar hacia arriba. El ejemplo de Android usa slideUp +
+    AnticipateInterpolator y lo copia todo el mundo; por eso no lo usamos.
+
+
+PARTE 4 - EL SALTO DE COLOR
+
+El fondo del arranque es el mismo mundo que la primera pantalla web. Ver recursos
+de color en la parte 1. El punto sigue #E11D2E en los dos temas.
+
+
+LO QUE NO SE TOCA
+
+    src/ entero, salvo Plan A de la parte 3 y solo anunciado
+    ic_marca.xml y los ic_launcher_*
+    El registro de VoskNativoPlugin y su comentario
+    El modelo de voz de assets/
+    El motor, el velo, la lectura
+
+
+LO QUE NO HAGAS AUNQUE "QUEDE LINDO"
+
+    Pulso del punto a 0.55
+    Tercer flash
+    scale o glow en el punto
+    Escribir "Sigo" adentro del vector animado
+    slideUp en la salida
+    fillAlpha 0.30 en los renglones
+    Llamar "ya pinto" al onPageFinished del WebView
+
+
+PRUEBAS
+
+Numerar desde T226. T1-T225 estan usados.
+
+Estas son de Android: instrumentacion o lectura de archivos. Elegi y decilo en el
+informe.
+
+  T226 - EL DIBUJO ESTA ADENTRO DEL CIRCULO. Leyendo marca_arranque.xml: lienzo
+         432; todo punto de todo trazo + mitad del grosor, y el circulo del punto,
+         caen en circulo centro 216,216 radio 144.
+
+         COMPROBALA ROMPIENDO: corre un trazo 60 px a la derecha, verifica que se
+         pone ROJA, despues dejala bien. El resultado textual de romperla va en el
+         informe.
+
+  T227 - NADIE QUEDA INVISIBLE. Ningun trazo tiene strokeAlpha/fillAlpha < 1. El
+         punto es la excepcion: arranca en 0 porque lo enciende la animacion.
+
+  T228 - LA ANIMACION EXISTE Y ENTRA EN EL TOPE. marca_arranque_animada.xml es
+         <animated-vector>, apunta a los seis nombres, y la suma mas larga
+         retardo+duracion <= 1000. Con la tabla de arriba, esa suma es 980.
+
+  T229 - EL PUNTO VA DESPUES. El retardo del primer animador del punto (560) es
+         mayor que retardo+duracion del ultimo trazo (280+260=540).
+
+  T230 - LA RETENCION TIENE TOPE. MainActivity llama a installSplashScreen, la
+         condicion existe, y hay un tope que la suelta aunque no llegue el aviso.
+
+  T231 - EL TALLY TERMINA ENCENDIDO. El ultimo objectAnimator de punto_late deja
+         fillAlpha en 1. No termina en 0.
+
+
+AL TERMINAR
+
+  Compila el APK.
+  Las pruebas de src/ siguen en 211 y tsc limpio, salvo que hayas tomado el Plan A.
+
+  INFORME:
+    1. Las cuatro partes, una por una.
+    2. Como resolviste el aviso de "ya pinto", y si tocaste src/.
+    3. Si pusiste branding image o no, y por que.
+    4. El resultado textual de romper T226.
+    5. git diff --stat.
+
+  No digas que "se ve mejor": desde la VM no lo ves. Deci que cambiaste.
