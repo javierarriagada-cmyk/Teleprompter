@@ -143,10 +143,8 @@ export default function EditorView({
   onAnimationEnd
 }: EditorViewProps) {
   const [plegados, setPlegados] = useState<Record<string, boolean>>({})
-  const [menuOpcionesAbierto, setMenuOpcionesAbierto] = useState(false)
   const [mostrarModalAjustes, setMostrarModalAjustes] = useState(false)
-  // se cierra tocando afuera o con Escape, no solo con el mismo boton
-  const refMenuOpciones = useCerrarAfuera(menuOpcionesAbierto, () => setMenuOpcionesAbierto(false))
+  const refAjustes = useCerrarAfuera(mostrarModalAjustes, () => setMostrarModalAjustes(false))
   const [mostrarModalPegar, setMostrarModalPegar] = useState(false)
   const [textoPegado, setTextoPegado] = useState('')
   const [errorPegado, setErrorPegado] = useState<string | null>(null)
@@ -436,6 +434,15 @@ export default function EditorView({
     : `${numPalabras.toLocaleString('es')} palabras · ${numMinutos > 0 ? numMinutos : 1} min`
 
   useEffect(() => {
+    if (!mostrarModalAjustes) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMostrarModalAjustes(false)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [mostrarModalAjustes])
+
+  useEffect(() => {
     if (onRegistrarCerrarModal) {
       onRegistrarCerrarModal(() => {
         if (mostrarModalAjustes) {
@@ -472,7 +479,7 @@ export default function EditorView({
         style={{ display: 'none' }}
       />
 
-      {/* Fila superior discreta: a la izquierda ‹ Guiones, a la derecha ⋯ */}
+      {/* Fila superior discreta: a la izquierda ‹ Guiones, a la derecha Aa */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-4)' }}>
         <button
           onClick={onVolverBiblioteca}
@@ -488,134 +495,26 @@ export default function EditorView({
           ‹ Guiones
         </button>
 
-        {/* Menu contextual superior ⋯ */}
-        <div ref={refMenuOpciones} style={{ position: 'relative' }}>
-          <button
-            onClick={() => {
-              hapticaToqueSuave()
-              setMenuOpcionesAbierto(!menuOpcionesAbierto)
-            }}
-            data-testid="btn-menu-opciones-editor"
-            style={{
-              background: 'transparent',
-              border: 'none',
-              fontSize: 'var(--texto-display)',
-              color: 'var(--color-texto)',
-              padding: 'var(--aire-1) var(--aire-2)',
-              cursor: 'pointer'
-            }}
-            title="Opciones"
-          >
-            ⋯
-          </button>
-
-          {menuOpcionesAbierto && (
-            <div
-              style={{
-                position: 'absolute',
-                top: '100%',
-                right: 0,
-                backgroundColor: 'var(--bg-menu)',
-                borderRadius: 'var(--redondeo)',
-                zIndex: 50,
-                minWidth: 180,
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-                transformOrigin: 'top right',
-                animation: movimientoApagado()
-                  ? 'none'
-                  : `menuCreceEsquina ${MS_CHICO}ms ${CURVA_RESORTE} forwards`
-              }}
-            >
-              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
-                <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
-                  Idioma:
-                </label>
-                <select
-                  value={guion.idioma || 'es'}
-                  onChange={(e) => handleIdiomaChange(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: 'var(--aire-1) var(--aire-2)',
-                    fontSize: 'var(--texto-meta)',
-                    borderRadius: 'var(--redondeo)',
-                    border: '1px solid var(--color-borde)',
-                    backgroundColor: 'var(--bg-suelo)',
-                    color: 'var(--color-texto)'
-                  }}
-                >
-                  <option value="es">Español (es)</option>
-                  <option value="en">English (en)</option>
-                  <option value="pt">Português (pt)</option>
-                  <option value="fr">Français (fr)</option>
-                  <option value="de">Deutsch (de)</option>
-                  <option value="it">Italiano (it)</option>
-                </select>
-              </div>
-
-              <div style={{ borderBottom: '1px solid var(--color-separador)' }}>
-                <button
-                  onClick={() => {
-                    setMenuOpcionesAbierto(false)
-                    setErrorPegado(null)
-                    setMostrarModalPegar(true)
-                  }}
-                  style={{
-                    width: '100%',
-                    padding: 'var(--aire-3) var(--aire-4)',
-                    textAlign: 'left',
-                    background: 'transparent',
-                    border: 'none',
-                    color: 'var(--color-texto)',
-                    fontSize: 'var(--texto-cuerpo)',
-                    cursor: 'pointer'
-                  }}
-                >
-                  Pegar texto
-                </button>
-
-                <button
-                  onClick={() => {
-                    setMenuOpcionesAbierto(false)
-                    fileInputRef.current?.click()
-                  }}
-                  disabled={cargandoArchivo}
-                  style={{
-                    width: '100%',
-                    padding: 'var(--aire-3) var(--aire-4)',
-                    textAlign: 'left',
-                    background: 'transparent',
-                    border: 'none',
-                    color: 'var(--color-texto)',
-                    fontSize: 'var(--texto-cuerpo)',
-                    cursor: cargandoArchivo ? 'not-allowed' : 'pointer'
-                  }}
-                >
-                  {cargandoArchivo ? 'Leyendo archivo...' : 'Abrir archivo'}
-                </button>
-              </div>
-
-              <button
-                onClick={() => {
-                  setMenuOpcionesAbierto(false)
-                  setMostrarModalAjustes(true)
-                }}
-                style={{
-                  padding: 'var(--aire-3) var(--aire-4)',
-                  textAlign: 'left',
-                  background: 'transparent',
-                  border: 'none',
-                  color: 'var(--color-texto)',
-                  fontSize: 'var(--texto-cuerpo)',
-                  cursor: 'pointer'
-                }}
-              >
-                Ajustes
-              </button>
-            </div>
-          )}
-        </div>
+        <button
+          onClick={() => {
+            hapticaToqueSuave()
+            setMostrarModalAjustes(true)
+          }}
+          data-testid="btn-menu-opciones-editor"
+          style={{
+            background: 'transparent',
+            border: 'none',
+            fontFamily: '"Source Serif 4", serif',
+            fontSize: 'var(--texto-titulo)',
+            fontWeight: 'bold',
+            color: 'var(--color-texto)',
+            padding: 'var(--aire-1) var(--aire-2)',
+            cursor: 'pointer'
+          }}
+          title="Ajustes de lectura"
+        >
+          Aa
+        </button>
       </div>
 
       {/* Titulo es el titulo: Display, editable, sin etiqueta ni recuadro */}
@@ -626,7 +525,7 @@ export default function EditorView({
           onChange={(e) => handleTituloChange(e.target.value)}
           onFocus={() => setTituloEnfocado(true)}
           onBlur={() => setTituloEnfocado(false)}
-          placeholder="Título"
+          placeholder="Sin título"
           className="texto-display"
           data-testid="input-titulo-guion"
           style={{
@@ -645,11 +544,51 @@ export default function EditorView({
       </div>
 
       {/* Resumen meta bajo el titulo */}
-      <div className="texto-meta" style={{ color: 'var(--color-apagado)', marginBottom: 'var(--aire-4)' }}>
+      <div className="texto-meta" style={{ color: 'var(--color-apagado)', marginBottom: numPalabras > 0 ? 'var(--aire-2)' : 'var(--aire-4)' }}>
         {resumenMeta}
       </div>
 
-      {/* Modal de Ajustes */}
+      {/* Botones Pegar y Abrir bajo el resumen meta si numPalabras > 0 */}
+      {numPalabras > 0 && (
+        <div style={{ display: 'flex', gap: 'var(--aire-2)', marginBottom: 'var(--aire-4)' }}>
+          <button
+            data-testid="btn-pegar-texto"
+            onClick={() => {
+              setErrorPegado(null)
+              setMostrarModalPegar(true)
+            }}
+            style={{
+              padding: 'var(--aire-1) var(--aire-3)',
+              fontSize: 'var(--texto-meta)',
+              backgroundColor: 'var(--bg-suelo)',
+              color: 'var(--color-texto)',
+              borderRadius: 'var(--redondeo)',
+              cursor: 'pointer',
+              border: '1px solid var(--color-borde)'
+            }}
+          >
+            Pegar texto
+          </button>
+          <button
+            data-testid="btn-abrir-archivo"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={cargandoArchivo}
+            style={{
+              padding: 'var(--aire-1) var(--aire-3)',
+              fontSize: 'var(--texto-meta)',
+              backgroundColor: 'var(--bg-suelo)',
+              color: 'var(--color-texto)',
+              borderRadius: 'var(--redondeo)',
+              cursor: cargandoArchivo ? 'not-allowed' : 'pointer',
+              border: '1px solid var(--color-borde)'
+            }}
+          >
+            {cargandoArchivo ? 'Leyendo...' : 'Abrir archivo'}
+          </button>
+        </div>
+      )}
+
+      {/* Modal de Ajustes: Hoja inferior */}
       {mostrarModalAjustes && (
         <div
           style={{
@@ -658,26 +597,26 @@ export default function EditorView({
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'var(--bg-suelo)',
+            backgroundColor: 'rgba(21,19,18,0.72)', // calc(1)
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-end',
             justifyContent: 'center',
-            zIndex: 200,
-            padding: 'var(--aire-4)'
+            zIndex: 200
           }}
           onClick={() => setMostrarModalAjustes(false)}
         >
           <div
+            ref={refAjustes}
             data-testid="panel-ajustes"
             className="panel-superficie"
             style={{
               backgroundColor: 'var(--bg-panel)',
               color: 'var(--color-texto)',
               padding: 'var(--aire-4)',
-              borderRadius: 'var(--redondeo)',
+              borderRadius: '24px 24px 0 0',
               maxWidth: 500,
               width: '100%',
-              maxHeight: '85vh',
+              maxHeight: '86vh',
               overflowY: 'auto',
               boxSizing: 'border-box',
               animation: movimientoApagado()
@@ -686,19 +625,24 @@ export default function EditorView({
             }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Handle superior de 36x4 */}
+            <div style={{ width: 36, height: 4, borderRadius: 'calc(2px)', backgroundColor: 'var(--color-borde)', margin: '0 auto var(--aire-3) auto' }} />
+
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-4)' }}>
               <h3 className="texto-titulo" style={{ margin: 0 }}>Ajustes</h3>
               <button
+                data-testid="btn-cerrar-ajustes"
                 onClick={() => setMostrarModalAjustes(false)}
                 style={{
                   background: 'transparent',
                   border: 'none',
                   color: 'var(--color-texto)',
-                  fontSize: 'var(--texto-titulo)',
+                  fontSize: 'var(--texto-cuerpo)',
+                  fontWeight: 'bold',
                   cursor: 'pointer'
                 }}
               >
-                ✕
+                Listo
               </button>
             </div>
 
@@ -850,10 +794,10 @@ export default function EditorView({
                   La toma
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-3)' }}>
-                  {/* Fondo y letra */}
+                  {/* Colores de lectura */}
                   {setColorFondo && setColorLetra && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Fondo y letra:</span>
+                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Colores de lectura:</span>
                       <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
                         {[
                           { fondo: PAREJAS_COLOR[0].fondo, letra: PAREJAS_COLOR[0].letra, label: 'Negro con blanco' },
@@ -984,6 +928,30 @@ export default function EditorView({
                       />
                     </label>
                   )}
+
+                  {/* Idioma */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Idioma:</span>
+                    <select
+                      value={guion.idioma || 'es'}
+                      onChange={(e) => handleIdiomaChange(e.target.value)}
+                      style={{
+                        padding: 'var(--aire-1) var(--aire-2)',
+                        fontSize: 'var(--texto-meta)',
+                        borderRadius: 'var(--redondeo)',
+                        border: '1px solid var(--color-borde)',
+                        backgroundColor: 'var(--bg-suelo)',
+                        color: 'var(--color-texto)'
+                      }}
+                    >
+                      <option value="es">Español (es)</option>
+                      <option value="en">English (en)</option>
+                      <option value="pt">Português (pt)</option>
+                      <option value="fr">Français (fr)</option>
+                      <option value="de">Deutsch (de)</option>
+                      <option value="it">Italiano (it)</option>
+                    </select>
+                  </div>
 
                   {/* Mostrar tiempo */}
                   {setMostrarTiempo && (
@@ -1365,6 +1333,67 @@ export default function EditorView({
           </div>
         )
       })()}
+
+      {/* Barra fija abajo cuando numPalabras === 0: Pegar texto y Abrir archivo */}
+      {numPalabras === 0 && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
+            left: 0,
+            right: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            gap: 'var(--aire-2)',
+            padding: '0 var(--aire-4)',
+            pointerEvents: 'none',
+            zIndex: 100
+          }}
+        >
+          <button
+            data-testid="btn-pegar-texto"
+            onClick={() => {
+              setErrorPegado(null)
+              setMostrarModalPegar(true)
+            }}
+            style={{
+              pointerEvents: 'auto',
+              flex: 1,
+              maxWidth: 200,
+              padding: 'var(--aire-3) var(--aire-4)',
+              fontSize: 'var(--texto-cuerpo)',
+              fontWeight: 600,
+              backgroundColor: 'var(--bg-panel)',
+              color: 'var(--color-texto)',
+              borderRadius: 'var(--redondeo-pildora)',
+              cursor: 'pointer',
+              border: '1px solid var(--color-borde)'
+            }}
+          >
+            Pegar texto
+          </button>
+          <button
+            data-testid="btn-abrir-archivo"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={cargandoArchivo}
+            style={{
+              pointerEvents: 'auto',
+              flex: 1,
+              maxWidth: 200,
+              padding: 'var(--aire-3) var(--aire-4)',
+              fontSize: 'var(--texto-cuerpo)',
+              fontWeight: 600,
+              backgroundColor: 'var(--bg-panel)',
+              color: 'var(--color-texto)',
+              borderRadius: 'var(--redondeo-pildora)',
+              cursor: cargandoArchivo ? 'not-allowed' : 'pointer',
+              border: '1px solid var(--color-borde)'
+            }}
+          >
+            {cargandoArchivo ? 'Leyendo...' : 'Abrir archivo'}
+          </button>
+        </div>
+      )}
 
       {/* Botón de Leer en voz alta Fijo Abajo - Solo cuando hay palabras */}
       {numPalabras > 0 && (

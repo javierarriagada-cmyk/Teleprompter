@@ -134,19 +134,12 @@ Línea tres`
       })
     )
 
-    // Abrir menú de opciones del editor y luego pegar texto
-    const btnMenuEditor = document.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
-    expect(btnMenuEditor).not.toBeNull()
+    // Pegar texto desde la pantalla del editor
+    const btnPegar = document.querySelector('[data-testid="btn-pegar-texto"]') as HTMLElement
+    expect(btnPegar).not.toBeNull()
 
     await act(async () => {
-      fireEvent.click(btnMenuEditor)
-    })
-
-    const btnPegar = Array.from(document.querySelectorAll('button')).find((b) => b.textContent === 'Pegar texto')
-    expect(btnPegar).not.toBeUndefined()
-
-    await act(async () => {
-      fireEvent.click(btnPegar!)
+      fireEvent.click(btnPegar)
     })
 
     // Intentar aceptar con texto vacío o solo espacios

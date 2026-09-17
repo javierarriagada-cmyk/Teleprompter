@@ -294,12 +294,9 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
       fireEvent.click(fila)
     })
 
-    // Abrir Ajustes
+    // Abrir Ajustes con Aa
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-    })
-    await act(async () => {
-      fireEvent.click(screen.getByText('Ajustes'))
     })
 
     hapticsCalls.selectionChanged = 0
@@ -314,9 +311,9 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     expect(hapticsCalls.selectionChanged).toBe(1)
 
     // Cerrar Ajustes
-    const btnCruz = screen.getByTestId('panel-ajustes').querySelector('button')!
+    const btnCerrar = screen.getByTestId('btn-cerrar-ajustes')
     await act(async () => {
-      fireEvent.click(btnCruz)
+      fireEvent.click(btnCerrar)
     })
 
     // Apretar Leer

@@ -135,7 +135,7 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
     // 1. Con el guion recién creado
     const inputTitulo = screen.getByTestId('input-titulo-guion') as HTMLInputElement
     expect(inputTitulo.value).toBe('')
-    expect(inputTitulo.placeholder).toBe('Título')
+    expect(inputTitulo.placeholder).toBe('Sin título')
 
     expect(screen.queryByTestId('btn-agregar-bloque')).toBeNull()
     expect(screen.queryByTestId('btn-leer-guion-fijo')).toBeNull()

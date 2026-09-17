@@ -735,14 +735,10 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    // Abrir menú de opciones y Ajustes en el Editor
+    // Abrir Ajustes en el Editor
     const btnMenu = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
     await act(async () => {
       fireEvent.click(btnMenu)
-    })
-    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!
-    await act(async () => {
-      fireEvent.click(btnAjustes)
     })
 
     const btnAngosta = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Angosto')!
@@ -780,9 +776,6 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     // Cambiar a completa
     await act(async () => {
       fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
-    })
-    await act(async () => {
-      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!)
     })
     await act(async () => {
       fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Ancho')!)
@@ -824,10 +817,6 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     await act(async () => {
       fireEvent.click(btnMenu)
     })
-    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!
-    await act(async () => {
-      fireEvent.click(btnAjustes)
-    })
 
     const btnAmbar = container!.querySelector('button[title="Negro con ámbar"]') as HTMLButtonElement
     expect(btnAmbar).not.toBeNull()
@@ -865,9 +854,6 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
 
     await act(async () => {
       fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
-    })
-    await act(async () => {
-      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!)
     })
 
     const btnBlanco = container!.querySelector('button[title="Blanco con negro"]') as HTMLButtonElement
@@ -1339,13 +1325,8 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
     })
 
     // Pegar texto para importar dos bloques adicionales (B y C)
-    const btnMenu = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
-    expect(btnMenu).not.toBeNull()
-    await act(async () => {
-      fireEvent.click(btnMenu)
-    })
-
-    const btnPegar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Pegar texto')!
+    const btnPegar = container!.querySelector('[data-testid="btn-pegar-texto"]') as HTMLElement
+    expect(btnPegar).not.toBeNull()
     await act(async () => {
       fireEvent.click(btnPegar)
     })
@@ -1365,10 +1346,7 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
     })
 
     await act(async () => {
-      fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement)
-    })
-    await act(async () => {
-      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Pegar texto')!)
+      fireEvent.click(container!.querySelector('[data-testid="btn-pegar-texto"]') as HTMLElement)
     })
     const textareaModal2 = container!.querySelector('textarea[placeholder="Pega aquí el texto completo..."]') as HTMLTextAreaElement
     await act(async () => {
@@ -2212,15 +2190,10 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     expect(container!.querySelector('div[data-testid="panel-ajustes"]')).toBeNull()
     expect(container!.textContent).not.toContain('Dónde lees:')
 
-    // Abrir menú de opciones en el Editor
+    // Abrir Ajustes en el Editor
     const btnMenu = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
     await act(async () => {
       fireEvent.click(btnMenu)
-    })
-
-    const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!
-    await act(async () => {
-      fireEvent.click(btnAjustes)
     })
 
     expect(container!.querySelector('div[data-testid="panel-ajustes"]')).not.toBeNull()
@@ -2261,10 +2234,6 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await act(async () => {
         fireEvent.click(btnMenu)
       })
-      const btnAjustes = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!
-      await act(async () => {
-        fireEvent.click(btnAjustes)
-      })
 
       const chkTiempo = Array.from(container!.querySelectorAll('input[type="checkbox"]')).find(
         (input) => input.parentElement?.textContent?.includes('Mostrar tiempo')
@@ -2304,10 +2273,6 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       const btnMenu2 = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
       await act(async () => {
         fireEvent.click(btnMenu2)
-      })
-      const btnAjustes2 = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Ajustes')!
-      await act(async () => {
-        fireEvent.click(btnAjustes2)
       })
 
       const chkTiempo2 = Array.from(container!.querySelectorAll('input[type="checkbox"]')).find(
