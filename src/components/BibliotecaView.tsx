@@ -1,1 +1,9 @@
-PLACEHOLDER_SEE_FILE
+import React, { useEffect, useRef, useState } from 'react'
+import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
+import { Guion, ResumenGuion, PAREJAS_COLOR } from '../datos/modelo'
+import { IdMotor } from '../motor/MotorDeVoz'
+import { PanelCorpus } from './PanelCorpus'
+import TarjetaLectura from './TarjetaLectura'
+import { IconoEngranaje } from './IconosApp'
+import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave } from '../haptica'
+import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './movimiento'
