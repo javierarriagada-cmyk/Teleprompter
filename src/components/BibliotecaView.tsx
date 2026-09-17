@@ -4,6 +4,7 @@ import { Guion, ResumenGuion, PAREJAS_COLOR } from '../datos/modelo'
 import { IdMotor } from '../motor/MotorDeVoz'
 import { PanelCorpus } from './PanelCorpus'
 import TarjetaLectura from './TarjetaLectura'
+import { IconoEngranaje } from './IconosApp'
 import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './movimiento'
 
@@ -358,11 +359,15 @@ export default function BibliotecaView({
               fontSize: 'var(--texto-display)',
               color: 'var(--color-texto)',
               padding: 'var(--aire-1) var(--aire-2)',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
-            title="Opciones"
+            title="Ajustes de la app"
+            aria-label="Ajustes de la app"
           >
-            ⋯
+            <IconoEngranaje />
           </button>
 
           {menuSuperiorAbierto && (
@@ -444,7 +449,7 @@ export default function BibliotecaView({
 
               <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
                 <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
-                  Tema:
+                  Apariencia:
                 </label>
                 <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
                   <button
@@ -607,7 +612,7 @@ export default function BibliotecaView({
           style={{ display: 'flex', flexDirection: 'column', ...animacionListaStyle }}
         >
           {guionesFiltrados.map((g, index) => {
-            const tituloMostrar = (g.titulo && g.titulo.trim() && g.titulo !== 'Sin título') ? g.titulo : 'Guion nuevo'
+            const tituloMostrar = (g.titulo && g.titulo.trim()) ? g.titulo : 'Sin título'
             const mins = Math.max(1, Math.round((g.palabras || 0) / 150))
             const fechaNat = formatearFechaNatural(g.modificado)
             const metaTexto = `${mins} min · ${fechaNat}`
@@ -787,7 +792,7 @@ export default function BibliotecaView({
           // Javier lo vio en el telefono el 16 de septiembre de 2026.
           bottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
           right: 'calc(32px + env(safe-area-inset-right, 0px))',
-          backgroundColor: 'var(--bg-superficie)',
+          backgroundColor: 'var(--bg-panel)',
           color: 'var(--color-texto)',
           borderRadius: 'var(--redondeo-pildora)',
           // 56, la medida de siempre para un boton flotante. Estaba en 44, que es el
@@ -796,9 +801,10 @@ export default function BibliotecaView({
           width: 56,
           height: 56,
           fontSize: 'var(--texto-display)',
-          fontWeight: 600,
+          fontWeight: 400,
           cursor: 'pointer',
-          border: '1px solid var(--color-borde)',
+          border: 'calc(1px) solid rgba(255, 255, 255, 0.08)',
+          boxShadow: 'inset 0 calc(1px) 0 rgba(255, 255, 255, 0.06)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

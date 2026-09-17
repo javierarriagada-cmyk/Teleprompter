@@ -249,7 +249,7 @@ describe('Pruebas TAREA 50 - Un Solo Mundo (T240-T252)', () => {
     }
   })
 
-  test('T251 - LA FILA SIN TITULO DICE "Guion nuevo".', async () => {
+  test('T251 - LA FILA SIN TITULO DICE "Sin título".', async () => {
     const repo = new RepositorioMemoria()
 
     const now = Date.now()
@@ -285,7 +285,7 @@ describe('Pruebas TAREA 50 - Un Solo Mundo (T240-T252)', () => {
 
     const fila = container!.querySelector('[data-testid="fila-guion-g-sin-titulo-2"]') as HTMLElement
     expect(fila).not.toBeNull()
-    expect(fila.textContent).toContain('Guion nuevo')
+    expect(fila.textContent).toContain('Sin título')
     expect(buscarSpy).not.toHaveBeenCalledWith('g-sin-titulo-2')
   })
 

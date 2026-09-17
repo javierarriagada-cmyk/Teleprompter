@@ -251,7 +251,7 @@ describe('Pruebas TAREA 31 (T160)', () => {
   ]
 
   test('T160: los menus del editor y de la biblioteca se cierran al tocar afuera y con Escape.', () => {
-    // 1. el ⋯ del editor
+    // 1. el Aa del editor
     {
       const { unmount } = render(
         React.createElement(EditorView, {
@@ -259,16 +259,16 @@ describe('Pruebas TAREA 31 (T160)', () => {
         })
       )
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-      expect(screen.queryByText('Pegar texto')).not.toBeNull()
+      expect(screen.queryByTestId('panel-ajustes')).not.toBeNull()
 
       fireEvent.pointerDown(document.body)
-      expect(screen.queryByText('Pegar texto')).toBeNull()
+      expect(screen.queryByTestId('panel-ajustes')).toBeNull()
 
       // y con Escape
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-      expect(screen.queryByText('Pegar texto')).not.toBeNull()
+      expect(screen.queryByTestId('panel-ajustes')).not.toBeNull()
       fireEvent.keyDown(document, { key: 'Escape' })
-      expect(screen.queryByText('Pegar texto')).toBeNull()
+      expect(screen.queryByTestId('panel-ajustes')).toBeNull()
       unmount()
     }
 
@@ -569,7 +569,7 @@ describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)
     expect(textoUnMinuto).not.toContain('1 minutos de lectura')
   })
 
-  test('T182 - El menu del editor NO contiene el caracter ⚙, y el boton de ajustes dice "Ajustes".', () => {
+  test('T182 - El menu del editor NO contiene el caracter ⚙, y el boton de ajustes dice "Aa".', () => {
     const guion: Guion = {
       id: 'g-t182',
       titulo: 'Guión T182',
@@ -598,17 +598,8 @@ describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)
     )
 
     const btnMenu = screen.getByTestId('btn-menu-opciones-editor')
-    fireEvent.click(btnMenu)
-
-    // No debe contener el caracter ⚙ en el menú desplegable
+    expect(btnMenu.textContent?.trim()).toBe('Aa')
     expect(container.textContent).not.toContain('⚙')
-
-    // El botón de ajustes dice exactamente 'Ajustes'
-    const btnAjustes = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Ajustes'
-    )
-    expect(btnAjustes).not.toBeUndefined()
-    expect(btnAjustes?.textContent?.trim()).toBe('Ajustes')
   })
 })
 
@@ -649,7 +640,6 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     )
 
     fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-    fireEvent.click(screen.getByText('Ajustes'))
 
     const panel = screen.getByTestId('panel-ajustes')
     expect(panel).not.toBeNull()
@@ -677,8 +667,8 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     expect(idxTipoFuente).toBeGreaterThan(idxAncho)
     expect(idxTipoFuente).toBeLessThan(idxGrupo2)
 
-    // Grupo 2: Fondo y letra, Dónde lees, Espejo, Mostrar tiempo
-    const idxFondoLetra = htmlText.indexOf('Fondo y letra:')
+    // Grupo 2: Colores de lectura, Dónde lees, Espejo, Mostrar tiempo
+    const idxFondoLetra = htmlText.indexOf('Colores de lectura:')
     const idxDondeLees = htmlText.indexOf('Dónde lees:')
     const idxEspejo = htmlText.indexOf('Espejo:')
     const idxMostrarTiempo = htmlText.indexOf('Mostrar tiempo:')
@@ -738,7 +728,6 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     }
 
     fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-    fireEvent.click(screen.getByText('Ajustes'))
 
     const btnMenos = screen.getByLabelText('Disminuir letra panel')
     const btnMas = screen.getByLabelText('Aumentar letra panel')
@@ -794,9 +783,6 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
     })
-    await act(async () => {
-      fireEvent.click(screen.getByText('Ajustes'))
-    })
 
     // Cambiar tamaño de letra en el panel de 24 a 32 (+1 paso)
     const btnMasPanel = screen.getByLabelText('Aumentar letra panel')
@@ -841,9 +827,6 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     // Reabrir Ajustes en el Editor y comprobar que muestra 42
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-    })
-    await act(async () => {
-      fireEvent.click(screen.getByText('Ajustes'))
     })
 
     expect(screen.getByTestId('valor-letra-panel').textContent).toBe('42')
@@ -896,16 +879,13 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
     })
-    await act(async () => {
-      fireEvent.click(screen.getByText('Ajustes'))
-    })
 
     expect(screen.queryByLabelText('Motor de Voz')).toBeNull()
     expect(screen.queryByLabelText('Motor de Voz (Avanzado)')).toBeNull()
     expect(screen.queryByText('Ver transcripción en vivo')).toBeNull()
   })
 
-  test('T187 - El panel se cierra con la ✕ y NO hay boton "Listo".', () => {
+  test('T187 - El panel se cierra con "Listo" (btn-cerrar-ajustes).', () => {
     const guion: Guion = {
       id: 'g-t187',
       titulo: 'Guión T187',
@@ -925,18 +905,13 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     )
 
     fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-    fireEvent.click(screen.getByText('Ajustes'))
 
     expect(screen.getByTestId('panel-ajustes')).not.toBeNull()
 
-    // No existe botón "Listo"
-    expect(screen.queryByText('Listo')).toBeNull()
+    const btnListo = screen.getByTestId('btn-cerrar-ajustes')
+    expect(btnListo.textContent).toBe('Listo')
 
-    // El panel tiene la ✕ y al hacer clic se cierra
-    const btnCruz = screen.getByTestId('panel-ajustes').querySelector('button')!
-    expect(btnCruz.textContent).toBe('✕')
-
-    fireEvent.click(btnCruz)
+    fireEvent.click(btnListo)
     expect(screen.queryByTestId('panel-ajustes')).toBeNull()
   })
 })
@@ -1021,9 +996,6 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
     // Abrir modal de Ajustes
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-    })
-    await act(async () => {
-      fireEvent.click(screen.getByText('Ajustes'))
     })
 
     expect(screen.getByTestId('panel-ajustes')).not.toBeNull()
@@ -1163,7 +1135,6 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
     }
 
     fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-    fireEvent.click(screen.getByText('Ajustes'))
 
     const btnAncho = screen.getByText('Ancho')
     const btnMedio = screen.getByText('Medio')
@@ -1230,7 +1201,6 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
     }
 
     fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-    fireEvent.click(screen.getByText('Ajustes'))
 
     // Comprobar que NO hay selects o controles independientes para Fondo o Letra
     expect(container.querySelector('select[aria-label="Color de fondo"]')).toBeNull()
@@ -1329,9 +1299,6 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
     })
-    await act(async () => {
-      fireEvent.click(screen.getByText('Ajustes'))
-    })
 
     const panelAjustes = screen.getByTestId('panel-ajustes')
     expect(panelAjustes.textContent).not.toContain('Tema:')
@@ -1351,7 +1318,7 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
       fireEvent.click(btnMenuBiblio)
     })
 
-    expect(screen.getByText('Tema:')).not.toBeNull()
+    expect(screen.getByText('Apariencia:')).not.toBeNull()
     const btnClaro = screen.getByRole('button', { name: 'Claro' })
     const btnOscuro = screen.getByRole('button', { name: 'Oscuro' })
     expect(btnClaro).not.toBeNull()
