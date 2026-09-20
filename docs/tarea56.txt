@@ -1,0 +1,159 @@
+TAREA 56 - LA CAMARA DETRAS DEL TEXTO
+
+Rama: tarea56-camara-detras-del-texto
+
+Hoy la pantalla de lectura muestra el texto sobre un fondo negro. Al terminar
+esta tarea va a poder mostrarlo sobre la imagen de la camara, para que la persona
+se vea mientras lee. Todavia NO se graba nada: esta tarea es solo la imagen en
+pantalla.
+
+
+LO MAS IMPORTANTE DE TODA LA TAREA
+
+La camara NO puede tomar el microfono. El microfono lo usa el reconocedor de voz
+que hace avanzar el texto. Si algo en esta tarea pide audio, el reconocedor deja
+de oir y el texto deja de avanzar solo.
+
+Por eso, en todas las llamadas al plugin: disableAudio en true, enableVideoMode
+en false, y no se llama nunca a startRecordVideo.
+
+
+1. INSTALAR EL PLUGIN
+
+    npm install @capgo/camera-preview
+    npx cap sync android
+
+Es el plugin @capgo/camera-preview, compatible con Capacitor 8, que es la version
+que usa el proyecto.
+
+
+2. EL PERMISO DE CAMARA
+
+En android/app/src/main/AndroidManifest.xml, junto a los permisos que ya estan:
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+
+3. ARCHIVO NUEVO: src/lib/camara.ts
+
+Todo el trato con el plugin vive aca. El resto de la aplicacion no importa el
+plugin directamente.
+
+    export type LadoCamara = 'frontal' | 'trasera'
+
+    export async function encenderCamara(lado: LadoCamara): Promise<void>
+    export async function apagarCamara(): Promise<void>
+    export async function cambiarLadoCamara(): Promise<LadoCamara>
+    export function camaraEncendida(): boolean
+    export function ladoActual(): LadoCamara
+
+encenderCamara llama a CameraPreview.start con estas opciones, y estas son
+obligatorias:
+
+    toBack: true            la imagen va DETRAS del contenido web
+    enableVideoMode: false  no se prepara grabacion en esta tarea
+    disableAudio: true      no se toca el microfono
+    position                'front' o 'rear' segun el lado
+                            (el tipo exacto es CameraPosition, esta en las
+                            definiciones del plugin)
+
+    width y height: la pantalla completa.
+
+apagarCamara llama a CameraPreview.stop.
+cambiarLadoCamara usa CameraPreview.flip y devuelve el lado que quedo.
+
+Si el usuario niega el permiso de camara, apagarCamara y listo: la pantalla
+sigue funcionando con el fondo negro de siempre. No se rompe nada ni se muestra
+un error en medio de una lectura.
+
+
+4. LOS BOTONES, QUE SON PROVISORIOS
+
+En src/App.tsx, adentro del panel con data-testid="panel-controles-lectura"
+-esta cerca de la linea 1211, donde estan Salir y Pausa-, agregar:
+
+    un boton  data-testid="btn-camara"          enciende y apaga la camara
+    un boton  data-testid="btn-cambiar-camara"  solo visible con la camara
+                                                encendida, cambia de lado
+
+DONDE VAN A VIVIR ESTOS CONTROLES AL FINAL TODAVIA NO ESTA DECIDIDO. Ponelos
+ahi, simples, junto a los que ya estan. No hay que disenar nada nuevo ni mover
+los botones existentes.
+
+
+5. EL FONDO DEL TEXTO SE VUELVE TRANSPARENTE
+
+En src/components/TeleprompterView.tsx hay una capa que dibuja el texto con
+`background: colorFondo` -cerca de la linea 574-. Con la camara encendida esa
+capa tiene que ser transparente, o tapa la imagen.
+
+Agregar una propiedad nueva al componente:
+
+    camaraEncendida?: boolean   // por omision false
+
+Cuando es true, esa capa va con background transparente. Cuando es false, queda
+exactamente como hoy.
+
+Revisar tambien que ningun contenedor de App.tsx que este por encima de la
+camara tenga un fondo opaco propio que la tape.
+
+
+6. EL VELO SE ACOTA AL ANCHO DE LA COLUMNA
+
+El elemento con data-testid="velo-lectura" es el que oscurece arriba y abajo del
+renglon vivo. Hoy toma todo el ancho de la pantalla.
+
+Sobre negro no se nota. Sobre una cara si: oscureceria la cara entera. Tiene que
+quedar del mismo ancho que la columna de texto, de manera que la imagen quede
+limpia a los dos lados y oscurecida solo donde vive el texto.
+
+NO cambiar los numeros que calcula calcularBgVelo en banda.ts. Solo el ancho del
+elemento.
+
+
+7. LO QUE NO SE TOCA
+
+    src/lib/seguidor.ts, src/lib/conduccion.ts, src/lib/avance.ts
+    los calculos de src/components/banda.ts
+    src/motor/ completo
+    android/.../VoskNativoPlugin.java
+
+Nada de esta tarea necesita tocar el seguimiento por voz.
+
+
+8. COMO SE COMPRUEBA QUE QUEDO BIEN
+
+Esto se prueba en el telefono, con el APK, no en el navegador.
+
+    a. Abrir un guion, entrar a leer, encender la camara. Se tiene que ver la
+       imagen detras del texto y el texto se tiene que leer bien encima.
+    b. CON LA CAMARA ENCENDIDA, LEER EN VOZ ALTA. El texto tiene que seguir
+       avanzando solo, igual que antes. Si deja de avanzar, la camara se llevo
+       el microfono y la tarea esta mal resuelta.
+    c. Cambiar a la camara de atras y que siga funcionando igual.
+    d. Apagar la camara: el fondo vuelve a ser el negro de siempre.
+
+
+9. DOS NUMEROS QUE HAY QUE ANOTAR EN EL PULL REQUEST
+
+    - Cuanto pesa el APK antes de esta tarea y cuanto despues.
+    - Si el texto se mueve igual de fluido con la camara encendida que con la
+      camara apagada, mirandolo en el telefono.
+
+Son dos datos que hacen falta para decidir si el plugin se queda.
+
+
+10. UNA PRUEBA, UNA SOLA
+
+En un archivo nuevo src/pruebas/tarea56.test.ts:
+
+    T273: encenderCamara llama a start con disableAudio en true y
+          enableVideoMode en false.
+
+Se hace con un doble del plugin y mirando las opciones con las que se lo llamo.
+Es la prueba que evita que alguien, mas adelante, encienda el audio sin darse
+cuenta y rompa el seguimiento por voz.
+
+No agregues otras pruebas. Las cosas que importan de esta tarea -que se vea bien
+la imagen, que el texto se lea encima- no se pueden comprobar en jsdom, porque
+jsdom no dibuja nada.

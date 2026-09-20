@@ -1,0 +1,541 @@
+GRABAR CON LA CAMARA - ARQUITECTURA
+Estudio pedido por Javier el 20 de septiembre de 2026, y conversado con el el
+mismo dia hasta dejarlo decidido.
+
+Acompana a docs/grabar.txt, que dice QUE quiere el producto. Este dice COMO se
+puede hacer, que cuesta, y en que orden se construye.
+
+ESTE TELEPROMPTER ES PARA CUALQUIER LECTURA. No para videos cortos, no para un
+formato. Una clase, una charla, un curso, un video de empresa, y tambien un
+video corto. La duracion, la orientacion y el tipo de usuario no se dan por
+supuestos desde ningun caso particular.
+
+
+===============================================================================
+0. LO QUE ESTA DECIDIDO
+===============================================================================
+
+De antes, en DECISIONES-DE-DISENO:
+
+  F5  Grabar es un INTERRUPTOR, no un modo. La misma pantalla de lectura con la
+      camara encendida o apagada.
+  B16 Se oscurece SOLO la franja donde vive el texto, no toda la imagen.
+  B14 Punto rojo = grabando.
+  B17 Vertical por omision, con opcion a horizontal.
+      Cuenta regresiva de tres segundos: ya existe, CuentaRegresiva.tsx.
+  F1  La ventana flotante sobre la camara del telefono NO reemplaza esto.
+
+DECIDIDO POR JAVIER EL 20 DE SEPTIEMBRE DE 2026:
+
+  1. EL CAMINO. La version web como MAQUETA, para decidir el diseno mirando.
+     Lo nativo como PRODUCTO.
+  2. TRES FONDOS, no dos: la imagen de la camara completa detras del texto; uno
+     de nuestros fondos, con la camara grabando pero sin verse; y un recuadro
+     pequeno con la camara.
+  3. LAS DOS CAMARAS, frontal y trasera.
+  4. EL RECUADRO PEQUENO SE MUEVE CON EL DEDO.
+  5. EL VIDEO SE GUARDA EN EL TELEFONO que esta grabando.
+  6. 4K NO, todavia. Ocupa demasiado.
+  7. Los SUBTITULOS quedan como posibilidad pendiente. No se construye nada.
+  8. QUE PASA SI ENTRA UNA LLAMADA no es problema nuestro por ahora.
+
+Y una cosa que conviene tener presente: el texto NO se quema en el video. La
+camara graba a la persona; nuestras letras son una capa de pantalla. Eso saca de
+encima la parte mas cara que tendria esto -componer dos imagenes en tiempo real-
+y es lo que hace viables varios de los caminos de abajo.
+
+
+===============================================================================
+1. LA RESTRICCION QUE DECIDE TODO: UN MICROFONO, DOS QUE LO NECESITAN
+===============================================================================
+
+Esto va primero porque condiciona el resto. Si se decide despues, se decide mal.
+
+Cuando grabamos, dos cosas necesitan el microfono AL MISMO TIEMPO: la pista de
+audio del video, y el que sigue la voz para mover el texto. Y microfono hay uno.
+
+La regla de Android, de la documentacion oficial -Sharing audio input-:
+
+    "Two ordinary apps can never capture audio at the same time."
+
+La que pierde no recibe un error: recibe SILENCIO. Eso ya estaba escrito en F1 y
+es lo que mato la ventana flotante.
+
+Y hay que agregar algo que esa pagina no dice: habla de APLICACIONES, no de dos
+capturas dentro de una misma aplicacion. Que pasa si la nuestra abre dos NO ESTA
+DOCUMENTADO. Suele funcionar. "Suele funcionar" en el camino critico de una
+aplicacion que graba significa que algun telefono va a entregar un video mudo o
+un prompter sordo, y el usuario se entera al terminar la toma.
+
+    REGLA DE ARQUITECTURA: se captura el microfono UNA SOLA VEZ y se reparte.
+    No se apuesta a que dos capturas convivan.
+
+        captura unica  --> encoder AAC   --> pista de audio del video
+                       --> 48k a 16k     --> el motor de voz
+                       --> (si se quiere) el grabador de corpus
+
+        48000 / 3 = 16000 exacto: es un diezmado entero, no un remuestreo
+        fraccionario. Barato y sin deriva.
+
+EL REQUISITO QUE ESTO LE PONE A CUALQUIER MOTOR DE VOZ, Y ES LO IMPORTANTE DE
+ESTA SECCION:
+
+    El motor tiene que ACEPTAR AUDIO QUE LE ENTREGAMOS NOSOTROS, en vez de
+    abrir el microfono por su cuenta.
+
+Eso es un filtro para elegir motor de aca en adelante, y vale para el que esta
+puesto hoy y para el que venga. Todo lo que insista en abrir el microfono solo
+queda descartado el dia que grabemos: no por malo, por incompatible. El
+reconocedor del sistema entra en esa duda y habria que comprobarlo antes de
+considerarlo.
+
+    EL CASO DE HOY, al pie y sin importancia arquitectonica: el motor actual
+    cumple el requisito -su reconocedor acepta que le pasemos las muestras-,
+    pero la clase que usamos para hablarle, SpeechService, es justamente la que
+    abre el microfono sola. Se cambia esa pieza y el reconocimiento queda igual.
+    Es plomeria, no una decision.
+
+QUE HAY QUE REPRODUCIR EXACTAMENTE. Leido el 20 de septiembre en el codigo de
+SpeechService -alphacep/vosk-api-, para que nadie lo adivine:
+
+    fuente        MediaRecorder.AudioSource.VOICE_RECOGNITION
+    formato       16000 Hz, CHANNEL_IN_MONO, ENCODING_PCM_16BIT
+    bloque        round(16000 * 0.2) = 3200 muestras, o sea 200 ms por lectura
+    entrega       recognizer.acceptWaveForm(buffer, nread)
+                  devuelve true  -> resultado final
+                  devuelve false -> parcial
+    avisos        se publican en el hilo principal
+    timeout       cuenta MUESTRAS, no reloj de pared
+
+CON ESO, EL CAMBIO ES SEGURO POR CONSTRUCCION: con la camara apagada, nuestra
+captura pide exactamente lo mismo -misma fuente, misma frecuencia, mismos
+bloques de 200 ms- y el reconocedor recibe los mismos bytes que hoy. No hay nada
+que notar. La fuente solo cambia cuando se graba, y ahi entra la medicion de mas
+abajo.
+
+Y LA CAPTURA UNICA TRAE ALGO QUE HOY NO TENEMOS Y QUE HACE FALTA: si lo que
+alimenta al motor es un flujo y no el microfono, una segunda implementacion de
+ese flujo es UNA GRABACION GUARDADA. Hoy el corpus se graba y se exporta
+-grabadorCorpus.ts, almacenCorpus.ts- pero NADA lo vuelve a pasar por el motor,
+asi que "verificar sobre el corpus" no se puede hacer tal cual esta. Con el
+flujo, se puede, y queda un banco de medicion repetible: el mismo audio, dos
+veces, y se compara. Es justo lo que pide el plan del motor -medir antes de
+tocar-.
+
+SE PUEDE HACER Y VERIFICAR SIN CAMARA, Y CONVIENE. La aplicacion tiene que
+comportarse exactamente igual que ahora. Si se hace junto con la camara,
+cualquier cosa que salga mal se va a confundir con la camara.
+
+LA PREGUNTA QUE QUEDA, Y ES UNA MEDICION: que fuente de audio se pide.
+
+    VOICE_RECOGNITION   pensada para reconocer. El sistema le saca el control
+                        automatico de ganancia y la supresion de ruido.
+    CAMCORDER           pensada para grabar. Es la que suena bien en el video.
+
+Una sola captura significa UNA SOLA FUENTE para las dos cosas: o el video suena
+a llamada telefonica, o el motor recibe audio procesado que no es el que espera.
+No se resuelve razonando. Se mide con el corpus que ya tenemos, leyendo el mismo
+guion igual con las dos fuentes y comparando cuanto acierta el seguidor.
+
+
+===============================================================================
+2. DONDE VIVE LA IMAGEN: LOS CAMINOS, Y EL ELEGIDO
+===============================================================================
+
+CAMINO A - TODO EN LA WEB
+    getUserMedia en el WebView, la imagen en un <video>, y MediaRecorder escribe
+    el archivo.
+
+    REGALA todo lo que es dificil del otro lado: el recuadro movible, las
+    esquinas redondeadas, el espejo, la opacidad, que el texto quede encima, que
+    todo se anime junto. Es CSS.
+
+    CUESTA donde mas duele: MediaRecorder escribe WebM salvo que el WebView sea
+    nuevo, y un WebM no lo acepta todo el mundo; no hay estabilizacion ni
+    control de exposicion o enfoque; la lista de resoluciones es la que el
+    WebView quiera dar; y una lectura larga saliendo por MediaRecorder dentro de
+    un WebView es justo donde ese camino se rompe.
+
+CAMINO B - NATIVO SIMPLE
+    CameraX pone la imagen detras del WebView transparente Y ADEMAS graba. NO
+    SIRVE: si CameraX graba, CameraX toma el microfono, y volvemos a la seccion
+    1. Queda anotado para que no vuelva a aparecer como atajo.
+
+CAMINO C - NATIVO, CON NUESTRO PROPIO ARCHIVO
+    Es el B corregido en el unico punto donde no servia. CameraX entrega la
+    imagen a dos destinos -la pantalla y nuestro encoder-, el audio lo
+    capturamos nosotros y lo repartimos, y el muxer junta las dos pistas.
+
+    Es mas codigo, pero no es codigo raro: es lo que hace cualquier aplicacion
+    que graba y ademas escucha. Y es el unico donde el seguimiento por voz y un
+    video decente conviven sin apostar a nada.
+
+CAMINO DESCARTADO - GRABAR LA PANTALLA (MediaProjection)
+    Saldria el video con el guion escrito encima. Se anota para que no vuelva.
+
+    DECIDIDO: A como maqueta, C como producto.
+
+Y HAY UNA PROPIEDAD DE LA MAQUETA QUE LA HACE MUCHO MAS UTIL DE LO QUE PARECE:
+puede pedir SOLO IMAGEN. La camara y el microfono son dos aparatos distintos: si
+la maqueta pide unicamente video, el microfono se queda donde esta y el
+seguimiento sigue funcionando como hoy. No es una maqueta muerta que se mira: es
+la aplicacion de verdad, leyendo de verdad, con la camara detras.
+
+    Y de la maqueta sobrevive casi todo: la capa de texto, el velo, las
+    posiciones, los tamanos y los numeros que se elijan mirando. Lo unico que se
+    reemplaza despues es de donde vienen los pixeles.
+
+
+===============================================================================
+3. LOS TRES FONDOS, Y LO QUE OBLIGAN
+===============================================================================
+
+Lo que pidio Javier:
+
+    camara completa    la imagen detras del texto. Te ves entero mientras lees.
+    fondo nuestro      negro, o el blanco de exterior. LA CAMARA SIGUE GRABANDO.
+    recuadro pequeno   la camara en un recuadro, sobre el fondo, y el texto
+                       avanzando.
+
+EL DEL MEDIO ES NUEVO respecto de lo que estaba escrito -F4 hablaba de dos
+modos- y es el que impone una condicion:
+
+    LA IMAGEN EN PANTALLA Y LA GRABACION SON DOS COSAS SEPARADAS.
+
+Si se construyen pegadas -que es lo natural y lo que sale solo- apagar la vista
+previa apaga la grabacion. Eso se descubre tarde y se arregla rehaciendo.
+
+EL RECUADRO SE MUEVE CON EL DEDO, y en lo nativo el gesto tiene que vivir del
+lado nativo. Si el dedo arrastra en la web y la web le va avisando al recuadro
+donde ponerse, el recuadro corre atras del dedo y se ve barato. El recuadro se
+mueve solo y le avisa a la web donde quedo.
+
+EL VELO -B16- es lo que hace legible el texto sobre una cara. Ya existe y ya es
+transparente: calcularBgVelo en banda.ts arma un degradado en rgba con alfa por
+tramo, asi que sobre la camara compone solo. Falta acotarlo al ancho de la
+columna -hoy toma todo el ancho- y elegir CUANTO oscurece, y ese numero sale
+grabando contra un fondo malo a proposito, no razonandolo.
+
+
+===============================================================================
+4. EL ARCHIVO, Y EL DEFECTO QUE HAY QUE IR A BUSCAR
+===============================================================================
+
+Un mp4 no se termina de escribir hasta que se cierra bien. Lo que queda a medias
+no se abre con nada. En una lectura larga eso no es un incordio: es una clase de
+cuarenta minutos perdida.
+
+    Lo que pasa si entra una llamada queda FUERA por decision de Javier. Pero
+    cerrar bien el archivo cuando la pantalla deja de estar al frente no es eso:
+    es el minimo para que lo grabado exista.
+
+Y HAY UN DEFECTO CONOCIDO QUE VIENE CON ESTE CAMINO. A PromptSmart le reportan
+problemas de sincronia entre audio y video. Es exactamente el punto donde se
+rompe lo que elegimos: capturar el audio por un lado y juntarlo con la imagen
+despues. No es motivo para cambiar de camino -es el unico que nos deja seguir la
+voz- pero si es el defecto que hay que ir a buscar A PROPOSITO en cuanto haya un
+archivo, y la prueba es una lectura LARGA, no diez segundos. Una deriva de
+cuadros no se ve en veinte segundos y arruina media hora.
+
+UN DETALLE QUE SE LE ESCAPA A TODO EL MUNDO: con la camara frontal, la vista
+previa va ESPEJADA -uno se ve como en un espejo- y el archivo va SIN espejar. Si
+se graba espejado, el texto del fondo, la ropa con letras y los carteles quedan
+al reves. No es lo mismo que B18, que es el espejo para prompters de vidrio.
+
+SOBRE LOS SUBTITULOS, que quedan pendientes: no se construye nada. Lo unico que
+se pide es no romper gratis una propiedad que sale sola: que el cero del reloj
+de la grabacion sea el mismo que el del registro de lectura. Si algun dia se
+quieren, estan; si no, nadie se entera. Cuesta cero mantenerlo y es imposible de
+recuperar despues, con el video ya hecho.
+
+
+===============================================================================
+5. QUE LE HACE ESTO A LA APLICACION QUE YA TENEMOS
+===============================================================================
+
+Se reviso el codigo. Es menos de lo que parece.
+
+  EL FONDO DE LA PANTALLA DE LECTURA. TeleprompterView dibuja el texto sobre
+  `background: colorFondo` -opaco-. Con camara, esa capa pasa a transparente.
+  colorFondo ya es un parametro: no es una cirugia.
+
+  EL VELO YA ESTA Y YA ES TRANSPARENTE. Ver seccion 3.
+
+  LA BANDA, LA COLUMNA, LOS TAMANOS Y LA TIPOGRAFIA no se tocan. Estaba escrito
+  en F1 y el codigo lo confirma.
+
+  LA HAPTICA. Ya esta prohibido vibrar durante la lectura -tarea 45-. Con
+  grabacion esa regla deja de ser de comodidad: el motor de vibracion se oye en
+  el audio del video.
+
+  LA ACTUALIZACION AUTOMATICA. actualizacion.ts ya sabe no recargar en medio de
+  una lectura. Con grabacion, recargar es perder la toma.
+
+  EL WAKELOCK ya existe.
+
+  LO QUE HAY QUE MEDIR Y NO SE PUEDE RAZONAR: el texto se mueve a 60 cuadros por
+  segundo. Con una ventana translucida sobre una vista de camara encima de un
+  video codificandose, eso puede empezar a saltar. En un telefono de gama media
+  ese salto se ve, y es lo que mas se mira. Se mide en el aparato.
+
+
+===============================================================================
+6. ESPACIO, CALIDAD Y CALOR
+===============================================================================
+
+COMO LO HACEN LOS DEMAS, averiguado el 20 de septiembre: casi nadie se hace
+cargo. PromptSmart y Teleprompter Pro guardan en la galeria del sistema y el
+espacio es problema del usuario. El unico que hace algo es Teleprompter for
+Video: ofrece 720p, 1080p y 4K y muestra una estimacion del espacio debajo de
+las opciones. NINGUNO muestra cuanto queda por grabar.
+
+LO QUE GASTA UN MINUTO:
+
+    4K a 50 Mbps           375 MB por minuto     por eso todavia no
+    1080p a 20 Mbps        150 MB por minuto     lo que gasta el telefono solo
+    720p a 9 Mbps           68 MB por minuto
+    1080p a 8 Mbps          60 MB por minuto     lo nuestro
+
+LA COMPRESION ES NUESTRA Y AHI ESTA LA DIFERENCIA. El telefono graba a 20
+megabits porque tiene que aguantar que alguien filme desde un auto en
+movimiento. Nosotros grabamos una cara quieta, que es lo mas facil que existe de
+comprimir. A 8 megabits se ve igual, y ocupa MENOS que el 720p del telefono con
+mejor imagen. No es apretar la calidad: es no desperdiciarla.
+
+LO QUE SE LE MUESTRA AL USUARIO: no megabytes libres, que no le dicen nada a
+nadie, sino CUANTO LE ALCANZA -"te alcanza para 47 minutos a esta calidad"-. Es
+una division entre el espacio libre y lo que gasta por minuto. Y se puede hacer
+justamente porque los videos quedan en nuestra carpeta: el que guarda todo en la
+galeria pierde la posibilidad de decir algo util.
+
+APK. CameraX suma unos 3 a 4 MB. Al lado de los 85 MB actuales no mueve la
+aguja.
+
+CALOR. Camara, codificacion, motor de voz y texto animado, todos juntos, durante
+una lectura larga. Es el escenario mas caliente que va a tener esta aplicacion,
+y lo primero que se degrada al bajar la frecuencia es la fluidez del texto. La
+prueba es grabar de corrido lo que dura una clase, no tres minutos.
+
+
+===============================================================================
+7. PERMISOS, DONDE QUEDA EL VIDEO, Y PLAY
+===============================================================================
+
+Hoy el manifest pide INTERNET y RECORD_AUDIO. Hay que agregar CAMERA.
+
+DONDE SE GUARDA. DECIDIDO: en nuestra carpeta, con un boton para mandarlo a la
+galeria cuando el usuario quiera. Es la opcion que cuesta CERO permisos nuevos,
+la que deja que la biblioteca los liste, y la unica que sobrevive a que el
+usuario reinstale la aplicacion -escribiendo directo en la galeria, al
+reinstalar dejamos de ser duenos de esos archivos y los perdemos de vista-.
+Ademas es la que permite contar el espacio de la seccion 6.
+
+    Con esto se cierra C5.
+
+PLAY. Pedir camara obliga a declararlo en el formulario de seguridad de datos.
+Como no sale nada del telefono -ni audio, ni video, ni texto- la declaracion es
+corta, y es un buen argumento en la ficha: todo pasa en el telefono.
+
+
+===============================================================================
+8. LO QUE PERMITE UN TELEFONO DE VERDAD
+===============================================================================
+
+Medido por adb el 20 de septiembre de 2026 sobre el moto g86 power 5G, Android
+16, que es el aparato de destino:
+
+    TRASERA     480p · 720p 9 Mbps · 1080p 20 Mbps · 4K 50 Mbps
+    FRONTAL     480p · 720p 9 Mbps · 1080p 20 Mbps     SIN 4K
+    audio       AAC 256 kbps, 48 kHz, estereo · h264 en mp4 · 30 cuadros
+    camaras     tres, las tres en nivel FULL de Camera2
+    encoder     por hardware -c2.mtk.avc.encoder-
+    WebView     151, o sea que el mp4 por MediaRecorder existe en este aparato
+
+LA FRONTAL NO LLEGA A 4K, y es la regla general, no este telefono: la camara de
+adelante siempre es la pobre. Y el que lee a camara lee a la frontal. O sea que
+el 4K no solo es caro en espacio: es para la camara que casi nadie va a usar
+leyendo.
+
+Y LO MAS IMPORTANTE DE ESTA SECCION: ESTOS NUMEROS NO SE ESCRIBEN EN EL CODIGO.
+Es un telefono, y uno bueno. Uno barato puede tener la frontal en 720p y nada
+mas. La lista de calidades se le PREGUNTA AL APARATO al abrir los ajustes, y se
+muestra lo que ese aparato tenga, con un orden de reemplazo si falta lo que
+pedimos. CameraX tiene esa pieza hecha. Es justo el error de PromptSmart: una
+lista fija heredada del iPhone, con medidas que en Android no existen.
+
+Lo unico nuestro y fijo es la compresion: una cara quieta a 8 megabits. Eso vale
+igual en un telefono caro y en uno de cien dolares.
+
+
+===============================================================================
+9. LO QUE SIGUE ABIERTO
+===============================================================================
+
+  - Que fuente de audio se pide. Es la medicion de la seccion 1.
+  - Cuanto vela el velo. Sale mirando, contra un fondo malo a proposito.
+  - La estructura de la aplicacion: que controles quedan en la pantalla de
+    lectura, cuales se van a ajustes, y como se llama cada modo. Ver seccion 10:
+    se decide EN EL MEDIO del plan, no al principio ni al final.
+  - El horizontal con la mitad del alto -B20-, que no es de esta tanda pero va a
+    aparecer.
+  - Los subtitulos, pendientes.
+
+
+===============================================================================
+10. LO QUE YA EXISTE Y NO HAY QUE ESCRIBIR
+===============================================================================
+
+Aviso de Javier, 20 de septiembre de 2026: "en github existen miles de
+repositorios con miles de funciones, a veces podemos investigar para optimizar y
+sacar aquello que nos puede servir". Tiene razon y aca es donde mas pesa, porque
+lo nativo es justo lo que estariamos escribiendo de cero.
+
+LO QUE HAY, mirado el mismo dia:
+
+  Cap-go/capacitor-camera-preview      Capacitor 8 -la que usamos-, mantenido,
+  sobre CameraX con interop de Camera2. Trae hechas, con nombre propio:
+
+      startRecordVideo({ disableAudio, videoQuality, videoCodec, frameRate,
+                         maxDuration, maxFileSize })
+      setPreviewSize()      posicion y tamano -el recuadro-
+      setOpacity()          la opacidad que pidio Javier
+      flip()                frontal y trasera
+      getAvailableDevices() preguntarle al aparato que tiene
+      toBack                la vista detras del WebView transparente
+
+  capacitor-community/camera-preview   el original, 228 estrellas, tambien al
+  dia con Capacitor 8, pero su disableAudio dice ser "solo web y iOS".
+
+LEIDO A FONDO EL 20 DE SEPTIEMBRE. 8.454 lineas de Java, version 8.11.4,
+publicada el dia anterior. Esto es lo que dice el codigo, no el README:
+
+  1. EL disableAudio FUNCIONA EN ANDROID, Y ES LA PIEZA QUE IMPORTA.
+     En CameraXView.startRecordVideo, cuando esta puesto, la grabacion arranca
+     SIN llamar a withAudioEnabled(). CameraX entonces no abre ningun
+     AudioRecord: graba solo imagen y el microfono se queda nuestro. Es
+     exactamente lo que pide la seccion 1, y era lo que yo temia que nadie
+     tuviera.
+
+     Consecuencia directa: la tarea del archivo -la que llame "lo unico
+     verdaderamente nuevo"- se encoge a meter nuestra pista de audio adentro
+     del mp4 que ellos escriben, que es copiar sin recodificar.
+
+  2. EL ARCHIVO ES UN mp4 DE VERDAD, escrito por el Recorder de CameraX en
+     getExternalFilesDir(MOVIES), o sea NUESTRA CARPETA, sin permisos. Coincide
+     con lo decidido en la seccion 7. Ademas manejan el cierre -Finalize-, el
+     limite de duracion y el de tamano, y dejan el archivo utilizable cuando se
+     alcanza un limite.
+
+  3. NO SE PUEDE FIJAR EL BITRATE. Solo eligen calidad -UHD, FHD, HD, SD- con
+     una estrategia de reemplazo si el aparato no la tiene, que es justo lo que
+     pide la seccion 8. Pero nunca llaman a setTargetVideoEncodingBitRate, asi
+     que grabariamos a los 20 megabits del telefono y no a nuestros 8. Es UNA
+     LINEA en el Recorder.Builder. Tambien aceptan hvc1 -HEVC-, que es otra
+     forma de ocupar la mitad.
+
+  4. EL RECUADRO MOVIBLE SIGUE SIENDO EL PUNTO FLOJO. setPreviewSize rehace los
+     LayoutParams de la vista: es una pasada de layout por cada llamada, y si
+     el dedo la llama sesenta veces por segundo cruzando el puente, el recuadro
+     va a ir atras del dedo. Lo que ya sabiamos, ahora confirmado.
+
+  5. Y LO MEJOR, QUE NO ESTABA EN MI LISTA: ToBackCompositorHelper. Treinta y
+     seis lineas que dicen que solo hay que transparentar la pila del WebView y
+     NUNCA el fondo de la ventana ni los colores de las barras del sistema,
+     porque eso hace parpadear la barra de estado en Android 16. Nuestro
+     telefono ES Android 16. Eso es una sesion entera de la nuestra, ya pagada
+     por otro y escrita en su codigo.
+
+LO QUE TRAE Y NO QUEREMOS: escaneo de codigos de barras -mlkit, usado en 31
+lugares del plugin, y con un meta-data en su manifest que obliga a instalar el
+modelo-, servicios de ubicacion para poner coordenadas en las fotos,
+commons-imaging para EXIF, y camera-extensions. Nuestro build tiene
+minifyEnabled false, asi que NADA DE ESO SE PODA: viaja entero en el APK. No es
+un problema de politica -si no lo llamamos, no recolectamos nada y no hay que
+declarar nada- pero si de peso y de codigo muerto adentro de un teleprompter.
+
+LA LICENCIA CAMBIA LA RECOMENDACION QUE YO TENIA. Es MPL-2.0, que es copyleft
+POR ARCHIVO:
+
+    usarlo como dependencia sin tocarlo    no obliga a nada sobre codigo nuestro
+    copiar sus archivos a nuestro plugin   ese archivo sigue siendo MPL y hay
+                                           que publicar lo que le cambiemos
+
+O sea que aca, al reves de lo que pasaba con Vosk, DEPENDER ES MAS LIMPIO QUE
+COPIAR. La regla de "la biblioteca de terceros, el puente nuestro" sigue siendo
+buena, pero el puente que escribiriamos nosotros no puede nacer de copiar y
+pegar el de ellos.
+
+    POSTURA: usarlo. Lo que resuelve -el compositor detras del WebView en
+    Android 16, el ciclo de vida de CameraX, la rotacion, las calidades con
+    reemplazo, el cierre del archivo y sobre todo disableAudio- es mas caro de
+    descubrir que de integrar. Lo que falta son dos cosas, y las dos son
+    chicas: el bitrate, que es una linea y se puede ofrecer rio arriba, y el
+    gesto del recuadro.
+
+    LO QUE HAY QUE MEDIR ANTES DE CASARSE: cuanto crece el APK con sus
+    dependencias, y si el recuadro arrastrado con el dedo se ve bien o corre
+    atras. Las dos se miden integrandolo, no discutiendolo.
+
+DONDE NO PAGA BUSCAR: la tarea 1. Pedir la imagen y ponerla en un <video> son
+veinte lineas; cualquier dependencia ahi es mas cara que escribirla.
+
+
+===============================================================================
+11. EL PLAN: NUEVE TAREAS EN CUATRO BLOQUES
+===============================================================================
+
+No estan encargadas. Los numeros de tarea se asignan cuando le toca a cada una.
+
+SIETE, NO NUEVE. Eran nueve antes de leer el plugin de la seccion 10. La maqueta
+en web desaparece: con toBack ya resuelto, la vista previa NATIVA sale tan
+barata como la de la web, asi que se mira directamente lo real y no se construye
+algo para tirar.
+
+BLOQUE 1 - LA CAMARA EN PANTALLA                          (todavia sin grabar)
+
+  1. LA CAMARA DETRAS DEL TEXTO. Integrar el plugin, permiso de camara, la
+     vista detras del WebView transparente, frontal y trasera, el fondo del
+     texto transparente, y el velo acotado al ancho de la columna sobre video
+     real. Aca se mide lo que no se puede razonar: si el texto sigue
+     moviendose bien con la camara encendida, y cuanto crece el APK.
+  2. LOS OTROS DOS FONDOS. El recuadro pequeno movible y el fondo nuestro con
+     la camara oculta. Aca aparece el punto flojo conocido -el recuadro
+     siguiendo al dedo-; si setPreviewSize no alcanza, el gesto se resuelve del
+     lado nativo o se cambia por tres posiciones fijas.
+
+AQUI VA LA DECISION DE ESTRUCTURA, Y NO ES DE JULES.
+     Con los tres modos en la mano ya se sabe que controles existen de verdad.
+     Ese es el momento de decidir que queda en la pantalla de lectura, que se va
+     a ajustes y como se llama cada cosa. Antes es imaginar; al final es mudar
+     dos veces. Lo que queda para el final es la MUDANZA, y es chica porque la
+     decision ya se tomo aca.
+
+BLOQUE 2 - EL AUDIO                              (nativo, no se ve en pantalla)
+
+  3. EL MICROFONO PASA A SER NUESTRO. Una sola captura repartida; el motor
+     consume de ahi en vez de abrir el microfono. Con la camara apagada pide
+     exactamente lo mismo que pide SpeechService hoy -ver seccion 1-, asi que
+     la aplicacion se comporta identica por construccion.
+     Incluye la segunda fuente del flujo: una grabacion guardada, que es lo que
+     deja medir de verdad.
+     NO toca el seguidor, la conduccion ni el avance: es la caneria anterior al
+     reconocedor. NO depende del bloque 1: puede ir en paralelo.
+
+BLOQUE 3 - EL ARCHIVO
+
+  4. GRABAR. Grabacion sin audio -disableAudio-, nuestra pista de audio metida
+     adentro del mp4 sin recodificar, y el archivo cerrado de manera que lo
+     grabado exista siempre. Es la tarea dificil de todas, y la unica donde hay
+     que ir a buscar a proposito el defecto de sincronia de la seccion 4, con
+     una lectura larga.
+  5. CALIDADES, ESPACIO Y EXPORTAR. Preguntarle al telefono que puede, fijar
+     nuestro bitrate, "te alcanza para N minutos", y el boton a la galeria.
+
+BLOQUE 4 - LA APLICACION ALREDEDOR
+
+  6. LAS GRABACIONES EN LA BIBLIOTECA: verlas, reproducirlas, borrarlas.
+  7. LA MUDANZA DE LOS AJUSTES a donde se decidio en el medio.
+
+QUE PUEDE MOVERSE: la 2 se simplifica si el recuadro con tres posiciones fijas
+alcanza. La 1 crece si el plugin resulta pesado y hay que escribir nuestro
+propio puente. Lo demas no deberia moverse.
