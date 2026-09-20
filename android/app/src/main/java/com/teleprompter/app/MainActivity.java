@@ -34,7 +34,10 @@ public class MainActivity extends BridgeActivity {
             return !(listoParaMostrar && animacionTerminada);
         });
 
-        new Handler(Looper.getMainLooper()).postDelayed(() -> listoParaMostrar = true, 2500);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            listoParaMostrar = true;
+            ArranquePlugin.resolverListo();
+        }, 2500);
 
         splashScreen.setOnExitAnimationListener(splashScreenViewProvider -> {
             View view = splashScreenViewProvider.getView();
@@ -42,7 +45,10 @@ public class MainActivity extends BridgeActivity {
                 .alpha(0f)
                 .setDuration(250)
                 .setInterpolator(new DecelerateInterpolator())
-                .withEndAction(splashScreenViewProvider::remove)
+                .withEndAction(() -> {
+                    splashScreenViewProvider.remove();
+                    ArranquePlugin.resolverListo();
+                })
                 .start();
         });
 

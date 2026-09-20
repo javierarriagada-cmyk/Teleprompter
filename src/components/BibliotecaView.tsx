@@ -73,6 +73,315 @@ export function resetearPrimerMontajeBiblioteca() {
   esPrimerMontajeBiblioteca = true
 }
 
+interface FilaGuionProps {
+  g: ResumenGuion
+  index: number
+  onAbrir: (id: string) => void
+  onBorrar: (id: string) => void
+  onArchivar: (id: string, archivado: boolean) => void
+  menuId: string | null
+  setMenuId: (id: string | null) => void
+  refMenuFila: React.RefObject<HTMLDivElement>
+}
+
+function FilaGuion({
+  g,
+  index,
+  onAbrir,
+  onBorrar,
+  onArchivar,
+  menuId,
+  setMenuId,
+  refMenuFila
+}: FilaGuionProps) {
+  const [dragX, setDragX] = useState(0)
+  const esArrastrandoRef = useRef(false)
+  const startXRef = useRef<number | null>(null)
+  const startYRef = useRef<number | null>(null)
+  const decidioDireccionRef = useRef(false)
+  const esHorizontalRef = useRef(false)
+  const cruzoUmbralRef = useRef(false)
+  const timerHoldRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const fueLongPressRef = useRef(false)
+
+  function obtenerPosicion(e: React.SyntheticEvent): { x: number; y: number } {
+    const native = e.nativeEvent as any
+    if ('touches' in e && (e as any).touches && (e as any).touches.length > 0) {
+      return { x: (e as any).touches[0].clientX, y: (e as any).touches[0].clientY }
+    }
+    const x = typeof (e as any).clientX === 'number' && !isNaN((e as any).clientX) ? (e as any).clientX : native?.clientX ?? 0
+    const y = typeof (e as any).clientY === 'number' && !isNaN((e as any).clientY) ? (e as any).clientY : native?.clientY ?? 0
+    return { x, y }
+  }
+
+  function handlePointerDown(e: React.SyntheticEvent) {
+    if ((e.target as HTMLElement).closest('[data-testid^="menu-opciones-"]')) return
+
+    const { x, y } = obtenerPosicion(e)
+    startXRef.current = x
+    startYRef.current = y
+    decidioDireccionRef.current = false
+    esHorizontalRef.current = false
+    cruzoUmbralRef.current = false
+    esArrastrandoRef.current = true
+
+    fueLongPressRef.current = false
+    if (timerHoldRef.current) clearTimeout(timerHoldRef.current)
+    timerHoldRef.current = setTimeout(() => {
+      fueLongPressRef.current = true
+      setMenuId(g.id)
+    }, 500)
+
+    const target = e.currentTarget as any
+    if (target && typeof target.setPointerCapture === 'function' && 'pointerId' in e) {
+      try { target.setPointerCapture((e as any).pointerId) } catch (err) {}
+    }
+  }
+
+  function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
+    if (!esArrastrandoRef.current || startXRef.current === null || startYRef.current === null) return
+
+    const { x, y } = obtenerPosicion(e)
+    const dx = x - startXRef.current
+    const dy = y - startYRef.current
+
+    if (!decidioDireccionRef.current) {
+      const dist = Math.hypot(dx, dy)
+      if (dist >= 10) {
+        decidioDireccionRef.current = true
+        if (Math.abs(dy) > Math.abs(dx)) {
+          if (timerHoldRef.current) clearTimeout(timerHoldRef.current)
+          esHorizontalRef.current = false
+          return
+        } else {
+          if (timerHoldRef.current) clearTimeout(timerHoldRef.current)
+          esHorizontalRef.current = true
+        }
+      } else {
+        return
+      }
+    }
+
+    if (esHorizontalRef.current) {
+      if (timerHoldRef.current) clearTimeout(timerHoldRef.current)
+      setDragX(dx)
+
+      if (Math.abs(dx) >= 88 && !cruzoUmbralRef.current) {
+        cruzoUmbralRef.current = true
+        hapticaToqueSuave()
+      }
+    }
+  }
+
+  function handlePointerUp(e: React.SyntheticEvent) {
+    if (timerHoldRef.current) {
+      clearTimeout(timerHoldRef.current)
+      timerHoldRef.current = null
+    }
+
+    const target = e.currentTarget as any
+    if (target && typeof target.releasePointerCapture === 'function' && 'pointerId' in e) {
+      try { target.releasePointerCapture((e as any).pointerId) } catch (err) {}
+    }
+
+    const { x, y } = obtenerPosicion(e)
+    const dx = startXRef.current !== null ? x - startXRef.current : 0
+    const dy = startYRef.current !== null ? y - startYRef.current : 0
+
+    if (esArrastrandoRef.current && esHorizontalRef.current) {
+      if (dragX < -88 || dx < -88) {
+        setDragX(0)
+        onBorrar(g.id)
+      } else if (dragX > 88 || dx > 88) {
+        setDragX(0)
+        onArchivar(g.id, !g.archivado)
+      } else {
+        setDragX(0)
+      }
+    } else if (!fueLongPressRef.current && !esHorizontalRef.current) {
+      if (Math.hypot(dx, dy) < 10) {
+        hapticaToqueSuave()
+        onAbrir(g.id)
+      }
+    }
+
+    esArrastrandoRef.current = false
+    startXRef.current = null
+    startYRef.current = null
+    decidioDireccionRef.current = false
+    esHorizontalRef.current = false
+    cruzoUmbralRef.current = false
+  }
+
+  const tituloMostrar = (g.titulo && g.titulo.trim()) ? g.titulo : 'Sin título'
+  const mins = Math.max(1, Math.round((g.palabras || 0) / 150))
+  const fechaNat = formatearFechaNatural(g.modificado)
+  const metaTexto = `${mins} min · ${fechaNat}`
+
+  return (
+    <div
+      style={{
+        position: 'relative',
+        borderRadius: 'var(--redondeo)',
+        marginBottom: 'var(--aire-2)',
+        overflow: 'hidden'
+      }}
+    >
+      {/* Fondo revelado según la dirección del deslizamiento al superar el umbral */}
+      {dragX <= -88 && (
+        <div
+          data-testid={`accion-revelada-borrar-${g.id}`}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: 'var(--color-grabando)',
+            color: 'var(--color-texto)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            paddingRight: 'var(--aire-4)',
+            fontWeight: 'bold',
+            fontSize: 'var(--texto-cuerpo)',
+            borderRadius: 'var(--redondeo)'
+          }}
+        >
+          Borrar
+        </div>
+      )}
+      {dragX >= 88 && (
+        <div
+          data-testid={`accion-revelada-archivar-${g.id}`}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: 'var(--bg-menu)',
+            color: 'var(--color-texto)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            paddingLeft: 'var(--aire-4)',
+            fontWeight: 'bold',
+            fontSize: 'var(--texto-cuerpo)',
+            borderRadius: 'var(--redondeo)'
+          }}
+        >
+          {g.archivado ? 'Desarchivar' : 'Archivar'}
+        </div>
+      )}
+
+      {/* Fila en primer plano */}
+      <div
+        data-testid={`fila-guion-${g.id}`}
+        onClick={(e) => {
+          if (!fueLongPressRef.current && !esHorizontalRef.current) {
+            hapticaToqueSuave()
+            onAbrir(g.id)
+          }
+        }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onMouseDown={handlePointerDown}
+        onMouseUp={handlePointerUp}
+        onTouchStart={handlePointerDown}
+        onTouchEnd={handlePointerUp}
+        onContextMenu={(e) => {
+          e.preventDefault()
+          setMenuId(g.id)
+        }}
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          padding: 'var(--aire-3) var(--aire-3)',
+          backgroundColor: 'var(--bg-fila)',
+          borderRadius: 'var(--redondeo)',
+          cursor: 'pointer',
+          userSelect: 'none',
+          transform: `translateX(${dragX}px)`,
+          transition: esArrastrandoRef.current
+            ? 'none'
+            : movimientoApagado()
+            ? 'none'
+            : `transform ${MS_CHICO}ms ${CURVA_RESORTE}`
+        }}
+      >
+        <div>
+          <div className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-1)' }}>
+            {tituloMostrar} {g.archivado && <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)' }}>(Archivado)</span>}
+          </div>
+          <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
+            {metaTexto}
+          </div>
+        </div>
+
+        {menuId === g.id && (
+          <div
+            ref={refMenuFila}
+            data-testid={`menu-opciones-${g.id}`}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              marginTop: 'var(--aire-2)',
+              paddingTop: 'var(--aire-2)',
+              display: 'flex',
+              gap: 'var(--aire-2)',
+              justifyContent: 'flex-start'
+            }}
+          >
+            <button
+              onClick={() => {
+                onArchivar(g.id, !g.archivado)
+                setMenuId(null)
+              }}
+              style={{
+                padding: 'var(--aire-2) var(--aire-3)',
+                backgroundColor: 'var(--bg-suelo)',
+                color: 'var(--color-texto)',
+                border: 'none',
+                borderRadius: 'var(--redondeo)',
+                cursor: 'pointer',
+                fontSize: 'var(--texto-meta)'
+              }}
+            >
+              {g.archivado ? 'Desarchivar' : 'Archivar'}
+            </button>
+            <button
+              onClick={() => {
+                onBorrar(g.id)
+                setMenuId(null)
+              }}
+              style={{
+                padding: 'var(--aire-2) var(--aire-3)',
+                backgroundColor: 'var(--bg-suelo)',
+                color: 'var(--color-texto)',
+                border: 'none',
+                borderRadius: 'var(--redondeo)',
+                cursor: 'pointer',
+                fontSize: 'var(--texto-meta)'
+              }}
+            >
+              Eliminar
+            </button>
+            <button
+              onClick={() => setMenuId(null)}
+              style={{
+                padding: 'var(--aire-2) var(--aire-3)',
+                backgroundColor: 'transparent',
+                color: 'var(--color-apagado)',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 'var(--texto-meta)'
+              }}
+            >
+              Cerrar
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export default function BibliotecaView({
   guiones,
   onAbrir,
@@ -611,111 +920,19 @@ export default function BibliotecaView({
           data-retardo-escalonado={esInicial && !movimientoApagado() ? 80 : 0}
           style={{ display: 'flex', flexDirection: 'column', ...animacionListaStyle }}
         >
-          {guionesFiltrados.map((g, index) => {
-            const tituloMostrar = (g.titulo && g.titulo.trim()) ? g.titulo : 'Sin título'
-            const mins = Math.max(1, Math.round((g.palabras || 0) / 150))
-            const fechaNat = formatearFechaNatural(g.modificado)
-            const metaTexto = `${mins} min · ${fechaNat}`
-            const esUltima = index === guionesFiltrados.length - 1
-
-            return (
-              <div
-                key={g.id}
-                data-testid={`fila-guion-${g.id}`}
-                onClick={() => handleRowClick(g)}
-                onMouseDown={() => handleTouchStart(g.id)}
-                onMouseUp={handleTouchEnd}
-                onMouseLeave={handleTouchEnd}
-                onTouchStart={() => handleTouchStart(g.id)}
-                onTouchEnd={handleTouchEnd}
-                onContextMenu={(e) => handleContextMenu(e, g.id)}
-                style={{
-                  padding: 'var(--aire-3) var(--aire-3)',
-                  backgroundColor: 'var(--bg-fila)',
-                  borderRadius: 'var(--redondeo)',
-                  marginBottom: 'var(--aire-2)',
-                  borderBottom: 'none',
-                  cursor: 'pointer',
-                  userSelect: 'none'
-                }}
-              >
-                <div>
-                  <div className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-1)' }}>
-                    {tituloMostrar} {g.archivado && <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)' }}>(Archivado)</span>}
-                  </div>
-                  <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
-                    {metaTexto}
-                  </div>
-                </div>
-
-                {menuId === g.id && (
-                  <div
-                    ref={refMenuFila}
-                    data-testid={`menu-opciones-${g.id}`}
-                    onClick={(e) => e.stopPropagation()}
-                    style={{
-                      marginTop: 'var(--aire-2)',
-                      paddingTop: 'var(--aire-2)',
-                      display: 'flex',
-                      gap: 'var(--aire-2)',
-                      justifyContent: 'flex-start'
-                    }}
-                  >
-                    <button
-                      onClick={() => {
-                        onArchivar(g.id, !g.archivado)
-                        setMenuId(null)
-                      }}
-                      style={{
-                        padding: 'var(--aire-2) var(--aire-3)',
-                        backgroundColor: 'var(--bg-suelo)',
-                        color: 'var(--color-texto)',
-                        border: 'none',
-                        borderRadius: 'var(--redondeo)',
-                        cursor: 'pointer',
-                        fontSize: 'var(--texto-meta)'
-                      }}
-                    >
-                      {g.archivado ? 'Desarchivar' : 'Archivar'}
-                    </button>
-                    <button
-                      onClick={() => {
-                        const confirmacion = window.confirm(`¿Estás seguro de borrar el guión "${tituloMostrar}"?`)
-                        if (confirmacion) {
-                          onBorrar(g.id)
-                        }
-                        setMenuId(null)
-                      }}
-                      style={{
-                        padding: 'var(--aire-2) var(--aire-3)',
-                        backgroundColor: 'var(--bg-suelo)',
-                        color: 'var(--color-texto)',
-                        border: 'none',
-                        borderRadius: 'var(--redondeo)',
-                        cursor: 'pointer',
-                        fontSize: 'var(--texto-meta)'
-                      }}
-                    >
-                      Eliminar
-                    </button>
-                    <button
-                      onClick={() => setMenuId(null)}
-                      style={{
-                        padding: 'var(--aire-2) var(--aire-3)',
-                        backgroundColor: 'transparent',
-                        color: 'var(--color-apagado)',
-                        border: 'none',
-                        cursor: 'pointer',
-                        fontSize: 'var(--texto-meta)'
-                      }}
-                    >
-                      Cerrar
-                    </button>
-                  </div>
-                )}
-              </div>
-            )
-          })}
+          {guionesFiltrados.map((g, index) => (
+            <FilaGuion
+              key={g.id}
+              g={g}
+              index={index}
+              onAbrir={onAbrir}
+              onBorrar={onBorrar}
+              onArchivar={onArchivar}
+              menuId={menuId}
+              setMenuId={setMenuId}
+              refMenuFila={refMenuFila}
+            />
+          ))}
         </div>
       )}
 
@@ -792,7 +1009,7 @@ export default function BibliotecaView({
           // Javier lo vio en el telefono el 16 de septiembre de 2026.
           bottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
           right: 'calc(32px + env(safe-area-inset-right, 0px))',
-          backgroundColor: 'var(--bg-panel)',
+          backgroundColor: 'var(--bg-menu)',
           color: 'var(--color-texto)',
           borderRadius: 'var(--redondeo-pildora)',
           // 56, la medida de siempre para un boton flotante. Estaba en 44, que es el

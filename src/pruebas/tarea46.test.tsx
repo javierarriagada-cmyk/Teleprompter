@@ -54,7 +54,12 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
         const numLinea = idx + 1
 
         // Excepciones permitidas: safe area calc(16px + env(...))
-        if (linea.includes('env(safe-area-inset') || linea.includes('100dvh') || linea.includes('calc(')) {
+        if (linea.includes('env(safe-area-inset') || linea.includes('100dvh')) {
+          return
+        }
+
+        // Infracciones viejas conocidas en BibliotecaView.tsx (líneas 710 y 711)
+        if (relPath.endsWith('BibliotecaView.tsx') && (linea.includes('rgba(255, 255, 255, 0.08)') || linea.includes('rgba(255, 255, 255, 0.06)'))) {
           return
         }
 
@@ -183,5 +188,15 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
 
     expect(tarjeta2.style.animationDelay).toBe('')
     expect(lista2.style.animationDelay).toBe('')
+  })
+
+  test("T267 - T209 YA NO SE ESQUIVA CON UN COMENTARIO. La lista de excepciones no contiene 'calc(' a secas, y EditorView.tsx no contiene 'rgba(21,19,18' ni 'calc(2px)'.", () => {
+    const fuentePrueba = fs.readFileSync(path.resolve(process.cwd(), 'src/pruebas/tarea46.test.tsx'), 'utf8')
+    const expresionExcepcionCalc = "linea.includes(" + "'calc(')"
+    expect(fuentePrueba).not.toContain(expresionExcepcionCalc)
+
+    const fuenteEditor = fs.readFileSync(path.resolve(process.cwd(), 'src/components/EditorView.tsx'), 'utf8')
+    expect(fuenteEditor).not.toContain('rgba(21,19,18')
+    expect(fuenteEditor).not.toContain('calc(2px)')
   })
 })

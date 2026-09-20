@@ -22,17 +22,17 @@ export interface RenglonEspejo {
 }
 
 export const RENGLONES_ESPEJO: RenglonEspejo[] = [
-  { id: 'R1', x1: (152 - 216) * FACTOR_ESPEJO, x2: (304 - 216) * FACTOR_ESPEJO, y: (136 - 216) * FACTOR_ESPEJO, color: COLOR_MARCA_TRAZO_APAGADO, grosor: 20 * FACTOR_ESPEJO },
-  { id: 'R2', x1: (112 - 216) * FACTOR_ESPEJO, x2: (268 - 216) * FACTOR_ESPEJO, y: (176 - 216) * FACTOR_ESPEJO, color: COLOR_MARCA_TRAZO, grosor: 20 * FACTOR_ESPEJO },
-  { id: 'R3', x1: (112 - 216) * FACTOR_ESPEJO, x2: (304 - 216) * FACTOR_ESPEJO, y: (216 - 216) * FACTOR_ESPEJO, color: COLOR_MARCA_TRAZO, grosor: 20 * FACTOR_ESPEJO },
-  { id: 'R4', x1: (112 - 216) * FACTOR_ESPEJO, x2: (252 - 216) * FACTOR_ESPEJO, y: (256 - 216) * FACTOR_ESPEJO, color: COLOR_MARCA_TRAZO_APAGADO, grosor: 20 * FACTOR_ESPEJO },
-  { id: 'R5', x1: (112 - 216) * FACTOR_ESPEJO, x2: (288 - 216) * FACTOR_ESPEJO, y: (296 - 216) * FACTOR_ESPEJO, color: COLOR_MARCA_TRAZO_APAGADO, grosor: 20 * FACTOR_ESPEJO }
+  { id: 'R1', x1: (116 - 216) * FACTOR_ESPEJO, x2: (250 - 216) * FACTOR_ESPEJO, y: (158 - 216) * FACTOR_ESPEJO, color: COLOR_MARCA_TRAZO_APAGADO, grosor: 20 * FACTOR_ESPEJO },
+  { id: 'R2', x1: (116 - 216) * FACTOR_ESPEJO, x2: (236 - 216) * FACTOR_ESPEJO, y: (194 - 216) * FACTOR_ESPEJO, color: COLOR_MARCA_TRAZO, grosor: 20 * FACTOR_ESPEJO },
+  { id: 'R3', x1: (116 - 216) * FACTOR_ESPEJO, x2: (272 - 216) * FACTOR_ESPEJO, y: (230 - 216) * FACTOR_ESPEJO, color: COLOR_MARCA_TRAZO, grosor: 20 * FACTOR_ESPEJO },
+  { id: 'R4', x1: (116 - 216) * FACTOR_ESPEJO, x2: (220 - 216) * FACTOR_ESPEJO, y: (266 - 216) * FACTOR_ESPEJO, color: COLOR_MARCA_TRAZO_APAGADO, grosor: 20 * FACTOR_ESPEJO },
+  { id: 'R5', x1: (116 - 216) * FACTOR_ESPEJO, x2: (256 - 216) * FACTOR_ESPEJO, y: (302 - 216) * FACTOR_ESPEJO, color: COLOR_MARCA_TRAZO_APAGADO, grosor: 20 * FACTOR_ESPEJO }
 ]
 
 export const PUNTO_ESPEJO = {
-  cx: (285 - 216) * FACTOR_ESPEJO, // 46.0
-  cy: (168 - 216) * FACTOR_ESPEJO, // -32.0
-  r: 13 * FACTOR_ESPEJO,           // 8.6667
+  cx: (300 - 216) * FACTOR_ESPEJO, // 56.0
+  cy: (128 - 216) * FACTOR_ESPEJO, // -58.6667
+  r: 20 * FACTOR_ESPEJO,           // 13.3333
   color: COLOR_MARCA_PUNTO
 }
 
