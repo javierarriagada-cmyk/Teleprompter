@@ -80,7 +80,7 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
     })
   })
 
-  test('T256 - EL ESPEJO SE VA. Montando App, el espejo esta al principio y NO esta en el documento despues de 1500 ms. Y con movimientoApagado() en true no se monta nunca.', async () => {
+  test('T256 - EL ESPEJO SE VA. Montando App, el espejo esta al principio y NO esta en el documento despues de 1900 ms. Y con movimientoApagado() en true no se monta nunca.', async () => {
     vi.useFakeTimers()
     try {
       const repo = new RepositorioMemoria()
@@ -91,7 +91,7 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
 
       // Pasado el tiempo de timeline (1400 ms), el espejo ya se desmontó
       await act(async () => {
-        await vi.advanceTimersByTimeAsync(1500)
+        await vi.advanceTimersByTimeAsync(1900)
       })
 
       expect(screen.queryByTestId('capa-entrada-espejo')).toBeNull()

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { movimientoApagado, CURVA_ENTRA } from './movimiento'
+import { movimientoApagado, CURVA_ENTRA, CURVA_SALE } from './movimiento'
 
 // COPIA EXACTA DE values-night/colors.xml (marca_trazo_apagado, marca_trazo, marca_punto).
 // Se mantienen en constantes declaradas aquí porque representan la marca nativa de Android,
@@ -15,8 +15,31 @@ export const FACTOR_ESPEJO = 288 / 432 // 0.6666666666666666
 // Constantes de tiempos (ms) de la animación de entrada
 export const MS_SOSTENIDO_MARCA = 250
 export const MS_ESCRIBIR_NOMBRE = 450
-export const MS_NOMBRE_QUIETO = 400
-export const MS_SALIDA_ENTRADA = 300
+// 700, no 400: escrito el nombre, tiene que poder LEERSE. Javier lo miro en el
+// telefono el 20 de septiembre de 2026: "sigo aparece menos de un segundo".
+export const MS_NOMBRE_QUIETO = 700
+export const MS_SALIDA_ENTRADA = 400
+
+// LA SALIDA NO ES UN DESVANECIDO: LA MARCA SE VA.
+//
+// El conjunto sube un poco y se achica mientras se apaga, y abajo ya esta la
+// biblioteca con su propio escalonado. Las dos propiedades que se mueven son
+// transform y opacity, que no obligan a recalcular la disposicion de nada: la
+// misma regla por la que en la tarea 48 la tarjeta creceria con clip-path y no
+// con width.
+export const PX_SALIDA_SUBE = 24
+export const ESCALA_SALIDA = 0.96
+
+// Y EL PUNTO ROJO ES LO ULTIMO QUE SE APAGA.
+//
+// Se queda encendido mientras los renglones y el nombre ya se estan yendo, y
+// recien entonces se va el tambien. Lo ultimo que queda en pantalla antes de la
+// aplicacion es la luz de grabar, que es lo que la aplicacion hace.
+//
+// Los numeros cierran a proposito: 120 de espera mas 280 de apagado son los
+// mismos 400 de la salida, asi que el punto no sobrevive al desmontaje.
+export const MS_ESPERA_PUNTO = 120
+export const MS_APAGADO_PUNTO = 280
 
 export interface RenglonEspejo {
   id: string
@@ -92,15 +115,17 @@ export function Entrada({ onFinish }: EntradaProps) {
     const arrancarLineaTiempo = () => {
       if (cancelado) return
 
-      const msInicioSalida = MS_SOSTENIDO_MARCA + MS_ESCRIBIR_NOMBRE + MS_NOMBRE_QUIETO // 1100 ms
-      const msFinTotal = msInicioSalida + MS_SALIDA_ENTRADA // 1400 ms
+      // 250 de sostenido + 450 escribiendo + 700 quieta = 1400 ms
+      const msInicioSalida = MS_SOSTENIDO_MARCA + MS_ESCRIBIR_NOMBRE + MS_NOMBRE_QUIETO
+      // mas 400 de salida = 1800 ms en total
+      const msFinTotal = msInicioSalida + MS_SALIDA_ENTRADA
 
-      // 1100 ms: fase de salida fade-out
+      // empieza la salida: sube, se achica y se apaga
       timerSalida = setTimeout(() => {
         if (!cancelado) setFaseSalida(true)
       }, msInicioSalida)
 
-      // 1400 ms: fin normal y desmontaje
+      // fin normal y desmontaje
       timerFin = setTimeout(() => {
         if (!cancelado) {
           setDesmontado(true)
@@ -171,8 +196,14 @@ export function Entrada({ onFinish }: EntradaProps) {
         alignItems: 'center',
         justifyContent: 'center',
         pointerEvents: 'none',
+        // El fondo se va con el conjunto; lo que hay debajo es la biblioteca.
         opacity: faseSalida ? 0 : 1,
-        transition: faseSalida ? `opacity ${MS_SALIDA_ENTRADA}ms ease-out` : 'none'
+        transform: faseSalida
+          ? `translateY(-${PX_SALIDA_SUBE}px) scale(${ESCALA_SALIDA})`
+          : 'none',
+        transition: faseSalida
+          ? `opacity ${MS_SALIDA_ENTRADA}ms ${CURVA_SALE}, transform ${MS_SALIDA_ENTRADA}ms ${CURVA_SALE}`
+          : 'none'
       }}
     >
       <svg
@@ -196,13 +227,22 @@ export function Entrada({ onFinish }: EntradaProps) {
           />
         ))}
 
-        {/* El punto rojo encendido */}
+        {/* EL PUNTO ROJO SE APAGA DESPUES QUE EL RESTO.
+            El contenedor entero se va con su transform y su opacidad; esta
+            opacidad propia, con su espera, deja al punto encendido mientras los
+            renglones y el nombre ya se estan yendo. */}
         <circle
           data-testid="punto-espejo"
           cx={PUNTO_ESPEJO.cx}
           cy={PUNTO_ESPEJO.cy}
           r={PUNTO_ESPEJO.r}
           fill={PUNTO_ESPEJO.color}
+          style={{
+            opacity: faseSalida ? 0 : 1,
+            transition: faseSalida
+              ? `opacity ${MS_APAGADO_PUNTO}ms ${MS_ESPERA_PUNTO}ms linear`
+              : 'none'
+          }}
         />
 
       </svg>

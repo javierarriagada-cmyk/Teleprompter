@@ -81,7 +81,7 @@ describe('Pruebas TAREA 54: Tipografía del Sistema para SIGO (T272-T275)', () =
   test('T274 - Leyendo las constantes de Entrada.tsx: MS_NOMBRE_QUIETO es mayor o igual a 350, y el tope de seguridad es mayor que MS_SOSTENIDO_MARCA + MS_ESCRIBIR_NOMBRE + MS_NOMBRE_QUIETO + MS_SALIDA_ENTRADA.', () => {
     expect(MS_NOMBRE_QUIETO).toBeGreaterThanOrEqual(350)
 
-    const sumaTiempos = MS_SOSTENIDO_MARCA + MS_ESCRIBIR_NOMBRE + MS_NOMBRE_QUIETO + MS_SALIDA_ENTRADA // 1400 ms
+    const sumaTiempos = MS_SOSTENIDO_MARCA + MS_ESCRIBIR_NOMBRE + MS_NOMBRE_QUIETO + MS_SALIDA_ENTRADA // hoy 1800 ms
     const TOPE_SEGURIDAD = 2400 // Constante interna en Entrada.tsx
 
     const filePath = path.join(process.cwd(), 'src/components/Entrada.tsx')
@@ -122,9 +122,9 @@ describe('Pruebas TAREA 54: Tipografía del Sistema para SIGO (T272-T275)', () =
       })
       expect(finalizado).toBe(false)
 
-      // Pasar los 1200 ms del tope de fuente + 1400 ms del timeline (total 2600 ms)
+      // Pasar los 1200 ms del tope de fuente + los 1800 del timeline (total 3000 ms)
       await act(async () => {
-        await vi.advanceTimersByTimeAsync(2600)
+        await vi.advanceTimersByTimeAsync(3000)
       })
 
       expect(finalizado).toBe(true)
