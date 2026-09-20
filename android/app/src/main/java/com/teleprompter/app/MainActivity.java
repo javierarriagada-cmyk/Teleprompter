@@ -39,16 +39,30 @@ public class MainActivity extends BridgeActivity {
             ArranquePlugin.resolverListo();
         }, 2500);
 
+        // EL ESPEJO TIENE QUE ESTAR PUESTO ANTES DE QUE ESTA PANTALLA SE VAYA.
+        //
+        // Aca estaba el defecto que Javier vio tres veces: "primero aparece algo de la
+        // biblioteca, despues el nombre una milesima, luego biblioteca otra vez".
+        //
+        // resolverListo() se llamaba en el withEndAction, o sea CUANDO EL DESVANECIDO YA
+        // HABIA TERMINADO. Para entonces esta pantalla ya no tapaba nada y lo que quedaba
+        // a la vista era la biblioteca. Recien ahi la web se enteraba y montaba el espejo,
+        // que aparecia ENCIMA de una biblioteca que ya se estaba viendo. Ese es el
+        // parpadeo, y se ve en las capturas cuadro a cuadro del 20 de septiembre de 2026:
+        // marca, marca, marca, BIBLIOTECA, marca.
+        //
+        // Ahora se avisa al EMPEZAR el desvanecido. La web monta el espejo mientras esta
+        // pantalla todavia esta encima, y los 250 ms de desvanecido descubren el espejo,
+        // no la biblioteca. Como los dos dibujan la misma marca en el mismo sitio, el
+        // relevo no se ve.
         splashScreen.setOnExitAnimationListener(splashScreenViewProvider -> {
+            ArranquePlugin.resolverListo();
             View view = splashScreenViewProvider.getView();
             view.animate()
                 .alpha(0f)
                 .setDuration(250)
                 .setInterpolator(new DecelerateInterpolator())
-                .withEndAction(() -> {
-                    splashScreenViewProvider.remove();
-                    ArranquePlugin.resolverListo();
-                })
+                .withEndAction(splashScreenViewProvider::remove)
                 .start();
         });
 
