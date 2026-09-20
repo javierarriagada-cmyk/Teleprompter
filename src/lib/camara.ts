@@ -31,8 +31,8 @@ export async function encenderCamara(lado: LadoCamara): Promise<void> {
   }
 
   const pos: CameraPosition = lado === 'frontal' ? 'front' : 'rear'
-  const width = typeof window !== 'undefined' ? window.innerWidth : 0
-  const height = typeof window !== 'undefined' ? window.innerHeight : 0
+  const width = typeof window !== 'undefined' ? (window.screen.width || window.innerWidth) : 0
+  const height = typeof window !== 'undefined' ? (window.screen.height || window.innerHeight) : 0
 
   try {
     await CameraPreview.start({
@@ -40,8 +40,12 @@ export async function encenderCamara(lado: LadoCamara): Promise<void> {
       enableVideoMode: false,
       disableAudio: true,
       position: pos,
+      x: 0,
+      y: 0,
       width,
-      height
+      height,
+      aspectMode: 'cover',
+      includeSafeAreaInsets: false
     })
     estaEncendida = true
     ladoEstado = lado

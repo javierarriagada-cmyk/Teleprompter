@@ -629,6 +629,7 @@ export default function TeleprompterView({
             maxWidth: columnaAngosta ? '22ch' : '90%',
             margin: '0 auto',
             width: '100%',
+            fontSize,
             pointerEvents: 'none',
             zIndex: 3,
             background: bgVelo
