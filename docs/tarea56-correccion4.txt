@@ -1,0 +1,68 @@
+TAREA 56 - CORRECCION 4
+
+El velo quedo bien y las constantes tambien. Pero la camara SIGUE SIN VERSE, y
+esta vez el diagnostico no es una sospecha: se inspecciono la pagina en vivo
+adentro del telefono, con la camara encendida.
+
+
+LO QUE SE MIDIO, EN EL TELEFONO, CON LA CAMARA ABIERTA
+
+  1. La camara esta ABIERTA. El sistema la registra: camara frontal, nuestra
+     aplicacion.
+
+  2. Su vista esta PUESTA Y DEL TAMANO CORRECTO, y por debajo del navegador:
+     PreviewView de 0,0 a 1220x2714, justo debajo de CapacitorWebView.
+
+  3. LA PAGINA ENTERA ES TRANSPARENTE. Inspeccionada en vivo:
+       - body           rgba(0, 0, 0, 0)
+       - html           rgba(0, 0, 0, 0)
+       - no hay NINGUN elemento opaco de pantalla completa. El unico que
+         aparecia -el velo de relevo de la transicion- esta en opacidad 0 y se
+         comprobo apagandolo: no cambia nada.
+
+  4. NO LLEGA NINGUN CUADRO A LA PANTALLA. Tres capturas de pantalla seguidas,
+     separadas por un segundo, son IDENTICAS BYTE A BYTE. Con una camara
+     dibujando, el ruido del sensor solo ya hace que dos capturas difieran.
+     Esta pintando negro, no imagen.
+
+CONCLUSION: no queda nada nuestro tapando la camara. Lo que la tapa es que EL
+WEBVIEW SIGUE SIENDO OPACO. Todo lo que este detras de el es invisible, por eso
+se ve negro y por eso lo unico que se veia antes eran capas de la propia pagina.
+
+
+QUE HAY QUE HACER
+
+Asegurar desde NUESTRO codigo que el WebView queda transparente mientras la
+camara esta encendida. El plugin dice hacerlo cuando se le pasa toBack, pero en
+nuestra aplicacion no esta quedando hecho, y no vamos a seguir adivinando por
+que.
+
+En android/app/src/main/java/com/teleprompter/app/, con el WebView de Capacitor:
+
+    al encender la camara:
+        webView.setBackgroundColor(Color.TRANSPARENT)
+        y lo mismo al contenedor que lo tiene, si tiene fondo propio
+
+    al apagarla:
+        se devuelve el color que tenia antes, guardado al encender
+
+Se expone como un plugin nuestro, chico, con dos metodos -algo como
+encender() y apagar()- y se llama desde src/lib/camara.ts justo antes de
+CameraPreview.start y justo despues de CameraPreview.stop.
+
+NO se toca el fondo de la ventana de la actividad ni los colores de las barras
+del sistema. Solo el WebView y su contenedor. Tocar la ventana hace parpadear la
+barra de estado en Android 16, que es la version de este telefono.
+
+
+COMO SE COMPRUEBA, Y NO HAY OTRA FORMA
+
+En el telefono: entrar a leer, apretar Camara y VER LA CARA detras del texto.
+
+Y la comprobacion objetiva, que se puede hacer por cable: dos capturas de
+pantalla seguidas TIENEN QUE SER DISTINTAS. Si salen identicas, no hay imagen,
+por mas que la camara figure abierta.
+
+Con la camara apagada, todo exactamente igual que hoy.
+
+No agregues pruebas: jsdom no dibuja.

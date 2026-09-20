@@ -1,0 +1,59 @@
+TAREA 56 - CORRECCION 3, Y ES LA ULTIMA
+
+La camara ya funciona: se enciende, ocupa la pantalla completa y la imagen llega.
+Comprobado en el telefono. Falta una sola cosa y despues esta terminada.
+
+
+LO QUE PASA: LA IMAGEN SE VE COMO UNA SOMBRA GRIS
+
+Con la camara encendida, en vez de verse la cara se ve una sombra gris apagada
+detras del texto.
+
+POR QUE. El velo de la pantalla de lectura pinta el color de fondo encima de todo
+con estas opacidades -calcularTramosVelo en src/components/banda.ts-:
+
+    arriba de la zona de lectura    45%
+    la franja de renglones vivos     0%
+    abajo de la zona de lectura     55%
+
+Sobre negro eso es invisible y hace su trabajo: apaga los renglones que no se
+estan leyendo. Sobre la camara apaga LA CARA de la persona casi a la mitad.
+
+Se reviso el resto de la pantalla y NO HAY NADA MAS tapando: la banda de luz
+pinta blanco al 7,5% como maximo y no molesta, la cuenta regresiva no tiene fondo
+propio, y los contenedores ya quedaron transparentes en las correcciones
+anteriores. Esta es la unica capa que falta.
+
+
+COMO SE ARREGLA
+
+calcularTramosVelo tiene que poder dar DOS juegos de opacidades, y la pantalla de
+lectura elige segun si la camara esta encendida:
+
+    camara apagada   45% arriba, 0% en la franja, 55% abajo   <- como hoy, no se toca
+    camara encendida 20% arriba, 0% en la franja, 25% abajo
+
+Los dos numeros nuevos son un punto de partida, no una verdad: Javier los va a
+ajustar mirandose en la pantalla. Por eso tienen que quedar como DOS CONSTANTES
+CON NOMBRE arriba del archivo, juntas y faciles de encontrar, no numeros sueltos
+adentro de la funcion.
+
+La franja de los renglones vivos se queda en 0% en los dos casos: ahi es donde se
+tiene que ver la cara limpia.
+
+
+LO QUE NO SE TOCA
+
+Con la camara apagada, la pantalla de lectura tiene que quedar EXACTAMENTE igual
+que hoy. Ese es el caso que ya funciona y el que usa todo el mundo.
+
+No toques la banda, ni la opacidad de los renglones, ni el motor, ni nada de las
+correcciones anteriores.
+
+
+COMO SE COMPRUEBA
+
+En el telefono: entrar a leer, apretar Camara, y VERSE LA CARA con claridad
+detras del texto, no una sombra. Con la camara apagada, todo igual que siempre.
+
+No agregues pruebas: jsdom no dibuja y una prueba verde no diria nada.

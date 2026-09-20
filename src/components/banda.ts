@@ -128,19 +128,26 @@ export const RENGLONES_CLAROS = 4
 // para aclarar un renglon entero de mas.
 export const HOLGURA_VELO = 16
 
+export const ALPHA_VELO_ARRIBA_SIN_CAMARA = 0.45
+export const ALPHA_VELO_ABAJO_SIN_CAMARA = 0.55
+export const ALPHA_VELO_ARRIBA_CON_CAMARA = 0.20
+export const ALPHA_VELO_ABAJO_CON_CAMARA = 0.25
+
 export interface TramoVelo {
   desdePx: number
   hastaPx: number
   alpha: number
 }
 
-export function calcularTramosVelo(topBanda: number, filaPx: number): TramoVelo[] {
+export function calcularTramosVelo(topBanda: number, filaPx: number, camaraEncendida = false): TramoVelo[] {
   const desdeClaro = Math.max(0, topBanda - HOLGURA_VELO)
   const hastaClaro = topBanda + RENGLONES_CLAROS * filaPx + HOLGURA_VELO
+  const alphaArriba = camaraEncendida ? ALPHA_VELO_ARRIBA_CON_CAMARA : ALPHA_VELO_ARRIBA_SIN_CAMARA
+  const alphaAbajo = camaraEncendida ? ALPHA_VELO_ABAJO_CON_CAMARA : ALPHA_VELO_ABAJO_SIN_CAMARA
   return [
-    { desdePx: 0, hastaPx: desdeClaro, alpha: 0.45 },
+    { desdePx: 0, hastaPx: desdeClaro, alpha: alphaArriba },
     { desdePx: desdeClaro, hastaPx: hastaClaro, alpha: 0.00 },
-    { desdePx: hastaClaro, hastaPx: Infinity, alpha: 0.55 }
+    { desdePx: hastaClaro, hastaPx: Infinity, alpha: alphaAbajo }
   ]
 }
 
@@ -173,10 +180,11 @@ export function calcularTramosVelo(topBanda: number, filaPx: number): TramoVelo[
 export function calcularBgVelo(
   topBanda: number,
   filaPx: number,
-  rgbFondo: { r: number; g: number; b: number }
+  rgbFondo: { r: number; g: number; b: number },
+  camaraEncendida = false
 ): string {
   const cVelo = (a: number) => `rgba(${rgbFondo.r}, ${rgbFondo.g}, ${rgbFondo.b}, ${a})`
-  const [arriba, ventana, abajo] = calcularTramosVelo(topBanda, filaPx)
+  const [arriba, ventana, abajo] = calcularTramosVelo(topBanda, filaPx, camaraEncendida)
   return (
     `linear-gradient(to bottom, ` +
     `${cVelo(arriba.alpha)} 0px, ${cVelo(arriba.alpha)} ${arriba.hastaPx}px, ` +

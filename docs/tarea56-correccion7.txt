@@ -1,0 +1,50 @@
+TAREA 56 - CORRECCION 7
+
+El intento 2 funciono: la camara se ve a pantalla completa detras, espejada, y
+el seguimiento por voz sigue andando. Comprobado en el telefono con capturas.
+
+Falta una sola cosa y es chica.
+
+
+EL TEXTO NO SE VE
+
+Con la camara encendida se ve la imagen, el velo y el punto rojo, pero EL TEXTO
+DEL GUION DESAPARECE. Comprobado con capturas de pantalla del telefono.
+
+POR QUE. En src/components/TeleprompterView.tsx el <video> esta con
+
+    position: 'absolute'
+    zIndex: 0
+
+y la columna de texto NO tiene posicion ni zIndex propios: se dibuja en el flujo
+normal. En CSS, un elemento posicionado con zIndex 0 se pinta POR ENCIMA del
+contenido no posicionado. Asi que el video tapa el texto.
+
+Los demas se ven porque si tienen zIndex propio: la banda 2, el velo 3, el
+indicador 5 y el punto rojo 10.
+
+
+COMO SE ARREGLA
+
+Darle al contenedor de la columna de texto una posicion y un zIndex propios:
+
+    position: 'relative'
+    zIndex: 1
+
+Con eso el orden queda: video 0, texto 1, banda 2, velo 3, indicador 5, punto 10.
+
+Ese orden deja el texto exactamente donde estaba respecto de la banda y el velo
+con la camara apagada, asi que no cambia nada de lo que ya funcionaba: solo lo
+levanta por encima del video.
+
+No cambies los zIndex de la banda, el velo, el indicador ni el punto.
+
+
+COMO SE COMPRUEBA
+
+En el telefono, con camara frontal elegida en el editor: entrar a leer y VER LA
+CARA Y EL TEXTO AL MISMO TIEMPO, el texto encima de la imagen.
+
+Con la camara apagada, todo exactamente igual que hoy.
+
+No agregues pruebas.

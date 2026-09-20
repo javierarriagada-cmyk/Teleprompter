@@ -1,0 +1,114 @@
+TAREA 56 - CORRECCION 6
+
+Dos cosas: que la imagen se vea, y que la camara se elija ANTES de leer y no en
+medio de la lectura.
+
+
+PARTE 1 - QUE LA IMAGEN SE VEA
+
+La camara del telefono funciona. Comprobado con una captura de pantalla:
+arrancando la vista previa con toBack en FALSE se ve la cara perfecta, a pantalla
+completa. El permiso, CameraX, la superficie y los cuadros estan bien.
+
+Lo unico que no funciona es ponerla DETRAS del WebView. Con toBack en true no se
+dibuja nada, y ya se probo todo esto sin resultado:
+
+  - el fondo del texto en transparente
+  - la biblioteca y los paneles que quedaban debajo, sacados del dibujo
+  - el velo bajado
+  - body y html en transparente
+  - el WebView y TODA la cadena de contenedores hasta android.R.id.content en
+    transparente
+  - transparentar antes y despues de arrancar la camara
+
+No sigas tocando nuestro codigo buscando algo opaco: no queda nada. Hay que
+cambiar COMO se dibuja la vista previa. Dos intentos, en este orden, y se para en
+el primero que funcione.
+
+INTENTO 1 - LA VISTA PREVIA COMO SUPERFICIE DE SISTEMA
+    El plugin la dibuja en una TEXTURA dentro del arbol de vistas -comprobado en
+    el telefono: adentro de PreviewView hay un TextureView-. Esa es la forma que
+    no se ve por debajo del navegador.
+
+    PreviewView tiene otro modo, el de superficie de sistema -SurfaceView, que en
+    CameraX es ImplementationMode.PERFORMANCE-, que se compone por fuera del
+    arbol de vistas y es la forma clasica de poner video debajo de una capa
+    transparente.
+
+    Hacer que use ese modo, con la superficie por debajo de la ventana: sin
+    setZOrderOnTop y sin setZOrderMediaOverlay. Si el plugin no deja elegirlo
+    desde JavaScript, se hace desde nuestro lado nativo.
+
+INTENTO 2 - SI ASI TAMPOCO SE VE: LA CAMARA VA EN LA PAGINA
+    Se deja la vista nativa y se usa la camara del navegador, que no tiene nada
+    por debajo que transparentar.
+
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'user' },   // 'environment' para la trasera
+          audio: false                     // OBLIGATORIO
+        })
+
+    Se muestra en un <video> autoplay, playsInline, muted, object-fit cover,
+    detras del texto, espejado -transform: scaleX(-1)- solo con la frontal.
+
+    audio: false NO ES OPCIONAL. Si se pide audio, el navegador se queda con el
+    microfono, el reconocedor deja de oir y el texto deja de avanzar solo.
+
+    Al apagar hay que parar todas las pistas -stream.getTracks().forEach(t =>
+    t.stop())- o la camara queda encendida.
+
+    Se sacan del proyecto @capgo/camera-preview y FondoPlugin, que existia solo
+    para transparentar el navegador.
+
+    La prueba T273 se reescribe para comprobar que getUserMedia se llama con
+    audio en false. Es la misma guardiana: que no se pida el microfono.
+
+DECI EN EL RESUMEN CUAL DE LOS DOS INTENTOS QUEDO.
+
+
+PARTE 2 - LA CAMARA SE ELIGE ANTES DE LEER
+
+Hoy la camara se prende con un boton adentro de la pantalla de lectura. Esta
+mal y fue provisorio desde el principio.
+
+Nadie busca un boton de camara mientras ya esta leyendo a camara: en ese momento
+la persona esta mirando el lente, no la pantalla. Como va a leer se decide antes,
+igual que el tamano de letra.
+
+QUE HAY QUE HACER:
+
+  a. SACAR de la pantalla de lectura los botones "Camara" y "Cambiar camara".
+     El panel de controles vuelve a tener Salir, Pausa y el tamano de letra, como
+     antes. Nada mas.
+
+  b. PONER LA ELECCION EN EL EDITOR, junto al boton de Leer, donde la persona
+     esta por leer. Un control chico con dos decisiones:
+
+         camara     apagada / frontal / trasera
+
+     Con "apagada" todo funciona exactamente como hoy.
+
+  c. AL ENTRAR A LEER, la pantalla arranca YA con la camara encendida si asi se
+     eligio, antes de la cuenta regresiva. Al salir de la lectura se apaga sola.
+
+  d. LA ELECCION SE RECUERDA, junto con los demas ajustes que ya se guardan
+     -tamano de letra, margen, tema-. Si alguien lee siempre con la frontal, no
+     tiene que elegirla cada vez.
+
+NO se toca nada del motor, ni el seguidor, ni la conduccion, ni el avance.
+
+Esto es solo el lugar de la eleccion. La pantalla de preparar la toma -verse
+antes de empezar, encuadrar, elegir si el texto va sobre la imagen o sobre
+nuestro fondo- es otra tarea y no va aca.
+
+
+COMO SE COMPRUEBA
+
+En el telefono: en el editor elegir camara frontal, apretar Leer, y VERSE LA CARA
+detras del texto desde que arranca. Salir y volver a entrar sin camara: todo
+igual que siempre.
+
+La medicion objetiva de que hay imagen: dos capturas de pantalla seguidas tienen
+que salir DISTINTAS. Si salen identicas byte a byte, no hay imagen.
+
+No agregues pruebas nuevas ademas de la T273 reescrita.

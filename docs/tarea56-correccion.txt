@@ -1,0 +1,77 @@
+TAREA 56 - CORRECCION
+
+Dos cosas para arreglar. Lo demas quedo bien: la camara se enciende, el
+reconocedor de voz SIGUE FUNCIONANDO con la camara encendida -comprobado en el
+telefono leyendo el registro del sistema, el reconocedor sigue entregando
+palabras mientras la camara graba-, y las 255 pruebas pasan.
+
+
+1. EL VELO QUEDA MUCHO MAS ANGOSTO QUE EL TEXTO
+
+En modo de columna angosta, el velo sale como una tira delgada en el medio del
+texto en vez de cubrir el ancho de la columna.
+
+POR QUE PASA. Copiaste bien el maxWidth de la columna:
+
+    maxWidth: columnaAngosta ? '22ch' : '90%'
+
+pero no copiaste el fontSize. La unidad ch es el ancho del caracter cero EN LA
+TIPOGRAFIA DEL PROPIO ELEMENTO. La columna tiene fontSize -el tamano de lectura-
+y el velo no tiene ninguno, asi que hereda 16 px. Entonces los dos dicen 22ch y
+miden cosas distintas.
+
+MEDIDO EN EL NAVEGADOR, con el tamano de lectura en 24:
+
+    columna   264 px
+    velo      176 px
+
+Y la diferencia crece con el tamano de letra, porque la columna crece y el velo
+se queda en 176.
+
+COMO SE ARREGLA. Al elemento data-testid="velo-lectura" agregarle el mismo
+fontSize que tiene data-testid="columna-texto". Con eso los dos miden 264 px.
+
+En el modo de columna completa no se nota, porque ahi los dos usan 90% y un
+porcentaje no depende de la tipografia. Pero la columna angosta es justo el modo
+para el que se penso poner la camara detras del texto, asi que hay que
+arreglarlo.
+
+
+2. LA IMAGEN DE LA CAMARA NO CUBRE LA PANTALLA
+
+Mirando el telefono con la camara encendida: la imagen no llega a los bordes.
+Queda una franja arriba, entre la barra de estado y donde empieza la imagen, y
+un margen a cada lado.
+
+POR QUE PASA. En src/lib/camara.ts la medida sale de:
+
+    width: window.innerWidth
+    height: window.innerHeight
+
+Eso es el tamano del area de la pagina, que NO es el tamano de la pantalla: deja
+afuera la barra de estado y la barra de navegacion. Y ademas el plugin, cuando
+la aplicacion dibuja de borde a borde -que es lo que hace la nuestra-, SUMA por
+su cuenta el desplazamiento del area segura de arriba. Entonces la imagen arranca
+mas abajo y termina antes.
+
+QUE TIENE QUE PASAR. Con la camara encendida, la imagen tiene que cubrir la
+pantalla completa, de borde a borde, con el texto encima. Sin franjas ni
+margenes.
+
+El plugin tiene opciones para esto: mira en sus definiciones que hace con
+x, y, width, height y con la opcion de los margenes seguros -includeSafeAreaInsets-,
+y elegi la combinacion que deje la imagen a pantalla completa.
+
+COMO SE COMPRUEBA, Y ESTO ES LO IMPORTANTE: no se comprueba razonando ni con una
+prueba. Se enciende la camara en el telefono, se saca una captura de pantalla y
+se mira si la imagen llega a los cuatro bordes. Si no se puede mirar, no esta
+terminado.
+
+
+LO QUE NO HAY QUE TOCAR
+
+Todo lo demas de la tarea 56 quedo bien. No cambies camara.ts mas alla de la
+medida, ni los botones, ni la prueba T273, ni nada del seguimiento por voz.
+
+No agregues pruebas nuevas. Las dos cosas de esta correccion son de dibujo y
+jsdom no dibuja: una prueba verde no diria nada.

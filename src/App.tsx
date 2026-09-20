@@ -15,6 +15,7 @@ import EditorView from './components/EditorView'
 import CuentaRegresiva from './components/CuentaRegresiva'
 import { Entrada } from './components/Entrada'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
+import { encenderCamara, apagarCamara, camaraEncendida, ModoCamara } from './lib/camara'
 import { hapticaToqueMedio, hapticaToqueSuave } from './haptica'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
 import { Guion, ResumenGuion, guionNuevo, PAREJAS_COLOR } from './datos/modelo'
@@ -211,6 +212,11 @@ export default function App({ motor, repoOverride }: AppProps) {
     ajustesPrevios.columnaAngosta !== undefined ? Boolean(ajustesPrevios.columnaAngosta) : false
   )
 
+  const [modoCamara, setModoCamara] = useState<ModoCamara>(
+    (ajustesPrevios.modoCamara === 'frontal' || ajustesPrevios.modoCamara === 'trasera') ? ajustesPrevios.modoCamara : 'apagada'
+  )
+  const [streamCamara, setStreamCamara] = useState<MediaStream | null>(null)
+
   const coloresIniciales = sanitizarColores(ajustesPrevios.colorFondo, ajustesPrevios.colorLetra)
   const [colorFondo, setColorFondo] = useState<string>(coloresIniciales.colorFondo)
   const [colorLetra, setColorLetra] = useState<string>(coloresIniciales.colorLetra)
@@ -224,6 +230,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [modoManual, setModoManual] = useState<boolean>(false)
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
   const [mostrarDiagnostico, setMostrarDiagnostico] = useState<boolean>(false)
+  const [camaraActiva, setCamaraActiva] = useState<boolean>(false)
 
   const { estado: estadoPrecarga, progreso: progresoPrecarga, error: errorPrecarga, reintentar: reintentarPrecarga } = usePrecargaModelo(engine)
 
@@ -252,12 +259,13 @@ export default function App({ motor, repoOverride }: AppProps) {
         columnaAngosta,
         colorFondo,
         colorLetra,
-        tipoFuente
+        tipoFuente,
+        modoCamara
       }
       localStorage.setItem('teleprompter_ajustes', JSON.stringify(objetoAjustes))
     } catch (e) {
     }
-  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente])
+  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente, modoCamara])
 
   const cargarBiblioteca = useCallback(async () => {
     let repo = repoRef.current
@@ -660,8 +668,37 @@ export default function App({ motor, repoOverride }: AppProps) {
   useEffect(() => {
     if (vista !== 'lectura') {
       cancelarCuentaRegresiva()
+      if (camaraActiva || streamCamara) {
+        apagarCamara()
+        setStreamCamara(null)
+        setCamaraActiva(false)
+      }
+    } else if (vista === 'lectura' && modoCamara !== 'apagada' && !camaraActiva) {
+      encenderCamara(modoCamara).then((st) => {
+        if (st) {
+          setStreamCamara(st)
+          setCamaraActiva(true)
+        } else {
+          setStreamCamara(null)
+          setCamaraActiva(false)
+        }
+      })
     }
-  }, [vista, cancelarCuentaRegresiva])
+  }, [vista, cancelarCuentaRegresiva, camaraActiva, streamCamara, modoCamara])
+
+  useEffect(() => {
+    if (camaraActiva && vista === 'lectura') {
+      document.body.style.backgroundColor = 'transparent'
+      document.documentElement.style.backgroundColor = 'transparent'
+    } else {
+      document.body.style.backgroundColor = ''
+      document.documentElement.style.backgroundColor = ''
+    }
+    return () => {
+      document.body.style.backgroundColor = ''
+      document.documentElement.style.backgroundColor = ''
+    }
+  }, [camaraActiva, vista])
 
   const guionParaSeguidor = guionActual || GUION_VACIO
 
@@ -855,6 +892,11 @@ export default function App({ motor, repoOverride }: AppProps) {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
     setEnPausa(false)
+    if (camaraActiva || streamCamara) {
+      apagarCamara()
+      setStreamCamara(null)
+      setCamaraActiva(false)
+    }
     await stop()
     // El audio se corta DESPUES del motor, no antes: si se cortara primero, los ultimos
     // calces quedarian anotados con un milisegundo que ya no existe en el archivo.
@@ -1039,7 +1081,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             marginBottom: 'var(--aire-4)',
             fontSize: 'var(--texto-meta)',
             border: '1px solid var(--color-borde)',
-            display: 'flex',
+            display: (camaraActiva && vista === 'lectura') ? 'none' : 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
           }}
@@ -1076,7 +1118,8 @@ export default function App({ motor, repoOverride }: AppProps) {
             borderRadius: 'var(--redondeo)',
             marginBottom: 'var(--aire-4)',
             fontSize: 'var(--texto-meta)',
-            border: '1px solid var(--color-borde)'
+            border: '1px solid var(--color-borde)',
+            display: (camaraActiva && vista === 'lectura') ? 'none' : 'block'
           }}
         >
           <strong>Franja de Estado:</strong>
@@ -1139,6 +1182,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               // apagon instantaneo se lee como un corte, que es justo lo que la
               // transformacion existe para evitar.
               filter: vista === 'lectura' ? 'brightness(0.15)' : 'none',
+              display: (camaraActiva && vista === 'lectura') ? 'none' : undefined,
               transition: movimientoApagado() ? 'none' : `filter ${MS_PANTALLA}ms ${CURVA_ENTRA}`,
               pointerEvents: vista === 'lectura' ? 'none' : 'auto'
             }}
@@ -1181,6 +1225,8 @@ export default function App({ motor, repoOverride }: AppProps) {
             setTema={setTema}
             engine={engine}
             setEngine={setEngine}
+            modoCamara={modoCamara}
+            setModoCamara={setModoCamara}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
           />
         </Pantalla>
@@ -1281,6 +1327,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                 >
                   {enPausa ? 'Seguir' : 'Pausa'}
                 </button>
+
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)' }}>
@@ -1337,7 +1384,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             style={{
               width: '100%',
               height: '100dvh',
-              background: colorFondo,
+              background: camaraActiva ? 'transparent' : colorFondo,
               overflow: 'hidden',
               position: 'relative',
               transition: movimientoApagado() ? 'none' : `background-color ${MS_PANEL}ms ${CURVA_NORMAL}`
@@ -1361,6 +1408,9 @@ export default function App({ motor, repoOverride }: AppProps) {
               tipoFuente={tipoFuente}
               isRecording={isRecording || cuentaRegresiva !== null}
               enPausa={enPausa}
+              camaraEncendida={camaraActiva}
+              streamCamara={streamCamara}
+              ladoCamara={modoCamara === 'trasera' ? 'trasera' : 'frontal'}
               onToggleControles={() => setControlesVisibles((prev) => !prev)}
               onNavegacionManual={irAToken}
               onModoManualChange={setModoManual}
