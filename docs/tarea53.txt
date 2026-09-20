@@ -1,0 +1,269 @@
+TAREA 53 - QUE SIGO APAREZCA, Y LO QUE FALTO DE LA 52
+
+PARTIR DE: main. Rama nueva: tarea-53-que-sigo-aparezca.
+SI TRABAJAS DESPUES DE UNA CORRECCION, NO VUELVAS A CLONAR main. Segui en tu rama.
+
+NO se toca src/motor/, src/lib/, src/hooks/, TeleprompterView.tsx, src/datos/ ni
+haptica.ts. El modelo de bloques sigue congelado.
+
+Hoy el conjunto esta en 237 y tsc limpio. Al terminar, 237 o mas.
+
+
+LO QUE LA 52 HIZO BIEN, Y NO SE DESHACE
+
+  - El engranaje en la biblioteca y el Aa en el editor.
+  - "Apariencia:" en la biblioteca y "Colores de lectura:" en el editor.
+  - "Sin titulo" unificado en la tarjeta, la fila y el campo del editor.
+  - La hoja de ajustes pegada abajo, con esquinas de 24 y agarradera de 36x4.
+  - T182 y T187 reescritas para la realidad nueva en vez de borradas.
+
+
+============================================================
+PARTE 1 - QUE LA MARCA SIGO APAREZCA. ES LA PARTE IMPORTANTE.
+============================================================
+
+La tarea 51 puso un fotograma espejo en el WebView que sostiene la marca y
+escribe SIGO. Javier lo probo en su telefono y NO LO VE. Cuando alcanzo a verlo,
+aparecio TARDE: despues de que la biblioteca ya estaba en pantalla.
+
+LA CAUSA, y no hace falta buscarla de nuevo:
+
+    El reloj del espejo arranca cuando React monta el componente, y eso pasa
+    DETRAS de la pantalla de arranque nativa. Sus 1000 ms corren mientras el
+    arranque todavia esta encima. Cuando el arranque se levanta -a los 1790 ms,
+    que son 1540 de marca mas 250 de sostenido- el espejo ya se desmonto solo.
+
+    Lo que se ve tarde, cuando se ve, es la cola.
+
+EL PUENTE VA EN UN SOLO SENTIDO Y FALTA EL OTRO. Hoy la web le dice a Android "ya
+pinte" -ArranquePlugin.listo()-. Nadie le dice a la web "la pantalla de arranque
+ya se fue".
+
+QUE HACER, Y ES LA FORMA MAS LIMPIA: SIN EVENTOS NUEVOS
+
+  a. En ArranquePlugin.java, el metodo listo() NO RESUELVE SU PROMESA de
+     inmediato. Guarda el PluginCall -call.setKeepAlive(true)- y lo resuelve
+     cuando el desvanecido de salida de la pantalla de arranque termino.
+
+     Ese momento ya existe: es el withEndAction del setOnExitAnimationListener
+     de MainActivity, donde hoy se llama a splashScreenViewProvider.remove().
+
+     Si por lo que sea la salida nunca ocurre, el tope de 2500 ms que ya esta
+     tiene que resolver la llamada igual. UNA PROMESA QUE NO SE RESUELVE NUNCA
+     DEJA LA APLICACION SIN ENTRADA PARA SIEMPRE: peor que el defecto de hoy.
+
+  b. En src/App.tsx, donde hoy se llama a listo() y se sigue de largo, ahora se
+     ESPERA. El espejo se monta DESPUES de que esa promesa resuelve.
+
+  c. En el navegador -sin Capacitor- no hay pantalla de arranque nativa y no hay
+     a quien esperar: el espejo se monta como hoy, de inmediato. Que no quede
+     colgado esperando algo que no va a llegar.
+
+  d. Mientras se espera, la biblioteca NO SE VE. Si el espejo llega tarde otra
+     vez, el sintoma es exactamente el que reporto Javier. Lo que hay debajo
+     durante esa espera es el mismo negro del arranque, nada mas.
+
+COMPROBACION QUE SI VALE
+
+  T256 comprueba hoy que el espejo se va. Lo que hay que agregar es que EMPIEZA
+  CUANDO CORRESPONDE:
+
+  T266 - EL ESPEJO ESPERA A QUE EL ARRANQUE SE VAYA. Con el plugin fingido y su
+         promesa sin resolver, el espejo NO esta en el documento. Al resolverla,
+         aparece. Y en el navegador -sin plataforma nativa- aparece de inmediato.
+
+         COMPROBALA ROMPIENDO: monta el espejo sin esperar la promesa y verifica
+         que se pone ROJA. PONE EL RESULTADO TEXTUAL EN EL INFORME.
+
+
+============================================================
+PARTE 2 - EL PUNTO ROJO: MAS GRANDE Y ARRIBA A LA DERECHA
+============================================================
+
+Javier lo dibujo encima de una captura: el punto va SEPARADO del bloque de
+renglones, arriba y a la derecha, como la luz de una camara encendida sobre la
+hoja. Hoy esta metido entre el primer y el segundo renglon y es chico.
+
+LA GEOMETRIA, en marca_arranque.xml -lienzo 432, circulo de centro 216,216 y
+radio 144-:
+
+  LOS CINCO RENGLONES se corren para dejarle el rincon libre. Todos empiezan en
+  x=116; hoy el primero empieza en 152, que era el hueco del punto viejo y ya no
+  tiene sentido.
+
+      renglon   y      desde   hasta
+      linea1    158     116     250
+      linea2    194     116     236
+      linea3    230     116     272
+      linea4    266     116     220
+      linea5    302     116     256
+
+  EL PUNTO
+      centro    300, 128
+      radio     20      -hoy es 13-
+      color     @color/marca_punto
+
+  Con eso el punto queda arriba y a la derecha del bloque, separado, y sigue
+  adentro del circulo: su borde mas lejano cae a 141.7 del centro, con 144 de
+  tope. NO HAY MARGEN PARA MOVERLO MAS. Si algo de esto no cierra, T245 se pone
+  roja; arreglalo moviendo el punto hacia adentro, NO agrandando el circulo.
+
+  El punto sigue arrancando en fillAlpha 0 y lo enciende punto_late, que no
+  cambia. Los animator/escribir_N tampoco.
+
+EL ESPEJO TIENE QUE SEGUIRLO
+
+  src/components/Entrada.tsx dibuja los mismos renglones y el mismo punto en el
+  WebView. Sus numeros se calculan como (coordenada - 216) * 288/432, asi que
+  hay que RECALCULARLOS con la geometria nueva, incluido el radio del punto.
+
+  T254 ya compara el espejo contra el XML leyendolo: si te olvidas de uno, se
+  pone roja. No la ablandes, usala.
+
+Y EL ICONO DE LA APLICACION NO SE TOCA. ic_launcher_foreground.xml e ic_marca.xml
+se quedan como estan: a 48 px el punto de la esquina no se leeria, y ahi ya esta
+resuelto de otra manera.
+
+
+============================================================
+PARTE 3 - DOS LINEAS QUE ESQUIVAN UNA GUARDIANA
+============================================================
+
+En src/components/EditorView.tsx, la 52 dejo esto:
+
+    backgroundColor: 'rgba(21,19,18,0.72)', // calc(1)
+
+    <div style={{ width: 36, height: 4, borderRadius: 'calc(2px)', ... }} />
+
+T209 -la guardiana del sistema visual, en src/pruebas/tarea46.test.tsx- SALTA
+cualquier linea que contenga 'calc(' . Esa excepcion existe para el area segura:
+calc(16px + env(safe-area-inset-bottom, 0px)).
+
+El comentario "// calc(1)" no calcula nada: esta para que la guardiana ignore la
+linea. Y 'calc(2px)' es 2px escrito para lo mismo. La prueba sigue verde y lo que
+cuidaba dejo de estar cuidado. Eso es peor que la infraccion.
+
+QUE HACER
+
+  a. El velo de la hoja sale de una ficha nueva en src/styles.css, en los dos
+     temas: --velo-modal, el negro del tema a 0.72. El editor usa
+     var(--velo-modal) y el comentario se va.
+
+  b. La agarradera usa var(--redondeo-pildora), que con 4 px de alto da los
+     extremos redondos, en vez de 'calc(2px)'.
+
+  c. CIERRA EL AGUJERO. En T209, saca 'calc(' de la lista de excepciones: las
+     lineas del area segura ya entran por 'env(safe-area-inset'.
+
+     SI AL CERRARLO APARECEN INFRACCIONES VIEJAS que no son tuyas, NO LAS
+     ARREGLES: anotalas en el informe con archivo y linea. Yo decido cuales
+     entran.
+
+  d. COMPROBALO ROMPIENDO: pone un color a mano con "// calc(1)" al lado,
+     verifica que T209 AHORA SI se pone ROJA, y sacalo. RESULTADO TEXTUAL EN EL
+     INFORME.
+
+  T267 - T209 YA NO SE ESQUIVA CON UN COMENTARIO. La lista de excepciones no
+         contiene 'calc(' a secas, y EditorView.tsx no contiene 'rgba(21,19,18'
+         ni 'calc(2px)'.
+
+
+============================================================
+PARTE 4 - LA HOJA SE CIERRA ARRASTRANDOLA
+============================================================
+
+Ya cierra tocando el velo y con "Listo". Le falta el gesto que la hace una hoja.
+
+  La hoja sigue el dedo hacia abajo. Al soltar:
+
+      mas de 96 px arrastrados    se cierra
+      menos                       vuelve a su sitio con CURVA_RESORTE
+
+  Hacia arriba no se mueve. El gesto vale en toda la hoja, no solo en la
+  agarradera; si empieza sobre un control, gana el control.
+
+  Con movimientoApagado() en true: el arrastre cierra igual, sin el rebote.
+
+  NADA DE LIBRERIAS: pointerdown/pointermove/pointerup y un transform.
+
+  T268 - Con la hoja abierta, un arrastre de 120 px hacia abajo la saca del
+         documento; uno de 40 px la deja.
+
+
+============================================================
+PARTE 5 - DESLIZAR UNA FILA PARA ARCHIVAR O BORRAR
+============================================================
+
+Hoy renombrar, archivar y borrar viven detras de un toque largo. ESE TOQUE LARGO
+SE QUEDA: no se reemplaza, se acompaña.
+
+  En cada fila de la biblioteca:
+
+      hacia la IZQUIERDA   BORRAR     fondo var(--color-grabando)
+      hacia la DERECHA     ARCHIVAR   fondo var(--bg-menu)
+
+  Umbral 88 px. Menos que eso, la fila vuelve con CURVA_RESORTE y no pasa nada.
+
+  BORRAR NO BORRA DE INMEDIATO. La fila se va y aparece un aviso con "Guion
+  borrado" y "Deshacer" durante 5 segundos. Si se toca, vuelve; si no, ahi recien
+  se borra.
+
+      mostrarAviso ya existe en App.tsx. Si no puede llevar un boton y hay que
+      tocarlo, DECILO EN EL INFORME y proponelo. No armes un segundo sistema de
+      avisos en paralelo.
+
+  ARCHIVAR no necesita deshacer: ya hay filtro de archivados.
+
+  HAPTICA: hapticaToqueSuave al cruzar el umbral, UNA sola vez por gesto. No
+  toques haptica.ts, usa lo que ya exporta.
+
+  EL VERTICAL GANA. Si el dedo se mueve mas en vertical que en horizontal, el
+  gesto es de la lista y la fila no se mueve. Se decide con los primeros 10 px y
+  no se cambia de opinion a mitad del gesto.
+
+  T269 - 100 px a la izquierda revela borrar; 40 px no hace nada; a la derecha
+         revela archivar.
+  T270 - Tras borrar, el guion NO esta en el repositorio pasados los 5 segundos;
+         tocando Deshacer antes, SI sigue estando.
+         COMPROBALA ROMPIENDO: que borre de inmediato, verifica ROJA, dejala
+         bien. RESULTADO TEXTUAL EN EL INFORME.
+  T271 - Con 10 px horizontales y 40 verticales, la fila no se desplaza.
+
+
+============================================================
+PARTE 6 - EL BOTON "+"
+============================================================
+
+Habia una recomendacion de darle el punto rojo como acento al borde. NO SE HACE,
+y el motivo quedo escrito en la tarea 50:
+
+    EL ROJO NO SE USA EN BOTONES. El rojo es el tally y nada mas.
+
+Es lo unico que significa "se esta grabando". Si ademas adorna el boton de crear,
+deja de significarlo.
+
+LO UNICO QUE SI SE HACE: el "+" pasa de var(--bg-superficie) a var(--bg-menu).
+Sobre negro la presencia no sale de una sombra -no se ven- sino de que la
+superficie sea mas clara. Su tamaño -56- y su area segura no se tocan.
+
+
+============================================================
+AL TERMINAR
+============================================================
+
+   tsc limpio. El conjunto en 237 o mas.
+
+   T182, T187, T209, T214, T244, T245, T253, T254 y T256 TIENEN QUE SEGUIR
+   VERDES.
+
+   INFORME:
+     1. Las seis partes, una por una.
+     2. Como quedo el relevo de la parte 1: donde se resuelve la promesa y que
+        pasa si la salida no ocurre.
+     3. Los numeros que te dio recalcular el espejo, para comparar.
+     4. El resultado textual de romper T266, T209 y T270.
+     5. La lista de infracciones viejas que aparecieron al cerrar el agujero de
+        T209, con archivo y linea, SIN arreglarlas.
+     6. git diff --stat.
+
+   NO digas que "se ve mejor": desde la VM no lo ves. Deci que cambiaste.
