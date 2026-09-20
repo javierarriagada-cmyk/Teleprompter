@@ -15,6 +15,7 @@ import EditorView from './components/EditorView'
 import CuentaRegresiva from './components/CuentaRegresiva'
 import { Entrada } from './components/Entrada'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
+import { encenderCamara, apagarCamara, cambiarLadoCamara, camaraEncendida } from './lib/camara'
 import { hapticaToqueMedio, hapticaToqueSuave } from './haptica'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
 import { Guion, ResumenGuion, guionNuevo, PAREJAS_COLOR } from './datos/modelo'
@@ -224,6 +225,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [modoManual, setModoManual] = useState<boolean>(false)
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
   const [mostrarDiagnostico, setMostrarDiagnostico] = useState<boolean>(false)
+  const [camaraActiva, setCamaraActiva] = useState<boolean>(false)
 
   const { estado: estadoPrecarga, progreso: progresoPrecarga, error: errorPrecarga, reintentar: reintentarPrecarga } = usePrecargaModelo(engine)
 
@@ -660,8 +662,25 @@ export default function App({ motor, repoOverride }: AppProps) {
   useEffect(() => {
     if (vista !== 'lectura') {
       cancelarCuentaRegresiva()
+      if (camaraActiva) {
+        apagarCamara().then(() => setCamaraActiva(false))
+      }
     }
-  }, [vista, cancelarCuentaRegresiva])
+  }, [vista, cancelarCuentaRegresiva, camaraActiva])
+
+  useEffect(() => {
+    if (camaraActiva && vista === 'lectura') {
+      document.body.style.backgroundColor = 'transparent'
+      document.documentElement.style.backgroundColor = 'transparent'
+    } else {
+      document.body.style.backgroundColor = ''
+      document.documentElement.style.backgroundColor = ''
+    }
+    return () => {
+      document.body.style.backgroundColor = ''
+      document.documentElement.style.backgroundColor = ''
+    }
+  }, [camaraActiva, vista])
 
   const guionParaSeguidor = guionActual || GUION_VACIO
 
@@ -855,6 +874,10 @@ export default function App({ motor, repoOverride }: AppProps) {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
     setEnPausa(false)
+    if (camaraActiva) {
+      await apagarCamara()
+      setCamaraActiva(false)
+    }
     await stop()
     // El audio se corta DESPUES del motor, no antes: si se cortara primero, los ultimos
     // calces quedarian anotados con un milisegundo que ya no existe en el archivo.
@@ -1281,6 +1304,52 @@ export default function App({ motor, repoOverride }: AppProps) {
                 >
                   {enPausa ? 'Seguir' : 'Pausa'}
                 </button>
+
+                <button
+                  data-testid="btn-camara"
+                  onClick={async () => {
+                    if (camaraActiva) {
+                      await apagarCamara()
+                      setCamaraActiva(false)
+                    } else {
+                      await encenderCamara('frontal')
+                      setCamaraActiva(camaraEncendida())
+                    }
+                  }}
+                  style={{
+                    padding: 'var(--aire-2) var(--aire-3)',
+                    cursor: 'pointer',
+                    backgroundColor: 'var(--bg-suelo)',
+                    border: '1px solid var(--color-borde)',
+                    borderRadius: 'var(--redondeo)',
+                    color: 'var(--color-texto)',
+                    fontWeight: 600,
+                    fontSize: 'var(--texto-cuerpo)'
+                  }}
+                >
+                  {camaraActiva ? 'Apagar cámara' : 'Cámara'}
+                </button>
+
+                {camaraActiva && (
+                  <button
+                    data-testid="btn-cambiar-camara"
+                    onClick={async () => {
+                      await cambiarLadoCamara()
+                    }}
+                    style={{
+                      padding: 'var(--aire-2) var(--aire-3)',
+                      cursor: 'pointer',
+                      backgroundColor: 'var(--bg-suelo)',
+                      border: '1px solid var(--color-borde)',
+                      borderRadius: 'var(--redondeo)',
+                      color: 'var(--color-texto)',
+                      fontWeight: 600,
+                      fontSize: 'var(--texto-cuerpo)'
+                    }}
+                  >
+                    Cambiar cámara
+                  </button>
+                )}
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)' }}>
@@ -1337,7 +1406,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             style={{
               width: '100%',
               height: '100dvh',
-              background: colorFondo,
+              background: camaraActiva ? 'transparent' : colorFondo,
               overflow: 'hidden',
               position: 'relative',
               transition: movimientoApagado() ? 'none' : `background-color ${MS_PANEL}ms ${CURVA_NORMAL}`
@@ -1361,6 +1430,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               tipoFuente={tipoFuente}
               isRecording={isRecording || cuentaRegresiva !== null}
               enPausa={enPausa}
+              camaraEncendida={camaraActiva}
               onToggleControles={() => setControlesVisibles((prev) => !prev)}
               onNavegacionManual={irAToken}
               onModoManualChange={setModoManual}

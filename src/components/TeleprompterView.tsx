@@ -129,6 +129,7 @@ interface TeleprompterViewProps {
   tipoFuente?: 'sans' | 'serif'
   isRecording?: boolean
   enPausa?: boolean
+  camaraEncendida?: boolean
   onToggleControles?: () => void
   onNavegacionManual?: (token: number) => void
   onModoManualChange?: (manual: boolean) => void
@@ -170,6 +171,7 @@ export default function TeleprompterView({
   tipoFuente = 'sans',
   isRecording = false,
   enPausa = false,
+  camaraEncendida = false,
   onToggleControles,
   onNavegacionManual,
   onModoManualChange,
@@ -571,7 +573,7 @@ export default function TeleprompterView({
         paddingBottom: 'calc(env(safe-area-inset-bottom, 0px))',
         paddingLeft: 'calc(env(safe-area-inset-left, 0px))',
         paddingRight: 'calc(env(safe-area-inset-right, 0px))',
-        background: colorFondo,
+        background: camaraEncendida ? 'transparent' : colorFondo,
         color: colorTextoEfectivo,
         fontFamily: fontFamilyCss,
         boxSizing: 'border-box',
@@ -624,6 +626,9 @@ export default function TeleprompterView({
             right: 0,
             top: 0,
             bottom: 0,
+            maxWidth: columnaAngosta ? '22ch' : '90%',
+            margin: '0 auto',
+            width: '100%',
             pointerEvents: 'none',
             zIndex: 3,
             background: bgVelo

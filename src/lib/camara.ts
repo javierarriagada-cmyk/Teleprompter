@@ -1,0 +1,64 @@
+import { CameraPreview, CameraPosition } from '@capgo/camera-preview'
+
+export type LadoCamara = 'frontal' | 'trasera'
+
+let estaEncendida = false
+let ladoEstado: LadoCamara = 'frontal'
+
+export function camaraEncendida(): boolean {
+  return estaEncendida
+}
+
+export function ladoActual(): LadoCamara {
+  return ladoEstado
+}
+
+export async function apagarCamara(): Promise<void> {
+  try {
+    if (estaEncendida) {
+      await CameraPreview.stop()
+    }
+  } catch (e) {
+    // ignorar error al apagar
+  } finally {
+    estaEncendida = false
+  }
+}
+
+export async function encenderCamara(lado: LadoCamara): Promise<void> {
+  if (estaEncendida) {
+    await apagarCamara()
+  }
+
+  const pos: CameraPosition = lado === 'frontal' ? 'front' : 'rear'
+  const width = typeof window !== 'undefined' ? window.innerWidth : 0
+  const height = typeof window !== 'undefined' ? window.innerHeight : 0
+
+  try {
+    await CameraPreview.start({
+      toBack: true,
+      enableVideoMode: false,
+      disableAudio: true,
+      position: pos,
+      width,
+      height
+    })
+    estaEncendida = true
+    ladoEstado = lado
+  } catch (e) {
+    await apagarCamara()
+  }
+}
+
+export async function cambiarLadoCamara(): Promise<LadoCamara> {
+  if (!estaEncendida) {
+    return ladoEstado
+  }
+  try {
+    await CameraPreview.flip()
+    ladoEstado = ladoEstado === 'frontal' ? 'trasera' : 'frontal'
+  } catch (e) {
+    // Si falla el flip, se mantiene el estado
+  }
+  return ladoEstado
+}
