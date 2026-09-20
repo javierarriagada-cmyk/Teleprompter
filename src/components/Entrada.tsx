@@ -12,6 +12,12 @@ export const COLOR_MARCA_PUNTO = '#E11D2E'
 // Canvas nativo: 432x432. Tamaño visual splash en dp/px: 288
 export const FACTOR_ESPEJO = 288 / 432 // 0.6666666666666666
 
+// Constantes de tiempos (ms) de la animación de entrada
+export const MS_SOSTENIDO_MARCA = 250
+export const MS_ESCRIBIR_NOMBRE = 450
+export const MS_NOMBRE_QUIETO = 400
+export const MS_SALIDA_ENTRADA = 300
+
 export interface RenglonEspejo {
   id: string
   x1: number
@@ -51,27 +57,66 @@ export function Entrada({ onFinish }: EntradaProps) {
       return
     }
 
-    // Inicio de salida fade-out a los 700 ms
-    const timerSalida = setTimeout(() => {
-      setFaseSalida(true)
-    }, 700)
+    let cancelado = false
+    let fontTimer: ReturnType<typeof setTimeout> | null = null
+    let timerSalida: ReturnType<typeof setTimeout> | null = null
+    let timerFin: ReturnType<typeof setTimeout> | null = null
+    let timerTope: ReturnType<typeof setTimeout> | null = null
 
-    // Desmontaje normal a los 1000 ms
-    const timerFin = setTimeout(() => {
-      setDesmontado(true)
-      if (onFinish) onFinish()
-    }, 1000)
+    const arrancarLineaTiempo = () => {
+      if (cancelado) return
 
-    // Timer de seguridad por si acaso a los 2000 ms
-    const timerTope = setTimeout(() => {
-      setDesmontado(true)
-      if (onFinish) onFinish()
-    }, 2000)
+      const msInicioSalida = MS_SOSTENIDO_MARCA + MS_ESCRIBIR_NOMBRE + MS_NOMBRE_QUIETO // 1100 ms
+      const msFinTotal = msInicioSalida + MS_SALIDA_ENTRADA // 1400 ms
+
+      // 1100 ms: fase de salida fade-out
+      timerSalida = setTimeout(() => {
+        if (!cancelado) setFaseSalida(true)
+      }, msInicioSalida)
+
+      // 1400 ms: fin normal y desmontaje
+      timerFin = setTimeout(() => {
+        if (!cancelado) {
+          setDesmontado(true)
+          if (onFinish) onFinish()
+        }
+      }, msFinTotal)
+
+      // 2400 ms: tope de seguridad
+      timerTope = setTimeout(() => {
+        if (!cancelado) {
+          setDesmontado(true)
+          if (onFinish) onFinish()
+        }
+      }, 2400)
+    }
+
+    let fontResolved = false
+    const resolverYArrancar = () => {
+      if (fontResolved) return
+      fontResolved = true
+      if (fontTimer) clearTimeout(fontTimer)
+      arrancarLineaTiempo()
+    }
+
+    if (document.fonts && document.fonts.ready) {
+      fontTimer = setTimeout(() => {
+        resolverYArrancar()
+      }, 1200)
+
+      document.fonts.ready
+        .then(() => resolverYArrancar())
+        .catch(() => resolverYArrancar())
+    } else {
+      arrancarLineaTiempo()
+    }
 
     return () => {
-      clearTimeout(timerSalida)
+      cancelado = true
+      if (fontTimer) clearTimeout(fontTimer)
+      if (timerSalida) clearTimeout(timerSalida)
       if (timerFin) clearTimeout(timerFin)
-      clearTimeout(timerTope)
+      if (timerTope) clearTimeout(timerTope)
     }
   }, [onFinish])
 
@@ -79,17 +124,10 @@ export function Entrada({ onFinish }: EntradaProps) {
     return null
   }
 
-  // Trazos de SIGO:
-  // Mayúsculas, color COLOR_MARCA_TRAZO, grosor trazo ~12px (0.9x de renglones)
-  const strokeNombre = 12
-
-  // Letras definidas como paths con pathLength="100" para control exacto de stroke-dashoffset
-  const letras = [
-    { id: 'S', retardo: 250, d: 'M -40 88 C -58 88, -58 99, -50 99 C -42 99, -42 112, -60 112' },
-    { id: 'I', retardo: 340, d: 'M -18 88 L -18 112' },
-    { id: 'G', retardo: 430, d: 'M 24 92 C 22 88, 2 88, 2 100 C 2 112, 24 112, 24 100 L 14 100' },
-    { id: 'O', retardo: 520, d: 'M 50 88 C 36 88, 36 112, 50 112 C 64 112, 64 88, 50 88 Z' }
-  ]
+  // Centro horizontal del bloque de renglones: (194 - 216) * FACTOR_ESPEJO = -14.6667 px
+  const xCentroBloque = (194 - 216) * FACTOR_ESPEJO
+  // 28 px por debajo del último renglón (R5 y = (302 - 216) * FACTOR_ESPEJO)
+  const yNombre = (302 - 216) * FACTOR_ESPEJO + 28
 
   return (
     <div
@@ -107,13 +145,13 @@ export function Entrada({ onFinish }: EntradaProps) {
         justifyContent: 'center',
         pointerEvents: 'none',
         opacity: faseSalida ? 0 : 1,
-        transition: faseSalida ? 'opacity 300ms ease-out' : 'none'
+        transition: faseSalida ? `opacity ${MS_SALIDA_ENTRADA}ms ease-out` : 'none'
       }}
     >
       <style>{`
-        @keyframes escribirLetra {
-          from { stroke-dashoffset: 100; }
-          to   { stroke-dashoffset: 0; }
+        @keyframes revelarNombreSigo {
+          from { clip-path: inset(0 100% 0 0); }
+          to   { clip-path: inset(0 0 0 0); }
         }
       `}</style>
       <svg
@@ -137,7 +175,7 @@ export function Entrada({ onFinish }: EntradaProps) {
           />
         ))}
 
-        {/* El punto rojo ya encendido */}
+        {/* El punto rojo encendido */}
         <circle
           data-testid="punto-espejo"
           cx={PUNTO_ESPEJO.cx}
@@ -146,29 +184,26 @@ export function Entrada({ onFinish }: EntradaProps) {
           fill={PUNTO_ESPEJO.color}
         />
 
-        {/* El nombre SIGO en trazo animado por CSS */}
-        <g data-testid="nombre-sigo">
-          {letras.map((letra) => (
-            <path
-              key={letra.id}
-              data-testid={`letra-${letra.id}`}
-              d={letra.d}
-              fill="none"
-              stroke={COLOR_MARCA_TRAZO}
-              strokeWidth={strokeNombre}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              pathLength={100}
-              strokeDasharray={100}
-              strokeDashoffset={100}
-              style={{
-                strokeDasharray: 100,
-                strokeDashoffset: 100,
-                animation: `escribirLetra 180ms ${CURVA_ENTRA} ${letra.retardo}ms forwards`
-              }}
-            />
-          ))}
-        </g>
+        {/* La palabra SIGO como texto */}
+        <text
+          data-testid="nombre-sigo"
+          x={xCentroBloque}
+          y={yNombre}
+          fill={COLOR_MARCA_TRAZO}
+          textAnchor="middle"
+          dominantBaseline="hanging"
+          style={{
+            fontFamily: '"Source Serif 4"',
+            fontWeight: 600,
+            fontSize: '44px',
+            letterSpacing: '0.04em',
+            textTransform: 'uppercase',
+            clipPath: 'inset(0 100% 0 0)',
+            animation: `revelarNombreSigo ${MS_ESCRIBIR_NOMBRE}ms ${CURVA_ENTRA} ${MS_SOSTENIDO_MARCA}ms forwards`
+          }}
+        >
+          SIGO
+        </text>
       </svg>
     </div>
   )

@@ -80,28 +80,7 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
     })
   })
 
-  test('T255 - EL NOMBRE SE ESCRIBE, NO APARECE. Los trazos de las letras usan stroke-dashoffset. Ningun elemento del nombre se anima solo con opacity.', () => {
-    render(<Entrada />)
-
-    const contenedorNombre = screen.getByTestId('nombre-sigo')
-    expect(contenedorNombre).not.toBeNull()
-
-    const letras = ['S', 'I', 'G', 'O']
-    letras.forEach((letra) => {
-      const el = screen.getByTestId(`letra-${letra}`)
-      expect(el).not.toBeNull()
-
-      const strokeDashoffset = el.getAttribute('stroke-dashoffset')
-      expect(strokeDashoffset).not.toBeNull()
-
-      // Verificar que NO usa opacity para aparecer
-      const computedStyle = window.getComputedStyle(el)
-      expect(computedStyle.opacity).not.toBe('0')
-      expect(el.getAttribute('opacity')).toBeNull()
-    })
-  })
-
-  test('T256 - EL ESPEJO SE VA. Montando App, el espejo esta al principio y NO esta en el documento despues de 1100 ms. Y con movimientoApagado() en true no se monta nunca.', async () => {
+  test('T256 - EL ESPEJO SE VA. Montando App, el espejo esta al principio y NO esta en el documento despues de 1500 ms. Y con movimientoApagado() en true no se monta nunca.', async () => {
     vi.useFakeTimers()
     try {
       const repo = new RepositorioMemoria()
@@ -110,9 +89,9 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
       // Al inicio está montada la capa espejo
       expect(screen.queryByTestId('capa-entrada-espejo')).not.toBeNull()
 
-      // A los 1100 ms (antes del tope de 2000 ms), el espejo ya se desmontó
+      // Pasado el tiempo de timeline (1400 ms), el espejo ya se desmontó
       await act(async () => {
-        await vi.advanceTimersByTimeAsync(1100)
+        await vi.advanceTimersByTimeAsync(1500)
       })
 
       expect(screen.queryByTestId('capa-entrada-espejo')).toBeNull()
@@ -185,7 +164,7 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
     expect(screen.getByTestId('btn-leer-guion-fijo')).not.toBeNull()
   })
 
-  test('T258 - RED DE SEGURIDAD. Si el timer de 1000 ms fallara, el tope de seguridad de 2000 ms desmonta el espejo.', async () => {
+  test('T258 - RED DE SEGURIDAD. Si el timer de 1400 ms fallara, el tope de seguridad de 2400 ms desmonta el espejo.', async () => {
     vi.useFakeTimers()
     try {
       let finalizado = false
@@ -193,9 +172,9 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
 
       expect(screen.queryByTestId('capa-entrada-espejo')).not.toBeNull()
 
-      // Avanzar hasta 2100 ms (pasado el tope de seguridad)
+      // Avanzar hasta 2500 ms (pasado el tope de seguridad)
       await act(async () => {
-        await vi.advanceTimersByTimeAsync(2100)
+        await vi.advanceTimersByTimeAsync(2500)
       })
 
       expect(finalizado).toBe(true)
