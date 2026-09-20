@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { movimientoApagado, CURVA_ENTRA } from './movimiento'
 
 // COPIA EXACTA DE values-night/colors.xml (marca_trazo_apagado, marca_trazo, marca_punto).
@@ -50,10 +50,36 @@ export function Entrada({ onFinish }: EntradaProps) {
   const [desmontado, setDesmontado] = useState<boolean>(false)
   const [faseSalida, setFaseSalida] = useState<boolean>(false)
 
+  // LA LINEA DE TIEMPO ARRANCA UNA SOLA VEZ, Y ESTO NO ES UNA PRECAUCION.
+  //
+  // Javier miro el arranque en su telefono el 20 de septiembre de 2026: "primero
+  // aparece algo de la biblioteca, despues el nombre una milesima, luego
+  // biblioteca, palabra... horrendo".
+  //
+  // La causa estaba aca. El efecto dependia de [onFinish], y App le pasa una
+  // funcion escrita en linea -onFinish={() => setMostrarEntrada(false)}-, que es
+  // NUEVA en cada redibujo. App se redibuja varias veces durante el arranque
+  // -cargado, la biblioteca, los ajustes, el tema-, y en cada uno el efecto se
+  // limpiaba y volvia a empezar: los temporizadores se reiniciaban y la entrada
+  // nunca llegaba a correr entera. Eso es el parpadeo.
+  //
+  // Dos candados: onFinish vive en un ref -asi su identidad deja de importar- y
+  // arrancoRef impide que la linea de tiempo empiece dos veces.
+  const onFinishRef = useRef(onFinish)
+  onFinishRef.current = onFinish
+  const arrancoRef = useRef<boolean>(false)
+
   useEffect(() => {
+    if (arrancoRef.current) return
+    arrancoRef.current = true
+
+    const avisarQueTermino = () => {
+      if (onFinishRef.current) onFinishRef.current()
+    }
+
     if (movimientoApagado()) {
       setDesmontado(true)
-      if (onFinish) onFinish()
+      avisarQueTermino()
       return
     }
 
@@ -78,7 +104,7 @@ export function Entrada({ onFinish }: EntradaProps) {
       timerFin = setTimeout(() => {
         if (!cancelado) {
           setDesmontado(true)
-          if (onFinish) onFinish()
+          avisarQueTermino()
         }
       }, msFinTotal)
 
@@ -86,7 +112,7 @@ export function Entrada({ onFinish }: EntradaProps) {
       timerTope = setTimeout(() => {
         if (!cancelado) {
           setDesmontado(true)
-          if (onFinish) onFinish()
+          avisarQueTermino()
         }
       }, 2400)
     }
@@ -118,7 +144,8 @@ export function Entrada({ onFinish }: EntradaProps) {
       if (timerFin) clearTimeout(timerFin)
       if (timerTope) clearTimeout(timerTope)
     }
-  }, [onFinish])
+    // Sin dependencias: la entrada corre una sola vez, no una por redibujo de App.
+  }, [])
 
   if (movimientoApagado() || desmontado) {
     return null
