@@ -13,7 +13,7 @@ NO TOQUES:
    La pildora "Leer" y su comportamiento al desplazar. Eso quedo bien.
    La hoja de ajustes inferior y su arrastre. Tambien.
 
-Hoy: 243 pruebas, tsc limpio. Al terminar: 243 o mas.
+Hoy: 246 pruebas, tsc limpio. Al terminar: 246 o mas.
 
 EN EL INFORME, POR CADA PRUEBA QUE DIGAS HABER CREADO, PONE EL ARCHIVO Y LA
 LINEA DONDE QUEDO.
@@ -285,7 +285,7 @@ Numerar desde T276.
 AL TERMINAR
 ============================================================
 
-   tsc limpio. 243 pruebas o mas.
+   tsc limpio. 246 pruebas o mas.
 
    INFORME:
      1. Las nueve partes.
