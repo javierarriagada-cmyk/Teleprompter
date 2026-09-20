@@ -158,16 +158,48 @@ export default function EditorView({
     return 0
   }
 
+  // EL ARRASTRE NO LLEGABA AL TELEFONO, Y NO ERA QUE ESTUVIERA MAL ESCRITO.
+  //
+  // La hoja tiene overflowY: auto. En una pantalla tactil el navegador se queda con
+  // el gesto vertical para desplazar el contenido, asi que los pointermove nunca
+  // llegan aca. En el escritorio, con el raton, funcionaba; con el dedo no.
+  // Javier lo vio en su telefono el 20 de septiembre de 2026: "no baja cuando el
+  // intento de bajarla".
+  //
+  // Dos caminos, y los dos hacen falta:
+  //
+  //   la agarradera    lleva touchAction: 'none' y sus propios manejadores, asi que
+  //                    desde ahi el arrastre SIEMPRE funciona. Para eso esta: es la
+  //                    pista visual de que la hoja se puede bajar.
+  //
+  //   el cuerpo        solo arrastra cuando la hoja esta ARRIBA DEL TODO
+  //                    -scrollTop en cero-. Si hay contenido por encima, el gesto
+  //                    es de desplazamiento y gana el desplazamiento.
+  //
+  // Sin esa condicion las dos cosas se pelean, y lo que se pierde es poder leer la
+  // hoja entera, que importa mas.
+  function empezarArrastre(e: React.PointerEvent<HTMLDivElement>, elemento: HTMLElement | null) {
+    dragStartYRef.current = obtenerClientY(e)
+    esArrastrandoModalRef.current = true
+    if (elemento && elemento.setPointerCapture) {
+      try { elemento.setPointerCapture(e.pointerId) } catch (err) {}
+    }
+  }
+
+  function handleAgarraderaPointerDown(e: React.PointerEvent<HTMLDivElement>) {
+    empezarArrastre(e, e.currentTarget)
+  }
+
   function handleModalPointerDown(e: React.PointerEvent<HTMLDivElement>) {
     const target = e.target as HTMLElement
     if (target && target.closest('button, input, select, label, textarea, a, option, [role="button"]')) {
       return
     }
-    dragStartYRef.current = obtenerClientY(e)
-    esArrastrandoModalRef.current = true
-    if (e.currentTarget.setPointerCapture) {
-      try { e.currentTarget.setPointerCapture(e.pointerId) } catch (err) {}
+    // Arriba del todo o no hay arrastre: si no, se pelea con el desplazamiento.
+    if (e.currentTarget.scrollTop > 0) {
+      return
     }
+    empezarArrastre(e, e.currentTarget)
   }
 
   function handleModalPointerMove(e: React.PointerEvent<HTMLDivElement>) {
@@ -639,7 +671,13 @@ export default function EditorView({
             style={{
               backgroundColor: 'var(--bg-panel)',
               color: 'var(--color-texto)',
+              // EL ULTIMO CONTROL DE LA HOJA QUEDABA DEBAJO DE LA BARRA DE
+              // NAVEGACION. La hoja esta pegada al borde de abajo de la pantalla,
+              // asi que su relleno inferior tiene que descontar el area segura o
+              // "Mostrar tiempo" -que es el ultimo- se mete debajo del sistema.
+              // Javier lo vio en su telefono el 20 de septiembre de 2026.
               padding: 'var(--aire-4)',
+              paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
               borderRadius: 'var(--redondeo-grande) var(--redondeo-grande) 0 0',
               maxWidth: 500,
               width: '100%',
@@ -659,7 +697,28 @@ export default function EditorView({
             onClick={(e) => e.stopPropagation()}
           >
             {/* Handle superior de 36x4 */}
-            <div style={{ width: 36, height: 4, borderRadius: 'var(--redondeo-pildora)', backgroundColor: 'var(--color-borde)', margin: '0 auto var(--aire-3) auto' }} />
+            {/* La agarradera es la unica zona donde el arrastre siempre gana:
+                touchAction 'none' le pide al navegador que no se quede con el
+                gesto. Se le da area de sobra alrededor para que se pueda tomar
+                con el dedo, aunque la barra dibujada siga siendo de 36x4. */}
+            <div
+              data-testid="agarradera-hoja-ajustes"
+              onPointerDown={handleAgarraderaPointerDown}
+              onPointerMove={handleModalPointerMove}
+              onPointerUp={handleModalPointerUp}
+              onPointerCancel={handleModalPointerUp}
+              style={{
+                padding: 'var(--aire-2) 0 var(--aire-3) 0',
+                margin: '0 auto',
+                width: 120,
+                display: 'flex',
+                justifyContent: 'center',
+                touchAction: 'none',
+                cursor: 'grab'
+              }}
+            >
+              <div style={{ width: 36, height: 4, borderRadius: 'var(--redondeo-pildora)', backgroundColor: 'var(--color-borde)' }} />
+            </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-4)' }}>
               <h3 style={{ margin: 0, fontSize: 'var(--texto-titulo)', fontWeight: 600, color: 'var(--color-texto)' }}>Ajustes</h3>

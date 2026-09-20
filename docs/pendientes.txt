@@ -327,3 +327,25 @@ ARTEMIS COMPLETO: PARA CUANDO TOQUE PROBAR FLUJOS ENTEROS
   su agente vale la pena. Hoy seria un martillo para una tachuela.
 
   https://github.com/google/artemis
+
+
+================================================================
+T9 ES INTERMITENTE POR CARGA, Y YA ESTA MEDIDO
+================================================================
+
+T9 -"integracion con React App y MotorFake avanza la linea resaltada 0 -> 1 -> 2"-
+falla cada tantas corridas del conjunto completo y nunca sola.
+
+MEDIDO EL 20 DE SEPTIEMBRE DE 2026:
+
+    corriendola sola             3 de 3 en verde
+    en el conjunto completo      falla una de cada dos o tres corridas
+
+La prueba avanza con temporizadores de reloj real -setTimeout de 600 ms y de 100-
+mientras vitest corre trece archivos en paralelo. Cuando la maquina va cargada,
+esos plazos no alcanzan.
+
+NO ES UN DEFECTO DEL MOTOR: es una prueba atada al reloj de pared. Se arregla
+haciendola esperar por una CONDICION -que la linea resaltada llegue a 2- en vez
+de por un tiempo fijo. Mientras no se toque, una corrida roja de T9 sola no
+significa nada; se vuelve a correr y se mira si es la unica que falla.
