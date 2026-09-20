@@ -528,7 +528,7 @@ describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)
       })
     )
 
-    expect(screen.getByText('0 palabras')).not.toBeNull()
+    expect(screen.queryByTestId('contador-palabras-editor')).toBeNull()
     expect(screen.queryByText(/1 min/i)).toBeNull()
     unmount()
 
@@ -1309,7 +1309,7 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
       fireEvent.click(btnCruz)
     })
     await act(async () => {
-      fireEvent.click(screen.getByText('‹ Guiones'))
+      fireEvent.click(screen.getByText('Guiones'))
     })
 
     // 2. En la Biblioteca: abrir menu ⋯ superior y verificar que SI esta Tema

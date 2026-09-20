@@ -102,7 +102,7 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
     })
 
     // 3. Activar el checkbox en la Biblioteca
-    const btnSalir = screen.getByText('‹ Guiones')
+    const btnSalir = screen.getByText('Guiones')
     await act(async () => {
       fireEvent.click(btnSalir)
     })

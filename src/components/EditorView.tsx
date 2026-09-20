@@ -6,6 +6,7 @@ import { importarArchivo } from '../datos/importarArchivo'
 import { IdMotor } from '../motor/MotorDeVoz'
 import { hapticaSeleccion, hapticaToqueSuave } from '../haptica'
 import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
+import { IconoAtras } from './IconosApp'
 
 export function reubicarTramos(
   textoViejo: string,
@@ -43,7 +44,7 @@ interface EditorViewProps {
   guion: Guion
   onChangeGuion: (nuevoGuion: Guion) => void
   onVolverBiblioteca: () => void
-  onEntrarLectura: () => void
+  onEntrarLectura: (rect?: DOMRect) => void
   fontSize?: number
   onLetraMenos?: () => void
   onLetraMas?: () => void
@@ -510,13 +511,14 @@ export default function EditorView({
     }
   }, [mostrarModalAjustes, mostrarModalPegar, onRegistrarCerrarModal])
 
+  const btnLeerRef = useRef<HTMLButtonElement>(null)
   const hayMasDeUnBloque = guion.bloques && guion.bloques.length > 1
 
   return (
     <div
       data-pantalla-direccion={dataPantallaDireccion}
       onAnimationEnd={onAnimationEnd}
-      style={{ maxWidth: 800, margin: '0 auto', padding: 'var(--aire-4) var(--aire-4) calc(130px + env(safe-area-inset-bottom, 0px)) var(--aire-4)', position: 'relative', ...style }}
+      style={{ maxWidth: 800, margin: '0 auto', padding: 'calc(20px + env(safe-area-inset-top, 0px)) var(--aire-4) calc(130px + env(safe-area-inset-bottom, 0px)) var(--aire-4)', position: 'relative', ...style }}
     >
       <input
         type="file"
@@ -536,10 +538,14 @@ export default function EditorView({
             border: 'none',
             color: 'var(--color-apagado)',
             cursor: 'pointer',
-            padding: 0
+            padding: 0,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 'var(--aire-2)'
           }}
         >
-          ‹ Guiones
+          <IconoAtras tamano={20} />
+          <span>Guiones</span>
         </button>
 
         <button
@@ -551,7 +557,6 @@ export default function EditorView({
           style={{
             background: 'transparent',
             border: 'none',
-            fontFamily: '"Source Serif 4", serif',
             fontSize: 'var(--texto-titulo)',
             fontWeight: 'bold',
             color: 'var(--color-texto)',
@@ -565,7 +570,7 @@ export default function EditorView({
       </div>
 
       {/* Titulo es el titulo: Display, editable, sin etiqueta ni recuadro */}
-      <div style={{ marginBottom: 'var(--aire-1)' }}>
+      <div style={{ marginBottom: 'var(--aire-2)' }}>
         <input
           type="text"
           value={guion.titulo === 'Sin título' ? '' : guion.titulo}
@@ -579,61 +584,32 @@ export default function EditorView({
             width: '100%',
             padding: 'var(--aire-1) var(--aire-2)',
             border: 'none',
-            borderBottom: tituloEnfocado ? '2px solid var(--color-acento)' : '1px solid var(--color-borde)',
             outline: 'none',
-            backgroundColor: tituloEnfocado ? 'var(--bg-suelo)' : 'transparent',
+            backgroundColor: tituloEnfocado ? 'var(--bg-fila)' : 'transparent',
             color: 'var(--color-texto)',
             boxSizing: 'border-box',
-            borderRadius: 'var(--redondeo) var(--redondeo) 0 0',
-            transition: 'border-color 0.2s, background-color 0.2s'
+            borderRadius: 'var(--redondeo)',
+            transition: `background-color ${MS_CHICO}ms ${CURVA_ENTRA}`
           }}
         />
       </div>
 
-      {/* Resumen meta bajo el titulo */}
-      <div className="texto-meta" style={{ color: 'var(--color-apagado)', marginBottom: numPalabras > 0 ? 'var(--aire-2)' : 'var(--aire-4)' }}>
-        {resumenMeta}
-      </div>
-
-      {/* Botones Pegar y Abrir bajo el resumen meta si numPalabras > 0 */}
+      {/* Resumen meta bajo el titulo - solo si numPalabras > 0 */}
       {numPalabras > 0 && (
-        <div style={{ display: 'flex', gap: 'var(--aire-2)', marginBottom: 'var(--aire-4)' }}>
-          <button
-            data-testid="btn-pegar-texto"
-            onClick={() => {
-              setErrorPegado(null)
-              setMostrarModalPegar(true)
-            }}
-            style={{
-              padding: 'var(--aire-1) var(--aire-3)',
-              fontSize: 'var(--texto-meta)',
-              backgroundColor: 'var(--bg-suelo)',
-              color: 'var(--color-texto)',
-              borderRadius: 'var(--redondeo)',
-              cursor: 'pointer',
-              border: '1px solid var(--color-borde)'
-            }}
-          >
-            Pegar texto
-          </button>
-          <button
-            data-testid="btn-abrir-archivo"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={cargandoArchivo}
-            style={{
-              padding: 'var(--aire-1) var(--aire-3)',
-              fontSize: 'var(--texto-meta)',
-              backgroundColor: 'var(--bg-suelo)',
-              color: 'var(--color-texto)',
-              borderRadius: 'var(--redondeo)',
-              cursor: cargandoArchivo ? 'not-allowed' : 'pointer',
-              border: '1px solid var(--color-borde)'
-            }}
-          >
-            {cargandoArchivo ? 'Leyendo...' : 'Abrir archivo'}
-          </button>
+        <div
+          data-testid="contador-palabras-editor"
+          className="texto-meta"
+          style={{
+            color: 'var(--color-apagado)',
+            marginTop: 'calc(-1 * var(--aire-1))',
+            marginBottom: 'var(--aire-4)',
+            paddingLeft: 'var(--aire-2)'
+          }}
+        >
+          {resumenMeta}
         </div>
       )}
+
 
       {/* Modal de Ajustes: Hoja inferior */}
       {mostrarModalAjustes && (
@@ -664,7 +640,7 @@ export default function EditorView({
               backgroundColor: 'var(--bg-panel)',
               color: 'var(--color-texto)',
               padding: 'var(--aire-4)',
-              borderRadius: '24px 24px 0 0',
+              borderRadius: 'var(--redondeo-grande) var(--redondeo-grande) 0 0',
               maxWidth: 500,
               width: '100%',
               maxHeight: '86vh',
@@ -686,7 +662,7 @@ export default function EditorView({
             <div style={{ width: 36, height: 4, borderRadius: 'var(--redondeo-pildora)', backgroundColor: 'var(--color-borde)', margin: '0 auto var(--aire-3) auto' }} />
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-4)' }}>
-              <h3 className="texto-titulo" style={{ margin: 0 }}>Ajustes</h3>
+              <h3 style={{ margin: 0, fontSize: 'var(--texto-titulo)', fontWeight: 600, color: 'var(--color-texto)' }}>Ajustes</h3>
               <button
                 data-testid="btn-cerrar-ajustes"
                 onClick={() => setMostrarModalAjustes(false)}
@@ -1062,7 +1038,7 @@ export default function EditorView({
               : `panelSube ${MS_PANEL}ms ${CURVA_RESORTE} forwards`
           }}
         >
-          <h4 className="texto-titulo" style={{ margin: '0 0 var(--aire-2) 0', color: 'var(--color-texto)' }}>Pegar texto</h4>
+          <h4 style={{ margin: '0 0 var(--aire-2) 0', fontSize: 'var(--texto-titulo)', fontWeight: 600, color: 'var(--color-texto)' }}>Pegar texto</h4>
           <p className="texto-cuerpo" style={{ margin: '0 0 var(--aire-3) 0', color: 'var(--color-apagado)' }}>
             Pega aquí el texto de tu guión. Se convertirá automáticamente en bloques y líneas con el formato adecuado.
           </p>
@@ -1420,11 +1396,11 @@ export default function EditorView({
               padding: 'var(--aire-3) var(--aire-4)',
               fontSize: 'var(--texto-cuerpo)',
               fontWeight: 600,
-              backgroundColor: 'var(--bg-panel)',
+              backgroundColor: 'var(--bg-fila)',
               color: 'var(--color-texto)',
               borderRadius: 'var(--redondeo-pildora)',
               cursor: 'pointer',
-              border: '1px solid var(--color-borde)'
+              border: 'none'
             }}
           >
             Pegar texto
@@ -1440,11 +1416,11 @@ export default function EditorView({
               padding: 'var(--aire-3) var(--aire-4)',
               fontSize: 'var(--texto-cuerpo)',
               fontWeight: 600,
-              backgroundColor: 'var(--bg-panel)',
+              backgroundColor: 'var(--bg-fila)',
               color: 'var(--color-texto)',
               borderRadius: 'var(--redondeo-pildora)',
               cursor: cargandoArchivo ? 'not-allowed' : 'pointer',
-              border: '1px solid var(--color-borde)'
+              border: 'none'
             }}
           >
             {cargandoArchivo ? 'Leyendo...' : 'Abrir archivo'}
@@ -1467,7 +1443,11 @@ export default function EditorView({
           }}
         >
           <button
-            onClick={onEntrarLectura}
+            ref={btnLeerRef}
+            onClick={() => {
+              const rect = btnLeerRef.current?.getBoundingClientRect()
+              onEntrarLectura(rect)
+            }}
             data-testid="btn-leer-guion-fijo"
             style={{
               pointerEvents: 'auto',

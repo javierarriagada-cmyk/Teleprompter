@@ -985,12 +985,13 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const tituloMostrar = (guionActual && guionActual.titulo && guionActual.titulo.trim()) ? guionActual.titulo : 'Sin título'
 
-  // LA TARJETA SE CONVIERTE EN LA PANTALLA DE LECTURA -parte 4 de la tarea 48-.
+  // LA TARJETA O LA PILDORA SE CONVIERTE EN LA PANTALLA DE LECTURA.
   //
-  // La medicion es una sola, en el toque: BibliotecaView manda el rectangulo de la
-  // tarjeta y aca se traduce a los cuatro huecos que pide inset(). El motivo de
-  // recortar en vez de agrandar esta escrito arriba de @keyframes revelarLectura.
-  const huecoTarjeta = (rectTarjeta && typeof window !== 'undefined')
+  // La medicion es una sola, en el toque: BibliotecaView o EditorView manda el
+  // rectangulo de la tarjeta o del boton "Leer", y aca se traduce a los cuatro huecos
+  // que pide inset(). El motivo de recortar en vez de agrandar esta escrito arriba de
+  // @keyframes revelarLectura.
+  const huecoEntrada = (rectTarjeta && typeof window !== 'undefined')
     ? {
         arriba: Math.max(0, rectTarjeta.top),
         izquierda: Math.max(0, rectTarjeta.left),
@@ -999,9 +1000,8 @@ export default function App({ motor, repoOverride }: AppProps) {
       }
     : null
 
-  const hayTransformacionDeTarjeta = !movimientoApagado()
-    && origenLecturaRef.current === 'biblioteca'
-    && huecoTarjeta !== null
+  const hayTransformacionDeEntrada = !movimientoApagado()
+    && huecoEntrada !== null
 
   return (
     <div
@@ -1010,7 +1010,15 @@ export default function App({ motor, repoOverride }: AppProps) {
         paddingBottom: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-bottom, 0px))',
         paddingLeft: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-left, 0px))',
         paddingRight: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-right, 0px))',
-        fontFamily: 'sans-serif',
+        // SIN fontFamily AQUI, A PROPOSITO.
+        //
+        // Esta linea decia fontFamily: 'sans-serif' -la palabra generica- y pisaba
+        // la pila del body para TODA la aplicacion. Medido en el navegador el 20 de
+        // septiembre de 2026: el body calculaba "Source Sans 3" y todo lo que colgaba
+        // de aca calculaba el sans generico del navegador.
+        //
+        // Aparecio revisando la tarea 55: el boton "Aa" paso de serif a sans y seguia
+        // sin ser el nuestro. La familia se define en un solo sitio, el body.
         maxWidth: vista === 'lectura' ? 'none' : 1200,
         margin: '0 auto'
       }}
@@ -1147,7 +1155,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               setGuionActual(nuevoG)
             }}
             onVolverBiblioteca={() => { salirDelEditor() }}
-            onEntrarLectura={() => handleEntrarLectura('editor')}
+            onEntrarLectura={(rect) => handleEntrarLectura('editor', rect)}
             fontSize={fontSize}
             onLetraMenos={handleLetraMenos}
             onLetraMas={handleLetraMas}
@@ -1189,15 +1197,15 @@ export default function App({ motor, repoOverride }: AppProps) {
             zIndex: 150,
             overflow: 'hidden',
             borderRadius: 0,
-            animation: hayTransformacionDeTarjeta
+            animation: hayTransformacionDeEntrada
               ? `revelarLectura ${MS_PANTALLA}ms ${CURVA_ENTRA}`
               : 'none',
-            // Los cuatro huecos que hay entre el borde de la pantalla y la tarjeta:
+            // Los cuatro huecos que hay entre el borde de la pantalla y la tarjeta o pildora:
             // eso es el recorte del que arranca la ventana.
-            '--tarjeta-arriba': huecoTarjeta ? `${huecoTarjeta.arriba}px` : '0px',
-            '--tarjeta-derecha': huecoTarjeta ? `${huecoTarjeta.derecha}px` : '0px',
-            '--tarjeta-abajo': huecoTarjeta ? `${huecoTarjeta.abajo}px` : '0px',
-            '--tarjeta-izquierda': huecoTarjeta ? `${huecoTarjeta.izquierda}px` : '0px'
+            '--tarjeta-arriba': huecoEntrada ? `${huecoEntrada.arriba}px` : '0px',
+            '--tarjeta-derecha': huecoEntrada ? `${huecoEntrada.derecha}px` : '0px',
+            '--tarjeta-abajo': huecoEntrada ? `${huecoEntrada.abajo}px` : '0px',
+            '--tarjeta-izquierda': huecoEntrada ? `${huecoEntrada.izquierda}px` : '0px'
           } as React.CSSProperties}
         >
           {controlesVisibles && (
@@ -1363,7 +1371,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                 envoltorio alrededor de TeleprompterView: envolverlo mete un elemento
                 entre el contenedor y la superficie de lectura, y hay pruebas que suben
                 por el arbol desde ahi. Un hermano no cambia ese camino. */}
-            {hayTransformacionDeTarjeta && (
+            {hayTransformacionDeEntrada && (
               <div
                 aria-hidden="true"
                 style={{

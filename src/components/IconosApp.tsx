@@ -23,3 +23,26 @@ export function IconoEngranaje({
     </svg>
   )
 }
+
+/** Flecha de volver hacia la izquierda de trazo fino. */
+export function IconoAtras({
+  tamano = 20,
+  ...props
+}: { tamano?: number } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width={tamano}
+      height={tamano}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M15 18l-6-6 6-6" />
+    </svg>
+  )
+}

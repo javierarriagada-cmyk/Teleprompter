@@ -135,7 +135,7 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     expect(pantallaDiv?.getAttribute('data-pantalla-direccion')).toBe('adentro')
 
     // 3. Volver a biblioteca (nivel 2 -> nivel 1 = atras)
-    const btnVolver = screen.getByText('‹ Guiones')
+    const btnVolver = screen.getByText('Guiones')
     await act(async () => {
       fireEvent.click(btnVolver)
     })

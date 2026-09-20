@@ -1304,9 +1304,7 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       idioma: 'es',
       creado: Date.now(),
       modificado: Date.now(),
-      bloques: [
-        { id: 'b1', nombre: '', texto: 'Bloque A' }
-      ]
+      bloques: []
     }
     await repo.guardar(guionPrueba)
 
@@ -1331,13 +1329,9 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       fireEvent.click(btnPegar)
     })
 
-    // DOS PEGADOS, NO UNO. Desde el 15 de septiembre de 2026 lo importado entra en
-    // UN bloque -ver T41-, asi que pegar "Bloque B\n\nBloque C" de una vez daria un
-    // solo bloque con los dos adentro. Esta prueba no es de importar: es de subir y
-    // borrar bloques, asi que se crean de a uno y lo que comprueba queda igual.
     const textareaModal = container!.querySelector('textarea[placeholder="Pega aquí el texto completo..."]') as HTMLTextAreaElement
     await act(async () => {
-      fireEvent.change(textareaModal, { target: { value: 'Bloque B' } })
+      fireEvent.change(textareaModal, { target: { value: 'Bloque A' } })
     })
 
     const btnAceptar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Importar')!
@@ -1345,15 +1339,21 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       fireEvent.click(btnAceptar)
     })
 
+    // Ahora con palabras > 0, agregar dos bloques adicionales usando el botón "+ Agregar bloque"
+    const btnAgregar = container!.querySelector('[data-testid="btn-agregar-bloque"]') as HTMLElement
+    expect(btnAgregar).not.toBeNull()
+
     await act(async () => {
-      fireEvent.click(container!.querySelector('[data-testid="btn-pegar-texto"]') as HTMLElement)
+      fireEvent.click(btnAgregar)
     })
-    const textareaModal2 = container!.querySelector('textarea[placeholder="Pega aquí el texto completo..."]') as HTMLTextAreaElement
     await act(async () => {
-      fireEvent.change(textareaModal2, { target: { value: 'Bloque C' } })
+      fireEvent.click(btnAgregar)
     })
+
+    const textareasTemp = Array.from(container!.querySelectorAll('textarea[placeholder="Escribe el texto..."]')) as HTMLTextAreaElement[]
     await act(async () => {
-      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Importar')!)
+      fireEvent.change(textareasTemp[1], { target: { value: 'Bloque B' } })
+      fireEvent.change(textareasTemp[2], { target: { value: 'Bloque C' } })
     })
 
     const textareas = Array.from(container!.querySelectorAll('textarea[placeholder="Escribe el texto..."]')) as HTMLTextAreaElement[]

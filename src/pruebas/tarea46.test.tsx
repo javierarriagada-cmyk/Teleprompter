@@ -46,7 +46,7 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
     // se cambia la fuente o el interletrado, este número se vuelve a medir: no se
     // ajusta a ojo.
     const tamanosPermitidos = [11, 13, 15, 18, 28, 42, 44]
-    const radiosPermitidos = [0, 10, 24, 999]
+    const radiosPermitidos = [0, 10, 999]
     const espaciadosPermitidos = [0, 4, 8, 12, 20, 32]
 
     const infracciones: string[] = []

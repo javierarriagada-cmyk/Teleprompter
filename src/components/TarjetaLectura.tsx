@@ -77,7 +77,7 @@ export default function TarjetaLectura({
       className="tarjeta-lectura-borde-iluminado"
       style={{
         backgroundColor: parejaColor.fondo,
-        borderRadius: 24,
+        borderRadius: 'var(--redondeo-grande)',
         padding: 'var(--aire-4)',
         position: 'relative',
         display: 'flex',

@@ -27,6 +27,7 @@
   --aire-4: 20px;
   --aire-5: 32px;
   --redondeo: 10px;
+  --redondeo-grande: 24px;
   --redondeo-pildora: 999px;
 }
 
@@ -45,6 +46,9 @@
   --color-grabando: #E11D2E;
   --color-grabando-texto: #FF5A5A;
   --velo-modal: rgba(21, 19, 18, 0.72);
+  --redondeo: 10px;
+  --redondeo-grande: 24px;
+  --redondeo-pildora: 999px;
 }
 
 [data-tema="oscuro"] {
@@ -62,6 +66,9 @@
   --color-grabando: #E11D2E;
   --color-grabando-texto: #FF5A5A;
   --velo-modal: rgba(21, 19, 18, 0.72);
+  --redondeo: 10px;
+  --redondeo-grande: 24px;
+  --redondeo-pildora: 999px;
 }
 
 body {
@@ -324,6 +331,28 @@ button.btn-deformable:active,
   }
 }
 
+/* LOS CONTROLES NO HEREDAN LA TIPOGRAFIA SOLOS, Y POR ESO TODA LA INTERFAZ
+ * ESTUVO EN ARIAL.
+ *
+ * El navegador le da a button, input, select y textarea su propia fuente, que no
+ * es la del documento. Medido en el navegador el 20 de septiembre de 2026, con la
+ * pantalla del editor abierta: el cuerpo calculaba "Source Sans 3", y CADA BOTON
+ * -Guiones, Aa, Leer, Agregar bloque- calculaba Arial.
+ *
+ * Aparecio revisando la tarea 55, que movio el boton "Aa" de serif a sans: paso de
+ * una fuente equivocada a otra, porque "sans" sin familia propia cae en la del
+ * navegador. El textarea ya tenia esta regla desde antes; faltaban los demas.
+ *
+ * Ninguna prueba podia agarrarlo: jsdom no resuelve tipografias. */
+button,
+input,
+select,
 textarea {
   font-family: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-borde);
+  opacity: 1;
 }
