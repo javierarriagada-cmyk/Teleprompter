@@ -3,8 +3,8 @@ TAREA 55 - LA PANTALLA DEL EDITOR
 PARTIR DE: main. Rama nueva: tarea-55-el-editor.
 SI TRABAJAS DESPUES DE UNA CORRECCION, NO VUELVAS A CLONAR main. Segui en tu rama.
 
-ARCHIVOS: src/components/EditorView.tsx, src/components/IconosApp.tsx y
-src/styles.css.
+ARCHIVOS: src/components/EditorView.tsx, src/components/IconosApp.tsx,
+src/components/TarjetaLectura.tsx, src/App.tsx y src/styles.css.
 
 NO TOQUES:
    src/motor/   src/lib/   src/hooks/   src/datos/
@@ -190,6 +190,58 @@ devolviendo a donde se entro -T222-.
 
 
 ============================================================
+PARTE 9 - UNA SOLA ESCALA DE ESQUINAS
+============================================================
+
+Medido hoy en el codigo: 35 usos de var(--redondeo) y 7 de
+var(--redondeo-pildora). Eso esta bien. Lo que no:
+
+    borderRadius: 24                              la tarjeta de portada
+    borderRadius: '24px 24px 0 0'                 una hoja inferior
+    borderRadius: 'var(--redondeo) var(--redondeo) 0 0'   otra hoja inferior
+    borderRadius: 'var(--aire-1)'                 la agarradera de la hoja
+
+Dos numeros 24 escritos a mano, DOS HOJAS INFERIORES QUE SE CURVAN DISTINTO -una
+24 y otra 10, siendo el mismo tipo de objeto-, y una ficha de ESPACIADO usada
+como radio.
+
+LA ESCALA, QUE QUEDA ASI Y NO SE AMPLIA
+
+    --redondeo          10px    superficies chicas: filas, botones, menus,
+                                cuadros de texto
+    --redondeo-grande   24px    superficies grandes: la tarjeta de portada y
+                                las hojas inferiores          <- FICHA NUEVA
+    --redondeo-pildora  999px   pildoras y la agarradera de la hoja
+    50%                         circulos
+
+    14px sigue existiendo en styles.css SOLO como estado apretado de
+    .btn-deformable. No se usa en ningun otro sitio.
+
+QUE HACER
+
+  a. Agrega --redondeo-grande: 24px a src/styles.css, en los tres bloques donde
+     viven las otras fichas.
+
+  b. La tarjeta de portada usa var(--redondeo-grande) en vez del 24 a mano.
+
+  c. LAS DOS HOJAS INFERIORES usan
+     var(--redondeo-grande) var(--redondeo-grande) 0 0.
+     La que hoy tiene 10 pasa a 24: son el mismo objeto y se tienen que ver
+     igual.
+
+  d. La agarradera usa var(--redondeo-pildora), no var(--aire-1).
+     --aire-1 es espaciado, no curvatura.
+
+  e. En T209, la lista de radios permitidos deja de aceptar 24 como numero.
+     Que los radios grandes tengan que venir de la ficha.
+
+ESTO DEROGA UNA REGLA DE LA TAREA 48, a proposito. Ahi decia: "Radio 24, que NO
+comparte con nada mas de la aplicacion. Es el unico objeto con forma propia." La
+tarea 52 ya le dio 24 a una hoja. La regla nueva es la escala de arriba: lo que
+distingue a la tarjeta no es su radio, es ser la pantalla de lectura en chico.
+
+
+============================================================
 PRUEBAS
 ============================================================
 
@@ -221,6 +273,11 @@ Numerar desde T276.
          contenedor de la lectura lleva la animacion revelarLectura. Con
          movimientoApagado() en true, no la lleva.
 
+  T283 - UNA SOLA ESCALA DE ESQUINAS. La ficha --redondeo-grande existe en los
+         tres bloques de styles.css. Ningun componente escribe el numero 24 como
+         radio. Las dos hojas inferiores usan la misma ficha en sus esquinas de
+         arriba.
+
   T209, T218, T222, T223, T253 y T256 TIENEN QUE SEGUIR VERDES.
 
 
@@ -231,7 +288,7 @@ AL TERMINAR
    tsc limpio. 243 pruebas o mas.
 
    INFORME:
-     1. Las ocho partes.
+     1. Las nueve partes.
      2. El contraste de los textos de ayuda, antes y despues.
      3. El resultado textual de romper T279.
      4. Archivo y linea de cada prueba nueva.
