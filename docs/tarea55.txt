@@ -1,0 +1,191 @@
+TAREA 55 - LA PANTALLA DEL EDITOR
+
+PARTIR DE: main. Rama nueva: tarea-55-el-editor.
+SI TRABAJAS DESPUES DE UNA CORRECCION, NO VUELVAS A CLONAR main. Segui en tu rama.
+
+ARCHIVOS: src/components/EditorView.tsx, src/components/IconosApp.tsx y
+src/styles.css.
+
+NO TOQUES:
+   src/motor/   src/lib/   src/hooks/   src/datos/
+   TeleprompterView.tsx   haptica.ts   Entrada.tsx
+   El modelo de bloques: cada parrafo sigue siendo un bloque.
+   La pildora "Leer" y su comportamiento al desplazar. Eso quedo bien.
+   La hoja de ajustes inferior y su arrastre. Tambien.
+
+Hoy: 243 pruebas, tsc limpio. Al terminar: 243 o mas.
+
+EN EL INFORME, POR CADA PRUEBA QUE DIGAS HABER CREADO, PONE EL ARCHIVO Y LA
+LINEA DONDE QUEDO.
+
+
+============================================================
+PARTE 1 - EL AREA SEGURA DE ARRIBA
+============================================================
+
+El contenedor del editor tiene hoy:
+
+    padding: var(--aire-4) var(--aire-4) calc(130px + env(safe-area-inset-bottom, 0px)) var(--aire-4)
+
+El relleno de ABAJO descuenta el area segura. El de ARRIBA no. Por eso
+"‹ Guiones" y "Aa" quedan pegados a la barra de estado del telefono.
+
+QUE HACER: el relleno de arriba pasa a
+
+    calc(20px + env(safe-area-inset-top, 0px))
+
+Igual que se hizo abajo en la tarea 43.
+
+
+============================================================
+PARTE 2 - EL ICONO DE VOLVER
+============================================================
+
+Hoy el boton dice el caracter "‹" seguido de "Guiones".
+
+QUE HACER: agrega a src/components/IconosApp.tsx un IconoAtras, con las MISMAS
+propiedades que el IconoEngranaje que ya esta ahi:
+
+    viewBox 0 0 24 24
+    fill none
+    stroke currentColor
+    strokeWidth 1.6
+    strokeLinecap round
+    strokeLinejoin round
+
+Una flecha hacia la izquierda. El boton pasa a ser el icono seguido de la palabra
+"Guiones", con 8 px entre los dos.
+
+
+============================================================
+PARTE 3 - SE VA LA LINEA BAJO EL TITULO
+============================================================
+
+Hoy el campo del titulo tiene:
+
+    borderBottom: tituloEnfocado ? '2px solid var(--color-acento)' : '1px solid var(--color-borde)'
+
+QUE HACER:
+
+  a. Sin foco: NO hay linea. Ninguna.
+  b. Con foco: tampoco hay linea. El foco se marca con el FONDO del campo, que
+     pasa de transparente a var(--bg-fila), con una transicion de MS_CHICO.
+
+El titulo se separa de lo que sigue con aire, no con una linea.
+
+
+============================================================
+PARTE 4 - EL CONTADOR DE PALABRAS
+============================================================
+
+Hoy dice "0 palabras" con el guion vacio, suelto debajo del titulo.
+
+QUE HACER:
+
+  a. CON CERO PALABRAS, EL CONTADOR NO SE DIBUJA. No esta en el documento.
+  b. Con una palabra o mas, se dibuja como esta hoy -texto, no una pildora ni un
+     recuadro-, alineado a la izquierda igual que el titulo, a 4 px por debajo.
+
+No lo conviertas en un chip ni le pongas fondo.
+
+
+============================================================
+PARTE 5 - LOS DOS BOTONES DE ENTRADA
+============================================================
+
+"Pegar texto" y "Abrir archivo" hoy son dos pildoras grandes con borde, abajo,
+y se quedan ahi siempre.
+
+QUE HACER:
+
+  a. SE DIBUJAN SOLO CON EL GUION VACIO. En cuanto hay una letra de texto en
+     cualquier bloque, NO estan en el documento.
+  b. Mientras estan, bajan de peso: sin borde, fondo var(--bg-fila), el texto en
+     var(--color-texto).
+
+NO los conviertas en iconos ni armes una barra inferior fija: ahi ya vive la
+pildora "Leer", que se esconde al desplazar para devolverle la pantalla al texto.
+
+
+============================================================
+PARTE 6 - SERIF SOLO PARA EL GUION
+============================================================
+
+La regla, y vale para todo el editor:
+
+    SERIF -"Source Serif 4"-   el campo del titulo y el texto de los bloques.
+                               Eso es el guion: lo que el usuario escribe.
+
+    SANS  -"Source Sans 3"-    TODO lo demas: botones, contadores, etiquetas,
+                               la barra de arriba, los titulos de la hoja de
+                               ajustes y del cuadro de pegar.
+
+HOY NO SE CUMPLE EN ESTOS SITIOS, comprobados:
+
+    el boton "Aa"                   fontFamily "Source Serif 4" a mano
+    <h3 className="texto-titulo">   el titulo "Ajustes" de la hoja
+    <h4 className="texto-titulo">   el titulo "Pegar texto" del cuadro
+
+    .texto-titulo y .texto-display son serif en styles.css.
+
+QUE HACER: esos tres pasan a sans. No cambies .texto-titulo ni .texto-display en
+styles.css -los usa la biblioteca-: en el editor usa el tamaño que corresponda
+con la familia sans.
+
+
+============================================================
+PARTE 7 - EL CONTRASTE DE LOS TEXTOS DE AYUDA
+============================================================
+
+"Sin título" y "Escribe el texto..." son los textos de marca de posicion.
+
+QUE HACER: MEDI su color efectivo contra var(--bg-suelo) del tema oscuro
+-#151312- y comproba que la relacion de contraste llegue a 4.5:1. Si no llega,
+aclaralos hasta que llegue, usando una ficha del sistema.
+
+PONE EL NUMERO QUE TE DIO, ANTES Y DESPUES, EN EL INFORME.
+
+
+============================================================
+PRUEBAS
+============================================================
+
+Numerar desde T276.
+
+  T276 - El contenedor del editor lleva env(safe-area-inset-top) en su relleno
+         superior.
+
+  T277 - El campo del titulo no tiene borderBottom, ni con foco ni sin foco.
+
+  T278 - Con el guion vacio, el contador de palabras NO esta en el documento.
+         Con texto, SI esta.
+
+  T279 - Con el guion vacio, "Pegar texto" y "Abrir archivo" estan. Escribiendo
+         una letra, NO estan.
+
+         ROMPELA: hace que se dibujen siempre, verifica que se pone ROJA, dejala
+         bien. RESULTADO TEXTUAL EN EL INFORME.
+
+  T280 - En EditorView.tsx, "Source Serif 4" aparece SOLO en el campo del titulo
+         y en el textarea de los bloques. Ningun boton, contador ni encabezado
+         lo usa.
+
+  T281 - El color de los textos de marca de posicion contra #151312 da una
+         relacion de contraste mayor o igual a 4.5. Calculala en la prueba, como
+         hace T214.
+
+  T209, T218 y T253 TIENEN QUE SEGUIR VERDES.
+
+
+============================================================
+AL TERMINAR
+============================================================
+
+   tsc limpio. 243 pruebas o mas.
+
+   INFORME:
+     1. Las siete partes.
+     2. El contraste de los textos de ayuda, antes y despues.
+     3. El resultado textual de romper T279.
+     4. Archivo y linea de cada prueba nueva.
+     5. git diff --stat.
