@@ -146,6 +146,53 @@ export default function EditorView({
   const [mostrarModalAjustes, setMostrarModalAjustes] = useState(false)
   const refAjustes = useCerrarAfuera(mostrarModalAjustes, () => setMostrarModalAjustes(false))
   const [mostrarModalPegar, setMostrarModalPegar] = useState(false)
+
+  const [dragOffsetY, setDragOffsetY] = useState(0)
+  const esArrastrandoModalRef = useRef(false)
+  const dragStartYRef = useRef<number | null>(null)
+
+  function obtenerClientY(e: React.PointerEvent<HTMLDivElement>): number {
+    if (typeof e.clientY === 'number' && !isNaN(e.clientY)) return e.clientY
+    if (e.nativeEvent && typeof (e.nativeEvent as any).clientY === 'number') return (e.nativeEvent as any).clientY
+    return 0
+  }
+
+  function handleModalPointerDown(e: React.PointerEvent<HTMLDivElement>) {
+    const target = e.target as HTMLElement
+    if (target && target.closest('button, input, select, label, textarea, a, option, [role="button"]')) {
+      return
+    }
+    dragStartYRef.current = obtenerClientY(e)
+    esArrastrandoModalRef.current = true
+    if (e.currentTarget.setPointerCapture) {
+      try { e.currentTarget.setPointerCapture(e.pointerId) } catch (err) {}
+    }
+  }
+
+  function handleModalPointerMove(e: React.PointerEvent<HTMLDivElement>) {
+    if (!esArrastrandoModalRef.current || dragStartYRef.current === null) return
+    const currentY = obtenerClientY(e)
+    const dy = Math.max(0, currentY - dragStartYRef.current)
+    setDragOffsetY(dy)
+  }
+
+  function handleModalPointerUp(e: React.PointerEvent<HTMLDivElement>) {
+    if (!esArrastrandoModalRef.current || dragStartYRef.current === null) return
+    const currentY = obtenerClientY(e)
+    const dy = Math.max(0, currentY - dragStartYRef.current)
+    if (e.currentTarget.releasePointerCapture) {
+      try { e.currentTarget.releasePointerCapture(e.pointerId) } catch (err) {}
+    }
+    esArrastrandoModalRef.current = false
+    dragStartYRef.current = null
+
+    if (dy > 96) {
+      setMostrarModalAjustes(false)
+      setDragOffsetY(0)
+    } else {
+      setDragOffsetY(0)
+    }
+  }
   const [textoPegado, setTextoPegado] = useState('')
   const [errorPegado, setErrorPegado] = useState<string | null>(null)
 
@@ -597,7 +644,7 @@ export default function EditorView({
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(21,19,18,0.72)', // calc(1)
+            backgroundColor: 'var(--velo-modal)',
             display: 'flex',
             alignItems: 'flex-end',
             justifyContent: 'center',
@@ -609,6 +656,10 @@ export default function EditorView({
             ref={refAjustes}
             data-testid="panel-ajustes"
             className="panel-superficie"
+            onPointerDown={handleModalPointerDown}
+            onPointerMove={handleModalPointerMove}
+            onPointerUp={handleModalPointerUp}
+            onPointerCancel={handleModalPointerUp}
             style={{
               backgroundColor: 'var(--bg-panel)',
               color: 'var(--color-texto)',
@@ -619,14 +670,20 @@ export default function EditorView({
               maxHeight: '86vh',
               overflowY: 'auto',
               boxSizing: 'border-box',
-              animation: movimientoApagado()
+              transform: `translateY(${dragOffsetY}px)`,
+              transition: esArrastrandoModalRef.current
+                ? 'none'
+                : movimientoApagado()
+                ? 'none'
+                : `transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
+              animation: movimientoApagado() || esArrastrandoModalRef.current || dragOffsetY > 0
                 ? 'none'
                 : `panelSube ${MS_PANEL}ms ${CURVA_RESORTE} forwards`
             }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Handle superior de 36x4 */}
-            <div style={{ width: 36, height: 4, borderRadius: 'calc(2px)', backgroundColor: 'var(--color-borde)', margin: '0 auto var(--aire-3) auto' }} />
+            <div style={{ width: 36, height: 4, borderRadius: 'var(--redondeo-pildora)', backgroundColor: 'var(--color-borde)', margin: '0 auto var(--aire-3) auto' }} />
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-4)' }}>
               <h3 className="texto-titulo" style={{ margin: 0 }}>Ajustes</h3>

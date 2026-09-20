@@ -10,38 +10,38 @@
         android:strokeWidth="20"
         android:strokeLineCap="round"
         android:trimPathEnd="0"
-        android:pathData="M152,136 L304,136" />
+        android:pathData="M116,158 L250,158" />
     <path
         android:name="linea2"
         android:strokeColor="@color/marca_trazo"
         android:strokeWidth="20"
         android:strokeLineCap="round"
         android:trimPathEnd="0"
-        android:pathData="M112,176 L268,176" />
+        android:pathData="M116,194 L236,194" />
     <path
         android:name="linea3"
         android:strokeColor="@color/marca_trazo"
         android:strokeWidth="20"
         android:strokeLineCap="round"
         android:trimPathEnd="0"
-        android:pathData="M112,216 L304,216" />
+        android:pathData="M116,230 L272,230" />
     <path
         android:name="linea4"
         android:strokeColor="@color/marca_trazo_apagado"
         android:strokeWidth="20"
         android:strokeLineCap="round"
         android:trimPathEnd="0"
-        android:pathData="M112,256 L252,256" />
+        android:pathData="M116,266 L220,266" />
     <path
         android:name="linea5"
         android:strokeColor="@color/marca_trazo_apagado"
         android:strokeWidth="20"
         android:strokeLineCap="round"
         android:trimPathEnd="0"
-        android:pathData="M112,296 L288,296" />
+        android:pathData="M116,302 L256,302" />
     <path
         android:name="punto"
         android:fillColor="@color/marca_punto"
         android:fillAlpha="0"
-        android:pathData="M285,168 m-13,0 a13,13 0 1,0 26,0 a13,13 0 1,0 -26,0" />
+        android:pathData="M300,128 m-20,0 a20,20 0 1,0 40,0 a20,20 0 1,0 -40,0" />
 </vector>

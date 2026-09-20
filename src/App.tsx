@@ -100,16 +100,29 @@ export default function App({ motor, repoOverride }: AppProps) {
   const prevVistaRef = useRef<Vista | null>(null)
   const [direccion, setDireccion] = useState<'adentro' | 'atras' | 'inicial'>('inicial')
   const guionModificadoRef = useRef<boolean>(false)
-  const [avisoTexto, setAvisoTexto] = useState<string | null>(null)
+  interface AvisoInfo {
+    texto: string
+    accionTexto?: string
+    alEjecutarAccion?: () => void
+  }
+  const [avisoInfo, setAvisoInfo] = useState<AvisoInfo | null>(null)
   const timerAvisoRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const mostrarAviso = useCallback((msg: string) => {
+  const mostrarAviso = useCallback((
+    msg: string,
+    opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number }
+  ) => {
     if (timerAvisoRef.current) clearTimeout(timerAvisoRef.current)
-    setAvisoTexto(msg)
+    setAvisoInfo({
+      texto: msg,
+      accionTexto: opciones?.accionTexto,
+      alEjecutarAccion: opciones?.alEjecutarAccion
+    })
+    const dur = opciones?.duracionMs ?? 2000
     timerAvisoRef.current = setTimeout(() => {
-      setAvisoTexto(null)
+      setAvisoInfo(null)
       timerAvisoRef.current = null
-    }, 2000)
+    }, dur)
   }, [])
 
   const getNivelVista = (v: Vista): number => {
@@ -518,18 +531,44 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }
 
-  async function handleBorrarGuion(id: string) {
-    try {
-      await repoRef.current.borrar(id)
-      if (guionActual && guionActual.id === id) {
-        setGuionActual(null)
-        setVista('biblioteca')
-      }
-      await cargarBiblioteca()
-    } catch (e) {
-      console.warn('[App] Error al borrar guion:', e)
+  const [idsPendientesBorrado, setIdsPendientesBorrado] = useState<string[]>([])
+  const timerBorradoRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({})
+
+  const handleBorrarGuion = useCallback((id: string) => {
+    setIdsPendientesBorrado((prev) => [...prev, id])
+
+    if (timerBorradoRef.current[id]) {
+      clearTimeout(timerBorradoRef.current[id])
     }
-  }
+
+    timerBorradoRef.current[id] = setTimeout(async () => {
+      delete timerBorradoRef.current[id]
+      try {
+        await repoRef.current.borrar(id)
+        if (guionActual && guionActual.id === id) {
+          setGuionActual(null)
+          setVista('biblioteca')
+        }
+        await cargarBiblioteca()
+      } catch (e) {
+        console.warn('[App] Error al borrar guion:', e)
+      } finally {
+        setIdsPendientesBorrado((prev) => prev.filter((i) => i !== id))
+      }
+    }, 5000)
+
+    mostrarAviso('Guion borrado', {
+      accionTexto: 'Deshacer',
+      duracionMs: 5000,
+      alEjecutarAccion: () => {
+        if (timerBorradoRef.current[id]) {
+          clearTimeout(timerBorradoRef.current[id])
+          delete timerBorradoRef.current[id]
+        }
+        setIdsPendientesBorrado((prev) => prev.filter((i) => i !== id))
+      }
+    })
+  }, [guionActual, cargarBiblioteca, mostrarAviso])
 
   async function handleArchivarGuion(id: string, archivado: boolean) {
     try {
@@ -1024,7 +1063,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       {(vista === 'biblioteca' || (vista === 'lectura' && origenLecturaRef.current === 'biblioteca')) && (
         <Pantalla direccion={direccion}>
           <BibliotecaView
-            guiones={guionesResumen}
+            guiones={guionesResumen.filter((g) => !idsPendientesBorrado.includes(g.id))}
             onAbrir={handleAbrirGuion}
             onLeerDirecto={handleLeerDirecto}
             onCrearNuevo={handleCrearNuevoGuion}
@@ -1335,7 +1374,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       )}
 
       {/* Toast / Aviso Breve */}
-      {avisoTexto && (
+      {avisoInfo && (
         <div
           data-testid="aviso-flotante"
           style={{
@@ -1351,11 +1390,34 @@ export default function App({ motor, repoOverride }: AppProps) {
             fontSize: 'var(--texto-cuerpo)',
             fontWeight: 600,
             zIndex: 999,
-            pointerEvents: 'none',
+            pointerEvents: avisoInfo.accionTexto ? 'auto' : 'none',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 'var(--aire-3)',
             animation: movimientoApagado() ? 'none' : `panelSube ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
           }}
         >
-          {avisoTexto}
+          <span>{avisoInfo.texto}</span>
+          {avisoInfo.accionTexto && (
+            <button
+              onClick={() => {
+                if (timerAvisoRef.current) clearTimeout(timerAvisoRef.current)
+                setAvisoInfo(null)
+                if (avisoInfo.alEjecutarAccion) avisoInfo.alEjecutarAccion()
+              }}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--color-acento)',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                fontSize: 'var(--texto-cuerpo)',
+                padding: 0
+              }}
+            >
+              {avisoInfo.accionTexto}
+            </button>
+          )}
         </div>
       )}
     </div>

@@ -13,6 +13,7 @@
   --color-texto-acento: #151312;
   --color-grabando: #E11D2E;
   --color-grabando-texto: #FF5A5A;
+  --velo-modal: rgba(21, 19, 18, 0.72);
 
   --texto-display: 28px;
   --texto-titulo: 18px;
@@ -43,6 +44,7 @@
   --color-texto-acento: #151312;
   --color-grabando: #E11D2E;
   --color-grabando-texto: #FF5A5A;
+  --velo-modal: rgba(21, 19, 18, 0.72);
 }
 
 [data-tema="oscuro"] {
@@ -59,6 +61,7 @@
   --color-texto-acento: #151312;
   --color-grabando: #E11D2E;
   --color-grabando-texto: #FF5A5A;
+  --velo-modal: rgba(21, 19, 18, 0.72);
 }
 
 body {

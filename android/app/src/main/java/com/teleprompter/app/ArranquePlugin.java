@@ -7,9 +7,19 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 
 @CapacitorPlugin(name = "Arranque")
 public class ArranquePlugin extends Plugin {
+    private static PluginCall ultimoCall = null;
+
     @PluginMethod
     public void listo(PluginCall call) {
+        call.setKeepAlive(true);
+        ultimoCall = call;
         MainActivity.notificarListo();
-        call.resolve();
+    }
+
+    public static void resolverListo() {
+        if (ultimoCall != null) {
+            ultimoCall.resolve();
+            ultimoCall = null;
+        }
     }
 }
