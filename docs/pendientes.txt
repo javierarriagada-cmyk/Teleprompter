@@ -286,3 +286,44 @@ LO QUE NO HAY QUE VOLVER A HACER:
   Suponer desde las pruebas. jsdom no maqueta, no recorta y no anima: las 246
   pruebas estuvieron en verde durante las cinco vueltas en que esto se veia mal.
   Se mira en el navegador -npm run dev- o en el telefono con capturas.
+
+
+================================================================
+MIRAR EL TELEFONO CON PRECISION: SCRCPY Y SCREENRECORD
+================================================================
+
+Javier trajo google/artemis el 20 de septiembre de 2026 -Apache 2.0, salio este
+mes-. Es un marco de automatizacion de Android: convierte instrucciones en
+lenguaje natural en acciones sobre un telefono, con consola web, CLI, SDK de
+Python y un servidor MCP que se enchufa a Claude Code. Soporta Windows.
+
+LA EVALUACION, Y POR QUE NO SE INSTALA ENTERO HOY
+
+  Su modo agente NECESITA MODELOS DE VISION EN LA NUBE: no corre local. Y lo que
+  nos falto durante la tarea 54 no fue decidir que tocar en el telefono, fue
+  CAPTURAR CUADROS CON PRECISION. Un 99% en AndroidWorld mide hacer tareas, no
+  medir milisegundos.
+
+  Y lo mas honesto: no habria evitado ninguno de los errores de esa tarea. El
+  problema no fue que mirar fuera imposible, fue que no se miro.
+
+LO QUE SI HAY QUE TOMAR, Y SON DOS DEPENDENCIAS SUELTAS
+
+  scrcpy              ver la pantalla del telefono en vivo mientras arranca
+  adb screenrecord    grabar el arranque
+  FFmpeg              sacar los cuadros exactos de esa grabacion
+
+  Eso resuelve justo lo que falto: saber si SIGO alcanzaba a escribirse. Durante
+  la 54 hubo que manejar el telefono con adb crudo -forzar cierre, lanzar,
+  rafagas de capturas separadas unos 400 ms- y ademas CONGELAR LOS TIEMPOS a
+  mano y PINTAR EL ESPEJO DE AZUL en una compilacion desechable, sin lo cual no
+  habia manera de distinguir dos capas que dibujan la misma marca a proposito.
+
+  Con una grabacion a 60 cuadros por segundo nada de eso hace falta.
+
+ARTEMIS COMPLETO: PARA CUANDO TOQUE PROBAR FLUJOS ENTEROS
+
+  Grabar una lectura de punta a punta, repetirla, comparar entre versiones. Ahi
+  su agente vale la pena. Hoy seria un martillo para una tachuela.
+
+  https://github.com/google/artemis
