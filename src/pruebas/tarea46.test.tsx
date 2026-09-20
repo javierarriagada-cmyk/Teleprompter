@@ -35,7 +35,17 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
     const regexGapSpacing = /\bgap\s*:\s*([0-9.]+)/g
 
     // 44 px es la excepción del título de la Tarjeta de Portada (el protagonista de la pantalla)
-    const tamanosPermitidos = [11, 13, 15, 18, 28, 44]
+    // 44 px es la excepción del título de la Tarjeta de Portada (el protagonista
+    // de la pantalla).
+    //
+    // 42 px es la palabra SIGO del arranque, y es una excepción de otra clase: no
+    // es texto, es un logotipo. Su tamaño no sale de la escalera tipográfica sino
+    // de una MEDIDA: tiene que quedar entre 100 y 120 px de ancho para leerse como
+    // parte de la marca. Medido en el navegador con la página cargada, 42 px da
+    // 107 px de ancho, y el renglón más largo de la marca mide 104. Si alguna vez
+    // se cambia la fuente o el interletrado, este número se vuelve a medir: no se
+    // ajusta a ojo.
+    const tamanosPermitidos = [11, 13, 15, 18, 28, 42, 44]
     const radiosPermitidos = [0, 10, 24, 999]
     const espaciadosPermitidos = [0, 4, 8, 12, 20, 32]
 

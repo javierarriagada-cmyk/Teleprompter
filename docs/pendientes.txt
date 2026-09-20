@@ -228,3 +228,61 @@ sistema visual. SIGO en esa fuente ES la marca.
 
     Lo que NO hay que hacer es una animacion de opacidad: eso no es escribir, es
     aparecer, y se nota.
+
+
+================================================================
+LA ENTRADA PARPADEA: LA CAUSA ESTA UBICADA, FALTA ARREGLARLA
+================================================================
+
+Estado al 20 de septiembre de 2026, con la tarea 54 corregida a mano y sin
+fusionar -rama revision-54-.
+
+LO QUE YA ESTA RESUELTO Y COMPROBADO CON LOS OJOS:
+
+  La palabra SIGO se dibuja bien. Se saco del <svg> -ahi clip-path recortaba
+  cada letra por su cuenta y salian manchas- y quedo como un <span> de HTML.
+  MEDIDO EN EL NAVEGADOR con la pagina cargada:
+
+      ancho de la palabra   107 px
+      renglon mas largo     104 px
+      alineadas             a 1 px una de otra
+      hueco bajo la marca   28 px
+      tipografia            Source Serif 4 de verdad, cargada
+
+  T272 paso de EXIGIR el <text> de SVG -o sea, de fijar el defecto- a exigir lo
+  contrario, y se comprobo rompiendola.
+
+LO QUE FALTA, Y ES LO QUE SE VE MAL EN EL TELEFONO:
+
+  Javier, mirando el arranque: "primero aparece algo de la biblioteca, despues
+  el nombre una milesima, luego biblioteca, palabra... horrendo".
+
+  O sea que el espejo NO corre su linea de tiempo una sola vez: aparece y
+  desaparece varias veces, encima de la biblioteca que ya esta pintada.
+
+  LA CAUSA MAS PROBABLE, y hay que comprobarla antes de tocar nada:
+
+      En Entrada.tsx el efecto que arranca la linea de tiempo depende de
+      [onFinish]. En App.tsx se le pasa una funcion escrita en linea:
+
+          <Entrada onFinish={() => setMostrarEntrada(false)} />
+
+      Esa funcion es NUEVA en cada render de App. Y App se redibuja varias veces
+      durante el arranque -cargado, guionesResumen, el tema, los ajustes-. Cada
+      redibujo limpia los temporizadores y vuelve a arrancar la linea de tiempo
+      desde cero. Nunca corre entera.
+
+  EL ARREGLO SERIA: que onFinish sea estable -useCallback en App- y que Entrada
+  tenga un ref que impida arrancar la linea de tiempo mas de una vez.
+
+  COMO COMPROBARLO SIN ADIVINAR: el espejo y la pantalla nativa dibujan la MISMA
+  marca a proposito, asi que en una captura no se distinguen. Para saber cual de
+  las dos esta en pantalla, se compila una vez con el fondo del espejo en otro
+  color -se probo con #002244- y se mira. Eso ya se hizo y la captura salio con
+  la biblioteca: a los 4 segundos el espejo ya no estaba.
+
+LO QUE NO HAY QUE VOLVER A HACER:
+
+  Suponer desde las pruebas. jsdom no maqueta, no recorta y no anima: las 246
+  pruebas estuvieron en verde durante las cinco vueltas en que esto se veia mal.
+  Se mira en el navegador -npm run dev- o en el telefono con capturas.

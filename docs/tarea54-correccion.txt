@@ -1,0 +1,114 @@
+CORRECCION DE LA TAREA 54
+
+NO VUELVAS A CLONAR main. Segui sobre tu misma rama.
+
+Un solo archivo: src/components/Entrada.tsx. Y las pruebas.
+
+
+LO QUE ESTA BIEN Y NO SE TOCA
+
+246 pruebas verdes, tsc limpio. Solo tocaste los archivos que correspondian.
+
+  - El dibujo a mano se fue del todo: no quedan stroke-dashoffset, pathLength ni
+    dasharray.
+  - Las cuatro constantes de tiempo estan, con los valores pedidos, y el tope
+    subio a 2400.
+  - document.fonts.ready con tope de 1200.
+  - ROMPI T274 -poniendo MS_NOMBRE_QUIETO en 0- y SE PUSO ROJA.
+  - La geometria de la marca y el punto no se tocaron: T254 sigue verde.
+
+Instale el APK en el telefono de Javier y capture el arranque cuadro a cuadro.
+La marca y el punto rojo se ven bien. La palabra no.
+
+
+================================================================
+LA PALABRA SALE EN PEDAZOS
+================================================================
+
+En las capturas, donde deberia decir SIGO hay tres manchas sueltas: un borron
+redondeado y dos puntos separados. No son letras.
+
+LA CAUSA, y la mitad es culpa del encargo:
+
+La palabra quedo como un <text> ADENTRO del <svg>:
+
+    <svg width="288" height="288" viewBox="-144 -144 288 288">
+      ...los renglones y el punto...
+      <text data-testid="nombre-sigo" ... style={{ clipPath: 'inset(0 100% 0 0)' , ... }}>
+        SIGO
+      </text>
+    </svg>
+
+clip-path con una forma basica -inset()- sobre un <text> de SVG NO se comporta
+como sobre una caja de HTML. En vez de descubrir la palabra de izquierda a
+derecha, el recorte se resuelve contra una caja distinta y deja pedazos de cada
+letra. Eso es lo que se ve.
+
+Mi encargo decia "un solo elemento con la palabra SIGO como TEXTO" y NO decia
+"fuera del SVG". Tenias un <svg> ahi mismo y la metiste adentro: con lo que te
+escribi, era lo razonable. Lo aclaro ahora.
+
+
+QUE HACER
+
+  a. SACA LA PALABRA DEL <svg>. El <svg> se queda SOLO con los cinco renglones y
+     el punto rojo, exactamente como esta.
+
+  b. La palabra pasa a ser un elemento de HTML -un <span> o un <div>- hermano del
+     <svg>, dentro del mismo contenedor centrado.
+
+  c. Se posiciona con position: absolute respecto de ese contenedor:
+
+         horizontal   centrada sobre el centro del bloque de renglones, que es
+                      xCentroBloque, el mismo numero que ya calculaste
+         vertical     28 px por debajo del ultimo renglon, que es yNombre
+
+     Los dos valores ya existen en el archivo. No los recalcules distinto:
+     conviertelos a desplazamientos en px desde el centro del contenedor.
+
+  d. El recorte va sobre ESE elemento de HTML, con los mismos keyframes que ya
+     escribiste:
+
+         from { clip-path: inset(0 100% 0 0); }
+         to   { clip-path: inset(0 0 0 0); }
+
+     Ahi si funciona: es la misma herramienta con la que la tarjeta se convierte
+     en la pantalla de lectura -revelarLectura-, que corre sobre una caja de HTML.
+
+  e. LA FAMILIA TIPOGRAFICA LLEVA RESPALDO. Hoy dice:
+
+         fontFamily: '"Source Serif 4"'
+
+     Si esa fuente no esta cargada, no hay a que caer. Pone:
+
+         fontFamily: '"Source Serif 4", Georgia, serif'
+
+  f. El tamaño se ajusta para que la palabra mida ENTRE 100 Y 120 px de ancho,
+     como pedia el encargo. Hoy esta en 44px dentro del sistema de coordenadas
+     del SVG; fuera del SVG ese numero significa otra cosa. MEDILO DE NUEVO y
+     pone el resultado en el informe.
+
+
+LA PRUEBA QUE FALTA
+
+  T276 - LA PALABRA NO VIVE ADENTRO DEL SVG. Montando Entrada, el nodo con
+         data-testid="nombre-sigo" NO es un elemento de SVG: su tagName no es
+         "text" y no esta contenido en un <svg>.
+
+         ROMPELA: volve a meter la palabra adentro del <svg>, verifica que se
+         pone ROJA, dejala bien. RESULTADO TEXTUAL EN EL INFORME.
+
+  T272, T273, T274 y T275 tienen que seguir verdes. Si T273 comprueba el
+  clip-path leyendo el archivo, que lo siga comprobando sobre el elemento nuevo.
+
+
+AL TERMINAR
+
+   tsc limpio. 246 pruebas o mas.
+
+   INFORME:
+     1. Donde quedo la palabra ahora y con que posicionamiento.
+     2. El ancho medido y el tamaño de letra que lo produce.
+     3. El resultado textual de romper T276.
+     4. Archivo y linea de cada prueba nueva.
+     5. git diff --stat.

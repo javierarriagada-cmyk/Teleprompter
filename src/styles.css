@@ -182,6 +182,18 @@ button {
  * que lo unico que cambia adentro del rectangulo es el texto. Sin esto, en el primer
  * cuadro el texto chico se reemplaza de golpe por el grande: eso es el corte que la
  * tarea pedia que no existiera. */
+/* El nombre se escribe de izquierda a derecha. Es el mismo recurso que
+ * revelarLectura: un recorte que se abre, no una opacidad que aparece. Vive aca
+ * y no adentro del componente, como todas las animaciones del sistema. */
+@keyframes revelarNombreSigo {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
 @keyframes veloRelevoSale {
   from {
     opacity: 1;
