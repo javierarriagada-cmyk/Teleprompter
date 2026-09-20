@@ -70,6 +70,7 @@ public class MainActivity extends BridgeActivity {
         // armado y no los toma. Es el orden que pide Capacitor.
         registerPlugin(ArranquePlugin.class);
         registerPlugin(VoskNativoPlugin.class);
+        registerPlugin(FondoPlugin.class);
         super.onCreate(savedInstanceState);
     }
 }

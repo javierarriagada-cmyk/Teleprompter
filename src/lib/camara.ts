@@ -1,4 +1,7 @@
+import { registerPlugin } from '@capacitor/core'
 import { CameraPreview, CameraPosition } from '@capgo/camera-preview'
+
+const Fondo = registerPlugin<any>('Fondo')
 
 export type LadoCamara = 'frontal' | 'trasera'
 
@@ -17,6 +20,10 @@ export async function apagarCamara(): Promise<void> {
   try {
     if (estaEncendida) {
       await CameraPreview.stop()
+      try {
+        await Fondo.restaurar()
+      } catch (e) {
+      }
     }
   } catch (e) {
     // ignorar error al apagar
@@ -35,6 +42,10 @@ export async function encenderCamara(lado: LadoCamara): Promise<void> {
   const height = typeof window !== 'undefined' ? (window.screen.height || window.innerHeight) : 0
 
   try {
+    try {
+      await Fondo.transparente()
+    } catch (e) {
+    }
     await CameraPreview.start({
       toBack: true,
       enableVideoMode: false,
