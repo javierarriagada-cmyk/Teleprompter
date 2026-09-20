@@ -1,0 +1,105 @@
+TAREA 57 - SE ACABAN LOS BLOQUES EN EL EDITOR
+
+Rama: tarea57-sin-bloques-en-el-editor
+
+Hoy el editor dibuja el guion partido en "Bloque #1", "Bloque #2", cada uno con
+su encabezado numerado y botones de mover y borrar. Al terminar esta tarea el
+editor va a ser UNA SOLA HOJA para escribir, sin encabezados ni numeros.
+
+Javier, el 20 de septiembre de 2026: "eliminar de una vez por todas eso de
+bloques, a mi parecer solo esta interrumpiendo algo que no es muy logico".
+
+
+LO QUE NO SE TOCA, Y ES LA MITAD DE LA TAREA
+
+El tipo Bloque SIGUE EXISTIENDO en src/datos/modelo.ts y Guion.bloques sigue
+siendo un arreglo. NO se cambia el modelo.
+
+Motivo: el seguidor direcciona cada palabra del guion por bloque y linea -esa
+pareja es la direccion de cada token-, hay un motivo de frenado llamado
+"fin-de-bloque", y quince archivos de prueba lo mencionan. Sacarlo del modelo no
+le cambia nada al usuario y pone en riesgo el motor y los guiones ya guardados.
+
+Lo que cambia es que de ahora en adelante el arreglo va a tener SIEMPRE UN SOLO
+ELEMENTO.
+
+NO TOCAR: src/lib/seguidor.ts, src/lib/avance.ts, src/lib/conduccion.ts,
+src/components/TeleprompterView.tsx, src/motor/ y src/datos/modelo.ts.
+
+
+1. EL EDITOR MUESTRA UNA SOLA HOJA
+
+En src/components/EditorView.tsx, sacar de la pantalla:
+
+    - el encabezado "Bloque #N" con su flechita
+    - los botones de mover arriba, mover abajo y borrar de cada bloque
+    - el boton "+ Agregar bloque" y su funcion handleAgregarBloque
+
+Queda un solo cajon de texto, el del unico bloque, con los botones de enfasis
+-negrita y colores- que ya tiene. Esos se quedan tal cual.
+
+
+2. LO QUE AGREGA TEXTO YA NO AGREGA BLOQUES
+
+Hoy, pegar texto y importar un archivo AGREGAN un bloque nuevo al final:
+
+    bloques: [...bloquesActuales, ...nuevosBloques]
+
+Por eso en el telefono de Javier hay un guion con un "Bloque #1" vacio y el
+texto en el "Bloque #2": el guion se creo vacio y despues se importo un archivo
+adentro.
+
+Las dos cosas tienen que ESCRIBIR EN EL BLOQUE QUE YA ESTA, pegando el texto
+nuevo al final del que habia, separado por una linea en blanco. Si el bloque
+estaba vacio, queda solo el texto nuevo, sin linea en blanco adelante.
+
+
+3. UN GUION VIEJO CON VARIOS BLOQUES SE JUNTA SOLO
+
+Al abrir en el editor un guion que tenga mas de un bloque, se juntan en uno y se
+guarda. Una sola vez, sin preguntar nada y sin que se note.
+
+Como se juntan:
+
+    a. Los textos, en orden, separados por UNA LINEA EN BLANCO entre bloque y
+       bloque. Es como se separan los parrafos hoy y la pantalla de lectura ya
+       respeta los saltos de linea del autor, asi que se lee igual que antes.
+
+    b. LOS TRAMOS DE ENFASIS NO SE PUEDEN PERDER. Cada bloque guarda sus tramos
+       -negrita y color- con indices de caracter relativos a SU texto. Al juntar,
+       los indices de cada bloque hay que correrlos por la cantidad de caracteres
+       que quedaron antes de el, incluidas las lineas en blanco que se agregaron.
+       Si una palabra estaba en ambar, tiene que seguir en ambar y sobre la misma
+       palabra.
+
+    c. Si algun bloque tiene nombre -el campo nombre no vacio-, ese nombre se
+       conserva como una linea "[nombre]" al principio del texto de ese bloque,
+       para que no se pierda nada. En la practica estan todos vacios.
+
+
+4. COMO SE COMPRUEBA QUE QUEDO BIEN
+
+    a. Abrir un guion que hoy tenga dos bloques: tiene que verse una sola hoja
+       con todo el texto seguido, y los parrafos en su lugar.
+    b. Si ese guion tenia palabras en negrita o en color, tienen que seguir
+       pintadas LAS MISMAS palabras.
+    c. Pegar texto con el guion ya escrito: se agrega al final de lo que habia,
+       separado por una linea en blanco. No aparece ningun bloque nuevo.
+    d. Importar un archivo: lo mismo.
+    e. Entrar a leer y comprobar que el texto se lee igual que antes y que el
+       seguimiento por voz sigue funcionando.
+
+
+5. UNA PRUEBA, UNA SOLA
+
+En src/pruebas/tarea57.test.ts:
+
+    T274: un guion con dos bloques, el segundo con una palabra en ambar, al
+          juntarse queda con un solo bloque, el texto completo separado por una
+          linea en blanco, y el tramo ambar cae sobre la misma palabra que
+          antes.
+
+Esta si se puede comprobar en jsdom porque es puro dato, sin dibujo. Es la
+prueba que evita que el enfasis se corra al juntar.
+
+No agregues mas pruebas.

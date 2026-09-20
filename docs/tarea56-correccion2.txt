@@ -1,0 +1,54 @@
+TAREA 56 - CORRECCION 2
+
+Una sola cosa. Las dos de la correccion anterior quedaron bien: el velo ahora
+mide lo mismo que la columna, y la camara ya arranca con el tamano de la
+pantalla completa -comprobado en el telefono, el plugin recibe 433 x 964, que es
+justo la pantalla en pixeles de CSS-.
+
+
+LO QUE PASA AHORA: LA CAMARA SE ENCIENDE PERO NO SE VE
+
+Comprobado en el telefono con la camara abierta -el sistema la registra abierta,
+camara frontal, nuestra aplicacion-: la pantalla de lectura se vuelve
+transparente, y lo que aparece detras del texto NO ES LA CAMARA. Es la propia
+BIBLIOTECA de la aplicacion. En la captura se ve la tarjeta del guion, el texto
+"19 min - hoy" y el boton "+" asomando por debajo del texto de lectura.
+
+POR QUE. En src/App.tsx, cerca de la linea 1135, la biblioteca SIGUE DIBUJANDOSE
+mientras se lee:
+
+    {(vista === 'biblioteca' || (vista === 'lectura' && origenLecturaRef.current === 'biblioteca')) && (
+
+y se la oscurece con filter: brightness(0.15) y pointerEvents: 'none'. Oscurecida
+al 15% pero dibujada. Mientras el fondo de lectura era negro y opaco eso no se
+notaba. Ahora que es transparente, la biblioteca queda ENTRE el texto y la
+camara, y tapa la imagen.
+
+La camara esta detras de TODA la pagina web. Cualquier cosa que la pagina siga
+dibujando por debajo de la pantalla de lectura se le pone encima.
+
+
+COMO SE ARREGLA
+
+Con la camara encendida y estando en lectura, la pantalla que quedo debajo NO SE
+DIBUJA. No alcanza con oscurecerla: hay que sacarla del dibujo, con display:
+'none' o visibility: 'hidden'.
+
+Vale para las dos pantallas desde las que se puede entrar a leer, la biblioteca y
+el editor: las dos se quedan debajo de la misma manera.
+
+Con la camara apagada todo queda EXACTAMENTE como esta hoy, oscurecido al 15%.
+Eso es lo que hace la transicion de vuelta y no se toca.
+
+Revisa ademas que no quede ningun otro contenedor de App.tsx dibujando un fondo
+opaco por debajo de la pantalla de lectura. Si aparece otro, el sintoma va a ser
+el mismo.
+
+
+COMO SE COMPRUEBA
+
+En el telefono, con un guion cualquiera: entrar a leer, apretar Camara, y VER LA
+PROPIA CARA detras del texto, llegando a los cuatro bordes de la pantalla. Si en
+vez de la cara aparece cualquier parte de la aplicacion, no esta terminado.
+
+No se comprueba con una prueba: jsdom no dibuja. No agregues pruebas nuevas.

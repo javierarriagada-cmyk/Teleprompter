@@ -1,0 +1,63 @@
+TAREA 56 - CORRECCION 5
+
+Esta vez hay un experimento hecho en el telefono, con la aplicacion corriendo, y
+el resultado acota el problema a una sola cosa. Leelo antes de tocar nada.
+
+
+EL EXPERIMENTO, Y LO QUE PRUEBA
+
+Conectado un depurador al navegador de la aplicacion en el telefono, se arranco
+la vista previa de dos maneras, con todo lo demas igual:
+
+    A. CameraPreview.start({ toBack: false, ... })   -> LA CAMARA SE DIBUJA.
+       Dos capturas de pantalla seguidas salen DISTINTAS: hay imagen viva.
+
+    B. CameraPreview.start({ toBack: true, ... })    -> NO SE DIBUJA NADA.
+       Dos capturas seguidas salen IDENTICAS byte a byte. Y se probo ademas
+       llamando a Fondo.transparente() DESPUES de start, por si era cuestion de
+       orden: sigue sin dibujarse.
+
+QUE SIGNIFICA: la camara, el permiso, la sesion de CameraX, la superficie y los
+cuadros FUNCIONAN PERFECTO. Puesta delante se ve. El problema es unica y
+exclusivamente que, puesta DETRAS del WebView, algo opaco queda en el medio.
+
+
+LO QUE YA SE DESCARTO, MEDIDO, NO SUPUESTO
+
+  - La pagina web entera es transparente: body y html en rgba(0,0,0,0), y no hay
+    ningun elemento de pantalla completa con fondo opaco.
+  - El WebView y su padre INMEDIATO ya se ponen en transparente con el
+    FondoPlugin de la correccion anterior, y se comprobo en el registro que el
+    metodo se ejecuta.
+  - El orden -transparentar antes o despues de start- no cambia nada.
+
+Queda una sola explicacion posible: hay ALGUN OTRO NIVEL opaco entre la vista de
+la camara y la pantalla. El FondoPlugin limpia el WebView y UN nivel de padre.
+La jerarquia de Capacitor tiene mas niveles que ese.
+
+
+QUE HAY QUE HACER
+
+En FondoPlugin, al poner transparente, no limpiar un solo padre: SUBIR POR TODA
+LA CADENA de contenedores desde el WebView hasta la vista raiz del contenido
+-android.R.id.content- y dejar cada uno con fondo transparente, guardando el
+fondo que tenia cada uno para poder devolverlo.
+
+Al restaurar, devolver a cada uno el fondo que tenia. Y devolver el que tenia de
+verdad, no un color fijo: hoy restaurar escribe #151312 a mano, y en tema claro
+eso deja el fondo equivocado.
+
+NO tocar el fondo de la ventana de la actividad ni los colores de las barras del
+sistema. Eso hace parpadear la barra de estado en Android 16, que es la version
+de este telefono.
+
+
+COMO SE COMPRUEBA, Y ES OBJETIVO
+
+Con la camara encendida y toBack en true, dos capturas de pantalla seguidas
+TIENEN QUE SALIR DISTINTAS. Si salen identicas, no hay imagen y no esta
+terminado. Es la misma medicion que distinguio A de B aca arriba.
+
+Con la camara apagada, todo exactamente igual que hoy.
+
+No agregues pruebas: jsdom no dibuja.

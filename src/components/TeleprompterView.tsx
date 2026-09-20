@@ -129,6 +129,9 @@ interface TeleprompterViewProps {
   tipoFuente?: 'sans' | 'serif'
   isRecording?: boolean
   enPausa?: boolean
+  camaraEncendida?: boolean
+  streamCamara?: MediaStream | null
+  ladoCamara?: 'frontal' | 'trasera'
   onToggleControles?: () => void
   onNavegacionManual?: (token: number) => void
   onModoManualChange?: (manual: boolean) => void
@@ -170,12 +173,23 @@ export default function TeleprompterView({
   tipoFuente = 'sans',
   isRecording = false,
   enPausa = false,
+  camaraEncendida = false,
+  streamCamara,
+  ladoCamara = 'frontal',
   onToggleControles,
   onNavegacionManual,
   onModoManualChange,
   onEstadoAvanceChange
 }: TeleprompterViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+
+  useEffect(() => {
+    if (videoRef.current && streamCamara) {
+      videoRef.current.srcObject = streamCamara
+      videoRef.current.play().catch(() => {})
+    }
+  }, [streamCamara])
 
   const modoManualRef = useRef(false)
   const finManualRef = useRef<number | null>(null)
@@ -526,7 +540,7 @@ export default function TeleprompterView({
     : 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.075) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%)'
 
   const rgbFondo = hexToRgb(colorFondo)
-  const bgVelo = calcularBgVelo(topBanda, filaPx, rgbFondo)
+  const bgVelo = calcularBgVelo(topBanda, filaPx, rgbFondo, camaraEncendida)
 
   const allTokens = tokensRef.current
 
@@ -571,13 +585,34 @@ export default function TeleprompterView({
         paddingBottom: 'calc(env(safe-area-inset-bottom, 0px))',
         paddingLeft: 'calc(env(safe-area-inset-left, 0px))',
         paddingRight: 'calc(env(safe-area-inset-right, 0px))',
-        background: colorFondo,
+        background: camaraEncendida ? 'transparent' : colorFondo,
         color: colorTextoEfectivo,
         fontFamily: fontFamilyCss,
         boxSizing: 'border-box',
         position: 'relative'
       }}
     >
+      {/* Elemento <video> para la previsualización de cámara en el navegador/app */}
+      {camaraEncendida && streamCamara && (
+        <video
+          ref={videoRef}
+          data-testid="video-camara-lectura"
+          autoPlay
+          playsInline
+          muted
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            transform: ladoCamara === 'frontal' ? 'scaleX(-1)' : 'none',
+            zIndex: 0,
+            pointerEvents: 'none'
+          }}
+        />
+      )}
+
       {/* Punto Rojo de Estado (Grabando) */}
       {isRecording && (
         <div
@@ -624,6 +659,10 @@ export default function TeleprompterView({
             right: 0,
             top: 0,
             bottom: 0,
+            maxWidth: columnaAngosta ? '22ch' : '90%',
+            margin: '0 auto',
+            width: '100%',
+            fontSize,
             pointerEvents: 'none',
             zIndex: 3,
             background: bgVelo
@@ -677,7 +716,9 @@ export default function TeleprompterView({
           // esto, y sale del alto MEDIDO, no de una constante.
           paddingBottom: `${Math.max(0, altoContenedor - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx)}px`,
           transform: mirror ? 'scaleX(-1)' : 'none',
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
+          position: 'relative',
+          zIndex: 1
         }}
       >
         <div
