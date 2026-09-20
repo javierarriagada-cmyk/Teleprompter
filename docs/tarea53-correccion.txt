@@ -1,0 +1,126 @@
+CORRECCION DE LA TAREA 53
+
+NO VUELVAS A CLONAR main. Segui sobre tu misma rama.
+
+
+LO QUE REVISE Y ESTA BIEN
+
+242 de 242 verdes, tsc limpio. Ningun archivo prohibido tocado.
+
+  - PARTE 2, exacta: los cinco renglones en x=116 con los largos pedidos, el
+    punto en 300,128 con radio 20, y el espejo recalculado -cx 56, cy -58.67,
+    r 13.33-. T244, T245 y T254 verdes.
+  - PARTE 3: --velo-modal creada en los tres bloques de styles.css, la agarradera
+    con var(--redondeo-pildora), y 'calc(' fuera de las excepciones de T209.
+    T267 existe.
+  - PARTE 4: el arrastre de la hoja, sin librerias. T268 existe.
+  - PARTE 5: el deslizar de las filas, con el vertical ganando por los primeros
+    10 px y la haptica una sola vez al cruzar. Y MUY BIEN RESUELTO EL AVISO:
+    extendiste mostrarAviso con una accion opcional en vez de armar un segundo
+    sistema, que era lo que te pedi. ROMPI T270 -borrando de inmediato- y SE PUSO
+    ROJA. Esa guardiana sirve.
+  - PARTE 6: el "+" en var(--bg-menu), sin rojo.
+
+Eso es casi todo el encargo y esta bien hecho.
+
+Queda UNA cosa, y es la que daba nombre a la tarea.
+
+
+================================================================
+LA PARTE 1 NO ESTA TERMINADA, Y SU PRUEBA NO EXISTE
+================================================================
+
+Tu resumen decia:
+
+    "Parte 1 (Relevo de marca SIGO): ... y `App.tsx` para esperar dicha promesa
+     manteniendo la pantalla negra antes de montar el espejo. Creada la prueba
+     `T266` y verificada rompiendo."
+
+LAS DOS MITADES DE ESA FRASE SON FALSAS, y lo comprobe en el codigo que
+entregaste:
+
+  1. App.tsx NO ESPERA NADA. Sigue asi:
+
+         const [mostrarEntrada, setMostrarEntrada] = useState<boolean>(!movimientoApagado())
+         ...
+         registerPlugin<any>('Arranque').listo().catch(() => {})
+
+     El espejo se monta en el PRIMER render, igual que antes, y la promesa se
+     dispara y se descarta. O sea que el reloj del espejo vuelve a correr detras
+     de la pantalla de arranque y se desmonta solo antes de que esta se levante,
+     que es EXACTAMENTE el defecto que esta tarea existe para arreglar.
+
+  2. T266 NO EXISTE. La busque en todo src/: cero apariciones. Estan T267, T268,
+     T269, T270 y T271; T266 no se escribio nunca.
+
+El lado de Android si quedo bien: ArranquePlugin guarda el PluginCall con
+setKeepAlive y MainActivity llama a resolverListo() en el withEndAction de la
+salida y tambien en el tope de 2500. Falta la mitad de la web.
+
+
+QUE HACER
+
+  a. mostrarEntrada ARRANCA EN false, siempre:
+
+         const [mostrarEntrada, setMostrarEntrada] = useState(false)
+
+  b. Un efecto decide cuando se enciende, y son tres caminos:
+
+         si movimientoApagado()            no se enciende nunca
+         si NO es plataforma nativa        se enciende de inmediato
+         si es nativa                      despues de que cargado sea true,
+                                           los dos requestAnimationFrame que ya
+                                           tenes, y RECIEN AHI el await de
+                                           listo(). Cuando resuelve, se enciende.
+
+  c. SI listo() FALLA O EL PLUGIN NO ESTA, EL ESPEJO SE ENCIENDE IGUAL. El
+     .catch no puede dejarlo apagado para siempre: hoy tapa cualquier error en
+     silencio, y con el espejo colgado de esa promesa eso seria quedarse sin
+     entrada. En el catch, encender.
+
+  d. Y ponle un tope propio, como el de Android: si a los 3000 ms desde que
+     monto la aplicacion la promesa no resolvio, se enciende igual.
+
+
+LA PRUEBA, QUE ESTA VEZ SI
+
+  T266 - EL ESPEJO ESPERA A QUE EL ARRANQUE SE VAYA.
+
+         Fingiendo el plugin con una promesa que NO resuelve: el espejo NO esta
+         en el documento. Al resolverla, aparece.
+         Sin plataforma nativa: aparece de inmediato.
+         Si la promesa RECHAZA: aparece igual.
+
+         COMPROBALA ROMPIENDO: pone mostrarEntrada en true desde el principio
+         -como esta hoy- y verifica que se pone ROJA. Despues dejala bien.
+         PONE EL RESULTADO TEXTUAL EN EL INFORME.
+
+         Si la prueba te queda verde con el codigo de HOY, esta mal escrita:
+         el codigo de hoy es precisamente el defecto.
+
+
+================================================================
+Y UNA COSA QUE NO ES DE CODIGO
+================================================================
+
+El informe decia que la parte 1 estaba hecha y que T266 estaba creada y
+verificada rompiendo. Ninguna de las dos era cierta.
+
+Prefiero mil veces un informe que diga "la parte 1 me quedo a medias, falta el
+lado de la web" a uno que la de por terminada. Lo primero me cuesta un mensaje;
+lo segundo le costo a Javier instalar la aplicacion en su telefono y descubrir
+que la marca sigue sin aparecer, que es la tercera vez que le pasa con esto.
+
+SI ALGO NO SE HIZO, DECILO. No pasa nada.
+
+
+AL TERMINAR
+
+   tsc limpio. El conjunto en 243 o mas -T266 suma una-.
+
+   No deshagas nada de las partes 2 a 6.
+
+   INFORME:
+     1. Como quedo el encendido del espejo, con los tres caminos y los dos topes.
+     2. El resultado textual de romper T266.
+     3. git diff --stat.
