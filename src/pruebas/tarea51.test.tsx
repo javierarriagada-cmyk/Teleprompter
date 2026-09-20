@@ -11,6 +11,28 @@ import { Entrada, RENGLONES_ESPEJO, FACTOR_ESPEJO, COLOR_MARCA_TRAZO_APAGADO, CO
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { guionNuevo, Guion } from '../datos/modelo'
 
+let mockIsNative = false
+let mockListoFn = () => Promise.resolve()
+
+vi.mock('@capacitor/core', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@capacitor/core')>()
+  return {
+    ...actual,
+    Capacitor: {
+      ...actual.Capacitor,
+      isNativePlatform: () => mockIsNative
+    },
+    registerPlugin: (name: string, options?: any) => {
+      if (name === 'Arranque') {
+        return {
+          listo: () => mockListoFn()
+        }
+      }
+      return actual.registerPlugin(name, options)
+    }
+  }
+})
+
 describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
@@ -178,6 +200,80 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
 
       expect(finalizado).toBe(true)
       expect(screen.queryByTestId('capa-entrada-espejo')).toBeNull()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  test('T266 - EL ESPEJO ESPERA A QUE EL ARRANQUE SE VAYA. Con el plugin fingido y su promesa sin resolver, el espejo NO esta en el documento. Al resolverla, aparece. Y en el navegador -sin plataforma nativa- aparece de inmediato. Si la promesa RECHAZA: aparece igual.', async () => {
+    vi.useFakeTimers()
+    try {
+      const repo = new RepositorioMemoria()
+
+      // 1. Caso plataforma nativa con promesa sin resolver
+      let resolverPromesa: () => void = () => {}
+      mockIsNative = true
+      mockListoFn = () => {
+        console.log('MOCK: listo() called')
+        return new Promise<void>((resolve) => {
+          resolverPromesa = () => {
+            console.log('MOCK: resolverPromesa called!')
+            resolve()
+          }
+        })
+      }
+
+      const { unmount } = render(<App repoOverride={repo} />)
+
+      // 1. Permitir que inicializar() complete y setCargado(true) dispare el useEffect
+      await act(async () => {
+        await Promise.resolve()
+      })
+      // 2. Permitir que las dos requestAnimationFrame se ejecuten
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(100)
+      })
+
+      console.log('TEST: checking null')
+      expect(screen.queryByTestId('capa-entrada-espejo')).toBeNull()
+
+      console.log('TEST: calling resolverPromesa')
+      await act(async () => {
+        resolverPromesa()
+        await Promise.resolve()
+        await vi.advanceTimersByTimeAsync(50)
+      })
+      expect(screen.queryByTestId('capa-entrada-espejo')).not.toBeNull()
+
+      unmount()
+
+      // 2. Sin plataforma nativa (navegador web)
+      mockIsNative = false
+      mockListoFn = () => Promise.resolve()
+      const { unmount: unmount2 } = render(<App repoOverride={repo} />)
+      await act(async () => {
+        await Promise.resolve()
+        await vi.advanceTimersByTimeAsync(50)
+      })
+      expect(screen.queryByTestId('capa-entrada-espejo')).not.toBeNull()
+      unmount2()
+
+      // 3. Caso plataforma nativa con promesa que RECHAZA
+      mockIsNative = true
+      mockListoFn = () => Promise.reject(new Error('error en plugin'))
+
+      const { unmount: unmount3 } = render(<App repoOverride={repo} />)
+      await act(async () => {
+        await Promise.resolve()
+      })
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(100)
+      })
+      await act(async () => {
+        await Promise.resolve()
+      })
+      expect(screen.queryByTestId('capa-entrada-espejo')).not.toBeNull()
+      unmount3()
     } finally {
       vi.useRealTimers()
     }

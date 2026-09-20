@@ -93,7 +93,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [usandoMemoriaFallback, setUsandoMemoriaFallback] = useState<boolean>(false)
   const [errorRepositorio, setErrorRepositorio] = useState<string | null>(null)
 
-  const [mostrarEntrada, setMostrarEntrada] = useState<boolean>(!movimientoApagado())
+  const [mostrarEntrada, setMostrarEntrada] = useState<boolean>(false)
   const [vista, setVista] = useState<Vista>('biblioteca')
   const origenLecturaRef = useRef<'biblioteca' | 'editor'>('editor')
   const [rectTarjeta, setRectTarjeta] = useState<DOMRect | null>(null)
@@ -398,14 +398,55 @@ export default function App({ motor, repoOverride }: AppProps) {
     inicializar()
   }, [cargarBiblioteca, repoOverride])
 
-  // Plan A: Avisar al splash screen nativo de Android que la biblioteca ya se pinto.
+  const disparoEntradaRef = useRef<boolean>(false)
+
+  // Relevo del splash nativo al espejo SIGO en la web
   useEffect(() => {
-    if (cargado && Capacitor.isNativePlatform()) {
+    if (movimientoApagado() || disparoEntradaRef.current) {
+      return
+    }
+
+    if (!Capacitor.isNativePlatform()) {
+      disparoEntradaRef.current = true
+      setMostrarEntrada(true)
+      return
+    }
+
+    let cancelado = false
+    const timerTope = setTimeout(() => {
+      if (!cancelado && !disparoEntradaRef.current) {
+        disparoEntradaRef.current = true
+        setMostrarEntrada(true)
+      }
+    }, 3000)
+
+    if (cargado) {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          registerPlugin<any>('Arranque').listo().catch(() => {})
+          registerPlugin<any>('Arranque')
+            .listo()
+            .then(() => {
+              if (!cancelado && !disparoEntradaRef.current) {
+                disparoEntradaRef.current = true
+                setMostrarEntrada(true)
+              }
+            })
+            .catch(() => {
+              if (!cancelado && !disparoEntradaRef.current) {
+                disparoEntradaRef.current = true
+                setMostrarEntrada(true)
+              }
+            })
+            .finally(() => {
+              clearTimeout(timerTope)
+            })
         })
       })
+    }
+
+    return () => {
+      cancelado = true
+      clearTimeout(timerTope)
     }
   }, [cargado])
 
