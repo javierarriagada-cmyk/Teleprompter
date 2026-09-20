@@ -147,6 +147,49 @@ PONE EL NUMERO QUE TE DIO, ANTES Y DESPUES, EN EL INFORME.
 
 
 ============================================================
+PARTE 8 - ENTRAR A LEER DESDE EL EDITOR TAMBIEN CRECE
+============================================================
+
+Hoy hay dos entradas distintas a la misma pantalla:
+
+    desde la tarjeta   la lectura crece desde el sitio de la tarjeta, con
+                       clip-path -revelarLectura-, MS_PANTALLA y CURVA_ENTRA
+    desde el editor    corte seco, sin transicion
+
+La causa: en App.tsx, la linea
+
+    onEntrarLectura={() => handleEntrarLectura('editor')}
+
+llama sin rectangulo, asi que la bandera hayTransformacionDeTarjeta queda en
+false y la animacion no corre.
+
+QUE HACER
+
+  a. EditorView mide la pildora "Leer" con getBoundingClientRect() EN EL MOMENTO
+     DEL TOQUE -una sola medicion, no un bucle- y la pasa por onEntrarLectura.
+
+  b. App usa ese rectangulo igual que usa el de la tarjeta. La condicion deja de
+     mirar si el origen es 'biblioteca': corre siempre que haya un rectangulo y
+     el movimiento no este apagado.
+
+  c. La bandera pasa a llamarse hayTransformacionDeEntrada. Hoy dice "DeTarjeta"
+     y deja de ser solo de la tarjeta.
+
+  d. NO agregues un fundido a negro ni ninguna otra transicion nueva. Es la misma
+     animacion que ya existe, aplicada al otro camino.
+
+  e. EL MICROFONO NO SE RETRASA. handleStart sigue corriendo cuando corre hoy: la
+     pantalla de lectura ya esta montada y la ventana se abre encima. Si tu
+     solucion obliga a esperar a que la animacion termine para arrancar el audio,
+     PARA Y DECILO EN EL INFORME.
+
+  f. Con movimientoApagado() en true: sin transformacion, como hoy.
+
+Y NO TOQUES EL VOLVER: handleVolverAtras y el boton "Salir" tienen que seguir
+devolviendo a donde se entro -T222-.
+
+
+============================================================
 PRUEBAS
 ============================================================
 
@@ -174,7 +217,11 @@ Numerar desde T276.
          relacion de contraste mayor o igual a 4.5. Calculala en la prueba, como
          hace T214.
 
-  T209, T218 y T253 TIENEN QUE SEGUIR VERDES.
+  T282 - ENTRAR DESDE EL EDITOR TAMBIEN CRECE. Apretando "Leer" en el editor, el
+         contenedor de la lectura lleva la animacion revelarLectura. Con
+         movimientoApagado() en true, no la lleva.
+
+  T209, T218, T222, T223, T253 y T256 TIENEN QUE SEGUIR VERDES.
 
 
 ============================================================
@@ -184,7 +231,7 @@ AL TERMINAR
    tsc limpio. 243 pruebas o mas.
 
    INFORME:
-     1. Las siete partes.
+     1. Las ocho partes.
      2. El contraste de los textos de ayuda, antes y despues.
      3. El resultado textual de romper T279.
      4. Archivo y linea de cada prueba nueva.
