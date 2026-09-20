@@ -1,0 +1,165 @@
+TAREA 54 - SIGO CON LA TIPOGRAFIA DEL SISTEMA
+
+PARTIR DE: main. Rama nueva: tarea-54-el-nombre-bien-escrito.
+SI TRABAJAS DESPUES DE UNA CORRECCION, NO VUELVAS A CLONAR main. Segui en tu rama.
+
+TODO ESTO PASA EN UN SOLO ARCHIVO: src/components/Entrada.tsx.
+Y en src/styles.css, si necesitas keyframes nuevos.
+
+NO TOQUES:
+   src/motor/   src/lib/   src/hooks/   src/datos/
+   TeleprompterView.tsx   haptica.ts
+   android/app/src/main/res/drawable/marca_arranque.xml
+   android/app/src/main/res/drawable/marca_arranque_animada.xml
+   android/app/src/main/res/animator/
+   La geometria de los renglones y del punto en Entrada.tsx -RENGLONES_ESPEJO,
+   PUNTO_ESPEJO, FACTOR_ESPEJO-. Esos numeros estan bien.
+
+Hoy: 243 pruebas, tsc limpio. Al terminar: 243 o mas.
+
+EN EL INFORME, POR CADA PRUEBA QUE DIGAS HABER CREADO, PONE EL ARCHIVO Y LA
+LINEA DONDE QUEDO.
+
+
+QUE PASA HOY
+
+Capturas del arranque en el telefono, cuadro a cuadro:
+
+   cuadro 6    tres puntos blancos sueltos debajo de la marca
+   cuadro 7    una S deformada, una I ancha, y dos puntos
+   cuadro 8    la biblioteca
+
+Los renglones y el punto rojo salen bien. La palabra SIGO no.
+
+
+============================================================
+PARTE 1 - BORRAR EL DIBUJO A MANO
+============================================================
+
+En src/components/Entrada.tsx, BORRA:
+
+   - los <path> de las letras S, I, G, O
+   - sus constantes y sus datos de recorrido
+   - pathLength
+   - stroke-dasharray y stroke-dashoffset, y sus keyframes
+   - el estado de React que controlaba el avance de cada letra
+
+Que no quede nada de eso en el archivo.
+
+
+============================================================
+PARTE 2 - PONER LA PALABRA COMO TEXTO
+============================================================
+
+Un solo elemento con la palabra SIGO como TEXTO.
+
+   texto              SIGO
+   familia            "Source Serif 4"
+   mayusculas         si
+   peso               600
+   color              el mismo hueso de los renglones llenos
+   interletrado       0.04em
+
+   ANCHO: entre 100 y 120 px. Ajusta el tamaño de letra hasta que caiga ahi.
+   Con Source Serif 4 a peso 600 son unos 36 px, pero el numero que manda es el
+   ancho, no el tamaño. MEDILO Y PONE EL RESULTADO EN EL INFORME.
+
+   POSICION HORIZONTAL: centrada sobre el centro del bloque de renglones.
+   Los renglones estan alineados a la izquierda, asi que su centro NO es el
+   centro de la pantalla. Calculalo desde RENGLONES_ESPEJO.
+
+   POSICION VERTICAL: 28 px por debajo del ultimo renglon.
+
+
+============================================================
+PARTE 3 - COMO SE ESCRIBE
+============================================================
+
+Se revela de izquierda a derecha con un recorte, en keyframes de CSS:
+
+       de     clip-path: inset(0 100% 0 0)
+       a      clip-path: inset(0 0 0 0)
+
+   curva      CURVA_ENTRA, de src/components/movimiento.tsx
+   duracion   450 ms
+
+PROHIBIDO:
+   - animar opacity para que aparezca
+   - un bucle de requestAnimationFrame
+   - setState por cuadro
+
+
+============================================================
+PARTE 4 - LOS TIEMPOS
+============================================================
+
+Los cuatro numeros van en constantes con nombre arriba del archivo:
+
+       MS_SOSTENIDO_MARCA     250
+       MS_ESCRIBIR_NOMBRE     450
+       MS_NOMBRE_QUIETO       400
+       MS_SALIDA_ENTRADA      300
+
+La linea de tiempo que producen:
+
+       0     -  250    la marca quieta con el punto encendido
+       250   -  700    se escribe SIGO
+       700   - 1100    la palabra queda quieta y entera
+       1100  - 1400    todo se desvanece y entra la biblioteca
+
+Hoy MS_NOMBRE_QUIETO no existe: la palabra se escribe y la entrada se va de
+inmediato. Ese tramo es nuevo y es el punto de esta parte.
+
+EL TOPE DE SEGURIDAD pasa de 2000 a 2400 ms.
+
+
+============================================================
+PARTE 5 - ESPERAR LA FUENTE
+============================================================
+
+Antes de arrancar la entrada, espera document.fonts.ready.
+
+TOPE: 1200 ms. Si no resuelve, la entrada arranca igual.
+
+
+============================================================
+PRUEBAS
+============================================================
+
+Numerar desde T272.
+
+  T272 - Entrada.tsx no contiene stroke-dashoffset, ni pathLength, ni
+         stroke-dasharray. La palabra SIGO esta como texto y su familia es
+         "Source Serif 4".
+
+  T273 - El nombre se revela con clip-path en keyframes. Ningun elemento del
+         nombre se anima con opacity.
+
+  T274 - Leyendo las constantes de Entrada.tsx: MS_NOMBRE_QUIETO es mayor o
+         igual a 350, y el tope de seguridad es mayor que
+         MS_SOSTENIDO_MARCA + MS_ESCRIBIR_NOMBRE + MS_NOMBRE_QUIETO +
+         MS_SALIDA_ENTRADA.
+
+         ROMPELA: pone MS_NOMBRE_QUIETO en 0, verifica que se pone ROJA, dejala
+         bien. RESULTADO TEXTUAL EN EL INFORME.
+
+  T275 - Entrada.tsx mira document.fonts.ready y tiene un tope de 1200 ms. Con
+         la promesa de las fuentes sin resolver, pasado el tope la entrada
+         arranca igual.
+
+  T254, T256 y T266 TIENEN QUE SEGUIR VERDES.
+  Si T254 se pone roja, tocaste la geometria de la marca. No la toques.
+
+
+============================================================
+AL TERMINAR
+============================================================
+
+   tsc limpio. 243 pruebas o mas.
+
+   INFORME:
+     1. Las cinco partes.
+     2. El ancho medido de la palabra y con que tamaño de letra.
+     3. El resultado textual de romper T274.
+     4. Archivo y linea de cada prueba nueva.
+     5. git diff --stat.
