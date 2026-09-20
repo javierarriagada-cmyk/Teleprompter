@@ -1062,7 +1062,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             marginBottom: 'var(--aire-4)',
             fontSize: 'var(--texto-meta)',
             border: '1px solid var(--color-borde)',
-            display: 'flex',
+            display: (camaraActiva && vista === 'lectura') ? 'none' : 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
           }}
@@ -1099,7 +1099,8 @@ export default function App({ motor, repoOverride }: AppProps) {
             borderRadius: 'var(--redondeo)',
             marginBottom: 'var(--aire-4)',
             fontSize: 'var(--texto-meta)',
-            border: '1px solid var(--color-borde)'
+            border: '1px solid var(--color-borde)',
+            display: (camaraActiva && vista === 'lectura') ? 'none' : 'block'
           }}
         >
           <strong>Franja de Estado:</strong>
@@ -1162,6 +1163,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               // apagon instantaneo se lee como un corte, que es justo lo que la
               // transformacion existe para evitar.
               filter: vista === 'lectura' ? 'brightness(0.15)' : 'none',
+              display: (camaraActiva && vista === 'lectura') ? 'none' : undefined,
               transition: movimientoApagado() ? 'none' : `filter ${MS_PANTALLA}ms ${CURVA_ENTRA}`,
               pointerEvents: vista === 'lectura' ? 'none' : 'auto'
             }}
