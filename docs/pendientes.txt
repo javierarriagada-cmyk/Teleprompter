@@ -349,3 +349,32 @@ NO ES UN DEFECTO DEL MOTOR: es una prueba atada al reloj de pared. Se arregla
 haciendola esperar por una CONDICION -que la linea resaltada llegue a 2- en vez
 de por un tiempo fijo. Mientras no se toque, una corrida roja de T9 sola no
 significa nada; se vuelve a correr y se mira si es la unica que falla.
+
+
+================================================================================
+9. LO QUE HAY QUE MIRAR CUANDO SE HAGA LA COHERENCIA DE PANTALLAS
+   Estado: LISTA ABIERTA. Se va llenando; se resuelve toda junta.
+================================================================================
+
+La tarea de coherencia -que queda en la pantalla de lectura, que se va a
+ajustes, como se llama cada cosa- no se puede encargar todavia: recien cuando
+los tres fondos y la pantalla de preparar existan se sabe que controles hay de
+verdad. Antes es imaginar; despues es mudar dos veces.
+
+Mientras tanto, lo que se vaya viendo se anota aca y no se arregla suelto.
+
+    a. EL CARTEL "DETENIDO" PISA EL TEXTO. En la pantalla de lectura, el estado
+       del motor se dibuja abajo a la izquierda ENCIMA de un renglon del guion.
+       Visto en el telefono el 21 de septiembre de 2026, sobre la linea
+       "Y COÑOPAN PIÑA, JUANA LUCIA".
+
+    b. EL SOL Y LA HORA QUEDAN PEGADOS. En la tarjeta de lectura de la
+       biblioteca, arriba a la derecha, el simbolo del sol y la hora estan
+       juntos sin aire entre medio. Javier, el 21 de septiembre de 2026.
+       OJO: puede que esa tarjeta termine en otra pantalla, asi que el arreglo
+       se decide junto con donde vive la tarjeta, no antes.
+
+    c. DONDE LEES ESTA EN DOS LADOS. El anclaje vive en el panel Aa del editor
+       y tambien en la pantalla de preparar -tarea 58-. Es a proposito: sin
+       camara no hay pantalla de preparar y tiene que seguir alcanzandose.
+       Pero es duplicacion y hay que mirarla cuando se ordene todo.
