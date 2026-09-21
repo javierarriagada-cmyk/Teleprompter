@@ -42,7 +42,7 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
   test('el editor ofrece DOS puertas, y Leer no enciende la camara', async () => {
     await abrirGuionConTexto()
 
-    expect(screen.getByTestId('btn-leer-guion-fijo')).toBeDefined()
+    expect(await screen.findByTestId('btn-leer-guion-fijo')).toBeDefined()
     expect(screen.getByTestId('btn-grabar-guion-fijo')).toBeDefined()
     expect(screen.queryByTestId('btn-modo-camara-apagada')).toBeNull()
     expect(screen.queryByTestId('btn-modo-camara-frontal')).toBeNull()
@@ -64,7 +64,7 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
 
   test('Grabar entra al mismo lienzo CON camara, Empezar no vuelve a llamar start', async () => {
     await abrirGuionConTexto()
-    fireEvent.click(screen.getByTestId('btn-grabar-guion-fijo'))
+    fireEvent.click(await screen.findByTestId('btn-grabar-guion-fijo'))
 
     await waitFor(() => {
       expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-con-camara')).toBe('si')
