@@ -26,7 +26,8 @@ import {
   parsearSidecar,
   reconocerPendiente,
   marcarLista,
-  marcarIncompleta
+  marcarIncompleta,
+  emparejarMp4PorTiempo
 } from './sidecar'
 import { veredictoMudo } from './detectorMudo'
 
@@ -147,7 +148,7 @@ export async function cortarTomaVideo(opts?: {
   let analisis = {
     duracionMs: s.sidecar.milisegundos,
     bytes: 0,
-    tienePistaAudio: false,
+    tienePistaAudio: null as boolean | null,
     nivelRmsDb: null as number | null
   }
   try {
@@ -189,7 +190,7 @@ export async function cortarTomaVideo(opts?: {
     bytes: s.sidecar.bytes,
     ruta: rutaFinal,
     rutaMiniatura,
-    tieneAudio: analisis.tienePistaAudio && !veredicto.mudo,
+    tieneAudio: analisis.tienePistaAudio === true && !veredicto.mudo,
     incompleta,
     avisoMudo: veredicto.aviso || undefined,
     errorMudo: veredicto.errorDuro || undefined
@@ -244,20 +245,44 @@ export async function recuperarTomasPendientes(
   }
 
   const recientes = await buscarMp4Recientes()
+  const ocupadas = new Set<string>()
+  for (const g of existentes) {
+    if (g.ruta && g.bytes > 0) ocupadas.add(g.ruta)
+  }
 
   for (const s of sidecars) {
-    if (s.estado === 'lista' && porId.has(s.id)) continue
+    if (s.estado === 'lista' && porId.has(s.id)) {
+      const ya = porId.get(s.id)!
+      const acusacionDudosa =
+        (ya.errorMudo || ya.avisoMudo || ya.tieneAudio === false) &&
+        (ya.bytes === 0 || (ya.ruta || '').startsWith('file:'))
+      if (!acusacionDudosa) continue
+    }
 
+    const enCarpetaPropia =
+      nombres.includes(`${s.id}.mp4`) || nombres.includes(`${s.id}.mp4.part`)
     let ruta = s.rutaMp4 || s.rutaPart || juntos(dir, `${s.id}.mp4.part`)
     if (nombres.includes(`${s.id}.mp4`)) ruta = juntos(dir, `${s.id}.mp4`)
     else if (nombres.includes(`${s.id}.mp4.part`)) ruta = juntos(dir, `${s.id}.mp4.part`)
     else if (s.rutaPlugin) ruta = s.rutaPlugin
-    else if (recientes.length === 1) ruta = recientes[0]
+    else {
+      // Cinco mp4 de prueba en la carpeta del plugin: "hay uno solo"
+      // se rinde. La marca video_<epoch> cae ~100 ms despues de creado.
+      const pareja = emparejarMp4PorTiempo({
+        creado: s.creado,
+        milisegundos: s.milisegundos,
+        candidatos: recientes,
+        ocupadas
+      })
+      if (pareja) ruta = pareja
+    }
 
     let analisis = {
       duracionMs: s.milisegundos,
       bytes: s.bytes,
-      tienePistaAudio: Boolean(s.tienePistaAudio),
+      // bytes=0 + false es el rastro del analisis que no encontro el
+      // archivo (URI file://). No se reusa como acusacion.
+      tienePistaAudio: s.bytes > 0 && typeof s.tienePistaAudio === 'boolean' ? s.tienePistaAudio : null,
       nivelRmsDb: null as number | null
     }
     try {
@@ -266,6 +291,27 @@ export async function recuperarTomasPendientes(
       try {
         analisis.bytes = await bytesDe(ruta)
       } catch {}
+    }
+
+    // .part fantasma o rutaPlugin que stop nunca devolvio: 0 bytes.
+    // El huerfano video_<epoch> sigue en la carpeta del plugin.
+    if (!enCarpetaPropia && analisis.bytes === 0) {
+      const pareja = emparejarMp4PorTiempo({
+        creado: s.creado,
+        milisegundos: s.milisegundos,
+        candidatos: recientes,
+        ocupadas
+      })
+      if (pareja && pareja !== ruta) {
+        ruta = pareja
+        try {
+          analisis = await analizarVideo(ruta)
+        } catch {
+          try {
+            analisis.bytes = await bytesDe(ruta)
+          } catch {}
+        }
+      }
     }
 
     let rutaMiniatura = juntos(dir, `${s.id}.jpg`)
@@ -291,13 +337,14 @@ export async function recuperarTomasPendientes(
       bytes: analisis.bytes || s.bytes,
       ruta,
       rutaMiniatura,
-      tieneAudio: analisis.tienePistaAudio && !veredicto.mudo,
+      tieneAudio: analisis.tienePistaAudio === true && !veredicto.mudo,
       incompleta,
       avisoMudo: veredicto.aviso || undefined,
       errorMudo: veredicto.errorDuro || undefined
     })
     await repo.guardar(resumen)
     porId.set(resumen.id, resumen)
+    if (ruta && resumen.bytes > 0) ocupadas.add(ruta)
 
     try {
       await escribirTexto(
@@ -313,8 +360,19 @@ export async function recuperarTomasPendientes(
 }
 
 export async function borrarGrabacionEnDisco(g: ResumenGrabacion): Promise<void> {
+  // g.ruta puede ser file://.../Movies/CameraPreview/video_*.mp4 si el
+  // mover no corrio. archivoDe del lado nativo lo resuelve; aca se manda
+  // la ruta tal cual. El json y el jpg viven en files/grabaciones/{id}.*
+  // aunque el mp4 se haya quedado en la carpeta del plugin.
   await borrarArchivo(g.ruta)
   await borrarArchivo(g.rutaMiniatura)
+  try {
+    const dir = await directorioGrabaciones()
+    await borrarArchivo(juntos(dir, `${g.id}.json`))
+    await borrarArchivo(juntos(dir, `${g.id}.mp4`))
+    await borrarArchivo(juntos(dir, `${g.id}.mp4.part`))
+    await borrarArchivo(juntos(dir, `${g.id}.jpg`))
+  } catch {}
   if (g.ruta) {
     const base = g.ruta.replace(/\.mp4(\.part)?$/, '')
     await borrarArchivo(base + '.json')

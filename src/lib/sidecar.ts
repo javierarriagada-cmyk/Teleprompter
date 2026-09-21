@@ -58,6 +58,49 @@ export function marcarIncompleta(s: SidecarToma, extra?: Partial<SidecarToma>): 
   return { ...s, ...extra, estado: 'incompleta' }
 }
 
+// Capgo nombra video_<epochMs>.mp4 al arrancar. El sidecar se escribe
+// unos milisegundos antes. Si stopRecordVideo no vuelve, rutaPlugin
+// queda vacia y rutaMp4 apunta a un .part que nunca se creo.
+export const MARGEN_EMPAREJAR_MS = 20_000
+
+export function marcaTiempoDeNombreMp4(ruta: string): number | null {
+  const nombre = ruta.split(/[/\\]/).pop() || ''
+  const m = nombre.match(/(\d{10,13})/)
+  if (!m) return null
+  const n = Number(m[1])
+  if (!Number.isFinite(n) || n <= 0) return null
+  return n < 1e12 ? n * 1000 : n
+}
+
+function claveRuta(ruta: string): string {
+  return ruta.replace(/^file:\/\//, '').replace(/\/+$/, '')
+}
+
+export function emparejarMp4PorTiempo(opts: {
+  creado: number
+  milisegundos: number
+  candidatos: string[]
+  ocupadas?: Iterable<string>
+  margenMs?: number
+}): string | null {
+  const margen = opts.margenMs ?? MARGEN_EMPAREJAR_MS
+  const inicio = opts.creado
+  const fin = opts.creado + Math.max(opts.milisegundos, 0)
+  const ocupadas = new Set(Array.from(opts.ocupadas || []).map(claveRuta))
+
+  const dentro: { ruta: string; dist: number }[] = []
+  for (const ruta of opts.candidatos) {
+    if (!ruta || ocupadas.has(claveRuta(ruta))) continue
+    const marca = marcaTiempoDeNombreMp4(ruta)
+    if (marca == null) continue
+    if (marca < inicio - margen || marca > fin + margen) continue
+    dentro.push({ ruta, dist: Math.abs(marca - inicio) })
+  }
+  if (dentro.length === 0) return null
+  dentro.sort((a, b) => a.dist - b.dist)
+  return dentro[0].ruta
+}
+
 export function parsearSidecar(texto: string): SidecarToma | null {
   try {
     const o = JSON.parse(texto)

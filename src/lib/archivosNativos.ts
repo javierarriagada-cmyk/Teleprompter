@@ -3,8 +3,14 @@ import { CamaraNativa } from './camara'
 export type AnalisisVideo = {
   duracionMs: number
   bytes: number
-  tienePistaAudio: boolean
+  tienePistaAudio: boolean | null
   nivelRmsDb: number | null
+}
+
+function boolONulo(v: unknown): boolean | null {
+  if (v === true) return true
+  if (v === false) return false
+  return null
 }
 
 export async function directorioGrabaciones(): Promise<string> {
@@ -50,7 +56,7 @@ export async function analizarVideo(ruta: string): Promise<AnalisisVideo> {
   return {
     duracionMs: Number(r.duracionMs) || 0,
     bytes: Number(r.bytes) || 0,
-    tienePistaAudio: Boolean(r.tienePistaAudio),
+    tienePistaAudio: boolONulo(r.tienePistaAudio),
     nivelRmsDb: typeof r.nivelRmsDb === 'number' ? r.nivelRmsDb : null
   }
 }

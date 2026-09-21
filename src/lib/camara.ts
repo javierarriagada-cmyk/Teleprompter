@@ -13,7 +13,7 @@ export interface CamaraNativaPlugin {
   analizarVideo(options: { ruta: string }): Promise<{
     duracionMs: number
     bytes: number
-    tienePistaAudio: boolean
+    tienePistaAudio: boolean | null
     nivelRmsDb: number | null
   }>
   extraerMiniatura(options: { ruta: string; destino: string; atMs?: number }): Promise<{ ruta: string }>

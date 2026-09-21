@@ -10,7 +10,9 @@ import {
   parsearSidecar,
   reconocerPendiente,
   marcarLista,
-  marcarIncompleta
+  marcarIncompleta,
+  emparejarMp4PorTiempo,
+  marcaTiempoDeNombreMp4
 } from '../lib/sidecar'
 import { veredictoMudo, UMBRAL_RMS_DB } from '../lib/detectorMudo'
 
@@ -115,6 +117,15 @@ describe('Tarea 64 - indice, sidecar y mudo', () => {
     expect(pistaVacia.errorDuro).toBe(true)
     expect(pistaVacia.mudo).toBe(true)
     expect(UMBRAL_RMS_DB).toBe(-50)
+
+    const desconocido = veredictoMudo({
+      tienePistaAudio: null,
+      nivelRmsDb: null,
+      frasesOidas: 2
+    })
+    expect(desconocido.mudo).toBe(false)
+    expect(desconocido.errorDuro).toBe(false)
+    expect(desconocido.aviso).toBe(false)
   })
 
   it('rompe a proposito el cruce: si se ignora frasesOidas, el error duro desaparece y la prueba lo pesca', () => {
@@ -128,6 +139,44 @@ describe('Tarea 64 - indice, sidecar y mudo', () => {
       aviso: senales.tienePistaAudio === false
     }
     expect(malHecho.errorDuro).not.toBe(correcto.errorDuro)
+  })
+
+  it('empareja el mp4 huerfano por la marca de tiempo del nombre, no por ser el unico', () => {
+    const creado = 1790007333707
+    const milisegundos = 19127
+    const huerfano = '/Movies/CameraPreview/video_1790007333818.mp4'
+    const recientes = [
+      '/Movies/CameraPreview/video_1790001000000.mp4',
+      '/Movies/CameraPreview/video_1790002000000.mp4',
+      '/Movies/CameraPreview/video_1790003000000.mp4',
+      '/Movies/CameraPreview/video_1790004000000.mp4',
+      huerfano
+    ]
+    expect(marcaTiempoDeNombreMp4(huerfano)).toBe(1790007333818)
+    expect(emparejarMp4PorTiempo({ creado, milisegundos, candidatos: recientes })).toBe(huerfano)
+    expect(
+      emparejarMp4PorTiempo({
+        creado,
+        milisegundos,
+        candidatos: recientes,
+        ocupadas: [huerfano]
+      })
+    ).toBeNull()
+  })
+
+  it('si hay dos en la ventana se queda con el mas cercano a creado', () => {
+    // Marcas de epoca DE VERDAD. El lector exige diez digitos o mas, que
+    // es lo que mide un epoch en milisegundos; con numeros cortos devuelve
+    // null a proposito, para no confundir cualquier numero del nombre con
+    // una fecha.
+    const creado = 1790000000000
+    expect(
+      emparejarMp4PorTiempo({
+        creado,
+        milisegundos: 2_000,
+        candidatos: ['/p/video_1790000001500.mp4', '/p/video_1790000000010.mp4']
+      })
+    ).toBe('/p/video_1790000000010.mp4')
   })
 
   it('RepositorioGrabacionesMemoria guarda y borra', async () => {
