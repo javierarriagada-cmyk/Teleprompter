@@ -438,6 +438,38 @@ aprobo como "un piso minimo de coherencia". Esto es el piso completo.
        pantalla de lectura, que hoy muestra ademas el estado del motor, el
        punto rojo y un panel de controles.
 
+===============================================================================
+10b. EL PARPADEO DEL ARRANQUE TIENE DOS PARTES, Y LA SEGUNDA ES PEOR
+     Estado: MEDIDO CUADRO A CUADRO. Causa no probada.
+===============================================================================
+
+Grabado el 21 de septiembre de 2026 a peticion de Javier -"intenta cazarlo"- y
+revisado a 20 cuadros por segundo.
+
+PARTE UNA, la que el vio: el logo SIGO sigue dibujado mientras la biblioteca ya
+esta pintada debajo, y ademas se va corriendo hacia abajo durante el traspaso.
+Es el punto 10 de esta lista.
+
+PARTE DOS, que no esperabamos: DESPUES de que la biblioteca aparece completa
+-tarjeta, dos guiones y la tira de tomas-, en UN cuadro desaparece todo y sale
+"Sin guiones / Escribe tu primer guion", y al cuadro siguiente vuelve.
+
+    cuadros 130 a 133   la biblioteca completa
+    cuadro  134         vacia, "Sin guiones"
+    cuadros 135 en mas  la biblioteca otra vez
+
+Son unos 50 milisegundos, pero es la aplicacion diciendo que no tienes nada.
+
+SOSPECHOSO, NO PROBADO. En src/App.tsx la lista se filtra antes de pintarse:
+
+    guiones={guionesResumen.filter((g) => !idsPendientesBorrado.includes(g.id))}
+
+Si esa lista de pendientes de borrado se llena por un instante, o si
+guionesResumen queda vacio en un render, la tarjeta cae en su estado vacio
+-guionMasReciente es undefined y TarjetaLectura muestra "Sin guiones"-. Hay que
+comprobarlo ANTES de tocar nada.
+
+
 
 ================================================================================
 11. EL DESFASE DE CUATRO RENGLONES, CON CAMARA
