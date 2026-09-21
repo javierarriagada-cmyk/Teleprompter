@@ -1,0 +1,100 @@
+TAREA 62 - GRABAR Y ESCUCHAR AL MISMO TIEMPO
+
+Rama: tarea62-grabar-y-escuchar
+
+Otra tarea de medicion, como la 60 y la 61. No agrega una funcion: contesta la
+pregunta que decide como va a grabar esta aplicacion.
+
+    ¿puede el grabador de video nativo quedarse con el microfono MIENTRAS
+    nuestro motor de voz escucha, en este telefono?
+
+De eso dependen dos diseños muy distintos, y no se elige antes de saberlo.
+
+
+DE DONDE VIENE
+
+Con la tarea 61 quedo resuelto lo visual: la vista previa nativa se ve por
+detras del WebView, medido con toBack en true. El camino nativo esta abierto,
+y grabar nativo es lo que da la calidad del telefono -1080p a 20 Mbps, audio
+AAC a 256 kbps- que por la pagina no se alcanza.
+
+Queda el audio, que es el problema de verdad. Android documenta que una captura
+cuyo origen es CAMCORDER o VOICE_COMMUNICATION es sensible a privacidad y NO se
+comparte: el que la tiene bloquea al resto. Nuestro motor abre su propio
+microfono. Si el grabador se queda con el microfono, el motor se queda mudo y el
+texto deja de seguir la voz, que es lo unico que nos diferencia.
+
+Desde Android 10 existe captura concurrente con reglas de prioridad, y lo que
+pasa DENTRO DE UNA MISMA APLICACION no esta documentado. Por eso se mide.
+
+
+QUE HAY QUE HACER
+
+En la misma pantalla de prueba que ya existe -PruebaCamaraNativaView-, agregar
+lo justo para correr el experimento y NADA mas.
+
+1. UN BOTON "GRABAR 10 SEGUNDOS".
+
+   Al apretarlo, y EN ESTE ORDEN:
+
+       a. arranca nuestro motor de voz, el nativo, el mismo que usa la
+          aplicacion para seguir la lectura
+       b. un segundo despues, arranca la grabacion de video CON AUDIO
+       c. a los 10 segundos, corta la grabacion y para el motor
+
+   El orden importa: primero el motor, despues el grabador. Si se hace al
+   reves, el grabador toma el microfono antes y no sabriamos si el motor fallo
+   por el conflicto o porque nunca alcanzo a abrirlo.
+
+2. QUE SE VEA LO QUE PASO, EN LA MISMA PANTALLA, sin tener que mirar ningun
+   registro:
+
+       - LO QUE OYO EL MOTOR: el texto que fue reconociendo, escrito en
+         pantalla mientras se graba. Si queda vacio, el motor se quedo mudo.
+       - DONDE QUEDO EL ARCHIVO: la ruta del video grabado, en pantalla y
+         seleccionable.
+       - SI HUBO ERROR: el mensaje tal cual, sin adornar. Un fallo del
+         grabador o del motor es informacion, no algo que haya que esconder.
+
+3. UN SEGUNDO BOTON, "GRABAR 10 SEGUNDOS SIN AUDIO".
+
+   Lo mismo, pero pidiendole al grabador que NO capture audio -el plugin
+   acepta disableAudio-. Sirve para separar dos cosas: si con audio el motor se
+   queda mudo y sin audio oye bien, el conflicto esta confirmado y es del
+   microfono, no de otra cosa.
+
+Con esos dos botones la pregunta queda contestada en dos corridas.
+
+
+LO QUE NO HAY QUE HACER
+
+NO toques ninguna pantalla de la aplicacion: ni la biblioteca, ni el editor, ni
+preparar la toma, ni la lectura. La camara por getUserMedia que usa hoy la
+aplicacion sigue funcionando igual. Esta pantalla vive al lado.
+
+NO escribas nada de repartir el audio, ni de mezclar pistas, ni de meter audio
+en el mp4. Eso es la tarea siguiente y depende de lo que conteste esta.
+
+NO elijas calidades ni bitrate todavia: con lo que venga de omision alcanza para
+esta pregunta.
+
+NO agregues pruebas en jsdom: esto no se comprueba ahi. Lo mido yo en el
+telefono.
+
+
+COMO SE SABE SI SALIO BIEN
+
+Tu parte esta terminada cuando los dos botones existen y la pantalla muestra las
+tres cosas -lo que oyo el motor, donde quedo el archivo, y el error si lo hubo-.
+
+Lo que pasa despues lo mido yo, hablando diez segundos contra el telefono y
+mirando dos cosas:
+
+    ¿el video guardado tiene mi voz?
+    ¿el motor escribio lo que dije?
+
+Si las dos responden que si, el telefono reparte el audio y existe un camino
+corto. Si el motor se queda mudo con audio y oye sin audio, el conflicto esta
+confirmado y hay que abrir el microfono nosotros. Las dos respuestas sirven.
+
+DECI EN EL RESUMEN que fuente de audio termina usando el grabador, si te consta.
