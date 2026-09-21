@@ -1,0 +1,130 @@
+TAREA 58 - CORRECCION
+
+La pantalla quedo bien: comprobado en el telefono con capturas, la cara se ve a
+pantalla completa, el texto encima quieto, y la captura de preparar y la de la
+lectura son iguales: el texto cae en el mismo lugar, la banda tambien y el velo
+tambien. Eso era lo mas importante y funciona.
+
+Cuatro cosas antes de fusionar. Las dos primeras son defectos medidos.
+
+
+1. EL PROYECTO NO COMPILA
+
+    npx tsc --noEmit
+    src/App.tsx(680,45): error TS2367: This comparison appears to be
+    unintentional because the types 'string' and 'null | undefined' have no
+    overlap.
+
+Es esta linea:
+
+    if (!camaraActiva || (streamCamara && modoCamara !== (camaraActiva ? undefined : null))) {
+
+Esto no quiere decir nada. modoCamara es un texto; compararlo con undefined o
+con null es siempre verdadero, y TypeScript lo esta diciendo.
+
+Esto tiene que compilar limpio antes de publicar. No es opcional.
+
+
+2. LA CAMARA SE APAGA Y SE VUELVE A PEDIR AL APRETAR EMPEZAR
+
+Es consecuencia de lo de arriba, y es exactamente lo que el encargo pedia
+evitar en el punto 5.
+
+MEDIDO EN EL TELEFONO. Envolvi navigator.mediaDevices.getUserMedia con un
+contador antes de entrar:
+
+    al entrar a preparar     getUserMedia llamado 1 vez
+    al apretar Empezar       getUserMedia llamado 3 veces
+
+Osea que al pasar de preparar a lectura la camara se corta y se vuelve a pedir
+dos veces mas. Eso es el parpadeo, el medio segundo de nada, y el riesgo de que
+el aparato no la devuelva.
+
+POR QUE. La condicion de arriba es siempre verdadera una vez que la camara esta
+encendida, y el efecto depende de vista, asi que al cambiar de preparar a
+lectura vuelve a llamar a encenderCamara -que primero apaga-.
+
+COMO SE ARREGLA. La camara se vuelve a pedir SOLO SI CAMBIO EL LADO. Para eso
+esta ladoActual() en src/lib/camara.ts, que dice cual esta encendida ahora:
+
+    si la vista no es preparar ni lectura   ->  apagar
+    si no hay camara encendida              ->  encender
+    si hay camara encendida y el lado que
+      pide modoCamara es distinto al que
+      devuelve ladoActual()                 ->  encender con el nuevo lado
+    en cualquier otro caso                  ->  no tocar nada
+
+Asi cambiar de frontal a trasera en preparar sigue funcionando, y pasar de
+preparar a lectura no toca la camara.
+
+
+3. EL DIBUJO DEL TEXTO ESTA COPIADO DOS VECES
+
+PrepararView.tsx trae una copia de renderFormattedLine, renderSegmentContent y
+renderNonTokenText de TeleprompterView.tsx. Son unas trescientas lineas
+identicas en dos archivos.
+
+ESTO NO ES UN TEMA DE PROLIJIDAD, ES EL ENCARGO MISMO. La pantalla de preparar
+sirve para una sola cosa: que lo que ves antes de empezar sea lo que vas a ver
+leyendo. Con dos copias del dibujo, el dia que se toque una -un color de tramo,
+una acotacion, un enfasis- la otra se queda atras y la pantalla pasa a mentir.
+Y nadie se va a acordar de que habia una segunda copia.
+
+COMO SE ARREGLA. Esas tres funciones se van a un archivo propio -por ejemplo
+src/components/renglones.tsx- y LAS DOS pantallas las importan de ahi. Se mueve
+el codigo tal cual, sin cambiarlo: es una mudanza, no una reescritura.
+
+Con eso, TeleprompterView.tsx queda mas corto y PrepararView.tsx tambien.
+
+
+4. EL BOTON DE VOLVER TAPA LA PRIMERA LINEA
+
+Visto en la captura: el boton "<" de arriba a la izquierda queda ENCIMA de la
+primera linea del guion. En mi prueba se comia la I de "INSERCIONES:".
+
+Que el boton no pise el texto. La forma mas simple es que el texto empiece mas
+abajo que el boton, pero resolvelo como te parezca mejor: lo que no puede pasar
+es que se tape una palabra.
+
+Cuidado con una cosa: el texto tiene que seguir cayendo DONDE MISMO QUE EN LA
+LECTURA. Si para hacerle lugar al boton corres el texto, corres tambien la
+banda, y la pantalla deja de servir. Mueve el boton, no el texto.
+
+
+5. EL VELO DEJA DOS FRANJAS SIN CUBRIR Y SE VE EL CORTE
+
+Javier, mirando la captura: "esa banda o sombra de lectura se salta un espacio
+relevante respecto de la camara... entiendo que quede algun espacio elegante,
+pero no como esta".
+
+QUE PASA. El velo esta recortado al ancho de la columna de texto:
+
+    maxWidth: columnaAngosta ? '22ch' : '90%'
+    margin: '0 auto'
+
+Con la letra en 24 eso da 264 px de los 434 de ancho de la pantalla. Quedan dos
+franjas de 85 px a cada lado con la imagen a brillo completo, y en el medio dos
+CORTES VERTICALES DUROS que cruzan la cara. Se ve como un panel gris pegado
+encima de la imagen, que es justo lo que no queremos.
+
+COMO SE ARREGLA. El velo va DE BORDE A BORDE: se le saca el maxWidth y el
+margin auto y queda como la banda, de lado a lado. El degradado de arriba abajo
+-que es el que hace el trabajo- no se toca.
+
+La elegancia la da ese degradado vertical, no dos costuras verticales.
+
+Esto hay que hacerlo EN LAS DOS PANTALLAS, la de lectura y la de preparar, o
+vuelven a verse distintas. Con la camara apagada no cambia nada, porque el velo
+es del mismo color que el fondo.
+
+Y aprovecha de sacar el fontSize que el velo tenia puesto solo para que ese
+'22ch' se calculara bien: sin maxWidth ya no sirve para nada.
+
+
+Y LA PRUEBA T276
+
+Agregale el contador: entre entrar a preparar y llegar a lectura,
+getUserMedia tiene que haberse llamado UNA SOLA VEZ. Es la guardiana de que no
+vuelva el parpadeo.
+
+No agregues mas pruebas.
