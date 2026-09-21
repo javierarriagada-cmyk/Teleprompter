@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { CameraPreview } from '@capgo/camera-preview'
-import { registerPlugin } from '@capacitor/core'
 import { MotorNativo } from '../motor/MotorNativo'
-
-export interface CamaraNativaPlugin {
-  fijarModoSuperficie(options: { modo: 'sistema' | 'textura' }): Promise<{ encontrado: boolean; modo: string }>
-}
-
-const CamaraNativa = registerPlugin<CamaraNativaPlugin>('CamaraNativa')
+import { CamaraNativa } from '../lib/camara'
 
 interface PruebaCamaraNativaViewProps {
   onVolver: () => void
@@ -96,7 +90,6 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
     let intervaloTimer: any = null
 
     try {
-      // a. Arranca nuestro motor de voz nativo
       motor = new MotorNativo()
 
       let parcialActual = ''
@@ -128,7 +121,6 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
       await motor.iniciar({ lang: 'es' })
       setEstadoGrabacion('Motor de voz iniciado. Esperando 1 segundo...')
 
-      // b. Un segundo después, arranca la grabación de video
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
       const modoTexto = disableAudio ? 'SIN AUDIO' : 'CON AUDIO'
@@ -136,7 +128,6 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
 
       await CameraPreview.startRecordVideo({ disableAudio })
 
-      // c. A los 10 segundos, corta la grabación y para el motor
       const inicio = Date.now()
       setSegundosRestantes(10)
 
@@ -184,7 +175,6 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
         try {
           await motor.detener()
         } catch {
-          // ignorar
         }
       }
       setGrabando(false)
@@ -205,7 +195,6 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
         boxSizing: 'border-box'
       }}
     >
-      {/* Barra superior de controles */}
       <div
         style={{
           display: 'flex',
@@ -268,7 +257,6 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
         </button>
       </div>
 
-      {/* Panel principal de prueba y resultados */}
       <div
         style={{
           backgroundColor: 'rgba(34, 31, 29, 0.90)',
@@ -304,7 +292,6 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
           </div>
         )}
 
-        {/* Botones de acción */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
           <button
             onClick={() => correrExperimento(false)}
@@ -341,7 +328,6 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
           </button>
         </div>
 
-        {/* Estado actual */}
         {estadoGrabacion && (
           <div style={{ backgroundColor: '#1E1B19', padding: '8px 12px', borderRadius: '8px', border: '1px solid #4B4643' }}>
             <span style={{ fontWeight: 600, color: '#CAC5C2' }}>Estado: </span>
@@ -349,7 +335,6 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
           </div>
         )}
 
-        {/* Result 1: LO QUE OYÓ EL MOTOR */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           <div style={{ fontWeight: 700, color: '#E7E1DE', fontSize: '12px', textTransform: 'uppercase' }}>
             LO QUE OYO EL MOTOR:
@@ -375,7 +360,6 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
           </div>
         </div>
 
-        {/* Result 2: DÓNDE QUEDÓ EL ARCHIVO */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           <div style={{ fontWeight: 700, color: '#E7E1DE', fontSize: '12px', textTransform: 'uppercase' }}>
             DONDE QUEDO EL ARCHIVO:
@@ -398,7 +382,6 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
           />
         </div>
 
-        {/* Result 3: SI HUBO ERROR */}
         {errorGrabacion && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <div style={{ fontWeight: 700, color: '#FF5A5A', fontSize: '12px', textTransform: 'uppercase' }}>
