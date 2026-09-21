@@ -1,0 +1,147 @@
+EL MAPA: QUE ESTA DECIDIDO, QUE SE CONTRADICE, QUE FALTA
+Leido el 21 de septiembre de 2026, antes de proponer nada.
+
+Fuentes: docs/identidad.html, estandar.html, circuito.html, la-cara.html,
+ajustes-propuesta.html, estado.html, competencia-*.txt, y
+teleprom/00-arquitectura/DECISIONES-DE-DISENO.txt.
+
+
+===============================================================================
+LO PRIMERO, Y CAMBIA EL ENCARGO
+===============================================================================
+
+NO FALTA DISEÑO. Hay cinco documentos de diseño con decisiones tomadas,
+medidas y argumentadas. Lo que pasa es que LO CONSTRUIDO SE FUE APARTANDO DE LO
+DECIDIDO, y como nadie volvio a leerlos, cada tarea nueva los contradijo un
+poco mas sin saberlo.
+
+Entonces la tarea de coherencia no es "diseñar la aplicacion". Es, en este
+orden:
+
+    1. hacer cumplir lo que ya esta decidido
+    2. resolver las contradicciones entre documentos
+    3. decidir lo poco que quedo abierto
+    4. y recien ahi, lo nuevo que traiga la grabacion
+
+Tres de los "defectos" que encontramos esta semana YA TENIAN SU DECISION
+ESCRITA. Eso no es mala suerte: es el sintoma.
+
+
+===============================================================================
+1. DECIDIDO Y NO CUMPLIDO
+===============================================================================
+
+A. EL ARRANQUE, "SIN UN SOLO DESTELLO"
+   identidad.html: "La marca se va y la tarjeta entra en su lugar, escalonada:
+   primero ella, despues la lista. El fondo nunca cambio de color. No hubo
+   transicion porque no hubo dos mundos."
+
+   MEDIDO HOY: las dos capas conviven medio segundo y el logo se desliza hacia
+   abajo mientras la biblioteca ya esta pintada. Justo lo contrario.
+
+B. EL ESTADO VACIO, "LA TARJETA NO DESAPARECE: ESPERA"
+   identidad.html: la misma tarjeta, vacia, con el cursor parpadeando. Y la
+   regla que sale de ahi: "una sola clase de objeto en la portada, llena o
+   vacia. El estado vacio no trae un mundo nuevo justo en el momento de menor
+   informacion."
+
+   MEDIDO HOY: el estado vacio esta bien hecho. El defecto es que aparece UN
+   CUADRO TENIENDO GUIONES, durante el arranque.
+
+C. BORRAR SE HACE MANTENIENDO APRETADO
+   identidad.html, sobre los botones de editar y borrar de la competencia: "En
+   Sigo se llega a ellas manteniendo apretado, como en todas partes."
+
+   VISTO HOY: Javier mantuvo apretada una grabacion para borrarla y no paso
+   nada. No se equivoco: hizo lo que su propia aplicacion tiene escrito. La
+   tira de grabaciones invento una palabra gris de doce pixeles.
+
+D. LA PORTADA MUESTRA LA LECTURA, NO UNA LISTA
+   la-cara.html entero: "Tenemos exactamente una imagen buena en todo el
+   producto, y la escondimos." La portada tiene que mostrar el guion dibujado
+   como se va a ver al leerlo, ocupando mas de media pantalla.
+
+   HOY: esta hecho -la tarjeta de lectura existe- pero por debajo le fuimos
+   agregando la tira de tomas y el resto sin revisar si la jerarquia aguanta.
+
+E. AJUSTES: DE DIEZ A SEIS
+   ajustes-propuesta.html: "Ancho" reemplaza a Columna y Margen; fondo y letra
+   en parejas que se ven; tipografia como dos botones; Tema SALE del panel
+   porque no es de la toma; "Anclaje" pasa a llamarse "Donde lees".
+
+   HOY: solo se cumplio el cambio de nombre. Los demas no, y encima agregamos
+   controles nuevos -camara, fondo, calidad- sin pasar por esa decision.
+
+F. LA GRAMATICA DEL MOVIMIENTO
+   circuito.html fija dos curvas y cuatro duraciones -100, 200, 300 ms- y dice
+   que todo lo que se mueva sale de ahi.
+
+   HOY: existe src/components/movimiento.ts y se usa. Este si se cumplio.
+
+
+===============================================================================
+2. LO QUE SE CONTRADICE ENTRE DOCUMENTOS Y LO CONSTRUIDO
+===============================================================================
+
+  - "DONDE LEES" vive en el panel del editor Y en preparar la toma. La
+    propuesta de ajustes lo pone en el panel; la tarea 58 lo duplico.
+
+  - AJUSTES: hay un panel en el editor, y ademas decisiones de toma en
+    preparar. Nadie decidio cual manda ni que va en cada uno.
+
+  - EL MENU DE LA BIBLIOTECA mezcla cosas del usuario con instrumentos
+    nuestros -motor de voz, transcripcion, medicion-. estado.html ya lo marco
+    y sigue igual.
+
+  - LA ENTRADA A LA CAMARA es una fila de tres opciones al lado de Leer.
+    Ningun documento la decidio: aparecio en la tarea 56 y se quedo. Es la
+    puerta a todo lo que se construyo esta semana y su autor no la encuentra.
+
+
+===============================================================================
+3. LO QUE DE VERDAD FALTA DECIDIR
+===============================================================================
+
+  - LEER SIN GRABAR ES UN USO, no la ausencia del otro. Ningun documento lo
+    trata: todos son anteriores a la camara.
+
+  - DONDE VIVEN LAS GRABACIONES. La tira esta puesta debajo de los guiones
+    -como PromptSmart- pero nadie decidio la jerarquia entre las dos
+    bibliotecas en la misma portada, que era la pantalla mas cuidada.
+
+  - QUE PASA CON LA PANTALLA DE LECTURA. F5 de DECISIONES quedo acotada: lo
+    cerrado es que no son dos productos; lo ABIERTO es si la pantalla de hoy
+    es el destino. Escrito ahi: "la pantalla de lectura hay que rehacerla, no
+    heredarla".
+
+  - LOS AJUSTES DE LA TOMA. Calidad, fondo, camara y recuadro nacieron en
+    preparar. Con los de lectura y los de aplicacion, ahora hay tres familias
+    de ajustes sin una regla que diga cual va donde.
+
+
+===============================================================================
+4. LO QUE NO HAY QUE VOLVER A ESTUDIAR
+===============================================================================
+
+Ya esta medido y no se rediscute:
+
+  la paleta y los tonos          identidad.html
+  la escala tipografica          estandar.html
+  las curvas y duraciones        circuito.html
+  el icono y la tienda           identidad.html
+  el aparato de destino          estado.html: moto g86, 1220x2712, densidad
+                                 450. El emulador miente.
+  la competencia                 competencia-*.txt y el recorrido estructural
+                                 de PromptSmart del 21 de septiembre
+
+
+===============================================================================
+5. LO QUE PROPONGO COMO PRIMER ENTREGABLE
+===============================================================================
+
+NO codigo. El dibujo de la aplicacion entera: cada pantalla, que manda en ella,
+que controles tiene y de donde se llega, con las contradicciones de la seccion
+2 resueltas de una manera concreta para que Javier corte.
+
+Y encima de eso, una sola regla que ordene los ajustes en tres familias, porque
+hoy es el desorden mas caro que tenemos.
