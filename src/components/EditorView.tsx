@@ -5,7 +5,6 @@ import { consolidarGuion } from '../datos/consolidar'
 import { importarTexto } from '../datos/importar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { IdMotor } from '../motor/MotorDeVoz'
-import { ModoCamara } from '../lib/camara'
 import { hapticaSeleccion, hapticaToqueSuave } from '../haptica'
 import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
 import { IconoAtras } from './IconosApp'
@@ -72,8 +71,7 @@ interface EditorViewProps {
   setTema?: (t: 'sistema' | 'claro' | 'oscuro') => void
   engine?: IdMotor
   setEngine?: (e: IdMotor) => void
-  modoCamara?: ModoCamara
-  setModoCamara?: (m: ModoCamara) => void
+  onEntrarGrabar?: (rect?: DOMRect) => void
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
   'data-pantalla-direccion'?: string
   style?: React.CSSProperties
@@ -125,8 +123,7 @@ export default function EditorView({
   setTema,
   engine = 'vosk',
   setEngine,
-  modoCamara = 'apagada',
-  setModoCamara,
+  onEntrarGrabar,
   onRegistrarCerrarModal,
   'data-pantalla-direccion': dataPantallaDireccion,
   style,
@@ -1308,48 +1305,6 @@ export default function EditorView({
               : `transform ${MS_DEDO}ms ${CURVA_SALE}`
           }}
         >
-          {setModoCamara && (
-            <div
-              style={{
-                pointerEvents: 'auto',
-                display: 'flex',
-                alignItems: 'center',
-                backgroundColor: 'var(--bg-superficie)',
-                border: '1px solid var(--color-borde)',
-                borderRadius: 'var(--redondeo-pildora)',
-                padding: 'var(--aire-1)'
-              }}
-            >
-              {[
-                { val: 'apagada', label: 'Sin cámara' },
-                { val: 'frontal', label: 'Frontal' },
-                { val: 'trasera', label: 'Trasera' }
-              ].map((opt) => (
-                <button
-                  key={opt.val}
-                  type="button"
-                  data-testid={`btn-modo-camara-${opt.val}`}
-                  onClick={() => {
-                    hapticaSeleccion()
-                    setModoCamara(opt.val as ModoCamara)
-                  }}
-                  style={{
-                    padding: 'var(--aire-2) var(--aire-3)',
-                    border: 'none',
-                    borderRadius: 'var(--redondeo-pildora)',
-                    backgroundColor: modoCamara === opt.val ? 'var(--color-acento)' : 'transparent',
-                    color: modoCamara === opt.val ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                    fontWeight: modoCamara === opt.val ? 'bold' : 'normal',
-                    fontSize: 'var(--texto-meta)',
-                    cursor: 'pointer'
-                  }}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          )}
-
           <button
             ref={btnLeerRef}
             onClick={() => {
@@ -1360,7 +1315,7 @@ export default function EditorView({
             style={{
               pointerEvents: 'auto',
               flex: 1,
-              maxWidth: 240,
+              maxWidth: 160,
               padding: 'var(--aire-3) var(--aire-4)',
               fontSize: 'var(--texto-titulo)',
               fontWeight: 600,
@@ -1382,6 +1337,32 @@ export default function EditorView({
             }}
           >
             ▶ Leer
+          </button>
+          <button
+            onClick={() => {
+              const rect = btnLeerRef.current?.getBoundingClientRect()
+              onEntrarGrabar?.(rect)
+            }}
+            data-testid="btn-grabar-guion-fijo"
+            style={{
+              pointerEvents: 'auto',
+              flex: 1,
+              maxWidth: 160,
+              padding: 'var(--aire-3) var(--aire-4)',
+              fontSize: 'var(--texto-titulo)',
+              fontWeight: 600,
+              backgroundColor: 'var(--bg-superficie)',
+              color: 'var(--color-texto)',
+              borderRadius: 'var(--redondeo-pildora)',
+              cursor: 'pointer',
+              border: '1px solid var(--color-borde)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 'var(--aire-2)'
+            }}
+          >
+            ● Grabar
           </button>
         </div>
       )}

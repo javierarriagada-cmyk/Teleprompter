@@ -1,3 +1,5 @@
+// El chrome de LISTO se mudo a TeleprompterView.
+// Este archivo queda con las mediciones de preparar; App ya no lo monta.
 import React, { useEffect, useRef } from 'react'
 import { Guion } from '../datos/modelo'
 import { tokenizarGuion, Token } from '../lib/seguidor'

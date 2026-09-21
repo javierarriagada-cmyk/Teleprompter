@@ -34,6 +34,9 @@ export function avanzarTrabado(
 import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
 import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
+import { IconoAtras, IconoEngranaje } from './IconosApp'
+import { hapticaSeleccion, hapticaToqueMedio } from '../haptica'
+import { actualizarConfigCamara } from '../lib/camara'
 
 // UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
 //
@@ -138,6 +141,22 @@ interface TeleprompterViewProps {
   fondoToma?: FondoToma
   recuadroX?: number
   recuadroY?: number
+  estadoToma?: 'listo' | 'leyendo'
+  conCamara?: boolean
+  setAnclajeZona?: (a: AnclajeZona) => void
+  setMirror?: (v: boolean) => void
+  mostrarTiempo?: boolean
+  setMostrarTiempo?: (v: boolean) => void
+  setFondoToma?: (f: FondoToma) => void
+  setRecuadroX?: (x: number) => void
+  setRecuadroY?: (y: number) => void
+  calidadVideo?: string
+  setCalidadVideo?: (q: string) => void
+  calidadesSoportadas?: string[]
+  minutosDisponibles?: number | null
+  onVoltear?: () => void
+  onEmpezar?: () => void
+  onVolverListo?: () => void
   onToggleControles?: () => void
   onNavegacionManual?: (token: number) => void
   onModoManualChange?: (manual: boolean) => void
@@ -185,6 +204,22 @@ export default function TeleprompterView({
   fondoToma = 'detras',
   recuadroX = 0.64,
   recuadroY = 0.52,
+  estadoToma = 'leyendo',
+  conCamara = false,
+  setAnclajeZona,
+  setMirror,
+  mostrarTiempo = true,
+  setMostrarTiempo,
+  setFondoToma,
+  setRecuadroX,
+  setRecuadroY,
+  calidadVideo = '1080p',
+  setCalidadVideo,
+  calidadesSoportadas = [],
+  minutosDisponibles = null,
+  onVoltear,
+  onEmpezar,
+  onVolverListo,
   onToggleControles,
   onNavegacionManual,
   onModoManualChange,
@@ -195,6 +230,8 @@ export default function TeleprompterView({
   const modoManualRef = useRef(false)
   const finManualRef = useRef<number | null>(null)
   const [textoEstadoLector, setTextoEstadoLector] = React.useState<string | null>(null)
+  const [arrastrandoRecuadro, setArrastrandoRecuadro] = React.useState(false)
+  const [panelTomaAbierto, setPanelTomaAbierto] = React.useState(false)
   const tInicioBuscandoRef = useRef<number | null>(null)
 
   const guionObj: Guion = typeof script === 'string' ? {
@@ -216,6 +253,7 @@ export default function TeleprompterView({
   const alturaLineaPx = filaPx + 16
   const [altoLineaViva, setAltoLineaViva] = React.useState<number>(filaPx)
   const [altoContenedor, setAltoContenedor] = React.useState<number>(0)
+  const [anchoContenedor, setAnchoContenedor] = React.useState<number>(0)
   const { topBanda, altoBanda } = altoContenedor > 0
     ? calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, 20, 20, altoLineaViva)
     : { topBanda: 0, altoBanda: 0 }
@@ -235,6 +273,7 @@ export default function TeleprompterView({
     if (!container) return
     const alto = container.clientHeight || 0
     setAltoContenedor(alto)
+    setAnchoContenedor(container.clientWidth || 0)
     const els = container.querySelectorAll('[data-token]')
     const medidas: MedidaToken[] = Array.from(els).map(el => ({
       token: Number((el as HTMLElement).dataset.token),
@@ -258,6 +297,17 @@ export default function TeleprompterView({
       return () => observer.disconnect()
     }
   }, [script, fontSize, columnaAngosta, marginPercent, recalcularGeometria])
+
+  useEffect(() => {
+    if (!conCamara) return
+    actualizarConfigCamara({
+      fondoToma,
+      recuadroX,
+      recuadroY,
+      vistaW: anchoContenedor || (typeof window !== 'undefined' ? window.innerWidth : 360),
+      vistaH: altoContenedor || (typeof window !== 'undefined' ? window.innerHeight : 640)
+    })
+  }, [conCamara, fondoToma, recuadroX, recuadroY, anchoContenedor, altoContenedor])
 
   useEffect(() => {
     if (motorAvance || isRecording) return
@@ -550,10 +600,13 @@ export default function TeleprompterView({
   return (
     <div
       data-testid="teleprompter-view-container"
+      data-estado-toma={estadoToma}
+      data-con-camara={conCamara ? 'si' : 'no'}
       data-columna={columnaAngosta ? 'angosta' : 'completo'}
       data-fondo={colorFondo}
       data-letra={colorTextoEfectivo}
       onClick={() => {
+        if (estadoToma !== 'leyendo') return
         if (!isDraggingGestureRef.current && onToggleControles) {
           onToggleControles()
         }
@@ -603,7 +656,12 @@ export default function TeleprompterView({
           recuadroX={recuadroX}
           recuadroY={recuadroY}
           colorFondo={colorFondo}
-          arrastrable={false}
+          arrastrable={estadoToma === 'listo'}
+          onChangePosicion={(x, y) => {
+            setRecuadroX?.(x)
+            setRecuadroY?.(y)
+          }}
+          onArrastrandoChange={setArrastrandoRecuadro}
         />
       )}
 
@@ -667,24 +725,9 @@ export default function TeleprompterView({
         />
       )}
 
-      {/* Indicador sobrio de estado para el lector */}
-      {textoEstadoLector && (
-        <div
-          data-testid="indicador-estado-lector"
-          style={{
-            position: 'absolute',
-            bottom: 'calc(80px + env(safe-area-inset-bottom, 0px))',
-            left: 'calc(16px + env(safe-area-inset-left, 0px))',
-            fontSize: 15,
-            fontWeight: 600,
-            color: isWhiteBg ? 'rgba(0, 0, 0, 0.85)' : 'rgba(255, 255, 255, 0.85)',
-            pointerEvents: 'none',
-            zIndex: 5
-          }}
-        >
-          {textoEstadoLector}
-        </div>
-      )}
+      {/* El cartel del motor ("Detenido") no pertenece a esta pantalla.
+          El que lee mira el lente. textoEstadoLector se sigue calculando
+          por si el diagnostico lo quiere; no se pinta encima del renglon. */}
 
       <div
         ref={containerRef}
@@ -786,6 +829,288 @@ export default function TeleprompterView({
           })}
         </div>
       </div>
+
+      {estadoToma === 'listo' && (
+        <>
+          <button
+            data-testid="btn-volver-listo"
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              hapticaToqueMedio()
+              onVolverListo?.()
+            }}
+            aria-label="Volver"
+            style={{
+              position: 'absolute',
+              top: 'calc(8px + env(safe-area-inset-top, 0px))',
+              left: 'calc(8px + env(safe-area-inset-left, 0px))',
+              zIndex: 10,
+              width: 32,
+              height: 32,
+              padding: 0,
+              cursor: 'pointer',
+              backgroundColor: 'var(--bg-superficie)',
+              border: '1px solid var(--color-borde)',
+              borderRadius: 'var(--redondeo-pildora)',
+              color: 'var(--color-texto)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <IconoAtras />
+          </button>
+
+          {conCamara && (
+            <button
+              data-testid="btn-voltear-camara"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                hapticaSeleccion()
+                onVoltear?.()
+              }}
+              aria-label="Voltear cámara"
+              style={{
+                position: 'absolute',
+                top: 'calc(8px + env(safe-area-inset-top, 0px))',
+                right: 'calc(8px + env(safe-area-inset-right, 0px))',
+                zIndex: 10,
+                width: 40,
+                height: 40,
+                padding: 0,
+                cursor: 'pointer',
+                backgroundColor: 'rgba(0,0,0,0.35)',
+                border: '1px solid rgba(255,255,255,0.35)',
+                borderRadius: 'var(--redondeo-pildora)',
+                color: '#fff',
+                fontSize: 16
+              }}
+            >
+              ⟳
+            </button>
+          )}
+
+          <div
+            data-testid="panel-controles-listo"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'absolute',
+              bottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+              left: 'calc(16px + env(safe-area-inset-left, 0px))',
+              right: 'calc(16px + env(safe-area-inset-right, 0px))',
+              zIndex: 10,
+              display: arrastrandoRecuadro ? 'none' : 'flex',
+              flexDirection: 'column',
+              gap: 'var(--aire-3)',
+              backgroundColor: 'var(--bg-superficie)',
+              border: '1px solid var(--color-borde)',
+              borderRadius: 'var(--redondeo-grande)',
+              padding: 'var(--aire-3)',
+              color: 'var(--color-texto)'
+            }}
+          >
+            {conCamara && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--aire-3)', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)' }}>
+                  <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                    Imagen:
+                  </span>
+                  <div style={{ display: 'flex', gap: 'var(--aire-1)' }}>
+                    {[
+                      { val: 'detras' as const, label: 'Detrás' },
+                      { val: 'recuadro' as const, label: 'Recuadro' },
+                      { val: 'oculta' as const, label: 'Oculta' }
+                    ].map((opt) => (
+                      <button
+                        key={opt.val}
+                        type="button"
+                        data-testid={`btn-fondo-${opt.val}`}
+                        className="btn-deformable"
+                        onClick={() => {
+                          hapticaSeleccion()
+                          setFondoToma?.(opt.val)
+                        }}
+                        style={{
+                          padding: 'var(--aire-1) var(--aire-2)',
+                          fontSize: 'var(--texto-meta)',
+                          borderRadius: 'var(--redondeo-pildora)',
+                          border: '1px solid var(--color-borde)',
+                          backgroundColor: fondoToma === opt.val ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                          color: fondoToma === opt.val ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                          fontWeight: fondoToma === opt.val ? 'bold' : 'normal',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {calidadesSoportadas.length > 0 && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-1)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)' }}>
+                      <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                        Calidad:
+                      </span>
+                      <div style={{ display: 'flex', gap: 'var(--aire-1)' }}>
+                        {calidadesSoportadas.map((q) => (
+                          <button
+                            key={q}
+                            type="button"
+                            data-testid={`btn-calidad-${q}`}
+                            className="btn-deformable"
+                            onClick={() => {
+                              hapticaSeleccion()
+                              setCalidadVideo?.(q)
+                            }}
+                            style={{
+                              padding: 'var(--aire-1) var(--aire-2)',
+                              fontSize: 'var(--texto-meta)',
+                              borderRadius: 'var(--redondeo-pildora)',
+                              border: '1px solid var(--color-borde)',
+                              backgroundColor: calidadVideo === q ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                              color: calidadVideo === q ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                              fontWeight: calidadVideo === q ? 'bold' : 'normal',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            {q}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    {typeof minutosDisponibles === 'number' && (
+                      <div
+                        data-testid="linea-minutos-disponibles"
+                        style={{
+                          fontSize: 'var(--texto-meta)',
+                          color: minutosDisponibles < 2 ? '#FF5A5A' : 'var(--color-apagado)',
+                          fontWeight: minutosDisponibles < 2 ? 700 : 400
+                        }}
+                      >
+                        {minutosDisponibles >= 2
+                          ? `Te alcanzan unos ${Math.floor(minutosDisponibles)} minutos`
+                          : 'Quedan menos de 2 minutos de espacio'}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {conCamara && fondoToma === 'oculta' && (
+              <div
+                data-testid="aviso-camara-encendida"
+                style={{
+                  fontSize: 'var(--texto-meta)',
+                  color: 'var(--color-apagado)',
+                  fontStyle: 'italic'
+                }}
+              >
+                la cámara sigue encendida
+              </div>
+            )}
+
+            {panelTomaAbierto && (
+              <div data-testid="panel-ajustes-toma" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-2)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                    Dónde lees:
+                  </span>
+                  {(['arriba', 'medio', 'abajo'] as const).map((z) => (
+                    <button
+                      key={z}
+                      type="button"
+                      data-testid={`btn-anclaje-${z}`}
+                      onClick={() => {
+                        hapticaSeleccion()
+                        setAnclajeZona?.(z)
+                      }}
+                      style={{
+                        padding: 'var(--aire-1) var(--aire-2)',
+                        fontSize: 'var(--texto-meta)',
+                        borderRadius: 'var(--redondeo-pildora)',
+                        border: '1px solid var(--color-borde)',
+                        backgroundColor: anclajeZona === z ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                        color: anclajeZona === z ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                        fontWeight: anclajeZona === z ? 'bold' : 'normal',
+                        cursor: 'pointer',
+                        textTransform: 'capitalize'
+                      }}
+                    >
+                      {z}
+                    </button>
+                  ))}
+                </div>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', fontSize: 'var(--texto-meta)' }}>
+                  <input
+                    type="checkbox"
+                    checked={mirror}
+                    onChange={(e) => setMirror?.(e.target.checked)}
+                  />
+                  Espejo
+                </label>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', fontSize: 'var(--texto-meta)' }}>
+                  <input
+                    type="checkbox"
+                    checked={mostrarTiempo}
+                    onChange={(e) => setMostrarTiempo?.(e.target.checked)}
+                  />
+                  Mostrar tiempo
+                </label>
+              </div>
+            )}
+
+            <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
+              <button
+                data-testid="btn-engranaje-toma"
+                type="button"
+                onClick={() => setPanelTomaAbierto((v) => !v)}
+                aria-label="Ajustes de la toma"
+                style={{
+                  width: 44,
+                  padding: 'var(--aire-3)',
+                  borderRadius: 'var(--redondeo-pildora)',
+                  border: '1px solid var(--color-borde)',
+                  backgroundColor: panelTomaAbierto ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                  color: panelTomaAbierto ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <IconoEngranaje tamano={18} />
+              </button>
+              <button
+                data-testid="btn-empezar-toma"
+                type="button"
+                className="btn-deformable"
+                onClick={() => {
+                  hapticaToqueMedio()
+                  onEmpezar?.()
+                }}
+                style={{
+                  flex: 1,
+                  padding: 'var(--aire-3)',
+                  fontSize: 'var(--texto-cuerpo)',
+                  fontWeight: 'bold',
+                  borderRadius: 'var(--redondeo-pildora)',
+                  border: 'none',
+                  backgroundColor: 'var(--color-acento)',
+                  color: 'var(--color-texto-acento)',
+                  cursor: 'pointer'
+                }}
+              >
+                Empezar
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

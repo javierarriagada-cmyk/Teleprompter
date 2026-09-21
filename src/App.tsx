@@ -12,11 +12,10 @@ import { bloquearRecargaAutomatica } from './lib/actualizacion'
 import { iniciarGrabacion, detenerGrabacion } from './lib/grabadorCorpus'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
-import PrepararView from './components/PrepararView'
 import CuentaRegresiva from './components/CuentaRegresiva'
 import { Entrada } from './components/Entrada'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
-import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, ModoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo } from './lib/camara'
+import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo } from './lib/camara'
 import { obtenerEspacioLibre } from './lib/archivosNativos'
 import { calcularMinutosDisponibles } from './lib/espacio'
 import { hapticaToqueMedio, hapticaToqueSuave } from './haptica'
@@ -47,7 +46,8 @@ interface AppProps {
   repoOverride?: RepositorioGuiones
 }
 
-type Vista = 'biblioteca' | 'editor' | 'preparar' | 'lectura'
+type Vista = 'biblioteca' | 'editor' | 'lectura'
+type EstadoToma = 'listo' | 'leyendo'
 
 const GUION_VACIO: Guion = {
   id: 'vacio',
@@ -149,8 +149,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const getNivelVista = (v: Vista): number => {
     if (v === 'biblioteca') return 1
     if (v === 'editor') return 2
-    if (v === 'preparar') return 3
-    return 4
+    return 3
   }
 
   useEffect(() => {
@@ -233,9 +232,20 @@ export default function App({ motor, repoOverride }: AppProps) {
     ajustesPrevios.columnaAngosta !== undefined ? Boolean(ajustesPrevios.columnaAngosta) : false
   )
 
-  const [modoCamara, setModoCamara] = useState<ModoCamara>(
-    (ajustesPrevios.modoCamara === 'frontal' || ajustesPrevios.modoCamara === 'trasera') ? ajustesPrevios.modoCamara : 'apagada'
-  )
+  // lado: lo que recuerda Voltear. Se persiste.
+  // conCamara: de ESTA entrada. Lo pone la puerta. No se persiste.
+  // El que solo lee no pide permiso ni enciende la camara.
+  const [ladoCamara, setLadoCamara] = useState<LadoCamara>(() => {
+    if (ajustesPrevios.ladoCamara === 'trasera' || ajustesPrevios.ladoCamara === 'frontal') {
+      return ajustesPrevios.ladoCamara
+    }
+    if (ajustesPrevios.modoCamara === 'trasera' || ajustesPrevios.modoCamara === 'frontal') {
+      return ajustesPrevios.modoCamara
+    }
+    return 'frontal'
+  })
+  const [conCamara, setConCamara] = useState<boolean>(false)
+  const [estadoToma, setEstadoToma] = useState<EstadoToma>('listo')
   const [fondoToma, setFondoToma] = useState<FondoToma>(
     (ajustesPrevios.fondoToma === 'recuadro' || ajustesPrevios.fondoToma === 'oculta')
       ? ajustesPrevios.fondoToma
@@ -300,7 +310,8 @@ export default function App({ motor, repoOverride }: AppProps) {
         colorFondo,
         colorLetra,
         tipoFuente,
-        modoCamara,
+        ladoCamara,
+        modoCamara: ladoCamara,
         fondoToma,
         recuadroX,
         recuadroY,
@@ -309,10 +320,10 @@ export default function App({ motor, repoOverride }: AppProps) {
       localStorage.setItem('teleprompter_ajustes', JSON.stringify(objetoAjustes))
     } catch (e) {
     }
-  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente, modoCamara, fondoToma, recuadroX, recuadroY, calidadVideo])
+  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente, ladoCamara, fondoToma, recuadroX, recuadroY, calidadVideo])
 
   useEffect(() => {
-    if (vista === 'preparar') {
+    if (vista === 'lectura' && estadoToma === 'listo' && conCamara) {
       obtenerCalidadesSoportadas().then((s) => {
         setCalidadesSoportadas(s)
         if (!s.includes(calidadVideo)) {
@@ -325,7 +336,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       })
       obtenerEspacioLibre().then((b) => setBytesLibres(b))
     }
-  }, [vista, calidadVideo])
+  }, [vista, estadoToma, conCamara, calidadVideo])
 
   const cargarBiblioteca = useCallback(async () => {
     let repo = repoRef.current
@@ -737,24 +748,28 @@ export default function App({ motor, repoOverride }: AppProps) {
   }, [cancelarCuentaRegresiva])
 
   useEffect(() => {
-    const vistaUsaCamara = vista === 'preparar' || vista === 'lectura'
-    if (!vistaUsaCamara) {
-      cancelarCuentaRegresiva()
-      if (camaraEncendida()) {
+    const enLienzo = vista === 'lectura'
+    if (!enLienzo || !conCamara) {
+      if (!enLienzo) cancelarCuentaRegresiva()
+      if (!conCamara && camaraEncendida()) {
         apagarCamara()
         setCamaraActiva(false)
       }
-    } else if (modoCamara !== 'apagada') {
-      if (!camaraEncendida() || modoCamara !== ladoActual()) {
-        encenderCamara(modoCamara, { fondoToma, recuadroX, recuadroY }).then(() => {
+      if (!enLienzo && camaraEncendida()) {
+        apagarCamara()
+        setCamaraActiva(false)
+      }
+    } else {
+      if (!camaraEncendida() || ladoCamara !== ladoActual()) {
+        encenderCamara(ladoCamara, { fondoToma, recuadroX, recuadroY }).then(() => {
           setCamaraActiva(camaraEncendida())
         })
       }
     }
-  }, [vista, cancelarCuentaRegresiva, modoCamara, fondoToma, recuadroX, recuadroY])
+  }, [vista, cancelarCuentaRegresiva, conCamara, ladoCamara, fondoToma, recuadroX, recuadroY])
 
   useEffect(() => {
-    if (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && (vista === 'lectura' || vista === 'preparar')) {
+    if (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && vista === 'lectura') {
       document.body.style.backgroundColor = 'transparent'
       document.documentElement.style.backgroundColor = 'transparent'
     } else {
@@ -926,27 +941,31 @@ export default function App({ motor, repoOverride }: AppProps) {
     }, 1000)
   }
 
-  async function handleEntrarLectura(origen: 'biblioteca' | 'editor' = 'editor', rect?: DOMRect) {
+  async function handleEntrarLectura(
+    origen: 'biblioteca' | 'editor' = 'editor',
+    rect?: DOMRect,
+    conCamaraEstaEntrada = false
+  ) {
     origenLecturaRef.current = origen
     setRectTarjeta(rect || null)
     hapticaToqueMedio()
-    if (modoCamara === 'apagada') {
-      setVista('lectura')
-      setControlesVisibles(false)
-      await handleStart()
-    } else {
-      setVista('preparar')
-    }
+    setConCamara(conCamaraEstaEntrada)
+    setEstadoToma('listo')
+    setControlesVisibles(false)
+    setVista('lectura')
   }
 
-  async function handleEmpezarDesdePreparar() {
+  async function handleEmpezarDesdeListo() {
+    if (estadoToma === 'leyendo') return
     hapticaToqueMedio()
-    setVista('lectura')
+    setEstadoToma('leyendo')
     setControlesVisibles(false)
     await handleStart()
   }
 
-  function handleVolverDesdePreparar() {
+  function handleVolverDesdeListo() {
+    setConCamara(false)
+    setEstadoToma('listo')
     setVista(origenLecturaRef.current)
   }
 
@@ -1027,24 +1046,13 @@ export default function App({ motor, repoOverride }: AppProps) {
     setTInicioLecturaMs(null)
     setEnPausa(false)
     await cortarTomaSiHay(false)
-    if (camaraEncendida()) {
-      apagarCamara()
-      setCamaraActiva(false)
-    }
     await stop()
     // El audio se corta DESPUES del motor, no antes: si se cortara primero, los ultimos
     // calces quedarian anotados con un milisegundo que ya no existe en el archivo.
     await detenerGrabacion()
     await soltarWakeLock()
-
-    // LOS CONTROLES VUELVEN AL PARAR, sin tener que tocar la pantalla.
-    //
-    // Volver con el toque ya existia -onToggleControles, que TeleprompterView dispara y que
-    // sabe distinguir un toque de un arrastre; lo cuida T91-. Esto es otra cosa: al APRETAR
-    // DETENER la lectura termino, y lo primero que uno quiere ver es justamente lo que hay
-    // ahi -que quedo grabado, como sigue-. Pedirle un toque de mas en ese momento es pedirle
-    // que adivine que los controles se traen tocando.
-    setControlesVisibles(true)
+    setEstadoToma('listo')
+    setControlesVisibles(false)
   }
 
   // Ciclo de vida de la toma. No hay servicio en primer plano: esta
@@ -1089,14 +1097,15 @@ export default function App({ motor, repoOverride }: AppProps) {
         setGrabacionAbierta(null)
         return
       }
-      // 2. Durante la lectura, hacer exactamente lo mismo que "Salir": handleStop y volver al origen
+      // Dos pisos. Nunca salta los dos.
+      // LEYENDO -> LISTO: corta la toma por el camino que ya existe.
+      // LISTO -> origen: ahi se apaga la camara.
       if (vista === 'lectura') {
-        await handleStop()
-        setVista(origenLecturaRef.current)
-        return
-      }
-      if (vista === 'preparar') {
-        setVista(origenLecturaRef.current)
+        if (estadoToma === 'leyendo' || isRecording || cuentaRegresiva !== null) {
+          await handleStop()
+          return
+        }
+        handleVolverDesdeListo()
         return
       }
       // 3. En el editor, volver a la biblioteca -descartando el guion si no se escribio
@@ -1233,7 +1242,7 @@ export default function App({ motor, repoOverride }: AppProps) {
         //
         // Aparecio revisando la tarea 55: el boton "Aa" paso de serif a sans y seguia
         // sin ser el nuestro. La familia se define en un solo sitio, el body.
-        maxWidth: (vista === 'lectura' || vista === 'preparar') ? 'none' : 1200,
+        maxWidth: vista === 'lectura' ? 'none' : 1200,
         margin: '0 auto'
       }}
     >
@@ -1253,7 +1262,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             marginBottom: 'var(--aire-4)',
             fontSize: 'var(--texto-meta)',
             border: '1px solid var(--color-borde)',
-            display: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && (vista === 'lectura' || vista === 'preparar')) ? 'none' : 'flex',
+            display: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && vista === 'lectura') ? 'none' : 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
           }}
@@ -1291,7 +1300,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             marginBottom: 'var(--aire-4)',
             fontSize: 'var(--texto-meta)',
             border: '1px solid var(--color-borde)',
-            display: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && (vista === 'lectura' || vista === 'preparar')) ? 'none' : 'block'
+            display: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && vista === 'lectura') ? 'none' : 'block'
           }}
         >
           <strong>Franja de Estado:</strong>
@@ -1324,7 +1333,7 @@ export default function App({ motor, repoOverride }: AppProps) {
         </div>
       )}
 
-      {(vista === 'biblioteca' || ((vista === 'lectura' || vista === 'preparar') && origenLecturaRef.current === 'biblioteca')) && (
+      {(vista === 'biblioteca' || (vista === 'lectura' && origenLecturaRef.current === 'biblioteca')) && (
         <Pantalla direccion={direccion}>
           <BibliotecaView
             guiones={guionesResumen.filter((g) => !idsPendientesBorrado.includes(g.id))}
@@ -1366,50 +1375,13 @@ export default function App({ motor, repoOverride }: AppProps) {
               // La biblioteca se oscurece MIENTRAS crece la ventana, no de golpe: un
               // apagon instantaneo se lee como un corte, que es justo lo que la
               // transformacion existe para evitar.
-              filter: (vista === 'lectura' || vista === 'preparar') ? 'brightness(0.15)' : 'none',
-              display: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && (vista === 'lectura' || vista === 'preparar')) ? 'none' : undefined,
+              filter: vista === 'lectura' ? 'brightness(0.15)' : 'none',
+              display: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && vista === 'lectura') ? 'none' : undefined,
               transition: movimientoApagado() ? 'none' : `filter ${MS_PANTALLA}ms ${CURVA_ENTRA}`,
-              pointerEvents: (vista === 'lectura' || vista === 'preparar') ? 'none' : 'auto'
+              pointerEvents: vista === 'lectura' ? 'none' : 'auto'
             }}
           />
         </Pantalla>
-      )}
-
-      {vista === 'preparar' && guionActual && (
-        <PrepararView
-          script={guionActual}
-          fontSize={fontSize}
-          marginPercent={marginPercent}
-          mirror={mirror}
-          lineasZona={lineasZona}
-          anclajeZona={anclajeZona}
-          setAnclajeZona={setAnclajeZona}
-          columnaAngosta={columnaAngosta}
-          colorFondo={colorFondo}
-          colorLetra={colorLetra}
-          tipoFuente={tipoFuente}
-          modoCamara={modoCamara === 'trasera' ? 'trasera' : 'frontal'}
-          setModoCamara={(m) => setModoCamara(m)}
-          fondoToma={fondoToma}
-          setFondoToma={setFondoToma}
-          recuadroX={recuadroX}
-          setRecuadroX={setRecuadroX}
-          recuadroY={recuadroY}
-          setRecuadroY={setRecuadroY}
-          calidadVideo={calidadVideo}
-          setCalidadVideo={(q) => {
-            setCalidadVideo(q)
-            fijarCalidadVideo(q)
-          }}
-          calidadesSoportadas={calidadesSoportadas}
-          minutosDisponibles={
-            bytesLibres !== null
-              ? calcularMinutosDisponibles(bytesLibres, calidadVideo, grabaciones)
-              : null
-          }
-          onVolver={handleVolverDesdePreparar}
-          onEmpezar={handleEmpezarDesdePreparar}
-        />
       )}
 
       {vista === 'editor' && guionActual && (
@@ -1421,7 +1393,8 @@ export default function App({ motor, repoOverride }: AppProps) {
               setGuionActual(nuevoG)
             }}
             onVolverBiblioteca={() => { salirDelEditor() }}
-            onEntrarLectura={(rect) => handleEntrarLectura('editor', rect)}
+            onEntrarLectura={(rect) => handleEntrarLectura('editor', rect, false)}
+            onEntrarGrabar={(rect) => handleEntrarLectura('editor', rect, true)}
             fontSize={fontSize}
             onLetraMenos={handleLetraMenos}
             onLetraMas={handleLetraMas}
@@ -1447,8 +1420,6 @@ export default function App({ motor, repoOverride }: AppProps) {
             setTema={setTema}
             engine={engine}
             setEngine={setEngine}
-            modoCamara={modoCamara}
-            setModoCamara={setModoCamara}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
           />
         </Pantalla>
@@ -1476,7 +1447,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             '--tarjeta-izquierda': huecoEntrada ? `${huecoEntrada.izquierda}px` : '0px'
           } as React.CSSProperties}
         >
-          {controlesVisibles && (
+          {estadoToma === 'leyendo' && controlesVisibles && (
             <div
               data-testid="panel-controles-lectura"
               data-duracion-entra={MS_CHICO}
@@ -1505,19 +1476,23 @@ export default function App({ motor, repoOverride }: AppProps) {
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)' }}>
                 <button
+                  data-testid="btn-salir-lectura"
                   onClick={async () => {
                     hapticaToqueMedio()
-                    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
-                    await handleStop()
-                    if (duracionMs !== null && duracionMs > 0) {
-                      const totalSeg = Math.floor(duracionMs / 1000)
-                      const mins = Math.floor(totalSeg / 60)
-                      const segs = String(totalSeg % 60).padStart(2, '0')
-                      mostrarAviso(`Grabado: ${mins}:${segs}`)
-                    } else {
-                      mostrarAviso('Grabado')
+                    if (estadoToma === 'leyendo' || isRecording || cuentaRegresiva !== null) {
+                      const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
+                      await handleStop()
+                      if (duracionMs !== null && duracionMs > 0) {
+                        const totalSeg = Math.floor(duracionMs / 1000)
+                        const mins = Math.floor(totalSeg / 60)
+                        const segs = String(totalSeg % 60).padStart(2, '0')
+                        mostrarAviso(`Grabado: ${mins}:${segs}`)
+                      } else {
+                        mostrarAviso('Grabado')
+                      }
+                      return
                     }
-                    setVista(origenLecturaRef.current)
+                    handleVolverDesdeListo()
                   }}
                   style={{
                     padding: 'var(--aire-2) var(--aire-3)',
@@ -1552,52 +1527,7 @@ export default function App({ motor, repoOverride }: AppProps) {
 
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)' }}>
-                <span className="texto-meta" style={{ color: 'var(--color-apagado)', fontWeight: 600 }}>Letra:</span>
-                <button
-                  onClick={handleLetraMenos}
-                  aria-label="Disminuir letra"
-                  style={{
-                    width: 32,
-                    height: 32,
-                    fontSize: 'var(--texto-titulo)',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                    borderRadius: 'var(--redondeo)',
-                    border: '1px solid var(--color-borde)',
-                    backgroundColor: 'var(--bg-suelo)',
-                    color: 'var(--color-texto)',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  -
-                </button>
-                <span data-testid="valor-letra" style={{ minWidth: 32, textAlign: 'center', fontWeight: 'bold', fontSize: 'var(--texto-cuerpo)', color: 'var(--color-texto)' }}>
-                  {fontSize}
-                </span>
-                <button
-                  onClick={handleLetraMas}
-                  aria-label="Aumentar letra"
-                  style={{
-                    width: 32,
-                    height: 32,
-                    fontSize: 'var(--texto-titulo)',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                    borderRadius: 'var(--redondeo)',
-                    border: '1px solid var(--color-borde)',
-                    backgroundColor: 'var(--bg-suelo)',
-                    color: 'var(--color-texto)',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  +
-                </button>
-              </div>
+              <div />
             </div>
           )}
 
@@ -1632,11 +1562,37 @@ export default function App({ motor, repoOverride }: AppProps) {
               grabandoVideo={grabandoVideo}
               enPausa={enPausa}
               camaraEncendida={camaraActiva}
-              ladoCamara={modoCamara === 'trasera' ? 'trasera' : 'frontal'}
+              ladoCamara={ladoCamara}
             fondoToma={fondoToma}
             recuadroX={recuadroX}
             recuadroY={recuadroY}
-              onToggleControles={() => setControlesVisibles((prev) => !prev)}
+              estadoToma={estadoToma}
+              conCamara={conCamara}
+              setAnclajeZona={setAnclajeZona}
+              setMirror={setMirror}
+              mostrarTiempo={mostrarTiempo}
+              setMostrarTiempo={setMostrarTiempo}
+              setFondoToma={setFondoToma}
+              setRecuadroX={setRecuadroX}
+              setRecuadroY={setRecuadroY}
+              calidadVideo={calidadVideo}
+              setCalidadVideo={(q) => {
+                setCalidadVideo(q)
+                fijarCalidadVideo(q)
+              }}
+              calidadesSoportadas={calidadesSoportadas}
+              minutosDisponibles={
+                bytesLibres !== null
+                  ? calcularMinutosDisponibles(bytesLibres, calidadVideo, grabaciones)
+                  : null
+              }
+              onVoltear={() => setLadoCamara((l) => (l === 'frontal' ? 'trasera' : 'frontal'))}
+              onEmpezar={handleEmpezarDesdeListo}
+              onVolverListo={handleVolverDesdeListo}
+              onToggleControles={() => {
+                if (estadoToma !== 'leyendo') return
+                setControlesVisibles((prev) => !prev)
+              }}
               onNavegacionManual={irAToken}
               onModoManualChange={setModoManual}
               onEstadoAvanceChange={handleEstadoAvanceChange}
