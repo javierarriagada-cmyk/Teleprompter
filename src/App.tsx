@@ -20,11 +20,23 @@ import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENT
 import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, ModoCamara } from './lib/camara'
 import { hapticaToqueMedio, hapticaToqueSuave } from './haptica'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
-import { Guion, ResumenGuion, guionNuevo, PAREJAS_COLOR } from './datos/modelo'
+import { Guion, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR } from './datos/modelo'
 import { RepositorioGuiones } from './datos/RepositorioGuiones'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
+import { RepositorioGrabaciones } from './datos/RepositorioGrabaciones'
+import { RepositorioGrabacionesIndexedDB } from './datos/RepositorioGrabacionesIndexedDB'
+import { RepositorioGrabacionesMemoria } from './datos/RepositorioGrabacionesMemoria'
 import { importarArchivo } from './datos/importarArchivo'
+import ReproductorGrabacion from './components/ReproductorGrabacion'
+import {
+  iniciarTomaVideo,
+  cortarTomaVideo,
+  recuperarTomasPendientes,
+  tomaEnCurso,
+  anotarFraseOida,
+  borrarGrabacionEnDisco
+} from './lib/tomaVideo'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
 const MS_CONTROLES_A_LA_VISTA = 4000
@@ -95,6 +107,9 @@ function ajustarFuenteValida(val: any): number {
 
 export default function App({ motor, repoOverride }: AppProps) {
   const repoRef = useRef<RepositorioGuiones>(repoOverride || new RepositorioIndexedDB())
+  const repoGrabacionesRef = useRef<RepositorioGrabaciones>(
+    repoOverride ? new RepositorioGrabacionesMemoria() : new RepositorioGrabacionesIndexedDB()
+  )
   const [usandoMemoriaFallback, setUsandoMemoriaFallback] = useState<boolean>(false)
   const [errorRepositorio, setErrorRepositorio] = useState<string | null>(null)
 
@@ -247,6 +262,10 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
   const [mostrarDiagnostico, setMostrarDiagnostico] = useState<boolean>(false)
   const [camaraActiva, setCamaraActiva] = useState<boolean>(false)
+  const [grabaciones, setGrabaciones] = useState<ResumenGrabacion[]>([])
+  const [grabandoVideo, setGrabandoVideo] = useState<boolean>(false)
+  const [grabacionAbierta, setGrabacionAbierta] = useState<ResumenGrabacion | null>(null)
+  const grabandoVideoRef = useRef<boolean>(false)
 
   const { estado: estadoPrecarga, progreso: progresoPrecarga, error: errorPrecarga, reintentar: reintentarPrecarga } = usePrecargaModelo(engine)
 
@@ -295,6 +314,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       console.warn('[App] Error al acceder a RepositorioIndexedDB, cayendo a RepositorioMemoria:', e)
       repo = new RepositorioMemoria()
       repoRef.current = repo
+      repoGrabacionesRef.current = new RepositorioGrabacionesMemoria()
       setUsandoMemoriaFallback(true)
       setErrorRepositorio('IndexedDB no está disponible; se está usando almacenamiento en memoria.')
       try {
@@ -315,6 +335,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       } catch (e) {
         console.warn('[App] Error al acceder a RepositorioIndexedDB, cayendo a RepositorioMemoria:', e)
         repoRef.current = new RepositorioMemoria()
+        repoGrabacionesRef.current = new RepositorioGrabacionesMemoria()
         setUsandoMemoriaFallback(true)
         setErrorRepositorio('IndexedDB no está disponible; se está usando almacenamiento en memoria.')
       }
@@ -419,6 +440,15 @@ export default function App({ motor, repoOverride }: AppProps) {
       }
 
       await cargarBiblioteca()
+      try {
+        const recuperadas = await recuperarTomasPendientes(repoGrabacionesRef.current)
+        setGrabaciones(recuperadas)
+      } catch (e) {
+        console.warn('[App] no se pudieron recuperar grabaciones:', e)
+        try {
+          setGrabaciones(await repoGrabacionesRef.current.listar())
+        } catch {}
+      }
       setCargado(true)
     }
 
@@ -745,7 +775,12 @@ export default function App({ motor, repoOverride }: AppProps) {
     motor,
     acumularTexto: verTranscripcion,
     alRecibirParcial: seguidorParcial,
-    alRecibirFraseFinal: seguidorFinal,
+    alRecibirFraseFinal: (e: any) => {
+      if (grabandoVideoRef.current && e && String(e.texto || '').trim()) {
+        anotarFraseOida()
+      }
+      seguidorFinal(e)
+    },
     alNotificarVoz: seguidorVoz
   })
 
@@ -846,6 +881,24 @@ export default function App({ motor, repoOverride }: AppProps) {
         setCuentaRegresiva(null)
         setTInicioLecturaMs(performance.now())
         start()
+        // La grabacion de video empieza DESPUES de la cuenta, no al
+        // entrar a lectura: si arranca antes, los primeros segundos
+        // son una cara quieta esperando. Y VA SIN await: si el
+        // grabador falla, la lectura sigue. La voz manda sobre el video.
+        if (camaraEncendida()) {
+          const idToma = generarUuid()
+          iniciarTomaVideo({
+            id: idToma,
+            guionId: guionActual ? guionActual.id : undefined,
+            tituloGuion: guionActual ? guionActual.titulo : '(sin guion)'
+          }).then((ok) => {
+            grabandoVideoRef.current = ok
+            setGrabandoVideo(ok)
+          }).catch(() => {
+            grabandoVideoRef.current = false
+            setGrabandoVideo(false)
+          })
+        }
       }
     }, 1000)
   }
@@ -918,10 +971,39 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }
 
+  async function persistirResumenToma(resumen: ResumenGrabacion | null) {
+    if (!resumen) return
+    try {
+      await repoGrabacionesRef.current.guardar(resumen)
+      setGrabaciones(await repoGrabacionesRef.current.listar())
+    } catch (e) {
+      console.warn('[App] no se pudo guardar el indice de la toma:', e)
+    }
+    if (resumen.errorMudo) {
+      mostrarAviso('El motor oyo y el archivo no tiene sonido')
+    } else if (resumen.avisoMudo) {
+      mostrarAviso('No se oye audio en este archivo')
+    }
+  }
+
+  async function cortarTomaSiHay(incompleta = false) {
+    if (!tomaEnCurso() && !grabandoVideoRef.current) return
+    try {
+      const resumen = await cortarTomaVideo({ incompleta })
+      await persistirResumenToma(resumen)
+    } catch (e) {
+      console.warn('[App] error al cortar la toma:', e)
+    } finally {
+      grabandoVideoRef.current = false
+      setGrabandoVideo(false)
+    }
+  }
+
   async function handleStop() {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
     setEnPausa(false)
+    await cortarTomaSiHay(false)
     if (camaraEncendida()) {
       apagarCamara()
       setCamaraActiva(false)
@@ -942,12 +1024,46 @@ export default function App({ motor, repoOverride }: AppProps) {
     setControlesVisibles(true)
   }
 
+  // Ciclo de vida de la toma. No hay servicio en primer plano: esta
+  // aplicacion se usa mirando el lente. Si la pantalla se va a segundo
+  // plano o la actividad se destruye, se corta limpio y se escribe el
+  // sidecar. Al volver, recuperarTomasPendientes promociona o marca
+  // incompleta lo que haya quedado.
+  useEffect(() => {
+    const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive && (tomaEnCurso() || grabandoVideoRef.current)) {
+        cortarTomaSiHay(true)
+      }
+    })
+    return () => {
+      try {
+        if (sub && typeof sub.then === 'function') {
+          sub.then((h: any) => h && h.remove && h.remove()).catch(() => {})
+        } else if (sub && typeof sub.remove === 'function') {
+          sub.remove()
+        }
+      } catch {}
+    }
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (tomaEnCurso()) {
+        cortarTomaVideo({ incompleta: true }).catch(() => {})
+      }
+    }
+  }, [])
+
   // Ref para manejar el evento de botón de atrás en Android
   const handleVolverAtrasRef = useRef<() => Promise<void> | void>(() => {})
   useEffect(() => {
     handleVolverAtrasRef.current = async () => {
       // 1. Si hay un modal abierto, cerrarlo
       if (cerrarModalRef.current && cerrarModalRef.current()) {
+        return
+      }
+      if (grabacionAbierta) {
+        setGrabacionAbierta(null)
         return
       }
       // 2. Durante la lectura, hacer exactamente lo mismo que "Salir": handleStop y volver al origen
@@ -1215,6 +1331,19 @@ export default function App({ motor, repoOverride }: AppProps) {
               colorFondo={colorFondo}
               colorLetra={colorLetra}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
+            grabaciones={grabaciones}
+            onAbrirGrabacion={(g) => setGrabacionAbierta(g)}
+            onBorrarGrabacion={async (id) => {
+              const actual = grabaciones.find((g) => g.id === id)
+              try {
+                if (actual) await borrarGrabacionEnDisco(actual)
+                await repoGrabacionesRef.current.borrar(id)
+                setGrabaciones(await repoGrabacionesRef.current.listar())
+              } catch (e) {
+                console.warn('[App] no se pudo borrar la toma:', e)
+              }
+              if (grabacionAbierta && grabacionAbierta.id === id) setGrabacionAbierta(null)
+            }}
             style={{
               // La biblioteca se oscurece MIENTRAS crece la ventana, no de golpe: un
               // apagon instantaneo se lee como un corte, que es justo lo que la
@@ -1475,6 +1604,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               colorLetra={colorLetra}
               tipoFuente={tipoFuente}
               isRecording={isRecording || cuentaRegresiva !== null}
+              grabandoVideo={grabandoVideo}
               enPausa={enPausa}
               camaraEncendida={camaraActiva}
               ladoCamara={modoCamara === 'trasera' ? 'trasera' : 'frontal'}
@@ -1540,6 +1670,24 @@ export default function App({ motor, repoOverride }: AppProps) {
             />
           )}
         </div>
+      )}
+
+      {grabacionAbierta && (
+        <ReproductorGrabacion
+          grabacion={grabacionAbierta}
+          onCerrar={() => setGrabacionAbierta(null)}
+          onBorrar={async (id) => {
+            const actual = grabaciones.find((g) => g.id === id) || grabacionAbierta
+            try {
+              if (actual) await borrarGrabacionEnDisco(actual)
+              await repoGrabacionesRef.current.borrar(id)
+              setGrabaciones(await repoGrabacionesRef.current.listar())
+            } catch (e) {
+              console.warn('[App] no se pudo borrar la toma:', e)
+            }
+            setGrabacionAbierta(null)
+          }}
+        />
       )}
 
       {/* Toast / Aviso Breve */}
