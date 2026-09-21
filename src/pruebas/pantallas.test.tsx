@@ -477,12 +477,12 @@ describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
 // guion tenia un bloque, no habia ninguna manera de sumar otro. Aparecio el 13 de septiembre
 // de 2026 revisando textos de botones: el texto estaba bien, lo que faltaba era la funcion.
 describe('Pruebas TAREA 32 (T161)', () => {
-  test('T161: con un guion que YA tiene un bloque, existe un boton para agregar otro y agregarlo suma un bloque.', () => {
+  test('T161: con un guion que YA tiene un bloque, es una sola hoja de texto y NO existe el boton de agregar bloque.', () => {
     let guionActual: Guion = {
       id: 'g-bloques', titulo: 'Con un bloque', idioma: 'es', creado: 1, modificado: 1,
       bloques: [{ id: 'b1', nombre: '', texto: 'Primero.' }]
     }
-    const { rerender } = render(
+    render(
       React.createElement(EditorView, {
         guion: guionActual,
         onChangeGuion: (g: Guion) => { guionActual = g },
@@ -491,20 +491,10 @@ describe('Pruebas TAREA 32 (T161)', () => {
       })
     )
 
-    // la pantalla vacia no esta, y el boton de agregar SI
+    // la pantalla vacia no esta, y NO existe el boton de agregar bloque
     expect(screen.queryByText('Agregar primer bloque')).toBeNull()
-    const btn = screen.getByTestId('btn-agregar-bloque')
-    expect(btn).not.toBeNull()
-
-    fireEvent.click(btn)
-    expect(guionActual.bloques.length).toBe(2)
-
-    rerender(
-      React.createElement(EditorView, {
-        guion: guionActual, onChangeGuion: () => {}, onVolverBiblioteca: () => {}, onEntrarLectura: () => {}
-      })
-    )
-    expect(document.querySelectorAll('textarea').length).toBe(2)
+    expect(screen.queryByTestId('btn-agregar-bloque')).toBeNull()
+    expect(document.querySelectorAll('textarea').length).toBe(1)
   })
 })
 

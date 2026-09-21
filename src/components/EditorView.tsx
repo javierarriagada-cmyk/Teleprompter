@@ -1,6 +1,7 @@
-﻿import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
-import { Guion, Bloque, TramoFormato, contarPalabras, calcularDuracionTexto, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
+import { Guion, Bloque, TramoFormato, contarPalabras, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
+import { consolidarGuion } from '../datos/consolidar'
 import { importarTexto } from '../datos/importar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { IdMotor } from '../motor/MotorDeVoz'
@@ -76,23 +77,6 @@ interface EditorViewProps {
   onAnimationEnd?: (e: React.AnimationEvent) => void
 }
 
-// EL CUADRO DE TEXTO CRECE CON LO QUE TIENE ADENTRO.
-//
-// Antes el alto salia de rows={lineas logicas + 2}, y eso cuenta los saltos de
-// linea que escribio el autor, NO las lineas que quedan despues de que el texto
-// se acomoda al ancho de la pantalla. Un parrafo largo sin saltos ocupa una linea
-// logica y seis visuales.
-//
-// Medido en el telefono el 15 de septiembre de 2026 con el guion de bienvenida:
-// el cuadro media 374 px de alto y su contenido 720. La mitad del guion quedaba
-// escondida en un scroll adentro de otro scroll, que es de lo peor que se puede
-// hacer en una pantalla de telefono.
-//
-// No se notaba mientras lo pegado se partia en un bloque por parrafo -cada bloque
-// era corto-. Al pasar a un solo bloque, aparece con cualquier guion de verdad.
-//
-// En jsdom scrollHeight vale 0 porque no hay maquetado: por eso solo se aplica
-// cuando da mayor que cero, y las pruebas siguen viendo el textarea como antes.
 function ajustarAltoTextarea(el: HTMLTextAreaElement | null): void {
   if (!el) return
   el.style.height = 'auto'
@@ -143,7 +127,6 @@ export default function EditorView({
   style,
   onAnimationEnd
 }: EditorViewProps) {
-  const [plegados, setPlegados] = useState<Record<string, boolean>>({})
   const [mostrarModalAjustes, setMostrarModalAjustes] = useState(false)
   const refAjustes = useCerrarAfuera(mostrarModalAjustes, () => setMostrarModalAjustes(false))
   const [mostrarModalPegar, setMostrarModalPegar] = useState(false)
@@ -152,32 +135,20 @@ export default function EditorView({
   const esArrastrandoModalRef = useRef(false)
   const dragStartYRef = useRef<number | null>(null)
 
+  // Auto-consolidar guiones viejos con más de un bloque
+  useEffect(() => {
+    if (guion && guion.bloques && guion.bloques.length > 1) {
+      const consolidado = consolidarGuion(guion)
+      onChangeGuion(consolidado)
+    }
+  }, [guion, onChangeGuion])
+
   function obtenerClientY(e: React.PointerEvent<HTMLDivElement>): number {
     if (typeof e.clientY === 'number' && !isNaN(e.clientY)) return e.clientY
     if (e.nativeEvent && typeof (e.nativeEvent as any).clientY === 'number') return (e.nativeEvent as any).clientY
     return 0
   }
 
-  // EL ARRASTRE NO LLEGABA AL TELEFONO, Y NO ERA QUE ESTUVIERA MAL ESCRITO.
-  //
-  // La hoja tiene overflowY: auto. En una pantalla tactil el navegador se queda con
-  // el gesto vertical para desplazar el contenido, asi que los pointermove nunca
-  // llegan aca. En el escritorio, con el raton, funcionaba; con el dedo no.
-  // Javier lo vio en su telefono el 20 de septiembre de 2026: "no baja cuando el
-  // intento de bajarla".
-  //
-  // Dos caminos, y los dos hacen falta:
-  //
-  //   la agarradera    lleva touchAction: 'none' y sus propios manejadores, asi que
-  //                    desde ahi el arrastre SIEMPRE funciona. Para eso esta: es la
-  //                    pista visual de que la hoja se puede bajar.
-  //
-  //   el cuerpo        solo arrastra cuando la hoja esta ARRIBA DEL TODO
-  //                    -scrollTop en cero-. Si hay contenido por encima, el gesto
-  //                    es de desplazamiento y gana el desplazamiento.
-  //
-  // Sin esa condicion las dos cosas se pelean, y lo que se pierde es poder leer la
-  // hoja entera, que importa mas.
   function empezarArrastre(e: React.PointerEvent<HTMLDivElement>, elemento: HTMLElement | null) {
     dragStartYRef.current = obtenerClientY(e)
     esArrastrandoModalRef.current = true
@@ -195,7 +166,6 @@ export default function EditorView({
     if (target && target.closest('button, input, select, label, textarea, a, option, [role="button"]')) {
       return
     }
-    // Arriba del todo o no hay arrastre: si no, se pelea con el desplazamiento.
     if (e.currentTarget.scrollTop > 0) {
       return
     }
@@ -235,7 +205,6 @@ export default function EditorView({
 
   const textareaRefs = useRef<Record<string, HTMLTextAreaElement | null>>({})
   const ultimasSeleccionesRef = useRef<Record<string, { desde: number; hasta: number }>>({})
-  const [bloqueSeleccionado, setBloqueSeleccionado] = useState<string | null>(null)
   const [hayTextoSeleccionado, setHayTextoSeleccionado] = useState(false)
   const [tituloEnfocado, setTituloEnfocado] = useState(false)
   const [barraLeerVisible, setBarraLeerVisible] = useState(true)
@@ -248,10 +217,8 @@ export default function EditorView({
       const diff = currentScrollTop - ultimoScrollTopRef.current
 
       if (diff > 5) {
-        // Desplazamiento hacia abajo: esconder rapido con curva de salida
         setBarraLeerVisible(false)
       } else if (diff < -5) {
-        // Desplazamiento hacia arriba: volver
         setBarraLeerVisible(true)
       }
 
@@ -259,7 +226,6 @@ export default function EditorView({
 
       if (timerScrollStopRef.current) clearTimeout(timerScrollStopRef.current)
       timerScrollStopRef.current = setTimeout(() => {
-        // Al parar de desplazar, la barra vuelve
         setBarraLeerVisible(true)
       }, 300)
     }
@@ -270,13 +236,6 @@ export default function EditorView({
       if (timerScrollStopRef.current) clearTimeout(timerScrollStopRef.current)
     }
   }, [])
-
-  function togglePlegado(id: string) {
-    setPlegados((prev) => ({
-      ...prev,
-      [id]: !prev[id]
-    }))
-  }
 
   function handleTituloChange(nuevoTitulo: string) {
     onChangeGuion({
@@ -298,10 +257,19 @@ export default function EditorView({
       return
     }
 
-    const bloquesActuales = guion.bloques || []
+    const textoAInsertar = nuevosBloques.map((b) => b.texto).join('\n\n')
+    const b0 = (guion.bloques && guion.bloques[0])
+      ? guion.bloques[0]
+      : { id: generarIdBloque(), nombre: '', texto: '', tramos: [] }
+
+    const textoExistente = b0.texto || ''
+    const textoNuevo = !textoExistente.trim()
+      ? textoAInsertar
+      : textoExistente + '\n\n' + textoAInsertar
+
     onChangeGuion({
       ...guion,
-      bloques: [...bloquesActuales, ...nuevosBloques],
+      bloques: [{ ...b0, texto: textoNuevo }],
       modificado: Date.now()
     })
 
@@ -330,7 +298,16 @@ export default function EditorView({
         throw new Error('El archivo no contiene texto importable.')
       }
 
-      const bloquesActuales = guion.bloques || []
+      const textoAInsertar = resultado.bloques.map((b) => b.texto).join('\n\n')
+      const b0 = (guion.bloques && guion.bloques[0])
+        ? guion.bloques[0]
+        : { id: generarIdBloque(), nombre: '', texto: '', tramos: [] }
+
+      const textoExistente = b0.texto || ''
+      const textoNuevo = !textoExistente.trim()
+        ? textoAInsertar
+        : textoExistente + '\n\n' + textoAInsertar
+
       const tituloNuevo = (!guion.titulo || !guion.titulo.trim() || guion.titulo === 'Sin título')
         ? resultado.titulo
         : guion.titulo
@@ -338,7 +315,7 @@ export default function EditorView({
       onChangeGuion({
         ...guion,
         titulo: tituloNuevo,
-        bloques: [...bloquesActuales, ...resultado.bloques],
+        bloques: [{ ...b0, texto: textoNuevo }],
         modificado: Date.now()
       })
     } catch (err: any) {
@@ -357,42 +334,27 @@ export default function EditorView({
     })
   }
 
-  function handleAgregarBloque() {
-    const nuevoBloque: Bloque = {
-      id: generarIdBloque(),
-      nombre: '',
-      texto: '',
-      tramos: []
-    }
-    const bloquesActuales = guion.bloques || []
-    onChangeGuion({
-      ...guion,
-      bloques: [...bloquesActuales, nuevoBloque],
-      modificado: Date.now()
-    })
-  }
+  function handleTextoChange(nuevoTexto: string) {
+    const b0 = (guion.bloques && guion.bloques[0])
+      ? guion.bloques[0]
+      : { id: generarIdBloque(), nombre: '', texto: '', tramos: [] }
 
-  function handleTextoBloqueChange(index: number, nuevoTexto: string) {
-    if (!guion.bloques || !guion.bloques[index]) return
-    const bloqueViejo = guion.bloques[index]
-
-    const nuevosBloques = [...guion.bloques]
-    nuevosBloques[index] = {
-      ...nuevosBloques[index],
+    const bloqueActualizado: Bloque = {
+      ...b0,
       texto: nuevoTexto,
-      tramos: reubicarTramos(bloqueViejo.texto || '', nuevoTexto, bloqueViejo.tramos || [])
+      tramos: reubicarTramos(b0.texto || '', nuevoTexto, b0.tramos || [])
     }
 
     onChangeGuion({
       ...guion,
-      bloques: nuevosBloques,
+      bloques: [bloqueActualizado],
       modificado: Date.now()
     })
   }
 
-  function aplicarFormatoEnSeleccion(index: number, opciones: { negrita?: boolean; color?: 'ambar' | 'celeste' | 'salvia' }) {
-    if (!guion.bloques || !guion.bloques[index]) return
-    const bloque = guion.bloques[index]
+  function aplicarFormatoEnSeleccion(opciones: { negrita?: boolean; color?: 'ambar' | 'celeste' | 'salvia' }) {
+    if (!guion.bloques || !guion.bloques[0]) return
+    const bloque = guion.bloques[0]
     const textarea = textareaRefs.current[bloque.id]
     if (!textarea) return
 
@@ -423,22 +385,16 @@ export default function EditorView({
       })
     }
 
-    const nuevosBloques = [...guion.bloques]
-    nuevosBloques[index] = {
-      ...nuevosBloques[index],
-      tramos: tramosActuales
-    }
-
     onChangeGuion({
       ...guion,
-      bloques: nuevosBloques,
+      bloques: [{ ...bloque, tramos: tramosActuales }],
       modificado: Date.now()
     })
   }
 
-  function handleAcotacion(index: number) {
-    if (!guion.bloques || !guion.bloques[index]) return
-    const bloque = guion.bloques[index]
+  function handleAcotacion() {
+    if (!guion.bloques || !guion.bloques[0]) return
+    const bloque = guion.bloques[0]
     const textarea = textareaRefs.current[bloque.id]
     if (!textarea) return
 
@@ -456,48 +412,11 @@ export default function EditorView({
 
     const textoNuevo = textoActual.substring(0, desde) + `[${textoSeleccionado}]` + textoActual.substring(hasta)
 
-    handleTextoBloqueChange(index, textoNuevo)
-  }
-
-  function handleSubirBloque(index: number) {
-    if (!guion.bloques || index <= 0 || index >= guion.bloques.length) return
-    const nuevosBloques = [...guion.bloques]
-    const temp = nuevosBloques[index - 1]
-    nuevosBloques[index - 1] = nuevosBloques[index]
-    nuevosBloques[index] = temp
-    onChangeGuion({
-      ...guion,
-      bloques: nuevosBloques,
-      modificado: Date.now()
-    })
-  }
-
-  function handleBajarBloque(index: number) {
-    if (!guion.bloques || index < 0 || index >= guion.bloques.length - 1) return
-    const nuevosBloques = [...guion.bloques]
-    const temp = nuevosBloques[index + 1]
-    nuevosBloques[index + 1] = nuevosBloques[index]
-    nuevosBloques[index] = temp
-    onChangeGuion({
-      ...guion,
-      bloques: nuevosBloques,
-      modificado: Date.now()
-    })
-  }
-
-  function handleBorrarBloque(index: number) {
-    if (!guion.bloques || index < 0 || index >= guion.bloques.length) return
-    const nuevosBloques = guion.bloques.filter((_, i) => i !== index)
-    onChangeGuion({
-      ...guion,
-      bloques: nuevosBloques,
-      modificado: Date.now()
-    })
+    handleTextoChange(textoNuevo)
   }
 
   function handleTextareaSelect(bloqueId: string, target: HTMLTextAreaElement) {
     const tieneSeleccion = target.selectionStart !== target.selectionEnd
-    setBloqueSeleccionado(bloqueId)
     setHayTextoSeleccionado(tieneSeleccion)
     if (tieneSeleccion) {
       ultimasSeleccionesRef.current[bloqueId] = {
@@ -544,7 +463,10 @@ export default function EditorView({
   }, [mostrarModalAjustes, mostrarModalPegar, onRegistrarCerrarModal])
 
   const btnLeerRef = useRef<HTMLButtonElement>(null)
-  const hayMasDeUnBloque = guion.bloques && guion.bloques.length > 1
+
+  const bloqueUnico: Bloque = (guion.bloques && guion.bloques[0])
+    ? guion.bloques[0]
+    : { id: 'b-inicial', nombre: '', texto: '', tramos: [] }
 
   return (
     <div
@@ -642,7 +564,6 @@ export default function EditorView({
         </div>
       )}
 
-
       {/* Modal de Ajustes: Hoja inferior */}
       {mostrarModalAjustes && (
         <div
@@ -671,11 +592,6 @@ export default function EditorView({
             style={{
               backgroundColor: 'var(--bg-panel)',
               color: 'var(--color-texto)',
-              // EL ULTIMO CONTROL DE LA HOJA QUEDABA DEBAJO DE LA BARRA DE
-              // NAVEGACION. La hoja esta pegada al borde de abajo de la pantalla,
-              // asi que su relleno inferior tiene que descontar el area segura o
-              // "Mostrar tiempo" -que es el ultimo- se mete debajo del sistema.
-              // Javier lo vio en su telefono el 20 de septiembre de 2026.
               padding: 'var(--aire-4)',
               paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
               borderRadius: 'var(--redondeo-grande) var(--redondeo-grande) 0 0',
@@ -696,11 +612,6 @@ export default function EditorView({
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Handle superior de 36x4 */}
-            {/* La agarradera es la unica zona donde el arrastre siempre gana:
-                touchAction 'none' le pide al navegador que no se quede con el
-                gesto. Se le da area de sobra alrededor para que se pueda tomar
-                con el dedo, aunque la barra dibujada siga siendo de 36x4. */}
             <div
               data-testid="agarradera-hoja-ajustes"
               onPointerDown={handleAgarraderaPointerDown}
@@ -1099,7 +1010,7 @@ export default function EditorView({
         >
           <h4 style={{ margin: '0 0 var(--aire-2) 0', fontSize: 'var(--texto-titulo)', fontWeight: 600, color: 'var(--color-texto)' }}>Pegar texto</h4>
           <p className="texto-cuerpo" style={{ margin: '0 0 var(--aire-3) 0', color: 'var(--color-apagado)' }}>
-            Pega aquí el texto de tu guión. Se convertirá automáticamente en bloques y líneas con el formato adecuado.
+            Pega aquí el texto de tu guión. Se convertirá automáticamente en líneas con el formato adecuado.
           </p>
           <textarea
             value={textoPegado}
@@ -1169,262 +1080,135 @@ export default function EditorView({
         </div>
       )}
 
-      {/* Bloques de Texto */}
-      {(() => {
-        const bloquesEfectivos = (!guion.bloques || guion.bloques.length === 0)
-          ? [{ id: 'b-inicial', nombre: '', texto: '', tramos: [] }]
-          : guion.bloques
+      {/* Hoja Única de Texto */}
+      <div style={{ position: 'relative' }}>
+        {/* Controles de formato: SOLO SI HAY TEXTO SELECCIONADO */}
+        {hayTextoSeleccionado && (
+          <div
+            data-testid={`barra-formato-${bloqueUnico.id}`}
+            style={{
+              display: 'flex',
+              gap: 'var(--aire-2)',
+              marginBottom: 'var(--aire-2)',
+              alignItems: 'center',
+              backgroundColor: 'var(--bg-superficie)',
+              padding: 'var(--aire-1) var(--aire-2)',
+              borderRadius: 'var(--redondeo)',
+              border: '1px solid var(--color-borde)'
+            }}
+          >
+            <button
+              type="button"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => aplicarFormatoEnSeleccion({ negrita: true })}
+              style={{
+                padding: 'var(--aire-1) var(--aire-2)',
+                fontWeight: 'bold',
+                borderRadius: 'var(--redondeo)',
+                border: '1px solid var(--color-borde)',
+                backgroundColor: 'var(--bg-suelo)',
+                color: 'var(--color-texto)',
+                cursor: 'pointer'
+              }}
+              title="Negrita"
+            >
+              N
+            </button>
 
-        return (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-3)' }}>
-            {bloquesEfectivos.map((bloque, index) => {
-              const estaPlegado = !!plegados[bloque.id]
-              const esSeleccionado = bloqueSeleccionado === bloque.id && hayTextoSeleccionado
-
-              return (
-                <div key={bloque.id || index} style={{ position: 'relative' }}>
-                  {/* Controles de bloque: SOLO SI HAY MÁS DE UN BLOQUE */}
-                  {hayMasDeUnBloque && (
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 'var(--aire-2)',
-                        marginBottom: estaPlegado ? 0 : 'var(--aire-2)'
-                      }}
-                    >
-                      <button
-                        onClick={() => togglePlegado(bloque.id)}
-                        style={{
-                          padding: 'var(--aire-1) var(--aire-2)',
-                          backgroundColor: 'transparent',
-                          border: 'none',
-                          color: 'var(--color-apagado)',
-                          cursor: 'pointer',
-                          fontSize: 'var(--texto-meta)'
-                        }}
-                        title={estaPlegado ? 'Desplegar bloque' : 'Plegar bloque'}
-                      >
-                        {estaPlegado ? '▶' : '▼'}
-                      </button>
-
-                      <span className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
-                        Bloque #{index + 1}
-                      </span>
-
-                      <div style={{ display: 'flex', gap: 'var(--aire-1)', marginLeft: 'auto' }}>
-                        <button
-                          onClick={() => handleSubirBloque(index)}
-                          disabled={index === 0}
-                          style={{
-                            padding: 'var(--aire-1) var(--aire-2)',
-                            background: 'transparent',
-                            border: 'none',
-                            color: 'var(--color-apagado)',
-                            cursor: index === 0 ? 'not-allowed' : 'pointer',
-                            opacity: index === 0 ? 0.3 : 1
-                          }}
-                          title="Subir bloque"
-                        >
-                          ▲
-                        </button>
-                        <button
-                          onClick={() => handleBajarBloque(index)}
-                          disabled={index === guion.bloques.length - 1}
-                          style={{
-                            padding: 'var(--aire-1) var(--aire-2)',
-                            background: 'transparent',
-                            border: 'none',
-                            color: 'var(--color-apagado)',
-                            cursor: index === guion.bloques.length - 1 ? 'not-allowed' : 'pointer',
-                            opacity: index === guion.bloques.length - 1 ? 0.3 : 1
-                          }}
-                          title="Bajar bloque"
-                        >
-                          ▼
-                        </button>
-                        <button
-                          onClick={() => handleBorrarBloque(index)}
-                          style={{
-                            padding: 'var(--aire-1) var(--aire-2)',
-                            background: 'transparent',
-                            border: 'none',
-                            color: 'var(--color-apagado)',
-                            cursor: 'pointer'
-                          }}
-                          title="Borrar bloque"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {!estaPlegado && (
-                    <div>
-                      {/* Controles de formato: SOLO SI HAY TEXTO SELECCIONADO */}
-                      {esSeleccionado && (
-                        <div
-                          data-testid={`barra-formato-${bloque.id}`}
-                          style={{
-                            display: 'flex',
-                            gap: 'var(--aire-2)',
-                            marginBottom: 'var(--aire-2)',
-                            alignItems: 'center',
-                            backgroundColor: 'var(--bg-superficie)',
-                            padding: 'var(--aire-1) var(--aire-2)',
-                            borderRadius: 'var(--redondeo)',
-                            border: '1px solid var(--color-borde)'
-                          }}
-                        >
-                          <button
-                            type="button"
-                            onMouseDown={(e) => e.preventDefault()}
-                            onClick={() => aplicarFormatoEnSeleccion(index, { negrita: true })}
-                            style={{
-                              padding: 'var(--aire-1) var(--aire-2)',
-                              fontWeight: 'bold',
-                              borderRadius: 'var(--redondeo)',
-                              border: '1px solid var(--color-borde)',
-                              backgroundColor: 'var(--bg-suelo)',
-                              color: 'var(--color-texto)',
-                              cursor: 'pointer'
-                            }}
-                            title="Negrita"
-                          >
-                            N
-                          </button>
-
-                          <div style={{ display: 'flex', gap: 'var(--aire-1)', alignItems: 'center' }}>
-                            <button
-                              type="button"
-                              onMouseDown={(e) => e.preventDefault()}
-                              onClick={() => aplicarFormatoEnSeleccion(index, { color: 'ambar' })}
-                              style={{
-                                width: 26,
-                                height: 26,
-                                borderRadius: 'var(--redondeo)',
-                                border: '1px solid var(--color-borde)',
-                                backgroundColor: COLORES_TRAMO.ambar,
-                                cursor: 'pointer'
-                              }}
-                              title="Ámbar"
-                              data-testid="btn-color-ambar"
-                            />
-                            <button
-                              type="button"
-                              onMouseDown={(e) => e.preventDefault()}
-                              onClick={() => aplicarFormatoEnSeleccion(index, { color: 'celeste' })}
-                              style={{
-                                width: 26,
-                                height: 26,
-                                borderRadius: 'var(--redondeo)',
-                                border: '1px solid var(--color-borde)',
-                                backgroundColor: COLORES_TRAMO.celeste,
-                                cursor: 'pointer'
-                              }}
-                              title="Celeste"
-                            />
-                            <button
-                              type="button"
-                              onMouseDown={(e) => e.preventDefault()}
-                              onClick={() => aplicarFormatoEnSeleccion(index, { color: 'salvia' })}
-                              style={{
-                                width: 26,
-                                height: 26,
-                                borderRadius: 'var(--redondeo)',
-                                border: '1px solid var(--color-borde)',
-                                backgroundColor: COLORES_TRAMO.salvia,
-                                cursor: 'pointer'
-                              }}
-                              title="Salvia"
-                            />
-                          </div>
-
-                          <button
-                            type="button"
-                            onMouseDown={(e) => e.preventDefault()}
-                            onClick={() => handleAcotacion(index)}
-                            style={{
-                              padding: 'var(--aire-1) var(--aire-2)',
-                              borderRadius: 'var(--redondeo)',
-                              border: '1px solid var(--color-borde)',
-                              backgroundColor: 'var(--bg-suelo)',
-                              color: 'var(--color-texto)',
-                              cursor: 'pointer',
-                              fontSize: 'var(--texto-meta)'
-                            }}
-                            title="Acotación"
-                          >
-                            [...] Acotación
-                          </button>
-                        </div>
-                      )}
-
-                      <textarea
-                        ref={(el) => { textareaRefs.current[bloque.id] = el; ajustarAltoTextarea(el) }}
-                        value={bloque.texto}
-                        onChange={(e) => {
-                          if (!guion.bloques || guion.bloques.length === 0) {
-                            onChangeGuion({
-                              ...guion,
-                              bloques: [{ id: bloque.id, nombre: '', texto: e.target.value, tramos: [] }],
-                              modificado: Date.now()
-                            })
-                          } else {
-                            handleTextoBloqueChange(index, e.target.value)
-                          }
-                          ajustarAltoTextarea(e.target)
-                        }}
-                        onSelect={(e) => handleTextareaSelect(bloque.id, e.currentTarget)}
-                        onKeyUp={(e) => handleTextareaSelect(bloque.id, e.currentTarget)}
-                        onMouseUp={(e) => handleTextareaSelect(bloque.id, e.currentTarget)}
-                        placeholder="Escribe el texto..."
-                        rows={3}
-                        style={{
-                          width: '100%',
-                          padding: 0,
-                          fontSize: 'var(--texto-titulo)',
-                          lineHeight: 1.6,
-                          fontFamily: '"Source Serif 4", serif',
-                          border: 'none',
-                          outline: 'none',
-                          backgroundColor: 'transparent',
-                          color: 'var(--color-texto)',
-                          boxSizing: 'border-box',
-                          resize: 'none',
-                          overflowY: 'hidden'
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
-              )
-            })}
-
-            {/* El botón de agregar bloque solo se muestra cuando ya hay texto */}
-            {numPalabras > 0 && (
+            <div style={{ display: 'flex', gap: 'var(--aire-1)', alignItems: 'center' }}>
               <button
-                onClick={handleAgregarBloque}
-                data-testid="btn-agregar-bloque"
-                className="texto-cuerpo"
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => aplicarFormatoEnSeleccion({ color: 'ambar' })}
                 style={{
-                  marginTop: 'var(--aire-4)',
-                  padding: 'var(--aire-2) var(--aire-3)',
-                  backgroundColor: 'transparent',
-                  color: 'var(--color-apagado)',
-                  border: '1px dashed var(--color-borde)',
+                  width: 26,
+                  height: 26,
                   borderRadius: 'var(--redondeo)',
-                  cursor: 'pointer',
-                  width: '100%'
+                  border: '1px solid var(--color-borde)',
+                  backgroundColor: COLORES_TRAMO.ambar,
+                  cursor: 'pointer'
                 }}
-              >
-                + Agregar bloque
-              </button>
-            )}
+                title="Ámbar"
+                data-testid="btn-color-ambar"
+              />
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => aplicarFormatoEnSeleccion({ color: 'celeste' })}
+                style={{
+                  width: 26,
+                  height: 26,
+                  borderRadius: 'var(--redondeo)',
+                  border: '1px solid var(--color-borde)',
+                  backgroundColor: COLORES_TRAMO.celeste,
+                  cursor: 'pointer'
+                }}
+                title="Celeste"
+              />
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => aplicarFormatoEnSeleccion({ color: 'salvia' })}
+                style={{
+                  width: 26,
+                  height: 26,
+                  borderRadius: 'var(--redondeo)',
+                  border: '1px solid var(--color-borde)',
+                  backgroundColor: COLORES_TRAMO.salvia,
+                  cursor: 'pointer'
+                }}
+                title="Salvia"
+              />
+            </div>
+
+            <button
+              type="button"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={handleAcotacion}
+              style={{
+                padding: 'var(--aire-1) var(--aire-2)',
+                borderRadius: 'var(--redondeo)',
+                border: '1px solid var(--color-borde)',
+                backgroundColor: 'var(--bg-suelo)',
+                color: 'var(--color-texto)',
+                cursor: 'pointer',
+                fontSize: 'var(--texto-meta)'
+              }}
+              title="Acotación"
+            >
+              [...] Acotación
+            </button>
           </div>
-        )
-      })()}
+        )}
+
+        <textarea
+          ref={(el) => { textareaRefs.current[bloqueUnico.id] = el; ajustarAltoTextarea(el) }}
+          value={bloqueUnico.texto}
+          onChange={(e) => {
+            handleTextoChange(e.target.value)
+            ajustarAltoTextarea(e.target)
+          }}
+          onSelect={(e) => handleTextareaSelect(bloqueUnico.id, e.currentTarget)}
+          onKeyUp={(e) => handleTextareaSelect(bloqueUnico.id, e.currentTarget)}
+          onMouseUp={(e) => handleTextareaSelect(bloqueUnico.id, e.currentTarget)}
+          placeholder="Escribe el texto..."
+          rows={3}
+          style={{
+            width: '100%',
+            padding: 0,
+            fontSize: 'var(--texto-titulo)',
+            lineHeight: 1.6,
+            fontFamily: '"Source Serif 4", serif',
+            border: 'none',
+            outline: 'none',
+            backgroundColor: 'transparent',
+            color: 'var(--color-texto)',
+            boxSizing: 'border-box',
+            resize: 'none',
+            overflowY: 'hidden'
+          }}
+        />
+      </div>
 
       {/* Barra fija abajo cuando numPalabras === 0: Pegar texto y Abrir archivo */}
       {numPalabras === 0 && (
