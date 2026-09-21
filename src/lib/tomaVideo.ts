@@ -228,6 +228,14 @@ export async function recuperarTomasPendientes(
     return existentes
   }
 
+  // HUERFANOS SIN SIDECAR: no se adoptan.
+  //
+  // El sidecar se escribe ANTES de startRecordVideo. El agujero que queda
+  // es mas chico que "murio entre el start y el json": persistirSidecar
+  // traga un error de escritura y recien despues el plugin crea el mp4.
+  // Adoptar cualquier mp4 reciente sin sidecar mezclaria tomas de la
+  // pantalla de prueba, basura de Capgo y archivos de otra sesion.
+  // Queda como sabido: un mp4 huerfano sin json no entra al indice.
   const porId = new Map(existentes.map((g) => [g.id, g]))
   const sidecars: SidecarToma[] = []
   for (const n of nombres) {
