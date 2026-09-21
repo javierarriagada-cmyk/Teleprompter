@@ -1,0 +1,100 @@
+DONDE QUEDO TODO EL 21 DE SEPTIEMBRE DE 2026
+
+Para retomar sin volver a deducir nada.
+
+
+LO QUE ENTRO A MAIN HOY
+
+  57  se acabaron los bloques del editor
+  58  preparar la toma
+  59  los tres fondos, con el recuadro movible
+  60  la pantalla de prueba de camara nativa      (andamio, ya borrado)
+  61  la camara nativa se ve por detras del WebView
+  62  grabar y escuchar al mismo tiempo            (medicion)
+  63  la camara de la toma pasa a ser nativa
+  64  grabar, y ver lo grabado
+
+Todo empujado. La aplicacion graba video con la calidad del telefono y sigue la
+voz al mismo tiempo.
+
+
+EN CURSO
+
+  TAREA 65 - calidad, espacio y exportar. En Jules, sesion 9773798333064084150.
+  Dijo que esta terminada y se le pidio publicar. Falta revisarla.
+
+  Revisarla es: contar comentarios borrados, buscar TODOS los usos de lo que
+  toco -no solo el archivo que cambio-, buscar restos del camino viejo, y
+  RECIEN AHI compilar el APK. Lo minimo se arregla uno mismo.
+
+
+LO SIGUIENTE, Y ES LO GRANDE
+
+  LA COHERENCIA DE PANTALLAS. Va ENTERA a Grok -razona, y trocearla la rompe-.
+
+  Y NO ES LA LISTA DE DEFECTOS. Javier: "no es solo lo de la lista juntandose,
+  es del estudio general sobre la app y con las perspectivas de usuario etc
+  para que se vea increible". La mudanza -que queda en la lectura, que se va a
+  ajustes- esta adentro y es el piso, no el techo.
+
+  Y NO SALE DE LA CABEZA DE NADIE. Javier: "esto es algo que debe estar muy
+  estudiado". Hay 200 KB de diseño ya escrito que NO se han leido enteros:
+
+      docs/identidad.html            72 KB
+      docs/estandar.html             33 KB
+      docs/circuito.html             32 KB
+      docs/estado.html               32 KB
+      docs/la-cara.html              18 KB
+      docs/ajustes-propuesta.html    14 KB
+      teleprom/00-arquitectura/DECISIONES-DE-DISENO.txt        1023 lineas
+      teleprom/00-arquitectura/PRODUCTO-pantallas-y-funciones.txt
+      docs/competencia-*.txt y docs/competencia-promptsmart/
+      docs/pantallas/                once capturas de las nuestras
+
+  ORDEN ACORDADO CON JAVIER:
+    1. cerrar la 65
+    2. leer ese material ENTERO y entregarle un mapa corto: que esta decidido,
+       donde se contradicen entre si, y que preguntas quedan que solo contesta el
+    3. recien ahi, el dibujo de la aplicacion entera para que corte
+    4. y despues el encargo
+
+  Lo primero que entrega esa tarea NO ES CODIGO: es algo para mirar.
+
+  Los sintomas juntados estan en el punto 9 de docs/pendientes.txt.
+
+
+DOS EJECUTORES
+
+  JULES  sesiones por API, parte de main, entrega parche. Literaliza: el
+         encargo va prescriptivo. El parche real esta en las actividades, no
+         en la rama, y vienen de a 100.
+  GROK   trabaja sobre el repositorio, entrega rama o PR, nunca main. Razona:
+         el encargo va con el POR QUE y los numeros medidos, y lo prescriptivo
+         corto al final como contrato. Aguanta tareas grandes.
+         SU CONECTOR TRUNCA LOS ARCHIVOS GRANDES: dejo TeleprompterView en 1920
+         bytes y BibliotecaView en 1850. Que mande los parches como TEXTO y se
+         aplican desde el clon.
+
+  Lo grande empieza por Grok. El tamano no es motivo para partir; la
+  verificacion si.
+
+
+LO QUE NO SE PUEDE OLVIDAR
+
+  LOS COMENTARIOS NO SE BORRAN, y va en todos los encargos. Un parche de hoy
+  borro 313 lineas de comentario sin que lo detectara nada: ni tsc, ni las
+  pruebas, ni mirar la app.
+
+  La sesion de camara arranca con disableAudio en FALSE. Si arranca sin audio,
+  el archivo sale MUDO Y SIN NINGUN ERROR.
+
+  El telefono de Javier reparte el microfono entre el grabador y el motor
+  -medido-, pero eso no esta garantizado en otros. Por eso existe el detector
+  de mudo.
+
+
+PENDIENTES QUE NO BLOQUEAN NADA
+
+  el traspaso sucio de la pantalla de arranque -punto 10 de pendientes-
+  el desfase de cuatro renglones con camara -punto 11-
+  el identificador del paquete y la politica de privacidad, antes de Play
