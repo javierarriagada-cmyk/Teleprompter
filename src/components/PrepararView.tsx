@@ -191,13 +191,6 @@ export default function PrepararView({
         <IconoAtras />
       </button>
 
-      {/* Identificador DOM de video a pantalla completa en modo 'detrás' para compatibilidad con guardianes/tests */}
-      {estaCamaraActiva && fondoToma === 'detras' && (
-        <div
-          data-testid="video-camara-preparar"
-          style={{ display: 'none' }}
-        />
-      )}
 
       {/* Recuadro chico de cámara en preparar */}
       {estaCamaraActiva && fondoToma === 'recuadro' && (

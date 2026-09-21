@@ -1118,7 +1118,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             marginBottom: 'var(--aire-4)',
             fontSize: 'var(--texto-meta)',
             border: '1px solid var(--color-borde)',
-            display: (camaraActiva && fondoToma === 'detras' && (vista === 'lectura' || vista === 'preparar')) ? 'none' : 'flex',
+            display: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && (vista === 'lectura' || vista === 'preparar')) ? 'none' : 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
           }}
@@ -1156,7 +1156,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             marginBottom: 'var(--aire-4)',
             fontSize: 'var(--texto-meta)',
             border: '1px solid var(--color-borde)',
-            display: (camaraActiva && fondoToma === 'detras' && (vista === 'lectura' || vista === 'preparar')) ? 'none' : 'block'
+            display: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && (vista === 'lectura' || vista === 'preparar')) ? 'none' : 'block'
           }}
         >
           <strong>Franja de Estado:</strong>
@@ -1220,7 +1220,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               // apagon instantaneo se lee como un corte, que es justo lo que la
               // transformacion existe para evitar.
               filter: (vista === 'lectura' || vista === 'preparar') ? 'brightness(0.15)' : 'none',
-              display: (camaraActiva && fondoToma === 'detras' && (vista === 'lectura' || vista === 'preparar')) ? 'none' : undefined,
+              display: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && (vista === 'lectura' || vista === 'preparar')) ? 'none' : undefined,
               transition: movimientoApagado() ? 'none' : `filter ${MS_PANTALLA}ms ${CURVA_ENTRA}`,
               pointerEvents: (vista === 'lectura' || vista === 'preparar') ? 'none' : 'auto'
             }}
@@ -1452,7 +1452,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             style={{
               width: '100%',
               height: '100dvh',
-            background: (camaraActiva && fondoToma === 'detras') ? 'transparent' : colorFondo,
+            background: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro')) ? 'transparent' : colorFondo,
               overflow: 'hidden',
               position: 'relative',
               transition: movimientoApagado() ? 'none' : `background-color ${MS_PANEL}ms ${CURVA_NORMAL}`

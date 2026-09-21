@@ -592,10 +592,6 @@ export default function TeleprompterView({
         position: 'relative'
       }}
     >
-      {/* Identificador DOM para modo 'detrás' */}
-      {textoSobreImagen && (
-        <div data-testid="video-camara-lectura" style={{ display: 'none' }} />
-      )}
 
       {/* Recuadro chico de cámara */}
       {camaraEncendida && fondoToma === 'recuadro' && (
