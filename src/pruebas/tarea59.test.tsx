@@ -23,7 +23,22 @@ describe('Pruebas TAREA 59 - LOS OTROS DOS FONDOS (T277)', () => {
     } as any)
   })
 
-  test('T277: con la camara en frontal, en la pantalla de preparar: a) con fondoToma en "detras", el video a pantalla completa esta en el documento. b) al elegir "recuadro", el video a pantalla completa YA NO esta y el recuadro SI. c) al elegir "oculta", no esta ninguno de los dos, Y LA PISTA DE LA CAMARA NO SE APAGO: el stop() de la pista no fue llamado.', async () => {
+  test('T277: con la camara en frontal, en la pantalla de preparar: a) con fondoToma en "detras", el video a pantalla completa esta en el documento. b) al elegir "recuadro", el video a pantalla completa YA NO esta y el recuadro SI (y su posicion recien montado corresponde a las fracciones sobre el alto de la VISTA, no sobre el body). c) al elegir "oculta", no esta ninguno de los dos, Y LA PISTA DE LA CAMARA NO SE APAGO: el stop() de la pista no fue llamado.', async () => {
+    // Simular que el contenedor de la vista mide 800px de alto
+    Object.defineProperty(HTMLElement.prototype, 'clientHeight', {
+      configurable: true,
+      get() {
+        if (this.getAttribute?.('data-testid') === 'preparar-view-container') return 800
+        return 800
+      }
+    })
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
+      configurable: true,
+      get() {
+        return 400
+      }
+    })
+
     localStorage.setItem(
       'teleprompter_ajustes',
       JSON.stringify({ modoCamara: 'frontal', fondoToma: 'detras' })
@@ -65,10 +80,16 @@ describe('Pruebas TAREA 59 - LOS OTROS DOS FONDOS (T277)', () => {
     const btnRecuadro = screen.getByTestId('btn-fondo-recuadro')
     fireEvent.click(btnRecuadro)
 
+    let recuadroEl: HTMLElement | null = null
     await waitFor(() => {
       expect(screen.queryByTestId('video-camara-preparar')).toBeNull()
-      expect(screen.getByTestId('recuadro-camara')).toBeDefined()
+      recuadroEl = screen.getByTestId('recuadro-camara')
+      expect(recuadroEl).toBeDefined()
     })
+
+    // Comprobar que recien montado, la posicion Y (top) corresponde a 0.68 x 800 = 544px (alto de la vista), y NO a una vista colapsada
+    const topPx = parseFloat(recuadroEl!.style.top)
+    expect(topPx).toBeGreaterThan(300) // 544px con vista de 800px
 
     // c. Al elegir 'oculta', no esta ninguno de los dos, Y LA PISTA DE LA CAMARA NO SE APAGO: el stop() de la pista no fue llamado
     const btnOculta = screen.getByTestId('btn-fondo-oculta')

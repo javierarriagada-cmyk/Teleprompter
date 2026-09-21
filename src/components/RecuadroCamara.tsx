@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 export interface RecuadroCamaraProps {
   streamCamara: MediaStream | null
@@ -20,6 +20,7 @@ export function RecuadroCamara({
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
 
+  const [dimensiones, setDimensiones] = useState<{ W: number; H: number } | null>(null)
   const [dragPos, setDragPos] = useState<{ x: number; y: number } | null>(null)
   const isDraggingRef = useRef(false)
   const dragStartRef = useRef<{ pointerX: number; pointerY: number; startX: number; startY: number } | null>(null)
@@ -34,15 +35,42 @@ export function RecuadroCamara({
     }
   }, [streamCamara])
 
+  const recalcularDimensiones = useCallback(() => {
+    const el = containerRef.current
+    if (!el) return
+    const parent = el.parentElement || document.body
+    const w = parent.clientWidth || window.innerWidth
+    const h = parent.clientHeight || window.innerHeight
+    if (w > 0 && h > 0) {
+      setDimensiones({ W: w, H: h })
+    }
+  }, [])
+
+  useEffect(() => {
+    recalcularDimensiones()
+    const el = containerRef.current
+    if (!el) return
+    const target = el.parentElement || el
+    if (typeof ResizeObserver !== 'undefined') {
+      const observer = new ResizeObserver(() => {
+        recalcularDimensiones()
+      })
+      observer.observe(target)
+      return () => observer.disconnect()
+    }
+  }, [recalcularDimensiones])
+
   const getContainerDimensions = () => {
-    const parent = containerRef.current?.parentElement || document.body
+    if (dimensiones) return dimensiones
+    const el = containerRef.current
+    const parent = el?.parentElement || document.body
     return {
       W: parent.clientWidth || window.innerWidth || 360,
       H: parent.clientHeight || window.innerHeight || 640
     }
   }
 
-  const { W, H } = getContainerDimensions()
+  const { W, H } = dimensiones || getContainerDimensions()
   const recuadroW = W * 0.32
   const recuadroH = recuadroW * (4 / 3)
 
@@ -128,10 +156,11 @@ export function RecuadroCamara({
         overflow: 'hidden',
         border: '1px solid var(--color-borde)',
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
-        zIndex: 4,
+        zIndex: 0,
         touchAction: 'none',
         cursor: arrastrable ? 'grab' : 'default',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        visibility: dimensiones ? 'visible' : 'hidden'
       }}
     >
       <video
