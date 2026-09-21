@@ -684,3 +684,27 @@ cuando le toque a cada tarea.
   guiones, como una tira con miniatura, duracion y fecha. No una pestana. Una
   grabacion incompleta se muestra marcada y no se exporta hasta que el usuario
   decida.
+
+
+DECIDIDO EL 21 DE SEPTIEMBRE DE 2026: LA 66 SE JUNTA CON LA 64.
+
+Quedan dos pedidos en vez de tres:
+
+    64  GRABAR Y VER LO GRABADO. El punto rojo, el archivo que sobrevive, el
+        detector de mudo, la miniatura, el tipo nuevo en el modelo, y la tira
+        en la biblioteca con reproducir y borrar.
+    65  CALIDAD, ESPACIO Y EXPORTAR.
+
+EL MOTIVO NO ES COMODIDAD. La 64 tiene que escribir al lado del archivo los
+datos de la toma -duracion, bytes, si tiene pista de audio, de que guion salio-
+y eso ES ResumenGrabacion, que era de la 66. Separadas, la 64 se inventa un
+formato y la 66 lo reescribe. Y una grabacion que no se puede ver ni borrar
+desde la aplicacion no existe para el usuario: hoy, para comprobar una toma hay
+que sacarla con un cable.
+
+LA 65 NO SE JUNTA, y el motivo es de verificacion: la 64 se comprueba con una
+pregunta dura -¿el archivo existe y se oye, incluso matando la aplicacion a
+mitad?-. Si en la misma tarea se estan tocando resoluciones y bitrates, cuando
+algo salga mal no se va a saber si fue la resiliencia o la calidad. Y no hay
+trabajo repetido: la 64 graba con lo que el telefono da por omision, que ya
+esta medido en 1080p a 20 Mbps.
