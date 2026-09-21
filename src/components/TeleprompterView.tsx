@@ -32,6 +32,8 @@ export function avanzarTrabado(
 }
 
 import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
+import { RecuadroCamara } from './RecuadroCamara'
+import { FondoToma } from '../App'
 
 // UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
 //
@@ -132,6 +134,9 @@ interface TeleprompterViewProps {
   camaraEncendida?: boolean
   streamCamara?: MediaStream | null
   ladoCamara?: 'frontal' | 'trasera'
+  fondoToma?: FondoToma
+  recuadroX?: number
+  recuadroY?: number
   onToggleControles?: () => void
   onNavegacionManual?: (token: number) => void
   onModoManualChange?: (manual: boolean) => void
@@ -176,6 +181,9 @@ export default function TeleprompterView({
   camaraEncendida = false,
   streamCamara,
   ladoCamara = 'frontal',
+  fondoToma = 'detras',
+  recuadroX = 0.64,
+  recuadroY = 0.52,
   onToggleControles,
   onNavegacionManual,
   onModoManualChange,
@@ -538,12 +546,14 @@ export default function TeleprompterView({
     )
   }
 
+  const textoSobreImagen = camaraEncendida && fondoToma === 'detras'
+
   const bgBanda = isWhiteBg
     ? 'linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.03) 25%, rgba(0, 0, 0, 0.075) 50%, rgba(0, 0, 0, 0.03) 75%, transparent 100%)'
     : 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.075) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%)'
 
   const rgbFondo = hexToRgb(colorFondo)
-  const bgVelo = calcularBgVelo(topBanda, filaPx, rgbFondo, camaraEncendida)
+  const bgVelo = calcularBgVelo(topBanda, filaPx, rgbFondo, textoSobreImagen)
 
   const allTokens = tokensRef.current
 
@@ -588,7 +598,7 @@ export default function TeleprompterView({
         paddingBottom: 'calc(env(safe-area-inset-bottom, 0px))',
         paddingLeft: 'calc(env(safe-area-inset-left, 0px))',
         paddingRight: 'calc(env(safe-area-inset-right, 0px))',
-        background: camaraEncendida ? 'transparent' : colorFondo,
+        background: textoSobreImagen ? 'transparent' : colorFondo,
         color: colorTextoEfectivo,
         fontFamily: fontFamilyCss,
         boxSizing: 'border-box',
@@ -596,7 +606,7 @@ export default function TeleprompterView({
       }}
     >
       {/* Elemento <video> para la previsualización de cámara en el navegador/app */}
-      {camaraEncendida && streamCamara && (
+      {textoSobreImagen && streamCamara && (
         <video
           ref={videoRef}
           data-testid="video-camara-lectura"
@@ -613,6 +623,17 @@ export default function TeleprompterView({
             zIndex: 0,
             pointerEvents: 'none'
           }}
+        />
+      )}
+
+      {/* Recuadro chico de cámara */}
+      {camaraEncendida && fondoToma === 'recuadro' && streamCamara && (
+        <RecuadroCamara
+          streamCamara={streamCamara}
+          modoCamara={ladoCamara}
+          recuadroX={recuadroX}
+          recuadroY={recuadroY}
+          arrastrable={false}
         />
       )}
 

@@ -5,6 +5,8 @@ import { calcularBanda, calcularBgVelo } from './banda'
 import { renderFormattedLine } from './renglones'
 import { IconoAtras } from './IconosApp'
 import { hapticaSeleccion, hapticaToqueMedio } from '../haptica'
+import { RecuadroCamara } from './RecuadroCamara'
+import { FondoToma } from '../App'
 
 interface PrepararViewProps {
   script: Guion | string
@@ -21,6 +23,12 @@ interface PrepararViewProps {
   modoCamara: 'frontal' | 'trasera'
   setModoCamara: (m: 'frontal' | 'trasera') => void
   streamCamara: MediaStream | null
+  fondoToma?: FondoToma
+  setFondoToma?: (f: FondoToma) => void
+  recuadroX?: number
+  setRecuadroX?: (x: number) => void
+  recuadroY?: number
+  setRecuadroY?: (y: number) => void
   onVolver: () => void
   onEmpezar: () => void
 }
@@ -54,12 +62,19 @@ export default function PrepararView({
   modoCamara,
   setModoCamara,
   streamCamara,
+  fondoToma = 'detras',
+  setFondoToma,
+  recuadroX = 0.64,
+  setRecuadroX,
+  recuadroY = 0.52,
+  setRecuadroY,
   onVolver,
   onEmpezar
 }: PrepararViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const [altoContenedor, setAltoContenedor] = React.useState<number>(0)
+  const [arrastrandoRecuadro, setArrastrandoRecuadro] = React.useState<boolean>(false)
 
   useEffect(() => {
     if (videoRef.current && streamCamara) {
@@ -109,6 +124,8 @@ export default function PrepararView({
     ? calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, 20, 20)
     : { topBanda: 0, altoBanda: 0 }
 
+  const textoSobreImagen = fondoToma === 'detras'
+
   const isWhiteBg = colorFondo.toUpperCase() === '#FFFFFF'
   const colorTextoEfectivo = isWhiteBg ? '#000000' : colorLetra
   const fontFamilyCss = tipoFuente === 'serif' ? '"Source Serif 4", serif' : '"Source Sans 3", sans-serif'
@@ -118,7 +135,7 @@ export default function PrepararView({
     : 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.075) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%)'
 
   const rgbFondo = hexToRgb(colorFondo)
-  const bgVelo = calcularBgVelo(topBanda, filaPx, rgbFondo, true)
+  const bgVelo = calcularBgVelo(topBanda, filaPx, rgbFondo, textoSobreImagen)
 
   const allTokens = tokensRef.current
 
@@ -136,7 +153,7 @@ export default function PrepararView({
         paddingBottom: 'calc(env(safe-area-inset-bottom, 0px))',
         paddingLeft: 'calc(env(safe-area-inset-left, 0px))',
         paddingRight: 'calc(env(safe-area-inset-right, 0px))',
-        background: '#000000',
+        background: textoSobreImagen ? '#000000' : colorFondo,
         color: colorTextoEfectivo,
         fontFamily: fontFamilyCss,
         boxSizing: 'border-box'
@@ -173,7 +190,7 @@ export default function PrepararView({
       </button>
 
       {/* Imagen de la cámara al fondo */}
-      {streamCamara && (
+      {streamCamara && textoSobreImagen && (
         <video
           ref={videoRef}
           data-testid="video-camara-preparar"
@@ -190,6 +207,22 @@ export default function PrepararView({
             zIndex: 0,
             pointerEvents: 'none'
           }}
+        />
+      )}
+
+      {/* Recuadro chico de cámara en preparar */}
+      {streamCamara && fondoToma === 'recuadro' && (
+        <RecuadroCamara
+          streamCamara={streamCamara}
+          modoCamara={modoCamara}
+          recuadroX={recuadroX}
+          recuadroY={recuadroY}
+          onChangePosicion={(x, y) => {
+            setRecuadroX?.(x)
+            setRecuadroY?.(y)
+          }}
+          onArrastrandoChange={setArrastrandoRecuadro}
+          arrastrable={true}
         />
       )}
 
@@ -241,7 +274,8 @@ export default function PrepararView({
           transform: mirror ? 'scaleX(-1)' : 'none',
           boxSizing: 'border-box',
           position: 'relative',
-          zIndex: 1
+          zIndex: 1,
+          pointerEvents: 'none'
         }}
       >
         <div
@@ -306,7 +340,7 @@ export default function PrepararView({
           left: 'calc(16px + env(safe-area-inset-left, 0px))',
           right: 'calc(16px + env(safe-area-inset-right, 0px))',
           zIndex: 10,
-          display: 'flex',
+          display: arrastrandoRecuadro ? 'none' : 'flex',
           flexDirection: 'column',
           gap: 'var(--aire-3)',
           backgroundColor: 'var(--bg-superficie)',
@@ -382,7 +416,58 @@ export default function PrepararView({
               ))}
             </div>
           </div>
+
+          {/* IMAGEN */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)' }}>
+            <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+              Imagen:
+            </span>
+            <div style={{ display: 'flex', gap: 'var(--aire-1)' }}>
+              {[
+                { val: 'detras', label: 'Detrás' },
+                { val: 'recuadro', label: 'Recuadro' },
+                { val: 'oculta', label: 'Oculta' }
+              ].map((opt) => (
+                <button
+                  key={opt.val}
+                  type="button"
+                  data-testid={`btn-fondo-${opt.val}`}
+                  className="btn-deformable"
+                  onClick={() => {
+                    hapticaSeleccion()
+                    setFondoToma?.(opt.val as FondoToma)
+                  }}
+                  style={{
+                    padding: 'var(--aire-1) var(--aire-2)',
+                    fontSize: 'var(--texto-meta)',
+                    borderRadius: 'var(--redondeo-pildora)',
+                    border: '1px solid var(--color-borde)',
+                    backgroundColor: fondoToma === opt.val ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                    color: fondoToma === opt.val ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                    fontWeight: fondoToma === opt.val ? 'bold' : 'normal',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
+
+        {fondoToma === 'oculta' && (
+          <div
+            data-testid="aviso-camara-encendida"
+            style={{
+              fontSize: 'var(--texto-meta)',
+              color: 'var(--color-apagado)',
+              fontStyle: 'italic',
+              marginTop: 'calc(-1 * var(--aire-1))'
+            }}
+          >
+            la cámara sigue encendida
+          </div>
+        )}
 
         {/* EMPEZAR */}
         <button
