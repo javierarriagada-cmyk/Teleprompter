@@ -135,9 +135,16 @@ export default function EditorView({
   const esArrastrandoModalRef = useRef(false)
   const dragStartYRef = useRef<number | null>(null)
 
-  // Auto-consolidar y limpiar guiones en los bordes
+  const idGuionLimpioRef = useRef<string | null>(null)
+
+  // Auto-consolidar y limpiar guiones SOLO AL ABRIR UN GUION NUEVO (por id)
   useEffect(() => {
-    if (guion && guion.bloques && guion.bloques.length > 0) {
+    if (!guion || !guion.id) return
+    if (idGuionLimpioRef.current === guion.id) {
+      return
+    }
+    idGuionLimpioRef.current = guion.id
+    if (guion.bloques && guion.bloques.length > 0) {
       const consolidado = consolidarGuion(guion)
       if (consolidado !== guion) {
         onChangeGuion(consolidado)

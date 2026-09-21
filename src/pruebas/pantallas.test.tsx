@@ -1467,4 +1467,55 @@ describe('Pruebas TAREA 43: El sistema operativo no puede meterse en la pantalla
 
     unmount()
   })
+
+  test('T275 - Limpia saltos de linea al abrir un guion y NO borra el salto de linea al escribir Enter al final.', async () => {
+    function WrapperEditorT275({ guionInicial }: { guionInicial: Guion }) {
+      const [guion, setGuion] = React.useState<Guion>(guionInicial)
+      return (
+        <EditorView
+          guion={guion}
+          onChangeGuion={setGuion}
+          onVolverBiblioteca={() => {}}
+          onEntrarLectura={() => {}}
+        />
+      )
+    }
+
+    // 1. Un guion que se abre con "\n\nHola" queda con "Hola" al montar
+    const guionConSaltosIniciales: Guion = {
+      id: 'g-t275-abrir',
+      titulo: 'Guion con saltos',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: '\n\nHola' }]
+    }
+
+    const { unmount } = render(<WrapperEditorT275 guionInicial={guionConSaltosIniciales} />)
+
+    const textareaMontado = screen.getByPlaceholderText('Escribe el texto...') as HTMLTextAreaElement
+    expect(textareaMontado.value).toBe('Hola')
+    unmount()
+
+    // 2. Se monta el editor con "Hola", se cambia el texto a "Hola\n". El textarea tiene que quedar en "Hola\n", NO en "Hola"
+    const guionNormal: Guion = {
+      id: 'g-t275-escribir',
+      titulo: 'Guion normal',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Hola' }]
+    }
+
+    render(<WrapperEditorT275 guionInicial={guionNormal} />)
+
+    const textarea = screen.getByPlaceholderText('Escribe el texto...') as HTMLTextAreaElement
+    expect(textarea.value).toBe('Hola')
+
+    await act(async () => {
+      fireEvent.change(textarea, { target: { value: 'Hola\n' } })
+    })
+
+    expect(textarea.value).toBe('Hola\n')
+  })
 })
