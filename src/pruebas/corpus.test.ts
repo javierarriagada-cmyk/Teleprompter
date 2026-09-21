@@ -160,8 +160,12 @@ describe('Corpus de medicion del motor (paso 1 del plan)', () => {
       fireEvent.click(leerBtn!)
       await new Promise((r) => setTimeout(r, 100))
     })
+    await act(async () => {
+      fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
 
-    // Y aca esta el contrato: apretar Leer arranca la grabacion junto con la lectura.
+    // El contrato: Empezar arranca la grabacion junto con la lectura.
     // La grabacion arranca ANTES de la cuenta regresiva, para que el comienzo de la lectura no quede cortado.
     expect(estadoGrabador()).not.toBe('inactivo')
 
@@ -205,6 +209,10 @@ describe('Corpus de medicion del motor (paso 1 del plan)', () => {
     const leer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
     await act(async () => {
       fireEvent.click(leer!)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+    await act(async () => {
+      fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)
       await new Promise((r) => setTimeout(r, 200))
     })
 

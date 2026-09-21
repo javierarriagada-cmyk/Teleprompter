@@ -73,10 +73,12 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
       fireEvent.click(itemGuion)
     })
 
-    // Entrar a lectura
     const botonLectura = screen.getByTestId('btn-leer-guion-fijo')
     await act(async () => {
       fireEvent.click(botonLectura)
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-empezar-toma'))
     })
 
     await act(async () => {
@@ -100,6 +102,9 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
     await act(async () => {
       fireEvent.click(btnVolver)
     })
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-volver-listo'))
+    })
 
     // 3. Activar el checkbox en la Biblioteca
     const btnSalir = screen.getByText('Guiones')
@@ -122,9 +127,11 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
       fireEvent.click(itemGuion2)
     })
 
-    // Volver a lectura
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-leer-guion-fijo'))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-empezar-toma'))
     })
 
     await act(async () => {

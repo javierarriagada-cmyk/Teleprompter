@@ -217,6 +217,10 @@ describe('Pruebas TAREA 50 - Un Solo Mundo (T240-T252)', () => {
       const btnLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLElement
       await act(async () => {
         fireEvent.click(btnLeer)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+      await act(async () => {
+        fireEvent.click(screen.getByTestId('btn-empezar-toma'))
         await vi.advanceTimersByTimeAsync(500)
       })
 

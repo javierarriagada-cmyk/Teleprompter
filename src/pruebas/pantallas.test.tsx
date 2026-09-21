@@ -348,6 +348,12 @@ describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
       })
 
       expect(screen.getByTestId('teleprompter-view-container')).not.toBeNull()
+      expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
+
+      await act(async () => {
+        fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+        await vi.advanceTimersByTimeAsync(100)
+      })
 
       await act(async () => {
         await vi.advanceTimersByTimeAsync(2800)
@@ -402,7 +408,7 @@ describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
     expect(screen.getByText('Texto')).not.toBeNull()
   })
 
-  test('T165 - Un toque trae la barra minima: estan el control de letra y el de salir, y NO estan el selector de motor ni el panel de corpus.', async () => {
+  test('T165 - Un toque trae la barra minima: esta Salir, NO el control de letra (vive en el Aa del editor), y NO estan el selector de motor ni el panel de corpus.', async () => {
     const motor = new MotorFake()
     const repo = new RepositorioMemoria()
     const guion = {
@@ -432,6 +438,11 @@ describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+      await new Promise((r) => setTimeout(r, 100))
+    })
+
     expect(screen.queryByTestId('panel-controles-lectura')).toBeNull()
 
     const prompterView = screen.getByTestId('teleprompter-view-container')
@@ -440,7 +451,7 @@ describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
     })
 
     expect(screen.getByTestId('panel-controles-lectura')).not.toBeNull()
-    expect(screen.getByTestId('valor-letra')).not.toBeNull()
+    expect(screen.queryByTestId('valor-letra')).toBeNull()
     expect(screen.getByText('← Salir')).not.toBeNull()
 
     expect(screen.queryByTestId('panel-corpus')).toBeNull()
@@ -746,7 +757,7 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     expect(valSpan.textContent).toBe('42')
   })
 
-  test('T185 - El mismo valor se ve reflejado en la barra de lectura y en el panel: no son dos estados distintos.', async () => {
+  test('T185 - El tamaño de letra vive en el Aa del editor. Entrar a leer no lo cambia, y no hay control de letra en la lectura.', async () => {
     const repo = new RepositorioMemoria()
     const guion = {
       id: 'g-t185',
@@ -787,39 +798,37 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
       fireEvent.click(btnCerrar)
     })
 
-    // Entrar a lectura
+    // Entrar al lienzo. Leer deja en LISTO; Empezar pasa a LEYENDO.
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-leer-guion-fijo'))
     })
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    })
 
-    // Traer barra de lectura
     const prompterView = screen.getByTestId('teleprompter-view-container')
     await act(async () => {
       fireEvent.click(prompterView)
     })
 
-    // Comprobar que en la barra de lectura el tamaño es 32
-    expect(screen.getByTestId('valor-letra').textContent).toBe('32')
+    expect(screen.queryByTestId('valor-letra')).toBeNull()
 
-    // Cambiar tamaño en la barra de lectura a 42 (+1 paso)
-    const btnMasLectura = screen.getByLabelText('Aumentar letra')
-    await act(async () => {
-      fireEvent.click(btnMasLectura)
-    })
-    expect(screen.getByTestId('valor-letra').textContent).toBe('42')
-
-    // Salir de lectura al editor
     const btnSalir = screen.getByText('← Salir')
     await act(async () => {
       fireEvent.click(btnSalir)
     })
+    // Primer piso: LEYENDO -> LISTO
+    expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
 
-    // Reabrir Ajustes en el Editor y comprobar que muestra 42
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-volver-listo'))
+    })
+
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
     })
 
-    expect(screen.getByTestId('valor-letra-panel').textContent).toBe('42')
+    expect(screen.getByTestId('valor-letra-panel').textContent).toBe('32')
   })
 
   test('T186 - El selector de motor y la transcripcion en vivo YA NO estan en el panel, y SI estan en la biblioteca, y el selector sigue cambiando el motor.', async () => {
@@ -915,7 +924,7 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
     vi.restoreAllMocks()
   })
 
-  test('T188 - GUARDIANA DE LA LECTURA. Durante la lectura, el gesto de atras llama a detenerGrabacion, igual que el boton Salir. La lectura no se pierde.', async () => {
+  test('T188 - GUARDIANA DE LA LECTURA. En LEYENDO, el gesto de atras llama a detenerGrabacion y deja en LISTO. No salta al origen: ese es el piso de arriba y es lo que protege la toma.', async () => {
     const grabadorModule = await import('../lib/grabadorCorpus')
     const spyDetener = vi.spyOn(grabadorModule, 'detenerGrabacion')
 
@@ -942,22 +951,27 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
       fireEvent.click(fila)
     })
 
-    // Entrar a la lectura
     const btnLeer = screen.getByTestId('btn-leer-guion-fijo')
     await act(async () => {
       fireEvent.click(btnLeer)
       await new Promise((r) => setTimeout(r, 200))
     })
 
-    // Confirmar que estamos en lectura
-    expect(screen.getByTestId('teleprompter-view-container')).not.toBeNull()
+    expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
 
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+      await new Promise((r) => setTimeout(r, 200))
+    })
+    expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('leyendo')
+
+    spyDetener.mockClear()
     await simularGestoAtras()
     await act(async () => { await new Promise((r) => setTimeout(r, 50)) })
 
-    // Verificar que detenerGrabacion se haya llamado y estemos de vuelta en el editor
     expect(spyDetener).toHaveBeenCalled()
-    expect(screen.getByTestId('input-titulo-guion')).not.toBeNull()
+    expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
+    expect(screen.queryByTestId('input-titulo-guion')).toBeNull()
   })
 
   test('T189 - Con un modal abierto, el gesto de atras cierra el modal y NO sale de la pantalla de atras.', async () => {
@@ -1447,6 +1461,10 @@ describe('Pruebas TAREA 43: El sistema operativo no puede meterse en la pantalla
     const btnLeer = screen.getByTestId('btn-leer-guion-fijo')
     await act(async () => {
       fireEvent.click(btnLeer)
+      await new Promise((r) => setTimeout(r, 100))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-empezar-toma'))
       await new Promise((r) => setTimeout(r, 100))
     })
 

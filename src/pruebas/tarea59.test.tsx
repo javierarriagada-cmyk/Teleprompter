@@ -27,7 +27,7 @@ describe('Pruebas TAREA 59 - LOS OTROS DOS FONDOS (T277)', () => {
     Object.defineProperty(HTMLElement.prototype, 'clientHeight', {
       configurable: true,
       get() {
-        if (this.getAttribute?.('data-testid') === 'preparar-view-container') return 800
+        if (this.getAttribute?.('data-testid') === 'teleprompter-view-container') return 800
         return 800
       }
     })
@@ -61,12 +61,13 @@ describe('Pruebas TAREA 59 - LOS OTROS DOS FONDOS (T277)', () => {
     const filaGuion = await screen.findByTestId('fila-guion-g-t277')
     fireEvent.click(filaGuion)
 
-    // Apretar Leer para ir a 'preparar'
-    const btnLeer = await screen.findByTestId('btn-leer-guion-fijo')
-    fireEvent.click(btnLeer)
+    const btnGrabar = await screen.findByTestId('btn-grabar-guion-fijo')
+    fireEvent.click(btnGrabar)
 
     await waitFor(() => {
-      expect(screen.getByTestId('preparar-view-container')).toBeDefined()
+      const lienzo = screen.getByTestId('teleprompter-view-container')
+      expect(lienzo.getAttribute('data-estado-toma')).toBe('listo')
+      expect(lienzo.getAttribute('data-con-camara')).toBe('si')
     })
 
     // a. Con fondoToma en 'detras', CameraPreview.start se inicio a pantalla completa (x: 0, y: 0) y NO hay recuadro en el DOM

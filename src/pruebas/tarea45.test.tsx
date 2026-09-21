@@ -174,6 +174,10 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
       fireEvent.click(btnLeer)
       await new Promise((r) => setTimeout(r, 100))
     })
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+      await new Promise((r) => setTimeout(r, 100))
+    })
 
     // Traer controles con un toque
     const prompterView = screen.getByTestId('teleprompter-view-container')
@@ -238,6 +242,10 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
       const btnLeer = screen.getByTestId('btn-leer-guion-fijo')
       await act(async () => {
         fireEvent.click(btnLeer)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+      await act(async () => {
+        fireEvent.click(screen.getByTestId('btn-empezar-toma'))
         await vi.advanceTimersByTimeAsync(100)
       })
 
@@ -383,7 +391,7 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     expect(hapticsCalls.impact.length).toBe(0)
   })
 
-  test('T205 - "Grabado" APARECE Y SE VA. Al salir de la lectura, el aviso esta en el documento; dos segundos despues, ya no.', async () => {
+  test('T205 - "Grabado" APARECE Y SE VA. Al salir de LEYENDO se queda en LISTO; el aviso esta en el documento; dos segundos despues, ya no.', async () => {
     vi.useFakeTimers()
     try {
       const repo = new RepositorioMemoria()
@@ -408,25 +416,26 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
         fireEvent.click(fila)
       })
 
-      // Entrar a lectura
       const btnLeer = screen.getByTestId('btn-leer-guion-fijo')
       await act(async () => {
         fireEvent.click(btnLeer)
       })
+      await act(async () => {
+        fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+      })
 
-      // Traer controles de lectura
       const prompterView = screen.getByTestId('teleprompter-view-container')
       await act(async () => {
         fireEvent.click(prompterView)
       })
 
-      // Salir de lectura
       const btnSalir = screen.getByText('← Salir')
       await act(async () => {
         fireEvent.click(btnSalir)
       })
 
-      // El aviso "Grabado" debe estar en el documento
+      expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
+
       const aviso = screen.getByTestId('aviso-flotante')
       expect(aviso).not.toBeNull()
       expect(aviso.textContent).toContain('Grabado')

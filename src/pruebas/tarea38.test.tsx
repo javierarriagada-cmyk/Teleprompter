@@ -63,6 +63,10 @@ describe('Pruebas TAREA 38 (T176-T179)', () => {
       fireEvent.click(btnLeer)
       await new Promise((r) => setTimeout(r, 100))
     })
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+      await new Promise((r) => setTimeout(r, 100))
+    })
 
     const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
     await act(async () => {
@@ -110,6 +114,10 @@ describe('Pruebas TAREA 38 (T176-T179)', () => {
       const btnLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLElement
       await act(async () => {
         fireEvent.click(btnLeer)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+      await act(async () => {
+        fireEvent.click(screen.getByTestId('btn-empezar-toma'))
         await vi.advanceTimersByTimeAsync(3100)
       })
 
@@ -131,7 +139,6 @@ describe('Pruebas TAREA 38 (T176-T179)', () => {
       })
 
       expect(detenerSpy).toHaveBeenCalled()
-      expect(screen.getByText('En pausa')).not.toBeNull()
       expect(btnPausa.textContent).toBe('Seguir')
 
       // Apretar Seguir
@@ -180,6 +187,10 @@ describe('Pruebas TAREA 38 (T176-T179)', () => {
       const btnLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLElement
       await act(async () => {
         fireEvent.click(btnLeer)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+      await act(async () => {
+        fireEvent.click(screen.getByTestId('btn-empezar-toma'))
         await vi.advanceTimersByTimeAsync(3100)
       })
 

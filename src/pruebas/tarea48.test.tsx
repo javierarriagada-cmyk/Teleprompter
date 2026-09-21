@@ -138,7 +138,7 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
     expect(onCrearNuevo).toHaveBeenCalledTimes(1)
   })
 
-  test('T222 - VUELVE DE DONDE VINO.', async () => {
+  test('T222 - VUELVE DE DONDE VINO. Dos pisos: LEYENDO vuelve a LISTO; LISTO vuelve al origen.', async () => {
     const repo = new RepositorioMemoria()
     await repo.guardar({
       id: 'g-test',
@@ -154,51 +154,58 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
     // Esperar a que cargue el guion en la biblioteca y aparezca el botón Leer de la tarjeta
     const btnLeerTarjeta = await screen.findByRole('button', { name: /▶ Leer/i })
 
-    // CASO A: Entrar a leer directo desde la Tarjeta
     fireEvent.click(btnLeerTarjeta)
 
-    // Se entra a la lectura
     await waitFor(() => {
-      expect(screen.getByTestId('teleprompter-view-container')).not.toBeNull()
+      expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
     })
 
-    // Tocar para mostrar controles de lectura y hacer clic en Salir
-    const container = screen.getByTestId('teleprompter-view-container')
-    fireEvent.click(container)
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await waitFor(() => {
+      expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('leyendo')
+    })
 
+    fireEvent.click(screen.getByTestId('teleprompter-view-container'))
     const btnSalir = await screen.findByRole('button', { name: /← Salir/i })
     fireEvent.click(btnSalir)
 
-    // Debe volver a la BIBLIOTECA
+    await waitFor(() => {
+      expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
+    })
+    expect(screen.getByTestId('btn-volver-listo')).not.toBeNull()
+
+    fireEvent.click(screen.getByTestId('btn-volver-listo'))
     await waitFor(() => {
       expect(screen.getByTestId('tarjeta-lectura-portada')).not.toBeNull()
     })
 
-    // CASO B: Entrar desde el EDITOR
     const filaGuion = await screen.findByTestId('fila-guion-g-test')
     fireEvent.click(filaGuion)
 
-    // Estamos en el EDITOR
     await waitFor(() => {
       expect(screen.getByTestId('btn-leer-guion-fijo')).not.toBeNull()
     })
 
-    const btnLeerEditor = screen.getByTestId('btn-leer-guion-fijo')
-    fireEvent.click(btnLeerEditor)
-
-    // Se entra a la lectura
+    fireEvent.click(screen.getByTestId('btn-leer-guion-fijo'))
     await waitFor(() => {
-      expect(screen.getByTestId('teleprompter-view-container')).not.toBeNull()
+      expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
     })
 
-    // Tocar y salir
-    const container2 = screen.getByTestId('teleprompter-view-container')
-    fireEvent.click(container2)
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await waitFor(() => {
+      expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('leyendo')
+    })
 
+    fireEvent.click(screen.getByTestId('teleprompter-view-container'))
     const btnSalir2 = await screen.findByRole('button', { name: /← Salir/i })
     fireEvent.click(btnSalir2)
 
-    // Debe volver al EDITOR
+    await waitFor(() => {
+      expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
+    })
+    expect(screen.queryByTestId('btn-leer-guion-fijo')).toBeNull()
+
+    fireEvent.click(screen.getByTestId('btn-volver-listo'))
     await waitFor(() => {
       expect(screen.getByTestId('btn-leer-guion-fijo')).not.toBeNull()
     })

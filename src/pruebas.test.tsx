@@ -763,14 +763,8 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     expect(colTexto).not.toBeNull()
     expect(colTexto.style.maxWidth).toBe('22ch')
 
-    // Volver al editor
-    const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
     await act(async () => {
-      fireEvent.click(prompterView)
-    })
-    const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Salir'))!
-    await act(async () => {
-      fireEvent.click(btnVolver)
+      fireEvent.click(container!.querySelector('[data-testid="btn-volver-listo"]')!)
     })
 
     // Cambiar a completa
@@ -843,13 +837,8 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     expect(prompterView.getAttribute('data-fondo')).toBe('#000000')
     expect(prompterView.getAttribute('data-letra')).toBe('#F5C24B')
 
-    // Volver al editor y cambiar a Blanco con negro
     await act(async () => {
-      fireEvent.click(prompterView)
-    })
-    const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Salir'))!
-    await act(async () => {
-      fireEvent.click(btnVolver)
+      fireEvent.click(container!.querySelector('[data-testid="btn-volver-listo"]')!)
     })
 
     await act(async () => {
@@ -922,6 +911,10 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+      await act(async () => {
+        fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)
         await vi.advanceTimersByTimeAsync(3100)
       })
 
@@ -976,6 +969,10 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+      await act(async () => {
+        fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)
         await vi.advanceTimersByTimeAsync(3100)
       })
 
@@ -1978,6 +1975,9 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await act(async () => {
         fireEvent.click(botonLeer!)
       })
+      await act(async () => {
+        fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)
+      })
 
       await act(async () => {
         await vi.advanceTimersByTimeAsync(2900)
@@ -2018,6 +2018,10 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+      await act(async () => {
+        fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)
         await vi.advanceTimersByTimeAsync(1000)
       })
 
@@ -2070,6 +2074,9 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await act(async () => {
         fireEvent.click(botonLeer!)
       })
+      await act(async () => {
+        fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)
+      })
 
       await act(async () => {
         await vi.advanceTimersByTimeAsync(2000)
@@ -2103,22 +2110,14 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
     await act(async () => {
-      fireEvent.click(botonLeer!)
-      await new Promise((r) => setTimeout(r, 100))
+      fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
     })
 
-    // Un toque en lectura trae los controles mínimos con el tamaño de letra
-    const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
-    await act(async () => {
-      fireEvent.click(prompterView)
-    })
+    const btnMenos = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Disminuir letra panel')!
+    const btnMas = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Aumentar letra panel')!
 
-    const btnMenos = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Disminuir letra')!
-    const btnMas = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Aumentar letra')!
-
-    const letra = () => container!.querySelector('[data-testid="valor-letra"]')!.textContent
+    const letra = () => container!.querySelector('[data-testid="valor-letra-panel"]')!.textContent
 
     expect(letra()).toBe('24')
 
@@ -2213,17 +2212,19 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         fireEvent.click(btnCerrar)
       })
 
-      // Entrar a lectura
       const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+      await act(async () => {
+        fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)
         await vi.advanceTimersByTimeAsync(3100)
       })
 
       // No se renderiza la barra de tiempo
       expect(container!.querySelector('div[aria-label="tiempo transcurrido y total estimado"]')).toBeNull()
 
-      // Volver al editor
       const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
       await act(async () => {
         fireEvent.click(prompterView)
@@ -2231,6 +2232,9 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Salir'))!
       await act(async () => {
         fireEvent.click(btnVolver)
+      })
+      await act(async () => {
+        fireEvent.click(container!.querySelector('[data-testid="btn-volver-listo"]')!)
       })
 
       // Reactivar Mostrar Tiempo
@@ -2250,10 +2254,13 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         fireEvent.click(btnCerrar2)
       })
 
-      // Volver a lectura
       const botonLeer2 = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer2!)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+      await act(async () => {
+        fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)
         await vi.advanceTimersByTimeAsync(3100)
       })
 
@@ -2548,23 +2555,16 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement
     await act(async () => {
-      fireEvent.click(botonLeer)
-      await new Promise((r) => setTimeout(r, 100))
+      fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
     })
 
-    const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
-    await act(async () => {
-      fireEvent.click(prompterView)
-    })
-
-    const btnMas = container!.querySelector('button[aria-label="Aumentar letra"]') as HTMLButtonElement
+    const btnMas = container!.querySelector('button[aria-label="Aumentar letra panel"]') as HTMLButtonElement
     await act(async () => {
       fireEvent.click(btnMas)
     })
 
-    const valorLetra = container!.querySelector('[data-testid="valor-letra"]')?.textContent
+    const valorLetra = container!.querySelector('[data-testid="valor-letra-panel"]')?.textContent
     expect(valorLetra).toBe('32')
 
     unmount!()
@@ -2583,17 +2583,11 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const botonLeer2 = container2!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement
     await act(async () => {
-      fireEvent.click(botonLeer2)
-      await new Promise((r) => setTimeout(r, 100))
+      fireEvent.click(container2!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
     })
 
-    await act(async () => {
-      fireEvent.click(container2!.querySelector('[data-testid="teleprompter-view-container"]')!)
-    })
-
-    expect(container2!.querySelector('[data-testid="valor-letra"]')?.textContent).toBe('32')
+    expect(container2!.querySelector('[data-testid="valor-letra-panel"]')?.textContent).toBe('32')
 
     // Probar fallback de valor guardado inexistente (ej: 56)
     const ajustesViejos = JSON.parse(localStorage.getItem('teleprompter_ajustes') || '{}')
@@ -2613,18 +2607,12 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const botonLeer3 = container3!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement
     await act(async () => {
-      fireEvent.click(botonLeer3)
-      await new Promise((r) => setTimeout(r, 100))
-    })
-
-    await act(async () => {
-      fireEvent.click(container3!.querySelector('[data-testid="teleprompter-view-container"]')!)
+      fireEvent.click(container3!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
     })
 
     // Cae al paso más cercano en la escalera (42)
-    expect(container3!.querySelector('[data-testid="valor-letra"]')?.textContent).toBe('42')
+    expect(container3!.querySelector('[data-testid="valor-letra-panel"]')?.textContent).toBe('42')
   })
 
 })
@@ -2861,6 +2849,10 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLElement
       await act(async () => {
         fireEvent.click(botonLeer)
+        await vi.advanceTimersByTimeAsync(100)
+      })
+      await act(async () => {
+        fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)
         await vi.advanceTimersByTimeAsync(3100)
       })
 
