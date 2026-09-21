@@ -13,6 +13,7 @@ import { iniciarGrabacion, detenerGrabacion } from './lib/grabadorCorpus'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
 import PrepararView from './components/PrepararView'
+import PruebaCamaraNativaView from './components/PruebaCamaraNativaView'
 import CuentaRegresiva from './components/CuentaRegresiva'
 import { Entrada } from './components/Entrada'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
@@ -33,7 +34,7 @@ interface AppProps {
   repoOverride?: RepositorioGuiones
 }
 
-type Vista = 'biblioteca' | 'editor' | 'preparar' | 'lectura'
+type Vista = 'biblioteca' | 'editor' | 'preparar' | 'lectura' | 'prueba-camara'
 
 const GUION_VACIO: Guion = {
   id: 'vacio',
@@ -132,6 +133,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const getNivelVista = (v: Vista): number => {
     if (v === 'biblioteca') return 1
     if (v === 'editor') return 2
+    if (v === 'prueba-camara') return 2
     if (v === 'preparar') return 3
     return 4
   }
@@ -967,6 +969,10 @@ export default function App({ motor, repoOverride }: AppProps) {
         setVista(origenLecturaRef.current)
         return
       }
+      if (vista === 'prueba-camara') {
+        setVista('biblioteca')
+        return
+      }
       // 3. En el editor, volver a la biblioteca -descartando el guion si no se escribio
       if (vista === 'editor') {
         await salirDelEditor()
@@ -1205,6 +1211,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             onArchivar={handleArchivarGuion}
             onBuscarGuionCompleto={(id) => repoRef.current.abrir(id)}
             onToggleDiagnostico={() => setMostrarDiagnostico((prev) => !prev)}
+            onAbrirPruebaCamaraNativa={() => setVista('prueba-camara')}
             medirLectura={medirLectura}
             setMedirLectura={setMedirLectura}
             engine={engine}
@@ -1228,6 +1235,10 @@ export default function App({ motor, repoOverride }: AppProps) {
             }}
           />
         </Pantalla>
+      )}
+
+      {vista === 'prueba-camara' && (
+        <PruebaCamaraNativaView onVolver={() => setVista('biblioteca')} />
       )}
 
       {vista === 'preparar' && guionActual && (
