@@ -16,19 +16,13 @@ vi.mock('@capgo/camera-preview', () => ({
   }
 }))
 
-describe('Pruebas TAREA 58 - PREPARAR LA TOMA (T276)', () => {
+describe('Pruebas TAREA 58 - UN LIENZO DE TOMA (T276)', () => {
   beforeEach(() => {
     localStorage.clear()
     vi.clearAllMocks()
   })
 
-  test('T276: con modoCamara en "frontal", apretar Leer deja la aplicacion en "preparar" y NO en "lectura", y el motor NO arranco. Apretar Empezar entra a "lectura". Y con modoCamara en "apagada", apretar Leer entra DERECHO a "lectura", sin pasar por "preparar". Entre entrar a preparar y llegar a lectura, CameraPreview.start tiene que haberse llamado UNA SOLA VEZ.', async () => {
-    // 1. Con modoCamara en 'frontal'
-    localStorage.setItem(
-      'teleprompter_ajustes',
-      JSON.stringify({ modoCamara: 'frontal' })
-    )
-
+  test('T276: Grabar entra al lienzo en LISTO con camara. Empezar pasa a LEYENDO. CameraPreview.start una sola vez. Leer entra al mismo lienzo SIN encender la camara.', async () => {
     const repoFrontal = new RepositorioMemoria()
     await repoFrontal.guardar({
       id: 'g-t276-frontal',
@@ -46,38 +40,31 @@ describe('Pruebas TAREA 58 - PREPARAR LA TOMA (T276)', () => {
     const filaGuionFrontal = await screen.findByTestId('fila-guion-g-t276-frontal')
     fireEvent.click(filaGuionFrontal)
 
-    const btnLeerEditorFrontal = await screen.findByTestId('btn-leer-guion-fijo')
-    fireEvent.click(btnLeerEditorFrontal)
+    const btnGrabar = await screen.findByTestId('btn-grabar-guion-fijo')
+    fireEvent.click(btnGrabar)
 
-    // Debe entrar a 'preparar' y NO a 'lectura'
     await waitFor(() => {
-      expect(screen.getByTestId('preparar-view-container')).toBeDefined()
-      expect(screen.queryByTestId('teleprompter-view-container')).toBeNull()
+      const lienzo = screen.getByTestId('teleprompter-view-container')
+      expect(lienzo.getAttribute('data-estado-toma')).toBe('listo')
+      expect(lienzo.getAttribute('data-con-camara')).toBe('si')
+    })
+    expect(screen.queryByTestId('preparar-view-container')).toBeNull()
+
+    await waitFor(() => {
+      expect(CameraPreview.start).toHaveBeenCalledTimes(1)
     })
 
-    // Apretar Empezar
-    const btnEmpezar = screen.getByTestId('btn-empezar-preparar')
-    fireEvent.click(btnEmpezar)
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
 
-    // Entra a 'lectura'
     await waitFor(() => {
-      expect(screen.getByTestId('teleprompter-view-container')).toBeDefined()
+      expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('leyendo')
     })
-
-    // Comprobar que CameraPreview.start se llamó UNA SOLA VEZ entre entrar a 'preparar' y llegar a 'lectura'
     expect(CameraPreview.start).toHaveBeenCalledTimes(1)
 
     unmount()
 
-    // 2. Con modoCamara en 'apagada'
-    localStorage.clear()
-    localStorage.setItem(
-      'teleprompter_ajustes',
-      JSON.stringify({ modoCamara: 'apagada' })
-    )
-
-    const repoApagada = new RepositorioMemoria()
-    await repoApagada.guardar({
+    const repoLeer = new RepositorioMemoria()
+    await repoLeer.guardar({
       id: 'g-t276-apagada',
       titulo: 'Guion Apagada T276',
       idioma: 'es',
@@ -87,18 +74,17 @@ describe('Pruebas TAREA 58 - PREPARAR LA TOMA (T276)', () => {
       bloques: [{ id: 'b1', nombre: '', texto: 'Texto de prueba apagada' }]
     })
 
-    render(<App repoOverride={repoApagada} motor={motorFake} />)
+    render(<App repoOverride={repoLeer} motor={motorFake} />)
 
-    const filaGuionApagada = await screen.findByTestId('fila-guion-g-t276-apagada')
-    fireEvent.click(filaGuionApagada)
+    fireEvent.click(await screen.findByTestId('fila-guion-g-t276-apagada'))
+    fireEvent.click(await screen.findByTestId('btn-leer-guion-fijo'))
 
-    const btnLeerEditorApagada = await screen.findByTestId('btn-leer-guion-fijo')
-    fireEvent.click(btnLeerEditorApagada)
-
-    // Entra DERECHO a 'lectura', sin pasar por 'preparar'
     await waitFor(() => {
-      expect(screen.queryByTestId('preparar-view-container')).toBeNull()
-      expect(screen.getByTestId('teleprompter-view-container')).toBeDefined()
+      const lienzo = screen.getByTestId('teleprompter-view-container')
+      expect(lienzo.getAttribute('data-estado-toma')).toBe('listo')
+      expect(lienzo.getAttribute('data-con-camara')).toBe('no')
     })
+    expect(screen.queryByTestId('preparar-view-container')).toBeNull()
+    expect(CameraPreview.start).toHaveBeenCalledTimes(1)
   })
 })
