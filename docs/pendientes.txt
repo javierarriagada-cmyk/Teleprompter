@@ -415,6 +415,20 @@ aprobo como "un piso minimo de coherencia". Esto es el piso completo.
        partir de que son DOS usos y los dos importan, no de uno con un
        interruptor apagado.
 
+    f. EL AUTOR NO ENCUENTRA LA FUNCION. El 21 de septiembre de 2026, con la
+       tarea 65 recien instalada, Javier: "yo no encuentro lo que señalas,
+       donde esta preparar toma?".
+
+       Preparar la toma solo aparece si antes se eligio camara, y esa eleccion
+       vive en una fila chica de tres opciones -Sin camara, Frontal, Trasera-
+       al lado del boton de Leer. O sea que la puerta de entrada a TODO lo que
+       se construyo estos dias es un control que su propio autor no ubica.
+
+       Es el mismo mal que el "Borrar" de las grabaciones, que tampoco se
+       encontraba: lo nuevo se fue colgando de donde habia lugar, no de donde
+       la persona lo va a buscar. Es la evidencia mas fuerte de que esto no se
+       arregla moviendo un boton.
+
     d. LA PANTALLA LIMPIA DE PROMPTSMART. Javier mando una captura el 21 de
        septiembre de 2026: con la lectura andando, en la pantalla hay el texto,
        el recuadro de la camara, y UNA SOLA COSA MAS: una equis para cerrar.
