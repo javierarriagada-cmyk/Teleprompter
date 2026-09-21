@@ -48,6 +48,8 @@ const GUION_VACIO: Guion = {
 const PASOS_LETRA = [14, 18, 24, 32, 42]
 const MOTORES_VALIDOS: IdMotor[] = ['vosk', 'nativo', 'fake']
 
+export type FondoToma = 'detras' | 'recuadro' | 'oculta'
+
 export { PAREJAS_COLOR }
 
 export function sanitizarColores(rawFondo: any, rawLetra: any): { colorFondo: string; colorLetra: string } {
@@ -217,6 +219,17 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [modoCamara, setModoCamara] = useState<ModoCamara>(
     (ajustesPrevios.modoCamara === 'frontal' || ajustesPrevios.modoCamara === 'trasera') ? ajustesPrevios.modoCamara : 'apagada'
   )
+  const [fondoToma, setFondoToma] = useState<FondoToma>(
+    (ajustesPrevios.fondoToma === 'recuadro' || ajustesPrevios.fondoToma === 'oculta')
+      ? ajustesPrevios.fondoToma
+      : 'detras'
+  )
+  const [recuadroX, setRecuadroX] = useState<number>(
+    typeof ajustesPrevios.recuadroX === 'number' ? ajustesPrevios.recuadroX : 0.64
+  )
+  const [recuadroY, setRecuadroY] = useState<number>(
+    typeof ajustesPrevios.recuadroY === 'number' ? ajustesPrevios.recuadroY : 0.68
+  )
   const [streamCamara, setStreamCamara] = useState<MediaStream | null>(null)
 
   const coloresIniciales = sanitizarColores(ajustesPrevios.colorFondo, ajustesPrevios.colorLetra)
@@ -262,12 +275,15 @@ export default function App({ motor, repoOverride }: AppProps) {
         colorFondo,
         colorLetra,
         tipoFuente,
-        modoCamara
+        modoCamara,
+        fondoToma,
+        recuadroX,
+        recuadroY
       }
       localStorage.setItem('teleprompter_ajustes', JSON.stringify(objetoAjustes))
     } catch (e) {
     }
-  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente, modoCamara])
+  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente, modoCamara, fondoToma, recuadroX, recuadroY])
 
   const cargarBiblioteca = useCallback(async () => {
     let repo = repoRef.current
@@ -692,7 +708,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   }, [vista, cancelarCuentaRegresiva, modoCamara])
 
   useEffect(() => {
-    if (camaraActiva && (vista === 'lectura' || vista === 'preparar')) {
+    if (camaraActiva && fondoToma === 'detras' && (vista === 'lectura' || vista === 'preparar')) {
       document.body.style.backgroundColor = 'transparent'
       document.documentElement.style.backgroundColor = 'transparent'
     } else {
@@ -703,7 +719,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       document.body.style.backgroundColor = ''
       document.documentElement.style.backgroundColor = ''
     }
-  }, [camaraActiva, vista])
+  }, [camaraActiva, fondoToma, vista])
 
   const guionParaSeguidor = guionActual || GUION_VACIO
 
@@ -1105,7 +1121,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             marginBottom: 'var(--aire-4)',
             fontSize: 'var(--texto-meta)',
             border: '1px solid var(--color-borde)',
-            display: (camaraActiva && (vista === 'lectura' || vista === 'preparar')) ? 'none' : 'flex',
+            display: (camaraActiva && fondoToma === 'detras' && (vista === 'lectura' || vista === 'preparar')) ? 'none' : 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
           }}
@@ -1143,7 +1159,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             marginBottom: 'var(--aire-4)',
             fontSize: 'var(--texto-meta)',
             border: '1px solid var(--color-borde)',
-            display: (camaraActiva && (vista === 'lectura' || vista === 'preparar')) ? 'none' : 'block'
+            display: (camaraActiva && fondoToma === 'detras' && (vista === 'lectura' || vista === 'preparar')) ? 'none' : 'block'
           }}
         >
           <strong>Franja de Estado:</strong>
@@ -1206,7 +1222,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               // apagon instantaneo se lee como un corte, que es justo lo que la
               // transformacion existe para evitar.
               filter: (vista === 'lectura' || vista === 'preparar') ? 'brightness(0.15)' : 'none',
-              display: (camaraActiva && (vista === 'lectura' || vista === 'preparar')) ? 'none' : undefined,
+              display: (camaraActiva && fondoToma === 'detras' && (vista === 'lectura' || vista === 'preparar')) ? 'none' : undefined,
               transition: movimientoApagado() ? 'none' : `filter ${MS_PANTALLA}ms ${CURVA_ENTRA}`,
               pointerEvents: (vista === 'lectura' || vista === 'preparar') ? 'none' : 'auto'
             }}
@@ -1230,6 +1246,12 @@ export default function App({ motor, repoOverride }: AppProps) {
           modoCamara={modoCamara === 'trasera' ? 'trasera' : 'frontal'}
           setModoCamara={(m) => setModoCamara(m)}
           streamCamara={streamCamara}
+          fondoToma={fondoToma}
+          setFondoToma={setFondoToma}
+          recuadroX={recuadroX}
+          setRecuadroX={setRecuadroX}
+          recuadroY={recuadroY}
+          setRecuadroY={setRecuadroY}
           onVolver={handleVolverDesdePreparar}
           onEmpezar={handleEmpezarDesdePreparar}
         />
@@ -1429,7 +1451,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             style={{
               width: '100%',
               height: '100dvh',
-              background: camaraActiva ? 'transparent' : colorFondo,
+            background: (camaraActiva && fondoToma === 'detras') ? 'transparent' : colorFondo,
               overflow: 'hidden',
               position: 'relative',
               transition: movimientoApagado() ? 'none' : `background-color ${MS_PANEL}ms ${CURVA_NORMAL}`
@@ -1456,6 +1478,9 @@ export default function App({ motor, repoOverride }: AppProps) {
               camaraEncendida={camaraActiva}
               streamCamara={streamCamara}
               ladoCamara={modoCamara === 'trasera' ? 'trasera' : 'frontal'}
+            fondoToma={fondoToma}
+            recuadroX={recuadroX}
+            recuadroY={recuadroY}
               onToggleControles={() => setControlesVisibles((prev) => !prev)}
               onNavegacionManual={irAToken}
               onModoManualChange={setModoManual}
