@@ -378,3 +378,12 @@ Mientras tanto, lo que se vaya viendo se anota aca y no se arregla suelto.
        y tambien en la pantalla de preparar -tarea 58-. Es a proposito: sin
        camara no hay pantalla de preparar y tiene que seguir alcanzandose.
        Pero es duplicacion y hay que mirarla cuando se ordene todo.
+
+    d. LA PANTALLA LIMPIA DE PROMPTSMART. Javier mando una captura el 21 de
+       septiembre de 2026: con la lectura andando, en la pantalla hay el texto,
+       el recuadro de la camara, y UNA SOLA COSA MAS: una equis para cerrar.
+       Nada de carteles de estado, nada de botoneras.
+
+       Es la mejor referencia que tenemos de a donde tiene que llegar nuestra
+       pantalla de lectura, que hoy muestra ademas el estado del motor, el
+       punto rojo y un panel de controles.

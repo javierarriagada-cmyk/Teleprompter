@@ -1,0 +1,89 @@
+TAREA 59 - CORRECCION
+
+Los tres fondos funcionan. Comprobado en el telefono: el texto cae en el mismo
+lugar en los tres -top 81, left 41-, con 'oculta' sale el cartel de que la
+camara sigue encendida, y cambiando de fondo cinco veces con stop()
+instrumentado la cuenta quedo en CERO: la camara nunca se corta. Eso es lo que
+importaba.
+
+Dos cosas.
+
+
+1. EL TEXTO VA ENCIMA DEL RECUADRO, NO DEBAJO
+
+Hoy el recuadro se dibuja por delante del texto y tapa las palabras que quedan
+abajo. Tiene que ser al reves: EL TEXTO PASA POR ENCIMA DE LA IMAGEN y se lee
+completo, aunque el recuadro este ahi.
+
+Javier lo vio en PromptSmart el 21 de septiembre de 2026 y mando la captura:
+la cara esta en el recuadro y los renglones del guion se leen enteros por
+encima de ella. Asi tiene que quedar.
+
+COMO SE ARREGLA. En src/components/RecuadroCamara.tsx el recuadro tiene
+zIndex 4. Pasa a zIndex 0, que es el mismo que tiene el video a pantalla
+completa: es la misma imagen, solo que mas chica.
+
+El orden queda igual que siempre y no se toca ningun otro:
+
+    0   la imagen -a pantalla completa o en el recuadro-
+    1   el texto
+    2   la banda
+    3   el velo
+    5   el indicador
+    10  el punto rojo
+
+CONSECUENCIA BUSCADA: el velo tambien va a caer sobre el recuadro, asi que la
+cara se va a ver mas clara justo a la altura donde se esta leyendo y mas
+apagada lejos de ahi. Eso esta bien y es coherente con todo lo demas de la
+pantalla. Si al mirarlo en el telefono queda demasiado oscuro, es un numero
+para ajustar despues, no un cambio de diseño.
+
+EL TAMAÑO NO SE TOCA: el 32% del ancho esta bien. Medido contra la captura de
+PromptSmart, el de ellos ocupa mas o menos lo mismo.
+
+
+2. EL RECUADRO NACE EN EL LUGAR EQUIVOCADO
+
+Tiene que empezar abajo a la derecha y empieza arriba.
+
+MEDIDO EN EL TELEFONO, con la posicion guardada borrada para que valgan los
+valores de omision:
+
+    recuadroY de omision      0.68
+    alto de la pantalla       964 px
+    donde deberia caer        656 px
+    donde cae                 85 px
+
+Y 85 es exactamente 0.68 x 125, donde 125 es el alto del BODY, no el de la
+pantalla.
+
+POR QUE. getContainerDimensions() mide containerRef.current.parentElement, pero
+se la llama DURANTE EL PRIMER DIBUJO, cuando containerRef.current todavia es
+null. Cae al document.body -que mide 125- y se queda con ese numero. Como
+despues no hay ningun otro dibujo, nunca se corrige.
+
+Por eso al arrastrarlo una vez se arregla solo: al soltar se vuelve a medir y
+ahi el padre ya existe.
+
+COMO SE ARREGLA. El ancho y el alto se miden DESPUES de montar y se guardan en
+estado, con un ResizeObserver que los vuelva a medir si la vista cambia de
+tamaño. Es exactamente el patron que ya esta en PrepararView.tsx con
+altoContenedor -recalcularGeometria y su ResizeObserver-: se hace igual.
+
+Mientras no haya medida, el recuadro no se dibuja. Mejor que aparezca un
+instante despues a que aparezca en el lugar equivocado y salte.
+
+AGREGALE EL CASO A LA T277: recien montado, sin haberlo arrastrado nunca, la
+posicion del recuadro tiene que corresponder a las fracciones guardadas sobre
+el alto de la VISTA, no sobre el del body.
+
+No agregues mas pruebas.
+
+
+COMO SE COMPRUEBA EN EL TELEFONO
+
+Elegir camara frontal y fondo 'recuadro', y entrar a preparar SIN arrastrar
+nada: el recuadro tiene que aparecer ABAJO A LA DERECHA.
+
+Y el texto tiene que leerse entero por encima del recuadro, sin palabras
+tapadas.
