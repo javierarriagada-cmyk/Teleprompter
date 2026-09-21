@@ -379,6 +379,21 @@ Mientras tanto, lo que se vaya viendo se anota aca y no se arregla suelto.
        camara no hay pantalla de preparar y tiene que seguir alcanzandose.
        Pero es duplicacion y hay que mirarla cuando se ordene todo.
 
+    e. LEER SIN GRABAR ES UN USO, NO LA AUSENCIA DEL OTRO. Javier, el 21 de
+       septiembre de 2026, usandola: "que pasa si alguien no quiere grabar y
+       solo lo quiere ocupar como telepromper, por que todas las posibilidades
+       que tenemos ahora son con la camara".
+
+       Hoy el camino existe -en el guion se elige "Sin camara" y se entra
+       derecho a leer, sin la pantalla de preparar- pero esta planteado como
+       LA CAMARA APAGADA, o sea como la falta de lo otro. Y deja al que solo
+       quiere leer en la pantalla de lectura vieja, la que hay que rehacer.
+
+       Estos dias se diseño el uso CON camara: los tres fondos, preparar la
+       toma, grabar. El otro uso quedo donde estaba. La coherencia tiene que
+       partir de que son DOS usos y los dos importan, no de uno con un
+       interruptor apagado.
+
     d. LA PANTALLA LIMPIA DE PROMPTSMART. Javier mando una captura el 21 de
        septiembre de 2026: con la lectura andando, en la pantalla hay el texto,
        el recuadro de la camara, y UNA SOLA COSA MAS: una equis para cerrar.
