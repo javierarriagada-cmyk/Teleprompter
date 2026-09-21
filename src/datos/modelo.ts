@@ -54,7 +54,7 @@ export type ResumenGuion = {
   archivado?: boolean
 }
 
-function generarUuid(): string {
+export function generarUuid(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
     return crypto.randomUUID()
   }
@@ -63,6 +63,43 @@ function generarUuid(): string {
     const v = c === 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
   })
+}
+
+// Indice de una toma. El mp4 y la miniatura viven en disco; aca va SOLO
+// lo que la biblioteca necesita para listar, reproducir y borrar.
+// Es el mismo dato que el sidecar {id}.json que se escribe mientras se graba:
+// si la aplicacion muere a mitad de la toma, al arrancar se reconstruye
+// este indice desde el sidecar y el .part, y se marca incompleta.
+export type ResumenGrabacion = {
+  id: string
+  guionId?: string
+  tituloGuion: string
+  creado: number
+  duracionMs: number
+  bytes: number
+  ruta: string
+  rutaMiniatura: string
+  tieneAudio: boolean
+  incompleta: boolean
+  avisoMudo?: boolean
+  errorMudo?: boolean
+}
+
+export function grabacionNueva(parcial: Partial<ResumenGrabacion> & Pick<ResumenGrabacion, 'tituloGuion'>): ResumenGrabacion {
+  return {
+    id: parcial.id || generarUuid(),
+    guionId: parcial.guionId,
+    tituloGuion: parcial.tituloGuion,
+    creado: parcial.creado ?? Date.now(),
+    duracionMs: parcial.duracionMs ?? 0,
+    bytes: parcial.bytes ?? 0,
+    ruta: parcial.ruta ?? '',
+    rutaMiniatura: parcial.rutaMiniatura ?? '',
+    tieneAudio: parcial.tieneAudio ?? false,
+    incompleta: parcial.incompleta ?? false,
+    avisoMudo: parcial.avisoMudo,
+    errorMudo: parcial.errorMudo
+  }
 }
 
 export function guionNuevo(idioma: string): Guion {
