@@ -363,6 +363,23 @@ verdad. Antes es imaginar; despues es mudar dos veces.
 
 Mientras tanto, lo que se vaya viendo se anota aca y no se arregla suelto.
 
+Y OJO CON ESTO, QUE ES LO MAS FACIL DE PERDER DE VISTA. Javier, el 21 de
+septiembre de 2026: "en esa de coherencia de pantalla no es solo lo de la lista
+juntandose. es del estudio general sobre la app y con las perspectivas de
+usuario etc para que se vea increible".
+
+O sea que ESTA LISTA NO ES EL ALCANCE, es insumo. La tarea parte del RECORRIDO
+DEL USUARIO -que quiere hacer, en que orden, que ve primero- y no de los
+defectos juntados. Los defectos son sintomas; lo que se arregla es la
+estructura.
+
+Y lo primero que entrega NO ES CODIGO: es algo para mirar. La aplicacion
+entera, sus pantallas y sus controles, dibujada, para que Javier corte antes de
+que nadie escriba una linea. Eso ya lo dijo el 20 de septiembre -"no eres capaz
+de generar una visualizacion total de la app... esa perspectiva general te veo
+extremadamente debil"- y la pantalla de preparar la toma salio de ahi, que el
+aprobo como "un piso minimo de coherencia". Esto es el piso completo.
+
     a. EL CARTEL "DETENIDO" PISA EL TEXTO. En la pantalla de lectura, el estado
        del motor se dibuja abajo a la izquierda ENCIMA de un renglon del guion.
        Visto en el telefono el 21 de septiembre de 2026, sobre la linea
