@@ -1,0 +1,261 @@
+TAREA 66 - LA COHERENCIA: LAS SEIS PANTALLAS
+
+Repositorio: github.com/javierarriagada-cmyk/Teleprompter
+Partir de: main
+Entregar: una rama o un PR. NUNCA escribir en main.
+
+Va con docs/la-aplicacion-entera.html, que es el diseño dibujado. Este encargo
+es como se ejecuta.
+
+
+LO PRIMERO, Y ES LO QUE MAS RIESGO TIENE
+
+ESTA TAREA NO TOCA LA TUBERIA DE GRABACION. Nada de eso.
+
+Lo que YA ESTA HECHO, medido en el telefono y con sus guardianas puestas:
+
+    el archivo que sobrevive si se muere la aplicacion, con su archivo hermano
+    la recuperacion de tomas interrumpidas y el emparejado por marca de tiempo
+    el detector de mudo, con sus tres señales y el cruce contra el motor
+    la miniatura, el indice en su propio almacen, borrar sin dejar basura
+    la eleccion de calidad y el calculo de los minutos disponibles
+
+Eso costo cuatro rondas de correcciones y hay cosas que se probaron y NO
+funcionan. Dos para que no las intentes:
+
+  - El plugin escribe su mp4 en SU carpeta y no devuelve la ruta hasta el stop.
+    No se le puede pedir que escriba un {id}.mp4.part. Por eso el archivo se
+    mueve DESPUES y la recuperacion empareja por la marca de tiempo del nombre.
+  - NUNCA se borra en silencio una toma, por corta que sea. Una toma de menos
+    de dos segundos tambien aparece, marcada. Esa regla ya salvo 47 MB de video
+    de Javier.
+
+Si algo de la grabacion te parece mal, DECILO EN EL RESUMEN y seguí. No lo
+toques.
+
+
+LA FRASE QUE ORDENA TODO LO DEMAS
+
+    La aplicacion hace dos cosas: LEER y GRABARSE LEYENDO. Las dos son de
+    primera clase. Grabar no es leer con un interruptor encendido, y leer no
+    es grabar con la camara apagada.
+
+De ahi sale el problema que esta tarea arregla: cada funcion nueva se colgo del
+primer hueco que habia, no del lugar donde la mano la busca. Javier no encontro
+la pantalla de preparar la toma -una pantalla que el mismo aprobo- porque la
+puerta es una fila de tres fichas del tamaño de una nota al pie. Y antes
+intento borrar una grabacion manteniendola apretada, que es el gesto que esta
+aplicacion tiene escrito desde hace meses, y no paso nada.
+
+
+1. LAS DOS PUERTAS
+
+En el EDITOR, al pie, dos botones:
+
+    ▶ Leer      entra a la toma SIN encender la camara
+    ● Grabar    entra a la toma CON la camara
+
+Las dos llevan a la MISMA pantalla -el lienzo del punto 4, en estado LISTO-.
+Lo unico que las diferencia es si se enciende la camara.
+
+DESAPARECE la fila "Sin camara / Frontal / Trasera". De que lado esta la camara
+se elige viendose, en el lienzo de toma, no antes y a ciegas.
+
+En la PORTADA, el boton grande de la tarjeta sigue siendo Leer. Manteniendolo
+apretado se ENTRA DIRECTO a la toma con la camara encendida -no conmuta el
+boton ni abre un menu: navega-. La accion frecuente al toque, la otra al gesto, y ninguna de
+las dos cuesta dos toques.
+
+CONSECUENCIA QUE HAY QUE RESPETAR: el que solo lee nunca se topa con la camara.
+
+
+2. MANTENER APRETADO ES EL GESTO DE ESTA APLICACION
+
+Ya estaba escrito en docs/identidad.html: "En Sigo se llega a ellas
+manteniendo apretado, como en todas partes".
+
+    - Se saca la palabra "Borrar" de doce pixeles de la tira de grabaciones.
+    - Se borra un guion y se borra una toma del mismo modo: manteniendo
+      apretado.
+    - Al mantener, una vibracion corta y un aviso sobrio para confirmar. El
+      borrado sigue preguntando una vez, como ya lo hace hoy.
+
+
+3. LA PORTADA
+
+Manda la tarjeta de lectura. Debajo, las dos bibliotecas en este orden: "Tus
+guiones" y despues "Tomas", porque el guion produce la toma y no al reves.
+
+Las tomas son de la MISMA FAMILIA VISUAL que los guiones: mismo radio, misma
+sobriedad, misma manera de borrarse. No son un tercer mundo.
+
+Nada de mobiliario: sin buscador con dos guiones, sin contadores, sin botones
+de editar en cada fila.
+
+Si no hay tomas todavia, no aparece un mundo nuevo: la misma tira, esperando.
+Vale la regla que ya esta escrita -"una sola clase de objeto por lista, llena o
+vacia"-.
+
+
+4. LA PANTALLA DE TOMA: UN SOLO LIENZO, DOS MOMENTOS
+
+Se elimina PrepararView. Queda UNA sola pantalla -TeleprompterView- con dos
+estados: LISTO y LEYENDO. No son dos pantallas con transicion: es la misma, y
+por eso lo que se prepara ES lo que se lee, por construccion.
+
+A) LISTO, al entrar
+
+   El texto dibujado en su posicion exacta de lectura, con su banda y su velo.
+
+   CON camara -se entro por Grabar-: fondo transparente, la vista previa
+   nativa detras, y estos controles:
+
+       Imagen: Detras | Recuadro | Oculta
+       Calidad y los minutos al lado          (tarea 65, no se toca)
+       Voltear camara: boton translucido sobre la imagen
+       Engranaje: abre los ajustes de la toma -donde lees, espejo, tiempo-
+       Empezar
+
+   SIN camara -se entro por Leer-: fondo opaco. NO aparecen Imagen, Calidad
+   ni Voltear: no hay imagen que decidir. Quedan el engranaje y Empezar.
+
+   La camara se enciende UNA vez al entrar y sigue encendida al pasar a
+   LEYENDO. Nunca se reinicia entre estados: eso era el parpadeo que costo dos
+   correcciones en la tarea 58.
+
+B) EMPEZAR
+
+   Cuenta regresiva, los controles de preparacion se van, arranca el motor y
+   el avance del texto. Si hay camara, la grabacion empieza DESPUES de la
+   cuenta y se enciende el punto rojo.
+
+C) LEYENDO
+
+   Un toque REVELA los controles de lectura -pausa y salir- y se van solos,
+   como ya hacen hoy.
+
+   UN TOQUE NO VUELVE A LISTO. Mientras se graba, un roce no puede cortar la
+   toma.
+
+   Solo Salir vuelve a LISTO. Y al volver, si habia una grabacion en curso se
+   corta y se guarda POR EL CAMINO QUE YA EXISTE, sin tocarlo.
+
+   El Atras del telefono hace lo mismo que Salir.
+
+D) LO QUE ERAN CUATRO FILAS DE FICHAS
+
+   Antes, preparar tenia cuatro filas apiladas sobre la imagen. En el estado
+   LISTO quedan dos: Imagen, y Calidad con los minutos. "Donde lees" se va a
+   los ajustes de la toma -punto 5- y el lado de la camara pasa a ser el boton
+   de voltear sobre la imagen.
+
+EL ARRASTRE DEL RECUADRO NO SE TOCA. Ya sigue al dedo con la vista previa
+nativa, medido en el telefono: de 260,289 a 55,511, con el panel escondiendose
+mientras dura el gesto. No lo rehagas.
+
+CONSECUENCIA TECNICA, Y ES EL MOTIVO DE FONDO
+
+   Hoy hay DOS componentes dibujando el mismo texto, llamando cada uno a
+   calcularBanda y al velo. Por eso esta semana hubo que comprobar tres veces
+   que el texto cayera en el mismo lugar en las dos pantallas, y dos veces se
+   habia separado sin que nadie lo notara. Con un solo lienzo esa comprobacion
+   deja de hacer falta, y de paso desaparece el reinicio de camara entre
+   pantallas.
+
+
+5. LOS AJUSTES, EN TRES FAMILIAS
+
+Hoy hay controles en el panel del editor y en preparar, y ninguna regla que
+diga cual va donde. Por eso "donde lees" termino en dos lugares.
+
+LA REGLA ES UNA PREGUNTA: ¿esto cambia entre una toma y otra?
+
+    DE LA APLICACION   menu de la portada
+                       tema, idioma, vibracion. Y lo nuestro -motor de voz,
+                       transcripcion, medicion- en su propio apartado,
+                       separado de lo del usuario, que hoy esta mezclado.
+
+    DEL TEXTO          panel Aa del editor
+                       tamaño, ancho, tipografia, fondo y letra. Aca se cumple
+                       lo que ya estaba decidido en docs/ajustes-propuesta.html
+                       y nunca se hizo: "Ancho" reemplaza a Columna y Margen
+                       con tres pasos nombrados; fondo y letra en PAREJAS que
+                       se ven, no en dos listas que permiten negro sobre negro.
+                       Las parejas YA ESTAN decididas y viven en
+                       PAREJAS_COLOR de src/datos/modelo.ts, que es su unica
+                       fuente: negro con blanco, negro con ambar -#F5C24B, el
+                       que usa la television porque cansa menos la vista en
+                       tomas largas- y blanco con negro, para grabar con mucha
+                       luz alrededor. No inventes otras ni las separes;
+                       tipografia como dos botones y no como lista; y el Tema
+                       SALE de aca porque no es del texto.
+
+    DE LA TOMA         el engranaje del lienzo de toma, en estado LISTO
+                       donde lees, espejo, mostrar tiempo.
+
+                       El lado de la camara NO esta aca a proposito: se decide
+                       VIENDOSE, con el boton de voltear sobre la imagen. Si
+                       estuviera en los dos lados volveriamos a lo que esta
+                       tarea arregla.
+
+"Donde lees" deja de estar duplicado: es de la toma.
+
+
+6. QUE QUEDA EN EL ESTADO LEYENDO
+
+Es el mismo lienzo del punto 4, ya andando. Mientras se lee, la persona mira
+el lente. Todo lo que no se pueda hacer sin
+mirar la pantalla no pertenece a esta pantalla.
+
+    SE VA      el cartel del estado del motor. Hoy dice "Detenido" ENCIMA de un
+               renglon del guion. Es un instrumento nuestro, no del que lee.
+    SE VA      el tamaño de letra de los controles: se decide antes.
+    SE QUEDA   el punto rojo, que ahora si significa grabando
+    SE QUEDA   una salida, siempre alcanzable sin buscarla
+    SE QUEDA   el tiempo, si esta encendido
+    SE QUEDA   los controles que aparecen al tocar y se van solos, como ya hacen
+
+La referencia es la captura de PromptSmart que mando Javier: con la lectura
+andando hay el texto, la imagen y una equis. Nada mas.
+
+
+7. LO QUE NO SE TOCA, Y ES CONTRATO
+
+NO toques el motor de voz ni el microfono: src/motor/, src/lib/seguidor.ts,
+src/lib/avance.ts, src/lib/conduccion.ts, VoskNativoPlugin.java. Encender la
+camara no puede interrumpir al reconocedor.
+
+NO toques la banda, el velo, ni como se calcula donde cae el texto. Esta
+comprobado que el texto cae en el MISMO lugar en preparar y en la lectura, y
+eso tiene que seguir igual.
+
+    OJO: donde cae el texto es el RESULTADO de calcularBanda, no un numero que
+    se escriba a mano. Si ves "top 81, left 41" en algun lado, eso es una
+    MEDICION del telefono de Javier, no una especificacion. No lo fijes.
+
+NO toques la tuberia de grabacion, como dice el principio de este encargo.
+
+NO borres comentarios. Si el codigo cambia, se actualiza su comentario; si el
+codigo desaparece de verdad, su comentario se va con el; todo lo demas se queda
+tal cual. En este proyecto los comentarios llevan las mediciones y las
+decisiones, y ninguna prueba los protege.
+
+NO escribas en main.
+
+
+8. COMO SE COMPRUEBA
+
+Las pruebas que existen van a romperse: cambian las puertas y los ajustes.
+Arreglalas para que comprueben la estructura nueva, NO agregandole al codigo
+cosas que las hagan pasar.
+
+Y agrega estas dos, que son las que protegen lo que esta tarea arregla:
+
+    el editor ofrece DOS puertas, y "Leer" no enciende la camara
+    "donde lees" existe en UN solo lugar
+
+Lo demas lo mide Javier en el telefono: que encuentre Grabar sin buscarlo, que
+mantener apretado borre, que la lectura quede limpia, y que el texto siga
+cayendo donde mismo.
+
+DECI EN EL RESUMEN que pruebas existentes tuviste que cambiar y por que.
