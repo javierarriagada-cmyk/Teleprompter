@@ -1,0 +1,155 @@
+TAREA 58 - PREPARAR LA TOMA
+
+Rama: tarea58-preparar-la-toma
+
+Hoy, si elegiste camara en el guion y apretas Leer, la aplicacion te tira
+directo a la cuenta regresiva: no te viste nunca, no sabes como quedaste
+encuadrado, no sabes por donde va a pasar el texto sobre tu cara.
+
+Una toma tiene tres momentos y hoy existe uno solo:
+
+    preparar   te ves, te encuadras, decidis como va el texto sobre la imagen.
+               Una sola accion principal: empezar.
+    leer       la pantalla es el texto y casi nada mas, porque estas mirando el
+               lente.
+    terminar   se corto; si grabo, el video existe y se decide que hacer.
+
+Esta tarea construye el PRIMERO. Los otros dos vienen despues.
+
+Javier, el 20 de septiembre de 2026: "que es eso de plantear que la camara se
+active o desactive cuando ya esta el teleprompter andando, la wuea deberia ser
+una opcion previa claramente, y el como se ejecuta tambien".
+
+
+1. UNA PANTALLA NUEVA ENTRE EL GUION Y LA LECTURA
+
+En src/App.tsx, Vista pasa a ser:
+
+    'biblioteca' | 'editor' | 'preparar' | 'lectura'
+
+Al apretar Leer -desde el editor O desde la tarjeta de la biblioteca, las dos
+puertas-:
+
+    modoCamara === 'apagada'    se entra a 'lectura', EXACTAMENTE COMO HOY.
+                                Sin pantalla nueva, sin un toque de mas.
+    frontal o trasera           se entra a 'preparar'.
+
+Esto es importante: el que usa el teleprompter sin camara no se entera de que
+esta pantalla existe. No le agregamos un paso.
+
+
+2. QUE SE VE EN 'PREPARAR'
+
+A pantalla completa, y tiene que verse IGUAL a lo que va a ver leyendo. Ese es
+el punto entero de la pantalla: si lo que se prepara no es lo que despues pasa,
+no sirve de nada.
+
+    a. LA IMAGEN DE LA CAMARA al fondo, igual que en la lectura: el mismo
+       <video> con objectFit cover, espejado -scaleX(-1)- solo con la frontal.
+
+    b. ENCIMA, LA COLUMNA DE TEXTO como va a verse: las primeras lineas del
+       guion, QUIETAS, con el mismo tamano de letra, el mismo ancho de columna,
+       el mismo margen, el mismo color de letra y la misma tipografia que va a
+       usar la lectura. El texto empieza donde empieza al leer.
+
+    c. LA BANDA Y EL VELO dibujados con calcularBanda de src/components/banda.ts
+       y los MISMOS argumentos que le pasa TeleprompterView, y con los alfas
+       ALPHA_VELO_ARRIBA_CON_CAMARA y ALPHA_VELO_ABAJO_CON_CAMARA.
+
+       No copies numeros a mano ni inventes un dibujo parecido: se llama a la
+       misma funcion. Si la banda de preparar no cae donde cae al leer, la
+       pantalla miente.
+
+    d. NO HAY MOTOR. Preparar no escucha el microfono, no enciende el
+       reconocedor, no tokeniza, no avanza. Es una imagen quieta. El motor
+       arranca al empezar, como hoy.
+
+
+3. LOS CONTROLES, QUE SON TRES Y NADA MAS
+
+    DONDE LEES        arriba / medio / abajo.
+
+                      Es el mismo ajuste anclajeZona que hoy vive en el panel
+                      Aa del editor, el mismo estado, el mismo guardado. Aca
+                      esta ADEMAS, no en vez de: sin camara no hay pantalla de
+                      preparar y tiene que seguir alcanzandose desde el editor.
+
+                      Con la camara encendida deja de ser un gusto y pasa a ser
+                      encuadre: si el renglon vivo cae al medio, en el video se
+                      te ven los ojos mirando al medio de la pantalla; si cae
+                      arriba, quedas mirando casi al lente. Eso solo se decide
+                      VIENDOSE. Tocarlo mueve la banda en vivo sobre la imagen.
+
+    CAMARA            frontal / trasera. Ya elegiste en el guion, pero estas
+                      aca viendote: si te equivocaste, se cambia aca y no
+                      volviendo atras. Cambia el estado modoCamara, que ya se
+                      guarda.
+
+    EMPEZAR           la accion principal, una sola, clara y grande.
+
+Nada mas. Ni tamano de letra, ni tema, ni espejo, ni colores: eso es del guion.
+Aca solo vive lo que se decide VIENDO LA IMAGEN.
+
+
+4. COMO SE SALE
+
+    EMPEZAR                  se entra a 'lectura' con su cuenta regresiva, tal
+                             como funciona hoy.
+
+    LA FLECHA DE ARRIBA A LA IZQUIERDA y EL ATRAS DEL TELEFONO hacen LO MISMO:
+                             se vuelve de donde se vino -el editor o la
+                             biblioteca, que ya esta guardado en
+                             origenLecturaRef- y se apaga la camara.
+
+                             Todavia no empezo nada: no hay nada que perder.
+
+
+5. LA CAMARA NO SE APAGA Y SE VUELVE A ENCENDER
+
+Hoy el efecto de src/App.tsx apaga la camara cada vez que la vista NO es
+'lectura'. Con la pantalla nueva eso la apagaria justo al apretar Empezar, y se
+volveria a pedir: parpadeo, medio segundo de nada, y el riesgo de que el
+permiso o el aparato no la devuelvan.
+
+La camara se enciende AL ENTRAR a 'preparar' y sigue encendida al pasar a
+'lectura'. Se apaga cuando la vista no es NI 'preparar' NI 'lectura'.
+
+Lo mismo para las tres cosas que hoy se esconden con display none cuando hay
+camara en la lectura -la biblioteca y los paneles de abajo-: tienen que
+esconderse tambien en 'preparar', o se van a ver por debajo de la imagen.
+
+
+6. LO QUE NO SE TOCA
+
+NO se toca el motor, ni src/lib/seguidor.ts, ni src/lib/avance.ts, ni
+src/lib/conduccion.ts, ni src/motor/, ni src/datos/modelo.ts.
+
+NO se saca nada de la pantalla de lectura en esta tarea. Que queda y que se va
+de ahi se decide cuando los tres fondos existan y se puedan mirar; es otra
+tarea y no va aca.
+
+NO se agregan los otros dos fondos -el recuadro chico movible y el fondo
+nuestro con la camara igual encendida-. Esta tarea construye la pantalla donde
+despues van a vivir; los fondos son la tarea siguiente.
+
+
+7. UNA PRUEBA, UNA SOLA
+
+    T276: con modoCamara en 'frontal', apretar Leer deja la aplicacion en
+          'preparar' y NO en 'lectura', y el motor NO arranco. Apretar Empezar
+          entra a 'lectura'. Y con modoCamara en 'apagada', apretar Leer entra
+          DERECHO a 'lectura', sin pasar por 'preparar'.
+
+Es la guardiana de que no le metimos un paso de mas al que lee sin camara.
+
+No agregues mas pruebas.
+
+
+8. COMO SE COMPRUEBA EN EL TELEFONO
+
+En el editor elegir camara frontal y apretar Leer: tiene que aparecer TU CARA
+con el texto encima, quieto, y tres controles. Mover "donde lees" y ver la
+banda moverse sobre la imagen. Apretar Empezar y que la cuenta regresiva
+arranque SIN que la imagen parpadee.
+
+Con camara apagada: apretar Leer y entrar a leer como siempre.
