@@ -191,7 +191,7 @@ Bloque importado B.`
 
     // Esperar a que la promesa asíncrona de handleSeleccionarArchivo termine
     await waitFor(() => {
-      expect(llamadasChange).toBe(1)
+      expect(llamadasChange).toBe(2)
     })
 
     // Lo importado entra en el único bloque del guion
@@ -213,7 +213,7 @@ Bloque importado B.`
     })
 
     // No debe haber llamado a onChangeGuion de nuevo
-    expect(llamadasChange).toBe(1)
+    expect(llamadasChange).toBe(2)
     // El texto del bloque existente no se altera ante error
     expect(guionEstado.bloques.length).toBe(1)
   })
