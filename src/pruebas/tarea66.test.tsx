@@ -82,4 +82,29 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
     })
     expect(CameraPreview.start).toHaveBeenCalledTimes(1)
   })
+
+  // GUARDIANA DEL ARRASTRE DEL RECUADRO.
+  //
+  // RecuadroCamara esta en zIndex 0 y la capa de texto en 1. Si en LISTO esa
+  // capa recibe punteros, se traga el pointerdown y el recuadro deja de seguir
+  // al dedo. Paso al mudar el chrome en la 66 y Javier lo vio en el telefono.
+  //
+  // No se puede comprobar arrastrando: jsdom no hace hit-testing y el arrastre
+  // pasaria igual con la capa encima. Lo que de verdad falla es esto, asi que
+  // esto es lo que se comprueba.
+  test('en LISTO la capa de texto deja pasar el dedo al recuadro; en LEYENDO se queda el gesto', async () => {
+    await abrirGuionConTexto()
+    fireEvent.click(await screen.findByTestId('btn-grabar-guion-fijo'))
+
+    await waitFor(() => {
+      expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
+    })
+    expect(screen.getByTestId('contenedor-lectura').style.pointerEvents).toBe('none')
+
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await waitFor(() => {
+      expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('leyendo')
+    })
+    expect(screen.getByTestId('contenedor-lectura').style.pointerEvents).toBe('auto')
+  })
 })

@@ -757,7 +757,24 @@ export default function TeleprompterView({
           transform: mirror ? 'scaleX(-1)' : 'none',
           boxSizing: 'border-box',
           position: 'relative',
-          zIndex: 1
+          zIndex: 1,
+          // EN LISTO EL TEXTO NO RECIBE EL DEDO, Y ES POR EL RECUADRO.
+          //
+          // RecuadroCamara vive en zIndex 0 -tiene que estar debajo para que se
+          // vea la camara nativa, RecuadroCamara.tsx:176-. Esta capa esta en 1.
+          // Si ademas recibe punteros, se traga el pointerdown y el recuadro no
+          // se entera: deja de seguir al dedo.
+          //
+          // PrepararView tenia pointerEvents 'none' fijo y por eso el arrastre
+          // andaba -medido en la tarea 59: de 260,289 a 55,511-. Al mudar el
+          // chrome aca en la 66 se perdio, porque en LEYENDO esta capa SI
+          // necesita los punteros para la navegacion manual, que PrepararView
+          // no tenia. Javier lo vio en el telefono: "el recuadro ya no sigue al
+          // dedo".
+          //
+          // Entonces depende del estado, no es un valor fijo: en LISTO el texto
+          // es una vista previa y nadie lo navega; en LEYENDO manda el gesto.
+          pointerEvents: estadoToma === 'listo' ? 'none' : 'auto'
         }}
       >
         <div
