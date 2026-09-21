@@ -2,9 +2,22 @@ import React from 'react'
 import { Capacitor } from '@capacitor/core'
 import { ResumenGrabacion } from '../datos/modelo'
 
+// UNA RUTA DE DISCO TAMBIEN HAY QUE CONVERTIRLA. El WebView no puede abrir
+// /storage/... directo: necesita la direccion que arma convertFileSrc.
+//
+// Antes esta funcion devolvia tal cual cualquier ruta que empezara con "/", y
+// eso partia las grabaciones en dos clases sin que se notara: las que cierran
+// bien guardan file:///storage/... -lo que devuelve el plugin- y se veian; las
+// RECUPERADAS guardan /storage/... -lo que devuelve el barrido de huerfanos- y
+// salian con el icono de archivo roto, aunque el mp4 estuviera intacto.
+// Comprobado el 21 de septiembre de 2026: el archivo de la toma cortada se
+// abre sin problemas fuera de la aplicacion.
+//
+// Solo se devuelven sin tocar las direcciones que YA son direcciones: http,
+// blob y data.
 export function srcDeRuta(ruta: string): string {
   if (!ruta) return ''
-  if (ruta.startsWith('http') || ruta.startsWith('blob:') || ruta.startsWith('data:') || ruta.startsWith('/')) return ruta
+  if (ruta.startsWith('http') || ruta.startsWith('blob:') || ruta.startsWith('data:')) return ruta
   try { return Capacitor.convertFileSrc(ruta) } catch { return ruta }
 }
 
