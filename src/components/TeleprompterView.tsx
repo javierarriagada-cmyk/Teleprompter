@@ -35,6 +35,7 @@ import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './b
 import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
 
+// UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
 export const MARGEN_RENGLONES_ARRIBA = 1
 export const MS_DESLIZAR = 70
 
