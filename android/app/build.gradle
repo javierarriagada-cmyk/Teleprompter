@@ -65,6 +65,9 @@ dependencies {
     implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
     implementation project(':capacitor-android')
 
+    // CameraX View for CamaraNativaPlugin
+    implementation "androidx.camera:camera-view:1.6.2"
+
     // VOSK NATIVO. La biblioteca oficial, de los mismos autores de Vosk, Apache 2.0.
     //
     // Es lo que reemplaza a Vosk WASM en Android. La version web baja 34 MB por

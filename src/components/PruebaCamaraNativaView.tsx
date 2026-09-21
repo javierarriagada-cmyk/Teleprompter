@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { CameraPreview } from '@capgo/camera-preview'
+import { registerPlugin } from '@capacitor/core'
+
+export interface CamaraNativaPlugin {
+  fijarModoSuperficie(options: { modo: 'sistema' | 'textura' }): Promise<{ encontrado: boolean; modo: string }>
+}
+
+const CamaraNativa = registerPlugin<CamaraNativaPlugin>('CamaraNativa')
 
 interface PruebaCamaraNativaViewProps {
   onVolver: () => void
@@ -7,13 +14,14 @@ interface PruebaCamaraNativaViewProps {
 
 export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaViewProps) {
   const [toBack, setToBack] = useState<boolean>(true)
+  const [modoSuperficie, setModoSuperficie] = useState<'sistema' | 'textura'>('sistema')
   const [camaraIniciada, setCamaraIniciada] = useState<boolean>(false)
   const [errorCamara, setErrorCamara] = useState<string | null>(null)
 
   useEffect(() => {
     let cancelado = false
 
-    async function arrancar(modoToBack: boolean) {
+    async function arrancar(modoToBack: boolean, modoSup: 'sistema' | 'textura') {
       try {
         setErrorCamara(null)
         await CameraPreview.start({
@@ -22,6 +30,11 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
           disableAudio: true,
           force: true
         })
+        try {
+          await CamaraNativa.fijarModoSuperficie({ modo: modoSup })
+        } catch (e) {
+          console.warn('[PruebaCamaraNativa] fijarModoSuperficie no disponible en esta plataforma:', e)
+        }
         if (!cancelado) {
           setCamaraIniciada(true)
         }
@@ -33,17 +46,22 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
       }
     }
 
-    arrancar(toBack)
+    arrancar(toBack, modoSuperficie)
 
     return () => {
       cancelado = true
       CameraPreview.stop().catch(() => {})
     }
-  }, [toBack])
+  }, [toBack, modoSuperficie])
 
   async function handleToggleToBack() {
     const nuevoToBack = !toBack
     setToBack(nuevoToBack)
+  }
+
+  async function handleToggleSuperficie() {
+    const nuevoModo = modoSuperficie === 'sistema' ? 'textura' : 'sistema'
+    setModoSuperficie(nuevoModo)
   }
 
   async function handleSalir() {
@@ -114,6 +132,22 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
         >
           toBack: {toBack ? 'TRUE' : 'FALSE'}
         </button>
+
+        <button
+          onClick={handleToggleSuperficie}
+          style={{
+            padding: '10px 16px',
+            backgroundColor: modoSuperficie === 'sistema' ? '#E11D2E' : '#2D2927',
+            color: '#FFFFFF',
+            border: '1px solid #968F8B',
+            borderRadius: '10px',
+            fontWeight: 600,
+            fontSize: '15px',
+            cursor: 'pointer'
+          }}
+        >
+          Superficie: {modoSuperficie === 'sistema' ? 'SISTEMA' : 'TEXTURA'}
+        </button>
       </div>
 
       {/* Estado flotante abajo */}
@@ -131,7 +165,7 @@ export default function PruebaCamaraNativaView({ onVolver }: PruebaCamaraNativaV
       >
         <div>Prueba de Cámara Nativa</div>
         <div style={{ marginTop: '4px', fontWeight: 600 }}>
-          Modo actual: toBack = {toBack ? 'true (detrás)' : 'false (frente)'}
+          Modo actual: toBack = {toBack ? 'true (detrás)' : 'false (frente)'} | Superficie = {modoSuperficie.toUpperCase()}
         </div>
         {errorCamara && (
           <div style={{ color: '#FF5A5A', marginTop: '4px' }}>

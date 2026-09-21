@@ -1,0 +1,90 @@
+TAREA 61 - CORRECCION: LA CAUSA ES NUESTRA Y YA ESTA MEDIDA
+
+Antes de que sigas con lo de la superficie de sistema, lee esto, porque cambia
+el orden del trabajo.
+
+ENCONTRE LA CAUSA, Y NO ES EL PLUGIN.
+
+Le saque el color al pixel del centro de la pantalla "negra" de la prueba, con
+toBack en true y TODO transparentado a la fuerza -body, html, root y cada
+elemento con fondo-:
+
+    pixel medido      #151312
+    fondo_arranque    #151312
+
+Es el mismo color. O sea que eso no es la ausencia de imagen: es NUESTRO FONDO
+DE VENTANA pintando por encima de la vista previa.
+
+Viene de android/app/src/main/res/values/styles.xml:
+
+    <style name="AppTheme.NoActionBar" ...>
+        <item name="android:background">@color/fondo_arranque</item>
+        ...
+    </style>
+
+Lo pusimos a proposito en la tarea 50 para que las barras del sistema se vieran
+negras, y esta explicado en el comentario de ese mismo archivo. Nadie lo
+relaciono con la camara.
+
+
+LOS DOS CAMBIOS QUE HAY QUE HACER
+
+1. EL WEBVIEW, TRANSPARENTE DESDE EL LADO NATIVO.
+
+   En android/app/src/main/java/com/teleprompter/app/MainActivity.java, dentro
+   de onCreate y despues de super.onCreate:
+
+       this.bridge.getWebView().setBackgroundColor(android.graphics.Color.TRANSPARENT);
+
+   El backgroundColor de capacitor.config.ts ya esta en '#00000000' -corregido
+   hoy: el '#ff000000' que decia la documentacion es negro OPACO en ARGB-, pero
+   ponerlo explicito aca no cuesta nada y no depende de como lo interprete cada
+   version del puente.
+
+2. LA VENTANA, TRANSLUCIDA, Y SOLO MIENTRAS LA CAMARA ESTA DETRAS.
+
+   Si la vista previa se dibuja por detras, el sistema pinta el windowBackground
+   de la aplicacion por encima mientras la ventana no este declarada translucida.
+   Eso es exactamente lo que estamos viendo.
+
+       <item name="android:windowBackground">@android:color/transparent</item>
+       <item name="android:windowIsTranslucent">true</item>
+
+   OJO CON DOS COSAS, Y SON IMPORTANTES:
+
+   a. ESE FONDO EXISTE POR UN MOTIVO. Es lo que se ve detras de las barras de
+      estado y de navegacion, y desde targetSdk 35 es la UNICA manera de que
+      esas barras sean negras. Si la ventana pasa a translucida, hay que
+      comprobar que las barras SIGUEN NEGRAS. Si se ven claras o se ve el
+      escritorio del telefono detras, esto no sirve como esta y hay que
+      encenderlo solo mientras la camara este atras, no siempre.
+
+   b. windowIsTranslucent apaga optimizaciones de dibujo de la ventana en
+      algunas versiones de Android. Por eso NO se deja puesto para toda la
+      aplicacion si se puede evitar: lo ideal es que se encienda cuando la
+      camara pasa a estar detras y se apague al salir.
+
+   Para esta tarea, que es de prueba, ponelo como te resulte mas simple de
+   comprobar, PERO DECINOS EN EL RESUMEN si lo dejaste permanente o conmutable,
+   y como quedaron las barras del sistema.
+
+
+EL ORDEN DEL TRABAJO CAMBIA
+
+Hace estos dos cambios PRIMERO y deci si con eso solo ya se ve la imagen con
+toBack en true. Puede que alcance.
+
+Si con eso se ve, lo de la superficie de sistema -PERFORMANCE en vez de
+COMPATIBLE- pasa a ser una comprobacion mas y no el arreglo: igual dejalo
+disponible con su boton, porque queremos saber cual de los dos modos se
+comporta mejor con la camara detras.
+
+Si con eso NO se ve, entonces si, seguis con lo de la superficie de sistema tal
+como estaba encargado.
+
+
+LO DEMAS NO CAMBIA
+
+Los dos botones de la pantalla de prueba -toBack y superficie- siguen siendo lo
+que hay que entregar. No toques ninguna pantalla de la aplicacion. No edites
+node_modules. No agregues grabacion ni pruebas: esto lo mido yo en el telefono.

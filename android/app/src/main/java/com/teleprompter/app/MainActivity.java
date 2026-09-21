@@ -70,6 +70,11 @@ public class MainActivity extends BridgeActivity {
         // armado y no los toma. Es el orden que pide Capacitor.
         registerPlugin(ArranquePlugin.class);
         registerPlugin(VoskNativoPlugin.class);
+        registerPlugin(CamaraNativaPlugin.class);
         super.onCreate(savedInstanceState);
+
+        if (this.bridge != null && this.bridge.getWebView() != null) {
+            this.bridge.getWebView().setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        }
     }
 }
