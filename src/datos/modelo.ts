@@ -83,6 +83,7 @@ export type ResumenGrabacion = {
   incompleta: boolean
   avisoMudo?: boolean
   errorMudo?: boolean
+  calidad?: string
 }
 
 export function grabacionNueva(parcial: Partial<ResumenGrabacion> & Pick<ResumenGrabacion, 'tituloGuion'>): ResumenGrabacion {
@@ -98,7 +99,8 @@ export function grabacionNueva(parcial: Partial<ResumenGrabacion> & Pick<Resumen
     tieneAudio: parcial.tieneAudio ?? false,
     incompleta: parcial.incompleta ?? false,
     avisoMudo: parcial.avisoMudo,
-    errorMudo: parcial.errorMudo
+    errorMudo: parcial.errorMudo,
+    calidad: parcial.calidad
   }
 }
 

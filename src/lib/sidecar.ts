@@ -22,6 +22,7 @@ export type SidecarToma = {
   rutaPart?: string
   rutaMp4?: string
   rutaPlugin?: string
+  calidad?: string
 }
 
 export function sidecarInicial(parcial: {
@@ -30,6 +31,7 @@ export function sidecarInicial(parcial: {
   tituloGuion: string
   creado?: number
   rutaPart?: string
+  calidad?: string
 }): SidecarToma {
   return {
     id: parcial.id,
@@ -41,7 +43,8 @@ export function sidecarInicial(parcial: {
     tienePistaAudio: null,
     frasesOidas: 0,
     estado: 'grabando',
-    rutaPart: parcial.rutaPart
+    rutaPart: parcial.rutaPart,
+    calidad: parcial.calidad
   }
 }
 
@@ -117,7 +120,8 @@ export function parsearSidecar(texto: string): SidecarToma | null {
       estado: o.estado === 'lista' || o.estado === 'incompleta' ? o.estado : 'grabando',
       rutaPart: typeof o.rutaPart === 'string' ? o.rutaPart : undefined,
       rutaMp4: typeof o.rutaMp4 === 'string' ? o.rutaMp4 : undefined,
-      rutaPlugin: typeof o.rutaPlugin === 'string' ? o.rutaPlugin : undefined
+      rutaPlugin: typeof o.rutaPlugin === 'string' ? o.rutaPlugin : undefined,
+      calidad: typeof o.calidad === 'string' ? o.calidad : undefined
     }
   } catch {
     return null

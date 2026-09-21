@@ -75,6 +75,20 @@ export async function buscarMp4Recientes(): Promise<string[]> {
   }
 }
 
+export async function obtenerEspacioLibre(): Promise<number> {
+  try {
+    const r = await CamaraNativa.espacioLibre()
+    return Number(r.bytesLibres) || 0
+  } catch (e) {
+    console.warn('[archivos] espacioLibre no disponible:', e)
+    return 10 * 1024 * 1024 * 1024
+  }
+}
+
+export async function guardarEnGaleria(ruta: string): Promise<{ ok: boolean; uri?: string }> {
+  return await CamaraNativa.guardarEnGaleria({ ruta })
+}
+
 export function juntos(dir: string, nombre: string): string {
   if (!dir) return nombre
   if (dir.endsWith('/')) return dir + nombre

@@ -18,6 +18,8 @@ export interface CamaraNativaPlugin {
   }>
   extraerMiniatura(options: { ruta: string; destino: string; atMs?: number }): Promise<{ ruta: string }>
   buscarMp4Recientes(): Promise<{ rutas: string[] }>
+  espacioLibre(): Promise<{ bytesLibres: number }>
+  guardarEnGaleria(options: { ruta: string }): Promise<{ ok: boolean; uri?: string }>
 }
 
 // Un solo registerPlugin. PruebaCamaraNativaView importa este mismo
@@ -177,6 +179,31 @@ export async function encenderCamara(
     console.error('[Camara] Error al encender cámara nativa:', err)
     estaEncendida = false
     return null
+  }
+}
+
+export async function obtenerCalidadesSoportadas(): Promise<string[]> {
+  try {
+    if (typeof (CameraPreview as any).getSupportedVideoQualities === 'function') {
+      const res = await (CameraPreview as any).getSupportedVideoQualities()
+      if (res && Array.isArray(res.qualities)) {
+        const filtradas = res.qualities.filter((q: string) => q !== '2160p')
+        if (filtradas.length > 0) return filtradas
+      }
+    }
+  } catch (e) {
+    console.warn('[Camara] Error al obtener calidades soportadas:', e)
+  }
+  return ['1080p', '720p', '480p']
+}
+
+export async function fijarCalidadVideo(calidad: string): Promise<void> {
+  try {
+    if (typeof (CameraPreview as any).setVideoQuality === 'function') {
+      await (CameraPreview as any).setVideoQuality({ quality: calidad })
+    }
+  } catch (e) {
+    console.warn('[Camara] Error al fijar calidad de video:', e)
   }
 }
 
