@@ -1,0 +1,166 @@
+TAREA 59 - LOS OTROS DOS FONDOS
+
+Rama: tarea59-los-tres-fondos
+
+Hoy la camara tiene una sola forma de mostrarse: a pantalla completa detras del
+texto. Al terminar esta tarea van a ser tres, y se eligen en la pantalla de
+preparar la toma, que es donde se ve como queda.
+
+    DETRAS      la imagen a pantalla completa y el texto encima. Es lo de hoy.
+    RECUADRO    la imagen en un recuadro chico que se pone donde uno quiera, y
+                el texto sobre nuestro fondo.
+    OCULTA      el texto sobre nuestro fondo y la imagen no se muestra, PERO LA
+                CAMARA SIGUE ENCENDIDA. Es para grabarse sin tener la propia
+                cara adelante mientras se lee.
+
+Javier los pidio asi el 20 de septiembre de 2026: "el recuadro pequeño deberia
+ser movible".
+
+
+1. UN AJUSTE NUEVO, QUE SE GUARDA
+
+    fondoToma: 'detras' | 'recuadro' | 'oculta'        de omision 'detras'
+
+Va en el objeto de ajustes de src/App.tsx que ya se guarda en
+teleprompter_ajustes -junto a modoCamara, anclajeZona y los demas-, con su
+entrada en el arreglo de dependencias del useEffect que guarda.
+
+Un guion guardado de antes no lo trae: se lee como 'detras', que es como se
+comporta hoy.
+
+
+2. LA REGLA QUE ORDENA TODO, Y SI NO SE ENTIENDE ESTA SE ROMPE LA TAREA
+
+Hoy hay un monton de codigo que pregunta "¿hay camara?" para decidir si algo se
+transparenta. Eso hasta ahora alcanzaba porque camara encendida queria decir
+texto sobre la imagen.
+
+CON TRES FONDOS YA NO ES LO MISMO. Con 'recuadro' y con 'oculta' la camara esta
+encendida y el texto NO va sobre la imagen: va sobre nuestro fondo, opaco, como
+si no hubiera camara.
+
+Entonces todo lo que hoy pregunta "¿hay camara?" tiene que pasar a preguntar
+"¿EL TEXTO VA SOBRE LA IMAGEN?", que es verdadero SOLO con 'detras'.
+
+Son estos lugares, uno por uno:
+
+    src/components/TeleprompterView.tsx
+      546   calcularBgVelo(..., camaraEncendida)
+            El ultimo argumento decide si el velo usa los alfas flojos -para
+            que se vea la imagen- o los fuertes. Sobre nuestro fondo opaco
+            tienen que ser los fuertes, los de siempre.
+      591   background: camaraEncendida ? 'transparent' : colorFondo
+            Transparente SOLO con 'detras'.
+      599   {camaraEncendida && streamCamara && (<video .../>)}
+            El video a pantalla completa SOLO con 'detras'.
+
+    src/App.tsx
+      695   el efecto que pone body y documentElement en transparente
+      1108, 1146, 1209   los display 'none' y el filter brightness que esconden
+            la biblioteca y los paneles de abajo
+      1432  background: camaraActiva ? 'transparent' : colorFondo
+
+    src/components/PrepararView.tsx
+      el background '#000000' del contenedor, el calcularBgVelo con true fijo,
+      y el <video> a pantalla completa: los tres pasan a depender de 'detras'.
+
+Todo eso esconde o transparenta cosas para que se vea la camara por debajo. Con
+'recuadro' y con 'oculta' no hay nada que ver por debajo, y si se transparenta
+igual se van a ver la biblioteca y los paneles atras del texto.
+
+
+3. EL RECUADRO
+
+FORMA Y TAMAÑO. Un rectangulo con las esquinas redondeadas, de un 32% del ancho
+de la pantalla, mas alto que ancho -proporcion 3 a 4-, con la imagen adentro en
+objectFit cover. Espejado con la frontal, igual que a pantalla completa.
+
+DONDE EMPIEZA. Abajo a la derecha, separado del borde.
+
+SE MUEVE CON EL DEDO, Y SOLO EN PREPARAR. Se arrastra y queda donde se suelta.
+En la pantalla de LECTURA no se mueve: se dibuja donde quedo y nada mas.
+
+    El motivo no es la comodidad de programarlo: mientras se lee se esta
+    mirando el lente, no la pantalla, y un gesto de arrastre ahi solo puede
+    pelearse con los controles que ya existen. Donde va el recuadro es una
+    decision de preparar la toma, igual que el encuadre.
+
+NO SE PUEDE SACAR DE LA PANTALLA. Al soltar, la posicion se recorta para que el
+recuadro quede entero adentro de la vista, sin pisar las barras del sistema.
+
+SE RECUERDA DONDE SE DEJO. La posicion se guarda en los ajustes, como dos
+numeros entre 0 y 1 -la fraccion del ancho y del alto de la pantalla-, no en
+pixeles:
+
+    recuadroX: number     de omision, la esquina de abajo a la derecha
+    recuadroY: number
+
+En fracciones porque el telefono puede girar o cambiar de tamaño util, y una
+posicion en pixeles quedaria fuera de la pantalla. Esto es lo que separa lo
+cuidado de lo descuidado: que la proxima vez que grabes este donde lo dejaste.
+
+
+4. EL CONTROL EN LA PANTALLA DE PREPARAR
+
+Una fila mas en el panel de abajo, junto a "Donde lees" y "Camara":
+
+    Imagen:   Detras   Recuadro   Oculta
+
+Al tocar cada una, la pantalla cambia EN EL MOMENTO y se ve como va a quedar.
+Ese es el sentido entero de esta pantalla.
+
+Con 'Oculta' elegida, debajo del control aparece una linea chica:
+
+    la camara sigue encendida
+
+No es decoracion. Si la persona elige "oculta" y cree que apago la camara, se
+va a grabar sin saberlo. Tiene que decirlo la pantalla.
+
+
+5. LO QUE NO SE TOCA
+
+La camara se pide UNA SOLA VEZ y no se apaga al cambiar de fondo. Cambiar entre
+'detras', 'recuadro' y 'oculta' es solo dibujo: el mismo MediaStream, las mismas
+pistas. Con 'oculta' el <video> no se dibuja Y LA PISTA SIGUE VIVA -nada de
+llamar a stop()-, porque de ahi va a salir la grabacion.
+
+NO se toca el motor, ni src/lib/seguidor.ts, ni src/lib/avance.ts, ni
+src/lib/conduccion.ts, ni src/motor/, ni src/datos/modelo.ts.
+
+NO se toca la banda, ni el velo, ni el ancho de la columna, ni donde cae el
+texto. Comprobado el 21 de septiembre de 2026 que preparar y lectura ponen el
+texto en el mismo lugar: eso tiene que seguir igual con los tres fondos.
+
+NO se agrega nada de grabar. Esta tarea es como se VE.
+
+
+6. UNA PRUEBA, UNA SOLA
+
+    T277: con la camara en frontal, en la pantalla de preparar:
+
+          a. con fondoToma en 'detras', el video a pantalla completa esta en el
+             documento.
+          b. al elegir 'recuadro', el video a pantalla completa YA NO esta y el
+             recuadro SI.
+          c. al elegir 'oculta', no esta ninguno de los dos, Y LA PISTA DE LA
+             CAMARA NO SE APAGO: el stop() de la pista no fue llamado.
+
+El punto c es la guardiana de verdad: es lo unico que garantiza que con nuestro
+fondo la camara siga capturando, que es de donde va a salir el video.
+
+No agregues mas pruebas.
+
+
+7. COMO SE COMPRUEBA EN EL TELEFONO
+
+Elegir camara frontal, apretar Leer, y en preparar tocar las tres:
+
+    Detras      la cara a pantalla completa con el texto encima, como hoy.
+    Recuadro    el fondo vuelve a ser el nuestro, el texto se lee como sin
+                camara, y la cara esta en el recuadro. Arrastrarlo a otra
+                esquina, apretar Empezar, y que en la lectura este DONDE SE
+                DEJO. Salir, volver a entrar, y que siga ahi.
+    Oculta      el fondo nuestro, sin imagen, y el cartelito de que la camara
+                sigue encendida.
+
+En los tres, el texto tiene que caer exactamente en el mismo lugar.
