@@ -77,8 +77,13 @@ li{margin-bottom:8px}
 <div class="envoltura">
 
 <h1>La aplicación entera</h1>
-<p class="bajada">Las seis pantallas, qué manda en cada una, dónde vive cada control
+<p class="bajada">Las cinco pantallas, qué manda en cada una, dónde vive cada control
 y por qué. Con lo de la cámara diseñado, que hasta hoy se fue armando tarea a tarea.</p>
+
+<p class="nota">Actualizado el 21 de septiembre de 2026, después de construirlo.
+Preparar la toma y la lectura eran dos pantallas en la versión anterior de este
+documento; son <b>una sola</b>, en dos estados. Por eso las pantallas son cinco y no
+seis.</p>
 
 <p>Los cinco documentos anteriores son de antes de la cámara. Ninguno conoce preparar
 la toma, los tres fondos, el recuadro, la tira de grabaciones ni la calidad: la mitad
@@ -202,30 +207,37 @@ no se encuentre.</p>
   </div>
   <div style="flex:1;min-width:300px">
     <h3>Dos botones, no un interruptor escondido</h3>
-    <p>Los dos usos aparecen donde se decide: al terminar de escribir. <b>Leer</b> entra
-    directo a leer, como siempre. <b>Grabar</b> entra a preparar la toma.</p>
+    <p>Los dos usos aparecen donde se decide: al terminar de escribir. Las dos puertas
+    llevan a la <b>misma pantalla</b> —el lienzo de la toma, en estado LISTO—. Lo único
+    que las diferencia es si se enciende la cámara.</p>
     <p>Esto resuelve de una vez las dos cosas: el que sólo quiere un teleprompter
-    nunca se topa con la cámara, y el que quiere grabarse encuentra la puerta sin
-    buscarla.</p>
+    nunca se topa con la cámara —ni siquiera con el diálogo de permiso—, y el que
+    quiere grabarse encuentra la puerta sin buscarla.</p>
     <div class="regla">
       <b>Lo que desaparece</b>
       La fila «Sin cámara · Frontal · Trasera». De qué lado está la cámara se elige
-      viéndose, en preparar la toma, que es donde se ve.
+      viéndose, con el botón de voltear sobre la imagen, que es donde se ve.
     </div>
     <p class="nota">Desde la portada, el botón grande de la tarjeta sigue siendo Leer, y
-    manteniéndolo apretado aparece Grabar. La acción frecuente al toque; la otra, al
-    gesto.</p>
+    manteniéndolo apretado se <b>entra directo a grabar</b> —no conmuta el botón ni abre
+    un menú: navega—. La acción frecuente al toque; la otra, al gesto. Ninguna de las
+    dos cuesta dos toques.</p>
   </div>
 </div>
 
 <hr>
 
 <h2>Tres</h2>
-<div class="titulo">Preparar la toma</div>
+<div class="titulo">La toma: un solo lienzo, dos momentos</div>
 
-<p>Existe y funciona; lo que falta es que esté diseñada en vez de acumulada. Hoy son
-cuatro filas de fichas apiladas sobre la imagen. Manda la imagen: es la única pantalla
-donde la persona se está mirando.</p>
+<p>No son dos pantallas con una transición entre medio: es <b>la misma</b>, en dos
+estados. Por eso lo que se prepara <b>es</b> lo que se lee, por construcción. Antes eran
+dos componentes dibujando el mismo texto, y dos veces se habían separado sin que nadie
+lo notara.</p>
+
+<p class="nota">La cámara se enciende <b>una vez</b> al entrar y sigue encendida al pasar
+a LEYENDO. Nunca se reinicia entre estados: eso era el parpadeo que costó dos
+correcciones.</p>
 
 <div class="fila">
   <div>
@@ -233,6 +245,9 @@ donde la persona se está mirando.</p>
       <div class="barra"><span>12:09</span><span>▂▄ ▮</span></div>
       <div class="cuerpo" style="position:relative;padding:0">
         <div style="position:absolute;inset:0;background:linear-gradient(160deg,#4a3f36,#241f1d)"></div>
+        <div style="position:absolute;top:7px;right:7px;width:16px;height:16px;border-radius:99px;
+             background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.35);font-size:9px;
+             display:flex;align-items:center;justify-content:center;color:#fff">⟳</div>
         <div style="position:relative;padding:9px;display:flex;flex-direction:column;height:100%">
           <div class="lineas" style="gap:6px;margin-top:14px">
             <div class="ln viva" style="width:88%"></div>
@@ -244,35 +259,58 @@ donde la persona se está mirando.</p>
             <div class="chips"><span class="chip on">Detrás</span><span class="chip">Recuadro</span><span class="chip">Oculta</span></div>
             <div class="chips"><span class="chip on">1080p</span><span class="chip">720p</span><span class="chip">480p</span>
               <span style="font-size:8px;color:var(--apagado);align-self:center;margin-left:4px">23 min</span></div>
-            <div class="boton">Empezar</div>
+            <div style="display:flex;gap:5px">
+              <div class="boton" style="flex:0 0 26px;background:transparent;border:1px solid var(--borde);color:var(--texto)">⚙</div>
+              <div class="boton" style="flex:1">Empezar</div>
+            </div>
           </div>
         </div>
       </div>
       <div class="pie"><span>▭</span><span>○</span><span>‹</span></div>
     </div>
-    <div class="pieta">Preparar la toma</div>
+    <div class="pieta">LISTO, con cámara —se entró por Grabar—</div>
+  </div>
+  <div>
+    <div class="pantalla">
+      <div class="barra"><span>12:09</span><span>▂▄ ▮</span></div>
+      <div class="cuerpo" style="position:relative;padding:0">
+        <div style="position:absolute;inset:0;background:#0f0d0c"></div>
+        <div style="position:relative;padding:9px;display:flex;flex-direction:column;height:100%">
+          <div class="lineas" style="gap:6px;margin-top:14px">
+            <div class="ln viva" style="width:88%"></div>
+            <div class="ln viva" style="width:76%"></div>
+            <div class="ln tenue" style="width:84%"></div>
+          </div>
+          <div style="margin-top:auto;display:flex;gap:5px">
+            <div class="boton" style="flex:0 0 26px;background:transparent;border:1px solid var(--borde);color:var(--texto)">⚙</div>
+            <div class="boton" style="flex:1">Empezar</div>
+          </div>
+        </div>
+      </div>
+      <div class="pie"><span>▭</span><span>○</span><span>‹</span></div>
+    </div>
+    <div class="pieta">LISTO, sin cámara —se entró por Leer—</div>
   </div>
   <div style="flex:1;min-width:300px">
     <h3>De cuatro filas a dos</h3>
     <table class="tabla">
       <tr><th>Hoy</th><th>Queda</th></tr>
-      <tr><td>Dónde lees</td><td>Se va a los ajustes de la toma. No se juzga mirándose.</td></tr>
+      <tr><td>Dónde lees</td><td>Se va al engranaje del lienzo. No se juzga mirándose.</td></tr>
       <tr><td>Cámara</td><td>Un icono de voltear sobre la imagen, no una fila de dos fichas.</td></tr>
       <tr><td>Imagen</td><td>Se queda. Es la decisión que sí se toma mirando.</td></tr>
       <tr><td>Calidad</td><td>Se queda, con los minutos al lado. Sólo significan juntos.</td></tr>
     </table>
     <div class="regla">
       <b>Regla</b>
-      En esta pantalla vive sólo lo que se decide <b style="display:inline;text-transform:none;letter-spacing:0;font-size:inherit;color:var(--texto)">viendo la imagen</b>.
-      Todo lo demás se va a los ajustes de la toma.
+      En este estado vive sólo lo que se decide <b style="display:inline;text-transform:none;letter-spacing:0;font-size:inherit;color:var(--texto)">viendo la imagen</b>.
+      Todo lo demás se va al engranaje.
     </div>
+    <p class="nota">Sin cámara no hay imagen que decidir: se van Imagen, Calidad y
+    Voltear, el fondo se vuelve opaco, y quedan el engranaje y Empezar.</p>
   </div>
 </div>
 
-<hr>
-
-<h2>Cuatro</h2>
-<div class="titulo">La lectura</div>
+<h3 style="margin-top:28px">El segundo momento: LEYENDO</h3>
 
 <p>Se rehace, no se hereda —eso ya estaba decidido en F5 y quedó pendiente. La
 referencia es PromptSmart: con la lectura andando hay el texto, la imagen y una salida.
@@ -318,15 +356,23 @@ Nada más.</p>
       Mientras se lee, la persona mira el lente. Todo lo que no se pueda hacer sin
       mirar la pantalla no pertenece a esta pantalla.
     </div>
+    <div class="regla">
+      <b>Dos pisos, y nunca se saltan los dos</b>
+      Un toque revela los controles y se van solos; <b style="display:inline;text-transform:none;letter-spacing:0;font-size:inherit;color:var(--texto)">un toque no vuelve a LISTO</b>,
+      porque mientras se graba un roce no puede cortar la toma. Salir baja un piso:
+      de LEYENDO a LISTO, cortando y guardando por el camino que ya existe. Desde
+      LISTO, Salir vuelve al origen y ahí se apaga la cámara. El Atrás del teléfono
+      hace lo mismo que Salir, piso por piso.
+    </div>
   </div>
 </div>
 
 <hr>
 
-<h2>Cinco</h2>
+<h2>Cuatro</h2>
 <div class="titulo">Los ajustes, en tres familias</div>
 
-<p>Hoy hay controles en el panel del editor, en preparar la toma y ninguna regla que
+<p>Hoy hay controles en el panel del editor, en el lienzo de la toma y ninguna regla que
 diga cuál va dónde. Por eso «dónde lees» terminó en dos lugares. La regla es una sola
 pregunta: <b>¿esto cambia entre una toma y otra?</b></p>
 
@@ -346,51 +392,63 @@ pregunta: <b>¿esto cambia entre una toma y otra?</b></p>
   </tr>
   <tr>
     <td>De la toma</td>
-    <td>Ajustes de preparar</td>
-    <td>Dónde lees, espejo, mostrar tiempo, lado de la cámara. Cambian entre una toma
-    y otra.</td>
+    <td>El engranaje del lienzo, en LISTO</td>
+    <td>Dónde lees, espejo, mostrar tiempo. Cambian entre una toma y otra.</td>
   </tr>
 </table>
 
 <div class="regla">
   <b>Y una consecuencia que no es menor</b>
-  «Dónde lees» deja de estar duplicado: es de la toma. Quien lee sin grabar también
-  entra a preparar —sin cámara— y ahí lo encuentra.
+  «Dónde lees» deja de estar duplicado: es de la toma. Quien lee sin grabar cae en el
+  mismo lienzo —sin cámara— y ahí lo encuentra.
+</div>
+
+<div class="regla">
+  <b>Por qué el lado de la cámara NO está acá</b>
+  Se decide viéndose, con el botón de voltear sobre la imagen. Si estuviera en los dos
+  lados volveríamos justo a lo que este documento arregla.
 </div>
 
 <hr>
 
-<h2>Seis</h2>
-<div class="titulo">Lo que decide Javier</div>
+<h2>Cinco</h2>
+<div class="titulo">Lo que ya está cortado</div>
 
-<p>Todo lo de arriba es propuesta con su motivo. Estas cuatro no las puedo cerrar yo.</p>
+<p>Las cuatro que estaban abiertas el 21 de septiembre las cerraste ese mismo día.
+Quedan acá escritas con su motivo, para que no se vuelvan a discutir.</p>
 
 <table class="tabla">
-  <tr><th>Decisión</th><th>De qué depende</th></tr>
-  <tr><td class="abierto">Leer y Grabar<br>como dos botones</td>
-      <td>Es el cambio más grande. La alternativa es un solo botón que pregunta, o que
-      recuerde lo último. Yo propongo dos botones porque hace visibles los dos usos.</td></tr>
-  <tr><td class="abierto">Preparar la toma<br>también sin cámara</td>
-      <td>Da un paso más al que sólo lee, y a cambio le da un lugar a «dónde lees» y al
-      espejo, y una sola puerta a la lectura. Antes dijiste que sin cámara se entrara
-      derecho; con la regla de las tres familias eso deja «dónde lees» sin casa.</td></tr>
-  <tr><td class="abierto">Las tomas en la portada</td>
-      <td>Están abajo de los guiones, como PromptSmart. La alternativa es que cada guion
-      muestre sus tomas al abrirlo, y la portada quede sólo de guiones.</td></tr>
-  <tr><td class="abierto">Mantener apretado</td>
-      <td>Ya está escrito como el gesto de la aplicación. Confirmar que se aplica a todo
-      —guiones y tomas— y que borrar sigue preguntando una vez.</td></tr>
+  <tr><th>Decisión</th><th>Cómo quedó</th></tr>
+  <tr><td>Leer y Grabar<br>como dos botones</td>
+      <td><b>Sí.</b> Hace visibles los dos usos. Construido y medido: Leer no enciende
+      la cámara ni dispara el diálogo de permiso.</td></tr>
+  <tr><td>Un solo lienzo,<br>también sin cámara</td>
+      <td><b>Sí,</b> y va más lejos de lo propuesto: no es «preparar también sin
+      cámara», es que preparar y leer son la <b>misma pantalla</b> en dos estados. Le
+      cuesta un toque más al que sólo lee, y a cambio compra tres cosas: casa para
+      «dónde lees», el espejo y el tiempo; ver el texto ya acomodado antes de que
+      arranque la cuenta; y que las dos no se puedan volver a separar.</td></tr>
+  <tr><td>Las tomas en la portada</td>
+      <td><b>Debajo de los guiones,</b> en ese orden, porque el guion produce la toma y
+      no al revés. Misma familia visual: mismo radio, misma sobriedad, misma manera de
+      borrarse.</td></tr>
+  <tr><td>Mantener apretado</td>
+      <td><b>Es el gesto de la aplicación.</b> Se borra un guion y una toma del mismo
+      modo, y borrar sigue preguntando una vez. En la portada, mantener apretado el
+      botón ▶ Leer entra a grabar; mantener apretada una fila o una toma, borra. Son
+      elementos distintos, no el mismo con dos significados.</td></tr>
 </table>
 
 <hr>
 
 <h2>Después</h2>
-<div class="titulo">En qué se convierte esto</div>
+<div class="titulo">Lo que falta</div>
 
-<p>Con esas cuatro cortadas, el encargo sale entero y en este orden: primero lo
-decidido y no cumplido —el arranque sin destello, la tarjeta que espera, mantener
-apretado—, que es hacer cumplir, no diseñar. Después la mudanza de los ajustes a las
-tres familias. Después las dos puertas. Y al final la lectura, que se rehace.</p>
+<p>Hecho y medido: las dos puertas, el lienzo único, los dos pisos de Atrás, y la
+háptica de vuelta donde corresponde. Falta, en este orden: el mantener apretado de la
+portada —la tercera puerta y el gesto de borrar—; la mudanza de los ajustes a las tres
+familias; y lo decidido y no cumplido que no depende de la cámara —el arranque sin
+destello y la tarjeta que espera—.</p>
 
 <p class="nota">La lista de síntomas vive en el punto 9 de <b>docs/pendientes.txt</b>.
 Lo que está decidido y no se cumple, en <b>docs/coherencia-mapa.txt</b>.</p>
