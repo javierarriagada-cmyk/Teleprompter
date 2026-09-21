@@ -548,3 +548,54 @@ BLOQUE 4 - LA APLICACION ALREDEDOR
 
 QUE PUEDE MOVERSE: la 1 crece si el plugin resulta pesado y hay que escribir
 nuestro propio puente. Lo demas no deberia moverse.
+
+
+===============================================================================
+12. MEDIDO EL 21 DE SEPTIEMBRE DE 2026: EL TELEFONO REPARTE EL MICROFONO
+===============================================================================
+
+La pregunta que decidia toda la arquitectura de la grabacion quedo contestada
+en el telefono de Javier, con la pantalla de prueba de las tareas 60, 61 y 62.
+
+LA PRUEBA. Se arranca el motor de voz nativo, un segundo despues arranca la
+grabacion nativa CON audio, y Javier lee diez segundos en voz alta.
+
+EL RESULTADO, y son las dos cosas a la vez:
+
+  EL MOTOR OYO. Transcribio "idea que podriamos llamar la concepcion tragica de
+  la naturaleza humana no dices solo que a veces somos egoistas o crueles",
+  que es lo que se leyo.
+
+  EL VIDEO TIENE LA VOZ. Medido con volumedetect:
+
+      con voz                mean -25.0 dB    max  -3.1 dB
+      sin que nadie hablara  mean -60.2 dB    max -19.3 dB
+
+  35 dB de diferencia en el promedio. No es ruido ambiente.
+
+Y EL ARCHIVO ES EL DEL TELEFONO, no una version recortada:
+
+      video   H.264 1920x1080, 20 Mbps, 30 cuadros por segundo
+      audio   AAC 48000 Hz estereo, 256 kbps
+
+ENTONCES: existe el camino corto. No hay que construir el reparto de audio -la
+tarea que llamabamos "el microfono pasa a ser nuestro"-, porque el sistema ya
+lo reparte.
+
+UNA TRAMPA QUE COSTO UNA VUELTA, Y QUE HAY QUE RECORDAR: la sesion de camara
+tiene que arrancarse con disableAudio en FALSE. Si la vista previa se arranca
+sin audio -como lo hacia la pantalla de prueba, heredado de cuando prohibimos
+el audio para proteger al reconocedor-, pedirle audio despues al grabador NO
+SIRVE: el archivo sale con una sola pista y sin ningun error. Grabar mudo sin
+avisar es el modo de fallar mas peligroso que tiene esto.
+
+LO QUE NO QUEDA GARANTIZADO. Esto se midio en UN telefono. Android documenta
+que una captura cuya fuente es CAMCORDER o VOICE_COMMUNICATION es sensible a
+privacidad y NO se comparte, y lo que pasa dentro de una misma aplicacion no
+esta documentado. Osea que este reparto puede no ocurrir en otro aparato.
+
+CONSECUENCIA DE DISEÑO, y no es opcional: la aplicacion tiene que DARSE CUENTA
+de que el audio no llego -mirar la pista del archivo, o el nivel- y decirlo,
+en vez de entregar un video mudo. Y si no llega, ahi si corresponde abrir el
+microfono nosotros y meter la pista al mp4, que es el plan que queda de
+reserva y no se descarta: queda escrito por si hace falta.
