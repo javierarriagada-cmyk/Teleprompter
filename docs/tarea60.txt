@@ -1,0 +1,95 @@
+TAREA 60 - LA PANTALLA MINIMA DE LA CAMARA NATIVA
+
+Rama: tarea60-prueba-camara-nativa
+
+Esta tarea NO agrega una funcion. Construye un caso de prueba para contestar UNA
+pregunta que decide la arquitectura de toda la grabacion:
+
+    ¿se puede ver una vista previa NATIVA de la camara por debajo del WebView,
+    en este telefono?
+
+Todo lo demas depende de eso, asi que primero se contesta y despues se decide.
+
+
+POR QUE HAY QUE CONTESTARLA
+
+Grabar tiene que ser nativo. La calidad que da el telefono -1080p a 20 Mbps,
+4K a 50, audio AAC a 256 kbps- sale de los perfiles del propio aparato y del
+codificador por hardware. Grabando desde la pagina, el navegador entrega un
+stream recortado, en un contenedor que la galeria no siempre abre, y sin
+control del bitrate. La competencia graba nativo: el APK de PromptSmart no
+tiene una sola linea de WebView.
+
+Pero si graba el lado nativo, el lado nativo es el dueño de la camara. Y
+entonces la vista previa tambien es nativa, porque una sesion de camara
+alimenta sus propias superficies, no un <video> de la pagina. Y una vista
+previa nativa con nuestro texto encima significa ponerla DETRAS del WebView.
+
+Eso es lo que no nos funciono en la tarea 56 y abandonamos. Hay que saber si es
+culpa nuestra o del aparato, y eso se sabe con el caso mas chico posible.
+
+LO QUE YA ESTA DESCARTADO, no lo vuelvas a probar:
+  - transparentar body, html, el WebView y toda la cadena de contenedores
+    hasta android.R.id.content
+  - backgroundColor '#ff000000' en capacitor.config.ts. Probado hoy, 21 de
+    septiembre de 2026: con eso puesto y con TODO el contenido de la aplicacion
+    escondido, la pantalla sigue negra y dos capturas seguidas salen identicas
+    byte a byte, o sea que no hay cuadros.
+
+Y lo que ya sabemos que SI funciona: con toBack en FALSE la imagen sale
+perfecta, a pantalla completa. La camara, el permiso y el plugin estan bien. Lo
+unico que falla es dibujarla por debajo.
+
+
+QUE HAY QUE HACER
+
+1. Volver a poner la dependencia @capgo/camera-preview en el proyecto. Se saco
+   en la tarea 56; se vuelve a instalar tal cual, sin tocar nada mas.
+
+2. Una pantalla de prueba, SOLA, sin nada de la aplicacion encima. Nada de
+   biblioteca, nada de editor, nada de paneles, nada de texto de guion. Solo:
+
+       - la vista previa nativa arrancada con toBack en TRUE, a pantalla
+         completa
+       - un boton para salir
+       - un boton que cambie toBack entre true y false SIN salir de la pantalla
+
+   El boton de toBack es la mitad del valor de la tarea: en la misma pantalla,
+   con la misma vista, se ve si la diferencia es solo esa.
+
+3. Como se llega a esa pantalla: un interruptor en el menu de la biblioteca que
+   diga "Prueba de camara nativa". Nada mas. Se va a borrar cuando la pregunta
+   este contestada.
+
+4. Segui el ejemplo del propio plugin, no lo inventes. El repositorio
+   Cap-go/capacitor-camera-preview trae su aplicacion de ejemplo; si ahi hay
+   pasos de instalacion o de configuracion que nosotros no hicimos, HACELOS Y
+   DECI CUALES ERAN. Eso es lo que mas nos puede servir.
+
+5. En el resumen decinos, con estas palabras: que pasos del ejemplo del plugin
+   faltaban en nuestro proyecto, y si tuviste que tocar algo del lado nativo
+   -Java, tema, manifiesto- para que la vista previa exista.
+
+
+LO QUE NO HAY QUE HACER
+
+NO toques ninguna pantalla de la aplicacion: ni la biblioteca, ni el editor, ni
+preparar la toma, ni la lectura. Nada de lo que ya funciona se modifica.
+
+NO saques ni cambies la camara por getUserMedia que usa hoy la aplicacion. Sigue
+funcionando exactamente igual. Esta pantalla vive al lado, no en vez de.
+
+NO agregues grabacion. Esta tarea es solo ver la imagen.
+
+NO agregues pruebas. Esto no se comprueba en jsdom: se comprueba en el telefono,
+y lo compruebo yo.
+
+
+COMO SE SABE SI SALIO BIEN
+
+No lo sabes vos y no lo sabe el CI: lo mido yo en el telefono de Javier, con dos
+capturas separadas por un segundo. Si salen distintas hay imagen; si salen
+identicas byte a byte, no la hay.
+
+Tu parte esta terminada cuando la pantalla existe, se llega a ella, y el boton
+de toBack cambia entre los dos modos sin reiniciar nada.
