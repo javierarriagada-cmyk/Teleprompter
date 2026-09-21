@@ -10,18 +10,28 @@ teleprom/00-arquitectura/DECISIONES-DE-DISENO.txt.
 LO PRIMERO, Y CAMBIA EL ENCARGO
 ===============================================================================
 
-NO FALTA DISEÑO. Hay cinco documentos de diseño con decisiones tomadas,
-medidas y argumentadas. Lo que pasa es que LO CONSTRUIDO SE FUE APARTANDO DE LO
-DECIDIDO, y como nadie volvio a leerlos, cada tarea nueva los contradijo un
-poco mas sin saberlo.
+SON DOS TRABAJOS DISTINTOS Y HAY QUE NO CONFUNDIRLOS.
 
-Entonces la tarea de coherencia no es "diseñar la aplicacion". Es, en este
-orden:
+DE LO QUE EXISTIA ANTES DE LA CAMARA, EL DISEÑO ESTA Y NO SE ESTA CUMPLIENDO.
+Cinco documentos con decisiones tomadas, medidas y argumentadas. Como nadie
+volvio a leerlos, cada tarea nueva los contradijo un poco mas sin saberlo. Tres
+de los defectos de esta semana YA tenian su decision escrita.
+
+DE LA CAMARA Y LA GRABACION, NO HAY DISEÑO. Los cinco documentos son ANTERIORES
+a la camara: ninguno conoce preparar la toma, ni los tres fondos, ni el
+recuadro movible, ni la tira de grabaciones, ni la eleccion de calidad. Eso es
+la mitad de la aplicacion de hoy y no tiene una linea escrita. Se fue armando
+tarea a tarea, decidiendo sobre la marcha.
+
+Entonces la tarea de coherencia es, en este orden:
 
     1. hacer cumplir lo que ya esta decidido
-    2. resolver las contradicciones entre documentos
-    3. decidir lo poco que quedo abierto
-    4. y recien ahi, lo nuevo que traiga la grabacion
+    2. resolver las contradicciones entre documentos y lo construido
+    3. DISEÑAR lo de la camara y la grabacion, que nunca se diseño
+    4. y decidir lo que quedo abierto de antes
+
+El 3 no es un agregado al final: es la mitad del trabajo, y es donde hay que
+poner el mismo cuidado que se puso en la portada y en los ajustes.
 
 Tres de los "defectos" que encontramos esta semana YA TENIAN SU DECISION
 ESCRITA. Eso no es mala suerte: es el sintoma.
