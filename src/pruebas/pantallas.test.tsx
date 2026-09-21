@@ -590,8 +590,7 @@ describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)
         setMarginPercent: () => {},
         setTipoFuente: () => {},
         setColorFondo: () => {},
-        setColorLetra: () => {},
-        setTema: () => {}
+        setColorLetra: () => {}
       })
     )
 

@@ -1424,8 +1424,6 @@ export default function App({ motor, repoOverride }: AppProps) {
             setColorLetra={setColorLetra}
             tipoFuente={tipoFuente}
             setTipoFuente={setTipoFuente}
-            tema={tema}
-            setTema={setTema}
             engine={engine}
             setEngine={setEngine}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}

@@ -67,8 +67,8 @@ interface EditorViewProps {
   setColorLetra?: (c: string) => void
   tipoFuente?: 'sans' | 'serif'
   setTipoFuente?: (f: 'sans' | 'serif') => void
-  tema?: 'sistema' | 'claro' | 'oscuro'
-  setTema?: (t: 'sistema' | 'claro' | 'oscuro') => void
+  // El Tema tampoco esta aca, y por el mismo motivo: no es del texto, es de la
+  // aplicacion. Vive en el menu de la portada, junto a idioma y vibracion.
   engine?: IdMotor
   setEngine?: (e: IdMotor) => void
   onEntrarGrabar?: (rect?: DOMRect) => void
@@ -113,8 +113,6 @@ export default function EditorView({
   setColorLetra,
   tipoFuente = 'sans',
   setTipoFuente,
-  tema = 'claro',
-  setTema,
   engine = 'vosk',
   setEngine,
   onEntrarGrabar,
