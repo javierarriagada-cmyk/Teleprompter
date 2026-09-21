@@ -130,18 +130,19 @@ export async function encenderCamara(
 
   const posNativa = lado === 'frontal' ? 'front' : 'rear'
 
+  // Calcular dimensiones para el modo de inicio
   const { x, y, width, height } = calcularDimensionesPreview(config)
 
   try {
     await CameraPreview.start({
       position: posNativa,
-      toBack: true,
-      aspectMode: 'cover',
+      toBack: true,            // SIEMPRE DETRÁS DEL WEBVIEW EN TODOS LOS FONDOS
+      aspectMode: 'cover',     // ¡CUBRIR LA PANTALLA SIN BANDAS NEGRAS!
       includeSafeAreaInsets: false,
-      disableAudio: false,
-      enableOpacity: true,
-      enableVideoMode: true,
-      force: true,
+      disableAudio: false,      // ¡REGLA DE ORO! Habilitar audio desde el día 1
+      enableOpacity: true,     // Permite cambiar opacidad (usado en modo OCULTA)
+      enableVideoMode: true,   // Habilita modo video nativo
+      force: true,             // Fuerza el reinicio si la sesión estaba atascada
       x,
       y,
       width,
@@ -149,6 +150,7 @@ export async function encenderCamara(
       storeToFile: false
     })
 
+    // Fijar superficie de sistema inmediatamente tras arrancar
     try {
       await CamaraNativa.fijarModoSuperficie({ modo: 'sistema' })
     } catch (e) {
@@ -157,6 +159,7 @@ export async function encenderCamara(
 
     estaEncendida = true
 
+    // Si el fondo es 'oculta', fijar opacidad a 0 de inmediato
     if (fondoEstado === 'oculta') {
       try {
         await CameraPreview.setOpacity({ opacity: 0 })
@@ -182,6 +185,9 @@ export async function cambiarLadoCamara(config?: OpcionesConfigCamara): Promise<
   return await encenderCamara(nuevoLado, config)
 }
 
+/**
+ * Actualiza la configuración de fondo / recuadro sin reiniciar la sesión nativa de cámara.
+ */
 export async function actualizarConfigCamara(config: OpcionesConfigCamara): Promise<void> {
   if (!estaEncendida) return
 
@@ -190,6 +196,7 @@ export async function actualizarConfigCamara(config: OpcionesConfigCamara): Prom
   }
 
   if (fondoEstado === 'oculta') {
+    // Modo OCULTA: la cámara SIGUE ENCENDIDA pero invisible (opacidad 0)
     try {
       await CameraPreview.setOpacity({ opacity: 0 })
     } catch (e) {
@@ -198,6 +205,7 @@ export async function actualizarConfigCamara(config: OpcionesConfigCamara): Prom
     return
   }
 
+  // Modos DETRAS y RECUADRO: opacidad en 1
   try {
     await CameraPreview.setOpacity({ opacity: 1 })
   } catch (e) {}
@@ -211,6 +219,10 @@ export async function actualizarConfigCamara(config: OpcionesConfigCamara): Prom
   }
 }
 
+/**
+ * Función auxiliar para calcular las coordenadas y tamaño en px para CameraPreview.
+ * Para pantalla completa se utiliza window.screen.width/height que mide la pantalla real.
+ */
 function calcularDimensionesPreview(config?: OpcionesConfigCamara): {
   x: number
   y: number
@@ -232,6 +244,7 @@ function calcularDimensionesPreview(config?: OpcionesConfigCamara): {
     return { x, y, width: w, height: h }
   }
 
+  // Fondo DETRÁS u OCULTA: ocupa toda la pantalla de borde a borde
   const screenW = typeof window !== 'undefined' ? (window.screen?.width || winW) : winW
   const screenH = typeof window !== 'undefined' ? (window.screen?.height || winH) : winH
 
