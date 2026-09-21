@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { execSync } from 'node:child_process'
 import { describe, expect, test, vi } from 'vitest'
-import { render, act, fireEvent } from '@testing-library/react'
+import { render, act, fireEvent, screen } from '@testing-library/react'
 import 'fake-indexeddb/auto'
 import App from './App'
 import { crearSeguidor, tokenizarGuion } from './lib/seguidor'
@@ -306,7 +306,10 @@ Esta es la tercera línea`)
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    const botonCrear = container!.querySelector('[data-testid="btn-crear-guion-flotante"]') as HTMLElement
+    // Por screen y no por container: el "+" cuelga de body a proposito, para
+    // que el transform de la transicion de pantalla no lo arrastre. Ver el
+    // comentario del portal en BibliotecaView.
+    const botonCrear = screen.getByTestId('btn-crear-guion-flotante')
     expect(botonCrear).not.toBeNull()
 
     await act(async () => {

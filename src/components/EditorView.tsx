@@ -487,21 +487,30 @@ export default function EditorView({
 
       {/* Fila superior discreta: a la izquierda ‹ Guiones, a la derecha Aa */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-4)' }}>
+        {/* LA SALIDA NO PUEDE SER LO MAS CHICO DE LA PANTALLA.
+            Estaba en texto-meta -13 px- y con padding 0, o sea un blanco de
+            toque del tamano del dibujo. Javier lo vio el 21 de septiembre de
+            2026 entrando a escribir un guion.
+            Sube al mismo escalon que los titulos de la portada -texto-cuerpo-
+            y gana padding de verdad. El margen negativo compensa ese padding
+            para que la flecha siga alineada con el borde del contenido: crece
+            el area que recibe el dedo, no se corre el dibujo. */}
         <button
           onClick={onVolverBiblioteca}
-          className="texto-meta"
+          className="texto-cuerpo"
           style={{
             background: 'transparent',
             border: 'none',
             color: 'var(--color-apagado)',
             cursor: 'pointer',
-            padding: 0,
+            padding: 'var(--aire-2)',
+            margin: 'calc(-1 * var(--aire-2))',
             display: 'flex',
             alignItems: 'center',
             gap: 'var(--aire-2)'
           }}
         >
-          <IconoAtras tamano={20} />
+          <IconoAtras tamano={24} />
           <span>Guiones</span>
         </button>
 

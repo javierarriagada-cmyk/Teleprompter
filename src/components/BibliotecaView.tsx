@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, ResumenGuion, ResumenGrabacion, PAREJAS_COLOR } from '../datos/modelo'
 import TiraGrabaciones from './TiraGrabaciones'
@@ -1031,8 +1032,21 @@ export default function BibliotecaView({
         </div>
       )}
 
-      {/* Botón Flotante CREAR secundario circular */}
-      <button
+      {/* EL "+" SALE POR UNA PUERTA APARTE, Y NO ES UN CAPRICHO.
+          Pantalla anima la raiz de la biblioteca con transform: translateX.
+          Un transform en un ancestro convierte a ese elemento en el BLOQUE
+          CONTENEDOR de sus descendientes position: fixed. O sea que durante
+          los 300 ms de la transicion este boton se posicionaba contra la caja
+          animada -que mide lo que mide el contenido- y no contra la pantalla;
+          al terminar la animacion se quitaba el transform y el boton saltaba a
+          su lugar. Javier lo vio el 21 de septiembre de 2026 al volver del
+          editor: "el signo mas queda mas arriba y baja, se ve un movimiento
+          como un parpadeo".
+          Con el portal cuelga de body, ningun transform lo alcanza y se queda
+          quieto. La alternativa era sacarle el transform a la transicion, y esa
+          curva esta decidida y medida en circuito.html: no se toca por esto. */}
+      {createPortal(
+        <button
         onClick={() => {
           hapticaToqueSuave()
           onCrearNuevo()
@@ -1066,9 +1080,11 @@ export default function BibliotecaView({
           justifyContent: 'center',
           zIndex: 100
         }}
-      >
-        +
-      </button>
+        >
+          +
+        </button>,
+        document.body
+      )}
     </div>
   )
 }
