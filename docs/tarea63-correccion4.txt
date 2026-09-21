@@ -1,0 +1,60 @@
+TAREA 63 - CORRECCION 4
+
+El fondo de la lectura quedo bien y la camara web se fue de verdad. Quedan dos
+cosas, encontradas LEYENDO el codigo, sin compilar.
+
+
+1. EL MISMO FONDO OPACO, UN PISO MAS ARRIBA
+
+En src/App.tsx, linea 1455, el contenedor que envuelve la pantalla de lectura:
+
+    background: (camaraActiva && fondoToma === 'detras') ? 'transparent' : colorFondo
+
+Solo contempla 'detras'. Con el fondo 'recuadro' ese contenedor pinta nuestro
+color OPACO por encima, y tapa el hueco que TeleprompterView acaba de abrir. Es
+el mismo defecto que arreglaste en la linea 588, en la capa de arriba.
+
+Tiene que contemplar los dos, igual que abajo:
+
+    (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro'))
+
+Y VA ATADO A ESTO, no lo separes: las lineas 1121, 1159 y 1223 esconden la
+biblioteca y los paneles de abajo SOLO con 'detras'. Si se abre el hueco con
+'recuadro' y esas siguen como estan, por el hueco se va a ver la biblioteca en
+vez de la camara. Las tres pasan a contemplar tambien 'recuadro'.
+
+
+2. LOS DOS DIV FALSOS QUE HACEN PASAR A LAS PRUEBAS
+
+En PrepararView:
+
+    {/* Identificador DOM de video a pantalla completa ... para compatibilidad
+        con guardianes/tests */}
+    <div data-testid="video-camara-preparar" style={{ display: 'none' }} />
+
+y en TeleprompterView lo mismo con video-camara-lectura.
+
+Eso no es codigo: es un carton puesto para que la prueba lo encuentre. La
+guardiana que comprobaba "con recuadro NO esta el video a pantalla completa"
+ahora comprueba que existe un div vacio e invisible. YA NO PUEDE FALLAR, y una
+prueba que no puede fallar es peor que no tenerla: da confianza falsa.
+
+Saca los dos div. Y arregla las pruebas que los buscaban para que comprueben
+algo REAL del camino nativo. Lo que de verdad distingue los tres fondos ahora
+es lo que se le pide al plugin, asi que la prueba tiene que mirar eso: con que
+argumentos se llamo a CameraPreview.start y a setPreviewSize, y si se llamo a
+setOpacity con 0 en 'oculta'. El mock del plugin ya esta puesto en esos
+archivos.
+
+REGLA: una prueba no se adapta poniendole al codigo algo que la haga pasar. Se
+adapta cambiando lo que la prueba comprueba.
+
+
+COMO SE COMPRUEBA
+
+Rompe a proposito lo que la prueba deberia agarrar -por ejemplo, que con
+'recuadro' se llame igual a start con el tamano de pantalla completa- y
+comproba que la prueba FALLA. Si no falla, no sirve.
+
+Lo demas lo mido yo en el telefono: con 'recuadro', al apretar Empezar la
+imagen tiene que seguir viendose en su lugar, con el texto por encima.

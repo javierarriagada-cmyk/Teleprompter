@@ -1,0 +1,110 @@
+TAREA 63 - CORRECCION 2
+
+El cambio de fondo funciona: la camara nativa se ve por detras del texto en
+preparar la toma, getUserMedia se fue, y tsc y las 259 pruebas pasan. Pero hay
+tres cosas y la primera no se ve en pantalla.
+
+
+1. VOLVER A PONER LOS COMENTARIOS QUE BORRASTE
+
+El parche borra 313 lineas de comentario y agrega 13. Ciento cincuenta y seis de
+src/components/TeleprompterView.tsx y ciento cincuenta y dos de src/App.tsx.
+
+Eso no es limpieza: es la memoria del proyecto. Un ejemplo de lo que se fue,
+que explicaba por que el motor por omision en Android es el nativo:
+
+    "baja 34 MB en CADA lectura. Comprobado el 14 de septiembre de 2026
+     poniendo el telefono en modo avion: no arranca. El reconocedor no entrega
+     nada durante los primeros 11 a 13 segundos y la primera palabra que ubica
+     es la 13 o la 15 del guion, y Javier leia tres renglones a ciegas cada
+     vez."
+
+Con ese mismo criterio se fueron los que explican por que el margen es 5%, por
+que la columna ancha es la omision, por que la banda mide TRES renglones y no
+cinco -"el remarcado esta pesimo", dicho mirando-, y por que el renglon
+siguiente va tan claro como el vivo.
+
+Cada uno de esos numeros costo dias de medicion. Sin el comentario al lado, el
+que los toque manana -vos, otro, o yo- los va a "mejorar" y vamos a volver a
+pagar el camino entero.
+
+REGLA, y vale para todo encargo de aca en adelante: LOS COMENTARIOS NO SE
+BORRAN. Si una linea de codigo cambia, se actualiza su comentario. Si el codigo
+desaparece de verdad -como el <video>-, su comentario se va con el. Todo lo
+demas se queda tal cual.
+
+Devolve los 313. Estan en el historial de git, en el commit anterior de cada
+archivo.
+
+
+2. CON EL FONDO "DETRAS" LA IMAGEN NO CUBRE LA PANTALLA
+
+Visto en el telefono: la imagen ocupa como el 60% de arriba y el resto queda
+negro.
+
+Falta aspectMode. En la llamada a CameraPreview.start hay position, toBack,
+disableAudio, enableOpacity, enableVideoMode, force, x, y, width, height y
+storeToFile, pero no aspectMode, y sin el la vista previa entra completa con
+bandas en vez de llenar.
+
+    aspectMode: 'cover'
+    includeSafeAreaInsets: false
+
+Las dos ya las habiamos aprendido en la tarea 56 y se perdieron en el camino.
+
+Y el tamano: calcularDimensionesPreview usa window.innerWidth y
+window.innerHeight. Esos valores no incluyen las barras del sistema. Para la
+vista previa a pantalla completa se usa window.screen.width y
+window.screen.height, que es lo que mide la pantalla de verdad.
+
+
+3. CON EL FONDO "RECUADRO" NO SE VE NINGUNA IMAGEN
+
+Visto en el telefono: se elige Recuadro y no aparece nada. Ni imagen ni
+recuadro.
+
+POR QUE, Y ACA ESTA EL NUDO DE ESTA TAREA. Al cambiar de fondo, aplicarConfigCamara
+solo llama a setPreviewSize, que cambia posicion y tamano pero NO puede cambiar
+toBack: la sesion sigue como arranco, con la vista previa DETRAS del WebView. Y
+con el fondo "recuadro" la pagina pinta su fondo opaco encima, asi que la vista
+previa queda tapada.
+
+Y la salida facil NO SIRVE: poner toBack en false para el recuadro pondria la
+imagen POR DELANTE del WebView, y entonces el recuadro taparia el texto. Javier
+pidio expresamente lo contrario, mirando PromptSmart: EL TEXTO VA POR ENCIMA DE
+LA IMAGEN, siempre.
+
+COMO SE RESUELVE. La vista previa queda SIEMPRE con toBack en true, en los tres
+fondos. Lo que cambia es el FONDO DE LA PAGINA:
+
+    detras     la pagina transparente entera -como ahora-
+    recuadro   la pagina opaca EN TODAS PARTES MENOS en el rectangulo del
+               recuadro, que queda transparente para que se vea la camara
+    oculta     la pagina opaca entera, y ademas la opacidad de la vista previa
+               en 0 como ya esta
+
+Para el recuadro, el fondo opaco se dibuja como CUATRO rectangulos -arriba,
+abajo, izquierda y derecha del recuadro-, o con un recorte, de manera que quede
+un hueco transparente exactamente donde esta la vista previa. El texto se sigue
+dibujando por encima de todo eso, asi que se lee entero sobre la imagen, que es
+lo pedido.
+
+El borde redondeado y la sombra del recuadro se dibujan en la pagina, alrededor
+del hueco.
+
+Y el arrastre sigue igual que hoy: mueve el hueco y le avisa al plugin la
+posicion nueva, con la escalera de tres escalones que ya estaba en el encargo.
+
+
+COMO SE COMPRUEBA
+
+En el telefono, en preparar la toma, con la camara frontal:
+
+    Detras     la imagen llena la pantalla de borde a borde, sin bandas negras
+    Recuadro   se ve el recuadro con la imagen, en su lugar, y EL TEXTO POR
+               ENCIMA; se arrastra y sigue al dedo
+    Oculta     sin imagen, y la camara sigue encendida
+
+Y en los tres, el texto cae en el mismo lugar que antes: top 81, left 41.
+
+No agregues pruebas.

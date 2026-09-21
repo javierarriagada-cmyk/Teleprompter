@@ -387,3 +387,26 @@ Mientras tanto, lo que se vaya viendo se anota aca y no se arregla suelto.
        Es la mejor referencia que tenemos de a donde tiene que llegar nuestra
        pantalla de lectura, que hoy muestra ademas el estado del motor, el
        punto rojo y un panel de controles.
+
+
+================================================================================
+11. EL DESFASE DE CUATRO RENGLONES, CON CAMARA
+    Estado: OBSERVADO, SIN MEDIR. No bloquea nada.
+================================================================================
+
+Javier, el 21 de septiembre de 2026, despues de leer un rato con la camara
+nativa encendida: "estuvo bastante bien aunque casi en todo estuve leyendo en
+el cuarto renglon".
+
+O sea que el ojo iba cuatro renglones por delante de la marca. La marca sigue a
+la VOZ y el ojo va delante de la voz -eso esta explicado en banda.ts y por eso
+la ventana clara son DOS renglones, el de la voz y el del ojo-. Cuatro es mas
+de lo que ese diseno contempla.
+
+LO QUE NO SE SABE: si la camara lo empeoro. La sesion de camara ahora corre
+todo el tiempo con el audio habilitado y eso consume, pero tambien puede ser el
+desfase de siempre.
+
+COMO SE SABE: la misma lectura dos veces, una con camara y otra sin, y se
+compara cuantos renglones de desfase hay. Si es igual, es el asunto del punto 1
+de esta lista -invertir la marca de lectura- y no algo que trajo la camara.

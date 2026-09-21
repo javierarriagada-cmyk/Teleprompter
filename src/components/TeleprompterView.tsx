@@ -132,7 +132,6 @@ interface TeleprompterViewProps {
   isRecording?: boolean
   enPausa?: boolean
   camaraEncendida?: boolean
-  streamCamara?: MediaStream | null
   ladoCamara?: 'frontal' | 'trasera'
   fondoToma?: FondoToma
   recuadroX?: number
@@ -179,7 +178,6 @@ export default function TeleprompterView({
   isRecording = false,
   enPausa = false,
   camaraEncendida = false,
-  streamCamara,
   ladoCamara = 'frontal',
   fondoToma = 'detras',
   recuadroX = 0.64,
@@ -190,17 +188,6 @@ export default function TeleprompterView({
   onEstadoAvanceChange
 }: TeleprompterViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const videoRef = useRef<HTMLVideoElement | null>(null)
-
-  useEffect(() => {
-    if (videoRef.current && streamCamara) {
-      videoRef.current.srcObject = streamCamara
-      const res = videoRef.current.play()
-      if (res && typeof res.catch === 'function') {
-        res.catch(() => {})
-      }
-    }
-  }, [streamCamara])
 
   const modoManualRef = useRef(false)
   const finManualRef = useRef<number | null>(null)
@@ -598,41 +585,21 @@ export default function TeleprompterView({
         paddingBottom: 'calc(env(safe-area-inset-bottom, 0px))',
         paddingLeft: 'calc(env(safe-area-inset-left, 0px))',
         paddingRight: 'calc(env(safe-area-inset-right, 0px))',
-        background: textoSobreImagen ? 'transparent' : colorFondo,
+        background: (camaraEncendida && (fondoToma === 'detras' || fondoToma === 'recuadro')) ? 'transparent' : colorFondo,
         color: colorTextoEfectivo,
         fontFamily: fontFamilyCss,
         boxSizing: 'border-box',
         position: 'relative'
       }}
     >
-      {/* Elemento <video> para la previsualización de cámara en el navegador/app */}
-      {textoSobreImagen && streamCamara && (
-        <video
-          ref={videoRef}
-          data-testid="video-camara-lectura"
-          autoPlay
-          playsInline
-          muted
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            transform: ladoCamara === 'frontal' ? 'scaleX(-1)' : 'none',
-            zIndex: 0,
-            pointerEvents: 'none'
-          }}
-        />
-      )}
 
       {/* Recuadro chico de cámara */}
-      {camaraEncendida && fondoToma === 'recuadro' && streamCamara && (
+      {camaraEncendida && fondoToma === 'recuadro' && (
         <RecuadroCamara
-          streamCamara={streamCamara}
           modoCamara={ladoCamara}
           recuadroX={recuadroX}
           recuadroY={recuadroY}
+          colorFondo={colorFondo}
           arrastrable={false}
         />
       )}

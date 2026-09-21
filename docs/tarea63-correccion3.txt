@@ -1,0 +1,58 @@
+TAREA 63 - CORRECCION 3
+
+Los comentarios volvieron -5 borrados en vez de 313, y los cinco se fueron con
+codigo que dejo de existir. Bien. Y el fondo "detras" ya llena la pantalla de
+borde a borde: aspectMode cover funciono.
+
+Quedan dos cosas, las dos en la PANTALLA DE LECTURA, y las dos juntas son lo que
+ve Javier: "cuando le aprieto a leer se queda pegado abajo y en negro, se ve
+solo su borde".
+
+
+1. EL FONDO DE LA LECTURA SIGUE OPACO CON "RECUADRO"
+
+En src/components/TeleprompterView.tsx, alrededor de la linea 601:
+
+    background: textoSobreImagen ? 'transparent' : colorFondo
+
+y textoSobreImagen es camaraEncendida && fondoToma === 'detras'. O sea que con
+el fondo "recuadro" la pantalla de lectura pinta nuestro color OPACO encima de
+todo, y la vista previa nativa -que esta por detras del WebView- queda tapada.
+Lo unico que se ve es el borde del recuadro, que lo dibuja la pagina.
+
+En src/components/PrepararView.tsx esto YA ESTA BIEN, en la linea 158:
+
+    background: (fondoToma === 'detras' || fondoToma === 'recuadro')
+                  ? 'transparent' : colorFondo
+
+Por eso en preparar el recuadro se ve y al apretar Empezar desaparece.
+
+Haceloc igual en la lectura. El truco del hueco -el boxShadow gigante de
+RecuadroCamara que pinta colorFondo en todas partes menos adentro del
+recuadro- solo funciona si el contenedor de atras es transparente.
+
+
+2. LA PANTALLA DE LECTURA CONSERVA LA CAMARA VIEJA
+
+En TeleprompterView quedaron el <video> de getUserMedia, su videoRef y la
+propiedad streamCamara: seis referencias. La primera version del parche las
+habia sacado; al restaurar los comentarios se volvieron a colar.
+
+Sacalas. El <video data-testid="video-camara-lectura">, el videoRef, el
+useEffect que le asigna srcObject, la propiedad streamCamara del tipo y su uso,
+y lo que App.tsx le pase de eso.
+
+Y el comentario que explicaba ese <video> se va CON el, que es justamente el
+caso en que un comentario si se borra: desaparecio el codigo que explicaba.
+
+
+COMO SE COMPRUEBA
+
+En el telefono, con camara frontal y fondo "recuadro": en preparar se ve el
+recuadro con la imagen y el texto por encima; se aprieta Empezar y TIENE QUE
+SEGUIR VIENDOSE IGUAL, en el mismo lugar, con el texto por encima. Hoy se pone
+negro.
+
+Con "detras" y con "oculta", todo como quedo.
+
+No agregues pruebas.
