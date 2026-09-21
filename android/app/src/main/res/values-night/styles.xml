@@ -6,6 +6,8 @@
         <!-- Mismo motivo que en values/styles.xml: el fondo es lo que se ve detras
              de las barras de sistema, y statusBarColor ya no existe en SDK 36. -->
         <item name="android:background">@color/fondo_arranque</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
     </style>

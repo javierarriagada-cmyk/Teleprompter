@@ -4,7 +4,7 @@ const config: CapacitorConfig = {
   appId: 'com.teleprompter.app',
   appName: 'Sigo',
   webDir: 'dist',
-  backgroundColor: '#ff000000'
+  backgroundColor: '#00000000'
 };
 
 export default config;
