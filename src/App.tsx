@@ -16,7 +16,9 @@ import PrepararView from './components/PrepararView'
 import CuentaRegresiva from './components/CuentaRegresiva'
 import { Entrada } from './components/Entrada'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
-import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, ModoCamara } from './lib/camara'
+import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, ModoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo } from './lib/camara'
+import { obtenerEspacioLibre } from './lib/archivosNativos'
+import { calcularMinutosDisponibles } from './lib/espacio'
 import { hapticaToqueMedio, hapticaToqueSuave } from './haptica'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
 import { Guion, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR } from './datos/modelo'
@@ -245,6 +247,11 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [recuadroY, setRecuadroY] = useState<number>(
     typeof ajustesPrevios.recuadroY === 'number' ? ajustesPrevios.recuadroY : 0.52
   )
+  const [calidadVideo, setCalidadVideo] = useState<string>(
+    typeof ajustesPrevios.calidadVideo === 'string' ? ajustesPrevios.calidadVideo : '1080p'
+  )
+  const [calidadesSoportadas, setCalidadesSoportadas] = useState<string[]>(['1080p', '720p', '480p'])
+  const [bytesLibres, setBytesLibres] = useState<number | null>(null)
 
   const coloresIniciales = sanitizarColores(ajustesPrevios.colorFondo, ajustesPrevios.colorLetra)
   const [colorFondo, setColorFondo] = useState<string>(coloresIniciales.colorFondo)
@@ -296,12 +303,29 @@ export default function App({ motor, repoOverride }: AppProps) {
         modoCamara,
         fondoToma,
         recuadroX,
-        recuadroY
+        recuadroY,
+        calidadVideo
       }
       localStorage.setItem('teleprompter_ajustes', JSON.stringify(objetoAjustes))
     } catch (e) {
     }
-  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente, modoCamara, fondoToma, recuadroX, recuadroY])
+  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente, modoCamara, fondoToma, recuadroX, recuadroY, calidadVideo])
+
+  useEffect(() => {
+    if (vista === 'preparar') {
+      obtenerCalidadesSoportadas().then((s) => {
+        setCalidadesSoportadas(s)
+        if (!s.includes(calidadVideo)) {
+          const nueva = s.includes('1080p') ? '1080p' : s[0] || '1080p'
+          setCalidadVideo(nueva)
+          fijarCalidadVideo(nueva)
+        } else {
+          fijarCalidadVideo(calidadVideo)
+        }
+      })
+      obtenerEspacioLibre().then((b) => setBytesLibres(b))
+    }
+  }, [vista, calidadVideo])
 
   const cargarBiblioteca = useCallback(async () => {
     let repo = repoRef.current
@@ -888,7 +912,8 @@ export default function App({ motor, repoOverride }: AppProps) {
           iniciarTomaVideo({
             id: idToma,
             guionId: guionActual ? guionActual.id : undefined,
-            tituloGuion: guionActual ? guionActual.titulo : '(sin guion)'
+            tituloGuion: guionActual ? guionActual.titulo : '(sin guion)',
+            calidad: calidadVideo
           }).then((ok) => {
             grabandoVideoRef.current = ok
             setGrabandoVideo(ok)
@@ -1371,6 +1396,17 @@ export default function App({ motor, repoOverride }: AppProps) {
           setRecuadroX={setRecuadroX}
           recuadroY={recuadroY}
           setRecuadroY={setRecuadroY}
+          calidadVideo={calidadVideo}
+          setCalidadVideo={(q) => {
+            setCalidadVideo(q)
+            fijarCalidadVideo(q)
+          }}
+          calidadesSoportadas={calidadesSoportadas}
+          minutosDisponibles={
+            bytesLibres !== null
+              ? calcularMinutosDisponibles(bytesLibres, calidadVideo, grabaciones)
+              : null
+          }
           onVolver={handleVolverDesdePreparar}
           onEmpezar={handleEmpezarDesdePreparar}
         />

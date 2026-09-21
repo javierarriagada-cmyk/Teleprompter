@@ -300,6 +300,73 @@ public class CamaraNativaPlugin extends Plugin {
         call.resolve(ret);
     }
 
+    @PluginMethod
+    public void espacioLibre(PluginCall call) {
+        try {
+            File dir = dirGrabaciones();
+            android.os.StatFs stat = new android.os.StatFs(dir.getAbsolutePath());
+            long bytesLibres = stat.getAvailableBytes();
+            JSObject ret = new JSObject();
+            ret.put("bytesLibres", bytesLibres);
+            call.resolve(ret);
+        } catch (Exception e) {
+            call.reject("espacioLibre: " + e.getMessage(), e);
+        }
+    }
+
+    @PluginMethod
+    public void guardarEnGaleria(PluginCall call) {
+        String ruta = call.getString("ruta");
+        if (ruta == null || ruta.isEmpty()) {
+            call.reject("ruta requerida");
+            return;
+        }
+        File origen = archivoDe(ruta);
+        if (!origen.exists()) {
+            call.reject("El archivo no existe: " + ruta);
+            return;
+        }
+
+        new Thread(() -> {
+            try {
+                android.content.ContentResolver resolver = getContext().getContentResolver();
+                android.content.ContentValues values = new android.content.ContentValues();
+                String nombre = origen.getName();
+                values.put(android.provider.MediaStore.Video.Media.DISPLAY_NAME, nombre);
+                values.put(android.provider.MediaStore.Video.Media.MIME_TYPE, "video/mp4");
+                values.put(android.provider.MediaStore.Video.Media.RELATIVE_PATH, android.os.Environment.DIRECTORY_MOVIES + "/Sigo");
+                values.put(android.provider.MediaStore.Video.Media.IS_PENDING, 1);
+
+                android.net.Uri collection = android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                android.net.Uri itemUri = resolver.insert(collection, values);
+                if (itemUri == null) {
+                    call.reject("Error al crear registro en MediaStore");
+                    return;
+                }
+
+                try (java.io.InputStream is = new java.io.FileInputStream(origen);
+                     java.io.OutputStream os = resolver.openOutputStream(itemUri)) {
+                    byte[] buffer = new byte[64 * 1024];
+                    int bytesRead;
+                    while ((bytesRead = is.read(buffer)) != -1) {
+                        os.write(buffer, 0, bytesRead);
+                    }
+                }
+
+                values.clear();
+                values.put(android.provider.MediaStore.Video.Media.IS_PENDING, 0);
+                resolver.update(itemUri, values, null, null);
+
+                JSObject ret = new JSObject();
+                ret.put("ok", true);
+                ret.put("uri", itemUri.toString());
+                call.resolve(ret);
+            } catch (Exception e) {
+                call.reject("Error al guardar en galería: " + e.getMessage(), e);
+            }
+        }).start();
+    }
+
     // SIN FILTRO DE EDAD, a proposito. Quien decide cual es el archivo de
     // una toma es emparejarMp4PorTiempo, contra la ventana del sidecar, y
     // eso es preciso: el nombre que pone Capgo lleva la marca de arranque

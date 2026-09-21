@@ -29,6 +29,10 @@ interface PrepararViewProps {
   setRecuadroX?: (x: number) => void
   recuadroY?: number
   setRecuadroY?: (y: number) => void
+  calidadVideo?: string
+  setCalidadVideo?: (q: string) => void
+  calidadesSoportadas?: string[]
+  minutosDisponibles?: number | null
   onVolver: () => void
   onEmpezar: () => void
 }
@@ -67,6 +71,10 @@ export default function PrepararView({
   setRecuadroX,
   recuadroY = 0.52,
   setRecuadroY,
+  calidadVideo = '1080p',
+  setCalidadVideo,
+  calidadesSoportadas = ['1080p', '720p', '480p'],
+  minutosDisponibles,
   onVolver,
   onEmpezar
 }: PrepararViewProps) {
@@ -435,6 +443,57 @@ export default function PrepararView({
               ))}
             </div>
           </div>
+
+          {/* CALIDAD Y MINUTOS */}
+          {calidadesSoportadas && calidadesSoportadas.length > 0 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-1)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)' }}>
+                <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                  Calidad:
+                </span>
+                <div style={{ display: 'flex', gap: 'var(--aire-1)' }}>
+                  {calidadesSoportadas.map((q) => (
+                    <button
+                      key={q}
+                      type="button"
+                      data-testid={`btn-calidad-${q}`}
+                      className="btn-deformable"
+                      onClick={() => {
+                        hapticaSeleccion()
+                        setCalidadVideo?.(q)
+                      }}
+                      style={{
+                        padding: 'var(--aire-1) var(--aire-2)',
+                        fontSize: 'var(--texto-meta)',
+                        borderRadius: 'var(--redondeo-pildora)',
+                        border: '1px solid var(--color-borde)',
+                        backgroundColor: calidadVideo === q ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                        color: calidadVideo === q ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                        fontWeight: calidadVideo === q ? 'bold' : 'normal',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {typeof minutosDisponibles === 'number' && (
+                <div
+                  data-testid="linea-minutos-disponibles"
+                  style={{
+                    fontSize: 'var(--texto-meta)',
+                    color: minutosDisponibles < 2 ? '#FF5A5A' : 'var(--color-apagado)',
+                    fontWeight: minutosDisponibles < 2 ? 700 : 400
+                  }}
+                >
+                  {minutosDisponibles >= 2
+                    ? `Te alcanzan unos ${Math.floor(minutosDisponibles)} minutos`
+                    : 'Quedan menos de 2 minutos de espacio'}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {fondoToma === 'oculta' && (

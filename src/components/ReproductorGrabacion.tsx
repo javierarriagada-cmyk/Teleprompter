@@ -1,12 +1,33 @@
 import React from 'react'
 import { ResumenGrabacion } from '../datos/modelo'
 import { srcDeRuta, formatearDuracionMs } from './TiraGrabaciones'
+import { guardarEnGaleria } from '../lib/archivosNativos'
 
 export default function ReproductorGrabacion({ grabacion, onCerrar, onBorrar }: { grabacion: ResumenGrabacion; onCerrar: () => void; onBorrar: (id: string) => void }) {
   // Misma regla que en la tira: borrar pregunta una vez. Ver el comentario de
   // TiraGrabaciones. Aca no hace falta el temporizador porque al cerrar el
   // reproductor se desmonta todo.
   const [confirmando, setConfirmando] = React.useState(false)
+  const [guardando, setGuardando] = React.useState(false)
+  const [mensajeGuardado, setMensajeGuardado] = React.useState<string | null>(null)
+
+  const handleGuardar = async () => {
+    if (guardando) return
+    setGuardando(true)
+    setMensajeGuardado(null)
+    try {
+      const res = await guardarEnGaleria(grabacion.ruta)
+      if (res && res.ok) {
+        setMensajeGuardado('Guardado en galería')
+      } else {
+        setMensajeGuardado('No se pudo guardar en galería')
+      }
+    } catch (e: any) {
+      setMensajeGuardado(e?.message || String(e))
+    } finally {
+      setGuardando(false)
+    }
+  }
   return (
     <div data-testid="reproductor-grabacion" onClick={onCerrar} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.72)', zIndex: 400, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'var(--aire-4)' }}>
       <div onClick={(e) => e.stopPropagation()} style={{ width: 'min(720px, 100%)', background: 'var(--bg-superficie)', color: 'var(--color-texto)', borderRadius: 'var(--redondeo)', border: '1px solid var(--color-borde)', overflow: 'hidden' }}>
@@ -20,8 +41,34 @@ export default function ReproductorGrabacion({ grabacion, onCerrar, onBorrar }: 
               {grabacion.errorMudo ? ' · el motor oyo y el archivo no tiene sonido' : ''}
               {grabacion.avisoMudo ? ' · no se oye audio en este archivo' : ''}
             </div>
+            {mensajeGuardado && (
+              <div
+                data-testid="mensaje-guardado-galeria"
+                style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-acento)', marginTop: 'var(--aire-1)' }}
+              >
+                {mensajeGuardado}
+              </div>
+            )}
           </div>
           <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
+            <button
+              type="button"
+              data-testid="guardar-galeria-desde-reproductor"
+              disabled={guardando}
+              onClick={handleGuardar}
+              style={{
+                background: 'var(--bg-suelo)',
+                border: '1px solid var(--color-borde)',
+                color: 'var(--color-texto)',
+                fontWeight: 600,
+                borderRadius: 'var(--redondeo)',
+                padding: 'var(--aire-2) var(--aire-3)',
+                cursor: guardando ? 'default' : 'pointer',
+                opacity: guardando ? 0.7 : 1
+              }}
+            >
+              {guardando ? 'Guardando...' : 'Guardar en galería'}
+            </button>
             <button
               type="button"
               data-testid="borrar-desde-reproductor"

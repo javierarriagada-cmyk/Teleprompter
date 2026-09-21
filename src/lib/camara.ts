@@ -18,6 +18,8 @@ export interface CamaraNativaPlugin {
   }>
   extraerMiniatura(options: { ruta: string; destino: string; atMs?: number }): Promise<{ ruta: string }>
   buscarMp4Recientes(): Promise<{ rutas: string[] }>
+  espacioLibre(): Promise<{ bytesLibres: number }>
+  guardarEnGaleria(options: { ruta: string }): Promise<{ ok: boolean; uri?: string }>
 }
 
 // Un solo registerPlugin. PruebaCamaraNativaView importa este mismo
@@ -177,6 +179,53 @@ export async function encenderCamara(
     console.error('[Camara] Error al encender cámara nativa:', err)
     estaEncendida = false
     return null
+  }
+}
+
+// SEIS FICHAS QUE SON TRES COSAS. El plugin devuelve las dos familias de
+// nombres que usa CameraX: las resoluciones -480p, 720p, 1080p, 2160p- y las
+// relativas -low, medium, high-, que son la MISMA escala nombrada dos veces.
+// Javier lo vio en el telefono el 21 de septiembre de 2026: "en vez de 3
+// aparecen seis opciones que no son seis opciones".
+//
+// Se queda con las resoluciones, que son las que dicen algo: "720p" es un dato,
+// "medium" es una opinion. Si el telefono SOLO reporta las relativas, se
+// quedan esas, porque algo hay que ofrecer.
+//
+// Y 4K queda fuera aunque el telefono lo soporte: con el motor de voz y el
+// WebView encima termina en throttle termico y se pierden cuadros del
+// seguimiento, que es lo unico que nos diferencia.
+export const CALIDADES_POR_RESOLUCION = ['1080p', '720p', '480p']
+
+export function normalizarCalidades(qualities: string[]): string[] {
+  const sinCuatroK = qualities.filter((q) => q !== '2160p' && q !== '4:3')
+  const porResolucion = CALIDADES_POR_RESOLUCION.filter((q) => sinCuatroK.includes(q))
+  if (porResolucion.length > 0) return porResolucion
+  return ['high', 'medium', 'low'].filter((q) => sinCuatroK.includes(q))
+}
+
+export async function obtenerCalidadesSoportadas(): Promise<string[]> {
+  try {
+    if (typeof (CameraPreview as any).getSupportedVideoQualities === 'function') {
+      const res = await (CameraPreview as any).getSupportedVideoQualities()
+      if (res && Array.isArray(res.qualities)) {
+        const filtradas = normalizarCalidades(res.qualities)
+        if (filtradas.length > 0) return filtradas
+      }
+    }
+  } catch (e) {
+    console.warn('[Camara] Error al obtener calidades soportadas:', e)
+  }
+  return ['1080p', '720p', '480p']
+}
+
+export async function fijarCalidadVideo(calidad: string): Promise<void> {
+  try {
+    if (typeof (CameraPreview as any).setVideoQuality === 'function') {
+      await (CameraPreview as any).setVideoQuality({ quality: calidad })
+    }
+  } catch (e) {
+    console.warn('[Camara] Error al fijar calidad de video:', e)
   }
 }
 

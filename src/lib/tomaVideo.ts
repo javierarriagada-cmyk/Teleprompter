@@ -73,6 +73,7 @@ export async function iniciarTomaVideo(opts: {
   id: string
   guionId?: string
   tituloGuion: string
+  calidad?: string
 }): Promise<boolean> {
   if (sesion) return true
   if (!Capacitor.isNativePlatform()) return false
@@ -92,7 +93,8 @@ export async function iniciarTomaVideo(opts: {
     id: opts.id,
     guionId: opts.guionId,
     tituloGuion: opts.tituloGuion,
-    rutaPart
+    rutaPart,
+    calidad: opts.calidad
   })
 
   const s: SesionToma = { sidecar, dir, rutaSidecar, heartbeat: null }
@@ -193,7 +195,8 @@ export async function cortarTomaVideo(opts?: {
     tieneAudio: analisis.tienePistaAudio === true && !veredicto.mudo,
     incompleta,
     avisoMudo: veredicto.aviso || undefined,
-    errorMudo: veredicto.errorDuro || undefined
+    errorMudo: veredicto.errorDuro || undefined,
+    calidad: s.sidecar.calidad
   })
 
   sesion = null
@@ -340,7 +343,8 @@ export async function recuperarTomasPendientes(
       tieneAudio: analisis.tienePistaAudio === true && !veredicto.mudo,
       incompleta,
       avisoMudo: veredicto.aviso || undefined,
-      errorMudo: veredicto.errorDuro || undefined
+      errorMudo: veredicto.errorDuro || undefined,
+      calidad: s.calidad
     })
     await repo.guardar(resumen)
     porId.set(resumen.id, resumen)
