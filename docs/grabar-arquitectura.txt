@@ -599,3 +599,75 @@ de que el audio no llego -mirar la pista del archivo, o el nivel- y decirlo,
 en vez de entregar un video mudo. Y si no llega, ahi si corresponde abrir el
 microfono nosotros y meter la pista al mp4, que es el plan que queda de
 reserva y no se descarta: queda escrito por si hace falta.
+
+
+===============================================================================
+13. MATERIAL PARA LAS TAREAS 64, 65 Y 66
+===============================================================================
+
+Recomendaciones de un asesor externo que Javier trajo el 21 de septiembre de
+2026, filtradas por lo que ya esta medido. NO son encargos: son insumos para
+cuando le toque a cada tarea.
+
+64 - GRABAR
+
+  QUE EL ARCHIVO SOBREVIVA. La ruta que devuelve stopRecordVideo no alcanza si
+  el proceso muere a mitad. El patron que usan las camaras serias:
+
+      se escribe en {id}.mp4.part
+      al lado, un {id}.json que se va actualizando: bytes, milisegundos,
+        si tiene pista de audio, de que guion salio
+      al terminar limpio, se renombra a .mp4 y se marca listo
+      al arrancar la aplicacion, si hay un .part con mas de dos segundos
+        grabados, se promueve o se marca incompleta. NUNCA se borra en silencio
+
+  CameraX tiene asPersistentRecording(), que evita que la grabacion se corte al
+  reacomodar la vista previa -por ejemplo al mover el recuadro-. No salva la
+  muerte del proceso; para eso esta el .part.
+
+  DARSE CUENTA DEL MUDO, con tres senales y no una:
+      el contenedor: ¿hay pista de audio? -MediaExtractor-
+      el nivel: amplitud durante la toma, o RMS de los primeros segundos
+      el cruce: si el motor reconocio frases y el archivo no tiene pista, es
+        error duro y no se ofrece como listo
+  Silencio de estudio -el motor tampoco oyo nada- NO es falla de tuberia: ahi
+  va un aviso, no un bloqueo.
+
+  LA SENAL DE GRABANDO ES EL PUNTO ROJO QUE YA EXISTE. No un boton nuevo que
+  compita con Leer. Y la grabacion empieza DESPUES de la cuenta regresiva, no
+  en preparar, o las primeras palabras quedan en el archivo con la cara quieta.
+
+65 - CALIDAD, ESPACIO, EXPORTAR
+
+  Preguntarle al telefono con getSupportedVideoQualities en vez de adivinar.
+  1080p como tope, 4K fuera: en varios equipos 4K con el motor y el WebView
+  encima termina en throttle termico y se pierden cuadros.
+
+  Con un bitrate nuestro fijo se puede decir cuanto alcanza:
+
+      minutos = (libre - reserva de 300 MB) / (bitrate / 8)
+
+  midiendo lo libre con StatFs sobre el directorio de grabaciones.
+
+  Exportar es copiar a MediaStore.Video -Movies/Sigo-, con IS_PENDING hasta que
+  termine. Mientras la 65 no exista, el archivo vive solo en el sandbox.
+
+  LA MINIATURA se saca de un cuadro al segundo 1 con MediaMetadataRetriever, y
+  se guarda al lado del mp4. La necesita la 66, asi que conviene sacarla al
+  cerrar la grabacion en la 64.
+
+66 - LAS GRABACIONES EN LA BIBLIOTECA
+
+  modelo.ts hoy NO tiene ningun tipo de grabacion. Hay que crearlo antes de que
+  la 66 empiece, o las miniaturas terminan metidas en IndexedDB:
+
+      ResumenGrabacion { id, guionId?, tituloGuion, creado, duracionMs, bytes,
+                         ruta, rutaMiniatura, tieneAudio, incompleta }
+
+  El mp4 vive en disco; en IndexedDB va SOLO el indice. Y en un almacen aparte,
+  sin inflar ResumenGuion.
+
+  El lugar lo acerto PromptSmart: la misma pantalla de inicio, debajo de los
+  guiones, como una tira con miniatura, duracion y fecha. No una pestana. Una
+  grabacion incompleta se muestra marcada y no se exporta hasta que el usuario
+  decida.

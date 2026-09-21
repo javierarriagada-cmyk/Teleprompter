@@ -1,0 +1,53 @@
+TAREA 63 - CORRECCION
+
+Dos agregados al encargo. El primero es el que importa.
+
+
+1. UN SOLO DUENO DE LA CAMARA. getUserMedia SE VA.
+
+Cuando el plugin abre la camara, el navegador NO puede tener la suya abierta.
+Son dos clientes del mismo aparato y el resultado no es un error claro: es que
+a veces anda y a veces no, segun cual llegue primero.
+
+Asi que en esta tarea getUserMedia SE BORRA, no se deja al lado:
+
+    - fuera el <video> de preparar la toma y el de la lectura
+    - fuera el MediaStream de produccion y todo lo que lo pasea por props
+    - fuera la llamada a navigator.mediaDevices.getUserMedia de src/lib/camara.ts
+
+src/lib/camara.ts queda como la UNICA puerta a la camara, con los mismos
+nombres de siempre -encenderCamara, apagarCamara, camaraEncendida, ladoActual-
+pero hablando con el plugin por dentro. Si queda una funcion vieja dando vueltas,
+alguien la va a importar "por si acaso" y volvemos a tener dos duenos.
+
+La UNICA camara por navegador que sigue viva es la de la pantalla de prueba, que
+es andamio y se saca despues.
+
+
+2. DESPUES DE ARRANCAR, FIJAR LA SUPERFICIE DE SISTEMA
+
+La pantalla de prueba, al arrancar la vista previa, llama a
+CamaraNativa.fijarModoSuperficie({ modo: 'sistema' }). Hace lo mismo en la toma,
+justo despues de start.
+
+Es el plugin nuestro de la tarea 61. No sabemos con certeza si es
+imprescindible -cuando por fin se vio la imagen estaban puestas a la vez la
+superficie de sistema Y las cinco capas transparentadas, asi que no quedo
+separado cual de las dos cosas la destapo-, pero es barato y es lo que estaba
+puesto cuando funciono. No lo saques.
+
+
+LO QUE NO CAMBIA, Y LO REPITO PORQUE ES DONDE MAS FACIL SE EQUIVOCA UNO
+
+La sesion se arranca con disableAudio en FALSE. Esta medido en este telefono el
+21 de septiembre de 2026: grabando CON audio y con el motor de voz encendido,
+las dos cosas ocurren a la vez -el motor transcribio lo leido y el archivo
+quedo con voz-. Y esta medido lo contrario: si la sesion arranca sin audio, el
+archivo sale MUDO y sin ningun error.
+
+No cambies eso. Y no toques nada del audio ni del microfono, como ya decia el
+encargo.
+
+LA PANTALLA DE PRUEBA NO SE BORRA EN ESTA TAREA. Entre esta y la de grabar hay
+una medicion mas -una toma larga, de verdad, no de diez segundos- y se hace con
+esos botones. Se saca cuando la grabacion este hecha.
