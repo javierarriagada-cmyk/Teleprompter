@@ -12,6 +12,7 @@ import { bloquearRecargaAutomatica } from './lib/actualizacion'
 import { iniciarGrabacion, detenerGrabacion } from './lib/grabadorCorpus'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
+import PrepararView from './components/PrepararView'
 import CuentaRegresiva from './components/CuentaRegresiva'
 import { Entrada } from './components/Entrada'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
@@ -32,7 +33,7 @@ interface AppProps {
   repoOverride?: RepositorioGuiones
 }
 
-type Vista = 'biblioteca' | 'editor' | 'lectura'
+type Vista = 'biblioteca' | 'editor' | 'preparar' | 'lectura'
 
 const GUION_VACIO: Guion = {
   id: 'vacio',
@@ -129,7 +130,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   const getNivelVista = (v: Vista): number => {
     if (v === 'biblioteca') return 1
     if (v === 'editor') return 2
-    return 3
+    if (v === 'preparar') return 3
+    return 4
   }
 
   useEffect(() => {
@@ -666,28 +668,31 @@ export default function App({ motor, repoOverride }: AppProps) {
   }, [cancelarCuentaRegresiva])
 
   useEffect(() => {
-    if (vista !== 'lectura') {
+    const vistaUsaCamara = vista === 'preparar' || vista === 'lectura'
+    if (!vistaUsaCamara) {
       cancelarCuentaRegresiva()
       if (camaraActiva || streamCamara) {
         apagarCamara()
         setStreamCamara(null)
         setCamaraActiva(false)
       }
-    } else if (vista === 'lectura' && modoCamara !== 'apagada' && !camaraActiva) {
-      encenderCamara(modoCamara).then((st) => {
-        if (st) {
-          setStreamCamara(st)
-          setCamaraActiva(true)
-        } else {
-          setStreamCamara(null)
-          setCamaraActiva(false)
-        }
-      })
+    } else if (modoCamara !== 'apagada') {
+      if (!camaraActiva || (streamCamara && modoCamara !== (camaraActiva ? undefined : null))) {
+        encenderCamara(modoCamara).then((st) => {
+          if (st) {
+            setStreamCamara(st)
+            setCamaraActiva(true)
+          } else {
+            setStreamCamara(null)
+            setCamaraActiva(false)
+          }
+        })
+      }
     }
-  }, [vista, cancelarCuentaRegresiva, camaraActiva, streamCamara, modoCamara])
+  }, [vista, cancelarCuentaRegresiva, modoCamara])
 
   useEffect(() => {
-    if (camaraActiva && vista === 'lectura') {
+    if (camaraActiva && (vista === 'lectura' || vista === 'preparar')) {
       document.body.style.backgroundColor = 'transparent'
       document.documentElement.style.backgroundColor = 'transparent'
     } else {
@@ -839,9 +844,24 @@ export default function App({ motor, repoOverride }: AppProps) {
     origenLecturaRef.current = origen
     setRectTarjeta(rect || null)
     hapticaToqueMedio()
+    if (modoCamara === 'apagada') {
+      setVista('lectura')
+      setControlesVisibles(false)
+      await handleStart()
+    } else {
+      setVista('preparar')
+    }
+  }
+
+  async function handleEmpezarDesdePreparar() {
+    hapticaToqueMedio()
     setVista('lectura')
     setControlesVisibles(false)
     await handleStart()
+  }
+
+  function handleVolverDesdePreparar() {
+    setVista(origenLecturaRef.current)
   }
 
   async function handleLeerDirecto(id: string, rect?: DOMRect) {
@@ -924,6 +944,10 @@ export default function App({ motor, repoOverride }: AppProps) {
       // 2. Durante la lectura, hacer exactamente lo mismo que "Salir": handleStop y volver al origen
       if (vista === 'lectura') {
         await handleStop()
+        setVista(origenLecturaRef.current)
+        return
+      }
+      if (vista === 'preparar') {
         setVista(origenLecturaRef.current)
         return
       }
@@ -1061,7 +1085,7 @@ export default function App({ motor, repoOverride }: AppProps) {
         //
         // Aparecio revisando la tarea 55: el boton "Aa" paso de serif a sans y seguia
         // sin ser el nuestro. La familia se define en un solo sitio, el body.
-        maxWidth: vista === 'lectura' ? 'none' : 1200,
+        maxWidth: (vista === 'lectura' || vista === 'preparar') ? 'none' : 1200,
         margin: '0 auto'
       }}
     >
@@ -1081,7 +1105,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             marginBottom: 'var(--aire-4)',
             fontSize: 'var(--texto-meta)',
             border: '1px solid var(--color-borde)',
-            display: (camaraActiva && vista === 'lectura') ? 'none' : 'flex',
+            display: (camaraActiva && (vista === 'lectura' || vista === 'preparar')) ? 'none' : 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
           }}
@@ -1119,7 +1143,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             marginBottom: 'var(--aire-4)',
             fontSize: 'var(--texto-meta)',
             border: '1px solid var(--color-borde)',
-            display: (camaraActiva && vista === 'lectura') ? 'none' : 'block'
+            display: (camaraActiva && (vista === 'lectura' || vista === 'preparar')) ? 'none' : 'block'
           }}
         >
           <strong>Franja de Estado:</strong>
@@ -1152,7 +1176,7 @@ export default function App({ motor, repoOverride }: AppProps) {
         </div>
       )}
 
-      {(vista === 'biblioteca' || (vista === 'lectura' && origenLecturaRef.current === 'biblioteca')) && (
+      {(vista === 'biblioteca' || ((vista === 'lectura' || vista === 'preparar') && origenLecturaRef.current === 'biblioteca')) && (
         <Pantalla direccion={direccion}>
           <BibliotecaView
             guiones={guionesResumen.filter((g) => !idsPendientesBorrado.includes(g.id))}
@@ -1181,13 +1205,34 @@ export default function App({ motor, repoOverride }: AppProps) {
               // La biblioteca se oscurece MIENTRAS crece la ventana, no de golpe: un
               // apagon instantaneo se lee como un corte, que es justo lo que la
               // transformacion existe para evitar.
-              filter: vista === 'lectura' ? 'brightness(0.15)' : 'none',
-              display: (camaraActiva && vista === 'lectura') ? 'none' : undefined,
+              filter: (vista === 'lectura' || vista === 'preparar') ? 'brightness(0.15)' : 'none',
+              display: (camaraActiva && (vista === 'lectura' || vista === 'preparar')) ? 'none' : undefined,
               transition: movimientoApagado() ? 'none' : `filter ${MS_PANTALLA}ms ${CURVA_ENTRA}`,
-              pointerEvents: vista === 'lectura' ? 'none' : 'auto'
+              pointerEvents: (vista === 'lectura' || vista === 'preparar') ? 'none' : 'auto'
             }}
           />
         </Pantalla>
+      )}
+
+      {vista === 'preparar' && guionActual && (
+        <PrepararView
+          script={guionActual}
+          fontSize={fontSize}
+          marginPercent={marginPercent}
+          mirror={mirror}
+          lineasZona={lineasZona}
+          anclajeZona={anclajeZona}
+          setAnclajeZona={setAnclajeZona}
+          columnaAngosta={columnaAngosta}
+          colorFondo={colorFondo}
+          colorLetra={colorLetra}
+          tipoFuente={tipoFuente}
+          modoCamara={modoCamara === 'trasera' ? 'trasera' : 'frontal'}
+          setModoCamara={(m) => setModoCamara(m)}
+          streamCamara={streamCamara}
+          onVolver={handleVolverDesdePreparar}
+          onEmpezar={handleEmpezarDesdePreparar}
+        />
       )}
 
       {vista === 'editor' && guionActual && (

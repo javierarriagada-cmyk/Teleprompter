@@ -187,7 +187,10 @@ export default function TeleprompterView({
   useEffect(() => {
     if (videoRef.current && streamCamara) {
       videoRef.current.srcObject = streamCamara
-      videoRef.current.play().catch(() => {})
+      const res = videoRef.current.play()
+      if (res && typeof res.catch === 'function') {
+        res.catch(() => {})
+      }
     }
   }, [streamCamara])
 
