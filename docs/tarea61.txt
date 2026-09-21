@@ -1,0 +1,100 @@
+TAREA 61 - LA VISTA PREVIA COMO SUPERFICIE DE SISTEMA
+
+Rama: tarea61-superficie-de-sistema
+
+Sigue directo de la tarea 60, que ya esta en el telefono y funciona. Esta tarea
+cambia UNA cosa de como se dibuja la vista previa y no toca nada mas.
+
+
+LO QUE SE MIDIO CON LA TAREA 60
+
+En la pantalla de prueba, sin nada de la aplicacion encima, con y sin el
+backgroundColor de capacitor.config.ts:
+
+    toBack = TRUE     pantalla negra. Dos capturas separadas por un segundo
+                      salen IDENTICAS byte a byte: no hay cuadros.
+    toBack = FALSE    la imagen a pantalla completa, perfecta. Dos capturas
+                      salen distintas.
+
+Mismo aparato, misma pantalla, misma sesion de camara, un boton de diferencia.
+Osea que la camara, el permiso y el plugin estan bien. Lo unico que no ocurre es
+el compuesto por debajo del WebView.
+
+
+LA CAUSA, ENCONTRADA EN EL CODIGO DEL PLUGIN
+
+En node_modules/@capgo/camera-preview/android/src/main/java/app/capgo/
+capacitor/camera/preview/CameraXView.java, alrededor de la linea 851:
+
+    private PreviewView.ImplementationMode choosePreviewImplementationMode() {
+        return PreviewView.ImplementationMode.COMPATIBLE;
+    }
+
+COMPATIBLE es el modo TEXTURA: PreviewView dibuja en un TextureView, que es una
+textura adentro del arbol de vistas. Esa es justamente la forma que NO se
+compone por debajo de una ventana.
+
+PreviewView tiene el otro modo, PERFORMANCE, que usa una SurfaceView: el
+sistema la compone POR FUERA del arbol de vistas, y es la manera clasica de
+poner video debajo de una capa transparente.
+
+El plugin lo tiene fijo en COMPATIBLE y no lo deja elegir desde JavaScript.
+
+
+QUE HAY QUE HACER
+
+Hacer que la vista previa use la superficie de sistema, y comprobarlo en la
+misma pantalla de prueba de la tarea 60.
+
+Como no se puede editar node_modules, se hace desde NUESTRO lado nativo, en
+android/app/src/main/java/com/teleprompter/app/, donde ya viven nuestros
+plugins:
+
+  1. Un metodo nuevo, llamable desde la pantalla de prueba, que recorra el
+     arbol de vistas de la actividad desde android.R.id.content, encuentre la
+     instancia de androidx.camera.view.PreviewView y le ponga
+     ImplementationMode.PERFORMANCE.
+
+  2. Si al cambiarlo con la camara ya andando no toma efecto, hay que hacerlo
+     ANTES de que empiece a llegar el flujo: entonces el orden es arrancar la
+     vista previa, cambiar el modo, y volver a arrancarla. Decidilo vos segun
+     lo que veas; lo que importa es que quede en PERFORMANCE con toBack en true.
+
+  3. Si ademas hace falta tocar el orden de la superficie, que sea POR DEBAJO
+     de la ventana: NADA de setZOrderOnTop y NADA de setZOrderMediaOverlay en
+     true. Si hay que llamar a algo, es setZOrderMediaOverlay(false).
+
+  4. En la pantalla de prueba de la tarea 60, un tercer boton:
+
+         "Superficie: TEXTURA / SISTEMA"
+
+     que cambie entre los dos modos sin salir de la pantalla, igual que el
+     boton de toBack. Con esos dos botones se pueden ver las cuatro
+     combinaciones, que es lo que hace falta.
+
+  5. En el resumen deci que tuviste que hacer para que el modo tomara efecto, y
+     si el plugin se resiste de alguna manera.
+
+
+LO QUE NO SE TOCA
+
+NO toques ninguna pantalla de la aplicacion: ni la biblioteca, ni el editor, ni
+preparar la toma, ni la lectura. La camara por getUserMedia que usa hoy la
+aplicacion sigue funcionando exactamente igual.
+
+NO edites node_modules: se borra en cada instalacion. Lo que se necesite va en
+nuestro codigo nativo.
+
+NO agregues grabacion. Esta tarea es solo ver la imagen.
+
+NO agregues pruebas: esto no se comprueba en jsdom. Lo mido yo en el telefono.
+
+
+COMO SE SABE SI SALIO BIEN
+
+Lo mido yo, con toBack en TRUE y la superficie en SISTEMA: dos capturas
+separadas por un segundo. Si salen distintas, hay imagen y el camino nativo
+queda abierto. Si salen identicas byte a byte, este plugin no sirve y vamos al
+otro.
+
+Tu parte esta terminada cuando el boton existe y cambia el modo de verdad.
