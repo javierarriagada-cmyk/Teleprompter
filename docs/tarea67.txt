@@ -1,0 +1,138 @@
+TAREA 67 - LA TERCERA PUERTA Y EL GESTO, EN TODAS PARTES
+
+Repositorio: github.com/javierarriagada-cmyk/Teleprompter
+Partir de: la rama tarea-66-coherencia, en 4bd75d4
+Entregar: commits en esa misma rama. NUNCA escribir en main.
+
+Es el segundo tramo de la 66, el que vos mismo separaste: "Ajustes en tres
+familias y el gesto de borrar van despues, para no mezclar un fallo de camara
+con un fallo de menu". El primero ya esta medido en el telefono.
+
+Esta tarea es SOLO el gesto y la tercera puerta. Los ajustes en tres familias
+van en la 68, aparte, por el mismo motivo por el que separamos esto.
+
+
+LO PRIMERO, Y TE AHORRA LA MITAD DEL TRABAJO
+
+MANTENER APRETADO YA ESTA CONSTRUIDO EN LOS GUIONES. No lo escribas de nuevo.
+
+    src/components/BibliotecaView.tsx:123  handlePointerDown
+    src/components/BibliotecaView.tsx:137  a los 500 ms -> fueLongPressRef = true
+                                          y setMenuId(g.id)
+    src/components/BibliotecaView.tsx:324  el menu que aparece:
+                                          Archivar | Eliminar | Cerrar
+
+Funciona. Javier no se equivoco de gesto cuando lo intento: uso el que su
+propia aplicacion tiene. Lo que fallo es que la TIRA DE GRABACIONES no lo
+tiene, e invento un boton gris de doce pixeles que dice "Borrar".
+
+Asi que esta tarea no es "agregar el gesto". Es LLEVAR EL QUE YA HAY al lugar
+que no lo tiene, y dejarlo idéntico.
+
+
+1. LA TIRA DE GRABACIONES APRENDE EL GESTO
+
+src/components/TiraGrabaciones.tsx, hoy:
+
+    linea 48   MS_PARA_ARREPENTIRSE = 4000
+    linea 87   un boton que al primer toque dice "Borrar", al segundo
+               "¿Seguro?", y borra
+    linea 108  ese texto
+
+SE VA ESE BOTON. En su lugar, mantener apretada LA TOMA abre el mismo menu que
+abre mantener apretado un guion. Con dos diferencias que salen del objeto, no
+del capricho:
+
+    - una toma no se archiva. El menu de la toma lleva Eliminar y Cerrar.
+    - lo demas es igual: los mismos 500 ms, la misma haptica, el mismo aspecto.
+
+EL BORRADO SIGUE PREGUNTANDO UNA VEZ. Hoy lo hace con "¿Seguro?" en el mismo
+boton; ahora lo hace el menu. Lo que NO puede pasar es que una toma se borre de
+un solo toque: son megabytes de video que no vuelven.
+
+EXTRAE EL GESTO A UN SOLO LUGAR. Hoy vive dentro de BibliotecaView. Si lo
+copias y pegas en la tira, dentro de dos tareas se van a haber separado, que es
+exactamente la enfermedad que la 66 vino a curar. Sacalo a un hook o a un
+componente -vos elegis cual- y que las dos lo usen. Los 500 ms se escriben UNA
+vez.
+
+NO LE PONGAS DESLIZAR A LA TIRA. La fila de guion tambien borra deslizando 88
+px a la izquierda -BibliotecaView.tsx:207-. En la tira NO va, y el motivo es
+del objeto: la tira se desplaza en horizontal, y el gesto de borrar chocaria
+con el de recorrerla. Mantener apretado no choca con nada.
+
+
+2. LA TERCERA PUERTA
+
+src/components/TarjetaLectura.tsx:221 es el boton ▶ Leer de la portada. Hoy es
+un onClick y nada mas.
+
+    un toque                -> Leer, como siempre
+    mantenerlo apretado     -> entra DIRECTO a grabar
+
+"Directo" es literal: NAVEGA. No conmuta el boton, no abre un menu, no muestra
+opciones. Cae en el mismo lienzo en estado LISTO con la camara encendida,
+igual que ● Grabar del editor. En App ya existe el camino:
+handleEntrarLectura(origen, rect, conCamara).
+
+DONDE ESTA EL PELIGRO, Y ES POR ESTO QUE LO SEPARAMOS:
+
+    mantener apretado el BOTON ▶ Leer       -> entrar a grabar
+    mantener apretada una FILA de guion     -> menu (borrar)
+    mantener apretada una TOMA              -> menu (borrar)
+    el cuerpo de la tarjeta                 -> no hace nada nuevo
+
+Son tres elementos distintos. El boton esta DENTRO de la tarjeta, asi que el
+evento del boton tiene que parar ahi y no subir. Si Javier mantiene apretado
+para grabar y se le borra un guion, perdimos.
+
+El titulo de la tarjeta ya tiene handlers propios -onDiagTouchEnd, onDiagClick,
+TarjetaLectura.tsx:200-. No los toques ni los uses de modelo.
+
+
+3. QUE NO SE TOCA, Y ES CONTRATO
+
+NO toques nada del lienzo de la toma ni de las dos puertas del editor. Eso se
+midio en el telefono y esta bien.
+
+NO toques el motor de voz ni el microfono: src/motor/, src/lib/seguidor.ts,
+src/lib/avance.ts, src/lib/conduccion.ts, VoskNativoPlugin.java.
+
+NO toques la tuberia de grabacion: sidecar, recuperacion, emparejado por marca
+de tiempo, detector de mudo, miniatura, indice.
+
+NO metas haptica dentro de TeleprompterView. T207 lo prohibe y lo acabamos de
+arreglar. La haptica la dispara el que MANDA la accion, no el que la dibuja.
+
+NO borres comentarios. Si el codigo cambia, se actualiza su comentario; si el
+codigo desaparece de verdad, su comentario se va con el; todo lo demas queda.
+En este proyecto los comentarios llevan las mediciones y ninguna prueba los
+protege. Yo los cuento en cada parche.
+
+NO escribas en main.
+
+
+4. COMO SE COMPRUEBA
+
+Agrega estas tres, que son las que protegen lo que esta tarea hace:
+
+    - mantener apretada una toma abre el menu, y un solo toque NO la borra
+    - mantener apretado el ▶ Leer de la portada entra al lienzo con camara
+      -data-con-camara="si"-, y un toque normal entra sin camara
+    - el gesto vive en UN solo lugar: guiones y tomas usan el mismo modulo
+
+La tercera es la que importa a largo plazo. Escribila de manera que falle si
+alguien vuelve a copiar los 500 ms en un segundo archivo.
+
+Las que existen hoy sobre el boton "Borrar" de la tira se van a romper.
+Adaptalas al gesto nuevo, NO agregandole al codigo cosas que las hagan pasar.
+
+Y corre vitest antes de mandar. Pegame el numero que te da. Si el tuyo y el mio
+no coinciden lo sabemos en un mensaje y no en tres.
+
+
+5. COMO LO MANDAS
+
+Parche de texto, pedazos numerados 1..n del MISMO diff, generado con git diff
+de verdad contra 4bd75d4. Tu conector trunca App.tsx, TeleprompterView.tsx y
+EditorView.tsx, asi que no intentes subirlos.
