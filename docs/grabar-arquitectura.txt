@@ -438,6 +438,13 @@ publicada el dia anterior. Esto es lo que dice el codigo, no el README:
      el dedo la llama sesenta veces por segundo cruzando el puente, el recuadro
      va a ir atras del dedo. Lo que ya sabiamos, ahora confirmado.
 
+     CADUCO EL 21 DE SEPTIEMBRE DE 2026. Este punto flojo era del camino
+     NATIVO, donde el recuadro era una vista de Android movida por el puente.
+     La camara termino siendo un <video> en la pagina, asi que el recuadro es
+     un elemento del navegador y moverlo es mover un elemento: no cruza ningun
+     puente ni rehace ningun LayoutParams. El problema desaparecio junto con el
+     plugin.
+
   5. Y LO MEJOR, QUE NO ESTABA EN MI LISTA: ToBackCompositorHelper. Treinta y
      seis lineas que dicen que solo hay que transparentar la pila del WebView y
      NUNCA el fondo de la ventana ni los colores de las barras del sistema,
@@ -499,9 +506,12 @@ BLOQUE 1 - LA CAMARA EN PANTALLA                          (todavia sin grabar)
      real. Aca se mide lo que no se puede razonar: si el texto sigue
      moviendose bien con la camara encendida, y cuanto crece el APK.
   2. LOS OTROS DOS FONDOS. El recuadro pequeno movible y el fondo nuestro con
-     la camara oculta. Aca aparece el punto flojo conocido -el recuadro
-     siguiendo al dedo-; si setPreviewSize no alcanza, el gesto se resuelve del
-     lado nativo o se cambia por tres posiciones fijas.
+     la camara oculta. El recuadro se arrastra con el dedo y queda donde se
+     suelta, y punto: con la camara en la pagina es un elemento mas, y el
+     proyecto ya arrastra elementos asi -hoja de ajustes del editor, tarjetas
+     de la biblioteca- con setPointerCapture, onPointerCancel y touchAction en
+     none. No hay aqui ninguna salida de repuesto con posiciones fijas: eso era
+     un resguardo del camino nativo que ya no existe.
 
 AQUI VA LA DECISION DE ESTRUCTURA, Y NO ES DE JULES.
      Con los tres modos en la mano ya se sabe que controles existen de verdad.
@@ -536,6 +546,5 @@ BLOQUE 4 - LA APLICACION ALREDEDOR
   6. LAS GRABACIONES EN LA BIBLIOTECA: verlas, reproducirlas, borrarlas.
   7. LA MUDANZA DE LOS AJUSTES a donde se decidio en el medio.
 
-QUE PUEDE MOVERSE: la 2 se simplifica si el recuadro con tres posiciones fijas
-alcanza. La 1 crece si el plugin resulta pesado y hay que escribir nuestro
-propio puente. Lo demas no deberia moverse.
+QUE PUEDE MOVERSE: la 1 crece si el plugin resulta pesado y hay que escribir
+nuestro propio puente. Lo demas no deberia moverse.

@@ -80,6 +80,38 @@ DONDE EMPIEZA. Abajo a la derecha, separado del borde.
 SE MUEVE CON EL DEDO, Y SOLO EN PREPARAR. Se arrastra y queda donde se suelta.
 En la pantalla de LECTURA no se mueve: se dibuja donde quedo y nada mas.
 
+    SIN LIBRERIA NUEVA. No agregues react-draggable ni dnd-kit ni interact.js:
+    son para arrastrar muchas cosas, soltarlas en destinos y ordenarlas, y
+    nosotros movemos UN elemento. El proyecto ya arrastra elementos asi -la
+    hoja de ajustes del editor y las tarjetas de la biblioteca-, con eventos de
+    puntero. Se hace igual que ahi.
+
+    LAS CUATRO COSAS QUE HAY QUE HACER SI O SI, que son justo las que se
+    rompen:
+
+      a. touchAction en 'none' sobre el recuadro. Sin eso el navegador se queda
+         con el gesto para desplazar la pagina y pelea con el arrastre: el
+         recuadro pega un salto en el primer movimiento. Es el error mas comun
+         de todos. Ya esta hecho asi en EditorView.tsx linea 641.
+
+      b. setPointerCapture al empezar. Sin eso, apenas el dedo se sale del
+         recuadro dejan de llegar los eventos y el recuadro se queda atras.
+         Ver BibliotecaView.tsx linea 136 y EditorView.tsx linea 169.
+
+      c. onPointerCancel ademas de onPointerUp, haciendo LO MISMO. Si el
+         sistema se lleva el gesto -una llamada, un menu largo- llega cancel y
+         no llega up; si no se atiende, el recuadro queda pegado al dedo para
+         siempre. Ver BibliotecaView.tsx linea 284.
+
+      d. Recortar la posicion al soltar para que el recuadro quede entero
+         dentro de la vista.
+
+    SIN IMANES A LAS ESQUINAS. La ventanita de Safari salta sola a la esquina
+    mas cercana al soltarla. Aca NO: el texto ocupa casi todo el ancho, asi que
+    la posicion donde tapa menos no tiene por que ser una esquina, y el iman le
+    sacaria a la persona justo la decision que vino a tomar a esta pantalla.
+    Queda donde se suelta.
+
     El motivo no es la comodidad de programarlo: mientras se lee se esta
     mirando el lente, no la pantalla, y un gesto de arrastre ahi solo puede
     pelearse con los controles que ya existen. Donde va el recuadro es una
