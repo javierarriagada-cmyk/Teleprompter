@@ -274,7 +274,8 @@ export default function PrepararView({
           transform: mirror ? 'scaleX(-1)' : 'none',
           boxSizing: 'border-box',
           position: 'relative',
-          zIndex: 1
+          zIndex: 1,
+          pointerEvents: 'none'
         }}
       >
         <div
