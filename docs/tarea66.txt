@@ -259,3 +259,94 @@ mantener apretado borre, que la lectura quede limpia, y que el texto siga
 cayendo donde mismo.
 
 DECI EN EL RESUMEN que pruebas existentes tuviste que cambiar y por que.
+
+
+===============================================================================
+APENDICE - LEIDO EN EL CODIGO EL 21 DE SEPTIEMBRE, DESPUES DEL PRIMER TRAMO
+===============================================================================
+
+El primer tramo -las dos puertas y el lienzo unico- esta hecho y medido en el
+telefono. Esto es para los que faltan, y sale de leer el codigo, no de
+suponerlo. Ahorra trabajo y evita dos errores caros.
+
+
+A. MANTENER APRETADO YA EXISTE EN LOS GUIONES. NO LO ESCRIBAS DE NUEVO.
+
+    src/components/BibliotecaView.tsx:123  handlePointerDown
+    src/components/BibliotecaView.tsx:137  a los 500 ms -> fueLongPressRef y
+                                           setMenuId(g.id)
+    src/components/BibliotecaView.tsx:324  el menu: Archivar | Eliminar | Cerrar
+
+   Funciona. Javier no se equivoco de gesto cuando lo intento: uso el que su
+   propia aplicacion tiene. Lo que fallo es que la TIRA DE GRABACIONES no lo
+   tiene e invento un boton gris -TiraGrabaciones.tsx:87 y 108, con
+   MS_PARA_ARREPENTIRSE en la 48-.
+
+   Entonces el punto 2 de este encargo no es "agregar el gesto": es LLEVAR EL
+   QUE YA HAY al lugar que no lo tiene, y dejarlo identico.
+
+   EXTRAELO A UN SOLO LUGAR -hook o componente, vos elegis-. Si lo copias y
+   pegas, dentro de dos tareas se habran separado, que es la enfermedad que
+   este encargo vino a curar. Los 500 ms se escriben UNA vez.
+
+   Una toma no se archiva: su menu lleva Eliminar y Cerrar. El borrado sigue
+   preguntando una vez. Una toma NO puede borrarse de un solo toque: son
+   megabytes de video que no vuelven.
+
+   NO LE PONGAS DESLIZAR A LA TIRA. La fila de guion tambien borra deslizando
+   88 px -BibliotecaView.tsx:207-. En la tira no va, y el motivo es del objeto:
+   la tira se desplaza en horizontal y los dos gestos chocarian.
+
+
+B. LA TERCERA PUERTA, Y DONDE ESTA EL PELIGRO
+
+   src/components/TarjetaLectura.tsx:221 es el ▶ Leer de la portada. Hoy es un
+   onClick y nada mas. Mantenerlo apretado NAVEGA a grabar: no conmuta el
+   boton, no abre menu. En App ya existe el camino,
+   handleEntrarLectura(origen, rect, conCamara).
+
+       mantener apretado el BOTON ▶ Leer       -> entrar a grabar
+       mantener apretada una FILA de guion     -> menu (borrar)
+       mantener apretada una TOMA              -> menu (borrar)
+       el cuerpo de la tarjeta                 -> no hace nada nuevo
+
+   Son tres elementos distintos y el boton esta DENTRO de la tarjeta: su evento
+   tiene que parar ahi. Si Javier mantiene apretado para grabar y se le borra
+   un guion, perdimos.
+
+   El titulo de la tarjeta ya tiene handlers propios -onDiagTouchEnd,
+   onDiagClick, TarjetaLectura.tsx:200-. No los toques ni los uses de modelo.
+
+
+C. LAS CAPAS. ESTO COSTO UNA VUELTA DE TELEFONO Y NO SE REPITE.
+
+   Al mudar el chrome en el primer tramo se rompio el arrastre del recuadro y
+   ninguna prueba lo vio. La causa: RecuadroCamara vive en zIndex 0 -tiene que
+   estar debajo para que se vea la camara nativa, RecuadroCamara.tsx:176- y la
+   capa de texto en 1. PrepararView le ponia pointerEvents 'none' fijo; al
+   mudarse, en LEYENDO esa capa SI necesita los punteros para la navegacion
+   manual, y quedo en 'auto' siempre. En LISTO el texto se tragaba el
+   pointerdown.
+
+   Ya esta arreglado y con guardiana. LA REGLA QUE SALE DE AHI, Y APLICA A LO
+   QUE TE FALTA: cuando muevas un control de sitio, mira que queda ENCIMA de
+   que. zIndex y pointerEvents viajan con el elemento y no los mira ninguna
+   prueba. Si pones un menu nuevo sobre la tira o sobre la tarjeta, decime en
+   el resumen en que capa quedo y que tapa.
+
+
+D. COMO LO MANDAS, Y ESTO IMPORTA
+
+   La rama ya tiene el primer tramo. Genera tu diff CONTRA LA PUNTA de
+   tarea-66-coherencia, no contra donde empezaste.
+
+   Parche de texto, pedazos numerados 1..n del MISMO diff, con git diff de
+   verdad. Tu conector trunca App.tsx, TeleprompterView.tsx y EditorView.tsx.
+
+   Corre vitest antes de mandar y pegame el numero. Si el tuyo y el mio no
+   coinciden lo sabemos en un mensaje y no en tres.
+
+   MANDA LOS DOS TRAMOS QUE FALTAN JUNTOS -el gesto con la tercera puerta, y
+   los ajustes en tres familias-, en commits separados dentro del mismo envio.
+   Separados para saber cual falla; juntos porque es una sola tarea y cada
+   APK le cuesta a Javier instalar y medir.
