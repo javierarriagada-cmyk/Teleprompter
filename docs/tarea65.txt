@@ -1,0 +1,162 @@
+TAREA 65 - CALIDAD, ESPACIO Y EXPORTAR
+
+Rama: tarea65-calidad-espacio-exportar
+
+Hoy se graba con lo que el telefono da por omision, el archivo vive dentro de la
+aplicacion y no hay manera de sacarlo ni de saber si va a caber. Esta tarea
+cierra eso.
+
+
+LO QUE YA ESTA Y NO SE VUELVE A AVERIGUAR
+
+  La grabacion funciona: el punto rojo, el archivo que sobrevive si se muere la
+  aplicacion, el detector de mudo, la miniatura y la tira en la biblioteca.
+  Todo eso quedo en la tarea 64 y NO se toca.
+
+  Lo que sale hoy, medido: H.264 1920x1080 a 20 Mbps, 30 cuadros, con AAC 48000
+  Hz estereo a 256 kbps.
+
+  Cada grabacion guarda ya sus bytes y su duracionMs en el indice
+  -ResumenGrabacion, en src/datos/modelo.ts-. Eso importa para el punto 2.
+
+
+1. QUE CALIDAD, PREGUNTANDOLE AL TELEFONO
+
+El plugin @capgo/camera-preview ya trae los tres metodos que hacen falta y NO
+hay que inventarse nada:
+
+    getSupportedVideoQualities()  ->  { qualities: [...] }
+    setVideoQuality({ quality })      cambia la sesion sin reiniciarla
+    getVideoQuality()
+
+Los valores son 'low' | 'medium' | 'high' | '2160p' | '1080p' | '720p' |
+'480p' | '4:3'.
+
+QUE HAY QUE HACER:
+
+  a. Preguntarle al telefono cuales soporta. Se ofrecen SOLO esas. Nada de
+     listas fijas: en otro aparato son otras.
+
+  b. 2160p -4K- NO SE OFRECE, aunque el telefono lo soporte. Es una decision
+     tomada: con el motor de voz y el WebView encima, 4K termina en throttle
+     termico y se pierden cuadros del seguimiento, que es lo que nos
+     diferencia. Filtralo de la lista.
+
+  c. La elegida se guarda en los ajustes, junto a modoCamara y fondoToma, en
+     el objeto de teleprompter_ajustes de src/App.tsx. De omision, 1080p si el
+     telefono la soporta; si no, la mas alta que quede despues de sacar 4K.
+
+  d. Se aplica con setVideoQuality sobre la sesion que ya esta andando. NO se
+     reinicia la camara: eso trae el parpadeo que costo arreglar en la tarea 58.
+
+
+2. CUANTO ALCANZA, Y ESTO ES LO MAS INTERESANTE DE LA TAREA
+
+Javier: "el usuario si tiene la posibilidad de grabar en su telefono tendra que
+saber cuanto espacio tiene".
+
+EL PLUGIN NO DEJA FIJAR EL BITRATE. Comprobado en su codigo: usa el
+QualitySelector de CameraX con UHD, FHD, HD y SD, y no expone nada para el
+bitrate. Asi que el ritmo al que se llena el disco es el del perfil del
+telefono, y no lo elegimos nosotros.
+
+Pero no hace falta adivinarlo, y aca esta la idea: YA GUARDAMOS bytes y
+duracionMs de cada toma. Entonces
+
+    ritmo real = bytes / duracionMs, de las grabaciones que YA HIZO esta
+                 persona en esa misma calidad
+
+Con eso la cuenta no es un promedio inventado: es lo que consume SU telefono.
+
+    minutos = (libre - reserva) / (ritmo * 60)
+
+  - La primera vez, cuando todavia no hay ninguna toma en esa calidad, se usa
+    una tabla de arranque: 1080p 20 Mbps, 720p 9 Mbps, 480p 3 Mbps. Son los
+    perfiles medidos en el telefono de Javier y sirven de estimacion inicial.
+  - En cuanto existe una grabacion propia en esa calidad, manda esa.
+  - RESERVA de 300 MB, que no se ofrecen: son para el sistema y para que la
+    toma en curso no deje el telefono sin aire.
+
+EL ESPACIO LIBRE HAY QUE PEDIRLO AL LADO NATIVO. Un metodo nuevo en
+android/app/src/main/java/com/teleprompter/app/CamaraNativaPlugin.java -que ya
+existe y tiene once metodos-, con StatFs sobre el directorio de grabaciones.
+
+DONDE SE MUESTRA: en la pantalla de preparar la toma, debajo del control de
+calidad, una linea sobria. "Te alcanzan unos 23 minutos". Nada de barras ni de
+porcentajes.
+
+Y si quedan menos de DOS minutos, la linea lo dice de otra manera y se ve: no
+se bloquea la grabacion -es su telefono y el sabra-, pero no puede enterarse
+cuando se corte.
+
+
+3. DONDE VAN LOS CONTROLES
+
+En src/components/PrepararView.tsx, el panel de abajo tiene hoy tres filas
+-Donde lees, Camara, Imagen- y el boton Empezar. Se agrega una cuarta:
+
+    Calidad:   1080p   720p   480p        (solo las que el telefono soporte)
+
+y justo debajo, la linea de los minutos.
+
+Calidad y minutos van JUNTOS porque solo tienen sentido juntos: se toca 720p y
+la linea cambia a mas minutos. Esa es la decision que la persona esta tomando.
+
+NO va en el editor ni en un panel de ajustes: es una decision de la toma, como
+de que lado esta la camara.
+
+
+4. SACAR EL VIDEO DEL TELEFONO
+
+Hoy el archivo vive en el sandbox de la aplicacion y desde afuera no existe.
+
+Un metodo nuevo en CamaraNativaPlugin.java que copie el mp4 a MediaStore.Video,
+en Movies/Sigo, con IS_PENDING en 1 mientras se copia y en 0 al terminar. Si se
+corta a la mitad, que no quede un video a medias indexado en la galeria del
+telefono.
+
+DONDE: un boton "Guardar en galeria" en el reproductor, al lado de Borrar y
+Cerrar. Ahi es donde la persona esta mirando la toma y decide que hacer con
+ella.
+
+Mientras copia, que se vea que esta copiando -son decenas de megas- y al
+terminar, un aviso corto. Si falla, el error tal cual, no un "algo salio mal".
+
+UNA GRABACION INCOMPLETA TAMBIEN SE PUEDE GUARDAR. Esta cortada, no rota: lo
+comprobamos, el archivo se reproduce. No se lo impidas.
+
+
+5. LO QUE NO SE TOCA
+
+NO toques el motor de voz ni el microfono: src/motor/, src/lib/seguidor.ts,
+src/lib/avance.ts, src/lib/conduccion.ts, VoskNativoPlugin.java.
+
+NO toques la banda, el velo, el ancho de la columna ni donde cae el texto. Esta
+medido que el texto cae en top 81 y left 41 en las dos pantallas y con los tres
+fondos.
+
+NO toques nada de la tarea 64: el sidecar, el detector de mudo, la
+recuperacion de tomas interrumpidas, el emparejado por tiempo. Eso costo cuatro
+vueltas y esta comprobado en el telefono.
+
+NO agregues 4K.
+
+LOS COMENTARIOS NO SE BORRAN. Si el codigo cambia, se actualiza su comentario;
+si el codigo desaparece de verdad, su comentario se va con el; todo lo demas se
+queda tal cual. En este proyecto los comentarios llevan las mediciones y las
+decisiones, y ninguna prueba los protege.
+
+
+6. UNA PRUEBA, UNA SOLA
+
+    T278: la cuenta de los minutos. Con un ritmo conocido y un espacio libre
+          conocido, devuelve los minutos esperados; descuenta la reserva de 300
+          MB; y si ya hay una grabacion propia en esa calidad, usa el ritmo de
+          esa grabacion y NO el de la tabla de arranque.
+
+Es pura cuenta, asi que se comprueba en jsdom sin camara ni archivos. Comproba
+que sirve rompiendola a proposito: si se ignora la reserva, la prueba tiene que
+fallar.
+
+No agregues mas pruebas: lo demas -que la galeria reciba el video, que el
+espacio libre sea el de verdad- lo mido yo en el telefono.
