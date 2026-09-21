@@ -232,7 +232,6 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [recuadroY, setRecuadroY] = useState<number>(
     typeof ajustesPrevios.recuadroY === 'number' ? ajustesPrevios.recuadroY : 0.52
   )
-  const [streamCamara, setStreamCamara] = useState<MediaStream | null>(null)
 
   const coloresIniciales = sanitizarColores(ajustesPrevios.colorFondo, ajustesPrevios.colorLetra)
   const [colorFondo, setColorFondo] = useState<string>(coloresIniciales.colorFondo)
