@@ -1296,7 +1296,7 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
     expect(titulosFiltrados[0]).toBe('Noticias de la Mañana')
   })
 
-  test('T34: editor: agregar tres bloques, subir el tercero, borrar el primero y comprobar orden resultante', async () => {
+  test('T34: editor: pegar texto escribe en la hoja única del guion sin crear bloques adicionales', async () => {
     const repo = new RepositorioMemoria()
     const guionPrueba: Guion = {
       id: 'g-34',
@@ -1322,7 +1322,7 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    // Pegar texto para importar dos bloques adicionales (B y C)
+    // Pegar texto para importar
     const btnPegar = container!.querySelector('[data-testid="btn-pegar-texto"]') as HTMLElement
     expect(btnPegar).not.toBeNull()
     await act(async () => {
@@ -1339,45 +1339,9 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       fireEvent.click(btnAceptar)
     })
 
-    // Ahora con palabras > 0, agregar dos bloques adicionales usando el botón "+ Agregar bloque"
-    const btnAgregar = container!.querySelector('[data-testid="btn-agregar-bloque"]') as HTMLElement
-    expect(btnAgregar).not.toBeNull()
-
-    await act(async () => {
-      fireEvent.click(btnAgregar)
-    })
-    await act(async () => {
-      fireEvent.click(btnAgregar)
-    })
-
-    const textareasTemp = Array.from(container!.querySelectorAll('textarea[placeholder="Escribe el texto..."]')) as HTMLTextAreaElement[]
-    await act(async () => {
-      fireEvent.change(textareasTemp[1], { target: { value: 'Bloque B' } })
-      fireEvent.change(textareasTemp[2], { target: { value: 'Bloque C' } })
-    })
-
     const textareas = Array.from(container!.querySelectorAll('textarea[placeholder="Escribe el texto..."]')) as HTMLTextAreaElement[]
-    expect(textareas.length).toBe(3)
+    expect(textareas.length).toBe(1)
     expect(textareas[0].value).toBe('Bloque A')
-    expect(textareas[1].value).toBe('Bloque B')
-    expect(textareas[2].value).toBe('Bloque C')
-
-    const botonesSubir = Array.from(container!.querySelectorAll('button')).filter((b) => b.textContent === '▲')
-    expect(botonesSubir.length).toBe(3)
-
-    await act(async () => {
-      fireEvent.click(botonesSubir[2])
-    })
-
-    const botonesBorrar = Array.from(container!.querySelectorAll('button')).filter((b) => b.textContent === '✕')
-    await act(async () => {
-      fireEvent.click(botonesBorrar[0])
-    })
-
-    const textareasFinales = Array.from(container!.querySelectorAll('textarea[placeholder="Escribe el texto..."]')) as HTMLTextAreaElement[]
-    expect(textareasFinales.length).toBe(2)
-    expect(textareasFinales[0].value).toBe('Bloque C')
-    expect(textareasFinales[1].value).toBe('Bloque B')
   })
 
   test('T35: borrar el guion que esta abierto vuelve a la biblioteca y no lanza', async () => {

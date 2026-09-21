@@ -160,7 +160,7 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
     const inputTituloConTexto = screen.getByTestId('input-titulo-guion') as HTMLInputElement
     expect(inputTituloConTexto.value).toBe('Mi Guión')
 
-    expect(screen.getByTestId('btn-agregar-bloque')).not.toBeNull()
+    expect(screen.queryByTestId('btn-agregar-bloque')).toBeNull()
     expect(screen.getByTestId('btn-leer-guion-fijo')).not.toBeNull()
   })
 

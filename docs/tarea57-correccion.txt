@@ -1,0 +1,35 @@
+TAREA 57 - CORRECCION
+
+Los bloques se fueron y el editor quedo como una hoja sola. Bien. La prueba T274
+tambien esta bien: se comprobo rompiendola a proposito -sacandole el
+desplazamiento a los indices- y falla, que es lo que tiene que hacer.
+
+Falta una sola cosa.
+
+
+LOS BLOQUES VACIOS DEJAN LINEAS EN BLANCO AL PRINCIPIO
+
+Visto en el telefono: el guion del mandato tenia un primer bloque VACIO -de
+antes- y el texto en el segundo. Al juntarlos, el texto ahora empieza con dos
+lineas en blanco, y se ve un hueco grande entre el titulo y la primera linea.
+
+POR QUE. En consolidarGuion, el separador se agrega para todo bloque que no sea
+el primero, sin mirar si el bloque tiene texto. Con un bloque vacio adelante, el
+resultado arranca con "\n\n".
+
+Eso no es solo feo en el editor: la pantalla de lectura respeta los saltos de
+linea del autor, asi que la lectura arrancaria con dos renglones vacios.
+
+COMO SE ARREGLA. Al juntar, los bloques cuyo texto quede vacio -despues de
+quitarle los espacios de los bordes- NO APORTAN NADA: ni texto ni separador. Si
+un bloque tiene nombre pero no texto, se conserva su linea "[nombre]" como hasta
+ahora.
+
+Si despues de eso no queda nada, el guion queda con un bloque unico de texto
+vacio, como un guion nuevo.
+
+Agregale el caso a la prueba T274 que ya existe: un guion cuyo PRIMER bloque esta
+vacio y el segundo tiene el texto queda con el texto EXACTO del segundo, sin
+lineas en blanco adelante.
+
+No toques nada mas.

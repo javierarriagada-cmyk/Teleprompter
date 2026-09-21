@@ -1,0 +1,35 @@
+TAREA 57 - CORRECCION 2
+
+El arreglo de los bloques vacios quedo bien para los guiones que se junten de
+ahora en adelante. Pero falta limpiar los que YA SE JUNTARON con la version
+anterior.
+
+
+EL DANO YA ESTA EN LOS DATOS
+
+Comprobado leyendo el guion guardado en el telefono: su texto empieza
+literalmente con "\n\nINSERCIONES:". Son las dos lineas en blanco que dejo el
+bloque vacio al juntarse la primera vez, y ya quedaron guardadas.
+
+Y no se van a limpiar solas, porque ese guion ahora tiene UN SOLO bloque y
+consolidarGuion no hace nada cuando hay uno solo.
+
+
+COMO SE ARREGLA
+
+consolidarGuion tiene que dejar el texto del bloque final SIN LINEAS EN BLANCO
+AL PRINCIPIO NI AL FINAL, y tiene que hacerlo TAMBIEN cuando el guion ya tiene un
+solo bloque.
+
+Lo de adentro no se toca: las lineas en blanco ENTRE parrafos son del autor y
+se quedan tal cual. Solo se sacan las de los bordes.
+
+Si el texto queda distinto despues de limpiarlo, se guarda. Si no cambia nada, no
+se guarda ni se toca la fecha de modificacion: abrir un guion no tiene que
+ensuciarlo de fecha sin motivo.
+
+Agregale el caso a la prueba T274: un guion con UN SOLO bloque cuyo texto empieza
+con dos saltos de linea queda con el texto empezando en la primera palabra, y las
+lineas en blanco de adentro siguen estando.
+
+No toques nada mas.

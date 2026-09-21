@@ -477,12 +477,12 @@ describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
 // guion tenia un bloque, no habia ninguna manera de sumar otro. Aparecio el 13 de septiembre
 // de 2026 revisando textos de botones: el texto estaba bien, lo que faltaba era la funcion.
 describe('Pruebas TAREA 32 (T161)', () => {
-  test('T161: con un guion que YA tiene un bloque, existe un boton para agregar otro y agregarlo suma un bloque.', () => {
+  test('T161: con un guion que YA tiene un bloque, es una sola hoja de texto y NO existe el boton de agregar bloque.', () => {
     let guionActual: Guion = {
       id: 'g-bloques', titulo: 'Con un bloque', idioma: 'es', creado: 1, modificado: 1,
       bloques: [{ id: 'b1', nombre: '', texto: 'Primero.' }]
     }
-    const { rerender } = render(
+    render(
       React.createElement(EditorView, {
         guion: guionActual,
         onChangeGuion: (g: Guion) => { guionActual = g },
@@ -491,20 +491,10 @@ describe('Pruebas TAREA 32 (T161)', () => {
       })
     )
 
-    // la pantalla vacia no esta, y el boton de agregar SI
+    // la pantalla vacia no esta, y NO existe el boton de agregar bloque
     expect(screen.queryByText('Agregar primer bloque')).toBeNull()
-    const btn = screen.getByTestId('btn-agregar-bloque')
-    expect(btn).not.toBeNull()
-
-    fireEvent.click(btn)
-    expect(guionActual.bloques.length).toBe(2)
-
-    rerender(
-      React.createElement(EditorView, {
-        guion: guionActual, onChangeGuion: () => {}, onVolverBiblioteca: () => {}, onEntrarLectura: () => {}
-      })
-    )
-    expect(document.querySelectorAll('textarea').length).toBe(2)
+    expect(screen.queryByTestId('btn-agregar-bloque')).toBeNull()
+    expect(document.querySelectorAll('textarea').length).toBe(1)
   })
 })
 
@@ -1476,5 +1466,56 @@ describe('Pruebas TAREA 43: El sistema operativo no puede meterse en la pantalla
     expect(panel.style.right).toContain('safe-area-inset-right')
 
     unmount()
+  })
+
+  test('T275 - Limpia saltos de linea al abrir un guion y NO borra el salto de linea al escribir Enter al final.', async () => {
+    function WrapperEditorT275({ guionInicial }: { guionInicial: Guion }) {
+      const [guion, setGuion] = React.useState<Guion>(guionInicial)
+      return (
+        <EditorView
+          guion={guion}
+          onChangeGuion={setGuion}
+          onVolverBiblioteca={() => {}}
+          onEntrarLectura={() => {}}
+        />
+      )
+    }
+
+    // 1. Un guion que se abre con "\n\nHola" queda con "Hola" al montar
+    const guionConSaltosIniciales: Guion = {
+      id: 'g-t275-abrir',
+      titulo: 'Guion con saltos',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: '\n\nHola' }]
+    }
+
+    const { unmount } = render(<WrapperEditorT275 guionInicial={guionConSaltosIniciales} />)
+
+    const textareaMontado = screen.getByPlaceholderText('Escribe el texto...') as HTMLTextAreaElement
+    expect(textareaMontado.value).toBe('Hola')
+    unmount()
+
+    // 2. Se monta el editor con "Hola", se cambia el texto a "Hola\n". El textarea tiene que quedar en "Hola\n", NO en "Hola"
+    const guionNormal: Guion = {
+      id: 'g-t275-escribir',
+      titulo: 'Guion normal',
+      idioma: 'es',
+      creado: Date.now(),
+      modificado: Date.now(),
+      bloques: [{ id: 'b1', nombre: '', texto: 'Hola' }]
+    }
+
+    render(<WrapperEditorT275 guionInicial={guionNormal} />)
+
+    const textarea = screen.getByPlaceholderText('Escribe el texto...') as HTMLTextAreaElement
+    expect(textarea.value).toBe('Hola')
+
+    await act(async () => {
+      fireEvent.change(textarea, { target: { value: 'Hola\n' } })
+    })
+
+    expect(textarea.value).toBe('Hola\n')
   })
 })

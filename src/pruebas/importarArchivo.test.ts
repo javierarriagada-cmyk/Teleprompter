@@ -191,12 +191,12 @@ Bloque importado B.`
 
     // Esperar a que la promesa asíncrona de handleSeleccionarArchivo termine
     await waitFor(() => {
-      expect(llamadasChange).toBe(1)
+      expect(llamadasChange).toBe(2)
     })
 
-    // Lo importado entra en los bloques
-    expect(guionEstado.bloques.length).toBeGreaterThanOrEqual(1)
-    const textoCompleto = guionEstado.bloques.map((b) => b.texto).join('\n')
+    // Lo importado entra en el único bloque del guion
+    expect(guionEstado.bloques.length).toBe(1)
+    const textoCompleto = guionEstado.bloques[0].texto
     expect(textoCompleto).toContain('Bloque importado A.')
     // Mantener título previo porque no estaba vacío ni era 'Sin título'
     expect(guionEstado.titulo).toBe('Guion T68 Original')
@@ -213,9 +213,9 @@ Bloque importado B.`
     })
 
     // No debe haber llamado a onChangeGuion de nuevo
-    expect(llamadasChange).toBe(1)
-    // Los bloques existentes no se alteran
-    expect(guionEstado.bloques.length).toBe(2)
+    expect(llamadasChange).toBe(2)
+    // El texto del bloque existente no se altera ante error
+    expect(guionEstado.bloques.length).toBe(1)
   })
 
 })

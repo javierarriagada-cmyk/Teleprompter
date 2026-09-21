@@ -1,0 +1,58 @@
+TAREA 57 - CORRECCION 3
+
+La limpieza de los bordes quedo bien: comprobado que un guion de un solo bloque
+que empieza con dos saltos de linea queda empezando en la primera palabra, y que
+las lineas en blanco de adentro no se tocan.
+
+Pero la limpieza quedo corriendo EN EL MOMENTO EQUIVOCADO y rompio el editor.
+
+
+NO SE PUEDE APRETAR ENTER AL FINAL DEL GUION
+
+Comprobado montando el editor con el guion en estado y escribiendo:
+
+    texto "Hola", se aprieta Enter  ->  el textarea vuelve a quedar en "Hola"
+
+El salto de linea se borra solo, al instante. Osea que nadie puede separar un
+parrafo nuevo al final de su guion: aprieta Enter y no pasa nada, para siempre.
+
+POR QUE. En src/components/EditorView.tsx la limpieza esta en un useEffect que
+depende de [guion, onChangeGuion]:
+
+    useEffect(() => {
+      const consolidado = consolidarGuion(guion)
+      if (consolidado !== guion) onChangeGuion(consolidado)
+    }, [guion, onChangeGuion])
+
+Cada tecla que se escribe cambia el guion, el efecto vuelve a correr, y
+consolidarGuion le recorta el salto de linea del final que la persona acaba de
+escribir. La limpieza esta peleando contra el que escribe.
+
+
+COMO SE ARREGLA
+
+La limpieza es para ARREGLAR LO QUE VIENE GUARDADO DE ANTES, una sola vez, al
+ABRIR el guion. No tiene nada que hacer mientras la persona escribe.
+
+Hay que correrla SOLO CUANDO CAMBIA EL GUION ABIERTO, no cuando cambia su texto.
+Con una referencia que guarde el id del guion que ya se limpio: si el id es el
+mismo que ya se limpio, el efecto no hace nada; si es otro, se limpia, se guarda
+ese id en la referencia, y se avisa con onChangeGuion solo si algo cambio.
+
+Mientras la persona escribe, el texto es suyo: no se le toca ni un espacio.
+
+
+UNA PRUEBA, UNA SOLA
+
+En src/pruebas/pantallas.test.tsx, que ya monta EditorView:
+
+    T275: se monta el editor con el guion en estado -un componente padre con
+          useState que le pasa el guion y actualiza con onChangeGuion-, con el
+          texto "Hola". Se cambia el texto a "Hola\n". El textarea tiene que
+          quedar en "Hola\n", NO en "Hola".
+
+          Y en el mismo test: un guion que se abre con el texto "\n\nHola" queda
+          con el texto "Hola" al montar. Las dos mitades juntas: limpia al abrir,
+          no toca al escribir.
+
+No toques la T274 ni agregues mas pruebas.
