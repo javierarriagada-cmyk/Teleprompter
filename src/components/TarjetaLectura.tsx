@@ -102,22 +102,15 @@ export default function TarjetaLectura({
         color: parejaColor.letra
       }}
     >
-      {/* Zona superior: Timecode */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: 24, zIndex: 5 }}>
-        {hayGuion && (
-          <span
-            data-testid="time-code-tarjeta"
-            style={{
-              fontFamily: 'monospace',
-              fontSize: 'var(--texto-meta)',
-              opacity: 0.7,
-              letterSpacing: '0.05em'
-            }}
-          >
-            {timecode}
-          </span>
-        )}
-      </div>
+      {/* EL RINCON DE ARRIBA A LA DERECHA NO ES NUESTRO, ES DEL SISTEMA.
+          Ahi Android pone su reloj y el icono del clima. El timecode estaba
+          exactamente debajo: dos lecturas chicas y grises en la misma esquina,
+          que se leen como una sola cosa. Javier, el 21 de septiembre de 2026:
+          "arriba queda un simbolo de un sol con la hora juntos".
+          No era falta de aire -la portada ya descuenta el area segura- sino
+          dos relojes en el mismo rincon. Y el nuestro no es una hora del dia:
+          es cuanto dura el guion, asi que su lugar es al lado del titulo. */}
+      <div style={{ height: 24, zIndex: 5 }} />
 
       {/* Zona Central: Simulación de Pantalla de Lectura */}
       <div
@@ -205,6 +198,20 @@ export default function TarjetaLectura({
 
       {/* Zona Inferior: Título de 44px y Botón de Acción */}
       <div style={{ zIndex: 5, display: 'flex', flexDirection: 'column', gap: 'var(--aire-3)' }}>
+        {hayGuion && (
+          <span
+            data-testid="time-code-tarjeta"
+            style={{
+              fontFamily: 'monospace',
+              fontSize: 'var(--texto-meta)',
+              opacity: 0.7,
+              letterSpacing: '0.05em',
+              color: parejaColor.letra
+            }}
+          >
+            {timecode}
+          </span>
+        )}
         <h2
           data-testid="titulo-tarjeta-lectura"
           onTouchStart={onDiagTouchStart}
