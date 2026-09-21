@@ -16,7 +16,7 @@ import PrepararView from './components/PrepararView'
 import CuentaRegresiva from './components/CuentaRegresiva'
 import { Entrada } from './components/Entrada'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
-import { encenderCamara, apagarCamara, camaraEncendida, ModoCamara } from './lib/camara'
+import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, ModoCamara } from './lib/camara'
 import { hapticaToqueMedio, hapticaToqueSuave } from './haptica'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
 import { Guion, ResumenGuion, guionNuevo, PAREJAS_COLOR } from './datos/modelo'
@@ -671,13 +671,13 @@ export default function App({ motor, repoOverride }: AppProps) {
     const vistaUsaCamara = vista === 'preparar' || vista === 'lectura'
     if (!vistaUsaCamara) {
       cancelarCuentaRegresiva()
-      if (camaraActiva || streamCamara) {
+      if (camaraEncendida()) {
         apagarCamara()
         setStreamCamara(null)
         setCamaraActiva(false)
       }
     } else if (modoCamara !== 'apagada') {
-      if (!camaraActiva || (streamCamara && modoCamara !== (camaraActiva ? undefined : null))) {
+      if (!camaraEncendida() || modoCamara !== ladoActual()) {
         encenderCamara(modoCamara).then((st) => {
           if (st) {
             setStreamCamara(st)
