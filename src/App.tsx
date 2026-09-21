@@ -18,7 +18,7 @@ import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENT
 import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo } from './lib/camara'
 import { obtenerEspacioLibre } from './lib/archivosNativos'
 import { calcularMinutosDisponibles } from './lib/espacio'
-import { hapticaToqueMedio, hapticaToqueSuave } from './haptica'
+import { hapticaToqueMedio, hapticaToqueSuave, hapticaSeleccion } from './haptica'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
 import { Guion, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR } from './datos/modelo'
 import { RepositorioGuiones } from './datos/RepositorioGuiones'
@@ -964,6 +964,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   }
 
   function handleVolverDesdeListo() {
+    hapticaToqueMedio()
     setConCamara(false)
     setEstadoToma('listo')
     setVista(origenLecturaRef.current)
@@ -1568,15 +1569,22 @@ export default function App({ motor, repoOverride }: AppProps) {
             recuadroY={recuadroY}
               estadoToma={estadoToma}
               conCamara={conCamara}
-              setAnclajeZona={setAnclajeZona}
+              setAnclajeZona={(a) => {
+                hapticaSeleccion()
+                setAnclajeZona(a)
+              }}
               setMirror={setMirror}
               mostrarTiempo={mostrarTiempo}
               setMostrarTiempo={setMostrarTiempo}
-              setFondoToma={setFondoToma}
+              setFondoToma={(f) => {
+                hapticaSeleccion()
+                setFondoToma(f)
+              }}
               setRecuadroX={setRecuadroX}
               setRecuadroY={setRecuadroY}
               calidadVideo={calidadVideo}
               setCalidadVideo={(q) => {
+                hapticaSeleccion()
                 setCalidadVideo(q)
                 fijarCalidadVideo(q)
               }}
@@ -1586,7 +1594,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                   ? calcularMinutosDisponibles(bytesLibres, calidadVideo, grabaciones)
                   : null
               }
-              onVoltear={() => setLadoCamara((l) => (l === 'frontal' ? 'trasera' : 'frontal'))}
+              onVoltear={() => {
+                hapticaSeleccion()
+                setLadoCamara((l) => (l === 'frontal' ? 'trasera' : 'frontal'))
+              }}
               onEmpezar={handleEmpezarDesdeListo}
               onVolverListo={handleVolverDesdeListo}
               onToggleControles={() => {

@@ -35,7 +35,6 @@ import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './b
 import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
 import { IconoAtras, IconoEngranaje } from './IconosApp'
-import { hapticaSeleccion, hapticaToqueMedio } from '../haptica'
 import { actualizarConfigCamara } from '../lib/camara'
 
 // UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
@@ -837,7 +836,6 @@ export default function TeleprompterView({
             type="button"
             onClick={(e) => {
               e.stopPropagation()
-              hapticaToqueMedio()
               onVolverListo?.()
             }}
             aria-label="Volver"
@@ -868,7 +866,6 @@ export default function TeleprompterView({
               type="button"
               onClick={(e) => {
                 e.stopPropagation()
-                hapticaSeleccion()
                 onVoltear?.()
               }}
               aria-label="Voltear cámara"
@@ -929,7 +926,6 @@ export default function TeleprompterView({
                         data-testid={`btn-fondo-${opt.val}`}
                         className="btn-deformable"
                         onClick={() => {
-                          hapticaSeleccion()
                           setFondoToma?.(opt.val)
                         }}
                         style={{
@@ -963,7 +959,6 @@ export default function TeleprompterView({
                             data-testid={`btn-calidad-${q}`}
                             className="btn-deformable"
                             onClick={() => {
-                              hapticaSeleccion()
                               setCalidadVideo?.(q)
                             }}
                             style={{
@@ -1026,7 +1021,6 @@ export default function TeleprompterView({
                       type="button"
                       data-testid={`btn-anclaje-${z}`}
                       onClick={() => {
-                        hapticaSeleccion()
                         setAnclajeZona?.(z)
                       }}
                       style={{
@@ -1090,7 +1084,6 @@ export default function TeleprompterView({
                 type="button"
                 className="btn-deformable"
                 onClick={() => {
-                  hapticaToqueMedio()
                   onEmpezar?.()
                 }}
                 style={{
