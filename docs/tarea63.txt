@@ -1,0 +1,142 @@
+TAREA 63 - LA CAMARA DE LA TOMA PASA A SER NATIVA
+
+Rama: tarea63-camara-nativa-en-la-toma
+
+Hasta hoy la imagen de la camara en preparar la toma y en la lectura sale de
+getUserMedia, o sea del navegador. Eso sirvio para decidir el diseno mirando, y
+sirvio bien, pero no puede grabar con la calidad del telefono.
+
+Esta tarea cambia DE DONDE SALE LA IMAGEN. No agrega grabacion: eso es la
+tarea siguiente, y depende de que esta quede impecable.
+
+
+POR QUE AHORA SI SE PUEDE
+
+Lo que faltaba quedo resuelto y medido en el telefono con las tareas 60, 61 y
+62:
+
+  - la vista previa NATIVA se ve por detras del WebView, con toBack en true
+  - el archivo sale H.264 1920x1080 a 20 Mbps y 30 cuadros, con AAC 48000 Hz
+    estereo a 256 kbps: el perfil del propio telefono
+  - con el grabador tomando audio, NUESTRO MOTOR SIGUE OYENDO. Medido: el motor
+    transcribio el texto leido, y el video quedo con voz -mean -25.0 dB contra
+    -60.2 dB de la misma corrida en silencio-
+
+Y quedo una trampa anotada que hay que respetar desde el primer dia:
+
+    LA SESION DE CAMARA SE ARRANCA CON disableAudio EN FALSE.
+
+Si se arranca sin audio, cuando mas adelante se grabe el archivo va a salir
+MUDO y SIN NINGUN ERROR. Es el modo de fallar mas peligroso que tiene esto, asi
+que el audio se habilita desde ahora aunque todavia no se grabe.
+
+
+QUE HAY QUE HACER
+
+En src/lib/camara.ts vive hoy el encendido por getUserMedia. Ese archivo pasa a
+manejar la camara NATIVA, con @capgo/camera-preview, que ya esta en el
+proyecto. Las funciones que la aplicacion usa -encenderCamara, apagarCamara,
+camaraEncendida, ladoActual- mantienen su nombre y su firma en lo posible, para
+que App.tsx cambie lo menos posible.
+
+Los tres fondos que ya existen tienen que seguir funcionando IGUAL:
+
+  DETRAS     la vista previa nativa a pantalla completa, con toBack en true, y
+             nuestro texto encima. Aca hay que respetar lo que costo
+             encontrarlo: el fondo de la capa web tiene que quedar transparente
+             para que la imagen se vea -la aplicacion ya lo hace segun el
+             fondo elegido-.
+
+  RECUADRO   la vista previa nativa en un rectangulo chico, en la posicion que
+             el usuario dejo guardada, con el TEXTO POR ENCIMA. El plugin
+             permite darle posicion y tamano a la vista previa.
+
+  OCULTA     la vista previa no se muestra y la camara SIGUE ENCENDIDA.
+
+             NADA DE CameraPreview.stop(). Eso apaga la sesion y de ahi tiene
+             que salir el video. Se hace con setOpacity en 0 -para lo cual la
+             sesion se arranca con enableOpacity en true- o dejando la vista
+             previa fuera de la pantalla con setPreviewSize. Las dos existen en
+             el plugin; elegi la que funcione y decinos cual quedo.
+
+Y la eleccion de camara frontal o trasera sigue igual, en el guion y en
+preparar la toma.
+
+
+LA PARTE DIFICIL, Y HAY QUE DECIRLA: EL RECUADRO QUE SIGUE AL DEDO
+
+Con la imagen en la pagina, mover el recuadro era mover un elemento del
+navegador. Con la imagen nativa, moverlo es pedirle al lado nativo que cambie
+la posicion de su vista, y eso cruza el puente. Si se le pide sesenta veces por
+segundo mientras el dedo se mueve, puede quedar atras del dedo.
+
+Probalo arrastrando de verdad, y si va atras del dedo subi UN escalon a la vez,
+en este orden, quedandote en el primero que se sienta bien:
+
+  1. DIRECTO. Se le pide la posicion nueva en cada movimiento del dedo. Puede
+     que alcance: es una sola vista y son ordenes chicas. Empeza por aca.
+
+  2. ESTRANGULADO. La orden al plugin no se manda en cada pixel sino cada 50 o
+     100 milisegundos. La imagen sigue viva y el puente deja de saturarse.
+
+  3. ARRASTRE FANTASMA. Mientras el dedo arrastra, lo que se mueve es un marco
+     de la pagina -liviano, a 60 cuadros-, y la vista previa nativa se queda
+     quieta. Al soltar, UNA sola orden y la imagen salta a la posicion final.
+
+NO abras el codigo nativo del plugin para esto. Con los tres escalones de
+arriba alcanza, y el tercero es un patron conocido de aplicaciones hibridas.
+
+Y NO reduzcas lo que el usuario puede hacer: el recuadro se sigue pudiendo
+dejar en cualquier parte de la vista, se sigue recordando donde quedo, y el
+panel de controles se sigue yendo mientras dura el gesto. Nada de posiciones
+fijas.
+
+DECINOS EN EL RESUMEN en que escalon quedaste.
+
+Lo que NO cambia: el recuadro solo se arrastra en preparar la toma, en la
+lectura se dibuja donde quedo; la posicion se guarda en fracciones de la vista;
+y el texto va POR ENCIMA del recuadro, nunca debajo.
+
+
+LO QUE NO SE TOCA
+
+NO se toca la banda, ni el velo, ni el ancho de la columna, ni donde cae el
+texto. Esta comprobado que preparar y lectura ponen el texto en el mismo lugar
+-top 81, left 41 en el telefono de Javier- y eso tiene que seguir exactamente
+igual.
+
+NO se toca el motor, ni el seguidor, ni la conduccion, ni el avance.
+
+NO se agrega grabacion, ni boton de grabar, ni archivo, ni calidades. Tarea
+siguiente.
+
+NO se borra todavia la pantalla de prueba de camara nativa. Se saca cuando la
+grabacion este hecha, no antes.
+
+
+COMO SE COMPRUEBA, Y ESTO ES LO QUE MAS IMPORTA
+
+Lo mido yo en el telefono, y son cuatro cosas:
+
+  1. Los tres fondos se ven como se ven hoy, y el texto cae en el mismo lugar
+     en los tres.
+  2. El recuadro sigue al dedo al arrastrarlo, y aparece donde se lo dejo al
+     empezar a leer.
+  3. CON LA CAMARA ENCENDIDA, LEYENDO EN VOZ ALTA, EL TEXTO SIGUE AVANZANDO
+     SOLO. Esta es la que decide: la sesion de camara ahora tiene el audio
+     habilitado, y hay que ver que el motor sigue oyendo durante una lectura de
+     verdad, no de diez segundos.
+
+     QUE QUEDE CLARO QUE ESTO NO ES TRABAJO TUYO: vos no tocas NADA del audio
+     ni del microfono en esta tarea. Ni la fuente, ni el motor, ni SpeechService,
+     ni el plugin de voz. Lo unico que haces con el audio es arrancar la sesion
+     de camara con disableAudio en false y no volver a mirarlo. La comprobacion
+     la hago yo, leyendo en voz alta contra el telefono.
+
+     Si al probar te parece que el motor deja de oir, DECILO EN EL RESUMEN y
+     para. No lo arregles: ese arreglo es otra tarea y se decide con mediciones.
+  4. Al salir de la lectura la camara se apaga, y al volver a entrar arranca
+     una sola vez.
+
+No agregues pruebas en jsdom para la camara: ahi no hay camara. Si alguna
+prueba existente se rompe por el cambio, arreglala.
