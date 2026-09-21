@@ -5,25 +5,24 @@ import 'fake-indexeddb/auto'
 import App from '../App'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { MotorFake } from '../motor/MotorFake'
+import { CameraPreview } from '@capgo/camera-preview'
+
+vi.mock('@capgo/camera-preview', () => ({
+  CameraPreview: {
+    start: vi.fn().mockResolvedValue({ width: 360, height: 640, x: 0, y: 0 }),
+    stop: vi.fn().mockResolvedValue(undefined),
+    setOpacity: vi.fn().mockResolvedValue(undefined),
+    setPreviewSize: vi.fn().mockResolvedValue({ width: 360, height: 640, x: 0, y: 0 })
+  }
+}))
 
 describe('Pruebas TAREA 59 - LOS OTROS DOS FONDOS (T277)', () => {
-  let stopTrackFn: any
-
   beforeEach(() => {
     localStorage.clear()
-    stopTrackFn = vi.fn()
-    if (!navigator.mediaDevices) {
-      Object.defineProperty(navigator, 'mediaDevices', {
-        value: {},
-        writable: true
-      })
-    }
-    navigator.mediaDevices.getUserMedia = vi.fn().mockResolvedValue({
-      getTracks: () => [{ stop: stopTrackFn }]
-    } as any)
+    vi.clearAllMocks()
   })
 
-  test('T277: con la camara en frontal, en la pantalla de preparar: a) con fondoToma en "detras", el video a pantalla completa esta en el documento. b) al elegir "recuadro", el video a pantalla completa YA NO esta y el recuadro SI (y su posicion recien montado corresponde a las fracciones sobre el alto de la VISTA, no sobre el body). c) al elegir "oculta", no esta ninguno de los dos, Y LA PISTA DE LA CAMARA NO SE APAGO: el stop() de la pista no fue llamado.', async () => {
+  test('T277: con la camara en frontal, en la pantalla de preparar: a) con fondoToma en "detras", el video a pantalla completa esta en el documento. b) al elegir "recuadro", el video a pantalla completa YA NO esta y el recuadro SI (y su posicion recien montado corresponde a las fracciones sobre el alto de la VISTA, no sobre el body). c) al elegir "oculta", no esta ninguno de los dos, Y LA PISTA DE LA CAMARA NO SE APAGO: el stop() de la sesion no fue llamado.', async () => {
     // Simular que el contenedor de la vista mide 800px de alto
     Object.defineProperty(HTMLElement.prototype, 'clientHeight', {
       configurable: true,
@@ -87,11 +86,11 @@ describe('Pruebas TAREA 59 - LOS OTROS DOS FONDOS (T277)', () => {
       expect(recuadroEl).toBeDefined()
     })
 
-    // Comprobar que recien montado, la posicion Y (top) corresponde a 0.68 x 800 = 544px (alto de la vista), y NO a una vista colapsada
+    // Comprobar que recien montado, la posicion Y (top) corresponde a 0.52 x 800 = 416px (alto de la vista), y NO a una vista colapsada
     const topPx = parseFloat(recuadroEl!.style.top)
-    expect(topPx).toBeGreaterThan(300) // 544px con vista de 800px
+    expect(topPx).toBeGreaterThan(300) // ~416px con vista de 800px
 
-    // c. Al elegir 'oculta', no esta ninguno de los dos, Y LA PISTA DE LA CAMARA NO SE APAGO: el stop() de la pista no fue llamado
+    // c. Al elegir 'oculta', no esta ninguno de los dos, Y LA PISTA DE LA CAMARA NO SE APAGO: el stop() de la camara no fue llamado
     const btnOculta = screen.getByTestId('btn-fondo-oculta')
     fireEvent.click(btnOculta)
 
@@ -103,8 +102,10 @@ describe('Pruebas TAREA 59 - LOS OTROS DOS FONDOS (T277)', () => {
     // El cartelito de aviso de camara encendida debe estar en el documento
     expect(screen.getByTestId('aviso-camara-encendida')).toBeDefined()
 
-    // LA GUARDIANA DE VERDAD: stop() de la pista NO fue llamado al cambiar de fondo
-    expect(stopTrackFn).not.toHaveBeenCalled()
+    // LA GUARDIANA DE VERDAD: CameraPreview.stop() NO fue llamado al cambiar a modo oculta
+    expect(CameraPreview.stop).not.toHaveBeenCalled()
+    // En su lugar, se invocó setOpacity({ opacity: 0 })
+    expect(CameraPreview.setOpacity).toHaveBeenCalledWith({ opacity: 0 })
 
     unmount()
   })

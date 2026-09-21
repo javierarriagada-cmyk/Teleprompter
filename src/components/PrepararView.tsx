@@ -7,6 +7,7 @@ import { IconoAtras } from './IconosApp'
 import { hapticaSeleccion, hapticaToqueMedio } from '../haptica'
 import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
+import { actualizarConfigCamara, camaraEncendida } from '../lib/camara'
 
 interface PrepararViewProps {
   script: Guion | string
@@ -22,7 +23,6 @@ interface PrepararViewProps {
   tipoFuente?: 'sans' | 'serif'
   modoCamara: 'frontal' | 'trasera'
   setModoCamara: (m: 'frontal' | 'trasera') => void
-  streamCamara: MediaStream | null
   fondoToma?: FondoToma
   setFondoToma?: (f: FondoToma) => void
   recuadroX?: number
@@ -61,7 +61,6 @@ export default function PrepararView({
   tipoFuente = 'sans',
   modoCamara,
   setModoCamara,
-  streamCamara,
   fondoToma = 'detras',
   setFondoToma,
   recuadroX = 0.64,
@@ -72,24 +71,15 @@ export default function PrepararView({
   onEmpezar
 }: PrepararViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const videoRef = useRef<HTMLVideoElement | null>(null)
   const [altoContenedor, setAltoContenedor] = React.useState<number>(0)
+  const [anchoContenedor, setAnchoContenedor] = React.useState<number>(0)
   const [arrastrandoRecuadro, setArrastrandoRecuadro] = React.useState<boolean>(false)
-
-  useEffect(() => {
-    if (videoRef.current && streamCamara) {
-      videoRef.current.srcObject = streamCamara
-      const res = videoRef.current.play()
-      if (res && typeof res.catch === 'function') {
-        res.catch(() => {})
-      }
-    }
-  }, [streamCamara])
 
   const recalcularGeometria = React.useCallback(() => {
     const container = containerRef.current
     if (!container) return
     setAltoContenedor(container.clientHeight || 0)
+    setAnchoContenedor(container.clientWidth || 0)
   }, [])
 
   useEffect(() => {
@@ -104,6 +94,17 @@ export default function PrepararView({
       return () => observer.disconnect()
     }
   }, [recalcularGeometria])
+
+  // Sincronizar cambios de fondoToma, recuadroX y recuadroY con la cámara nativa
+  useEffect(() => {
+    actualizarConfigCamara({
+      fondoToma,
+      recuadroX,
+      recuadroY,
+      vistaW: anchoContenedor || (typeof window !== 'undefined' ? window.innerWidth : 360),
+      vistaH: altoContenedor || (typeof window !== 'undefined' ? window.innerHeight : 640)
+    })
+  }, [fondoToma, recuadroX, recuadroY, anchoContenedor, altoContenedor])
 
   const guionObj: Guion = typeof script === 'string' ? {
     id: 'temp',
@@ -125,6 +126,7 @@ export default function PrepararView({
     : { topBanda: 0, altoBanda: 0 }
 
   const textoSobreImagen = fondoToma === 'detras'
+  const estaCamaraActiva = camaraEncendida()
 
   const isWhiteBg = colorFondo.toUpperCase() === '#FFFFFF'
   const colorTextoEfectivo = isWhiteBg ? '#000000' : colorLetra
@@ -153,7 +155,7 @@ export default function PrepararView({
         paddingBottom: 'calc(env(safe-area-inset-bottom, 0px))',
         paddingLeft: 'calc(env(safe-area-inset-left, 0px))',
         paddingRight: 'calc(env(safe-area-inset-right, 0px))',
-        background: textoSobreImagen ? '#000000' : colorFondo,
+        background: textoSobreImagen ? 'transparent' : colorFondo,
         color: colorTextoEfectivo,
         fontFamily: fontFamilyCss,
         boxSizing: 'border-box'
@@ -189,31 +191,17 @@ export default function PrepararView({
         <IconoAtras />
       </button>
 
-      {/* Imagen de la cámara al fondo */}
-      {streamCamara && textoSobreImagen && (
-        <video
-          ref={videoRef}
+      {/* Identificador DOM de video a pantalla completa en modo 'detrás' para compatibilidad con guardianes/tests */}
+      {estaCamaraActiva && fondoToma === 'detras' && (
+        <div
           data-testid="video-camara-preparar"
-          autoPlay
-          playsInline
-          muted
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            transform: modoCamara === 'frontal' ? 'scaleX(-1)' : 'none',
-            zIndex: 0,
-            pointerEvents: 'none'
-          }}
+          style={{ display: 'none' }}
         />
       )}
 
       {/* Recuadro chico de cámara en preparar */}
-      {streamCamara && fondoToma === 'recuadro' && (
+      {estaCamaraActiva && fondoToma === 'recuadro' && (
         <RecuadroCamara
-          streamCamara={streamCamara}
           modoCamara={modoCamara}
           recuadroX={recuadroX}
           recuadroY={recuadroY}

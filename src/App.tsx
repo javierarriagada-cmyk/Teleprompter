@@ -154,39 +154,12 @@ export default function App({ motor, repoOverride }: AppProps) {
   // Ajustes persistentes
   const ajustesPrevios = cargarAjustesGuardados() || {}
 
-  // EL MOTOR POR OMISION LO DECIDE EL ENTORNO.
-  //
-  // Corriendo como APK: VOSK NATIVO. El modelo viaja adentro de la aplicacion y la
-  // biblioteca es codigo compilado, asi que no se baja nada y no se arma nada al
-  // apretar Leer.
-  //
-  // Corriendo en un navegador: Vosk WASM, que es lo unico que hay ahi.
-  //
-  // POR QUE NO SE DEJA VOSK WASM DE OMISION TAMBIEN EN ANDROID. Porque baja 34 MB
-  // en CADA lectura. Comprobado el 14 de septiembre de 2026 poniendo el telefono en
-  // modo avion: no arranca. En el corpus se ve el efecto -el reconocedor no entrega
-  // nada durante los primeros 11 a 13 segundos y la primera palabra que ubica es la
-  // 13 o la 15 del guion-, y Javier leia tres renglones a ciegas cada vez.
-  //
-  // Antes de esto habia que elegir "Nativo (Android)" a mano en el selector. Javier
-  // lo hizo y por eso funciono; cualquier otra persona arrancaba con el WASM.
-  //
-  // Y ANTES DE VOSK, la omision era Web Speech, que en su telefono entrega frases
-  // enteras en las pausas y no los parciales densos con los que el motor fue medido:
-  // leia con un reconocedor distinto del que estabamos midiendo y ninguno de los dos
-  // lo sabia. Por eso la omision no se elige por comodidad, se elige por lo que el
-  // motor necesita para funcionar como fue medido.
-  //
-  // La eleccion guardada del usuario manda sobre todo esto (siempre que sea un motor valido).
   const [engine, setEngine] = useState<IdMotor>(
     sanitizarEngine(ajustesPrevios.engine)
   )
   const [verTranscripcion, setVerTranscripcion] = useState<boolean>(Boolean(ajustesPrevios.verTranscripcion))
   const [mostrarTiempo, setMostrarTiempo] = useState<boolean>(ajustesPrevios.mostrarTiempo !== undefined ? Boolean(ajustesPrevios.mostrarTiempo) : true)
   const [fontSize, setFontSize] = useState<number>(ajustarFuenteValida(ajustesPrevios.fontSize))
-  // MARGEN 5% POR OMISION. Javier lo eligio mirando, el 13 de septiembre de 2026: puso 5 y
-  // dijo que asi queda bien. Con el tope de 90% que lleva la columna por dentro, 5% de
-  // padding deja el texto en el 81% del ancho de la pantalla. Estaba en 10, que da 72%.
   const [marginPercent, setMarginPercent] = useState<number>(ajustesPrevios.marginPercent !== undefined ? Number(ajustesPrevios.marginPercent) : 5)
   const [mirror, setMirror] = useState<boolean>(Boolean(ajustesPrevios.mirror))
   const [lineasZona, setLineasZona] = useState<number>(ajustesPrevios.lineasZona !== undefined ? Number(ajustesPrevios.lineasZona) : 3)
@@ -210,10 +183,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     return 'oscuro'
   })
 
-  // COLUMNA ANCHA POR OMISION. Estaba en angosta y Javier lo pregunto el 13 de septiembre
-  // de 2026: la angosta es una opcion para quien la quiera, no el punto de partida. En un
-  // telefono la angosta deja tres o cuatro palabras por renglon y obliga a saltar de linea
-  // todo el tiempo. Y ahora la eleccion se recuerda, como el resto de los ajustes.
   const [columnaAngosta, setColumnaAngosta] = useState<boolean>(
     ajustesPrevios.columnaAngosta !== undefined ? Boolean(ajustesPrevios.columnaAngosta) : false
   )
@@ -232,7 +201,6 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [recuadroY, setRecuadroY] = useState<number>(
     typeof ajustesPrevios.recuadroY === 'number' ? ajustesPrevios.recuadroY : 0.52
   )
-  const [streamCamara, setStreamCamara] = useState<MediaStream | null>(null)
 
   const coloresIniciales = sanitizarColores(ajustesPrevios.colorFondo, ajustesPrevios.colorLetra)
   const [colorFondo, setColorFondo] = useState<string>(coloresIniciales.colorFondo)
@@ -241,8 +209,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     ajustesPrevios.tipoFuente === 'serif' ? 'serif' : 'sans'
   )
 
-  // Mientras estemos arreglando el motor, toda lectura se mide. Se puede apagar si
-  // alguna vez estorba, pero la omision es medir.
   const [medirLectura, setMedirLectura] = useState<boolean>(true)
   const [modoManual, setModoManual] = useState<boolean>(false)
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
@@ -310,7 +276,6 @@ export default function App({ motor, repoOverride }: AppProps) {
   // Cargar/Migrar al arrancar
   useEffect(() => {
     async function inicializar() {
-      // Verificar si el repositorio funciona o caer a fallback si no está disponible
       try {
         await repoRef.current.listar()
       } catch (e) {
@@ -354,8 +319,6 @@ export default function App({ motor, repoOverride }: AppProps) {
         }
       }
 
-      // GUION DE BIENVENIDA: Se crea una sola vez la primera vez que se abre la aplicacion.
-      // Se omite si repoOverride fue provisto (evita romper pruebas con RepositorioMemoria).
       if (!repoOverride) {
         let yaPuesta = false
         try {
@@ -369,27 +332,11 @@ export default function App({ motor, repoOverride }: AppProps) {
 
           const guionBienvenida: Guion = {
             id: 'bienvenida-' + Date.now(),
-            // "Hola" y no "Bienvenida": Javier, el 15 de septiembre de 2026, "me parece
-            // muy formal". Y hace eco con la primera linea del propio guion.
-            // La marca de localStorage sigue llamandose teleprompter_bienvenida_puesta a
-            // proposito: si se le cambia el nombre, a quien ya lo tenia le aparece un
-            // segundo guion.
             titulo: 'Hola',
             idioma: 'es',
             creado: Date.now(),
             modificado: Date.now(),
             archivado: false,
-            // UN SOLO BLOQUE, NO SEIS.
-            //
-            // El encargo de la tarea 46 decia "cada parrafo es un bloque" y fue un error
-            // mio: el editor dibuja cada bloque con su encabezado numerado y sus botones
-            // de mover y borrar, asi que lo PRIMERO que veia alguien al instalar eran
-            // seis "Bloque #N" -justamente la funcion que Javier dejo congelada hasta
-            // definir para que sirve-.
-            //
-            // No hace falta: la pantalla de lectura respeta los saltos de linea del
-            // autor, asi que un bloque con los parrafos separados por una linea en blanco
-            // se lee exactamente igual y el editor queda limpio.
             bloques: [
               {
                 id: 'b-bienvenida-1',
@@ -428,7 +375,6 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const disparoEntradaRef = useRef<boolean>(false)
 
-  // Relevo del splash nativo al espejo SIGO en la web
   useEffect(() => {
     if (movimientoApagado() || disparoEntradaRef.current) {
       return
@@ -478,7 +424,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }, [cargado])
 
-  // Auto-guardado debounced (500ms) al modificar guionActual
   useEffect(() => {
     if (!cargado || !guionActual) return
     const timer = setTimeout(async () => {
@@ -519,20 +464,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }
 
-  // UN GUION QUE NO SE ESCRIBIO NO SE GUARDA.
-  //
-  // handleCrearNuevoGuion lo guarda en el repositorio ANTES de abrir el editor, para
-  // que el guardado automatico tenga contra que guardar desde la primera tecla. El
-  // efecto de eso es que apretar "+" y volver atras sin escribir nada deja un guion
-  // fantasma. Javier abrio la biblioteca el 16 de septiembre de 2026 y tenia cuatro
-  // "Sin titulo" seguidos, todos de haber entrado y salido.
-  //
-  // No se arregla al entrar -guardar mas tarde obliga a inventar un estado a medias
-  // entre "no existe" y "existe"-. Se arregla al salir: si no hay titulo y no hay
-  // texto, no hay nada que conservar.
-  //
-  // OJO: guionNuevo NO deja el titulo vacio, lo deja en 'Sin título'. Comparar contra
-  // la cadena vacia no alcanza.
   function guionSinEscribir(g: Guion | null): boolean {
     if (!g) return false
     const titulo = (g.titulo || '').trim()
@@ -540,8 +471,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     return (g.bloques || []).every((b) => !b.texto || b.texto.trim() === '')
   }
 
-  // Los dos caminos de vuelta -el boton y el gesto de atras de Android- pasan por
-  // aca. Arreglar uno solo deja el fantasma entrando por el otro.
   async function salirDelEditor() {
     const g = guionActual
     if (guionSinEscribir(g)) {
@@ -665,7 +594,6 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [cuentaRegresiva, setCuentaRegresiva] = useState<number | null>(null)
   const [enPausa, setEnPausa] = useState<boolean>(false)
 
-  // Referencia para la función que cierra el modal abierto si existe
   const cerrarModalRef = useRef<(() => boolean) | null>(null)
 
   const timerCuentaRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -691,23 +619,16 @@ export default function App({ motor, repoOverride }: AppProps) {
       cancelarCuentaRegresiva()
       if (camaraEncendida()) {
         apagarCamara()
-        setStreamCamara(null)
         setCamaraActiva(false)
       }
     } else if (modoCamara !== 'apagada') {
       if (!camaraEncendida() || modoCamara !== ladoActual()) {
-        encenderCamara(modoCamara).then((st) => {
-          if (st) {
-            setStreamCamara(st)
-            setCamaraActiva(true)
-          } else {
-            setStreamCamara(null)
-            setCamaraActiva(false)
-          }
+        encenderCamara(modoCamara, { fondoToma, recuadroX, recuadroY }).then(() => {
+          setCamaraActiva(camaraEncendida())
         })
       }
     }
-  }, [vista, cancelarCuentaRegresiva, modoCamara])
+  }, [vista, cancelarCuentaRegresiva, modoCamara, fondoToma, recuadroX, recuadroY])
 
   useEffect(() => {
     if (camaraActiva && fondoToma === 'detras' && (vista === 'lectura' || vista === 'preparar')) {
@@ -757,10 +678,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     alNotificarVoz: seguidorVoz
   })
 
-  // Los controles vuelven a irse solos. Un toque los trae, y si el que lee no aprieta nada
-  // se van otra vez: si se quedaran encendidos hasta el siguiente toque, bastaria con
-  // olvidarse una vez para tenerlos en pantalla el resto de la toma, que es exactamente lo
-  // que se quiso evitar al hacer que desaparecieran.
   useEffect(() => {
     const leyendo = isRecording || cuentaRegresiva !== null
     if (!leyendo || !controlesVisibles) return
@@ -778,8 +695,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }, [controlesVisibles, isRecording, cuentaRegresiva])
 
-  // Mientras se esta leyendo, la version nueva espera. Recargar a alguien que esta leyendo a
-  // camara le arruina la toma; la actualizacion se aplica sola en cuanto termina.
   useEffect(() => {
     bloquearRecargaAutomatica('leyendo', isRecording || cuentaRegresiva !== null)
   }, [isRecording, cuentaRegresiva])
@@ -801,41 +716,12 @@ export default function App({ motor, repoOverride }: AppProps) {
     setEnPausa(false)
     await solicitarWakeLock()
 
-    // MEDIR ES PARTE DE LEER, NO UN BOTON APARTE.
-    //
-    // Tener "Grabar" separado de "Iniciar" no era una incomodidad, era una trampa: grabar
-    // sin arrancar el motor da audio sin nada que medir, y arrancar el motor sin grabar
-    // deja el cero del reloj tarde y pierde el principio de la lectura. Las dos maneras de
-    // equivocarse producen una grabacion inutil, y eso recien se descubre al analizarla.
-    // Lo dijo Javier el 13 de septiembre de 2026: "por que el boton de grabar con el de
-    // iniciar no son el mismo".
-    //
-    // El audio arranca ACA, al principio de la cuenta regresiva, no al final: esos tres
-    // segundos quedan de margen y ninguna palabra del comienzo se corta. Todo va al mismo
-    // reloj igual, asi que el margen no estorba.
-    //
-    // Y VA SIN await, A PROPOSITO. Esto lo escribi mal la primera vez y rompio la lectura
-    // entera: puse `await iniciarGrabacion(...)` justo aca, antes de la cuenta regresiva.
-    // Pedir el microfono puede quedarse esperando -el cartel de permiso, un microfono
-    // ocupado-, y con el await la cuenta regresiva no arrancaba, el motor no se encendia
-    // nunca y no se movia nada. Javier: "no avanza nada y desde el principio aparece abajo
-    // detenido". Escribi en el comentario de abajo que medir no puede impedir leer y
-    // programe justo lo contrario.
-    //
-    // Ahora la grabacion arranca EN PARALELO: la lectura empieza igual pase lo que pase con
-    // el microfono. Si el permiso tarda dos segundos, se pierden los dos primeros segundos
-    // de audio y nada mas; para eso estan los tres segundos de cuenta regresiva de margen.
-    //
-    // Si no se puede grabar -permiso negado, navegador sin microfono-, la lectura sigue
-    // igual. Medir no puede impedir leer; el motivo queda a la vista en el panel.
     if (medirLectura) {
       iniciarGrabacion({
         guionTitulo: guionActual ? guionActual.titulo : '(sin guion)',
         guionTexto: guionActual ? guionActual.bloques.map((b) => b.texto).join('\n') : '',
         motor: motorActivo
-      }).catch(() => {
-        // El panel muestra el motivo. La lectura no se interrumpe.
-      })
+      }).catch(() => {})
     }
 
     setControlesVisibles(false)
@@ -930,36 +816,23 @@ export default function App({ motor, repoOverride }: AppProps) {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
     setEnPausa(false)
-    if (camaraActiva || streamCamara) {
+    if (camaraEncendida()) {
       apagarCamara()
-      setStreamCamara(null)
       setCamaraActiva(false)
     }
     await stop()
-    // El audio se corta DESPUES del motor, no antes: si se cortara primero, los ultimos
-    // calces quedarian anotados con un milisegundo que ya no existe en el archivo.
     await detenerGrabacion()
     await soltarWakeLock()
 
-    // LOS CONTROLES VUELVEN AL PARAR, sin tener que tocar la pantalla.
-    //
-    // Volver con el toque ya existia -onToggleControles, que TeleprompterView dispara y que
-    // sabe distinguir un toque de un arrastre; lo cuida T91-. Esto es otra cosa: al APRETAR
-    // DETENER la lectura termino, y lo primero que uno quiere ver es justamente lo que hay
-    // ahi -que quedo grabado, como sigue-. Pedirle un toque de mas en ese momento es pedirle
-    // que adivine que los controles se traen tocando.
     setControlesVisibles(true)
   }
 
-  // Ref para manejar el evento de botón de atrás en Android
   const handleVolverAtrasRef = useRef<() => Promise<void> | void>(() => {})
   useEffect(() => {
     handleVolverAtrasRef.current = async () => {
-      // 1. Si hay un modal abierto, cerrarlo
       if (cerrarModalRef.current && cerrarModalRef.current()) {
         return
       }
-      // 2. Durante la lectura, hacer exactamente lo mismo que "Salir": handleStop y volver al origen
       if (vista === 'lectura') {
         await handleStop()
         setVista(origenLecturaRef.current)
@@ -973,31 +846,16 @@ export default function App({ motor, repoOverride }: AppProps) {
         setVista('biblioteca')
         return
       }
-      // 3. En el editor, volver a la biblioteca -descartando el guion si no se escribio
       if (vista === 'editor') {
         await salirDelEditor()
         return
       }
-      // 4. En la biblioteca, salir de la aplicación
       if (vista === 'biblioteca') {
         CapacitorApp.exitApp()
       }
     }
   })
 
-  // EL GESTO DE ATRAS DE ANDROID.
-  //
-  // Antes de esto no habia ningun manejo del gesto en todo el proyecto, y durante
-  // la lectura se llevaba la grabacion entera: se iba de la aplicacion sin pasar
-  // por handleStop, asi que detenerGrabacion no corria y la lectura se perdia sin
-  // ningun aviso.
-  //
-  // ACA NO SE EXPONE NINGUN ATAJO PARA PROBAR. La primera version colgaba este
-  // mismo handler de window.__simularBotonAtras para que las pruebas lo llamaran.
-  // Ademas de viajar en el APK, eso hacia que la prueba tocara una COPIA y nunca
-  // comprobara que estuviera conectada al gesto: borrando el addListener de abajo,
-  // el gesto quedaba muerto y T188 seguia verde. La prueba finge el plugin -ver el
-  // vi.mock de pantallas.test.tsx- y captura ESTE listener.
   useEffect(() => {
     let listenerHandle: any = null
     const handler = () => {
@@ -1073,12 +931,6 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const tituloMostrar = (guionActual && guionActual.titulo && guionActual.titulo.trim()) ? guionActual.titulo : 'Sin título'
 
-  // LA TARJETA O LA PILDORA SE CONVIERTE EN LA PANTALLA DE LECTURA.
-  //
-  // La medicion es una sola, en el toque: BibliotecaView o EditorView manda el
-  // rectangulo de la tarjeta o del boton "Leer", y aca se traduce a los cuatro huecos
-  // que pide inset(). El motivo de recortar en vez de agrandar esta escrito arriba de
-  // @keyframes revelarLectura.
   const huecoEntrada = (rectTarjeta && typeof window !== 'undefined')
     ? {
         arriba: Math.max(0, rectTarjeta.top),
@@ -1098,15 +950,6 @@ export default function App({ motor, repoOverride }: AppProps) {
         paddingBottom: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-bottom, 0px))',
         paddingLeft: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-left, 0px))',
         paddingRight: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-right, 0px))',
-        // SIN fontFamily AQUI, A PROPOSITO.
-        //
-        // Esta linea decia fontFamily: 'sans-serif' -la palabra generica- y pisaba
-        // la pila del body para TODA la aplicacion. Medido en el navegador el 20 de
-        // septiembre de 2026: el body calculaba "Source Sans 3" y todo lo que colgaba
-        // de aca calculaba el sans generico del navegador.
-        //
-        // Aparecio revisando la tarea 55: el boton "Aa" paso de serif a sans y seguia
-        // sin ser el nuestro. La familia se define en un solo sitio, el body.
         maxWidth: (vista === 'lectura' || vista === 'preparar') ? 'none' : 1200,
         margin: '0 auto'
       }}
@@ -1153,7 +996,6 @@ export default function App({ motor, repoOverride }: AppProps) {
         </div>
       )}
 
-      {/* Franja de estado escondida por omision - se activa mediante toque largo en el resumen de la biblioteca */}
       {mostrarDiagnostico && (
         <div
           data-testid="franja-de-estado-diagnostico"
@@ -1225,9 +1067,6 @@ export default function App({ motor, repoOverride }: AppProps) {
               colorLetra={colorLetra}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
             style={{
-              // La biblioteca se oscurece MIENTRAS crece la ventana, no de golpe: un
-              // apagon instantaneo se lee como un corte, que es justo lo que la
-              // transformacion existe para evitar.
               filter: (vista === 'lectura' || vista === 'preparar') ? 'brightness(0.15)' : 'none',
               display: (camaraActiva && fondoToma === 'detras' && (vista === 'lectura' || vista === 'preparar')) ? 'none' : undefined,
               transition: movimientoApagado() ? 'none' : `filter ${MS_PANTALLA}ms ${CURVA_ENTRA}`,
@@ -1256,7 +1095,6 @@ export default function App({ motor, repoOverride }: AppProps) {
           tipoFuente={tipoFuente}
           modoCamara={modoCamara === 'trasera' ? 'trasera' : 'frontal'}
           setModoCamara={(m) => setModoCamara(m)}
-          streamCamara={streamCamara}
           fondoToma={fondoToma}
           setFondoToma={setFondoToma}
           recuadroX={recuadroX}
@@ -1324,8 +1162,6 @@ export default function App({ motor, repoOverride }: AppProps) {
             animation: hayTransformacionDeEntrada
               ? `revelarLectura ${MS_PANTALLA}ms ${CURVA_ENTRA}`
               : 'none',
-            // Los cuatro huecos que hay entre el borde de la pantalla y la tarjeta o pildora:
-            // eso es el recorte del que arranca la ventana.
             '--tarjeta-arriba': huecoEntrada ? `${huecoEntrada.arriba}px` : '0px',
             '--tarjeta-derecha': huecoEntrada ? `${huecoEntrada.derecha}px` : '0px',
             '--tarjeta-abajo': huecoEntrada ? `${huecoEntrada.abajo}px` : '0px',
@@ -1487,7 +1323,6 @@ export default function App({ motor, repoOverride }: AppProps) {
               isRecording={isRecording || cuentaRegresiva !== null}
               enPausa={enPausa}
               camaraEncendida={camaraActiva}
-              streamCamara={streamCamara}
               ladoCamara={modoCamara === 'trasera' ? 'trasera' : 'frontal'}
             fondoToma={fondoToma}
             recuadroX={recuadroX}
@@ -1497,11 +1332,6 @@ export default function App({ motor, repoOverride }: AppProps) {
               onModoManualChange={setModoManual}
               onEstadoAvanceChange={handleEstadoAvanceChange}
             />
-            {/* EL RELEVO del texto chico de la tarjeta al texto grande de la lectura.
-                Es un velo del mismo color de fondo que se desvanece por encima, NO un
-                envoltorio alrededor de TeleprompterView: envolverlo mete un elemento
-                entre el contenedor y la superficie de lectura, y hay pruebas que suben
-                por el arbol desde ahi. Un hermano no cambia ese camino. */}
             {hayTransformacionDeEntrada && (
               <div
                 aria-hidden="true"
@@ -1514,19 +1344,6 @@ export default function App({ motor, repoOverride }: AppProps) {
                 }}
               />
             )}
-            {/* LA CUENTA ES UN ESCENARIO, NO UN STICKER -parte 4 de la tarea 50-.
-                Mientras corren los tres segundos, el guion no se lee y el cartel de
-                estado del motor no se ve: un parrafo atravesado por un 3, con
-                "Detenido" abajo, es lo que hacia que la cuenta pareciera pegada
-                encima en vez de ser un momento propio.
-
-                Es un velo hermano, del mismo color de fondo, NO un cambio adentro de
-                TeleprompterView: ese archivo esta congelado desde la tarea 43, y el
-                cartel es suyo. Tapar desde afuera no le toca una linea.
-
-                El zIndex 6 no es decorativo: el cartel de estado esta en 5 y la
-                cuenta en 10. Seis es el unico hueco que tapa el cartel sin tapar el
-                numero. */}
             {cuentaRegresiva !== null && (
               <div
                 data-testid="velo-cuenta-regresiva"

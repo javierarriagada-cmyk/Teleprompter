@@ -5,22 +5,24 @@ import 'fake-indexeddb/auto'
 import App from '../App'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { MotorFake } from '../motor/MotorFake'
+import { CameraPreview } from '@capgo/camera-preview'
+
+vi.mock('@capgo/camera-preview', () => ({
+  CameraPreview: {
+    start: vi.fn().mockResolvedValue({ width: 360, height: 640, x: 0, y: 0 }),
+    stop: vi.fn().mockResolvedValue(undefined),
+    setOpacity: vi.fn().mockResolvedValue(undefined),
+    setPreviewSize: vi.fn().mockResolvedValue({ width: 360, height: 640, x: 0, y: 0 })
+  }
+}))
 
 describe('Pruebas TAREA 58 - PREPARAR LA TOMA (T276)', () => {
   beforeEach(() => {
     localStorage.clear()
-    if (!navigator.mediaDevices) {
-      Object.defineProperty(navigator, 'mediaDevices', {
-        value: {},
-        writable: true
-      })
-    }
-    navigator.mediaDevices.getUserMedia = vi.fn().mockResolvedValue({
-      getTracks: () => [{ stop: () => {} }]
-    } as any)
+    vi.clearAllMocks()
   })
 
-  test('T276: con modoCamara en "frontal", apretar Leer deja la aplicacion en "preparar" y NO en "lectura", y el motor NO arranco. Apretar Empezar entra a "lectura". Y con modoCamara en "apagada", apretar Leer entra DERECHO a "lectura", sin pasar por "preparar". Entre entrar a preparar y llegar a lectura, getUserMedia para camara tiene que haberse llamado UNA SOLA VEZ.', async () => {
+  test('T276: con modoCamara en "frontal", apretar Leer deja la aplicacion en "preparar" y NO en "lectura", y el motor NO arranco. Apretar Empezar entra a "lectura". Y con modoCamara en "apagada", apretar Leer entra DERECHO a "lectura", sin pasar por "preparar". Entre entrar a preparar y llegar a lectura, CameraPreview.start tiene que haberse llamado UNA SOLA VEZ.', async () => {
     // 1. Con modoCamara en 'frontal'
     localStorage.setItem(
       'teleprompter_ajustes',
@@ -62,11 +64,8 @@ describe('Pruebas TAREA 58 - PREPARAR LA TOMA (T276)', () => {
       expect(screen.getByTestId('teleprompter-view-container')).toBeDefined()
     })
 
-    // Comprobar que getUserMedia para video (cámara) se llamó UNA SOLA VEZ entre entrar a 'preparar' y llegar a 'lectura'
-    const llamadasCamara = (navigator.mediaDevices.getUserMedia as any).mock.calls.filter(
-      (c: any) => c[0] && c[0].video
-    )
-    expect(llamadasCamara.length).toBe(1)
+    // Comprobar que CameraPreview.start se llamó UNA SOLA VEZ entre entrar a 'preparar' y llegar a 'lectura'
+    expect(CameraPreview.start).toHaveBeenCalledTimes(1)
 
     unmount()
 

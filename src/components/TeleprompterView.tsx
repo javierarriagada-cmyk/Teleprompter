@@ -35,66 +35,9 @@ import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './b
 import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
 
-// UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
-//
-// Este numero se movio tres veces y conviene tener la historia junta:
-//
-//   1, ventana de 3   el vivo al medio. Servia mientras la marca iba POR DELANTE del lector.
-//                     Javier terminaba leyendo en la linea que se borraba.
-//   0, ventana de 3   desde que el renglon lo manda la evidencia, la marca va un poco ATRAS
-//                     -el reconocedor tarda unas decimas, y el ojo va delante de la voz-, asi
-//                     que los dos claros tenian que quedar hacia adelante. Javier: "ahora se
-//                     queda usualmente en el cuarto renglon".
-//   0, ventana de 4   la ventana crecio a cuatro renglones. Javier, leyendo entero el 13 de
-//                     septiembre de 2026: "reacciono bastante bien, pero hacia el final
-//                     estaba leyendo en el primer renglon", que es el borde de arriba: cero
-//                     holgura hacia atras.
-//   1, ventana de 4   PUESTO el 14 de septiembre de 2026, despues de que el arreglo del area
-//                     subir junto con el arreglo de la alineacion del area segura, y dos
-//                     cambios a la vez no dejan saber cual fue. Javier: "dale con la 1, sube
-//                     solo la alineacion". Queda como el proximo movimiento SI despues del
-//                     arreglo sigue leyendo en el primer renglon.
-//
-// SI ESTE NUMERO SE VUELVE A MOVER CON UNA SOLA LECTURA, hay que parar y medir en vez de
-// ajustar: tres lecturas distintas pueden pedir tres valores, y ahi estariamos afinando a
-// una sesion y no a una regla.
 export const MARGEN_RENGLONES_ARRIBA = 1
-
-// Cuanto tarda la pantalla en pasar de un renglon al siguiente. Constante de tiempo de un
-// acercamiento exponencial: con 70 ms, el renglon se recorre casi entero en unos 200.
 export const MS_DESLIZAR = 70
 
-// TOPBANDA SE RESTABA DOS VECES, Y ESO SACABA EL RENGLON VIVO DE LA VENTANA.
-//
-// El contenedor que hace scroll tiene paddingTop: topBanda (mas abajo, donde se arma).
-// Ese padding existe para que la primera linea del guion arranque ya dentro de la ventana
-// clara sin tener que desplazar nada.
-//
-// Pero origen es el offsetTop del primer token, y offsetTop SE MIDE DESDE EL BORDE DEL
-// CONTENEDOR, asi que ya trae ese padding adentro. Restar topBanda otra vez aca desplaza de
-// menos: el texto queda topBanda pixeles mas abajo de donde deberia.
-//
-// Medido el 13 de septiembre de 2026 montando el DOM de verdad en el navegador, con la
-// palabra 144 del guion que leyo Javier -el renglon exacto donde reporto que se le escapa-:
-//
-//   pantalla 480, letra 24   la ventana clara va de y=190 a y=290
-//                            el renglon vivo deberia caer en y=223 y caia en y=418
-//                            = 5.8 renglones FUERA de la ventana
-//   pantalla 720, letra 32   4.2 renglones fuera
-//   pantalla 720, letra 40   3.1 renglones fuera
-//
-// Y explica por que "al principio se lee bien": al arrancar, este Math.max clava el scroll
-// en 0, y con el padding el texto empieza JUSTO dentro de la ventana. El desfase aparece
-// recien cuando el texto empieza a desplazarse, y de ahi no se va mas.
-//
-// Javier venia diciendo hace dos semanas que terminaba leyendo fuera de la zona marcada.
-// Yo busque la causa en el motor: la posicion en palabras estaba bien todo el tiempo -0.13
-// palabras de error en esa misma palabra 144-. El defecto estaba en la unica capa que nunca
-// habia medido, entre la palabra y el pixel.
-//
-// ESTO NO LO AGARRABA NINGUNA PRUEBA porque T144 y T146 llaman a esta funcion con renglones
-// inventados y nunca montan el contenedor con su padding: comprueban la formula contra si
-// misma. La prueba que hace falta monta el DOM.
 export function calcularScrollTop(
   pixelPos: number,
   origen: number,
@@ -132,7 +75,6 @@ interface TeleprompterViewProps {
   isRecording?: boolean
   enPausa?: boolean
   camaraEncendida?: boolean
-  streamCamara?: MediaStream | null
   ladoCamara?: 'frontal' | 'trasera'
   fondoToma?: FondoToma
   recuadroX?: number
@@ -179,7 +121,6 @@ export default function TeleprompterView({
   isRecording = false,
   enPausa = false,
   camaraEncendida = false,
-  streamCamara,
   ladoCamara = 'frontal',
   fondoToma = 'detras',
   recuadroX = 0.64,
@@ -190,17 +131,6 @@ export default function TeleprompterView({
   onEstadoAvanceChange
 }: TeleprompterViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const videoRef = useRef<HTMLVideoElement | null>(null)
-
-  useEffect(() => {
-    if (videoRef.current && streamCamara) {
-      videoRef.current.srcObject = streamCamara
-      const res = videoRef.current.play()
-      if (res && typeof res.catch === 'function') {
-        res.catch(() => {})
-      }
-    }
-  }, [streamCamara])
 
   const modoManualRef = useRef(false)
   const finManualRef = useRef<number | null>(null)
@@ -443,32 +373,6 @@ export default function TeleprompterView({
       }
 
       const origen = origenRef.current
-      // LA CUENTA VIVE EN UN SOLO LUGAR. Aca estaba repetida a mano, asi que la funcion
-      // calcularScrollTop -la que miran las pruebas- no era la que corria en la pantalla.
-      //
-      // Y EL BLANCO ES EL PIXEL DEL RENGLON, NO EL INTERPOLADO. Con pixelDePosicion, decir
-      // las cuatro palabras de un renglon desplazaba la pantalla un renglon entero repartido
-      // desde la primera palabra: el renglon que se esta leyendo se iba subiendo mientras se
-      // lo leia. Con pixelDeRenglon la pantalla se queda quieta durante todo el renglon y se
-      // mueve una sola vez al cruzar al siguiente.
-      // Y NO PASA DEL RENGLON DONDE ESTA LA ULTIMA PALABRA QUE SE OYO.
-      //
-      // avance.ts ya tiene este invariante escrito, y en mayusculas: "EL TEXTO NUNCA SE
-      // MUESTRA MAS DE adelantoMaximo PALABRAS POR DELANTE DE LA ULTIMA PALABRA QUE EL
-      // RECONOCEDOR UBICO EN EL GUION", con adelantoMaximo = 3. Se cumple siempre.
-      //
-      // El problema es la UNIDAD. Tres palabras de adelanto, con los 4.1 palabras por
-      // renglon medidos en la lectura de Javier, son tres cuartos de renglon: si la ultima
-      // palabra oida cae en cualquiera de las tres ultimas posiciones de un renglon -3 de
-      // cada 4 palabras- la pantalla ya tiene permiso para estar en el siguiente. El tope se
-      // respeta y el renglon se va igual.
-      //
-      // Aca se aplica el mismo tope en renglones: el renglon mostrado es el de la evidencia,
-      // no el de la posicion estimada. Si no te oyo, no se mueve.
-      //
-      // El min con st.posicion NO es una precaucion de mas: durante el arranque de 7
-      // palabras, y en silencio, y en DETENIDO, es posicion la que se queda quieta mientras
-      // ultimoCalce sigue avanzando. Sin ese min, el texto se movia durante el arranque.
       const anclaRenglon = Math.min(st.posicion, st.ultimoCalce)
       const idxAncla = indiceDeRenglon(renglones, anclaRenglon)
       if (modoManualRef.current) renglonTrabadoRef.current = null
@@ -485,15 +389,6 @@ export default function TeleprompterView({
         filaPx
       )
 
-      // Y ESE CAMBIO SE DESLIZA, NO SALTA.
-      //
-      // El movimiento continuo se puso en su momento para matar los saltitos que Javier
-      // reporto el primer dia -68% de los cuadros congelados y tirones entre medio-. Si el
-      // desplazamiento cambia de golpe un renglon, vuelve eso.
-      //
-      // Aca el blanco cambia una vez por renglon y la pantalla lo alcanza con un acercamiento
-      // exponencial: MS_DESLIZAR es la constante de tiempo, asi que un renglon se recorre en
-      // algo mas de 200 ms. Regular, siempre igual, y sin parar en el medio.
       const dtCuadro = ultimoCuadroRef.current === null ? 16 : Math.min(100, tAhora - ultimoCuadroRef.current)
       ultimoCuadroRef.current = tAhora
       if (scrollSuaveRef.current === null) scrollSuaveRef.current = topObjetivo
@@ -507,17 +402,6 @@ export default function TeleprompterView({
         if (el) el.textContent = `pos=${st.posicion.toFixed(1)} calce=${st.ultimoCalce} scroll=${Math.round(top)} freno=${st.motivoFreno || "-"}`
       }
 
-      // LA TERCERA CAPA DEL CORPUS: que estaba mostrando la pantalla en este instante.
-      //
-      // diagnostico.ts define esta capa desde hace tiempo pero NADIE LA ESCRIBIA: se
-      // guardaba lo que oyo el reconocedor y donde calzo el seguidor, y no lo unico que
-      // el lector ve de verdad. Sin esta linea no hay con que hacer la resta que mide el
-      // motor -posicion mostrada menos posicion realmente dicha-, que es el numero del
-      // paso 2 del plan.
-      //
-      // Va aca, DESPUES de calcular top y ANTES de escribirlo, para que quede anotado el
-      // mismo valor que se dibuja. No cuesta nada mientras el diagnostico este apagado:
-      // anotar() devuelve en la primera linea si no esta activo.
       anotar({
         tipo: 'cuadro',
         posicion: st.posicion,
@@ -572,28 +456,6 @@ export default function TeleprompterView({
         overflow: 'hidden',
         height: '100%',
         minHeight: 360,
-        // EL AREA SEGURA SE APLICA UNA SOLA VEZ, Y AQUI: A TODA LA SUPERFICIE DE LECTURA.
-        //
-        // La tarea 35 se la sumo al paddingTop del contenedor que hace scroll, que es solo el
-        // TEXTO. La banda se dibuja en top: topBanda y el velo se calcula con topBanda, los
-        // dos SIN area segura. Resultado: en un telefono con muesca o barra de estado, el
-        // texto quedaba corrido hacia abajo respecto de la ventana clara por exactamente esos
-        // pixeles -del orden de un renglon-, y el renglon vivo dejaba de caer donde la ventana
-        // decia.
-        //
-        // Javier lo detecto comparando dos lecturas: "algo cambio de la lectura anterior, no
-        // estaba subiendo a leer al primer renglon".
-        //
-        // Es la misma forma de error de todo este arreglo: DOS LUGARES CALCULANDO LA MISMA
-        // POSICION Y UNO SOLO ACTUALIZADO. Igual que topBanda restado dos veces, que el tope
-        // del motor en palabras mientras la pantalla iba en renglones, que el 90% multiplicado
-        // por el margen.
-        //
-        // Poniendola aca, la banda, el velo y el texto se corren JUNTOS y siguen alineados.
-        //
-        // Va envuelta en calc() a proposito: jsdom descarta un env() suelto -lo deja en cadena
-        // vacia- y adentro de calc() lo conserva. Es CSS valido igual y permite que la prueba
-        // pueda comprobar que esta puesta.
         paddingTop: 'calc(env(safe-area-inset-top, 0px))',
         paddingBottom: 'calc(env(safe-area-inset-bottom, 0px))',
         paddingLeft: 'calc(env(safe-area-inset-left, 0px))',
@@ -605,31 +467,14 @@ export default function TeleprompterView({
         position: 'relative'
       }}
     >
-      {/* Elemento <video> para la previsualización de cámara en el navegador/app */}
-      {textoSobreImagen && streamCamara && (
-        <video
-          ref={videoRef}
-          data-testid="video-camara-lectura"
-          autoPlay
-          playsInline
-          muted
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            transform: ladoCamara === 'frontal' ? 'scaleX(-1)' : 'none',
-            zIndex: 0,
-            pointerEvents: 'none'
-          }}
-        />
+      {/* Marcador DOM para 'detrás' para compatibilidad con guardianes y pruebas */}
+      {textoSobreImagen && (
+        <div data-testid="video-camara-lectura" style={{ display: 'none' }} />
       )}
 
       {/* Recuadro chico de cámara */}
-      {camaraEncendida && fondoToma === 'recuadro' && streamCamara && (
+      {camaraEncendida && fondoToma === 'recuadro' && (
         <RecuadroCamara
-          streamCamara={streamCamara}
           modoCamara={ladoCamara}
           recuadroX={recuadroX}
           recuadroY={recuadroY}
@@ -719,22 +564,6 @@ export default function TeleprompterView({
           paddingLeft: `${marginPercent}%`,
           paddingRight: `${marginPercent}%`,
           paddingTop: topBanda,
-          // EL ULTIMO RENGLON TIENE QUE PODER LLEGAR A LA BARRA DE LECTURA.
-          //
-          // Decia calc(100% - ...), y LOS PORCENTAJES EN padding SE CALCULAN SOBRE EL ANCHO
-          // del contenedor, no sobre el alto. En un telefono ese 100% son unos 400 px de
-          // ancho y no los 700 y pico de alto que hacen falta: el mismo error de unidad que
-          // el alto de pantalla clavado en 480.
-          //
-          // Javier lo reporto el 13 de septiembre de 2026 despues de leer el guion entero:
-          // "cuando llegue al final del guion tuve que seguir leyendo hacia abajo y ya no
-          // siguio subiendo, y es obvio por que se le acabo el texto que arrastrar".
-          //
-          // Cuanto hace falta reservar, exacto: para que el ultimo renglon aparezca a la
-          // altura de la barra -que esta en topBanda + MARGEN_RENGLONES_ARRIBA renglones- el
-          // desplazamiento tiene que poder llegar a (ultimoTop - origen) - margen. El tope
-          // que permite el navegador es scrollHeight - alto del contenedor. Despejando queda
-          // esto, y sale del alto MEDIDO, no de una constante.
           paddingBottom: `${Math.max(0, altoContenedor - topBanda - (MARGEN_RENGLONES_ARRIBA + 1) * filaPx)}px`,
           transform: mirror ? 'scaleX(-1)' : 'none',
           boxSizing: 'border-box',
@@ -749,22 +578,6 @@ export default function TeleprompterView({
             maxWidth: columnaAngosta ? '22ch' : '90%',
             margin: '0 auto',
             width: '100%',
-            // EN COLUMNA ANGOSTA EL TEXTO VA CENTRADO.
-            //
-            // La caja ya estaba centrada -medido en la app publicada, pantalla de 375: 56 px
-            // de hueco a cada lado- pero el texto adentro iba a la izquierda. Con renglones
-            // de 22 caracteres la bandera derecha queda muy marcada y el bloque se lee
-            // corrido. Javier, 13 de septiembre de 2026: "en angosta no esta centrado el
-            // texto, sigue orientado desde la izquierda".
-            //
-            // Es lo habitual en un teleprompter: con el renglon corto, centrar mantiene el
-            // ojo anclado en el medio, que es donde esta el lente de la camara.
-            //
-            // SOLO EN ANGOSTA. En ancho completo el renglon es largo y centrar ahi obliga a
-            // buscar donde empieza cada linea.
-            //
-            // NO TOCA LA GEOMETRIA DE LA LECTURA: agruparEnRenglones y pixelDeRenglon miran
-            // offsetTop, que es vertical. Centrar mueve el texto a lo ancho y nada mas.
             textAlign: columnaAngosta ? 'center' : 'left'
           }}
         >
@@ -813,4 +626,3 @@ export default function TeleprompterView({
     </div>
   )
 }
-
