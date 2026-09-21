@@ -611,6 +611,15 @@ cuando le toque a cada tarea.
 
 64 - GRABAR
 
+  EL CAMINO CORTO ES EL DISENO BASE, NO UNA HIPOTESIS. Esta medido en la
+  seccion 12: este telefono reparte el audio, asi que se graba con la pista que
+  entrega el propio grabador y NO se construye el reparto de audio.
+
+  Y el detector de mudo que viene abajo no es una comprobacion mas: es el
+  ESCUDO para los telefonos que no se porten como este. Es lo que convierte un
+  fallo silencioso en un aviso exacto, para que nadie pierda una toma buena sin
+  enterarse.
+
   QUE EL ARCHIVO SOBREVIVA. La ruta que devuelve stopRecordVideo no alcanza si
   el proceso muere a mitad. El patron que usan las camaras serias:
 
@@ -655,6 +664,10 @@ cuando le toque a cada tarea.
   LA MINIATURA se saca de un cuadro al segundo 1 con MediaMetadataRetriever, y
   se guarda al lado del mp4. La necesita la 66, asi que conviene sacarla al
   cerrar la grabacion en la 64.
+
+  Y al WebView le va SOLO LA RUTA de esa miniatura, nunca la imagen. Mandar
+  imagenes por el puente lo congestiona y no hace falta: el navegador sabe
+  abrir un archivo del disco.
 
 66 - LAS GRABACIONES EN LA BIBLIOTECA
 
