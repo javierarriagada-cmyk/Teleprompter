@@ -41,5 +41,30 @@ describe('Pruebas TAREA 57: Sin bloques en el editor (T274)', () => {
 
     const palabraDestacada = consolidado.bloques[0].texto.substring(tramo.desde, tramo.hasta)
     expect(palabraDestacada).toBe('ambar')
+
+    // Caso de primer bloque vacío
+    const guionBloque1Vacio: Guion = {
+      id: 'g-t274-vacio',
+      titulo: 'Guion con primer bloque vacio',
+      idioma: 'es',
+      creado: 1000,
+      modificado: 1000,
+      bloques: [
+        {
+          id: 'b1',
+          nombre: '',
+          texto: '   '
+        },
+        {
+          id: 'b2',
+          nombre: '',
+          texto: 'Texto del segundo bloque.'
+        }
+      ]
+    }
+
+    const consolidadoVacio = consolidarGuion(guionBloque1Vacio)
+    expect(consolidadoVacio.bloques.length).toBe(1)
+    expect(consolidadoVacio.bloques[0].texto).toBe('Texto del segundo bloque.')
   })
 })
