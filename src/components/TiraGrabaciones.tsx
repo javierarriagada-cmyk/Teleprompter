@@ -141,7 +141,9 @@ export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar }: Prop
   }
   return (
     <div data-testid="tira-grabaciones" style={{ marginTop: 'var(--aire-4)', marginBottom: 'var(--aire-3)' }}>
-      <div className="texto-meta" style={{ color: 'var(--color-apagado)', marginBottom: 'var(--aire-2)', fontWeight: 600 }}>Tomas</div>
+      {/* "Videos" y no "Tomas": hermano de "Guiones" en la portada, mismo
+          escalon y mismo peso. */}
+      <div className="texto-cuerpo" style={{ color: 'var(--color-apagado)', marginBottom: 'var(--aire-2)', fontWeight: 600 }}>Videos</div>
       {(!grabaciones || grabaciones.length === 0) ? null : (
         <div style={{ display: 'flex', gap: 'var(--aire-3)', overflowX: 'auto', paddingBottom: 'var(--aire-2)', WebkitOverflowScrolling: 'touch' }}>
           {grabaciones.map((g) => (

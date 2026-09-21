@@ -917,7 +917,12 @@ export default function BibliotecaView({
         </div>
       )}
 
-      <div className="texto-meta" style={{ color: 'var(--color-apagado)', marginBottom: 'var(--aire-2)', fontWeight: 600 }}>Tus guiones</div>
+      {/* Los dos titulos de biblioteca -este y "Videos"- van en el mismo
+          escalon de la escala y con el mismo peso: son hermanos, no uno
+          principal y otro al pie. Javier los pidio mas grandes el 21 de
+          septiembre de 2026; texto-cuerpo es el escalon que sigue a
+          texto-meta, no un numero inventado. */}
+      <div className="texto-cuerpo" style={{ color: 'var(--color-apagado)', marginBottom: 'var(--aire-2)', fontWeight: 600 }}>Guiones</div>
 
       {/* Lista de guiones o Vacío */}
       {guiones.length === 0 ? (
