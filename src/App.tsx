@@ -228,7 +228,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     typeof ajustesPrevios.recuadroX === 'number' ? ajustesPrevios.recuadroX : 0.64
   )
   const [recuadroY, setRecuadroY] = useState<number>(
-    typeof ajustesPrevios.recuadroY === 'number' ? ajustesPrevios.recuadroY : 0.68
+    typeof ajustesPrevios.recuadroY === 'number' ? ajustesPrevios.recuadroY : 0.52
   )
   const [streamCamara, setStreamCamara] = useState<MediaStream | null>(null)
 

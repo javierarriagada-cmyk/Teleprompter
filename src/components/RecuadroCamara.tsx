@@ -6,6 +6,7 @@ export interface RecuadroCamaraProps {
   recuadroX: number // fracción 0..1
   recuadroY: number // fracción 0..1
   onChangePosicion?: (x: number, y: number) => void
+  onArrastrandoChange?: (arrastrando: boolean) => void
   arrastrable?: boolean
 }
 
@@ -15,6 +16,7 @@ export function RecuadroCamara({
   recuadroX,
   recuadroY,
   onChangePosicion,
+  onArrastrandoChange,
   arrastrable = false
 }: RecuadroCamaraProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -92,6 +94,9 @@ export function RecuadroCamara({
       startX: currentX,
       startY: currentY
     }
+    if (onArrastrandoChange) {
+      onArrastrandoChange(true)
+    }
   }
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -135,6 +140,9 @@ export function RecuadroCamara({
 
     if (onChangePosicion) {
       onChangePosicion(fracX, fracY)
+    }
+    if (onArrastrandoChange) {
+      onArrastrandoChange(false)
     }
   }
 

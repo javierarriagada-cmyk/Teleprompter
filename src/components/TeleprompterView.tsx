@@ -183,7 +183,7 @@ export default function TeleprompterView({
   ladoCamara = 'frontal',
   fondoToma = 'detras',
   recuadroX = 0.64,
-  recuadroY = 0.68,
+  recuadroY = 0.52,
   onToggleControles,
   onNavegacionManual,
   onModoManualChange,

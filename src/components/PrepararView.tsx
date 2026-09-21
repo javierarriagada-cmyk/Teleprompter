@@ -66,7 +66,7 @@ export default function PrepararView({
   setFondoToma,
   recuadroX = 0.64,
   setRecuadroX,
-  recuadroY = 0.68,
+  recuadroY = 0.52,
   setRecuadroY,
   onVolver,
   onEmpezar
@@ -74,6 +74,7 @@ export default function PrepararView({
   const containerRef = useRef<HTMLDivElement | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const [altoContenedor, setAltoContenedor] = React.useState<number>(0)
+  const [arrastrandoRecuadro, setArrastrandoRecuadro] = React.useState<boolean>(false)
 
   useEffect(() => {
     if (videoRef.current && streamCamara) {
@@ -220,6 +221,7 @@ export default function PrepararView({
             setRecuadroX?.(x)
             setRecuadroY?.(y)
           }}
+          onArrastrandoChange={setArrastrandoRecuadro}
           arrastrable={true}
         />
       )}
@@ -337,7 +339,7 @@ export default function PrepararView({
           left: 'calc(16px + env(safe-area-inset-left, 0px))',
           right: 'calc(16px + env(safe-area-inset-right, 0px))',
           zIndex: 10,
-          display: 'flex',
+          display: arrastrandoRecuadro ? 'none' : 'flex',
           flexDirection: 'column',
           gap: 'var(--aire-3)',
           backgroundColor: 'var(--bg-superficie)',
