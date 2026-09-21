@@ -1,12 +1,14 @@
 import React from 'react'
 import { ResumenGuion, PAREJAS_COLOR } from '../datos/modelo'
 import { movimientoApagado } from './movimiento'
+import { useMantenerApretado } from './mantenerApretado'
 
 interface TarjetaLecturaProps {
   guionResumen?: ResumenGuion
   textoCompleto?: string
   esInicial?: boolean
   onLeer: (rect?: DOMRect) => void
+  onGrabar?: (rect?: DOMRect) => void
   onCrearNuevo: () => void
   onDiagTouchStart?: () => void
   onDiagTouchEnd?: () => void
@@ -30,6 +32,7 @@ export default function TarjetaLectura({
   textoCompleto,
   esInicial = false,
   onLeer,
+  onGrabar,
   onCrearNuevo,
   onDiagTouchStart,
   onDiagTouchEnd,
@@ -41,6 +44,16 @@ export default function TarjetaLectura({
   const cardRef = React.useRef<HTMLDivElement>(null)
   const parejaColor = { fondo: colorFondo, letra: colorLetra }
   const hayGuion = Boolean(guionResumen)
+
+  // TERCERA PUERTA. Un toque lee. Mantener apretado entra a grabar.
+  // El evento se queda en el boton: si sube a la tarjeta o a una fila,
+  // Javier mantiene para grabar y se le abre el menu de borrar.
+  const gestoLeer = useMantenerApretado({
+    onMantener: () => {
+      const rect = cardRef.current?.getBoundingClientRect()
+      if (onGrabar) onGrabar(rect)
+    }
+  })
 
   const palabras = guionResumen?.palabras || 0
   const timecode = formatearDuracion(palabras)
@@ -219,7 +232,12 @@ export default function TarjetaLectura({
 
         {hayGuion ? (
           <button
-            onClick={() => {
+            type="button"
+            data-testid="btn-leer-tarjeta"
+            {...gestoLeer.props}
+            onClick={(e) => {
+              e.stopPropagation()
+              if (gestoLeer.fueLongPressRef.current) return
               const rect = cardRef.current?.getBoundingClientRect()
               onLeer(rect)
             }}

@@ -2,10 +2,13 @@ import React from 'react'
 import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import 'fake-indexeddb/auto'
+import { act } from '@testing-library/react'
 import App from '../App'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { MotorFake } from '../motor/MotorFake'
 import { CameraPreview } from '@capgo/camera-preview'
+import TiraGrabaciones from '../components/TiraGrabaciones'
+import { grabacionNueva } from '../datos/modelo'
 
 vi.mock('@capgo/camera-preview', () => ({
   CameraPreview: {
@@ -106,5 +109,82 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
       expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('leyendo')
     })
     expect(screen.getByTestId('contenedor-lectura').style.pointerEvents).toBe('auto')
+  })
+
+  test('mantener apretado el boton Leer de la tarjeta entra a grabar', async () => {
+    const repo = new RepositorioMemoria()
+    await repo.guardar({
+      id: 'g-66-puerta', titulo: 'Guion puerta', idioma: 'es',
+      creado: Date.now(), modificado: Date.now(), archivado: false,
+      bloques: [{ id: 'b1', nombre: '', texto: 'Texto de la coherencia' }]
+    })
+    render(<App repoOverride={repo} motor={new MotorFake()} />)
+    const boton = await screen.findByTestId('btn-leer-tarjeta')
+    vi.useFakeTimers()
+    try {
+      await act(async () => {
+        fireEvent.mouseDown(boton)
+        await vi.advanceTimersByTimeAsync(550)
+        fireEvent.mouseUp(boton)
+      })
+      vi.useRealTimers()
+      await waitFor(() => {
+        expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-con-camara')).toBe('si')
+      })
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  test('mantener apretada una toma abre Eliminar y Cerrar; no hay boton Borrar a la vista', async () => {
+    vi.useFakeTimers()
+    try {
+      const toma = grabacionNueva({ id: 'toma-1', tituloGuion: 'Ensayo', ruta: '/x.mp4', duracionMs: 4000 })
+      const onBorrar = vi.fn()
+      render(<TiraGrabaciones grabaciones={[toma]} onAbrir={() => {}} onBorrar={onBorrar} />)
+      expect(screen.queryByText('Borrar')).toBeNull()
+      const boton = screen.getByTestId('tarjeta-grabacion-toma-1').querySelector('button') as HTMLElement
+      await act(async () => {
+        fireEvent.mouseDown(boton)
+        await vi.advanceTimersByTimeAsync(550)
+        fireEvent.mouseUp(boton)
+      })
+      expect(screen.getByTestId('menu-toma-toma-1')).not.toBeNull()
+      expect(screen.getByText('Eliminar')).not.toBeNull()
+      expect(screen.getByText('Cerrar')).not.toBeNull()
+      fireEvent.click(screen.getByTestId('borrar-grabacion-toma-1'))
+      expect(onBorrar).not.toHaveBeenCalled()
+      expect(screen.getByTestId('borrar-grabacion-toma-1').getAttribute('data-confirmando')).toBe('si')
+      fireEvent.click(screen.getByTestId('borrar-grabacion-toma-1'))
+      expect(onBorrar).toHaveBeenCalledTimes(1)
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  test('"donde lees" existe en UN solo lugar: el engranaje de la toma', async () => {
+    const fs = await import('fs')
+    const path = await import('path')
+    const raiz = path.resolve(process.cwd(), 'src')
+    const hits: string[] = []
+    function andar(dir: string) {
+      for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, item.name)
+        if (item.isDirectory()) andar(full)
+        else if (/\.(tsx|ts)$/.test(item.name) && !full.includes(`${path.sep}pruebas`) && !item.name.includes('PrepararView')) {
+          const txt = fs.readFileSync(full, 'utf-8')
+          if (txt.includes('Dónde lees')) hits.push(full)
+        }
+      }
+    }
+    andar(raiz)
+    expect(hits.length).toBe(1)
+    expect(hits[0]).toMatch(/TeleprompterView\.tsx$/)
+    await abrirGuionConTexto()
+    fireEvent.click(await screen.findByTestId('btn-leer-guion-fijo'))
+    await waitFor(() => expect(screen.getByTestId('btn-engranaje-toma')).toBeDefined())
+    expect(screen.queryByText('Dónde lees:')).toBeNull()
+    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+    expect(screen.getByTestId('panel-ajustes-toma').textContent).toContain('Dónde lees:')
   })
 })

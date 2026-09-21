@@ -2160,8 +2160,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     })
 
     expect(container!.querySelector('div[data-testid="panel-ajustes"]')).not.toBeNull()
-    expect(container!.textContent).toContain('Dónde lees:')
-    expect(container!.textContent).toContain('Espejo')
+    expect(container!.textContent).not.toContain('Dónde lees:')
 
     const btnCerrar = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
     await act(async () => {
@@ -2192,30 +2191,20 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         await vi.advanceTimersByTimeAsync(100)
       })
 
-      // Desactivar Mostrar Tiempo desde los Ajustes del Editor
-      const btnMenu = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
-      await act(async () => {
-        fireEvent.click(btnMenu)
-      })
-
-      const chkTiempo = Array.from(container!.querySelectorAll('input[type="checkbox"]')).find(
-        (input) => input.parentElement?.textContent?.includes('Mostrar tiempo')
-      ) as HTMLInputElement
-      expect(chkTiempo).not.toBeUndefined()
-
-      await act(async () => {
-        fireEvent.click(chkTiempo)
-      })
-
-      const btnCerrar = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
-      await act(async () => {
-        fireEvent.click(btnCerrar)
-      })
-
       const botonLeer = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
       await act(async () => {
         fireEvent.click(botonLeer!)
         await vi.advanceTimersByTimeAsync(100)
+      })
+      await act(async () => {
+        fireEvent.click(container!.querySelector('[data-testid="btn-engranaje-toma"]')!)
+      })
+      const chkTiempo = Array.from(container!.querySelectorAll('input[type="checkbox"]')).find(
+        (input) => input.parentElement?.textContent?.includes('Mostrar tiempo')
+      ) as HTMLInputElement
+      expect(chkTiempo).not.toBeUndefined()
+      await act(async () => {
+        fireEvent.click(chkTiempo)
       })
       await act(async () => {
         fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)
@@ -2233,31 +2222,12 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await act(async () => {
         fireEvent.click(btnVolver)
       })
-      await act(async () => {
-        fireEvent.click(container!.querySelector('[data-testid="btn-volver-listo"]')!)
-      })
-
-      // Reactivar Mostrar Tiempo
-      const btnMenu2 = container!.querySelector('[data-testid="btn-menu-opciones-editor"]') as HTMLElement
-      await act(async () => {
-        fireEvent.click(btnMenu2)
-      })
 
       const chkTiempo2 = Array.from(container!.querySelectorAll('input[type="checkbox"]')).find(
         (input) => input.parentElement?.textContent?.includes('Mostrar tiempo')
       ) as HTMLInputElement
       await act(async () => {
         fireEvent.click(chkTiempo2)
-      })
-      const btnCerrar2 = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
-      await act(async () => {
-        fireEvent.click(btnCerrar2)
-      })
-
-      const botonLeer2 = container!.querySelector('[data-testid="btn-leer-guion-fijo"]') as HTMLButtonElement | null
-      await act(async () => {
-        fireEvent.click(botonLeer2!)
-        await vi.advanceTimersByTimeAsync(100)
       })
       await act(async () => {
         fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)

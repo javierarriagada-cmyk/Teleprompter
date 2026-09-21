@@ -591,10 +591,7 @@ describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)
         setTipoFuente: () => {},
         setColorFondo: () => {},
         setColorLetra: () => {},
-        setTema: () => {},
-        setMirror: () => {},
-        setAnclajeZona: () => {},
-        setMostrarTiempo: () => {}
+        setTema: () => {}
       })
     )
 
@@ -613,7 +610,7 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     vi.restoreAllMocks()
   })
 
-  test('T183 - El panel muestra los dos títulos de grupo, y los siete controles están en el grupo que les corresponde.', () => {
+  test('T183 - El panel del editor es del texto: tamaño, ancho, tipografía y parejas de color. Dónde lees no está acá.', () => {
     const guion: Guion = {
       id: 'g-t183',
       titulo: 'Guión T183',
@@ -633,10 +630,7 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
         setMarginPercent: () => {},
         setTipoFuente: () => {},
         setColorFondo: () => {},
-        setColorLetra: () => {},
-        setMirror: () => {},
-        setAnclajeZona: () => {},
-        setMostrarTiempo: () => {}
+        setColorLetra: () => {}
       })
     )
 
@@ -645,39 +639,22 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     const panel = screen.getByTestId('panel-ajustes')
     expect(panel).not.toBeNull()
 
-    // 1. Títulos de grupo
     expect(screen.getByText('Cómo se ve el texto')).not.toBeNull()
-    expect(screen.getByText('La toma')).not.toBeNull()
+    expect(screen.queryByText('La toma')).toBeNull()
 
-    // 2. Orden y pertenencia de controles por grupo
     const htmlText = panel.innerHTML
     const idxGrupo1 = htmlText.indexOf('Cómo se ve el texto')
-    const idxGrupo2 = htmlText.indexOf('La toma')
-
-    expect(idxGrupo1).toBeLessThan(idxGrupo2)
-
-    // Grupo 1: Tamaño de letra, Ancho, Tipografía
     const idxLetra = htmlText.indexOf('Tamaño de letra:')
     const idxAncho = htmlText.indexOf('Ancho:')
     const idxTipoFuente = htmlText.indexOf('Tipografía:')
+    const idxFondoLetra = htmlText.indexOf('Colores de lectura:')
 
     expect(idxLetra).toBeGreaterThan(idxGrupo1)
-    expect(idxLetra).toBeLessThan(idxGrupo2)
     expect(idxAncho).toBeGreaterThan(idxLetra)
-    expect(idxAncho).toBeLessThan(idxGrupo2)
     expect(idxTipoFuente).toBeGreaterThan(idxAncho)
-    expect(idxTipoFuente).toBeLessThan(idxGrupo2)
-
-    // Grupo 2: Colores de lectura, Dónde lees, Espejo, Mostrar tiempo
-    const idxFondoLetra = htmlText.indexOf('Colores de lectura:')
-    const idxDondeLees = htmlText.indexOf('Dónde lees:')
-    const idxEspejo = htmlText.indexOf('Espejo:')
-    const idxMostrarTiempo = htmlText.indexOf('Mostrar tiempo:')
-
-    expect(idxFondoLetra).toBeGreaterThan(idxGrupo2)
-    expect(idxDondeLees).toBeGreaterThan(idxFondoLetra)
-    expect(idxEspejo).toBeGreaterThan(idxDondeLees)
-    expect(idxMostrarTiempo).toBeGreaterThan(idxEspejo)
+    expect(idxFondoLetra).toBeGreaterThan(idxTipoFuente)
+    expect(htmlText).not.toContain('Dónde lees:')
+    expect(htmlText).not.toContain('Mostrar tiempo:')
   })
 
   test('T184 - El tamaño de letra se puede cambiar DESDE EL PANEL, recorre los cinco pasos y en los extremos no se sale.', () => {

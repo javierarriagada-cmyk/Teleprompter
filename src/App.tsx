@@ -975,10 +975,22 @@ export default function App({ motor, repoOverride }: AppProps) {
       const g = await repoRef.current.abrir(id)
       if (g) {
         setGuionActual(g)
-        await handleEntrarLectura('biblioteca', rect)
+        await handleEntrarLectura('biblioteca', rect, false)
       }
     } catch (e) {
       console.warn('[App] Error al abrir directo para lectura:', e)
+    }
+  }
+
+  async function handleGrabarDirecto(id: string, rect?: DOMRect) {
+    try {
+      const g = await repoRef.current.abrir(id)
+      if (g) {
+        setGuionActual(g)
+        await handleEntrarLectura('biblioteca', rect, true)
+      }
+    } catch (e) {
+      console.warn('[App] Error al abrir directo para grabar:', e)
     }
   }
 
@@ -1340,6 +1352,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             guiones={guionesResumen.filter((g) => !idsPendientesBorrado.includes(g.id))}
             onAbrir={handleAbrirGuion}
             onLeerDirecto={handleLeerDirecto}
+            onGrabarDirecto={handleGrabarDirecto}
             onCrearNuevo={handleCrearNuevoGuion}
             onImportarArchivo={handleImportarArchivo}
             onRenombrar={handleRenombrarGuion}
@@ -1401,14 +1414,8 @@ export default function App({ motor, repoOverride }: AppProps) {
             onLetraMas={handleLetraMas}
             marginPercent={marginPercent}
             setMarginPercent={setMarginPercent}
-            mirror={mirror}
-            setMirror={setMirror}
-            anclajeZona={anclajeZona}
-            setAnclajeZona={setAnclajeZona}
             verTranscripcion={verTranscripcion}
             setVerTranscripcion={setVerTranscripcion}
-            mostrarTiempo={mostrarTiempo}
-            setMostrarTiempo={setMostrarTiempo}
             columnaAngosta={columnaAngosta}
             setColumnaAngosta={setColumnaAngosta}
             colorFondo={colorFondo}

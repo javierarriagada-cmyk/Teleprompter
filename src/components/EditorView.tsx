@@ -51,14 +51,14 @@ interface EditorViewProps {
   onLetraMas?: () => void
   marginPercent?: number
   setMarginPercent?: (m: number) => void
-  mirror?: boolean
-  setMirror?: (m: boolean) => void
-  anclajeZona?: 'arriba' | 'medio' | 'abajo'
-  setAnclajeZona?: (a: 'arriba' | 'medio' | 'abajo') => void
+  // Espejo, "donde lees" y "mostrar tiempo" YA NO ESTAN ACA. Son de la toma
+  // -cambian entre una toma y otra- y viven en el engranaje del lienzo. El
+  // panel del editor es del TEXTO: tamano, ancho, tipografia y parejas de
+  // color. Si alguno vuelve a aparecer en los dos lados, se rompe la regla de
+  // las tres familias y "donde lees" vuelve a estar duplicado, que es de donde
+  // salio esta tarea.
   verTranscripcion?: boolean
   setVerTranscripcion?: (v: boolean) => void
-  mostrarTiempo?: boolean
-  setMostrarTiempo?: (v: boolean) => void
   columnaAngosta?: boolean
   setColumnaAngosta?: (v: boolean) => void
   colorFondo?: string
@@ -103,14 +103,8 @@ export default function EditorView({
   onLetraMas,
   marginPercent = 5,
   setMarginPercent,
-  mirror = false,
-  setMirror,
-  anclajeZona = 'arriba',
-  setAnclajeZona,
   verTranscripcion = false,
   setVerTranscripcion,
-  mostrarTiempo = true,
-  setMostrarTiempo,
   columnaAngosta = false,
   setColumnaAngosta,
   colorFondo = PAREJAS_COLOR[0].fondo,
@@ -799,16 +793,7 @@ export default function EditorView({
                       </div>
                     </div>
                   )}
-                </div>
-              </div>
-
-              {/* Grupo 2: LA TOMA */}
-              <div>
-                <h4 className="texto-etiqueta" style={{ margin: '0 0 var(--aire-3) 0', color: 'var(--color-apagado)' }}>
-                  La toma
-                </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-3)' }}>
-                  {/* Colores de lectura */}
+                  {/* Colores de lectura: parejas, no dos listas. Fuente: PAREJAS_COLOR. */}
                   {setColorFondo && setColorLetra && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Colores de lectura:</span>
@@ -864,85 +849,6 @@ export default function EditorView({
                     </div>
                   )}
 
-                  {/* Dónde lees */}
-                  {setAnclajeZona && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Dónde lees:</span>
-                      <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
-                        <button
-                          type="button"
-                          className="btn-deformable"
-                          onClick={() => {
-                            hapticaSeleccion()
-                            setAnclajeZona('arriba')
-                          }}
-                          style={{
-                            padding: 'var(--aire-2) var(--aire-3)',
-                            border: '1px solid var(--color-borde)',
-                            backgroundColor: anclajeZona === 'arriba' ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                            color: anclajeZona === 'arriba' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                            fontWeight: anclajeZona === 'arriba' ? 'bold' : 'normal',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          Arriba
-                        </button>
-                        <button
-                          type="button"
-                          className="btn-deformable"
-                          onClick={() => {
-                            hapticaSeleccion()
-                            setAnclajeZona('medio')
-                          }}
-                          style={{
-                            padding: 'var(--aire-2) var(--aire-3)',
-                            border: '1px solid var(--color-borde)',
-                            backgroundColor: anclajeZona === 'medio' ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                            color: anclajeZona === 'medio' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                            fontWeight: anclajeZona === 'medio' ? 'bold' : 'normal',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          Medio
-                        </button>
-                        <button
-                          type="button"
-                          className="btn-deformable"
-                          onClick={() => {
-                            hapticaSeleccion()
-                            setAnclajeZona('abajo')
-                          }}
-                          style={{
-                            padding: 'var(--aire-2) var(--aire-3)',
-                            border: '1px solid var(--color-borde)',
-                            backgroundColor: anclajeZona === 'abajo' ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                            color: anclajeZona === 'abajo' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                            fontWeight: anclajeZona === 'abajo' ? 'bold' : 'normal',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          Abajo
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Espejo */}
-                  {setMirror && (
-                    <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
-                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Espejo:</span>
-                      <input
-                        type="checkbox"
-                        checked={mirror}
-                        onChange={(e) => {
-                          hapticaToqueSuave()
-                          setMirror(e.target.checked)
-                        }}
-                        style={{ width: 18, height: 18, accentColor: 'var(--color-acento)' }}
-                      />
-                    </label>
-                  )}
-
                   {/* Idioma */}
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Idioma:</span>
@@ -967,21 +873,6 @@ export default function EditorView({
                     </select>
                   </div>
 
-                  {/* Mostrar tiempo */}
-                  {setMostrarTiempo && (
-                    <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
-                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Mostrar tiempo:</span>
-                      <input
-                        type="checkbox"
-                        checked={mostrarTiempo}
-                        onChange={(e) => {
-                          hapticaToqueSuave()
-                          setMostrarTiempo(e.target.checked)
-                        }}
-                        style={{ width: 18, height: 18, accentColor: 'var(--color-acento)' }}
-                      />
-                    </label>
-                  )}
                 </div>
               </div>
             </div>

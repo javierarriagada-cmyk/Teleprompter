@@ -8,11 +8,13 @@ import TarjetaLectura from './TarjetaLectura'
 import { IconoEngranaje } from './IconosApp'
 import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './movimiento'
+import { MS_MANTENER_APRETADO } from './mantenerApretado'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
   onAbrir: (id: string) => void
   onLeerDirecto?: (id: string, rect?: DOMRect) => void
+  onGrabarDirecto?: (id: string, rect?: DOMRect) => void
   onCrearNuevo: () => void
   onImportarArchivo: (file: File) => void
   onRenombrar?: (id: string, nuevoTitulo: string) => void
@@ -135,8 +137,9 @@ function FilaGuion({
     if (timerHoldRef.current) clearTimeout(timerHoldRef.current)
     timerHoldRef.current = setTimeout(() => {
       fueLongPressRef.current = true
+      hapticaToqueSuave()
       setMenuId(g.id)
-    }, 500)
+    }, MS_MANTENER_APRETADO)
 
     const target = e.currentTarget as any
     if (target && typeof target.setPointerCapture === 'function' && 'pointerId' in e) {
@@ -392,6 +395,7 @@ export default function BibliotecaView({
   guiones,
   onAbrir,
   onLeerDirecto,
+  onGrabarDirecto,
   onCrearNuevo,
   onImportarArchivo,
   onRenombrar,
@@ -654,6 +658,9 @@ export default function BibliotecaView({
               else onAbrir(guionMasReciente.id)
             }
           }}
+          onGrabar={(rect) => {
+            if (guionMasReciente && onGrabarDirecto) onGrabarDirecto(guionMasReciente.id, rect)
+          }}
           onCrearNuevo={onCrearNuevo}
           onDiagTouchStart={handleDiagTouchStart}
           onDiagTouchEnd={handleDiagTouchEnd}
@@ -741,6 +748,9 @@ export default function BibliotecaView({
                 Importar archivo
               </button>
 
+              <div className="texto-meta" style={{ padding: 'var(--aire-2) var(--aire-4) 0', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                Lo nuestro
+              </div>
               <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
                 <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
                   Motor de voz:
@@ -765,6 +775,9 @@ export default function BibliotecaView({
                 </label>
               </div>
 
+              <div className="texto-meta" style={{ padding: 'var(--aire-2) var(--aire-4) 0', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                La aplicación
+              </div>
               <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
                 <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
                   Apariencia:
@@ -903,6 +916,8 @@ export default function BibliotecaView({
           />
         </div>
       )}
+
+      <div className="texto-meta" style={{ color: 'var(--color-apagado)', marginBottom: 'var(--aire-2)', fontWeight: 600 }}>Tus guiones</div>
 
       {/* Lista de guiones o Vacío */}
       {guiones.length === 0 ? (
