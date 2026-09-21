@@ -4,6 +4,7 @@ export interface RecuadroCamaraProps {
   modoCamara: 'frontal' | 'trasera'
   recuadroX: number // fracción 0..1
   recuadroY: number // fracción 0..1
+  colorFondo?: string
   onChangePosicion?: (x: number, y: number) => void
   onArrastrandoChange?: (arrastrando: boolean) => void
   arrastrable?: boolean
@@ -13,6 +14,7 @@ export function RecuadroCamara({
   modoCamara,
   recuadroX,
   recuadroY,
+  colorFondo = '#151312',
   onChangePosicion,
   onArrastrandoChange,
   arrastrable = false
@@ -102,7 +104,7 @@ export function RecuadroCamara({
 
     setDragPos({ x: clampedX, y: clampedY })
 
-    // Escalón 1 (DIRECTO): Manda la orden de posición en cada movimiento del dedo
+    // Escalón 1 (DIRECTO): Manda la orden de posición nativa en cada movimiento del dedo
     const fracX = winW > 0 ? clampedX / winW : 0
     const fracY = winH > 0 ? clampedY / winH : 0
     if (onChangePosicion) {
@@ -161,15 +163,23 @@ export function RecuadroCamara({
         width: recuadroW,
         height: recuadroH,
         borderRadius: 'var(--redondeo)',
-        overflow: 'hidden',
         border: '1px solid var(--color-borde)',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+        /*
+         * EL HUECO TRANSPARENTE CON FONDO OPACO ALREDEDOR.
+         * La vista previa nativa está por detrás del WebView (toBack: true).
+         * Con boxShadow gigantesco, se pinta colorFondo opaco en toda la pantalla
+         * ALREDEDOR de este recuadro, dejando únicamente transparente esta caja de recuadro
+         * para ver la cámara nativa inferior. El texto de la página se renderiza a zIndex 1
+         * (por encima), cumpliendo que el texto pasa POR ENCIMA de la imagen.
+         */
+        boxShadow: `0 0 0 9999px ${colorFondo}`,
         zIndex: 0,
         touchAction: 'none',
         cursor: arrastrable ? 'grab' : 'default',
         boxSizing: 'border-box',
         visibility: dimensiones ? 'visible' : 'hidden',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        pointerEvents: 'auto'
       }}
     />
   )

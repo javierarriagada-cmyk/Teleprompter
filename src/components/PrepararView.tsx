@@ -155,7 +155,7 @@ export default function PrepararView({
         paddingBottom: 'calc(env(safe-area-inset-bottom, 0px))',
         paddingLeft: 'calc(env(safe-area-inset-left, 0px))',
         paddingRight: 'calc(env(safe-area-inset-right, 0px))',
-        background: textoSobreImagen ? 'transparent' : colorFondo,
+        background: (fondoToma === 'detras' || fondoToma === 'recuadro') ? 'transparent' : colorFondo,
         color: colorTextoEfectivo,
         fontFamily: fontFamilyCss,
         boxSizing: 'border-box'
@@ -205,6 +205,7 @@ export default function PrepararView({
           modoCamara={modoCamara}
           recuadroX={recuadroX}
           recuadroY={recuadroY}
+          colorFondo={colorFondo}
           onChangePosicion={(x, y) => {
             setRecuadroX?.(x)
             setRecuadroY?.(y)

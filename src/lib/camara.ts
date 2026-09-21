@@ -74,12 +74,14 @@ export async function encenderCamara(
   const posNativa = lado === 'frontal' ? 'front' : 'rear'
 
   // Calcular dimensiones para el modo de inicio
-  const { x, y, width, height, toBack } = calcularDimensionesPreview(config)
+  const { x, y, width, height } = calcularDimensionesPreview(config)
 
   try {
     await CameraPreview.start({
       position: posNativa,
-      toBack,
+      toBack: true,            // SIEMPRE DETRÁS DEL WEBVIEW EN TODOS LOS FONDOS
+      aspectMode: 'cover',     // ¡CUBRIR LA PANTALLA SIN BANDAS NEGRAS!
+      includeSafeAreaInsets: false,
       disableAudio: false,      // ¡REGLA DE ORO! Habilitar audio desde el día 1
       enableOpacity: true,     // Permite cambiar opacidad (usado en modo OCULTA)
       enableVideoMode: true,   // Habilita modo video nativo
@@ -162,17 +164,17 @@ export async function actualizarConfigCamara(config: OpcionesConfigCamara): Prom
 
 /**
  * Función auxiliar para calcular las coordenadas y tamaño en px para CameraPreview.
+ * Para pantalla completa se utiliza window.screen.width/height que mide la pantalla real.
  */
 function calcularDimensionesPreview(config?: OpcionesConfigCamara): {
   x: number
   y: number
   width: number
   height: number
-  toBack: boolean
 } {
   const fondo = config?.fondoToma || fondoEstado
-  const winW = config?.vistaW || (typeof window !== 'undefined' ? window.innerWidth : 360)
-  const winH = config?.vistaH || (typeof window !== 'undefined' ? window.innerHeight : 640)
+  const winW = config?.vistaW || (typeof window !== 'undefined' ? (window.screen?.width || window.innerWidth) : 360)
+  const winH = config?.vistaH || (typeof window !== 'undefined' ? (window.screen?.height || window.innerHeight) : 640)
 
   if (fondo === 'recuadro') {
     const rx = config?.recuadroX ?? 0.64
@@ -182,9 +184,12 @@ function calcularDimensionesPreview(config?: OpcionesConfigCamara): {
     const x = Math.round(rx * winW)
     const y = Math.round(ry * winH)
 
-    return { x, y, width: w, height: h, toBack: false }
+    return { x, y, width: w, height: h }
   }
 
-  // Fondo DETRÁS u OCULTA: ocupa toda la pantalla
-  return { x: 0, y: 0, width: winW, height: winH, toBack: true }
+  // Fondo DETRÁS u OCULTA: ocupa toda la pantalla de borde a borde
+  const screenW = typeof window !== 'undefined' ? (window.screen?.width || winW) : winW
+  const screenH = typeof window !== 'undefined' ? (window.screen?.height || winH) : winH
+
+  return { x: 0, y: 0, width: screenW, height: screenH }
 }
