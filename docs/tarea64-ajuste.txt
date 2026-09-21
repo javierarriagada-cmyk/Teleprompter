@@ -1,0 +1,56 @@
+TAREA 64 - AJUSTE, ANTES DE EMPEZAR
+
+Tus cuatro observaciones son correctas. Dos son correcciones al encargo y te
+paso como quedan, para que no tengas que inventar la forma.
+
+
+1. LO DEL .part: TENES RAZON, Y ASI SE RESUELVE
+
+Cierto: el plugin escribe SU archivo en SU carpeta y ni siquiera nos da la ruta
+hasta stopRecordVideo. Medido: sale en
+
+    files/Movies/CameraPreview/video_<marca de tiempo>.mp4
+
+Asi que no podemos hacer que escriba un .part ni elegirle el nombre. Lo que
+importa no era el nombre: era que UNA TOMA INTERRUMPIDA NO SE PIERDA NI
+DESAPAREZCA EN SILENCIO. Eso se consigue igual, por dos lados que se cruzan:
+
+    AL EMPEZAR la toma escribimos un sidecar "en curso" con lo que sabemos:
+    un id nuestro, el guion, la marca de tiempo de inicio. Sin ruta, porque
+    todavia no la hay.
+
+    AL CERRAR limpio, stopRecordVideo nos da la ruta: se completa el sidecar
+    -duracion, bytes, si tiene pista de audio, miniatura- y la grabacion queda
+    lista y entra al indice.
+
+    AL ARRANCAR LA APLICACION, si quedo un sidecar "en curso", la toma se
+    interrumpio. Entonces se mira la carpeta del plugin y se busca el mp4
+    huerfano -el que no esta en nuestro indice-, se lo empareja con ese sidecar
+    y se guarda como INCOMPLETA, con lo que se pueda leer del archivo.
+
+    Y de paso, cualquier mp4 de esa carpeta que no este en el indice y no tenga
+    sidecar tambien se adopta como incompleta. NUNCA se borra en silencio.
+
+Si al probar resulta que el plugin no deja el archivo utilizable cuando lo matan
+a mitad, DECILO con lo que hayas visto. Es un dato que necesitamos, no un
+fracaso: significa que el largo de las tomas tiene un riesgo y hay que decidir
+que hacer, y esa decision no es tuya ni mia solo.
+
+
+2. MediaExtractor Y LA MINIATURA EN JAVA: SI, Y HAY DONDE PONERLOS
+
+Ya existe un plugin nuestro: android/app/src/main/java/com/teleprompter/app/
+CamaraNativaPlugin.java, registrado en MainActivity, que hoy tiene un solo
+metodo -cambia el modo de superficie de la vista previa-. Ahi van los metodos
+nuevos que necesites: leer si el mp4 tiene pista de audio, sacar el cuadro para
+la miniatura, medir duracion y bytes.
+
+Al lado esta VoskNativoPlugin.java, que es el del motor de voz. ESE NO SE TOCA.
+
+
+3 Y 4
+
+El punto rojo separado del isRecording del ASR, y la voz intacta: tal cual.
+
+
+Lo demas del encargo queda como esta.

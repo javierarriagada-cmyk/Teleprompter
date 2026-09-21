@@ -38,7 +38,29 @@ interface Props {
   onBorrar: (id: string) => void
 }
 
+// BORRAR PREGUNTA UNA VEZ, Y ES LA UNICA ACCION DE LA APLICACION QUE NO SE
+// PUEDE DESHACER. Un video grabado no se recupera, y antes se iba con un solo
+// toque sobre una palabra chica y gris, del tamano de una nota al pie.
+//
+// No hay ventana de confirmacion: el mismo boton pasa a decir "¿Seguro?" y hay
+// que tocarlo otra vez. Si la persona no vuelve a tocarlo, a los cuatro
+// segundos se arrepiente solo. Un toque sin querer no borra nada.
+const MS_PARA_ARREPENTIRSE = 4000
+
 export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar }: Props) {
+  const [confirmando, setConfirmando] = React.useState<string | null>(null)
+  const temporizador = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  React.useEffect(() => {
+    return () => { if (temporizador.current) clearTimeout(temporizador.current) }
+  }, [])
+
+  function pedirConfirmacion(id: string) {
+    setConfirmando(id)
+    if (temporizador.current) clearTimeout(temporizador.current)
+    temporizador.current = setTimeout(() => setConfirmando(null), MS_PARA_ARREPENTIRSE)
+  }
+
   if (!grabaciones || grabaciones.length === 0) return null
   return (
     <div data-testid="tira-grabaciones" style={{ marginTop: 'var(--aire-4)', marginBottom: 'var(--aire-3)' }}>
@@ -58,7 +80,33 @@ export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar }: Prop
                 <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>{formatearFechaCorta(g.creado)}</div>
               </div>
             </button>
-            <button type="button" data-testid={`borrar-grabacion-${g.id}`} onClick={(e) => { e.stopPropagation(); onBorrar(g.id) }} style={{ marginTop: 4, background: 'transparent', border: 'none', color: 'var(--color-apagado)', fontSize: 12, cursor: 'pointer', padding: 0 }}>Borrar</button>
+            <button
+              type="button"
+              data-testid={`borrar-grabacion-${g.id}`}
+              data-confirmando={confirmando === g.id ? 'si' : 'no'}
+              onClick={(e) => {
+                e.stopPropagation()
+                if (confirmando === g.id) {
+                  if (temporizador.current) clearTimeout(temporizador.current)
+                  setConfirmando(null)
+                  onBorrar(g.id)
+                } else {
+                  pedirConfirmacion(g.id)
+                }
+              }}
+              style={{
+                marginTop: 4,
+                background: 'transparent',
+                border: 'none',
+                color: confirmando === g.id ? '#e11d2e' : 'var(--color-apagado)',
+                fontWeight: confirmando === g.id ? 700 : 400,
+                fontSize: 12,
+                cursor: 'pointer',
+                padding: '4px 0'
+              }}
+            >
+              {confirmando === g.id ? '¿Seguro?' : 'Borrar'}
+            </button>
           </div>
         ))}
       </div>

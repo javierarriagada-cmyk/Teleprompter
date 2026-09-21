@@ -1,0 +1,56 @@
+TAREA 64 - REVISION DEL PR #42, Y QUE FALTA
+
+Revise la rama tarea-64-grabar leyendo el codigo, antes de compilar nada. El
+nucleo esta bien hecho. Tres cosas que comprobe y te sirven saber:
+
+  LO DEL .part LO RESOLVISTE SOLO Y BIEN. Habia un ajuste escrito para mandarte
+  -el plugin escribe su propio archivo en su propia carpeta y no da la ruta
+  hasta el stop, asi que no se le puede elegir el nombre-. Diste con la misma
+  salida: grabar donde el plugin quiere y mover al cerrar, y en la recuperacion
+  emparejar el sidecar pendiente con rutaPlugin o con el mp4 reciente. No hace
+  falta mandarte nada de eso.
+
+  LA MIGRACION DE LA BASE ES SEGURA. La version sube a 2 y los almacenes se
+  crean solo si no existen, asi que los guiones que ya tiene Javier en el
+  telefono no se tocan.
+
+  LAS PRUEBAS SIRVEN. Rompi a proposito el cruce del mudo -que con frases oidas
+  y sin pista marque error duro- y fallan dos. tsc limpio y 264 de 264.
+
+
+1. SI, SUBI LOS CUATRO ARCHIVOS AL MISMO PR
+
+Sin App.tsx, TeleprompterView.tsx y BibliotecaView.tsx nada de esto es
+alcanzable y no se puede medir en el telefono. Subilos y avisamos.
+
+
+2. ANTES DE ESO, DEVOLVE SEIS COMENTARIOS
+
+En src/lib/camara.ts borraste seis comentarios donde el codigo se quedo igual:
+
+    // Calcular dimensiones para el modo de inicio
+    // Fijar superficie de sistema inmediatamente tras arrancar
+    // Si el fondo es 'oculta', fijar opacidad a 0 de inmediato
+    // Modo OCULTA: la camara SIGUE ENCENDIDA pero invisible (opacidad 0)
+    // Modos DETRAS y RECUADRO: opacidad en 1
+    // Fondo DETRAS u OCULTA: ocupa toda la pantalla de borde a borde
+
+El cuarto es el que mas importa, y esta justo encima del setOpacity(0). Es lo
+unico que impide que alguien -vos, otro, o yo dentro de dos semanas- "optimice"
+apagando la camara en ese modo y rompa la grabacion sin darse cuenta de que la
+rompio. La camara tiene que seguir capturando aunque no se vea.
+
+No es un tema de estilo. En este proyecto los comentarios llevan las mediciones
+y las decisiones, y no hay ninguna prueba que los proteja: ni tsc, ni el CI, ni
+mirar la aplicacion en el telefono. Por eso la regla es que no se borran: si el
+codigo cambia se actualiza el comentario, y si el codigo desaparece de verdad,
+su comentario se va con el.
+
+
+3. UNA PREGUNTA, NO UN PEDIDO
+
+En la recuperacion, si quedo un mp4 huerfano en la carpeta del plugin y NO hay
+sidecar -porque la aplicacion murio entre el start y la escritura del sidecar-,
+por lo que lei el bucle recorre sidecars y ese archivo no se adopta. La ventana
+es chiquita y puede que no valga la pena. Decime que pensas: si te parece que
+no vale, lo dejamos escrito como sabido y seguimos.

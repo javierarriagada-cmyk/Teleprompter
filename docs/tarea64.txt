@@ -1,0 +1,205 @@
+TAREA 64 - GRABAR, Y VER LO GRABADO
+
+Repositorio: github.com/javierarriagada-cmyk/Teleprompter
+Partir de: main
+Entregar: una rama o un PR. NUNCA escribir en main.
+
+
+QUE ES ESTA APLICACION, EN UNA FRASE
+
+Sigo es un teleprompter que sigue la voz: el texto avanza porque el motor de
+voz reconoce lo que la persona esta leyendo, no por un temporizador. Eso es lo
+unico que nos diferencia, y de ahi sale la regla que ordena todos los conflictos
+de esta tarea: LA VOZ MANDA SOBRE EL VIDEO. Si alguna vez hay que elegir entre
+que el seguimiento funcione y que el video salga mejor, gana el seguimiento.
+
+Esta tarea agrega grabar. Hasta hoy la camara se ve y no se graba.
+
+
+LO QUE YA ESTA HECHO Y MEDIDO, PARA QUE NO LO VUELVAS A AVERIGUAR
+
+  La camara es NATIVA y vive detras del WebView. Es @capgo/camera-preview,
+  arrancada desde src/lib/camara.ts, que es la UNICA puerta a la camara. La
+  sesion se arranca con toBack en true y la pagina se pone transparente para
+  que se vea. No hay ningun getUserMedia de camara en la aplicacion.
+
+  EL TELEFONO REPARTE EL MICROFONO. Medido el 21 de septiembre de 2026: con la
+  grabacion tomando audio y el motor de voz nativo escuchando al mismo tiempo,
+  las dos cosas funcionan. El motor transcribio el texto leido, y el archivo
+  quedo con voz -volumen medio -25.0 dB, contra -60.2 dB de la misma corrida en
+  silencio-. Asi que NO hay que construir ningun reparto de audio: se graba con
+  la pista que entrega el propio grabador.
+
+  LA CALIDAD QUE SALE es la del telefono: H.264 1920x1080 a 20 Mbps y 30
+  cuadros, con AAC 48000 Hz estereo a 256 kbps. No hay que elegir calidades en
+  esta tarea; con lo que da por omision alcanza.
+
+  LA SESION SE ARRANCA CON disableAudio EN FALSE. Ya esta asi. Si alguna vez se
+  arranca sin audio, el archivo sale MUDO Y SIN NINGUN ERROR.
+
+
+LOS TRES MODOS DE FALLAR QUE YA PAGAMOS
+
+Te los cuento porque probablemente vuelvan con otra cara, y reconocerlos vale
+mas que cualquier instruccion:
+
+  1. FALLAR EN SILENCIO. La grabacion sin audio no dio error: dio un archivo
+     con una sola pista. Lo peor que puede hacer esta funcion es entregar algo
+     roto sin avisar, porque la persona se entera cuando ya no puede repetir la
+     toma.
+
+  2. ARREGLAR LA PRUEBA EN VEZ DE COMPROBAR. En una tarea anterior se dejo un
+     <div> vacio e invisible para que una prueba lo encontrara. Una prueba que
+     no puede fallar es peor que no tenerla.
+
+  3. BORRAR LOS COMENTARIOS. En este proyecto los comentarios llevan las
+     mediciones y las decisiones: por que la banda mide tres renglones, por que
+     el motor por omision es el nativo. No se borran nunca. Si el codigo
+     cambia, se actualiza el comentario; si el codigo desaparece, su comentario
+     se va con el.
+
+
+LO QUE HAY QUE CONSTRUIR
+
+A. GRABAR
+
+La grabacion empieza DESPUES de la cuenta regresiva, no al entrar a la pantalla
+de lectura. Si empieza antes, los primeros segundos del video son una cara
+quieta esperando.
+
+Se graba con el plugin, que ya tiene startRecordVideo y stopRecordVideo.
+
+QUE LO GRABADO EXISTA SIEMPRE, y esto es lo dificil. La ruta que devuelve
+stopRecordVideo no alcanza: si el sistema mata la aplicacion a mitad de la toma
+-falta de memoria, bateria, el usuario que se va-, esa llamada no ocurre nunca.
+El patron que usan las camaras serias:
+
+    se escribe en {id}.mp4.part
+    al lado, un {id}.json que se va actualizando con lo que se sabe hasta ahi:
+      milisegundos, bytes, si tiene pista de audio, de que guion salio
+    al terminar limpio, se renombra a .mp4 y queda marcado como listo
+    al arrancar la aplicacion, si hay un .part con algo de duracion, se
+      promueve o se marca INCOMPLETA. Nunca se borra en silencio.
+
+Y hay que atender el ciclo de vida: si la pantalla se va a segundo plano o la
+actividad se destruye, se corta la grabacion de forma limpia y se escribe el
+sidecar. No hace falta un servicio en primer plano: esta aplicacion se usa
+mirando el lente, no en segundo plano.
+
+B. DARSE CUENTA DE QUE SALIO MUDO
+
+No es una comprobacion mas: es lo que nos protege en los telefonos que no
+repartan el audio como el de Javier. Tres senales, no una:
+
+    el contenedor:  ¿el mp4 tiene pista de audio? -MediaExtractor-
+    el nivel:       ¿esa pista tiene algo? RMS de unos segundos, o las
+                    estadisticas de audio que entregue el grabador
+    el cruce:       si el motor de voz reconocio frases durante esa toma,
+                    sabemos que la persona hablo. Si ademas el archivo no
+                    tiene sonido, la tuberia fallo y eso es un error duro: la
+                    grabacion se marca y NO se ofrece como buena.
+
+Y al reves importa: si el motor tampoco oyo nada, probablemente no hablo nadie.
+Eso es un aviso, no un error. "No se oye audio en este archivo" y listo.
+
+C. LA SEÑAL EN PANTALLA, Y UNA CORRECCION QUE VAS A NECESITAR
+
+Mientras se lee, la pantalla tiene que quedar limpia: el texto, la imagen, y
+casi nada mas. La persona esta mirando el lente.
+
+La marca de que se esta grabando es UN PUNTO ROJO, que ya existe en
+src/components/TeleprompterView.tsx con data-testid="punto-grabando".
+
+OJO CON ESTO: hoy ese punto NO significa grabando. Lo enciende la propiedad
+isRecording, que viene del reconocedor de voz -src/hooks/useASR.ts- y quiere
+decir "el motor esta escuchando". Osea que hoy se enciende cada vez que se lee,
+haya camara o no.
+
+DECISION: el punto rojo pasa a significar GRABANDO, y nada mas. Leyendo sin
+grabar no se enciende. Resolve el cambio de nombre como te parezca mejor, pero
+que quede claro en el codigo cual de las dos cosas es cada una.
+
+No agregues un boton nuevo que compita con Leer.
+
+D. QUE LO GRABADO EXISTA PARA EL USUARIO
+
+Una grabacion que no se puede ver ni borrar desde la aplicacion no existe: hoy,
+para comprobar una toma hay que sacarla con un cable.
+
+EL MODELO NO TIENE NINGUN TIPO DE GRABACION. src/datos/modelo.ts solo conoce
+Guion, Bloque, TramoFormato y ResumenGuion. Hay que crearlo, y es el mismo dato
+que el sidecar del punto A -por eso las dos cosas van en la misma tarea-:
+
+    ResumenGrabacion {
+      id, guionId?, tituloGuion,
+      creado, duracionMs, bytes,
+      ruta, rutaMiniatura,
+      tieneAudio, incompleta
+    }
+
+El mp4 y la miniatura viven en el disco. En IndexedDB va SOLO el indice, en un
+almacen aparte del de guiones. Mira src/datos/RepositorioGuiones.ts y
+RepositorioIndexedDB.ts: hay una interfaz chica y una implementacion, y conviene
+que esto se parezca.
+
+LA MINIATURA se saca de un cuadro del segundo 1 con MediaMetadataRetriever al
+cerrar la grabacion, y se guarda al lado del mp4. Al WebView le va SOLO LA RUTA,
+nunca la imagen: mandar imagenes por el puente lo congestiona y no hace falta.
+
+DONDE SE VEN. En la pantalla de inicio, debajo de la lista de guiones, una tira
+horizontal: miniatura, duracion y fecha. Es donde las pone PromptSmart y esta
+bien puesto: el video al lado del guion que lo produjo, no escondido en otra
+pantalla. No una pestaña nueva.
+
+Tocar una reproduce. Borrar se lleva el mp4, la miniatura y la fila. Una
+grabacion incompleta se muestra marcada como tal.
+
+
+LO QUE NO ENTRA EN ESTA TAREA
+
+  - elegir resoluciones o bitrate, y el "te alcanzan N minutos"
+  - exportar a la galeria del telefono
+  Las dos son la tarea 65. Por ahora el archivo vive en el sandbox de la
+  aplicacion.
+
+  - 4K. Queda fuera por decision: con el motor de voz y el WebView encima
+    termina en throttle termico y se pierden cuadros del seguimiento.
+
+  - la pantalla de prueba de camara nativa -PruebaCamaraNativaView-. Es
+    andamio; se saca cuando esto este, no ahora.
+
+
+LO QUE NO SE TOCA, Y ES CONTRATO
+
+  NO toques el motor de voz ni el microfono: src/motor/, src/lib/seguidor.ts,
+  src/lib/avance.ts, src/lib/conduccion.ts, VoskNativoPlugin.java. Si algo del
+  audio parece estorbar, DECILO y para; no lo arregles.
+
+  NO toques la banda, el velo, el ancho de la columna ni donde cae el texto.
+  Esta medido que el texto cae en top 81 y left 41 en las dos pantallas y con
+  los tres fondos; tiene que seguir igual.
+
+  NO borres comentarios.
+
+  NO escribas en main.
+
+
+COMO SE COMPRUEBA
+
+Las pruebas automaticas de este proyecto corren en jsdom, donde no hay camara
+ni archivos. Lo que ahi se puede comprobar es el DATO: que el indice se escribe
+y se lee, que una grabacion incompleta se reconoce al arrancar, que el cruce
+del mudo marca error cuando hubo voz y no hay pista. Escribi esas, y comproba
+que sirven rompiendo a proposito lo que deberian agarrar.
+
+Lo demas lo mido yo en el telefono de Javier:
+
+    se lee un rato con la camara, se corta, y el archivo esta, se ve y se oye
+    se mata la aplicacion a mitad de una toma y al volver a abrir la grabacion
+      aparece, marcada como incompleta, con lo que alcanzo a grabarse
+    la tira muestra la miniatura, la duracion y la fecha, y se reproduce
+    leyendo SIN grabar, el punto rojo no se enciende
+
+DECI EN EL RESUMEN como resolviste el ciclo de vida -que pasa si la aplicacion
+se va a segundo plano en medio de una toma- y que hiciste con el nombre de
+isRecording.

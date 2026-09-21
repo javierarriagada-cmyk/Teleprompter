@@ -20,7 +20,6 @@ interface BibliotecaViewProps {
   onArchivar: (id: string, archivado: boolean) => void
   onBuscarGuionCompleto?: (id: string) => Promise<Guion | null>
   onToggleDiagnostico?: () => void
-  onAbrirPruebaCamaraNativa?: () => void
   medirLectura?: boolean
   setMedirLectura?: (medir: boolean) => void
   engine?: IdMotor
@@ -400,7 +399,6 @@ export default function BibliotecaView({
   onArchivar,
   onBuscarGuionCompleto,
   onToggleDiagnostico,
-  onAbrirPruebaCamaraNativa,
   medirLectura = true,
   setMedirLectura = () => {},
   engine = 'vosk',
@@ -877,24 +875,6 @@ export default function BibliotecaView({
                 Medición / Panel Corpus
               </button>
 
-              <button
-                data-testid="btn-prueba-camara-nativa"
-                onClick={() => {
-                  setMenuSuperiorAbierto(false)
-                  onAbrirPruebaCamaraNativa?.()
-                }}
-                style={{
-                  padding: 'var(--aire-3) var(--aire-4)',
-                  textAlign: 'left',
-                  background: 'transparent',
-                  border: 'none',
-                  color: 'var(--color-texto)',
-                  fontSize: 'var(--texto-cuerpo)',
-                  cursor: 'pointer'
-                }}
-              >
-                Prueba de cámara nativa
-              </button>
             </div>
           )}
         </div>
