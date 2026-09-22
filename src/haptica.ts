@@ -36,23 +36,28 @@ export function hapticaToqueSuave(): void {
 }
 
 
-// EL AVISO DEL GESTO DE MANTENER, Y SU DURACION VIVE ACA Y EN NINGUN OTRO LADO.
+// EL AVISO DEL GESTO DE MANTENER, Y POR QUE NO ES UNA DURACION EN MILISEGUNDOS.
 //
-// Es mas corto que hapticaToqueSuave -el impacto Light, unos 20 ms- porque no
-// confirma nada: solo dice "te senti" a los 300 ms, mientras el dedo sigue
-// apoyado. Un golpe largo ahi se lee como que ya paso algo, y todavia no paso.
+// Dice "te senti" a los 300 ms, con el dedo todavia apoyado y sin que haya
+// pasado nada aun. Tiene que ser un toquecito seco y corto.
 //
-// El numero se exporta en vez de quedar suelto adentro del vibrate. Venia
-// escrito en dos lugares -aca y como MS_VIBRACION_AVISO en mantenerApretado-,
-// que es justo lo que esta tarea vino a impedir: dos numeros que tienen que
-// moverse juntos y no se mueven. La DURACION de una vibracion es de la
-// haptica; los TIEMPOS del gesto -300 y 500- son de mantenerApretado.
-export const MS_VIBRACION_AVISO = 15
-
+// PRIMERO SE HIZO CON Haptics.vibrate({ duration: 15 }) Y NO SE SENTIA NADA.
+// Javier en el telefono, el 21 de septiembre de 2026: "en el menu del sol no
+// siento la vibracion". El motivo es de hardware: vibrate() enciende el motor
+// durante ese tiempo en crudo, y 15 ms no alcanzan para que la masa arranque y
+// se note. Subir el numero hasta sentirlo daria un golpe torpe, que es justo
+// lo contrario de lo que este aviso quiere decir.
+//
+// selectionChanged() es el primitivo correcto: el sistema lo resuelve con su
+// propio efecto de tic -EFFECT_TICK en Android-, disenado para ser breve y
+// perceptible. No se pide una duracion porque la duracion no es nuestra.
+//
+// Por eso aca no hay ninguna constante de milisegundos. Los tiempos del GESTO
+// -300 y 500- viven en mantenerApretado.ts y son otra cosa.
 export function hapticaAvisoMantener(): void {
   if (!vibracionHabilitada() || !Capacitor.isNativePlatform()) return
   try {
-    Haptics.vibrate({ duration: MS_VIBRACION_AVISO }).catch(() => {})
+    Haptics.selectionChanged().catch(() => {})
   } catch (e) {
   }
 }

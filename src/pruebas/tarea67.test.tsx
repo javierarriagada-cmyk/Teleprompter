@@ -10,7 +10,6 @@ import { MotorFake } from '../motor/MotorFake'
 import TiraGrabaciones from '../components/TiraGrabaciones'
 import { grabacionNueva } from '../datos/modelo'
 import { MS_AVISO_MANTENER, MS_MANTENER_APRETADO } from '../components/mantenerApretado'
-import { MS_VIBRACION_AVISO } from '../haptica'
 
 vi.mock('@capgo/camera-preview', () => ({
   CameraPreview: {
@@ -82,7 +81,6 @@ describe('Tarea 67 - la casa de cada ajuste y el gesto que se siente', () => {
   test('los tres tiempos del gesto salen de UN archivo, no hay 500 ni 300 de mantener escritos a mano', () => {
     expect(MS_MANTENER_APRETADO).toBe(500)
     expect(MS_AVISO_MANTENER).toBe(300)
-    expect(MS_VIBRACION_AVISO).toBe(15)
     const raiz = path.resolve(process.cwd(), 'src/components')
     const sucios: string[] = []
     function andar(dir: string) {

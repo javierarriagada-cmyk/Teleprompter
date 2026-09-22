@@ -8,12 +8,13 @@ import { hapticaAvisoMantener } from '../haptica'
 //
 // 300 ms: "te senti" — vibracion corta y la tarjeta se comprime.
 // 500 ms: se suelta el menu o el atajo. Soltar entre medio no abre nada.
-// La duracion de la vibracion NO esta aca: es de la haptica y vive en
-// src/haptica.ts como MS_VIBRACION_AVISO. Aca solo los tiempos del gesto.
+// Aca viven los TIEMPOS del gesto y nada mas. La vibracion del aviso no tiene
+// duracion nuestra: la pone el sistema con su efecto de tic. Ver
+// hapticaAvisoMantener en src/haptica.ts, donde esta escrito por que.
 export const MS_MANTENER_APRETADO = 500
 export const MS_AVISO_MANTENER = 300
 const PX_PARA_CANCELAR = 10
-const ESCALA_AVISO = 0.97
+export const ESCALA_AVISO = 0.97
 
 export function estiloComprimirPorAviso(avisado: boolean): React.CSSProperties {
   return {

@@ -78,6 +78,18 @@ body {
   color: var(--color-texto);
 }
 
+/* EL DESTELLO AZUL DE ANDROID NO ES NUESTRO Y NO LO QUEREMOS.
+   El WebView pinta un rectangulo azul translucido sobre cualquier cosa que
+   toques. Es el aviso por omision del sistema para paginas web que no tienen
+   respuesta propia al toque. Nosotros SI la tenemos -btn-deformable, el
+   comprimido del gesto de mantener, las curvas de circuito.html- asi que el
+   destello se superpone a la nuestra y ademas llega antes.
+   Javier lo vio el 21 de septiembre de 2026 manteniendo apretado un guion:
+   "da un breve parpadeo azul". */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .texto-display {
   font-family: "Source Serif 4", serif;
   font-size: var(--texto-display);

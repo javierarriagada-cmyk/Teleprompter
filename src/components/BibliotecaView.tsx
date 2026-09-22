@@ -9,7 +9,7 @@ import TarjetaLectura from './TarjetaLectura'
 import { IconoEngranaje } from './IconosApp'
 import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './movimiento'
-import { estiloComprimirPorAviso, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
+import { ESCALA_AVISO, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -314,9 +314,17 @@ function FilaGuion({
           backgroundColor: 'var(--bg-fila)',
           borderRadius: 'var(--redondeo)',
           cursor: 'pointer',
-          ...estiloComprimirPorAviso(avisado),
           userSelect: 'none',
-          transform: `translateX(${dragX}px)`,
+          // LOS DOS MOVIMIENTOS VAN EN UN SOLO transform, Y ESTE ES EL UNICO
+          // SITIO DONDE CHOCAN. La fila se desliza -translateX- y ademas se
+          // comprime al avisar el gesto -scale-. Como CSS tiene una sola
+          // propiedad transform, escribirlas por separado hace que la segunda
+          // borre a la primera: el spread de estiloComprimirPorAviso iba antes
+          // y el translateX lo pisaba, asi que el encogimiento no se veia
+          // nunca. Javier el 21 de septiembre de 2026: "cuando mantengo
+          // apretado el guion no se encoge".
+          // En la tarjeta y en la tira no pasa porque ahi no hay deslizamiento.
+          transform: `translateX(${dragX}px) scale(${avisado ? ESCALA_AVISO : 1})`,
           transition: esArrastrandoRef.current
             ? 'none'
             : movimientoApagado()
