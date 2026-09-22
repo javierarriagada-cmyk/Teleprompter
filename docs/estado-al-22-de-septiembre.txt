@@ -1,0 +1,88 @@
+DONDE QUEDO TODO, Y POR DONDE SE RETOMA
+
+Para no volver a deducir nada.
+
+
+LO SIGUIENTE ES AFINAR EL MOTOR. Decidido por Javier el 22 de septiembre de
+2026: "cuando retomemos, partiendo por afinar motor".
+
+Y ESO TIENE SU PLAN YA ESCRITO, que no se rehace: medir antes de tocar.
+Ningun cambio entra si no mueve el numero sobre las grabaciones. El corpus de
+lecturas y el panel de medicion existen y siguen funcionando; desde la tarea 68
+ya no estan en el menu, se llega manteniendo apretado el titulo de la tarjeta
+de la portada.
+
+    src/lib/seguidor.ts      donde cae el renglon
+    src/lib/avance.ts        el motor de avance y sus estados
+    src/lib/conduccion.ts
+    src/motor/               los motores y su eleccion
+    src/lib/almacenCorpus.ts, grabadorCorpus.ts    las lecturas grabadas
+
+Lo unico medido y no resuelto que toca al motor esta en el punto 11 de
+pendientes: EL DESFASE DE CUATRO RENGLONES CON CAMARA. Ese es el candidato a
+primer numero que mover.
+
+
+LO QUE ENTRO A MAIN EL 21 Y 22 DE SEPTIEMBRE
+
+  66  la coherencia: dos puertas, un solo lienzo con LISTO y LEYENDO, los dos
+      pisos de Atras, mantener apretado en todas partes, las tres familias de
+      ajustes, la portada ordenada
+  67  la casa de cada ajuste: las dos puertas tambien en la portada, el gesto
+      con sus dos tiempos -aviso a los 300, menu a los 500-, brillo de escena,
+      dos temas y no tres
+  68  el final de la toma: el visor se abre con lo que acabas de grabar,
+      Repetir toma, el menu por portal, lo nuestro fuera de la vista
+
+  Y UNO QUE NO ERA UNA TAREA Y VALIO POR TRES: el service worker no va adentro
+  del APK. Era el parpadeo del arranque Y la razon por la que el telefono
+  corria el codigo de ayer mientras el APK era el de hoy.
+
+
+ABIERTO, SIN TAREA ASIGNADA
+
+  ANTES DE PLAY, Y NO SE PUEDE DEJAR PARA EL FINAL:
+    el identificador del paquete es com.teleprompter.app, generico y no es
+    suyo. UNA VEZ PUBLICADO NO SE PUEDE CAMBIAR NUNCA.
+    la politica de privacidad, obligatoria por grabar audio y video.
+
+  LA TARJETA DE LA PORTADA con los dos botones. Punto 12 de pendientes.
+  Javier: "no te voy a decir que se ve bonito, pero se entiende". Se entiende
+  no es el estandar de la unica imagen buena del producto.
+
+  EL LIENZO DE TOMA sigue sin titulo de grupo, a diferencia de las otras dos
+  familias. Javier lo dejo para despues a proposito.
+
+  LA VIBRACION no se siente en el telefono de Javier. Comprobado por el
+  depurador que el codigo esta bien y lo apagado es el aparato. El metodo para
+  volver a distinguirlo en un minuto esta escrito en src/haptica.ts.
+
+
+EL REPOSITORIO
+
+  main y origin/main al dia. Las ramas de trabajo publicadas. Quedan ramas
+  viejas de revision solo locales; su contenido ya esta en main.
+
+  PENDIENTE DE JAVIER: ponerlo PRIVADO. No hay despliegue web que se rompa
+  -ni Pages, ni Vercel, ni Netlify; solo ci.yml, que anda igual en privado-.
+  Lo unico a comprobar despues es que el conector de Grok siga alcanzandolo.
+
+
+COMO SE TRABAJA, QUE NO SE OLVIDE
+
+  UN APK POR TAREA, NO POR TRAMO, y lo instala Claude por adb. Pasarle el
+  archivo y preguntarle que ve agrega una vuelta suya para averiguar algo que
+  el depurador contesta solo.
+
+  CUANDO UNA MEDICION EN EL TELEFONO CONTRADICE A UNA PRUEBA QUE PASA, la
+  primera hipotesis es que el telefono no esta corriendo ese codigo.
+
+  LOS COMENTARIOS NO SE BORRAN y se cuentan en cada parche.
+
+  LAS CAPAS se miran como se miran los usos: zIndex y pointerEvents viajan con
+  el elemento y no los mira ninguna prueba. Dos veces rompieron algo en un dia.
+
+  GROK manda parches como TEXTO, en pedazos numerados del mismo diff, cortados
+  entre archivos o hunks completos. Su conector trunca App.tsx,
+  TeleprompterView.tsx y EditorView.tsx. Si las cuentas de un hunk vienen mal,
+  git apply --recount.
