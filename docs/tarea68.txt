@@ -1,0 +1,167 @@
+TAREA 68 - QUE PASA CUANDO LA TOMA TERMINA
+
+Repositorio: github.com/javierarriagada-cmyk/Teleprompter
+Partir de: main, hoy en c2e6dda
+Entregar: una rama o un PR. NUNCA escribir en main.
+
+Va junto con la 67. Se separan porque esta toca el final de la grabacion, que
+es lo que mas cuidamos, y la otra toca menus. Si algo se rompe, que se sepa
+cual fue.
+
+
+EL PROBLEMA, EN UNA FRASE
+
+Hoy terminas de grabar y la aplicacion te deja en LISTO, mirando el texto otra
+vez, como si no hubiera pasado nada. La toma que acabas de hacer esta en la
+tira de la portada, dos pantallas mas atras, y hay que ir a buscarla.
+
+Grabar termina en un archivo. La aplicacion tiene que mostrartelo.
+
+
+LO QUE YA EXISTE Y NO SE REHACE - LEELO ANTES
+
+    src/components/ReproductorGrabacion.tsx
+        el visor. Ya reproduce, ya tiene "Guardar en galeria" -con su estado
+        "Guardando..." y su mensaje-, ya tiene borrar con confirmacion y
+        cerrar. NO lo reescribas: le falta UNA accion.
+
+    guardarEnGaleria() en src/lib/archivosNativos.ts
+        anda, usa MediaStore con IS_PENDING. No la toques.
+
+    mostrarAviso() en App.tsx:132
+        el aviso flotante, con accionTexto y alEjecutarAccion. Es el unico
+        sistema de avisos que hay y es el que se usa.
+
+    handleStop() en App.tsx
+        corta la toma por cortarTomaSiHay, para el motor, corta el audio DESPUES
+        del motor -y el comentario dice por que-, suelta el wake lock y deja el
+        estado en LISTO.
+
+    LOS DOS PISOS DE ATRAS, de la tarea 66 y medidos en el telefono:
+        LEYENDO -> LISTO   corta la toma y se queda, la camara sigue viva
+        LISTO   -> origen  ahi se apaga la camara
+    Esto NO se rompe. Lo de abajo se monta ENCIMA, no en su lugar.
+
+
+1. AL TERMINAR UNA TOMA, SE VE LA TOMA
+
+Cuando se sale de LEYENDO habiendo grabado video -y solo entonces-, despues de
+que handleStop hizo su trabajo, se abre el reproductor con esa toma.
+
+    con camara y hubo grabacion   handleStop, y se abre el reproductor
+    sin camara -solo lectura-     handleStop y nada mas, como hoy
+    con camara pero sin grabar    nada mas, como hoy
+
+    Al CERRAR el reproductor se queda en LISTO, con la camara viva, que es
+    donde ya estaba. NO salta al origen: eso sigue siendo el segundo piso y lo
+    decide la persona.
+
+POR QUE ASI Y NO MANDANDOLO A LA PORTADA: porque lo mas probable despues de una
+toma es repetirla. Si te devuelve a la portada, volver a grabar cuesta tres
+pasos. Quedando en LISTO detras del visor, cuesta cerrar y apretar Empezar.
+
+Y VALE PARA LAS DOS SALIDAS. El boton Salir y el Atras del telefono hacen lo
+mismo, como ya pasa hoy. Si solo lo pones en el boton, el que usa el gesto del
+telefono no ve nunca su toma.
+
+
+2. EL REPRODUCTOR GANA "REPETIR TOMA"
+
+Dos acciones de primer nivel, del mismo peso visual:
+
+    [Guardar en galeria]    ya existe
+    [Repetir toma]          nueva
+
+"Repetir toma" cierra el visor y arranca una toma nueva enseguida: la misma
+cuenta regresiva y el mismo camino que Empezar. No una pantalla intermedia, no
+una pregunta.
+
+LO QUE NO HACE, Y ES IMPORTANTE: NO borra la toma anterior. Repetir es hacer
+otra, no pisar la que habia. Ya tenemos la regla escrita de la tarea 64: nunca
+se borra en silencio una toma, por corta que sea. Esa regla salvo 47 MB de
+video y no se debilita por comodidad.
+
+Borrar sigue estando donde esta, con su confirmacion.
+
+El resto del visor -borrar, cerrar- queda como esta.
+
+
+3. EL AVISO DE GUARDADO DICE DONDE QUEDO
+
+Hoy "Guardar en galeria" muestra un mensaje adentro del visor. Falta que sea un
+aviso de los nuestros y que diga algo util.
+
+    mientras guarda      el boton dice "Guardando...", como ya hace
+    cuando termina       mostrarAviso con el destino, y una vibracion corta
+    si falla             mostrarAviso con que paso, SIN vibracion de exito
+
+    El texto nombra donde quedo -la galeria del telefono, en Peliculas-, no un
+    "Listo" a secas. Si guardarEnGaleria devuelve uri, usalo para decirlo bien.
+
+LA VIBRACION: hapticaToqueMedio, que ya existe. Exito vibra, error no. Un error
+que vibra igual que un acierto ensena a no confiar en la vibracion.
+
+Y NO INVENTES OTRO SISTEMA DE AVISOS. mostrarAviso es el que hay.
+
+
+4. LO QUE NO SE TOCA, Y ES CONTRATO
+
+NO TOQUES LA TUBERIA DE GRABACION. Ni el sidecar, ni la recuperacion, ni el
+emparejado por marca de tiempo, ni el detector de mudo, ni la miniatura, ni el
+indice, ni cortarTomaVideo. Esta tarea pasa DESPUES de que el archivo ya esta
+guardado y no cambia como se guarda.
+
+    Dos cosas que ya se probaron y NO funcionan, para que no las intentes:
+      - el plugin escribe su mp4 en SU carpeta y no devuelve la ruta hasta el
+        stop; por eso el archivo se mueve DESPUES.
+      - NUNCA se borra en silencio una toma, por corta que sea.
+
+NO toques el motor de voz ni el microfono: src/motor/, src/lib/seguidor.ts,
+src/lib/avance.ts, src/lib/conduccion.ts, VoskNativoPlugin.java.
+
+NO toques los dos pisos de Atras. Se montan encima.
+
+NO toques la camara: encenderla, apagarla, el lado, los tres fondos, el
+recuadro. Al cerrar el visor la sesion sigue viva, no se reinicia.
+
+NO borres comentarios. Si el codigo cambia, se actualiza su comentario; si el
+codigo desaparece de verdad, su comentario se va con el. Los comentarios de
+este proyecto llevan las mediciones y ninguna prueba los protege.
+
+MIRA LAS CAPAS. El visor es fixed con zIndex 400 y va a aparecer sobre el
+lienzo con la camara nativa POR DETRAS del WebView. Comproba que el visor se
+vea de verdad y no quede transparente: el fondo de esa pantalla se pone en
+transparente a proposito para que se vea la camara. Decilo en el resumen.
+
+NO escribas en main.
+
+
+5. COMO SE COMPRUEBA
+
+Agrega estas cuatro:
+
+    - al salir de LEYENDO habiendo grabado, el visor aparece con esa toma
+    - al salir de LEYENDO SIN camara, el visor NO aparece
+    - al cerrar el visor se queda en LISTO, no en el origen
+    - "Repetir toma" arranca otra toma y la anterior SIGUE EXISTIENDO
+
+La cuarta es la que protege lo que mas importa. Escribila de manera que falle
+si alguien hace que repetir pise la toma anterior.
+
+Lo demas lo mide Javier en el telefono: que el video se reproduzca, que guardar
+en galeria funcione de verdad y el aviso diga donde quedo, y que repetir no le
+haga perder nada.
+
+DECI EN EL RESUMEN que pruebas existentes tuviste que cambiar y por que.
+
+
+6. COMO LO MANDAS
+
+Parche de TEXTO, pedazos numerados 1..n del MISMO diff, generado con git diff
+de verdad contra c2e6dda. Cortar solo entre archivos o entre hunks completos,
+nunca a mitad de un hunk. Sin texto entre medio.
+
+Tu conector trunca App.tsx, TeleprompterView.tsx y EditorView.tsx: no intentes
+subirlos.
+
+Corre vitest antes de mandar y pegame el numero. Hoy main da 276.

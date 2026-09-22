@@ -1,0 +1,212 @@
+TAREA 67 - LA CASA DE CADA AJUSTE, Y EL GESTO QUE SE SIENTE
+
+Repositorio: github.com/javierarriagada-cmyk/Teleprompter
+Partir de: main, hoy en c2e6dda
+Entregar: una rama o un PR. NUNCA escribir en main.
+
+Va junto con la 68, que es el final de la grabacion. Se separan por UN motivo y
+no por tamano: esta toca menus y gestos, y la otra toca la tuberia de la toma.
+Si algo se rompe, quiero saber cual de las dos fue.
+
+
+LO QUE YA ESTA HECHO Y NO SE REHACE
+
+La tarea 66 dejo las tres familias armadas y el gesto de mantener apretado en
+un solo lugar. Esto TERMINA eso, no lo empieza:
+
+    src/components/mantenerApretado.ts   MS_MANTENER_APRETADO = 500, el hook
+                                         useMantenerApretado, y el gesto de la
+                                         fila de guion, la toma y el boton Leer
+                                         de la tarjeta
+    el menu de la portada                ya separa "Lo nuestro" de "La
+                                         aplicacion"
+    el engranaje del lienzo              ya tiene donde lees, espejo, tiempo
+    el panel Aa del editor               ya es solo del texto
+
+NO reescribas nada de eso. Lo que falta es lo de abajo.
+
+
+1. LAS TRES FAMILIAS, TERMINADAS
+
+La regla sigue siendo una pregunta: ¿esto cambia entre una toma y otra?
+
+A) DE LA APLICACION - menu de la portada
+
+   Estan Tema -"Apariencia"-, Vibracion y el apartado del motor. Falta:
+
+   - QUE EL APARTADO NUESTRO SE LLAME POR SU NOMBRE. Hoy el separador dice "Lo
+     nuestro", que fue un apunte mio, no una palabra de producto. Tiene que
+     decir MOTOR DE VOZ Y TRANSCRIPCION, y quedar visiblemente separado de lo
+     del usuario: es instrumental nuestro, no una preferencia suya.
+
+   - EL ORDEN. Primero lo del usuario -Apariencia, Vibracion-, despues lo
+     nuestro. Hoy esta al reves.
+
+B) DEL TEXTO - panel Aa del editor
+
+   - "Idioma" PASA A LLAMARSE "IDIOMA DEL GUION", y SE QUEDA DONDE ESTA.
+
+     OJO, QUE ESTO CONTRADICE EL PEDIDO Y ES A PROPOSITO. Javier lo puso en
+     ajustes de aplicacion. No corresponde: nuestro idioma vive en el modelo
+     del guion -Guion.idioma- y es lo que oye el reconocedor, no el idioma de
+     la interfaz. Un guion en ingles adentro de una aplicacion en espanol es un
+     caso real y hay que poder tenerlo. El idioma de la INTERFAZ no existe
+     todavia y ese si ira a la portada el dia que exista.
+
+     Si al implementarlo ves que me equivoco, DECILO en el resumen y dejalo
+     donde esta igual.
+
+C) DE LA TOMA - engranaje del lienzo, en LISTO
+
+   Estan donde lees, espejo y mostrar tiempo. Falta BRILLO.
+
+   - UN CONTROL DE BRILLO DE PANTALLA, con tres pasos nombrados, al lado de los
+     otros tres. No un deslizador: la escala de esta aplicacion es de pasos
+     nombrados y un deslizador pide precision que nadie tiene filmando.
+
+   - POR QUE EXISTE, para que no lo hagas como un capricho: leyendo a camara, la
+     pantalla a tope quema la vista en tomas largas y se refleja en el lente y
+     en los anteojos. Y al reves, con sol encima hace falta subirla. Es una
+     decision de escena, cambia entre una toma y otra, y por eso es de esta
+     familia.
+
+   - COMO: @capacitor/screen-brightness si esta disponible; si no, el plugin
+     nativo nuestro -CamaraNativaPlugin- con WindowManager.LayoutParams
+     screenBrightness sobre la Activity. Elegi vos y decilo en el resumen.
+
+   - SE DEVUELVE AL SALIR. El brillo es del sistema: si lo subimos y la persona
+     se va, no puede quedarse asi. Al abandonar el lienzo vuelve al valor que
+     tenia -screenBrightness = -1 devuelve el control al sistema-.
+
+   - Y NO SE PERSISTE COMO LOS OTROS. Donde lees o el espejo son preferencias;
+     el brillo es de la escena de hoy. Arranca siempre en "automatico".
+
+
+2. EL GESTO SE TIENE QUE SENTIR ANTES DE VERSE
+
+Hoy mantener apretado funciona pero no avisa: pasan 500 ms sin que nada le diga
+a la persona que la aplicacion la esta escuchando. Es correcto y es mudo.
+
+Los dos tiempos son distintos y los dos importan:
+
+    A LOS 300 ms    una vibracion CORTA -15 ms- y la tarjeta se comprime al 97%
+                    con la curva elastica que ya existe -CURVA_RESORTE en
+                    src/components/movimiento.tsx-.
+                    Esto dice "te senti". No abre nada.
+
+    A LOS 500 ms    se suelta el menu, como hoy.
+
+   Si se suelta el dedo entre los 300 y los 500, la tarjeta vuelve a su tamano
+   con la misma curva y NO pasa nada mas. Ese viaje de ida y vuelta es lo que
+   ensena el gesto sin que nadie lo explique.
+
+DONDE VA, Y ES UN SOLO LUGAR: en useMantenerApretado y en el temporizador de
+FilaGuion, que hoy son dos implementaciones del mismo gesto. Los dos tiempos se
+escriben UNA vez, al lado de MS_MANTENER_APRETADO:
+
+    MS_MANTENER_APRETADO = 500   ya existe, no lo muevas
+    MS_AVISO_MANTENER    = 300   nuevo
+    MS_VIBRACION_AVISO   = 15    nuevo
+
+APROVECHA Y UNIFICA. FilaGuion todavia tiene su propio setTimeout y su propio
+fueLongPressRef; useMantenerApretado ya hace lo mismo. Que FilaGuion use el
+hook. Si no entra porque la fila ademas desliza, decilo en el resumen y dejalo,
+pero que los tres numeros salgan del mismo archivo igual.
+
+LA HAPTICA NO ENTRA A LA VISTA DE LECTURA. T207 lo prohibe y ya nos mordio una
+vez. En la portada y en la tira no hay problema.
+
+Y hace falta un toque haptico nuevo, mas corto que los que hay:
+hapticaToqueSuave es de 20 ms. Agrega uno de 15 en src/haptica.ts, con su
+nombre, en vez de pasarle numeros sueltos desde los componentes.
+
+
+3. AVISAR QUE SE RECUPERO UNA TOMA
+
+Esto YA FUNCIONA a medias y hay que leerlo antes de tocarlo:
+recuperarTomasPendientes() corre al arrancar, encuentra las tomas que quedaron
+de una sesion interrumpida, las empareja por marca de tiempo y las deja en la
+tira marcadas "incompleta". El archivo NO se pierde. Eso esta medido y salvo 47
+MB de video de Javier.
+
+LO QUE FALTA ES QUE LA APLICACION LO DIGA. Hoy la toma aparece en la tira y
+nadie se entera de que hubo un rescate.
+
+    Si recuperarTomasPendientes devuelve al menos una toma nueva, al terminar de
+    cargar la portada aparece un aviso sobrio:
+
+        "Se recupero una toma de una sesion interrumpida."   [Verla]
+
+    Usa mostrarAviso, que YA EXISTE en App.tsx:132 y acepta accionTexto y
+    alEjecutarAccion -asi lo usa "Guion borrado"-. No inventes otro sistema de
+    avisos.
+
+    "Verla" abre esa toma en el reproductor. Si hay mas de una, el texto va en
+    plural y "Verla" abre la mas reciente.
+
+    Dura un poco mas que un aviso normal -5 segundos, no 2-, porque trae una
+    noticia y no una confirmacion.
+
+NO TOQUES la recuperacion en si, ni el emparejado por marca de tiempo, ni el
+detector de mudo, ni el sidecar. Solo el aviso.
+
+
+4. LO QUE NO SE TOCA, Y ES CONTRATO
+
+NO toques el motor de voz ni el microfono: src/motor/, src/lib/seguidor.ts,
+src/lib/avance.ts, src/lib/conduccion.ts, VoskNativoPlugin.java.
+
+NO toques la tuberia de grabacion: sidecar, recuperacion, emparejado, detector
+de mudo, miniatura, indice. La 68 tampoco la toca.
+
+NO toques el lienzo de la toma ni las dos puertas: estan medidas en el telefono.
+
+NO toques el autoguardado del editor. YA EXISTE -App.tsx:544, debounce de 500
+ms sobre guionActual- y anda. Javier lo pidio como si faltara; no falta.
+
+NO metas haptica dentro de TeleprompterView. T207.
+
+NO borres comentarios. Si el codigo cambia, se actualiza su comentario; si el
+codigo desaparece de verdad, su comentario se va con el. En este proyecto los
+comentarios llevan las mediciones y ninguna prueba los protege: yo los cuento
+en cada parche.
+
+MIRA LAS CAPAS. Vas a poner un menu comprimido y un control nuevo. zIndex y
+pointerEvents viajan con el elemento y no los mira ninguna prueba: una mudanza
+de controles ya nos rompio el arrastre del recuadro. Deci en el resumen que
+quedo encima de que.
+
+NO escribas en main.
+
+
+5. COMO SE COMPRUEBA
+
+Agrega estas cuatro:
+
+    - los tres tiempos del gesto salen de UN archivo, no hay un 500 ni un 300
+      escritos a mano en ningun componente
+    - soltar entre los 300 y los 500 no abre el menu
+    - "Idioma del guion" existe en el editor y NO existe en el menu de la portada
+    - si recuperarTomasPendientes devuelve una toma, aparece el aviso con su
+      accion
+
+La primera es la que importa a largo plazo: escribila de manera que falle si
+alguien vuelve a copiar un numero en un segundo archivo.
+
+Lo demas lo mide Javier en el telefono: que el gesto se sienta antes de verse,
+que el brillo cambie de verdad y vuelva al salir, y que el aviso de rescate
+aparezca cuando corresponde.
+
+DECI EN EL RESUMEN que pruebas existentes tuviste que cambiar y por que.
+
+
+6. COMO LO MANDAS
+
+Parche de TEXTO, pedazos numerados 1..n del MISMO diff, generado con git diff
+de verdad contra c2e6dda. Cortar solo entre archivos o entre hunks completos,
+nunca a mitad de un hunk. Sin texto entre medio.
+
+Tu conector trunca App.tsx, TeleprompterView.tsx y EditorView.tsx: no intentes
+subirlos.
+
+Corre vitest antes de mandar y pegame el numero. Hoy main da 276.
