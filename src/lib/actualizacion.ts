@@ -26,6 +26,8 @@
 //      arruina la toma. Si la version nueva llega mientras se esta leyendo o grabando, se
 //      espera a que termine y recien ahi se aplica.
 
+import { Capacitor } from '@capacitor/core'
+
 let habiaControladorAlCargar = false
 let yaRecargue = false
 let actualizacionPendiente = false
@@ -68,4 +70,54 @@ export function instalarRecargaAlActualizar(): void {
     if (!habiaControladorAlCargar) return
     aplicar()
   })
+}
+
+// DENTRO DEL APK NO VA SERVICE WORKER, Y ESTO COSTO UNA TARDE ENTERA.
+//
+// Todo lo de arriba existe para la WEB, donde el service worker es lo que permite abrir la
+// aplicacion sin red. Adentro del APK no sirve para nada: los archivos ya viajan en el
+// paquete, se leen del disco del telefono y no hay red que reemplazar. Lo unico que agrega
+// es su riesgo.
+//
+// Y ese riesgo se materializo. El 21 de septiembre de 2026, con el APK recien instalado,
+// Javier reportaba defectos que en las pruebas no existian, y la misma compilacion me medio
+// dos resultados distintos en el mismo telefono con una hora de diferencia. La causa: al
+// reinstalar el APK, el service worker viejo seguia controlando la pagina y servia el
+// paquete de la instalacion ANTERIOR. La version nueva se instalaba por detras y recien
+// tomaba el control en la carga siguiente -y aqui el bloqueo de recarga de arriba, que es
+// correcto para la web, la posterga todavia mas-.
+//
+// O sea: el telefono corria el codigo de ayer mientras el APK era el de hoy, y sin ningun
+// aviso. Es el mismo modo de falla que advierte el comentario de scripts/apk.mjs sobre
+// compilar sin sincronizar, pero por otra puerta.
+//
+// Por eso, en nativo, se DESREGISTRA el que hubiera y se borran sus cachos. No alcanza con
+// no registrarlo: el que ya quedo instalado de una version anterior sigue mandando.
+//
+// La recarga al final es por unica vez: en el arranque en que esto corre, la pagina YA se
+// cargo con los archivos viejos del cache, asi que hay que volver a pedirlos. Solo si habia
+// un controlador; si no habia, no hay nada viejo que tirar.
+export async function sacarServiceWorkerEnNativo(): Promise<void> {
+  if (!Capacitor.isNativePlatform()) return
+  if (typeof navigator === 'undefined' || !navigator.serviceWorker) return
+
+  const habiaControlador = !!navigator.serviceWorker.controller
+  try {
+    const registros = await navigator.serviceWorker.getRegistrations()
+    if (registros.length === 0 && !habiaControlador) return
+    await Promise.all(registros.map((r) => r.unregister()))
+
+    if (typeof caches !== 'undefined') {
+      const claves = await caches.keys()
+      await Promise.all(claves.map((k) => caches.delete(k)))
+    }
+  } catch (e) {
+    console.warn('[Actualizacion] No se pudo sacar el service worker:', e)
+    return
+  }
+
+  if (habiaControlador && !yaRecargue) {
+    yaRecargue = true
+    window.location.reload()
+  }
 }

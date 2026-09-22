@@ -16,11 +16,15 @@ import '@fontsource/source-serif-4/latin-ext-600.css'
 import App from './App'
 import './styles.css'
 
-import { instalarRecargaAlActualizar } from './lib/actualizacion'
+import { instalarRecargaAlActualizar, sacarServiceWorkerEnNativo } from './lib/actualizacion'
 
 // Antes de dibujar nada: si el telefono tenia guardada una version vieja y acaba de llegar
 // una nueva, que se aplique sola en vez de esperar a una segunda carga que nadie hace.
 instalarRecargaAlActualizar()
+
+// Y en el APK, que no haya service worker en absoluto: ahi el cache solo sirve para hacerte
+// probar el codigo de ayer creyendo que es el de hoy. El motivo largo esta en actualizacion.ts.
+sacarServiceWorkerEnNativo()
 
 const el = document.getElementById('root')!
 createRoot(el).render(<App />)
