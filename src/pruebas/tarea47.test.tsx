@@ -169,21 +169,32 @@ describe('Pruebas TAREA 47 (T213-T217)', () => {
     expect(contenidoCSS).toContain('cubic-bezier(.34, 1.3, .64, 1)')
   })
 
-  test('T217 - EL TEMA SIGUE AL SISTEMA POR OMISION.', async () => {
-    // Sin nada guardado, por Tarea 50 el tema inicial es 'oscuro' y documentElement TIENE data-tema="oscuro"
+  // T217 - DOS TEMAS Y NINGUNO MAS, CON OSCURO POR OMISION.
+  //
+  // Esta prueba comprobaba lo contrario: que por omision el tema siguiera al
+  // sistema. Dejo de ser cierto el 21 de septiembre de 2026, cuando se saco esa
+  // tercera opcion. Javier: "no se por que ademas da la opcion de sistema, que
+  // en el fondo igual es una de las otras dos". El motivo largo esta en
+  // BibliotecaView, donde vive el control.
+  //
+  // Lo que cuida sigue siendo lo mismo -que el tema elegido llegue de verdad al
+  // documento-, con la lista de opciones nueva.
+  test('T217 - DOS TEMAS Y NINGUNO MAS, CON OSCURO POR OMISION.', async () => {
     render(<App />)
 
     expect(document.documentElement.getAttribute('data-tema')).toBe('oscuro')
 
-    // Abrir menu superior ⋯ de biblioteca
     const btnMenu = screen.getByTestId('btn-menu-superior-biblioteca')
     fireEvent.click(btnMenu)
 
-    // Elegir "Sistema"
-    const btnSistema = screen.getByRole('button', { name: /Sistema/i })
-    fireEvent.click(btnSistema)
+    // "Sistema" ya no existe.
+    expect(screen.queryByRole('button', { name: /^Sistema$/i })).toBeNull()
 
-    expect(document.documentElement.hasAttribute('data-tema')).toBe(false)
+    fireEvent.click(screen.getByRole('button', { name: /^Claro$/i }))
+    expect(document.documentElement.getAttribute('data-tema')).toBe('claro')
+
+    fireEvent.click(screen.getByRole('button', { name: /^Oscuro$/i }))
+    expect(document.documentElement.getAttribute('data-tema')).toBe('oscuro')
   })
 
   // T218 - LA BARRA "Leer" DEL EDITOR DESCUENTA EL AREA SEGURA.

@@ -29,8 +29,8 @@ interface BibliotecaViewProps {
   setEngine?: (engine: IdMotor) => void
   verTranscripcion?: boolean
   setVerTranscripcion?: (ver: boolean) => void
-  tema?: 'sistema' | 'claro' | 'oscuro'
-  setTema?: (tema: 'sistema' | 'claro' | 'oscuro') => void
+  tema?: 'claro' | 'oscuro'
+  setTema?: (tema: 'claro' | 'oscuro') => void
   tipoFuente?: 'sans' | 'serif'
   colorFondo?: string
   colorLetra?: string
@@ -722,7 +722,20 @@ export default function BibliotecaView({
                 borderRadius: 'var(--redondeo)',
                 zIndex: 50,
                 minWidth: 160,
-                overflow: 'hidden',
+                // EL MENU NO PUEDE CRECER MAS QUE LA PANTALLA.
+                //
+                // Tenia overflow hidden y ningun alto maximo. Mientras fue
+                // corto no se noto; cuando la tarea 67 le sumo el apartado de
+                // motor y transcripcion, el ultimo renglon -Medicion- quedo por
+                // debajo del borde y SIN forma de llegar, porque hidden no
+                // desplaza. Javier el 21 de septiembre de 2026: "el renglon de
+                // abajo no se ve".
+                //
+                // En X se sigue recortando, que es lo que mantiene las esquinas
+                // redondeadas mientras el menu crece. En Y ahora se desplaza.
+                maxHeight: 'calc(100vh - 120px)',
+                overflowX: 'hidden',
+                overflowY: 'auto',
                 display: 'flex',
                 flexDirection: 'column',
                 transformOrigin: 'top right',
@@ -731,6 +744,16 @@ export default function BibliotecaView({
                   : `menuCreceEsquina ${MS_CHICO}ms ${CURVA_RESORTE} forwards`
               }}
             >
+              {/* TODO RENGLON TIENE SU GRUPO, TAMBIEN LAS ACCIONES.
+                  Ver archivados e Importar archivo no son ajustes: son cosas
+                  que le haces a tus guiones. Estaban arriba sueltas, sin
+                  titulo, mientras el resto si estaba agrupado, y eso era la
+                  mitad del desorden que Javier vio el 21 de septiembre de 2026.
+                  Con esto el menu queda en tres grupos y ninguno suelto: lo de
+                  los guiones, lo del usuario, y lo nuestro al final. */}
+              <div className="texto-meta" style={{ padding: 'var(--aire-2) var(--aire-4) 0', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                Guiones
+              </div>
               <button
                 onClick={() => {
                   setMostrarArchivados(!mostrarArchivados)
@@ -772,24 +795,17 @@ export default function BibliotecaView({
                 <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
                   Apariencia:
                 </label>
+                {/* DOS OPCIONES, NO TRES. "Sistema" se fue el 21 de septiembre
+                    de 2026. Javier: "no se por que ademas da la opcion de
+                    sistema, que en el fondo igual es una de las otras dos".
+                    Tiene razon, y hay un motivo propio de este producto: seguir
+                    el horario del telefono no tiene nada que ver con filmar.
+                    Que anochezca no cambia la luz de tu pieza ni si estas
+                    grabando. Era elegir sin informacion, que es lo mismo que
+                    ajustes-propuesta.html ya habia decidido cortar al pasar de
+                    diez controles a seis. El valor por omision sigue siendo
+                    oscuro, y a quien tenga guardado "sistema" le cae ahi. */}
                 <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
-                  <button
-                    type="button"
-                    onClick={() => setTema?.('sistema')}
-                    style={{
-                      padding: 'var(--aire-1) var(--aire-2)',
-                      fontSize: 'var(--texto-meta)',
-                      borderRadius: 'var(--redondeo)',
-                      border: '1px solid var(--color-borde)',
-                      backgroundColor: tema === 'sistema' ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                      color: tema === 'sistema' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                      fontWeight: tema === 'sistema' ? 'bold' : 'normal',
-                      cursor: 'pointer',
-                      flex: 1
-                    }}
-                  >
-                    Sistema
-                  </button>
                   <button
                     type="button"
                     onClick={() => setTema?.('claro')}

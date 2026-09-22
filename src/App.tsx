@@ -205,7 +205,11 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [mirror, setMirror] = useState<boolean>(Boolean(ajustesPrevios.mirror))
   const [lineasZona, setLineasZona] = useState<number>(ajustesPrevios.lineasZona !== undefined ? Number(ajustesPrevios.lineasZona) : 3)
   const [anclajeZona, setAnclajeZona] = useState<'arriba' | 'medio' | 'abajo'>(ajustesPrevios.anclajeZona || 'arriba')
-  const [tema, setTema] = useState<'sistema' | 'claro' | 'oscuro'>(() => {
+  // DOS TEMAS, NO TRES. "Sistema" se fue el 21 de septiembre de 2026; el motivo
+  // esta escrito en BibliotecaView, donde vive el control. Aca solo queda la
+  // consecuencia: a quien lo tenia guardado le cae en oscuro, que ya era el
+  // valor por omision.
+  const [tema, setTema] = useState<'claro' | 'oscuro'>(() => {
     let yaImpuesto = false
     try {
       yaImpuesto = localStorage.getItem('teleprompter_oscuro_impuesto') === 'true'
@@ -218,7 +222,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       return 'oscuro'
     }
 
-    if (ajustesPrevios.tema === 'claro' || ajustesPrevios.tema === 'oscuro' || ajustesPrevios.tema === 'sistema') {
+    if (ajustesPrevios.tema === 'claro' || ajustesPrevios.tema === 'oscuro') {
       return ajustesPrevios.tema
     }
     return 'oscuro'
