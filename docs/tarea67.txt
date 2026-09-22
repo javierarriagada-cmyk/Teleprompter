@@ -26,21 +26,83 @@ un solo lugar. Esto TERMINA eso, no lo empieza:
 NO reescribas nada de eso. Lo que falta es lo de abajo.
 
 
+0. LO PRIMERO, Y ES UN ERROR MIO DE LA TAREA 66
+
+UN GESTO QUE NADIE VE NO ES UNA PUERTA.
+
+La frase que ordena este diseno dice: "la aplicacion hace dos cosas, LEER y
+GRABARSE LEYENDO, y las dos son de primera clase". En el editor eso se cumple:
+hay dos botones. En la PORTADA no: hay un boton de Leer y Grabar esta escondida
+detras de mantener apretado.
+
+Javier, el 21 de septiembre de 2026: "alguien podria entrar a la aplicacion,
+apretar leer, que es el boton mas relevante, ir a leer y ni siquiera enterarse
+de que tenemos la opcion de grabar".
+
+Tiene razon y el error es mio: el encargo 66 dijo "la accion frecuente al
+toque, la otra al gesto". Un acelerador invisible esta bien COMO ACELERADOR,
+pero no puede ser la unica forma de llegar. Es exactamente la enfermedad que
+esta tarea vino a curar -"yo no encuentro lo que senalas"-, repetida por mi.
+
+ENTONCES: LA TARJETA DE LA PORTADA LLEVA LAS MISMAS DOS PUERTAS QUE EL EDITOR.
+
+    ▶ Leer      principal, con el acento, como esta hoy
+    ● Grabar    secundaria, contorno sobre el fondo, al lado
+
+    Mismo par, mismo orden y mismas palabras que al pie del editor. Que sean
+    IGUALES es el punto: alguien que aprendio a grabar en un lado lo reconoce
+    en el otro sin pensarlo. No inventes una variante para la tarjeta.
+
+    Reusa el camino que ya existe: onGrabarDirecto en BibliotecaView y
+    handleGrabarDirecto en App, que hoy solo los llama el gesto.
+
+    EL MANTENER APRETADO SE QUEDA, como atajo sobre ▶ Leer. Ahora es lo que
+    tiene que ser: un acelerador para el que ya sabe, no la unica puerta.
+
+    CUIDADO CON EL ESPACIO. La tarjeta es la unica imagen buena del producto y
+    manda ella -la-cara.html-. Dos botones no pueden comersela: el titulo de 44
+    px y el texto dibujado siguen siendo lo que manda. Si al ponerlos la tarjeta
+    pierde presencia, decilo en el resumen ANTES de achicar el titulo.
+
+
 1. LAS TRES FAMILIAS, TERMINADAS
 
 La regla sigue siendo una pregunta: ¿esto cambia entre una toma y otra?
 
 A) DE LA APLICACION - menu de la portada
 
-   Estan Tema -"Apariencia"-, Vibracion y el apartado del motor. Falta:
+   Hoy el menu esta asi, y esta mal repartido:
 
-   - QUE EL APARTADO NUESTRO SE LLAME POR SU NOMBRE. Hoy el separador dice "Lo
-     nuestro", que fue un apunte mio, no una palabra de producto. Tiene que
-     decir MOTOR DE VOZ Y TRANSCRIPCION, y quedar visiblemente separado de lo
-     del usuario: es instrumental nuestro, no una preferencia suya.
+       Importar archivo
+       "Lo nuestro"      -> Motor de voz
+       "La aplicacion"   -> Apariencia, Transcripcion, Vibracion
+       Medicion / Panel Corpus          suelto al final, fuera de los dos grupos
+
+   O sea que el apartado nuestro tiene UN solo elemento y los otros dos
+   instrumentos andan sueltos entre las preferencias del usuario.
+
+   - QUE EL APARTADO NUESTRO SE LLAME POR SU NOMBRE Y LOS TENGA A LOS TRES.
+     "Lo nuestro" fue un apunte mio, no una palabra de producto. Tiene que
+     decir MOTOR DE VOZ Y TRANSCRIPCION y llevar adentro:
+
+         Motor de voz
+         Transcripcion en vivo
+         Medicion / Panel Corpus
+
+     Los tres son instrumentos nuestros, no preferencias de nadie. La
+     transcripcion en vivo es diagnostico; el panel de corpus lee el almacen de
+     lecturas grabadas para medir el motor. Javier lo marco el 21 de septiembre
+     de 2026: "el menu del sol, que sale lo del medicion panel corpus, que no
+     creo que corresponda". estado.html ya lo habia marcado y seguia igual.
 
    - EL ORDEN. Primero lo del usuario -Apariencia, Vibracion-, despues lo
-     nuestro. Hoy esta al reves.
+     nuestro, al final y separado. Hoy esta al reves.
+
+   - Y ANOTALO EN EL RESUMEN, no lo hagas todavia: este apartado entero tiene
+     que DESAPARECER de la version que se sube a Play. Es andamio de medicion y
+     no tiene por que viajar en el telefono de un desconocido. Se resuelve
+     cuando se arme la version de tienda, junto con el identificador del paquete
+     y la politica de privacidad, y no ahora.
 
 B) DEL TEXTO - panel Aa del editor
 
@@ -181,8 +243,12 @@ NO escribas en main.
 
 5. COMO SE COMPRUEBA
 
-Agrega estas cuatro:
+Agrega estas seis:
 
+    - la PORTADA ofrece las DOS puertas visibles, y Grabar entra con camara
+      -data-con-camara="si"- sin necesidad de ningun gesto
+    - los tres instrumentos -motor, transcripcion, medicion- estan DENTRO del
+      apartado nuestro, y ninguno suelto entre las preferencias del usuario
     - los tres tiempos del gesto salen de UN archivo, no hay un 500 ni un 300
       escritos a mano en ningun componente
     - soltar entre los 300 y los 500 no abre el menu
@@ -190,8 +256,10 @@ Agrega estas cuatro:
     - si recuperarTomasPendientes devuelve una toma, aparece el aviso con su
       accion
 
-La primera es la que importa a largo plazo: escribila de manera que falle si
-alguien vuelve a copiar un numero en un segundo archivo.
+La primera es la que mas importa para el producto: escribila de manera que
+falle si alguien vuelve a dejar Grabar detras de un gesto y nada mas. La
+tercera es la que mas importa a largo plazo: que falle si alguien vuelve a
+copiar un numero en un segundo archivo.
 
 Lo demas lo mide Javier en el telefono: que el gesto se sienta antes de verse,
 que el brillo cambie de verdad y vuelva al salir, y que el aviso de rescate
