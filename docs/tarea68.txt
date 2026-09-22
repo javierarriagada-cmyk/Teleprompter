@@ -33,11 +33,40 @@ de lo de la grabacion.
     Cuida que useCerrarAfuera siga cerrandolo al tocar fuera: con el menu fuera
     del arbol, "fuera" cambia de significado.
 
-Y ADEMAS, ORDENAR LO QUE SOBRA. Javier: "con cosas que claramente sobran".
-Ahora el menu son tres grupos -Guiones, La aplicacion, Motor de voz y
-transcripcion- y eso ya esta. Lo que falta es podarlo: revisa renglon por
-renglon si cada uno tiene que existir para el que usa la aplicacion, y deci en
-el resumen cual sacarias y por que. NO saques nada sin decirlo antes.
+Y ADEMAS, PODARLO. Javier: "con cosas que claramente sobran". No hay nada que
+proponer: el ya escribio que va en ese menu.
+
+    "Ajustes de Aplicacion (Portada): EXCLUSIVO para preferencias globales
+     -Tema claro/oscuro, Idioma, Vibracion- y un apartado claramente delimitado
+     para Motor de voz y Transcripcion."
+
+EXCLUSIVO. Entonces el menu queda con eso y nada mas:
+
+    Apariencia -claro / oscuro-
+    Vibracion
+    Motor de voz y transcripcion    motor, transcripcion en vivo, medicion
+
+SE VAN DE AHI "VER ARCHIVADOS" E "IMPORTAR ARCHIVO". No son preferencias: son
+acciones sobre la biblioteca. Yo las habia agrupado bajo un titulo "Guiones"
+dentro del menu y fue un parche mio: agrupar no arregla que esten en la casa
+equivocada.
+
+    IMPORTAR ARCHIVO es hermano de crear un guion. Va con el "+" flotante, que
+    es donde la mano ya busca "traer un guion nuevo". Mantener apretado el "+"
+    ofrece importar, o el "+" abre las dos opciones: elegi vos y decilo en el
+    resumen, pero NO lo dejes en el menu de ajustes.
+
+    VER ARCHIVADOS es un filtro de la lista, no un ajuste. Va en la lista de
+    guiones, donde se ve lo que filtra.
+
+    Ninguna de las dos puede desaparecer: las dos funcionan y se usan.
+
+DEL "IDIOMA" DE ESA LISTA, OJO. Javier lo puso ahi, y en la tarea 67 quedo
+decidido lo contrario con su motivo: nuestro idioma es del GUION -Guion.idioma,
+lo que oye el reconocedor- y no de la interfaz, asi que se quedo en el panel Aa
+del editor como "Idioma del guion". El idioma de la INTERFAZ no existe todavia.
+Esa es la unica diferencia entre el menu y lo que el escribio, y es a proposito.
+No la cambies.
 
 
 EL PROBLEMA, EN UNA FRASE
