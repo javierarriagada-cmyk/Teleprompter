@@ -9,6 +9,37 @@ es lo que mas cuidamos, y la otra toca menus. Si algo se rompe, que se sepa
 cual fue.
 
 
+ANTES DE EMPEZAR: UN ARREGLO QUE VA ADENTRO DE ESTA TAREA
+
+EL MENU DEL SOL QUEDO ROTO Y LO ROMPI YO. Arreglalo como primer commit, antes
+de lo de la grabacion.
+
+    Que pasa: el menu se dibuja POR DETRAS de la tarjeta del guion y sigue por
+    debajo de la pantalla. Javier el 21 de septiembre de 2026: "ahora pasa por
+    detras del cuadro del guion y sigue por abajo".
+
+    Por que: su contenedor -el div con ref refMenuSuperior en BibliotecaView-
+    esta en position absolute con zIndex 20 DENTRO del contenedor de la tarjeta.
+    Mientras el menu fue corto no se noto. Yo le puse maxHeight y overflowY para
+    que se alcanzara el ultimo renglon, se hizo largo, y ahi aparecio: su zIndex
+    solo compite adentro de ese contenedor.
+
+    Como: sacalo por un PORTAL a document.body, igual que el boton "+" flotante
+    de esta misma pantalla -createPortal, el comentario que explica por que esta
+    ahi mismo en BibliotecaView-. Colgado de body no lo atrapa ningun ancestro,
+    no se mete detras de nada y el ultimo renglon se alcanza. Va a necesitar
+    posicionarse contra el engranaje: tomale el rect al boton.
+
+    Cuida que useCerrarAfuera siga cerrandolo al tocar fuera: con el menu fuera
+    del arbol, "fuera" cambia de significado.
+
+Y ADEMAS, ORDENAR LO QUE SOBRA. Javier: "con cosas que claramente sobran".
+Ahora el menu son tres grupos -Guiones, La aplicacion, Motor de voz y
+transcripcion- y eso ya esta. Lo que falta es podarlo: revisa renglon por
+renglon si cada uno tiene que existir para el que usa la aplicacion, y deci en
+el resumen cual sacarias y por que. NO saques nada sin decirlo antes.
+
+
 EL PROBLEMA, EN UNA FRASE
 
 Hoy terminas de grabar y la aplicacion te deja en LISTO, mirando el texto otra
