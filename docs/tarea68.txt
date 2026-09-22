@@ -40,26 +40,17 @@ proponer: el ya escribio que va en ese menu.
      -Tema claro/oscuro, Idioma, Vibracion- y un apartado claramente delimitado
      para Motor de voz y Transcripcion."
 
-Hoy el menu tiene, ademas de eso, dos renglones mas: VER ARCHIVADOS e IMPORTAR
-ARCHIVO. Los agrupe bajo un titulo "Guiones" y ahi siguen.
+VER ARCHIVADOS E IMPORTAR ARCHIVO SE QUEDAN DONDE ESTAN, agrupados bajo su
+titulo "Guiones". Javier lo cerro el 21 de septiembre de 2026: "eso estaba
+bien". No los muevas ni los saques.
 
-ESTO NO LO RESUELVAS VOS NI LO RESUELVO YO: LO CORTA JAVIER. Va escrito aca
-para que se decida mirandolo, no para que alguien lo saque por su cuenta.
+Entonces el menu es este y no hay nada que podar:
 
-    A favor de que se queden donde estan: funcionan, se encuentran, y el menu
-    del engranaje es el lugar donde la gente busca "lo demas" en cualquier
-    aplicacion. Agrupadas bajo su titulo ya no estan sueltas.
+    Guiones                        Ver archivados, Importar archivo
+    La aplicacion                  Apariencia -claro / oscuro-, Vibracion
+    Motor de voz y transcripcion   motor, transcripcion en vivo, medicion
 
-    En contra: su propio texto dice EXCLUSIVO para preferencias globales, y
-    estas dos no son preferencias sino acciones sobre la biblioteca. Importar
-    es hermano de crear un guion -vive cerca del "+"-, y Ver archivados es un
-    filtro de la lista, que se entiende mejor donde se ve lo que filtra.
-
-    Lo que NO esta en discusion: las dos funcionan y se usan, asi que ninguna
-    desaparece. Si se mueven, se mueven a un lugar mejor.
-
-Cuando este el menu arreglado -el portal de arriba- Javier lo mira y corta.
-Hasta entonces se quedan como estan.
+Lo unico que falta en el menu es que NO SE ROMPA: el portal de aca arriba.
 
 DEL "IDIOMA" DE ESA LISTA, OJO. Javier lo puso ahi, y en la tarea 67 quedo
 decidido lo contrario con su motivo: nuestro idioma es del GUION -Guion.idioma,
