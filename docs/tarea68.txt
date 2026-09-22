@@ -44,13 +44,58 @@ VER ARCHIVADOS E IMPORTAR ARCHIVO SE QUEDAN DONDE ESTAN, agrupados bajo su
 titulo "Guiones". Javier lo cerro el 21 de septiembre de 2026: "eso estaba
 bien". No los muevas ni los saques.
 
-Entonces el menu es este y no hay nada que podar:
+LO QUE SI CAMBIA, Y ESTA TODO DECIDIDO. No hay nada que proponer aca.
 
-    Guiones                        Ver archivados, Importar archivo
-    La aplicacion                  Apariencia -claro / oscuro-, Vibracion
-    Motor de voz y transcripcion   motor, transcripcion en vivo, medicion
+A) LO NUESTRO SALE DE LA VISTA. El apartado "Motor de voz y transcripcion"
+   -motor de voz, ver transcripcion en vivo, medicion / panel corpus- deja de
+   mostrarse en el menu.
 
-Lo unico que falta en el menu es que NO SE ROMPA: el portal de aca arriba.
+   POR QUE EL MOTOR TAMBIEN, que es lo que menos se espera: elegir entre Vosk y
+   Nativo cambia lo unico que nos diferencia, que es que el texto siga la voz.
+   Y el que lo elige no tiene como evaluarlo: no puede leer el mismo guion dos
+   veces y medir cual lo siguio mejor. Ponerlo en un menu le pasa al usuario una
+   decision de ingenieria nuestra disfrazada de preferencia. El valor por
+   omision ya es el correcto -nativo en el telefono, vosk en el navegador- y con
+   eso alcanza. Javier el 21 de septiembre de 2026: "de acuerdo".
+
+   NO SE BORRA NADA: los tres siguen existiendo y funcionando, solo dejan de
+   estar a la vista.
+
+   DONDE QUEDAN: detras de la puerta escondida QUE YA EXISTE. Mantener apretado
+   el titulo de la tarjeta dispara onToggleDiagnostico -handleDiagTouchStart en
+   BibliotecaView, mostrarDiagnostico en App-. Esa es la unica puerta de lo
+   nuestro y ahi van los tres. No inventes otra.
+
+   Con eso el menu queda en dos grupos:
+
+       Guiones          Ver archivados, Importar archivo
+       La aplicacion    Tema -claro / oscuro-, Vibracion
+
+B) "APARIENCIA" PASA A LLAMARSE "TEMA". Es lo que hace y es la palabra que usa
+   Javier. "Apariencia" no nombra nada: todo es apariencia.
+
+C) DOS ENGRANAJES IGUALES ABRIENDO COSAS DISTINTAS. El de la portada abre las
+   preferencias de la aplicacion; el del lienzo abre la escena de esta toma. El
+   mismo dibujo para dos familias distintas no distingue nada, y si el icono no
+   distingue no sirve de icono.
+
+   EL ENGRANAJE QUEDA SOLO PARA LA APLICACION. El del lienzo pasa a ser un
+   icono de ESCENA: las cuatro esquinas de un encuadre y la linea de la franja
+   donde cae el renglon vivo. Es literalmente lo que se ajusta ahi -donde lees,
+   espejo, tiempo y brillo son todos de la escena-.
+
+   Va en src/components/IconosApp.tsx junto a los otros, con su comentario
+   diciendo por que no es un engranaje. Trazo 1.6 y viewBox 24, como los demas.
+
+D) LO QUE NO SE TOCA DE LOS AJUSTES, que ya quedo decidido y medido:
+
+       Tema: SOLO claro y oscuro. "Sistema" no vuelve.
+       Idioma: se queda en el panel Aa del editor como "Idioma del guion".
+       Las parejas de color: las tres que ya estan en PAREJAS_COLOR.
+       Brillo: se queda en el engranaje de la toma.
+       El lienzo sigue SIN titulo de grupo. Se vera despues.
+
+Y ADEMAS, que NO SE ROMPA: el portal de aca arriba.
 
 DEL "IDIOMA" DE ESA LISTA, OJO. Javier lo puso ahi, y en la tarea 67 quedo
 decidido lo contrario con su motivo: nuestro idioma es del GUION -Guion.idioma,
