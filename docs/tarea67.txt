@@ -1,7 +1,7 @@
 TAREA 67 - LA CASA DE CADA AJUSTE, Y EL GESTO QUE SE SIENTE
 
 Repositorio: github.com/javierarriagada-cmyk/Teleprompter
-Partir de: main, hoy en c2e6dda
+Partir de: main, hoy en 34e5539
 Entregar: una rama o un PR. NUNCA escribir en main.
 
 Va junto con la 68, que es el final de la grabacion. Se separan por UN motivo y
@@ -271,7 +271,7 @@ DECI EN EL RESUMEN que pruebas existentes tuviste que cambiar y por que.
 6. COMO LO MANDAS
 
 Parche de TEXTO, pedazos numerados 1..n del MISMO diff, generado con git diff
-de verdad contra c2e6dda. Cortar solo entre archivos o entre hunks completos,
+de verdad contra 34e5539. Cortar solo entre archivos o entre hunks completos,
 nunca a mitad de un hunk. Sin texto entre medio.
 
 Tu conector trunca App.tsx, TeleprompterView.tsx y EditorView.tsx: no intentes
