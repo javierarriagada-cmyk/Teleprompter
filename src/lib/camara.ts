@@ -20,6 +20,8 @@ export interface CamaraNativaPlugin {
   buscarMp4Recientes(): Promise<{ rutas: string[] }>
   espacioLibre(): Promise<{ bytesLibres: number }>
   guardarEnGaleria(options: { ruta: string }): Promise<{ ok: boolean; uri?: string }>
+  fijarBrillo(options: { valor: number }): Promise<{ ok: boolean }>
+  restaurarBrillo(): Promise<{ ok: boolean }>
 }
 
 // Un solo registerPlugin. PruebaCamaraNativaView importa este mismo

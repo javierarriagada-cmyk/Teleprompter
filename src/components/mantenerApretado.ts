@@ -1,36 +1,70 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
+import { CURVA_RESORTE, MS_CHICO, movimientoApagado } from './movimiento'
+import { hapticaAvisoMantener } from '../haptica'
 
-// UN SOLO LUGAR PARA LOS 500 ms. La fila de guion, la toma y el boton Leer
-// de la tarjeta tienen que durar lo mismo. Si cada uno trae su numero, a la
-// segunda tarea ya no es el mismo gesto.
+// UN SOLO LUGAR PARA LOS TIEMPOS DEL GESTO. La fila de guion, la toma y el
+// boton Leer de la tarjeta tienen que durar lo mismo. Si cada uno trae su
+// numero, a la segunda tarea ya no es el mismo gesto.
+//
+// 300 ms: "te senti" — vibracion corta y la tarjeta se comprime.
+// 500 ms: se suelta el menu o el atajo. Soltar entre medio no abre nada.
+// La duracion de la vibracion NO esta aca: es de la haptica y vive en
+// src/haptica.ts como MS_VIBRACION_AVISO. Aca solo los tiempos del gesto.
 export const MS_MANTENER_APRETADO = 500
+export const MS_AVISO_MANTENER = 300
 const PX_PARA_CANCELAR = 10
+const ESCALA_AVISO = 0.97
 
-export function programarMantener(alDisparar: () => void): {
+export function estiloComprimirPorAviso(avisado: boolean): React.CSSProperties {
+  return {
+    transform: avisado ? `scale(${ESCALA_AVISO})` : 'scale(1)',
+    transition: movimientoApagado() ? 'none' : `transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
+    transformOrigin: 'center center'
+  }
+}
+
+export function programarMantener(alDisparar: () => void, alAvisar?: () => void): {
   arrancar: () => void
   cancelar: () => void
   seDisparo: () => boolean
+  seAviso: () => boolean
 } {
-  let timer: ReturnType<typeof setTimeout> | null = null
+  let timerAviso: ReturnType<typeof setTimeout> | null = null
+  let timerMenu: ReturnType<typeof setTimeout> | null = null
   let disparo = false
+  let aviso = false
   return {
     arrancar() {
       disparo = false
-      if (timer) clearTimeout(timer)
-      timer = setTimeout(() => {
+      aviso = false
+      if (timerAviso) clearTimeout(timerAviso)
+      if (timerMenu) clearTimeout(timerMenu)
+      timerAviso = setTimeout(() => {
+        aviso = true
+        timerAviso = null
+        alAvisar?.()
+      }, MS_AVISO_MANTENER)
+      timerMenu = setTimeout(() => {
         disparo = true
-        timer = null
+        timerMenu = null
         alDisparar()
       }, MS_MANTENER_APRETADO)
     },
     cancelar() {
-      if (timer) {
-        clearTimeout(timer)
-        timer = null
+      if (timerAviso) {
+        clearTimeout(timerAviso)
+        timerAviso = null
+      }
+      if (timerMenu) {
+        clearTimeout(timerMenu)
+        timerMenu = null
       }
     },
     seDisparo() {
       return disparo
+    },
+    seAviso() {
+      return aviso
     }
   }
 }
@@ -50,19 +84,27 @@ function posicionDe(e: { nativeEvent?: any; touches?: any; changedTouches?: any;
 
 // Para el boton de la tarjeta y la tarjeta de una toma: mantener dispara
 // onMantener. Un movimiento de mas de 10 px cancela el temporizador.
+// A los 300 ms avisa (haptica corta + comprimido). A los 500 ms abre.
 export function useMantenerApretado(opts: {
   onMantener: () => void
   onToque?: () => void
+  onAviso?: () => void
 }) {
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const timerAvisoRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const timerMenuRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const fueLongPressRef = useRef(false)
   const startRef = useRef<{ x: number; y: number } | null>(null)
   const seMovioRef = useRef(false)
+  const [avisado, setAvisado] = useState(false)
 
-  function limpiarTimer() {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current)
-      timerRef.current = null
+  function limpiarTimers() {
+    if (timerAvisoRef.current) {
+      clearTimeout(timerAvisoRef.current)
+      timerAvisoRef.current = null
+    }
+    if (timerMenuRef.current) {
+      clearTimeout(timerMenuRef.current)
+      timerMenuRef.current = null
     }
   }
 
@@ -72,10 +114,17 @@ export function useMantenerApretado(opts: {
     startRef.current = { x, y }
     seMovioRef.current = false
     fueLongPressRef.current = false
-    limpiarTimer()
-    timerRef.current = setTimeout(() => {
+    setAvisado(false)
+    limpiarTimers()
+    timerAvisoRef.current = setTimeout(() => {
+      timerAvisoRef.current = null
+      setAvisado(true)
+      hapticaAvisoMantener()
+      opts.onAviso?.()
+    }, MS_AVISO_MANTENER)
+    timerMenuRef.current = setTimeout(() => {
       fueLongPressRef.current = true
-      timerRef.current = null
+      timerMenuRef.current = null
       opts.onMantener()
     }, MS_MANTENER_APRETADO)
   }
@@ -85,17 +134,19 @@ export function useMantenerApretado(opts: {
     const { x, y } = posicionDe(e as any)
     if (Math.hypot(x - startRef.current.x, y - startRef.current.y) >= PX_PARA_CANCELAR) {
       seMovioRef.current = true
-      limpiarTimer()
+      limpiarTimers()
+      setAvisado(false)
     }
   }
 
   function handleUp(e: React.SyntheticEvent) {
     e.stopPropagation()
-    limpiarTimer()
+    limpiarTimers()
     const eraLongPress = fueLongPressRef.current
     const seMovio = seMovioRef.current
     startRef.current = null
     seMovioRef.current = false
+    setAvisado(false)
     if (!eraLongPress && !seMovio) {
       opts.onToque?.()
     }
@@ -103,6 +154,7 @@ export function useMantenerApretado(opts: {
 
   return {
     fueLongPressRef,
+    avisado,
     props: {
       onPointerDown: handleDown,
       onPointerMove: handleMove,

@@ -1,7 +1,7 @@
 import React from 'react'
 import { ResumenGuion, PAREJAS_COLOR } from '../datos/modelo'
 import { movimientoApagado } from './movimiento'
-import { useMantenerApretado } from './mantenerApretado'
+import { estiloComprimirPorAviso, useMantenerApretado } from './mantenerApretado'
 
 interface TarjetaLecturaProps {
   guionResumen?: ResumenGuion
@@ -45,7 +45,8 @@ export default function TarjetaLectura({
   const parejaColor = { fondo: colorFondo, letra: colorLetra }
   const hayGuion = Boolean(guionResumen)
 
-  // TERCERA PUERTA. Un toque lee. Mantener apretado entra a grabar.
+  // DOS PUERTAS VISIBLES, igual que al pie del editor. Mantener apretado
+  // sobre ▶ Leer sigue siendo el atajo a grabar, no la unica forma de llegar.
   // El evento se queda en el boton: si sube a la tarjeta o a una fila,
   // Javier mantiene para grabar y se le abre el menu de borrar.
   const gestoLeer = useMantenerApretado({
@@ -238,6 +239,7 @@ export default function TarjetaLectura({
         </h2>
 
         {hayGuion ? (
+          <div style={{ display: 'flex', gap: 'var(--aire-2)', width: '100%' }}>
           <button
             type="button"
             data-testid="btn-leer-tarjeta"
@@ -250,13 +252,42 @@ export default function TarjetaLectura({
             }}
             className="btn-deformable"
             style={{
-              width: '100%',
+              flex: 1,
               padding: 'var(--aire-3) var(--aire-4)',
               backgroundColor: 'var(--color-acento)',
               color: 'var(--color-texto-acento)',
-              border: 'none',
+              border: '1px solid var(--color-borde)',
+              borderRadius: 'var(--redondeo-pildora)',
               fontSize: 'var(--texto-titulo)',
-              fontWeight: 700,
+              fontWeight: 600,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 'var(--aire-2)',
+              ...estiloComprimirPorAviso(gestoLeer.avisado)
+            }}
+          >
+            ▶ Leer
+          </button>
+          <button
+            type="button"
+            data-testid="btn-grabar-tarjeta"
+            className="btn-deformable"
+            onClick={(e) => {
+              e.stopPropagation()
+              const rect = cardRef.current?.getBoundingClientRect()
+              if (onGrabar) onGrabar(rect)
+            }}
+            style={{
+              flex: 1,
+              padding: 'var(--aire-3) var(--aire-4)',
+              backgroundColor: 'var(--bg-superficie)',
+              color: 'var(--color-texto)',
+              border: '1px solid var(--color-borde)',
+              borderRadius: 'var(--redondeo-pildora)',
+              fontSize: 'var(--texto-titulo)',
+              fontWeight: 600,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -264,8 +295,9 @@ export default function TarjetaLectura({
               gap: 'var(--aire-2)'
             }}
           >
-            ▶ Leer
+            ● Grabar
           </button>
+          </div>
         ) : (
           <button
             onClick={onCrearNuevo}

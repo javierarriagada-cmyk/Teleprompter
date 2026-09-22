@@ -474,8 +474,24 @@ export default function App({ motor, repoOverride }: AppProps) {
 
       await cargarBiblioteca()
       try {
+        const idsAntes = new Set((await repoGrabacionesRef.current.listar()).map((g) => g.id))
         const recuperadas = await recuperarTomasPendientes(repoGrabacionesRef.current)
         setGrabaciones(recuperadas)
+        const nuevas = recuperadas.filter((g) => !idsAntes.has(g.id))
+        if (nuevas.length > 0) {
+          const masReciente = [...nuevas].sort((a, b) => b.creado - a.creado)[0]
+          const una = nuevas.length === 1
+          mostrarAviso(
+            una
+              ? 'Se recuperó una toma de una sesión interrumpida.'
+              : `Se recuperaron ${nuevas.length} tomas de una sesión interrumpida.`,
+            {
+              accionTexto: 'Verla',
+              alEjecutarAccion: () => setGrabacionAbierta(masReciente),
+              duracionMs: 5000
+            }
+          )
+        }
       } catch (e) {
         console.warn('[App] no se pudieron recuperar grabaciones:', e)
         try {

@@ -7,9 +7,9 @@ import { IdMotor } from '../motor/MotorDeVoz'
 import { PanelCorpus } from './PanelCorpus'
 import TarjetaLectura from './TarjetaLectura'
 import { IconoEngranaje } from './IconosApp'
-import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave } from '../haptica'
+import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './movimiento'
-import { MS_MANTENER_APRETADO } from './mantenerApretado'
+import { estiloComprimirPorAviso, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -110,8 +110,18 @@ function FilaGuion({
   const decidioDireccionRef = useRef(false)
   const esHorizontalRef = useRef(false)
   const cruzoUmbralRef = useRef(false)
-  const timerHoldRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const fueLongPressRef = useRef(false)
+  const [avisado, setAvisado] = useState(false)
+  const gestoRef = useRef(programarMantener(
+    () => {
+      fueLongPressRef.current = true
+      setMenuId(g.id)
+    },
+    () => {
+      setAvisado(true)
+      hapticaAvisoMantener()
+    }
+  ))
 
   function obtenerPosicion(e: React.SyntheticEvent): { x: number; y: number } {
     const native = e.nativeEvent as any
@@ -135,12 +145,8 @@ function FilaGuion({
     esArrastrandoRef.current = true
 
     fueLongPressRef.current = false
-    if (timerHoldRef.current) clearTimeout(timerHoldRef.current)
-    timerHoldRef.current = setTimeout(() => {
-      fueLongPressRef.current = true
-      hapticaToqueSuave()
-      setMenuId(g.id)
-    }, MS_MANTENER_APRETADO)
+    setAvisado(false)
+    gestoRef.current.arrancar()
 
     const target = e.currentTarget as any
     if (target && typeof target.setPointerCapture === 'function' && 'pointerId' in e) {
@@ -160,11 +166,13 @@ function FilaGuion({
       if (dist >= 10) {
         decidioDireccionRef.current = true
         if (Math.abs(dy) > Math.abs(dx)) {
-          if (timerHoldRef.current) clearTimeout(timerHoldRef.current)
+          gestoRef.current.cancelar()
+          setAvisado(false)
           esHorizontalRef.current = false
           return
         } else {
-          if (timerHoldRef.current) clearTimeout(timerHoldRef.current)
+          gestoRef.current.cancelar()
+          setAvisado(false)
           esHorizontalRef.current = true
         }
       } else {
@@ -173,7 +181,8 @@ function FilaGuion({
     }
 
     if (esHorizontalRef.current) {
-      if (timerHoldRef.current) clearTimeout(timerHoldRef.current)
+      gestoRef.current.cancelar()
+      setAvisado(false)
       setDragX(dx)
 
       if (Math.abs(dx) >= 88 && !cruzoUmbralRef.current) {
@@ -184,10 +193,8 @@ function FilaGuion({
   }
 
   function handlePointerUp(e: React.SyntheticEvent) {
-    if (timerHoldRef.current) {
-      clearTimeout(timerHoldRef.current)
-      timerHoldRef.current = null
-    }
+    gestoRef.current.cancelar()
+    setAvisado(false)
 
     const target = e.currentTarget as any
     if (target && typeof target.releasePointerCapture === 'function' && 'pointerId' in e) {
@@ -307,6 +314,7 @@ function FilaGuion({
           backgroundColor: 'var(--bg-fila)',
           borderRadius: 'var(--redondeo)',
           cursor: 'pointer',
+          ...estiloComprimirPorAviso(avisado),
           userSelect: 'none',
           transform: `translateX(${dragX}px)`,
           transition: esArrastrandoRef.current
@@ -527,7 +535,7 @@ export default function BibliotecaView({
     timerHoldRef.current = setTimeout(() => {
       fueLongPressRef.current = true
       setMenuId(id)
-    }, 500)
+    }, MS_MANTENER_APRETADO)
   }
 
   function handleTouchEnd() {
@@ -571,7 +579,7 @@ export default function BibliotecaView({
     timerDiagRef.current = setTimeout(() => {
       fueLongPressDiagRef.current = true
       if (onToggleDiagnostico) onToggleDiagnostico()
-    }, 500)
+    }, MS_MANTENER_APRETADO)
   }
 
   function handleDiagTouchEnd() {
@@ -750,33 +758,6 @@ export default function BibliotecaView({
               </button>
 
               <div className="texto-meta" style={{ padding: 'var(--aire-2) var(--aire-4) 0', color: 'var(--color-apagado)', fontWeight: 600 }}>
-                Lo nuestro
-              </div>
-              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
-                <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
-                  Motor de voz:
-                  <select
-                    aria-label="Motor de Voz"
-                    value={engine}
-                    onChange={(e) => setEngine?.(e.target.value as IdMotor)}
-                    style={{
-                      width: '100%',
-                      marginTop: 'var(--aire-1)',
-                      padding: 'var(--aire-1) var(--aire-2)',
-                      fontSize: 'var(--texto-meta)',
-                      borderRadius: 'var(--redondeo)',
-                      border: '1px solid var(--color-borde)',
-                      backgroundColor: 'var(--bg-suelo)',
-                      color: 'var(--color-texto)'
-                    }}
-                  >
-                    <option value="vosk">Vosk (Offline)</option>
-                    <option value="nativo">Nativo</option>
-                  </select>
-                </label>
-              </div>
-
-              <div className="texto-meta" style={{ padding: 'var(--aire-2) var(--aire-4) 0', color: 'var(--color-apagado)', fontWeight: 600 }}>
                 La aplicación
               </div>
               <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
@@ -840,21 +821,6 @@ export default function BibliotecaView({
 
               <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
                 <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}>
-                  <span>Ver transcripción en vivo</span>
-                  <input
-                    type="checkbox"
-                    checked={verTranscripcion}
-                    onChange={(e) => {
-                      hapticaToqueSuave()
-                      setVerTranscripcion?.(e.target.checked)
-                    }}
-                    style={{ width: 16, height: 16, accentColor: 'var(--color-acento)' }}
-                  />
-                </label>
-              </div>
-
-              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
-                <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}>
                   <span>Vibración</span>
                   <input
                     type="checkbox"
@@ -869,6 +835,48 @@ export default function BibliotecaView({
                 </label>
               </div>
 
+              <div data-testid="apartado-nuestro">
+              <div className="texto-meta" style={{ padding: 'var(--aire-2) var(--aire-4) 0', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                Motor de voz y transcripción
+              </div>
+              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
+                <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
+                  Motor de voz:
+                  <select
+                    aria-label="Motor de Voz"
+                    value={engine}
+                    onChange={(e) => setEngine?.(e.target.value as IdMotor)}
+                    style={{
+                      width: '100%',
+                      marginTop: 'var(--aire-1)',
+                      padding: 'var(--aire-1) var(--aire-2)',
+                      fontSize: 'var(--texto-meta)',
+                      borderRadius: 'var(--redondeo)',
+                      border: '1px solid var(--color-borde)',
+                      backgroundColor: 'var(--bg-suelo)',
+                      color: 'var(--color-texto)'
+                    }}
+                  >
+                    <option value="vosk">Vosk (Offline)</option>
+                    <option value="nativo">Nativo</option>
+                  </select>
+                </label>
+              </div>
+
+              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
+                <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}>
+                  <span>Ver transcripción en vivo</span>
+                  <input
+                    type="checkbox"
+                    checked={verTranscripcion}
+                    onChange={(e) => {
+                      hapticaToqueSuave()
+                      setVerTranscripcion?.(e.target.checked)
+                    }}
+                    style={{ width: 16, height: 16, accentColor: 'var(--color-acento)' }}
+                  />
+                </label>
+              </div>
               <button
                 data-testid="btn-abrir-corpus"
                 onClick={() => {
@@ -888,6 +896,7 @@ export default function BibliotecaView({
               >
                 Medición / Panel Corpus
               </button>
+              </div>
 
             </div>
           )}

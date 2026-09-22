@@ -856,9 +856,11 @@ export default function EditorView({
                     </div>
                   )}
 
-                  {/* Idioma */}
+                  {/* Idioma del guion. Vive en el modelo (Guion.idioma), no
+                      en la interfaz. Un guion en ingles dentro de una app en
+                      espanol es un caso real. */}
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Idioma:</span>
+                    <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Idioma del guion:</span>
                     <select
                       value={guion.idioma || 'es'}
                       onChange={(e) => handleIdiomaChange(e.target.value)}

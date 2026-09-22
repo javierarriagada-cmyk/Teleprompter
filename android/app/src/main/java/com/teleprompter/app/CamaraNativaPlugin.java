@@ -7,6 +7,8 @@ import android.media.MediaMetadataRetriever;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.camera.view.PreviewView;
 
@@ -393,5 +395,40 @@ public class CamaraNativaPlugin extends Plugin {
                 }
             }
         }
+    }
+
+    @PluginMethod
+    public void fijarBrillo(PluginCall call) {
+        Double valor = call.getDouble("valor", -1.0);
+        getActivity().runOnUiThread(() -> {
+            try {
+                Window w = getActivity().getWindow();
+                WindowManager.LayoutParams lp = w.getAttributes();
+                lp.screenBrightness = valor == null ? WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE : valor.floatValue();
+                w.setAttributes(lp);
+                JSObject ret = new JSObject();
+                ret.put("ok", true);
+                call.resolve(ret);
+            } catch (Exception e) {
+                call.reject("Error al fijar brillo: " + e.getMessage(), e);
+            }
+        });
+    }
+
+    @PluginMethod
+    public void restaurarBrillo(PluginCall call) {
+        getActivity().runOnUiThread(() -> {
+            try {
+                Window w = getActivity().getWindow();
+                WindowManager.LayoutParams lp = w.getAttributes();
+                lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                w.setAttributes(lp);
+                JSObject ret = new JSObject();
+                ret.put("ok", true);
+                call.resolve(ret);
+            } catch (Exception e) {
+                call.reject("Error al restaurar brillo: " + e.getMessage(), e);
+            }
+        });
     }
 }

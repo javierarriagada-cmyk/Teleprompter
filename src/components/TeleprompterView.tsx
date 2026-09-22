@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { MotorDeAvance, EstadoModo } from '../lib/avance'
 import { tokenizarGuion, Token } from '../lib/seguidor'
 import { Guion } from '../datos/modelo'
@@ -36,6 +36,8 @@ import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
 import { IconoAtras, IconoEngranaje } from './IconosApp'
 import { actualizarConfigCamara } from '../lib/camara'
+import { App as CapacitorApp } from '@capacitor/app'
+import { aplicarBrillo, PASOS_BRILLO, PasoBrillo, restaurarBrillo } from '../lib/brillo'
 
 // UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
 //
@@ -225,6 +227,36 @@ export default function TeleprompterView({
   onEstadoAvanceChange
 }: TeleprompterViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const [brillo, setBrillo] = useState<PasoBrillo>('automatico')
+
+  // EL BRILLO SE DEVUELVE AL SISTEMA EN LOS DOS CAMINOS DE SALIDA, NO EN UNO.
+  //
+  // Al desmontar el lienzo, que es salir por la puerta. Y AL IRSE A SEGUNDO
+  // PLANO, que no desmonta nada: si entra una llamada o se cambia de
+  // aplicacion con el brillo en Alto, la pantalla se queda encendida a tope en
+  // otra parte y gastando bateria, sin que nadie entienda por que.
+  //
+  // Al volver se repone el paso elegido, porque la persona no abandono la toma:
+  // la interrumpieron. Si volviera en automatico, tendria que acordarse de
+  // ajustarlo otra vez justo cuando retoma.
+  useEffect(() => {
+    const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive) restaurarBrillo()
+      else if (brillo !== 'automatico') aplicarBrillo(brillo)
+    })
+    return () => {
+      try {
+        if (sub && typeof sub.then === 'function') sub.then((s: any) => s.remove())
+        else if (sub && typeof sub.remove === 'function') sub.remove()
+      } catch (e) {}
+    }
+  }, [brillo])
+
+  useEffect(() => {
+    return () => {
+      restaurarBrillo()
+    }
+  }, [])
 
   const modoManualRef = useRef(false)
   const finManualRef = useRef<number | null>(null)
@@ -1072,6 +1104,34 @@ export default function TeleprompterView({
                   />
                   Mostrar tiempo
                 </label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                    Brillo:
+                  </span>
+                  {PASOS_BRILLO.map((paso) => (
+                    <button
+                      key={paso.id}
+                      type="button"
+                      data-testid={`btn-brillo-${paso.id}`}
+                      onClick={() => {
+                        setBrillo(paso.id)
+                        aplicarBrillo(paso.id)
+                      }}
+                      style={{
+                        padding: 'var(--aire-1) var(--aire-2)',
+                        fontSize: 'var(--texto-meta)',
+                        borderRadius: 'var(--redondeo-pildora)',
+                        border: '1px solid var(--color-borde)',
+                        backgroundColor: brillo === paso.id ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                        color: brillo === paso.id ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                        fontWeight: brillo === paso.id ? 'bold' : 'normal',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {paso.nombre}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 

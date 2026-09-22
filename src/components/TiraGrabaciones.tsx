@@ -32,8 +32,7 @@ export function formatearFechaCorta(ts: number): string {
   return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`
 }
 
-import { useMantenerApretado } from './mantenerApretado'
-import { hapticaToqueSuave } from '../haptica'
+import { estiloComprimirPorAviso, useMantenerApretado } from './mantenerApretado'
 
 interface Props {
   grabaciones: ResumenGrabacion[]
@@ -72,7 +71,6 @@ function TarjetaToma({
 }) {
   const gesto = useMantenerApretado({
     onMantener: () => {
-      hapticaToqueSuave()
       onPedirMenu()
     }
   })
@@ -90,7 +88,7 @@ function TarjetaToma({
           if (gesto.fueLongPressRef.current) return
           onAbrir()
         }}
-        style={{ display: 'block', width: '100%', padding: 0, border: '1px solid var(--color-borde)', borderRadius: 'var(--redondeo)', overflow: 'hidden', background: 'var(--bg-suelo)', cursor: 'pointer' }}
+        style={{ display: 'block', width: '100%', padding: 0, border: '1px solid var(--color-borde)', borderRadius: 'var(--redondeo)', overflow: 'hidden', background: 'var(--bg-suelo)', cursor: 'pointer', ...estiloComprimirPorAviso(gesto.avisado) }}
       >
         <div style={{ width: '100%', height: 88, background: 'var(--bg-superficie)', position: 'relative' }}>
           {g.rutaMiniatura ? <img src={srcDeRuta(g.rutaMiniatura)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} /> : <div style={{ width: '100%', height: '100%', background: '#1a1a1a' }} />}
