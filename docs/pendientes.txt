@@ -440,7 +440,29 @@ aprobo como "un piso minimo de coherencia". Esto es el piso completo.
 
 ===============================================================================
 10b. EL PARPADEO DEL ARRANQUE TIENE DOS PARTES, Y LA SEGUNDA ES PEOR
-     Estado: MEDIDO CUADRO A CUADRO. Causa no probada.
+     Estado: CERRADO el 21 de septiembre de 2026. Era el service worker.
+
+     LA CAUSA, y no estaba en la pantalla de arranque. El service worker de la
+     PWA llamaba a window.location.reload() cuando la version nueva tomaba el
+     control: la aplicacion se reiniciaba entera, y eso es lo que se veia como
+     el traspaso sucio y como el cuadro vacio con "Sin guiones".
+
+     LO QUE LO CONFIRMA es justamente que NO pasaba siempre. Javier: "usualmente
+     me pasaba cuando instalaba la apk". Claro: solo habia service worker nuevo
+     esperando despues de reinstalar. En un arranque normal no habia nada que
+     recargar y no parpadeaba. Esa intermitencia, que parecia el dato mas raro,
+     era la firma de la causa.
+
+     El arreglo fue sacar el service worker en nativo -ver
+     sacarServiceWorkerEnNativo() en src/lib/actualizacion.ts, donde esta escrito
+     el motivo largo-. Adentro del APK no aporta nada y aportaba esto.
+
+     Comprobado abriendo y cerrando la aplicacion varias veces seguidas: no se
+     repitio. Si vuelve a aparecer, la sospecha de abajo sigue en pie y hay que
+     comprobarla antes de tocar nada.
+
+     -------------------------------------------------------------------------
+     LO QUE SE MIDIO EN SU MOMENTO, que se conserva porque el metodo sirvio:
 ===============================================================================
 
 Grabado el 21 de septiembre de 2026 a peticion de Javier -"intenta cazarlo"- y
