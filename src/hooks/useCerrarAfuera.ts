@@ -12,25 +12,35 @@ import { useEffect, useRef } from 'react'
 // Devuelve un ref que hay que poner en el elemento que envuelve al boton Y al menu. Mientras
 // esta abierto, cualquier toque fuera de ese elemento -o la tecla Escape- lo cierra.
 //
+// Si el menu sale por un portal a document.body, el boton y el menu ya no viven
+// en el mismo nodo. Pasa el ref del menu en `tambien`: los dos cuentan como
+// "adentro". Si solo se pone el ref en el boton, el primer toque al menu lo
+// cierra.
+//
 // El toque se escucha en fase de captura y con pointerdown, no con click: asi cierra apenas
 // se apoya el dedo, antes de que el click llegue a lo que haya debajo. Si se usara click, el
 // primer toque afuera se gastaria en cerrar el menu y habria que tocar dos veces.
 export function useCerrarAfuera<T extends HTMLElement = HTMLDivElement>(
   abierto: boolean,
-  cerrar: () => void
+  cerrar: () => void,
+  tambien?: Array<{ current: HTMLElement | null }>
 ) {
   const contenedor = useRef<T | null>(null)
   const cerrarRef = useRef(cerrar)
   cerrarRef.current = cerrar
+  const tambienRef = useRef(tambien)
+  tambienRef.current = tambien
 
   useEffect(() => {
     if (!abierto) return
 
     const alTocarAfuera = (e: Event) => {
+      const nodo = e.target as Node
       const el = contenedor.current
-      if (el && !el.contains(e.target as Node)) {
-        cerrarRef.current()
-      }
+      if (el && el.contains(nodo)) return
+      const extras = tambienRef.current
+      if (extras && extras.some((r) => r.current && r.current.contains(nodo))) return
+      cerrarRef.current()
     }
     const alTeclear = (e: KeyboardEvent) => {
       if (e.key === 'Escape') cerrarRef.current()

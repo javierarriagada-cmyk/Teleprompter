@@ -49,17 +49,30 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
 
     const { container } = render(React.createElement(App, { motor: motorFake, repoOverride: repo }))
 
+    // 600 y no 50: con 50 la pantalla de entrada todavia esta encima y la
+    // tarjeta no ha terminado de armarse, asi que el titulo -que es la puerta
+    // de diagnostico- no existe aun. El resto de las pruebas de portada usan
+    // este mismo numero.
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 50))
+      await new Promise((r) => setTimeout(r, 600))
     })
 
-    // 1. Comprobar que en la biblioteca, el checkbox "Ver transcripción en vivo" está desmarcado por omisión
-    const btnMenuBiblio = screen.getByTestId('btn-menu-superior-biblioteca')
+    // 1. El checkbox "Ver transcripción en vivo" está desmarcado por omisión.
+    //
+    // Ya no vive en el menu del engranaje: es un instrumento nuestro, no una
+    // preferencia, y desde la tarea 68 los tres -motor, transcripcion y
+    // medicion- estan detras de la puerta de diagnostico. Se abre tocando el
+    // titulo de la tarjeta.
     await act(async () => {
-      fireEvent.click(btnMenuBiblio)
+      fireEvent.click(await screen.findByTestId('titulo-tarjeta-lectura'))
     })
 
-    const checkbox = screen.getByLabelText(/Ver transcripción en vivo/i) as HTMLInputElement
+    // Por el texto y su label envolvente, no por getByLabelText: el control
+    // vive ahora en la franja de diagnostico y asi no depende de como
+    // testing-library resuelva el nombre accesible de un label que envuelve.
+    await screen.findByTestId('franja-de-estado-diagnostico')
+    const checkbox = (screen.getByText('Ver transcripción en vivo').closest('label') as HTMLLabelElement)
+      .querySelector('input[type="checkbox"]') as HTMLInputElement
     expect(checkbox.checked).toBe(false)
 
     // Cerrar menú biblioteca tocando afuera
@@ -112,11 +125,11 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
       fireEvent.click(btnSalir)
     })
 
-    await act(async () => {
-      fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
-    })
-
-    const checkboxActual = screen.getByLabelText(/Ver transcripción en vivo/i)
+    // NO se vuelve a tocar el titulo: la puerta de diagnostico CONMUTA, no
+    // abre. El menu viejo se podia abrir dos veces sin consecuencia; este
+    // segundo toque cerraria la franja que ya quedo abierta en el paso 1.
+    const checkboxActual = (screen.getByText('Ver transcripción en vivo').closest('label') as HTMLLabelElement)
+      .querySelector('input[type="checkbox"]') as HTMLInputElement
     await act(async () => {
       fireEvent.click(checkboxActual)
     })

@@ -391,7 +391,7 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     expect(hapticsCalls.impact.length).toBe(0)
   })
 
-  test('T205 - "Grabado" APARECE Y SE VA. Al salir de LEYENDO se queda en LISTO; el aviso esta en el documento; dos segundos despues, ya no.', async () => {
+  test('T205 - Salir de LEYENDO SIN camara confirma con el aviso Grabado, que se va a los dos segundos. CON camara confirma el visor (tarea 68).', async () => {
     vi.useFakeTimers()
     try {
       const repo = new RepositorioMemoria()

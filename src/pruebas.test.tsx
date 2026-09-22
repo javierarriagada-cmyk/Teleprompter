@@ -2401,7 +2401,10 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       fireEvent.click(btnMenu)
     })
 
-    const btnFiltro = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ver Archivados'))!
+    // Por screen y no por container: desde la tarea 68 el menu del engranaje
+    // sale por un portal a body, para que no lo atrape el apilado de la
+    // tarjeta. Ver el comentario del portal en BibliotecaView.
+    const btnFiltro = screen.getByText('Ver Archivados')
     await act(async () => {
       fireEvent.click(btnFiltro)
     })
@@ -2411,7 +2414,7 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
     await act(async () => {
       fireEvent.click(btnMenu)
     })
-    const btnFiltroPrincipales = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Ver Principales'))!
+    const btnFiltroPrincipales = screen.getByText('Ver Principales')
     await act(async () => {
       fireEvent.click(btnFiltroPrincipales)
     })

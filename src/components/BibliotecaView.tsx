@@ -445,10 +445,18 @@ export default function BibliotecaView({
   const [menuId, setMenuId] = useState<string | null>(null)
   const [menuSuperiorAbierto, setMenuSuperiorAbierto] = useState(false)
   const [vibracion, setVibracion] = useState<boolean>(vibracionHabilitada())
-  // se cierra tocando afuera o con Escape, no solo con el mismo boton
-  const refMenuSuperior = useCerrarAfuera(menuSuperiorAbierto, () => setMenuSuperiorAbierto(false))
+  // El menu sale por portal a body. El ref del hook queda en el engranaje;
+  // el del panel viaja en `tambien` para que un toque al menu no cuente
+  // como "afuera".
+  const refMenuPortaleado = useRef<HTMLDivElement | null>(null)
+  const refMenuSuperior = useCerrarAfuera(
+    menuSuperiorAbierto,
+    () => setMenuSuperiorAbierto(false),
+    [refMenuPortaleado]
+  )
   // el menu de cada fila, que se abre con toque largo, se cierra igual que los demas
   const refMenuFila = useCerrarAfuera(menuId !== null, () => setMenuId(null))
+  const [rectMenuSuperior, setRectMenuSuperior] = useState<{ top: number; right: number } | null>(null)
   const [mapaTextos, setMapaTextos] = useState<Record<string, string>>({})
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -687,12 +695,22 @@ export default function BibliotecaView({
           colorLetra={colorLetra}
         />
 
-        {/* Menú superior derecho ⋯ flotante sobre la tarjeta */}
+        {/* El engranaje se queda aca. El MENU sale por portal a body:
+            colgado de la tarjeta, su zIndex 20 solo competia adentro
+            de ese contenedor. Javier el 21 de septiembre de 2026:
+            "ahora pasa por detras del cuadro del guion y sigue por
+            abajo". Igual que el boton +, createPortal. */}
         <div ref={refMenuSuperior} style={{ position: 'absolute', top: 'var(--aire-2)', right: 'var(--aire-2)', zIndex: 20 }}>
           <button
-            onClick={() => {
+            onClick={(e) => {
               hapticaToqueSuave()
-              setMenuSuperiorAbierto(!menuSuperiorAbierto)
+              if (menuSuperiorAbierto) {
+                setMenuSuperiorAbierto(false)
+                return
+              }
+              const r = (e.currentTarget as HTMLElement).getBoundingClientRect()
+              setRectMenuSuperior({ top: r.bottom + 4, right: window.innerWidth - r.right })
+              setMenuSuperiorAbierto(true)
             }}
             data-testid="btn-menu-superior-biblioteca"
             style={{
@@ -712,12 +730,15 @@ export default function BibliotecaView({
             <IconoEngranaje />
           </button>
 
-          {menuSuperiorAbierto && (
+          </div>
+        {menuSuperiorAbierto && createPortal(
             <div
+              ref={refMenuPortaleado}
+              data-testid="menu-superior-biblioteca"
               style={{
-                position: 'absolute',
-                top: '100%',
-                right: 0,
+                position: 'fixed',
+                top: rectMenuSuperior ? rectMenuSuperior.top : 48,
+                right: rectMenuSuperior ? rectMenuSuperior.right : 8,
                 backgroundColor: 'var(--bg-menu)',
                 borderRadius: 'var(--redondeo)',
                 zIndex: 50,
@@ -793,7 +814,7 @@ export default function BibliotecaView({
               </div>
               <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
                 <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
-                  Apariencia:
+                  Tema:
                 </label>
                 {/* DOS OPCIONES, NO TRES. "Sistema" se fue el 21 de septiembre
                     de 2026. Javier: "no se por que ademas da la opcion de
@@ -859,72 +880,9 @@ export default function BibliotecaView({
                 </label>
               </div>
 
-              <div data-testid="apartado-nuestro">
-              <div className="texto-meta" style={{ padding: 'var(--aire-2) var(--aire-4) 0', color: 'var(--color-apagado)', fontWeight: 600 }}>
-                Motor de voz y transcripción
-              </div>
-              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
-                <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
-                  Motor de voz:
-                  <select
-                    aria-label="Motor de Voz"
-                    value={engine}
-                    onChange={(e) => setEngine?.(e.target.value as IdMotor)}
-                    style={{
-                      width: '100%',
-                      marginTop: 'var(--aire-1)',
-                      padding: 'var(--aire-1) var(--aire-2)',
-                      fontSize: 'var(--texto-meta)',
-                      borderRadius: 'var(--redondeo)',
-                      border: '1px solid var(--color-borde)',
-                      backgroundColor: 'var(--bg-suelo)',
-                      color: 'var(--color-texto)'
-                    }}
-                  >
-                    <option value="vosk">Vosk (Offline)</option>
-                    <option value="nativo">Nativo</option>
-                  </select>
-                </label>
-              </div>
-
-              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
-                <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}>
-                  <span>Ver transcripción en vivo</span>
-                  <input
-                    type="checkbox"
-                    checked={verTranscripcion}
-                    onChange={(e) => {
-                      hapticaToqueSuave()
-                      setVerTranscripcion?.(e.target.checked)
-                    }}
-                    style={{ width: 16, height: 16, accentColor: 'var(--color-acento)' }}
-                  />
-                </label>
-              </div>
-              <button
-                data-testid="btn-abrir-corpus"
-                onClick={() => {
-                  setMostrarPanelCorpus(true)
-                  setMenuSuperiorAbierto(false)
-                }}
-                style={{
-                  padding: 'var(--aire-3) var(--aire-4)',
-                  textAlign: 'left',
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: '1px solid var(--color-separador)',
-                  color: 'var(--color-texto)',
-                  fontSize: 'var(--texto-cuerpo)',
-                  cursor: 'pointer'
-                }}
-              >
-                Medición / Panel Corpus
-              </button>
-              </div>
-
-            </div>
+            </div>,
+            document.body
           )}
-        </div>
       </div>
 
       {/* Buscador: sin borde, fondo bg-suelo y redondeo */}

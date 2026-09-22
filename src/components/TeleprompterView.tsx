@@ -34,7 +34,7 @@ export function avanzarTrabado(
 import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
 import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
-import { IconoAtras, IconoEngranaje } from './IconosApp'
+import { IconoAtras, IconoEscena } from './IconosApp'
 import { actualizarConfigCamara } from '../lib/camara'
 import { App as CapacitorApp } from '@capacitor/app'
 import { aplicarBrillo, PASOS_BRILLO, PasoBrillo, restaurarBrillo } from '../lib/brillo'
@@ -1140,7 +1140,7 @@ export default function TeleprompterView({
                 data-testid="btn-engranaje-toma"
                 type="button"
                 onClick={() => setPanelTomaAbierto((v) => !v)}
-                aria-label="Ajustes de la toma"
+                aria-label="Ajustes de la escena"
                 style={{
                   width: 44,
                   padding: 'var(--aire-3)',
@@ -1154,7 +1154,7 @@ export default function TeleprompterView({
                   justifyContent: 'center'
                 }}
               >
-                <IconoEngranaje tamano={18} />
+                <IconoEscena tamano={18} />
               </button>
               <button
                 data-testid="btn-empezar-toma"

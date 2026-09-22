@@ -63,19 +63,19 @@ describe('Tarea 67 - la casa de cada ajuste y el gesto que se siente', () => {
     })
   })
 
-  test('los tres instrumentos estan DENTRO del apartado nuestro, ninguno suelto entre preferencias', async () => {
+  test('los tres instrumentos NO estan en el menu de la portada; viven en la franja de diagnostico', async () => {
     await portadaConGuion()
     fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
-    const nuestro = screen.getByTestId('apartado-nuestro')
+    const menu = await screen.findByTestId('menu-superior-biblioteca')
+    expect(menu.textContent).toContain('La aplicación')
+    expect(menu.textContent).not.toContain('Motor de voz')
+    expect(menu.textContent).not.toContain('Ver transcripción en vivo')
+    expect(menu.textContent).not.toContain('Medición / Panel Corpus')
+    fireEvent.click(screen.getByTestId('titulo-tarjeta-lectura'))
+    const nuestro = await screen.findByTestId('apartado-nuestro')
     expect(nuestro.textContent).toContain('Motor de voz')
     expect(nuestro.textContent).toContain('Ver transcripción en vivo')
     expect(nuestro.textContent).toContain('Medición / Panel Corpus')
-    const menu = nuestro.parentElement as HTMLElement
-    const html = menu.innerHTML
-    const idxApp = html.indexOf('La aplicación')
-    const idxNuestro = html.indexOf('apartado-nuestro')
-    expect(idxApp).toBeGreaterThan(-1)
-    expect(idxNuestro).toBeGreaterThan(idxApp)
   })
 
   test('los tres tiempos del gesto salen de UN archivo, no hay 500 ni 300 de mantener escritos a mano', () => {

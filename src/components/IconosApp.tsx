@@ -24,6 +24,36 @@ export function IconoEngranaje({
   )
 }
 
+// No es un engranaje. El engranaje queda para las preferencias de la
+// aplicacion (portada). Este abre la ESCENA de ESTA toma: donde lees,
+// espejo, tiempo y brillo. Cuatro esquinas de encuadre y la linea de
+// la franja donde cae el renglon vivo.
+export function IconoEscena({
+  tamano = 22,
+  ...props
+}: { tamano?: number } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width={tamano}
+      height={tamano}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M4 8V4h4" />
+      <path d="M16 4h4v4" />
+      <path d="M20 16v4h-4" />
+      <path d="M8 20H4v-4" />
+      <path d="M6 10h12" />
+    </svg>
+  )
+}
+
 /** Flecha de volver hacia la izquierda de trazo fino. */
 export function IconoAtras({
   tamano = 20,

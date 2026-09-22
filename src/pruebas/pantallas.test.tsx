@@ -467,9 +467,9 @@ describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
 
     expect(screen.queryByTestId('panel-corpus')).toBeNull()
 
-    const btnMenu = screen.getByTestId('btn-menu-superior-biblioteca')
+    const titulo = screen.getByTestId('titulo-tarjeta-lectura')
     await act(async () => {
-      fireEvent.click(btnMenu)
+      fireEvent.click(titulo)
     })
 
     const btnCorpus = screen.getByTestId('btn-abrir-corpus')
@@ -824,10 +824,15 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    // 1. En la Biblioteca: abrir menú ⋯ y verificar que SI están Motor de voz y Transcripción en vivo
-    const btnMenuBiblio = screen.getByTestId('btn-menu-superior-biblioteca')
+    // 1. Motor de voz y Transcripción en vivo NO estan en el panel del editor.
+    //
+    // Estaban en el menu del engranaje de la portada y desde la tarea 68 ya no:
+    // son instrumentos nuestros, no preferencias, y viven detras de la puerta
+    // de diagnostico. Lo que esta prueba cuida NO cambio -que no esten en el
+    // panel del editor y que el selector siga cambiando el motor-, solo cambio
+    // de donde se los saca.
     await act(async () => {
-      fireEvent.click(btnMenuBiblio)
+      fireEvent.click(await screen.findByTestId('titulo-tarjeta-lectura'))
     })
 
     const selectEngine = screen.getByLabelText('Motor de Voz') as HTMLSelectElement
@@ -840,9 +845,12 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     })
     expect(selectEngine.value).toBe('nativo')
 
-    // Cerrar menú Biblioteca
+    // Cerrar la franja de diagnostico. Un toque afuera NO la cierra -eso
+    // cerraba el menu del engranaje, que es otra cosa-: la franja conmuta con
+    // el mismo titulo que la abre. Si queda abierta, su selector de motor
+    // sigue en el documento y la comprobacion de abajo mira el equivocado.
     await act(async () => {
-      fireEvent.pointerDown(document.body)
+      fireEvent.click(screen.getByTestId('titulo-tarjeta-lectura'))
     })
 
     // 2. Abrir Editor -> Ajustes: verificar que NO están selector de motor ni transcripción en vivo
@@ -1298,7 +1306,7 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
       fireEvent.click(btnMenuBiblio)
     })
 
-    expect(screen.getByText('Apariencia:')).not.toBeNull()
+    expect(screen.getByText('Tema:')).not.toBeNull()
     const btnClaro = screen.getByRole('button', { name: 'Claro' })
     const btnOscuro = screen.getByRole('button', { name: 'Oscuro' })
     expect(btnClaro).not.toBeNull()

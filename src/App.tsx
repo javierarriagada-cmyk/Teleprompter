@@ -280,6 +280,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [modoManual, setModoManual] = useState<boolean>(false)
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
   const [mostrarDiagnostico, setMostrarDiagnostico] = useState<boolean>(false)
+  const [mostrarPanelCorpus, setMostrarPanelCorpus] = useState<boolean>(false)
   const [camaraActiva, setCamaraActiva] = useState<boolean>(false)
   const [grabaciones, setGrabaciones] = useState<ResumenGrabacion[]>([])
   const [grabandoVideo, setGrabandoVideo] = useState<boolean>(false)
@@ -1061,24 +1062,26 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }
 
-  async function cortarTomaSiHay(incompleta = false) {
-    if (!tomaEnCurso() && !grabandoVideoRef.current) return
+  async function cortarTomaSiHay(incompleta = false): Promise<ResumenGrabacion | null> {
+    if (!tomaEnCurso() && !grabandoVideoRef.current) return null
     try {
       const resumen = await cortarTomaVideo({ incompleta })
       await persistirResumenToma(resumen)
+      return resumen
     } catch (e) {
       console.warn('[App] error al cortar la toma:', e)
+      return null
     } finally {
       grabandoVideoRef.current = false
       setGrabandoVideo(false)
     }
   }
 
-  async function handleStop() {
+  async function handleStop(): Promise<ResumenGrabacion | null> {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
     setEnPausa(false)
-    await cortarTomaSiHay(false)
+    const resumen = await cortarTomaSiHay(false)
     await stop()
     // El audio se corta DESPUES del motor, no antes: si se cortara primero, los ultimos
     // calces quedarian anotados con un milisegundo que ya no existe en el archivo.
@@ -1086,6 +1089,10 @@ export default function App({ motor, repoOverride }: AppProps) {
     await soltarWakeLock()
     setEstadoToma('listo')
     setControlesVisibles(false)
+    // Si hubo toma, el visor la confirma. El aviso "Grabado" solo queda
+    // para la salida SIN archivo: los dos juntos tapaban el mismo hecho.
+    if (resumen) setGrabacionAbierta(resumen)
+    return resumen
   }
 
   // Ciclo de vida de la toma. No hay servicio en primer plano: esta
@@ -1124,6 +1131,10 @@ export default function App({ motor, repoOverride }: AppProps) {
     handleVolverAtrasRef.current = async () => {
       // 1. Si hay un modal abierto, cerrarlo
       if (cerrarModalRef.current && cerrarModalRef.current()) {
+        return
+      }
+      if (mostrarPanelCorpus) {
+        setMostrarPanelCorpus(false)
         return
       }
       if (grabacionAbierta) {
@@ -1363,6 +1374,62 @@ export default function App({ motor, repoOverride }: AppProps) {
               Aviso Repositorio: {errorRepositorio}
             </div>
           )}
+          {/* Lo nuestro: motor, transcripcion y medicion. No van en el
+              menu de la portada. Esta franja es la unica puerta. */}
+          <div data-testid="apartado-nuestro" style={{ marginTop: 'var(--aire-3)', paddingTop: 'var(--aire-2)', borderTop: '1px solid var(--color-separador)' }}>
+            <div className="texto-meta" style={{ color: 'var(--color-apagado)', fontWeight: 600, marginBottom: 'var(--aire-2)' }}>
+              Motor de voz y transcripción
+            </div>
+            <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-2)' }}>
+              Motor de voz:
+              <select
+                aria-label="Motor de Voz"
+                value={engine}
+                onChange={(e) => setEngine(e.target.value as IdMotor)}
+                style={{
+                  width: '100%',
+                  marginTop: 'var(--aire-1)',
+                  padding: 'var(--aire-1) var(--aire-2)',
+                  fontSize: 'var(--texto-meta)',
+                  borderRadius: 'var(--redondeo)',
+                  border: '1px solid var(--color-borde)',
+                  backgroundColor: 'var(--bg-suelo)',
+                  color: 'var(--color-texto)'
+                }}
+              >
+                <option value="vosk">Vosk (Offline)</option>
+                <option value="nativo">Nativo</option>
+              </select>
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)', marginBottom: 'var(--aire-2)' }}>
+              <span>Ver transcripción en vivo</span>
+              <input
+                type="checkbox"
+                checked={verTranscripcion}
+                onChange={(e) => {
+                  hapticaToqueSuave()
+                  setVerTranscripcion(e.target.checked)
+                }}
+                style={{ width: 16, height: 16, accentColor: 'var(--color-acento)' }}
+              />
+            </label>
+            <button
+              type="button"
+              data-testid="btn-abrir-corpus"
+              onClick={() => setMostrarPanelCorpus(true)}
+              style={{
+                padding: 'var(--aire-2) 0',
+                textAlign: 'left',
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--color-texto)',
+                fontSize: 'var(--texto-cuerpo)',
+                cursor: 'pointer'
+              }}
+            >
+              Medición / Panel Corpus
+            </button>
+          </div>
         </div>
       )}
 
@@ -1507,14 +1574,16 @@ export default function App({ motor, repoOverride }: AppProps) {
                     hapticaToqueMedio()
                     if (estadoToma === 'leyendo' || isRecording || cuentaRegresiva !== null) {
                       const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
-                      await handleStop()
-                      if (duracionMs !== null && duracionMs > 0) {
-                        const totalSeg = Math.floor(duracionMs / 1000)
-                        const mins = Math.floor(totalSeg / 60)
-                        const segs = String(totalSeg % 60).padStart(2, '0')
-                        mostrarAviso(`Grabado: ${mins}:${segs}`)
-                      } else {
-                        mostrarAviso('Grabado')
+                      const resumen = await handleStop()
+                      if (!resumen) {
+                        if (duracionMs !== null && duracionMs > 0) {
+                          const totalSeg = Math.floor(duracionMs / 1000)
+                          const mins = Math.floor(totalSeg / 60)
+                          const segs = String(totalSeg % 60).padStart(2, '0')
+                          mostrarAviso(`Grabado: ${mins}:${segs}`)
+                        } else {
+                          mostrarAviso('Grabado')
+                        }
                       }
                       return
                     }
@@ -1689,10 +1758,66 @@ export default function App({ motor, repoOverride }: AppProps) {
         </div>
       )}
 
+      {mostrarPanelCorpus && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'var(--bg-suelo)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 200,
+            padding: 'var(--aire-4)'
+          }}
+          onClick={() => setMostrarPanelCorpus(false)}
+        >
+          <div
+            className="panel-superficie"
+            style={{
+              backgroundColor: 'var(--bg-panel)',
+              color: 'var(--color-texto)',
+              padding: 'var(--aire-4)',
+              borderRadius: 'var(--redondeo)',
+              maxWidth: 600,
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              boxSizing: 'border-box'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-3)' }}>
+              <h3 className="texto-titulo" style={{ margin: 0 }}>Medición / Panel de Corpus</h3>
+              <button
+                type="button"
+                onClick={() => setMostrarPanelCorpus(false)}
+                style={{ background: 'transparent', border: 'none', color: 'var(--color-texto)', fontSize: 'var(--texto-titulo)', cursor: 'pointer' }}
+              >
+                ✕
+              </button>
+            </div>
+            <PanelCorpus medir={medirLectura} setMedir={setMedirLectura} />
+          </div>
+        </div>
+      )}
+
       {grabacionAbierta && (
         <ReproductorGrabacion
           grabacion={grabacionAbierta}
           onCerrar={() => setGrabacionAbierta(null)}
+          onRepetir={() => {
+            setGrabacionAbierta(null)
+            handleEmpezarDesdeListo()
+          }}
+          onGuardadoEnGaleria={(ok, detalle) => {
+            if (ok) {
+              hapticaToqueMedio()
+              mostrarAviso(detalle || 'Quedó en la galería del teléfono, en Películas.')
+            } else {
+              mostrarAviso(detalle || 'No se pudo guardar en la galería')
+            }
+          }}
           onBorrar={async (id) => {
             const actual = grabaciones.find((g) => g.id === id) || grabacionAbierta
             try {
