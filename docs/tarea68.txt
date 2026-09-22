@@ -40,26 +40,26 @@ proponer: el ya escribio que va en ese menu.
      -Tema claro/oscuro, Idioma, Vibracion- y un apartado claramente delimitado
      para Motor de voz y Transcripcion."
 
-EXCLUSIVO. Entonces el menu queda con eso y nada mas:
+Hoy el menu tiene, ademas de eso, dos renglones mas: VER ARCHIVADOS e IMPORTAR
+ARCHIVO. Los agrupe bajo un titulo "Guiones" y ahi siguen.
 
-    Apariencia -claro / oscuro-
-    Vibracion
-    Motor de voz y transcripcion    motor, transcripcion en vivo, medicion
+ESTO NO LO RESUELVAS VOS NI LO RESUELVO YO: LO CORTA JAVIER. Va escrito aca
+para que se decida mirandolo, no para que alguien lo saque por su cuenta.
 
-SE VAN DE AHI "VER ARCHIVADOS" E "IMPORTAR ARCHIVO". No son preferencias: son
-acciones sobre la biblioteca. Yo las habia agrupado bajo un titulo "Guiones"
-dentro del menu y fue un parche mio: agrupar no arregla que esten en la casa
-equivocada.
+    A favor de que se queden donde estan: funcionan, se encuentran, y el menu
+    del engranaje es el lugar donde la gente busca "lo demas" en cualquier
+    aplicacion. Agrupadas bajo su titulo ya no estan sueltas.
 
-    IMPORTAR ARCHIVO es hermano de crear un guion. Va con el "+" flotante, que
-    es donde la mano ya busca "traer un guion nuevo". Mantener apretado el "+"
-    ofrece importar, o el "+" abre las dos opciones: elegi vos y decilo en el
-    resumen, pero NO lo dejes en el menu de ajustes.
+    En contra: su propio texto dice EXCLUSIVO para preferencias globales, y
+    estas dos no son preferencias sino acciones sobre la biblioteca. Importar
+    es hermano de crear un guion -vive cerca del "+"-, y Ver archivados es un
+    filtro de la lista, que se entiende mejor donde se ve lo que filtra.
 
-    VER ARCHIVADOS es un filtro de la lista, no un ajuste. Va en la lista de
-    guiones, donde se ve lo que filtra.
+    Lo que NO esta en discusion: las dos funcionan y se usan, asi que ninguna
+    desaparece. Si se mueven, se mueven a un lugar mejor.
 
-    Ninguna de las dos puede desaparecer: las dos funcionan y se usan.
+Cuando este el menu arreglado -el portal de arriba- Javier lo mira y corta.
+Hasta entonces se quedan como estan.
 
 DEL "IDIOMA" DE ESA LISTA, OJO. Javier lo puso ahi, y en la tarea 67 quedo
 decidido lo contrario con su motivo: nuestro idioma es del GUION -Guion.idioma,
