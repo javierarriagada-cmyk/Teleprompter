@@ -1,6 +1,25 @@
 import { Capacitor } from '@capacitor/core'
 import { Haptics, ImpactStyle } from '@capacitor/haptics'
 
+// SI NO SE SIENTE NADA, ANTES DE BUSCAR UN DEFECTO ACA: MIRAR EL TELEFONO.
+//
+// El 21 de septiembre de 2026 Javier no sentia ninguna vibracion en toda la
+// aplicacion. Comprobado en su telefono por el depurador: Capacitor era nativo,
+// el plugin Haptics estaba registrado, nuestro interruptor de Vibracion estaba
+// en si -la clave ni siquiera existia, o sea el valor por omision-, y las tres
+// llamadas salieron sin error: vibrate de 400 ms, impact HEAVY y
+// selectionChanged. No sintio ninguna de las tres.
+//
+// O sea que el codigo estaba bien y lo apagado era el aparato -la vibracion
+// del sistema, el modo silencio, o la respuesta tactil en Ajustes de Android-.
+// Contra eso no hay nada que hacer desde aca y no hay que intentarlo: si el
+// usuario apago la vibracion de su telefono, la decision es suya.
+//
+// El metodo para volver a distinguirlo en un minuto: disparar las tres por
+// separado, con una pausa entre medio, y preguntar cuales se sintieron. Si se
+// siente la cruda y no las otras dos, lo apagado es la respuesta tactil del
+// sistema, que suprime impactos y tics pero deja pasar vibrate(). Si no se
+// siente ninguna, es la vibracion general del telefono.
 export function vibracionHabilitada(): boolean {
   try {
     const raw = localStorage.getItem('teleprompter_vibracion')
