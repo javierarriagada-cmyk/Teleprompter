@@ -514,3 +514,23 @@ desfase de siempre.
 COMO SE SABE: la misma lectura dos veces, una con camara y otra sin, y se
 compara cuantos renglones de desfase hay. Si es igual, es el asunto del punto 1
 de esta lista -invertir la marca de lectura- y no algo que trajo la camara.
+
+===============================================================================
+12. LA TARJETA DE LA PORTADA CON DOS BOTONES: SE ENTIENDE, PERO NO ES BONITA
+    Estado: ABIERTO. Sin tarea asignada.
+===============================================================================
+
+Al poner ▶ Leer y ● Grabar lado a lado -tarea 67-, el boton principal paso de
+ancho completo sin borde a media pildora con borde, y de peso 700 a 600.
+
+Javier el 21 de septiembre de 2026: "no te voy a decir que se ve bonito, pero
+se entiende".
+
+"Se entiende" no es el estandar de esta pantalla. la-cara.html es explicito:
+"tenemos exactamente una imagen buena en todo el producto, y la escondimos".
+La portada es esa imagen. Que la puerta a grabar ahora se encuentre -que era el
+problema, y se arreglo- no paga que la tarjeta pierda presencia.
+
+Lo que hay que resolver cuando se retome: como conviven las dos puertas sin que
+el par de botones le coma la jerarquia al titulo de 44 px y al texto dibujado.
+No achicar el titulo para que quepan: ese seria el camino facil y equivocado.
