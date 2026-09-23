@@ -1322,24 +1322,22 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    // Pegar texto para importar
+    // "Pegar texto" pone el cursor al final del guion; el texto entra
+    // directo en la hoja. El dialogo intermedio se elimino el 23 de
+    // septiembre de 2026.
     const btnPegar = container!.querySelector('[data-testid="btn-pegar-texto"]') as HTMLElement
     expect(btnPegar).not.toBeNull()
     await act(async () => {
       fireEvent.click(btnPegar)
     })
 
-    const textareaModal = container!.querySelector('textarea[placeholder="Pega aquí el texto completo..."]') as HTMLTextAreaElement
+    const textareaGuion = container!.querySelector('[data-testid="textarea-guion"]') as HTMLTextAreaElement
+    expect(textareaGuion).not.toBeNull()
     await act(async () => {
-      fireEvent.change(textareaModal, { target: { value: 'Bloque A' } })
+      fireEvent.change(textareaGuion, { target: { value: 'Bloque A' } })
     })
 
-    const btnAceptar = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Importar')!
-    await act(async () => {
-      fireEvent.click(btnAceptar)
-    })
-
-    const textareas = Array.from(container!.querySelectorAll('textarea[placeholder="Escribe el texto..."]')) as HTMLTextAreaElement[]
+    const textareas = Array.from(container!.querySelectorAll('[data-testid="textarea-guion"]')) as HTMLTextAreaElement[]
     expect(textareas.length).toBe(1)
     expect(textareas[0].value).toBe('Bloque A')
   })
@@ -2483,7 +2481,7 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const textarea = container!.querySelector('textarea[placeholder="Escribe el texto..."]') as HTMLTextAreaElement
+    const textarea = container!.querySelector('[data-testid="textarea-guion"]') as HTMLTextAreaElement
     expect(textarea).not.toBeNull()
 
     let gInicial = await repo.abrir('g-98')

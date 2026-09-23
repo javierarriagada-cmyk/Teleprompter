@@ -108,8 +108,14 @@ Línea tres`
     expect(resSinCerrar[0].texto).toContain('[acotacion')
   })
 
-  // T45: Integración UI en EditorView con botón "Pegar texto" y acumulación de bloques
-  test('T45: el botón Pegar texto en EditorView agrega los bloques al final sin reemplazar los existentes', async () => {
+  // T45: el texto de varios parrafos que se pega en el editor llega
+  // completo al guion, en la hoja unica, sin crear bloques extra.
+  // Hasta el 23 de septiembre de 2026 este test manejaba un dialogo
+  // intermedio -"Pegar texto" abria un modal con otro textarea y un boton
+  // "Importar"-. Ese dialogo se elimino: ahora "Pegar texto" pone el cursor
+  // al final del guion y el pegado lo hace el teclado del sistema. Lo que
+  // se comprueba es lo mismo de siempre; el camino es el que cambio.
+  test('T45: el texto pegado de varios parrafos llega completo al guion', async () => {
     let guionEstado: Guion = {
       id: 'g-t45',
       titulo: 'Guion T45',
@@ -134,7 +140,7 @@ Línea tres`
       })
     )
 
-    // Pegar texto desde la pantalla del editor
+    // "Pegar texto" ya no abre nada: deja el cursor al final del guion.
     const btnPegar = document.querySelector('[data-testid="btn-pegar-texto"]') as HTMLElement
     expect(btnPegar).not.toBeNull()
 
@@ -142,20 +148,9 @@ Línea tres`
       fireEvent.click(btnPegar)
     })
 
-    // Intentar aceptar con texto vacío o solo espacios
-    const btnAceptar = Array.from(document.querySelectorAll('button')).find((b) => b.textContent === 'Importar')
-    expect(btnAceptar).not.toBeUndefined()
-
-    await act(async () => {
-      fireEvent.click(btnAceptar!)
-    })
-
-    // Debe mostrar un aviso en pantalla y no modificar el guion
-    expect(document.body.textContent).toContain('El texto pegado está vacío')
-
-    // Pegar texto válido con 2 párrafos
-    const textarea = document.querySelector('textarea[placeholder="Pega aquí el texto completo..."]') as HTMLTextAreaElement
+    const textarea = document.querySelector('[data-testid="textarea-guion"]') as HTMLTextAreaElement
     expect(textarea).not.toBeNull()
+    expect(document.activeElement).toBe(textarea)
 
     const textoParaPegar = `Primer párrafo importado.
 
@@ -165,14 +160,10 @@ Segundo párrafo importado.`
       fireEvent.change(textarea, { target: { value: textoParaPegar } })
     })
 
-    await act(async () => {
-      fireEvent.click(btnAceptar!)
-    })
-
-    // Lo pegado entra en los bloques del guion
-    expect(guionEstado.bloques.length).toBeGreaterThanOrEqual(1)
-    const textoCompleto = guionEstado.bloques.map((b) => b.texto).join('\n')
-    expect(textoCompleto).toContain('Primer párrafo importado.')
+    // Los dos parrafos llegan, y siguen siendo UNA sola hoja.
+    expect(guionEstado.bloques.length).toBe(1)
+    expect(guionEstado.bloques[0].texto).toContain('Primer párrafo importado.')
+    expect(guionEstado.bloques[0].texto).toContain('Segundo párrafo importado.')
   })
 
   // T46: Criterio de preferencia de cortes en 3 niveles

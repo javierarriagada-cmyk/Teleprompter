@@ -2,12 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, Bloque, TramoFormato, contarPalabras, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
 import { consolidarGuion } from '../datos/consolidar'
-import { importarTexto } from '../datos/importar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { IdMotor } from '../motor/MotorDeVoz'
 import { hapticaSeleccion, hapticaToqueSuave } from '../haptica'
 import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
-import { IconoAtras } from './IconosApp'
+import { IconoAtras, IconoEmpezar } from './IconosApp'
 
 export function reubicarTramos(
   textoViejo: string,
@@ -93,6 +92,20 @@ function generarIdBloque(): string {
   return 'b-' + Date.now() + '-' + Math.random().toString(36).substring(2, 9)
 }
 
+// Los nombres de idioma de la linea de meta salen de aca y no del <select>
+// de la linea 871, aunque digan lo mismo: el <select> muestra "Español (es)"
+// porque ahi el usuario ESTA ELIGIENDO y le sirve ver el codigo; la meta
+// muestra "Español" a secas porque ahi solo esta leyendo de que idioma es
+// su guion. Si algun dia hay que agregar un idioma, van los dos.
+const NOMBRE_IDIOMA: Record<string, string> = {
+  es: 'Español',
+  en: 'English',
+  pt: 'Português',
+  fr: 'Français',
+  de: 'Deutsch',
+  it: 'Italiano'
+}
+
 export default function EditorView({
   guion,
   onChangeGuion,
@@ -123,7 +136,6 @@ export default function EditorView({
 }: EditorViewProps) {
   const [mostrarModalAjustes, setMostrarModalAjustes] = useState(false)
   const refAjustes = useCerrarAfuera(mostrarModalAjustes, () => setMostrarModalAjustes(false))
-  const [mostrarModalPegar, setMostrarModalPegar] = useState(false)
 
   const [dragOffsetY, setDragOffsetY] = useState(0)
   const esArrastrandoModalRef = useRef(false)
@@ -199,8 +211,6 @@ export default function EditorView({
       setDragOffsetY(0)
     }
   }
-  const [textoPegado, setTextoPegado] = useState('')
-  const [errorPegado, setErrorPegado] = useState<string | null>(null)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [cargandoArchivo, setCargandoArchivo] = useState(false)
@@ -246,45 +256,6 @@ export default function EditorView({
       titulo: nuevoTitulo,
       modificado: Date.now()
     })
-  }
-
-  function handleAceptarPegar() {
-    if (!textoPegado || !textoPegado.trim()) {
-      setErrorPegado('El texto pegado está vacío o sólo contiene espacios.')
-      return
-    }
-
-    const nuevosBloques = importarTexto(textoPegado)
-    if (nuevosBloques.length === 0) {
-      setErrorPegado('El texto pegado está vacío o sólo contiene espacios.')
-      return
-    }
-
-    const textoAInsertar = nuevosBloques.map((b) => b.texto).join('\n\n')
-    const b0 = (guion.bloques && guion.bloques[0])
-      ? guion.bloques[0]
-      : { id: generarIdBloque(), nombre: '', texto: '', tramos: [] }
-
-    const textoExistente = b0.texto || ''
-    const textoNuevo = !textoExistente.trim()
-      ? textoAInsertar
-      : textoExistente + '\n\n' + textoAInsertar
-
-    onChangeGuion({
-      ...guion,
-      bloques: [{ ...b0, texto: textoNuevo }],
-      modificado: Date.now()
-    })
-
-    setTextoPegado('')
-    setErrorPegado(null)
-    setMostrarModalPegar(false)
-  }
-
-  function handleCancelarPegar() {
-    setTextoPegado('')
-    setErrorPegado(null)
-    setMostrarModalPegar(false)
   }
 
   async function handleSeleccionarArchivo(e: React.ChangeEvent<HTMLInputElement>) {
@@ -431,9 +402,8 @@ export default function EditorView({
 
   const numPalabras = contarPalabras(guion)
   const numMinutos = Math.round(numPalabras / 150)
-  const resumenMeta = numPalabras === 0
-    ? `${numPalabras.toLocaleString('es')} palabras`
-    : `${numPalabras.toLocaleString('es')} palabras · ${numMinutos > 0 ? numMinutos : 1} min`
+  const nombreIdioma = NOMBRE_IDIOMA[guion.idioma || 'es'] || (guion.idioma || 'es')
+  const resumenMeta = `${numPalabras.toLocaleString('es')} palabras · ${numMinutos > 0 ? numMinutos : 1} min · ${nombreIdioma}`
 
   useEffect(() => {
     if (!mostrarModalAjustes) return
@@ -451,10 +421,6 @@ export default function EditorView({
           setMostrarModalAjustes(false)
           return true
         }
-        if (mostrarModalPegar) {
-          setMostrarModalPegar(false)
-          return true
-        }
         return false
       })
     }
@@ -463,7 +429,7 @@ export default function EditorView({
         onRegistrarCerrarModal(null)
       }
     }
-  }, [mostrarModalAjustes, mostrarModalPegar, onRegistrarCerrarModal])
+  }, [mostrarModalAjustes, onRegistrarCerrarModal])
 
   const btnLeerRef = useRef<HTMLButtonElement>(null)
 
@@ -497,7 +463,7 @@ export default function EditorView({
             el area que recibe el dedo, no se corre el dibujo. */}
         <button
           onClick={onVolverBiblioteca}
-          className="texto-cuerpo"
+          className="texto-cuerpo btn-deformable"
           style={{
             background: 'transparent',
             border: 'none',
@@ -519,6 +485,7 @@ export default function EditorView({
             hapticaToqueSuave()
             setMostrarModalAjustes(true)
           }}
+          className="btn-deformable"
           data-testid="btn-menu-opciones-editor"
           style={{
             background: 'transparent',
@@ -535,7 +502,13 @@ export default function EditorView({
         </button>
       </div>
 
-      {/* Titulo es el titulo: Display, editable, sin etiqueta ni recuadro */}
+      {/* Titulo es el titulo: Display, editable, sin etiqueta ni recuadro.
+          El placeholder dice "Título del guion" y no "Sin título": el primero
+          dice QUE HACER, el segundo solo describe un estado y se lee como una
+          etiqueta puesta por el sistema. Ojo con la linea de abajo: la
+          comparacion con 'Sin título' es contra el titulo GUARDADO en el
+          modelo, no contra este placeholder. Son dos cosas distintas que hasta
+          hoy decian la misma frase. Se cambio el 23 de septiembre de 2026. */}
       <div style={{ marginBottom: 'var(--aire-2)' }}>
         <input
           type="text"
@@ -543,7 +516,7 @@ export default function EditorView({
           onChange={(e) => handleTituloChange(e.target.value)}
           onFocus={() => setTituloEnfocado(true)}
           onBlur={() => setTituloEnfocado(false)}
-          placeholder="Sin título"
+          placeholder="Título del guion"
           className="texto-display"
           data-testid="input-titulo-guion"
           style={{
@@ -569,7 +542,17 @@ export default function EditorView({
             color: 'var(--color-apagado)',
             marginTop: 'calc(-1 * var(--aire-1))',
             marginBottom: 'var(--aire-4)',
-            paddingLeft: 'var(--aire-2)'
+            paddingLeft: 'var(--aire-2)',
+            paddingBottom: 'var(--aire-3)',
+            // La linea separa el NOMBRE del guion de lo que se va a LEER. Las dos
+            // cosas estan en Source Serif 4 y se funden sin nada en el medio.
+            // Va en var(--bg-panel) y no en var(--color-borde): el borde a fuerza
+            // completa sobre var(--bg-suelo) es una raya que grita. Esta tiene que
+            // separar, no anunciarse.
+            // Aparece con la misma condicion que el contador -numPalabras > 0- y
+            // no con una propia: con el guion vacio no hay nada que separar, y el
+            // dibujo del estado vacio que aprobo Javier no tiene linea.
+            borderBottom: '1px solid var(--bg-panel)'
           }}
         >
           {resumenMeta}
@@ -647,6 +630,7 @@ export default function EditorView({
               <h3 style={{ margin: 0, fontSize: 'var(--texto-titulo)', fontWeight: 600, color: 'var(--color-texto)' }}>Ajustes</h3>
               <button
                 data-testid="btn-cerrar-ajustes"
+                className="btn-deformable"
                 onClick={() => setMostrarModalAjustes(false)}
                 style={{
                   background: 'transparent',
@@ -675,6 +659,7 @@ export default function EditorView({
                       <button
                         onClick={onLetraMenos}
                         aria-label="Disminuir letra panel"
+                        className="btn-deformable"
                         style={{ padding: 'var(--aire-1) var(--aire-3)', fontSize: 'var(--texto-titulo)', cursor: 'pointer', borderRadius: 'var(--redondeo)', border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
                       >
                         -
@@ -683,6 +668,7 @@ export default function EditorView({
                       <button
                         onClick={onLetraMas}
                         aria-label="Aumentar letra panel"
+                        className="btn-deformable"
                         style={{ padding: 'var(--aire-1) var(--aire-3)', fontSize: 'var(--texto-titulo)', cursor: 'pointer', borderRadius: 'var(--redondeo)', border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
                       >
                         +
@@ -913,91 +899,6 @@ export default function EditorView({
         </div>
       )}
 
-      {mostrarModalPegar && (
-        <div
-          style={{
-            backgroundColor: 'var(--bg-superficie)',
-            border: '1px solid var(--color-borde)',
-            borderRadius: 'var(--redondeo)',
-            padding: 'var(--aire-4)',
-            marginBottom: 'var(--aire-4)',
-            animation: movimientoApagado()
-              ? 'none'
-              : `panelSube ${MS_PANEL}ms ${CURVA_RESORTE} forwards`
-          }}
-        >
-          <h4 style={{ margin: '0 0 var(--aire-2) 0', fontSize: 'var(--texto-titulo)', fontWeight: 600, color: 'var(--color-texto)' }}>Pegar texto</h4>
-          <p className="texto-cuerpo" style={{ margin: '0 0 var(--aire-3) 0', color: 'var(--color-apagado)' }}>
-            Pega aquí el texto de tu guión. Se convertirá automáticamente en líneas con el formato adecuado.
-          </p>
-          <textarea
-            value={textoPegado}
-            onChange={(e) => {
-              setTextoPegado(e.target.value)
-              if (errorPegado) setErrorPegado(null)
-            }}
-            placeholder="Pega aquí el texto completo..."
-            rows={8}
-            style={{
-              width: '100%',
-              padding: 'var(--aire-2) var(--aire-3)',
-              fontSize: 'var(--texto-cuerpo)',
-              fontFamily: 'inherit',
-              borderRadius: 'var(--redondeo)',
-              border: '1px solid var(--color-borde)',
-              backgroundColor: 'var(--bg-suelo)',
-              color: 'var(--color-texto)',
-              boxSizing: 'border-box',
-              marginBottom: 'var(--aire-2)'
-            }}
-          />
-          {errorPegado && (
-            <div
-              style={{
-                color: 'var(--color-grabando)',
-                backgroundColor: 'var(--bg-suelo)',
-                padding: 'var(--aire-2) var(--aire-3)',
-                borderRadius: 'var(--redondeo)',
-                marginBottom: 'var(--aire-3)',
-                fontSize: 'var(--texto-cuerpo)',
-                fontWeight: 'bold'
-              }}
-            >
-              {errorPegado}
-            </div>
-          )}
-          <div style={{ display: 'flex', gap: 'var(--aire-2)', justifyContent: 'flex-end' }}>
-            <button
-              onClick={handleCancelarPegar}
-              style={{
-                padding: 'var(--aire-2) var(--aire-3)',
-                backgroundColor: 'var(--bg-suelo)',
-                border: 'none',
-                borderRadius: 'var(--redondeo)',
-                color: 'var(--color-texto)',
-                cursor: 'pointer'
-              }}
-            >
-              Cancelar
-            </button>
-            <button
-              onClick={handleAceptarPegar}
-              style={{
-                padding: 'var(--aire-2) var(--aire-3)',
-                backgroundColor: 'var(--bg-superficie)',
-                color: 'var(--color-texto)',
-                border: '1px solid var(--color-borde)',
-                borderRadius: 'var(--redondeo)',
-                cursor: 'pointer',
-                fontWeight: 'bold'
-              }}
-            >
-              Importar
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Hoja Única de Texto */}
       <div style={{ position: 'relative' }}>
         {/* Controles de formato: SOLO SI HAY TEXTO SELECCIONADO */}
@@ -1099,6 +1000,15 @@ export default function EditorView({
           </div>
         )}
 
+        {/* El data-testid existe porque hasta hoy SEIS pruebas encontraban este
+            textarea por su placeholder exacto -getByPlaceholderText('Escribe el
+            texto...')-. O sea que el texto que ve el usuario era, sin que nadie lo
+            decidiera, una llave de las pruebas: no se podia mejorar una palabra sin
+            romper seis archivos. El testid corta ese amarre.
+            El ejemplo va adentro del placeholder y no como un parrafo aparte: un
+            parrafo de ayuda ocupa lugar para siempre, el placeholder desaparece
+            solo con la primera letra.
+            "Sigo" va con mayuscula inicial y no "SIGO": es un nombre, no una sigla. */}
         <textarea
           ref={(el) => { textareaRefs.current[bloqueUnico.id] = el; ajustarAltoTextarea(el) }}
           value={bloqueUnico.texto}
@@ -1109,7 +1019,8 @@ export default function EditorView({
           onSelect={(e) => handleTextareaSelect(bloqueUnico.id, e.currentTarget)}
           onKeyUp={(e) => handleTextareaSelect(bloqueUnico.id, e.currentTarget)}
           onMouseUp={(e) => handleTextareaSelect(bloqueUnico.id, e.currentTarget)}
-          placeholder="Escribe el texto..."
+          data-testid="textarea-guion"
+          placeholder={'Escribe el texto...\n\nEj: Hola, hoy te quiero contar cómo usar Sigo para grabar tus videos mirando a la cámara.'}
           rows={3}
           style={{
             width: '100%',
@@ -1146,9 +1057,21 @@ export default function EditorView({
         >
           <button
             data-testid="btn-pegar-texto"
+            className="btn-deformable"
             onClick={() => {
-              setErrorPegado(null)
-              setMostrarModalPegar(true)
+              // Antes esto abria un dialogo con OTRA caja de texto adentro, en la que
+              // habia que pegar, y despues apretar "Importar": tres toques y una
+              // pantalla de mas para algo que el teclado del telefono ya hace.
+              // Ahora el boton lleva al usuario a donde tiene que estar -escribiendo en
+              // el guion, con el cursor al final- y el pegado lo hace Android, que al
+              // poner el cursor en un campo vacio ofrece "Pegar" solo.
+              // No se agrego @capacitor/clipboard: seria una dependencia nueva para
+              // ahorrar un toque que el sistema ya ahorra.
+              const el = textareaRefs.current[bloqueUnico.id]
+              if (!el) return
+              el.focus()
+              const fin = el.value.length
+              el.setSelectionRange(fin, fin)
             }}
             style={{
               pointerEvents: 'auto',
@@ -1157,8 +1080,11 @@ export default function EditorView({
               padding: 'var(--aire-3) var(--aire-4)',
               fontSize: 'var(--texto-cuerpo)',
               fontWeight: 600,
-              backgroundColor: 'var(--bg-fila)',
-              color: 'var(--color-texto)',
+              // Pegar manda. De cada diez guiones, nueve llegan de un texto que ya
+              // esta escrito en otra parte. El crema es el mismo de Leer: en esta
+              // aplicacion, el relleno crema quiere decir "este es el camino".
+              backgroundColor: 'var(--color-acento)',
+              color: 'var(--color-texto-acento)',
               borderRadius: 'var(--redondeo-pildora)',
               cursor: 'pointer',
               border: 'none'
@@ -1168,6 +1094,7 @@ export default function EditorView({
           </button>
           <button
             data-testid="btn-abrir-archivo"
+            className="btn-deformable"
             onClick={() => fileInputRef.current?.click()}
             disabled={cargandoArchivo}
             style={{
@@ -1177,11 +1104,15 @@ export default function EditorView({
               padding: 'var(--aire-3) var(--aire-4)',
               fontSize: 'var(--texto-cuerpo)',
               fontWeight: 600,
-              backgroundColor: 'var(--bg-fila)',
+              // Acompana. Sube de var(--bg-fila) a var(--bg-panel) y gana borde por
+              // la misma razon que Grabar: sin relleno fuerte, el borde es lo que lo
+              // dibuja. Queda el mismo par que abajo -uno relleno, uno de contorno-,
+              // asi las dos barras de esta pantalla se leen con la misma gramatica.
+              backgroundColor: 'var(--bg-panel)',
               color: 'var(--color-texto)',
               borderRadius: 'var(--redondeo-pildora)',
               cursor: cargandoArchivo ? 'not-allowed' : 'pointer',
-              border: 'none'
+              border: '1px solid var(--color-borde)'
             }}
           >
             {cargandoArchivo ? 'Leyendo...' : 'Abrir archivo'}
@@ -1214,6 +1145,7 @@ export default function EditorView({
         >
           <button
             ref={btnLeerRef}
+            className="btn-deformable"
             onClick={() => {
               const rect = btnLeerRef.current?.getBoundingClientRect()
               onEntrarLectura(rect)
@@ -1230,22 +1162,26 @@ export default function EditorView({
               color: 'var(--color-texto-acento)',
               borderRadius: 'var(--redondeo-pildora)',
               cursor: 'pointer',
-              border: '1px solid var(--color-borde)',
+              // Sin borde: un contorno gris alrededor de un relleno crema no separa
+              // nada sobre el fondo oscuro, solo ensucia el canto. El relleno YA es
+              // el limite. Grabar si lleva borde, porque ahi el borde es el boton.
+              border: 'none',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 'var(--aire-2)',
-              transform: barraLeerVisible ? 'translateY(0)' : 'translateY(120px)',
-              transition: movimientoApagado()
-                ? 'none'
-                : barraLeerVisible
-                ? `transform ${MS_CHICO}ms ${CURVA_RESORTE}`
-                : `transform ${MS_DEDO}ms ${CURVA_SALE}`
+              gap: 'var(--aire-2)'
+              // NO VA transform NI transition ACA. El translateY de entrada y salida
+              // de la barra lo hace el contenedor de la linea 1194, y estaba repetido
+              // en los dos: la barra escondida se corria 240px en vez de 120. Ademas
+              // un transform en linea le gana al scaleY(0.94) de btn-deformable y
+              // deja el boton sin apretado. Se saco el 23 de septiembre de 2026.
             }}
           >
-            ▶ Leer
+            <IconoEmpezar tamano={16} />
+            <span>Leer</span>
           </button>
           <button
+            className="btn-deformable"
             onClick={() => {
               const rect = btnLeerRef.current?.getBoundingClientRect()
               onEntrarGrabar?.(rect)
@@ -1269,7 +1205,21 @@ export default function EditorView({
               gap: 'var(--aire-2)'
             }}
           >
-            ● Grabar
+            {/* El punto de grabar era el caracter "●", que hereda el color del texto
+                y queda gris: el mismo gris del triangulo de Leer. Dos puertas que
+                hacen cosas distintas se veian iguales. Es un div y no un caracter
+                porque asi toma var(--color-grabando), el mismo rojo de la barra de
+                tiempo y del punto tally del lienzo. Es el UNICO rojo de la pantalla. */}
+            <div
+              style={{
+                width: 10,
+                height: 10,
+                borderRadius: 'var(--redondeo-pildora)',
+                backgroundColor: 'var(--color-grabando)',
+                flexShrink: 0
+              }}
+            />
+            <span>Grabar</span>
           </button>
         </div>
       )}

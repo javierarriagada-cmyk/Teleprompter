@@ -152,7 +152,7 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
     render(<App repoOverride={repo} />)
 
     // Esperar a que cargue el guion en la biblioteca y aparezca el botón Leer de la tarjeta
-    const btnLeerTarjeta = await screen.findByRole('button', { name: /▶ Leer/i })
+    const btnLeerTarjeta = await screen.findByTestId('btn-leer-tarjeta')
 
     fireEvent.click(btnLeerTarjeta)
 
@@ -224,7 +224,7 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
 
     render(<App repoOverride={repo} />)
 
-    const btnLeerTarjeta = await screen.findByRole('button', { name: /▶ Leer/i })
+    const btnLeerTarjeta = await screen.findByTestId('btn-leer-tarjeta')
 
     // Entrar a leer desde la tarjeta (Biblioteca sigue montada detrás)
     fireEvent.click(btnLeerTarjeta)
@@ -261,19 +261,19 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
     // Inicialmente visible con safe area calc en su contenedor padre
     expect(barraLeer.parentElement?.style.bottom).not.toBe('')
     expect(barraLeer.parentElement?.style.bottom).toContain('safe-area-inset-bottom')
-    expect(barraLeer.style.transform).toBe('translateY(0)')
+    expect(barraLeer.parentElement?.style.transform).toBe('translateY(0)')
 
     // Simular scroll en window hacia abajo
     fireEvent.scroll(window, { target: { scrollY: 100 } })
 
     // Se esconde fuera de vista
-    expect(barraLeer.style.transform).toBe('translateY(120px)')
+    expect(barraLeer.parentElement?.style.transform).toBe('translateY(120px)')
 
     // Simular scroll en window hacia arriba
     fireEvent.scroll(window, { target: { scrollY: 40 } })
 
     // Vuelve a estar visible y conserva el bottom seguro en su contenedor
-    expect(barraLeer.style.transform).toBe('translateY(0)')
+    expect(barraLeer.parentElement?.style.transform).toBe('translateY(0)')
     expect(barraLeer.parentElement?.style.bottom).toContain('safe-area-inset-bottom')
   })
 

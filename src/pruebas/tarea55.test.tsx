@@ -158,7 +158,7 @@ describe('Pruebas TAREA 55 - LA PANTALLA DEL EDITOR (T276-T283)', () => {
     expect(screen.getByTestId('btn-abrir-archivo')).toBeDefined()
 
     // Se simula escribir una letra en el bloque
-    const textarea = screen.getByPlaceholderText('Escribe el texto...')
+    const textarea = screen.getByTestId('textarea-guion')
     fireEvent.change(textarea, { target: { value: 'H' } })
 
     // Rerender con el guion actualizado conteniendo la letra
@@ -326,5 +326,65 @@ describe('Pruebas TAREA 55 - LA PANTALLA DEL EDITOR (T276-T283)', () => {
       'utf8'
     )
     expect(fuenteEditor).toContain("borderRadius: 'var(--redondeo-grande) var(--redondeo-grande) 0 0'")
+  })
+
+  // T284 - GUARDIANA. Los botones del editor tienen que poder apretarse.
+  // En src/styles.css linea 89 esta apagado el destello azul de Android
+  // -webkit-tap-highlight-color: transparent-. O sea que un boton sin
+  // btn-deformable en esta aplicacion NO DA NINGUNA SENAL al apretarlo:
+  // ni la del sistema, porque la sacamos, ni la nuestra, porque no la
+  // tiene. Esta prueba falla si alguien agrega un boton a esta pantalla y
+  // se olvida, o si alguien le pone un transform en linea a uno de estos
+  // -un transform en linea le gana al scaleY del apretado y lo deja mudo
+  // sin romper nada visible-.
+  // Cubre los NUEVE del punto 4.1, no tres: si cubriera solo los de una
+  // barra, la promesa -"un boton de esta pantalla sin btn-deformable hace
+  // fallar la prueba"- seria falsa, y una guardiana que promete de mas es
+  // peor que ninguna. Por eso monta el editor DOS VECES -vacio y con
+  // texto, porque las dos barras de abajo nunca estan juntas- y ademas
+  // abre el panel de Aa, donde viven Listo, - y +.
+  test('T284 - los nueve botones del editor llevan btn-deformable y ninguno tiene transform en linea', () => {
+    function revisar(b: HTMLElement, nombre: string) {
+      expect(b.classList.contains('btn-deformable'), `${nombre} sin btn-deformable`).toBe(true)
+      expect(b.style.transform, `${nombre} tiene transform en linea`).toBe('')
+    }
+
+    // 1. Con el guion VACIO: volver, Aa, Pegar texto y Abrir archivo.
+    const vacio = render(
+      <EditorView
+        guion={guionPruebaVacio}
+        onChangeGuion={() => {}}
+        onVolverBiblioteca={() => {}}
+        onEntrarLectura={() => {}}
+      />
+    )
+
+    revisar(screen.getByText('Guiones').closest('button') as HTMLElement, 'volver')
+    revisar(screen.getByTestId('btn-menu-opciones-editor'), 'Aa')
+    revisar(screen.getByTestId('btn-pegar-texto'), 'Pegar texto')
+    revisar(screen.getByTestId('btn-abrir-archivo'), 'Abrir archivo')
+
+    // El panel de Aa: Listo, - y +. Se abre aca y no en el otro montaje
+    // porque el panel es el mismo en los dos estados.
+    fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+    revisar(screen.getByTestId('btn-cerrar-ajustes'), 'Listo')
+    revisar(screen.getByLabelText('Disminuir letra panel'), 'menos letra')
+    revisar(screen.getByLabelText('Aumentar letra panel'), 'mas letra')
+
+    vacio.unmount()
+
+    // 2. Con TEXTO: Leer y Grabar, que con el guion vacio no existen.
+    render(
+      <EditorView
+        guion={guionPruebaConTexto}
+        onChangeGuion={() => {}}
+        onVolverBiblioteca={() => {}}
+        onEntrarLectura={() => {}}
+        onEntrarGrabar={() => {}}
+      />
+    )
+
+    revisar(screen.getByTestId('btn-leer-guion-fijo'), 'Leer')
+    revisar(screen.getByTestId('btn-grabar-guion-fijo'), 'Grabar')
   })
 })

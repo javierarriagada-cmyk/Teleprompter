@@ -1,4 +1,5 @@
 import React from 'react'
+import { IconoEmpezar } from './IconosApp'
 import { ResumenGuion, PAREJAS_COLOR } from '../datos/modelo'
 import { movimientoApagado } from './movimiento'
 import { estiloComprimirPorAviso, useMantenerApretado } from './mantenerApretado'
@@ -239,64 +240,89 @@ export default function TarjetaLectura({
         </h2>
 
         {hayGuion ? (
+          /* El triangulo era el caracter "▶" y ahora es IconoEmpezar, el mismo SVG
+             que usa el boton Leer del editor. Son los DOS botones de empezar a
+             leer de la aplicacion y se veian distintos: el caracter no tiene ni el
+             mismo peso ni la misma alineacion vertical que el dibujo.
+             El punto de Grabar era el caracter "●" y ahora es un div de 10x10 con
+             var(--color-grabando), igual que en el editor. La clase
+             btn-grabar-tarjeta-rojo NO lo pintaba: esa clase solo actua en :active
+             y pinta el boton entero mientras se aprieta. En reposo el punto era
+             gris. El :active se queda como esta, es otra cosa.
+             El borde se saca por la misma razon que en el Leer del editor: crema
+             con contorno gris sobre fondo oscuro ensucia el canto y no separa
+             nada. Grabar, al lado, si lo conserva, porque ahi el borde ES el boton.
+             NO SACAR el estiloComprimirPorAviso de mas abajo aunque ponga un
+             transform en linea: ese es el aviso del mantener-apretado.
+             Todo esto se hizo el 23 de septiembre de 2026, en la Tarea 71. */
           <div style={{ display: 'flex', gap: 'var(--aire-2)', width: '100%' }}>
-          <button
-            type="button"
-            data-testid="btn-leer-tarjeta"
-            {...gestoLeer.props}
-            onClick={(e) => {
-              e.stopPropagation()
-              if (gestoLeer.fueLongPressRef.current) return
-              const rect = cardRef.current?.getBoundingClientRect()
-              onLeer(rect)
-            }}
-            className="btn-deformable"
-            style={{
-              flex: 1,
-              padding: 'var(--aire-3) var(--aire-4)',
-              backgroundColor: 'var(--color-acento)',
-              color: 'var(--color-texto-acento)',
-              border: '1px solid var(--color-borde)',
-              borderRadius: 'var(--redondeo-pildora)',
-              fontSize: 'var(--texto-titulo)',
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 'var(--aire-2)',
-              ...estiloComprimirPorAviso(gestoLeer.avisado)
-            }}
-          >
-            ▶ Leer
-          </button>
-          <button
-            type="button"
-            data-testid="btn-grabar-tarjeta"
-            className="btn-deformable btn-grabar-tarjeta-rojo"
-            onClick={(e) => {
-              e.stopPropagation()
-              const rect = cardRef.current?.getBoundingClientRect()
-              if (onGrabar) onGrabar(rect)
-            }}
-            style={{
-              flex: 1,
-              padding: 'var(--aire-3) var(--aire-4)',
-              backgroundColor: 'var(--bg-superficie)',
-              color: 'var(--color-texto)',
-              border: '1px solid var(--color-borde)',
-              borderRadius: 'var(--redondeo-pildora)',
-              fontSize: 'var(--texto-titulo)',
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 'var(--aire-2)'
-            }}
-          >
-            ● Grabar
-          </button>
+            <button
+              type="button"
+              data-testid="btn-leer-tarjeta"
+              {...gestoLeer.props}
+              onClick={(e) => {
+                e.stopPropagation()
+                if (gestoLeer.fueLongPressRef.current) return
+                const rect = cardRef.current?.getBoundingClientRect()
+                onLeer(rect)
+              }}
+              className="btn-deformable"
+              style={{
+                flex: 1,
+                padding: 'var(--aire-3) var(--aire-4)',
+                backgroundColor: 'var(--color-acento)',
+                color: 'var(--color-texto-acento)',
+                border: 'none',
+                borderRadius: 'var(--redondeo-pildora)',
+                fontSize: 'var(--texto-titulo)',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 'var(--aire-2)',
+                ...estiloComprimirPorAviso(gestoLeer.avisado)
+              }}
+            >
+              <IconoEmpezar tamano={16} />
+              <span>Leer</span>
+            </button>
+            <button
+              type="button"
+              data-testid="btn-grabar-tarjeta"
+              className="btn-deformable btn-grabar-tarjeta-rojo"
+              onClick={(e) => {
+                e.stopPropagation()
+                const rect = cardRef.current?.getBoundingClientRect()
+                if (onGrabar) onGrabar(rect)
+              }}
+              style={{
+                flex: 1,
+                padding: 'var(--aire-3) var(--aire-4)',
+                backgroundColor: 'var(--bg-superficie)',
+                color: 'var(--color-texto)',
+                border: '1px solid var(--color-borde)',
+                borderRadius: 'var(--redondeo-pildora)',
+                fontSize: 'var(--texto-titulo)',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 'var(--aire-2)'
+              }}
+            >
+              <div
+                style={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: 'var(--redondeo-pildora)',
+                  backgroundColor: 'var(--color-grabando)',
+                  flexShrink: 0
+                }}
+              />
+              <span>Grabar</span>
+            </button>
           </div>
         ) : (
           <button

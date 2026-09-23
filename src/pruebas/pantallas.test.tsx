@@ -188,7 +188,7 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T149-T153)', () => {
     expect(screen.queryByTestId('btn-color-ambar')).toBeNull()
 
     // 2. Con texto seleccionado en el textarea, aparece la barra de formato
-    const textarea = screen.getByPlaceholderText('Escribe el texto...') as HTMLTextAreaElement
+    const textarea = screen.getByTestId('textarea-guion') as HTMLTextAreaElement
     await act(async () => {
       fireEvent.select(textarea, { target: { selectionStart: 0, selectionEnd: 7 } })
     })
@@ -1044,7 +1044,7 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
     // ya lo dice tres veces -el contador en 0 palabras, el "Escribe el texto..." del
     // bloque y el propio boton apagado-. Lo que esta prueba cuida, que el boton este
     // HABILITADO con texto, no cambio.
-    expect(btnLeerTexto.textContent?.trim()).toBe('▶ Leer')
+    expect(btnLeerTexto.textContent?.trim()).toBe('Leer')
   })
 
   test('T191 - GUARDIANA DEL AJUSTE VIEJO. Con engine "webspeech" guardado en localStorage -o cualquier valor que ya no existe-, la aplicacion abre y termina con un motor valido. No queda sin motor ni lanza.', async () => {
@@ -1495,7 +1495,7 @@ describe('Pruebas TAREA 43: El sistema operativo no puede meterse en la pantalla
 
     const { unmount } = render(<WrapperEditorT275 guionInicial={guionConSaltosIniciales} />)
 
-    const textareaMontado = screen.getByPlaceholderText('Escribe el texto...') as HTMLTextAreaElement
+    const textareaMontado = screen.getByTestId('textarea-guion') as HTMLTextAreaElement
     expect(textareaMontado.value).toBe('Hola')
     unmount()
 
@@ -1511,7 +1511,7 @@ describe('Pruebas TAREA 43: El sistema operativo no puede meterse en la pantalla
 
     render(<WrapperEditorT275 guionInicial={guionNormal} />)
 
-    const textarea = screen.getByPlaceholderText('Escribe el texto...') as HTMLTextAreaElement
+    const textarea = screen.getByTestId('textarea-guion') as HTMLTextAreaElement
     expect(textarea.value).toBe('Hola')
 
     await act(async () => {
