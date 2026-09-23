@@ -880,9 +880,17 @@ export default function TeleprompterView({
 
       {estadoToma === 'listo' && (
         <>
+          {/* La flecha usa el tratamiento comun de 32 -btn-flotante-32, styles.css-,
+              igual que la flecha del estado leyendo en App.tsx. Hasta la revision
+              de la 70 era opaca -bg-superficie y borde gris- con el icono a 22, y
+              al lado de la otra se veian dos flechas distintas para la misma
+              salida. El encargo 70 decia que este boton no se tocaba y a la vez,
+              en la 9.3, que la otra flecha copiaba su tratamiento translucido,
+              que no tenia: se resolvio por la seccion 11, que manda. 23-09-2026. */}
           <button
             data-testid="btn-volver-listo"
             type="button"
+            className="btn-deformable btn-flotante-32"
             onClick={(e) => {
               e.stopPropagation()
               onVolverListo?.()
@@ -892,21 +900,10 @@ export default function TeleprompterView({
               position: 'absolute',
               top: 'calc(8px + env(safe-area-inset-top, 0px))',
               left: 'calc(8px + env(safe-area-inset-left, 0px))',
-              zIndex: 10,
-              width: 32,
-              height: 32,
-              padding: 0,
-              cursor: 'pointer',
-              backgroundColor: 'var(--bg-superficie)',
-              border: '1px solid var(--color-borde)',
-              borderRadius: 'var(--redondeo-pildora)',
-              color: 'var(--color-texto)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
+              zIndex: 10
             }}
           >
-            <IconoAtras />
+            <IconoAtras tamano={18} />
           </button>
 
           {/* ARRIBA A LA DERECHA: EL ENGRANAJE. Las dos puertas, siempre.
@@ -922,22 +919,18 @@ export default function TeleprompterView({
               setPanelTomaAbierto((v) => !v)
             }}
             aria-label="Ajustes de la escena"
+            className="btn-deformable btn-flotante-40"
             style={{
               position: 'absolute',
               top: 'calc(8px + env(safe-area-inset-top, 0px))',
               right: 'calc(8px + env(safe-area-inset-right, 0px))',
               zIndex: 11,
-              width: 40,
-              height: 40,
-              padding: 0,
-              cursor: 'pointer',
               display: arrastrandoRecuadro ? 'none' : 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: panelTomaAbierto ? 'var(--color-acento)' : 'rgba(0,0,0,0.35)',
-              border: '1px solid rgba(255,255,255,0.35)',
-              borderRadius: 'var(--redondeo-pildora)',
-              color: panelTomaAbierto ? 'var(--color-texto-acento)' : '#fff'
+              // Cerrado, el aspecto lo da btn-flotante-40 -el mismo de la pausa
+              // en App.tsx, que ocupa este rincon mientras se lee-. Abierto se
+              // pinta con el acento para decir que el panel colgado es suyo.
+              backgroundColor: panelTomaAbierto ? 'var(--color-acento)' : undefined,
+              color: panelTomaAbierto ? 'var(--color-texto-acento)' : undefined
             }}
           >
             <IconoEngranaje tamano={20} />

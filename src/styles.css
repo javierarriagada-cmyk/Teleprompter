@@ -274,7 +274,7 @@ button.btn-deformable:active,
 .btn-grabar-tarjeta-rojo:active {
   background-color: var(--color-grabando) !important;
   border-color: var(--color-grabando) !important;
-  color: var(--color-texto) !important;
+  color: #fff !important;
 }
 
 /* Clases y animaciones con CURVA_RESORTE */
@@ -380,7 +380,13 @@ textarea::placeholder {
   opacity: 1;
 }
 
-/* TRATAMIENTO COMUN DE CONTROLES FLOTANTES (TAREA 70) */
+/* TRATAMIENTO COMUN DE CONTROLES FLOTANTES (TAREA 70)
+   Todos los controles que flotan sobre el lienzo son EL MISMO objeto en tres
+   tamanos -32 esquina secundaria, 40 esquina principal, 72 accion central-,
+   seccion 11 del encargo 70. Viven aca y no copiados en linea en cada boton
+   para que no se vuelvan a separar: un control distinto a sus hermanos es un
+   defecto. Ninguna de estas clases lleva transform: .btn-deformable lo usa
+   para el apretado, y cualquier transform aca se lo comeria. */
 .btn-flotante-32 {
   width: 32px;
   height: 32px;

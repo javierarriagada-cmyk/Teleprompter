@@ -828,7 +828,7 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     // Estaban en el menu del engranaje de la portada y desde la tarea 68 ya no:
     // son instrumentos nuestros, no preferencias, y viven detras de la puerta
     // de diagnostico. Lo que esta prueba cuida NO cambio -que no esten en el
-    // panel del editor y que el selector sigue cambiando el motor-, solo cambio
+    // panel del editor y que el selector siga cambiando el motor-, solo cambio
     // de donde se los saca.
     await act(async () => {
       fireEvent.click(await screen.findByTestId('titulo-tarjeta-lectura'))

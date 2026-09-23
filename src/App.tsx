@@ -1571,9 +1571,15 @@ export default function App({ motor, repoOverride }: AppProps) {
         >
           {estadoToma === 'leyendo' && controlesVisibles && (
             <>
+              {/* Cada boton flotante lleva data-duracion-entra y data-duracion-sale: son
+                  los tiempos de su entrada y su salida, y T201 de tarea45 los lee de aca.
+                  Antes los llevaba el cajon panel-controles-lectura, que la 70 elimino.
+                  Si se sacan, esa prueba se pone roja: no ponerle valores por omision. */}
               {!conCamara && (
                 <button
                   data-testid="btn-salir-lectura"
+                  data-duracion-entra={MS_CHICO}
+                  data-duracion-sale={MS_PANTALLA}
                   type="button"
                   className="btn-deformable btn-flotante-32"
                   aria-label="Salir"
@@ -1608,6 +1614,8 @@ export default function App({ motor, repoOverride }: AppProps) {
               {conCamara && enPausa && (
                 <button
                   data-testid="btn-descartar-toma"
+                  data-duracion-entra={MS_CHICO}
+                  data-duracion-sale={MS_PANTALLA}
                   data-confirmando={confirmandoDescarte ? 'si' : 'no'}
                   type="button"
                   className="btn-deformable btn-flotante-32"
@@ -1626,13 +1634,23 @@ export default function App({ motor, repoOverride }: AppProps) {
                     top: 'calc(8px + env(safe-area-inset-top, 0px))',
                     left: 'calc(8px + env(safe-area-inset-left, 0px))',
                     zIndex: 100,
-                    width: confirmandoDescarte ? 'auto' : 32,
+                    // Ancho fijo y no 'auto': CSS no anima un ancho hacia 'auto', salta de golpe,
+                    // y la 11.6 pide que el tacho se abra con una transicion de MS_CHICO.
+                    // 96 le alcanza a '¿Seguro?' en negrita con su aire a los lados.
+                    width: confirmandoDescarte ? 96 : 32,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
                     padding: confirmandoDescarte ? '0 var(--aire-2)' : 0,
                     borderColor: confirmandoDescarte ? 'var(--color-grabando)' : undefined,
                     color: confirmandoDescarte ? 'var(--color-grabando-texto)' : undefined,
                     fontSize: 'var(--texto-meta)',
                     fontWeight: confirmandoDescarte ? 'bold' : 'normal',
-                    transition: movimientoApagado() ? 'none' : `width ${MS_CHICO}ms ${CURVA_ENTRA}`,
+                    // Un transition en linea pisa el de .btn-deformable -styles.css- y el
+                    // tacho se apretaria de golpe, sin el resorte de sus hermanos. Por eso
+                    // se repiten aca el border-radius y el transform con la misma curva.
+                    transition: movimientoApagado()
+                      ? 'none'
+                      : `width ${MS_CHICO}ms ${CURVA_ENTRA}, border-radius ${MS_CHICO}ms ${CURVA_RESORTE}, transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
                     animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
                   }}
                 >
@@ -1642,6 +1660,8 @@ export default function App({ motor, repoOverride }: AppProps) {
 
               <button
                 data-testid="btn-pausa-lectura"
+                data-duracion-entra={MS_CHICO}
+                data-duracion-sale={MS_PANTALLA}
                 type="button"
                 className="btn-deformable btn-flotante-40"
                 aria-label={enPausa ? 'Seguir' : 'Pausa'}
@@ -1675,6 +1695,8 @@ export default function App({ motor, repoOverride }: AppProps) {
               >
                 <button
                   data-testid="btn-parar-lectura"
+                  data-duracion-entra={MS_CHICO}
+                  data-duracion-sale={MS_PANTALLA}
                   type="button"
                   className="btn-deformable btn-flotante-72 btn-flotante-rojo"
                   aria-label="Parar"
@@ -1699,7 +1721,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                     animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
                   }}
                 >
-                  <IconoParar tamano={26} />
+                  {/* 44 y no 26: IconoParar dibuja su cuadrado en 12 de las 24 unidades de la
+                      grilla, como los demas iconos dejan aire. A 44 el cuadrado mide los 22 px
+                      que pide la 11.3 del encargo 70, y el redondeo queda en unos 3 px. */}
+                  <IconoParar tamano={44} />
                 </button>
               </div>
             </>
