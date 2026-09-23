@@ -643,10 +643,10 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
 
     const htmlText = panel.innerHTML
     const idxGrupo1 = htmlText.indexOf('Cómo se ve el texto')
-    const idxLetra = htmlText.indexOf('Tamaño de letra:')
-    const idxAncho = htmlText.indexOf('Ancho:')
-    const idxTipoFuente = htmlText.indexOf('Tipografía:')
-    const idxFondoLetra = htmlText.indexOf('Colores de lectura:')
+    const idxLetra = htmlText.indexOf('Tamaño de letra')
+    const idxAncho = htmlText.indexOf('Ancho')
+    const idxTipoFuente = htmlText.indexOf('Tipografía')
+    const idxFondoLetra = htmlText.indexOf('Colores de lectura')
 
     expect(idxLetra).toBeGreaterThan(idxGrupo1)
     expect(idxAncho).toBeGreaterThan(idxLetra)

@@ -670,7 +670,7 @@ export default function EditorView({
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-3)' }}>
                   {/* Tamaño de letra */}
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Tamaño de letra:</span>
+                    <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Tamaño de letra</span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)' }}>
                       <button
                         onClick={onLetraMenos}
@@ -693,7 +693,14 @@ export default function EditorView({
                   {/* Ancho */}
                   {(setColumnaAngosta || setMarginPercent) && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Ancho:</span>
+                      {/* "Ancho del texto" y no "Ancho" a secas: la primera de
+                          las tres opciones de esta misma fila TAMBIEN se llama
+                          "Ancho". Mientras la etiqueta llevo dos puntos la
+                          diferencia se veia; al sacarlos quedaron dos "Ancho"
+                          pegados, y getByText encontro los dos. Se vio al
+                          sacar los dos puntos del panel, el 23 de septiembre
+                          de 2026. */}
+                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Ancho del texto</span>
                       <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
                         <button
                           type="button"
@@ -759,7 +766,7 @@ export default function EditorView({
                   {/* Tipografía */}
                   {setTipoFuente && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Tipografía:</span>
+                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Tipografía</span>
                       <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
                         <button
                           type="button"
@@ -803,7 +810,7 @@ export default function EditorView({
                   {/* Colores de lectura: parejas, no dos listas. Fuente: PAREJAS_COLOR. */}
                   {setColorFondo && setColorLetra && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Colores de lectura:</span>
+                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Colores de lectura</span>
                       <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
                         {[
                           { fondo: PAREJAS_COLOR[0].fondo, letra: PAREJAS_COLOR[0].letra, label: 'Negro con blanco' },
@@ -860,7 +867,7 @@ export default function EditorView({
                       en la interfaz. Un guion en ingles dentro de una app en
                       espanol es un caso real. */}
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Idioma del guion:</span>
+                    <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Idioma del guion</span>
                     <select
                       value={guion.idioma || 'es'}
                       onChange={(e) => handleIdiomaChange(e.target.value)}
@@ -902,7 +909,7 @@ export default function EditorView({
             fontWeight: 'bold'
           }}
         >
-          ⚠️ Error al abrir archivo: {errorArchivo}
+          Error al abrir archivo: {errorArchivo}
         </div>
       )}
 

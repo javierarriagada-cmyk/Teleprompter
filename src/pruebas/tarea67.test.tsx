@@ -119,10 +119,10 @@ describe('Tarea 67 - la casa de cada ajuste y el gesto que se siente', () => {
   test('"Idioma del guion" existe en el editor y NO existe en el menu de la portada', async () => {
     await portadaConGuion()
     fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
-    expect(screen.queryByText('Idioma del guion:')).toBeNull()
+    expect(screen.queryByText('Idioma del guion')).toBeNull()
     fireEvent.click(await screen.findByTestId('fila-guion-g-67'))
     fireEvent.click(await screen.findByTestId('btn-menu-opciones-editor'))
-    expect(await screen.findByText('Idioma del guion:')).toBeDefined()
+    expect(await screen.findByText('Idioma del guion')).toBeDefined()
   })
 
   test('si recuperarTomasPendientes devuelve una toma, aparece el aviso con su accion', async () => {
