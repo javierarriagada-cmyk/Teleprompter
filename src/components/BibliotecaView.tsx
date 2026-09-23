@@ -17,6 +17,12 @@ interface BibliotecaViewProps {
   onLeerDirecto?: (id: string, rect?: DOMRect) => void
   onGrabarDirecto?: (id: string, rect?: DOMRect) => void
   onCrearNuevo: () => void
+  // El + de crear guion cuelga de body por un portal -ver mas abajo-, asi que
+  // NO se esconde con la biblioteca. App la deja montada debajo de la lectura, y
+  // en Grabar con la camara detras el lienzo es transparente: el + se veia a
+  // traves, en plena toma. Por eso App dice explicitamente cuando va. Revision
+  // de la 70, 23-09-2026.
+  mostrarBotonCrear?: boolean
   onImportarArchivo: (file: File) => void
   onRenombrar?: (id: string, nuevoTitulo: string) => void
   onBorrar: (id: string) => void
@@ -414,6 +420,7 @@ export default function BibliotecaView({
   onLeerDirecto,
   onGrabarDirecto,
   onCrearNuevo,
+  mostrarBotonCrear = true,
   onImportarArchivo,
   onRenombrar,
   onBorrar,
@@ -1036,7 +1043,7 @@ export default function BibliotecaView({
           Con el portal cuelga de body, ningun transform lo alcanza y se queda
           quieto. La alternativa era sacarle el transform a la transicion, y esa
           curva esta decidida y medida en circuito.html: no se toca por esto. */}
-      {createPortal(
+      {mostrarBotonCrear && createPortal(
         <button
         onClick={() => {
           hapticaToqueSuave()

@@ -246,4 +246,20 @@ describe('Tarea 70 - El estado LISTO y LEYENDO del lienzo se hace como la foto, 
     })
     expect((await screen.findByTestId('aviso-flotante')).textContent).toMatch(/Toma descartada/)
   })
+
+  // El + de crear guion cuelga de body por un portal y no se escondia con la
+  // biblioteca. En Grabar con la camara detras el lienzo es transparente y el +
+  // se veia en plena toma. Lo tapaba el cajon; al sacarlo la 70, aparecio.
+  // Javier lo vio en el telefono el 23-09-2026.
+  test('m) El + de crear guion existe en la portada y NO existe en el lienzo', async () => {
+    await crearAppConGuion()
+    expect(screen.getByTestId('btn-crear-guion-flotante')).toBeDefined()
+
+    fireEvent.click(await screen.findByTestId('btn-grabar-tarjeta'))
+    await screen.findByTestId('btn-empezar-toma')
+    expect(screen.queryByTestId('btn-crear-guion-flotante')).toBeNull()
+
+    fireEvent.click(screen.getByTestId('btn-volver-listo'))
+    expect(await screen.findByTestId('btn-crear-guion-flotante')).toBeDefined()
+  })
 })

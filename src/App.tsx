@@ -1470,6 +1470,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             onLeerDirecto={handleLeerDirecto}
             onGrabarDirecto={handleGrabarDirecto}
             onCrearNuevo={handleCrearNuevoGuion}
+            mostrarBotonCrear={vista === 'biblioteca'}
             onImportarArchivo={handleImportarArchivo}
             onRenombrar={handleRenombrarGuion}
             onBorrar={handleBorrarGuion}
