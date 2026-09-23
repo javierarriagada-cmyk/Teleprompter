@@ -266,6 +266,17 @@ button.btn-deformable:active,
   transition: border-radius 100ms ease-out, transform 100ms ease-out;
 }
 
+/* El boton Grabar de la portada se tine del rojo de grabar -color-grabando,
+   el mismo de la barra de tiempo y del punto tally- mientras se lo mantiene
+   apretado, no despues: anticipa la accion, no la confirma. !important
+   porque el color de reposo se fija inline en TarjetaLectura y sin eso esta
+   regla no lo pisa. */
+.btn-grabar-tarjeta-rojo:active {
+  background-color: var(--color-grabando) !important;
+  border-color: var(--color-grabando) !important;
+  color: #fff !important;
+}
+
 /* Clases y animaciones con CURVA_RESORTE */
 .tarjeta-superficie,
 .panel-superficie {

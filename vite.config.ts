@@ -22,8 +22,8 @@ export default defineConfig({
       },
       manifest: {
         id: 'com.teleprompter.app',
-        name: 'Teleprompter MVP',
-        short_name: 'Teleprompter',
+        name: 'SIGO - Teleprompter',
+        short_name: 'Sigo',
         start_url: '/',
         scope: '/',
         display: 'standalone',

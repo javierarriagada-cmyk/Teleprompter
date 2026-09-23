@@ -273,7 +273,7 @@ export default function TarjetaLectura({
           <button
             type="button"
             data-testid="btn-grabar-tarjeta"
-            className="btn-deformable"
+            className="btn-deformable btn-grabar-tarjeta-rojo"
             onClick={(e) => {
               e.stopPropagation()
               const rect = cardRef.current?.getBoundingClientRect()

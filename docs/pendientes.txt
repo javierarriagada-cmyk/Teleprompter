@@ -534,3 +534,41 @@ problema, y se arreglo- no paga que la tarjeta pierda presencia.
 Lo que hay que resolver cuando se retome: como conviven las dos puertas sin que
 el par de botones le coma la jerarquia al titulo de 44 px y al texto dibujado.
 No achicar el titulo para que quepan: ese seria el camino facil y equivocado.
+
+
+===============================================================================
+13. EN LEER, EL CIRCULO DE EMPEZAR QUEDA DENTRO DE UN RECTANGULO
+    Estado: ABIERTO. Sin tarea asignada.
+===============================================================================
+
+DE QUE SE TRATA
+
+Tarea 69 puso el boton Empezar como un circulo de 64x64 con el triangulo de
+play adentro cuando se entra por Leer. El circulo esta bien -es circulo de
+verdad, 999px de radio sobre un cuadrado-, pero vive adentro de
+panel-controles-listo (TeleprompterView.tsx:941-958), la tarjeta rectangular
+de fondo #221F1D, borde de 1px y esquinas de 24px que ya existia antes de esta
+tarea. Ese panel se dibuja siempre, en Leer y en Grabar, sin condicion ligada
+a conCamara.
+
+Javier, revisando la prueba en vivo el 23 de septiembre de 2026: en la foto
+que se evaluo para disenar esto, el triangulo de play no estaba dentro de
+ningun rectangulo. Comprobado en el codigo: el rectangulo es real, no es un
+efecto de la prueba.
+
+POR QUE NO SE ARREGLO AHORA
+
+La Operacion 4 del encargo de la tarea 69 (docs/tarea69.txt, linea 207) solo
+pedia que Empezar pasara a circulo "centrado en la fila" -esa fila es la que
+vive adentro del panel-. Nunca pedia sacar el fondo del panel para Leer. O sea
+que lo que se ve hoy cumple el encargo tal como se escribio; lo que quedo
+afuera es si el encargo debio pedir tambien que el panel se volviera
+transparente o desapareciera en Leer, para que el circulo quedara flotando
+solo, como en la foto.
+
+QUE HARIA FALTA ANTES DE ENCARGAR
+
+Decidir si panel-controles-listo debe perder su fondo/borde cuando conCamara
+es false -dejando solo el circulo flotando sobre el video o el texto- o si se
+mantiene como esta y la diferencia con la foto se acepta. Es una decision de
+diseno de Javier, no algo para resolver mientras se revisa otra tarea.

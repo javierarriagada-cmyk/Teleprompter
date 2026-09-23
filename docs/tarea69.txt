@@ -1,0 +1,256 @@
+TAREA 69 — EN LEER: EL ENGRANAJE SUBE A LA ESQUINA, EMPEZAR PASA A SER UN ICONO
+
+Rama nueva: tarea69-leer-engranaje-y-empezar
+Base: main (al dia con origin/main).
+Depende de: nada en vuelo.
+Habilita: la Tarea 70, que hara el mismo tipo de revision para Grabar. Esta
+tarea NO TOCA Grabar.
+
+Trae el main de ahora antes de empezar. No toques TAREAS.md si existe.
+
+
+PROHIBIDO TOCAR, Y POR QUE
+
+    src/lib/camara.ts                    nada de esto es sobre camara
+    src/components/RecuadroCamara.tsx    no participa en esta pantalla
+    src/App.tsx                          conCamara ya se calcula bien ahi
+    src/components/PrepararView.tsx      tiene su PROPIO boton "Empezar",
+                                          de otra pantalla. No es el que
+                                          se cambia aqui.
+    Cualquier archivo dentro de src/pruebas/ que ya existe: se leen y se
+    corren, no se edita ninguno.
+
+La condicion conCamara ya distingue las dos puertas: false es Leer, true es
+Grabar. Esta tarea agrega comportamiento condicionado a esa misma variable,
+que ya llega como prop a TeleprompterView. No se crea ninguna prop nueva
+para esto.
+
+
+OPERACION 1 — Icono nuevo en src/components/IconosApp.tsx
+
+Agregar, despues de IconoAtras (linea 78 en adelante), exactamente esto:
+
+    /** Triangulo de play, relleno solido: a diferencia de los otros tres,
+     * este no es de trazo -un triangulo solo con contorno no se lee a 22px. */
+    export function IconoEmpezar({
+      tamano = 22,
+      ...props
+    }: { tamano?: number } & React.SVGProps<SVGSVGElement>) {
+      return (
+        <svg
+          width={tamano}
+          height={tamano}
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          stroke="none"
+          aria-hidden="true"
+          {...props}
+        >
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      )
+    }
+
+No tocar IconoEngranaje, IconoEscena ni IconoAtras.
+
+
+OPERACION 2 — Import en src/components/TeleprompterView.tsx
+
+La linea 37 dice:
+
+    import { IconoAtras, IconoEscena } from './IconosApp'
+
+Cambiarla a:
+
+    import { IconoAtras, IconoEscena, IconoEmpezar } from './IconosApp'
+
+
+OPERACION 3 — El engranaje sube a la esquina SOLO cuando conCamara es false
+
+Ubicacion: dentro del bloque `{estadoToma === 'listo' && (...)}`, inmediatamente
+despues del boton btn-voltear-camara (ese boton termina en la linea 939,
+cerrando con `)}`). Ahora mismo btn-voltear-camara solo existe cuando
+conCamara es true, asi que en Leer esa esquina superior derecha esta vacia
+hoy: no hay colision.
+
+Agregar ahi, como hermano de ese bloque, esto:
+
+    {!conCamara && (
+      <button
+        data-testid="btn-engranaje-toma"
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation()
+          setPanelTomaAbierto((v) => !v)
+        }}
+        aria-label="Ajustes de la escena"
+        style={{
+          position: 'absolute',
+          top: 'calc(8px + env(safe-area-inset-top, 0px))',
+          right: 'calc(8px + env(safe-area-inset-right, 0px))',
+          zIndex: 10,
+          width: 40,
+          height: 40,
+          padding: 0,
+          cursor: 'pointer',
+          backgroundColor: panelTomaAbierto ? 'var(--color-acento)' : 'var(--bg-superficie)',
+          border: '1px solid var(--color-borde)',
+          borderRadius: 'var(--redondeo-pildora)',
+          color: panelTomaAbierto ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <IconoEscena tamano={18} />
+      </button>
+    )}
+
+Se agrega e.stopPropagation() porque btn-volver-listo y btn-voltear-camara,
+que estan al mismo nivel, ya lo hacen; sin eso el toque atraviesa al lienzo
+de atras.
+
+El testid, el aria-label, el icono (IconoEscena, no se cambia) y la accion
+(togglear panelTomaAbierto, que abre panel-ajustes-toma con sus cuatro
+opciones de siempre: Donde lees, Espejo, Mostrar tiempo, Brillo) son
+IDENTICOS a los del boton de hoy. Solo cambia donde vive y como se ve por
+fuera.
+
+
+OPERACION 4 — La fila de abajo, solo distinta cuando conCamara es false
+
+Ubicacion: las lineas 1138 a 1180 de TeleprompterView.tsx, el div final
+dentro de panel-controles-listo:
+
+    <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
+      <button data-testid="btn-engranaje-toma" ...>
+        <IconoEscena tamano={18} />
+      </button>
+      <button data-testid="btn-empezar-toma" ...>
+        Empezar
+      </button>
+    </div>
+
+Reemplazar ESE div completo (las dos lineas de apertura y cierre incluidas)
+por:
+
+    <div style={{ display: 'flex', gap: 'var(--aire-2)', justifyContent: conCamara ? 'flex-start' : 'center' }}>
+      {conCamara && (
+        <button
+          data-testid="btn-engranaje-toma"
+          type="button"
+          onClick={() => setPanelTomaAbierto((v) => !v)}
+          aria-label="Ajustes de la escena"
+          style={{
+            width: 44,
+            padding: 'var(--aire-3)',
+            borderRadius: 'var(--redondeo-pildora)',
+            border: '1px solid var(--color-borde)',
+            backgroundColor: panelTomaAbierto ? 'var(--color-acento)' : 'var(--bg-suelo)',
+            color: panelTomaAbierto ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <IconoEscena tamano={18} />
+        </button>
+      )}
+      <button
+        data-testid="btn-empezar-toma"
+        type="button"
+        className="btn-deformable"
+        aria-label="Empezar"
+        onClick={() => {
+          onEmpezar?.()
+        }}
+        style={
+          conCamara
+            ? {
+                flex: 1,
+                padding: 'var(--aire-3)',
+                fontSize: 'var(--texto-cuerpo)',
+                fontWeight: 'bold',
+                borderRadius: 'var(--redondeo-pildora)',
+                border: 'none',
+                backgroundColor: 'var(--color-acento)',
+                color: 'var(--color-texto-acento)',
+                cursor: 'pointer'
+              }
+            : {
+                width: 64,
+                height: 64,
+                padding: 0,
+                borderRadius: 'var(--redondeo-pildora)',
+                border: 'none',
+                backgroundColor: 'var(--color-acento)',
+                color: 'var(--color-texto-acento)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }
+        }
+      >
+        {conCamara ? 'Empezar' : <IconoEmpezar tamano={26} />}
+      </button>
+    </div>
+
+Cuando conCamara es true (Grabar) el resultado tiene que quedar BYTE A BYTE
+igual al de hoy en pantalla: mismo texto "Empezar", mismo boton cuadrado del
+engranaje al lado. Esta tarea no cambia Grabar; solo se reescribe el codigo
+para que ambos casos vivan en el mismo bloque.
+
+Cuando conCamara es false (Leer): el engranaje ya no esta aqui -vive en la
+esquina, por la Operacion 3-, y "Empezar" pasa a ser un circulo de 64x64
+con el triangulo de play adentro, sin texto visible, centrado en la fila.
+
+
+QUE NO SE PIERDE, Y COMO SE COMPRUEBA
+
+Las cuatro opciones de panel-ajustes-toma -Donde lees, Espejo, Mostrar
+tiempo, Brillo- no se tocan: siguen abriendose con el mismo boton, con el
+mismo testid, en ambas pantallas. Comprobarlo abriendo el panel en Leer Y en
+Grabar despues del cambio y mirando que las cuatro sigan ahi.
+
+En Grabar, btn-voltear-camara sigue en su lugar de siempre -esta tarea no
+agrega ningun otro elemento a esa esquina cuando conCamara es true-.
+
+
+PRUEBA NUEVA, OBLIGATORIA
+
+Agregar a src/pruebas/tarea69.test.tsx (archivo nuevo) un caso que falle si
+el cambio se deshace:
+
+  1. Entrar por btn-leer-tarjeta (conCamara false). Esperar btn-empezar-toma.
+     Comprobar que su textContent NO contiene la palabra "Empezar" -el texto
+     desaparecio- y que dentro tiene un <svg>. Comprobar tambien que existe
+     un boton con aria-label "Ajustes de la escena" cuyo estilo computado
+     tenga position absolute (la forma simple: buscarlo por aria-label y
+     confirmar que ADEMAS de btn-empezar-toma existe un solo
+     btn-engranaje-toma en el DOM -getByTestId ya revienta si hubiera dos-).
+
+  2. Entrar por btn-grabar-tarjeta (conCamara true). Esperar btn-empezar-toma.
+     Comprobar que su textContent SI contiene "Empezar".
+
+En el informe, para esta prueba: archivo y linea de cada expect, como pide
+la regla de siempre.
+
+
+CRITERIO DE TERMINADO
+
+  1. npm run build sin errores.
+  2. npm test: TODAS las pruebas existentes pasan sin modificar ningun
+     archivo de src/pruebas/ salvo el tarea69.test.tsx nuevo. git diff
+     --stat lo prueba: ningun test viejo debe aparecer en la lista de
+     archivos modificados.
+  3. La prueba nueva del punto anterior, corriendo y en rojo si se revierte
+     el cambio de posicion o de icono a mano para comprobarlo -y despues
+     revertido de vuelta a verde-.
+  4. Abrir la app: entrar por Leer, ver el engranaje arriba a la derecha y
+     el circulo de play solo, sin texto, abrir el panel y confirmar las
+     cuatro opciones. Entrar por Grabar, ver la fila de abajo exactamente
+     como esta hoy en produccion -engranaje cuadrado + pildora "Empezar"-.
+  5. Informe: que quedo bien, git diff --stat completo, y el resultado
+     textual de intentar romper la prueba nueva del punto 3.

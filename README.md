@@ -1,30 +1,61 @@
-# Extended README
+# Sigo — Teleprompter de voz
 
-Teleprompter MVP — rama feature/asr-improvements
+Teleprompter que sigue la voz del que lee. React + Vite + TypeScript, empaquetado
+para Android con Capacitor. Todo ocurre en el dispositivo: no hay servidor, no hay
+cuentas, no hay telemetria, y no los va a haber.
 
-Objetivo: teleprompter inteligente con ASR on-device (Whisper-tiny via transformers.js) y Web Speech API fallback. Esta rama incluye mejoras: AudioWorklet VAD, worker ASR, caching en IndexedDB, alineamiento incremental, TeleprompterView con auto-scroll y PWA.
+Para el mapa completo del codigo (capas, que no tocar, reglas de la casa) ver
+[AGENTS.md](AGENTS.md). Este archivo es solo como levantar y probar el proyecto.
 
-Cómo probar localmente
+## Motor de voz
 
-1. Clona el repo y cambia a la rama:
-   git clone https://github.com/javierarriagada-cmyk/Teleprompter.git
-   cd Teleprompter
-   git fetch origin feature/asr-improvements
-   git checkout feature/asr-improvements
+El reconocedor es Vosk en las dos formas en que corre:
 
-2. Instala dependencias:
-   npm install
+- **En el navegador** (`npm run dev`): la version WASM, que baja el modelo por
+  internet la primera vez.
+- **Adentro del APK**, en un telefono Android real: la version nativa compilada,
+  con el modelo empaquetado adentro. No descarga nada y arranca de inmediato -la
+  version WASM tarda 11 a 13 segundos en entregar la primera palabra, medido con
+  el telefono en modo avion.
 
-3. Levanta dev server:
-   npm run dev
+Cual se usa no se elige a mano: `Capacitor.isNativePlatform()` decide sola
+(`src/App.tsx`, `sanitizarEngine`). El selector de motor en Ajustes sigue
+disponible para forzar otra opcion si hace falta.
 
-4. Desde tu teléfono (mismo Wi‑Fi): abre http://<IP_de_tu_PC>:5173 y permite micrófono.
+## Desarrollo local
 
-Notas
-- Primera descarga del modelo whisper-tiny puede tardar y consumir datos. Usa la opción "Preload Wi‑Fi" para descargar sólo en redes wifi.
-- Por defecto la inferencia es on-device para privacidad.
+```bash
+npm install
+npm run dev
+```
 
-Próximos pasos
-- Ajustes de thresholds VAD por dispositivo
-- Mejorar alignment con forced-alignment si se desea mayor precisión
-- Tests en varios dispositivos Android/iOS
+Abre la URL que imprime Vite en el navegador. Sirve para iterar pantallas y
+logica; la camara, el microfono y el motor de voz solo se comprueban de verdad
+en un telefono, no en el navegador de escritorio.
+
+## Pruebas y tipos
+
+```bash
+npx tsc --noEmit
+npm run test
+npm run build
+```
+
+Vitest transpila sin comprobar tipos, por eso `tsc --noEmit` va aparte. Estos
+tres pasos, mas `npm ci`, son exactamente lo que corre el CI en cada PR contra
+`main` (`.github/workflows/ci.yml`).
+
+## Armar e instalar el APK
+
+```bash
+npm run modelo          # una sola vez: baja el modelo de voz para empaquetar
+npm run apk              # vite build + cap sync + gradlew assembleDebug
+npm run apk -- poner     # lo mismo, e instala en lo que este conectado por adb
+```
+
+`poner` elige el telefono por sobre el emulador si hay los dos conectados
+(`npm run apk -- poner emulador` o `... poner telefono` para forzar uno). Se
+necesita Java 21 (Gradle no corre con el 25 de Android Studio) y el SDK de
+Android; el script (`scripts/apk.mjs`) los busca solo y avisa si falta alguno.
+El APK queda en `android/app/build/outputs/apk/debug/` y una copia en el
+Escritorio como `Sigo.apk`.
