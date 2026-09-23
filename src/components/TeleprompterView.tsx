@@ -34,7 +34,7 @@ export function avanzarTrabado(
 import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
 import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
-import { IconoAtras, IconoEscena } from './IconosApp'
+import { IconoAtras, IconoEscena, IconoEmpezar } from './IconosApp'
 import { actualizarConfigCamara } from '../lib/camara'
 import { App as CapacitorApp } from '@capacitor/app'
 import { aplicarBrillo, PASOS_BRILLO, PasoBrillo, restaurarBrillo } from '../lib/brillo'
@@ -938,6 +938,37 @@ export default function TeleprompterView({
             </button>
           )}
 
+          {!conCamara && (
+            <button
+              data-testid="btn-engranaje-toma"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                setPanelTomaAbierto((v) => !v)
+              }}
+              aria-label="Ajustes de la escena"
+              style={{
+                position: 'absolute',
+                top: 'calc(8px + env(safe-area-inset-top, 0px))',
+                right: 'calc(8px + env(safe-area-inset-right, 0px))',
+                zIndex: 10,
+                width: 40,
+                height: 40,
+                padding: 0,
+                cursor: 'pointer',
+                backgroundColor: panelTomaAbierto ? 'var(--color-acento)' : 'var(--bg-superficie)',
+                border: '1px solid var(--color-borde)',
+                borderRadius: 'var(--redondeo-pildora)',
+                color: panelTomaAbierto ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <IconoEscena tamano={18} />
+            </button>
+          )}
+
           <div
             data-testid="panel-controles-listo"
             onClick={(e) => e.stopPropagation()}
@@ -1135,47 +1166,66 @@ export default function TeleprompterView({
               </div>
             )}
 
-            <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
-              <button
-                data-testid="btn-engranaje-toma"
-                type="button"
-                onClick={() => setPanelTomaAbierto((v) => !v)}
-                aria-label="Ajustes de la escena"
-                style={{
-                  width: 44,
-                  padding: 'var(--aire-3)',
-                  borderRadius: 'var(--redondeo-pildora)',
-                  border: '1px solid var(--color-borde)',
-                  backgroundColor: panelTomaAbierto ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                  color: panelTomaAbierto ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <IconoEscena tamano={18} />
-              </button>
+            <div style={{ display: 'flex', gap: 'var(--aire-2)', justifyContent: conCamara ? 'flex-start' : 'center' }}>
+              {conCamara && (
+                <button
+                  data-testid="btn-engranaje-toma"
+                  type="button"
+                  onClick={() => setPanelTomaAbierto((v) => !v)}
+                  aria-label="Ajustes de la escena"
+                  style={{
+                    width: 44,
+                    padding: 'var(--aire-3)',
+                    borderRadius: 'var(--redondeo-pildora)',
+                    border: '1px solid var(--color-borde)',
+                    backgroundColor: panelTomaAbierto ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                    color: panelTomaAbierto ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <IconoEscena tamano={18} />
+                </button>
+              )}
               <button
                 data-testid="btn-empezar-toma"
                 type="button"
                 className="btn-deformable"
+                aria-label="Empezar"
                 onClick={() => {
                   onEmpezar?.()
                 }}
-                style={{
-                  flex: 1,
-                  padding: 'var(--aire-3)',
-                  fontSize: 'var(--texto-cuerpo)',
-                  fontWeight: 'bold',
-                  borderRadius: 'var(--redondeo-pildora)',
-                  border: 'none',
-                  backgroundColor: 'var(--color-acento)',
-                  color: 'var(--color-texto-acento)',
-                  cursor: 'pointer'
-                }}
+                style={
+                  conCamara
+                    ? {
+                        flex: 1,
+                        padding: 'var(--aire-3)',
+                        fontSize: 'var(--texto-cuerpo)',
+                        fontWeight: 'bold',
+                        borderRadius: 'var(--redondeo-pildora)',
+                        border: 'none',
+                        backgroundColor: 'var(--color-acento)',
+                        color: 'var(--color-texto-acento)',
+                        cursor: 'pointer'
+                      }
+                    : {
+                        width: 64,
+                        height: 64,
+                        padding: 0,
+                        borderRadius: 'var(--redondeo-pildora)',
+                        border: 'none',
+                        backgroundColor: 'var(--color-acento)',
+                        color: 'var(--color-texto-acento)',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }
+                }
               >
-                Empezar
+                {conCamara ? 'Empezar' : <IconoEmpezar tamano={26} />}
               </button>
             </div>
           </div>

@@ -24,6 +24,27 @@ export function IconoEngranaje({
   )
 }
 
+/** Triangulo de play, relleno solido: a diferencia de los otros tres,
+ * este no es de trazo -un triangulo solo con contorno no se lee a 22px. */
+export function IconoEmpezar({
+  tamano = 22,
+  ...props
+}: { tamano?: number } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width={tamano}
+      height={tamano}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="none"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M8 5v14l11-7z" />
+    </svg>
+  )
+}
+
 // No es un engranaje. El engranaje queda para las preferencias de la
 // aplicacion (portada). Este abre la ESCENA de ESTA toma: donde lees,
 // espejo, tiempo y brillo. Cuatro esquinas de encuadre y la linea de
