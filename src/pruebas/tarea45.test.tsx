@@ -185,7 +185,7 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
       fireEvent.click(prompterView)
     })
 
-    const panel = screen.getByTestId('panel-controles-lectura') as HTMLElement
+    const panel = screen.getByTestId('btn-salir-lectura') as HTMLElement
     expect(panel).not.toBeNull()
 
     // Verificar estilo: opacidad solamente, sin translate ni scale
@@ -429,7 +429,7 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
         fireEvent.click(prompterView)
       })
 
-      const btnSalir = screen.getByText('← Salir')
+      const btnSalir = screen.getByTestId('btn-salir-lectura')
       await act(async () => {
         fireEvent.click(btnSalir)
       })

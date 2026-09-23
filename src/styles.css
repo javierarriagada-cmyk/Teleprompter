@@ -379,3 +379,56 @@ textarea::placeholder {
   color: var(--color-borde);
   opacity: 1;
 }
+
+/* TRATAMIENTO COMUN DE CONTROLES FLOTANTES (TAREA 70)
+   Todos los controles que flotan sobre el lienzo son EL MISMO objeto en tres
+   tamanos -32 esquina secundaria, 40 esquina principal, 72 accion central-,
+   seccion 11 del encargo 70. Viven aca y no copiados en linea en cada boton
+   para que no se vuelvan a separar: un control distinto a sus hermanos es un
+   defecto. Ninguna de estas clases lleva transform: .btn-deformable lo usa
+   para el apretado, y cualquier transform aca se lo comeria. */
+.btn-flotante-32 {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--redondeo-pildora);
+  background-color: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn-flotante-40 {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--redondeo-pildora);
+  background-color: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn-flotante-72 {
+  width: 72px;
+  height: 72px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--redondeo-pildora);
+  background-color: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn-flotante-rojo {
+  background-color: var(--color-grabando);
+}

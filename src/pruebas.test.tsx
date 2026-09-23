@@ -922,7 +922,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       })
 
       // Al arrancar la lectura, los controles NO estan en el documento
-      const panelDuranteLectura = container!.querySelector('[data-testid="panel-controles-lectura"]')
+      const panelDuranteLectura = container!.querySelector('[data-testid="btn-pausa-lectura"]')
       expect(panelDuranteLectura).toBeNull()
 
       const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
@@ -935,14 +935,14 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       })
 
       // Un arrastre NO devuelve los controles
-      expect(container!.querySelector('[data-testid="panel-controles-lectura"]')).toBeNull()
+      expect(container!.querySelector('[data-testid="btn-pausa-lectura"]')).toBeNull()
 
       // Un toque corto (tap / click sin desplazamiento) devuelve los controles
       await act(async () => {
         fireEvent.click(prompterView)
       })
 
-      expect(container!.querySelector('[data-testid="panel-controles-lectura"]')).not.toBeNull()
+      expect(container!.querySelector('[data-testid="btn-pausa-lectura"]')).not.toBeNull()
     } finally {
       vi.useRealTimers()
     }
@@ -979,7 +979,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
         await vi.advanceTimersByTimeAsync(3100)
       })
 
-      const panel = () => container!.querySelector('[data-testid="panel-controles-lectura"]')
+      const panel = () => container!.querySelector('[data-testid="btn-pausa-lectura"]')
       expect(panel()).toBeNull()
 
       const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
@@ -2032,7 +2032,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         fireEvent.click(prompterView)
       })
 
-      const botonVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Salir'))
+      const botonVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label')?.includes('Salir') || b.getAttribute('data-testid') === 'btn-salir-lectura')
       expect(botonVolver).not.toBeUndefined()
 
       await act(async () => {
@@ -2219,7 +2219,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await act(async () => {
         fireEvent.click(prompterView)
       })
-      const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent?.includes('Salir'))!
+      const btnVolver = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label')?.includes('Salir') || b.getAttribute('data-testid') === 'btn-salir-lectura')!
       await act(async () => {
         fireEvent.click(btnVolver)
       })
@@ -2831,7 +2831,7 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       })
 
       // Inicialmente los controles NO están a la vista
-      expect(container!.querySelector('[data-testid="panel-controles-lectura"]')).toBeNull()
+      expect(container!.querySelector('[data-testid="btn-pausa-lectura"]')).toBeNull()
 
       // Un toque los trae
       const prompterView = container!.querySelector('[data-testid="teleprompter-view-container"]')!
@@ -2839,7 +2839,7 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
         fireEvent.click(prompterView)
       })
 
-      expect(container!.querySelector('[data-testid="panel-controles-lectura"]')).not.toBeNull()
+      expect(container!.querySelector('[data-testid="btn-pausa-lectura"]')).not.toBeNull()
     } finally {
       vi.useRealTimers()
     }

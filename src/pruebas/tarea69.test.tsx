@@ -50,7 +50,9 @@ describe('Pruebas TAREA 69 - EN LEER: EL ENGRANAJE SUBE A LA ESQUINA, EMPEZAR PA
     expect(btnEngranaje.style.right).toContain('8px')
   })
 
-  test('2. Entrar por btn-grabar-tarjeta (conCamara true): el boton empezar conserva el texto Empezar', async () => {
+  // La Tarea 70 dio vuelta lo que la 69 fijaba aqui: en Grabar el boton de empezar TAMPOCO
+  // tiene el texto "Empezar" y lleva un svg adentro, igual que en Leer.
+  test('2. Entrar por btn-grabar-tarjeta (conCamara true): el boton empezar tampoco tiene texto y lleva un svg', async () => {
     const repo = new RepositorioMemoria()
     await repo.guardar({
       id: 'g-t69-grabar',
@@ -69,6 +71,7 @@ describe('Pruebas TAREA 69 - EN LEER: EL ENGRANAJE SUBE A LA ESQUINA, EMPEZAR PA
     fireEvent.click(btnGrabarTarjeta)
 
     const btnEmpezar = await screen.findByTestId('btn-empezar-toma')
-    expect(btnEmpezar.textContent).toContain('Empezar')
+    expect(btnEmpezar.textContent).not.toContain('Empezar')
+    expect(btnEmpezar.querySelector('svg')).not.toBeNull()
   })
 })

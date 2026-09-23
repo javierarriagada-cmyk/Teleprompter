@@ -37,6 +37,7 @@ import {
   anotarFraseOida,
   borrarGrabacionEnDisco
 } from './lib/tomaVideo'
+import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar } from './components/IconosApp'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
 const MS_CONTROLES_A_LA_VISTA = 4000
@@ -747,6 +748,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [tInicioLecturaMs, setTInicioLecturaMs] = useState<number | null>(null)
   const [cuentaRegresiva, setCuentaRegresiva] = useState<number | null>(null)
   const [enPausa, setEnPausa] = useState<boolean>(false)
+  const [confirmandoDescarte, setConfirmandoDescarte] = useState<boolean>(false)
 
   // Referencia para la función que cierra el modal abierto si existe
   const cerrarModalRef = useRef<(() => boolean) | null>(null)
@@ -1075,6 +1077,33 @@ export default function App({ motor, repoOverride }: AppProps) {
       grabandoVideoRef.current = false
       setGrabandoVideo(false)
     }
+  }
+
+  // Descartar es parar y borrar. El archivo ya esta en disco cuando se
+  // pausa -el grabador escribe mientras graba, no al final-, asi que no
+  // existe un camino de "nunca escribirlo". Se corta igual que en
+  // handleStop y recien despues se borra del disco y del indice.
+  // A diferencia de handleStop, NO se abre el visor.
+  async function handleDescartarToma(): Promise<void> {
+    cancelarCuentaRegresiva()
+    setTInicioLecturaMs(null)
+    setEnPausa(false)
+    const resumen = await cortarTomaSiHay(false)
+    await stop()
+    await detenerGrabacion()
+    await soltarWakeLock()
+    setEstadoToma('listo')
+    setControlesVisibles(false)
+    if (resumen) {
+      try {
+        await borrarGrabacionEnDisco(resumen)
+        await repoGrabacionesRef.current.borrar(resumen.id)
+        setGrabaciones(await repoGrabacionesRef.current.listar())
+      } catch (e) {
+        console.warn('[App] no se pudo descartar la toma:', e)
+      }
+    }
+    mostrarAviso('Toma descartada')
   }
 
   async function handleStop(): Promise<ResumenGrabacion | null> {
@@ -1541,89 +1570,164 @@ export default function App({ motor, repoOverride }: AppProps) {
           } as React.CSSProperties}
         >
           {estadoToma === 'leyendo' && controlesVisibles && (
-            <div
-              data-testid="panel-controles-lectura"
-              data-duracion-entra={MS_CHICO}
-              data-duracion-sale={MS_PANTALLA}
-              style={{
-                position: 'absolute',
-                bottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
-                left: 'calc(16px + env(safe-area-inset-left, 0px))',
-                right: 'calc(16px + env(safe-area-inset-right, 0px))',
-                zIndex: 100,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                backgroundColor: 'var(--bg-superficie)',
-                border: '1px solid var(--color-borde)',
-                borderRadius: 'var(--redondeo)',
-                padding: 'var(--aire-2) var(--aire-3)',
-                color: 'var(--color-texto)',
-                animation: movimientoApagado()
-                  ? 'none'
-                  : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`,
-                transition: movimientoApagado()
-                  ? 'none'
-                  : `opacity ${MS_CHICO}ms ${CURVA_NORMAL}`
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)' }}>
+            <>
+              {/* Cada boton flotante lleva data-duracion-entra y data-duracion-sale: son
+                  los tiempos de su entrada y su salida, y T201 de tarea45 los lee de aca.
+                  Antes los llevaba el cajon panel-controles-lectura, que la 70 elimino.
+                  Si se sacan, esa prueba se pone roja: no ponerle valores por omision. */}
+              {!conCamara && (
                 <button
                   data-testid="btn-salir-lectura"
-                  onClick={async () => {
+                  data-duracion-entra={MS_CHICO}
+                  data-duracion-sale={MS_PANTALLA}
+                  type="button"
+                  className="btn-deformable btn-flotante-32"
+                  aria-label="Salir"
+                  onClick={async (e) => {
+                    e.stopPropagation()
                     hapticaToqueMedio()
-                    if (estadoToma === 'leyendo' || isRecording || cuentaRegresiva !== null) {
-                      const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
-                      const resumen = await handleStop()
-                      if (!resumen) {
-                        if (duracionMs !== null && duracionMs > 0) {
-                          const totalSeg = Math.floor(duracionMs / 1000)
-                          const mins = Math.floor(totalSeg / 60)
-                          const segs = String(totalSeg % 60).padStart(2, '0')
-                          mostrarAviso(`Grabado: ${mins}:${segs}`)
-                        } else {
-                          mostrarAviso('Grabado')
-                        }
+                    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
+                    const resumen = await handleStop()
+                    if (!resumen) {
+                      if (duracionMs !== null && duracionMs > 0) {
+                        const totalSeg = Math.floor(duracionMs / 1000)
+                        const mins = Math.floor(totalSeg / 60)
+                        const segs = String(totalSeg % 60).padStart(2, '0')
+                        mostrarAviso(`Grabado: ${mins}:${segs}`)
+                      } else {
+                        mostrarAviso('Grabado')
                       }
-                      return
                     }
-                    handleVolverDesdeListo()
                   }}
                   style={{
-                    padding: 'var(--aire-2) var(--aire-3)',
-                    cursor: 'pointer',
-                    backgroundColor: 'var(--bg-suelo)',
-                    border: '1px solid var(--color-borde)',
-                    borderRadius: 'var(--redondeo)',
-                    color: 'var(--color-texto)',
-                    fontWeight: 600,
-                    fontSize: 'var(--texto-cuerpo)'
+                    position: 'absolute',
+                    top: 'calc(8px + env(safe-area-inset-top, 0px))',
+                    left: 'calc(8px + env(safe-area-inset-left, 0px))',
+                    zIndex: 100,
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
                   }}
                 >
-                  ← Salir
+                  <IconoAtras tamano={18} />
                 </button>
+              )}
 
+              {conCamara && enPausa && (
                 <button
-                  data-testid="btn-pausa-lectura"
-                  onClick={handleTogglePausa}
+                  data-testid="btn-descartar-toma"
+                  data-duracion-entra={MS_CHICO}
+                  data-duracion-sale={MS_PANTALLA}
+                  data-confirmando={confirmandoDescarte ? 'si' : 'no'}
+                  type="button"
+                  className="btn-deformable btn-flotante-32"
+                  aria-label="Descartar toma"
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    if (!confirmandoDescarte) {
+                      setConfirmandoDescarte(true)
+                    } else {
+                      setConfirmandoDescarte(false)
+                      await handleDescartarToma()
+                    }
+                  }}
                   style={{
-                    padding: 'var(--aire-2) var(--aire-3)',
-                    cursor: 'pointer',
-                    backgroundColor: 'var(--bg-suelo)',
-                    border: '1px solid var(--color-borde)',
-                    borderRadius: 'var(--redondeo)',
-                    color: 'var(--color-texto)',
-                    fontWeight: 600,
-                    fontSize: 'var(--texto-cuerpo)'
+                    position: 'absolute',
+                    top: 'calc(8px + env(safe-area-inset-top, 0px))',
+                    left: 'calc(8px + env(safe-area-inset-left, 0px))',
+                    zIndex: 100,
+                    // Ancho fijo y no 'auto': CSS no anima un ancho hacia 'auto', salta de golpe,
+                    // y la 11.6 pide que el tacho se abra con una transicion de MS_CHICO.
+                    // 96 le alcanza a '¿Seguro?' en negrita con su aire a los lados.
+                    width: confirmandoDescarte ? 96 : 32,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    padding: confirmandoDescarte ? '0 var(--aire-2)' : 0,
+                    borderColor: confirmandoDescarte ? 'var(--color-grabando)' : undefined,
+                    color: confirmandoDescarte ? 'var(--color-grabando-texto)' : undefined,
+                    fontSize: 'var(--texto-meta)',
+                    fontWeight: confirmandoDescarte ? 'bold' : 'normal',
+                    // Un transition en linea pisa el de .btn-deformable -styles.css- y el
+                    // tacho se apretaria de golpe, sin el resorte de sus hermanos. Por eso
+                    // se repiten aca el border-radius y el transform con la misma curva.
+                    transition: movimientoApagado()
+                      ? 'none'
+                      : `width ${MS_CHICO}ms ${CURVA_ENTRA}, border-radius ${MS_CHICO}ms ${CURVA_RESORTE}, transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
                   }}
                 >
-                  {enPausa ? 'Seguir' : 'Pausa'}
+                  {confirmandoDescarte ? '¿Seguro?' : <IconoTacho tamano={18} />}
                 </button>
+              )}
 
+              <button
+                data-testid="btn-pausa-lectura"
+                data-duracion-entra={MS_CHICO}
+                data-duracion-sale={MS_PANTALLA}
+                type="button"
+                className="btn-deformable btn-flotante-40"
+                aria-label={enPausa ? 'Seguir' : 'Pausa'}
+                onClick={async (e) => {
+                  e.stopPropagation()
+                  setConfirmandoDescarte(false)
+                  await handleTogglePausa()
+                }}
+                style={{
+                  position: 'absolute',
+                  top: 'calc(8px + env(safe-area-inset-top, 0px))',
+                  right: 'calc(8px + env(safe-area-inset-right, 0px))',
+                  zIndex: 100,
+                  animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                }}
+              >
+                {enPausa ? <IconoEmpezar tamano={20} /> : <IconoPausa tamano={20} />}
+              </button>
+
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+                  left: 0,
+                  right: 0,
+                  zIndex: 100,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  pointerEvents: 'none'
+                }}
+              >
+                <button
+                  data-testid="btn-parar-lectura"
+                  data-duracion-entra={MS_CHICO}
+                  data-duracion-sale={MS_PANTALLA}
+                  type="button"
+                  className="btn-deformable btn-flotante-72 btn-flotante-rojo"
+                  aria-label="Parar"
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    hapticaToqueMedio()
+                    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
+                    const resumen = await handleStop()
+                    if (!resumen) {
+                      if (duracionMs !== null && duracionMs > 0) {
+                        const totalSeg = Math.floor(duracionMs / 1000)
+                        const mins = Math.floor(totalSeg / 60)
+                        const segs = String(totalSeg % 60).padStart(2, '0')
+                        mostrarAviso(`Grabado: ${mins}:${segs}`)
+                      } else {
+                        mostrarAviso('Grabado')
+                      }
+                    }
+                  }}
+                  style={{
+                    pointerEvents: 'auto',
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                  }}
+                >
+                  {/* 44 y no 26: IconoParar dibuja su cuadrado en 12 de las 24 unidades de la
+                      grilla, como los demas iconos dejan aire. A 44 el cuadrado mide los 22 px
+                      que pide la 11.3 del encargo 70, y el redondeo queda en unos 3 px. */}
+                  <IconoParar tamano={44} />
+                </button>
               </div>
-
-              <div />
-            </div>
+            </>
           )}
 
           <div

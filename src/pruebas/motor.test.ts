@@ -111,7 +111,7 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
       fireEvent.click(prompterView)
     })
 
-    const btnVolver = screen.getByText('← Salir')
+    const btnVolver = screen.getByTestId('btn-salir-lectura')
     await act(async () => {
       fireEvent.click(btnVolver)
     })

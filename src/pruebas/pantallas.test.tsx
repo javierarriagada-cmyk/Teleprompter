@@ -443,16 +443,15 @@ describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    expect(screen.queryByTestId('panel-controles-lectura')).toBeNull()
+    expect(screen.queryByTestId('btn-salir-lectura')).toBeNull()
 
     const prompterView = screen.getByTestId('teleprompter-view-container')
     await act(async () => {
       fireEvent.click(prompterView)
     })
 
-    expect(screen.getByTestId('panel-controles-lectura')).not.toBeNull()
+    expect(screen.getByTestId('btn-salir-lectura')).not.toBeNull()
     expect(screen.queryByTestId('valor-letra')).toBeNull()
-    expect(screen.getByText('← Salir')).not.toBeNull()
 
     expect(screen.queryByTestId('panel-corpus')).toBeNull()
     expect(screen.queryByLabelText('Motor de Voz (Avanzado)')).toBeNull()
@@ -789,7 +788,7 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
 
     expect(screen.queryByTestId('valor-letra')).toBeNull()
 
-    const btnSalir = screen.getByText('← Salir')
+    const btnSalir = screen.getByTestId('btn-salir-lectura')
     await act(async () => {
       fireEvent.click(btnSalir)
     })
@@ -1458,14 +1457,11 @@ describe('Pruebas TAREA 43: El sistema operativo no puede meterse en la pantalla
       fireEvent.click(prompterView)
     })
 
-    const panel = screen.getByTestId('panel-controles-lectura') as HTMLElement
-    expect(panel).not.toBeNull()
-    expect(panel.style.bottom).toContain('16px')
-    expect(panel.style.bottom).toContain('safe-area-inset-bottom')
-    expect(panel.style.left).toContain('16px')
-    expect(panel.style.left).toContain('safe-area-inset-left')
-    expect(panel.style.right).toContain('16px')
-    expect(panel.style.right).toContain('safe-area-inset-right')
+    const btnParar = screen.getByTestId('btn-parar-lectura') as HTMLElement
+    expect(btnParar).not.toBeNull()
+    const parentContainer = btnParar.parentElement as HTMLElement
+    expect(parentContainer.style.bottom).toContain('24px')
+    expect(parentContainer.style.bottom).toContain('safe-area-inset-bottom')
 
     unmount()
   })

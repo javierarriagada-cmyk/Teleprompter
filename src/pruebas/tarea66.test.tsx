@@ -60,6 +60,9 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
     expect(lienzo.getAttribute('data-estado-toma')).toBe('listo')
     expect(lienzo.getAttribute('data-con-camara')).toBe('no')
     expect(screen.getByTestId('btn-empezar-toma')).toBeDefined()
+
+    // Tarea 70: Al hacer click en engranaje, en Leer siguen siendo null bajo conCamara
+    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
     expect(screen.queryByTestId('btn-fondo-detras')).toBeNull()
     expect(screen.queryByTestId('btn-voltear-camara')).toBeNull()
     expect(CameraPreview.start).not.toHaveBeenCalled()
@@ -76,6 +79,9 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
       expect(CameraPreview.start).toHaveBeenCalledTimes(1)
     })
     expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
+
+    // Tarea 70: Abrir el panel de engranaje para encontrar btn-fondo-detras y btn-voltear-camara
+    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
     expect(screen.getByTestId('btn-fondo-detras')).toBeDefined()
     expect(screen.getByTestId('btn-voltear-camara')).toBeDefined()
 

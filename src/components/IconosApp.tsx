@@ -49,6 +49,9 @@ export function IconoEmpezar({
 // aplicacion (portada). Este abre la ESCENA de ESTA toma: donde lees,
 // espejo, tiempo y brillo. Cuatro esquinas de encuadre y la linea de
 // la franja donde cae el renglon vivo.
+// 23-09-2026, Tarea 70: en la toma esto se dio vuelta. La foto que
+// Javier aprobo muestra un engranaje de verdad arriba a la derecha, y
+// eso es lo que quedo. IconoEscena sigue aqui por si se vuelve atras.
 export function IconoEscena({
   tamano = 22,
   ...props
@@ -94,6 +97,72 @@ export function IconoAtras({
       {...props}
     >
       <path d="M15 18l-6-6 6-6" />
+    </svg>
+  )
+}
+
+/** Dos barras verticales redondeadas para la pausa en lectura. */
+export function IconoPausa({
+  tamano = 22,
+  ...props
+}: { tamano?: number } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width={tamano}
+      height={tamano}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="none"
+      aria-hidden="true"
+      {...props}
+    >
+      <rect x="6" y="5" width="4" height="14" rx="1.5" />
+      <rect x="14" y="5" width="4" height="14" rx="1.5" />
+    </svg>
+  )
+}
+
+/** Cuadrado relleno con esquinas redondeadas para detener la toma. */
+export function IconoParar({
+  tamano = 22,
+  ...props
+}: { tamano?: number } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width={tamano}
+      height={tamano}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="none"
+      aria-hidden="true"
+      {...props}
+    >
+      <rect x="6" y="6" width="12" height="12" rx="2" />
+    </svg>
+  )
+}
+
+/** Tacho de basura de trazo para descartar la toma desde la pausa. */
+export function IconoTacho({
+  tamano = 22,
+  ...props
+}: { tamano?: number } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width={tamano}
+      height={tamano}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M3 6h18" />
+      <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" />
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
     </svg>
   )
 }

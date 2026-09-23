@@ -79,6 +79,9 @@ describe('Pruebas TAREA 59 - LOS OTROS DOS FONDOS (T277)', () => {
     expect(startArgs.y).toBe(0)
     expect(screen.queryByTestId('recuadro-camara')).toBeNull()
 
+    // Abrir engranaje (Tarea 70)
+    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+
     // b. Al elegir 'recuadro', el recuadro SI esta en el DOM y se notifica la posicion a CameraPreview
     const btnRecuadro = screen.getByTestId('btn-fondo-recuadro')
     fireEvent.click(btnRecuadro)
