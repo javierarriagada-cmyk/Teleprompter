@@ -33,7 +33,7 @@ describe('Pruebas TAREA 38 (T176-T179)', () => {
     expect(tramos[1].alpha).toBe(0.00)
   })
 
-  test('T177 - Con los controles visibles, el panel esta posicionado abajo y NO sobre la ventana clara.', async () => {
+  test('T177 - Con los controles visibles, los botones flotantes de lectura estan posicionados arriba o abajo y NO sobre la ventana clara.', async () => {
     const repo = new RepositorioMemoria()
     const guion: Guion = {
       id: 'g-t177',
@@ -73,11 +73,10 @@ describe('Pruebas TAREA 38 (T176-T179)', () => {
       fireEvent.click(prompterView)
     })
 
-    const panelControles = screen.getByTestId('panel-controles-lectura')
-    expect(panelControles).not.toBeNull()
+    const btnSalir = screen.getByTestId('btn-salir-lectura')
+    expect(btnSalir).not.toBeNull()
 
-    expect(panelControles.style.bottom).toContain('16px')
-    expect(panelControles.style.top).not.toBe('16px')
+    expect(btnSalir.style.top).toContain('8px')
   })
 
   test('T178 - La pausa detiene el motor y el texto deja de moverse; al seguir, el motor vuelve a escuchar y la posicion NO se reinicio.', async () => {
@@ -132,14 +131,14 @@ describe('Pruebas TAREA 38 (T176-T179)', () => {
 
       // Apretar Pausa
       const btnPausa = screen.getByTestId('btn-pausa-lectura')
-      expect(btnPausa.textContent).toBe('Pausa')
+      expect(btnPausa.getAttribute('aria-label')).toBe('Pausa')
 
       await act(async () => {
         fireEvent.click(btnPausa)
       })
 
       expect(detenerSpy).toHaveBeenCalled()
-      expect(btnPausa.textContent).toBe('Seguir')
+      expect(btnPausa.getAttribute('aria-label')).toBe('Seguir')
 
       // Apretar Seguir
       iniciarSpy.mockClear()
@@ -148,7 +147,7 @@ describe('Pruebas TAREA 38 (T176-T179)', () => {
       })
 
       expect(iniciarSpy).toHaveBeenCalledTimes(1)
-      expect(btnPausa.textContent).toBe('Pausa')
+      expect(btnPausa.getAttribute('aria-label')).toBe('Pausa')
     } finally {
       vi.useRealTimers()
     }

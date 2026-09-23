@@ -34,7 +34,7 @@ export function avanzarTrabado(
 import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
 import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
-import { IconoAtras, IconoEscena, IconoEmpezar } from './IconosApp'
+import { IconoAtras, IconoEngranaje, IconoEmpezar } from './IconosApp'
 import { actualizarConfigCamara } from '../lib/camara'
 import { App as CapacitorApp } from '@capacitor/app'
 import { aplicarBrillo, PASOS_BRILLO, PasoBrillo, restaurarBrillo } from '../lib/brillo'
@@ -909,88 +909,103 @@ export default function TeleprompterView({
             <IconoAtras />
           </button>
 
-          {conCamara && (
-            <button
-              data-testid="btn-voltear-camara"
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation()
-                onVoltear?.()
-              }}
-              aria-label="Voltear cámara"
-              style={{
-                position: 'absolute',
-                top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                right: 'calc(8px + env(safe-area-inset-right, 0px))',
-                zIndex: 10,
-                width: 40,
-                height: 40,
-                padding: 0,
-                cursor: 'pointer',
-                backgroundColor: 'rgba(0,0,0,0.35)',
-                border: '1px solid rgba(255,255,255,0.35)',
-                borderRadius: 'var(--redondeo-pildora)',
-                color: '#fff',
-                fontSize: 16
-              }}
-            >
-              ⟳
-            </button>
-          )}
-
-          {!conCamara && (
-            <button
-              data-testid="btn-engranaje-toma"
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation()
-                setPanelTomaAbierto((v) => !v)
-              }}
-              aria-label="Ajustes de la escena"
-              style={{
-                position: 'absolute',
-                top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                right: 'calc(8px + env(safe-area-inset-right, 0px))',
-                zIndex: 10,
-                width: 40,
-                height: 40,
-                padding: 0,
-                cursor: 'pointer',
-                backgroundColor: panelTomaAbierto ? 'var(--color-acento)' : 'var(--bg-superficie)',
-                border: '1px solid var(--color-borde)',
-                borderRadius: 'var(--redondeo-pildora)',
-                color: panelTomaAbierto ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <IconoEscena tamano={18} />
-            </button>
-          )}
-
-          <div
-            data-testid="panel-controles-listo"
-            onClick={(e) => e.stopPropagation()}
+          {/* ARRIBA A LA DERECHA: EL ENGRANAJE. Las dos puertas, siempre.
+              Hasta la 69 este rincon lo peleaban dos botones -el ⟳ en Grabar
+              y el de la escena en Leer- y por eso la 69 solo se atrevio con
+              Leer. En la 70 el rincon es del engranaje en las dos puertas y
+              el ⟳ se mudo adentro del panel: decision de Javier, 23-09-2026. */}
+          <button
+            data-testid="btn-engranaje-toma"
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              setPanelTomaAbierto((v) => !v)
+            }}
+            aria-label="Ajustes de la escena"
             style={{
               position: 'absolute',
-              bottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
-              left: 'calc(16px + env(safe-area-inset-left, 0px))',
-              right: 'calc(16px + env(safe-area-inset-right, 0px))',
-              zIndex: 10,
+              top: 'calc(8px + env(safe-area-inset-top, 0px))',
+              right: 'calc(8px + env(safe-area-inset-right, 0px))',
+              zIndex: 11,
+              width: 40,
+              height: 40,
+              padding: 0,
+              cursor: 'pointer',
               display: arrastrandoRecuadro ? 'none' : 'flex',
-              flexDirection: 'column',
-              gap: 'var(--aire-3)',
-              backgroundColor: 'var(--bg-superficie)',
-              border: '1px solid var(--color-borde)',
-              borderRadius: 'var(--redondeo-grande)',
-              padding: 'var(--aire-3)',
-              color: 'var(--color-texto)'
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: panelTomaAbierto ? 'var(--color-acento)' : 'rgba(0,0,0,0.35)',
+              border: '1px solid rgba(255,255,255,0.35)',
+              borderRadius: 'var(--redondeo-pildora)',
+              color: panelTomaAbierto ? 'var(--color-texto-acento)' : '#fff'
             }}
           >
-            {conCamara && (
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--aire-3)', flexWrap: 'wrap' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)' }}>
+            <IconoEngranaje tamano={20} />
+          </button>
+
+          {/* EL PANEL DE LA TOMA. Cuelga del engranaje, ya no del suelo.
+              Aqui vive TODO lo que antes estaba en panel-controles-listo.
+              Nada se perdio: se mudo. */}
+          {panelTomaAbierto && (
+            <div
+              data-testid="panel-ajustes-toma"
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                position: 'absolute',
+                top: 'calc(56px + env(safe-area-inset-top, 0px))',
+                right: 'calc(8px + env(safe-area-inset-right, 0px))',
+                left: 'calc(16px + env(safe-area-inset-left, 0px))',
+                maxHeight: '62%',
+                overflowY: 'auto',
+                zIndex: 11,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 'var(--aire-3)',
+                backgroundColor: 'var(--bg-superficie)',
+                border: '1px solid var(--color-borde)',
+                borderRadius: 'var(--redondeo-grande)',
+                padding: 'var(--aire-3)',
+                color: 'var(--color-texto)'
+              }}
+            >
+              {/* VOLTEAR CAMARA. Antes era un boton flotante en el rincon de
+                  arriba a la derecha. Se mudo aqui en la 70 para dejarle ese
+                  rincon al engranaje. Mismo testid, mismo aria-label, misma
+                  accion: lo unico que cambia es donde vive. */}
+              {conCamara && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                    Cámara:
+                  </span>
+                  <button
+                    data-testid="btn-voltear-camara"
+                    type="button"
+                    className="btn-deformable"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onVoltear?.()
+                    }}
+                    aria-label="Voltear cámara"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 'var(--aire-1)',
+                      padding: 'var(--aire-1) var(--aire-2)',
+                      fontSize: 'var(--texto-meta)',
+                      borderRadius: 'var(--redondeo-pildora)',
+                      border: '1px solid var(--color-borde)',
+                      backgroundColor: 'var(--bg-suelo)',
+                      color: 'var(--color-texto)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <span aria-hidden="true">⟳</span> Voltear
+                  </button>
+                </div>
+              )}
+
+              {conCamara && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
                     Imagen:
                   </span>
@@ -1024,210 +1039,197 @@ export default function TeleprompterView({
                     ))}
                   </div>
                 </div>
+              )}
 
-                {calidadesSoportadas.length > 0 && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-1)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)' }}>
-                      <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
-                        Calidad:
-                      </span>
-                      <div style={{ display: 'flex', gap: 'var(--aire-1)' }}>
-                        {calidadesSoportadas.map((q) => (
-                          <button
-                            key={q}
-                            type="button"
-                            data-testid={`btn-calidad-${q}`}
-                            className="btn-deformable"
-                            onClick={() => {
-                              setCalidadVideo?.(q)
-                            }}
-                            style={{
-                              padding: 'var(--aire-1) var(--aire-2)',
-                              fontSize: 'var(--texto-meta)',
-                              borderRadius: 'var(--redondeo-pildora)',
-                              border: '1px solid var(--color-borde)',
-                              backgroundColor: calidadVideo === q ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                              color: calidadVideo === q ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                              fontWeight: calidadVideo === q ? 'bold' : 'normal',
-                              cursor: 'pointer'
-                            }}
-                          >
-                            {q}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    {typeof minutosDisponibles === 'number' && (
-                      <div
-                        data-testid="linea-minutos-disponibles"
-                        style={{
-                          fontSize: 'var(--texto-meta)',
-                          color: minutosDisponibles < 2 ? '#FF5A5A' : 'var(--color-apagado)',
-                          fontWeight: minutosDisponibles < 2 ? 700 : 400
-                        }}
-                      >
-                        {minutosDisponibles >= 2
-                          ? `Te alcanzan unos ${Math.floor(minutosDisponibles)} minutos`
-                          : 'Quedan menos de 2 minutos de espacio'}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {conCamara && fondoToma === 'oculta' && (
-              <div
-                data-testid="aviso-camara-encendida"
-                style={{
-                  fontSize: 'var(--texto-meta)',
-                  color: 'var(--color-apagado)',
-                  fontStyle: 'italic'
-                }}
-              >
-                la cámara sigue encendida
-              </div>
-            )}
-
-            {panelTomaAbierto && (
-              <div data-testid="panel-ajustes-toma" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-2)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
-                    Dónde lees:
-                  </span>
-                  {(['arriba', 'medio', 'abajo'] as const).map((z) => (
-                    <button
-                      key={z}
-                      type="button"
-                      data-testid={`btn-anclaje-${z}`}
-                      onClick={() => {
-                        setAnclajeZona?.(z)
-                      }}
-                      style={{
-                        padding: 'var(--aire-1) var(--aire-2)',
-                        fontSize: 'var(--texto-meta)',
-                        borderRadius: 'var(--redondeo-pildora)',
-                        border: '1px solid var(--color-borde)',
-                        backgroundColor: anclajeZona === z ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                        color: anclajeZona === z ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                        fontWeight: anclajeZona === z ? 'bold' : 'normal',
-                        cursor: 'pointer',
-                        textTransform: 'capitalize'
-                      }}
-                    >
-                      {z}
-                    </button>
-                  ))}
-                </div>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', fontSize: 'var(--texto-meta)' }}>
-                  <input
-                    type="checkbox"
-                    checked={mirror}
-                    onChange={(e) => setMirror?.(e.target.checked)}
-                  />
-                  Espejo
-                </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', fontSize: 'var(--texto-meta)' }}>
-                  <input
-                    type="checkbox"
-                    checked={mostrarTiempo}
-                    onChange={(e) => setMostrarTiempo?.(e.target.checked)}
-                  />
-                  Mostrar tiempo
-                </label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
-                    Brillo:
-                  </span>
-                  {PASOS_BRILLO.map((paso) => (
-                    <button
-                      key={paso.id}
-                      type="button"
-                      data-testid={`btn-brillo-${paso.id}`}
-                      onClick={() => {
-                        setBrillo(paso.id)
-                        aplicarBrillo(paso.id)
-                      }}
-                      style={{
-                        padding: 'var(--aire-1) var(--aire-2)',
-                        fontSize: 'var(--texto-meta)',
-                        borderRadius: 'var(--redondeo-pildora)',
-                        border: '1px solid var(--color-borde)',
-                        backgroundColor: brillo === paso.id ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                        color: brillo === paso.id ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                        fontWeight: brillo === paso.id ? 'bold' : 'normal',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      {paso.nombre}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div style={{ display: 'flex', gap: 'var(--aire-2)', justifyContent: conCamara ? 'flex-start' : 'center' }}>
-              {conCamara && (
-                <button
-                  data-testid="btn-engranaje-toma"
-                  type="button"
-                  onClick={() => setPanelTomaAbierto((v) => !v)}
-                  aria-label="Ajustes de la escena"
+              {conCamara && fondoToma === 'oculta' && (
+                <div
+                  data-testid="aviso-camara-encendida"
                   style={{
-                    width: 44,
-                    padding: 'var(--aire-3)',
-                    borderRadius: 'var(--redondeo-pildora)',
-                    border: '1px solid var(--color-borde)',
-                    backgroundColor: panelTomaAbierto ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                    color: panelTomaAbierto ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
+                    fontSize: 'var(--texto-meta)',
+                    color: 'var(--color-apagado)',
+                    fontStyle: 'italic'
                   }}
                 >
-                  <IconoEscena tamano={18} />
-                </button>
+                  la cámara sigue encendida
+                </div>
               )}
-              <button
-                data-testid="btn-empezar-toma"
-                type="button"
-                className="btn-deformable"
-                aria-label="Empezar"
-                onClick={() => {
-                  onEmpezar?.()
-                }}
-                style={
-                  conCamara
-                    ? {
-                        flex: 1,
-                        padding: 'var(--aire-3)',
-                        fontSize: 'var(--texto-cuerpo)',
-                        fontWeight: 'bold',
-                        borderRadius: 'var(--redondeo-pildora)',
-                        border: 'none',
-                        backgroundColor: 'var(--color-acento)',
-                        color: 'var(--color-texto-acento)',
-                        cursor: 'pointer'
-                      }
-                    : {
-                        width: 64,
-                        height: 64,
-                        padding: 0,
-                        borderRadius: 'var(--redondeo-pildora)',
-                        border: 'none',
-                        backgroundColor: 'var(--color-acento)',
-                        color: 'var(--color-texto-acento)',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }
-                }
-              >
-                {conCamara ? 'Empezar' : <IconoEmpezar tamano={26} />}
-              </button>
+
+              {conCamara && calidadesSoportadas.length > 0 && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-1)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                      Calidad:
+                    </span>
+                    <div style={{ display: 'flex', gap: 'var(--aire-1)' }}>
+                      {calidadesSoportadas.map((q) => (
+                        <button
+                          key={q}
+                          type="button"
+                          data-testid={`btn-calidad-${q}`}
+                          className="btn-deformable"
+                          onClick={() => {
+                            setCalidadVideo?.(q)
+                          }}
+                          style={{
+                            padding: 'var(--aire-1) var(--aire-2)',
+                            fontSize: 'var(--texto-meta)',
+                            borderRadius: 'var(--redondeo-pildora)',
+                            border: '1px solid var(--color-borde)',
+                            backgroundColor: calidadVideo === q ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                            color: calidadVideo === q ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                            fontWeight: calidadVideo === q ? 'bold' : 'normal',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          {q}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  {typeof minutosDisponibles === 'number' && (
+                    <div
+                      data-testid="linea-minutos-disponibles"
+                      style={{
+                        fontSize: 'var(--texto-meta)',
+                        color: minutosDisponibles < 2 ? '#FF5A5A' : 'var(--color-apagado)',
+                        fontWeight: minutosDisponibles < 2 ? 700 : 400
+                      }}
+                    >
+                      {minutosDisponibles >= 2
+                        ? `Te alcanzan unos ${Math.floor(minutosDisponibles)} minutos`
+                        : 'Quedan menos de 2 minutos de espacio'}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                  Dónde lees:
+                </span>
+                {(['arriba', 'medio', 'abajo'] as const).map((z) => (
+                  <button
+                    key={z}
+                    type="button"
+                    data-testid={`btn-anclaje-${z}`}
+                    onClick={() => {
+                      setAnclajeZona?.(z)
+                    }}
+                    style={{
+                      padding: 'var(--aire-1) var(--aire-2)',
+                      fontSize: 'var(--texto-meta)',
+                      borderRadius: 'var(--redondeo-pildora)',
+                      border: '1px solid var(--color-borde)',
+                      backgroundColor: anclajeZona === z ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                      color: anclajeZona === z ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                      fontWeight: anclajeZona === z ? 'bold' : 'normal',
+                      cursor: 'pointer',
+                      textTransform: 'capitalize'
+                    }}
+                  >
+                    {z}
+                  </button>
+                ))}
+              </div>
+
+              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', fontSize: 'var(--texto-meta)' }}>
+                <input
+                  type="checkbox"
+                  checked={mirror}
+                  onChange={(e) => setMirror?.(e.target.checked)}
+                />
+                Espejo
+              </label>
+
+              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', fontSize: 'var(--texto-meta)' }}>
+                <input
+                  type="checkbox"
+                  checked={mostrarTiempo}
+                  onChange={(e) => setMostrarTiempo?.(e.target.checked)}
+                />
+                Mostrar tiempo
+              </label>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                  Brillo:
+                </span>
+                {PASOS_BRILLO.map((paso) => (
+                  <button
+                    key={paso.id}
+                    type="button"
+                    data-testid={`btn-brillo-${paso.id}`}
+                    onClick={() => {
+                      setBrillo(paso.id)
+                      aplicarBrillo(paso.id)
+                    }}
+                    style={{
+                      padding: 'var(--aire-1) var(--aire-2)',
+                      fontSize: 'var(--texto-meta)',
+                      borderRadius: 'var(--redondeo-pildora)',
+                      border: '1px solid var(--color-borde)',
+                      backgroundColor: brillo === paso.id ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                      color: brillo === paso.id ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                      fontWeight: brillo === paso.id ? 'bold' : 'normal',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {paso.nombre}
+                  </button>
+                ))}
+              </div>
             </div>
+          )}
+
+          {/* ABAJO AL CENTRO: EMPEZAR. Un circulo translucido flotando sobre
+              el fondo, SIN cajon detras. El cajon -panel-controles-listo- se
+              elimino en la 70: la foto aprobada no lo tiene y se comia el
+              ultimo tercio del texto.
+
+              El centrado lo hace ESTE div, no un transform inline en el
+              boton: .btn-deformable hace su efecto de apretado con transform
+              -styles.css:255-267- y un transform inline le gana a la hoja de
+              estilos y lo deja muerto. pointerEvents none en el contenedor y
+              auto en el boton para que la franja invisible no se coma los
+              toques del texto que pasa por debajo. */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+              left: 0,
+              right: 0,
+              zIndex: 10,
+              display: arrastrandoRecuadro ? 'none' : 'flex',
+              justifyContent: 'center',
+              pointerEvents: 'none'
+            }}
+          >
+            <button
+              data-testid="btn-empezar-toma"
+              type="button"
+              className="btn-deformable"
+              aria-label="Empezar"
+              onClick={(e) => {
+                e.stopPropagation()
+                onEmpezar?.()
+              }}
+              style={{
+                pointerEvents: 'auto',
+                width: 72,
+                height: 72,
+                padding: 0,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 'var(--redondeo-pildora)',
+                border: '1px solid rgba(255,255,255,0.35)',
+                backgroundColor: 'rgba(0,0,0,0.45)',
+                color: '#fff'
+              }}
+            >
+              <IconoEmpezar tamano={30} />
+            </button>
           </div>
         </>
       )}

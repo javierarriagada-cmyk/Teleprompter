@@ -77,7 +77,7 @@ async function entrarGrabandoYSalir() {
   })
   const vista = screen.getByTestId('teleprompter-view-container')
   fireEvent.click(vista)
-  fireEvent.click(screen.getByTestId('btn-salir-lectura'))
+  fireEvent.click(screen.getByTestId('btn-parar-lectura'))
 }
 
 describe('Tarea 68 - que pasa cuando la toma termina', () => {

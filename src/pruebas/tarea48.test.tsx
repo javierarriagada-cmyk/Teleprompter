@@ -166,7 +166,7 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
     })
 
     fireEvent.click(screen.getByTestId('teleprompter-view-container'))
-    const btnSalir = await screen.findByRole('button', { name: /← Salir/i })
+    const btnSalir = await screen.findByTestId('btn-salir-lectura')
     fireEvent.click(btnSalir)
 
     await waitFor(() => {
@@ -197,7 +197,7 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
     })
 
     fireEvent.click(screen.getByTestId('teleprompter-view-container'))
-    const btnSalir2 = await screen.findByRole('button', { name: /← Salir/i })
+    const btnSalir2 = await screen.findByTestId('btn-salir-lectura')
     fireEvent.click(btnSalir2)
 
     await waitFor(() => {
