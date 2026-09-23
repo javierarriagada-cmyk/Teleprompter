@@ -951,7 +951,10 @@ export default function TeleprompterView({
                 maxHeight: '62%',
                 overflowY: 'auto',
                 zIndex: 11,
-                display: 'flex',
+                // Se esconde mientras se arrastra el recuadro, igual que el engranaje y el
+                // circulo. Hasta la 70 vivia dentro del cajon y se escondia con el; al
+                // mudarse al engranaje habia quedado fuera de esa regla.
+                display: arrastrandoRecuadro ? 'none' : 'flex',
                 flexDirection: 'column',
                 gap: 'var(--aire-3)',
                 backgroundColor: 'var(--bg-superficie)',
