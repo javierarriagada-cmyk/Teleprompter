@@ -1,6 +1,13 @@
 import React from 'react'
 
-/** Engranaje de trazo fino. Sin relleno; ocho dientes en línea, no el cog de librería. */
+/** Engranaje de trazo fino. Sin relleno; ocho dientes en línea, no el cog de librería.
+ *
+ * 23-09-2026, revision de la 70: los ocho dientes eran rayitas sueltas alrededor de
+ * un circulo, y eso se leia como un SOL -Javier lo llamaba "el menu del sol" en la
+ * portada, y lo dijo mirando la toma: "el engranaje, es un sol"-. Ahora es una
+ * rueda dentada de verdad: un solo contorno cerrado con ocho dientes trapeciales y el
+ * agujero al centro. Sigue siendo de trazo y sigue sin ser el cog de libreria: los
+ * dientes son rectos, no los petalos redondeados del icono de siempre. */
 export function IconoEngranaje({
   tamano = 22,
   ...props
@@ -18,8 +25,8 @@ export function IconoEngranaje({
       aria-hidden="true"
       {...props}
     >
-      <circle cx="12" cy="12" r="3.1" />
-      <path d="M12 3.2v2M12 18.8v2M3.2 12h2M18.8 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4l1.4-1.4M17 7l1.4-1.4" />
+      <path d="M10.23 4.61L10.44 2.12L13.56 2.12L13.77 4.61A7.6 7.6 0 0 1 15.97 5.52L17.88 3.91L20.09 6.12L18.48 8.03A7.6 7.6 0 0 1 19.39 10.23L21.88 10.44L21.88 13.56L19.39 13.77A7.6 7.6 0 0 1 18.48 15.97L20.09 17.88L17.88 20.09L15.97 18.48A7.6 7.6 0 0 1 13.77 19.39L13.56 21.88L10.44 21.88L10.23 19.39A7.6 7.6 0 0 1 8.03 18.48L6.12 20.09L3.91 17.88L5.52 15.97A7.6 7.6 0 0 1 4.61 13.77L2.12 13.56L2.12 10.44L4.61 10.23A7.6 7.6 0 0 1 5.52 8.03L3.91 6.12L6.12 3.91L8.03 5.52A7.6 7.6 0 0 1 10.23 4.61Z" />
+      <circle cx="12" cy="12" r="3" />
     </svg>
   )
 }
