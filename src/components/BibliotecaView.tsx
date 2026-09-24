@@ -3,13 +3,12 @@ import { createPortal } from 'react-dom'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, ResumenGuion, ResumenGrabacion, PAREJAS_COLOR, duracionDeLectura } from '../datos/modelo'
 import TiraGrabaciones from './TiraGrabaciones'
-import { IdMotor } from '../motor/MotorDeVoz'
 import { PanelCorpus } from './PanelCorpus'
 import TarjetaLectura from './TarjetaLectura'
 import { IconoEngranaje, IconoVibracion } from './IconosApp'
 import { MarcaSigo } from './MarcaSigo'
 import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
-import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './movimiento'
+import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_RESORTE } from './movimiento'
 import { ESCALA_AVISO, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
 
 interface BibliotecaViewProps {
@@ -24,20 +23,14 @@ interface BibliotecaViewProps {
   // traves, en plena toma. Por eso App dice explicitamente cuando va. Revision
   // de la 70, 23-09-2026.
   mostrarBotonCrear?: boolean
-  onRenombrar?: (id: string, nuevoTitulo: string) => void
   onBorrar: (id: string) => void
   onArchivar: (id: string, archivado: boolean) => void
   onBuscarGuionCompleto?: (id: string) => Promise<Guion | null>
   onToggleDiagnostico?: () => void
   medirLectura?: boolean
   setMedirLectura?: (medir: boolean) => void
-  engine?: IdMotor
-  setEngine?: (engine: IdMotor) => void
-  verTranscripcion?: boolean
-  setVerTranscripcion?: (ver: boolean) => void
   tema?: 'claro' | 'oscuro'
   setTema?: (tema: 'claro' | 'oscuro') => void
-  tipoFuente?: 'sans' | 'serif'
   colorFondo?: string
   colorLetra?: string
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
@@ -90,7 +83,6 @@ export function resetearPrimerMontajeBiblioteca() {
 
 interface FilaGuionProps {
   g: ResumenGuion
-  index: number
   onAbrir: (id: string) => void
   onBorrar: (id: string) => void
   onArchivar: (id: string, archivado: boolean) => void
@@ -101,7 +93,6 @@ interface FilaGuionProps {
 
 function FilaGuion({
   g,
-  index,
   onAbrir,
   onBorrar,
   onArchivar,
@@ -295,7 +286,7 @@ function FilaGuion({
       {/* Fila en primer plano */}
       <div
         data-testid={`fila-guion-${g.id}`}
-        onClick={(e) => {
+        onClick={() => {
           if (!fueLongPressRef.current && !esHorizontalRef.current) {
             hapticaToqueSuave()
             onAbrir(g.id)
@@ -421,20 +412,14 @@ export default function BibliotecaView({
   onGrabarDirecto,
   onCrearNuevo,
   mostrarBotonCrear = true,
-  onRenombrar,
   onBorrar,
   onArchivar,
   onBuscarGuionCompleto,
   onToggleDiagnostico,
   medirLectura = true,
   setMedirLectura = () => {},
-  engine = 'vosk',
-  setEngine,
-  verTranscripcion = false,
-  setVerTranscripcion,
   tema = 'claro',
   setTema,
-  tipoFuente = 'sans',
   colorFondo = PAREJAS_COLOR[0].fondo,
   colorLetra = PAREJAS_COLOR[0].letra,
   onRegistrarCerrarModal,
@@ -463,7 +448,7 @@ export default function BibliotecaView({
   const refMenuFila = useCerrarAfuera(menuId !== null, () => setMenuId(null))
   const [mapaTextos, setMapaTextos] = useState<Record<string, string>>({})
 
-  const [esInicial, setEsInicial] = useState<boolean>(esPrimerMontajeBiblioteca)
+  const [esInicial] = useState<boolean>(esPrimerMontajeBiblioteca)
 
   const guionMasReciente = guiones.length > 0 ? guiones[0] : undefined
   // La tarjeta ya no muestra el texto del guion -TarjetaLectura.tsx, 24-09-2026-,
@@ -476,8 +461,6 @@ export default function BibliotecaView({
     }
   }, [])
 
-  const timerHoldRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const fueLongPressRef = useRef<boolean>(false)
 
   const timerDiagRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const fueLongPressDiagRef = useRef<boolean>(false)
@@ -535,35 +518,8 @@ export default function BibliotecaView({
     return !g.archivado
   })
 
-  function handleTouchStart(id: string) {
-    fueLongPressRef.current = false
-    if (timerHoldRef.current) clearTimeout(timerHoldRef.current)
-    timerHoldRef.current = setTimeout(() => {
-      fueLongPressRef.current = true
-      setMenuId(id)
-    }, MS_MANTENER_APRETADO)
-  }
-
-  function handleTouchEnd() {
-    if (timerHoldRef.current) {
-      clearTimeout(timerHoldRef.current)
-      timerHoldRef.current = null
-    }
-  }
-
-  function handleRowClick(g: ResumenGuion) {
-    if (fueLongPressRef.current) {
-      fueLongPressRef.current = false
-      return
-    }
-    hapticaToqueSuave()
-    onAbrir(g.id)
-  }
-
-  function handleContextMenu(e: React.MouseEvent, id: string) {
-    e.preventDefault()
-    setMenuId(id)
-  }
+  // -24-09-2026: aca vivian el toque largo, el clic y el menu contextual de la fila vieja. La
+  // fila ahora es FilaGuion, con sus propios manejadores; estos habian quedado sin uso.
 
   // Toque largo sobre el resumen para alternar diagnostico
   function handleDiagTouchStart() {
@@ -611,22 +567,10 @@ export default function BibliotecaView({
     }
   }, [mostrarPanelCorpus, menuSuperiorAbierto, onRegistrarCerrarModal])
 
-  const minsLectura = calcularMinutosLectura(guiones)
-  const textoResumen = guiones.length === 0
-    ? '0 guiones'
-    : `${guiones.length} ${guiones.length === 1 ? 'guión' : 'guiones'} · ${minsLectura} ${minsLectura === 1 ? 'minuto' : 'minutos'} de lectura`
-
   const animacionTituloStyle: React.CSSProperties = (esInicial && !movimientoApagado())
     ? {
         animation: `pantallaEntraInicial ${MS_PANTALLA}ms ${CURVA_ENTRA} forwards`,
         animationDelay: '0ms'
-      }
-    : {}
-
-  const animacionSubtituloStyle: React.CSSProperties = (esInicial && !movimientoApagado())
-    ? {
-        animation: `pantallaEntraInicial ${MS_PANTALLA}ms ${CURVA_ENTRA} forwards`,
-        animationDelay: '40ms'
       }
     : {}
 
@@ -897,11 +841,10 @@ export default function BibliotecaView({
           data-retardo-escalonado={esInicial && !movimientoApagado() ? 80 : 0}
           style={{ display: 'flex', flexDirection: 'column', ...animacionListaStyle }}
         >
-          {guionesFiltrados.map((g, index) => (
+          {guionesFiltrados.map((g) => (
             <FilaGuion
               key={g.id}
               g={g}
-              index={index}
               onAbrir={onAbrir}
               onBorrar={onBorrar}
               onArchivar={onArchivar}

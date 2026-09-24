@@ -81,8 +81,6 @@ export function crearMotorDeAvance(
   let muestrasVelocidad: Array<{ tMs: number; token: number }> = []
   let ultimaConfirmada = 0
   let anclaTentativa = 0
-  let tUltimaConfirmacion = 0
-  let tUltimoTentativo = 0
 
   let fallosFinalesSeguidos = 0
   let tUltimoCalce = 0
@@ -100,31 +98,10 @@ export function crearMotorDeAvance(
   let palabrasConfirmadasDesdeArranque = 0
   let arranqueCumplido = false
 
-  function obtenerLimiteLineaActual(refToken: number): number {
-    if (!limitesDeLinea || limitesDeLinea.length === 0) return Infinity
-    for (const lim of limitesDeLinea) {
-      if (lim >= refToken) return lim
-    }
-    return limitesDeLinea[limitesDeLinea.length - 1]
-  }
-
-  function obtenerLimiteLineaSiguiente(refToken: number): number {
-    if (!limitesDeLinea || limitesDeLinea.length === 0) return Infinity
-    for (let i = 0; i < limitesDeLinea.length; i++) {
-      if (limitesDeLinea[i] >= refToken) {
-        return i + 1 < limitesDeLinea.length ? limitesDeLinea[i + 1] : limitesDeLinea[i]
-      }
-    }
-    return limitesDeLinea[limitesDeLinea.length - 1]
-  }
-
-  function obtenerLimiteBloqueActual(refToken: number): number {
-    if (!limitesDeBloque || limitesDeBloque.length === 0) return Infinity
-    for (const lim of limitesDeBloque) {
-      if (lim >= refToken) return lim
-    }
-    return limitesDeBloque[limitesDeBloque.length - 1]
-  }
+  // -24-09-2026: aca estaban obtenerLimiteLineaActual, obtenerLimiteLineaSiguiente y
+  // obtenerLimiteBloqueActual, del freno de fin de linea y de bloque. Nadie las llamaba: el
+  // tope de avance por renglon lo pone conduccion.ts. limitesDeLinea y limitesDeBloque siguen
+  // sirviendo para saber donde termina el guion -mas abajo-.
 
   function actualizarVelocidad(token: number, tMs: number) {
     muestrasVelocidad.push({ tMs, token })
@@ -185,7 +162,6 @@ export function crearMotorDeAvance(
 
       ultimaConfirmada = Math.max(ultimaConfirmada, token)
       anclaTentativa = Math.max(anclaTentativa, token)
-      tUltimaConfirmacion = tMs
       fallosFinalesSeguidos = 0
       tUltimoCalce = tMs
     },
@@ -200,7 +176,6 @@ export function crearMotorDeAvance(
       if (token > anclaTentativa) {
         actualizarVelocidad(token, tMs)
         anclaTentativa = token
-        tUltimoTentativo = tMs
       }
       registrarAvanceArranque(token, anclaTentativa)
 
@@ -460,8 +435,6 @@ export function crearMotorDeAvance(
       anclaTentativa = destino
       fallosFinalesSeguidos = 0
       tUltimoCalce = tMs
-      tUltimaConfirmacion = tMs
-      tUltimoTentativo = 0
       tUltimaActualizacion = 0
       muestrasVelocidad = []
       palabrasConfirmadasDesdeArranque = 0
@@ -473,8 +446,6 @@ export function crearMotorDeAvance(
       muestrasVelocidad = []
       ultimaConfirmada = 0
       anclaTentativa = 0
-      tUltimaConfirmacion = 0
-      tUltimoTentativo = 0
       fallosFinalesSeguidos = 0
       tUltimoCalce = 0
       hayVoz = false

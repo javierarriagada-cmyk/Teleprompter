@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 export interface RecuadroCamaraProps {
-  modoCamara: 'frontal' | 'trasera'
   recuadroX: number // fracción 0..1
   recuadroY: number // fracción 0..1
   colorFondo?: string
@@ -11,7 +10,6 @@ export interface RecuadroCamaraProps {
 }
 
 export function RecuadroCamara({
-  modoCamara,
   recuadroX,
   recuadroY,
   colorFondo = '#151312',

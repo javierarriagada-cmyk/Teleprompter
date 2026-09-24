@@ -1,4 +1,3 @@
-import React from 'react'
 import { createRoot } from 'react-dom/client'
 // SOLO LOS SUBCONJUNTOS LATINOS. Importar 400.css a secas trae ademas cirilico, griego y
 // vietnamita: 26 archivos y 352 kB, de los cuales unos 250 no se usan nunca en un producto

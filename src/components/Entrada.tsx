@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { movimientoApagado } from './movimiento'
 import { MarcaSigo } from './MarcaSigo'
 import { MARCA_CAJA, MARCA_LEMA_TRAZO, MARCA_LEMA_CAJA } from './trazoMarca'

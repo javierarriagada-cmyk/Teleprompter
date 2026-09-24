@@ -25,7 +25,6 @@ import {
   SidecarToma,
   sidecarInicial,
   parsearSidecar,
-  reconocerPendiente,
   marcarLista,
   marcarIncompleta,
   emparejarMp4PorTiempo

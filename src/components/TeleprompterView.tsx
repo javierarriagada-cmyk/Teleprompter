@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { MotorDeAvance, EstadoModo } from '../lib/avance'
 import { tokenizarGuion, Token } from '../lib/seguidor'
 import { Guion } from '../datos/modelo'
-import { agruparEnRenglones, indiceDeRenglon, pixelDePosicion, pixelDeRenglon, Renglon, MedidaToken } from '../lib/renglones'
+import { agruparEnRenglones, indiceDeRenglon, Renglon, MedidaToken } from '../lib/renglones'
 import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
@@ -55,7 +55,7 @@ export function avanzarTrabado(
   return trabado
 }
 
-import { AnclajeZona, calcularBanda, calcularBgVelo, calcularTramosVelo, opacidadDeLinea } from './banda'
+import { AnclajeZona, calcularBanda, calcularBgVelo, calcularTramosVelo } from './banda'
 import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
 import {
@@ -216,9 +216,7 @@ interface TeleprompterViewProps {
   isRecording?: boolean
   // Punto rojo: GRABANDO VIDEO. No es isRecording del ASR.
   grabandoVideo?: boolean
-  enPausa?: boolean
   camaraEncendida?: boolean
-  ladoCamara?: 'frontal' | 'trasera'
   fondoToma?: FondoToma
   recuadroX?: number
   recuadroY?: number
@@ -279,9 +277,7 @@ export default function TeleprompterView({
   tipoFuente = 'sans',
   isRecording = false,
   grabandoVideo = false,
-  enPausa = false,
   camaraEncendida = false,
-  ladoCamara = 'frontal',
   fondoToma = 'detras',
   recuadroX = 0.64,
   recuadroY = 0.52,
@@ -342,7 +338,6 @@ export default function TeleprompterView({
 
   const modoManualRef = useRef(false)
   const finManualRef = useRef<number | null>(null)
-  const [textoEstadoLector, setTextoEstadoLector] = React.useState<string | null>(null)
   const [arrastrandoRecuadro, setArrastrandoRecuadro] = React.useState(false)
   const [panelTomaAbierto, setPanelTomaAbierto] = React.useState(false)
   // Arrastre del cajon de la toma hacia abajo, para cerrarlo -como el Aa-.
@@ -356,7 +351,6 @@ export default function TeleprompterView({
     leerBrilloSistema().then((v) => { if (vivo) setBrilloSistema(v) })
     return () => { vivo = false }
   }, [panelTomaAbierto, brillo])
-  const tInicioBuscandoRef = useRef<number | null>(null)
 
   const guionObj: Guion = typeof script === 'string' ? {
     id: 'temp',
@@ -605,12 +599,6 @@ export default function TeleprompterView({
   }, [onNavegacionManual, onModoManualChange, alturaLineaPx, onToggleControles, filaPx, topBanda])
 
   useEffect(() => {
-    if (enPausa) {
-      setTextoEstadoLector('En pausa')
-    }
-  }, [enPausa])
-
-  useEffect(() => {
     if (!motorAvance) return
 
     let animId: number
@@ -621,15 +609,10 @@ export default function TeleprompterView({
         onEstadoAvanceChange(st.motivoFreno, st.avanzando, st.estado)
       }
 
-      if (enPausa) {
-        setTextoEstadoLector('En pausa')
-      } else if (st.estado === 'DETENIDO') {
-        tInicioBuscandoRef.current = null
-        setTextoEstadoLector('Detenido')
-      } else {
-        tInicioBuscandoRef.current = null
-        setTextoEstadoLector(null)
-      }
+      // -24-09-2026: aca se calculaba textoEstadoLector -"En pausa", "Detenido"- con un
+      // setState en cada cuadro, para un cartel que ya no se pinta -ver el comentario del
+      // cartel del motor, mas abajo-. Se saco: cada cambio redibujaba la vista entera. Y
+      // tInicioBuscandoRef, que solo se escribia.
 
       let renglones = renglonesRef.current
       if (renglones.length === 0) {
@@ -924,7 +907,6 @@ export default function TeleprompterView({
       {/* Recuadro chico de cámara */}
       {camaraEncendida && fondoToma === 'recuadro' && (
         <RecuadroCamara
-          modoCamara={ladoCamara}
           recuadroX={recuadroX}
           recuadroY={recuadroY}
           colorFondo={colorFondo}
@@ -1044,7 +1026,8 @@ export default function TeleprompterView({
 
       {/* El cartel del motor ("Detenido") no pertenece a esta pantalla.
           El que lee mira el lente. textoEstadoLector se sigue calculando
-          por si el diagnostico lo quiere; no se pinta encima del renglon. */}
+          por si el diagnostico lo quiere; no se pinta encima del renglon.
+          -24-09-2026: ya no se calcula; el diagnostico tiene el freno en cada cuadro. */}
 
       <div
         ref={containerRef}

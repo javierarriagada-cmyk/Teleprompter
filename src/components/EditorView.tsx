@@ -4,7 +4,6 @@ import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, Bloque, TramoFormato, contarPalabras, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
 import { consolidarGuion } from '../datos/consolidar'
 import { importarArchivo } from '../datos/importarArchivo'
-import { IdMotor } from '../motor/MotorDeVoz'
 import { hapticaSeleccion, hapticaToqueSuave } from '../haptica'
 import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
 import { IconoAtras, IconoEmpezar } from './IconosApp'
@@ -52,8 +51,6 @@ interface EditorViewProps {
   // color. Si alguno vuelve a aparecer en los dos lados, se rompe la regla de
   // las tres familias y "donde lees" vuelve a estar duplicado, que es de donde
   // salio esta tarea.
-  verTranscripcion?: boolean
-  setVerTranscripcion?: (v: boolean) => void
   columnaAngosta?: boolean
   setColumnaAngosta?: (v: boolean) => void
   colorFondo?: string
@@ -64,8 +61,6 @@ interface EditorViewProps {
   setTipoFuente?: (f: 'sans' | 'serif') => void
   // El Tema tampoco esta aca, y por el mismo motivo: no es del texto, es de la
   // aplicacion. Vive en el menu de la portada, junto a idioma y vibracion.
-  engine?: IdMotor
-  setEngine?: (e: IdMotor) => void
   onEntrarGrabar?: (rect?: DOMRect) => void
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
   'data-pantalla-direccion'?: string
@@ -108,8 +103,6 @@ export default function EditorView({
   onLetraMas,
   marginPercent = 5,
   setMarginPercent,
-  verTranscripcion = false,
-  setVerTranscripcion,
   columnaAngosta = false,
   setColumnaAngosta,
   colorFondo = PAREJAS_COLOR[0].fondo,
@@ -118,8 +111,6 @@ export default function EditorView({
   setColorLetra,
   tipoFuente = 'sans',
   setTipoFuente,
-  engine = 'vosk',
-  setEngine,
   onEntrarGrabar,
   onRegistrarCerrarModal,
   'data-pantalla-direccion': dataPantallaDireccion,

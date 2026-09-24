@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { hapticaToqueFuerte } from '../haptica'
 import { movimientoApagado, MS_CHICO, CURVA_RESORTE } from './movimiento'
 

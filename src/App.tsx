@@ -251,7 +251,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   // padding deja el texto en el 81% del ancho de la pantalla. Estaba en 10, que da 72%.
   const [marginPercent, setMarginPercent] = useState<number>(ajustesPrevios.marginPercent !== undefined ? Number(ajustesPrevios.marginPercent) : 5)
   const [mirror, setMirror] = useState<boolean>(Boolean(ajustesPrevios.mirror))
-  const [lineasZona, setLineasZona] = useState<number>(ajustesPrevios.lineasZona !== undefined ? Number(ajustesPrevios.lineasZona) : 3)
+  const [lineasZona] = useState<number>(ajustesPrevios.lineasZona !== undefined ? Number(ajustesPrevios.lineasZona) : 3)
   // "DONDE LEES" YA NO OFRECE ABAJO. Se fue el 24 de septiembre de 2026; el dueno:
   // "nadie lee abajo". El boton salio de TeleprompterView. Aca queda la consecuencia:
   // a quien lo tenia guardado le cae en arriba, que ya era el valor por omision.
@@ -333,7 +333,6 @@ export default function App({ motor, repoOverride }: AppProps) {
   // alguna vez estorba, pero la omision es medir.
   const [medirLectura, setMedirLectura] = useState<boolean>(true)
   const [modoManual, setModoManual] = useState<boolean>(false)
-  const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false)
   const [mostrarDiagnostico, setMostrarDiagnostico] = useState<boolean>(false)
   const [mostrarPanelCorpus, setMostrarPanelCorpus] = useState<boolean>(false)
   const [camaraActiva, setCamaraActiva] = useState<boolean>(false)
@@ -695,21 +694,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   // con esa entrada del menu: el editor vacio ofrece "Abrir archivo" y hace lo
   // mismo -EditorView.tsx, handleSeleccionarArchivo-.
 
-  async function handleRenombrarGuion(id: string, nuevoTitulo: string) {
-    try {
-      const g = await repoRef.current.abrir(id)
-      if (g) {
-        g.titulo = nuevoTitulo
-        await repoRef.current.guardar(g)
-        if (guionActual && guionActual.id === id) {
-          setGuionActual({ ...g })
-        }
-        await cargarBiblioteca()
-      }
-    } catch (e) {
-      console.warn('[App] Error al renombrar guion:', e)
-    }
-  }
+  // handleRenombrarGuion vivia aca, para renombrar desde la lista. La lista no lo
+  // llamaba -el titulo se cambia en el editor-; se fue el 24-09-2026 con la limpieza.
 
   const [idsPendientesBorrado, setIdsPendientesBorrado] = useState<string[]>([])
   const timerBorradoRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({})
@@ -842,7 +828,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     alRecibirParcial: seguidorParcial,
     alRecibirFinal: seguidorFinal,
     alNotificarVoz: seguidorVoz,
-    reiniciar,
     irAToken,
     motorAvance
   } = useSeguidor(guionParaSeguidor)
@@ -850,9 +835,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const {
     start,
     stop,
-    clear,
     isRecording,
-    transcript,
     estadoMotor,
     ultimoError,
     motorActivo
@@ -1266,10 +1249,9 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }, [])
 
-  function handleClear() {
-    clear()
-    reiniciar()
-  }
+  // -24-09-2026: aca estaba handleClear -vaciar lo oido y reiniciar el seguidor-, sin uso desde
+  // que la Tarea 34 saco el boton "Volver al inicio". Cuando B24 -detener a mitad: continuar o
+  // empezar de nuevo- se haga, el reinicio es reiniciar() de useSeguidor mas clear() de useASR.
 
   const handleTogglePausa = async () => {
     if (enPausa) {
@@ -1280,29 +1262,6 @@ export default function App({ motor, repoOverride }: AppProps) {
       await stop()
     }
   }
-
-  function toggleFullscreen() {
-    if (!prompterContainerRef.current) return
-    if (!document.fullscreenElement) {
-      prompterContainerRef.current.requestFullscreen().then(() => {
-        setEsPantallaCompleta(true)
-      }).catch((err) => {
-        console.warn('Error al activar pantalla completa:', err)
-      })
-    } else {
-      document.exitFullscreen().then(() => {
-        setEsPantallaCompleta(false)
-      }).catch(() => {})
-    }
-  }
-
-  useEffect(() => {
-    const handleFSChange = () => {
-      setEsPantallaCompleta(!!document.fullscreenElement)
-    }
-    document.addEventListener('fullscreenchange', handleFSChange)
-    return () => document.removeEventListener('fullscreenchange', handleFSChange)
-  }, [])
 
   let textoFreno = ''
   if (estadoModo === 'BUSCANDO') {
@@ -1316,8 +1275,6 @@ export default function App({ motor, repoOverride }: AppProps) {
     else if (motivoFreno === 'fin-de-linea') textoFreno = 'fin de línea, espero'
     else if (motivoFreno === 'fin-de-bloque') textoFreno = 'fin de bloque, espero'
   }
-
-  const tituloMostrar = (guionActual && guionActual.titulo && guionActual.titulo.trim()) ? guionActual.titulo : 'Sin título'
 
   // LA TARJETA O LA PILDORA SE CONVIERTE EN LA PANTALLA DE LECTURA.
   //
@@ -1509,20 +1466,14 @@ export default function App({ motor, repoOverride }: AppProps) {
             onGrabarDirecto={handleGrabarDirecto}
             onCrearNuevo={handleCrearNuevoGuion}
             mostrarBotonCrear={vista === 'biblioteca'}
-            onRenombrar={handleRenombrarGuion}
             onBorrar={handleBorrarGuion}
             onArchivar={handleArchivarGuion}
             onBuscarGuionCompleto={(id) => repoRef.current.abrir(id)}
             onToggleDiagnostico={() => setMostrarDiagnostico((prev) => !prev)}
             medirLectura={medirLectura}
             setMedirLectura={setMedirLectura}
-            engine={engine}
-            setEngine={setEngine}
-            verTranscripcion={verTranscripcion}
-            setVerTranscripcion={setVerTranscripcion}
             tema={tema}
             setTema={setTema}
-              tipoFuente={tipoFuente}
               colorFondo={colorFondo}
               colorLetra={colorLetra}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
@@ -1568,8 +1519,6 @@ export default function App({ motor, repoOverride }: AppProps) {
             onLetraMas={handleLetraMas}
             marginPercent={marginPercent}
             setMarginPercent={setMarginPercent}
-            verTranscripcion={verTranscripcion}
-            setVerTranscripcion={setVerTranscripcion}
             columnaAngosta={columnaAngosta}
             setColumnaAngosta={setColumnaAngosta}
             colorFondo={colorFondo}
@@ -1578,8 +1527,6 @@ export default function App({ motor, repoOverride }: AppProps) {
             setColorLetra={setColorLetra}
             tipoFuente={tipoFuente}
             setTipoFuente={setTipoFuente}
-            engine={engine}
-            setEngine={setEngine}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
           />
         </Pantalla>
@@ -1799,9 +1746,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               tipoFuente={tipoFuente}
               isRecording={isRecording || cuentaRegresiva !== null}
               grabandoVideo={grabandoVideo}
-              enPausa={enPausa}
               camaraEncendida={camaraActiva}
-              ladoCamara={ladoCamara}
             fondoToma={fondoToma}
             recuadroX={recuadroX}
             recuadroY={recuadroY}
