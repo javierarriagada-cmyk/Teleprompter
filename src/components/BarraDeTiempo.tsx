@@ -63,6 +63,10 @@ function Pastilla({
       <div
         data-testid={testid}
         aria-label={etiqueta}
+        // Los colores -fondo translucido, borde y letra- estan en la clase
+        // pastilla-tiempo de styles.css y no aca: T209 no deja escribir colores a
+        // mano en este archivo, y son los mismos de los controles flotantes.
+        className="pastilla-tiempo"
         style={{
           minWidth: 120,
           display: 'flex',
@@ -70,9 +74,6 @@ function Pastilla({
           gap: 4,
           padding: '6px 14px 8px',
           borderRadius: 'var(--redondeo-pildora)',
-              backgroundColor: 'rgba(0,0,0,0.45)',
-              border: '1px solid rgba(255,255,255,0.35)',
-              color: '#fff',
           fontSize: 'var(--texto-meta)',
           letterSpacing: '0.04em',
           fontVariantNumeric: 'tabular-nums',
@@ -83,20 +84,20 @@ function Pastilla({
         <div>{texto}</div>
         <div
           data-testid={conTestidsDeProgreso ? 'barra-progreso-pista' : undefined}
+          className="pastilla-tiempo-pista"
           style={{
             width: '100%',
             height: 2,
             borderRadius: 'var(--redondeo-pildora)',
-                backgroundColor: 'rgba(255,255,255,0.25)',
             overflow: 'hidden'
           }}
         >
           <div
             data-testid={conTestidsDeProgreso ? 'barra-progreso' : undefined}
+            className="pastilla-tiempo-relleno"
             style={{
               width: `${progresoPct}%`,
               height: '100%',
-                  backgroundColor: 'rgba(255,255,255,0.9)',
               transition: 'width 0.25s linear'
             }}
           />

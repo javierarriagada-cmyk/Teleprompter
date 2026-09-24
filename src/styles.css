@@ -453,3 +453,24 @@ textarea::placeholder {
   outline: 2px solid var(--color-acento);
   outline-offset: 2px;
 }
+
+/* LA PASTILLA DE LA BARRA DE TIEMPO (Tarea 72). El mismo tratamiento translucido
+   que los controles flotantes -.btn-flotante-*-, porque se dibuja encima del video
+   o del texto. Los colores viven aca y no en BarraDeTiempo.tsx: T209 no deja
+   escribirlos a mano en los componentes. En la entrega de Jules estaban en linea
+   y la guardiana se burlaba con un comentario falso pegado a cada color; la
+   revision de la 72 los mudo aca. El relleno es blanco y no rojo: el rojo se gana
+   grabando, y esta barra sale tambien en Leer. */
+.pastilla-tiempo {
+  background-color: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+
+.pastilla-tiempo-pista {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.pastilla-tiempo-relleno {
+  background-color: rgba(255, 255, 255, 0.9);
+}
