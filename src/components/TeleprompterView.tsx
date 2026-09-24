@@ -783,26 +783,57 @@ export default function TeleprompterView({
           const letra = filaPx / 1.4
           const aireX = letra * 0.04
           const grosor = Math.max(2, letra * 0.09)
-          capsulasRef.current.forEach((c, k) => {
-            if (!c) return
-            const s = segs[k]
-            if (!s) {
-              c.style.opacity = '0'
-              return
+          // CADA LINEA SE QUEDA EN SU RENGLON -24-09-2026-. Se asignaban por orden: la primera
+          // linea al primer renglon de la ventana. Al pasar la ventana al renglon siguiente, la
+          // linea del renglon viejo cruzaba en diagonal al nuevo y la que ya estaba en el nuevo
+          // se apagaba. Javier: "aparecen en el nuevo renglon aproximadamente desde la mitad, eso
+          // le quita un poco el efecto de deslizamiento". Ahora cada linea recuerda su renglon
+          // -data-renglon, su arriba- y lo sigue: la del renglon nuevo solo se alarga, y la del
+          // viejo se encoge hacia el final de su renglon mientras se apaga.
+          const caps = capsulasRef.current.filter((c): c is HTMLDivElement => c !== null)
+          const usadas = new Set<HTMLDivElement>()
+          const asignada = new Map<number, HTMLDivElement>()
+          for (let k = 0; k < segs.length; k++) {
+            const enSuRenglon = caps.find((c) => !usadas.has(c) && c.style.opacity !== '0' && c.style.opacity !== '' && Number(c.dataset.renglon) === segs[k].arriba)
+            if (enSuRenglon) { usadas.add(enSuRenglon); asignada.set(k, enSuRenglon) }
+          }
+          for (let k = 0; k < segs.length; k++) {
+            if (asignada.has(k)) continue
+            const libre = caps.find((c) => !usadas.has(c) && (c.style.opacity === '0' || c.style.opacity === ''))
+              || caps.find((c) => !usadas.has(c))
+            if (libre) { usadas.add(libre); asignada.set(k, libre) }
+          }
+          for (const c of caps) {
+            if (usadas.has(c)) continue
+            if (c.style.opacity !== '0' && c.style.opacity !== '') {
+              // Se va: se encoge hacia el final de su renglon y se apaga.
+              const izq = parseFloat(c.style.left) || 0
+              const ancho = parseFloat(c.style.width) || 0
+              c.style.left = `${izq + ancho}px`
+              c.style.width = '0px'
             }
+            c.style.opacity = '0'
+          }
+          asignada.forEach((c, k) => {
+            const s = segs[k]
             // Una capsula que estaba apagada aparece DONDE va, sin barrer desde su lugar viejo.
+            // Y nace desde el comienzo de su tramo, con ancho cero, para crecer hacia adelante.
             const estabaApagada = c.style.opacity === '' || c.style.opacity === '0'
             const transicion = c.style.transition
-            if (estabaApagada) c.style.transition = 'none'
+            if (estabaApagada) {
+              c.style.transition = 'none'
+              c.style.left = `${s.izquierda - aireX}px`
+              c.style.top = `${s.arriba + s.alto - grosor / 2}px`
+              c.style.width = '0px'
+              void c.offsetWidth
+              c.style.transition = transicion
+            }
+            c.dataset.renglon = String(s.arriba)
             c.style.left = `${s.izquierda - aireX}px`
             c.style.top = `${s.arriba + s.alto - grosor / 2}px`
             c.style.width = `${s.ancho + 2 * aireX}px`
             c.style.height = `${grosor}px`
             c.style.borderRadius = `${grosor / 2}px`
-            if (estabaApagada) {
-              void c.offsetWidth
-              c.style.transition = transicion
-            }
             c.style.opacity = String(alfa)
           })
         }
