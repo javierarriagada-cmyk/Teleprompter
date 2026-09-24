@@ -74,4 +74,15 @@ if (faltan.length > 0) {
   process.exit(1)
 }
 
+// LA RED DE VOSK CORRE DE A 3 CUADROS -24-09-2026, medido-. El modelo viene sin
+// --frames-per-chunk y con el valor por omision retiene las palabras: aparecen en los
+// parciales 250 ms despues de dichas; con 3, 140 ms, reconociendo lo mismo. Las cifras
+// estan en VoskNativoPlugin.java, arriba de SEGUNDOS_POR_TROZO. La carpeta del modelo no
+// esta en git, asi que la linea se agrega aca: si no, se pierde al volver a bajarlo.
+const conf = path.join(DESTINO, 'conf', 'model.conf')
+const textoConf = fs.readFileSync(conf, 'utf8')
+if (!textoConf.includes('--frames-per-chunk')) {
+  fs.writeFileSync(conf, textoConf.replace(/\s*$/, '') + '\n--frames-per-chunk=3\n')
+}
+
 console.log(`Listo: ${DESTINO}`)

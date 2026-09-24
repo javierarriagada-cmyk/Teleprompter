@@ -98,8 +98,28 @@ public class VoskNativoPlugin extends Plugin {
      *     si la persona esta hablando, sin esperar al reconocedor.
      *
      * La fuente es la misma que usaba SpeechService: VOICE_RECOGNITION.
+     *
+     * TROZOS DE 20 MS Y --frames-per-chunk=3 EN assets/model-es/conf/model.conf
+     * -24-09-2026, medido-. Con el audio exacto que escucho Vosk en doce lecturas de
+     * Javier, pasado por Vosk en el PC -teleprom/02-lecturas/motor-24-sep, banco.py-,
+     * cuanto tarda una palabra en aparecer en un parcial desde que termina de decirse:
+     *
+     *   trozo 100 ms, modelo como venia          290 ms   p90 520
+     *   trozo  20 ms, modelo como venia          250 ms   p90 490
+     *   trozo  20 ms, --frames-per-chunk=5       160 ms   p90 340
+     *   trozo  20 ms, --frames-per-chunk=3       140 ms   p90 310
+     *
+     * Y reconoce lo mismo: 96,6% de las palabras oidas estan en el guion en todos los
+     * casos. frames-per-chunk es cada cuantos cuadros de audio corre la red de Vosk; el
+     * modelo lo dejaba en su valor por omision y eso retenia las palabras. Cuesta mas
+     * proceso: en el PC paso de 20 a 7 veces mas rapido que el tiempo real.
+     *
+     * Con trozos de 20 ms habria 50 parciales por segundo cruzando a JavaScript. Se
+     * entrega uno solo cuando el texto CAMBIA -es lo unico que mueve la pantalla-, o cada
+     * TROZOS_POR_ENTREGA trozos para que el registro siga teniendo los tiempos y el nivel.
      */
-    private static final float SEGUNDOS_POR_TROZO = 0.1f;
+    private static final float SEGUNDOS_POR_TROZO = 0.02f;
+    private static final int TROZOS_POR_ENTREGA = 5;
     // Cuantos audios guardados se conservan. Cada minuto son 1,9 MB.
     private static final int AUDIOS_GUARDADOS = 12;
 
@@ -122,7 +142,8 @@ public class VoskNativoPlugin extends Plugin {
      * grande, y al cambiar se lee de corrido hasta ponerse al dia.
      */
     private static final long UMBRAL_RETENCION_MS = 250;
-    private static final int TROZOS_PARA_RELEVO = 5;
+    // En tiempo, no en trozos: medio segundo seguido de atraso -25 trozos de 20 ms-.
+    private static final int TROZOS_PARA_RELEVO = Math.round(0.5f / SEGUNDOS_POR_TROZO);
     private static final long MS_ENTRE_RELEVOS = 5000;
     private static final float SEGUNDOS_BUFFER_RELEVO = 3.0f;
 
@@ -233,7 +254,9 @@ public class VoskNativoPlugin extends Plugin {
                 frecuenciaMic,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT,
-                Math.max(minimo, muestrasPorTrozo * factor * 2 * 4));
+                // Medio segundo de colchon: con trozos de 20 ms, cuatro trozos serian 80 ms, y
+                // cualquier tiron del telefono -la camara empezando a grabar- perderia audio.
+                Math.max(minimo, Math.round(FRECUENCIA * 0.5f) * factor * 2));
             if (grabadora.getState() != AudioRecord.STATE_INITIALIZED) {
                 grabadora.release();
                 reconocedor.close();
@@ -391,6 +414,9 @@ public class VoskNativoPlugin extends Plugin {
             byte[] bytes = new byte[muestrasPorTrozo * 2];
             long muestras = 0;
             int trozosAtrasados = 0;
+            String ultimoParcial = null;
+            int trozosSinEntregar = 0;
+            double rmsMaximo = 0;
             long ultimoRelevoEpochMs = 0;
             try {
                 while (escuchando) {
@@ -439,7 +465,14 @@ public class VoskNativoPlugin extends Plugin {
                     boolean cerro = reconocedor.acceptWaveForm(trozo, n);
                     String json = cerro ? reconocedor.getResult() : reconocedor.getPartialResult();
                     long procesado = System.currentTimeMillis();
-                    entregar(cerro ? "final" : "parcial", json, muestras * 1000L / (long) FRECUENCIA, leido, procesado, rms);
+                    rmsMaximo = Math.max(rmsMaximo, rms);
+                    trozosSinEntregar++;
+                    if (cerro || !json.equals(ultimoParcial) || trozosSinEntregar >= TROZOS_POR_ENTREGA) {
+                        entregar(cerro ? "final" : "parcial", json, muestras * 1000L / (long) FRECUENCIA, leido, procesado, rmsMaximo);
+                        ultimoParcial = cerro ? null : json;
+                        trozosSinEntregar = 0;
+                        rmsMaximo = 0;
+                    }
                     }
                     if (cambiar) {
                         soltar(grabadora);
