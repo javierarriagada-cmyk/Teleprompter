@@ -147,7 +147,7 @@ cerrar la grabacion, y se guarda al lado del mp4. Al WebView le va SOLO LA RUTA,
 nunca la imagen: mandar imagenes por el puente lo congestiona y no hace falta.
 
 DONDE SE VEN. En la pantalla de inicio, debajo de la lista de guiones, una tira
-horizontal: miniatura, duracion y fecha. Es donde las pone PromptSmart y esta
+horizontal: miniatura, duracion y fecha. Es donde las pone otra aplicacion y esta
 bien puesto: el video al lado del guion que lo produjo, no escondido en otra
 pantalla. No una pestaña nueva.
 

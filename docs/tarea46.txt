@@ -172,7 +172,7 @@ PARTE 3 - EL GUION DE BIENVENIDA, Y LA PANTALLA VACIA QUE DESAPARECE
 Hoy la biblioteca vacia dice "Aca van a estar tus guiones", que repite el titulo
 de la pantalla con mas palabras y no cuenta que hace la aplicacion.
 
-LO QUE HACE LA COMPETENCIA, Y ES MEJOR QUE CUALQUIER FRASE: no escriben un cartel
+LO QUE HACEN OTRAS APLICACIONES, Y ES MEJOR QUE CUALQUIER FRASE: no escriben un cartel
 mejor, ELIMINAN LA PANTALLA VACIA poniendo un guion de ejemplo. Ese guion, leido
 en voz alta, es el que explica el producto.
 

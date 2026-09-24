@@ -19,7 +19,7 @@ Hoy la pantalla de lectura APAGA todo salvo una ventana:
     abajo de la ventana     velo 0.55
 
 Invertirlo seria lo contrario: todo el texto legible, y una banda apenas
-perceptible detras de los renglones vivos. Es lo que hace PromptSmart -captura que
+perceptible detras de los renglones vivos. Es lo que hace otra aplicacion -captura que
 mostro Javier el 15 de septiembre-: pinta una franja sobre las lineas actuales y
 deja el resto igual de claro.
 
@@ -65,12 +65,11 @@ para decir que esta vacia.
 No dice que el texto se mueve solo, siguiendo la voz, sin tocar nada.
 
 CORREGIDO EL 15 DE SEPTIEMBRE DE 2026. Aca decia "hay veinte teleprompters en la
-tienda y ninguno hace eso". ES FALSO: PromptSmart, Teleprompter.com y
-VoicePrompter siguen la voz, y el primero hace mas de diez anos. Ver
-docs/competencia-el-mercado.txt.
+tienda y ninguno hace eso". ES FALSO: otras aplicaciones siguen la voz, y una de ellas hace mas de diez
+anos. El analisis esta en la carpeta privada del proyecto -Escritorio/teleprom-.
 
 Seguir la voz no es la diferencia: es el precio de entrada. LA DIFERENCIA ES QUE
-A TODOS SE LES CORRE -a PromptSmart, medido por terceros, se le corre 5 a 10
+A TODOS SE LES CORRE -a una de ellas, medido por terceros, se le corre 5 a 10
 palabras con ruido de fondo, y su forma de recuperarse es que el que lee toque la
 pantalla-. La promesa que nos queda es que no te perdemos, y que si te perdemos
 no te das cuenta. ESO TODAVIA NO LO CUMPLIMOS, asi que tampoco se puede escribir
@@ -125,7 +124,7 @@ Es una pregunta de producto, no de codigo. No se resuelve construyendo.
    Estado: DESCARTADA HASTA QUE EL MOTOR LA MEREZCA.
 ================================================================================
 
-PromptSmart tiene un puntero que marca la linea actual -y se puede quitar, o sea
+Otra aplicacion tiene un puntero que marca la linea actual -y se puede quitar, o sea
 que ni ellos lo dan por bueno para todos-.
 
 Javier lo descarto con un argumento que hay que conservar: "no lo hemos abarcado
@@ -429,7 +428,7 @@ aprobo como "un piso minimo de coherencia". Esto es el piso completo.
        la persona lo va a buscar. Es la evidencia mas fuerte de que esto no se
        arregla moviendo un boton.
 
-    d. LA PANTALLA LIMPIA DE PROMPTSMART. Javier mando una captura el 21 de
+    d. LA PANTALLA LIMPIA DE OTRA APLICACION. Javier mando una captura el 21 de
        septiembre de 2026: con la lectura andando, en la pantalla hay el texto,
        el recuadro de la camara, y UNA SOLA COSA MAS: una equis para cerrar.
        Nada de carteles de estado, nada de botoneras.

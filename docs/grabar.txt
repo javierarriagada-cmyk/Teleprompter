@@ -44,7 +44,7 @@ para no re-derivarlo despues.
      una grabacion de medicion que se tira. La regla de la tarea 45 -no vibra
      nada durante la lectura salvo Pausa y Salir- queda igual de vigente o mas.
 
-  d. Y CAMBIA PARA QUE SIRVEN LAS CAPTURAS DE LA COMPETENCIA. Una aplicacion que
+  d. Y CAMBIA PARA QUE SIRVEN LAS CAPTURAS DE OTRAS APLICACIONES. Una aplicacion que
      graba es comparable con la nuestra. Una que no graba resuelve un problema
      mas facil y sus decisiones de pantalla hay que descontarlas.
 

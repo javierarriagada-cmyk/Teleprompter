@@ -48,7 +48,7 @@ LO SIGUIENTE, Y ES LO GRANDE
       docs/ajustes-propuesta.html    14 KB
       teleprom/00-arquitectura/DECISIONES-DE-DISENO.txt        1023 lineas
       teleprom/00-arquitectura/PRODUCTO-pantallas-y-funciones.txt
-      docs/competencia-*.txt y docs/competencia-promptsmart/
+      los analisis y capturas de otras aplicaciones, hoy en la carpeta privada del proyecto -Escritorio/teleprom-
       docs/pantallas/                once capturas de las nuestras
 
   ORDEN ACORDADO CON JAVIER:

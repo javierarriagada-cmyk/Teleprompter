@@ -24,7 +24,7 @@ decision de Javier hasta terminar lo visual.
    Javier trajo una recomendacion externa para usarlo en vez de Vosk.
 
    LO PRIMERO: esa recomendacion NO ESTA ESCRITA SOBRE NUESTRO PROYECTO. Menciona
-   asr.worker.ts, audio-worklet-processor.ts, useVoiceTrack.tsx, alignWords y
+   asr.worker.ts, audio-worklet-processor.ts, un hook de seguimiento de voz, alignWords y
    fuse.js. Comprobado: NINGUNO EXISTE. Usamos leven, no fuse.js, y nunca tuvimos
    un AudioWorklet calculando RMS. Lo unico que coincide es useASR.ts, que es un
    nombre comun.

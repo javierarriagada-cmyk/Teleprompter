@@ -71,7 +71,7 @@ previa queda tapada.
 
 Y la salida facil NO SIRVE: poner toBack en false para el recuadro pondria la
 imagen POR DELANTE del WebView, y entonces el recuadro taparia el texto. Javier
-pidio expresamente lo contrario, mirando PromptSmart: EL TEXTO VA POR ENCIMA DE
+pidio expresamente lo contrario, mirando otra aplicacion: EL TEXTO VA POR ENCIMA DE
 LA IMAGEN, siempre.
 
 COMO SE RESUELVE. La vista previa queda SIEMPRE con toBack en true, en los tres

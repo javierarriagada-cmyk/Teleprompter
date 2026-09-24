@@ -229,7 +229,7 @@ cuarenta minutos perdida.
     cerrar bien el archivo cuando la pantalla deja de estar al frente no es eso:
     es el minimo para que lo grabado exista.
 
-Y HAY UN DEFECTO CONOCIDO QUE VIENE CON ESTE CAMINO. A PromptSmart le reportan
+Y HAY UN DEFECTO CONOCIDO QUE VIENE CON ESTE CAMINO. A otra aplicacion le reportan
 problemas de sincronia entre audio y video. Es exactamente el punto donde se
 rompe lo que elegimos: capturar el audio por un lado y juntarlo con la imagen
 despues. No es motivo para cambiar de camino -es el unico que nos deja seguir la
@@ -284,7 +284,7 @@ Se reviso el codigo. Es menos de lo que parece.
 ===============================================================================
 
 COMO LO HACEN LOS DEMAS, averiguado el 20 de septiembre: casi nadie se hace
-cargo. PromptSmart y Teleprompter Pro guardan en la galeria del sistema y el
+cargo. Otras aplicaciones guardan en la galeria del sistema y el
 espacio es problema del usuario. El unico que hace algo es Teleprompter for
 Video: ofrece 720p, 1080p y 4K y muestra una estimacion del espacio debajo de
 las opciones. NINGUNO muestra cuanto queda por grabar.
@@ -360,7 +360,7 @@ Y LO MAS IMPORTANTE DE ESTA SECCION: ESTOS NUMEROS NO SE ESCRIBEN EN EL CODIGO.
 Es un telefono, y uno bueno. Uno barato puede tener la frontal en 720p y nada
 mas. La lista de calidades se le PREGUNTA AL APARATO al abrir los ajustes, y se
 muestra lo que ese aparato tenga, con un orden de reemplazo si falta lo que
-pedimos. CameraX tiene esa pieza hecha. Es justo el error de PromptSmart: una
+pedimos. CameraX tiene esa pieza hecha. Es justo el error de otra aplicacion: una
 lista fija heredada del iPhone, con medidas que en Android no existen.
 
 Lo unico nuestro y fijo es la compresion: una cara quieta a 8 megabits. Eso vale
@@ -680,7 +680,7 @@ cuando le toque a cada tarea.
   El mp4 vive en disco; en IndexedDB va SOLO el indice. Y en un almacen aparte,
   sin inflar ResumenGuion.
 
-  El lugar lo acerto PromptSmart: la misma pantalla de inicio, debajo de los
+  El lugar lo acerto otra aplicacion: la misma pantalla de inicio, debajo de los
   guiones, como una tira con miniatura, duracion y fecha. No una pestana. Una
   grabacion incompleta se muestra marcada y no se exporta hasta que el usuario
   decida.

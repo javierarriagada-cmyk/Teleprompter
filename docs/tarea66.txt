@@ -215,7 +215,7 @@ mirar la pantalla no pertenece a esta pantalla.
     SE QUEDA   el tiempo, si esta encendido
     SE QUEDA   los controles que aparecen al tocar y se van solos, como ya hacen
 
-La referencia es la captura de PromptSmart que mando Javier: con la lectura
+La referencia es la captura de otra aplicacion que mando Javier: con la lectura
 andando hay el texto, la imagen y una equis. Nada mas.
 
 

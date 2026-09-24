@@ -17,7 +17,7 @@ Grabar tiene que ser nativo. La calidad que da el telefono -1080p a 20 Mbps,
 4K a 50, audio AAC a 256 kbps- sale de los perfiles del propio aparato y del
 codificador por hardware. Grabando desde la pagina, el navegador entrega un
 stream recortado, en un contenedor que la galeria no siempre abre, y sin
-control del bitrate. La competencia graba nativo: el APK de PromptSmart no
+control del bitrate. Otras aplicaciones graban nativo: el APK de una de ellas no
 tiene una sola linea de WebView.
 
 Pero si graba el lado nativo, el lado nativo es el dueño de la camara. Y

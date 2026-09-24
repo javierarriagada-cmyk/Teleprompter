@@ -15,7 +15,7 @@ Hoy el recuadro se dibuja por delante del texto y tapa las palabras que quedan
 abajo. Tiene que ser al reves: EL TEXTO PASA POR ENCIMA DE LA IMAGEN y se lee
 completo, aunque el recuadro este ahi.
 
-Javier lo vio en PromptSmart el 21 de septiembre de 2026 y mando la captura:
+Javier lo vio en otra aplicacion el 21 de septiembre de 2026 y mando la captura:
 la cara esta en el recuadro y los renglones del guion se leen enteros por
 encima de ella. Asi tiene que quedar.
 
@@ -39,7 +39,7 @@ pantalla. Si al mirarlo en el telefono queda demasiado oscuro, es un numero
 para ajustar despues, no un cambio de diseño.
 
 EL TAMAÑO NO SE TOCA: el 32% del ancho esta bien. Medido contra la captura de
-PromptSmart, el de ellos ocupa mas o menos lo mismo.
+esa aplicacion, el de ellos ocupa mas o menos lo mismo.
 
 
 2. EL RECUADRO NACE EN EL LUGAR EQUIVOCADO

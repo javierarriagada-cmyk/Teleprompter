@@ -2,7 +2,7 @@ EL MAPA: QUE ESTA DECIDIDO, QUE SE CONTRADICE, QUE FALTA
 Leido el 21 de septiembre de 2026, antes de proponer nada.
 
 Fuentes: docs/identidad.html, estandar.html, circuito.html, la-cara.html,
-ajustes-propuesta.html, estado.html, competencia-*.txt, y
+ajustes-propuesta.html, estado.html, los analisis de otras aplicaciones -en la carpeta privada del proyecto -Escritorio/teleprom--, y
 teleprom/00-arquitectura/DECISIONES-DE-DISENO.txt.
 
 
@@ -59,7 +59,7 @@ B. EL ESTADO VACIO, "LA TARJETA NO DESAPARECE: ESPERA"
    CUADRO TENIENDO GUIONES, durante el arranque.
 
 C. BORRAR SE HACE MANTENIENDO APRETADO
-   identidad.html, sobre los botones de editar y borrar de la competencia: "En
+   identidad.html, sobre los botones de editar y borrar de otras aplicaciones: "En
    Sigo se llega a ellas manteniendo apretado, como en todas partes."
 
    VISTO HOY: Javier mantuvo apretada una grabacion para borrarla y no paso
@@ -116,7 +116,7 @@ F. LA GRAMATICA DEL MOVIMIENTO
     trata: todos son anteriores a la camara.
 
   - DONDE VIVEN LAS GRABACIONES. La tira esta puesta debajo de los guiones
-    -como PromptSmart- pero nadie decidio la jerarquia entre las dos
+    -como otra aplicacion de referencia- pero nadie decidio la jerarquia entre las dos
     bibliotecas en la misma portada, que era la pantalla mas cuidada.
 
   - QUE PASA CON LA PANTALLA DE LECTURA. F5 de DECISIONES quedo acotada: lo
@@ -141,8 +141,9 @@ Ya esta medido y no se rediscute:
   el icono y la tienda           identidad.html
   el aparato de destino          estado.html: moto g86, 1220x2712, densidad
                                  450. El emulador miente.
-  la competencia                 competencia-*.txt y el recorrido estructural
-                                 de PromptSmart del 21 de septiembre
+  otras aplicaciones             sus analisis y el recorrido estructural de
+                                 una de ellas del 21 de septiembre, en
+                                 la carpeta privada del proyecto -Escritorio/teleprom-
 
 
 ===============================================================================
