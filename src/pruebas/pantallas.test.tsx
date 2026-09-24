@@ -637,10 +637,13 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
 
     expect(screen.queryByText('La toma')).toBeNull()
 
-    // Cuatro filas y en este orden. Desde el 24-09-2026 el cajon no tiene
-    // titulo de grupo ni muestra: el guion de arriba es la muestra.
-    const filas = Array.from(panel.querySelectorAll('.fila-aa-nombre')).map((e) => e.textContent)
-    expect(filas).toEqual(['Tamaño', 'Ancho', 'Letra', 'Colores'])
+    // Cuatro grupos y en este orden. Desde el 24-09-2026 el cajon no tiene
+    // titulo, ni muestra, ni nombres al lado de los controles: el guion de
+    // arriba es la muestra y cada control se dibuja. Los grupos se nombran
+    // para el lector de pantalla.
+    const grupos = Array.from(panel.querySelectorAll('[role="group"]')).map((e) => e.getAttribute('aria-label'))
+    expect(grupos).toEqual(['Tamaño de letra', 'Tipografía', 'Ancho del texto', 'Colores de lectura'])
+    expect(panel.textContent).not.toMatch(/Tamaño|Ancho|Letra|Colores/)
 
     const htmlText = panel.innerHTML
     expect(htmlText).not.toContain('Dónde lees:')

@@ -9,6 +9,7 @@ import { hapticaSeleccion, hapticaToqueSuave } from '../haptica'
 import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
 import { IconoAtras, IconoEmpezar } from './IconosApp'
 import { EditorGuion } from './EditorGuion'
+import { familiaLectura } from './estiloLectura'
 import type { Editor } from '@tiptap/react'
 
 // reubicarTramos vivia aca: con el <textarea>, cada tecla llegaba como un
@@ -526,132 +527,141 @@ export default function EditorView({
                 entiende solo -esta debajo del Aa que lo abrio- y se cierra
                 tocando el guion o bajandolo por la agarradera. */}
 
-            {/* Cuatro filas. Cada control MUESTRA lo que hace en vez de
-                nombrarlo: la A chica y la A grande, la columna dibujada, el Aa
-                escrito en cada letra, el fondo y la letra de cada pareja. Los
-                nombres quedan en aria-label, para el lector de pantalla. Los
-                selectores son el mismo objeto -.selector-aa-, no botoneras
-                decoradas por separado. */}
+            {/* TRES FILAS Y NINGUNA PALABRA. 24-09-2026.
+                Los controles ya mostraban lo que hacen -la A chica y la A
+                grande, el Aa en cada letra, las columnas dibujadas, las
+                parejas pintadas- y el dueno vio que los nombres de al lado
+                sobraban: "la verdad es que es innecesario". Sin nombres, los
+                controles ocupan todo el ancho, como el cajon de temas de
+                Apple Books: todo cae en la misma grilla y los blancos de
+                toque crecen.
+                  1. Tamano: una pieza partida al medio. El numero se fue de
+                     la vista -el cambio se ve en el guion- y queda para el
+                     lector de pantalla.
+                  2. Letra y ancho, mitad y mitad: los dos cambian la forma
+                     del texto.
+                  3. Colores: tres tarjetas anchas. Es lo que mas cambia el
+                     guion y por eso tiene la fila entera.
+                Los nombres siguen en aria-label y en title: el lector de
+                pantalla y las pruebas los usan. Los selectores son el mismo
+                objeto -.selector-aa-, no botoneras decoradas por separado.
+                OJO con "Ancho": es el nombre del grupo -aria-label "Ancho del
+                texto"- y de la primera opcion. Hasta el 23-09-2026 la fila
+                decia "Ancho del texto" porque getByText encontraba dos
+                "Ancho"; ahora las pruebas buscan el boton por rol. */}
             <div className="cajon-aa-filas">
-              <div className="fila-aa">
-                <span className="fila-aa-nombre">Tamaño</span>
-                <div className="selector-aa" role="group" aria-label="Tamaño de letra">
-                  <button
-                    type="button"
-                    onClick={onLetraMenos}
-                    aria-label="Disminuir letra panel"
-                    className="btn-deformable selector-aa-opcion letra-aa-chica"
-                  >
-                    A
-                  </button>
-                  <span data-testid="valor-letra-panel" className="selector-aa-valor">{fontSize}</span>
-                  <button
-                    type="button"
-                    onClick={onLetraMas}
-                    aria-label="Aumentar letra panel"
-                    className="btn-deformable selector-aa-opcion letra-aa-grande"
-                  >
-                    A
-                  </button>
-                </div>
+              <div className="selector-aa selector-aa-lleno" role="group" aria-label="Tamaño de letra">
+                <button
+                  type="button"
+                  onClick={onLetraMenos}
+                  aria-label="Disminuir letra panel"
+                  className="btn-deformable selector-aa-opcion letra-aa-chica"
+                >
+                  A
+                </button>
+                <span className="selector-aa-divisor" aria-hidden="true" />
+                <button
+                  type="button"
+                  onClick={onLetraMas}
+                  aria-label="Aumentar letra panel"
+                  className="btn-deformable selector-aa-opcion letra-aa-grande"
+                >
+                  A
+                </button>
+                <span data-testid="valor-letra-panel" className="solo-lector" aria-live="polite">{fontSize}</span>
               </div>
 
-              {(setColumnaAngosta || setMarginPercent) && (
-                <div className="fila-aa">
-                  {/* OJO: la fila se llama "Ancho" y la primera opcion TAMBIEN
-                      -su aria-label-. getByText('Ancho') encuentra la fila; las
-                      pruebas buscan el boton por rol. Hasta el 24-09-2026 la
-                      fila decia "Ancho del texto" justamente para no chocar con
-                      el texto del boton -se vio el 23-09-2026 al sacar los dos
-                      puntos-; ahora el boton es un dibujo y el choque es solo
-                      de nombre accesible. */}
-                  <span className="fila-aa-nombre">Ancho</span>
-                  <div className="selector-aa" role="group" aria-label="Ancho del texto">
-                    {([
-                      { nombre: 'Ancho', angosta: false, margen: 5, activo: !columnaAngosta && marginPercent !== 12, lineas: [16, 16, 11] },
-                      { nombre: 'Medio', angosta: false, margen: 12, activo: !columnaAngosta && marginPercent === 12, lineas: [11, 11, 8] },
-                      { nombre: 'Angosto', angosta: true, margen: 5, activo: columnaAngosta, lineas: [6, 6, 4] }
-                    ]).map((o) => (
-                      <button
-                        key={o.nombre}
-                        type="button"
-                        aria-label={o.nombre}
-                        aria-pressed={o.activo}
-                        className={`btn-deformable selector-aa-opcion${o.activo ? ' activa' : ''}`}
-                        onClick={() => {
-                          hapticaSeleccion()
-                          setColumnaAngosta?.(o.angosta)
-                          setMarginPercent?.(o.margen)
-                        }}
-                      >
-                        <svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true">
-                          {o.lineas.map((ancho, i) => (
-                            <rect key={i} x={(22 - ancho) / 2} y={3 + i * 5} width={ancho} height="2" rx="1" fill="currentColor" />
-                          ))}
-                        </svg>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
+              {(setTipoFuente || setColumnaAngosta || setMarginPercent) && (
+                <div className="fila-aa-par">
+                  {setTipoFuente && (
+                    <div className="selector-aa selector-aa-lleno" role="group" aria-label="Tipografía">
+                      {([
+                        { valor: 'sans' as const, nombre: 'Sans' },
+                        { valor: 'serif' as const, nombre: 'Serif' }
+                      ]).map((o) => (
+                        <button
+                          key={o.valor}
+                          type="button"
+                          aria-label={o.nombre}
+                          aria-pressed={tipoFuente === o.valor}
+                          className={`btn-deformable selector-aa-opcion aa-${o.valor}${tipoFuente === o.valor ? ' activa' : ''}`}
+                          onClick={() => {
+                            hapticaSeleccion()
+                            setTipoFuente(o.valor)
+                          }}
+                        >
+                          Aa
+                        </button>
+                      ))}
+                    </div>
+                  )}
 
-              {setTipoFuente && (
-                <div className="fila-aa">
-                  <span className="fila-aa-nombre">Letra</span>
-                  <div className="selector-aa" role="group" aria-label="Tipografía">
-                    {([
-                      { valor: 'sans' as const, nombre: 'Sans' },
-                      { valor: 'serif' as const, nombre: 'Serif' }
-                    ]).map((o) => (
-                      <button
-                        key={o.valor}
-                        type="button"
-                        aria-label={o.nombre}
-                        aria-pressed={tipoFuente === o.valor}
-                        className={`btn-deformable selector-aa-opcion aa-${o.valor}${tipoFuente === o.valor ? ' activa' : ''}`}
-                        onClick={() => {
-                          hapticaSeleccion()
-                          setTipoFuente(o.valor)
-                        }}
-                      >
-                        Aa
-                      </button>
-                    ))}
-                  </div>
+                  {(setColumnaAngosta || setMarginPercent) && (
+                    <div className="selector-aa selector-aa-lleno" role="group" aria-label="Ancho del texto">
+                      {([
+                        { nombre: 'Ancho', angosta: false, margen: 5, activo: !columnaAngosta && marginPercent !== 12, lineas: [16, 16, 11] },
+                        { nombre: 'Medio', angosta: false, margen: 12, activo: !columnaAngosta && marginPercent === 12, lineas: [11, 11, 8] },
+                        { nombre: 'Angosto', angosta: true, margen: 5, activo: columnaAngosta, lineas: [6, 6, 4] }
+                      ]).map((o) => (
+                        <button
+                          key={o.nombre}
+                          type="button"
+                          aria-label={o.nombre}
+                          aria-pressed={o.activo}
+                          className={`btn-deformable selector-aa-opcion${o.activo ? ' activa' : ''}`}
+                          onClick={() => {
+                            hapticaSeleccion()
+                            setColumnaAngosta?.(o.angosta)
+                            setMarginPercent?.(o.margen)
+                          }}
+                        >
+                          <svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true">
+                            {o.lineas.map((ancho, i) => (
+                              <rect key={i} x={(22 - ancho) / 2} y={3 + i * 5} width={ancho} height="2" rx="1" fill="currentColor" />
+                            ))}
+                          </svg>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
               {/* Colores de lectura: parejas, no dos listas. Fuente: PAREJAS_COLOR. */}
               {setColorFondo && setColorLetra && (
-                <div className="fila-aa">
-                  <span className="fila-aa-nombre">Colores</span>
-                  <div className="parejas-aa" role="group" aria-label="Colores de lectura">
-                    {[
-                      { fondo: PAREJAS_COLOR[0].fondo, letra: PAREJAS_COLOR[0].letra, label: 'Negro con blanco' },
-                      { fondo: PAREJAS_COLOR[1].fondo, letra: PAREJAS_COLOR[1].letra, label: 'Negro con ámbar' },
-                      { fondo: PAREJAS_COLOR[2].fondo, letra: PAREJAS_COLOR[2].letra, label: 'Blanco con negro' }
-                    ].map((p, idx) => {
-                      const activo = colorFondo.toUpperCase() === p.fondo.toUpperCase() && colorLetra.toUpperCase() === p.letra.toUpperCase()
-                      return (
-                        <button
-                          key={idx}
-                          type="button"
-                          title={p.label}
-                          aria-pressed={activo}
-                          className={`btn-deformable pareja-aa${activo ? ' activa' : ''}`}
-                          onClick={() => {
-                            hapticaSeleccion()
-                            setColorFondo(p.fondo)
-                            setColorLetra(p.letra)
-                          }}
+                <div className="parejas-aa" role="group" aria-label="Colores de lectura">
+                  {[
+                    { fondo: PAREJAS_COLOR[0].fondo, letra: PAREJAS_COLOR[0].letra, label: 'Negro con blanco' },
+                    { fondo: PAREJAS_COLOR[1].fondo, letra: PAREJAS_COLOR[1].letra, label: 'Negro con ámbar' },
+                    { fondo: PAREJAS_COLOR[2].fondo, letra: PAREJAS_COLOR[2].letra, label: 'Blanco con negro' }
+                  ].map((p, idx) => {
+                    const activo = colorFondo.toUpperCase() === p.fondo.toUpperCase() && colorLetra.toUpperCase() === p.letra.toUpperCase()
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        title={p.label}
+                        aria-label={p.label}
+                        aria-pressed={activo}
+                        className={`btn-deformable pareja-aa${activo ? ' activa' : ''}`}
+                        onClick={() => {
+                          hapticaSeleccion()
+                          setColorFondo(p.fondo)
+                          setColorLetra(p.letra)
+                        }}
+                      >
+                        {/* Fondo y letra de la pareja: son dato, no tema
+                            -modelo.ts, PAREJAS_COLOR-. El Aa va en la letra
+                            elegida, asi la tarjeta es el guion en chico. */}
+                        <span
+                          className="pareja-aa-muestra"
+                          style={{ backgroundColor: p.fondo, color: p.letra, fontFamily: familiaLectura(tipoFuente) }}
                         >
-                          {/* Fondo y letra de la pareja: son dato, no tema
-                              -modelo.ts, PAREJAS_COLOR-. */}
-                          <span className="pareja-aa-disco" style={{ backgroundColor: p.fondo, color: p.letra }}>Aa</span>
-                        </button>
-                      )
-                    })}
-                  </div>
+                          Aa
+                        </span>
+                      </button>
+                    )
+                  })}
                 </div>
               )}
             </div>

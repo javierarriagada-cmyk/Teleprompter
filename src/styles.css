@@ -529,42 +529,10 @@ textarea::placeholder {
   border-radius: var(--redondeo-pildora);
   background-color: var(--color-borde);
 }
-.cajon-aa-cabeza {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--aire-2);
-}
-.cajon-aa-titulo {
-  margin: 0;
-  font-size: var(--texto-cuerpo);
-  font-weight: 600;
-  color: var(--color-apagado);
-}
-.cajon-aa-listo {
-  background: transparent;
-  border: none;
-  color: var(--color-texto);
-  font-size: var(--texto-cuerpo);
-  font-weight: 700;
-  padding: var(--aire-2);
-  margin: calc(-1 * var(--aire-2));
-  cursor: pointer;
-}
 .cajon-aa-filas {
   display: flex;
   flex-direction: column;
-  gap: var(--aire-2);
-}
-.fila-aa {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 52px;
-}
-.fila-aa-nombre {
-  font-size: var(--texto-cuerpo);
-  font-weight: 600;
+  gap: var(--aire-3);
 }
 /* UN SOLO OBJETO PARA LOS SELECTORES: una pildora hundida y, adentro, la
    opcion elegida levantada en crema. Tamano, ancho y letra son el mismo
@@ -607,34 +575,6 @@ textarea::placeholder {
 .letra-aa-grande { font-size: 22px; font-weight: 600; }
 .aa-sans { font-family: "Source Sans 3", sans-serif; font-size: 19px; }
 .aa-serif { font-family: "Source Serif 4", serif; font-size: 19px; }
-.parejas-aa {
-  display: flex;
-  gap: var(--aire-2);
-}
-.pareja-aa {
-  width: 46px;
-  height: 46px;
-  padding: 3px;
-  border-radius: var(--redondeo-pildora);
-  border: 2px solid transparent;
-  background: transparent;
-  cursor: pointer;
-  transition: border-color 160ms ease;
-}
-.pareja-aa.activa {
-  border-color: var(--color-acento);
-}
-.pareja-aa-disco {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  border-radius: var(--redondeo-pildora);
-  box-shadow: inset 0 0 0 1px var(--color-borde);
-  font-size: 13px;
-  font-weight: 700;
-}
 /* El paso de una pareja de colores a otra se ve, no salta. */
 .hoja-editor,
 .hoja-editor > div {
@@ -694,4 +634,82 @@ textarea::placeholder {
   background-color: color-mix(in srgb, var(--color-grabando) 16%, var(--bg-superficie));
   border: 1px solid var(--color-grabando);
   color: var(--color-texto);
+}
+
+/* EL CAJON SIN PALABRAS -24-09-2026-: los selectores ocupan todo el ancho.
+   .selector-aa-lleno estira la pildora y reparte las opciones en partes
+   iguales; .fila-aa-par pone dos selectores lado a lado. */
+.selector-aa-lleno {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+}
+.selector-aa-lleno .selector-aa-opcion {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+}
+.selector-aa-divisor {
+  width: 1px;
+  align-self: stretch;
+  margin: 10px 0;
+  background-color: var(--color-borde);
+}
+.fila-aa-par {
+  display: flex;
+  gap: var(--aire-2);
+}
+.fila-aa-par > .selector-aa {
+  flex: 1;
+  min-width: 0;
+}
+/* Las parejas de color son tres tarjetas que llenan la fila: lo que mas
+   cambia el guion se lleva el lugar mas grande. */
+.parejas-aa {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--aire-2);
+}
+.pareja-aa {
+  height: 64px;
+  padding: 3px;
+  border-radius: var(--redondeo);
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 160ms ease;
+}
+.pareja-aa.activa {
+  border-color: var(--color-acento);
+}
+.pareja-aa-muestra {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--redondeo) - 4px);
+  box-shadow: inset 0 0 0 1px var(--color-borde);
+  font-size: 22px;
+  font-weight: 600;
+}
+/* Texto que existe para el lector de pantalla y no para la vista. */
+.solo-lector {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+/* button.btn-deformable -pildora- le gana a .pareja-aa por especificidad, y
+   el borde de la tarjeta elegida salia como capsula alrededor de un
+   rectangulo. Visto en el telefono, 24-09-2026. Al apretar sigue
+   deformandose -button.btn-deformable:active-. */
+button.btn-deformable.pareja-aa:not(:active) {
+  border-radius: var(--redondeo);
 }
