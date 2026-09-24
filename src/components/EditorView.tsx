@@ -11,6 +11,24 @@ import { IconoAtras, IconoEmpezar } from './IconosApp'
 import { EditorGuion } from './EditorGuion'
 import { familiaLectura } from './estiloLectura'
 import type { Editor } from '@tiptap/react'
+import { Capacitor } from '@capacitor/core'
+import { Clipboard } from '@capacitor/clipboard'
+
+// LO QUE HAY COPIADO, EN EL TELEFONO O EN EL NAVEGADOR. En el APK lo lee el plugin oficial
+// de Capacitor -el portapapeles de Android-; en el navegador, la API del navegador. Si no se
+// puede leer -permiso negado, portapapeles vacio o con una imagen- devuelve ''.
+async function leerPortapapeles(): Promise<string> {
+  try {
+    if (Capacitor.isNativePlatform()) {
+      const r = await Clipboard.read()
+      return typeof r.value === 'string' && (r.type === undefined || r.type.startsWith('text')) ? r.value : ''
+    }
+    if (navigator.clipboard && navigator.clipboard.readText) return await navigator.clipboard.readText()
+  } catch {
+    // sin portapapeles legible: el boton cae a dejar el cursor en el guion
+  }
+  return ''
+}
 
 // reubicarTramos vivia aca: con el <textarea>, cada tecla llegaba como un
 // texto nuevo entero y habia que adivinar donde habia quedado cada marca
@@ -859,7 +877,25 @@ export default function EditorView({
               // poner el cursor en un campo vacio ofrece "Pegar" solo.
               // No se agrego @capacitor/clipboard: seria una dependencia nueva para
               // ahorrar un toque que el sistema ya ahorra.
-              editorRef.current?.commands.focus('end')
+              //
+              // -24-09-2026: NO LO AHORRA. Con el editor de la Tarea 73 Android no ofrece
+              // "Pegar" al poner el cursor: Javier, "el boton pegar no esta haciendo nada".
+              // Ahora el boton PEGA: lee lo copiado -leerPortapapeles, arriba- y lo mete por
+              // el mismo parser que un pegado a mano -clipboardTextParser de EditorGuion-, asi
+              // que cada linea sigue siendo una linea. No view.pasteText: arma un ClipboardEvent
+              // que las pruebas -jsdom- no tienen. Si no hay texto copiado, queda lo de antes:
+              // el cursor al final del guion.
+              const ed = editorRef.current
+              if (!ed) return
+              ed.commands.focus('end')
+              leerPortapapeles().then((texto) => {
+                const e = editorRef.current
+                if (!texto || !e) return
+                const vista = e.view
+                const trozo = vista.someProp('clipboardTextParser', (f) => f(texto, vista.state.selection.$from, true, vista))
+                if (trozo) vista.dispatch(vista.state.tr.replaceSelection(trozo).scrollIntoView())
+                else e.commands.insertContent(texto)
+              })
             }}
             style={{
               pointerEvents: 'auto',
