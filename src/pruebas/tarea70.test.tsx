@@ -69,7 +69,7 @@ describe('Tarea 70 - El estado LISTO y LEYENDO del lienzo se hace como la foto, 
     expect(engranajeGrabar.style.right).toContain('8px')
   })
 
-  test('b) En Leer Y en Grabar, btn-empezar-toma NO contiene el texto Empezar y tiene un svg adentro', async () => {
+  test('b) En Leer Y en Grabar, btn-empezar-toma NO contiene el texto Empezar; en Leer lleva el triangulo y en Grabar el punto rojo', async () => {
     await crearAppConGuion()
 
     // Leer
@@ -77,6 +77,7 @@ describe('Tarea 70 - El estado LISTO y LEYENDO del lienzo se hace como la foto, 
     const btnEmpezarLeer = await screen.findByTestId('btn-empezar-toma')
     expect(btnEmpezarLeer.textContent).not.toContain('Empezar')
     expect(btnEmpezarLeer.querySelector('svg')).not.toBeNull()
+    expect(btnEmpezarLeer.classList.contains('btn-empezar-leer')).toBe(true)
 
     // Volver
     fireEvent.click(screen.getByTestId('btn-volver-listo'))
@@ -85,7 +86,10 @@ describe('Tarea 70 - El estado LISTO y LEYENDO del lienzo se hace como la foto, 
     fireEvent.click(await screen.findByTestId('btn-grabar-tarjeta'))
     const btnEmpezarGrabar = await screen.findByTestId('btn-empezar-toma')
     expect(btnEmpezarGrabar.textContent).not.toContain('Empezar')
-    expect(btnEmpezarGrabar.querySelector('svg')).not.toBeNull()
+    // 24-09-2026: cada puerta con el estandar de sus botones. Grabar lleva el
+    // punto rojo; Leer, el triangulo en crema.
+    expect(btnEmpezarGrabar.querySelector('.punto-grabar')).not.toBeNull()
+    expect(btnEmpezarGrabar.classList.contains('btn-empezar-grabar')).toBe(true)
   })
 
   test('c) panel-controles-listo NO EXISTE en ninguna de las dos puertas', async () => {

@@ -415,6 +415,26 @@ public class CamaraNativaPlugin extends Plugin {
         });
     }
 
+    // El brillo del sistema, de 0 a 1, para que la barra de brillo del
+    // cajon de la toma parta de donde esta la pantalla. Leer este ajuste no
+    // pide permiso; escribirlo si, y por eso el brillo de la toma se pone en
+    // la ventana -fijarBrillo- y no en el sistema. 24-09-2026.
+    @PluginMethod
+    public void leerBrillo(PluginCall call) {
+        try {
+            int v = android.provider.Settings.System.getInt(
+                getContext().getContentResolver(),
+                android.provider.Settings.System.SCREEN_BRIGHTNESS,
+                128
+            );
+            JSObject ret = new JSObject();
+            ret.put("valor", Math.min(1.0, v / 255.0));
+            call.resolve(ret);
+        } catch (Exception e) {
+            call.reject("Error al leer brillo: " + e.getMessage(), e);
+        }
+    }
+
     @PluginMethod
     public void restaurarBrillo(PluginCall call) {
         getActivity().runOnUiThread(() -> {

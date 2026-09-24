@@ -191,6 +191,9 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
     await waitFor(() => expect(screen.getByTestId('btn-engranaje-toma')).toBeDefined())
     expect(screen.queryByText('Dónde lees:')).toBeNull()
     fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
-    expect(screen.getByTestId('panel-ajustes-toma').textContent).toContain('Dónde lees:')
+    // Desde el 24-09-2026 el cajon de la toma no escribe "Dónde lees:": el
+    // grupo se dibuja -franja arriba, franja al medio- y se nombra por
+    // aria-label.
+    expect(screen.getByTestId('panel-ajustes-toma').querySelector('[role="group"][aria-label="Dónde lees"]')).not.toBeNull()
   })
 })

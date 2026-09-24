@@ -22,6 +22,7 @@ export interface CamaraNativaPlugin {
   guardarEnGaleria(options: { ruta: string }): Promise<{ ok: boolean; uri?: string }>
   fijarBrillo(options: { valor: number }): Promise<{ ok: boolean }>
   restaurarBrillo(): Promise<{ ok: boolean }>
+  leerBrillo(): Promise<{ valor: number }>
 }
 
 // Un solo registerPlugin. PruebaCamaraNativaView importa este mismo

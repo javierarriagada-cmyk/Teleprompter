@@ -713,3 +713,128 @@ textarea::placeholder {
 button.btn-deformable.pareja-aa:not(:active) {
   border-radius: var(--redondeo);
 }
+
+/* EL CAJON DE LA TOMA -24-09-2026-: las mismas piezas del cajon Aa, mas
+   tres que el Aa no necesitaba. */
+/* Un selector y, al lado, una accion redonda -voltear la camara-. */
+.fila-aa-accion {
+  display: flex;
+  align-items: center;
+  gap: var(--aire-2);
+}
+.fila-aa-accion > .selector-aa {
+  flex: 1;
+  min-width: 0;
+}
+.boton-aa-redondo {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--color-borde);
+  background-color: var(--bg-suelo);
+  color: var(--color-texto);
+  cursor: pointer;
+}
+/* Opciones que son un dato y van escritas -la calidad-. */
+.texto-aa {
+  font-size: var(--texto-cuerpo);
+  font-weight: 600;
+}
+/* Los avisos de una linea: "la camara sigue encendida", los minutos que
+   alcanzan. Son lo unico escrito del cajon porque son informacion, no un
+   control. */
+.aviso-aa {
+  font-size: var(--texto-meta);
+  color: var(--color-apagado);
+  text-align: center;
+  margin-top: calc(-1 * var(--aire-1));
+}
+.aviso-aa-urgente {
+  color: var(--color-grabando-texto);
+  font-weight: 700;
+}
+label.selector-aa-opcion {
+  position: relative;
+  cursor: pointer;
+}
+/* EL BRILLO: una barra entre un sol chico y uno grande. La pista es una
+   pildora hundida como la de los selectores; el tramo recorrido va en crema
+   hasta --relleno, que pone TeleprompterView. */
+.brillo-aa {
+  display: flex;
+  align-items: center;
+  gap: var(--aire-3);
+  height: 52px;
+  padding: 0 var(--aire-3);
+  border-radius: var(--redondeo-pildora);
+  background-color: var(--bg-suelo);
+  border: 1px solid var(--color-borde);
+  color: var(--color-texto);
+}
+.barra-brillo {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  min-width: 0;
+  height: 6px;
+  margin: 0;
+  border-radius: var(--redondeo-pildora);
+  background: linear-gradient(to right, var(--color-acento) var(--relleno, 50%), var(--color-borde) var(--relleno, 50%));
+  outline: none;
+  cursor: pointer;
+}
+.barra-brillo::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--color-acento);
+  border: 3px solid var(--bg-suelo);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+.barra-brillo::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--color-acento);
+  border: 3px solid var(--bg-suelo);
+}
+.barra-brillo:focus-visible {
+  outline: 2px solid var(--color-acento);
+  outline-offset: 6px;
+}
+/* EL CIRCULO DE EMPEZAR, con el estandar de su puerta. Con camara: el de
+   Grabar -borde rojo, relleno rojo tenue- con el punto rojo adentro. El
+   relleno va sobre negro translucido y no sobre la superficie: el circulo
+   flota sobre la imagen de la camara y tiene que dejarla ver. Sin camara:
+   el de Leer, crema lleno. */
+.btn-empezar-grabar {
+  background-color: rgba(0, 0, 0, 0.45);
+  background-color: color-mix(in srgb, var(--color-grabando) 22%, rgba(0, 0, 0, 0.5));
+  border: 2px solid var(--color-grabando);
+  color: #fff;
+}
+.btn-empezar-leer {
+  background-color: var(--color-acento);
+  border: none;
+  color: var(--color-texto-acento);
+}
+.punto-grabar {
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--color-grabando);
+}
+/* El cajon es de la aplicacion, no del guion: lleva la letra de la
+   aplicacion. En la toma colgaba del lienzo y heredaba la tipografia de
+   lectura -"1080p" salia en Serif si el guion estaba en Serif-. Visto en el
+   telefono, 24-09-2026. Los "Aa" de Sans y Serif ponen la suya. */
+.cajon-aa {
+  font-family: "Source Sans 3", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}

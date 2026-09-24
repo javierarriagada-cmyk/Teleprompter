@@ -173,3 +173,117 @@ export function IconoTacho({
     </svg>
   )
 }
+
+// LOS ICONOS DEL CAJON DE LA TOMA. 24-09-2026.
+// El cajon del engranaje sigue el estandar del cajon Aa del editor: cada
+// control se dibuja en vez de nombrarse. Todos son de trazo, 24x24, y usan
+// el mismo marco de telefono -rect 6,2 de 12x20- cuando hablan de la
+// pantalla, asi se leen como una familia.
+type PropsIcono = { tamano?: number } & React.SVGProps<SVGSVGElement>
+
+function Trazo({ tamano = 22, children, ...props }: PropsIcono & { children: React.ReactNode }) {
+  return (
+    <svg
+      width={tamano}
+      height={tamano}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      {children}
+    </svg>
+  )
+}
+
+/** Dos flechas en circulo: dar vuelta la camara. */
+export function IconoVoltear(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M4.5 11a7.5 7.5 0 0 1 13.2-4.3L20 9" />
+      <path d="M20 4.5V9h-4.5" />
+      <path d="M19.5 13a7.5 7.5 0 0 1-13.2 4.3L4 15" />
+      <path d="M4 19.5V15h4.5" />
+    </Trazo>
+  )
+}
+
+/** La imagen de la camara detras de todo el texto: la persona llena el telefono. */
+export function IconoImagenDetras(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <rect x="6" y="2" width="12" height="20" rx="2.5" />
+      <circle cx="12" cy="10" r="2.6" />
+      <path d="M7.5 19.5c.9-2.6 2.6-3.9 4.5-3.9s3.6 1.3 4.5 3.9" />
+    </Trazo>
+  )
+}
+
+/** La imagen en un recuadro chico, en una esquina. */
+export function IconoImagenRecuadro(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <rect x="6" y="2" width="12" height="20" rx="2.5" />
+      <rect x="11.5" y="5" width="4" height="5.5" rx="1" fill="currentColor" stroke="none" />
+      <path d="M8.5 14h7M8.5 17h5" opacity="0.55" />
+    </Trazo>
+  )
+}
+
+/** La imagen oculta: el ojo tachado. La camara sigue grabando. */
+export function IconoImagenOculta(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" />
+      <circle cx="12" cy="12" r="2.8" />
+      <path d="M4 4l16 16" />
+    </Trazo>
+  )
+}
+
+/** La franja de lectura arriba o al medio de la pantalla. */
+export function IconoFranja({ posicion, ...props }: PropsIcono & { posicion: 'arriba' | 'medio' }) {
+  const y = posicion === 'arriba' ? 5.5 : 10.5
+  return (
+    <Trazo {...props}>
+      <rect x="6" y="2" width="12" height="20" rx="2.5" />
+      <rect x="8.2" y={y} width="7.6" height="3" rx="1" fill="currentColor" stroke="none" />
+    </Trazo>
+  )
+}
+
+/** Espejo: un triangulo y su reflejo a los dos lados de un eje. */
+export function IconoEspejo(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M12 3v18" strokeDasharray="2 2.2" />
+      <path d="M9 7L4 17h5Z" />
+      <path d="M15 7l5 10h-5Z" fill="currentColor" />
+    </Trazo>
+  )
+}
+
+/** Reloj: mostrar el tiempo de la toma. */
+export function IconoReloj(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 2" />
+    </Trazo>
+  )
+}
+
+/** Sol: los extremos de la barra de brillo. Rayos cortos y separados del
+ * centro, para que no se confunda con el engranaje -ese error ya paso-. */
+export function IconoSol(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <circle cx="12" cy="12" r="3.6" />
+      <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4" />
+    </Trazo>
+  )
+}

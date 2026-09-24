@@ -34,12 +34,15 @@ export function avanzarTrabado(
 import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
 import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
-import { IconoAtras, IconoEngranaje, IconoEmpezar } from './IconosApp'
+import {
+  IconoAtras, IconoEngranaje, IconoEmpezar, IconoVoltear, IconoImagenDetras, IconoImagenRecuadro,
+  IconoImagenOculta, IconoFranja, IconoEspejo, IconoReloj, IconoSol
+} from './IconosApp'
+import { movimientoApagado, MS_CHICO, MS_PANEL, CURVA_RESORTE } from './movimiento'
 import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
-import { Interruptor } from './Interruptor'
 import { actualizarConfigCamara } from '../lib/camara'
 import { App as CapacitorApp } from '@capacitor/app'
-import { aplicarBrillo, PASOS_BRILLO, PasoBrillo, restaurarBrillo } from '../lib/brillo'
+import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from '../lib/brillo'
 
 // UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
 //
@@ -229,7 +232,9 @@ export default function TeleprompterView({
   onEstadoAvanceChange
 }: TeleprompterViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const [brillo, setBrillo] = useState<PasoBrillo>('automatico')
+  // null = automatico: el brillo es el del sistema hasta que se toca la barra.
+  const [brillo, setBrillo] = useState<number | null>(null)
+  const [brilloSistema, setBrilloSistema] = useState<number | null>(null)
 
   // EL BRILLO SE DEVUELVE AL SISTEMA EN LOS DOS CAMINOS DE SALIDA, NO EN UNO.
   //
@@ -238,13 +243,13 @@ export default function TeleprompterView({
   // aplicacion con el brillo en Alto, la pantalla se queda encendida a tope en
   // otra parte y gastando bateria, sin que nadie entienda por que.
   //
-  // Al volver se repone el paso elegido, porque la persona no abandono la toma:
+  // Al volver se repone el brillo elegido, porque la persona no abandono la toma:
   // la interrumpieron. Si volviera en automatico, tendria que acordarse de
   // ajustarlo otra vez justo cuando retoma.
   useEffect(() => {
     const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
       if (!isActive) restaurarBrillo()
-      else if (brillo !== 'automatico') aplicarBrillo(brillo)
+      else if (brillo !== null) aplicarBrillo(brillo)
     })
     return () => {
       try {
@@ -265,6 +270,17 @@ export default function TeleprompterView({
   const [textoEstadoLector, setTextoEstadoLector] = React.useState<string | null>(null)
   const [arrastrandoRecuadro, setArrastrandoRecuadro] = React.useState(false)
   const [panelTomaAbierto, setPanelTomaAbierto] = React.useState(false)
+  // Arrastre del cajon de la toma hacia abajo, para cerrarlo -como el Aa-.
+  const [arrastreCajonToma, setArrastreCajonToma] = React.useState(0)
+  const arrastrandoCajonTomaRef = useRef(false)
+  const inicioArrastreCajonTomaRef = useRef<number | null>(null)
+  // La barra de brillo parte del brillo que tiene la pantalla ahora.
+  useEffect(() => {
+    if (!panelTomaAbierto || brillo !== null) return
+    let vivo = true
+    leerBrilloSistema().then((v) => { if (vivo) setBrilloSistema(v) })
+    return () => { vivo = false }
+  }, [panelTomaAbierto, brillo])
   const tInicioBuscandoRef = useRef<number | null>(null)
 
   const guionObj: Guion = typeof script === 'string' ? {
@@ -940,239 +956,235 @@ export default function TeleprompterView({
 
           {/* EL PANEL DE LA TOMA. Cuelga del engranaje, ya no del suelo.
               Aqui vive TODO lo que antes estaba en panel-controles-listo.
-              Nada se perdio: se mudo. */}
+              Nada se perdio: se mudo.
+              24-09-2026: y se volvio a mudar, ahora al CAJON DESDE ABAJO, con
+              el estandar del cajon Aa del editor -el dueno: "deberia imponer
+              un tipo de standar para nuestros otros menu de ajustes"-.
+              Colgado del engranaje ocupaba hasta el 62% de la pantalla desde
+              arriba, que es donde esta la franja de lectura: al tocar "Donde
+              lees" el panel tapaba justo lo que se habia movido. Desde abajo,
+              sin velo y sin palabras, lo que se ajusta se ve arriba a plena
+              luz. Los nombres siguen en aria-label y title. Mismos testid de
+              siempre: lo que cambia es la forma, no las puertas. */}
           {panelTomaAbierto && (
             <div
-              data-testid="panel-ajustes-toma"
-              onClick={(e) => e.stopPropagation()}
+              className="capa-cajon-aa"
+              data-testid="capa-ajustes-toma"
+              onClick={(e) => {
+                e.stopPropagation()
+                setPanelTomaAbierto(false)
+              }}
               style={{
-                position: 'absolute',
-                top: 'calc(56px + env(safe-area-inset-top, 0px))',
-                right: 'calc(8px + env(safe-area-inset-right, 0px))',
-                left: 'calc(16px + env(safe-area-inset-left, 0px))',
-                maxHeight: '62%',
-                overflowY: 'auto',
-                zIndex: 11,
                 // Se esconde mientras se arrastra el recuadro, igual que el engranaje y el
                 // circulo. Hasta la 70 vivia dentro del cajon y se escondia con el; al
                 // mudarse al engranaje habia quedado fuera de esa regla.
-                display: arrastrandoRecuadro ? 'none' : 'flex',
-                flexDirection: 'column',
-                gap: 'var(--aire-3)',
-                backgroundColor: 'var(--bg-superficie)',
-                border: '1px solid var(--color-borde)',
-                borderRadius: 'var(--redondeo-grande)',
-                padding: 'var(--aire-3)',
-                color: 'var(--color-texto)'
+                display: arrastrandoRecuadro ? 'none' : 'flex'
               }}
             >
-              {/* VOLTEAR CAMARA. Antes era un boton flotante en el rincon de
-                  arriba a la derecha. Se mudo aqui en la 70 para dejarle ese
-                  rincon al engranaje. Mismo testid, mismo aria-label, misma
-                  accion: lo unico que cambia es donde vive. */}
-              {conCamara && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
-                    Cámara:
-                  </span>
-                  <button
-                    data-testid="btn-voltear-camara"
-                    type="button"
-                    className="btn-deformable"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      onVoltear?.()
-                    }}
-                    aria-label="Voltear cámara"
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 'var(--aire-1)',
-                      padding: 'var(--aire-1) var(--aire-2)',
-                      fontSize: 'var(--texto-meta)',
-                      borderRadius: 'var(--redondeo-pildora)',
-                      border: '1px solid var(--color-borde)',
-                      backgroundColor: 'var(--bg-suelo)',
-                      color: 'var(--color-texto)',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <span aria-hidden="true">⟳</span> Voltear
-                  </button>
-                </div>
-              )}
-
-              {conCamara && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
-                    Imagen:
-                  </span>
-                  <div style={{ display: 'flex', gap: 'var(--aire-1)' }}>
-                    {[
-                      { val: 'detras' as const, label: 'Detrás' },
-                      { val: 'recuadro' as const, label: 'Recuadro' },
-                      { val: 'oculta' as const, label: 'Oculta' }
-                    ].map((opt) => (
-                      <button
-                        key={opt.val}
-                        type="button"
-                        data-testid={`btn-fondo-${opt.val}`}
-                        className="btn-deformable"
-                        onClick={() => {
-                          setFondoToma?.(opt.val)
-                        }}
-                        style={{
-                          padding: 'var(--aire-1) var(--aire-2)',
-                          fontSize: 'var(--texto-meta)',
-                          borderRadius: 'var(--redondeo-pildora)',
-                          border: '1px solid var(--color-borde)',
-                          backgroundColor: fondoToma === opt.val ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                          color: fondoToma === opt.val ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                          fontWeight: fondoToma === opt.val ? 'bold' : 'normal',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {conCamara && fondoToma === 'oculta' && (
+              <div
+                data-testid="panel-ajustes-toma"
+                className="panel-superficie cajon-aa"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  paddingBottom: 'calc(var(--aire-4) + env(safe-area-inset-bottom, 0px))',
+                  transform: `translateY(${arrastreCajonToma}px)`,
+                  transition: arrastrandoCajonTomaRef.current || movimientoApagado() ? 'none' : `transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
+                  animation: movimientoApagado() || arrastrandoCajonTomaRef.current || arrastreCajonToma > 0
+                    ? 'none'
+                    : `panelSube ${MS_PANEL}ms ${CURVA_RESORTE} forwards`
+                }}
+              >
                 <div
-                  data-testid="aviso-camara-encendida"
-                  style={{
-                    fontSize: 'var(--texto-meta)',
-                    color: 'var(--color-apagado)',
-                    fontStyle: 'italic'
+                  className="cajon-aa-agarradera"
+                  onPointerDown={(e) => {
+                    inicioArrastreCajonTomaRef.current = e.clientY
+                    arrastrandoCajonTomaRef.current = true
+                    try { e.currentTarget.setPointerCapture(e.pointerId) } catch (err) {}
+                  }}
+                  onPointerMove={(e) => {
+                    if (!arrastrandoCajonTomaRef.current || inicioArrastreCajonTomaRef.current === null) return
+                    setArrastreCajonToma(Math.max(0, e.clientY - inicioArrastreCajonTomaRef.current))
+                  }}
+                  onPointerUp={() => {
+                    arrastrandoCajonTomaRef.current = false
+                    inicioArrastreCajonTomaRef.current = null
+                    // El mismo umbral que el cajon Aa -EditorView.tsx-.
+                    if (arrastreCajonToma > 96) setPanelTomaAbierto(false)
+                    setArrastreCajonToma(0)
+                  }}
+                  onPointerCancel={() => {
+                    arrastrandoCajonTomaRef.current = false
+                    inicioArrastreCajonTomaRef.current = null
+                    setArrastreCajonToma(0)
                   }}
                 >
-                  la cámara sigue encendida
+                  <div className="cajon-aa-agarradera-raya" />
                 </div>
-              )}
 
-              {conCamara && calidadesSoportadas.length > 0 && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-1)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
-                      Calidad:
-                    </span>
-                    <div style={{ display: 'flex', gap: 'var(--aire-1)' }}>
-                      {calidadesSoportadas.map((q) => (
+                <div className="cajon-aa-filas">
+                  {/* LA IMAGEN Y VOLTEAR. Voltear era un boton flotante arriba a
+                      la derecha hasta la 70; despues una fila con "Cámara:".
+                      Es una ACCION, no una eleccion: por eso va aparte, redondo,
+                      al lado del selector de la imagen. */}
+                  {conCamara && (
+                    <div className="fila-aa-accion">
+                      <div className="selector-aa selector-aa-lleno" role="group" aria-label="Imagen de la cámara">
+                        {[
+                          { val: 'detras' as const, label: 'Detrás', Icono: IconoImagenDetras },
+                          { val: 'recuadro' as const, label: 'Recuadro', Icono: IconoImagenRecuadro },
+                          { val: 'oculta' as const, label: 'Oculta', Icono: IconoImagenOculta }
+                        ].map((opt) => (
+                          <button
+                            key={opt.val}
+                            type="button"
+                            data-testid={`btn-fondo-${opt.val}`}
+                            aria-label={opt.label}
+                            title={opt.label}
+                            aria-pressed={fondoToma === opt.val}
+                            className={`btn-deformable selector-aa-opcion${fondoToma === opt.val ? ' activa' : ''}`}
+                            onClick={() => {
+                              setFondoToma?.(opt.val)
+                            }}
+                          >
+                            <opt.Icono tamano={24} />
+                          </button>
+                        ))}
+                      </div>
+                      <button
+                        data-testid="btn-voltear-camara"
+                        type="button"
+                        className="btn-deformable boton-aa-redondo"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onVoltear?.()
+                        }}
+                        aria-label="Voltear cámara"
+                        title="Voltear cámara"
+                      >
+                        <IconoVoltear tamano={24} />
+                      </button>
+                    </div>
+                  )}
+
+                  {conCamara && fondoToma === 'oculta' && (
+                    <div data-testid="aviso-camara-encendida" className="aviso-aa">
+                      la cámara sigue encendida
+                    </div>
+                  )}
+
+                  {/* LA CALIDAD VA EN TEXTO: 720p o 1080p es un dato, no una
+                      forma, y dibujarlo seria adivinar. Decision del dueno,
+                      24-09-2026: "la calidad esta bien que sea texto para que
+                      se entienda". */}
+                  {conCamara && calidadesSoportadas.length > 0 && (
+                    <>
+                      <div className="selector-aa selector-aa-lleno" role="group" aria-label="Calidad del video">
+                        {calidadesSoportadas.map((q) => (
+                          <button
+                            key={q}
+                            type="button"
+                            data-testid={`btn-calidad-${q}`}
+                            aria-pressed={calidadVideo === q}
+                            className={`btn-deformable selector-aa-opcion texto-aa${calidadVideo === q ? ' activa' : ''}`}
+                            onClick={() => {
+                              setCalidadVideo?.(q)
+                            }}
+                          >
+                            {q}
+                          </button>
+                        ))}
+                      </div>
+                      {typeof minutosDisponibles === 'number' && (
+                        <div
+                          data-testid="linea-minutos-disponibles"
+                          className={`aviso-aa${minutosDisponibles < 2 ? ' aviso-aa-urgente' : ''}`}
+                        >
+                          {minutosDisponibles >= 2
+                            ? `Te alcanzan unos ${Math.floor(minutosDisponibles)} minutos`
+                            : 'Quedan menos de 2 minutos de espacio'}
+                        </div>
+                      )}
+                    </>
+                  )}
+
+                  {/* DONDE LEES, ESPEJO Y TIEMPO, mitad y mitad. Espejo y tiempo
+                      son interruptores: cada uno se enciende solo, y encendido
+                      se pinta como la opcion elegida. La casilla real sigue en
+                      el documento -para el lector de pantalla y el teclado-,
+                      escondida con la misma clase que Interruptor.tsx. */}
+                  <div className="fila-aa-par">
+                    <div className="selector-aa selector-aa-lleno" role="group" aria-label="Dónde lees">
+                      {/* Sin 'abajo' desde el 24-09-2026: "nadie lee abajo". Ver App.tsx, donde
+                          se carga anclajeZona. */}
+                      {(['arriba', 'medio'] as const).map((z) => (
                         <button
-                          key={q}
+                          key={z}
                           type="button"
-                          data-testid={`btn-calidad-${q}`}
-                          className="btn-deformable"
+                          data-testid={`btn-anclaje-${z}`}
+                          aria-label={z === 'arriba' ? 'Leer arriba' : 'Leer al medio'}
+                          title={z === 'arriba' ? 'Leer arriba' : 'Leer al medio'}
+                          aria-pressed={anclajeZona === z}
+                          className={`btn-deformable selector-aa-opcion${anclajeZona === z ? ' activa' : ''}`}
                           onClick={() => {
-                            setCalidadVideo?.(q)
-                          }}
-                          style={{
-                            padding: 'var(--aire-1) var(--aire-2)',
-                            fontSize: 'var(--texto-meta)',
-                            borderRadius: 'var(--redondeo-pildora)',
-                            border: '1px solid var(--color-borde)',
-                            backgroundColor: calidadVideo === q ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                            color: calidadVideo === q ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                            fontWeight: calidadVideo === q ? 'bold' : 'normal',
-                            cursor: 'pointer'
+                            setAnclajeZona?.(z)
                           }}
                         >
-                          {q}
+                          <IconoFranja posicion={z} tamano={24} />
                         </button>
                       ))}
                     </div>
-                  </div>
-                  {typeof minutosDisponibles === 'number' && (
-                    <div
-                      data-testid="linea-minutos-disponibles"
-                      style={{
-                        fontSize: 'var(--texto-meta)',
-                        color: minutosDisponibles < 2 ? '#FF5A5A' : 'var(--color-apagado)',
-                        fontWeight: minutosDisponibles < 2 ? 700 : 400
-                      }}
-                    >
-                      {minutosDisponibles >= 2
-                        ? `Te alcanzan unos ${Math.floor(minutosDisponibles)} minutos`
-                        : 'Quedan menos de 2 minutos de espacio'}
+                    <div className="selector-aa selector-aa-lleno" role="group" aria-label="Espejo y tiempo">
+                      {[
+                        { etiqueta: 'Espejo', encendido: mirror, cambiar: (v: boolean) => setMirror?.(v), Icono: IconoEspejo },
+                        { etiqueta: 'Mostrar tiempo', encendido: mostrarTiempo, cambiar: (v: boolean) => setMostrarTiempo?.(v), Icono: IconoReloj }
+                      ].map((t) => (
+                        <label
+                          key={t.etiqueta}
+                          title={t.etiqueta}
+                          className={`btn-deformable selector-aa-opcion${t.encendido ? ' activa' : ''}`}
+                        >
+                          <input
+                            type="checkbox"
+                            role="switch"
+                            className="interruptor-casilla"
+                            checked={t.encendido}
+                            onChange={(e) => t.cambiar(e.target.checked)}
+                          />
+                          <t.Icono tamano={24} />
+                          <span className="solo-lector">{t.etiqueta}</span>
+                        </label>
+                      ))}
                     </div>
-                  )}
+                  </div>
+
+                  {/* BRILLO: UNA BARRA ENTRE UN SOL CHICO Y UN SOL GRANDE. Ver el
+                      porque del cambio en lib/brillo.ts. Parte del brillo que
+                      tiene el sistema; mientras no se toca, el brillo es el del
+                      sistema -automatico-. El relleno de la pista lo dibuja
+                      --relleno, en styles.css. */}
+                  <div className="brillo-aa" role="group" aria-label="Brillo">
+                    <IconoSol tamano={16} />
+                    <input
+                      type="range"
+                      data-testid="barra-brillo"
+                      className="barra-brillo"
+                      aria-label="Brillo"
+                      min={Math.round(BRILLO_MINIMO * 100)}
+                      max={100}
+                      step={1}
+                      value={Math.round((brillo ?? brilloSistema ?? 0.5) * 100)}
+                      onChange={(e) => {
+                        const v = Number(e.target.value) / 100
+                        setBrillo(v)
+                        aplicarBrillo(v)
+                      }}
+                      style={{
+                        ['--relleno' as string]: `${((Math.round((brillo ?? brilloSistema ?? 0.5) * 100) - BRILLO_MINIMO * 100) / (100 - BRILLO_MINIMO * 100)) * 100}%`
+                      }}
+                    />
+                    <IconoSol tamano={26} />
+                  </div>
                 </div>
-              )}
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
-                  Dónde lees:
-                </span>
-                {/* Sin 'abajo' desde el 24-09-2026: "nadie lee abajo". Ver App.tsx, donde
-                    se carga anclajeZona. */}
-                {(['arriba', 'medio'] as const).map((z) => (
-                  <button
-                    key={z}
-                    type="button"
-                    data-testid={`btn-anclaje-${z}`}
-                    onClick={() => {
-                      setAnclajeZona?.(z)
-                    }}
-                    style={{
-                      padding: 'var(--aire-1) var(--aire-2)',
-                      fontSize: 'var(--texto-meta)',
-                      borderRadius: 'var(--redondeo-pildora)',
-                      border: '1px solid var(--color-borde)',
-                      backgroundColor: anclajeZona === z ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                      color: anclajeZona === z ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                      fontWeight: anclajeZona === z ? 'bold' : 'normal',
-                      cursor: 'pointer',
-                      textTransform: 'capitalize'
-                    }}
-                  >
-                    {z}
-                  </button>
-                ))}
-              </div>
-
-              <Interruptor
-                etiqueta="Espejo"
-                encendido={mirror}
-                onCambiar={(v) => setMirror?.(v)}
-                estiloEtiqueta={{ fontSize: 'var(--texto-meta)' }}
-              />
-
-              <Interruptor
-                etiqueta="Mostrar tiempo"
-                encendido={mostrarTiempo}
-                onCambiar={(v) => setMostrarTiempo?.(v)}
-                estiloEtiqueta={{ fontSize: 'var(--texto-meta)' }}
-              />
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
-                  Brillo:
-                </span>
-                {PASOS_BRILLO.map((paso) => (
-                  <button
-                    key={paso.id}
-                    type="button"
-                    data-testid={`btn-brillo-${paso.id}`}
-                    onClick={() => {
-                      setBrillo(paso.id)
-                      aplicarBrillo(paso.id)
-                    }}
-                    style={{
-                      padding: 'var(--aire-1) var(--aire-2)',
-                      fontSize: 'var(--texto-meta)',
-                      borderRadius: 'var(--redondeo-pildora)',
-                      border: '1px solid var(--color-borde)',
-                      backgroundColor: brillo === paso.id ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                      color: brillo === paso.id ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                      fontWeight: brillo === paso.id ? 'bold' : 'normal',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    {paso.nombre}
-                  </button>
-                ))}
               </div>
             </div>
           )}
@@ -1200,10 +1212,17 @@ export default function TeleprompterView({
               pointerEvents: 'none'
             }}
           >
+            {/* EL CIRCULO SIGUE EL ESTANDAR DE LOS BOTONES DE ESA PUERTA.
+                24-09-2026, el dueno: "ese boton de play que esta abajo tambien
+                deberia estar con el estandar de los botones que graban". Con
+                camara es Grabar: borde rojo, relleno rojo tenue y el punto
+                rojo en vez del triangulo -.btn-grabar, styles.css-. Sin camara
+                es Leer: crema lleno con el triangulo. Antes era un circulo
+                negro translucido igual en las dos puertas. */}
             <button
               data-testid="btn-empezar-toma"
               type="button"
-              className="btn-deformable"
+              className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}`}
               aria-label="Empezar"
               onClick={(e) => {
                 e.stopPropagation()
@@ -1218,13 +1237,10 @@ export default function TeleprompterView({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius: 'var(--redondeo-pildora)',
-                border: '1px solid rgba(255,255,255,0.35)',
-                backgroundColor: 'rgba(0,0,0,0.45)',
-                color: '#fff'
+                borderRadius: 'var(--redondeo-pildora)'
               }}
             >
-              <IconoEmpezar tamano={30} />
+              {conCamara ? <span className="punto-grabar" aria-hidden="true" /> : <IconoEmpezar tamano={30} />}
             </button>
           </div>
         </>

@@ -225,8 +225,13 @@ export type AtributosCaracter = { esAcotacion: boolean; negrita: boolean; color?
 
 // Un solo lugar para pasar de atributos a estilo, para el texto que el motor
 // sigue -tokens- y para el que no -puntuacion, acotaciones-. El destacado es
-// fondo amarillo con letra negra; box-decoration-break hace que, si corta el
-// renglon, cada pedazo lleve su propio borde redondeado. 24-09-2026.
+// fondo amarillo con letra negra. 24-09-2026.
+// SIN ESQUINAS REDONDEADAS NI RELLENO, a diferencia del editor: aca cada
+// palabra y cada espacio son un span aparte -el motor sigue palabra por
+// palabra-, y con esquinas cada uno era una cajita. Visto en el telefono:
+// entre palabra y palabra quedaban muescas y el destacado se leia cortado.
+// Rectangulos pegados forman una sola banda. En el editor el tramo es un
+// solo elemento y ahi las esquinas si quedan bien.
 function estiloDeAtributos(a: { negrita?: boolean; color?: string; destacado?: boolean }): React.CSSProperties {
   const style: React.CSSProperties = {}
   if (a.negrita) style.fontWeight = 'bold'
@@ -234,10 +239,6 @@ function estiloDeAtributos(a: { negrita?: boolean; color?: string; destacado?: b
   if (a.destacado) {
     style.backgroundColor = DESTACADO.fondo
     style.color = DESTACADO.letra
-    style.borderRadius = '0.15em'
-    style.padding = '0 0.08em'
-    style.boxDecorationBreak = 'clone'
-    style.WebkitBoxDecorationBreak = 'clone'
   }
   return style
 }

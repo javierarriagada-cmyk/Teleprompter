@@ -42,6 +42,8 @@ describe('Pruebas TAREA 69 - EN LEER: EL ENGRANAJE SUBE A LA ESQUINA, EMPEZAR PA
     const btnEmpezar = await screen.findByTestId('btn-empezar-toma')
     expect(btnEmpezar.textContent).not.toContain('Empezar')
     expect(btnEmpezar.querySelector('svg')).not.toBeNull()
+    // 24-09-2026: en Leer el circulo lleva el estandar de Leer, crema.
+    expect(btnEmpezar.classList.contains('btn-empezar-leer')).toBe(true)
 
     const btnEngranaje = screen.getByTestId('btn-engranaje-toma')
     expect(btnEngranaje.getAttribute('aria-label')).toBe('Ajustes de la escena')
@@ -52,7 +54,7 @@ describe('Pruebas TAREA 69 - EN LEER: EL ENGRANAJE SUBE A LA ESQUINA, EMPEZAR PA
 
   // La Tarea 70 dio vuelta lo que la 69 fijaba aqui: en Grabar el boton de empezar TAMPOCO
   // tiene el texto "Empezar" y lleva un svg adentro, igual que en Leer.
-  test('2. Entrar por btn-grabar-tarjeta (conCamara true): el boton empezar tampoco tiene texto y lleva un svg', async () => {
+  test('2. Entrar por btn-grabar-tarjeta (conCamara true): el boton empezar tampoco tiene texto y lleva el punto rojo de grabar', async () => {
     const repo = new RepositorioMemoria()
     await repo.guardar({
       id: 'g-t69-grabar',
@@ -72,6 +74,9 @@ describe('Pruebas TAREA 69 - EN LEER: EL ENGRANAJE SUBE A LA ESQUINA, EMPEZAR PA
 
     const btnEmpezar = await screen.findByTestId('btn-empezar-toma')
     expect(btnEmpezar.textContent).not.toContain('Empezar')
-    expect(btnEmpezar.querySelector('svg')).not.toBeNull()
+    // 24-09-2026: en Grabar el circulo lleva el punto rojo, el estandar de los
+    // botones que graban, y no el triangulo.
+    expect(btnEmpezar.querySelector('.punto-grabar')).not.toBeNull()
+    expect(btnEmpezar.classList.contains('btn-empezar-grabar')).toBe(true)
   })
 })
