@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { execSync } from 'node:child_process'
 import { describe, expect, test, vi } from 'vitest'
-import { render, act, fireEvent, screen } from '@testing-library/react'
+import { render, act, fireEvent, screen, waitFor } from '@testing-library/react'
 import 'fake-indexeddb/auto'
 import App from './App'
 import { crearSeguidor, tokenizarGuion } from './lib/seguidor'
@@ -244,7 +244,14 @@ Esta es la tercera línea`)
     await act(async () => {
       motor.emitirSiguiente()
     })
-    expect(getHighlightedLineIndex()).toBe(1)
+    // SE ESPERA A QUE EL RENGLON LLEGUE, CON TOPE. 24-09-2026.
+    // Esta prueba pasaba sola y fallaba en la suite completa. El renglon
+    // resaltado no cambia en el instante de la frase: lo mueve el motor de
+    // avance cuadro a cuadro -requestAnimationFrame-, y con la maquina cargada
+    // esos cuadros se atrasan. Mirarlo en el mismo instante era apostar a la
+    // velocidad de la maquina. Se espera hasta 3 s: si el motor de verdad no
+    // avanza, la prueba sigue fallando.
+    await waitFor(() => expect(getHighlightedLineIndex()).toBe(1), { timeout: 3000 })
   })
 
   // Casos borde adicionales
