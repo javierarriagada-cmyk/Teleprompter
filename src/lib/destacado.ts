@@ -3,6 +3,11 @@
 // No es el destacado amarillo del editor -un formato que el autor le pone al texto-. Es una
 // capsula suave detras de las palabras que se estan leyendo, y se desliza con la voz.
 //
+// -24-09-2026, despues de probarla: UNA LINEA, NO UNA CAPSULA. Javier: "me impresiono
+// bastante, es muy certero", pero "cuando se topan en dos renglones se marca mas": al pasar
+// al renglon siguiente quedaban dos cajas una encima de la otra y pesaban el doble. Una linea
+// fina bajo las palabras -como subrayar con un lapiz- en dos renglones sigue siendo liviana.
+//
 // POR QUE UNA VENTANA QUE ARRANCA EN EL MOTOR Y VA HACIA ADELANTE. Hubo un resaltado por
 // palabra -amarillo- y se saco en la Tarea 5: iba siempre corrido de lo que se decia y
 // distraia. El motor va detras de la voz, y lo medido en las tomas de Javier del 24-09

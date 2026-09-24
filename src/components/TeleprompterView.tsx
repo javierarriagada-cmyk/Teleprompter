@@ -776,9 +776,13 @@ export default function TeleprompterView({
           const segs = alfa > 0 ? segmentosDelDestacado(cajas) : []
           // Un poco mas ancha que las palabras, como un resaltador: el aire es del tamano de la
           // letra, asi se ve igual con cualquier letra.
+          //
+          // -24-09-2026: ahora es una LINEA bajo las palabras -lib/destacado.ts, arriba-. El
+          // grosor va con la letra -2 px con letra 14, casi 4 con letra 42- y la linea cae al
+          // pie de la caja de la palabra, bajo las letras.
           const letra = filaPx / 1.4
-          const aireX = letra * 0.22
-          const aireY = letra * 0.08
+          const aireX = letra * 0.04
+          const grosor = Math.max(2, letra * 0.09)
           capsulasRef.current.forEach((c, k) => {
             if (!c) return
             const s = segs[k]
@@ -791,9 +795,10 @@ export default function TeleprompterView({
             const transicion = c.style.transition
             if (estabaApagada) c.style.transition = 'none'
             c.style.left = `${s.izquierda - aireX}px`
-            c.style.top = `${s.arriba - aireY}px`
+            c.style.top = `${s.arriba + s.alto - grosor / 2}px`
             c.style.width = `${s.ancho + 2 * aireX}px`
-            c.style.height = `${s.alto + 2 * aireY}px`
+            c.style.height = `${grosor}px`
+            c.style.borderRadius = `${grosor / 2}px`
             if (estabaApagada) {
               void c.offsetWidth
               c.style.transition = transicion
@@ -1081,9 +1086,9 @@ export default function TeleprompterView({
               style={{
                 position: 'absolute',
                 opacity: 0,
-                borderRadius: fontSize * 0.35,
-                background: isWhiteBg ? 'rgba(0, 0, 0, 0.07)' : 'rgba(255, 255, 255, 0.14)',
-                boxShadow: isWhiteBg ? 'inset 0 0 0 1px rgba(0, 0, 0, 0.10)' : 'inset 0 0 0 1px rgba(255, 255, 255, 0.20)',
+                // La linea: el crema de la aplicacion -#E7E1DE, --color-acento- sobre fondo
+                // oscuro o la camara; sobre el fondo blanco, oscura.
+                background: isWhiteBg ? 'rgba(0, 0, 0, 0.55)' : 'rgba(231, 225, 222, 0.85)',
                 transition: movimientoApagado()
                   ? 'none'
                   : 'left 240ms cubic-bezier(0.2, 0.8, 0.2, 1), top 240ms cubic-bezier(0.2, 0.8, 0.2, 1), width 240ms cubic-bezier(0.2, 0.8, 0.2, 1), height 240ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 200ms ease'
