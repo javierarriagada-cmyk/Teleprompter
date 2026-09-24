@@ -5,7 +5,8 @@ import path from 'path'
 //
 // Desde la marca "Sig" y la bola -trazoMarca.ts- el splash dibuja: el nombre
 // -un trazo relleno-, la bola -un circulo adentro del grupo "bola", que se
-// mueve- y una linea circular que la bola recorre. Estas funciones leen el XML
+// mueve-, una linea circular que la bola recorre, y el lema TELEPROMPTER bajo
+// la marca. Estas funciones leen el XML
 // y los animadores para que tarea49 y tarea50 prueben lo mismo sin repetir
 // el analisis.
 
@@ -44,6 +45,7 @@ export function leerMarca() {
   const nombre = bloque(xml, 'nombre')
   const punto = bloque(xml, 'punto')
   const linea = bloque(xml, 'linea')
+  const lema = bloque(xml, 'lema')
   const mp = /M(-?[\d.]+),(-?[\d.]+) m-([\d.]+),0/.exec(atributo(punto, 'pathData') || '')
   if (!mp) throw new Error('El punto no es un circulo M cx,cy m-r,0 ...')
   const ml = /A([\d.]+),/.exec(atributo(linea, 'pathData') || '')
@@ -53,6 +55,8 @@ export function leerMarca() {
     alfaNombre: atributo(nombre, 'fillAlpha'),
     alfaPunto: atributo(punto, 'fillAlpha'),
     alfaLinea: atributo(linea, 'strokeAlpha'),
+    trazoLema: atributo(lema, 'pathData') || '',
+    alfaLema: atributo(lema, 'fillAlpha'),
     anchoLinea: Number(atributo(linea, 'strokeWidth')),
     radioLinea: ml ? Number(ml[1]) : NaN,
     punto: { cx: Number(mp[1]), cy: Number(mp[2]), r: Number(mp[3]) }

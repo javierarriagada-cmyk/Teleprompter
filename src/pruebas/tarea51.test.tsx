@@ -8,7 +8,7 @@ import 'fake-indexeddb/auto'
 import App from '../App'
 import EditorView from '../components/EditorView'
 import { Entrada, FACTOR_ESPEJO, ALTO_MARCA_ENTRADA, COLOR_MARCA_TRAZO_APAGADO, COLOR_MARCA_TRAZO, COLOR_MARCA_PUNTO } from '../components/Entrada'
-import { MARCA_TRAZO_NOMBRE, MARCA_PUNTO, MARCA_CAJA } from '../components/trazoMarca'
+import { MARCA_TRAZO_NOMBRE, MARCA_PUNTO, MARCA_CAJA, MARCA_LEMA_TRAZO } from '../components/trazoMarca'
 import { leerMarca } from './marcaArranque'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { guionNuevo, Guion } from '../datos/modelo'
@@ -50,6 +50,7 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
     const marca = leerMarca()
     expect(marca.trazoNombre, 'el nombre del splash y el de trazoMarca.ts no son el mismo trazo').toBe(MARCA_TRAZO_NOMBRE)
     expect(marca.punto).toEqual({ cx: MARCA_PUNTO.cx, cy: MARCA_PUNTO.cy, r: MARCA_PUNTO.r })
+    expect(marca.trazoLema, 'TELEPROMPTER del splash y el de trazoMarca.ts no son el mismo trazo').toBe(MARCA_LEMA_TRAZO)
     expect(FACTOR_ESPEJO).toBeCloseTo(288 / 432)
     expect(ALTO_MARCA_ENTRADA).toBeCloseTo(MARCA_CAJA.alto * FACTOR_ESPEJO)
     // La caja de la marca esta centrada en el lienzo: la entrada la centra en la pantalla.
@@ -59,6 +60,7 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
     render(<Entrada desdeSplashNativo />)
     const trazo = screen.getByTestId('marca-entrada').querySelector('path')
     expect(trazo?.getAttribute('d')).toBe(MARCA_TRAZO_NOMBRE)
+    expect(screen.getByTestId('lema-entrada').querySelector('path')?.getAttribute('d')).toBe(MARCA_LEMA_TRAZO)
   })
 
   test('T256 - EL ESPEJO SE VA. Montando App, el espejo esta al principio y NO esta en el documento despues de 1900 ms. Y con movimientoApagado() en true no se monta nunca.', async () => {

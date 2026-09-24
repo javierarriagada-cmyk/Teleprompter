@@ -937,3 +937,7 @@ label.boton-aa-redondo {
   flex: 1;
   min-width: 0;
 }
+@keyframes lemaEntradaAparece {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

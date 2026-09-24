@@ -18,6 +18,10 @@ describe('Pruebas TAREA 49 - La Entrada: La Marca (T226-T231)', () => {
     for (const [x, y] of puntosDelTrazo(marca.trazoNombre)) {
       expect(dentro(x, y), `el nombre se sale en ${x},${y}`).toBe(true)
     }
+    // El lema sube 8 unidades mientras aparece: se mide desde donde arranca.
+    for (const [x, y] of puntosDelTrazo(marca.trazoLema)) {
+      expect(dentro(x, y + 8), `TELEPROMPTER se sale en ${x},${y}`).toBe(true)
+    }
     const p = marca.punto
     expect(Math.hypot(p.cx - CENTRO, p.cy - CENTRO) + p.r, 'la bola en su lugar se sale').toBeLessThanOrEqual(RADIO_VISIBLE)
     expect(marca.radioLinea + marca.anchoLinea / 2, 'la linea se sale').toBeLessThanOrEqual(RADIO_VISIBLE)
@@ -38,13 +42,15 @@ describe('Pruebas TAREA 49 - La Entrada: La Marca (T226-T231)', () => {
     expect(encendido('punto', 'fillAlpha'), 'la bola nunca se enciende').toBe(true)
     expect(marca.alfaLinea).toBe('0')
     expect(encendido('linea', 'strokeAlpha'), 'la linea nunca se enciende').toBe(true)
+    expect(marca.alfaLema).toBe('0')
+    expect(encendido('lema', 'fillAlpha'), 'TELEPROMPTER nunca se enciende').toBe(true)
   })
 
-  test('T228 - LA ANIMACION EXISTE Y ENTRA EN EL TOPE. Cuatro targets -linea, bola, punto, nombre- y todo termina a los 1250 ms.', () => {
+  test('T228 - LA ANIMACION EXISTE Y ENTRA EN EL TOPE. Seis targets -linea, bola, punto, nombre, lema y su grupo- y todo termina a los 1250 ms.', () => {
     const xmlAnim = fs.readFileSync(RUTA_MARCA_ANIMADA, 'utf-8')
     expect(xmlAnim).toContain('<animated-vector')
     expect(xmlAnim).toContain('android:drawable="@drawable/marca_arranque"')
-    expect(Object.keys(leerAnimaciones()).sort()).toEqual(['bola', 'linea', 'nombre', 'punto'])
+    expect(Object.keys(leerAnimaciones()).sort()).toEqual(['bola', 'lema', 'lema_grupo', 'linea', 'nombre', 'punto'])
     expect(finDeLaAnimacion()).toBe(1250)
   })
 

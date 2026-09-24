@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { movimientoApagado } from './movimiento'
 import { MarcaSigo } from './MarcaSigo'
-import { MARCA_CAJA } from './trazoMarca'
+import { MARCA_CAJA, MARCA_LEMA_TRAZO, MARCA_LEMA_CAJA } from './trazoMarca'
 
 // LA ENTRADA: LA MARCA VIAJA A SU LUGAR. 24-09-2026.
 //
@@ -39,6 +39,7 @@ export const ALTO_MARCA_ENTRADA = MARCA_CAJA.alto * FACTOR_ESPEJO
 export const MS_MARCA_QUIETA = 400   // la marca se sostiene: tiene que poder leerse
 export const MS_VIAJE_MARCA = 750    // de la mitad de la pantalla a la barra
 export const MS_FONDO_SE_APAGA = 500 // el fondo se va mientras la marca viaja
+export const MS_LEMA_SE_APAGA = 250  // TELEPROMPTER se apaga en su sitio al empezar el viaje
 export const MS_TOPE_ENTRADA = 2400  // pase lo que pase, a los 2.4 s no queda nada encima
 
 // Las clases que la entrada le pone a <html> mientras dura. styles.css las usa
@@ -194,6 +195,29 @@ export function Entrada({ onFinish, desdeSplashNativo = false }: EntradaProps) {
           <MarcaSigo alto={ALTO_MARCA_ENTRADA} colorPunto={COLOR_MARCA_PUNTO} />
         </div>
       </div>
+      {/* EL LEMA SE QUEDA. "TELEPROMPTER" esta bajo la marca como la dejo el
+          splash -mismo trazo, mismo sitio- y cuando la marca sale de viaje se
+          apaga donde esta. El dueno: "esa palabra despues no acompana a Sigo". */}
+      <svg
+        data-testid="lema-entrada"
+        aria-hidden="true"
+        width={MARCA_LEMA_CAJA.ancho * FACTOR_ESPEJO}
+        height={MARCA_LEMA_CAJA.alto * FACTOR_ESPEJO}
+        viewBox={`${MARCA_LEMA_CAJA.x} ${MARCA_LEMA_CAJA.y} ${MARCA_LEMA_CAJA.ancho} ${MARCA_LEMA_CAJA.alto}`}
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          // Relativo al centro de la pantalla, que es el 216,216 del lienzo.
+          transform: `translate(${(MARCA_LEMA_CAJA.x - 216) * FACTOR_ESPEJO}px, ${(MARCA_LEMA_CAJA.y - 216) * FACTOR_ESPEJO}px)`,
+          opacity: viajando ? 0 : 1,
+          transition: viajando ? `opacity ${MS_LEMA_SE_APAGA}ms ease-out` : 'none',
+          // Solo opacidad: el transform de arriba es su posicion.
+          animation: desdeSplashNativo ? 'none' : 'lemaEntradaAparece 300ms ease-out'
+        }}
+      >
+        <path d={MARCA_LEMA_TRAZO} fill={COLOR_MARCA_TRAZO_APAGADO} />
+      </svg>
     </div>
   )
 }

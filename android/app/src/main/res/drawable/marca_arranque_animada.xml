@@ -7,6 +7,7 @@
                  borra detras vaya pegada a ella
        150-966   la linea se borra: 966 es cuando la bola cierra la vuelta
                  -la vuelta es el 81.6% del trayecto-
+       650-1150  aparece TELEPROMPTER, subiendo, cuando la bola ya paso por abajo
        900-1250  aparece "Sig" mientras la bola se acomoda, ya sin linea
      MainActivity espera 1250 mas 250 de sostenido antes de soltar. -->
 <animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,4 +16,6 @@
     <target android:name="bola"   android:animation="@animator/marca_bola_recorre" />
     <target android:name="punto"  android:animation="@animator/marca_bola_aparece" />
     <target android:name="nombre" android:animation="@animator/marca_nombre_aparece" />
+    <target android:name="lema" android:animation="@animator/marca_lema_aparece" />
+    <target android:name="lema_grupo" android:animation="@animator/marca_lema_sube" />
 </animated-vector>
