@@ -98,16 +98,27 @@ export async function empezarGrabacionVideo(): Promise<void> {
   grabandoVideoNativo = true
 }
 
+// Por que fallo el ultimo corte, si fallo: lo anota la toma -tomaVideo.ts-. Sin esto, un
+// corte fallido no deja rastro: el registro del sistema se sobrescribe en minutos.
+let ultimoErrorCorte: string | null = null
+export function errorDelUltimoCorte(): string | null {
+  return ultimoErrorCorte
+}
+
 export async function cortarGrabacionVideo(): Promise<string | null> {
   if (!grabandoVideoNativo && typeof (CameraPreview as any).stopRecordVideo !== 'function') {
     return null
   }
   grabandoVideoNativo = false
+  ultimoErrorCorte = null
   try {
     const res = await CameraPreview.stopRecordVideo()
-    return (res && (res as any).videoFilePath) || null
+    const ruta = (res && (res as any).videoFilePath) || null
+    if (!ruta) ultimoErrorCorte = 'stopRecordVideo no devolvio la ruta'
+    return ruta
   } catch (e) {
     console.warn('[Camara] Error al cortar grabacion:', e)
+    ultimoErrorCorte = e instanceof Error ? e.message : String(e)
     return null
   }
 }

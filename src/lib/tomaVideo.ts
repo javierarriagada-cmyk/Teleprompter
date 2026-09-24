@@ -5,6 +5,7 @@ import {
   camaraEncendida,
   empezarGrabacionVideo,
   cortarGrabacionVideo,
+  errorDelUltimoCorte,
   grabacionNativaEnCurso
 } from './camara'
 import {
@@ -154,12 +155,43 @@ export async function cortarTomaVideo(opts?: {
   s.sidecar.milisegundos = Math.max(s.sidecar.milisegundos, Date.now() - s.sidecar.creado)
 
   let rutaPlugin: string | null = null
+  let motivoCorte: string | null = null
   if (grabacionNativaEnCurso()) {
     rutaPlugin = await cortarGrabacionVideo()
+    if (!rutaPlugin) motivoCorte = errorDelUltimoCorte() || 'sin ruta'
+  } else {
+    motivoCorte = 'la grabacion ya no estaba en curso al cortar'
+  }
+
+  // EL VIDEO QUE EL CORTE NO DEVOLVIO -24-09-2026-. El plugin de la camara rechaza
+  // stopRecordVideo cuando CameraX termina el archivo con un error que no sea de limite
+  // -CameraXView.handleRecordingFinalized-, pero el archivo muchas veces queda ENTERO en su
+  // carpeta: el de la toma a4371d2b de Javier, 96 MB, 15:42. Y si alguien corto la grabacion
+  // antes -apagarCamara la corta y descarta la ruta- tampoco hay ruta. En los dos casos la toma
+  // se guardaba "lista" con 0 bytes y un .part que no existe; como "lista", la recuperacion
+  // del arranque no la volvia a mirar, y dejo de aparecer la toma "incompleta" de siempre. Aca
+  // se busca el video_<epoch> por la hora, igual que en recuperarTomasPendientes, y la toma
+  // queda INCOMPLETA: con su video si se encontro, y si no, para que el arranque lo reintente.
+  let recuperadoPorHora = false
+  if (!rutaPlugin) {
+    try {
+      const pareja = emparejarMp4PorTiempo({
+        creado: s.sidecar.creado,
+        milisegundos: s.sidecar.milisegundos,
+        candidatos: await buscarMp4Recientes()
+      })
+      if (pareja) {
+        rutaPlugin = pareja
+        recuperadoPorHora = true
+      }
+    } catch (e) {
+      console.warn('[tomaVideo] no se pudo buscar el video por la hora:', e)
+    }
+    console.warn('[tomaVideo] el corte no devolvio el video:', motivoCorte, recuperadoPorHora ? '- recuperado por la hora: ' + rutaPlugin : '- no se encontro')
   }
   if (rutaPlugin) s.sidecar.rutaPlugin = rutaPlugin
 
-  const incompleta = Boolean(opts?.incompleta)
+  const incompleta = Boolean(opts?.incompleta) || motivoCorte !== null
   let rutaFinal = juntos(s.dir, incompleta ? `${s.sidecar.id}.mp4.part` : `${s.sidecar.id}.mp4`)
 
   const origen = rutaPlugin || s.sidecar.rutaPart
@@ -207,6 +239,7 @@ export async function cortarTomaVideo(opts?: {
     const texto = [
       '# REGISTRO DEL MOTOR DE UNA TOMA',
       `# toma: ${s.sidecar.id}`,
+      ...(motivoCorte ? [`# corte con problema: ${motivoCorte}${recuperadoPorHora ? ' (video recuperado por la hora)' : ' (sin video)'}`] : []),
       `# inicio del video (epoch ms): ${s.inicioVideoEpochMs}`,
       s.cabeceraMotor,
       '',
