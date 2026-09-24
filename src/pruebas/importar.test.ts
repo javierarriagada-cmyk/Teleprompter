@@ -5,6 +5,7 @@ import 'fake-indexeddb/auto'
 import { importarTexto } from '../datos/importar'
 import EditorView from '../components/EditorView'
 import { Guion } from '../datos/modelo'
+import { pegarEnGuion } from './ayudaEditor'
 
 describe('Pruebas TAREA 6 - Importar y dar forma al guion (T40-T50)', () => {
 
@@ -144,24 +145,27 @@ Línea tres`
     const btnPegar = document.querySelector('[data-testid="btn-pegar-texto"]') as HTMLElement
     expect(btnPegar).not.toBeNull()
 
+    // Tiptap pone el foco en el cuadro siguiente -requestAnimationFrame-, no
+    // en el mismo toque: por eso la espera.
     await act(async () => {
       fireEvent.click(btnPegar)
+      await new Promise((r) => setTimeout(r, 50))
     })
 
-    const textarea = document.querySelector('[data-testid="textarea-guion"]') as HTMLTextAreaElement
-    expect(textarea).not.toBeNull()
-    expect(document.activeElement).toBe(textarea)
+    const editor = document.querySelector('[data-testid="editor-guion"]') as HTMLElement
+    expect(editor).not.toBeNull()
+    expect(document.activeElement).toBe(editor)
 
     const textoParaPegar = `Primer párrafo importado.
 
 Segundo párrafo importado.`
 
-    await act(async () => {
-      fireEvent.change(textarea, { target: { value: textoParaPegar } })
-    })
+    pegarEnGuion(textoParaPegar)
 
-    // Los dos parrafos llegan, y siguen siendo UNA sola hoja.
+    // Los dos parrafos llegan, y siguen siendo UNA sola hoja. Y la linea en
+    // blanco entre los dos se conserva -clipboardTextParser, EditorGuion.tsx-.
     expect(guionEstado.bloques.length).toBe(1)
+    expect(guionEstado.bloques[0].texto).toBe(textoParaPegar)
     expect(guionEstado.bloques[0].texto).toContain('Primer párrafo importado.')
     expect(guionEstado.bloques[0].texto).toContain('Segundo párrafo importado.')
   })

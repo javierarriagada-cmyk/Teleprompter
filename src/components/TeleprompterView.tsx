@@ -870,7 +870,7 @@ export default function TeleprompterView({
                         lineHeight: INTERLINEADO_LECTURA
                       }}
                     >
-                      {renderFormattedLine(linea, lineStart, lineTokens, bloque.tramos)}
+                      {renderFormattedLine(linea, lineStart, lineTokens, bloque.tramos, colorFondo)}
                     </div>
                   )
                 })}

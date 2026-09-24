@@ -2,6 +2,7 @@
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest'
 import { render, act, fireEvent, screen } from '@testing-library/react'
 import 'fake-indexeddb/auto'
+import { editorDelGuion, seleccionarEnGuion, textoDelGuion } from './ayudaEditor'
 
 // EL PLUGIN DE ANDROID, FINGIDO ACA Y NO EN LA APLICACION.
 //
@@ -187,11 +188,8 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T149-T153)', () => {
     expect(screen.queryByTestId('barra-formato-b1')).toBeNull()
     expect(screen.queryByTestId('btn-color-ambar')).toBeNull()
 
-    // 2. Con texto seleccionado en el textarea, aparece la barra de formato
-    const textarea = screen.getByTestId('textarea-guion') as HTMLTextAreaElement
-    await act(async () => {
-      fireEvent.select(textarea, { target: { selectionStart: 0, selectionEnd: 7 } })
-    })
+    // 2. Con texto seleccionado en el editor, aparece la barra de formato
+    seleccionarEnGuion(0, 7)
 
     expect(screen.getByTestId('barra-formato-b1')).not.toBeNull()
     expect(screen.getByTestId('btn-color-ambar')).not.toBeNull()
@@ -504,7 +502,7 @@ describe('Pruebas TAREA 32 (T161)', () => {
     // la pantalla vacia no esta, y NO existe el boton de agregar bloque
     expect(screen.queryByText('Agregar primer bloque')).toBeNull()
     expect(screen.queryByTestId('btn-agregar-bloque')).toBeNull()
-    expect(document.querySelectorAll('textarea').length).toBe(1)
+    expect(document.querySelectorAll('[data-testid="editor-guion"]').length).toBe(1)
   })
 })
 
@@ -637,20 +635,14 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     const panel = screen.getByTestId('panel-ajustes')
     expect(panel).not.toBeNull()
 
-    expect(screen.getByText('Cómo se ve el texto')).not.toBeNull()
     expect(screen.queryByText('La toma')).toBeNull()
 
-    const htmlText = panel.innerHTML
-    const idxGrupo1 = htmlText.indexOf('Cómo se ve el texto')
-    const idxLetra = htmlText.indexOf('Tamaño de letra')
-    const idxAncho = htmlText.indexOf('Ancho')
-    const idxTipoFuente = htmlText.indexOf('Tipografía')
-    const idxFondoLetra = htmlText.indexOf('Colores de lectura')
+    // Cuatro filas y en este orden. Desde el 24-09-2026 el cajon no tiene
+    // titulo de grupo ni muestra: el guion de arriba es la muestra.
+    const filas = Array.from(panel.querySelectorAll('.fila-aa-nombre')).map((e) => e.textContent)
+    expect(filas).toEqual(['Tamaño', 'Ancho', 'Letra', 'Colores'])
 
-    expect(idxLetra).toBeGreaterThan(idxGrupo1)
-    expect(idxAncho).toBeGreaterThan(idxLetra)
-    expect(idxTipoFuente).toBeGreaterThan(idxAncho)
-    expect(idxFondoLetra).toBeGreaterThan(idxTipoFuente)
+    const htmlText = panel.innerHTML
     expect(htmlText).not.toContain('Dónde lees:')
     expect(htmlText).not.toContain('Mostrar tiempo:')
   })
@@ -767,8 +759,8 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     })
     expect(screen.getByTestId('valor-letra-panel').textContent).toBe('32')
 
-    // Cerrar panel tocando ✕
-    const btnCerrar = screen.getByTestId('panel-ajustes').querySelector('button')!
+    // Cerrar el cajon tocando afuera, sobre el guion
+    const btnCerrar = screen.getByTestId('capa-ajustes')
     await act(async () => {
       fireEvent.click(btnCerrar)
     })
@@ -867,7 +859,7 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     expect(screen.queryByText('Ver transcripción en vivo')).toBeNull()
   })
 
-  test('T187 - El panel se cierra con "Listo" (btn-cerrar-ajustes).', () => {
+  test('T187 - El cajon no tiene "Listo": se cierra tocando afuera, sobre el guion.', () => {
     const guion: Guion = {
       id: 'g-t187',
       titulo: 'Guión T187',
@@ -890,10 +882,15 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
 
     expect(screen.getByTestId('panel-ajustes')).not.toBeNull()
 
-    const btnListo = screen.getByTestId('btn-cerrar-ajustes')
-    expect(btnListo.textContent).toBe('Listo')
+    // El dueno, 24-09-2026: "la palabra texto y la palabra listo pierden todo
+    // sentido y no deberian estar mas".
+    expect(screen.queryByTestId('btn-cerrar-ajustes')).toBeNull()
+    expect(screen.getByTestId('panel-ajustes').textContent).not.toContain('Listo')
 
-    fireEvent.click(btnListo)
+    // Tocar dentro del cajon no lo cierra; tocar afuera, si.
+    fireEvent.click(screen.getByTestId('panel-ajustes'))
+    expect(screen.queryByTestId('panel-ajustes')).not.toBeNull()
+    fireEvent.click(screen.getByTestId('capa-ajustes'))
     expect(screen.queryByTestId('panel-ajustes')).toBeNull()
   })
 })
@@ -1123,9 +1120,10 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
 
     fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
 
-    const btnAncho = screen.getByText('Ancho')
-    const btnMedio = screen.getByText('Medio')
-    const btnAngosto = screen.getByText('Angosto')
+    // Los botones se dibujan -tres columnas- y se nombran por aria-label.
+    const btnAncho = screen.getByRole('button', { name: 'Ancho' })
+    const btnMedio = screen.getByRole('button', { name: 'Medio' })
+    const btnAngosto = screen.getByRole('button', { name: 'Angosto' })
 
     // 1. "Ancho" deja margen 5% y columna completa (columnaAngosta = false)
     fireEvent.click(btnAncho)
@@ -1491,11 +1489,10 @@ describe('Pruebas TAREA 43: El sistema operativo no puede meterse en la pantalla
 
     const { unmount } = render(<WrapperEditorT275 guionInicial={guionConSaltosIniciales} />)
 
-    const textareaMontado = screen.getByTestId('textarea-guion') as HTMLTextAreaElement
-    expect(textareaMontado.value).toBe('Hola')
+    expect(textoDelGuion()).toBe('Hola')
     unmount()
 
-    // 2. Se monta el editor con "Hola", se cambia el texto a "Hola\n". El textarea tiene que quedar en "Hola\n", NO en "Hola"
+    // 2. Se monta el editor con "Hola" y se aprieta Enter al final. El guion tiene que quedar en "Hola\n", NO en "Hola"
     const guionNormal: Guion = {
       id: 'g-t275-escribir',
       titulo: 'Guion normal',
@@ -1507,13 +1504,14 @@ describe('Pruebas TAREA 43: El sistema operativo no puede meterse en la pantalla
 
     render(<WrapperEditorT275 guionInicial={guionNormal} />)
 
-    const textarea = screen.getByTestId('textarea-guion') as HTMLTextAreaElement
-    expect(textarea.value).toBe('Hola')
+    expect(textoDelGuion()).toBe('Hola')
 
+    // Enter es splitBlock: parte el parrafo donde esta el cursor.
+    const editor = editorDelGuion()
     await act(async () => {
-      fireEvent.change(textarea, { target: { value: 'Hola\n' } })
+      editor.chain().setTextSelection(editor.state.doc.content.size - 1).splitBlock().run()
     })
 
-    expect(textarea.value).toBe('Hola\n')
+    expect(textoDelGuion()).toBe('Hola\n')
   })
 })

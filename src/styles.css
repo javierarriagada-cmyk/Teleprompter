@@ -148,15 +148,6 @@ button {
   display: none;
 }
 
-@keyframes avanceTextoTarjeta {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-30px);
-  }
-}
-
 /* LA TARJETA SE CONVIERTE EN LA PANTALLA DE LECTURA.
  *
  * La primera version de la tarea 48 animaba top, left, width y height. Se ve bien
@@ -225,27 +216,7 @@ button {
 /* parpadeoCursor se fue con la tarea 50: el cursor de la portada vacia lo
  * reemplazo la marca quieta, y no quedaba nadie usando estos keyframes. */
 
-.tarjeta-lectura-velo-superior {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 35px;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 100%);
-  z-index: 3;
-  pointer-events: none;
-}
 
-.tarjeta-lectura-velo-inferior {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 35px;
-  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 100%);
-  z-index: 3;
-  pointer-events: none;
-}
 
 .tarjeta-lectura-borde-iluminado {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -473,4 +444,254 @@ textarea::placeholder {
 
 .pastilla-tiempo-relleno {
   background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* EL EDITOR DEL GUION CON FORMATO -Tiptap, 24-09-2026-. La hoja lleva el fondo,
+   la letra y el margen de la lectura -los pone EditorGuion.tsx, son dato del
+   usuario-; aca queda lo que no cambia: que ocupe el ancho entero de la
+   pantalla, el espacio entre lineas del guion igual al de la lectura -16 px,
+   MARGEN_RENGLON_LECTURA_PX- y como se dibujan colores y acotaciones. */
+.hoja-editor {
+  margin: 0 calc(-1 * var(--aire-4));
+  padding-top: var(--aire-3);
+  padding-bottom: var(--aire-3);
+  min-height: 40vh;
+}
+.editor-guion {
+  outline: none;
+  min-height: 30vh;
+  caret-color: currentColor;
+}
+.editor-guion p {
+  margin: 16px 0;
+}
+.editor-guion p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  opacity: 0.45;
+  pointer-events: none;
+  white-space: pre-wrap;
+}
+/* Los valores vienen de EditorGuion.tsx -colorDeTramo, DESTACADO-: cambian
+   con el fondo de lectura y no se repiten aca. */
+.tramo-ambar { color: var(--tramo-ambar); }
+.tramo-celeste { color: var(--tramo-celeste); }
+.tramo-salvia { color: var(--tramo-salvia); }
+.tramo-destacado {
+  background-color: var(--destacado-fondo);
+  color: var(--destacado-letra);
+  border-radius: 0.15em;
+  padding: 0 0.08em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+/* Igual que la lectura -renglones.tsx-: mas tenue y en cursiva. */
+.acotacion-editor {
+  opacity: 0.5;
+  font-style: italic;
+}
+
+/* EL CAJON Aa -24-09-2026-. Sin velo: el guion de arriba tiene que verse a
+   plena luz mientras se toca, porque es ahi donde se ve el cambio. Lo separa
+   del guion una sombra, no un oscurecido. */
+.capa-cajon-aa {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 200;
+  background: transparent;
+}
+.cajon-aa {
+  background-color: var(--bg-panel);
+  color: var(--color-texto);
+  border-radius: var(--redondeo-grande) var(--redondeo-grande) 0 0;
+  box-shadow: 0 -10px 36px rgba(0, 0, 0, 0.38);
+  max-width: 500px;
+  width: 100%;
+  padding: 0 var(--aire-4);
+  box-sizing: border-box;
+}
+.cajon-aa-agarradera {
+  display: flex;
+  justify-content: center;
+  width: 120px;
+  margin: 0 auto;
+  padding: var(--aire-2) 0 var(--aire-2);
+  touch-action: none;
+  cursor: grab;
+}
+.cajon-aa-agarradera-raya {
+  width: 36px;
+  height: 4px;
+  border-radius: var(--redondeo-pildora);
+  background-color: var(--color-borde);
+}
+.cajon-aa-cabeza {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--aire-2);
+}
+.cajon-aa-titulo {
+  margin: 0;
+  font-size: var(--texto-cuerpo);
+  font-weight: 600;
+  color: var(--color-apagado);
+}
+.cajon-aa-listo {
+  background: transparent;
+  border: none;
+  color: var(--color-texto);
+  font-size: var(--texto-cuerpo);
+  font-weight: 700;
+  padding: var(--aire-2);
+  margin: calc(-1 * var(--aire-2));
+  cursor: pointer;
+}
+.cajon-aa-filas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aire-2);
+}
+.fila-aa {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 52px;
+}
+.fila-aa-nombre {
+  font-size: var(--texto-cuerpo);
+  font-weight: 600;
+}
+/* UN SOLO OBJETO PARA LOS SELECTORES: una pildora hundida y, adentro, la
+   opcion elegida levantada en crema. Tamano, ancho y letra son el mismo
+   control con distinto contenido. */
+.selector-aa {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--redondeo-pildora);
+  background-color: var(--bg-suelo);
+  border: 1px solid var(--color-borde);
+}
+.selector-aa-opcion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  height: 40px;
+  padding: 0 var(--aire-2);
+  border: none;
+  border-radius: var(--redondeo-pildora);
+  background: transparent;
+  color: var(--color-texto);
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+.selector-aa-opcion.activa {
+  background-color: var(--color-acento);
+  color: var(--color-texto-acento);
+}
+.selector-aa-valor {
+  min-width: 34px;
+  text-align: center;
+  font-size: var(--texto-cuerpo);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.letra-aa-chica { font-size: 14px; font-weight: 600; }
+.letra-aa-grande { font-size: 22px; font-weight: 600; }
+.aa-sans { font-family: "Source Sans 3", sans-serif; font-size: 19px; }
+.aa-serif { font-family: "Source Serif 4", serif; font-size: 19px; }
+.parejas-aa {
+  display: flex;
+  gap: var(--aire-2);
+}
+.pareja-aa {
+  width: 46px;
+  height: 46px;
+  padding: 3px;
+  border-radius: var(--redondeo-pildora);
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 160ms ease;
+}
+.pareja-aa.activa {
+  border-color: var(--color-acento);
+}
+.pareja-aa-disco {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--redondeo-pildora);
+  box-shadow: inset 0 0 0 1px var(--color-borde);
+  font-size: 13px;
+  font-weight: 700;
+}
+/* El paso de una pareja de colores a otra se ve, no salta. */
+.hoja-editor,
+.hoja-editor > div {
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+/* El Aa que abre el cajon: mas grande que un titulo -era 18 px- porque es el
+   unico control de la fila y se busca con el pulgar. El padding agranda el
+   blanco de toque y el margen negativo lo compensa: la letra sigue alineada
+   con el borde del contenido. 24-09-2026. */
+.boton-aa {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-texto);
+  padding: var(--aire-2) var(--aire-3);
+  margin: calc(-1 * var(--aire-2)) calc(-1 * var(--aire-3));
+  cursor: pointer;
+}
+.cajon-aa-agarradera {
+  padding-bottom: var(--aire-3);
+}
+.volver-guiones {
+  font-size: var(--texto-titulo);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* El boton de destacado de la barra de formato: amarillo con letra negra,
+   como el texto que deja. Los valores son DESTACADO -modelo.ts-. */
+.btn-destacado-barra {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background-color: #FFE066;
+  color: #111111;
+  font-weight: 700;
+  font-size: var(--texto-cuerpo);
+  cursor: pointer;
+}
+
+/* GRABAR SE RECONOCE ANTES DE LEER LA PALABRA. 24-09-2026.
+   Era un contorno gris, igual a cualquier boton secundario: se leia apagado y
+   lo unico que decia "grabar" era el punto. Ahora lleva el rojo de grabacion
+   -var(--color-grabando)- en el borde y, muy tenue, en el relleno. Leer sigue
+   siendo el principal: crema y lleno.
+   El relleno mezcla el rojo con var(--bg-superficie) y no es un color fijo: en
+   el tema claro sale un rosa palido y en el oscuro un rojo casi negro, y la
+   letra de tema se lee en los dos. La primera linea queda para un WebView que
+   no sepa color-mix. Lo usan la tarjeta de la portada y la barra del editor:
+   es el mismo boton. */
+.btn-grabar {
+  background-color: var(--bg-superficie);
+  background-color: color-mix(in srgb, var(--color-grabando) 16%, var(--bg-superficie));
+  border: 1px solid var(--color-grabando);
+  color: var(--color-texto);
 }

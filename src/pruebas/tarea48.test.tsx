@@ -1,6 +1,6 @@
 import React from 'react'
 import { describe, test, expect, beforeEach, vi } from 'vitest'
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, within, act } from '@testing-library/react'
 import fs from 'fs'
 import path from 'path'
 import 'fake-indexeddb/auto'
@@ -56,7 +56,7 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
     expect(screen.queryByTestId('teleprompter-view-container')).toBeNull()
   })
 
-  test('T220 - LA TARJETA MUESTRA EL GUION MAS RECIENTE con su titulo y time-code en formato m:ss.', async () => {
+  test('T220 - LA TARJETA MUESTRA EL GUION MAS RECIENTE con su titulo y time-code en formato m:ss, y NO el texto del guion.', async () => {
     const guionesPrueba = [
       {
         id: 'g1',
@@ -105,9 +105,15 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
       bloques: [{ id: 'b1', nombre: '', texto: 'Primer renglón del guión' }]
     })
 
-    await waitFor(() => {
-      expect(screen.getByText('Primer renglón del guión')).not.toBeNull()
+    // SIN TEXTO FANTASMA -24-09-2026-. Hasta aca la tarjeta dibujaba los
+    // primeros renglones del guion detras del titulo; se sacaron porque no se
+    // leian y desordenaban la portada. Aunque el guion completo llegue, su
+    // texto no aparece en la tarjeta.
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 50))
     })
+    expect(tarjeta.textContent).not.toContain('Primer renglón del guión')
+    expect(within(tarjeta).getByText('Guión Más Reciente')).not.toBeNull()
   })
 
   test('T221 - SIN GUIONES, LA TARJETA SIGUE.', async () => {

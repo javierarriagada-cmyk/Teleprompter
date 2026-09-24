@@ -1,21 +1,16 @@
 import React from 'react'
 import { IconoEmpezar } from './IconosApp'
 import { ResumenGuion, PAREJAS_COLOR } from '../datos/modelo'
-import { movimientoApagado } from './movimiento'
-import { familiaLectura } from './estiloLectura'
 import { estiloComprimirPorAviso, useMantenerApretado } from './mantenerApretado'
 
 interface TarjetaLecturaProps {
   guionResumen?: ResumenGuion
-  textoCompleto?: string
-  esInicial?: boolean
   onLeer: (rect?: DOMRect) => void
   onGrabar?: (rect?: DOMRect) => void
   onCrearNuevo: () => void
   onDiagTouchStart?: () => void
   onDiagTouchEnd?: () => void
   onDiagClick?: () => void
-  tipoFuente?: 'sans' | 'serif'
   colorFondo?: string
   colorLetra?: string
 }
@@ -31,15 +26,12 @@ function formatearDuracion(palabras: number): string {
 
 export default function TarjetaLectura({
   guionResumen,
-  textoCompleto,
-  esInicial = false,
   onLeer,
   onGrabar,
   onCrearNuevo,
   onDiagTouchStart,
   onDiagTouchEnd,
   onDiagClick,
-  tipoFuente = 'sans',
   colorFondo = PAREJAS_COLOR[0].fondo,
   colorLetra = PAREJAS_COLOR[0].letra
 }: TarjetaLecturaProps) {
@@ -69,23 +61,6 @@ export default function TarjetaLectura({
     // ajusta al sitio que hay, no al reves.
     : 'Sin guiones'
 
-  const lineasTexto = textoCompleto
-    ? textoCompleto.split('\n').filter((l) => l.trim().length > 0)
-    : []
-
-  const animacionTextoStyle: React.CSSProperties =
-    esInicial && !movimientoApagado() && hayGuion
-      ? {
-          animation: 'avanceTextoTarjeta 6s linear forwards'
-        }
-      : hayGuion && !movimientoApagado()
-      ? {
-          transform: 'translateY(-30px)'
-        }
-      : {}
-
-  const fuentefamily = familiaLectura(tipoFuente)
-
   return (
     <div
       ref={cardRef}
@@ -99,7 +74,6 @@ export default function TarjetaLectura({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        minHeight: 340,
         boxSizing: 'border-box',
         overflow: 'hidden',
         color: parejaColor.letra
@@ -115,7 +89,17 @@ export default function TarjetaLectura({
           es cuanto dura el guion, asi que su lugar es al lado del titulo. */}
       <div style={{ height: 24, zIndex: 5 }} />
 
-      {/* Zona Central: Simulación de Pantalla de Lectura */}
+      {/* SIN TEXTO FANTASMA. 24-09-2026.
+          Desde la Tarea 48 la tarjeta llevaba una miniatura de la lectura: cinco
+          renglones del guion a 18 px, cortados por un velo arriba y otro abajo,
+          casi todos atenuados. No se alcanzaban a leer, competian con el titulo
+          de 44 px y ensuciaban la pantalla que tiene que decir lo mas simple:
+          este es tu guion, leelo o grabalo. El dueno: "siento que nos desordena
+          un poco la pantalla". Se fue el texto Y el hueco de 140 px que ocupaba:
+          dejar el hueco vacio es espacio muerto. La animacion de la tarjeta que
+          crece hasta la lectura no dependia del texto: sale del rectangulo.
+          La zona queda solo para el estado vacio, con la marca. */}
+      {!hayGuion && (
       <div
         style={{
           position: 'relative',
@@ -127,31 +111,7 @@ export default function TarjetaLectura({
           justifyContent: 'center'
         }}
       >
-        {/* Velo Superior e Inferior */}
-        <div className="tarjeta-lectura-velo-superior" />
-        <div className="tarjeta-lectura-velo-inferior" />
-
-        {/* Bloque de Texto de Lectura */}
-        {hayGuion ? (
-          <div
-            style={{
-              position: 'relative',
-              zIndex: 2,
-              padding: '0 var(--aire-2)',
-              fontSize: 18,
-              lineHeight: 1.4,
-              fontFamily: fuentefamily,
-              color: parejaColor.letra,
-              ...animacionTextoStyle
-            }}
-          >
-            {lineasTexto.slice(0, 8).map((linea, idx) => (
-              <div key={idx} style={{ marginBottom: 4, opacity: idx >= 1 && idx <= 2 ? 1 : 0.45 }}>
-                {linea}
-              </div>
-            ))}
-          </div>
-        ) : (
+        {
           /* ESTADO VACIO: LA MARCA, QUIETA. Parte 5.2 de la tarea 50.
            *
            * Reemplaza al cursor parpadeante que puso la tarea 48. El cursor decia
@@ -196,8 +156,9 @@ export default function TarjetaLectura({
               />
             ))}
           </div>
-        )}
+        }
       </div>
+      )}
 
       {/* Zona Inferior: Título de 44px y Botón de Acción */}
       <div style={{ zIndex: 5, display: 'flex', flexDirection: 'column', gap: 'var(--aire-3)' }}>
@@ -291,7 +252,7 @@ export default function TarjetaLectura({
             <button
               type="button"
               data-testid="btn-grabar-tarjeta"
-              className="btn-deformable btn-grabar-tarjeta-rojo"
+              className="btn-deformable btn-grabar btn-grabar-tarjeta-rojo"
               onClick={(e) => {
                 e.stopPropagation()
                 const rect = cardRef.current?.getBoundingClientRect()
@@ -300,9 +261,6 @@ export default function TarjetaLectura({
               style={{
                 flex: 1,
                 padding: 'var(--aire-3) var(--aire-4)',
-                backgroundColor: 'var(--bg-superficie)',
-                color: 'var(--color-texto)',
-                border: '1px solid var(--color-borde)',
                 borderRadius: 'var(--redondeo-pildora)',
                 fontSize: 'var(--texto-titulo)',
                 fontWeight: 600,

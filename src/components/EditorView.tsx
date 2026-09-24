@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
-import { MuestraLectura } from './MuestraLectura'
 import { Guion, Bloque, TramoFormato, contarPalabras, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
 import { consolidarGuion } from '../datos/consolidar'
 import { importarArchivo } from '../datos/importarArchivo'
@@ -9,38 +8,14 @@ import { IdMotor } from '../motor/MotorDeVoz'
 import { hapticaSeleccion, hapticaToqueSuave } from '../haptica'
 import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
 import { IconoAtras, IconoEmpezar } from './IconosApp'
+import { EditorGuion } from './EditorGuion'
+import type { Editor } from '@tiptap/react'
 
-export function reubicarTramos(
-  textoViejo: string,
-  nuevoTexto: string,
-  tramos: TramoFormato[]
-): TramoFormato[] {
-  if (tramos.length === 0) return []
-  if (textoViejo === nuevoTexto) return tramos
-
-  let ini = 0
-  const maxIni = Math.min(textoViejo.length, nuevoTexto.length)
-  while (ini < maxIni && textoViejo[ini] === nuevoTexto[ini]) ini++
-
-  let cola = 0
-  while (
-    cola < maxIni - ini &&
-    textoViejo[textoViejo.length - 1 - cola] === nuevoTexto[nuevoTexto.length - 1 - cola]
-  ) cola++
-
-  const finViejo = textoViejo.length - cola
-  const delta = (nuevoTexto.length - cola) - finViejo
-
-  const salida: TramoFormato[] = []
-  for (const tr of tramos) {
-    if (tr.hasta <= ini) {
-      salida.push(tr)
-    } else if (tr.desde >= finViejo) {
-      salida.push({ ...tr, desde: tr.desde + delta, hasta: tr.hasta + delta })
-    }
-  }
-  return salida
-}
+// reubicarTramos vivia aca: con el <textarea>, cada tecla llegaba como un
+// texto nuevo entero y habia que adivinar donde habia quedado cada marca
+// comparando el viejo con el nuevo. Tiptap lleva las marcas pegadas al texto,
+// asi que ya no hay nada que adivinar. Se fue el 24-09-2026; su guardiana,
+// T101, ahora prueba lo mismo sobre el editor -pruebas.test.tsx-.
 
 interface EditorViewProps {
   guion: Guion
@@ -79,13 +54,6 @@ interface EditorViewProps {
   onAnimationEnd?: (e: React.AnimationEvent) => void
 }
 
-function ajustarAltoTextarea(el: HTMLTextAreaElement | null): void {
-  if (!el) return
-  el.style.height = 'auto'
-  if (el.scrollHeight > 0) {
-    el.style.height = el.scrollHeight + 'px'
-  }
-}
 
 function generarIdBloque(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
@@ -221,8 +189,7 @@ export default function EditorView({
   const [cargandoArchivo, setCargandoArchivo] = useState(false)
   const [errorArchivo, setErrorArchivo] = useState<string | null>(null)
 
-  const textareaRefs = useRef<Record<string, HTMLTextAreaElement | null>>({})
-  const ultimasSeleccionesRef = useRef<Record<string, { desde: number; hasta: number }>>({})
+  const editorRef = useRef<Editor | null>(null)
   const [hayTextoSeleccionado, setHayTextoSeleccionado] = useState(false)
   const [tituloEnfocado, setTituloEnfocado] = useState(false)
   const [barraLeerVisible, setBarraLeerVisible] = useState(true)
@@ -305,96 +272,43 @@ export default function EditorView({
     }
   }
 
-  function handleTextoChange(nuevoTexto: string) {
-    const b0 = (guion.bloques && guion.bloques[0])
-      ? guion.bloques[0]
-      : { id: generarIdBloque(), nombre: '', texto: '', tramos: [] }
-
-    const bloqueActualizado: Bloque = {
-      ...b0,
-      texto: nuevoTexto,
-      tramos: reubicarTramos(b0.texto || '', nuevoTexto, b0.tramos || [])
+  // El formato se aplica sobre el editor, que lo dibuja en el acto y avisa el
+  // cambio por onCambio -texto y tramos, como se guarda-. Negrita y color van
+  // y vuelven: tocar de nuevo el mismo lo saca.
+  function aplicarFormatoEnSeleccion(opciones: { negrita?: boolean; destacado?: boolean; color?: 'ambar' | 'celeste' | 'salvia' }) {
+    const editor = editorRef.current
+    if (!editor || editor.state.selection.empty) return
+    if (opciones.negrita) {
+      editor.chain().focus().toggleBold().run()
     }
-
-    onChangeGuion({
-      ...guion,
-      bloques: [bloqueActualizado],
-      modificado: Date.now()
-    })
-  }
-
-  function aplicarFormatoEnSeleccion(opciones: { negrita?: boolean; color?: 'ambar' | 'celeste' | 'salvia' }) {
-    if (!guion.bloques || !guion.bloques[0]) return
-    const bloque = guion.bloques[0]
-    const textarea = textareaRefs.current[bloque.id]
-    if (!textarea) return
-
-    let desde = textarea.selectionStart
-    let hasta = textarea.selectionEnd
-
-    if (desde === hasta && ultimasSeleccionesRef.current[bloque.id]) {
-      const guardado = ultimasSeleccionesRef.current[bloque.id]
-      desde = guardado.desde
-      hasta = guardado.hasta
+    if (opciones.destacado) {
+      editor.chain().focus().toggleMark('destacado').run()
     }
-
-    if (desde === hasta) return
-
-    const tramosActuales = bloque.tramos ? [...bloque.tramos] : []
-
-    const tramoExisteIdx = tramosActuales.findIndex((t) => t.desde === desde && t.hasta === hasta)
-    if (tramoExisteIdx !== -1) {
-      tramosActuales[tramoExisteIdx] = {
-        ...tramosActuales[tramoExisteIdx],
-        ...opciones
+    if (opciones.color) {
+      if (editor.isActive('colorTramo', { color: opciones.color })) {
+        editor.chain().focus().unsetMark('colorTramo').run()
+      } else {
+        editor.chain().focus().setMark('colorTramo', { color: opciones.color }).run()
       }
-    } else {
-      tramosActuales.push({
-        desde,
-        hasta,
-        ...opciones
-      })
     }
-
-    onChangeGuion({
-      ...guion,
-      bloques: [{ ...bloque, tramos: tramosActuales }],
-      modificado: Date.now()
-    })
   }
 
   function handleAcotacion() {
-    if (!guion.bloques || !guion.bloques[0]) return
-    const bloque = guion.bloques[0]
-    const textarea = textareaRefs.current[bloque.id]
-    if (!textarea) return
-
-    let desde = textarea.selectionStart
-    let hasta = textarea.selectionEnd
-
-    if (desde === hasta && ultimasSeleccionesRef.current[bloque.id]) {
-      const guardado = ultimasSeleccionesRef.current[bloque.id]
-      desde = guardado.desde
-      hasta = guardado.hasta
-    }
-
-    const textoActual = bloque.texto || ''
-    const textoSeleccionado = textoActual.substring(desde, hasta)
-
-    const textoNuevo = textoActual.substring(0, desde) + `[${textoSeleccionado}]` + textoActual.substring(hasta)
-
-    handleTextoChange(textoNuevo)
+    const editor = editorRef.current
+    if (!editor) return
+    const { from, to } = editor.state.selection
+    editor.chain().focus().insertContentAt(to, ']').insertContentAt(from, '[').run()
   }
 
-  function handleTextareaSelect(bloqueId: string, target: HTMLTextAreaElement) {
-    const tieneSeleccion = target.selectionStart !== target.selectionEnd
-    setHayTextoSeleccionado(tieneSeleccion)
-    if (tieneSeleccion) {
-      ultimasSeleccionesRef.current[bloqueId] = {
-        desde: target.selectionStart,
-        hasta: target.selectionEnd
-      }
-    }
+  function handleEditorCambio(nuevoTexto: string, nuevosTramos: TramoFormato[]) {
+    const b0 = (guion.bloques && guion.bloques[0])
+      ? guion.bloques[0]
+      : { id: generarIdBloque(), nombre: '', texto: '', tramos: [] }
+    onChangeGuion({
+      ...guion,
+      bloques: [{ ...b0, texto: nuevoTexto, tramos: nuevosTramos }],
+      modificado: Date.now()
+    })
   }
 
   const numPalabras = contarPalabras(guion)
@@ -457,10 +371,13 @@ export default function EditorView({
             Sube al mismo escalon que los titulos de la portada -texto-cuerpo-
             y gana padding de verdad. El margen negativo compensa ese padding
             para que la flecha siga alineada con el borde del contenido: crece
-            el area que recibe el dedo, no se corre el dibujo. */}
+            el area que recibe el dedo, no se corre el dibujo.
+            24-09-2026: sube otro escalon, a 18 px -.volver-guiones-, junto con
+            el Aa de la derecha. El dueno: "la palabra Guiones que esta arriba
+            tambien deberia ser un poco mas grande". */}
         <button
           onClick={onVolverBiblioteca}
-          className="texto-cuerpo btn-deformable"
+          className="volver-guiones btn-deformable"
           style={{
             background: 'transparent',
             border: 'none',
@@ -480,19 +397,18 @@ export default function EditorView({
         <button
           onClick={() => {
             hapticaToqueSuave()
+            // Al abrir Aa se cierran el teclado y la seleccion: si no, el menu
+            // de Android -Copiar, Compartir- queda flotando sobre el guion
+            // mientras se mira como cambia. Visto en el telefono, 24-09-2026.
+            const ed = editorRef.current
+            if (ed) {
+              ed.commands.setTextSelection(ed.state.selection.to)
+              ed.commands.blur()
+            }
             setMostrarModalAjustes(true)
           }}
-          className="btn-deformable"
+          className="btn-deformable boton-aa"
           data-testid="btn-menu-opciones-editor"
-          style={{
-            background: 'transparent',
-            border: 'none',
-            fontSize: 'var(--texto-titulo)',
-            fontWeight: 'bold',
-            color: 'var(--color-texto)',
-            padding: 'var(--aire-1) var(--aire-2)',
-            cursor: 'pointer'
-          }}
           title="Ajustes de lectura"
         >
           Aa
@@ -556,42 +472,32 @@ export default function EditorView({
         </div>
       )}
 
-      {/* Modal de Ajustes: Hoja inferior */}
+      {/* EL CAJON Aa, SIN MUESTRA Y SIN VELO. 24-09-2026.
+          Con el editor nuevo -EditorGuion, Tiptap- el guion mismo toma la letra,
+          el tamano, el ancho y los colores de lectura en el momento en que se
+          tocan. La muestra que vivia aca dentro -MuestraLectura, Tarea 72- sobraba,
+          y el velo oscuro que tapaba el resto de la pantalla escondia justo lo que
+          habia que mirar. El dueno, al probarlo: "se cambia todo
+          instantaneamente, de ahi tendria que salir la previsualizacion".
+          Es el patron de Apple Books y Kindle, de donde viene el "Aa": el libro
+          cambia detras, a plena luz, y el cajon es bajo. La capa transparente
+          sigue ahi para que tocar el guion cierre el cajon. */}
       {mostrarModalAjustes && (
         <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'var(--velo-modal)',
-            display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'center',
-            zIndex: 200
-          }}
+          className="capa-cajon-aa"
+          data-testid="capa-ajustes"
           onClick={() => setMostrarModalAjustes(false)}
         >
           <div
             ref={refAjustes}
             data-testid="panel-ajustes"
-            className="panel-superficie"
+            className="panel-superficie cajon-aa"
             onPointerDown={handleModalPointerDown}
             onPointerMove={handleModalPointerMove}
             onPointerUp={handleModalPointerUp}
             onPointerCancel={handleModalPointerUp}
             style={{
-              backgroundColor: 'var(--bg-panel)',
-              color: 'var(--color-texto)',
-              padding: 'var(--aire-4)',
-              paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
-              borderRadius: 'var(--redondeo-grande) var(--redondeo-grande) 0 0',
-              maxWidth: 500,
-              width: '100%',
-              maxHeight: '86vh',
-              overflowY: 'auto',
-              boxSizing: 'border-box',
+              paddingBottom: 'calc(var(--aire-4) + env(safe-area-inset-bottom, 0px))',
               transform: `translateY(${dragOffsetY}px)`,
               transition: esArrastrandoModalRef.current
                 ? 'none'
@@ -606,258 +512,148 @@ export default function EditorView({
           >
             <div
               data-testid="agarradera-hoja-ajustes"
+              className="cajon-aa-agarradera"
               onPointerDown={handleAgarraderaPointerDown}
               onPointerMove={handleModalPointerMove}
               onPointerUp={handleModalPointerUp}
               onPointerCancel={handleModalPointerUp}
-              style={{
-                padding: 'var(--aire-2) 0 var(--aire-3) 0',
-                margin: '0 auto',
-                width: 120,
-                display: 'flex',
-                justifyContent: 'center',
-                touchAction: 'none',
-                cursor: 'grab'
-              }}
             >
-              <div style={{ width: 36, height: 4, borderRadius: 'var(--redondeo-pildora)', backgroundColor: 'var(--color-borde)' }} />
+              <div className="cajon-aa-agarradera-raya" />
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-4)' }}>
-              <h3 style={{ margin: 0, fontSize: 'var(--texto-titulo)', fontWeight: 600, color: 'var(--color-texto)' }}>Ajustes</h3>
-              <button
-                data-testid="btn-cerrar-ajustes"
-                className="btn-deformable"
-                onClick={() => setMostrarModalAjustes(false)}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: 'var(--color-texto)',
-                  fontSize: 'var(--texto-cuerpo)',
-                  fontWeight: 'bold',
-                  cursor: 'pointer'
-                }}
-              >
-                Listo
-              </button>
-            </div>
+            {/* Sin titulo y sin "Listo". El dueno, 24-09-2026: "la palabra
+                texto y la palabra listo pierden todo sentido". El cajon se
+                entiende solo -esta debajo del Aa que lo abrio- y se cierra
+                tocando el guion o bajandolo por la agarradera. */}
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-4)' }}>
-              {/* Grupo 1: CÓMO SE VE EL TEXTO */}
-              <div>
-                <h4 className="texto-etiqueta" style={{ margin: '0 0 var(--aire-3) 0', color: 'var(--color-apagado)' }}>
-                  Cómo se ve el texto
-                </h4>
-                <MuestraLectura
-                  texto={bloqueUnico.texto}
-                  fontSize={fontSize}
-                  tipoFuente={tipoFuente}
-                  colorFondo={colorFondo}
-                  colorLetra={colorLetra}
-                  columnaAngosta={columnaAngosta}
-                  marginPercent={marginPercent}
-                />
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-3)' }}>
-                  {/* Tamaño de letra */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Tamaño de letra</span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)' }}>
-                      <button
-                        onClick={onLetraMenos}
-                        aria-label="Disminuir letra panel"
-                        className="btn-deformable"
-                        style={{ padding: 'var(--aire-1) var(--aire-3)', fontSize: 'var(--texto-titulo)', cursor: 'pointer', borderRadius: 'var(--redondeo)', border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
-                      >
-                        -
-                      </button>
-                      <span data-testid="valor-letra-panel" className="texto-cuerpo" style={{ fontWeight: 'bold', minWidth: 28, textAlign: 'center' }}>{fontSize}</span>
-                      <button
-                        onClick={onLetraMas}
-                        aria-label="Aumentar letra panel"
-                        className="btn-deformable"
-                        style={{ padding: 'var(--aire-1) var(--aire-3)', fontSize: 'var(--texto-titulo)', cursor: 'pointer', borderRadius: 'var(--redondeo)', border: '1px solid var(--color-borde)', backgroundColor: 'var(--bg-suelo)', color: 'var(--color-texto)' }}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Ancho */}
-                  {(setColumnaAngosta || setMarginPercent) && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      {/* "Ancho del texto" y no "Ancho" a secas: la primera de
-                          las tres opciones de esta misma fila TAMBIEN se llama
-                          "Ancho". Mientras la etiqueta llevo dos puntos la
-                          diferencia se veia; al sacarlos quedaron dos "Ancho"
-                          pegados, y getByText encontro los dos. Se vio al
-                          sacar los dos puntos del panel, el 23 de septiembre
-                          de 2026. */}
-                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Ancho del texto</span>
-                      <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
-                        <button
-                          type="button"
-                          className="btn-deformable"
-                          onClick={() => {
-                            hapticaSeleccion()
-                            setColumnaAngosta?.(false)
-                            setMarginPercent?.(5)
-                          }}
-                          style={{
-                            padding: 'var(--aire-2) var(--aire-3)',
-                            border: '1px solid var(--color-borde)',
-                            backgroundColor: (!columnaAngosta && marginPercent !== 12) ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                            color: (!columnaAngosta && marginPercent !== 12) ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                            fontWeight: (!columnaAngosta && marginPercent !== 12) ? 'bold' : 'normal',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          Ancho
-                        </button>
-                        <button
-                          type="button"
-                          className="btn-deformable"
-                          onClick={() => {
-                            hapticaSeleccion()
-                            setColumnaAngosta?.(false)
-                            setMarginPercent?.(12)
-                          }}
-                          style={{
-                            padding: 'var(--aire-2) var(--aire-3)',
-                            border: '1px solid var(--color-borde)',
-                            backgroundColor: (!columnaAngosta && marginPercent === 12) ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                            color: (!columnaAngosta && marginPercent === 12) ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                            fontWeight: (!columnaAngosta && marginPercent === 12) ? 'bold' : 'normal',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          Medio
-                        </button>
-                        <button
-                          type="button"
-                          className="btn-deformable"
-                          onClick={() => {
-                            hapticaSeleccion()
-                            setColumnaAngosta?.(true)
-                            setMarginPercent?.(5)
-                          }}
-                          style={{
-                            padding: 'var(--aire-2) var(--aire-3)',
-                            border: '1px solid var(--color-borde)',
-                            backgroundColor: columnaAngosta ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                            color: columnaAngosta ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                            fontWeight: columnaAngosta ? 'bold' : 'normal',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          Angosto
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Tipografía */}
-                  {setTipoFuente && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Tipografía</span>
-                      <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
-                        <button
-                          type="button"
-                          className="btn-deformable"
-                          onClick={() => {
-                            hapticaSeleccion()
-                            setTipoFuente('sans')
-                          }}
-                          style={{
-                            padding: 'var(--aire-2) var(--aire-3)',
-                            border: '1px solid var(--color-borde)',
-                            backgroundColor: tipoFuente === 'sans' ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                            color: tipoFuente === 'sans' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                            fontWeight: tipoFuente === 'sans' ? 'bold' : 'normal',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          Sans
-                        </button>
-                        <button
-                          type="button"
-                          className="btn-deformable"
-                          onClick={() => {
-                            hapticaSeleccion()
-                            setTipoFuente('serif')
-                          }}
-                          style={{
-                            padding: 'var(--aire-2) var(--aire-3)',
-                            border: '1px solid var(--color-borde)',
-                            backgroundColor: tipoFuente === 'serif' ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                            color: tipoFuente === 'serif' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                            fontWeight: tipoFuente === 'serif' ? 'bold' : 'normal',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          Serif
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                  {/* Colores de lectura: parejas, no dos listas. Fuente: PAREJAS_COLOR. */}
-                  {setColorFondo && setColorLetra && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Colores de lectura</span>
-                      <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
-                        {[
-                          { fondo: PAREJAS_COLOR[0].fondo, letra: PAREJAS_COLOR[0].letra, label: 'Negro con blanco' },
-                          { fondo: PAREJAS_COLOR[1].fondo, letra: PAREJAS_COLOR[1].letra, label: 'Negro con ámbar' },
-                          { fondo: PAREJAS_COLOR[2].fondo, letra: PAREJAS_COLOR[2].letra, label: 'Blanco con negro' }
-                        ].map((p, idx) => {
-                          const activo = colorFondo.toUpperCase() === p.fondo.toUpperCase() && colorLetra.toUpperCase() === p.letra.toUpperCase()
-                          return (
-                            <button
-                              key={idx}
-                              type="button"
-                              className="btn-deformable"
-                              title={p.label}
-                              onClick={() => {
-                                hapticaSeleccion()
-                                setColorFondo(p.fondo)
-                                setColorLetra(p.letra)
-                              }}
-                              style={{
-                                padding: 'var(--aire-1)',
-                                border: activo ? '2px solid var(--color-acento)' : '1px solid var(--color-borde)',
-                                backgroundColor: 'var(--bg-suelo)',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                              }}
-                            >
-                              <div
-                                style={{
-                                  width: 28,
-                                  height: 28,
-                                  borderRadius: 'var(--aire-1)',
-                                  backgroundColor: p.fondo,
-                                  color: p.letra,
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  fontWeight: 'bold',
-                                  fontSize: 'var(--texto-meta)',
-                                  border: '1px solid var(--color-borde)'
-                                }}
-                              >
-                                Aa
-                              </div>
-                            </button>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-
+            {/* Cuatro filas. Cada control MUESTRA lo que hace en vez de
+                nombrarlo: la A chica y la A grande, la columna dibujada, el Aa
+                escrito en cada letra, el fondo y la letra de cada pareja. Los
+                nombres quedan en aria-label, para el lector de pantalla. Los
+                selectores son el mismo objeto -.selector-aa-, no botoneras
+                decoradas por separado. */}
+            <div className="cajon-aa-filas">
+              <div className="fila-aa">
+                <span className="fila-aa-nombre">Tamaño</span>
+                <div className="selector-aa" role="group" aria-label="Tamaño de letra">
+                  <button
+                    type="button"
+                    onClick={onLetraMenos}
+                    aria-label="Disminuir letra panel"
+                    className="btn-deformable selector-aa-opcion letra-aa-chica"
+                  >
+                    A
+                  </button>
+                  <span data-testid="valor-letra-panel" className="selector-aa-valor">{fontSize}</span>
+                  <button
+                    type="button"
+                    onClick={onLetraMas}
+                    aria-label="Aumentar letra panel"
+                    className="btn-deformable selector-aa-opcion letra-aa-grande"
+                  >
+                    A
+                  </button>
                 </div>
               </div>
+
+              {(setColumnaAngosta || setMarginPercent) && (
+                <div className="fila-aa">
+                  {/* OJO: la fila se llama "Ancho" y la primera opcion TAMBIEN
+                      -su aria-label-. getByText('Ancho') encuentra la fila; las
+                      pruebas buscan el boton por rol. Hasta el 24-09-2026 la
+                      fila decia "Ancho del texto" justamente para no chocar con
+                      el texto del boton -se vio el 23-09-2026 al sacar los dos
+                      puntos-; ahora el boton es un dibujo y el choque es solo
+                      de nombre accesible. */}
+                  <span className="fila-aa-nombre">Ancho</span>
+                  <div className="selector-aa" role="group" aria-label="Ancho del texto">
+                    {([
+                      { nombre: 'Ancho', angosta: false, margen: 5, activo: !columnaAngosta && marginPercent !== 12, lineas: [16, 16, 11] },
+                      { nombre: 'Medio', angosta: false, margen: 12, activo: !columnaAngosta && marginPercent === 12, lineas: [11, 11, 8] },
+                      { nombre: 'Angosto', angosta: true, margen: 5, activo: columnaAngosta, lineas: [6, 6, 4] }
+                    ]).map((o) => (
+                      <button
+                        key={o.nombre}
+                        type="button"
+                        aria-label={o.nombre}
+                        aria-pressed={o.activo}
+                        className={`btn-deformable selector-aa-opcion${o.activo ? ' activa' : ''}`}
+                        onClick={() => {
+                          hapticaSeleccion()
+                          setColumnaAngosta?.(o.angosta)
+                          setMarginPercent?.(o.margen)
+                        }}
+                      >
+                        <svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true">
+                          {o.lineas.map((ancho, i) => (
+                            <rect key={i} x={(22 - ancho) / 2} y={3 + i * 5} width={ancho} height="2" rx="1" fill="currentColor" />
+                          ))}
+                        </svg>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {setTipoFuente && (
+                <div className="fila-aa">
+                  <span className="fila-aa-nombre">Letra</span>
+                  <div className="selector-aa" role="group" aria-label="Tipografía">
+                    {([
+                      { valor: 'sans' as const, nombre: 'Sans' },
+                      { valor: 'serif' as const, nombre: 'Serif' }
+                    ]).map((o) => (
+                      <button
+                        key={o.valor}
+                        type="button"
+                        aria-label={o.nombre}
+                        aria-pressed={tipoFuente === o.valor}
+                        className={`btn-deformable selector-aa-opcion aa-${o.valor}${tipoFuente === o.valor ? ' activa' : ''}`}
+                        onClick={() => {
+                          hapticaSeleccion()
+                          setTipoFuente(o.valor)
+                        }}
+                      >
+                        Aa
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Colores de lectura: parejas, no dos listas. Fuente: PAREJAS_COLOR. */}
+              {setColorFondo && setColorLetra && (
+                <div className="fila-aa">
+                  <span className="fila-aa-nombre">Colores</span>
+                  <div className="parejas-aa" role="group" aria-label="Colores de lectura">
+                    {[
+                      { fondo: PAREJAS_COLOR[0].fondo, letra: PAREJAS_COLOR[0].letra, label: 'Negro con blanco' },
+                      { fondo: PAREJAS_COLOR[1].fondo, letra: PAREJAS_COLOR[1].letra, label: 'Negro con ámbar' },
+                      { fondo: PAREJAS_COLOR[2].fondo, letra: PAREJAS_COLOR[2].letra, label: 'Blanco con negro' }
+                    ].map((p, idx) => {
+                      const activo = colorFondo.toUpperCase() === p.fondo.toUpperCase() && colorLetra.toUpperCase() === p.letra.toUpperCase()
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          title={p.label}
+                          aria-pressed={activo}
+                          className={`btn-deformable pareja-aa${activo ? ' activa' : ''}`}
+                          onClick={() => {
+                            hapticaSeleccion()
+                            setColorFondo(p.fondo)
+                            setColorLetra(p.letra)
+                          }}
+                        >
+                          {/* Fondo y letra de la pareja: son dato, no tema
+                              -modelo.ts, PAREJAS_COLOR-. */}
+                          <span className="pareja-aa-disco" style={{ backgroundColor: p.fondo, color: p.letra }}>Aa</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -962,6 +758,19 @@ export default function EditorView({
                 />
               ))}
             </div>
+            {/* Destacado: fondo amarillo, letra negra. El boton se dibuja como
+                lo que hace. 24-09-2026. */}
+            <button
+              type="button"
+              className="btn-deformable btn-destacado-barra"
+              data-testid="btn-destacado"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => aplicarFormatoEnSeleccion({ destacado: true })}
+              title="Destacado"
+              aria-label="Destacado"
+            >
+              ab
+            </button>
             <button
               type="button"
               className="btn-deformable"
@@ -992,34 +801,23 @@ export default function EditorView({
             El ejemplo va adentro del placeholder y no como un parrafo aparte: un
             parrafo de ayuda ocupa lugar para siempre, el placeholder desaparece
             solo con la primera letra.
-            "Sigo" va con mayuscula inicial y no "SIGO": es un nombre, no una sigla. */}
-        <textarea
-          ref={(el) => { textareaRefs.current[bloqueUnico.id] = el; ajustarAltoTextarea(el) }}
-          value={bloqueUnico.texto}
-          onChange={(e) => {
-            handleTextoChange(e.target.value)
-            ajustarAltoTextarea(e.target)
-          }}
-          onSelect={(e) => handleTextareaSelect(bloqueUnico.id, e.currentTarget)}
-          onKeyUp={(e) => handleTextareaSelect(bloqueUnico.id, e.currentTarget)}
-          onMouseUp={(e) => handleTextareaSelect(bloqueUnico.id, e.currentTarget)}
-          data-testid="textarea-guion"
+            "Sigo" va con mayuscula inicial y no "SIGO": es un nombre, no una sigla.
+            24-09-2026: el textarea se fue -Tarea 73, Tiptap-. El editor lleva
+            data-testid="editor-guion" y las pruebas escriben en el con
+            src/pruebas/ayudaEditor.ts; el amarre al placeholder sigue cortado. */}
+        <EditorGuion
+          texto={bloqueUnico.texto}
+          tramos={bloqueUnico.tramos || []}
+          onCambio={handleEditorCambio}
+          onSeleccion={setHayTextoSeleccionado}
+          editorRef={editorRef}
           placeholder={'Escribe el texto...\n\nEj: Hola, hoy te quiero contar cómo usar Sigo para grabar tus videos mirando a la cámara.'}
-          rows={3}
-          style={{
-            width: '100%',
-            padding: 0,
-            fontSize: 'var(--texto-titulo)',
-            lineHeight: 1.6,
-            fontFamily: '"Source Serif 4", serif',
-            border: 'none',
-            outline: 'none',
-            backgroundColor: 'transparent',
-            color: 'var(--color-texto)',
-            boxSizing: 'border-box',
-            resize: 'none',
-            overflowY: 'hidden'
-          }}
+          fontSize={fontSize}
+          tipoFuente={tipoFuente}
+          colorFondo={colorFondo}
+          colorLetra={colorLetra}
+          columnaAngosta={columnaAngosta}
+          marginPercent={marginPercent}
         />
       </div>
 
@@ -1051,11 +849,7 @@ export default function EditorView({
               // poner el cursor en un campo vacio ofrece "Pegar" solo.
               // No se agrego @capacitor/clipboard: seria una dependencia nueva para
               // ahorrar un toque que el sistema ya ahorra.
-              const el = textareaRefs.current[bloqueUnico.id]
-              if (!el) return
-              el.focus()
-              const fin = el.value.length
-              el.setSelectionRange(fin, fin)
+              editorRef.current?.commands.focus('end')
             }}
             style={{
               pointerEvents: 'auto',
@@ -1165,7 +959,7 @@ export default function EditorView({
             <span>Leer</span>
           </button>
           <button
-            className="btn-deformable"
+            className="btn-deformable btn-grabar"
             onClick={() => {
               const rect = btnLeerRef.current?.getBoundingClientRect()
               onEntrarGrabar?.(rect)
@@ -1178,11 +972,8 @@ export default function EditorView({
               padding: 'var(--aire-3) var(--aire-4)',
               fontSize: 'var(--texto-titulo)',
               fontWeight: 600,
-              backgroundColor: 'var(--bg-superficie)',
-              color: 'var(--color-texto)',
               borderRadius: 'var(--redondeo-pildora)',
               cursor: 'pointer',
-              border: '1px solid var(--color-borde)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -1193,7 +984,9 @@ export default function EditorView({
                 y queda gris: el mismo gris del triangulo de Leer. Dos puertas que
                 hacen cosas distintas se veian iguales. Es un div y no un caracter
                 porque asi toma var(--color-grabando), el mismo rojo de la barra de
-                tiempo y del punto tally del lienzo. Es el UNICO rojo de la pantalla. */}
+                tiempo y del punto tally del lienzo. Es el UNICO rojo de la pantalla.
+                24-09-2026: el boton entero tambien lleva ese rojo, tenue -.btn-grabar,
+                styles.css-. Sigue siendo un solo rojo, ahora en el boton que graba. */}
             <div
               style={{
                 width: 10,

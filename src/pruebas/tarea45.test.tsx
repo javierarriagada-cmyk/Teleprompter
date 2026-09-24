@@ -310,8 +310,9 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     hapticsCalls.selectionChanged = 0
     hapticsCalls.impact = []
 
-    // Elegir Ancho -> Medio (primer 'Medio' en Ajustes es el de Ancho)
-    const btnMedio = screen.getAllByText('Medio')[0]
+    // Elegir Ancho -> Medio. El boton se dibuja -tres columnas- y se nombra
+    // por aria-label.
+    const btnMedio = screen.getByRole('button', { name: 'Medio' })
     await act(async () => {
       fireEvent.click(btnMedio)
     })
@@ -319,7 +320,7 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     expect(hapticsCalls.selectionChanged).toBe(1)
 
     // Cerrar Ajustes
-    const btnCerrar = screen.getByTestId('btn-cerrar-ajustes')
+    const btnCerrar = screen.getByTestId('capa-ajustes')
     await act(async () => {
       fireEvent.click(btnCerrar)
     })

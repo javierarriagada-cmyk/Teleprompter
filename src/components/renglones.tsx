@@ -1,13 +1,15 @@
 import React from 'react'
 import { Token } from '../lib/seguidor'
-import { TramoFormato } from '../datos/modelo'
+import { TramoFormato, DESTACADO } from '../datos/modelo'
+import { colorDeTramo } from './estiloLectura'
 import { esCaracterApertura, esCaracterCierre } from '../lib/acotaciones'
 
 export function renderFormattedLine(
   linea: string,
   lineaStart: number = 0,
   lineTokens: Token[] = [],
-  tramos: TramoFormato[] = []
+  tramos: TramoFormato[] = [],
+  colorFondo: string = '#000000'
 ) {
   if (!linea) return null
 
@@ -25,27 +27,28 @@ export function renderFormattedLine(
     }
   }
 
-  const COLOR_MAP: Record<string, string> = {
-    ambar: '#F0C070',
-    celeste: '#8FB8DE',
-    salvia: '#9CC5A1'
-  }
+  // Los colores de los tramos salen de colorDeTramo -estiloLectura.ts-: hasta
+  // el 24-09-2026 estaban copiados aca, fijos para fondo negro, y sobre la
+  // pareja blanca el ambar no se leia.
 
   type CharAttr = {
     esAcotacion: boolean
     negrita: boolean
     color?: string
+    destacado?: boolean
   }
 
   const attrs: CharAttr[] = []
   for (let i = 0; i < linea.length; i++) {
     const globalIdx = lineaStart + i
     let negrita = false
+    let destacado = false
     let colorName: 'ambar' | 'celeste' | 'salvia' | undefined = undefined
 
     for (const tr of tramos) {
       if (globalIdx >= tr.desde && globalIdx < tr.hasta) {
         if (tr.negrita) negrita = true
+        if (tr.destacado) destacado = true
         if (tr.color) colorName = tr.color
       }
     }
@@ -53,7 +56,8 @@ export function renderFormattedLine(
     attrs.push({
       esAcotacion: isBracket[i],
       negrita,
-      color: colorName ? COLOR_MAP[colorName] : undefined
+      destacado,
+      color: colorName ? colorDeTramo(colorName, colorFondo) : undefined
     })
   }
 
@@ -130,7 +134,7 @@ export function renderSegmentContent(
   globalStart: number,
   localStartInLine: number,
   tokens: Token[],
-  attrs: { esAcotacion: boolean; negrita: boolean; color?: string }[]
+  attrs: AtributosCaracter[]
 ) {
   const globalEnd = globalStart + text.length
   const nodes: React.ReactNode[] = []
@@ -146,9 +150,7 @@ export function renderSegmentContent(
     const tokText = text.substring(tok.desdeChar - globalStart, tok.hastaChar - globalStart)
     const tokAttr = attrs[localStartInLine + (tok.desdeChar - globalStart)] || { esAcotacion: false, negrita: false }
 
-    const style: React.CSSProperties = {}
-    if (tokAttr.negrita) style.fontWeight = 'bold'
-    if (tokAttr.color) style.color = tokAttr.color
+    const style = estiloDeAtributos(tokAttr)
 
     nodes.push(
       <span
@@ -176,35 +178,36 @@ export function renderNonTokenText(
   keyPrefix: string,
   text: string,
   offsetInLine: number,
-  attrs: { esAcotacion: boolean; negrita: boolean; color?: string }[]
+  attrs: AtributosCaracter[]
 ) {
   if (!text) return null
 
-  type Group = { text: string; negrita: boolean; color?: string }
+  type Group = { text: string; negrita: boolean; color?: string; destacado?: boolean }
   const groups: Group[] = []
   let currText = ''
   let currNeg = attrs[offsetInLine]?.negrita || false
   let currCol = attrs[offsetInLine]?.color
+  let currDes = attrs[offsetInLine]?.destacado || false
 
   for (let i = 0; i < text.length; i++) {
-    const a = attrs[offsetInLine + i] || { negrita: false }
-    if (a.negrita !== currNeg || a.color !== currCol) {
-      if (currText) groups.push({ text: currText, negrita: currNeg, color: currCol })
+    const a: Partial<AtributosCaracter> = attrs[offsetInLine + i] || { negrita: false }
+    const des = a.destacado || false
+    if (a.negrita !== currNeg || a.color !== currCol || des !== currDes) {
+      if (currText) groups.push({ text: currText, negrita: currNeg, color: currCol, destacado: currDes })
       currText = text[i]
-      currNeg = a.negrita
+      currNeg = a.negrita || false
       currCol = a.color
+      currDes = des
     } else {
       currText += text[i]
     }
   }
-  if (currText) groups.push({ text: currText, negrita: currNeg, color: currCol })
+  if (currText) groups.push({ text: currText, negrita: currNeg, color: currCol, destacado: currDes })
 
   return (
     <React.Fragment key={keyPrefix}>
       {groups.map((g, idx) => {
-        const style: React.CSSProperties = {}
-        if (g.negrita) style.fontWeight = 'bold'
-        if (g.color) style.color = g.color
+        const style = estiloDeAtributos(g)
 
         return Object.keys(style).length > 0 ? (
           <span key={idx} style={style}>
@@ -216,4 +219,25 @@ export function renderNonTokenText(
       })}
     </React.Fragment>
   )
+}
+
+export type AtributosCaracter = { esAcotacion: boolean; negrita: boolean; color?: string; destacado?: boolean }
+
+// Un solo lugar para pasar de atributos a estilo, para el texto que el motor
+// sigue -tokens- y para el que no -puntuacion, acotaciones-. El destacado es
+// fondo amarillo con letra negra; box-decoration-break hace que, si corta el
+// renglon, cada pedazo lleve su propio borde redondeado. 24-09-2026.
+function estiloDeAtributos(a: { negrita?: boolean; color?: string; destacado?: boolean }): React.CSSProperties {
+  const style: React.CSSProperties = {}
+  if (a.negrita) style.fontWeight = 'bold'
+  if (a.color) style.color = a.color
+  if (a.destacado) {
+    style.backgroundColor = DESTACADO.fondo
+    style.color = DESTACADO.letra
+    style.borderRadius = '0.15em'
+    style.padding = '0 0.08em'
+    style.boxDecorationBreak = 'clone'
+    style.WebkitBoxDecorationBreak = 'clone'
+  }
+  return style
 }

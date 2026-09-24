@@ -6,6 +6,7 @@ import App from '../App'
 import EditorView from '../components/EditorView'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { MotorFake } from '../motor/MotorFake'
+import { editorDelGuion, seleccionarEnGuion } from './ayudaEditor'
 
 vi.mock('@capgo/camera-preview', () => ({
   CameraPreview: {
@@ -53,39 +54,41 @@ describe('Tarea 72 - cada ajuste muestra lo que hace', () => {
   })
 
   // T285 - GUARDIANA DE LA REGLA DE PRODUCTO EN EL PANEL Aa. Cada uno de los
-  // cuatro ajustes del texto cambia la muestra en el momento del toque. Si
-  // alguien desconecta la muestra de un ajuste, ese ajuste vuelve a
-  // parecer falso y esta prueba falla nombrandolo.
-  test('T285 - tamano, ancho, tipografia y colores cambian la muestra al tocarlos', async () => {
+  // cuatro ajustes del texto cambia EL GUION en el momento del toque. Hasta
+  // el 24-09-2026 cambiaban una muestra dentro del panel -MuestraLectura-;
+  // desde que el editor es Tiptap, el guion mismo es la muestra. Si alguien
+  // desconecta un ajuste de la hoja del editor, ese ajuste vuelve a parecer
+  // falso y esta prueba falla nombrandolo.
+  test('T285 - tamano, ancho, tipografia y colores cambian el guion al tocarlos', async () => {
     await appConGuion()
     await abrirPanelAa()
-    const col = () => screen.getByTestId('muestra-lectura-columna') as HTMLElement
-    const caja = () => screen.getByTestId('muestra-lectura') as HTMLElement
+    const caja = () => screen.getByTestId('hoja-editor') as HTMLElement
+    const col = () => caja().firstElementChild as HTMLElement
 
     // Tipografia
     fireEvent.click(screen.getByRole('button', { name: 'Serif' }))
-    expect(col().style.fontFamily, 'Serif no llego a la muestra').toContain('Source Serif 4')
+    expect(col().style.fontFamily, 'Serif no llego al guion').toContain('Source Serif 4')
     fireEvent.click(screen.getByRole('button', { name: 'Sans' }))
-    expect(col().style.fontFamily, 'Sans no llego a la muestra').toContain('Source Sans 3')
+    expect(col().style.fontFamily, 'Sans no llego al guion').toContain('Source Sans 3')
 
     // Ancho
     fireEvent.click(screen.getByRole('button', { name: 'Angosto' }))
-    expect(col().style.maxWidth, 'Angosto no llego a la muestra').toBe('22ch')
+    expect(col().style.maxWidth, 'Angosto no llego al guion').toBe('22ch')
     fireEvent.click(screen.getByRole('button', { name: 'Ancho' }))
-    expect(col().style.maxWidth, 'Ancho no llego a la muestra').toBe('90%')
+    expect(col().style.maxWidth, 'Ancho no llego al guion').toBe('90%')
 
     // Tamano: por omision es 24, el + lo lleva a 32
     const antes = parseFloat(col().style.fontSize)
     fireEvent.click(screen.getByLabelText('Aumentar letra panel'))
-    expect(parseFloat(col().style.fontSize), 'el + no llego a la muestra').toBeGreaterThan(antes)
+    expect(parseFloat(col().style.fontSize), 'el + no llego al guion').toBeGreaterThan(antes)
 
     // Colores
     fireEvent.click(screen.getByTitle('Blanco con negro'))
-    expect(mismoColor(caja().style.backgroundColor, '#FFFFFF'), 'el fondo blanco no llego a la muestra').toBe(true)
-    expect(mismoColor(col().style.color, '#000000'), 'la letra negra no llego a la muestra').toBe(true)
+    expect(mismoColor(caja().style.backgroundColor, '#FFFFFF'), 'el fondo blanco no llego al guion').toBe(true)
+    expect(mismoColor(col().style.color, '#000000'), 'la letra negra no llego al guion').toBe(true)
     fireEvent.click(screen.getByTitle('Negro con ámbar'))
-    expect(mismoColor(caja().style.backgroundColor, '#000000'), 'el fondo negro no llego a la muestra').toBe(true)
-    expect(mismoColor(col().style.color, '#F5C24B'), 'la letra ambar no llego a la muestra').toBe(true)
+    expect(mismoColor(caja().style.backgroundColor, '#000000'), 'el fondo negro no llego al guion').toBe(true)
+    expect(mismoColor(col().style.color, '#F5C24B'), 'la letra ambar no llego al guion').toBe(true)
   })
 
   // T286 - GUARDIANA DE LA BARRA DE TIEMPO. Dos cosas: que en listo el
@@ -144,13 +147,11 @@ describe('Tarea 72 - cada ajuste muestra lo que hace', () => {
         onEntrarLectura={() => {}}
       />
     )
-    const textarea = screen.getByTestId('textarea-guion') as HTMLTextAreaElement
-    await act(async () => {
-      fireEvent.select(textarea, { target: { selectionStart: 0, selectionEnd: 4 } })
-    })
+    seleccionarEnGuion(0, 4)
     const barra = screen.getByTestId('barra-formato-b1')
     expect(barra.parentElement).toBe(document.body)
     expect(barra.style.position).toBe('fixed')
-    expect(textarea.parentElement!.contains(barra)).toBe(false)
+    expect(screen.getByTestId('hoja-editor').contains(barra)).toBe(false)
+    expect(editorDelGuion().view.dom.contains(barra)).toBe(false)
   })
 })

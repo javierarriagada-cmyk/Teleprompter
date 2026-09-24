@@ -471,23 +471,9 @@ export default function BibliotecaView({
   const [esInicial, setEsInicial] = useState<boolean>(esPrimerMontajeBiblioteca)
 
   const guionMasReciente = guiones.length > 0 ? guiones[0] : undefined
-  const [textoTarjeta, setTextoTarjeta] = useState<string>('')
+  // La tarjeta ya no muestra el texto del guion -TarjetaLectura.tsx, 24-09-2026-,
+  // asi que ya no se lee el guion completo para dibujarla.
 
-  useEffect(() => {
-    if (!guionMasReciente || !onBuscarGuionCompleto) {
-      setTextoTarjeta('')
-      return
-    }
-    let cancelado = false
-    onBuscarGuionCompleto(guionMasReciente.id).then((g) => {
-      if (cancelado) return
-      const t = g && g.bloques ? g.bloques.map((b) => b.texto || '').join('\n') : ''
-      setTextoTarjeta(t)
-    })
-    return () => {
-      cancelado = true
-    }
-  }, [guionMasReciente?.id, onBuscarGuionCompleto])
 
   useEffect(() => {
     if (esPrimerMontajeBiblioteca) {
@@ -683,8 +669,6 @@ export default function BibliotecaView({
       <div style={{ position: 'relative', marginBottom: 'var(--aire-4)', ...animacionTituloStyle }}>
         <TarjetaLectura
           guionResumen={guionMasReciente}
-          textoCompleto={textoTarjeta}
-          esInicial={esInicial}
           onLeer={(rect) => {
             if (guionMasReciente) {
               if (onLeerDirecto) onLeerDirecto(guionMasReciente.id, rect)
@@ -698,7 +682,6 @@ export default function BibliotecaView({
           onDiagTouchStart={handleDiagTouchStart}
           onDiagTouchEnd={handleDiagTouchEnd}
           onDiagClick={handleDiagClick}
-          tipoFuente={tipoFuente}
           colorFondo={colorFondo}
           colorLetra={colorLetra}
         />

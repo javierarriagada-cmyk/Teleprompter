@@ -1,6 +1,7 @@
 import React from 'react'
 import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { escribirEnGuion } from './ayudaEditor'
 import fs from 'fs'
 import path from 'path'
 import 'fake-indexeddb/auto'
@@ -157,9 +158,8 @@ describe('Pruebas TAREA 55 - LA PANTALLA DEL EDITOR (T276-T283)', () => {
     expect(screen.getByTestId('btn-pegar-texto')).toBeDefined()
     expect(screen.getByTestId('btn-abrir-archivo')).toBeDefined()
 
-    // Se simula escribir una letra en el bloque
-    const textarea = screen.getByTestId('textarea-guion')
-    fireEvent.change(textarea, { target: { value: 'H' } })
+    // Se escribe una letra en el guion
+    escribirEnGuion('H')
 
     // Rerender con el guion actualizado conteniendo la letra
     guionEstado = {
@@ -320,12 +320,11 @@ describe('Pruebas TAREA 55 - LA PANTALLA DEL EDITOR (T276-T283)', () => {
       }
     }
 
-    // La hoja inferior de EditorView usa var(--redondeo-grande) var(--redondeo-grande) 0 0
-    const fuenteEditor = fs.readFileSync(
-      path.resolve(process.cwd(), 'src/components/EditorView.tsx'),
-      'utf8'
-    )
-    expect(fuenteEditor).toContain("borderRadius: 'var(--redondeo-grande) var(--redondeo-grande) 0 0'")
+    // La hoja inferior de EditorView -el cajon Aa- usa var(--redondeo-grande)
+    // var(--redondeo-grande) 0 0. Desde el 24-09-2026 su estilo vive en
+    // styles.css, clase .cajon-aa, y no en linea.
+    const reglaCajon = cssContent.match(/\.cajon-aa\s*\{([^}]+)\}/)?.[1] || ''
+    expect(reglaCajon).toContain('border-radius: var(--redondeo-grande) var(--redondeo-grande) 0 0')
   })
 
   // T284 - GUARDIANA. Los botones del editor tienen que poder apretarse.
@@ -364,12 +363,16 @@ describe('Pruebas TAREA 55 - LA PANTALLA DEL EDITOR (T276-T283)', () => {
     revisar(screen.getByTestId('btn-pegar-texto'), 'Pegar texto')
     revisar(screen.getByTestId('btn-abrir-archivo'), 'Abrir archivo')
 
-    // El panel de Aa: Listo, - y +. Se abre aca y no en el otro montaje
-    // porque el panel es el mismo en los dos estados.
+    // El cajon de Aa. Se abre aca y no en el otro montaje porque es el mismo
+    // en los dos estados. Desde el 24-09-2026 no tiene "Listo" y todos sus
+    // controles son botones: se revisan TODOS, no una lista, para que uno
+    // nuevo sin btn-deformable haga fallar la prueba.
     fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-    revisar(screen.getByTestId('btn-cerrar-ajustes'), 'Listo')
     revisar(screen.getByLabelText('Disminuir letra panel'), 'menos letra')
     revisar(screen.getByLabelText('Aumentar letra panel'), 'mas letra')
+    const botonesCajon = Array.from(screen.getByTestId('panel-ajustes').querySelectorAll('button')) as HTMLElement[]
+    expect(botonesCajon.length).toBeGreaterThanOrEqual(2)
+    botonesCajon.forEach((b) => revisar(b, b.getAttribute('aria-label') || b.getAttribute('title') || b.textContent || 'boton del cajon'))
 
     vacio.unmount()
 

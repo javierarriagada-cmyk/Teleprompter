@@ -22,7 +22,9 @@ import { agruparEnRenglones, pixelDePosicion, Renglon, MedidaToken } from './lib
 import TeleprompterView, { MARGEN_RENGLONES_ARRIBA, calcularScrollTop, posicionEnPantalla } from './components/TeleprompterView'
 import { normalizar } from './lib/seguidor'
 import BarraDeTiempo from './components/BarraDeTiempo'
-import { reubicarTramos } from './components/EditorView'
+import { EditorGuion } from './components/EditorGuion'
+import { TramoFormato } from './datos/modelo'
+import { editorDelGuion, escribirEnGuion, textoDelGuion } from './pruebas/ayudaEditor'
 import { importarTexto } from './datos/importar'
 
 function guionSimple(texto: string, titulo = 'Guion de prueba'): Guion {
@@ -317,12 +319,7 @@ Esta es la tercera línea`)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const textarea = container!.querySelector('textarea') as HTMLTextAreaElement
-    expect(textarea).not.toBeNull()
-
-    await act(async () => {
-      fireEvent.change(textarea, { target: { value: nuevoTexto } })
-    })
+    escribirEnGuion(nuevoTexto, container!)
 
     await act(async () => {
       await new Promise((r) => setTimeout(r, 600))
@@ -348,9 +345,7 @@ Esta es la tercera línea`)
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const textarea2 = container2!.querySelector('textarea') as HTMLTextAreaElement
-    expect(textarea2).not.toBeNull()
-    expect(textarea2.value).toBe(nuevoTexto)
+    expect(textoDelGuion(container2!)).toBe(nuevoTexto)
   })
 })
 
@@ -744,14 +739,16 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(btnMenu)
     })
 
-    const btnAngosta = Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Angosto')!
+    const btnAngosta = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Angosto')!
     expect(btnAngosta).not.toBeUndefined()
 
     await act(async () => {
       fireEvent.click(btnAngosta)
     })
 
-    const btnCerrar = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
+    // El cajon ya no tiene "Listo" -24-09-2026-: se cierra tocando afuera,
+    // sobre el guion, que es la capa transparente.
+    const btnCerrar = container!.querySelector('[data-testid="capa-ajustes"]') as HTMLElement
     await act(async () => {
       fireEvent.click(btnCerrar)
     })
@@ -775,10 +772,10 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
     })
     await act(async () => {
-      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.textContent === 'Ancho')!)
+      fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Ancho')!)
     })
     await act(async () => {
-      fireEvent.click(container!.querySelector('[data-testid="panel-ajustes"] button')!)
+      fireEvent.click(container!.querySelector('[data-testid="capa-ajustes"]')!)
     })
 
     // Volver a lectura
@@ -823,7 +820,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(btnAmbar)
     })
 
-    const btnCerrar = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
+    const btnCerrar = container!.querySelector('[data-testid="capa-ajustes"]') as HTMLElement
     await act(async () => {
       fireEvent.click(btnCerrar)
     })
@@ -854,7 +851,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     })
 
     await act(async () => {
-      fireEvent.click(container!.querySelector('[data-testid="panel-ajustes"] button')!)
+      fireEvent.click(container!.querySelector('[data-testid="capa-ajustes"]')!)
     })
 
     await act(async () => {
@@ -1331,15 +1328,10 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       fireEvent.click(btnPegar)
     })
 
-    const textareaGuion = container!.querySelector('[data-testid="textarea-guion"]') as HTMLTextAreaElement
-    expect(textareaGuion).not.toBeNull()
-    await act(async () => {
-      fireEvent.change(textareaGuion, { target: { value: 'Bloque A' } })
-    })
+    escribirEnGuion('Bloque A', container!)
 
-    const textareas = Array.from(container!.querySelectorAll('[data-testid="textarea-guion"]')) as HTMLTextAreaElement[]
-    expect(textareas.length).toBe(1)
-    expect(textareas[0].value).toBe('Bloque A')
+    expect(container!.querySelectorAll('[data-testid="editor-guion"]').length).toBe(1)
+    expect(textoDelGuion(container!)).toBe('Bloque A')
   })
 
   test('T35: borrar el guion que esta abierto vuelve a la biblioteca y no lanza', async () => {
@@ -1425,14 +1417,13 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const textarea = container!.querySelector('textarea') as HTMLTextAreaElement
-    expect(textarea).not.toBeNull()
+    editorDelGuion(container!)
 
     recuentoLlamadasGuardar = 0
 
     for (let i = 1; i <= 5; i++) {
+      escribirEnGuion(`Inicial + cambio ${i}`, container!)
       await act(async () => {
-        fireEvent.change(textarea, { target: { value: `Inicial + cambio ${i}` } })
         await new Promise((r) => setTimeout(r, 100))
       })
     }
@@ -2163,7 +2154,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     expect(container!.querySelector('div[data-testid="panel-ajustes"]')).not.toBeNull()
     expect(container!.textContent).not.toContain('Dónde lees:')
 
-    const btnCerrar = container!.querySelector('[data-testid="panel-ajustes"] button') as HTMLElement
+    const btnCerrar = container!.querySelector('[data-testid="capa-ajustes"]') as HTMLElement
     await act(async () => {
       fireEvent.click(btnCerrar)
     })
@@ -2269,44 +2260,69 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     expect(inputTitulo.value).toBe('MiGuionNuevo')
 
     // UN SOLO CUADRO DE TEXTO con los dos parrafos adentro. Ver T41.
-    const textareas = Array.from(container!.querySelectorAll('textarea'))
-    expect(textareas.length).toBe(1)
-    expect(textareas[0].value).toContain('Primer párrafo del guion importado.')
-    expect(textareas[0].value).toContain('Segundo párrafo del guion importado.')
+    expect(container!.querySelectorAll('[data-testid="editor-guion"]').length).toBe(1)
+    expect(textoDelGuion(container!)).toContain('Primer párrafo del guion importado.')
+    expect(textoDelGuion(container!)).toContain('Segundo párrafo del guion importado.')
   })
 
 })
 
 describe('Pruebas TAREA 18 (T94-T99)', () => {
   // T101 y no T100: la T100 esta tomada por la tarea 17, en vuelo al mismo tiempo.
-  test('T101: GUARDIANA DEL ENFASIS. La marca no se muda a otra palabra igual, se corre solo si la edicion fue antes, y se pierde si se edita lo marcado.', () => {
-    const marca = (desde: number, hasta: number) => [{ desde, hasta, tipo: 'color' as const, valor: '#F0C070' }]
+  test('T101: GUARDIANA DEL ENFASIS. La marca no se muda a otra palabra igual, se corre si la edicion fue antes, no se mueve si fue despues, y si se escribe DENTRO de lo marcado la marca sigue con la palabra.', () => {
+    // Hasta el 24-09-2026 esto probaba reubicarTramos, que adivinaba donde
+    // quedaba cada marca comparando el texto viejo con el nuevo. Con el editor
+    // de Tiptap la marca va pegada al texto; la guardiana ahora escribe EN el
+    // editor -tr.insertText, que es lo que hace una tecla- y mira lo que se
+    // guardaria.
+    const probar = (texto: string, tramos: TramoFormato[], indice: number, agregado: string) => {
+      let ultimo: { texto: string; tramos: TramoFormato[] } = { texto, tramos }
+      const { container, unmount } = render(
+        <EditorGuion
+          texto={texto}
+          tramos={tramos}
+          onCambio={(t, tr) => { ultimo = { texto: t, tramos: tr } }}
+          onSeleccion={() => {}}
+          editorRef={{ current: null }}
+          placeholder=""
+          fontSize={24}
+          tipoFuente="sans"
+          colorFondo="#000000"
+          colorLetra="#FFFFFF"
+          columnaAngosta={false}
+          marginPercent={5}
+        />
+      )
+      const editor = editorDelGuion(container)
+      act(() => {
+        editor.view.dispatch(editor.state.tr.insertText(agregado, indice + 1))
+      })
+      unmount()
+      return ultimo
+    }
+    const ambar = (desde: number, hasta: number): TramoFormato[] => [{ desde, hasta, color: 'ambar' }]
 
     // EL DEFECTO QUE ESTO CAZA: re-anclar buscando el texto marcado devuelve la PRIMERA
     // aparicion. Con la palabra repetida -que en prosa pasa siempre- la marca saltaba de
     // la segunda a la primera en cuanto se tocaba una letra.
-    const viejo = 'el poder y el poder'
-    const nuevo = 'el poder y el poder.'
-    const r1 = reubicarTramos(viejo, nuevo, marca(14, 19))
-    expect(r1).toHaveLength(1)
-    expect(nuevo.substring(r1[0].desde, r1[0].hasta)).toBe('poder')
-    expect(r1[0].desde).toBe(14)
+    const r1 = probar('el poder y el poder', ambar(14, 19), 0, 'Y ')
+    expect(r1.tramos).toHaveLength(1)
+    expect(r1.texto.substring(r1.tramos[0].desde, r1.tramos[0].hasta)).toBe('poder')
+    expect(r1.tramos[0].desde).toBe(16)
 
     // Editar ANTES corre la marca lo que crecio el texto.
-    const r2 = reubicarTramos('hola mundo', 'y hola mundo', marca(5, 10))
-    expect(r2).toHaveLength(1)
-    expect('y hola mundo'.substring(r2[0].desde, r2[0].hasta)).toBe('mundo')
+    const r2 = probar('hola mundo', ambar(5, 10), 0, 'y ')
+    expect(r2.texto.substring(r2.tramos[0].desde, r2.tramos[0].hasta)).toBe('mundo')
 
     // Editar DESPUES no la mueve.
-    const r3 = reubicarTramos('hola mundo', 'hola mundo entero', marca(0, 4))
-    expect(r3).toHaveLength(1)
-    expect(r3[0].desde).toBe(0)
-    expect(r3[0].hasta).toBe(4)
+    const r3 = probar('hola mundo', ambar(0, 4), 10, ' entero')
+    expect(r3.tramos).toEqual(ambar(0, 4))
 
-    // Y editar DENTRO de lo marcado la pierde, que es lo honesto: se reescribio el texto
-    // que estaba marcado y adivinar donde quedo es volver al defecto de arriba.
-    const r4 = reubicarTramos('hola mundo', 'hola muXndo', marca(5, 10))
-    expect(r4).toHaveLength(0)
+    // Escribir DENTRO de lo marcado la conserva sobre la palabra. Con el textarea
+    // se perdia: no habia forma de saber donde habia quedado. Ahora si la hay.
+    const r4 = probar('hola mundo', ambar(5, 10), 7, 'X')
+    expect(r4.texto).toBe('hola muXndo')
+    expect(r4.texto.substring(r4.tramos[0].desde, r4.tramos[0].hasta)).toBe('muXndo')
   })
 
 
@@ -2481,8 +2497,7 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    const textarea = container!.querySelector('[data-testid="textarea-guion"]') as HTMLTextAreaElement
-    expect(textarea).not.toBeNull()
+    expect(container!.querySelector('[data-testid="editor-guion"]')).not.toBeNull()
 
     let gInicial = await repo.abrir('g-98')
     gInicial!.bloques[0].tramos = [{ desde: 23, hasta: 33, color: 'ambar' }]

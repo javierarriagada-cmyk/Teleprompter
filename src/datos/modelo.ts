@@ -3,6 +3,10 @@ export type TramoFormato = {
   hasta: number
   negrita?: boolean
   color?: 'ambar' | 'celeste' | 'salvia'
+  // Fondo amarillo y letra negra, como un resaltador. 24-09-2026. Es lo que
+  // mas se ve a distancia y de pasada, que es como se lee un teleprompter.
+  // Opcional: un guion sin destacados se guarda igual que antes.
+  destacado?: boolean
 }
 
 // LAS TRES PAREJAS DE FONDO Y LETRA DE LA LECTURA, y los tres colores con que se
@@ -27,6 +31,21 @@ export const COLORES_TRAMO = {
   celeste: '#8FB8DE',
   salvia: '#9CC5A1'
 }
+
+// LOS MISMOS TRES COLORES, PARA FONDO BLANCO. Los de arriba son claros y estan
+// pensados para fondo negro: sobre la pareja blanca el ambar casi no se leia.
+// Son el mismo tono, oscurecido hasta contraste 4.5:1 o mas sobre blanco. Se
+// eligen con colorDeTramo -estiloLectura.ts-, igual que la letra pasa a negra
+// sobre blanco con colorLetraEfectiva. 24-09-2026.
+export const COLORES_TRAMO_SOBRE_CLARO = {
+  ambar: '#8F5B00',
+  celeste: '#2B679E',
+  salvia: '#3C7347'
+}
+
+// El destacado es igual sobre cualquier fondo: amarillo con letra negra se lee
+// sobre negro y sobre blanco.
+export const DESTACADO = { fondo: '#FFE066', letra: '#111111' }
 
 export type Bloque = {
   id: string        // uuid

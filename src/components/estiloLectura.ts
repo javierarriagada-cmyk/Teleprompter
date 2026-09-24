@@ -16,6 +16,8 @@
 // dos cuentas en el mismo commit, o la lectura se descuadra sin que
 // ninguna prueba lo vea.
 
+import { COLORES_TRAMO, COLORES_TRAMO_SOBRE_CLARO } from '../datos/modelo'
+
 export const INTERLINEADO_LECTURA = 1.4
 export const MARGEN_RENGLON_LECTURA_PX = 16
 
@@ -36,4 +38,10 @@ export function columnaLectura(columnaAngosta: boolean): { maxWidth: string; tex
   return columnaAngosta
     ? { maxWidth: '22ch', textAlign: 'center' }
     : { maxWidth: '90%', textAlign: 'left' }
+}
+
+// El color de un tramo depende del fondo: claro sobre negro, oscuro sobre
+// blanco. Lo usan la lectura -renglones.tsx- y el editor -EditorGuion.tsx-.
+export function colorDeTramo(color: keyof typeof COLORES_TRAMO, colorFondo: string): string {
+  return colorFondo.toUpperCase() === '#FFFFFF' ? COLORES_TRAMO_SOBRE_CLARO[color] : COLORES_TRAMO[color]
 }
