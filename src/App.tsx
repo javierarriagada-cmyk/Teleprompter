@@ -1853,7 +1853,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             <CuentaRegresiva valor={cuentaRegresiva} />
 
             {/* La barra de tiempo va ADENTRO del lienzo -position relative, 100dvh-
-                y se ubica sola arriba al centro. Afuera quedaba debajo del borde
+                y se ubica sola abajo a la derecha. Afuera quedaba debajo del borde
                 de la pantalla y no se veia nunca. Tarea 72. */}
             {mostrarTiempo && (
               <BarraDeTiempo

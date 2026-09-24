@@ -27,8 +27,12 @@ function formatearTiempo(segundosTotales: number): string {
 // Hasta la 72 esta barra se montaba DESPUES del lienzo, adentro de un
 // contenedor fijo de 100dvh con overflow hidden, y el lienzo ya ocupaba
 // los 100dvh: quedaba debajo del borde de la pantalla y nunca se vio.
-// Ahora App la monta ADENTRO del lienzo y ella se ubica sola, arriba al
-// centro, entre la esquina de volver y la del engranaje o la pausa. Es
+// Ahora App la monta ADENTRO del lienzo y ella se ubica sola, ABAJO A LA
+// DERECHA, a la altura del circulo de empezar o parar. Primero fue arriba al
+// centro, y en el telefono rozaba el renglon vivo cuando se lee arriba. El
+// dueno, 23-09-2026: "esa barra de tiempo siempre debe ir abajo a la derecha".
+// Abajo a la derecha no la tapa nada y no tapa nada: el circulo va al centro
+// y el que lee casi nunca lee abajo. Es
 // una pastilla con el mismo tratamiento translucido que los controles
 // flotantes -tarea 70, seccion 11- porque se dibuja encima del video o
 // del texto, y sin fondo no se leeria sobre una pared clara.
@@ -51,12 +55,13 @@ function Pastilla({
     <div
       style={{
         position: 'absolute',
-        top: 'calc(12px + env(safe-area-inset-top, 0px))',
-        left: 0,
-        right: 0,
+        // El circulo de abajo mide 72 y esta a 24 del borde: su centro queda a
+        // 60. La pastilla mide unos 44, asi que a 38 del borde su centro calza
+        // con el del circulo.
+        bottom: 'calc(38px + env(safe-area-inset-bottom, 0px))',
+        right: 'calc(16px + env(safe-area-inset-right, 0px))',
         zIndex: 12,
         display: 'flex',
-        justifyContent: 'center',
         pointerEvents: 'none'
       }}
     >
