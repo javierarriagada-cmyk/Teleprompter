@@ -8,6 +8,7 @@ import App from '../App'
 import BibliotecaView, { resetearPrimerMontajeBiblioteca } from '../components/BibliotecaView'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { Guion } from '../datos/modelo'
+import { CENTRO, RADIO_VISIBLE, leerMarca, leerAnimaciones, finDeLaAnimacion, puntosDelTrazo } from './marcaArranque'
 
 describe('Pruebas TAREA 50 - Un Solo Mundo (T240-T252)', () => {
   const rootDir = process.cwd()
@@ -70,113 +71,49 @@ describe('Pruebas TAREA 50 - Un Solo Mundo (T240-T252)', () => {
     expect(xmlSplash).toContain('@color/marca_punto')
   })
 
-  test('T244 - Punto a la derecha del centro en marca_arranque.xml.', () => {
-    const xml = fs.readFileSync(pathMarcaArranque, 'utf8')
-    const puntoMatch = /<path[\s\S]*?name="punto"[\s\S]*?pathData="M(\d+),(\d+)/.exec(xml)
-    expect(puntoMatch).not.toBeNull()
-
-    const px = parseFloat(puntoMatch![1])
-    expect(px, 'Centro X del punto debe ser mayor que 216').toBeGreaterThan(216)
+  // T244-T248 miraban los cinco renglones y el punto que latia. Desde el
+  // 24-09-2026 la marca es "Sig" y la bola -trazoMarca.ts-; las guardianas
+  // cuidan lo mismo sobre el dibujo nuevo, leido con marcaArranque.ts.
+  test('T244 - La bola va a la derecha del centro en marca_arranque.xml.', () => {
+    expect(leerMarca().punto.cx, 'Centro X de la bola debe ser mayor que 216').toBeGreaterThan(216)
   })
 
   test('T245 - EL DIBUJO ESTA ADENTRO DEL CIRCULO.', () => {
-    const xml = fs.readFileSync(pathMarcaArranque, 'utf8')
-    const centerX = 216
-    const centerY = 216
-    const maxRadius = 144
-    const maxDistSq = maxRadius * maxRadius
-
-    const strokeRegex = /<path[\s\S]*?name="(linea\d)"[\s\S]*?strokeWidth="(\d+)"[\s\S]*?pathData="M(\d+),(\d+)\s+L(\d+),(\d+)"/g
-    let match: RegExpExecArray | null
-    let count = 0
-
-    while ((match = strokeRegex.exec(xml)) !== null) {
-      count++
-      const name = match[1]
-      const strokeWidth = parseFloat(match[2])
-      const capRadius = strokeWidth / 2
-      const x1 = parseFloat(match[3])
-      const y1 = parseFloat(match[4])
-      const x2 = parseFloat(match[5])
-      const y2 = parseFloat(match[6])
-
-      const distStartLeftSq = Math.pow(x1 - capRadius - centerX, 2) + Math.pow(y1 - centerY, 2)
-      const distStartRightSq = Math.pow(x1 + capRadius - centerX, 2) + Math.pow(y1 - centerY, 2)
-      expect(distStartLeftSq, `${name} inicio cap izq fuera del circulo`).toBeLessThanOrEqual(maxDistSq)
-      expect(distStartRightSq, `${name} inicio cap der fuera del circulo`).toBeLessThanOrEqual(maxDistSq)
-
-      const distEndLeftSq = Math.pow(x2 - capRadius - centerX, 2) + Math.pow(y2 - centerY, 2)
-      const distEndRightSq = Math.pow(x2 + capRadius - centerX, 2) + Math.pow(y2 - centerY, 2)
-      expect(distEndLeftSq, `${name} fin cap izq fuera del circulo`).toBeLessThanOrEqual(maxDistSq)
-      expect(distEndRightSq, `${name} fin cap der fuera del circulo`).toBeLessThanOrEqual(maxDistSq)
+    const marca = leerMarca()
+    for (const [x, y] of puntosDelTrazo(marca.trazoNombre)) {
+      expect(Math.hypot(x - CENTRO, y - CENTRO), `el nombre se sale en ${x},${y}`).toBeLessThanOrEqual(RADIO_VISIBLE)
     }
-
-    expect(count).toBe(5)
-
-    const puntoRegex = /<path[\s\S]*?name="punto"[\s\S]*?pathData="M(\d+),(\d+)\s+m-(\d+),0\s+a(\d+),\4\s+0\s+1,0\s+\d+,0\s+a\4,\4\s+0\s+1,0\s+-\d+,0"/
-    const puntoMatch = puntoRegex.exec(xml)
-    expect(puntoMatch).not.toBeNull()
-
-    if (puntoMatch) {
-      const px = parseFloat(puntoMatch[1])
-      const py = parseFloat(puntoMatch[2])
-      const pr = parseFloat(puntoMatch[3])
-
-      const extremes = [
-        { x: px - pr, y: py },
-        { x: px + pr, y: py },
-        { x: px, y: py - pr },
-        { x: px, y: py + pr }
-      ]
-
-      for (const pt of extremes) {
-        const distSq = Math.pow(pt.x - centerX, 2) + Math.pow(pt.y - centerY, 2)
-        expect(distSq, `Extremo del punto (${pt.x}, ${pt.y}) fuera del circulo`).toBeLessThanOrEqual(maxDistSq)
-      }
-    }
+    const p = marca.punto
+    expect(Math.hypot(p.cx - CENTRO, p.cy - CENTRO) + p.r).toBeLessThanOrEqual(RADIO_VISIBLE)
+    expect(marca.radioLinea + p.r).toBeLessThanOrEqual(RADIO_VISIBLE)
   })
 
   test('T246 - NADIE QUEDA INVISIBLE EN LA SPLASH.', () => {
-    const xml = fs.readFileSync(pathMarcaArranque, 'utf-8')
-    const pathRegex = /<path[\s\S]*?name="([^"]+)"[\s\S]*?\/>/g
-    let match: RegExpExecArray | null
-
-    while ((match = pathRegex.exec(xml)) !== null) {
-      const pathBlock = match[0]
-      const name = match[1]
-
-      if (name.startsWith('linea')) {
-        expect(pathBlock, `${name} no debe contener strokeAlpha < 1`).not.toMatch(/strokeAlpha="0\.\d+"/)
-      } else if (name === 'punto') {
-        expect(pathBlock, 'punto debe arrancar con fillAlpha="0"').toContain('fillAlpha="0"')
+    const anim = leerAnimaciones()
+    const marca = leerMarca()
+    for (const [target, propiedad, alfa] of [
+      ['nombre', 'fillAlpha', marca.alfaNombre],
+      ['punto', 'fillAlpha', marca.alfaPunto],
+      ['linea', 'strokeAlpha', marca.alfaLinea]
+    ] as const) {
+      if (alfa === '0') {
+        expect((anim[target] || []).some((a) => a.propiedad === propiedad && a.valorFinal === '1'), `${target} queda invisible`).toBe(true)
       }
     }
   })
 
-  test('T247 - LA ANIMACION Y EL ATRIBUTO NO SE CONTRADICEN.', () => {
+  test('T247 - LA ANIMACION Y EL ATRIBUTO NO SE CONTRADICEN. La duracion declarada sigue en 1000, y MainActivity sostiene la marca hasta que la animacion termina.', () => {
     const stylesXml = fs.readFileSync(pathStylesXml, 'utf8')
     expect(stylesXml).toContain('name="windowSplashScreenAnimationDuration">1000')
-
-    const escribir5Xml = fs.readFileSync(path.join(pathAnimatorDir, 'escribir_5.xml'), 'utf-8')
-    const m5 = /startOffset="(\d+)"[\s\S]*?duration="(\d+)"/.exec(escribir5Xml) || /duration="(\d+)"[\s\S]*?startOffset="(\d+)"/.exec(escribir5Xml)
-    expect(m5).not.toBeNull()
-
-    const finUltimoTrazo = parseInt(m5![1], 10) + parseInt(m5![2], 10)
-
-    const puntoLateXml = fs.readFileSync(path.join(pathAnimatorDir, 'punto_late.xml'), 'utf-8')
-    const firstPuntoMatch = /<objectAnimator[\s\S]*?startOffset="(\d+)"/.exec(puntoLateXml)
-    expect(firstPuntoMatch).not.toBeNull()
-
-    const startPunto = parseInt(firstPuntoMatch![1], 10)
-    expect(startPunto, 'Retardo del primer animador del punto debe ser mayor que el fin del ultimo trazo').toBeGreaterThan(finUltimoTrazo)
+    const java = fs.readFileSync(pathMainActivity, 'utf8')
+    const m = /DURACION_MARCA_MS = (\d+) \+ (\d+);/.exec(java)
+    expect(m, 'DURACION_MARCA_MS no es fin + sostenido').not.toBeNull()
+    expect(Number(m![1]), 'MainActivity suelta antes de que termine la animacion').toBe(finDeLaAnimacion())
   })
 
-  test('T248 - EL TALLY TERMINA ENCENDIDO.', () => {
-    const puntoLateXml = fs.readFileSync(path.join(pathAnimatorDir, 'punto_late.xml'), 'utf-8')
-    const animators = puntoLateXml.match(/<objectAnimator[\s\S]*?\/>/g)
-    expect(animators).not.toBeNull()
-    const lastAnimator = animators![animators!.length - 1]
-    expect(lastAnimator).toContain('valueTo="1"')
+  test('T248 - LA BOLA TERMINA ENCENDIDA.', () => {
+    const alfas = leerAnimaciones().punto.filter((a) => a.propiedad === 'fillAlpha')
+    expect(alfas[alfas.length - 1].valorFinal).toBe('1')
   })
 
   test('T249 - LA RETENCION ESPERA LAS DOS COSAS.', () => {

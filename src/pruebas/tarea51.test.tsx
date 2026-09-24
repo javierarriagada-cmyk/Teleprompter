@@ -7,7 +7,9 @@ import 'fake-indexeddb/auto'
 
 import App from '../App'
 import EditorView from '../components/EditorView'
-import { Entrada, RENGLONES_ESPEJO, FACTOR_ESPEJO, COLOR_MARCA_TRAZO_APAGADO, COLOR_MARCA_TRAZO, COLOR_MARCA_PUNTO } from '../components/Entrada'
+import { Entrada, FACTOR_ESPEJO, ALTO_MARCA_ENTRADA, COLOR_MARCA_TRAZO_APAGADO, COLOR_MARCA_TRAZO, COLOR_MARCA_PUNTO } from '../components/Entrada'
+import { MARCA_TRAZO_NOMBRE, MARCA_PUNTO, MARCA_CAJA } from '../components/trazoMarca'
+import { leerMarca } from './marcaArranque'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { guionNuevo, Guion } from '../datos/modelo'
 
@@ -42,42 +44,21 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
     vi.restoreAllMocks()
   })
 
-  test('T254 - EL ESPEJO CALZA CON EL ARRANQUE. Leyendo marca_arranque.xml, calcular factor = 288/432 y las cinco posiciones de renglon como (coordenada - 216) * factor. Comparar con las que usa Entrada.tsx con tolerancia <= 0.5 px.', () => {
-    const xmlPath = path.join(process.cwd(), 'android/app/src/main/res/drawable/marca_arranque.xml')
-    const xmlContent = fs.readFileSync(xmlPath, 'utf-8')
+  test('T254 - EL ESPEJO CALZA CON EL ARRANQUE. La entrada web dibuja EXACTAMENTE el trazo del splash nativo -el mismo pathData de "Sig" y la misma bola- centrado y a la escala 288/432, asi el relevo no se ve.', () => {
+    // Hasta el 24-09-2026 comparaba las cinco posiciones de renglon. Con la marca
+    // "Sig" y la bola, lo que tiene que calzar es el dibujo entero.
+    const marca = leerMarca()
+    expect(marca.trazoNombre, 'el nombre del splash y el de trazoMarca.ts no son el mismo trazo').toBe(MARCA_TRAZO_NOMBRE)
+    expect(marca.punto).toEqual({ cx: MARCA_PUNTO.cx, cy: MARCA_PUNTO.cy, r: MARCA_PUNTO.r })
+    expect(FACTOR_ESPEJO).toBeCloseTo(288 / 432)
+    expect(ALTO_MARCA_ENTRADA).toBeCloseTo(MARCA_CAJA.alto * FACTOR_ESPEJO)
+    // La caja de la marca esta centrada en el lienzo: la entrada la centra en la pantalla.
+    expect(MARCA_CAJA.x + MARCA_CAJA.ancho / 2).toBeCloseTo(216, 0)
+    expect(MARCA_CAJA.y + MARCA_CAJA.alto / 2).toBeCloseTo(216, 0)
 
-    // Extraer paths linea1..linea5 de marca_arranque.xml
-    const lineasCoordenadas: { [key: string]: { x1: number; y: number; x2: number } } = {}
-
-    const pathRegex = /<path\s+[^>]*android:name="linea(\d)"[^>]*pathData="M(\d+),(\d+)\s+L(\d+),(\d+)"/g
-    let match
-    while ((match = pathRegex.exec(xmlContent)) !== null) {
-      const num = match[1]
-      const x1 = parseFloat(match[2])
-      const y1 = parseFloat(match[3])
-      const x2 = parseFloat(match[4])
-      const y2 = parseFloat(match[5])
-      lineasCoordenadas[`R${num}`] = { x1, y: y1, x2 }
-    }
-
-    expect(Object.keys(lineasCoordenadas).length).toBe(5)
-
-    const factorEsperado = 288 / 432
-    expect(Math.abs(FACTOR_ESPEJO - factorEsperado)).toBeLessThan(0.0001)
-
-    // Comparar cada renglón de Entrada.tsx con lo derivado de marca_arranque.xml
-    RENGLONES_ESPEJO.forEach((renglon) => {
-      const orig = lineasCoordenadas[renglon.id]
-      expect(orig).toBeDefined()
-
-      const x1Esperado = (orig.x1 - 216) * factorEsperado
-      const x2Esperado = (orig.x2 - 216) * factorEsperado
-      const yEsperado = (orig.y - 216) * factorEsperado
-
-      expect(Math.abs(renglon.x1 - x1Esperado)).toBeLessThanOrEqual(0.5)
-      expect(Math.abs(renglon.x2 - x2Esperado)).toBeLessThanOrEqual(0.5)
-      expect(Math.abs(renglon.y - yEsperado)).toBeLessThanOrEqual(0.5)
-    })
+    render(<Entrada desdeSplashNativo />)
+    const trazo = screen.getByTestId('marca-entrada').querySelector('path')
+    expect(trazo?.getAttribute('d')).toBe(MARCA_TRAZO_NOMBRE)
   })
 
   test('T256 - EL ESPEJO SE VA. Montando App, el espejo esta al principio y NO esta en el documento despues de 1900 ms. Y con movimientoApagado() en true no se monta nunca.', async () => {
@@ -164,7 +145,7 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
     expect(screen.getByTestId('btn-leer-guion-fijo')).not.toBeNull()
   })
 
-  test('T258 - RED DE SEGURIDAD. Si el timer de 1400 ms fallara, el tope de seguridad de 2400 ms desmonta el espejo.', async () => {
+  test('T258 - RED DE SEGURIDAD. Si el timer del viaje fallara, el tope de seguridad de 2400 ms desmonta el espejo.', async () => {
     vi.useFakeTimers()
     try {
       let finalizado = false

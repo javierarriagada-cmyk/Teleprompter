@@ -7,6 +7,7 @@ import { IdMotor } from '../motor/MotorDeVoz'
 import { PanelCorpus } from './PanelCorpus'
 import TarjetaLectura from './TarjetaLectura'
 import { IconoEngranaje, IconoVibracion } from './IconosApp'
+import { MarcaSigo } from './MarcaSigo'
 import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './movimiento'
 import { ESCALA_AVISO, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
@@ -655,10 +656,14 @@ export default function BibliotecaView({
             el icono de menu -tres rayas-: algo que se toca y no hace nada.
             Visto en el telefono, 24-09-2026. Queda el nombre y el punto rojo
             del tally, que es lo unico propio de Sigo que se reconoce a este
-            tamano: una luz de "grabando". */}
-        <div className="portada-marca" aria-label="Sigo">
-          <span className="portada-nombre">Sigo</span>
-          <span className="portada-punto" aria-hidden="true" />
+            tamano: una luz de "grabando".
+            Mas tarde el mismo dia el dueno la llevo un paso mas: "Sig" y la bola
+            roja EN LUGAR de la o, un poco mas arriba. Es el dibujo de
+            MarcaSigo.tsx, el mismo del arranque y de la entrada: la marca que
+            viaja desde la mitad de la pantalla aterriza exactamente aca
+            -data-marca-portada es a donde apunta Entrada.tsx-. */}
+        <div className="portada-marca">
+          <MarcaSigo alto={24} data-marca-portada="" />
         </div>
         <button
           type="button"
@@ -675,6 +680,11 @@ export default function BibliotecaView({
           <IconoEngranaje tamano={22} />
         </button>
       </header>
+
+      {/* LO QUE VA DEBAJO DE LA BARRA ENTRA SUBIENDO. Mientras la marca viaja
+          desde la entrada, esto pasa de transparente y 10 px mas abajo a su
+          lugar -.portada-cuerpo y .entrada-en-curso, styles.css-. */}
+      <div className="portada-cuerpo">
 
       {/* Tarjeta de Portada */}
       <div style={{ position: 'relative', marginBottom: 'var(--aire-5)', ...animacionTituloStyle }}>
@@ -984,6 +994,8 @@ export default function BibliotecaView({
           </div>
         </div>
       )}
+
+      </div>
 
       {/* EL "+" SALE POR UNA PUERTA APARTE, Y NO ES UN CAPRICHO.
           Pantalla anima la raiz de la biblioteca con transform: translateX.

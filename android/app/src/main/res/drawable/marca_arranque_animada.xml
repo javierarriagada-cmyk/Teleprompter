@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Tiempos -todos desde que abre la app-:
+       0-150     aparece el circulo fino
+       150       aparece la bola, arriba del circulo
+       150-1150  la bola recorre el circulo -una vuelta y un poco- y entra a su
+                 lugar; es un solo trayecto, lineal, para que la linea que se
+                 borra detras vaya pegada a ella
+       150-966   la linea se borra: 966 es cuando la bola cierra la vuelta
+                 -la vuelta es el 81.6% del trayecto-
+       900-1250  aparece "Sig" mientras la bola se acomoda, ya sin linea
+     MainActivity espera 1250 mas 250 de sostenido antes de soltar. -->
 <animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:drawable="@drawable/marca_arranque">
-    <target android:name="linea1" android:animation="@animator/escribir_1" />
-    <target android:name="linea2" android:animation="@animator/escribir_2" />
-    <target android:name="linea3" android:animation="@animator/escribir_3" />
-    <target android:name="linea4" android:animation="@animator/escribir_4" />
-    <target android:name="linea5" android:animation="@animator/escribir_5" />
-    <target android:name="punto"  android:animation="@animator/punto_late" />
+    <target android:name="linea"  android:animation="@animator/marca_linea" />
+    <target android:name="bola"   android:animation="@animator/marca_bola_recorre" />
+    <target android:name="punto"  android:animation="@animator/marca_bola_aparece" />
+    <target android:name="nombre" android:animation="@animator/marca_nombre_aparece" />
 </animated-vector>

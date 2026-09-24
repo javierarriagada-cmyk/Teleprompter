@@ -1311,7 +1311,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     >
 
       {mostrarEntrada && (
-        <Entrada onFinish={() => setMostrarEntrada(false)} />
+        <Entrada onFinish={() => setMostrarEntrada(false)} desdeSplashNativo={Capacitor.isNativePlatform()} />
       )}
 
       {/* Indicador de precarga de modelo Vosk */}

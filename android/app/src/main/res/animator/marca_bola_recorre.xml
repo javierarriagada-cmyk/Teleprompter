@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- El trayecto va en coordenadas RELATIVAS a donde termina la bola: empieza
+     arriba del circulo -216,104 menos el centro de la bola-, da la vuelta en
+     sentido horario, sigue hasta el angulo de su lugar y entra en curva hasta 0,0. -->
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:propertyXName="translateX"
+    android:propertyYName="translateY"
+    android:pathData="M-97.53,-87.04 A112,112 0 1,1 -97.53,136.96 A112,112 0 1,1 -97.53,-87.04 A112,112 0 0,1 10.97,-2.81 Q3.29,-4.21 0,0"
+    android:startOffset="150"
+    android:duration="1000"
+    android:interpolator="@android:anim/linear_interpolator" />

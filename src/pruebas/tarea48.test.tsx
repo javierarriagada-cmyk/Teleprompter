@@ -136,7 +136,9 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
     expect(btnCrear).not.toBeNull()
 
     // No hay ninguna imagen/icono de estado vacío
-    expect(screen.queryByRole('img')).toBeNull()
+    // Adentro de la tarjeta: desde el 24-09-2026 la barra de la portada lleva la
+    // marca, que es un dibujo con role img, y no es un icono de estado vacio.
+    expect(within(screen.getByTestId('tarjeta-lectura-portada')).queryByRole('img')).toBeNull()
 
     fireEvent.click(btnCrear)
     expect(onCrearNuevo).toHaveBeenCalledTimes(1)

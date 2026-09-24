@@ -16,7 +16,9 @@ public class MainActivity extends BridgeActivity {
     // 1540 es cuando el punto termina de encenderse. Los 250 de mas son el SOSTENIDO:
     // el punto se queda quieto y prendido un cuarto de segundo antes de soltar. Sin eso
     // la marca se completa y desaparece en el mismo instante, y no se alcanza a leer.
-    private static final long DURACION_MARCA_MS = 1540 + 250;
+    // 24-09-2026: la marca nueva -la bola recorre el circulo y aparece "Sig"- termina a
+    // los 1250 ms -marca_arranque_animada.xml-. Mismo sostenido de 250 despues.
+    private static final long DURACION_MARCA_MS = 1250 + 250;
 
     public static void notificarListo() {
         listoParaMostrar = true;
