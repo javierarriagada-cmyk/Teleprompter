@@ -1,11 +1,13 @@
 import { IdMotor, MotorDeVoz } from './MotorDeVoz'
 import { MotorFake } from './MotorFake'
 import { MotorNativo } from './MotorNativo'
-import { MotorVosk } from './MotorVosk'
+import { cargarMotorVosk } from './motorWeb'
 
 export async function elegirMotor(preferido?: IdMotor): Promise<MotorDeVoz> {
-  const motores: Record<IdMotor, MotorDeVoz> = {
-    vosk: new MotorVosk(),
+  // El motor web se carga aparte -motorWeb.ts-: en el APK no viaja, y ahi 'vosk' no esta.
+  const MotorVosk = await cargarMotorVosk()
+  const motores: Partial<Record<IdMotor, MotorDeVoz>> = {
+    ...(MotorVosk ? { vosk: new MotorVosk() } : {}),
     nativo: new MotorNativo(),
     fake: new MotorFake()
   }
@@ -27,10 +29,16 @@ export async function elegirMotor(preferido?: IdMotor): Promise<MotorDeVoz> {
     }
   }
 
-  const ordenFallback: IdMotor[] = ['vosk']
+  // -24-09-2026: y despues el nativo. En el APK el web no viaja -motorWeb.ts-; si alguien
+  // tenia 'vosk' guardado, sin esto se quedaba sin reconocedor.
+  const ordenFallback: IdMotor[] = ['vosk', 'nativo']
   for (const id of ordenFallback) {
     if (id === preferido) continue
     const candidate = motores[id]
+    if (!candidate) {
+      errores[id] = 'no viene en este paquete'
+      continue
+    }
     try {
       if (await candidate.disponible()) {
         if (typeof candidate.listo === 'function') {

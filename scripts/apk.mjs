@@ -82,7 +82,8 @@ function correr(cmd, args, cwd) {
 }
 
 console.log('\n[1/3] Armando el paquete web...')
-correr('npx', ['vite', 'build'], RAIZ)
+// --mode android: sin el motor web -src/motor/motorWeb.ts, .env.android-. 24-09-2026.
+correr('npx', ['vite', 'build', '--mode', 'android'], RAIZ)
 
 console.log('\n[2/3] Copiandolo adentro del proyecto Android...')
 correr('npx', ['cap', 'sync', 'android'], RAIZ)

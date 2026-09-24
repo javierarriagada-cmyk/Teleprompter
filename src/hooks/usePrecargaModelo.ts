@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { IdMotor } from '../motor/MotorDeVoz'
-import { MotorVosk } from '../motor/MotorVosk'
+import type { MotorVosk } from '../motor/MotorVosk'
+import { cargarMotorVosk } from '../motor/motorWeb'
 
 export type EstadoPrecarga = 'inactivo' | 'descargando' | 'listo' | 'error'
 
@@ -21,12 +22,19 @@ export function usePrecargaModelo(engine: IdMotor = 'vosk'): {
       return
     }
 
+    // En el APK el motor web no viaja -motorWeb.ts-: no hay nada que precargar.
+    const ClaseMotorVosk = await cargarMotorVosk()
+    if (!ClaseMotorVosk) {
+      setEstado('inactivo')
+      return
+    }
+
     setEstado('descargando')
     setError(null)
     setProgreso(0)
 
     try {
-      const motor = new MotorVosk()
+      const motor = new ClaseMotorVosk()
       motorRef.current = motor
 
       const unsubProgreso = motor.onProgreso((pct) => {
