@@ -381,7 +381,9 @@ export default function TeleprompterView({
   // lectura va detras de ella cuando el texto esta sobre la camara.
   const [columnaX, setColumnaX] = React.useState<{ izquierda: number; ancho: number } | null>(null)
   const { topBanda, altoBanda } = altoContenedor > 0
-    ? calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, 20, 20, altoLineaViva)
+    // ARRIBA, SIN HOLGURA -24-09-2026-. Eran 20 px entre el borde de arriba del texto y
+    // la ventana. Ver REFERENCIA DEL RENGLON VIVO, en el lazo.
+    ? calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, 0, 20, altoLineaViva)
     : { topBanda: 0, altoBanda: 0 }
 
   const isWhiteBg = colorFondo.toUpperCase() === '#FFFFFF'
@@ -488,7 +490,11 @@ export default function TeleprompterView({
       if (!cont || tokens.length === 0) return 0
 
       const origen = origenRef.current
-      const buscado = cont.scrollTop + origen + filaPx
+      // El renglon vivo esta en scrollTop + topBanda + MARGEN_RENGLONES_ARRIBA renglones
+      // -REFERENCIA DEL RENGLON VIVO, en el lazo-. Era origen + un renglon, de cuando el
+      // margen era 1 y el vivo se media desde el primer token.
+      void origen
+      const buscado = cont.scrollTop + topBanda + MARGEN_RENGLONES_ARRIBA * filaPx
 
       const renglones = renglonesRef.current
       if (renglones.length > 0) {
@@ -587,7 +593,8 @@ export default function TeleprompterView({
       el.removeEventListener('wheel', terminar)
       if (finManualRef.current !== null) window.clearTimeout(finManualRef.current)
     }
-  }, [onNavegacionManual, onModoManualChange, alturaLineaPx, onToggleControles, filaPx])
+  // topBanda: tokenEnLaBanda la usa desde el 24-09-2026; con anclaje medio o abajo cambia al medir.
+  }, [onNavegacionManual, onModoManualChange, alturaLineaPx, onToggleControles, filaPx, topBanda])
 
   useEffect(() => {
     if (enPausa) {
@@ -669,9 +676,23 @@ export default function TeleprompterView({
         renglones
       )
       const renglonTrabado = renglones[renglonTrabadoRef.current]
+      // REFERENCIA DEL RENGLON VIVO: topBanda, NO origen -24-09-2026, visto en el telefono-.
+      //
+      // origen es donde descansa el primer token, y trae adentro el paddingTop -topBanda,
+      // 20 px- MAS el margen de 16 px de la primera linea. Restarlo dejaba el renglon vivo
+      // 36 px por debajo del borde de arriba del texto, SIEMPRE, con cualquier letra. Con
+      // la camara detras no hay velo, asi que en esos 36 px se ven los renglones ya leidos:
+      // con letra 14 -19,6 px por renglon- casi dos. Grabando la pantalla de Javier con
+      // letra 14, cuando decia "que nunca vamos a poder superar" ese renglon era el TERCERO
+      // de arriba, y el dijo "la regla general fue el tercer renglon". Con letra 42 los 36
+      // px no alcanzan a un renglon: por eso la letra grande andaba mejor y la chica no.
+      //
+      // Con topBanda de referencia el vivo cae exactamente en topBanda + MARGEN renglones
+      // del borde de arriba, que es lo que dice posicionEnPantalla. Y topBanda arriba es 0.
+      void origen
       const topObjetivo = calcularScrollTop(
         renglonTrabado ? renglonTrabado.top : 0,
-        origen,
+        topBanda,
         filaPx
       )
 
@@ -730,7 +751,11 @@ export default function TeleprompterView({
 
     animId = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(animId)
-  }, [motorAvance, onEstadoAvanceChange, topBanda, filaPx, diagnostico, recalcularGeometria])
+  // altoContenedor TAMBIEN -24-09-2026-: el lazo solo escribe el scroll con altoContenedor > 0,
+  // y hasta hoy se enteraba de rebote, porque al medirse el contenedor cambiaba topBanda -de 0
+  // a 20- y eso rehacia el lazo. Con topBanda 0 arriba ya no cambia, y el texto no se movia:
+  // lo agarraron T158 y T170.
+  }, [motorAvance, onEstadoAvanceChange, topBanda, filaPx, diagnostico, recalcularGeometria, altoContenedor])
 
   if (!guionObj.bloques || guionObj.bloques.length === 0) {
     return (
