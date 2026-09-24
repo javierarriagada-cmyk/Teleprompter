@@ -8,6 +8,12 @@ import { anotar } from '../lib/diagnostico'
 
 export const PALABRAS_DE_SEGURIDAD = 2
 
+// La franja de lectura -solo con la camara detras-: cuanto tapa y cuanto se
+// sale de la columna a cada lado. 0.38 deja ver la cara para encuadrarse y le
+// da al texto un fondo parejo; los 28 px de afuera son el difuminado.
+export const ALPHA_FRANJA_LECTURA = 0.38
+export const MARGEN_FRANJA_PX = 28
+
 export function avanzarTrabado(
   trabado: number | null,
   idxAncla: number,
@@ -303,6 +309,9 @@ export default function TeleprompterView({
   const [altoLineaViva, setAltoLineaViva] = React.useState<number>(filaPx)
   const [altoContenedor, setAltoContenedor] = React.useState<number>(0)
   const [anchoContenedor, setAnchoContenedor] = React.useState<number>(0)
+  // Donde esta la columna de texto, a lo ancho: la franja de lectura va detras
+  // de ella cuando el texto esta sobre la imagen de la camara.
+  const [columnaX, setColumnaX] = React.useState<{ izquierda: number; ancho: number } | null>(null)
   const { topBanda, altoBanda } = altoContenedor > 0
     ? calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, 20, 20, altoLineaViva)
     : { topBanda: 0, altoBanda: 0 }
@@ -323,6 +332,10 @@ export default function TeleprompterView({
     const alto = container.clientHeight || 0
     setAltoContenedor(alto)
     setAnchoContenedor(container.clientWidth || 0)
+    const columna = container.querySelector('[data-testid="columna-texto"]') as HTMLElement | null
+    if (columna && columna.offsetWidth > 0) {
+      setColumnaX({ izquierda: columna.offsetLeft, ancho: columna.offsetWidth })
+    }
     const els = container.querySelectorAll('[data-token]')
     const medidas: MedidaToken[] = Array.from(els).map(el => ({
       token: Number((el as HTMLElement).dataset.token),
@@ -720,20 +733,19 @@ export default function TeleprompterView({
           esta oyendo. Osea que se prendia cada vez que se leia, hubiera camara
           o no, y B14 dice que el punto rojo es GRABANDO. Ahora lo enciende
           grabandoVideo, que solo es cierto despues de la cuenta regresiva y si
-          el grabador arranco de verdad. */}
+          el grabador arranco de verdad.
+          24-09-2026: ARRIBA AL CENTRO, JUNTO AL LENTE. Estaba arriba a la derecha
+          y el boton de pausa -la esquina de 40- lo tapaba: pendiente B22. La luz
+          de grabar de una camara va al lado del lente por una razon: el que mira
+          el lente la ve de reojo sin buscarla. En el telefono el lente frontal
+          esta arriba al centro, asi que el punto va justo debajo. Y es el rojo de
+          grabar de la aplicacion, no uno parecido. */}
       {grabandoVideo && (
         <div
           data-testid="punto-grabando"
+          className="punto-grabando"
           style={{
-            position: 'absolute',
-            top: 'calc(16px + env(safe-area-inset-top, 0px))',
-            right: 'calc(16px + env(safe-area-inset-right, 0px))',
-            width: 12,
-            height: 12,
-            borderRadius: '50%',
-            backgroundColor: '#ff2d55',
-            zIndex: 10,
-            boxShadow: '0 0 6px rgba(255, 45, 85, 0.8)'
+            top: 'calc(10px + env(safe-area-inset-top, 0px))'
           }}
           title="Grabando"
         />
@@ -752,6 +764,29 @@ export default function TeleprompterView({
             pointerEvents: 'none',
             zIndex: 2,
             background: bgBanda
+          }}
+        />
+      )}
+
+      {/* LA FRANJA DE LECTURA. 24-09-2026.
+          Con la camara detras, los renglones que se leen iban directo sobre la
+          imagen: la ventana clara del velo es transparente -alpha 0.00- y sobre una
+          pared clara el texto blanco se perdia. La franja es una columna vertical
+          semitransparente del color de fondo de lectura, justo detras de la columna
+          de texto y con los bordes difuminados: el texto gana contraste en todo el
+          alto, y a los costados la imagen se sigue viendo para encuadrarse.
+          Es solo la vista de quien lee: la camara graba la imagen limpia.
+          Idea de una revision de pantallas que trajo el dueno -"anade franja
+          vertical semitransparente detras del texto"-, tomada en lo que sirve al
+          que lee. */}
+      {textoSobreImagen && columnaX && (
+        <div
+          data-testid="franja-lectura"
+          className="franja-lectura"
+          style={{
+            left: columnaX.izquierda - MARGEN_FRANJA_PX,
+            width: columnaX.ancho + 2 * MARGEN_FRANJA_PX,
+            background: `rgba(${rgbFondo.r}, ${rgbFondo.g}, ${rgbFondo.b}, ${ALPHA_FRANJA_LECTURA})`
           }}
         />
       )}
@@ -781,6 +816,10 @@ export default function TeleprompterView({
       <div
         ref={containerRef}
         data-testid="contenedor-lectura"
+        // Sobre la imagen de la camara las letras llevan una sombra suave, como
+        // los subtitulos: separa cada letra de lo que tenga detras. Oscura para
+        // letra clara, clara para la letra negra de la pareja blanca.
+        className={textoSobreImagen ? `lectura-sobre-imagen${isWhiteBg ? ' letra-oscura' : ''}` : undefined}
         style={{
           height: '100%',
           overflowY: 'auto',
