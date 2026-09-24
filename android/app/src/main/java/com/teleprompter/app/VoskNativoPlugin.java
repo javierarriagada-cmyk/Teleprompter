@@ -146,9 +146,21 @@ public class VoskNativoPlugin extends Plugin implements RecognitionListener {
         }
         try {
             Recognizer reconocedor = new Recognizer(modelo, FRECUENCIA);
+            // EL TIEMPO DE CADA PALABRA -24-09-2026-. Vosk sabe en que segundo del
+            // audio empieza y termina cada palabra que reconoce, pero solo lo dice si
+            // se le pide. Es la vara del motor: con esto se mide cuanto tarda cada
+            // palabra en llegar y a cuantas palabras va la pantalla de la voz. No
+            // cambia lo que se reconoce.
+            reconocedor.setWords(true);
+            reconocedor.setPartialWords(true);
             servicio = new SpeechService(reconocedor, FRECUENCIA);
+            // El cero de esos tiempos es el arranque del audio: se anota el reloj
+            // del telefono justo al abrir el microfono.
+            long inicioEpochMs = System.currentTimeMillis();
             servicio.startListening(this);
-            call.resolve();
+            JSObject r = new JSObject();
+            r.put("inicioEpochMs", inicioEpochMs);
+            call.resolve(r);
         } catch (Exception e) {
             call.reject("No se pudo abrir el microfono: " + e.getMessage());
         }
@@ -175,6 +187,7 @@ public class VoskNativoPlugin extends Plugin implements RecognitionListener {
     public void onPartialResult(String hipotesis) {
         JSObject d = new JSObject();
         d.put("json", hipotesis);
+        d.put("llegadaEpochMs", System.currentTimeMillis());
         notifyListeners("parcial", d);
     }
 
@@ -182,6 +195,7 @@ public class VoskNativoPlugin extends Plugin implements RecognitionListener {
     public void onResult(String hipotesis) {
         JSObject d = new JSObject();
         d.put("json", hipotesis);
+        d.put("llegadaEpochMs", System.currentTimeMillis());
         notifyListeners("final", d);
     }
 
@@ -193,6 +207,7 @@ public class VoskNativoPlugin extends Plugin implements RecognitionListener {
     public void onFinalResult(String hipotesis) {
         JSObject d = new JSObject();
         d.put("json", hipotesis);
+        d.put("llegadaEpochMs", System.currentTimeMillis());
         notifyListeners("final", d);
     }
 

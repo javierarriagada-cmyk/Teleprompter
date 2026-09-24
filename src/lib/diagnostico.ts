@@ -19,19 +19,37 @@ export type EntradaDiagnostico =
   | { ms: number; tipo: 'oyo'; texto: string; final: boolean }
   | { ms: number; tipo: 'calce'; token: number | null; texto: string }
   | { ms: number; tipo: 'cuadro'; posicion: number; calce: number; scroll: number; freno: string; trabado: number }
+  // LA VARA DEL MOTOR -24-09-2026-. Las palabras que el reconocedor nativo ubico en el
+  // audio, cada una con el milisegundo en que empezo y termino de decirse, en el MISMO
+  // reloj que el resto. ms es cuando llegaron. La diferencia entre las dos es el
+  // retraso del reconocedor; y con estas y 'cuadro' sale a cuantas palabras y
+  // renglones va la pantalla de la voz.
+  | { ms: number; tipo: 'palabras'; final: boolean; palabras: Array<{ w: string; ini: number; fin: number }> }
+  // Que palabras caen en cada renglon de la pantalla: el primer token de cada uno. Se
+  // anota al empezar y cada vez que cambia -otra letra, otro ancho-. Sin esto el
+  // atraso solo se puede medir en palabras, y el que lee lo siente en renglones.
+  | { ms: number; tipo: 'renglones'; inicios: number[] }
 
 const MAX_ENTRADAS = 60000
 
 let activo = false
 let entradas: EntradaDiagnostico[] = []
 let t0 = 0
+// Cuenta cada vez que se enciende. Lo que se anota una sola vez por lectura -los
+// renglones- mira esto para volver a anotarse si el registro empezo despues.
+let generacion = 0
 
 export function activarDiagnostico(valor: boolean) {
   activo = valor
   if (valor) {
     entradas = []
     t0 = performance.now()
+    generacion++
   }
+}
+
+export function generacionDiagnostico(): number {
+  return generacion
 }
 
 export function diagnosticoActivo(): boolean {
@@ -47,6 +65,12 @@ export function anotar(e: SinMs<EntradaDiagnostico>) {
   entradas.push({ ...e, ms } as EntradaDiagnostico)
 }
 
+// Para anotar un instante que no es "ahora" -el tiempo de una palabra en el audio-
+// en el mismo reloj del registro.
+export function msDelRegistro(msPerformance: number): number {
+  return Math.round(msPerformance - t0)
+}
+
 export function cantidadEntradas(): number {
   return entradas.length
 }
@@ -60,6 +84,10 @@ export function comoTexto(): string {
       filas.push(`${e.ms}\toyo\t${e.final ? 'FINAL' : 'parcial'}: ${e.texto}`)
     } else if (e.tipo === 'calce') {
       filas.push(`${e.ms}\tcalce\t${e.token === null ? 'NO CALZO' : 'token ' + e.token}: ${e.texto}`)
+    } else if (e.tipo === 'palabras') {
+      filas.push(`${e.ms}\tpalabras\t${e.final ? 'FINAL' : 'parcial'}: ${e.palabras.map((p) => `${p.w}@${p.ini}-${p.fin}`).join(' ')}`)
+    } else if (e.tipo === 'renglones') {
+      filas.push(`${e.ms}\trenglones\t${e.inicios.join(' ')}`)
     } else {
       filas.push(
         `${e.ms}\tcuadro\tpos=${e.posicion.toFixed(2)} calce=${e.calce} scroll=${e.scroll} freno=${e.freno} trabado=${e.trabado}`

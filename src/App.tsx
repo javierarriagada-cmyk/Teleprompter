@@ -941,7 +941,18 @@ export default function App({ motor, repoOverride }: AppProps) {
             id: idToma,
             guionId: guionActual ? guionActual.id : undefined,
             tituloGuion: guionActual ? guionActual.titulo : '(sin guion)',
-            calidad: calidadVideo
+            calidad: calidadVideo,
+            // Para leer el registro del motor despues -tomaVideo.ts-: con que motor,
+            // que letra, que ancho y que guion se leyo.
+            cabeceraMotor: [
+              `# motor de voz: ${engine}`,
+              `# letra: ${fontSize} px, ${tipoFuente}`,
+              `# columna: ${columnaAngosta ? 'angosta' : 'completa'}, margen ${marginPercent}%`,
+              `# donde lees: ${anclajeZona}`,
+              '# ---------- GUION, TAL CUAL SE LEYO ----------',
+              ...(guionActual ? guionActual.bloques.map((b) => b.texto) : []).join('\n').split('\n').map((l) => `# | ${l}`),
+              '# ---------------------------------------------'
+            ].join('\n')
           }).then((ok) => {
             grabandoVideoRef.current = ok
             setGrabandoVideo(ok)

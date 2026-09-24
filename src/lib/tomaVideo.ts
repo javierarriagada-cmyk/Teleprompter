@@ -30,6 +30,7 @@ import {
   emparejarMp4PorTiempo
 } from './sidecar'
 import { veredictoMudo } from './detectorMudo'
+import { activarDiagnostico, diagnosticoActivo, comoTexto } from './diagnostico'
 
 const MS_HEARTBEAT = 2000
 
@@ -38,6 +39,15 @@ type SesionToma = {
   dir: string
   rutaSidecar: string
   heartbeat: ReturnType<typeof setInterval> | null
+  // EL REGISTRO DEL MOTOR DE ESTA TOMA -24-09-2026-. Se enciende cuando empieza el
+  // video y se escribe al lado del mp4 como <id>.motor.txt: lo que oyo el
+  // reconocedor con el tiempo de cada palabra, donde lo ubico el seguidor, que
+  // renglon mostraba la pantalla y que palabras tenia cada renglon. Es la vara del
+  // plan del motor, medida en el telefono y con el reconocedor nativo, que es el que
+  // va en la aplicacion. No cambia nada de la lectura.
+  cabeceraMotor: string
+  diagnosticoAntes: boolean
+  inicioVideoEpochMs: number
 }
 
 let sesion: SesionToma | null = null
@@ -74,6 +84,8 @@ export async function iniciarTomaVideo(opts: {
   guionId?: string
   tituloGuion: string
   calidad?: string
+  // Lo que hace falta para leer el registro despues: motor, letra, ancho, guion.
+  cabeceraMotor?: string
 }): Promise<boolean> {
   if (sesion) return true
   if (!Capacitor.isNativePlatform()) return false
@@ -97,7 +109,15 @@ export async function iniciarTomaVideo(opts: {
     calidad: opts.calidad
   })
 
-  const s: SesionToma = { sidecar, dir, rutaSidecar, heartbeat: null }
+  const s: SesionToma = {
+    sidecar,
+    dir,
+    rutaSidecar,
+    heartbeat: null,
+    cabeceraMotor: opts.cabeceraMotor || '',
+    diagnosticoAntes: diagnosticoActivo(),
+    inicioVideoEpochMs: 0
+  }
   sesion = s
   await persistirSidecar(s)
 
@@ -110,6 +130,11 @@ export async function iniciarTomaVideo(opts: {
     sesion = null
     return false
   }
+
+  // El cero del registro es el arranque del video: el milisegundo N del registro es,
+  // con el error de lo que tarda la camara en empezar a escribir, el N del mp4.
+  s.inicioVideoEpochMs = Date.now()
+  activarDiagnostico(true)
 
   s.heartbeat = setInterval(() => {
     if (!sesion) return
@@ -175,6 +200,23 @@ export async function cortarTomaVideo(opts?: {
     nivelRmsDb: analisis.nivelRmsDb ?? null,
     frasesOidas: s.sidecar.frasesOidas
   })
+
+  // El registro del motor, junto al mp4. Si no se puede escribir, la toma sigue
+  // igual: es un instrumento, no parte de la toma.
+  try {
+    const texto = [
+      '# REGISTRO DEL MOTOR DE UNA TOMA',
+      `# toma: ${s.sidecar.id}`,
+      `# inicio del video (epoch ms): ${s.inicioVideoEpochMs}`,
+      s.cabeceraMotor,
+      '',
+      comoTexto()
+    ].join('\n')
+    await escribirTexto(juntos(s.dir, `${s.sidecar.id}.motor.txt`), texto)
+  } catch (e) {
+    console.warn('[tomaVideo] no se pudo escribir el registro del motor:', e)
+  }
+  activarDiagnostico(s.diagnosticoAntes)
 
   s.sidecar.bytes = analisis.bytes
   s.sidecar.milisegundos = analisis.duracionMs || s.sidecar.milisegundos

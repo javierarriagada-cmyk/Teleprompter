@@ -4,7 +4,7 @@ import { tokenizarGuion, Token } from '../lib/seguidor'
 import { Guion } from '../datos/modelo'
 import { agruparEnRenglones, indiceDeRenglon, pixelDePosicion, pixelDeRenglon, Renglon, MedidaToken } from '../lib/renglones'
 import { renderFormattedLine } from './renglones'
-import { anotar } from '../lib/diagnostico'
+import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
 
 export const PALABRAS_DE_SEGURIDAD = 2
 
@@ -320,6 +320,10 @@ export default function TeleprompterView({
   const fontFamilyCss = familiaLectura(tipoFuente)
 
   const renglonesRef = useRef<Renglon[]>([])
+  // En que encendido del registro se anotaron los renglones. La toma lo enciende
+  // DESPUES de que la vista midio sus renglones -el video empieza con la lectura-,
+  // asi que el lazo los vuelve a anotar la primera vez que lo ve encendido.
+  const renglonesAnotadosRef = useRef<number>(-1)
   const origenRef = useRef<number>(0)
   const scrollSuaveRef = useRef<number | null>(null)
   const renglonTrabadoRef = useRef<number | null>(null)
@@ -342,6 +346,10 @@ export default function TeleprompterView({
     }))
     const r = agruparEnRenglones(medidas, filaPx)
     renglonesRef.current = r
+    // Para medir el atraso en RENGLONES y no solo en palabras -24-09-2026-: el primer
+    // token de cada renglon. No cuesta nada con el registro apagado.
+    anotar({ tipo: 'renglones', inicios: r.map((x) => x.desdeToken) })
+    renglonesAnotadosRef.current = generacionDiagnostico()
     origenRef.current = medidas.length > 0 ? medidas[0].top : 0
   }, [filaPx])
 
@@ -619,6 +627,10 @@ export default function TeleprompterView({
       // Va aca, DESPUES de calcular top y ANTES de escribirlo, para que quede anotado el
       // mismo valor que se dibuja. No cuesta nada mientras el diagnostico este apagado:
       // anotar() devuelve en la primera linea si no esta activo.
+      if (diagnosticoActivo() && renglonesAnotadosRef.current !== generacionDiagnostico() && renglonesRef.current.length > 0) {
+        anotar({ tipo: 'renglones', inicios: renglonesRef.current.map((x) => x.desdeToken) })
+        renglonesAnotadosRef.current = generacionDiagnostico()
+      }
       anotar({
         tipo: 'cuadro',
         posicion: st.posicion,

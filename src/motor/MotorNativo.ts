@@ -1,5 +1,6 @@
 import { Capacitor, registerPlugin, PluginListenerHandle } from '@capacitor/core'
 import { EventoFinal, EventoParcial, MotorDeVoz } from './MotorDeVoz'
+import { anotar, msDelRegistro } from '../lib/diagnostico'
 
 // EL RECONOCEDOR NATIVO DE ANDROID. Es Vosk igual que la version web, pero compilado.
 //
@@ -24,7 +25,7 @@ import { EventoFinal, EventoParcial, MotorDeVoz } from './MotorDeVoz'
 interface VoskNativoPlugin {
   disponible(): Promise<{ disponible: boolean }>
   iniciar(): Promise<void>
-  escuchar(): Promise<void>
+  escuchar(): Promise<{ inicioEpochMs?: number } | void>
   detener(): Promise<void>
   addListener(
     eventName: 'parcial' | 'final',
@@ -62,6 +63,9 @@ export class MotorNativo implements MotorDeVoz {
   private listenersError: ((e: Error) => void)[] = []
   private suscripciones: PluginListenerHandle[] = []
   private modeloCargado = false
+  // El cero de los tiempos de Vosk -el arranque del audio-, en el reloj de
+  // performance.now(), que es el de la aplicacion y el del registro.
+  private ceroAudioPerf: number | null = null
 
   async disponible(): Promise<boolean> {
     // La comprobacion es de capacidades reales, nunca del user-agent: este motor
@@ -105,6 +109,7 @@ export class MotorNativo implements MotorDeVoz {
     this.suscripciones.push(
       await Nativo.addListener('parcial', (d) => {
         const texto = textoDe(d.json, 'partial')
+        this.anotarPalabras(d.json, false)
         if (texto.trim()) {
           this.listenersParcial.forEach((cb) => cb({ texto }))
         }
@@ -114,6 +119,7 @@ export class MotorNativo implements MotorDeVoz {
     this.suscripciones.push(
       await Nativo.addListener('final', (d) => {
         const texto = textoDe(d.json, 'text')
+        this.anotarPalabras(d.json, true)
         if (texto.trim()) {
           // Vosk nativo no entrega marcas de tiempo por palabra salvo que se le pida
           // -setWords(true)-, y no se le pide: el motor de lectura no las usa. Se
@@ -136,10 +142,40 @@ export class MotorNativo implements MotorDeVoz {
     // Si esto resulta ser un problema en una lectura larga, se vera midiendo.
     this.suscripciones.push(await Nativo.addListener('silencio', () => {}))
 
-    await Nativo.escuchar()
+    const r = await Nativo.escuchar()
+    // Date.now() y performance.now() avanzan juntos: la diferencia entre los dos
+    // pasa el instante del telefono al reloj de la aplicacion.
+    const inicioEpochMs = r && typeof r.inicioEpochMs === 'number' ? r.inicioEpochMs : Date.now()
+    this.ceroAudioPerf = inicioEpochMs - (Date.now() - performance.now())
+  }
+
+  // LAS PALABRAS CON SU TIEMPO, AL REGISTRO. Vosk las entrega con setWords en
+  // "result" -finales- y con setPartialWords en "partial_result" -parciales-, en
+  // segundos desde el arranque del audio. No cambian nada de lo que hace el motor:
+  // son la vara para medirlo.
+  private anotarPalabras(json: string, final: boolean): void {
+    if (this.ceroAudioPerf === null) return
+    try {
+      const o = JSON.parse(json)
+      const lista = final ? o.result : o.partial_result
+      if (!Array.isArray(lista) || lista.length === 0) return
+      const cero = this.ceroAudioPerf
+      anotar({
+        tipo: 'palabras',
+        final,
+        palabras: lista.map((p: { word: string; start: number; end: number }) => ({
+          w: String(p.word),
+          ini: msDelRegistro(cero + p.start * 1000),
+          fin: msDelRegistro(cero + p.end * 1000)
+        }))
+      })
+    } catch {
+      // Un JSON raro no puede tumbar la lectura: la vara es opcional.
+    }
   }
 
   async detener(): Promise<void> {
+    this.ceroAudioPerf = null
     await Nativo.detener()
     for (const s of this.suscripciones) {
       await s.remove()
