@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
+import { MuestraLectura } from './MuestraLectura'
 import { Guion, Bloque, TramoFormato, contarPalabras, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
 import { consolidarGuion } from '../datos/consolidar'
 import { importarArchivo } from '../datos/importarArchivo'
@@ -92,11 +94,14 @@ function generarIdBloque(): string {
   return 'b-' + Date.now() + '-' + Math.random().toString(36).substring(2, 9)
 }
 
-// Los nombres de idioma de la linea de meta salen de aca y no del <select>
-// de la linea 871, aunque digan lo mismo: el <select> muestra "Español (es)"
-// porque ahi el usuario ESTA ELIGIENDO y le sirve ver el codigo; la meta
-// muestra "Español" a secas porque ahi solo esta leyendo de que idioma es
-// su guion. Si algun dia hay que agregar un idioma, van los dos.
+// Los nombres de idioma salen de aca para la linea de meta. Hasta la
+// Tarea 72 el panel Aa tenia un <select> para elegir el idioma del guion,
+// y se quito: en el APK el motor nativo ignora el idioma -MotorNativo.ts,
+// iniciar()- porque el unico modelo de voz que viaja es el de espanol.
+// Elegir otro idioma no cambiaba lo que escucha el motor: era un control
+// falso. El producto es para hablantes de espanol -decision del dueno,
+// 23-09-2026-. Guion.idioma se sigue guardando: si algun dia viajan otros
+// modelos, el dato ya esta y el control vuelve.
 const NOMBRE_IDIOMA: Record<string, string> = {
   es: 'Español',
   en: 'English',
@@ -298,14 +303,6 @@ export default function EditorView({
     } finally {
       setCargandoArchivo(false)
     }
-  }
-
-  function handleIdiomaChange(nuevoIdioma: string) {
-    onChangeGuion({
-      ...guion,
-      idioma: nuevoIdioma,
-      modificado: Date.now()
-    })
   }
 
   function handleTextoChange(nuevoTexto: string) {
@@ -651,6 +648,15 @@ export default function EditorView({
                 <h4 className="texto-etiqueta" style={{ margin: '0 0 var(--aire-3) 0', color: 'var(--color-apagado)' }}>
                   Cómo se ve el texto
                 </h4>
+                <MuestraLectura
+                  texto={bloqueUnico.texto}
+                  fontSize={fontSize}
+                  tipoFuente={tipoFuente}
+                  colorFondo={colorFondo}
+                  colorLetra={colorLetra}
+                  columnaAngosta={columnaAngosta}
+                  marginPercent={marginPercent}
+                />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-3)' }}>
                   {/* Tamaño de letra */}
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -849,31 +855,6 @@ export default function EditorView({
                     </div>
                   )}
 
-                  {/* Idioma del guion. Vive en el modelo (Guion.idioma), no
-                      en la interfaz. Un guion en ingles dentro de una app en
-                      espanol es un caso real. */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span className="texto-cuerpo" style={{ fontWeight: 600 }}>Idioma del guion</span>
-                    <select
-                      value={guion.idioma || 'es'}
-                      onChange={(e) => handleIdiomaChange(e.target.value)}
-                      style={{
-                        padding: 'var(--aire-1) var(--aire-2)',
-                        fontSize: 'var(--texto-meta)',
-                        borderRadius: 'var(--redondeo)',
-                        border: '1px solid var(--color-borde)',
-                        backgroundColor: 'var(--bg-suelo)',
-                        color: 'var(--color-texto)'
-                      }}
-                    >
-                      <option value="es">Español (es)</option>
-                      <option value="en">English (en)</option>
-                      <option value="pt">Português (pt)</option>
-                      <option value="fr">Français (fr)</option>
-                      <option value="de">Deutsch (de)</option>
-                      <option value="it">Italiano (it)</option>
-                    </select>
-                  </div>
 
                 </div>
               </div>
@@ -901,29 +882,50 @@ export default function EditorView({
 
       {/* Hoja Única de Texto */}
       <div style={{ position: 'relative' }}>
-        {/* Controles de formato: SOLO SI HAY TEXTO SELECCIONADO */}
-        {hayTextoSeleccionado && (
+        {/* LA BARRA DE FORMATO FLOTA ARRIBA, NO EMPUJA EL GUION. Tarea 72.
+            Hasta la 72 se insertaba en el flujo, justo arriba del textarea:
+            seleccionar una palabra empujaba todo el guion para abajo y el que
+            seleccionaba perdia de vista lo que habia seleccionado.
+            Ahora sale por un portal a document.body, fija arriba de la
+            pantalla, encima de la fila "‹ Guiones … Aa". Es el patron de
+            Android para la seleccion -la barra de accion contextual-. No
+            depende del teclado, y se ve aunque el guion este desplazado.
+            Los botones conservan su onMouseDown con preventDefault: eso es lo
+            que evita que el textarea pierda la seleccion al tocarlos. */}
+        {hayTextoSeleccionado && createPortal(
           <div
             data-testid={`barra-formato-${bloqueUnico.id}`}
+            role="toolbar"
+            aria-label="Formato del texto seleccionado"
             style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              zIndex: 150,
               display: 'flex',
-              gap: 'var(--aire-2)',
-              marginBottom: 'var(--aire-2)',
               alignItems: 'center',
-              backgroundColor: 'var(--bg-superficie)',
-              padding: 'var(--aire-1) var(--aire-2)',
-              borderRadius: 'var(--redondeo)',
-              border: '1px solid var(--color-borde)'
+              gap: 'var(--aire-3)',
+              paddingTop: 'calc(8px + env(safe-area-inset-top, 0px))',
+              paddingBottom: 8,
+              paddingLeft: 'calc(var(--aire-4) + env(safe-area-inset-left, 0px))',
+              paddingRight: 'calc(var(--aire-4) + env(safe-area-inset-right, 0px))',
+              backgroundColor: 'var(--bg-panel)',
+              borderBottom: '1px solid var(--color-borde)',
+              animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
             }}
           >
             <button
               type="button"
+              className="btn-deformable"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => aplicarFormatoEnSeleccion({ negrita: true })}
               style={{
-                padding: 'var(--aire-1) var(--aire-2)',
+                width: 40,
+                height: 40,
+                padding: 0,
                 fontWeight: 'bold',
-                borderRadius: 'var(--redondeo)',
+                fontSize: 'var(--texto-titulo)',
                 border: '1px solid var(--color-borde)',
                 backgroundColor: 'var(--bg-suelo)',
                 color: 'var(--color-texto)',
@@ -933,60 +935,40 @@ export default function EditorView({
             >
               N
             </button>
-
-            <div style={{ display: 'flex', gap: 'var(--aire-1)', alignItems: 'center' }}>
-              <button
-                type="button"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => aplicarFormatoEnSeleccion({ color: 'ambar' })}
-                style={{
-                  width: 26,
-                  height: 26,
-                  borderRadius: 'var(--redondeo)',
-                  border: '1px solid var(--color-borde)',
-                  backgroundColor: COLORES_TRAMO.ambar,
-                  cursor: 'pointer'
-                }}
-                title="Ámbar"
-                data-testid="btn-color-ambar"
-              />
-              <button
-                type="button"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => aplicarFormatoEnSeleccion({ color: 'celeste' })}
-                style={{
-                  width: 26,
-                  height: 26,
-                  borderRadius: 'var(--redondeo)',
-                  border: '1px solid var(--color-borde)',
-                  backgroundColor: COLORES_TRAMO.celeste,
-                  cursor: 'pointer'
-                }}
-                title="Celeste"
-              />
-              <button
-                type="button"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => aplicarFormatoEnSeleccion({ color: 'salvia' })}
-                style={{
-                  width: 26,
-                  height: 26,
-                  borderRadius: 'var(--redondeo)',
-                  border: '1px solid var(--color-borde)',
-                  backgroundColor: COLORES_TRAMO.salvia,
-                  cursor: 'pointer'
-                }}
-                title="Salvia"
-              />
+            <div style={{ display: 'flex', gap: 'var(--aire-2)', alignItems: 'center' }}>
+              {([
+                { color: 'ambar' as const, titulo: 'Ámbar', testid: 'btn-color-ambar' },
+                { color: 'celeste' as const, titulo: 'Celeste', testid: undefined },
+                { color: 'salvia' as const, titulo: 'Salvia', testid: undefined }
+              ]).map((c) => (
+                <button
+                  key={c.color}
+                  type="button"
+                  className="btn-deformable"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => aplicarFormatoEnSeleccion({ color: c.color })}
+                  style={{
+                    width: 32,
+                    height: 32,
+                    padding: 0,
+                    border: '2px solid var(--bg-panel)',
+                    boxShadow: '0 0 0 1px var(--color-borde)',
+                    backgroundColor: COLORES_TRAMO[c.color],
+                    cursor: 'pointer'
+                  }}
+                  title={c.titulo}
+                  data-testid={c.testid}
+                />
+              ))}
             </div>
-
             <button
               type="button"
+              className="btn-deformable"
               onMouseDown={(e) => e.preventDefault()}
               onClick={handleAcotacion}
               style={{
-                padding: 'var(--aire-1) var(--aire-2)',
-                borderRadius: 'var(--redondeo)',
+                height: 40,
+                padding: '0 var(--aire-3)',
                 border: '1px solid var(--color-borde)',
                 backgroundColor: 'var(--bg-suelo)',
                 color: 'var(--color-texto)',
@@ -997,7 +979,8 @@ export default function EditorView({
             >
               [...] Acotación
             </button>
-          </div>
+          </div>,
+          document.body
         )}
 
         {/* El data-testid existe porque hasta hoy SEIS pruebas encontraban este

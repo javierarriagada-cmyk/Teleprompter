@@ -2,6 +2,7 @@ import React from 'react'
 import { IconoEmpezar } from './IconosApp'
 import { ResumenGuion, PAREJAS_COLOR } from '../datos/modelo'
 import { movimientoApagado } from './movimiento'
+import { familiaLectura } from './estiloLectura'
 import { estiloComprimirPorAviso, useMantenerApretado } from './mantenerApretado'
 
 interface TarjetaLecturaProps {
@@ -83,7 +84,7 @@ export default function TarjetaLectura({
         }
       : {}
 
-  const fuentefamily = tipoFuente === 'serif' ? '"Source Serif 4", serif' : '"Source Sans 3", sans-serif'
+  const fuentefamily = familiaLectura(tipoFuente)
 
   return (
     <div

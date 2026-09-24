@@ -35,6 +35,8 @@ import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './b
 import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
 import { IconoAtras, IconoEngranaje, IconoEmpezar } from './IconosApp'
+import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
+import { Interruptor } from './Interruptor'
 import { actualizarConfigCamara } from '../lib/camara'
 import { App as CapacitorApp } from '@capacitor/app'
 import { aplicarBrillo, PASOS_BRILLO, PasoBrillo, restaurarBrillo } from '../lib/brillo'
@@ -290,8 +292,8 @@ export default function TeleprompterView({
     : { topBanda: 0, altoBanda: 0 }
 
   const isWhiteBg = colorFondo.toUpperCase() === '#FFFFFF'
-  const colorTextoEfectivo = isWhiteBg ? '#000000' : colorLetra
-  const fontFamilyCss = tipoFuente === 'serif' ? '"Source Serif 4", serif' : '"Source Sans 3", sans-serif'
+  const colorTextoEfectivo = colorLetraEfectiva(colorFondo, colorLetra)
+  const fontFamilyCss = familiaLectura(tipoFuente)
 
   const renglonesRef = useRef<Renglon[]>([])
   const origenRef = useRef<number>(0)
@@ -813,7 +815,7 @@ export default function TeleprompterView({
           data-testid="columna-texto"
           style={{
             fontSize,
-            maxWidth: columnaAngosta ? '22ch' : '90%',
+            maxWidth: columnaLectura(columnaAngosta).maxWidth,
             margin: '0 auto',
             width: '100%',
             // EN COLUMNA ANGOSTA EL TEXTO VA CENTRADO.
@@ -832,7 +834,7 @@ export default function TeleprompterView({
             //
             // NO TOCA LA GEOMETRIA DE LA LECTURA: agruparEnRenglones y pixelDeRenglon miran
             // offsetTop, que es vertical. Centrar mueve el texto a lo ancho y nada mas.
-            textAlign: columnaAngosta ? 'center' : 'left'
+            textAlign: columnaLectura(columnaAngosta).textAlign
           }}
         >
           {guionObj.bloques.map((bloque, bIdx) => {
@@ -864,8 +866,8 @@ export default function TeleprompterView({
                       data-line={lIdx}
                       style={{
                         fontSize,
-                        margin: '16px 0',
-                        lineHeight: 1.4
+                        margin: `${MARGEN_RENGLON_LECTURA_PX}px 0`,
+                        lineHeight: INTERLINEADO_LECTURA
                       }}
                     >
                       {renderFormattedLine(linea, lineStart, lineTokens, bloque.tramos)}
@@ -1128,23 +1130,19 @@ export default function TeleprompterView({
                 ))}
               </div>
 
-              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', fontSize: 'var(--texto-meta)' }}>
-                <input
-                  type="checkbox"
-                  checked={mirror}
-                  onChange={(e) => setMirror?.(e.target.checked)}
-                />
-                Espejo
-              </label>
+              <Interruptor
+                etiqueta="Espejo"
+                encendido={mirror}
+                onCambiar={(v) => setMirror?.(v)}
+                estiloEtiqueta={{ fontSize: 'var(--texto-meta)' }}
+              />
 
-              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', fontSize: 'var(--texto-meta)' }}>
-                <input
-                  type="checkbox"
-                  checked={mostrarTiempo}
-                  onChange={(e) => setMostrarTiempo?.(e.target.checked)}
-                />
-                Mostrar tiempo
-              </label>
+              <Interruptor
+                etiqueta="Mostrar tiempo"
+                encendido={mostrarTiempo}
+                onCambiar={(v) => setMostrarTiempo?.(v)}
+                estiloEtiqueta={{ fontSize: 'var(--texto-meta)' }}
+              />
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
                 <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
