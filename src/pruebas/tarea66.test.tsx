@@ -177,7 +177,7 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
       for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
         const full = path.join(dir, item.name)
         if (item.isDirectory()) andar(full)
-        else if (/\.(tsx|ts)$/.test(item.name) && !full.includes(`${path.sep}pruebas`) && !item.name.includes('PrepararView')) {
+        else if (/\.(tsx|ts)$/.test(item.name) && !full.includes(`${path.sep}pruebas`)) {
           const txt = fs.readFileSync(full, 'utf-8')
           if (txt.includes('Dónde lees')) hits.push(full)
         }
