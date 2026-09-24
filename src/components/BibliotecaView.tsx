@@ -7,6 +7,7 @@ import { IdMotor } from '../motor/MotorDeVoz'
 import { PanelCorpus } from './PanelCorpus'
 import TarjetaLectura from './TarjetaLectura'
 import { IconoEngranaje } from './IconosApp'
+import { Interruptor } from './Interruptor'
 import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './movimiento'
 import { ESCALA_AVISO, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
@@ -872,19 +873,16 @@ export default function BibliotecaView({
               </div>
 
               <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
-                <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}>
-                  <span>Vibración</span>
-                  <input
-                    type="checkbox"
-                    checked={vibracion}
-                    onChange={(e) => {
-                      setVibracion(e.target.checked)
-                      guardarVibracionHabilitada(e.target.checked)
-                      hapticaToqueSuave()
-                    }}
-                    style={{ width: 16, height: 16, accentColor: 'var(--color-acento)' }}
-                  />
-                </label>
+                <Interruptor
+                  etiqueta="Vibración"
+                  encendido={vibracion}
+                  onCambiar={(v) => {
+                    setVibracion(v)
+                    guardarVibracionHabilitada(v)
+                    hapticaToqueSuave()
+                  }}
+                  estiloEtiqueta={{ fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}
+                />
               </div>
 
             </div>,

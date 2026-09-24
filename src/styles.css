@@ -432,3 +432,24 @@ textarea::placeholder {
 .btn-flotante-rojo {
   background-color: var(--color-grabando);
 }
+
+/* INTERRUPTOR (Tarea 72). La casilla real se esconde a la vista pero sigue
+   en el documento: recibe el toque a traves de su label, el teclado y el
+   lector de pantalla. Ver Interruptor.tsx. */
+.interruptor-casilla {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.interruptor-casilla:focus-visible + .interruptor-pista {
+  outline: 2px solid var(--color-acento);
+  outline-offset: 2px;
+}

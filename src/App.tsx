@@ -1851,15 +1851,19 @@ export default function App({ motor, repoOverride }: AppProps) {
               />
             )}
             <CuentaRegresiva valor={cuentaRegresiva} />
-          </div>
 
-          {mostrarTiempo && (
-            <BarraDeTiempo
-              motorAvance={motorAvance}
-              totalTokens={totalTokens}
-              tInicioLecturaMs={tInicioLecturaMs}
-            />
-          )}
+            {/* La barra de tiempo va ADENTRO del lienzo -position relative, 100dvh-
+                y se ubica sola arriba al centro. Afuera quedaba debajo del borde
+                de la pantalla y no se veia nunca. Tarea 72. */}
+            {mostrarTiempo && (
+              <BarraDeTiempo
+                motorAvance={motorAvance}
+                totalTokens={totalTokens}
+                tInicioLecturaMs={tInicioLecturaMs}
+                vistaPrevia={estadoToma === 'listo'}
+              />
+            )}
+          </div>
         </div>
       )}
 

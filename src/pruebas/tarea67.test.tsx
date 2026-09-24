@@ -116,13 +116,21 @@ describe('Tarea 67 - la casa de cada ajuste y el gesto que se siente', () => {
     }
   })
 
-  test('"Idioma del guion" existe en el editor y NO existe en el menu de la portada', async () => {
+  // Hasta la Tarea 72 este test cuidaba que "Idioma del guion" viviera en el
+  // editor y no en la portada. En la 72 el selector se quito: en el APK el
+  // motor ignora el idioma y el control no hacia nada. Ahora cuida que no
+  // vuelva a aparecer en ninguno de los dos lados.
+  test('"Idioma del guion" no existe ni en el menu de la portada ni en el panel del editor', async () => {
     await portadaConGuion()
     fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
     expect(screen.queryByText('Idioma del guion')).toBeNull()
     fireEvent.click(await screen.findByTestId('fila-guion-g-67'))
     fireEvent.click(await screen.findByTestId('btn-menu-opciones-editor'))
-    expect(await screen.findByText('Idioma del guion')).toBeDefined()
+    // Se busca SOLO adentro del panel Aa: el diagnostico de la portada tiene
+    // su propio <select> -el del motor, App.tsx- y no tiene que ver con esto.
+    const panel = await screen.findByTestId('panel-ajustes')
+    expect(panel.textContent).not.toContain('Idioma del guion')
+    expect(panel.querySelector('select')).toBeNull()
   })
 
   test('si recuperarTomasPendientes devuelve una toma, aparece el aviso con su accion', async () => {
