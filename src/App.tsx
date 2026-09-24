@@ -205,7 +205,14 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [marginPercent, setMarginPercent] = useState<number>(ajustesPrevios.marginPercent !== undefined ? Number(ajustesPrevios.marginPercent) : 5)
   const [mirror, setMirror] = useState<boolean>(Boolean(ajustesPrevios.mirror))
   const [lineasZona, setLineasZona] = useState<number>(ajustesPrevios.lineasZona !== undefined ? Number(ajustesPrevios.lineasZona) : 3)
-  const [anclajeZona, setAnclajeZona] = useState<'arriba' | 'medio' | 'abajo'>(ajustesPrevios.anclajeZona || 'arriba')
+  // "DONDE LEES" YA NO OFRECE ABAJO. Se fue el 24 de septiembre de 2026; el dueno:
+  // "nadie lee abajo". El boton salio de TeleprompterView. Aca queda la consecuencia:
+  // a quien lo tenia guardado le cae en arriba, que ya era el valor por omision.
+  // banda.ts sigue sabiendo calcular 'abajo' -esta congelado y sus pruebas lo miden-,
+  // pero desde la pantalla ya no se puede elegir.
+  const [anclajeZona, setAnclajeZona] = useState<'arriba' | 'medio' | 'abajo'>(
+    ajustesPrevios.anclajeZona === 'medio' ? 'medio' : 'arriba'
+  )
   // DOS TEMAS, NO TRES. "Sistema" se fue el 21 de septiembre de 2026; el motivo
   // esta escrito en BibliotecaView, donde vive el control. Aca solo queda la
   // consecuencia: a quien lo tenia guardado le cae en oscuro, que ya era el

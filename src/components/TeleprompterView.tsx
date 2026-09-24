@@ -1105,7 +1105,9 @@ export default function TeleprompterView({
                 <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
                   Dónde lees:
                 </span>
-                {(['arriba', 'medio', 'abajo'] as const).map((z) => (
+                {/* Sin 'abajo' desde el 24-09-2026: "nadie lee abajo". Ver App.tsx, donde
+                    se carga anclajeZona. */}
+                {(['arriba', 'medio'] as const).map((z) => (
                   <button
                     key={z}
                     type="button"
