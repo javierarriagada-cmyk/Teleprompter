@@ -122,7 +122,7 @@ export function bloqueDeBienvenida(): Bloque {
     '',
     'En el botón Aa eliges el tamaño de la letra, la tipografía, el ancho de la columna y los colores de la pantalla. Déjalo como te resulte más cómodo.',
     '',
-    'Cuando quieras grabarte, toca Grabar. La cámara filma mientras lees, y el texto queda justo bajo el lente, para que tu mirada vaya a la cámara y no a la pantalla.',
+    'Cuando quieras grabarte, toca Grabar. La cámara filma mientras lees, y el texto queda justo bajo el lente, para que tu mirada vaya a la cámara y no a la pantalla. Puedes verte a pantalla completa, detrás del texto, o en un recuadro pequeño. Así sabes cómo te están viendo, sin perder la comodidad para leer.',
     '',
     'Te acompaña para darte la comodidad y la tranquilidad que necesitas. Queremos que toda tu concentración esté donde debe estar. No tienes que memorizar. No tienes que apurarte para alcanzar el texto. Puedes transmitir la emoción que quieras, en el momento que quieras.',
     '',
