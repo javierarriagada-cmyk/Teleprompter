@@ -944,7 +944,7 @@ label.boton-aa-redondo {
 
 /* LA LECTURA SOBRE LA IMAGEN DE LA CAMARA -24-09-2026, TeleprompterView-. La
    franja va detras de la columna de texto, con los bordes difuminados; la
-   sombra separa cada letra de la imagen; el punto de grabar va junto al lente. */
+   sombra separa cada letra de la imagen. */
 .franja-lectura {
   position: absolute;
   top: 0;
@@ -962,10 +962,8 @@ label.boton-aa-redondo {
 }
 .punto-grabando {
   position: absolute;
-  left: 50%;
   width: 10px;
   height: 10px;
-  margin-left: -5px;
   border-radius: 50%;
   background-color: var(--color-grabando);
   box-shadow: 0 0 8px rgba(225, 29, 46, 0.85);

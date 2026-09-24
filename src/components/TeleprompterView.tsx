@@ -734,18 +734,22 @@ export default function TeleprompterView({
           o no, y B14 dice que el punto rojo es GRABANDO. Ahora lo enciende
           grabandoVideo, que solo es cierto despues de la cuenta regresiva y si
           el grabador arranco de verdad.
-          24-09-2026: ARRIBA AL CENTRO, JUNTO AL LENTE. Estaba arriba a la derecha
-          y el boton de pausa -la esquina de 40- lo tapaba: pendiente B22. La luz
-          de grabar de una camara va al lado del lente por una razon: el que mira
-          el lente la ve de reojo sin buscarla. En el telefono el lente frontal
-          esta arriba al centro, asi que el punto va justo debajo. Y es el rojo de
-          grabar de la aplicacion, no uno parecido. */}
+          24-09-2026: ARRIBA A LA DERECHA, AL LADO DE LA PAUSA. Estaba a 16 px de
+          la esquina y el boton de pausa -la esquina de 40, App.tsx- lo tapaba
+          cada vez que aparecian los controles: pendiente B22. Primero lo movi
+          arriba al centro, bajo el lente, y el dueno lo corrigio: "su posicion es
+          arriba a la derecha". Queda en la esquina, a la izquierda de la pausa y
+          alineado con su centro: siempre a la vista, esten o no los controles.
+          Y es el rojo de grabar de la aplicacion, no uno parecido. */}
       {grabandoVideo && (
         <div
           data-testid="punto-grabando"
           className="punto-grabando"
           style={{
-            top: 'calc(10px + env(safe-area-inset-top, 0px))'
+            // La pausa: top 8, right 8, 40 x 40. El punto de 10 va a su izquierda,
+            // 12 px de aire, con el centro a la misma altura: 8 + 20 - 5.
+            top: 'calc(23px + env(safe-area-inset-top, 0px))',
+            right: 'calc(60px + env(safe-area-inset-right, 0px))'
           }}
           title="Grabando"
         />
