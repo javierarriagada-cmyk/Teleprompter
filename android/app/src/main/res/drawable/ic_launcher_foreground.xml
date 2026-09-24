@@ -1,36 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- EL ICONO DE SIGO. 24-09-2026.
+     Cinco renglones de guion -los dos del medio a plena luz: la ventana donde se
+     lee- y la bola roja de la marca arriba a la derecha, separada del texto,
+     como la luz de grabar. Es el icono de los renglones de antes, pulido, con la
+     bola de "Sig" y la bola -trazoMarca.ts-. Se probo un monograma "S" y la bola
+     y el dueno lo descarto: el de los renglones "gritaba que era un teleprompter",
+     y "aun nuestra marca no es reconocida".
+     Todo cabe en el circulo de radio 33 que Android nunca recorta: escalado 0.86
+     alrededor del centro -scratchpad herramientas/vista3.mjs-. Los renglones
+     apagados van en 0.62: T242 no deja nada bajo 0.60 en los iconos. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Bar 1: y=31, w=46 -->
+    <!-- ya leido -->
     <path
         android:fillColor="#E7E1DE"
         android:fillAlpha="0.62"
-        android:pathData="M33.5,31h41a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-41a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
-    <!-- Bar 2: y=41, w=36 (la ventana) -->
+        android:pathData="M33.1,37.06h24.6a2.32,2.32 0 0 1 0,4.64h-24.6a2.32,2.32 0 0 1 0,-4.64z" />
+    <!-- la ventana -->
     <path
         android:fillColor="#E7E1DE"
         android:fillAlpha="1.00"
-        android:pathData="M33.5,41h31a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-31a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
-    <!-- Bar 3: y=51, w=46 (la ventana) -->
+        android:pathData="M33.1,45.66h29.76a2.32,2.32 0 0 1 0,4.64h-29.76a2.32,2.32 0 0 1 0,-4.64z" />
+    <!-- la ventana -->
     <path
         android:fillColor="#E7E1DE"
         android:fillAlpha="1.00"
-        android:pathData="M33.5,51h41a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-41a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
-    <!-- Bar 4: y=61, w=30 -->
+        android:pathData="M33.1,54.26h33.2a2.32,2.32 0 0 1 0,4.64h-33.2a2.32,2.32 0 0 1 0,-4.64z" />
+    <!-- lo que viene -->
     <path
         android:fillColor="#E7E1DE"
         android:fillAlpha="0.62"
-        android:pathData="M33.5,61h25a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-25a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
-    <!-- Bar 5: y=71, w=42 -->
+        android:pathData="M33.1,62.86h21.16a2.32,2.32 0 0 1 0,4.64h-21.16a2.32,2.32 0 0 1 0,-4.64z" />
+    <!-- lo que viene -->
     <path
         android:fillColor="#E7E1DE"
         android:fillAlpha="0.62"
-        android:pathData="M33.5,71h37a2.5,2.5 0 0 1 2.5,2.5v0a2.5,2.5 0 0 1 -2.5,2.5h-37a2.5,2.5 0 0 1 -2.5,-2.5v0a2.5,2.5 0 0 1 2.5,-2.5z" />
-    <!-- Punto Tally: circulo #E11D2E a la DERECHA de R2 (x=73.5, y=41.5, radio=4.5) -->
+        android:pathData="M33.1,71.46h28.04a2.32,2.32 0 0 1 0,4.64h-28.04a2.32,2.32 0 0 1 0,-4.64z" />
+    <!-- la bola: la luz de grabar -->
     <path
         android:name="punto"
         android:fillColor="#E11D2E"
-        android:pathData="M73.5,41.5 m-4.5,0 a4.5,4.5 0 1,0 9,0 a4.5,4.5 0 1,0 -9,0" />
+        android:pathData="M73.78,36.37 m-5.85,0 a5.85,5.85 0 1,0 11.7,0 a5.85,5.85 0 1,0 -11.7,0" />
 </vector>
