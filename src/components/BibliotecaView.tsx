@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
-import { Guion, ResumenGuion, ResumenGrabacion, PAREJAS_COLOR } from '../datos/modelo'
+import { Guion, ResumenGuion, ResumenGrabacion, PAREJAS_COLOR, duracionDeLectura } from '../datos/modelo'
 import TiraGrabaciones from './TiraGrabaciones'
 import { IdMotor } from '../motor/MotorDeVoz'
 import { PanelCorpus } from './PanelCorpus'
 import TarjetaLectura from './TarjetaLectura'
-import { IconoEngranaje } from './IconosApp'
-import { Interruptor } from './Interruptor'
+import { IconoEngranaje, IconoVibracion } from './IconosApp'
 import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './movimiento'
 import { ESCALA_AVISO, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
@@ -24,7 +23,6 @@ interface BibliotecaViewProps {
   // traves, en plena toma. Por eso App dice explicitamente cuando va. Revision
   // de la 70, 23-09-2026.
   mostrarBotonCrear?: boolean
-  onImportarArchivo: (file: File) => void
   onRenombrar?: (id: string, nuevoTitulo: string) => void
   onBorrar: (id: string) => void
   onArchivar: (id: string, archivado: boolean) => void
@@ -238,9 +236,9 @@ function FilaGuion({
   }
 
   const tituloMostrar = (g.titulo && g.titulo.trim()) ? g.titulo : 'Sin título'
-  const mins = Math.max(1, Math.round((g.palabras || 0) / 150))
+  // La duracion sale de duracionDeLectura -modelo.ts-, la misma de la tarjeta.
   const fechaNat = formatearFechaNatural(g.modificado)
-  const metaTexto = `${mins} min · ${fechaNat}`
+  const metaTexto = `${duracionDeLectura(g.palabras || 0)} · ${fechaNat}`
 
   return (
     <div
@@ -422,7 +420,6 @@ export default function BibliotecaView({
   onGrabarDirecto,
   onCrearNuevo,
   mostrarBotonCrear = true,
-  onImportarArchivo,
   onRenombrar,
   onBorrar,
   onArchivar,
@@ -453,20 +450,17 @@ export default function BibliotecaView({
   const [menuId, setMenuId] = useState<string | null>(null)
   const [menuSuperiorAbierto, setMenuSuperiorAbierto] = useState(false)
   const [vibracion, setVibracion] = useState<boolean>(vibracionHabilitada())
-  // El menu sale por portal a body. El ref del hook queda en el engranaje;
-  // el del panel viaja en `tambien` para que un toque al menu no cuente
-  // como "afuera".
-  const refMenuPortaleado = useRef<HTMLDivElement | null>(null)
-  const refMenuSuperior = useCerrarAfuera(
-    menuSuperiorAbierto,
-    () => setMenuSuperiorAbierto(false),
-    [refMenuPortaleado]
-  )
+  // El cajon de ajustes se cierra como el Aa: un toque afuera o Escape
+  // -useCerrarAfuera-, bajando la raya, o con volver del telefono. El
+  // engranaje cuenta como "adentro" para que tocarlo lo abra y lo cierre.
+  const refEngranajePortada = useRef<HTMLButtonElement | null>(null)
+  const refCajonPortada = useCerrarAfuera(menuSuperiorAbierto, () => setMenuSuperiorAbierto(false), [refEngranajePortada])
+  const [arrastreCajon, setArrastreCajon] = useState(0)
+  const arrastrandoCajonRef = useRef(false)
+  const inicioArrastreCajonRef = useRef<number | null>(null)
   // el menu de cada fila, que se abre con toque largo, se cierra igual que los demas
   const refMenuFila = useCerrarAfuera(menuId !== null, () => setMenuId(null))
-  const [rectMenuSuperior, setRectMenuSuperior] = useState<{ top: number; right: number } | null>(null)
   const [mapaTextos, setMapaTextos] = useState<Record<string, string>>({})
-  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [esInicial, setEsInicial] = useState<boolean>(esPrimerMontajeBiblioteca)
 
@@ -488,6 +482,7 @@ export default function BibliotecaView({
   const fueLongPressDiagRef = useRef<boolean>(false)
 
   const hayMasDeOcho = guiones.length > 8
+  const cantidadArchivados = guiones.filter((g) => g.archivado).length
 
   useEffect(() => {
     const query = busqueda.toLowerCase().trim()
@@ -569,19 +564,6 @@ export default function BibliotecaView({
     setMenuId(id)
   }
 
-  function handleClicImportar() {
-    setMenuSuperiorAbierto(false)
-    fileInputRef.current?.click()
-  }
-
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (file) {
-      onImportarArchivo(file)
-      e.target.value = ''
-    }
-  }
-
   // Toque largo sobre el resumen para alternar diagnostico
   function handleDiagTouchStart() {
     fueLongPressDiagRef.current = false
@@ -614,6 +596,10 @@ export default function BibliotecaView({
           setMostrarPanelCorpus(false)
           return true
         }
+        if (menuSuperiorAbierto) {
+          setMenuSuperiorAbierto(false)
+          return true
+        }
         return false
       })
     }
@@ -622,7 +608,7 @@ export default function BibliotecaView({
         onRegistrarCerrarModal(null)
       }
     }
-  }, [mostrarPanelCorpus, onRegistrarCerrarModal])
+  }, [mostrarPanelCorpus, menuSuperiorAbierto, onRegistrarCerrarModal])
 
   const minsLectura = calcularMinutosLectura(guiones)
   const textoResumen = guiones.length === 0
@@ -656,17 +642,42 @@ export default function BibliotecaView({
       onAnimationEnd={onAnimationEnd}
       style={{ padding: 'var(--aire-4)', maxWidth: 800, margin: '0 auto', position: 'relative', minHeight: '80vh', ...style }}
     >
-      <input
-        type="file"
-        ref={fileInputRef}
-        accept=".txt,.md,.docx"
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-        data-testid="input-importar-archivo"
-      />
+      {/* LA PORTADA, DE ARRIBA A ABAJO: marca, tu guion, tus guiones, tus
+          videos. 24-09-2026, el dueno: "siento que queda debajo de las otras en
+          nivel ... subamos el nivel con todo".
+          Arriba, una barra fina con la marca y el engranaje. El engranaje vivia
+          adentro de la tarjeta del guion y mezclaba "este guion" con "la
+          aplicacion"; ahora la tarjeta es solo del guion. La marca ancla la
+          pantalla: antes la portada empezaba con un hueco y la tarjeta. */}
+      <header className="portada-cabeza" style={animacionTituloStyle}>
+        {/* LA MARCA ES EL NOMBRE CON SU PUNTO. Primero fueron los cinco
+            renglones del icono al lado del nombre, y en chico se leian como
+            el icono de menu -tres rayas-: algo que se toca y no hace nada.
+            Visto en el telefono, 24-09-2026. Queda el nombre y el punto rojo
+            del tally, que es lo unico propio de Sigo que se reconoce a este
+            tamano: una luz de "grabando". */}
+        <div className="portada-marca" aria-label="Sigo">
+          <span className="portada-nombre">Sigo</span>
+          <span className="portada-punto" aria-hidden="true" />
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            hapticaToqueSuave()
+            setMenuSuperiorAbierto((v) => !v)
+          }}
+          ref={refEngranajePortada}
+          data-testid="btn-menu-superior-biblioteca"
+          className="btn-deformable boton-portada"
+          title="Ajustes de la app"
+          aria-label="Ajustes de la app"
+        >
+          <IconoEngranaje tamano={22} />
+        </button>
+      </header>
 
-      {/* Tarjeta de Portada y Menú Superior */}
-      <div style={{ position: 'relative', marginBottom: 'var(--aire-4)', ...animacionTituloStyle }}>
+      {/* Tarjeta de Portada */}
+      <div style={{ position: 'relative', marginBottom: 'var(--aire-5)', ...animacionTituloStyle }}>
         <TarjetaLectura
           guionResumen={guionMasReciente}
           onLeer={(rect) => {
@@ -685,128 +696,74 @@ export default function BibliotecaView({
           colorFondo={colorFondo}
           colorLetra={colorLetra}
         />
+      </div>
 
-        {/* El engranaje se queda aca. El MENU sale por portal a body:
-            colgado de la tarjeta, su zIndex 20 solo competia adentro
-            de ese contenedor. Javier el 21 de septiembre de 2026:
-            "ahora pasa por detras del cuadro del guion y sigue por
-            abajo". Igual que el boton +, createPortal. */}
-        <div ref={refMenuSuperior} style={{ position: 'absolute', top: 'var(--aire-2)', right: 'var(--aire-2)', zIndex: 20 }}>
-          <button
-            onClick={(e) => {
-              hapticaToqueSuave()
-              if (menuSuperiorAbierto) {
-                setMenuSuperiorAbierto(false)
-                return
-              }
-              const r = (e.currentTarget as HTMLElement).getBoundingClientRect()
-              setRectMenuSuperior({ top: r.bottom + 4, right: window.innerWidth - r.right })
-              setMenuSuperiorAbierto(true)
-            }}
-            data-testid="btn-menu-superior-biblioteca"
+      {/* LOS AJUSTES DE LA APLICACION, EN EL CAJON ESTANDAR. 24-09-2026.
+          Era un menu colgado del engranaje con cuatro renglones escritos:
+          "Ver Archivados", "Importar archivo", "Tema:" y "Vibracion". Dos no
+          eran ajustes: archivados paso al pie de la lista de guiones, que es
+          donde se busca, e importar se fue porque el editor vacio ya lo ofrece
+          -"Abrir archivo", y toma el titulo del archivo-. Quedan los dos
+          ajustes de verdad, en UNA fila y sin palabras, como el cajon Aa: el
+          tema en dos tarjetas que muestran como se ve, y la vibracion como un
+          boton redondo que se enciende.
+          Del menu viejo quedan dos lecciones. Los renglones sueltos sin grupo
+          eran "la mitad del desorden" que Javier vio el 21-09-2026. Y el menu
+          crecio hasta pasarse del borde de abajo sin forma de llegar al ultimo
+          renglon -"el renglon de abajo no se ve"-: si este cajon crece, lleva
+          alto maximo y desplazamiento.
+          Sigue saliendo por portal a body -Javier, 21-09-2026: "ahora pasa por
+          detras del cuadro del guion"-. Se cierra tocando afuera, bajando la
+          raya o con el boton de volver del telefono. */}
+      {menuSuperiorAbierto && createPortal(
+        <div
+          className="capa-cajon-aa"
+          data-testid="capa-ajustes-portada"
+          onClick={() => setMenuSuperiorAbierto(false)}
+        >
+          <div
+            ref={refCajonPortada}
+            data-testid="menu-superior-biblioteca"
+            className="panel-superficie cajon-aa"
+            onClick={(e) => e.stopPropagation()}
             style={{
-              background: 'transparent',
-              border: 'none',
-              fontSize: 'var(--texto-display)',
-              color: 'var(--color-texto)',
-              padding: 'var(--aire-1) var(--aire-2)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
+              paddingBottom: 'calc(var(--aire-4) + env(safe-area-inset-bottom, 0px))',
+              transform: `translateY(${arrastreCajon}px)`,
+              transition: arrastrandoCajonRef.current || movimientoApagado() ? 'none' : `transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
+              animation: movimientoApagado() || arrastrandoCajonRef.current || arrastreCajon > 0
+                ? 'none'
+                : `panelSube ${MS_PANEL}ms ${CURVA_RESORTE} forwards`
             }}
-            title="Ajustes de la app"
-            aria-label="Ajustes de la app"
           >
-            <IconoEngranaje />
-          </button>
-
-          </div>
-        {menuSuperiorAbierto && createPortal(
             <div
-              ref={refMenuPortaleado}
-              data-testid="menu-superior-biblioteca"
-              style={{
-                position: 'fixed',
-                top: rectMenuSuperior ? rectMenuSuperior.top : 48,
-                right: rectMenuSuperior ? rectMenuSuperior.right : 8,
-                backgroundColor: 'var(--bg-menu)',
-                borderRadius: 'var(--redondeo)',
-                zIndex: 50,
-                minWidth: 160,
-                // EL MENU NO PUEDE CRECER MAS QUE LA PANTALLA.
-                //
-                // Tenia overflow hidden y ningun alto maximo. Mientras fue
-                // corto no se noto; cuando la tarea 67 le sumo el apartado de
-                // motor y transcripcion, el ultimo renglon -Medicion- quedo por
-                // debajo del borde y SIN forma de llegar, porque hidden no
-                // desplaza. Javier el 21 de septiembre de 2026: "el renglon de
-                // abajo no se ve".
-                //
-                // En X se sigue recortando, que es lo que mantiene las esquinas
-                // redondeadas mientras el menu crece. En Y ahora se desplaza.
-                maxHeight: 'calc(100vh - 120px)',
-                overflowX: 'hidden',
-                overflowY: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-                transformOrigin: 'top right',
-                animation: movimientoApagado()
-                  ? 'none'
-                  : `menuCreceEsquina ${MS_CHICO}ms ${CURVA_RESORTE} forwards`
+              className="cajon-aa-agarradera"
+              onPointerDown={(e) => {
+                inicioArrastreCajonRef.current = e.clientY
+                arrastrandoCajonRef.current = true
+                try { e.currentTarget.setPointerCapture(e.pointerId) } catch (err) {}
+              }}
+              onPointerMove={(e) => {
+                if (!arrastrandoCajonRef.current || inicioArrastreCajonRef.current === null) return
+                setArrastreCajon(Math.max(0, e.clientY - inicioArrastreCajonRef.current))
+              }}
+              onPointerUp={() => {
+                arrastrandoCajonRef.current = false
+                inicioArrastreCajonRef.current = null
+                // El mismo umbral que el cajon Aa -EditorView.tsx-.
+                if (arrastreCajon > 96) setMenuSuperiorAbierto(false)
+                setArrastreCajon(0)
+              }}
+              onPointerCancel={() => {
+                arrastrandoCajonRef.current = false
+                inicioArrastreCajonRef.current = null
+                setArrastreCajon(0)
               }}
             >
-              {/* TODO RENGLON TIENE SU GRUPO, TAMBIEN LAS ACCIONES.
-                  Ver archivados e Importar archivo no son ajustes: son cosas
-                  que le haces a tus guiones. Estaban arriba sueltas, sin
-                  titulo, mientras el resto si estaba agrupado, y eso era la
-                  mitad del desorden que Javier vio el 21 de septiembre de 2026.
-                  Con esto el menu queda en tres grupos y ninguno suelto: lo de
-                  los guiones, lo del usuario, y lo nuestro al final. */}
-              <div className="texto-meta" style={{ padding: 'var(--aire-2) var(--aire-4) 0', color: 'var(--color-apagado)', fontWeight: 600 }}>
-                Guiones
-              </div>
-              <button
-                onClick={() => {
-                  setMostrarArchivados(!mostrarArchivados)
-                  setMenuSuperiorAbierto(false)
-                }}
-                style={{
-                  padding: 'var(--aire-3) var(--aire-4)',
-                  textAlign: 'left',
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: '1px solid var(--color-separador)',
-                  color: 'var(--color-texto)',
-                  fontSize: 'var(--texto-cuerpo)',
-                  cursor: 'pointer'
-                }}
-              >
-                {mostrarArchivados ? 'Ver Principales' : 'Ver Archivados'}
-              </button>
-              <button
-                onClick={handleClicImportar}
-                style={{
-                  padding: 'var(--aire-3) var(--aire-4)',
-                  textAlign: 'left',
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: '1px solid var(--color-borde)',
-                  color: 'var(--color-texto)',
-                  fontSize: 'var(--texto-cuerpo)',
-                  cursor: 'pointer'
-                }}
-              >
-                Importar archivo
-              </button>
+              <div className="cajon-aa-agarradera-raya" />
+            </div>
 
-              <div className="texto-meta" style={{ padding: 'var(--aire-2) var(--aire-4) 0', color: 'var(--color-apagado)', fontWeight: 600 }}>
-                La aplicación
-              </div>
-              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
-                <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-1)' }}>
-                  Tema:
-                </label>
+            <div className="cajon-aa-filas">
+              <div className="fila-aa-accion">
                 {/* DOS OPCIONES, NO TRES. "Sistema" se fue el 21 de septiembre
                     de 2026. Javier: "no se por que ademas da la opcion de
                     sistema, que en el fondo igual es una de las otras dos".
@@ -816,62 +773,59 @@ export default function BibliotecaView({
                     grabando. Era elegir sin informacion, que es lo mismo que
                     ajustes-propuesta.html ya habia decidido cortar al pasar de
                     diez controles a seis. El valor por omision sigue siendo
-                    oscuro, y a quien tenga guardado "sistema" le cae ahi. */}
-                <div style={{ display: 'flex', gap: 'var(--aire-2)' }}>
-                  <button
-                    type="button"
-                    onClick={() => setTema?.('claro')}
-                    style={{
-                      padding: 'var(--aire-1) var(--aire-2)',
-                      fontSize: 'var(--texto-meta)',
-                      borderRadius: 'var(--redondeo)',
-                      border: '1px solid var(--color-borde)',
-                      backgroundColor: tema === 'claro' ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                      color: tema === 'claro' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                      fontWeight: tema === 'claro' ? 'bold' : 'normal',
-                      cursor: 'pointer',
-                      flex: 1
-                    }}
-                  >
-                    Claro
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setTema?.('oscuro')}
-                    style={{
-                      padding: 'var(--aire-1) var(--aire-2)',
-                      fontSize: 'var(--texto-meta)',
-                      borderRadius: 'var(--redondeo)',
-                      border: '1px solid var(--color-borde)',
-                      backgroundColor: tema === 'oscuro' ? 'var(--color-acento)' : 'var(--bg-suelo)',
-                      color: tema === 'oscuro' ? 'var(--color-texto-acento)' : 'var(--color-texto)',
-                      fontWeight: tema === 'oscuro' ? 'bold' : 'normal',
-                      cursor: 'pointer',
-                      flex: 1
-                    }}
-                  >
-                    Oscuro
-                  </button>
+                    oscuro, y a quien tenga guardado "sistema" le cae ahi.
+                    24-09-2026: las dos opciones son tarjetas que muestran el
+                    tema -su fondo y su letra-, como las parejas del cajon Aa. */}
+                <div className="parejas-aa parejas-aa-dos" role="group" aria-label="Tema">
+                  {([
+                    { valor: 'claro' as const, nombre: 'Claro' },
+                    { valor: 'oscuro' as const, nombre: 'Oscuro' }
+                  ]).map((t) => (
+                    <button
+                      key={t.valor}
+                      type="button"
+                      title={t.nombre}
+                      aria-label={t.nombre}
+                      aria-pressed={tema === t.valor}
+                      className={`btn-deformable pareja-aa${tema === t.valor ? ' activa' : ''}`}
+                      onClick={() => {
+                        hapticaToqueSuave()
+                        setTema?.(t.valor)
+                      }}
+                    >
+                      <span className={`pareja-aa-muestra tema-muestra-${t.valor}`}>Aa</span>
+                    </button>
+                  ))}
                 </div>
+                {/* Vibracion: un interruptor dibujado. La casilla real sigue en
+                    el documento, escondida -interruptor-casilla-, para el lector
+                    de pantalla y para getByLabelText('Vibración'). Al
+                    encenderla vibra: es la unica forma de mostrar lo que hace. */}
+                <label
+                  title="Vibración"
+                  className={`btn-deformable boton-aa-redondo${vibracion ? ' activa' : ''}`}
+                >
+                  <input
+                    type="checkbox"
+                    role="switch"
+                    className="interruptor-casilla"
+                    checked={vibracion}
+                    onChange={(e) => {
+                      const v = e.target.checked
+                      setVibracion(v)
+                      guardarVibracionHabilitada(v)
+                      hapticaToqueSuave()
+                    }}
+                  />
+                  <IconoVibracion tamano={24} />
+                  <span className="solo-lector">Vibración</span>
+                </label>
               </div>
-
-              <div style={{ padding: 'var(--aire-2) var(--aire-4)', borderBottom: '1px solid var(--color-separador)' }}>
-                <Interruptor
-                  etiqueta="Vibración"
-                  encendido={vibracion}
-                  onCambiar={(v) => {
-                    setVibracion(v)
-                    guardarVibracionHabilitada(v)
-                    hapticaToqueSuave()
-                  }}
-                  estiloEtiqueta={{ fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}
-                />
-              </div>
-
-            </div>,
-            document.body
-          )}
-      </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
 
       {/* Buscador: sin borde, fondo bg-suelo y redondeo */}
       {hayMasDeOcho && (
@@ -902,7 +856,9 @@ export default function BibliotecaView({
           principal y otro al pie. Javier los pidio mas grandes el 21 de
           septiembre de 2026; texto-cuerpo es el escalon que sigue a
           texto-meta, no un numero inventado. */}
-      <div className="texto-cuerpo" style={{ color: 'var(--color-apagado)', marginBottom: 'var(--aire-2)', fontWeight: 600 }}>Guiones</div>
+      <div className="texto-cuerpo" style={{ color: 'var(--color-apagado)', marginBottom: 'var(--aire-2)', fontWeight: 600 }}>
+        {mostrarArchivados ? 'Archivados' : 'Guiones'}
+      </div>
 
       {/* Lista de guiones o Vacío */}
       {guiones.length === 0 ? (
@@ -945,6 +901,24 @@ export default function BibliotecaView({
             />
           ))}
         </div>
+      )}
+
+      {/* ARCHIVADOS, AL PIE DE LA LISTA. 24-09-2026. Vivia en el menu del
+          engranaje -"Ver Archivados"-, que es de ajustes. Los archivados son
+          guiones, y se buscan donde estan los guiones. Solo aparece si hay
+          alguno, con cuantos son; adentro, el mismo lugar lleva de vuelta. */}
+      {!busqueda.trim() && (cantidadArchivados > 0 || mostrarArchivados) && (
+        <button
+          type="button"
+          data-testid="btn-ver-archivados"
+          className="btn-deformable enlace-archivados"
+          onClick={() => {
+            hapticaToqueSuave()
+            setMostrarArchivados(!mostrarArchivados)
+          }}
+        >
+          {mostrarArchivados ? '‹ Volver a tus guiones' : `Archivados · ${cantidadArchivados}`}
+        </button>
       )}
 
       {onAbrirGrabacion && onBorrarGrabacion && (

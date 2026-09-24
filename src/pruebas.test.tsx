@@ -2232,7 +2232,10 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     }
   })
 
-  test('T87: En la biblioteca vacía, "Importar archivo" con un .txt de dos párrafos crea un guión nuevo, con el título sacado del nombre del archivo y los dos bloques.', async () => {
+  test('T87: En la biblioteca vacía, crear un guion y "Abrir archivo" con un .txt de dos párrafos lo llena, con el título sacado del nombre del archivo y los dos párrafos.', async () => {
+    // Hasta el 24-09-2026 esto entraba por "Importar archivo" del menu de la
+    // portada. Esa entrada se fue: el editor vacio ofrece "Abrir archivo" y hace
+    // lo mismo. Lo que se comprueba no cambio; cambio la puerta.
     const repo = new RepositorioMemoria()
 
     let container: HTMLElement
@@ -2242,9 +2245,13 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    expect(container!.querySelector('[data-testid="btn-menu-superior-biblioteca"]')).not.toBeNull()
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-crear-guion-flotante'))
+      await new Promise((r) => setTimeout(r, 100))
+    })
+    expect(screen.getByTestId('btn-abrir-archivo')).not.toBeNull()
 
-    const inputArchivo = container!.querySelector('input[data-testid="input-importar-archivo"]') as HTMLInputElement
+    const inputArchivo = container!.querySelector('input[type="file"]') as HTMLInputElement
     expect(inputArchivo).not.toBeNull()
 
     const contenido = 'Primer párrafo del guion importado.\n\nSegundo párrafo del guion importado.'
@@ -2408,29 +2415,19 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
     // 1. Con filtro apagado y búsqueda vacía, no aparece en la lista principal
     expect(container!.textContent).not.toContain('Guion Oculto Archivado')
 
-    // 2. Con el filtro encendido ("Ver Archivados"), sí aparece (desplegando primero el menú ⋯)
-    const btnMenu = container!.querySelector('[data-testid="btn-menu-superior-biblioteca"]') as HTMLElement
-    expect(btnMenu).not.toBeNull()
-    await act(async () => {
-      fireEvent.click(btnMenu)
-    })
-
-    // Por screen y no por container: desde la tarea 68 el menu del engranaje
-    // sale por un portal a body, para que no lo atrape el apilado de la
-    // tarjeta. Ver el comentario del portal en BibliotecaView.
-    const btnFiltro = screen.getByText('Ver Archivados')
+    // 2. Con el filtro encendido, sí aparece. Desde el 24-09-2026 el filtro es
+    // el enlace "Archivados · N" al pie de la lista, no una entrada del menu
+    // del engranaje, y dice cuantos hay.
+    const btnFiltro = screen.getByTestId('btn-ver-archivados')
+    expect(btnFiltro.textContent).toContain('1')
     await act(async () => {
       fireEvent.click(btnFiltro)
     })
     expect(container!.textContent).toContain('Guion Oculto Archivado')
 
-    // Volver a apagar el filtro (desplegando el menú ⋯ de nuevo)
+    // Volver a apagar el filtro, con el mismo enlace
     await act(async () => {
-      fireEvent.click(btnMenu)
-    })
-    const btnFiltroPrincipales = screen.getByText('Ver Principales')
-    await act(async () => {
-      fireEvent.click(btnFiltroPrincipales)
+      fireEvent.click(screen.getByTestId('btn-ver-archivados'))
     })
     expect(container!.textContent).not.toContain('Guion Oculto Archivado')
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { IconoEmpezar } from './IconosApp'
-import { ResumenGuion, PAREJAS_COLOR } from '../datos/modelo'
+import { ResumenGuion, PAREJAS_COLOR, duracionDeLectura } from '../datos/modelo'
 import { estiloComprimirPorAviso, useMantenerApretado } from './mantenerApretado'
 
 interface TarjetaLecturaProps {
@@ -13,15 +13,6 @@ interface TarjetaLecturaProps {
   onDiagClick?: () => void
   colorFondo?: string
   colorLetra?: string
-}
-
-function formatearDuracion(palabras: number): string {
-  const totalSegundos = Math.round((palabras / 150) * 60)
-  const mins = Math.floor(totalSegundos / 60)
-  const segs = totalSegundos % 60
-  const mStr = String(mins).padStart(2, '0')
-  const sStr = String(segs).padStart(2, '0')
-  return `${mStr}:${sStr}`
 }
 
 export default function TarjetaLectura({
@@ -51,7 +42,8 @@ export default function TarjetaLectura({
   })
 
   const palabras = guionResumen?.palabras || 0
-  const timecode = formatearDuracion(palabras)
+  // Mismo formato que la fila del guion: duracionDeLectura, modelo.ts.
+  const timecode = duracionDeLectura(palabras)
   const tituloText = hayGuion
     ? guionResumen?.titulo && guionResumen.titulo.trim()
       ? guionResumen.titulo
@@ -86,8 +78,10 @@ export default function TarjetaLectura({
           "arriba queda un simbolo de un sol con la hora juntos".
           No era falta de aire -la portada ya descuenta el area segura- sino
           dos relojes en el mismo rincon. Y el nuestro no es una hora del dia:
-          es cuanto dura el guion, asi que su lugar es al lado del titulo. */}
-      <div style={{ height: 24, zIndex: 5 }} />
+          es cuanto dura el guion, asi que su lugar es al lado del titulo.
+          24-09-2026: el espacio de 24 px que quedaba arriba se fue. La tarjeta ya
+          no toca el rincon del sistema -arriba esta la barra con la marca y el
+          engranaje- y el engranaje ya no vive en la tarjeta. */}
 
       {/* SIN TEXTO FANTASMA. 24-09-2026.
           Desde la Tarea 48 la tarjeta llevaba una miniatura de la lectura: cinco
@@ -165,13 +159,8 @@ export default function TarjetaLectura({
         {hayGuion && (
           <span
             data-testid="time-code-tarjeta"
-            style={{
-              fontFamily: 'monospace',
-              fontSize: 'var(--texto-meta)',
-              opacity: 0.7,
-              letterSpacing: '0.05em',
-              color: parejaColor.letra
-            }}
+            className="duracion-tarjeta"
+            style={{ color: parejaColor.letra }}
           >
             {timecode}
           </span>

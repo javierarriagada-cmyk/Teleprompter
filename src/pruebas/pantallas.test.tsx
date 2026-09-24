@@ -69,7 +69,6 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T149-T153)', () => {
         guiones,
         onAbrir: (id: string) => { guionAbiertoId = id },
         onCrearNuevo: () => {},
-        onImportarArchivo: () => {},
         onBorrar: () => {},
         onArchivar: () => {}
       })
@@ -102,7 +101,6 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T149-T153)', () => {
         guiones,
         onAbrir: (id: string) => { guionAbiertoId = id },
         onCrearNuevo: () => {},
-        onImportarArchivo: () => {},
         onBorrar: (id: string) => { guionBorradoId = id },
         onArchivar: () => {}
       })
@@ -275,16 +273,21 @@ describe('Pruebas TAREA 31 (T160)', () => {
       const { unmount } = render(
         React.createElement(BibliotecaView, {
           guiones: guionesBiblioteca, onAbrir: () => {}, onCrearNuevo: () => {},
-          onImportarArchivo: () => {}, onBorrar: () => {}, onArchivar: () => {}
+          onBorrar: () => {}, onArchivar: () => {}
         })
       )
+      // Desde el 24-09-2026 es un cajon desde abajo, y se cierra igual.
       const btn = screen.getByTestId('btn-menu-superior-biblioteca')
       fireEvent.click(btn)
-      const abierto = document.body.textContent || ''
-      expect(abierto).toContain('Importar archivo')
+      expect(screen.queryByTestId('menu-superior-biblioteca')).not.toBeNull()
 
       fireEvent.pointerDown(document.body)
-      expect(document.body.textContent || '').not.toContain('Importar archivo')
+      expect(screen.queryByTestId('menu-superior-biblioteca')).toBeNull()
+
+      fireEvent.click(btn)
+      expect(screen.queryByTestId('menu-superior-biblioteca')).not.toBeNull()
+      fireEvent.keyDown(document, { key: 'Escape' })
+      expect(screen.queryByTestId('menu-superior-biblioteca')).toBeNull()
       unmount()
     }
 
@@ -293,7 +296,7 @@ describe('Pruebas TAREA 31 (T160)', () => {
       const { unmount } = render(
         React.createElement(BibliotecaView, {
           guiones: guionesBiblioteca, onAbrir: () => {}, onCrearNuevo: () => {},
-          onImportarArchivo: () => {}, onBorrar: () => {}, onArchivar: () => {}
+          onBorrar: () => {}, onArchivar: () => {}
         })
       )
       const fila = screen.getByTestId('fila-guion-g1')
@@ -1292,7 +1295,7 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
     expect(panelAjustes.textContent).not.toContain('Tema:')
 
     // Cerrar panel y volver a la Biblioteca
-    const btnCruz = panelAjustes.querySelector('button')!
+    const btnCruz = screen.getByTestId('capa-ajustes')
     await act(async () => {
       fireEvent.click(btnCruz)
     })
@@ -1306,7 +1309,7 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
       fireEvent.click(btnMenuBiblio)
     })
 
-    expect(screen.getByText('Tema:')).not.toBeNull()
+    expect(screen.getByRole('group', { name: 'Tema' })).not.toBeNull()
     const btnClaro = screen.getByRole('button', { name: 'Claro' })
     const btnOscuro = screen.getByRole('button', { name: 'Oscuro' })
     expect(btnClaro).not.toBeNull()

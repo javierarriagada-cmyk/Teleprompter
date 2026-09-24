@@ -27,7 +27,6 @@ import { RepositorioMemoria } from './datos/RepositorioMemoria'
 import { RepositorioGrabaciones } from './datos/RepositorioGrabaciones'
 import { RepositorioGrabacionesIndexedDB } from './datos/RepositorioGrabacionesIndexedDB'
 import { RepositorioGrabacionesMemoria } from './datos/RepositorioGrabacionesMemoria'
-import { importarArchivo } from './datos/importarArchivo'
 import ReproductorGrabacion from './components/ReproductorGrabacion'
 import {
   iniciarTomaVideo,
@@ -654,26 +653,10 @@ export default function App({ motor, repoOverride }: AppProps) {
     setVista('biblioteca')
   }
 
-  async function handleImportarArchivo(file: File) {
-    try {
-      const res = await importarArchivo(file)
-      const nuevo: Guion = {
-        id: 'g-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7),
-        titulo: res.titulo,
-        idioma: 'es',
-        creado: Date.now(),
-        modificado: Date.now(),
-        archivado: false,
-        bloques: res.bloques
-      }
-      await repoRef.current.guardar(nuevo)
-      setGuionActual(nuevo)
-      await cargarBiblioteca()
-      setVista('editor')
-    } catch (e) {
-      console.warn('[App] Error al importar archivo:', e)
-    }
-  }
+  // handleImportarArchivo vivia aca: importaba un archivo desde el menu de la
+  // portada y creaba un guion nuevo con su titulo. Se fue el 24-09-2026 junto
+  // con esa entrada del menu: el editor vacio ofrece "Abrir archivo" y hace lo
+  // mismo -EditorView.tsx, handleSeleccionarArchivo-.
 
   async function handleRenombrarGuion(id: string, nuevoTitulo: string) {
     try {
@@ -1478,7 +1461,6 @@ export default function App({ motor, repoOverride }: AppProps) {
             onGrabarDirecto={handleGrabarDirecto}
             onCrearNuevo={handleCrearNuevoGuion}
             mostrarBotonCrear={vista === 'biblioteca'}
-            onImportarArchivo={handleImportarArchivo}
             onRenombrar={handleRenombrarGuion}
             onBorrar={handleBorrarGuion}
             onArchivar={handleArchivarGuion}

@@ -287,3 +287,13 @@ export function IconoSol(props: PropsIcono) {
     </Trazo>
   )
 }
+
+/** Vibracion: un telefono con dos ondas a los lados. */
+export function IconoVibracion(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <rect x="8" y="3.5" width="8" height="17" rx="2" />
+      <path d="M4.5 8.5v7M2 10.5v3M19.5 8.5v7M22 10.5v3" />
+    </Trazo>
+  )
+}

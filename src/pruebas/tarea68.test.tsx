@@ -147,7 +147,7 @@ describe('Tarea 68 - que pasa cuando la toma termina', () => {
     expect(menu.textContent).not.toContain('Motor de voz')
     expect(menu.textContent).not.toContain('Ver transcripción en vivo')
     expect(menu.textContent).not.toContain('Medición / Panel Corpus')
-    expect(menu.textContent).toContain('Tema:')
+    expect(menu.querySelector('[role="group"][aria-label="Tema"]')).not.toBeNull()
     expect(screen.queryByTestId('apartado-nuestro')).toBeNull()
   })
 

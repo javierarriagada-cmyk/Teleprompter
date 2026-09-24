@@ -46,7 +46,6 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
         guiones={guionesPrueba}
         onAbrir={() => {}}
         onCrearNuevo={() => {}}
-        onImportarArchivo={() => {}}
         onBorrar={() => {}}
         onArchivar={() => {}}
       />
@@ -80,7 +79,6 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
         guiones={guionesPrueba}
         onAbrir={() => {}}
         onCrearNuevo={() => {}}
-        onImportarArchivo={() => {}}
         onBorrar={() => {}}
         onArchivar={() => {}}
         onBuscarGuionCompleto={onBuscarGuionCompleto}
@@ -93,7 +91,8 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
     expect(tarjeta).not.toBeNull()
     expect(screen.queryByText(/cargando/i)).toBeNull()
     expect(within(tarjeta).getByText('Guión Más Reciente')).not.toBeNull()
-    expect(screen.getByTestId('time-code-tarjeta').textContent).toBe('02:00')
+    // El mismo formato que la fila del guion -duracionDeLectura, 24-09-2026-.
+    expect(screen.getByTestId('time-code-tarjeta').textContent).toBe('2 min')
 
     // Resolver la promesa del guión completo
     resolverGuionCompleto({
@@ -124,7 +123,6 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
         guiones={[]}
         onAbrir={() => {}}
         onCrearNuevo={onCrearNuevo}
-        onImportarArchivo={() => {}}
         onBorrar={() => {}}
         onArchivar={() => {}}
       />

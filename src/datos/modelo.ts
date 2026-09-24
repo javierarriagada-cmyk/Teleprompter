@@ -144,6 +144,21 @@ export function guionNuevo(idioma: string): Guion {
 
 import { REGEX_ACOTACION } from '../lib/acotaciones'
 
+// CUANTO DURA LEIDO, EN UN SOLO FORMATO. 24-09-2026.
+// La tarjeta de la portada decia "01:30" -su propio formatearDuracion- y la
+// fila del mismo guion, justo debajo, "2 min" -redondeado aparte-. Dos
+// numeros distintos para la misma cosa, uno arriba del otro. Ahora los dos
+// salen de aca: "45 s", "1:30 min", "2 min". A 150 palabras por minuto,
+// el mismo ritmo de siempre.
+export function duracionDeLectura(palabras: number): string {
+  if (!palabras || palabras <= 0) return 'vacío'
+  const segundos = Math.round((palabras / 150) * 60)
+  if (segundos < 60) return `${segundos} s`
+  const m = Math.floor(segundos / 60)
+  const s = segundos % 60
+  return s === 0 ? `${m} min` : `${m}:${String(s).padStart(2, '0')} min`
+}
+
 export function contarPalabras(g: Guion): number {
   let total = 0
   if (!g || !g.bloques) return 0

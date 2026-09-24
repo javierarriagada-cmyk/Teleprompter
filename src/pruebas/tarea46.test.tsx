@@ -181,7 +181,7 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
   test('T212 - EL ESCALONADO. En el primer montaje, la tarjeta de portada y la lista tienen retardos reales distintos y crecientes. Volviendo del editor, los dos tienen retardo cero.', async () => {
     resetearPrimerMontajeBiblioteca()
 
-    render(<BibliotecaView guiones={[]} onAbrir={() => {}} onCrearNuevo={() => {}} onImportarArchivo={() => {}} onBorrar={() => {}} onArchivar={() => {}} />)
+    render(<BibliotecaView guiones={[]} onAbrir={() => {}} onCrearNuevo={() => {}} onBorrar={() => {}} onArchivar={() => {}} />)
 
     const tarjeta = screen.getByTestId('tarjeta-lectura-portada').parentElement!
     const lista = screen.getByTestId('lista-guiones-biblioteca')
@@ -191,7 +191,7 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
     expect(lista.style.animationDelay).toBe('80ms')
 
     // Simular un segundo montaje (ej. volviendo del editor)
-    render(<BibliotecaView guiones={[]} onAbrir={() => {}} onCrearNuevo={() => {}} onImportarArchivo={() => {}} onBorrar={() => {}} onArchivar={() => {}} />)
+    render(<BibliotecaView guiones={[]} onAbrir={() => {}} onCrearNuevo={() => {}} onBorrar={() => {}} onArchivar={() => {}} />)
 
     const tarjeta2 = screen.getAllByTestId('tarjeta-lectura-portada')[1].parentElement!
     const lista2 = screen.getAllByTestId('lista-guiones-biblioteca')[1]

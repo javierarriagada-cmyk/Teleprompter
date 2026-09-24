@@ -67,7 +67,9 @@ describe('Tarea 67 - la casa de cada ajuste y el gesto que se siente', () => {
     await portadaConGuion()
     fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
     const menu = await screen.findByTestId('menu-superior-biblioteca')
-    expect(menu.textContent).toContain('La aplicación')
+    // Desde el 24-09-2026 el cajon no escribe "La aplicación": el tema es un
+    // grupo de dos tarjetas dibujadas.
+    expect(menu.querySelector('[role="group"][aria-label="Tema"]')).not.toBeNull()
     expect(menu.textContent).not.toContain('Motor de voz')
     expect(menu.textContent).not.toContain('Ver transcripción en vivo')
     expect(menu.textContent).not.toContain('Medición / Panel Corpus')

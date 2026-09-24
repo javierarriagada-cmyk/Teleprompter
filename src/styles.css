@@ -294,16 +294,9 @@ button.btn-deformable:active,
   }
 }
 
-@keyframes menuCreceEsquina {
-  from {
-    transform: scale(0.92);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
+/* @keyframes menuCreceEsquina vivia aca: hacia crecer el menu del engranaje
+   de la portada desde su esquina, con el resorte. Se fue el 24-09-2026 con
+   ese menu; el cajon que lo reemplaza sube con panelSube, como los otros. */
 
 @keyframes cuentaRegresivaEntra {
   from {
@@ -827,4 +820,109 @@ label.selector-aa-opcion {
    telefono, 24-09-2026. Los "Aa" de Sans y Serif ponen la suya. */
 .cajon-aa {
   font-family: "Source Sans 3", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* LA PORTADA -24-09-2026-. Una barra fina arriba: la marca a la izquierda y
+   el engranaje a la derecha. Nada mas: la pantalla es del guion. */
+.portada-cabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  margin-bottom: var(--aire-3);
+}
+.portada-marca {
+  display: flex;
+  align-items: center;
+  gap: var(--aire-2);
+  color: var(--color-texto);
+}
+.portada-nombre {
+  font-family: "Source Serif 4", serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+/* El engranaje de la portada: el mismo circulo de 40 de las esquinas del
+   lienzo, pero sobre el suelo y no sobre una imagen, asi que va con los
+   colores del tema y no con el negro translucido. */
+.boton-portada {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-separador);
+  background-color: var(--bg-fila);
+  color: var(--color-texto);
+  cursor: pointer;
+}
+/* La duracion en la tarjeta: la letra de la aplicacion, no un reloj
+   monoespaciado -es cuanto dura leerlo, no una hora-. */
+.duracion-tarjeta {
+  font-size: var(--texto-meta);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.75;
+}
+/* El tema en dos tarjetas: cada una se pinta con su tema. Son los valores
+   de --bg-suelo y --color-texto de cada bloque de :root -no se pueden leer
+   de las variables porque la tarjeta de claro tiene que verse clara aunque
+   la aplicacion este en oscuro-. Si se cambia un tema, se cambia aca. */
+.parejas-aa-dos {
+  grid-template-columns: repeat(2, 1fr);
+}
+.tema-muestra-claro {
+  background-color: #F3F1ED;
+  color: #1A1815;
+}
+.tema-muestra-oscuro {
+  background-color: #151312;
+  color: #E7E1DE;
+}
+/* Un boton redondo encendido -la vibracion- se pinta como la opcion
+   elegida de un selector: crema. */
+.boton-aa-redondo.activa {
+  background-color: var(--color-acento);
+  border-color: var(--color-acento);
+  color: var(--color-texto-acento);
+}
+label.boton-aa-redondo {
+  position: relative;
+  cursor: pointer;
+}
+/* Archivados, al pie de la lista de guiones: un enlace, no un boton que
+   compita con las filas. */
+.enlace-archivados {
+  display: block;
+  margin: var(--aire-1) 0 var(--aire-4);
+  padding: var(--aire-2) var(--aire-3);
+  background: transparent;
+  border: none;
+  color: var(--color-apagado);
+  font-size: var(--texto-meta);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* El punto de la marca: el rojo de grabar, arriba a la derecha del nombre,
+   como la luz de una camara encendida. */
+.portada-marca {
+  align-items: flex-start;
+  gap: 3px;
+}
+.portada-punto {
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background-color: var(--color-grabando);
+}
+/* Las tarjetas -de tema, en la portada- tambien llenan la fila cuando van
+   al lado de un boton redondo. */
+.fila-aa-accion > .parejas-aa {
+  flex: 1;
+  min-width: 0;
 }

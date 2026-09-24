@@ -127,7 +127,9 @@ describe('Pruebas TAREA 47 (T213-T217)', () => {
     const contenidoCSS = fs.readFileSync(cssPath, 'utf8')
 
     // Verificar que los keyframes de objetos usen CURVA_RESORTE
-    const keyframesObjetos = ['panelSube', 'cuentaRegresivaEntra', 'menuCreceEsquina']
+    // menuCreceEsquina se fue el 24-09-2026 con el menu colgado de la portada:
+    // su reemplazo es un cajon que sube con panelSube.
+    const keyframesObjetos = ['panelSube', 'cuentaRegresivaEntra']
     for (const keyframe of keyframesObjetos) {
       const regexKeyframe = new RegExp(`@keyframes\\s+${keyframe}\\s*\\{([^}]+)\\}`, 'm')
       const matchKeyframe = contenidoCSS.match(regexKeyframe)
