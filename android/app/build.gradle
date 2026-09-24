@@ -10,6 +10,15 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // SOLO LOS PROCESADORES DE LOS TELEFONOS -24-09-2026-. Las bibliotecas nativas -Vosk,
+        // la camara- venian para seis arquitecturas, y las x86 son solo de emuladores: 21 MB
+        // del APK de 99 que ningun telefono usa. Quedan arm64-v8a -todos los telefonos de los
+        // ultimos anos, el de Javier incluido- y armeabi-v7a, los de 32 bits mas viejos. Para
+        // correr en el emulador del PC: ./gradlew assembleDebug -PconEmulador
+        ndk {
+            abiFilters 'arm64-v8a', 'armeabi-v7a'
+            if (project.hasProperty('conEmulador')) abiFilters 'x86_64'
+        }
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
              // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
