@@ -8,6 +8,11 @@ import { anotar } from '../lib/diagnostico'
 
 export const PALABRAS_DE_SEGURIDAD = 2
 
+// El panel de la ventana de lectura -solo con la camara detras-: cuanto tapa,
+// y cuanto se sale de la columna a cada lado.
+export const ALPHA_PANEL_LECTURA = 0.45
+export const MARGEN_PANEL_PX = 14
+
 export function avanzarTrabado(
   trabado: number | null,
   idxAncla: number,
@@ -31,7 +36,7 @@ export function avanzarTrabado(
   return trabado
 }
 
-import { AnclajeZona, calcularBanda, calcularBgVelo, opacidadDeLinea } from './banda'
+import { AnclajeZona, calcularBanda, calcularBgVelo, calcularTramosVelo, opacidadDeLinea } from './banda'
 import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
 import {
@@ -303,6 +308,9 @@ export default function TeleprompterView({
   const [altoLineaViva, setAltoLineaViva] = React.useState<number>(filaPx)
   const [altoContenedor, setAltoContenedor] = React.useState<number>(0)
   const [anchoContenedor, setAnchoContenedor] = React.useState<number>(0)
+  // Donde esta la columna de texto, a lo ancho: el panel de la ventana de
+  // lectura va detras de ella cuando el texto esta sobre la camara.
+  const [columnaX, setColumnaX] = React.useState<{ izquierda: number; ancho: number } | null>(null)
   const { topBanda, altoBanda } = altoContenedor > 0
     ? calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, 20, 20, altoLineaViva)
     : { topBanda: 0, altoBanda: 0 }
@@ -323,6 +331,10 @@ export default function TeleprompterView({
     const alto = container.clientHeight || 0
     setAltoContenedor(alto)
     setAnchoContenedor(container.clientWidth || 0)
+    const columna = container.querySelector('[data-testid="columna-texto"]') as HTMLElement | null
+    if (columna && columna.offsetWidth > 0) {
+      setColumnaX({ izquierda: columna.offsetLeft, ancho: columna.offsetWidth })
+    }
     const els = container.querySelectorAll('[data-token]')
     const medidas: MedidaToken[] = Array.from(els).map(el => ({
       token: Number((el as HTMLElement).dataset.token),
@@ -742,8 +754,9 @@ export default function TeleprompterView({
         />
       )}
 
-      {/* Overlay Visual de la Banda de Lectura (Luz/Sombra degradado) */}
-      {altoContenedor > 0 && (
+      {/* Overlay Visual de la Banda de Lectura (Luz/Sombra degradado).
+          Tampoco con la camara detras: seria una tercera capa sobre el panel. */}
+      {altoContenedor > 0 && !textoSobreImagen && (
         <div
           data-testid="banda-lectura"
           style={{
@@ -759,14 +772,43 @@ export default function TeleprompterView({
         />
       )}
 
-      {/* NO HAY FRANJA VERTICAL. El 24-09-2026 se probo una columna oscura
-          semitransparente detras del texto -idea de una revision de pantallas- y
-          encima del velo horizontal armaba un cuadriculado. El dueno: "pusiste
-          una franja al medio, sobre la otra franja que estaba, ahora se ve muy
-          raro". Se quedo solo la sombra en las letras -lectura-sobre-imagen-. */}
+      {/* EL PANEL DE LA VENTANA DE LECTURA. 24-09-2026.
+          Con la camara detras, la ventana clara -donde se lee- era la parte MAS
+          transparente de la pantalla: alpha 0.00 del velo, el texto directo sobre
+          la imagen. Justo al reves de lo que necesita el que lee.
+          Primero se probo una franja vertical en todo el alto, y encima del velo
+          horizontal armaba un cuadriculado: "pusiste una franja al medio, sobre
+          la otra franja que estaba, ahora se ve muy raro". El dueno aclaro lo que
+          mostraba la foto: la franja "abarca orientativamente donde vas leyendo,
+          que es arriba". Asi que es un panel del alto de la ventana de lectura
+          -los mismos bordes que usa el velo, calcularTramosVelo- y del ancho de
+          la columna, con las esquinas redondeadas y el borde difuminado. Queda
+          quieto: el texto pasa por el. Marca donde leer y le da contraste justo
+          ahi. Solo es la vista del que lee: la camara graba la imagen limpia. */}
+      {textoSobreImagen && columnaX && altoContenedor > 0 && (() => {
+        const ventana = calcularTramosVelo(topBanda, filaPx, true)[1]
+        return (
+          <div
+            data-testid="panel-lectura"
+            className="panel-lectura"
+            style={{
+              top: ventana.desdePx,
+              height: ventana.hastaPx - ventana.desdePx,
+              left: columnaX.izquierda - MARGEN_PANEL_PX,
+              width: columnaX.ancho + 2 * MARGEN_PANEL_PX,
+              ['--panel-color' as string]: `rgba(${rgbFondo.r}, ${rgbFondo.g}, ${rgbFondo.b}, ${ALPHA_PANEL_LECTURA})`
+            }}
+          />
+        )
+      })()}
 
-      {/* Velo de opacidad asimétrica de borde a borde */}
-      {altoContenedor > 0 && (
+      {/* Velo de opacidad asimétrica de borde a borde.
+          CON LA CAMARA DETRAS NO VA: la guia de donde leer es el panel de arriba.
+          Los dos juntos eran dos sombras distintas sobre el texto -el panel en la
+          ventana y el velo debajo-, y el dueno lo vio dos veces: "nuevamente
+          estan dos sombras sobre un texto". Una sola capa, como en la foto que
+          trajo: el panel donde se lee y el resto del texto sobre la imagen. */}
+      {altoContenedor > 0 && !textoSobreImagen && (
         <div
           data-testid="velo-lectura"
           style={{

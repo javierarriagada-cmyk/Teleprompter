@@ -942,8 +942,18 @@ label.boton-aa-redondo {
   to { opacity: 1; }
 }
 
-/* LA LECTURA SOBRE LA IMAGEN DE LA CAMARA -24-09-2026, TeleprompterView-. La
-   sombra separa cada letra de la imagen, como en los subtitulos. */
+/* LA LECTURA SOBRE LA IMAGEN DE LA CAMARA -24-09-2026, TeleprompterView-. El
+   panel va detras de la ventana de lectura, con el borde difuminado por la
+   sombra del mismo color; la sombra de las letras las separa de la imagen,
+   como en los subtitulos. */
+.panel-lectura {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: var(--redondeo-grande);
+  background-color: var(--panel-color);
+  box-shadow: 0 0 22px 10px var(--panel-color);
+}
 .lectura-sobre-imagen {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), 0 0 12px rgba(0, 0, 0, 0.4);
 }
