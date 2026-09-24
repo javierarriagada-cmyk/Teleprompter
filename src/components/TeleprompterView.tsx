@@ -8,12 +8,6 @@ import { anotar } from '../lib/diagnostico'
 
 export const PALABRAS_DE_SEGURIDAD = 2
 
-// La franja de lectura -solo con la camara detras-: cuanto tapa y cuanto se
-// sale de la columna a cada lado. 0.38 deja ver la cara para encuadrarse y le
-// da al texto un fondo parejo; los 28 px de afuera son el difuminado.
-export const ALPHA_FRANJA_LECTURA = 0.38
-export const MARGEN_FRANJA_PX = 28
-
 export function avanzarTrabado(
   trabado: number | null,
   idxAncla: number,
@@ -309,9 +303,6 @@ export default function TeleprompterView({
   const [altoLineaViva, setAltoLineaViva] = React.useState<number>(filaPx)
   const [altoContenedor, setAltoContenedor] = React.useState<number>(0)
   const [anchoContenedor, setAnchoContenedor] = React.useState<number>(0)
-  // Donde esta la columna de texto, a lo ancho: la franja de lectura va detras
-  // de ella cuando el texto esta sobre la imagen de la camara.
-  const [columnaX, setColumnaX] = React.useState<{ izquierda: number; ancho: number } | null>(null)
   const { topBanda, altoBanda } = altoContenedor > 0
     ? calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, 20, 20, altoLineaViva)
     : { topBanda: 0, altoBanda: 0 }
@@ -332,10 +323,6 @@ export default function TeleprompterView({
     const alto = container.clientHeight || 0
     setAltoContenedor(alto)
     setAnchoContenedor(container.clientWidth || 0)
-    const columna = container.querySelector('[data-testid="columna-texto"]') as HTMLElement | null
-    if (columna && columna.offsetWidth > 0) {
-      setColumnaX({ izquierda: columna.offsetLeft, ancho: columna.offsetWidth })
-    }
     const els = container.querySelectorAll('[data-token]')
     const medidas: MedidaToken[] = Array.from(els).map(el => ({
       token: Number((el as HTMLElement).dataset.token),
@@ -772,28 +759,11 @@ export default function TeleprompterView({
         />
       )}
 
-      {/* LA FRANJA DE LECTURA. 24-09-2026.
-          Con la camara detras, los renglones que se leen iban directo sobre la
-          imagen: la ventana clara del velo es transparente -alpha 0.00- y sobre una
-          pared clara el texto blanco se perdia. La franja es una columna vertical
-          semitransparente del color de fondo de lectura, justo detras de la columna
-          de texto y con los bordes difuminados: el texto gana contraste en todo el
-          alto, y a los costados la imagen se sigue viendo para encuadrarse.
-          Es solo la vista de quien lee: la camara graba la imagen limpia.
-          Idea de una revision de pantallas que trajo el dueno -"anade franja
-          vertical semitransparente detras del texto"-, tomada en lo que sirve al
-          que lee. */}
-      {textoSobreImagen && columnaX && (
-        <div
-          data-testid="franja-lectura"
-          className="franja-lectura"
-          style={{
-            left: columnaX.izquierda - MARGEN_FRANJA_PX,
-            width: columnaX.ancho + 2 * MARGEN_FRANJA_PX,
-            background: `rgba(${rgbFondo.r}, ${rgbFondo.g}, ${rgbFondo.b}, ${ALPHA_FRANJA_LECTURA})`
-          }}
-        />
-      )}
+      {/* NO HAY FRANJA VERTICAL. El 24-09-2026 se probo una columna oscura
+          semitransparente detras del texto -idea de una revision de pantallas- y
+          encima del velo horizontal armaba un cuadriculado. El dueno: "pusiste
+          una franja al medio, sobre la otra franja que estaba, ahora se ve muy
+          raro". Se quedo solo la sombra en las letras -lectura-sobre-imagen-. */}
 
       {/* Velo de opacidad asimétrica de borde a borde */}
       {altoContenedor > 0 && (
