@@ -5,6 +5,7 @@ import { Guion } from '../datos/modelo'
 import { agruparEnRenglones, indiceDeRenglon, pixelDePosicion, pixelDeRenglon, Renglon, MedidaToken } from '../lib/renglones'
 import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
+import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
 
 // CERO DESDE EL 24-09-2026, MEDIDO. Era 2, puesto con el motor WASM -tarea 36-: el
 // renglon vivo no pasaba al siguiente hasta que el motor llevaba 2 palabras adentro.
@@ -344,6 +345,8 @@ export default function TeleprompterView({
   const origenRef = useRef<number>(0)
   const scrollSuaveRef = useRef<number | null>(null)
   const renglonTrabadoRef = useRef<number | null>(null)
+  // La compensacion de la demora del reconocedor -lib/compensacion.ts-.
+  const compensacionRef = useRef(crearCompensacion())
   const ultimoCuadroRef = useRef<number | null>(null)
 
   const recalcularGeometria = React.useCallback(() => {
@@ -595,7 +598,17 @@ export default function TeleprompterView({
       // El min con st.posicion NO es una precaucion de mas: durante el arranque de 7
       // palabras, y en silencio, y en DETENIDO, es posicion la que se queda quieta mientras
       // ultimoCalce sigue avanzando. Sin ese min, el texto se movia durante el arranque.
-      const anclaRenglon = Math.min(st.posicion, st.ultimoCalce)
+      //
+      // -24-09-2026: y mientras SIGUE, se le suma lo que la persona alcanza a decir en la
+      // demora medida del reconocedor -lib/compensacion.ts, con las cifras-. En el
+      // arranque, en silencio y en DETENIDO no hay compensacion: queda el min de siempre.
+      if (modoManualRef.current) compensacionRef.current = crearCompensacion()
+      const anclaRenglon = anclaCompensada(compensacionRef.current, {
+        posicion: st.posicion,
+        ultimoCalce: st.ultimoCalce,
+        siguiendo: st.estado === 'SIGUIENDO' && st.motivoFreno === null,
+        tMs: tAhora
+      })
       const idxAncla = indiceDeRenglon(renglones, anclaRenglon)
       if (modoManualRef.current) renglonTrabadoRef.current = null
       renglonTrabadoRef.current = avanzarTrabado(

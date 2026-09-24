@@ -138,17 +138,24 @@ function leer(ruta) {
 }
 
 // Alineamiento de lo oido contra el guion: maximo de coincidencias en orden.
-function alinear(oidas, tokens) {
+// Y SOLO CERCA DE DONDE IBA LA PANTALLA -24-09-2026-. El guion repite palabras -"estamos",
+// "somos"- y sin esto el alineamiento, al final de una toma cortada, emparejaba las ultimas
+// palabras dichas con apariciones 50 tokens mas adelante: la medicion decia que la persona iba
+// 15 renglones delante de la pantalla -3% de una toma- cuando la pantalla la seguia bien. Una
+// palabra solo se empareja con tokens a menos de CERCANIA del calce de ese momento.
+const CERCANIA = 25
+function alinear(oidas, tokens, calceEn) {
+  const cerca = (o, t) => !calceEn || Math.abs(t - calceEn(o.ini)) <= CERCANIA
   const idx = tokens.map((t, i) => ({ ...t, i })).filter((t) => !t.acot)
   const m = oidas.length, n = idx.length
   const D = Array.from({ length: m + 1 }, () => new Int32Array(n + 1))
   for (let i = 1; i <= m; i++)
     for (let j = 1; j <= n; j++)
-      D[i][j] = Math.max(D[i - 1][j], D[i][j - 1], D[i - 1][j - 1] + (similar(oidas[i - 1].w, idx[j - 1].w) ? 1 : 0))
+      D[i][j] = Math.max(D[i - 1][j], D[i][j - 1], D[i - 1][j - 1] + (similar(oidas[i - 1].w, idx[j - 1].w) && cerca(oidas[i - 1], idx[j - 1].i) ? 1 : 0))
   const pares = []
   let i = m, j = n
   while (i > 0 && j > 0) {
-    if (similar(oidas[i - 1].w, idx[j - 1].w) && D[i][j] === D[i - 1][j - 1] + 1) { pares.push([i - 1, idx[j - 1].i]); i--; j-- }
+    if (similar(oidas[i - 1].w, idx[j - 1].w) && cerca(oidas[i - 1], idx[j - 1].i) && D[i][j] === D[i - 1][j - 1] + 1) { pares.push([i - 1, idx[j - 1].i]); i--; j-- }
     else if (D[i - 1][j] >= D[i][j - 1]) i--
     else j--
   }
@@ -165,7 +172,8 @@ const f1 = (x) => (Number.isFinite(x) ? x.toFixed(1) : '-')
 for (const ruta of process.argv.slice(2)) {
   const { guion, cab, oidas, cuadros, renglones, retrasos, cruces, capturas, procesos, oido } = leer(ruta)
   const tokens = tokensDelGuion(guion)
-  const pares = alinear(oidas, tokens)
+  const calceEn = (t) => { let v = 0; for (const x of cuadros) { if (x.ms > t) break; v = x.pos } return v }
+  const pares = alinear(oidas, tokens, cuadros.length ? calceEn : null)
   console.log(`\n=== ${ruta.split(/[\\/]/).pop()}`)
   console.log(`letra ${cab.letra || '?'} | columna ${cab.columna || '?'} | motor ${cab['motor de voz'] || '?'}`)
   console.log(`guion ${tokens.length} palabras | oidas ${oidas.length} | emparejadas con el guion ${pares.length}`)
