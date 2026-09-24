@@ -130,7 +130,18 @@ import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from
 //                     falta y conserva un cuarto de renglon hacia atras. Si Javier lo siente
 //                     bien, el siguiente paso es 0.
 //
-export const MARGEN_RENGLONES_ARRIBA = 0.25
+//   0, ventana de 4     PUESTO el 24 de septiembre de 2026, a prueba. Con 0.25 Javier leyo letra
+//                     14 y 24 completa y 32 angosta; "en la letra pequena pude visualizar estar
+//                     en varios momentos en el renglon tercero". Y es cierto: medido por
+//                     RENGLONES ENTEROS -no por avance dentro del renglon, que fue mi error en
+//                     la tabla de 0.25: mezcle lo que se avanza a lo ancho con la altura-, la voz
+//                     esta en el renglon de ABAJO del vivo el 16% del tiempo con letra 14, 36%
+//                     con 24 completa y 29% con 32 angosta. Y el ojo va delante de la voz. Con
+//                     0 el renglon vivo es el primero de la ventana: todo sube un cuarto de
+//                     renglon mas. Lo que NO cambia es cuanto tiempo se esta en el renglon de
+//                     abajo del vivo: eso se baja con menos atraso en palabras.
+//
+export const MARGEN_RENGLONES_ARRIBA = 0
 
 // Cuanto tarda la pantalla en pasar de un renglon al siguiente. Constante de tiempo de un
 // acercamiento exponencial: con 70 ms, el renglon se recorre casi entero en unos 200.
