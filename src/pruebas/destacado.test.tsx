@@ -43,7 +43,7 @@ describe('Destacado de lectura', () => {
         estadoToma={estadoToma} motorAvance={motorEn(5, motivoFreno) as any} />
     )
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))
-    const ops = [...container.querySelectorAll('.capsula-destacado')].map((c) => (c as HTMLElement).style.opacity)
+    const ops = Array.from(container.querySelectorAll('.capsula-destacado')).map((c) => (c as HTMLElement).style.opacity)
     unmount()
     return ops
   }
