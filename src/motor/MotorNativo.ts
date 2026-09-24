@@ -1,6 +1,21 @@
 import { Capacitor, registerPlugin, PluginListenerHandle } from '@capacitor/core'
 import { EventoFinal, EventoParcial, MotorDeVoz } from './MotorDeVoz'
-import { anotar, msDelRegistro } from '../lib/diagnostico'
+import { anotar, msDelRegistro, generacionDiagnostico } from '../lib/diagnostico'
+
+// EL AUDIO QUE ESCUCHO VOSK, GUARDADO -24-09-2026-. Es el instrumento del plan del
+// motor: con el se afina el reconocedor en el PC contra lecturas reales. Quedan los
+// ultimos 12 en files/oido, 1,9 MB por minuto. Se revisa antes de llevar esto a una
+// version para usuarios.
+const GUARDAR_AUDIO_DEL_OIDO = true
+
+type DatosResultado = {
+  json: string
+  llegadaEpochMs?: number
+  audioFinMs?: number
+  leidoEpochMs?: number
+  procesadoEpochMs?: number
+  rms?: number
+}
 
 // EL RECONOCEDOR NATIVO DE ANDROID. Es Vosk igual que la version web, pero compilado.
 //
@@ -25,11 +40,11 @@ import { anotar, msDelRegistro } from '../lib/diagnostico'
 interface VoskNativoPlugin {
   disponible(): Promise<{ disponible: boolean }>
   iniciar(): Promise<void>
-  escuchar(): Promise<{ inicioEpochMs?: number } | void>
+  escuchar(opciones?: { guardarAudio?: boolean }): Promise<{ inicioEpochMs?: number; rutaAudio?: string; muestrasPorTrozo?: number } | void>
   detener(): Promise<void>
   addListener(
     eventName: 'parcial' | 'final',
-    listener: (data: { json: string; llegadaEpochMs?: number }) => void
+    listener: (data: DatosResultado) => void
   ): Promise<PluginListenerHandle>
   addListener(
     eventName: 'error',
@@ -66,6 +81,10 @@ export class MotorNativo implements MotorDeVoz {
   // El cero de los tiempos de Vosk -el arranque del audio-, en el reloj de
   // performance.now(), que es el de la aplicacion y el del registro.
   private ceroAudioPerf: number | null = null
+  // Para anotar el arranque del oido en cada registro nuevo: la toma enciende el
+  // registro DESPUES de que el oido arranco.
+  private oidoInfo: { ruta: string; muestrasPorTrozo: number } | null = null
+  private oidoAnotadoEn = -1
 
   async disponible(): Promise<boolean> {
     // La comprobacion es de capacidades reales, nunca del user-agent: este motor
@@ -109,7 +128,7 @@ export class MotorNativo implements MotorDeVoz {
     this.suscripciones.push(
       await Nativo.addListener('parcial', (d) => {
         const texto = textoDe(d.json, 'partial')
-        this.anotarLlegada(d.llegadaEpochMs, false)
+        this.anotarLlegada(d, false)
         this.anotarPalabras(d.json, false)
         if (texto.trim()) {
           this.listenersParcial.forEach((cb) => cb({ texto }))
@@ -120,7 +139,7 @@ export class MotorNativo implements MotorDeVoz {
     this.suscripciones.push(
       await Nativo.addListener('final', (d) => {
         const texto = textoDe(d.json, 'text')
-        this.anotarLlegada(d.llegadaEpochMs, true)
+        this.anotarLlegada(d, true)
         this.anotarPalabras(d.json, true)
         if (texto.trim()) {
           // Vosk nativo no entrega marcas de tiempo por palabra salvo que se le pida
@@ -144,7 +163,9 @@ export class MotorNativo implements MotorDeVoz {
     // Si esto resulta ser un problema en una lectura larga, se vera midiendo.
     this.suscripciones.push(await Nativo.addListener('silencio', () => {}))
 
-    const r = await Nativo.escuchar()
+    const r = await Nativo.escuchar({ guardarAudio: GUARDAR_AUDIO_DEL_OIDO })
+    this.oidoInfo = r && r.rutaAudio ? { ruta: r.rutaAudio, muestrasPorTrozo: r.muestrasPorTrozo ?? 0 } : null
+    this.oidoAnotadoEn = -1
     // Date.now() y performance.now() avanzan juntos: la diferencia entre los dos
     // pasa el instante del telefono al reloj de la aplicacion.
     const inicioEpochMs = r && typeof r.inicioEpochMs === 'number' ? r.inicioEpochMs : Date.now()
@@ -153,9 +174,22 @@ export class MotorNativo implements MotorDeVoz {
 
   // CUANDO SALIO DEL LADO NATIVO, AL REGISTRO. Con 'oyo' -cuando llego aca- separa
   // lo que tarda Vosk de lo que tarda el cruce a JavaScript.
-  private anotarLlegada(llegadaEpochMs: number | undefined, final: boolean): void {
-    if (typeof llegadaEpochMs !== 'number') return
-    anotar({ tipo: 'llegada', final, nativo: msDelRegistro(llegadaEpochMs - (Date.now() - performance.now())) })
+  private anotarLlegada(d: DatosResultado, final: boolean): void {
+    if (typeof d.llegadaEpochMs !== 'number') return
+    const aRegistro = (epoch: number) => msDelRegistro(epoch - (Date.now() - performance.now()))
+    if (this.oidoInfo && this.ceroAudioPerf !== null && this.oidoAnotadoEn !== generacionDiagnostico()) {
+      anotar({ tipo: 'oido', inicio: msDelRegistro(this.ceroAudioPerf), ruta: this.oidoInfo.ruta, muestrasPorTrozo: this.oidoInfo.muestrasPorTrozo })
+      this.oidoAnotadoEn = generacionDiagnostico()
+    }
+    anotar({
+      tipo: 'llegada',
+      final,
+      nativo: aRegistro(d.llegadaEpochMs),
+      audio: typeof d.audioFinMs === 'number' && this.ceroAudioPerf !== null ? msDelRegistro(this.ceroAudioPerf + d.audioFinMs) : undefined,
+      leido: typeof d.leidoEpochMs === 'number' ? aRegistro(d.leidoEpochMs) : undefined,
+      procesado: typeof d.procesadoEpochMs === 'number' ? aRegistro(d.procesadoEpochMs) : undefined,
+      rms: d.rms
+    })
   }
 
   // LAS PALABRAS CON SU TIEMPO, AL REGISTRO. Vosk las entrega con setWords en

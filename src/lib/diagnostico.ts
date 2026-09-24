@@ -32,7 +32,13 @@ export type EntradaDiagnostico =
   // Cuando el lado nativo entrego cada resultado, en el reloj del registro. ms menos
   // nativo es lo que tarda en cruzar a JavaScript: separa la demora de Vosk de la
   // del telefono.
-  | { ms: number; tipo: 'llegada'; final: boolean; nativo: number }
+  | { ms: number; tipo: 'llegada'; final: boolean; nativo: number
+      // -24-09-2026, el oido propio-: en que ms del registro termina el trozo de audio,
+      // cuando se leyo del microfono, cuando termino Vosk, y el nivel del trozo -0 a 1-.
+      audio?: number; leido?: number; procesado?: number; rms?: number }
+  // El arranque del oido: donde quedo guardado el audio que escucho Vosk y de a
+  // cuantas muestras lo lee. Con el audio se afina el reconocedor en el PC.
+  | { ms: number; tipo: 'oido'; inicio: number; ruta: string; muestrasPorTrozo: number }
 
 const MAX_ENTRADAS = 60000
 
@@ -93,7 +99,10 @@ export function comoTexto(): string {
     } else if (e.tipo === 'renglones') {
       filas.push(`${e.ms}\trenglones\t${e.inicios.join(' ')}`)
     } else if (e.tipo === 'llegada') {
-      filas.push(`${e.ms}\tllegada\t${e.final ? 'FINAL' : 'parcial'} nativo=${e.nativo}`)
+      const extra = e.audio === undefined ? '' : ` audio=${e.audio} leido=${e.leido} procesado=${e.procesado} rms=${(e.rms ?? 0).toFixed(4)}`
+      filas.push(`${e.ms}\tllegada\t${e.final ? 'FINAL' : 'parcial'} nativo=${e.nativo}${extra}`)
+    } else if (e.tipo === 'oido') {
+      filas.push(`${e.ms}\toido\tinicio=${e.inicio} trozo=${e.muestrasPorTrozo} ruta=${e.ruta}`)
     } else {
       filas.push(
         `${e.ms}\tcuadro\tpos=${e.posicion.toFixed(2)} calce=${e.calce} scroll=${e.scroll} freno=${e.freno} trabado=${e.trabado}`

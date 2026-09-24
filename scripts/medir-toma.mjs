@@ -38,6 +38,10 @@
 //                        a veces 20 s despues.
 //   cruce a JavaScript   de las lineas 'llegada': lo que tarda un resultado desde
 //                        que Vosk lo entrega hasta que la aplicacion lo recibe.
+//   microfono y proceso  con el oido propio -24-09-2026-: cuanto pasa desde que
+//                        termina el audio de un trozo hasta que se lee, y cuanto
+//                        tarda Vosk en procesarlo. Lo que sobra del retraso es lo que
+//                        Vosk se guarda las palabras antes de mostrarlas.
 //
 // Se mide cada 100 ms mientras hay voz -entre la primera y la ultima palabra dicha-.
 
@@ -89,6 +93,9 @@ function leer(ruta) {
   const cuadros = []  // { ms, pos, trabado }
   const retrasos = [] // ms desde el fin de la palabra hasta su primer parcial
   const cruces = []   // ms del lado nativo a JavaScript
+  const capturas = [] // ms desde que termina el audio del trozo hasta que se lee
+  const procesos = [] // ms que tarda Vosk con cada trozo
+  let oido = null
   let primera = []    // cuando el parcial de la frase en curso llego a k+1 palabras
   let renglones = null
   for (const l of texto.split(/\r?\n/)) {
@@ -116,6 +123,10 @@ function leer(ruta) {
     } else if (c[1] === 'llegada') {
       const nat = /nativo=(-?\d+)/.exec(c[2])
       if (nat) cruces.push(ms - Number(nat[1]))
+      const au = /audio=(-?d+) leido=(-?d+) procesado=(-?d+)/.exec(c[2])
+      if (au) { capturas.push(Number(au[2]) - Number(au[1])); procesos.push(Number(au[3]) - Number(au[2])) }
+    } else if (c[1] === 'oido') {
+      oido = c[2]
     } else if (c[1] === 'cuadro') {
       const pos = /pos=([\d.]+)/.exec(c[2]); const tr = /trabado=(\d+)/.exec(c[2])
       if (pos) cuadros.push({ ms, pos: Number(pos[1]), trabado: tr ? Number(tr[1]) : null })
@@ -123,7 +134,7 @@ function leer(ruta) {
       renglones = c[2].split(' ').map(Number)
     }
   }
-  return { guion, cab, oidas, cuadros, renglones, retrasos, cruces }
+  return { guion, cab, oidas, cuadros, renglones, retrasos, cruces, capturas, procesos, oido }
 }
 
 // Alineamiento de lo oido contra el guion: maximo de coincidencias en orden.
@@ -152,7 +163,7 @@ function percentil(arr, p) {
 const f1 = (x) => (Number.isFinite(x) ? x.toFixed(1) : '-')
 
 for (const ruta of process.argv.slice(2)) {
-  const { guion, cab, oidas, cuadros, renglones, retrasos, cruces } = leer(ruta)
+  const { guion, cab, oidas, cuadros, renglones, retrasos, cruces, capturas, procesos, oido } = leer(ruta)
   const tokens = tokensDelGuion(guion)
   const pares = alinear(oidas, tokens)
   console.log(`\n=== ${ruta.split(/[\\/]/).pop()}`)
@@ -194,7 +205,10 @@ for (const ruta of process.argv.slice(2)) {
   const dichoAntes = primerMov ? tokenDichoEn(primerMov.ms) : null
 
   console.log(`retraso del reconocedor, ms      mediana ${percentil(retrasos, 50)}  p90 ${percentil(retrasos, 90)}`)
+  if (capturas.length) console.log(`  de eso, microfono, ms           mediana ${percentil(capturas, 50)}  p90 ${percentil(capturas, 90)}`)
+  if (procesos.length) console.log(`  de eso, proceso de Vosk, ms     mediana ${percentil(procesos, 50)}  p90 ${percentil(procesos, 90)}`)
   if (cruces.length) console.log(`  de eso, cruce a JavaScript, ms  mediana ${percentil(cruces, 50)}  p90 ${percentil(cruces, 90)}`)
+  if (oido) console.log(`oido: ${oido}`)
   console.log(`atraso de la pantalla, palabras  mediana ${f1(percentil(atrasoPal, 50))}  p90 ${f1(percentil(atrasoPal, 90))}`)
   if (atrasoRen.length) {
     const ventana = atrasoRen.map((x) => x + 2)

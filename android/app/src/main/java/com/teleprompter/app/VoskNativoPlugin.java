@@ -1,6 +1,9 @@
 package com.teleprompter.app;
 
 import android.Manifest;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.PermissionState;
@@ -13,9 +16,14 @@ import com.getcapacitor.annotation.PermissionCallback;
 
 import org.vosk.Model;
 import org.vosk.Recognizer;
-import org.vosk.android.RecognitionListener;
-import org.vosk.android.SpeechService;
 import org.vosk.android.StorageService;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Arrays;
 
 /**
  * EL RECONOCEDOR NATIVO. Reemplaza a Vosk WASM cuando la aplicacion corre como APK.
@@ -54,7 +62,7 @@ import org.vosk.android.StorageService;
         @Permission(strings = { Manifest.permission.RECORD_AUDIO }, alias = VoskNativoPlugin.MICROFONO)
     }
 )
-public class VoskNativoPlugin extends Plugin implements RecognitionListener {
+public class VoskNativoPlugin extends Plugin {
 
     static final String MICROFONO = "microfono";
 
@@ -71,8 +79,32 @@ public class VoskNativoPlugin extends Plugin implements RecognitionListener {
      */
     private static final float FRECUENCIA = 16000.0f;
 
+    /**
+     * EL OIDO PROPIO -24-09-2026-. Hasta aca el microfono lo abria SpeechService, la
+     * clase de ejemplo de Vosk: leia de a 0,2 s y entregaba cada resultado pasando por
+     * el hilo principal. Medido en dos tomas: las palabras llegaban a la aplicacion 0,5
+     * a 1,4 s despues de dichas, y con el mismo modelo sobre el audio del video, en el
+     * PC, 0,3 s. Esa diferencia -casi una palabra- no se podia ver desde afuera de
+     * SpeechService. Este lazo hace lo mismo que el, y ademas:
+     *
+     *   - anota cuando se leyo cada trozo, cuanto tardo Vosk en procesarlo y en que
+     *     milisegundo del audio termina: separa la demora del microfono, la de Vosk y
+     *     la del cruce a JavaScript;
+     *   - lee de a 0,1 s -en el PC gana 0,02 s; lo que importa es poder medir-;
+     *   - guarda, si se le pide, el audio EXACTO que escucho Vosk. El del video es
+     *     otro microfono con otro procesamiento. Con este se puede afinar el
+     *     reconocedor en el PC contra lecturas reales, sin que Javier grabe cada prueba;
+     *   - entrega el nivel del microfono de cada trozo: la base para saber al instante
+     *     si la persona esta hablando, sin esperar al reconocedor.
+     *
+     * La fuente es la misma que usaba SpeechService: VOICE_RECOGNITION.
+     */
+    private static final float SEGUNDOS_POR_TROZO = 0.1f;
+    // Cuantos audios guardados se conservan. Cada minuto son 1,9 MB.
+    private static final int AUDIOS_GUARDADOS = 12;
+
     private Model modelo = null;
-    private SpeechService servicio = null;
+    private Oido oido = null;
     private PluginCall llamadaIniciar = null;
 
     @PluginMethod
@@ -140,7 +172,7 @@ public class VoskNativoPlugin extends Plugin implements RecognitionListener {
             call.reject("El modelo no esta cargado: llamar a iniciar() primero");
             return;
         }
-        if (servicio != null) {
+        if (oido != null) {
             call.resolve();
             return;
         }
@@ -161,13 +193,42 @@ public class VoskNativoPlugin extends Plugin implements RecognitionListener {
             // en cierres de frase-. El tiempo de cada palabra sale entonces de los
             // finales, y cuando aparecio, del texto de los parciales.
             reconocedor.setWords(true);
-            servicio = new SpeechService(reconocedor, FRECUENCIA);
+            int muestrasPorTrozo = Math.round(FRECUENCIA * SEGUNDOS_POR_TROZO);
+            int minimo = AudioRecord.getMinBufferSize(
+                (int) FRECUENCIA, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
+            AudioRecord grabadora = new AudioRecord(
+                MediaRecorder.AudioSource.VOICE_RECOGNITION,
+                (int) FRECUENCIA,
+                AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_16BIT,
+                Math.max(minimo, muestrasPorTrozo * 2 * 4));
+            if (grabadora.getState() != AudioRecord.STATE_INITIALIZED) {
+                grabadora.release();
+                reconocedor.close();
+                call.reject("No se pudo abrir el microfono");
+                return;
+            }
+            grabadora.startRecording();
             // El cero de esos tiempos es el arranque del audio: se anota el reloj
             // del telefono justo al abrir el microfono.
             long inicioEpochMs = System.currentTimeMillis();
-            servicio.startListening(this);
+            String rutaAudio = null;
+            OutputStream salida = null;
+            if (Boolean.TRUE.equals(call.getBoolean("guardarAudio", false))) {
+                File archivo = archivoDeAudio(inicioEpochMs);
+                if (archivo != null) {
+                    salida = new BufferedOutputStream(new FileOutputStream(archivo), 64 * 1024);
+                    rutaAudio = archivo.getAbsolutePath();
+                }
+            }
+            oido = new Oido(grabadora, reconocedor, salida, muestrasPorTrozo);
+            Thread hilo = new Thread(oido, "sigo-oido");
+            oido.hilo = hilo;
+            hilo.start();
             JSObject r = new JSObject();
             r.put("inicioEpochMs", inicioEpochMs);
+            r.put("muestrasPorTrozo", muestrasPorTrozo);
+            if (rutaAudio != null) r.put("rutaAudio", rutaAudio);
             call.resolve(r);
         } catch (Exception e) {
             call.reject("No se pudo abrir el microfono: " + e.getMessage());
@@ -176,12 +237,117 @@ public class VoskNativoPlugin extends Plugin implements RecognitionListener {
 
     @PluginMethod
     public void detener(PluginCall call) {
-        if (servicio != null) {
-            servicio.stop();
-            servicio.shutdown();
-            servicio = null;
-        }
+        pararOido();
         call.resolve();
+    }
+
+    /**
+     * Para el lazo y espera a que entregue lo que quedo pendiente. El hilo cierra el
+     * microfono y el reconocedor el mismo -en su finally-: si esto se cortara antes de
+     * que termine, cerrar el reconocedor desde aca lo dejaria usando memoria liberada.
+     */
+    private void pararOido() {
+        Oido o = oido;
+        oido = null;
+        if (o == null) return;
+        o.escuchando = false;
+        if (o.hilo != null) {
+            try {
+                o.hilo.join(1500);
+            } catch (InterruptedException ignorada) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    // El audio que escucho Vosk, crudo: 16 kHz, mono, 16 bits little-endian. Se
+    // borran los mas viejos: quedan AUDIOS_GUARDADOS.
+    private File archivoDeAudio(long inicioEpochMs) {
+        File dir = new File(getContext().getFilesDir(), "oido");
+        if (!dir.exists() && !dir.mkdirs()) return null;
+        File[] viejos = dir.listFiles();
+        if (viejos != null && viejos.length >= AUDIOS_GUARDADOS) {
+            Arrays.sort(viejos, (a, b) -> Long.compare(a.lastModified(), b.lastModified()));
+            for (int i = 0; i <= viejos.length - AUDIOS_GUARDADOS; i++) viejos[i].delete();
+        }
+        return new File(dir, inicioEpochMs + ".pcm");
+    }
+
+    /**
+     * El lazo: lee un trozo, lo guarda si corresponde, se lo da a Vosk y entrega el
+     * resultado. Es lo que hacia SpeechService.RecognizerThread, con los tiempos
+     * anotados. Entrega desde este mismo hilo: notifyListeners ya encola hacia la
+     * WebView, y pasar antes por el hilo principal -como SpeechService- solo agrega
+     * una espera que depende de lo ocupada que este la pantalla.
+     */
+    private class Oido implements Runnable {
+        final AudioRecord grabadora;
+        final Recognizer reconocedor;
+        final OutputStream salida;
+        final int muestrasPorTrozo;
+        volatile boolean escuchando = true;
+        Thread hilo = null;
+
+        Oido(AudioRecord grabadora, Recognizer reconocedor, OutputStream salida, int muestrasPorTrozo) {
+            this.grabadora = grabadora;
+            this.reconocedor = reconocedor;
+            this.salida = salida;
+            this.muestrasPorTrozo = muestrasPorTrozo;
+        }
+
+        @Override
+        public void run() {
+            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
+            short[] trozo = new short[muestrasPorTrozo];
+            byte[] bytes = new byte[muestrasPorTrozo * 2];
+            long muestras = 0;
+            try {
+                while (escuchando) {
+                    int n = grabadora.read(trozo, 0, trozo.length);
+                    long leido = System.currentTimeMillis();
+                    if (n < 0) throw new IOException("error leyendo el microfono: " + n);
+                    if (n == 0) continue;
+                    muestras += n;
+                    double suma = 0;
+                    for (int i = 0; i < n; i++) suma += (double) trozo[i] * trozo[i];
+                    double rms = Math.sqrt(suma / n) / 32768.0;
+                    if (salida != null) {
+                        for (int i = 0; i < n; i++) {
+                            bytes[2 * i] = (byte) (trozo[i] & 0xff);
+                            bytes[2 * i + 1] = (byte) ((trozo[i] >> 8) & 0xff);
+                        }
+                        salida.write(bytes, 0, n * 2);
+                    }
+                    boolean cerro = reconocedor.acceptWaveForm(trozo, n);
+                    String json = cerro ? reconocedor.getResult() : reconocedor.getPartialResult();
+                    long procesado = System.currentTimeMillis();
+                    entregar(cerro ? "final" : "parcial", json, muestras * 1000L / (long) FRECUENCIA, leido, procesado, rms);
+                }
+                // Lo que quedo pendiente al cerrar, como final: son palabras que la
+                // persona dijo -igual que onFinalResult de SpeechService-.
+                long ahora = System.currentTimeMillis();
+                entregar("final", reconocedor.getFinalResult(), muestras * 1000L / (long) FRECUENCIA, ahora, ahora, 0);
+            } catch (Exception e) {
+                JSObject d = new JSObject();
+                d.put("mensaje", e.getMessage());
+                notifyListeners("error", d);
+            } finally {
+                try {
+                    grabadora.stop();
+                } catch (Exception ignorada) {
+                    // ya estaba parado
+                }
+                grabadora.release();
+                reconocedor.close();
+                if (salida != null) {
+                    try {
+                        salida.close();
+                    } catch (IOException ignorada) {
+                        // el audio es un instrumento: si no se cierra bien, la lectura sigue
+                    }
+                }
+            }
+        }
     }
 
     // ── Lo que entrega Vosk ────────────────────────────────────────────────────────
@@ -191,58 +357,41 @@ public class VoskNativoPlugin extends Plugin implements RecognitionListener {
     // Java y otra en TypeScript- y a recompilar el APK cada vez que Vosk agregue un
     // campo. Del otro lado ya hay un parser.
 
-    @Override
-    public void onPartialResult(String hipotesis) {
+    // Parciales -"parcial"- y finales -"final"-, con los tiempos del lazo: en que
+    // milisegundo del audio termina el trozo, cuando se leyo, cuando termino Vosk, y
+    // el nivel del microfono en ese trozo -raiz del promedio de los cuadrados, 0 a 1-.
+    private void entregar(String evento, String hipotesis, long audioFinMs, long leidoEpochMs, long procesadoEpochMs, double rms) {
         JSObject d = new JSObject();
         d.put("json", hipotesis);
         d.put("llegadaEpochMs", System.currentTimeMillis());
-        notifyListeners("parcial", d);
-    }
-
-    @Override
-    public void onResult(String hipotesis) {
-        JSObject d = new JSObject();
-        d.put("json", hipotesis);
-        d.put("llegadaEpochMs", System.currentTimeMillis());
-        notifyListeners("final", d);
+        d.put("audioFinMs", audioFinMs);
+        d.put("leidoEpochMs", leidoEpochMs);
+        d.put("procesadoEpochMs", procesadoEpochMs);
+        d.put("rms", rms);
+        notifyListeners(evento, d);
     }
 
     /**
      * Llega al cerrar el flujo, con lo que quedo pendiente. Se emite como final igual:
      * son palabras que la persona dijo y el motor de lectura las necesita.
+     *
+     * -24-09-2026: ahora lo hace el final de Oido.run, con entregar("final", ...). Los
+     * errores tambien salen de ahi, como "error"-.
      */
-    @Override
-    public void onFinalResult(String hipotesis) {
-        JSObject d = new JSObject();
-        d.put("json", hipotesis);
-        d.put("llegadaEpochMs", System.currentTimeMillis());
-        notifyListeners("final", d);
-    }
-
-    @Override
-    public void onError(Exception e) {
-        JSObject d = new JSObject();
-        d.put("mensaje", e.getMessage());
-        notifyListeners("error", d);
-    }
 
     /**
      * SpeechService corta solo tras un rato sin voz. En una lectura a camara hay
      * pausas largas -Javier lee guiones de varios minutos-, asi que aca NO se deja
      * morir: se avisa al lado de JavaScript, que decide.
      */
-    @Override
-    public void onTimeout() {
-        notifyListeners("silencio", new JSObject());
-    }
+    //
+    // -24-09-2026: en la practica nunca se emitia. startListening(this), sin tiempo,
+    // es NO_TIMEOUT en SpeechService. El lazo propio tampoco corta por silencio; el
+    // evento "silencio" queda declarado del lado de JavaScript y no llega.
 
     @Override
     protected void handleOnDestroy() {
-        if (servicio != null) {
-            servicio.stop();
-            servicio.shutdown();
-            servicio = null;
-        }
+        pararOido();
         if (modelo != null) {
             modelo.close();
             modelo = null;
