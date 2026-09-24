@@ -1,4 +1,4 @@
-package com.teleprompter.app;
+package com.sigoteleprompter.app;
 
 import android.graphics.Bitmap;
 import android.media.MediaExtractor;

@@ -162,7 +162,7 @@ if (process.argv.includes('poner')) {
   console.log(`\nInstalando en ${cual} (${destino})...`)
   try {
     correr(adb, ['-s', destino, 'install', '-r', APK], RAIZ)
-    correr(adb, ['-s', destino, 'shell', 'monkey', '-p', 'com.teleprompter.app', '-c', 'android.intent.category.LAUNCHER', '1'], RAIZ)
+    correr(adb, ['-s', destino, 'shell', 'monkey', '-p', 'com.sigoteleprompter.app', '-c', 'android.intent.category.LAUNCHER', '1'], RAIZ)
     console.log(`Instalado y abierto en ${cual}.`)
   } catch {
     console.error(`\nNo se pudo instalar en ${destino}.`)

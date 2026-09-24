@@ -1,4 +1,4 @@
-package com.teleprompter.app;
+package com.sigoteleprompter.app;
 
 import android.Manifest;
 import android.media.AudioFormat;

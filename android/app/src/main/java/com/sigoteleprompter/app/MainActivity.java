@@ -1,4 +1,4 @@
-package com.teleprompter.app;
+package com.sigoteleprompter.app;
 
 import android.os.Bundle;
 import android.os.Handler;

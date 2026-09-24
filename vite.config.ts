@@ -21,7 +21,7 @@ export default defineConfig({
         globIgnores: ['**/*.worker-*.js', '**/*.wasm']
       },
       manifest: {
-        id: 'com.teleprompter.app',
+        id: 'com.sigoteleprompter.app',
         name: 'SIGO - Teleprompter',
         short_name: 'Sigo',
         start_url: '/',

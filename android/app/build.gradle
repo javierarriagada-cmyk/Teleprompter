@@ -1,10 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "com.teleprompter.app"
+    // EL IDENTIFICADOR DE LA APP -24-09-2026-. Era com.teleprompter.app, generico, y en Google Play
+    // ya lo usa otra aplicacion: no se podia publicar con el. Es el unico dato que no se puede
+    // cambiar nunca despues de subir la primera version. Va con el dominio sigoteleprompter.com,
+    // que Javier inscribe. Cambiarlo hace que el telefono la trate como una app nueva.
+    namespace = "com.sigoteleprompter.app"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.teleprompter.app"
+        applicationId "com.sigoteleprompter.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

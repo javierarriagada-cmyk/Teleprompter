@@ -14,7 +14,7 @@ const raiz = process.cwd()
 export const RUTA_MARCA = path.join(raiz, 'android/app/src/main/res/drawable/marca_arranque.xml')
 export const RUTA_MARCA_ANIMADA = path.join(raiz, 'android/app/src/main/res/drawable/marca_arranque_animada.xml')
 export const RUTA_ANIMADORES = path.join(raiz, 'android/app/src/main/res/animator')
-export const RUTA_MAIN_ACTIVITY = path.join(raiz, 'android/app/src/main/java/com/teleprompter/app/MainActivity.java')
+export const RUTA_MAIN_ACTIVITY = path.join(raiz, 'android/app/src/main/java/com/sigoteleprompter/app/MainActivity.java')
 
 // El splash deja ver un circulo de 288 dp en un lienzo de 432: radio 144.
 export const CENTRO = 216

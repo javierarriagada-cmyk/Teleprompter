@@ -1,4 +1,4 @@
-package com.teleprompter.app;
+package com.sigoteleprompter.app;
 
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
