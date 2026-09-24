@@ -20,7 +20,7 @@ import { obtenerEspacioLibre } from './lib/archivosNativos'
 import { calcularMinutosDisponibles } from './lib/espacio'
 import { hapticaToqueMedio, hapticaToqueSuave, hapticaSeleccion } from './haptica'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
-import { Guion, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR } from './datos/modelo'
+import { Guion, Bloque, TramoFormato, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR } from './datos/modelo'
 import { RepositorioGuiones } from './datos/RepositorioGuiones'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
@@ -104,6 +104,54 @@ function ajustarFuenteValida(val: any): number {
     Math.abs(curr - num) < Math.abs(prev - num) ? curr : prev
   )
   return masCercano
+}
+
+// EL GUION "HOLA": el que ya viene puesto la primera vez. Los tramos se calculan buscando
+// las palabras en el texto, asi el texto se puede retocar sin contar caracteres a mano.
+export function bloqueDeBienvenida(): Bloque {
+  const texto = [
+    'Hola. Lee esto en voz alta, con o sin apuro, como prefieras.',
+    '',
+    'Ahora fíjate en el texto. Se está moviendo solo, al ritmo en que hablas, sin que toques nada. La línea suave bajo las palabras te muestra por dónde vas.',
+    '',
+    'Si te detienes a pensar, el texto te espera. Cuando vuelves a hablar, sigue contigo.',
+    '',
+    'Lo que escribes entre corchetes es una nota solo para ti. Se ve en la pantalla, pero no hace falta leerla en voz alta. [Como esta: respira y sonríe.]',
+    '',
+    'Tu guion también puede ayudarte a leer mejor. Marca en negrita lo que quieres decir con más fuerza. Pinta palabras en ámbar, en celeste o en verde salvia para distinguir ideas o cambios de tono. Y usa el destacado amarillo para lo que no se te puede pasar. Basta con seleccionar el texto en el editor y elegir.',
+    '',
+    'En el botón Aa eliges el tamaño de la letra, la tipografía, el ancho de la columna y los colores de la pantalla. Déjalo como te resulte más cómodo.',
+    '',
+    'Cuando quieras grabarte, toca Grabar. La cámara filma mientras lees, y el texto queda justo bajo el lente, para que tu mirada vaya a la cámara y no a la pantalla.',
+    '',
+    'Te acompaña para darte la comodidad y la tranquilidad que necesitas. Queremos que toda tu concentración esté donde debe estar. No tienes que memorizar. No tienes que apurarte para alcanzar el texto. Puedes transmitir la emoción que quieras, en el momento que quieras.',
+    '',
+    'Sirve para grabar un video, dar una clase o preparar una entrevista.',
+    '',
+    'Cuando termines, borra esto y escribe tu propio guion, o pega uno que ya tengas.',
+    '',
+    // CORREO PROVISORIO -24-09-2026-: Javier pidio uno ficticio mientras tanto. Cambiarlo por
+    // el de verdad antes de publicar.
+    'Y si algo te gusta, te molesta o se te ocurre cómo mejorarlo, cuéntanos. Tus comentarios son muy valiosos para nosotros. Escríbenos a hola@ejemplo.com. Que te vaya muy bien.'
+  ].join('\n')
+  const tramo = (frase: string, formato: Omit<TramoFormato, 'desde' | 'hasta'>): TramoFormato => {
+    const desde = texto.indexOf(frase)
+    return { desde, hasta: desde + frase.length, ...formato }
+  }
+  return {
+    id: 'b-bienvenida-1',
+    nombre: '',
+    texto,
+    // Si alguien retoca el texto y una de estas palabras deja de estar, su tramo se cae en vez
+    // de pintar desde el caracter -1.
+    tramos: [
+      tramo('negrita', { negrita: true }),
+      tramo('ámbar', { color: 'ambar' }),
+      tramo('celeste', { color: 'celeste' }),
+      tramo('verde salvia', { color: 'salvia' }),
+      tramo('destacado amarillo', { destacado: true })
+    ].filter((t) => t.desde >= 0)
+  }
 }
 
 export default function App({ motor, repoOverride }: AppProps) {
@@ -455,25 +503,14 @@ export default function App({ motor, repoOverride }: AppProps) {
             // No hace falta: la pantalla de lectura respeta los saltos de linea del
             // autor, asi que un bloque con los parrafos separados por una linea en blanco
             // se lee exactamente igual y el editor queda limpio.
-            bloques: [
-              {
-                id: 'b-bienvenida-1',
-                nombre: '',
-                texto: [
-                  'Hola. Lee esto en voz alta, con o sin apuro, como prefieras.',
-                  '',
-                  'Ahora fíjate en el texto. Se está moviendo solo, al ritmo en que hablas, sin que toques nada.',
-                  '',
-                  'Te acompaña para darte la comodidad y la tranquilidad que necesitas. Queremos que toda tu concentración esté donde debe estar. Cuando quieras, puedes recorrer los ajustes y dejar la experiencia a tu medida.',
-                  '',
-                  'Nuestra tarea es que puedas mirar la cámara y no la pantalla. No tienes que memorizar. No tienes que apurarte para alcanzar el texto. Puedes transmitir la emoción que quieras, en el momento que quieras.',
-                  '',
-                  'Sirve para grabar un video, dar una clase o preparar una entrevista.',
-                  '',
-                  'Cuando termines, borra esto y escribe tu propio guion.'
-                ].join('\n')
-              }
-            ]
+            //
+            // MAS LARGO Y MOSTRANDO LO QUE SE PUEDE HACER -24-09-2026-. Javier: "ese texto
+            // deberia ser mas largo, en el mismo tono, pero aprovechando mas de explicar mejor
+            // las funcionalidades de la app, por ejemplo los colores", y "debe ser un texto
+            // amable". Explica leyendo: la negrita, los tres colores y el destacado van puestos
+            // sobre las mismas palabras que los nombran, y la nota entre corchetes es una nota
+            // de verdad -el seguidor se la salta-. Lo que dice es lo que hace la aplicacion hoy.
+            bloques: [bloqueDeBienvenida()]
           }
 
           try {
