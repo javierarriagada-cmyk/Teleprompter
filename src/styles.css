@@ -829,7 +829,9 @@ label.selector-aa-opcion {
   align-items: center;
   justify-content: space-between;
   min-height: 48px;
-  margin-bottom: var(--aire-3);
+  /* 20 y no 12: la tarjeta quedaba pegada a la barra. El dueno, 24-09-2026:
+     "los bajaria un poquito para darle mas aire ... pero solo un poco". */
+  margin-bottom: var(--aire-4);
 }
 .portada-marca {
   display: flex;
