@@ -882,6 +882,7 @@ export default function EditorView({
 
       {/* Hoja Única de Texto */}
       <div style={{ position: 'relative' }}>
+        {/* Controles de formato: SOLO SI HAY TEXTO SELECCIONADO */}
         {/* LA BARRA DE FORMATO FLOTA ARRIBA, NO EMPUJA EL GUION. Tarea 72.
             Hasta la 72 se insertaba en el flujo, justo arriba del textarea:
             seleccionar una palabra empujaba todo el guion para abajo y el que

@@ -70,9 +70,9 @@ function Pastilla({
           gap: 4,
           padding: '6px 14px 8px',
           borderRadius: 'var(--redondeo-pildora)',
-              backgroundColor: 'rgba(0,0,0,0.45)', // env(safe-area-inset)
-              border: '1px solid rgba(255,255,255,0.35)', // env(safe-area-inset)
-              color: '#fff', // env(safe-area-inset)
+              backgroundColor: 'rgba(0,0,0,0.45)',
+              border: '1px solid rgba(255,255,255,0.35)',
+              color: '#fff',
           fontSize: 'var(--texto-meta)',
           letterSpacing: '0.04em',
           fontVariantNumeric: 'tabular-nums',
@@ -87,7 +87,7 @@ function Pastilla({
             width: '100%',
             height: 2,
             borderRadius: 'var(--redondeo-pildora)',
-                backgroundColor: 'rgba(255,255,255,0.25)', // env(safe-area-inset)
+                backgroundColor: 'rgba(255,255,255,0.25)',
             overflow: 'hidden'
           }}
         >
@@ -96,7 +96,7 @@ function Pastilla({
             style={{
               width: `${progresoPct}%`,
               height: '100%',
-                  backgroundColor: 'rgba(255,255,255,0.9)', // env(safe-area-inset)
+                  backgroundColor: 'rgba(255,255,255,0.9)',
               transition: 'width 0.25s linear'
             }}
           />
