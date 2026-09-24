@@ -114,7 +114,23 @@ import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from
 //                     quiere reglas por version, el motor se tiene que adaptar solo. Lo que
 //                     falta en los renglones cortos se gana bajando el atraso en PALABRAS.
 //
-export const MARGEN_RENGLONES_ARRIBA = 0.5
+//   0.25, ventana de 4  PUESTO el 24 de septiembre de 2026, a prueba. Javier leyo tres tomas
+//                     con 0.5 -letra 18 completa, 24 y 32 angosta-: 100%, 92% y 91% en la zona,
+//                     tal como predijo la matriz, ningun adelanto a mitad de renglon, y "quizas
+//                     se debe ajustar mas". Con siete tomas y los mismos renglones, renglon 1 /
+//                     2 / 3 o mas de la ventana:
+//
+//                                          0.5           0.25          0
+//                       letra 18 completa  34/66/0       58/42/0       79/21/0
+//                       angosta 24         19/75/7       38/61/2       62/38/0
+//                       letra 42 completa  17/65/18      30/59/11      45/49/7
+//
+//                     0 deja sin nada visible arriba del renglon que se lee -y en la pausa de
+//                     fin de renglon, el recien terminado desaparece entero-. 0.25 gana donde
+//                     falta y conserva un cuarto de renglon hacia atras. Si Javier lo siente
+//                     bien, el siguiente paso es 0.
+//
+export const MARGEN_RENGLONES_ARRIBA = 0.25
 
 // Cuanto tarda la pantalla en pasar de un renglon al siguiente. Constante de tiempo de un
 // acercamiento exponencial: con 70 ms, el renglon se recorre casi entero en unos 200.
