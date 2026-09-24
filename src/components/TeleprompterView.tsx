@@ -6,6 +6,7 @@ import { agruparEnRenglones, indiceDeRenglon, pixelDePosicion, pixelDeRenglon, R
 import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
+import { palabrasDelDestacado, segmentosDelDestacado, CajaPalabra } from '../lib/destacado'
 
 // CERO DESDE EL 24-09-2026, MEDIDO. Era 2, puesto con el motor WASM -tarea 36-: el
 // renglon vivo no pasaba al siguiente hasta que el motor llevaba 2 palabras adentro.
@@ -400,6 +401,13 @@ export default function TeleprompterView({
   const renglonTrabadoRef = useRef<number | null>(null)
   // La compensacion de la demora del reconocedor -lib/compensacion.ts-.
   const compensacionRef = useRef(crearCompensacion())
+  // EL DESTACADO DE LECTURA -lib/destacado.ts-. Tres capsulas -una por renglon; con la regla
+  // de 4 a 6 palabras se usan a lo sumo dos- que el lazo mueve tocando su estilo directo: la
+  // vista entera no se vuelve a dibujar en cada palabra. clave evita medir si nada cambio.
+  const capsulasRef = useRef<Array<HTMLDivElement | null>>([null, null, null])
+  const destacadoPrevRef = useRef<{ clave: string; renglones: Renglon[] | null }>({ clave: '', renglones: null })
+  const estadoTomaRef = useRef(estadoToma)
+  estadoTomaRef.current = estadoToma
   const ultimoCuadroRef = useRef<number | null>(null)
 
   const recalcularGeometria = React.useCallback(() => {
@@ -746,6 +754,55 @@ export default function TeleprompterView({
         containerRef.current.scrollTop = top
       }
 
+      // EL DESTACADO DE LECTURA -lib/destacado.ts-: desde la posicion del motor, N palabras
+      // hacia adelante. Solo leyendo. Si el motor perdio el hilo -sin calce- queda tenue: no
+      // puede afirmar "aqui estas" con la misma fuerza.
+      {
+        const cont = containerRef.current
+        const leyendo = estadoTomaRef.current === 'leyendo'
+        const n = palabrasDelDestacado(tokensRef.current.length / Math.max(1, renglones.length))
+        const inicio = Math.max(0, Math.floor(st.posicion))
+        const alfa = !leyendo ? 0 : st.motivoFreno === 'sin-calce' ? 0.35 : 1
+        const clave = `${alfa}|${inicio}|${n}|${filaPx}`
+        const previo = destacadoPrevRef.current
+        if (cont && (clave !== previo.clave || previo.renglones !== renglones)) {
+          previo.clave = clave
+          previo.renglones = renglones
+          const cajas: CajaPalabra[] = []
+          for (let i = inicio; i < Math.min(tokensRef.current.length, inicio + n); i++) {
+            const el = cont.querySelector(`[data-token="${i}"]`) as HTMLElement | null
+            if (el) cajas.push({ izquierda: el.offsetLeft, arriba: el.offsetTop, ancho: el.offsetWidth, alto: el.offsetHeight })
+          }
+          const segs = alfa > 0 ? segmentosDelDestacado(cajas) : []
+          // Un poco mas ancha que las palabras, como un resaltador: el aire es del tamano de la
+          // letra, asi se ve igual con cualquier letra.
+          const letra = filaPx / 1.4
+          const aireX = letra * 0.22
+          const aireY = letra * 0.08
+          capsulasRef.current.forEach((c, k) => {
+            if (!c) return
+            const s = segs[k]
+            if (!s) {
+              c.style.opacity = '0'
+              return
+            }
+            // Una capsula que estaba apagada aparece DONDE va, sin barrer desde su lugar viejo.
+            const estabaApagada = c.style.opacity === '' || c.style.opacity === '0'
+            const transicion = c.style.transition
+            if (estabaApagada) c.style.transition = 'none'
+            c.style.left = `${s.izquierda - aireX}px`
+            c.style.top = `${s.arriba - aireY}px`
+            c.style.width = `${s.ancho + 2 * aireX}px`
+            c.style.height = `${s.alto + 2 * aireY}px`
+            if (estabaApagada) {
+              void c.offsetWidth
+              c.style.transition = transicion
+            }
+            c.style.opacity = String(alfa)
+          })
+        }
+      }
+
       animId = requestAnimationFrame(animate)
     }
 
@@ -1006,6 +1063,34 @@ export default function TeleprompterView({
           pointerEvents: estadoToma === 'listo' ? 'none' : 'auto'
         }}
       >
+        {/* EL DESTACADO DE LECTURA -lib/destacado.ts-. Detras del texto: zIndex -1 dentro del
+            contenedor, que con position relative y zIndex 1 es su propio contexto de
+            apilamiento. Vive adentro del que hace scroll, asi que se desplaza con el texto, y
+            las medidas son offsetLeft/offsetTop de las palabras, que no cambian con el scroll
+            ni con el espejo. Neutro a proposito: no es el destacado amarillo del editor. */}
+        <div
+          aria-hidden="true"
+          data-testid="capa-destacado"
+          style={{ position: 'absolute', left: 0, top: 0, width: 0, height: 0, zIndex: -1, pointerEvents: 'none' }}
+        >
+          {[0, 1, 2].map((k) => (
+            <div
+              key={k}
+              ref={(el) => { capsulasRef.current[k] = el }}
+              className="capsula-destacado"
+              style={{
+                position: 'absolute',
+                opacity: 0,
+                borderRadius: fontSize * 0.35,
+                background: isWhiteBg ? 'rgba(0, 0, 0, 0.07)' : 'rgba(255, 255, 255, 0.14)',
+                boxShadow: isWhiteBg ? 'inset 0 0 0 1px rgba(0, 0, 0, 0.10)' : 'inset 0 0 0 1px rgba(255, 255, 255, 0.20)',
+                transition: movimientoApagado()
+                  ? 'none'
+                  : 'left 240ms cubic-bezier(0.2, 0.8, 0.2, 1), top 240ms cubic-bezier(0.2, 0.8, 0.2, 1), width 240ms cubic-bezier(0.2, 0.8, 0.2, 1), height 240ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 200ms ease'
+              }}
+            />
+          ))}
+        </div>
         <div
           data-testid="columna-texto"
           style={{
