@@ -151,8 +151,16 @@ public class VoskNativoPlugin extends Plugin implements RecognitionListener {
             // se le pide. Es la vara del motor: con esto se mide cuanto tarda cada
             // palabra en llegar y a cuantas palabras va la pantalla de la voz. No
             // cambia lo que se reconoce.
+            //
+            // PERO SOLO EN LOS FINALES -24-09-2026, medido-. setPartialWords(true)
+            // retrasa los PARCIALES: con el mismo modelo y el audio de una toma real,
+            // las palabras aparecen 1,7 s despues de dichas con la opcion y 0,32 s
+            // sin ella -scratchpad simvosk2.py, Vosk 0.3.45 en el PC; en el telefono
+            // se midio 2,0 s con la opcion-. Y los parciales son lo que mueve la
+            // pantalla. setWords(true) no cambia los parciales -5 de 206 distintos,
+            // en cierres de frase-. El tiempo de cada palabra sale entonces de los
+            // finales, y cuando aparecio, del texto de los parciales.
             reconocedor.setWords(true);
-            reconocedor.setPartialWords(true);
             servicio = new SpeechService(reconocedor, FRECUENCIA);
             // El cero de esos tiempos es el arranque del audio: se anota el reloj
             // del telefono justo al abrir el microfono.

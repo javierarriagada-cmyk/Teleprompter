@@ -29,6 +29,10 @@ export type EntradaDiagnostico =
   // anota al empezar y cada vez que cambia -otra letra, otro ancho-. Sin esto el
   // atraso solo se puede medir en palabras, y el que lee lo siente en renglones.
   | { ms: number; tipo: 'renglones'; inicios: number[] }
+  // Cuando el lado nativo entrego cada resultado, en el reloj del registro. ms menos
+  // nativo es lo que tarda en cruzar a JavaScript: separa la demora de Vosk de la
+  // del telefono.
+  | { ms: number; tipo: 'llegada'; final: boolean; nativo: number }
 
 const MAX_ENTRADAS = 60000
 
@@ -88,6 +92,8 @@ export function comoTexto(): string {
       filas.push(`${e.ms}\tpalabras\t${e.final ? 'FINAL' : 'parcial'}: ${e.palabras.map((p) => `${p.w}@${p.ini}-${p.fin}`).join(' ')}`)
     } else if (e.tipo === 'renglones') {
       filas.push(`${e.ms}\trenglones\t${e.inicios.join(' ')}`)
+    } else if (e.tipo === 'llegada') {
+      filas.push(`${e.ms}\tllegada\t${e.final ? 'FINAL' : 'parcial'} nativo=${e.nativo}`)
     } else {
       filas.push(
         `${e.ms}\tcuadro\tpos=${e.posicion.toFixed(2)} calce=${e.calce} scroll=${e.scroll} freno=${e.freno} trabado=${e.trabado}`

@@ -29,7 +29,7 @@ interface VoskNativoPlugin {
   detener(): Promise<void>
   addListener(
     eventName: 'parcial' | 'final',
-    listener: (data: { json: string }) => void
+    listener: (data: { json: string; llegadaEpochMs?: number }) => void
   ): Promise<PluginListenerHandle>
   addListener(
     eventName: 'error',
@@ -109,6 +109,7 @@ export class MotorNativo implements MotorDeVoz {
     this.suscripciones.push(
       await Nativo.addListener('parcial', (d) => {
         const texto = textoDe(d.json, 'partial')
+        this.anotarLlegada(d.llegadaEpochMs, false)
         this.anotarPalabras(d.json, false)
         if (texto.trim()) {
           this.listenersParcial.forEach((cb) => cb({ texto }))
@@ -119,6 +120,7 @@ export class MotorNativo implements MotorDeVoz {
     this.suscripciones.push(
       await Nativo.addListener('final', (d) => {
         const texto = textoDe(d.json, 'text')
+        this.anotarLlegada(d.llegadaEpochMs, true)
         this.anotarPalabras(d.json, true)
         if (texto.trim()) {
           // Vosk nativo no entrega marcas de tiempo por palabra salvo que se le pida
@@ -149,10 +151,20 @@ export class MotorNativo implements MotorDeVoz {
     this.ceroAudioPerf = inicioEpochMs - (Date.now() - performance.now())
   }
 
+  // CUANDO SALIO DEL LADO NATIVO, AL REGISTRO. Con 'oyo' -cuando llego aca- separa
+  // lo que tarda Vosk de lo que tarda el cruce a JavaScript.
+  private anotarLlegada(llegadaEpochMs: number | undefined, final: boolean): void {
+    if (typeof llegadaEpochMs !== 'number') return
+    anotar({ tipo: 'llegada', final, nativo: msDelRegistro(llegadaEpochMs - (Date.now() - performance.now())) })
+  }
+
   // LAS PALABRAS CON SU TIEMPO, AL REGISTRO. Vosk las entrega con setWords en
   // "result" -finales- y con setPartialWords en "partial_result" -parciales-, en
   // segundos desde el arranque del audio. No cambian nada de lo que hace el motor:
   // son la vara para medirlo.
+  //
+  // Los parciales ya no traen palabras con tiempo: setPartialWords los retrasaba 1,4 s
+  // -VoskNativoPlugin.java-. Solo los finales las traen.
   private anotarPalabras(json: string, final: boolean): void {
     if (this.ceroAudioPerf === null) return
     try {

@@ -28,8 +28,16 @@
 //                        renglon vivo se dibuja segundo en la ventana -un renglon de
 //                        holgura arriba, MARGEN_RENGLONES_ARRIBA-, asi que el renglon
 //                        de la ventana donde se lee es 2 + este atraso.
-//   retraso del reconocedor   cuanto tarda una palabra en llegar desde que termino
-//                        de decirse.
+//   retraso del reconocedor   cuanto tarda una palabra en APARECER EN UN PARCIAL
+//                        desde que termino de decirse. Los parciales son lo que
+//                        mueve la pantalla. Se toma del texto de los parciales: la
+//                        palabra k de la frase aparecio cuando el parcial llego a
+//                        tener k palabras; y termino de decirse cuando dice el
+//                        final. Medirlo con la llegada del FINAL -la primera
+//                        version- daba 8 a 11 s: el final llega al cerrar la frase,
+//                        a veces 20 s despues.
+//   cruce a JavaScript   de las lineas 'llegada': lo que tarda un resultado desde
+//                        que Vosk lo entrega hasta que la aplicacion lo recibe.
 //
 // Se mide cada 100 ms mientras hay voz -entre la primera y la ultima palabra dicha-.
 
@@ -79,6 +87,9 @@ function leer(ruta) {
   const cab = {}
   const oidas = []    // palabras finales con tiempo
   const cuadros = []  // { ms, pos, trabado }
+  const retrasos = [] // ms desde el fin de la palabra hasta su primer parcial
+  const cruces = []   // ms del lado nativo a JavaScript
+  let primera = []    // cuando el parcial de la frase en curso llego a k+1 palabras
   let renglones = null
   for (const l of texto.split(/\r?\n/)) {
     if (l.startsWith('# | ')) { guion.push(l.slice(4)); continue }
@@ -89,10 +100,22 @@ function leer(ruta) {
     if (c.length < 3) continue
     const ms = Number(c[0])
     if (c[1] === 'palabras' && c[2].startsWith('FINAL: ')) {
+      let k = 0
       for (const p of c[2].slice(7).split(' ')) {
         const mm = /^(.*)@(\d+)-(\d+)$/.exec(p)
-        if (mm) oidas.push({ w: normalizar(mm[1]), ini: Number(mm[2]), fin: Number(mm[3]), llegada: ms })
+        if (mm) {
+          oidas.push({ w: normalizar(mm[1]), ini: Number(mm[2]), fin: Number(mm[3]), llegada: ms })
+          retrasos.push((k < primera.length ? primera[k] : ms) - Number(mm[3]))
+          k++
+        }
       }
+      primera = []
+    } else if (c[1] === 'oyo' && c[2].startsWith('parcial: ')) {
+      const n = c[2].slice(9).split(' ').filter(Boolean).length
+      while (primera.length < n) primera.push(ms)
+    } else if (c[1] === 'llegada') {
+      const nat = /nativo=(-?\d+)/.exec(c[2])
+      if (nat) cruces.push(ms - Number(nat[1]))
     } else if (c[1] === 'cuadro') {
       const pos = /pos=([\d.]+)/.exec(c[2]); const tr = /trabado=(\d+)/.exec(c[2])
       if (pos) cuadros.push({ ms, pos: Number(pos[1]), trabado: tr ? Number(tr[1]) : null })
@@ -100,7 +123,7 @@ function leer(ruta) {
       renglones = c[2].split(' ').map(Number)
     }
   }
-  return { guion, cab, oidas, cuadros, renglones }
+  return { guion, cab, oidas, cuadros, renglones, retrasos, cruces }
 }
 
 // Alineamiento de lo oido contra el guion: maximo de coincidencias en orden.
@@ -129,7 +152,7 @@ function percentil(arr, p) {
 const f1 = (x) => (Number.isFinite(x) ? x.toFixed(1) : '-')
 
 for (const ruta of process.argv.slice(2)) {
-  const { guion, cab, oidas, cuadros, renglones } = leer(ruta)
+  const { guion, cab, oidas, cuadros, renglones, retrasos, cruces } = leer(ruta)
   const tokens = tokensDelGuion(guion)
   const pares = alinear(oidas, tokens)
   console.log(`\n=== ${ruta.split(/[\\/]/).pop()}`)
@@ -154,7 +177,6 @@ for (const ruta of process.argv.slice(2)) {
     return r
   }
 
-  const retraso = pares.map(([io]) => oidas[io].llegada - oidas[io].fin)
   const t0 = conocidos[0][1], t1 = conocidos[conocidos.length - 1][1]
   const atrasoPal = [], atrasoRen = []
   let c = 0
@@ -171,7 +193,8 @@ for (const ruta of process.argv.slice(2)) {
   const primerMov = cuadros.find((x) => x.pos > 0.5)
   const dichoAntes = primerMov ? tokenDichoEn(primerMov.ms) : null
 
-  console.log(`retraso del reconocedor, ms      mediana ${percentil(retraso, 50)}  p90 ${percentil(retraso, 90)}`)
+  console.log(`retraso del reconocedor, ms      mediana ${percentil(retrasos, 50)}  p90 ${percentil(retrasos, 90)}`)
+  if (cruces.length) console.log(`  de eso, cruce a JavaScript, ms  mediana ${percentil(cruces, 50)}  p90 ${percentil(cruces, 90)}`)
   console.log(`atraso de la pantalla, palabras  mediana ${f1(percentil(atrasoPal, 50))}  p90 ${f1(percentil(atrasoPal, 90))}`)
   if (atrasoRen.length) {
     const ventana = atrasoRen.map((x) => x + 2)
