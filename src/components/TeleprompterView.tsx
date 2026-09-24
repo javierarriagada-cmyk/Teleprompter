@@ -6,7 +6,24 @@ import { agruparEnRenglones, indiceDeRenglon, pixelDePosicion, pixelDeRenglon, R
 import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
 
-export const PALABRAS_DE_SEGURIDAD = 2
+// CERO DESDE EL 24-09-2026, MEDIDO. Era 2, puesto con el motor WASM -tarea 36-: el
+// renglon vivo no pasaba al siguiente hasta que el motor llevaba 2 palabras adentro.
+// Con el reconocedor nativo, en dos tomas de Javier -letra 18 columna completa, y
+// letra 24 columna angosta-, eso dejaba el renglon vivo atras de la posicion del
+// motor el 41% y el 52% del tiempo, encima de las 2 a 4 palabras que el motor ya va
+// atras de la voz. Repetido sobre esas mismas tomas -scratchpad simtrabado.mjs, que
+// reproduce exacto lo grabado con 2-:
+//
+//                          donde se lee (objetivo: renglon 2)
+//   columna completa  2 ->  2: 26%  3: 74%
+//                     0 ->  2: 64%  3: 35%
+//   columna angosta   2 ->  2: 6%  3: 41%  4: 48%  5: 5%
+//                     0 ->  2: 19%  3: 62%  4: 18%
+//
+// Y sin un solo salto hacia atras ni un cambio de renglon de mas: la proteccion ya
+// la da el seguidor -3 palabras seguidas para ubicar- y conduccion.ts, que no deja
+// pasar del renglon siguiente.
+export const PALABRAS_DE_SEGURIDAD = 0
 
 // El panel de la ventana de lectura -solo con la camara detras-: cuanto tapa,
 // y cuanto se sale de la columna a cada lado.

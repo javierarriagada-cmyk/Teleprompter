@@ -359,15 +359,17 @@ describe('Pruebas TAREA 36 (T167-T170)', () => {
 
     // Avanzamos por el renglon 1
     // Token 4 (palabra 1 de R1): Math.floor(4) - 4 = 0 < min(2, 3) = 2 -> se queda en R0
-    trabado = avanzarTrabado(trabado, 1, 4.0, renglones)
+    // El 2 va explicito: la prueba es del mecanismo, no del valor por omision -que
+    // desde el 24-09-2026 es 0, medido; ver TeleprompterView-.
+    trabado = avanzarTrabado(trabado, 1, 4.0, renglones, 2)
     expect(trabado).toBe(0)
 
     // Token 5 (palabra 2 de R1): Math.floor(5) - 4 = 1 < 2 -> se queda en R0
-    trabado = avanzarTrabado(trabado, 1, 5.0, renglones)
+    trabado = avanzarTrabado(trabado, 1, 5.0, renglones, 2)
     expect(trabado).toBe(0)
 
     // Token 6 (palabra 3 de R1): Math.floor(6) - 4 = 2 >= 2 -> avanza a R1
-    trabado = avanzarTrabado(trabado, 1, 6.0, renglones)
+    trabado = avanzarTrabado(trabado, 1, 6.0, renglones, 2)
     expect(trabado).toBe(1)
   })
 
@@ -395,7 +397,12 @@ describe('Pruebas TAREA 36 (T167-T170)', () => {
   })
 
   // T170: Sobre la vista montada: el scrollTop no cambia mientras la posicion recorre las dos primeras palabras de un renglon, y cambia despues.
-  test('T170 Sobre la vista montada: el scrollTop no cambia mientras la posicion recorre las dos primeras palabras de un renglon, y cambia despues.', async () => {
+  //
+  // DESDE EL 24-09-2026 la vista usa PALABRAS_DE_SEGURIDAD = 0, medido -ver
+  // TeleprompterView-: el scrollTop cambia en la PRIMERA palabra del renglon siguiente
+  // y despues se queda quieto el resto del renglon. La espera de 2 sigue probada, como
+  // mecanismo, en T168.
+  test('T170 Sobre la vista montada: el scrollTop cambia en la primera palabra del renglon siguiente, y no pasa de ese renglon mientras se lo lee.', async () => {
     const FILA = 24 * 1.4
     const origClientHeight = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'clientHeight')
     const origOffsetTop = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'offsetTop')
@@ -441,7 +448,7 @@ describe('Pruebas TAREA 36 (T167-T170)', () => {
       const cont = container.querySelector('[data-testid="contenedor-lectura"]') as HTMLElement
       const scrollBase = cont.scrollTop // R1 (token 7), trabado = 1, scroll = 0
 
-      // Token 8 (palabra 1 de R2): no avanza trabado (sigue en 1)
+      // Token 8 (palabra 1 de R2): con espera 0 avanza trabado a 2, scroll cambia
       rerender(
         <TeleprompterView
           script={guion} currentLineIndex={0} currentWordIndex={0}
@@ -450,9 +457,12 @@ describe('Pruebas TAREA 36 (T167-T170)', () => {
         />
       )
       await esperarCuadros()
-      expect(cont.scrollTop).toBe(scrollBase)
+      expect(cont.scrollTop).toBeGreaterThan(scrollBase)
+      // El cambio se desliza -MS_DESLIZAR-: a estas alturas puede ir a mitad de camino.
+      // Lo que se exige es que no pase NUNCA del renglon 2: un renglon -FILA- sobre la base.
+      const topeR2 = scrollBase + FILA + 0.5
 
-      // Token 9 (palabra 2 de R2): no avanza trabado (sigue en 1)
+      // Token 9 (palabra 2 de R2): el trabado sigue en 2, el scroll no pasa del renglon 2
       rerender(
         <TeleprompterView
           script={guion} currentLineIndex={0} currentWordIndex={0}
@@ -461,9 +471,9 @@ describe('Pruebas TAREA 36 (T167-T170)', () => {
         />
       )
       await esperarCuadros()
-      expect(cont.scrollTop).toBe(scrollBase)
+      expect(cont.scrollTop).toBeLessThanOrEqual(topeR2)
 
-      // Token 10 (palabra 3 de R2): avanza trabado a 2, scroll cambia
+      // Token 10 (palabra 3 de R2): sigue en 2, no pasa del renglon 2
       rerender(
         <TeleprompterView
           script={guion} currentLineIndex={0} currentWordIndex={0}
@@ -472,7 +482,7 @@ describe('Pruebas TAREA 36 (T167-T170)', () => {
         />
       )
       await esperarCuadros()
-      expect(cont.scrollTop).toBeGreaterThan(scrollBase)
+      expect(cont.scrollTop).toBeLessThanOrEqual(topeR2)
 
       unmount()
     } finally {
