@@ -35,7 +35,9 @@ export type EntradaDiagnostico =
   | { ms: number; tipo: 'llegada'; final: boolean; nativo: number
       // -24-09-2026, el oido propio-: en que ms del registro termina el trozo de audio,
       // cuando se leyo del microfono, cuando termino Vosk, y el nivel del trozo -0 a 1-.
-      audio?: number; leido?: number; procesado?: number; rms?: number }
+      audio?: number; leido?: number; procesado?: number; rms?: number
+      // Cuantas veces el oido cambio de microfono por atraso -VoskNativoPlugin, el relevo-.
+      relevos?: number }
   // El arranque del oido: donde quedo guardado el audio que escucho Vosk y de a
   // cuantas muestras lo lee. Con el audio se afina el reconocedor en el PC.
   | { ms: number; tipo: 'oido'; inicio: number; ruta: string; muestrasPorTrozo: number }
@@ -99,7 +101,7 @@ export function comoTexto(): string {
     } else if (e.tipo === 'renglones') {
       filas.push(`${e.ms}\trenglones\t${e.inicios.join(' ')}`)
     } else if (e.tipo === 'llegada') {
-      const extra = e.audio === undefined ? '' : ` audio=${e.audio} leido=${e.leido} procesado=${e.procesado} rms=${(e.rms ?? 0).toFixed(4)}`
+      const extra = e.audio === undefined ? '' : ` audio=${e.audio} leido=${e.leido} procesado=${e.procesado} rms=${(e.rms ?? 0).toFixed(4)} relevos=${e.relevos ?? 0}`
       filas.push(`${e.ms}\tllegada\t${e.final ? 'FINAL' : 'parcial'} nativo=${e.nativo}${extra}`)
     } else if (e.tipo === 'oido') {
       filas.push(`${e.ms}\toido\tinicio=${e.inicio} trozo=${e.muestrasPorTrozo} ruta=${e.ruta}`)

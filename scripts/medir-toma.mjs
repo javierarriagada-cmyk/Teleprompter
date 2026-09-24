@@ -123,7 +123,7 @@ function leer(ruta) {
     } else if (c[1] === 'llegada') {
       const nat = /nativo=(-?\d+)/.exec(c[2])
       if (nat) cruces.push(ms - Number(nat[1]))
-      const au = /audio=(-?d+) leido=(-?d+) procesado=(-?d+)/.exec(c[2])
+      const au = /audio=(-?\d+) leido=(-?\d+) procesado=(-?\d+)/.exec(c[2])
       if (au) { capturas.push(Number(au[2]) - Number(au[1])); procesos.push(Number(au[3]) - Number(au[2])) }
     } else if (c[1] === 'oido') {
       oido = c[2]

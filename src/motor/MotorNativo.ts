@@ -15,6 +15,7 @@ type DatosResultado = {
   leidoEpochMs?: number
   procesadoEpochMs?: number
   rms?: number
+  relevos?: number
 }
 
 // EL RECONOCEDOR NATIVO DE ANDROID. Es Vosk igual que la version web, pero compilado.
@@ -40,7 +41,7 @@ type DatosResultado = {
 interface VoskNativoPlugin {
   disponible(): Promise<{ disponible: boolean }>
   iniciar(): Promise<void>
-  escuchar(opciones?: { guardarAudio?: boolean }): Promise<{ inicioEpochMs?: number; rutaAudio?: string; muestrasPorTrozo?: number } | void>
+  escuchar(opciones?: { guardarAudio?: boolean; fuente?: string; frecuenciaMic?: number }): Promise<{ inicioEpochMs?: number; rutaAudio?: string; muestrasPorTrozo?: number } | void>
   detener(): Promise<void>
   addListener(
     eventName: 'parcial' | 'final',
@@ -188,7 +189,8 @@ export class MotorNativo implements MotorDeVoz {
       audio: typeof d.audioFinMs === 'number' && this.ceroAudioPerf !== null ? msDelRegistro(this.ceroAudioPerf + d.audioFinMs) : undefined,
       leido: typeof d.leidoEpochMs === 'number' ? aRegistro(d.leidoEpochMs) : undefined,
       procesado: typeof d.procesadoEpochMs === 'number' ? aRegistro(d.procesadoEpochMs) : undefined,
-      rms: d.rms
+      rms: d.rms,
+      relevos: d.relevos
     })
   }
 

@@ -103,6 +103,29 @@ public class VoskNativoPlugin extends Plugin {
     // Cuantos audios guardados se conservan. Cada minuto son 1,9 MB.
     private static final int AUDIOS_GUARDADOS = 12;
 
+    /**
+     * EL RELEVO DEL MICROFONO -24-09-2026, medido en el telefono de Javier-.
+     *
+     * Si el microfono ya esta abierto cuando la camara empieza a grabar video con
+     * sonido, Android le deja al microfono un atraso que NO se recupera en toda la
+     * toma: el audio llega 0,3 s tarde en la prueba y 0,50 a 0,77 s en dos tomas
+     * reales, contra 0,09 s sin camara. Abierto DESPUES de que la camara graba, llega
+     * a tiempo -0,09 s-. Y en la aplicacion el orden es justo el malo: el microfono
+     * arranca al terminar la cuenta y el video un instante despues -App.tsx-.
+     *
+     * Se arregla aca y no cambiando ese orden, porque aca se arregla sea cual sea la
+     * causa: si el audio llega con mas de UMBRAL_RETENCION_MS de atraso durante
+     * TROZOS_PARA_RELEVO trozos seguidos, se abre un microfono nuevo -el relevo-. El
+     * viejo se sigue leyendo hasta que su audio alcanza el instante en que se abrio el
+     * relevo, y ahi se cambia: no se pierde audio ni se repite, y el reloj del audio
+     * sigue siendo el mismo. El relevo guarda lo suyo mientras tanto en un buffer
+     * grande, y al cambiar se lee de corrido hasta ponerse al dia.
+     */
+    private static final long UMBRAL_RETENCION_MS = 250;
+    private static final int TROZOS_PARA_RELEVO = 5;
+    private static final long MS_ENTRE_RELEVOS = 5000;
+    private static final float SEGUNDOS_BUFFER_RELEVO = 3.0f;
+
     private Model modelo = null;
     private Oido oido = null;
     private PluginCall llamadaIniciar = null;
@@ -194,14 +217,23 @@ public class VoskNativoPlugin extends Plugin {
             // finales, y cuando aparecio, del texto de los parciales.
             reconocedor.setWords(true);
             int muestrasPorTrozo = Math.round(FRECUENCIA * SEGUNDOS_POR_TROZO);
+            // LA FUENTE Y LA FRECUENCIA DEL MICROFONO, ELEGIBLES -24-09-2026-. Medido:
+            // sin camara el microfono entrega cada trozo 0,09 s despues de dicho; con
+            // la camara grabando video con sonido, 0,50 a 0,77 s. La camara -CameraX-
+            // graba con su propia fuente y a 44,1 o 48 kHz, y Android le cuelga este
+            // pedido a ese flujo. Para probar cual combinacion evita esa espera se
+            // puede pedir otra fuente y leer a 48 kHz: se baja a 16 kHz aca.
+            String fuente = call.getString("fuente", "VOICE_RECOGNITION");
+            int frecuenciaMic = call.getInt("frecuenciaMic", (int) FRECUENCIA);
+            int factor = Math.max(1, Math.round(frecuenciaMic / FRECUENCIA));
             int minimo = AudioRecord.getMinBufferSize(
-                (int) FRECUENCIA, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
+                frecuenciaMic, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
             AudioRecord grabadora = new AudioRecord(
-                MediaRecorder.AudioSource.VOICE_RECOGNITION,
-                (int) FRECUENCIA,
+                fuenteDeAudio(fuente),
+                frecuenciaMic,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT,
-                Math.max(minimo, muestrasPorTrozo * 2 * 4));
+                Math.max(minimo, muestrasPorTrozo * factor * 2 * 4));
             if (grabadora.getState() != AudioRecord.STATE_INITIALIZED) {
                 grabadora.release();
                 reconocedor.close();
@@ -221,13 +253,16 @@ public class VoskNativoPlugin extends Plugin {
                     rutaAudio = archivo.getAbsolutePath();
                 }
             }
-            oido = new Oido(grabadora, reconocedor, salida, muestrasPorTrozo);
+            oido = new Oido(grabadora, reconocedor, salida, muestrasPorTrozo, factor,
+                inicioEpochMs, fuenteDeAudio(fuente), frecuenciaMic);
             Thread hilo = new Thread(oido, "sigo-oido");
             oido.hilo = hilo;
             hilo.start();
             JSObject r = new JSObject();
             r.put("inicioEpochMs", inicioEpochMs);
             r.put("muestrasPorTrozo", muestrasPorTrozo);
+            r.put("fuente", fuente);
+            r.put("frecuenciaMic", frecuenciaMic);
             if (rutaAudio != null) r.put("rutaAudio", rutaAudio);
             call.resolve(r);
         } catch (Exception e) {
@@ -260,6 +295,17 @@ public class VoskNativoPlugin extends Plugin {
         }
     }
 
+    private static int fuenteDeAudio(String nombre) {
+        switch (nombre) {
+            case "MIC": return MediaRecorder.AudioSource.MIC;
+            case "CAMCORDER": return MediaRecorder.AudioSource.CAMCORDER;
+            case "UNPROCESSED": return MediaRecorder.AudioSource.UNPROCESSED;
+            case "VOICE_COMMUNICATION": return MediaRecorder.AudioSource.VOICE_COMMUNICATION;
+            case "VOICE_PERFORMANCE": return MediaRecorder.AudioSource.VOICE_PERFORMANCE;
+            default: return MediaRecorder.AudioSource.VOICE_RECOGNITION;
+        }
+    }
+
     // El audio que escucho Vosk, crudo: 16 kHz, mono, 16 bits little-endian. Se
     // borran los mas viejos: quedan AUDIOS_GUARDADOS.
     private File archivoDeAudio(long inicioEpochMs) {
@@ -281,32 +327,104 @@ public class VoskNativoPlugin extends Plugin {
      * una espera que depende de lo ocupada que este la pantalla.
      */
     private class Oido implements Runnable {
-        final AudioRecord grabadora;
+        // No es final: el relevo la reemplaza.
+        AudioRecord grabadora;
         final Recognizer reconocedor;
         final OutputStream salida;
         final int muestrasPorTrozo;
+        // Cuantas muestras del microfono hacen una de 16 kHz: 1, o 3 si se lee a 48 kHz.
+        final int factor;
+        // Para el relevo: el cero del reloj del audio y como abrir otro microfono igual.
+        final long inicioEpochMs;
+        final int fuente;
+        final int frecuenciaMic;
         volatile boolean escuchando = true;
         Thread hilo = null;
+        AudioRecord relevo = null;
+        long relevoInicioEpochMs = 0;
+        int relevos = 0;
 
-        Oido(AudioRecord grabadora, Recognizer reconocedor, OutputStream salida, int muestrasPorTrozo) {
+        Oido(AudioRecord grabadora, Recognizer reconocedor, OutputStream salida, int muestrasPorTrozo, int factor,
+             long inicioEpochMs, int fuente, int frecuenciaMic) {
             this.grabadora = grabadora;
             this.reconocedor = reconocedor;
             this.salida = salida;
             this.muestrasPorTrozo = muestrasPorTrozo;
+            this.factor = factor;
+            this.inicioEpochMs = inicioEpochMs;
+            this.fuente = fuente;
+            this.frecuenciaMic = frecuenciaMic;
+        }
+
+        // Abre el relevo con un buffer grande: no se lo lee hasta el cambio, y tiene
+        // que aguantar sin perder nada lo que dure ponerse al dia con el viejo.
+        private void abrirRelevo() {
+            int minimo = AudioRecord.getMinBufferSize(
+                frecuenciaMic, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
+            int grande = Math.round(frecuenciaMic * SEGUNDOS_BUFFER_RELEVO) * 2;
+            AudioRecord r = new AudioRecord(fuente, frecuenciaMic, AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_16BIT, Math.max(minimo, grande));
+            if (r.getState() != AudioRecord.STATE_INITIALIZED) {
+                r.release();
+                return;
+            }
+            r.startRecording();
+            relevo = r;
+            relevoInicioEpochMs = System.currentTimeMillis();
+        }
+
+        private void soltar(AudioRecord r) {
+            if (r == null) return;
+            try {
+                r.stop();
+            } catch (Exception ignorada) {
+                // ya estaba parado
+            }
+            r.release();
         }
 
         @Override
         public void run() {
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
             short[] trozo = new short[muestrasPorTrozo];
+            short[] crudo = new short[muestrasPorTrozo * factor];
             byte[] bytes = new byte[muestrasPorTrozo * 2];
             long muestras = 0;
+            int trozosAtrasados = 0;
+            long ultimoRelevoEpochMs = 0;
             try {
                 while (escuchando) {
-                    int n = grabadora.read(trozo, 0, trozo.length);
+                    int leidas = grabadora.read(crudo, 0, crudo.length);
                     long leido = System.currentTimeMillis();
-                    if (n < 0) throw new IOException("error leyendo el microfono: " + n);
+                    if (leidas < 0) throw new IOException("error leyendo el microfono: " + leidas);
+                    if (leidas == 0) continue;
+                    // A 16 kHz: el promedio de cada grupo de 'factor' muestras. Es un
+                    // filtro pobre -deja pasar algo sobre 8 kHz- y alcanza para medir la
+                    // espera; si esta fuente gana, se pone uno bueno.
+                    int n = leidas / factor;
+                    if (factor == 1) {
+                        System.arraycopy(crudo, 0, trozo, 0, n);
+                    } else {
+                        for (int i = 0; i < n; i++) {
+                            int s = 0;
+                            for (int k = 0; k < factor; k++) s += crudo[i * factor + k];
+                            trozo[i] = (short) (s / factor);
+                        }
+                    }
                     if (n == 0) continue;
+                    // Con relevo abierto: del trozo del viejo se usa solo lo que es
+                    // anterior al instante en que se abrio el relevo. Lo demas ya lo
+                    // tiene el relevo, y ahi se cambia.
+                    boolean cambiar = false;
+                    if (relevo != null) {
+                        long desdeEpoch = inicioEpochMs + muestras * 1000L / (long) FRECUENCIA;
+                        long hasta = (relevoInicioEpochMs - desdeEpoch) * (long) FRECUENCIA / 1000L;
+                        if (hasta < n) {
+                            n = (int) Math.max(0, hasta);
+                            cambiar = true;
+                        }
+                    }
+                    if (n > 0) {
                     muestras += n;
                     double suma = 0;
                     for (int i = 0; i < n; i++) suma += (double) trozo[i] * trozo[i];
@@ -322,6 +440,26 @@ public class VoskNativoPlugin extends Plugin {
                     String json = cerro ? reconocedor.getResult() : reconocedor.getPartialResult();
                     long procesado = System.currentTimeMillis();
                     entregar(cerro ? "final" : "parcial", json, muestras * 1000L / (long) FRECUENCIA, leido, procesado, rms);
+                    }
+                    if (cambiar) {
+                        soltar(grabadora);
+                        grabadora = relevo;
+                        relevo = null;
+                        relevos++;
+                        ultimoRelevoEpochMs = System.currentTimeMillis();
+                        trozosAtrasados = 0;
+                        continue;
+                    }
+                    // Cuanto atraso trae el audio: cuando se leyo menos cuando termino.
+                    if (relevo == null) {
+                        long retencion = leido - (inicioEpochMs + muestras * 1000L / (long) FRECUENCIA);
+                        trozosAtrasados = retencion > UMBRAL_RETENCION_MS ? trozosAtrasados + 1 : 0;
+                        if (trozosAtrasados >= TROZOS_PARA_RELEVO && leido - ultimoRelevoEpochMs > MS_ENTRE_RELEVOS) {
+                            trozosAtrasados = 0;
+                            ultimoRelevoEpochMs = leido;
+                            abrirRelevo();
+                        }
+                    }
                 }
                 // Lo que quedo pendiente al cerrar, como final: son palabras que la
                 // persona dijo -igual que onFinalResult de SpeechService-.
@@ -332,12 +470,8 @@ public class VoskNativoPlugin extends Plugin {
                 d.put("mensaje", e.getMessage());
                 notifyListeners("error", d);
             } finally {
-                try {
-                    grabadora.stop();
-                } catch (Exception ignorada) {
-                    // ya estaba parado
-                }
-                grabadora.release();
+                soltar(relevo);
+                soltar(grabadora);
                 reconocedor.close();
                 if (salida != null) {
                     try {
@@ -368,6 +502,8 @@ public class VoskNativoPlugin extends Plugin {
         d.put("leidoEpochMs", leidoEpochMs);
         d.put("procesadoEpochMs", procesadoEpochMs);
         d.put("rms", rms);
+        Oido o = oido;
+        if (o != null) d.put("relevos", o.relevos);
         notifyListeners(evento, d);
     }
 
