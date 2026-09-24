@@ -1,7 +1,20 @@
 // Siete palabras. Lo pidio Javier el 6 de septiembre de 2026 leyendo a camara.
 // NO reemplazar por una derivacion de renglones, tamano de letra ni ancho de
 // columna: ya se hizo una vez y se desfondó al cambiar la tipografia.
-export const PALABRAS_PARA_ARRANCAR = 7
+//
+// TRES DESDE EL 24-09-2026, MEDIDO, Y CON JAVIER. El siete se pidio con el reconocedor web,
+// que al empezar entregaba a rafagas y a destiempo. Con el nativo, en dieciseis tomas reales
+// -teleprom/02-lecturas/motor-24-sep, arranque3.mjs-, el primer cambio de renglon llegaba
+// 0,81 s despues de la voz con siete y 0,48 s con cinco o con tres; los cambios siguientes
+// no se mueven, y en ninguna toma la pantalla salio del primer renglon antes de tiempo. Tres
+// es lo mismo que ya exige el seguidor -tres palabras seguidas para ubicar-.
+//
+// Y ES UNA SOLA REGLA PARA CUALQUIER LETRA, que es lo que Javier pidio -"alguna distorsion
+// deberia tener de acuerdo al tamano de la letra"- sin reglas por version: la pantalla nunca
+// sale del primer renglon antes de que la voz lo termine, asi que con letra chica -siete u
+// ocho palabras por renglon- el arranque no se nota y con letra grande deja de retener un
+// renglon de mas. No es la derivacion de renglones que advierte el comentario de arriba.
+export const PALABRAS_PARA_ARRANCAR = 3
 
 // Cuanto tarda el reconocedor en entregar una palabra desde que se dijo. Es lo unico que
 // hay que compensar para apuntar a donde esta la persona.

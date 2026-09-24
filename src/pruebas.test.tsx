@@ -10,7 +10,7 @@ import { crearSeguidor, tokenizarGuion } from './lib/seguidor'
 import { useSeguidor } from './hooks/useSeguidor'
 import { remuestrear } from './lib/remuestrear'
 import { MotorFake } from './motor/MotorFake'
-import { crearMotorDeAvance } from './lib/avance'
+import { crearMotorDeAvance, PALABRAS_PARA_ARRANCAR } from './lib/avance'
 import { crearRegistro } from './lib/registro'
 import { simularLectura } from './pruebas/lectorSimulado'
 import { medir } from './pruebas/metricas'
@@ -2623,12 +2623,16 @@ describe('Pruebas TAREA 20 (T112-T118)', () => {
     expect(motor.estadoEn(100).avanzando).toBe(false)
     expect(motor.estadoEn(100).posicion).toBe(0)
 
-    motor.confirmar(5, 500)
+    // -24-09-2026: con la constante y no con el 7 escrito a mano. PALABRAS_PARA_ARRANCAR paso
+    // de 7 a 3, medido -avance.ts-; lo que se guarda es el mecanismo: con una palabra menos
+    // que el arranque el texto no se mueve, y con las del arranque si. El token N es la
+    // palabra N+1.
+    motor.confirmar(PALABRAS_PARA_ARRANCAR - 2, 500)
     const st6 = motor.estadoEn(600)
     expect(st6.posicion).toBe(0)
     expect(st6.avanzando).toBe(false)
 
-    motor.confirmar(6, 700)
+    motor.confirmar(PALABRAS_PARA_ARRANCAR - 1, 700)
     const st7 = motor.estadoEn(800)
     expect(st7.avanzando).toBe(true)
 
