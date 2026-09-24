@@ -1,0 +1,1131 @@
+TAREA 72 — CADA AJUSTE MUESTRA LO QUE HACE
+
+Repositorio: javierarriagada-cmyk/Teleprompter  (privado)
+Rama base: main, commit 760a215 "El panel de la toma tambien se esconde
+           mientras se arrastra el recuadro". Traer ese main, no otro.
+Rama de trabajo: tarea-72-cada-ajuste-muestra-lo-que-hace
+
+ESTE DOCUMENTO ES LA FUENTE DE LA VERDAD. Si algo no esta aca, no se decide:
+se pregunta. El codigo de la seccion 3 se pega tal cual.
+
+LOS COMENTARIOS NO SE BORRAN. Si el codigo cambia, se actualiza su
+comentario. Si el codigo desaparece de verdad, su comentario se va con el.
+Todo lo demas se queda. Esto incluye los comentarios largos de
+TeleprompterView.tsx que estan pegados a las lineas que cambia el 3.2.
+
+NO TOQUES TAREAS.md. NO AGREGUES DEPENDENCIAS.
+
+
+==============================================================================
+0. QUE SE ARREGLA
+==============================================================================
+
+Regla de producto, dicha por el dueno el 23 de septiembre de 2026: TODO
+CONTROL MUESTRA SU EFECTO EN EL MOMENTO Y DONDE SE TOCO. Si se toca y no
+cambia nada a la vista, el usuario cree que el control es falso.
+
+Hoy la aplicacion rompe esa regla en estos cinco puntos, todos comprobados en
+el telefono o en el codigo:
+
+  1. PANEL Aa DEL EDITOR. Tamano de letra, Ancho del texto, Tipografia y
+     Colores de lectura se guardan, pero solo se aplican en la pantalla de
+     lectura. El texto del editor esta fijo -EditorView.tsx, textarea del
+     guion: Source Serif 4, var(--texto-titulo)-. Se toca "Serif" y no
+     cambia nada.
+  2. MOSTRAR TIEMPO. La barra de tiempo NUNCA se ve, ni en listo ni leyendo.
+     App.tsx la monta en la linea 1856, DESPUES del div del lienzo -linea
+     1734, height 100dvh- y adentro de un contenedor fijo de 100dvh con
+     overflow hidden -linea 1552-. Queda debajo del borde de la pantalla.
+     Comprobado en el telefono: interruptor encendido, siete segundos de
+     lectura, ninguna barra.
+  3. LA BARRA DE FORMATO. Al seleccionar texto aparece EN EL FLUJO, arriba
+     del textarea -EditorView.tsx:905-1001-, y empuja todo el guion para
+     abajo: el que selecciona pierde de vista lo que selecciono.
+  4. TRES CASILLAS NATIVAS. Espejo y Mostrar tiempo
+     -TeleprompterView.tsx:1131-1147- y Vibracion -BibliotecaView.tsx:874-888-
+     son <input type="checkbox"> de 16 px que Android pinta azules. No se
+     parecen a nada de la aplicacion.
+  5. EL SELECTOR DE IDIOMA NO HACE NADA EN EL APK. MotorNativo.ts:97-101
+     ignora el idioma: el unico modelo de voz que viaja en el APK es el de
+     espanol. Elegir "English" no cambia lo que escucha el motor. Decision
+     del dueno, 23 de septiembre de 2026: el producto es para hablantes de
+     espanol, y el selector SE QUITA. El dato Guion.idioma se sigue
+     guardando en el modelo; solo desaparece el control.
+
+
+==============================================================================
+1. ARCHIVOS
+==============================================================================
+
+SE CREAN:
+  src/components/estiloLectura.ts
+  src/components/MuestraLectura.tsx
+  src/components/Interruptor.tsx
+  src/pruebas/tarea72.test.tsx
+
+SE MODIFICAN, y SOLO en los puntos que dice la seccion 3:
+  src/components/EditorView.tsx
+  src/components/TeleprompterView.tsx     -solo 3.2: seis lineas, dos
+                                            imports y las dos casillas-
+  src/components/TarjetaLectura.tsx       -solo 3.3: una linea y un import-
+  src/components/BibliotecaView.tsx       -solo 3.5-
+  src/components/BarraDeTiempo.tsx        -3.9, el archivo entero-
+  src/App.tsx                             -solo 3.9: mover un bloque-
+  src/styles.css                          -solo 3.4: agregar al final-
+  src/pruebas/tarea67.test.tsx            -solo 3.7 c: un test-
+
+PROHIBIDO TOCAR, aunque parezca que conviene:
+  src/lib/seguidor.ts, src/lib/avance.ts, src/lib/conduccion.ts, src/motor/,
+  src/components/banda.ts, y todo TeleprompterView.tsx fuera de lo que
+  nombra el 3.2. La logica de lectura se ajusto a mano contra defectos que
+  solo se ven leyendo en voz alta y ninguna prueba los atrapa.
+
+Se comprueba con `git diff --stat main`: tienen que aparecer exactamente
+los doce archivos de arriba y ningun otro.
+
+
+==============================================================================
+2. LO QUE YA ESTA DECIDIDO, Y LO QUE QUEDA AFUERA
+==============================================================================
+
+2.1 La muestra del panel Aa usa LAS MISMAS reglas que la lectura, desde un
+    modulo compartido -estiloLectura.ts-. Hoy la regla de la tipografia esta
+    escrita dos veces: TeleprompterView.tsx:294 y TarjetaLectura.tsx:86. Con
+    la muestra serian tres. Los tres importan el modulo.
+
+2.2 El interruptor es una casilla de verdad escondida a la vista, con
+    role="switch", HIJA DIRECTA de su <label>. Lo que se ve es una pista y
+    una perilla. Asi siguen funcionando, SIN TOCARLAS, la prueba T86 de
+    src/pruebas.test.tsx -busca la casilla por el texto de su parentElement-
+    y la de vibracion de tarea45.test.tsx -getByLabelText('Vibración')-.
+    "Ver transcripción en vivo" -motor.test.ts- es una casilla del panel de
+    diagnostico y NO se cambia.
+
+2.3 La barra de formato sale por un portal a document.body, fija arriba de
+    la pantalla. No se ancla al teclado.
+
+2.4 La barra de tiempo pasa ADENTRO del lienzo, arriba al centro, como una
+    pastilla translucida igual a los controles flotantes. En el estado
+    listo se dibuja quieta: 00:00 y la duracion estimada a 150 palabras por
+    minuto. Esa vista previa lleva OTRA etiqueta y OTRO testid: T83 cuida
+    que el reloj de la lectura -aria-label "tiempo transcurrido y total
+    estimado"- no aparezca antes de que la lectura empiece, y tiene que
+    seguir pasando sin tocarla.
+
+2.5 El relleno de la barra de progreso deja de ser rojo y pasa a blanco. La
+    regla ya fijada para los controles flotantes -tarea 70, seccion 11.3- es
+    que el rojo se gana grabando, y esta barra aparece tambien en Leer, que
+    no graba.
+
+2.6 FUERA DE ALCANCE, anotado para otra tarea: el punto rojo de grabacion
+    -TeleprompterView.tsx, title="Grabando"- esta arriba a la derecha, en el
+    mismo lugar que el boton de pausa, que lo tapa mientras los controles
+    estan a la vista. No se toca aca.
+
+
+==============================================================================
+3. EL CODIGO
+==============================================================================
+
+Los numeros de linea son los del archivo como esta hoy en main, commit
+760a215, ANTES de cualquier cambio. Apenas se edita un archivo, los numeros
+de mas abajo se corren: si algo no coincide, mandan el texto citado y el
+data-testid, no el numero.
+
+------------------------------------------------------------------------------
+3.1 src/components/estiloLectura.ts  (ARCHIVO NUEVO, completo)
+------------------------------------------------------------------------------
+
+    // COMO SE VE EL TEXTO DE LA LECTURA, EN UN SOLO LUGAR.
+    //
+    // Estas reglas estaban escritas en TeleprompterView.tsx -la lectura- y la
+    // de la tipografia ademas copiada en TarjetaLectura.tsx -la portada-. La
+    // Tarea 72 agrego un tercer lugar que las necesita: la muestra viva del
+    // panel Aa del editor. Tres copias de una regla se separan en cuanto
+    // alguien cambia una; por eso viven aca y los tres las importan.
+    // 23-09-2026.
+    //
+    // OJO, NO ES EL UNICO LUGAR DEL 1.4 Y DEL 16. TeleprompterView.tsx tiene
+    // su propia geometria del lienzo -filaPx = fontSize * 1.4 y
+    // alturaLineaPx = filaPx + 16-, que es la que usan la banda, el scroll y
+    // el renglon trabado. Esa quedo afuera a proposito: la logica de lectura
+    // esta congelada y la Tarea 72 no la toco. Si se cambia
+    // INTERLINEADO_LECTURA o MARGEN_RENGLON_LECTURA_PX, hay que cambiar esas
+    // dos cuentas en el mismo commit, o la lectura se descuadra sin que
+    // ninguna prueba lo vea.
+
+    export const INTERLINEADO_LECTURA = 1.4
+    export const MARGEN_RENGLON_LECTURA_PX = 16
+
+    export function familiaLectura(tipoFuente: 'sans' | 'serif'): string {
+      return tipoFuente === 'serif' ? '"Source Serif 4", serif' : '"Source Sans 3", sans-serif'
+    }
+
+    // Sobre fondo blanco la letra va negra siempre, sea cual sea la elegida:
+    // una letra ambar o blanca sobre blanco no se lee.
+    export function colorLetraEfectiva(colorFondo: string, colorLetra: string): string {
+      return colorFondo.toUpperCase() === '#FFFFFF' ? '#000000' : colorLetra
+    }
+
+    // Angosta: 22 caracteres y centrada. Completa: 90% del ancho y a la
+    // izquierda. El porque largo esta en TeleprompterView.tsx, arriba del
+    // textAlign de columna-texto.
+    export function columnaLectura(columnaAngosta: boolean): { maxWidth: string; textAlign: 'center' | 'left' } {
+      return columnaAngosta
+        ? { maxWidth: '22ch', textAlign: 'center' }
+        : { maxWidth: '90%', textAlign: 'left' }
+    }
+
+------------------------------------------------------------------------------
+3.2 src/components/TeleprompterView.tsx  (SOLO ESTO)
+------------------------------------------------------------------------------
+
+a) Debajo de la linea 37 -el import de IconosApp- agregar dos lineas:
+
+    import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
+    import { Interruptor } from './Interruptor'
+
+b) Linea 293. De:
+      const colorTextoEfectivo = isWhiteBg ? '#000000' : colorLetra
+   a:
+      const colorTextoEfectivo = colorLetraEfectiva(colorFondo, colorLetra)
+
+   La linea 292 -isWhiteBg- SE QUEDA: la usa la banda, linea 622.
+
+c) Linea 294. De:
+      const fontFamilyCss = tipoFuente === 'serif' ? '"Source Serif 4", serif' : '"Source Sans 3", sans-serif'
+   a:
+      const fontFamilyCss = familiaLectura(tipoFuente)
+
+d) Linea 816. De:
+      maxWidth: columnaAngosta ? '22ch' : '90%',
+   a:
+      maxWidth: columnaLectura(columnaAngosta).maxWidth,
+
+e) Linea 835. De:
+      textAlign: columnaAngosta ? 'center' : 'left'
+   a:
+      textAlign: columnaLectura(columnaAngosta).textAlign
+   El comentario largo que esta justo arriba -lineas 818 a 834, "EN COLUMNA
+   ANGOSTA EL TEXTO VA CENTRADO"- NO SE TOCA.
+
+f) Lineas 867 y 868. De:
+      margin: '16px 0',
+      lineHeight: 1.4
+   a:
+      margin: `${MARGEN_RENGLON_LECTURA_PX}px 0`,
+      lineHeight: INTERLINEADO_LECTURA
+
+g) Las dos casillas, lineas 1131 a 1147 -desde el <label> de Espejo hasta el
+   </label> de Mostrar tiempo-, se reemplazan por:
+
+              <Interruptor
+                etiqueta="Espejo"
+                encendido={mirror}
+                onCambiar={(v) => setMirror?.(v)}
+                estiloEtiqueta={{ fontSize: 'var(--texto-meta)' }}
+              />
+
+              <Interruptor
+                etiqueta="Mostrar tiempo"
+                encendido={mostrarTiempo}
+                onCambiar={(v) => setMostrarTiempo?.(v)}
+                estiloEtiqueta={{ fontSize: 'var(--texto-meta)' }}
+              />
+
+NADA MAS en este archivo.
+
+------------------------------------------------------------------------------
+3.3 src/components/TarjetaLectura.tsx  (SOLO ESTO)
+------------------------------------------------------------------------------
+
+Agregar el import, debajo de los que ya estan:
+
+    import { familiaLectura } from './estiloLectura'
+
+Y la linea 86, de:
+    const fuentefamily = tipoFuente === 'serif' ? '"Source Serif 4", serif' : '"Source Sans 3", sans-serif'
+a:
+    const fuentefamily = familiaLectura(tipoFuente)
+
+------------------------------------------------------------------------------
+3.4 src/components/Interruptor.tsx  (ARCHIVO NUEVO, completo)
+------------------------------------------------------------------------------
+
+    import React from 'react'
+    import { movimientoApagado, MS_CHICO, CURVA_RESORTE } from './movimiento'
+
+    // UN INTERRUPTOR NUESTRO, SOBRE UNA CASILLA DE VERDAD. Tarea 72.
+    //
+    // Espejo, Mostrar tiempo y Vibracion eran <input type="checkbox"> de 16 px
+    // que Android dibuja con el azul del sistema: no se parecian a nada de
+    // esta aplicacion.
+    //
+    // La casilla SIGUE ESTANDO y es la que recibe el toque, el teclado y el
+    // lector de pantalla -role="switch"-; solo se la esconde a la vista con la
+    // clase interruptor-casilla de styles.css. Lo que se ve es la pista y la
+    // perilla, dibujadas segun `encendido`.
+    //
+    // El input va HIJO DIRECTO del <label>. No meterlo adentro de la pista:
+    // T86 -src/pruebas.test.tsx- encuentra la casilla de Mostrar tiempo
+    // mirando el texto de su parentElement, y getByLabelText('Vibración')
+    // necesita que el label la envuelva.
+    export function Interruptor({
+      encendido,
+      onCambiar,
+      etiqueta,
+      estiloEtiqueta
+    }: {
+      encendido: boolean
+      onCambiar: (encendido: boolean) => void
+      etiqueta: string
+      estiloEtiqueta?: React.CSSProperties
+    }) {
+      const transicion = movimientoApagado()
+        ? 'none'
+        : `transform ${MS_CHICO}ms ${CURVA_RESORTE}, background-color ${MS_CHICO}ms ease-out, border-color ${MS_CHICO}ms ease-out`
+      return (
+        <label
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 'var(--aire-3)',
+            cursor: 'pointer',
+            position: 'relative',
+            ...estiloEtiqueta
+          }}
+        >
+          <span>{etiqueta}</span>
+          <input
+            type="checkbox"
+            role="switch"
+            className="interruptor-casilla"
+            checked={encendido}
+            onChange={(e) => onCambiar(e.target.checked)}
+          />
+          <span
+            aria-hidden="true"
+            className="interruptor-pista"
+            data-encendido={encendido ? 'si' : 'no'}
+            style={{
+              position: 'relative',
+              flexShrink: 0,
+              width: 44,
+              height: 26,
+              boxSizing: 'border-box',
+              borderRadius: 'var(--redondeo-pildora)',
+              backgroundColor: encendido ? 'var(--color-acento)' : 'var(--bg-suelo)',
+              border: `1px solid ${encendido ? 'var(--color-acento)' : 'var(--color-borde)'}`,
+              transition: transicion
+            }}
+          >
+            <span
+              style={{
+                position: 'absolute',
+                top: 3,
+                left: 3,
+                width: 18,
+                height: 18,
+                borderRadius: 'var(--redondeo-pildora)',
+                backgroundColor: encendido ? 'var(--color-texto-acento)' : 'var(--color-apagado)',
+                transform: encendido ? 'translateX(18px)' : 'translateX(0)',
+                transition: transicion
+              }}
+            />
+          </span>
+        </label>
+      )
+    }
+
+Y al FINAL de src/styles.css se agrega:
+
+    /* INTERRUPTOR (Tarea 72). La casilla real se esconde a la vista pero sigue
+       en el documento: recibe el toque a traves de su label, el teclado y el
+       lector de pantalla. Ver Interruptor.tsx. */
+    .interruptor-casilla {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      border: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .interruptor-casilla:focus-visible + .interruptor-pista {
+      outline: 2px solid var(--color-acento);
+      outline-offset: 2px;
+    }
+
+------------------------------------------------------------------------------
+3.5 src/components/BibliotecaView.tsx  (SOLO ESTO)
+------------------------------------------------------------------------------
+
+Agregar el import:
+
+    import { Interruptor } from './Interruptor'
+
+Y el <label> de Vibracion -lineas 875 a 887, desde <label hasta </label>,
+adentro del div con padding de la linea 874, que SE QUEDA igual que su
+</div> de la linea 888- se reemplaza por:
+
+                <Interruptor
+                  etiqueta="Vibración"
+                  encendido={vibracion}
+                  onCambiar={(v) => {
+                    setVibracion(v)
+                    guardarVibracionHabilitada(v)
+                    hapticaToqueSuave()
+                  }}
+                  estiloEtiqueta={{ fontSize: 'var(--texto-meta)', color: 'var(--color-texto)' }}
+                />
+
+------------------------------------------------------------------------------
+3.6 LA MUESTRA VIVA DEL PANEL Aa
+------------------------------------------------------------------------------
+
+a) src/components/MuestraLectura.tsx  (ARCHIVO NUEVO, completo)
+
+    import React from 'react'
+    import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA } from './estiloLectura'
+
+    // LA MUESTRA VIVA DEL PANEL Aa. Tarea 72, 23-09-2026.
+    //
+    // Tamano, ancho, tipografia y colores se aplican en la LECTURA, no en el
+    // editor: el editor tiene su propia letra, comoda para escribir. Hasta la
+    // 72 el panel no mostraba ningun cambio -se tocaba "Serif" y no pasaba
+    // nada a la vista-. El dueno: "si las personas apretan un ajuste y no
+    // pasa nada, lo que asumen es que eso es falso".
+    //
+    // La muestra son las primeras palabras del guion dibujadas con LAS MISMAS
+    // reglas que la lectura -estiloLectura.ts- y al tamano real. Ocupa el
+    // ancho entero de la hoja, que en un telefono es el ancho de la pantalla,
+    // y le aplica el mismo margen en % y la misma columna que la lectura: los
+    // renglones se cortan donde los va a cortar la lectura. En una pantalla
+    // de mas de 500 px la hoja no llega al borde y la muestra queda algo mas
+    // angosta; se acepta, el producto es el telefono.
+    //
+    // Se ven tres renglones y el resto se desvanece: a 42 px tres renglones ya
+    // son 176 px, y una muestra mas alta empuja los controles fuera de la hoja.
+    const TEXTO_SI_VACIO = 'Así se va a ver tu guion cuando lo leas frente a la cámara.'
+    const MAX_CARACTERES = 220
+
+    export function MuestraLectura({
+      texto,
+      fontSize,
+      tipoFuente,
+      colorFondo,
+      colorLetra,
+      columnaAngosta,
+      marginPercent
+    }: {
+      texto: string
+      fontSize: number
+      tipoFuente: 'sans' | 'serif'
+      colorFondo: string
+      colorLetra: string
+      columnaAngosta: boolean
+      marginPercent: number
+    }) {
+      const limpio = (texto || '').replace(/\s+/g, ' ').trim()
+      const muestra = limpio.length > 0 ? limpio.slice(0, MAX_CARACTERES) : TEXTO_SI_VACIO
+      const columna = columnaLectura(columnaAngosta)
+      return (
+        <div
+          data-testid="muestra-lectura"
+          aria-label="Así se va a ver al leer"
+          style={{
+            margin: '0 calc(-1 * var(--aire-4)) var(--aire-3)',
+            backgroundColor: colorFondo,
+            paddingLeft: `${marginPercent}%`,
+            paddingRight: `${marginPercent}%`,
+            paddingTop: 'var(--aire-3)',
+            paddingBottom: 'var(--aire-3)',
+            borderTop: '1px solid var(--color-borde)',
+            borderBottom: '1px solid var(--color-borde)'
+          }}
+        >
+          <div
+            data-testid="muestra-lectura-columna"
+            style={{
+              fontSize,
+              lineHeight: INTERLINEADO_LECTURA,
+              fontFamily: familiaLectura(tipoFuente),
+              color: colorLetraEfectiva(colorFondo, colorLetra),
+              maxWidth: columna.maxWidth,
+              textAlign: columna.textAlign,
+              margin: '0 auto',
+              height: fontSize * INTERLINEADO_LECTURA * 3,
+              overflow: 'hidden',
+              WebkitMaskImage: 'linear-gradient(to bottom, #000 55%, transparent)',
+              maskImage: 'linear-gradient(to bottom, #000 55%, transparent)'
+            }}
+          >
+            {muestra}
+          </div>
+        </div>
+      )
+    }
+
+b) En src/components/EditorView.tsx, agregar el import junto a los otros de
+   componentes:
+
+    import { MuestraLectura } from './MuestraLectura'
+
+c) En EditorView.tsx, en el panel Aa, el grupo "Cómo se ve el texto" -linea
+   649-. Justo DESPUES del </h4> que cierra el titulo "Cómo se ve el texto"
+   -linea 653- y ANTES del <div> con las filas, se inserta:
+
+                <MuestraLectura
+                  texto={bloqueUnico.texto}
+                  fontSize={fontSize}
+                  tipoFuente={tipoFuente}
+                  colorFondo={colorFondo}
+                  colorLetra={colorLetra}
+                  columnaAngosta={columnaAngosta}
+                  marginPercent={marginPercent}
+                />
+
+   Los seis valores ya son props del componente, con valor por omision.
+   bloqueUnico esta definido en la linea 436. No se toca nada mas del panel.
+
+------------------------------------------------------------------------------
+3.7 EL SELECTOR DE IDIOMA SE QUITA
+------------------------------------------------------------------------------
+
+a) En EditorView.tsx, el comentario de las lineas 95 a 99 -arriba de
+   NOMBRE_IDIOMA- se REEMPLAZA por este, porque el <select> que nombra deja
+   de existir:
+
+    // Los nombres de idioma salen de aca para la linea de meta. Hasta la
+    // Tarea 72 el panel Aa tenia un <select> para elegir el idioma del guion,
+    // y se quito: en el APK el motor nativo ignora el idioma -MotorNativo.ts,
+    // iniciar()- porque el unico modelo de voz que viaja es el de espanol.
+    // Elegir otro idioma no cambiaba lo que escucha el motor: era un control
+    // falso. El producto es para hablantes de espanol -decision del dueno,
+    // 23-09-2026-. Guion.idioma se sigue guardando: si algun dia viajan otros
+    // modelos, el dato ya esta y el control vuelve.
+
+   NOMBRE_IDIOMA no se toca: la linea de meta lo sigue usando.
+
+b) En EditorView.tsx se BORRAN:
+     - la funcion handleIdiomaChange, lineas 303 a 309. Queda sin uso.
+     - el bloque de la fila de idioma del panel Aa: desde el comentario
+       {/* Idioma del guion. Vive en el modelo... -linea 852- hasta el
+       </div> que cierra la fila, despues del </select> -linea 876-. Ese
+       comentario se va con su codigo: el porque de la quita queda escrito
+       en el comentario nuevo del punto a).
+   Nada mas del panel cambia.
+
+c) En src/pruebas/tarea67.test.tsx, el test de las lineas 119 a 126
+   -'"Idioma del guion" existe en el editor y NO existe en el menu de la
+   portada'- cuidaba que el idioma viviera en el editor y no en la portada.
+   El control ya no vive en ninguna parte. Se REESCRIBE asi, con el
+   comentario arriba:
+
+  // Hasta la Tarea 72 este test cuidaba que "Idioma del guion" viviera en el
+  // editor y no en la portada. En la 72 el selector se quito: en el APK el
+  // motor ignora el idioma y el control no hacia nada. Ahora cuida que no
+  // vuelva a aparecer en ninguno de los dos lados.
+  test('"Idioma del guion" no existe ni en el menu de la portada ni en el panel del editor', async () => {
+    await portadaConGuion()
+    fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
+    expect(screen.queryByText('Idioma del guion')).toBeNull()
+    fireEvent.click(await screen.findByTestId('fila-guion-g-67'))
+    fireEvent.click(await screen.findByTestId('btn-menu-opciones-editor'))
+    // Se busca SOLO adentro del panel Aa: el diagnostico de la portada tiene
+    // su propio <select> -el del motor, App.tsx- y no tiene que ver con esto.
+    const panel = await screen.findByTestId('panel-ajustes')
+    expect(panel.textContent).not.toContain('Idioma del guion')
+    expect(panel.querySelector('select')).toBeNull()
+  })
+
+------------------------------------------------------------------------------
+3.8 LA BARRA DE FORMATO FIJA ARRIBA
+------------------------------------------------------------------------------
+
+a) En EditorView.tsx, la linea 1 queda:
+
+    import React, { useEffect, useRef, useState } from 'react'
+    import { createPortal } from 'react-dom'
+
+b) El bloque de las lineas 905 a 1001 -desde {hayTextoSeleccionado && ( hasta
+   el )} que cierra la barra, justo antes del comentario del data-testid del
+   textarea- se reemplaza por este. El comentario de la linea 904 -"Controles
+   de formato: SOLO SI HAY TEXTO SELECCIONADO"- SE QUEDA arriba, como esta.
+   Los cinco botones mantienen su onClick,
+   su onMouseDown, su title y su data-testid; cambia donde vive la barra y
+   como se dibujan.
+
+        {/* LA BARRA DE FORMATO FLOTA ARRIBA, NO EMPUJA EL GUION. Tarea 72.
+            Hasta la 72 se insertaba en el flujo, justo arriba del textarea:
+            seleccionar una palabra empujaba todo el guion para abajo y el que
+            seleccionaba perdia de vista lo que habia seleccionado.
+            Ahora sale por un portal a document.body, fija arriba de la
+            pantalla, encima de la fila "‹ Guiones … Aa". Es el patron de
+            Android para la seleccion -la barra de accion contextual-. No
+            depende del teclado, y se ve aunque el guion este desplazado.
+            Los botones conservan su onMouseDown con preventDefault: eso es lo
+            que evita que el textarea pierda la seleccion al tocarlos. */}
+        {hayTextoSeleccionado && createPortal(
+          <div
+            data-testid={`barra-formato-${bloqueUnico.id}`}
+            role="toolbar"
+            aria-label="Formato del texto seleccionado"
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              zIndex: 150,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--aire-3)',
+              paddingTop: 'calc(8px + env(safe-area-inset-top, 0px))',
+              paddingBottom: 8,
+              paddingLeft: 'calc(var(--aire-4) + env(safe-area-inset-left, 0px))',
+              paddingRight: 'calc(var(--aire-4) + env(safe-area-inset-right, 0px))',
+              backgroundColor: 'var(--bg-panel)',
+              borderBottom: '1px solid var(--color-borde)',
+              animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+            }}
+          >
+            <button
+              type="button"
+              className="btn-deformable"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => aplicarFormatoEnSeleccion({ negrita: true })}
+              style={{
+                width: 40,
+                height: 40,
+                padding: 0,
+                fontWeight: 'bold',
+                fontSize: 'var(--texto-titulo)',
+                border: '1px solid var(--color-borde)',
+                backgroundColor: 'var(--bg-suelo)',
+                color: 'var(--color-texto)',
+                cursor: 'pointer'
+              }}
+              title="Negrita"
+            >
+              N
+            </button>
+            <div style={{ display: 'flex', gap: 'var(--aire-2)', alignItems: 'center' }}>
+              {([
+                { color: 'ambar' as const, titulo: 'Ámbar', testid: 'btn-color-ambar' },
+                { color: 'celeste' as const, titulo: 'Celeste', testid: undefined },
+                { color: 'salvia' as const, titulo: 'Salvia', testid: undefined }
+              ]).map((c) => (
+                <button
+                  key={c.color}
+                  type="button"
+                  className="btn-deformable"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => aplicarFormatoEnSeleccion({ color: c.color })}
+                  style={{
+                    width: 32,
+                    height: 32,
+                    padding: 0,
+                    border: '2px solid var(--bg-panel)',
+                    boxShadow: '0 0 0 1px var(--color-borde)',
+                    backgroundColor: COLORES_TRAMO[c.color],
+                    cursor: 'pointer'
+                  }}
+                  title={c.titulo}
+                  data-testid={c.testid}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              className="btn-deformable"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={handleAcotacion}
+              style={{
+                height: 40,
+                padding: '0 var(--aire-3)',
+                border: '1px solid var(--color-borde)',
+                backgroundColor: 'var(--bg-suelo)',
+                color: 'var(--color-texto)',
+                cursor: 'pointer',
+                fontSize: 'var(--texto-meta)'
+              }}
+              title="Acotación"
+            >
+              [...] Acotación
+            </button>
+          </div>,
+          document.body
+        )}
+
+   El radio de los botones lo pone .btn-deformable -pildora- y es lo que se
+   quiere: circulos para N y los colores, pildora para Acotacion. No les
+   pongas borderRadius en linea.
+
+------------------------------------------------------------------------------
+3.9 LA BARRA DE TIEMPO: SE VE, Y SE VE ANTES DE EMPEZAR
+------------------------------------------------------------------------------
+
+a) src/components/BarraDeTiempo.tsx queda ENTERO asi -el archivo de hoy no
+   tiene comentarios, no se pierde ninguno-:
+
+    import React, { useEffect, useState } from 'react'
+    import { MotorDeAvance } from '../lib/avance'
+
+    export interface BarraDeTiempoProps {
+      motorAvance: MotorDeAvance | null
+      totalTokens: number
+      tInicioLecturaMs: number | null
+      // En LISTO, antes de empezar: la barra se dibuja quieta con la duracion
+      // estimada del guion. Ver el comentario de la vista previa, abajo.
+      vistaPrevia?: boolean
+    }
+
+    // El mismo ritmo que usa el editor para decir "1 min", y el que usa esta
+    // barra mientras el motor todavia no midio el del que lee.
+    const PALABRAS_POR_MINUTO_ESTIMADAS = 150
+
+    function formatearTiempo(segundosTotales: number): string {
+      const s = Math.max(0, Math.floor(segundosTotales))
+      const mins = Math.floor(s / 60)
+      const secs = s % 60
+      const mm = mins.toString().padStart(2, '0')
+      const ss = secs.toString().padStart(2, '0')
+      return `${mm}:${ss}`
+    }
+
+    // DONDE VIVE Y COMO SE VE. Tarea 72, 23-09-2026.
+    // Hasta la 72 esta barra se montaba DESPUES del lienzo, adentro de un
+    // contenedor fijo de 100dvh con overflow hidden, y el lienzo ya ocupaba
+    // los 100dvh: quedaba debajo del borde de la pantalla y nunca se vio.
+    // Ahora App la monta ADENTRO del lienzo y ella se ubica sola, arriba al
+    // centro, entre la esquina de volver y la del engranaje o la pausa. Es
+    // una pastilla con el mismo tratamiento translucido que los controles
+    // flotantes -tarea 70, seccion 11- porque se dibuja encima del video o
+    // del texto, y sin fondo no se leeria sobre una pared clara.
+    // El relleno de la barra es blanco y no rojo: el rojo se gana grabando, y
+    // esta barra tambien sale en Leer.
+    function Pastilla({
+      texto,
+      progresoPct,
+      etiqueta,
+      testid,
+      conTestidsDeProgreso
+    }: {
+      texto: string
+      progresoPct: number
+      etiqueta: string
+      testid?: string
+      conTestidsDeProgreso: boolean
+    }) {
+      return (
+        <div
+          style={{
+            position: 'absolute',
+            top: 'calc(12px + env(safe-area-inset-top, 0px))',
+            left: 0,
+            right: 0,
+            zIndex: 12,
+            display: 'flex',
+            justifyContent: 'center',
+            pointerEvents: 'none'
+          }}
+        >
+          <div
+            data-testid={testid}
+            aria-label={etiqueta}
+            style={{
+              minWidth: 120,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 4,
+              padding: '6px 14px 8px',
+              borderRadius: 'var(--redondeo-pildora)',
+              backgroundColor: 'rgba(0,0,0,0.45)',
+              border: '1px solid rgba(255,255,255,0.35)',
+              color: '#fff',
+              fontSize: 'var(--texto-meta)',
+              letterSpacing: '0.04em',
+              fontVariantNumeric: 'tabular-nums',
+              textAlign: 'center',
+              userSelect: 'none'
+            }}
+          >
+            <div>{texto}</div>
+            <div
+              data-testid={conTestidsDeProgreso ? 'barra-progreso-pista' : undefined}
+              style={{
+                width: '100%',
+                height: 2,
+                borderRadius: 'var(--redondeo-pildora)',
+                backgroundColor: 'rgba(255,255,255,0.25)',
+                overflow: 'hidden'
+              }}
+            >
+              <div
+                data-testid={conTestidsDeProgreso ? 'barra-progreso' : undefined}
+                style={{
+                  width: `${progresoPct}%`,
+                  height: '100%',
+                  backgroundColor: 'rgba(255,255,255,0.9)',
+                  transition: 'width 0.25s linear'
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    export default function BarraDeTiempo({
+      motorAvance,
+      totalTokens,
+      tInicioLecturaMs,
+      vistaPrevia = false
+    }: BarraDeTiempoProps) {
+      const [ahora, setAhora] = useState<number>(() => performance.now())
+
+      useEffect(() => {
+        if (!tInicioLecturaMs || totalTokens === 0 || !motorAvance) return
+
+        const interval = setInterval(() => {
+          setAhora(performance.now())
+        }, 250)
+
+        return () => clearInterval(interval)
+      }, [tInicioLecturaMs, totalTokens, motorAvance])
+
+      if (!tInicioLecturaMs || totalTokens === 0 || !motorAvance) {
+        // "MOSTRAR TIEMPO" TIENE QUE VERSE AL TOCARLO. Tarea 72.
+        // Antes de empezar no hay reloj, y la barra devolvia null: en el estado
+        // listo el interruptor no cambiaba nada en pantalla. Regla de producto:
+        // todo control muestra su efecto donde se toca. En vista previa se
+        // dibuja quieta, 00:00 y la duracion estimada.
+        // Lleva OTRA etiqueta y OTRO testid a proposito: no es el reloj de la
+        // lectura. T83 cuida que ese reloj arranque con la lectura y no con el
+        // boton, y el reloj sigue sin aparecer hasta que la lectura empieza.
+        if (vistaPrevia && totalTokens > 0) {
+          const totalSeg = totalTokens / (PALABRAS_POR_MINUTO_ESTIMADAS / 60)
+          return (
+            <Pastilla
+              texto={`${formatearTiempo(0)} / ${formatearTiempo(totalSeg)}`}
+              progresoPct={0}
+              etiqueta="duración estimada del guion"
+              testid="barra-tiempo-previa"
+              conTestidsDeProgreso={false}
+            />
+          )
+        }
+        return null
+      }
+
+      const estado = motorAvance.estadoEn(ahora)
+
+      const transcurridoSeg = (ahora - tInicioLecturaMs) / 1000
+      const palabrasQueFaltan = Math.max(0, totalTokens - estado.posicion)
+      const ppm = estado.ppmEstimadas > 0 ? estado.ppmEstimadas : PALABRAS_POR_MINUTO_ESTIMADAS
+      const segundosQueFaltan = palabrasQueFaltan / (ppm / 60)
+      const totalEstimadoSeg = transcurridoSeg + segundosQueFaltan
+
+      const progresoPct = Math.min(100, Math.max(0, (estado.posicion / totalTokens) * 100))
+
+      return (
+        <Pastilla
+          texto={`${formatearTiempo(transcurridoSeg)} / ${formatearTiempo(totalEstimadoSeg)}`}
+          progresoPct={progresoPct}
+          etiqueta="tiempo transcurrido y total estimado"
+          conTestidsDeProgreso={true}
+        />
+      )
+    }
+
+b) En src/App.tsx, el bloque de las lineas 1856 a 1862:
+
+          {mostrarTiempo && (
+            <BarraDeTiempo
+              motorAvance={motorAvance}
+              totalTokens={totalTokens}
+              tInicioLecturaMs={tInicioLecturaMs}
+            />
+          )}
+
+   SE SACA de ahi -despues del </div> de la linea 1854- y se pone ADENTRO
+   del lienzo, justo despues de <CuentaRegresiva valor={cuentaRegresiva} />
+   -linea 1853- y antes de ese </div>, asi:
+
+            {/* La barra de tiempo va ADENTRO del lienzo -position relative, 100dvh-
+                y se ubica sola arriba al centro. Afuera quedaba debajo del borde
+                de la pantalla y no se veia nunca. Tarea 72. */}
+            {mostrarTiempo && (
+              <BarraDeTiempo
+                motorAvance={motorAvance}
+                totalTokens={totalTokens}
+                tInicioLecturaMs={tInicioLecturaMs}
+                vistaPrevia={estadoToma === 'listo'}
+              />
+            )}
+
+   estadoToma pasa a 'leyendo' en handleEmpezarDesdeListo -linea 984- apenas
+   se aprieta Empezar, antes de la cuenta regresiva: la vista previa se va
+   en ese momento, y el reloj aparece recien cuando empieza la lectura.
+
+
+==============================================================================
+4. LAS PRUEBAS
+==============================================================================
+
+4.1 SE TIENEN QUE SEGUIR PASANDO SIN TOCARLAS. Si alguna se pone roja, PARAR
+    y reportarlo con la salida, no arreglarla:
+
+      T80  en src/pruebas.test.tsx  -"01:00 / 02:00" y la barra al 50%-
+      T83  en src/pruebas.test.tsx  -el reloj no aparece antes de la lectura-
+      T86  en src/pruebas.test.tsx  -Mostrar tiempo apagado y encendido-
+      T152 en src/pruebas/pantallas.test.tsx  -la barra de formato aparece y
+           desaparece con la seleccion-
+      la de vibracion de src/pruebas/tarea45.test.tsx -getByLabelText-
+      src/pruebas/tarea67.test.tsx entera, SALVO el test que reescribe el 3.7 c
+      src/pruebas/motor.test.ts entera
+      T284 en src/pruebas/tarea55.test.tsx
+
+4.2 PRUEBA NUEVA: src/pruebas/tarea72.test.tsx, completa:
+
+    import React from 'react'
+    import { describe, test, expect, beforeEach, vi } from 'vitest'
+    import { render, screen, fireEvent, act } from '@testing-library/react'
+    import 'fake-indexeddb/auto'
+    import App from '../App'
+    import EditorView from '../components/EditorView'
+    import { RepositorioMemoria } from '../datos/RepositorioMemoria'
+    import { MotorFake } from '../motor/MotorFake'
+
+    vi.mock('@capgo/camera-preview', () => ({
+      CameraPreview: {
+        start: vi.fn().mockResolvedValue({ width: 360, height: 640, x: 0, y: 0 }),
+        stop: vi.fn().mockResolvedValue(undefined),
+        setOpacity: vi.fn().mockResolvedValue(undefined),
+        setPreviewSize: vi.fn().mockResolvedValue({ width: 360, height: 640, x: 0, y: 0 })
+      }
+    }))
+
+    const TEXTO = 'Hola. Lee esto en voz alta, con o sin apuro, como prefieras. Ahora fijate en el texto.'
+
+    async function appConGuion() {
+      const repo = new RepositorioMemoria()
+      await repo.guardar({
+        id: 'g-72',
+        titulo: 'Guion 72',
+        idioma: 'es',
+        creado: Date.now(),
+        modificado: Date.now(),
+        archivado: false,
+        bloques: [{ id: 'b1', nombre: '', texto: TEXTO }]
+      })
+      render(<App repoOverride={repo} motor={new MotorFake()} />)
+      await screen.findByTestId('btn-leer-tarjeta')
+    }
+
+    async function abrirPanelAa() {
+      fireEvent.click(await screen.findByTestId('fila-guion-g-72'))
+      fireEvent.click(await screen.findByTestId('btn-menu-opciones-editor'))
+    }
+
+    // jsdom puede devolver un color como hex o como rgb(); se comparan los dos.
+    function mismoColor(css: string, hex: string): boolean {
+      const n = css.replace(/\s/g, '').toLowerCase()
+      const h = hex.toLowerCase()
+      const r = parseInt(h.slice(1, 3), 16), g = parseInt(h.slice(3, 5), 16), b = parseInt(h.slice(5, 7), 16)
+      return n === h || n === `rgb(${r},${g},${b})`
+    }
+
+    describe('Tarea 72 - cada ajuste muestra lo que hace', () => {
+      beforeEach(() => {
+        localStorage.clear()
+        vi.clearAllMocks()
+      })
+
+      // T285 - GUARDIANA DE LA REGLA DE PRODUCTO EN EL PANEL Aa. Cada uno de los
+      // cuatro ajustes del texto cambia la muestra en el momento del toque. Si
+      // alguien desconecta la muestra de un ajuste, ese ajuste vuelve a
+      // parecer falso y esta prueba falla nombrandolo.
+      test('T285 - tamano, ancho, tipografia y colores cambian la muestra al tocarlos', async () => {
+        await appConGuion()
+        await abrirPanelAa()
+        const col = () => screen.getByTestId('muestra-lectura-columna') as HTMLElement
+        const caja = () => screen.getByTestId('muestra-lectura') as HTMLElement
+
+        // Tipografia
+        fireEvent.click(screen.getByRole('button', { name: 'Serif' }))
+        expect(col().style.fontFamily, 'Serif no llego a la muestra').toContain('Source Serif 4')
+        fireEvent.click(screen.getByRole('button', { name: 'Sans' }))
+        expect(col().style.fontFamily, 'Sans no llego a la muestra').toContain('Source Sans 3')
+
+        // Ancho
+        fireEvent.click(screen.getByRole('button', { name: 'Angosto' }))
+        expect(col().style.maxWidth, 'Angosto no llego a la muestra').toBe('22ch')
+        fireEvent.click(screen.getByRole('button', { name: 'Ancho' }))
+        expect(col().style.maxWidth, 'Ancho no llego a la muestra').toBe('90%')
+
+        // Tamano: por omision es 24, el + lo lleva a 32
+        const antes = parseFloat(col().style.fontSize)
+        fireEvent.click(screen.getByLabelText('Aumentar letra panel'))
+        expect(parseFloat(col().style.fontSize), 'el + no llego a la muestra').toBeGreaterThan(antes)
+
+        // Colores
+        fireEvent.click(screen.getByTitle('Blanco con negro'))
+        expect(mismoColor(caja().style.backgroundColor, '#FFFFFF'), 'el fondo blanco no llego a la muestra').toBe(true)
+        expect(mismoColor(col().style.color, '#000000'), 'la letra negra no llego a la muestra').toBe(true)
+        fireEvent.click(screen.getByTitle('Negro con ámbar'))
+        expect(mismoColor(caja().style.backgroundColor, '#000000'), 'el fondo negro no llego a la muestra').toBe(true)
+        expect(mismoColor(col().style.color, '#F5C24B'), 'la letra ambar no llego a la muestra').toBe(true)
+      })
+
+      // T286 - GUARDIANA DE LA BARRA DE TIEMPO. Dos cosas: que en listo el
+      // interruptor muestre algo, y que la barra viva ADENTRO del lienzo. Si
+      // alguien la vuelve a montar despues del lienzo, queda debajo del borde
+      // de la pantalla y no se ve; eso jsdom no lo puede medir, pero si puede
+      // ver donde esta montada.
+      test('T286 - Mostrar tiempo se ve en listo, y el reloj vive adentro del lienzo', async () => {
+        await appConGuion()
+        fireEvent.click(await screen.findByTestId('btn-leer-tarjeta'))
+
+        // No se da por sentado el valor por omision de Mostrar tiempo: se
+        // enciende a mano, asi la prueba cuida el montaje y no un default.
+        fireEvent.click(await screen.findByTestId('btn-engranaje-toma'))
+        const interruptor = screen.getByLabelText('Mostrar tiempo') as HTMLInputElement
+        if (!interruptor.checked) fireEvent.click(interruptor)
+        fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+
+        const previa = await screen.findByTestId('barra-tiempo-previa')
+        expect(previa.textContent).toMatch(/^00:00 \/ \d\d:\d\d$/)
+
+        fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+        fireEvent.click(screen.getByLabelText('Mostrar tiempo'))
+        expect(screen.queryByTestId('barra-tiempo-previa')).toBeNull()
+        fireEvent.click(screen.getByLabelText('Mostrar tiempo'))
+        expect(screen.getByTestId('barra-tiempo-previa')).toBeDefined()
+
+        fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+        fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+        expect(screen.queryByTestId('barra-tiempo-previa')).toBeNull()
+
+        await act(async () => {
+          await new Promise((r) => setTimeout(r, 3100))
+        })
+        const reloj = document.querySelector('div[aria-label="tiempo transcurrido y total estimado"]') as HTMLElement
+        expect(reloj).not.toBeNull()
+        const lienzo = screen.getByTestId('teleprompter-view-container').parentElement as HTMLElement
+        expect(lienzo.contains(reloj), 'el reloj no esta adentro del lienzo').toBe(true)
+      }, 15000)
+
+      // T287 - GUARDIANA DE LA BARRA DE FORMATO. No puede volver al flujo del
+      // editor: si vuelve, seleccionar una palabra empuja el guion.
+      test('T287 - la barra de formato cuelga de body, fija, y no del editor', async () => {
+        render(
+          <EditorView
+            guion={{
+              id: 'g-288',
+              titulo: 'Guion 288',
+              idioma: 'es',
+              creado: Date.now(),
+              modificado: Date.now(),
+              bloques: [{ id: 'b1', nombre: '', texto: TEXTO }]
+            }}
+            onChangeGuion={() => {}}
+            onVolverBiblioteca={() => {}}
+            onEntrarLectura={() => {}}
+          />
+        )
+        const textarea = screen.getByTestId('textarea-guion') as HTMLTextAreaElement
+        await act(async () => {
+          fireEvent.select(textarea, { target: { selectionStart: 0, selectionEnd: 4 } })
+        })
+        const barra = screen.getByTestId('barra-formato-b1')
+        expect(barra.parentElement).toBe(document.body)
+        expect(barra.style.position).toBe('fixed')
+        expect(textarea.parentElement!.contains(barra)).toBe(false)
+      })
+    })
+
+    Si el test de T285 no encuentra un boton por su nombre -Serif, Sans,
+    Angosto, Ancho- NO cambies el selector por uno que "funcione": el
+    nombre es lo que ve el usuario. Reportalo.
+
+
+==============================================================================
+5. QUE NO SE PIERDE — LISTA DE CONTROL
+==============================================================================
+
+  [ ] La lectura se ve IGUAL que antes: misma letra, mismo interlineado, 16 px
+      entre renglones, columna de 22 caracteres centrada en angosta, 90% a la
+      izquierda en completa, letra negra sobre fondo blanco.
+  [ ] La portada dibuja su tarjeta con la misma tipografia que antes.
+  [ ] Espejo sigue volteando el texto. Mostrar tiempo sigue apagando la barra.
+      Vibracion sigue guardandose y vibra al encenderla.
+  [ ] Los tres interruptores se prenden y apagan tocando el texto o la pista.
+  [ ] El panel Aa ya no tiene fila de idioma, y la linea de meta del editor
+      sigue diciendo el idioma del guion -"Español"-.
+  [ ] Negrita, los tres colores y Acotacion siguen aplicandose a la seleccion,
+      y tocarlos NO borra la seleccion.
+  [ ] Ningun comentario existente quedo borrado.
+
+
+==============================================================================
+6. CRITERIO DE TERMINADO
+==============================================================================
+
+  1. `npx vitest run`: hoy main tiene 303 pruebas. Al terminar son 306 -las
+     tres de tarea72.test.tsx- y ninguna roja ni saltada.
+  2. `npx tsc --noEmit` no imprime nada.
+  3. `npm run build` sin errores.
+  4. `git diff --stat main` muestra exactamente los doce archivos de la
+     seccion 1.
+  5. COMPROBADO ROMPIENDO, y en el informe se pega la salida de cada uno:
+       a) En MuestraLectura.tsx, cambiar familiaLectura(tipoFuente) por
+          familiaLectura('sans'). T285 tiene que ponerse roja con el mensaje
+          "Serif no llego a la muestra". Volver atras.
+       b) En App.tsx, devolver el bloque de BarraDeTiempo a donde estaba,
+          despues del </div> del lienzo. T286 tiene que ponerse roja con "el
+          reloj no esta adentro del lienzo". Volver atras.
+       c) En EditorView.tsx, sacar el createPortal y dejar la barra en el
+          flujo. T287 tiene que ponerse roja. Volver atras.
+  6. En el informe, por cada prueba creada, el archivo y la linea donde esta.
+  7. La rama es tarea-72-cada-ajuste-muestra-lo-que-hace, sale de main y se
+     entrega sin mergear.
+
+
+==============================================================================
+7. COMO SE VE, AL TERMINAR
+==============================================================================
+
+EL PANEL Aa:
+
+    Ajustes                                             Listo
+    CÓMO SE VE EL TEXTO
+    ┌──────────────────────────────────────────────────────┐  <- de borde
+    │  Hola. Lee esto en voz alta, con o                   │     a borde,
+    │  sin apuro, como prefieras. Ahora                    │     con el fondo
+    │  fíjate en el texto.                  (se desvanece) │     de lectura
+    └──────────────────────────────────────────────────────┘
+    Tamaño de letra                           ( - )  24  ( + )
+    Ancho del texto              (Ancho) (Medio) (Angosto)
+    Tipografía                                  (Sans) (Serif)
+    Colores de lectura                         [Aa] [Aa] [Aa]
+                                               <- ya no hay fila de idioma
+
+EL LIENZO, EN LISTO, CON MOSTRAR TIEMPO:
+
+    (‹)            ( 00:00 / 01:00 )             (⚙)
+                   ───────────────   <- pista vacia
+
+SELECCIONANDO TEXTO EN EL EDITOR:
+
+    ┌────────────────────────────────────────────────┐  <- fija arriba,
+    │ (N)  (●)(●)(●)  ( [...] Acotación )            │     tapa la fila
+    └────────────────────────────────────────────────┘     de Guiones y Aa
+    el guion no se mueve
+
+ESTOS DIBUJOS NO MANDAN: manda el codigo de la seccion 3.

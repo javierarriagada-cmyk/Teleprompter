@@ -1,0 +1,1111 @@
+TAREA 71 — EL EDITOR SE VE COMO LA FOTO: SE APRIETA, RESPIRA Y NO ABRE UN
+DIALOGO PARA PEGAR
+
+Repositorio: javierarriagada-cmyk/Teleprompter  (privado)
+Rama base: main, en el commit adfb09c "El panel de ajustes deja de parecer un
+           formulario".
+Rama de trabajo: tarea-71-el-editor-se-ve-como-la-foto
+Archivos que se tocan: src/components/EditorView.tsx -casi toda la tarea- y
+           src/components/TarjetaLectura.tsx -solo el punto 4.8-, mas las
+           pruebas que se nombran en la seccion 5.
+
+LA BASE YA ESTA EN GITHUB, COMPROBADO:
+El 23 de septiembre de 2026 se empujo main -efa55e6..adfb09c-, asi que
+origin/main ES adfb09c y los numeros de linea de aqui abajo son los que se
+van a encontrar al clonar. Antes de empujar se corrio la suite entera sobre
+ese commit: 28 archivos, 290 pruebas, todas en verde, ninguna saltada. Ese
+290 es el numero contra el que se mide el criterio de terminado.
+
+LA TAREA 70 ESTA ENTREGADA Y TODAVIA NO MEZCLADA, y no estorba:
+Salio de efa55e6 y toca TeleprompterView.tsx, App.tsx, IconosApp.tsx y las
+pruebas tarea66, tarea69 y tarea70. Esta tarea no toca ninguno de esos
+archivos. Las dos ramas pueden entrar en cualquier orden, sin conflicto.
+Por eso esta sale de adfb09c en vez de esperar: asi el 290 de arriba sigue
+siendo un numero medido y no uno estimado.
+
+
+==============================================================================
+0. POR QUE EXISTE ESTA TAREA
+==============================================================================
+
+La pantalla del editor -la que se abre al tocar un guion- es la unica de la
+aplicacion que no paso todavia por el tratamiento visual que ya tienen la
+portada y el lienzo. Se nota en tres cosas concretas, todas verificables en el
+codigo de hoy y ninguna de opinion:
+
+  1. NINGUNO de los nueve botones de esta pantalla lleva la clase
+     btn-deformable. Y en src/styles.css linea 89 esta apagado el destello
+     azul de Android -webkit-tap-highlight-color: transparent-. O sea: hoy,
+     en esta pantalla, apretar un boton NO PRODUCE NINGUNA SENAL. Ni la del
+     sistema, porque la apagamos, ni la nuestra, porque no se la pusimos.
+     No es que se vea distinto: es que no se siente nada.
+
+  2. El titulo -Source Serif 4, 28px- y el texto del guion -Source Serif 4,
+     18px- quedan pegados uno arriba del otro, con la misma familia y sin
+     nada entre medio. Dos serifas del mismo tono se funden: el ojo no sabe
+     donde termina el nombre del guion y donde empieza lo que va a leer.
+
+  3. Los dos botones de abajo -Pegar texto y Abrir archivo- son identicos:
+     mismo fondo var(--bg-fila), mismo tamano, misma tipografia. No hay
+     jerarquia: la pantalla no dice cual de los dos es el camino normal.
+
+Ademas, el boton "Pegar texto" no pega: abre un dialogo con OTRA caja de
+texto adentro, en la que hay que pegar, y despues apretar "Importar". Son
+tres toques y una pantalla de mas para hacer lo que el teclado de Android ya
+hace solo.
+
+Esta tarea arregla las cuatro cosas. No agrega funciones nuevas.
+
+Ademas arrastra dos cosas chicas que Javier aprobo aparte, el 23 de
+septiembre, y que no se pueden dejar afuera sin dejar la pantalla a medias:
+el placeholder del titulo -punto 2.9- y las dos puertas de la portada, que
+despues de esto se verian distintas a las del editor -punto 2.8-.
+
+La referencia es el dibujo "COMO ES / COMO SERIA" que aprobo Javier, mas los
+ocho consejos que venian con el. La seccion 2 dice cuales de esos consejos se
+toman, cuales no, y por que.
+
+
+==============================================================================
+1. ALCANCE EXACTO
+==============================================================================
+
+SE TOCAN DOS ARCHIVOS DE CODIGO, Y NINGUNO MAS:
+
+  src/components/EditorView.tsx      - casi todo lo de esta tarea.
+  src/components/TarjetaLectura.tsx  - SOLO el punto 4.8: las dos puertas de
+                                       la tarjeta de la portada -Leer y
+                                       Grabar- pasan a tener los mismos
+                                       dibujos que las del editor. Nada mas
+                                       de ese archivo se toca.
+
+NO SE TOCA, Y ESTO ES UNA REGLA DURA, NO UNA PREFERENCIA:
+
+  src/components/IconosApp.tsx
+  src/App.tsx
+  src/components/TeleprompterView.tsx
+
+Motivo: la Tarea 70 esta ENTREGADA sobre esos tres archivos y todavia no se
+mezclo. Las dos ramas entran sin conflicto SOLAMENTE si esta no los toca. Si
+en algun momento parece que hace falta un icono nuevo, NO se agrega: se para
+y se avisa. Esta tarea no necesita ninguno -IconoEmpezar ya existe en
+IconosApp.tsx lineas 29 a 46-. Lo unico que pasa con IconosApp.tsx es que
+dos archivos lo IMPORTAN: EditorView.tsx en el 4.3 y TarjetaLectura.tsx en
+el 4.8. Importar de un archivo no es modificarlo.
+
+TAMPOCO SE TOCA, por decision, no por olvido: el panel de ajustes en su
+contenido -que ajustes viven ahi y cuales no-, el flujo de Abrir archivo,
+importarArchivo, importarTexto, contarPalabras, el modelo del guion, ni la
+condicion numPalabras > 0 / === 0 que gobierna que se muestra abajo.
+
+SE TOCAN las pruebas nombradas una por una en la seccion 5, y ninguna otra.
+
+
+==============================================================================
+2. OBSERVACIONES QUE SE DECLARAN ANTES DE EMPEZAR
+==============================================================================
+
+Esto es lo que el dibujo y los consejos piden, y lo que este encargo hace o
+deliberadamente NO hace con cada cosa. Esta aca para que Javier lo pueda dar
+vuelta con una palabra, en vez de descubrirlo despues en el telefono.
+
+2.1 CONSEJO 1 -"las dos puertas Leer/Grabar viven en el editor siempre,
+    visibles y apagadas cuando esta vacio; Pegar y Abrir bajan a texto"-.
+    NO SE TOMA.
+    Hoy hay una prueba, T190 en src/pruebas/pantallas.test.tsx, que dice
+    textualmente: "Con un guion vacio, btn-leer-guion-fijo NO esta en el
+    documento". Y T279 en src/pruebas/tarea55.test.tsx cuida que con el guion
+    vacio Pegar y Abrir SI esten como botones. Tomar el consejo 1 es dar
+    vuelta las dos decisiones y reescribir las dos guardianas.
+    Ademas el propio dibujo de Javier -la columna "COMO SERIA" del estado
+    vacio- muestra Pegar y Abrir abajo como botones, y no muestra Leer ni
+    Grabar. El dibujo aprobado y el consejo se contradicen; manda el dibujo.
+
+2.2 CONSEJO 5 -"minutos y palabras, abajo del titulo"-. YA ESTABA HECHO, y
+    se le agrega una sola cosa.
+    El contador ya existe -data-testid="contador-palabras-editor", hoy lineas
+    563 a 577- y ya vive abajo del titulo, y ya aparece solo cuando hay
+    palabras. Lo unico que cambia es que la misma linea pasa a decir tambien
+    el idioma del guion, que es el consejo 3. No se mueve, no se duplica, no
+    aparece con el guion vacio. El dibujo del estado vacio no muestra
+    contador, y asi queda.
+
+2.3 CONSEJO 7 -"Pegar debe pegar y dejar el cursor al final"-. SE TOMA EL
+    EFECTO, NO LA LETRA.
+    "Pegar de verdad" significaria leer el portapapeles. Hoy el proyecto no
+    tiene con que: no hay @capacitor/clipboard en package.json y no hay una
+    sola llamada a navigator.clipboard en todo src/. Agregar una dependencia
+    nueva para ahorrar un toque no vale la pena, y ademas Android ya resuelve
+    esto solo: al poner el cursor en un campo de texto vacio, el sistema
+    ofrece "Pegar" sobre el cursor si hay algo en el portapapeles.
+    Entonces el boton hace lo que el consejo pide -dejar al usuario escribiendo
+    en el guion, con el cursor al final- y el pegado lo hace el teclado del
+    telefono. Lo que se elimina es el dialogo del medio.
+    RIESGO DECLARADO: si el portapapeles esta vacio, no aparece ninguna
+    burbuja y lo que pasa es que se abre el teclado para escribir. Es un
+    resultado valido -la pantalla es para poner texto, de una forma o de la
+    otra- pero el boton se sigue llamando "Pegar texto". Se deja asi porque
+    es lo que dice el dibujo aprobado.
+
+2.4 EL BOTON LEER TIENE UN transform EN LINEA QUE MATARIA btn-deformable.
+    En EditorView.tsx lineas 1238 a 1243, el boton btn-leer-guion-fijo repite
+    el mismo transform: translateY que YA tiene su contenedor en las lineas
+    1207 a 1212. O sea que hoy, cuando la barra esta escondida, el conjunto
+    se corre 240px y no 120px. Es redundante desde que existe, y ademas un
+    transform en linea le gana siempre al scaleY(0.94) de btn-deformable.
+    SE SACA del boton y SE DEJA en el contenedor. La barra sigue entrando y
+    saliendo exactamente igual -120px alcanzan de sobra para sacarla de
+    pantalla- y el apretado vuelve a funcionar.
+
+2.5 EL BORDE DEL BOTON CREMA. Hoy btn-leer-guion-fijo tiene fondo
+    var(--color-acento) -crema- Y ADEMAS border: 1px solid var(--color-borde)
+    -gris claro-. Un borde gris alrededor de un relleno crema sobre fondo
+    oscuro no separa nada: ensucia el canto. Se saca el borde de Leer. El de
+    Grabar se queda, porque Grabar SI es un contorno sin relleno y ahi el
+    borde es lo unico que lo dibuja.
+
+2.6 LA BARRA DE FORMATO QUE EMPUJA EL GUION. QUEDA AFUERA, VA A LA TAREA 72.
+    Hoy, en las lineas 1003 a 1099, la barra que aparece al seleccionar texto
+    -"N", tres cuadrados de color, "[...] Acotacion"- se inserta EN EL FLUJO,
+    arriba del textarea. Resultado: seleccionar una palabra empuja todo el
+    guion para abajo y el usuario pierde de vista lo que habia seleccionado.
+    Es un defecto real y es mas grande que esta tarea -hay que decidir si esa
+    barra flota, si se ancla arriba o si va al borde del teclado-. No se toca
+    aca para no mezclar dos discusiones en la misma rama.
+
+2.7 EL <select> DE IDIOMA. QUEDA AFUERA, VA A LA TAREA 72.
+    En la linea 871 el idioma se elige con un <select> nativo, que en Android
+    abre una lista del sistema que no se parece a nada nuestro. Deberia ser un
+    grupo de pastillas como los otros ajustes del mismo panel. Es un cambio de
+    control, no de estilo, y arrastra su propia prueba -tarea67.test.tsx-.
+    En ESTA tarea el idioma solo aparece de lectura en la linea de meta.
+
+2.8 EL ▶ DE LA PORTADA. SE ARREGLA. Javier lo aprobo el 23 de septiembre.
+    El motivo: despues del punto 3.3, el boton Leer del editor tiene el
+    triangulo DIBUJADO -IconoEmpezar, un SVG- y el boton Leer de la portada
+    -TarjetaLectura.tsx linea 271- tendria todavia el caracter "▶" escrito a
+    mano. Se verian parecidos pero no iguales, porque el caracter no tiene ni
+    el mismo peso ni la misma alineacion vertical que el SVG. Son los DOS
+    botones de empezar a leer de la aplicacion: tienen que ser el mismo.
+    El codigo esta en el punto 4.8. Es la unica razon por la que esta tarea
+    abre TarjetaLectura.tsx, y no se aprovecha para nada mas.
+
+    TRES COSAS DE ESE ARCHIVO QUE HAY QUE SABER ANTES DE TOCARLO. Las tres
+    salieron de mirar el archivo entero antes de escribir esto, no de
+    suponer. Las dos primeras cambian lo que hay que hacer:
+
+    a) ESE BOTON TIENE EL MISMO DEFECTO DEL 2.5, Y SE ARREGLA IGUAL.
+       Hoy, en su linea 260, tiene relleno crema var(--color-acento) Y ADEMAS
+       border: 1px solid var(--color-borde). Es exactamente lo que el 2.5
+       manda sacar del Leer del editor. Si se saca en un lado y no en el
+       otro, los dos botones que estamos igualando quedan distintos de una
+       manera NUEVA, y esta tarea habria empeorado lo que vino a arreglar.
+       Se saca en los dos. Esto no estaba en lo que Javier aprobo -el aprobo
+       el triangulo-, se decide aca por coherencia con el 2.5, y queda
+       escrito para que lo pueda dar vuelta con una palabra.
+
+    b) HAY UN transform EN LINEA EN ESE BOTON QUE NO SE TOCA. OJO CON ESTO.
+       El style de ese boton termina con ...estiloComprimirPorAviso(
+       gestoLeer.avisado), que inyecta transform: scale(...) en linea.
+       El 2.4 y el 4.3 de este mismo encargo mandan SACAR un transform en
+       linea porque mata el apretado de btn-deformable. ACA NO SE SACA: ese
+       transform es el aviso del mantener-apretado, el gesto que abre el
+       menu de la tarjeta, vive en mantenerApretado.ts y lo cuida
+       tarea67.test.tsx. Sacarlo "por analogia" rompe el gesto y una prueba.
+       La regla del 2.4 vale para el boton Leer del EDITOR y para los nueve
+       botones del 4.1. No para este.
+
+    c) EL "●" DE GRABAR DE LA PORTADA TAMPOCO ES ROJO, Y TAMBIEN SE ARREGLA.
+       Parece que si, porque el boton tiene la clase
+       btn-grabar-tarjeta-rojo. Pero esa clase, en styles.css linea 274,
+       solo actua en :active: pinta el boton ENTERO de rojo mientras se
+       aprieta. En reposo el "●" es un caracter gris, el mismo defecto que
+       el 3.3 arregla en el editor.
+       Se arregla aca tambien, con el mismo div del 4.3, porque si no esta
+       tarea CREA una inconsistencia nueva: los dos botones Grabar de la
+       aplicacion quedarian distintos entre si. El detalle y el codigo, en
+       el 4.8 punto 3.
+
+2.9 EL PLACEHOLDER DEL TITULO PASA A "Título del guion". Javier lo aprobo
+    el 23 de septiembre. El codigo esta en el punto 4.7.
+    El consejo 2 pedia dos cosas: que el titulo fuera un campo y no una
+    etiqueta gris, y que el placeholder invitara a escribir. La primera YA
+    ESTABA HECHA desde antes -linea 540: es un <input> con class
+    texto-display y data-testid="input-titulo-guion", y T151 en
+    pantallas.test.tsx la cuida-. La segunda se hace ahora, y la razon es
+    que "Sin título" DESCRIBE UN ESTADO y "Título del guion" DICE QUE HACER.
+    Un campo vacio que se llama "Sin título" parece una etiqueta puesta por
+    el sistema; uno que dice "Título del guion" se ve como lo que es, un
+    lugar donde escribir.
+
+    LO QUE NO SE TOCA, Y HAY QUE MIRARLO PARA NO CONFUNDIRLO: la linea 542
+    compara guion.titulo === 'Sin título' para decidir si el campo se muestra
+    vacio. Esa comparacion es contra el TITULO GUARDADO en el modelo, no
+    contra el placeholder. Son dos cosas distintas que hoy dicen la misma
+    frase, y por eso se prestan a confusion. La comparacion SE QUEDA COMO
+    ESTA: 'Sin título' sigue siendo el titulo que la aplicacion le pone a un
+    guion nuevo, y el punto 4.7 solo cambia lo que se ve cuando el campo esta
+    en blanco. Cambiar la comparacion haria que los guiones nuevos ya
+    guardados aparezcan con el texto literal "Sin título" adentro del campo.
+
+    T151 NO SE ROMPE: esa prueba usa queryByText(/Título del guión/i), que
+    mira nodos de TEXTO, y un placeholder es un ATRIBUTO. Lo que T151 prohibe
+    es una ETIQUETA gris al lado del campo, que es justo lo que no se va a
+    poner. T151 no se toca y tiene que seguir pasando tal cual.
+
+
+==============================================================================
+3. EL CAMBIO
+==============================================================================
+
+Ocho cosas. Las siete primeras dentro de EditorView.tsx; la octava son tres
+retoques en TarjetaLectura.tsx, todos dentro de sus dos botones.
+
+3.1 QUE SE SIENTA EL APRETON. Nueve botones reciben className="btn-deformable".
+3.2 QUE RESPIRE. Una linea separadora bajo el titulo, y el idioma en la meta.
+3.3 QUE LAS DOS PUERTAS SE VEAN COMO DOS PUERTAS. Leer relleno con el
+    triangulo dibujado; Grabar contorno con el punto rojo.
+3.4 QUE SE SEPA CUAL ES EL CAMINO. Pegar texto manda; Abrir archivo acompana.
+3.5 QUE LA HOJA EN BLANCO DIGA ALGO. El placeholder del guion gana un ejemplo.
+3.6 QUE PEGAR SEA PEGAR. Muere el dialogo intermedio.
+3.7 QUE EL TITULO INVITE. El placeholder pasa a "Título del guion".
+3.8 QUE LAS DOS PUERTAS DE LA PORTADA SEAN LAS MISMAS QUE LAS DEL EDITOR. El
+    ▶ y el ● de la portada pasan a ser los mismos dibujos que los del editor,
+    y Leer pierde el borde que le sobra.
+
+El detalle de cada una, con el codigo, esta en la seccion 4.
+
+
+==============================================================================
+4. EL CODIGO, LISTO PARA PEGAR
+==============================================================================
+
+Los numeros de linea son los del archivo como esta hoy en main, commit
+adfb09c. Si algo no coincide, mandan el texto y el data-testid, no el numero.
+
+------------------------------------------------------------------------------
+4.1 btn-deformable EN LOS NUEVE BOTONES
+------------------------------------------------------------------------------
+
+Se agrega className="btn-deformable" -o se agrega la clase a la que ya
+tienen- a estos nueve, y a ninguno mas:
+
+  linea  498  el boton de volver, el que dice "‹ Guiones".
+              Hoy tiene className="texto-cuerpo".
+              Queda:  className="texto-cuerpo btn-deformable"
+  linea  517  el boton "Aa", data-testid="btn-menu-opciones-editor".
+  linea  648  el boton "Listo", data-testid="btn-cerrar-ajustes".
+  linea  675  el "-" de letra, aria-label="Disminuir letra panel".
+  linea  683  el "+" de letra, aria-label="Aumentar letra panel".
+  linea 1147  data-testid="btn-pegar-texto".
+  linea 1169  data-testid="btn-abrir-archivo".
+  linea 1215  data-testid="btn-leer-guion-fijo".
+  linea 1248  data-testid="btn-grabar-guion-fijo".
+
+Los botones que ya estan DENTRO del panel de ajustes en las filas Ancho del
+texto, Tipografia y Colores de lectura ya tienen btn-deformable desde antes.
+No se tocan.
+
+DOS COSAS QUE HAY QUE SABER Y NO "ARREGLAR":
+
+  a) .btn-deformable pone border-radius: var(--redondeo-pildora) en reposo
+     -styles.css linea 257-. Los botones "-" y "+" tienen border-radius:
+     var(--redondeo) escrito en el style en linea, y el estilo en linea le
+     gana siempre a la clase. O sea: esos dos van a seguir con la esquina
+     de 10px y solo van a tomar el scaleY(0.94) del apretado. ESTA BIEN ASI.
+     No se les saca el radio en linea para "que la clase funcione entera":
+     esos dos botones son cuadrados a proposito, no pastillas.
+
+  b) Para que el apretado se vea, el boton NO puede tener transform en su
+     style en linea. Es exactamente el caso del boton Leer: ver 4.3.
+
+------------------------------------------------------------------------------
+4.2 LA LINEA SEPARADORA Y EL IDIOMA EN LA META
+------------------------------------------------------------------------------
+
+Hoy, en la linea 432, se arma el texto de la meta asi:
+
+  const resumenMeta = `${numPalabras.toLocaleString('es')} palabras · ${numMinutos > 0 ? numMinutos : 1} min`
+
+Se agrega, ARRIBA de la funcion del componente -al lado de las otras
+constantes del modulo, no adentro del render-:
+
+  // Los nombres de idioma de la linea de meta salen de aca y no del <select>
+  // de la linea 871, aunque digan lo mismo: el <select> muestra "Español (es)"
+  // porque ahi el usuario ESTA ELIGIENDO y le sirve ver el codigo; la meta
+  // muestra "Español" a secas porque ahi solo esta leyendo de que idioma es
+  // su guion. Si algun dia hay que agregar un idioma, van los dos.
+  const NOMBRE_IDIOMA: Record<string, string> = {
+    es: 'Español',
+    en: 'English',
+    pt: 'Português',
+    fr: 'Français',
+    de: 'Deutsch',
+    it: 'Italiano'
+  }
+
+Y la linea 432 queda:
+
+  const nombreIdioma = NOMBRE_IDIOMA[guion.idioma || 'es'] || (guion.idioma || 'es')
+  const resumenMeta = `${numPalabras.toLocaleString('es')} palabras · ${numMinutos > 0 ? numMinutos : 1} min · ${nombreIdioma}`
+
+Y el bloque de la meta -hoy lineas 564 a 577- queda asi. Lo unico que cambia
+es que gana la linea de abajo y el aire que la acompana:
+
+  {/* Resumen meta bajo el titulo - solo si numPalabras > 0 */}
+  {numPalabras > 0 && (
+    <div
+      data-testid="contador-palabras-editor"
+      className="texto-meta"
+      style={{
+        color: 'var(--color-apagado)',
+        marginTop: 'calc(-1 * var(--aire-1))',
+        marginBottom: 'var(--aire-4)',
+        paddingLeft: 'var(--aire-2)',
+        paddingBottom: 'var(--aire-3)',
+        // La linea separa el NOMBRE del guion de lo que se va a LEER. Las dos
+        // cosas estan en Source Serif 4 y se funden sin nada en el medio.
+        // Va en var(--bg-panel) y no en var(--color-borde): el borde a fuerza
+        // completa sobre var(--bg-suelo) es una raya que grita. Esta tiene que
+        // separar, no anunciarse.
+        // Aparece con la misma condicion que el contador -numPalabras > 0- y
+        // no con una propia: con el guion vacio no hay nada que separar, y el
+        // dibujo del estado vacio que aprobo Javier no tiene linea.
+        borderBottom: '1px solid var(--bg-panel)'
+      }}
+    >
+      {resumenMeta}
+    </div>
+  )}
+
+------------------------------------------------------------------------------
+4.3 LAS DOS PUERTAS
+------------------------------------------------------------------------------
+
+En la linea 10, el import queda:
+
+  import { IconoAtras, IconoEmpezar } from './IconosApp'
+
+El boton Leer -hoy lineas 1215 a 1247- queda asi. Cambian tres cosas: la
+clase, el borde que se va, el transform en linea que se va, y el ▶ que pasa
+a ser el dibujo.
+
+  <button
+    ref={btnLeerRef}
+    className="btn-deformable"
+    onClick={() => {
+      const rect = btnLeerRef.current?.getBoundingClientRect()
+      onEntrarLectura(rect)
+    }}
+    data-testid="btn-leer-guion-fijo"
+    style={{
+      pointerEvents: 'auto',
+      flex: 1,
+      maxWidth: 160,
+      padding: 'var(--aire-3) var(--aire-4)',
+      fontSize: 'var(--texto-titulo)',
+      fontWeight: 600,
+      backgroundColor: 'var(--color-acento)',
+      color: 'var(--color-texto-acento)',
+      borderRadius: 'var(--redondeo-pildora)',
+      cursor: 'pointer',
+      // Sin borde: un contorno gris alrededor de un relleno crema no separa
+      // nada sobre el fondo oscuro, solo ensucia el canto. El relleno YA es
+      // el limite. Grabar si lleva borde, porque ahi el borde es el boton.
+      border: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 'var(--aire-2)'
+      // NO VA transform NI transition ACA. El translateY de entrada y salida
+      // de la barra lo hace el contenedor de la linea 1194, y estaba repetido
+      // en los dos: la barra escondida se corria 240px en vez de 120. Ademas
+      // un transform en linea le gana al scaleY(0.94) de btn-deformable y
+      // deja el boton sin apretado. Se saco el 23 de septiembre de 2026.
+    }}
+  >
+    <IconoEmpezar tamano={16} />
+    <span>Leer</span>
+  </button>
+
+El boton Grabar -hoy lineas 1248 a 1273- queda asi. Cambian dos cosas: la
+clase, y el "●" escrito a mano que pasa a ser un punto de verdad, rojo.
+
+  <button
+    className="btn-deformable"
+    onClick={() => {
+      const rect = btnLeerRef.current?.getBoundingClientRect()
+      onEntrarGrabar?.(rect)
+    }}
+    data-testid="btn-grabar-guion-fijo"
+    style={{
+      pointerEvents: 'auto',
+      flex: 1,
+      maxWidth: 160,
+      padding: 'var(--aire-3) var(--aire-4)',
+      fontSize: 'var(--texto-titulo)',
+      fontWeight: 600,
+      backgroundColor: 'var(--bg-superficie)',
+      color: 'var(--color-texto)',
+      borderRadius: 'var(--redondeo-pildora)',
+      cursor: 'pointer',
+      border: '1px solid var(--color-borde)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 'var(--aire-2)'
+    }}
+  >
+    {/* El punto de grabar era el caracter "●", que hereda el color del texto
+        y queda gris: el mismo gris del triangulo de Leer. Dos puertas que
+        hacen cosas distintas se veian iguales. Es un div y no un caracter
+        porque asi toma var(--color-grabando), el mismo rojo de la barra de
+        tiempo y del punto tally del lienzo. Es el UNICO rojo de la pantalla. */}
+    <div
+      style={{
+        width: 10,
+        height: 10,
+        borderRadius: 'var(--redondeo-pildora)',
+        backgroundColor: 'var(--color-grabando)',
+        flexShrink: 0
+      }}
+    />
+    <span>Grabar</span>
+  </button>
+
+------------------------------------------------------------------------------
+4.4 PEGAR MANDA, ABRIR ACOMPANA
+------------------------------------------------------------------------------
+
+Los dos botones de la barra del estado vacio -hoy lineas 1147 a 1188- dejan
+de ser gemelos. El onClick de Pegar cambia por completo: eso es el 4.6.
+
+  <button
+    data-testid="btn-pegar-texto"
+    className="btn-deformable"
+    onClick={ ... ver 4.6 ... }
+    style={{
+      pointerEvents: 'auto',
+      flex: 1,
+      maxWidth: 200,
+      padding: 'var(--aire-3) var(--aire-4)',
+      fontSize: 'var(--texto-cuerpo)',
+      fontWeight: 600,
+      // Pegar manda. De cada diez guiones, nueve llegan de un texto que ya
+      // esta escrito en otra parte. El crema es el mismo de Leer: en esta
+      // aplicacion, el relleno crema quiere decir "este es el camino".
+      backgroundColor: 'var(--color-acento)',
+      color: 'var(--color-texto-acento)',
+      borderRadius: 'var(--redondeo-pildora)',
+      cursor: 'pointer',
+      border: 'none'
+    }}
+  >
+    Pegar texto
+  </button>
+  <button
+    data-testid="btn-abrir-archivo"
+    className="btn-deformable"
+    onClick={() => fileInputRef.current?.click()}
+    disabled={cargandoArchivo}
+    style={{
+      pointerEvents: 'auto',
+      flex: 1,
+      maxWidth: 200,
+      padding: 'var(--aire-3) var(--aire-4)',
+      fontSize: 'var(--texto-cuerpo)',
+      fontWeight: 600,
+      // Acompana. Sube de var(--bg-fila) a var(--bg-panel) y gana borde por
+      // la misma razon que Grabar: sin relleno fuerte, el borde es lo que lo
+      // dibuja. Queda el mismo par que abajo -uno relleno, uno de contorno-,
+      // asi las dos barras de esta pantalla se leen con la misma gramatica.
+      backgroundColor: 'var(--bg-panel)',
+      color: 'var(--color-texto)',
+      borderRadius: 'var(--redondeo-pildora)',
+      cursor: cargandoArchivo ? 'not-allowed' : 'pointer',
+      border: '1px solid var(--color-borde)'
+    }}
+  >
+    {cargandoArchivo ? 'Leyendo...' : 'Abrir archivo'}
+  </button>
+
+------------------------------------------------------------------------------
+4.5 EL PLACEHOLDER DEL GUION
+------------------------------------------------------------------------------
+
+El textarea del guion -hoy linea 1102 a 1128- gana un data-testid y un
+placeholder que muestra de que se trata. Solo esas dos lineas cambian:
+
+  data-testid="textarea-guion"
+  placeholder={'Escribe el texto...\n\nEj: Hola, hoy te quiero contar cómo usar Sigo para grabar tus videos mirando a la cámara.'}
+
+Sobre el textarea va este comentario:
+
+  {/* El data-testid existe porque hasta hoy SEIS pruebas encontraban este
+      textarea por su placeholder exacto -getByPlaceholderText('Escribe el
+      texto...')-. O sea que el texto que ve el usuario era, sin que nadie lo
+      decidiera, una llave de las pruebas: no se podia mejorar una palabra sin
+      romper seis archivos. El testid corta ese amarre.
+      El ejemplo va adentro del placeholder y no como un parrafo aparte: un
+      parrafo de ayuda ocupa lugar para siempre, el placeholder desaparece
+      solo con la primera letra.
+      "Sigo" va con mayuscula inicial y no "SIGO": es un nombre, no una sigla. */}
+
+------------------------------------------------------------------------------
+4.6 MUERE EL DIALOGO DE PEGAR
+------------------------------------------------------------------------------
+
+SE BORRA, todo esto:
+
+  linea    5    import { importarTexto } from '../datos/importar'
+                Queda sin uso en este archivo. importarTexto NO se borra de
+                src/datos/importar.ts: la sigue usando importarArchivo.ts en
+                su linea 160, y la siguen probando los T44 a T50.
+  linea  202    const [textoPegado, setTextoPegado] = useState('')
+  linea  203    const [errorPegado, setErrorPegado] = useState<string | null>(null)
+  lineas 251-282  function handleAceptarPegar()
+  lineas 284-288  function handleCancelarPegar()
+  lineas 916-999  el modal entero: el velo, el <h4>Pegar texto</h4>, el parrafo
+                explicativo, el textarea con placeholder "Pega aquí el texto
+                completo...", el bloque de errorPegado y los botones Cancelar
+                e Importar.
+
+SE CAMBIA el efecto de onRegistrarCerrarModal -hoy lineas 447 a 466-. Se le
+saca la rama de mostrarModalPegar Y se le saca mostrarModalPegar del arreglo
+de dependencias. Queda:
+
+  useEffect(() => {
+    if (onRegistrarCerrarModal) {
+      onRegistrarCerrarModal(() => {
+        if (mostrarModalAjustes) {
+          setMostrarModalAjustes(false)
+          return true
+        }
+        return false
+      })
+    }
+    return () => {
+      if (onRegistrarCerrarModal) {
+        onRegistrarCerrarModal(null)
+      }
+    }
+  }, [mostrarModalAjustes, onRegistrarCerrarModal])
+
+El estado mostrarModalPegar y su setter se borran tambien, con todo lo demas.
+Si al terminar queda alguna referencia suelta, el build de TypeScript la
+encuentra: `npx tsc --noEmit` tiene que pasar limpio.
+
+Y el onClick del boton Pegar texto -que en 4.4 quedo pendiente- es este:
+
+  onClick={() => {
+    // Antes esto abria un dialogo con OTRA caja de texto adentro, en la que
+    // habia que pegar, y despues apretar "Importar": tres toques y una
+    // pantalla de mas para algo que el teclado del telefono ya hace.
+    // Ahora el boton lleva al usuario a donde tiene que estar -escribiendo en
+    // el guion, con el cursor al final- y el pegado lo hace Android, que al
+    // poner el cursor en un campo vacio ofrece "Pegar" solo.
+    // No se agrego @capacitor/clipboard: seria una dependencia nueva para
+    // ahorrar un toque que el sistema ya ahorra.
+    const el = textareaRefs.current[bloqueUnico.id]
+    if (!el) return
+    el.focus()
+    const fin = el.value.length
+    el.setSelectionRange(fin, fin)
+  }}
+
+------------------------------------------------------------------------------
+4.7 EL PLACEHOLDER DEL TITULO
+------------------------------------------------------------------------------
+
+UNA SOLA LINEA CAMBIA. En EditorView.tsx, linea 546:
+
+  de:    placeholder="Sin título"
+  a:     placeholder="Título del guion"
+
+LA LINEA 542 NO SE TOCA. Dice:
+
+  value={guion.titulo === 'Sin título' ? '' : guion.titulo}
+
+y tiene que quedar exactamente asi. Esa comparacion es contra el titulo
+GUARDADO -'Sin título' es el que la aplicacion le pone a un guion recien
+creado-, no contra el placeholder. Hoy las dos cosas dicen la misma frase y
+por eso se confunden; despues de este cambio ya no, y se ve mejor por que
+eran distintas. Si alguien "empareja" la linea 542 con la 546, todos los
+guiones nuevos van a aparecer con el texto literal "Título del guion"
+escrito adentro del campo como si el usuario lo hubiera tecleado.
+
+Y sobre el <input>, el comentario de la linea 538 se reemplaza por este
+-no se borra: se le agrega el por que del placeholder-:
+
+  {/* Titulo es el titulo: Display, editable, sin etiqueta ni recuadro.
+      El placeholder dice "Título del guion" y no "Sin título": el primero
+      dice QUE HACER, el segundo solo describe un estado y se lee como una
+      etiqueta puesta por el sistema. Ojo con la linea de abajo: la
+      comparacion con 'Sin título' es contra el titulo GUARDADO en el
+      modelo, no contra este placeholder. Son dos cosas distintas que hasta
+      hoy decian la misma frase. Se cambio el 23 de septiembre de 2026. */}
+
+------------------------------------------------------------------------------
+4.8 EL ▶ Y EL ● DE LA PORTADA, EN TarjetaLectura.tsx
+------------------------------------------------------------------------------
+
+Este es el UNICO punto que sale de EditorView.tsx. Lo que dice el 2.8 sobre
+este archivo -el borde que se saca, y el transform que NO se saca- hay que
+haberlo leido antes de tocar esto.
+
+En la linea 1, el import queda:
+
+  import React from 'react'
+  import { IconoEmpezar } from './IconosApp'
+
+-una linea nueva; IconosApp.tsx NO se modifica, solo se importa de el, igual
+que hace EditorView.tsx en el punto 4.3-.
+
+En el boton data-testid="btn-leer-tarjeta", dos cambios y nada mas:
+
+  1. En su style, hoy linea 260:
+       de:   border: '1px solid var(--color-borde)',
+       a:    border: 'none',
+     Por el mismo motivo del 2.5: un contorno gris alrededor de un relleno
+     crema no separa nada sobre el fondo oscuro, solo ensucia el canto.
+     El boton btn-grabar-tarjeta de al lado CONSERVA su borde, porque ahi el
+     borde es lo unico que lo dibuja.
+
+  2. El contenido, hoy linea 271:
+       de:   ▶ Leer
+       a:    <IconoEmpezar tamano={16} />
+             <span>Leer</span>
+
+Y EN EL BOTON DE AL LADO, data-testid="btn-grabar-tarjeta", UN CAMBIO MAS:
+
+  3. El contenido, hoy linea 298:
+       de:   ● Grabar
+       a:    <div
+               style={{
+                 width: 10,
+                 height: 10,
+                 borderRadius: 'var(--redondeo-pildora)',
+                 backgroundColor: 'var(--color-grabando)',
+                 flexShrink: 0
+               }}
+             />
+             <span>Grabar</span>
+     Es el mismo div del punto 4.3, palabra por palabra.
+
+     POR QUE ESTO ESTA ACA Y NO SE DEJO AFUERA: el "●" de la portada NO es
+     rojo hoy. La clase btn-grabar-tarjeta-rojo, en styles.css linea 274,
+     solo actua en :active: pinta el boton ENTERO de rojo mientras se
+     aprieta. En reposo el "●" es un caracter que hereda el color del texto
+     y se ve gris, exactamente igual que el del editor antes del 4.3.
+     Si se arregla el del editor y no este, despues de esta tarea los dos
+     botones Grabar de la aplicacion se ven distintos: uno con punto rojo
+     dibujado y el otro con un caracter gris. Es la misma inconsistencia que
+     el 2.8 vino a matar para Leer, creada por esta misma tarea.
+     Esto NO estaba en lo que Javier aprobo -el aprobo el triangulo-. Se
+     decide aca por lo de arriba, y queda escrito para que lo pueda dar
+     vuelta con una palabra.
+     EL :active ROJO NO SE TOCA. Es otra cosa y esta bien como esta.
+
+EL RESTO DEL style DE LOS DOS BOTONES NO SE TOCA. En particular la ultima linea,
+...estiloComprimirPorAviso(gestoLeer.avisado), SE QUEDA TAL CUAL. Inyecta un
+transform en linea, si; es el aviso del mantener-apretado y tiene que estar.
+Ver 2.8 b.
+
+Y arriba de la fila de los dos botones va este comentario:
+
+  {/* El triangulo era el caracter "▶" y ahora es IconoEmpezar, el mismo SVG
+      que usa el boton Leer del editor. Son los DOS botones de empezar a
+      leer de la aplicacion y se veian distintos: el caracter no tiene ni el
+      mismo peso ni la misma alineacion vertical que el dibujo.
+      El punto de Grabar era el caracter "●" y ahora es un div de 10x10 con
+      var(--color-grabando), igual que en el editor. La clase
+      btn-grabar-tarjeta-rojo NO lo pintaba: esa clase solo actua en :active
+      y pinta el boton entero mientras se aprieta. En reposo el punto era
+      gris. El :active se queda como esta, es otra cosa.
+      El borde se saca por la misma razon que en el Leer del editor: crema
+      con contorno gris sobre fondo oscuro ensucia el canto y no separa
+      nada. Grabar, al lado, si lo conserva, porque ahi el borde ES el boton.
+      NO SACAR el estiloComprimirPorAviso de mas abajo aunque ponga un
+      transform en linea: ese es el aviso del mantener-apretado.
+      Todo esto se hizo el 23 de septiembre de 2026, en la Tarea 71. */}
+
+
+==============================================================================
+5. LAS PRUEBAS QUE SE ROMPEN Y COMO QUEDAN
+==============================================================================
+
+Son cinco archivos. Dos de ellos cuidan algo de verdad y por eso SE
+REESCRIBEN, no se borran.
+
+5.1 src/pruebas/pantallas.test.tsx linea 1047.
+    Hoy: expect(btnLeerTexto.textContent?.trim()).toBe('▶ Leer')
+    Se rompe porque el ▶ dejo de ser un caracter y paso a ser un SVG, que no
+    aporta texto. Lo que esta prueba cuida es OTRA cosa -que el boton este
+    habilitado cuando hay texto-, y eso no cambia.
+    Queda:  expect(btnLeerTexto.textContent?.trim()).toBe('Leer')
+    El comentario de las lineas 1043 a 1046, que explica por que el 16 de
+    septiembre se saco el "— Escribe algo para leer", NO SE BORRA.
+
+5.2 LOS SEIS SELECTORES POR PLACEHOLDER. Todos pasan al data-testid nuevo.
+    Es el costo declarado y aceptado del punto 4.5.
+
+      src/pruebas/pantallas.test.tsx:191
+      src/pruebas/pantallas.test.tsx:1498
+      src/pruebas/pantallas.test.tsx:1514
+        de:    screen.getByPlaceholderText('Escribe el texto...')
+        a:     screen.getByTestId('textarea-guion')
+
+      src/pruebas/tarea55.test.tsx:161
+        de:    screen.getByPlaceholderText('Escribe el texto...')
+        a:     screen.getByTestId('textarea-guion')
+        OJO: esa linea esta ADENTRO del test T279 -lineas 142 a 182-, que el
+        punto 5.7 nombra como "no se toca". Se toca ESTA LINEA Y NADA MAS:
+        el selector. Las dos comprobaciones de T279 -que con el guion vacio
+        estan Pegar y Abrir, y que con una letra no estan- no se tocan, y el
+        test tiene que seguir pasando igual.
+
+      src/pruebas.test.tsx:2486
+        de:    container!.querySelector('textarea[placeholder="Escribe el texto..."]')
+        a:     container!.querySelector('[data-testid="textarea-guion"]')
+
+      src/pruebas.test.tsx:1342  -ver 5.4, cambia junto con el resto del test-
+
+    En pantallas.test.tsx linea 1044 hay un comentario que menciona el texto
+    "Escribe el texto..." al explicar una decision de septiembre. NO SE
+    CAMBIA NI SE BORRA: cuenta lo que se decidio ese dia, no lo que dice la
+    pantalla hoy.
+
+5.3 src/pruebas/importar.test.ts, test T45, lineas 111 a 176. SE REESCRIBE.
+    Hoy maneja el dialogo entero: abre el modal, aprieta "Importar" vacio y
+    comprueba el aviso "El texto pegado está vacío", despues escribe dos
+    parrafos en el textarea del modal y vuelve a apretar "Importar".
+    Con 4.6 no hay modal, no hay boton "Importar" y no hay validacion de
+    vacio -el usuario escribe directo en el guion, y un guion vacio es un
+    estado valido, no un error-. Esa parte del test desaparece con la funcion
+    que probaba, y esta bien que desaparezca.
+    LO QUE NO PUEDE DESAPARECER es lo que el test cuida de verdad: que un
+    texto de varios parrafos que entra por esta pantalla llegue completo al
+    guion. Eso ahora pasa por el camino nuevo. El test queda asi, con el
+    mismo nombre T45 y el titulo corregido:
+
+    // T45: el texto de varios parrafos que se pega en el editor llega
+    // completo al guion, en la hoja unica, sin crear bloques extra.
+    // Hasta el 23 de septiembre de 2026 este test manejaba un dialogo
+    // intermedio -"Pegar texto" abria un modal con otro textarea y un boton
+    // "Importar"-. Ese dialogo se elimino: ahora "Pegar texto" pone el cursor
+    // al final del guion y el pegado lo hace el teclado del sistema. Lo que
+    // se comprueba es lo mismo de siempre; el camino es el que cambio.
+    test('T45: el texto pegado de varios parrafos llega completo al guion', async () => {
+      let guionEstado: Guion = {
+        id: 'g-t45',
+        titulo: 'Guion T45',
+        idioma: 'es',
+        creado: Date.now(),
+        modificado: Date.now(),
+        bloques: [
+          { id: 'b-existente', nombre: 'Bloque previo', texto: '' }
+        ]
+      }
+
+      const handleChangeGuion = (nuevoGuion: Guion) => {
+        guionEstado = nuevoGuion
+      }
+
+      render(
+        React.createElement(EditorView, {
+          guion: guionEstado,
+          onChangeGuion: handleChangeGuion,
+          onVolverBiblioteca: () => {},
+          onEntrarLectura: () => {}
+        })
+      )
+
+      // "Pegar texto" ya no abre nada: deja el cursor al final del guion.
+      const btnPegar = document.querySelector('[data-testid="btn-pegar-texto"]') as HTMLElement
+      expect(btnPegar).not.toBeNull()
+
+      await act(async () => {
+        fireEvent.click(btnPegar)
+      })
+
+      const textarea = document.querySelector('[data-testid="textarea-guion"]') as HTMLTextAreaElement
+      expect(textarea).not.toBeNull()
+      expect(document.activeElement).toBe(textarea)
+
+      const textoParaPegar = `Primer párrafo importado.
+
+Segundo párrafo importado.`
+
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: textoParaPegar } })
+      })
+
+      // Los dos parrafos llegan, y siguen siendo UNA sola hoja.
+      expect(guionEstado.bloques.length).toBe(1)
+      expect(guionEstado.bloques[0].texto).toContain('Primer párrafo importado.')
+      expect(guionEstado.bloques[0].texto).toContain('Segundo párrafo importado.')
+    })
+
+    El resto del archivo -T44, T46 a T50, que prueban importarTexto directo,
+    sin interfaz- no se toca. Ahi sigue viviendo, entera, la comprobacion de
+    que el texto se parte bien en parrafos y lineas.
+
+5.4 src/pruebas.test.tsx, test T34, lineas 1299 a 1345. SE REESCRIBE.
+    Mismo caso, dentro de App en vez de EditorView suelto. Lo que cuida es
+    que lo pegado entre en la hoja unica y no genere textareas de mas.
+    Las lineas 1325 a 1344 quedan asi -lo de arriba, el render de App y la
+    entrada al guion, no se toca-:
+
+      // "Pegar texto" pone el cursor al final del guion; el texto entra
+      // directo en la hoja. El dialogo intermedio se elimino el 23 de
+      // septiembre de 2026.
+      const btnPegar = container!.querySelector('[data-testid="btn-pegar-texto"]') as HTMLElement
+      expect(btnPegar).not.toBeNull()
+      await act(async () => {
+        fireEvent.click(btnPegar)
+      })
+
+      const textareaGuion = container!.querySelector('[data-testid="textarea-guion"]') as HTMLTextAreaElement
+      expect(textareaGuion).not.toBeNull()
+      await act(async () => {
+        fireEvent.change(textareaGuion, { target: { value: 'Bloque A' } })
+      })
+
+      const textareas = Array.from(container!.querySelectorAll('[data-testid="textarea-guion"]')) as HTMLTextAreaElement[]
+      expect(textareas.length).toBe(1)
+      expect(textareas[0].value).toBe('Bloque A')
+
+    El titulo del test se corrige a:
+      'T34: editor: pegar texto escribe en la hoja única del guion sin crear bloques adicionales'
+    o sea, se queda igual: sigue siendo cierto.
+
+5.5 PRUEBA NUEVA, al final de src/pruebas/tarea55.test.tsx, porque ahi ya
+    viven las guardianas del estado vacio del editor -T278, T279, T280-.
+    SE LLAMA T284: ese archivo ya tiene ocupados del T276 al T283, y el T281
+    de hoy es el contraste de los textos de marca de posicion contra #151312.
+    Numerar de nuevo un test que ya existe es peor que no escribirlo.
+
+    // T284 - GUARDIANA. Los botones del editor tienen que poder apretarse.
+    // En src/styles.css linea 89 esta apagado el destello azul de Android
+    // -webkit-tap-highlight-color: transparent-. O sea que un boton sin
+    // btn-deformable en esta aplicacion NO DA NINGUNA SENAL al apretarlo:
+    // ni la del sistema, porque la sacamos, ni la nuestra, porque no la
+    // tiene. Esta prueba falla si alguien agrega un boton a esta pantalla y
+    // se olvida, o si alguien le pone un transform en linea a uno de estos
+    // -un transform en linea le gana al scaleY del apretado y lo deja mudo
+    // sin romper nada visible-.
+    // Cubre los NUEVE del punto 4.1, no tres: si cubriera solo los de una
+    // barra, la promesa -"un boton de esta pantalla sin btn-deformable hace
+    // fallar la prueba"- seria falsa, y una guardiana que promete de mas es
+    // peor que ninguna. Por eso monta el editor DOS VECES -vacio y con
+    // texto, porque las dos barras de abajo nunca estan juntas- y ademas
+    // abre el panel de Aa, donde viven Listo, - y +.
+    test('T284 - los nueve botones del editor llevan btn-deformable y ninguno tiene transform en linea', () => {
+      function revisar(b: HTMLElement, nombre: string) {
+        expect(b.classList.contains('btn-deformable'), `${nombre} sin btn-deformable`).toBe(true)
+        expect(b.style.transform, `${nombre} tiene transform en linea`).toBe('')
+      }
+
+      // 1. Con el guion VACIO: volver, Aa, Pegar texto y Abrir archivo.
+      const vacio = render(
+        <EditorView
+          guion={guionPruebaVacio}
+          onChangeGuion={() => {}}
+          onVolverBiblioteca={() => {}}
+          onEntrarLectura={() => {}}
+        />
+      )
+
+      revisar(screen.getByText('Guiones').closest('button') as HTMLElement, 'volver')
+      revisar(screen.getByTestId('btn-menu-opciones-editor'), 'Aa')
+      revisar(screen.getByTestId('btn-pegar-texto'), 'Pegar texto')
+      revisar(screen.getByTestId('btn-abrir-archivo'), 'Abrir archivo')
+
+      // El panel de Aa: Listo, - y +. Se abre aca y no en el otro montaje
+      // porque el panel es el mismo en los dos estados.
+      fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
+      revisar(screen.getByTestId('btn-cerrar-ajustes'), 'Listo')
+      revisar(screen.getByLabelText('Disminuir letra panel'), 'menos letra')
+      revisar(screen.getByLabelText('Aumentar letra panel'), 'mas letra')
+
+      vacio.unmount()
+
+      // 2. Con TEXTO: Leer y Grabar, que con el guion vacio no existen.
+      render(
+        <EditorView
+          guion={guionPruebaConTexto}
+          onChangeGuion={() => {}}
+          onVolverBiblioteca={() => {}}
+          onEntrarLectura={() => {}}
+          onEntrarGrabar={() => {}}
+        />
+      )
+
+      revisar(screen.getByTestId('btn-leer-guion-fijo'), 'Leer')
+      revisar(screen.getByTestId('btn-grabar-guion-fijo'), 'Grabar')
+    })
+
+    COMO SE COMPRUEBA QUE ESTA PRUEBA SIRVE -esto no es opcional-: antes de
+    entregar, sacarle a mano el btn-deformable al boton Leer y correr el
+    test. Tiene que fallar, y el mensaje tiene que decir "Leer". Repetirlo
+    con Pegar texto, que esta en el otro montaje, para comprobar que las dos
+    mitades corren de verdad. Despues volver a ponerlos los dos. Una
+    guardiana que no falla cuando el defecto vuelve no es una guardiana.
+
+    Si el selector del boton de volver -getByText('Guiones').closest('button')-
+    resulta fragil al implementarlo, ponerle data-testid="btn-volver-guiones"
+    al boton de la linea 498 y usarlo. Es preferible eso a sacarlo de la
+    prueba.
+
+5.6 src/pruebas/tarea48.test.tsx, lineas 155 y 227. DOS SELECTORES.
+    Las dos dicen hoy:
+      const btnLeerTarjeta = await screen.findByRole('button', { name: /▶ Leer/i })
+    Se rompen porque el ▶ de la portada dejo de ser un caracter -punto 4.8- y
+    el nombre accesible del boton ya no lo contiene. Las dos quedan:
+      const btnLeerTarjeta = await screen.findByTestId('btn-leer-tarjeta')
+    El data-testid YA EXISTE en ese boton, no hay que agregarlo. Lo que cada
+    uno de esos dos tests comprueba despues no se toca.
+    Estas dos lineas son el unico cambio en este archivo.
+
+5.7 NO SE TOCAN, y tienen que seguir pasando tal cual estan:
+      T190 en pantallas.test.tsx  -con guion vacio no hay boton Leer-
+      T257 en tarea51.test.tsx
+      T278 y T280 en tarea55.test.tsx
+      T151 en pantallas.test.tsx  -la guardiana del titulo. El 4.7 cambia el
+        placeholder y NO la rompe, porque T151 mira nodos de texto y un
+        placeholder es un atributo: ver 2.9. Si igual se pusiera roja, es
+        senal de que se cambio la linea 542 y hay que volver atras-
+      T279 en tarea55.test.tsx, con UNA excepcion: el selector de su linea
+        161 cambia al data-testid, como dice el 5.2. Lo que el test COMPRUEBA
+        no se toca.
+      T68 en importarArchivo.test.ts  -Abrir archivo-
+      tarea67.test.tsx  -"Idioma del guion" vive en el editor, y el gesto de
+        mantener apretado en la tarjeta de la portada. Esta ultima es la que
+        se pone roja si alguien saca el estiloComprimirPorAviso del boton
+        Leer de la portada: ver 2.8 b-
+
+
+==============================================================================
+6. QUE NO SE PIERDE — LISTA DE CONTROL
+==============================================================================
+
+Antes de entregar, comprobar una por una:
+
+  [ ] Los comentarios que ya estaban en EditorView.tsx siguen todos. En
+      particular: el de las lineas 54 a 59 y 70 a 71 -por que el espejo, el
+      "donde lees", el mostrar tiempo y el Tema NO estan en este panel-, el
+      de las lineas 490 a 497 -por que el boton de volver crecio-, el de las
+      lineas 696 a 702 -por que la etiqueta dice "Ancho del texto" y no
+      "Ancho"- y el de las lineas 866 a 868 -por que el idioma vive en el
+      modelo-. Ninguno se borra ni se resume. Ahi esta escrito lo que ya se
+      midio y se decidio; sin eso, alguien lo vuelve a decidir al reves.
+  [ ] Los comentarios de TarjetaLectura.tsx tambien siguen todos. En
+      particular el de las lineas 48 a 51 -por que el mantener-apretado vive
+      en el boton y no en la tarjeta-. Ese comentario nombra el boton como
+      "▶ Leer"; se deja tal cual, esta nombrando el boton, no describiendo
+      el caracter.
+  [ ] El contador sigue apareciendo SOLO con numPalabras > 0.
+  [ ] Con el guion vacio siguen estando Pegar texto y Abrir archivo, y NO
+      estan Leer ni Grabar.
+  [ ] Con texto siguen estando Leer y Grabar, y NO estan Pegar ni Abrir.
+  [ ] La barra de Leer y Grabar sigue entrando y saliendo con el scroll
+      -barraLeerVisible-, ahora con el translateY una sola vez, en el
+      contenedor.
+  [ ] Abrir archivo sigue funcionando igual: .txt, .md y .docx, el estado
+      "Leyendo...", y el aviso de error.
+  [ ] El panel de Aa sigue teniendo las mismas filas, en el mismo orden.
+  [ ] El titulo de un guion recien creado SIGUE apareciendo con el campo
+      vacio y el placeholder encima, no con las palabras "Sin título" ni
+      "Título del guion" escritas adentro. O sea: la linea 542 quedo igual.
+  [ ] En la portada, el boton Grabar de la tarjeta conserva su borde y sigue
+      poniendose rojo ENTERO al apretarlo, y el mantener apretado sobre Leer
+      sigue avisando y abriendo el menu de la tarjeta.
+  [ ] Los cuatro botones -Leer y Grabar del editor, Leer y Grabar de la
+      portada- se ven identicos entre si de a pares. Mirarlos en el
+      telefono, uno al lado del otro, no en la pantalla del computador.
+  [ ] `npx tsc --noEmit` pasa limpio -sin imports ni estados huerfanos del
+      dialogo que se borro-.
+  [ ] La suite entera pasa: `npx vitest run`. En adfb09c son 290 pruebas en
+      verde, medidas el 23 de septiembre de 2026. Al terminar tiene que
+      haber 291 -la T284 nueva- y ninguna roja ni saltada.
+
+
+==============================================================================
+7. CRITERIO DE TERMINADO
+==============================================================================
+
+  1. `npx vitest run` termina con 291 pasando y 0 fallando.
+  2. `npx tsc --noEmit` no imprime nada.
+  3. La guardiana T284 se comprobo rompiendola a mano las dos veces, como
+     dice el 5.5.
+  4. `git diff --stat main` muestra exactamente estos archivos y ningun otro:
+       src/components/EditorView.tsx
+       src/components/TarjetaLectura.tsx
+       src/pruebas.test.tsx
+       src/pruebas/pantallas.test.tsx
+       src/pruebas/tarea55.test.tsx
+       src/pruebas/tarea48.test.tsx
+       src/pruebas/importar.test.ts
+     Si aparece IconosApp.tsx, App.tsx o TeleprompterView.tsx, la entrega
+     esta mal aunque las pruebas pasen: son los archivos de la Tarea 70, que
+     esta entregada y esperando para mezclarse.
+     De TarjetaLectura.tsx y de tarea48.test.tsx, el diff tiene que ser
+     chico: el import, y despues tres cosas en el primero -el borde, el
+     triangulo y el punto, todo del 4.8- y dos lineas en el segundo -los
+     selectores del 5.6-. Si es mas grande que eso, se aprovecho el archivo
+     para otra cosa y no corresponde.
+  5. La rama es tarea-71-el-editor-se-ve-como-la-foto, sale de main y se
+     entrega sin mergear.
+
+
+==============================================================================
+8. COMO SE VE, AL TERMINAR
+==============================================================================
+
+CON EL GUION VACIO:
+
+  ‹ Guiones                                                             Aa
+  Título del guion            <- placeholder, el campo esta vacio: ver 4.7
+  Escribe el texto...
+  Ej: Hola, hoy te quiero contar cómo
+  usar Sigo para grabar tus videos
+  mirando a la cámara.
+
+                  [ Pegar texto ]  ( Abrir archivo )
+                    relleno crema     contorno
+
+  Tocar "Pegar texto" no abre nada: el cursor cae al final del guion, sube
+  el teclado y Android ofrece Pegar solo. Los dos botones se achatan un
+  poco al apretarlos.
+
+CON TEXTO:
+
+  ‹ Guiones                                                             Aa
+  Mi guion de prueba
+  312 palabras · 2 min · Español
+  ──────────────────────────────────────  <- linea fina, casi invisible
+  Hola, hoy te quiero contar...
+
+                     [ ▶ Leer ]  ( ● Grabar )
+                    crema, sin borde   contorno, punto ROJO
+
+  El triangulo de Leer es el dibujo de IconoEmpezar, no el caracter. El
+  punto de Grabar es el unico rojo de la pantalla, y es el mismo rojo de la
+  barra de tiempo del lienzo.
+
+Y EN LA PORTADA, la tarjeta de arriba -punto 4.8-:
+
+                     [ ▶ Leer ]  ( ● Grabar )
+                    crema, sin borde   contorno, rojo
+
+  El triangulo y el punto tienen que ser LOS MISMOS que los del editor:
+  mismo peso, misma altura, mismo aire contra la palabra. Poner las dos
+  pantallas una al lado de la otra en el telefono y mirarlas. Si uno se ve
+  mas flaco o mas alto que el otro, quedo el caracter en algun lado.
+  El boton Grabar de la portada sigue poniendose rojo ENTERO al apretarlo
+  -eso es otra cosa, la clase btn-grabar-tarjeta-rojo, y no se toca-.
+
+ESTOS DIBUJOS NO MANDAN. Manda el codigo de la seccion 4. Estan aca para
+que se pueda comparar contra el telefono al terminar, no para implementarlos
+al pie de la letra: si un dibujo y la seccion 4 se contradicen, es un error
+de este documento y hay que avisar, no elegir uno.

@@ -1,0 +1,890 @@
+TAREA 70 — EL ESTADO LISTO DEL LIENZO SE HACE COMO LA FOTO, EN LAS DOS PUERTAS
+
+Repositorio: javierarriagada-cmyk/Teleprompter  (privado)
+Rama base: main
+Rama de trabajo: tarea-70-listo-como-la-foto
+Archivo que se toca: src/components/TeleprompterView.tsx  (y las pruebas que se nombran abajo)
+
+
+==============================================================================
+0. POR QUE EXISTE ESTA TAREA
+==============================================================================
+
+La Tarea 69 salio incompleta. No por culpa de quien la implemento: el encargo
+69 pedia literalmente lo que quedo en pantalla. El encargo era el que estaba
+mal, porque cubria una parte de la foto que se habia aprobado y dejaba el
+resto afuera sin decirlo.
+
+La referencia aprobada es una foto de dos columnas -"Sigo hoy" a la izquierda,
+"la propuesta" a la derecha- que Javier aprobo con "para mi tambien gana el de
+la derecha". La columna de la derecha muestra CUATRO cosas:
+
+  1. Arriba a la derecha, un ENGRANAJE de verdad -rueda dentada-.
+  2. Al lado del engranaje, el recuadro redondo de la camara.
+  3. Abajo, el boton de empezar como un CIRCULO OSCURO TRANSLUCIDO flotando
+     solo sobre el fondo, centrado.
+  4. NO HAY CAJON abajo. El texto llega hasta el borde inferior.
+
+La Tarea 69 hizo 1 a medias -subio el boton al rincon pero le dejo el icono de
+las cuatro esquinas, no un engranaje-, hizo 3 a medias -circulo, pero blanco y
+adentro del cajon-, no hizo 4, no hizo 2, y solo lo aplico a Leer. Grabar
+quedo con la pildora ancha "Empezar" y el cajon entero: dos puertas que
+parecen dos aplicaciones distintas.
+
+Esta tarea cierra las cuatro, en LAS DOS PUERTAS, de una sola vez.
+
+
+==============================================================================
+1. ALCANCE EXACTO
+==============================================================================
+
+SE TOCA, PARTE A: el estado LISTO del lienzo -el bloque
+{estadoToma === 'listo' && ...} de TeleprompterView.tsx, hoy lineas 881 a
+1233-, en sus dos puertas: conCamara false -Leer- y conCamara true -Grabar-.
+Secciones 3, 4, 5.
+
+SE TOCA, PARTE B: el estado LEYENDO, o sea panel-controles-lectura en
+App.tsx lineas 1543 a 1627, que es el mismo cajon y tiene el mismo problema.
+Seccion 9.
+
+SE TOCA, PARTE C: se agrega DESCARTAR LA TOMA desde la pausa, con su funcion
+nueva handleDescartarToma en App.tsx. Seccion 10.
+
+SE TOCA, TRANSVERSAL: src/components/IconosApp.tsx, para agregar los iconos
+que faltan. Seccion 11, que ademas fija como se ven TODOS los controles
+flotantes y manda por sobre cualquier estilo suelto de las secciones 4 y 9.
+
+NO SE TOCA: el velo del texto, la barra de tiempo, el punto rojo tally, la
+cuenta regresiva, el visor que se abre al terminar -ni su boton Borrar, ni
+Guardar en galeria-, persistirResumenToma, ni handleStop. Nada mas fuera de
+TeleprompterView.tsx, IconosApp.tsx y esos bloques de App.tsx, salvo las
+pruebas nombradas en las secciones 6, 9 y 10.
+
+
+==============================================================================
+2. OBSERVACIONES QUE SE DECLARAN ANTES DE EMPEZAR
+==============================================================================
+
+Estas son las cosas que la foto muestra o sugiere y que este encargo resuelve
+de una manera concreta, o deliberadamente NO hace. Estan aqui para que Javier
+las pueda dar vuelta con una palabra, en vez de descubrirlas despues en el
+telefono.
+
+2.1 EL ENGRANAJE CONTRADICE UN COMENTARIO DEL CODIGO. RESUELTO.
+    En src/components/IconosApp.tsx, sobre IconoEscena, hay escrito:
+      "No es un engranaje. El engranaje queda para las preferencias de la
+       aplicacion (portada). Este abre la ESCENA de ESTA toma: donde lees,
+       espejo, tiempo y brillo."
+    O sea: en su momento se decidio a proposito que la toma NO llevara
+    engranaje, para no confundirla con los ajustes de la aplicacion.
+    La foto aprobada muestra un engranaje.
+    JAVIER CORTO EL 23-09-2026: "que sea como el que aparece en la foto de la
+    derecha". Va IconoEngranaje. Sin vuelta.
+    El comentario de IconosApp.tsx NO SE BORRA -se le agrega debajo la linea
+    que dice que la 70 lo dio vuelta y por que, ver seccion 5-.
+
+2.2 EL CIRCULO CON LA CARA NO ES DE LA APLICACION. NO APLICA.
+    En la foto hay un circulo con la cara de Javier, y en la columna de la
+    derecha aparece arriba a la derecha, al lado del engranaje.
+    ESE CIRCULO NO ES DE SIGO: es la camara del grabador de pantalla de
+    Android, que estaba filmando la pantalla cuando se hizo el video del que
+    salieron estos fotogramas. Javier lo confirmo el 23-09-2026: "ese recuadro
+    es de la camara que estaba grabando la pantalla, no considerarlo".
+    Por lo tanto la foto NO DICE NADA sobre el recuadro de camara de la
+    aplicacion -RecuadroCamara-. Ese recuadro no se toca en esta tarea: queda
+    donde esta, arrastrable, con su posicion por defecto de siempre, y la
+    prueba guardiana de su arrastre en tarea66.test.tsx tiene que seguir
+    pasando.
+
+2.3 EL ⟳ DE VOLTEAR CAMARA SE METE ADENTRO DEL PANEL DE AJUSTES.
+    Es la solucion que dio Javier el 23-09-2026: "una solucion era meter ese
+    signo que da vuelta la camara dentro del que quedaria nuevo como ajustes".
+    Se deja constancia de que el 22-09-2026, en el mapa de ajustes, el mismo
+    habia escrito lo contrario: "SE SACA: Voltear camara ... Sale de este
+    modal. Queda unicamente como boton flotante translucido directamente
+    sobre la vista previa". Manda lo del 23, que es mas nuevo y se dijo
+    mirando justamente este problema. Si era al reves, se devuelve al rincon
+    y entonces hay que decidir cual de los dos botones se queda ahi.
+
+2.4 EL CIRCULO TRANSLUCIDO SOBRE FONDO CLARO.
+    En la foto el circulo de empezar es gris oscuro translucido con el
+    triangulo blanco, sobre un fondo negro. En Grabar el fondo es el video y
+    eso funciona -es el mismo tratamiento que hoy tiene el ⟳ y se ve bien en
+    el telefono-. En Leer el fondo de la toma lo elige el usuario y puede ser
+    claro; ahi un circulo negro al 45% se va a ver apagado en vez de solido.
+    ESTE ENCARGO USA EL TRATAMIENTO DE LA FOTO IGUAL, en las dos puertas, y
+    deja el punto anotado para mirarlo en el APK con el tema claro puesto.
+    No se inventa un color intermedio que la foto no muestra.
+
+2.5 EL TRANSFORM INLINE MATA EL EFECTO DE APRETADO.
+    El circulo hay que centrarlo abajo. La forma obvia -left 50% mas
+    transform: translateX(-50%) inline- ROMPE el efecto de deformacion al
+    apretar, porque .btn-deformable hace su efecto con transform
+    -styles.css:255-267- y un transform inline le gana a la hoja de estilos.
+    Ese efecto es justamente el que Javier dijo que habia quedado bien.
+    Por eso el circulo va dentro de un div contenedor que lo centra, y el
+    boton mismo no lleva ningun transform inline. No cambiar esto.
+
+2.6 EL VELO DEL TEXTO.
+    En la columna izquierda de la foto hay un velo oscuro sobre la parte de
+    arriba del texto y en la derecha no. Ese velo es del estado 'leyendo'
+    -calcularTramosVelo, banda.ts- y sirve para que se lea el renglon vivo.
+    FUERA DE ALCANCE. No se toca en esta tarea.
+
+
+==============================================================================
+3. EL CAMBIO
+==============================================================================
+
+Reemplazar TODO el bloque que hoy va de la linea 912 a la linea 1231 de
+src/components/TeleprompterView.tsx -o sea: desde {conCamara && ( del boton
+de voltear, hasta el </div> que cierra panel-controles-listo- por el codigo
+de la seccion 4.
+
+El boton btn-volver-listo -lineas 883 a 910- NO SE TOCA.
+
+Lo que desaparece:
+  - El <div data-testid="panel-controles-listo"> entero. EL CAJON SE VA.
+  - El boton de voltear camara del rincon de arriba a la derecha.
+  - El bloque {!conCamara && ...} del engranaje en el rincon.
+  - La fila de abajo con el engranaje cuadrado + la pildora "Empezar".
+
+Lo que se muda, sin perder nada:
+  - "Imagen: Detras / Recuadro / Oculta"   -> adentro del panel del engranaje
+  - "Calidad: ..." y la linea de minutos   -> adentro del panel del engranaje
+  - El aviso "la camara sigue encendida"   -> adentro del panel del engranaje
+  - "Donde lees / Espejo / Mostrar tiempo / Brillo" -> ya estaba en ese panel
+  - El ⟳ voltear camara                    -> adentro del panel del engranaje
+
+Lo que queda nuevo, suelto sobre el lienzo:
+  - Arriba a la izquierda: la flecha de volver -igual que hoy-.
+  - Arriba a la derecha: el engranaje, en las dos puertas.
+  - Colgando del engranaje: el panel de ajustes de la toma.
+  - Abajo al centro: el circulo translucido de empezar, flotando.
+
+La regla de "esconder el chrome mientras se arrastra el recuadro" -hoy
+display: arrastrandoRecuadro ? 'none' : 'flex' en el cajon- se conserva: pasa
+al engranaje y al circulo de empezar.
+
+
+==============================================================================
+4. EL CODIGO, LISTO PARA PEGAR
+==============================================================================
+
+En el import de la linea 36, cambiar:
+
+    import { IconoAtras, IconoEscena, IconoEmpezar } from './IconosApp'
+por:
+    import { IconoAtras, IconoEngranaje, IconoEmpezar } from './IconosApp'
+
+(IconoEscena deja de usarse en este archivo. Si el linter reclama por el
+import muerto, sacarlo; NO borrar la funcion IconoEscena de IconosApp.tsx.)
+
+Y este es el bloque que reemplaza las lineas 912 a 1231:
+
+          {/* ARRIBA A LA DERECHA: EL ENGRANAJE. Las dos puertas, siempre.
+              Hasta la 69 este rincon lo peleaban dos botones -el ⟳ en Grabar
+              y el de la escena en Leer- y por eso la 69 solo se atrevio con
+              Leer. En la 70 el rincon es del engranaje en las dos puertas y
+              el ⟳ se mudo adentro del panel: decision de Javier, 23-09-2026. */}
+          <button
+            data-testid="btn-engranaje-toma"
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              setPanelTomaAbierto((v) => !v)
+            }}
+            aria-label="Ajustes de la escena"
+            style={{
+              position: 'absolute',
+              top: 'calc(8px + env(safe-area-inset-top, 0px))',
+              right: 'calc(8px + env(safe-area-inset-right, 0px))',
+              zIndex: 11,
+              width: 40,
+              height: 40,
+              padding: 0,
+              cursor: 'pointer',
+              display: arrastrandoRecuadro ? 'none' : 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: panelTomaAbierto ? 'var(--color-acento)' : 'rgba(0,0,0,0.35)',
+              border: '1px solid rgba(255,255,255,0.35)',
+              borderRadius: 'var(--redondeo-pildora)',
+              color: panelTomaAbierto ? 'var(--color-texto-acento)' : '#fff'
+            }}
+          >
+            <IconoEngranaje tamano={20} />
+          </button>
+
+          {/* EL PANEL DE LA TOMA. Cuelga del engranaje, ya no del suelo.
+              Aqui vive TODO lo que antes estaba en panel-controles-listo.
+              Nada se perdio: se mudo. */}
+          {panelTomaAbierto && (
+            <div
+              data-testid="panel-ajustes-toma"
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                position: 'absolute',
+                top: 'calc(56px + env(safe-area-inset-top, 0px))',
+                right: 'calc(8px + env(safe-area-inset-right, 0px))',
+                left: 'calc(16px + env(safe-area-inset-left, 0px))',
+                maxHeight: '62%',
+                overflowY: 'auto',
+                zIndex: 11,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 'var(--aire-3)',
+                backgroundColor: 'var(--bg-superficie)',
+                border: '1px solid var(--color-borde)',
+                borderRadius: 'var(--redondeo-grande)',
+                padding: 'var(--aire-3)',
+                color: 'var(--color-texto)'
+              }}
+            >
+              {/* VOLTEAR CAMARA. Antes era un boton flotante en el rincon de
+                  arriba a la derecha. Se mudo aqui en la 70 para dejarle ese
+                  rincon al engranaje. Mismo testid, mismo aria-label, misma
+                  accion: lo unico que cambia es donde vive. */}
+              {conCamara && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                    Cámara:
+                  </span>
+                  <button
+                    data-testid="btn-voltear-camara"
+                    type="button"
+                    className="btn-deformable"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onVoltear?.()
+                    }}
+                    aria-label="Voltear cámara"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 'var(--aire-1)',
+                      padding: 'var(--aire-1) var(--aire-2)',
+                      fontSize: 'var(--texto-meta)',
+                      borderRadius: 'var(--redondeo-pildora)',
+                      border: '1px solid var(--color-borde)',
+                      backgroundColor: 'var(--bg-suelo)',
+                      color: 'var(--color-texto)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <span aria-hidden="true">⟳</span> Voltear
+                  </button>
+                </div>
+              )}
+
+              {conCamara && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                    Imagen:
+                  </span>
+                  <div style={{ display: 'flex', gap: 'var(--aire-1)' }}>
+                    {[
+                      { val: 'detras' as const, label: 'Detrás' },
+                      { val: 'recuadro' as const, label: 'Recuadro' },
+                      { val: 'oculta' as const, label: 'Oculta' }
+                    ].map((opt) => (
+                      <button
+                        key={opt.val}
+                        type="button"
+                        data-testid={`btn-fondo-${opt.val}`}
+                        className="btn-deformable"
+                        onClick={() => {
+                          setFondoToma?.(opt.val)
+                        }}
+                        style={{
+                          padding: 'var(--aire-1) var(--aire-2)',
+                          fontSize: 'var(--texto-meta)',
+                          borderRadius: 'var(--redondeo-pildora)',
+                          border: '1px solid var(--color-borde)',
+                          backgroundColor: fondoToma === opt.val ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                          color: fondoToma === opt.val ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                          fontWeight: fondoToma === opt.val ? 'bold' : 'normal',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {conCamara && fondoToma === 'oculta' && (
+                <div
+                  data-testid="aviso-camara-encendida"
+                  style={{
+                    fontSize: 'var(--texto-meta)',
+                    color: 'var(--color-apagado)',
+                    fontStyle: 'italic'
+                  }}
+                >
+                  la cámara sigue encendida
+                </div>
+              )}
+
+              {conCamara && calidadesSoportadas.length > 0 && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--aire-1)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                      Calidad:
+                    </span>
+                    <div style={{ display: 'flex', gap: 'var(--aire-1)' }}>
+                      {calidadesSoportadas.map((q) => (
+                        <button
+                          key={q}
+                          type="button"
+                          data-testid={`btn-calidad-${q}`}
+                          className="btn-deformable"
+                          onClick={() => {
+                            setCalidadVideo?.(q)
+                          }}
+                          style={{
+                            padding: 'var(--aire-1) var(--aire-2)',
+                            fontSize: 'var(--texto-meta)',
+                            borderRadius: 'var(--redondeo-pildora)',
+                            border: '1px solid var(--color-borde)',
+                            backgroundColor: calidadVideo === q ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                            color: calidadVideo === q ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                            fontWeight: calidadVideo === q ? 'bold' : 'normal',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          {q}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  {typeof minutosDisponibles === 'number' && (
+                    <div
+                      data-testid="linea-minutos-disponibles"
+                      style={{
+                        fontSize: 'var(--texto-meta)',
+                        color: minutosDisponibles < 2 ? '#FF5A5A' : 'var(--color-apagado)',
+                        fontWeight: minutosDisponibles < 2 ? 700 : 400
+                      }}
+                    >
+                      {minutosDisponibles >= 2
+                        ? `Te alcanzan unos ${Math.floor(minutosDisponibles)} minutos`
+                        : 'Quedan menos de 2 minutos de espacio'}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                  Dónde lees:
+                </span>
+                {(['arriba', 'medio', 'abajo'] as const).map((z) => (
+                  <button
+                    key={z}
+                    type="button"
+                    data-testid={`btn-anclaje-${z}`}
+                    onClick={() => {
+                      setAnclajeZona?.(z)
+                    }}
+                    style={{
+                      padding: 'var(--aire-1) var(--aire-2)',
+                      fontSize: 'var(--texto-meta)',
+                      borderRadius: 'var(--redondeo-pildora)',
+                      border: '1px solid var(--color-borde)',
+                      backgroundColor: anclajeZona === z ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                      color: anclajeZona === z ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                      fontWeight: anclajeZona === z ? 'bold' : 'normal',
+                      cursor: 'pointer',
+                      textTransform: 'capitalize'
+                    }}
+                  >
+                    {z}
+                  </button>
+                ))}
+              </div>
+
+              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', fontSize: 'var(--texto-meta)' }}>
+                <input
+                  type="checkbox"
+                  checked={mirror}
+                  onChange={(e) => setMirror?.(e.target.checked)}
+                />
+                Espejo
+              </label>
+
+              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', fontSize: 'var(--texto-meta)' }}>
+                <input
+                  type="checkbox"
+                  checked={mostrarTiempo}
+                  onChange={(e) => setMostrarTiempo?.(e.target.checked)}
+                />
+                Mostrar tiempo
+              </label>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-2)', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)', fontWeight: 600 }}>
+                  Brillo:
+                </span>
+                {PASOS_BRILLO.map((paso) => (
+                  <button
+                    key={paso.id}
+                    type="button"
+                    data-testid={`btn-brillo-${paso.id}`}
+                    onClick={() => {
+                      setBrillo(paso.id)
+                      aplicarBrillo(paso.id)
+                    }}
+                    style={{
+                      padding: 'var(--aire-1) var(--aire-2)',
+                      fontSize: 'var(--texto-meta)',
+                      borderRadius: 'var(--redondeo-pildora)',
+                      border: '1px solid var(--color-borde)',
+                      backgroundColor: brillo === paso.id ? 'var(--color-acento)' : 'var(--bg-suelo)',
+                      color: brillo === paso.id ? 'var(--color-texto-acento)' : 'var(--color-texto)',
+                      fontWeight: brillo === paso.id ? 'bold' : 'normal',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {paso.nombre}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ABAJO AL CENTRO: EMPEZAR. Un circulo translucido flotando sobre
+              el fondo, SIN cajon detras. El cajon -panel-controles-listo- se
+              elimino en la 70: la foto aprobada no lo tiene y se comia el
+              ultimo tercio del texto.
+
+              El centrado lo hace ESTE div, no un transform inline en el
+              boton: .btn-deformable hace su efecto de apretado con transform
+              -styles.css:255-267- y un transform inline le gana a la hoja de
+              estilos y lo deja muerto. pointerEvents none en el contenedor y
+              auto en el boton para que la franja invisible no se coma los
+              toques del texto que pasa por debajo. */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+              left: 0,
+              right: 0,
+              zIndex: 10,
+              display: arrastrandoRecuadro ? 'none' : 'flex',
+              justifyContent: 'center',
+              pointerEvents: 'none'
+            }}
+          >
+            <button
+              data-testid="btn-empezar-toma"
+              type="button"
+              className="btn-deformable"
+              aria-label="Empezar"
+              onClick={(e) => {
+                e.stopPropagation()
+                onEmpezar?.()
+              }}
+              style={{
+                pointerEvents: 'auto',
+                width: 72,
+                height: 72,
+                padding: 0,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 'var(--redondeo-pildora)',
+                border: '1px solid rgba(255,255,255,0.35)',
+                backgroundColor: 'rgba(0,0,0,0.45)',
+                color: '#fff'
+              }}
+            >
+              <IconoEmpezar tamano={30} />
+            </button>
+          </div>
+
+
+==============================================================================
+5. EL COMENTARIO DE IconosApp.tsx
+==============================================================================
+
+En src/components/IconosApp.tsx, el comentario que esta arriba de IconoEscena
+-lineas 48 a 51- NO SE BORRA. Se le agrega al final, dentro del mismo bloque:
+
+    // 23-09-2026, Tarea 70: en la toma esto se dio vuelta. La foto que
+    // Javier aprobo muestra un engranaje de verdad arriba a la derecha, y
+    // eso es lo que quedo. IconoEscena sigue aqui por si se vuelve atras.
+
+Si despues de eso IconoEscena queda sin usarse en toda la aplicacion, IGUAL
+SE DEJA. No se borra.
+
+
+==============================================================================
+6. LAS PRUEBAS QUE SE ROMPEN Y COMO QUEDAN
+==============================================================================
+
+Este cambio rompe pruebas que hoy pasan. Estan identificadas una por una.
+No arreglar ninguna otra prueba que no este en esta lista: si algo mas falla,
+PARAR y reportarlo en vez de tocarlo.
+
+6.1 src/pruebas/tarea66.test.tsx
+    En el test "Grabar entra al mismo lienzo CON camara...":
+      expect(screen.getByTestId('btn-fondo-detras')).toBeDefined()
+      expect(screen.getByTestId('btn-voltear-camara')).toBeDefined()
+    Los dos se rompen, porque ahora esos botones viven adentro del panel y el
+    panel arranca cerrado. ARREGLO: antes de esas dos lineas, agregar
+      fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+    y dejar las dos expectativas tal cual. El punto que esa prueba cuida -que
+    en Grabar existen el voltear y los fondos- se sigue cuidando igual.
+
+    En el test de Leer:
+      expect(screen.queryByTestId('btn-voltear-camara')).toBeNull()
+      expect(screen.queryByTestId('btn-fondo-detras')).toBeNull()
+    Estas DEBEN SEGUIR PASANDO SIN TOCARLAS, con el panel abierto o cerrado:
+    en Leer esos dos botones no existen, porque siguen bajo {conCamara && ...}.
+    Para dejarlo cuidado, agregar en ese mismo test, despues del click en
+    btn-engranaje-toma, que las dos siguen siendo null con el panel abierto.
+
+    La prueba guardiana del arrastre del recuadro NO SE TOCA y tiene que
+    seguir pasando.
+
+6.2 src/pruebas/tarea69.test.tsx
+    El test 2 dice:
+      expect(btnEmpezar.textContent).toContain('Empezar')
+    Ese test fija la decision equivocada de la 69 -que en Grabar el boton
+    siguiera siendo una pildora con texto- y es justamente lo que esta tarea
+    deshace. SE REESCRIBE ese test para que compruebe lo contrario: que en
+    Grabar el boton de empezar TAMPOCO tiene el texto "Empezar" y lleva un
+    svg adentro, igual que en Leer. Dejar arriba del test un comentario que
+    diga que la 70 dio vuelta lo que la 69 fijaba aqui, y por que.
+    El test 1 se mantiene y ademas debe seguir pasando tal cual.
+
+6.3 Cualquier prueba que haga click en btn-empezar-toma -pantallas, tarea68,
+    tarea66, tarea45, tarea38, tarea48, tarea50, tarea58, motor, corpus- tiene
+    que seguir pasando SIN TOCARLA: el testid, el aria-label y el onClick son
+    los mismos. Si alguna falla, es señal de que algo mas se movio: PARAR y
+    reportarlo.
+
+6.4 PRUEBA NUEVA, en src/pruebas/tarea70.test.tsx.
+    Cuatro comprobaciones, las cuatro de la foto:
+      a) En Leer Y en Grabar, btn-engranaje-toma existe, tiene
+         style.position 'absolute', top con '8px' y right con '8px'.
+      b) En Leer Y en Grabar, btn-empezar-toma NO contiene el texto
+         'Empezar' y tiene un svg adentro.
+      c) panel-controles-listo NO EXISTE en ninguna de las dos puertas.
+         Esta es la guardiana del cajon: si alguien lo vuelve a poner, falla.
+      d) En Grabar, con el panel cerrado, btn-voltear-camara es null; al
+         hacer click en btn-engranaje-toma, btn-voltear-camara existe y su
+         aria-label es 'Voltear cámara'.
+
+    Cada una de las cuatro tiene que fallar si se deshace el cambio que
+    cuida. Comprobarlo antes de entregar.
+
+
+==============================================================================
+7. QUE NO SE PIERDE — LISTA DE CONTROL
+==============================================================================
+
+Al terminar, todo esto tiene que seguir funcionando. No es decorativo: es la
+lista contra la que se revisa la entrega.
+
+  [ ] Leer: flecha de volver arriba a la izquierda.
+  [ ] Leer: engranaje arriba a la derecha, abre el panel.
+  [ ] Leer: en el panel, Donde lees / Espejo / Mostrar tiempo / Brillo.
+  [ ] Leer: circulo de empezar abajo al centro, sin cajon, arranca la toma.
+  [ ] Leer: NO aparece Voltear, ni Imagen, ni Calidad.
+  [ ] Grabar: flecha de volver arriba a la izquierda.
+  [ ] Grabar: engranaje arriba a la derecha, abre el panel.
+  [ ] Grabar: en el panel, Camara-Voltear, Imagen, Calidad, los minutos, el
+      aviso de camara encendida, y los cuatro de la escena.
+  [ ] Grabar: voltear camara cambia de frontal a trasera de verdad.
+  [ ] Grabar: circulo de empezar abajo al centro, sin cajon.
+  [ ] Grabar: el recuadro de la camara se sigue arrastrando con el dedo.
+  [ ] Mientras se arrastra el recuadro, el engranaje y el circulo se
+      esconden, como se escondia el cajon.
+  [ ] El efecto de apretado -.btn-deformable- se sigue viendo en el circulo.
+  [ ] El estado 'leyendo' quedo exactamente igual que antes.
+
+
+==============================================================================
+8. CRITERIO DE TERMINADO
+==============================================================================
+
+Este criterio vale para el encargo COMPLETO: las secciones 9, 10 y 11 vienen
+despues de esta y estan incluidas. No se entrega la parte A sola.
+
+  1. npm test pasa entero.
+  2. npx tsc --noEmit sin errores.
+  3. npm run build sin errores.
+  4. Las comprobaciones nuevas de 6.4, 9.5 y 10.6 fallan si se deshace a
+     mano el cambio que cada una cuida.
+  5. Ningun comentario existente de ningun archivo quedo borrado.
+  6. Los tres tamanos y el tratamiento de la seccion 11 se respetan en los
+     dos estados y en las dos puertas: un control que se vea distinto a sus
+     hermanos es un defecto, no un detalle.
+  7. Rama tarea-70-listo-como-la-foto publicada en GitHub.
+
+La revision del lado de aca se hace corriendo el APK en el telefono, con las
+dos puertas, contra las listas de las secciones 7, 9.6 y 10.7.
+
+
+==============================================================================
+9. PARTE B — LA PANTALLA MIENTRAS SE LEE Y SE GRABA
+==============================================================================
+
+9.1 QUE HAY HOY.
+    En App.tsx, lineas 1543 a 1627, cuando estadoToma es 'leyendo' se dibuja
+    panel-controles-lectura: el MISMO cajon del estado listo -rectangulo con
+    bg-superficie, borde y redondeo, pegado abajo de lado a lado- y adentro
+    dos botones de texto: "← Salir" -btn-salir-lectura- y "Pausa"/"Seguir"
+    -btn-pausa-lectura-. Al final del div hay un <div /> vacio, resto de un
+    justifyContent space-between que ya no reparte nada.
+
+    btn-salir-lectura llama a handleStop -App.tsx:1080-, que corta la toma,
+    la guarda, deja estadoToma en 'listo' y abre el visor de la grabacion.
+    O sea: hoy "Salir" NO es salir, es PARAR Y GUARDAR.
+
+9.2 COMO QUEDA. Los mismos tres lugares que en listo, para que las dos
+    pantallas se sientan la misma aplicacion:
+
+      arriba al centro : el punto rojo y el tiempo, como hoy, sin tocar.
+      arriba a la derecha : PAUSA / SEGUIR, circulo translucido de 40, mismo
+                            lugar y mismo tratamiento que el engranaje del
+                            estado listo.
+      abajo al centro : el circulo de 72 que en listo empieza, aca PARA. Es
+                        el mismo boton en el mismo lugar, en rojo
+                        -var(--color-grabando)- con un cuadrado blanco
+                        adentro. Llama a lo mismo que llama hoy
+                        btn-salir-lectura: la conducta no cambia, cambia
+                        donde se toca.
+      arriba a la izquierda : LA FLECHA. Ver 9.3.
+
+    El cajon panel-controles-lectura DESAPARECE, igual que el de listo. Los
+    dos botones pasan a ser botones sueltos flotando sobre el lienzo, con el
+    mismo tratamiento translucido -rgba(0,0,0,0.45), borde
+    rgba(255,255,255,0.35), contenido blanco-.
+
+    Se conservan intactos: los testids btn-salir-lectura y btn-pausa-lectura,
+    sus onClick tal cual estan, controlesVisibles -si es false no se dibuja
+    nada de esto-, y la animacion de entrada panelControlesEntra, que pasa a
+    aplicarse a cada boton en vez de al cajon.
+
+9.3 LA ESQUINA DE ARRIBA A LA IZQUIERDA, SEGUN LA PUERTA.
+    Mientras se graba video no hay volver: irse a mitad de toma es
+    destructivo y ninguna aplicacion de camara ofrece esa salida. Al pausar,
+    la interfaz se abre. Queda asi:
+
+      - conCamara true, grabando -grabandoVideo true y enPausa false-:
+        LA ESQUINA VA VACIA. Solo pausa arriba a la derecha y el circulo
+        rojo abajo.
+      - conCamara true, en pausa -enPausa true-: aparece DESCARTAR. No una
+        flecha: un tacho. Ver seccion 10.
+      - conCamara false -Leer-: LA FLECHA SE DIBUJA SIEMPRE, con el mismo
+        tratamiento translucido de 32 que btn-volver-listo. En Leer no hay
+        archivo que perder y esconderla seria quitar una salida que hoy
+        existe, no mejorar nada. Aqui NO hay tacho: no hay nada que tirar.
+
+    La flecha de Leer reusa btn-salir-lectura -mismo testid, mismo onClick-.
+
+9.4 POR QUE NO VA UNA FLECHA EN PAUSA.
+    btn-salir-lectura llama a handleStop, que PARA Y GUARDA. El circulo rojo
+    llama a lo mismo. Poner la flecha en pausa dejaria dos controles
+    distintos haciendo exactamente lo mismo, y con un dibujo -una flecha-
+    que promete otra cosa. Lo que hace falta en pausa es DESCARTAR, que es
+    la seccion 10. Con eso las dos acciones quedan distintas y honestas:
+    el circulo rojo TERMINA Y GUARDA, el tacho TIRA.
+
+9.5 PRUEBAS DE LA PARTE B, en el mismo src/pruebas/tarea70.test.tsx:
+      e) En 'leyendo', panel-controles-lectura NO EXISTE. Guardiana del
+         segundo cajon.
+      f) En Leer, estando en 'leyendo', btn-salir-lectura existe.
+      g) En Grabar, estando en 'leyendo', btn-salir-lectura es null.
+    Las tres tienen que fallar si se deshace el cambio que cuidan.
+
+9.6 LISTA DE CONTROL DE LA PARTE B:
+      [ ] Leer, leyendo: flecha arriba izq, pausa arriba der, circulo rojo
+          abajo, sin cajon.
+      [ ] Grabar, grabando: esquina izquierda vacia, pausa arriba der,
+          circulo rojo abajo.
+      [ ] El circulo rojo termina la toma y abre el visor, igual que hoy.
+      [ ] Pausa y Seguir siguen funcionando igual.
+      [ ] Si controlesVisibles es false no se dibuja ninguno.
+      [ ] Ninguna prueba que hoy hace click en btn-salir-lectura o
+          btn-pausa-lectura quedo rota; si alguna se rompe, PARAR y avisar.
+
+
+==============================================================================
+10. PARTE C — DESCARTAR LA TOMA DESDE LA PAUSA
+==============================================================================
+
+10.1 QUE HAY HOY Y QUE FALTA.
+     Descartar YA EXISTE, pero vive tarde y lejos: hay que parar, esperar
+     que se abra el visor, apretar "Borrar" y despues "¿Seguro?". Cuatro
+     toques y una pantalla nueva, cuando el error se sabe en el segundo en
+     que se comete. Lo que falta no es la funcion: es el lugar.
+
+     Dato que conviene tener claro y que NO hay que cambiar: el archivo se
+     escribe en getFilesDir()/grabaciones -almacenamiento privado de la
+     aplicacion, CamaraNativaPlugin.java:93-, que Android no indexa. A la
+     galeria del telefono solo llega si se aprieta "Guardar en galeria" en
+     el visor. Una toma descartada nunca estuvo en la galeria.
+
+10.2 DONDE VA. Arriba a la izquierda, SOLO cuando conCamara es true y
+     enPausa es true. Es el lugar que la seccion 9.3 deja vacio mientras se
+     graba. En Leer no va nunca: ahi no hay archivo.
+
+     El dibujo es un TACHO, no una flecha. Una flecha dice "volver"; esto
+     borra un archivo. El control tiene que decir lo que hace.
+
+10.3 COMO CONFIRMA. En dos toques, con el mismo patron que ya usan el visor
+     y la tira de grabaciones -ReproductorGrabacion.tsx:92 y
+     TiraGrabaciones-: primer toque, el boton se abre en pildora y dice
+     "¿Seguro?" en rojo; segundo toque, descarta. NO se usa un dialogo
+     modal: interrumpe, y la aplicacion ya resolvio esto de otra manera en
+     dos lugares. Reusar el patron es lo que la hace sentir una sola cosa.
+
+     Si el usuario aprieta "Seguir" -btn-pausa-lectura- con el tacho
+     abierto en "¿Seguro?", el tacho vuelve a su estado cerrado. Nadie
+     vuelve de una pausa con una confirmacion armada esperando.
+
+10.4 QUE HACE AL DESCARTAR. Para, borra, y deja al usuario donde estaba,
+     listo para repetir. NO abre el visor: el visor es para mirar lo que se
+     guardo, y aqui no hay nada que mirar.
+
+     En App.tsx, al lado de handleStop -linea 1080-, se agrega:
+
+     // Descartar es parar y borrar. El archivo ya esta en disco cuando se
+     // pausa -el grabador escribe mientras graba, no al final-, asi que no
+     // existe un camino de "nunca escribirlo". Se corta igual que en
+     // handleStop y recien despues se borra del disco y del indice.
+     // A diferencia de handleStop, NO se abre el visor.
+     async function handleDescartarToma(): Promise<void> {
+       cancelarCuentaRegresiva()
+       setTInicioLecturaMs(null)
+       setEnPausa(false)
+       const resumen = await cortarTomaSiHay(false)
+       await stop()
+       await detenerGrabacion()
+       await soltarWakeLock()
+       setEstadoToma('listo')
+       setControlesVisibles(false)
+       if (resumen) {
+         try {
+           await borrarGrabacionEnDisco(resumen)
+           await repoGrabacionesRef.current.borrar(resumen.id)
+           setGrabaciones(await repoGrabacionesRef.current.listar())
+         } catch (e) {
+           console.warn('[App] no se pudo descartar la toma:', e)
+         }
+       }
+       mostrarAviso('Toma descartada')
+     }
+
+     Las cinco primeras lineas y las cuatro del corte son las mismas de
+     handleStop a proposito: descartar y terminar tienen que dejar la
+     maquina en el mismo estado, y lo unico que cambia es el destino del
+     archivo. No refactorizar handleStop para compartir codigo: son dos
+     caminos que van a seguir separandose, y tocarlo arriesga lo unico que
+     hoy funciona.
+
+     borrarGrabacionEnDisco ya esta importado en App.tsx -linea 38-.
+
+10.5 EL AVISO DE AUDIO. cortarTomaSiHay llama a persistirResumenToma, que
+     puede mostrar "No se oye audio en este archivo". En un descarte eso es
+     ruido. No se toca persistirResumenToma: mostrarAviso reemplaza el aviso
+     anterior y limpia su temporizador -App.tsx:136-, asi que el
+     "Toma descartada" del final gana. Puede alcanzar a verse un parpadeo
+     del aviso de audio; se acepta, y se anota aca para que no se descubra
+     como sorpresa.
+
+10.6 PRUEBAS DE LA PARTE C, en src/pruebas/tarea70.test.tsx:
+       h) En Grabar, leyendo y SIN pausa, btn-descartar-toma es null.
+       i) En Grabar, al pausar, btn-descartar-toma existe.
+       j) En Leer, en pausa, btn-descartar-toma es null.
+       k) Un solo click en btn-descartar-toma NO descarta: el boton queda en
+          data-confirmando="si". El segundo click si.
+     Las cuatro verificadas rompiendolas.
+
+10.7 LISTA DE CONTROL DE LA PARTE C, en el telefono:
+       [ ] Grabar una toma, pausar, tocar el tacho: dice "¿Seguro?".
+       [ ] Tocar "Seguir" con el "¿Seguro?" abierto: el tacho se cierra y la
+           grabacion sigue.
+       [ ] Segundo toque: vuelve a listo, sin visor, con el aviso
+           "Toma descartada".
+       [ ] La toma descartada NO aparece en la tira de grabaciones.
+       [ ] El archivo no quedo en disco -revisar la tira despues de cerrar y
+           abrir la aplicacion-.
+       [ ] Terminar una toma con el circulo rojo sigue guardando y abriendo
+           el visor, igual que siempre.
+
+
+==============================================================================
+11. COMO SE VE: EL TRATAMIENTO COMUN DE LOS CONTROLES FLOTANTES
+==============================================================================
+
+Javier pidio que se vea bien, elegante y moderno. Eso no se consigue
+decorando cada boton: se consigue porque TODOS los controles flotantes de
+las dos pantallas son el mismo objeto en distintos tamanos. Esta seccion es
+la unica fuente de la verdad para eso, y manda por sobre cualquier estilo
+suelto que haya quedado en las secciones 4 y 9.
+
+11.1 LOS TRES TAMANOS. No hay otros.
+       32 : los controles de esquina secundarios. Flecha de volver, tacho.
+       40 : los controles de esquina principales. Engranaje, pausa.
+       72 : la accion central de abajo. Empezar, parar.
+
+11.2 EL MISMO TRATAMIENTO PARA LOS TRES:
+       borderRadius   : 'var(--redondeo-pildora)'
+       backgroundColor: 'rgba(0,0,0,0.45)'
+       border         : '1px solid rgba(255,255,255,0.35)'
+       color          : '#fff'
+       padding        : 0
+       display        : 'flex', alignItems y justifyContent en 'center'
+       className      : 'btn-deformable'
+
+     El de 32 usa rgba(0,0,0,0.35) en vez de 0.45: pesa menos porque manda
+     menos. Es la unica variacion permitida.
+
+11.3 EL ROJO. El circulo de parar lleva backgroundColor
+     'var(--color-grabando)' en vez del negro translucido, y adentro un
+     cuadrado blanco de 22 con borderRadius 3. El rojo se gana estando
+     grabando: en ningun otro control aparece, salvo el "¿Seguro?" del
+     tacho, que usa var(--color-grabando) en el borde y
+     var(--color-grabando-texto) en el texto -el mismo par que ya usa la
+     aplicacion-.
+
+11.4 NADA DE TRANSFORM EN LINEA. Ver la observacion 2.5. .btn-deformable
+     -styles.css:255- hace su efecto de apretado con transform, y un
+     transform en linea lo mata en silencio. Centrar el circulo de abajo se
+     hace con el div envoltorio de la seccion 4, nunca con
+     translateX(-50%).
+
+11.5 LOS ICONOS QUE FALTAN. En src/components/IconosApp.tsx ya estan
+     IconoEngranaje, IconoEmpezar, IconoEscena y IconoAtras. Faltan tres, y
+     se escriben con la MISMA firma que los que ya estan -{ tamano = 22,
+     ...props }, stroke currentColor, strokeWidth 2, fill none salvo donde
+     se diga-:
+
+       IconoPausa    : dos barras verticales redondeadas, fill currentColor.
+       IconoSeguir   : el mismo triangulo de IconoEmpezar. NO se duplica el
+                       path: en pausa se muestra <IconoEmpezar tamano={20} />
+                       y listo. Este icono NO se crea.
+       IconoParar    : un cuadrado con esquinas apenas redondeadas, fill
+                       currentColor, sin stroke.
+       IconoTacho    : tacho de basura de trazo, la tapa y el cuerpo, sin
+                       las rayitas de adentro. A 18 las rayitas se
+                       ensucian.
+
+     Cada uno lleva su comentario de una linea diciendo donde se usa, como
+     los que ya estan. Y vale la regla de la seccion 5: LOS COMENTARIOS QUE
+     YA ESTAN NO SE BORRAN.
+
+11.6 LA TRANSICION. Los controles ya aparecen y desaparecen con
+     controlesVisibles y con la animacion panelControlesEntra. Esa animacion
+     pasa de aplicarse al cajon a aplicarse a cada boton, con el mismo
+     MS_CHICO y la misma CURVA_ENTRA. No se inventa ninguna animacion
+     nueva. El tacho que se abre a "¿Seguro?" cambia de ancho con una
+     transicion de ancho de MS_CHICO, y respeta movimientoApagado() igual
+     que todo lo demas.
