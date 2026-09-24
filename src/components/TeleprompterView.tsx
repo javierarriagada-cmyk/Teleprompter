@@ -792,8 +792,14 @@ export default function TeleprompterView({
             data-testid="panel-lectura"
             className="panel-lectura"
             style={{
-              top: ventana.desdePx,
-              height: ventana.hastaPx - ventana.desdePx,
+              // DOS CORRECCIONES, MEDIDAS EN EL TELEFONO -24-09-2026-. El texto va
+              // adentro del area segura -la barra de estado, 45 px en el moto g86- y
+              // este panel no: sin sumarla quedaba corrido hacia arriba y cubria dos
+              // renglones en vez de cuatro -"llega a dos renglones, deberian ser unos
+              // 4"-. Y los cuatro renglones casi siempre cruzan un salto de parrafo,
+              // que suma MARGEN_RENGLON_LECTURA_PX: el panel lo incluye.
+              top: `calc(env(safe-area-inset-top, 0px) + ${ventana.desdePx}px)`,
+              height: ventana.hastaPx - ventana.desdePx + MARGEN_RENGLON_LECTURA_PX,
               left: columnaX.izquierda - MARGEN_PANEL_PX,
               width: columnaX.ancho + 2 * MARGEN_PANEL_PX,
               ['--panel-color' as string]: `rgba(${rgbFondo.r}, ${rgbFondo.g}, ${rgbFondo.b}, ${ALPHA_PANEL_LECTURA})`
