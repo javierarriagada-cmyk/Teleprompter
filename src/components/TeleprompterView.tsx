@@ -90,7 +90,31 @@ import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from
 // SI ESTE NUMERO SE VUELVE A MOVER CON UNA SOLA LECTURA, hay que parar y medir en vez de
 // ajustar: tres lecturas distintas pueden pedir tres valores, y ahi estariamos afinando a
 // una sesion y no a una regla.
-export const MARGEN_RENGLONES_ARRIBA = 1
+//   0.5, ventana de 4   PUESTO el 24 de septiembre de 2026, MEDIDO y no con una lectura.
+//                     Con el motor ya pegado a la voz -oido propio, relevo del microfono,
+//                     compensacion: 1,5 palabras de atraso- Javier leia en el renglon 2 o 3
+//                     y lo que pide es "el final del primero y el segundo": lo mas cerca del
+//                     lente. Repetido sobre cuatro tomas reales en las VEINTE combinaciones
+//                     de letra -14 a 42, serif y sans- y columna -completa y angosta-, con
+//                     los renglones medidos en su telefono -teleprom/02-lecturas/motor-24-sep,
+//                     matriz.mjs-. Final del renglon 1 o renglon 2 de la ventana:
+//
+//                       palabras por renglon   con 1        con 0.5
+//                       6 a 9                  78-86%       99%
+//                       4 a 5                  67-74%       97-98%
+//                       ~3,5                   61%          91%
+//                       2,5 a 3,3 (letra 42)   43-57%       80-91%
+//
+//                     Pantalla ADELANTADA -la persona en el renglon de arriba del vivo- 0 a
+//                     2% en todas: son la pausa despues de la ultima palabra de un renglon,
+//                     cuando la pantalla ya paso al siguiente. El renglon que queda cortado a
+//                     medias arriba es el que se acaba de terminar.
+//
+//                     Un solo numero para todas las combinaciones, a proposito: Javier no
+//                     quiere reglas por version, el motor se tiene que adaptar solo. Lo que
+//                     falta en los renglones cortos se gana bajando el atraso en PALABRAS.
+//
+export const MARGEN_RENGLONES_ARRIBA = 0.5
 
 // Cuanto tarda la pantalla en pasar de un renglon al siguiente. Constante de tiempo de un
 // acercamiento exponencial: con 70 ms, el renglon se recorre casi entero en unos 200.
