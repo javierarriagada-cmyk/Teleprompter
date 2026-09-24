@@ -1589,7 +1589,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                   data-duracion-entra={MS_CHICO}
                   data-duracion-sale={MS_PANTALLA}
                   type="button"
-                  className="btn-deformable btn-flotante-32"
+                  className="btn-deformable btn-flotante-40"
                   aria-label="Salir"
                   onClick={async (e) => {
                     e.stopPropagation()
@@ -1615,7 +1615,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                     animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
                   }}
                 >
-                  <IconoAtras tamano={18} />
+                  <IconoAtras tamano={20} />
                 </button>
               )}
 
@@ -1626,7 +1626,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                   data-duracion-sale={MS_PANTALLA}
                   data-confirmando={confirmandoDescarte ? 'si' : 'no'}
                   type="button"
-                  className="btn-deformable btn-flotante-32"
+                  className="btn-deformable btn-flotante-40"
                   aria-label="Descartar toma"
                   onClick={async (e) => {
                     e.stopPropagation()
@@ -1645,7 +1645,9 @@ export default function App({ motor, repoOverride }: AppProps) {
                     // Ancho fijo y no 'auto': CSS no anima un ancho hacia 'auto', salta de golpe,
                     // y la 11.6 pide que el tacho se abra con una transicion de MS_CHICO.
                     // 96 le alcanza a '¿Seguro?' en negrita con su aire a los lados.
-                    width: confirmandoDescarte ? 96 : 32,
+                    // 40 cerrado desde el 24-09-2026: las esquinas de arriba miden lo
+                    // mismo que la pausa de la otra esquina -btn-flotante-40-.
+                    width: confirmandoDescarte ? 96 : 40,
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     padding: confirmandoDescarte ? '0 var(--aire-2)' : 0,
@@ -1662,7 +1664,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                     animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
                   }}
                 >
-                  {confirmandoDescarte ? '¿Seguro?' : <IconoTacho tamano={18} />}
+                  {confirmandoDescarte ? '¿Seguro?' : <IconoTacho tamano={20} />}
                 </button>
               )}
 

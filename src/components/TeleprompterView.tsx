@@ -904,11 +904,15 @@ export default function TeleprompterView({
               al lado de la otra se veian dos flechas distintas para la misma
               salida. El encargo 70 decia que este boton no se tocaba y a la vez,
               en la 9.3, que la otra flecha copiaba su tratamiento translucido,
-              que no tenia: se resolvio por la seccion 11, que manda. 23-09-2026. */}
+              que no tenia: se resolvio por la seccion 11, que manda. 23-09-2026.
+              24-09-2026: sube a 40, el tamano del engranaje de la otra esquina.
+              El dueno: "el boton de volver ... esta desproporcionado por ser mas
+              pequeno que el engranaje". Las dos esquinas de arriba son el mismo
+              objeto y el mismo tamano; el 32 de "esquina secundaria" se fue. */}
           <button
             data-testid="btn-volver-listo"
             type="button"
-            className="btn-deformable btn-flotante-32"
+            className="btn-deformable btn-flotante-40"
             onClick={(e) => {
               e.stopPropagation()
               onVolverListo?.()
@@ -921,7 +925,7 @@ export default function TeleprompterView({
               zIndex: 10
             }}
           >
-            <IconoAtras tamano={18} />
+            <IconoAtras tamano={20} />
           </button>
 
           {/* ARRIBA A LA DERECHA: EL ENGRANAJE. Las dos puertas, siempre.
