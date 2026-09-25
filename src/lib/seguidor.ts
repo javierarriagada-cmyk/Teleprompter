@@ -45,6 +45,29 @@ export const MIN_PALABRAS_PARCIAL = 3
 export const MIN_PALABRAS_SEGUIDAS = 3
 export const PENALIZACION_POR_TOKEN = 0.005
 export const VENTANA_LINEAS_ADELANTE = 3
+// UN PARCIAL NO SALTA LEJOS CON PALABRAS SOLO PARECIDAS -24-09-2026-.
+//
+// Toma a5bc922c de Javier, guion de bienvenida: a los 2,3 s, diciendo "Lee esto
+// en voz alta", el reconocedor oyo a medias "le estan volviendo". Las tres se
+// PARECEN -similar()- a "Se esta moviendo" del segundo parrafo -le/se,
+// estan/esta, volviendo/moviendo-, ninguna es identica, y el seguidor salto de
+// la palabra 3 a la 19. La frase cerrada corrigio al segundo -"le esto en voz
+// alta", palabra 5-, pero la pantalla no retrocede: quedo adelantada y se llevo
+// hacia arriba lo que habia que leer. Con este guion pasa porque el primer
+// parrafo es corto y el segundo queda dentro de la ventana de busqueda.
+//
+// Un parcial que mueve la posicion mas de SALTO_PARCIAL_SIN_EXACTAS palabras
+// adelante necesita al menos PALABRAS_EXACTAS_PARA_SALTAR identicas. Si no las
+// tiene, se busca solo cerca. La frase cerrada no tiene esta regla: es la que
+// alcanza a quien se salta un trozo del guion.
+//
+// Medido antes de meterlo, repitiendo en el PC las 28 tomas guardadas por la
+// misma conduccion de la app -comparar-seguidor.ts en teleprom/02-lecturas/
+// motor-24-sep, 99% de los calces iguales a los del telefono-: en ninguna hubo
+// un salto de mas de 5 palabras por un parcial que fuera bueno; el unico era
+// este, y era falso.
+export const SALTO_PARCIAL_SIN_EXACTAS = 5
+export const PALABRAS_EXACTAS_PARA_SALTAR = 2
 
 export function normalizar(s: string): string {
   return s
@@ -293,6 +316,19 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
     return { mejorOffset, mejorPuntaje }
   }
 
+  // Cuantas palabras de la frase son IDENTICAS al guion, puesta desde offset.
+  function exactasEn(frase: string[], offset: number): number {
+    let n = 0
+    let idx = offset
+    for (let i = 0; i < frase.length; i++) {
+      while (idx < tokens.length && tokens[idx].esAcotacion) idx++
+      if (idx >= tokens.length) break
+      if (frase[i] === tokens[idx].palabra) n++
+      idx++
+    }
+    return n
+  }
+
   return {
     avanzar(fraseFinal: string, tMs?: number, ppmEstimadas?: number, tUltimoCalce?: number): Posicion {
       ultimoParcial = ''
@@ -401,7 +437,15 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
       const desde = Math.max(0, posMinima - (frase.length + VENTANA_ATRAS))
       hasta = Math.max(desde, hasta)
 
-      const { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta, posPredicha)
+      let { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta, posPredicha)
+
+      // Ver SALTO_PARCIAL_SIN_EXACTAS: lejos, solo con palabras identicas.
+      if (mejorPuntaje >= MIN_COINCIDENCIA && mejorOffset - base > SALTO_PARCIAL_SIN_EXACTAS && exactasEn(frase, mejorOffset) < PALABRAS_EXACTAS_PARA_SALTAR) {
+        const cerca = Math.max(desde, Math.min(hasta, base + SALTO_PARCIAL_SIN_EXACTAS))
+        const r = buscarMejorOffset(frase, desde, cerca, posPredicha)
+        mejorOffset = r.mejorOffset
+        mejorPuntaje = r.mejorPuntaje
+      }
 
       if (mejorPuntaje < MIN_COINCIDENCIA) {
         fallosParcialesSeguidos++

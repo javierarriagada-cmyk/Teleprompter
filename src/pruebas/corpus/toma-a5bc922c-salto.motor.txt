@@ -1,0 +1,76 @@
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: a5bc922c-bfd7-4561-9394-5f610436b906
+# inicio del video (epoch ms): 1790301070112
+# motor de voz: nativo
+# letra: 24 px, serif
+# columna: completa, margen 5%
+# donde lees: arriba
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Hola. Lee esto en voz alta, con o sin apuro, como prefieras.
+# | 
+# | Ahora fíjate en el texto. Se está moviendo solo, al ritmo en que hablas, sin que toques nada. La línea suave bajo las palabras te muestra por dónde vas.
+# | 
+# | Si te detienes a pensar, el texto te espera. Cuando vuelves a hablar, sigue contigo.
+# | 
+# | Lo que escribes entre corchetes es una nota solo para ti. Se ve en la pantalla, pero no hace falta leerla en voz alta. [Como esta: respira y sonríe.]
+# | 
+# | Tu guion también puede ayudarte a leer mejor. Marca en negrita lo que quieres decir con más fuerza. Pinta palabras en ámbar, en celeste o en verde salvia para distinguir ideas o cambios de tono. Y usa el destacado amarillo para lo que no se te puede pasar. Basta con seleccionar el texto en el editor y elegir.
+# | 
+# | En el botón Aa eliges el tamaño de la letra, la tipografía, el ancho de la columna y los colores de la pantalla. Déjalo como te resulte más cómodo.
+# | 
+# | Cuando quieras grabarte, toca Grabar. La cámara filma mientras lees, y el texto queda justo bajo el lente, para que tu mirada vaya a la cámara y no a la pantalla. Puedes verte a pantalla completa, detrás del texto, o en un recuadro pequeño. Así sabes cómo te están viendo, sin perder la comodidad para leer.
+# | 
+# | Te acompaña para darte la comodidad y la tranquilidad que necesitas. Queremos que toda tu concentración esté donde debe estar. No tienes que memorizar. No tienes que apurarte para alcanzar el texto. Puedes transmitir la emoción que quieras, en el momento que quieras.
+# | 
+# | Sirve para grabar un video, dar una clase o preparar una entrevista.
+# | 
+# | Cuando termines, borra esto y escribe tu propio guion, o pega uno que ya tengas.
+# | 
+# | Y si algo te gusta, te molesta o se te ocurre cómo mejorarlo, cuéntanos. Tus comentarios son muy valiosos para nosotros. Escríbenos a hola@ejemplo.com. Que te vaya muy bien.
+# ---------------------------------------------
+
+ms	tipo	detalle
+1788	oyo	parcial: le
+1887	oyo	parcial: leer
+1953	oyo	parcial: le
+2036	oyo	parcial: le estoy
+2123	oyo	parcial: le esto en
+2183	oyo	parcial: le esto
+2265	oyo	parcial: le están volviendo
+2347	oyo	parcial: le esto
+2392	oyo	parcial: le esto en
+2455	oyo	parcial: le esto
+2470	oyo	parcial: le esto en voz
+2499	oyo	parcial: le esto en voz alta
+2529	oyo	parcial: le esto en voz alta
+2570	oyo	parcial: le esto en voz alta
+2659	oyo	parcial: le esto en voz alta
+2760	oyo	parcial: le esto en voz alta
+2862	oyo	parcial: le esto en voz alta
+2963	oyo	parcial: le esto en voz alta
+3056	oyo	parcial: le esto en voz alta
+3188	oyo	parcial: le esto en voz alta
+3260	oyo	parcial: le esto en voz alta
+3356	oyo	parcial: le esto en voz alta
+3463	oyo	parcial: le esto en voz alta
+3559	oyo	parcial: le esto en voz alta
+3648	oyo	FINAL: le esto en voz alta
+4361	oyo	parcial: con
+4483	oyo	parcial: con
+4560	oyo	parcial: con
+4663	oyo	parcial: con
+4785	oyo	parcial: con o
+4846	oyo	parcial: con o sin
+4913	oyo	parcial: con
+4953	oyo	parcial: con o sin
+5039	oyo	parcial: con o sin
+5148	oyo	parcial: con o sin
+5243	oyo	parcial: con o sin
+5341	oyo	parcial: con o sin
+5452	oyo	parcial: con o sin
+5549	oyo	parcial: con o sin
+5645	oyo	parcial: con o sin
+5765	oyo	parcial: con o sin
+5846	oyo	parcial: con o sin
+5937	oyo	parcial: con o sin
+6026	oyo	FINAL: con o sin
