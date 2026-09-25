@@ -1,0 +1,2 @@
+# cache del deploy de Firebase: se regenera en cada "firebase deploy"
+.firebase/

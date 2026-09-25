@@ -567,7 +567,11 @@ textarea::placeholder {
 /* El Aa que abre el cajon: mas grande que un titulo -era 18 px- porque es el
    unico control de la fila y se busca con el pulgar. El padding agranda el
    blanco de toque y el margen negativo lo compensa: la letra sigue alineada
-   con el borde del contenido. 24-09-2026. */
+   con el borde del contenido. 24-09-2026.
+   ALTO MINIMO 48px -25-09-2026-. El Robo test de Firebase lo marco chico: con
+   el padding de arriba quedaba en ~40px de alto. Es el control mas usado del
+   editor, asi que se lleva el mismo minimo que boton-aa-redondo. El ancho ya
+   sobraba -no se toca-. */
 .boton-aa {
   background: transparent;
   border: none;
@@ -577,6 +581,9 @@ textarea::placeholder {
   color: var(--color-texto);
   padding: var(--aire-2) var(--aire-3);
   margin: calc(-1 * var(--aire-2)) calc(-1 * var(--aire-3));
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
 }
 .cajon-aa-agarradera {
