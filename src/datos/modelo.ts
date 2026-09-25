@@ -103,6 +103,12 @@ export type ResumenGrabacion = {
   avisoMudo?: boolean
   errorMudo?: boolean
   calidad?: string
+  // La copia en la galeria del telefono, si ya se guardo -24-09-2026-. Una toma
+  // guardada ofrece Compartir y Borrar, y nada mas: sus subtitulos quedaron como
+  // se eligieron al guardar -Javier: "ya se guardaron asi no mas"-.
+  galeriaUri?: string
+  // Con que subtitulos quedo esa copia: el visor la muestra igual.
+  estiloGaleria?: 'no' | 'amarillo' | 'rojo' | 'formal'
 }
 
 export function grabacionNueva(parcial: Partial<ResumenGrabacion> & Pick<ResumenGrabacion, 'tituloGuion'>): ResumenGrabacion {
@@ -119,7 +125,9 @@ export function grabacionNueva(parcial: Partial<ResumenGrabacion> & Pick<Resumen
     incompleta: parcial.incompleta ?? false,
     avisoMudo: parcial.avisoMudo,
     errorMudo: parcial.errorMudo,
-    calidad: parcial.calidad
+    calidad: parcial.calidad,
+    galeriaUri: parcial.galeriaUri,
+    estiloGaleria: parcial.estiloGaleria
   }
 }
 

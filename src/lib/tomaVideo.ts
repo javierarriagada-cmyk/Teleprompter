@@ -14,6 +14,7 @@ import {
   buscarMp4Recientes,
   bytesDe,
   directorioGrabaciones,
+  existeEnGaleria,
   extraerMiniatura,
   escribirTexto,
   juntos,
@@ -437,6 +438,35 @@ export async function recuperarTomasPendientes(
   return lista
 }
 
+// LAS TOMAS CUYO VIDEO SE BORRO DESDE LA GALERIA, FUERA -24-09-2026-. Una toma
+// guardada vive solo en la galeria -una sola copia por toma-. Si alguien la borra
+// desde ahi, en Sigo "solo no aparece" -Javier-: sin aviso. Se quitan del indice
+// y se limpia lo que quedaba de ellas en la carpeta de Sigo -miniatura, sidecar,
+// registro-. Si no se puede preguntar -version web, o falla la consulta-, la toma
+// se queda: nunca se borra algo por no haber podido mirar.
+export async function quitarTomasSinVideo(repo: RepositorioGrabaciones): Promise<ResumenGrabacion[]> {
+  const todas = await repo.listar()
+  if (!Capacitor.isNativePlatform()) return todas
+  const quedan: ResumenGrabacion[] = []
+  for (const g of todas) {
+    if (!g.galeriaUri) { quedan.push(g); continue }
+    let existe = true
+    try {
+      existe = await existeEnGaleria(g.galeriaUri)
+    } catch {
+      existe = true
+    }
+    if (existe) { quedan.push(g); continue }
+    try {
+      await borrarGrabacionEnDisco(g)
+      await repo.borrar(g.id)
+    } catch {
+      quedan.push(g)
+    }
+  }
+  return quedan
+}
+
 export async function borrarGrabacionEnDisco(g: ResumenGrabacion): Promise<void> {
   // g.ruta puede ser file://.../Movies/CameraPreview/video_*.mp4 si el
   // mover no corrio. archivoDe del lado nativo lo resuelve; aca se manda
@@ -450,6 +480,8 @@ export async function borrarGrabacionEnDisco(g: ResumenGrabacion): Promise<void>
     await borrarArchivo(juntos(dir, `${g.id}.mp4`))
     await borrarArchivo(juntos(dir, `${g.id}.mp4.part`))
     await borrarArchivo(juntos(dir, `${g.id}.jpg`))
+    // El registro del motor -24-09-2026-: se quedaba huerfano al borrar la toma.
+    await borrarArchivo(juntos(dir, `${g.id}.motor.txt`))
   } catch {}
   if (g.ruta) {
     const base = g.ruta.replace(/\.mp4(\.part)?$/, '')

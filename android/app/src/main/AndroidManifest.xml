@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- hasFragileUserData -24-09-2026-: las tomas que no se guardaron en la
+         galeria viven en la carpeta privada de Sigo, que la galeria no muestra
+         -Javier eligio que queden escondidas-. Esa carpeta se borraba entera al
+         desinstalar: ese dia se perdieron asi las tomas de la app vieja. Con esto,
+         al desinstalar, Android pregunta si conservar los datos de la app. -->
     <application
+        android:hasFragileUserData="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

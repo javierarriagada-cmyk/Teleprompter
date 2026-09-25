@@ -186,6 +186,22 @@ public class CamaraNativaPlugin extends Plugin {
     public void borrarArchivo(PluginCall call) {
         String ruta = call.getString("ruta");
         if (ruta == null) { call.reject("ruta requerida"); return; }
+        // UNA TOMA GUARDADA VIVE EN LA GALERIA -24-09-2026-: su ruta es content://.
+        // Borrarla en Sigo la borra de ahi -Javier: "si se borra de la galeria de
+        // sigo se borra de todos lados"-. Android deja borrar sin preguntar lo que
+        // la app misma guardo; si no la deja -la app se reinstalo y ya no es la
+        // duena-, se avisa con ok=false y el archivo queda en la galeria.
+        if (ruta.startsWith("content:")) {
+            JSObject ret = new JSObject();
+            try {
+                getContext().getContentResolver().delete(android.net.Uri.parse(ruta), null, null);
+                ret.put("ok", true);
+            } catch (Exception e) {
+                ret.put("ok", false);
+            }
+            call.resolve(ret);
+            return;
+        }
         File f = archivoDe(ruta);
         if (f.exists()) f.delete();
         JSObject ret = new JSObject();
@@ -331,9 +347,22 @@ public class CamaraNativaPlugin extends Plugin {
 
         new Thread(() -> {
             try {
+                android.net.Uri itemUri = copiarAGaleria(origen, origen.getName());
+                JSObject ret = new JSObject();
+                ret.put("ok", true);
+                ret.put("uri", itemUri.toString());
+                call.resolve(ret);
+            } catch (Exception e) {
+                call.reject("Error al guardar en galería: " + e.getMessage(), e);
+            }
+        }).start();
+    }
+
+    // Copia un mp4 a Peliculas/Sigo de la galeria y devuelve su direccion. Lo usan
+    // guardarEnGaleria -la toma tal cual- y guardarConSubtitulos -la quemada-.
+    private android.net.Uri copiarAGaleria(File origen, String nombre) throws Exception {
                 android.content.ContentResolver resolver = getContext().getContentResolver();
                 android.content.ContentValues values = new android.content.ContentValues();
-                String nombre = origen.getName();
                 values.put(android.provider.MediaStore.Video.Media.DISPLAY_NAME, nombre);
                 values.put(android.provider.MediaStore.Video.Media.MIME_TYPE, "video/mp4");
                 values.put(android.provider.MediaStore.Video.Media.RELATIVE_PATH, android.os.Environment.DIRECTORY_MOVIES + "/Sigo");
@@ -341,10 +370,7 @@ public class CamaraNativaPlugin extends Plugin {
 
                 android.net.Uri collection = android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
                 android.net.Uri itemUri = resolver.insert(collection, values);
-                if (itemUri == null) {
-                    call.reject("Error al crear registro en MediaStore");
-                    return;
-                }
+                if (itemUri == null) throw new Exception("no se pudo crear el registro en MediaStore");
 
                 try (java.io.InputStream is = new java.io.FileInputStream(origen);
                      java.io.OutputStream os = resolver.openOutputStream(itemUri)) {
@@ -358,15 +384,161 @@ public class CamaraNativaPlugin extends Plugin {
                 values.clear();
                 values.put(android.provider.MediaStore.Video.Media.IS_PENDING, 0);
                 resolver.update(itemUri, values, null, null);
+                return itemUri;
+    }
 
-                JSObject ret = new JSObject();
-                ret.put("ok", true);
-                ret.put("uri", itemUri.toString());
-                call.resolve(ret);
+    // GUARDAR CON LOS SUBTITULOS QUEMADOS -24-09-2026-. Media3 Transformer, de
+    // Google: vuelve a codificar el video con el codificador de hardware del
+    // telefono y en cada cuadro pone encima CapaDeSubtitulos. El audio se copia
+    // sin recomprimir. El avance va a la app como "progresoGuardado" -0 a 100-.
+    // Javier, sobre el tiempo: "el que lo quiere con subtitulos sabe que el
+    // proceso es mas pesado". Si el codificador falla, se rechaza y la app avisa;
+    // la toma original no se toca nunca.
+    @PluginMethod
+    @androidx.annotation.OptIn(markerClass = androidx.media3.common.util.UnstableApi.class)
+    public void guardarConSubtitulos(PluginCall call) {
+        String ruta = call.getString("ruta");
+        String subtitulos = call.getString("subtitulos");
+        String estilo = call.getString("estilo", "amarillo");
+        File origen = archivoDe(ruta);
+        if (!origen.exists() || subtitulos == null) {
+            call.reject("El archivo no existe: " + ruta);
+            return;
+        }
+        int rotacion = 0;
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        try {
+            mmr.setDataSource(origen.getAbsolutePath());
+            String r = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+            if (r != null) rotacion = Integer.parseInt(r);
+        } catch (Exception ignorada) {
+            // sin rotacion conocida se dibuja como viene el cuadro
+        } finally {
+            try { mmr.release(); } catch (Exception ignorada) {}
+        }
+        final CapaDeSubtitulos capa;
+        try {
+            capa = new CapaDeSubtitulos(subtitulos, estilo, rotacion);
+        } catch (Exception e) {
+            call.reject("subtitulos ilegibles: " + e.getMessage(), e);
+            return;
+        }
+        File salida = new File(getContext().getCacheDir(), "con-subtitulos-" + System.currentTimeMillis() + ".mp4");
+        String nombre = origen.getName().replace(".mp4", "") + "-subtitulos.mp4";
+        android.os.Handler hilo = new android.os.Handler(android.os.Looper.getMainLooper());
+        hilo.post(() -> {
+            try {
+                androidx.media3.transformer.EditedMediaItem item = new androidx.media3.transformer.EditedMediaItem.Builder(
+                    androidx.media3.common.MediaItem.fromUri(android.net.Uri.fromFile(origen)))
+                    .setEffects(new androidx.media3.transformer.Effects(
+                        com.google.common.collect.ImmutableList.of(),
+                        com.google.common.collect.ImmutableList.of(
+                            new androidx.media3.effect.OverlayEffect(com.google.common.collect.ImmutableList.of(capa)))))
+                    .build();
+                final androidx.media3.transformer.Transformer[] t = new androidx.media3.transformer.Transformer[1];
+                final boolean[] terminado = { false };
+                // 12 Mbps -24-09-2026-. Sin pedirlo, Media3 eligio 8,7 contra ~20 de la
+                // camara. Es una segunda compresion y, desde que se guarda, la UNICA
+                // copia de la toma: 12 queda sobre lo que pide YouTube para 1080p
+                // -8- y deja margen para cuando Instagram o WhatsApp la vuelvan a
+                // comprimir. 30 minutos: unos 2,7 GB.
+                androidx.media3.transformer.DefaultEncoderFactory codificador = new androidx.media3.transformer.DefaultEncoderFactory.Builder(getContext())
+                    .setRequestedVideoEncoderSettings(new androidx.media3.transformer.VideoEncoderSettings.Builder().setBitrate(12_000_000).build())
+                    .build();
+                t[0] = new androidx.media3.transformer.Transformer.Builder(getContext())
+                    .setEncoderFactory(codificador)
+                    .addListener(new androidx.media3.transformer.Transformer.Listener() {
+                        @Override
+                        public void onCompleted(androidx.media3.transformer.Composition c, androidx.media3.transformer.ExportResult r) {
+                            terminado[0] = true;
+                            new Thread(() -> {
+                                try {
+                                    android.net.Uri uri = copiarAGaleria(salida, nombre);
+                                    JSObject ret = new JSObject();
+                                    ret.put("ok", true);
+                                    ret.put("uri", uri.toString());
+                                    call.resolve(ret);
+                                } catch (Exception e) {
+                                    call.reject("Error al guardar en galería: " + e.getMessage(), e);
+                                } finally {
+                                    salida.delete();
+                                }
+                            }).start();
+                        }
+
+                        @Override
+                        public void onError(androidx.media3.transformer.Composition c, androidx.media3.transformer.ExportResult r, androidx.media3.transformer.ExportException e) {
+                            terminado[0] = true;
+                            salida.delete();
+                            call.reject("No se pudieron poner los subtítulos: " + e.getMessage(), e);
+                        }
+                    })
+                    .build();
+                t[0].start(item, salida.getAbsolutePath());
+                androidx.media3.transformer.ProgressHolder avance = new androidx.media3.transformer.ProgressHolder();
+                hilo.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (terminado[0]) return;
+                        if (t[0].getProgress(avance) == androidx.media3.transformer.Transformer.PROGRESS_STATE_AVAILABLE) {
+                            JSObject d = new JSObject();
+                            d.put("porcentaje", avance.progress);
+                            notifyListeners("progresoGuardado", d);
+                        }
+                        hilo.postDelayed(this, 400);
+                    }
+                }, 400);
             } catch (Exception e) {
-                call.reject("Error al guardar en galería: " + e.getMessage(), e);
+                salida.delete();
+                call.reject("No se pudieron poner los subtítulos: " + e.getMessage(), e);
             }
-        }).start();
+        });
+    }
+
+    // Si la copia de una toma sigue en la galeria. Javier, 24-09-2026: "si no
+    // encuentra un video porque se elimino, solo no aparece".
+    private boolean existeEnGaleria(android.net.Uri uri) {
+        try (android.database.Cursor c = getContext().getContentResolver().query(uri, new String[] { android.provider.MediaStore.MediaColumns._ID }, null, null, null)) {
+            return c != null && c.moveToFirst();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @PluginMethod
+    public void existeEnGaleria(PluginCall call) {
+        String uriTexto = call.getString("uri");
+        JSObject ret = new JSObject();
+        ret.put("existe", uriTexto != null && !uriTexto.isEmpty() && existeEnGaleria(android.net.Uri.parse(uriTexto)));
+        call.resolve(ret);
+    }
+
+    // COMPARTIR LA TOMA GUARDADA -24-09-2026-. Una toma que ya esta en la galeria
+    // no ofrece Guardar ni Subtitulos: ofrece Compartir -Javier: "debemos tender a
+    // lo simple"-. Se comparte la copia de la galeria, la que se guardo con su
+    // estilo de subtitulos, por el menu de Android. Sin biblioteca nueva: es un
+    // Intent. Si esa copia ya no existe -la borraron desde la galeria-, se avisa
+    // con "no existe" y la toma vuelve a ofrecer Guardar.
+    @PluginMethod
+    public void compartir(PluginCall call) {
+        String uriTexto = call.getString("uri");
+        if (uriTexto == null || uriTexto.isEmpty()) {
+            call.reject("uri requerida");
+            return;
+        }
+        android.net.Uri uri = android.net.Uri.parse(uriTexto);
+        if (!existeEnGaleria(uri)) {
+            call.reject("no existe");
+            return;
+        }
+        android.content.Intent envio = new android.content.Intent(android.content.Intent.ACTION_SEND);
+        envio.setType("video/mp4");
+        envio.putExtra(android.content.Intent.EXTRA_STREAM, uri);
+        envio.addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        android.content.Intent menu = android.content.Intent.createChooser(envio, null);
+        menu.addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        getActivity().startActivity(menu);
+        call.resolve();
     }
 
     // SIN FILTRO DE EDAD, a proposito. Quien decide cual es el archivo de

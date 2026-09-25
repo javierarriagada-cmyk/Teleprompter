@@ -879,16 +879,10 @@ label.selector-aa-opcion {
   color: #E7E1DE;
 }
 /* Un boton redondo encendido -la vibracion- se pinta como la opcion
-   elegida de un selector: crema. */
-.boton-aa-redondo.activa {
-  background-color: var(--color-acento);
-  border-color: var(--color-acento);
-  color: var(--color-texto-acento);
-}
-label.boton-aa-redondo {
-  position: relative;
-  cursor: pointer;
-}
+   elegida de un selector: crema. 24-09-2026: el interruptor de vibracion
+   salio de la portada y era el unico boton redondo que se encendia; sus
+   dos reglas -.boton-aa-redondo.activa y label.boton-aa-redondo- se fueron
+   con el. */
 /* Archivados, al pie de la lista de guiones: un enlace, no un boton que
    compita con las filas. */
 .enlace-archivados {
@@ -969,4 +963,173 @@ label.boton-aa-redondo {
   box-shadow: 0 0 8px rgba(225, 29, 46, 0.85);
   z-index: 10;
   pointer-events: none;
+}
+
+/* LOS SUBTITULOS DE LA TOMA, EN EL VISOR -24-09-2026-. Ver SubtitulosVisor.tsx.
+   Tres estilos cerrados. La letra es la de la app, Source Sans 3, en 600:
+   es el peso mas grueso que trae el paquete, y una negrita falsa se veria
+   distinta de la que se quemara en el archivo.
+   CORREGIDO el mismo 24-09-2026, al quemarlos: Android no puede dibujar con
+   Source Sans 3 -solo viene en woff2-, asi que visor y archivo usan la letra
+   del sistema, Roboto, en 700. Ver .capa-subtitulos. */
+.visor-video {
+  position: relative;
+  background: #000;
+}
+.capa-subtitulos {
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* La letra del sistema -Roboto en Android-, no la de la app: es la misma con
+     que se queman en el video guardado -CapaDeSubtitulos.java-. Source Sans 3
+     viene solo como woff2 y Android no la puede cargar para dibujar. */
+  font-family: Roboto, sans-serif;
+}
+.subtitulo {
+  /* Un octavo del alto desde abajo, como el prototipo -160 sobre 1280-. Va en
+     linea, en SubtitulosVisor.tsx: un margen en % se mide contra el ANCHO, y en
+     una toma vertical quedaba a la mitad de altura. */
+  margin: 0 6%;
+  text-align: center;
+  line-height: 1.25;
+}
+.subtitulo-renglon {
+  display: block;
+}
+/* Amarillo -el del prototipo-: blanco con contorno negro, y lo ya dicho en
+   amarillo. */
+.capa-subtitulos[data-estilo="amarillo"] .subtitulo-palabra,
+.capa-subtitulos[data-estilo="rojo"] .subtitulo-palabra {
+  font-weight: 700;
+  color: #FFFFFF;
+  text-shadow: 0 0 0.12em #000, 0.05em 0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em -0.05em 0 #000;
+}
+.capa-subtitulos[data-estilo="amarillo"] .subtitulo-palabra:not([data-estado="por-decir"]) {
+  color: #FFD200;
+}
+/* Rojo: la palabra que se esta diciendo, sobre un recuadro rojo. */
+.capa-subtitulos[data-estilo="rojo"] .subtitulo-palabra[data-estado="diciendose"] {
+  background: #E5322D;
+  border-radius: 0.14em;
+  /* Sin margen negativo: se comia el espacio de los dos lados y se leia
+     "quea veces" -24-09-2026-. */
+  padding: 0 0.1em;
+  text-shadow: none;
+}
+/* Formal: la frase entera, blanca sobre franja negra, sin marcar palabras. */
+.capa-subtitulos[data-estilo="formal"] .subtitulo-renglon {
+  /* NO display: table -24-09-2026-. Como tabla, el navegador tira los
+     espacios sueltos entre palabra y palabra -son espacios en blanco entre
+     cajas de tabla- y en el telefono salia "Nodicesoloqueaveces". Javier: "los
+     subtitulos no tienen separacion de espacio entre palabras". fit-content
+     da la misma franja a la medida del renglon y respeta los espacios. */
+  width: fit-content;
+  margin: 0 auto 0.12em;
+  padding: 0.08em 0.4em;
+  background: rgba(0, 0, 0, 0.74);
+  border-radius: 0.12em;
+}
+.capa-subtitulos[data-estilo="formal"] .subtitulo-palabra {
+  font-weight: 400;
+  color: #FFFFFF;
+}
+
+/* El boton que se despliega. Una pildora a todo el ancho que dice lo elegido,
+   y debajo las cuatro opciones como tarjetas con su muestra, como las parejas
+   del cajon Aa. */
+.selector-subtitulos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aire-2);
+}
+button.boton-subtitulos {
+  display: flex;
+  align-items: center;
+  gap: var(--aire-2);
+  width: 100%;
+  padding: var(--aire-2) var(--aire-3);
+  background: var(--bg-suelo);
+  color: var(--color-texto);
+  border: 1px solid var(--color-borde);
+  font: inherit;
+  cursor: pointer;
+}
+button.boton-subtitulos.con-subtitulos {
+  border-color: var(--color-acento);
+}
+.boton-subtitulos-nombre {
+  font-weight: 600;
+}
+.boton-subtitulos-valor {
+  flex: 1;
+  text-align: left;
+  color: var(--color-apagado);
+}
+.boton-subtitulos-flecha {
+  transition: transform 160ms ease;
+}
+.opciones-subtitulos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--aire-2);
+  animation: subtitulosDespliega 180ms ease-out;
+}
+/* Se abre hacia abajo, desde el boton: un desplegable, no un cajon que sube. */
+@keyframes subtitulosDespliega {
+  from { transform: translateY(-6px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+button.opcion-subtitulos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 68px;
+  padding: 4px;
+  background: #1c1a19;
+  color: #CFC8C3;
+  border: 2px solid transparent;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+button.btn-deformable.opcion-subtitulos:not(:active) {
+  border-radius: var(--redondeo);
+}
+button.opcion-subtitulos.activa {
+  border-color: var(--color-acento);
+  color: #FFFFFF;
+}
+/* La muestra se dibuja sobre oscuro en los dos temas: el subtitulo siempre
+   va sobre la imagen, no sobre la app. */
+.muestra-subtitulo {
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  color: #FFFFFF;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+.muestra-subtitulo[data-estilo="no"] {
+  color: #7d7672;
+  text-decoration: line-through;
+}
+.muestra-subtitulo[data-estilo="amarillo"] [data-estado="dicha"] {
+  color: #FFD200;
+}
+.muestra-subtitulo[data-estilo="rojo"] {
+  background: #E5322D;
+}
+.muestra-subtitulo[data-estilo="formal"] {
+  font-weight: 400;
+  background: #000;
+  box-shadow: inset 0 0 0 1px #3a3634;
+}
+@media (prefers-reduced-motion: reduce) {
+  .opciones-subtitulos { animation: none; }
+  .boton-subtitulos-flecha { transition: none; }
 }

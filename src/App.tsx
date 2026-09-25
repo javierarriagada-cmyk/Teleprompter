@@ -32,6 +32,7 @@ import {
   iniciarTomaVideo,
   cortarTomaVideo,
   recuperarTomasPendientes,
+  quitarTomasSinVideo,
   tomaEnCurso,
   anotarFraseOida,
   borrarGrabacionEnDisco
@@ -524,7 +525,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       try {
         const idsAntes = new Set((await repoGrabacionesRef.current.listar()).map((g) => g.id))
         const recuperadas = await recuperarTomasPendientes(repoGrabacionesRef.current)
-        setGrabaciones(recuperadas)
+        setGrabaciones(await quitarTomasSinVideo(repoGrabacionesRef.current))
         const nuevas = recuperadas.filter((g) => !idsAntes.has(g.id))
         if (nuevas.length > 0) {
           const masReciente = [...nuevas].sort((a, b) => b.creado - a.creado)[0]
@@ -1154,6 +1155,16 @@ export default function App({ motor, repoOverride }: AppProps) {
     const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
       if (!isActive && (tomaEnCurso() || grabandoVideoRef.current)) {
         cortarTomaSiHay(true)
+      }
+      // Al volver: si mientras tanto se borro de la galeria el video de una toma
+      // guardada, la toma deja de aparecer -quitarTomasSinVideo-.
+      if (isActive && !tomaEnCurso()) {
+        quitarTomasSinVideo(repoGrabacionesRef.current)
+          .then((quedan) => {
+            setGrabaciones(quedan)
+            setGrabacionAbierta((abierta) => (abierta && !quedan.some((g) => g.id === abierta.id) ? null : abierta))
+          })
+          .catch(() => {})
       }
     })
     return () => {
@@ -1909,6 +1920,17 @@ export default function App({ motor, repoOverride }: AppProps) {
               mostrarAviso(detalle || 'Quedó en la galería del teléfono, en Películas.')
             } else {
               mostrarAviso(detalle || 'No se pudo guardar en la galería')
+            }
+          }}
+          onCambio={async (g) => {
+            // Guardada en la galeria -o su copia ya no esta-: se anota en el
+            // indice, y el visor abierto cambia de botones al tiro.
+            setGrabacionAbierta(g)
+            try {
+              await repoGrabacionesRef.current.guardar(g)
+              setGrabaciones(await repoGrabacionesRef.current.listar())
+            } catch (e) {
+              console.warn('[App] no se pudo anotar la toma:', e)
             }
           }}
           onBorrar={async (id) => {

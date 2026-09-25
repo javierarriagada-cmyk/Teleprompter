@@ -20,6 +20,10 @@ export interface CamaraNativaPlugin {
   buscarMp4Recientes(): Promise<{ rutas: string[] }>
   espacioLibre(): Promise<{ bytesLibres: number }>
   guardarEnGaleria(options: { ruta: string }): Promise<{ ok: boolean; uri?: string }>
+  compartir(options: { uri: string }): Promise<void>
+  existeEnGaleria(options: { uri: string }): Promise<{ existe: boolean }>
+  guardarConSubtitulos(options: { ruta: string; subtitulos: string; estilo: string }): Promise<{ ok: boolean; uri?: string }>
+  addListener(evento: 'progresoGuardado', cb: (d: { porcentaje: number }) => void): Promise<{ remove: () => Promise<void> }>
   fijarBrillo(options: { valor: number }): Promise<{ ok: boolean }>
   restaurarBrillo(): Promise<{ ok: boolean }>
   leerBrillo(): Promise<{ valor: number }>

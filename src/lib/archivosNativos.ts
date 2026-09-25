@@ -89,6 +89,33 @@ export async function guardarEnGaleria(ruta: string): Promise<{ ok: boolean; uri
   return await CamaraNativa.guardarEnGaleria({ ruta })
 }
 
+export async function existeEnGaleria(uri: string): Promise<boolean> {
+  const r = await CamaraNativa.existeEnGaleria({ uri })
+  return r.existe
+}
+
+// Comparte la copia de la galeria por el menu de Android. Rechaza con "no existe"
+// si esa copia se borro desde la galeria.
+export async function compartirDeGaleria(uri: string): Promise<void> {
+  await CamaraNativa.compartir({ uri })
+}
+
+// Guarda en la galeria una copia con los subtitulos quemados -Media3, en el
+// telefono-. alAvanzar recibe de 0 a 100 mientras se codifica.
+export async function guardarEnGaleriaConSubtitulos(
+  ruta: string,
+  subtitulos: unknown,
+  estilo: string,
+  alAvanzar?: (porcentaje: number) => void
+): Promise<{ ok: boolean; uri?: string }> {
+  const escucha = alAvanzar ? await CamaraNativa.addListener('progresoGuardado', (d) => alAvanzar(d.porcentaje)) : null
+  try {
+    return await CamaraNativa.guardarConSubtitulos({ ruta, subtitulos: JSON.stringify(subtitulos), estilo })
+  } finally {
+    await escucha?.remove()
+  }
+}
+
 export function juntos(dir: string, nombre: string): string {
   if (!dir) return nombre
   if (dir.endsWith('/')) return dir + nombre
