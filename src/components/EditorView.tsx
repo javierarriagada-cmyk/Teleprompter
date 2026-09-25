@@ -61,6 +61,7 @@ interface EditorViewProps {
   setTipoFuente?: (f: 'sans' | 'serif') => void
   // El Tema tampoco esta aca, y por el mismo motivo: no es del texto, es de la
   // aplicacion. Vive en el menu de la portada, junto a idioma y vibracion.
+  // -24-09-2026: la vibracion salio de ese menu; la decide el telefono.-
   onEntrarGrabar?: (rect?: DOMRect) => void
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
   'data-pantalla-direccion'?: string

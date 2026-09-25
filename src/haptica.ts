@@ -20,34 +20,49 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics'
 // siente la cruda y no las otras dos, lo apagado es la respuesta tactil del
 // sistema, que suprime impactos y tics pero deja pasar vibrate(). Si no se
 // siente ninguna, es la vibracion general del telefono.
-export function vibracionHabilitada(): boolean {
-  try {
-    const raw = localStorage.getItem('teleprompter_vibracion')
-    if (raw !== null) {
-      return JSON.parse(raw) === true
-    }
-  } catch (e) {
-  }
-  return true
-}
+//
+// CORRECCION DEL 24-09-2026, LEYENDO EL REGISTRO DEL TELEFONO -adb shell
+// dumpsys vibrator_manager-: la respuesta tactil de Javier estaba apagada
+// -TOUCH = OFF, el resto de las intensidades en MEDIUM- y Android ignoraba
+// "por ajustes" las vibraciones de toque de todas las apps: 82 en una hora,
+// del sistema, Facebook, WhatsApp y Chrome. Y la cruda tampoco pasa: una
+// vibracion de menos de un segundo pedida sin tipo, Android la cuenta como
+// tactil. Asi que las tres del 21 las callo el mismo interruptor. Con la
+// respuesta tactil encendida, vibran.
+//
+// POR ESO NO HAY INTERRUPTOR PROPIO DE VIBRACION -24-09-2026-. Estaba en el
+// cajon de ajustes de la portada -clave teleprompter_vibracion-. Era un
+// segundo interruptor encima del del telefono: el que tiene la respuesta
+// tactil encendida la quiere, y el que la apago ya no siente nada aunque la
+// app insista. Javier: "que esten activas para quien este activo, por
+// defecto". La clave vieja, si quedo guardada, ya no se lee.
 
-export function guardarVibracionHabilitada(habilitada: boolean): void {
+// LOS TICS DEL PLUGIN NECESITAN selectionStart ANTES -24-09-2026-.
+// @capacitor/haptics, en Android, solo vibra en selectionChanged si antes se
+// llamo a selectionStart: tiene una bandera selectionStarted que arranca en
+// false -Haptics.java-. Nunca la llamabamos, y los dos avisos hechos con tics
+// -elegir una opcion y el de mantener apretado, el del menu del sol- no
+// vibraron nunca, en ningun telefono. La seleccion se abre una sola vez y no
+// se cierra: aca no hay un gesto de arrastre con principio y fin, cada tic es
+// un toque suelto. Los llamados al plugin se atienden en orden, pero igual se
+// espera a que la apertura termine antes del primer tic.
+let seleccionAbierta: Promise<void> | null = null
+
+function tic(): void {
   try {
-    localStorage.setItem('teleprompter_vibracion', JSON.stringify(habilitada))
+    if (!seleccionAbierta) seleccionAbierta = Haptics.selectionStart().catch(() => {})
+    seleccionAbierta.then(() => Haptics.selectionChanged()).catch(() => {})
   } catch (e) {
   }
 }
 
 export function hapticaSeleccion(): void {
-  if (!vibracionHabilitada() || !Capacitor.isNativePlatform()) return
-  try {
-    Haptics.selectionChanged().catch(() => {})
-  } catch (e) {
-  }
+  if (!Capacitor.isNativePlatform()) return
+  tic()
 }
 
 export function hapticaToqueSuave(): void {
-  if (!vibracionHabilitada() || !Capacitor.isNativePlatform()) return
+  if (!Capacitor.isNativePlatform()) return
   try {
     Haptics.impact({ style: ImpactStyle.Light }).catch(() => {})
   } catch (e) {
@@ -74,15 +89,12 @@ export function hapticaToqueSuave(): void {
 // Por eso aca no hay ninguna constante de milisegundos. Los tiempos del GESTO
 // -300 y 500- viven en mantenerApretado.ts y son otra cosa.
 export function hapticaAvisoMantener(): void {
-  if (!vibracionHabilitada() || !Capacitor.isNativePlatform()) return
-  try {
-    Haptics.selectionChanged().catch(() => {})
-  } catch (e) {
-  }
+  if (!Capacitor.isNativePlatform()) return
+  tic()
 }
 
 export function hapticaToqueMedio(): void {
-  if (!vibracionHabilitada() || !Capacitor.isNativePlatform()) return
+  if (!Capacitor.isNativePlatform()) return
   try {
     Haptics.impact({ style: ImpactStyle.Medium }).catch(() => {})
   } catch (e) {
@@ -90,7 +102,7 @@ export function hapticaToqueMedio(): void {
 }
 
 export function hapticaToqueFuerte(): void {
-  if (!vibracionHabilitada() || !Capacitor.isNativePlatform()) return
+  if (!Capacitor.isNativePlatform()) return
   try {
     Haptics.impact({ style: ImpactStyle.Heavy }).catch(() => {})
   } catch (e) {

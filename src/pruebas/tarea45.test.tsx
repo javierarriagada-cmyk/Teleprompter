@@ -9,10 +9,19 @@ const hapticsCalls = {
   notification: 0
 }
 
+let seleccionIniciada = false
+
 vi.mock('@capacitor/haptics', () => ({
   Haptics: {
+    // Como el plugin real -Haptics.java-: sin selectionStart antes,
+    // selectionChanged no vibra, y aca no cuenta. Asi T203 falla si vuelve el
+    // error del 24-09-2026, cuando los tics no sonaron nunca.
+    selectionStart: vi.fn(() => {
+      seleccionIniciada = true
+      return Promise.resolve()
+    }),
     selectionChanged: vi.fn(() => {
-      hapticsCalls.selectionChanged++
+      if (seleccionIniciada) hapticsCalls.selectionChanged++
       return Promise.resolve()
     }),
     impact: vi.fn((opts: any) => {
@@ -334,7 +343,14 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     expect(hapticsCalls.impact).toContainEqual({ style: 'MEDIUM' })
   })
 
-  test('T204 - EL INTERRUPTOR. Con la vibracion apagada, ninguno de los toques de T203 llama al plugin. Y el ajuste sobrevive a desmontar y volver a montar.', async () => {
+  // 24-09-2026: T204 probaba el interruptor de Vibracion de la portada -con la
+  // vibracion apagada, ningun toque llamaba al plugin, y el ajuste sobrevivia a
+  // desmontar-. El interruptor salio: la vibracion la decide la respuesta
+  // tactil del telefono -haptica.ts-. Ahora T204 cuida lo contrario: que no
+  // vuelva un interruptor propio, y que una clave vieja guardada en "no" no
+  // apague la vibracion de quien la tiene encendida en su telefono.
+  test('T204 - SIN INTERRUPTOR PROPIO. El cajon de la portada no tiene Vibracion, y la clave vieja en "no" no calla los toques.', async () => {
+    localStorage.setItem('teleprompter_vibracion', 'false')
     const repo = new RepositorioMemoria()
     const guion: Guion = {
       id: 'g-t204',
@@ -346,50 +362,33 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     }
     await repo.guardar(guion)
 
-    const { unmount } = render(<App repoOverride={repo} />)
-    await act(async () => {
-      await new Promise((r) => setTimeout(r, 200))
-    })
-
-    // Desactivar vibración en biblioteca -> opciones ⋯
-    const btnMenu = screen.getByTestId('btn-menu-superior-biblioteca')
-    await act(async () => {
-      fireEvent.click(btnMenu)
-    })
-
-    const inputVibracion = screen.getByLabelText('Vibración') as HTMLInputElement
-    expect(inputVibracion.checked).toBe(true)
-
-    await act(async () => {
-      fireEvent.click(inputVibracion)
-    })
-    expect(inputVibracion.checked).toBe(false)
-
-    // Desmontar y volver a montar la aplicación
-    unmount()
-
-    hapticsCalls.selectionChanged = 0
-    hapticsCalls.impact = []
-
     render(<App repoOverride={repo} />)
     await act(async () => {
       await new Promise((r) => setTimeout(r, 200))
     })
 
-    // Probar toque que normalmente llamaría a háptica
-    const fila = screen.getByTestId('fila-guion-g-t204')
     await act(async () => {
-      fireEvent.click(fila)
+      fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
+    })
+    expect(screen.getByTestId('menu-superior-biblioteca')).toBeTruthy()
+    expect(screen.queryByLabelText('Vibración')).toBeNull()
+    // Quedan las dos tarjetas del tema.
+    expect(screen.getByRole('button', { name: 'Claro' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Oscuro' })).toBeTruthy()
+
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('capa-ajustes-portada'))
     })
 
-    const btnLeer = screen.getByTestId('btn-leer-guion-fijo')
+    hapticsCalls.impact = []
     await act(async () => {
-      fireEvent.click(btnLeer)
+      fireEvent.click(screen.getByTestId('fila-guion-g-t204'))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-leer-guion-fijo'))
     })
 
-    // Con la vibración apagada, ninguna llamada de háptica debe haberse realizado
-    expect(hapticsCalls.selectionChanged).toBe(0)
-    expect(hapticsCalls.impact.length).toBe(0)
+    expect(hapticsCalls.impact).toContainEqual({ style: 'MEDIUM' })
   })
 
   test('T205 - Salir de LEYENDO SIN camara confirma con el aviso Grabado, que se va a los dos segundos. CON camara confirma el visor (tarea 68).', async () => {

@@ -5,9 +5,9 @@ import { Guion, ResumenGuion, ResumenGrabacion, PAREJAS_COLOR, duracionDeLectura
 import TiraGrabaciones from './TiraGrabaciones'
 import { PanelCorpus } from './PanelCorpus'
 import TarjetaLectura from './TarjetaLectura'
-import { IconoEngranaje, IconoVibracion } from './IconosApp'
+import { IconoEngranaje } from './IconosApp'
 import { MarcaSigo } from './MarcaSigo'
-import { vibracionHabilitada, guardarVibracionHabilitada, hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
+import { hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_RESORTE } from './movimiento'
 import { ESCALA_AVISO, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
 
@@ -435,7 +435,6 @@ export default function BibliotecaView({
   const [mostrarPanelCorpus, setMostrarPanelCorpus] = useState(false)
   const [menuId, setMenuId] = useState<string | null>(null)
   const [menuSuperiorAbierto, setMenuSuperiorAbierto] = useState(false)
-  const [vibracion, setVibracion] = useState<boolean>(vibracionHabilitada())
   // El cajon de ajustes se cierra como el Aa: un toque afuera o Escape
   // -useCerrarAfuera-, bajando la raya, o con volver del telefono. El
   // engranaje cuenta como "adentro" para que tocarlo lo abra y lo cierre.
@@ -660,7 +659,8 @@ export default function BibliotecaView({
           -"Abrir archivo", y toma el titulo del archivo-. Quedan los dos
           ajustes de verdad, en UNA fila y sin palabras, como el cajon Aa: el
           tema en dos tarjetas que muestran como se ve, y la vibracion como un
-          boton redondo que se enciende.
+          boton redondo que se enciende. Ese boton salio el mismo 24-09: queda
+          solo el tema.
           Del menu viejo quedan dos lecciones. Los renglones sueltos sin grupo
           eran "la mitad del desorden" que Javier vio el 21-09-2026. Y el menu
           crecio hasta pasarse del borde de abajo sin forma de llegar al ultimo
@@ -754,26 +754,10 @@ export default function BibliotecaView({
                 {/* Vibracion: un interruptor dibujado. La casilla real sigue en
                     el documento, escondida -interruptor-casilla-, para el lector
                     de pantalla y para getByLabelText('Vibración'). Al
-                    encenderla vibra: es la unica forma de mostrar lo que hace. */}
-                <label
-                  title="Vibración"
-                  className={`btn-deformable boton-aa-redondo${vibracion ? ' activa' : ''}`}
-                >
-                  <input
-                    type="checkbox"
-                    role="switch"
-                    className="interruptor-casilla"
-                    checked={vibracion}
-                    onChange={(e) => {
-                      const v = e.target.checked
-                      setVibracion(v)
-                      guardarVibracionHabilitada(v)
-                      hapticaToqueSuave()
-                    }}
-                  />
-                  <IconoVibracion tamano={24} />
-                  <span className="solo-lector">Vibración</span>
-                </label>
+                    encenderla vibra: es la unica forma de mostrar lo que hace.
+                    24-09-2026: EL INTERRUPTOR SE FUE. La vibracion la decide la
+                    respuesta tactil del telefono -el porque esta en haptica.ts-.
+                    Quedan las dos tarjetas del tema. */}
               </div>
             </div>
           </div>
