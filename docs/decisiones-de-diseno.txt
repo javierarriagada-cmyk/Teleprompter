@@ -1138,6 +1138,13 @@ P1  AL PUBLICAR: PROTEGER EL CODIGO Y LA MARCA.                    ABIERTA / AL 
        nuestra -Javier: "lo ocupamos mientras nosotros"-: sacarlo del alcance del usuario
        antes de publicar. Tambien GUARDAR_AUDIO_DEL_OIDO=true en MotorNativo.ts y el correo
        provisorio hola@ejemplo.com del guion Hola. Detalle en accesibilidad-robo-test-25-sep.txt.
+       -26-09-2026: el correo ya es hola@sigoteleprompter.com, reenviado al Gmail de Javier.-
+    g. ACCESIBILIDAD CON TALKBACK -27-09-2026, verificado en el telefono-: en Grabar, los dos
+       marcos nativos de la camara figuran como tocables sin nombre -marcarlos no importantes
+       para accesibilidad, riesgo bajo-; en Leer, la portada sigue en el arbol debajo de la
+       lectura -esconderla del lector mientras se lee, riesgo algo mayor: toca la navegacion-.
+       Solo afecta a quien usa TalkBack y no impide publicar. Javier: dejarlo para esta ronda,
+       con la version de publicacion ya probada.
 
 I1  OTROS IDIOMAS: GUIONES EN INGLES Y LA APP EN INGLES.            EN ESPERA / JAVIER
     25-09-2026. Conversado, NO se avanza todavia -Javier: "no vamos a avanzar en nada de
