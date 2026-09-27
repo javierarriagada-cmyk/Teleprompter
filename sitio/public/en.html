@@ -1,0 +1,1057 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sigo — The teleprompter that follows your voice</title>
+<meta name="description" content="Sigo is the teleprompter that follows your voice: read out loud and the text keeps pace with you. Pause, and it waits. Coming soon to Google Play.">
+<meta property="og:title" content="Sigo — The teleprompter that follows your voice">
+<meta property="og:description" content="The teleprompter that follows your voice. Coming soon to Google Play.">
+<meta property="og:image" content="https://sigoteleprompter.com/icono.png">
+<link rel="canonical" href="https://sigoteleprompter.com/en">
+<meta property="og:url" content="https://sigoteleprompter.com/en">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<link rel="alternate" hreflang="es" href="https://sigoteleprompter.com/">
+<link rel="alternate" hreflang="en" href="https://sigoteleprompter.com/en">
+<link rel="alternate" hreflang="x-default" href="https://sigoteleprompter.com/">
+<script>(function(){var C='sigo-idioma',A='sigo-idioma-auto',yo='en',otra='/';try{var s=window.localStorage,e=s.getItem(C);if(e==='es'||e==='en'){if(e!==yo)location.replace(otra);}else if(yo==='es'&&!s.getItem(A)&&!/bot|crawl|spider|slurp|lighthouse|headless/i.test(navigator.userAgent)){s.setItem(A,'1');var l=(navigator.languages&&navigator.languages[0])||navigator.language||'';if(l&&!/^es/i.test(l))location.replace(otra);}}catch(_){}document.addEventListener('click',function(v){var a=v.target&&v.target.closest?v.target.closest('a[data-idioma]'):null;if(a){try{localStorage.setItem(C,a.getAttribute('data-idioma'));}catch(_){}}});})();</script>
+<meta name="theme-color" content="#0B0A09">
+<link rel="icon" type="image/png" href="/icono.png">
+<link rel="apple-touch-icon" href="/icono.png">
+<link rel="preload" href="/fuentes/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script>document.documentElement.classList.add('js')</script>
+<style>
+@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 400; font-display: swap; src: url(/fuentes/source-serif-4-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 600; font-display: swap; src: url(/fuentes/source-serif-4-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 400; font-display: swap; src: url(/fuentes/source-sans-3-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 600; font-display: swap; src: url(/fuentes/source-sans-3-latin-600-normal.woff2) format("woff2"); }
+:root {
+  color-scheme: dark;
+  --hondo: #0B0A09;
+  --suelo: #151312;
+  --letra: #E7E1DE;
+  --crema: #F2ECE8;
+  --apagado: #9C948E;
+  --rojo: #E11D2E;
+  --filete: rgba(231, 225, 222, 0.12);
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --titular: clamp(44px, 11.5vw, 64px);
+  --margen: 20px;
+}
+@media (min-width: 900px) {
+  :root { --titular: clamp(96px, 7.4vw, 160px); --margen: 6vw; }
+}
+* { box-sizing: border-box; }
+html { background: var(--hondo); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--hondo);
+  color: var(--letra);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+:focus-visible { outline: 2px solid var(--crema); outline-offset: 3px; border-radius: 6px; }
+.solo-lector { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.grano {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.07;
+  transform: translateZ(0);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.marca-svg { display: block; width: 100%; height: auto; overflow: visible; color: var(--crema); }
+.marca-svg .punto { fill: var(--rojo); }
+@media (prefers-reduced-motion: reduce) { .marca-svg .resplandor, .telefono.grabando .punto-grabando, .punto-respira, .escena-video { animation: none !important; } }
+.marca-svg .resplandor { fill: var(--rojo); opacity: 0.55; transform-box: fill-box; transform-origin: center; animation: respira 3.2s ease-in-out infinite; }
+@keyframes respira { 0%, 100% { opacity: 0.35; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.12); } }
+.escenario { position: relative; height: 1160svh; }
+.fijo {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--suelo);
+}
+.ancla { position: absolute; left: 0; width: 1px; height: 1px; }
+.luces, .luz { position: absolute; inset: 0; pointer-events: none; }
+.luz { opacity: 0; will-change: opacity; }
+.luz-entrada {
+  opacity: 1;
+  background:
+    radial-gradient(60% 45% at 50% -8%, rgba(255, 196, 140, 0.20), rgba(255, 196, 140, 0) 70%),
+    var(--hondo);
+}
+.luz-entrada::after {
+  content: "";
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  top: -60%;
+  height: 60%;
+  background: linear-gradient(to bottom, rgba(255, 210, 160, 0), rgba(255, 210, 160, 0.10) 60%, rgba(255, 210, 160, 0));
+  transform: translateY(var(--barrido, 0%));
+}
+.luz-tibia { background: radial-gradient(42% 55% at var(--luz-x, 64%) 52%, rgba(240, 170, 110, 0.24), rgba(240, 170, 110, 0) 70%); }
+.luz-duelo {
+  background:
+    radial-gradient(34% 50% at var(--izq, 32%) 56%, rgba(150, 165, 190, 0.16), rgba(150, 165, 190, 0) 70%),
+    radial-gradient(34% 50% at var(--der, 68%) 56%, rgba(245, 175, 110, 0.26), rgba(245, 175, 110, 0) 70%),
+    #121110;
+}
+.luz-color {
+  background:
+    radial-gradient(26% 34% at calc(var(--luz-x, 64%) - 12%) 30%, rgba(240, 192, 112, 0.22), rgba(240, 192, 112, 0) 70%),
+    radial-gradient(26% 34% at calc(var(--luz-x, 64%) + 13%) 48%, rgba(143, 184, 222, 0.2), rgba(143, 184, 222, 0) 70%),
+    radial-gradient(28% 34% at calc(var(--luz-x, 64%) - 6%) 76%, rgba(156, 197, 161, 0.18), rgba(156, 197, 161, 0) 70%),
+    #141211;
+}
+.luz-lente { background: radial-gradient(34% 70% at var(--luz-x, 64%) 0%, rgba(255, 214, 160, 0.3), rgba(255, 214, 160, 0) 72%), #100F0E; }
+.luz-cine { background: radial-gradient(40% 55% at var(--luz-x, 64%) 55%, rgba(255, 170, 100, 0.22), rgba(255, 170, 100, 0) 70%), radial-gradient(80% 60% at 50% 100%, rgba(80, 100, 140, 0.14), rgba(0, 0, 0, 0) 70%), #0A0908; }
+.luz-noche { background: radial-gradient(45% 55% at var(--luz-x, 64%) 50%, rgba(110, 140, 200, 0.16), rgba(0, 0, 0, 0) 70%), linear-gradient(#08090D, #0B0A09); }
+.entrada {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(9svh + env(safe-area-inset-top, 0px)) var(--margen) 0;
+  text-align: center;
+  pointer-events: none;
+}
+.marca-gigante { margin: 0; width: min(72vw, 44svh * 1.96); line-height: 0; }
+.titular-entrada {
+  margin: 4.5svh 0 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: var(--titular);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--crema);
+  text-wrap: balance;
+  max-width: 11em;
+}
+@media (min-width: 900px) {
+  .marca-gigante { width: min(40vw, 30svh * 1.96); }
+  .titular-entrada { font-size: clamp(76px, 7vw, 150px); max-width: 12em; margin-top: 3svh; }
+}
+.texto-escena {
+  position: absolute;
+  z-index: 4;
+  left: var(--margen);
+  right: var(--margen);
+  top: calc(5.5svh + env(safe-area-inset-top, 0px));
+  opacity: 0;
+  visibility: hidden;
+  text-align: center;
+  pointer-events: none;
+}
+.capitulo {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--apagado);
+}
+.titular {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: var(--titular);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--crema);
+  text-wrap: balance;
+}
+.titular .acento { color: var(--letra); font-style: italic; }
+.titular .p { display: inline-block; }
+.bajada {
+  margin: 14px auto 0;
+  max-width: 26em;
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--apagado);
+  text-wrap: balance;
+}
+.estilos-subtitulo { display: flex; justify-content: center; gap: 8px; margin: 16px 0 0; }
+.estilos-subtitulo span {
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--filete);
+  font-size: 13px;
+  color: var(--apagado);
+  transition: color 250ms, background-color 250ms, border-color 250ms;
+}
+.estilos-subtitulo span.activo { color: var(--hondo); background: var(--crema); border-color: var(--crema); }
+@media (max-width: 899px) {
+  .titular { font-size: clamp(44px, 12vw, 64px); }
+  .bajada { font-size: 16px; margin-top: 10px; }
+  .texto-escena .capitulo { display: none; }
+}
+@media (min-width: 900px) {
+  .texto-escena { top: 50%; transform: translateY(-50%); left: var(--margen); right: auto; width: 44vw; text-align: left; }
+  .texto-escena .titular { font-size: clamp(96px, 6.6vw, 160px); }
+  .texto-escena .bajada { margin-left: 0; font-size: 21px; max-width: 22em; }
+  .texto-escena.arriba { top: 7svh; transform: none; left: var(--margen); right: var(--margen); width: auto; text-align: center; }
+  .texto-escena.arriba .bajada { margin-left: auto; }
+  .texto-escena.arriba .titular { font-size: clamp(64px, 5.6vw, 112px); }
+  .estilos-subtitulo span { font-size: 14px; }
+}
+.onda { position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; opacity: 0; }
+.telefonos { position: absolute; inset: 0; z-index: 3; perspective: 1900px; perspective-origin: 50% 40%; pointer-events: none; }
+.telefono {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 380px;
+  height: 800px;
+  margin: -400px 0 0 -190px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.telefono[data-telefono="comun"] { opacity: 0; visibility: hidden; }
+.telefono-canto {
+  position: absolute;
+  inset: 0;
+  border-radius: 58px;
+  background: linear-gradient(90deg, #2a2623, #5a534d 12%, #1d1a18 50%, #4d4741 88%, #25211f);
+  transform: translateZ(-9px);
+}
+.telefono::before {
+  content: "";
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  top: 86%;
+  bottom: -10%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+  transform: translateZ(-20px);
+  pointer-events: none;
+}
+.telefono.es-video::before { opacity: 0.4; }
+.telefono-cuerpo {
+  position: absolute;
+  inset: 0;
+  padding: 10px;
+  border-radius: 58px;
+  background: linear-gradient(145deg, #3b3632, #16140f 45%, #2b2724);
+  box-shadow:
+    inset 0 0 0 1.5px rgba(255, 240, 225, 0.16),
+    inset 0 0 0 3px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.telefono-cuerpo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 58px;
+  pointer-events: none;
+  background: linear-gradient(170deg, rgba(255, 236, 214, 0.13), rgba(255, 236, 214, 0) 28%);
+}
+.pantalla-lectura {
+  position: relative;
+  width: 360px;
+  height: 780px;
+  border-radius: 48px;
+  overflow: hidden;
+  background: #151312;
+  isolation: isolate;
+}
+.rotulo {
+  position: absolute;
+  left: -40px;
+  right: -40px;
+  top: calc(100% + 36px);
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--apagado);
+  opacity: 0;
+}
+.telefono[data-telefono="sigo"] .rotulo { color: var(--crema); }
+.barra-estado {
+  position: absolute;
+  z-index: 8;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 36px;
+  padding: 0 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: #E7E1DE;
+  background: linear-gradient(#151312 70%, rgba(21, 19, 18, 0));
+}
+.telefono.grabando .barra-estado { background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0)); }
+.iconos { display: flex; align-items: center; gap: 7px; }
+.iconos svg { width: 15px; height: 15px; display: block; transition: opacity 300ms; }
+.icono-avion { opacity: 0; width: 0 !important; transition: opacity 300ms, width 300ms; }
+.telefono.avion .icono-avion { opacity: 1; width: 15px !important; }
+.telefono.sin-wifi .icono-wifi { opacity: 0.18; }
+.senal { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
+.senal i { display: block; width: 3px; background: currentColor; border-radius: 1px; transition: opacity 300ms; }
+.senal i:nth-child(1) { height: 4px; }
+.senal i:nth-child(2) { height: 6.5px; }
+.senal i:nth-child(3) { height: 9px; }
+.senal i:nth-child(4) { height: 12px; }
+.senal i.apagada { opacity: 0.18; }
+.bateria { position: relative; width: 23px; height: 11px; border: 1.5px solid currentColor; border-radius: 3.5px; opacity: 0.9; }
+.bateria::after { content: ""; position: absolute; right: -4px; top: 3px; width: 2px; height: 3.5px; background: currentColor; border-radius: 0 1px 1px 0; }
+.bateria i { position: absolute; left: 1.5px; top: 1.5px; bottom: 1.5px; width: 68%; background: currentColor; border-radius: 1.5px; }
+.lente {
+  position: absolute;
+  z-index: 9;
+  top: 12px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 35%, #3a4250 0 18%, #0a0b0d 34%, #000 70%);
+  box-shadow: 0 0 0 1.5px #050505;
+}
+.telefono.ilumina-lente .lente { box-shadow: 0 0 0 1.5px #050505, 0 0 18px 6px rgba(255, 214, 160, 0.55); }
+.haz {
+  position: absolute;
+  z-index: 7;
+  left: 50%;
+  top: 16px;
+  width: 340px;
+  height: 128px;
+  margin-left: -170px;
+  opacity: 0;
+  pointer-events: none;
+  filter: blur(5px);
+  mix-blend-mode: screen;
+}
+.haz::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(47% 0, 53% 0, 100% 100%, 0 100%);
+  background: linear-gradient(to bottom, rgba(255, 228, 188, 0.95), rgba(255, 224, 180, 0.3) 70%, rgba(255, 224, 180, 0.45) 100%);
+}
+.haz::after {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: -10px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 224, 180, 0.35);
+}
+.lectura {
+  --letra-lectura: 26px;
+  --fila: calc(var(--letra-lectura) * 1.4);
+  --ventana: calc(4 * var(--fila) + 16px);
+  position: absolute;
+  inset: 36px 0 0 0;
+  overflow: hidden;
+  color: #E7E1DE;
+  font-family: "Source Serif 4", serif;
+}
+.banda {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(4 * var(--fila));
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.075) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%);
+  transition: opacity 500ms;
+}
+.velo {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(21, 19, 18, 0) 0, rgba(21, 19, 18, 0) var(--ventana), rgba(21, 19, 18, 0.55) var(--ventana), rgba(21, 19, 18, 0.55) 100%);
+  transition: opacity 500ms;
+}
+.desliza { position: relative; z-index: 1; padding: 0 5%; will-change: transform; }
+.columna { max-width: 90%; margin: 0 auto; font-size: var(--letra-lectura); }
+.columna .line { margin: 16px 0; line-height: 1.4; }
+.capa-destacado { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: -1; font-size: var(--letra-lectura); }
+.linea-destacado {
+  position: absolute;
+  box-sizing: content-box;
+  height: max(2px, 0.09em);
+  padding: 0 0.04em;
+  margin: calc(max(2px, 0.09em) / -2) 0 0 -0.04em;
+  border-radius: 999px;
+  background: rgba(231, 225, 222, 0.85);
+}
+.columna [data-token] { transition: color 180ms, text-shadow 260ms; }
+.oye-voz .columna [data-token].suena { color: #FFF4E8; text-shadow: 0 0 14px rgba(255, 196, 140, 0.9), 0 0 2px rgba(255, 220, 190, 0.8); }
+.columna .f-negrita { transition: font-weight 0s, color 400ms; }
+.pinta-negrita .columna .f-negrita { font-weight: 600; color: #FFF; }
+.columna .f-ambar, .columna .f-celeste, .columna .f-salvia { transition: color 700ms ease; }
+.pinta-ambar .columna .f-ambar { color: #F0C070; }
+.pinta-celeste .columna .f-celeste { color: #8FB8DE; }
+.pinta-salvia .columna .f-salvia { color: #9CC5A1; }
+.columna .f-destacado {
+  background-image: linear-gradient(#FFE066, #FFE066);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 380ms linear var(--retraso, 0ms), color 200ms linear var(--retraso, 0ms);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.pinta-destacado .columna .f-destacado { background-size: 100% 100%; color: #111111; }
+.telefono[data-modo="fijo"] .velo,
+.telefono[data-modo="fijo"] .banda,
+.telefono[data-modo="fijo"] .capa-destacado { display: none; }
+.marcador-fijo { display: none; }
+.telefono[data-modo="fijo"] .marcador-fijo {
+  display: block;
+  position: absolute;
+  z-index: 4;
+  left: 4px;
+  right: 4px;
+  top: 147px;
+  height: 0;
+  border-top: 2px dashed rgba(201, 202, 206, 0.35);
+}
+.telefono[data-modo="fijo"] .marcador-fijo::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -10px;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 13px solid rgba(201, 202, 206, 0.8);
+}
+.telefono[data-modo="fijo"] .pantalla-lectura { background: #17181A; }
+.telefono[data-modo="fijo"] .lectura { color: #C9CACE; }
+.telefono[data-modo="fijo"] .barra-estado { background: linear-gradient(#17181A 70%, rgba(23, 24, 26, 0)); }
+.columna .escapa { color: #F0C070 !important; text-decoration: line-through; text-decoration-thickness: 3px; text-decoration-color: rgba(240, 192, 112, 0.9); transition: color 250ms; }
+.aviso {
+  position: absolute;
+  z-index: 9;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px 12px 18px;
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-size: 30px;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 12px) scale(0.96);
+  transition: opacity 280ms ease, transform 380ms cubic-bezier(.3, 1.4, .5, 1);
+  pointer-events: none;
+}
+.aviso-espera { top: 300px; color: #F2ECE8; background: rgba(30, 27, 25, 0.9); border: 1px solid rgba(255, 240, 225, 0.2); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5); }
+.aviso-escapa { top: 46px; color: #1a1408; background: #F0C070; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5); }
+.telefono.espera .aviso-espera, .telefono.se-escapa .aviso-escapa { opacity: 1; transform: translate(-50%, 0) scale(1); }
+.telefono:not(.espera) .punto-respira { animation-play-state: paused; }
+.punto-respira { width: 18px; height: 18px; border-radius: 50%; background: var(--rojo); box-shadow: 0 0 14px rgba(225, 29, 46, 0.9); animation: respira-punto 1.6s ease-in-out infinite; }
+.sin-senal {
+  position: absolute;
+  z-index: 9;
+  left: 34px;
+  right: 34px;
+  top: 400px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 150px auto;
+  row-gap: 14px;
+  align-items: center;
+  justify-items: center;
+  padding: 26px 20px 20px;
+  border-radius: 34px;
+  color: #F2ECE8;
+  background: #181B24;
+  border: 1px solid rgba(200, 215, 255, 0.16);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transform: translateY(24px) scale(0.94);
+  transition: opacity 350ms ease, transform 450ms cubic-bezier(.3, 1.3, .5, 1);
+}
+.telefono.sin-internet .sin-senal { opacity: 1; transform: none; }
+.senal-grande { grid-column: 1; grid-row: 1; display: flex; align-items: flex-end; gap: 9px; height: 100px; }
+.senal-grande i { display: block; width: 18px; border-radius: 5px; background: currentColor; transition: opacity 300ms, transform 300ms; }
+.senal-grande i:nth-child(1) { height: 32%; }
+.senal-grande i:nth-child(2) { height: 55%; }
+.senal-grande i:nth-child(3) { height: 78%; }
+.senal-grande i:nth-child(4) { height: 100%; }
+.senal-grande i.apagada { opacity: 0.14; transform: scaleY(0.92); transform-origin: bottom; }
+.wifi-grande { grid-column: 2; grid-row: 1; width: 96px; height: 96px; transition: opacity 300ms; }
+.telefono.sin-wifi .wifi-grande { opacity: 0.14; }
+.avion-grande {
+  grid-column: 1 / 3;
+  grid-row: 1;
+  width: 120px;
+  height: 120px;
+  color: #FFD9A0;
+  filter: drop-shadow(0 0 22px rgba(255, 190, 110, 0.55));
+  opacity: 0;
+  transform: rotate(-35deg) scale(0.6) translateX(-60px);
+  transition: opacity 350ms, transform 600ms cubic-bezier(.2, 1.2, .4, 1);
+}
+.telefono.avion .avion-grande { opacity: 1; transform: none; }
+.telefono.avion .senal-grande, .telefono.avion .wifi-grande { opacity: 0; transition: opacity 250ms; }
+.sin-senal-texto { grid-column: 1 / 3; grid-row: 2; font-family: var(--sans); font-size: 26px; font-weight: 600; letter-spacing: 0.02em; opacity: 0; transition: opacity 300ms 150ms; }
+.telefono.avion .sin-senal-texto { opacity: 1; }
+.camara-detras {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 700ms ease;
+  background:
+    radial-gradient(38% 30% at 78% 22%, rgba(255, 196, 120, 0.55), rgba(255, 196, 120, 0) 70%),
+    radial-gradient(60% 40% at 20% 85%, rgba(90, 120, 150, 0.35), rgba(90, 120, 150, 0) 70%),
+    radial-gradient(70% 55% at 50% 60%, rgba(120, 80, 55, 0.55), rgba(40, 28, 22, 0) 75%),
+    linear-gradient(160deg, #3a2a20, #1a1512 55%, #0e0c0b);
+}
+.bokeh { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(255, 220, 170, 0.55), rgba(255, 220, 170, 0.18) 55%, rgba(255, 220, 170, 0) 70%); }
+.b1 { width: 90px; height: 90px; left: 8%; top: 14%; }
+.b2 { width: 54px; height: 54px; left: 64%; top: 9%; opacity: 0.8; }
+.b3 { width: 130px; height: 130px; left: 58%; top: 52%; opacity: 0.45; }
+.b4 { width: 40px; height: 40px; left: 22%; top: 48%; opacity: 0.7; }
+.b5 { width: 70px; height: 70px; left: 78%; top: 76%; opacity: 0.55; }
+.panel-lectura {
+  position: absolute;
+  z-index: 0;
+  left: 12px;
+  right: 12px;
+  top: 4px;
+  height: calc(var(--ventana) + 10px);
+  border-radius: 24px;
+  opacity: 0;
+  background: rgba(21, 19, 18, 0.45);
+  box-shadow: 0 0 22px 10px rgba(21, 19, 18, 0.45);
+  transition: opacity 600ms;
+}
+.telefono.grabando .camara-detras { opacity: 1; }
+.telefono.grabando .pantalla-lectura { background: #0e0c0b; }
+.telefono.grabando .velo,
+.telefono.grabando .banda { opacity: 0; }
+.telefono.grabando .panel-lectura { opacity: 1; }
+.telefono.grabando .columna { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), 0 0 12px rgba(0, 0, 0, 0.4); }
+.punto-grabando {
+  position: absolute;
+  z-index: 9;
+  top: 13px;
+  right: 30px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--rojo);
+  box-shadow: 0 0 8px rgba(225, 29, 46, 0.85);
+  opacity: 0;
+  transition: opacity 300ms;
+}
+.telefono.grabando .punto-grabando { opacity: 1; animation: respira-punto 2.4s ease-in-out infinite; }
+@keyframes respira-punto { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+.video {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  opacity: 0;
+  overflow: hidden;
+  background: #0e0c0b;
+}
+.escena-video { position: absolute; inset: -6%; will-change: transform; animation: respira-camara 9s ease-in-out infinite alternate; }
+.telefono:not(.es-video) .escena-video { animation-play-state: paused; }
+@keyframes respira-camara { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.05) translate(-1.5%, -1%); } }
+.escena-video i { position: absolute; display: block; }
+.escena-video .muro { inset: 0; background: linear-gradient(115deg, #2b1d16 0%, #4a3122 38%, #6b4630 52%, #3a281e 70%, #1b1411 100%); }
+.escena-video .ventana { left: 44%; top: 0; width: 62%; height: 62%; background: radial-gradient(closest-side, rgba(255, 226, 180, 0.8), rgba(255, 196, 130, 0.4) 55%, rgba(255, 170, 100, 0)); }
+.escena-video .lampara { left: 6%; top: 30%; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 200, 130, 0.95), rgba(255, 170, 90, 0.35) 40%, rgba(255, 170, 90, 0) 70%); }
+.escena-video .repisa { left: -10%; right: -10%; top: 64%; height: 60%; background: linear-gradient(#20150f, #120c09); box-shadow: 0 -30px 60px rgba(0, 0, 0, 0.45); }
+.escena-video .planta { left: 66%; top: 44%; width: 120px; height: 220px; border-radius: 60% 40% 50% 50%; background: radial-gradient(closest-side, rgba(63, 90, 58, 0.9), rgba(28, 42, 27, 0.6) 60%, rgba(28, 42, 27, 0)); }
+.escena-video .polvo { inset: 0; background: radial-gradient(60% 40% at 70% 20%, rgba(255, 230, 190, 0.18), rgba(0, 0, 0, 0) 70%), linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0) 45%); }
+.escena-video .bokeh { border-radius: 50%; background: radial-gradient(circle, rgba(255, 222, 170, 0.7), rgba(255, 222, 170, 0.2) 55%, rgba(255, 222, 170, 0) 70%); }
+.v1 { width: 70px; height: 70px; left: 58%; top: 12%; } .v2 { width: 40px; height: 40px; left: 80%; top: 24%; opacity: 0.8; }
+.v3 { width: 110px; height: 110px; left: 20%; top: 8%; opacity: 0.5; } .v4 { width: 50px; height: 50px; left: 30%; top: 46%; opacity: 0.6; }
+.v5 { width: 90px; height: 90px; left: 74%; top: 52%; opacity: 0.45; } .v6 { width: 30px; height: 30px; left: 12%; top: 58%; opacity: 0.7; }
+.video-estilo {
+  position: absolute;
+  z-index: 3;
+  top: 58px;
+  left: 50%;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #111;
+  background: #FFD200;
+  transform: translateX(-50%);
+  transition: background-color 250ms, color 250ms, transform 250ms;
+}
+.video-estilo[data-estilo="rojo"] { background: #E5322D; color: #fff; }
+.video-estilo[data-estilo="formal"] { background: rgba(0, 0, 0, 0.74); color: #fff; }
+.video-estilo.cambio { transform: translateX(-50%) scale(1.12); }
+.capa-subtitulos {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-family: Roboto, "Source Sans 3", system-ui, sans-serif;
+  font-size: 40px;
+}
+.subtitulo { margin: 0 7% 130px; text-align: center; line-height: 1.22; }
+.subtitulo-renglon { display: block; }
+.capa-subtitulos[data-estilo="amarillo"] .sp,
+.capa-subtitulos[data-estilo="rojo"] .sp { font-weight: 700; color: #FFF; text-shadow: 0 0 0.12em #000, 0.05em 0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em -0.05em 0 #000, 0 4px 14px rgba(0, 0, 0, 0.6); }
+.capa-subtitulos[data-estilo="amarillo"] .sp:not([data-estado="por-decir"]) { color: #FFD200; }
+.capa-subtitulos[data-estilo="rojo"] .sp[data-estado="diciendose"] { background: #E5322D; border-radius: 0.14em; padding: 0 0.1em; text-shadow: none; }
+.capa-subtitulos[data-estilo="formal"] .subtitulo-renglon { width: fit-content; margin: 0 auto 0.12em; padding: 0.08em 0.4em; background: rgba(0, 0, 0, 0.74); border-radius: 0.12em; }
+.capa-subtitulos[data-estilo="formal"] .sp { font-weight: 400; color: #FFF; }
+.video-controles {
+  position: absolute;
+  z-index: 3;
+  left: 26px;
+  right: 26px;
+  bottom: 38px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  font-variant-numeric: tabular-nums;
+}
+.video-barra { position: relative; flex: 1; height: 4px; border-radius: 4px; background: rgba(255, 255, 255, 0.25); }
+.video-barra i { display: block; height: 100%; width: 0; border-radius: 4px; background: #fff; }
+.telefono.es-video .telefono-canto { opacity: 0; }
+.telefono.es-video .telefono-cuerpo { background: transparent; box-shadow: none; }
+.telefono.es-video .telefono-cuerpo::after { opacity: 0; }
+.telefono.es-video .pantalla-lectura { border-radius: 30px; box-shadow: 0 40px 120px -20px rgba(255, 160, 90, 0.35), 0 30px 80px rgba(0, 0, 0, 0.7); }
+.telefono-canto, .telefono-cuerpo, .telefono-cuerpo::after { transition: opacity 400ms, background 400ms, box-shadow 400ms; }
+.pantalla-lectura { transition: border-radius 400ms, box-shadow 400ms; }
+.tarjetas { position: absolute; inset: 0; z-index: 6; pointer-events: none; }
+.tarjeta {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px 11px 14px;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--crema);
+  background: rgba(38, 34, 31, 0.86);
+  border: 1px solid rgba(255, 240, 225, 0.12);
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  opacity: 0;
+  visibility: hidden;
+}
+.tarjeta.tenue { color: var(--apagado); }
+.tarjeta b { font-family: var(--serif); font-weight: 600; font-size: 18px; }
+.tarjeta .muestra { display: block; width: 14px; height: 14px; border-radius: 4px; }
+.tarjeta svg { flex: none; }
+.punto-vivo, .punto-rojo { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.punto-vivo { background: var(--crema); box-shadow: 0 0 10px rgba(242, 236, 232, 0.8); }
+.punto-rojo { background: var(--rojo); box-shadow: 0 0 10px rgba(225, 29, 46, 0.9); }
+@media (max-width: 899px) {
+  .tarjeta { font-size: 13px; padding: 8px 12px 8px 10px; border-radius: 13px; }
+}
+.pildora {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 999px;
+  background: rgba(30, 27, 25, 0.82);
+  border: 1px solid rgba(255, 240, 225, 0.1);
+  box-shadow: 0 16px 40px -14px rgba(0, 0, 0, 0.8);
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+}
+.pildora a {
+  position: relative;
+  z-index: 1;
+  padding: 8px 15px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--apagado);
+  transition: color 250ms;
+}
+.pildora a.activo { color: var(--hondo); }
+.pildora-fondo { position: absolute; z-index: 0; top: 5px; bottom: 5px; left: 0; width: 0; border-radius: 999px; background: var(--crema); transition: transform 350ms cubic-bezier(.3, .8, .3, 1), width 350ms cubic-bezier(.3, .8, .3, 1); }
+@media (max-width: 899px) {
+  .pildora a { font-size: 13px; padding: 7px 12px; }
+  .pildora a:not(.activo) { width: 22px; padding: 7px 0; font-size: 0; color: transparent; }
+  .pildora a:not(.activo)::after { content: ""; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--apagado); }
+}
+.cierre {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12svh var(--margen);
+  text-align: center;
+  background: var(--hondo);
+  overflow: hidden;
+}
+.luz-cierre { opacity: 1; background: radial-gradient(50% 40% at 50% 38%, rgba(225, 29, 46, 0.10), rgba(225, 29, 46, 0) 70%), radial-gradient(70% 60% at 50% 110%, rgba(255, 196, 140, 0.10), rgba(0, 0, 0, 0) 70%); }
+.marca-cierre { position: relative; width: min(70vw, 560px); line-height: 0; }
+.frase-cierre {
+  position: relative;
+  margin: 6svh 0 0;
+  font-family: var(--serif);
+  font-size: var(--titular);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--crema);
+  max-width: 11em;
+  text-wrap: balance;
+}
+.disponible {
+  position: relative;
+  margin: 5svh 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--apagado);
+}
+@media (min-width: 900px) {
+  .frase-cierre { font-size: clamp(80px, 6.6vw, 140px); }
+  .disponible { font-size: 17px; }
+}
+.pie { position: relative; z-index: 1; padding: 0 var(--margen) calc(28px + env(safe-area-inset-bottom, 0px)); background: var(--hondo); color: var(--apagado); font-size: 15px; }
+.pie ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 0; margin: 0 auto; padding: 24px 0 0; max-width: 1200px; border-top: 1px solid var(--filete); list-style: none; }
+.pie li { display: flex; flex-wrap: nowrap; }
+.pie li span + span::before, .pie li + li::before { content: "·"; padding: 0 0.6em; }
+.pie li + li { flex-basis: 100%; justify-content: center; }
+.pie li + li::before { content: none; }
+.pie a { color: var(--letra); text-decoration: none; }
+.pie a:hover { text-decoration: underline; }
+@media (min-width: 720px) {
+  .pie li + li { flex-basis: auto; }
+  .pie li + li::before { content: "·"; }
+}
+.idioma {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+}
+.idioma a {
+  padding: 6px 7px;
+  border-radius: 999px;
+  color: var(--apagado);
+  text-decoration: none;
+  transition: color 200ms;
+}
+.idioma a:hover { color: var(--letra); }
+.idioma a[aria-current] { color: var(--crema); }
+.idioma span { color: rgba(156, 148, 142, 0.6); }
+.idioma-arriba {
+  position: fixed;
+  z-index: 60;
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  right: calc(12px + env(safe-area-inset-right, 0px));
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: rgba(20, 18, 17, 0.55);
+  border: 1px solid rgba(255, 240, 225, 0.08);
+}
+.idioma-pie { display: flex; justify-content: center; margin-top: 14px; }
+@media (min-width: 900px) {
+  .idioma-arriba { top: 22px; right: 26px; }
+}
+html:not(.js) .escenario { height: auto; }
+html:not(.js) .fijo { position: relative; height: auto; padding-bottom: 60px; }
+html:not(.js) .entrada, html:not(.js) .texto-escena { position: relative; inset: auto; opacity: 1; visibility: visible; transform: none; width: auto; left: auto; right: auto; top: auto; padding: 48px var(--margen); }
+html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:not(.js) .onda, html:not(.js) .ancla { display: none; }
+.interior { position: relative; min-height: 100svh; display: flex; flex-direction: column; background: var(--hondo); }
+.interior::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 90svh; pointer-events: none; background: radial-gradient(60% 45% at 50% -6%, rgba(255, 196, 140, 0.14), rgba(255, 196, 140, 0) 70%); }
+.interior > :not(.grano):not(.idioma-arriba) { position: relative; }
+.interior .cabecera { padding: calc(26px + env(safe-area-inset-top, 0px)) var(--margen) 0; }
+.interior .cabecera a { display: inline-block; width: 92px; line-height: 0; }
+.texto { flex: 1; width: 100%; max-width: 760px; margin: 0 auto; padding: 9svh var(--margen) 12svh; }
+.texto h1 { margin: 0 0 6svh; font-family: var(--serif); font-weight: 400; font-size: clamp(52px, 13vw, 128px); line-height: 1; letter-spacing: -0.03em; color: var(--crema); }
+.texto .lista { margin: 0; padding: 0; list-style: none; counter-reset: punto; }
+.texto .lista li { position: relative; padding: 22px 0 22px 0; border-top: 1px solid var(--filete); font-family: var(--serif); font-size: clamp(21px, 5.4vw, 30px); line-height: 1.3; color: var(--letra); }
+.texto .lista li:last-child { border-bottom: 1px solid var(--filete); }
+.texto .lista li small { display: block; margin-top: 6px; font-family: var(--sans); font-size: 16px; line-height: 1.5; color: var(--apagado); }
+.texto p { font-size: 18px; line-height: 1.6; color: var(--apagado); }
+.texto p a, .texto .correo { color: var(--crema); }
+.texto .correo { display: inline-block; margin-top: 8px; font-family: var(--serif); font-size: clamp(22px, 6vw, 34px); text-decoration: none; border-bottom: 1px solid var(--filete); }
+.texto .correo:hover { border-color: var(--crema); }
+</style>
+</head>
+<body class="portada">
+<div class="grano" aria-hidden="true"></div>
+<nav class="idioma idioma-arriba" aria-label="Language"><a href="/" lang="es" hreflang="es" data-idioma="es">ES</a><span aria-hidden="true">·</span><a href="/en" lang="en" hreflang="en" data-idioma="en" aria-current="page">EN</a></nav>
+
+<main>
+  <section class="escenario" id="escenario" aria-label="Sigo, scene by scene">
+    <div class="fijo">
+      <!-- Las luces de cada escena: se encienden y apagan con el scroll. -->
+      <div class="luces" aria-hidden="true">
+        <div class="luz luz-entrada"></div>
+        <div class="luz luz-tibia"></div>
+        <div class="luz luz-duelo"></div>
+        <div class="luz luz-color"></div>
+        <div class="luz luz-lente"></div>
+        <div class="luz luz-cine"></div>
+        <div class="luz luz-noche"></div>
+      </div>
+
+      <!-- E0 -->
+      <header class="entrada" data-escena="0">
+        <h1 class="marca-gigante"><svg class="marca-svg" viewBox="90 151.84 252 128.32" role="img" aria-label="Sigo"><defs><filter id="resplandor-entrada-en" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="16"/></filter></defs><circle class="resplandor" cx="313.53" cy="191.04" r="38.43" filter="url(#resplandor-entrada-en)"/><path d="M118.47 251.42L118.47 251.42Q109.86 251.42 102.25 249.44Q94.63 247.45 90 244.80L90 244.80L90.40 224.67L100.20 224.67L103.24 240.43Q106.29 241.76 109.60 242.55L109.60 242.55Q113.44 243.48 118.07 243.48L118.07 243.48Q124.43 243.48 128.53 241.69Q132.64 239.90 134.63 236.66Q136.61 233.41 136.61 229.44L136.61 229.44Q136.61 225.60 135.09 222.95Q133.57 220.30 130.32 218.25Q127.08 216.20 121.78 214.21L121.78 214.21L117.15 212.23Q109.60 209.18 103.77 205.54Q97.95 201.90 94.63 196.80Q91.32 191.70 91.32 184.15L91.32 184.15Q91.32 176.21 95.56 170.65Q99.80 165.08 107.08 162.17Q114.37 159.26 123.64 159.26L123.64 159.26Q131.71 159.26 138.07 161.11Q144.43 162.96 148.27 165.48L148.27 165.48L147.74 184.42L138.20 184.42L135.16 169.32Q134.63 169.06 134.23 168.92L134.23 168.92Q129.73 167.07 123.90 167.07L123.90 167.07Q118.87 167.07 115.29 168.73Q111.72 170.38 109.73 173.29Q107.74 176.21 107.74 180.05L107.74 180.05Q107.74 183.76 109.33 186.40Q110.92 189.05 114.17 191.10Q117.41 193.16 122.31 195.14L122.31 195.14L127.21 197.13Q135.42 200.44 141.25 204.15Q147.07 207.86 150.12 212.89Q153.17 217.92 153.17 225.20L153.17 225.20Q153.17 233.28 148.86 239.17Q144.56 245.07 136.81 248.24Q129.06 251.42 118.47 251.42ZM198.85 249.30L163.63 249.30L163.63 242.29L172.90 241.36Q172.90 240.96 173.03 240.43L173.03 240.43Q173.03 235.53 173.03 230.37L173.03 230.37L173.03 205.21Q173.03 201.23 172.90 197.13L172.90 197.13L162.83 196.47L162.83 190.11L185.61 182.83L189.85 183.49L189.71 200.84L189.71 230.37Q189.71 235.53 189.85 240.43L189.85 240.43Q189.85 240.96 189.85 241.49L189.85 241.49L198.85 242.29L198.85 249.30ZM180.97 171.44L180.97 171.44Q176.74 171.44 173.76 168.59Q170.78 165.75 170.78 161.64L170.78 161.64Q170.78 157.40 173.76 154.62Q176.74 151.84 180.97 151.84L180.97 151.84Q185.34 151.84 188.26 154.62Q191.17 157.40 191.17 161.64L191.17 161.64Q191.17 165.75 188.26 168.59Q185.34 171.44 180.97 171.44ZM235.93 280.16L235.93 280.16Q226.26 280.16 219.77 278.11Q213.29 276.05 210.04 272.48Q206.80 268.90 206.80 264.27L206.80 264.27Q206.80 260.43 208.92 257.51Q211.03 254.60 215.40 252.48L215.40 252.48Q218.32 251.16 222.29 249.97L222.29 249.97L222.29 248.38Q216.86 247.45 213.68 245.00Q210.50 242.55 210.50 237.78L210.50 237.78Q210.50 233.28 213.68 230.17Q216.86 227.06 222.69 224.54L222.69 224.54L222.69 223.48Q222.55 223.48 222.55 223.48L222.55 223.48Q216.46 220.83 213.09 215.93Q209.71 211.03 209.71 204.15L209.71 204.15Q209.71 197.53 213.09 192.50Q216.46 187.46 222.55 184.75Q228.65 182.03 236.86 182.03L236.86 182.03Q242.68 182.03 247.05 183.29Q251.42 184.55 254.47 186.80L254.47 186.80Q256.72 188.65 258.18 190.64L258.18 190.64L258.97 190.64L271.15 181.24L275.79 181.90L275.79 194.88L262.15 194.88Q262.81 196.07 263.21 197.39L263.21 197.39Q264.14 200.31 264.14 203.88L264.14 203.88Q264.14 210.64 260.83 215.60Q257.51 220.57 251.49 223.35Q245.46 226.13 236.99 226.13L236.99 226.13Q231.29 226.13 226.53 224.94L226.53 224.94Q225.73 225.73 225.20 226.53L225.20 226.53Q223.88 228.51 223.88 231.16L223.88 231.16Q223.88 234.21 226.06 235.86Q228.25 237.52 233.28 237.52L233.28 237.52L249.83 237.52Q258.18 237.52 263.54 239.84Q268.90 242.15 271.42 246.19Q273.93 250.23 273.93 255.53L273.93 255.53Q273.93 260.69 271.09 265.19Q268.24 269.70 263.14 273.07Q258.04 276.45 251.09 278.30Q244.14 280.16 235.93 280.16ZM225.60 251.42L225.60 251.42Q224.67 252.35 223.88 253.28L223.88 253.28Q222.42 255.13 221.63 257.18Q220.83 259.24 220.83 261.75L220.83 261.75Q220.83 264.93 222.69 267.45Q224.54 269.96 228.38 271.35Q232.22 272.74 238.45 272.74L238.45 272.74Q245.46 272.74 250.23 271.09Q255.00 269.43 257.45 266.65Q259.90 263.87 259.90 260.43L259.90 260.43Q259.90 256.46 257.12 254.01Q254.34 251.56 248.24 251.56L248.24 251.56L231.16 251.56Q228.65 251.56 226.53 251.42L226.53 251.42Q226.00 251.42 225.60 251.42ZM236.99 219.38L236.99 219.38Q240.70 219.38 243.35 217.52Q245.99 215.67 247.32 212.16Q248.64 208.65 248.64 203.88Q248.64 199.12 247.32 195.67Q245.99 192.23 243.41 190.44Q240.83 188.65 237.12 188.65L237.12 188.65Q233.55 188.65 230.90 190.51Q228.25 192.36 226.92 195.81Q225.60 199.25 225.60 204.02Q225.60 208.78 226.92 212.23Q228.25 215.67 230.77 217.52Q233.28 219.38 236.99 219.38Z" fill="currentColor"/><circle class="punto" cx="313.53" cy="191.04" r="28.47"/></svg></h1>
+        <p class="titular-entrada">The teleprompter that follows your&nbsp;voice.</p>
+      </header>
+
+      <!-- Los textos de las escenas E1 a E6 -->
+      <div class="texto-escena" data-escena="1">
+        <p class="capitulo">Read</p>
+        <h2 class="titular" data-palabra-a-palabra>You talk. It&nbsp;follows.</h2>
+        <p class="bajada">Speak, and the text moves with you. No hands, no scrolling.</p>
+      </div>
+      <div class="texto-escena arriba" data-escena="2">
+        <p class="capitulo">It waits</p>
+        <h2 class="titular">Others keep scrolling. <span class="acento">Sigo waits.</span></h2>
+        <p class="bajada">Stop to think, and the text waits for you. Start talking again, and it picks up right where you are.</p>
+      </div>
+      <div class="texto-escena" data-escena="3">
+        <p class="capitulo">Your script</p>
+        <h2 class="titular">Mark what matters.</h2>
+        <p class="bajada">Bold the lines you want to land. Color the shifts in tone. Highlight what you can’t afford to miss.</p>
+      </div>
+      <div class="texto-escena" data-escena="4">
+        <p class="capitulo">Record</p>
+        <h2 class="titular">Eyes on the lens.</h2>
+        <p class="bajada">The text sits right under the camera. You look into the lens, not down at the screen.</p>
+      </div>
+      <div class="texto-escena" data-escena="5">
+        <p class="capitulo">Captions</p>
+        <h2 class="titular">Captions that keep time.</h2>
+        <p class="bajada">When you’re done, your video comes with captions built from your script, in step with your voice.</p>
+        <p class="estilos-subtitulo" aria-hidden="true"><span data-estilo="amarillo">Yellow</span><span data-estilo="rojo">Red</span><span data-estilo="formal">Formal</span></p>
+      </div>
+      <div class="texto-escena" data-escena="6">
+        <p class="capitulo">Offline</p>
+        <h2 class="titular">No signal? No problem.</h2>
+        <p class="bajada">Works without internet. Your voice never leaves your phone.</p>
+      </div>
+
+      <!-- La onda de la voz: E1 y E2 -->
+      <canvas class="onda" aria-hidden="true"></canvas>
+
+      <!-- Los telefonos -->
+      <div class="telefonos" aria-hidden="true">
+        <div class="telefono" data-telefono="comun">
+  <div class="rotulo">A regular teleprompter</div>
+  <div class="telefono-canto"></div>
+  <div class="telefono-cuerpo">
+    <div class="pantalla-lectura">
+      <div class="camara-detras">
+        <i class="bokeh b1"></i><i class="bokeh b2"></i><i class="bokeh b3"></i><i class="bokeh b4"></i><i class="bokeh b5"></i>
+      </div>
+      <div class="lectura serif">
+        <div class="banda"></div>
+        <div class="panel-lectura"></div>
+        <div class="desliza">
+          <div class="capa-destacado"></div>
+          <div class="columna"><div class="line"><span data-token="0">Today</span> <span data-token="1">I</span> <span data-token="2">want</span> <span data-token="3">to</span> <span data-token="4">tell</span> <span data-token="5">you</span> <span data-token="6">something</span> <span data-token="7" class="f-negrita">important.</span> <span data-token="8">For</span> <span data-token="9">years</span> <span data-token="10">I</span> <span data-token="11">filmed</span> <span data-token="12">videos</span> <span data-token="13">reading</span> <span data-token="14">off</span> <span data-token="15">a</span> <span data-token="16">sheet</span> <span data-token="17">of</span> <span data-token="18">paper,</span> <span data-token="19">and</span> <span data-token="20">it</span> <span data-token="21">showed.</span> <span data-token="22">Now</span> <span data-token="23">I</span> <span data-token="24">read,</span> <span data-token="25">I</span> <span data-token="26">talk,</span> <span data-token="27">and</span> <span data-token="28" class="f-salvia">the</span> <span data-token="29" class="f-salvia">text</span> <span data-token="30" class="f-salvia">follows</span> <span data-token="31" class="f-salvia">me.</span> <span data-token="32" class="f-ambar">No</span> <span data-token="33" class="f-ambar">rushing.</span> <span data-token="34" class="f-celeste">No</span> <span data-token="35" class="f-celeste">losing</span> <span data-token="36" class="f-celeste">my</span> <span data-token="37" class="f-celeste">place.</span> <span data-token="38">And</span> <span data-token="39">whatever</span> <span data-token="40">I</span> <span data-token="41">can't</span> <span data-token="42">afford</span> <span data-token="43">to</span> <span data-token="44">miss,</span> <span data-token="45" class="f-destacado">I</span><span class="f-destacado"> </span><span data-token="46" class="f-destacado">mark</span><span class="f-destacado"> </span><span data-token="47" class="f-destacado">in</span><span class="f-destacado"> </span><span data-token="48" class="f-destacado">yellow.</span></div><div class="line"><span data-token="49">If</span> <span data-token="50">I</span> <span data-token="51">stop</span> <span data-token="52">to</span> <span data-token="53">think,</span> <span data-token="54">the</span> <span data-token="55">text</span> <span data-token="56">waits</span> <span data-token="57">for</span> <span data-token="58">me.</span> <span data-token="59">When</span> <span data-token="60">I</span> <span data-token="61">start</span> <span data-token="62">talking</span> <span data-token="63">again,</span> <span data-token="64">it</span> <span data-token="65">keeps</span> <span data-token="66">up</span> <span data-token="67">with</span> <span data-token="68">me.</span> <span data-token="69">I</span> <span data-token="70">look</span> <span data-token="71">at</span> <span data-token="72">the</span> <span data-token="73">lens,</span> <span data-token="74">not</span> <span data-token="75">at</span> <span data-token="76">the</span> <span data-token="77">screen,</span> <span data-token="78">and</span> <span data-token="79">whoever</span> <span data-token="80">is</span> <span data-token="81">watching</span> <span data-token="82">feels</span> <span data-token="83">I'm</span> <span data-token="84">talking</span> <span data-token="85">straight</span> <span data-token="86">to</span> <span data-token="87">them.</span></div><div class="line"><span data-token="88">I</span> <span data-token="89">record</span> <span data-token="90">from</span> <span data-token="91">start</span> <span data-token="92">to</span> <span data-token="93">finish,</span> <span data-token="94">no</span> <span data-token="95">cuts,</span> <span data-token="96">and</span> <span data-token="97">when</span> <span data-token="98">I'm</span> <span data-token="99">done</span> <span data-token="100">the</span> <span data-token="101">video</span> <span data-token="102">already</span> <span data-token="103">has</span> <span data-token="104">its</span> <span data-token="105">captions.</span> <span data-token="106">I</span> <span data-token="107">share</span> <span data-token="108">it</span> <span data-token="109">just</span> <span data-token="110">as</span> <span data-token="111">it</span> <span data-token="112">came</span> <span data-token="113">out.</span></div></div>
+        </div>
+        <div class="velo"></div>
+        <div class="marcador-fijo"></div>
+      </div>
+      <!-- E2: lo que pasa en la pausa, a la vista sin leer -->
+      <div class="aviso aviso-espera"><i class="punto-respira"></i>Waiting for you</div>
+      <div class="aviso aviso-escapa"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>You missed it</div>
+      <!-- E5: el video grabado con Sigo, vertical -->
+      <div class="video">
+        <div class="escena-video">
+          <i class="muro"></i><i class="ventana"></i><i class="lampara"></i><i class="repisa"></i><i class="planta"></i>
+          <i class="bokeh v1"></i><i class="bokeh v2"></i><i class="bokeh v3"></i><i class="bokeh v4"></i><i class="bokeh v5"></i><i class="bokeh v6"></i>
+          <i class="polvo"></i>
+        </div>
+        <div class="video-estilo">Yellow</div>
+        <div class="capa-subtitulos" data-estilo="amarillo"><div class="subtitulo"></div></div>
+        <div class="video-controles">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg>
+          <span class="video-tiempo">0:00</span>
+          <span class="video-barra"><i></i></span>
+          <span class="video-total">0:40</span>
+        </div>
+      </div>
+      <!-- E6: la senal, grande -->
+      <div class="sin-senal">
+        <span class="senal-grande"><i></i><i></i><i></i><i></i></span>
+        <svg class="wifi-grande" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M6 12.6a9 9 0 0 1 12 0"/><path d="M9.4 16a4 4 0 0 1 5.2 0"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
+        <svg class="avion-grande" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
+        <span class="sin-senal-texto">Airplane mode</span>
+      </div>
+      <div class="barra-estado">
+        <span class="hora">10:08</span>
+        <span class="iconos">
+          <svg class="icono-avion" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
+          <svg class="icono-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M6 12.6a9 9 0 0 1 12 0"/><path d="M9.4 16a4 4 0 0 1 5.2 0"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
+          <span class="senal"><i></i><i></i><i></i><i></i></span>
+          <span class="bateria"><i></i></span>
+        </span>
+      </div>
+      <div class="haz"></div>
+      <div class="punto-grabando"></div>
+      <div class="lente"></div>
+    </div>
+  </div>
+</div>
+
+        <div class="telefono" data-telefono="sigo">
+  <div class="rotulo">Sigo</div>
+  <div class="telefono-canto"></div>
+  <div class="telefono-cuerpo">
+    <div class="pantalla-lectura">
+      <div class="camara-detras">
+        <i class="bokeh b1"></i><i class="bokeh b2"></i><i class="bokeh b3"></i><i class="bokeh b4"></i><i class="bokeh b5"></i>
+      </div>
+      <div class="lectura serif">
+        <div class="banda"></div>
+        <div class="panel-lectura"></div>
+        <div class="desliza">
+          <div class="capa-destacado"></div>
+          <div class="columna"><div class="line"><span data-token="0">Today</span> <span data-token="1">I</span> <span data-token="2">want</span> <span data-token="3">to</span> <span data-token="4">tell</span> <span data-token="5">you</span> <span data-token="6">something</span> <span data-token="7" class="f-negrita">important.</span> <span data-token="8">For</span> <span data-token="9">years</span> <span data-token="10">I</span> <span data-token="11">filmed</span> <span data-token="12">videos</span> <span data-token="13">reading</span> <span data-token="14">off</span> <span data-token="15">a</span> <span data-token="16">sheet</span> <span data-token="17">of</span> <span data-token="18">paper,</span> <span data-token="19">and</span> <span data-token="20">it</span> <span data-token="21">showed.</span> <span data-token="22">Now</span> <span data-token="23">I</span> <span data-token="24">read,</span> <span data-token="25">I</span> <span data-token="26">talk,</span> <span data-token="27">and</span> <span data-token="28" class="f-salvia">the</span> <span data-token="29" class="f-salvia">text</span> <span data-token="30" class="f-salvia">follows</span> <span data-token="31" class="f-salvia">me.</span> <span data-token="32" class="f-ambar">No</span> <span data-token="33" class="f-ambar">rushing.</span> <span data-token="34" class="f-celeste">No</span> <span data-token="35" class="f-celeste">losing</span> <span data-token="36" class="f-celeste">my</span> <span data-token="37" class="f-celeste">place.</span> <span data-token="38">And</span> <span data-token="39">whatever</span> <span data-token="40">I</span> <span data-token="41">can't</span> <span data-token="42">afford</span> <span data-token="43">to</span> <span data-token="44">miss,</span> <span data-token="45" class="f-destacado">I</span><span class="f-destacado"> </span><span data-token="46" class="f-destacado">mark</span><span class="f-destacado"> </span><span data-token="47" class="f-destacado">in</span><span class="f-destacado"> </span><span data-token="48" class="f-destacado">yellow.</span></div><div class="line"><span data-token="49">If</span> <span data-token="50">I</span> <span data-token="51">stop</span> <span data-token="52">to</span> <span data-token="53">think,</span> <span data-token="54">the</span> <span data-token="55">text</span> <span data-token="56">waits</span> <span data-token="57">for</span> <span data-token="58">me.</span> <span data-token="59">When</span> <span data-token="60">I</span> <span data-token="61">start</span> <span data-token="62">talking</span> <span data-token="63">again,</span> <span data-token="64">it</span> <span data-token="65">keeps</span> <span data-token="66">up</span> <span data-token="67">with</span> <span data-token="68">me.</span> <span data-token="69">I</span> <span data-token="70">look</span> <span data-token="71">at</span> <span data-token="72">the</span> <span data-token="73">lens,</span> <span data-token="74">not</span> <span data-token="75">at</span> <span data-token="76">the</span> <span data-token="77">screen,</span> <span data-token="78">and</span> <span data-token="79">whoever</span> <span data-token="80">is</span> <span data-token="81">watching</span> <span data-token="82">feels</span> <span data-token="83">I'm</span> <span data-token="84">talking</span> <span data-token="85">straight</span> <span data-token="86">to</span> <span data-token="87">them.</span></div><div class="line"><span data-token="88">I</span> <span data-token="89">record</span> <span data-token="90">from</span> <span data-token="91">start</span> <span data-token="92">to</span> <span data-token="93">finish,</span> <span data-token="94">no</span> <span data-token="95">cuts,</span> <span data-token="96">and</span> <span data-token="97">when</span> <span data-token="98">I'm</span> <span data-token="99">done</span> <span data-token="100">the</span> <span data-token="101">video</span> <span data-token="102">already</span> <span data-token="103">has</span> <span data-token="104">its</span> <span data-token="105">captions.</span> <span data-token="106">I</span> <span data-token="107">share</span> <span data-token="108">it</span> <span data-token="109">just</span> <span data-token="110">as</span> <span data-token="111">it</span> <span data-token="112">came</span> <span data-token="113">out.</span></div></div>
+        </div>
+        <div class="velo"></div>
+        <div class="marcador-fijo"></div>
+      </div>
+      <!-- E2: lo que pasa en la pausa, a la vista sin leer -->
+      <div class="aviso aviso-espera"><i class="punto-respira"></i>Waiting for you</div>
+      <div class="aviso aviso-escapa"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>You missed it</div>
+      <!-- E5: el video grabado con Sigo, vertical -->
+      <div class="video">
+        <div class="escena-video">
+          <i class="muro"></i><i class="ventana"></i><i class="lampara"></i><i class="repisa"></i><i class="planta"></i>
+          <i class="bokeh v1"></i><i class="bokeh v2"></i><i class="bokeh v3"></i><i class="bokeh v4"></i><i class="bokeh v5"></i><i class="bokeh v6"></i>
+          <i class="polvo"></i>
+        </div>
+        <div class="video-estilo">Yellow</div>
+        <div class="capa-subtitulos" data-estilo="amarillo"><div class="subtitulo"></div></div>
+        <div class="video-controles">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg>
+          <span class="video-tiempo">0:00</span>
+          <span class="video-barra"><i></i></span>
+          <span class="video-total">0:40</span>
+        </div>
+      </div>
+      <!-- E6: la senal, grande -->
+      <div class="sin-senal">
+        <span class="senal-grande"><i></i><i></i><i></i><i></i></span>
+        <svg class="wifi-grande" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M6 12.6a9 9 0 0 1 12 0"/><path d="M9.4 16a4 4 0 0 1 5.2 0"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
+        <svg class="avion-grande" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
+        <span class="sin-senal-texto">Airplane mode</span>
+      </div>
+      <div class="barra-estado">
+        <span class="hora">10:08</span>
+        <span class="iconos">
+          <svg class="icono-avion" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
+          <svg class="icono-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M6 12.6a9 9 0 0 1 12 0"/><path d="M9.4 16a4 4 0 0 1 5.2 0"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
+          <span class="senal"><i></i><i></i><i></i><i></i></span>
+          <span class="bateria"><i></i></span>
+        </span>
+      </div>
+      <div class="haz"></div>
+      <div class="punto-grabando"></div>
+      <div class="lente"></div>
+    </div>
+  </div>
+</div>
+
+      </div>
+
+      <!-- Tarjetas flotantes: momentos de quien lee -->
+      <div class="tarjetas" aria-hidden="true">
+        <div class="tarjeta" data-tarjeta="espera"><span class="punto-vivo"></span>You paused: the text waits</div>
+        <div class="tarjeta tenue" data-tarjeta="corre">The other one keeps going</div>
+        <div class="tarjeta formato" data-tarjeta="negrita"><b>Aa</b>Bold</div>
+        <div class="tarjeta formato" data-tarjeta="ambar"><i class="muestra" style="background:#F0C070"></i>Amber</div>
+        <div class="tarjeta formato" data-tarjeta="celeste"><i class="muestra" style="background:#8FB8DE"></i>Sky blue</div>
+        <div class="tarjeta formato" data-tarjeta="salvia"><i class="muestra" style="background:#9CC5A1"></i>Green</div>
+        <div class="tarjeta formato" data-tarjeta="destacado"><i class="muestra" style="background:#FFE066"></i>Highlight</div>
+        <div class="tarjeta" data-tarjeta="lente">Your line sits under the lens</div>
+        <div class="tarjeta" data-tarjeta="camara"><span class="punto-rojo"></span>The camera, behind the text</div>
+        <div class="tarjeta" data-tarjeta="avion"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>Airplane mode. Still reading.</div>
+      </div>
+
+      <!-- Los capitulos -->
+      <nav class="pildora" aria-label="Chapters">
+        <span class="pildora-fondo" aria-hidden="true"></span>
+        <a href="#e1" data-capitulo="1">Read</a>
+        <a href="#e2" data-capitulo="2">It waits</a>
+        <a href="#e3" data-capitulo="3">Your script</a>
+        <a href="#e4" data-capitulo="4">Record</a>
+        <a href="#e5" data-capitulo="5">Captions</a>
+        <a href="#e6" data-capitulo="6">Offline</a>
+      </nav>
+    </div>
+    <!-- Anclas de los capitulos, a la altura de cada escena -->
+    <span class="ancla" id="e1"></span><span class="ancla" id="e2"></span><span class="ancla" id="e3"></span>
+    <span class="ancla" id="e4"></span><span class="ancla" id="e5"></span><span class="ancla" id="e6"></span>
+  </section>
+
+  <!-- E7 -->
+  <section class="cierre" id="e7">
+    <div class="luz luz-cierre" aria-hidden="true"></div>
+    <div class="marca-cierre"><svg class="marca-svg" viewBox="90 151.84 252 128.32" role="img" aria-label="Sigo"><defs><filter id="resplandor-cierre-en" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="16"/></filter></defs><circle class="resplandor" cx="313.53" cy="191.04" r="38.43" filter="url(#resplandor-cierre-en)"/><path d="M118.47 251.42L118.47 251.42Q109.86 251.42 102.25 249.44Q94.63 247.45 90 244.80L90 244.80L90.40 224.67L100.20 224.67L103.24 240.43Q106.29 241.76 109.60 242.55L109.60 242.55Q113.44 243.48 118.07 243.48L118.07 243.48Q124.43 243.48 128.53 241.69Q132.64 239.90 134.63 236.66Q136.61 233.41 136.61 229.44L136.61 229.44Q136.61 225.60 135.09 222.95Q133.57 220.30 130.32 218.25Q127.08 216.20 121.78 214.21L121.78 214.21L117.15 212.23Q109.60 209.18 103.77 205.54Q97.95 201.90 94.63 196.80Q91.32 191.70 91.32 184.15L91.32 184.15Q91.32 176.21 95.56 170.65Q99.80 165.08 107.08 162.17Q114.37 159.26 123.64 159.26L123.64 159.26Q131.71 159.26 138.07 161.11Q144.43 162.96 148.27 165.48L148.27 165.48L147.74 184.42L138.20 184.42L135.16 169.32Q134.63 169.06 134.23 168.92L134.23 168.92Q129.73 167.07 123.90 167.07L123.90 167.07Q118.87 167.07 115.29 168.73Q111.72 170.38 109.73 173.29Q107.74 176.21 107.74 180.05L107.74 180.05Q107.74 183.76 109.33 186.40Q110.92 189.05 114.17 191.10Q117.41 193.16 122.31 195.14L122.31 195.14L127.21 197.13Q135.42 200.44 141.25 204.15Q147.07 207.86 150.12 212.89Q153.17 217.92 153.17 225.20L153.17 225.20Q153.17 233.28 148.86 239.17Q144.56 245.07 136.81 248.24Q129.06 251.42 118.47 251.42ZM198.85 249.30L163.63 249.30L163.63 242.29L172.90 241.36Q172.90 240.96 173.03 240.43L173.03 240.43Q173.03 235.53 173.03 230.37L173.03 230.37L173.03 205.21Q173.03 201.23 172.90 197.13L172.90 197.13L162.83 196.47L162.83 190.11L185.61 182.83L189.85 183.49L189.71 200.84L189.71 230.37Q189.71 235.53 189.85 240.43L189.85 240.43Q189.85 240.96 189.85 241.49L189.85 241.49L198.85 242.29L198.85 249.30ZM180.97 171.44L180.97 171.44Q176.74 171.44 173.76 168.59Q170.78 165.75 170.78 161.64L170.78 161.64Q170.78 157.40 173.76 154.62Q176.74 151.84 180.97 151.84L180.97 151.84Q185.34 151.84 188.26 154.62Q191.17 157.40 191.17 161.64L191.17 161.64Q191.17 165.75 188.26 168.59Q185.34 171.44 180.97 171.44ZM235.93 280.16L235.93 280.16Q226.26 280.16 219.77 278.11Q213.29 276.05 210.04 272.48Q206.80 268.90 206.80 264.27L206.80 264.27Q206.80 260.43 208.92 257.51Q211.03 254.60 215.40 252.48L215.40 252.48Q218.32 251.16 222.29 249.97L222.29 249.97L222.29 248.38Q216.86 247.45 213.68 245.00Q210.50 242.55 210.50 237.78L210.50 237.78Q210.50 233.28 213.68 230.17Q216.86 227.06 222.69 224.54L222.69 224.54L222.69 223.48Q222.55 223.48 222.55 223.48L222.55 223.48Q216.46 220.83 213.09 215.93Q209.71 211.03 209.71 204.15L209.71 204.15Q209.71 197.53 213.09 192.50Q216.46 187.46 222.55 184.75Q228.65 182.03 236.86 182.03L236.86 182.03Q242.68 182.03 247.05 183.29Q251.42 184.55 254.47 186.80L254.47 186.80Q256.72 188.65 258.18 190.64L258.18 190.64L258.97 190.64L271.15 181.24L275.79 181.90L275.79 194.88L262.15 194.88Q262.81 196.07 263.21 197.39L263.21 197.39Q264.14 200.31 264.14 203.88L264.14 203.88Q264.14 210.64 260.83 215.60Q257.51 220.57 251.49 223.35Q245.46 226.13 236.99 226.13L236.99 226.13Q231.29 226.13 226.53 224.94L226.53 224.94Q225.73 225.73 225.20 226.53L225.20 226.53Q223.88 228.51 223.88 231.16L223.88 231.16Q223.88 234.21 226.06 235.86Q228.25 237.52 233.28 237.52L233.28 237.52L249.83 237.52Q258.18 237.52 263.54 239.84Q268.90 242.15 271.42 246.19Q273.93 250.23 273.93 255.53L273.93 255.53Q273.93 260.69 271.09 265.19Q268.24 269.70 263.14 273.07Q258.04 276.45 251.09 278.30Q244.14 280.16 235.93 280.16ZM225.60 251.42L225.60 251.42Q224.67 252.35 223.88 253.28L223.88 253.28Q222.42 255.13 221.63 257.18Q220.83 259.24 220.83 261.75L220.83 261.75Q220.83 264.93 222.69 267.45Q224.54 269.96 228.38 271.35Q232.22 272.74 238.45 272.74L238.45 272.74Q245.46 272.74 250.23 271.09Q255.00 269.43 257.45 266.65Q259.90 263.87 259.90 260.43L259.90 260.43Q259.90 256.46 257.12 254.01Q254.34 251.56 248.24 251.56L248.24 251.56L231.16 251.56Q228.65 251.56 226.53 251.42L226.53 251.42Q226.00 251.42 225.60 251.42ZM236.99 219.38L236.99 219.38Q240.70 219.38 243.35 217.52Q245.99 215.67 247.32 212.16Q248.64 208.65 248.64 203.88Q248.64 199.12 247.32 195.67Q245.99 192.23 243.41 190.44Q240.83 188.65 237.12 188.65L237.12 188.65Q233.55 188.65 230.90 190.51Q228.25 192.36 226.92 195.81Q225.60 199.25 225.60 204.02Q225.60 208.78 226.92 212.23Q228.25 215.67 230.77 217.52Q233.28 219.38 236.99 219.38Z" fill="currentColor"/><circle class="punto" cx="313.53" cy="191.04" r="28.47"/></svg></div>
+    <p class="frase-cierre">The teleprompter that follows your&nbsp;voice.</p>
+    <p class="disponible">Coming soon to Google Play.</p>
+  </section>
+</main>
+<footer class="pie">
+  <ul>
+    <li><span><a href="/en/privacy">Privacy</a></span><span><a href="/en/support">Support</a></span></li>
+    <li><span><a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></span><span>© Sigo</span></li>
+  </ul>
+  <nav class="idioma idioma-pie" aria-label="Language"><a href="/" lang="es" hreflang="es" data-idioma="es">ES</a><span aria-hidden="true">·</span><a href="/en" lang="en" hreflang="en" data-idioma="en" aria-current="page">EN</a></nav>
+</footer>
+<script type="application/json" id="demo-datos">{"hastaMs":46502,"palabrasDestacadas":6,"cuadros":[[0,0],[2448,1],[2608,2],[2784,3],[2992,4],[3216,5],[3520,6],[4272,7],[5776,8],[6080,9],[6416,10],[6784,11],[7216,12],[7728,13],[8160,14],[8512,15],[8848,16],[9200,17],[9552,18],[10112,19],[10496,20],[10912,21],[12160,22],[12464,23],[12784,24],[13152,25],[13568,26],[14128,27],[14544,28],[14944,29],[15440,30],[15856,31],[17232,32],[17568,33],[18736,34],[19072,35],[19408,36],[19808,37],[21136,38],[21456,39],[21776,40],[22112,41],[22496,42],[22848,43],[23184,44],[23568,45],[23952,46],[24304,47],[24656,48],[26336,49],[26640,50],[26976,51],[27312,52],[27696,53],[31248,54],[31568,55],[31888,56],[32224,57],[32576,58],[33552,59],[33856,60],[34192,61],[34592,62],[35040,63],[35632,64],[36096,65],[36496,66],[36880,67],[37232,68],[38320,69],[38608,70],[38880,71],[39184,72],[39504,73],[39984,74],[40384,75],[40736,76],[41120,77],[41760,78],[42336,79],[42736,80],[43264,81],[43776,82],[44192,83],[44656,84],[45296,85],[45712,86],[46112,87]],"voz":[[400,805],[871,1075],[1109,1464],[1521,1776],[1818,2172],[2230,2535],[2585,3189],[3288,3893],[4611,4916],[4966,5370],[5436,5641],[5674,6129],[6203,6658],[6732,7237],[7319,7624],[7673,7878],[7912,8316],[8382,8637],[8678,9083],[9409,9714],[9764,10018],[10060,10515],[11209,11514],[11563,11768],[11801,12156],[12474,12679],[12712,13067],[13385,13689],[13739,14044],[14093,14448],[14506,15011],[15093,15348],[16009,16264],[16305,16810],[17512,17767],[17809,18263],[18337,18592],[18634,19039],[19724,20029],[20079,20634],[20724,20929],[20962,21317],[21375,21829],[21903,22158],[22200,22555],[22872,23077],[23110,23465],[23523,23778],[23819,24274],[25448,25703],[25744,25949],[25983,26337],[26395,26650],[26691,27096],[29962,30267],[30316,30671],[30729,31134],[31200,31504],[31554,31809],[32470,32825],[32883,33088],[33121,33526],[33592,34097],[34179,34584],[34909,35164],[35206,35610],[35676,35931],[35973,36327],[36385,36640],[37302,37506],[37540,37894],[37952,38207],[38248,38553],[38603,38958],[39275,39580],[39630,39885],[39926,40231],[40281,40735],[41069,41374],[41424,41929],[42011,42266],[42307,42862],[42952,43357],[43423,43678],[43719,44224],[44306,44861],[44951,45206],[45247,45602]],"subtitulos":[[400,4493,[[["Today",400,805],["I",871,1075],["want",1109,1464],["to",1521,1776],["tell",1818,2172],["you",2230,2535]],[["something",2585,3189],["important.",3288,3893]]]],[4611,9409,[[["For",4611,4916],["years",4966,5370],["I",5436,5641],["filmed",5674,6129],["videos",6203,6658]],[["reading",6732,7237],["off",7319,7624],["a",7673,7878],["sheet",7912,8316],["of",8382,8637],["paper,",8678,9083]]]],[9409,11115,[[["and",9409,9714],["it",9764,10018],["showed.",10060,10515]]]],[11209,15948,[[["Now",11209,11514],["I",11563,11768],["read,",11801,12156],["I",12474,12679],["talk,",12712,13067],["and",13385,13689]],[["the",13739,14044],["text",14093,14448],["follows",14506,15011],["me.",15093,15348]]]],[16009,17410,[[["No",16009,16264],["rushing.",16305,16810]]]],[17512,19639,[[["No",17512,17767],["losing",17809,18263],["my",18337,18592],["place.",18634,19039]]]],[19724,22872,[[["And",19724,20029],["whatever",20079,20634],["I",20724,20929],["can't",20962,21317]],[["afford",21375,21829],["to",21903,22158],["miss,",22200,22555]]]],[22872,24874,[[["I",22872,23077],["mark",23110,23465],["in",23523,23778],["yellow.",23819,24274]]]],[25448,27696,[[["If",25448,25703],["I",25744,25949],["stop",25983,26337],["to",26395,26650],["think,",26691,27096]]]],[29962,32409,[[["the",29962,30267],["text",30316,30671],["waits",30729,31134],["for",31200,31504],["me.",31554,31809]]]],[32470,37240,[[["When",32470,32825],["I",32883,33088],["start",33121,33526],["talking",33592,34097],["again,",34179,34584]],[["it",34909,35164],["keeps",35206,35610],["up",35676,35931],["with",35973,36327],["me.",36385,36640]]]],[37302,41069,[[["I",37302,37506],["look",37540,37894],["at",37952,38207],["the",38248,38553],["lens,",38603,38958]],[["not",39275,39580],["at",39630,39885],["the",39926,40231],["screen,",40281,40735]]]],[41069,46202,[[["and",41069,41374],["whoever",41424,41929],["is",42011,42266],["watching",42307,42862],["feels",42952,43357]],[["I'm",43423,43678],["talking",43719,44224],["straight",44306,44861],["to",44951,45206],["them.",45247,45602]]]]],"pausa":[27096,29962,53],"estilos":{"amarillo":"Yellow","rojo":"Red","formal":"Formal"}}</script>
+<script src="/vendor/gsap.min.js" defer></script>
+<script src="/vendor/ScrollTrigger.min.js" defer></script>
+<script src="/vendor/lenis.min.js" defer></script>
+<script defer src="/sitio.js"></script>
+</body>
+</html>

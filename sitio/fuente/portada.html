@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="{{idioma}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{meta.titulo}}</title>
+<meta name="description" content="{{meta.descripcion}}">
+<meta property="og:title" content="{{meta.titulo}}">
+<meta property="og:description" content="{{meta.ogDescripcion}}">
+<meta property="og:image" content="https://sigoteleprompter.com/icono.png">
+<!--@cabecera-idioma-->
+<meta name="theme-color" content="#0B0A09">
+<link rel="icon" type="image/png" href="/icono.png">
+<link rel="apple-touch-icon" href="/icono.png">
+<link rel="preload" href="/fuentes/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/*@estilo*/
+</style>
+</head>
+<body class="portada">
+<div class="grano" aria-hidden="true"></div>
+<!--@selector-->
+
+<main>
+  <section class="escenario" id="escenario" aria-label="{{escenario}}">
+    <div class="fijo">
+      <!-- Las luces de cada escena: se encienden y apagan con el scroll. -->
+      <div class="luces" aria-hidden="true">
+        <div class="luz luz-entrada"></div>
+        <div class="luz luz-tibia"></div>
+        <div class="luz luz-duelo"></div>
+        <div class="luz luz-color"></div>
+        <div class="luz luz-lente"></div>
+        <div class="luz luz-cine"></div>
+        <div class="luz luz-noche"></div>
+      </div>
+
+      <!-- E0 -->
+      <header class="entrada" data-escena="0">
+        <h1 class="marca-gigante"><!--@marca--></h1>
+        <p class="titular-entrada">{{entrada.titular}}</p>
+      </header>
+
+      <!-- Los textos de las escenas E1 a E6 -->
+      <div class="texto-escena" data-escena="1">
+        <p class="capitulo">{{e1.capitulo}}</p>
+        <h2 class="titular" data-palabra-a-palabra>{{e1.titular}}</h2>
+        <p class="bajada">{{e1.bajada}}</p>
+      </div>
+      <div class="texto-escena arriba" data-escena="2">
+        <p class="capitulo">{{e2.capitulo}}</p>
+        <h2 class="titular">{{e2.titular}}</h2>
+        <p class="bajada">{{e2.bajada}}</p>
+      </div>
+      <div class="texto-escena" data-escena="3">
+        <p class="capitulo">{{e3.capitulo}}</p>
+        <h2 class="titular">{{e3.titular}}</h2>
+        <p class="bajada">{{e3.bajada}}</p>
+      </div>
+      <div class="texto-escena" data-escena="4">
+        <p class="capitulo">{{e4.capitulo}}</p>
+        <h2 class="titular">{{e4.titular}}</h2>
+        <p class="bajada">{{e4.bajada}}</p>
+      </div>
+      <div class="texto-escena" data-escena="5">
+        <p class="capitulo">{{e5.capitulo}}</p>
+        <h2 class="titular">{{e5.titular}}</h2>
+        <p class="bajada">{{e5.bajada}}</p>
+        <p class="estilos-subtitulo" aria-hidden="true"><span data-estilo="amarillo">{{estilos.amarillo}}</span><span data-estilo="rojo">{{estilos.rojo}}</span><span data-estilo="formal">{{estilos.formal}}</span></p>
+      </div>
+      <div class="texto-escena" data-escena="6">
+        <p class="capitulo">{{e6.capitulo}}</p>
+        <h2 class="titular">{{e6.titular}}</h2>
+        <p class="bajada">{{e6.bajada}}</p>
+      </div>
+
+      <!-- La onda de la voz: E1 y E2 -->
+      <canvas class="onda" aria-hidden="true"></canvas>
+
+      <!-- Los telefonos -->
+      <div class="telefonos" aria-hidden="true">
+        <!--@telefono-comun-->
+        <!--@telefono-sigo-->
+      </div>
+
+      <!-- Tarjetas flotantes: momentos de quien lee -->
+      <div class="tarjetas" aria-hidden="true">
+        <div class="tarjeta" data-tarjeta="espera"><span class="punto-vivo"></span>{{tarjetas.espera}}</div>
+        <div class="tarjeta tenue" data-tarjeta="corre">{{tarjetas.corre}}</div>
+        <div class="tarjeta formato" data-tarjeta="negrita"><b>Aa</b>{{tarjetas.negrita}}</div>
+        <div class="tarjeta formato" data-tarjeta="ambar"><i class="muestra" style="background:#F0C070"></i>{{tarjetas.ambar}}</div>
+        <div class="tarjeta formato" data-tarjeta="celeste"><i class="muestra" style="background:#8FB8DE"></i>{{tarjetas.celeste}}</div>
+        <div class="tarjeta formato" data-tarjeta="salvia"><i class="muestra" style="background:#9CC5A1"></i>{{tarjetas.salvia}}</div>
+        <div class="tarjeta formato" data-tarjeta="destacado"><i class="muestra" style="background:#FFE066"></i>{{tarjetas.destacado}}</div>
+        <div class="tarjeta" data-tarjeta="lente">{{tarjetas.lente}}</div>
+        <div class="tarjeta" data-tarjeta="camara"><span class="punto-rojo"></span>{{tarjetas.camara}}</div>
+        <div class="tarjeta" data-tarjeta="avion"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>{{tarjetas.avion}}</div>
+      </div>
+
+      <!-- Los capitulos -->
+      <nav class="pildora" aria-label="{{capitulosEtiqueta}}">
+        <span class="pildora-fondo" aria-hidden="true"></span>
+        <a href="#e1" data-capitulo="1">{{e1.capitulo}}</a>
+        <a href="#e2" data-capitulo="2">{{e2.capitulo}}</a>
+        <a href="#e3" data-capitulo="3">{{e3.capitulo}}</a>
+        <a href="#e4" data-capitulo="4">{{e4.capitulo}}</a>
+        <a href="#e5" data-capitulo="5">{{e5.capitulo}}</a>
+        <a href="#e6" data-capitulo="6">{{e6.capitulo}}</a>
+      </nav>
+    </div>
+    <!-- Anclas de los capitulos, a la altura de cada escena -->
+    <span class="ancla" id="e1"></span><span class="ancla" id="e2"></span><span class="ancla" id="e3"></span>
+    <span class="ancla" id="e4"></span><span class="ancla" id="e5"></span><span class="ancla" id="e6"></span>
+  </section>
+
+  <!-- E7 -->
+  <section class="cierre" id="e7">
+    <div class="luz luz-cierre" aria-hidden="true"></div>
+    <div class="marca-cierre"><!--@marca-cierre--></div>
+    <p class="frase-cierre">{{cierre.frase}}</p>
+    <p class="disponible">{{cierre.disponible}}</p>
+  </section>
+</main>
+<!--@pie-->
+<script type="application/json" id="demo-datos">/*@datos*/</script>
+<script src="/vendor/gsap.min.js" defer></script>
+<script src="/vendor/ScrollTrigger.min.js" defer></script>
+<script src="/vendor/lenis.min.js" defer></script>
+<script defer src="/sitio.js"></script>
+</body>
+</html>
