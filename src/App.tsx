@@ -175,6 +175,18 @@ export default function App({ motor, repoOverride }: AppProps) {
   const repoGrabacionesRef = useRef<RepositorioGrabaciones>(
     repoOverride ? new RepositorioGrabacionesMemoria() : new RepositorioGrabacionesIndexedDB()
   )
+  // LA CARGA INICIAL ES ASINCRONA Y PUEDE TERMINAR CON App YA DESMONTADA. Paso en el CI el
+  // 26-09-2026 -corridas 290 y 291-: tarea47 termino, se desarmo el entorno de prueba, y
+  // recien ahi la carga de la biblioteca llamo a un setState; React busco window y no estaba.
+  // Las 341 pruebas pasaban igual y el CI quedo rojo por ese error suelto, a veces si y a
+  // veces no. Cada await de la carga mira esto antes de tocar el estado.
+  const montadoRef = useRef<boolean>(true)
+  useEffect(() => {
+    montadoRef.current = true
+    return () => {
+      montadoRef.current = false
+    }
+  }, [])
   const [usandoMemoriaFallback, setUsandoMemoriaFallback] = useState<boolean>(false)
   const [errorRepositorio, setErrorRepositorio] = useState<string | null>(null)
 
@@ -417,8 +429,10 @@ export default function App({ motor, repoOverride }: AppProps) {
     let repo = repoRef.current
     try {
       const lista = await repo.listar()
+      if (!montadoRef.current) return
       setGuionesResumen(lista)
     } catch (e) {
+      if (!montadoRef.current) return
       console.warn('[App] Error al acceder a RepositorioIndexedDB, cayendo a RepositorioMemoria:', e)
       repo = new RepositorioMemoria()
       repoRef.current = repo
@@ -427,6 +441,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       setErrorRepositorio('IndexedDB no está disponible; se está usando almacenamiento en memoria.')
       try {
         const lista = await repo.listar()
+        if (!montadoRef.current) return
         setGuionesResumen(lista)
       } catch (err) {
         console.warn('[App] Error al listar de RepositorioMemoria:', err)
@@ -441,6 +456,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       try {
         await repoRef.current.listar()
       } catch (e) {
+        if (!montadoRef.current) return
         console.warn('[App] Error al acceder a RepositorioIndexedDB, cayendo a RepositorioMemoria:', e)
         repoRef.current = new RepositorioMemoria()
         repoGrabacionesRef.current = new RepositorioGrabacionesMemoria()
@@ -537,10 +553,13 @@ export default function App({ motor, repoOverride }: AppProps) {
       }
 
       await cargarBiblioteca()
+      if (!montadoRef.current) return
       try {
         const idsAntes = new Set((await repoGrabacionesRef.current.listar()).map((g) => g.id))
         const recuperadas = await recuperarTomasPendientes(repoGrabacionesRef.current)
-        setGrabaciones(await quitarTomasSinVideo(repoGrabacionesRef.current))
+        const conVideo = await quitarTomasSinVideo(repoGrabacionesRef.current)
+        if (!montadoRef.current) return
+        setGrabaciones(conVideo)
         const nuevas = recuperadas.filter((g) => !idsAntes.has(g.id))
         if (nuevas.length > 0) {
           const masReciente = [...nuevas].sort((a, b) => b.creado - a.creado)[0]
@@ -559,9 +578,12 @@ export default function App({ motor, repoOverride }: AppProps) {
       } catch (e) {
         console.warn('[App] no se pudieron recuperar grabaciones:', e)
         try {
-          setGrabaciones(await repoGrabacionesRef.current.listar())
+          const todas = await repoGrabacionesRef.current.listar()
+          if (!montadoRef.current) return
+          setGrabaciones(todas)
         } catch {}
       }
+      if (!montadoRef.current) return
       setCargado(true)
     }
 
