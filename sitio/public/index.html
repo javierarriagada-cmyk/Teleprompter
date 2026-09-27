@@ -2,56 +2,430 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sigo — Teleprompter de voz</title>
-<meta name="description" content="Sigo es el teleprompter que sigue tu voz: el texto avanza al ritmo en que hablas, sin tocar nada. Pronto en Google Play.">
+<meta name="description" content="Sigo es el teleprompter que sigue tu voz: lees en voz alta y el texto avanza contigo. Pronto en Google Play.">
 <meta property="og:title" content="Sigo — Teleprompter de voz">
 <meta property="og:description" content="El teleprompter que sigue tu voz. Pronto en Google Play.">
 <meta property="og:image" content="https://sigoteleprompter.com/icono.png">
+<meta property="og:url" content="https://sigoteleprompter.com/">
+<meta property="og:locale" content="es_LA">
+<link rel="canonical" href="https://sigoteleprompter.com/">
 <meta name="theme-color" content="#151312">
 <link rel="icon" type="image/png" href="/icono.png">
 <link rel="apple-touch-icon" href="/icono.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<link rel="preload" href="/fuentes/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-  :root { --fondo: #151312; --letra: #E7E1DE; --apagado: #9C948E; --rojo: #E11D2E; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; }
-  body {
-    background: var(--fondo);
-    color: var(--letra);
-    font-family: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    display: grid;
-    place-items: center;
-    padding: 24px 16px;
-    min-height: 100svh;
+@font-face {
+  font-family: "Source Serif 4";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fuentes/source-serif-4-latin-400-normal.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Source Serif 4";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/fuentes/source-serif-4-latin-600-normal.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fuentes/source-sans-3-latin-400-normal.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/fuentes/source-sans-3-latin-600-normal.woff2) format("woff2");
+}
+:root {
+  color-scheme: dark;
+  --fondo: #151312;
+  --letra: #E7E1DE;
+  --apagado: #9C948E;
+  --rojo: #E11D2E;
+  --filete: rgba(231, 225, 222, 0.12);
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --margen: 16px;
+  --ancho: 1120px;
+}
+* { box-sizing: border-box; }
+html {
+  background: var(--fondo);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--letra);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-color: var(--letra); }
+:focus-visible { outline: 2px solid var(--letra); outline-offset: 3px; border-radius: 4px; }
+.solo-lector {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.envoltura {
+  width: 100%;
+  max-width: calc(var(--ancho) + 2 * var(--margen));
+  margin: 0 auto;
+  padding: 0 var(--margen);
+}
+.cabecera { padding-top: 22px; }
+.marca {
+  display: inline-block;
+  color: var(--letra);
+  line-height: 0;
+  text-decoration: none;
+}
+.marca svg { display: block; height: 30px; width: auto; }
+.marca circle { fill: var(--rojo); }
+.portada {
+  display: grid;
+  gap: 24px;
+  padding-top: 26px;
+}
+.frase {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1.12;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+.apoyo {
+  margin: 12px 0 0;
+  max-width: 30em;
+  color: var(--apagado);
+  font-size: 17px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+.demo {
+  position: relative;
+  margin: 0;
+}
+.pantalla {
+  position: relative;
+  height: max(340px, calc(100svh - 268px));
+  max-height: 640px;
+  padding-top: 22px;
+  border: 1px solid rgba(231, 225, 222, 0.14);
+  border-radius: 26px;
+  background: var(--fondo);
+  overflow: hidden;
+  isolation: isolate;
+}
+.lienzo {
+  --fila: calc(var(--letra-lectura, 18px) * 1.4);
+  --ventana: calc(4 * var(--fila) + 16px);
+  position: absolute;
+  left: 0;
+  top: 22px;
+  width: 360px;
+  height: calc(100% - 22px);
+  transform-origin: 0 0;
+  overflow: hidden;
+  color: var(--letra);
+}
+.lienzo.serif { font-family: "Source Serif 4", serif; }
+.lienzo.sans { font-family: "Source Sans 3", sans-serif; }
+.banda-lectura,
+.velo-lectura {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+.banda-lectura {
+  top: 0;
+  height: calc(4 * var(--fila));
+  z-index: 2;
+  background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.075) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%);
+}
+.velo-lectura {
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  background: linear-gradient(to bottom, rgba(21, 19, 18, 0) 0, rgba(21, 19, 18, 0) var(--ventana), rgba(21, 19, 18, 0.55) var(--ventana), rgba(21, 19, 18, 0.55) 100%);
+}
+.contenedor-lectura {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  overflow: hidden;
+  padding: 0 var(--margen, 5%);
+  transition: opacity 450ms ease;
+}
+.capa-destacado {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: -1;
+  pointer-events: none;
+  font-size: var(--letra-lectura, 18px);
+}
+.linea-destacado {
+  position: absolute;
+  box-sizing: content-box;
+  height: max(2px, 0.09em);
+  padding: 0 0.04em;
+  margin: calc(max(2px, 0.09em) / -2) 0 0 -0.04em;
+  border-radius: 999px;
+  background: rgba(231, 225, 222, 0.85);
+}
+.columna-texto {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 90%;
+  font-size: var(--letra-lectura, 18px);
+}
+.block-container { margin-bottom: 24px; }
+.columna-texto .line { margin: 16px 0; line-height: 1.4; }
+.controles {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 5;
+  display: none;
+  gap: 10px;
+}
+.demo[data-lista="si"] .controles { display: flex; }
+.btn-flotante-40 {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background-color: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  transform: scale(1) scaleY(1);
+  transition: border-radius 200ms cubic-bezier(.34, 1.3, .64, 1), transform 200ms cubic-bezier(.34, 1.3, .64, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-flotante-40:active {
+  border-radius: 14px;
+  transform: scaleY(0.94);
+  transition: border-radius 100ms ease-out, transform 100ms ease-out;
+}
+.btn-flotante-40 svg { width: 22px; height: 22px; display: block; }
+.btn-flotante-40 .icono-reproducir,
+.btn-flotante-40[data-estado="reproducir"] .icono-pausa,
+.btn-flotante-40 .icono-con-sonido,
+.btn-flotante-40[data-estado="con"] .icono-sin-sonido { display: none; }
+.btn-flotante-40[data-estado="reproducir"] .icono-reproducir,
+.btn-flotante-40[data-estado="con"] .icono-con-sonido { display: block; }
+.promesas {
+  margin: 96px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.promesa:last-child { border-bottom: 1px solid var(--filete); }
+.promesa {
+  display: grid;
+  gap: 8px;
+  padding: 28px 0 30px;
+  border-top: 1px solid var(--filete);
+}
+.promesa h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+.promesa p {
+  margin: 0;
+  color: var(--apagado);
+  font-size: 17px;
+  line-height: 1.5;
+  max-width: 30em;
+  text-wrap: pretty;
+}
+.para-quien {
+  margin: 0;
+  padding: 56px 0 0;
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1.35;
+  max-width: 30em;
+  text-wrap: pretty;
+}
+.disponible {
+  margin: 88px 0 0;
+  font-family: var(--serif);
+  font-size: 30px;
+  line-height: 1.2;
+}
+.pie {
+  margin-top: 96px;
+  padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  color: var(--apagado);
+  font-size: 15px;
+}
+.pie ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 0;
+  margin: 0;
+  padding: 24px 0 0;
+  border-top: 1px solid var(--filete);
+  list-style: none;
+}
+.pie li { display: flex; flex-wrap: nowrap; }
+.pie li span + span::before,
+.pie li + li::before {
+  content: "·";
+  padding: 0 0.6em;
+}
+.pie li + li { flex-basis: 100%; }
+.pie li + li::before { content: none; }
+.pie a { color: var(--letra); text-decoration: none; }
+.pie a:hover { text-decoration: underline; }
+.texto {
+  max-width: 36em;
+  padding-top: 48px;
+}
+.texto h1 {
+  margin: 0 0 28px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1.15;
+}
+.texto p,
+.texto li {
+  font-size: 18px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.texto p { margin: 0 0 18px; }
+.texto ul { margin: 0 0 18px; padding-left: 1.1em; }
+.texto li { margin-bottom: 10px; }
+.texto li::marker { color: var(--apagado); }
+.texto a { color: var(--letra); }
+@media (min-width: 720px) {
+  :root { --margen: 40px; }
+  .cabecera { padding-top: 36px; }
+  .marca svg { height: 38px; }
+  .frase { font-size: 48px; }
+  .apoyo { font-size: 20px; margin-top: 18px; }
+  .portada { gap: 40px; padding-top: 48px; }
+  .pantalla { max-width: 460px; height: max(420px, min(calc(100svh - 360px), 760px)); max-height: none; }
+  .promesa { grid-template-columns: 5fr 4fr; gap: 40px; padding: 36px 0 38px; }
+  .promesa h2 { font-size: 30px; }
+  .promesa p { font-size: 19px; padding-top: 4px; }
+  .para-quien { font-size: 30px; padding-top: 72px; }
+  .disponible { font-size: 38px; margin-top: 120px; }
+  .texto { padding-top: 72px; }
+  .pie li + li { flex-basis: auto; }
+  .pie li + li::before { content: "·"; }
+  .texto h1 { font-size: 44px; }
+}
+@media (min-width: 1000px) {
+  .portada {
+    grid-template-columns: minmax(0, 1fr) 440px;
+    align-items: center;
+    gap: 72px;
+    min-height: calc(100svh - 74px);
+    padding: 24px 0 48px;
   }
-  main { display: flex; flex-direction: column; align-items: center; gap: 40px; text-align: center; max-width: 36rem; }
-  .marca { width: min(64vw, 280px); height: auto; color: var(--letra); }
-  .marca circle { fill: var(--rojo); animation: latido 2.4s ease-in-out infinite; transform-origin: 313.53px 191.04px; }
-  @keyframes latido { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
-  h1 {
-    margin: 0;
-    font-family: "Source Serif 4", Georgia, serif;
-    font-weight: 400;
-    font-size: clamp(1.5rem, 5vw, 2.1rem);
-    line-height: 1.3;
-    text-wrap: balance;
-  }
-  p { margin: 0; color: var(--apagado); font-size: 1.05rem; letter-spacing: .02em; }
-  @media (prefers-reduced-motion: reduce) { .marca circle { animation: none; } }
+  .frase { font-size: clamp(52px, 5vw, 68px); }
+  .apoyo { font-size: 22px; }
+  .pantalla { height: min(calc(100svh - 150px), 780px); min-height: 540px; }
+  .promesas { margin-top: 72px; }
+}
 </style>
 </head>
 <body>
-<main>
-  <svg class="marca" viewBox="90 151.84 252 157.93" role="img" aria-label="Sigo, teleprompter">
-    <path d="M118.47 251.42L118.47 251.42Q109.86 251.42 102.25 249.44Q94.63 247.45 90 244.80L90 244.80L90.40 224.67L100.20 224.67L103.24 240.43Q106.29 241.76 109.60 242.55L109.60 242.55Q113.44 243.48 118.07 243.48L118.07 243.48Q124.43 243.48 128.53 241.69Q132.64 239.90 134.63 236.66Q136.61 233.41 136.61 229.44L136.61 229.44Q136.61 225.60 135.09 222.95Q133.57 220.30 130.32 218.25Q127.08 216.20 121.78 214.21L121.78 214.21L117.15 212.23Q109.60 209.18 103.77 205.54Q97.95 201.90 94.63 196.80Q91.32 191.70 91.32 184.15L91.32 184.15Q91.32 176.21 95.56 170.65Q99.80 165.08 107.08 162.17Q114.37 159.26 123.64 159.26L123.64 159.26Q131.71 159.26 138.07 161.11Q144.43 162.96 148.27 165.48L148.27 165.48L147.74 184.42L138.20 184.42L135.16 169.32Q134.63 169.06 134.23 168.92L134.23 168.92Q129.73 167.07 123.90 167.07L123.90 167.07Q118.87 167.07 115.29 168.73Q111.72 170.38 109.73 173.29Q107.74 176.21 107.74 180.05L107.74 180.05Q107.74 183.76 109.33 186.40Q110.92 189.05 114.17 191.10Q117.41 193.16 122.31 195.14L122.31 195.14L127.21 197.13Q135.42 200.44 141.25 204.15Q147.07 207.86 150.12 212.89Q153.17 217.92 153.17 225.20L153.17 225.20Q153.17 233.28 148.86 239.17Q144.56 245.07 136.81 248.24Q129.06 251.42 118.47 251.42ZM198.85 249.30L163.63 249.30L163.63 242.29L172.90 241.36Q172.90 240.96 173.03 240.43L173.03 240.43Q173.03 235.53 173.03 230.37L173.03 230.37L173.03 205.21Q173.03 201.23 172.90 197.13L172.90 197.13L162.83 196.47L162.83 190.11L185.61 182.83L189.85 183.49L189.71 200.84L189.71 230.37Q189.71 235.53 189.85 240.43L189.85 240.43Q189.85 240.96 189.85 241.49L189.85 241.49L198.85 242.29L198.85 249.30ZM180.97 171.44L180.97 171.44Q176.74 171.44 173.76 168.59Q170.78 165.75 170.78 161.64L170.78 161.64Q170.78 157.40 173.76 154.62Q176.74 151.84 180.97 151.84L180.97 151.84Q185.34 151.84 188.26 154.62Q191.17 157.40 191.17 161.64L191.17 161.64Q191.17 165.75 188.26 168.59Q185.34 171.44 180.97 171.44ZM235.93 280.16L235.93 280.16Q226.26 280.16 219.77 278.11Q213.29 276.05 210.04 272.48Q206.80 268.90 206.80 264.27L206.80 264.27Q206.80 260.43 208.92 257.51Q211.03 254.60 215.40 252.48L215.40 252.48Q218.32 251.16 222.29 249.97L222.29 249.97L222.29 248.38Q216.86 247.45 213.68 245.00Q210.50 242.55 210.50 237.78L210.50 237.78Q210.50 233.28 213.68 230.17Q216.86 227.06 222.69 224.54L222.69 224.54L222.69 223.48Q222.55 223.48 222.55 223.48L222.55 223.48Q216.46 220.83 213.09 215.93Q209.71 211.03 209.71 204.15L209.71 204.15Q209.71 197.53 213.09 192.50Q216.46 187.46 222.55 184.75Q228.65 182.03 236.86 182.03L236.86 182.03Q242.68 182.03 247.05 183.29Q251.42 184.55 254.47 186.80L254.47 186.80Q256.72 188.65 258.18 190.64L258.18 190.64L258.97 190.64L271.15 181.24L275.79 181.90L275.79 194.88L262.15 194.88Q262.81 196.07 263.21 197.39L263.21 197.39Q264.14 200.31 264.14 203.88L264.14 203.88Q264.14 210.64 260.83 215.60Q257.51 220.57 251.49 223.35Q245.46 226.13 236.99 226.13L236.99 226.13Q231.29 226.13 226.53 224.94L226.53 224.94Q225.73 225.73 225.20 226.53L225.20 226.53Q223.88 228.51 223.88 231.16L223.88 231.16Q223.88 234.21 226.06 235.86Q228.25 237.52 233.28 237.52L233.28 237.52L249.83 237.52Q258.18 237.52 263.54 239.84Q268.90 242.15 271.42 246.19Q273.93 250.23 273.93 255.53L273.93 255.53Q273.93 260.69 271.09 265.19Q268.24 269.70 263.14 273.07Q258.04 276.45 251.09 278.30Q244.14 280.16 235.93 280.16ZM225.60 251.42L225.60 251.42Q224.67 252.35 223.88 253.28L223.88 253.28Q222.42 255.13 221.63 257.18Q220.83 259.24 220.83 261.75L220.83 261.75Q220.83 264.93 222.69 267.45Q224.54 269.96 228.38 271.35Q232.22 272.74 238.45 272.74L238.45 272.74Q245.46 272.74 250.23 271.09Q255.00 269.43 257.45 266.65Q259.90 263.87 259.90 260.43L259.90 260.43Q259.90 256.46 257.12 254.01Q254.34 251.56 248.24 251.56L248.24 251.56L231.16 251.56Q228.65 251.56 226.53 251.42L226.53 251.42Q226.00 251.42 225.60 251.42ZM236.99 219.38L236.99 219.38Q240.70 219.38 243.35 217.52Q245.99 215.67 247.32 212.16Q248.64 208.65 248.64 203.88Q248.64 199.12 247.32 195.67Q245.99 192.23 243.41 190.44Q240.83 188.65 237.12 188.65L237.12 188.65Q233.55 188.65 230.90 190.51Q228.25 192.36 226.92 195.81Q225.60 199.25 225.60 204.02Q225.60 208.78 226.92 212.23Q228.25 215.67 230.77 217.52Q233.28 219.38 236.99 219.38Z" fill="currentColor"/>
-    <circle cx="313.53" cy="191.04" r="28.47"/>
-    <path d="M125.32 309.54L123.42 309.54L123.42 298.71L119.74 298.71L119.74 297.10L128.99 297.10L128.99 298.71L125.32 298.71L125.32 309.54ZM144.36 309.54L136.84 309.54L136.84 297.10L144.17 297.10L144.17 298.69L138.74 298.69L138.74 302.24L143.33 302.24L143.33 303.84L138.74 303.84L138.74 307.94L144.36 307.94L144.36 309.54ZM159.85 309.54L152.64 309.54L152.64 297.10L154.54 297.10L154.54 307.93L159.85 307.93L159.85 309.54ZM175.25 309.54L167.73 309.54L167.73 297.10L175.06 297.10L175.06 298.69L169.63 298.69L169.63 302.24L174.23 302.24L174.23 303.84L169.63 303.84L169.63 307.94L175.25 307.94L175.25 309.54ZM185.44 309.54L183.54 309.54L183.54 297.10L187.28 297.10Q188.67 297.10 189.74 297.45Q190.82 297.80 191.42 298.62Q192.03 299.45 192.03 300.84L192.03 300.84Q192.03 302.19 191.43 303.06Q190.83 303.94 189.77 304.36Q188.71 304.79 187.36 304.79L187.36 304.79L185.44 304.79L185.44 309.54ZM185.44 298.62L185.44 303.25L187.17 303.25Q188.69 303.25 189.42 302.66Q190.15 302.07 190.15 300.84L190.15 300.84Q190.15 299.58 189.38 299.10Q188.61 298.62 187.09 298.62L187.09 298.62L185.44 298.62ZM202.04 309.54L200.14 309.54L200.14 297.10L204.19 297.10Q205.48 297.10 206.49 297.43Q207.50 297.76 208.09 298.56Q208.68 299.36 208.68 300.69L208.68 300.69Q208.68 301.98 208.09 302.81Q207.50 303.65 206.49 304.07L206.49 304.07Q206.26 304.16 206.03 304.24L206.03 304.24L209.09 309.54L206.97 309.54L204.12 304.49L202.04 304.49L202.04 309.54ZM202.04 298.62L202.04 302.95L203.96 302.95Q205.35 302.95 206.07 302.39Q206.79 301.83 206.79 300.69Q206.79 299.55 206.07 299.08Q205.35 298.62 203.96 298.62L203.96 298.62L202.04 298.62ZM221.61 309.77L221.61 309.77Q220.02 309.77 218.80 308.98Q217.59 308.19 216.89 306.73Q216.20 305.27 216.20 303.27L216.20 303.27Q216.20 301.26 216.89 299.82Q217.59 298.39 218.80 297.63Q220.02 296.87 221.61 296.87L221.61 296.87Q223.21 296.87 224.43 297.63Q225.64 298.39 226.34 299.82Q227.03 301.26 227.03 303.27L227.03 303.27Q227.03 305.27 226.34 306.73Q225.64 308.19 224.43 308.98Q223.21 309.77 221.61 309.77ZM221.61 308.10L221.61 308.10Q222.66 308.10 223.43 307.51Q224.20 306.92 224.63 305.83Q225.05 304.73 225.05 303.27L225.05 303.27Q225.05 301.79 224.63 300.73Q224.20 299.68 223.43 299.10Q222.66 298.52 221.61 298.52L221.61 298.52Q220.57 298.52 219.79 299.10Q219.01 299.68 218.58 300.73Q218.16 301.79 218.16 303.27L218.16 303.27Q218.16 304.73 218.58 305.83Q219.01 306.92 219.79 307.51Q220.57 308.10 221.61 308.10ZM237.02 309.54L235.29 309.54L235.29 297.10L237.63 297.10L239.85 303.46Q240.08 304.07 240.27 304.68Q240.46 305.28 240.63 305.97L240.63 305.97L240.71 305.97Q240.90 305.28 241.08 304.68Q241.26 304.07 241.45 303.46L241.45 303.46L243.69 297.10L246.01 297.10L246.01 309.54L244.24 309.54L244.24 303.29Q244.24 302.72 244.28 302.00Q244.32 301.28 244.39 300.56Q244.45 299.85 244.53 299.28L244.53 299.28L244.45 299.28L243.46 302.38L241.30 308.34L239.97 308.34L237.80 302.38L236.83 299.28L236.76 299.28Q236.83 299.85 236.89 300.56Q236.95 301.28 236.99 302.00Q237.02 302.72 237.02 303.29L237.02 303.29L237.02 309.54ZM256.88 309.54L254.98 309.54L254.98 297.10L258.72 297.10Q260.11 297.10 261.18 297.45Q262.26 297.80 262.86 298.62Q263.47 299.45 263.47 300.84L263.47 300.84Q263.47 302.19 262.87 303.06Q262.27 303.94 261.21 304.36Q260.15 304.79 258.80 304.79L258.80 304.79L256.88 304.79L256.88 309.54ZM256.88 298.62L256.88 303.25L258.61 303.25Q260.13 303.25 260.86 302.66Q261.59 302.07 261.59 300.84L261.59 300.84Q261.59 299.58 260.82 299.10Q260.05 298.62 258.53 298.62L258.53 298.62L256.88 298.62ZM276.05 309.54L274.15 309.54L274.15 298.71L270.46 298.71L270.46 297.10L279.72 297.10L279.72 298.71L276.05 298.71L276.05 309.54ZM295.09 309.54L287.56 309.54L287.56 297.10L294.90 297.10L294.90 298.69L289.46 298.69L289.46 302.24L294.06 302.24L294.06 303.84L289.46 303.84L289.46 307.94L295.09 307.94L295.09 309.54ZM305.27 309.54L303.37 309.54L303.37 297.10L307.42 297.10Q308.71 297.10 309.72 297.43Q310.72 297.76 311.31 298.56Q311.90 299.36 311.90 300.69L311.90 300.69Q311.90 301.98 311.31 302.81Q310.72 303.65 309.72 304.07L309.72 304.07Q309.49 304.16 309.26 304.24L309.26 304.24L312.32 309.54L310.19 309.54L307.34 304.49L305.27 304.49L305.27 309.54ZM305.27 298.62L305.27 302.95L307.19 302.95Q308.58 302.95 309.30 302.39Q310.02 301.83 310.02 300.69Q310.02 299.55 309.30 299.08Q308.58 298.62 307.19 298.62L307.19 298.62L305.27 298.62Z" fill="currentColor" opacity=".7"/>
-  </svg>
-  <h1>El teleprompter que sigue tu voz.</h1>
-  <p>Pronto en Google Play.</p>
+<header class="cabecera envoltura">
+  <span class="marca"><svg viewBox="90 151.84 252 128.32" role="img" aria-label="Sigo"><path d="M118.47 251.42L118.47 251.42Q109.86 251.42 102.25 249.44Q94.63 247.45 90 244.80L90 244.80L90.40 224.67L100.20 224.67L103.24 240.43Q106.29 241.76 109.60 242.55L109.60 242.55Q113.44 243.48 118.07 243.48L118.07 243.48Q124.43 243.48 128.53 241.69Q132.64 239.90 134.63 236.66Q136.61 233.41 136.61 229.44L136.61 229.44Q136.61 225.60 135.09 222.95Q133.57 220.30 130.32 218.25Q127.08 216.20 121.78 214.21L121.78 214.21L117.15 212.23Q109.60 209.18 103.77 205.54Q97.95 201.90 94.63 196.80Q91.32 191.70 91.32 184.15L91.32 184.15Q91.32 176.21 95.56 170.65Q99.80 165.08 107.08 162.17Q114.37 159.26 123.64 159.26L123.64 159.26Q131.71 159.26 138.07 161.11Q144.43 162.96 148.27 165.48L148.27 165.48L147.74 184.42L138.20 184.42L135.16 169.32Q134.63 169.06 134.23 168.92L134.23 168.92Q129.73 167.07 123.90 167.07L123.90 167.07Q118.87 167.07 115.29 168.73Q111.72 170.38 109.73 173.29Q107.74 176.21 107.74 180.05L107.74 180.05Q107.74 183.76 109.33 186.40Q110.92 189.05 114.17 191.10Q117.41 193.16 122.31 195.14L122.31 195.14L127.21 197.13Q135.42 200.44 141.25 204.15Q147.07 207.86 150.12 212.89Q153.17 217.92 153.17 225.20L153.17 225.20Q153.17 233.28 148.86 239.17Q144.56 245.07 136.81 248.24Q129.06 251.42 118.47 251.42ZM198.85 249.30L163.63 249.30L163.63 242.29L172.90 241.36Q172.90 240.96 173.03 240.43L173.03 240.43Q173.03 235.53 173.03 230.37L173.03 230.37L173.03 205.21Q173.03 201.23 172.90 197.13L172.90 197.13L162.83 196.47L162.83 190.11L185.61 182.83L189.85 183.49L189.71 200.84L189.71 230.37Q189.71 235.53 189.85 240.43L189.85 240.43Q189.85 240.96 189.85 241.49L189.85 241.49L198.85 242.29L198.85 249.30ZM180.97 171.44L180.97 171.44Q176.74 171.44 173.76 168.59Q170.78 165.75 170.78 161.64L170.78 161.64Q170.78 157.40 173.76 154.62Q176.74 151.84 180.97 151.84L180.97 151.84Q185.34 151.84 188.26 154.62Q191.17 157.40 191.17 161.64L191.17 161.64Q191.17 165.75 188.26 168.59Q185.34 171.44 180.97 171.44ZM235.93 280.16L235.93 280.16Q226.26 280.16 219.77 278.11Q213.29 276.05 210.04 272.48Q206.80 268.90 206.80 264.27L206.80 264.27Q206.80 260.43 208.92 257.51Q211.03 254.60 215.40 252.48L215.40 252.48Q218.32 251.16 222.29 249.97L222.29 249.97L222.29 248.38Q216.86 247.45 213.68 245.00Q210.50 242.55 210.50 237.78L210.50 237.78Q210.50 233.28 213.68 230.17Q216.86 227.06 222.69 224.54L222.69 224.54L222.69 223.48Q222.55 223.48 222.55 223.48L222.55 223.48Q216.46 220.83 213.09 215.93Q209.71 211.03 209.71 204.15L209.71 204.15Q209.71 197.53 213.09 192.50Q216.46 187.46 222.55 184.75Q228.65 182.03 236.86 182.03L236.86 182.03Q242.68 182.03 247.05 183.29Q251.42 184.55 254.47 186.80L254.47 186.80Q256.72 188.65 258.18 190.64L258.18 190.64L258.97 190.64L271.15 181.24L275.79 181.90L275.79 194.88L262.15 194.88Q262.81 196.07 263.21 197.39L263.21 197.39Q264.14 200.31 264.14 203.88L264.14 203.88Q264.14 210.64 260.83 215.60Q257.51 220.57 251.49 223.35Q245.46 226.13 236.99 226.13L236.99 226.13Q231.29 226.13 226.53 224.94L226.53 224.94Q225.73 225.73 225.20 226.53L225.20 226.53Q223.88 228.51 223.88 231.16L223.88 231.16Q223.88 234.21 226.06 235.86Q228.25 237.52 233.28 237.52L233.28 237.52L249.83 237.52Q258.18 237.52 263.54 239.84Q268.90 242.15 271.42 246.19Q273.93 250.23 273.93 255.53L273.93 255.53Q273.93 260.69 271.09 265.19Q268.24 269.70 263.14 273.07Q258.04 276.45 251.09 278.30Q244.14 280.16 235.93 280.16ZM225.60 251.42L225.60 251.42Q224.67 252.35 223.88 253.28L223.88 253.28Q222.42 255.13 221.63 257.18Q220.83 259.24 220.83 261.75L220.83 261.75Q220.83 264.93 222.69 267.45Q224.54 269.96 228.38 271.35Q232.22 272.74 238.45 272.74L238.45 272.74Q245.46 272.74 250.23 271.09Q255.00 269.43 257.45 266.65Q259.90 263.87 259.90 260.43L259.90 260.43Q259.90 256.46 257.12 254.01Q254.34 251.56 248.24 251.56L248.24 251.56L231.16 251.56Q228.65 251.56 226.53 251.42L226.53 251.42Q226.00 251.42 225.60 251.42ZM236.99 219.38L236.99 219.38Q240.70 219.38 243.35 217.52Q245.99 215.67 247.32 212.16Q248.64 208.65 248.64 203.88Q248.64 199.12 247.32 195.67Q245.99 192.23 243.41 190.44Q240.83 188.65 237.12 188.65L237.12 188.65Q233.55 188.65 230.90 190.51Q228.25 192.36 226.92 195.81Q225.60 199.25 225.60 204.02Q225.60 208.78 226.92 212.23Q228.25 215.67 230.77 217.52Q233.28 219.38 236.99 219.38Z" fill="currentColor"/><circle cx="313.53" cy="191.04" r="28.47"/></svg></span>
+</header>
+<main class="envoltura">
+  <section class="portada">
+    <div class="portada-texto">
+      <h1 class="frase">El teleprompter que sigue tu voz.</h1>
+      <p class="apoyo">Lees en voz alta y el texto avanza contigo. Si quieres, te graba mientras.</p>
+    </div>
+    <figure class="demo" id="demo">
+      <figcaption class="solo-lector">La pantalla de lectura de Sigo siguiendo una lectura real: el texto sube y una línea marca las palabras que se están diciendo.</figcaption>
+      <div class="pantalla">
+        <div class="lienzo serif" style="--letra-lectura:18px;--margen:5%" aria-hidden="true">
+          <div class="banda-lectura"></div>
+          <div class="velo-lectura"></div>
+          <div class="contenedor-lectura">
+            <div class="capa-destacado"></div>
+            <div class="columna-texto"><div class="block-container"><div class="line"><span data-token="0">Hay</span> <span data-token="1">una</span> <span data-token="2">idea</span> <span data-token="3">antigua</span> <span data-token="4">que</span> <span data-token="5">podríamos</span> <span data-token="6">llamar</span> <span data-token="7">la</span> <span data-token="8">concepción</span> <span data-token="9">trágica</span> <span data-token="10">de</span> <span data-token="11">la</span> <span data-token="12">naturaleza</span> <span data-token="13">humana.</span> <span data-token="14">No</span> <span data-token="15">dice</span> <span data-token="16">solo</span> <span data-token="17">que</span> <span data-token="18">a</span> <span data-token="19">veces</span> <span data-token="20">somos</span> <span data-token="21">egoístas</span> <span data-token="22">o</span> <span data-token="23">crueles.</span> <span data-token="24">Dice</span> <span data-token="25">que</span> <span data-token="26">hay</span> <span data-token="27">un</span> <span data-token="28">límite</span> <span data-token="29">que</span> <span data-token="30">nunca</span> <span data-token="31">vamos</span> <span data-token="32">a</span> <span data-token="33">poder</span> <span data-token="34">superar.</span> <span data-token="35">Sin</span> <span data-token="36">importar</span> <span data-token="37">qué</span> <span data-token="38">tan</span> <span data-token="39">buena</span> <span data-token="40">sea</span> <span data-token="41">nuestra</span> <span data-token="42">formación,</span> <span data-token="43">o</span> <span data-token="44">las</span> <span data-token="45">leyes</span> <span data-token="46">o</span> <span data-token="47">las</span> <span data-token="48">circunstancias,</span> <span data-token="49">y</span> <span data-token="50">este</span> <span data-token="51">límite</span> <span data-token="52">es</span> <span data-token="53">el</span> <span data-token="54">interés</span> <span data-token="55">propio,</span> <span data-token="56">y</span> <span data-token="57">se</span> <span data-token="58">expresa</span> <span data-token="59">en</span> <span data-token="60">las</span> <span data-token="61">ganas</span> <span data-token="62">de</span> <span data-token="63">estatus,</span> <span data-token="64">de</span> <span data-token="65">aparentar</span> <span data-token="66">o</span> <span data-token="67">de</span> <span data-token="68">engañarnos</span> <span data-token="69">solos.</span> <span data-token="70">Esta</span> <span data-token="71">idea</span> <span data-token="72">dice</span> <span data-token="73">que</span> <span data-token="74">somos</span> <span data-token="75">así</span> <span data-token="76">y</span> <span data-token="77">ninguna</span> <span data-token="78">reforma</span> <span data-token="79">o</span> <span data-token="80">método</span> <span data-token="81">educativo</span> <span data-token="82">o</span> <span data-token="83">entorno</span> <span data-token="84">familiar</span> <span data-token="85">lo</span> <span data-token="86">va</span> <span data-token="87">a</span> <span data-token="88">poder</span> <span data-token="89">cambiar.</span> <span data-token="90">Somos</span> <span data-token="91">lo</span> <span data-token="92">que</span> <span data-token="93">somos.</span></div><div class="line"><span data-token="94">Cuando</span> <span data-token="95">alguien</span> <span data-token="96">toma</span> <span data-token="97">en</span> <span data-token="98">serio</span> <span data-token="99">esta</span> <span data-token="100">idea,</span> <span data-token="101">casi</span> <span data-token="102">siempre</span> <span data-token="103">da</span> <span data-token="104">un</span> <span data-token="105">paso</span> <span data-token="106">más.</span> <span data-token="107">Dice:</span> <span data-token="108">si</span> <span data-token="109">estamos</span> <span data-token="110">llenos</span> <span data-token="111">de</span> <span data-token="112">sesgos,</span> <span data-token="113">prejuicios</span> <span data-token="114">y</span> <span data-token="115">egoísmos,</span> <span data-token="116">entonces</span> <span data-token="117">estamos</span> <span data-token="118">en</span> <span data-token="119">general</span> <span data-token="120">contaminados.</span> <span data-token="121">Y</span> <span data-token="122">si</span> <span data-token="123">es</span> <span data-token="124">asi,</span> <span data-token="125">todo</span> <span data-token="126">proyecto</span> <span data-token="127">de</span> <span data-token="128">mejora</span> <span data-token="129">en</span> <span data-token="130">la</span> <span data-token="131">política,</span> <span data-token="132">la</span> <span data-token="133">ciencia</span> <span data-token="134">o</span> <span data-token="135">las</span> <span data-token="136">instituciones</span> <span data-token="137">es,</span> <span data-token="138">en</span> <span data-token="139">buena</span> <span data-token="140">parte,</span> <span data-token="141">un</span> <span data-token="142">derroche</span> <span data-token="143">de</span> <span data-token="144">tiempo,</span> <span data-token="145">de</span> <span data-token="146">recursos.</span> <span data-token="147">Este</span> <span data-token="148">razonamiento,</span> <span data-token="149">logico,</span> <span data-token="150">es</span> <span data-token="151">la</span> <span data-token="152">explicación</span> <span data-token="153">favorita</span> <span data-token="154">de</span> <span data-token="155">la</span> <span data-token="156">desconfianza</span> <span data-token="157">que</span> <span data-token="158">vemos</span> <span data-token="159">hoy</span> <span data-token="160">hacia</span> <span data-token="161">la</span> <span data-token="162">política,</span> <span data-token="163">aquí</span> <span data-token="164">en</span> <span data-token="165">Chile</span> <span data-token="166">y</span> <span data-token="167">en</span> <span data-token="168">el</span> <span data-token="169">mundo:</span> <span data-token="170">si</span> <span data-token="171">los</span> <span data-token="172">políticos</span> <span data-token="173">son</span> <span data-token="174">así</span> <span data-token="175">por</span> <span data-token="176">naturaleza</span> <span data-token="177">—y</span> <span data-token="178">sobran</span> <span data-token="179">los</span> <span data-token="180">ejemplos—,</span> <span data-token="181">¿para</span> <span data-token="182">qué</span> <span data-token="183">confiar</span> <span data-token="184">en</span> <span data-token="185">reformas,</span> <span data-token="186">instituciones,</span> <span data-token="187">partidos?</span> <span data-token="188">de</span> <span data-token="189">todas</span> <span data-token="190">formas</span> <span data-token="191">parece</span> <span data-token="192">que</span> <span data-token="193">estamos</span> <span data-token="194">condenados</span> <span data-token="195">a</span> <span data-token="196">repetir</span> <span data-token="197">lo</span> <span data-token="198">que</span> <span data-token="199">somos</span> <span data-token="200">en</span> <span data-token="201">todo</span> <span data-token="202">lo</span> <span data-token="203">que</span> <span data-token="204">hacemos.</span> <span data-token="205">hablemos</span> <span data-token="206">de</span> <span data-token="207">un</span> <span data-token="208">subsecretario</span> <span data-token="209">o</span> <span data-token="210">del</span> <span data-token="211">tesorero</span> <span data-token="212">del</span> <span data-token="213">colegio.</span></div></div></div>
+          </div>
+        </div>
+        <div class="controles">
+          
+          <button type="button" class="btn-flotante-40" data-control="pausa" data-estado="pausa" aria-label="Pausar la demostración">
+            <svg class="icono-pausa" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg>
+            <svg class="icono-reproducir" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+      </div>
+    </figure>
+  </section>
+
+  <ul class="promesas">
+    <li class="promesa">
+      <h2>Sigue tu voz, no un reloj.</h2>
+      <p>Si te detienes a pensar, el texto te espera.</p>
+    </li>
+    <li class="promesa">
+      <h2>Funciona sin internet.</h2>
+      <p>Tu voz no sale del teléfono.</p>
+    </li>
+    <li class="promesa">
+      <h2>Grábate mirando a la cámara.</h2>
+      <p>El texto queda bajo el lente; al terminar, subtítulos que salen de tu guion.</p>
+    </li>
+  </ul>
+
+  <p class="para-quien">Clases, charlas, cursos, videos, entrevistas: Sigo es para todo el que lee en voz alta, no solo para videos cortos.</p>
+
+  <p class="disponible">Pronto en Google Play.</p>
 </main>
+<footer class="pie envoltura">
+  <ul>
+    <li><span><a href="/privacidad">Privacidad</a></span><span><a href="/soporte">Soporte</a></span></li>
+    <li><span><a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></span><span>© Sigo</span></li>
+  </ul>
+</footer>
+<script type="application/json" id="demo-datos">{"hastaMs":14150,"palabrasDestacadas":6,"cuadros":[[0,0],[1808,1],[1968,2],[2160,3],[2448,4],[2752,5],[3088,6],[3472,7],[5648,8],[5888,9],[6096,10],[6368,11],[6688,12],[7024,13],[7984,14],[8272,15],[8592,16],[8784,17],[8992,18],[9248,19],[9536,20],[9856,21],[10112,22],[10368,23],[10752,24],[11728,25],[11936,26],[12144,27],[12416,28],[12752,29],[13120,30],[13408,31],[13632,32],[13840,33],[14064,34]]}</script>
+<script>
+(function(){"use strict";function H(){const m=document.getElementById("demo"),Q=document.getElementById("demo-datos");if(!m||!Q)return;const R=JSON.parse(Q.textContent),p=m.querySelector(".pantalla"),C=m.querySelector(".lienzo"),h=m.querySelector(".contenedor-lectura"),ne=m.querySelector(".capa-destacado"),T=m.querySelector('[data-control="pausa"]'),x=m.querySelector('[data-control="sonido"]'),f=m.querySelector("audio"),y=R.cuadros,F=R.hastaMs,l=Array.from(h.querySelectorAll("[data-token]")),q=window.matchMedia?window.matchMedia("(prefers-reduced-motion: reduce)"):{matches:!1};let M=1,b=null,B="",O=[],s=-900,S=null,g=!1,j=!1,N=!1,D=!1,u="lectura",z=0,_=!1,r=!1,E=0;function V(){const e=p.clientWidth,o=p.clientHeight-parseFloat(getComputedStyle(p).paddingTop);if(!e||o<=0||!l.length)return!1;M=e/C.offsetWidth;const a=o/M;return C.style.height=`${a}px`,C.style.transform=M===1?"none":`scale(${M})`,h.style.paddingBottom=`${Math.max(0,a-l[l.length-1].offsetHeight)}px`,b=null,B="",!0}function oe(e){if(e<y[0][0])return y[0];let o=0,a=y.length-1;for(;o<a;){const i=o+a+1>>1;y[i][0]<=e?o=i:a=i-1}return y[o]}function ae(){const e=F*.62;for(const o of y)if(o[0]>=e)return o[0];return y[y.length-1][0]}function J(e,o,a){const i=oe(e)[1],t=Math.min(l.length,i+R.palabrasDestacadas),c=Math.max(0,l[Math.min(i,l.length-1)].offsetTop);a||b===null?b={desde:c,hasta:c,t0:o}:c!==b.hasta&&(b={desde:h.scrollTop,hasta:c,t0:o});const n=Math.min(1,(o-b.t0)/320),d=1-Math.pow(1-n,3);h.scrollTop=b.desde+(b.hasta-b.desde)*d;const w=`${i}|${t}`;w===B&&!a||(B=w,se(ie(i,t),a))}function ie(e,o){const a=h.getBoundingClientRect(),i=[];let t=e;for(;t<o&&t<l.length;){const c=l[t].parentNode;let n=t;for(;n+1<o&&n+1<l.length&&l[n+1].parentNode===c;)n++;const d=document.createElement("span");c.insertBefore(d,l[t]);let w=l[t];for(;w;){const v=w.nextSibling;if(d.appendChild(w),w===l[n])break;w=v}for(const v of d.getClientRects()){if(!v.width)continue;const W=(v.left-a.left)/M,G=(v.right-a.left)/M,ee=(v.top-a.top)/M+h.scrollTop,te=v.height/M,A=i.find(k=>Math.abs(k.arriba-ee)<te/2);if(A){const k=Math.max(A.izquierda+A.ancho,G);A.izquierda=Math.min(A.izquierda,W),A.ancho=k-A.izquierda}else i.push({izquierda:W,arriba:ee,ancho:G-W,alto:te})}for(;d.firstChild;)c.insertBefore(d.firstChild,d);d.remove(),t=n+1}return i}function se(e,o){const a=o||q.matches?"none":"left 240ms cubic-bezier(0.2, 0.8, 0.2, 1), top 240ms cubic-bezier(0.2, 0.8, 0.2, 1), width 240ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 200ms ease",i=[];for(const t of e){const c=Math.round(t.arriba);let n=O.find(d=>d.renglon===c&&!i.includes(d));n||(n={el:document.createElement("div"),renglon:c},n.el.className="linea-destacado",n.el.style.transition="none",n.el.style.left=`${t.izquierda}px`,n.el.style.top=`${t.arriba+t.alto}px`,n.el.style.width="0px",n.el.style.opacity="0",ne.appendChild(n.el),n.el.offsetWidth),n.el.style.transition=a,n.el.style.left=`${t.izquierda}px`,n.el.style.top=`${t.arriba+t.alto}px`,n.el.style.width=`${t.ancho}px`,n.el.style.opacity="1",i.push(n)}for(const t of O){if(i.includes(t))continue;if(a==="none"){t.el.remove();continue}const c=parseFloat(t.el.style.left)||0,n=parseFloat(t.el.style.width)||0;t.el.style.transition=a,t.el.style.left=`${c+n}px`,t.el.style.width="0px",t.el.style.opacity="0",setTimeout(()=>t.el.remove(),300)}O=i}function I(e){J(e,performance.now(),!0)}function le(e){return r&&u==="lectura"&&!f.paused?f.currentTime*1e3:(S===null&&(S=e-s),e-S)}function K(e){if(E=0,!!g){if(u==="lectura")s=le(e),s>=F&&(s=F,r&&f.pause(),u="final",z=e),J(s,e,!1);else if(u==="final"){if(_){U();return}e-z>=2800&&(u="fundido",z=e,h.style.opacity="0")}else u==="fundido"&&e-z>=450&&(s=r?0:-900,S=null,I(s),h.style.opacity="1",u="lectura",r&&P(0));E=requestAnimationFrame(K)}}function L(){!j||g||N||D||(g=!0,S=null,r&&u==="lectura"&&s>=0&&P(s),E=requestAnimationFrame(K),$())}function U(){g=!1,E&&cancelAnimationFrame(E),E=0,f&&!f.paused&&f.pause(),$()}function P(e){f.currentTime=Math.max(0,e)/1e3;const o=f.play();o&&o.catch&&o.catch(a=>{console.warn(`Sigo, demostracion: el audio no pudo sonar (${a&&a.name}). Sigue sin sonido.`),r=!1,S=null,$()})}function $(){T.dataset.estado=g?"pausa":"reproducir",T.setAttribute("aria-label",g?"Pausar la demostración":"Reproducir la demostración"),x&&(x.dataset.estado=r?"con":"sin",x.setAttribute("aria-pressed",r?"true":"false"),x.setAttribute("aria-label",r?"Quitar el sonido":"Escuchar la lectura"))}T.addEventListener("click",()=>{if(g){N=!0,U();return}N=!1,q.matches?(_=!0,u="lectura",s=r?0:-900,I(s)):u!=="lectura"&&(z=performance.now()),L()}),x&&f&&x.addEventListener("click",()=>{if(r){r=!1,f.pause(),S=null,$();return}r=!0,N=!1,_=q.matches,u="lectura",s=0,S=null,h.style.opacity="1",I(0),P(0),g||L(),$()});let X=!0;function Y(){D=!(X&&!document.hidden),D?g&&U():(!q.matches||_)&&L()}"IntersectionObserver"in window&&new IntersectionObserver(e=>{X=e[e.length-1].isIntersecting,Y()}).observe(p),document.addEventListener("visibilitychange",Y);function Z(){if(!V()){console.warn(`Sigo, demostracion: la pantalla mide ${p.clientWidth} x ${p.clientHeight} px y tiene ${l.length} palabras. No se reproduce.`);return}if(m.dataset.lista="si",j=!0,q.matches){s=ae(),I(s),u="final",$();return}I(s),L()}if("ResizeObserver"in window){let e="";new ResizeObserver(()=>{const o=`${p.clientWidth}x${p.clientHeight}`;if(o===e)return;const a=e==="";e=o,!a&&j&&V()&&I(Math.max(s,y[0][0]))}).observe(p)}(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(Z,Z)}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",H):H()})();
+</script>
 </body>
 </html>
