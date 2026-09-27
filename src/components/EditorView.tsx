@@ -756,7 +756,7 @@ export default function EditorView({
               {([
                 { color: 'ambar' as const, titulo: 'Ámbar', testid: 'btn-color-ambar' },
                 { color: 'celeste' as const, titulo: 'Celeste', testid: undefined },
-                { color: 'salvia' as const, titulo: 'Salvia', testid: undefined }
+                { color: 'salvia' as const, titulo: 'Verde', testid: undefined }
               ]).map((c) => (
                 <button
                   key={c.color}

@@ -119,11 +119,16 @@ export function bloqueDeBienvenida(): Bloque {
     '',
     'Lo que escribes entre corchetes es una nota solo para ti. Se ve en la pantalla, pero no hace falta leerla en voz alta. [Como esta: respira y sonríe.]',
     '',
-    'Tu guion también puede ayudarte a leer mejor. Marca en negrita lo que quieres decir con más fuerza. Pinta palabras en ámbar, en celeste o en verde salvia para distinguir ideas o cambios de tono. Y usa el destacado amarillo para lo que no se te puede pasar. Basta con seleccionar el texto en el editor y elegir.',
+    'Tu guion también puede ayudarte a leer mejor. Marca en negrita lo que quieres decir con más fuerza. Pinta palabras en ámbar, en celeste o en verde para distinguir ideas o cambios de tono. Y usa el destacado amarillo para lo que no se te puede pasar. Basta con seleccionar el texto en el editor y elegir.',
     '',
     'En el botón Aa eliges el tamaño de la letra, la tipografía, el ancho de la columna y los colores de la pantalla. Déjalo como te resulte más cómodo.',
     '',
     'Cuando quieras grabarte, toca Grabar. La cámara filma mientras lees, y el texto queda justo bajo el lente, para que tu mirada vaya a la cámara y no a la pantalla. Puedes verte a pantalla completa, detrás del texto, o en un recuadro pequeño. Así sabes cómo te están viendo, sin perder la comodidad para leer.',
+    '',
+    // SUBTITULOS -26-09-2026, Javier-: el Hola tenia que contarlos antes de la grabacion de
+    // prueba. Salen del guion con los tiempos de la voz -lib/subtitulos.ts- y se guardan como se
+    // ven -una sola copia en la galeria-.
+    'Al terminar, tu video puede llevar subtítulos. Salen de tu guion, al ritmo de tu voz. Elige el estilo que más te guste y guárdalo en tu galería tal como lo ves.',
     '',
     'Te acompaña para darte la comodidad y la tranquilidad que necesitas. Queremos que toda tu concentración esté donde debe estar. No tienes que memorizar. No tienes que apurarte para alcanzar el texto. Puedes transmitir la emoción que quieras, en el momento que quieras.',
     '',
@@ -131,9 +136,9 @@ export function bloqueDeBienvenida(): Bloque {
     '',
     'Cuando termines, borra esto y escribe tu propio guion, o pega uno que ya tengas.',
     '',
-    // CORREO PROVISORIO -24-09-2026-: Javier pidio uno ficticio mientras tanto. Cambiarlo por
-    // el de verdad antes de publicar.
-    'Y si algo te gusta, te molesta o se te ocurre cómo mejorarlo, cuéntanos. Tus comentarios son muy valiosos para nosotros. Escríbenos a hola@ejemplo.com. Que te vaya muy bien.'
+    // CORREO -26-09-2026-: el del dominio, que Namecheap reenvia al Gmail de Javier. Hasta el
+    // 24-09 era el ficticio hola@ejemplo.com que el pidio mientras tanto.
+    'Y si algo te gusta, te molesta o se te ocurre cómo mejorarlo, cuéntanos. Tus comentarios son muy valiosos para nosotros. Escríbenos a hola@sigoteleprompter.com. Que te vaya muy bien.'
   ].join('\n')
   const tramo = (frase: string, formato: Omit<TramoFormato, 'desde' | 'hasta'>): TramoFormato => {
     const desde = texto.indexOf(frase)
@@ -145,13 +150,23 @@ export function bloqueDeBienvenida(): Bloque {
     texto,
     // Si alguien retoca el texto y una de estas palabras deja de estar, su tramo se cae en vez
     // de pintar desde el caracter -1.
+    // Los cinco primeros caen sobre la palabra que nombra su formato. Los demas -26-09-2026,
+    // Javier: "ponle colores"- muestran el guion pintado como se usaria de verdad, para la
+    // grabacion de prueba. Van ordenados por posicion y sin pisarse.
     tramos: [
       tramo('negrita', { negrita: true }),
       tramo('ámbar', { color: 'ambar' }),
       tramo('celeste', { color: 'celeste' }),
-      tramo('verde salvia', { color: 'salvia' }),
-      tramo('destacado amarillo', { destacado: true })
-    ].filter((t) => t.desde >= 0)
+      tramo('verde', { color: 'salvia' }),
+      tramo('destacado amarillo', { destacado: true }),
+      tramo('sin que toques nada', { negrita: true }),
+      tramo('el texto te espera', { color: 'celeste' }),
+      tramo('para que tu mirada vaya a la cámara', { color: 'ambar' }),
+      tramo('tal como lo ves', { color: 'salvia' }),
+      tramo('No tienes que memorizar.', { negrita: true }),
+      tramo('en el momento que quieras', { destacado: true }),
+      tramo('hola@sigoteleprompter.com', { color: 'celeste' })
+    ].filter((t) => t.desde >= 0).sort((a, b) => a.desde - b.desde)
   }
 }
 
