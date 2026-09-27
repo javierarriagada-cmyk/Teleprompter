@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
-import { Guion, Bloque, TramoFormato, contarPalabras, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
+import { Guion, Bloque, TramoFormato, contarPalabras, duracionDeLectura, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
 import { consolidarGuion } from '../datos/consolidar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { hapticaSeleccion, hapticaToqueSuave } from '../haptica'
@@ -839,6 +839,14 @@ export default function EditorView({
           columnaAngosta={columnaAngosta}
           marginPercent={marginPercent}
         />
+        {/* CUANTO VA A DURAR, MIENTRAS SE ESCRIBE -27-09-2026-. Una auditoria proponia
+            "0 palabras · ~0s"; las palabras no le dicen nada a quien va a grabar, el tiempo
+            si. Mismo formato que la portada -duracionDeLectura-. Vacio no dice nada. */}
+        {numPalabras > 0 && (
+          <div data-testid="duracion-editor" className="texto-meta" style={{ color: 'var(--color-apagado)', marginTop: 'var(--aire-3)' }}>
+            {duracionDeLectura(numPalabras)}
+          </div>
+        )}
       </div>
 
       {/* Barra fija abajo cuando numPalabras === 0: Pegar texto y Abrir archivo */}
