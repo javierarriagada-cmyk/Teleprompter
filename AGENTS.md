@@ -7,6 +7,21 @@ Destino: aplicacion Android publicada en Google Play, empaquetada con Capacitor.
 
 ---
 
+## Antes de todo: el criterio
+
+La aplicacion se llama **Sigo — Teleprompter de voz**. Este archivo es el mapa del codigo;
+el criterio con que se trabaja, lo que ya se decidio y lo que falta estan en dos documentos
+que hay que leer ANTES de proponer o cambiar nada:
+
+- `docs/lo-que-hay-que-saber.txt` — el producto, como se trabaja con Javier, las reglas del
+  codigo y del diseño, donde esta todo y que no se puede hacer sin el telefono.
+- `docs/decisiones-de-diseno.txt` — cada decision con su estado y quien la toma. Lo cerrado
+  no se reabre sin que Javier lo pida.
+
+Con Javier: siempre en español, tuteo chileno. En pantalla: español neutro.
+
+---
+
 ## Lo primero: no explores el repositorio entero
 
 Este archivo es el mapa. Anda directo a los archivos que nombra tu tarea. Recorrer todo el

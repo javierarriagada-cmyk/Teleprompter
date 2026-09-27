@@ -1,0 +1,139 @@
+ACCESIBILIDAD, SEGUN ROBO TEST DE FIREBASE: CONSEJOS PARA EVALUAR
+25-09-2026. Prueba del 25-09 sobre main (55e73f9). NO ES UN ENCARGO: es lo que
+encontro la prueba automatica, para que Javier decida que vale la pena.
+Guardado tambien: Escritorio\grafico de rastreo SIGO.png (el mapa completo).
+
+RESULTADO GENERAL: 23 problemas -2 advertencias, 21 menores, 0 sugerencias-,
+en un Pixel 5 -"redfin", API 30- explorando el guion "Hola".
+
+REVISADO EL MISMO 25-09 -YA CON OPUS-: la primera version de este documento
+se escribio con otro modelo y tenia tres afirmaciones que no resistieron el
+codigo. Quedan corregidas abajo, cada una marcada CORREGIDO.
+
+
+==============================================================================
+0. EL DISPOSITIVO, Y LO QUE COSTO
+==============================================================================
+
+  CORREGIDO: se dijo que era un Pixel 5 VIRTUAL. Todo indica que era FISICO:
+  "redfin" es el Pixel 5 real, la version del sistema es la de un telefono
+  -RQ3A.211001.001- y el aviso de "costo maximo $0,42" calza con la tarifa
+  de fisicos -5 min a US$ 5 la hora-, no con la de virtuales -serian US$ 0,08-.
+  Igual deberia salir GRATIS: en el plan Blaze los fisicos tienen 30 minutos
+  gratis al dia, y la prueba duro 4. Se confirma en el informe de facturacion
+  del proyecto Sigo en unos dias.
+
+
+==============================================================================
+1. ADVERTENCIA: UN CONTENEDOR SIN ETIQUETA PARA LECTOR DE PANTALLA
+==============================================================================
+
+  La herramienta marco android:id/content/ViewGroup[1]/FrameLayout[2]/
+  FrameLayout[1], con el recuadro sobre casi toda la zona de lectura.
+
+  OJO CON LA RUTA: es una ruta de vistas NATIVAS de Android -FrameLayout-.
+  Sigo pinta la pantalla dentro de una WebView -React-; los div de la app no
+  aparecen con ese nombre. Puede ser el marco que envuelve la WebView, o el
+  de la camara -el plugin de camara agrega vistas nativas-. Si es el marco de
+  la WebView, TalkBack igual lee lo de adentro y la advertencia importa poco.
+
+  PENDIENTE DE VERIFICAR: con el telefono conectado, en la pantalla de
+  lectura, "adb shell uiautomator dump" -solo lee, un minuto- dice que vista
+  es y si tiene contenido adentro. Recien ahi se sabe si hay algo que hacer.
+
+
+==============================================================================
+2. ADVERTENCIA: DOS ELEMENTOS TOCABLES EN EL MISMO LUGAR
+==============================================================================
+
+  Dos elementos en los que se puede hacer clic ocupan el mismo rectangulo:
+  [0,290] a [1080,2296], casi toda la zona de lectura.
+
+  CORREGIDO: se atribuyo a la capa de cierre del panel de Medicion/Corpus
+  -App.tsx ~1865-. NO CALZA: esa capa es opaca y cubre toda la pantalla, y en
+  las capturas se ve el texto de lectura alrededor del panel. Es otra cosa.
+
+  CANDIDATO MAS PROBABLE, SIN CONFIRMAR: TeleprompterView.tsx tiene un
+  onClick en el contenedor de toda la vista -muestra u oculta los controles
+  al tocar durante la lectura-; si otro elemento con el mismo tamano tambien
+  responde al toque -el contenedor del texto, o una vista nativa-, son dos
+  tocables apilados. Se resuelve con el mismo "uiautomator dump" del punto 1.
+  No es un defecto visible: no se toca hasta saber que es.
+
+
+==============================================================================
+3. MENOR (14): OBJETOS TACTILES CHICOS
+==============================================================================
+
+  Vistos en los ejemplos:
+    - el selector de motor "Vosk (Offline) / Nativo"
+    - el boton "X" para cerrar "Medicion / Panel de Corpus"
+    - el "Aa" del editor de guion, arriba a la derecha
+
+  Android recomienda 48dp como minimo para algo que se toca.
+
+  HECHO -25-09-2026-: el "Aa" paso a min-height 48px -styles.css, .boton-aa-.
+  En main: 3010863.
+  Los otros dos son del panel de diagnostico -punto 5-: se van con el.
+
+
+==============================================================================
+4. MENOR (6): CONTRASTE BAJO EN EL TEXTO QUE VIENE
+==============================================================================
+
+  El texto de mas abajo en la lectura mide 4,43:1, color #737373. El minimo
+  recomendado -WCAG AA, texto normal- es 4,5:1.
+
+  CORREGIDO -LO MAS IMPORTANTE DE ESTA REVISION-: se dijo que no era un color
+  nuestro y que era un error de medicion. ES NUESTRO, Y LA MEDICION ES EXACTA.
+  Es el VELO de la lectura -banda.ts, calcularBgVelo-: debajo de la ventana
+  clara de 4 renglones se pinta el fondo al 55% -ALPHA_VELO_ABAJO_SIN_CAMARA
+  = 0.55-. Letra blanca bajo un velo negro al 55% queda en 0,45 x 255 = 115
+  = #737373, y eso da 4,4:1 sobre negro. Es la decision de siempre: "abajo de
+  la ventana 0.55: se lee, y es lo que viene".
+
+  Y HAY UN CASO PEOR QUE LA PRUEBA NO VIO -solo probo el fondo negro-: con la
+  pareja blanca -fondo blanco, letra negra-, el mismo velo deja la letra en
+  un gris #8C8C8C y el contraste baja a unos 3,4:1.
+
+  OPCIONES, PARA DECIDIR CON LA PANTALLA DELANTE -no por el numero-:
+    a. Dejarlo. Es texto de apoyo -lo que viene-, no el que se esta leyendo,
+       y el velo existe para que el ojo no se vaya de la ventana clara.
+    b. Velo de abajo a 0.54 con fondo negro: da 4,56:1, pasa el minimo, y la
+       diferencia a la vista es de un 1%.
+    c. Para el fondo blanco haria falta bajar ese velo a ~0.46: ahi el cambio
+       si se nota, y toca una decision que se afino leyendo.
+  Cualquier cambio a este velo se compara leyendo, como se decidio -docs/
+  motor-notas.txt punto 3, "no se cambia por lo que diga un articulo"-.
+
+
+==============================================================================
+5. EL PANEL DE DIAGNOSTICO SE ABRE CON UN SOLO TOQUE
+==============================================================================
+
+  CORREGIDO: se dijo que se llegaba "en pocos pasos". Es mas directo: TOCAR
+  UNA VEZ EL TITULO GRANDE DEL GUION EN LA PORTADA -el "Hola" de la tarjeta,
+  TarjetaLectura.tsx, onDiagClick- abre la franja de estado con el selector
+  Vosk/Nativo, "Ver transcripcion en vivo" y "Medicion / Panel Corpus".
+  Mantenerlo apretado tambien. Por eso el robot llego ahi, y cualquier
+  persona que toque el titulo esperando abrir su guion llega igual.
+
+  Javier: "lo ocupamos mientras nosotros". Antes de publicar -P1- hay que
+  sacarlo del alcance del usuario: detras de un gesto que nadie haga sin
+  querer, o fuera de la version de publicacion. Con eso se van tambien dos de
+  los objetos chicos del punto 3.
+
+
+==============================================================================
+RESUMEN PARA DECIDIR
+==============================================================================
+
+  HECHO: el "Aa" a 48px -en main, 3010863-.
+  ANTES DE PUBLICAR, Y ES LO QUE MAS PESA: el panel de diagnostico se abre
+  tocando el titulo de la portada -punto 5-.
+  PARA DECIDIR MIRANDO: el velo de abajo y el contraste -punto 4-, sobre todo
+  con fondo blanco.
+  PENDIENTE DE UN MINUTO CON EL TELEFONO: que son los puntos 1 y 2 -dump de
+  la pantalla de lectura-. Nada que tocar antes de saberlo.
+
+  Javier, 25-09-2026: "puros detalles minimos... y los vamos viendo".

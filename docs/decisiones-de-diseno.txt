@@ -1,0 +1,1176 @@
+DECISIONES DE DISENO Y DE OPERACION
+Lista de trabajo de Claude. Abierta el 7 de septiembre de 2026.
+
+DESDE EL 25-09-2026 LA COPIA VIGENTE ES ESTA, LA DEL REPOSITORIO, para que la lea tambien
+una sesion en la nube. Vivia en la carpeta privada teleprom/00-arquitectura, que no esta
+en el repositorio: donde este documento nombre algo de teleprom/ -tomas, capturas, la
+patente-, eso NO esta a tu alcance. Aca las otras aplicaciones van sin nombre.
+
+COMO SE USA
+    Una por vez, como se hizo con la pantalla de lectura: se estudia, se mide o se dibuja,
+    se le muestra a Javier algo que pueda MIRAR, el corta, y de ahi sale una tarea para
+    Jules. Nada de resolver quince a la vez en un documento que nadie lee.
+
+    Cada punto lleva su estado:
+        ABIERTA     nadie la miro todavia
+        EN PRUEBA   esta dibujada y Javier tiene que cortar
+        CERRADA     decidida, con fecha y con lo que se decidio
+        ENCARGADA   ya esta en una tarea de Jules
+
+    Y quien decide:
+        JAVIER   producto, estilo, plata, lo que se ve
+        CLAUDE   ingenieria, orden, estructura
+        PRUEBA   no se argumenta: se mira leyendo a camara
+
+    REGLA QUE ORDENA TODA LA LISTA, dicha por Javier el 7 de septiembre de 2026:
+    "en nuestro estilo en general debemos ser elegantes y profesionales", y
+    "la perspectiva desde el usuario es esencial". Un punto no entra por ser buena idea:
+    entra si alguien lo va a usar grabando, y si no obliga a agregar otro control.
+
+    Y EL HECHO DEL QUE SALE TODO: el que lee NO mira la pantalla, mira el lente. El texto
+    lo toma de reojo en vistazos. Cada punto de esta lista se contesta pensando en eso.
+
+    SEGUNDA REGLA, Javier el 7 de septiembre de 2026: "las cosas esenciales deben ser muy
+    faciles de elegir para el usuario".
+
+    Parece chocar con "mientras se lee no hay nada en pantalla" y no choca: separa DOS
+    MOMENTOS que hoy estan mezclados en una sola barra de controles.
+
+        ANTES DE EMPEZAR   lo esencial, grande y a la mano, sin abrir nada.
+        MIENTRAS SE LEE    nada. Los controles se van solos y vuelven al tocar.
+
+    Y ESENCIAL ES UN CONJUNTO CHICO Y CERRADO: lo que decide si la persona PUEDE LEER.
+
+        tamano de letra     los cinco pasos, con botones grandes
+        tipografia          las dos, a un toque
+        ancho de columna    las dos, a un toque
+        empezar
+
+    Todo lo demas -espejo, anclaje de la zona, lineas de zona, mostrar el tiempo, pantalla
+    completa- es de ajustar una vez y no volver a mirar. Va detras de ajustes.
+
+    DOS CONSECUENCIAS QUE APARECIERON AL APLICAR LA REGLA:
+
+    a) EL MARGEN DEJA DE SER UN CONTROL. Con la columna angosta medida en caracteres, el
+       porcentaje de margen no hace practicamente nada: solo cambia algo en el modo de
+       ancho completo. Un control que ya no controla es exactamente el ruido que hay que
+       sacar. Baja a ajustes, o desaparece.
+
+    b) "VER TRANSCRIPCION EN VIVO" NO ES UNA FUNCION DEL PRODUCTO, es una herramienta de
+       diagnostico que quedo a la vista. Javier ya habia preguntado por que le transcribia
+       el audio. Sale de la interfaz del producto.
+
+
+EN VUELO CON JULES, al 7 de septiembre de 2026
+
+    Las decisiones cerradas no se implementan solas. Estas dos tareas las bajan a codigo:
+
+    TAREA 17 - la pantalla de lectura      sesion 8853416467347786266
+        A1 tipografias empaquetadas, A9 los tres fondos y los tres colores de letra,
+        B1 y B1b la escalera y el tamano por omision -ya mergeados en la tarea 16-,
+        B2 la columna de 22 caracteres, B3 el interlineado fijo, B4 la banda de tres
+        renglones, B9 los parentesis como acotacion, B11 los controles que se van solos,
+        B14 el punto rojo.
+
+    TAREA 18 - biblioteca, editor y ajustes  sesion 15139343597691184578
+        A4 claro y oscuro siguiendo el telefono, A10 la paleta calida con turquesa,
+        C6 tocar abre y mantener da opciones, C7 archivar con su filtro, D4 el enfasis
+        guardado -no dibujado todavia-, E2 los ajustes se recuerdan, E4 el motor de voz
+        se elige solo.
+
+    TAREA 19 - lo que quedo sin terminar de la interfaz   sesion 1800770816324713691
+        Dibujar el enfasis en la pantalla de lectura -que quedo fuera de la 18 a proposito-,
+        A2 tipografia de interfaz, A5 iconos, B8 la escala de atenuacion, B18 espejo,
+        B20 renglones en horizontal, B22 el texto no pasa por debajo de nada, C4 orden y
+        busqueda, D5 pegar de otro lado, D6 el boton de leer.
+
+
+===============================================================================
+A. IDENTIDAD Y ESTILO - transversal, y va primero porque lo demas se apoya aca
+===============================================================================
+
+A1  TIPOGRAFIA DE LECTURA.                                      CERRADA / 7 sept 2026
+    DOS O TRES tipografias claras, elegibles por el usuario. Javier aprobo las dos que
+    estan en el probador: Source Sans 3 -sans humanista- y Source Serif 4 -serif de
+    emision-. Una tercera solo si se gana el lugar; dos alcanzan.
+
+    CORRECCION A UN SUPUESTO DE JAVIER: pidio tipografias "que esten en todos los
+    telefonos". No hace falta y ademas no conviene. Las dos elegidas no vienen en ningun
+    telefono, pero VAN EMPAQUETADAS DENTRO DE LA APLICACION: pesan unos 150 KB las dos y a
+    cambio se ven identicas en cualquier aparato y funcionan sin internet. Apoyarse en las
+    del sistema significa que el mismo guion se ve distinto en un Samsung y en un Xiaomi,
+    y no lo controlamos nosotros.
+
+    DONDE SE ELIGE: Javier lo dio por supuesto en la pantalla donde se ve el guion, "de un
+    modo facil". Va en los ajustes rapidos de la pantalla de lectura, a un toque, junto al
+    tamano y el margen. No en una pantalla de configuracion aparte.
+
+A2  TIPOGRAFIA DE INTERFAZ.                                     DECIDIDA / tarea 19
+    La de los botones, titulos y listas, que puede ser otra que la de lectura. Hoy tampoco
+    hay ninguna. Tiene que verse bien en un tamano chico y con poca luz.
+
+A3  EL RESTO DE LA APLICACION: BIBLIOTECA, EDITOR, AJUSTES.     DIRECCION APROBADA / 13 sept 2026
+    Javier aprobo la direccion mirando la propuesta dibujada:
+    https://claude.ai/code/artifact/9b03b4df-d983-45d5-903b-312a47037352
+
+    LA IDEA, UNA SOLA Y PARA LAS CUATRO PANTALLAS: lo que importa ocupa la pantalla; lo
+    demas desaparece hasta que hace falta.
+
+    Lo que se decidio, con el fundamento:
+
+      - UNA SOLA SUPERFICIE, NO SEIS CAJAS. Material 3 Expressive -el estandar de Android
+        hoy- lo llama CONTENCION ESTRATEGICA: la caja separa lo que de verdad es otra cosa.
+        Con todo encajonado nada se distingue. La jerarquia la hacen el tamano y el aire.
+      - EL TITULO NO LLEVA ETIQUETA. "Titulo del guion:" encima de un campo gris es un
+        formulario. Un titulo se escribe grande y arriba y se edita tocandolo. Javier lo
+        senalo como lo que mas confunde de la pantalla de hoy.
+      - LOS CONTROLES DE FORMATO APARECEN AL SELECCIONAR y se van despues, como iA Writer y
+        Bear. Negrita y tres colores sin nada seleccionado no sirven y ocupan lugar.
+      - LA FRANJA DE ESTADO SE VA. Es diagnostico de desarrollo a la vista del usuario, y
+        ocupa el mejor lugar de la pantalla. Pasa detras de un toque largo.
+      - LA LECTURA TOMA LA PANTALLA ENTERA. Hoy son 480 px fijos dentro de una tarjeta.
+      - EN LA BIBLIOTECA, LOS TITULOS HACEN LA LISTA. Archivar y borrar salen al deslizar o
+        al mantener apretado; hoy son tres botones por guion, o sea treinta con diez
+        guiones.
+      - LOS AJUSTES SE ELIGEN MIRANDO. Una vista previa real arriba, con banda y todo. Hoy
+        no se puede elegir tamano de letra sin ver el texto: se decide a ciegas sobre lo
+        unico que se mira al grabar.
+      - FONDO Y COLOR DE LETRA SE FUNDEN EN UNO, y dejan de llamarse por su color para
+        llamarse por su situacion -interior, exterior, vista cansada-. Que sean dos
+        opciones sueltas solo permite equivocarse: nadie quiere fondo blanco con letra
+        blanca. Coincide con lo ya estudiado en A9.
+      - ONCE OPCIONES BAJAN A SEIS. El interlineado ya esta fijo en 1,4 por decision de
+        Javier. Anclaje y margen bajan a "Avanzado". El motor de voz no es un ajuste de
+        aspecto y no puede estar al lado del espejo: decide si la aplicacion funciona.
+      - SIN DESPLEGABLES con tres o cinco opciones: en fila se ven todas y se elige con el
+        pulgar sin abrir nada.
+
+    NO SE TOCA lo que ya estaba decidido y estudiado: la banda de tres renglones, el velo
+    con sus opacidades, los fondos segun la luz, las dos tipografias, los cinco tamanos.
+
+    CUANDO SE PROGRAMA: despues del motor. Ir antes significaria dos ramas tocando las
+    mismas pantallas.
+
+A3b LO QUE FALTA ESTUDIAR DE VERDAD.                            PENDIENTE / despues del motor
+    Javier y yo coincidimos el 13 de septiembre de 2026 en que A3 es un PRIMER CORTE
+    SOLIDO y no un estudio profundo. Alcanza para corregir lo que esta mal, y se aprobo con
+    ese alcance explicito.
+
+    Lo que queda sin estudiar, y es donde se juega que la experiencia sea buena de verdad:
+
+      - Como se siente el movimiento. Que aparece, que se desliza, a que velocidad.
+      - La primera vez, sin ningun guion guardado. Hoy no hay nada pensado y es la pantalla
+        que decide si la persona vuelve -ver C1-.
+      - Que ve alguien mientras el modelo de voz se esta bajando: son 34 MB.
+      - Como entra alguien que nunca uso un teleprompter y no sabe que el texto sigue la
+        voz.
+
+    Javier: "dejemos pendiente el otro estudio para cuando estemos mas consolidados con el
+    motor, pero en eso nos falta bastante aun".
+
+A9  FONDO Y COLOR DEL TEXTO AL LEER.                            CERRADA / 7 sept 2026
+    DECIDIDO POR JAVIER: negro por omision, mas dos fondos mas; uno blanco y el tercero a
+    determinar con estudio. Y planteo la alternativa de pensarlo como DOS CONFIGURACIONES
+    SEGUN LA LUZ del lugar -habitacion con poca luz, o afuera con mas contraste-.
+
+    EL ESTUDIO DICE QUE SU SEGUNDA FORMA DE PLANTEARLO ES LA CORRECTA, y no es un matiz:
+
+      - Afuera o con mucha luz, el fondo NEGRO es peor: la pantalla no alcanza el brillo
+        necesario y el vidrio refleja. Fondo claro con letra oscura gana afuera.
+      - Con poca luz gana el negro, por lo contrario.
+      - Cerca del 50% de las personas tiene algun grado de astigmatismo, y para ellas la
+        letra blanca sobre negro produce HALACION -la letra parece brillar y desdibujarse-.
+        Leen peor en negativo que en positivo.
+      - En general, letra oscura sobre fondo claro se lee mas rapido y con menos errores.
+        El negro del prompter no es mejor para leer: es mejor para NO ILUMINARTE LA CARA
+        mientras grabas, que es otra cosa.
+
+    PROPUESTA, entonces: no son "tres colores de fondo", son DOS SITUACIONES y un remedio.
+
+        INTERIOR   fondo negro, letra blanca. Por omision.
+        EXTERIOR   fondo blanco, letra negra. Para grabar afuera o con mucha luz.
+        TERCERO    fondo gris muy oscuro -no negro puro- con letra hueso. Es el remedio
+                   para la halacion: sigue sin iluminar la cara y le baja el halo a la
+                   mitad de la gente que lo sufre. Ese es el tercer fondo que pediste que
+                   determinara con estudio.
+
+    COLOR DE LETRA. Javier propone negro, blanco y un tercero que podria ser verde fuerte
+    o rojo. Con el negro y el blanco no hay nada que discutir: son los dos fondos de
+    arriba al reves. Sobre el tercero, UNA ADVERTENCIA MEDIDA: el ROJO es el peor color
+    posible para leer sobre negro, porque es el que menos luminancia aporta de todos los
+    matices; se lee mas lento y cansa. El verde fuerte si funciona. Pero el tercero clasico
+    de los prompters de emision es el AMBAR o amarillo, que da mas luminancia que el verde
+    sin el brillo duro del blanco. Mi propuesta: ambar.
+
+    EL ROJO QUEDA DESCARTADO. Javier: "lo del rojo tbn, mal color".
+
+    APROBADO EL 7 DE SEPTIEMBRE, mirando el probador: "los fondos y los colores de letras
+    me parecen adecuados". Quedan los TRES FONDOS -negro interior por omision, gris muy
+    oscuro para la halacion, blanco exterior- y los TRES COLORES DE LETRA sobre los fondos
+    oscuros: blanco por omision, ambar y verde fuerte. Sobre fondo claro la letra es negra
+    y no hay nada que elegir.
+
+    Detalle que aparecio al construirlo: la banda de B4 es LUZ sobre fondo oscuro y SOMBRA
+    sobre fondo claro. Con el fondo blanco, un blanco al 7% no existe.
+
+A10 PALETA DE LA APLICACION.                                    CERRADA / 7 sept 2026
+    Javier: "usualmente veo algo de la paleta de akva group que en sus software ocupan
+    elementos que se ven modernos, pero se puede revisar".
+
+    MIRADO EL 7 DE SEPTIEMBRE DE 2026 en akvagroup.com. Lo que hace que se vean modernos
+    no es el color: es la SOBRIEDAD. Su lenguaje entero son cuatro cosas.
+
+      - Un azul marino casi negro como suelo, desaturado. No es negro puro ni gris.
+      - Tipografia blanca, sans pesada, con mucho aire alrededor.
+      - UN SOLO acento, verde, y solo en lo que se aprieta.
+      - Superficies planas. Ni degradados de adorno, ni sombras, ni bordes redondeados
+        por todos lados.
+
+    O sea que la referencia confirma la postura que ya teniamos: un color de acento, no
+    seis. Lo moderno ahi es la contencion, no la paleta.
+
+    PROPUESTA para el resto de la aplicacion -biblioteca, editor, ajustes-:
+        suelo       azul marino casi negro   #0D1620
+        superficie  #17232F
+        texto       #EAF0F5
+        apagado     #8A9AA8
+        acento      uno solo, y es lo unico a decidir
+
+    CORRECCION: la primera vez mire el sitio corporativo, que es folleteria, y Javier habia
+    dicho "en sus software". Su aplicacion Fishtalk Control es OSCURA -casi negro, texto
+    blanco, chips grises en pildora-, nada del blanco con verde que le mostre.
+
+    Y APARECIO UNA SEGUNDA REFERENCIA, puesta por Javier: la interfaz de Claude. Las dos no
+    se parecen en nada -una oscura y tecnica, la otra clara y de papel- y hacen lo mismo
+    por debajo: un solo acento y solo en lo que se aprieta, superficies planas, separacion
+    por espacio y no por cajas, y el contenido ocupando todo. Que dos cosas tan distintas
+    coincidan ahi es lo que dice que no es gusto sino oficio.
+
+    DECIDIDO EL 7 DE SEPTIEMBRE: la direccion CALIDA. Javier: "en la biblioteca me gusta la
+    B pero quizas con un acento mas nuestro o algo mas claro pero que sea moderno". La
+    direccion fria -azul marino, acento verde- queda descartada.
+
+        suelo       negro de tinta con algo de tierra   #16130F
+        superficie  #211D17
+        texto       #EFE9DF
+        apagado     #988E80
+        acento      por elegir
+
+    RESTRICCION SOBRE EL ACENTO, y achica mucho la lista: NO PUEDE SER NINGUNO DE LOS TRES
+    COLORES DE ENFASIS. Si el boton principal es ambar y una palabra destacada tambien es
+    ambar, la palabra parece un boton. Eso saca el ambar, el celeste y el salvia.
+
+    Los cuatro que quedan, puestos en vivo en el documento de biblioteca y editor:
+        coral FF7A59, turquesa 2FC4B2, frambuesa E8607A, ambar quemado D9924A
+
+    Y LA PANTALLA DE LECTURA NO LLEVA ACENTO NINGUNO. Ahi solo vive el punto rojo de
+    grabando. El acento es de la biblioteca, el editor y los ajustes.
+
+    ELEGIDO EL TURQUESA, el 7 de septiembre: "la combinacion claro oscuro con turquesa me
+    parece muy bien". Frio sobre suelo calido; ese contraste es el gesto que lo separa de
+    lo que se ve por ahi, y no choca con ninguno de los tres colores de enfasis.
+
+        acento sobre suelo claro   #0F8377   con texto blanco encima
+        acento sobre suelo oscuro  #2FC4B2   con texto #04211D encima
+
+    Es el mismo color y no la misma receta: sobre claro necesita mas cuerpo para contrastar.
+
+A4  CLARO Y OSCURO, LAS DOS.                                    CERRADA / 7 sept 2026
+    Javier descarto que la aplicacion sea toda negra: "el negro como color base o guia de
+    toda la aplicacion me parece riesgoso". Y tenia razon, contra lo que yo mismo habia
+    propuesto: el negro de la pantalla de lectura existe por un motivo funcional -no
+    iluminarte la cara mientras grabas- y ese motivo NO EXISTE en la biblioteca ni en el
+    editor. Ahi solo se lee y se escribe, que es donde el estudio de A9 dice que gana lo
+    claro. Yo habia arrastrado el negro por inercia, no por argumento.
+
+    Van las dos, con el turquesa funcionando en las dos. Detalle que se ve al construirlo:
+    en claro la SUPERFICIE SUBE a blanco en vez de bajar a gris. Es lo que hace que un tema
+    claro se vea limpio en vez de sucio.
+
+    CON CUAL ARRANCA, decidido el 7 de septiembre: SIGUE EL AJUSTE DEL TELEFONO. La persona
+    ya eligio claro u oscuro para todo su aparato; la aplicacion se acomoda y no le pregunta
+    nada. En ajustes puede forzarlo igual.
+
+    Y CON EL RESGUARDO YA RESUELTO, para que nadie tenga que volver a preguntar. Javier:
+    "si tiene algun grado de dificultad deberia arrancar clara con la opcion de modo oscuro
+    en ajuste". Tecnicamente es UNA LINEA DE CSS -la consulta prefers-color-scheme- siempre
+    que los colores esten en variables, que es como estan definidos. Pero corremos dentro
+    de un WebView de Android, y ahi esa consulta ha tenido rarezas segun la version: hay
+    que COMPROBARLO EN EL APK, no darlo por hecho.
+
+    Si al probarlo no toma: arranca clara, con el interruptor de oscuro en ajustes. En los
+    dos casos el interruptor existe.
+
+    Y EL PASO ENTRE LOS DOS MUNDOS ES A FAVOR: apretas Leer y el mundo se apaga. Entrar a
+    leer es cambiar de modo y conviene que se sienta. Con la aplicacion clara ese contraste
+    es mucho mas fuerte que si todo fuera negro.
+
+A5  ICONOGRAFIA.                                                DECIDIDA / tarea 19
+    Hoy hay botones con texto. Con iconos, cuales y de donde salen. Con texto, en que
+    idioma y con que largo maximo para que no rompan la fila.
+
+A6  NOMBRE DE LA APLICACION.                                    CERRADA / Sigo
+    24-09-2026: El nombre es Sigo -"Sigo, teleprompter de voz"-. Y desde el 24-09-2026 la marca
+    es "Sig" con la bola roja en lugar de la o -Source Serif 4-, con TELEPROMPTER
+    debajo solo en el arranque. Ver trazoMarca.ts.
+    Hoy dice "Teleprompter MVP". Bloquea la ficha de la tienda y el icono.
+
+A7  ICONO DE LA APLICACION.                                     CERRADA / 24 sept 2026
+    24-09-2026: renglones -los dos del medio a plena luz- y la bola roja de la marca arriba a
+    la derecha, sobre el negro tibio con brillo. Se descarto "S" y la bola: el icono tiene que
+    decir teleprompter mientras la marca no es conocida. Adaptable, tematico, PNG y tienda.
+    Depende del nombre. Se ve a 48 px en una lista de aplicaciones, junto a otros.
+
+A8  ESPANOL NEUTRO EN TODA LA PANTALLA.                         CERRADA / 7 sept 2026
+    Decidido por Javier: el producto es para el idioma espanol, no para Chile. Sin
+    modismos de ningun pais. Revisar todos los textos que ya existen contra esto.
+
+
+===============================================================================
+B. PANTALLA DE LECTURA - la unica que se mira grabando
+===============================================================================
+
+B1  LA ESCALERA DE TAMANOS.                                     CERRADA / 7 sept 2026
+    Tope 42 px, decidido por Javier: "mas alla no tiene sentido". Como la escalera va
+    multiplicando por 1,33, sacando los dos pasos de arriba entran dos abajo. Queda
+    14, 18, 24, 32, 42. Reemplaza al 24-32-42-56-72 que se habia acordado antes y que
+    quedo dentro de la tarea 16: hay que corregirlo al revisarla, incluida la T84.
+
+    Y destapo un dato: a 14 px entran unas 8 palabras por linea, que es el largo de linea
+    clasico de los prompters de estudio. En un telefono solo se llega ahi en el extremo
+    chico, y se paga teniendolo mas cerca del ojo.
+
+B1b TAMANO POR OMISION.                                         CERRADA / 7 sept 2026
+    24 px, decidido por Javier. Da unas cuatro o cinco palabras por linea: todavia se lleva
+    una frase entera de un vistazo y el ojo ya no barre de punta a punta. Hoy el codigo
+    arranca en 28 y hay que cambiarlo.
+
+B2  ANCHO DE COLUMNA.                                           CERRADA / 7 sept 2026
+    Javier: "la opcion de dos anchos de columna esta bien". Quedan las dos como opcion del
+    usuario -todo el ancho, y columna angosta y centrada-, con la ANGOSTA por omision.
+    Hoy no hay tope de ancho: en pantalla grande el texto se estira a los bordes.
+
+    Nota: es la unica de la pantalla de lectura que queda como opcion elegible. El tamano
+    de letra tambien lo es; el interlineado no. Si al final se quiere una sola pantalla sin
+    ajustes, esta es la primera candidata a fijar.
+
+B3  INTERLINEADO.                                               CERRADA / 7 sept 2026
+    Fijo en 1,4 y NO se ofrece como opcion al usuario. Decidido por Javier, que descarto
+    tanto el 1,6 propuesto como la idea de dejarlo elegible.
+
+    Queda anotado el motivo por el que se habia propuesto 1,6, por si alguna vez aparece
+    el sintoma: la referencia profesional va de 1,5 a 2 porque con lineas apretadas el ojo
+    que vuelve del lente puede caer en el renglon equivocado. Si eso llega a pasar leyendo,
+    el interlineado es donde mirar. No es motivo para reabrirlo antes.
+
+B4  LA BANDA DETRAS DE LA LINEA VIVA.                           CERRADA / 7 sept 2026
+    SE QUEDA, y es importante. Javier: "si la banda esta bien y es importante... pero guia
+    al ojo". Yo habia propuesto sacarla; me equivoque, y el motivo de mi error esta escrito
+    en [disenar-desde-el-usuario]: la mire como maqueta en vez de como vistazo.
+
+    Y CAMBIA DE FORMA. Ya no es el rectangulo de un renglon al 6% que hay hoy. Abarca TRES
+    RENGLONES: la linea viva a plena luz -7,5%- y el renglon de arriba y el de abajo mas
+    tenues -3%-, apagandose hacia los bordes. Guia al ojo hacia donde va, no solo marca
+    donde esta.
+
+    Detalle de implementacion que no es cosmetico: si la linea viva ocupa mas de un renglon
+    -pasa siempre con la columna angosta-, la banda la envuelve ENTERA y se derrama un
+    renglon hacia cada lado. Medir tres renglones fijos la deja tapando justo a la linea
+    viva y sin tocar a las vecinas, que es lo contrario de lo que se pidio.
+
+B5  TEXTO CENTRADO O A LA IZQUIERDA.                            CERRADA / en el codigo
+    24-09-2026: Columna angosta: centrada. Columna completa: a la izquierda. estiloLectura.ts,
+    columnaLectura.
+    Centrado mantiene la vista cerca del eje del lente; a la izquierda da un punto de
+    retorno fijo para el ojo. Con columna angosta la diferencia se achica. Falta probarlo.
+
+B6  DONDE QUEDA LA LINEA QUE SE ESTA LEYENDO.                   CERRADA / 24 sept 2026
+    24-09-2026: Arriba por omision, al medio como opcion. "Abajo" se saco el 24-09-2026 -Javier:
+    "nadie lee abajo"-.
+    Existe anclajeZona -arriba, medio, abajo- pero nunca se decidio el valor por omision
+    mirando una camara. La linea viva tiene que quedar lo mas cerca posible del lente.
+
+B7  CUANTAS LINEAS SE VEN ADELANTE Y ATRAS.                     CERRADA / 14 sept 2026
+    24-09-2026: Un renglon de holgura arriba y ventana de cuatro -MARGEN_RENGLONES_ARRIBA,
+    TeleprompterView.tsx-. Se mueve solo midiendo varias lecturas, no con una.
+    Existe lineasZona. Cuantas lineas ya leidas conviene dejar visibles: cero limpia la
+    pantalla, dos o tres dan de donde agarrarse si se pierde.
+
+B8  LA ESCALA DE ATENUACION.                                    DECIDIDA / tarea 19
+    Hoy: leida 20%, previa 50%, viva 100%, proxima 35%. Nunca se penso, salio sola.
+    Lo que viene DESPUES importa mas que lo que ya se leyo.
+
+B9  LAS ACOTACIONES NO SE LEEN.                                 CERRADA / 7 sept 2026
+    ACOTACION ES LO QUE VA ENTRE CORCHETES Y ENTRE PARENTESIS. El seguidor las saltea y el
+    lector no las dice en voz alta.
+
+    LO QUE VA ENTRE COMILLAS SI SE LEE. Javier lo habia dicho al reves y lo corrigio el
+    mismo dia: "lo de entre comillas si se lee, en parentesis no". Era importante: en sus
+    propios guiones las comillas marcan citas que se pronuncian -el verso de Sabina-, y
+    tratarlas como acotacion las habria borrado de la lectura sin aviso.
+
+    LO QUE HAY QUE HACER: hoy el seguidor solo saltea corchetes. Hay que agregar los
+    parentesis, en el mismo lugar y de la misma forma.
+
+    Y UNA CONSECUENCIA QUE HAY QUE DECIRLE AL USUARIO EN ALGUNA PARTE: a partir de esto,
+    TODO lo que este entre parentesis se saltea, incluido lo que alguien escriba sin pensar
+    que es una acotacion -un ano "(2026)", una aclaracion al pasar-. Es el precio de que la
+    marca sea un signo comun, y es el mismo precio que ya pagan los corchetes. El guion de
+    ejemplo de C1 es el lugar natural para mostrarlo.
+
+    Queda abierto aparte: si la acotacion se ve atenuada -como hoy-, si se puede ocultar
+    del todo, y si el corchete o el parentesis mismos se muestran o no.
+
+B10 LOS CONTROLES DURANTE LA LECTURA.                           HECHA / tareas 16, 70 y 24-09
+    24-09-2026: Arriba: volver y el engranaje, los dos de 40. Abajo: el circulo de empezar. Todo
+    lo demas vive en el cajon del engranaje, con el estandar del cajon Aa.
+    Que queda a la vista y que se esconde. En la tarea 16: quedan empezar, detener, letra
+    y margen; el resto detras de ajustes.
+
+B11 LOS CONTROLES SE VAN SOLOS.                                 CERRADA / 7 sept 2026
+    Javier: "en la pantalla los controles se deberian ir al empezar a grabar y aparecer con
+    el touch". Al arrancar desaparecen todos; un toque en la pantalla los trae de vuelta.
+    Nada de lo encargado hasta ahora hace esto: hay que agregarlo.
+
+B12 LA CUENTA REGRESIVA.                                        HECHA
+    24-09-2026: CuentaRegresiva.tsx.
+    Tres segundos, numero grande y centrado, el guion visible debajo.
+
+B13 LA BARRA DE TIEMPO.                                         CERRADA / 23 sept 2026
+    24-09-2026: Se ve por omision, abajo a la derecha, a la altura del circulo -decision de
+    Javier-. El interruptor es el reloj del cajon de la toma.
+    Hecha, con interruptor para ocultarla. Falta decidir si por omision se ve o no
+    MIENTRAS se lee. Mi postura: no.
+
+B14 EL PUNTO DE ESTADO.                                         CERRADA / 7 sept 2026
+    Un punto chico que sobrevive a que los controles se vayan -B11-. Es lo unico que queda
+    en pantalla mientras se lee, asi que va lejos del texto y no se mueve.
+
+    ROJO = GRABANDO. Sin punto, o punto apagado, cuando no. Javier habia propuesto verde
+    para grabando y rojo para no, y lo corrigio el mismo dia: "lo del punto rojo o ver
+    tienes razon". El motivo: en todo aparato que graba el punto rojo significa grabando
+    -camaras, telefonos, la barra de Android, la luz de la webcam-. Invertirlo obliga a
+    razonar algo que la persona ya sabia, y de reojo no hay tiempo.
+
+    QUEDA POR DECIDIR, y es lo que de verdad importa: como se ve "estoy grabando PERO
+    perdi tu posicion". Ese es el estado que hoy no existe y que deja al lector sin saber
+    si el programa se rompio, si no lo oyo, o si el que se salio del guion es el. El punto
+    rojo solo dice que la camara corre. Ahi es donde entra el ambar, o el texto
+    "buscando tu posicion". Va junto con la observacion 3 del plan.
+
+B15 NAVEGAR A MANO MIENTRAS SE LEE.                             ABIERTA / JAVIER
+    Existe el arrastre. Falta si hay algo mas visible para retomar en un punto, porque hoy
+    lo unico explicito es "volver al inicio", que es todo o nada.
+
+B16 LA CAMARA DETRAS DEL TEXTO, Y EL VELO.                      CERRADA / 7 sept 2026
+    Es uno de los dos modos de vista previa -ver F4-, y el que Javier senalo como lo mas
+    interesante del telefono. Su valor propio, dicho por el el 7 de septiembre: TE VES A
+    TAMANO COMPLETO mientras lees. Podes controlar encuadre, fondo y cara todo el tiempo, no
+    de reojo en un recuadro. La vista chica prioriza LEER; esta prioriza VERTE.
+
+    ESO ACOTA EL PROBLEMA: el velo hace falta SOLO EN ESTE MODO. En el modo chico el texto
+    va sobre nuestro negro y se lee perfecto. No hay que resolver "legibilidad sobre video"
+    en general: hay que resolverla en una sola pantalla.
+
+    APROBADO POR JAVIER el 7 de septiembre -"oscurecer solo la franja donde vive el texto,
+    esta muy bien"-, y sale directo de la columna angosta: OSCURECER SOLO LA FRANJA DONDE VIVE EL
+    TEXTO, no todo el video. La columna ocupa una tira estrecha al centro; un velo del ancho
+    de esa tira deja el texto siempre legible sobre un fondo controlado y la cara y el resto
+    del encuadre LIMPIOS a los dos lados.
+
+    Con el texto a todo el ancho eso no existe: o se vela toda la imagen y el usuario se ve
+    apagado, o no se vela nada y a veces no se lee. En la captura de otra aplicacion que mando
+    Javier -celeste sobre un techo de zinc a plena luz- se ve el segundo caso.
+
+    Es el mismo patron que con el recuadro chico: la decision del ancho de columna, tomada
+    por el eje del lente, resuelve tambien esto sin que nadie lo buscara.
+
+    FALTA SOLO EL NUMERO: cuanto vela. Demasiado y el usuario se ve apagado; muy poco y con
+    mal fondo no se lee. Ese valor sale GRABANDO CONTRA UN FONDO MALO A PROPOSITO, no
+    razonandolo. Y falta si es fijo o ajustable.
+
+    INTERACCION A VIGILAR, para no descubrirla tarde: en este modo se superponen DOS CAPAS.
+    El velo, franja oscura FIJA del ancho de la columna, y la banda de B4, charco de luz que
+    SE MUEVE con la linea viva. Una oscurece y la otra aclara sobre la misma tira. Deberia
+    funcionar -el velo baja el video, la banda sube la linea actual respecto de ese fondo-
+    pero es de las cosas que se ven raras recien cuando estan armadas.
+
+B17 ORIENTACION.                                                CERRADA / 7 sept 2026
+    VERTICAL POR OMISION, CON OPCION A HORIZONTAL. Javier: "mucha gente graba de esa
+    forma". Se descarta la propuesta de hacer solo vertical.
+
+    Y ARRASTRA UNA CONSECUENCIA QUE CAMBIA EL ARGUMENTO DE TODA LA PANTALLA. Todo lo que
+    se decidio antes -columna angosta, centrada, banda- se apoya en que el lente esta
+    ARRIBA AL CENTRO y el texto justo debajo, asi que el vistazo cae donde el ojo ya
+    estaba. Al girar el telefono la camara queda en un BORDE LATERAL. Con el texto
+    centrado lo estariamos poniendo lo mas lejos posible del lente: lo contrario de lo
+    que se buscaba.
+
+    PERO NO HAY QUE HACER NADA AL RESPECTO. Javier, el mismo dia: "es algo que las personas
+    que lo hacen lo asumen y muchas veces con un poco mas de distancia eso se compensa".
+    Tiene razon, y la cuenta lo confirma: el desvio del ojo es el ANGULO entre el texto y
+    el lente, no la distancia en centimetros.
+
+        vertical    telefono a 50 cm, texto 5 cm bajo el lente     ~ 6 grados
+        horizontal  telefono a 1 m, texto al centro, lente al      ~ 4 grados
+                    borde, unos 7,5 cm
+
+    Horizontal centrado, a la distancia que la gente de verdad usa para encuadrar apaisado,
+    queda MEJOR que vertical de cerca. El desplazamiento es mayor pero la distancia lo
+    compensa de sobra.
+
+    LO QUE SI SIRVE TAL CUAL: el ancho de columna, porque se especifico en CARACTERES y no
+    en porcentaje. En horizontal la columna se queda angosta sola en vez de estirarse a lo
+    ancho de la pantalla. Si se hubiera puesto un porcentaje, habria que rehacerlo.
+
+B19 POSICION DE LA COLUMNA EN HORIZONTAL.                       CERRADA / 7 sept 2026
+    CENTRADA TAMBIEN EN HORIZONTAL. NO se agrega control de posicion. Yo habia propuesto
+    izquierda-centro-derecha para acercar el texto al lente; Javier lo descarto y la
+    trigonometria le da la razon -ver B17-.
+
+    Lo que ahorra: un control, tener que detectar de que lado quedo la camara, y un estado
+    mas que guardar. La pantalla de lectura se comporta igual en las dos orientaciones.
+
+    Unico caso que queda flojo, anotado y sin accion: el telefono acostado MUY cerca -un
+    soporte de escritorio a 40 cm- da unos 11 grados. Si alguna vez alguien se queja de
+    eso, la explicacion esta aca. No es motivo para agregar el control antes.
+
+B20 CUANTOS RENGLONES ENTRAN EN HORIZONTAL.                     DECIDIDA / tarea 19
+    Acostado quedan unos 390 px de alto: a 24 px con interlineado 1,4 son unos once
+    renglones contra los veinte de vertical. Hay que comprobar que la zona de lectura y el
+    anclaje siguen teniendo sentido con la mitad del alto.
+
+B18 MODO ESPEJO.                                                DECIDIDA / tarea 19
+    Existe el interruptor. Falta que quede en ajustes y no en la fila principal, y
+    comprobar que con la columna angosta sigue funcionando.
+
+
+===============================================================================
+C. BIBLIOTECA - la primera pantalla que se ve al abrir
+===============================================================================
+
+C1  EL GUION DE EJEMPLO ES LA BIENVENIDA.                       CERRADA / 7 sept 2026
+    Javier: "deberiamos tener un primer texto que puedan utilizar como ejemplo y ademas ese
+    texto lo podemos aprovechar como primera comunicacion con ellos para generar
+    engagement". Viene cargado de fabrica, en la biblioteca y abierto en el editor.
+
+    Y ES MEJOR IDEA DE LO QUE PARECE: el unico texto que la persona va a leer EN VOZ ALTA
+    antes de decidir si se queda es ese. O sea que la bienvenida no se lee: se pronuncia, y
+    mientras la pronuncia el producto le esta demostrando lo unico que lo diferencia. No es
+    un cartel de bienvenida, es la demostracion.
+
+    QUE TIENE QUE HACER ESE TEXTO, y por eso lo escribe Javier y no yo:
+      - durar unos treinta segundos leido, no mas
+      - explicar el producto mientras se lo usa
+      - traer una acotacion entre corchetes, para que se vea que no se lee
+      - traer una palabra en enfasis, para que se vea que existe
+      - terminar invitando a algo concreto
+
+    FALTA: que Javier lo escriba. El texto es de el.
+
+C2  IMPORTAR COMO ACCION PRINCIPAL.                             CERRADA / 24 sept 2026
+    24-09-2026: Crear con el +; el editor vacio ofrece "Pegar texto" y "Abrir archivo", que toma
+    el titulo del archivo. La entrada "Importar archivo" salio del menu de la
+    portada.
+
+C3  QUE MUESTRA CADA GUION EN LA LISTA.                         HECHA / tarea 18
+    Titulo, cuantas palabras, cuando se modifico, y CUANTO DURA LEIDO, que es el dato que
+    de verdad le importa a alguien que hace shorts.
+
+C4  ORDEN Y BUSQUEDA.                                           DECIDIDA / tarea 19
+    Hoy ordena por modificado. Con veinte guiones hace falta buscar; con dos, no.
+
+C5  LAS GRABACIONES EN LA MISMA PANTALLA.                       HECHA
+    24-09-2026: La tira "Videos" en la portada, debajo de los guiones.
+    El documento de producto lo propone. Depende de que la aplicacion grabe.
+
+C6  QUE PASA AL TOCAR UN GUION.                                 CERRADA / 7 sept 2026
+    Javier: "si un guion se aprieta se deberia abrir, y si se mantiene apretado deberia dar
+    la opcion de eliminarlo o archivarlo".
+
+        toque       abre el guion
+        mantener    menu con eliminar y archivar
+
+    Con eso desaparece la fila de botones por guion que hay hoy, y la lista queda limpia.
+
+C7  ARCHIVAR ES UN ESTADO NUEVO.                                CERRADA / 7 sept 2026
+    Nace de C6 y no estaba en ningun lado. Hoy un guion existe o no existe; archivar agrega
+    un tercer estado, y eso obliga a dos cosas o archivar es borrar con otro nombre:
+
+      - donde se ven los archivados. Un filtro en la misma lista, o una pantalla aparte.
+      - como se traen de vuelta.
+
+    RESUELTO ASI, aprobado por Javier el 7 de septiembre: un FILTRO en la misma biblioteca,
+    no una pantalla mas. Los archivados salen de la lista principal pero SIGUEN APARECIENDO
+    AL BUSCAR POR TITULO, que es como la gente los va a ir a buscar cuando los necesite.
+
+
+===============================================================================
+D. EDITOR
+===============================================================================
+
+D1  CUANTO DURA LEIDO, ESTIMADO.                                HECHA / tarea 18
+    Escribiendo un short, saber que va a durar 1:40 vale mas que el numero de palabras.
+    Ahora que la velocidad se mide bien, se puede estimar con la velocidad REAL del que
+    escribe, no con una constante.
+
+D2  LOS BLOQUES: SE VEN O ESTORBAN.                             CERRADA / una hoja
+    24-09-2026: Una sola hoja de texto por guion; no hay boton de agregar bloque -T161-.
+    El modelo son bloques con nombre. Falta decidir si el que escribe un short de dos
+    minutos ve eso o ve una hoja simple.
+
+D3  COMO SE ESCRIBEN LAS ACOTACIONES.                           CERRADA / 24 sept 2026
+    24-09-2026: Boton "[...] Acotacion" en la barra de formato, y el editor -Tiptap, Tarea 73-
+    las dibuja atenuadas y en cursiva mientras se escribe, igual que la lectura.
+    Hoy hay que escribir corchetes a mano. Falta decidir si hay un boton, y si se ven
+    distinto mientras se escribe.
+
+D4  ENFASIS: NEGRITA Y COLOR.                                   CERRADA / 7 sept 2026
+    El cajon donde se pega el texto es un pequeno editor. Lleva NEGRITA y TRES COLORES para
+    destacar, "pero no muchas posibilidades, tres colores bastaria". Distinto de las
+    acotaciones: no es texto que no se dice, es texto que se dice CON ENFASIS.
+
+    Los tres colores puestos en el probador sobre negro: ambar F0C070, celeste 8FB8DE,
+    salvia 9CC5A1. Apagados a proposito: sobre negro un color saturado encandila de reojo.
+
+    ES ESTATICO, y esto hubo que aclararlo: Javier entendio al principio que el enfasis se
+    iba generando sobre la palabra que se esta diciendo, lo que exigiria una precision
+    palabra a palabra que no tenemos. No es eso. El usuario pinta la palabra en el editor y
+    esa palabra se dibuja pintada SIEMPRE. EL SEGUIDOR NI SE ENTERA DE QUE EXISTE.
+
+    Y LOS DOS REPAROS TECNICOS QUE PUSE YO NO SE SOSTIENEN. Los anoto porque el error fue
+    mio y no quiero que vuelva:
+
+      1. Dije que habia que mantener las marcas pegadas a las palabras al editar. Esa
+         dificultad la creaba MI forma de guardarlo -tramos sobre indices de palabra-.
+         Javier lo vio: "no entiendo la dificultad que marcas, ese es asunto del usuario".
+
+         LO CORRECTO: el editor guarda texto con formato, como cualquier editor. El color
+         vive pegado a la palabra y el navegador mueve todo solo al escribir. Al guardar se
+         derivan DOS cosas: el texto limpio para el seguidor, y los tramos para dibujar,
+         RECALCULADOS cada vez y nunca mantenidos. Lo que se recalcula no se desfasa.
+
+      2. Dije que la negrita podia romper el calculo del desplazamiento al cambiar donde
+         corta la linea. Tampoco: la vista MIDE el resultado ya dibujado -lee la altura de
+         renglon y el offsetTop reales del navegador-, no lo predice. Si la negrita mueve el
+         corte, lo mide igual.
+
+    LA LECCION, que vale mas que el punto: antes de declarar una dificultad tecnica, mirar
+    si la esta creando la solucion que uno mismo propuso. Las dos veces fue eso.
+
+D5  PEGAR DESDE OTRO LADO.                                      DECIDIDA / tarea 19
+    Pegar de WhatsApp o de un documento trae saltos de linea raros, guiones y comillas
+    curvas. Hoy entra tal cual.
+
+D6  EL BOTON DE LEER.                                           DECIDIDA / tarea 19
+    Tiene que ser el mas grande de la pantalla y estar siempre a la vista.
+
+
+===============================================================================
+E. AJUSTES
+===============================================================================
+
+E1  QUE VIVE EN AJUSTES Y QUE EN LA PANTALLA DE LECTURA.        HECHA / 24 sept 2026
+    24-09-2026: Tres casas: el Aa del editor es del TEXTO, el engranaje del lienzo es de la
+    TOMA, el engranaje de la portada es de la APLICACION -tema y vibracion-. Los
+    tres con el cajon estandar.
+
+E2  LOS AJUSTES SE RECUERDAN.                                   HECHA / tarea 18
+    Hoy el tamano de letra y el margen se pierden al cerrar. Si alguien encontro su tamano,
+    tenerlo que buscar de nuevo cada vez es una falta grave y es barato de arreglar.
+
+E3  AJUSTES POR GUION O GLOBALES.                               ABIERTA / JAVIER
+    24-09-2026: 24-09-2026: hoy son globales y nadie pidio otra cosa. No bloquea nada.
+    Un guion largo se puede querer leer mas chico. Global es mas simple; por guion es mas
+    fino. Mi postura: global, y no complicar.
+
+E4  ELEGIR EL MOTOR DE VOZ.                                     HECHA / tarea 18
+    Hoy hay un desplegable con cinco motores en la pantalla principal. Eso es una consola
+    de desarrollo, no un producto. Tiene que elegir solo, y a lo sumo quedar en ajustes.
+
+E5  QUE VE EL USUARIO DE LA DESCARGA DEL MODELO.                ENCARGADA / tarea 13
+    Hecho el indicador. Falta el texto: "modelo de voz" no significa nada para nadie.
+
+
+===============================================================================
+F. GRABACIONES
+===============================================================================
+
+F1  EL MODO DE LECTURA Y LA GRABACION.                          APLAZADA / 7 sept 2026
+    Javier: "lo otro que es complejo y que lo hemos dejado para atras es el modo de lectura,
+    si es con grabacion o no y como son esos modos... si eso lo podemos dejar un poco para
+    despues, bien". Se aplaza, y no cuesta nada.
+
+    NO BLOQUEA NADA de lo que esta en curso: ni el seguimiento, ni la pantalla de lectura
+    cerrada el 7 de septiembre, ni la biblioteca, ni el editor, ni la tarea 16.
+
+    Y LO DECIDIDO HOY SOBREVIVE A CUALQUIERA DE LAS DOS RESPUESTAS, porque el texto es
+    blanco sobre negro: poner la camara detras es AGREGAR UNA CAPA debajo del texto, no
+    rehacer la pantalla. Habra que resolver que se lea sobre cualquier imagen -velo,
+    contorno; ver B16-, pero la tipografia, la columna, la banda y los tamanos quedan.
+
+    CUANDO SE RETOME, LA PREGUNTA NO ES "GRABA O NO". Es: grabamos nosotros, o el prompter
+    FLOTA encima de la aplicacion de camara del propio telefono. La segunda puede reemplazar
+    entera la tarea de grabacion -de las mas caras que quedan- y ademas graba con la camara
+    nativa, con su calidad y su estabilizacion.
+
+    AVERIGUADO EL 7 DE SEPTIEMBRE, Y CAMBIA LA DISYUNTIVA ENTERA:
+
+    EN ANDROID DOS APLICACIONES NORMALES NO PUEDEN TOMAR EL MICROFONO A LA VEZ. No es un
+    permiso: es del sistema. Cuando una segunda pide entrada de audio, la primera sigue
+    corriendo pero RECIBE SILENCIO. Solo las privilegiadas -las de fabrica, el Asistente,
+    los servicios de accesibilidad- comparten microfono.
+
+    Entonces, si el usuario graba con la camara nativa, esa aplicacion tiene el microfono y
+    la nuestra escucha silencio: EL PROMPTER FLOTANTE NO PUEDE SEGUIR LA VOZ. Seria un
+    teleprompter de velocidad constante flotando encima, o sea exactamente lo que hace
+    otra aplicacion y exactamente lo que dijimos que no nos diferencia.
+
+    Y HAY UN MODO DE FALLAR PEOR: si la que gana el microfono es la NUESTRA, el video del
+    usuario sale MUDO, y se entera al terminar de grabar, con la toma perdida.
+
+    HAY QUE CORREGIR EL PLAN: la nota que dice que la ventana flotante "puede reemplazar por
+    completo la TAREA 5" es FALSA. No es la misma cosa mas barata: es otro modo, mas pobre.
+
+    LA DISYUNTIVA REAL:
+      grabamos nosotros        una sola aplicacion tiene camara y microfono -> EL
+                               SEGUIMIENTO FUNCIONA. Es lo caro y es lo unico que nos
+                               diferencia.
+      ventana flotante         mejor calidad de video, CERO seguimiento. Prompter comun.
+
+    LO QUE SI SOBREVIVE DE LA IDEA DE JAVIER -"si es con opacidad, si por ejemplo permitimos
+    que se vean en un recuadro pequeno movible es genial"-: todo eso es diseno de NUESTRA
+    pantalla de grabacion, y ahi funciona perfecto. Texto sobre nuestra propia vista de
+    camara, con la opacidad y la posicion que el usuario quiera. No lo bloquea nada.
+
+F4  LOS DOS MODOS DE VISTA PREVIA.                              CONFIRMADA / 7 sept 2026
+    Javier los describio y las capturas de otra aplicacion los confirman: "Detras del texto" y
+    "Pequena". Son los dos que hay que tener.
+
+F5  GRABAR ES UN INTERRUPTOR, NO UN MODO.                       CERRADA / 7 sept 2026
+    Visto en los ajustes de otra aplicacion el 7 de septiembre: "Grabacion de video" es un
+    interruptor. El prompter funciona igual sin grabar. No son dos productos ni dos
+    pantallas: es la misma pantalla de lectura con la camara encendida o apagada.
+    Esto no lo teniamos decidido y es la forma correcta.
+
+    ACOTADA EL 20 DE SEPTIEMBRE DE 2026, Y HAY QUE LEER ESTO JUNTO CON LO DE ARRIBA.
+    Javier, viendo la pantalla de lectura con los botones de camara encima: "si en este
+    minuto evaluamos como se ve la pantalla de lectura, es un despelote... no como algo
+    definitivo porque deja mucho que desear".
+
+    LO QUE ESTA CERRADO ES QUE NO SON DOS PRODUCTOS. El texto, el seguimiento, la banda
+    y los tamanos son identicos con o sin camara, y no se construyen dos aplicaciones
+    paralelas.
+
+    LO QUE NO ESTA CERRADO, Y ESTA REDACCION LO HACIA PARECER QUE SI: que la pantalla de
+    lectura TAL COMO ESTA HOY sea el destino. No lo es. Hoy su panel mezcla cosas de tres
+    momentos distintos -preparar la toma, leer, y salir-, y por eso se desbordo apenas se
+    le agregaron dos botones.
+
+    UNA TOMA TIENE TRES MOMENTOS y hoy existe uno solo:
+
+      preparar   te ves, encuadras, elegis camara y como va el texto sobre la imagen.
+                 Aca vive todo lo que hoy estorba en la pantalla de lectura. Una sola
+                 accion principal: empezar.
+      leer       la pantalla es el texto y casi nada mas, porque se esta mirando el
+                 lente. Sobrevive saber que esta grabando y cuanto va, y como cortar sin
+                 buscar nada.
+      terminar   se corto; si grabo, el video existe y se decide que hacer con el.
+
+    ENTONCES: grabar es un estado de la misma lectura, PERO LA PANTALLA DE LECTURA HAY QUE
+    REHACERLA, no heredarla. Eso se decide cuando los tres fondos y la pantalla de
+    preparar existan y se puedan mirar, no antes y no en abstracto.
+
+F6  AJUSTES DE CAMARA.                                          HECHA / 24 sept 2026
+    24-09-2026: Voltear la camara y la calidad -en texto, 1080p/720p/480p- viven en el cajon del
+    engranaje de la toma.
+    De las capturas: camara frontal o trasera, y resolucion elegible -3264x1836, 1920x1440,
+    1920x1080, 1440x1080-. Van en ajustes, no en la pantalla de lectura.
+
+B21 EL RECUADRO CHICO DE LA CAMARA ES MOVIBLE.                  HECHA
+    24-09-2026: El recuadro se arrastra -recuadroX/recuadroY- y el panel se esconde mientras se
+    mueve.
+    CORRECCION DE JAVIER, 7 de septiembre. Yo habia anotado como defecto de otra aplicacion que
+    el recuadro tapa palabras del texto. NO ES UN DEFECTO: es totalmente movible y el
+    usuario lo deja donde no le molesta.
+
+    Y la evidencia estaba en las capturas que el mismo mando: en una el recuadro esta abajo
+    a la derecha y en otra al medio. Dos posiciones distintas decian "se mueve"; yo lei
+    "tapa el texto". Mirar lo que cambia entre dos capturas antes de declarar un defecto.
+
+    LO QUE QUEDA EN PIE, y es mucho mas chico de lo que dije: con el texto a todo el ancho,
+    lo pongas donde lo pongas cubre algo y se elige el lugar menos malo; con nuestra columna
+    angosta hay una posicion donde no cubre nada. Es mas prolijo, no una ventaja de peso.
+
+    LO QUE HAY QUE COPIAR: que sea movible. Y una que probablemente ellos no hacen y separa
+    lo cuidado de lo descuidado: QUE RECUERDE DONDE LO DEJASTE la proxima vez que grabes.
+    Misma familia que E2, que los ajustes se recuerden.
+
+B22 EL TEXTO NO PASA POR DEBAJO DE NADA.                        DECIDIDA / tarea 19
+    Otro defecto visible en las capturas: el guion sigue corriendo por debajo de la barra de
+    controles de abajo y las ultimas lineas quedan cortadas. Con nuestros controles yendose
+    solos al empezar -B11- casi no pasa, pero hay que asegurarlo tambien cuando estan.
+
+F7  MEJORAR LA VOZ DE LA GRABACION.                             ABIERTA / JAVIER
+    Visto el 7 de septiembre de 2026 en un teleprompter que mostro Javier -@taayjuss en X-,
+    que trae una opcion para mejorar la voz del que habla. Es procesamiento del AUDIO
+    GRABADO, no de lo que oye el reconocedor, asi que vive en el camino de grabacion, que
+    es el nativo.
+
+    DOS NIVELES, con costos muy distintos:
+
+      BARATO, y probablemente es lo que hace el: Android trae tres efectos de fabrica que
+      se activan sobre la captura -NoiseSuppressor, AutomaticGainControl,
+      AcousticEchoCanceler-. Una linea cada uno. NOSOTROS YA LOS PEDIMOS para el
+      reconocimiento, en el getUserMedia de MotorVosk; aplicarlos tambien a la pista del
+      video es casi gratis en el camino nativo. Saca el zumbido del ambiente y empareja el
+      volumen, que es la mayor parte de lo que se percibe como "suena mejor".
+
+      CARO: filtro de graves para el retumbe y el ruido de manipular el telefono,
+      compresion para que no haya partes que se pierden y otras que saturan, y
+      normalizacion de volumen. Eso es procesamiento de senal de verdad: un DSP nativo, o
+      procesar el archivo despues de grabar. Es lo que separa "sin ruido" de "suena
+      producido".
+
+    PREGUNTA DE PRODUCTO A CONTESTAR ANTES DE HACERLO: se guarda solo el audio mejorado, o
+    tambien el original. Si se procesa y al usuario no le gusta como quedo, perdio la toma.
+    Guardar los dos duplica el espacio.
+
+F2  DONDE QUEDA EL VIDEO.                                       HECHA
+    24-09-2026: Los videos quedan en la aplicacion -tira "Videos"- y el reproductor ofrece
+    guardarlos en la galeria.
+    En la galeria del telefono o dentro de la aplicacion.
+
+F3  SUBTITULOS A PARTIR DEL GUION.                              ABIERTA / JAVIER
+    Tenemos el guion y las marcas de tiempo. Falta averiguar que hace AutoCap antes de
+    apoyarse en esto, porque si no usa guion hace algo mas dificil, no menos.
+
+
+===============================================================================
+G. OPERACION - lo que pasa cuando algo sale mal
+===============================================================================
+
+G1  EL PERMISO DEL MICROFONO.                                   ABIERTA / CLAUDE
+    Que ve la persona la primera vez que se lo piden, y que ve si dijo que no. Hoy no hay
+    nada: el motor tira un error tecnico.
+
+G2  FUNCIONA SIN INTERNET, Y EL USUARIO NO ELIGE MOTOR.        CERRADA / 13 sept 2026
+    DECIDIDO POR JAVIER: "el usuario final no tiene por que elegirlo, y que funcione sin
+    internet es una tremenda ventaja".
+
+    DOS DECISIONES EN UNA, y la segunda ordena media aplicacion:
+
+    1. EL SELECTOR DE MOTOR SALE DE LA VISTA DEL USUARIO. Hoy hay un desplegable "Motor de
+       Voz (Avanzado)" con cuatro opciones en fila y con el mismo peso: Vosk, Web Speech,
+       Whisper Local y Nativo. No son cuatro sabores. Una manda el audio a Google y necesita
+       red; otra se baja un modelo enorme de Hugging Face; otra no esta implementada de
+       verdad; y en el telefono de Javier Web Speech NO FUNCIONA -comprobado el 13 de
+       septiembre-. Ofrecerlas como iguales hace que alguien se lleve una descarga enorme o
+       se quede sin motor sin enterarse.
+
+       La aplicacion elige el mejor disponible y DICE cual usa. La lista pasa al mismo lugar
+       que la franja de diagnostico: detras del interruptor de desarrollo.
+
+    2. PODER FUNCIONAR SIN INTERNET ES UNA VENTAJA, NO UN DOGMA. Javier lo preciso el mismo
+       dia, corrigiendome: "no digo que todo sea sin internet, pero PUEDE funcionar sin
+       internet... es bueno que tenga la opcion de ser offline".
+
+       O sea: leer con el prompter tiene que andar sin red. Otras funciones pueden pedirla
+       -y mas adelante puede haber funciones de pago que la necesiten; eso es muy posterior
+       y no se decide ahora-. La regla es que la funcion central no dependa de la conexion,
+       no que la aplicacion entera viva desconectada.
+
+       Con esa aclaracion, Vosk es el motor de lectura. Eso trae consecuencias que hay que
+       trabajar:
+
+       a) EL MODELO VIAJA DENTRO DEL APK. Son 34 MB del modelo mas 5,8 MB del worker. Si van
+          empaquetados, el primer uso NO baja nada, funciona sin red desde el minuto cero, y
+          ademas podemos volver al modelo 0.42 -mas nuevo que el 0.3 que usamos hoy, que se
+          eligio solo porque era el unico que se podia bajar desde el navegador-. La
+          debilidad se convierte en la ventaja.
+
+       b) HOY LA DESCARGA ARRANCA SOLA AL ABRIR, SIEMPRE, use o no use Vosk, y sin decir
+          nada -usePrecargaModelo se llama sin ninguna condicion-. Con datos moviles eso es
+          serio. Mientras no este el APK, hay que avisar y dejar elegir cuando bajarlo.
+
+       c) LA CALIDAD DEL MODELO CHICO ALCANZA, MEDIDO. Comparado contra el guion de Javier,
+          Vosk small acierta la mayoria y falla en palabras sueltas -se come articulos, y a
+          veces cambia una palabra con contenido: "respuesta" por "puerta"-. Para un
+          teleprompter eso basta, porque el texto YA SE CONOCE y solo hacen falta anclas
+          suficientes para ubicarse. La prueba: con el MISMO Vosk, sin tocar el reconocedor,
+          arreglar la ventana del seguidor llevo el porcentaje ubicado de 18% a 94%.
+          El reconocedor no era el cuello de botella.
+
+       d) SE DICE EN LA TIENDA. "Funciona sin internet y sin mandar tu voz a ningun lado" es
+          una ventaja real frente a la competencia, y ademas es un argumento de privacidad.
+
+    EL DE GOOGLE NO NOS SIRVE. Javier, 13 de septiembre de 2026: "el que dices de google
+    derechamente no nos funciona bien". Y hay evidencia, no es impresion: en su telefono
+    Web Speech arranca -la franja decia "escuchando"- y no devuelve NADA, el texto no se
+    mueve y el motor queda en "Detenido". Ademas manda el audio a Google, necesita red, y
+    corta solo cada pocos segundos obligando a reconectar.
+
+    Queda como respaldo silencioso para navegadores donde Vosk no pueda correr, y nada mas.
+    No se ofrece, no se recomienda y no se le ajusta nada pensando en el.
+
+    LO QUE QUEDA ABIERTO: que hacer con Whisper Local. Mi postura es sacarlo -baja un modelo
+    enorme de Hugging Face y no aporta nada que Vosk no de-, pero lo corta Javier.
+
+G3  QUE SE ROMPE EN UN GUION LARGO.                             ABIERTA / CLAUDE
+    Nunca se probo con un guion de diez mil palabras. El seguidor recorre ventanas; la
+    vista dibuja todo. Hay que medirlo antes de que lo encuentre un usuario.
+
+G4  LA PANTALLA NO SE APAGA.                                    ABIERTA / CLAUDE
+    Existe wake lock. Falta comprobar que aguanta veinte minutos en el APK.
+
+G5  LLAMADA ENTRANTE, NOTIFICACION, CAMBIO DE APLICACION.       HECHA
+    24-09-2026: Al irse a segundo plano la toma se corta limpia y al volver se recupera
+    -incompleta si quedo cortada-; el brillo vuelve al del sistema.
+    Que pasa con el microfono y con la posicion cuando la aplicacion se va a segundo plano
+    en medio de una lectura.
+
+G6  SE ACABA EL ESPACIO.                                        HECHA
+    24-09-2026: El cajon de la toma dice cuantos minutos alcanzan con la calidad elegida, y
+    avisa en rojo bajo 2.
+    Con video, pasa. Hoy la aplicacion no lo contempla.
+
+G7  RUIDO AMBIENTE.                                             ABIERTA / CLAUDE
+    Es la queja numero uno de los usuarios de otra aplicacion. Hay que medir como se comporta
+    el nuestro con ruido antes de que lo mida un comprador.
+
+G8  LA COPIA DE SEGURIDAD DE LOS GUIONES.                       ABIERTA / JAVIER
+    Javier la dejo para el final. Si se pierde IndexedDB se pierde todo lo escrito.
+
+G9  EL ALTO DE PANTALLA Y LA BARRA DE GESTOS.                   HECHA
+    24-09-2026: El lienzo usa 100dvh y env(safe-area-inset-*).
+    App.tsx:679 usa 100vh. En Android esa medida no descuenta la barra de estado ni la
+    barra de gestos de abajo: el ultimo renglon puede quedar debajo de donde el dedo
+    desliza. Se corrige con dvh y con env(safe-area-inset-*), y hay que decidirlo antes
+    del APK porque en el navegador del escritorio no se nota.
+
+G10 CUANTOS RENGLONES ENTRAN EN EL TELEFONO MAS CHICO.          ABIERTA / CLAUDE
+    Los telefonos van de unos 360 a 430 puntos de ancho, y de 640 a 950 de alto. La
+    columna en ch y la banda en renglones aguantan solos; lo que cambia es CUANTOS
+    renglones se ven. Hay que mirar la pantalla de lectura en el mas chico y en tableta
+    antes de la tienda, y despues confirmarlo con el informe previo al lanzamiento de
+    Play, que corre la aplicacion en telefonos reales y devuelve capturas.
+
+G11 EL TAMANO DE LETRA DEL SISTEMA.                             ABIERTA / CLAUDE
+    Android tiene un ajuste de accesibilidad que agranda todo el texto, y el WebView lo
+    obedece. Con letra grande del sistema nuestros 24 px salen mas grandes y entran menos
+    renglones. Hay que decidir si lo respetamos -es lo correcto para accesibilidad- o si
+    lo fijamos, porque aca el tamano de letra ya es una opcion del usuario.
+
+
+===============================================================================
+H. LO QUE BLOQUEA Y ES DE JAVIER
+===============================================================================
+
+    TODO ESTE GRUPO QUEDA APARCADO. Javier, 7 de septiembre de 2026: "los temas que
+    indicaste como H dejemoslos para despues pendientes". No se vuelven a plantear hasta
+    que algo los obligue -y lo que los obliga es tener el APK listo, no antes-.
+
+H1  IDENTIFICADOR DEL PAQUETE.                                  ABIERTA / JAVIER
+    Hoy com.teleprompter.app, que es relleno. ES PERMANENTE: cambiarlo despues de publicar
+    es publicar otra aplicacion y perder las instalaciones. Bloquea la tienda.
+
+H2  MODELO DE NEGOCIO.                                          ABIERTA / JAVIER
+    Gratis, pago unico o suscripcion. Si hay cobro dentro de la aplicacion hay que integrar
+    la facturacion de Google Play, que es trabajo aparte.
+
+H3  SI LA LISTA DE LA VERSION 1 ES DEMASIADO LARGA.             ABIERTA / JAVIER
+    Lo imprescindible para que alguien grabe un video es biblioteca, seguimiento por voz,
+    zona de lectura y grabar. Todo lo demas se puede posponer.
+
+H4  LOS 25 DOLARES Y EL RELOJ DE LOS 14 DIAS.                   ABIERTA / JAVIER
+    Se decide con el APK ya listo, no antes.
+
+
+===============================================================================
+LO PRIMERO, EN ORDEN
+===============================================================================
+
+    1. Que Javier corte B1, B2, B3, B4, A1 y B17, que ya estan dibujados y esperando.
+    2. B6 y B7 -donde queda la linea y cuantas se ven-, que son del mismo grupo y se
+       prueban en la misma sesion de camara.
+    3. B11 y B14 -que los controles se vayan, y que se vea que el seguimiento esta vivo-,
+       que son lo que separa esto de una consola de desarrollo.
+    4. E2 y E4, que son baratos y hoy hacen que la aplicacion parezca de laboratorio.
+    5. C1, la primera vez sin ningun guion, que decide si la persona vuelve.
+
+    G3 y G7 -guion largo y ruido ambiente- se miden ANTES de la tienda, no despues, porque
+    son las dos quejas que hunden a la competencia.
+
+
+===============================================================================
+D1. LOS BLOQUES: MEDIA IDEA, PENDIENTE DE CORTE
+===============================================================================
+Anotado el 13 de septiembre de 2026. Javier: "tenemos un agregar bloque, pero no
+entiendo que eso funcione o como lo haria". Lo dejamos pendiente a proposito.
+
+QUE ES UN BLOQUE HOY, mirado en el codigo:
+
+  - SE CREAN SOLOS. Al pegar o importar, importar.ts hace UN BLOQUE POR PARRAFO.
+    El guion de 541 palabras de Javier son 16 bloques sin que el haga nada.
+  - LO UNICO QUE SE PUEDE HACER es subirlos, bajarlos y borrarlos. O sea, mover
+    una seccion sin cortar y pegar.
+  - HAY UN CAMPO MUERTO. El modelo tiene bloque.nombre y TeleprompterView lo
+    dibuja entre corchetes al leer -{bloque.nombre && [{bloque.nombre}]}- pero EN
+    EL EDITOR NO HAY NINGUNA MANERA DE ESCRIBIRLO. La unica aparicion de nombre
+    en EditorView es 'nombre: ""' al crear. Por eso se ven como "Bloque #1",
+    "Bloque #2": un numero, no un nombre.
+
+Hasta hoy tampoco se podia agregar uno: el unico boton vivia dentro de la
+pantalla vacia. Eso ya se arreglo -hay "+ Agregar bloque" al final de la lista,
+fijado por T161-, pero el boton agrega una caja vacia llamada "Bloque #17" y no
+se entiende para que sirve. El arreglo es correcto y la funcion sigue siendo
+media idea.
+
+LAS DOS SALIDAS, Y CORTA JAVIER:
+
+  D1a. LOS BLOQUES DESAPARECEN DE LA PANTALLA. Si se crean solos por parrafo y lo
+       unico que dan es reordenar, el editor es un solo texto y los bloques viven
+       adentro, invisibles. Saca de la vista algo que hoy confunde.
+  D1b. SE COMPLETA LA IDEA. Que se les pueda poner nombre -"Intro", "Cierre"- y
+       que ese nombre sirva al leer: verlo venir, saltar a el. Convierte los
+       bloques en algo util de verdad.
+
+Lo que NO se sostiene es lo de ahora. No es urgente: no impide leer.
+
+
+===============================================================================
+D2. LA ALINEACION DEL TEXTO EN COLUMNA ANGOSTA
+===============================================================================
+Anotado el 13 de septiembre de 2026. Javier: "en angosta no esta centrado el
+texto, sigue orientado desde la izquierda".
+
+MEDIDO en la app publicada, columna angosta, pantalla de 375:
+
+    la CAJA de la columna esta centrada      56 px de hueco a cada lado
+    el TEXTO adentro esta a la izquierda     text-align: start
+
+O sea que la caja esta bien y lo que se ve es el borde derecho desparejo: con
+22ch los renglones son cortos y la bandera derecha queda muy marcada, y eso se
+lee como si el bloque estuviera corrido.
+
+LA DECISION, Y CORTA JAVIER:
+
+  D2a. TEXTO CENTRADO en columna angosta. Es lo habitual en teleprompters: con
+       el renglon corto, centrar mantiene el ojo anclado en el medio, que es
+       donde esta el lente de la camara. El costo es que el borde IZQUIERDO
+       queda desparejo y el ojo tiene que buscar donde empieza cada renglon.
+  D2b. SE QUEDA A LA IZQUIERDA. El borde izquierdo parejo es lo que permite leer
+       de corrido sin buscar el arranque de cada renglon. El costo es el que
+       Javier vio.
+
+No es urgente: no impide leer. Y si se elige D2a, aplica SOLO a la columna
+angosta: en ancho completo el renglon es largo y centrar ahi si molesta.
+
+===============================================================================
+AGREGADOS EL 24 DE SEPTIEMBRE DE 2026
+===============================================================================
+
+A11 LA MARCA Y EL ARRANQUE.                                     CERRADA / 24 sept 2026
+    "Sig" y la bola roja en lugar de la o. El splash: la bola recorre un circulo fino
+    persiguiendo la linea, que se borra detras; aterriza al lado de la g, aparece "Sig"
+    y debajo TELEPROMPTER. La entrada lleva la marca en arco a la barra de la portada y
+    TELEPROMPTER se queda. El trazo es el mismo en el splash, la entrada y la barra.
+
+A12 EL ESTANDAR DE LOS AJUSTES.                                 CERRADA / 24 sept 2026
+    Cajon desde abajo, esquinas redondeadas, sin velo, sin palabras, controles dibujados
+    a todo el ancho. Javier: "deberia imponer un tipo de standar para nuestros otros
+    menu de ajustes". Ya lo tienen el Aa del editor, el engranaje de la toma y el de la
+    portada.
+
+B23 EL PUNTO ROJO DE GRABACION Y LA PAUSA.                      HECHA / 24 sept 2026
+    24-09-2026: arriba a la derecha, a la izquierda de la pausa y alineado con su centro.
+    Anotado en la Tarea 72 -seccion 2.6-: el punto rojo de grabando quedaba tapado por el
+    boton de pausa. No se volvio a mirar despues de que las esquinas pasaran a 40.
+
+D5  EL TECLADO Y LA BARRA LEER / GRABAR.                        ABIERTA / CLAUDE
+    Con el teclado abierto, la barra de Leer y Grabar del editor tapa un renglon del guion.
+    Viene de antes de la Tarea 73.
+
+B24 DETENER A MITAD DEL GUION: CONTINUAR O EMPEZAR DE NUEVO.       ABIERTA / JAVIER
+    Hoy, si se detiene una toma y se aprieta Grabar sin salir de la lectura, la toma nueva
+    sigue desde la palabra donde quedo la anterior; si la persona lee desde el comienzo, el
+    motor la busca ahi y no la encuentra (visto el 24-09-2026: una toma con letra 14 que
+    partio en la palabra 39). Idea de Javier, 24-09-2026: al detener, que se vea que quedo
+    EN PAUSA y que se ofrezca continuar o volver a empezar, "quizas dandole una
+    intermitencia al boton de reinicio". "No lo veamos aun": se dibuja cuando le toque.
+
+M1  EL MOTOR: LO QUE QUEDA POR AFINAR, Y EN QUE SENTIDO.            EN ESPERA / JAVIER
+    24-09-2026: Javier probo el estado actual -"salieron bastante bien"- y pidio dejar
+    anotado hacia donde se podria mejorar, sin hacerlo ahora. Todo medido sobre sus tomas
+    -teleprom/02-lecturas/motor-24-sep-; hoy la voz esta en el renglon de arriba del todo
+    ~83% del tiempo y en el segundo ~17%, que es el momento de cambiar de renglon.
+    a. EL CAMBIO DE RENGLON: la pantalla llega 0,4-0,5 s despues de la voz. ~0,3 s son decir
+       la primera palabra -nadie la reconoce antes- y ~0,14 s Vosk. Techo realista: de 17%
+       a ~12%. Adelantar el cambio por ritmo o por la voz del microfono ya se descarto:
+       corta el renglon que se esta diciendo o gana 0,1 s.
+    b. EL MICROFONO EN LA CUENTA REGRESIVA: en 6 de 16 tomas se perdio "Hay una idea"
+       porque el oido abre al terminar la cuenta. Abrirlo al empezarla lo arregla, pero
+       choca con una decision de la Tarea 16 -el motor no arranca durante la cuenta, y no
+       arranca si se cancela-. La decide Javier.
+    c. EL CAMBIO DE PARRAFO: casi siempre bien; un caso de 1,3 s. Revisar con las tomas.
+    d. LA LECTURA REAL: no literal, salirse del guion, silencios, volver atras. No esta
+       probado: todo lo medido fue leyendo el guion al pie de la letra.
+    e. EL DESTACADO DE 5-6 PALABRAS: esperaba a que el motor fuera exacto; ya tiene base.
+
+P1  AL PUBLICAR: PROTEGER EL CODIGO Y LA MARCA.                    ABIERTA / AL PUBLICAR
+    24-09-2026. Hoy ya viaja protegido por omision: el JavaScript de la APK sale sin
+    comentarios y con los nombres revueltos, sin mapas de fuentes, la app no lleva claves, y
+    el repositorio es privado. Lo que falta, cuando toque pasar a Play:
+    a. Compilar la version de publicacion, no la de desarrollo: sin inspeccion desde el PC
+       y con R8 -achica y revuelve el codigo de Android-.
+    b. La llave de firma de Play: nunca en el repositorio, con respaldo seguro. Perderla es
+       no poder actualizar mas la app.
+    c. Repartir solo la version de Play; la APK que circula hoy es de desarrollo.
+    d. Opcional, si aparecen copias: Play Integrity, para detectar APK modificadas.
+    e. Lo legal: "todos los derechos reservados" en el repositorio y en los terminos de
+       uso; registrar la marca Sigo en INAPI; cumplir las licencias de Vosk y su modelo
+       -dar credito-.
+    La patente guardada en teleprom/01-competencia ya se reviso en su momento, justamente
+    para no copiarla, y Sigo no cae en ella -Javier, 24-09-2026-.
+    f. EL PANEL DE DIAGNOSTICO -25-09-2026, visto con el Robo test de Firebase-: se abre
+       TOCANDO UNA VEZ el titulo del guion en la portada -TarjetaLectura.tsx, onDiagClick-:
+       selector Vosk/Nativo, transcripcion en vivo, Medicion/Panel Corpus. Es herramienta
+       nuestra -Javier: "lo ocupamos mientras nosotros"-: sacarlo del alcance del usuario
+       antes de publicar. Tambien GUARDAR_AUDIO_DEL_OIDO=true en MotorNativo.ts y el correo
+       provisorio hola@ejemplo.com del guion Hola. Detalle en accesibilidad-robo-test-25-sep.txt.
+
+I1  OTROS IDIOMAS: GUIONES EN INGLES Y LA APP EN INGLES.            EN ESPERA / JAVIER
+    25-09-2026. Conversado, NO se avanza todavia -Javier: "no vamos a avanzar en nada de
+    ese aspecto aun"-. Va con la internacionalizacion: dominio sigoteleprompter.com, ficha
+    de Play en ingles, mas idiomas despues.
+    LO QUE YA ESTA: cada guion guarda su idioma -modelo.ts: "NUNCA cablear 'es'"- y el
+    editor lo muestra. El seguidor compara palabras sin saber de idiomas.
+    EL MOTOR NO CAMBIA. "Motor nativo" es Vosk compilado para Android -vosk-android, desde
+    el 14-09-2026, en vez de la version web-, NO el reconocedor de Google. Vosk son dos
+    piezas: el motor, que sirve para cualquier idioma, y el MODELO, el archivo que le
+    ensena uno -hoy vosk-model-small-es-0.42, 41 MB del APK-. Para ingles: el modelo
+    ingles de Vosk, del mismo tamano. El seguidor, la conduccion y el motor de avance son
+    los mismos. El reconocedor de Google -SpeechRecognizer- tiene muchos idiomas pero corta
+    la sesion en los silencios: evaluado el 15-09-2026, docs/motor-notas.txt punto 2.
+    a. GUIONES EN INGLES -primero, es lo que mas vale para un creador bilingue-:
+       - el modelo ingles: recomendado BAJARLO LA PRIMERA VEZ que se lee un guion en ingles
+         -"Descargando ingles, 40 MB", una vez, despues sin internet-; meterlo en el APK
+         lo lleva de 75 a ~115 MB y cada idioma suma 40. MotorNativo.ts hoy ignora el
+         idioma: tiene que elegir el modelo segun guion.idioma.
+       - la lista de palabras que no cierran un subtitulo -ATADAS en subtitulos.ts- esta en
+         espanol: agregar la inglesa -the, of, to, a, and...-.
+       - los guiones nuevos nacen en 'es' -guionNuevo('es') en App.tsx-: elegir el idioma, o
+         detectarlo mirando el texto, que es lo comodo y lo que hacen otras aplicaciones.
+       - MEDIR: el motor se afino con lecturas de Javier en espanol -renglon donde se lee,
+         compensacion, arranque-. El ingles va mas rapido y con palabras mas cortas. Hace
+         falta alguien que lea en ingles: unas tomas, y el resto se repite en el PC con
+         comparar-seguidor.ts como el 24-09-2026.
+    b. LA APP EN INGLES -despues, con la internacionalizacion-: CHICO. No cambia ninguna
+       logica; son ~200 textos de pantalla y traducirlos es una tarde -Javier, 25-09-2026:
+       "me parece bastante ridiculo" presentarlo como trabajo grande-. Lo unico con algo
+       de estructura es juntarlos en un lugar para que la app elija segun el telefono.
+       - la app sigue el idioma del telefono, sin preguntar.
+       - el guion de bienvenida en ingles: escrito, no traducido palabra por palabra -explica
+         leyendo, con los formatos sobre las palabras que los nombran-.
+       - la ficha de Play en ingles, con su texto y sus fotos.
+    Son independientes: un telefono en espanol puede leer un guion en ingles, y al reves.

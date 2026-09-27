@@ -1,0 +1,172 @@
+LO QUE HAY QUE SABER ANTES DE TOCAR SIGO
+Escrito el 25-09-2026 para las sesiones que trabajan en la nube, sin el computador de
+Javier. Es lo que la sesion local sabe de memoria y no esta en el codigo. AGENTS.md es el
+mapa del codigo; esto es el criterio. Lo pendiente vive en docs/decisiones-de-diseno.txt.
+
+
+==============================================================================
+1. EL PRODUCTO
+==============================================================================
+
+  SIGO — TELEPROMPTER DE VOZ. Paquete com.sigoteleprompter.app. Dominio
+  sigoteleprompter.com. Destino: Android en Google Play, con Capacitor. La version
+  web quedo atras el 14-09-2026: el producto es el APK.
+
+  El nombre es exacto, no decorativo: la app va ATRAS de la voz, nunca adelante. El
+  renglon sigue a la evidencia de lo que se dijo. "Tu hablas, yo sigo."
+
+  ES PARA TODO, NO PARA SHORTS. Una clase, una charla, un curso, un video corporativo:
+  cuarenta minutos, horizontal tan seguido como vertical. El dueño tiene otro proyecto
+  de shorts de YouTube; no mezclar sus premisas -un minuto, solo vertical- con Sigo.
+
+  EL QUE LEE MIRA EL LENTE, NO LA PANTALLA. Toma el texto de reojo, en vistazos. Todo
+  lo que se decide de la pantalla de lectura se contesta desde ahi: cuanto se agarra en
+  un vistazo, cuanto cuesta volver a encontrar el lugar.
+
+  TODO OCURRE EN EL TELEFONO. Sin servidor, sin cuentas, sin telemetria. El
+  reconocedor es Vosk compilado para Android -src/motor/MotorNativo.ts y
+  VoskNativoPlugin.java-, con el modelo espanol dentro del APK. Funciona sin internet.
+
+  EN PANTALLA, ESPANOL NEUTRO: sin voseo, sin chilenismos, sin modismos de ningun pais.
+
+  EL REPOSITORIO NO NOMBRA OTRAS APLICACIONES. Ni en codigo, ni en comentarios, ni en
+  pruebas, ni en docs/. Se dice "otra aplicacion". El material de competencia vive en
+  una carpeta privada fuera del repositorio.
+
+
+==============================================================================
+2. CON JAVIER
+==============================================================================
+
+  Javier es el dueño. Chileno: a el se le escribe en castellano de Chile, con TUTEO
+  -"mueves", "dime"-, nunca voseo. SIEMPRE EN ESPANOL, tambien los informes largos con
+  tablas y numeros, que es donde se escapa el ingles.
+
+  PRIMERO SE HABLA, DESPUES SE EJECUTA. Investigar a fondo ya es ejecutar: se dice que
+  se haria y se para hasta que el corte.
+
+  ESCRIBIR AFUERA SE PREGUNTA SIEMPRE: empujar a main, borrar ramas, publicar el sitio,
+  hablarle a otro agente. En la nube: trabajar en una rama y abrir un pull request;
+  a main no se empuja directo.
+
+  NO OFRECERLE LA VERSION DEGRADADA. Si una solucion tropieza, se busca otra que
+  conserve la funcion entera. "En que momento yo acepte bajar el estandar?" Si de
+  verdad no existe ninguna, se dice que no existe y por que, con lo medido.
+
+  NO INVENTAR DEFECTOS. Antes de afirmar un problema: mirar si la dificultad la crea una
+  decision propia, y mirar que dicen todas las evidencias, no solo la que confirma.
+
+  UNA PREGUNTA CORTA ES UNA PREGUNTA: se contesta, no se reabre el plan.
+
+  NO PEDIRLE QUE GRABE A CADA RATO. Se afina con los registros y audios ya guardados;
+  se le pide una lectura solo con una mejora grande y medida, diciendo antes que cifra
+  deberia notarse.
+
+
+==============================================================================
+3. COMO SE TRABAJA EL CODIGO
+==============================================================================
+
+  LOS COMENTARIOS NO SE BORRAN. Ahi vive por que cada numero esta donde esta, y costo
+  dias medirlo. Si el codigo cambia, se actualiza su comentario; si el codigo
+  desaparece de verdad, su comentario se va con el; todo lo demas se queda. Una vez un
+  parche se llevo 313 lineas de comentario y ninguna prueba lo noto.
+
+  CADA VUELTA MAS LIMPIO, SIN CAMPANAS DE LIMPIEZA. No dejar basura nueva: rastros de
+  pruebas que viajan en produccion -como window.__simularBotonAtras-, codigo que era
+  solo de la web, pruebas que fijan un defecto. Lo viejo se saca en su propia tarea.
+
+  EL MOTOR SE TOCA MIDIENDO. Ningun cambio al seguidor, al avance o a la conduccion entra
+  si no mueve el numero sobre lecturas reales. "Deberia sentirse mejor" se devuelve.
+  Las lecturas de referencia estan en src/pruebas/corpus/ -audio y registros sobre el
+  mismo reloj-, y cada toma nueva deja su <id>.motor.txt. Medir: node scripts/
+  medir-toma.mjs <archivo>. Un cambio se evalua sobre todas las tomas, no sobre dos: el
+  25-09 el salto parcial del seguidor se comparo en 28 y dio 27 identicas.
+
+  UN SOLO COMPORTAMIENTO QUE SE ADAPTA. Javier no quiere reglas distintas por
+  combinacion. Tiene que quedar bien con cualquier letra, tamano, ancho de columna,
+  "donde lees", con y sin camara.
+
+  LAS TRES TRAMPAS DE SIEMPRE:
+    a. Centralizar a medias: al sacar una constante a un modulo, buscar el VALOR -no el
+       nombre- en todo src/. Cada copia que quede se nombra en el comentario.
+    b. Una prueba guardiana fija ella misma el estado que necesita; no se apoya en un
+       valor por omision.
+    c. Las busquedas del DOM en pruebas van acotadas al testid del componente.
+  Y T209 -src/pruebas/tarea46.test.tsx- no deja colores ni medidas en linea en varios
+  componentes: los colores van como clase en styles.css. Nunca burlarla con un
+  comentario de excepcion falso.
+
+  LA PANTALLA MANDA SOBRE LA PRUEBA. Las pruebas comprueban que un valor se guarda, no
+  que se vea. Si una medicion en el telefono contradice a una prueba que pasa, primero
+  sospechar que el telefono corre otro codigo -paso con un service worker viejo-.
+
+
+==============================================================================
+4. COMO SE VE
+==============================================================================
+
+  "ELEGANTES Y PROFESIONALES", y lo esencial muy facil de elegir.
+
+  CADA CONTROL MUESTRA SU EFECTO en el momento y en el lugar donde se toca. Un ajuste
+  que no cambia nada a la vista se lee como falso.
+
+  EL CAJON Aa ES EL ESTANDAR de todo menu de ajustes -EditorView.tsx, clases .cajon-aa,
+  .selector-aa, .fila-aa-par-: sale desde abajo, esquinas grandes, SIN velo, sin titulo
+  ni "Listo" ni nombres al lado. Cada control se DIBUJA; los nombres van en aria-label.
+  Controles a todo el ancho, un solo objeto por fila.
+
+  LOS BOTONES FLOTANTES SON UN SOLO OBJETO EN TRES TAMANOS: 32 esquina secundaria, 40
+  esquina principal, 72 accion central -docs/tarea70.txt, seccion 11-. Mismo fondo
+  translucido y btn-deformable. El rojo es solo para grabar. Un control distinto a sus
+  hermanos es un defecto. Ojo: un transform en linea mata el efecto de apretado.
+
+  DEBEMOS TENDER A LO SIMPLE -Javier, 25-09-2026-. Ante la duda, menos texto y menos
+  controles.
+
+
+==============================================================================
+5. DONDE ESTA TODO, AL 25-09-2026 -main 3010863-
+==============================================================================
+
+  HECHO Y EN MAIN, entre otras cosas:
+    - Seguimiento con el renglon vivo arriba del todo, destacado de 4-6 palabras,
+      reconocedor con trozos de 20 ms. Javier: "la mejor mejora hasta ahora".
+    - Subtitulos de la toma: tres estilos cerrados -amarillo, rojo, formal- y "sin",
+      quemados con Media3 -CapaDeSubtitulos.java, src/lib/subtitulos.ts,
+      SubtitulosVisor.tsx-. Una sola copia por toma: al guardar en la galeria se borra la
+      de Sigo; una toma guardada muestra solo Compartir y Borrar.
+    - Vibracion para todos los que tengan la respuesta tactil del telefono activada.
+    - Pagina provisoria en sitio/ -Firebase Hosting, proyecto sigoteleprompter-. La
+      definitiva tiene que estar "al nivel de la app".
+
+  LO QUE MAS PESA ANTES DE PUBLICAR -decisiones-de-diseno.txt, punto P1-:
+    - El panel de diagnostico se abre TOCANDO UNA VEZ el titulo del guion en la portada
+      -TarjetaLectura.tsx, onDiagClick-. Es herramienta nuestra: sacarla del alcance del
+      usuario.
+    - GUARDAR_AUDIO_DEL_OIDO=true en MotorNativo.ts y el correo provisorio
+      hola@ejemplo.com del guion Hola.
+    - Version de publicacion con R8, llave de firma fuera del repositorio.
+
+  OTROS ABIERTOS: accesibilidad -docs/accesibilidad-robo-test-25-sep.txt-, el cambio de
+  parrafo en la lectura, M1 y B24 -en decisiones-de-diseno.txt-, otros idiomas -I1, en
+  espera-. Los iconos public/icon-192/512.png son negros de relleno.
+
+  LOS GUIONES QUE HAY SON DE PRUEBA: no hay usuarios todavia. No volver tema la
+  compatibilidad con lo guardado; si hace falta que un valor viejo no rompa, se resuelve
+  en silencio.
+
+
+==============================================================================
+6. LO QUE UNA SESION EN LA NUBE NO PUEDE HACER
+==============================================================================
+
+  - No hay telefono ni adb: no se instala el APK, no se leen tomas nuevas, no se mira la
+    pantalla real. Lo que dependa de eso se escribe a ciegas y se DICE en el informe.
+  - Probablemente no hay SDK de Android: npm run apk no va a correr. Lo que si:
+    npm ci, npx tsc --noEmit, npm run test, npm run build:android -el APK usa
+    build:android, no build-.
+  - El modelo de Vosk no esta en git -scripts/bajar-modelo.mjs lo baja-.
+  - No hay acceso a la carpeta privada teleprom/ ni a la consola de Firebase o Google.
+  - El trabajo se revisa despues en el computador de Javier, contra el telefono, antes
+    de pasar a main.
