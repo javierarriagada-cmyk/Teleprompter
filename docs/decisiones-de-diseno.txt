@@ -1184,3 +1184,9 @@ I1  OTROS IDIOMAS: GUIONES EN INGLES Y LA APP EN INGLES.            EN ESPERA / 
          leyendo, con los formatos sobre las palabras que los nombran-.
        - la ficha de Play en ingles, con su texto y sus fotos.
     Son independientes: un telefono en espanol puede leer un guion en ingles, y al reves.
+    27-09-2026, JAVIER DECIDE: LA APP VA A FUNCIONAR EN ESPANOL E INGLES. "Es una decision
+    grande": se hace con cuidado y despues. El SITIO va primero, ya: / en espanol y /en en
+    ingles, con selector ES · EN, eleccion automatica la primera vez por el idioma del
+    navegador, el ingles escrito y no traducido, y el telefono de la pagina con un guion en
+    ingles -encargado a la nube en el PR #48-. Javier tiene una traductora que puede grabar
+    las lecturas en ingles que hagan falta, para la pagina y para medir el motor.
