@@ -3,6 +3,7 @@
 //   npm run apk            construye el APK
 //   npm run apk -- poner   construye e instala en lo que este conectado
 //                          -el emulador, o tu telefono por cable-
+//   npm run apk -- distribuir   construye y lo manda a los probadores -Firebase-
 //
 // POR QUE EXISTE ESTE ARCHIVO.
 //
@@ -172,5 +173,36 @@ if (process.argv.includes('poner')) {
     console.log(`Instalado y abierto en ${cual}.`)
   } catch {
     console.error(`\nNo se pudo instalar en ${destino}.`)
+  }
+}
+
+// A LOS PROBADORES, POR FIREBASE APP DISTRIBUTION -27-09-2026-.
+//
+//   npm run apk -- distribuir
+//
+// Sube el APK recien construido al grupo "probadores" del proyecto sigoteleprompter. A cada
+// probador le llega un aviso y actualiza con un toque desde la app Firebase App Tester: se
+// instala encima de la version anterior, conserva sus guiones y tomas, y no deja archivos
+// sueltos en Descargas -en el Redmi de la traductora habia que copiar el APK a mano y buscarlo
+// en la app de archivos-.
+//
+// Los correos de los probadores NO viven aca: estan en el grupo, en la consola de Firebase
+// -App Distribution -> Probadores-. Sumar uno es:
+//   npx firebase-tools appdistribution:testers:add <correo> --group-alias probadores --project sigoteleprompter
+//
+// La nota de la version es el titulo del ultimo commit: lo que cambio, en una linea.
+if (process.argv.includes('distribuir')) {
+  const APP_ID = '1:505619935722:android:449893e0c5d723d98d8293'
+  let nota = 'Version de prueba'
+  try { nota = execSync('git log -1 --pretty=%s', { cwd: RAIZ }).toString().trim() } catch {}
+  // shell de Windows: los argumentos no se escapan solos -DEP0190-; la nota va entre comillas.
+  const notaSegura = `"${nota.replace(/"/g, "'")}"`
+  console.log(`\nSubiendo a los probadores: ${nota}`)
+  try {
+    correr('npx', ['-y', 'firebase-tools', 'appdistribution:distribute', `"${APK}"`, '--app', APP_ID,
+      '--groups', 'probadores', '--release-notes', notaSegura, '--project', 'sigoteleprompter'], RAIZ)
+    console.log('Listo: a los probadores les llega el aviso para actualizar.')
+  } catch {
+    console.error('\nNo se pudo subir a App Distribution: el APK igual quedo construido y en el Escritorio.')
   }
 }
