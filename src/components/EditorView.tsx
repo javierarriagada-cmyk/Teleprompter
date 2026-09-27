@@ -13,6 +13,8 @@ import { familiaLectura } from './estiloLectura'
 import type { Editor } from '@tiptap/react'
 import { Capacitor } from '@capacitor/core'
 import { Clipboard } from '@capacitor/clipboard'
+import { t, useTextos, numeroLocal, TITULO_SIN_NOMBRE, ClaveTexto } from '../textos'
+import { detectarIdioma } from '../lib/detectarIdioma'
 
 // LO QUE HAY COPIADO, EN EL TELEFONO O EN EL NAVEGADOR. En el APK lo lee el plugin oficial
 // de Capacitor -el portapapeles de Android-; en el navegador, la API del navegador. Si no se
@@ -78,7 +80,7 @@ function generarIdBloque(): string {
   return 'b-' + Date.now() + '-' + Math.random().toString(36).substring(2, 9)
 }
 
-// Los nombres de idioma salen de aca para la linea de meta. Hasta la
+// Los nombres de idioma salen de aca para el boton ES / EN del guion. Hasta la
 // Tarea 72 el panel Aa tenia un <select> para elegir el idioma del guion,
 // y se quito: en el APK el motor nativo ignora el idioma -MotorNativo.ts,
 // iniciar()- porque el unico modelo de voz que viaja es el de espanol.
@@ -86,13 +88,15 @@ function generarIdBloque(): string {
 // falso. El producto es para hablantes de espanol -decision del dueno,
 // 23-09-2026-. Guion.idioma se sigue guardando: si algun dia viajan otros
 // modelos, el dato ya esta y el control vuelve.
-const NOMBRE_IDIOMA: Record<string, string> = {
-  es: 'Español',
-  en: 'English',
-  pt: 'Português',
-  fr: 'Français',
-  de: 'Deutsch',
-  it: 'Italiano'
+// EL CONTROL VOLVIO -tarea 75, 27-09-2026-: el modelo ingles viaja en el APK -D3 de
+// docs/ingles.txt- y el guion lleva su idioma, detectado solo al escribir -D2-. Son dos
+// idiomas y un toque los alterna: no hace falta un <select> ni un cajon. Hasta que Claude
+// conecte MotorNativo con el modelo ingles en el telefono, elegir EN todavia no cambia lo
+// que escucha el motor.
+// La linea de meta ya no lleva el nombre del idioma: lo dice el boton, a la vista.
+const NOMBRE_IDIOMA: Record<string, ClaveTexto> = {
+  es: 'idiomaEspanol',
+  en: 'idiomaIngles'
 }
 
 export default function EditorView({
@@ -119,6 +123,7 @@ export default function EditorView({
   style,
   onAnimationEnd
 }: EditorViewProps) {
+  useTextos()
   const [mostrarModalAjustes, setMostrarModalAjustes] = useState(false)
   const refAjustes = useCerrarAfuera(mostrarModalAjustes, () => setMostrarModalAjustes(false))
 
@@ -251,9 +256,17 @@ export default function EditorView({
     setErrorArchivo(null)
 
     try {
+      // El formato se mira antes de importar para poder decirlo en el idioma de la app: el
+      // mensaje de importarArchivo esta en espanol -es de la capa de datos-. Es la misma lista
+      // que acepta importarArchivo: .txt, .md y .docx.
+      if (!/\.(txt|md|docx)$/i.test(file.name || '')) {
+        setErrorArchivo(t('archivoNoSoportado', { nombre: file.name }))
+        return
+      }
       const resultado = await importarArchivo(file)
       if (resultado.bloques.length === 0) {
-        throw new Error('El archivo no contiene texto importable.')
+        setErrorArchivo(t('archivoSinTexto'))
+        return
       }
 
       const textoAInsertar = resultado.bloques.map((b) => b.texto).join('\n\n')
@@ -266,19 +279,22 @@ export default function EditorView({
         ? textoAInsertar
         : textoExistente + '\n\n' + textoAInsertar
 
-      const tituloNuevo = (!guion.titulo || !guion.titulo.trim() || guion.titulo === 'Sin título')
+      const tituloNuevo = (!guion.titulo || !guion.titulo.trim() || guion.titulo === TITULO_SIN_NOMBRE)
         ? resultado.titulo
         : guion.titulo
 
       onChangeGuion({
         ...guion,
+        ...idiomaSegunTexto(textoNuevo),
         titulo: tituloNuevo,
         bloques: [{ ...b0, texto: textoNuevo }],
         modificado: Date.now()
       })
     } catch (err: any) {
-      const mensaje = err?.message || 'Error al importar el archivo'
-      setErrorArchivo(mensaje)
+      // El detalle de importarArchivo -en espanol, capa de datos- va a la consola; en la
+      // pantalla, la frase en el idioma de la app.
+      console.warn('[EditorView] no se pudo importar el archivo:', err)
+      setErrorArchivo(t('archivoNoSeImporto'))
     } finally {
       setCargandoArchivo(false)
     }
@@ -312,12 +328,33 @@ export default function EditorView({
     editor.chain().focus().insertContentAt(to, ']').insertContentAt(from, '[').run()
   }
 
+  // EL IDIOMA DEL GUION SE DETECTA AL ESCRIBIR O PEGAR -D2, tarea 75-. Si el texto dice
+  // otro idioma que el guardado, se cambia; si la persona lo eligio a mano -idiomaElegido-,
+  // se queda como lo dejo. Con menos de 12 palabras o un texto mezclado, detectarIdioma no
+  // decide y el guion se queda con el que tenia.
+  function idiomaSegunTexto(texto: string): { idioma?: string } {
+    if (guion.idiomaElegido) return {}
+    const detectado = detectarIdioma(texto)
+    return detectado && detectado !== guion.idioma ? { idioma: detectado } : {}
+  }
+
+  function handleAlternarIdioma() {
+    hapticaSeleccion()
+    onChangeGuion({
+      ...guion,
+      idioma: guion.idioma === 'en' ? 'es' : 'en',
+      idiomaElegido: true,
+      modificado: Date.now()
+    })
+  }
+
   function handleEditorCambio(nuevoTexto: string, nuevosTramos: TramoFormato[]) {
     const b0 = (guion.bloques && guion.bloques[0])
       ? guion.bloques[0]
       : { id: generarIdBloque(), nombre: '', texto: '', tramos: [] }
     onChangeGuion({
       ...guion,
+      ...idiomaSegunTexto(nuevoTexto),
       bloques: [{ ...b0, texto: nuevoTexto, tramos: nuevosTramos }],
       modificado: Date.now()
     })
@@ -325,8 +362,9 @@ export default function EditorView({
 
   const numPalabras = contarPalabras(guion)
   const numMinutos = Math.round(numPalabras / 150)
-  const nombreIdioma = NOMBRE_IDIOMA[guion.idioma || 'es'] || (guion.idioma || 'es')
-  const resumenMeta = `${numPalabras.toLocaleString('es')} palabras · ${numMinutos > 0 ? numMinutos : 1} min · ${nombreIdioma}`
+  const idiomaGuion = guion.idioma || 'es'
+  const nombreIdioma = NOMBRE_IDIOMA[idiomaGuion] ? t(NOMBRE_IDIOMA[idiomaGuion]) : idiomaGuion
+  const resumenMeta = t('metaEditor', { palabras: numeroLocal(numPalabras), minutos: numMinutos > 0 ? numMinutos : 1 })
 
   useEffect(() => {
     if (!mostrarModalAjustes) return
@@ -403,8 +441,24 @@ export default function EditorView({
           }}
         >
           <IconoAtras tamano={24} />
-          <span>Guiones</span>
+          <span>{t('guiones')}</span>
         </button>
+
+        {/* EL IDIOMA DEL GUION, AL LADO DEL Aa -tarea 75-. Mismo tratamiento que su vecino:
+            un texto que se toca, sin borde ni cajon. Un toque alterna ES y EN y lo deja
+            elegido a mano. Mas chico y en gris que el Aa: se mira una vez, el Aa se usa. */}
+        <div className="fila-editor-derecha">
+          <button
+            type="button"
+            onClick={handleAlternarIdioma}
+            className="btn-deformable boton-aa boton-idioma-guion"
+            data-testid="btn-idioma-guion"
+            data-idioma={idiomaGuion}
+            aria-label={t('idiomaDelGuion', { idioma: nombreIdioma })}
+            title={t('idiomaDelGuion', { idioma: nombreIdioma })}
+          >
+            {idiomaGuion.toUpperCase()}
+          </button>
 
         <button
           onClick={() => {
@@ -421,10 +475,11 @@ export default function EditorView({
           }}
           className="btn-deformable boton-aa"
           data-testid="btn-menu-opciones-editor"
-          title="Ajustes de lectura"
+          title={t('ajustesLectura')}
         >
           Aa
         </button>
+        </div>
       </div>
 
       {/* Titulo es el titulo: Display, editable, sin etiqueta ni recuadro.
@@ -437,11 +492,11 @@ export default function EditorView({
       <div style={{ marginBottom: 'var(--aire-2)' }}>
         <input
           type="text"
-          value={guion.titulo === 'Sin título' ? '' : guion.titulo}
+          value={guion.titulo === TITULO_SIN_NOMBRE ? '' : guion.titulo}
           onChange={(e) => handleTituloChange(e.target.value)}
           onFocus={() => setTituloEnfocado(true)}
           onBlur={() => setTituloEnfocado(false)}
-          placeholder="Título del guion"
+          placeholder={t('tituloDelGuion')}
           className="texto-display"
           data-testid="input-titulo-guion"
           style={{
@@ -566,7 +621,7 @@ export default function EditorView({
               {(setTipoFuente || setColumnaAngosta || setMarginPercent) && (
                 <div className="fila-aa-par">
                   {setTipoFuente && (
-                    <div className="selector-aa selector-aa-lleno" role="group" aria-label="Tipografía">
+                    <div className="selector-aa selector-aa-lleno" role="group" aria-label={t('tipografia')}>
                       {([
                         { valor: 'sans' as const, nombre: 'Sans' },
                         { valor: 'serif' as const, nombre: 'Serif' }
@@ -601,11 +656,11 @@ export default function EditorView({
 
               {/* Colores de lectura: parejas, no dos listas. Fuente: PAREJAS_COLOR. */}
               {setColorFondo && setColorLetra && (
-                <div className="parejas-aa" role="group" aria-label="Colores de lectura">
+                <div className="parejas-aa" role="group" aria-label={t('coloresLectura')}>
                   {[
-                    { fondo: PAREJAS_COLOR[0].fondo, letra: PAREJAS_COLOR[0].letra, label: 'Negro con blanco' },
-                    { fondo: PAREJAS_COLOR[1].fondo, letra: PAREJAS_COLOR[1].letra, label: 'Negro con ámbar' },
-                    { fondo: PAREJAS_COLOR[2].fondo, letra: PAREJAS_COLOR[2].letra, label: 'Blanco con negro' }
+                    { fondo: PAREJAS_COLOR[0].fondo, letra: PAREJAS_COLOR[0].letra, label: t('parejaNegroBlanco') },
+                    { fondo: PAREJAS_COLOR[1].fondo, letra: PAREJAS_COLOR[1].letra, label: t('parejaNegroAmbar') },
+                    { fondo: PAREJAS_COLOR[2].fondo, letra: PAREJAS_COLOR[2].letra, label: t('parejaBlancoNegro') }
                   ].map((p, idx) => {
                     const activo = colorFondo.toUpperCase() === p.fondo.toUpperCase() && colorLetra.toUpperCase() === p.letra.toUpperCase()
                     return (
@@ -654,7 +709,7 @@ export default function EditorView({
             fontWeight: 'bold'
           }}
         >
-          Error al abrir archivo: {errorArchivo}
+          {t('errorAbrirArchivo', { detalle: errorArchivo })}
         </div>
       )}
 
@@ -675,7 +730,7 @@ export default function EditorView({
           <div
             data-testid={`barra-formato-${bloqueUnico.id}`}
             role="toolbar"
-            aria-label="Formato del texto seleccionado"
+            aria-label={t('formatoSeleccion')}
             style={{
               position: 'fixed',
               top: 0,
@@ -710,15 +765,16 @@ export default function EditorView({
                 color: 'var(--color-texto)',
                 cursor: 'pointer'
               }}
-              title="Negrita"
+              title={t('negrita')}
+              aria-label={t('negrita')}
             >
-              N
+              {t('letraNegrita')}
             </button>
             <div style={{ display: 'flex', gap: 'var(--aire-2)', alignItems: 'center' }}>
               {([
-                { color: 'ambar' as const, titulo: 'Ámbar', testid: 'btn-color-ambar' },
-                { color: 'celeste' as const, titulo: 'Celeste', testid: undefined },
-                { color: 'salvia' as const, titulo: 'Verde', testid: undefined }
+                { color: 'ambar' as const, titulo: t('ambar'), testid: 'btn-color-ambar' },
+                { color: 'celeste' as const, titulo: t('celeste'), testid: undefined },
+                { color: 'salvia' as const, titulo: t('verde'), testid: undefined }
               ]).map((c) => (
                 <button
                   key={c.color}
@@ -736,6 +792,7 @@ export default function EditorView({
                     cursor: 'pointer'
                   }}
                   title={c.titulo}
+                  aria-label={c.titulo}
                   data-testid={c.testid}
                 />
               ))}
@@ -748,8 +805,8 @@ export default function EditorView({
               data-testid="btn-destacado"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => aplicarFormatoEnSeleccion({ destacado: true })}
-              title="Destacado"
-              aria-label="Destacado"
+              title={t('destacado')}
+              aria-label={t('destacado')}
             >
               ab
             </button>
@@ -767,9 +824,9 @@ export default function EditorView({
                 cursor: 'pointer',
                 fontSize: 'var(--texto-meta)'
               }}
-              title="Acotación"
+              title={t('acotacion')}
             >
-              [...] Acotación
+              {t('botonAcotacion')}
             </button>
           </div>,
           document.body
@@ -793,7 +850,7 @@ export default function EditorView({
           onCambio={handleEditorCambio}
           onSeleccion={setHayTextoSeleccionado}
           editorRef={editorRef}
-          placeholder={'Escribe el texto...\n\nEj: Hola, hoy te quiero contar cómo usar Sigo para grabar tus videos mirando a la cámara.'}
+          placeholder={t('placeholderGuion')}
           fontSize={fontSize}
           tipoFuente={tipoFuente}
           colorFondo={colorFondo}
@@ -876,7 +933,7 @@ export default function EditorView({
               border: 'none'
             }}
           >
-            Pegar texto
+            {t('pegarTexto')}
           </button>
           <button
             data-testid="btn-abrir-archivo"
@@ -901,7 +958,7 @@ export default function EditorView({
               border: '1px solid var(--color-borde)'
             }}
           >
-            {cargandoArchivo ? 'Leyendo...' : 'Abrir archivo'}
+            {cargandoArchivo ? t('leyendoArchivo') : t('abrirArchivo')}
           </button>
         </div>
       )}
@@ -964,7 +1021,7 @@ export default function EditorView({
             }}
           >
             <IconoEmpezar tamano={16} />
-            <span>Leer</span>
+            <span>{t('leer')}</span>
           </button>
           <button
             className="btn-deformable btn-grabar"
@@ -1004,7 +1061,7 @@ export default function EditorView({
                 flexShrink: 0
               }}
             />
-            <span>Grabar</span>
+            <span>{t('grabar')}</span>
           </button>
         </div>
       )}

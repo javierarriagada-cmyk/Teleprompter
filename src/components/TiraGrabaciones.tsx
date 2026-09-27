@@ -1,6 +1,7 @@
 import React from 'react'
 import { Capacitor } from '@capacitor/core'
 import { ResumenGrabacion } from '../datos/modelo'
+import { t, useTextos, tituloVisible, fechaCortaDosDigitos } from '../textos'
 
 // UNA RUTA DE DISCO TAMBIEN HAY QUE CONVERTIRLA. El WebView no puede abrir
 // /storage/... directo: necesita la direccion que arma convertFileSrc.
@@ -26,10 +27,10 @@ export function formatearDuracionMs(ms: number): string {
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`
 }
 
+// Por idioma desde la tarea 75: 07/09 en espanol, Sep 7 en ingles -textos/index.ts-.
 export function formatearFechaCorta(ts: number): string {
   if (!ts) return ''
-  const d = new Date(ts)
-  return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`
+  return fechaCortaDosDigitos(ts)
 }
 
 import { estiloComprimirPorAviso, useMantenerApretado } from './mantenerApretado'
@@ -69,6 +70,7 @@ function TarjetaToma({
   onPedirBorrar: () => void
   onConfirmarBorrar: () => void
 }) {
+  useTextos()
   const gesto = useMantenerApretado({
     onMantener: () => {
       onPedirMenu()
@@ -93,11 +95,11 @@ function TarjetaToma({
         <div style={{ width: '100%', height: 88, background: 'var(--bg-superficie)', position: 'relative' }}>
           {g.rutaMiniatura ? <img src={srcDeRuta(g.rutaMiniatura)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} /> : <div style={{ width: '100%', height: '100%', background: '#1a1a1a' }} />}
           <span style={{ position: 'absolute', right: 6, bottom: 6, background: 'rgba(0,0,0,0.7)', color: '#fff', fontSize: 11, padding: '1px 5px', borderRadius: 4 }}>{formatearDuracionMs(g.duracionMs)}</span>
-          {g.incompleta && <span data-testid={`marca-incompleta-${g.id}`} style={{ position: 'absolute', left: 6, top: 6, background: 'rgba(180, 40, 40, 0.9)', color: '#fff', fontSize: 10, padding: '1px 5px', borderRadius: 4, fontWeight: 700 }}>incompleta</span>}
-          {g.errorMudo && <span style={{ position: 'absolute', left: 6, bottom: 6, background: 'rgba(180, 40, 40, 0.9)', color: '#fff', fontSize: 10, padding: '1px 5px', borderRadius: 4 }}>sin audio</span>}
+          {g.incompleta && <span data-testid={`marca-incompleta-${g.id}`} style={{ position: 'absolute', left: 6, top: 6, background: 'rgba(180, 40, 40, 0.9)', color: '#fff', fontSize: 10, padding: '1px 5px', borderRadius: 4, fontWeight: 700 }}>{t('incompleta')}</span>}
+          {g.errorMudo && <span style={{ position: 'absolute', left: 6, bottom: 6, background: 'rgba(180, 40, 40, 0.9)', color: '#fff', fontSize: 10, padding: '1px 5px', borderRadius: 4 }}>{t('sinAudio')}</span>}
         </div>
         <div style={{ padding: '6px 8px', textAlign: 'left', color: 'var(--color-texto)', fontSize: 'var(--texto-meta)' }}>
-          <div style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{g.tituloGuion || 'Toma'}</div>
+          <div style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{g.tituloGuion ? tituloVisible(g.tituloGuion) : t('toma')}</div>
           <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>{formatearFechaCorta(g.creado)}</div>
         </div>
       </button>
@@ -114,10 +116,10 @@ function TarjetaToma({
             }}
             style={{ background: 'transparent', border: 'none', color: confirmando ? '#e11d2e' : 'var(--color-texto)', fontWeight: confirmando ? 700 : 600, fontSize: 'var(--texto-meta)', cursor: 'pointer', padding: '4px 0' }}
           >
-            {confirmando ? '¿Seguro?' : 'Eliminar'}
+            {confirmando ? t('seguro') : t('eliminar')}
           </button>
           <button type="button" onClick={(e) => { e.stopPropagation(); onCerrarMenu() }} style={{ background: 'transparent', border: 'none', color: 'var(--color-apagado)', fontSize: 'var(--texto-meta)', cursor: 'pointer', padding: '4px 0' }}>
-            Cerrar
+            {t('cerrar')}
           </button>
         </div>
       )}
@@ -126,6 +128,7 @@ function TarjetaToma({
 }
 
 export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar }: Props) {
+  useTextos()
   const [menuId, setMenuId] = React.useState<string | null>(null)
   const [confirmando, setConfirmando] = React.useState<string | null>(null)
   const temporizador = React.useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -141,12 +144,12 @@ export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar }: Prop
     <div data-testid="tira-grabaciones" style={{ marginTop: 'var(--aire-5)', marginBottom: 'var(--aire-3)' }}>
       {/* "Videos" y no "Tomas": hermano de "Guiones" en la portada, mismo
           escalon y mismo peso. */}
-      <div className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-3)', fontWeight: 600 }}>Videos</div>
+      <div className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-3)', fontWeight: 600 }}>{t('videos')}</div>
       {/* SIN VIDEOS, UNA LINEA -27-09-2026-. El titulo solo, sin nada debajo, se leia como algo
           roto o a medio cargar. Una auditoria proponia dibujo, titulo y dos lineas; Javier eligio
           una linea que diga donde van a quedar. */}
       {(!grabaciones || grabaciones.length === 0) ? (
-        <div data-testid="videos-vacio" className="texto-meta" style={{ color: 'var(--color-apagado)' }}>Tus videos aparecerán aquí.</div>
+        <div data-testid="videos-vacio" className="texto-meta" style={{ color: 'var(--color-apagado)' }}>{t('videosVacio')}</div>
       ) : (
         <div style={{ display: 'flex', gap: 'var(--aire-3)', overflowX: 'auto', paddingBottom: 'var(--aire-2)', WebkitOverflowScrolling: 'touch' }}>
           {grabaciones.map((g) => (

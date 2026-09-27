@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { MotorDeAvance } from '../lib/avance'
+import { t, useTextos } from '../textos'
 
 export interface BarraDeTiempoProps {
   motorAvance: MotorDeAvance | null
@@ -121,6 +122,7 @@ export default function BarraDeTiempo({
   tInicioLecturaMs,
   vistaPrevia = false
 }: BarraDeTiempoProps) {
+  useTextos()
   const [ahora, setAhora] = useState<number>(() => performance.now())
 
   useEffect(() => {
@@ -148,7 +150,7 @@ export default function BarraDeTiempo({
         <Pastilla
           texto={`${formatearTiempo(0)} / ${formatearTiempo(totalSeg)}`}
           progresoPct={0}
-          etiqueta="duración estimada del guion"
+          etiqueta={t('duracionEstimada')}
           testid="barra-tiempo-previa"
           conTestidsDeProgreso={false}
         />
@@ -171,7 +173,7 @@ export default function BarraDeTiempo({
     <Pastilla
       texto={`${formatearTiempo(transcurridoSeg)} / ${formatearTiempo(totalEstimadoSeg)}`}
       progresoPct={progresoPct}
-      etiqueta="tiempo transcurrido y total estimado"
+      etiqueta={t('tiempoTranscurrido')}
       conTestidsDeProgreso={true}
     />
   )
