@@ -41,6 +41,18 @@ codigo. Quedan corregidas abajo, cada una marcada CORREGIDO.
   lectura, "adb shell uiautomator dump" -solo lee, un minuto- dice que vista
   es y si tiene contenido adentro. Recien ahi se sabe si hay algo que hacer.
 
+  VERIFICADO EL 27-09-2026 -uiautomator dump en el moto g86, APK de ese dia-:
+  en LEER no aparece. En GRABAR si: debajo de la WebView hay DOS FrameLayout
+  nativos a pantalla completa -[0,0][1220,2712]-, los dos "clickable", sin
+  etiqueta, y adentro el TextureView de la camara. Es el contenedor de la
+  vista previa del plugin de camara -la ruta calza con la del informe:
+  content/ViewGroup/FrameLayout/FrameLayout-. Con TalkBack, quien graba
+  encontraria dos "botones" sin nombre que no hacen nada. Es el mismo hallazgo
+  que el punto 2.
+  ARREGLO PROBABLE, SIN HACER: al montar la vista previa, marcar esos dos
+  contenedores como no importantes para accesibilidad y no tocables
+  -setImportantForAccessibility(NO), setClickable(false)-, del lado nativo.
+
 
 ==============================================================================
 2. ADVERTENCIA: DOS ELEMENTOS TOCABLES EN EL MISMO LUGAR
@@ -59,6 +71,16 @@ codigo. Quedan corregidas abajo, cada una marcada CORREGIDO.
   responde al toque -el contenedor del texto, o una vista nativa-, son dos
   tocables apilados. Se resuelve con el mismo "uiautomator dump" del punto 1.
   No es un defecto visible: no se toca hasta saber que es.
+
+  VERIFICADO EL 27-09-2026: son los dos FrameLayout de la camara del punto 1 -en
+  GRABAR, apilados y los dos "clickable"-. El candidato de arriba no era: el
+  onClick del contenedor de lectura no aparece como tocable para Android.
+
+  Y UN HALLAZGO MAS, del mismo volcado: en LEER, la portada sigue en el arbol
+  de accesibilidad debajo de la lectura -"Leer", "Grabar", "Ajustes de la
+  app", las filas de guiones y las tomas-. TalkBack las leeria y dejaria
+  tocarlas aunque no se ven. En GRABAR no pasa. No se ve en pantalla: queda
+  anotado, sin tocar.
 
 
 ==============================================================================
@@ -133,6 +155,8 @@ RESUMEN PARA DECIDIR
   tocando el titulo de la portada -punto 5-.
   PARA DECIDIR MIRANDO: el velo de abajo y el contraste -punto 4-, sobre todo
   con fondo blanco.
+  VERIFICADOS EL 27-09-2026 -ver 1 y 2-: la camara nativa en GRABAR, y la
+  portada que queda en el arbol en LEER. Antes decia:
   PENDIENTE DE UN MINUTO CON EL TELEFONO: que son los puntos 1 y 2 -dump de
   la pantalla de lectura-. Nada que tocar antes de saberlo.
 
