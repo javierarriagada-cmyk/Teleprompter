@@ -92,6 +92,25 @@ nivel". Punto I1 de docs/decisiones-de-diseno.txt.
            actividad no se reinicia.
     FALTA  las lecturas en ingles de la traductora, y con ellas la normalizacion medida.
 
+  MEDIDO EL 27-09-2026 -7 tomas de la traductora en un Redmi 13C, ingles como segundo idioma;
+  banco en teleprom/02-lecturas/ingles-27-sep/banco-guion.py, el audio exacto del telefono en
+  trozos de 20 ms-. La cifra que manda es "guion reconocido en orden":
+    - El seguimiento se porta como en espanol cuando el reconocedor oye bien: atraso mediano
+      menos de una palabra, dos tercios del tiempo en el renglon objetivo.
+    - Las contracciones -don't, you're, it's- NO son el problema: calzan.
+    - DESCARTADO restringir Vosk a las palabras del guion -gramatica-: empeora en los dos
+      idiomas. Ingles 685 -> 613 palabras en orden; espanol -12 lecturas de Javier- 1223 ->
+      882. Cuando duda, elige una palabra del guion que no corresponde.
+    - DESCARTADO el modelo ingles grande -vosk-model-en-us-0.22-lgraph, 125 MB comprimido,
+      205 MB desempaquetado-: 685 -> 700 palabras en orden, pero 140 -> 390 ms de atraso por
+      palabra y apenas tiempo real en el PC. Mismo 79% de lo oido en el guion que el chico.
+    - OJO CON LA COMPARACION: las tomas de ella tienen errores e improvisaciones a proposito;
+      las de Javier son lecturas de corrido. Hacen falta 2 lecturas limpias del "Hi" para
+      comparar con la misma vara.
+    - PENDIENTE, REVISION DEL RECONOCEDOR: Vosk se eligio cuando Sigo era web y no se
+      reviso al pasar a APK. Medir sherpa-onnx -reconocedores modernos para telefono, 20 a
+      70 MB- con este mismo banco, en los DOS idiomas, antes de decidir.
+
 
 ==============================================================================
 4. GLOSARIO -manda en toda la app-
