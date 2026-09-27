@@ -76,6 +76,10 @@ export function formatearTextoResumen(guiones: ResumenGuion[]): string {
 // GESTO DE OPCIONES DE DESARROLLADOR / DIAGNÓSTICO (Tarea 74, P1f de decisiones-de-diseno.txt).
 // Cinco toques rápidos sobre la marca abren y cierran la franja de diagnóstico.
 // Herramienta interna para no abrir el diagnóstico de forma accidental con toques involuntarios.
+// Hasta el 27-09-2026 la abria UN toque en el titulo de la tarjeta: la encontro el robot de
+// pruebas de Google y se abrio sin querer en el telefono. ES UN PASO INTERMEDIO: antes de
+// publicar, el panel de diagnostico se elimina entero -Javier: "despues tenemos que
+// eliminarlo"-.
 const TOQUES_PARA_DIAGNOSTICO = 5
 const MS_ENTRE_TOQUES_DIAGNOSTICO = 600
 
@@ -520,6 +524,9 @@ export default function BibliotecaView({
 
     return !g.archivado
   })
+
+  // -24-09-2026: aca vivian el toque largo, el clic y el menu contextual de la fila vieja. La
+  // fila ahora es FilaGuion, con sus propios manejadores; estos habian quedado sin uso.
 
   function handleToqueMarcaDiag() {
     const ahora = Date.now()

@@ -129,7 +129,8 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
     })
 
     // NO se vuelve a tocar la marca: la puerta de diagnostico CONMUTA, no
-    // abre.
+    // abre. El menu viejo se podia abrir dos veces sin consecuencia; estos
+    // toques cerrarian la franja que ya quedo abierta en el paso 1.
     const checkboxActual = (screen.getByText('Ver transcripción en vivo').closest('label') as HTMLLabelElement)
       .querySelector('input[type="checkbox"]') as HTMLInputElement
     await act(async () => {
