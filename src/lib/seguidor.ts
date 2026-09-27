@@ -1,4 +1,5 @@
 import leven from 'leven'
+import { suenanParecido } from './fonetica'
 import { Guion } from '../datos/modelo'
 import { esCaracterApertura, esCaracterCierre } from './acotaciones'
 
@@ -206,7 +207,13 @@ function similar(a: string, b: string): boolean {
   return leven(a, b) <= tolerancia
 }
 
-export function crearSeguidor(tokens: Token[]): Seguidor {
+// EL IDIOMA DEL GUION -28-09-2026, docs/ingles.txt-: en ingles, dos palabras que no se parecen
+// por letras tambien calzan si SUENAN parecido -fonetica.ts-. En espanol no cambia nada: la
+// comparacion es exactamente la de siempre -las 28 tomas de Javier dan lo mismo, byte a byte-.
+export function crearSeguidor(tokens: Token[], opciones: { idioma?: string } = {}): Seguidor {
+  const parecidas = opciones.idioma === 'en'
+    ? (a: string, b: string) => similar(a, b) || suenanParecido(a, b)
+    : similar
   const frecuencia = new Map<string, number>()
   for (const t of tokens) {
     if (t.esAcotacion) continue
@@ -273,7 +280,7 @@ export function crearSeguidor(tokens: Token[]): Seguidor {
         }
 
         if (currTokenIdx < tokens.length) {
-          if (similar(frase[i], tokens[currTokenIdx].palabra)) {
+          if (parecidas(frase[i], tokens[currTokenIdx].palabra)) {
             coincidencias++
             evidencia += pesoDe(tokens[currTokenIdx].palabra)
             racha++

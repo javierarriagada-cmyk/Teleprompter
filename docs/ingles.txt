@@ -151,6 +151,21 @@ nivel". Punto I1 de docs/decisiones-de-diseno.txt.
            oyo Vosk -.motor.txt- y lo que mostro la pantalla cuadro a cuadro: es lo que ve
            ella, no lo que calcula la app. Esa toma se suma a la base.
         5. ENTRA A MAIN solo si 3 y 4 dan bien.
+      HECHO 0-3 -28-09-2026, rama ingles-fonetica; herramienta teleprom/02-lecturas/ingles-27-
+      sep/medir-repeticion.ts, DIAG=1 para el diagnostico-:
+        - Diagnostico: 12 perdidas en 9 tomas -la larga, donde ella movio el texto a mano,
+          queda fuera: la repeticion no reproduce eso-. 5 al arrancar -"read this out loud"
+          oido "write these are allowed"-; las otras, frases con varias confusiones de sonido
+          -"pace/base", "words/wars", "shows/chose", "anything/and of thank"-.
+        - src/lib/fonetica.ts -Metaphone- y crearSeguidor(tokens, { idioma }): en ingles
+          calzan tambien las que suenan parecido; palabras de menos de 3 letras nunca. La regla
+          contra saltos falsos sigue pidiendo palabras IDENTICAS.
+        - Ingles: perdidas 12 -> 9, 44,6 -> 31,3 s -30%-; adelantada 0 -> 0.
+        - Espanol, 28 tomas: calces y pantalla IDENTICOS byte a byte.
+        - Pruebas F1-F3 y S1-S2 -src/pruebas/fonetica.test.ts-; S1 rota a proposito: falla.
+        - La cabecera del registro de cada toma anota el idioma del guion.
+        - Lo que queda: tramos en que Vosk casi no entrego nada, o confusiones que ni por
+          sonido se parecen -"bold"/"ball"-. No se fuerzan: aflojar mas arriesga saltos.
     - PENDIENTE, REVISION DEL RECONOCEDOR, SOLO PARA EL INGLES. Vosk se eligio cuando Sigo
       era web y no se reviso al pasar a APK. Javier, 27-09-2026: "en espanol el asunto esta
       solucionado" -el espanol queda con Vosk, no se toca-. Medir sherpa-onnx -reconocedores

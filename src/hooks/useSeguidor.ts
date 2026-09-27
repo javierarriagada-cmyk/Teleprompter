@@ -59,7 +59,8 @@ export function useSeguidor(guionEntrada: Guion | string) {
     const limitesDeBloque = Array.from(limitesBloqueMap.values()).sort((a, b) => a - b)
 
     const motor = crearMotorDeAvance(undefined, limitesDeLinea, limitesDeBloque)
-    seguidorRef.current = crearSeguidor(tokens)
+    // El idioma del guion: en ingles el seguidor tambien compara por sonido -seguidor.ts-.
+    seguidorRef.current = crearSeguidor(tokens, { idioma: guion.idioma })
     motorAvanceRef.current = motor
     setMotorAvance(motor)
     registroRef.current = crearRegistro()

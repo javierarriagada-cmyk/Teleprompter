@@ -1098,6 +1098,9 @@ export default function App({ motor, repoOverride }: AppProps) {
               `# letra: ${fontSize} px, ${tipoFuente}`,
               `# columna: ${columnaAngosta ? 'angosta' : 'completa'}, margen ${marginPercent}%`,
               `# donde lees: ${anclajeZona}`,
+              // El idioma del guion -28-09-2026-: elige el reconocedor y, en ingles, la
+              // comparacion por sonido del seguidor. Sin esto habia que deducirlo del texto.
+              `# idioma: ${guionActual ? guionActual.idioma : '?'}`,
               '# ---------- GUION, TAL CUAL SE LEYO ----------',
               ...(guionActual ? guionActual.bloques.map((b) => b.texto) : []).join('\n').split('\n').map((l) => `# | ${l}`),
               '# ---------------------------------------------'
