@@ -126,6 +126,31 @@ nivel". Punto I1 de docs/decisiones-de-diseno.txt.
       Si se mejora el ingles, es por el seguidor -aprovechar lo que Vosk oye mal pero
       parecido: "wars" por "words", "decks" por "text"-, no cambiando de reconocedor. Volver
       a mirar Moonshine si llega a actualizar mas seguido.
+    - PLAN DE LA MEJORA DEL SEGUIDOR EN INGLES -28-09-2026, acordado con Javier-. Lo hace
+      Claude: es el motor, se mide en el PC y se prueba en el telefono.
+        0. LA BASE. Las 10 tomas de la traductora -7 con pruebas y 3 limpias- repetidas en el
+           PC con comparar-seguidor.ts -la misma conduccion de la app- y medidas con
+           medir-toma.mjs. Se suma un numero que hoy no esta: EPISODIOS DE PERDIDA -tramos en
+           que la pantalla va mas de 3 palabras atras de la voz por mas de 2 s-, que es lo
+           que ella sintio como "no me siguio".
+        1. DIAGNOSTICO. En cada episodio, que dijo ella, que oyo Vosk y por que el seguidor no
+           calzo: palabra oida parecida por sonido -"wars"/"words"-, palabra que Vosk no oyo,
+           o ella fuera del guion. Sin este paso no se sabe que arreglar.
+        2. LA MEJORA. Hoy similar() -seguidor.ts- acepta dos palabras si difieren en una letra
+           cada cuatro: "wars" y "words" difieren en dos y no calzan. Para guiones en ingles,
+           si no se parecen por letras, se comparan por SONIDO: una clave fonetica del ingles
+           -Metaphone, escrito en el repo, sin dependencias nuevas-. El seguidor necesita saber
+           el idioma del guion -Guion.idioma-. En espanol no cambia nada: la comparacion por
+           sonido no se activa.
+        3. MEDIR ANTES DE ENTRAR. Las 10 tomas en ingles, antes y despues: tienen que bajar
+           los episodios de perdida y el atraso sin aparecer saltos falsos -SALTO_PARCIAL_SIN_
+           EXACTAS-. Las 28 tomas de Javier en espanol: salida IDENTICA, byte a byte.
+        4. VALIDACION EN VIVO. Con la APK mejorada, la traductora lee el "Hi" completo con
+           Record en el Redmi mientras Claude graba la pantalla por adb -screenrecord, 3 min
+           por archivo-. Se juntan en una linea de tiempo su voz -video de la toma-, lo que
+           oyo Vosk -.motor.txt- y lo que mostro la pantalla cuadro a cuadro: es lo que ve
+           ella, no lo que calcula la app. Esa toma se suma a la base.
+        5. ENTRA A MAIN solo si 3 y 4 dan bien.
     - PENDIENTE, REVISION DEL RECONOCEDOR, SOLO PARA EL INGLES. Vosk se eligio cuando Sigo
       era web y no se reviso al pasar a APK. Javier, 27-09-2026: "en espanol el asunto esta
       solucionado" -el espanol queda con Vosk, no se toca-. Medir sherpa-onnx -reconocedores
