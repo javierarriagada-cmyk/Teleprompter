@@ -107,6 +107,16 @@ nivel". Punto I1 de docs/decisiones-de-diseno.txt.
     - OJO CON LA COMPARACION: las tomas de ella tienen errores e improvisaciones a proposito;
       las de Javier son lecturas de corrido. Hacen falta 2 lecturas limpias del "Hi" para
       comparar con la misma vara.
+    - LECTURAS LIMPIAS -3 tomas, 26 a 39 s, teleprom/02-lecturas/ingles-27-sep/limpias-: con
+      el Vosk de hoy, 83,4% de lo oido esta en el guion y 66% se reconoce en orden, contra
+      96,6% y 92% en espanol. La diferencia es real: el reconocedor ingles oye peor esa voz.
+      El seguimiento, igual, va bien en 2 de las 3 -atraso mediano 0,8 palabras, 75 y 84% en
+      el renglon objetivo-; la tercera, 1,8 y 55%.
+    - SIGUIENTE -investigado el 27-09-: medir con estas lecturas Moonshine v2 Tiny -~26 MB,
+      solo ingles, hecho para transcribir en vivo en telefonos, libreria Android oficial- y
+      sherpa-onnx Zipformer 20M -~42 MB int8- contra el Vosk de hoy, con banco-guion.py.
+      Comprobar tambien que entreguen parciales mientras se habla y el tiempo de cada
+      palabra -los subtitulos lo necesitan-.
     - PENDIENTE, REVISION DEL RECONOCEDOR, SOLO PARA EL INGLES. Vosk se eligio cuando Sigo
       era web y no se reviso al pasar a APK. Javier, 27-09-2026: "en espanol el asunto esta
       solucionado" -el espanol queda con Vosk, no se toca-. Medir sherpa-onnx -reconocedores
