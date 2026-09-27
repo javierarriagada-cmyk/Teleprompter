@@ -1522,8 +1522,6 @@ export default function App({ motor, repoOverride }: AppProps) {
             setMedirLectura={setMedirLectura}
             tema={tema}
             setTema={setTema}
-              colorFondo={colorFondo}
-              colorLetra={colorLetra}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
             grabaciones={grabaciones}
             onAbrirGrabacion={(g) => setGrabacionAbierta(g)}

@@ -1278,8 +1278,11 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
+    // Acotado a la lista: desde el 27-09-2026 los titulos de seccion "Guiones" y "Videos"
+    // tambien son .texto-titulo, y buscando en todo el contenedor se contaban como guiones.
     const obtenerTitulosVisibles = () => {
-      const divs = Array.from(container!.querySelectorAll('.texto-titulo'))
+      const lista = container!.querySelector('[data-testid="lista-guiones-biblioteca"]')
+      const divs = Array.from(lista ? lista.querySelectorAll('.texto-titulo') : [])
       return divs.map((d) => d.textContent?.trim() || '').filter((t) => t.length > 0)
     }
 
