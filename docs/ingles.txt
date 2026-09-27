@@ -166,6 +166,9 @@ nivel". Punto I1 de docs/decisiones-de-diseno.txt.
         - La cabecera del registro de cada toma anota el idioma del guion.
         - Lo que queda: tramos en que Vosk casi no entrego nada, o confusiones que ni por
           sonido se parecen -"bold"/"ball"-. No se fuerzan: aflojar mas arriesga saltos.
+        - A MAIN el 28-09-2026 por decision de Javier: "si mejoro con lo que hiciste, subelo".
+          El paso 4 -sesion en vivo con grabacion de pantalla- queda para mas adelante, como
+          validacion de lo que ya esta en main.
     - PENDIENTE, REVISION DEL RECONOCEDOR, SOLO PARA EL INGLES. Vosk se eligio cuando Sigo
       era web y no se reviso al pasar a APK. Javier, 27-09-2026: "en espanol el asunto esta
       solucionado" -el espanol queda con Vosk, no se toca-. Medir sherpa-onnx -reconocedores
