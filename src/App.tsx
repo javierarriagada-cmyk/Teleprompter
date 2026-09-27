@@ -277,6 +277,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   // MARGEN 5% POR OMISION. Javier lo eligio mirando, el 13 de septiembre de 2026: puso 5 y
   // dijo que asi queda bien. Con el tope de 90% que lleva la columna por dentro, 5% de
   // padding deja el texto en el 81% del ancho de la pantalla. Estaba en 10, que da 72%.
+  // Desde el 27-09-2026 el tope es 93% -estiloLectura.ts- y el texto queda en ~83,5%.
   const [marginPercent, setMarginPercent] = useState<number>(ajustesPrevios.marginPercent !== undefined ? Number(ajustesPrevios.marginPercent) : 5)
   const [mirror, setMirror] = useState<boolean>(Boolean(ajustesPrevios.mirror))
   const [lineasZona] = useState<number>(ajustesPrevios.lineasZona !== undefined ? Number(ajustesPrevios.lineasZona) : 3)

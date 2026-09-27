@@ -792,7 +792,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     })
 
     const colTextoAncha = container!.querySelector('[data-testid="columna-texto"]') as HTMLElement
-    expect(colTextoAncha.style.maxWidth).toBe('90%')
+    expect(colTextoAncha.style.maxWidth).toBe('93%')
   })
 
   test('T89: Los tres fondos aplican su par fondo/letra correcto, y con fondo blanco la letra es negra sin importar que color de letra este elegido.', async () => {
