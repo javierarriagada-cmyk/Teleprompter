@@ -9,33 +9,39 @@
 //
 // La lectura del telefono NO va con el scroll: corre con su reloj, con los tiempos del JSON,
 // como corre en la aplicacion. El scroll decide que se ve de ella.
+//
+// CORRECCION DEL 27-09-2026, revisada en un telefono de 390 px: tramos mas cortos -8,5
+// pantallas, eran 10,9-, sin tiempos muertos: el texto de una escena entra mientras sale el de
+// la anterior, y en cada tramo algo se mueve. Cada capitulo cambia el entorno -su luz- y algo
+// del telefono -pose, pantalla-. En el celular el telefono es mas grande.
 
 import { Pantalla, Reloj } from './pantalla.js'
 import { Onda } from './onda.js'
 
 // [escena, desde, hasta, mejor cuadro -el que se muestra quieto con movimiento reducido-]
 const ESCENAS = [
-  [0, 0, 0.6, 0],
-  [1, 0.6, 2.2, 1.9],
-  [2, 2.2, 3.9, 3.45],
-  [3, 3.9, 5.6, 5.45],
-  [4, 5.6, 7.5, 6.3],
-  [5, 7.5, 9.5, 8.3],
-  [6, 9.5, 10.9, 10.7]
+  [0, 0, 0.45, 0],
+  [1, 0.45, 1.55, 1.3],
+  [2, 1.55, 3.05, 2.7],
+  [3, 3.05, 4.3, 4.2],
+  [4, 4.3, 5.6, 4.85],
+  [5, 5.6, 7.25, 6.1],
+  [6, 7.25, 8.5, 8.3]
 ]
-const TOTAL = 10.9
+const TOTAL = 8.5
 // Donde deja el scroll cada capitulo de la pildora.
-const CAPITULOS = { 1: 1.3, 2: 3.0, 3: 5.4, 4: 6.0, 5: 8.1, 6: 10.6 }
+const CAPITULOS = { 1: 1.1, 2: 2.35, 3: 4.1, 4: 4.8, 5: 6.1, 6: 8.2 }
 // Los formatos se pintan en E3, uno tras otro, y quedan.
-const PINTA = [['negrita', 4.45], ['ambar', 4.65], ['celeste', 4.85], ['salvia', 5.05], ['destacado', 5.25]]
-const GRABA = [6.75, 7.55]
-const LENTE = [6.0, 6.6]
-const VIDEO = [7.8, 9.55]
-const ESTILOS = [['amarillo', 7.5], ['rojo', 8.6], ['formal', 9.05]]
+const PINTA = [['negrita', 3.35], ['ambar', 3.5], ['celeste', 3.65], ['salvia', 3.8], ['destacado', 3.95]]
+const GRABA = [5.0, 5.65]
+const LENTE = [4.55, 5.0]
+const VIDEO = [5.75, 7.3]
+const ESTILOS = [['amarillo', 5.6], ['rojo', 6.3], ['formal', 6.8]]
 // Sin internet: las cuatro barras se apagan de a una, despues el wifi, despues el avion.
-const SENAL = [10.0, 10.1, 10.2, 10.3]
-const SIN_WIFI = 10.4
-const AVION = 10.5
+const SIN_INTERNET = 7.4
+const SENAL = [7.5, 7.6, 7.7, 7.8]
+const SIN_WIFI = 7.9
+const AVION = 8.0
 
 const escenaEn = (p) => (ESCENAS.find((e) => p < e[2]) || ESCENAS[ESCENAS.length - 1])[0]
 
@@ -54,6 +60,7 @@ export function iniciarEscenas(datos) {
   ScrollTrigger.config({ ignoreMobileResize: true })
 
   const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const tactil = window.matchMedia('(pointer: coarse)').matches
   const $ = (s, r = document) => r.querySelector(s)
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s))
 
@@ -76,8 +83,11 @@ export function iniciarEscenas(datos) {
   const video = $('.video', telSigo)
   const capaSub = $('.capa-subtitulos', telSigo)
   const subEl = $('.subtitulo', capaSub)
+  const estiloVideo = $('.video-estilo', telSigo)
   const barraVideo = $('.video-barra i', telSigo)
-  const barras = $$('.senal i', telSigo)
+  const tiempoVideo = $('.video-tiempo', telSigo)
+  const totalVideo = $('.video-total', telSigo)
+  const barras = [...$$('.senal i', telSigo), ...$$('.senal-grande i', telSigo)]
   const canvas = $('.onda')
 
   const sigo = new Pantalla(telSigo, datos)
@@ -101,22 +111,34 @@ export function iniciarEscenas(datos) {
     h.innerHTML = h.textContent.trim().split(/\s+/).map((w) => `<span class="p">${w}</span>`).join(' ')
   })
 
-  // Los relojes. La lectura entera da vueltas; E2 da vueltas sobre el tramo de la pausa de
-  // pensar: seis segundos antes, la pausa, y cuatro despues.
+  // Los relojes. La lectura entera da vueltas. E2 da vueltas sobre la pausa de pensar: dos
+  // segundos antes -que la pausa llegue enseguida-, la pausa, y un poco despues. E3 sobre el
+  // comienzo, donde estan los formatos. E5 sobre el primer parrafo, que se habla sin pausas
+  // largas: siempre hay un subtitulo en pantalla.
   const relojLectura = new Reloj(0, datos.hastaMs, { antes: 700, despues: 2600 })
-  const pausa = datos.pausa || [datos.hastaMs / 2, datos.hastaMs / 2 + 2000]
-  const relojE2 = new Reloj(pausa[0] - 6500, pausa[1] + 4200, { antes: 250, despues: 1500 })
+  const pausa = datos.pausa || [datos.hastaMs / 2, datos.hastaMs / 2 + 2000, 0]
+  const relojE2 = new Reloj(pausa[0] - 2400, pausa[1] + 2600, { antes: 200, despues: 1400 })
   comun.ponerFijo(relojE2.desde)
-  // E3 da vueltas sobre el comienzo, para que los formatos se pinten donde se ven.
   const relojE3 = new Reloj(0, 9500, { antes: 500, despues: 1800 })
+  const relojE5 = new Reloj(300, 16500, { antes: 200, despues: 900 })
+  // La frase que tocaba decir despues de la pausa: hasta el primer punto.
+  const fraseTocaba = (() => {
+    const desde = pausa[2] + 1
+    let hasta = desde
+    const palabras = $$('.columna [data-token]', telComun)
+    while (hasta < palabras.length && !/[.?!]$/.test(palabras[hasta].textContent)) hasta++
+    return [desde, Math.min(palabras.length, hasta + 1)]
+  })()
   if (reducido) {
-    // Quieto en su mejor cuadro: la lectura en "Sin apuro", con el destacado a la vista; E2
-    // al final de la pausa, cuando el comun ya se llevo la frase.
+    // Quieto en su mejor cuadro: la lectura en "Sin apuro", con el destacado a la vista; E2 al
+    // final de la pausa, cuando el comun ya se llevo la frase.
     const k = Math.min(datos.voz.length - 1, 25)
     relojLectura.congelar(datos.voz[k][0] + 120)
     relojE2.congelar(pausa[1] - 150)
     relojE3.congelar(6200)
+    relojE5.congelar(datos.voz[Math.min(datos.voz.length - 1, 9)][0] + 100)
   }
+  totalVideo.textContent = reloj2texto(relojE5.hasta)
 
   // ---------- las posiciones del telefono en cada escena ----------
 
@@ -127,22 +149,28 @@ export function iniciarEscenas(datos) {
     const movil = vw < 900
     const E = {}
     if (movil) {
-      const s = Math.min((0.6 * vh) / 800, (0.72 * vw) / 380)
-      const cy = 0.31 * vh + 400 * s
-      E.e0 = { x: 0, y: 0.64 * vh + 400 * s - vh / 2, rotationX: 26, rotationY: 0, rotationZ: 0, scale: s }
-      E.e1 = { x: 0.12 * vw, y: cy - vh / 2, rotationX: 0, rotationY: -8, rotationZ: 0, scale: s }
-      E.e3 = { x: 0, y: cy - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s }
-      const s2 = Math.min((0.44 * vw) / 380, (0.37 * vh) / 800)
-      const cy2 = 0.4 * vh + 400 * s2
-      E.e2sigo = { x: 0.235 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
-      E.e2comun = { x: -0.235 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
-      const sz = s * 1.45
-      E.e4zoom = { x: 0, y: 0.4 * vh - 22 * sz + 400 * sz - vh / 2, rotationX: 30, rotationY: -10, rotationZ: 0, scale: sz }
-      E.e4graba = { ...E.e3, rotationY: -5 }
-      const sv = Math.min((0.9 * vw) / 800, (0.36 * vh) / 380)
-      E.e5 = { x: 0, y: 0.56 * vh - vh / 2, rotationX: 0, rotationY: 0, rotationZ: -90, scale: sv }
-      // Debajo de los rotulos: entre los telefonos no hay lugar para verla.
-      E.onda2Y = cy2 + 400 * s2 + 70
+      // EL TELEFONO GRANDE: tres cuartos del alto. El texto de la escena va arriba, compacto, y
+      // la pildora flota sobre el borde de abajo del telefono.
+      const s = Math.min((0.7 * vh) / 800, (0.84 * vw) / 380)
+      const cy = 0.265 * vh + 400 * s
+      E.e0 = { x: 0, y: 0.62 * vh + 400 * s - vh / 2, rotationX: 26, rotationY: 0, rotationZ: 0, scale: s * 0.92 }
+      E.e1 = { x: 0.1 * vw, y: cy - vh / 2, rotationX: 0, rotationY: -10, rotationZ: 0, scale: s }
+      E.e3 = { x: 0, y: cy - vh / 2 + 0.01 * vh, rotationX: 0, rotationY: 7, rotationZ: -1.5, scale: s * 1.02 }
+      // En E2 los dos telefonos van derechos, sin giro: el comun mueve su texto en cada cuadro,
+      // y dentro de un telefono girado en 3D ese texto se vuelve a dibujar entero cada vez
+      // -medido en un telefono de gama media simulado: 22 a 33 cuadros largos de 99 con giro,
+      // 9 a 14 sin el-.
+      const s2 = Math.min((0.46 * vw) / 380, (0.42 * vh) / 800)
+      const cy2 = 0.36 * vh + 400 * s2
+      E.e2sigo = { x: 0.24 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
+      E.e2comun = { x: -0.24 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
+      E.ondaE2 = { y: cy2 + 400 * s2 + 64, medio: 190 * s2 }
+      const sz = s * 1.4
+      E.e4zoom = { x: 0, y: 0.38 * vh - 22 * sz + 400 * sz - vh / 2, rotationX: 30, rotationY: -10, rotationZ: 0, scale: sz }
+      E.e4graba = { x: 0, y: cy - vh / 2, rotationX: 0, rotationY: -5, rotationZ: 0, scale: s }
+      const sv = Math.min((0.6 * vh) / 780, (0.86 * vw) / 360)
+      E.e5 = { x: 0, y: 0.305 * vh + 390 * sv - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: sv }
+      E.e6 = { x: 0, y: cy - vh / 2, rotationX: 8, rotationY: 0, rotationZ: 0, scale: s }
       E.espera2Y = cy2 - 400 * s2 - 52
       E.s = s
     } else {
@@ -150,20 +178,20 @@ export function iniciarEscenas(datos) {
       const xR = 0.19 * vw
       E.e0 = { x: 0, y: 0.72 * vh + 400 * s - vh / 2, rotationX: 28, rotationY: 0, rotationZ: 0, scale: s * 0.98 }
       E.e1 = { x: xR, y: 0.01 * vh, rotationX: 4, rotationY: -12, rotationZ: 0, scale: s }
-      E.e3 = { x: xR, y: 0, rotationX: 0, rotationY: -5, rotationZ: 0, scale: s }
-      const s2 = Math.min((0.5 * vh) / 800, (0.26 * vw) / 380)
-      const cy2 = 0.33 * vh + 400 * s2
-      E.e2sigo = { x: 0.14 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: -4, rotationZ: 0, scale: s2 }
-      E.e2comun = { x: -0.14 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 4, rotationZ: 0, scale: s2 }
+      E.e3 = { x: xR * 0.95, y: 0, rotationX: 0, rotationY: 9, rotationZ: -1.5, scale: s * 1.03 }
+      const s2 = Math.min((0.46 * vh) / 800, (0.27 * vw) / 380)
+      const cy2 = 0.3 * vh + 400 * s2
+      E.e2sigo = { x: 0.15 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
+      E.e2comun = { x: -0.15 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
+      E.ondaE2 = { y: cy2 + 400 * s2 + 88, medio: 190 * s2 }
       const sz = s * 1.75
       E.e4zoom = { x: xR * 0.7, y: 0.3 * vh - 22 * sz + 400 * sz - vh / 2, rotationX: 30, rotationY: -22, rotationZ: 0, scale: sz }
-      E.e4graba = { ...E.e3, rotationY: -8 }
-      const sv = Math.min((0.6 * vw) / 800, (0.5 * vh) / 380)
-      E.e5 = { x: 0, y: 0.63 * vh - vh / 2, rotationX: 0, rotationY: 0, rotationZ: -90, scale: sv }
-      E.onda2Y = cy2
+      E.e4graba = { x: xR, y: 0, rotationX: 0, rotationY: -8, rotationZ: 0, scale: s }
+      const sv = Math.min((0.88 * vh) / 780, 1.25)
+      E.e5 = { x: xR, y: 0, rotationX: 0, rotationY: -4, rotationZ: 0, scale: sv }
+      E.e6 = { x: xR, y: 0.02 * vh, rotationX: 10, rotationY: -14, rotationZ: 0, scale: s }
       E.s = s
     }
-    E.e6 = E.e3
     E.vw = vw
     E.vh = vh
     E.movil = movil
@@ -184,9 +212,11 @@ export function iniciarEscenas(datos) {
       const ancla = document.getElementById(`e${k}`)
       if (ancla) ancla.style.top = `${Math.round(p * L.vh)}px`
     }
-    luces.tibia.style.setProperty('--luz-x', L.movil ? '50%' : '69%')
+    const x = L.movil ? '50%' : '69%'
+    for (const l of ['tibia', 'color', 'cine', 'noche']) luces[l].style.setProperty('--luz-x', x)
     luces.lente.style.setProperty('--luz-x', L.movil ? '50%' : '62%')
-    luces.noche.style.setProperty('--luz-x', L.movil ? '50%' : '69%')
+    luces.duelo.style.setProperty('--izq', `${50 - (L.movil ? 24 : 15)}%`)
+    luces.duelo.style.setProperty('--der', `${50 + (L.movil ? 24 : 15)}%`)
 
     const facil = 'power2.inOut'
     tl = gsap.timeline({ paused: true, defaults: { ease: facil } })
@@ -194,65 +224,73 @@ export function iniciarEscenas(datos) {
     gsap.set(telComun, { ...L.e2comun, x: L.e2comun.x - 0.3 * L.vw, autoAlpha: 0 })
     gsap.set(Object.values(textos), { autoAlpha: 0 })
     gsap.set(entrada, { autoAlpha: 1, y: 0, scale: 1 })
-    gsap.set([luces.tibia, luces.lente, luces.cine, luces.noche], { opacity: 0 })
+    gsap.set([luces.tibia, luces.duelo, luces.color, luces.lente, luces.cine, luces.noche], { opacity: 0 })
     gsap.set(luces.entrada, { opacity: 1 })
     gsap.set([pildora, canvas, haz, video], { autoAlpha: 0 })
     gsap.set('.rotulo', { opacity: 0 })
 
-    // E0 -> E1
-    tl.to(entrada, { autoAlpha: 0, y: -0.14 * L.vh, scale: 0.94, duration: 0.6, ease: 'power1.in' }, 0.05)
-    tl.to(telSigo, { ...L.e1, duration: 1 }, 0)
-    tl.to(luces.entrada, { opacity: 0, duration: 0.8 }, 0.2)
-    tl.to(luces.tibia, { opacity: 1, duration: 0.8 }, 0.3)
-    tl.to(pildora, { autoAlpha: 1, duration: 0.3 }, 0.75)
-    tl.set(textos[1], { autoAlpha: 1 }, 0.95)
-    tl.fromTo($$('.p', textos[1]), { opacity: 0, y: 40 }, { opacity: 1, y: 0, stagger: 0.14, duration: 0.3, ease: 'power2.out' }, 1.0)
-    tl.fromTo($('.bajada', textos[1]), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.3 }, 1.45)
-    tl.fromTo(canvas, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 1.0)
+    // Cada texto entra mientras sale el anterior: no queda pantalla vacia entre escenas.
+    const sale = (el, t) => tl.to(el, { autoAlpha: 0, y: -24, duration: 0.2, ease: 'power1.in' }, t)
+    const entra = (el, t) => tl.fromTo(el, { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.25, ease: 'power2.out' }, t)
 
-    // E1 -> E2: aparece el comun al lado
-    tl.to(textos[1], { autoAlpha: 0, y: -30, duration: 0.3 }, 2.2)
-    tl.to(canvas, { autoAlpha: 0, duration: 0.2 }, 2.2)
-    tl.to(telSigo, { ...L.e2sigo, duration: 0.7 }, 2.2)
-    tl.to(telComun, { ...L.e2comun, autoAlpha: 1, duration: 0.7 }, 2.2)
-    tl.to('.rotulo', { opacity: 1, duration: 0.3 }, 2.7)
-    tl.fromTo(textos[2], { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 2.5)
-    tl.to(canvas, { autoAlpha: 1, duration: 0.3 }, 2.75)
+    // E0 -> E1: el telefono sube y endereza; el titular se arma
+    tl.to(entrada, { autoAlpha: 0, y: -0.14 * L.vh, scale: 0.94, duration: 0.4, ease: 'power1.in' }, 0.02)
+    tl.to(telSigo, { ...L.e1, duration: 0.6 }, 0)
+    tl.to(luces.entrada, { opacity: 0, duration: 0.5 }, 0.1)
+    tl.to(luces.tibia, { opacity: 1, duration: 0.5 }, 0.15)
+    tl.to(pildora, { autoAlpha: 1, duration: 0.2 }, 0.4)
+    tl.set(textos[1], { autoAlpha: 1 }, 0.4)
+    tl.fromTo($$('.p', textos[1]), { opacity: 0, y: 40 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.22, ease: 'power2.out' }, 0.42)
+    tl.fromTo($('.bajada', textos[1]), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.22 }, 0.72)
+    tl.fromTo(canvas, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, 0.5)
 
-    // E2 -> E3
-    tl.to(textos[2], { autoAlpha: 0, y: -30, duration: 0.3 }, 3.9)
-    tl.to(canvas, { autoAlpha: 0, duration: 0.2 }, 3.9)
-    tl.to('.rotulo', { opacity: 0, duration: 0.2 }, 3.9)
-    tl.to(telComun, { autoAlpha: 0, x: L.e2comun.x - 0.3 * L.vw, duration: 0.5 }, 3.9)
-    tl.to(telSigo, { ...L.e3, duration: 0.55 }, 3.9)
-    tl.fromTo(textos[3], { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 4.15)
+    // E1 -> E2: aparece el comun al lado; la luz se parte en fria y tibia
+    sale(textos[1], 1.5)
+    tl.to(canvas, { autoAlpha: 0, duration: 0.12 }, 1.5)
+    tl.to(telSigo, { ...L.e2sigo, duration: 0.45 }, 1.5)
+    tl.to(telComun, { ...L.e2comun, autoAlpha: 1, duration: 0.45 }, 1.5)
+    tl.to(luces.tibia, { opacity: 0, duration: 0.3 }, 1.5)
+    tl.to(luces.duelo, { opacity: 1, duration: 0.35 }, 1.55)
+    tl.to('.rotulo', { opacity: 1, duration: 0.2 }, 1.85)
+    entra(textos[2], 1.62)
+    tl.to(canvas, { autoAlpha: 1, duration: 0.2 }, 1.9)
+
+    // E2 -> E3: se va el comun; los colores del guion encienden la luz
+    sale(textos[2], 3.0)
+    tl.to(canvas, { autoAlpha: 0, duration: 0.12 }, 3.0)
+    tl.to('.rotulo', { opacity: 0, duration: 0.12 }, 3.0)
+    tl.to(telComun, { autoAlpha: 0, x: L.e2comun.x - 0.3 * L.vw, duration: 0.35 }, 3.0)
+    tl.to(telSigo, { ...L.e3, duration: 0.4 }, 3.0)
+    tl.to(luces.duelo, { opacity: 0, duration: 0.3 }, 3.0)
+    tl.to(luces.color, { opacity: 1, duration: 0.5 }, 3.1)
+    entra(textos[3], 3.12)
 
     // E3 -> E4: gira hasta mostrar el lente, el haz, y despues grabando
-    tl.to(textos[3], { autoAlpha: 0, y: -30, duration: 0.3 }, 5.6)
-    tl.to(luces.tibia, { opacity: 0, duration: 0.5 }, 5.6)
-    tl.to(luces.lente, { opacity: 1, duration: 0.5 }, 5.7)
-    tl.to(telSigo, { ...L.e4zoom, duration: 0.7 }, 5.6)
-    tl.fromTo(textos[4], { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 5.9)
-    tl.to(haz, { autoAlpha: 1, duration: 0.25 }, 6.05)
-    tl.to(haz, { autoAlpha: 0, duration: 0.2 }, 6.55)
-    tl.to(telSigo, { ...L.e4graba, duration: 0.55 }, 6.5)
+    sale(textos[3], 4.28)
+    tl.to(luces.color, { opacity: 0, duration: 0.3 }, 4.28)
+    tl.to(luces.lente, { opacity: 1, duration: 0.3 }, 4.32)
+    tl.to(telSigo, { ...L.e4zoom, duration: 0.45 }, 4.28)
+    entra(textos[4], 4.36)
+    tl.to(haz, { autoAlpha: 1, duration: 0.15 }, 4.58)
+    tl.to(haz, { autoAlpha: 0, duration: 0.12 }, 4.98)
+    tl.to(telSigo, { ...L.e4graba, duration: 0.4 }, 4.95)
 
-    // E4 -> E5: se acuesta y se vuelve un cuadro de video
-    tl.to(textos[4], { autoAlpha: 0, y: -30, duration: 0.3 }, 7.5)
-    tl.to(luces.lente, { opacity: 0, duration: 0.4 }, 7.5)
-    tl.to(luces.cine, { opacity: 1, duration: 0.5 }, 7.55)
-    tl.to(telSigo, { ...L.e5, duration: 0.6 }, 7.5)
-    tl.to(video, { autoAlpha: 1, duration: 0.3 }, 7.85)
-    tl.fromTo(textos[5], { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 7.85)
+    // E4 -> E5: el telefono pierde el marco y se vuelve el video, grande
+    sale(textos[4], 5.58)
+    tl.to(luces.lente, { opacity: 0, duration: 0.3 }, 5.58)
+    tl.to(luces.cine, { opacity: 1, duration: 0.35 }, 5.6)
+    tl.to(telSigo, { ...L.e5, duration: 0.45 }, 5.58)
+    tl.to(video, { autoAlpha: 1, duration: 0.2 }, 5.72)
+    entra(textos[5], 5.66)
 
-    // E5 -> E6: vuelve a quedar de pie; se va la senal
-    tl.to(textos[5], { autoAlpha: 0, y: -30, duration: 0.3 }, 9.5)
-    tl.to(video, { autoAlpha: 0, duration: 0.25 }, 9.5)
-    tl.to(luces.cine, { opacity: 0, duration: 0.4 }, 9.5)
-    tl.to(luces.noche, { opacity: 1, duration: 0.5 }, 9.55)
-    tl.to(telSigo, { ...L.e6, duration: 0.5 }, 9.5)
-    tl.fromTo(textos[6], { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 9.8)
-    tl.to(pildora, { autoAlpha: 0, duration: 0.2 }, TOTAL - 0.2)
+    // E5 -> E6: vuelve el marco; se va la senal
+    sale(textos[5], 7.22)
+    tl.to(video, { autoAlpha: 0, duration: 0.15 }, 7.22)
+    tl.to(luces.cine, { opacity: 0, duration: 0.3 }, 7.22)
+    tl.to(luces.noche, { opacity: 1, duration: 0.35 }, 7.25)
+    tl.to(telSigo, { ...L.e6, duration: 0.4 }, 7.22)
+    entra(textos[6], 7.3)
+    tl.to(pildora, { autoAlpha: 0, duration: 0.15 }, TOTAL - 0.15)
     tl.set({}, {}, TOTAL)
 
     tl.time(Math.min(tiempo, TOTAL))
@@ -272,8 +310,6 @@ export function iniciarEscenas(datos) {
     onda.medir()
   }
 
-  const tactil = window.matchMedia('(pointer: coarse)').matches
-
   // ---------- cada cuadro ----------
 
   const estadoPrevio = {}
@@ -282,6 +318,7 @@ export function iniciarEscenas(datos) {
     estadoPrevio[clave] = valor
     return true
   }
+  const alternar = (el, clase, si, clave = clase) => { if (cambia(clave, si)) el.classList.toggle(clase, si) }
 
   let relojActivo = null
   let vueltaPrevia = -1
@@ -294,33 +331,39 @@ export function iniciarEscenas(datos) {
     const esc = escenaEn(p)
 
     // Los formatos, grabando, el lente, el video, la senal.
-    for (const [f, desde] of PINTA) if (cambia(`pinta-${f}`, p >= desde)) telSigo.classList.toggle(`pinta-${f}`, p >= desde)
-    const graba = p >= GRABA[0] && p < GRABA[1]
-    if (cambia('graba', graba)) telSigo.classList.toggle('grabando', graba)
-    const lente = p >= LENTE[0] && p < LENTE[1]
-    if (cambia('lente', lente)) telSigo.classList.toggle('ilumina-lente', lente)
-    barras.forEach((b, i) => { const off = p >= SENAL[i]; if (cambia(`senal${i}`, off)) b.classList.toggle('apagada', off) })
-    if (cambia('wifi', p >= SIN_WIFI)) telSigo.classList.toggle('sin-wifi', p >= SIN_WIFI)
-    if (cambia('avion', p >= AVION)) telSigo.classList.toggle('avion', p >= AVION)
-    if (cambia('oye', esc === 1)) telSigo.classList.toggle('oye-voz', esc === 1)
+    for (const [f, desde] of PINTA) alternar(telSigo, `pinta-${f}`, p >= desde)
+    alternar(telSigo, 'grabando', p >= GRABA[0] && p < GRABA[1])
+    alternar(telSigo, 'ilumina-lente', p >= LENTE[0] && p < LENTE[1])
+    alternar(telSigo, 'es-video', p >= VIDEO[0] - 0.1 && p < VIDEO[1])
+    alternar(telSigo, 'sin-internet', p >= SIN_INTERNET)
+    barras.forEach((b, i) => { const off = p >= SENAL[i % 4]; if (cambia(`senal${i}`, off)) b.classList.toggle('apagada', off) })
+    alternar(telSigo, 'sin-wifi', p >= SIN_WIFI)
+    alternar(telSigo, 'avion', p >= AVION)
+    alternar(telSigo, 'oye-voz', esc === 1)
     sigo.oyeVoz = esc === 1
     let estilo = ESTILOS[0][0]
     for (const [e, desde] of ESTILOS) if (p >= desde) estilo = e
     if (cambia('estilo', estilo)) {
       capaSub.dataset.estilo = estilo
+      estiloVideo.dataset.estilo = estilo
+      estiloVideo.textContent = { amarillo: 'Amarillo', rojo: 'Rojo', formal: 'Formal' }[estilo]
+      // El estilo nuevo se anuncia: la etiqueta late una vez.
+      estiloVideo.classList.add('cambio')
+      setTimeout(() => estiloVideo.classList.remove('cambio'), 260)
       estilosSub.forEach((s) => s.classList.toggle('activo', s.dataset.estilo === estilo))
       estadoPrevio.sub = ''
     }
     const cap = esc >= 1 ? esc : 0
     if (cambia('capitulo', cap)) ponerCapitulo(cap)
 
-    // La lectura: en E2, el tramo de la pausa, igual en los dos telefonos.
-    const enE2 = p >= 2.45 && p < 3.95
-    const enE3 = p >= 3.95 && p < 5.65
-    const reloj = enE2 ? relojE2 : enE3 ? relojE3 : relojLectura
+    // La lectura: cada escena con su reloj -ver arriba-.
+    const enE2 = p >= 1.6 && p < 3.05
+    const enE3 = p >= 3.05 && p < 4.3
+    const enE5 = p >= 5.6 && p < 7.3
+    const reloj = enE2 ? relojE2 : enE3 ? relojE3 : enE5 ? relojE5 : relojLectura
     let deGolpe = false
     if (reloj !== relojActivo) {
-      if (enE2 || enE3) reloj.reiniciar(ahora)
+      if (reloj !== relojLectura) reloj.reiniciar(ahora)
       relojActivo = reloj
       deGolpe = true
       vueltaPrevia = -1
@@ -330,7 +373,13 @@ export function iniciarEscenas(datos) {
     const a = alfa.toFixed(2)
     if (cambia('alfa', a)) { sigo.desliza.style.opacity = a; comun.desliza.style.opacity = a }
     sigo.dibujar(t, ahora, deGolpe)
-    if (esc === 2 || (p > 2.2 && p < 4.4)) comun.dibujar(t, ahora, deGolpe)
+    if (p > 1.5 && p < 3.4) {
+      comun.dibujar(t, ahora, deGolpe)
+      ponerPausa(t, deGolpe)
+    } else if (cambia('fueraE2', true)) {
+      ponerPausa(-1, true)
+    }
+    if (p > 1.5 && p < 3.4) estadoPrevio.fueraE2 = false
 
     // La onda
     const alfaOnda = +gsap.getProperty(canvas, 'opacity')
@@ -338,9 +387,18 @@ export function iniciarEscenas(datos) {
       if (esc <= 1) {
         const x = L.vw / 2 + gsap.getProperty(telSigo, 'x') - 190 * gsap.getProperty(telSigo, 'scale')
         const y = L.vh / 2 + gsap.getProperty(telSigo, 'y') + (86 - 400) * gsap.getProperty(telSigo, 'scale')
-        onda.dibujar(t, { x, y, alto: L.movil ? 46 : 78, izquierda: x })
+        onda.dibujar(t, { x, y, alto: L.movil ? 50 : 78, izquierda: x })
       } else {
-        onda.dibujar(t, { x: L.vw / 2, y: L.onda2Y, alto: L.movil ? 34 : 56, izquierda: L.vw / 2, pasado: L.vw / 2 })
+        // E2: una onda bajo cada telefono, con su "ahora" al centro. Es la misma voz: cuando se
+        // aplana, se aplana bajo los dos a la vez.
+        const { y, medio } = L.ondaE2
+        const alto = L.movil ? 40 : 60
+        let primero = true
+        for (const tel of [telComun, telSigo]) {
+          const cx = L.vw / 2 + gsap.getProperty(tel, 'x')
+          onda.dibujar(t, { x: cx, y, alto, izquierda: medio, pasado: medio, tramo: [cx - medio, cx + medio], limpiar: primero, marca: true })
+          primero = false
+        }
       }
       estadoPrevio.ondaLimpia = false
     } else if (!estadoPrevio.ondaLimpia) {
@@ -348,13 +406,38 @@ export function iniciarEscenas(datos) {
       estadoPrevio.ondaLimpia = true
     }
 
-    // Los subtitulos: con el reloj de la lectura, en el cuadro de video.
+    // Los subtitulos: en el video, con su reloj.
     if (p >= VIDEO[0] - 0.3 && p < VIDEO[1]) ponerSubtitulo(t)
 
     ponerTarjetas(p, esc, t)
   }
 
+  // ---------- E2: lo que pasa en la pausa ----------
+
+  // En el comun, la frase que tocaba decir llega a su marca antes que la voz: se tacha y sube.
+  // En Sigo, "Te espera" con el punto rojo que respira mientras la voz calla.
+  let escapadas = new Set()
+  function ponerPausa(t, deGolpe) {
+    const enPausa = t >= pausa[0] + 150 && t < pausa[1]
+    alternar(telSigo, 'espera', enPausa)
+    if (deGolpe || t < pausa[0]) {
+      for (const i of escapadas) comun.palabras[i].classList.remove('escapa')
+      escapadas = new Set()
+    }
+    if (t >= pausa[0]) {
+      for (const i of comun.adelantadas(fraseTocaba[0], fraseTocaba[1], t)) {
+        if (!escapadas.has(i)) { escapadas.add(i); comun.palabras[i].classList.add('escapa') }
+      }
+    }
+    alternar(telComun, 'se-escapa', escapadas.size > 0 && t < pausa[1] + 1800)
+  }
+
   // ---------- subtitulos ----------
+
+  function reloj2texto(ms) {
+    const s = Math.max(0, Math.floor(ms / 1000))
+    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
+  }
 
   function ponerSubtitulo(t) {
     const s = datos.subtitulos.find((x) => t >= x[0] && t < x[1])
@@ -363,7 +446,9 @@ export function iniciarEscenas(datos) {
       html = s[2].map((r) => `<span class="subtitulo-renglon">${r.map(([w, a, b]) => `<span class="sp" data-estado="${t >= b ? 'dicha' : t >= a ? 'diciendose' : 'por-decir'}">${w}</span>`).join(' ')}</span>`).join('')
     }
     if (cambia('sub', html)) subEl.innerHTML = html
-    barraVideo.style.width = `${Math.min(100, (100 * Math.max(0, t)) / datos.hastaMs)}%`
+    barraVideo.style.width = `${Math.min(100, (100 * Math.max(0, t)) / relojE5.hasta)}%`
+    const tt = reloj2texto(t)
+    if (cambia('tiempoVideo', tt)) tiempoVideo.textContent = tt
   }
 
   // ---------- tarjetas ----------
@@ -385,14 +470,15 @@ export function iniciarEscenas(datos) {
   function tarjetasVisibles(p, esc, t) {
     const v = new Set()
     const enPausa = t >= pausa[0] + 250 && t < pausa[1] + 200
-    if (esc === 2 && p > 2.8 && enPausa) { v.add('espera'); if (!L.movil) v.add('corre') }
+    // En el celular los avisos de E2 ya van dentro de cada pantalla: sin tarjetas encima.
+    if (esc === 2 && p > 1.9 && enPausa && !L.movil) { v.add('espera'); v.add('corre') }
     if (esc === 3) {
       const pintados = PINTA.filter(([, d]) => p >= d).map(([f]) => f)
       if (L.movil) { if (pintados.length) v.add(pintados[pintados.length - 1]) } else pintados.forEach((f) => v.add(f))
     }
-    if (p >= 6.05 && p < 6.6) v.add('lente')
-    if (p >= GRABA[0] + 0.1 && p < 7.45) v.add('camara')
-    if (p >= AVION && p < TOTAL) v.add('avion')
+    if (p >= LENTE[0] && p < LENTE[1]) v.add('lente')
+    if (p >= GRABA[0] + 0.05 && p < GRABA[1] - 0.1) v.add('camara')
+    if (p >= AVION && p < TOTAL && !L.movil) v.add('avion')
     return v
   }
 
@@ -400,7 +486,7 @@ export function iniciarEscenas(datos) {
     const v = tarjetasVisibles(p, esc, t)
     for (const [nombre, el] of Object.entries(tarjetas)) {
       const ver = v.has(nombre)
-      if (cambia(`tarjeta-${nombre}`, ver)) gsap.to(el, { autoAlpha: ver ? 1 : 0, duration: reducido ? 0 : 0.35, overwrite: 'auto' })
+      if (cambia(`tarjeta-${nombre}`, ver)) gsap.to(el, { autoAlpha: ver ? 1 : 0, duration: reducido ? 0 : 0.3, overwrite: 'auto' })
       if (!ver && +gsap.getProperty(el, 'opacity') < 0.01) continue
       const lugar = LUGARES[nombre]
       const tel = lugar.telefono === 'comun' ? telComun : telSigo
@@ -410,9 +496,9 @@ export function iniciarEscenas(datos) {
       let x
       let y
       if (L.movil) {
-        // En un telefono no hay costados: van centradas, abajo del telefono.
+        // En un telefono no hay costados: van centradas, sobre la parte de abajo del telefono.
         x = L.vw / 2 - el.offsetWidth / 2
-        y = esc === 2 ? L.espera2Y : Math.min(L.vh - 110, cy + 320 * s)
+        y = esc === 2 ? L.espera2Y : Math.min(L.vh - 120, cy + 270 * s)
       } else {
         x = cx + lugar.x * s
         if (lugar.lado === 'der') x -= el.offsetWidth
@@ -441,7 +527,7 @@ export function iniciarEscenas(datos) {
     ev.preventDefault()
     const k = +a.dataset.capitulo
     const y = escenario.offsetTop + CAPITULOS[k] * L.vh
-    if (lenis) lenis.scrollTo(y, { duration: 1.4 })
+    if (lenis) lenis.scrollTo(y, { duration: 1.2 })
     else window.scrollTo({ top: y, behavior: reducido ? 'auto' : 'smooth' })
   }))
 

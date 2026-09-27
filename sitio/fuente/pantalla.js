@@ -14,6 +14,9 @@
 const MS_SUBIR = 320   // lo que tarda el texto en subir un renglon
 const MS_LINEA = 240   // lo que tarda la linea en ir de un lugar al otro
 const AIRE_ARRIBA = 6  // el renglon vivo no queda pegado al borde
+// El teleprompter comun lee en una marca fija mas abajo del borde, como esos aparatos: asi lo
+// que se le pasa se ve subir por encima de la marca antes de irse.
+export const MARCA_FIJA = 130
 
 export class Pantalla {
   constructor(telefono, datos) {
@@ -95,7 +98,8 @@ export class Pantalla {
       const siguiente = this.renglones[this.renglonDe[i] + 1]
       const fraccion = (w - r.desde) / (r.hasta - r.desde + 1)
       const alto = siguiente ? siguiente.arriba - r.arriba : this.geo[i].alto
-      y = r.arriba + Math.min(1, Math.max(0, fraccion)) * alto - AIRE_ARRIBA
+      y = r.arriba + Math.min(1, Math.max(0, fraccion)) * alto - MARCA_FIJA
+      this.yActual = y
       this.desliza.style.transform = `translate3d(0, ${-y}px, 0)`
       return
     }
@@ -175,6 +179,18 @@ export class Pantalla {
     }
     this.lineas = quedan
   }
+}
+
+// En el teleprompter comun: las palabras desde..hasta que ya llegaron a la marca de lectura
+// -o la pasaron- antes de que la voz las dijera en t. Esas se le escaparon al que lee.
+Pantalla.prototype.adelantadas = function (desde, hasta, t) {
+  const marca = (this.yActual || 0) + MARCA_FIJA
+  const v = this.datos.voz
+  const fuera = []
+  for (let i = desde; i < hasta && i < this.geo.length; i++) {
+    if (this.geo[i].arriba < marca && (!v[i] || t < v[i][0])) fuera.push(i)
+  }
+  return fuera
 }
 
 // UN RELOJ QUE DA VUELTAS sobre un tramo de la lectura, con una espera quieta al final y un

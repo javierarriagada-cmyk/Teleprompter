@@ -45,12 +45,20 @@ export class Onda {
     return Math.max(0.06, (0.25 + 0.75 * silaba) * grano * borde)
   }
 
-  // ahora: el x en pantalla donde suena ahora; lo que viene llega desde la izquierda.
+  // x: el x en pantalla donde suena ahora; lo que viene llega desde la izquierda.
   // pasado: cuanto se dibuja a la derecha de "ahora" -lo que ya sono-, en px.
-  dibujar(t, { x: xAhora, y, alto, izquierda = xAhora, pasado = 0, alfa = 1 }) {
+  // tramo: [desde, hasta] en x, para dibujar varias ondas -una bajo cada telefono, E2- sin
+  // que se pisen; limpiar en false para no borrar la anterior. marca: una raya en "ahora".
+  dibujar(t, { x: xAhora, y, alto, izquierda = xAhora, pasado = 0, alfa = 1, tramo = null, limpiar = true, marca = false }) {
     const ctx = this.ctx
-    ctx.clearRect(0, 0, this.ancho, this.alto)
+    if (limpiar) ctx.clearRect(0, 0, this.ancho, this.alto)
     if (alfa <= 0.01) return
+    ctx.save()
+    if (tramo) {
+      ctx.beginPath()
+      ctx.rect(tramo[0], y - alto, tramo[1] - tramo[0], alto * 2)
+      ctx.clip()
+    }
     this.ultima = 0
     const desplazamiento = ((t % MS_POR_BARRA) / MS_POR_BARRA) * PX_POR_BARRA
     const n = Math.ceil(izquierda / PX_POR_BARRA) + 1
@@ -72,6 +80,12 @@ export class Onda {
       else ctx.rect(x - 1.5, y - h / 2, 3, h)
       ctx.fill()
     }
+    if (marca) {
+      ctx.globalAlpha = 0.9 * alfa
+      ctx.fillStyle = '#F2ECE8'
+      ctx.fillRect(xAhora - 1, y - alto * 0.62, 2, alto * 1.24)
+    }
+    ctx.restore()
     ctx.globalAlpha = 1
   }
 }
