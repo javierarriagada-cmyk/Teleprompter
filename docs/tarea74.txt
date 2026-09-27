@@ -1,0 +1,84 @@
+TAREA 74 — EL DIAGNOSTICO SE ABRE CON UN GESTO QUE NADIE HACE SIN QUERER
+Repositorio: javierarriagada-cmyk/Teleprompter. Partir de main. Rama nueva: tarea-74-diagnostico-escondido.
+Lee antes AGENTS.md y docs/lo-que-hay-que-saber.txt.
+
+------------------------------------------------------------------------------
+POR QUE
+------------------------------------------------------------------------------
+Hoy, TOCAR UNA VEZ el titulo grande del guion en la portada -o mantenerlo
+apretado- abre la franja de diagnostico: el selector Vosk/Nativo, "Ver
+transcripcion en vivo" y "Medicion / Panel Corpus". Es una herramienta nuestra
+-el dueno: "lo ocupamos mientras nosotros"-, no del usuario. El 25-09 la
+encontro un robot de pruebas de Google en su primera exploracion, y el 27-09 se
+abrio sin querer con un toque en el titulo. Antes de publicar tiene que quedar
+fuera del alcance de quien no la busca. Es el punto P1f de
+docs/decisiones-de-diseno.txt.
+
+ES UN PASO INTERMEDIO. El dueno, 27-09-2026: "ese panel de diagnostico despues
+tenemos que eliminarlo". Esta tarea lo esconde mientras lo seguimos usando para
+medir; antes de publicar se elimina del todo, en otra tarea. Por eso aca NO se
+reorganiza nada del panel: solo cambia la puerta.
+
+------------------------------------------------------------------------------
+QUE SE HACE
+------------------------------------------------------------------------------
+1. EL TITULO DE LA TARJETA DE LA PORTADA DEJA DE ABRIR EL DIAGNOSTICO.
+   - src/components/TarjetaLectura.tsx: el <h2 data-testid="titulo-tarjeta-lectura">
+     pierde onTouchStart, onTouchEnd, onMouseDown, onMouseUp y onClick, y su
+     cursor: 'pointer'. Salen de la interfaz de TarjetaLectura las props
+     onDiagTouchStart, onDiagTouchEnd y onDiagClick.
+   - src/components/BibliotecaView.tsx: salen handleDiagTouchStart,
+     handleDiagTouchEnd, handleDiagClick, y timerDiagRef y fueLongPressDiagRef si
+     quedan sin uso. Ya no se pasan a TarjetaLectura.
+
+2. SE ABRE -Y SE CIERRA- TOCANDO LA MARCA "Sig●" CINCO VECES SEGUIDAS.
+   Es el gesto de las "opciones de desarrollador" de Android: nadie lo hace sin
+   querer y nosotros lo recordamos.
+   - En BibliotecaView.tsx, sobre el <div className="portada-marca"> que envuelve
+     a <MarcaSigo>: cinco toques con menos de 600 ms entre uno y el siguiente
+     llaman a onToggleDiagnostico(). Si pasan mas de 600 ms, la cuenta vuelve a
+     cero. Constantes con nombre y comentario: TOQUES_PARA_DIAGNOSTICO = 5,
+     MS_ENTRE_TOQUES_DIAGNOSTICO = 600.
+   - Sin vibracion, sin aviso y sin cambio visible en la marca mientras se
+     cuenta: el unico efecto es que la franja aparece o se va.
+   - onToggleDiagnostico y la franja en App.tsx -mostrarDiagnostico- NO cambian.
+
+3. PRUEBAS
+   - src/pruebas/tarea67.test.tsx:76 y src/pruebas/tarea68.test.tsx:156 abren hoy
+     la franja con fireEvent.click sobre 'titulo-tarjeta-lectura'. Pasan a abrirla
+     con cinco clics seguidos sobre la marca. Lo que comprueban despues no cambia.
+   - Prueba nueva, archivo src/pruebas/tarea74.test.tsx, renderizando <App> -no
+     solo BibliotecaView-:
+       T74a: un clic en el titulo de la tarjeta NO abre la franja -no aparece
+             "Medición / Panel Corpus"-.
+       T74b: cinco clics seguidos en la marca la abren; otros cinco la cierran.
+       T74c: cuatro clics, esperar 700 ms, un clic mas: NO se abre.
+     Para el tiempo, vi.useFakeTimers o avanzar el reloj; la prueba fija ella
+     misma el estado que necesita. Buscar los elementos dentro de la portada, no
+     en todo el documento.
+   - ROMPER A PROPOSITO antes de entregar: poner TOQUES_PARA_DIAGNOSTICO = 1 y
+     confirmar que T74a y T74c fallan; volver a 5. Pegar esa salida en el informe.
+
+------------------------------------------------------------------------------
+QUE NO SE HACE
+------------------------------------------------------------------------------
+- No tocar la franja de diagnostico ni lo que tiene adentro, ni PanelCorpus, ni
+  src/motor/. GUARDAR_AUDIO_DEL_OIDO en MotorNativo.ts NO se toca en esta tarea.
+- No tocar sitio/ -otra tarea trabaja ahi-.
+- LOS COMENTARIOS NO SE BORRAN. Si el codigo cambia, se actualiza su
+  comentario; si el codigo desaparece de verdad -los manejadores del titulo-, su
+  comentario se va con el; todo lo demas se queda. Sumar un comentario corto en
+  el nuevo manejo de la marca que diga por que existe -esta tarea y P1f-.
+- Sin colores ni medidas en linea: T209 -src/pruebas/tarea46.test.tsx- vigila
+  BibliotecaView y TarjetaLectura. Esta tarea no deberia necesitar estilos.
+- Sin dependencias nuevas.
+
+------------------------------------------------------------------------------
+TERMINADO ES
+------------------------------------------------------------------------------
+- npx tsc --noEmit sin errores; npm run test entero en verde; npm run build.
+- Un toque en el titulo de la portada no hace nada; cinco en la marca abren y
+  cierran la franja.
+- El informe dice que se hizo, que NO se pudo hacer -no hay telefono: el gesto se
+  prueba en el aparato despues, aca-, y la salida de la prueba rota a proposito.
+- Pull request hacia main desde tarea-74-diagnostico-escondido.

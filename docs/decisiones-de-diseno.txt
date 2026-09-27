@@ -1139,6 +1139,9 @@ P1  AL PUBLICAR: PROTEGER EL CODIGO Y LA MARCA.                    ABIERTA / AL 
        antes de publicar. Tambien GUARDAR_AUDIO_DEL_OIDO=true en MotorNativo.ts y el correo
        provisorio hola@ejemplo.com del guion Hola. Detalle en accesibilidad-robo-test-25-sep.txt.
        -26-09-2026: el correo ya es hola@sigoteleprompter.com, reenviado al Gmail de Javier.-
+       -27-09-2026: Tarea 74 esconde el panel detras de cinco toques en la marca, mientras lo
+       usamos. Javier: "despues tenemos que eliminarlo". ANTES DE PUBLICAR SE ELIMINA ENTERO
+       -la franja, el selector de motor, la transcripcion en vivo y Medicion / Panel Corpus-.-
     g. ACCESIBILIDAD CON TALKBACK -27-09-2026, verificado en el telefono-: en Grabar, los dos
        marcos nativos de la camara figuran como tocables sin nombre -marcarlos no importantes
        para accesibilidad, riesgo bajo-; en Leer, la portada sigue en el arbol debajo de la
