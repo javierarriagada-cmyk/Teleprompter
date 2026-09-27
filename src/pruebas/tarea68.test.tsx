@@ -153,7 +153,10 @@ describe('Tarea 68 - que pasa cuando la toma termina', () => {
 
   test('los tres siguen alcanzables por la puerta de diagnostico', async () => {
     await portadaConGuion()
-    fireEvent.click(screen.getByTestId('titulo-tarjeta-lectura'))
+    const marca = document.querySelector('.portada-marca') as HTMLElement
+    for (let i = 0; i < 5; i++) {
+      fireEvent.click(marca)
+    }
     const franja = await screen.findByTestId('franja-de-estado-diagnostico')
     expect(franja.textContent).toContain('Motor de voz')
     expect(franja.textContent).toContain('Ver transcripción en vivo')

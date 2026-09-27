@@ -214,10 +214,12 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T149-T153)', () => {
     // 1. En la biblioteca, por omisión (interruptor apagado), NO existe "Franja de Estado"
     expect(screen.queryByText(/Franja de Estado/i)).toBeNull()
 
-    // 2. Encendido mediante el toque en el título de la tarjeta de portada, SÍ aparece
-    const resumen = screen.getByTestId('titulo-tarjeta-lectura')
+    // 2. Encendido mediante los 5 toques en la marca de la portada, SÍ aparece
+    const marca = document.querySelector('.portada-marca') as HTMLElement
     await act(async () => {
-      fireEvent.click(resumen)
+      for (let i = 0; i < 5; i++) {
+        fireEvent.click(marca)
+      }
     })
 
     expect(screen.getByText(/Franja de Estado/i)).not.toBeNull()
@@ -467,9 +469,11 @@ describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
 
     expect(screen.queryByTestId('panel-corpus')).toBeNull()
 
-    const titulo = screen.getByTestId('titulo-tarjeta-lectura')
+    const marca = document.querySelector('.portada-marca') as HTMLElement
     await act(async () => {
-      fireEvent.click(titulo)
+      for (let i = 0; i < 5; i++) {
+        fireEvent.click(marca)
+      }
     })
 
     const btnCorpus = screen.getByTestId('btn-abrir-corpus')
@@ -828,8 +832,11 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     // de diagnostico. Lo que esta prueba cuida NO cambio -que no esten en el
     // panel del editor y que el selector siga cambiando el motor-, solo cambio
     // de donde se los saca.
+    const marca186 = document.querySelector('.portada-marca') as HTMLElement
     await act(async () => {
-      fireEvent.click(await screen.findByTestId('titulo-tarjeta-lectura'))
+      for (let i = 0; i < 5; i++) {
+        fireEvent.click(marca186)
+      }
     })
 
     const selectEngine = screen.getByLabelText('Motor de Voz') as HTMLSelectElement
@@ -847,7 +854,9 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     // el mismo titulo que la abre. Si queda abierta, su selector de motor
     // sigue en el documento y la comprobacion de abajo mira el equivocado.
     await act(async () => {
-      fireEvent.click(screen.getByTestId('titulo-tarjeta-lectura'))
+      for (let i = 0; i < 5; i++) {
+        fireEvent.click(marca186)
+      }
     })
 
     // 2. Abrir Editor -> Ajustes: verificar que NO están selector de motor ni transcripción en vivo
@@ -1062,10 +1071,12 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    // Activar diagnóstico
-    const resumen = screen.getByTestId('titulo-tarjeta-lectura')
+    // Activar diagnóstico mediante 5 toques en la marca
+    const marca191 = document.querySelector('.portada-marca') as HTMLElement
     await act(async () => {
-      fireEvent.click(resumen)
+      for (let i = 0; i < 5; i++) {
+        fireEvent.click(marca191)
+      }
     })
 
     const diagnostico = screen.getByTestId('franja-de-estado-diagnostico')

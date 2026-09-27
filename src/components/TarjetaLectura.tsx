@@ -8,19 +8,13 @@ interface TarjetaLecturaProps {
   onLeer: (rect?: DOMRect) => void
   onGrabar?: (rect?: DOMRect) => void
   onCrearNuevo: () => void
-  onDiagTouchStart?: () => void
-  onDiagTouchEnd?: () => void
-  onDiagClick?: () => void
 }
 
 export default function TarjetaLectura({
   guionResumen,
   onLeer,
   onGrabar,
-  onCrearNuevo,
-  onDiagTouchStart,
-  onDiagTouchEnd,
-  onDiagClick
+  onCrearNuevo
 }: TarjetaLecturaProps) {
   const cardRef = React.useRef<HTMLDivElement>(null)
   // LA TARJETA ES UNA SUPERFICIE DE LA PORTADA, NO UNA MUESTRA DE LA LECTURA -27-09-2026-.
@@ -171,11 +165,6 @@ export default function TarjetaLectura({
         )}
         <h2
           data-testid="titulo-tarjeta-lectura"
-          onTouchStart={onDiagTouchStart}
-          onTouchEnd={onDiagTouchEnd}
-          onMouseDown={onDiagTouchStart}
-          onMouseUp={onDiagTouchEnd}
-          onClick={onDiagClick}
           style={{
             margin: 0,
             fontSize: 44,
@@ -186,7 +175,6 @@ export default function TarjetaLectura({
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
             letterSpacing: '-0.02em',
-            cursor: 'pointer',
             userSelect: 'none'
           }}
           title={tituloText}
