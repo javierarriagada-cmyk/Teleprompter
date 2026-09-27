@@ -940,7 +940,7 @@ describe('Pruebas TAREA 33 (T162)', () => {
         expect(col.style.textAlign).toBe(angosta ? 'center' : 'left')
         // y la caja sigue centrada en los dos, que es lo que ya estaba bien
         expect(col.style.margin).toBe('0px auto')
-        expect(col.style.maxWidth).toBe(angosta ? '22ch' : '90%')
+        expect(col.style.maxWidth).toBe(angosta ? '22ch' : '93%')
         unmount()
       }
     } finally {

@@ -31,13 +31,16 @@ export function colorLetraEfectiva(colorFondo: string, colorLetra: string): stri
   return colorFondo.toUpperCase() === '#FFFFFF' ? '#000000' : colorLetra
 }
 
-// Angosta: 22 caracteres y centrada. Completa: 90% del ancho y a la
+// Angosta: 22 caracteres y centrada. Completa: 93% del ancho y a la
 // izquierda. El porque largo esta en TeleprompterView.tsx, arriba del
 // textAlign de columna-texto.
+// 90 -> 93 el 27-09-2026: Javier comparo capturas -Sigo ~80% del ancho de la pantalla,
+// otra aplicacion de lectura ~86%- y pidio "el punto intermedio". Con el margen de 5%
+// por lado, 93% deja el texto en ~83,5% de la pantalla.
 export function columnaLectura(columnaAngosta: boolean): { maxWidth: string; textAlign: 'center' | 'left' } {
   return columnaAngosta
     ? { maxWidth: '22ch', textAlign: 'center' }
-    : { maxWidth: '90%', textAlign: 'left' }
+    : { maxWidth: '93%', textAlign: 'left' }
 }
 
 // El color de un tramo depende del fondo: claro sobre negro, oscuro sobre

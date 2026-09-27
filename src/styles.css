@@ -434,11 +434,19 @@ textarea::placeholder {
    usuario-; aca queda lo que no cambia: que ocupe el ancho entero de la
    pantalla, el espacio entre lineas del guion igual al de la lectura -16 px,
    MARGEN_RENGLON_LECTURA_PX- y como se dibujan colores y acotaciones. */
+/* LA HOJA ES UNA HOJA -27-09-2026-. Iba de borde a borde -margen negativo- y terminaba en
+   el 40% del alto: con la pareja negra, un rectangulo negro puro sobre el suelo casi negro
+   y un hueco muerto hasta los botones de abajo. Javier, comparando con una auditoria:
+   mejor su proporcion y su contraste. Ahora se alinea con el titulo, tiene esquinas y un
+   borde fino que la separa del suelo, y baja hasta cerca de los botones. Sigue pintada con
+   los colores de la lectura: lo que se toca en Aa se ve aca. */
 .hoja-editor {
-  margin: 0 calc(-1 * var(--aire-4));
+  margin: 0;
   padding-top: var(--aire-3);
   padding-bottom: var(--aire-3);
-  min-height: 40vh;
+  min-height: 60vh;
+  border: 1px solid var(--color-separador);
+  border-radius: var(--redondeo-grande);
 }
 .editor-guion {
   outline: none;
@@ -652,6 +660,15 @@ textarea::placeholder {
 .fila-aa-par > .selector-aa {
   flex: 1;
   min-width: 0;
+}
+/* El brillo tambien va en media fila desde el 27-09-2026, junto a espejo y tiempo, para
+   que la letra y el ancho entraran en el cajon de la toma sin agrandarlo. En media fila
+   los soles y la barra se aprietan un poco. */
+.fila-aa-par > .brillo-aa {
+  flex: 1;
+  min-width: 0;
+  gap: var(--aire-2);
+  padding: 0 var(--aire-2);
 }
 /* Las parejas de color son tres tarjetas que llenan la fila: lo que mas
    cambia el guion se lleva el lugar mas grande. */

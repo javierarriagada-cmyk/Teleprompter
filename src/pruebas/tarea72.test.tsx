@@ -75,7 +75,7 @@ describe('Tarea 72 - cada ajuste muestra lo que hace', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Angosto' }))
     expect(col().style.maxWidth, 'Angosto no llego al guion').toBe('22ch')
     fireEvent.click(screen.getByRole('button', { name: 'Ancho' }))
-    expect(col().style.maxWidth, 'Ancho no llego al guion').toBe('90%')
+    expect(col().style.maxWidth, 'Ancho no llego al guion').toBe('93%')
 
     // Tamano: por omision es 24, el + lo lleva a 32
     const antes = parseFloat(col().style.fontSize)

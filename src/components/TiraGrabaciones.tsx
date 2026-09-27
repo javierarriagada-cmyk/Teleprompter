@@ -138,11 +138,16 @@ export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar }: Prop
     temporizador.current = setTimeout(() => setConfirmando(null), MS_PARA_ARREPENTIRSE)
   }
   return (
-    <div data-testid="tira-grabaciones" style={{ marginTop: 'var(--aire-4)', marginBottom: 'var(--aire-3)' }}>
+    <div data-testid="tira-grabaciones" style={{ marginTop: 'var(--aire-5)', marginBottom: 'var(--aire-3)' }}>
       {/* "Videos" y no "Tomas": hermano de "Guiones" en la portada, mismo
           escalon y mismo peso. */}
-      <div className="texto-cuerpo" style={{ color: 'var(--color-apagado)', marginBottom: 'var(--aire-2)', fontWeight: 600 }}>Videos</div>
-      {(!grabaciones || grabaciones.length === 0) ? null : (
+      <div className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-3)', fontWeight: 600 }}>Videos</div>
+      {/* SIN VIDEOS, UNA LINEA -27-09-2026-. El titulo solo, sin nada debajo, se leia como algo
+          roto o a medio cargar. Una auditoria proponia dibujo, titulo y dos lineas; Javier eligio
+          una linea que diga donde van a quedar. */}
+      {(!grabaciones || grabaciones.length === 0) ? (
+        <div data-testid="videos-vacio" className="texto-meta" style={{ color: 'var(--color-apagado)' }}>Tus videos aparecerán aquí.</div>
+      ) : (
         <div style={{ display: 'flex', gap: 'var(--aire-3)', overflowX: 'auto', paddingBottom: 'var(--aire-2)', WebkitOverflowScrolling: 'touch' }}>
           {grabaciones.map((g) => (
             <TarjetaToma

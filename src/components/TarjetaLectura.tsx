@@ -1,6 +1,6 @@
 import React from 'react'
 import { IconoEmpezar } from './IconosApp'
-import { ResumenGuion, PAREJAS_COLOR, duracionDeLectura } from '../datos/modelo'
+import { ResumenGuion, duracionDeLectura } from '../datos/modelo'
 import { estiloComprimirPorAviso, useMantenerApretado } from './mantenerApretado'
 
 interface TarjetaLecturaProps {
@@ -11,8 +11,6 @@ interface TarjetaLecturaProps {
   onDiagTouchStart?: () => void
   onDiagTouchEnd?: () => void
   onDiagClick?: () => void
-  colorFondo?: string
-  colorLetra?: string
 }
 
 export default function TarjetaLectura({
@@ -22,12 +20,16 @@ export default function TarjetaLectura({
   onCrearNuevo,
   onDiagTouchStart,
   onDiagTouchEnd,
-  onDiagClick,
-  colorFondo = PAREJAS_COLOR[0].fondo,
-  colorLetra = PAREJAS_COLOR[0].letra
+  onDiagClick
 }: TarjetaLecturaProps) {
   const cardRef = React.useRef<HTMLDivElement>(null)
-  const parejaColor = { fondo: colorFondo, letra: colorLetra }
+  // LA TARJETA ES UNA SUPERFICIE DE LA PORTADA, NO UNA MUESTRA DE LA LECTURA -27-09-2026-.
+  // Hasta hoy tomaba la pareja de colores de lectura: con la negra, un rectangulo negro puro
+  // sobre el suelo casi negro, que se leia como un hueco. Javier, comparando con una
+  // auditoria: la otra version "se ve mejor esteticamente" por la proporcion y el contraste
+  // entre gris y negro. Ahora sube del suelo con --bg-panel, en los dos temas. Los colores de
+  // lectura se ven donde se eligen -cajon Aa- y al leer.
+  const parejaColor = { fondo: 'var(--bg-panel)', letra: 'var(--color-texto)' }
   const hayGuion = Boolean(guionResumen)
 
   // DOS PUERTAS VISIBLES, igual que al pie del editor. Mantener apretado
@@ -61,7 +63,9 @@ export default function TarjetaLectura({
       style={{
         backgroundColor: parejaColor.fondo,
         borderRadius: 'var(--redondeo-grande)',
-        padding: 'var(--aire-4)',
+        // Mas aire adentro -27-09-2026-, junto con la superficie gris: la tarjeta crece y la
+        // portada deja de quedar apretada arriba.
+        padding: 'var(--aire-5) var(--aire-4)',
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',

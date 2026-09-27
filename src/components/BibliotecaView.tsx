@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
-import { Guion, ResumenGuion, ResumenGrabacion, PAREJAS_COLOR, duracionDeLectura } from '../datos/modelo'
+import { Guion, ResumenGuion, ResumenGrabacion, duracionDeLectura } from '../datos/modelo'
 import TiraGrabaciones from './TiraGrabaciones'
 import { PanelCorpus } from './PanelCorpus'
 import TarjetaLectura from './TarjetaLectura'
@@ -31,8 +31,6 @@ interface BibliotecaViewProps {
   setMedirLectura?: (medir: boolean) => void
   tema?: 'claro' | 'oscuro'
   setTema?: (tema: 'claro' | 'oscuro') => void
-  colorFondo?: string
-  colorLetra?: string
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
   // LA TIRA DE GRABACIONES vive aca, debajo de los guiones, y no en una
   // pantalla aparte: el video al lado del guion que lo produjo.
@@ -237,7 +235,7 @@ function FilaGuion({
       style={{
         position: 'relative',
         borderRadius: 'var(--redondeo)',
-        marginBottom: 'var(--aire-2)',
+        marginBottom: 'var(--aire-3)',
         overflow: 'hidden'
       }}
     >
@@ -307,8 +305,11 @@ function FilaGuion({
         style={{
           position: 'relative',
           zIndex: 2,
-          padding: 'var(--aire-3) var(--aire-3)',
-          backgroundColor: 'var(--bg-fila)',
+          // PROPORCION Y CONTRASTE -27-09-2026-: la fila sube del suelo con el mismo gris de
+          // la tarjeta de arriba y respira mas. Con --bg-fila casi no se separaba del fondo;
+          // Javier prefirio el contraste entre gris y negro de una auditoria.
+          padding: 'var(--aire-4)',
+          backgroundColor: 'var(--bg-panel)',
           borderRadius: 'var(--redondeo)',
           cursor: 'pointer',
           userSelect: 'none',
@@ -420,8 +421,6 @@ export default function BibliotecaView({
   setMedirLectura = () => {},
   tema = 'claro',
   setTema,
-  colorFondo = PAREJAS_COLOR[0].fondo,
-  colorLetra = PAREJAS_COLOR[0].letra,
   onRegistrarCerrarModal,
   grabaciones = [],
   onAbrirGrabacion,
@@ -646,8 +645,6 @@ export default function BibliotecaView({
           onDiagTouchStart={handleDiagTouchStart}
           onDiagTouchEnd={handleDiagTouchEnd}
           onDiagClick={handleDiagClick}
-          colorFondo={colorFondo}
-          colorLetra={colorLetra}
         />
       </div>
 
@@ -793,8 +790,10 @@ export default function BibliotecaView({
           escalon de la escala y con el mismo peso: son hermanos, no uno
           principal y otro al pie. Javier los pidio mas grandes el 21 de
           septiembre de 2026; texto-cuerpo es el escalon que sigue a
-          texto-meta, no un numero inventado. */}
-      <div className="texto-cuerpo" style={{ color: 'var(--color-apagado)', marginBottom: 'var(--aire-2)', fontWeight: 600 }}>
+          texto-meta, no un numero inventado. El 27-09-2026 subieron otro
+          escalon -texto-titulo- y a color de texto: son los que ordenan la
+          portada, y en gris apagado se perdian. */}
+      <div className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-3)', fontWeight: 600 }}>
         {mostrarArchivados ? 'Archivados' : 'Guiones'}
       </div>
 
