@@ -1475,7 +1475,9 @@ describe('Pruebas TAREA 43: El sistema operativo no puede meterse en la pantalla
     const btnParar = screen.getByTestId('btn-parar-lectura') as HTMLElement
     expect(btnParar).not.toBeNull()
     const parentContainer = btnParar.parentElement as HTMLElement
-    expect(parentContainer.style.bottom).toContain('24px')
+    // Desde el 27-09-2026 la altura sale de --circulo-desde-abajo -styles.css-, compartida con
+    // Empezar y la barra de tiempo. Antes esta prueba pedia '24px'.
+    expect(parentContainer.style.bottom).toContain('--circulo-desde-abajo')
     expect(parentContainer.style.bottom).toContain('safe-area-inset-bottom')
 
     unmount()

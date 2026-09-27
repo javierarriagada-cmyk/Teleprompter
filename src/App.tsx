@@ -1718,7 +1718,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               <div
                 style={{
                   position: 'absolute',
-                  bottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+                  bottom: 'calc(var(--circulo-desde-abajo) + env(safe-area-inset-bottom, 0px))',
                   left: 0,
                   right: 0,
                   zIndex: 100,

@@ -29,6 +29,10 @@
   --redondeo: 10px;
   --redondeo-grande: 24px;
   --redondeo-pildora: 999px;
+  /* EL CIRCULO DE ABAJO DE LA LECTURA -Empezar y Parar- Y LA BARRA DE TIEMPO SE MIDEN DESDE
+     ACA. Era 24px; 27-09-2026 sube a 64: una persona abrio Leer y dos veces empezo a hablar
+     sin tocar Empezar -Javier: "esta muy abajo"-. Los tres lo usan, asi no se desalinean. */
+  --circulo-desde-abajo: 64px;
 }
 
 [data-tema="claro"] {
@@ -830,6 +834,20 @@ label.selector-aa-opcion {
   background-color: var(--color-acento);
   border: none;
   color: var(--color-texto-acento);
+  /* EL CIRCULO RESPIRA MIENTRAS ESPERA -27-09-2026-. Una persona abrio Leer y dos veces empezo
+     a hablar sin tocarlo. Un halo que sale y se apaga, con box-shadow y NO con transform: el
+     transform es del efecto de apretado de .btn-deformable. Espera 1,5 s para no molestar a
+     quien ya iba a tocar. Solo en Leer: en Grabar el inicio es deliberado y un pulso rojo se
+     leeria como "ya estas grabando". */
+  animation: pulsoEmpezar 1.8s ease-out 1.5s infinite;
+}
+@keyframes pulsoEmpezar {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-acento) 55%, transparent); }
+  70% { box-shadow: 0 0 0 18px color-mix(in srgb, var(--color-acento) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-acento) 0%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-empezar-leer { animation: none; }
 }
 .punto-grabar {
   display: block;

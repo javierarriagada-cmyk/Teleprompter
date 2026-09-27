@@ -58,7 +58,10 @@ function Pastilla({
         // El circulo de abajo mide 72 y esta a 24 del borde: su centro queda a
         // 60. La pastilla mide unos 44, asi que a 38 del borde su centro calza
         // con el del circulo.
-        bottom: 'calc(38px + env(safe-area-inset-bottom, 0px))',
+        // Desde el 27-09-2026 el circulo se mide con --circulo-desde-abajo
+        // -styles.css-: la pastilla va 14 px mas arriba que el borde del circulo,
+        // (72 - 44) / 2, y asi los centros siguen calzando si el circulo se mueve.
+        bottom: 'calc(var(--circulo-desde-abajo) + 14px + env(safe-area-inset-bottom, 0px))',
         right: 'calc(16px + env(safe-area-inset-right, 0px))',
         zIndex: 12,
         display: 'flex',
