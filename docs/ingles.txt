@@ -107,9 +107,12 @@ nivel". Punto I1 de docs/decisiones-de-diseno.txt.
     - OJO CON LA COMPARACION: las tomas de ella tienen errores e improvisaciones a proposito;
       las de Javier son lecturas de corrido. Hacen falta 2 lecturas limpias del "Hi" para
       comparar con la misma vara.
-    - PENDIENTE, REVISION DEL RECONOCEDOR: Vosk se eligio cuando Sigo era web y no se
-      reviso al pasar a APK. Medir sherpa-onnx -reconocedores modernos para telefono, 20 a
-      70 MB- con este mismo banco, en los DOS idiomas, antes de decidir.
+    - PENDIENTE, REVISION DEL RECONOCEDOR, SOLO PARA EL INGLES. Vosk se eligio cuando Sigo
+      era web y no se reviso al pasar a APK. Javier, 27-09-2026: "en espanol el asunto esta
+      solucionado" -el espanol queda con Vosk, no se toca-. Medir sherpa-onnx -reconocedores
+      modernos para telefono, 20 a 70 MB- con este mismo banco sobre las lecturas limpias en
+      ingles. Si gana, los guiones en ingles usarian otro reconocedor que los de espanol: dos
+      librerias y mas peso, que se deciden con los numeros delante.
 
 
 ==============================================================================
