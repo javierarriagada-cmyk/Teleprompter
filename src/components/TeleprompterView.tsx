@@ -67,6 +67,7 @@ import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTUR
 import { actualizarConfigCamara } from '../lib/camara'
 import { App as CapacitorApp } from '@capacitor/app'
 import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from '../lib/brillo'
+import { SelectorLetra, SelectorAncho } from './ControlesAa'
 
 // UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
 //
@@ -224,6 +225,11 @@ interface TeleprompterViewProps {
   conCamara?: boolean
   setAnclajeZona?: (a: AnclajeZona) => void
   setMirror?: (v: boolean) => void
+  // Tamano y ancho tambien en el cajon de la toma -27-09-2026-: ver ControlesAa.tsx.
+  onLetraMenos?: () => void
+  onLetraMas?: () => void
+  setColumnaAngosta?: (v: boolean) => void
+  setMarginPercent?: (v: number) => void
   mostrarTiempo?: boolean
   setMostrarTiempo?: (v: boolean) => void
   setFondoToma?: (f: FondoToma) => void
@@ -285,6 +291,10 @@ export default function TeleprompterView({
   conCamara = false,
   setAnclajeZona,
   setMirror,
+  onLetraMenos,
+  onLetraMas,
+  setColumnaAngosta,
+  setMarginPercent,
   mostrarTiempo = true,
   setMostrarTiempo,
   setFondoToma,
@@ -1359,12 +1369,26 @@ export default function TeleprompterView({
                     </div>
                   )}
 
+                  {/* LETRA Y ANCHO, ARRIBA Y MITAD Y MITAD -27-09-2026-. Javier los extrano aca,
+                      justo antes de grabar. El cajon no tiene velo: el texto de atras cambia en
+                      vivo. Para que el cajon no creciera, la calidad y el brillo dejaron de ir a
+                      todo el ancho: calidad con donde lees, espejo y tiempo con el brillo. */}
+                  <div className="fila-aa-par">
+                    <SelectorLetra fontSize={fontSize} onMenos={onLetraMenos} onMas={onLetraMas} />
+                    <SelectorAncho
+                      columnaAngosta={columnaAngosta}
+                      marginPercent={marginPercent}
+                      setColumnaAngosta={setColumnaAngosta}
+                      setMarginPercent={setMarginPercent}
+                    />
+                  </div>
+
                   {/* LA CALIDAD VA EN TEXTO: 720p o 1080p es un dato, no una
                       forma, y dibujarlo seria adivinar. Decision del dueno,
                       24-09-2026: "la calidad esta bien que sea texto para que
                       se entienda". */}
-                  {conCamara && calidadesSoportadas.length > 0 && (
-                    <>
+                  <div className="fila-aa-par">
+                    {conCamara && calidadesSoportadas.length > 0 && (
                       <div className="selector-aa selector-aa-lleno" role="group" aria-label="Calidad del video">
                         {calidadesSoportadas.map((q) => (
                           <button
@@ -1381,25 +1405,7 @@ export default function TeleprompterView({
                           </button>
                         ))}
                       </div>
-                      {typeof minutosDisponibles === 'number' && (
-                        <div
-                          data-testid="linea-minutos-disponibles"
-                          className={`aviso-aa${minutosDisponibles < 2 ? ' aviso-aa-urgente' : ''}`}
-                        >
-                          {minutosDisponibles >= 2
-                            ? `Te alcanzan unos ${Math.floor(minutosDisponibles)} minutos`
-                            : 'Quedan menos de 2 minutos de espacio'}
-                        </div>
-                      )}
-                    </>
-                  )}
-
-                  {/* DONDE LEES, ESPEJO Y TIEMPO, mitad y mitad. Espejo y tiempo
-                      son interruptores: cada uno se enciende solo, y encendido
-                      se pinta como la opcion elegida. La casilla real sigue en
-                      el documento -para el lector de pantalla y el teclado-,
-                      escondida con la misma clase que Interruptor.tsx. */}
-                  <div className="fila-aa-par">
+                    )}
                     <div className="selector-aa selector-aa-lleno" role="group" aria-label="Dónde lees">
                       {/* Sin 'abajo' desde el 24-09-2026: "nadie lee abajo". Ver App.tsx, donde
                           se carga anclajeZona. */}
@@ -1420,6 +1426,25 @@ export default function TeleprompterView({
                         </button>
                       ))}
                     </div>
+                  </div>
+                  {conCamara && calidadesSoportadas.length > 0 && typeof minutosDisponibles === 'number' && (
+                    <div
+                      data-testid="linea-minutos-disponibles"
+                      className={`aviso-aa${minutosDisponibles < 2 ? ' aviso-aa-urgente' : ''}`}
+                    >
+                      {minutosDisponibles >= 2
+                        ? `Te alcanzan unos ${Math.floor(minutosDisponibles)} minutos`
+                        : 'Quedan menos de 2 minutos de espacio'}
+                    </div>
+                  )}
+
+                  {/* ESPEJO Y TIEMPO CON EL BRILLO, mitad y mitad -hasta el 27-09-2026 espejo y
+                      tiempo iban con donde lees, y el brillo a todo el ancho-. Espejo y tiempo
+                      son interruptores: cada uno se enciende solo, y encendido
+                      se pinta como la opcion elegida. La casilla real sigue en
+                      el documento -para el lector de pantalla y el teclado-,
+                      escondida con la misma clase que Interruptor.tsx. */}
+                  <div className="fila-aa-par">
                     <div className="selector-aa selector-aa-lleno" role="group" aria-label="Espejo y tiempo">
                       {[
                         { etiqueta: 'Espejo', encendido: mirror, cambiar: (v: boolean) => setMirror?.(v), Icono: IconoEspejo },
@@ -1442,34 +1467,33 @@ export default function TeleprompterView({
                         </label>
                       ))}
                     </div>
-                  </div>
-
-                  {/* BRILLO: UNA BARRA ENTRE UN SOL CHICO Y UN SOL GRANDE. Ver el
-                      porque del cambio en lib/brillo.ts. Parte del brillo que
-                      tiene el sistema; mientras no se toca, el brillo es el del
-                      sistema -automatico-. El relleno de la pista lo dibuja
-                      --relleno, en styles.css. */}
-                  <div className="brillo-aa" role="group" aria-label="Brillo">
-                    <IconoSol tamano={16} />
-                    <input
-                      type="range"
-                      data-testid="barra-brillo"
-                      className="barra-brillo"
-                      aria-label="Brillo"
-                      min={Math.round(BRILLO_MINIMO * 100)}
-                      max={100}
-                      step={1}
-                      value={Math.round((brillo ?? brilloSistema ?? 0.5) * 100)}
-                      onChange={(e) => {
-                        const v = Number(e.target.value) / 100
-                        setBrillo(v)
-                        aplicarBrillo(v)
-                      }}
-                      style={{
-                        ['--relleno' as string]: `${((Math.round((brillo ?? brilloSistema ?? 0.5) * 100) - BRILLO_MINIMO * 100) / (100 - BRILLO_MINIMO * 100)) * 100}%`
-                      }}
-                    />
-                    <IconoSol tamano={26} />
+                    {/* BRILLO: UNA BARRA ENTRE UN SOL CHICO Y UN SOL GRANDE. Ver el
+                        porque del cambio en lib/brillo.ts. Parte del brillo que
+                        tiene el sistema; mientras no se toca, el brillo es el del
+                        sistema -automatico-. El relleno de la pista lo dibuja
+                        --relleno, en styles.css. */}
+                    <div className="brillo-aa" role="group" aria-label="Brillo">
+                      <IconoSol tamano={16} />
+                      <input
+                        type="range"
+                        data-testid="barra-brillo"
+                        className="barra-brillo"
+                        aria-label="Brillo"
+                        min={Math.round(BRILLO_MINIMO * 100)}
+                        max={100}
+                        step={1}
+                        value={Math.round((brillo ?? brilloSistema ?? 0.5) * 100)}
+                        onChange={(e) => {
+                          const v = Number(e.target.value) / 100
+                          setBrillo(v)
+                          aplicarBrillo(v)
+                        }}
+                        style={{
+                          ['--relleno' as string]: `${((Math.round((brillo ?? brilloSistema ?? 0.5) * 100) - BRILLO_MINIMO * 100) / (100 - BRILLO_MINIMO * 100)) * 100}%`
+                        }}
+                      />
+                      <IconoSol tamano={26} />
+                    </div>
                   </div>
                 </div>
               </div>

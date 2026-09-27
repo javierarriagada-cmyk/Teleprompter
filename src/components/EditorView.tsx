@@ -5,6 +5,7 @@ import { Guion, Bloque, TramoFormato, contarPalabras, duracionDeLectura, PAREJAS
 import { consolidarGuion } from '../datos/consolidar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { hapticaSeleccion, hapticaToqueSuave } from '../haptica'
+import { SelectorLetra, SelectorAncho } from './ControlesAa'
 import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
 import { IconoAtras, IconoEmpezar } from './IconosApp'
 import { EditorGuion } from './EditorGuion'
@@ -560,26 +561,7 @@ export default function EditorView({
                 decia "Ancho del texto" porque getByText encontraba dos
                 "Ancho"; ahora las pruebas buscan el boton por rol. */}
             <div className="cajon-aa-filas">
-              <div className="selector-aa selector-aa-lleno" role="group" aria-label="Tamaño de letra">
-                <button
-                  type="button"
-                  onClick={onLetraMenos}
-                  aria-label="Disminuir letra panel"
-                  className="btn-deformable selector-aa-opcion letra-aa-chica"
-                >
-                  A
-                </button>
-                <span className="selector-aa-divisor" aria-hidden="true" />
-                <button
-                  type="button"
-                  onClick={onLetraMas}
-                  aria-label="Aumentar letra panel"
-                  className="btn-deformable selector-aa-opcion letra-aa-grande"
-                >
-                  A
-                </button>
-                <span data-testid="valor-letra-panel" className="solo-lector" aria-live="polite">{fontSize}</span>
-              </div>
+              <SelectorLetra fontSize={fontSize} onMenos={onLetraMenos} onMas={onLetraMas} />
 
               {(setTipoFuente || setColumnaAngosta || setMarginPercent) && (
                 <div className="fila-aa-par">
@@ -607,32 +589,12 @@ export default function EditorView({
                   )}
 
                   {(setColumnaAngosta || setMarginPercent) && (
-                    <div className="selector-aa selector-aa-lleno" role="group" aria-label="Ancho del texto">
-                      {([
-                        { nombre: 'Ancho', angosta: false, margen: 5, activo: !columnaAngosta && marginPercent !== 12, lineas: [16, 16, 11] },
-                        { nombre: 'Medio', angosta: false, margen: 12, activo: !columnaAngosta && marginPercent === 12, lineas: [11, 11, 8] },
-                        { nombre: 'Angosto', angosta: true, margen: 5, activo: columnaAngosta, lineas: [6, 6, 4] }
-                      ]).map((o) => (
-                        <button
-                          key={o.nombre}
-                          type="button"
-                          aria-label={o.nombre}
-                          aria-pressed={o.activo}
-                          className={`btn-deformable selector-aa-opcion${o.activo ? ' activa' : ''}`}
-                          onClick={() => {
-                            hapticaSeleccion()
-                            setColumnaAngosta?.(o.angosta)
-                            setMarginPercent?.(o.margen)
-                          }}
-                        >
-                          <svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true">
-                            {o.lineas.map((ancho, i) => (
-                              <rect key={i} x={(22 - ancho) / 2} y={3 + i * 5} width={ancho} height="2" rx="1" fill="currentColor" />
-                            ))}
-                          </svg>
-                        </button>
-                      ))}
-                    </div>
+                    <SelectorAncho
+                      columnaAngosta={columnaAngosta}
+                      marginPercent={marginPercent}
+                      setColumnaAngosta={setColumnaAngosta}
+                      setMarginPercent={setMarginPercent}
+                    />
                   )}
                 </div>
               )}

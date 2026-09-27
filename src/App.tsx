@@ -1787,6 +1787,10 @@ export default function App({ motor, repoOverride }: AppProps) {
               motorAvance={motorAvance}
               diagnostico={verTranscripcion}
               columnaAngosta={columnaAngosta}
+              onLetraMenos={handleLetraMenos}
+              onLetraMas={handleLetraMas}
+              setColumnaAngosta={setColumnaAngosta}
+              setMarginPercent={setMarginPercent}
               colorFondo={colorFondo}
               colorLetra={colorLetra}
               tipoFuente={tipoFuente}

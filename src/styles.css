@@ -661,6 +661,15 @@ textarea::placeholder {
   flex: 1;
   min-width: 0;
 }
+/* El brillo tambien va en media fila desde el 27-09-2026, junto a espejo y tiempo, para
+   que la letra y el ancho entraran en el cajon de la toma sin agrandarlo. En media fila
+   los soles y la barra se aprietan un poco. */
+.fila-aa-par > .brillo-aa {
+  flex: 1;
+  min-width: 0;
+  gap: var(--aire-2);
+  padding: 0 var(--aire-2);
+}
 /* Las parejas de color son tres tarjetas que llenan la fila: lo que mas
    cambia el guion se lleva el lugar mas grande. */
 .parejas-aa {
