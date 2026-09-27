@@ -112,11 +112,20 @@ nivel". Punto I1 de docs/decisiones-de-diseno.txt.
       96,6% y 92% en espanol. La diferencia es real: el reconocedor ingles oye peor esa voz.
       El seguimiento, igual, va bien en 2 de las 3 -atraso mediano 0,8 palabras, 75 y 84% en
       el renglon objetivo-; la tercera, 1,8 y 55%.
-    - SIGUIENTE -investigado el 27-09-: medir con estas lecturas Moonshine v2 Tiny -~26 MB,
-      solo ingles, hecho para transcribir en vivo en telefonos, libreria Android oficial- y
-      sherpa-onnx Zipformer 20M -~42 MB int8- contra el Vosk de hoy, con banco-guion.py.
-      Comprobar tambien que entreguen parciales mientras se habla y el tiempo de cada
-      palabra -los subtitulos lo necesitan-.
+    - MEDIDOS LOS CANDIDATOS -28-09-2026, las 3 lecturas limpias, candidatos/banco-
+      candidatos.py: mismo audio, trozos de 20 ms, atraso contra los tiempos de Vosk-:
+                          en orden   atraso    actualiza   peso
+        Vosk chico           154     130 ms    50 /s       40 MB
+        sherpa-onnx 20M      148     420 ms     2 /s       44 MB
+        Moonshine Tiny       163     250 ms   1,7 /s       43 MB
+        Moonshine Small      187     370 ms   1,7 /s      136 MB
+      VOSK SE QUEDA TAMBIEN PARA EL INGLES. Sigo mueve la pantalla con cada palabra: los
+      candidatos actualizan menos de 2 veces por segundo y llegan 2 a 3 veces mas tarde; la
+      pantalla iria a saltos y atrasada. Moonshine Tiny gana apenas 6% al mismo peso; Small
+      gana 21% pero pesa 136 MB -Javier: "tampoco nos podemos exceder en peso"-.
+      Si se mejora el ingles, es por el seguidor -aprovechar lo que Vosk oye mal pero
+      parecido: "wars" por "words", "decks" por "text"-, no cambiando de reconocedor. Volver
+      a mirar Moonshine si llega a actualizar mas seguido.
     - PENDIENTE, REVISION DEL RECONOCEDOR, SOLO PARA EL INGLES. Vosk se eligio cuando Sigo
       era web y no se reviso al pasar a APK. Javier, 27-09-2026: "en espanol el asunto esta
       solucionado" -el espanol queda con Vosk, no se toca-. Medir sherpa-onnx -reconocedores
