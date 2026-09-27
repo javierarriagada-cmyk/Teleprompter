@@ -6,8 +6,11 @@
          -Javier eligio que queden escondidas-. Esa carpeta se borraba entera al
          desinstalar: ese dia se perdieron asi las tomas de la app vieja. Con esto,
          al desinstalar, Android pregunta si conservar los datos de la app. -->
+    <!-- localeConfig -27-09-2026, docs/ingles.txt D1-: los idiomas que la app ofrece, para
+         que Android 13 o mas nuevo muestre el selector en Ajustes -> Apps -> Sigo -> Idioma. -->
     <application
         android:hasFragileUserData="true"
+        android:localeConfig="@xml/locales_config"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,8 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- layoutDirection -27-09-2026-: cambiar el idioma de la app -IdiomaAppPlugin- trae
+             locale Y layoutDirection. Sin el segundo, Android reinicia la actividad y la
+             pagina se recarga en medio de lo que se estaba haciendo. -->
         <activity
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation|density"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|smallestScreenSize|screenLayout|uiMode|navigation|density"
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch"
@@ -39,6 +45,18 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
+
+        <!-- EL IDIOMA ELEGIDO SE RECUERDA TAMBIEN EN ANDROID 12 O ANTERIOR -27-09-2026-. Ahi
+             no existe el idioma por app del sistema; AppCompat lo guarda solo con esto. Es la
+             receta de la documentacion de AppCompat 1.6+. -->
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
     </application>
 
     <!-- Permissions -->

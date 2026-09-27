@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LOS IDIOMAS QUE SIGO OFRECE -27-09-2026, docs/ingles.txt-. Android 13 o mas nuevo los
+     muestra en Ajustes del telefono -> Apps -> Sigo -> Idioma. Sumar uno aca sin sus textos
+     en src/textos/ mostraria un idioma que la app no tiene. -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="es" />
+    <locale android:name="en" />
+</locale-config>

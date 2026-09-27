@@ -1286,6 +1286,10 @@ export default function App({ motor, repoOverride }: AppProps) {
       }
       // Al volver: si mientras tanto se borro de la galeria el video de una toma
       // guardada, la toma deja de aparecer -quitarTomasSinVideo-.
+      // Al volver, tambien el idioma: se pudo cambiar en Ajustes del telefono -> Apps -> Sigo
+      // -> Idioma mientras la app estaba atras -IdiomaAppPlugin, 27-09-2026-. Leerlo no cambia
+      // nada si sigue igual.
+      if (isActive) leerIdiomaDelTelefono()
       if (isActive && !tomaEnCurso()) {
         quitarTomasSinVideo(repoGrabacionesRef.current)
           .then((quedan) => {

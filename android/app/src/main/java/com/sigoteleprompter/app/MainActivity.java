@@ -73,6 +73,7 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(ArranquePlugin.class);
         registerPlugin(VoskNativoPlugin.class);
         registerPlugin(CamaraNativaPlugin.class);
+        registerPlugin(IdiomaAppPlugin.class);
         super.onCreate(savedInstanceState);
 
         if (this.bridge != null && this.bridge.getWebView() != null) {
