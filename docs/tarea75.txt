@@ -1,0 +1,112 @@
+TAREA 75 — LA APP EN ESPANOL E INGLES: TEXTOS, IDIOMA DE LA APP Y DEL GUION
+Repositorio: javierarriagada-cmyk/Teleprompter. Partir del main de ahora. Rama nueva:
+tarea-75-app-en-ingles. Pull request hacia main.
+Lee antes AGENTS.md, docs/lo-que-hay-que-saber.txt y docs/ingles.txt -el plan, las
+decisiones D1 a D6, el GLOSARIO y el guion Hola en ingles-. docs/ingles.txt manda.
+
+------------------------------------------------------------------------------
+LA VARA
+------------------------------------------------------------------------------
+La app tiene que verse y sentirse en ingles EXACTAMENTE al mismo nivel que en espanol: ni un
+texto en espanol que se escape, ni una frase que suene traducida. Quien la abra con el
+telefono en ingles no tiene que notar que se hizo primero en espanol.
+
+------------------------------------------------------------------------------
+QUE SE HACE
+------------------------------------------------------------------------------
+1. LOS TEXTOS, EN UN SOLO LUGAR POR IDIOMA.
+   - src/textos/es.ts y src/textos/en.ts, con las mismas claves. en.ts tiene que declararse
+     con el tipo de es.ts, para que tsc falle si falta una clave en ingles.
+   - Una funcion t(clave, variables?) y un gancho para que los componentes se redibujen al
+     cambiar el idioma. Sin dependencias nuevas.
+   - SE PASAN TODOS los textos que ve o escucha el usuario: lo escrito en pantalla,
+     aria-label, title, placeholder, avisos y confirmaciones, en src/App.tsx y
+     src/components/. Buscar a conciencia: un texto que quede en espanol en la pantalla en
+     ingles es un defecto.
+   - NO se pasan: el panel de diagnostico -la franja con el selector de motor, "Ver
+     transcripcion en vivo" y PanelCorpus-, porque se elimina antes de publicar -P1f-; los
+     mensajes de console; los comentarios.
+   - Ingles de Estados Unidos, con el GLOSARIO de docs/ingles.txt. Si hace falta un termino
+     que no esta, se elige con el mismo criterio -corto, el que usan las mejores apps- y se
+     agrega al glosario en el mismo PR.
+
+2. EL IDIOMA DE LA APP -D1-.
+   - src/lib/idioma.ts: tipo IdiomaApp = 'es' | 'en'. Al arrancar se lee el idioma: si esta
+     el plugin nativo 'IdiomaApp' -Capacitor.isPluginAvailable('IdiomaApp')-, se le pide con
+     leer(): Promise<{ idioma: string }>; si no, navigator.language. 'es' si empieza con
+     'es'; 'en' en cualquier otro caso.
+   - Cambiarlo: fijar(idioma) llama al plugin -fijar({ idioma })- si esta; si no, lo guarda
+     en localStorage 'sigo_idioma', que tambien manda al arrancar. EL PLUGIN NATIVO LO HACE
+     CLAUDE DESPUES: aca solo se usa si existe, y todo funciona sin el.
+   - El selector: en el cajon del engranaje de la portada -BibliotecaView, junto a las
+     tarjetas de tema-, una fila con dos opciones "ES" y "EN", con las piezas del estandar
+     del cajon Aa -.selector-aa, .selector-aa-lleno, .selector-aa-opcion, activa en crema-.
+     Al tocar, toda la app cambia en el momento, sin reiniciar.
+
+3. EL IDIOMA DE CADA GUION -D2-.
+   - src/lib/detectarIdioma.ts: detectarIdioma(texto): 'es' | 'en' | null. Cuenta palabras
+     frecuentes de cada idioma -listas cortas, 30 a 50 palabras cada una-; con menos de 12
+     palabras o sin diferencia clara devuelve null. Pruebas con textos reales de los dos
+     idiomas, mezclados y cortos.
+   - Al escribir o pegar en el editor, si la deteccion da un idioma y es distinto del
+     guardado, se actualiza Guion.idioma. Si la persona lo eligio a mano, ya no se cambia
+     solo: nuevo campo opcional en el modelo, Guion.idiomaElegido?: boolean. Un guion
+     guardado sin ese campo se comporta como antes.
+   - En el editor se ve el idioma del guion -ES / EN- y se cambia con un toque. Ubicarlo
+     con el mismo tratamiento que los controles vecinos; sin cajones nuevos.
+   - Los guiones nuevos nacen en el idioma de la app: App.tsx hoy cablea 'es' en
+     guionNuevo('es') y al crear el guion Hola. El guion migrado de la version web vieja
+     queda en 'es'.
+   - El motor de voz recibe el idioma del guion: verificar que useASR / conduccion pasen
+     guion.idioma como lang -hoy MotorNativo lo ignora; lo conecta Claude despues-.
+
+4. EL GUION HOLA EN LOS DOS IDIOMAS.
+   - bloqueDeBienvenida(idioma) -App.tsx- devuelve el texto espanol de hoy o el ingles de
+     docs/ingles.txt seccion 5, LETRA POR LETRA, con los formatos que ahi se listan puestos
+     con el mismo mecanismo -tramo(frase, formato)-. Titulo: "Hola" o "Hi".
+   - Se crea en el idioma de la app al instalar. La marca teleprompter_bienvenida_puesta no
+     cambia de nombre -su comentario dice por que-.
+   - src/pruebas/bienvenida.test.ts: las mismas comprobaciones para el ingles -los cinco
+     formatos sobre las palabras que los nombran, tramos en orden y sin pisarse, el correo
+     hello@sigoteleprompter.com-.
+
+5. FECHAS Y DURACIONES.
+   - "hoy", "ayer" y las fechas de las tomas, por idioma -Intl.DateTimeFormat-.
+   - duracionDeLectura -modelo.ts-: el formato "2:09 min" sirve en los dos; 'vacío' pasa
+     por t().
+
+6. PRUEBAS.
+   - Las pruebas existentes buscan textos en espanol. La preparacion de vitest fija el idioma
+     en 'es' por omision, para que sigan valiendo sin tocarlas una por una.
+   - Pruebas nuevas en src/pruebas/tarea75.test.tsx, renderizando <App>:
+       T75a: con el idioma en 'en', la portada, el editor, la lectura y el cajon de la toma
+             no muestran ningun texto de es.ts -recorrer los valores de es.ts y buscarlos en
+             el documento, salvo los que son iguales en los dos idiomas-.
+       T75b: el selector ES · EN cambia la app en el momento.
+       T75c: con 'en', un guion nuevo nace con idioma 'en'; pegar un texto espanol largo lo
+             pasa a 'es'; elegirlo a mano lo deja fijo.
+       T75d: en.ts tiene todas las claves de es.ts y ninguna vacia.
+   - ROMPER A PROPOSITO antes de entregar: dejar un texto visible sin pasar por t() y
+     confirmar que T75a falla; pegar la salida en el informe.
+
+------------------------------------------------------------------------------
+QUE NO SE HACE
+------------------------------------------------------------------------------
+- No tocar src/motor/, el seguidor -src/lib/seguidor.ts-, subtitulos.ts ni nada nativo
+  -android/-: el modelo ingles, la normalizacion del ingles y el idioma por app de Android
+  los hace Claude en el telefono.
+- No tocar sitio/.
+- LOS COMENTARIOS NO SE BORRAN. Si el codigo cambia, se actualiza su comentario; todo lo
+  demas se queda.
+- Sin colores ni medidas en linea en los archivos que vigila T209 -src/pruebas/
+  tarea46.test.tsx-; los estilos van como clase en styles.css.
+- Sin dependencias nuevas.
+
+------------------------------------------------------------------------------
+TERMINADO ES
+------------------------------------------------------------------------------
+- npx tsc --noEmit sin errores; npm run test entero en verde; npm run build.
+- Con el idioma en ingles no queda un solo texto en espanol fuera del panel de diagnostico.
+- El informe: que se hizo, que NO se pudo hacer -no hay telefono: el cambio de idioma se
+  prueba despues en el aparato-, la salida de la prueba rota a proposito, y los terminos que
+  se agregaron al glosario.

@@ -1,0 +1,136 @@
+SIGO EN INGLES — EL PLAN
+27-09-2026. Decidido con Javier. La app funciona en espanol e ingles, "exactamente al mismo
+nivel". Punto I1 de docs/decisiones-de-diseno.txt.
+
+
+==============================================================================
+1. LA IDEA: DOS IDIOMAS DISTINTOS, SEPARADOS
+==============================================================================
+
+  EL IDIOMA DE LA APP -botones, avisos, el guion Hola- y EL IDIOMA DE CADA GUION -que
+  reconocedor escucha, como se arman los subtitulos- son dos cosas. Alguien con el telefono
+  en espanol puede grabar un guion en ingles, y al reves. Asi lo hacen Google Docs o Gboard.
+
+  NO SE PREGUNTA EL IDIOMA AL EMPEZAR. Las mejores apps siguen el idioma del telefono y
+  ofrecen cambiarlo adentro; desde Android 13 cada app tiene su idioma en Ajustes del
+  telefono -> Apps -> Idioma. Solo preguntan al comienzo las apps donde el idioma ES el
+  contenido.
+
+
+==============================================================================
+2. LAS DECISIONES
+==============================================================================
+
+  D1. LA APP SIGUE EL IDIOMA DEL TELEFONO. Espanol si el telefono esta en espanol; ingles
+      en cualquier otro caso. Un selector ES · EN en el cajon del engranaje de la portada,
+      que usa el mismo ajuste de Android -idioma por app, AppCompatDelegate.
+      setApplicationLocales y locales_config.xml-, asi lo que se elige adentro y lo que se
+      elige en Ajustes del telefono son lo mismo.
+
+  D2. CADA GUION TIENE SU IDIOMA, DETECTADO SOLO. Al escribir o pegar, se mira que
+      palabras frecuentes tiene -el, que, de, la, y... contra the, and, of, to, a...-; con
+      12 palabras o mas decide, con menos se queda el que tenia. Un guion nuevo parte en el
+      idioma de la app. Se ve en el editor y se cambia con un toque. El modelo de datos ya
+      lo guarda -Guion.idioma, "NUNCA cablear 'es'"-; hoy App.tsx lo cablea en tres lugares.
+
+  D3. EL MODELO INGLES DE VOSK VIAJA DENTRO DE LA APK -Javier, 27-09-2026: opcion a-. La
+      APK pasa de ~72 a ~112 MB, y "funciona sin internet" sigue siendo cierto desde el
+      primer momento. MAS ADELANTE: separarlo con Play Asset Delivery -install-time- para
+      aligerar la descarga sin que el usuario lo note. Se carga UN modelo a la vez: el del
+      idioma del guion que se va a leer.
+
+  D4. MISMO NIVEL = MISMOS NUMEROS. El motor se afino con lecturas de Javier en espanol. En
+      ingles se mide igual: la traductora de Javier graba 3 o 4 lecturas con la app, y se
+      pasan por scripts/medir-toma.mjs. El ingles entra cuando da los mismos numeros que el
+      espanol -renglon donde se lee, atraso, saltos-.
+
+  D5. EL TEXTO EN INGLES SE ESCRIBE, NO SE TRADUCE. Mismo tono, frases naturales para
+      quien habla ingles. Espanol neutro en espanol; en ingles, ingles de Estados Unidos
+      -"color", "captions"-. El glosario de la seccion 4 manda.
+
+  D6. EL CORREO EN INGLES es hello@sigoteleprompter.com -reenvio nuevo en Namecheap al
+      mismo Gmail, lo agrega Claude con el OK de Javier-.
+
+
+==============================================================================
+3. QUIEN HACE QUE
+==============================================================================
+
+  TAREA 75 -la nube, docs/tarea75.txt-: los textos de la app en los dos idiomas, el idioma
+      de la app en JS, la deteccion del idioma del guion, el guion Hola en ingles, fechas y
+      duraciones por idioma.
+  CLAUDE, EN LA MAQUINA DE JAVIER -necesita el telefono-:
+      - el modelo ingles en la APK: bajar-modelo.mjs, carpetas model-es y model-en sin
+        pisarse -hoy StorageService.unpack desempaqueta en "model"-, MotorNativo elige por
+        idioma;
+      - el idioma por app de Android: locales_config.xml, el manifiesto y los dos metodos
+        nativos que usa la tarea 75;
+      - la normalizacion del ingles en el seguidor -contracciones, apostrofos, numeros- y
+        la lista inglesa de palabras que no cierran un subtitulo -ATADAS, subtitulos.ts-;
+      - la medicion con las lecturas de la traductora.
+  JAVIER: las lecturas de la traductora; despues, la ficha de Play en ingles.
+
+
+==============================================================================
+4. GLOSARIO -manda en toda la app-
+==============================================================================
+
+  Leer              Read                Guion / Guiones     Script / Scripts
+  Grabar            Record              Toma                Take
+  Videos            Videos              Empezar             Start
+  Pausa / Seguir    Pause / Resume      Parar               Stop
+  Ajustes           Settings            Archivar            Archive
+  Archivados        Archived            Borrar              Delete
+  Compartir         Share               Guardar en galeria  Save to gallery
+  Subtitulos        Captions            Amarillo/Rojo/Formal  Yellow / Red / Formal
+  Pegar texto       Paste text          Abrir archivo       Open file
+  Sin titulo        Untitled            Guardado            Saved
+  ¿Seguro?          Sure?               Voltear camara      Flip camera
+  Donde lees arriba Read at the top     ...al medio         Read in the middle
+  Espejo            Mirror              Mostrar tiempo      Show time
+  Brillo            Brightness          Calidad del video   Video quality
+  Tamano de letra   Text size           Ancho del texto     Text width
+  Ancho/Medio/Angosto  Wide/Medium/Narrow
+  Tipografia        Typeface            Destacado           Highlight
+  Negrita           Bold                Ambar/Celeste/Verde Amber / Light blue / Green
+  Acotacion         Note                Tus videos apareceran aqui.  Your videos will show up here.
+  la camara sigue encendida           the camera is still on
+  Te alcanzan unos N minutos          About N minutes of space left
+  Quedan menos de 2 minutos de espacio  Less than 2 minutes of space left
+  Se recupero una toma de una sesion interrumpida.  A take from an interrupted session was recovered.
+  Verla             View it             hoy / ayer          today / yesterday
+
+
+==============================================================================
+5. EL GUION HOLA EN INGLES -escrito por Claude; la traductora lo revisa-
+==============================================================================
+
+  Mismos formatos que el espanol, sobre las palabras que los nombran: bold, amber, light
+  blue, green, yellow highlight. Y los extra de la grabacion de prueba: "without you
+  touching anything" en negrita, "the text waits for you" celeste, "so your eyes go to the
+  camera" ambar, "just as you see it" verde, "You don't have to memorize anything." negrita,
+  "whenever you want" destacado, el correo celeste.
+
+Hi. Read this out loud, as slowly or as quickly as you like.
+
+Now look at the text. It's moving on its own, at the pace you speak, without you touching anything. The soft line under the words shows you where you are.
+
+If you stop to think, the text waits for you. When you start talking again, it picks up right where you left off.
+
+Anything you write in square brackets is a note just for you. It shows on the screen, but you don't need to read it out loud. [Like this one: breathe, and smile.]
+
+Your script can also help you read better. Use bold for what you want to say with more force. Color words in amber, light blue or green to set apart ideas or shifts in tone. And use the yellow highlight for what you can't afford to miss. Just select the text in the editor and pick one.
+
+With the Aa button you choose the text size, the typeface, the column width and the screen colors. Set it up however feels most comfortable.
+
+When you want to record yourself, tap Record. The camera films while you read, and the text sits right under the lens, so your eyes go to the camera and not to the screen. You can see yourself full screen, behind the text, or in a small window. That way you know how you look, without giving up the comfort of reading.
+
+When you're done, your video can have captions. They come from your script, in time with your voice. Pick the style you like best and save it to your gallery just as you see it.
+
+Sigo is here to give you the comfort and the calm you need. We want all your focus to be where it belongs. You don't have to memorize anything. You don't have to rush to keep up with the text. You can bring whatever emotion you want, whenever you want.
+
+It works for recording a video, teaching a class or getting ready for an interview.
+
+When you're done, delete this and write your own script, or paste one you already have.
+
+And if there's something you like, something that bugs you, or an idea to make it better, let us know. Your feedback means a lot to us. Write to hello@sigoteleprompter.com. All the best.
