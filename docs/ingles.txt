@@ -70,6 +70,24 @@ nivel". Punto I1 de docs/decisiones-de-diseno.txt.
       - la medicion con las lecturas de la traductora.
   JAVIER: las lecturas de la traductora; despues, la ficha de Play en ingles.
 
+  AVANCE -27-09-2026, Claude-:
+    HECHO  el modelo ingles en la APK -vosk-model-small-en-us-0.15, bajar-modelo.mjs-; cada
+           idioma en su carpeta; VoskNativoPlugin carga el del idioma pedido y MotorNativo
+           pide el del guion. Probado en el telefono desde la app: ingles 1,35 s la primera
+           vez, 4 ms si ya estaba, cambiar de idioma 0,7 a 1,2 s. La carpeta vieja "model"
+           -57 MB- se borra sola. APK 71,5 -> 111,8 MB.
+    HECHO  la lista inglesa de palabras que no cierran un subtitulo -ATADAS-, con su prueba
+           rota a proposito.
+    CON LAS LECTURAS  la normalizacion del ingles en el seguidor. Revisado el 27-09: las
+           contracciones y los apostrofos ya calzan -"don't" y lo que oye Vosk quedan
+           "dont" los dos-. Pueden fallar los guiones entre palabras -"well-known": el
+           guion lo junta, Vosk lo oye separado-, las cifras -"10" contra "ten"- y
+           simbolos como & o %. Tocar eso es tocar el seguidor: se hace midiendo con las
+           lecturas de la traductora y comprobando que las 28 tomas en espanol no se
+           muevan -comparar-seguidor.ts-.
+    FALTA  el idioma por app de Android -locales_config.xml y el plugin IdiomaApp-, cuando
+           la tarea 75 este en main.
+
 
 ==============================================================================
 4. GLOSARIO -manda en toda la app-

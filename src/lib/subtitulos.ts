@@ -60,7 +60,15 @@ export const ATRASO_DEL_CALCE_MS = 300
 
 // Un subtitulo no termina en "de la" o "que": esas palabras pasan al siguiente,
 // con la que las completa.
-const ATADAS = new Set('a al como con de del el en entre la las lo los mi mas o para pero por que se si sin su sus tan te tu un una y ya'.split(' '))
+// EL INGLES -27-09-2026, docs/ingles.txt-: lo mismo con "the", "of", "to"... Van en la misma
+// lista y no en una por idioma: no se pisan -"a" ata en los dos- y asi un subtitulo no
+// necesita saber el idioma del guion. Se comparan despues de norm(): sin apostrofo -"i'm"
+// queda "im"-.
+const ATADAS = new Set((
+  'a al como con de del el en entre la las lo los mi mas o para pero por que se si sin su sus tan te tu un una y ya ' +
+  'an the of to in on at by for with from into onto about as and or but nor so if than that this these those ' +
+  'my your his her its our their im youre were theyre is are was be not no very just'
+).split(' '))
 
 function norm(s: string): string {
   return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '')

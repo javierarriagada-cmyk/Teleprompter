@@ -108,3 +108,5 @@ app/src/main/res/xml/config.xml
 # Se baja con: npm run modelo
 # y queda en app/src/main/assets/model-es
 app/src/main/assets/model-es/
+# El ingles, desde el 27-09-2026 -docs/ingles.txt D3-: 68 MB desempaquetados.
+app/src/main/assets/model-en/

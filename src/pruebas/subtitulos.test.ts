@@ -58,6 +58,25 @@ describe('Subtitulos armados con el guion y la hora de cada palabra', () => {
     }
   })
 
+  test('EN INGLES TAMBIEN: un subtitulo no termina en "the", "of", "to"...', () => {
+    // 27-09-2026, docs/ingles.txt. Un guion ingles leido de corrido, sin pausas: los cortes
+    // salen por espacio, que es donde puede quedar colgando una palabra atada. Las horas son
+    // parejas -300 ms por palabra- y las palabras llegan como las entrega Vosk en ingles:
+    // minusculas, con apostrofo.
+    const guion = "Today I want to tell you about the way I used to record my videos, reading off a sheet of paper, and why I don't do that anymore because the text now follows my voice."
+    const palabras = guion.split(' ')
+    const oidas = palabras.map((w, i) => `${w.toLowerCase().replace(/[^a-z']/g, '')}@${i * 300}-${i * 300 + 280}`).join(' ')
+    const subs = armarSubtitulos(registro(guion, [`100\tpalabras\tFINAL: ${oidas}`]))
+    expect(subs.flatMap((s) => s.renglones.flat()).map((w) => w.texto)).toEqual(palabras)
+    expect(subs.length).toBeGreaterThan(1)
+    const atadas = new Set(['the', 'of', 'to', 'a', 'an', 'and', 'my', 'about', 'that'])
+    for (const s of subs) {
+      const ultima = s.renglones[s.renglones.length - 1]
+      const w = ultima[ultima.length - 1].texto.toLowerCase()
+      if (!/[.?!:;,]$/.test(w)) expect(atadas.has(w), `termina en "${w}"`).toBe(false)
+    }
+  })
+
   test('LA PALABRA QUE NO SE OYO toma su hora repartida por letras entre las vecinas', () => {
     // "Hola mundo querido amigo": el reconocedor no oyo "querido".
     const r = registro('Hola mundo querido amigo.', [

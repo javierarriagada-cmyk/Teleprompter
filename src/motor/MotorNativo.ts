@@ -40,7 +40,8 @@ type DatosResultado = {
 
 interface VoskNativoPlugin {
   disponible(): Promise<{ disponible: boolean }>
-  iniciar(): Promise<void>
+  // 'es' o 'en': el plugin carga assets/model-es o assets/model-en -docs/ingles.txt D3-.
+  iniciar(opciones?: { idioma?: 'es' | 'en' }): Promise<void>
   escuchar(opciones?: { guardarAudio?: boolean; fuente?: string; frecuenciaMic?: number }): Promise<{ inicioEpochMs?: number; rutaAudio?: string; muestrasPorTrozo?: number } | void>
   detener(): Promise<void>
   addListener(
@@ -113,18 +114,21 @@ export class MotorNativo implements MotorDeVoz {
   //
   // PENDIENTE: engancharlo al arranque de la aplicacion. Hoy usePrecargaModelo crea
   // un MotorVosk a mano y no mira este. Va en su propia tarea, no en esta.
-  async precargarModelo(): Promise<void> {
-    await Nativo.iniciar()
+  async precargarModelo(idioma: 'es' | 'en' = 'es'): Promise<void> {
+    // El plugin sabe que modelo tiene cargado: si es el mismo idioma no hace nada, y si es
+    // otro lo cambia -VoskNativoPlugin.iniciar-.
+    await Nativo.iniciar({ idioma })
     this.modeloCargado = true
   }
 
-  async iniciar(_opciones: { lang: string }): Promise<void> {
-    // El idioma no se elige: el modelo que viaja en el APK es el de espanol. Recibir
-    // el parametro y no usarlo es correcto -lo pide la interfaz-, inventar que se
-    // puede cambiar seria mentir.
-    void _opciones
+  async iniciar(opciones: { lang: string }): Promise<void> {
+    // EL IDIOMA DEL GUION ELIGE EL MODELO -27-09-2026, docs/ingles.txt-. Hasta ese dia
+    // el APK traia solo el espanol y este parametro se ignoraba a proposito: "inventar
+    // que se puede cambiar seria mentir". Ahora viajan los dos, y lang llega de App.tsx
+    // como 'es-ES' o 'en-EN' -guion.idioma-. Cualquier otro idioma cae en espanol.
+    const idioma: 'es' | 'en' = (opciones?.lang || '').toLowerCase().startsWith('en') ? 'en' : 'es'
 
-    await this.precargarModelo()
+    await this.precargarModelo(idioma)
 
     this.suscripciones.push(
       await Nativo.addListener('parcial', (d) => {

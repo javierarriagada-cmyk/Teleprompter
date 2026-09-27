@@ -71,7 +71,13 @@ public class VoskNativoPlugin extends Plugin {
      * tarea genUUID de app/build.gradle. Si los tres no dicen lo mismo, el modelo no
      * se copia y Vosk falla despues, con un error que no menciona esto.
      */
-    private static final String CARPETA_MODELO = "model-es";
+    //
+    // DOS IDIOMAS -27-09-2026, docs/ingles.txt D3-: assets/model-es y assets/model-en. Cada uno
+    // se desempaqueta en SU carpeta -antes todo iba a "model" y dos modelos se pisarian-, y se
+    // carga uno a la vez: el del idioma del guion que se va a leer.
+    private static String carpetaModelo(String idioma) {
+        return "en".equals(idioma) ? "model-en" : "model-es";
+    }
 
     /**
      * 16 kHz. Es la frecuencia con la que se entrenaron los modelos small de Vosk;
@@ -148,6 +154,8 @@ public class VoskNativoPlugin extends Plugin {
     private static final float SEGUNDOS_BUFFER_RELEVO = 3.0f;
 
     private Model modelo = null;
+    // El idioma del modelo cargado -'es' o 'en'-: si piden otro, se cambia.
+    private String idiomaModelo = null;
     private Oido oido = null;
     private PluginCall llamadaIniciar = null;
 
@@ -167,18 +175,35 @@ public class VoskNativoPlugin extends Plugin {
      */
     @PluginMethod
     public void iniciar(PluginCall call) {
-        if (modelo != null) {
+        // 'es' salvo que pidan ingles: un idioma que no conocemos no puede dejar a la app sin
+        // reconocedor.
+        String idioma = "en".equals(call.getString("idioma", "es")) ? "en" : "es";
+        if (modelo != null && idioma.equals(idiomaModelo)) {
             call.resolve();
             return;
         }
+        if (modelo != null) {
+            // Cambiar de idioma con el microfono abierto dejaria al oido con un reconocedor
+            // del modelo viejo. Desde JavaScript se detiene antes de pedir otro idioma.
+            if (oido != null) {
+                call.reject("No se puede cambiar el idioma mientras se escucha");
+                return;
+            }
+            modelo.close();
+            modelo = null;
+            idiomaModelo = null;
+        }
+        borrarCarpetaVieja();
         call.setKeepAlive(true);
         llamadaIniciar = call;
+        final String idiomaPedido = idioma;
         StorageService.unpack(
             getContext(),
-            CARPETA_MODELO,
-            "model",
+            carpetaModelo(idioma),
+            carpetaModelo(idioma),
             (modeloCargado) -> {
                 modelo = modeloCargado;
+                idiomaModelo = idiomaPedido;
                 if (llamadaIniciar != null) {
                     llamadaIniciar.resolve();
                     llamadaIniciar = null;
@@ -191,6 +216,24 @@ public class VoskNativoPlugin extends Plugin {
                 }
             }
         );
+    }
+
+    /**
+     * Hasta el 27-09-2026 el modelo espanol se desempaquetaba en "model". Ahora cada idioma
+     * va en su carpeta, y esa copia vieja -57 MB- quedaria huerfana en el telefono. Se
+     * borra una vez; si no esta, no hace nada.
+     */
+    private void borrarCarpetaVieja() {
+        java.io.File base = getContext().getExternalFilesDir(null);
+        if (base == null) return;
+        java.io.File vieja = new java.io.File(base, "model");
+        if (vieja.exists()) borrarRecursivo(vieja);
+    }
+
+    private static void borrarRecursivo(java.io.File f) {
+        java.io.File[] hijos = f.listFiles();
+        if (hijos != null) for (java.io.File h : hijos) borrarRecursivo(h);
+        if (!f.delete()) android.util.Log.w("VoskNativo", "No se pudo borrar " + f);
     }
 
     @PluginMethod
