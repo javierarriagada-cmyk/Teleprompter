@@ -423,6 +423,45 @@ textarea::placeholder {
   background-color: rgba(0, 0, 0, 0.45);
   border: 1px solid rgba(255, 255, 255, 0.35);
   color: #fff;
+  /* LA PASTILLA NO PISA EL CIRCULO EN UN TELEFONO ANGOSTO -27-09-2026-. En un Redmi 13C
+     -360 px de ancho- se montaba sobre Empezar: medía 120 minimo mas relleno, pegada a la
+     derecha, y al lado del circulo quedan 116. En el moto g86 -434- no se veia. Ahora vive
+     en el espacio entre el circulo y el borde -.pastilla-tiempo-lugar- y en pantallas
+     angostas achica letra y relleno para caber. */
+  /* border-box: el minimo incluye relleno y borde. Antes eran 120 de contenido mas 28 de
+     relleno y 2 de borde -150-; se conserva ese ancho donde cabe, y donde no, el espacio
+     que haya. Medido a 360: la hora sola mide 57 px. */
+  box-sizing: border-box;
+  min-width: min(150px, 100%);
+  max-width: 100%;
+  white-space: nowrap;
+  padding: 6px clamp(8px, 3vw, 14px) 8px;
+  font-size: clamp(11px, 3.2vw, 13px);
+}
+/* El lugar de la pastilla: desde el borde derecho del circulo de 72 -centrado- mas 8 de aire,
+   hasta el margen derecho. La pastilla se apoya a la derecha de ese espacio. */
+.pastilla-tiempo-lugar {
+  left: calc(50% + 36px + 8px);
+  right: calc(16px + env(safe-area-inset-right, 0px));
+  justify-content: flex-end;
+}
+.pastilla-tiempo { letter-spacing: 0.04em; }
+/* En 380 px o menos la hora no entra con su aire: "00:00 / 02:23" no se puede partir. Medido
+   a 360 -Redmi 13C-: quedaban 120 px y la pastilla pedia 144. Se juntan las letras, el
+   relleno baja al minimo y la pastilla gana 8 px a cada lado. */
+@media (max-width: 380px) {
+  .pastilla-tiempo-lugar {
+    left: calc(50% + 36px + 4px);
+    right: calc(12px + env(safe-area-inset-right, 0px));
+  }
+  .pastilla-tiempo {
+    letter-spacing: 0;
+    padding: 6px 8px 8px;
+    font-size: 11px;
+    /* Sin ancho minimo: mide lo que mide la hora -unos 75 px- y queda aire para el halo del
+       circulo cuando respira. */
+    min-width: 0;
+  }
 }
 
 .pastilla-tiempo-pista {

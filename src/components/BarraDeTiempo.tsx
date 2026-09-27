@@ -54,6 +54,9 @@ function Pastilla({
 }) {
   return (
     <div
+      // El lado izquierdo lo pone .pastilla-tiempo-lugar -styles.css-: termina en el
+      // circulo, para no pisarlo en telefonos angostos -27-09-2026-.
+      className="pastilla-tiempo-lugar"
       style={{
         position: 'absolute',
         // El circulo de abajo mide 72 y esta a 24 del borde: su centro queda a
@@ -63,7 +66,8 @@ function Pastilla({
         // -styles.css-: la pastilla va 14 px mas arriba que el borde del circulo,
         // (72 - 44) / 2, y asi los centros siguen calzando si el circulo se mueve.
         bottom: 'calc(var(--circulo-desde-abajo) + 14px + env(safe-area-inset-bottom, 0px))',
-        right: 'calc(16px + env(safe-area-inset-right, 0px))',
+        // right -16 px mas el area segura- tambien vive en .pastilla-tiempo-lugar: en
+        // pantallas angostas baja a 12 -27-09-2026-.
         zIndex: 12,
         display: 'flex',
         pointerEvents: 'none'
@@ -76,15 +80,15 @@ function Pastilla({
         // pastilla-tiempo de styles.css y no aca: T209 no deja escribir colores a
         // mano en este archivo, y son los mismos de los controles flotantes.
         className="pastilla-tiempo"
+        // El ancho minimo, el relleno y la letra estan en .pastilla-tiempo -styles.css-:
+        // se achican en pantallas angostas -27-09-2026-. Eran 120, '6px 14px 8px' y
+        // --texto-meta.
         style={{
-          minWidth: 120,
           display: 'flex',
           flexDirection: 'column',
           gap: 4,
-          padding: '6px 14px 8px',
           borderRadius: 'var(--redondeo-pildora)',
-          fontSize: 'var(--texto-meta)',
-          letterSpacing: '0.04em',
+          // letterSpacing 0.04em: en .pastilla-tiempo, que lo quita en pantallas angostas.
           fontVariantNumeric: 'tabular-nums',
           textAlign: 'center',
           userSelect: 'none'
