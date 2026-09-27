@@ -1,28 +1,26 @@
-// ARMA EL SITIO sigoteleprompter.com -sitio/public/-. 27-09-2026, docs/el-sitio.md.
+// ARMA EL SITIO sigoteleprompter.com -sitio/public/-. 27-09-2026, docs/el-sitio.md version 2.
 //
 //   node sitio/armar.mjs      (desde la carpeta Teleprompter, despues de npm ci)
 //
-// Reemplaza a la pagina provisoria del 25-09-2026. Se sigue armando con un script, y no
-// escribiendo el HTML a mano, por tres cosas que tienen que salir de la aplicacion y no de
-// una copia que se separe:
+// Se arma con un script, y no escribiendo el HTML a mano, por tres cosas que tienen que salir
+// de la aplicacion y no de una copia que se separe:
 //
-//   1. LA MARCA sale del trazo de src/components/trazoMarca.ts, como en la provisoria: el
-//      logo de la pagina y el de la aplicacion son la misma forma. trazoMarca.ts se LEE.
-//   2. LA DEMOSTRACION sale de correr la conduccion de la aplicacion -seguidor, avance-
-//      sobre los tiempos de una toma real, AQUI, al armar: a la pagina llega solo un JSON con
-//      el milisegundo y la palabra destacada. Ningun codigo de la aplicacion viaja a la
-//      pagina -todo JavaScript publicado se puede leer-. Ver sitio/fuente/lectura.js y demo.js,
-//      y la comprobacion de abajo.
-//   3. LAS LETRAS son las de la aplicacion -@fontsource, las mismas que importa
-//      src/main.tsx-, servidas desde el propio dominio: la pagina no le pide nada a nadie
-//      mas, y eso es parte de lo que dice /privacidad.
+//   1. LA MARCA sale del trazo de src/components/trazoMarca.ts: el logo de la pagina y el de
+//      la aplicacion son la misma forma. trazoMarca.ts se LEE, no se edita.
+//   2. LA LECTURA del telefono sale de correr la conduccion de la aplicacion -seguidor,
+//      avance- y sus subtitulos AQUI, al armar -sitio/fuente/lectura.js-. A la pagina llega
+//      solo un JSON de numeros. Ningun codigo de la aplicacion viaja a la pagina -todo
+//      JavaScript publicado se puede leer-: ver la comprobacion del empaquetado, abajo.
+//   3. LAS LETRAS son las de la aplicacion -@fontsource, las mismas que importa src/main.tsx-,
+//      servidas desde el propio dominio, igual que GSAP y Lenis -sitio/fuente/vendor-: la
+//      pagina no le pide nada a otro servidor, y eso es parte de lo que dice /privacidad.
 //
-// Lo que sale en sitio/public/ es HTML, CSS y JavaScript planos, sin dependencias: Vite -que
-// ya esta en el proyecto- solo se usa aca, al armar, para entender el TypeScript de src/.
+// Vite -que ya esta en el proyecto- solo se usa aca: para entender el TypeScript de src/ al
+// calcular la lectura, y para juntar en un archivo el JavaScript de la pagina.
 // Lo armado se sube al repositorio: Firebase publica sitio/public tal cual.
 //
-// NO PUBLICA. Publicar es de Javier -docs/el-sitio.md seccion 6-: primero un canal de
-// prueba, `firebase hosting:channel:deploy prueba` desde sitio/, y al dominio con su OK.
+// NO PUBLICA. Publicar es de Javier: primero un canal de prueba,
+// `firebase hosting:channel:deploy prueba` desde sitio/, y al dominio con su OK.
 
 import fs from 'node:fs'
 import path from 'node:path'
@@ -51,21 +49,26 @@ const nombre = cadena('MARCA_TRAZO_NOMBRE')
 const punto = objeto('MARCA_PUNTO')
 const caja = objeto('MARCA_CAJA')
 // "Sig" y el punto rojo, sin el lema: "TELEPROMPTER" es solo del arranque -trazoMarca.ts,
-// "esa palabra despues no acompana a Sigo"-. La caja de la marca ya trae el punto adentro.
+// "esa palabra despues no acompana a Sigo"-.
 const vb = [caja.x, caja.y, caja.ancho, caja.alto].map((n) => +n.toFixed(2)).join(' ')
-const svgMarca = `<svg viewBox="${vb}" role="img" aria-label="Sigo"><path d="${nombre}" fill="currentColor"/><circle cx="${punto.cx}" cy="${punto.cy}" r="${punto.r}"/></svg>`
-// En la portada la marca no es enlace: llevaria a la misma pagina.
-const marcaPortada = `<span class="marca">${svgMarca}</span>`
-const marcaInterior = `<a class="marca" href="/">${svgMarca}</a>`
+// Con resplandor: el punto es la luz de grabar encendida -docs/el-sitio.md, E0-. Cada marca
+// lleva su propio filtro: dos ids iguales en la misma pagina se pisan.
+function marca(id, { resplandor = true, etiqueta = true } = {}) {
+  const brillo = resplandor
+    ? `<defs><filter id="${id}" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="16"/></filter></defs><circle class="resplandor" cx="${punto.cx}" cy="${punto.cy}" r="${(punto.r * 1.35).toFixed(2)}" filter="url(#${id})"/>`
+    : ''
+  const aria = etiqueta ? 'role="img" aria-label="Sigo"' : 'aria-hidden="true"'
+  return `<svg class="marca-svg" viewBox="${vb}" ${aria}>${brillo}<path d="${nombre}" fill="currentColor"/><circle class="punto" cx="${punto.cx}" cy="${punto.cy}" r="${punto.r}"/></svg>`
+}
 
-const pie = `<footer class="pie envoltura">
+const pie = `<footer class="pie">
   <ul>
     <li><span><a href="/privacidad">Privacidad</a></span><span><a href="/soporte">Soporte</a></span></li>
     <li><span><a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></span><span>© Sigo</span></li>
   </ul>
 </footer>`
 
-// ---------- 2. la lectura y la demostracion ----------
+// ---------- 2. la lectura ----------
 
 // lectura.js importa el TypeScript de src/: Vite lo carga como lo cargaria una prueba.
 const servidor = await createServer({
@@ -77,15 +80,15 @@ const servidor = await createServer({
   optimizeDeps: { noDiscovery: true, include: [] }
 })
 let lectura
-let AUDIO
 try {
   const modulo = await servidor.ssrLoadModule('/sitio/fuente/lectura.js')
   lectura = modulo.armarLectura(RAIZ)
-  AUDIO = modulo.AUDIO
 } finally {
   await servidor.close()
 }
 console.log(lectura.resumen)
+
+// ---------- 3. el JavaScript de la pagina ----------
 
 const empaquetado = await build({
   root: RAIZ,
@@ -96,78 +99,74 @@ const empaquetado = await build({
     write: false,
     target: 'es2019',
     minify: 'esbuild',
-    lib: { entry: path.join(FUENTE, 'demo.js'), formats: ['iife'], name: 'SigoDemo', fileName: () => 'demo.js' }
+    lib: { entry: path.join(FUENTE, 'demo.js'), formats: ['iife'], name: 'Sigo', fileName: () => 'sitio.js' }
   }
 })
-const salidaDemo = (Array.isArray(empaquetado) ? empaquetado[0] : empaquetado).output
-const codigoDemo = salidaDemo[0].code.trim()
-// NINGUN CODIGO DE LA APLICACION EN LA PAGINA. demo.js no importa nada; si alguien le agrega
-// un import de src/, el empaquetado lo meteria entero y en silencio. Se para aca.
-if (salidaDemo.length !== 1 || /from\s+['"]|import\s*\(/.test(leer('sitio/fuente/demo.js'))) {
-  throw new Error('sitio/fuente/demo.js importa algo: a la pagina no viaja codigo de la aplicacion. Lo que haga falta se calcula en lectura.js y va en el JSON.')
+const salida = (Array.isArray(empaquetado) ? empaquetado[0] : empaquetado).output
+// NINGUN CODIGO DE LA APLICACION EN LA PAGINA. Todo lo que el empaquetado junto tiene que ser
+// de sitio/fuente, y nunca lectura.js -que si usa la aplicacion, pero solo aca, al armar-.
+// Si alguien agrega un import de src/ o de una biblioteca, se para aca.
+const modulos = Object.values(salida[0].modules || {}).length ? Object.keys(salida[0].modules) : salida[0].moduleIds
+const ajenos = (modulos || []).filter((m) => !m.startsWith(FUENTE + path.sep) || m.endsWith(`${path.sep}lectura.js`) || m.includes(`${path.sep}vendor${path.sep}`))
+if (salida.length !== 1 || !modulos || !modulos.length || ajenos.length) {
+  throw new Error(`El JavaScript de la pagina junta algo que no es de sitio/fuente: ${ajenos.join(', ') || '(sin lista de modulos)'}. A la pagina no viaja codigo de la aplicacion: lo que haga falta se calcula en lectura.js y va en el JSON.`)
 }
-
-// ---------- 3. el sonido, si hay ----------
-
-let htmlSonido = ''
-let audioPublico = null
-let audioOrigen = null
-if (AUDIO) {
-  audioOrigen = path.resolve(RAIZ, AUDIO)
-  if (!fs.existsSync(audioOrigen)) throw new Error(`lectura.js dice AUDIO = '${AUDIO}' y ese archivo no existe.`)
-  audioPublico = `lectura${path.extname(AUDIO).toLowerCase()}`
-  // Arranca sin sonido y el audio no se baja hasta que alguien lo pide: preload none.
-  htmlSonido = `<audio src="/${audioPublico}" preload="none"></audio>
-          <button type="button" class="btn-flotante-40" data-control="sonido" data-estado="sin" aria-pressed="false" aria-label="Escuchar la lectura">
-            <svg class="icono-sin-sonido" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>
-            <svg class="icono-con-sonido" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6"/><path d="M18.3 6.5a8 8 0 0 1 0 11"/></svg>
-          </button>`
-}
+const codigo = salida[0].code
 
 // ---------- 4. las paginas ----------
 
 // Sin los comentarios: explican la hoja a quien la edita, no a quien la baja.
 const estilo = leer('sitio/fuente/estilo.css').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\n\s*\n+/g, '\n').trim()
 
-function llenar(plantilla, valores) {
-  let html = leer(`sitio/fuente/${plantilla}`)
+function llenar(texto, valores, donde) {
+  let html = texto
   for (const [marca, valor] of Object.entries(valores)) {
-    // split/join y no replace: el codigo minificado trae "$&" y replace lo interpretaria.
+    // split/join y no replace: el texto puede traer "$&" y replace lo interpretaria.
     const partes = html.split(marca)
-    if (partes.length !== 2) throw new Error(`sitio/fuente/${plantilla}: la marca ${marca} aparece ${partes.length - 1} veces, tiene que aparecer una.`)
+    if (partes.length !== 2) throw new Error(`${donde}: la marca ${marca} aparece ${partes.length - 1} veces, tiene que aparecer una.`)
     html = partes.join(valor)
   }
-  const sobrante = html.match(/\/\*@\w+\*\/|<!--@\w+-->/)
-  if (sobrante) throw new Error(`sitio/fuente/${plantilla}: quedo sin llenar ${sobrante[0]}.`)
+  const sobrante = html.match(/\/\*@[\w-]+\*\/|<!--@[\w-]+-->|@(guion|nombre|rotulo)@/)
+  if (sobrante) throw new Error(`${donde}: quedo sin llenar ${sobrante[0]}.`)
   return html
 }
 
-if (/<\/script/i.test(codigoDemo)) throw new Error('El codigo de la demostracion trae "</script": romperia la pagina.')
+const telefono = (nombre, rotulo) => llenar(leer('sitio/fuente/telefono.html'), { '@nombre@': nombre, '@rotulo@': rotulo, '@guion@': lectura.html }, 'telefono.html')
 
 const paginas = {
-  'index.html': llenar('portada.html', {
+  'index.html': llenar(leer('sitio/fuente/portada.html'), {
     '/*@estilo*/': estilo,
-    '<!--@marca-->': marcaPortada,
-    '/*@tipo*/': lectura.pantalla.tipo,
-    '/*@medidas*/': `--letra-lectura:${lectura.pantalla.letra}px;--margen:${lectura.pantalla.margen}%`,
-    '<!--@guion-->': lectura.html,
-    '<!--@sonido-->': htmlSonido,
+    '<!--@marca-->': marca('resplandor-entrada'),
+    '<!--@marca-cierre-->': marca('resplandor-cierre'),
+    '<!--@telefono-sigo-->': telefono('sigo', 'Sigo'),
+    '<!--@telefono-comun-->': telefono('comun', 'Un teleprompter común'),
     '<!--@pie-->': pie,
-    '/*@datos*/': JSON.stringify(lectura.datos),
-    '/*@demo*/': codigoDemo
-  }),
-  'privacidad.html': llenar('privacidad.html', { '/*@estilo*/': estilo, '<!--@marca-->': marcaInterior, '<!--@pie-->': pie }),
-  'soporte.html': llenar('soporte.html', { '/*@estilo*/': estilo, '<!--@marca-->': marcaInterior, '<!--@pie-->': pie })
+    '/*@datos*/': JSON.stringify(lectura.datos)
+  }, 'portada.html'),
+  'privacidad.html': llenar(leer('sitio/fuente/privacidad.html'), { '/*@estilo*/': estilo, '<!--@marca-->': `<a href="/" aria-label="Sigo, inicio">${marca('', { resplandor: false, etiqueta: false })}</a>`, '<!--@pie-->': pie }, 'privacidad.html'),
+  'soporte.html': llenar(leer('sitio/fuente/soporte.html'), { '/*@estilo*/': estilo, '<!--@marca-->': `<a href="/" aria-label="Sigo, inicio">${marca('', { resplandor: false, etiqueta: false })}</a>`, '<!--@pie-->': pie }, 'soporte.html')
 }
 
-fs.mkdirSync(path.join(PUBLICO, 'fuentes'), { recursive: true })
+if (/<\/script/i.test(JSON.stringify(lectura.datos))) throw new Error('Los datos de la lectura traen "</script": romperian la pagina.')
+
+// Lo que arma este script, y nada mas: lo que quede de un armado anterior se borra.
+const armados = new Set([...Object.keys(paginas), 'sitio.js', 'fuentes', 'vendor', 'icono.png'])
+for (const viejo of fs.readdirSync(PUBLICO)) {
+  if (armados.has(viejo)) continue
+  fs.rmSync(path.join(PUBLICO, viejo), { recursive: true })
+  console.log(`sitio/public/${viejo} borrado: ya no lo arma este script`)
+}
+
 for (const [archivo, html] of Object.entries(paginas)) {
   fs.writeFileSync(path.join(PUBLICO, archivo), html)
-  console.log(`sitio/public/${archivo}`, html.length, 'bytes')
+  console.log(`sitio/public/${archivo}`, Buffer.byteLength(html), 'bytes')
 }
+fs.writeFileSync(path.join(PUBLICO, 'sitio.js'), codigo)
+console.log('sitio/public/sitio.js', Buffer.byteLength(codigo), 'bytes')
 
-// ---------- 5. las letras ----------
+// ---------- 5. letras y bibliotecas ----------
 
+fs.mkdirSync(path.join(PUBLICO, 'fuentes'), { recursive: true })
 const letras = [
   ['source-serif-4', 'source-serif-4-latin-400-normal.woff2'],
   ['source-serif-4', 'source-serif-4-latin-600-normal.woff2'],
@@ -181,12 +180,7 @@ for (const [paquete, archivo] of letras) {
 fs.copyFileSync(path.join(RAIZ, 'node_modules/@fontsource/source-serif-4/LICENSE'), path.join(PUBLICO, 'fuentes', 'OFL-source-serif-4.txt'))
 fs.copyFileSync(path.join(RAIZ, 'node_modules/@fontsource/source-sans-3/LICENSE'), path.join(PUBLICO, 'fuentes', 'OFL-source-sans-3.txt'))
 
-// Un audio de una toma anterior no se queda publicado si ya no es el de la demostracion.
-for (const viejo of fs.readdirSync(PUBLICO).filter((f) => /^lectura\.\w+$/.test(f) && f !== audioPublico)) {
-  fs.rmSync(path.join(PUBLICO, viejo))
-  console.log(`sitio/public/${viejo} borrado: ya no es el audio de la demostracion`)
-}
-if (audioPublico) {
-  fs.copyFileSync(audioOrigen, path.join(PUBLICO, audioPublico))
-  console.log(`sitio/public/${audioPublico}`)
+fs.mkdirSync(path.join(PUBLICO, 'vendor'), { recursive: true })
+for (const archivo of fs.readdirSync(path.join(FUENTE, 'vendor'))) {
+  fs.copyFileSync(path.join(FUENTE, 'vendor', archivo), path.join(PUBLICO, 'vendor', archivo))
 }
