@@ -73,7 +73,10 @@ describe('Tarea 67 - la casa de cada ajuste y el gesto que se siente', () => {
     expect(menu.textContent).not.toContain('Motor de voz')
     expect(menu.textContent).not.toContain('Ver transcripción en vivo')
     expect(menu.textContent).not.toContain('Medición / Panel Corpus')
-    fireEvent.click(screen.getByTestId('titulo-tarjeta-lectura'))
+    const marca = document.querySelector('.portada-marca') as HTMLElement
+    for (let i = 0; i < 5; i++) {
+      fireEvent.click(marca)
+    }
     const nuestro = await screen.findByTestId('apartado-nuestro')
     expect(nuestro.textContent).toContain('Motor de voz')
     expect(nuestro.textContent).toContain('Ver transcripción en vivo')

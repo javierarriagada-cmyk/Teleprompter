@@ -73,6 +73,12 @@ export function formatearTextoResumen(guiones: ResumenGuion[]): string {
   return `${guiones.length} ${guiones.length === 1 ? 'guión' : 'guiones'} · ${minsLectura} ${minsLectura === 1 ? 'minuto' : 'minutos'} de lectura`
 }
 
+// GESTO DE OPCIONES DE DESARROLLADOR / DIAGNÓSTICO (Tarea 74, P1f de decisiones-de-diseno.txt).
+// Cinco toques rápidos sobre la marca abren y cierran la franja de diagnóstico.
+// Herramienta interna para no abrir el diagnóstico de forma accidental con toques involuntarios.
+const TOQUES_PARA_DIAGNOSTICO = 5
+const MS_ENTRE_TOQUES_DIAGNOSTICO = 600
+
 let esPrimerMontajeBiblioteca = true
 
 export function resetearPrimerMontajeBiblioteca() {
@@ -459,9 +465,8 @@ export default function BibliotecaView({
     }
   }, [])
 
-
-  const timerDiagRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const fueLongPressDiagRef = useRef<boolean>(false)
+  const conteoToquesDiagRef = useRef(0)
+  const ultimoToqueDiagRef = useRef(0)
 
   const hayMasDeOcho = guiones.length > 8
   const cantidadArchivados = guiones.filter((g) => g.archivado).length
@@ -516,32 +521,19 @@ export default function BibliotecaView({
     return !g.archivado
   })
 
-  // -24-09-2026: aca vivian el toque largo, el clic y el menu contextual de la fila vieja. La
-  // fila ahora es FilaGuion, con sus propios manejadores; estos habian quedado sin uso.
+  function handleToqueMarcaDiag() {
+    const ahora = Date.now()
+    if (ahora - ultimoToqueDiagRef.current < MS_ENTRE_TOQUES_DIAGNOSTICO) {
+      conteoToquesDiagRef.current += 1
+    } else {
+      conteoToquesDiagRef.current = 1
+    }
+    ultimoToqueDiagRef.current = ahora
 
-  // Toque largo sobre el resumen para alternar diagnostico
-  function handleDiagTouchStart() {
-    fueLongPressDiagRef.current = false
-    if (timerDiagRef.current) clearTimeout(timerDiagRef.current)
-    timerDiagRef.current = setTimeout(() => {
-      fueLongPressDiagRef.current = true
+    if (conteoToquesDiagRef.current >= TOQUES_PARA_DIAGNOSTICO) {
+      conteoToquesDiagRef.current = 0
       if (onToggleDiagnostico) onToggleDiagnostico()
-    }, MS_MANTENER_APRETADO)
-  }
-
-  function handleDiagTouchEnd() {
-    if (timerDiagRef.current) {
-      clearTimeout(timerDiagRef.current)
-      timerDiagRef.current = null
     }
-  }
-
-  function handleDiagClick() {
-    if (fueLongPressDiagRef.current) {
-      fueLongPressDiagRef.current = false
-      return
-    }
-    if (onToggleDiagnostico) onToggleDiagnostico()
   }
 
   useEffect(() => {
@@ -604,7 +596,7 @@ export default function BibliotecaView({
             MarcaSigo.tsx, el mismo del arranque y de la entrada: la marca que
             viaja desde la mitad de la pantalla aterriza exactamente aca
             -data-marca-portada es a donde apunta Entrada.tsx-. */}
-        <div className="portada-marca">
+        <div className="portada-marca" onClick={handleToqueMarcaDiag}>
           <MarcaSigo alto={24} data-marca-portada="" />
         </div>
         <button
@@ -642,9 +634,6 @@ export default function BibliotecaView({
             if (guionMasReciente && onGrabarDirecto) onGrabarDirecto(guionMasReciente.id, rect)
           }}
           onCrearNuevo={onCrearNuevo}
-          onDiagTouchStart={handleDiagTouchStart}
-          onDiagTouchEnd={handleDiagTouchEnd}
-          onDiagClick={handleDiagClick}
         />
       </div>
 

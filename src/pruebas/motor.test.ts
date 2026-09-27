@@ -61,10 +61,13 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
     //
     // Ya no vive en el menu del engranaje: es un instrumento nuestro, no una
     // preferencia, y desde la tarea 68 los tres -motor, transcripcion y
-    // medicion- estan detras de la puerta de diagnostico. Se abre tocando el
-    // titulo de la tarjeta.
+    // medicion- estan detras de la puerta de diagnostico. Se abre con 5 toques
+    // en la marca (Tarea 74).
+    const marca58 = document.querySelector('.portada-marca') as HTMLElement
     await act(async () => {
-      fireEvent.click(await screen.findByTestId('titulo-tarjeta-lectura'))
+      for (let i = 0; i < 5; i++) {
+        fireEvent.click(marca58)
+      }
     })
 
     // Por el texto y su label envolvente, no por getByLabelText: el control
@@ -125,9 +128,8 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
       fireEvent.click(btnSalir)
     })
 
-    // NO se vuelve a tocar el titulo: la puerta de diagnostico CONMUTA, no
-    // abre. El menu viejo se podia abrir dos veces sin consecuencia; este
-    // segundo toque cerraria la franja que ya quedo abierta en el paso 1.
+    // NO se vuelve a tocar la marca: la puerta de diagnostico CONMUTA, no
+    // abre.
     const checkboxActual = (screen.getByText('Ver transcripción en vivo').closest('label') as HTMLLabelElement)
       .querySelector('input[type="checkbox"]') as HTMLInputElement
     await act(async () => {
@@ -168,10 +170,12 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
       await new Promise((r) => setTimeout(r, 100))
     })
 
-    // La franja de diagnóstico se activa tocando/haciendo clic en el título de la tarjeta de portada
-    const resumen = screen.getByTestId('titulo-tarjeta-lectura')
+    // La franja de diagnóstico se activa con 5 toques en la marca de la portada (Tarea 74)
+    const marca59 = document.querySelector('.portada-marca') as HTMLElement
     await act(async () => {
-      fireEvent.click(resumen)
+      for (let i = 0; i < 5; i++) {
+        fireEvent.click(marca59)
+      }
     })
 
     expect(screen.getByText(/Franja de Estado:/i)).not.toBeNull()
