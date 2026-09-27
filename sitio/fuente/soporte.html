@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="es">
+<html lang="{{idioma}}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Soporte — Sigo</title>
-<meta name="description" content="Cómo avisar un problema con Sigo, el teleprompter que sigue tu voz.">
-<link rel="canonical" href="https://sigoteleprompter.com/soporte">
+<title>{{meta.soporteTitulo}}</title>
+<meta name="description" content="{{meta.soporteDescripcion}}">
+<!--@cabecera-idioma-->
 <meta name="theme-color" content="#0B0A09">
 <link rel="icon" type="image/png" href="/icono.png">
 <link rel="apple-touch-icon" href="/icono.png">
@@ -15,17 +15,16 @@
 </head>
 <body class="interior">
 <div class="grano" aria-hidden="true"></div>
+<!--@selector-->
 <header class="cabecera">
   <!--@marca-->
 </header>
 <main class="texto">
-  <h1>Soporte</h1>
-  <p>Sigo es un teleprompter que sigue tu voz: lees en voz alta y el texto avanza contigo. Hoy es para teléfonos Android.</p>
-  <p>Si algo no funciona, escríbenos y cuéntanos:</p>
+  <h1>{{soporte.titulo}}</h1>
+  <p>{{soporte.queEs}}</p>
+  <p>{{soporte.avisa}}</p>
   <ul class="lista">
-    <li>Qué teléfono usas.</li>
-    <li>Qué versión de Android tiene.</li>
-    <li>Qué estabas haciendo cuando pasó.</li>
+    {{soporte.lista}}
   </ul>
   <p><a class="correo" href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></p>
 </main>

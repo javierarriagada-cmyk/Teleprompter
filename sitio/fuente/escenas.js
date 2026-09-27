@@ -108,7 +108,9 @@ export function iniciarEscenas(datos) {
 
   // El titular de E1 se arma palabra por palabra.
   $$('[data-palabra-a-palabra]').forEach((h) => {
-    h.innerHTML = h.textContent.trim().split(/\s+/).map((w) => `<span class="p">${w}</span>`).join(' ')
+    // Solo en espacios comunes: un &nbsp; -"It&nbsp;follows"- deja juntas las palabras que no deben
+    // quedar solas en un renglon.
+    h.innerHTML = h.textContent.trim().split(/[ \t\n]+/).map((w) => `<span class="p">${w}</span>`).join(' ')
   })
 
   // Los relojes. La lectura entera da vueltas. E2 da vueltas sobre la pausa de pensar: dos
@@ -346,7 +348,8 @@ export function iniciarEscenas(datos) {
     if (cambia('estilo', estilo)) {
       capaSub.dataset.estilo = estilo
       estiloVideo.dataset.estilo = estilo
-      estiloVideo.textContent = { amarillo: 'Amarillo', rojo: 'Rojo', formal: 'Formal' }[estilo]
+      // El nombre del estilo en el idioma de la pagina: viene en el JSON, de textos/<idioma>.js.
+      estiloVideo.textContent = datos.estilos[estilo]
       // El estilo nuevo se anuncia: la etiqueta late una vez.
       estiloVideo.classList.add('cambio')
       setTimeout(() => estiloVideo.classList.remove('cambio'), 260)

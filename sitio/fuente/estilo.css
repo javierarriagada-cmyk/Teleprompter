@@ -835,6 +835,44 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   .pie li + li::before { content: "·"; }
 }
 
+/* ---------- el idioma: "ES · EN" ---------- */
+
+/* Discreto: arriba a la derecha, fijo, y en el pie. El idioma de la pagina en crema, el otro
+   apagado. Encima del grano y del escenario, pero chico: no compite con la marca. */
+.idioma {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+}
+.idioma a {
+  padding: 6px 7px;
+  border-radius: 999px;
+  color: var(--apagado);
+  text-decoration: none;
+  transition: color 200ms;
+}
+.idioma a:hover { color: var(--letra); }
+.idioma a[aria-current] { color: var(--crema); }
+.idioma span { color: rgba(156, 148, 142, 0.6); }
+.idioma-arriba {
+  position: fixed;
+  z-index: 60;
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  right: calc(12px + env(safe-area-inset-right, 0px));
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: rgba(20, 18, 17, 0.55);
+  border: 1px solid rgba(255, 240, 225, 0.08);
+}
+.idioma-pie { display: flex; justify-content: center; margin-top: 14px; }
+@media (min-width: 900px) {
+  .idioma-arriba { top: 22px; right: 26px; }
+}
+
 /* ---------- sin JavaScript: las escenas en fila, quietas ---------- */
 html:not(.js) .escenario { height: auto; }
 html:not(.js) .fijo { position: relative; height: auto; padding-bottom: 60px; }
@@ -847,7 +885,7 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
 /* La luz tibia de arriba, en su capa: como fondo del body se cortaba donde termina la
    primera pantalla. */
 .interior::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 90svh; pointer-events: none; background: radial-gradient(60% 45% at 50% -6%, rgba(255, 196, 140, 0.14), rgba(255, 196, 140, 0) 70%); }
-.interior > :not(.grano) { position: relative; }
+.interior > :not(.grano):not(.idioma-arriba) { position: relative; }
 .interior .cabecera { padding: calc(26px + env(safe-area-inset-top, 0px)) var(--margen) 0; }
 .interior .cabecera a { display: inline-block; width: 92px; line-height: 0; }
 .texto { flex: 1; width: 100%; max-width: 760px; margin: 0 auto; padding: 9svh var(--margen) 12svh; }

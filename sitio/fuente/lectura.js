@@ -23,8 +23,22 @@
 // FINAL'- y de ahi en adelante todo es lo de la aplicacion: los parciales como los entrega
 // Vosk, con la demora medida del reconocedor, el seguidor, el avance y los subtitulos.
 //
-// LA LECTURA DEFINITIVA -Javier la grabara leyendo este mismo texto-: su registro va en TOMA.
-// Si su guion no es este texto, se para: los formatos se dibujan sobre este.
+// DOS IDIOMAS -27-09-2026-: el guion, la pausa de pensar y la toma de cada idioma vienen de
+// sitio/fuente/textos/<idioma>.js, en "lectura". armar.mjs llama a armarLectura una vez por
+// idioma. En ingles la voz tambien es estimada, al mismo ritmo.
+//
+// LA LECTURA DEFINITIVA -la grabacion real de cada idioma: en espanol la hara Javier, en ingles
+// una traductora-. Como se cambia:
+//   1. Grabar en Sigo una toma leyendo el guion de textos/<idioma>.js, tal cual -con la camara
+//      encendida, para que la app deje el registro <id>.motor.txt de la toma-.
+//   2. Copiar ese registro al repositorio -por ejemplo sitio/fuente/tomas/en.motor.txt- y poner
+//      su ruta en textos/<idioma>.js, lectura.toma.
+//   3. node sitio/armar.mjs. Los tiempos de la voz salen del registro -sus 'palabras FINAL'-, y
+//      si trae lo que entrego el reconocedor -'oyo'-, se usa tal cual. La pausa de pensar de
+//      E2 es la que haga la persona despues de lectura.pausaDespuesDe: si no hace una, la
+//      comparacion no tiene que mostrar, y conviene pedirle que la haga.
+// Si el guion del registro no es el de textos/<idioma>.js, el armado se para: los formatos se
+// dibujan sobre ese texto.
 
 import fs from 'node:fs'
 import { leerCorpus } from '../../src/lib/repetidor'
@@ -34,20 +48,10 @@ import { procesarFinal, procesarParcial } from '../../src/lib/conduccion'
 import { palabrasDelDestacado } from '../../src/lib/destacado'
 import { armarSubtitulos } from '../../src/lib/subtitulos'
 
-// EL TEXTO DEL TELEFONO, con los formatos del editor -src/datos/modelo.ts, COLORES_TRAMO y
-// DESTACADO-: **negrita**, {ambar}...{/}, {celeste}...{/}, {salvia}...{/} -el verde- y
-// ==destacado==. Un parrafo por elemento.
-export const GUION = [
-  'Hoy quiero contarte algo **importante**. Durante años grabé videos mirando un papel, y se notaba. Ahora leo, hablo y {salvia}el texto me sigue{/}. {ambar}Sin apuro.{/} {celeste}Sin perder el hilo.{/} Y lo que no se me puede pasar, ==lo marco en amarillo==.',
-  'Si me detengo a pensar, el texto me espera. Cuando vuelvo a hablar, sigue conmigo. Miro al lente, no a la pantalla, y quien me ve siente que le hablo directamente.',
-  'Grabo de principio a fin, sin cortes, y al terminar el video ya lleva sus subtítulos. Lo comparto así, tal como salió.'
-]
-// Cuantos parrafos se leen. El ultimo no: esta para que debajo del renglon vivo siempre haya
-// guion, como en la aplicacion, y para que el teleprompter comun de E2 tenga por donde correr.
-export const PARRAFOS_LEIDOS = 2
-
-// La toma real de este texto, cuando exista. null: la voz estimada de abajo.
-export const TOMA = null
+// EL TEXTO DEL TELEFONO -el guion, cuantos parrafos se leen, la pausa de pensar y la toma-
+// esta en sitio/fuente/textos/<idioma>.js, "lectura". Los formatos son los del editor
+// -src/datos/modelo.ts, COLORES_TRAMO y DESTACADO-: **negrita**, {ambar}...{/}, {celeste}...{/},
+// {salvia}...{/} -el verde- y ==destacado==.
 
 // La pantalla con que se dibuja: letra 26 -mas grande que la de todos los dias, porque el
 // telefono de la pagina se ve chico en un telefono de verdad-, columna completa con 5% de
@@ -61,8 +65,8 @@ const MS_POR_PALABRA = 60000 / 150
 const PAUSA_COMA_MS = 260
 const PAUSA_PUNTO_MS = 620
 const PAUSA_PARRAFO_MS = 1100
-// La pausa de pensar de E2, despues de esta palabra.
-export const PAUSA_PENSAR = { despuesDe: 'pensar,', ms: 2800 }
+// Lo que dura la pausa de pensar de E2 -la palabra despues de la cual va esta en textos/-.
+export const PAUSA_PENSAR_MS = 2800
 // Cuanto despues de la ultima palabra cierra Vosk la frase: con una pausa de este largo.
 const CIERRE_FRASE_MS = 600
 // Demora del reconocedor para armar los parciales -src/lib/compensacion.ts: "esa palabra
@@ -127,7 +131,7 @@ function leerFormatos(parrafos) {
 
 const normalizar = (s) => s.toLowerCase().replace(/[^a-z0-9áéíóúñü]/gi, '')
 
-function registroEstimado(texto, tokens) {
+function registroEstimado(texto, tokens, pausaDespuesDe) {
   const letras = tokens.map((t) => normalizar(texto.substring(t.desdeChar, t.hastaChar)).length || 1)
   const media = letras.reduce((s, x) => s + x, 0) / letras.length
   const voz = []
@@ -138,7 +142,7 @@ function registroEstimado(texto, tokens) {
     t += dur
     const crudo = texto.substring(tok.desdeChar, tok.hastaChar)
     const siguiente = tokens[k + 1]
-    if (crudo === PAUSA_PENSAR.despuesDe) t += PAUSA_PENSAR.ms
+    if (crudo === pausaDespuesDe) t += PAUSA_PENSAR_MS
     else if (siguiente && siguiente.linea !== tok.linea) t += PAUSA_PARRAFO_MS
     else if (/[.?!]$/.test(crudo)) t += PAUSA_PUNTO_MS
     else if (/[,;:]$/.test(crudo)) t += PAUSA_COMA_MS
@@ -247,8 +251,9 @@ function htmlDelGuion(texto, tokens, tramos) {
 
 // ---------- todo junto ----------
 
-export function armarLectura(raiz) {
-  const { texto, tramos } = leerFormatos(GUION)
+export function armarLectura(raiz, { guion, parrafosLeidos, pausaDespuesDe, toma }) {
+  const TOMA = toma
+  const { texto, tramos } = leerFormatos(guion)
   const tokens = tokenizarGuion(texto)
 
   let registro
@@ -256,14 +261,14 @@ export function armarLectura(raiz) {
   if (TOMA) {
     registro = fs.readFileSync(`${raiz}/${TOMA}`, 'utf8')
     if (leerCorpus(registro).guion.trim() !== texto.trim()) {
-      throw new Error(`${TOMA}: su guion no es el texto de GUION. Los formatos se dibujan sobre ese texto.`)
+      throw new Error(`${TOMA}: su guion no es el de textos/, lectura.guion. Los formatos se dibujan sobre ese texto.`)
     }
     // La voz de la toma, palabra por palabra, para la onda y los subtitulos.
     const subs = armarSubtitulos(registro).flatMap((s) => s.renglones.flat())
     voz = subs.map((w) => [Math.round(w.desdeMs), Math.round(w.hastaMs)])
   } else {
-    const leidos = tokens.filter((t) => t.linea < PARRAFOS_LEIDOS)
-    ;({ registro, voz } = registroEstimado(texto, leidos))
+    const leidos = tokens.filter((t) => t.linea < parrafosLeidos)
+    ;({ registro, voz } = registroEstimado(texto, leidos, pausaDespuesDe))
   }
 
   const corpus = leerCorpus(registro)
@@ -324,9 +329,11 @@ export function armarLectura(raiz) {
   ])
 
   const pausa = (() => {
-    const k = tokens.findIndex((t) => texto.substring(t.desdeChar, t.hastaChar) === PAUSA_PENSAR.despuesDe)
+    const k = tokens.findIndex((t) => texto.substring(t.desdeChar, t.hastaChar) === pausaDespuesDe)
     return k >= 0 && k + 1 < voz.length ? [voz[k][1], voz[k + 1][0], k] : null
   })()
+  // NADA FALLA EN SILENCIO: sin la pausa de pensar, la escena E2 no tiene que mostrar.
+  if (!pausa) throw new Error(`lectura.pausaDespuesDe "${pausaDespuesDe}" no esta en el guion, o es su ultima palabra leida: E2 se queda sin pausa.`)
 
   return {
     html: htmlDelGuion(texto, tokens, tramos),

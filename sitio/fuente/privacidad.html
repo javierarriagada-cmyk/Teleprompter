@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="es">
+<html lang="{{idioma}}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Privacidad — Sigo</title>
-<meta name="description" content="Cómo trata Sigo tus guiones, tus tomas y tu voz: todo queda en tu teléfono.">
-<link rel="canonical" href="https://sigoteleprompter.com/privacidad">
+<title>{{meta.privacidadTitulo}}</title>
+<meta name="description" content="{{meta.privacidadDescripcion}}">
+<!--@cabecera-idioma-->
 <meta name="theme-color" content="#0B0A09">
 <link rel="icon" type="image/png" href="/icono.png">
 <link rel="apple-touch-icon" href="/icono.png">
@@ -15,20 +15,16 @@
 </head>
 <body class="interior">
 <div class="grano" aria-hidden="true"></div>
+<!--@selector-->
 <header class="cabecera">
   <!--@marca-->
 </header>
 <main class="texto">
-  <h1>Privacidad</h1>
+  <h1>{{privacidad.titulo}}</h1>
   <ul class="lista">
-    <li>Tus guiones viven en tu teléfono.</li>
-    <li>Tus tomas también.<small>Si guardas una en la galería, queda ahí.</small></li>
-    <li>Sigo usa el micrófono para seguir tu voz.<small>El reconocimiento de voz corre en el teléfono. El audio no se manda a ningún servidor.</small></li>
-    <li>Sigo usa la cámara cuando la enciendes para grabarte.<small>El video se guarda en tu teléfono y no sale de ahí.</small></li>
-    <li>Sigo no tiene cuentas.</li>
-    <li>Este sitio no usa cookies de seguimiento ni analítica.</li>
+    {{privacidad.lista}}
   </ul>
-  <p>Si tienes una pregunta, escríbenos.<br><a class="correo" href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></p>
+  <p>{{privacidad.contacto}}<br><a class="correo" href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></p>
 </main>
 <!--@pie-->
 </body>
