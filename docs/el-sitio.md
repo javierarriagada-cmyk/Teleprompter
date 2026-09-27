@@ -27,20 +27,29 @@ Lo primero que se ve -arriba, sin bajar- es **la pantalla de lectura de Sigo, di
 HTML con los mismos colores, letras y destacado de la app, avanzando con los tiempos reales
 de una lectura real.**
 
-- Cada toma de Sigo deja un registro `<id>.motor.txt`, con el guion y el milisegundo en que
-  el reconocedor entrego cada palabra. Ejemplo en el repo:
-  `src/pruebas/corpus/toma-a5bc922c-salto.motor.txt`. El formato lo lee `armarSubtitulos()`,
-  en `src/lib/subtitulos.ts`: se puede reutilizar su lectura, o preprocesar el registro a un
-  JSON chico `[{palabra, ms}]` con un script dentro de `sitio/`.
-- La demostracion reproduce ese registro: el renglon vivo sube, la linea del destacado
-  avanza bajo las 4-6 palabras que se estan diciendo -como `src/lib/destacado.ts`-. No se
-  simula un ritmo inventado: se usan los tiempos de la toma. Eso es lo que hace verdadera
-  la frase.
+- **REGLA PRIMERA: LA PAGINA ES PUBLICA Y NO LLEVA NADA DE LA LOGICA DE LA APP.** Todo
+  JavaScript publicado se puede leer. Ni copiado ni reescrito: nada de seguidor, avance,
+  conduccion, destacado, renglones, banda ni avanzarTrabado. Lo que decide vive en la app;
+  la pagina solo mide y dibuja. -Corregido el 26-09-2026: la primera version de esta
+  especificacion nombraba esos archivos como modelo, y la pagina los termino copiando.-
+- **LO QUE SE CALCULA AL ARMAR, en tu computador, con un script de `sitio/` que NO se
+  publica:** de un registro `<id>.motor.txt` -ejemplo:
+  `src/pruebas/corpus/toma-a5bc922c-salto.motor.txt`- sale un JSON con el guion y, para
+  cada momento, el tiempo y el indice de la palabra destacada. El script puede importar
+  codigo de la app, porque corre solo al armar. Al publico llega unicamente el JSON: es el
+  resultado del motor, que igual se ve en cualquier video, no el metodo.
+- **LO QUE SE CALCULA EN LA PAGINA:** donde quedo esa palabra en ESTA pantalla -se mide en
+  el DOM, porque los renglones dependen del ancho- y un desplazamiento suave generico hasta
+  ahi. El velo, un degradado fijo en CSS. No se fijan renglones al armar: un telefono y un
+  computador parten las lineas distinto.
+- La demostracion usa los tiempos de la toma, no un ritmo inventado. Eso es lo que hace
+  verdadera la frase.
 - Sonido: arranca SIN sonido. Un control a la vista lo activa y se escucha la voz, con el
   texto siguiendola. Sin audio todavia -ver 6-, la demostracion funciona igual en silencio.
 - Tiene que verse como la app de verdad: fondo `#151312`, letra `#E7E1DE`, Source Serif 4,
-  el velo arriba y abajo de la ventana de lectura -`src/components/banda.ts`-. Es la misma
-  pantalla, no un dibujo "inspirado en".
+  la linea del destacado bajo las palabras que se dicen, el velo arriba y abajo de la
+  ventana de lectura. Se imita el ASPECTO mirando la app; el codigo de la app no se copia.
+- Perfecta en un celular -de 360 a 430 px de ancho, vertical- y en un computador.
 - Vuelve a empezar sola al terminar, con una pausa.
 - Con `prefers-reduced-motion`: se muestra quieta, en un momento con el destacado visible,
   y un boton para reproducirla.
