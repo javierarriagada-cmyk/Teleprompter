@@ -110,6 +110,12 @@ try {
   const escritorio = path.join(os.homedir(), 'Desktop')
   if (fs.existsSync(escritorio)) {
     const copia = path.join(escritorio, 'Sigo.apk')
+    // SE BORRA ANTES DE COPIAR -27-09-2026-. Copiar encima conserva la fecha de creacion de
+    // la primera Sigo.apk -16-09- y el peso sale identico de una vez a otra -117.225.932
+    // bytes-: Javier miraba el Escritorio y creia que la APK no se habia reemplazado.
+    // Borrandola, Windows la trata como nueva: creacion y modificacion quedan con la hora de
+    // la construccion.
+    if (fs.existsSync(copia)) fs.rmSync(copia)
     fs.copyFileSync(APK, copia)
     console.log(`Copia en el Escritorio: ${copia}`)
   }
