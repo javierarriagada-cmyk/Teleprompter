@@ -10,6 +10,8 @@ import { MarcaSigo } from './MarcaSigo'
 import { hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_RESORTE } from './movimiento'
 import { ESCALA_AVISO, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
+import { t, useTextos, tituloVisible, fechaCorta, IdiomaApp } from '../textos'
+import { fijarIdioma } from '../lib/idioma'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -42,6 +44,8 @@ interface BibliotecaViewProps {
   onAnimationEnd?: (e: React.AnimationEvent) => void
 }
 
+// "hoy", "ayer", "hace 3 dias" y, pasadas cuatro semanas, la fecha corta por idioma
+// -textos/index.ts, fechaCorta-.
 export function formatearFechaNatural(timestamp: number): string {
   if (!timestamp) return ''
   const ahora = new Date()
@@ -51,15 +55,13 @@ export function formatearFechaNatural(timestamp: number): string {
   const inicioFecha = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()).getTime()
   const diffDias = Math.round((inicioAhora - inicioFecha) / (1000 * 60 * 60 * 24))
 
-  if (diffDias === 0) return 'hoy'
-  if (diffDias === 1) return 'ayer'
-  if (diffDias > 1 && diffDias <= 6) return `hace ${diffDias} días`
-  if (diffDias > 6 && diffDias <= 13) return 'hace 1 semana'
-  if (diffDias > 13 && diffDias <= 27) return `hace ${Math.floor(diffDias / 7)} semanas`
+  if (diffDias === 0) return t('hoy')
+  if (diffDias === 1) return t('ayer')
+  if (diffDias > 1 && diffDias <= 6) return t('haceDias', { n: diffDias })
+  if (diffDias > 6 && diffDias <= 13) return t('haceUnaSemana')
+  if (diffDias > 13 && diffDias <= 27) return t('haceSemanas', { n: Math.floor(diffDias / 7) })
 
-  const dia = fecha.getDate()
-  const mes = fecha.getMonth() + 1
-  return `${dia}/${mes}`
+  return fechaCorta(timestamp)
 }
 
 export function calcularMinutosLectura(guiones: ResumenGuion[]): number {
@@ -69,8 +71,10 @@ export function calcularMinutosLectura(guiones: ResumenGuion[]): number {
 
 export function formatearTextoResumen(guiones: ResumenGuion[]): string {
   const minsLectura = calcularMinutosLectura(guiones)
-  if (guiones.length === 0) return '0 guiones'
-  return `${guiones.length} ${guiones.length === 1 ? 'guión' : 'guiones'} · ${minsLectura} ${minsLectura === 1 ? 'minuto' : 'minutos'} de lectura`
+  if (guiones.length === 0) return t('resumenSinGuiones')
+  const cuantos = guiones.length === 1 ? t('resumenUnGuion') : t('resumenGuiones', { n: guiones.length })
+  const lectura = minsLectura === 1 ? t('resumenUnMinuto') : t('resumenMinutos', { n: minsLectura })
+  return `${cuantos} · ${lectura}`
 }
 
 // GESTO DE OPCIONES DE DESARROLLADOR / DIAGNÓSTICO (Tarea 74, P1f de decisiones-de-diseno.txt).
@@ -108,6 +112,7 @@ function FilaGuion({
   setMenuId,
   refMenuFila
 }: FilaGuionProps) {
+  useTextos()
   const [dragX, setDragX] = useState(0)
   const esArrastrandoRef = useRef(false)
   const startXRef = useRef<number | null>(null)
@@ -235,7 +240,7 @@ function FilaGuion({
     cruzoUmbralRef.current = false
   }
 
-  const tituloMostrar = (g.titulo && g.titulo.trim()) ? g.titulo : 'Sin título'
+  const tituloMostrar = tituloVisible(g.titulo)
   // La duracion sale de duracionDeLectura -modelo.ts-, la misma de la tarjeta.
   const fechaNat = formatearFechaNatural(g.modificado)
   const metaTexto = `${duracionDeLectura(g.palabras || 0)} · ${fechaNat}`
@@ -267,7 +272,7 @@ function FilaGuion({
             borderRadius: 'var(--redondeo)'
           }}
         >
-          Borrar
+          {t('borrar')}
         </div>
       )}
       {dragX >= 88 && (
@@ -287,7 +292,7 @@ function FilaGuion({
             borderRadius: 'var(--redondeo)'
           }}
         >
-          {g.archivado ? 'Desarchivar' : 'Archivar'}
+          {g.archivado ? t('desarchivar') : t('archivar')}
         </div>
       )}
 
@@ -342,7 +347,7 @@ function FilaGuion({
       >
         <div>
           <div className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-1)' }}>
-            {tituloMostrar} {g.archivado && <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)' }}>(Archivado)</span>}
+            {tituloMostrar} {g.archivado && <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)' }}>{t('marcaArchivado')}</span>}
           </div>
           <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
             {metaTexto}
@@ -377,7 +382,7 @@ function FilaGuion({
                 fontSize: 'var(--texto-meta)'
               }}
             >
-              {g.archivado ? 'Desarchivar' : 'Archivar'}
+              {g.archivado ? t('desarchivar') : t('archivar')}
             </button>
             <button
               onClick={() => {
@@ -394,7 +399,7 @@ function FilaGuion({
                 fontSize: 'var(--texto-meta)'
               }}
             >
-              Eliminar
+              {t('eliminar')}
             </button>
             <button
               onClick={() => setMenuId(null)}
@@ -407,7 +412,7 @@ function FilaGuion({
                 fontSize: 'var(--texto-meta)'
               }}
             >
-              Cerrar
+              {t('cerrar')}
             </button>
           </div>
         )}
@@ -439,6 +444,7 @@ export default function BibliotecaView({
   style,
   onAnimationEnd
 }: BibliotecaViewProps) {
+  const idioma = useTextos()
   const [busqueda, setBusqueda] = useState('')
   const [mostrarArchivados, setMostrarArchivados] = useState(false)
   const [mostrarPanelCorpus, setMostrarPanelCorpus] = useState(false)
@@ -509,7 +515,7 @@ export default function BibliotecaView({
 
   const guionesFiltrados = guiones.filter((g) => {
     const query = busqueda.toLowerCase().trim()
-    const tituloNormalizado = (g.titulo || 'Sin título').toLowerCase()
+    const tituloNormalizado = tituloVisible(g.titulo).toLowerCase()
     const textoNormalizado = (mapaTextos[g.id] || '').toLowerCase()
 
     const coincideBusqueda = query === '' || tituloNormalizado.includes(query) || textoNormalizado.includes(query)
@@ -615,8 +621,8 @@ export default function BibliotecaView({
           ref={refEngranajePortada}
           data-testid="btn-menu-superior-biblioteca"
           className="btn-deformable boton-portada"
-          title="Ajustes de la app"
-          aria-label="Ajustes de la app"
+          title={t('ajustesApp')}
+          aria-label={t('ajustesApp')}
         >
           <IconoEngranaje tamano={22} />
         </button>
@@ -723,24 +729,24 @@ export default function BibliotecaView({
                     oscuro, y a quien tenga guardado "sistema" le cae ahi.
                     24-09-2026: las dos opciones son tarjetas que muestran el
                     tema -su fondo y su letra-, como las parejas del cajon Aa. */}
-                <div className="parejas-aa parejas-aa-dos" role="group" aria-label="Tema">
+                <div className="parejas-aa parejas-aa-dos" role="group" aria-label={t('tema')}>
                   {([
-                    { valor: 'claro' as const, nombre: 'Claro' },
-                    { valor: 'oscuro' as const, nombre: 'Oscuro' }
-                  ]).map((t) => (
+                    { valor: 'claro' as const, nombre: t('temaClaro') },
+                    { valor: 'oscuro' as const, nombre: t('temaOscuro') }
+                  ]).map((tm) => (
                     <button
-                      key={t.valor}
+                      key={tm.valor}
                       type="button"
-                      title={t.nombre}
-                      aria-label={t.nombre}
-                      aria-pressed={tema === t.valor}
-                      className={`btn-deformable pareja-aa${tema === t.valor ? ' activa' : ''}`}
+                      title={tm.nombre}
+                      aria-label={tm.nombre}
+                      aria-pressed={tema === tm.valor}
+                      className={`btn-deformable pareja-aa${tema === tm.valor ? ' activa' : ''}`}
                       onClick={() => {
                         hapticaToqueSuave()
-                        setTema?.(t.valor)
+                        setTema?.(tm.valor)
                       }}
                     >
-                      <span className={`pareja-aa-muestra tema-muestra-${t.valor}`}>Aa</span>
+                      <span className={`pareja-aa-muestra tema-muestra-${tm.valor}`}>Aa</span>
                     </button>
                   ))}
                 </div>
@@ -751,6 +757,40 @@ export default function BibliotecaView({
                     24-09-2026: EL INTERRUPTOR SE FUE. La vibracion la decide la
                     respuesta tactil del telefono -el porque esta en haptica.ts-.
                     Quedan las dos tarjetas del tema. */}
+              </div>
+              {/* EL IDIOMA DE LA APP -D1, tarea 75, 27-09-2026-. Una fila con ES y EN, la
+                  misma pieza que los selectores del cajon Aa, la elegida en crema. Toda la
+                  app cambia en el momento -fijarIdioma, lib/idioma.ts-. Van escritas porque
+                  son un dato, como la calidad del video. Cada opcion se nombra en su propio
+                  idioma -"Español", "English"-: quien no entiende el idioma de la pantalla
+                  tiene que poder encontrar el suyo. */}
+              <div
+                className="selector-aa selector-aa-lleno"
+                role="group"
+                aria-label={t('idiomaDeLaApp')}
+                data-testid="selector-idioma-app"
+              >
+                {([
+                  { valor: 'es' as IdiomaApp, sigla: 'ES', nombre: 'Español' },
+                  { valor: 'en' as IdiomaApp, sigla: 'EN', nombre: 'English' }
+                ]).map((o) => (
+                  <button
+                    key={o.valor}
+                    type="button"
+                    lang={o.valor}
+                    data-testid={`btn-idioma-${o.valor}`}
+                    aria-label={o.nombre}
+                    title={o.nombre}
+                    aria-pressed={idioma === o.valor}
+                    className={`btn-deformable selector-aa-opcion texto-aa${idioma === o.valor ? ' activa' : ''}`}
+                    onClick={() => {
+                      hapticaToqueSuave()
+                      fijarIdioma(o.valor)
+                    }}
+                  >
+                    {o.sigla}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -763,7 +803,7 @@ export default function BibliotecaView({
         <div style={{ marginBottom: 'var(--aire-4)' }}>
           <input
             type="text"
-            placeholder="Buscar"
+            placeholder={t('buscar')}
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
             data-testid="input-busqueda-biblioteca"
@@ -790,7 +830,7 @@ export default function BibliotecaView({
           escalon -texto-titulo- y a color de texto: son los que ordenan la
           portada, y en gris apagado se perdian. */}
       <div className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-3)', fontWeight: 600 }}>
-        {mostrarArchivados ? 'Archivados' : 'Guiones'}
+        {mostrarArchivados ? t('archivados') : t('guiones')}
       </div>
 
       {/* Lista de guiones o Vacío */}
@@ -809,10 +849,10 @@ export default function BibliotecaView({
           className="texto-meta"
         >
           {busqueda.trim()
-            ? `No se encontraron guiones que coincidan con "${busqueda}".`
+            ? t('sinCoincidencias', { busqueda })
             : mostrarArchivados
-            ? 'No hay guiones archivados.'
-            : 'No hay guiones en la lista principal.'}
+            ? t('sinArchivados')
+            : t('listaVacia')}
         </div>
       ) : (
         <div
@@ -849,7 +889,7 @@ export default function BibliotecaView({
             setMostrarArchivados(!mostrarArchivados)
           }}
         >
-          {mostrarArchivados ? '‹ Volver a tus guiones' : `Archivados · ${cantidadArchivados}`}
+          {mostrarArchivados ? t('volverATusGuiones') : t('archivadosConteo', { n: cantidadArchivados })}
         </button>
       )}
 
@@ -939,7 +979,8 @@ export default function BibliotecaView({
           onCrearNuevo()
         }}
         data-testid="btn-crear-guion-flotante"
-        title="Crear nuevo guion"
+        title={t('crearGuion')}
+        aria-label={t('crearGuion')}
         style={{
           position: 'fixed',
           // EL AREA SEGURA. Este boton se quedo afuera de la tarea 43, que se la sumo

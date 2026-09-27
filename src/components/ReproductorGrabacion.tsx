@@ -4,6 +4,7 @@ import { srcDeRuta, formatearDuracionMs } from './TiraGrabaciones'
 import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo } from '../lib/archivosNativos'
 import { armarSubtitulos, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo } from '../lib/subtitulos'
 import { CapaSubtitulos, SelectorSubtitulos } from './SubtitulosVisor'
+import { t, useTextos, tituloVisible } from '../textos'
 
 export default function ReproductorGrabacion({
   grabacion,
@@ -25,6 +26,7 @@ export default function ReproductorGrabacion({
   // Misma regla que en la tira: borrar pregunta una vez. Ver el comentario de
   // TiraGrabaciones. Aca no hace falta el temporizador porque al cerrar el
   // reproductor se desmonta todo.
+  useTextos()
   const [confirmando, setConfirmando] = React.useState(false)
   const [guardando, setGuardando] = React.useState(false)
 
@@ -85,12 +87,15 @@ export default function ReproductorGrabacion({
           // si no se pudo borrar, queda la copia de Sigo: nada se pierde
         }
         onCambio?.({ ...grabacion, ruta: res.uri, galeriaUri: res.uri, estiloGaleria: conSubtitulos ? estilo : 'no' })
-        onGuardadoEnGaleria?.(true, 'Quedó en la galería del teléfono, en Películas.')
+        onGuardadoEnGaleria?.(true, t('galeriaGuardada'))
       } else {
-        onGuardadoEnGaleria?.(false, 'No se pudo guardar en la galería')
+        onGuardadoEnGaleria?.(false, t('galeriaNoSeGuardo'))
       }
     } catch (e: any) {
-      onGuardadoEnGaleria?.(false, e?.message || String(e))
+      // El motivo va a la vista, con la frase en el idioma de la app. El detalle lo escribe
+      // el plugin nativo -CamaraNativaPlugin.java- y hoy esta en espanol: traducir esos
+      // rechazos es trabajo del lado nativo.
+      onGuardadoEnGaleria?.(false, t('galeriaNoSeGuardoPorque', { detalle: e?.message || String(e) }))
     } finally {
       setGuardando(false)
       setAvance(null)
@@ -108,7 +113,7 @@ export default function ReproductorGrabacion({
         // aparece" -Javier-. Sin aviso: se quita como al borrarla.
         onBorrar(grabacion.id)
       } else {
-        onGuardadoEnGaleria?.(false, 'No se pudo compartir')
+        onGuardadoEnGaleria?.(false, t('noSeCompartio'))
       }
     }
   }
@@ -142,12 +147,12 @@ export default function ReproductorGrabacion({
         )}
         <div style={{ padding: 'var(--aire-3)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--aire-3)' }}>
           <div>
-            <div style={{ fontWeight: 700 }}>{grabacion.tituloGuion || 'Toma'}</div>
+            <div style={{ fontWeight: 700 }}>{grabacion.tituloGuion ? tituloVisible(grabacion.tituloGuion) : t('toma')}</div>
             <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
               {formatearDuracionMs(grabacion.duracionMs)}
-              {grabacion.incompleta ? ' · incompleta' : ''}
-              {grabacion.errorMudo ? ' · el motor oyo y el archivo no tiene sonido' : ''}
-              {grabacion.avisoMudo ? ' · no se oye audio en este archivo' : ''}
+              {grabacion.incompleta ? ` · ${t('incompleta')}` : ''}
+              {grabacion.errorMudo ? ` · ${t('metaErrorMudo')}` : ''}
+              {grabacion.avisoMudo ? ` · ${t('metaAvisoMudo')}` : ''}
             </div>
           </div>
           <div style={{ display: 'flex', gap: 'var(--aire-2)', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
@@ -158,7 +163,7 @@ export default function ReproductorGrabacion({
                 onClick={handleCompartir}
                 style={{ ...estiloBoton, background: 'var(--color-acento)', borderColor: 'var(--color-acento)', color: 'var(--color-texto-acento)' }}
               >
-                Compartir
+                {t('compartir')}
               </button>
             ) : (
               <>
@@ -169,7 +174,7 @@ export default function ReproductorGrabacion({
                   onClick={handleGuardar}
                   style={{ ...estiloBoton, cursor: guardando ? 'default' : 'pointer', opacity: guardando ? 0.7 : 1 }}
                 >
-                  {guardando ? (avance !== null ? `Guardando… ${Math.round(avance)}%` : 'Guardando…') : 'Guardar en galería'}
+                  {guardando ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardarEnGaleria')}
                 </button>
                 {onRepetir && (
                   <button
@@ -178,7 +183,7 @@ export default function ReproductorGrabacion({
                     onClick={onRepetir}
                     style={estiloBoton}
                   >
-                    Repetir toma
+                    {t('repetirToma')}
                   </button>
                 )}
               </>
@@ -198,9 +203,9 @@ export default function ReproductorGrabacion({
                 cursor: 'pointer'
               }}
             >
-              {confirmando ? '¿Seguro?' : 'Borrar'}
+              {confirmando ? t('seguro') : t('borrar')}
             </button>
-            <button type="button" onClick={onCerrar} style={{ background: 'var(--bg-suelo)', border: '1px solid var(--color-borde)', color: 'var(--color-texto)', borderRadius: 'var(--redondeo)', padding: 'var(--aire-2) var(--aire-3)', cursor: 'pointer', fontWeight: 600 }}>Cerrar</button>
+            <button type="button" onClick={onCerrar} style={{ background: 'var(--bg-suelo)', border: '1px solid var(--color-borde)', color: 'var(--color-texto)', borderRadius: 'var(--redondeo)', padding: 'var(--aire-2) var(--aire-3)', cursor: 'pointer', fontWeight: 600 }}>{t('cerrar')}</button>
           </div>
         </div>
       </div>

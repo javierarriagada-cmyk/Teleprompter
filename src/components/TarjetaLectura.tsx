@@ -2,6 +2,7 @@ import React from 'react'
 import { IconoEmpezar } from './IconosApp'
 import { ResumenGuion, duracionDeLectura } from '../datos/modelo'
 import { estiloComprimirPorAviso, useMantenerApretado } from './mantenerApretado'
+import { t, useTextos, tituloVisible } from '../textos'
 
 interface TarjetaLecturaProps {
   guionResumen?: ResumenGuion
@@ -16,6 +17,7 @@ export default function TarjetaLectura({
   onGrabar,
   onCrearNuevo
 }: TarjetaLecturaProps) {
+  useTextos()
   const cardRef = React.useRef<HTMLDivElement>(null)
   // LA TARJETA ES UNA SUPERFICIE DE LA PORTADA, NO UNA MUESTRA DE LA LECTURA -27-09-2026-.
   // Hasta hoy tomaba la pareja de colores de lectura: con la negra, un rectangulo negro puro
@@ -41,13 +43,11 @@ export default function TarjetaLectura({
   // Mismo formato que la fila del guion: duracionDeLectura, modelo.ts.
   const timecode = duracionDeLectura(palabras)
   const tituloText = hayGuion
-    ? guionResumen?.titulo && guionResumen.titulo.trim()
-      ? guionResumen.titulo
-      : 'Sin título'
+    ? tituloVisible(guionResumen?.titulo)
     // "Sin guiones todavía" no entra a 44 px y se cortaba en "Sin guiones to...".
     // El titulo de la portada es de una sola linea a proposito; entonces el texto se
-    // ajusta al sitio que hay, no al reves.
-    : 'Sin guiones'
+    // ajusta al sitio que hay, no al reves. En ingles, "No scripts", por lo mismo.
+    : t('sinGuiones')
 
   return (
     <div
@@ -228,7 +228,7 @@ export default function TarjetaLectura({
               }}
             >
               <IconoEmpezar tamano={16} />
-              <span>Leer</span>
+              <span>{t('leer')}</span>
             </button>
             <button
               type="button"
@@ -261,7 +261,7 @@ export default function TarjetaLectura({
                   flexShrink: 0
                 }}
               />
-              <span>Grabar</span>
+              <span>{t('grabar')}</span>
             </button>
           </div>
         ) : (
@@ -282,7 +282,7 @@ export default function TarjetaLectura({
               justifyContent: 'center'
             }}
           >
-            Escribe tu primer guion
+            {t('escribePrimerGuion')}
           </button>
         )}
       </div>

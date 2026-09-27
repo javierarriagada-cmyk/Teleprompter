@@ -118,6 +118,28 @@ nivel". Punto I1 de docs/decisiones-de-diseno.txt.
   Se recupero una toma de una sesion interrumpida.  A take from an interrupted session was recovered.
   Verla             View it             hoy / ayer          today / yesterday
 
+  AGREGADOS EN LA TAREA 75 -27-09-2026-, con el mismo criterio: cortos, los que usan las
+  mejores apps.
+  Tema              Theme               Claro / Oscuro      Light / Dark
+  Idioma de la app  App language        Idioma del guion    Script language
+  Buscar            Search              Desarchivar         Unarchive
+  Deshacer          Undo                Cerrar              Close
+  Eliminar          Delete              Volver              Back
+  Salir             Exit                Reintentar          Try again
+  Repetir toma      Retake              Descartar toma      Discard take
+  Grabando          Recording           Grabado             Recorded
+  Ajustes de la app Settings            Ajustes de lectura  Reading settings
+  Ajustes de la escena  Scene settings  Imagen de la camara Camera view
+  Detras / Recuadro / Oculta            Behind the text / Small window / Hidden
+  Donde lees        Where you read      Titulo del guion    Script title
+  Colores de lectura  Reading colors    incompleta          incomplete
+  Negro con blanco / Negro con ambar / Blanco con negro
+                    White on black / Amber on black / Black on white
+  Subtitulos: No    Captions: Off       vacio -duracion-    empty
+  Guion importado   Imported script     sin audio           no audio
+  Tipografia: Sans / Serif              igual en los dos
+  La letra del boton de negrita: N en espanol, B en ingles.
+
 
 ==============================================================================
 5. EL GUION HOLA EN INGLES -escrito por Claude; la traductora lo revisa-

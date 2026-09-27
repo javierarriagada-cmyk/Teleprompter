@@ -38,6 +38,8 @@ import {
   borrarGrabacionEnDisco
 } from './lib/tomaVideo'
 import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar } from './components/IconosApp'
+import { t, useTextos, TITULO_SIN_NOMBRE } from './textos'
+import { IdiomaApp, idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
 const MS_CONTROLES_A_LA_VISTA = 4000
@@ -109,7 +111,30 @@ function ajustarFuenteValida(val: any): number {
 
 // EL GUION "HOLA": el que ya viene puesto la primera vez. Los tramos se calculan buscando
 // las palabras en el texto, asi el texto se puede retocar sin contar caracteres a mano.
-export function bloqueDeBienvenida(): Bloque {
+//
+// EN LOS DOS IDIOMAS -tarea 75, 27-09-2026-: se crea en el idioma de la app. El ingles es el de
+// docs/ingles.txt, seccion 5, LETRA POR LETRA -lo escribio Claude y lo revisa la traductora de
+// Javier-; si se retoca, se retoca alla primero. Mismos formatos que el espanol, sobre las
+// palabras que los nombran.
+export function tituloDeBienvenida(idioma: IdiomaApp): string {
+  return idioma === 'es' ? 'Hola' : 'Hi'
+}
+
+export function bloqueDeBienvenida(idioma: IdiomaApp): Bloque {
+  return idioma === 'es' ? bienvenidaEspanol() : bienvenidaIngles()
+}
+
+function tramosSobre(texto: string, marcas: Array<[string, Omit<TramoFormato, 'desde' | 'hasta'>]>): TramoFormato[] {
+  const tramo = (frase: string, formato: Omit<TramoFormato, 'desde' | 'hasta'>): TramoFormato => {
+    const desde = texto.indexOf(frase)
+    return { desde, hasta: desde + frase.length, ...formato }
+  }
+  // Si alguien retoca el texto y una de estas palabras deja de estar, su tramo se cae en vez
+  // de pintar desde el caracter -1.
+  return marcas.map(([frase, formato]) => tramo(frase, formato)).filter((t) => t.desde >= 0).sort((a, b) => a.desde - b.desde)
+}
+
+function bienvenidaEspanol(): Bloque {
   const texto = [
     'Hola. Lee esto en voz alta, con o sin apuro, como prefieras.',
     '',
@@ -140,37 +165,86 @@ export function bloqueDeBienvenida(): Bloque {
     // 24-09 era el ficticio hola@ejemplo.com que el pidio mientras tanto.
     'Y si algo te gusta, te molesta o se te ocurre cómo mejorarlo, cuéntanos. Tus comentarios son muy valiosos para nosotros. Escríbenos a hola@sigoteleprompter.com. Que te vaya muy bien.'
   ].join('\n')
-  const tramo = (frase: string, formato: Omit<TramoFormato, 'desde' | 'hasta'>): TramoFormato => {
-    const desde = texto.indexOf(frase)
-    return { desde, hasta: desde + frase.length, ...formato }
-  }
   return {
     id: 'b-bienvenida-1',
     nombre: '',
     texto,
     // Si alguien retoca el texto y una de estas palabras deja de estar, su tramo se cae en vez
-    // de pintar desde el caracter -1.
+    // de pintar desde el caracter -1 -tramosSobre, arriba-.
     // Los cinco primeros caen sobre la palabra que nombra su formato. Los demas -26-09-2026,
     // Javier: "ponle colores"- muestran el guion pintado como se usaria de verdad, para la
     // grabacion de prueba. Van ordenados por posicion y sin pisarse.
-    tramos: [
-      tramo('negrita', { negrita: true }),
-      tramo('ámbar', { color: 'ambar' }),
-      tramo('celeste', { color: 'celeste' }),
-      tramo('verde', { color: 'salvia' }),
-      tramo('destacado amarillo', { destacado: true }),
-      tramo('sin que toques nada', { negrita: true }),
-      tramo('el texto te espera', { color: 'celeste' }),
-      tramo('para que tu mirada vaya a la cámara', { color: 'ambar' }),
-      tramo('tal como lo ves', { color: 'salvia' }),
-      tramo('No tienes que memorizar.', { negrita: true }),
-      tramo('en el momento que quieras', { destacado: true }),
-      tramo('hola@sigoteleprompter.com', { color: 'celeste' })
-    ].filter((t) => t.desde >= 0).sort((a, b) => a.desde - b.desde)
+    tramos: tramosSobre(texto, [
+      ['negrita', { negrita: true }],
+      ['ámbar', { color: 'ambar' }],
+      ['celeste', { color: 'celeste' }],
+      ['verde', { color: 'salvia' }],
+      ['destacado amarillo', { destacado: true }],
+      ['sin que toques nada', { negrita: true }],
+      ['el texto te espera', { color: 'celeste' }],
+      ['para que tu mirada vaya a la cámara', { color: 'ambar' }],
+      ['tal como lo ves', { color: 'salvia' }],
+      ['No tienes que memorizar.', { negrita: true }],
+      ['en el momento que quieras', { destacado: true }],
+      ['hola@sigoteleprompter.com', { color: 'celeste' }]
+    ])
+  }
+}
+
+// El Hola en ingles. Es de docs/ingles.txt, seccion 5, letra por letra -tambien los
+// apostrofos rectos: son los que escribe el teclado del telefono-. Los formatos son los que
+// esa seccion lista, con el mismo mecanismo. El correo es el ingles -D6-.
+function bienvenidaIngles(): Bloque {
+  const texto = [
+    'Hi. Read this out loud, as slowly or as quickly as you like.',
+    '',
+    "Now look at the text. It's moving on its own, at the pace you speak, without you touching anything. The soft line under the words shows you where you are.",
+    '',
+    'If you stop to think, the text waits for you. When you start talking again, it picks up right where you left off.',
+    '',
+    "Anything you write in square brackets is a note just for you. It shows on the screen, but you don't need to read it out loud. [Like this one: breathe, and smile.]",
+    '',
+    "Your script can also help you read better. Use bold for what you want to say with more force. Color words in amber, light blue or green to set apart ideas or shifts in tone. And use the yellow highlight for what you can't afford to miss. Just select the text in the editor and pick one.",
+    '',
+    'With the Aa button you choose the text size, the typeface, the column width and the screen colors. Set it up however feels most comfortable.',
+    '',
+    'When you want to record yourself, tap Record. The camera films while you read, and the text sits right under the lens, so your eyes go to the camera and not to the screen. You can see yourself full screen, behind the text, or in a small window. That way you know how you look, without giving up the comfort of reading.',
+    '',
+    "When you're done, your video can have captions. They come from your script, in time with your voice. Pick the style you like best and save it to your gallery just as you see it.",
+    '',
+    "Sigo is here to give you the comfort and the calm you need. We want all your focus to be where it belongs. You don't have to memorize anything. You don't have to rush to keep up with the text. You can bring whatever emotion you want, whenever you want.",
+    '',
+    'It works for recording a video, teaching a class or getting ready for an interview.',
+    '',
+    "When you're done, delete this and write your own script, or paste one you already have.",
+    '',
+    "And if there's something you like, something that bugs you, or an idea to make it better, let us know. Your feedback means a lot to us. Write to hello@sigoteleprompter.com. All the best."
+  ].join('\n')
+  return {
+    id: 'b-bienvenida-1',
+    nombre: '',
+    texto,
+    tramos: tramosSobre(texto, [
+      ['bold', { negrita: true }],
+      ['amber', { color: 'ambar' }],
+      ['light blue', { color: 'celeste' }],
+      ['green', { color: 'salvia' }],
+      ['yellow highlight', { destacado: true }],
+      ['without you touching anything', { negrita: true }],
+      ['the text waits for you', { color: 'celeste' }],
+      ['so your eyes go to the camera', { color: 'ambar' }],
+      ['just as you see it', { color: 'salvia' }],
+      ["You don't have to memorize anything.", { negrita: true }],
+      ['whenever you want', { destacado: true }],
+      ['hello@sigoteleprompter.com', { color: 'celeste' }]
+    ])
   }
 }
 
 export default function App({ motor, repoOverride }: AppProps) {
+  // El idioma de la app: al cambiarlo en el cajon de la portada, App y todo lo que cuelga de
+  // ella se redibuja con los textos nuevos -textos/index.ts-.
+  useTextos()
   const repoRef = useRef<RepositorioGuiones>(repoOverride || new RepositorioIndexedDB())
   const repoGrabacionesRef = useRef<RepositorioGrabaciones>(
     repoOverride ? new RepositorioGrabacionesMemoria() : new RepositorioGrabacionesIndexedDB()
@@ -453,6 +527,10 @@ export default function App({ motor, repoOverride }: AppProps) {
   // Cargar/Migrar al arrancar
   useEffect(() => {
     async function inicializar() {
+      // Primero el idioma que Android tiene para la app -si esta el plugin-: el guion Hola
+      // de mas abajo se crea en ese idioma.
+      await leerIdiomaDelTelefono()
+      if (!montadoRef.current) return
       // Verificar si el repositorio funciona o caer a fallback si no está disponible
       try {
         await repoRef.current.listar()
@@ -474,7 +552,9 @@ export default function App({ motor, repoOverride }: AppProps) {
       if (textoViejo && textoViejo.trim()) {
         const gMigrado: Guion = {
           id: 'migrado-' + Date.now(),
-          titulo: 'Guion importado',
+          titulo: t('guionImportado'),
+          // El guion migrado de la version web vieja queda en espanol: esa version solo
+          // existio en espanol. El titulo si va en el idioma de la app, que es quien lo pone.
           idioma: 'es',
           creado: Date.now(),
           modificado: Date.now(),
@@ -519,8 +599,9 @@ export default function App({ motor, repoOverride }: AppProps) {
             // La marca de localStorage sigue llamandose teleprompter_bienvenida_puesta a
             // proposito: si se le cambia el nombre, a quien ya lo tenia le aparece un
             // segundo guion.
-            titulo: 'Hola',
-            idioma: 'es',
+            // Desde la tarea 75 en el idioma de la app: "Hola" o "Hi", con su texto.
+            titulo: tituloDeBienvenida(idiomaApp()),
+            idioma: idiomaApp(),
             creado: Date.now(),
             modificado: Date.now(),
             archivado: false,
@@ -542,7 +623,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             // amable". Explica leyendo: la negrita, los tres colores y el destacado van puestos
             // sobre las mismas palabras que los nombran, y la nota entre corchetes es una nota
             // de verdad -el seguidor se la salta-. Lo que dice es lo que hace la aplicacion hoy.
-            bloques: [bloqueDeBienvenida()]
+            bloques: [bloqueDeBienvenida(idiomaApp())]
           }
 
           try {
@@ -567,10 +648,10 @@ export default function App({ motor, repoOverride }: AppProps) {
           const una = nuevas.length === 1
           mostrarAviso(
             una
-              ? 'Se recuperó una toma de una sesión interrumpida.'
-              : `Se recuperaron ${nuevas.length} tomas de una sesión interrumpida.`,
+              ? t('avisoTomaRecuperada')
+              : t('avisoTomasRecuperadas', { n: nuevas.length }),
             {
-              accionTexto: 'Verla',
+              accionTexto: t('verla'),
               alEjecutarAccion: () => setGrabacionAbierta(masReciente),
               duracionMs: 5000
             }
@@ -672,8 +753,10 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }
 
+  // Un guion nuevo nace en el idioma de la app -D2-. Al escribir o pegar, el editor lo
+  // corrige si el texto es de otro idioma -EditorView, detectarIdioma-.
   async function handleCrearNuevoGuion() {
-    const nuevo = guionNuevo('es')
+    const nuevo = guionNuevo(idiomaApp())
     try {
       await repoRef.current.guardar(nuevo)
       setGuionActual(nuevo)
@@ -696,12 +779,12 @@ export default function App({ motor, repoOverride }: AppProps) {
   // entre "no existe" y "existe"-. Se arregla al salir: si no hay titulo y no hay
   // texto, no hay nada que conservar.
   //
-  // OJO: guionNuevo NO deja el titulo vacio, lo deja en 'Sin título'. Comparar contra
-  // la cadena vacia no alcanza.
+  // OJO: guionNuevo NO deja el titulo vacio, lo deja en 'Sin título' -TITULO_SIN_NOMBRE, que
+  // se guarda asi en los dos idiomas-. Comparar contra la cadena vacia no alcanza.
   function guionSinEscribir(g: Guion | null): boolean {
     if (!g) return false
     const titulo = (g.titulo || '').trim()
-    if (titulo !== '' && titulo !== 'Sin título') return false
+    if (titulo !== '' && titulo !== TITULO_SIN_NOMBRE) return false
     return (g.bloques || []).every((b) => !b.texto || b.texto.trim() === '')
   }
 
@@ -722,7 +805,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       return
     }
     if (guionModificadoRef.current) {
-      mostrarAviso('Guardado')
+      mostrarAviso(t('guardado'))
       guionModificadoRef.current = false
     }
     setVista('biblioteca')
@@ -762,8 +845,8 @@ export default function App({ motor, repoOverride }: AppProps) {
       }
     }, 5000)
 
-    mostrarAviso('Guion borrado', {
-      accionTexto: 'Deshacer',
+    mostrarAviso(t('guionBorrado'), {
+      accionTexto: t('deshacer'),
       duracionMs: 5000,
       alEjecutarAccion: () => {
         if (timerBorradoRef.current[id]) {
@@ -871,6 +954,13 @@ export default function App({ motor, repoOverride }: AppProps) {
     motorAvance
   } = useSeguidor(guionParaSeguidor)
 
+  // EL MOTOR ESCUCHA EN EL IDIOMA DEL GUION, NO EN EL DE LA APP -D2-. Hasta la tarea 75 se
+  // armaba `${idioma}-${IDIOMA}`, que para el ingles daba 'en-EN', un codigo que no existe.
+  // MotorNativo todavia lo ignora: el modelo ingles y la eleccion por idioma los conecta
+  // Claude en el telefono -docs/ingles.txt, seccion 3-.
+  const idiomaGuion = guionActual && guionActual.idioma ? guionActual.idioma : 'es'
+  const langMotor = idiomaGuion === 'en' ? 'en-US' : idiomaGuion === 'es' ? 'es-ES' : idiomaGuion
+
   const {
     start,
     stop,
@@ -880,7 +970,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     motorActivo
   } = useASR({
     engine,
-    lang: guionActual && guionActual.idioma ? `${guionActual.idioma}-${guionActual.idioma.toUpperCase()}` : 'es-ES',
+    lang: langMotor,
     motor,
     acumularTexto: verTranscripcion,
     alRecibirParcial: seguidorParcial,
@@ -1118,9 +1208,9 @@ export default function App({ motor, repoOverride }: AppProps) {
       console.warn('[App] no se pudo guardar el indice de la toma:', e)
     }
     if (resumen.errorMudo) {
-      mostrarAviso('El motor oyo y el archivo no tiene sonido')
+      mostrarAviso(t('avisoErrorMudo'))
     } else if (resumen.avisoMudo) {
-      mostrarAviso('No se oye audio en este archivo')
+      mostrarAviso(t('avisoMudo'))
     }
   }
 
@@ -1163,7 +1253,7 @@ export default function App({ motor, repoOverride }: AppProps) {
         console.warn('[App] no se pudo descartar la toma:', e)
       }
     }
-    mostrarAviso('Toma descartada')
+    mostrarAviso(t('tomaDescartada'))
   }
 
   async function handleStop(): Promise<ResumenGrabacion | null> {
@@ -1386,19 +1476,19 @@ export default function App({ motor, repoOverride }: AppProps) {
         >
           {estadoPrecarga === 'descargando' && (
             <span>
-              ⏬ Descargando modelo de voz para uso offline: <strong>{Math.round(progresoPrecarga * 100)}%</strong>
+              ⏬ {t('descargandoModelo')} <strong>{Math.round(progresoPrecarga * 100)}%</strong>
             </span>
           )}
           {estadoPrecarga === 'error' && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)', width: '100%', justifyContent: 'space-between' }}>
               <span>
-                ⚠️ Error descargando modelo de voz Vosk: {errorPrecarga || 'Desconocido'}.
+                ⚠️ {t('errorModelo', { detalle: errorPrecarga || t('desconocido') })}
               </span>
               <button
                 onClick={reintentarPrecarga}
                 style={{ padding: 'var(--aire-1) var(--aire-2)', fontSize: 'var(--texto-meta)', cursor: 'pointer' }}
               >
-                Reintentar
+                {t('reintentar')}
               </button>
             </div>
           )}
@@ -1614,7 +1704,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                   data-duracion-sale={MS_PANTALLA}
                   type="button"
                   className="btn-deformable btn-flotante-40"
-                  aria-label="Salir"
+                  aria-label={t('salir')}
                   onClick={async (e) => {
                     e.stopPropagation()
                     hapticaToqueMedio()
@@ -1625,9 +1715,9 @@ export default function App({ motor, repoOverride }: AppProps) {
                         const totalSeg = Math.floor(duracionMs / 1000)
                         const mins = Math.floor(totalSeg / 60)
                         const segs = String(totalSeg % 60).padStart(2, '0')
-                        mostrarAviso(`Grabado: ${mins}:${segs}`)
+                        mostrarAviso(t('grabadoDuracion', { duracion: `${mins}:${segs}` }))
                       } else {
-                        mostrarAviso('Grabado')
+                        mostrarAviso(t('grabado'))
                       }
                     }
                   }}
@@ -1651,7 +1741,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                   data-confirmando={confirmandoDescarte ? 'si' : 'no'}
                   type="button"
                   className="btn-deformable btn-flotante-40"
-                  aria-label="Descartar toma"
+                  aria-label={t('descartarToma')}
                   onClick={async (e) => {
                     e.stopPropagation()
                     if (!confirmandoDescarte) {
@@ -1668,7 +1758,8 @@ export default function App({ motor, repoOverride }: AppProps) {
                     zIndex: 100,
                     // Ancho fijo y no 'auto': CSS no anima un ancho hacia 'auto', salta de golpe,
                     // y la 11.6 pide que el tacho se abra con una transicion de MS_CHICO.
-                    // 96 le alcanza a '¿Seguro?' en negrita con su aire a los lados.
+                    // 96 le alcanza a '¿Seguro?' en negrita con su aire a los lados; 'Sure?' es
+                    // mas corto.
                     // 40 cerrado desde el 24-09-2026: las esquinas de arriba miden lo
                     // mismo que la pausa de la otra esquina -btn-flotante-40-.
                     width: confirmandoDescarte ? 96 : 40,
@@ -1688,7 +1779,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                     animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
                   }}
                 >
-                  {confirmandoDescarte ? '¿Seguro?' : <IconoTacho tamano={20} />}
+                  {confirmandoDescarte ? t('seguro') : <IconoTacho tamano={20} />}
                 </button>
               )}
 
@@ -1698,7 +1789,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                 data-duracion-sale={MS_PANTALLA}
                 type="button"
                 className="btn-deformable btn-flotante-40"
-                aria-label={enPausa ? 'Seguir' : 'Pausa'}
+                aria-label={enPausa ? t('seguir') : t('pausa')}
                 onClick={async (e) => {
                   e.stopPropagation()
                   setConfirmandoDescarte(false)
@@ -1733,7 +1824,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                   data-duracion-sale={MS_PANTALLA}
                   type="button"
                   className="btn-deformable btn-flotante-72 btn-flotante-rojo"
-                  aria-label="Parar"
+                  aria-label={t('parar')}
                   onClick={async (e) => {
                     e.stopPropagation()
                     hapticaToqueMedio()
@@ -1744,9 +1835,9 @@ export default function App({ motor, repoOverride }: AppProps) {
                         const totalSeg = Math.floor(duracionMs / 1000)
                         const mins = Math.floor(totalSeg / 60)
                         const segs = String(totalSeg % 60).padStart(2, '0')
-                        mostrarAviso(`Grabado: ${mins}:${segs}`)
+                        mostrarAviso(t('grabadoDuracion', { duracion: `${mins}:${segs}` }))
                       } else {
-                        mostrarAviso('Grabado')
+                        mostrarAviso(t('grabado'))
                       }
                     }
                   }}
@@ -1957,9 +2048,9 @@ export default function App({ motor, repoOverride }: AppProps) {
           onGuardadoEnGaleria={(ok, detalle) => {
             if (ok) {
               hapticaToqueMedio()
-              mostrarAviso(detalle || 'Quedó en la galería del teléfono, en Películas.')
+              mostrarAviso(detalle || t('galeriaGuardada'))
             } else {
-              mostrarAviso(detalle || 'No se pudo guardar en la galería')
+              mostrarAviso(detalle || t('galeriaNoSeGuardo'))
             }
           }}
           onCambio={async (g) => {

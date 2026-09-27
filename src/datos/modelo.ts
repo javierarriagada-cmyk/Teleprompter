@@ -58,6 +58,9 @@ export type Guion = {
   id: string
   titulo: string
   idioma: string    // 'es', 'en', 'pt'... codigo corto. NUNCA cablear 'es'.
+  // true si la persona eligio el idioma a mano en el editor: desde ahi ya no lo cambia la
+  // deteccion -lib/detectarIdioma.ts-. Un guion guardado sin el campo se detecta como antes.
+  idiomaElegido?: boolean
   creado: number    // epoch ms
   modificado: number
   archivado?: boolean
@@ -135,6 +138,8 @@ export function guionNuevo(idioma: string): Guion {
   const ahora = Date.now()
   return {
     id: generarUuid(),
+    // Se guarda en espanol en los dos idiomas de la app: es una marca, no un texto -ver
+    // TITULO_SIN_NOMBRE en textos/index.ts-. Para mostrarlo, tituloVisible().
     titulo: 'Sin título',
     idioma,
     creado: ahora,
@@ -151,6 +156,7 @@ export function guionNuevo(idioma: string): Guion {
 }
 
 import { REGEX_ACOTACION } from '../lib/acotaciones'
+import { t } from '../textos'
 
 // CUANTO DURA LEIDO, EN UN SOLO FORMATO. 24-09-2026.
 // La tarjeta de la portada decia "01:30" -su propio formatearDuracion- y la
@@ -158,8 +164,9 @@ import { REGEX_ACOTACION } from '../lib/acotaciones'
 // numeros distintos para la misma cosa, uno arriba del otro. Ahora los dos
 // salen de aca: "45 s", "1:30 min", "2 min". A 150 palabras por minuto,
 // el mismo ritmo de siempre.
+// El formato sirve igual en ingles -"45 s", "2:09 min"-; solo 'vacío' se traduce -tarea 75-.
 export function duracionDeLectura(palabras: number): string {
-  if (!palabras || palabras <= 0) return 'vacío'
+  if (!palabras || palabras <= 0) return t('vacio')
   const segundos = Math.round((palabras / 150) * 60)
   if (segundos < 60) return `${segundos} s`
   const m = Math.floor(segundos / 60)

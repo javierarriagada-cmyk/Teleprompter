@@ -601,6 +601,21 @@ textarea::placeholder {
 .cajon-aa-agarradera {
   padding-bottom: var(--aire-3);
 }
+/* EL IDIOMA DEL GUION, AL LADO DEL Aa -tarea 75, 27-09-2026-. Es la misma pieza que el Aa
+   -mismo blanco de toque de 48px, mismo margen negativo- pero se mira una vez y el Aa se usa:
+   va mas chico y en gris. La fila de la derecha los separa con aire; el margen negativo de
+   cada uno se come su padding, asi que entre letra y letra queda justo el gap. */
+.fila-editor-derecha {
+  display: flex;
+  align-items: center;
+  gap: var(--aire-4);
+}
+.boton-idioma-guion {
+  font-size: var(--texto-cuerpo);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-apagado);
+}
 .volver-guiones {
   font-size: var(--texto-titulo);
   font-weight: 500;

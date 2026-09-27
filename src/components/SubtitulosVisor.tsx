@@ -1,6 +1,7 @@
 import React from 'react'
 import { hapticaSeleccion } from '../haptica'
 import { ESTILOS_SUBTITULO, EstiloSubtitulo, Subtitulo, subtituloEn } from '../lib/subtitulos'
+import { t, useTextos, ClaveTexto } from '../textos'
 
 // LOS SUBTITULOS EN EL VISOR DE LA TOMA -24-09-2026-.
 //
@@ -129,6 +130,20 @@ function Muestra({ estilo }: { estilo: EstiloSubtitulo }) {
   )
 }
 
+// Los nombres de los estilos, por idioma. ESTILOS_SUBTITULO -lib/subtitulos.ts- sigue siendo
+// la lista de estilos y el orden; su campo nombre es el espanol de siempre y no se toca desde
+// aca -subtitulos.ts lo trabaja Claude en el telefono-. Lo que se muestra sale de t().
+const CLAVE_ESTILO: Record<EstiloSubtitulo, ClaveTexto> = {
+  no: 'subtitulosNo',
+  amarillo: 'subtitulosAmarillo',
+  rojo: 'subtitulosRojo',
+  formal: 'subtitulosFormal'
+}
+function nombreDeEstilo(estilo: EstiloSubtitulo): string {
+  const clave = CLAVE_ESTILO[estilo]
+  return clave ? t(clave) : estilo
+}
+
 export function SelectorSubtitulos({
   estilo,
   onCambiar
@@ -136,8 +151,9 @@ export function SelectorSubtitulos({
   estilo: EstiloSubtitulo
   onCambiar: (e: EstiloSubtitulo) => void
 }) {
+  useTextos()
   const [abierto, setAbierto] = React.useState(false)
-  const nombre = ESTILOS_SUBTITULO.find((e) => e.valor === estilo)?.nombre || 'No'
+  const nombre = nombreDeEstilo(estilo)
   return (
     <div className="selector-subtitulos">
       <button
@@ -147,21 +163,21 @@ export function SelectorSubtitulos({
         className={`btn-deformable boton-subtitulos${estilo !== 'no' ? ' con-subtitulos' : ''}`}
         onClick={() => setAbierto((a) => !a)}
       >
-        <span className="boton-subtitulos-nombre">Subtítulos</span>
+        <span className="boton-subtitulos-nombre">{t('subtitulos')}</span>
         <span className="boton-subtitulos-valor">{nombre}</span>
         <svg className="boton-subtitulos-flecha" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ transform: abierto ? 'rotate(180deg)' : 'none' }}>
           <path d="M6 9l6 6 6-6" />
         </svg>
       </button>
       {abierto && (
-        <div className="opciones-subtitulos" role="group" aria-label="Subtítulos" data-testid="opciones-subtitulos">
+        <div className="opciones-subtitulos" role="group" aria-label={t('subtitulos')} data-testid="opciones-subtitulos">
           {ESTILOS_SUBTITULO.map((e) => (
             <button
               key={e.valor}
               type="button"
               aria-pressed={estilo === e.valor}
-              aria-label={e.nombre}
-              title={e.nombre}
+              aria-label={nombreDeEstilo(e.valor)}
+              title={nombreDeEstilo(e.valor)}
               className={`btn-deformable opcion-subtitulos${estilo === e.valor ? ' activa' : ''}`}
               onClick={() => {
                 hapticaSeleccion()
@@ -170,7 +186,7 @@ export function SelectorSubtitulos({
               }}
             >
               <Muestra estilo={e.valor} />
-              <span className="opcion-subtitulos-nombre">{e.nombre}</span>
+              <span className="opcion-subtitulos-nombre">{nombreDeEstilo(e.valor)}</span>
             </button>
           ))}
         </div>

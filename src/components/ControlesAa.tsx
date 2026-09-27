@@ -1,5 +1,6 @@
 import React from 'react'
 import { hapticaSeleccion } from '../haptica'
+import { t, useTextos } from '../textos'
 
 // EL TAMANO Y EL ANCHO, EN DOS LUGARES Y UN SOLO OBJETO -27-09-2026-. Vivian solo en el
 // cajon Aa del editor. Javier los extrano en la pantalla de grabacion, justo antes de
@@ -18,12 +19,13 @@ export function SelectorLetra({
   onMenos?: () => void
   onMas?: () => void
 }) {
+  useTextos()
   return (
-    <div className="selector-aa selector-aa-lleno" role="group" aria-label="Tamaño de letra">
+    <div className="selector-aa selector-aa-lleno" role="group" aria-label={t('tamanoLetra')}>
       <button
         type="button"
         onClick={onMenos}
-        aria-label="Disminuir letra panel"
+        aria-label={t('letraMenos')}
         className="btn-deformable selector-aa-opcion letra-aa-chica"
       >
         A
@@ -32,7 +34,7 @@ export function SelectorLetra({
       <button
         type="button"
         onClick={onMas}
-        aria-label="Aumentar letra panel"
+        aria-label={t('letraMas')}
         className="btn-deformable selector-aa-opcion letra-aa-grande"
       >
         A
@@ -55,15 +57,16 @@ export function SelectorAncho({
   setColumnaAngosta?: (v: boolean) => void
   setMarginPercent?: (v: number) => void
 }) {
+  useTextos()
   return (
-    <div className="selector-aa selector-aa-lleno" role="group" aria-label="Ancho del texto">
+    <div className="selector-aa selector-aa-lleno" role="group" aria-label={t('anchoTexto')}>
       {([
-        { nombre: 'Ancho', angosta: false, margen: 5, activo: !columnaAngosta && marginPercent !== 12, lineas: [16, 16, 11] },
-        { nombre: 'Medio', angosta: false, margen: 12, activo: !columnaAngosta && marginPercent === 12, lineas: [11, 11, 8] },
-        { nombre: 'Angosto', angosta: true, margen: 5, activo: !!columnaAngosta, lineas: [6, 6, 4] }
+        { clave: 'ancho', nombre: t('ancho'), angosta: false, margen: 5, activo: !columnaAngosta && marginPercent !== 12, lineas: [16, 16, 11] },
+        { clave: 'medio', nombre: t('medio'), angosta: false, margen: 12, activo: !columnaAngosta && marginPercent === 12, lineas: [11, 11, 8] },
+        { clave: 'angosto', nombre: t('angosto'), angosta: true, margen: 5, activo: !!columnaAngosta, lineas: [6, 6, 4] }
       ]).map((o) => (
         <button
-          key={o.nombre}
+          key={o.clave}
           type="button"
           aria-label={o.nombre}
           aria-pressed={o.activo}

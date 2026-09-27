@@ -177,9 +177,11 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
       for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
         const full = path.join(dir, item.name)
         if (item.isDirectory()) andar(full)
-        else if (/\.(tsx|ts)$/.test(item.name) && !full.includes(`${path.sep}pruebas`)) {
+        // Desde la tarea 75 el texto vive en textos/es.ts y el control lo usa por su clave:
+        // se buscan las dos formas, y la carpeta de los textos no cuenta como un lugar.
+        else if (/\.(tsx|ts)$/.test(item.name) && !full.includes(`${path.sep}pruebas`) && !full.includes(`${path.sep}textos${path.sep}`)) {
           const txt = fs.readFileSync(full, 'utf-8')
-          if (txt.includes('Dónde lees')) hits.push(full)
+          if (txt.includes('Dónde lees') || txt.includes("t('dondeLees')")) hits.push(full)
         }
       }
     }

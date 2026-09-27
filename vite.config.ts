@@ -10,7 +10,9 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
-    globals: true
+    globals: true,
+    // Fija el idioma de la app en espanol antes de cada prueba -tarea 75-.
+    setupFiles: ['./src/pruebas/preparacion.ts']
   },
   plugins: [
     react(),

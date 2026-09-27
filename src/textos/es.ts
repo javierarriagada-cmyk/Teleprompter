@@ -1,0 +1,170 @@
+// LOS TEXTOS DE LA APP EN ESPANOL -tarea 75, 27-09-2026-. Todo lo que el usuario ve o
+// escucha -lo escrito, aria-label, title, placeholder, avisos- sale de aca o de en.ts, con
+// las mismas claves. en.ts se declara con el tipo de este archivo: si falta una clave en
+// ingles, tsc no compila.
+//
+// Espanol neutro: sin voseo, sin chilenismos. Las variables van entre llaves -{n}- y las
+// reemplaza t() -textos/index.ts-.
+//
+// NO VIVEN ACA: el panel de diagnostico -la franja, "Ver transcripcion en vivo" y
+// PanelCorpus-, que se elimina antes de publicar -P1f-; los mensajes de consola; el guion
+// Hola, que es un texto largo con sus formatos y vive en App.tsx -bloqueDeBienvenida-.
+export const es = {
+  // --- Comunes: los mismos verbos en toda la app -glosario de docs/ingles.txt- ---
+  leer: 'Leer',
+  grabar: 'Grabar',
+  sinTitulo: 'Sin título',
+  seguro: '¿Seguro?',
+  cerrar: 'Cerrar',
+  borrar: 'Borrar',
+  eliminar: 'Eliminar',
+  toma: 'Toma',
+  volver: 'Volver',
+
+  // --- Portada ---
+  ajustesApp: 'Ajustes de la app',
+  tema: 'Tema',
+  temaClaro: 'Claro',
+  temaOscuro: 'Oscuro',
+  idiomaDeLaApp: 'Idioma de la app',
+  buscar: 'Buscar',
+  guiones: 'Guiones',
+  archivados: 'Archivados',
+  archivadosConteo: 'Archivados · {n}',
+  marcaArchivado: '(Archivado)',
+  archivar: 'Archivar',
+  desarchivar: 'Desarchivar',
+  sinCoincidencias: 'No se encontraron guiones que coincidan con "{busqueda}".',
+  sinArchivados: 'No hay guiones archivados.',
+  listaVacia: 'No hay guiones en la lista principal.',
+  volverATusGuiones: '‹ Volver a tus guiones',
+  crearGuion: 'Crear nuevo guion',
+  sinGuiones: 'Sin guiones',
+  escribePrimerGuion: 'Escribe tu primer guion',
+  resumenSinGuiones: '0 guiones',
+  resumenUnGuion: '1 guión',
+  resumenGuiones: '{n} guiones',
+  resumenUnMinuto: '1 minuto de lectura',
+  resumenMinutos: '{n} minutos de lectura',
+
+  // --- Fechas y duraciones ---
+  hoy: 'hoy',
+  ayer: 'ayer',
+  haceDias: 'hace {n} días',
+  haceUnaSemana: 'hace 1 semana',
+  haceSemanas: 'hace {n} semanas',
+  vacio: 'vacío',
+
+  // --- Videos: la tira y el visor de la toma ---
+  videos: 'Videos',
+  videosVacio: 'Tus videos aparecerán aquí.',
+  incompleta: 'incompleta',
+  sinAudio: 'sin audio',
+  metaErrorMudo: 'el motor oyo y el archivo no tiene sonido',
+  metaAvisoMudo: 'no se oye audio en este archivo',
+  compartir: 'Compartir',
+  guardarEnGaleria: 'Guardar en galería',
+  guardando: 'Guardando…',
+  guardandoAvance: 'Guardando… {n}%',
+  repetirToma: 'Repetir toma',
+  subtitulos: 'Subtítulos',
+  subtitulosNo: 'No',
+  subtitulosAmarillo: 'Amarillo',
+  subtitulosRojo: 'Rojo',
+  subtitulosFormal: 'Formal',
+
+  // --- Avisos ---
+  avisoTomaRecuperada: 'Se recuperó una toma de una sesión interrumpida.',
+  avisoTomasRecuperadas: 'Se recuperaron {n} tomas de una sesión interrumpida.',
+  verla: 'Verla',
+  guardado: 'Guardado',
+  guionBorrado: 'Guion borrado',
+  deshacer: 'Deshacer',
+  tomaDescartada: 'Toma descartada',
+  grabado: 'Grabado',
+  grabadoDuracion: 'Grabado: {duracion}',
+  avisoErrorMudo: 'El motor oyo y el archivo no tiene sonido',
+  avisoMudo: 'No se oye audio en este archivo',
+  galeriaGuardada: 'Quedó en la galería del teléfono, en Películas.',
+  galeriaNoSeGuardo: 'No se pudo guardar en la galería',
+  galeriaNoSeGuardoPorque: 'No se pudo guardar en la galería: {detalle}',
+  noSeCompartio: 'No se pudo compartir',
+  guionImportado: 'Guion importado',
+  descargandoModelo: 'Descargando modelo de voz para uso offline:',
+  errorModelo: 'Error descargando modelo de voz Vosk: {detalle}.',
+  desconocido: 'Desconocido',
+  reintentar: 'Reintentar',
+
+  // --- Editor ---
+  ajustesLectura: 'Ajustes de lectura',
+  idiomaDelGuion: 'Idioma del guion: {idioma}',
+  idiomaEspanol: 'Español',
+  idiomaIngles: 'Inglés',
+  tituloDelGuion: 'Título del guion',
+  metaEditor: '{palabras} palabras · {minutos} min',
+  tipografia: 'Tipografía',
+  coloresLectura: 'Colores de lectura',
+  parejaNegroBlanco: 'Negro con blanco',
+  parejaNegroAmbar: 'Negro con ámbar',
+  parejaBlancoNegro: 'Blanco con negro',
+  errorAbrirArchivo: 'Error al abrir archivo: {detalle}',
+  archivoSinTexto: 'El archivo no contiene texto importable.',
+  archivoNoSoportado: 'Formato de archivo no soportado ({nombre}). Solo se permiten .txt, .md y .docx',
+  archivoNoSeImporto: 'Error al importar el archivo',
+  formatoSeleccion: 'Formato del texto seleccionado',
+  negrita: 'Negrita',
+  // La letra del boton de negrita: la inicial de la palabra, como en cualquier procesador
+  // de texto del idioma.
+  letraNegrita: 'N',
+  ambar: 'Ámbar',
+  celeste: 'Celeste',
+  verde: 'Verde',
+  destacado: 'Destacado',
+  acotacion: 'Acotación',
+  botonAcotacion: '[...] Acotación',
+  placeholderGuion: 'Escribe el texto...\n\nEj: Hola, hoy te quiero contar cómo usar Sigo para grabar tus videos mirando a la cámara.',
+  pegarTexto: 'Pegar texto',
+  abrirArchivo: 'Abrir archivo',
+  leyendoArchivo: 'Leyendo...',
+
+  // --- Tamano y ancho: el cajon Aa y el de la toma ---
+  tamanoLetra: 'Tamaño de letra',
+  letraMenos: 'Disminuir letra panel',
+  letraMas: 'Aumentar letra panel',
+  anchoTexto: 'Ancho del texto',
+  ancho: 'Ancho',
+  medio: 'Medio',
+  angosto: 'Angosto',
+
+  // --- Lectura y cajon de la toma ---
+  salir: 'Salir',
+  descartarToma: 'Descartar toma',
+  pausa: 'Pausa',
+  seguir: 'Seguir',
+  parar: 'Parar',
+  guionSinBloques: 'Guión sin bloques',
+  grabando: 'Grabando',
+  ajustesEscena: 'Ajustes de la escena',
+  imagenCamara: 'Imagen de la cámara',
+  imagenDetras: 'Detrás',
+  imagenRecuadro: 'Recuadro',
+  imagenOculta: 'Oculta',
+  voltearCamara: 'Voltear cámara',
+  camaraSigueEncendida: 'la cámara sigue encendida',
+  calidadVideo: 'Calidad del video',
+  dondeLees: 'Dónde lees',
+  leerArriba: 'Leer arriba',
+  leerAlMedio: 'Leer al medio',
+  minutosDisponibles: 'Te alcanzan unos {n} minutos',
+  menosDeDosMinutos: 'Quedan menos de 2 minutos de espacio',
+  espejoYTiempo: 'Espejo y tiempo',
+  espejo: 'Espejo',
+  mostrarTiempo: 'Mostrar tiempo',
+  brillo: 'Brillo',
+  empezar: 'Empezar',
+  duracionEstimada: 'duración estimada del guion',
+  tiempoTranscurrido: 'tiempo transcurrido y total estimado'
+}
+
+export type ClaveTexto = keyof typeof es
+export type Textos = Record<ClaveTexto, string>

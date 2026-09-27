@@ -68,6 +68,7 @@ import { actualizarConfigCamara } from '../lib/camara'
 import { App as CapacitorApp } from '@capacitor/app'
 import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from '../lib/brillo'
 import { SelectorLetra, SelectorAncho } from './ControlesAa'
+import { t, useTextos } from '../textos'
 
 // UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
 //
@@ -312,6 +313,7 @@ export default function TeleprompterView({
   onModoManualChange,
   onEstadoAvanceChange
 }: TeleprompterViewProps) {
+  useTextos()
   const containerRef = useRef<HTMLDivElement | null>(null)
   // null = automatico: el brillo es el del sistema hasta que se toca la barra.
   const [brillo, setBrillo] = useState<number | null>(null)
@@ -846,7 +848,7 @@ export default function TeleprompterView({
   if (!guionObj.bloques || guionObj.bloques.length === 0) {
     return (
       <div style={{ background: colorFondo, color: '#888', padding: 20, textAlign: 'center', fontFamily: fontFamilyCss }}>
-        <em>Guión sin bloques</em>
+        <em>{t('guionSinBloques')}</em>
       </div>
     )
   }
@@ -953,7 +955,7 @@ export default function TeleprompterView({
             top: 'calc(23px + env(safe-area-inset-top, 0px))',
             right: 'calc(60px + env(safe-area-inset-right, 0px))'
           }}
-          title="Grabando"
+          title={t('grabando')}
         />
       )}
 
@@ -1210,7 +1212,7 @@ export default function TeleprompterView({
               e.stopPropagation()
               onVolverListo?.()
             }}
-            aria-label="Volver"
+            aria-label={t('volver')}
             style={{
               position: 'absolute',
               top: 'calc(8px + env(safe-area-inset-top, 0px))',
@@ -1233,7 +1235,7 @@ export default function TeleprompterView({
               e.stopPropagation()
               setPanelTomaAbierto((v) => !v)
             }}
-            aria-label="Ajustes de la escena"
+            aria-label={t('ajustesEscena')}
             className="btn-deformable btn-flotante-40"
             style={{
               position: 'absolute',
@@ -1325,11 +1327,11 @@ export default function TeleprompterView({
                       al lado del selector de la imagen. */}
                   {conCamara && (
                     <div className="fila-aa-accion">
-                      <div className="selector-aa selector-aa-lleno" role="group" aria-label="Imagen de la cámara">
+                      <div className="selector-aa selector-aa-lleno" role="group" aria-label={t('imagenCamara')}>
                         {[
-                          { val: 'detras' as const, label: 'Detrás', Icono: IconoImagenDetras },
-                          { val: 'recuadro' as const, label: 'Recuadro', Icono: IconoImagenRecuadro },
-                          { val: 'oculta' as const, label: 'Oculta', Icono: IconoImagenOculta }
+                          { val: 'detras' as const, label: t('imagenDetras'), Icono: IconoImagenDetras },
+                          { val: 'recuadro' as const, label: t('imagenRecuadro'), Icono: IconoImagenRecuadro },
+                          { val: 'oculta' as const, label: t('imagenOculta'), Icono: IconoImagenOculta }
                         ].map((opt) => (
                           <button
                             key={opt.val}
@@ -1355,8 +1357,8 @@ export default function TeleprompterView({
                           e.stopPropagation()
                           onVoltear?.()
                         }}
-                        aria-label="Voltear cámara"
-                        title="Voltear cámara"
+                        aria-label={t('voltearCamara')}
+                        title={t('voltearCamara')}
                       >
                         <IconoVoltear tamano={24} />
                       </button>
@@ -1365,7 +1367,7 @@ export default function TeleprompterView({
 
                   {conCamara && fondoToma === 'oculta' && (
                     <div data-testid="aviso-camara-encendida" className="aviso-aa">
-                      la cámara sigue encendida
+                      {t('camaraSigueEncendida')}
                     </div>
                   )}
 
@@ -1389,7 +1391,7 @@ export default function TeleprompterView({
                       se entienda". */}
                   <div className="fila-aa-par">
                     {conCamara && calidadesSoportadas.length > 0 && (
-                      <div className="selector-aa selector-aa-lleno" role="group" aria-label="Calidad del video">
+                      <div className="selector-aa selector-aa-lleno" role="group" aria-label={t('calidadVideo')}>
                         {calidadesSoportadas.map((q) => (
                           <button
                             key={q}
@@ -1406,7 +1408,7 @@ export default function TeleprompterView({
                         ))}
                       </div>
                     )}
-                    <div className="selector-aa selector-aa-lleno" role="group" aria-label="Dónde lees">
+                    <div className="selector-aa selector-aa-lleno" role="group" aria-label={t('dondeLees')}>
                       {/* Sin 'abajo' desde el 24-09-2026: "nadie lee abajo". Ver App.tsx, donde
                           se carga anclajeZona. */}
                       {(['arriba', 'medio'] as const).map((z) => (
@@ -1414,8 +1416,8 @@ export default function TeleprompterView({
                           key={z}
                           type="button"
                           data-testid={`btn-anclaje-${z}`}
-                          aria-label={z === 'arriba' ? 'Leer arriba' : 'Leer al medio'}
-                          title={z === 'arriba' ? 'Leer arriba' : 'Leer al medio'}
+                          aria-label={z === 'arriba' ? t('leerArriba') : t('leerAlMedio')}
+                          title={z === 'arriba' ? t('leerArriba') : t('leerAlMedio')}
                           aria-pressed={anclajeZona === z}
                           className={`btn-deformable selector-aa-opcion${anclajeZona === z ? ' activa' : ''}`}
                           onClick={() => {
@@ -1433,8 +1435,8 @@ export default function TeleprompterView({
                       className={`aviso-aa${minutosDisponibles < 2 ? ' aviso-aa-urgente' : ''}`}
                     >
                       {minutosDisponibles >= 2
-                        ? `Te alcanzan unos ${Math.floor(minutosDisponibles)} minutos`
-                        : 'Quedan menos de 2 minutos de espacio'}
+                        ? t('minutosDisponibles', { n: Math.floor(minutosDisponibles) })
+                        : t('menosDeDosMinutos')}
                     </div>
                   )}
 
@@ -1445,25 +1447,25 @@ export default function TeleprompterView({
                       el documento -para el lector de pantalla y el teclado-,
                       escondida con la misma clase que Interruptor.tsx. */}
                   <div className="fila-aa-par">
-                    <div className="selector-aa selector-aa-lleno" role="group" aria-label="Espejo y tiempo">
+                    <div className="selector-aa selector-aa-lleno" role="group" aria-label={t('espejoYTiempo')}>
                       {[
-                        { etiqueta: 'Espejo', encendido: mirror, cambiar: (v: boolean) => setMirror?.(v), Icono: IconoEspejo },
-                        { etiqueta: 'Mostrar tiempo', encendido: mostrarTiempo, cambiar: (v: boolean) => setMostrarTiempo?.(v), Icono: IconoReloj }
-                      ].map((t) => (
+                        { clave: 'espejo', etiqueta: t('espejo'), encendido: mirror, cambiar: (v: boolean) => setMirror?.(v), Icono: IconoEspejo },
+                        { clave: 'tiempo', etiqueta: t('mostrarTiempo'), encendido: mostrarTiempo, cambiar: (v: boolean) => setMostrarTiempo?.(v), Icono: IconoReloj }
+                      ].map((it) => (
                         <label
-                          key={t.etiqueta}
-                          title={t.etiqueta}
-                          className={`btn-deformable selector-aa-opcion${t.encendido ? ' activa' : ''}`}
+                          key={it.clave}
+                          title={it.etiqueta}
+                          className={`btn-deformable selector-aa-opcion${it.encendido ? ' activa' : ''}`}
                         >
                           <input
                             type="checkbox"
                             role="switch"
                             className="interruptor-casilla"
-                            checked={t.encendido}
-                            onChange={(e) => t.cambiar(e.target.checked)}
+                            checked={it.encendido}
+                            onChange={(e) => it.cambiar(e.target.checked)}
                           />
-                          <t.Icono tamano={24} />
-                          <span className="solo-lector">{t.etiqueta}</span>
+                          <it.Icono tamano={24} />
+                          <span className="solo-lector">{it.etiqueta}</span>
                         </label>
                       ))}
                     </div>
@@ -1472,13 +1474,13 @@ export default function TeleprompterView({
                         tiene el sistema; mientras no se toca, el brillo es el del
                         sistema -automatico-. El relleno de la pista lo dibuja
                         --relleno, en styles.css. */}
-                    <div className="brillo-aa" role="group" aria-label="Brillo">
+                    <div className="brillo-aa" role="group" aria-label={t('brillo')}>
                       <IconoSol tamano={16} />
                       <input
                         type="range"
                         data-testid="barra-brillo"
                         className="barra-brillo"
-                        aria-label="Brillo"
+                        aria-label={t('brillo')}
                         min={Math.round(BRILLO_MINIMO * 100)}
                         max={100}
                         step={1}
@@ -1534,7 +1536,7 @@ export default function TeleprompterView({
               data-testid="btn-empezar-toma"
               type="button"
               className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}`}
-              aria-label="Empezar"
+              aria-label={t('empezar')}
               onClick={(e) => {
                 e.stopPropagation()
                 onEmpezar?.()

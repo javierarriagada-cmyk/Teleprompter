@@ -55,6 +55,9 @@ ni con el motor de voz.
 | `public/vad-processor.js` | AudioWorklet. **JavaScript plano y autocontenido, a proposito.** |
 | `src/pruebas/lectorSimulado.ts` | genera una lectura sintetica con su verdad de referencia. |
 | `src/pruebas/metricas.ts` | mide retardo, retrocesos, frenado y recuperacion. |
+| `src/textos/` | los textos de la app: `es.ts` y `en.ts` con las mismas claves, `t()` y el gancho `useTextos`. |
+| `src/lib/idioma.ts` | el idioma de la APP: sigue al telefono, se cambia en el cajon del engranaje. |
+| `src/lib/detectarIdioma.ts` | el idioma de cada GUION, detectado al escribir o pegar. |
 
 ## No tocar salvo que la tarea lo pida por su nombre
 
