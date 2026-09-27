@@ -85,8 +85,12 @@ nivel". Punto I1 de docs/decisiones-de-diseno.txt.
            simbolos como & o %. Tocar eso es tocar el seguidor: se hace midiendo con las
            lecturas de la traductora y comprobando que las 28 tomas en espanol no se
            muevan -comparar-seguidor.ts-.
-    FALTA  el idioma por app de Android -locales_config.xml y el plugin IdiomaApp-, cuando
-           la tarea 75 este en main.
+    HECHO  la tarea 75 en main -textos, selector ES · EN, deteccion del idioma del guion,
+           Hola en ingles-, revisada en el telefono.
+    HECHO  el idioma por app de Android -IdiomaAppPlugin, locales_config.xml-. Probado: EN
+           adentro -> Android lo registra; es desde Ajustes -> la app lo sigue al volver; la
+           actividad no se reinicia.
+    FALTA  las lecturas en ingles de la traductora, y con ellas la normalizacion medida.
 
 
 ==============================================================================
