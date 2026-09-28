@@ -189,7 +189,9 @@ import { t } from '../textos'
 // El formato sirve igual en ingles -"45 s", "2:09 min"-; solo 'vacío' se traduce -tarea 75-.
 export function duracionDeLectura(palabras: number): string {
   if (!palabras || palabras <= 0) return t('vacio')
-  const segundos = Math.round((palabras / 150) * 60)
+  // Nunca "0 s" para un guion con palabras -28-09-2026-: uno de una palabra decia "0 s" en la
+  // portada, como si estuviera vacio.
+  const segundos = Math.max(1, Math.round((palabras / 150) * 60))
   if (segundos < 60) return `${segundos} s`
   const m = Math.floor(segundos / 60)
   const s = segundos % 60

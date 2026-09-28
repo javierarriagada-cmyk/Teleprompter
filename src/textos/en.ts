@@ -72,6 +72,9 @@ export const en: Textos = {
   guardando: 'Saving…',
   guardandoAvance: 'Saving… {n}%',
   repetirToma: 'Retake',
+  // Los controles propios del reproductor -28-09-2026-.
+  reproducir: 'Play',
+  avanceDelVideo: 'Video progress',
   subtitulos: 'Captions',
   subtitulosNo: 'Off',
   subtitulosAmarillo: 'Yellow',
@@ -88,6 +91,9 @@ export const en: Textos = {
   tomaDescartada: 'Take discarded',
   grabado: 'Recorded',
   grabadoDuracion: 'Recorded: {duracion}',
+  // Al parar una lectura -28-09-2026-: antes decia Grabado aunque no se grababa nada.
+  lecturaDuracion: 'Reading: {duracion}',
+  lecturaTerminada: 'Reading finished',
   avisoErrorMudo: 'Your voice was heard, but the file has no sound',
   avisoMudo: 'No sound can be heard in this file',
   galeriaGuardada: 'Saved to your phone’s gallery, in Movies.',

@@ -108,7 +108,8 @@ describe('Tarea 68 - que pasa cuando la toma termina', () => {
     expect(screen.queryByTestId('reproductor-grabacion')).toBeNull()
     // Con findBy y no getBy: el aviso lo pinta App despues de que handleStop
     // resuelve, asi que no esta en el mismo tick que el click en Salir.
-    expect((await screen.findByTestId('aviso-flotante')).textContent).toMatch(/Grabado/)
+    // 28-09-2026: al salir de una LECTURA el aviso dice "Lectura", no "Grabado": no se grabo nada -App.tsx, avisarFinDeToma-.
+    expect((await screen.findByTestId('aviso-flotante')).textContent).toMatch(/Lectura/)
   })
 
   test('al cerrar el visor se queda en LISTO, no en el origen', async () => {

@@ -267,6 +267,24 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } {
   }
 }
 
+// EL VELO DE LOS CONTROLES DE ABAJO -28-09-2026-. En el moto g86 el circulo de Empezar o Parar y
+// la pastilla del tiempo flotaban sobre el texto y se leian mezclados con el -"o las" montado
+// sobre "00:19"-. Las apps profesionales ponen esos controles en una franja oscura; aca, mientras
+// los controles estan a la vista -LISTO, o al tocar la pantalla leyendo-, un velo del color del
+// fondo sube desde abajo y se desvanece. Arriba NO hay velo a proposito: el renglon vivo esta
+// arriba sin holgura -calcularBanda- y un velo lo apagaria. Arriba basta el vidrio de los botones.
+export function VeloControles({ colorFondo }: { colorFondo: string }) {
+  const { r, g, b } = hexToRgb(colorFondo)
+  return (
+    <div
+      className="velo-controles"
+      data-testid="velo-controles"
+      aria-hidden="true"
+      style={{ ['--velo' as any]: `rgba(${r}, ${g}, ${b}, 0.92)` }}
+    />
+  )
+}
+
 export default function TeleprompterView({
   script,
   currentBlockIndex = 0,
@@ -1193,6 +1211,7 @@ export default function TeleprompterView({
 
       {estadoToma === 'listo' && (
         <>
+          <VeloControles colorFondo={colorFondo} />
           {/* La flecha usa el tratamiento comun de 32 -btn-flotante-32, styles.css-,
               igual que la flecha del estado leyendo en App.tsx. Hasta la revision
               de la 70 era opaca -bg-superficie y borde gris- con el icono a 22, y

@@ -165,16 +165,17 @@ export default function TarjetaLectura({
         )}
         <h2
           data-testid="titulo-tarjeta-lectura"
+          // DOS RENGLONES Y LA LETRA DE LOS TITULOS -28-09-2026-. En el moto g86 decia "Hay una
+          // idea a...": un renglon a 44 px corta un guion sin titulo a tres palabras. Y era la
+          // unica letra sin remates de la portada -la marca, Guiones, Videos y cada fila van en
+          // Source Serif 4-, en un 800 que ni se carga -main.tsx trae 400 y 600-: el mismo guion
+          // se veia con dos letras. Ahora la serif en 600, como .texto-titulo.
+          className="titulo-tarjeta"
           style={{
             margin: 0,
             fontSize: 44,
-            fontWeight: 800,
             lineHeight: 1.1,
             color: hayGuion ? parejaColor.letra : 'var(--color-apagado)',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            letterSpacing: '-0.02em',
             userSelect: 'none'
           }}
           title={tituloText}

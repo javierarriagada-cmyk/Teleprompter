@@ -1,7 +1,7 @@
 import React from 'react'
 import { Capacitor } from '@capacitor/core'
-import { ResumenGrabacion } from '../datos/modelo'
-import { t, useTextos, tituloVisible, fechaCortaDosDigitos } from '../textos'
+import { ResumenGrabacion, ResumenGuion } from '../datos/modelo'
+import { t, useTextos, tituloVisible, tituloOInicio, fechaCortaDosDigitos } from '../textos'
 import { IconoSinVideos, IconoTacho, IconoCerrar } from './IconosApp'
 
 // UNA RUTA DE DISCO TAMBIEN HAY QUE CONVERTIRLA. El WebView no puede abrir
@@ -23,6 +23,16 @@ export function srcDeRuta(ruta: string): string {
   try { return Capacitor.convertFileSrc(ruta) } catch { return ruta }
 }
 
+// EL NOMBRE DE UNA TOMA -28-09-2026-: el de su guion HOY, con la misma regla que la lista -titulo,
+// o sus primeras palabras-. En el moto g86 la tira y el reproductor decian "Sin titulo" mientras
+// la lista mostraba "Hay una idea antigua...": la toma guarda el titulo del momento en que se
+// grabo. Sin el guion -se borro, o no se paso la lista- queda lo guardado, como antes.
+export function nombreDeToma(g: ResumenGrabacion, guiones?: ResumenGuion[]): string {
+  const guion = guiones?.find((x) => x.id === g.guionId)
+  if (guion) return tituloOInicio(guion.titulo, guion.inicio)
+  return g.tituloGuion ? tituloVisible(g.tituloGuion) : t('toma')
+}
+
 export function formatearDuracionMs(ms: number): string {
   const total = Math.max(0, Math.floor((ms || 0) / 1000))
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`
@@ -40,6 +50,8 @@ interface Props {
   grabaciones: ResumenGrabacion[]
   onAbrir: (g: ResumenGrabacion) => void
   onBorrar: (id: string) => void
+  // Para nombrar cada toma por su guion -nombreDeToma-.
+  guiones?: ResumenGuion[]
 }
 
 // BORRAR PREGUNTA UNA VEZ, Y ES LA UNICA ACCION DE LA APLICACION QUE NO SE
@@ -60,9 +72,10 @@ interface Props {
 const MS_PARA_ARREPENTIRSE = 4000
 
 function TarjetaToma({
-  g, menuAbierto, confirmando, onAbrir, onPedirMenu, onCerrarMenu, onPedirBorrar, onConfirmarBorrar
+  g, nombre, menuAbierto, confirmando, onAbrir, onPedirMenu, onCerrarMenu, onPedirBorrar, onConfirmarBorrar
 }: {
   g: any
+  nombre: string
   menuAbierto: boolean
   confirmando: boolean
   onAbrir: () => void
@@ -100,7 +113,7 @@ function TarjetaToma({
           {g.errorMudo && <span style={{ position: 'absolute', left: 6, bottom: 6, background: 'rgba(180, 40, 40, 0.9)', color: '#fff', fontSize: 10, padding: '1px 5px', borderRadius: 4 }}>{t('sinAudio')}</span>}
         </div>
         <div style={{ padding: '6px 8px', textAlign: 'left', color: 'var(--color-texto)', fontSize: 'var(--texto-meta)' }}>
-          <div style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{g.tituloGuion ? tituloVisible(g.tituloGuion) : t('toma')}</div>
+          <div style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{nombre}</div>
           <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>{formatearFechaCorta(g.creado)}</div>
         </div>
       </button>
@@ -134,7 +147,7 @@ function TarjetaToma({
   )
 }
 
-export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar }: Props) {
+export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar, guiones }: Props) {
   useTextos()
   const [menuId, setMenuId] = React.useState<string | null>(null)
   const [confirmando, setConfirmando] = React.useState<string | null>(null)
@@ -174,6 +187,7 @@ export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar }: Prop
             <TarjetaToma
               key={g.id}
               g={g}
+              nombre={nombreDeToma(g, guiones)}
               menuAbierto={menuId === g.id}
               confirmando={confirmando === g.id}
               onAbrir={() => onAbrir(g)}

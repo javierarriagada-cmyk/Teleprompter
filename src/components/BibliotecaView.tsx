@@ -5,7 +5,7 @@ import { Guion, ResumenGuion, ResumenGrabacion, duracionDeLectura } from '../dat
 import TiraGrabaciones from './TiraGrabaciones'
 import { PanelCorpus } from './PanelCorpus'
 import TarjetaLectura from './TarjetaLectura'
-import { IconoEngranaje, IconoMas, IconoChevron, IconoTacho, IconoArchivar, IconoCerrar } from './IconosApp'
+import { IconoEngranaje, IconoMas, IconoChevron, IconoTacho, IconoArchivar, IconoCerrar, IconoAtras } from './IconosApp'
 import { MarcaSigo } from './MarcaSigo'
 import { hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_RESORTE } from './movimiento'
@@ -327,6 +327,17 @@ function FilaGuion({
       {/* Fila en primer plano */}
       <div
         data-testid={`fila-guion-${g.id}`}
+        // UN BOTON PARA TALKBACK -28-09-2026-. La fila abre el guion, pero era un div suelto: en
+        // el arbol de accesibilidad del moto g86 no aparecia como algo tocable. Con Enter o
+        // espacio abre, como un boton.
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            onAbrir(g.id)
+          }
+        }}
         onClick={() => {
           // seMovioRef: un deslizamiento lateral corto -sin llegar a borrar o archivar- tambien
           // termina en click, porque ese gesto no lo hace la pagina. No es un toque: no abre.
@@ -1066,7 +1077,8 @@ export default function BibliotecaView({
             setMostrarArchivados(!mostrarArchivados)
           }}
         >
-          {mostrarArchivados ? t('volverATusGuiones') : t('archivadosConteo', { n: cantidadArchivados })}
+          {mostrarArchivados ? <IconoAtras tamano={18} /> : <IconoArchivar tamano={18} />}
+          <span>{mostrarArchivados ? t('volverATusGuiones') : t('archivadosConteo', { n: cantidadArchivados })}</span>
         </button>
       )}
 
@@ -1075,6 +1087,7 @@ export default function BibliotecaView({
           grabaciones={grabaciones}
           onAbrir={onAbrirGrabacion}
           onBorrar={onBorrarGrabacion}
+          guiones={guiones}
         />
       )}
 

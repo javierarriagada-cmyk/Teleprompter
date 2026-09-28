@@ -14,6 +14,9 @@
   --color-grabando: #E11D2E;
   --color-grabando-texto: #FF5A5A;
   --velo-modal: rgba(21, 19, 18, 0.72);
+  /* EL TEXTO DE SUGERENCIA -placeholder- -28-09-2026-. Usaba --color-borde, que en el tema claro
+     es casi el fondo: "Titulo del guion" no se veia en el moto g86. En el oscuro queda igual. */
+  --color-sugerencia: #968F8B;
 
   --texto-display: 28px;
   /* EL ESCALON ENTRE TITULO Y DISPLAY -28-09-2026-. La escala saltaba de 18 a 28. Los titulos
@@ -57,6 +60,7 @@
   --color-texto: #1A1815;
   --color-apagado: #78706A;
   --color-borde: #E4E0D9;
+  --color-sugerencia: #9A928B;
   --color-acento: #E7E1DE;
   --color-texto-acento: #151312;
   --color-grabando: #E11D2E;
@@ -75,6 +79,7 @@
   --bg-menu: #383432;
   --color-separador: #4B4643;
   --color-borde: #968F8B;
+  --color-sugerencia: #968F8B;
   --color-apagado: #CAC5C2;
   --color-texto: #E7E1DE;
   --color-acento: #E7E1DE;
@@ -148,10 +153,12 @@ body {
 /* El "+": se ve un circulo de 34 -el gris de las filas, el borde del engranaje- y se toca un
    cuadrado de 44, el minimo tocable. El margen negativo devuelve lo que agrega el relleno: el
    circulo queda alineado al borde de las filas y no se corre. */
+/* 48 y no 44 -28-09-2026-: el minimo tocable de Android. El circulo sigue en 34 y el margen
+   negativo crece lo mismo, asi nada se mueve en la pantalla. */
 .boton-crear-guion {
-  width: 44px;
-  height: 44px;
-  margin: calc(-1 * var(--aire-1)) calc(-1 * var(--aire-1)) calc(-1 * var(--aire-1)) 0;
+  width: 48px;
+  height: 48px;
+  margin: calc(-1 * var(--aire-1) - 2px) calc(-1 * var(--aire-1) - 2px) calc(-1 * var(--aire-1) - 2px) 0;
   padding: 0;
   border: none;
   background: transparent;
@@ -408,7 +415,7 @@ textarea {
 
 input::placeholder,
 textarea::placeholder {
-  color: var(--color-borde);
+  color: var(--color-sugerencia);
   opacity: 1;
 }
 
@@ -435,6 +442,62 @@ textarea::placeholder {
   border: 1px solid rgba(255, 255, 255, 0.35);
   color: #fff;
   cursor: pointer;
+}
+
+/* LA ZONA DE TOQUE LLEGA A 48 -28-09-2026-. El engranaje de la portada y los botones de 40 de
+   la lectura -volver, engranaje, pausa- median 41 dp en el moto g86; Android pide 48. El dibujo
+   sigue en 40: lo que crece es un borde invisible de 4 px que tambien recibe el toque. Con
+   position relative solo los que no traen otra en linea -la de linea gana-. */
+.boton-portada,
+.btn-flotante-40 {
+  position: relative;
+}
+.boton-portada::after,
+.btn-flotante-40::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+}
+
+/* VIDRIO ESMERILADO -28-09-2026-. Los controles flotantes eran translucidos sin mas, y la letra
+   de atras se leia a traves: en el moto g86 la flecha de volver tocaba la "H" del primer
+   renglon, que esta arriba sin holgura -calcularBanda- y no se baja. Con el desenfoque, lo de
+   atras se vuelve una mancha y el boton se lee como un objeto encima. Un WebView sin
+   backdrop-filter se queda con el translucido de siempre. */
+.btn-flotante-40,
+.btn-flotante-72,
+.pastilla-tiempo {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* El titulo de la tarjeta de la portada -TarjetaLectura.tsx-: serif como los demas titulos, y
+   hasta dos renglones antes de cortar. */
+.titulo-tarjeta {
+  font-family: "Source Serif 4", serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow-wrap: anywhere;
+}
+
+/* El velo de abajo de la lectura: ver VeloControles en TeleprompterView.tsx. Macizo hasta
+   poco mas arriba del circulo de 72 y despues se desvanece; debajo de los controles -zIndex 9
+   contra 10 y 12- y sin recibir toques. */
+.velo-controles {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--circulo-desde-abajo) + 72px + 96px + env(safe-area-inset-bottom, 0px));
+  z-index: 9;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--velo) 0%, var(--velo) 40%, transparent 100%);
 }
 
 .btn-flotante-72 {
@@ -1047,10 +1110,16 @@ label.selector-aa-opcion {
    con el. */
 /* Archivados, al pie de la lista de guiones: un enlace, no un boton que
    compita con las filas. */
+/* 28-09-2026: con la caja de archivar delante, 48 px de alto y alineado al borde de las filas.
+   En el moto g86 medía 36 px, quedaba corrido 12 px hacia adentro y se leía como texto suelto.
+   Sigue sin fondo ni borde: enlace, no fila. */
 .enlace-archivados {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: var(--aire-2);
+  min-height: 48px;
   margin: var(--aire-1) 0 var(--aire-4);
-  padding: var(--aire-2) var(--aire-3);
+  padding: 0;
   background: transparent;
   border: none;
   color: var(--color-apagado);
@@ -1137,6 +1206,89 @@ label.selector-aa-opcion {
 .visor-video {
   position: relative;
   background: #000;
+}
+
+/* LOS CONTROLES PROPIOS DEL VISOR -28-09-2026-. Ver ReproductorGrabacion.tsx. El play grande
+   al centro -donde nunca van los subtitulos- solo cuando el video esta quieto; la barra de
+   avance va debajo del video, con el boton, los dos tiempos y un riel que se arrastra. */
+.visor-video {
+  cursor: pointer;
+}
+.play-visor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--redondeo-pildora);
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  pointer-events: none;
+}
+.barra-visor {
+  display: flex;
+  align-items: center;
+  gap: var(--aire-2);
+  padding: var(--aire-1) var(--aire-3) 0 var(--aire-1);
+  color: var(--color-apagado);
+  font-size: var(--texto-meta);
+  font-variant-numeric: tabular-nums;
+}
+.boton-visor {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--color-texto);
+  cursor: pointer;
+}
+.avance-visor {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+.avance-visor::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: var(--redondeo-pildora);
+  background: linear-gradient(to right, var(--color-texto) var(--avance, 0%), var(--color-separador) var(--avance, 0%));
+}
+.avance-visor::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  border-radius: var(--redondeo-pildora);
+  background: var(--color-texto);
+}
+.avance-visor::-moz-range-track {
+  height: 4px;
+  border-radius: var(--redondeo-pildora);
+  background: linear-gradient(to right, var(--color-texto) var(--avance, 0%), var(--color-separador) var(--avance, 0%));
+}
+.avance-visor::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: var(--redondeo-pildora);
+  background: var(--color-texto);
+}
+.boton-visor:focus-visible,
+.avance-visor:focus-visible {
+  outline: 2px solid var(--color-texto);
+  outline-offset: -2px;
 }
 
 /* LAS ACCIONES DE LA TOMA, CON SIMBOLOS -28-09-2026-. Eran cuatro botones de palabras

@@ -149,7 +149,9 @@ export default function BarraDeTiempo({
     // lectura. T83 cuida que ese reloj arranque con la lectura y no con el
     // boton, y el reloj sigue sin aparecer hasta que la lectura empieza.
     if (vistaPrevia && totalTokens > 0) {
-      const totalSeg = totalTokens / (PALABRAS_POR_MINUTO_ESTIMADAS / 60)
+      // REDONDEADO COMO EN EL EDITOR -28-09-2026-: formatearTiempo corta los decimales, y el
+      // editor -duracionDeLectura- redondea. 214 palabras eran 1:26 en el editor y 01:25 aca.
+      const totalSeg = Math.round(totalTokens / (PALABRAS_POR_MINUTO_ESTIMADAS / 60))
       return (
         <Pastilla
           texto={`${formatearTiempo(0)} / ${formatearTiempo(totalSeg)}`}

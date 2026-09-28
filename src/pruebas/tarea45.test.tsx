@@ -391,7 +391,7 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     expect(hapticsCalls.impact).toContainEqual({ style: 'MEDIUM' })
   })
 
-  test('T205 - Salir de LEYENDO SIN camara confirma con el aviso Grabado, que se va a los dos segundos. CON camara confirma el visor (tarea 68).', async () => {
+  test('T205 - Salir de LEYENDO SIN camara confirma con el aviso Lectura -antes Grabado, 28-09-2026-, que se va a los dos segundos. CON camara confirma el visor (tarea 68).', async () => {
     vi.useFakeTimers()
     try {
       const repo = new RepositorioMemoria()
@@ -438,7 +438,8 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
 
       const aviso = screen.getByTestId('aviso-flotante')
       expect(aviso).not.toBeNull()
-      expect(aviso.textContent).toContain('Grabado')
+      // 28-09-2026: al salir de una LECTURA el aviso dice "Lectura", no "Grabado": no se grabo nada -App.tsx, avisarFinDeToma-.
+      expect(aviso.textContent).toContain('Lectura')
 
       // Avanzar 2 segundos
       await act(async () => {

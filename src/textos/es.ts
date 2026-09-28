@@ -81,6 +81,9 @@ export const es = {
   guardando: 'Guardando…',
   guardandoAvance: 'Guardando… {n}%',
   repetirToma: 'Repetir toma',
+  // Los controles propios del reproductor -28-09-2026-.
+  reproducir: 'Reproducir',
+  avanceDelVideo: 'Avance del video',
   subtitulos: 'Subtítulos',
   subtitulosNo: 'No',
   subtitulosAmarillo: 'Amarillo',
@@ -97,6 +100,9 @@ export const es = {
   tomaDescartada: 'Toma descartada',
   grabado: 'Grabado',
   grabadoDuracion: 'Grabado: {duracion}',
+  // Al parar una lectura -28-09-2026-: antes decia Grabado aunque no se grababa nada.
+  lecturaDuracion: 'Lectura: {duracion}',
+  lecturaTerminada: 'Lectura terminada',
   avisoErrorMudo: 'El motor oyo y el archivo no tiene sonido',
   avisoMudo: 'No se oye audio en este archivo',
   galeriaGuardada: 'Quedó en la galería del teléfono, en Películas.',

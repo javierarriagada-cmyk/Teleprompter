@@ -1,11 +1,17 @@
 import React from 'react'
-import { ResumenGrabacion } from '../datos/modelo'
-import { srcDeRuta, formatearDuracionMs } from './TiraGrabaciones'
+import { ResumenGrabacion, ResumenGuion } from '../datos/modelo'
+import { srcDeRuta, formatearDuracionMs, nombreDeToma } from './TiraGrabaciones'
 import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo } from '../lib/archivosNativos'
 import { armarSubtitulos, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo } from '../lib/subtitulos'
 import { CapaSubtitulos, SelectorSubtitulos } from './SubtitulosVisor'
-import { t, useTextos, tituloVisible } from '../textos'
-import { IconoGuardar, IconoCompartir, IconoRepetir, IconoCerrar, IconoTacho } from './IconosApp'
+import { t, useTextos } from '../textos'
+import { IconoGuardar, IconoCompartir, IconoRepetir, IconoCerrar, IconoTacho, IconoEmpezar, IconoPausa } from './IconosApp'
+
+// 0:04, 1:25 -como la duracion de la tira-.
+function formatearSegundos(s: number): string {
+  const n = Math.max(0, Math.floor(Number.isFinite(s) ? s : 0))
+  return `${Math.floor(n / 60)}:${String(n % 60).padStart(2, '0')}`
+}
 
 export default function ReproductorGrabacion({
   grabacion,
@@ -13,7 +19,8 @@ export default function ReproductorGrabacion({
   onBorrar,
   onRepetir,
   onGuardadoEnGaleria,
-  onCambio
+  onCambio,
+  guiones
 }: {
   grabacion: ResumenGrabacion
   onCerrar: () => void
@@ -23,6 +30,8 @@ export default function ReproductorGrabacion({
   // La toma cambio -se guardo en la galeria, o su copia ya no esta-: App la
   // anota en el indice.
   onCambio?: (g: ResumenGrabacion) => void
+  // Para nombrarla por su guion de hoy -nombreDeToma, TiraGrabaciones.tsx-.
+  guiones?: ResumenGuion[]
 }) {
   // Misma regla que en la tira: borrar pregunta una vez. Ver el comentario de
   // TiraGrabaciones. Aca no hace falta el temporizador porque al cerrar el
@@ -52,6 +61,42 @@ export default function ReproductorGrabacion({
     })()
     return () => { vigente = false }
   }, [grabacion.id])
+
+  // Lo que muestran los controles propios -ver el comentario del visor, abajo-. El total sale del
+  // video; si el archivo no lo trae -Infinity en algunos WebView-, de lo que mide el indice.
+  const [reproduciendo, setReproduciendo] = React.useState(false)
+  const [actual, setActual] = React.useState(0)
+  const [total, setTotal] = React.useState(grabacion.duracionMs / 1000)
+  React.useEffect(() => {
+    if (!video) return
+    const alReproducir = () => setReproduciendo(true)
+    const alPausar = () => setReproduciendo(false)
+    const alAvanzar = () => setActual(video.currentTime)
+    const alCargar = () => { if (Number.isFinite(video.duration) && video.duration > 0) setTotal(video.duration) }
+    video.addEventListener('play', alReproducir)
+    video.addEventListener('pause', alPausar)
+    video.addEventListener('ended', alPausar)
+    video.addEventListener('timeupdate', alAvanzar)
+    video.addEventListener('loadedmetadata', alCargar)
+    return () => {
+      video.removeEventListener('play', alReproducir)
+      video.removeEventListener('pause', alPausar)
+      video.removeEventListener('ended', alPausar)
+      video.removeEventListener('timeupdate', alAvanzar)
+      video.removeEventListener('loadedmetadata', alCargar)
+    }
+  }, [video])
+  const alternarVideo = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (!video) return
+    if (video.paused || video.ended) {
+      video.play()?.catch?.(() => {
+        // sin permiso para reproducir, el play sigue a la vista
+      })
+    } else {
+      video.pause()
+    }
+  }
 
   // UNA TOMA GUARDADA OFRECE COMPARTIR Y BORRAR, Y NADA MAS -24-09-2026-. Javier:
   // "por que un video que se hace clic desde galeria aparece con exactamente las
@@ -122,13 +167,46 @@ export default function ReproductorGrabacion({
   return (
     <div data-testid="reproductor-grabacion" onClick={onCerrar} style={{ position: 'fixed', inset: 0, background: '#111111', zIndex: 400, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'var(--aire-4)' }}>
       <div onClick={(e) => e.stopPropagation()} style={{ width: 'min(720px, 100%)', background: 'var(--bg-superficie)', color: 'var(--color-texto)', borderRadius: 'var(--redondeo)', border: '1px solid var(--color-borde)', overflow: 'hidden' }}>
-        <div className="visor-video">
+        {/* LOS CONTROLES DEL VIDEO SON NUESTROS -28-09-2026-. Los del sistema -atributo controls-
+            en el moto g86 casi no se veian: ni play ni barra, solo un "0:00 / 0:19" desvanecido
+            sobre la imagen. Ahora: tocar el video lo pausa o lo sigue, el play grande al centro
+            cuando esta quieto, y debajo del video -no encima, para no tapar los subtitulos- una
+            barra con los tiempos que se puede arrastrar. */}
+        <div className="visor-video" onClick={alternarVideo}>
           {/* Cerrar es la X de la esquina -28-09-2026-: tocar fuera de la tarjeta tambien cierra. */}
-          <button type="button" className="cerrar-visor" data-testid="btn-cerrar-reproductor" aria-label={t('cerrar')} title={t('cerrar')} onClick={onCerrar}>
+          <button type="button" className="cerrar-visor" data-testid="btn-cerrar-reproductor" aria-label={t('cerrar')} title={t('cerrar')} onClick={(e) => { e.stopPropagation(); onCerrar() }}>
             <IconoCerrar tamano={22} />
           </button>
-          <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} controls playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ width: '100%', maxHeight: '70vh', background: '#000', display: 'block' }} />
+          <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ width: '100%', maxHeight: '70vh', background: '#000', display: 'block' }} />
           {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} />}
+          {!reproduciendo && (
+            <span className="play-visor" aria-hidden="true">
+              <IconoEmpezar tamano={30} />
+            </span>
+          )}
+        </div>
+        <div className="barra-visor">
+          <button type="button" className="boton-visor" data-testid="btn-reproducir-toma" aria-label={reproduciendo ? t('pausa') : t('reproducir')} onClick={alternarVideo}>
+            {reproduciendo ? <IconoPausa tamano={20} /> : <IconoEmpezar tamano={20} />}
+          </button>
+          <span>{formatearSegundos(actual)}</span>
+          <input
+            type="range"
+            className="avance-visor"
+            data-testid="avance-toma"
+            aria-label={t('avanceDelVideo')}
+            min={0}
+            max={total || 0}
+            step={0.1}
+            value={Math.min(actual, total || 0)}
+            onChange={(e) => {
+              const s = Number(e.target.value)
+              if (video) video.currentTime = s
+              setActual(s)
+            }}
+            style={{ ['--avance' as any]: `${total > 0 ? (actual / total) * 100 : 0}%` }}
+          />
+          <span>{formatearSegundos(total)}</span>
         </div>
         {subtitulos.length > 0 && !guardada && (
           <div style={{ padding: 'var(--aire-3) var(--aire-3) 0' }}>
@@ -142,7 +220,7 @@ export default function ReproductorGrabacion({
           </div>
         )}
         <div style={{ padding: 'var(--aire-3) var(--aire-3) 0' }}>
-          <div style={{ fontWeight: 700 }}>{grabacion.tituloGuion ? tituloVisible(grabacion.tituloGuion) : t('toma')}</div>
+          <div style={{ fontWeight: 700 }}>{nombreDeToma(grabacion, guiones)}</div>
           <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
             {formatearDuracionMs(grabacion.duracionMs)}
             {grabacion.incompleta ? ` · ${t('incompleta')}` : ''}

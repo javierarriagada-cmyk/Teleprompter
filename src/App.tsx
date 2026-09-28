@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Capacitor, registerPlugin } from '@capacitor/core'
+import { Capacitor, registerPlugin, SystemBars, SystemBarsStyle } from '@capacitor/core'
 import { App as CapacitorApp } from '@capacitor/app'
 import useASR from './hooks/useASR'
 import { useSeguidor } from './hooks/useSeguidor'
 import { useWakeLock } from './hooks/useWakeLock'
 import { usePrecargaModelo } from './hooks/usePrecargaModelo'
-import TeleprompterView from './components/TeleprompterView'
+import TeleprompterView, { VeloControles } from './components/TeleprompterView'
 import BarraDeTiempo from './components/BarraDeTiempo'
 import { PanelCorpus } from './components/PanelCorpus'
 import { bloquearRecargaAutomatica } from './lib/actualizacion'
@@ -454,6 +454,19 @@ export default function App({ motor, repoOverride }: AppProps) {
       document.documentElement.removeAttribute('data-tema')
     }
   }, [tema])
+
+  // LAS BARRAS DE ANDROID SIGUEN A SIGO, NO AL TELEFONO -28-09-2026-. En el moto g86 de Javier,
+  // con el modo noche en automatico y de dia, la hora y la bateria salian en iconos oscuros sobre
+  // el fondo oscuro de Sigo -casi invisibles- y la barra de navegacion blanca, tambien debajo del
+  // texto de la lectura. Capacitor 8 pinta las barras segun el tema del TELEFONO -SystemBars,
+  // estilo DEFAULT- y los styles.xml no alcanzan. La lectura es siempre oscura: ahi, iconos claros.
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return
+    const oscuro = tema !== 'claro' || vista === 'lectura'
+    SystemBars.setStyle({ style: oscuro ? SystemBarsStyle.Dark : SystemBarsStyle.Light }).catch(() => {
+      // sin el plugin -WebView muy viejo- quedan las barras del telefono, como antes
+    })
+  }, [tema, vista])
 
   // Guardar ajustes en localStorage ante cambios
   useEffect(() => {
@@ -1289,6 +1302,21 @@ export default function App({ motor, repoOverride }: AppProps) {
     mostrarAviso(t('tomaDescartada'))
   }
 
+  // EL AVISO AL PARAR SIN VIDEO -28-09-2026-. Decia "Grabado: 1:29" tambien al parar una
+  // LECTURA, donde no se grabo nada -visto en el moto g86 de Javier-. Leer dice cuanto se leyo;
+  // "Grabado" queda para una toma que no llego al reproductor. Era el mismo bloque copiado en
+  // Salir y en Parar: ahora vive aca.
+  function avisarFinDeToma(duracionMs: number | null) {
+    if (duracionMs !== null && duracionMs > 0) {
+      const totalSeg = Math.floor(duracionMs / 1000)
+      const mins = Math.floor(totalSeg / 60)
+      const segs = String(totalSeg % 60).padStart(2, '0')
+      mostrarAviso(t(conCamara ? 'grabadoDuracion' : 'lecturaDuracion', { duracion: `${mins}:${segs}` }))
+    } else {
+      mostrarAviso(t(conCamara ? 'grabado' : 'lecturaTerminada'))
+    }
+  }
+
   async function handleStop(): Promise<ResumenGrabacion | null> {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
@@ -1741,6 +1769,8 @@ export default function App({ motor, repoOverride }: AppProps) {
         >
           {estadoToma === 'leyendo' && controlesVisibles && (
             <>
+              {/* El velo de abajo, el mismo de LISTO -VeloControles, TeleprompterView.tsx-. */}
+              <VeloControles colorFondo={colorFondo} />
               {/* Cada boton flotante lleva data-duracion-entra y data-duracion-sale: son
                   los tiempos de su entrada y su salida, y T201 de tarea45 los lee de aca.
                   Antes los llevaba el cajon panel-controles-lectura, que la 70 elimino.
@@ -1758,16 +1788,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                     hapticaToqueMedio()
                     const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
                     const resumen = await handleStop()
-                    if (!resumen) {
-                      if (duracionMs !== null && duracionMs > 0) {
-                        const totalSeg = Math.floor(duracionMs / 1000)
-                        const mins = Math.floor(totalSeg / 60)
-                        const segs = String(totalSeg % 60).padStart(2, '0')
-                        mostrarAviso(t('grabadoDuracion', { duracion: `${mins}:${segs}` }))
-                      } else {
-                        mostrarAviso(t('grabado'))
-                      }
-                    }
+                    if (!resumen) avisarFinDeToma(duracionMs)
                   }}
                   style={{
                     position: 'absolute',
@@ -1878,16 +1899,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                     hapticaToqueMedio()
                     const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
                     const resumen = await handleStop()
-                    if (!resumen) {
-                      if (duracionMs !== null && duracionMs > 0) {
-                        const totalSeg = Math.floor(duracionMs / 1000)
-                        const mins = Math.floor(totalSeg / 60)
-                        const segs = String(totalSeg % 60).padStart(2, '0')
-                        mostrarAviso(t('grabadoDuracion', { duracion: `${mins}:${segs}` }))
-                      } else {
-                        mostrarAviso(t('grabado'))
-                      }
-                    }
+                    if (!resumen) avisarFinDeToma(duracionMs)
                   }}
                   style={{
                     pointerEvents: 'auto',
@@ -2089,6 +2101,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       {grabacionAbierta && (
         <ReproductorGrabacion
           grabacion={grabacionAbierta}
+          guiones={guionesResumen}
           onCerrar={() => setGrabacionAbierta(null)}
           onRepetir={() => {
             setGrabacionAbierta(null)
@@ -2133,9 +2146,17 @@ export default function App({ motor, repoOverride }: AppProps) {
           data-testid="aviso-flotante"
           style={{
             position: 'fixed',
-            bottom: 'var(--aire-5)',
-            left: '50%',
-            transform: 'translateX(-50%)',
+            // SOBRE LA BARRA DE ANDROID Y CENTRADO -28-09-2026-. En el moto g86 el aviso quedaba
+            // medio tapado por la barra de navegacion -no sumaba el area segura- y corrido a la
+            // derecha: se centraba con translateX(-50%), y la animacion panelSube, que tambien
+            // usa transform, lo pisaba. Ahora se centra con margenes, sin transform.
+            bottom: 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))',
+            left: 0,
+            right: 0,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            width: 'max-content',
+            maxWidth: 'calc(100% - 2 * var(--aire-4))',
             backgroundColor: 'var(--bg-superficie)',
             color: 'var(--color-texto)',
             border: '1px solid var(--color-borde)',

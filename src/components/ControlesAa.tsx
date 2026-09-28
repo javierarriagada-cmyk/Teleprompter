@@ -61,9 +61,11 @@ export function SelectorAncho({
   return (
     <div className="selector-aa selector-aa-lleno" role="group" aria-label={t('anchoTexto')}>
       {([
-        { clave: 'ancho', nombre: t('ancho'), angosta: false, margen: 5, activo: !columnaAngosta && marginPercent !== 12, lineas: [16, 16, 11] },
+        // 28-09-2026: las rayas eran 16, 11 y 6; con los rieles de los lados -ver el svg- el
+        // ancho llega casi al riel y el angosto crece a 8, para no volverse puntos.
+        { clave: 'ancho', nombre: t('ancho'), angosta: false, margen: 5, activo: !columnaAngosta && marginPercent !== 12, lineas: [15, 15, 10] },
         { clave: 'medio', nombre: t('medio'), angosta: false, margen: 12, activo: !columnaAngosta && marginPercent === 12, lineas: [11, 11, 8] },
-        { clave: 'angosto', nombre: t('angosto'), angosta: true, margen: 5, activo: !!columnaAngosta, lineas: [6, 6, 4] }
+        { clave: 'angosto', nombre: t('angosto'), angosta: true, margen: 5, activo: !!columnaAngosta, lineas: [8, 8, 5] }
       ]).map((o) => (
         <button
           key={o.clave}
@@ -78,6 +80,11 @@ export function SelectorAncho({
           }}
         >
           <svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true">
+            {/* LOS BORDES DE LA PAGINA -28-09-2026-. Sin ellos, las tres rayitas del angosto se
+                leian como "⋮", el simbolo de menu -visto en el moto g86-. Dos rieles tenues a los
+                lados dicen "columna dentro de la pagina" en los tres anchos. */}
+            <rect x="0.5" y="1" width="1.2" height="16" rx="0.6" fill="currentColor" opacity="0.4" />
+            <rect x="20.3" y="1" width="1.2" height="16" rx="0.6" fill="currentColor" opacity="0.4" />
             {o.lineas.map((ancho, i) => (
               <rect key={i} x={(22 - ancho) / 2} y={3 + i * 5} width={ancho} height="2" rx="1" fill="currentColor" />
             ))}
