@@ -59,15 +59,14 @@ import { AnclajeZona, calcularBanda, calcularBgVelo, calcularTramosVelo } from '
 import { RecuadroCamara } from './RecuadroCamara'
 import { FondoToma } from '../App'
 import {
-  IconoAtras, IconoEngranaje, IconoEmpezar, IconoVoltear, IconoImagenDetras, IconoImagenRecuadro,
-  IconoImagenOculta, IconoFranja, IconoEspejo, IconoReloj, IconoSol
+  IconoAtras, IconoEmpezar
 } from './IconosApp'
-import { movimientoApagado, MS_CHICO, MS_PANEL, CURVA_RESORTE } from './movimiento'
+import { movimientoApagado } from './movimiento'
 import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
 import { actualizarConfigCamara } from '../lib/camara'
 import { App as CapacitorApp } from '@capacitor/app'
-import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from '../lib/brillo'
-import { SelectorLetra, SelectorAncho } from './ControlesAa'
+import { aplicarBrillo, leerBrilloSistema, restaurarBrillo } from '../lib/brillo'
+import { FichasListo, PanelFicha } from './FichasListo'
 import { t, useTextos } from '../textos'
 
 // UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
@@ -229,6 +228,9 @@ interface TeleprompterViewProps {
   // Tamano y ancho tambien en el cajon de la toma -27-09-2026-: ver ControlesAa.tsx.
   onLetraMenos?: () => void
   onLetraMas?: () => void
+  // 28-09-2026, tarea 77: la ficha Aa elige el paso; Mas abre Ajustes.
+  onElegirLetra?: (n: number) => void
+  onAbrirAjustes?: () => void
   setColumnaAngosta?: (v: boolean) => void
   setMarginPercent?: (v: number) => void
   mostrarTiempo?: boolean
@@ -312,6 +314,8 @@ export default function TeleprompterView({
   setMirror,
   onLetraMenos,
   onLetraMas,
+  onElegirLetra,
+  onAbrirAjustes,
   setColumnaAngosta,
   setMarginPercent,
   mostrarTiempo = true,
@@ -369,18 +373,18 @@ export default function TeleprompterView({
   const modoManualRef = useRef(false)
   const finManualRef = useRef<number | null>(null)
   const [arrastrandoRecuadro, setArrastrandoRecuadro] = React.useState(false)
-  const [panelTomaAbierto, setPanelTomaAbierto] = React.useState(false)
-  // Arrastre del cajon de la toma hacia abajo, para cerrarlo -como el Aa-.
-  const [arrastreCajonToma, setArrastreCajonToma] = React.useState(0)
-  const arrastrandoCajonTomaRef = useRef(false)
-  const inicioArrastreCajonTomaRef = useRef<number | null>(null)
+  // 28-09-2026, tarea 77: el cajon panel-ajustes-toma y el engranaje de LISTO
+  // se fueron. Queda panelFicha: un panel chico a la vez, pegado a su ficha.
+  // panelTomaAbierto era el cajon entero, y se cerraba tambien arrastrandolo
+  // hacia abajo -como el Aa-; ese arrastre se fue con el cajon.
+  const [panelFicha, setPanelFicha] = React.useState<PanelFicha>(null)
   // La barra de brillo parte del brillo que tiene la pantalla ahora.
   useEffect(() => {
-    if (!panelTomaAbierto || brillo !== null) return
+    if (panelFicha !== 'brillo' || brillo !== null) return
     let vivo = true
     leerBrilloSistema().then((v) => { if (vivo) setBrilloSistema(v) })
     return () => { vivo = false }
-  }, [panelTomaAbierto, brillo])
+  }, [panelFicha, brillo])
 
   const guionObj: Guion = typeof script === 'string' ? {
     id: 'temp',
@@ -895,6 +899,11 @@ export default function TeleprompterView({
       data-fondo={colorFondo}
       data-letra={colorTextoEfectivo}
       onClick={() => {
+        // Tocar el texto cierra el panel de la ficha -tarea 77, 28-09-2026-.
+        if (estadoToma === 'listo' && panelFicha) {
+          setPanelFicha(null)
+          return
+        }
         if (estadoToma !== 'leyendo') return
         if (!isDraggingGestureRef.current && onToggleControles) {
           onToggleControles()
@@ -1252,278 +1261,49 @@ export default function TeleprompterView({
               y el de la escena en Leer- y por eso la 69 solo se atrevio con
               Leer. En la 70 el rincon es del engranaje en las dos puertas y
               el ⟳ se mudo adentro del panel: decision de Javier, 23-09-2026. */}
-          <button
-            data-testid="btn-engranaje-toma"
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation()
-              setPanelTomaAbierto((v) => !v)
-            }}
-            aria-label={t('ajustesEscena')}
-            className="btn-deformable btn-flotante-40"
-            style={{
-              position: 'absolute',
-              top: 'calc(8px + env(safe-area-inset-top, 0px))',
-              right: 'calc(8px + env(safe-area-inset-right, 0px))',
-              zIndex: 11,
-              display: arrastrandoRecuadro ? 'none' : 'flex',
-              // Cerrado, el aspecto lo da btn-flotante-40 -el mismo de la pausa
-              // en App.tsx, que ocupa este rincon mientras se lee-. Abierto se
-              // pinta con el acento para decir que el panel colgado es suyo.
-              backgroundColor: panelTomaAbierto ? 'var(--color-acento)' : undefined,
-              color: panelTomaAbierto ? 'var(--color-texto-acento)' : undefined
-            }}
-          >
-            <IconoEngranaje tamano={20} />
-          </button>
-
-          {/* EL PANEL DE LA TOMA. Cuelga del engranaje, ya no del suelo.
-              Aqui vive TODO lo que antes estaba en panel-controles-listo.
-              Nada se perdio: se mudo.
-              24-09-2026: y se volvio a mudar, ahora al CAJON DESDE ABAJO, con
-              el estandar del cajon Aa del editor -el dueno: "deberia imponer
-              un tipo de standar para nuestros otros menu de ajustes"-.
-              Colgado del engranaje ocupaba hasta el 62% de la pantalla desde
-              arriba, que es donde esta la franja de lectura: al tocar "Donde
-              lees" el panel tapaba justo lo que se habia movido. Desde abajo,
-              sin velo y sin palabras, lo que se ajusta se ve arriba a plena
-              luz. Los nombres siguen en aria-label y title. Mismos testid de
-              siempre: lo que cambia es la forma, no las puertas. */}
-          {panelTomaAbierto && (
-            <div
-              className="capa-cajon-aa"
-              data-testid="capa-ajustes-toma"
+          {/* 28-09-2026, tarea 77: EL ENGRANAJE Y EL CAJON DE LA TOMA SE FUERON. Las fichas
+              de abajo dicen su valor y abren un panel chico solo con sus opciones
+              -FichasListo.tsx-; lo que se elige una vez vive en la pantalla de Ajustes,
+              que abre la ficha Mas. Del cajon siguen valiendo, ahora en FichasListo: la
+              imagen y voltear -voltear es una accion, no una eleccion-; la calidad va en
+              texto -"720p es un dato", Javier, 24-09-2026-; sin "abajo" en donde lees
+              -"nadie lee abajo", 24-09-2026-; el brillo parte del del sistema -lib/brillo.ts-.
+              Todo se esconde mientras se arrastra el recuadro, como el circulo. El testid
+              btn-engranaje-toma queda en la ficha Mas. */}
+          {panelFicha && (
+            <button
+              type="button"
+              className="capa-panel-ficha"
+              data-testid="capa-panel-ficha"
+              aria-label={t('cerrar')}
               onClick={(e) => {
                 e.stopPropagation()
-                setPanelTomaAbierto(false)
+                setPanelFicha(null)
               }}
-              style={{
-                // Se esconde mientras se arrastra el recuadro, igual que el engranaje y el
-                // circulo. Hasta la 70 vivia dentro del cajon y se escondia con el; al
-                // mudarse al engranaje habia quedado fuera de esa regla.
-                display: arrastrandoRecuadro ? 'none' : 'flex'
-              }}
-            >
-              <div
-                data-testid="panel-ajustes-toma"
-                className="panel-superficie cajon-aa"
-                onClick={(e) => e.stopPropagation()}
-                style={{
-                  paddingBottom: 'calc(var(--aire-4) + env(safe-area-inset-bottom, 0px))',
-                  transform: `translateY(${arrastreCajonToma}px)`,
-                  transition: arrastrandoCajonTomaRef.current || movimientoApagado() ? 'none' : `transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
-                  animation: movimientoApagado() || arrastrandoCajonTomaRef.current || arrastreCajonToma > 0
-                    ? 'none'
-                    : `panelSube ${MS_PANEL}ms ${CURVA_RESORTE} forwards`
-                }}
-              >
-                <div
-                  className="cajon-aa-agarradera"
-                  onPointerDown={(e) => {
-                    inicioArrastreCajonTomaRef.current = e.clientY
-                    arrastrandoCajonTomaRef.current = true
-                    try { e.currentTarget.setPointerCapture(e.pointerId) } catch (err) {}
-                  }}
-                  onPointerMove={(e) => {
-                    if (!arrastrandoCajonTomaRef.current || inicioArrastreCajonTomaRef.current === null) return
-                    setArrastreCajonToma(Math.max(0, e.clientY - inicioArrastreCajonTomaRef.current))
-                  }}
-                  onPointerUp={() => {
-                    arrastrandoCajonTomaRef.current = false
-                    inicioArrastreCajonTomaRef.current = null
-                    // El mismo umbral que el cajon Aa -EditorView.tsx-.
-                    if (arrastreCajonToma > 96) setPanelTomaAbierto(false)
-                    setArrastreCajonToma(0)
-                  }}
-                  onPointerCancel={() => {
-                    arrastrandoCajonTomaRef.current = false
-                    inicioArrastreCajonTomaRef.current = null
-                    setArrastreCajonToma(0)
-                  }}
-                >
-                  <div className="cajon-aa-agarradera-raya" />
-                </div>
-
-                <div className="cajon-aa-filas">
-                  {/* LA IMAGEN Y VOLTEAR. Voltear era un boton flotante arriba a
-                      la derecha hasta la 70; despues una fila con "Cámara:".
-                      Es una ACCION, no una eleccion: por eso va aparte, redondo,
-                      al lado del selector de la imagen. */}
-                  {conCamara && (
-                    <div className="fila-aa-accion">
-                      <div className="selector-aa selector-aa-lleno" role="group" aria-label={t('imagenCamara')}>
-                        {[
-                          { val: 'detras' as const, label: t('imagenDetras'), Icono: IconoImagenDetras },
-                          { val: 'recuadro' as const, label: t('imagenRecuadro'), Icono: IconoImagenRecuadro },
-                          { val: 'oculta' as const, label: t('imagenOculta'), Icono: IconoImagenOculta }
-                        ].map((opt) => (
-                          <button
-                            key={opt.val}
-                            type="button"
-                            data-testid={`btn-fondo-${opt.val}`}
-                            aria-label={opt.label}
-                            title={opt.label}
-                            aria-pressed={fondoToma === opt.val}
-                            className={`btn-deformable selector-aa-opcion${fondoToma === opt.val ? ' activa' : ''}`}
-                            onClick={() => {
-                              setFondoToma?.(opt.val)
-                            }}
-                          >
-                            <opt.Icono tamano={24} />
-                          </button>
-                        ))}
-                      </div>
-                      <button
-                        data-testid="btn-voltear-camara"
-                        type="button"
-                        className="btn-deformable boton-aa-redondo"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          onVoltear?.()
-                        }}
-                        aria-label={t('voltearCamara')}
-                        title={t('voltearCamara')}
-                      >
-                        <IconoVoltear tamano={24} />
-                      </button>
-                    </div>
-                  )}
-
-                  {conCamara && fondoToma === 'oculta' && (
-                    <div data-testid="aviso-camara-encendida" className="aviso-aa">
-                      {t('camaraSigueEncendida')}
-                    </div>
-                  )}
-
-                  {/* LETRA Y ANCHO, ARRIBA Y MITAD Y MITAD -27-09-2026-. Javier los extrano aca,
-                      justo antes de grabar. El cajon no tiene velo: el texto de atras cambia en
-                      vivo. Para que el cajon no creciera, la calidad y el brillo dejaron de ir a
-                      todo el ancho: calidad con donde lees, espejo y tiempo con el brillo. */}
-                  <div className="fila-aa-par">
-                    <SelectorLetra fontSize={fontSize} onMenos={onLetraMenos} onMas={onLetraMas} />
-                    <SelectorAncho
-                      columnaAngosta={columnaAngosta}
-                      marginPercent={marginPercent}
-                      setColumnaAngosta={setColumnaAngosta}
-                      setMarginPercent={setMarginPercent}
-                    />
-                  </div>
-
-                  {/* LA CALIDAD VA EN TEXTO: 720p o 1080p es un dato, no una
-                      forma, y dibujarlo seria adivinar. Decision del dueno,
-                      24-09-2026: "la calidad esta bien que sea texto para que
-                      se entienda". */}
-                  <div className="fila-aa-par">
-                    {conCamara && calidadesSoportadas.length > 0 && (
-                      <div className="selector-aa selector-aa-lleno" role="group" aria-label={t('calidadVideo')}>
-                        {calidadesSoportadas.map((q) => (
-                          <button
-                            key={q}
-                            type="button"
-                            data-testid={`btn-calidad-${q}`}
-                            aria-pressed={calidadVideo === q}
-                            className={`btn-deformable selector-aa-opcion texto-aa${calidadVideo === q ? ' activa' : ''}`}
-                            onClick={() => {
-                              setCalidadVideo?.(q)
-                            }}
-                          >
-                            {q}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                    <div className="selector-aa selector-aa-lleno" role="group" aria-label={t('dondeLees')}>
-                      {/* Sin 'abajo' desde el 24-09-2026: "nadie lee abajo". Ver App.tsx, donde
-                          se carga anclajeZona. */}
-                      {(['arriba', 'medio'] as const).map((z) => (
-                        <button
-                          key={z}
-                          type="button"
-                          data-testid={`btn-anclaje-${z}`}
-                          aria-label={z === 'arriba' ? t('leerArriba') : t('leerAlMedio')}
-                          title={z === 'arriba' ? t('leerArriba') : t('leerAlMedio')}
-                          aria-pressed={anclajeZona === z}
-                          className={`btn-deformable selector-aa-opcion${anclajeZona === z ? ' activa' : ''}`}
-                          onClick={() => {
-                            setAnclajeZona?.(z)
-                          }}
-                        >
-                          <IconoFranja posicion={z} tamano={24} />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  {conCamara && calidadesSoportadas.length > 0 && typeof minutosDisponibles === 'number' && (
-                    <div
-                      data-testid="linea-minutos-disponibles"
-                      className={`aviso-aa${minutosDisponibles < 2 ? ' aviso-aa-urgente' : ''}`}
-                    >
-                      {minutosDisponibles >= 2
-                        ? t('minutosDisponibles', { n: Math.floor(minutosDisponibles) })
-                        : t('menosDeDosMinutos')}
-                    </div>
-                  )}
-
-                  {/* ESPEJO Y TIEMPO CON EL BRILLO, mitad y mitad -hasta el 27-09-2026 espejo y
-                      tiempo iban con donde lees, y el brillo a todo el ancho-. Espejo y tiempo
-                      son interruptores: cada uno se enciende solo, y encendido
-                      se pinta como la opcion elegida. La casilla real sigue en
-                      el documento -para el lector de pantalla y el teclado-,
-                      escondida con la misma clase que Interruptor.tsx. */}
-                  <div className="fila-aa-par">
-                    <div className="selector-aa selector-aa-lleno" role="group" aria-label={t('espejoYTiempo')}>
-                      {[
-                        { clave: 'espejo', etiqueta: t('espejo'), encendido: mirror, cambiar: (v: boolean) => setMirror?.(v), Icono: IconoEspejo },
-                        { clave: 'tiempo', etiqueta: t('mostrarTiempo'), encendido: mostrarTiempo, cambiar: (v: boolean) => setMostrarTiempo?.(v), Icono: IconoReloj }
-                      ].map((it) => (
-                        <label
-                          key={it.clave}
-                          title={it.etiqueta}
-                          className={`btn-deformable selector-aa-opcion${it.encendido ? ' activa' : ''}`}
-                        >
-                          <input
-                            type="checkbox"
-                            role="switch"
-                            className="interruptor-casilla"
-                            checked={it.encendido}
-                            onChange={(e) => it.cambiar(e.target.checked)}
-                          />
-                          <it.Icono tamano={24} />
-                          <span className="solo-lector">{it.etiqueta}</span>
-                        </label>
-                      ))}
-                    </div>
-                    {/* BRILLO: UNA BARRA ENTRE UN SOL CHICO Y UN SOL GRANDE. Ver el
-                        porque del cambio en lib/brillo.ts. Parte del brillo que
-                        tiene el sistema; mientras no se toca, el brillo es el del
-                        sistema -automatico-. El relleno de la pista lo dibuja
-                        --relleno, en styles.css. */}
-                    <div className="brillo-aa" role="group" aria-label={t('brillo')}>
-                      <IconoSol tamano={16} />
-                      <input
-                        type="range"
-                        data-testid="barra-brillo"
-                        className="barra-brillo"
-                        aria-label={t('brillo')}
-                        min={Math.round(BRILLO_MINIMO * 100)}
-                        max={100}
-                        step={1}
-                        value={Math.round((brillo ?? brilloSistema ?? 0.5) * 100)}
-                        onChange={(e) => {
-                          const v = Number(e.target.value) / 100
-                          setBrillo(v)
-                          aplicarBrillo(v)
-                        }}
-                        style={{
-                          ['--relleno' as string]: `${((Math.round((brillo ?? brilloSistema ?? 0.5) * 100) - BRILLO_MINIMO * 100) / (100 - BRILLO_MINIMO * 100)) * 100}%`
-                        }}
-                      />
-                      <IconoSol tamano={26} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            />
+          )}
+          {!arrastrandoRecuadro && (
+            <FichasListo
+              fontSize={fontSize}
+              onLetraMenos={onLetraMenos}
+              onLetraMas={onLetraMas}
+              onElegirLetra={onElegirLetra}
+              conCamara={conCamara}
+              fondoToma={fondoToma}
+              setFondoToma={setFondoToma}
+              onVoltear={onVoltear}
+              anclajeZona={anclajeZona}
+              setAnclajeZona={setAnclajeZona}
+              brillo={brillo}
+              setBrillo={setBrillo}
+              calidadVideo={calidadVideo}
+              setCalidadVideo={setCalidadVideo}
+              calidadesSoportadas={calidadesSoportadas}
+              minutosDisponibles={minutosDisponibles}
+              panelAbierto={panelFicha}
+              setPanelAbierto={setPanelFicha}
+              onAbrirAjustes={onAbrirAjustes}
+            />
           )}
 
           {/* ABAJO AL CENTRO: EMPEZAR. Un circulo translucido flotando sobre

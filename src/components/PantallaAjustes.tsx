@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { App as CapacitorApp } from '@capacitor/app'
 import { IconoAtras, IconoChevron } from './IconosApp'
 import { Interruptor } from './Interruptor'
 import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA } from './estiloLectura'
@@ -49,15 +48,10 @@ function nombreEstiloSub(estilo: EstiloSubtitulo): string {
   return t('subtitulosNo')
 }
 
+// Privacidad y soporte se abren en el navegador del telefono. @capacitor/app no tiene openUrl
+// -eso es de otro plugin-; en Android, Capacitor manda los enlaces externos al navegador del
+// sistema, asi que window.open alcanza, y en la version web abre una pestana. 28-09-2026.
 function abrirEnlace(url: string) {
-  try {
-    if (typeof CapacitorApp.openUrl === 'function') {
-      CapacitorApp.openUrl({ url }).catch(() => { window.open(url, '_blank') })
-      return
-    }
-  } catch {
-    // en el navegador el plugin no esta
-  }
   window.open(url, '_blank')
 }
 
