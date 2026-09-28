@@ -377,10 +377,13 @@ export default function EditorView({
   }
 
   const numPalabras = contarPalabras(guion)
-  const numMinutos = Math.round(numPalabras / 150)
+  // LA DURACION ES UNA SOLA EN TODA LA APP -28-09-2026-. Aca se redondeaba a minutos enteros
+  // -Math.round, y minimo 1-: con 5 palabras decia "1 min" arriba y "2 s" abajo, y el guion Hola
+  // "3 min" en el editor y "2:34 min" en la portada. Lo mostraron las capturas del agente de
+  // pruebas de Firebase. Ahora sale de duracionDeLectura, la misma de la portada y de la tarjeta.
   const idiomaGuion = guion.idioma || 'es'
   const nombreIdioma = NOMBRE_IDIOMA[idiomaGuion] ? t(NOMBRE_IDIOMA[idiomaGuion]) : idiomaGuion
-  const resumenMeta = t('metaEditor', { palabras: numeroLocal(numPalabras), minutos: numMinutos > 0 ? numMinutos : 1 })
+  const resumenMeta = t('metaEditor', { palabras: numeroLocal(numPalabras), duracion: duracionDeLectura(numPalabras) })
 
   useEffect(() => {
     if (!mostrarModalAjustes) return

@@ -104,7 +104,7 @@ export const en: Textos = {
   idiomaEspanol: 'Spanish',
   idiomaIngles: 'English',
   tituloDelGuion: 'Script title',
-  metaEditor: '{palabras} words · {minutos} min',
+  metaEditor: '{palabras} words · {duracion}',
   tipografia: 'Typeface',
   coloresLectura: 'Reading colors',
   parejaNegroBlanco: 'White on black',

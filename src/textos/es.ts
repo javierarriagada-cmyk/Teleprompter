@@ -113,7 +113,7 @@ export const es = {
   idiomaEspanol: 'Español',
   idiomaIngles: 'Inglés',
   tituloDelGuion: 'Título del guion',
-  metaEditor: '{palabras} palabras · {minutos} min',
+  metaEditor: '{palabras} palabras · {duracion}',
   tipografia: 'Tipografía',
   coloresLectura: 'Colores de lectura',
   parejaNegroBlanco: 'Negro con blanco',
