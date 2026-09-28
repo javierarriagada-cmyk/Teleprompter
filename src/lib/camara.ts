@@ -44,11 +44,20 @@ export interface OpcionesConfigCamara {
   recuadroY?: number // fracción 0..1
   vistaW?: number    // ancho px de la pantalla/vista
   vistaH?: number    // alto px de la pantalla/vista
+  // EL HUECO TAL COMO SE DIBUJO -28-09-2026-, en px de la pantalla -getBoundingClientRect del
+  // recuadro-. Cuando viene, la camara va exactamente ahi. Antes se recalculaba con la fraccion
+  // por vistaH, y vistaH -el alto del contenedor que hace scroll- no es el alto donde se dibuja
+  // el hueco -el lienzo entero-: en el moto g86 la camara quedaba 26 px mas arriba que el hueco
+  // y abajo se veia una franja negra.
+  rectRecuadro?: { x: number; y: number; width: number; height: number }
 }
 
 let estaEncendida = false
 let ladoEstado: LadoCamara = 'frontal'
 let fondoEstado: FondoToma = 'detras'
+// La ultima medida del hueco -rectRecuadro-. Al dar vuelta la camara, encenderCamara arranca de
+// nuevo sin ella en la config: se usa esta, o la camara volveria al lugar mal calculado.
+let rectRecuadroGuardado: OpcionesConfigCamara['rectRecuadro'] = undefined
 let grabandoVideoNativo = false
 
 export function camaraEncendida(): boolean {
@@ -299,6 +308,12 @@ function calcularDimensionesPreview(config?: OpcionesConfigCamara): {
   const fondo = config?.fondoToma || fondoEstado
   const winW = config?.vistaW || (typeof window !== 'undefined' ? (window.screen?.width || window.innerWidth) : 360)
   const winH = config?.vistaH || (typeof window !== 'undefined' ? (window.screen?.height || window.innerHeight) : 640)
+
+  if (config?.rectRecuadro) rectRecuadroGuardado = config.rectRecuadro
+  if (fondo === 'recuadro' && rectRecuadroGuardado) {
+    const r = rectRecuadroGuardado
+    return { x: Math.round(r.x), y: Math.round(r.y), width: Math.round(r.width), height: Math.round(r.height) }
+  }
 
   if (fondo === 'recuadro') {
     const rx = config?.recuadroX ?? 0.64

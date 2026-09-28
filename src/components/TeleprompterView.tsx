@@ -472,6 +472,9 @@ export default function TeleprompterView({
     }
   }, [script, fontSize, columnaAngosta, marginPercent, recalcularGeometria])
 
+  // Donde quedo dibujado el hueco del recuadro -RecuadroCamara, onRect-: la camara va ahi.
+  const [rectRecuadro, setRectRecuadro] = React.useState<{ x: number; y: number; width: number; height: number } | undefined>(undefined)
+
   useEffect(() => {
     if (!conCamara) return
     actualizarConfigCamara({
@@ -479,9 +482,10 @@ export default function TeleprompterView({
       recuadroX,
       recuadroY,
       vistaW: anchoContenedor || (typeof window !== 'undefined' ? window.innerWidth : 360),
-      vistaH: altoContenedor || (typeof window !== 'undefined' ? window.innerHeight : 640)
+      vistaH: altoContenedor || (typeof window !== 'undefined' ? window.innerHeight : 640),
+      rectRecuadro: fondoToma === 'recuadro' ? rectRecuadro : undefined
     })
-  }, [conCamara, fondoToma, recuadroX, recuadroY, anchoContenedor, altoContenedor])
+  }, [conCamara, fondoToma, recuadroX, recuadroY, anchoContenedor, altoContenedor, rectRecuadro])
 
   useEffect(() => {
     if (motorAvance || isRecording) return
@@ -946,6 +950,7 @@ export default function TeleprompterView({
             setRecuadroY?.(y)
           }}
           onArrastrandoChange={setArrastrandoRecuadro}
+          onRect={setRectRecuadro}
         />
       )}
 

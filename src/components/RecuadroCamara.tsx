@@ -7,6 +7,8 @@ export interface RecuadroCamaraProps {
   onChangePosicion?: (x: number, y: number) => void
   onArrastrandoChange?: (arrastrando: boolean) => void
   arrastrable?: boolean
+  // Donde quedo dibujado el hueco, en px de la pantalla -ver el efecto de abajo-.
+  onRect?: (rect: { x: number; y: number; width: number; height: number }) => void
 }
 
 export function RecuadroCamara({
@@ -15,7 +17,8 @@ export function RecuadroCamara({
   colorFondo = '#151312',
   onChangePosicion,
   onArrastrandoChange,
-  arrastrable = false
+  arrastrable = false,
+  onRect
 }: RecuadroCamaraProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
 
@@ -65,6 +68,22 @@ export function RecuadroCamara({
 
   const currentX = dragPos ? dragPos.x : recuadroX * W
   const currentY = dragPos ? dragPos.y : recuadroY * H
+
+  // EL HUECO SE AVISA MEDIDO -28-09-2026-. La camara nativa se coloca con lo que mide el hueco en
+  // la pantalla, no con la fraccion: ver rectRecuadro en lib/camara.ts. Solo se avisa si cambio.
+  const ultimoRectRef = useRef<string>('')
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el || !onRect || !dimensiones) return
+    const r = el.getBoundingClientRect()
+    // Un hueco de 0 x 0 no es una medida -sin pantalla, como en las pruebas-: queda la fraccion.
+    if (r.width <= 0 || r.height <= 0) return
+    const rect = { x: r.left, y: r.top, width: r.width, height: r.height }
+    const clave = [rect.x, rect.y, rect.width, rect.height].map((n) => Math.round(n)).join(',')
+    if (clave === ultimoRectRef.current) return
+    ultimoRectRef.current = clave
+    onRect(rect)
+  })
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!arrastrable) return
