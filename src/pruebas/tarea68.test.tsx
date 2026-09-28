@@ -115,7 +115,8 @@ describe('Tarea 68 - que pasa cuando la toma termina', () => {
     await portadaConGuion()
     await entrarGrabandoYSalir()
     await screen.findByTestId('reproductor-grabacion')
-    fireEvent.click(screen.getByText('Cerrar'))
+    // 28-09-2026: Cerrar es la X de la esquina del video.
+    fireEvent.click(screen.getByTestId('btn-cerrar-reproductor'))
     expect(screen.queryByTestId('reproductor-grabacion')).toBeNull()
     expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
     // NO se comprueba que la tarjeta de la portada haya desaparecido: cuando se

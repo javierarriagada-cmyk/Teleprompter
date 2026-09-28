@@ -156,8 +156,9 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
         fireEvent.mouseUp(boton)
       })
       expect(screen.getByTestId('menu-toma-toma-1')).not.toBeNull()
-      expect(screen.getByText('Eliminar')).not.toBeNull()
-      expect(screen.getByText('Cerrar')).not.toBeNull()
+      // 28-09-2026: los botones pasaron a simbolos; se buscan por su nombre -aria-label-, que es lo que lee TalkBack. "Eliminar" ahora es "Borrar".
+      expect(screen.getByLabelText('Borrar')).not.toBeNull()
+      expect(screen.getByLabelText('Cerrar')).not.toBeNull()
       fireEvent.click(screen.getByTestId('borrar-grabacion-toma-1'))
       expect(onBorrar).not.toHaveBeenCalled()
       expect(screen.getByTestId('borrar-grabacion-toma-1').getAttribute('data-confirmando')).toBe('si')

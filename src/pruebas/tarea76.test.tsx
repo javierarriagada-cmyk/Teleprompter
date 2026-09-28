@@ -383,7 +383,8 @@ describe('Tarea 76 - las tomas del guion abierto', () => {
     expect(conMarcas.textContent).toContain(es.sinAudio)
     expect(screen.getByTestId('toma-banda-t-b').textContent).not.toContain(es.incompleta)
     // Sin menu de borrar: mantener apretado no abre nada.
-    expect(screen.queryByText(es.eliminar)).toBeNull()
+    // 28-09-2026: el menu de borrar ahora es un tacho; se busca por su nombre.
+    expect(screen.queryByLabelText(es.borrar)).toBeNull()
   })
 
   test('T76-14 Con el foco en el texto del guion la banda no se ve; al perder el foco vuelve. Con el titulo, igual', async () => {
@@ -444,7 +445,8 @@ describe('Tarea 76 - las tomas del guion abierto', () => {
     // El editor sigue montado debajo.
     expect(screen.getByTestId('editor-guion')).not.toBeNull()
     await act(async () => {
-      fireEvent.click(within(screen.getByTestId('reproductor-grabacion')).getByText(es.cerrar))
+      // 28-09-2026: Cerrar es la X de la esquina del video; se busca por su nombre.
+      fireEvent.click(within(screen.getByTestId('reproductor-grabacion')).getByLabelText(es.cerrar))
     })
     expect(screen.queryByTestId('reproductor-grabacion')).toBeNull()
     expect(textoDelGuion()).toBe(textoAntes)

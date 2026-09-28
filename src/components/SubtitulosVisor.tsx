@@ -2,6 +2,7 @@ import React from 'react'
 import { hapticaSeleccion } from '../haptica'
 import { ESTILOS_SUBTITULO, EstiloSubtitulo, Subtitulo, subtituloEn } from '../lib/subtitulos'
 import { t, useTextos, ClaveTexto } from '../textos'
+import { IconoSubtitulos } from './IconosApp'
 
 // LOS SUBTITULOS EN EL VISOR DE LA TOMA -24-09-2026-.
 //
@@ -163,6 +164,8 @@ export function SelectorSubtitulos({
         className={`btn-deformable boton-subtitulos${estilo !== 'no' ? ' con-subtitulos' : ''}`}
         onClick={() => setAbierto((a) => !a)}
       >
+        {/* El CC delante de la palabra -28-09-2026-: el simbolo que todo el mundo reconoce. */}
+        <IconoSubtitulos tamano={20} />
         <span className="boton-subtitulos-nombre">{t('subtitulos')}</span>
         <span className="boton-subtitulos-valor">{nombre}</span>
         <svg className="boton-subtitulos-flecha" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ transform: abierto ? 'rotate(180deg)' : 'none' }}>

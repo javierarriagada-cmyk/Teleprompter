@@ -1138,6 +1138,89 @@ label.selector-aa-opcion {
   position: relative;
   background: #000;
 }
+
+/* LAS ACCIONES DE LA TOMA, CON SIMBOLOS -28-09-2026-. Eran cuatro botones de palabras
+   -"Guardar en galeria", "Repetir toma", "Borrar", "Cerrar"- que en un telefono angosto se
+   partian en dos filas. Ahora una fila a todo el ancho, sin cajas: Repetir, Compartir y Borrar
+   con el simbolo solo; Guardar con su palabra chica debajo. Los simbolos se alinean arriba
+   para quedar en una misma linea aunque solo uno lleve palabra. Cerrar es la X del video. */
+.acciones-toma {
+  display: flex;
+  border-top: 1px solid var(--color-separador);
+  margin-top: var(--aire-3);
+}
+.accion-toma {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--aire-1);
+  min-height: 64px;
+  padding: var(--aire-3) 0;
+  background: transparent;
+  border: none;
+  color: var(--color-texto);
+  font-size: var(--texto-etiqueta);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.accion-toma:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+/* Borrar pregunta una vez: el tacho se pone rojo y aparece "¿Seguro?" debajo. */
+.accion-toma[data-confirmando="si"],
+.boton-menu-chico[data-confirmando="si"] {
+  color: var(--color-grabando-texto);
+  font-weight: 700;
+}
+.accion-toma:focus-visible,
+.boton-menu-chico:focus-visible,
+.cerrar-visor:focus-visible {
+  outline: 2px solid var(--color-texto);
+  outline-offset: -4px;
+}
+.cerrar-visor {
+  position: absolute;
+  top: var(--aire-2);
+  right: var(--aire-2);
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--redondeo-pildora);
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  cursor: pointer;
+}
+
+/* LOS MENUS DE MANTENER APRETADO -guion y toma-, CON SIMBOLOS -28-09-2026-. Archivar lleva
+   su palabra; Borrar y Cerrar van con el simbolo solo. Un solo boton para los dos menus. */
+.boton-menu-chico {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aire-1);
+  min-height: 40px;
+  padding: var(--aire-2) var(--aire-3);
+  background: var(--bg-suelo);
+  color: var(--color-texto);
+  border: none;
+  border-radius: var(--redondeo);
+  font-size: var(--texto-meta);
+  cursor: pointer;
+}
+.boton-menu-chico.solo-simbolo {
+  padding: var(--aire-2);
+}
+.boton-menu-chico.cerrar-menu {
+  margin-left: auto;
+  background: transparent;
+  color: var(--color-apagado);
+}
 .capa-subtitulos {
   position: absolute;
   pointer-events: none;

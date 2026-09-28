@@ -163,7 +163,7 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
     fireEvent.click(screen.getByTestId('btn-ver-archivados'))
     // Borrar deja el aviso con Deshacer.
     fireEvent.contextMenu(screen.getByTestId('fila-guion-g-8'))
-    fireEvent.click(screen.getByRole('button', { name: en.eliminar }))
+    fireEvent.click(screen.getByRole('button', { name: en.borrar }))
     await screen.findByTestId('aviso-flotante')
     revisar('portada, aviso de borrado')
 

@@ -5,7 +5,7 @@ import { Guion, ResumenGuion, ResumenGrabacion, duracionDeLectura } from '../dat
 import TiraGrabaciones from './TiraGrabaciones'
 import { PanelCorpus } from './PanelCorpus'
 import TarjetaLectura from './TarjetaLectura'
-import { IconoEngranaje, IconoMas, IconoChevron } from './IconosApp'
+import { IconoEngranaje, IconoMas, IconoChevron, IconoTacho, IconoArchivar, IconoCerrar } from './IconosApp'
 import { MarcaSigo } from './MarcaSigo'
 import { hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_RESORTE } from './movimiento'
@@ -294,8 +294,10 @@ function FilaGuion({
             fontSize: 'var(--texto-cuerpo)',
             borderRadius: 'var(--redondeo)'
           }}
+          aria-label={t('borrar')}
         >
-          {t('borrar')}
+          {/* El tacho sobre rojo, sin palabra -28-09-2026-. Antes decia "Borrar". */}
+          <IconoTacho tamano={26} strokeWidth={1.6} />
         </div>
       )}
       {dragX >= 88 && (
@@ -310,12 +312,15 @@ function FilaGuion({
             alignItems: 'center',
             justifyContent: 'flex-start',
             paddingLeft: 'var(--aire-4)',
+            gap: 'var(--aire-2)',
             fontWeight: 'bold',
-            fontSize: 'var(--texto-cuerpo)',
+            fontSize: 'var(--texto-meta)',
             borderRadius: 'var(--redondeo)'
           }}
         >
-          {g.archivado ? t('desarchivar') : t('archivar')}
+          {/* La caja de archivo con su palabra chica -28-09-2026-. Antes, la palabra sola. */}
+          <IconoArchivar tamano={26} />
+          <span>{g.archivado ? t('desarchivar') : t('archivar')}</span>
         </div>
       )}
 
@@ -393,52 +398,39 @@ function FilaGuion({
               justifyContent: 'flex-start'
             }}
           >
+            {/* SIMBOLOS -28-09-2026-: Archivar con su palabra; Borrar -antes "Eliminar"- y
+                Cerrar con el simbolo solo y su nombre en aria-label. Ver .boton-menu-chico. */}
             <button
+              type="button"
+              className="boton-menu-chico"
               onClick={() => {
                 onArchivar(g.id, !g.archivado)
                 setMenuId(null)
               }}
-              style={{
-                padding: 'var(--aire-2) var(--aire-3)',
-                backgroundColor: 'var(--bg-suelo)',
-                color: 'var(--color-texto)',
-                border: 'none',
-                borderRadius: 'var(--redondeo)',
-                cursor: 'pointer',
-                fontSize: 'var(--texto-meta)'
-              }}
             >
-              {g.archivado ? t('desarchivar') : t('archivar')}
+              <IconoArchivar tamano={18} />
+              <span>{g.archivado ? t('desarchivar') : t('archivar')}</span>
             </button>
             <button
+              type="button"
+              className="boton-menu-chico solo-simbolo"
+              aria-label={t('borrar')}
+              title={t('borrar')}
               onClick={() => {
                 onBorrar(g.id)
                 setMenuId(null)
               }}
-              style={{
-                padding: 'var(--aire-2) var(--aire-3)',
-                backgroundColor: 'var(--bg-suelo)',
-                color: 'var(--color-texto)',
-                border: 'none',
-                borderRadius: 'var(--redondeo)',
-                cursor: 'pointer',
-                fontSize: 'var(--texto-meta)'
-              }}
             >
-              {t('eliminar')}
+              <IconoTacho tamano={20} strokeWidth={1.6} />
             </button>
             <button
+              type="button"
+              className="boton-menu-chico solo-simbolo cerrar-menu"
+              aria-label={t('cerrar')}
+              title={t('cerrar')}
               onClick={() => setMenuId(null)}
-              style={{
-                padding: 'var(--aire-2) var(--aire-3)',
-                backgroundColor: 'transparent',
-                color: 'var(--color-apagado)',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 'var(--texto-meta)'
-              }}
             >
-              {t('cerrar')}
+              <IconoCerrar tamano={20} />
             </button>
           </div>
         )}

@@ -17,7 +17,7 @@ export const es = {
   seguro: '¿Seguro?',
   cerrar: 'Cerrar',
   borrar: 'Borrar',
-  eliminar: 'Eliminar',
+  // "eliminar" se fue el 28-09-2026: el tacho dice lo mismo que "borrar" en toda la app.
   toma: 'Toma',
   volver: 'Volver',
 
@@ -75,6 +75,8 @@ export const es = {
   metaErrorMudo: 'el motor oyo y el archivo no tiene sonido',
   metaAvisoMudo: 'no se oye audio en este archivo',
   compartir: 'Compartir',
+  // La palabra chica bajo la flecha de guardar -28-09-2026-; la frase larga queda para lectores de pantalla.
+  guardar: 'Guardar',
   guardarEnGaleria: 'Guardar en galería',
   guardando: 'Guardando…',
   guardandoAvance: 'Guardando… {n}%',

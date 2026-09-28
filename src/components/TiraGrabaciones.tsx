@@ -2,7 +2,7 @@ import React from 'react'
 import { Capacitor } from '@capacitor/core'
 import { ResumenGrabacion } from '../datos/modelo'
 import { t, useTextos, tituloVisible, fechaCortaDosDigitos } from '../textos'
-import { IconoSinVideos } from './IconosApp'
+import { IconoSinVideos, IconoTacho, IconoCerrar } from './IconosApp'
 
 // UNA RUTA DE DISCO TAMBIEN HAY QUE CONVERTIRLA. El WebView no puede abrir
 // /storage/... directo: necesita la direccion que arma convertFileSrc.
@@ -106,21 +106,27 @@ function TarjetaToma({
       </button>
       {menuAbierto && (
         <div data-testid={`menu-toma-${g.id}`} onClick={(e) => e.stopPropagation()} style={{ marginTop: 4, display: 'flex', gap: 8, position: 'relative', zIndex: 7 }}>
+          {/* SIMBOLOS -28-09-2026-: el tacho -antes "Eliminar"- y la X, como en el menu del
+              guion -.boton-menu-chico-. Al pedir confirmacion el tacho se pone rojo y dice
+              "¿Seguro?" a su lado. */}
           <button
             type="button"
+            className={`boton-menu-chico${confirmando ? '' : ' solo-simbolo'}`}
             data-testid={`borrar-grabacion-${g.id}`}
             data-confirmando={confirmando ? 'si' : 'no'}
+            aria-label={confirmando ? t('seguro') : t('borrar')}
+            title={t('borrar')}
             onClick={(e) => {
               e.stopPropagation()
               if (confirmando) onConfirmarBorrar()
               else onPedirBorrar()
             }}
-            style={{ background: 'transparent', border: 'none', color: confirmando ? '#e11d2e' : 'var(--color-texto)', fontWeight: confirmando ? 700 : 600, fontSize: 'var(--texto-meta)', cursor: 'pointer', padding: '4px 0' }}
           >
-            {confirmando ? t('seguro') : t('eliminar')}
+            <IconoTacho tamano={20} strokeWidth={1.6} />
+            {confirmando && <span>{t('seguro')}</span>}
           </button>
-          <button type="button" onClick={(e) => { e.stopPropagation(); onCerrarMenu() }} style={{ background: 'transparent', border: 'none', color: 'var(--color-apagado)', fontSize: 'var(--texto-meta)', cursor: 'pointer', padding: '4px 0' }}>
-            {t('cerrar')}
+          <button type="button" className="boton-menu-chico solo-simbolo cerrar-menu" aria-label={t('cerrar')} title={t('cerrar')} onClick={(e) => { e.stopPropagation(); onCerrarMenu() }}>
+            <IconoCerrar tamano={20} />
           </button>
         </div>
       )}

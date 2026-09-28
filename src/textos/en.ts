@@ -14,7 +14,7 @@ export const en: Textos = {
   seguro: 'Sure?',
   cerrar: 'Close',
   borrar: 'Delete',
-  eliminar: 'Delete',
+  // "eliminar" se fue el 28-09-2026: el tacho dice lo mismo que "borrar" en toda la app.
   toma: 'Take',
   volver: 'Back',
 
@@ -66,6 +66,8 @@ export const en: Textos = {
   metaErrorMudo: 'your voice was heard, but the file has no sound',
   metaAvisoMudo: 'no sound can be heard in this file',
   compartir: 'Share',
+  // La palabra chica bajo la flecha de guardar -28-09-2026-; la frase larga queda para lectores de pantalla.
+  guardar: 'Save',
   guardarEnGaleria: 'Save to gallery',
   guardando: 'Saving…',
   guardandoAvance: 'Saving… {n}%',

@@ -311,6 +311,81 @@ export function IconoChevron(props: PropsIcono) {
   )
 }
 
+// LOS SIMBOLOS UNIVERSALES -28-09-2026-. Javier: "existen algunos simbolos y formas que son de
+// un uso internacional... no los estamos utilizando". Se dibujan con la convencion de Android,
+// que es donde vive Sigo: compartir son los tres nodos -el cuadrado con flecha es de iPhone- y
+// guardar es la flecha a la bandeja -el disquete es "guardar documento", no "bajar el video al
+// telefono"-. Compartir, Borrar, Repetir y Cerrar van solos; Guardar, Archivar y Subtitulos con
+// su palabra chica debajo o al lado. Decision de Javier sobre un dibujo.
+
+/** Flecha hacia abajo a una bandeja: guardar la toma en la galeria. */
+export function IconoGuardar(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M12 4v11" />
+      <path d="M7 10l5 5 5-5" />
+      <path d="M5 19.5h14" />
+    </Trazo>
+  )
+}
+
+/** Tres nodos unidos: compartir, como en Android. */
+export function IconoCompartir(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <circle cx="18" cy="5" r="2.6" />
+      <circle cx="6" cy="12" r="2.6" />
+      <circle cx="18" cy="19" r="2.6" />
+      <path d="M8.3 10.7l7.4-4.4" />
+      <path d="M8.3 13.3l7.4 4.4" />
+    </Trazo>
+  )
+}
+
+/** Una sola flecha en circulo, hacia atras: repetir la toma. No las dos flechas de
+ *  IconoVoltear -dar vuelta la camara-, que ademas se leen como "recargar". */
+export function IconoRepetir(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+      <path d="M3 3v5h5" />
+    </Trazo>
+  )
+}
+
+/** Una X: cerrar. */
+export function IconoCerrar(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M6 6l12 12" />
+      <path d="M18 6L6 18" />
+    </Trazo>
+  )
+}
+
+/** Una caja con su tapa: archivar un guion. */
+export function IconoArchivar(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <rect x="2.5" y="3.5" width="19" height="5" rx="1" />
+      <path d="M4.5 8.5V19a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8.5" />
+      <path d="M10 12.5h4" />
+    </Trazo>
+  )
+}
+
+/** CC en un recuadro: subtitulos. Las dos C son arcos, no letras: una letra cambia con la
+ *  tipografia -ver IconoMas-. */
+export function IconoSubtitulos(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <rect x="2" y="5" width="20" height="14" rx="3" />
+      <path d="M10.2 10.2a2.3 2.3 0 1 0 0 3.6" />
+      <path d="M17.2 10.2a2.3 2.3 0 1 0 0 3.6" />
+    </Trazo>
+  )
+}
+
 /** SIN VIDEOS -tarea 76, 28-09-2026-. Un visor de cámara: cuatro esquinas en L en el rojo de
  * grabar y, adentro, una filmadora de líneas con el triángulo de reproducir. Javier lo eligió
  * de la imagen de una auditoría; está hecho con las piezas de este archivo.

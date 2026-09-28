@@ -5,6 +5,7 @@ import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, compartirDeGaleria, le
 import { armarSubtitulos, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo } from '../lib/subtitulos'
 import { CapaSubtitulos, SelectorSubtitulos } from './SubtitulosVisor'
 import { t, useTextos, tituloVisible } from '../textos'
+import { IconoGuardar, IconoCompartir, IconoRepetir, IconoCerrar, IconoTacho } from './IconosApp'
 
 export default function ReproductorGrabacion({
   grabacion,
@@ -118,19 +119,14 @@ export default function ReproductorGrabacion({
     }
   }
 
-  const estiloBoton: React.CSSProperties = {
-    background: 'var(--bg-suelo)',
-    border: '1px solid var(--color-borde)',
-    color: 'var(--color-texto)',
-    fontWeight: 600,
-    borderRadius: 'var(--redondeo)',
-    padding: 'var(--aire-2) var(--aire-3)',
-    cursor: 'pointer'
-  }
   return (
     <div data-testid="reproductor-grabacion" onClick={onCerrar} style={{ position: 'fixed', inset: 0, background: '#111111', zIndex: 400, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'var(--aire-4)' }}>
       <div onClick={(e) => e.stopPropagation()} style={{ width: 'min(720px, 100%)', background: 'var(--bg-superficie)', color: 'var(--color-texto)', borderRadius: 'var(--redondeo)', border: '1px solid var(--color-borde)', overflow: 'hidden' }}>
         <div className="visor-video">
+          {/* Cerrar es la X de la esquina -28-09-2026-: tocar fuera de la tarjeta tambien cierra. */}
+          <button type="button" className="cerrar-visor" data-testid="btn-cerrar-reproductor" aria-label={t('cerrar')} title={t('cerrar')} onClick={onCerrar}>
+            <IconoCerrar tamano={22} />
+          </button>
           <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} controls playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ width: '100%', maxHeight: '70vh', background: '#000', display: 'block' }} />
           {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} />}
         </div>
@@ -145,68 +141,72 @@ export default function ReproductorGrabacion({
             />
           </div>
         )}
-        <div style={{ padding: 'var(--aire-3)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--aire-3)' }}>
-          <div>
-            <div style={{ fontWeight: 700 }}>{grabacion.tituloGuion ? tituloVisible(grabacion.tituloGuion) : t('toma')}</div>
-            <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
-              {formatearDuracionMs(grabacion.duracionMs)}
-              {grabacion.incompleta ? ` · ${t('incompleta')}` : ''}
-              {grabacion.errorMudo ? ` · ${t('metaErrorMudo')}` : ''}
-              {grabacion.avisoMudo ? ` · ${t('metaAvisoMudo')}` : ''}
-            </div>
+        <div style={{ padding: 'var(--aire-3) var(--aire-3) 0' }}>
+          <div style={{ fontWeight: 700 }}>{grabacion.tituloGuion ? tituloVisible(grabacion.tituloGuion) : t('toma')}</div>
+          <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
+            {formatearDuracionMs(grabacion.duracionMs)}
+            {grabacion.incompleta ? ` · ${t('incompleta')}` : ''}
+            {grabacion.errorMudo ? ` · ${t('metaErrorMudo')}` : ''}
+            {grabacion.avisoMudo ? ` · ${t('metaAvisoMudo')}` : ''}
           </div>
-          <div style={{ display: 'flex', gap: 'var(--aire-2)', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-            {guardada ? (
-              <button
-                type="button"
-                data-testid="btn-compartir-toma"
-                onClick={handleCompartir}
-                style={{ ...estiloBoton, background: 'var(--color-acento)', borderColor: 'var(--color-acento)', color: 'var(--color-texto-acento)' }}
-              >
-                {t('compartir')}
-              </button>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  data-testid="guardar-galeria-desde-reproductor"
-                  disabled={guardando}
-                  onClick={handleGuardar}
-                  style={{ ...estiloBoton, cursor: guardando ? 'default' : 'pointer', opacity: guardando ? 0.7 : 1 }}
-                >
-                  {guardando ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardarEnGaleria')}
-                </button>
-                {onRepetir && (
-                  <button
-                    type="button"
-                    data-testid="btn-repetir-toma"
-                    onClick={onRepetir}
-                    style={estiloBoton}
-                  >
-                    {t('repetirToma')}
-                  </button>
-                )}
-              </>
-            )}
+        </div>
+        {/* LAS ACCIONES CON SIMBOLOS -28-09-2026-. Ver .acciones-toma en styles.css. Los que van
+            con el simbolo solo llevan su nombre en aria-label: es lo que lee TalkBack. Recien
+            grabada: Guardar, Repetir, Borrar. Guardada: Compartir, Borrar. Antes Compartir era el
+            unico boton relleno -acento-: en una fila de simbolos iguales ya no hace falta, porque
+            en la toma guardada es la primera de solo dos acciones. */}
+        <div className="acciones-toma">
+          {guardada ? (
             <button
               type="button"
-              data-testid="borrar-desde-reproductor"
-              data-confirmando={confirmando ? 'si' : 'no'}
-              onClick={() => { if (confirmando) { onBorrar(grabacion.id) } else { setConfirmando(true) } }}
-              style={{
-                background: 'var(--bg-suelo)',
-                border: `1px solid ${confirmando ? '#e11d2e' : 'var(--color-borde)'}`,
-                color: confirmando ? '#e11d2e' : 'var(--color-texto)',
-                fontWeight: confirmando ? 700 : 400,
-                borderRadius: 'var(--redondeo)',
-                padding: 'var(--aire-2) var(--aire-3)',
-                cursor: 'pointer'
-              }}
+              className="accion-toma"
+              data-testid="btn-compartir-toma"
+              aria-label={t('compartir')}
+              title={t('compartir')}
+              onClick={handleCompartir}
             >
-              {confirmando ? t('seguro') : t('borrar')}
+              <IconoCompartir tamano={26} />
             </button>
-            <button type="button" onClick={onCerrar} style={{ background: 'var(--bg-suelo)', border: '1px solid var(--color-borde)', color: 'var(--color-texto)', borderRadius: 'var(--redondeo)', padding: 'var(--aire-2) var(--aire-3)', cursor: 'pointer', fontWeight: 600 }}>{t('cerrar')}</button>
-          </div>
+          ) : (
+            <>
+              <button
+                type="button"
+                className="accion-toma"
+                data-testid="guardar-galeria-desde-reproductor"
+                aria-label={t('guardarEnGaleria')}
+                disabled={guardando}
+                onClick={handleGuardar}
+              >
+                <IconoGuardar tamano={26} />
+                <span>{guardando ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardar')}</span>
+              </button>
+              {onRepetir && (
+                <button
+                  type="button"
+                  className="accion-toma"
+                  data-testid="btn-repetir-toma"
+                  aria-label={t('repetirToma')}
+                  title={t('repetirToma')}
+                  onClick={onRepetir}
+                >
+                  <IconoRepetir tamano={26} />
+                </button>
+              )}
+            </>
+          )}
+          {/* Borrar pregunta una vez: el tacho se pone rojo y dice "¿Seguro?" debajo. */}
+          <button
+            type="button"
+            className="accion-toma"
+            data-testid="borrar-desde-reproductor"
+            data-confirmando={confirmando ? 'si' : 'no'}
+            aria-label={confirmando ? t('seguro') : t('borrar')}
+            title={t('borrar')}
+            onClick={() => { if (confirmando) { onBorrar(grabacion.id) } else { setConfirmando(true) } }}
+          >
+            <IconoTacho tamano={26} strokeWidth={1.6} />
+            {confirmando && <span>{t('seguro')}</span>}
+          </button>
         </div>
       </div>
     </div>

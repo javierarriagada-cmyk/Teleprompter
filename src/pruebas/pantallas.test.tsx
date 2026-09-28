@@ -122,7 +122,8 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T149-T153)', () => {
 
     expect(screen.getByTestId('menu-opciones-g1')).not.toBeNull()
     expect(screen.getByText('Archivar')).not.toBeNull()
-    expect(screen.getByText('Eliminar')).not.toBeNull()
+    // 28-09-2026: los botones pasaron a simbolos; se buscan por su nombre -aria-label-, que es lo que lee TalkBack. "Eliminar" ahora es "Borrar".
+    expect(screen.getByLabelText('Borrar')).not.toBeNull()
   })
 
   test('T151: GUARDIANA DEL TITULO. En el editor, el titulo del guion se dibuja con el tamano de display y NO existe ninguna etiqueta con el texto "Título del guión". Editarlo cambia el guion.', async () => {
