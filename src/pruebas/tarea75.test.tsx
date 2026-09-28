@@ -13,6 +13,7 @@ import { fijarIdioma, idiomaApp } from '../lib/idioma'
 import { es } from '../textos/es'
 import { en } from '../textos/en'
 import { pegarEnGuion, seleccionarEnGuion, escribirEnGuion } from './ayudaEditor'
+import { desplegarGuiones } from './ayudaPortada'
 
 // TAREA 75 -27-09-2026-: LA APP EN ESPANOL E INGLES. La vara: con la app en ingles, ni un
 // texto en espanol que se escape. Estas pruebas renderizan <App> entera -la regla de la casa:
@@ -140,6 +141,11 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
 
     await appEnIngles()
 
+    // La lista plegada -tarea 76, 28-09-2026-: tres filas y "See all".
+    revisar('portada plegada')
+    // Desplegada aparecen el buscador y el pie de archivados.
+    desplegarGuiones()
+
     // --- PORTADA: la tarjeta, la lista con su buscador, el pie de archivados, la tira vacia
     revisar('portada')
     // El menu de una fila y el cajon del engranaje.
@@ -179,7 +185,7 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
     revisar('portada, aviso de guardado')
 
     // --- EDITOR VACIO: pegar texto y abrir archivo
-    fireEvent.click(screen.getByTestId('btn-crear-guion-flotante'))
+    fireEvent.click(screen.getByTestId('btn-crear-guion'))
     await screen.findByTestId('btn-pegar-texto')
     revisar('editor vacio')
     fireEvent.click(screen.getByText(en.guiones))
@@ -271,7 +277,7 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
 
   test('T75c - Con la app en ingles, un guion nuevo nace en ingles; pegar un texto espanol largo lo pasa a espanol; elegirlo a mano lo deja fijo', async () => {
     const { repo } = await appEnIngles()
-    fireEvent.click(screen.getByTestId('btn-crear-guion-flotante'))
+    fireEvent.click(screen.getByTestId('btn-crear-guion'))
     const boton = await screen.findByTestId('btn-idioma-guion')
     expect(boton.getAttribute('data-idioma')).toBe('en')
     expect(boton.textContent).toBe('EN')

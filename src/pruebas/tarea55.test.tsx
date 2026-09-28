@@ -82,12 +82,15 @@ describe('Pruebas TAREA 55 - LA PANTALLA DEL EDITOR (T276-T283)', () => {
     localStorage.clear()
   })
 
-  test('T276 - El contenedor del editor lleva env(safe-area-inset-top) en su relleno superior.', () => {
-    const fuente = fs.readFileSync(
-      path.resolve(process.cwd(), 'src/components/EditorView.tsx'),
-      'utf8'
-    )
-    expect(fuente).toContain('calc(20px + env(safe-area-inset-top, 0px))')
+  // T276 CAMBIO EL 28-09-2026: el area segura de arriba la pone UNA vez el marco de App.tsx
+  // -16px + env(safe-area-inset-top)-. El editor tambien la sumaba y en el telefono quedaba una
+  // franja negra doble sobre "Guiones" -Javier: "deberia ser la mitad"-. Ahora el editor no la
+  // suma; la prueba cuida que el marco la tenga y que el editor no la repita.
+  test('T276 - El area segura de arriba la pone el marco de App una sola vez; el editor no la repite.', () => {
+    const editor = fs.readFileSync(path.resolve(process.cwd(), 'src/components/EditorView.tsx'), 'utf8')
+    const app = fs.readFileSync(path.resolve(process.cwd(), 'src/App.tsx'), 'utf8')
+    expect(app).toContain("paddingTop: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-top, 0px))'")
+    expect(editor).not.toContain('calc(20px + env(safe-area-inset-top, 0px))')
   })
 
   test('T277 - El campo del titulo no tiene borderBottom, ni con foco ni sin foco.', () => {

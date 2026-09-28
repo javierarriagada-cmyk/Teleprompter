@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, ResumenGuion, ResumenGrabacion, duracionDeLectura } from '../datos/modelo'
 import TiraGrabaciones from './TiraGrabaciones'
 import { PanelCorpus } from './PanelCorpus'
 import TarjetaLectura from './TarjetaLectura'
-import { IconoEngranaje } from './IconosApp'
+import { IconoEngranaje, IconoMas, IconoChevron } from './IconosApp'
 import { MarcaSigo } from './MarcaSigo'
 import { hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_RESORTE } from './movimiento'
@@ -89,8 +89,24 @@ const MS_ENTRE_TOQUES_DIAGNOSTICO = 600
 
 let esPrimerMontajeBiblioteca = true
 
+// LA LISTA PLEGADA -tarea 76, 28-09-2026-. Javier: debajo de la tarjeta, "Guiones" con los 3 más
+// recientes y un "Ver todos" que despliega la lista en el mismo lugar, sin otra pantalla. Con
+// 30 guiones la portada tiene que verse igual de ordenada que con 3: la tarjeta, tres filas,
+// "Ver todos" y el comienzo de "Videos" caben en una pantalla de 412 x 915 sin desplazar.
+// El más reciente sale también en la tarjeta de arriba y se deja así: muchas pruebas abren ese
+// guion desde su fila.
+export const GUIONES_A_LA_VISTA = 3
+
+// Desplegada o plegada SE RECUERDA EN LA SESIÓN, como esPrimerMontajeBiblioteca: la biblioteca
+// se desmonta al entrar a un guion, y quien desplegó para buscar uno tiene que encontrar la
+// lista como la dejó al volver. Al cerrar la app vuelve a plegada.
+let listaDesplegadaEnSesion = false
+
+// Las pruebas simulan una app recién abierta con esto: la entrada escalonada vuelve a correr
+// y la lista vuelve a plegada, que es como la encuentra quien abre la app.
 export function resetearPrimerMontajeBiblioteca() {
   esPrimerMontajeBiblioteca = true
+  listaDesplegadaEnSesion = false
 }
 
 interface FilaGuionProps {
@@ -474,6 +490,16 @@ export default function BibliotecaView({
 
   const [esInicial] = useState<boolean>(esPrimerMontajeBiblioteca)
 
+  // Plegada o desplegada -ver GUIONES_A_LA_VISTA-. animarDespliegue es true solo después del
+  // toque en "Ver todos": al volver de un guion con la lista ya desplegada, las filas están
+  // ahí, no entran de nuevo.
+  const [desplegada, setDesplegada] = useState<boolean>(listaDesplegadaEnSesion)
+  const [animarDespliegue, setAnimarDespliegue] = useState(false)
+  const idLista = useId()
+  const refTituloGuiones = useRef<HTMLDivElement | null>(null)
+  const refVerTodos = useRef<HTMLButtonElement | null>(null)
+  const recienPlegadaRef = useRef(false)
+
   const guionMasReciente = guiones.length > 0 ? guiones[0] : undefined
   // La tarjeta ya no muestra el texto del guion -TarjetaLectura.tsx, 24-09-2026-,
   // asi que ya no se lee el guion completo para dibujarla.
@@ -540,6 +566,55 @@ export default function BibliotecaView({
 
     return !g.archivado
   })
+
+  // LO QUE SE VE DE LA LISTA -tarea 76-. Se pliega solo la lista principal, y solo si tiene más
+  // de GUIONES_A_LA_VISTA: con 3 o menos no hay "Ver todos". Archivados se ve entero -"la vista
+  // de archivados muestra todos sus guiones, sin plegar"-, y con texto en la búsqueda no rige
+  // el límite. listaEntera es "no hay nada escondido": desplegada, o nada que esconder. Ahí
+  // viven la búsqueda y "Archivados".
+  // OJO, UNA LECTURA DEL ENCARGO: "Archivados solo con la lista desplegada" y "con 3 o menos no
+  // hay Ver todos" juntos dejaban sin salida a quien tiene 2 guiones y 1 archivado -nunca
+  // podría desplegar-. Con 3 o menos la lista ya está entera, y Archivados se muestra.
+  const hayBusqueda = busqueda.trim() !== ''
+  const cantidadEnLista = guiones.length - cantidadArchivados
+  const sePliega = !mostrarArchivados && cantidadEnLista > GUIONES_A_LA_VISTA
+  const listaEntera = !sePliega || desplegada
+  const guionesVisibles = listaEntera || hayBusqueda
+    ? guionesFiltrados
+    : guionesFiltrados.slice(0, GUIONES_A_LA_VISTA)
+
+  function alternarLista() {
+    hapticaToqueSuave()
+    const nueva = !desplegada
+    listaDesplegadaEnSesion = nueva
+    setAnimarDespliegue(nueva)
+    // Al plegar se va la búsqueda, y con ella lo escrito: si quedara, filtraría la lista con
+    // un campo que ya no se ve.
+    if (!nueva) {
+      setBusqueda('')
+      recienPlegadaRef.current = true
+    }
+    setDesplegada(nueva)
+  }
+
+  // AL PLEGAR, SI LA LISTA QUEDÓ ARRIBA DE LO QUE SE VE, SE VUELVE A ELLA. Las filas de la
+  // cuarta en adelante se van sin animación -basta con quitarlas-, y la página se acorta: quien
+  // estaba mirando el final de una lista larga podría quedar mirando el vacío o los videos.
+  // Si "Ver todos" -el final de la lista plegada- quedó por encima del borde de arriba, la
+  // página baja suave hasta el título "Guiones".
+  useEffect(() => {
+    if (!recienPlegadaRef.current) return
+    recienPlegadaRef.current = false
+    const boton = refVerTodos.current
+    const titulo = refTituloGuiones.current
+    if (!boton || !titulo) return
+    if (boton.getBoundingClientRect().top >= 0) return
+    if (typeof titulo.scrollIntoView !== 'function') {
+      console.warn('[BibliotecaView] la lista plegada quedó arriba de la pantalla y este navegador no tiene scrollIntoView: no se puede volver a ella')
+      return
+    }
+    titulo.scrollIntoView({ behavior: movimientoApagado() ? 'auto' : 'smooth', block: 'start' })
+  }, [desplegada])
 
   // -24-09-2026: aca vivian el toque largo, el clic y el menu contextual de la fila vieja. La
   // fila ahora es FilaGuion, con sus propios manejadores; estos habian quedado sin uso.
@@ -808,9 +883,51 @@ export default function BibliotecaView({
         document.body
       )}
 
+      {/* Los dos titulos de biblioteca -este y "Videos"- van en el mismo
+          escalon de la escala y con el mismo peso: son hermanos, no uno
+          principal y otro al pie. Javier los pidio mas grandes el 21 de
+          septiembre de 2026; texto-cuerpo es el escalon que sigue a
+          texto-meta, no un numero inventado. El 27-09-2026 subieron otro
+          escalon -texto-titulo- y a color de texto: son los que ordenan la
+          portada, y en gris apagado se perdian. */}
+      {/* 28-09-2026: suben a --texto-seccion -22 px, .titulo-seccion-, los dos. Y el titulo es
+          ahora una fila con el "+" de crear guion a la derecha: el boton flotante tapaba la tira
+          de videos -ver el comentario del "+" al final de este archivo-. En Archivados no va:
+          ahi no se crea nada. */}
+      <div ref={refTituloGuiones} className="fila-titulo-seccion">
+        <div className="texto-titulo titulo-seccion" style={{ color: 'var(--color-texto)', fontWeight: 600 }}>
+          {mostrarArchivados ? t('archivados') : t('guiones')}
+        </div>
+        {mostrarBotonCrear && !mostrarArchivados && (
+          <button
+            type="button"
+            className="boton-crear-guion btn-deformable"
+            onClick={() => {
+              hapticaToqueSuave()
+              onCrearNuevo()
+            }}
+            data-testid="btn-crear-guion"
+            title={t('crearGuion')}
+            aria-label={t('crearGuion')}
+          >
+            <span><IconoMas tamano={20} /></span>
+          </button>
+        )}
+      </div>
+
       {/* Buscador: sin borde, fondo bg-suelo y redondeo */}
-      {hayMasDeOcho && (
-        <div style={{ marginBottom: 'var(--aire-4)' }}>
+      {/* -28-09-2026, tarea 76: solo con la lista desplegada, y ya no arriba del título sino
+          debajo, arriba de las filas: es de la lista. Abre su lugar al aparecer
+          -.buscador-guiones, styles.css-. Su margen de abajo pasó de var(--aire-4) a
+          var(--aire-3), el de una fila a la siguiente. */}
+      {hayMasDeOcho && listaEntera && (
+        <div
+          className="buscador-guiones"
+          style={animarDespliegue && !movimientoApagado()
+            ? { animation: `buscadorAbre ${MS_CHICO}ms ${CURVA_ENTRA} both` }
+            : undefined}
+        >
+         <div>
           <input
             type="text"
             placeholder={t('buscar')}
@@ -829,23 +946,14 @@ export default function BibliotecaView({
               outline: 'none'
             }}
           />
+         </div>
         </div>
       )}
-
-      {/* Los dos titulos de biblioteca -este y "Videos"- van en el mismo
-          escalon de la escala y con el mismo peso: son hermanos, no uno
-          principal y otro al pie. Javier los pidio mas grandes el 21 de
-          septiembre de 2026; texto-cuerpo es el escalon que sigue a
-          texto-meta, no un numero inventado. El 27-09-2026 subieron otro
-          escalon -texto-titulo- y a color de texto: son los que ordenan la
-          portada, y en gris apagado se perdian. */}
-      <div className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-3)', fontWeight: 600 }}>
-        {mostrarArchivados ? t('archivados') : t('guiones')}
-      </div>
 
       {/* Lista de guiones o Vacío */}
       {guiones.length === 0 ? (
         <div
+          id={idLista}
           data-testid="lista-guiones-biblioteca"
           data-retardo-escalonado={esInicial && !movimientoApagado() ? 80 : 0}
           style={{ textAlign: 'center', padding: 'var(--aire-5) 0', ...animacionListaStyle }}
@@ -853,6 +961,7 @@ export default function BibliotecaView({
         </div>
       ) : guionesFiltrados.length === 0 ? (
         <div
+          id={idLista}
           data-testid="lista-guiones-biblioteca"
           data-retardo-escalonado={esInicial && !movimientoApagado() ? 80 : 0}
           style={{ padding: 'var(--aire-4)', textAlign: 'center', color: 'var(--color-apagado)', ...animacionListaStyle }}
@@ -866,11 +975,12 @@ export default function BibliotecaView({
         </div>
       ) : (
         <div
+          id={idLista}
           data-testid="lista-guiones-biblioteca"
           data-retardo-escalonado={esInicial && !movimientoApagado() ? 80 : 0}
           style={{ display: 'flex', flexDirection: 'column', ...animacionListaStyle }}
         >
-          {guionesFiltrados.map((g) => (
+          {guionesVisibles.slice(0, GUIONES_A_LA_VISTA).map((g) => (
             <FilaGuion
               key={g.id}
               g={g}
@@ -882,14 +992,79 @@ export default function BibliotecaView({
               refMenuFila={refMenuFila}
             />
           ))}
+          {/* DE LA CUARTA EN ADELANTE -tarea 76-. Entran con la misma entrada que la lista al
+              abrir la portada -pantallaEntraInicial, MS_PANTALLA, CURVA_ENTRA, 80 ms después-:
+              la lista entra 80 ms después de la tarjeta, y estas filas 80 ms después del toque.
+              Entran como un bloque y no fila por fila: con 30 guiones, 80 ms por fila serían
+              más de dos segundos, con filas todavía invisibles abajo del borde. both y no
+              forwards: con forwards, durante los 80 ms de espera se verían de golpe y después
+              se apagarían para aparecer. Solo anima después del toque: al volver de un guion
+              con la lista desplegada, ya están. Con movimientoApagado(), aparecen de una.
+              Son FilaGuion, las mismas de arriba: mismos gestos, y bajar la pantalla sobre
+              ellas tampoco las abre -desplazarNoAbre.test.tsx-. */}
+          {guionesVisibles.length > GUIONES_A_LA_VISTA && (
+            <div
+              data-testid="filas-desplegadas"
+              data-retardo-escalonado={animarDespliegue && !movimientoApagado() ? 80 : 0}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                ...(animarDespliegue && !movimientoApagado()
+                  ? { animation: `pantallaEntraInicial ${MS_PANTALLA}ms ${CURVA_ENTRA} both`, animationDelay: '80ms' }
+                  : {})
+              }}
+            >
+              {guionesVisibles.slice(GUIONES_A_LA_VISTA).map((g) => (
+                <FilaGuion
+                  key={g.id}
+                  g={g}
+                  onAbrir={onAbrir}
+                  onBorrar={onBorrar}
+                  onArchivar={onArchivar}
+                  menuId={menuId}
+                  setMenuId={setMenuId}
+                  refMenuFila={refMenuFila}
+                />
+              ))}
+            </div>
+          )}
         </div>
+      )}
+
+      {/* "VER TODOS" Y "VER MENOS" -tarea 76, 28-09-2026-. Un botón de texto, no una píldora ni
+          una tarjeta: se lee como continuación de la lista -.ver-todos-guiones, styles.css-.
+          El número es el total de la lista principal, sin archivados. El chevron apunta a lo
+          que va a aparecer y gira 180 grados al desplegar -MS_CHICO, CURVA_RESORTE-; el giro va
+          en el dibujo y no en el botón: un transform en línea en un btn-deformable le mata el
+          apretado. Mientras se ven los archivados no está: esa vista no se pliega. */}
+      {sePliega && (
+        <button
+          type="button"
+          ref={refVerTodos}
+          data-testid="btn-ver-todos-guiones"
+          className="btn-deformable ver-todos-guiones"
+          aria-expanded={desplegada}
+          aria-controls={idLista}
+          onClick={alternarLista}
+        >
+          <span>{desplegada ? t('verMenosGuiones') : t('verTodosGuiones', { n: cantidadEnLista })}</span>
+          <IconoChevron
+            tamano={16}
+            style={{
+              transform: desplegada ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: movimientoApagado() ? 'none' : `transform ${MS_CHICO}ms ${CURVA_RESORTE}`
+            }}
+          />
+        </button>
       )}
 
       {/* ARCHIVADOS, AL PIE DE LA LISTA. 24-09-2026. Vivia en el menu del
           engranaje -"Ver Archivados"-, que es de ajustes. Los archivados son
           guiones, y se buscan donde estan los guiones. Solo aparece si hay
-          alguno, con cuantos son; adentro, el mismo lugar lleva de vuelta. */}
-      {!busqueda.trim() && (cantidadArchivados > 0 || mostrarArchivados) && (
+          alguno, con cuantos son; adentro, el mismo lugar lleva de vuelta.
+          -28-09-2026, tarea 76: solo con la lista entera -desplegada, o sin nada que
+          plegar-, al pie, debajo de "Ver menos". */}
+      {!busqueda.trim() && listaEntera && (cantidadArchivados > 0 || mostrarArchivados) && (
         <button
           type="button"
           data-testid="btn-ver-archivados"
@@ -982,47 +1157,18 @@ export default function BibliotecaView({
           Con el portal cuelga de body, ningun transform lo alcanza y se queda
           quieto. La alternativa era sacarle el transform a la transicion, y esa
           curva esta decidida y medida en circuito.html: no se toca por esto. */}
-      {mostrarBotonCrear && createPortal(
-        <button
-        onClick={() => {
-          hapticaToqueSuave()
-          onCrearNuevo()
-        }}
-        data-testid="btn-crear-guion-flotante"
-        title={t('crearGuion')}
-        aria-label={t('crearGuion')}
-        style={{
-          position: 'fixed',
-          // EL AREA SEGURA. Este boton se quedo afuera de la tarea 43, que se la sumo
-          // al relleno de la raiz y a la barra de controles de la lectura. Con el
-          // borde a borde obligatorio del SDK 36, 32 px se miden desde el borde FISICO
-          // de la pantalla, asi que la barra de navegacion se lo come casi entero.
-          // Javier lo vio en el telefono el 16 de septiembre de 2026.
-          bottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
-          right: 'calc(32px + env(safe-area-inset-right, 0px))',
-          backgroundColor: 'var(--bg-menu)',
-          color: 'var(--color-texto)',
-          borderRadius: 'var(--redondeo-pildora)',
-          // 56, la medida de siempre para un boton flotante. Estaba en 44, que es el
-          // MINIMO tocable: la tarea 48 lo hizo secundario -Leer paso a ser la accion
-          // principal- y secundario se confundio con apretado.
-          width: 56,
-          height: 56,
-          fontSize: 'var(--texto-display)',
-          fontWeight: 400,
-          cursor: 'pointer',
-          border: 'calc(1px) solid rgba(255, 255, 255, 0.08)',
-          boxShadow: 'inset 0 calc(1px) 0 rgba(255, 255, 255, 0.06)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 100
-        }}
-        >
-          +
-        </button>,
-        document.body
-      )}
+      {/* EL BOTON FLOTANTE SE RETIRO EL 28-09-2026. Con la lista plegada -tarea 76- la tira de
+          videos sube a la primera pantalla, y el "+" de 56 abajo a la derecha tapaba la tercera
+          miniatura. Javier eligio, mirando un dibujo, llevarlo junto al titulo "Guiones"
+          -.boton-crear-guion, fila-titulo-seccion, arriba en este archivo-. Lo que decian sus
+          comentarios -el area segura del SDK 36, el 56 que no es el minimo, el portal para que
+          no lo alcance el transform- queda aca como memoria: si el "+" vuelve a flotar, esas tres
+          cosas siguen valiendo. Estaba asi:
+            bottom: calc(32px + env(safe-area-inset-bottom)); right: calc(32px + ...);
+            56 x 56, --bg-menu, redondeo pildora, borde blanco 8% y brillo interior 6%;
+            EL AREA SEGURA: se quedo afuera de la tarea 43; con el borde a borde del SDK 36 la
+            barra de navegacion se lo comia -Javier, 16-09-2026-.
+            56 Y NO 44: la tarea 48 lo hizo secundario, y secundario se confundio con apretado. */}
     </div>
   )
 }

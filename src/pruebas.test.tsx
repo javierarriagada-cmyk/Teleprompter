@@ -25,6 +25,7 @@ import BarraDeTiempo from './components/BarraDeTiempo'
 import { EditorGuion } from './components/EditorGuion'
 import { TramoFormato } from './datos/modelo'
 import { editorDelGuion, escribirEnGuion, textoDelGuion } from './pruebas/ayudaEditor'
+import { desplegarGuiones } from './pruebas/ayudaPortada'
 import { importarTexto } from './datos/importar'
 
 function guionSimple(texto: string, titulo = 'Guion de prueba'): Guion {
@@ -318,7 +319,7 @@ Esta es la tercera línea`)
     // Por screen y no por container: el "+" cuelga de body a proposito, para
     // que el transform de la transicion de pantalla no lo arrastre. Ver el
     // comentario del portal en BibliotecaView.
-    const botonCrear = screen.getByTestId('btn-crear-guion-flotante')
+    const botonCrear = screen.getByTestId('btn-crear-guion')
     expect(botonCrear).not.toBeNull()
 
     await act(async () => {
@@ -1285,6 +1286,10 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       const divs = Array.from(lista ? lista.querySelectorAll('.texto-titulo') : [])
       return divs.map((d) => d.textContent?.trim() || '').filter((t) => t.length > 0)
     }
+
+    // Desde la tarea 76 -28-09-2026- la lista muestra 3 y "Ver todos": se despliega para ver
+    // los nueve y la busqueda.
+    desplegarGuiones(container)
 
     const titulos = obtenerTitulosVisibles()
     expect(titulos.length).toBe(9)
@@ -2263,7 +2268,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     })
 
     await act(async () => {
-      fireEvent.click(screen.getByTestId('btn-crear-guion-flotante'))
+      fireEvent.click(screen.getByTestId('btn-crear-guion'))
       await new Promise((r) => setTimeout(r, 100))
     })
     expect(screen.getByTestId('btn-abrir-archivo')).not.toBeNull()
@@ -2431,6 +2436,10 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
     })
 
     // 1. Con filtro apagado y búsqueda vacía, no aparece en la lista principal
+    expect(container!.textContent).not.toContain('Guion Oculto Archivado')
+
+    // Desde la tarea 76 -28-09-2026- "Archivados" y la busqueda viven en la lista desplegada.
+    desplegarGuiones(container!)
     expect(container!.textContent).not.toContain('Guion Oculto Archivado')
 
     // 2. Con el filtro encendido, sí aparece. Desde el 24-09-2026 el filtro es
@@ -2892,6 +2901,10 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
+    // Desde la tarea 76 -28-09-2026- la busqueda solo vive en la lista desplegada: se despliega
+    // en los dos casos, asi lo que se compara es cuantos guiones hay y no si la lista esta
+    // plegada.
+    desplegarGuiones(container8!)
     expect(container8!.querySelector('[data-testid="input-busqueda-biblioteca"]')).toBeNull()
 
     const repo9 = new RepositorioMemoria()
@@ -2906,6 +2919,7 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
+    desplegarGuiones(container9!)
     expect(container9!.querySelector('[data-testid="input-busqueda-biblioteca"]')).not.toBeNull()
   })
 
@@ -3114,6 +3128,8 @@ describe('Pruebas TAREA 19 (T102-T107)', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
 
+    // Desde la tarea 76 -28-09-2026- la busqueda vive en la lista desplegada.
+    desplegarGuiones(container!)
     const busquedaInput = container!.querySelector('input[data-testid="input-busqueda-biblioteca"]') as HTMLInputElement
     expect(busquedaInput).not.toBeNull()
 

@@ -200,6 +200,17 @@ function Trazo({ tamano = 22, children, ...props }: PropsIcono & { children: Rea
   )
 }
 
+/** Una cruz: crear un guion. Dibujada con el trazo de la casa y no con el caracter "+", que
+ *  cambia de grosor y de altura con cada tipografia -28-09-2026, junto al titulo Guiones-. */
+export function IconoMas(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M12 5v14" />
+      <path d="M5 12h14" />
+    </Trazo>
+  )
+}
+
 /** Dos flechas en circulo: dar vuelta la camara. */
 export function IconoVoltear(props: PropsIcono) {
   return (
@@ -288,3 +299,53 @@ export function IconoSol(props: PropsIcono) {
   )
 }
 
+
+/** Chevron hacia abajo: "Ver todos" en la portada -tarea 76, 28-09-2026-. Al desplegar la
+ * lista gira 180 grados en su lugar -BibliotecaView.tsx-, así que se dibuja una sola vez,
+ * apuntando a lo que va a aparecer. */
+export function IconoChevron(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M6 9l6 6 6-6" />
+    </Trazo>
+  )
+}
+
+/** SIN VIDEOS -tarea 76, 28-09-2026-. Un visor de cámara: cuatro esquinas en L en el rojo de
+ * grabar y, adentro, una filmadora de líneas con el triángulo de reproducir. Javier lo eligió
+ * de la imagen de una auditoría; está hecho con las piezas de este archivo.
+ *
+ * Mide 96 x 72 y el viewBox es del mismo tamaño A PROPÓSITO: con un viewBox de 24 escalado a 96,
+ * el trazo de 1.6 saldría cuatro veces más grueso que el de los demás iconos. Así, 1.6 es 1.6.
+ *
+ * El rojo es var(--color-grabando) -el único rojo de la pantalla- y va en style y no en el
+ * atributo stroke: un var() en un atributo de presentación no lo lee cualquier WebView. Lo
+ * demás toma currentColor, que TiraGrabaciones pinta con --color-apagado. */
+export function IconoSinVideos(props: React.SVGProps<SVGSVGElement>) {
+  const rojo: React.CSSProperties = { stroke: 'var(--color-grabando)' }
+  return (
+    <svg
+      width={96}
+      height={72}
+      viewBox="0 0 96 72"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      {/* El visor: cuatro L con la esquina redondeada. */}
+      <path d="M4 18V8a4 4 0 0 1 4-4h10" style={rojo} />
+      <path d="M78 4h10a4 4 0 0 1 4 4v10" style={rojo} />
+      <path d="M92 54v10a4 4 0 0 1-4 4H78" style={rojo} />
+      <path d="M18 68H8a4 4 0 0 1-4-4V54" style={rojo} />
+      {/* La filmadora, centrada en el visor: el cuerpo y el lente trapecio a la derecha. */}
+      <rect x="26" y="24" width="32" height="24" rx="5" />
+      <path d="M58 32l12-6v20l-12-6" />
+      {/* Reproducir, relleno y con las puntas suavizadas por el mismo trazo redondeado. */}
+      <path d="M39 30.5l7.5 5.5-7.5 5.5z" style={{ ...rojo, fill: 'var(--color-grabando)' }} />
+    </svg>
+  )
+}

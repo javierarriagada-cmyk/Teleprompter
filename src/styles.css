@@ -16,6 +16,10 @@
   --velo-modal: rgba(21, 19, 18, 0.72);
 
   --texto-display: 28px;
+  /* EL ESCALON ENTRE TITULO Y DISPLAY -28-09-2026-. La escala saltaba de 18 a 28. Los titulos
+     que ordenan la portada -Guiones, Videos- y la salida "Guiones" del editor. Javier: "la
+     palabra guiones deberia crecer un poquito". */
+  --texto-seccion: 22px;
   --texto-titulo: 18px;
   --texto-cuerpo: 15px;
   --texto-meta: 13px;
@@ -33,6 +37,14 @@
      ACA. Era 24px; 27-09-2026 sube a 64: una persona abrio Leer y dos veces empezo a hablar
      sin tocar Empezar -Javier: "esta muy abajo"-. Los tres lo usan, asi no se desalinean. */
   --circulo-desde-abajo: 64px;
+  /* LA BANDA DE TOMAS DEL EDITOR -BandaTomas.tsx, tarea 76, 28-09-2026-. La miniatura es la de
+     la tira de la portada -132 x 88, 3:2- a escala: 84 x 56, para que una toma se reconozca
+     igual en los dos lugares. El alto de la banda es su título -una línea de texto-meta, con
+     el interlineado 1.4 de .texto-meta-, el aire-1 y la miniatura: 78,2 px, por debajo de los
+     80 que pidió Javier para que el guion siga siendo lo principal. EditorView suma este
+     mismo alto al relleno de abajo, así el final del texto no queda tapado. */
+  --alto-miniatura-banda: 56px;
+  --alto-banda-tomas: calc(var(--texto-meta) * 1.4 + var(--aire-1) + var(--alto-miniatura-banda));
 }
 
 [data-tema="claro"] {
@@ -107,6 +119,48 @@ body {
   font-size: var(--texto-titulo);
   font-weight: 600;
   line-height: 1.3;
+}
+/* Los titulos de seccion de la portada -Guiones, Archivados, Videos-: un escalon mas que
+   texto-titulo, iguales entre si porque son hermanos. 28-09-2026. */
+.texto-titulo.titulo-seccion {
+  font-size: var(--texto-seccion);
+}
+/* La fila del titulo Guiones con el "+" a la derecha -28-09-2026-. El "+" era un boton
+   flotante abajo a la derecha y tapaba la tira de videos cuando la lista plegada la subio a la
+   primera pantalla. Centrados en vertical; el "+" queda alineado al borde derecho de las filas. */
+.fila-titulo-seccion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--aire-3);
+  margin-bottom: var(--aire-3);
+}
+/* El "+": se ve un circulo de 34 -el gris de las filas, el borde del engranaje- y se toca un
+   cuadrado de 44, el minimo tocable. El margen negativo devuelve lo que agrega el relleno: el
+   circulo queda alineado al borde de las filas y no se corre. */
+.boton-crear-guion {
+  width: 44px;
+  height: 44px;
+  margin: calc(-1 * var(--aire-1)) calc(-1 * var(--aire-1)) calc(-1 * var(--aire-1)) 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.boton-crear-guion > span {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--redondeo-pildora);
+  background-color: var(--bg-panel);
+  border: 1px solid var(--color-separador);
+  color: var(--color-texto);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .texto-cuerpo {
@@ -655,8 +709,10 @@ textarea::placeholder {
   letter-spacing: 0.04em;
   color: var(--color-apagado);
 }
+/* 28-09-2026: sube a --texto-seccion, el mismo escalon del titulo Guiones de la portada. Javier,
+   mirando el editor en el telefono: "ese guiones tambien esta pequeño". */
 .volver-guiones {
-  font-size: var(--texto-titulo);
+  font-size: var(--texto-seccion);
   font-weight: 500;
   line-height: 1.3;
 }
@@ -1228,4 +1284,190 @@ button.opcion-subtitulos.activa {
 @media (prefers-reduced-motion: reduce) {
   .opciones-subtitulos { animation: none; }
   .boton-subtitulos-flecha { transition: none; }
+}
+
+/* ==========================================================================
+   TAREA 76 -28-09-2026-: LA PORTADA QUE NO CRECE SIN FIN, LOS VIDEOS VACÍOS CON
+   DIBUJO Y LAS TOMAS DEL GUION ABIERTO. Javier: "de excelencia visual" y "cuida la
+   proporcionalidad". Todo se mide con la escala que ya existía.
+   ========================================================================== */
+
+/* "VER TODOS" -BibliotecaView.tsx-. Un botón de texto que se lee como continuación de la
+   lista: ancho de la columna, 44 px de alto -el mínimo tocable-, texto-meta en gris y el
+   chevron a 4 px del texto -la escalera: entre un ícono y su palabra-. No lleva margen: el
+   aire de arriba es el margen de la última fila -var(--aire-3)-, así ocupa el lugar de una
+   fila más en el mismo ritmo, ni pegado ni flotando. El peso 600 es el de su hermano de
+   abajo, "Archivados · n" -.enlace-archivados-. */
+.ver-todos-guiones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--aire-1);
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 var(--aire-3);
+  background: transparent;
+  border: none;
+  color: var(--color-apagado);
+  font-size: var(--texto-meta);
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+/* LA BÚSQUEDA ABRE SU LUGAR, NO APARECE DE GOLPE. Vive arriba de las filas y solo con la
+   lista desplegada: si entrara de una, las tres filas de arriba y "Ver todos" -bajo el dedo
+   que acaba de tocarlo- saltarían hacia abajo lo que mide. Crece de 0 a su alto con la
+   entrada de la casa -grid-template-rows de 0fr a 1fr; la duración y la curva van en línea,
+   de movimiento.tsx-. Su margen de abajo va ADENTRO -padding- para que crezca con ella: es
+   var(--aire-3), el mismo que separa una fila de la siguiente. */
+.buscador-guiones {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+.buscador-guiones > div {
+  min-height: 0;
+  overflow: hidden;
+  padding-bottom: var(--aire-3);
+}
+@keyframes buscadorAbre {
+  from { grid-template-rows: 0fr; opacity: 0; }
+  to { grid-template-rows: 1fr; opacity: 1; }
+}
+
+/* SIN VIDEOS, CON DIBUJO -TiraGrabaciones.tsx-. Un bloque centrado que respira -var(--aire-5)
+   arriba y abajo- sin caja ni borde. Del dibujo al título, var(--aire-3): lo que va del
+   título de una sección a su contenido. Del título a la línea, var(--aire-1): son una sola
+   frase partida en dos pesos. Dibujo, título y línea suman 148 px con la línea en dos
+   renglones: menos que dos filas de guion -171 px-. text-wrap: balance reparte la línea en
+   dos renglones parejos en vez de dejar una palabra sola abajo. */
+.videos-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--aire-5) 0;
+  color: var(--color-apagado);
+}
+.videos-vacio-titulo {
+  margin-top: var(--aire-3);
+  font-size: var(--texto-cuerpo);
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--color-texto);
+}
+.videos-vacio-linea {
+  margin-top: var(--aire-1);
+  font-size: var(--texto-meta);
+  line-height: 1.4;
+  color: var(--color-apagado);
+  text-wrap: balance;
+}
+
+/* LAS TOMAS DEL GUION ABIERTO -BandaTomas.tsx-. Va encima de Leer y Grabar, en el mismo
+   contenedor fijo, y mide var(--alto-banda-tomas): título, aire-1, miniaturas. La banda sí
+   recibe el dedo -el contenedor no, para que el texto de al lado siga tocable-: un toque
+   entre dos miniaturas no tiene que caer en el guion de atrás y abrir el teclado. */
+.banda-tomas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aire-1);
+  height: var(--alto-banda-tomas);
+  pointer-events: auto;
+}
+/* EL FONDO DE LA BANDA: el suelo de la pantalla subiendo a transparente. Es un ::before SIN
+   posición propia en la banda, así que se mide contra el contenedor fijo de EditorView -el
+   primer ancestro posicionado-: cubre de borde a borde de la pantalla y hasta abajo, detrás
+   de Leer y Grabar, y sube var(--aire-5) por encima de la banda para el degradado. Si solo
+   cubriera la banda, el texto del guion asomaría entre la banda y los botones: tres franjas
+   en vez de una. Viaja con la banda: se va con ella al escribir y entra con ella. Sin
+   sombra y sin borde. Los botones van por encima -zIndex 1 en EditorView-.
+   COPIA: el contenedor queda a 32 px del borde de abajo más el área segura -su bottom en
+   EditorView.tsx-; para llegar hasta el borde, el fondo baja lo mismo. Si cambia allá,
+   cambia acá. */
+.banda-tomas::before {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--aire-5));
+  left: 0;
+  right: 0;
+  bottom: calc(-1 * (32px + env(safe-area-inset-bottom, 0px)));
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--bg-suelo) calc(100% - var(--aire-5)), transparent);
+}
+.banda-tomas-titulo {
+  font-size: var(--texto-meta);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-apagado);
+}
+/* Desplazamiento lateral sin barra: una barra visible le suma alto a la banda en algunos
+   navegadores y la pasa de los 80 px. En Android la barra ya es flotante. */
+.banda-tomas-fila {
+  display: flex;
+  gap: var(--aire-2);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.banda-tomas-fila::-webkit-scrollbar {
+  display: none;
+}
+/* 84 x 56: el alto y la proporción 3:2 de la tira. Entre miniatura y miniatura, var(--aire-2):
+   el 12 de la tira a esta escala da 7,6, y la escalera dice 8 -cosas del mismo grupo-. */
+.miniatura-banda {
+  position: relative;
+  flex: 0 0 auto;
+  width: calc(var(--alto-miniatura-banda) * 3 / 2);
+  height: var(--alto-miniatura-banda);
+  padding: 0;
+  border: none;
+  border-radius: var(--redondeo);
+  overflow: hidden;
+  background: var(--bg-panel);
+  cursor: pointer;
+}
+/* button.btn-deformable -píldora- le gana por especificidad: el mismo arreglo que
+   .pareja-aa. Al apretar se deforma como todos los botones. */
+button.btn-deformable.miniatura-banda:not(:active) {
+  border-radius: var(--redondeo);
+}
+.miniatura-banda img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Las marcas sobre la miniatura son las de la tira -TiraGrabaciones.tsx, en línea en
+   TarjetaToma-: la duración abajo a la derecha, "incompleta" arriba a la izquierda y "sin
+   audio" abajo a la izquierda, con los mismos fondos. Van sobre la imagen y no sobre la app,
+   así que no cambian con el tema. COPIA: si cambian allá, cambian acá. La letra es la del
+   escalón etiqueta -11-; la tira escribe 10 en las dos marcas rojas. */
+.marca-toma {
+  position: absolute;
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: #fff;
+  font-size: var(--texto-etiqueta);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.marca-toma-duracion {
+  right: 6px;
+  bottom: 6px;
+  background: rgba(0, 0, 0, 0.7);
+}
+.marca-toma-incompleta {
+  left: 6px;
+  top: 6px;
+  background: rgba(180, 40, 40, 0.9);
+  font-weight: 700;
+}
+.marca-toma-sin-audio {
+  left: 6px;
+  bottom: 6px;
+  background: rgba(180, 40, 40, 0.9);
 }

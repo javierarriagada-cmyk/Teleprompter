@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
-import { Guion, Bloque, TramoFormato, contarPalabras, duracionDeLectura, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
+import { Guion, Bloque, TramoFormato, ResumenGrabacion, contarPalabras, duracionDeLectura, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
 import { consolidarGuion } from '../datos/consolidar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { hapticaSeleccion, hapticaToqueSuave } from '../haptica'
 import { SelectorLetra, SelectorAncho } from './ControlesAa'
 import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
 import { IconoAtras, IconoEmpezar } from './IconosApp'
+import BandaTomas from './BandaTomas'
 import { EditorGuion } from './EditorGuion'
 import { familiaLectura } from './estiloLectura'
 import type { Editor } from '@tiptap/react'
@@ -67,6 +68,11 @@ interface EditorViewProps {
   // -24-09-2026: la vibracion salio de ese menu; la decide el telefono.-
   onEntrarGrabar?: (rect?: DOMRect) => void
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
+  // LAS TOMAS DE ESTE GUION -tarea 76, 28-09-2026-: App.tsx las filtra por guionId y las
+  // ordena de la más nueva a la más vieja. Van en la banda de abajo -BandaTomas.tsx-, y un
+  // toque abre el reproductor, que App dibuja encima de cualquier vista.
+  tomas?: ResumenGrabacion[]
+  onAbrirToma?: (g: ResumenGrabacion) => void
   'data-pantalla-direccion'?: string
   style?: React.CSSProperties
   onAnimationEnd?: (e: React.AnimationEvent) => void
@@ -94,6 +100,11 @@ function generarIdBloque(): string {
 // conecte MotorNativo con el modelo ingles en el telefono, elegir EN todavia no cambia lo
 // que escucha el motor.
 // La linea de meta ya no lleva el nombre del idioma: lo dice el boton, a la vista.
+// EL ANCHO MÁXIMO DE LEER Y DE GRABAR en la barra de abajo. Era 160 escrito en los dos botones;
+// desde la tarea 76 -28-09-2026- lo usa también la banda de tomas, que va encima con el ancho
+// de los dos juntos: su primera miniatura empieza donde empieza Leer. Un solo número.
+const ANCHO_BOTON_BARRA = 160
+
 const NOMBRE_IDIOMA: Record<string, ClaveTexto> = {
   es: 'idiomaEspanol',
   en: 'idiomaIngles'
@@ -119,6 +130,8 @@ export default function EditorView({
   setTipoFuente,
   onEntrarGrabar,
   onRegistrarCerrarModal,
+  tomas = [],
+  onAbrirToma,
   'data-pantalla-direccion': dataPantallaDireccion,
   style,
   onAnimationEnd
@@ -209,6 +222,9 @@ export default function EditorView({
   const editorRef = useRef<Editor | null>(null)
   const [hayTextoSeleccionado, setHayTextoSeleccionado] = useState(false)
   const [tituloEnfocado, setTituloEnfocado] = useState(false)
+  // El texto del guion tiene el foco -tarea 76-: mientras se escribe, en el título o en el
+  // texto, la banda de tomas se esconde para devolverle el espacio al texto y al teclado.
+  const [textoEnfocado, setTextoEnfocado] = useState(false)
   const [barraLeerVisible, setBarraLeerVisible] = useState(true)
   const ultimoScrollTopRef = useRef<number>(0)
   const timerScrollStopRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -394,6 +410,14 @@ export default function EditorView({
 
   const btnLeerRef = useRef<HTMLButtonElement>(null)
 
+  // LA BANDA DE TOMAS -tarea 76-. Vive con Leer y Grabar, así que existe cuando ellos existen:
+  // con el guion vacío -Pegar texto y Abrir archivo- no hay banda. Mientras se escribe no se
+  // ve. hayBanda, y no bandaVisible, es lo que agranda el relleno de abajo: si el relleno se
+  // achicara al tomar el foco, con la página al fondo el navegador recortaría el desplazamiento
+  // y el texto saltaría justo cuando se empieza a escribir.
+  const hayBanda = tomas.length > 0 && numPalabras > 0 && !!onAbrirToma
+  const bandaVisible = hayBanda && !tituloEnfocado && !textoEnfocado
+
   const bloqueUnico: Bloque = (guion.bloques && guion.bloques[0])
     ? guion.bloques[0]
     : { id: 'b-inicial', nombre: '', texto: '', tramos: [] }
@@ -402,7 +426,22 @@ export default function EditorView({
     <div
       data-pantalla-direccion={dataPantallaDireccion}
       onAnimationEnd={onAnimationEnd}
-      style={{ maxWidth: 800, margin: '0 auto', padding: 'calc(20px + env(safe-area-inset-top, 0px)) var(--aire-4) calc(130px + env(safe-area-inset-bottom, 0px)) var(--aire-4)', position: 'relative', ...style }}
+      style={{
+        maxWidth: 800,
+        margin: '0 auto',
+        // Con la banda de tomas, el relleno de abajo crece lo que mide la banda y su aire hasta
+        // los botones -var(--alto-banda-tomas) y var(--aire-3)-: el final del guion no queda
+        // tapado. Tarea 76, 28-09-2026.
+        // ARRIBA, SIN LA BARRA DE ESTADO -28-09-2026-. Era calc(20px + env(safe-area-inset-top)), y
+        // el marco de App.tsx ya suma 16px + esa misma area segura: en el editor se contaba DOS
+        // veces y quedaba una franja negra de ~80 px sobre "Guiones". Javier, en el telefono: "ese
+        // espacio deberia ser la mitad". La portada no la suma: queda igual que ella.
+        padding: hayBanda
+          ? 'var(--aire-4) var(--aire-4) calc(130px + var(--alto-banda-tomas) + var(--aire-3) + env(safe-area-inset-bottom, 0px)) var(--aire-4)'
+          : 'var(--aire-4) var(--aire-4) calc(130px + env(safe-area-inset-bottom, 0px)) var(--aire-4)',
+        position: 'relative',
+        ...style
+      }}
     >
       <input
         type="file"
@@ -714,7 +753,15 @@ export default function EditorView({
       )}
 
       {/* Hoja Única de Texto */}
-      <div style={{ position: 'relative' }}>
+      {/* onFocus y onBlur escuchan el foco del editor -Tiptap, contenteditable- desde afuera:
+          en React suben como focusin y focusout. Tarea 76: la banda de tomas se esconde
+          mientras se escribe. La barra de formato no le quita el foco al editor -sus botones
+          hacen preventDefault-, así que no la hace volver. */}
+      <div
+        style={{ position: 'relative' }}
+        onFocus={() => setTextoEnfocado(true)}
+        onBlur={() => setTextoEnfocado(false)}
+      >
         {/* Controles de formato: SOLO SI HAY TEXTO SELECCIONADO */}
         {/* LA BARRA DE FORMATO FLOTA ARRIBA, NO EMPUJA EL GUION. Tarea 72.
             Hasta la 72 se insertaba en el flujo, justo arriba del textarea:
@@ -964,6 +1011,17 @@ export default function EditorView({
       )}
 
       {/* Botón de Leer en voz alta Fijo Abajo - Solo cuando hay palabras */}
+      {/* -28-09-2026, tarea 76: el contenedor lleva ahora, encima de Leer y Grabar, la banda
+          de tomas del guion -BandaTomas.tsx-. Todo lo que sube y baja con barraLeerVisible
+          está en este contenedor, y el transform sigue siendo UNO, acá -ver el comentario del
+          23-09 en el botón Leer-.
+          La banda es la primera línea de este mismo flex -flexWrap y flex-basis 100%-, no una
+          caja nueva alrededor de los botones: Leer y Grabar siguen siendo hijos directos de
+          este contenedor, con su bottom seguro y su translateY -T224, tarea48.test.tsx-.
+          Su ancho máximo es el de los dos botones juntos y va centrada como ellos: la primera
+          miniatura empieza donde empieza Leer, a cualquier ancho -ANCHO_BOTON_BARRA-.
+          Escondida, la barra baja 120 px más lo que mide la banda con su aire: con 120 solos
+          quedaba media banda a la vista. Sin banda, los 120 de siempre. */}
       {numPalabras > 0 && (
         <div
           style={{
@@ -972,13 +1030,20 @@ export default function EditorView({
             left: 0,
             right: 0,
             display: 'flex',
+            flexWrap: 'wrap',
             justifyContent: 'center',
             alignItems: 'center',
-            gap: 'var(--aire-2)',
+            // Entre la banda y los botones, var(--aire-3); entre Leer y Grabar, var(--aire-2)
+            // como siempre.
+            gap: 'var(--aire-3) var(--aire-2)',
             padding: '0 var(--aire-4)',
             pointerEvents: 'none',
             zIndex: 100,
-            transform: barraLeerVisible ? 'translateY(0)' : 'translateY(120px)',
+            transform: barraLeerVisible
+              ? 'translateY(0)'
+              : bandaVisible
+              ? 'translateY(calc(120px + var(--alto-banda-tomas) + var(--aire-3)))'
+              : 'translateY(120px)',
             transition: movimientoApagado()
               ? 'none'
               : barraLeerVisible
@@ -986,6 +1051,11 @@ export default function EditorView({
               : `transform ${MS_DEDO}ms ${CURVA_SALE}`
           }}
         >
+          {bandaVisible && onAbrirToma && (
+            <div style={{ flex: '0 0 100%', maxWidth: `calc(${2 * ANCHO_BOTON_BARRA}px + var(--aire-2))` }}>
+              <BandaTomas tomas={tomas} onAbrirToma={onAbrirToma} />
+            </div>
+          )}
           <button
             ref={btnLeerRef}
             className="btn-deformable"
@@ -996,8 +1066,12 @@ export default function EditorView({
             data-testid="btn-leer-guion-fijo"
             style={{
               pointerEvents: 'auto',
+              // Por encima del fondo de la banda de tomas -.banda-tomas::before, styles.css-:
+              // mientras la banda entra -opacidad- es una capa propia, y sin esto su fondo se
+              // pintaría encima de los botones hasta terminar de entrar. Tarea 76.
+              zIndex: 1,
               flex: 1,
-              maxWidth: 160,
+              maxWidth: ANCHO_BOTON_BARRA,
               padding: 'var(--aire-3) var(--aire-4)',
               fontSize: 'var(--texto-titulo)',
               fontWeight: 600,
@@ -1032,8 +1106,12 @@ export default function EditorView({
             data-testid="btn-grabar-guion-fijo"
             style={{
               pointerEvents: 'auto',
+              // Por encima del fondo de la banda de tomas -.banda-tomas::before, styles.css-:
+              // mientras la banda entra -opacidad- es una capa propia, y sin esto su fondo se
+              // pintaría encima de los botones hasta terminar de entrar. Tarea 76.
+              zIndex: 1,
               flex: 1,
-              maxWidth: 160,
+              maxWidth: ANCHO_BOTON_BARRA,
               padding: 'var(--aire-3) var(--aire-4)',
               fontSize: 'var(--texto-titulo)',
               fontWeight: 600,
