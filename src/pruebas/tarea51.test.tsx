@@ -260,43 +260,25 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
     expect(COLOR_MARCA_PUNTO.toUpperCase()).toBe(marcaPunto)
   })
 
-  test('T268 - HOJA DE AJUSTES SE CIERRA ARRASTRANDOLA. Con la hoja abierta, un arrastre de 120 px hacia abajo la saca del documento; uno de 40 px la deja.', async () => {
+  // 28-09-2026, tarea 77: la hoja de ajustes del editor -y su cierre arrastrandola hacia abajo, que
+  // cuidaba esta prueba- se fue. El Aa abre la pantalla de Ajustes de App. Lo que se cuida ahora: el
+  // editor no monta ninguna hoja propia y le pide a App que abra Ajustes.
+  test('T268 - EL Aa YA NO ABRE UNA HOJA PROPIA. Pide la pantalla de Ajustes y no monta panel-ajustes.', async () => {
     const guion = guionNuevo('es')
+    const abrir = vi.fn()
     render(
       <EditorView
         guion={guion}
         onChangeGuion={() => {}}
         onVolverBiblioteca={() => {}}
         onEntrarLectura={() => {}}
+        onAbrirAjustes={abrir}
       />
     )
-
-    // Abrir hoja con Aa
-    const btnAa = screen.getByTestId('btn-menu-opciones-editor')
     await act(async () => {
-      btnAa.click()
+      screen.getByTestId('btn-menu-opciones-editor').click()
     })
-
-    const panel = screen.getByTestId('panel-ajustes')
-    expect(panel).not.toBeNull()
-
-    // 1. Arrastre de 40 px hacia abajo (menos de 96 px): la hoja se queda
-    await act(async () => {
-      fireEvent(panel, new MouseEvent('pointerdown', { clientY: 100, bubbles: true }))
-      fireEvent(panel, new MouseEvent('pointermove', { clientY: 140, bubbles: true }))
-      fireEvent(panel, new MouseEvent('pointerup', { clientY: 140, bubbles: true }))
-    })
-
-    expect(screen.queryByTestId('panel-ajustes')).not.toBeNull()
-
-    // 2. Arrastre de 120 px hacia abajo (más de 96 px): la hoja se cierra y sale del documento
-    const panelActual = screen.getByTestId('panel-ajustes')
-    await act(async () => {
-      fireEvent(panelActual, new MouseEvent('pointerdown', { clientY: 100, bubbles: true }))
-      fireEvent(panelActual, new MouseEvent('pointermove', { clientY: 220, bubbles: true }))
-      fireEvent(panelActual, new MouseEvent('pointerup', { clientY: 220, bubbles: true }))
-    })
-
+    expect(abrir).toHaveBeenCalledTimes(1)
     expect(screen.queryByTestId('panel-ajustes')).toBeNull()
   })
 

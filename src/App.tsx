@@ -353,6 +353,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [fontSize, setFontSize] = useState<number>(ajustarFuenteValida(ajustesPrevios.fontSize))
   // Ajustes es capa, no piso -tarea 77, 28-09-2026-. Encima de todo; atras solo la cierra.
   const [ajustesAbiertos, setAjustesAbiertos] = useState(false)
+  // Desde donde se abrio: cada puerta muestra lo suyo -PantallaAjustes, origen-.
+  const [origenAjustes, setOrigenAjustes] = useState<'portada' | 'editor' | 'leer' | 'grabar'>('portada')
   // MARGEN 5% POR OMISION. Javier lo eligio mirando, el 13 de septiembre de 2026: puso 5 y
   // dijo que asi queda bien. Con el tope de 90% que lleva la columna por dentro, 5% de
   // padding deja el texto en el 81% del ancho de la pantalla. Estaba en 10, que da 72%.
@@ -1256,8 +1258,9 @@ export default function App({ motor, repoOverride }: AppProps) {
     setFontSize(n)
   }
 
-  function handleAbrirAjustes() {
+  function handleAbrirAjustes(origen: 'portada' | 'editor' | 'leer' | 'grabar' = 'portada') {
     hapticaToqueSuave()
+    setOrigenAjustes(origen)
     setAjustesAbiertos(true)
   }
 
@@ -1699,7 +1702,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             setMedirLectura={setMedirLectura}
             tema={tema}
             setTema={setTema}
-            onAbrirAjustes={handleAbrirAjustes}
+            onAbrirAjustes={() => handleAbrirAjustes('portada')}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
             grabaciones={grabaciones}
             onAbrirGrabacion={(g) => setGrabacionAbierta(g)}
@@ -1751,6 +1754,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             setColorLetra={setColorLetra}
             tipoFuente={tipoFuente}
             setTipoFuente={setTipoFuente}
+            onAbrirAjustes={() => handleAbrirAjustes('editor')}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
             // LAS TOMAS DE ESTE GUION, de la más nueva a la más vieja -tarea 76, 28-09-2026-.
             // Salen de grabaciones, el mismo estado de la tira: al borrar la última desde el
@@ -1965,7 +1969,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               onLetraMenos={handleLetraMenos}
               onLetraMas={handleLetraMas}
               onElegirLetra={handleElegirLetra}
-              onAbrirAjustes={handleAbrirAjustes}
+              onAbrirAjustes={() => handleAbrirAjustes(conCamara ? 'grabar' : 'leer')}
               setColumnaAngosta={setColumnaAngosta}
               setMarginPercent={setMarginPercent}
               colorFondo={colorFondo}
@@ -2167,7 +2171,9 @@ export default function App({ motor, repoOverride }: AppProps) {
       {ajustesAbiertos && (
         <PantallaAjustes
           onCerrar={() => setAjustesAbiertos(false)}
+          origen={origenAjustes}
           fontSize={fontSize}
+          onElegirLetra={handleElegirLetra}
           tipoFuente={tipoFuente}
           setTipoFuente={(v) => {
             hapticaSeleccion()
@@ -2203,7 +2209,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               ? calcularMinutosDisponibles(bytesLibres, calidadVideo, grabaciones)
               : null
           }
-          conCamara={conCamara || calidadesSoportadas.length > 0}
+          conCamara={conCamara}
           tema={tema}
           setTema={(v) => {
             hapticaSeleccion()

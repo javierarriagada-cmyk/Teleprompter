@@ -747,6 +747,10 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(btnMenu)
     })
 
+    // 28-09-2026: el Aa del editor abre la pantalla de Ajustes; cada ajuste se elige en su dialogo.
+    await act(async () => {
+      fireEvent.click(container!.querySelector('[data-testid="fila-ancho-texto"]')!)
+    })
     const btnAngosta = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Angosto')!
     expect(btnAngosta).not.toBeUndefined()
 
@@ -756,7 +760,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
 
     // El cajon ya no tiene "Listo" -24-09-2026-: se cierra tocando afuera,
     // sobre el guion, que es la capa transparente.
-    const btnCerrar = container!.querySelector('[data-testid="capa-ajustes"]') as HTMLElement
+    const btnCerrar = container!.querySelector('[data-testid="btn-cerrar-ajustes"]') as HTMLElement
     await act(async () => {
       fireEvent.click(btnCerrar)
     })
@@ -780,10 +784,13 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
     })
     await act(async () => {
+      fireEvent.click(container!.querySelector('[data-testid="fila-ancho-texto"]')!)
+    })
+    await act(async () => {
       fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Ancho')!)
     })
     await act(async () => {
-      fireEvent.click(container!.querySelector('[data-testid="capa-ajustes"]')!)
+      fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes"]')!)
     })
 
     // Volver a lectura
@@ -820,7 +827,11 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(btnMenu)
     })
 
-    const btnAmbar = container!.querySelector('button[title="Negro con ámbar"]') as HTMLButtonElement
+    // 28-09-2026: el Aa del editor abre la pantalla de Ajustes; cada ajuste se elige en su dialogo.
+    await act(async () => {
+      fireEvent.click(container!.querySelector('[data-testid="fila-colores"]')!)
+    })
+    const btnAmbar = container!.querySelector('button[aria-label="Negro con ámbar"]') as HTMLButtonElement
     expect(btnAmbar).not.toBeNull()
 
     // Cambiar a Negro con Ámbar (#000000 / #F5C24B)
@@ -828,7 +839,7 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(btnAmbar)
     })
 
-    const btnCerrar = container!.querySelector('[data-testid="capa-ajustes"]') as HTMLElement
+    const btnCerrar = container!.querySelector('[data-testid="btn-cerrar-ajustes"]') as HTMLElement
     await act(async () => {
       fireEvent.click(btnCerrar)
     })
@@ -853,13 +864,16 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
     })
 
-    const btnBlanco = container!.querySelector('button[title="Blanco con negro"]') as HTMLButtonElement
+    await act(async () => {
+      fireEvent.click(container!.querySelector('[data-testid="fila-colores"]')!)
+    })
+    const btnBlanco = container!.querySelector('button[aria-label="Blanco con negro"]') as HTMLButtonElement
     await act(async () => {
       fireEvent.click(btnBlanco)
     })
 
     await act(async () => {
-      fireEvent.click(container!.querySelector('[data-testid="capa-ajustes"]')!)
+      fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes"]')!)
     })
 
     await act(async () => {
@@ -2129,21 +2143,15 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
     })
 
-    const btnMenos = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Disminuir letra panel')!
-    const btnMas = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Aumentar letra panel')!
-
-    const letra = () => container!.querySelector('[data-testid="valor-letra-panel"]')!.textContent
-
+    // 28-09-2026: el Aa del editor abre la pantalla de Ajustes; cada ajuste se elige en su dialogo.
+    // Los cinco pasos son las cinco opciones del dialogo: no hay forma de salirse de la escalera.
+    const letra = () => container!.querySelector('[data-testid="fila-tamano-letra"] .fila-ajuste-valor')!.textContent
     expect(letra()).toBe('24')
-
-    for (const esperado of ['18', '14', '14']) {
-      await act(async () => { fireEvent.click(btnMenos) })
-      expect(letra()).toBe(esperado)
-    }
-
-    for (const esperado of ['18', '24', '32', '42', '42']) {
-      await act(async () => { fireEvent.click(btnMas) })
-      expect(letra()).toBe(esperado)
+    for (const paso of ['14', '18', '24', '32', '42']) {
+      await act(async () => { fireEvent.click(container!.querySelector('[data-testid="fila-tamano-letra"]')!) })
+      expect(container!.querySelectorAll('[data-testid^="opcion-letra-"]').length).toBe(5)
+      await act(async () => { fireEvent.click(container!.querySelector(`[data-testid="opcion-letra-${paso}"]`)!) })
+      expect(letra()).toBe(paso)
     }
   })
 
@@ -2174,15 +2182,16 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       fireEvent.click(btnMenu)
     })
 
-    expect(container!.querySelector('div[data-testid="panel-ajustes"]')).not.toBeNull()
+    // 28-09-2026: el Aa del editor abre la pantalla de Ajustes; cada ajuste se elige en su dialogo.
+    expect(container!.querySelector('[data-testid="pantalla-ajustes"]')).not.toBeNull()
     expect(container!.textContent).not.toContain('Dónde lees:')
 
-    const btnCerrar = container!.querySelector('[data-testid="capa-ajustes"]') as HTMLElement
+    const btnCerrar = container!.querySelector('[data-testid="btn-cerrar-ajustes"]') as HTMLElement
     await act(async () => {
       fireEvent.click(btnCerrar)
     })
 
-    expect(container!.querySelector('div[data-testid="panel-ajustes"]')).toBeNull()
+    expect(container!.querySelector('[data-testid="pantalla-ajustes"]')).toBeNull()
     expect(container!.textContent).not.toContain('Dónde lees:')
   })
 
@@ -2582,12 +2591,15 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       fireEvent.click(container!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
     })
 
-    const btnMas = container!.querySelector('button[aria-label="Aumentar letra panel"]') as HTMLButtonElement
+    // 28-09-2026: el Aa del editor abre la pantalla de Ajustes; cada ajuste se elige en su dialogo.
     await act(async () => {
-      fireEvent.click(btnMas)
+      fireEvent.click(container!.querySelector('[data-testid="fila-tamano-letra"]')!)
+    })
+    await act(async () => {
+      fireEvent.click(container!.querySelector('[data-testid="opcion-letra-32"]')!)
     })
 
-    const valorLetra = container!.querySelector('[data-testid="valor-letra-panel"]')?.textContent
+    const valorLetra = container!.querySelector('[data-testid="fila-tamano-letra"] .fila-ajuste-valor')?.textContent
     expect(valorLetra).toBe('32')
 
     unmount!()
@@ -2610,7 +2622,7 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       fireEvent.click(container2!.querySelector('[data-testid="btn-menu-opciones-editor"]')!)
     })
 
-    expect(container2!.querySelector('[data-testid="valor-letra-panel"]')?.textContent).toBe('32')
+    expect(container2!.querySelector('[data-testid="fila-tamano-letra"] .fila-ajuste-valor')?.textContent).toBe('32')
 
     // Probar fallback de valor guardado inexistente (ej: 56)
     const ajustesViejos = JSON.parse(localStorage.getItem('teleprompter_ajustes') || '{}')
@@ -2635,7 +2647,7 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
     })
 
     // Cae al paso más cercano en la escalera (42)
-    expect(container3!.querySelector('[data-testid="valor-letra-panel"]')?.textContent).toBe('42')
+    expect(container3!.querySelector('[data-testid="fila-tamano-letra"] .fila-ajuste-valor')?.textContent).toBe('42')
   })
 
 })

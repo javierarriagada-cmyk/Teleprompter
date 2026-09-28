@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { App as CapacitorApp } from '@capacitor/app'
 import { IconoAtras, IconoChevron } from './IconosApp'
+import { hapticaSeleccion } from '../haptica'
 import { Interruptor } from './Interruptor'
-import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA } from './estiloLectura'
+import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, PASOS_LETRA } from './estiloLectura'
 import { PAREJAS_COLOR } from '../datos/modelo'
 import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
 import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
@@ -18,6 +20,7 @@ import { t, useTextos } from '../textos'
 // guardado no cambian: teleprompter_ajustes y sigo_subtitulos_estilo.
 
 export type DialogoAjustes =
+  | 'letra'
   | 'tipo'
   | 'ancho'
   | 'colores'
@@ -101,7 +104,9 @@ function FilaAjuste({
 
 export function PantallaAjustes({
   onCerrar,
+  origen = 'portada',
   fontSize,
+  onElegirLetra,
   tipoFuente,
   setTipoFuente,
   columnaAngosta,
@@ -125,7 +130,14 @@ export function PantallaAjustes({
   setTema
 }: {
   onCerrar: () => void
+  // DESDE DONDE SE ABRE -28-09-2026-. Javier: "por que subtitulos esta en ajustes que pueden
+  // estar para leer". Cada puerta muestra lo suyo: el guion y Leer, solo la lectura; Grabar,
+  // lectura y video; la portada, todo -tambien apariencia y acerca de-.
+  origen?: 'portada' | 'editor' | 'leer' | 'grabar'
   fontSize: number
+  // El tamano tambien vive aca -28-09-2026-: el Aa del editor abre esta misma pantalla, y
+  // Javier pidio un solo estilo de ajustes en toda la app. Los pasos son PASOS_LETRA.
+  onElegirLetra?: (n: number) => void
   tipoFuente: 'sans' | 'serif'
   setTipoFuente: (v: 'sans' | 'serif') => void
   columnaAngosta: boolean
@@ -154,7 +166,22 @@ export function PantallaAjustes({
 
   const letra = colorLetraEfectiva(colorFondo, colorLetra)
   const col = columnaLectura(columnaAngosta)
-  const mostrarVideo = conCamara && calidadesSoportadas.length > 0
+  const verVideo = origen === 'portada' || origen === 'grabar'
+  const verCalidad = verVideo && calidadesSoportadas.length > 0 && (conCamara || origen === 'portada')
+  const verApp = origen === 'portada'
+  // La version real, la del paquete -1.0 (457)-. Estaba escrita a mano como 0.2.0.
+  const [version, setVersion] = useState<string | null>(null)
+  useEffect(() => {
+    // Solo en el telefono: en el navegador -y en las pruebas- el plugin no trae getInfo.
+    if (!verApp || typeof (CapacitorApp as any).getInfo !== 'function') return
+    try {
+      CapacitorApp.getInfo()
+        .then((i) => setVersion(`${i.version} (${i.build})`))
+        .catch(() => setVersion(null))
+    } catch {
+      setVersion(null)
+    }
+  }, [verApp])
   const calidades = calidadesSoportadas.length > 0 ? calidadesSoportadas : ['1080p', '720p', '480p']
 
   function elegirYCerrar(fn: () => void) {
@@ -203,6 +230,12 @@ export function PantallaAjustes({
         </div>
 
         <FilaAjuste
+          testid="fila-tamano-letra"
+          nombre={t('tamanoLetra')}
+          valor={String(fontSize)}
+          onClick={() => setDialogo('letra')}
+        />
+        <FilaAjuste
           testid="fila-tipo-letra"
           nombre={t('tipografia')}
           valor={tipoFuente === 'serif' ? t('tipoSerif') : t('tipoSans')}
@@ -246,33 +279,24 @@ export function PantallaAjustes({
           )}
         />
 
-        {mostrarVideo && (
+        {verVideo && (
           <>
             <h2 className="titulo-seccion-ajustes">{t('seccionVideo')}</h2>
-            <FilaAjuste
-              testid="fila-calidad"
-              nombre={t('calidadVideo')}
-              valor={calidadVideo}
-              explicacion={
-                typeof minutosDisponibles === 'number'
-                  ? (minutosDisponibles >= 2
-                    ? t('minutosDisponibles', { n: Math.floor(minutosDisponibles) })
-                    : t('menosDeDosMinutos'))
-                  : undefined
-              }
-              onClick={() => setDialogo('calidad')}
-            />
-            <FilaAjuste
-              testid="fila-subtitulos"
-              nombre={t('subtitulos')}
-              valor={nombreEstiloSub(estiloSub)}
-              onClick={() => setDialogo('subtitulos')}
-            />
-          </>
-        )}
-        {!mostrarVideo && (
-          <>
-            <h2 className="titulo-seccion-ajustes">{t('seccionVideo')}</h2>
+            {verCalidad && (
+              <FilaAjuste
+                testid="fila-calidad"
+                nombre={t('calidadVideo')}
+                valor={calidadVideo}
+                explicacion={
+                  typeof minutosDisponibles === 'number'
+                    ? (minutosDisponibles >= 2
+                      ? t('minutosDisponibles', { n: Math.floor(minutosDisponibles) })
+                      : t('menosDeDosMinutos'))
+                    : undefined
+                }
+                onClick={() => setDialogo('calidad')}
+              />
+            )}
             <FilaAjuste
               testid="fila-subtitulos"
               nombre={t('subtitulos')}
@@ -282,35 +306,39 @@ export function PantallaAjustes({
           </>
         )}
 
-        <h2 className="titulo-seccion-ajustes">{t('seccionApariencia')}</h2>
-        <FilaAjuste
-          testid="fila-tema"
-          nombre={t('tema')}
-          valor={tema === 'claro' ? t('temaClaro') : t('temaOscuro')}
-          onClick={() => setDialogo('tema')}
-        />
-        <FilaAjuste
-          testid="fila-idioma"
-          nombre={t('idiomaDeLaApp')}
-          valor={idioma === 'es' ? 'Español' : 'English'}
-          onClick={() => setDialogo('idioma')}
-        />
+        {verApp && (
+          <>
+            <h2 className="titulo-seccion-ajustes">{t('seccionApariencia')}</h2>
+            <FilaAjuste
+              testid="fila-tema"
+              nombre={t('tema')}
+              valor={tema === 'claro' ? t('temaClaro') : t('temaOscuro')}
+              onClick={() => setDialogo('tema')}
+            />
+            <FilaAjuste
+              testid="fila-idioma"
+              nombre={t('idiomaDeLaApp')}
+              valor={idioma === 'es' ? 'Español' : 'English'}
+              onClick={() => setDialogo('idioma')}
+            />
 
-        <h2 className="titulo-seccion-ajustes">{t('seccionAcerca')}</h2>
-        <div className="fila-ajuste" data-testid="fila-version">
-          <div className="fila-ajuste-nombre">{t('version')}</div>
-          <span className="fila-ajuste-valor">0.2.0</span>
-        </div>
-        <FilaAjuste
-          testid="fila-privacidad"
-          nombre={t('privacidad')}
-          onClick={() => abrirEnlace(enlacePrivacidad)}
-        />
-        <FilaAjuste
-          testid="fila-soporte"
-          nombre={t('soporte')}
-          onClick={() => abrirEnlace(enlaceSoporte)}
-        />
+            <h2 className="titulo-seccion-ajustes">{t('seccionAcerca')}</h2>
+            <div className="fila-ajuste" data-testid="fila-version">
+              <div className="fila-ajuste-nombre">{t('version')}</div>
+              <span className="fila-ajuste-valor">{version ?? '—'}</span>
+            </div>
+            <FilaAjuste
+              testid="fila-privacidad"
+              nombre={t('privacidad')}
+              onClick={() => abrirEnlace(enlacePrivacidad)}
+            />
+            <FilaAjuste
+              testid="fila-soporte"
+              nombre={t('soporte')}
+              onClick={() => abrirEnlace(enlaceSoporte)}
+            />
+          </>
+        )}
       </div>
 
       {dialogo && (
@@ -327,6 +355,7 @@ export function PantallaAjustes({
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="dialogo-ajustes-titulo">
+              {dialogo === 'letra' && t('tamanoLetra')}
               {dialogo === 'tipo' && t('tipografia')}
               {dialogo === 'ancho' && t('anchoTexto')}
               {dialogo === 'colores' && t('coloresLectura')}
@@ -335,6 +364,26 @@ export function PantallaAjustes({
               {dialogo === 'tema' && t('tema')}
               {dialogo === 'idioma' && t('idiomaDeLaApp')}
             </h2>
+
+            {/* Cada tamano se muestra a su tamano: se elige mirando, no leyendo un numero. */}
+            {dialogo === 'letra' && (
+              <div className="lista-dialogo">
+                {PASOS_LETRA.map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    data-testid={`opcion-letra-${n}`}
+                    className={`fila-dialogo${fontSize === n ? ' elegida' : ''}`}
+                    aria-pressed={fontSize === n}
+                    aria-label={`${t('tamanoLetra')} ${n}`}
+                    onClick={() => elegirYCerrar(() => onElegirLetra?.(n))}
+                  >
+                    <span style={{ fontFamily: familiaLectura(tipoFuente), fontSize: Math.min(n, 32) }}>Aa</span>
+                    <span className="fila-ajuste-valor">{n}</span>
+                  </button>
+                ))}
+              </div>
+            )}
 
             {dialogo === 'tipo' && (
               <div className="lista-dialogo">
@@ -369,6 +418,8 @@ export function PantallaAjustes({
                     aria-label={o.n}
                     aria-pressed={o.activo}
                     onClick={() => elegirYCerrar(() => {
+                      // La vibracion corta de elegir, como en el cajon que reemplaza -T203-.
+                      hapticaSeleccion()
                       setColumnaAngosta(o.angosta)
                       setMarginPercent(o.margen)
                     })}
@@ -391,6 +442,7 @@ export function PantallaAjustes({
                       aria-label={nombrePareja(p.fondo, p.letra)}
                       aria-pressed={activa}
                       onClick={() => elegirYCerrar(() => {
+                        hapticaSeleccion()
                         setColorFondo(p.fondo)
                         setColorLetra(p.letra)
                       })}

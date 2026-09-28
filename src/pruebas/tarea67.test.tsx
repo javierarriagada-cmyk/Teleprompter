@@ -131,9 +131,10 @@ describe('Tarea 67 - la casa de cada ajuste y el gesto que se siente', () => {
     expect(screen.queryByText('Idioma del guion')).toBeNull()
     fireEvent.click(await screen.findByTestId('fila-guion-g-67'))
     fireEvent.click(await screen.findByTestId('btn-menu-opciones-editor'))
-    // Se busca SOLO adentro del panel Aa: el diagnostico de la portada tiene
+    // Se busca SOLO adentro de Ajustes: el diagnostico de la portada tiene
     // su propio <select> -el del motor, App.tsx- y no tiene que ver con esto.
-    const panel = await screen.findByTestId('panel-ajustes')
+    // 28-09-2026: el Aa abre la pantalla de Ajustes, no el cajon.
+    const panel = await screen.findByTestId('pantalla-ajustes')
     expect(panel.textContent).not.toContain('Idioma del guion')
     expect(panel.querySelector('select')).toBeNull()
   })

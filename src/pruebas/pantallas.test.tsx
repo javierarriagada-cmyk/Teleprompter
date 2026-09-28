@@ -42,6 +42,7 @@ async function simularGestoAtras() {
 import App from '../App'
 import BibliotecaView from '../components/BibliotecaView'
 import EditorView from '../components/EditorView'
+import { PantallaAjustes } from '../components/PantallaAjustes'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { Guion } from '../datos/modelo'
 import { MotorFake } from '../motor/MotorFake'
@@ -252,23 +253,17 @@ describe('Pruebas TAREA 31 (T160)', () => {
   ]
 
   test('T160: los menus del editor y de la biblioteca se cierran al tocar afuera y con Escape.', () => {
-    // 1. el Aa del editor
+    // 1. el Aa del editor -28-09-2026: ya no abre un cajon propio; pide la pantalla de Ajustes a App-
     {
+      const abrir = vi.fn()
       const { unmount } = render(
         React.createElement(EditorView, {
-          guion: guionEditor, onChangeGuion: () => {}, onVolverBiblioteca: () => {}, onEntrarLectura: () => {}
+          guion: guionEditor, onChangeGuion: () => {}, onVolverBiblioteca: () => {}, onEntrarLectura: () => {},
+          onAbrirAjustes: abrir
         })
       )
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-      expect(screen.queryByTestId('panel-ajustes')).not.toBeNull()
-
-      fireEvent.pointerDown(document.body)
-      expect(screen.queryByTestId('panel-ajustes')).toBeNull()
-
-      // y con Escape
-      fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-      expect(screen.queryByTestId('panel-ajustes')).not.toBeNull()
-      fireEvent.keyDown(document, { key: 'Escape' })
+      expect(abrir).toHaveBeenCalledTimes(1)
       expect(screen.queryByTestId('panel-ajustes')).toBeNull()
       unmount()
     }
@@ -608,6 +603,21 @@ describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)
   })
 })
 
+
+// 28-09-2026, tarea 77: EL CAJON Aa DEL EDITOR SE FUE. El Aa abre la pantalla de Ajustes de App
+// -origen "editor"-, la misma de la portada y de LISTO. Las pruebas que cuidaban el tamano, el ancho,
+// la tipografia y las parejas de color desde el cajon las cuidan ahora en esa pantalla.
+function ajustesDelEditor(p: Record<string, unknown> = {}) {
+  return React.createElement(PantallaAjustes, {
+    onCerrar: () => {}, origen: 'editor', fontSize: 24, tipoFuente: 'sans', setTipoFuente: () => {},
+    columnaAngosta: false, marginPercent: 5, setColumnaAngosta: () => {}, setMarginPercent: () => {},
+    colorFondo: '#000000', colorLetra: '#FFFFFF', setColorFondo: () => {}, setColorLetra: () => {},
+    mirror: false, setMirror: () => {}, mostrarTiempo: true, setMostrarTiempo: () => {},
+    calidadVideo: '1080p', setCalidadVideo: () => {}, calidadesSoportadas: ['1080p'], minutosDisponibles: null,
+    conCamara: false, tema: 'oscuro', setTema: () => {}, ...p
+  } as any)
+}
+
 describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
@@ -617,125 +627,34 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     vi.restoreAllMocks()
   })
 
-  test('T183 - El panel del editor es del texto: tamaño, ancho, tipografía y parejas de color. Dónde lees no está acá.', () => {
-    const guion: Guion = {
-      id: 'g-t183',
-      titulo: 'Guión T183',
-      idioma: 'es',
-      creado: Date.now(),
-      modificado: Date.now(),
-      bloques: [{ id: 'b1', nombre: '', texto: 'Texto del guión' }]
-    }
-
-    render(
-      React.createElement(EditorView, {
-        guion,
-        onChangeGuion: () => {},
-        onVolverBiblioteca: () => {},
-        onEntrarLectura: () => {},
-        setColumnaAngosta: () => {},
-        setMarginPercent: () => {},
-        setTipoFuente: () => {},
-        setColorFondo: () => {},
-        setColorLetra: () => {}
-      })
-    )
-
-    fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-
-    const panel = screen.getByTestId('panel-ajustes')
-    expect(panel).not.toBeNull()
-
-    expect(screen.queryByText('La toma')).toBeNull()
-
-    // Cuatro grupos y en este orden. Desde el 24-09-2026 el cajon no tiene
-    // titulo, ni muestra, ni nombres al lado de los controles: el guion de
-    // arriba es la muestra y cada control se dibuja. Los grupos se nombran
-    // para el lector de pantalla.
-    const grupos = Array.from(panel.querySelectorAll('[role="group"]')).map((e) => e.getAttribute('aria-label'))
-    expect(grupos).toEqual(['Tamaño de letra', 'Tipografía', 'Ancho del texto', 'Colores de lectura'])
-    expect(panel.textContent).not.toMatch(/Tamaño|Ancho|Letra|Colores/)
-
-    const htmlText = panel.innerHTML
-    expect(htmlText).not.toContain('Dónde lees:')
-    expect(htmlText).not.toContain('Mostrar tiempo:')
+  test('T183 - Desde el guion, Ajustes muestra solo lo del texto: tamaño, tipografía, ancho y colores. Dónde lees, video y apariencia no están acá.', () => {
+    render(ajustesDelEditor())
+    const pantalla = screen.getByTestId('pantalla-ajustes')
+    expect(screen.getByTestId('fila-tamano-letra')).toBeTruthy()
+    expect(screen.getByTestId('fila-tipo-letra')).toBeTruthy()
+    expect(screen.getByTestId('fila-ancho-texto')).toBeTruthy()
+    expect(screen.getByTestId('fila-colores')).toBeTruthy()
+    expect(screen.getByTestId('muestra-lectura-ajustes')).toBeTruthy()
+    // Lo de otras puertas no aparece desde el guion -origen editor, 28-09-2026-.
+    expect(screen.queryByTestId('fila-calidad')).toBeNull()
+    expect(screen.queryByTestId('fila-subtitulos')).toBeNull()
+    expect(screen.queryByTestId('fila-tema')).toBeNull()
+    expect(pantalla.textContent).not.toContain('Dónde lees')
   })
 
-  test('T184 - El tamaño de letra se puede cambiar DESDE EL PANEL, recorre los cinco pasos y en los extremos no se sale.', () => {
-    let size = 24
-    function handleMenos() {
-      const pasos = [14, 18, 24, 32, 42]
-      const idx = pasos.indexOf(size)
-      if (idx > 0) size = pasos[idx - 1]
+  test('T184 - El tamaño de letra se elige en Ajustes entre los cinco pasos, y cada opción entrega su paso.', () => {
+    const elegir = vi.fn()
+    render(ajustesDelEditor({ fontSize: 24, onElegirLetra: elegir }))
+    expect(screen.getByTestId('fila-tamano-letra').textContent).toContain('24')
+    for (const n of [14, 18, 24, 32, 42]) {
+      fireEvent.click(screen.getByTestId('fila-tamano-letra'))
+      fireEvent.click(screen.getByTestId(`opcion-letra-${n}`))
+      expect(elegir).toHaveBeenLastCalledWith(n)
     }
-    function handleMas() {
-      const pasos = [14, 18, 24, 32, 42]
-      const idx = pasos.indexOf(size)
-      if (idx >= 0 && idx < pasos.length - 1) size = pasos[idx + 1]
-    }
-
-    const guion: Guion = {
-      id: 'g-t184',
-      titulo: 'Guión T184',
-      idioma: 'es',
-      creado: Date.now(),
-      modificado: Date.now(),
-      bloques: [{ id: 'b1', nombre: '', texto: 'Texto del guión' }]
-    }
-
-    const { rerender } = render(
-      React.createElement(EditorView, {
-        guion,
-        onChangeGuion: () => {},
-        onVolverBiblioteca: () => {},
-        onEntrarLectura: () => {},
-        fontSize: size,
-        onLetraMenos: () => { handleMenos(); rerenderComp() },
-        onLetraMas: () => { handleMas(); rerenderComp() }
-      })
-    )
-
-    function rerenderComp() {
-      rerender(
-        React.createElement(EditorView, {
-          guion,
-          onChangeGuion: () => {},
-          onVolverBiblioteca: () => {},
-          onEntrarLectura: () => {},
-          fontSize: size,
-          onLetraMenos: () => { handleMenos(); rerenderComp() },
-          onLetraMas: () => { handleMas(); rerenderComp() }
-        })
-      )
-    }
-
-    fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-
-    const btnMenos = screen.getByLabelText('Disminuir letra panel')
-    const btnMas = screen.getByLabelText('Aumentar letra panel')
-    const valSpan = screen.getByTestId('valor-letra-panel')
-
-    expect(valSpan.textContent).toBe('24')
-
-    // Bajar a 18 -> 14 -> inteto extra
-    fireEvent.click(btnMenos)
-    expect(valSpan.textContent).toBe('18')
-    fireEvent.click(btnMenos)
-    expect(valSpan.textContent).toBe('14')
-    fireEvent.click(btnMenos)
-    expect(valSpan.textContent).toBe('14')
-
-    // Subir a 18 -> 24 -> 32 -> 42 -> intento extra
-    fireEvent.click(btnMas)
-    expect(valSpan.textContent).toBe('18')
-    fireEvent.click(btnMas)
-    expect(valSpan.textContent).toBe('24')
-    fireEvent.click(btnMas)
-    expect(valSpan.textContent).toBe('32')
-    fireEvent.click(btnMas)
-    expect(valSpan.textContent).toBe('42')
-    fireEvent.click(btnMas)
-    expect(valSpan.textContent).toBe('42')
+    // No hay pasos fuera de la escalera.
+    fireEvent.click(screen.getByTestId('fila-tamano-letra'))
+    expect(screen.queryByTestId('opcion-letra-10')).toBeNull()
+    expect(screen.queryByTestId('opcion-letra-50')).toBeNull()
   })
 
   test('T185 - El tamaño de letra vive en el Aa del editor. Entrar a leer no lo cambia, y no hay control de letra en la lectura.', async () => {
@@ -761,22 +680,23 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
       fireEvent.click(fila)
     })
 
-    // Abrir Ajustes desde el Editor
+    // Abrir Ajustes desde el Editor -28-09-2026: el Aa abre la pantalla de Ajustes-
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
     })
 
-    // Cambiar tamaño de letra en el panel de 24 a 32 (+1 paso)
-    const btnMasPanel = screen.getByLabelText('Aumentar letra panel')
+    // Cambiar tamaño de letra de 24 a 32
     await act(async () => {
-      fireEvent.click(btnMasPanel)
+      fireEvent.click(screen.getByTestId('fila-tamano-letra'))
     })
-    expect(screen.getByTestId('valor-letra-panel').textContent).toBe('32')
-
-    // Cerrar el cajon tocando afuera, sobre el guion
-    const btnCerrar = screen.getByTestId('capa-ajustes')
     await act(async () => {
-      fireEvent.click(btnCerrar)
+      fireEvent.click(screen.getByTestId('opcion-letra-32'))
+    })
+    expect(screen.getByTestId('fila-tamano-letra').textContent).toContain('32')
+
+    // Cerrar Ajustes
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
     })
 
     // Entrar al lienzo. Leer deja en LISTO; Empezar pasa a LEYENDO.
@@ -809,7 +729,7 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
     })
 
-    expect(screen.getByTestId('valor-letra-panel').textContent).toBe('32')
+    expect(screen.getByTestId('fila-tamano-letra').textContent).toContain('32')
   })
 
   test('T186 - El selector de motor y la transcripcion en vivo YA NO estan en el panel, y SI estan en la biblioteca, y el selector sigue cambiando el motor.', async () => {
@@ -878,39 +798,19 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     expect(screen.queryByText('Ver transcripción en vivo')).toBeNull()
   })
 
-  test('T187 - El cajon no tiene "Listo": se cierra tocando afuera, sobre el guion.', () => {
-    const guion: Guion = {
-      id: 'g-t187',
-      titulo: 'Guión T187',
-      idioma: 'es',
-      creado: Date.now(),
-      modificado: Date.now(),
-      bloques: [{ id: 'b1', nombre: '', texto: 'Texto del guión' }]
-    }
-
-    render(
-      React.createElement(EditorView, {
-        guion,
-        onChangeGuion: () => {},
-        onVolverBiblioteca: () => {},
-        onEntrarLectura: () => {}
-      })
-    )
-
-    fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-
-    expect(screen.getByTestId('panel-ajustes')).not.toBeNull()
-
-    // El dueno, 24-09-2026: "la palabra texto y la palabra listo pierden todo
-    // sentido y no deberian estar mas".
-    expect(screen.queryByTestId('btn-cerrar-ajustes')).toBeNull()
-    expect(screen.getByTestId('panel-ajustes').textContent).not.toContain('Listo')
-
-    // Tocar dentro del cajon no lo cierra; tocar afuera, si.
-    fireEvent.click(screen.getByTestId('panel-ajustes'))
-    expect(screen.queryByTestId('panel-ajustes')).not.toBeNull()
-    fireEvent.click(screen.getByTestId('capa-ajustes'))
-    expect(screen.queryByTestId('panel-ajustes')).toBeNull()
+  test('T187 - Ajustes no tiene "Listo": elegir aplica y cierra el diálogo, y la pantalla se cierra con su flecha.', () => {
+    // 28-09-2026: el cajon se fue. Lo que cuidaba -nada de "Listo"- sigue: en Ajustes no hay
+    // boton de confirmar; cada eleccion aplica al tocarla.
+    const cerrar = vi.fn()
+    render(ajustesDelEditor({ onCerrar: cerrar }))
+    expect(screen.getByTestId('pantalla-ajustes').textContent).not.toContain('Listo')
+    fireEvent.click(screen.getByTestId('fila-tipo-letra'))
+    expect(screen.getByTestId('capa-dialogo-ajustes')).toBeTruthy()
+    expect(screen.getByTestId('capa-dialogo-ajustes').textContent).not.toContain('Listo')
+    fireEvent.click(screen.getByTestId('capa-dialogo-ajustes'))
+    expect(screen.queryByTestId('capa-dialogo-ajustes')).toBeNull()
+    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+    expect(cerrar).toHaveBeenCalledTimes(1)
   })
 })
 
@@ -996,17 +896,17 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
       fireEvent.click(fila)
     })
 
-    // Abrir modal de Ajustes
+    // Abrir Ajustes -28-09-2026: la pantalla de Ajustes, no el cajon-
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
     })
 
-    expect(screen.getByTestId('panel-ajustes')).not.toBeNull()
+    expect(screen.getByTestId('pantalla-ajustes')).not.toBeNull()
 
     await simularGestoAtras()
 
-    // El modal de Ajustes se cierra, pero SE MANTIENE en la vista del editor
-    expect(screen.queryByTestId('panel-ajustes')).toBeNull()
+    // Ajustes se cierra, pero SE MANTIENE en la vista del editor
+    expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
     expect(screen.getByTestId('input-titulo-guion')).not.toBeNull()
   })
 
@@ -1099,138 +999,56 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
   })
 
   test('T195 - "Ancho" mueve columna y margen a la vez: los tres pasos dan tres anchos distintos, y "Ancho" deja margen 5% y columna completa.', () => {
-    let columnaAngostaState = false
-    let marginPercentState = 5
-
-    const guion: Guion = {
-      id: 'g-t195',
-      titulo: 'Guión T195',
-      idioma: 'es',
-      creado: Date.now(),
-      modificado: Date.now(),
-      bloques: [{ id: 'b1', nombre: '', texto: 'Texto T195' }]
+    // 28-09-2026: se elige en Ajustes -fila Ancho del texto-, no en el cajon del editor.
+    let columna = false
+    let margen = 5
+    const props = () => ({
+      columnaAngosta: columna, marginPercent: margen,
+      setColumnaAngosta: (c: boolean) => { columna = c; rerender(ajustesDelEditor(props())) },
+      setMarginPercent: (m: number) => { margen = m; rerender(ajustesDelEditor(props())) }
+    })
+    const { rerender } = render(ajustesDelEditor(props()))
+    const elegir = (nombre: string) => {
+      fireEvent.click(screen.getByTestId('fila-ancho-texto'))
+      fireEvent.click(screen.getByRole('button', { name: nombre }))
     }
-
-    const { rerender } = render(
-      React.createElement(EditorView, {
-        guion,
-        onChangeGuion: () => {},
-        onVolverBiblioteca: () => {},
-        onEntrarLectura: () => {},
-        columnaAngosta: columnaAngostaState,
-        setColumnaAngosta: (c) => { columnaAngostaState = c; rerenderComp() },
-        marginPercent: marginPercentState,
-        setMarginPercent: (m) => { marginPercentState = m; rerenderComp() }
-      })
-    )
-
-    function rerenderComp() {
-      rerender(
-        React.createElement(EditorView, {
-          guion,
-          onChangeGuion: () => {},
-          onVolverBiblioteca: () => {},
-          onEntrarLectura: () => {},
-          columnaAngosta: columnaAngostaState,
-          setColumnaAngosta: (c) => { columnaAngostaState = c; rerenderComp() },
-          marginPercent: marginPercentState,
-          setMarginPercent: (m) => { marginPercentState = m; rerenderComp() }
-        })
-      )
-    }
-
-    fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-
-    // Los botones se dibujan -tres columnas- y se nombran por aria-label.
-    const btnAncho = screen.getByRole('button', { name: 'Ancho' })
-    const btnMedio = screen.getByRole('button', { name: 'Medio' })
-    const btnAngosto = screen.getByRole('button', { name: 'Angosto' })
-
-    // 1. "Ancho" deja margen 5% y columna completa (columnaAngosta = false)
-    fireEvent.click(btnAncho)
-    expect(columnaAngostaState).toBe(false)
-    expect(marginPercentState).toBe(5)
-
-    // 2. "Medio" deja columna completa (columnaAngosta = false) y margen 12%
-    fireEvent.click(btnMedio)
-    expect(columnaAngostaState).toBe(false)
-    expect(marginPercentState).toBe(12)
-
-    // 3. "Angosto" deja columna angosta (columnaAngosta = true) y margen 5%
-    fireEvent.click(btnAngosto)
-    expect(columnaAngostaState).toBe(true)
-    expect(marginPercentState).toBe(5)
-
-    // Confirmar que los tres pasos dan tres combinaciones de columna/margen distintas
-    expect(5).not.toBe(12)
+    elegir('Ancho')
+    expect(columna).toBe(false)
+    expect(margen).toBe(5)
+    elegir('Medio')
+    expect(columna).toBe(false)
+    expect(margen).toBe(12)
+    elegir('Angosto')
+    expect(columna).toBe(true)
+    expect(margen).toBe(5)
   })
 
   test('T196 - Las parejas de color mueven fondo y letra juntos, y NO existe forma de elegir una combinacion donde fondo y letra sean iguales.', () => {
-    let colorFondoState = '#000000'
-    let colorLetraState = '#FFFFFF'
-
-    const guion: Guion = {
-      id: 'g-t196',
-      titulo: 'Guión T196',
-      idioma: 'es',
-      creado: Date.now(),
-      modificado: Date.now(),
-      bloques: [{ id: 'b1', nombre: '', texto: 'Texto T196' }]
-    }
-
-    const { container, rerender } = render(
-      React.createElement(EditorView, {
-        guion,
-        onChangeGuion: () => {},
-        onVolverBiblioteca: () => {},
-        onEntrarLectura: () => {},
-        colorFondo: colorFondoState,
-        setColorFondo: (f) => { colorFondoState = f; rerenderComp() },
-        colorLetra: colorLetraState,
-        setColorLetra: (l) => { colorLetraState = l; rerenderComp() }
-      })
-    )
-
-    function rerenderComp() {
-      rerender(
-        React.createElement(EditorView, {
-          guion,
-          onChangeGuion: () => {},
-          onVolverBiblioteca: () => {},
-          onEntrarLectura: () => {},
-          colorFondo: colorFondoState,
-          setColorFondo: (f) => { colorFondoState = f; rerenderComp() },
-          colorLetra: colorLetraState,
-          setColorLetra: (l) => { colorLetraState = l; rerenderComp() }
-        })
-      )
-    }
-
-    fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-
-    // Comprobar que NO hay selects o controles independientes para Fondo o Letra
+    // 28-09-2026: las parejas viven en Ajustes -fila Colores-.
+    let fondo = '#000000'
+    let letra = '#FFFFFF'
+    const props = () => ({
+      colorFondo: fondo, colorLetra: letra,
+      setColorFondo: (v: string) => { fondo = v; rerender(ajustesDelEditor(props())) },
+      setColorLetra: (v: string) => { letra = v; rerender(ajustesDelEditor(props())) }
+    })
+    const { container, rerender } = render(ajustesDelEditor(props()))
     expect(container.querySelector('select[aria-label="Color de fondo"]')).toBeNull()
     expect(container.querySelector('select[aria-label="Color de letra"]')).toBeNull()
-
-    const btnNegroBlanco = screen.getByTitle('Negro con blanco')
-    const btnNegroAmbar = screen.getByTitle('Negro con ámbar')
-    const btnBlancoNegro = screen.getByTitle('Blanco con negro')
-
-    // Probar las tres parejas
-    fireEvent.click(btnNegroAmbar)
-    expect(colorFondoState).toBe('#000000')
-    expect(colorLetraState).toBe('#F5C24B')
-    expect(colorFondoState).not.toBe(colorLetraState)
-
-    fireEvent.click(btnBlancoNegro)
-    expect(colorFondoState).toBe('#FFFFFF')
-    expect(colorLetraState).toBe('#000000')
-    expect(colorFondoState).not.toBe(colorLetraState)
-
-    fireEvent.click(btnNegroBlanco)
-    expect(colorFondoState).toBe('#000000')
-    expect(colorLetraState).toBe('#FFFFFF')
-    expect(colorFondoState).not.toBe(colorLetraState)
+    const elegir = (nombre: string) => {
+      fireEvent.click(screen.getByTestId('fila-colores'))
+      fireEvent.click(screen.getByRole('button', { name: nombre }))
+    }
+    elegir('Negro con ámbar')
+    expect(fondo).toBe('#000000')
+    expect(letra).toBe('#F5C24B')
+    elegir('Blanco con negro')
+    expect(fondo).toBe('#FFFFFF')
+    expect(letra).toBe('#000000')
+    elegir('Negro con blanco')
+    expect(fondo).toBe('#000000')
+    expect(letra).toBe('#FFFFFF')
+    expect(fondo).not.toBe(letra)
   })
 
   test('T197 - GUARDIANA DEL AJUSTE VIEJO. Con una combinacion de colores guardada en localStorage que ya no existe, la aplicacion abre con negro sobre blanco y no lanza.', async () => {
@@ -1309,13 +1127,13 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
     })
 
-    const panelAjustes = screen.getByTestId('panel-ajustes')
-    expect(panelAjustes.textContent).not.toContain('Tema:')
+    // 28-09-2026: desde el guion, Ajustes no muestra el Tema -es de la app, no del texto-.
+    expect(screen.getByTestId('pantalla-ajustes')).not.toBeNull()
+    expect(screen.queryByTestId('fila-tema')).toBeNull()
 
-    // Cerrar panel y volver a la Biblioteca
-    const btnCruz = screen.getByTestId('capa-ajustes')
+    // Cerrar Ajustes y volver a la Biblioteca
     await act(async () => {
-      fireEvent.click(btnCruz)
+      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
     })
     await act(async () => {
       fireEvent.click(screen.getByText('Guiones'))
