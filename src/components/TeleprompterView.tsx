@@ -1,1 +1,1 @@
-PLACEHOLDER
+import { FichasListo } from './FichasListo'
