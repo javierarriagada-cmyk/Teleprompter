@@ -1,5 +1,5 @@
 import { RepositorioGuiones } from './RepositorioGuiones'
-import { Guion, ResumenGuion, contarPalabras } from './modelo'
+import { Guion, ResumenGuion, contarPalabras, inicioDelTexto } from './modelo'
 import { abrirDb, STORE_GUIONES } from './abrirDb'
 
 export class RepositorioIndexedDB implements RepositorioGuiones {
@@ -26,6 +26,7 @@ export class RepositorioIndexedDB implements RepositorioGuiones {
             idioma: g.idioma,
             modificado: g.modificado,
             palabras: contarPalabras(g),
+            inicio: inicioDelTexto(g),
             archivado: Boolean(g.archivado)
           }))
           resumenes.sort((a, b) => b.modificado - a.modificado)

@@ -74,6 +74,28 @@ export type ResumenGuion = {
   modificado: number
   palabras: number
   archivado?: boolean
+  // Las primeras palabras del texto: el nombre que se muestra si el guion no tiene titulo
+  // -28-09-2026, inicioDelTexto-.
+  inicio?: string
+}
+
+// LAS PRIMERAS PALABRAS, PARA UN GUION SIN TITULO -28-09-2026-. La lista mostraba "Sin titulo" en
+// cada guion creado sin nombre: con varios, una columna de filas iguales. El agente de pruebas de
+// Firebase lo encontro al crear un guion y no poder reconocerlo en la lista; Javier: "toda la razon
+// en que aparezcan las primeras palabras si no existen titulos". Se saltan las acotaciones
+// -[...]-, que no se leen en voz alta.
+export const PALABRAS_DEL_INICIO = 6
+
+export function inicioDelTexto(g: Guion): string {
+  if (!g || !g.bloques) return ''
+  const texto = g.bloques
+    .map((b) => b.texto || '')
+    .join(' ')
+    .replace(new RegExp(REGEX_ACOTACION.source, REGEX_ACOTACION.flags), ' ')
+  const palabras = texto.trim().split(/\s+/).filter(Boolean)
+  if (palabras.length === 0) return ''
+  const inicio = palabras.slice(0, PALABRAS_DEL_INICIO).join(' ')
+  return palabras.length > PALABRAS_DEL_INICIO ? `${inicio}…` : inicio
 }
 
 export function generarUuid(): string {

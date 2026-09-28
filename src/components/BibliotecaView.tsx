@@ -10,7 +10,7 @@ import { MarcaSigo } from './MarcaSigo'
 import { hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_RESORTE } from './movimiento'
 import { ESCALA_AVISO, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
-import { t, useTextos, tituloVisible, fechaCorta, IdiomaApp } from '../textos'
+import { t, useTextos, tituloVisible, tituloOInicio, fechaCorta, IdiomaApp } from '../textos'
 import { fijarIdioma } from '../lib/idioma'
 
 interface BibliotecaViewProps {
@@ -121,6 +121,8 @@ function FilaGuion({
   const esHorizontalRef = useRef(false)
   const cruzoUmbralRef = useRef(false)
   const fueLongPressRef = useRef(false)
+  // El dedo se movio mas de 10 px en este gesto: ya no es un toque -ver onClick-.
+  const seMovioRef = useRef(false)
   const [avisado, setAvisado] = useState(false)
   const gestoRef = useRef(programarMantener(
     () => {
@@ -155,13 +157,11 @@ function FilaGuion({
     esArrastrandoRef.current = true
 
     fueLongPressRef.current = false
+    seMovioRef.current = false
     setAvisado(false)
     gestoRef.current.arrancar()
-
-    const target = e.currentTarget as any
-    if (target && typeof target.setPointerCapture === 'function' && 'pointerId' in e) {
-      try { target.setPointerCapture((e as any).pointerId) } catch (err) {}
-    }
+    // La captura del dedo ya no va aca: se toma recien cuando el gesto resulta horizontal
+    // -handlePointerMove-. Capturar al apoyar el dedo le disputaba el desplazamiento a la pagina.
   }
 
   function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
@@ -175,6 +175,7 @@ function FilaGuion({
       const dist = Math.hypot(dx, dy)
       if (dist >= 10) {
         decidioDireccionRef.current = true
+        seMovioRef.current = true
         if (Math.abs(dy) > Math.abs(dx)) {
           gestoRef.current.cancelar()
           setAvisado(false)
@@ -184,6 +185,10 @@ function FilaGuion({
           gestoRef.current.cancelar()
           setAvisado(false)
           esHorizontalRef.current = true
+          const target = e.currentTarget as any
+          if (target && typeof target.setPointerCapture === 'function' && 'pointerId' in e) {
+            try { target.setPointerCapture((e as any).pointerId) } catch (err) {}
+          }
         }
       } else {
         return
@@ -225,12 +230,14 @@ function FilaGuion({
       } else {
         setDragX(0)
       }
-    } else if (!fueLongPressRef.current && !esHorizontalRef.current) {
-      if (Math.hypot(dx, dy) < 10) {
-        hapticaToqueSuave()
-        onAbrir(g.id)
-      }
     }
+    // ABRIR NO VA ACA -28-09-2026-. Esta funcion la llamaban cuatro eventos a la vez -pointerup,
+    // pointercancel, mouseup y touchend- y cada uno podia abrir el guion. Al bajar la pantalla
+    // empezando sobre una fila, Android cancela el puntero porque el gesto es de la pagina; el
+    // touchend que llegaba despues encontraba el gesto ya reseteado -distancia 0- y abria el
+    // guion. Javier: "cuando accidentalmente para correr se aprieta un guion ... el guion se abre
+    // y la pantalla no baja". Ahora abre solo onClick: el navegador ya decide que es un toque y
+    // no lo dispara cuando hubo desplazamiento. Es la forma estandar.
 
     esArrastrandoRef.current = false
     startXRef.current = null
@@ -240,7 +247,7 @@ function FilaGuion({
     cruzoUmbralRef.current = false
   }
 
-  const tituloMostrar = tituloVisible(g.titulo)
+  const tituloMostrar = tituloOInicio(g.titulo, g.inicio)
   // La duracion sale de duracionDeLectura -modelo.ts-, la misma de la tarjeta.
   const fechaNat = formatearFechaNatural(g.modificado)
   const metaTexto = `${duracionDeLectura(g.palabras || 0)} · ${fechaNat}`
@@ -300,19 +307,19 @@ function FilaGuion({
       <div
         data-testid={`fila-guion-${g.id}`}
         onClick={() => {
-          if (!fueLongPressRef.current && !esHorizontalRef.current) {
+          // seMovioRef: un deslizamiento lateral corto -sin llegar a borrar o archivar- tambien
+          // termina en click, porque ese gesto no lo hace la pagina. No es un toque: no abre.
+          if (!fueLongPressRef.current && !seMovioRef.current) {
             hapticaToqueSuave()
             onAbrir(g.id)
           }
         }}
+        // SOLO EVENTOS DE PUNTERO -28-09-2026-: cubren dedo y mouse. Los de mouse y touch
+        // repetian cada gesto, y el touchend repetido era el que abria el guion al desplazar.
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        onMouseDown={handlePointerDown}
-        onMouseUp={handlePointerUp}
-        onTouchStart={handlePointerDown}
-        onTouchEnd={handlePointerUp}
         onContextMenu={(e) => {
           e.preventDefault()
           setMenuId(g.id)
@@ -328,6 +335,9 @@ function FilaGuion({
           borderRadius: 'var(--redondeo)',
           cursor: 'pointer',
           userSelect: 'none',
+          // EL GESTO VERTICAL ES DE LA PAGINA -28-09-2026-: el navegador desplaza apenas el dedo
+          // baja o sube, sin esperar a esta fila. El lateral -borrar, archivar- queda para ella.
+          touchAction: 'pan-y',
           // LOS DOS MOVIMIENTOS VAN EN UN SOLO transform, Y ESTE ES EL UNICO
           // SITIO DONDE CHOCAN. La fila se desliza -translateX- y ademas se
           // comprime al avisar el gesto -scale-. Como CSS tiene una sola
@@ -515,7 +525,7 @@ export default function BibliotecaView({
 
   const guionesFiltrados = guiones.filter((g) => {
     const query = busqueda.toLowerCase().trim()
-    const tituloNormalizado = tituloVisible(g.titulo).toLowerCase()
+    const tituloNormalizado = tituloOInicio(g.titulo, g.inicio).toLowerCase()
     const textoNormalizado = (mapaTextos[g.id] || '').toLowerCase()
 
     const coincideBusqueda = query === '' || tituloNormalizado.includes(query) || textoNormalizado.includes(query)

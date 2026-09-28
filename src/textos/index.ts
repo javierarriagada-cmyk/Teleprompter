@@ -39,6 +39,15 @@ export function tituloVisible(titulo: string | null | undefined): string {
   return limpio === '' || limpio === TITULO_SIN_NOMBRE ? t('sinTitulo') : limpio
 }
 
+// El nombre de un guion en la portada -28-09-2026-: su titulo si lo tiene; si no, sus primeras
+// palabras -ResumenGuion.inicio-; "Sin titulo" solo cuando el guion esta vacio.
+export function tituloOInicio(titulo: string | null | undefined, inicio?: string): string {
+  const limpio = (titulo || '').trim()
+  if (limpio !== '' && limpio !== TITULO_SIN_NOMBRE) return limpio
+  const primeras = (inicio || '').trim()
+  return primeras !== '' ? primeras : t('sinTitulo')
+}
+
 // Las fechas por idioma, con Intl. En espanol quedan como estaban -27/9 y 27/09-; en
 // ingles, el mes escrito corto -Sep 27-, que es como se lee una fecha suelta en una lista.
 export function fechaCorta(ts: number, idioma: IdiomaApp = idiomaApp()): string {

@@ -1,5 +1,5 @@
 import { RepositorioGuiones } from './RepositorioGuiones'
-import { Guion, ResumenGuion, contarPalabras } from './modelo'
+import { Guion, ResumenGuion, contarPalabras, inicioDelTexto } from './modelo'
 
 export class RepositorioMemoria implements RepositorioGuiones {
   private guionesMap = new Map<string, Guion>()
@@ -14,6 +14,7 @@ export class RepositorioMemoria implements RepositorioGuiones {
         idioma: g.idioma,
         modificado: g.modificado,
         palabras: contarPalabras(g),
+        inicio: inicioDelTexto(g),
         archivado: Boolean(g.archivado)
       })
     }

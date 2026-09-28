@@ -2,7 +2,7 @@ import React from 'react'
 import { IconoEmpezar } from './IconosApp'
 import { ResumenGuion, duracionDeLectura } from '../datos/modelo'
 import { estiloComprimirPorAviso, useMantenerApretado } from './mantenerApretado'
-import { t, useTextos, tituloVisible } from '../textos'
+import { t, useTextos, tituloOInicio } from '../textos'
 
 interface TarjetaLecturaProps {
   guionResumen?: ResumenGuion
@@ -43,7 +43,7 @@ export default function TarjetaLectura({
   // Mismo formato que la fila del guion: duracionDeLectura, modelo.ts.
   const timecode = duracionDeLectura(palabras)
   const tituloText = hayGuion
-    ? tituloVisible(guionResumen?.titulo)
+    ? tituloOInicio(guionResumen?.titulo, guionResumen?.inicio)
     // "Sin guiones todavía" no entra a 44 px y se cortaba en "Sin guiones to...".
     // El titulo de la portada es de una sola linea a proposito; entonces el texto se
     // ajusta al sitio que hay, no al reves. En ingles, "No scripts", por lo mismo.

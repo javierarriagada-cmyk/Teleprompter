@@ -190,7 +190,9 @@ describe('Pruebas TAREA 50 - Un Solo Mundo (T240-T252)', () => {
     }
   })
 
-  test('T251 - LA FILA SIN TITULO DICE "Sin título".', async () => {
+  // T251 CAMBIO EL 28-09-2026: la fila sin titulo muestra las primeras palabras del texto, no
+  // "Sin título" -Javier, tras el agente de pruebas de Firebase-. Sigue sin abrir el guion entero.
+  test('T251 - LA FILA SIN TITULO MUESTRA SUS PRIMERAS PALABRAS, sin abrir el guion.', async () => {
     const repo = new RepositorioMemoria()
 
     const now = Date.now()
@@ -226,7 +228,8 @@ describe('Pruebas TAREA 50 - Un Solo Mundo (T240-T252)', () => {
 
     const fila = container!.querySelector('[data-testid="fila-guion-g-sin-titulo-2"]') as HTMLElement
     expect(fila).not.toBeNull()
-    expect(fila.textContent).toContain('Sin título')
+    expect(fila.textContent).toContain('Cuerpo del segundo guion sin titulo')
+    expect(fila.textContent).not.toContain('Sin título')
     expect(buscarSpy).not.toHaveBeenCalledWith('g-sin-titulo-2')
   })
 

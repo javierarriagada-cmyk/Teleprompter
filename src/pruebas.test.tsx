@@ -2382,11 +2382,12 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
       const fila = container!.querySelector(`[data-testid="fila-guion-${guion.id}"]`) as HTMLElement
       expect(fila).not.toBeNull()
 
-      // Mantener presionado 500ms
+      // Mantener presionado 500ms. Con eventos de puntero: desde el 28-09-2026 la fila escucha
+      // solo esos -los de mouse y touch repetian el gesto y abrian el guion al desplazar-.
       await act(async () => {
-        fireEvent.mouseDown(fila)
+        fireEvent.pointerDown(fila)
         await vi.advanceTimersByTimeAsync(550)
-        fireEvent.mouseUp(fila)
+        fireEvent.pointerUp(fila)
       })
 
       // NO abre el editor, muestra el menú
