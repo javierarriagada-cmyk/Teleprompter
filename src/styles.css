@@ -178,11 +178,13 @@ body {
   flex-shrink: 0;
 }
 .boton-crear-guion > span {
+  /* 28-09-2026: el borde y la sombra de las cajas -ver --borde-tarjeta-, en toda la app y no solo en la portada. */
+  box-shadow: var(--sombra-tarjeta);
   width: 34px;
   height: 34px;
   border-radius: var(--redondeo-pildora);
   background-color: var(--bg-panel);
-  border: 1px solid var(--color-separador);
+  border: 1px solid var(--borde-tarjeta);
   color: var(--color-texto);
   display: flex;
   align-items: center;
@@ -675,7 +677,9 @@ textarea::placeholder {
   padding-top: var(--aire-3);
   padding-bottom: var(--aire-3);
   min-height: 60vh;
-  border: 1px solid var(--color-separador);
+  /* 28-09-2026: el borde y la sombra de las cajas -ver --borde-tarjeta-, en toda la app y no solo en la portada. */
+  border: 1px solid var(--borde-tarjeta);
+  box-shadow: var(--sombra-tarjeta);
   border-radius: var(--redondeo-grande);
 }
 .editor-guion {
@@ -730,6 +734,8 @@ textarea::placeholder {
   color: var(--color-texto);
   border-radius: var(--redondeo-grande) var(--redondeo-grande) 0 0;
   box-shadow: 0 -10px 36px rgba(0, 0, 0, 0.38);
+  /* 28-09-2026: el borde y la sombra de las cajas -ver --borde-tarjeta-, en toda la app y no solo en la portada. */
+  border-top: 1px solid var(--borde-tarjeta);
   max-width: 500px;
   width: 100%;
   padding: 0 var(--aire-4);
@@ -1134,7 +1140,9 @@ label.selector-aa-opcion {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-separador);
+  /* 28-09-2026: el borde y la sombra de las cajas -ver --borde-tarjeta-, en toda la app y no solo en la portada. */
+  border: 1px solid var(--borde-tarjeta);
+  box-shadow: var(--sombra-tarjeta);
   background-color: var(--bg-fila);
   color: var(--color-texto);
   cursor: pointer;
@@ -1517,7 +1525,7 @@ button.boton-subtitulos {
   padding: var(--aire-2) var(--aire-3);
   background: var(--bg-suelo);
   color: var(--color-texto);
-  border: 1px solid var(--color-borde);
+  border: 1px solid var(--borde-tarjeta);
   font: inherit;
   cursor: pointer;
 }
@@ -1737,7 +1745,8 @@ button.opcion-subtitulos.activa {
   width: calc(var(--alto-miniatura-banda) * 3 / 2);
   height: var(--alto-miniatura-banda);
   padding: 0;
-  border: none;
+  /* 28-09-2026: el mismo borde de un pelo que las miniaturas de la tira -.borde-suave-. */
+  border: 1px solid var(--borde-tarjeta);
   border-radius: var(--redondeo);
   overflow: hidden;
   background: var(--bg-panel);
