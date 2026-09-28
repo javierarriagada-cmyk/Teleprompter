@@ -107,6 +107,7 @@ export function FichasListo({
         <div
           className="panel-ficha tarjeta-elevada"
           data-testid={`panel-ficha-${panelAbierto}`}
+          data-panel-ajustes-toma=""
           onClick={(e) => e.stopPropagation()}
         >
           {panelAbierto === 'letra' && (
@@ -366,6 +367,7 @@ export function FichasListo({
           type="button"
           className="ficha-listo"
           data-testid="ficha-mas"
+          data-alias-engranaje="btn-engranaje-toma"
           aria-label={t('fichaMas')}
           onClick={() => {
             setPanelAbierto(null)
