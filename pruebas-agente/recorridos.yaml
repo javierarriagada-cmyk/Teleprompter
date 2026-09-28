@@ -53,11 +53,14 @@ tests:
           is expected.
         finalScreenAssertion: >-
           The countdown numbers are gone and the script text is visible on the screen.
-      - goal: Leave the reading screen.
+      # 28-09-2026: SALIR SON DOS "ATRAS". En Sigo el primero deja la lectura lista para empezar
+      # de nuevo y el segundo lleva a la portada -App.tsx, "Dos pisos"-. En la primera bateria el
+      # agente esperaba salir con uno y en el moto g05 se le acabo el tiempo.
+      - goal: Leave the reading screen and go back to the main screen.
         hint: >-
-          Tap once on the text to show the controls, then use the back arrow ("Volver" /
-          "Back") or the system back button until the main screen with the list of scripts
-          is visible again.
+          Press the system back button once: the reading stops and the screen stays on the
+          script, ready to start again. Press the system back button a second time to reach
+          the main screen. Do not tap on the text.
         finalScreenAssertion: The main screen with the list of scripts is visible.
 
   - id: crear-guion
@@ -104,11 +107,23 @@ tests:
         finalScreenAssertion: >-
           A recording screen is shown: the script text over the camera image or over a dark
           background, with a round start button near the bottom.
+      # 28-09-2026: SE DETIENE CON EL BOTON ATRAS DEL SISTEMA, no tocando la pantalla. El agente
+      # maneja el telefono por la accesibilidad de Android, y por ahi la pantalla de lectura no
+      # ofrece como sacar los controles -pendiente P1g, TalkBack-: en la primera bateria no pudo
+      # detener la toma en ningun telefono y nunca llego al reproductor. Atras detiene la toma y
+      # abre el reproductor -handleStop, App.tsx-, que es lo que se quiere probar aca. CUANDO SE
+      # ARREGLE P1g, este paso vuelve a "toca la pantalla y aprieta Parar".
       - goal: Record for about 8 seconds and then stop.
         hint: >-
           Tap the round "Empezar" / "Start" button, wait for the 3, 2, 1 countdown and then
-          about 8 more seconds. Tap once on the screen to show the controls and tap the stop
-          button ("Parar" / "Stop").
+          about 8 more seconds. Then press the system back button once: that stops the
+          recording. Do not tap on the text.
         finalScreenAssertion: >-
           A video player shows the recorded take, with options for captions ("Subtítulos" /
           "Captions") or to save it to the gallery.
+      - goal: Turn on captions in the video player.
+        hint: >-
+          In the video player, find the captions options ("Subtítulos" / "Captions") and tap
+          one of the styles, such as "Amarillo" / "Yellow".
+        finalScreenAssertion: >-
+          The video player is still visible and a captions style is selected.
