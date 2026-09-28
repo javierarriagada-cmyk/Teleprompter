@@ -5,7 +5,7 @@ import { Guion, ResumenGuion, ResumenGrabacion, duracionDeLectura } from '../dat
 import TiraGrabaciones from './TiraGrabaciones'
 import { PanelCorpus } from './PanelCorpus'
 import TarjetaLectura from './TarjetaLectura'
-import { IconoEngranaje, IconoChevron } from './IconosApp'
+import { IconoEngranaje, IconoMas, IconoChevron } from './IconosApp'
 import { MarcaSigo } from './MarcaSigo'
 import { hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_RESORTE } from './movimiento'
@@ -890,8 +890,29 @@ export default function BibliotecaView({
           texto-meta, no un numero inventado. El 27-09-2026 subieron otro
           escalon -texto-titulo- y a color de texto: son los que ordenan la
           portada, y en gris apagado se perdian. */}
-      <div ref={refTituloGuiones} className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-3)', fontWeight: 600 }}>
-        {mostrarArchivados ? t('archivados') : t('guiones')}
+      {/* 28-09-2026: suben a --texto-seccion -22 px, .titulo-seccion-, los dos. Y el titulo es
+          ahora una fila con el "+" de crear guion a la derecha: el boton flotante tapaba la tira
+          de videos -ver el comentario del "+" al final de este archivo-. En Archivados no va:
+          ahi no se crea nada. */}
+      <div ref={refTituloGuiones} className="fila-titulo-seccion">
+        <div className="texto-titulo titulo-seccion" style={{ color: 'var(--color-texto)', fontWeight: 600 }}>
+          {mostrarArchivados ? t('archivados') : t('guiones')}
+        </div>
+        {mostrarBotonCrear && !mostrarArchivados && (
+          <button
+            type="button"
+            className="boton-crear-guion btn-deformable"
+            onClick={() => {
+              hapticaToqueSuave()
+              onCrearNuevo()
+            }}
+            data-testid="btn-crear-guion"
+            title={t('crearGuion')}
+            aria-label={t('crearGuion')}
+          >
+            <span><IconoMas tamano={20} /></span>
+          </button>
+        )}
       </div>
 
       {/* Buscador: sin borde, fondo bg-suelo y redondeo */}
@@ -1136,47 +1157,18 @@ export default function BibliotecaView({
           Con el portal cuelga de body, ningun transform lo alcanza y se queda
           quieto. La alternativa era sacarle el transform a la transicion, y esa
           curva esta decidida y medida en circuito.html: no se toca por esto. */}
-      {mostrarBotonCrear && createPortal(
-        <button
-        onClick={() => {
-          hapticaToqueSuave()
-          onCrearNuevo()
-        }}
-        data-testid="btn-crear-guion-flotante"
-        title={t('crearGuion')}
-        aria-label={t('crearGuion')}
-        style={{
-          position: 'fixed',
-          // EL AREA SEGURA. Este boton se quedo afuera de la tarea 43, que se la sumo
-          // al relleno de la raiz y a la barra de controles de la lectura. Con el
-          // borde a borde obligatorio del SDK 36, 32 px se miden desde el borde FISICO
-          // de la pantalla, asi que la barra de navegacion se lo come casi entero.
-          // Javier lo vio en el telefono el 16 de septiembre de 2026.
-          bottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
-          right: 'calc(32px + env(safe-area-inset-right, 0px))',
-          backgroundColor: 'var(--bg-menu)',
-          color: 'var(--color-texto)',
-          borderRadius: 'var(--redondeo-pildora)',
-          // 56, la medida de siempre para un boton flotante. Estaba en 44, que es el
-          // MINIMO tocable: la tarea 48 lo hizo secundario -Leer paso a ser la accion
-          // principal- y secundario se confundio con apretado.
-          width: 56,
-          height: 56,
-          fontSize: 'var(--texto-display)',
-          fontWeight: 400,
-          cursor: 'pointer',
-          border: 'calc(1px) solid rgba(255, 255, 255, 0.08)',
-          boxShadow: 'inset 0 calc(1px) 0 rgba(255, 255, 255, 0.06)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 100
-        }}
-        >
-          +
-        </button>,
-        document.body
-      )}
+      {/* EL BOTON FLOTANTE SE RETIRO EL 28-09-2026. Con la lista plegada -tarea 76- la tira de
+          videos sube a la primera pantalla, y el "+" de 56 abajo a la derecha tapaba la tercera
+          miniatura. Javier eligio, mirando un dibujo, llevarlo junto al titulo "Guiones"
+          -.boton-crear-guion, fila-titulo-seccion, arriba en este archivo-. Lo que decian sus
+          comentarios -el area segura del SDK 36, el 56 que no es el minimo, el portal para que
+          no lo alcance el transform- queda aca como memoria: si el "+" vuelve a flotar, esas tres
+          cosas siguen valiendo. Estaba asi:
+            bottom: calc(32px + env(safe-area-inset-bottom)); right: calc(32px + ...);
+            56 x 56, --bg-menu, redondeo pildora, borde blanco 8% y brillo interior 6%;
+            EL AREA SEGURA: se quedo afuera de la tarea 43; con el borde a borde del SDK 36 la
+            barra de navegacion se lo comia -Javier, 16-09-2026-.
+            56 Y NO 44: la tarea 48 lo hizo secundario, y secundario se confundio con apretado. */}
     </div>
   )
 }

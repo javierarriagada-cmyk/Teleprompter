@@ -247,7 +247,7 @@ describe('Pruebas TAREA 50 - Un Solo Mundo (T240-T252)', () => {
     const repo = new RepositorioMemoria()
     render(<App repoOverride={repo} />)
 
-    const btnCrear = await screen.findByTestId('btn-crear-guion-flotante')
+    const btnCrear = await screen.findByTestId('btn-crear-guion')
     await act(async () => {
       fireEvent.click(btnCrear)
       await new Promise((r) => setTimeout(r, 50))

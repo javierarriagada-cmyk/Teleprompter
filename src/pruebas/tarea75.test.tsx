@@ -185,7 +185,7 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
     revisar('portada, aviso de guardado')
 
     // --- EDITOR VACIO: pegar texto y abrir archivo
-    fireEvent.click(screen.getByTestId('btn-crear-guion-flotante'))
+    fireEvent.click(screen.getByTestId('btn-crear-guion'))
     await screen.findByTestId('btn-pegar-texto')
     revisar('editor vacio')
     fireEvent.click(screen.getByText(en.guiones))
@@ -277,7 +277,7 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
 
   test('T75c - Con la app en ingles, un guion nuevo nace en ingles; pegar un texto espanol largo lo pasa a espanol; elegirlo a mano lo deja fijo', async () => {
     const { repo } = await appEnIngles()
-    fireEvent.click(screen.getByTestId('btn-crear-guion-flotante'))
+    fireEvent.click(screen.getByTestId('btn-crear-guion'))
     const boton = await screen.findByTestId('btn-idioma-guion')
     expect(boton.getAttribute('data-idioma')).toBe('en')
     expect(boton.textContent).toBe('EN')

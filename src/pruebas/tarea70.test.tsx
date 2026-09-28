@@ -257,13 +257,13 @@ describe('Tarea 70 - El estado LISTO y LEYENDO del lienzo se hace como la foto, 
   // Javier lo vio en el telefono el 23-09-2026.
   test('m) El + de crear guion existe en la portada y NO existe en el lienzo', async () => {
     await crearAppConGuion()
-    expect(screen.getByTestId('btn-crear-guion-flotante')).toBeDefined()
+    expect(screen.getByTestId('btn-crear-guion')).toBeDefined()
 
     fireEvent.click(await screen.findByTestId('btn-grabar-tarjeta'))
     await screen.findByTestId('btn-empezar-toma')
-    expect(screen.queryByTestId('btn-crear-guion-flotante')).toBeNull()
+    expect(screen.queryByTestId('btn-crear-guion')).toBeNull()
 
     fireEvent.click(screen.getByTestId('btn-volver-listo'))
-    expect(await screen.findByTestId('btn-crear-guion-flotante')).toBeDefined()
+    expect(await screen.findByTestId('btn-crear-guion')).toBeDefined()
   })
 })

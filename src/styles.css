@@ -16,6 +16,10 @@
   --velo-modal: rgba(21, 19, 18, 0.72);
 
   --texto-display: 28px;
+  /* EL ESCALON ENTRE TITULO Y DISPLAY -28-09-2026-. La escala saltaba de 18 a 28. Los titulos
+     que ordenan la portada -Guiones, Videos- y la salida "Guiones" del editor. Javier: "la
+     palabra guiones deberia crecer un poquito". */
+  --texto-seccion: 22px;
   --texto-titulo: 18px;
   --texto-cuerpo: 15px;
   --texto-meta: 13px;
@@ -115,6 +119,48 @@ body {
   font-size: var(--texto-titulo);
   font-weight: 600;
   line-height: 1.3;
+}
+/* Los titulos de seccion de la portada -Guiones, Archivados, Videos-: un escalon mas que
+   texto-titulo, iguales entre si porque son hermanos. 28-09-2026. */
+.texto-titulo.titulo-seccion {
+  font-size: var(--texto-seccion);
+}
+/* La fila del titulo Guiones con el "+" a la derecha -28-09-2026-. El "+" era un boton
+   flotante abajo a la derecha y tapaba la tira de videos cuando la lista plegada la subio a la
+   primera pantalla. Centrados en vertical; el "+" queda alineado al borde derecho de las filas. */
+.fila-titulo-seccion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--aire-3);
+  margin-bottom: var(--aire-3);
+}
+/* El "+": se ve un circulo de 34 -el gris de las filas, el borde del engranaje- y se toca un
+   cuadrado de 44, el minimo tocable. El margen negativo devuelve lo que agrega el relleno: el
+   circulo queda alineado al borde de las filas y no se corre. */
+.boton-crear-guion {
+  width: 44px;
+  height: 44px;
+  margin: calc(-1 * var(--aire-1)) calc(-1 * var(--aire-1)) calc(-1 * var(--aire-1)) 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.boton-crear-guion > span {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--redondeo-pildora);
+  background-color: var(--bg-panel);
+  border: 1px solid var(--color-separador);
+  color: var(--color-texto);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .texto-cuerpo {
@@ -663,8 +709,10 @@ textarea::placeholder {
   letter-spacing: 0.04em;
   color: var(--color-apagado);
 }
+/* 28-09-2026: sube a --texto-seccion, el mismo escalon del titulo Guiones de la portada. Javier,
+   mirando el editor en el telefono: "ese guiones tambien esta pequeño". */
 .volver-guiones {
-  font-size: var(--texto-titulo);
+  font-size: var(--texto-seccion);
   font-weight: 500;
   line-height: 1.3;
 }

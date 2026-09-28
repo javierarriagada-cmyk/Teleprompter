@@ -319,7 +319,7 @@ Esta es la tercera línea`)
     // Por screen y no por container: el "+" cuelga de body a proposito, para
     // que el transform de la transicion de pantalla no lo arrastre. Ver el
     // comentario del portal en BibliotecaView.
-    const botonCrear = screen.getByTestId('btn-crear-guion-flotante')
+    const botonCrear = screen.getByTestId('btn-crear-guion')
     expect(botonCrear).not.toBeNull()
 
     await act(async () => {
@@ -2268,7 +2268,7 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     })
 
     await act(async () => {
-      fireEvent.click(screen.getByTestId('btn-crear-guion-flotante'))
+      fireEvent.click(screen.getByTestId('btn-crear-guion'))
       await new Promise((r) => setTimeout(r, 100))
     })
     expect(screen.getByTestId('btn-abrir-archivo')).not.toBeNull()

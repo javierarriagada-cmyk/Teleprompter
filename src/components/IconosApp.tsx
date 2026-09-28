@@ -200,6 +200,17 @@ function Trazo({ tamano = 22, children, ...props }: PropsIcono & { children: Rea
   )
 }
 
+/** Una cruz: crear un guion. Dibujada con el trazo de la casa y no con el caracter "+", que
+ *  cambia de grosor y de altura con cada tipografia -28-09-2026, junto al titulo Guiones-. */
+export function IconoMas(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M12 5v14" />
+      <path d="M5 12h14" />
+    </Trazo>
+  )
+}
+
 /** Dos flechas en circulo: dar vuelta la camara. */
 export function IconoVoltear(props: PropsIcono) {
   return (

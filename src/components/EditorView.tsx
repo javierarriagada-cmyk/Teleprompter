@@ -432,9 +432,13 @@ export default function EditorView({
         // Con la banda de tomas, el relleno de abajo crece lo que mide la banda y su aire hasta
         // los botones -var(--alto-banda-tomas) y var(--aire-3)-: el final del guion no queda
         // tapado. Tarea 76, 28-09-2026.
+        // ARRIBA, SIN LA BARRA DE ESTADO -28-09-2026-. Era calc(20px + env(safe-area-inset-top)), y
+        // el marco de App.tsx ya suma 16px + esa misma area segura: en el editor se contaba DOS
+        // veces y quedaba una franja negra de ~80 px sobre "Guiones". Javier, en el telefono: "ese
+        // espacio deberia ser la mitad". La portada no la suma: queda igual que ella.
         padding: hayBanda
-          ? 'calc(20px + env(safe-area-inset-top, 0px)) var(--aire-4) calc(130px + var(--alto-banda-tomas) + var(--aire-3) + env(safe-area-inset-bottom, 0px)) var(--aire-4)'
-          : 'calc(20px + env(safe-area-inset-top, 0px)) var(--aire-4) calc(130px + env(safe-area-inset-bottom, 0px)) var(--aire-4)',
+          ? 'var(--aire-4) var(--aire-4) calc(130px + var(--alto-banda-tomas) + var(--aire-3) + env(safe-area-inset-bottom, 0px)) var(--aire-4)'
+          : 'var(--aire-4) var(--aire-4) calc(130px + env(safe-area-inset-bottom, 0px)) var(--aire-4)',
         position: 'relative',
         ...style
       }}
