@@ -1,0 +1,71 @@
+TAREA 76 — CORRECCION 1
+En la MISMA rama tarea-76-portada-y-tomas y el MISMO pull request -#51-. Revisado por Claude en
+el computador de Javier el 28-09-2026: las 388 pruebas pasan, los comentarios estan completos,
+las capturas se ven bien. Tus tres decisiones del PR se ACEPTAN tal como las hiciste -archivados
+con 3 guiones o menos, la barra que baja 120 px mas la banda, el degradado hasta el borde-.
+Quedan tres cosas.
+
+------------------------------------------------------------------------------
+1. EL "+" SALE DE LA ESQUINA Y VA JUNTO AL TITULO "GUIONES"
+------------------------------------------------------------------------------
+Por que: con la lista plegada, la tira de videos sube a la primera pantalla y el "+" flotante
+-btn-crear-guion-flotante, abajo a la derecha- queda encima de la tercera miniatura. Se ve en
+tus propias capturas 412x915-*-1-portada-plegada.png. Javier eligio moverlo, viendo un dibujo.
+
+  - Se quita el boton flotante y su portal. SU COMENTARIO LARGO SE QUEDA -el de "EL + SALE POR
+    UNA PUERTA APARTE"- y se le agrega debajo, con fecha 28-09-2026, que el boton flotante se
+    retiro porque tapaba la tira de videos, y a donde fue.
+  - El titulo "Guiones" pasa a ser una fila: el titulo a la izquierda y el "+" a la derecha,
+    centrados en vertical entre si. El "+" queda alineado al borde DERECHO de las filas de
+    guion, no al borde de la pantalla.
+  - El "+": un circulo de 34 px, relleno var(--bg-panel) -el mismo gris de las filas-, borde de
+    1 px con el mismo color y grosor que el borde del boton del engranaje de arriba, el signo
+    "+" en --color-texto, dibujado como icono en IconosApp.tsx -IconoMas, trazo de la casa-, no
+    como caracter. Area tocable minima 44 x 44 -el circulo se ve de 34, el toque abarca mas-.
+    Apretado: la misma respuesta de btn-deformable que los demas botones.
+  - Mismo handler de siempre: hapticaToqueSuave() y onCrearNuevo(). aria-label y title
+    t('crearGuion'). data-testid NUEVO "btn-crear-guion"; actualizar las pruebas que usaban
+    btn-crear-guion-flotante -buscar TODAS: pruebas.test.tsx y src/pruebas/-.
+  - Se ve SIEMPRE que se ve el titulo "Guiones": plegado, desplegado, y con cero guiones. En la
+    vista de archivados -el titulo dice "Archivados"- NO va el "+".
+  - El relleno inferior de la portada que existia para no quedar debajo del boton flotante, si
+    lo hay, se ajusta: ya no hay nada flotando abajo.
+
+------------------------------------------------------------------------------
+2. LOS TITULOS DE SECCION CRECEN UN ESCALON
+------------------------------------------------------------------------------
+Javier: "quizas la palabra guiones deberia crecer un poquito". Hoy la escala salta de
+--texto-titulo -18 px- a --texto-display -28 px, el titulo de la tarjeta-.
+
+  - Token nuevo en :root de styles.css, junto a los otros tamanos: --texto-seccion: 22px, con
+    comentario: el escalon entre titulo y display, para los titulos que ordenan la portada.
+  - "Guiones" -y "Archivados" cuando se ve esa lista- y "Videos" -TiraGrabaciones- pasan a
+    --texto-seccion. LOS DOS IGUALES: el comentario "Los dos titulos de biblioteca ... son
+    hermanos" se queda y se le agrega la fecha y el cambio.
+  - Mismo peso y color de hoy. Revisar que el ritmo vertical de LAS PROPORCIONES de la tarea 76
+    se mantenga -a 412 x 915, plegada, tienen que seguir cabiendo tarjeta, 3 filas, "Ver todos"
+    y el comienzo de la tira-.
+
+------------------------------------------------------------------------------
+3. LA BANDA VUELVE CUANDO SE CIERRA EL TECLADO, SE CIERRE COMO SE CIERRE
+------------------------------------------------------------------------------
+Lo que avisaste en el PR: con "atras" Android cierra el teclado pero el foco sigue en el texto,
+y la banda queda escondida hasta tocar afuera.
+
+  - La banda se esconde cuando el titulo o el texto tienen el foco Y el teclado esta abierto.
+    Si el teclado se cierra, la banda vuelve aunque el foco siga en el texto.
+  - Detectar el teclado con window.visualViewport -evento resize-: abierto cuando
+    visualViewport.height es menor que el 75% de window.innerHeight. Sin dependencias nuevas.
+    Si visualViewport no existe, queda el comportamiento de hoy -solo el foco-.
+  - Constante con nombre y comentario para el 75%.
+  - Prueba nueva: con el foco en el texto, simular teclado abierto -visualViewport.height
+    chico- -> no hay banda; simular teclado cerrado sin quitar el foco -> la banda vuelve.
+
+------------------------------------------------------------------------------
+AL TERMINAR
+------------------------------------------------------------------------------
+  - npx tsc --noEmit, npx vitest run -todo en verde, desplazarNoAbre y T209 sin tocarlas-,
+    npm run build.
+  - Capturas nuevas, reemplazando las de docs/pantallas/tarea76/ que cambian: portada plegada y
+    desplegada, oscuro y claro, 360 x 800 y 412 x 915.
+  - Un comentario en el PR con que cambio en esta correccion.
