@@ -31,6 +31,10 @@ export const es = {
   guiones: 'Guiones',
   archivados: 'Archivados',
   archivadosConteo: 'Archivados · {n}',
+  // La lista plegada -tarea 76, 28-09-2026-: {n} es el total de guiones de la lista, sin
+  // archivados.
+  verTodosGuiones: 'Ver todos · {n}',
+  verMenosGuiones: 'Ver menos',
   marcaArchivado: '(Archivado)',
   archivar: 'Archivar',
   desarchivar: 'Desarchivar',
@@ -58,6 +62,14 @@ export const es = {
   // --- Videos: la tira y el visor de la toma ---
   videos: 'Videos',
   videosVacio: 'Tus videos aparecerán aquí.',
+  // Sin videos, con dibujo -tarea 76, 28-09-2026-. videosVacio se queda: es la línea del
+  // 27-09 y la nombra el glosario de docs/ingles.txt.
+  videosVacioTitulo: 'Aún no tienes videos',
+  videosVacioLinea: 'Abre un guion y toca Grabar. Tus tomas aparecerán aquí.',
+  // La banda de tomas del guion abierto -BandaTomas.tsx-. La miniatura no lleva más texto
+  // que su duración: el lector de pantalla la nombra con tomaDuracion.
+  tomasConteo: 'Tomas · {n}',
+  tomaDuracion: 'Toma · {duracion}',
   incompleta: 'incompleta',
   sinAudio: 'sin audio',
   metaErrorMudo: 'el motor oyo y el archivo no tiene sonido',

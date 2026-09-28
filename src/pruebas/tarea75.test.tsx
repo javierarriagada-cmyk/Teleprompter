@@ -13,6 +13,7 @@ import { fijarIdioma, idiomaApp } from '../lib/idioma'
 import { es } from '../textos/es'
 import { en } from '../textos/en'
 import { pegarEnGuion, seleccionarEnGuion, escribirEnGuion } from './ayudaEditor'
+import { desplegarGuiones } from './ayudaPortada'
 
 // TAREA 75 -27-09-2026-: LA APP EN ESPANOL E INGLES. La vara: con la app en ingles, ni un
 // texto en espanol que se escape. Estas pruebas renderizan <App> entera -la regla de la casa:
@@ -139,6 +140,11 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
     expect(PEDAZOS_ESPANOLES.length).toBeGreaterThan(100)
 
     await appEnIngles()
+
+    // La lista plegada -tarea 76, 28-09-2026-: tres filas y "See all".
+    revisar('portada plegada')
+    // Desplegada aparecen el buscador y el pie de archivados.
+    desplegarGuiones()
 
     // --- PORTADA: la tarjeta, la lista con su buscador, el pie de archivados, la tira vacia
     revisar('portada')

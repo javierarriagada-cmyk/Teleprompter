@@ -2,6 +2,7 @@ import React from 'react'
 import { Capacitor } from '@capacitor/core'
 import { ResumenGrabacion } from '../datos/modelo'
 import { t, useTextos, tituloVisible, fechaCortaDosDigitos } from '../textos'
+import { IconoSinVideos } from './IconosApp'
 
 // UNA RUTA DE DISCO TAMBIEN HAY QUE CONVERTIRLA. El WebView no puede abrir
 // /storage/... directo: necesita la direccion que arma convertFileSrc.
@@ -148,8 +149,19 @@ export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar }: Prop
       {/* SIN VIDEOS, UNA LINEA -27-09-2026-. El titulo solo, sin nada debajo, se leia como algo
           roto o a medio cargar. Una auditoria proponia dibujo, titulo y dos lineas; Javier eligio
           una linea que diga donde van a quedar. */}
+      {/* -28-09-2026, tarea 76: CAMBIA. Javier vuelve a la propuesta de la auditoría, hecha con
+          el estilo de Sigo: el dibujo de una cámara dentro de un visor de esquinas rojas
+          -IconoSinVideos-, un título y una línea que dice qué hacer y dónde van a quedar. El
+          motivo de la línea del 27-09 sigue en pie -el título solo se leía roto-; lo que cambia
+          es cuánto se dice. La clave videosVacio queda en los textos; el testid también. Con
+          videos, la tira queda exactamente como estaba. Medidas y aire en .videos-vacio,
+          styles.css. */}
       {(!grabaciones || grabaciones.length === 0) ? (
-        <div data-testid="videos-vacio" className="texto-meta" style={{ color: 'var(--color-apagado)' }}>{t('videosVacio')}</div>
+        <div data-testid="videos-vacio" className="videos-vacio">
+          <IconoSinVideos />
+          <div className="videos-vacio-titulo">{t('videosVacioTitulo')}</div>
+          <div className="videos-vacio-linea">{t('videosVacioLinea')}</div>
+        </div>
       ) : (
         <div style={{ display: 'flex', gap: 'var(--aire-3)', overflowX: 'auto', paddingBottom: 'var(--aire-2)', WebkitOverflowScrolling: 'touch' }}>
           {grabaciones.map((g) => (

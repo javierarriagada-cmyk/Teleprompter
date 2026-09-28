@@ -1702,6 +1702,15 @@ export default function App({ motor, repoOverride }: AppProps) {
             tipoFuente={tipoFuente}
             setTipoFuente={setTipoFuente}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
+            // LAS TOMAS DE ESTE GUION, de la más nueva a la más vieja -tarea 76, 28-09-2026-.
+            // Salen de grabaciones, el mismo estado de la tira: al borrar la última desde el
+            // reproductor, la lista se vuelve a leer y la banda se va sola. El reproductor se
+            // dibuja encima de cualquier vista -ReproductorGrabacion, más abajo-: el editor queda
+            // montado debajo, con su texto y su desplazamiento, y al cerrarlo está como estaba.
+            tomas={grabaciones
+              .filter((g) => g.guionId === guionActual.id)
+              .sort((a, b) => b.creado - a.creado)}
+            onAbrirToma={(g) => setGrabacionAbierta(g)}
           />
         </Pantalla>
       )}
