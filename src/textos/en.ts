@@ -1,24 +1,14 @@
 import type { Textos } from './es'
 
-// LOS TEXTOS DE LA APP EN INGLES -tarea 75, 27-09-2026-. Mismas claves que es.ts: el tipo
-// Textos hace que tsc falle si falta una o sobra otra.
-//
-// SE ESCRIBEN, NO SE TRADUCEN -D5 de docs/ingles.txt-. Ingles de Estados Unidos, con el
-// glosario de docs/ingles.txt, que manda: Script, Take, Record, Captions, Settings... Quien
-// abra la app en ingles no tiene que notar que se hizo primero en espanol.
 export const en: Textos = {
-  // --- Comunes ---
   leer: 'Read',
   grabar: 'Record',
   sinTitulo: 'Untitled',
   seguro: 'Sure?',
   cerrar: 'Close',
   borrar: 'Delete',
-  // "eliminar" se fue el 28-09-2026: el tacho dice lo mismo que "borrar" en toda la app.
   toma: 'Take',
   volver: 'Back',
-
-  // --- Portada ---
   ajustesApp: 'Settings',
   tema: 'Theme',
   temaClaro: 'Light',
@@ -45,16 +35,12 @@ export const en: Textos = {
   resumenGuiones: '{n} scripts',
   resumenUnMinuto: '1 min read',
   resumenMinutos: '{n} min read',
-
-  // --- Fechas y duraciones ---
   hoy: 'today',
   ayer: 'yesterday',
   haceDias: '{n} days ago',
   haceUnaSemana: '1 week ago',
   haceSemanas: '{n} weeks ago',
   vacio: 'empty',
-
-  // --- Videos ---
   videos: 'Videos',
   videosVacio: 'Your videos will show up here.',
   videosVacioTitulo: 'No videos yet',
@@ -66,13 +52,11 @@ export const en: Textos = {
   metaErrorMudo: 'your voice was heard, but the file has no sound',
   metaAvisoMudo: 'no sound can be heard in this file',
   compartir: 'Share',
-  // La palabra chica bajo la flecha de guardar -28-09-2026-; la frase larga queda para lectores de pantalla.
   guardar: 'Save',
   guardarEnGaleria: 'Save to gallery',
   guardando: 'Saving…',
   guardandoAvance: 'Saving… {n}%',
   repetirToma: 'Retake',
-  // Los controles propios del reproductor -28-09-2026-.
   reproducir: 'Play',
   avanceDelVideo: 'Video progress',
   subtitulos: 'Captions',
@@ -80,8 +64,6 @@ export const en: Textos = {
   subtitulosAmarillo: 'Yellow',
   subtitulosRojo: 'Red',
   subtitulosFormal: 'Formal',
-
-  // --- Avisos ---
   avisoTomaRecuperada: 'A take from an interrupted session was recovered.',
   avisoTomasRecuperadas: '{n} takes from an interrupted session were recovered.',
   verla: 'View it',
@@ -91,7 +73,6 @@ export const en: Textos = {
   tomaDescartada: 'Take discarded',
   grabado: 'Recorded',
   grabadoDuracion: 'Recorded: {duracion}',
-  // Al parar una lectura -28-09-2026-: antes decia Grabado aunque no se grababa nada.
   lecturaDuracion: 'Reading: {duracion}',
   lecturaTerminada: 'Reading finished',
   avisoErrorMudo: 'Your voice was heard, but the file has no sound',
@@ -105,8 +86,6 @@ export const en: Textos = {
   errorModelo: 'Couldn’t download the Vosk voice model: {detalle}.',
   desconocido: 'Unknown error',
   reintentar: 'Try again',
-
-  // --- Editor ---
   ajustesLectura: 'Reading settings',
   idiomaDelGuion: 'Script language: {idioma}',
   idiomaEspanol: 'Spanish',
@@ -135,8 +114,6 @@ export const en: Textos = {
   pegarTexto: 'Paste text',
   abrirArchivo: 'Open file',
   leyendoArchivo: 'Opening...',
-
-  // --- Tamano y ancho ---
   tamanoLetra: 'Text size',
   letraMenos: 'Smaller text',
   letraMas: 'Larger text',
@@ -144,8 +121,6 @@ export const en: Textos = {
   ancho: 'Wide',
   medio: 'Medium',
   angosto: 'Narrow',
-
-  // --- Lectura y cajon de la toma ---
   salir: 'Exit',
   descartarToma: 'Discard take',
   pausa: 'Pause',
@@ -172,5 +147,25 @@ export const en: Textos = {
   brillo: 'Brightness',
   empezar: 'Start',
   duracionEstimada: 'estimated script length',
-  tiempoTranscurrido: 'elapsed time and estimated total'
+  tiempoTranscurrido: 'elapsed time and estimated total',
+  fichaArriba: 'Top',
+  fichaAlMedio: 'Middle',
+  fichaCamaraDetras: 'Behind',
+  fichaCamaraRecuadro: 'Window',
+  fichaCamaraOculta: 'Hidden',
+  fichaMas: 'More',
+  brilloAuto: 'Auto',
+  brilloAutomatico: 'Automatic',
+  tituloAjustes: 'Settings',
+  seccionLectura: 'Reading',
+  seccionVideo: 'Video',
+  seccionApariencia: 'Appearance',
+  seccionAcerca: 'About',
+  tipoSans: 'Sans',
+  tipoSerif: 'Serif',
+  version: 'Version',
+  privacidad: 'Privacy',
+  soporte: 'Support',
+  espejoExplicacion: 'For use with a teleprompter glass',
+  lineaMuestraLectura: 'Read this out loud, at your own pace.'
 }

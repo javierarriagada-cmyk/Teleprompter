@@ -10,18 +10,14 @@
 // PanelCorpus-, que se elimina antes de publicar -P1f-; los mensajes de consola; el guion
 // Hola, que es un texto largo con sus formatos y vive en App.tsx -bloqueDeBienvenida-.
 export const es = {
-  // --- Comunes: los mismos verbos en toda la app -glosario de docs/ingles.txt- ---
   leer: 'Leer',
   grabar: 'Grabar',
   sinTitulo: 'Sin título',
   seguro: '¿Seguro?',
   cerrar: 'Cerrar',
   borrar: 'Borrar',
-  // "eliminar" se fue el 28-09-2026: el tacho dice lo mismo que "borrar" en toda la app.
   toma: 'Toma',
   volver: 'Volver',
-
-  // --- Portada ---
   ajustesApp: 'Ajustes de la app',
   tema: 'Tema',
   temaClaro: 'Claro',
@@ -31,8 +27,6 @@ export const es = {
   guiones: 'Guiones',
   archivados: 'Archivados',
   archivadosConteo: 'Archivados · {n}',
-  // La lista plegada -tarea 76, 28-09-2026-: {n} es el total de guiones de la lista, sin
-  // archivados.
   verTodosGuiones: 'Ver todos · {n}',
   verMenosGuiones: 'Ver menos',
   marcaArchivado: '(Archivado)',
@@ -50,24 +44,16 @@ export const es = {
   resumenGuiones: '{n} guiones',
   resumenUnMinuto: '1 minuto de lectura',
   resumenMinutos: '{n} minutos de lectura',
-
-  // --- Fechas y duraciones ---
   hoy: 'hoy',
   ayer: 'ayer',
   haceDias: 'hace {n} días',
   haceUnaSemana: 'hace 1 semana',
   haceSemanas: 'hace {n} semanas',
   vacio: 'vacío',
-
-  // --- Videos: la tira y el visor de la toma ---
   videos: 'Videos',
   videosVacio: 'Tus videos aparecerán aquí.',
-  // Sin videos, con dibujo -tarea 76, 28-09-2026-. videosVacio se queda: es la línea del
-  // 27-09 y la nombra el glosario de docs/ingles.txt.
   videosVacioTitulo: 'Aún no tienes videos',
   videosVacioLinea: 'Abre un guion y toca Grabar. Tus tomas aparecerán aquí.',
-  // La banda de tomas del guion abierto -BandaTomas.tsx-. La miniatura no lleva más texto
-  // que su duración: el lector de pantalla la nombra con tomaDuracion.
   tomasConteo: 'Tomas · {n}',
   tomaDuracion: 'Toma · {duracion}',
   incompleta: 'incompleta',
@@ -75,13 +61,11 @@ export const es = {
   metaErrorMudo: 'el motor oyo y el archivo no tiene sonido',
   metaAvisoMudo: 'no se oye audio en este archivo',
   compartir: 'Compartir',
-  // La palabra chica bajo la flecha de guardar -28-09-2026-; la frase larga queda para lectores de pantalla.
   guardar: 'Guardar',
   guardarEnGaleria: 'Guardar en galería',
   guardando: 'Guardando…',
   guardandoAvance: 'Guardando… {n}%',
   repetirToma: 'Repetir toma',
-  // Los controles propios del reproductor -28-09-2026-.
   reproducir: 'Reproducir',
   avanceDelVideo: 'Avance del video',
   subtitulos: 'Subtítulos',
@@ -89,8 +73,6 @@ export const es = {
   subtitulosAmarillo: 'Amarillo',
   subtitulosRojo: 'Rojo',
   subtitulosFormal: 'Formal',
-
-  // --- Avisos ---
   avisoTomaRecuperada: 'Se recuperó una toma de una sesión interrumpida.',
   avisoTomasRecuperadas: 'Se recuperaron {n} tomas de una sesión interrumpida.',
   verla: 'Verla',
@@ -100,7 +82,6 @@ export const es = {
   tomaDescartada: 'Toma descartada',
   grabado: 'Grabado',
   grabadoDuracion: 'Grabado: {duracion}',
-  // Al parar una lectura -28-09-2026-: antes decia Grabado aunque no se grababa nada.
   lecturaDuracion: 'Lectura: {duracion}',
   lecturaTerminada: 'Lectura terminada',
   avisoErrorMudo: 'El motor oyo y el archivo no tiene sonido',
@@ -114,8 +95,6 @@ export const es = {
   errorModelo: 'Error descargando modelo de voz Vosk: {detalle}.',
   desconocido: 'Desconocido',
   reintentar: 'Reintentar',
-
-  // --- Editor ---
   ajustesLectura: 'Ajustes de lectura',
   idiomaDelGuion: 'Idioma del guion: {idioma}',
   idiomaEspanol: 'Español',
@@ -133,8 +112,6 @@ export const es = {
   archivoNoSeImporto: 'Error al importar el archivo',
   formatoSeleccion: 'Formato del texto seleccionado',
   negrita: 'Negrita',
-  // La letra del boton de negrita: la inicial de la palabra, como en cualquier procesador
-  // de texto del idioma.
   letraNegrita: 'N',
   ambar: 'Ámbar',
   celeste: 'Celeste',
@@ -146,8 +123,6 @@ export const es = {
   pegarTexto: 'Pegar texto',
   abrirArchivo: 'Abrir archivo',
   leyendoArchivo: 'Leyendo...',
-
-  // --- Tamano y ancho: el cajon Aa y el de la toma ---
   tamanoLetra: 'Tamaño de letra',
   letraMenos: 'Disminuir letra panel',
   letraMas: 'Aumentar letra panel',
@@ -155,8 +130,6 @@ export const es = {
   ancho: 'Ancho',
   medio: 'Medio',
   angosto: 'Angosto',
-
-  // --- Lectura y cajon de la toma ---
   salir: 'Salir',
   descartarToma: 'Descartar toma',
   pausa: 'Pausa',
@@ -183,7 +156,27 @@ export const es = {
   brillo: 'Brillo',
   empezar: 'Empezar',
   duracionEstimada: 'duración estimada del guion',
-  tiempoTranscurrido: 'tiempo transcurrido y total estimado'
+  tiempoTranscurrido: 'tiempo transcurrido y total estimado',
+  fichaArriba: 'Arriba',
+  fichaAlMedio: 'Al medio',
+  fichaCamaraDetras: 'Detrás',
+  fichaCamaraRecuadro: 'Recuadro',
+  fichaCamaraOculta: 'Oculta',
+  fichaMas: 'Más',
+  brilloAuto: 'Auto',
+  brilloAutomatico: 'Automático',
+  tituloAjustes: 'Ajustes',
+  seccionLectura: 'Lectura',
+  seccionVideo: 'Video',
+  seccionApariencia: 'Apariencia',
+  seccionAcerca: 'Acerca de',
+  tipoSans: 'Sans',
+  tipoSerif: 'Serif',
+  version: 'Versión',
+  privacidad: 'Privacidad',
+  soporte: 'Soporte',
+  espejoExplicacion: 'Para usar con un vidrio de teleprompter',
+  lineaMuestraLectura: 'Lee esto en voz alta, sin apuro.'
 }
 
 export type ClaveTexto = keyof typeof es
