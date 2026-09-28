@@ -164,7 +164,7 @@ export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar, guione
     temporizador.current = setTimeout(() => setConfirmando(null), MS_PARA_ARREPENTIRSE)
   }
   return (
-    <div data-testid="tira-grabaciones" style={{ marginTop: 'var(--aire-5)', marginBottom: 'var(--aire-3)' }}>
+    <div data-testid="tira-grabaciones" style={{ marginTop: 'var(--aire-4)', marginBottom: 'var(--aire-3)' }}>
       {/* "Videos" y no "Tomas": hermano de "Guiones" en la portada, mismo
           escalon y mismo peso. */}
       <div className="texto-titulo titulo-seccion" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-3)', fontWeight: 600 }}>{t('videos')}</div>

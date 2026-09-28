@@ -59,7 +59,9 @@ export default function TarjetaLectura({
         borderRadius: 'var(--redondeo-grande)',
         // Mas aire adentro -27-09-2026-, junto con la superficie gris: la tarjeta crece y la
         // portada deja de quedar apretada arriba.
-        padding: 'var(--aire-5) var(--aire-4)',
+        // 28-09-2026: 20 en todos los lados, no 32 arriba y abajo. Javier, comparando con una propuesta
+        // profesional: "nuestros cajones con mucho aire hacen que se vea menos profesional".
+        padding: 'var(--aire-4)',
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
@@ -174,7 +176,6 @@ export default function TarjetaLectura({
           className="titulo-tarjeta"
           style={{
             margin: 0,
-            fontSize: 44,
             lineHeight: 1.1,
             color: hayGuion ? parejaColor.letra : 'var(--color-apagado)',
             userSelect: 'none'

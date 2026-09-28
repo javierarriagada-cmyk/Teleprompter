@@ -731,7 +731,8 @@ export default function BibliotecaView({
       <div className="portada-cuerpo">
 
       {/* Tarjeta de Portada */}
-      <div style={{ position: 'relative', marginBottom: 'var(--aire-5)', ...animacionTituloStyle }}>
+      {/* 20 y no 32 entre la tarjeta y Guiones -28-09-2026-, la pasada de densidad. */}
+      <div style={{ position: 'relative', marginBottom: 'var(--aire-4)', ...animacionTituloStyle }}>
         <TarjetaLectura
           guionResumen={guionMasReciente}
           onLeer={(rect) => {
