@@ -229,6 +229,35 @@ describe('Tarea 76 - la portada plegada', () => {
     expect(filas().length).toBe(12)
   })
 
+  test('T76-18 Al plegar, si "Ver todos" quedo arriba del borde de la pantalla, la pagina vuelve suave al titulo "Guiones"; si se ve, no se mueve', async () => {
+    // jsdom no mide ni desplaza: la prueba fija ella misma donde queda el boton y mira a quien
+    // se le pide volver.
+    const volver = vi.fn()
+    const original = (Element.prototype as any).scrollIntoView
+    ;(Element.prototype as any).scrollIntoView = volver
+    try {
+      await portada(muchos(12))
+      const boton = screen.getByTestId('btn-ver-todos-guiones')
+      const medirEn = (top: number) => {
+        boton.getBoundingClientRect = () => ({ top, bottom: top + 44, left: 0, right: 0, width: 0, height: 44, x: 0, y: top, toJSON: () => ({}) }) as DOMRect
+      }
+      // Plegar con "Ver todos" a la vista: no se mueve.
+      fireEvent.click(boton)
+      medirEn(300)
+      fireEvent.click(boton)
+      expect(volver).not.toHaveBeenCalled()
+      // Plegar con "Ver todos" arriba del borde: vuelve al titulo.
+      fireEvent.click(boton)
+      medirEn(-40)
+      fireEvent.click(boton)
+      expect(volver).toHaveBeenCalledTimes(1)
+      expect(volver.mock.instances[0].textContent).toBe('Guiones')
+      expect(volver).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
+    } finally {
+      ;(Element.prototype as any).scrollIntoView = original
+    }
+  })
+
   test('T76-8 Bajar la pantalla sobre una fila que aparecio al desplegar tampoco la abre: las filas nuevas son FilaGuion', async () => {
     await portada(muchos(12))
     desplegarGuiones()
