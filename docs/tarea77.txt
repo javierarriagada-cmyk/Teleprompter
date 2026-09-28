@@ -1,0 +1,136 @@
+TAREA 77 - LOS AJUSTES DE SIGO CON REGLAS DE SISTEMA
+Encargo para Grok, 28-09-2026. Rama propia y PR: nunca escribir en main.
+Direccion aprobada por Javier mirando el dibujo: docs/pantallas/tarea77/direccion-aprobada.png
+
+==============================================================================
+1. POR QUE
+==============================================================================
+
+Javier, 28-09-2026, con la app en la mano:
+  "lo importante es que se vea muy moderno, elegante, y muy profesional, y es en eso en lo que
+  estamos fallando, a veces con botones gigantes, otro llenamos de A un recuadro grande... esto
+  debe ser facilitador para el usuario, y en esto tienen que existir ya reglas, y no las estamos
+  ocupando bien, estamos haciendo mejor un mockup... las app profesionales de marca tambien lo
+  resolvieron". Y: "lo de las palabras no es un limite".
+
+Hoy los ajustes de la lectura viven en UN cajon grande -panel-ajustes-toma, TeleprompterView.tsx-
+que junta lo que se toca antes de cada toma con lo que se elige una vez, todo dibujado sin decir
+el valor actual. Medido en un moto g86 -densidad 2,8125-: opciones de 45-50 dp de alto, el tamano
+de letra son dos cajas de 192 x 46 dp con una "A", espejo y reloj son botones que se rellenan y no
+se lee si estan prendidos, y el cajon cubre media pantalla. El engranaje de la portada abre otro
+cajon con tema e idioma.
+
+Lo que hacen las apps profesionales -mirado en la camara del telefono de Javier y en apps de marca-
+son tres patrones, y son las reglas de Material 3, el sistema de Android:
+  A. FICHAS QUE DICEN SU VALOR. Sobre la imagen, fichas chicas que muestran como esta cada cosa
+     -en la camara del telefono: "FHD 60"-. Tocar una abre un panel chico, pegado a ella, SOLO con
+     sus opciones.
+  B. UNA PANTALLA DE AJUSTES para lo que se elige una vez: secciones con titulo chico y linea fina;
+     cada fila con nombre, valor actual y flecha, o interruptor.
+  C. MUESTRA VIVA donde el ajuste es visual.
+La hoja que sube desde abajo, dice Material 3, es para contenido complementario: no para ser el
+lugar de todos los ajustes.
+
+==============================================================================
+2. LAS MEDIDAS -Material 3, en dp = px CSS en el WebView-
+==============================================================================
+
+  Ficha -chip-            32 de alto, radio 8, borde 1 -token--, icono 16-18, texto 13-14 en 500,
+                          relleno lateral 12, separacion 8. Toque minimo 48 -zona invisible-.
+  Panel de una ficha      radio 16, relleno 16, fondo de superficie elevada, borde de un pelo y
+                          sombra -tokens--borde-tarjeta y --sombra-tarjeta, ya existen-. Titulo
+                          chico en mayusculas espaciadas -12, .1em- y el valor a la derecha.
+  Botones segmentados     40 de alto, borde 1, opcion elegida rellena con --color-acento, icono
+                          + palabra cuando la palabra aclara.
+  Deslizador              pista de 16 de alto -Material 3 expresivo- o la actual si queda
+                          coherente; con PASOS discretos cuando el valor es discreto.
+  Interruptor             pista 52 x 32, borde 2; perilla 16 apagado, 24 encendido; encendido =
+                          pista --color-acento, perilla --color-texto-acento. Role switch real.
+  Barra superior          64 de alto: flecha atras + titulo en Source Serif 4, 22.
+  Titulo de seccion       12-13, mayusculas, espaciado .1em, color --color-apagado.
+  Fila de lista           minimo 56 -una linea- o 72 -con explicacion-; relleno lateral 16;
+                          icono 24 a la izquierda en --color-apagado; nombre 16; explicacion 13
+                          apagada; valor 14 apagado a la derecha; flecha ">" o interruptor.
+                          Separadas por una linea de un pelo -token-.
+  Dialogo de eleccion     radio 28, relleno 24, titulo serif 22, filas de 56 con radio; elegir
+                          aplica y cierra -sin "Aceptar"-. Tocar afuera cierra.
+  Contencion              lineas de un pelo en vez de cajas llenas, casi sin color, jerarquia por
+                          tamano y peso. El ROJO es solo de grabar: jamas como seleccion.
+
+==============================================================================
+3. QUE VA DONDE -todos los ajustes de hoy, ninguno se pierde-
+==============================================================================
+
+FICHAS EN LISTO -Leer y Grabar, antes de empezar-
+  Aa  Tamano de letra     ficha "Aa 32"; panel: titulo + valor, boton -, deslizador con los 5
+                          pasos de PASOS_LETRA -14 18 24 32 42-, boton +. El texto de atras cambia
+                          en vivo, como hoy.
+      Camara -solo Grabar- ficha con el icono y la palabra: "Detras" / "Recuadro" / "Oculta";
+                          panel: segmentado de 3 con icono y palabra; si "Oculta", la linea de
+                          aviso que ya existe -camaraSigueEncendida-.
+      Donde lees          ficha "Arriba" / "Al medio" con IconoFranja; panel: segmentado de 2.
+      Brillo              ficha "70 %" o "Auto" cuando no se toco; panel: deslizador entre sol
+                          chico y sol grande, y un boton de texto "Automatico" que vuelve al del
+                          sistema -restaurarBrillo, lib/brillo.ts-.
+      Calidad -solo Grabar- ficha "1080p"; panel: segmentado 1080p/720p/480p y debajo la linea de
+                          minutos que ya existe -linea-minutos-disponibles-.
+      Voltear -solo Grabar- ficha solo con IconoVoltear: es una ACCION, no abre panel.
+      Mas                 ultima ficha, icono de ajustes: abre la PANTALLA DE AJUSTES encima de la
+                          lectura; al volver, la lectura sigue en LISTO tal como estaba.
+
+  Reglas de las fichas: una fila horizontal que se desplaza de lado si no cabe, 16 de margen,
+  justo arriba del circulo de Empezar -bottom: circulo-desde-abajo + 72 + 16 + area segura-. Un
+  panel abierto a la vez; tocar su ficha de nuevo, o tocar el texto, lo cierra. La ficha abierta
+  se pinta rellena. Se esconden al empezar -en LEYENDO no hay fichas- y mientras se arrastra el
+  recuadro. El engranaje de la esquina de LISTO y el cajon panel-ajustes-toma SE VAN.
+
+PANTALLA DE AJUSTES -desde el engranaje de la portada y desde la ficha "Mas"-
+  Pantalla completa encima de todo, barra superior "Ajustes" con flecha; el atras del sistema
+  tambien la cierra.
+  LECTURA
+    muestra viva        una caja con un renglon de ejemplo con la letra, el ancho y los colores
+                        elegidos; cambia en vivo.
+    Tipo de letra       valor "Sans" / "Serif"      -> dialogo
+    Ancho del texto     valor "Ancho"/"Medio"/"Angosto" -> dialogo -con los iconos de ancho-
+    Colores             valor con el nombre de la pareja -> dialogo con las parejas como
+                        muestras pintadas -PAREJAS_COLOR-
+    Espejo              interruptor; explicacion "Para usar con un vidrio de teleprompter"
+    Mostrar el tiempo   interruptor
+  VIDEO
+    Calidad             valor "1080p"; explicacion "Te alcanzan unos N minutos" -> dialogo
+    Subtitulos          valor del estilo por omision -ESTILOS_SUBTITULO- -> dialogo
+  APARIENCIA
+    Tema                valor "Oscuro"/"Claro" -> dialogo
+    Idioma de la app    valor "Espanol"/"English" -> dialogo -el camino de hoy: IdiomaAppPlugin-
+  ACERCA DE
+    Version             solo lectura
+    Privacidad          abre sigoteleprompter.com/privacidad -o /en/privacy segun idioma-
+    Soporte             abre sigoteleprompter.com/soporte -o /en/support-
+  Donde un ajuste no aplica en un aparato -sin camara, sin calidades- la fila no aparece.
+
+LO QUE NO SE TOCA EN ESTA TAREA
+  El cajon Aa del editor -se hace despues, con la misma logica-. Los controles de LEYENDO, el
+  circulo de Empezar, la pastilla del tiempo, el recuadro arrastrable, el diagnostico de 5 toques.
+
+==============================================================================
+4. CONTRATO
+==============================================================================
+
+  1. Rama y PR; commits por partes que se puedan verificar solos -fichas y paneles; pantalla de
+     ajustes; retiro de los cajones; pruebas-.
+  2. Dos temas: todo con los tokens de styles.css, en oscuro y en claro. T209 sigue: ningun
+     componente escribe a mano color, tamano de letra, espaciado ni radio -van a clases-.
+  3. Textos en src/textos/es.ts y en.ts, los dos. Espanol neutro, sin modismos.
+  4. LOS COMENTARIOS NO SE BORRAN. Los que explican un control que se va se conservan junto a su
+     reemplazo, con una linea fechada que diga que cambio y por que. Se cuentan en la revision.
+  5. Pruebas: las que hoy tocan panel-ajustes-toma, btn-engranaje-toma, menu-superior-biblioteca,
+     btn-fondo-*, btn-calidad-*, btn-anclaje-*, barra-brillo -13 archivos- se MIGRAN a los
+     controles nuevos, con comentario fechado; no se borran. Cada ajuste conserva una prueba que
+     demuestra que cambia. Nuevas: la ficha muestra su valor; un panel a la vez; cada fila de
+     Ajustes abre su dialogo y aplica; los interruptores cambian y se guardan; la ficha Mas abre
+     Ajustes y al volver la lectura sigue en LISTO.
+  6. Accesibilidad -avanza P1g-: fichas como botones con nombre y valor -"Tamano de letra, 32"- y
+     aria-expanded; filas de Ajustes como botones con nombre y valor; interruptores role switch.
+  7. Guardar como hoy: los ajustes se siguen guardando y cargando igual -mismas claves-.
+  8. npm test verde y npx tsc sin errores antes del PR. No hace falta APK: la revision en el
+     telefono la hace Claude.
