@@ -1717,12 +1717,14 @@ export default function App({ motor, repoOverride }: AppProps) {
 
       {vista === 'lectura' && guionActual && (
         <div
+          className="alto-pantalla"
           style={{
             position: 'fixed',
             top: 0,
             left: 0,
             width: '100%',
-            height: '100dvh',
+            // El alto va por la clase .alto-pantalla -100vh y despues 100dvh, styles.css-: 100dvh
+            // escrito aca dejaba sin Empezar a los navegadores viejos. 28-09-2026.
             zIndex: 150,
             overflow: 'hidden',
             borderRadius: 0,
@@ -1903,9 +1905,10 @@ export default function App({ motor, repoOverride }: AppProps) {
 
           <div
             ref={prompterContainerRef}
+            className="alto-pantalla"
             style={{
               width: '100%',
-              height: '100dvh',
+              // Alto: .alto-pantalla, mismo motivo que el contenedor de arriba. 28-09-2026.
             background: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro')) ? 'transparent' : colorFondo,
               overflow: 'hidden',
               position: 'relative',

@@ -122,6 +122,16 @@ body {
 }
 /* Los titulos de seccion de la portada -Guiones, Archivados, Videos-: un escalon mas que
    texto-titulo, iguales entre si porque son hermanos. 28-09-2026. */
+/* EL ALTO DE LA PANTALLA, CON RESPALDO -28-09-2026-. El lienzo de lectura media 100dvh escrito
+   en linea. Los navegadores de Android anteriores a Chrome 108 -fines de 2022- no conocen dvh: la
+   declaracion entera se ignora, el lienzo queda tan alto como el guion y Empezar y la barra de
+   tiempo -pegados abajo- quedan debajo del borde. El agente de pruebas de Firebase lo mostro en
+   un Galaxy A03s: la pantalla de lectura sin Empezar. Primero 100vh, que entienden todos; despues
+   100dvh, que lo reemplaza donde existe. En linea no se pueden poner los dos: por eso es clase. */
+.alto-pantalla {
+  height: 100vh;
+  height: 100dvh;
+}
 .texto-titulo.titulo-seccion {
   font-size: var(--texto-seccion);
 }
