@@ -1,5 +1,5 @@
 import React from 'react'
-import { IconoEmpezar } from './IconosApp'
+import { IconoEmpezar, IconoReloj } from './IconosApp'
 import { ResumenGuion, duracionDeLectura } from '../datos/modelo'
 import { estiloComprimirPorAviso, useMantenerApretado } from './mantenerApretado'
 import { t, useTextos, tituloOInicio } from '../textos'
@@ -53,7 +53,7 @@ export default function TarjetaLectura({
     <div
       ref={cardRef}
       data-testid="tarjeta-lectura-portada"
-      className="tarjeta-lectura-borde-iluminado"
+      className="tarjeta-lectura-borde-iluminado tarjeta-elevada"
       style={{
         backgroundColor: parejaColor.fondo,
         borderRadius: 'var(--redondeo-grande)',
@@ -160,6 +160,7 @@ export default function TarjetaLectura({
             className="duracion-tarjeta"
             style={{ color: parejaColor.letra }}
           >
+            <IconoReloj tamano={14} />
             {timecode}
           </span>
         )}

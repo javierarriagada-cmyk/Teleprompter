@@ -17,6 +17,11 @@
   /* EL TEXTO DE SUGERENCIA -placeholder- -28-09-2026-. Usaba --color-borde, que en el tema claro
      es casi el fondo: "Titulo del guion" no se veia en el moto g86. En el oscuro queda igual. */
   --color-sugerencia: #968F8B;
+  /* LAS CAJAS SE LEVANTAN DEL SUELO -28-09-2026-. Javier comparo la portada con una propuesta mas
+     profesional: "la nuestra si parece mas prototipo". Las cajas eran rellenos planos. Ahora un
+     borde de un pelo, apenas mas claro que la caja, y una sombra suave debajo. Ver .tarjeta-elevada. */
+  --borde-tarjeta: rgba(255, 255, 255, 0.08);
+  --sombra-tarjeta: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 6px 18px rgba(0, 0, 0, 0.38);
 
   --texto-display: 28px;
   /* EL ESCALON ENTRE TITULO Y DISPLAY -28-09-2026-. La escala saltaba de 18 a 28. Los titulos
@@ -61,6 +66,8 @@
   --color-apagado: #78706A;
   --color-borde: #E4E0D9;
   --color-sugerencia: #9A928B;
+  --borde-tarjeta: rgba(26, 24, 21, 0.09);
+  --sombra-tarjeta: 0 1px 2px rgba(26, 24, 21, 0.06), 0 6px 16px rgba(26, 24, 21, 0.07);
   --color-acento: #E7E1DE;
   --color-texto-acento: #151312;
   --color-grabando: #E11D2E;
@@ -80,6 +87,8 @@
   --color-separador: #4B4643;
   --color-borde: #968F8B;
   --color-sugerencia: #968F8B;
+  --borde-tarjeta: rgba(255, 255, 255, 0.08);
+  --sombra-tarjeta: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 6px 18px rgba(0, 0, 0, 0.38);
   --color-apagado: #CAC5C2;
   --color-texto: #E7E1DE;
   --color-acento: #E7E1DE;
@@ -497,6 +506,41 @@ textarea::placeholder {
   background: var(--bg-suelo);
   z-index: 90;
   pointer-events: none;
+}
+
+/* Las cajas de la portada -tarjeta de arriba y filas de guiones-: ver --borde-tarjeta. */
+.tarjeta-elevada {
+  border: 1px solid var(--borde-tarjeta);
+  box-shadow: var(--sombra-tarjeta);
+}
+/* Las miniaturas de la tira solo llevan el borde: la tira desplaza de lado y cortaria la sombra. */
+.borde-suave {
+  border: 1px solid var(--borde-tarjeta);
+}
+
+/* EL PLAY SOBRE LA MINIATURA -28-09-2026-: dice "esto es un video" de un vistazo. */
+.play-miniatura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--redondeo-pildora);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  pointer-events: none;
+}
+
+/* La flecha de cada fila de guion: "se abre". */
+.flecha-fila {
+  flex-shrink: 0;
+  color: var(--color-apagado);
+  transform: rotate(-90deg);
 }
 
 /* El velo de abajo de la lectura: ver VeloControles en TeleprompterView.tsx. Macizo hasta
@@ -1094,7 +1138,15 @@ label.selector-aa-opcion {
 }
 /* La duracion en la tarjeta: la letra de la aplicacion, no un reloj
    monoespaciado -es cuanto dura leerlo, no una hora-. */
+/* 28-09-2026: pastilla con el reloj delante, como en la propuesta que trajo Javier. */
 .duracion-tarjeta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aire-1);
+  align-self: flex-start;
+  padding: 2px var(--aire-2);
+  border: 1px solid var(--borde-tarjeta);
+  border-radius: var(--redondeo-pildora);
   font-size: var(--texto-meta);
   font-weight: 600;
   letter-spacing: 0.02em;

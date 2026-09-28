@@ -270,6 +270,9 @@ function FilaGuion({
 
   return (
     <div
+      // La caja se levanta del suelo -borde de un pelo y sombra, .tarjeta-elevada, 28-09-2026-. Va en
+      // este envoltorio y no en la fila: el overflow hidden de aca recortaria la sombra de adentro.
+      className="tarjeta-elevada"
       style={{
         position: 'relative',
         borderRadius: 'var(--redondeo)',
@@ -362,7 +365,9 @@ function FilaGuion({
           // PROPORCION Y CONTRASTE -27-09-2026-: la fila sube del suelo con el mismo gris de
           // la tarjeta de arriba y respira mas. Con --bg-fila casi no se separaba del fondo;
           // Javier prefirio el contraste entre gris y negro de una auditoria.
-          padding: 'var(--aire-4)',
+          // MAS COMPACTA -28-09-2026-: 20 px de aire arriba y abajo era un tercio mas alto que la
+          // propuesta profesional que trajo Javier. Los lados se quedan en 20.
+          padding: 'var(--aire-3) var(--aire-4)',
           backgroundColor: 'var(--bg-panel)',
           borderRadius: 'var(--redondeo)',
           cursor: 'pointer',
@@ -387,13 +392,17 @@ function FilaGuion({
             : `transform ${MS_CHICO}ms ${CURVA_RESORTE}`
         }}
       >
-        <div>
+        {/* La flecha a la derecha: el simbolo de "esto se abre" -28-09-2026-. */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div className="texto-titulo" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-1)' }}>
             {tituloMostrar} {g.archivado && <span style={{ fontSize: 'var(--texto-meta)', color: 'var(--color-apagado)' }}>{t('marcaArchivado')}</span>}
           </div>
           <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
             {metaTexto}
           </div>
+        </div>
+        <IconoChevron tamano={18} className="flecha-fila" />
         </div>
 
         {menuId === g.id && (
