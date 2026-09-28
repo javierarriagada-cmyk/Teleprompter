@@ -1,5 +1,18 @@
 apply plugin: 'com.android.application'
 
+// La cantidad de commits del repositorio. Si git no esta -una copia sin historia- vale 1 y la
+// construccion sigue: el numero nunca hace fallar el APK.
+def numeroDeVersion() {
+    try {
+        def p = ['git', 'rev-list', '--count', 'HEAD'].execute(null, rootProject.projectDir.parentFile)
+        def salida = p.text.trim()
+        p.waitFor()
+        return p.exitValue() == 0 ? salida.toInteger() : 1
+    } catch (Exception e) {
+        return 1
+    }
+}
+
 android {
     // EL IDENTIFICADOR DE LA APP -24-09-2026-. Era com.teleprompter.app, generico, y en Google Play
     // ya lo usa otra aplicacion: no se podia publicar con el. Es el unico dato que no se puede
@@ -11,7 +24,12 @@ android {
         applicationId "com.sigoteleprompter.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        // EL NUMERO DE VERSION SUBE SOLO -28-09-2026-. Era versionCode 1 fijo: todas las APK salian
+        // "1.0 (1)", la traductora vio en App Tester el mismo numero que ya tenia instalado y no habia
+        // forma de saber si la version nueva era la nueva. Play ademas rechaza una subida que no
+        // aumente este numero. Ahora es la cantidad de commits de main: cada APK construida despues de
+        // un commit lleva un numero mayor, sin que nadie tenga que acordarse de cambiarlo.
+        versionCode numeroDeVersion()
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         // SOLO LOS PROCESADORES DE LOS TELEFONOS -24-09-2026-. Las bibliotecas nativas -Vosk,
