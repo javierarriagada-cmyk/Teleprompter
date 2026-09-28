@@ -14,6 +14,7 @@ import '@fontsource/source-serif-4/latin-ext-400.css'
 import '@fontsource/source-serif-4/latin-ext-600.css'
 import App from './App'
 import './styles.css'
+import './styles-ajustes.css'
 
 import { instalarRecargaAlActualizar, sacarServiceWorkerEnNativo } from './lib/actualizacion'
 
