@@ -1,0 +1,32 @@
+TAREA 79 - ORDENAR docs/: LO VIGENTE ARRIBA, LO VIEJO AL ARCHIVO
+Encargo para Jules, 28-09-2026. Solo mueve archivos de documentacion. No toca codigo.
+
+POR QUE
+docs/ tiene 85 archivos -4,5 MB-. Unos 60 son encargos viejos y sus correcciones, maquetas HTML
+antiguas y estados de dias pasados. Lo vigente queda perdido entre ellos. Nada se borra: lo viejo
+se muda a docs/archivo/, con su historia de git intacta.
+
+1. QUEDAN EN docs/ -no se mueven-
+     lo-que-hay-que-saber.txt        decisiones-de-diseno.txt       ingles.txt
+     el-sitio.md                     accesibilidad-robo-test-25-sep.txt
+     ic-play-512.png                 tarea77.txt   tarea78.txt   tarea79.txt
+     pantallas/tarea77/
+
+2. SE MUEVEN A docs/archivo/ con git mv -para conservar la historia-
+     todos los tarea43*.txt a tarea76*.txt, con sus -correccion, -notas, -ajuste y -respuesta
+     estado-al-21-de-septiembre.txt   estado-al-22-de-septiembre.txt   pendientes.txt
+     coherencia-mapa.txt   grabar.txt   grabar-arquitectura.txt   motor-notas.txt
+     ajustes-propuesta.html   circuito.html   estado.html   estandar.html   identidad.html
+     la-aplicacion-entera.html   la-cara.html
+     docs/pantallas/*.png -las capturas sueltas 01 a 11- a docs/archivo/pantallas/
+   Si aparece en docs/ un archivo que no esta en ninguna de las dos listas, NO lo muevas: avisa.
+
+3. CREA docs/archivo/LEEME.txt con cuatro lineas: que ahi estan los encargos y documentos viejos
+   de Sigo, movidos el 28-09-2026 desde docs/; que los comentarios del codigo que citan
+   "docs/tareaNN.txt" se refieren a estos archivos; y que lo vigente esta en docs/.
+
+4. CONTRATO
+   - Solo git mv y el LEEME nuevo. No se edita el contenido de ningun documento.
+   - No se toca nada fuera de docs/: ni src/, ni AGENTS.md, ni README.md, ni pruebas.
+   - npm test y npx tsc siguen en verde -no deberian cambiar-.
+   - Un commit, en la rama tarea-79-ordenar-docs desde main.

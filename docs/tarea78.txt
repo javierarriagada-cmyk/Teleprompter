@@ -1,0 +1,71 @@
+TAREA 78 - PARTIR EDITORVIEW.TSX EN PIEZAS, SIN CAMBIAR NADA DE LO QUE HACE
+Encargo para Jules, 28-09-2026. Es MOVER CODIGO, no mejorarlo.
+
+==============================================================================
+POR QUE
+==============================================================================
+src/components/EditorView.tsx tiene 1.152 lineas y hace cinco cosas distintas. Cualquier cambio
+obliga a leerlo entero. Se parte en piezas de un solo proposito. La app tiene que quedar
+EXACTAMENTE igual: mismo HTML, mismos data-testid, mismas clases, mismos estilos, mismo
+comportamiento. Si una prueba necesita cambiarse, esta mal hecho.
+
+==============================================================================
+EL MAPA -numeros de linea de EditorView.tsx en main, commit f336b3d-
+==============================================================================
+
+PIEZA 1 - src/components/EditorCabecera.tsx
+  Mover: el bloque JSX de las lineas 457 a 526 -empieza en el comentario "Fila superior
+  discreta"-. Tal cual, con sus comentarios.
+  Recibe por props exactamente lo que ese bloque usa: guion, onVolverBiblioteca, idiomaGuion,
+  nombreIdioma, handleAlternarIdioma -como onAlternarIdioma-, y una funcion onAbrirAjustes que
+  reemplaza a las llamadas setMostrarModalAjustes(...) que haya en el bloque. editorRef si el
+  bloque lo usa.
+
+PIEZA 2 - src/components/CajonAaEditor.tsx
+  Mover: el bloque JSX de las lineas 584 a 739 -empieza en el comentario "EL CAJON Aa, SIN
+  MUESTRA Y SIN VELO" y termina en el cierre de {mostrarModalAjustes && (...)}-.
+  Mover tambien, adentro de la pieza, lo que solo usa el cajon:
+    - lineas 143 a 145: dragOffsetY, esArrastrandoModalRef, dragStartYRef
+    - lineas 164 a 216: obtenerClientY, empezarArrastre, handleAgarraderaPointerDown,
+      handleModalPointerDown, handleModalPointerMove, handleModalPointerUp
+    - linea 141: refAjustes = useCerrarAfuera(abierto, onCerrar)
+  Recibe: abierto -antes mostrarModalAjustes-, onCerrar -reemplaza setMostrarModalAjustes(false)-,
+  guion, fontSize, onLetraMenos, onLetraMas, marginPercent, setMarginPercent, columnaAngosta,
+  setColumnaAngosta, colorFondo, setColorFondo, colorLetra, setColorLetra, tipoFuente,
+  setTipoFuente.
+  QUEDAN en EditorView: el estado mostrarModalAjustes -linea 140- y el efecto de
+  onRegistrarCerrarModal -lineas 397 a 412- y el de la tecla Escape que esta justo antes, porque los usan la cabecera y App.
+
+PIEZA 3 - src/components/BarraEditorVacio.tsx
+  Mover: el bloque JSX de las lineas 921 a 1015 -comentario "Barra fija abajo cuando
+  numPalabras === 0"-, con el manejador de Pegar que esta escrito adentro del onClick.
+  Recibe: guion, fontSize, editorRef, fileInputRef, cargandoArchivo. La condicion
+  numPalabras === 0 se queda en EditorView: la pieza se monta solo si se cumple.
+  QUEDAN en EditorView: el <input type="file"> de la linea 449, su manejador handleSeleccionarArchivo -lineas 266 a
+  316- y el aviso errorArchivo de las lineas 741 a 756.
+
+PIEZA 4 - src/components/BarraLeerGrabar.tsx
+  Mover: el bloque JSX de las lineas 1016 a 1150 -los dos comentarios "Boton de Leer en voz alta
+  Fijo Abajo" y el de la tarea 76-. La condicion numPalabras > 0 se queda en EditorView.
+  Recibe: guion, fontSize, barraLeerVisible, bandaVisible, btnLeerRef, onEntrarLectura,
+  onEntrarGrabar, tomas, onAbrirToma.
+
+SE QUEDA EN EditorView.tsx: todo lo demas -estado, efectos, titulo y meta -527 a 583-, la hoja
+del editor -758 a 920-, el input de archivo y el aviso de error-. Debe quedar cerca de 600 lineas.
+
+==============================================================================
+CONTRATO - NO SE NEGOCIA
+==============================================================================
+1. MOVER, NO REESCRIBIR. Cada bloque se copia tal cual. No se renombra nada que no este dicho
+   aca, no se "ordena", no se cambian estilos, no se agregan envoltorios -div- nuevos. El HTML
+   final tiene que ser identico: mismo orden de elementos, mismos data-testid, mismas clases.
+2. LOS COMENTARIOS NO SE BORRAN. Cada comentario viaja con su codigo. Al final, la cantidad de
+   lineas de comentario de EditorView.tsx + las cuatro piezas tiene que ser IGUAL O MAYOR que
+   la de EditorView.tsx en f336b3d. Se va a contar.
+3. NINGUNA PRUEBA SE TOCA. Ni una linea de src/pruebas ni de src/pruebas.test.tsx. npm test tiene
+   que pasar entero -391 pruebas- y npx tsc sin errores.
+4. No se toca ningun otro archivo: ni App.tsx, ni styles.css, ni textos. EditorView sigue
+   recibiendo exactamente las mismas props que hoy.
+5. Una pieza por commit, en este orden: 1, 2, 3, 4. Rama tarea-78-partir-editor desde main.
+6. Si algo del mapa no calza con el codigo -una linea corrida, una variable que falta-, NO lo
+   resuelvas inventando: detente y avisa que parte no calza.
