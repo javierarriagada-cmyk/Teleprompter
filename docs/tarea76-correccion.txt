@@ -1,3 +1,7 @@
+APLICADA POR CLAUDE EN EL COMPUTADOR DE JAVIER EL 28-09-2026, NO POR LA NUBE: puntos 1 y 2 hechos -y ademas
+la franja doble de arriba del editor-; el punto 3 -el teclado- lo descarto Javier: "no lo veo como problema".
+En main ab5e3a3.
+
 TAREA 76 — CORRECCION 1
 En la MISMA rama tarea-76-portada-y-tomas y el MISMO pull request -#51-. Revisado por Claude en
 el computador de Javier el 28-09-2026: las 388 pruebas pasan, los comentarios estan completos,
