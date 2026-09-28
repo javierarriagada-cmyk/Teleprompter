@@ -2211,15 +2211,17 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         fireEvent.click(botonLeer!)
         await vi.advanceTimersByTimeAsync(100)
       })
+      // 28-09-2026: Mostrar tiempo salio del cajon. Vive en Ajustes, ficha Mas.
       await act(async () => {
-        fireEvent.click(container!.querySelector('[data-testid="btn-engranaje-toma"]')!)
+        fireEvent.click(container!.querySelector('[data-testid="ficha-mas"]')!)
       })
-      const chkTiempo = Array.from(container!.querySelectorAll('input[type="checkbox"]')).find(
-        (input) => input.parentElement?.textContent?.includes('Mostrar tiempo')
-      ) as HTMLInputElement
-      expect(chkTiempo).not.toBeUndefined()
+      const swTiempo = container!.querySelector('[data-testid="switch-mostrar-tiempo"]') as HTMLElement
+      expect(swTiempo).not.toBeNull()
       await act(async () => {
-        fireEvent.click(chkTiempo)
+        fireEvent.click(swTiempo)
+      })
+      await act(async () => {
+        fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes"]')!)
       })
       await act(async () => {
         fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)
@@ -2238,11 +2240,17 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         fireEvent.click(btnVolver)
       })
 
-      const chkTiempo2 = Array.from(container!.querySelectorAll('input[type="checkbox"]')).find(
-        (input) => input.parentElement?.textContent?.includes('Mostrar tiempo')
-      ) as HTMLInputElement
+      // 28-09-2026: al salir de la lectura sin camara se vuelve a LISTO -tarea 68-, con las fichas
+      // a la vista: no hace falta volver a entrar por el editor.
       await act(async () => {
-        fireEvent.click(chkTiempo2)
+        fireEvent.click(container!.querySelector('[data-testid="ficha-mas"]')!)
+      })
+      const swTiempo2 = container!.querySelector('[data-testid="switch-mostrar-tiempo"]') as HTMLElement
+      await act(async () => {
+        fireEvent.click(swTiempo2)
+      })
+      await act(async () => {
+        fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes"]')!)
       })
       await act(async () => {
         fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)

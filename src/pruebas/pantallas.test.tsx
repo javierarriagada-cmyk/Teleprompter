@@ -238,8 +238,10 @@ describe('Pruebas TAREA 25: Pantallas Biblioteca y Editor (T149-T153)', () => {
 // que solo se cierra con el boton que lo abrio tapa el texto hasta que el usuario descubre
 // el truco.
 //
-// Son TRES en toda la aplicacion y los tres usan el mismo hook, useCerrarAfuera: el ⋯ del
-// editor, el ⋯ de la biblioteca y el de cada fila. Esta prueba los recorre, mas Escape.
+// Eran TRES y los tres usaban useCerrarAfuera: el Aa del editor, el cajon de la
+// biblioteca y el de cada fila. 28-09-2026: el cajon de la biblioteca se fue; el
+// engranaje abre Ajustes. Quedan el Aa y el menu de cada fila, mas el cierre de
+// Ajustes con su atras.
 describe('Pruebas TAREA 31 (T160)', () => {
   const guionEditor: Guion = {
     id: 'g-menu', titulo: 'Guion de prueba', idioma: 'es', creado: 1, modificado: 1,
@@ -271,26 +273,25 @@ describe('Pruebas TAREA 31 (T160)', () => {
       unmount()
     }
 
-    // 2. el ⋯ de la biblioteca
+    // 2. el engranaje de la biblioteca
+    // 28-09-2026: el cajon menu-superior-biblioteca se fue. El engranaje abre
+    // la pantalla de Ajustes —capa de App—, y se cierra con su atras.
     {
       const { unmount } = render(
-        React.createElement(BibliotecaView, {
-          guiones: guionesBiblioteca, onAbrir: () => {}, onCrearNuevo: () => {},
-          onBorrar: () => {}, onArchivar: () => {}
-        })
+        React.createElement(App, {})
       )
-      // Desde el 24-09-2026 es un cajon desde abajo, y se cierra igual.
       const btn = screen.getByTestId('btn-menu-superior-biblioteca')
       fireEvent.click(btn)
-      expect(screen.queryByTestId('menu-superior-biblioteca')).not.toBeNull()
-
-      fireEvent.pointerDown(document.body)
+      expect(screen.queryByTestId('pantalla-ajustes')).not.toBeNull()
       expect(screen.queryByTestId('menu-superior-biblioteca')).toBeNull()
+
+      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
 
       fireEvent.click(btn)
-      expect(screen.queryByTestId('menu-superior-biblioteca')).not.toBeNull()
-      fireEvent.keyDown(document, { key: 'Escape' })
-      expect(screen.queryByTestId('menu-superior-biblioteca')).toBeNull()
+      expect(screen.queryByTestId('pantalla-ajustes')).not.toBeNull()
+      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
       unmount()
     }
 
@@ -1278,6 +1279,9 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
     expect(prompterView.getAttribute('data-letra')).toBe('#FFFFFF')
   })
 
+  // 28-09-2026: Tema sigue fuera del panel Aa del editor. Ya no vive en el
+  // cajon de la portada: esta en la pantalla de Ajustes, fila-tema. Sigue
+  // cambiando data-tema.
   test('T198 - "Tema" NO esta en el panel de Ajustes y SI esta en la biblioteca, y sigue cambiando el modo oscuro.', async () => {
     const repo = new RepositorioMemoria()
     const guion = {
@@ -1295,7 +1299,7 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
       await new Promise((r) => setTimeout(r, 600))
     })
 
-    // 1. Abrir Editor -> Ajustes: verificar que NO esta Tema
+    // 1. Abrir Editor -> panel Aa: verificar que NO esta Tema
     const fila = screen.getByTestId('fila-guion-g-t198')
     await act(async () => {
       fireEvent.click(fila)
@@ -1317,13 +1321,17 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
       fireEvent.click(screen.getByText('Guiones'))
     })
 
-    // 2. En la Biblioteca: abrir menu ⋯ superior y verificar que SI esta Tema
+    // 2. El engranaje abre Ajustes; Tema esta ahi.
     const btnMenuBiblio = screen.getByTestId('btn-menu-superior-biblioteca')
     await act(async () => {
       fireEvent.click(btnMenuBiblio)
     })
 
-    expect(screen.getByRole('group', { name: 'Tema' })).not.toBeNull()
+    expect(screen.getByTestId('pantalla-ajustes')).not.toBeNull()
+    expect(screen.getByTestId('fila-tema')).not.toBeNull()
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('fila-tema'))
+    })
     const btnClaro = screen.getByRole('button', { name: 'Claro' })
     const btnOscuro = screen.getByRole('button', { name: 'Oscuro' })
     expect(btnClaro).not.toBeNull()
@@ -1335,9 +1343,12 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
     })
     expect(document.documentElement.getAttribute('data-tema')).toBe('oscuro')
 
-    // Cambiar a Claro y comprobar data-tema
+    // Cambiar a Claro: hay que volver a abrir el dialogo.
     await act(async () => {
-      fireEvent.click(btnClaro)
+      fireEvent.click(screen.getByTestId('fila-tema'))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Claro' }))
     })
     expect(document.documentElement.getAttribute('data-tema')).toBe('claro')
   })

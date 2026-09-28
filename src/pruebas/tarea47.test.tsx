@@ -181,6 +181,8 @@ describe('Pruebas TAREA 47 (T213-T217)', () => {
   //
   // Lo que cuida sigue siendo lo mismo -que el tema elegido llegue de verdad al
   // documento-, con la lista de opciones nueva.
+  // 28-09-2026: las dos opciones viven en Ajustes, dialogo de fila-tema.
+  // "Sistema" sigue sin existir.
   test('T217 - DOS TEMAS Y NINGUNO MAS, CON OSCURO POR OMISION.', async () => {
     render(<App />)
 
@@ -189,12 +191,15 @@ describe('Pruebas TAREA 47 (T213-T217)', () => {
     const btnMenu = screen.getByTestId('btn-menu-superior-biblioteca')
     fireEvent.click(btnMenu)
 
+    fireEvent.click(screen.getByTestId('fila-tema'))
+
     // "Sistema" ya no existe.
     expect(screen.queryByRole('button', { name: /^Sistema$/i })).toBeNull()
 
     fireEvent.click(screen.getByRole('button', { name: /^Claro$/i }))
     expect(document.documentElement.getAttribute('data-tema')).toBe('claro')
 
+    fireEvent.click(screen.getByTestId('fila-tema'))
     fireEvent.click(screen.getByRole('button', { name: /^Oscuro$/i }))
     expect(document.documentElement.getAttribute('data-tema')).toBe('oscuro')
   })

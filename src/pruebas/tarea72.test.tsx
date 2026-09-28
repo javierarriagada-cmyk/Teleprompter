@@ -102,21 +102,23 @@ describe('Tarea 72 - cada ajuste muestra lo que hace', () => {
 
     // No se da por sentado el valor por omision de Mostrar tiempo: se
     // enciende a mano, asi la prueba cuida el montaje y no un default.
-    fireEvent.click(await screen.findByTestId('btn-engranaje-toma'))
-    const interruptor = screen.getByLabelText('Mostrar tiempo') as HTMLInputElement
-    if (!interruptor.checked) fireEvent.click(interruptor)
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+    // 28-09-2026: el interruptor vive en Ajustes, ficha Mas. Es un switch,
+    // no una casilla.
+    fireEvent.click(await screen.findByTestId('ficha-mas'))
+    const interruptor = screen.getByTestId('switch-mostrar-tiempo')
+    if (interruptor.getAttribute('aria-checked') !== 'true') fireEvent.click(interruptor)
+    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
 
     const previa = await screen.findByTestId('barra-tiempo-previa')
     expect(previa.textContent).toMatch(/^00:00 \/ \d\d:\d\d$/)
 
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
-    fireEvent.click(screen.getByLabelText('Mostrar tiempo'))
+    fireEvent.click(screen.getByTestId('ficha-mas'))
+    fireEvent.click(screen.getByTestId('switch-mostrar-tiempo'))
     expect(screen.queryByTestId('barra-tiempo-previa')).toBeNull()
-    fireEvent.click(screen.getByLabelText('Mostrar tiempo'))
+    fireEvent.click(screen.getByTestId('switch-mostrar-tiempo'))
     expect(screen.getByTestId('barra-tiempo-previa')).toBeDefined()
 
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
     fireEvent.click(screen.getByTestId('btn-empezar-toma'))
     // Desde el 28-09-2026 Empezar primero resuelve el permiso del microfono -asincrono- y recien
     // despues pasa a leyendo: la previa se va un instante despues del toque, no en el mismo.

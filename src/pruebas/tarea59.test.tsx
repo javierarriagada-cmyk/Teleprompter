@@ -79,8 +79,8 @@ describe('Pruebas TAREA 59 - LOS OTROS DOS FONDOS (T277)', () => {
     expect(startArgs.y).toBe(0)
     expect(screen.queryByTestId('recuadro-camara')).toBeNull()
 
-    // Abrir engranaje (Tarea 70)
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+    // 28-09-2026: los fondos viven en la ficha de camara, no en el cajon.
+    fireEvent.click(screen.getByTestId('ficha-camara'))
 
     // b. Al elegir 'recuadro', el recuadro SI esta en el DOM y se notifica la posicion a CameraPreview
     const btnRecuadro = screen.getByTestId('btn-fondo-recuadro')

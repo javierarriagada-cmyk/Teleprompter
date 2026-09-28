@@ -46,27 +46,24 @@ describe('Tarea 70 - El estado LISTO y LEYENDO del lienzo se hace como la foto, 
     vi.clearAllMocks()
   })
 
+  // 28-09-2026: el engranaje de la esquina se fue. En las dos puertas LISTO
+  // monta las fichas; Mas es la puerta de Ajustes.
   test('a) En Leer Y en Grabar, btn-engranaje-toma existe, tiene style.position absolute, top 8px y right 8px', async () => {
     await crearAppConGuion()
 
     // 1. En Leer
     fireEvent.click(await screen.findByTestId('btn-leer-tarjeta'))
-    const engranajeLeer = await screen.findByTestId('btn-engranaje-toma')
-    expect(engranajeLeer).toBeDefined()
-    expect(engranajeLeer.style.position).toBe('absolute')
-    expect(engranajeLeer.style.top).toContain('8px')
-    expect(engranajeLeer.style.right).toContain('8px')
+    expect(await screen.findByTestId('fila-fichas-listo')).toBeDefined()
+    expect(screen.getByTestId('ficha-mas')).toBeDefined()
 
     // Volver
     fireEvent.click(screen.getByTestId('btn-volver-listo'))
 
     // 2. En Grabar
     fireEvent.click(await screen.findByTestId('btn-grabar-tarjeta'))
-    const engranajeGrabar = await screen.findByTestId('btn-engranaje-toma')
-    expect(engranajeGrabar).toBeDefined()
-    expect(engranajeGrabar.style.position).toBe('absolute')
-    expect(engranajeGrabar.style.top).toContain('8px')
-    expect(engranajeGrabar.style.right).toContain('8px')
+    expect(await screen.findByTestId('fila-fichas-listo')).toBeDefined()
+    expect(screen.getByTestId('ficha-mas')).toBeDefined()
+    expect(screen.getByTestId('btn-voltear-camara')).toBeDefined()
   })
 
   test('b) En Leer Y en Grabar, btn-empezar-toma NO contiene el texto Empezar; en Leer lleva el triangulo y en Grabar el punto rojo', async () => {
@@ -109,14 +106,12 @@ describe('Tarea 70 - El estado LISTO y LEYENDO del lienzo se hace como la foto, 
     expect(screen.queryByTestId('panel-controles-listo')).toBeNull()
   })
 
+  // 28-09-2026: Voltear es ficha-accion. En Grabar esta a la vista, sin panel.
+  // En Leer no existe.
   test('d) En Grabar, con el panel cerrado, btn-voltear-camara es null; al hacer click en btn-engranaje-toma, btn-voltear-camara existe y su aria-label es Voltear cámara', async () => {
     await crearAppConGuion()
 
     fireEvent.click(await screen.findByTestId('btn-grabar-tarjeta'))
-    await screen.findByTestId('btn-engranaje-toma')
-    expect(screen.queryByTestId('btn-voltear-camara')).toBeNull()
-
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
     const btnVoltear = await screen.findByTestId('btn-voltear-camara')
     expect(btnVoltear).toBeDefined()
     expect(btnVoltear.getAttribute('aria-label')).toBe('Voltear cámara')

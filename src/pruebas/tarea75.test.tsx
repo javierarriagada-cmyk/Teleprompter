@@ -148,12 +148,12 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
 
     // --- PORTADA: la tarjeta, la lista con su buscador, el pie de archivados, la tira vacia
     revisar('portada')
-    // El menu de una fila y el cajon del engranaje.
+    // El menu de una fila y la pantalla de Ajustes —28-09-2026, fuera el cajon—.
     fireEvent.contextMenu(screen.getByTestId('fila-guion-g-1'))
     fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
-    await screen.findByTestId('menu-superior-biblioteca')
-    revisar('portada, menu de la fila y cajon del engranaje')
-    fireEvent.click(screen.getByTestId('capa-ajustes-portada'))
+    await screen.findByTestId('pantalla-ajustes')
+    revisar('portada, menu de la fila y pantalla de Ajustes')
+    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
     // Los archivados, y una busqueda sin resultados.
     fireEvent.click(screen.getByTestId('btn-ver-archivados'))
     revisar('portada, archivados')
@@ -191,22 +191,22 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
     fireEvent.click(screen.getByText(en.guiones))
     await screen.findByTestId('btn-leer-tarjeta')
 
-    // --- LECTURA: el estado listo y el cajon de la toma, en Leer
+    // --- LECTURA: el estado listo y las fichas, en Leer
     fireEvent.click(screen.getByTestId('btn-leer-tarjeta'))
-    fireEvent.click(await screen.findByTestId('btn-engranaje-toma'))
-    await screen.findByTestId('panel-ajustes-toma')
-    revisar('lectura, cajon de la toma en Leer')
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+    fireEvent.click(await screen.findByTestId('ficha-letra'))
+    await screen.findByTestId('panel-ficha-letra')
+    fireEvent.click(screen.getByTestId('ficha-anclaje'))
+    await screen.findByTestId('panel-ficha-anclaje')
+    revisar('lectura, fichas de LISTO en Leer')
     fireEvent.click(screen.getByTestId('btn-volver-listo'))
 
-    // --- GRABAR: el cajon de la toma con la camara, y la camara oculta
+    // --- GRABAR: la ficha de camara, y la camara oculta
     fireEvent.click(await screen.findByTestId('btn-grabar-tarjeta'))
-    fireEvent.click(await screen.findByTestId('btn-engranaje-toma'))
+    fireEvent.click(await screen.findByTestId('ficha-camara'))
     fireEvent.click(await screen.findByTestId('btn-fondo-oculta'))
     await screen.findByTestId('aviso-camara-encendida')
-    revisar('grabar, cajon de la toma con la camara oculta')
+    revisar('grabar, ficha de camara oculta')
     fireEvent.click(screen.getByTestId('btn-fondo-detras'))
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
 
     // --- LEYENDO: los controles, la pausa y el tacho con su "Sure?"
     fireEvent.click(screen.getByTestId('btn-empezar-toma'))
@@ -243,31 +243,33 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
     expect(screen.getByText(en.sinTitulo)).toBeDefined()
   })
 
+  // 28-09-2026: ES · EN viven en Ajustes, fila-idioma. Elegir aplica y cierra
+  // el dialogo; Ajustes sigue abierto.
   test('T75b - El selector ES · EN del cajon del engranaje cambia la app en el momento', async () => {
     fijarIdioma('es')
     await appEnIngles()
     expect(screen.getByTestId('btn-leer-tarjeta').textContent).toContain(es.leer)
 
     fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
+    fireEvent.click(await screen.findByTestId('fila-idioma'))
     const selector = await screen.findByTestId('selector-idioma-app')
-    expect(selector.classList.contains('selector-aa')).toBe(true)
+    expect(selector).toBeTruthy()
     expect(screen.getByTestId('btn-idioma-es').getAttribute('aria-pressed')).toBe('true')
-    expect(screen.getByTestId('btn-idioma-es').classList.contains('activa')).toBe(true)
     expect(screen.getByTestId('btn-idioma-en').getAttribute('aria-pressed')).toBe('false')
 
     fireEvent.click(screen.getByTestId('btn-idioma-en'))
-    // Sin reiniciar: la misma App, ya en ingles, y el cajon sigue abierto.
+    // Sin reiniciar: la misma App, ya en ingles, y Ajustes sigue abierto.
     expect(idiomaApp()).toBe('en')
     expect(screen.getByTestId('btn-leer-tarjeta').textContent).toContain(en.leer)
     expect(screen.getByTestId('btn-grabar-tarjeta').textContent).toContain(en.grabar)
     expect(screen.getByTestId('btn-menu-superior-biblioteca').getAttribute('aria-label')).toBe(en.ajustesApp)
     expect(screen.getByText(en.guiones)).toBeDefined()
-    expect(screen.getByTestId('btn-idioma-en').getAttribute('aria-pressed')).toBe('true')
-    expect(screen.getByTestId('btn-idioma-en').classList.contains('activa')).toBe(true)
     expect(document.documentElement.lang).toBe('en')
     // Sin el plugin nativo, la eleccion queda en localStorage, que manda al arrancar.
     expect(localStorage.getItem('sigo_idioma')).toBe('en')
 
+    fireEvent.click(screen.getByTestId('fila-idioma'))
+    expect(screen.getByTestId('btn-idioma-en').getAttribute('aria-pressed')).toBe('true')
     fireEvent.click(screen.getByTestId('btn-idioma-es'))
     expect(screen.getByTestId('btn-leer-tarjeta').textContent).toContain(es.leer)
     expect(screen.getByText(es.guiones)).toBeDefined()

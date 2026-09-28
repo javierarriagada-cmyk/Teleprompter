@@ -145,11 +145,12 @@ describe('Tarea 68 - que pasa cuando la toma termina', () => {
   test('el menu de la portada NO muestra motor, transcripcion ni medicion', async () => {
     await portadaConGuion()
     fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
-    const menu = await screen.findByTestId('menu-superior-biblioteca')
-    expect(menu.textContent).not.toContain('Motor de voz')
-    expect(menu.textContent).not.toContain('Ver transcripción en vivo')
-    expect(menu.textContent).not.toContain('Medición / Panel Corpus')
-    expect(menu.querySelector('[role="group"][aria-label="Tema"]')).not.toBeNull()
+    // 28-09-2026: el cajon se fue. Lo mismo se mira en Ajustes.
+    const ajustes = await screen.findByTestId('pantalla-ajustes')
+    expect(ajustes.textContent).not.toContain('Motor de voz')
+    expect(ajustes.textContent).not.toContain('Ver transcripción en vivo')
+    expect(ajustes.textContent).not.toContain('Medición / Panel Corpus')
+    expect(screen.getByTestId('fila-tema')).not.toBeNull()
     expect(screen.queryByTestId('apartado-nuestro')).toBeNull()
   })
 

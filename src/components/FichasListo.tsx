@@ -102,7 +102,10 @@ export function FichasListo({
   const puedeMas = (idxLetra >= 0 && idxLetra < PASOS_LETRA.length - 1) || (idxLetra < 0 && PASOS_LETRA.some((p) => p > fontSize))
 
   return (
-    <div className="fila-fichas-listo" data-testid="fila-fichas-listo">
+    // El toque en una ficha o en su panel no sube al lienzo: el lienzo cierra el panel abierto al
+    // tocar el texto, y con el toque subiendo, tocar "Arriba" con la letra abierta cerraba todo en
+    // vez de abrir su panel -lo encontro T77b, 28-09-2026-.
+    <div className="fila-fichas-listo" data-testid="fila-fichas-listo" onClick={(e) => e.stopPropagation()}>
       {panelAbierto && (
         <div
           className="panel-ficha tarjeta-elevada"
