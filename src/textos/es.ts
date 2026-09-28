@@ -10,7 +10,6 @@
 // PanelCorpus-, que se elimina antes de publicar -P1f-; los mensajes de consola; el guion
 // Hola, que es un texto largo con sus formatos y vive en App.tsx -bloqueDeBienvenida-.
 export const es = {
-  // --- Comunes: los mismos verbos en toda la app -glosario de docs/ingles.txt- ---
   leer: 'Leer',
   grabar: 'Grabar',
   sinTitulo: 'Sin título',
@@ -20,8 +19,6 @@ export const es = {
   // "eliminar" se fue el 28-09-2026: el tacho dice lo mismo que "borrar" en toda la app.
   toma: 'Toma',
   volver: 'Volver',
-
-  // --- Portada ---
   ajustesApp: 'Ajustes de la app',
   tema: 'Tema',
   temaClaro: 'Claro',
@@ -50,16 +47,12 @@ export const es = {
   resumenGuiones: '{n} guiones',
   resumenUnMinuto: '1 minuto de lectura',
   resumenMinutos: '{n} minutos de lectura',
-
-  // --- Fechas y duraciones ---
   hoy: 'hoy',
   ayer: 'ayer',
   haceDias: 'hace {n} días',
   haceUnaSemana: 'hace 1 semana',
   haceSemanas: 'hace {n} semanas',
   vacio: 'vacío',
-
-  // --- Videos: la tira y el visor de la toma ---
   videos: 'Videos',
   videosVacio: 'Tus videos aparecerán aquí.',
   // Sin videos, con dibujo -tarea 76, 28-09-2026-. videosVacio se queda: es la línea del
@@ -89,8 +82,6 @@ export const es = {
   subtitulosAmarillo: 'Amarillo',
   subtitulosRojo: 'Rojo',
   subtitulosFormal: 'Formal',
-
-  // --- Avisos ---
   avisoTomaRecuperada: 'Se recuperó una toma de una sesión interrumpida.',
   avisoTomasRecuperadas: 'Se recuperaron {n} tomas de una sesión interrumpida.',
   verla: 'Verla',
@@ -114,8 +105,6 @@ export const es = {
   errorModelo: 'Error descargando modelo de voz Vosk: {detalle}.',
   desconocido: 'Desconocido',
   reintentar: 'Reintentar',
-
-  // --- Editor ---
   ajustesLectura: 'Ajustes de lectura',
   idiomaDelGuion: 'Idioma del guion: {idioma}',
   idiomaEspanol: 'Español',
@@ -146,8 +135,6 @@ export const es = {
   pegarTexto: 'Pegar texto',
   abrirArchivo: 'Abrir archivo',
   leyendoArchivo: 'Leyendo...',
-
-  // --- Tamano y ancho: el cajon Aa y el de la toma ---
   tamanoLetra: 'Tamaño de letra',
   letraMenos: 'Disminuir letra panel',
   letraMas: 'Aumentar letra panel',
@@ -155,8 +142,6 @@ export const es = {
   ancho: 'Ancho',
   medio: 'Medio',
   angosto: 'Angosto',
-
-  // --- Lectura y cajon de la toma ---
   salir: 'Salir',
   descartarToma: 'Descartar toma',
   pausa: 'Pausa',
@@ -184,9 +169,7 @@ export const es = {
   empezar: 'Empezar',
   duracionEstimada: 'duración estimada del guion',
   tiempoTranscurrido: 'tiempo transcurrido y total estimado',
-
-  // --- Ajustes de sistema -tarea 77, 28-09-2026- ---
-  // Claves nuevas al final: el orden de las anteriores no se toca.
+  // Claves nuevas al final -tarea 77, 28-09-2026-: el orden de las anteriores no se toca.
   fichaArriba: 'Arriba',
   fichaAlMedio: 'Al medio',
   fichaCamaraDetras: 'Detrás',
