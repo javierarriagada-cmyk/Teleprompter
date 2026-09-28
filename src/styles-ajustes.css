@@ -1,0 +1,360 @@
+/* FICHAS, PANELES E INTERRUPTOR DE AJUSTES -tarea 77, 28-09-2026-.
+   Medidas de Material 3 en dp = px CSS. T209: los componentes no escriben
+   color, tamano, aire ni radio a mano. El rojo no se usa como seleccion. */
+
+/* 28-09-2026, tarea 77: la fila de fichas vive encima del circulo; el velo
+   sube para cubrirla (160 en vez de 96) y el tramo macizo llega mas alto. */
+.velo-controles {
+  height: calc(var(--circulo-desde-abajo) + 72px + 160px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, var(--velo) 0%, var(--velo) 58%, transparent 100%);
+}
+
+.fila-fichas-listo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--circulo-desde-abajo) + 72px + 16px + env(safe-area-inset-bottom, 0px));
+  z-index: 12;
+  padding: 0 16px;
+  pointer-events: none;
+}
+.fila-fichas-listo > * {
+  pointer-events: auto;
+}
+.carril-fichas {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.carril-fichas::-webkit-scrollbar { display: none; }
+
+.ficha-listo {
+  position: relative;
+  flex: 0 0 auto;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--borde-tarjeta);
+  background: var(--bg-panel);
+  color: var(--color-texto);
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  box-shadow: var(--sombra-tarjeta);
+}
+.ficha-listo::after {
+  content: "";
+  position: absolute;
+  inset: -8px 0;
+}
+.ficha-listo.abierta {
+  background: var(--color-acento);
+  color: var(--color-texto-acento);
+  border-color: var(--color-acento);
+}
+
+.capa-panel-ficha {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.panel-ficha {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 52px;
+  z-index: 13;
+  border-radius: 16px;
+  padding: 16px;
+  background: var(--bg-superficie);
+  border: 1px solid var(--borde-tarjeta);
+  box-shadow: var(--sombra-tarjeta);
+}
+.panel-ficha-cabeza {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-apagado);
+}
+.panel-ficha-cabeza span:last-child {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--color-texto);
+}
+
+.segmentado {
+  display: flex;
+  border: 1px solid var(--borde-tarjeta);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.segmentado-opcion {
+  flex: 1;
+  height: 40px;
+  border: none;
+  background: transparent;
+  color: var(--color-texto);
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 8px;
+}
+.segmentado-opcion.activa {
+  background: var(--color-acento);
+  color: var(--color-texto-acento);
+}
+
+.fila-deslizador-letra {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-paso-letra {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--redondeo-pildora);
+  border: 1px solid var(--borde-tarjeta);
+  background: var(--bg-panel);
+  color: var(--color-texto);
+  font-size: 20px;
+  line-height: 1;
+}
+.barra-pasos,
+.barra-brillo {
+  flex: 1;
+  height: 16px;
+  accent-color: var(--color-acento);
+}
+.brillo-ficha {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.boton-texto-ficha {
+  margin-top: 12px;
+  background: none;
+  border: none;
+  color: var(--color-texto);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 0;
+}
+.aviso-ficha {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--color-apagado);
+}
+.aviso-ficha-urgente {
+  color: var(--color-grabando-texto);
+}
+
+.interruptor {
+  width: 52px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  flex-shrink: 0;
+}
+.interruptor-pista {
+  display: block;
+  width: 52px;
+  height: 32px;
+  box-sizing: border-box;
+  border-radius: var(--redondeo-pildora);
+  border: 2px solid var(--color-borde);
+  background: var(--bg-panel);
+  position: relative;
+}
+.interruptor.encendido .interruptor-pista {
+  background: var(--color-acento);
+  border-color: var(--color-acento);
+}
+.interruptor-perilla {
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--redondeo-pildora);
+  background: var(--color-texto);
+  transform: translateY(-50%);
+}
+.interruptor.encendido .interruptor-perilla {
+  left: auto;
+  right: 2px;
+  width: 24px;
+  height: 24px;
+  background: var(--color-texto-acento);
+}
+
+.pantalla-ajustes {
+  position: fixed;
+  inset: 0;
+  z-index: 240;
+  background: var(--bg-suelo);
+  color: var(--color-texto);
+  display: flex;
+  flex-direction: column;
+}
+.barra-ajustes {
+  height: 64px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: env(safe-area-inset-top, 0px) 8px 0 8px;
+  box-sizing: content-box;
+}
+.btn-atras-ajustes {
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: transparent;
+  color: var(--color-texto);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.titulo-ajustes {
+  font-family: "Source Serif 4", serif;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+}
+.cuerpo-ajustes {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 0 calc(24px + env(safe-area-inset-bottom, 0px));
+}
+.titulo-seccion-ajustes {
+  margin: 20px 16px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-apagado);
+}
+.muestra-lectura-ajustes {
+  margin: 8px 16px 16px;
+  padding: 16px;
+  border-radius: var(--redondeo);
+  border: 1px solid var(--borde-tarjeta);
+  min-height: 56px;
+}
+.fila-ajuste {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 16px;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid var(--color-separador);
+  background: transparent;
+  color: var(--color-texto);
+  text-align: left;
+}
+.fila-ajuste.con-explicacion {
+  min-height: 72px;
+}
+.fila-ajuste-textos {
+  flex: 1;
+  min-width: 0;
+}
+.fila-ajuste-nombre {
+  font-size: 16px;
+}
+.fila-ajuste-explicacion {
+  font-size: 13px;
+  color: var(--color-apagado);
+  margin-top: 2px;
+}
+.fila-ajuste-valor {
+  font-size: 14px;
+  color: var(--color-apagado);
+  flex-shrink: 0;
+}
+.fila-ajuste .flecha-fila {
+  transform: rotate(-90deg);
+  color: var(--color-apagado);
+  flex-shrink: 0;
+}
+
+.capa-dialogo-ajustes {
+  position: absolute;
+  inset: 0;
+  background: var(--velo-modal);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+}
+.dialogo-ajustes {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 28px;
+  padding: 24px;
+  background: var(--bg-superficie);
+}
+.dialogo-ajustes-titulo {
+  font-family: "Source Serif 4", serif;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+.lista-dialogo {
+  display: flex;
+  flex-direction: column;
+}
+.fila-dialogo {
+  min-height: 56px;
+  border: none;
+  border-radius: var(--redondeo);
+  background: transparent;
+  color: var(--color-texto);
+  font-size: 16px;
+  text-align: left;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.fila-dialogo.elegida {
+  background: var(--bg-panel);
+}
+.muestra-pareja {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid var(--borde-tarjeta);
+}
