@@ -1,0 +1,222 @@
+TAREA 76 — LA PORTADA QUE NO CRECE SIN FIN, LOS VIDEOS VACIOS CON DIBUJO Y LAS TOMAS DEL GUION
+Repositorio: javierarriagada-cmyk/Teleprompter. Partir del main de ahora. Rama nueva:
+tarea-76-portada-y-tomas. Pull request hacia main.
+Lee antes AGENTS.md, docs/lo-que-hay-que-saber.txt y docs/estandar.html. Los comentarios del
+codigo son la memoria del proyecto: se leen antes de tocar un archivo y NO SE BORRA NINGUNO. Si
+una decision de un comentario cambia, el comentario se deja y se le agrega debajo la nueva, con
+fecha -28-09-2026- y el motivo.
+
+------------------------------------------------------------------------------
+LA VARA
+------------------------------------------------------------------------------
+Esto es lo primero que ve cualquier persona al abrir Sigo. Tiene que sentirse como la portada
+de una aplicacion hecha por un estudio que cuida cada pixel: calma, orden, nada que sobre,
+nada que parezca pegado despues. Javier lo pidio asi, textual: "de excelencia visual".
+
+Que quiere decir eso aca, en concreto:
+  - Nada crece sin limite. Con 30 guiones la portada se ve igual de ordenada que con 3.
+  - Cada elemento nuevo usa las piezas que ya existen: las filas de guion, los titulos de
+    seccion -texto-titulo-, la tira de videos, los tokens de styles.css, las curvas y tiempos
+    de src/components/movimiento.tsx. Si algo nuevo no se puede decir con eso, se agrega UN
+    token o UNA clase a styles.css, con nombre en castellano y un comentario de por que.
+  - Los estados raros se ven tan cuidados como el normal: 0 guiones, 1 guion, 4 guiones, 30
+    guiones, sin videos, un guion sin tomas, un guion con 12 tomas.
+  - Se prueba en pantalla angosta: 360 px de ancho -Redmi 13C- y 412 px -moto g86-. Nada se
+    corta, nada se monta, nada salta al abrir o cerrar.
+  - Movimiento sobrio: lo que aparece entra con las curvas de la casa y respeta
+    movimientoApagado() -prefers-reduced-motion-. Nada rebota, nada destella.
+
+------------------------------------------------------------------------------
+LO QUE DECIDIO JAVIER -28-09-2026-
+------------------------------------------------------------------------------
+  1. La portada: la tarjeta de arriba como esta; debajo, "Guiones" con los 3 MAS RECIENTES y un
+     "Ver todos" que DESPLIEGA la lista en el mismo lugar -no abre otra pantalla-; debajo de
+     todo, "Videos", como estan hoy.
+  2. Sin videos: el dibujo de una camara dentro de un visor de esquinas rojas, un titulo y una
+     linea -como la imagen de una auditoria que el vio y le gusto-, hecho con el estilo de Sigo.
+     OJO: el 27-09 habia elegido una sola linea -comentario en TiraGrabaciones.tsx-; ahora
+     cambia. Ese comentario se queda y se le agrega la decision nueva.
+  3. Al abrir un guion, abajo, una banda con LAS TOMAS DE ESE GUION.
+  4. Un guion sin titulo ya muestra sus primeras palabras en la lista -hecho en main,
+     tituloOInicio() en src/textos/index.ts-. No se toca.
+  5. Bajar la pantalla empezando sobre un guion ya no lo abre -hecho en main, FilaGuion en
+     BibliotecaView.tsx: abre solo onClick, touch-action pan-y; guardiana
+     src/pruebas/desplazarNoAbre.test.tsx-. NO SE TOCA ese mecanismo: cualquier fila nueva o
+     cambiada tiene que conservarlo, y esa prueba tiene que seguir pasando.
+
+------------------------------------------------------------------------------
+LAS PROPORCIONES -Javier: "cuida la proporcionalidad"-
+------------------------------------------------------------------------------
+Una sola escala para todo, la que ya existe. Nada nuevo se mide a ojo.
+  - RITMO VERTICAL: entre secciones -tarjeta, Guiones, Videos- var(--aire-5); del titulo de
+    seccion a su contenido var(--aire-3); entre filas de guion var(--aire-3), como hoy. "Ver
+    todos" ocupa el lugar de una fila mas en ese mismo ritmo: ni pegado a la ultima fila ni
+    flotando lejos.
+  - JERARQUIA: la tarjeta de arriba es lo mas grande de la pantalla; los titulos de seccion
+    -texto-titulo- son los segundos; las filas, terceras; "Ver todos", la linea de la
+    tira vacia y el titulo de la banda son lo mas chico -texto-meta-. Ningun elemento nuevo
+    puede competir con la tarjeta.
+  - LA PORTADA PLEGADA CABE EN UNA PANTALLA de 412 x 915 con videos: tarjeta, 3 filas, "Ver
+    todos" y el comienzo de la tira de videos a la vista sin desplazar. A 360 x 800 puede
+    asomar la tira sin verse entera, pero "Ver todos" tiene que verse sin bajar.
+  - EL DIBUJO DE VIDEOS VACIOS mide 96 x 72: cerca de un tercio del ancho de la columna a 360
+    px. Mas grande seria un cartel; mas chico, un icono perdido. El bloque entero -dibujo,
+    titulo, linea- no pasa del alto de dos filas de guion.
+  - LAS MINIATURAS DE LA BANDA guardan LA MISMA PROPORCION que las de la tira de la portada
+    -hoy 132 x 88, 3:2- a escala: 84 x 56. Asi una toma se reconoce igual en los dos lugares.
+    La banda entera -titulo y miniaturas- no pasa de 80 px de alto: mas baja que el espacio
+    que ocupan Leer y Grabar juntos con su aire, para que el guion siga siendo lo principal.
+  - LA BANDA Y LOS BOTONES van alineados a los mismos margenes laterales -var(--aire-4)- y la
+    primera miniatura empieza donde empieza el boton Leer.
+
+------------------------------------------------------------------------------
+A. LA PORTADA -src/components/BibliotecaView.tsx-
+------------------------------------------------------------------------------
+Orden de arriba a abajo, sin cambios en lo que no se nombra: marca y engranaje · tarjeta
+-TarjetaLectura- · "Guiones" · la lista · "Ver todos" · -archivados- · "Videos".
+
+A1. LA LISTA PLEGADA.
+    - Muestra los 3 guiones mas recientes, en el orden de siempre -modificado, el ultimo arriba-.
+      El mas reciente aparece tambien en la tarjeta de arriba: se deja asi, como hoy -muchas
+      pruebas abren ese guion desde su fila-.
+    - Constante exportada en BibliotecaView.tsx: GUIONES_A_LA_VISTA = 3, con comentario.
+    - Si hay 3 o menos guiones no hay "Ver todos".
+
+A2. "VER TODOS" Y "VER MENOS".
+    - Un boton de texto, no una pildora ni una tarjeta: se lee como continuacion de la lista.
+      Ancho completo de la columna, alto tocable minimo 44 px, texto en texto-meta, color
+      --color-apagado, y un chevron a la derecha del texto -icono nuevo IconoChevron en
+      IconosApp.tsx, trazo como los demas iconos de ese archivo-.
+    - Textos -src/textos/es.ts y en.ts, con claves nuevas; en.ts tipado contra es.ts como
+      siempre-: "Ver todos · {n}" / "See all · {n}", donde n es el total de guiones de la lista
+      -sin archivados-; y "Ver menos" / "Show less".
+    - Al desplegar: el chevron gira 180 grados -transform, MS_CHICO, CURVA_RESORTE- y las filas
+      que faltan ENTRAN con la misma entrada escalonada que ya usa la lista al abrir la portada
+      -data-retardo-escalonado / animacionListaStyle-, desde la cuarta. Con movimientoApagado(),
+      aparecen de una.
+    - Al plegar: las filas de la cuarta en adelante se van sin animacion de salida larga -basta
+      con quitarlas-; si la lista plegada queda por encima de lo que se ve, la pagina se desplaza
+      con scrollIntoView suave hasta el titulo "Guiones", para que la persona no quede mirando
+      el vacio.
+    - Accesibilidad: <button type="button"> con aria-expanded y aria-controls apuntando a la
+      lista. data-testid="btn-ver-todos-guiones".
+    - EL ESTADO SE RECUERDA en la sesion: si la persona desplego, entra a un guion y vuelve, la
+      lista sigue desplegada. Variable de modulo, como esPrimerMontajeBiblioteca en el mismo
+      archivo. Al cerrar la app vuelve a plegada.
+
+A3. LO QUE VIVE EN LA LISTA DESPLEGADA.
+    - La busqueda -hoy aparece con hayMasDeOcho- solo se muestra con la lista desplegada, arriba
+      de las filas. Con texto escrito, filtra TODOS los guiones -como hoy- y mientras se busca no
+      rige el limite de 3.
+    - "Archivados" -btn-ver-archivados- solo con la lista desplegada, al pie, como hoy. La vista
+      de archivados muestra todos sus guiones, sin plegar.
+
+A4. LAS FILAS NO CAMBIAN. Mismo componente FilaGuion, mismo gris, mismos gestos -toque abre,
+    deslizar borra o archiva, mantener apretado abre el menu-.
+
+------------------------------------------------------------------------------
+B. VIDEOS VACIOS -src/components/TiraGrabaciones.tsx-
+------------------------------------------------------------------------------
+    - Reemplaza la linea sola -data-testid="videos-vacio", se conserva ese testid en el bloque
+      nuevo- por un bloque centrado: dibujo, titulo, una linea.
+    - EL DIBUJO: componente IconoSinVideos en IconosApp.tsx, SVG propio -nada de emoji ni
+      imagenes-. Un visor de camara: cuatro esquinas en L de trazo redondeado, en
+      var(--color-grabando) -el rojo de la casa, el unico rojo de la pantalla-; adentro, una
+      filmadora de lineas -cuerpo rectangular redondeado y el lente trapecio a la derecha- en
+      var(--color-apagado); en el centro del cuerpo un triangulo de reproducir relleno en
+      var(--color-grabando). Tamano: 96 x 72 px. Mismo grosor de trazo que el resto de
+      IconosApp. aria-hidden.
+    - TITULO: "Aún no tienes videos" / "No videos yet" -texto-cuerpo, peso 600,
+      --color-texto-.
+    - LINEA: "Abre un guion y toca Grabar. Tus tomas aparecerán aquí." / "Open a script and tap
+      Record. Your takes will show up here." -texto-meta, --color-apagado, maximo dos lineas,
+      centrada-. La clave videosVacio se queda para no romper nada; se agregan las nuevas.
+    - Aire: el bloque respira -var(--aire-5) arriba y abajo-; nada de cajas ni bordes alrededor.
+    - Con videos, la tira queda EXACTAMENTE como esta.
+
+------------------------------------------------------------------------------
+C. LAS TOMAS DEL GUION ABIERTO -src/components/EditorView.tsx-
+------------------------------------------------------------------------------
+C1. QUE LLEGA.
+    - EditorView recibe dos props nuevas: tomas: ResumenGrabacion[] y
+      onAbrirToma: (g: ResumenGrabacion) => void.
+    - App.tsx le pasa grabaciones.filter((g) => g.guionId === guionActual.id), ordenadas de la
+      mas nueva a la mas vieja, y onAbrirToma={(g) => setGrabacionAbierta(g)}. El reproductor ya
+      se dibuja encima de cualquier vista -App.tsx, {grabacionAbierta && <ReproductorGrabacion}-:
+      verificar que se ve bien sobre el editor y que al cerrarlo se vuelve al editor tal como
+      estaba, con el texto y el desplazamiento intactos.
+    - Si al borrar una toma desde el reproductor era la ultima, la banda desaparece sola.
+
+C2. LA BANDA.
+    - Componente nuevo src/components/BandaTomas.tsx. Encima de los botones Leer y Grabar, DENTRO
+      del mismo contenedor fijo que ellos, para que suba y baje con barraLeerVisible exactamente
+      igual -hoy ese contenedor tiene el transform translateY; ver el comentario del 23-09 sobre
+      no duplicar ese transform-.
+    - Titulo corto a la izquierda: "Tomas · {n}" / "Takes · {n}" -texto-meta, peso 600-.
+    - Debajo, una fila con desplazamiento horizontal de miniaturas: cada una 84 px de ancho y
+      56 px de alto -ver LAS PROPORCIONES-, --redondeo, object-fit cover sobre rutaMiniatura -srcDeRuta de
+      TiraGrabaciones.tsx-, y la duracion abajo a la derecha como en la tira. Sin titulo ni
+      fecha: todas son del mismo guion. Las marcas "incompleta" y "sin audio" se conservan si la
+      toma las tiene.
+    - Toque: abre la toma. Sin menu de borrar aca: una toma se borra desde el reproductor o desde
+      la tira de la portada -un gesto destructivo no se agrega en una banda de paso-.
+    - La banda tiene fondo: el mismo --bg-suelo de la pantalla con un leve degradado hacia
+      arriba a transparente, para que el texto del guion que pasa por detras no se mezcle con
+      las miniaturas. Sin sombra, sin borde.
+    - data-testid="banda-tomas" y miniaturas data-testid="toma-banda-{id}".
+
+C3. CUANDO NO SE VE.
+    - Si el guion no tiene tomas: no hay banda. Ni titulo, ni hueco.
+    - Mientras se escribe -el titulo o el texto del guion tienen el foco-, la banda se esconde
+      para devolverle el espacio al texto y al teclado; vuelve al perder el foco. Leer y Grabar
+      siguen como estan hoy.
+    - Con la banda visible, el final del texto del guion no puede quedar tapado: el relleno
+      inferior del area de escritura crece lo que mide la banda.
+
+------------------------------------------------------------------------------
+D. REGLAS QUE NO SE NEGOCIAN
+------------------------------------------------------------------------------
+  - Sin dependencias nuevas.
+  - T209 -src/pruebas/tarea46.test.tsx-: ningun componente escribe a mano un color, un tamano
+    de letra, un espaciado o un radio. Todo sale de los tokens y las clases de styles.css. Los
+    dos temas -oscuro y claro- tienen que verse bien: probar los dos.
+  - Todo texto visible pasa por t(), en espanol neutro y en ingles de Estados Unidos con el
+    glosario de docs/ingles.txt -toma = take, guion = script-.
+  - El repositorio no nombra otras aplicaciones, en ninguna parte.
+  - No se toca: el motor de voz, la lectura, la grabacion, FilaGuion por dentro.
+
+------------------------------------------------------------------------------
+E. PRUEBAS
+------------------------------------------------------------------------------
+  Nuevas, en src/pruebas/tarea76.test.tsx:
+  - Portada con 1, 3, 4 y 12 guiones: cuantas filas se ven, cuando existe "Ver todos", que el
+    numero es el total, que desplegar muestra todas y aria-expanded cambia, que plegar vuelve a 3.
+  - Desplegar, entrar a un guion y volver: sigue desplegada.
+  - La busqueda solo aparece desplegada, y con texto encuentra un guion que estaba mas abajo
+    del tercero.
+  - Sin videos: el dibujo, el titulo y la linea en los dos idiomas. Con videos: la tira, sin el
+    bloque vacio.
+  - Editor de un guion sin tomas: no hay banda-tomas. Con 2 tomas de ese guion y 1 de otro: la
+    banda muestra 2, en orden de la mas nueva, y tocar una llama a onAbrirToma con esa toma.
+  - Con el foco en el texto del guion la banda no se ve; al perder el foco vuelve.
+
+  Existentes que se van a romper, y como se arreglan:
+  - Las que buscan la fila de un guion que queda cuarto o mas abajo: se despliega primero con
+    btn-ver-todos-guiones, en un ayudante compartido. NO se arreglan subiendo el limite ni
+    desactivando el plegado en pruebas.
+  - Las que esperan el texto viejo de videos-vacio: al texto nuevo.
+  - desplazarNoAbre.test.tsx, T209 y el resto: siguen pasando SIN tocarlas.
+
+  Al terminar: npx tsc --noEmit, npx vitest run -todo en verde-, npm run build.
+
+------------------------------------------------------------------------------
+F. COMO SE ENTREGA
+------------------------------------------------------------------------------
+  - Pull request con una descripcion corta de que cambio y donde.
+  - CAPTURAS, si tu entorno puede levantar la app -npm run dev y un navegador sin cabeza-: a
+    360 x 800 y a 412 x 915, tema oscuro y claro, de:
+      portada con 12 guiones plegada · la misma desplegada · portada sin videos · editor de un
+      guion con 3 tomas · el mismo con el foco en el texto.
+    Adjuntarlas al PR. Si no se puede, decirlo en el PR: no inventar.
+  - Si algo de este encargo choca con un comentario del codigo o con otra decision escrita, NO
+    elegir en silencio: dejarlo anotado en el PR con las dos opciones.
