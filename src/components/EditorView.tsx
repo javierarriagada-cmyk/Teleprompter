@@ -1,37 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, Bloque, TramoFormato, ResumenGrabacion, contarPalabras, duracionDeLectura, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
 import { consolidarGuion } from '../datos/consolidar'
 import { importarArchivo } from '../datos/importarArchivo'
-import { hapticaSeleccion, hapticaToqueSuave } from '../haptica'
-import { SelectorLetra, SelectorAncho } from './ControlesAa'
-import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
-import { IconoAtras, IconoEmpezar } from './IconosApp'
-import BandaTomas from './BandaTomas'
+import { hapticaSeleccion } from '../haptica'
+import { movimientoApagado, MS_DEDO, MS_CHICO, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
+import { IconoEmpezar } from './IconosApp'
+import { EditorCabecera } from './EditorCabecera'
+import { CajonAaEditor } from './CajonAaEditor'
+import { BarraEditorVacio } from './BarraEditorVacio'
+import { BarraLeerGrabar } from './BarraLeerGrabar'
 import { EditorGuion } from './EditorGuion'
-import { familiaLectura } from './estiloLectura'
 import type { Editor } from '@tiptap/react'
-import { Capacitor } from '@capacitor/core'
-import { Clipboard } from '@capacitor/clipboard'
 import { t, useTextos, numeroLocal, TITULO_SIN_NOMBRE, ClaveTexto } from '../textos'
 import { detectarIdioma } from '../lib/detectarIdioma'
-
-// LO QUE HAY COPIADO, EN EL TELEFONO O EN EL NAVEGADOR. En el APK lo lee el plugin oficial
-// de Capacitor -el portapapeles de Android-; en el navegador, la API del navegador. Si no se
-// puede leer -permiso negado, portapapeles vacio o con una imagen- devuelve ''.
-async function leerPortapapeles(): Promise<string> {
-  try {
-    if (Capacitor.isNativePlatform()) {
-      const r = await Clipboard.read()
-      return typeof r.value === 'string' && (r.type === undefined || r.type.startsWith('text')) ? r.value : ''
-    }
-    if (navigator.clipboard && navigator.clipboard.readText) return await navigator.clipboard.readText()
-  } catch {
-    // sin portapapeles legible: el boton cae a dejar el cursor en el guion
-  }
-  return ''
-}
 
 // reubicarTramos vivia aca: con el <textarea>, cada tecla llegaba como un
 // texto nuevo entero y habia que adivinar donde habia quedado cada marca
@@ -100,11 +82,6 @@ function generarIdBloque(): string {
 // conecte MotorNativo con el modelo ingles en el telefono, elegir EN todavia no cambia lo
 // que escucha el motor.
 // La linea de meta ya no lleva el nombre del idioma: lo dice el boton, a la vista.
-// EL ANCHO MÁXIMO DE LEER Y DE GRABAR en la barra de abajo. Era 160 escrito en los dos botones;
-// desde la tarea 76 -28-09-2026- lo usa también la banda de tomas, que va encima con el ancho
-// de los dos juntos: su primera miniatura empieza donde empieza Leer. Un solo número.
-const ANCHO_BOTON_BARRA = 160
-
 const NOMBRE_IDIOMA: Record<string, ClaveTexto> = {
   es: 'idiomaEspanol',
   en: 'idiomaIngles'
@@ -138,11 +115,6 @@ export default function EditorView({
 }: EditorViewProps) {
   useTextos()
   const [mostrarModalAjustes, setMostrarModalAjustes] = useState(false)
-  const refAjustes = useCerrarAfuera(mostrarModalAjustes, () => setMostrarModalAjustes(false))
-
-  const [dragOffsetY, setDragOffsetY] = useState(0)
-  const esArrastrandoModalRef = useRef(false)
-  const dragStartYRef = useRef<number | null>(null)
 
   const idGuionLimpioRef = useRef<string | null>(null)
 
@@ -160,60 +132,6 @@ export default function EditorView({
       }
     }
   }, [guion, onChangeGuion])
-
-  function obtenerClientY(e: React.PointerEvent<HTMLDivElement>): number {
-    if (typeof e.clientY === 'number' && !isNaN(e.clientY)) return e.clientY
-    if (e.nativeEvent && typeof (e.nativeEvent as any).clientY === 'number') return (e.nativeEvent as any).clientY
-    return 0
-  }
-
-  function empezarArrastre(e: React.PointerEvent<HTMLDivElement>, elemento: HTMLElement | null) {
-    dragStartYRef.current = obtenerClientY(e)
-    esArrastrandoModalRef.current = true
-    if (elemento && elemento.setPointerCapture) {
-      try { elemento.setPointerCapture(e.pointerId) } catch (err) {}
-    }
-  }
-
-  function handleAgarraderaPointerDown(e: React.PointerEvent<HTMLDivElement>) {
-    empezarArrastre(e, e.currentTarget)
-  }
-
-  function handleModalPointerDown(e: React.PointerEvent<HTMLDivElement>) {
-    const target = e.target as HTMLElement
-    if (target && target.closest('button, input, select, label, textarea, a, option, [role="button"]')) {
-      return
-    }
-    if (e.currentTarget.scrollTop > 0) {
-      return
-    }
-    empezarArrastre(e, e.currentTarget)
-  }
-
-  function handleModalPointerMove(e: React.PointerEvent<HTMLDivElement>) {
-    if (!esArrastrandoModalRef.current || dragStartYRef.current === null) return
-    const currentY = obtenerClientY(e)
-    const dy = Math.max(0, currentY - dragStartYRef.current)
-    setDragOffsetY(dy)
-  }
-
-  function handleModalPointerUp(e: React.PointerEvent<HTMLDivElement>) {
-    if (!esArrastrandoModalRef.current || dragStartYRef.current === null) return
-    const currentY = obtenerClientY(e)
-    const dy = Math.max(0, currentY - dragStartYRef.current)
-    if (e.currentTarget.releasePointerCapture) {
-      try { e.currentTarget.releasePointerCapture(e.pointerId) } catch (err) {}
-    }
-    esArrastrandoModalRef.current = false
-    dragStartYRef.current = null
-
-    if (dy > 96) {
-      setMostrarModalAjustes(false)
-      setDragOffsetY(0)
-    } else {
-      setDragOffsetY(0)
-    }
-  }
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [cargandoArchivo, setCargandoArchivo] = useState(false)
@@ -454,75 +372,15 @@ export default function EditorView({
         style={{ display: 'none' }}
       />
 
-      {/* Fila superior discreta: a la izquierda ‹ Guiones, a la derecha Aa */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-4)' }}>
-        {/* LA SALIDA NO PUEDE SER LO MAS CHICO DE LA PANTALLA.
-            Estaba en texto-meta -13 px- y con padding 0, o sea un blanco de
-            toque del tamano del dibujo. Javier lo vio el 21 de septiembre de
-            2026 entrando a escribir un guion.
-            Sube al mismo escalon que los titulos de la portada -texto-cuerpo-
-            y gana padding de verdad. El margen negativo compensa ese padding
-            para que la flecha siga alineada con el borde del contenido: crece
-            el area que recibe el dedo, no se corre el dibujo.
-            24-09-2026: sube otro escalon, a 18 px -.volver-guiones-, junto con
-            el Aa de la derecha. El dueno: "la palabra Guiones que esta arriba
-            tambien deberia ser un poco mas grande". */}
-        <button
-          onClick={onVolverBiblioteca}
-          className="volver-guiones btn-deformable"
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: 'var(--color-apagado)',
-            cursor: 'pointer',
-            padding: 'var(--aire-2)',
-            margin: 'calc(-1 * var(--aire-2))',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 'var(--aire-2)'
-          }}
-        >
-          <IconoAtras tamano={24} />
-          <span>{t('guiones')}</span>
-        </button>
-
-        {/* EL IDIOMA DEL GUION, AL LADO DEL Aa -tarea 75-. Mismo tratamiento que su vecino:
-            un texto que se toca, sin borde ni cajon. Un toque alterna ES y EN y lo deja
-            elegido a mano. Mas chico y en gris que el Aa: se mira una vez, el Aa se usa. */}
-        <div className="fila-editor-derecha">
-          <button
-            type="button"
-            onClick={handleAlternarIdioma}
-            className="btn-deformable boton-aa boton-idioma-guion"
-            data-testid="btn-idioma-guion"
-            data-idioma={idiomaGuion}
-            aria-label={t('idiomaDelGuion', { idioma: nombreIdioma })}
-            title={t('idiomaDelGuion', { idioma: nombreIdioma })}
-          >
-            {idiomaGuion.toUpperCase()}
-          </button>
-
-        <button
-          onClick={() => {
-            hapticaToqueSuave()
-            // Al abrir Aa se cierran el teclado y la seleccion: si no, el menu
-            // de Android -Copiar, Compartir- queda flotando sobre el guion
-            // mientras se mira como cambia. Visto en el telefono, 24-09-2026.
-            const ed = editorRef.current
-            if (ed) {
-              ed.commands.setTextSelection(ed.state.selection.to)
-              ed.commands.blur()
-            }
-            setMostrarModalAjustes(true)
-          }}
-          className="btn-deformable boton-aa"
-          data-testid="btn-menu-opciones-editor"
-          title={t('ajustesLectura')}
-        >
-          Aa
-        </button>
-        </div>
-      </div>
+      <EditorCabecera
+        guion={guion}
+        onVolverBiblioteca={onVolverBiblioteca}
+        idiomaGuion={idiomaGuion}
+        nombreIdioma={nombreIdioma}
+        onAlternarIdioma={handleAlternarIdioma}
+        onAbrirAjustes={() => setMostrarModalAjustes(true)}
+        editorRef={editorRef}
+      />
 
       {/* Titulo es el titulo: Display, editable, sin etiqueta ni recuadro.
           El placeholder dice "Título del guion" y no "Sin título": el primero
@@ -581,162 +439,24 @@ export default function EditorView({
         </div>
       )}
 
-      {/* EL CAJON Aa, SIN MUESTRA Y SIN VELO. 24-09-2026.
-          Con el editor nuevo -EditorGuion, Tiptap- el guion mismo toma la letra,
-          el tamano, el ancho y los colores de lectura en el momento en que se
-          tocan. La muestra que vivia aca dentro -MuestraLectura, Tarea 72- sobraba,
-          y el velo oscuro que tapaba el resto de la pantalla escondia justo lo que
-          habia que mirar. El dueno, al probarlo: "se cambia todo
-          instantaneamente, de ahi tendria que salir la previsualizacion".
-          Es el patron de Apple Books y Kindle, de donde viene el "Aa": el libro
-          cambia detras, a plena luz, y el cajon es bajo. La capa transparente
-          sigue ahi para que tocar el guion cierre el cajon. */}
-      {mostrarModalAjustes && (
-        <div
-          className="capa-cajon-aa"
-          data-testid="capa-ajustes"
-          onClick={() => setMostrarModalAjustes(false)}
-        >
-          <div
-            ref={refAjustes}
-            data-testid="panel-ajustes"
-            className="panel-superficie cajon-aa"
-            onPointerDown={handleModalPointerDown}
-            onPointerMove={handleModalPointerMove}
-            onPointerUp={handleModalPointerUp}
-            onPointerCancel={handleModalPointerUp}
-            style={{
-              paddingBottom: 'calc(var(--aire-4) + env(safe-area-inset-bottom, 0px))',
-              transform: `translateY(${dragOffsetY}px)`,
-              transition: esArrastrandoModalRef.current
-                ? 'none'
-                : movimientoApagado()
-                ? 'none'
-                : `transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
-              animation: movimientoApagado() || esArrastrandoModalRef.current || dragOffsetY > 0
-                ? 'none'
-                : `panelSube ${MS_PANEL}ms ${CURVA_RESORTE} forwards`
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div
-              data-testid="agarradera-hoja-ajustes"
-              className="cajon-aa-agarradera"
-              onPointerDown={handleAgarraderaPointerDown}
-              onPointerMove={handleModalPointerMove}
-              onPointerUp={handleModalPointerUp}
-              onPointerCancel={handleModalPointerUp}
-            >
-              <div className="cajon-aa-agarradera-raya" />
-            </div>
-
-            {/* Sin titulo y sin "Listo". El dueno, 24-09-2026: "la palabra
-                texto y la palabra listo pierden todo sentido". El cajon se
-                entiende solo -esta debajo del Aa que lo abrio- y se cierra
-                tocando el guion o bajandolo por la agarradera. */}
-
-            {/* TRES FILAS Y NINGUNA PALABRA. 24-09-2026.
-                Los controles ya mostraban lo que hacen -la A chica y la A
-                grande, el Aa en cada letra, las columnas dibujadas, las
-                parejas pintadas- y el dueno vio que los nombres de al lado
-                sobraban: "la verdad es que es innecesario". Sin nombres, los
-                controles ocupan todo el ancho, como el cajon de temas de
-                Apple Books: todo cae en la misma grilla y los blancos de
-                toque crecen.
-                  1. Tamano: una pieza partida al medio. El numero se fue de
-                     la vista -el cambio se ve en el guion- y queda para el
-                     lector de pantalla.
-                  2. Letra y ancho, mitad y mitad: los dos cambian la forma
-                     del texto.
-                  3. Colores: tres tarjetas anchas. Es lo que mas cambia el
-                     guion y por eso tiene la fila entera.
-                Los nombres siguen en aria-label y en title: el lector de
-                pantalla y las pruebas los usan. Los selectores son el mismo
-                objeto -.selector-aa-, no botoneras decoradas por separado.
-                OJO con "Ancho": es el nombre del grupo -aria-label "Ancho del
-                texto"- y de la primera opcion. Hasta el 23-09-2026 la fila
-                decia "Ancho del texto" porque getByText encontraba dos
-                "Ancho"; ahora las pruebas buscan el boton por rol. */}
-            <div className="cajon-aa-filas">
-              <SelectorLetra fontSize={fontSize} onMenos={onLetraMenos} onMas={onLetraMas} />
-
-              {(setTipoFuente || setColumnaAngosta || setMarginPercent) && (
-                <div className="fila-aa-par">
-                  {setTipoFuente && (
-                    <div className="selector-aa selector-aa-lleno" role="group" aria-label={t('tipografia')}>
-                      {([
-                        { valor: 'sans' as const, nombre: 'Sans' },
-                        { valor: 'serif' as const, nombre: 'Serif' }
-                      ]).map((o) => (
-                        <button
-                          key={o.valor}
-                          type="button"
-                          aria-label={o.nombre}
-                          aria-pressed={tipoFuente === o.valor}
-                          className={`btn-deformable selector-aa-opcion aa-${o.valor}${tipoFuente === o.valor ? ' activa' : ''}`}
-                          onClick={() => {
-                            hapticaSeleccion()
-                            setTipoFuente(o.valor)
-                          }}
-                        >
-                          Aa
-                        </button>
-                      ))}
-                    </div>
-                  )}
-
-                  {(setColumnaAngosta || setMarginPercent) && (
-                    <SelectorAncho
-                      columnaAngosta={columnaAngosta}
-                      marginPercent={marginPercent}
-                      setColumnaAngosta={setColumnaAngosta}
-                      setMarginPercent={setMarginPercent}
-                    />
-                  )}
-                </div>
-              )}
-
-              {/* Colores de lectura: parejas, no dos listas. Fuente: PAREJAS_COLOR. */}
-              {setColorFondo && setColorLetra && (
-                <div className="parejas-aa" role="group" aria-label={t('coloresLectura')}>
-                  {[
-                    { fondo: PAREJAS_COLOR[0].fondo, letra: PAREJAS_COLOR[0].letra, label: t('parejaNegroBlanco') },
-                    { fondo: PAREJAS_COLOR[1].fondo, letra: PAREJAS_COLOR[1].letra, label: t('parejaNegroAmbar') },
-                    { fondo: PAREJAS_COLOR[2].fondo, letra: PAREJAS_COLOR[2].letra, label: t('parejaBlancoNegro') }
-                  ].map((p, idx) => {
-                    const activo = colorFondo.toUpperCase() === p.fondo.toUpperCase() && colorLetra.toUpperCase() === p.letra.toUpperCase()
-                    return (
-                      <button
-                        key={idx}
-                        type="button"
-                        title={p.label}
-                        aria-label={p.label}
-                        aria-pressed={activo}
-                        className={`btn-deformable pareja-aa${activo ? ' activa' : ''}`}
-                        onClick={() => {
-                          hapticaSeleccion()
-                          setColorFondo(p.fondo)
-                          setColorLetra(p.letra)
-                        }}
-                      >
-                        {/* Fondo y letra de la pareja: son dato, no tema
-                            -modelo.ts, PAREJAS_COLOR-. El Aa va en la letra
-                            elegida, asi la tarjeta es el guion en chico. */}
-                        <span
-                          className="pareja-aa-muestra"
-                          style={{ backgroundColor: p.fondo, color: p.letra, fontFamily: familiaLectura(tipoFuente) }}
-                        >
-                          Aa
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      <CajonAaEditor
+        abierto={mostrarModalAjustes}
+        onCerrar={() => setMostrarModalAjustes(false)}
+        guion={guion}
+        fontSize={fontSize}
+        onLetraMenos={onLetraMenos}
+        onLetraMas={onLetraMas}
+        marginPercent={marginPercent}
+        setMarginPercent={setMarginPercent}
+        columnaAngosta={columnaAngosta}
+        setColumnaAngosta={setColumnaAngosta}
+        colorFondo={colorFondo}
+        setColorFondo={setColorFondo}
+        colorLetra={colorLetra}
+        setColorLetra={setColorLetra}
+        tipoFuente={tipoFuente}
+        setTipoFuente={setTipoFuente}
+      />
 
       {errorArchivo && (
         <div
@@ -918,233 +638,30 @@ export default function EditorView({
         )}
       </div>
 
-      {/* Barra fija abajo cuando numPalabras === 0: Pegar texto y Abrir archivo */}
+      {/* Barra fija abajo cuando numPalabras === 0 (posicionada con bottom: 'calc(32px + env(safe-area-inset-bottom, 0px))' en BarraEditorVacio): Pegar texto y Abrir archivo */}
       {numPalabras === 0 && (
-        <div
-          style={{
-            position: 'fixed',
-            bottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
-            left: 0,
-            right: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            gap: 'var(--aire-2)',
-            padding: '0 var(--aire-4)',
-            pointerEvents: 'none',
-            zIndex: 100
-          }}
-        >
-          <button
-            data-testid="btn-pegar-texto"
-            className="btn-deformable"
-            onClick={() => {
-              // Antes esto abria un dialogo con OTRA caja de texto adentro, en la que
-              // habia que pegar, y despues apretar "Importar": tres toques y una
-              // pantalla de mas para algo que el teclado del telefono ya hace.
-              // Ahora el boton lleva al usuario a donde tiene que estar -escribiendo en
-              // el guion, con el cursor al final- y el pegado lo hace Android, que al
-              // poner el cursor en un campo vacio ofrece "Pegar" solo.
-              // No se agrego @capacitor/clipboard: seria una dependencia nueva para
-              // ahorrar un toque que el sistema ya ahorra.
-              //
-              // -24-09-2026: NO LO AHORRA. Con el editor de la Tarea 73 Android no ofrece
-              // "Pegar" al poner el cursor: Javier, "el boton pegar no esta haciendo nada".
-              // Ahora el boton PEGA: lee lo copiado -leerPortapapeles, arriba- y lo mete por
-              // el mismo parser que un pegado a mano -clipboardTextParser de EditorGuion-, asi
-              // que cada linea sigue siendo una linea. No view.pasteText: arma un ClipboardEvent
-              // que las pruebas -jsdom- no tienen. Si no hay texto copiado, queda lo de antes:
-              // el cursor al final del guion.
-              const ed = editorRef.current
-              if (!ed) return
-              ed.commands.focus('end')
-              leerPortapapeles().then((texto) => {
-                const e = editorRef.current
-                if (!texto || !e) return
-                const vista = e.view
-                const trozo = vista.someProp('clipboardTextParser', (f) => f(texto, vista.state.selection.$from, true, vista))
-                if (trozo) vista.dispatch(vista.state.tr.replaceSelection(trozo).scrollIntoView())
-                else e.commands.insertContent(texto)
-              })
-            }}
-            style={{
-              pointerEvents: 'auto',
-              flex: 1,
-              maxWidth: 200,
-              padding: 'var(--aire-3) var(--aire-4)',
-              fontSize: 'var(--texto-cuerpo)',
-              fontWeight: 600,
-              // Pegar manda. De cada diez guiones, nueve llegan de un texto que ya
-              // esta escrito en otra parte. El crema es el mismo de Leer: en esta
-              // aplicacion, el relleno crema quiere decir "este es el camino".
-              backgroundColor: 'var(--color-acento)',
-              color: 'var(--color-texto-acento)',
-              borderRadius: 'var(--redondeo-pildora)',
-              cursor: 'pointer',
-              border: 'none'
-            }}
-          >
-            {t('pegarTexto')}
-          </button>
-          <button
-            data-testid="btn-abrir-archivo"
-            className="btn-deformable"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={cargandoArchivo}
-            style={{
-              pointerEvents: 'auto',
-              flex: 1,
-              maxWidth: 200,
-              padding: 'var(--aire-3) var(--aire-4)',
-              fontSize: 'var(--texto-cuerpo)',
-              fontWeight: 600,
-              // Acompana. Sube de var(--bg-fila) a var(--bg-panel) y gana borde por
-              // la misma razon que Grabar: sin relleno fuerte, el borde es lo que lo
-              // dibuja. Queda el mismo par que abajo -uno relleno, uno de contorno-,
-              // asi las dos barras de esta pantalla se leen con la misma gramatica.
-              backgroundColor: 'var(--bg-panel)',
-              color: 'var(--color-texto)',
-              borderRadius: 'var(--redondeo-pildora)',
-              cursor: cargandoArchivo ? 'not-allowed' : 'pointer',
-              border: '1px solid var(--color-borde)'
-            }}
-          >
-            {cargandoArchivo ? t('leyendoArchivo') : t('abrirArchivo')}
-          </button>
-        </div>
+        <BarraEditorVacio
+          guion={guion}
+          fontSize={fontSize}
+          editorRef={editorRef}
+          fileInputRef={fileInputRef}
+          cargandoArchivo={cargandoArchivo}
+        />
       )}
 
       {/* Botón de Leer en voz alta Fijo Abajo - Solo cuando hay palabras */}
-      {/* -28-09-2026, tarea 76: el contenedor lleva ahora, encima de Leer y Grabar, la banda
-          de tomas del guion -BandaTomas.tsx-. Todo lo que sube y baja con barraLeerVisible
-          está en este contenedor, y el transform sigue siendo UNO, acá -ver el comentario del
-          23-09 en el botón Leer-.
-          La banda es la primera línea de este mismo flex -flexWrap y flex-basis 100%-, no una
-          caja nueva alrededor de los botones: Leer y Grabar siguen siendo hijos directos de
-          este contenedor, con su bottom seguro y su translateY -T224, tarea48.test.tsx-.
-          Su ancho máximo es el de los dos botones juntos y va centrada como ellos: la primera
-          miniatura empieza donde empieza Leer, a cualquier ancho -ANCHO_BOTON_BARRA-.
-          Escondida, la barra baja 120 px más lo que mide la banda con su aire: con 120 solos
-          quedaba media banda a la vista. Sin banda, los 120 de siempre. */}
       {numPalabras > 0 && (
-        <div
-          style={{
-            position: 'fixed',
-            bottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
-            left: 0,
-            right: 0,
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            alignItems: 'center',
-            // Entre la banda y los botones, var(--aire-3); entre Leer y Grabar, var(--aire-2)
-            // como siempre.
-            gap: 'var(--aire-3) var(--aire-2)',
-            padding: '0 var(--aire-4)',
-            pointerEvents: 'none',
-            zIndex: 100,
-            transform: barraLeerVisible
-              ? 'translateY(0)'
-              : bandaVisible
-              ? 'translateY(calc(120px + var(--alto-banda-tomas) + var(--aire-3)))'
-              : 'translateY(120px)',
-            transition: movimientoApagado()
-              ? 'none'
-              : barraLeerVisible
-              ? `transform ${MS_CHICO}ms ${CURVA_RESORTE}`
-              : `transform ${MS_DEDO}ms ${CURVA_SALE}`
-          }}
-        >
-          {bandaVisible && onAbrirToma && (
-            <div style={{ flex: '0 0 100%', maxWidth: `calc(${2 * ANCHO_BOTON_BARRA}px + var(--aire-2))` }}>
-              <BandaTomas tomas={tomas} onAbrirToma={onAbrirToma} />
-            </div>
-          )}
-          <button
-            ref={btnLeerRef}
-            className="btn-deformable"
-            onClick={() => {
-              const rect = btnLeerRef.current?.getBoundingClientRect()
-              onEntrarLectura(rect)
-            }}
-            data-testid="btn-leer-guion-fijo"
-            style={{
-              pointerEvents: 'auto',
-              // Por encima del fondo de la banda de tomas -.banda-tomas::before, styles.css-:
-              // mientras la banda entra -opacidad- es una capa propia, y sin esto su fondo se
-              // pintaría encima de los botones hasta terminar de entrar. Tarea 76.
-              zIndex: 1,
-              flex: 1,
-              maxWidth: ANCHO_BOTON_BARRA,
-              padding: 'var(--aire-3) var(--aire-4)',
-              fontSize: 'var(--texto-titulo)',
-              fontWeight: 600,
-              backgroundColor: 'var(--color-acento)',
-              color: 'var(--color-texto-acento)',
-              borderRadius: 'var(--redondeo-pildora)',
-              cursor: 'pointer',
-              // Sin borde: un contorno gris alrededor de un relleno crema no separa
-              // nada sobre el fondo oscuro, solo ensucia el canto. El relleno YA es
-              // el limite. Grabar si lleva borde, porque ahi el borde es el boton.
-              border: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 'var(--aire-2)'
-              // NO VA transform NI transition ACA. El translateY de entrada y salida
-              // de la barra lo hace el contenedor de la linea 1194, y estaba repetido
-              // en los dos: la barra escondida se corria 240px en vez de 120. Ademas
-              // un transform en linea le gana al scaleY(0.94) de btn-deformable y
-              // deja el boton sin apretado. Se saco el 23 de septiembre de 2026.
-            }}
-          >
-            <IconoEmpezar tamano={16} />
-            <span>{t('leer')}</span>
-          </button>
-          <button
-            className="btn-deformable btn-grabar"
-            onClick={() => {
-              const rect = btnLeerRef.current?.getBoundingClientRect()
-              onEntrarGrabar?.(rect)
-            }}
-            data-testid="btn-grabar-guion-fijo"
-            style={{
-              pointerEvents: 'auto',
-              // Por encima del fondo de la banda de tomas -.banda-tomas::before, styles.css-:
-              // mientras la banda entra -opacidad- es una capa propia, y sin esto su fondo se
-              // pintaría encima de los botones hasta terminar de entrar. Tarea 76.
-              zIndex: 1,
-              flex: 1,
-              maxWidth: ANCHO_BOTON_BARRA,
-              padding: 'var(--aire-3) var(--aire-4)',
-              fontSize: 'var(--texto-titulo)',
-              fontWeight: 600,
-              borderRadius: 'var(--redondeo-pildora)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 'var(--aire-2)'
-            }}
-          >
-            {/* El punto de grabar era el caracter "●", que hereda el color del texto
-                y queda gris: el mismo gris del triangulo de Leer. Dos puertas que
-                hacen cosas distintas se veian iguales. Es un div y no un caracter
-                porque asi toma var(--color-grabando), el mismo rojo de la barra de
-                tiempo y del punto tally del lienzo. Es el UNICO rojo de la pantalla.
-                24-09-2026: el boton entero tambien lleva ese rojo, tenue -.btn-grabar,
-                styles.css-. Sigue siendo un solo rojo, ahora en el boton que graba. */}
-            <div
-              style={{
-                width: 10,
-                height: 10,
-                borderRadius: 'var(--redondeo-pildora)',
-                backgroundColor: 'var(--color-grabando)',
-                flexShrink: 0
-              }}
-            />
-            <span>{t('grabar')}</span>
-          </button>
-        </div>
+        <BarraLeerGrabar
+          guion={guion}
+          fontSize={fontSize}
+          barraLeerVisible={barraLeerVisible}
+          bandaVisible={bandaVisible}
+          btnLeerRef={btnLeerRef}
+          onEntrarLectura={onEntrarLectura}
+          onEntrarGrabar={onEntrarGrabar}
+          tomas={tomas}
+          onAbrirToma={onAbrirToma}
+        />
       )}
     </div>
   )
