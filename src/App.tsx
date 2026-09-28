@@ -1065,6 +1065,17 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
 
     setControlesVisibles(false)
+
+    // EL RECONOCEDOR ARRANCA CON LA CUENTA, NO AL TERMINARLA -28-09-2026-. Arrancaba al final,
+    // y eso es cargar el modelo del idioma del guion y abrir el microfono justo cuando la
+    // persona empieza a hablar. Medido en todas las tomas con Grabar: el oido empezaba 1,2 s
+    // despues del "1" en el moto g86 y 3,3 s en el Redmi 13C. En la lectura en vivo de la
+    // traductora se perdio "Hi. Read this out loud, as" entero y el texto quedo quieto 5 s.
+    // Con la cuenta de por medio, esos segundos quedan adentro de los tres de la cuenta.
+    // Javier: "usualmente las personas cuando empieza la cuenta se concentran y guardan
+    // silencio" -lo que se oiga en la cuenta no mueve nada que no se haya dicho-.
+    // Va SIN await, como la grabacion de audio de arriba: si el motor tarda, la cuenta sigue.
+    start()
     setCuentaRegresiva(3)
 
     let c = 3
@@ -1079,7 +1090,7 @@ export default function App({ motor, repoOverride }: AppProps) {
         }
         setCuentaRegresiva(null)
         setTInicioLecturaMs(performance.now())
-        start()
+        // start() ya no va aca: arranca al empezar la cuenta -ver arriba, 28-09-2026-.
         // La grabacion de video empieza DESPUES de la cuenta, no al
         // entrar a lectura: si arranca antes, los primeros segundos
         // son una cara quieta esperando. Y VA SIN await: si el

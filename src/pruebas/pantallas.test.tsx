@@ -317,7 +317,7 @@ describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
     vi.restoreAllMocks()
   })
 
-  test('T163 - Al apretar el boton de leer del editor se entra a la lectura Y el motor arranca: no hace falta apretar nada mas. Con el motor falso, start() se llama despues de la cuenta regresiva.', async () => {
+  test('T163 - Al apretar el boton de leer del editor se entra a la lectura Y el motor arranca: no hace falta apretar nada mas. Con el motor falso, start() se llama al empezar la cuenta regresiva -desde el 28-09-2026-.', async () => {
     vi.useFakeTimers()
     try {
       const motor = new MotorFake()
@@ -358,13 +358,11 @@ describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
         await vi.advanceTimersByTimeAsync(100)
       })
 
-      await act(async () => {
-        await vi.advanceTimersByTimeAsync(2800)
-      })
-      expect(iniciarSpy).toHaveBeenCalledTimes(0)
+      // Desde el 28-09-2026 el motor arranca con la cuenta, no al final -ver T81-.
+      expect(iniciarSpy).toHaveBeenCalledTimes(1)
 
       await act(async () => {
-        await vi.advanceTimersByTimeAsync(500)
+        await vi.advanceTimersByTimeAsync(3300)
       })
       expect(iniciarSpy).toHaveBeenCalledTimes(1)
     } finally {

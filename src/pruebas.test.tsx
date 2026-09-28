@@ -1951,7 +1951,10 @@ function buscarTextoEnDirectorio(dir: string, texto: string): string[] {
 
 describe('Pruebas TAREA 16 (T81-T87)', () => {
 
-  test('T81: Se aprieta empezar. Antes de los tres segundos, start() del motor NO se llamó. Pasados los tres, se llamó exactamente una vez.', async () => {
+  // T81 y T82 CAMBIARON EL 28-09-2026: el motor arranca AL EMPEZAR la cuenta, no al terminarla
+  // -App.tsx, handleStart-. Antes esperaban lo contrario; la lectura en vivo mostro que el
+  // microfono llegaba 3,3 s tarde en el Redmi y se perdian las primeras palabras.
+  test('T81: Se aprieta empezar. El motor arranca en ese momento, con la cuenta, y una sola vez: terminar la cuenta no lo vuelve a arrancar.', async () => {
     vi.useFakeTimers()
     try {
       const motor = new MotorFake()
@@ -1982,12 +1985,12 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       })
 
       await act(async () => {
-        await vi.advanceTimersByTimeAsync(2900)
+        await vi.advanceTimersByTimeAsync(100)
       })
-      expect(iniciarSpy).toHaveBeenCalledTimes(0)
+      expect(iniciarSpy).toHaveBeenCalledTimes(1)
 
       await act(async () => {
-        await vi.advanceTimersByTimeAsync(200)
+        await vi.advanceTimersByTimeAsync(3000)
       })
       expect(iniciarSpy).toHaveBeenCalledTimes(1)
     } finally {
@@ -1995,11 +1998,12 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     }
   })
 
-  test('T82: GUARDIANA. Se aprieta empezar y, con la cuenta corriendo, se aprieta detener. Pasan cinco segundos y start() NO se llamó NUNCA.', async () => {
+  test('T82: GUARDIANA. Se aprieta empezar y, con la cuenta corriendo, se aprieta salir. El motor queda detenido y no se vuelve a arrancar: salir en la cuenta no deja el microfono abierto.', async () => {
     vi.useFakeTimers()
     try {
       const motor = new MotorFake()
       const iniciarSpy = vi.spyOn(motor, 'iniciar')
+      const detenerSpy = vi.spyOn(motor, 'detener')
 
       const repo = new RepositorioMemoria()
       await repo.guardar(guionSimple('Hola mundo de prueba'))
@@ -2040,11 +2044,14 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         fireEvent.click(botonVolver!)
       })
 
+      const detenidasAlSalir = detenerSpy.mock.calls.length
+      expect(detenidasAlSalir).toBeGreaterThan(0)
+
       await act(async () => {
         await vi.advanceTimersByTimeAsync(5000)
       })
 
-      expect(iniciarSpy).toHaveBeenCalledTimes(0)
+      expect(iniciarSpy).toHaveBeenCalledTimes(1)
     } finally {
       vi.useRealTimers()
     }
