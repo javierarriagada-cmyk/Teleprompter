@@ -486,6 +486,19 @@ textarea::placeholder {
   overflow-wrap: anywhere;
 }
 
+/* La franja de la hora -App.tsx-: tapa lo que sube por detras de la barra de Android. Por
+   debajo de los cajones y avisos -zIndex 90- y sin recibir toques. */
+.franja-hora {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-top, 0px);
+  background: var(--bg-suelo);
+  z-index: 90;
+  pointer-events: none;
+}
+
 /* El velo de abajo de la lectura: ver VeloControles en TeleprompterView.tsx. Macizo hasta
    poco mas arriba del circulo de 72 y despues se desvanece; debajo de los controles -zIndex 9
    contra 10 y 12- y sin recibir toques. */

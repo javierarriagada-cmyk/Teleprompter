@@ -2140,6 +2140,12 @@ export default function App({ motor, repoOverride }: AppProps) {
         />
       )}
 
+      {/* LA FRANJA DE LA HORA -28-09-2026-. Con las barras de Android transparentes, al bajar la
+          portada el titulo de la tarjeta pasaba por detras de la hora y la bateria -visto en el
+          moto g86-. Una franja del color del suelo, del alto del area segura, tapa lo que sube.
+          En la lectura no: ahi manda el lienzo, de borde a borde. */}
+      {vista !== 'lectura' && <div className="franja-hora" aria-hidden="true" />}
+
       {/* Toast / Aviso Breve */}
       {avisoInfo && (
         <div
@@ -2150,7 +2156,11 @@ export default function App({ motor, repoOverride }: AppProps) {
             // medio tapado por la barra de navegacion -no sumaba el area segura- y corrido a la
             // derecha: se centraba con translateX(-50%), y la animacion panelSube, que tambien
             // usa transform, lo pisaba. Ahora se centra con margenes, sin transform.
-            bottom: 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))',
+            // En la lectura, encima del circulo de 72 -Empezar o Parar-: a 32 px quedaba montado
+            // sobre el, visto en el moto g86 el mismo dia.
+            bottom: vista === 'lectura'
+              ? 'calc(var(--circulo-desde-abajo) + 72px + var(--aire-3) + env(safe-area-inset-bottom, 0px))'
+              : 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))',
             left: 0,
             right: 0,
             marginLeft: 'auto',
