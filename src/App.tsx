@@ -958,7 +958,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   // armaba `${idioma}-${IDIOMA}`, que para el ingles daba 'en-EN', un codigo que no existe.
   // MotorNativo todavia lo ignora: el modelo ingles y la eleccion por idioma los conecta
   // Claude en el telefono -docs/ingles.txt, seccion 3-.
-  const idiomaGuion = guionActual && guionActual.idioma ? guionActual.idioma : 'es'
+  // Sin guion abierto -al abrir la app- vale el idioma de la app: es el del guion de bienvenida
+  // y el que la persona usa, y asi la precarga silenciosa carga el modelo correcto -28-09-2026-.
+  const idiomaGuion = guionActual && guionActual.idioma ? guionActual.idioma : idiomaApp()
   const langMotor = idiomaGuion === 'en' ? 'en-US' : idiomaGuion === 'es' ? 'es-ES' : idiomaGuion
 
   const {
@@ -967,7 +969,10 @@ export default function App({ motor, repoOverride }: AppProps) {
     isRecording,
     estadoMotor,
     ultimoError,
-    motorActivo
+    motorActivo,
+    precargar,
+    pedirMicrofono,
+    motorListo
   } = useASR({
     engine,
     lang: langMotor,
@@ -982,6 +987,16 @@ export default function App({ motor, repoOverride }: AppProps) {
     },
     alNotificarVoz: seguidorVoz
   })
+
+  // EL MODELO DEL IDIOMA DEL GUION, CARGADO EN SILENCIO -28-09-2026-. Al abrir la app y cada vez
+  // que cambia el idioma del guion en uso. Asi Empezar no espera a desempaquetar: en una
+  // instalacion limpia eso tardaba mas que los tres segundos de la cuenta. Nunca mientras se
+  // lee: cambiar de modelo con el microfono abierto no se puede -VoskNativoPlugin.iniciar-.
+  useEffect(() => {
+    if (!motorListo || isRecording || cuentaRegresiva !== null) return
+    precargar(langMotor)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [motorListo, langMotor])
 
   // Los controles vuelven a irse solos. Un toque los trae, y si el que lee no aprieta nada
   // se van otra vez: si se quedaran encendidos hasta el siguiente toque, bastaria con
@@ -1145,6 +1160,10 @@ export default function App({ motor, repoOverride }: AppProps) {
   async function handleEmpezarDesdeListo() {
     if (estadoToma === 'leyendo') return
     hapticaToqueMedio()
+    // EL PERMISO DEL MICROFONO, ANTES DE LA CUENTA -28-09-2026-. Ver MotorNativo.pedirMicrofono:
+    // en la primera lectura el cartel de Android aparecia con la toma andando y tapaba el guion.
+    // Si la persona lo niega, se lee igual, como antes: el motivo queda a la vista.
+    await pedirMicrofono()
     setEstadoToma('leyendo')
     setControlesVisibles(false)
     await handleStart()

@@ -1,0 +1,4 @@
+model=a15,version=34,locale=es_419,orientation=portrait
+model=lamul,version=35,locale=es_419,orientation=portrait
+model=a03su,version=33,locale=es_419,orientation=portrait
+model=pa1q,version=36,locale=en_US,orientation=portrait

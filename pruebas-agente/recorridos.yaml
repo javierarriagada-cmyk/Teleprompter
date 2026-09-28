@@ -1,0 +1,114 @@
+# RECORRIDOS DEL AGENTE DE PRUEBAS DE FIREBASE -27-09-2026-.
+#
+# El agente -Gemini, App Distribution- lee estos pasos en lenguaje natural, recorre Sigo en
+# telefonos reales de Test Lab y dice si cada uno pasa o falla, con capturas.
+#
+#   npx firebase-tools apptesting:execute <apk> --app 1:505619935722:android:449893e0c5d723d98d8293 \
+#     --test-dir pruebas-agente --test-devices-file pruebas-agente/telefonos.txt
+#
+# LO QUE CUESTA. Gratis en la preview hasta 200 pruebas al mes por proyecto, y cada
+# recorrido en cada telefono cuenta una: 5 recorridos x 4 telefonos = 20 por bateria. Con eso
+# entran unas 8 baterias al mes; se corre la bateria entera solo en versiones que tocan
+# pantallas, y lo que falla se repite en ESE telefono, no en todos.
+#
+# LO QUE NO PUEDE. No habla: el seguimiento de la voz no se prueba aca -eso lo cubren las
+# lecturas reales-. Por eso ningun paso espera que el texto avance solo.
+#
+# COMO SE ESCRIBEN. El telefono puede estar en espanol o en ingles y la app sigue su idioma:
+# cada pista nombra los dos rotulos. El agente falla con tareas largas en un solo paso y con
+# cosas que hay que buscar desplazando: pasos cortos, y la pista dice donde esta. Las
+# afirmaciones finales solo pueden hablar de lo que se VE en la pantalla.
+#
+# Los menus ocultos -el diagnostico de 5 toques en la marca- no se mencionan: el agente hace
+# solo lo que se le pide y no los encuentra.
+
+tests:
+  - id: portada
+    displayName: La app abre en la portada
+    steps:
+      - goal: Open the app and wait until the main screen is shown.
+        hint: >-
+          On a fresh install the app shows its main screen with the brand "Sigo" at the top,
+          a list of scripts that already contains a welcome script (titled "Hola" in Spanish
+          or "Hi" in English) and a "Videos" section below it.
+        finalScreenAssertion: >-
+          The main screen shows the word "Sigo" and at least one script in a list. No error
+          message, blank screen or crash dialog is visible.
+
+  - id: leer
+    displayName: Leer un guion
+    prerequisiteTestCaseId: portada
+    steps:
+      - goal: Start reading the welcome script.
+        hint: >-
+          Tap the welcome script ("Hola" or "Hi") in the list. It shows the buttons "Leer"
+          / "Read" and "Grabar" / "Record". Tap "Leer" / "Read".
+        finalScreenAssertion: >-
+          A reading screen is shown with the text of the script in large letters and a round
+          start button near the bottom.
+      - goal: Start the reading and wait until the countdown ends.
+        hint: >-
+          Tap the round button labeled "Empezar" / "Start". A countdown 3, 2, 1 appears; wait
+          about 5 seconds. The text will NOT scroll by itself because nobody is speaking: that
+          is expected.
+        finalScreenAssertion: >-
+          The countdown numbers are gone and the script text is visible on the screen.
+      - goal: Leave the reading screen.
+        hint: >-
+          Tap once on the text to show the controls, then use the back arrow ("Volver" /
+          "Back") or the system back button until the main screen with the list of scripts
+          is visible again.
+        finalScreenAssertion: The main screen with the list of scripts is visible.
+
+  - id: crear-guion
+    displayName: Crear un guion nuevo
+    prerequisiteTestCaseId: portada
+    steps:
+      - goal: Create a new script.
+        hint: >-
+          Tap the round "+" button, labeled "Crear nuevo guion" / "New script". An editor
+          opens with an empty area to write.
+        finalScreenAssertion: An editor with an empty writing area and a keyboard or cursor is visible.
+      - goal: Type the sentence "Prueba del agente de Firebase." in the editor.
+        finalScreenAssertion: The text "Prueba del agente de Firebase." is visible in the editor.
+      - goal: Go back to the main screen.
+        hint: Use the back arrow at the top or the system back button, once or twice.
+        finalScreenAssertion: >-
+          The main screen lists a script that shows the words "Prueba del agente".
+
+  - id: letra-y-ancho
+    displayName: Cambiar letra y ancho en el editor
+    prerequisiteTestCaseId: portada
+    steps:
+      - goal: Open the welcome script in the editor.
+        hint: >-
+          Tap the welcome script ("Hola" or "Hi"). If only the Read / Record buttons appear,
+          tap the text of the card or the pencil to edit.
+        finalScreenAssertion: The text of the welcome script is visible in an editor.
+      - goal: Open the text settings and make the letters bigger.
+        hint: >-
+          Tap the button showing "Aa". A panel opens from the bottom. Tap the "A+" / larger
+          letter control two times.
+        finalScreenAssertion: >-
+          A panel with text size controls is open and the sample text looks bigger than
+          before.
+
+  - id: grabar
+    displayName: Grabar una toma corta
+    prerequisiteTestCaseId: portada
+    steps:
+      - goal: Open the welcome script in recording mode.
+        hint: >-
+          Tap the welcome script ("Hola" or "Hi") and then "Grabar" / "Record". If Android
+          asks for permission to use the camera or the microphone, allow it.
+        finalScreenAssertion: >-
+          A recording screen is shown: the script text over the camera image or over a dark
+          background, with a round start button near the bottom.
+      - goal: Record for about 8 seconds and then stop.
+        hint: >-
+          Tap the round "Empezar" / "Start" button, wait for the 3, 2, 1 countdown and then
+          about 8 more seconds. Tap once on the screen to show the controls and tap the stop
+          button ("Parar" / "Stop").
+        finalScreenAssertion: >-
+          A video player shows the recorded take, with options for captions ("Subtítulos" /
+          "Captions") or to save it to the gallery.

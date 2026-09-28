@@ -1,6 +1,6 @@
 import React from 'react'
 import { describe, test, expect, beforeEach, vi } from 'vitest'
-import { render, screen, fireEvent, act } from '@testing-library/react'
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react'
 import 'fake-indexeddb/auto'
 import App from '../App'
 import EditorView from '../components/EditorView'
@@ -118,7 +118,9 @@ describe('Tarea 72 - cada ajuste muestra lo que hace', () => {
 
     fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
     fireEvent.click(screen.getByTestId('btn-empezar-toma'))
-    expect(screen.queryByTestId('barra-tiempo-previa')).toBeNull()
+    // Desde el 28-09-2026 Empezar primero resuelve el permiso del microfono -asincrono- y recien
+    // despues pasa a leyendo: la previa se va un instante despues del toque, no en el mismo.
+    await waitFor(() => expect(screen.queryByTestId('barra-tiempo-previa')).toBeNull())
 
     await act(async () => {
       await new Promise((r) => setTimeout(r, 3100))

@@ -74,15 +74,36 @@ android {
 // Un uuid por modelo -27-09-2026, se suma el ingles, docs/ingles.txt D3-: cada carpeta de
 // assets -model-es, model-en- lleva el suyo, y VoskNativoPlugin desempaqueta cada idioma en
 // su propia carpeta.
+//
+// LA MARCA SALE DEL CONTENIDO DEL MODELO, NO AL AZAR -28-09-2026-. Era UUID.randomUUID() en cada
+// construccion: cada APK nueva traia otra marca y el telefono volvia a copiar el modelo entero
+// -decenas de MB- en la primera lectura despues de CADA actualizacion, no solo al instalar. Esa
+// lectura partia tarde -3,3 s en el Redmi de la traductora con la 1.0 (439)-. Ahora la marca es
+// la huella de los archivos del modelo: cambia solo si cambia el modelo, y se copia una vez.
 tasks.register('genUUID') {
-    def uuid = UUID.randomUUID().toString()
     def carpetas = ['model-es', 'model-en']
     def ofiles = carpetas.collect { file("$buildDir/generated/assets/$it/uuid") }
     outputs.files(ofiles)
+    outputs.upToDateWhen { false }
     doLast {
-        ofiles.each { f ->
+        carpetas.eachWithIndex { carpeta, i ->
+            def raiz = file("src/main/assets/$carpeta")
+            def huella = java.security.MessageDigest.getInstance('SHA-256')
+            if (raiz.exists()) {
+                def archivos = []
+                raiz.eachFileRecurse(groovy.io.FileType.FILES) { archivos << it }
+                archivos.sort { it.path }.each { a ->
+                    huella.update(raiz.toPath().relativize(a.toPath()).toString().replace('\\', '/').getBytes('UTF-8'))
+                    a.withInputStream { entrada ->
+                        byte[] buf = new byte[1 << 16]
+                        int n
+                        while ((n = entrada.read(buf)) > 0) huella.update(buf, 0, n)
+                    }
+                }
+            }
+            def f = ofiles[i]
             mkdir f.parentFile
-            f.text = uuid
+            f.text = huella.digest().encodeHex().toString()
         }
     }
 }

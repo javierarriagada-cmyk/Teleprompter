@@ -44,6 +44,9 @@ interface VoskNativoPlugin {
   iniciar(opciones?: { idioma?: 'es' | 'en' }): Promise<void>
   escuchar(opciones?: { guardarAudio?: boolean; fuente?: string; frecuenciaMic?: number }): Promise<{ inicioEpochMs?: number; rutaAudio?: string; muestrasPorTrozo?: number } | void>
   detener(): Promise<void>
+  // Los pone Capacitor solo, por el @Permission del plugin -alias 'microfono'-.
+  checkPermissions(): Promise<{ microfono: string }>
+  requestPermissions(opciones?: { permissions: Array<'microfono'> }): Promise<{ microfono: string }>
   addListener(
     eventName: 'parcial' | 'final',
     listener: (data: DatosResultado) => void
@@ -114,11 +117,54 @@ export class MotorNativo implements MotorDeVoz {
   //
   // PENDIENTE: engancharlo al arranque de la aplicacion. Hoy usePrecargaModelo crea
   // un MotorVosk a mano y no mira este. Va en su propia tarea, no en esta.
+  // HECHO el 28-09-2026: precargar(), mas abajo, lo llama App.tsx al abrir y al cambiar de guion.
   async precargarModelo(idioma: 'es' | 'en' = 'es'): Promise<void> {
     // El plugin sabe que modelo tiene cargado: si es el mismo idioma no hace nada, y si es
     // otro lo cambia -VoskNativoPlugin.iniciar-.
-    await Nativo.iniciar({ idioma })
+    //
+    // EN FILA, NUNCA DOS A LA VEZ -28-09-2026-. Desde que el modelo se precarga al abrir la
+    // app, Leer puede pedirlo mientras la precarga todavia desempaqueta. El plugin guarda UNA
+    // sola llamada pendiente -llamadaIniciar-: la segunda pisaria a la primera, que no
+    // terminaria nunca, y se cargarian dos modelos. Encadenadas, la segunda espera y, si es el
+    // mismo idioma, vuelve al instante.
+    const turno = this.filaDeCarga.then(() => Nativo.iniciar({ idioma }))
+    this.filaDeCarga = turno.catch(() => {})
+    await turno
     this.modeloCargado = true
+  }
+
+  private filaDeCarga: Promise<void> = Promise.resolve()
+
+  // PRECARGA EN SILENCIO -28-09-2026-. Medido con una instalacion limpia en el emulador: la
+  // primera lectura desempaquetaba el modelo DESPUES de apretar Empezar, y el permiso del
+  // microfono aparecia con el reloj de la lectura ya en 00:04, tapando el guion. Ahora se
+  // carga al abrir la app y al cambiar de guion. Si falla no se dice nada: Leer lo vuelve a
+  // intentar y ahi el error si se ve.
+  async precargar(lang: string): Promise<void> {
+    if (!Capacitor.isNativePlatform()) return
+    const idioma: 'es' | 'en' = (lang || '').toLowerCase().startsWith('en') ? 'en' : 'es'
+    try {
+      await this.precargarModelo(idioma)
+    } catch {
+      // Tambien llega aca si piden otro idioma con el microfono abierto: no toca nada.
+    }
+  }
+
+  // EL PERMISO ANTES DE LA CUENTA -28-09-2026-. Lo pedia escuchar(), que llega despues de
+  // desempaquetar el modelo: en la primera lectura el cartel aparecia con la toma andando.
+  // Pedido aca, la persona lo ve al apretar Empezar, lo resuelve, y recien ahi parte el 3, 2, 1.
+  // Android no lo vuelve a mostrar una vez dado.
+  async pedirMicrofono(): Promise<boolean> {
+    if (!Capacitor.isNativePlatform()) return true
+    try {
+      const ya = await Nativo.checkPermissions()
+      if (ya.microfono === 'granted') return true
+      const r = await Nativo.requestPermissions({ permissions: ['microfono'] })
+      return r.microfono === 'granted'
+    } catch {
+      // Si no se puede preguntar, escuchar() lo pide como siempre: leer no se bloquea.
+      return true
+    }
   }
 
   async iniciar(opciones: { lang: string }): Promise<void> {

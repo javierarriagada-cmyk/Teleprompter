@@ -27,6 +27,8 @@ export default function useASR(options: {
   const [ready, setReady] = useState(false)
   const [progresoDescarga, setProgresoDescarga] = useState<number>(0)
   const [ultimoError, setUltimoError] = useState<string | null>(null)
+  // El motor ya existe -elegirMotor es asincrono-: recien ahi se puede precargar.
+  const [motorListo, setMotorListo] = useState(false)
 
   const listenerParcialCbRef = useRef<((texto: string) => void) | null>(null)
   const listenerFinalCbRef = useRef<((e: EventoFinal) => void) | null>(null)
@@ -53,6 +55,7 @@ export default function useASR(options: {
 
         const m = motorInyectado || (await elegirMotor(engine))
         motorRef.current = m
+        setMotorListo(true)
 
         unsubs.push(
           m.onParcial((e) => {
@@ -127,6 +130,20 @@ export default function useASR(options: {
     }
   }
 
+  // Ver MotorDeVoz.precargar y pedirMicrofono -28-09-2026-. Los motores que no los tienen
+  // -el falso de las pruebas, el web- siguen como antes.
+  async function precargar(l: string) {
+    const m = motorRef.current
+    if (!m || !m.precargar) return
+    await m.precargar(l)
+  }
+
+  async function pedirMicrofono(): Promise<boolean> {
+    const m = motorRef.current
+    if (!m || !m.pedirMicrofono) return true
+    return m.pedirMicrofono()
+  }
+
   async function stop() {
     if (motorRef.current) {
       try {
@@ -178,6 +195,9 @@ export default function useASR(options: {
     start,
     stop,
     clear,
+    precargar,
+    pedirMicrofono,
+    motorListo,
     isRecording,
     transcript: (transcript + (transcripcionParcial ? '\n' + transcripcionParcial : '')).trim(),
     ready,
