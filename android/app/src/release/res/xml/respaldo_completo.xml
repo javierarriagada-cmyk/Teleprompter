@@ -13,7 +13,11 @@
      DÓNDE VIVE LO DEL WEBVIEW. El WebView de Android guarda los datos de cada página en
      app_webview/Default/ dentro de la carpeta de la app -/data/data/com.sigoteleprompter.app/-:
      IndexedDB/ con la base -https_localhost_0.indexeddb.leveldb- y "Local Storage/" con el
-     localStorage -leveldb-. Comprobado en el emulador con Android 15 -ver el PR de la tarea 84-.
+     localStorage -leveldb-. Comprobado con bmgr en el emulador con Android 15 el 29-09-2026:
+     el WebView creó app_webview/Default/"Local Storage"/leveldb; la base IndexedDB se puso a
+     mano -en el emulador de la box el WebView se caía al dibujar-, se respaldó, se desinstaló y
+     al reinstalar volvió; la carpeta .blob no se respaldó. Falta verlo con guiones de verdad en
+     el teléfono -ver el PR de la tarea 84-.
      domain="root" es esa carpeta de la app. -->
 <!-- Android 10 y 11 -android:fullBackupContent-: las mismas reglas, en el formato viejo. -->
 <full-backup-content>
