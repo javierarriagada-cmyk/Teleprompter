@@ -44,6 +44,61 @@
 -keep public class * extends com.getcapacitor.Plugin { *; }
 -keepattributes *Annotation*, Signature, InnerClasses, EnclosingMethod
 
+# ----------------------------------------------------------------------------------------------
+# EL NÚCLEO DE CAPACITOR, ENTERO -tarea 85, 29-09-2026-. Javier lo vio en su moto g86 con la
+# versión de Play: la app se caía al apretar Grabar -NullPointerException en
+# Plugin.getPermissionStates, llamado desde CameraPreview.start-. Las reglas de arriba protegen los
+# plugins, no el puente que los lee. R8, en su modo completo -el de AGP 8-, dio por hecho que
+# nadie crea nunca un objeto del tipo de la anotación @CapacitorPlugin: es una interfaz que solo
+# fabrica la máquina virtual al leer la anotación por reflexión, y R8 no ve esa fábrica. Con eso
+# concluyó que PluginHandle.pluginAnnotation vale siempre null, borró el campo -usage.txt de ese
+# build- y dejó Plugin.getPermissionStates reducido a "throw null" -dexdump del AAB-. Todo plugin
+# que pregunta por sus permisos se caía ahí: la cámara al empezar y, en ese mismo AAB, también
+# VoskNativoPlugin.escuchar, que pregunta por el micrófono.
+#
+# Se conserva com.getcapacitor.** completo, sin encoger ni renombrar. Buscar una por una las
+# clases que el puente lee por reflexión -PluginHandle, Bridge, PluginMethodHandle, los
+# callbacks, el MessageHandler del WebView- es justo el juego que ya falló una vez. Es la
+# biblioteca que hace funcionar la app entera, y pesa poco -unos cientos de KB-.
+-keep class com.getcapacitor.** { *; }
+-keep interface com.getcapacitor.** { *; }
+
+# LAS ANOTACIONES DE CAPACITOR, COMO TIPOS. -keepattributes deja la anotación escrita en la clase,
+# pero no impide que R8 trate a su tipo como "nunca creado" y pliegue a null todo lo que lo lee:
+# eso fue exactamente la caída. Estas reglas conservan los tipos @interface -CapacitorPlugin,
+# Permission, PermissionCallback, ActivityCallback, y PluginMethod y NativePlugin, que viven en
+# com.getcapacitor- con todos sus métodos: permissions(), alias(), strings(), name().
+-keep @interface com.getcapacitor.annotation.** { *; }
+-keep @interface com.getcapacitor.PluginMethod { *; }
+-keep @interface com.getcapacitor.NativePlugin { *; }
+
+# Y LAS ANOTACIONES MISMAS, CON TODO LO QUE CAPACITOR LEE DE ELLAS. RuntimeVisibleAnnotations son
+# las de la clase y de los métodos -@CapacitorPlugin, @PluginMethod, @PermissionCallback-;
+# RuntimeVisibleParameterAnnotations las de los parámetros; AnnotationDefault los valores por
+# omisión -name() = "" y permissions() = {} cuando el plugin no los escribe, como Arranque-.
+# Signature, InnerClasses y EnclosingMethod dejan que la reflexión resuelva tipos genéricos y
+# clases internas. *Annotation* ya estaba arriba: se repite aquí para que esta regla se lea sola.
+-keepattributes *Annotation*, RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations, AnnotationDefault, Signature, InnerClasses, EnclosingMethod
+
+# Cualquier clase con @CapacitorPlugin, entera y con su nombre, aunque no extienda Plugin
+# directamente o venga de una dependencia que no esté en la lista de abajo. PluginHandle le lee
+# la anotación y le busca los métodos por nombre -"trasPermiso", "handleCameraPermissionResult"-:
+# un método renombrado o quitado es un plugin que no responde, en silencio.
+-keep @com.getcapacitor.annotation.CapacitorPlugin class * { *; }
+
+# LO DEMÁS QUE SE REVISÓ CON EL MISMO CRITERIO -tarea 85-, en el mapping, usage.txt y el dexdump
+# del AAB: nada más necesitó regla nueva.
+#   - media3-transformer y media3-effect -subtítulos quemados-: no usan reflexión, y sus shaders
+#     van en assets/, que R8 y shrinkResources no tocan.
+#   - CameraX, media3, WorkManager, Room, Play Services y webkit traen sus propias reglas.
+#   - Cordova: config.xml no declara plugins; CoreAndroid y AllowListPlugin quedan con su nombre
+#     por las reglas que trae Capacitor.
+#   - Galería y compartir van por MediaStore e Intent, sin reflexión. Los métodos nativos -JNI- los
+#     cuida proguard-android-optimize.txt; Vosk y JNA, las reglas de más abajo.
+#   - Queda un solo "throw null" en todo com.getcapacitor: Bridge$Builder.create, en el camino de
+#     BridgeFragment, que Sigo no usa -MainActivity es una BridgeActivity-.
+# npm run play revisa esto en cada AAB -scripts/revisarR8.mjs-.
+
 # Los cuatro plugins de Sigo -ArranquePlugin, CamaraNativaPlugin, IdiomaAppPlugin,
 # VoskNativoPlugin-, enteros: MainActivity los registra por clase y JavaScript los llama por
 # nombre. Con sus clases de adentro -Oido, el lazo del micrófono- y PaqueteDeVoz.

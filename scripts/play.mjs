@@ -27,6 +27,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import os from 'node:os'
 import { fileURLToPath } from 'node:url'
+import { revisarR8 } from './revisarR8.mjs'
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const ANDROID = path.join(RAIZ, 'android')
@@ -160,6 +161,27 @@ if (llave) {
   anotarResultado(firmado, firmado ? 'el AAB está firmado con la llave de subida' : 'el AAB NO quedó firmado: revisa android/keystore.properties')
 } else {
   anotarResultado(null, 'no hay android/keystore.properties: el AAB salió SIN FIRMAR y Play no lo acepta -ver android/keystore.properties.ejemplo-')
+}
+
+// R8 NO SE COMIÓ LO QUE SE BUSCA POR NOMBRE -tarea 85, 29-09-2026-. La caída de Grabar en el moto
+// g86 no la avisó nada: compiló y abrió. Aquí se leen los informes de R8 del build recién hecho
+// -scripts/revisarR8.mjs-. Con -- sinR8 no hay informes y no hay nada que revisar.
+if (args.includes('sinR8')) {
+  anotarResultado(null, 'sin R8 -- sinR8-: no hay mapping que revisar')
+} else {
+  const dirMapping = path.join(ANDROID, 'app', 'build', 'outputs', 'mapping', 'release')
+  const mappingTxt = path.join(dirMapping, 'mapping.txt')
+  const usageTxt = path.join(dirMapping, 'usage.txt')
+  if (!fs.existsSync(mappingTxt) || !fs.existsSync(usageTxt)) {
+    anotarResultado(false, 'no están mapping.txt y usage.txt de R8: no se puede revisar qué conservó')
+  } else {
+    const problemas = revisarR8(fs.readFileSync(mappingTxt, 'utf8'), fs.readFileSync(usageTxt, 'utf8'))
+    if (problemas.length === 0) {
+      anotarResultado(true, 'R8 conservó el núcleo de Capacitor, @CapacitorPlugin y Plugin.getPermissionState con su nombre')
+    } else {
+      for (const p of problemas) anotarResultado(false, 'R8: ' + p + ' -ver android/app/proguard-rules.pro-')
+    }
+  }
 }
 
 if (await asegurarBundletool()) {
