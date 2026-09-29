@@ -1,0 +1,106 @@
+TAREA 81 - PARTIR APP.TSX, PRIMERA ETAPA: SACAR LO QUE NO ES DE APP, SIN CAMBIAR NADA DE LO QUE HACE
+Encargo para el bot de Grok, 29-09-2026. Es LIMPIEZA: MOVER CODIGO, no mejorarlo.
+Punto de partida: main, commit b14e39f. Nunca una rama vieja.
+
+==============================================================================
+POR QUE
+==============================================================================
+src/App.tsx tiene 2.299 lineas. Cualquier cambio obliga a leerlo entero, y cada ejecutor que lo
+toca choca con el siguiente. Esta primera etapa saca las piezas que NO dependen del estado de
+App -funciones puras, el aviso breve y dos paneles-. La app tiene que quedar EXACTAMENTE igual:
+mismo HTML, mismos data-testid, mismas clases, mismos estilos, mismo orden de dibujo, mismo
+comportamiento. Si una prueba de comportamiento necesita cambiarse, esta mal hecho.
+
+La segunda etapa -la logica de la toma, lineas 899 a 1372, y la vista de lectura, 1787 a 2099-
+NO es parte de este encargo: esta tan enredada con el estado de App que necesita su propio mapa.
+No tocarla.
+
+REGLAS
+  - Se mueve TAL CUAL, con TODOS sus comentarios. Ningun comentario se borra, se acorta ni se
+    reescribe. Si un comentario queda arriba de un bloque que se va, viaja con el bloque.
+  - Arriba de cada archivo nuevo, un comentario corto -castellano, sin tildes- que diga de donde
+    salio: "Salio de App.tsx el 29-09-2026, tarea 81: ..." y para que sirve.
+  - No se renombra nada. No se cambia ninguna logica. No se "aprovecha" para arreglar otra cosa.
+  - No se agregan dependencias.
+
+==============================================================================
+EL MAPA -numeros de linea de src/App.tsx en main, commit b14e39f-
+==============================================================================
+
+PIEZA 1 - src/app/bienvenida.ts -archivo y carpeta nuevos-
+  Mover: lineas 116 a 246 -empieza en el comentario 'EL GUION "HOLA"' y termina en el cierre de
+  bienvenidaIngles, justo antes de "export default function App"-.
+  Contiene tituloDeBienvenida y bloqueDeBienvenida -exportadas- y tramosSobre, bienvenidaEspanol,
+  bienvenidaIngles -internas-. Traer los imports que usen -Bloque, IdiomaApp, lo que sea-.
+  En App.tsx: importarlas desde './app/bienvenida' Y volver a exportar las dos publicas:
+    export { tituloDeBienvenida, bloqueDeBienvenida } from './app/bienvenida'
+  porque src/pruebas/bienvenida.test.ts y detectarIdioma.test.ts las importan desde '../App'.
+  Esas pruebas NO se tocan.
+
+PIEZA 2 - src/app/ajustesIniciales.ts
+  Mover: GUION_VACIO -linea 58-, MOTORES_VALIDOS -70-, sanitizarColores -76, exportada-,
+  sanitizarEngine -88-, cargarAjustesGuardados -95- y ajustarFuenteValida -106- con sus
+  comentarios. Se exportan las que App usa.
+  QUEDAN en App.tsx, sin moverse: MS_CONTROLES_A_LA_VISTA, AppProps, Vista, EstadoToma,
+  "export type FondoToma" -linea 72: TeleprompterView la importa desde '../App'- y
+  "export { PAREJAS_COLOR }" -linea 74-. Si sanitizarColores se importa desde '../App' en algun
+  archivo, volver a exportarla desde App.tsx igual que en la pieza 1.
+
+PIEZA 3 - el aviso breve: src/hooks/useAviso.ts y src/components/AvisoBreve.tsx
+  a) useAviso: la interfaz AvisoInfo -lineas 278 a 282-, el estado avisoInfo, timerAvisoRef y
+     mostrarAviso -lineas 283 a 301-. Devuelve { avisoInfo, mostrarAviso, cerrarAviso }, donde
+     cerrarAviso hace exactamente lo que hoy hace el boton de accion antes de ejecutarla: limpia
+     el temporizador y pone avisoInfo en null.
+     La duracion por omision SIGUE en 2000. No se cambia ahora.
+  b) AvisoBreve: el bloque JSX de las lineas 2238 a 2296 -comentario "Toast / Aviso Breve"
+     hasta el cierre de {avisoInfo && (...)}-, con sus comentarios. Recibe avisoInfo, enLectura
+     -hoy es vista === 'lectura'- y cerrarAviso. El boton de accion llama cerrarAviso() y despues
+     avisoInfo.alEjecutarAccion si existe: el mismo orden de hoy.
+  En App.tsx queda: const { avisoInfo, mostrarAviso, cerrarAviso } = useAviso() en el MISMO lugar
+  donde hoy empieza el bloque -linea 278-, y <AvisoBreve .../> en el MISMO lugar del JSX -ultimo
+  hijo del contenedor-. Cualquier otro uso de setAvisoInfo o timerAvisoRef en App.tsx se
+  reemplaza por cerrarAviso o mostrarAviso; si aparece alguno que no calce, se describe en el
+  mensaje final en vez de improvisar.
+
+PIEZA 4 - src/components/IndicadorPrecarga.tsx
+  Mover: el bloque JSX de las lineas 1565 a 1600 -comentario "Indicador de precarga de modelo
+  Vosk"-. Recibe estadoPrecarga, progresoPrecarga, errorPrecarga, reintentarPrecarga y un booleano
+  oculto -hoy la condicion camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro')
+  && vista === 'lectura', que se calcula en App y se pasa hecha-. La condicion de afuera
+  -estadoPrecarga 'descargando' o 'error'- queda en App, en el mismo lugar.
+
+PIEZA 5 - src/components/PanelDiagnostico.tsx
+  Mover: el bloque JSX de las lineas 1602 a 1701 -comentario "Franja de estado escondida por
+  omision" hasta el cierre de {mostrarDiagnostico && (...)}-. La condicion mostrarDiagnostico
+  queda en App. Recibe por props exactamente lo que el bloque usa -son unos 17 nombres: camaraActiva,
+  engine, setEngine, errorRepositorio, fondoToma, fontSize, modoManual, textoFreno,
+  usandoMemoriaFallback, verTranscripcion, setVerTranscripcion, setMostrarPanelCorpus, vista,
+  wakeLockActivo, y los que aparezcan al moverlo-.
+  Motivo de moverlo aparte: este panel se saca de la app antes de subir a Play; aislado, sacarlo
+  despues es borrar un archivo y una linea.
+
+==============================================================================
+LAS PRUEBAS QUE LEEN EL CODIGO FUENTE
+==============================================================================
+  - src/pruebas/tarea46.test.tsx, T209 -guardiana del sistema: ningun componente escribe color,
+    tamano, aire o radio a mano-: revisa una lista de archivos. Agregar a esa lista
+    src/components/AvisoBreve.tsx, src/components/IndicadorPrecarga.tsx y
+    src/components/PanelDiagnostico.tsx, para que el codigo movido siga vigilado. Si con eso la
+    prueba falla, es porque el codigo movido ya tenia valores a mano que la guardiana no veia
+    donde estaban: NO se arreglan los valores ni se relaja la prueba; se describe en el mensaje
+    final.
+  - altoPantalla, tarea50, tarea55, tarea45, tarea67, tarea68 y pruebas.test.tsx leen App.tsx
+    buscando textos que NO estan en las piezas que se mueven. Deben seguir en verde sin tocarlas.
+    Si alguna falla, se describe en el mensaje final.
+
+==============================================================================
+TERMINADO CUANDO
+==============================================================================
+  - Las cinco piezas movidas, cada archivo nuevo con su comentario de origen.
+  - App.tsx bajo en unas 420 lineas; decir el numero exacto antes y despues.
+  - npx tsc --noEmit sin errores. npx vitest run: las 401 pruebas en verde.
+  - Ninguna prueba de comportamiento modificada. La unica prueba tocada es la lista de T209.
+  - Contar los comentarios -lineas que empiezan con // o dentro de /* */- en App.tsx antes, y en
+    App.tsx mas los archivos nuevos despues: el total no baja. Decir los dos numeros.
+  - Entrega: un PR contra main. Si tu conector no puede subir App.tsx por tamano, entrega un
+    diff unificado contra b14e39f, completo, y lo aplica Claude.
