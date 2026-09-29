@@ -1,0 +1,66 @@
+FICHA DE SIGO EN GOOGLE PLAY — Español (Latinoamérica) — es-419
+Generado por herramientas/armar-textos.cjs desde herramientas/textos.cjs. Los conteos son de la máquina.
+Lo que va entre dobles corchetes se copia tal cual a Play Console; lo demás son notas.
+
+==============================================================================
+NOMBRE (máximo 30) — 26 caracteres
+==============================================================================
+[[Sigo — Teleprompter de voz]]
+Es el que ya está en Play Console. docs/tarea86.txt dice no cambiarlo: queda este.
+
+Alternativas, SOLO si Javier decide cambiarlo (opcionales):
+  1. {{Sigo: teleprompter y apuntador}} — 30 caracteres. Suma "apuntador", la palabra en español para lo mismo. No se midió cuánto se busca cada una.
+  2. {{Sigo — Apuntador de voz}} — 23 caracteres. Más corto; pierde "teleprompter", la palabra más conocida para esto.
+  3. {{Sigo — Teleprompter para video}} — 30 caracteres. Apunta a quien graba; deja fuera la voz, que es lo que distingue a Sigo.
+
+==============================================================================
+DESCRIPCIÓN BREVE (máximo 80) — tres propuestas; se elige una
+==============================================================================
+Propuesta A — 75 caracteres. La recomendada. Dice qué es, qué hace distinto y lo de sin internet.
+[[Teleprompter que sigue tu voz: el texto avanza mientras lees, sin internet.]]
+
+Propuesta B — 75 caracteres. Más cálida. Abre con "apuntador" y deja "teleprompter" para el nombre.
+[[Un apuntador que escucha: el guion avanza al ritmo de tu voz, sin internet.]]
+
+Propuesta C — 77 caracteres. Suma grabar video; es la más larga y la menos directa.
+[[Lees en voz alta y el texto te sigue, sin internet. Y grabas tu video con él.]]
+
+==============================================================================
+DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2075 caracteres
+==============================================================================
+[[Lee en voz alta y el texto avanza solo, a tu ritmo. Sigo es un teleprompter que escucha tu voz: si haces una pausa, espera; cuando sigues, sigue contigo. Y todo ocurre en tu teléfono, sin internet.
+
+LEE MIRANDO A LA CÁMARA
+- Sigo reconoce lo que dices y marca con una línea lo que estás leyendo.
+- Si te detienes, el texto se detiene. No hay que ajustar velocidades.
+- Elige si lees arriba o al medio de la pantalla.
+
+GRABA TU VIDEO CON EL GUION A LA VISTA
+- Tu imagen va detrás del texto, en un recuadro que mueves donde quieras, u oculta mientras grabas.
+- Cámara frontal o trasera, en 1080p, 720p o 480p.
+- En vertical o de lado.
+- Subtítulos en tres estilos: Amarillo, Rojo y Formal. Salen de tu guion y del tiempo de tu voz, y quedan dentro del video al guardarlo.
+- Guarda tus videos en la galería o compártelos.
+
+UN EDITOR PENSADO PARA LEER
+- Negrita, tres colores y destacado, para ver de lejos lo importante.
+- Acotaciones entre [corchetes] o (paréntesis): notas para ti que no se leen en voz alta ni salen en los subtítulos.
+- Pega tu texto o abre un archivo .txt, .md o .docx.
+- Todos tus guiones en un lugar, con su duración estimada.
+
+A TU MANERA
+- Tamaño de letra, tipografía, ancho del texto y colores de lectura.
+- Modo espejo, para usar con un vidrio de teleprompter.
+- Tema claro u oscuro.
+- La app está en español y en inglés, y sigue tu voz en los dos idiomas.
+
+PARA QUIÉN ES
+Para quien graba videos para redes, clases o su trabajo y quiere mirar a la cámara sin aprenderse el texto. Para quien ensaya una presentación, un discurso o una lectura y necesita un apuntador que no se adelante ni se quede atrás.
+
+TU PRIVACIDAD
+- Tu voz se reconoce en el teléfono. El audio no se manda a ningún servidor.
+- No hay cuentas ni registro.
+- Tus guiones y tus videos se quedan en tu teléfono, hasta que tú los compartes.
+- El español funciona sin internet desde que instalas Sigo. Para seguir tu voz en inglés, el modelo se descarga una vez desde Google Play; después también funciona sin internet.
+
+Escribe tu guion, dale a Leer o a Grabar, y habla. Sigo te sigue.]]

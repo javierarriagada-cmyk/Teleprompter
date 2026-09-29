@@ -1,0 +1,28 @@
+LAS FOTOS DE PERSONA DE LAS CAPTURAS -tarea 86, 29-09-2026-
+
+Son lo que "ve" la cámara en las capturas: el navegador no tiene la vista previa nativa del
+teléfono -ver capturar.cjs-. Dos fotos, porque la vertical recortada a 16:9 dejaba solo la cara.
+
+1) persona-v.jpg -vertical: capturas 2, 3 y 6, y las de tableta verticales-
+Archivo:   reducida a 2400 x 3600 desde el original de 3744 x 5616
+Título:    "Happy daughter (Unsplash).jpg"
+Autor:     Michael Dam -https://unsplash.com/@michaeldam-
+Origen:    https://commons.wikimedia.org/wiki/File:Happy_daughter_(Unsplash).jpg
+           publicada antes en https://unsplash.com/photos/mEZ3PoFGs_k -Kolding, Dinamarca, 14-05-2017-
+Licencia:  CC0 1.0, dedicación al dominio público -https://creativecommons.org/publicdomain/zero/1.0/-.
+           Permite el uso comercial, sin atribución obligatoria.
+OJO:       Wikimedia Commons la marca con el aviso de "derechos de la personalidad": la licencia
+           cubre la foto, no la imagen de la persona que aparece.
+
+2) persona-h.jpg -de lado: captura 4 y las de tableta de lado-
+Archivo:   reducida a 2400 x 1600 desde el original de 5370 x 3580
+Título:    "Sitting And Smiling (Unsplash).jpg"
+Autor:     Brooke Cagle -https://unsplash.com/@brookecagle-
+Origen:    https://commons.wikimedia.org/wiki/File:Sitting_And_Smiling_(Unsplash).jpg
+           publicada antes en https://unsplash.com/photos/Nm70URdtf3c -19-03-2017-
+Licencia:  CC0 1.0, dedicación al dominio público -https://creativecommons.org/publicdomain/zero/1.0/-.
+           Commons no le pone aviso de personalidad, pero vale lo mismo: la licencia es de la foto.
+
+PARA LA FICHA DEFINITIVA lo más seguro es una foto propia de Javier o de alguien que firme su
+permiso, en vertical y en horizontal. Se cambian estos dos archivos -mismo nombre- y se corre
+herramientas/todo.sh: todas las capturas salen de nuevo con esas fotos.

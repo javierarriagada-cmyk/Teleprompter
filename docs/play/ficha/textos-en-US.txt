@@ -1,0 +1,66 @@
+FICHA DE SIGO EN GOOGLE PLAY — English (United States) — en-US
+Generado por herramientas/armar-textos.cjs desde herramientas/textos.cjs. Los conteos son de la máquina.
+Lo que va entre dobles corchetes se copia tal cual a Play Console; lo demás son notas.
+
+==============================================================================
+NOMBRE (máximo 30) — 25 caracteres
+==============================================================================
+[[Sigo — Voice Teleprompter]]
+El que fija docs/tarea86.txt.
+
+Alternativas, SOLO si Javier decide cambiarlo (opcionales):
+  1. {{Sigo — Teleprompter for Video}} — 29 caracteres. Apunta a quien graba; deja fuera la voz, que es lo que distingue a Sigo.
+  2. {{Sigo — Read-Aloud Teleprompter}} — 30 caracteres. Pone "read aloud" en el nombre. No se midió cuánto se busca.
+  3. {{Sigo — Teleprompter by Voice}} — 28 caracteres. La misma idea del principal, en otro orden; suena menos natural.
+
+==============================================================================
+DESCRIPCIÓN BREVE (máximo 80) — tres propuestas; se elige una
+==============================================================================
+Propuesta A — 75 caracteres. La recomendada. Dice qué es y qué la hace distinta.
+[[A teleprompter that follows your voice: the script moves as you read aloud.]]
+
+Propuesta B — 72 caracteres. Más cálida, abre con la acción. Deja "teleprompter" para el nombre.
+[[Read aloud and the script keeps up with your voice, right on your phone.]]
+
+Propuesta C — 74 caracteres. Suma grabar; es la menos directa de las tres.
+[[Voice teleprompter: the text follows you as you speak, and you can record.]]
+
+==============================================================================
+DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2105 caracteres
+==============================================================================
+[[Read aloud and the script moves on its own, at your pace. Sigo is a teleprompter that listens: pause and it waits; keep going and it keeps up. Speech recognition runs on your phone, not on a server.
+
+READ WHILE LOOKING AT THE CAMERA
+- Sigo recognizes what you say and underlines the line you are reading.
+- Stop, and the text stops. No scroll speed to set.
+- Choose whether you read at the top or in the middle of the screen.
+
+RECORD VIDEO WITH YOUR SCRIPT IN VIEW
+- Your camera image goes behind the text, in a small frame you can drag anywhere, or stays hidden while you record.
+- Front or back camera, in 1080p, 720p or 480p.
+- Portrait or landscape.
+- Captions in three styles: Yellow, Red and Formal. They come from your script and the timing of your voice, and are burned into the video when you save it.
+- Save your videos to the gallery or share them.
+
+AN EDITOR MADE FOR READING
+- Bold, three colors and highlight, so what matters stands out at a glance.
+- Stage directions in [brackets] or (parentheses): notes for you that are not read aloud and do not appear in captions.
+- Paste your text or open a .txt, .md or .docx file.
+- All your scripts in one place, with their estimated length.
+
+YOUR WAY
+- Font size, typeface, text width and reading colors.
+- Mirror mode, for use with teleprompter glass.
+- Light or dark theme.
+- The app is in English and Spanish, and follows your voice in both languages.
+
+WHO IT IS FOR
+For anyone who records videos for social media, classes or work and wants to look at the camera without memorizing the script. For anyone rehearsing a talk, a speech or a reading who needs a prompter that never runs ahead or falls behind.
+
+YOUR PRIVACY
+- Your voice is recognized on your phone. The audio is not sent to any server.
+- No accounts, no sign-up.
+- Your scripts and videos stay on your phone until you share them.
+- To follow your voice in English, Sigo downloads the English speech model once from Google Play. After that it works without internet. Spanish works offline right after install.
+
+Write your script, tap Read or Record, and start talking. Sigo follows.]]
