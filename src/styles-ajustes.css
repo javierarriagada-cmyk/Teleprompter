@@ -382,6 +382,35 @@
   gap: 8px;
   margin-top: 24px;
 }
+.texto-dialogo {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-apagado);
+}
+/* Botones de dialogo de Material 3: 40 de alto y el toque llega a 48 con el ::after, como
+   .ficha-listo. El de texto cierra; el lleno es la accion principal. */
+.boton-dialogo {
+  position: relative;
+  height: 40px;
+  padding: 0 16px;
+  border: none;
+  border-radius: var(--redondeo-pildora);
+  background: transparent;
+  color: var(--color-texto);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.boton-dialogo::after {
+  content: "";
+  position: absolute;
+  inset: -4px 0;
+}
+.boton-dialogo.lleno {
+  background: var(--color-acento);
+  color: var(--color-texto-acento);
+}
 .dialogo-ajustes {
   width: 100%;
   max-width: 480px;
