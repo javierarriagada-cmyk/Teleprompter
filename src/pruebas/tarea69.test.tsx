@@ -21,6 +21,8 @@ describe('Pruebas TAREA 69 - EN LEER: EL ENGRANAJE SUBE A LA ESQUINA, EMPEZAR PA
     vi.clearAllMocks()
   })
 
+  // 28-09-2026: el engranaje de la esquina se fue. En LISTO las fichas —Mas—
+  // son la puerta de Ajustes. Empezar sigue siendo un icono.
   test('1. Entrar por btn-leer-tarjeta (conCamara false): el icono de empezar no tiene texto y el engranaje esta arriba a la derecha con position absolute', async () => {
     const repo = new RepositorioMemoria()
     await repo.guardar({
@@ -45,11 +47,9 @@ describe('Pruebas TAREA 69 - EN LEER: EL ENGRANAJE SUBE A LA ESQUINA, EMPEZAR PA
     // 24-09-2026: en Leer el circulo lleva el estandar de Leer, crema.
     expect(btnEmpezar.classList.contains('btn-empezar-leer')).toBe(true)
 
-    const btnEngranaje = screen.getByTestId('btn-engranaje-toma')
-    expect(btnEngranaje.getAttribute('aria-label')).toBe('Ajustes de la escena')
-    expect(btnEngranaje.style.position).toBe('absolute')
-    expect(btnEngranaje.style.top).toContain('8px')
-    expect(btnEngranaje.style.right).toContain('8px')
+    expect(screen.getByTestId('fila-fichas-listo')).toBeDefined()
+    expect(screen.getByTestId('ficha-mas')).toBeDefined()
+    expect(screen.queryByTestId('btn-engranaje-toma')).toBeNull()
   })
 
   // La Tarea 70 dio vuelta lo que la 69 fijaba aqui: en Grabar el boton de empezar TAMPOCO

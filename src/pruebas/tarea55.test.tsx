@@ -366,16 +366,9 @@ describe('Pruebas TAREA 55 - LA PANTALLA DEL EDITOR (T276-T283)', () => {
     revisar(screen.getByTestId('btn-pegar-texto'), 'Pegar texto')
     revisar(screen.getByTestId('btn-abrir-archivo'), 'Abrir archivo')
 
-    // El cajon de Aa. Se abre aca y no en el otro montaje porque es el mismo
-    // en los dos estados. Desde el 24-09-2026 no tiene "Listo" y todos sus
-    // controles son botones: se revisan TODOS, no una lista, para que uno
-    // nuevo sin btn-deformable haga fallar la prueba.
-    fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
-    revisar(screen.getByLabelText('Disminuir letra panel'), 'menos letra')
-    revisar(screen.getByLabelText('Aumentar letra panel'), 'mas letra')
-    const botonesCajon = Array.from(screen.getByTestId('panel-ajustes').querySelectorAll('button')) as HTMLElement[]
-    expect(botonesCajon.length).toBeGreaterThanOrEqual(2)
-    botonesCajon.forEach((b) => revisar(b, b.getAttribute('aria-label') || b.getAttribute('title') || b.textContent || 'boton del cajon'))
+    // El cajon de Aa se revisaba aca -desde el 24-09-2026 sin "Listo", todos sus botones con
+    // btn-deformable-. 28-09-2026, tarea 77: el cajon se fue; el Aa abre la pantalla de Ajustes, que
+    // usa filas de lista y no botones deformables. Quedan los botones del editor.
 
     vacio.unmount()
 

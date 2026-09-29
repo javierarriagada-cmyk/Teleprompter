@@ -10,8 +10,7 @@ import { MarcaSigo } from './MarcaSigo'
 import { hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_RESORTE } from './movimiento'
 import { ESCALA_AVISO, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
-import { t, useTextos, tituloVisible, tituloOInicio, fechaCorta, IdiomaApp } from '../textos'
-import { fijarIdioma } from '../lib/idioma'
+import { t, useTextos, tituloVisible, tituloOInicio, fechaCorta } from '../textos'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -33,6 +32,9 @@ interface BibliotecaViewProps {
   setMedirLectura?: (medir: boolean) => void
   tema?: 'claro' | 'oscuro'
   setTema?: (tema: 'claro' | 'oscuro') => void
+  // 28-09-2026, tarea 77: el engranaje abre la pantalla de Ajustes, no el
+  // cajon de tema e idioma. El cajon menu-superior-biblioteca se fue.
+  onAbrirAjustes?: () => void
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
   // LA TIRA DE GRABACIONES vive aca, debajo de los guiones, y no en una
   // pantalla aparte: el video al lado del guion que lo produjo.
@@ -474,6 +476,7 @@ export default function BibliotecaView({
   setMedirLectura = () => {},
   tema = 'claro',
   setTema,
+  onAbrirAjustes,
   onRegistrarCerrarModal,
   grabaciones = [],
   onAbrirGrabacion,
@@ -482,20 +485,14 @@ export default function BibliotecaView({
   style,
   onAnimationEnd
 }: BibliotecaViewProps) {
-  const idioma = useTextos()
+  useTextos()
   const [busqueda, setBusqueda] = useState('')
   const [mostrarArchivados, setMostrarArchivados] = useState(false)
   const [mostrarPanelCorpus, setMostrarPanelCorpus] = useState(false)
   const [menuId, setMenuId] = useState<string | null>(null)
-  const [menuSuperiorAbierto, setMenuSuperiorAbierto] = useState(false)
-  // El cajon de ajustes se cierra como el Aa: un toque afuera o Escape
-  // -useCerrarAfuera-, bajando la raya, o con volver del telefono. El
-  // engranaje cuenta como "adentro" para que tocarlo lo abra y lo cierre.
+  // 28-09-2026, tarea 77: el cajon de la portada -tema e idioma-, su estado y su arrastre se
+  // fueron. El engranaje llama a onAbrirAjustes: la pantalla de Ajustes es capa de App.
   const refEngranajePortada = useRef<HTMLButtonElement | null>(null)
-  const refCajonPortada = useCerrarAfuera(menuSuperiorAbierto, () => setMenuSuperiorAbierto(false), [refEngranajePortada])
-  const [arrastreCajon, setArrastreCajon] = useState(0)
-  const arrastrandoCajonRef = useRef(false)
-  const inicioArrastreCajonRef = useRef<number | null>(null)
   // el menu de cada fila, que se abre con toque largo, se cierra igual que los demas
   const refMenuFila = useCerrarAfuera(menuId !== null, () => setMenuId(null))
   const [mapaTextos, setMapaTextos] = useState<Record<string, string>>({})
@@ -653,10 +650,7 @@ export default function BibliotecaView({
           setMostrarPanelCorpus(false)
           return true
         }
-        if (menuSuperiorAbierto) {
-          setMenuSuperiorAbierto(false)
-          return true
-        }
+        // 28-09-2026: el cajon de la portada se fue. Ajustes lo cierra App: es capa de App.
         return false
       })
     }
@@ -665,7 +659,7 @@ export default function BibliotecaView({
         onRegistrarCerrarModal(null)
       }
     }
-  }, [mostrarPanelCorpus, menuSuperiorAbierto, onRegistrarCerrarModal])
+  }, [mostrarPanelCorpus, onRegistrarCerrarModal])
 
   const animacionTituloStyle: React.CSSProperties = (esInicial && !movimientoApagado())
     ? {
@@ -712,8 +706,7 @@ export default function BibliotecaView({
         <button
           type="button"
           onClick={() => {
-            hapticaToqueSuave()
-            setMenuSuperiorAbierto((v) => !v)
+            onAbrirAjustes?.()
           }}
           ref={refEngranajePortada}
           data-testid="btn-menu-superior-biblioteca"
@@ -748,153 +741,14 @@ export default function BibliotecaView({
         />
       </div>
 
-      {/* LOS AJUSTES DE LA APLICACION, EN EL CAJON ESTANDAR. 24-09-2026.
-          Era un menu colgado del engranaje con cuatro renglones escritos:
-          "Ver Archivados", "Importar archivo", "Tema:" y "Vibracion". Dos no
-          eran ajustes: archivados paso al pie de la lista de guiones, que es
-          donde se busca, e importar se fue porque el editor vacio ya lo ofrece
-          -"Abrir archivo", y toma el titulo del archivo-. Quedan los dos
-          ajustes de verdad, en UNA fila y sin palabras, como el cajon Aa: el
-          tema en dos tarjetas que muestran como se ve, y la vibracion como un
-          boton redondo que se enciende. Ese boton salio el mismo 24-09: queda
-          solo el tema.
-          Del menu viejo quedan dos lecciones. Los renglones sueltos sin grupo
-          eran "la mitad del desorden" que Javier vio el 21-09-2026. Y el menu
-          crecio hasta pasarse del borde de abajo sin forma de llegar al ultimo
-          renglon -"el renglon de abajo no se ve"-: si este cajon crece, lleva
-          alto maximo y desplazamiento.
-          Sigue saliendo por portal a body -Javier, 21-09-2026: "ahora pasa por
-          detras del cuadro del guion"-. Se cierra tocando afuera, bajando la
-          raya o con el boton de volver del telefono. */}
-      {menuSuperiorAbierto && createPortal(
-        <div
-          className="capa-cajon-aa"
-          data-testid="capa-ajustes-portada"
-          onClick={() => setMenuSuperiorAbierto(false)}
-        >
-          <div
-            ref={refCajonPortada}
-            data-testid="menu-superior-biblioteca"
-            className="panel-superficie cajon-aa"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              paddingBottom: 'calc(var(--aire-4) + env(safe-area-inset-bottom, 0px))',
-              transform: `translateY(${arrastreCajon}px)`,
-              transition: arrastrandoCajonRef.current || movimientoApagado() ? 'none' : `transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
-              animation: movimientoApagado() || arrastrandoCajonRef.current || arrastreCajon > 0
-                ? 'none'
-                : `panelSube ${MS_PANEL}ms ${CURVA_RESORTE} forwards`
-            }}
-          >
-            <div
-              className="cajon-aa-agarradera"
-              onPointerDown={(e) => {
-                inicioArrastreCajonRef.current = e.clientY
-                arrastrandoCajonRef.current = true
-                try { e.currentTarget.setPointerCapture(e.pointerId) } catch (err) {}
-              }}
-              onPointerMove={(e) => {
-                if (!arrastrandoCajonRef.current || inicioArrastreCajonRef.current === null) return
-                setArrastreCajon(Math.max(0, e.clientY - inicioArrastreCajonRef.current))
-              }}
-              onPointerUp={() => {
-                arrastrandoCajonRef.current = false
-                inicioArrastreCajonRef.current = null
-                // El mismo umbral que el cajon Aa -EditorView.tsx-.
-                if (arrastreCajon > 96) setMenuSuperiorAbierto(false)
-                setArrastreCajon(0)
-              }}
-              onPointerCancel={() => {
-                arrastrandoCajonRef.current = false
-                inicioArrastreCajonRef.current = null
-                setArrastreCajon(0)
-              }}
-            >
-              <div className="cajon-aa-agarradera-raya" />
-            </div>
-
-            <div className="cajon-aa-filas">
-              <div className="fila-aa-accion">
-                {/* DOS OPCIONES, NO TRES. "Sistema" se fue el 21 de septiembre
-                    de 2026. Javier: "no se por que ademas da la opcion de
-                    sistema, que en el fondo igual es una de las otras dos".
-                    Tiene razon, y hay un motivo propio de este producto: seguir
-                    el horario del telefono no tiene nada que ver con filmar.
-                    Que anochezca no cambia la luz de tu pieza ni si estas
-                    grabando. Era elegir sin informacion, que es lo mismo que
-                    ajustes-propuesta.html ya habia decidido cortar al pasar de
-                    diez controles a seis. El valor por omision sigue siendo
-                    oscuro, y a quien tenga guardado "sistema" le cae ahi.
-                    24-09-2026: las dos opciones son tarjetas que muestran el
-                    tema -su fondo y su letra-, como las parejas del cajon Aa. */}
-                <div className="parejas-aa parejas-aa-dos" role="group" aria-label={t('tema')}>
-                  {([
-                    { valor: 'claro' as const, nombre: t('temaClaro') },
-                    { valor: 'oscuro' as const, nombre: t('temaOscuro') }
-                  ]).map((tm) => (
-                    <button
-                      key={tm.valor}
-                      type="button"
-                      title={tm.nombre}
-                      aria-label={tm.nombre}
-                      aria-pressed={tema === tm.valor}
-                      className={`btn-deformable pareja-aa${tema === tm.valor ? ' activa' : ''}`}
-                      onClick={() => {
-                        hapticaToqueSuave()
-                        setTema?.(tm.valor)
-                      }}
-                    >
-                      <span className={`pareja-aa-muestra tema-muestra-${tm.valor}`}>Aa</span>
-                    </button>
-                  ))}
-                </div>
-                {/* Vibracion: un interruptor dibujado. La casilla real sigue en
-                    el documento, escondida -interruptor-casilla-, para el lector
-                    de pantalla y para getByLabelText('Vibración'). Al
-                    encenderla vibra: es la unica forma de mostrar lo que hace.
-                    24-09-2026: EL INTERRUPTOR SE FUE. La vibracion la decide la
-                    respuesta tactil del telefono -el porque esta en haptica.ts-.
-                    Quedan las dos tarjetas del tema. */}
-              </div>
-              {/* EL IDIOMA DE LA APP -D1, tarea 75, 27-09-2026-. Una fila con ES y EN, la
-                  misma pieza que los selectores del cajon Aa, la elegida en crema. Toda la
-                  app cambia en el momento -fijarIdioma, lib/idioma.ts-. Van escritas porque
-                  son un dato, como la calidad del video. Cada opcion se nombra en su propio
-                  idioma -"Español", "English"-: quien no entiende el idioma de la pantalla
-                  tiene que poder encontrar el suyo. */}
-              <div
-                className="selector-aa selector-aa-lleno"
-                role="group"
-                aria-label={t('idiomaDeLaApp')}
-                data-testid="selector-idioma-app"
-              >
-                {([
-                  { valor: 'es' as IdiomaApp, sigla: 'ES', nombre: 'Español' },
-                  { valor: 'en' as IdiomaApp, sigla: 'EN', nombre: 'English' }
-                ]).map((o) => (
-                  <button
-                    key={o.valor}
-                    type="button"
-                    lang={o.valor}
-                    data-testid={`btn-idioma-${o.valor}`}
-                    aria-label={o.nombre}
-                    title={o.nombre}
-                    aria-pressed={idioma === o.valor}
-                    className={`btn-deformable selector-aa-opcion texto-aa${idioma === o.valor ? ' activa' : ''}`}
-                    onClick={() => {
-                      hapticaToqueSuave()
-                      fijarIdioma(o.valor)
-                    }}
-                  >
-                    {o.sigla}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>,
-        document.body
-      )}
+      {/* LOS AJUSTES DE LA APLICACION. 24-09-2026: era un menu colgado del engranaje, con
+          renglones sueltos -"la mitad del desorden", Javier 21-09-2026- que crecio hasta pasarse
+          del borde de abajo; paso al cajon estandar con el tema en dos tarjetas y, desde la
+          tarea 75, el idioma ES/EN. "Sistema" como tema se fue el 21-09-2026: seguir el horario
+          del telefono no tiene que ver con filmar.
+          28-09-2026, tarea 77: ESTE CAJON SE FUE. El engranaje abre la pantalla de Ajustes
+          -PantallaAjustes.tsx-, la misma que la ficha Mas de LISTO; tema e idioma viven alla.
+          El testid btn-menu-superior-biblioteca se queda en el engranaje. */}
 
       {/* Los dos titulos de biblioteca -este y "Videos"- van en el mismo
           escalon de la escala y con el mismo peso: son hermanos, no uno

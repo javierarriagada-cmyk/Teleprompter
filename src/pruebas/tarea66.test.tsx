@@ -61,10 +61,11 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
     expect(lienzo.getAttribute('data-con-camara')).toBe('no')
     expect(screen.getByTestId('btn-empezar-toma')).toBeDefined()
 
-    // Tarea 70: Al hacer click en engranaje, en Leer siguen siendo null bajo conCamara
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+    // 28-09-2026: sin camara no hay ficha de imagen ni voltear. Los botones
+    // de fondo solo existen dentro del panel de esa ficha.
     expect(screen.queryByTestId('btn-fondo-detras')).toBeNull()
     expect(screen.queryByTestId('btn-voltear-camara')).toBeNull()
+    expect(screen.queryByTestId('ficha-camara')).toBeNull()
     expect(CameraPreview.start).not.toHaveBeenCalled()
   })
 
@@ -80,8 +81,9 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
     })
     expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
 
-    // Tarea 70: Abrir el panel de engranaje para encontrar btn-fondo-detras y btn-voltear-camara
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+    // 28-09-2026: los fondos y voltear viven en el panel de la ficha de camara.
+    expect(screen.queryByTestId('btn-voltear-camara')).toBeNull()
+    fireEvent.click(screen.getByTestId('ficha-camara'))
     expect(screen.getByTestId('btn-fondo-detras')).toBeDefined()
     expect(screen.getByTestId('btn-voltear-camara')).toBeDefined()
 
@@ -188,15 +190,16 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
     }
     andar(raiz)
     expect(hits.length).toBe(1)
-    expect(hits[0]).toMatch(/TeleprompterView\.tsx$/)
+    // 28-09-2026: el control se mudo a FichasListo. Sigue en UN solo lugar.
+    expect(hits[0]).toMatch(/FichasListo\.tsx$/)
     await abrirGuionConTexto()
     fireEvent.click(await screen.findByTestId('btn-leer-guion-fijo'))
-    await waitFor(() => expect(screen.getByTestId('btn-engranaje-toma')).toBeDefined())
+    await waitFor(() => expect(screen.getByTestId('ficha-anclaje')).toBeDefined())
     expect(screen.queryByText('Dónde lees:')).toBeNull()
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+    fireEvent.click(screen.getByTestId('ficha-anclaje'))
     // Desde el 24-09-2026 el cajon de la toma no escribe "Dónde lees:": el
     // grupo se dibuja -franja arriba, franja al medio- y se nombra por
     // aria-label.
-    expect(screen.getByTestId('panel-ajustes-toma').querySelector('[role="group"][aria-label="Dónde lees"]')).not.toBeNull()
+    expect(screen.getByTestId('panel-ficha-anclaje').querySelector('[role="group"][aria-label="Dónde lees"]')).not.toBeNull()
   })
 })

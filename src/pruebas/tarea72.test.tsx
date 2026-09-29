@@ -65,28 +65,38 @@ describe('Tarea 72 - cada ajuste muestra lo que hace', () => {
     const caja = () => screen.getByTestId('hoja-editor') as HTMLElement
     const col = () => caja().firstElementChild as HTMLElement
 
+    // 28-09-2026: los ajustes se eligen en la pantalla de Ajustes, fila y opcion; el guion de atras
+    // sigue montado y es el que se revisa.
+    const elegir = (fila: string, nombre: string) => {
+      fireEvent.click(screen.getByTestId(fila))
+      fireEvent.click(screen.getByRole('button', { name: nombre }))
+    }
+
     // Tipografia
-    fireEvent.click(screen.getByRole('button', { name: 'Serif' }))
+    elegir('fila-tipo-letra', 'Serif')
     expect(col().style.fontFamily, 'Serif no llego al guion').toContain('Source Serif 4')
-    fireEvent.click(screen.getByRole('button', { name: 'Sans' }))
+    elegir('fila-tipo-letra', 'Sans')
     expect(col().style.fontFamily, 'Sans no llego al guion').toContain('Source Sans 3')
 
     // Ancho
-    fireEvent.click(screen.getByRole('button', { name: 'Angosto' }))
+    elegir('fila-ancho-texto', 'Angosto')
     expect(col().style.maxWidth, 'Angosto no llego al guion').toBe('22ch')
-    fireEvent.click(screen.getByRole('button', { name: 'Ancho' }))
+    elegir('fila-ancho-texto', 'Ancho')
     expect(col().style.maxWidth, 'Ancho no llego al guion').toBe('93%')
 
-    // Tamano: por omision es 24, el + lo lleva a 32
+    // Tamano: por omision es 24; elegir 32 lo agranda
     const antes = parseFloat(col().style.fontSize)
-    fireEvent.click(screen.getByLabelText('Aumentar letra panel'))
-    expect(parseFloat(col().style.fontSize), 'el + no llego al guion').toBeGreaterThan(antes)
+    fireEvent.click(screen.getByTestId('fila-tamano-letra'))
+    fireEvent.click(screen.getByTestId('opcion-letra-32'))
+    expect(parseFloat(col().style.fontSize), 'el tamano no llego al guion').toBeGreaterThan(antes)
 
     // Colores
-    fireEvent.click(screen.getByTitle('Blanco con negro'))
+    fireEvent.click(screen.getByTestId('fila-colores'))
+    fireEvent.click(screen.getByRole('button', { name: 'Blanco con negro' }))
     expect(mismoColor(caja().style.backgroundColor, '#FFFFFF'), 'el fondo blanco no llego al guion').toBe(true)
     expect(mismoColor(col().style.color, '#000000'), 'la letra negra no llego al guion').toBe(true)
-    fireEvent.click(screen.getByTitle('Negro con ámbar'))
+    fireEvent.click(screen.getByTestId('fila-colores'))
+    fireEvent.click(screen.getByRole('button', { name: 'Negro con ámbar' }))
     expect(mismoColor(caja().style.backgroundColor, '#000000'), 'el fondo negro no llego al guion').toBe(true)
     expect(mismoColor(col().style.color, '#F5C24B'), 'la letra ambar no llego al guion').toBe(true)
   })
@@ -102,21 +112,23 @@ describe('Tarea 72 - cada ajuste muestra lo que hace', () => {
 
     // No se da por sentado el valor por omision de Mostrar tiempo: se
     // enciende a mano, asi la prueba cuida el montaje y no un default.
-    fireEvent.click(await screen.findByTestId('btn-engranaje-toma'))
-    const interruptor = screen.getByLabelText('Mostrar tiempo') as HTMLInputElement
-    if (!interruptor.checked) fireEvent.click(interruptor)
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+    // 28-09-2026: el interruptor vive en Ajustes, ficha Mas. Es un switch,
+    // no una casilla.
+    fireEvent.click(await screen.findByTestId('ficha-mas'))
+    const interruptor = screen.getByTestId('switch-mostrar-tiempo')
+    if (interruptor.getAttribute('aria-checked') !== 'true') fireEvent.click(interruptor)
+    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
 
     const previa = await screen.findByTestId('barra-tiempo-previa')
     expect(previa.textContent).toMatch(/^00:00 \/ \d\d:\d\d$/)
 
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
-    fireEvent.click(screen.getByLabelText('Mostrar tiempo'))
+    fireEvent.click(screen.getByTestId('ficha-mas'))
+    fireEvent.click(screen.getByTestId('switch-mostrar-tiempo'))
     expect(screen.queryByTestId('barra-tiempo-previa')).toBeNull()
-    fireEvent.click(screen.getByLabelText('Mostrar tiempo'))
+    fireEvent.click(screen.getByTestId('switch-mostrar-tiempo'))
     expect(screen.getByTestId('barra-tiempo-previa')).toBeDefined()
 
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
+    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
     fireEvent.click(screen.getByTestId('btn-empezar-toma'))
     // Desde el 28-09-2026 Empezar primero resuelve el permiso del microfono -asincrono- y recien
     // despues pasa a leyendo: la previa se va un instante despues del toque, no en el mismo.

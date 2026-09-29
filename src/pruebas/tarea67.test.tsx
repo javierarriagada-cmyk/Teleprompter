@@ -66,13 +66,13 @@ describe('Tarea 67 - la casa de cada ajuste y el gesto que se siente', () => {
   test('los tres instrumentos NO estan en el menu de la portada; viven en la franja de diagnostico', async () => {
     await portadaConGuion()
     fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
-    const menu = await screen.findByTestId('menu-superior-biblioteca')
-    // Desde el 24-09-2026 el cajon no escribe "La aplicación": el tema es un
-    // grupo de dos tarjetas dibujadas.
-    expect(menu.querySelector('[role="group"][aria-label="Tema"]')).not.toBeNull()
-    expect(menu.textContent).not.toContain('Motor de voz')
-    expect(menu.textContent).not.toContain('Ver transcripción en vivo')
-    expect(menu.textContent).not.toContain('Medición / Panel Corpus')
+    // 28-09-2026: el cajon se fue. El engranaje abre Ajustes; ahi esta Tema
+    // y no estan los tres instrumentos.
+    const ajustes = await screen.findByTestId('pantalla-ajustes')
+    expect(screen.getByTestId('fila-tema')).not.toBeNull()
+    expect(ajustes.textContent).not.toContain('Motor de voz')
+    expect(ajustes.textContent).not.toContain('Ver transcripción en vivo')
+    expect(ajustes.textContent).not.toContain('Medición / Panel Corpus')
     const marca = document.querySelector('.portada-marca') as HTMLElement
     for (let i = 0; i < 5; i++) {
       fireEvent.click(marca)
@@ -131,9 +131,10 @@ describe('Tarea 67 - la casa de cada ajuste y el gesto que se siente', () => {
     expect(screen.queryByText('Idioma del guion')).toBeNull()
     fireEvent.click(await screen.findByTestId('fila-guion-g-67'))
     fireEvent.click(await screen.findByTestId('btn-menu-opciones-editor'))
-    // Se busca SOLO adentro del panel Aa: el diagnostico de la portada tiene
+    // Se busca SOLO adentro de Ajustes: el diagnostico de la portada tiene
     // su propio <select> -el del motor, App.tsx- y no tiene que ver con esto.
-    const panel = await screen.findByTestId('panel-ajustes')
+    // 28-09-2026: el Aa abre la pantalla de Ajustes, no el cajon.
+    const panel = await screen.findByTestId('pantalla-ajustes')
     expect(panel.textContent).not.toContain('Idioma del guion')
     expect(panel.querySelector('select')).toBeNull()
   })

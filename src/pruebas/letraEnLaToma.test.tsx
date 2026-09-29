@@ -18,13 +18,15 @@ vi.mock('@capgo/camera-preview', () => ({
 // LA LETRA Y EL ANCHO EN EL CAJON DE LA TOMA -27-09-2026-. Javier los extrano justo antes
 // de grabar. La prueba atraviesa la app entera -portada, editor, Grabar, engranaje- porque
 // lo que falla es conectar: los botones podian estar dibujados y no mover el ajuste.
+// 28-09-2026: el cajon y el engranaje de LISTO se fueron. La letra se cambia en la ficha
+// Aa; el ancho vive en la pantalla de Ajustes, abierta con Mas.
 describe('Letra y ancho en el cajon de la toma', () => {
   beforeEach(() => {
     localStorage.clear()
     vi.clearAllMocks()
   })
 
-  test('L1 En el cajon de la toma, la A grande sube la letra un paso y el ancho angosto se guarda.', async () => {
+  test('L1 En LISTO, la ficha Aa sube la letra un paso y el ancho angosto se guarda en Ajustes.', async () => {
     localStorage.setItem('teleprompter_ajustes', JSON.stringify({ fontSize: 24, modoCamara: 'frontal', fondoToma: 'detras' }))
     const repo = new RepositorioMemoria()
     await repo.guardar({
@@ -44,15 +46,15 @@ describe('Letra y ancho en el cajon de la toma', () => {
       expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
     })
 
-    fireEvent.click(screen.getByTestId('btn-engranaje-toma'))
-    const letra = screen.getByRole('group', { name: 'Tamaño de letra' })
-    fireEvent.click(within(letra).getByRole('button', { name: 'Aumentar letra panel' }))
+    fireEvent.click(screen.getByTestId('ficha-letra'))
+    fireEvent.click(screen.getByLabelText('Aumentar letra panel'))
     await waitFor(() => {
       expect(JSON.parse(localStorage.getItem('teleprompter_ajustes') || '{}').fontSize).toBe(32)
     })
 
-    const ancho = screen.getByRole('group', { name: 'Ancho del texto' })
-    fireEvent.click(within(ancho).getByRole('button', { name: 'Angosto' }))
+    fireEvent.click(screen.getByTestId('ficha-mas'))
+    fireEvent.click(screen.getByTestId('fila-ancho-texto'))
+    fireEvent.click(within(screen.getByTestId('dialogo-ancho')).getByRole('button', { name: 'Angosto' }))
     await waitFor(() => {
       expect(JSON.parse(localStorage.getItem('teleprompter_ajustes') || '{}').columnaAngosta).toBe(true)
     })

@@ -7,7 +7,6 @@ import type { Textos } from './es'
 // glosario de docs/ingles.txt, que manda: Script, Take, Record, Captions, Settings... Quien
 // abra la app en ingles no tiene que notar que se hizo primero en espanol.
 export const en: Textos = {
-  // --- Comunes ---
   leer: 'Read',
   grabar: 'Record',
   sinTitulo: 'Untitled',
@@ -17,8 +16,6 @@ export const en: Textos = {
   // "eliminar" se fue el 28-09-2026: el tacho dice lo mismo que "borrar" en toda la app.
   toma: 'Take',
   volver: 'Back',
-
-  // --- Portada ---
   ajustesApp: 'Settings',
   tema: 'Theme',
   temaClaro: 'Light',
@@ -45,16 +42,12 @@ export const en: Textos = {
   resumenGuiones: '{n} scripts',
   resumenUnMinuto: '1 min read',
   resumenMinutos: '{n} min read',
-
-  // --- Fechas y duraciones ---
   hoy: 'today',
   ayer: 'yesterday',
   haceDias: '{n} days ago',
   haceUnaSemana: '1 week ago',
   haceSemanas: '{n} weeks ago',
   vacio: 'empty',
-
-  // --- Videos ---
   videos: 'Videos',
   videosVacio: 'Your videos will show up here.',
   videosVacioTitulo: 'No videos yet',
@@ -80,8 +73,6 @@ export const en: Textos = {
   subtitulosAmarillo: 'Yellow',
   subtitulosRojo: 'Red',
   subtitulosFormal: 'Formal',
-
-  // --- Avisos ---
   avisoTomaRecuperada: 'A take from an interrupted session was recovered.',
   avisoTomasRecuperadas: '{n} takes from an interrupted session were recovered.',
   verla: 'View it',
@@ -105,8 +96,6 @@ export const en: Textos = {
   errorModelo: 'Couldn’t download the Vosk voice model: {detalle}.',
   desconocido: 'Unknown error',
   reintentar: 'Try again',
-
-  // --- Editor ---
   ajustesLectura: 'Reading settings',
   idiomaDelGuion: 'Script language: {idioma}',
   idiomaEspanol: 'Spanish',
@@ -135,8 +124,6 @@ export const en: Textos = {
   pegarTexto: 'Paste text',
   abrirArchivo: 'Open file',
   leyendoArchivo: 'Opening...',
-
-  // --- Tamano y ancho ---
   tamanoLetra: 'Text size',
   letraMenos: 'Smaller text',
   letraMas: 'Larger text',
@@ -144,8 +131,6 @@ export const en: Textos = {
   ancho: 'Wide',
   medio: 'Medium',
   angosto: 'Narrow',
-
-  // --- Lectura y cajon de la toma ---
   salir: 'Exit',
   descartarToma: 'Discard take',
   pausa: 'Pause',
@@ -172,5 +157,26 @@ export const en: Textos = {
   brillo: 'Brightness',
   empezar: 'Start',
   duracionEstimada: 'estimated script length',
-  tiempoTranscurrido: 'elapsed time and estimated total'
+  tiempoTranscurrido: 'elapsed time and estimated total',
+  // Claves nuevas al final -tarea 77, 28-09-2026-: el orden de las anteriores no se toca.
+  fichaArriba: 'Top',
+  fichaAlMedio: 'Middle',
+  fichaCamaraDetras: 'Behind',
+  fichaCamaraRecuadro: 'Window',
+  fichaCamaraOculta: 'Hidden',
+  fichaMas: 'More',
+  brilloAuto: 'Auto',
+  brilloAutomatico: 'Automatic',
+  tituloAjustes: 'Settings',
+  seccionLectura: 'Reading',
+  seccionVideo: 'Video',
+  seccionApariencia: 'Appearance',
+  seccionAcerca: 'About',
+  tipoSans: 'Sans',
+  tipoSerif: 'Serif',
+  version: 'Version',
+  privacidad: 'Privacy',
+  soporte: 'Support',
+  espejoExplicacion: 'For use with a teleprompter glass',
+  lineaMuestraLectura: 'Read this out loud, at your own pace.'
 }

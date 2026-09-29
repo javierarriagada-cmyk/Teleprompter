@@ -319,8 +319,10 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     hapticsCalls.selectionChanged = 0
     hapticsCalls.impact = []
 
-    // Elegir Ancho -> Medio. El boton se dibuja -tres columnas- y se nombra
-    // por aria-label.
+    // Elegir Ancho -> Medio. 28-09-2026: en la pantalla de Ajustes, fila Ancho del texto.
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('fila-ancho-texto'))
+    })
     const btnMedio = screen.getByRole('button', { name: 'Medio' })
     await act(async () => {
       fireEvent.click(btnMedio)
@@ -329,7 +331,7 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     expect(hapticsCalls.selectionChanged).toBe(1)
 
     // Cerrar Ajustes
-    const btnCerrar = screen.getByTestId('capa-ajustes')
+    const btnCerrar = screen.getByTestId('btn-cerrar-ajustes')
     await act(async () => {
       fireEvent.click(btnCerrar)
     })
@@ -349,6 +351,8 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
   // tactil del telefono -haptica.ts-. Ahora T204 cuida lo contrario: que no
   // vuelva un interruptor propio, y que una clave vieja guardada en "no" no
   // apague la vibracion de quien la tiene encendida en su telefono.
+  // 28-09-2026: el cajon de la portada se fue. Vibracion se mira en Ajustes.
+  // El tema vive en fila-tema.
   test('T204 - SIN INTERRUPTOR PROPIO. El cajon de la portada no tiene Vibracion, y la clave vieja en "no" no calla los toques.', async () => {
     localStorage.setItem('teleprompter_vibracion', 'false')
     const repo = new RepositorioMemoria()
@@ -370,14 +374,16 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
     })
-    expect(screen.getByTestId('menu-superior-biblioteca')).toBeTruthy()
+    expect(screen.getByTestId('pantalla-ajustes')).toBeTruthy()
     expect(screen.queryByLabelText('Vibración')).toBeNull()
-    // Quedan las dos tarjetas del tema.
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('fila-tema'))
+    })
     expect(screen.getByRole('button', { name: 'Claro' })).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Oscuro' })).toBeTruthy()
 
     await act(async () => {
-      fireEvent.click(screen.getByTestId('capa-ajustes-portada'))
+      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
     })
 
     hapticsCalls.impact = []

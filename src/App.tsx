@@ -40,6 +40,8 @@ import {
 import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar } from './components/IconosApp'
 import { t, useTextos, TITULO_SIN_NOMBRE } from './textos'
 import { IdiomaApp, idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
+import { PASOS_LETRA } from './components/estiloLectura'
+import { PantallaAjustes } from './components/PantallaAjustes'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
 const MS_CONTROLES_A_LA_VISTA = 4000
@@ -62,7 +64,8 @@ const GUION_VACIO: Guion = {
   bloques: []
 }
 
-const PASOS_LETRA = [14, 18, 24, 32, 42]
+// PASOS_LETRA vive en estiloLectura.ts desde el 28-09-2026: LISTO y el editor
+// usan el mismo arreglo. Antes estaba aca.
 const MOTORES_VALIDOS: IdMotor[] = ['vosk', 'nativo', 'fake']
 
 export type FondoToma = 'detras' | 'recuadro' | 'oculta'
@@ -348,6 +351,10 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [verTranscripcion, setVerTranscripcion] = useState<boolean>(Boolean(ajustesPrevios.verTranscripcion))
   const [mostrarTiempo, setMostrarTiempo] = useState<boolean>(ajustesPrevios.mostrarTiempo !== undefined ? Boolean(ajustesPrevios.mostrarTiempo) : true)
   const [fontSize, setFontSize] = useState<number>(ajustarFuenteValida(ajustesPrevios.fontSize))
+  // Ajustes es capa, no piso -tarea 77, 28-09-2026-. Encima de todo; atras solo la cierra.
+  const [ajustesAbiertos, setAjustesAbiertos] = useState(false)
+  // Desde donde se abrio: cada puerta muestra lo suyo -PantallaAjustes, origen-.
+  const [origenAjustes, setOrigenAjustes] = useState<'portada' | 'editor' | 'leer' | 'grabar'>('portada')
   // MARGEN 5% POR OMISION. Javier lo eligio mirando, el 13 de septiembre de 2026: puso 5 y
   // dijo que asi queda bien. Con el tope de 90% que lleva la columna por dentro, 5% de
   // padding deja el texto en el 81% del ancho de la pantalla. Estaba en 10, que da 72%.
@@ -1245,6 +1252,18 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }
 
+  function handleElegirLetra(n: number) {
+    if (!PASOS_LETRA.includes(n) || n === fontSize) return
+    hapticaSeleccion()
+    setFontSize(n)
+  }
+
+  function handleAbrirAjustes(origen: 'portada' | 'editor' | 'leer' | 'grabar' = 'portada') {
+    hapticaToqueSuave()
+    setOrigenAjustes(origen)
+    setAjustesAbiertos(true)
+  }
+
   async function persistirResumenToma(resumen: ResumenGrabacion | null) {
     if (!resumen) return
     try {
@@ -1385,6 +1404,11 @@ export default function App({ motor, repoOverride }: AppProps) {
     handleVolverAtrasRef.current = async () => {
       // 1. Si hay un modal abierto, cerrarlo
       if (cerrarModalRef.current && cerrarModalRef.current()) {
+        return
+      }
+      // Ajustes es capa, no piso: el atras solo la cierra. 28-09-2026.
+      if (ajustesAbiertos) {
+        setAjustesAbiertos(false)
         return
       }
       if (mostrarPanelCorpus) {
@@ -1678,6 +1702,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             setMedirLectura={setMedirLectura}
             tema={tema}
             setTema={setTema}
+            onAbrirAjustes={() => handleAbrirAjustes('portada')}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
             grabaciones={grabaciones}
             onAbrirGrabacion={(g) => setGrabacionAbierta(g)}
@@ -1729,6 +1754,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             setColorLetra={setColorLetra}
             tipoFuente={tipoFuente}
             setTipoFuente={setTipoFuente}
+            onAbrirAjustes={() => handleAbrirAjustes('editor')}
             onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
             // LAS TOMAS DE ESTE GUION, de la más nueva a la más vieja -tarea 76, 28-09-2026-.
             // Salen de grabaciones, el mismo estado de la tira: al borrar la última desde el
@@ -1942,6 +1968,8 @@ export default function App({ motor, repoOverride }: AppProps) {
               columnaAngosta={columnaAngosta}
               onLetraMenos={handleLetraMenos}
               onLetraMas={handleLetraMas}
+              onElegirLetra={handleElegirLetra}
+              onAbrirAjustes={() => handleAbrirAjustes(conCamara ? 'grabar' : 'leer')}
               setColumnaAngosta={setColumnaAngosta}
               setMarginPercent={setMarginPercent}
               colorFondo={colorFondo}
@@ -2136,6 +2164,43 @@ export default function App({ motor, repoOverride }: AppProps) {
               console.warn('[App] no se pudo borrar la toma:', e)
             }
             setGrabacionAbierta(null)
+          }}
+        />
+      )}
+
+      {ajustesAbiertos && (
+        <PantallaAjustes
+          onCerrar={() => setAjustesAbiertos(false)}
+          origen={origenAjustes}
+          fontSize={fontSize}
+          onElegirLetra={handleElegirLetra}
+          tipoFuente={tipoFuente}
+          setTipoFuente={(v) => {
+            hapticaSeleccion()
+            setTipoFuente(v)
+          }}
+          columnaAngosta={columnaAngosta}
+          marginPercent={marginPercent}
+          setColumnaAngosta={setColumnaAngosta}
+          setMarginPercent={setMarginPercent}
+          colorFondo={colorFondo}
+          colorLetra={colorLetra}
+          setColorFondo={setColorFondo}
+          setColorLetra={setColorLetra}
+          mirror={mirror}
+          setMirror={(v) => {
+            hapticaSeleccion()
+            setMirror(v)
+          }}
+          mostrarTiempo={mostrarTiempo}
+          setMostrarTiempo={(v) => {
+            hapticaSeleccion()
+            setMostrarTiempo(v)
+          }}
+          tema={tema}
+          setTema={(v) => {
+            hapticaSeleccion()
+            setTema(v)
           }}
         />
       )}

@@ -21,6 +21,10 @@ import { COLORES_TRAMO, COLORES_TRAMO_SOBRE_CLARO } from '../datos/modelo'
 export const INTERLINEADO_LECTURA = 1.4
 export const MARGEN_RENGLON_LECTURA_PX = 16
 
+// LOS CINCO PASOS DE LA LETRA -antes en App.tsx-. Las fichas de LISTO y el
+// editor usan el mismo arreglo: dos puertas, un solo valor. 28-09-2026.
+export const PASOS_LETRA = [14, 18, 24, 32, 42]
+
 export function familiaLectura(tipoFuente: 'sans' | 'serif'): string {
   return tipoFuente === 'serif' ? '"Source Serif 4", serif' : '"Source Sans 3", sans-serif'
 }

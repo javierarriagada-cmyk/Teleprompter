@@ -7,7 +7,6 @@ import { hapticaSeleccion } from '../haptica'
 import { movimientoApagado, MS_DEDO, MS_CHICO, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
 import { IconoEmpezar } from './IconosApp'
 import { EditorCabecera } from './EditorCabecera'
-import { CajonAaEditor } from './CajonAaEditor'
 import { BarraEditorVacio } from './BarraEditorVacio'
 import { BarraLeerGrabar } from './BarraLeerGrabar'
 import { EditorGuion } from './EditorGuion'
@@ -50,6 +49,9 @@ interface EditorViewProps {
   // -24-09-2026: la vibracion salio de ese menu; la decide el telefono.-
   onEntrarGrabar?: (rect?: DOMRect) => void
   onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
+  // 28-09-2026, tarea 77: el Aa abre la pantalla de Ajustes de App, la misma de la portada y de
+  // LISTO. Javier: "ya ni siquiera tenemos coherencia dentro de los ajustes de la app".
+  onAbrirAjustes?: () => void
   // LAS TOMAS DE ESTE GUION -tarea 76, 28-09-2026-: App.tsx las filtra por guionId y las
   // ordena de la más nueva a la más vieja. Van en la banda de abajo -BandaTomas.tsx-, y un
   // toque abre el reproductor, que App dibuja encima de cualquier vista.
@@ -107,6 +109,7 @@ export default function EditorView({
   setTipoFuente,
   onEntrarGrabar,
   onRegistrarCerrarModal,
+  onAbrirAjustes,
   tomas = [],
   onAbrirToma,
   'data-pantalla-direccion': dataPantallaDireccion,
@@ -114,7 +117,9 @@ export default function EditorView({
   onAnimationEnd
 }: EditorViewProps) {
   useTextos()
-  const [mostrarModalAjustes, setMostrarModalAjustes] = useState(false)
+  // 28-09-2026, tarea 77: el cajon Aa del editor -CajonAaEditor, mostrarModalAjustes, su Escape y
+  // su registro para el atras del telefono- se fue. El Aa abre la pantalla de Ajustes: un solo
+  // estilo de ajustes en toda la app, con la muestra viva arriba.
 
   const idGuionLimpioRef = useRef<string | null>(null)
 
@@ -303,31 +308,6 @@ export default function EditorView({
   const nombreIdioma = NOMBRE_IDIOMA[idiomaGuion] ? t(NOMBRE_IDIOMA[idiomaGuion]) : idiomaGuion
   const resumenMeta = t('metaEditor', { palabras: numeroLocal(numPalabras), duracion: duracionDeLectura(numPalabras) })
 
-  useEffect(() => {
-    if (!mostrarModalAjustes) return
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setMostrarModalAjustes(false)
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [mostrarModalAjustes])
-
-  useEffect(() => {
-    if (onRegistrarCerrarModal) {
-      onRegistrarCerrarModal(() => {
-        if (mostrarModalAjustes) {
-          setMostrarModalAjustes(false)
-          return true
-        }
-        return false
-      })
-    }
-    return () => {
-      if (onRegistrarCerrarModal) {
-        onRegistrarCerrarModal(null)
-      }
-    }
-  }, [mostrarModalAjustes, onRegistrarCerrarModal])
 
   const btnLeerRef = useRef<HTMLButtonElement>(null)
 
@@ -378,7 +358,7 @@ export default function EditorView({
         idiomaGuion={idiomaGuion}
         nombreIdioma={nombreIdioma}
         onAlternarIdioma={handleAlternarIdioma}
-        onAbrirAjustes={() => setMostrarModalAjustes(true)}
+        onAbrirAjustes={() => onAbrirAjustes?.()}
         editorRef={editorRef}
       />
 
@@ -439,24 +419,6 @@ export default function EditorView({
         </div>
       )}
 
-      <CajonAaEditor
-        abierto={mostrarModalAjustes}
-        onCerrar={() => setMostrarModalAjustes(false)}
-        guion={guion}
-        fontSize={fontSize}
-        onLetraMenos={onLetraMenos}
-        onLetraMas={onLetraMas}
-        marginPercent={marginPercent}
-        setMarginPercent={setMarginPercent}
-        columnaAngosta={columnaAngosta}
-        setColumnaAngosta={setColumnaAngosta}
-        colorFondo={colorFondo}
-        setColorFondo={setColorFondo}
-        colorLetra={colorLetra}
-        setColorLetra={setColorLetra}
-        tipoFuente={tipoFuente}
-        setTipoFuente={setTipoFuente}
-      />
 
       {errorArchivo && (
         <div
