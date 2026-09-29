@@ -1,0 +1,902 @@
+[
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "texto",
+  "ratio": 19.44,
+  "sombras": 1,
+  "core": "255,255,255",
+  "anillo": "13,13,13"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "celeste",
+  "ratio": 9.33,
+  "sombras": 1,
+  "core": "143,184,222",
+  "anillo": "13,13,13"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "ámbar",
+  "ratio": 11.55,
+  "sombras": 1,
+  "core": "240,192,112",
+  "anillo": "13,13,13"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "verde",
+  "ratio": 9.74,
+  "sombras": 1,
+  "core": "156,197,161",
+  "anillo": "18,18,18"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "acotación",
+  "ratio": 2.51,
+  "sombras": 1,
+  "core": "85,85,85",
+  "anillo": "18,18,18"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "texto",
+  "ratio": 20.14,
+  "sombras": 1,
+  "core": "255,255,255",
+  "anillo": "7,7,7"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "celeste",
+  "ratio": 9.67,
+  "sombras": 1,
+  "core": "143,184,222",
+  "anillo": "7,7,7"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "ámbar",
+  "ratio": 11.97,
+  "sombras": 1,
+  "core": "240,192,112",
+  "anillo": "7,7,7"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "verde",
+  "ratio": 10.35,
+  "sombras": 1,
+  "core": "156,197,161",
+  "anillo": "9,9,9"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "acotación",
+  "ratio": 2.67,
+  "sombras": 1,
+  "core": "85,85,85",
+  "anillo": "9,9,9"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "texto",
+  "ratio": 21,
+  "sombras": 1,
+  "core": "255,255,255",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "celeste",
+  "ratio": 10.08,
+  "sombras": 1,
+  "core": "143,184,222",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "ámbar",
+  "ratio": 12.48,
+  "sombras": 1,
+  "core": "240,192,112",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "verde",
+  "ratio": 10.91,
+  "sombras": 1,
+  "core": "156,197,161",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "acotación",
+  "ratio": 2.82,
+  "sombras": 1,
+  "core": "85,85,85",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "texto",
+  "ratio": 19.44,
+  "sombras": 1,
+  "core": "255,255,255",
+  "anillo": "13,13,13"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "celeste",
+  "ratio": 9.33,
+  "sombras": 1,
+  "core": "143,184,222",
+  "anillo": "13,13,13"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "ámbar",
+  "ratio": 11.55,
+  "sombras": 1,
+  "core": "240,192,112",
+  "anillo": "13,13,13"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "verde",
+  "ratio": 9.74,
+  "sombras": 1,
+  "core": "156,197,161",
+  "anillo": "18,18,18"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "acotación",
+  "ratio": 2.51,
+  "sombras": 1,
+  "core": "85,85,85",
+  "anillo": "18,18,18"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "texto",
+  "ratio": 20.14,
+  "sombras": 1,
+  "core": "255,255,255",
+  "anillo": "7,7,7"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "celeste",
+  "ratio": 9.67,
+  "sombras": 1,
+  "core": "143,184,222",
+  "anillo": "7,7,7"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "ámbar",
+  "ratio": 11.97,
+  "sombras": 1,
+  "core": "240,192,112",
+  "anillo": "7,7,7"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "verde",
+  "ratio": 10.35,
+  "sombras": 1,
+  "core": "156,197,161",
+  "anillo": "9,9,9"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "acotación",
+  "ratio": 2.67,
+  "sombras": 1,
+  "core": "85,85,85",
+  "anillo": "9,9,9"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "texto",
+  "ratio": 21,
+  "sombras": 1,
+  "core": "255,255,255",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "celeste",
+  "ratio": 10.08,
+  "sombras": 1,
+  "core": "143,184,222",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "ámbar",
+  "ratio": 12.48,
+  "sombras": 1,
+  "core": "240,192,112",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "verde",
+  "ratio": 10.91,
+  "sombras": 1,
+  "core": "156,197,161",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con blanco",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "acotación",
+  "ratio": 2.82,
+  "sombras": 1,
+  "core": "85,85,85",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "texto",
+  "ratio": 11.75,
+  "sombras": 1,
+  "core": "245,194,75",
+  "anillo": "13,13,13"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "celeste",
+  "ratio": 9.33,
+  "sombras": 1,
+  "core": "143,184,222",
+  "anillo": "13,13,13"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "ámbar",
+  "ratio": 11.55,
+  "sombras": 1,
+  "core": "240,192,112",
+  "anillo": "13,13,13"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "verde",
+  "ratio": 9.74,
+  "sombras": 1,
+  "core": "156,197,161",
+  "anillo": "18,18,18"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "acotación",
+  "ratio": 2.51,
+  "sombras": 1,
+  "core": "85,85,85",
+  "anillo": "18,18,18"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "texto",
+  "ratio": 12.18,
+  "sombras": 1,
+  "core": "245,194,75",
+  "anillo": "7,7,7"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "celeste",
+  "ratio": 9.67,
+  "sombras": 1,
+  "core": "143,184,222",
+  "anillo": "7,7,7"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "ámbar",
+  "ratio": 11.97,
+  "sombras": 1,
+  "core": "240,192,112",
+  "anillo": "7,7,7"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "verde",
+  "ratio": 10.35,
+  "sombras": 1,
+  "core": "156,197,161",
+  "anillo": "9,9,9"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "acotación",
+  "ratio": 2.67,
+  "sombras": 1,
+  "core": "85,85,85",
+  "anillo": "9,9,9"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "texto",
+  "ratio": 12.7,
+  "sombras": 1,
+  "core": "245,194,75",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "celeste",
+  "ratio": 10.08,
+  "sombras": 1,
+  "core": "143,184,222",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "ámbar",
+  "ratio": 12.48,
+  "sombras": 1,
+  "core": "240,192,112",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "verde",
+  "ratio": 10.91,
+  "sombras": 1,
+  "core": "156,197,161",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "acotación",
+  "ratio": 2.82,
+  "sombras": 1,
+  "core": "85,85,85",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "texto",
+  "ratio": 11.75,
+  "sombras": 1,
+  "core": "245,194,75",
+  "anillo": "13,13,13"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "celeste",
+  "ratio": 9.33,
+  "sombras": 1,
+  "core": "143,184,222",
+  "anillo": "13,13,13"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "ámbar",
+  "ratio": 11.55,
+  "sombras": 1,
+  "core": "240,192,112",
+  "anillo": "13,13,13"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "verde",
+  "ratio": 9.74,
+  "sombras": 1,
+  "core": "156,197,161",
+  "anillo": "18,18,18"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "acotación",
+  "ratio": 2.51,
+  "sombras": 1,
+  "core": "85,85,85",
+  "anillo": "18,18,18"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "texto",
+  "ratio": 12.18,
+  "sombras": 1,
+  "core": "245,194,75",
+  "anillo": "7,7,7"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "celeste",
+  "ratio": 9.67,
+  "sombras": 1,
+  "core": "143,184,222",
+  "anillo": "7,7,7"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "ámbar",
+  "ratio": 11.97,
+  "sombras": 1,
+  "core": "240,192,112",
+  "anillo": "7,7,7"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "verde",
+  "ratio": 10.35,
+  "sombras": 1,
+  "core": "156,197,161",
+  "anillo": "9,9,9"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "acotación",
+  "ratio": 2.67,
+  "sombras": 1,
+  "core": "85,85,85",
+  "anillo": "9,9,9"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "texto",
+  "ratio": 12.7,
+  "sombras": 1,
+  "core": "245,194,75",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "celeste",
+  "ratio": 10.08,
+  "sombras": 1,
+  "core": "143,184,222",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "ámbar",
+  "ratio": 12.48,
+  "sombras": 1,
+  "core": "240,192,112",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "verde",
+  "ratio": 10.91,
+  "sombras": 1,
+  "core": "156,197,161",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Negro con ámbar",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "acotación",
+  "ratio": 2.82,
+  "sombras": 1,
+  "core": "85,85,85",
+  "anillo": "0,0,0"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "texto",
+  "ratio": 21,
+  "sombras": 1,
+  "core": "0,0,0",
+  "anillo": "255,255,255"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "celeste",
+  "ratio": 5.94,
+  "sombras": 1,
+  "core": "43,103,158",
+  "anillo": "255,255,255"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "ámbar",
+  "ratio": 5.73,
+  "sombras": 1,
+  "core": "143,91,0",
+  "anillo": "255,255,255"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "verde",
+  "ratio": 5.62,
+  "sombras": 1,
+  "core": "60,115,71",
+  "anillo": "255,255,255"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "pared blanca",
+  "estilo": "acotación",
+  "ratio": 1.47,
+  "sombras": 1,
+  "core": "213,213,213",
+  "anillo": "255,255,255"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "texto",
+  "ratio": 19.95,
+  "sombras": 1,
+  "core": "0,0,0",
+  "anillo": "249,249,249"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "celeste",
+  "ratio": 5.64,
+  "sombras": 1,
+  "core": "43,103,158",
+  "anillo": "249,249,249"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "ámbar",
+  "ratio": 5.44,
+  "sombras": 1,
+  "core": "143,91,0",
+  "anillo": "249,249,249"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "verde",
+  "ratio": 5.2,
+  "sombras": 1,
+  "core": "60,115,71",
+  "anillo": "246,246,246"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "gris 50 %",
+  "estilo": "acotación",
+  "ratio": 1.36,
+  "sombras": 1,
+  "core": "213,213,213",
+  "anillo": "246,246,246"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "texto",
+  "ratio": 18.76,
+  "sombras": 1,
+  "core": "0,0,0",
+  "anillo": "242,242,242"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "celeste",
+  "ratio": 5.3,
+  "sombras": 1,
+  "core": "43,103,158",
+  "anillo": "242,242,242"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "ámbar",
+  "ratio": 5.12,
+  "sombras": 1,
+  "core": "143,91,0",
+  "anillo": "242,242,242"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "verde",
+  "ratio": 4.8,
+  "sombras": 1,
+  "core": "60,115,71",
+  "anillo": "237,237,237"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "horizontal 800×360",
+  "video": "escena oscura",
+  "estilo": "acotación",
+  "ratio": 1.25,
+  "sombras": 1,
+  "core": "213,213,213",
+  "anillo": "237,237,237"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "texto",
+  "ratio": 21,
+  "sombras": 1,
+  "core": "0,0,0",
+  "anillo": "255,255,255"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "celeste",
+  "ratio": 5.94,
+  "sombras": 1,
+  "core": "43,103,158",
+  "anillo": "255,255,255"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "ámbar",
+  "ratio": 5.73,
+  "sombras": 1,
+  "core": "143,91,0",
+  "anillo": "255,255,255"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "verde",
+  "ratio": 5.62,
+  "sombras": 1,
+  "core": "60,115,71",
+  "anillo": "255,255,255"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "pared blanca",
+  "estilo": "acotación",
+  "ratio": 1.47,
+  "sombras": 1,
+  "core": "213,213,213",
+  "anillo": "255,255,255"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "texto",
+  "ratio": 19.95,
+  "sombras": 1,
+  "core": "0,0,0",
+  "anillo": "249,249,249"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "celeste",
+  "ratio": 5.64,
+  "sombras": 1,
+  "core": "43,103,158",
+  "anillo": "249,249,249"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "ámbar",
+  "ratio": 5.44,
+  "sombras": 1,
+  "core": "143,91,0",
+  "anillo": "249,249,249"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "verde",
+  "ratio": 5.2,
+  "sombras": 1,
+  "core": "60,115,71",
+  "anillo": "246,246,246"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "gris 50 %",
+  "estilo": "acotación",
+  "ratio": 1.36,
+  "sombras": 1,
+  "core": "213,213,213",
+  "anillo": "246,246,246"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "texto",
+  "ratio": 18.76,
+  "sombras": 1,
+  "core": "0,0,0",
+  "anillo": "242,242,242"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "celeste",
+  "ratio": 5.3,
+  "sombras": 1,
+  "core": "43,103,158",
+  "anillo": "242,242,242"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "ámbar",
+  "ratio": 5.12,
+  "sombras": 1,
+  "core": "143,91,0",
+  "anillo": "242,242,242"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "verde",
+  "ratio": 4.8,
+  "sombras": 1,
+  "core": "60,115,71",
+  "anillo": "237,237,237"
+ },
+ {
+  "pareja": "Blanco con negro",
+  "vista": "vertical 390×844",
+  "video": "escena oscura",
+  "estilo": "acotación",
+  "ratio": 1.25,
+  "sombras": 1,
+  "core": "213,213,213",
+  "anillo": "237,237,237"
+ }
+]
