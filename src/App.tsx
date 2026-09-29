@@ -1375,14 +1375,22 @@ export default function App({ motor, repoOverride }: AppProps) {
   // que la Tarea 34 saco el boton "Volver al inicio". Cuando B24 -detener a mitad: continuar o
   // empezar de nuevo- se haga, el reinicio es reiniciar() de useSeguidor mas clear() de useASR.
 
+  // PAUSA Y SEGUIR VAN EN FILA -tarea 85, 29-09-2026-. Cada toque esperaba solo lo suyo: si
+  // Seguir llegaba mientras Pausa todavía estaba apagando el micrófono, start() corría en
+  // paralelo con el stop() anterior. En el teléfono, MotorNativo.detener() termina sacando las
+  // suscripciones que tenga en ese momento, y ahí ya estaban las que el iniciar() de Seguir
+  // acababa de poner: Vosk escuchaba y nadie recibía sus frases, así que ese primer Seguir no
+  // arrancaba y había que pausar y seguir otra vez. Ahora cada encendido o apagado espera a que
+  // termine el anterior. El botón cambia al tiro -setEnPausa- para que el toque se vea atendido.
+  // El .catch es para que un fallo no deje la fila trabada: start() y stop() ya avisan el error
+  // por su cuenta -ultimoError-.
+  const filaPausaRef = useRef<Promise<void>>(Promise.resolve())
   const handleTogglePausa = async () => {
-    if (enPausa) {
-      setEnPausa(false)
-      await start()
-    } else {
-      setEnPausa(true)
-      await stop()
-    }
+    const paso = enPausa ? start : stop
+    setEnPausa(!enPausa)
+    const turno = filaPausaRef.current.then(() => paso()).catch(() => {})
+    filaPausaRef.current = turno
+    await turno
   }
 
   let textoFreno = ''

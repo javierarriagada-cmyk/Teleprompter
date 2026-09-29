@@ -530,6 +530,19 @@ export default function TeleprompterView({
   const pointerStartPosRef = useRef<{ x: number; y: number } | null>(null)
   const isDraggingGestureRef = useRef<boolean>(false)
 
+  // LOS AVISOS DE LOS GESTOS VIVEN EN UNA REFERENCIA, NO EN LAS DEPENDENCIAS DEL EFECTO -tarea 85,
+  // 29-09-2026-. App le pasa funciones nuevas en cada dibujo: onToggleControles es una flecha
+  // escrita en el JSX e irAToken -onNavegacionManual- se crea en cada vuelta de useSeguidor. Con
+  // ellas en las dependencias, el efecto de los gestos se desarmaba y se volvía a armar cada vez
+  // que App se dibujaba, y su limpieza borraba el temporizador que apaga el modo manual. Mostrar
+  // los controles dibuja App al tiro, así que el temporizador no alcanzaba a correr nunca:
+  // modoManualRef quedaba en true y el lazo dejaba de escribir el scrollTop hasta el siguiente
+  // arrastre. Javier lo vio en su moto g86: tras Seguir el texto no lo acompañaba, y arrastrarlo
+  // lo enderezaba. filaPx y topBanda van también aquí: tokenEnLaBanda los lee al soltar, y un
+  // cambio de letra en medio de un arrastre tampoco puede borrar el temporizador.
+  const gestosRef = useRef({ onNavegacionManual, onModoManualChange, onToggleControles, filaPx, topBanda })
+  gestosRef.current = { onNavegacionManual, onModoManualChange, onToggleControles, filaPx, topBanda }
+
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
@@ -540,6 +553,7 @@ export default function TeleprompterView({
       const tokens = tokensRef.current
       const cont = containerRef.current
       if (!cont || tokens.length === 0) return 0
+      const { filaPx, topBanda } = gestosRef.current
 
       const origen = origenRef.current
       // El renglon vivo esta en scrollTop + topBanda + MARGEN_RENGLONES_ARRIBA renglones
@@ -575,14 +589,24 @@ export default function TeleprompterView({
         pointerStartPosRef.current = { x: te.clientX, y: te.clientY }
       }
 
+      // Si el dedo vuelve mientras corre la espera de un arrastre anterior, el modo manual
+      // sigue: se borra la espera y la vuelve a poner terminar().
       if (finManualRef.current !== null) {
         window.clearTimeout(finManualRef.current)
         finManualRef.current = null
       }
-      if (!modoManualRef.current) {
-        modoManualRef.current = true
-        if (onModoManualChange) onModoManualChange(true)
-      }
+      // EL DEDO QUE SE APOYA TODAVÍA NO ES UN ARRASTRE -tarea 85, 29-09-2026-. Aquí se encendía
+      // el modo manual en cuanto el dedo tocaba el texto, y un toque es casi siempre el que
+      // muestra u oculta los controles, justo antes de Pausa o de Seguir. El modo manual se
+      // enciende recién cuando el dedo se mueve más de 8 px -mover- o con la rueda.
+      if (e.type === 'wheel') entrarAModoManual()
+    }
+
+    function entrarAModoManual() {
+      if (modoManualRef.current) return
+      modoManualRef.current = true
+      const { onModoManualChange } = gestosRef.current
+      if (onModoManualChange) onModoManualChange(true)
     }
 
     function mover(e: Event) {
@@ -601,6 +625,8 @@ export default function TeleprompterView({
         const dist = Math.hypot(cx - pointerStartPosRef.current.x, cy - pointerStartPosRef.current.y)
         if (dist > 8) {
           isDraggingGestureRef.current = true
+          // Ahora sí es un arrastre: desde aquí el lazo deja de pisar lo que mueve el dedo.
+          entrarAModoManual()
         }
       }
     }
@@ -610,16 +636,25 @@ export default function TeleprompterView({
         isDraggingGestureRef.current = true
       }
 
+      const { onToggleControles } = gestosRef.current
       if (!isDraggingGestureRef.current && onToggleControles) {
         onToggleControles()
       }
 
       pointerStartPosRef.current = null
 
+      // UN TOQUE NO MUEVE EL TEXTO, ASÍ QUE NO LE DICE NADA AL MOTOR -tarea 85, 29-09-2026-. La
+      // espera de 350 ms y el irAToken del final corrían también tras un toque. irAToken
+      // reinicia el arranque del motor -otra vez siete palabras antes de moverse- y pone al
+      // seguidor en el renglón que esté en la ventana aunque la persona esté en otro. Queda
+      // solo para cuando hubo arrastre o rueda: ahí la persona sí eligió dónde seguir.
+      if (!modoManualRef.current) return
+
       if (finManualRef.current !== null) window.clearTimeout(finManualRef.current)
       finManualRef.current = window.setTimeout(() => {
         finManualRef.current = null
         modoManualRef.current = false
+        const { onModoManualChange, onNavegacionManual } = gestosRef.current
         if (onModoManualChange) onModoManualChange(false)
         if (onNavegacionManual) onNavegacionManual(tokenEnLaBanda())
       }, MS_PARA_SOLTAR)
@@ -646,7 +681,10 @@ export default function TeleprompterView({
       if (finManualRef.current !== null) window.clearTimeout(finManualRef.current)
     }
   // topBanda: tokenEnLaBanda la usa desde el 24-09-2026; con anclaje medio o abajo cambia al medir.
-  }, [onNavegacionManual, onModoManualChange, alturaLineaPx, onToggleControles, filaPx, topBanda])
+  // Desde la tarea 85 -29-09-2026- topBanda, filaPx y los avisos se leen de gestosRef: si
+  // estuvieran aquí, cada dibujo de App desarmaría el efecto y su limpieza borraría la espera
+  // que apaga el modo manual -ver gestosRef-. El efecto se arma una vez por contenedor.
+  }, [])
 
   useEffect(() => {
     if (!motorAvance) return

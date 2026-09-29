@@ -449,7 +449,29 @@ export async function quitarTomasSinVideo(repo: RepositorioGrabaciones): Promise
   if (!Capacitor.isNativePlatform()) return todas
   const quedan: ResumenGrabacion[] = []
   for (const g of todas) {
-    if (!g.galeriaUri) { quedan.push(g); continue }
+    // TAMBIÉN LAS QUE NUNCA SE GUARDARON EN LA GALERÍA -tarea 85, 29-09-2026-. Antes una toma
+    // sin galeriaUri se quedaba siempre. Tras restaurar un respaldo -tarea 84: la base IndexedDB
+    // vuelve, files/grabaciones no- esas tomas volvían a la lista sin su video, y tocarlas no
+    // mostraba nada. Decisión de Javier: no aparecen. Para mirarlas basta bytesDe: el lado nativo
+    // responde 0 si el archivo no existe. Sin ruta, o con una ruta content:// -que bytesDe no
+    // sabe abrir y daría 0 aunque el video esté-, no se puede mirar, y la toma se queda.
+    if (!g.galeriaUri) {
+      if (!g.ruta || g.ruta.startsWith('content:')) { quedan.push(g); continue }
+      let bytes = 1
+      try {
+        bytes = await bytesDe(g.ruta)
+      } catch {
+        bytes = 1
+      }
+      if (bytes > 0) { quedan.push(g); continue }
+      try {
+        await borrarGrabacionEnDisco(g)
+        await repo.borrar(g.id)
+      } catch {
+        quedan.push(g)
+      }
+      continue
+    }
     let existe = true
     try {
       existe = await existeEnGaleria(g.galeriaUri)
