@@ -20,7 +20,7 @@ import { obtenerEspacioLibre } from './lib/archivosNativos'
 import { calcularMinutosDisponibles } from './lib/espacio'
 import { hapticaToqueMedio, hapticaToqueSuave, hapticaSeleccion } from './haptica'
 import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
-import { Guion, Bloque, TramoFormato, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR } from './datos/modelo'
+import { Guion, Bloque, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR } from './datos/modelo'
 import { RepositorioGuiones } from './datos/RepositorioGuiones'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
@@ -39,10 +39,16 @@ import {
 } from './lib/tomaVideo'
 import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar } from './components/IconosApp'
 import { t, useTextos, TITULO_SIN_NOMBRE } from './textos'
-import { IdiomaApp, idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
+import { idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
 import { PASOS_LETRA } from './components/estiloLectura'
 import { PantallaAjustes } from './components/PantallaAjustes'
 import { DialogoMicrofono } from './components/DialogoMicrofono'
+import { tituloDeBienvenida, bloqueDeBienvenida } from './app/bienvenida'
+import { GUION_VACIO, sanitizarColores, sanitizarEngine, cargarAjustesGuardados, ajustarFuenteValida } from './app/ajustesIniciales'
+import { useAviso } from './hooks/useAviso'
+import { AvisoBreve } from './components/AvisoBreve'
+import { IndicadorPrecarga } from './components/IndicadorPrecarga'
+import { PanelDiagnostico } from './components/PanelDiagnostico'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
 const MS_CONTROLES_A_LA_VISTA = 4000
@@ -55,195 +61,13 @@ interface AppProps {
 type Vista = 'biblioteca' | 'editor' | 'lectura'
 type EstadoToma = 'listo' | 'leyendo'
 
-const GUION_VACIO: Guion = {
-  id: 'vacio',
-  titulo: '',
-  idioma: 'es',
-  creado: 0,
-  modificado: 0,
-  archivado: false,
-  bloques: []
-}
-
-// PASOS_LETRA vive en estiloLectura.ts desde el 28-09-2026: LISTO y el editor
-// usan el mismo arreglo. Antes estaba aca.
-const MOTORES_VALIDOS: IdMotor[] = ['vosk', 'nativo', 'fake']
-
 export type FondoToma = 'detras' | 'recuadro' | 'oculta'
 
 export { PAREJAS_COLOR }
 
-export function sanitizarColores(rawFondo: any, rawLetra: any): { colorFondo: string; colorLetra: string } {
-  if (typeof rawFondo === 'string' && typeof rawLetra === 'string') {
-    const f = rawFondo.toUpperCase()
-    const l = rawLetra.toUpperCase()
-    const coincide = PAREJAS_COLOR.find((p) => p.fondo.toUpperCase() === f && p.letra.toUpperCase() === l)
-    if (coincide) {
-      return { colorFondo: coincide.fondo, colorLetra: coincide.letra }
-    }
-  }
-  return { colorFondo: PAREJAS_COLOR[0].fondo, colorLetra: PAREJAS_COLOR[0].letra }
-}
-
-function sanitizarEngine(rawEngine: any): IdMotor {
-  if (rawEngine && MOTORES_VALIDOS.includes(rawEngine)) {
-    return rawEngine
-  }
-  return Capacitor.isNativePlatform() ? 'nativo' : 'vosk'
-}
-
-function cargarAjustesGuardados() {
-  try {
-    const raw = localStorage.getItem('teleprompter_ajustes')
-    if (raw) {
-      return JSON.parse(raw)
-    }
-  } catch (e) {
-  }
-  return null
-}
-
-function ajustarFuenteValida(val: any): number {
-  const num = Number(val)
-  if (isNaN(num)) return 24
-  if (PASOS_LETRA.includes(num)) return num
-  const masCercano = PASOS_LETRA.reduce((prev, curr) =>
-    Math.abs(curr - num) < Math.abs(prev - num) ? curr : prev
-  )
-  return masCercano
-}
-
-// EL GUION "HOLA": el que ya viene puesto la primera vez. Los tramos se calculan buscando
-// las palabras en el texto, asi el texto se puede retocar sin contar caracteres a mano.
-//
-// EN LOS DOS IDIOMAS -tarea 75, 27-09-2026-: se crea en el idioma de la app. El ingles es el de
-// docs/ingles.txt, seccion 5, LETRA POR LETRA -lo escribio Claude y lo revisa la traductora de
-// Javier-; si se retoca, se retoca alla primero. Mismos formatos que el espanol, sobre las
-// palabras que los nombran.
-export function tituloDeBienvenida(idioma: IdiomaApp): string {
-  return idioma === 'es' ? 'Hola' : 'Hi'
-}
-
-export function bloqueDeBienvenida(idioma: IdiomaApp): Bloque {
-  return idioma === 'es' ? bienvenidaEspanol() : bienvenidaIngles()
-}
-
-function tramosSobre(texto: string, marcas: Array<[string, Omit<TramoFormato, 'desde' | 'hasta'>]>): TramoFormato[] {
-  const tramo = (frase: string, formato: Omit<TramoFormato, 'desde' | 'hasta'>): TramoFormato => {
-    const desde = texto.indexOf(frase)
-    return { desde, hasta: desde + frase.length, ...formato }
-  }
-  // Si alguien retoca el texto y una de estas palabras deja de estar, su tramo se cae en vez
-  // de pintar desde el caracter -1.
-  return marcas.map(([frase, formato]) => tramo(frase, formato)).filter((t) => t.desde >= 0).sort((a, b) => a.desde - b.desde)
-}
-
-function bienvenidaEspanol(): Bloque {
-  const texto = [
-    'Hola. Lee esto en voz alta, con o sin apuro, como prefieras.',
-    '',
-    'Ahora fíjate en el texto. Se está moviendo solo, al ritmo en que hablas, sin que toques nada. La línea suave bajo las palabras te muestra por dónde vas.',
-    '',
-    'Si te detienes a pensar, el texto te espera. Cuando vuelves a hablar, sigue contigo.',
-    '',
-    'Lo que escribes entre corchetes es una nota solo para ti. Se ve en la pantalla, pero no hace falta leerla en voz alta. [Como esta: respira y sonríe.]',
-    '',
-    'Tu guion también puede ayudarte a leer mejor. Marca en negrita lo que quieres decir con más fuerza. Pinta palabras en ámbar, en celeste o en verde para distinguir ideas o cambios de tono. Y usa el destacado amarillo para lo que no se te puede pasar. Basta con seleccionar el texto en el editor y elegir.',
-    '',
-    'En el botón Aa eliges el tamaño de la letra, la tipografía, el ancho de la columna y los colores de la pantalla. Déjalo como te resulte más cómodo.',
-    '',
-    'Cuando quieras grabarte, toca Grabar. La cámara filma mientras lees, y el texto queda justo bajo el lente, para que tu mirada vaya a la cámara y no a la pantalla. Puedes verte a pantalla completa, detrás del texto, o en un recuadro pequeño. Así sabes cómo te están viendo, sin perder la comodidad para leer.',
-    '',
-    // SUBTITULOS -26-09-2026, Javier-: el Hola tenia que contarlos antes de la grabacion de
-    // prueba. Salen del guion con los tiempos de la voz -lib/subtitulos.ts- y se guardan como se
-    // ven -una sola copia en la galeria-.
-    'Al terminar, tu video puede llevar subtítulos. Salen de tu guion, al ritmo de tu voz. Elige el estilo que más te guste y guárdalo en tu galería tal como lo ves.',
-    '',
-    'Te acompaña para darte la comodidad y la tranquilidad que necesitas. Queremos que toda tu concentración esté donde debe estar. No tienes que memorizar. No tienes que apurarte para alcanzar el texto. Puedes transmitir la emoción que quieras, en el momento que quieras.',
-    '',
-    'Sirve para grabar un video, dar una clase o preparar una entrevista.',
-    '',
-    'Cuando termines, borra esto y escribe tu propio guion, o pega uno que ya tengas.',
-    '',
-    // CORREO -26-09-2026-: el del dominio, que Namecheap reenvia al Gmail de Javier. Hasta el
-    // 24-09 era el ficticio hola@ejemplo.com que el pidio mientras tanto.
-    'Y si algo te gusta, te molesta o se te ocurre cómo mejorarlo, cuéntanos. Tus comentarios son muy valiosos para nosotros. Escríbenos a hola@sigoteleprompter.com. Que te vaya muy bien.'
-  ].join('\n')
-  return {
-    id: 'b-bienvenida-1',
-    nombre: '',
-    texto,
-    // Si alguien retoca el texto y una de estas palabras deja de estar, su tramo se cae en vez
-    // de pintar desde el caracter -1 -tramosSobre, arriba-.
-    // Los cinco primeros caen sobre la palabra que nombra su formato. Los demas -26-09-2026,
-    // Javier: "ponle colores"- muestran el guion pintado como se usaria de verdad, para la
-    // grabacion de prueba. Van ordenados por posicion y sin pisarse.
-    tramos: tramosSobre(texto, [
-      ['negrita', { negrita: true }],
-      ['ámbar', { color: 'ambar' }],
-      ['celeste', { color: 'celeste' }],
-      ['verde', { color: 'salvia' }],
-      ['destacado amarillo', { destacado: true }],
-      ['sin que toques nada', { negrita: true }],
-      ['el texto te espera', { color: 'celeste' }],
-      ['para que tu mirada vaya a la cámara', { color: 'ambar' }],
-      ['tal como lo ves', { color: 'salvia' }],
-      ['No tienes que memorizar.', { negrita: true }],
-      ['en el momento que quieras', { destacado: true }],
-      ['hola@sigoteleprompter.com', { color: 'celeste' }]
-    ])
-  }
-}
-
-// El Hola en ingles. Es de docs/ingles.txt, seccion 5, letra por letra -tambien los
-// apostrofos rectos: son los que escribe el teclado del telefono-. Los formatos son los que
-// esa seccion lista, con el mismo mecanismo. El correo es el ingles -D6-.
-function bienvenidaIngles(): Bloque {
-  const texto = [
-    'Hi. Read this out loud, as slowly or as quickly as you like.',
-    '',
-    "Now look at the text. It's moving on its own, at the pace you speak, without you touching anything. The soft line under the words shows you where you are.",
-    '',
-    'If you stop to think, the text waits for you. When you start talking again, it picks up right where you left off.',
-    '',
-    "Anything you write in square brackets is a note just for you. It shows on the screen, but you don't need to read it out loud. [Like this one: breathe, and smile.]",
-    '',
-    "Your script can also help you read better. Use bold for what you want to say with more force. Color words in amber, light blue or green to set apart ideas or shifts in tone. And use the yellow highlight for what you can't afford to miss. Just select the text in the editor and pick one.",
-    '',
-    'With the Aa button you choose the text size, the typeface, the column width and the screen colors. Set it up however feels most comfortable.',
-    '',
-    'When you want to record yourself, tap Record. The camera films while you read, and the text sits right under the lens, so your eyes go to the camera and not to the screen. You can see yourself full screen, behind the text, or in a small window. That way you know how you look, without giving up the comfort of reading.',
-    '',
-    "When you're done, your video can have captions. They come from your script, in time with your voice. Pick the style you like best and save it to your gallery just as you see it.",
-    '',
-    "Sigo is here to give you the comfort and the calm you need. We want all your focus to be where it belongs. You don't have to memorize anything. You don't have to rush to keep up with the text. You can bring whatever emotion you want, whenever you want.",
-    '',
-    'It works for recording a video, teaching a class or getting ready for an interview.',
-    '',
-    "When you're done, delete this and write your own script, or paste one you already have.",
-    '',
-    "And if there's something you like, something that bugs you, or an idea to make it better, let us know. Your feedback means a lot to us. Write to hello@sigoteleprompter.com. All the best."
-  ].join('\n')
-  return {
-    id: 'b-bienvenida-1',
-    nombre: '',
-    texto,
-    tramos: tramosSobre(texto, [
-      ['bold', { negrita: true }],
-      ['amber', { color: 'ambar' }],
-      ['light blue', { color: 'celeste' }],
-      ['green', { color: 'salvia' }],
-      ['yellow highlight', { destacado: true }],
-      ['without you touching anything', { negrita: true }],
-      ['the text waits for you', { color: 'celeste' }],
-      ['so your eyes go to the camera', { color: 'ambar' }],
-      ['just as you see it', { color: 'salvia' }],
-      ["You don't have to memorize anything.", { negrita: true }],
-      ['whenever you want', { destacado: true }],
-      ['hello@sigoteleprompter.com', { color: 'celeste' }]
-    ])
-  }
-}
+// tituloDeBienvenida y bloqueDeBienvenida viven en app/bienvenida.ts desde el 29-09-2026
+// -tarea 81-; se vuelven a exportar desde aca porque las pruebas las importan de '../App'.
+export { tituloDeBienvenida, bloqueDeBienvenida } from './app/bienvenida'
 
 export default function App({ motor, repoOverride }: AppProps) {
   // El idioma de la app: al cambiarlo en el cajon de la portada, App y todo lo que cuelga de
@@ -275,30 +99,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const prevVistaRef = useRef<Vista | null>(null)
   const [direccion, setDireccion] = useState<'adentro' | 'atras' | 'inicial'>('inicial')
   const guionModificadoRef = useRef<boolean>(false)
-  interface AvisoInfo {
-    texto: string
-    accionTexto?: string
-    alEjecutarAccion?: () => void
-  }
-  const [avisoInfo, setAvisoInfo] = useState<AvisoInfo | null>(null)
-  const timerAvisoRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const mostrarAviso = useCallback((
-    msg: string,
-    opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number }
-  ) => {
-    if (timerAvisoRef.current) clearTimeout(timerAvisoRef.current)
-    setAvisoInfo({
-      texto: msg,
-      accionTexto: opciones?.accionTexto,
-      alEjecutarAccion: opciones?.alEjecutarAccion
-    })
-    const dur = opciones?.duracionMs ?? 2000
-    timerAvisoRef.current = setTimeout(() => {
-      setAvisoInfo(null)
-      timerAvisoRef.current = null
-    }, dur)
-  }, [])
+  const { avisoInfo, mostrarAviso, cerrarAviso } = useAviso()
 
   const getNivelVista = (v: Vista): number => {
     if (v === 'biblioteca') return 1
@@ -1562,142 +1363,35 @@ export default function App({ motor, repoOverride }: AppProps) {
         <Entrada onFinish={() => setMostrarEntrada(false)} desdeSplashNativo={Capacitor.isNativePlatform()} />
       )}
 
-      {/* Indicador de precarga de modelo Vosk */}
       {(estadoPrecarga === 'descargando' || estadoPrecarga === 'error') && (
-        <div
-          style={{
-            background: 'var(--bg-suelo)',
-            color: estadoPrecarga === 'error' ? 'var(--color-grabando)' : 'var(--color-texto)',
-            padding: 'var(--aire-2) var(--aire-3)',
-            borderRadius: 'var(--redondeo)',
-            marginBottom: 'var(--aire-4)',
-            fontSize: 'var(--texto-meta)',
-            border: '1px solid var(--color-borde)',
-            display: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && vista === 'lectura') ? 'none' : 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}
-        >
-          {estadoPrecarga === 'descargando' && (
-            <span>
-              ⏬ {t('descargandoModelo')} <strong>{Math.round(progresoPrecarga * 100)}%</strong>
-            </span>
-          )}
-          {estadoPrecarga === 'error' && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)', width: '100%', justifyContent: 'space-between' }}>
-              <span>
-                ⚠️ {t('errorModelo', { detalle: errorPrecarga || t('desconocido') })}
-              </span>
-              <button
-                onClick={reintentarPrecarga}
-                style={{ padding: 'var(--aire-1) var(--aire-2)', fontSize: 'var(--texto-meta)', cursor: 'pointer' }}
-              >
-                {t('reintentar')}
-              </button>
-            </div>
-          )}
-        </div>
+        <IndicadorPrecarga
+          estadoPrecarga={estadoPrecarga}
+          progresoPrecarga={progresoPrecarga}
+          errorPrecarga={errorPrecarga}
+          reintentarPrecarga={reintentarPrecarga}
+          oculto={camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && vista === 'lectura'}
+        />
       )}
 
-      {/* Franja de estado escondida por omision - se activa mediante toque largo en el resumen de la biblioteca */}
       {mostrarDiagnostico && (
-        <div
-          data-testid="franja-de-estado-diagnostico"
-          style={{
-            background: (ultimoError || errorRepositorio) ? 'var(--bg-suelo)' : 'var(--bg-superficie)',
-            color: (ultimoError || errorRepositorio) ? 'var(--color-grabando)' : 'var(--color-texto)',
-            padding: 'var(--aire-2) var(--aire-3)',
-            borderRadius: 'var(--redondeo)',
-            marginBottom: 'var(--aire-4)',
-            fontSize: 'var(--texto-meta)',
-            border: '1px solid var(--color-borde)',
-            display: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && vista === 'lectura') ? 'none' : 'block'
-          }}
-        >
-          <strong>Franja de Estado:</strong>
-          <div style={{ marginTop: 'var(--aire-1)' }}>
-            <span>Estado del Motor: <strong>{estadoMotor}</strong></span>
-            {modoManual && <span style={{ marginLeft: 'var(--aire-4)', color: 'var(--color-acento)', fontWeight: 600 }}>MODO MANUAL: mandas tú</span>}
-            <span style={{ marginLeft: 'var(--aire-4)' }}>Motor Activo: <strong>{motorActivo}</strong></span>
-            <span style={{ marginLeft: 'var(--aire-4)' }}>Bloqueo Pantalla: <strong>{wakeLockActivo ? 'Sí' : 'No'}</strong></span>
-            {textoFreno && (
-              <span style={{ marginLeft: 'var(--aire-4)', color: 'var(--color-grabando)', fontWeight: 'bold' }}>
-                Estado Avance: {textoFreno}
-              </span>
-            )}
-            {usandoMemoriaFallback && (
-              <span style={{ marginLeft: 'var(--aire-4)', color: 'var(--color-grabando)', fontWeight: 'bold' }}>
-                ⚠️ Almacenamiento: En Memoria (IndexedDB no disponible)
-              </span>
-            )}
-          </div>
-          {ultimoError && (
-            <div style={{ marginTop: 'var(--aire-2)', fontWeight: 'bold' }}>
-              Último Error Motor: {ultimoError}
-            </div>
-          )}
-          {errorRepositorio && (
-            <div style={{ marginTop: 'var(--aire-2)', fontWeight: 'bold', color: 'var(--color-grabando)' }}>
-              Aviso Repositorio: {errorRepositorio}
-            </div>
-          )}
-          {/* Lo nuestro: motor, transcripcion y medicion. No van en el
-              menu de la portada. Esta franja es la unica puerta. */}
-          <div data-testid="apartado-nuestro" style={{ marginTop: 'var(--aire-3)', paddingTop: 'var(--aire-2)', borderTop: '1px solid var(--color-separador)' }}>
-            <div className="texto-meta" style={{ color: 'var(--color-apagado)', fontWeight: 600, marginBottom: 'var(--aire-2)' }}>
-              Motor de voz y transcripción
-            </div>
-            <label className="texto-meta" style={{ display: 'block', color: 'var(--color-apagado)', marginBottom: 'var(--aire-2)' }}>
-              Motor de voz:
-              <select
-                aria-label="Motor de Voz"
-                value={engine}
-                onChange={(e) => setEngine(e.target.value as IdMotor)}
-                style={{
-                  width: '100%',
-                  marginTop: 'var(--aire-1)',
-                  padding: 'var(--aire-1) var(--aire-2)',
-                  fontSize: 'var(--texto-meta)',
-                  borderRadius: 'var(--redondeo)',
-                  border: '1px solid var(--color-borde)',
-                  backgroundColor: 'var(--bg-suelo)',
-                  color: 'var(--color-texto)'
-                }}
-              >
-                <option value="vosk">Vosk (Offline)</option>
-                <option value="nativo">Nativo</option>
-              </select>
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 'var(--texto-meta)', color: 'var(--color-texto)', marginBottom: 'var(--aire-2)' }}>
-              <span>Ver transcripción en vivo</span>
-              <input
-                type="checkbox"
-                checked={verTranscripcion}
-                onChange={(e) => {
-                  hapticaToqueSuave()
-                  setVerTranscripcion(e.target.checked)
-                }}
-                style={{ width: 16, height: 16, accentColor: 'var(--color-acento)' }}
-              />
-            </label>
-            <button
-              type="button"
-              data-testid="btn-abrir-corpus"
-              onClick={() => setMostrarPanelCorpus(true)}
-              style={{
-                padding: 'var(--aire-2) 0',
-                textAlign: 'left',
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--color-texto)',
-                fontSize: 'var(--texto-cuerpo)',
-                cursor: 'pointer'
-              }}
-            >
-              Medición / Panel Corpus
-            </button>
-          </div>
-        </div>
+        <PanelDiagnostico
+          ultimoError={ultimoError}
+          errorRepositorio={errorRepositorio}
+          camaraActiva={camaraActiva}
+          fondoToma={fondoToma}
+          vista={vista}
+          estadoMotor={estadoMotor}
+          modoManual={modoManual}
+          motorActivo={motorActivo}
+          wakeLockActivo={wakeLockActivo}
+          textoFreno={textoFreno}
+          usandoMemoriaFallback={usandoMemoriaFallback}
+          engine={engine}
+          setEngine={setEngine}
+          verTranscripcion={verTranscripcion}
+          setVerTranscripcion={setVerTranscripcion}
+          setMostrarPanelCorpus={setMostrarPanelCorpus}
+        />
       )}
 
       {(vista === 'biblioteca' || (vista === 'lectura' && origenLecturaRef.current === 'biblioteca')) && (
@@ -2235,65 +1929,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           En la lectura no: ahi manda el lienzo, de borde a borde. */}
       {vista !== 'lectura' && <div className="franja-hora" aria-hidden="true" />}
 
-      {/* Toast / Aviso Breve */}
-      {avisoInfo && (
-        <div
-          data-testid="aviso-flotante"
-          style={{
-            position: 'fixed',
-            // SOBRE LA BARRA DE ANDROID Y CENTRADO -28-09-2026-. En el moto g86 el aviso quedaba
-            // medio tapado por la barra de navegacion -no sumaba el area segura- y corrido a la
-            // derecha: se centraba con translateX(-50%), y la animacion panelSube, que tambien
-            // usa transform, lo pisaba. Ahora se centra con margenes, sin transform.
-            // En la lectura, encima del circulo de 72 -Empezar o Parar-: a 32 px quedaba montado
-            // sobre el, visto en el moto g86 el mismo dia.
-            bottom: vista === 'lectura'
-              ? 'calc(var(--circulo-desde-abajo) + 72px + var(--aire-3) + env(safe-area-inset-bottom, 0px))'
-              : 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))',
-            left: 0,
-            right: 0,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            width: 'max-content',
-            maxWidth: 'calc(100% - 2 * var(--aire-4))',
-            backgroundColor: 'var(--bg-superficie)',
-            color: 'var(--color-texto)',
-            border: '1px solid var(--color-borde)',
-            padding: 'var(--aire-2) var(--aire-3)',
-            borderRadius: 'var(--redondeo-pildora)',
-            fontSize: 'var(--texto-cuerpo)',
-            fontWeight: 600,
-            zIndex: 999,
-            pointerEvents: avisoInfo.accionTexto ? 'auto' : 'none',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 'var(--aire-3)',
-            animation: movimientoApagado() ? 'none' : `panelSube ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
-          }}
-        >
-          <span>{avisoInfo.texto}</span>
-          {avisoInfo.accionTexto && (
-            <button
-              onClick={() => {
-                if (timerAvisoRef.current) clearTimeout(timerAvisoRef.current)
-                setAvisoInfo(null)
-                if (avisoInfo.alEjecutarAccion) avisoInfo.alEjecutarAccion()
-              }}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--color-acento)',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                fontSize: 'var(--texto-cuerpo)',
-                padding: 0
-              }}
-            >
-              {avisoInfo.accionTexto}
-            </button>
-          )}
-        </div>
-      )}
+      <AvisoBreve avisoInfo={avisoInfo} enLectura={vista === 'lectura'} cerrarAviso={cerrarAviso} />
     </div>
   )
 }

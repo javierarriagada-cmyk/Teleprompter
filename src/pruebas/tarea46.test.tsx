@@ -23,7 +23,10 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
       'src/components/PanelCorpus.tsx',
       'src/components/BarraDeTiempo.tsx',
       'src/components/TarjetaLectura.tsx',
-      'src/components/Entrada.tsx'
+      'src/components/Entrada.tsx',
+      'src/components/AvisoBreve.tsx',
+      'src/components/IndicadorPrecarga.tsx',
+      'src/components/PanelDiagnostico.tsx'
     ]
 
     const regexHexColor = /#(?:[0-9a-fA-F]{3,4}){1,2}\b/g
