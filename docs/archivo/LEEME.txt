@@ -1,0 +1,4 @@
+Aquí se encuentran los encargos y documentos viejos de Sigo, movidos el 28-09-2026 desde docs/.
+Los comentarios del código que citan "docs/tareaNN.txt" se refieren a estos archivos.
+Lo vigente permanece en docs/.
+Consulte el directorio docs/ para la documentación activa del proyecto.
