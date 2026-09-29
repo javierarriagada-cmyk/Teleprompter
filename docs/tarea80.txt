@@ -1,0 +1,132 @@
+TAREA 80 - MICROFONO NEGADO, CONTRASTE DEL TEMA CLARO, NOMBRE DEL Aa Y EL PERMISO DE MAS
+Encargo para Jules, 28-09-2026. Sale de la revision de Sigo contra las guias de calidad de
+Android -developer.android.com/develop/adaptive-apps/quality-guidelines-. Cuatro arreglos
+chicos e independientes. Javier los aprobo uno por uno.
+
+REGLAS DE LA CASA -valen para todo el encargo-
+  - Comentarios en castellano, sin tildes, y explican POR QUE, con la fecha 28-09-2026 y el
+    caso que los provoca. Ningun comentario existente se borra ni se acorta.
+  - Todo texto que ve la persona sale de src/textos/es.ts y en.ts -nunca escrito en el JSX-.
+  - Colores, radios y aire salen de las variables CSS; nada escrito a mano.
+  - No se agregan dependencias.
+  - npx tsc --noEmit sin errores y npx vitest run con todas las pruebas en verde al terminar.
+
+==============================================================================
+1. SI SE NIEGA EL MICROFONO, SIGO LO EXPLICA Y OFRECE LA SALIDA
+==============================================================================
+EL PROBLEMA -visto en el codigo, main c81ee46-
+  src/App.tsx, handleEmpezarDesdeListo -linea 1180 aprox-: hace `await pedirMicrofono()` y NO
+  mira la respuesta. Si la persona niega el permiso, la lectura parte igual y el texto no avanza
+  nunca, porque Sigo avanza con la voz. No existe ningun texto que lo explique. Y desde la
+  segunda negativa Android ya no muestra su cartel: la persona queda sin salida.
+  Guias de Android: Permission_Rationale -explicar por que- y Graceful_Degradation -no dejar al
+  usuario atrapado-.
+
+LO QUE HAY QUE HACER
+  a) handleEmpezarDesdeListo: guardar el resultado. Si pedirMicrofono() devuelve false, NO se
+     empieza -no se llama setEstadoToma('leyendo') ni handleStart()-: se abre el dialogo de
+     abajo y la pantalla queda en LISTO, como estaba. El comentario que hoy dice "Si la persona
+     lo niega, se lee igual, como antes" se conserva y se le agrega debajo el cambio y su motivo:
+     sin microfono el texto no avanza y, con camara, la toma saldria muda.
+
+  b) El dialogo -componente nuevo src/components/DialogoMicrofono.tsx-:
+       data-testid="dialogo-microfono"
+       Titulo -clave microfonoTitulo-:
+         es: 'Sigo necesita el micrófono'
+         en: 'Sigo needs the microphone'
+       Explicacion -clave microfonoExplicacion-:
+         es: 'Escucha tu voz para avanzar el texto al ritmo en que lees. La voz se reconoce en el teléfono, sin internet.'
+         en: 'It listens to your voice to move the text as you read. Your voice is recognized on the phone, offline.'
+       Dos botones, a la derecha, en este orden:
+         "Ahora no"      -clave ahoraNo; en: 'Not now'-         data-testid="btn-microfono-ahora-no"
+                         boton de texto: cierra el dialogo. Nada mas.
+         "Abrir ajustes" -clave abrirAjustes; en: 'Open settings'- data-testid="btn-microfono-ajustes"
+                         boton lleno: abre los ajustes de Sigo en Android -punto c- y cierra
+                         el dialogo.
+       Aspecto -dialogo de Material 3, el mismo de PantallaAjustes-: reusar las clases
+       .dialogo-ajustes -radio 28, relleno 24, --bg-superficie- y .dialogo-ajustes-titulo.
+       La capa es nueva, .capa-dialogo-microfono en styles-ajustes.css: position fixed, inset 0,
+       fondo var(--velo-modal), dialogo CENTRADO vertical y horizontal, z-index 300 -por encima
+       de la lectura y de sus controles; Ajustes usa 240-. Un toque en la capa, fuera del
+       dialogo, cierra como "Ahora no".
+       Botones: fila .botones-dialogo -flex, justify-content flex-end, gap 8px, margin-top 24px-.
+       Cada boton 40px de alto, padding 0 16px, radio var(--redondeo-pildora), font-size 14px,
+       font-weight 500. "Ahora no": fondo transparente, sin borde, color var(--color-texto).
+       "Abrir ajustes": fondo var(--color-acento), color var(--color-texto-acento), sin borde.
+       El area tocable de cada boton llega a 48px de alto con un ::after de inset -4px 0, como
+       .ficha-listo.
+       La explicacion: font-size 16px, line-height 1.5, color var(--color-apagado), margin 0.
+  c) Abrir los ajustes de la app, lado nativo. En
+     android/app/src/main/java/com/sigoteleprompter/app/VoskNativoPlugin.java -que ya es el
+     dueno del permiso "microfono"- un @PluginMethod nuevo `abrirAjustesDeLaApp`:
+       Intent con android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS y
+       Uri.fromParts("package", getContext().getPackageName(), null), FLAG_ACTIVITY_NEW_TASK,
+       getActivity().startActivity(...); call.resolve(). Si falla, call.reject con el motivo.
+     Lado JS, por la misma cadena que ya usa pedirMicrofono:
+       src/motor/MotorNativo.ts   -interfaz del plugin: abrirAjustesDeLaApp(): Promise<void>; y
+                                   un metodo abrirAjustesDeLaApp() que en web no hace nada-
+       src/motor/MotorDeVoz.ts    -abrirAjustesDeLaApp?(): Promise<void>, opcional como
+                                   pedirMicrofono-
+       src/hooks/useASR.ts        -expone abrirAjustesDeLaApp igual que pedirMicrofono; si el
+                                   motor no lo tiene, no hace nada-
+       src/App.tsx                -lo toma de useASR y lo pasa al dialogo-.
+  d) El boton y el gesto de atras de Android cierran el dialogo -como "Ahora no"-: en la funcion
+     a la que apunta handleVolverAtrasRef en App.tsx, el dialogo abierto es lo PRIMERO que se
+     cierra, antes que cualquier otra capa. La tecla Escape tambien -useCerrarAfuera ya lo hace
+     si se usa para el dialogo-.
+  e) Al volver de los ajustes de Android no se empieza solo: la persona aprieta Empezar otra vez
+     y, si ya dio el permiso, parte normal.
+
+PRUEBA
+  Una prueba de comportamiento en un archivo nuevo src/__tests__/microfono-negado.test.tsx:
+  con pedirMicrofono devolviendo false, apretar Empezar muestra dialogo-microfono y la toma NO
+  pasa a leyendo; "Ahora no" lo cierra; "Abrir ajustes" llama a abrirAjustesDeLaApp. Con true,
+  no aparece el dialogo y la lectura parte. Mirar como las pruebas existentes fingen useASR o el
+  motor -src/__tests__/pantallas.test.tsx- y hacer igual. Ninguna prueba que lea el codigo
+  fuente con readFileSync.
+
+==============================================================================
+2. CONTRASTE DEL GRIS SECUNDARIO EN TEMA CLARO
+==============================================================================
+EL PROBLEMA
+  src/styles.css, bloque [data-tema="claro"]: --color-apagado: #78706A. Sobre el suelo #F3F1ED
+  da 4,3 a 1; la guia de Android -Visual_Contrast- pide 4,5 a 1 para texto chico, y ese gris se
+  usa en textos de 12 a 14 px -fechas, valores de ajustes, explicaciones-.
+LO QUE HAY QUE HACER
+  Cambiar SOLO ese valor a #736B65: 4,6 a 1 sobre #F3F1ED y 5,2 a 1 sobre #FFFFFF. Es el mismo
+  gris calido, un tono mas oscuro. Comentario encima con las cifras de antes y de despues.
+  El tema oscuro no se toca: #CAC5C2 sobre #151312 ya cumple de sobra.
+
+==============================================================================
+3. EL BOTON Aa DEL EDITOR, CON NOMBRE PARA EL LECTOR DE PANTALLA
+==============================================================================
+EL PROBLEMA
+  src/components/EditorCabecera.tsx, boton data-testid="btn-menu-opciones-editor": su contenido
+  es el texto "Aa". TalkBack lo lee "A, a", que no dice nada. Guia: Content_Description.
+LO QUE HAY QUE HACER
+  Agregarle aria-label={t('ajustesLectura')} -la clave ya existe: 'Ajustes de lectura'-. El
+  texto visible "Aa" no cambia.
+
+==============================================================================
+4. EL PERMISO PARA ESCRIBIR EN TODA LA MEMORIA, SOLO DONDE HACE FALTA
+==============================================================================
+EL PROBLEMA
+  android/app/src/main/AndroidManifest.xml pide WRITE_EXTERNAL_STORAGE sin tope. Desde Android
+  10 no sirve para nada -Sigo guarda en la galeria por MediaStore, sin permiso- y Play lo
+  muestra en la ficha como "puede modificar o borrar el contenido de tu almacenamiento".
+  Guia: Minimize_Permissions.
+LO QUE HAY QUE HACER
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+      android:maxSdkVersion="28" />
+  con un comentario XML encima que diga el motivo. INTERNET, RECORD_AUDIO, CAMERA y
+  MODIFY_AUDIO_SETTINGS NO se tocan.
+
+==============================================================================
+TERMINADO CUANDO
+==============================================================================
+  - Los cuatro puntos hechos, cada uno con su comentario de por que.
+  - npx tsc --noEmit sin errores; npx vitest run todo en verde, con la prueba nueva.
+  - Ningun comentario existente borrado ni acortado.
+  - Nada fuera de lo que dice este encargo. Si algo no calza con lo descrito -una linea que no
+    esta donde se dice, una funcion con otro nombre-, se describe en el mensaje final en vez
+    de improvisar.
