@@ -66,6 +66,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <!-- WRITE_EXTERNAL_STORAGE solo hace falta hasta Android 9 (API 28). Desde Android 10 (API 29) Sigo guarda en la galeria por MediaStore sin necesitar este permiso -28-09-2026-. -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28" />
+    <!-- 29-09-2026: el permiso se fue. Con Android 10 como mínimo -variables.gradle- ningún
+         teléfono que pueda instalar Sigo lo usaba: quedaba escrito sin efecto. -->
 </manifest>

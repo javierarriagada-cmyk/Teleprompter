@@ -1,5 +1,10 @@
 ext {
-    minSdkVersion = 24
+    // ANDROID 10 COMO MÍNIMO -29-09-2026, decisión de Javier-. Era 24 -Android 7, 2016-. Guardar
+    // en la galería -CamaraNativaPlugin.copiarAGaleria- usa RELATIVE_PATH e IS_PENDING, que
+    // existen desde Android 10: en 7 a 9 fallaba. Y un teléfono de 2018 o anterior difícilmente
+    // sostiene el reconocimiento de voz mientras graba en 1080p. Ver la revisión de calidad de
+    // Android, teleprom/00-arquitectura/calidad-android-28-sep.txt.
+    minSdkVersion = 29
     compileSdkVersion = 36
     targetSdkVersion = 36
     androidxActivityVersion = '1.11.0'
