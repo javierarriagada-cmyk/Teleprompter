@@ -19,7 +19,7 @@ export type TramoFormato = {
 // PAREJAS_COLOR estaba en App.tsx hasta la tarea 46 y se movio aca porque tambien
 // la necesita EditorView para dibujar los cuadraditos donde se eligen. Una sola
 // fuente de la verdad: si se agrega una pareja, se agrega aca y en ningun otro
-// lado. sanitizarColores, en App.tsx, la usa para descartar combinaciones viejas.
+// lado. sanitizarColores -src/app/ajustesIniciales.ts desde la tarea 81- la usa para descartar combinaciones viejas.
 export const PAREJAS_COLOR = [
   { fondo: '#000000', letra: '#FFFFFF' },
   { fondo: '#000000', letra: '#F5C24B' },
