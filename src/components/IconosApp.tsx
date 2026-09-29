@@ -386,6 +386,105 @@ export function IconoSubtitulos(props: PropsIcono) {
   )
 }
 
+// LOS ICONOS DE LAS FILAS DE AJUSTES -28-09-2026-. El dibujo aprobado llevaba un icono a la izquierda
+// de cada fila; la pantalla salio sin ellos y Javier lo noto: "con dibujito... mejor espaciado".
+// Mismo trazo que el resto -Trazo, 1.6-.
+
+/** Una A grande y una chica: el tamano de letra. */
+export function IconoTamanoLetra(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M3 19l5.5-14 5.5 14M5 14h7" />
+      <path d="M15 19l3-8 3 8M16.2 16h3.6" />
+    </Trazo>
+  )
+}
+
+/** Una T con remates: la tipografia. */
+export function IconoTipografia(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M5 7V5h14v2" />
+      <path d="M12 5v14" />
+      <path d="M9 19h6" />
+    </Trazo>
+  )
+}
+
+/** Dos margenes y renglones entre ellos: el ancho del texto. */
+export function IconoAnchoTexto(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M3 4v16M21 4v16" />
+      <path d="M7.5 9h9M7.5 12h9M7.5 15h6" />
+    </Trazo>
+  )
+}
+
+/** Una paleta: los colores de lectura. */
+export function IconoPaleta(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-1.3-1-1.6-1-2.6 0-.9.7-1.5 1.7-1.5H17a4 4 0 0 0 4-4c0-4.5-4-8.2-9-8.2z" />
+      <circle cx="7.5" cy="11" r="1" />
+      <circle cx="10" cy="7" r="1" />
+      <circle cx="15" cy="7.5" r="1" />
+    </Trazo>
+  )
+}
+
+/** Una luna: el tema. */
+export function IconoTema(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" />
+    </Trazo>
+  )
+}
+
+/** Un globo: el idioma de la app. */
+export function IconoIdioma(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z" />
+    </Trazo>
+  )
+}
+
+/** Una i en un circulo: la version. */
+export function IconoInfo(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5" />
+      <path d="M12 7.8v.2" />
+    </Trazo>
+  )
+}
+
+/** Un candado: la privacidad. */
+export function IconoCandado(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <rect x="5" y="11" width="14" height="10" rx="2" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+    </Trazo>
+  )
+}
+
+/** Un signo de pregunta en un circulo: el soporte. */
+export function IconoAyuda(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.1-2.4 3.6" />
+      <path d="M12 17v.2" />
+    </Trazo>
+  )
+}
+
 /** SIN VIDEOS -tarea 76, 28-09-2026-. Un visor de cámara: cuatro esquinas en L en el rojo de
  * grabar y, adentro, una filmadora de líneas con el triángulo de reproducir. Javier lo eligió
  * de la imagen de una auditoría; está hecho con las piezas de este archivo.
