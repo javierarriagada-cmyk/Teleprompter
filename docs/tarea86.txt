@@ -110,8 +110,18 @@ REGLAS QUE NO SE NEGOCIAN
 ==============================================================================
 4. LO QUE NO VA AHORA
 ==============================================================================
-  - Capturas de tableta: NO. El diseño para tableta es la tarea 83, que no está hecha; mostrar la
-    tableta de hoy sería mostrar algo que se ve mal. Se agregan después de la 83.
+  - CAPTURAS DE TABLETA: SÍ VAN -Javier, 29-09-. La consola pide dos juegos: tableta de 7 pulgadas
+    y de 10 pulgadas. Por cada una, 4 capturas, en es-419 y en en-US:
+      7 pulgadas:  1440 x 2560 -vertical- o 2560 x 1440 -horizontal-.
+      10 pulgadas: 2160 x 3840 o 3840 x 2160 -la consola pide entre 1080 y 7680 por lado-.
+    Mismas reglas que las del teléfono: app REAL, 9:16 o 16:9 exacto, sin alfa, menos de 8 MB.
+    Estados: Leer, Grabar con la cámara detrás, la tableta de lado y el editor.
+    OJO, REGLA DE VERDAD: el diseño de tableta aprobado -tus bocetos- es la tarea 83 y todavía no
+    está en la app. Las capturas deben mostrar lo que la app hace de verdad. Por eso: deja listo el
+    guion que genera las capturas de tableta desde la app real, genera hoy un juego PROVISIONAL
+    con la app actual -en capturas/tableta-provisional/, marcado así en la lámina- y escribe en el
+    mensaje final cómo regenerarlas con un solo comando cuando la 83 esté fusionada. Javier sube
+    las de tableta después de la 83.
   - Video de YouTube: NO por ahora. Si quieres, propone en un párrafo qué mostraría.
   - Ícono: ya existe, no se toca. Es android/app/src/main/ic_launcher-playstore.png -512 x 512,
     PNG con alfa, 48 KB-. OJO: docs/ic-play-512.png es un ícono VIEJO; no usarlo.
