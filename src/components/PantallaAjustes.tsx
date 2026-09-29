@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { App as CapacitorApp } from '@capacitor/app'
-import { IconoAtras, IconoChevron } from './IconosApp'
+import {
+  IconoAtras, IconoChevron, IconoTamanoLetra, IconoTipografia, IconoAnchoTexto, IconoPaleta, IconoEspejo,
+  IconoReloj, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda
+} from './IconosApp'
 import { hapticaSeleccion } from '../haptica'
 import { Interruptor } from './Interruptor'
 import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, PASOS_LETRA } from './estiloLectura'
@@ -54,8 +57,11 @@ function FilaAjuste({
   valor,
   explicacion,
   onClick,
-  extra
+  extra,
+  icono
 }: {
+  // El icono de la izquierda -28-09-2026-: lo traia el dibujo aprobado y la pantalla salio sin el.
+  icono?: React.ReactNode
   testid: string
   nombre: string
   valor?: string
@@ -66,6 +72,7 @@ function FilaAjuste({
   if (extra) {
     return (
       <div className={`fila-ajuste${explicacion ? ' con-explicacion' : ''}`} data-testid={testid}>
+        {icono && <span className="fila-ajuste-icono" aria-hidden="true">{icono}</span>}
         <div className="fila-ajuste-textos">
           <div className="fila-ajuste-nombre">{nombre}</div>
           {explicacion && <div className="fila-ajuste-explicacion">{explicacion}</div>}
@@ -82,6 +89,7 @@ function FilaAjuste({
       aria-label={valor ? `${nombre}, ${valor}` : nombre}
       onClick={onClick}
     >
+      {icono && <span className="fila-ajuste-icono" aria-hidden="true">{icono}</span>}
       <div className="fila-ajuste-textos">
         <div className="fila-ajuste-nombre">{nombre}</div>
         {explicacion && <div className="fila-ajuste-explicacion">{explicacion}</div>}
@@ -210,30 +218,35 @@ export function PantallaAjustes({
 
         <FilaAjuste
           testid="fila-tamano-letra"
+          icono={<IconoTamanoLetra tamano={22} />}
           nombre={t('tamanoLetra')}
           valor={String(fontSize)}
           onClick={() => setDialogo('letra')}
         />
         <FilaAjuste
           testid="fila-tipo-letra"
+          icono={<IconoTipografia tamano={22} />}
           nombre={t('tipografia')}
           valor={tipoFuente === 'serif' ? t('tipoSerif') : t('tipoSans')}
           onClick={() => setDialogo('tipo')}
         />
         <FilaAjuste
           testid="fila-ancho-texto"
+          icono={<IconoAnchoTexto tamano={22} />}
           nombre={t('anchoTexto')}
           valor={nombreAncho(columnaAngosta, marginPercent)}
           onClick={() => setDialogo('ancho')}
         />
         <FilaAjuste
           testid="fila-colores"
+          icono={<IconoPaleta tamano={22} />}
           nombre={t('coloresLectura')}
           valor={nombrePareja(colorFondo, colorLetra)}
           onClick={() => setDialogo('colores')}
         />
         <FilaAjuste
           testid="fila-espejo"
+          icono={<IconoEspejo tamano={22} />}
           nombre={t('espejo')}
           explicacion={t('espejoExplicacion')}
           extra={(
@@ -247,6 +260,7 @@ export function PantallaAjustes({
         />
         <FilaAjuste
           testid="fila-mostrar-tiempo"
+          icono={<IconoReloj tamano={22} />}
           nombre={t('mostrarTiempo')}
           extra={(
             <Interruptor
@@ -263,12 +277,14 @@ export function PantallaAjustes({
             <h2 className="titulo-seccion-ajustes">{t('seccionApariencia')}</h2>
             <FilaAjuste
               testid="fila-tema"
+              icono={<IconoTema tamano={22} />}
               nombre={t('tema')}
               valor={tema === 'claro' ? t('temaClaro') : t('temaOscuro')}
               onClick={() => setDialogo('tema')}
             />
             <FilaAjuste
               testid="fila-idioma"
+              icono={<IconoIdioma tamano={22} />}
               nombre={t('idiomaDeLaApp')}
               valor={idioma === 'es' ? 'Español' : 'English'}
               onClick={() => setDialogo('idioma')}
@@ -276,16 +292,19 @@ export function PantallaAjustes({
 
             <h2 className="titulo-seccion-ajustes">{t('seccionAcerca')}</h2>
             <div className="fila-ajuste" data-testid="fila-version">
+              <span className="fila-ajuste-icono" aria-hidden="true"><IconoInfo tamano={22} /></span>
               <div className="fila-ajuste-nombre">{t('version')}</div>
               <span className="fila-ajuste-valor">{version ?? '—'}</span>
             </div>
             <FilaAjuste
               testid="fila-privacidad"
+              icono={<IconoCandado tamano={22} />}
               nombre={t('privacidad')}
               onClick={() => abrirEnlace(enlacePrivacidad)}
             />
             <FilaAjuste
               testid="fila-soporte"
+              icono={<IconoAyuda tamano={22} />}
               nombre={t('soporte')}
               onClick={() => abrirEnlace(enlaceSoporte)}
             />

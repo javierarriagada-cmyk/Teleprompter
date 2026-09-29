@@ -142,11 +142,46 @@
   font-size: 20px;
   line-height: 1;
 }
+/* EL DESLIZADOR COMO EN EL DIBUJO APROBADO -28-09-2026-: pista gruesa de 16 con el relleno en crema
+   y un tirador de barra, el de Material 3 expresivo. Era la pista fina con bolita del navegador. */
 .barra-pasos,
 .barra-brillo {
   flex: 1;
+  height: 32px;
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.barra-pasos::-webkit-slider-runnable-track,
+.barra-brillo::-webkit-slider-runnable-track {
   height: 16px;
-  accent-color: var(--color-acento);
+  border-radius: 8px;
+  background: linear-gradient(to right, var(--color-acento) var(--relleno, 50%), var(--bg-menu) var(--relleno, 50%));
+}
+.barra-pasos::-webkit-slider-thumb,
+.barra-brillo::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 4px;
+  height: 32px;
+  margin-top: -8px;
+  border-radius: 2px;
+  background: var(--color-acento);
+  box-shadow: 0 0 0 4px var(--bg-superficie);
+}
+.barra-pasos::-moz-range-track,
+.barra-brillo::-moz-range-track {
+  height: 16px;
+  border-radius: 8px;
+  background: linear-gradient(to right, var(--color-acento) var(--relleno, 50%), var(--bg-menu) var(--relleno, 50%));
+}
+.barra-pasos::-moz-range-thumb,
+.barra-brillo::-moz-range-thumb {
+  width: 4px;
+  height: 32px;
+  border: none;
+  border-radius: 2px;
+  background: var(--color-acento);
 }
 .brillo-ficha {
   display: flex;
@@ -193,6 +228,8 @@
   background: var(--color-acento);
   border-color: var(--color-acento);
 }
+/* Apagado, la perilla va en el gris del borde -como en el dibujo aprobado, 28-09-2026-: casi blanca
+   competia con el interruptor encendido y no se leia cual estaba prendido. */
 .interruptor-perilla {
   position: absolute;
   top: 50%;
@@ -200,7 +237,7 @@
   width: 16px;
   height: 16px;
   border-radius: var(--redondeo-pildora);
-  background: var(--color-texto);
+  background: var(--color-borde);
   transform: translateY(-50%);
 }
 .interruptor.encendido .interruptor-perilla {
@@ -250,8 +287,10 @@
   overflow-y: auto;
   padding: 0 0 calc(24px + env(safe-area-inset-bottom, 0px));
 }
+/* LAS SECCIONES, MAS SEPARADAS -28-09-2026-. Javier comparando con el dibujo: "como categorias se
+   notan mas claramente diferenciados". Mas aire arriba que abajo: el titulo se pega a su grupo. */
 .titulo-seccion-ajustes {
-  margin: 20px 16px 8px;
+  margin: 32px 16px 8px;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -268,16 +307,25 @@
 .fila-ajuste {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   min-height: 56px;
   padding: 0 16px;
   width: 100%;
   box-sizing: border-box;
   border: none;
-  border-bottom: 1px solid var(--color-separador);
+  /* Linea de un pelo, la de las cajas -antes el separador gris, mas marcado que en el dibujo-. */
+  border-bottom: 1px solid var(--borde-tarjeta);
   background: transparent;
   color: var(--color-texto);
   text-align: left;
+}
+.fila-ajuste-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  flex-shrink: 0;
+  color: var(--color-apagado);
 }
 .fila-ajuste.con-explicacion {
   min-height: 72px;
