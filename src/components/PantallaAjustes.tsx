@@ -184,7 +184,16 @@ export function PantallaAjustes({
     : 'https://sigoteleprompter.com/en/support'
 
   return (
-    <div className="pantalla-ajustes" data-testid="pantalla-ajustes">
+    // UNA PANTALLA QUE TAPA TODO, DICHA COMO TAL -tarea 84, G2, 29-09-2026-. Para TalkBack era
+    // un bloque más de la página: al abrirla seguía leyendo lo de atrás. role="dialog" con
+    // aria-modal la marca como la capa de encima, y su nombre es el título -"Ajustes"-.
+    <div
+      className="pantalla-ajustes"
+      data-testid="pantalla-ajustes"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-pantalla-ajustes"
+    >
       <header className="barra-ajustes">
         <button
           type="button"
@@ -195,7 +204,7 @@ export function PantallaAjustes({
         >
           <IconoAtras tamano={22} />
         </button>
-        <h1 className="titulo-ajustes">{t('tituloAjustes')}</h1>
+        <h1 className="titulo-ajustes" id="titulo-pantalla-ajustes">{t('tituloAjustes')}</h1>
       </header>
 
       <div className="cuerpo-ajustes">

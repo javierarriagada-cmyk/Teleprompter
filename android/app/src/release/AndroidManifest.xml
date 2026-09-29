@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- QUÉ SE RESPALDA -tarea 84, E1, 29-09-2026-: solo los guiones y los ajustes; ver
+         res/xml/reglas_respaldo.xml. Va en el manifiesto de release, que Android junta con el
+         de main, y no en main: la APK de prueba sigue respaldando como siempre -regla madre-.
+         Android 12 o más nuevo lee dataExtractionRules; Android 10 y 11, fullBackupContent. -->
+    <application
+        android:dataExtractionRules="@xml/reglas_respaldo"
+        android:fullBackupContent="@xml/respaldo_completo" />
+
+    <!-- SOLO EN RELEASE -tarea 84, D2, 29-09-2026-: PaqueteDeVoz mira si hay red antes de pedir el
+         modelo inglés a Play, para decir "sin conexión" en vez de dejar la descarga pendiente sin
+         aviso. Es un permiso normal -no pregunta nada a la persona-. La APK de prueba no lo
+         necesita ni lo lleva: trae los dos modelos dentro. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+</manifest>

@@ -194,6 +194,22 @@ public class VoskNativoPlugin extends Plugin {
             idiomaModelo = null;
         }
         borrarCarpetaVieja();
+        // EL MODELO QUE NO VIENE EN ASSETS -tarea 84, D2, 29-09-2026-. En la APK de prueba los dos
+        // vienen en assets y en la versión de Play el español también -su paquete es install-time
+        // y Android lo junta con los assets de la app-: los dos siguen por StorageService.unpack,
+        // como siempre. El inglés de Play no: su paquete es on-demand y queda en una carpeta
+        // aparte. Si ya se bajó, Vosk lo abre directo desde ahí, sin copiarlo; si no, iniciar NO
+        // lo pide -esto también lo llama la precarga silenciosa al abrir la app, y bajar 68 MB sin
+        // que nadie lo pida no corresponde-: lo pide asegurarVoz, al apretar Empezar.
+        if (!enAssets(carpetaModelo(idioma))) {
+            String ruta = PaqueteDeVoz.rutaSiEsta(getContext(), carpetaModelo(idioma));
+            if (ruta == null) {
+                call.reject("El modelo " + carpetaModelo(idioma) + " no está bajado", "VOZ_NO_DESCARGADA");
+                return;
+            }
+            cargarDesdeCarpeta(call, ruta, idioma);
+            return;
+        }
         call.setKeepAlive(true);
         llamadaIniciar = call;
         final String idiomaPedido = idioma;
@@ -216,6 +232,80 @@ public class VoskNativoPlugin extends Plugin {
                 }
             }
         );
+    }
+
+    /**
+     * EL MODELO DEL IDIOMA, LISTO PARA LEER, BAJÁNDOLO SI HACE FALTA -tarea 84, D2 y D3-.
+     *
+     * Lo llama la app al apretar Empezar, antes de la cuenta. Si el modelo está -en assets, o su
+     * paquete ya bajado- responde al instante. Si no, lo pide a Play -PaqueteDeVoz, solo en la
+     * versión de Play- y va avisando el avance con el evento "progresoVoz" -de 0 a 1-: la app lo
+     * muestra en el mismo IndicadorPrecarga de siempre. Sin internet rechaza con SIN_CONEXION y la
+     * app dice que hace falta conexión una vez; la lectura no parte.
+     */
+    @PluginMethod
+    public void asegurarVoz(PluginCall call) {
+        String idioma = "en".equals(call.getString("idioma", "es")) ? "en" : "es";
+        final String paquete = carpetaModelo(idioma);
+        if (enAssets(paquete) || PaqueteDeVoz.rutaSiEsta(getContext(), paquete) != null) {
+            JSObject r = new JSObject();
+            r.put("estado", "lista");
+            call.resolve(r);
+            return;
+        }
+        PaqueteDeVoz.bajar(getActivity(), getContext(), paquete, new PaqueteDeVoz.Aviso() {
+            @Override
+            public void progreso(double fraccion) {
+                JSObject d = new JSObject();
+                d.put("idioma", idioma);
+                d.put("progreso", fraccion);
+                notifyListeners("progresoVoz", d);
+            }
+
+            @Override
+            public void listo(String rutaModelo) {
+                JSObject r = new JSObject();
+                r.put("estado", "lista");
+                r.put("descargada", true);
+                call.resolve(r);
+            }
+
+            @Override
+            public void fallo(String codigo, String mensaje) {
+                call.reject(mensaje, codigo);
+            }
+        });
+    }
+
+    /**
+     * Si la carpeta del modelo está en los assets -los de la app o los de un paquete install-time,
+     * que Android junta con ellos-. Se mira el uuid, que genUUID pone en cada carpeta de modelo.
+     */
+    private boolean enAssets(String carpeta) {
+        try {
+            getContext().getAssets().open(carpeta + "/uuid").close();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Carga un modelo desde una carpeta común -el paquete on-demand ya bajado-, sin copiarlo.
+     * En su propio hilo: new Model tarda segundos con un modelo de 68 MB, y el hilo del plugin
+     * no puede quedarse esperando.
+     */
+    private void cargarDesdeCarpeta(PluginCall call, String ruta, String idioma) {
+        new Thread(() -> {
+            try {
+                Model cargado = new Model(ruta);
+                modelo = cargado;
+                idiomaModelo = idioma;
+                call.resolve();
+            } catch (Exception e) {
+                call.reject("No se pudo cargar el modelo: " + e.getMessage());
+            }
+        }, "sigo-modelo").start();
     }
 
     /**

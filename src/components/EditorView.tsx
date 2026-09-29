@@ -377,6 +377,10 @@ export default function EditorView({
           onFocus={() => setTituloEnfocado(true)}
           onBlur={() => setTituloEnfocado(false)}
           placeholder={t('tituloDelGuion')}
+          // EL NOMBRE PARA EL LECTOR -tarea 84, G3, 29-09-2026-. El placeholder no es un nombre:
+          // desaparece al escribir y TalkBack decía solo "cuadro de edición". Clave aparte y no
+          // la del placeholder: el placeholder dice qué hacer, el nombre dice qué es.
+          aria-label={t('nombreCampoTitulo')}
           className="texto-display"
           data-testid="input-titulo-guion"
           style={{

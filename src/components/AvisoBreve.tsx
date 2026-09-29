@@ -17,7 +17,13 @@ interface AvisoBreveProps {
 export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizontal = null }: AvisoBreveProps) {
   const enRieles = enLectura && !!columnaHorizontal
   return (
-    <>
+    /* EL LECTOR DE PANTALLA ANUNCIA EL AVISO -tarea 84, G1, 29-09-2026-. role="status" con
+       aria-live="polite": TalkBack lo lee cuando termina lo que estaba diciendo, sin cortar a la
+       persona. La región está SIEMPRE montada y el aviso aparece adentro: una región viva que
+       nace junto con su texto muchas veces no se anuncia -Android y Chrome solo avisan los
+       CAMBIOS de una región que ya existía-. No ocupa lugar: el aviso de adentro es fixed. La
+       duración del aviso no cambia -useAviso-. */
+    <div role="status" aria-live="polite" data-testid="region-aviso">
       {/* Toast / Aviso Breve */}
       {avisoInfo && (
         <div
@@ -80,6 +86,6 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
           )}
         </div>
       )}
-    </>
+    </div>
   )
 }

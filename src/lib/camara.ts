@@ -144,6 +144,32 @@ export function grabacionNativaEnCurso(): boolean {
  * Enciende la sesión de cámara nativa con CameraPreview.
  * REGLA FUNDAMENTAL: disableAudio SIEMPRE en false para evitar que futuras grabaciones salgan mudas.
  */
+// LA CÁMARA NEGADA SE DICE -tarea 84, F2, 29-09-2026-. Si la persona niega el permiso, Grabar se
+// quedaba sin imagen y nadie explicaba por qué: encenderCamara lo anotaba en la consola y devolvía
+// null, igual que con cualquier otro error. Ahora, cuando el motivo es el permiso, avisa a quien se
+// haya suscrito -App abre el diálogo de permiso, el mismo del micrófono-.
+//
+// CÓMO SE DISTINGUE "NEGADO" DE LOS DEMÁS ERRORES. El plugin de la cámara -capgo camera-preview,
+// CameraPreview.java, handleCameraPermissionResult- rechaza start() con el código
+// 'cameraPermissionDenied' cuando Android devuelve el permiso negado; "cámara ocupada" o "no hay
+// cámara" traen otros códigos y otros mensajes. Se mira el código, y el mensaje de ese mismo
+// rechazo -"camera permission denied"- por si una versión del plugin no pasara el código.
+const oyentesCamaraNegada = new Set<() => void>()
+
+export function alNegarseLaCamara(cb: () => void): () => void {
+  oyentesCamaraNegada.add(cb)
+  return () => {
+    oyentesCamaraNegada.delete(cb)
+  }
+}
+
+export function esPermisoDeCamaraNegado(err: unknown): boolean {
+  const e = err as { code?: unknown; message?: unknown } | null
+  if (!e) return false
+  if (e.code === 'cameraPermissionDenied') return true
+  return typeof e.message === 'string' && /camera permission denied/i.test(e.message)
+}
+
 export async function encenderCamara(
   lado: LadoCamara,
   config?: OpcionesConfigCamara
@@ -205,6 +231,7 @@ export async function encenderCamara(
   } catch (err) {
     console.error('[Camara] Error al encender cámara nativa:', err)
     estaEncendida = false
+    if (esPermisoDeCamaraNegado(err)) oyentesCamaraNegada.forEach((cb) => cb())
     return null
   }
 }

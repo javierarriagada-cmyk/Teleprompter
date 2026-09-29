@@ -19,7 +19,7 @@ export function IndicadorPrecarga({ estadoPrecarga, progresoPrecarga, errorPreca
     <div
       style={{
         background: 'var(--bg-suelo)',
-        color: estadoPrecarga === 'error' ? 'var(--color-grabando)' : 'var(--color-texto)',
+        color: estadoPrecarga === 'error' || estadoPrecarga === 'sin-conexion' ? 'var(--color-grabando)' : 'var(--color-texto)',
         padding: 'var(--aire-2) var(--aire-3)',
         borderRadius: 'var(--redondeo)',
         marginBottom: 'var(--aire-4)',
@@ -34,6 +34,19 @@ export function IndicadorPrecarga({ estadoPrecarga, progresoPrecarga, errorPreca
         <span>
           ⏬ {t('descargandoModelo')} <strong>{Math.round(progresoPrecarga * 100)}%</strong>
         </span>
+      )}
+      {/* Sin internet para bajar la voz en inglés -tarea 84, D3-: qué pasa y que es una sola vez.
+          Reintentar vuelve a apretar Empezar. */}
+      {estadoPrecarga === 'sin-conexion' && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)', width: '100%', justifyContent: 'space-between' }}>
+          <span data-testid="aviso-voz-sin-conexion">⚠️ {t('vozSinConexion')}</span>
+          <button
+            onClick={reintentarPrecarga}
+            style={{ padding: 'var(--aire-1) var(--aire-2)', fontSize: 'var(--texto-meta)', cursor: 'pointer' }}
+          >
+            {t('reintentar')}
+          </button>
+        </div>
       )}
       {estadoPrecarga === 'error' && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)', width: '100%', justifyContent: 'space-between' }}>

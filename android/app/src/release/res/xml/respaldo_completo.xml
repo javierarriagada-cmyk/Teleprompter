@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- QUÉ SE RESPALDA DE SIGO -tarea 84, E1, 29-09-2026-. Revisión de calidad de Android, punto 2,
+     App_Data_Backup: allowBackup estaba encendido pero sin reglas. Android respalda como máximo
+     25 MB por app y, pasado eso, no respalda nada; en la carpeta de Sigo viven el modelo de voz
+     desempaquetado -decenas de MB, en la memoria externa de la app- y las tomas -files/grabaciones-.
+     Quien cambiaba de teléfono perdía sus guiones.
+
+     Se respaldan SOLO los guiones y los ajustes. Todo lo que no se nombra aquí queda fuera: los
+     modelos de voz -se vuelven a copiar desde la app-, las tomas -pesan cientos de MB; las que
+     importan están en la galería-, el audio de prueba -files/oido-, los cachés y la memoria
+     externa.
+
+     DÓNDE VIVE LO DEL WEBVIEW. El WebView de Android guarda los datos de cada página en
+     app_webview/Default/ dentro de la carpeta de la app -/data/data/com.sigoteleprompter.app/-:
+     IndexedDB/ con la base -https_localhost_0.indexeddb.leveldb- y "Local Storage/" con el
+     localStorage -leveldb-. Comprobado en el emulador con Android 15 -ver el PR de la tarea 84-.
+     domain="root" es esa carpeta de la app. -->
+<!-- Android 10 y 11 -android:fullBackupContent-: las mismas reglas, en el formato viejo. -->
+<full-backup-content>
+    <!-- Los guiones: la base IndexedDB de Sigo -datos/abrirDb.ts-, del origen
+         https://localhost de Capacitor. -->
+    <include domain="root" path="app_webview/Default/IndexedDB/" />
+    <!-- Los ajustes de la app: el localStorage del WebView -tema, letra, colores,
+         idioma, la esquina del recuadro-. -->
+    <include domain="root" path="app_webview/Default/Local Storage/" />
+    <!-- Las preferencias de Android. -->
+    <include domain="sharedpref" path="." />
+    <!-- El idioma elegido en Android 12 o anterior: AppCompat lo guarda en este archivo
+         -AppLocalesMetadataHolderService, AndroidManifest.xml de main-. -->
+    <include domain="file" path="androidx.appcompat.app.AppCompatDelegate.application_locales_record_file" />
+    <!-- FUERA, aunque viva en la carpeta de IndexedDB: los archivos grandes -blobs- de la
+         base. Ahí van los audios del corpus, que en la versión de Play no se graban pero
+         en un teléfono que tuvo la APK de prueba pueden pesar decenas de MB y hacer que
+         Android no respalde NADA -tope de 25 MB-. -->
+    <exclude domain="root" path="app_webview/Default/IndexedDB/https_localhost_0.indexeddb.blob/" />
+</full-backup-content>

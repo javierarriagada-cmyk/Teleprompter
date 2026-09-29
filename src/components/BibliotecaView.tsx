@@ -4,6 +4,7 @@ import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, ResumenGuion, ResumenGrabacion, duracionDeLectura } from '../datos/modelo'
 import TiraGrabaciones from './TiraGrabaciones'
 import { PanelCorpus } from './PanelCorpus'
+import { HERRAMIENTAS } from '../lib/herramientas'
 import TarjetaLectura from './TarjetaLectura'
 import { IconoEngranaje, IconoMas, IconoChevron, IconoTacho, IconoArchivar, IconoCerrar, IconoAtras } from './IconosApp'
 import { MarcaSigo } from './MarcaSigo'
@@ -629,6 +630,11 @@ export default function BibliotecaView({
   // fila ahora es FilaGuion, con sus propios manejadores; estos habian quedado sin uso.
 
   function handleToqueMarcaDiag() {
+    // EN PLAY LOS CINCO TOQUES NO ABREN NADA -tarea 84, B1, 29-09-2026-. Es el paso que pedía el
+    // comentario de arriba: "antes de publicar, el panel de diagnostico se elimina". En la APK de
+    // prueba sigue abriéndolo, porque es donde se afina el motor. No es un fallo mudo: para quien
+    // usa Sigo desde Play la marca es solo la marca.
+    if (!HERRAMIENTAS) return
     const ahora = Date.now()
     if (ahora - ultimoToqueDiagRef.current < MS_ENTRE_TOQUES_DIAGNOSTICO) {
       conteoToquesDiagRef.current += 1
@@ -956,7 +962,8 @@ export default function BibliotecaView({
       )}
 
       {/* Modal de PanelCorpus */}
-      {mostrarPanelCorpus && (
+      {/* Fuera del paquete de Play -tarea 84, B1-: HERRAMIENTAS queda en false al armar. */}
+      {HERRAMIENTAS && mostrarPanelCorpus && (
         <div
           style={{
             position: 'fixed',

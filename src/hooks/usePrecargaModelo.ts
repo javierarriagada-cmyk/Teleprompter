@@ -3,7 +3,9 @@ import { IdMotor } from '../motor/MotorDeVoz'
 import type { MotorVosk } from '../motor/MotorVosk'
 import { cargarMotorVosk } from '../motor/motorWeb'
 
-export type EstadoPrecarga = 'inactivo' | 'descargando' | 'listo' | 'error'
+// 'sin-conexion': la voz en inglés de la versión de Play no se pudo bajar por falta de internet
+// -tarea 84, D3-. Lo usa App con IndicadorPrecarga; este gancho, el del motor web, no lo produce.
+export type EstadoPrecarga = 'inactivo' | 'descargando' | 'listo' | 'error' | 'sin-conexion'
 
 export function usePrecargaModelo(engine: IdMotor = 'vosk'): {
   estado: EstadoPrecarga

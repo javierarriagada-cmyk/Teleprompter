@@ -1,0 +1,22 @@
+// EL MODELO DE VOZ EN ESPAÑOL COMO PAQUETE DE RECURSOS DE PLAY -tarea 84, D1, 29-09-2026-.
+//
+// install-time: viene con la instalación, porque el español es el mercado principal y nadie tiene
+// que esperar una descarga para leer. Android lo junta con los assets de la app, así que
+// VoskNativoPlugin lo sigue desempaquetando con el mismo AssetManager y la misma marca uuid que
+// hoy -comprobado en el AAB con bundletool: assets/model-es/uuid está en el paquete-.
+//
+// Solo existe en la construcción para Play -settings.gradle, -PparaPlay-. La APK de prueba trae
+// el modelo en android/app/src/main/assets/model-es, como siempre.
+apply plugin: 'com.android.asset-pack'
+
+assetPack {
+    // model_es con guion bajo, no model-es: el nombre de un paquete de Play tiene que ser un
+    // nombre de "split" válido -letras, números y guion bajo- y AAPT rechaza el guion -probado-.
+    // La carpeta del modelo adentro sigue llamándose model-es, la que busca VoskNativoPlugin.
+    packName = 'model_es'
+    dynamicDelivery {
+        deliveryType = 'install-time'
+    }
+}
+
+apply from: '../paquete-de-modelo.gradle'

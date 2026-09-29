@@ -6,3 +6,13 @@ preview.log
 build_output.log
 
 dev_server.log
+
+# LA LLAVE DE SUBIDA A GOOGLE PLAY NO ENTRA NUNCA AL REPOSITORIO -tarea 84, A2, 29-09-2026-. Ni
+# sus datos -android/keystore.properties, con las contraseñas- ni el archivo de la llave, esté
+# donde esté. El molde sin datos, android/keystore.properties.ejemplo, sí va.
+android/keystore.properties
+*.jks
+*.keystore
+
+# Bundletool se baja una vez aquí -scripts/play.mjs-, no al repositorio.
+.herramientas/

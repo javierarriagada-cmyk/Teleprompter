@@ -194,7 +194,14 @@ export const es = {
   microfonoTitulo: 'Sigo necesita el micrófono',
   microfonoExplicacion: 'Escucha tu voz para avanzar el texto al ritmo en que lees. La voz se reconoce en el teléfono, sin internet.',
   ahoraNo: 'Ahora no',
-  abrirAjustes: 'Abrir ajustes'
+  abrirAjustes: 'Abrir ajustes',
+  // Diálogo de permiso de cámara -tarea 84, F1, 29-09-2026-: mismo diálogo que el del micrófono.
+  camaraTitulo: 'Sigo necesita la cámara',
+  camaraExplicacion: 'La cámara filma mientras lees. La imagen y el video quedan en el teléfono.',
+  // La voz en inglés se baja de Google Play la primera vez -tarea 84, D3-.
+  vozSinConexion: 'Para leer en inglés hace falta conexión una vez, para bajar la voz en inglés. Después funciona sin internet.',
+  // El nombre del campo del título del guion para el lector de pantalla -tarea 84, G3-.
+  nombreCampoTitulo: 'Título del guion'
 }
 
 export type ClaveTexto = keyof typeof es

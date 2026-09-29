@@ -183,5 +183,12 @@ export const en: Textos = {
   microfonoTitulo: 'Sigo needs the microphone',
   microfonoExplicacion: 'It listens to your voice to move the text as you read. Your voice is recognized on the phone, offline.',
   ahoraNo: 'Not now',
-  abrirAjustes: 'Open settings'
+  abrirAjustes: 'Open settings',
+  // Camera permission dialog -tarea 84, F1, 29-09-2026-: same dialog as the microphone one.
+  camaraTitulo: 'Sigo needs the camera',
+  camaraExplicacion: 'The camera films while you read. The image and the video stay on the phone.',
+  // The English voice is downloaded from Google Play the first time -tarea 84, D3-.
+  vozSinConexion: 'To read in English you need a connection once, to download the English voice. After that it works offline.',
+  // The name of the script title field for screen readers -tarea 84, G3-.
+  nombreCampoTitulo: 'Script title'
 }

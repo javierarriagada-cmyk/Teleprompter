@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { elegirMotor } from '../motor/elegirMotor'
-import { EventoFinal, IdMotor, MotorDeVoz } from '../motor/MotorDeVoz'
+import { EventoFinal, IdMotor, MotorDeVoz, ResultadoVoz } from '../motor/MotorDeVoz'
 import { anotar } from '../lib/diagnostico'
 
 export default function useASR(options: {
@@ -144,6 +144,14 @@ export default function useASR(options: {
     return m.pedirMicrofono()
   }
 
+  // Ver MotorDeVoz.asegurarVoz -tarea 84, D3-. Sin el método -el falso de las pruebas, el web-
+  // el modelo ya está donde tiene que estar: 'lista', y la lectura sigue como siempre.
+  async function asegurarVoz(l: string, alProgreso: (fraccion: number) => void): Promise<ResultadoVoz> {
+    const m = motorRef.current
+    if (!m || !m.asegurarVoz) return 'lista'
+    return m.asegurarVoz(l, alProgreso)
+  }
+
   async function abrirAjustesDeLaApp(): Promise<void> {
     const m = motorRef.current
     if (!m || !m.abrirAjustesDeLaApp) return
@@ -204,6 +212,7 @@ export default function useASR(options: {
     precargar,
     pedirMicrofono,
     abrirAjustesDeLaApp,
+    asegurarVoz,
     motorListo,
     isRecording,
     transcript: (transcript + (transcripcionParcial ? '\n' + transcripcionParcial : '')).trim(),

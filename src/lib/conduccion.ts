@@ -1,6 +1,7 @@
 import { Seguidor, Posicion, Token, MIN_PALABRAS_COINCIDENTES } from './seguidor'
 import { MotorDeAvance } from './avance'
 import { anotar } from './diagnostico'
+import { HERRAMIENTAS } from './herramientas'
 
 export type Conduccion = {
   seguidor: Seguidor
@@ -80,7 +81,9 @@ export function procesarFinal(c: Conduccion, texto: string, tMs: number): Posici
     motor.confirmar(tokenCapped, tMs)
     return { ...pos, hastaToken: tokenCapped }
   } else if (contarPalabras(texto) >= PALABRAS_PARA_QUE_UN_FALLO_CUENTE) {
-    console.warn(`[Seguidor] Final no movió o cayó fuera de ventana para texto "${texto}"`)
+    // LO QUE DIJO LA PERSONA NO VA A LA CONSOLA EN PLAY -tarea 84, B4, 29-09-2026-: es un
+    // registro de prueba con el texto oído. En la APK de prueba y en el navegador sigue igual.
+    if (HERRAMIENTAS) console.warn(`[Seguidor] Final no movió o cayó fuera de ventana para texto "${texto}"`)
     motor.falloCalce(tMs)
   }
   return null

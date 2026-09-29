@@ -1,0 +1,38 @@
+// LO QUE COMPARTEN LOS DOS PAQUETES DE LOS MODELOS -tarea 84, D1, 29-09-2026-.
+//
+// El modelo NO vive en git -android/.gitignore, 57 y 68 MB- y se baja una sola vez con
+// npm run modelo a android/app/src/main/assets/model-es y model-en, donde lo usa la APK de prueba.
+// El paquete de Play no tiene su propia copia en el repositorio: esta tarea la arma antes de cada
+// construcción, copiando la carpeta del modelo y su uuid a src/main/assets/<paquete>/ de este
+// módulo -también ignorada-.
+//
+// EL uuid ES EL MISMO DE LA APK DE PRUEBA: sale de la tarea genUUID de app/build.gradle, la
+// huella del contenido del modelo. Así la marca que Vosk usa para no volver a copiar el modelo
+// sigue existiendo y sigue saliendo del contenido, como pide D1.
+//
+// La carpeta de adentro se llama como el módulo -model-es/..., aunque el paquete se llame model_es,
+// ver model-es/build.gradle-: el AssetManager ve los paquetes install-time mezclados con los assets
+// de la app, y VoskNativoPlugin busca "model-es/uuid", el mismo camino de siempre.
+def carpeta = project.name
+def origen = file("../app/src/main/assets/$carpeta")
+def destino = file("src/main/assets/$carpeta")
+
+tasks.register('copiarModelo', Sync) {
+    dependsOn ':app:genUUID'
+    doFirst {
+        if (!new File(origen, 'am').exists()) {
+            throw new GradleException("Falta el modelo $carpeta en android/app/src/main/assets. Corre primero: npm run modelo")
+        }
+    }
+    from(origen)
+    from(file("../app/build/generated/assets/$carpeta")) { include 'uuid' }
+    into(destino)
+}
+
+// Toda tarea del paquete espera la copia: así ningún paso del empaquetado ve la carpeta vacía o
+// la del modelo anterior.
+tasks.configureEach { t ->
+    if (t.name != 'copiarModelo' && !t.name.toLowerCase().contains('clean')) {
+        t.dependsOn 'copiarModelo'
+    }
+}

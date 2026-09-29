@@ -26,7 +26,9 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
       'src/components/Entrada.tsx',
       'src/components/AvisoBreve.tsx',
       'src/components/IndicadorPrecarga.tsx',
-      'src/components/PanelDiagnostico.tsx'
+      'src/components/PanelDiagnostico.tsx',
+      // Tarea 84 -29-09-2026-: el componente nuevo entra a la lista, como pide la regla de la casa.
+      'src/components/DialogoPermiso.tsx'
     ]
 
     const regexHexColor = /#(?:[0-9a-fA-F]{3,4}){1,2}\b/g

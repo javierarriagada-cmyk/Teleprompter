@@ -1890,3 +1890,18 @@ button.btn-deformable.miniatura-banda:not(:active) {
   bottom: 6px;
   background: rgba(180, 40, 40, 0.9);
 }
+
+/* LA VOZ EN INGLÉS BAJÁNDOSE, SOBRE LA LECTURA -tarea 84, D3, 29-09-2026-. App monta aquí el mismo
+   IndicadorPrecarga de siempre cuando la versión de Play baja el modelo inglés al apretar Empezar,
+   o cuando falta conexión para bajarlo. Fijo arriba y por encima de la lectura -LISTO tapa el flujo
+   de la página, donde vive el indicador del motor web-, respetando la barra del sistema. */
+.aviso-voz {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + var(--aire-3));
+  left: var(--aire-3);
+  right: var(--aire-3);
+  z-index: 998;
+}
+.aviso-voz > div {
+  margin-bottom: 0 !important; /* el indicador trae su margen para el flujo de la página: aquí flota */
+}

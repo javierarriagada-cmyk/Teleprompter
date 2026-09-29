@@ -3,3 +3,11 @@ include ':capacitor-cordova-android-plugins'
 project(':capacitor-cordova-android-plugins').projectDir = new File('./capacitor-cordova-android-plugins/')
 
 apply from: 'capacitor.settings.gradle'
+
+// LOS PAQUETES DE LOS MODELOS DE VOZ -tarea 84, parte D-: solo existen en la construcción para Play
+// -npm run play, que pasa -PparaPlay-. En la APK de prueba ni se declaran, y el proyecto queda
+// idéntico al de antes.
+if (startParameter.projectProperties.containsKey('paraPlay')) {
+    include ':model-es'
+    include ':model-en'
+}

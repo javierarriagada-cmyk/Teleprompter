@@ -1,12 +1,15 @@
 import { Capacitor, registerPlugin, PluginListenerHandle } from '@capacitor/core'
-import { EventoFinal, EventoParcial, MotorDeVoz } from './MotorDeVoz'
+import { EventoFinal, EventoParcial, MotorDeVoz, ResultadoVoz } from './MotorDeVoz'
 import { anotar, msDelRegistro, generacionDiagnostico } from '../lib/diagnostico'
+import { HERRAMIENTAS } from '../lib/herramientas'
 
 // EL AUDIO QUE ESCUCHO VOSK, GUARDADO -24-09-2026-. Es el instrumento del plan del
 // motor: con el se afina el reconocedor en el PC contra lecturas reales. Quedan los
 // ultimos 12 en files/oido, 1,9 MB por minuto. Se revisa antes de llevar esto a una
 // version para usuarios.
-const GUARDAR_AUDIO_DEL_OIDO = true
+// EN PLAY, NUNCA -tarea 84, B2, 29-09-2026-: ese audio no se guarda en el teléfono de la gente.
+// Sigue en true en la APK de prueba -src/lib/herramientas.ts-.
+const GUARDAR_AUDIO_DEL_OIDO = HERRAMIENTAS
 
 type DatosResultado = {
   json: string
@@ -57,6 +60,11 @@ interface VoskNativoPlugin {
     listener: (data: { mensaje: string }) => void
   ): Promise<PluginListenerHandle>
   addListener(eventName: 'silencio', listener: () => void): Promise<PluginListenerHandle>
+  // El avance de la descarga del modelo desde Play, de 0 a 1 -tarea 84, D3-.
+  addListener(eventName: 'progresoVoz', listener: (data: { idioma: string; progreso: number }) => void): Promise<PluginListenerHandle>
+  // Resuelve cuando el modelo del idioma está en el teléfono; rechaza con code 'SIN_CONEXION' si
+  // hay que bajarlo y no hay internet -VoskNativoPlugin.asegurarVoz, tarea 84-.
+  asegurarVoz(opciones: { idioma: 'es' | 'en' }): Promise<{ estado: string; descargada?: boolean }>
 }
 
 const Nativo = registerPlugin<VoskNativoPlugin>('VoskNativo')
@@ -165,6 +173,30 @@ export class MotorNativo implements MotorDeVoz {
     } catch {
       // Si no se puede preguntar, escuchar() lo pide como siempre: leer no se bloquea.
       return true
+    }
+  }
+
+  // EL MODELO DEL IDIOMA, EN EL TELÉFONO ANTES DE LA CUENTA -tarea 84, D3, 29-09-2026-.
+  //
+  // En la APK de prueba los dos modelos vienen dentro y esto vuelve al instante. En la versión de
+  // Play el inglés viaja aparte y se pide a Play la primera vez: el plugin avisa el avance con
+  // 'progresoVoz' y App lo muestra en el IndicadorPrecarga. Sin internet responde 'sin-conexion' y
+  // App dice que hace falta conexión una vez; la lectura no parte. Cualquier otro error se lanza:
+  // App lo muestra, nunca en silencio.
+  async asegurarVoz(lang: string, alProgreso: (fraccion: number) => void): Promise<ResultadoVoz> {
+    if (!Capacitor.isNativePlatform()) return 'lista'
+    const idioma: 'es' | 'en' = (lang || '').toLowerCase().startsWith('en') ? 'en' : 'es'
+    const oyente = await Nativo.addListener('progresoVoz', (d) => {
+      if (d && typeof d.progreso === 'number') alProgreso(d.progreso)
+    })
+    try {
+      await Nativo.asegurarVoz({ idioma })
+      return 'lista'
+    } catch (e: any) {
+      if (e && e.code === 'SIN_CONEXION') return 'sin-conexion'
+      throw e
+    } finally {
+      oyente.remove()
     }
   }
 

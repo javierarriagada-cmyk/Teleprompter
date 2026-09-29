@@ -17,11 +17,11 @@ import EditorView from './components/EditorView'
 import CuentaRegresiva from './components/CuentaRegresiva'
 import { Entrada } from './components/Entrada'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
-import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo } from './lib/camara'
+import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo, alNegarseLaCamara } from './lib/camara'
 import { obtenerEspacioLibre } from './lib/archivosNativos'
 import { calcularMinutosDisponibles } from './lib/espacio'
 import { hapticaToqueMedio, hapticaToqueSuave, hapticaSeleccion } from './haptica'
-import { IdMotor, MotorDeVoz } from './motor/MotorDeVoz'
+import { IdMotor, MotorDeVoz, ResultadoVoz } from './motor/MotorDeVoz'
 import { Guion, Bloque, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR } from './datos/modelo'
 import { RepositorioGuiones } from './datos/RepositorioGuiones'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
@@ -45,12 +45,15 @@ import { idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
 import { PASOS_LETRA } from './components/estiloLectura'
 import { PantallaAjustes } from './components/PantallaAjustes'
 import { DialogoMicrofono } from './components/DialogoMicrofono'
+import { DialogoPermiso } from './components/DialogoPermiso'
 import { tituloDeBienvenida, bloqueDeBienvenida } from './app/bienvenida'
 import { GUION_VACIO, sanitizarColores, sanitizarEngine, cargarAjustesGuardados, ajustarFuenteValida } from './app/ajustesIniciales'
 import { useAviso } from './hooks/useAviso'
 import { AvisoBreve } from './components/AvisoBreve'
 import { IndicadorPrecarga } from './components/IndicadorPrecarga'
 import { PanelDiagnostico } from './components/PanelDiagnostico'
+// Las herramientas de prueba no viajan a Play -tarea 84, src/lib/herramientas.ts-.
+import { HERRAMIENTAS } from './lib/herramientas'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
 const MS_CONTROLES_A_LA_VISTA = 4000
@@ -160,6 +163,19 @@ export default function App({ motor, repoOverride }: AppProps) {
   // Desde donde se abrio: cada puerta muestra lo suyo -PantallaAjustes, origen-.
   const [origenAjustes, setOrigenAjustes] = useState<'portada' | 'editor' | 'leer' | 'grabar'>('portada')
   const [mostrarDialogoMicrofono, setMostrarDialogoMicrofono] = useState(false)
+  // La cámara negada, igual que el micrófono -tarea 84, F-: lib/camara.ts avisa y se abre el
+  // mismo diálogo, con su título y su explicación.
+  const [mostrarDialogoCamara, setMostrarDialogoCamara] = useState(false)
+  useEffect(() => alNegarseLaCamara(() => setMostrarDialogoCamara(true)), [])
+  // LA VOZ DEL IDIOMA, BAJÁNDOSE ANTES DE LEER -tarea 84, D3-. Solo en la versión de Play y solo
+  // para el inglés, la primera vez: el avance real de la descarga, o el aviso de que falta
+  // conexión. null es "no hay nada que mostrar", que es lo de siempre en la APK de prueba.
+  const [descargaVoz, setDescargaVoz] = useState<
+    { estado: 'descargando' | 'sin-conexion' | 'error'; progreso: number; error: string | null } | null
+  >(null)
+  const bajandoVozRef = useRef(false)
+  // Sube al volver de LISTO: si la descarga termina después, la cuenta ya no parte en otra pantalla.
+  const intentoVozRef = useRef(0)
   // MARGEN 5% POR OMISION. Javier lo eligio mirando, el 13 de septiembre de 2026: puso 5 y
   // dijo que asi queda bien. Con el tope de 90% que lleva la columna por dentro, 5% de
   // padding deja el texto en el 81% del ancho de la pantalla. Estaba en 10, que da 72%.
@@ -265,7 +281,11 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   // Mientras estemos arreglando el motor, toda lectura se mide. Se puede apagar si
   // alguna vez estorba, pero la omision es medir.
-  const [medirLectura, setMedirLectura] = useState<boolean>(true)
+  // EN PLAY NO SE MIDE -tarea 84, B4, 29-09-2026-. Medir es grabar el audio de cada lectura con
+  // el micrófono del navegador y guardarlo en el teléfono -lib/grabadorCorpus.ts, guardarLectura-:
+  // un instrumento de prueba, que en la versión de Play ni siquiera se puede apagar, porque el
+  // panel de corpus no viaja. En la APK de prueba y en el navegador sigue en true, como siempre.
+  const [medirLectura, setMedirLectura] = useState<boolean>(HERRAMIENTAS)
   const [modoManual, setModoManual] = useState<boolean>(false)
   const [mostrarDiagnostico, setMostrarDiagnostico] = useState<boolean>(false)
   const [mostrarPanelCorpus, setMostrarPanelCorpus] = useState<boolean>(false)
@@ -817,6 +837,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     precargar,
     pedirMicrofono,
     abrirAjustesDeLaApp,
+    asegurarVoz,
     motorListo
   } = useASR({
     engine,
@@ -1016,6 +1037,33 @@ export default function App({ motor, repoOverride }: AppProps) {
       setMostrarDialogoMicrofono(true)
       return
     }
+    // LA VOZ DEL GUION TIENE QUE ESTAR EN EL TELÉFONO ANTES DE LA CUENTA -tarea 84, D3, 29-09-2026-.
+    // En la versión de Play el modelo inglés no viene con la instalación: la primera vez se baja
+    // aquí, con el avance a la vista -IndicadorPrecarga-, y la cuenta parte cuando termina. Sin
+    // internet se dice que hace falta conexión una vez, y la lectura NO parte: sin modelo el texto
+    // no avanzaría y nadie sabría por qué. En la APK de prueba los dos modelos vienen dentro y
+    // esto vuelve al instante, sin mostrar nada. Un segundo toque mientras baja no pide otra
+    // descarga.
+    if (bajandoVozRef.current) return
+    bajandoVozRef.current = true
+    const intento = ++intentoVozRef.current
+    let voz: ResultadoVoz
+    try {
+      voz = await asegurarVoz(langMotor, (fraccion) => {
+        setDescargaVoz({ estado: 'descargando', progreso: fraccion, error: null })
+      })
+    } catch (e: any) {
+      setDescargaVoz({ estado: 'error', progreso: 0, error: e?.message || String(e) })
+      return
+    } finally {
+      bajandoVozRef.current = false
+    }
+    if (intento !== intentoVozRef.current) return
+    if (voz === 'sin-conexion') {
+      setDescargaVoz({ estado: 'sin-conexion', progreso: 0, error: null })
+      return
+    }
+    setDescargaVoz(null)
     setEstadoToma('leyendo')
     setControlesVisibles(false)
     await handleStart()
@@ -1023,6 +1071,10 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   function handleVolverDesdeListo() {
     hapticaToqueMedio()
+    // Si la voz en inglés se estaba bajando, sigue bajando -Play la termina igual y queda para la
+    // próxima-, pero la lectura ya no parte sola al terminar -tarea 84, D3-.
+    intentoVozRef.current++
+    setDescargaVoz(null)
     setConCamara(false)
     setEstadoToma('listo')
     setVista(origenLecturaRef.current)
@@ -1239,6 +1291,11 @@ export default function App({ motor, repoOverride }: AppProps) {
         setMostrarDialogoMicrofono(false)
         return
       }
+      // Y el de la cámara, igual -tarea 84, F1-.
+      if (mostrarDialogoCamara) {
+        setMostrarDialogoCamara(false)
+        return
+      }
       // 1. Si hay un modal abierto, cerrarlo
       if (cerrarModalRef.current && cerrarModalRef.current()) {
         return
@@ -1425,7 +1482,9 @@ export default function App({ motor, repoOverride }: AppProps) {
         />
       )}
 
-      {mostrarDiagnostico && (
+      {/* HERRAMIENTAS delante -tarea 84, B1-: con --mode play la condición queda en false al armar
+          y PanelDiagnostico no llega al paquete. */}
+      {HERRAMIENTAS && mostrarDiagnostico && (
         <PanelDiagnostico
           ultimoError={ultimoError}
           errorRepositorio={errorRepositorio}
@@ -1873,7 +1932,8 @@ export default function App({ motor, repoOverride }: AppProps) {
         </div>
       )}
 
-      {mostrarPanelCorpus && (
+      {/* Igual que el diagnóstico: el panel de corpus no viaja a Play -tarea 84, B1-. */}
+      {HERRAMIENTAS && mostrarPanelCorpus && (
         <div
           style={{
             position: 'fixed',
@@ -1966,6 +2026,36 @@ export default function App({ motor, repoOverride }: AppProps) {
             abrirAjustesDeLaApp()
           }}
         />
+      )}
+
+      {/* La cámara negada -tarea 84, F-: el mismo diálogo. "Abrir ajustes" abre la misma pantalla
+          de Sigo en Android -VoskNativoPlugin.abrirAjustesDeLaApp-, donde están los dos permisos. */}
+      {mostrarDialogoCamara && (
+        <DialogoPermiso
+          tipo="camara"
+          onCerrar={() => setMostrarDialogoCamara(false)}
+          onAbrirAjustes={() => {
+            abrirAjustesDeLaApp()
+          }}
+        />
+      )}
+
+      {/* La voz en inglés bajándose, o el aviso de que falta conexión -tarea 84, D3-. El mismo
+          IndicadorPrecarga de siempre, en una capa fija arriba -.aviso-voz, styles.css-: se abre
+          desde LISTO, donde el indicador del flujo de la página queda tapado por la lectura. */}
+      {descargaVoz && (
+        <div className="aviso-voz" data-testid="aviso-voz">
+          <IndicadorPrecarga
+            estadoPrecarga={descargaVoz.estado}
+            progresoPrecarga={descargaVoz.progreso}
+            errorPrecarga={descargaVoz.error}
+            reintentarPrecarga={() => {
+              setDescargaVoz(null)
+              handleEmpezarDesdeListo()
+            }}
+            oculto={false}
+          />
+        </div>
       )}
 
       {ajustesAbiertos && (

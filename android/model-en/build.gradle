@@ -1,0 +1,22 @@
+// EL MODELO DE VOZ EN INGLÉS COMO PAQUETE DE RECURSOS DE PLAY -tarea 84, D1, 29-09-2026-.
+//
+// on-demand: no viene con la instalación. Se pide a Play la primera vez que alguien lee un guion en
+// inglés -PaqueteDeVoz.java, src/release- y queda en el teléfono: 68 MB menos para quien lee solo
+// en español, que es casi todo el mundo. Vosk lo abre directo desde la carpeta del paquete, sin
+// copiarlo.
+//
+// Solo existe en la construcción para Play -settings.gradle, -PparaPlay-. La APK de prueba trae
+// el modelo en android/app/src/main/assets/model-en, como siempre.
+apply plugin: 'com.android.asset-pack'
+
+assetPack {
+    // model_en con guion bajo, no model-en: el nombre de un paquete de Play tiene que ser un
+    // nombre de "split" válido -letras, números y guion bajo- y AAPT rechaza el guion -probado-.
+    // La carpeta del modelo adentro sigue llamándose model-en, la que busca VoskNativoPlugin.
+    packName = 'model_en'
+    dynamicDelivery {
+        deliveryType = 'on-demand'
+    }
+}
+
+apply from: '../paquete-de-modelo.gradle'

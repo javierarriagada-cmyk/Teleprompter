@@ -1,6 +1,5 @@
 import React from 'react'
-import { t } from '../textos'
-import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
+import { DialogoPermiso } from './DialogoPermiso'
 
 // DIALOGO DE PERMISO DE MICROFONO NEGADO -28-09-2026-.
 // Se abre cuando la persona niega el permiso de microfono. Explica por que Sigo lo necesita y
@@ -12,48 +11,9 @@ interface DialogoMicrofonoProps {
   onAbrirAjustes: () => void
 }
 
+// DESDE LA TAREA 84 -29-09-2026- ES EL DIÁLOGO DE PERMISO CON EL TIPO 'microfono': el cuerpo
+// que estaba aquí vive en DialogoPermiso.tsx, sin cambios en cómo se ve ni en sus data-testid.
+// Este nombre se conserva para que App y las pruebas de la tarea 80 sigan diciendo lo mismo.
 export function DialogoMicrofono({ onCerrar, onAbrirAjustes }: DialogoMicrofonoProps) {
-  const refDialogo = useCerrarAfuera<HTMLDivElement>(true, onCerrar)
-
-  return (
-    <div
-      className="capa-dialogo-microfono"
-      onClick={onCerrar}
-      data-testid="capa-dialogo-microfono"
-    >
-      <div
-        ref={refDialogo}
-        className="dialogo-ajustes"
-        data-testid="dialogo-microfono"
-        role="dialog"
-        aria-modal="true"
-        aria-label={t('microfonoTitulo')}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h3 className="dialogo-ajustes-titulo">{t('microfonoTitulo')}</h3>
-        <p className="texto-dialogo">{t('microfonoExplicacion')}</p>
-        <div className="botones-dialogo">
-          <button
-            type="button"
-            className="boton-dialogo"
-            data-testid="btn-microfono-ahora-no"
-            onClick={onCerrar}
-          >
-            {t('ahoraNo')}
-          </button>
-          <button
-            type="button"
-            className="boton-dialogo lleno"
-            data-testid="btn-microfono-ajustes"
-            onClick={() => {
-              onAbrirAjustes()
-              onCerrar()
-            }}
-          >
-            {t('abrirAjustes')}
-          </button>
-        </div>
-      </div>
-    </div>
-  )
+  return <DialogoPermiso tipo="microfono" onCerrar={onCerrar} onAbrirAjustes={onAbrirAjustes} />
 }

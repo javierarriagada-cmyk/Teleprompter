@@ -13,6 +13,28 @@ def numeroDeVersion() {
     }
 }
 
+// LA LLAVE DE SUBIDA A GOOGLE PLAY -tarea 84, A1, 29-09-2026-.
+//
+// NINGUNA CONTRASEÑA NI LLAVE ENTRA AL REPOSITORIO. La llave la crea Javier en su computador y
+// sus datos van en android/keystore.properties -storeFile, storePassword, keyAlias, keyPassword-,
+// que .gitignore deja fuera. El molde sin datos es android/keystore.properties.ejemplo.
+//
+// Si el archivo no está, la construcción de release igual funciona, sin firmar, y lo avisa: así el
+// repositorio compila en cualquier máquina -la de un probador, la del bot-. La APK de prueba
+// -assembleDebug, npm run apk- no mira nada de esto: sigue firmada con la llave de depuración.
+def archivoLlaveSubida = rootProject.file('keystore.properties')
+def llaveSubida = new Properties()
+if (archivoLlaveSubida.exists()) {
+    archivoLlaveSubida.withInputStream { llaveSubida.load(it) }
+}
+def hayLlaveSubida = archivoLlaveSubida.exists()
+
+// LA VERSIÓN DE PLAY VA POR OTRO CAMINO -tarea 84-. npm run play -scripts/play.mjs- construye con
+// -PparaPlay: solo entonces los modelos de voz salen del paquete base y viajan en sus paquetes de
+// recursos -model-es, model-en, parte D-. Sin la propiedad -npm run apk, la APK de prueba- todo
+// queda exactamente como antes: los dos modelos dentro, en assets.
+def paraPlay = project.hasProperty('paraPlay')
+
 android {
     // EL IDENTIFICADOR DE LA APP -24-09-2026-. Era com.teleprompter.app, generico, y en Google Play
     // ya lo usa otra aplicacion: no se podia publicar con el. Es el unico dato que no se puede
@@ -47,10 +69,57 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        // Solo se declara si hay llave: un signingConfig con storeFile vacío hace fallar la
+        // construcción, y el encargo pide que sin el archivo igual compile.
+        if (hayLlaveSubida) {
+            subida {
+                storeFile rootProject.file(llaveSubida['storeFile'])
+                storePassword llaveSubida['storePassword']
+                keyAlias llaveSubida['keyAlias']
+                keyPassword llaveSubida['keyPassword']
+            }
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (hayLlaveSubida) {
+                signingConfig signingConfigs.subida
+            } else {
+                logger.warn('AVISO -tarea 84-: no está android/keystore.properties. El paquete de release sale SIN FIRMAR y Google Play no lo acepta. Ver android/keystore.properties.ejemplo.')
+            }
+            // R8 -tarea 84, parte C, 29-09-2026-: encoge y ofusca el código y saca los recursos que
+            // nadie usa. Las reglas de lo que no se puede tocar -lo que Capacitor y JNA buscan por
+            // nombre- están en proguard-rules.pro, cada una con su por qué. Era minifyEnabled false.
+            //
+            // LA BANDERA PARA APAGARLO -C3-: si R8 rompe algo que solo se ve en el teléfono,
+            // ./gradlew bundleRelease -PsinR8 -o npm run play -- sinR8- arma igual que antes, sin
+            // encoger, mientras se encuentra la regla que falta. La APK de prueba es debug y R8 no
+            // la toca nunca.
+            def conR8 = !project.hasProperty('sinR8')
+            minifyEnabled conR8
+            shrinkResources conR8
+            // Era 'proguard-android.txt', que trae -dontoptimize: pensado para cuando R8 estaba
+            // apagado. Con R8 encendido va la de optimizar, la que recomienda la documentación de
+            // Android -y la única que sigue existiendo desde AGP 9-.
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // LOS MODELOS DE VOZ EN SUS PAQUETES DE RECURSOS, SOLO PARA PLAY -tarea 84, parte D-.
+    //
+    // Hoy cada persona descarga los dos modelos -126 MB- aunque lea en un solo idioma. En el AAB de
+    // Play van aparte: model-es instalado con la app -install-time, el mercado principal- y model-en
+    // bajado la primera vez que se lee en inglés -on-demand-. Ver android/model-es/build.gradle.
+    //
+    // Para eso las carpetas model-es y model-en tienen que salir de los assets del paquete base:
+    // '<dir>model-es' saca la carpeta de assets con ese nombre -la del modelo y la del uuid de
+    // genUUID-. El patrón es el de siempre -el que ya estaba en aaptOptions- más esas dos. Sin
+    // -PparaPlay no se toca nada: la APK de prueba sigue con los dos modelos dentro -D4-.
+    if (paraPlay) {
+        assetPacks = [':model-es', ':model-en']
+        androidResources {
+            ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~:<dir>model-es:<dir>model-en'
         }
     }
 
@@ -143,6 +212,14 @@ dependencies {
     implementation 'androidx.media3:media3-transformer:1.9.0'
     implementation 'androidx.media3:media3-effect:1.9.0'
     implementation 'androidx.media3:media3-common:1.9.0'
+
+    // PLAY ASSET DELIVERY, SOLO EN RELEASE -tarea 84, D2, 29-09-2026-. Es la biblioteca de Google
+    // que pide a Play el paquete del modelo inglés -on-demand- y dice dónde quedó. Va como
+    // releaseImplementation, con su clase en src/release/java/.../PaqueteDeVoz.java: la APK de
+    // prueba -debug- no la lleva, trae los dos modelos dentro y usa la versión de
+    // src/debug/java, que no pide nada a nadie. Es la única dependencia nueva, y la permite el
+    // encargo -"en Android se permiten SOLO las de Google para Play"-.
+    releaseImplementation 'com.google.android.play:asset-delivery:2.3.0'
 
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
