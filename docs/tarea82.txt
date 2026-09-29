@@ -1,0 +1,216 @@
+TAREA 82 - EL TELÉFONO DE LADO: LEER Y GRABAR EN HORIZONTAL, Y EL TEXTO SOBRE LA CÁMARA
+Encargo para el bot de Grok, 29-09-2026. Punto de partida: main, commit e9ed20d. Nunca una rama vieja.
+
+==============================================================================
+QUÉ ES Y POR QUÉ
+==============================================================================
+El video largo de YouTube se graba con el teléfono de lado. Hoy, en horizontal, Sigo muestra la
+pantalla vertical estirada: las fichas flotan a media pantalla encima del texto, el círculo y la
+pastilla tapan renglones y la columna llega a unos 70 caracteres. Javier ya comprobó en su moto
+g86 que al grabar de lado el video sale horizontal: la cámara no es el problema, la pantalla sí.
+
+El diseño es el tuyo, aprobado por Javier el 29-09-2026: "tremendamente profesional, y respeta
+todo nuestro trabajo". Tus bocetos y tu hoja de medidas SON EL PISO de esta tarea: lo que se
+programe tiene que verse igual o mejor, y se va a comparar lado a lado en el teléfono de Javier.
+
+Esta tarea tiene tres partes:
+  A. Teléfono horizontal -Leer y Grabar, LISTO y leyendo-. Es la parte grande.
+  B. El texto sobre la cámara con la regla E -halo difuso-, en TODAS las orientaciones: el
+     problema existe hoy también en vertical.
+  C. Empezar de Leer con contraste suficiente en tema claro.
+
+NO es parte de esta tarea: las tabletas -vertical y horizontal- ni los casos de ventana dividida
+o plegable a medio abrir. Van en la tarea 83, con tus mismas medidas. En esta tarea, todo lo que
+no sea "teléfono horizontal" se ve EXACTAMENTE como hoy.
+
+==============================================================================
+REGLAS DE LA CASA -valen para todo el encargo-
+==============================================================================
+  - Comentarios en castellano, CON tildes -AGENTS.md-. Explican POR QUÉ, con la fecha y el caso
+    que los provoca. Ningún comentario existente se borra ni se acorta: si el código que un
+    comentario explica cambia, el comentario se conserva y se le agrega debajo qué cambió y por
+    qué. Al terminar, contar comentarios antes y después, como en la 81: el total no baja.
+  - Colores, tamaños, aire y radios en las hojas de estilo, con variables. Los componentes no
+    escriben colores a mano -guardiana T209, src/pruebas/tarea46.test.tsx-. Un archivo de
+    componente nuevo se agrega a la lista de T209.
+  - Los estilos nuevos van en un archivo nuevo, src/styles-horizontal.css, importado en
+    src/main.tsx justo después de styles-ajustes.css.
+  - No se agregan dependencias.
+  - Los data-testid existentes se conservan: las pruebas los usan. Un elemento que cambia de
+    lugar se lleva su testid; nunca hay dos elementos con el mismo testid en la pantalla.
+  - Si algo del código no calza con lo que dice este encargo, se describe en el mensaje final
+    en vez de improvisar. En la 81 lo hiciste así y estuvo muy bien.
+
+==============================================================================
+PASO 0 - LA VARA ENTRA AL REPOSITORIO
+==============================================================================
+Primer commit de la rama: tu hoja de medidas FINAL -con la regla E y la D como plan B- y las
+láminas del teléfono horizontal, en docs/pantallas/tarea82/:
+  medidas-implementacion.md
+  hoja-tel-horizontal.png, hoja-tel-horizontal-claro.png
+  la lámina de comparación B / D / E / E2 con el zoom y las tablas
+Así la revisión compara contra algo que está en main, no contra una conversación.
+
+==============================================================================
+PARTE A - TELÉFONO HORIZONTAL
+==============================================================================
+
+A1. CUÁNDO SE ACTIVA
+  Teléfono horizontal = ancho de la VENTANA >= 600 y alto < 480 -clases de tamaño de ventana de
+  Material 3: ancho Medium o Expanded, alto Compact-. Media query:
+    (min-width: 600px) and (max-height: 479.98px)
+  Un solo hook nuevo, src/hooks/useLayout.ts, que devuelve 'tel-v' | 'tel-h' | 'tab-v' | 'tab-h'.
+  En esta tarea solo puede devolver 'tel-v' o 'tel-h' -las tabletas llegan en la 83; el tipo ya
+  las nombra para no cambiar la firma después-. Usa window.matchMedia con listener 'change'. Si
+  window.matchMedia no existe -jsdom, las pruebas- devuelve 'tel-v': así todas las pruebas de
+  hoy siguen viendo la pantalla vertical sin tocarlas.
+  La superficie de lectura lleva la clase .layout-tel-h cuando corresponde, y el CSS cuelga de
+  esa clase. Nada de window.screen: mide la pantalla, no la ventana.
+
+A2. LISTO -antes de empezar-, en horizontal
+  Riel izquierdo -ancho 112 en Leer, 128 en Grabar-:
+    - btn-volver-listo: 40 x 40, top 8, left 12. Es el mismo botón de hoy, cambia de lugar.
+    - Las fichas en COLUMNA, una debajo de otra: alto 32, zona de toque 48 -el ::after de
+      .ficha-listo, sin que se pisen-, paso 48, la primera en y = 60.
+      Leer: Aa, Dónde lees, Brillo.
+      Grabar: Aa, Cámara, Dónde lees, Brillo, Calidad -solo si el aparato informa calidades,
+      como hoy-, Subtítulos.
+  Riel derecho -ancho 124-:
+    - ficha-mas arriba, top 12. En Leer Y en Grabar -decisión de Javier: el mismo lugar en los
+      dos modos-. Es la misma ficha de hoy, con su testid; sale del carril de FichasListo en
+      horizontal. En vertical no cambia nada.
+    - btn-empezar-toma: 72 x 72, centrado en el alto útil del riel.
+    - La pastilla de tiempo abajo del riel: ancho mínimo 100, bottom 14, centrada en el riel.
+  Fondo de los rieles: variables nuevas --riel-fondo y --riel-borde en styles.css, en :root, en
+  [data-tema="claro"] y en [data-tema="oscuro"] -toman --bg-suelo y --borde-tarjeta de cada
+  tema-. Con la cámara detrás: --riel-fondo-sobre-imagen, el suelo al 62 % con
+  backdrop-filter: blur(12px), como tus láminas.
+  En horizontal NO va VeloControles: los controles ya no están encima del texto.
+
+  Los paneles de las fichas -.panel-ficha-: en horizontal se abren A LA DERECHA DEL RIEL, a la
+  altura de su ficha: left = ancho del riel + 8, top = top de la ficha, corrido hacia arriba si
+  no cabe -nunca se sale de la pantalla-, ancho 320, alto máximo el alto útil menos 16 con
+  scroll interno. Tocar fuera sigue cerrándolo -capa-panel-ficha-, igual que hoy.
+
+A3. LA COLUMNA DE TEXTO en horizontal
+  - Queda entre los dos rieles. Padding lateral 28 -20 cuando hay recuadro-, en vez del
+    marginPercent de hoy.
+  - "Columna completa" se topa en 56ch: unos 51 caracteres por renglón a 800 y 55 a 844.
+    "Columna angosta" -22ch centrada- no cambia.
+  - La letra es la que eligió la persona. El 24 por omisión no cambia en el teléfono.
+  - Al empezar a leer, el texto se queda EXACTAMENTE donde estaba en LISTO: ni la columna ni el
+    renglón vivo se mueven.
+
+A4. LEYENDO en horizontal
+  - Sin controles: solo el texto en su columna. Los rieles no se dibujan, pero su espacio se
+    conserva: la columna no se ensancha.
+  - Con controles -tocar la pantalla, como hoy-: aparecen en los rieles, NUNCA sobre el texto.
+      Riel izquierdo arriba: btn-salir-lectura en Leer; btn-descartar-toma en Grabar con pausa
+      -el mismo lugar que el ‹ de LISTO-.
+      Riel derecho arriba: btn-pausa-lectura.
+      Riel derecho al centro: btn-parar-lectura, 72 x 72 -el mismo lugar que Empezar-.
+      Riel derecho abajo: la pastilla.
+  - El punto rojo al grabar -punto-grabando-: siempre visible, 10 px, 12 px a la izquierda de la
+    pausa y a su altura -top 23-.
+  - La pastilla, según "Mostrar tiempo", como hoy -decisión de Javier-: encendido, se ve
+    siempre -LISTO, leyendo, grabando-; apagado, no hay pastilla y al grabar queda solo el punto.
+  - La cuenta regresiva y su velo no cambian.
+  - El aviso breve -AvisoBreve.tsx- en horizontal va abajo y centrado en la columna, a 16 más
+    el área segura: hoy se calcula sobre el círculo de la pantalla vertical.
+
+A5. EL RECUADRO DE LA CÁMARA en horizontal -Grabar, "Recuadro"-
+  - Mide 144 x 81 -16:9, la forma del video que se graba de lado-. Hoy mediría 256 x 341: casi
+    todo el alto, encima de los rieles y del texto -RecuadroCamara.tsx, W * 0.32 y 4/3-.
+  - Vive en la zona libre entre los rieles, con margen 12; nunca entra a un riel.
+  - Por omisión abajo a la derecha. Solo se arrastra en LISTO, como hoy: sigue al dedo dentro de
+    la zona libre, se detiene contra el borde del riel, y al soltar se imanta a la esquina más
+    cercana -der-arriba, der-abajo, izq-arriba, izq-abajo-.
+  - La columna le reserva un carril de 168 del lado donde está -144 + 2 x 12-; si el recuadro
+    queda a la izquierda, la columna pasa a la derecha. Al empezar a grabar ni el recuadro ni la
+    columna se mueven.
+  - La esquina elegida en horizontal se guarda aparte -localStorage sigo_recuadro_esquina_h-: la
+    posición del recuadro en vertical -recuadroX, recuadroY- no se toca.
+  - La cámara nativa se sigue poniendo con el hueco MEDIDO -onRect, rectRecuadro,
+    lib/camara.ts-, que ya existe y funciona.
+
+A6. GIRAR EL TELÉFONO
+  - En LISTO: cambia de diseño y queda todo donde dice arriba.
+  - EN PLENA TOMA: cambia de diseño SIN cortar la grabación ni la lectura. El texto sigue en la
+    palabra donde iba, anclado de nuevo en su renglón vivo.
+  - La cámara "Detrás" tiene que cubrir la pantalla nueva. Ojo: calcularDimensionesPreview
+    -lib/camara.ts, línea 302 y siguientes- usa window.screen para "detrás". Comprobar que al
+    girar la vista previa cubre todo; si no, usar el ancho y alto medidos -vistaW, vistaH, que
+    TeleprompterView ya pasa-. Describir en el mensaje final qué encontraste.
+
+==============================================================================
+PARTE B - EL TEXTO SOBRE LA CÁMARA: REGLA E, EN TODAS LAS ORIENTACIONES
+==============================================================================
+El problema es de hoy, también en vertical: con la cámara detrás, el texto fuera del panel del
+renglón vivo baja a 1,1 a 1 sobre una pared blanca -tus mediciones-. Javier eligió la E mirando
+el zoom: la letra sigue siendo Sigo y se lee.
+
+  - src/styles.css, .lectura-sobre-imagen -línea 1261-: reemplazar la sombra de hoy por el halo
+    E: diez sombras del color de fondo de la pareja elegida, sin trazo -sin
+    -webkit-text-stroke-:
+      0 0 2px -cinco veces-, 0 0 4px -tres veces-, 0 0 8px -dos veces-, todas en
+      var(--fondo-lectura).
+    --fondo-lectura se define en el estilo de contenedor-lectura con el colorFondo de la pareja
+    -TeleprompterView.tsx, línea 1082-: es un dato, no un color escrito a mano.
+    .letra-oscura deja de necesitar su propia sombra -el color sale de la pareja-; la clase se
+    conserva por si alguna prueba la busca, con un comentario que lo diga.
+  - El destacado amarillo va SIN halo.
+  - Las notas entre corchetes, con la cámara detrás: sin opacity y color
+    color-mix(in srgb, #aaa 50%, var(--fondo-lectura)). Hoy son un estilo en línea en
+    renglones.tsx, línea 110 y siguientes: agregar al span la clase acotacion-lectura, dejar el
+    estilo en línea como está, y en el CSS
+      .lectura-sobre-imagen .acotacion-lectura { opacity: 1 !important; color: ... !important; }
+    con el !important comentado: es para ganarle al estilo en línea sin tocar la vista normal.
+  - La D -trazo de 2,6 px con sombras apretadas- queda escrita como plan B en un comentario, con
+    el criterio de cuándo se usa: si en el moto g86 la E traba la lectura.
+
+==============================================================================
+PARTE C - EMPEZAR DE LEER EN TEMA CLARO
+==============================================================================
+.btn-empezar-leer -styles.css, línea 1085- es crema -var(--color-acento), #E7E1DE- y en tema
+claro da 1,15 a 1 sobre el fondo: casi no se ve. Android pide 3 a 1 para un control.
+  - Variables nuevas --empezar-fondo y --empezar-icono. Tema oscuro: las de hoy -acento y
+    texto-acento-. Tema claro: #1A1815 con ícono #F3F1ED -15,7 a 1-.
+  - En horizontal el botón vive en el riel, que sigue al tema: usa esas variables.
+  - En vertical flota sobre el lienzo, que sigue a la PAREJA de lectura y no al tema: si la
+    pareja tiene fondo blanco, usa la variante oscura; si no, la de hoy. Mismo criterio que ya
+    usa isWhiteBg en TeleprompterView.
+  - El pulso -pulsoEmpezar- usa el mismo color del botón.
+
+==============================================================================
+LAS PRUEBAS
+==============================================================================
+  - Todas las de hoy siguen en verde SIN modificarlas: en jsdom useLayout devuelve 'tel-v'.
+  - Archivo nuevo src/pruebas/tarea82.test.tsx, que finge matchMedia para 'tel-h':
+      en Leer: el riel izquierdo tiene btn-volver-listo y las fichas Aa, Dónde lees y Brillo;
+        ficha-mas está en el riel derecho y no en el izquierdo; no hay velo-controles;
+      en Grabar: las seis fichas en el riel izquierdo, en ese orden, y ficha-mas a la derecha;
+      leyendo con controles: salir o descartar a la izquierda; pausa y parar a la derecha;
+      con la cámara detrás, contenedor-lectura lleva lectura-sobre-imagen y --fondo-lectura
+        con el colorFondo de la pareja -en vertical Y en horizontal-.
+  - Cada prueba nueva se rompe a propósito una vez -como hiciste con T209 en la 81- y se dice
+    cuál y cómo en el mensaje final.
+
+==============================================================================
+TERMINADO CUANDO
+==============================================================================
+  1. Las tres partes hechas; npx tsc --noEmit limpio; npx vitest run todo en verde.
+  2. Comentarios: el total no baja. Decir los números.
+  3. Capturas de la app REAL -no de los bocetos- en Chrome a 800 x 360 y 844 x 390, oscuro y
+     claro, de estos estados: Leer LISTO; Leer leyendo sin y con controles; Grabar LISTO con
+     cámara detrás y con recuadro; grabando con cámara detrás y con recuadro, sin y con
+     controles; grabando en pausa con el tacho. La cámara se simula con una imagen de fondo.
+     Cada captura al lado de su boceto, en una lámina, en docs/pantallas/tarea82/. Lo que no
+     quede igual o mejor que el boceto se arregla antes de entregar, o se explica.
+  4. Entrega: un PR contra main. Si el conector no puede subir un archivo por tamaño, un diff
+     unificado completo contra e9ed20d.
+
+Después de la entrega, Claude la revisa y la prueba en el moto g86 de Javier:
+  - lado a lado con tus láminas, en los dos temas;
+  - la fluidez de la regla E: cámara detrás, cinco minutos de lectura sin tirones -si se traba,
+    va la D, que queda en el comentario-;
+  - girar el teléfono en plena toma: la grabación sigue y el texto no pierde la palabra.
