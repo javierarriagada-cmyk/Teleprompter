@@ -2197,19 +2197,6 @@ export default function App({ motor, repoOverride }: AppProps) {
             hapticaSeleccion()
             setMostrarTiempo(v)
           }}
-          calidadVideo={calidadVideo}
-          setCalidadVideo={(q) => {
-            hapticaSeleccion()
-            setCalidadVideo(q)
-            fijarCalidadVideo(q)
-          }}
-          calidadesSoportadas={calidadesSoportadas}
-          minutosDisponibles={
-            bytesLibres !== null
-              ? calcularMinutosDisponibles(bytesLibres, calidadVideo, grabaciones)
-              : null
-          }
-          conCamara={conCamara}
           tema={tema}
           setTema={(v) => {
             hapticaSeleccion()

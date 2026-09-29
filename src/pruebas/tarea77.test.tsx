@@ -157,4 +157,30 @@ describe('Letra y ancho, migrados a fichas y Ajustes', () => {
 
     unmount()
   })
+  // 28-09-2026: la seccion Video salio de Ajustes. Los subtitulos tienen su ficha en Grabar, con la
+  // misma clave que el reproductor; en Leer no hay ficha porque no hay video. Y Ajustes ya no muestra
+  // calidad ni subtitulos en ninguna puerta.
+  test('T77g Subtitulos: ficha en Grabar que guarda el estilo; no en Leer; fuera de Ajustes.', async () => {
+    const sembrar = async () => {
+      const r = new RepositorioMemoria()
+      await r.guardar({ id: 'g-77', titulo: 'Guion ajustes', idioma: 'es', creado: Date.now(), modificado: Date.now(), archivado: false, bloques: [{ id: 'b1', nombre: '', texto: 'Texto para las fichas de listo' }] })
+      return r
+    }
+    const repo = await sembrar()
+    const { unmount } = render(<App repoOverride={repo} motor={new MotorFake()} />)
+    fireEvent.click(await screen.findByTestId('fila-guion-g-77'))
+    fireEvent.click(await screen.findByTestId('btn-grabar-guion-fijo'))
+    fireEvent.click(await screen.findByTestId('ficha-subtitulos'))
+    fireEvent.click(screen.getByTestId('btn-subtitulo-formal'))
+    expect(localStorage.getItem('sigo_subtitulos_estilo')).toBe('formal')
+    expect(screen.getByTestId('ficha-subtitulos').textContent).toContain('Formal')
+    fireEvent.click(screen.getByTestId('ficha-mas'))
+    expect(screen.queryByTestId('fila-subtitulos')).toBeNull()
+    expect(screen.queryByTestId('fila-calidad')).toBeNull()
+    unmount()
+    const u2 = await abrirListo(await sembrar())
+    expect(screen.queryByTestId('ficha-subtitulos')).toBeNull()
+    u2()
+  })
+
 })

@@ -81,10 +81,11 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
     })
     expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
 
-    // 28-09-2026: voltear esta a la vista; los fondos, en la ficha de camara.
-    expect(screen.getByTestId('btn-voltear-camara')).toBeDefined()
+    // 28-09-2026: los fondos y voltear viven en el panel de la ficha de camara.
+    expect(screen.queryByTestId('btn-voltear-camara')).toBeNull()
     fireEvent.click(screen.getByTestId('ficha-camara'))
     expect(screen.getByTestId('btn-fondo-detras')).toBeDefined()
+    expect(screen.getByTestId('btn-voltear-camara')).toBeDefined()
 
     fireEvent.click(screen.getByTestId('btn-empezar-toma'))
     await waitFor(() => {

@@ -5,7 +5,6 @@ import { hapticaSeleccion } from '../haptica'
 import { Interruptor } from './Interruptor'
 import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, PASOS_LETRA } from './estiloLectura'
 import { PAREJAS_COLOR } from '../datos/modelo'
-import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
 import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
 import { t, useTextos } from '../textos'
 
@@ -24,8 +23,6 @@ export type DialogoAjustes =
   | 'tipo'
   | 'ancho'
   | 'colores'
-  | 'calidad'
-  | 'subtitulos'
   | 'tema'
   | 'idioma'
   | null
@@ -42,13 +39,6 @@ function nombreAncho(columnaAngosta: boolean, marginPercent: number): string {
   if (columnaAngosta) return t('angosto')
   if (marginPercent === 12) return t('medio')
   return t('ancho')
-}
-
-function nombreEstiloSub(estilo: EstiloSubtitulo): string {
-  if (estilo === 'amarillo') return t('subtitulosAmarillo')
-  if (estilo === 'rojo') return t('subtitulosRojo')
-  if (estilo === 'formal') return t('subtitulosFormal')
-  return t('subtitulosNo')
 }
 
 // Privacidad y soporte se abren en el navegador del telefono. @capacitor/app no tiene openUrl
@@ -121,11 +111,6 @@ export function PantallaAjustes({
   setMirror,
   mostrarTiempo,
   setMostrarTiempo,
-  calidadVideo,
-  setCalidadVideo,
-  calidadesSoportadas,
-  minutosDisponibles,
-  conCamara,
   tema,
   setTema
 }: {
@@ -133,6 +118,9 @@ export function PantallaAjustes({
   // DESDE DONDE SE ABRE -28-09-2026-. Javier: "por que subtitulos esta en ajustes que pueden
   // estar para leer". Cada puerta muestra lo suyo: el guion y Leer, solo la lectura; Grabar,
   // lectura y video; la portada, todo -tambien apariencia y acerca de-.
+  // 28-09-2026, mas tarde: LA SECCION VIDEO SALIO DE AJUSTES EN TODAS LAS PUERTAS. Javier: la calidad
+  // ya esta en su ficha de Grabar, y los subtitulos pasan a la suya. Queda la lectura, y en la
+  // portada tambien apariencia y acerca de.
   origen?: 'portada' | 'editor' | 'leer' | 'grabar'
   fontSize: number
   // El tamano tambien vive aca -28-09-2026-: el Aa del editor abre esta misma pantalla, y
@@ -152,22 +140,14 @@ export function PantallaAjustes({
   setMirror: (v: boolean) => void
   mostrarTiempo: boolean
   setMostrarTiempo: (v: boolean) => void
-  calidadVideo: string
-  setCalidadVideo: (q: string) => void
-  calidadesSoportadas: string[]
-  minutosDisponibles: number | null
-  conCamara: boolean
   tema: 'claro' | 'oscuro'
   setTema: (t: 'claro' | 'oscuro') => void
 }) {
   const idioma = useTextos()
   const [dialogo, setDialogo] = useState<DialogoAjustes>(null)
-  const [estiloSub, setEstiloSub] = useState<EstiloSubtitulo>(estiloSubtituloGuardado)
 
   const letra = colorLetraEfectiva(colorFondo, colorLetra)
   const col = columnaLectura(columnaAngosta)
-  const verVideo = origen === 'portada' || origen === 'grabar'
-  const verCalidad = verVideo && calidadesSoportadas.length > 0 && (conCamara || origen === 'portada')
   const verApp = origen === 'portada'
   // La version real, la del paquete -1.0 (457)-. Estaba escrita a mano como 0.2.0.
   const [version, setVersion] = useState<string | null>(null)
@@ -182,7 +162,6 @@ export function PantallaAjustes({
       setVersion(null)
     }
   }, [verApp])
-  const calidades = calidadesSoportadas.length > 0 ? calidadesSoportadas : ['1080p', '720p', '480p']
 
   function elegirYCerrar(fn: () => void) {
     fn()
@@ -279,33 +258,6 @@ export function PantallaAjustes({
           )}
         />
 
-        {verVideo && (
-          <>
-            <h2 className="titulo-seccion-ajustes">{t('seccionVideo')}</h2>
-            {verCalidad && (
-              <FilaAjuste
-                testid="fila-calidad"
-                nombre={t('calidadVideo')}
-                valor={calidadVideo}
-                explicacion={
-                  typeof minutosDisponibles === 'number'
-                    ? (minutosDisponibles >= 2
-                      ? t('minutosDisponibles', { n: Math.floor(minutosDisponibles) })
-                      : t('menosDeDosMinutos'))
-                    : undefined
-                }
-                onClick={() => setDialogo('calidad')}
-              />
-            )}
-            <FilaAjuste
-              testid="fila-subtitulos"
-              nombre={t('subtitulos')}
-              valor={nombreEstiloSub(estiloSub)}
-              onClick={() => setDialogo('subtitulos')}
-            />
-          </>
-        )}
-
         {verApp && (
           <>
             <h2 className="titulo-seccion-ajustes">{t('seccionApariencia')}</h2>
@@ -359,8 +311,6 @@ export function PantallaAjustes({
               {dialogo === 'tipo' && t('tipografia')}
               {dialogo === 'ancho' && t('anchoTexto')}
               {dialogo === 'colores' && t('coloresLectura')}
-              {dialogo === 'calidad' && t('calidadVideo')}
-              {dialogo === 'subtitulos' && t('subtitulos')}
               {dialogo === 'tema' && t('tema')}
               {dialogo === 'idioma' && t('idiomaDeLaApp')}
             </h2>
@@ -457,42 +407,6 @@ export function PantallaAjustes({
                     </button>
                   )
                 })}
-              </div>
-            )}
-
-            {dialogo === 'calidad' && (
-              <div className="lista-dialogo">
-                {calidades.map((q) => (
-                  <button
-                    key={q}
-                    type="button"
-                    data-testid={`btn-calidad-${q}`}
-                    className={`fila-dialogo${calidadVideo === q ? ' elegida' : ''}`}
-                    aria-pressed={calidadVideo === q}
-                    onClick={() => elegirYCerrar(() => setCalidadVideo(q))}
-                  >
-                    {q}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {dialogo === 'subtitulos' && (
-              <div className="lista-dialogo">
-                {ESTILOS_SUBTITULO.map((e) => (
-                  <button
-                    key={e.valor}
-                    type="button"
-                    className={`fila-dialogo${estiloSub === e.valor ? ' elegida' : ''}`}
-                    aria-pressed={estiloSub === e.valor}
-                    onClick={() => elegirYCerrar(() => {
-                      setEstiloSub(e.valor)
-                      guardarEstiloSubtitulo(e.valor)
-                    })}
-                  >
-                    {nombreEstiloSub(e.valor)}
-                  </button>
-                ))}
               </div>
             )}
 

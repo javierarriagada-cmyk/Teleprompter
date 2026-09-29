@@ -3,8 +3,10 @@ import type { FondoToma } from '../App'
 import { AnclajeZona } from './banda'
 import {
   IconoEngranaje, IconoVoltear, IconoImagenDetras, IconoImagenRecuadro,
-  IconoImagenOculta, IconoFranja, IconoSol
+  IconoImagenOculta, IconoFranja, IconoSol, IconoSubtitulos
 } from './IconosApp'
+import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
+import type { ClaveTexto } from '../textos'
 import { PASOS_LETRA } from './estiloLectura'
 import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from '../lib/brillo'
 import { t, useTextos } from '../textos'
@@ -22,7 +24,12 @@ import { t, useTextos } from '../textos'
 // linea-minutos-disponibles, btn-voltear-camara- se conservan: las pruebas
 // migran el camino, no las puertas de cada ajuste.
 
-export type PanelFicha = 'letra' | 'camara' | 'anclaje' | 'brillo' | 'calidad' | null
+export type PanelFicha = 'letra' | 'camara' | 'anclaje' | 'brillo' | 'calidad' | 'subtitulos' | null
+
+// Los nombres de los estilos, en el idioma de la app -las claves de SubtitulosVisor.tsx-.
+const CLAVE_SUBTITULO: Record<EstiloSubtitulo, ClaveTexto> = {
+  no: 'subtitulosNo', amarillo: 'subtitulosAmarillo', rojo: 'subtitulosRojo', formal: 'subtitulosFormal'
+}
 
 function etiquetaCamara(fondo: FondoToma): string {
   if (fondo === 'recuadro') return t('fichaCamaraRecuadro')
@@ -96,6 +103,10 @@ export function FichasListo({
 
   const calidades = calidadesSoportadas.length > 0 ? calidadesSoportadas : ['1080p', '720p', '480p']
   const mostrarCalidad = conCamara && calidadesSoportadas.length > 0
+  // LOS SUBTITULOS, ANTES DE GRABAR -28-09-2026-. Javier: la seccion Video salio de Ajustes; los
+  // subtitulos van en su ficha de Grabar. Es la MISMA clave que el reproductor -sigo_subtitulos_estilo-:
+  // lo que se elige aca es con lo que abre la toma, y ahi se puede cambiar mirando el video.
+  const [estiloSub, setEstiloSub] = useState<EstiloSubtitulo>(estiloSubtituloGuardado)
   const valorBrillo = brillo ?? brilloSistema ?? 0.5
   const idxLetra = PASOS_LETRA.indexOf(fontSize)
   const puedeMenos = idxLetra > 0 || (idxLetra < 0 && PASOS_LETRA.some((p) => p < fontSize))
@@ -186,6 +197,47 @@ export function FichasListo({
                   {t('camaraSigueEncendida')}
                 </div>
               )}
+              {/* VOLTEAR, ADENTRO DEL PANEL DE LA CAMARA -28-09-2026-. Era una ficha suelta; Javier:
+                  "deberia estar incluido en el submenu de la camara... al ladito o abajo". Todo lo de
+                  la camara en un solo lugar. Sigue siendo una accion, no una eleccion. */}
+              <div className="segmentado">
+                <button
+                  type="button"
+                  data-testid="btn-voltear-camara"
+                  aria-label={t('voltearCamara')}
+                  className="segmentado-opcion"
+                  onClick={() => onVoltear?.()}
+                >
+                  <IconoVoltear tamano={18} />
+                  <span>{t('voltearCamara')}</span>
+                </button>
+              </div>
+            </>
+          )}
+
+          {panelAbierto === 'subtitulos' && (
+            <>
+              <div className="panel-ficha-cabeza">
+                <span>{t('subtitulos')}</span>
+                <span>{t(CLAVE_SUBTITULO[estiloSub])}</span>
+              </div>
+              <div className="segmentado" role="group" aria-label={t('subtitulos')}>
+                {ESTILOS_SUBTITULO.map((e) => (
+                  <button
+                    key={e.valor}
+                    type="button"
+                    data-testid={`btn-subtitulo-${e.valor}`}
+                    aria-pressed={estiloSub === e.valor}
+                    className={`segmentado-opcion${estiloSub === e.valor ? ' activa' : ''}`}
+                    onClick={() => {
+                      setEstiloSub(e.valor)
+                      guardarEstiloSubtitulo(e.valor)
+                    }}
+                  >
+                    <span>{t(CLAVE_SUBTITULO[e.valor])}</span>
+                  </button>
+                ))}
+              </div>
             </>
           )}
 
@@ -357,12 +409,14 @@ export function FichasListo({
         {conCamara && (
           <button
             type="button"
-            className="ficha-listo"
-            data-testid="btn-voltear-camara"
-            aria-label={t('voltearCamara')}
-            onClick={() => onVoltear?.()}
+            className={`ficha-listo${panelAbierto === 'subtitulos' ? ' abierta' : ''}`}
+            data-testid="ficha-subtitulos"
+            aria-label={`${t('subtitulos')}, ${t(CLAVE_SUBTITULO[estiloSub])}`}
+            aria-expanded={panelAbierto === 'subtitulos'}
+            onClick={() => toggle('subtitulos')}
           >
-            <IconoVoltear tamano={16} />
+            <IconoSubtitulos tamano={16} />
+            <span>{t(CLAVE_SUBTITULO[estiloSub])}</span>
           </button>
         )}
 

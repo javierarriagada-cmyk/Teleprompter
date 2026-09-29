@@ -63,7 +63,7 @@ describe('Tarea 70 - El estado LISTO y LEYENDO del lienzo se hace como la foto, 
     fireEvent.click(await screen.findByTestId('btn-grabar-tarjeta'))
     expect(await screen.findByTestId('fila-fichas-listo')).toBeDefined()
     expect(screen.getByTestId('ficha-mas')).toBeDefined()
-    expect(screen.getByTestId('btn-voltear-camara')).toBeDefined()
+    expect(screen.getByTestId('ficha-camara')).toBeDefined()
   })
 
   test('b) En Leer Y en Grabar, btn-empezar-toma NO contiene el texto Empezar; en Leer lleva el triangulo y en Grabar el punto rojo', async () => {
@@ -106,12 +106,15 @@ describe('Tarea 70 - El estado LISTO y LEYENDO del lienzo se hace como la foto, 
     expect(screen.queryByTestId('panel-controles-listo')).toBeNull()
   })
 
-  // 28-09-2026: Voltear es ficha-accion. En Grabar esta a la vista, sin panel.
-  // En Leer no existe.
+  // 28-09-2026: voltear vive en el panel de la ficha de camara -Javier: "deberia estar incluido
+  // en el submenu de la camara"-. Con el panel cerrado no esta; al abrir la ficha, si.
   test('d) En Grabar, con el panel cerrado, btn-voltear-camara es null; al hacer click en btn-engranaje-toma, btn-voltear-camara existe y su aria-label es Voltear cámara', async () => {
     await crearAppConGuion()
 
     fireEvent.click(await screen.findByTestId('btn-grabar-tarjeta'))
+    await screen.findByTestId('ficha-camara')
+    expect(screen.queryByTestId('btn-voltear-camara')).toBeNull()
+    fireEvent.click(screen.getByTestId('ficha-camara'))
     const btnVoltear = await screen.findByTestId('btn-voltear-camara')
     expect(btnVoltear).toBeDefined()
     expect(btnVoltear.getAttribute('aria-label')).toBe('Voltear cámara')
