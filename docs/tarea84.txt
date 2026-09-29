@@ -1,0 +1,179 @@
+TAREA 84 - LA VERSIÓN PARA GOOGLE PLAY: FIRMADA, LIVIANA, LIMPIA Y COMO GOOGLE LA PIDE
+Encargo para el bot de Grok, 29-09-2026. Punto de partida: main, commit 570d069. Nunca una rama vieja.
+(La 83 queda reservada para las tabletas.)
+
+==============================================================================
+QUÉ ES Y POR QUÉ
+==============================================================================
+La cuenta de Play Console de Javier está aprobada. Lo primero que se sube es una prueba cerrada:
+12 probadores durante 14 días antes de poder publicar. Javier quiere que esa primera versión ya
+salga como Google la necesita, no la APK de prueba de siempre.
+
+Hoy la APK de prueba pesa unos 130 MB: trae los dos modelos de voz -español 58 MB, inglés 68 MB,
+android/app/src/main/assets- aunque casi todos usan uno solo, trae las bibliotecas nativas para
+dos tipos de procesador, y trae herramientas de prueba: el panel de diagnóstico, el panel de
+corpus y el guardado del audio de cada lectura.
+
+Lo que ya cumple y NO se toca: Android 16 como objetivo -API 36, lo que Play exige desde el
+31-08-2026-, Android 10 como mínimo -570d069-, páginas de 16 KB -medido en la APK-.
+
+REGLA MADRE DE ESTA TAREA: `npm run apk -- poner telefono`, la APK de prueba que Claude instala en
+el moto g86 para trabajar, TIENE QUE SEGUIR ANDANDO IGUAL: con los dos modelos adentro y con las
+herramientas de diagnóstico. Lo nuevo es un segundo camino, el de Play. Si algo obliga a tocar el
+camino de prueba, se dice en el mensaje final.
+
+==============================================================================
+REGLAS DE LA CASA
+==============================================================================
+  - Comentarios en castellano, con tildes, explicando POR QUÉ, con fecha y caso. Ningún
+    comentario existente se borra ni se acorta; contar antes y después: el total no baja.
+  - Colores y medidas en las hojas de estilo; los componentes nuevos, a la lista de T209.
+  - Todo texto que ve la persona, en src/textos/es.ts y en.ts.
+  - Dependencias: en el lado web NO se agrega ninguna. En Android se permiten SOLO las de Google
+    para Play -asset delivery- si hacen falta, cada una con su comentario de por qué.
+  - NINGUNA CONTRASEÑA NI LLAVE ENTRA AL REPOSITORIO. La llave de subida la crea Javier en su
+    computador; el repositorio solo sabe leer un archivo local que nunca se sube.
+  - Si algo no calza con este encargo, se describe en el mensaje final en vez de improvisar.
+
+==============================================================================
+PARTE A - EL PAQUETE DE PLAY: AAB FIRMADO
+==============================================================================
+  A1. android/app/build.gradle: un signingConfig "subida" para release que lee
+      android/keystore.properties -storeFile, storePassword, keyAlias, keyPassword-. Si el
+      archivo no existe, la construcción de release igual funciona, sin firmar, y lo avisa en la
+      consola: así el repositorio compila en cualquier máquina.
+  A2. .gitignore: android/keystore.properties, *.jks y *.keystore. Un ejemplo sin datos reales,
+      android/keystore.properties.ejemplo, con un comentario de cómo llenarlo.
+  A3. Un comando: `npm run play`. Arma la web en modo play -parte B-, sincroniza Capacitor y
+      corre bundleRelease. Deja el AAB en una ruta fija que imprime al final, con su peso.
+  A4. Comprobaciones automáticas al final de `npm run play`, que imprimen OK o FALLA:
+      - que el AAB está firmado -si hay keystore.properties-;
+      - alineación de 16 KB: bundletool dump config --bundle=... debe decir PAGE_ALIGNMENT_16K;
+      - el peso de descarga por teléfono: bundletool get-size total para un teléfono arm64 en
+        español y uno en inglés. Bundletool se baja una vez a una carpeta ignorada, no al repo.
+      - versionCode mayor que el de la subida anterior -hoy: cantidad de commits, ya lo hace-.
+
+==============================================================================
+PARTE B - LO QUE NO VIAJA A PLAY
+==============================================================================
+Un modo de Vite nuevo, "play" -archivo .env.play, como .env.android-, con:
+    VITE_SIN_MOTOR_WEB=1       -igual que hoy en android-
+    VITE_HERRAMIENTAS=0
+En modo "android" -la APK de prueba- VITE_HERRAMIENTAS=1.
+
+Con VITE_HERRAMIENTAS=0, y SOLO entonces:
+  B1. Los cinco toques sobre la marca no abren nada -BibliotecaView.tsx, línea 83 y 642-: no se
+      montan PanelDiagnostico ni PanelCorpus, ni en App.tsx ni en BibliotecaView.tsx. Que el
+      código quede fuera del paquete -la rama muerta la elimina Vite, como hace hoy con
+      VITE_SIN_MOTOR_WEB en src/motor/motorWeb.ts; mirar cómo está hecho ahí y hacer igual-.
+  B2. GUARDAR_AUDIO_DEL_OIDO -src/motor/MotorNativo.ts, línea 9- queda en false: no se guarda
+      el audio de cada lectura en el teléfono de la gente.
+  B3. Sin la aplicación web instalable: en modo play NO van el service worker, registerSW.js,
+      workbox ni manifest.webmanifest. Hoy viajan en la APK -android/app/src/main/assets/public-
+      aunque dentro de la app no sirven, y ya causaron el problema del código viejo
+      -src/lib/actualizacion.ts-. vite.config.ts: VitePWA solo fuera de los modos android y play;
+      si sacarlo del modo android cambia la APK de prueba, dejarlo en android y decirlo.
+  B4. Buscar y listar en el mensaje final cualquier otro rastro de prueba que viaje: registros
+      de consola con datos del usuario, rutas de depuración, textos de prueba. Listarlos; sacar
+      solo los que sean claramente de prueba.
+
+==============================================================================
+PARTE C - CÓDIGO OPTIMIZADO: R8
+==============================================================================
+  C1. Release con minifyEnabled true y shrinkResources true.
+  C2. android/app/proguard-rules.pro -hoy vacío- con las reglas que hacen falta, cada una con su
+      comentario de por qué. Lo mínimo conocido:
+      - Capacitor: los plugins se encuentran por anotación y los métodos por reflexión
+        -@CapacitorPlugin, @PluginMethod, @Permission-: los cuatro plugins de Sigo
+        -com.sigoteleprompter.app.*Plugin- y los de las dependencias -capgo camera-preview,
+        @capacitor/app, clipboard, haptics-.
+      - Vosk y JNA: org.vosk.**, com.sun.jna.** -JNA llama por nombre a código nativo-.
+      - Media3 y CameraX: lo que pidan sus reglas de consumidor; agregar solo si falla.
+  C3. Si R8 rompe algo que no se puede probar sin el teléfono, se deja una bandera para
+      apagarlo -propiedad de gradle- y se dice en el mensaje final. Claude lo prueba en el
+      moto g86 antes de fusionar.
+
+==============================================================================
+PARTE D - LOS MODELOS DE VOZ POR SEPARADO: PLAY ASSET DELIVERY
+==============================================================================
+Hoy cada persona descarga los dos modelos -126 MB- aunque lea en un solo idioma.
+  D1. Dos paquetes de recursos -asset packs-:
+        model-es: install-time -viene con la instalación; el español es el mercado principal-.
+        model-en: on-demand -se baja la primera vez que hace falta-.
+      Cada uno con su archivo uuid -hoy lo genera la tarea genUUID de build.gradle en
+      build/generated/assets-: la marca que usa Vosk para no volver a copiar el modelo tiene que
+      seguir existiendo y seguir saliendo de la huella del contenido.
+  D2. VoskNativoPlugin.java -iniciar, línea 180 y siguientes-: el modelo español se sigue
+      cargando como hoy -un paquete install-time se lee con el mismo AssetManager; comprobarlo-.
+      El inglés, si el paquete no está, se pide a Play; cuando está, se carga desde la carpeta
+      del paquete. Si Vosk puede abrir el modelo directo desde esa carpeta, sin copiarlo, mejor:
+      ahorra 68 MB de copia.
+  D3. Lo que ve la persona: al empezar a leer un guion en inglés sin el paquete, el mismo
+      IndicadorPrecarga que ya existe -src/components/IndicadorPrecarga.tsx, "Descargando modelo
+      de voz para uso offline: N %"- muestra el avance real. Si no hay internet: un aviso claro
+      -texto nuevo en es y en: que hace falta conexión una vez para bajar la voz en inglés, y
+      que después funciona sin internet- y la lectura no parte. Nunca un fallo en silencio.
+  D4. La APK de prueba -regla madre- sigue trayendo los dos modelos dentro, como hoy. Proponer y
+      explicar cómo -por ejemplo, los modelos en los assets de la variante debug y en paquetes
+      solo para release-.
+  D5. Probarlo con bundletool build-apks --local-testing -simula la descarga de Play sin
+      subir nada-, e incluir en el mensaje final cómo lo repite Claude en el teléfono.
+
+==============================================================================
+PARTE E - LOS GUIONES SE RESPALDAN
+==============================================================================
+Revisión de calidad de Android, punto 2 -App_Data_Backup-: allowBackup está encendido pero sin
+reglas. Android respalda como máximo 25 MB por app y pasado eso no respalda nada; en la carpeta de
+Sigo viven el modelo desempaquetado y las tomas. Si alguien cambia de teléfono, pierde sus guiones.
+  E1. android:dataExtractionRules -Android 12 o más- y android:fullBackupContent -Android 10 y
+      11-, en res/xml, que respalden SOLO los guiones y los ajustes -la base IndexedDB y el
+      localStorage del WebView, y las preferencias- y dejen fuera los modelos de voz, las tomas
+      y los cachés. Averiguar en qué carpetas del WebView viven exactamente y escribirlo en el
+      comentario.
+  E2. Comprobarlo en el emulador con adb shell bmgr: respaldar, desinstalar, reinstalar,
+      restaurar, y ver que los guiones vuelven. Escribir los comandos en el mensaje final.
+
+==============================================================================
+PARTE F - CÁMARA NEGADA: IGUAL QUE EL MICRÓFONO
+==============================================================================
+La tarea 80 resolvió el micrófono negado -DialogoMicrofono.tsx-. Con la cámara pasa lo mismo:
+si se niega, Grabar no tiene imagen y nadie explica por qué.
+  F1. Mismo diálogo, misma forma y mismos botones -"Ahora no" y "Abrir ajustes"-, con su título
+      y explicación en es y en: la cámara filma mientras lees; la imagen y el video quedan en el
+      teléfono. Generalizar DialogoMicrofono en un DialogoPermiso con el tipo como dato, sin
+      cambiar cómo se ve el del micrófono ni sus data-testid.
+  F2. Se abre cuando Grabar no consigue la cámara por permiso -encenderCamara en lib/camara.ts;
+      distinguir "negado" de otros errores y decir en el mensaje final cómo se distinguió-.
+
+==============================================================================
+PARTE G - TALKBACK -accesibilidad, lo que queda de la revisión-
+==============================================================================
+  G1. AvisoBreve.tsx: role="status" y aria-live="polite", para que el lector anuncie el aviso.
+      La duración NO cambia.
+  G2. PantallaAjustes.tsx: la pantalla con role="dialog", aria-modal="true" y su título como
+      nombre.
+  G3. El campo del título del guion en el editor, con nombre para el lector -clave de texto
+      nueva en es y en-.
+
+==============================================================================
+LAS PRUEBAS
+==============================================================================
+  - Las 408 de hoy en verde, sin modificarlas. En las pruebas VITE_HERRAMIENTAS vale lo de la
+    APK de prueba: las pruebas del diagnóstico siguen corriendo.
+  - Nuevas: con VITE_HERRAMIENTAS=0 los cinco toques no abren el panel; DialogoPermiso de
+    cámara con sus dos botones; AvisoBreve con role status; Ajustes con role dialog.
+  - Cada prueba nueva se rompe a propósito una vez, y se dice cuál y cómo.
+
+==============================================================================
+TERMINADO CUANDO
+==============================================================================
+  1. npx tsc --noEmit limpio, npx vitest run todo verde, comentarios que no bajan -los números-.
+  2. `npm run apk -- poner telefono` sigue funcionando igual -decirlo comprobado-.
+  3. `npm run play` produce el AAB e imprime sus comprobaciones. En el mensaje final: el peso de
+     descarga por teléfono -arm64, en español y en inglés- contra los 130 MB de hoy.
+  4. Entrega: un PR contra main. Si el conector no sube un archivo por tamaño, un diff unificado
+     completo contra 570d069.
+
+Después, Claude lo prueba en el moto g86 antes de fusionar: el AAB con la llave de Javier
+instalado con bundletool, la lectura y la grabación completas con R8, la descarga del inglés, el
+respaldo de los guiones y los dos diálogos de permiso.
