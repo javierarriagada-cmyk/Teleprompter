@@ -330,5 +330,19 @@ function calcularDimensionesPreview(config?: OpcionesConfigCamara): {
   const screenW = typeof window !== 'undefined' ? (window.screen?.width || winW) : winW
   const screenH = typeof window !== 'undefined' ? (window.screen?.height || winH) : winH
 
+  // AL GIRAR EL TELÉFONO -tarea 82, A6, 29-09-2026-. window.screen mide la pantalla física, y en
+  // el WebView de Android sus dos lados se dan vuelta con el giro: por eso "detrás" cubre de borde
+  // a borde, barras incluidas. Pero nada garantiza que ya se hayan dado vuelta cuando llega este
+  // cálculo -lo dispara el cambio de tamaño de la vista, TeleprompterView-, y hay WebViews que los
+  // informan siempre en vertical. Si screen dice vertical y la vista medida dice horizontal -o al
+  // revés-, la vista previa quedaría como una franja angosta en la pantalla girada. En ese caso se
+  // usa lo medido -vistaW, vistaH-, que es la ventana de ahora mismo. Si coinciden, queda screen
+  // como siempre: en vertical nada cambia.
+  const vistaW = config?.vistaW
+  const vistaH = config?.vistaH
+  if (vistaW && vistaH && vistaW !== vistaH && screenW !== screenH && (vistaW > vistaH) !== (screenW > screenH)) {
+    return { x: 0, y: 0, width: vistaW, height: vistaH }
+  }
+
   return { x: 0, y: 0, width: screenW, height: screenH }
 }

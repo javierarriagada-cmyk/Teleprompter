@@ -9,6 +9,10 @@ export interface BarraDeTiempoProps {
   // En LISTO, antes de empezar: la barra se dibuja quieta con la duracion
   // estimada del guion. Ver el comentario de la vista previa, abajo.
   vistaPrevia?: boolean
+  // TELÉFONO DE LADO -tarea 82, 29-09-2026-: la pastilla va abajo del riel derecho y su lugar lo
+  // pone entero styles-horizontal.css. El bottom en línea, medido desde el círculo de la pantalla
+  // vertical, ahí no corresponde y un estilo en línea le ganaría a la hoja.
+  enRiel?: boolean
 }
 
 // El mismo ritmo que usa el editor para decir "1 min", y el que usa esta
@@ -44,13 +48,15 @@ function Pastilla({
   progresoPct,
   etiqueta,
   testid,
-  conTestidsDeProgreso
+  conTestidsDeProgreso,
+  enRiel = false
 }: {
   texto: string
   progresoPct: number
   etiqueta: string
   testid?: string
   conTestidsDeProgreso: boolean
+  enRiel?: boolean
 }) {
   return (
     <div
@@ -65,7 +71,8 @@ function Pastilla({
         // Desde el 27-09-2026 el circulo se mide con --circulo-desde-abajo
         // -styles.css-: la pastilla va 14 px mas arriba que el borde del circulo,
         // (72 - 44) / 2, y asi los centros siguen calzando si el circulo se mueve.
-        bottom: 'calc(var(--circulo-desde-abajo) + 14px + env(safe-area-inset-bottom, 0px))',
+        bottom: enRiel ? undefined : 'calc(var(--circulo-desde-abajo) + 14px + env(safe-area-inset-bottom, 0px))',
+        // 29-09-2026, tarea 82: en el riel -teléfono de lado- el bottom lo pone styles-horizontal.css.
         // right -16 px mas el area segura- tambien vive en .pastilla-tiempo-lugar: en
         // pantallas angostas baja a 12 -27-09-2026-.
         zIndex: 12,
@@ -124,7 +131,8 @@ export default function BarraDeTiempo({
   motorAvance,
   totalTokens,
   tInicioLecturaMs,
-  vistaPrevia = false
+  vistaPrevia = false,
+  enRiel = false
 }: BarraDeTiempoProps) {
   useTextos()
   const [ahora, setAhora] = useState<number>(() => performance.now())
@@ -159,6 +167,7 @@ export default function BarraDeTiempo({
           etiqueta={t('duracionEstimada')}
           testid="barra-tiempo-previa"
           conTestidsDeProgreso={false}
+          enRiel={enRiel}
         />
       )
     }
@@ -181,6 +190,7 @@ export default function BarraDeTiempo({
       progresoPct={progresoPct}
       etiqueta={t('tiempoTranscurrido')}
       conTestidsDeProgreso={true}
+      enRiel={enRiel}
     />
   )
 }

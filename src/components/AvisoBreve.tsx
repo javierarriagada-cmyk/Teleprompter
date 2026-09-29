@@ -8,9 +8,14 @@ interface AvisoBreveProps {
   avisoInfo: AvisoInfo | null
   enLectura: boolean
   cerrarAviso: () => void
+  // TELÉFONO DE LADO -tarea 82, 29-09-2026-: dónde empieza y termina la columna de texto entre
+  // los rieles, como largos CSS. Con esto el aviso va abajo y centrado en la columna, a 16 más el
+  // área segura: en horizontal no hay círculo abajo al centro sobre el que calcularlo.
+  columnaHorizontal?: { izquierda: string; derecha: string } | null
 }
 
-export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso }: AvisoBreveProps) {
+export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizontal = null }: AvisoBreveProps) {
+  const enRieles = enLectura && !!columnaHorizontal
   return (
     <>
       {/* Toast / Aviso Breve */}
@@ -25,11 +30,15 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso }: AvisoBreveProp
             // usa transform, lo pisaba. Ahora se centra con margenes, sin transform.
             // En la lectura, encima del circulo de 72 -Empezar o Parar-: a 32 px quedaba montado
             // sobre el, visto en el moto g86 el mismo dia.
-            bottom: enLectura
+            // 29-09-2026, tarea 82: en el teléfono de lado va a 16 más el área segura y entre
+            // los rieles -columnaHorizontal-; en vertical sigue exactamente como arriba.
+            bottom: enRieles
+              ? 'calc(16px + env(safe-area-inset-bottom, 0px))'
+              : enLectura
               ? 'calc(var(--circulo-desde-abajo) + 72px + var(--aire-3) + env(safe-area-inset-bottom, 0px))'
               : 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))',
-            left: 0,
-            right: 0,
+            left: enRieles && columnaHorizontal ? columnaHorizontal.izquierda : 0,
+            right: enRieles && columnaHorizontal ? columnaHorizontal.derecha : 0,
             marginLeft: 'auto',
             marginRight: 'auto',
             width: 'max-content',

@@ -15,6 +15,9 @@ import '@fontsource/source-serif-4/latin-ext-600.css'
 import App from './App'
 import './styles.css'
 import './styles-ajustes.css'
+// El teléfono de lado -tarea 82, 29-09-2026-: va después de las otras dos porque las pisa
+// solo dentro de .layout-tel-h.
+import './styles-horizontal.css'
 
 import { instalarRecargaAlActualizar, sacarServiceWorkerEnNativo } from './lib/actualizacion'
 

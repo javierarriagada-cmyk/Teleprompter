@@ -56,7 +56,7 @@ export function avanzarTrabado(
 }
 
 import { AnclajeZona, calcularBanda, calcularBgVelo, calcularTramosVelo } from './banda'
-import { RecuadroCamara } from './RecuadroCamara'
+import { RecuadroCamara, EsquinaRecuadroH } from './RecuadroCamara'
 import { FondoToma } from '../App'
 import {
   IconoAtras, IconoEmpezar
@@ -66,7 +66,7 @@ import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTUR
 import { actualizarConfigCamara } from '../lib/camara'
 import { App as CapacitorApp } from '@capacitor/app'
 import { aplicarBrillo, leerBrilloSistema, restaurarBrillo } from '../lib/brillo'
-import { FichasListo, PanelFicha } from './FichasListo'
+import { FichasListo, FichaMas, PanelFicha } from './FichasListo'
 import { t, useTextos } from '../textos'
 
 // UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
@@ -253,6 +253,13 @@ interface TeleprompterViewProps {
     avanzando: boolean,
     estado?: EstadoModo
   ) => void
+  // EL TELÉFONO DE LADO -tarea 82, 29-09-2026-. App lo sabe por useLayout -'tel-h'- y lo pasa acá.
+  // Con esto LISTO dibuja los dos rieles, la columna queda entre ellos y el recuadro vive en una
+  // esquina. false: la pantalla vertical de siempre.
+  horizontal?: boolean
+  // La esquina del recuadro en horizontal -sigo_recuadro_esquina_h, la guarda App-.
+  esquinaRecuadroH?: EsquinaRecuadroH
+  setEsquinaRecuadroH?: (e: EsquinaRecuadroH) => void
 }
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
@@ -333,7 +340,10 @@ export default function TeleprompterView({
   onToggleControles,
   onNavegacionManual,
   onModoManualChange,
-  onEstadoAvanceChange
+  onEstadoAvanceChange,
+  horizontal = false,
+  esquinaRecuadroH = 'der-abajo',
+  setEsquinaRecuadroH
 }: TeleprompterViewProps) {
   useTextos()
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -474,7 +484,9 @@ export default function TeleprompterView({
       observer.observe(container)
       return () => observer.disconnect()
     }
-  }, [script, fontSize, columnaAngosta, marginPercent, recalcularGeometria])
+  // 29-09-2026, tarea 82: también al cambiar de diseño y de lado del recuadro. El relleno de la
+  // columna cambia sin que el contenedor cambie de tamaño, y el ResizeObserver no se entera.
+  }, [script, fontSize, columnaAngosta, marginPercent, recalcularGeometria, horizontal, esquinaRecuadroH, fondoToma, camaraEncendida])
 
   // Donde quedo dibujado el hueco del recuadro -RecuadroCamara, onRect-: la camara va ahi.
   const [rectRecuadro, setRectRecuadro] = React.useState<{ x: number; y: number; width: number; height: number } | undefined>(undefined)
@@ -881,12 +893,117 @@ export default function TeleprompterView({
 
   const textoSobreImagen = camaraEncendida && fondoToma === 'detras'
 
+  // LA COLUMNA ENTRE LOS RIELES -tarea 82, A3 y A5, 29-09-2026-. En el teléfono de lado el relleno
+  // lateral no es marginPercent: es el ancho del riel más 28 de aire -20 con el recuadro-, y del
+  // lado del recuadro se suma su carril de 168 -144 más 12 a cada lado-. Si el recuadro está a la
+  // izquierda la columna pasa a la derecha. Las medidas viven en styles-horizontal.css; acá solo
+  // se elige cuál va a cada lado. Son las mismas en LISTO y leyendo, así que al empezar la columna
+  // no se mueve.
+  const recuadroEnPantalla = camaraEncendida && fondoToma === 'recuadro'
+  const recuadroALaIzquierda = recuadroEnPantalla && esquinaRecuadroH.startsWith('izq')
+  const varRielIzq = conCamara ? 'var(--riel-izq-grabar)' : 'var(--riel-izq-leer)'
+  const varAireColumna = recuadroEnPantalla ? 'var(--columna-aire-h-recuadro)' : 'var(--columna-aire-h)'
+  const rellenoIzqH = `calc(${varRielIzq} + ${recuadroALaIzquierda ? 'var(--carril-recuadro-h) + ' : ''}${varAireColumna})`
+  const rellenoDerH = `calc(var(--riel-der) + ${recuadroEnPantalla && !recuadroALaIzquierda ? 'var(--carril-recuadro-h) + ' : ''}${varAireColumna})`
+
   const bgBanda = isWhiteBg
     ? 'linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.03) 25%, rgba(0, 0, 0, 0.075) 50%, rgba(0, 0, 0, 0.03) 75%, transparent 100%)'
     : 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.075) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%)'
 
   const rgbFondo = hexToRgb(colorFondo)
   const bgVelo = calcularBgVelo(topBanda, filaPx, rgbFondo, textoSobreImagen)
+
+  // LOS PEDAZOS DE LISTO QUE CAMBIAN DE LUGAR SEGÚN EL DISEÑO -tarea 82, 29-09-2026-. El mismo ‹,
+  // las mismas fichas y el mismo Empezar -con sus testid- van en vertical donde siempre y de lado
+  // en los rieles. Se arman una vez acá para no tener dos copias que después se desalineen.
+  const botonVolverListo = (
+    <>
+      {/* La flecha usa el tratamiento comun de 32 -btn-flotante-32, styles.css-,
+          igual que la flecha del estado leyendo en App.tsx. Hasta la revision
+          de la 70 era opaca -bg-superficie y borde gris- con el icono a 22, y
+          al lado de la otra se veian dos flechas distintas para la misma
+          salida. El encargo 70 decia que este boton no se tocaba y a la vez,
+          en la 9.3, que la otra flecha copiaba su tratamiento translucido,
+          que no tenia: se resolvio por la seccion 11, que manda. 23-09-2026.
+          24-09-2026: sube a 40, el tamano del engranaje de la otra esquina.
+          El dueno: "el boton de volver ... esta desproporcionado por ser mas
+          pequeno que el engranaje". Las dos esquinas de arriba son el mismo
+          objeto y el mismo tamano; el 32 de "esquina secundaria" se fue. */}
+      <button
+        data-testid="btn-volver-listo"
+        type="button"
+        className="btn-deformable btn-flotante-40"
+        onClick={(e) => {
+          e.stopPropagation()
+          onVolverListo?.()
+        }}
+        aria-label={t('volver')}
+        style={{
+          position: 'absolute',
+          top: 'calc(8px + env(safe-area-inset-top, 0px))',
+          // 29-09-2026, tarea 82: de lado, arriba del riel izquierdo a 12 del borde.
+          left: horizontal ? 'calc(12px + env(safe-area-inset-left, 0px))' : 'calc(8px + env(safe-area-inset-left, 0px))',
+          zIndex: 10
+        }}
+      >
+        <IconoAtras tamano={20} />
+      </button>
+    </>
+  )
+
+  const fichasListo = (enRiel: boolean) => (
+      <FichasListo
+        fontSize={fontSize}
+        onLetraMenos={onLetraMenos}
+        onLetraMas={onLetraMas}
+        onElegirLetra={onElegirLetra}
+        conCamara={conCamara}
+        fondoToma={fondoToma}
+        setFondoToma={setFondoToma}
+        onVoltear={onVoltear}
+        anclajeZona={anclajeZona}
+        setAnclajeZona={setAnclajeZona}
+        brillo={brillo}
+        setBrillo={setBrillo}
+        calidadVideo={calidadVideo}
+        setCalidadVideo={setCalidadVideo}
+        calidadesSoportadas={calidadesSoportadas}
+        minutosDisponibles={minutosDisponibles}
+        panelAbierto={panelFicha}
+        setPanelAbierto={setPanelFicha}
+        onAbrirAjustes={onAbrirAjustes}
+        horizontal={enRiel}
+      />
+  )
+
+  const botonEmpezar = (
+    <button
+      data-testid="btn-empezar-toma"
+      type="button"
+      // 29-09-2026, tarea 82, parte C: en vertical, sobre la pareja de fondo blanco,
+      // Empezar de Leer va en su variante oscura -empezar-sobre-blanco, styles.css-.
+      // De lado vive en el riel, que sigue al tema: ahí manda styles-horizontal.css.
+      className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${!conCamara && !horizontal && isWhiteBg ? ' empezar-sobre-blanco' : ''}`}
+      aria-label={t('empezar')}
+      onClick={(e) => {
+        e.stopPropagation()
+        onEmpezar?.()
+      }}
+      style={{
+        pointerEvents: 'auto',
+        width: 72,
+        height: 72,
+        padding: 0,
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 'var(--redondeo-pildora)'
+      }}
+    >
+      {conCamara ? <span className="punto-grabar" aria-hidden="true" /> : <IconoEmpezar tamano={30} />}
+    </button>
+  )
 
   const allTokens = tokensRef.current
 
@@ -960,6 +1077,8 @@ export default function TeleprompterView({
           }}
           onArrastrandoChange={setArrastrandoRecuadro}
           onRect={setRectRecuadro}
+          // 29-09-2026, tarea 82: de lado, 144 x 81 en una esquina de la zona libre.
+          horizontal={horizontal ? { esquina: esquinaRecuadroH, onEsquina: (e) => setEsquinaRecuadroH?.(e) } : null}
         />
       )}
 
@@ -985,7 +1104,12 @@ export default function TeleprompterView({
             // La pausa: top 8, right 8, 40 x 40. El punto de 10 va a su izquierda,
             // 12 px de aire, con el centro a la misma altura: 8 + 20 - 5.
             top: 'calc(23px + env(safe-area-inset-top, 0px))',
-            right: 'calc(60px + env(safe-area-inset-right, 0px))'
+            // 29-09-2026, tarea 82: de lado la pausa va centrada en el riel derecho -a (124 - 40) / 2
+            // del borde-, así que el punto queda a la mitad del riel + 20 + 12 del borde. Mismo
+            // alto -23- y los mismos 12 de aire.
+            right: horizontal
+              ? 'calc(var(--riel-der) / 2 + 32px + env(safe-area-inset-right, 0px))'
+              : 'calc(60px + env(safe-area-inset-right, 0px))'
           }}
           title={t('grabando')}
         />
@@ -998,8 +1122,9 @@ export default function TeleprompterView({
           data-testid="banda-lectura"
           style={{
             position: 'absolute',
-            left: 0,
-            right: 0,
+            // 29-09-2026, tarea 82: de lado, como el velo, solo sobre la columna.
+            left: horizontal ? `calc(${varRielIzq}${recuadroALaIzquierda ? ' + var(--carril-recuadro-h)' : ''} + env(safe-area-inset-left, 0px))` : 0,
+            right: horizontal ? `calc(var(--riel-der)${recuadroEnPantalla && !recuadroALaIzquierda ? ' + var(--carril-recuadro-h)' : ''} + env(safe-area-inset-right, 0px))` : 0,
             top: topBanda,
             height: altoBanda,
             pointerEvents: 'none',
@@ -1056,11 +1181,15 @@ export default function TeleprompterView({
           data-testid="velo-lectura"
           style={{
             position: 'absolute',
-            left: 0,
-            right: 0,
+            // 29-09-2026, tarea 82: de lado el velo va solo sobre la columna -entre los rieles y
+            // sin el carril del recuadro-. De borde a borde oscurecía el hueco del recuadro, y la
+            // lámina aprobada lo muestra limpio: la persona tiene que verse bien ahí.
+            left: horizontal ? `calc(${varRielIzq}${recuadroALaIzquierda ? ' + var(--carril-recuadro-h)' : ''} + env(safe-area-inset-left, 0px))` : 0,
+            right: horizontal ? `calc(var(--riel-der)${recuadroEnPantalla && !recuadroALaIzquierda ? ' + var(--carril-recuadro-h)' : ''} + env(safe-area-inset-right, 0px))` : 0,
             top: 0,
             bottom: 0,
-            width: '100%',
+            // 29-09-2026, tarea 82: de lado el ancho sale de left y right -la columna-.
+            width: horizontal ? 'auto' : '100%',
             pointerEvents: 'none',
             zIndex: 3,
             background: bgVelo
@@ -1083,8 +1212,15 @@ export default function TeleprompterView({
         style={{
           height: '100%',
           overflowY: 'auto',
-          paddingLeft: `${marginPercent}%`,
-          paddingRight: `${marginPercent}%`,
+          // 29-09-2026, tarea 82: de lado, el relleno de la columna entre los rieles -ver
+          // rellenoIzqH-; en vertical, marginPercent como siempre.
+          paddingLeft: horizontal ? rellenoIzqH : `${marginPercent}%`,
+          paddingRight: horizontal ? rellenoDerH : `${marginPercent}%`,
+          // EL FONDO DE LA PAREJA, PARA EL HALO E -tarea 82, parte B, 29-09-2026-. styles.css
+          // -.lectura-sobre-imagen- pinta las diez sombras con esta variable. Es el dato que eligió
+          // la persona -colorFondo-, no un color escrito acá. Va siempre, haya o no cámara: solo
+          // se usa dentro de .lectura-sobre-imagen.
+          ['--fondo-lectura' as string]: colorFondo,
           paddingTop: topBanda,
           // EL ULTIMO RENGLON TIENE QUE PODER LLEGAR A LA BARRA DE LECTURA.
           //
@@ -1158,7 +1294,9 @@ export default function TeleprompterView({
           data-testid="columna-texto"
           style={{
             fontSize,
-            maxWidth: columnaLectura(columnaAngosta).maxWidth,
+            // 29-09-2026, tarea 82: de lado la columna completa se topa en 56ch -unos 51
+            // caracteres a 800 y 55 a 844-; la angosta -22ch- no cambia.
+            maxWidth: horizontal && !columnaAngosta ? 'var(--columna-tope-h)' : columnaLectura(columnaAngosta).maxWidth,
             margin: '0 auto',
             width: '100%',
             // EN COLUMNA ANGOSTA EL TEXTO VA CENTRADO.
@@ -1225,36 +1363,24 @@ export default function TeleprompterView({
 
       {estadoToma === 'listo' && (
         <>
-          <VeloControles colorFondo={colorFondo} />
-          {/* La flecha usa el tratamiento comun de 32 -btn-flotante-32, styles.css-,
-              igual que la flecha del estado leyendo en App.tsx. Hasta la revision
-              de la 70 era opaca -bg-superficie y borde gris- con el icono a 22, y
-              al lado de la otra se veian dos flechas distintas para la misma
-              salida. El encargo 70 decia que este boton no se tocaba y a la vez,
-              en la 9.3, que la otra flecha copiaba su tratamiento translucido,
-              que no tenia: se resolvio por la seccion 11, que manda. 23-09-2026.
-              24-09-2026: sube a 40, el tamano del engranaje de la otra esquina.
-              El dueno: "el boton de volver ... esta desproporcionado por ser mas
-              pequeno que el engranaje". Las dos esquinas de arriba son el mismo
-              objeto y el mismo tamano; el 32 de "esquina secundaria" se fue. */}
-          <button
-            data-testid="btn-volver-listo"
-            type="button"
-            className="btn-deformable btn-flotante-40"
-            onClick={(e) => {
-              e.stopPropagation()
-              onVolverListo?.()
-            }}
-            aria-label={t('volver')}
-            style={{
-              position: 'absolute',
-              top: 'calc(8px + env(safe-area-inset-top, 0px))',
-              left: 'calc(8px + env(safe-area-inset-left, 0px))',
-              zIndex: 10
-            }}
-          >
-            <IconoAtras tamano={20} />
-          </button>
+          {/* 29-09-2026, tarea 82: de lado NO va el velo: los controles ya no están encima del
+              texto, están en los rieles. */}
+          {!horizontal && <VeloControles colorFondo={colorFondo} />}
+          {/* EL RIEL IZQUIERDO DE LISTO -tarea 82, A2, 29-09-2026-. De lado, el ‹ arriba y las
+              fichas en columna debajo -112 de ancho en Leer, 128 en Grabar-. El riel es un
+              envoltorio sin z-index -no arma su propio apilamiento- para que el ‹ y las fichas
+              sigan por encima de capa-panel-ficha como en vertical; el fondo es una capa aparte
+              debajo de ellos. En vertical el ‹ queda donde estaba. */}
+          {horizontal ? (
+            <div
+              data-testid="riel-izquierdo"
+              className={`riel-lectura riel-izquierdo${conCamara ? ' riel-grabar' : ''}${textoSobreImagen ? ' sobre-imagen' : ''}`}
+            >
+              <div className="riel-fondo" aria-hidden="true" />
+              {botonVolverListo}
+              {!arrastrandoRecuadro && fichasListo(true)}
+            </div>
+          ) : botonVolverListo}
 
           {/* ARRIBA A LA DERECHA: EL ENGRANAJE. Las dos puertas, siempre.
               Hasta la 69 este rincon lo peleaban dos botones -el ⟳ en Grabar
@@ -1282,84 +1408,60 @@ export default function TeleprompterView({
               }}
             />
           )}
-          {!arrastrandoRecuadro && (
-            <FichasListo
-              fontSize={fontSize}
-              onLetraMenos={onLetraMenos}
-              onLetraMas={onLetraMas}
-              onElegirLetra={onElegirLetra}
-              conCamara={conCamara}
-              fondoToma={fondoToma}
-              setFondoToma={setFondoToma}
-              onVoltear={onVoltear}
-              anclajeZona={anclajeZona}
-              setAnclajeZona={setAnclajeZona}
-              brillo={brillo}
-              setBrillo={setBrillo}
-              calidadVideo={calidadVideo}
-              setCalidadVideo={setCalidadVideo}
-              calidadesSoportadas={calidadesSoportadas}
-              minutosDisponibles={minutosDisponibles}
-              panelAbierto={panelFicha}
-              setPanelAbierto={setPanelFicha}
-              onAbrirAjustes={onAbrirAjustes}
-            />
-          )}
+          {!horizontal && !arrastrandoRecuadro && fichasListo(false)}
 
-          {/* ABAJO AL CENTRO: EMPEZAR. Un circulo translucido flotando sobre
-              el fondo, SIN cajon detras. El cajon -panel-controles-listo- se
-              elimino en la 70: la foto aprobada no lo tiene y se comia el
-              ultimo tercio del texto.
+          {/* EL RIEL DERECHO DE LISTO -tarea 82, A2-. Más arriba -en Leer y en Grabar, decisión
+              de Javier-, Empezar al centro del alto útil y la pastilla abajo -la monta App,
+              BarraDeTiempo con enRiel-. En vertical, Empezar abajo al centro como siempre. */}
+          {horizontal ? (
+            <div
+              data-testid="riel-derecho"
+              className={`riel-lectura riel-derecho${textoSobreImagen ? ' sobre-imagen' : ''}`}
+            >
+              <div className="riel-fondo" aria-hidden="true" />
+              {!arrastrandoRecuadro && (
+                <div className="riel-lugar-arriba riel-lugar-ficha-mas">
+                  <FichaMas setPanelAbierto={setPanelFicha} onAbrirAjustes={onAbrirAjustes} />
+                </div>
+              )}
+              {!arrastrandoRecuadro && <div className="riel-lugar-centro">{botonEmpezar}</div>}
+            </div>
+          ) : (
+            <>
+            {/* ABAJO AL CENTRO: EMPEZAR. Un circulo translucido flotando sobre
+                el fondo, SIN cajon detras. El cajon -panel-controles-listo- se
+                elimino en la 70: la foto aprobada no lo tiene y se comia el
+                ultimo tercio del texto.
 
-              El centrado lo hace ESTE div, no un transform inline en el
-              boton: .btn-deformable hace su efecto de apretado con transform
-              -styles.css:255-267- y un transform inline le gana a la hoja de
-              estilos y lo deja muerto. pointerEvents none en el contenedor y
-              auto en el boton para que la franja invisible no se coma los
-              toques del texto que pasa por debajo. */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 'calc(var(--circulo-desde-abajo) + env(safe-area-inset-bottom, 0px))',
-              left: 0,
-              right: 0,
-              zIndex: 10,
-              display: arrastrandoRecuadro ? 'none' : 'flex',
-              justifyContent: 'center',
-              pointerEvents: 'none'
-            }}
-          >
-            {/* EL CIRCULO SIGUE EL ESTANDAR DE LOS BOTONES DE ESA PUERTA.
-                24-09-2026, el dueno: "ese boton de play que esta abajo tambien
-                deberia estar con el estandar de los botones que graban". Con
-                camara es Grabar: borde rojo, relleno rojo tenue y el punto
-                rojo en vez del triangulo -.btn-grabar, styles.css-. Sin camara
-                es Leer: crema lleno con el triangulo. Antes era un circulo
-                negro translucido igual en las dos puertas. */}
-            <button
-              data-testid="btn-empezar-toma"
-              type="button"
-              className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}`}
-              aria-label={t('empezar')}
-              onClick={(e) => {
-                e.stopPropagation()
-                onEmpezar?.()
-              }}
+                El centrado lo hace ESTE div, no un transform inline en el
+                boton: .btn-deformable hace su efecto de apretado con transform
+                -styles.css:255-267- y un transform inline le gana a la hoja de
+                estilos y lo deja muerto. pointerEvents none en el contenedor y
+                auto en el boton para que la franja invisible no se coma los
+                toques del texto que pasa por debajo. */}
+            <div
               style={{
-                pointerEvents: 'auto',
-                width: 72,
-                height: 72,
-                padding: 0,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
+                position: 'absolute',
+                bottom: 'calc(var(--circulo-desde-abajo) + env(safe-area-inset-bottom, 0px))',
+                left: 0,
+                right: 0,
+                zIndex: 10,
+                display: arrastrandoRecuadro ? 'none' : 'flex',
                 justifyContent: 'center',
-                borderRadius: 'var(--redondeo-pildora)'
+                pointerEvents: 'none'
               }}
             >
-              {conCamara ? <span className="punto-grabar" aria-hidden="true" /> : <IconoEmpezar tamano={30} />}
-            </button>
-          </div>
+              {/* EL CIRCULO SIGUE EL ESTANDAR DE LOS BOTONES DE ESA PUERTA.
+                  24-09-2026, el dueno: "ese boton de play que esta abajo tambien
+                  deberia estar con el estandar de los botones que graban". Con
+                  camara es Grabar: borde rojo, relleno rojo tenue y el punto
+                  rojo en vez del triangulo -.btn-grabar, styles.css-. Sin camara
+                  es Leer: crema lleno con el triangulo. Antes era un circulo
+                  negro translucido igual en las dos puertas. */}
+              {botonEmpezar}
+            </div>
+            </>
+          )}
         </>
       )}
     </div>

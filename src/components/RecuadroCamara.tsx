@@ -9,6 +9,59 @@ export interface RecuadroCamaraProps {
   arrastrable?: boolean
   // Donde quedo dibujado el hueco, en px de la pantalla -ver el efecto de abajo-.
   onRect?: (rect: { x: number; y: number; width: number; height: number }) => void
+  // TELÉFONO DE LADO -tarea 82, 29-09-2026-. Con esto el recuadro deja de ser la fracción de la
+  // pantalla vertical y pasa a vivir en una de las cuatro esquinas de la zona libre entre los
+  // rieles. null o ausente: la pantalla vertical de siempre, sin ningún cambio.
+  horizontal?: RecuadroHorizontal | null
+}
+
+// Las cuatro esquinas donde se imanta el recuadro en horizontal.
+export type EsquinaRecuadroH = 'der-arriba' | 'der-abajo' | 'izq-arriba' | 'izq-abajo'
+
+export interface RecuadroHorizontal {
+  // El ancho de los rieles NO viene acá: sale de la hoja de estilos -styles-horizontal.css,
+  // --riel-izq-grabar y --riel-der-, que es la que los dibuja. Un solo lugar para la medida: si
+  // se cambia el riel, el tope del arrastre lo sigue solo.
+  esquina: EsquinaRecuadroH
+  onEsquina: (e: EsquinaRecuadroH) => void
+}
+
+// 144 x 81 -16:9-: la forma del video que se graba de lado, del tamaño de la hoja de medidas
+// aprobada. La fórmula vertical -W * 0,32 y 4/3- en 844 x 390 daba 270 x 360: casi todo el alto,
+// encima de los rieles y del texto. Son medidas de geometría para el arrastre, no de estilo.
+export const RECUADRO_H_ANCHO = 144
+export const RECUADRO_H_ALTO = 81
+export const RECUADRO_H_MARGEN = 12
+
+// La zona libre entre los rieles, en px del contenedor, con el área segura y el margen de 12.
+function zonaLibreH(
+  W: number,
+  H: number,
+  pad: { izq: number; der: number; arr: number; aba: number; rielIzq: number; rielDer: number }
+) {
+  const minX = pad.izq + pad.rielIzq + RECUADRO_H_MARGEN
+  const maxX = Math.max(minX, W - pad.der - pad.rielDer - RECUADRO_H_MARGEN - RECUADRO_H_ANCHO)
+  const minY = pad.arr + RECUADRO_H_MARGEN
+  const maxY = Math.max(minY, H - pad.aba - RECUADRO_H_MARGEN - RECUADRO_H_ALTO)
+  return { minX, maxX, minY, maxY }
+}
+
+function posicionDeEsquina(e: EsquinaRecuadroH, z: { minX: number; maxX: number; minY: number; maxY: number }) {
+  return {
+    x: e.startsWith('izq') ? z.minX : z.maxX,
+    y: e.endsWith('arriba') ? z.minY : z.maxY
+  }
+}
+
+// La esquina más cercana al centro del recuadro al soltarlo.
+export function esquinaMasCercana(
+  x: number,
+  y: number,
+  z: { minX: number; maxX: number; minY: number; maxY: number }
+): EsquinaRecuadroH {
+  const lado = x - z.minX < z.maxX - x ? 'izq' : 'der'
+  const alto = y - z.minY < z.maxY - y ? 'arriba' : 'abajo'
+  return `${lado}-${alto}` as EsquinaRecuadroH
 }
 
 export function RecuadroCamara({
@@ -18,7 +71,8 @@ export function RecuadroCamara({
   onChangePosicion,
   onArrastrandoChange,
   arrastrable = false,
-  onRect
+  onRect,
+  horizontal = null
 }: RecuadroCamaraProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
 
@@ -52,6 +106,13 @@ export function RecuadroCamara({
     }
   }, [recalcularDimensiones])
 
+  // Al girar el teléfono la posición que dejó un arrastre ya no vale: en vertical es un punto de
+  // la pantalla vertical y en horizontal manda la esquina. Tarea 82, 29-09-2026.
+  const esHorizontal = !!horizontal
+  useEffect(() => {
+    setDragPos(null)
+  }, [esHorizontal])
+
   const getContainerDimensions = () => {
     if (dimensiones) return dimensiones
     const el = containerRef.current
@@ -62,12 +123,36 @@ export function RecuadroCamara({
     }
   }
 
-  const { W, H } = dimensiones || getContainerDimensions()
-  const recuadroW = W * 0.32
-  const recuadroH = recuadroW * (4 / 3)
+  // El área segura del contenedor -TeleprompterView la pone como padding- para que la zona
+  // libre del teléfono de lado no se meta bajo la muesca ni la barra de navegación.
+  const leerPadding = () => {
+    const parent = containerRef.current?.parentElement
+    if (!parent || typeof window === 'undefined' || typeof window.getComputedStyle !== 'function') {
+      return { izq: 0, der: 0, arr: 0, aba: 0, rielIzq: 0, rielDer: 0 }
+    }
+    const cs = window.getComputedStyle(parent)
+    const n = (v: string) => (Number.isFinite(parseFloat(v)) ? parseFloat(v) : 0)
+    return {
+      izq: n(cs.paddingLeft),
+      der: n(cs.paddingRight),
+      arr: n(cs.paddingTop),
+      aba: n(cs.paddingBottom),
+      // El recuadro solo existe en Grabar: el riel izquierdo es el de Grabar.
+      rielIzq: n(cs.getPropertyValue('--riel-izq-grabar')),
+      rielDer: n(cs.getPropertyValue('--riel-der'))
+    }
+  }
 
-  const currentX = dragPos ? dragPos.x : recuadroX * W
-  const currentY = dragPos ? dragPos.y : recuadroY * H
+  const { W, H } = dimensiones || getContainerDimensions()
+  // 29-09-2026, tarea 82: en horizontal mide 144 x 81; en vertical, la fórmula de siempre.
+  const recuadroW = horizontal ? RECUADRO_H_ANCHO : W * 0.32
+  const recuadroH = horizontal ? RECUADRO_H_ALTO : recuadroW * (4 / 3)
+
+  const zonaH = horizontal ? zonaLibreH(W, H, leerPadding()) : null
+  const posEsquina = horizontal && zonaH ? posicionDeEsquina(horizontal.esquina, zonaH) : null
+
+  const currentX = dragPos ? dragPos.x : posEsquina ? posEsquina.x : recuadroX * W
+  const currentY = dragPos ? dragPos.y : posEsquina ? posEsquina.y : recuadroY * H
 
   // EL HUECO SE AVISA MEDIDO -28-09-2026-. La camara nativa se coloca con lo que mide el hueco en
   // la pantalla, no con la fraccion: ver rectRecuadro en lib/camara.ts. Solo se avisa si cambio.
@@ -113,6 +198,15 @@ export function RecuadroCamara({
     const rawY = dragStartRef.current.startY + dy
 
     const { W: winW, H: winH } = getContainerDimensions()
+
+    // 29-09-2026, tarea 82: de lado sigue al dedo DENTRO de la zona libre -se detiene contra el
+    // borde del riel- y no toca recuadroX ni recuadroY, que son de la pantalla vertical.
+    if (horizontal) {
+      const z = zonaLibreH(winW, winH, leerPadding())
+      setDragPos({ x: Math.max(z.minX, Math.min(z.maxX, rawX)), y: Math.max(z.minY, Math.min(z.maxY, rawY)) })
+      return
+    }
+
     const rW = winW * 0.32
     const rH = rW * (4 / 3)
 
@@ -146,6 +240,22 @@ export function RecuadroCamara({
     dragStartRef.current = null
 
     const { W: winW, H: winH } = getContainerDimensions()
+
+    // 29-09-2026, tarea 82: de lado, al soltar se imanta a la esquina más cercana y se guarda
+    // la esquina -App, sigo_recuadro_esquina_h-. dragPos vuelve a null: la posición sale de la
+    // esquina, así que al girar o al cambiar la zona libre el recuadro sigue en su esquina.
+    if (horizontal) {
+      const z = zonaLibreH(winW, winH, leerPadding())
+      const x = Math.max(z.minX, Math.min(z.maxX, rawX))
+      const y = Math.max(z.minY, Math.min(z.maxY, rawY))
+      horizontal.onEsquina(esquinaMasCercana(x, y, z))
+      setDragPos(null)
+      if (onArrastrandoChange) {
+        onArrastrandoChange(false)
+      }
+      return
+    }
+
     const rW = winW * 0.32
     const rH = rW * (4 / 3)
 

@@ -1,0 +1,183 @@
+/* EL TELÉFONO DE LADO -tarea 82, 29-09-2026-.
+   El video largo de YouTube se graba con el teléfono de lado, y hasta la 81 Sigo mostraba ahí la
+   pantalla vertical estirada: las fichas flotando a media pantalla encima del texto, el círculo y
+   la pastilla tapando renglones y la columna en unos 70 caracteres. El diseño aprobado por Javier
+   el 29-09-2026 -docs/pantallas/tarea82/, la hoja de medidas y las láminas- saca los controles de
+   encima del texto y los pone en dos rieles a los lados. Este archivo es ese diseño.
+
+   Todo cuelga de .layout-tel-h -la pone App cuando useLayout dice 'tel-h'- o de las clases del
+   riel, que solo se dibujan de lado: en vertical ninguna regla de acá aplica y la pantalla queda
+   exactamente como antes.
+
+   Las medidas son las de la hoja -medidas-implementacion.md-. Están acá, como variables, y no en
+   los componentes: TeleprompterView, App y RecuadroCamara las leen de estas variables para que el
+   riel, la columna, el aviso y el tope del recuadro no puedan desalinearse. */
+
+:root {
+  /* Riel izquierdo: 112 en Leer -‹ y tres fichas-, 128 en Grabar -seis fichas, la más larga es
+     «Subtítulos» o «Recuadro»-. Riel derecho: 124 en los dos -Más, el círculo de 72 y la pastilla
+     de 100 con su aire-. Todos SIN el área segura: cada regla la suma aparte. */
+  --riel-izq-leer: 112px;
+  --riel-izq-grabar: 128px;
+  --riel-der: 124px;
+  /* La columna entre los rieles: 28 de aire a cada lado, 20 con el recuadro -la columna ya es
+     más angosta por su carril-. Tope de la columna completa: 56ch, unos 51 caracteres por renglón
+     a 800 de ancho y 55 a 844. La angosta -22ch- no cambia. */
+  --columna-aire-h: 28px;
+  --columna-aire-h-recuadro: 20px;
+  --columna-tope-h: 56ch;
+  /* El carril que la columna le deja al recuadro de 144: 144 + 12 a cada lado. */
+  --carril-recuadro-h: 168px;
+}
+
+/* LOS RIELES. Un envoltorio sin z-index -no arma su propio apilamiento, así los botones de adentro
+   siguen compitiendo con capa-panel-ficha y con el texto como en vertical- y una capa de fondo
+   debajo de los botones. El fondo sigue al TEMA ---riel-fondo, styles.css-: los rieles son de la
+   app, no de la lectura. */
+.riel-lectura {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+.riel-lectura > * {
+  pointer-events: auto;
+}
+.riel-izquierdo {
+  left: 0;
+  width: calc(var(--riel-izq-leer) + env(safe-area-inset-left, 0px));
+}
+.riel-izquierdo.riel-grabar {
+  width: calc(var(--riel-izq-grabar) + env(safe-area-inset-left, 0px));
+}
+.riel-derecho {
+  right: 0;
+  width: calc(var(--riel-der) + env(safe-area-inset-right, 0px));
+}
+.riel-lectura > .riel-fondo {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  background: var(--riel-fondo);
+}
+.riel-izquierdo > .riel-fondo {
+  border-right: 1px solid var(--riel-borde);
+}
+.riel-derecho > .riel-fondo {
+  border-left: 1px solid var(--riel-borde);
+}
+/* Con la cámara detrás el riel es vidrio: el suelo del tema al 62 % y un desenfoque, como en las
+   láminas. Se ve la imagen -la persona sabe que está grabando- pero los botones se leen encima.
+   Un WebView sin backdrop-filter se queda con el 62 % solo, que ya separa. */
+.riel-lectura.sobre-imagen > .riel-fondo {
+  background: var(--riel-fondo-sobre-imagen);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* Arriba del riel derecho -Más, top 12- y al centro de su alto útil -Empezar o Parar, 72 x 72-.
+   El centrado lo hacen estos lugares y no un transform en el botón: .btn-deformable usa transform
+   para el apretado -el mismo motivo del div de Empezar en vertical, TeleprompterView-. */
+.riel-lugar-arriba {
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  left: 0;
+  right: env(safe-area-inset-right, 0px);
+  display: flex;
+  justify-content: center;
+  z-index: 12;
+  pointer-events: none;
+}
+.riel-lugar-centro {
+  position: absolute;
+  top: env(safe-area-inset-top, 0px);
+  bottom: env(safe-area-inset-bottom, 0px);
+  left: 0;
+  right: env(safe-area-inset-right, 0px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+.riel-lugar-arriba > *,
+.riel-lugar-centro > * {
+  pointer-events: auto;
+}
+/* Leyendo, parar va por encima de todo lo demás, como sus hermanos -zIndex 100 en App-. */
+.riel-lugar-leyendo {
+  z-index: 100;
+}
+
+/* LAS FICHAS EN COLUMNA, EN EL RIEL IZQUIERDO. La fila cubre el riel entero -así el panel se
+   ubica respecto del riel- y el carril baja en columna desde y = 60: el ‹ termina en 52 -8 + 40 +
+   4 de su toque- y la ficha suma 8 de su propio toque. Paso 48: ficha de 32 y 16 de separación, y
+   el ::after de .ficha-listo -inset -8px 0- da exactamente 48 de toque sin que se pisen. */
+.layout-tel-h .riel-izquierdo .fila-fichas-listo {
+  inset: 0;
+  bottom: 0;
+  padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+}
+.layout-tel-h .riel-izquierdo .carril-fichas {
+  position: absolute;
+  top: calc(60px + env(safe-area-inset-top, 0px));
+  left: calc(12px + env(safe-area-inset-left, 0px));
+  right: 12px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  overflow: visible;
+}
+/* En Grabar el riel es de 128 y las fichas van a 10 de cada lado, como en la lámina. */
+.layout-tel-h .riel-izquierdo.riel-grabar .carril-fichas {
+  left: calc(10px + env(safe-area-inset-left, 0px));
+  right: 10px;
+}
+.layout-tel-h .riel-izquierdo .ficha-listo {
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+.layout-tel-h .riel-izquierdo .ficha-listo > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* EL PANEL DE LA FICHA, A LA DERECHA DEL RIEL. left = ancho del riel + 8, top = el de la ficha
+   -lo pone FichasListo medido, corrido hacia arriba si no cabe-, ancho 320 y alto máximo el alto
+   útil menos 16, con scroll adentro. */
+.layout-tel-h .riel-izquierdo .panel-ficha {
+  left: calc(100% + 8px);
+  right: auto;
+  bottom: auto;
+  top: calc(60px + env(safe-area-inset-top, 0px));
+  width: 320px;
+  box-sizing: border-box;
+  max-height: calc(100% - 16px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+}
+
+/* EMPEZAR DE LEER EN EL RIEL SIGUE AL TEMA -tarea 82, parte C-. En el riel claro el crema daba
+   1,15 a 1; con --empezar-fondo es #1A1815 con el ícono #F3F1ED en claro y el crema de siempre en
+   oscuro. El pulso toma el mismo color. */
+.layout-tel-h .btn-empezar-leer {
+  background-color: var(--empezar-fondo);
+  color: var(--empezar-icono);
+  --pulso-empezar: var(--empezar-fondo);
+}
+
+/* LA PASTILLA, ABAJO DEL RIEL DERECHO: ancho mínimo 100, bottom 14, centrada en el riel
+   -(124 - 100) / 2 = 12 del borde-. BarraDeTiempo con enRiel no pone su bottom en línea. */
+.layout-tel-h .pastilla-tiempo-lugar {
+  left: auto;
+  right: calc((var(--riel-der) - 100px) / 2 + env(safe-area-inset-right, 0px));
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  width: 100px;
+  justify-content: center;
+}
+.layout-tel-h .pastilla-tiempo {
+  min-width: 100px;
+  padding: 6px 8px 8px;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { FondoToma } from '../App'
 import { AnclajeZona } from './banda'
 import {
@@ -65,7 +65,8 @@ export function FichasListo({
   minutosDisponibles,
   panelAbierto,
   setPanelAbierto,
-  onAbrirAjustes
+  onAbrirAjustes,
+  horizontal = false
 }: {
   fontSize: number
   onLetraMenos?: () => void
@@ -86,8 +87,42 @@ export function FichasListo({
   panelAbierto: PanelFicha
   setPanelAbierto: (p: PanelFicha) => void
   onAbrirAjustes?: () => void
+  // TELÉFONO DE LADO -tarea 82, 29-09-2026-: las fichas van en columna en el riel izquierdo, Más
+  // sale del carril -la dibuja TeleprompterView arriba del riel derecho, con FichaMas- y el panel
+  // se abre a la derecha del riel, a la altura de su ficha.
+  horizontal?: boolean
 }) {
   useTextos()
+  const carrilRef = useRef<HTMLDivElement | null>(null)
+  const panelRef = useRef<HTMLDivElement | null>(null)
+  // El top del panel en horizontal, en px de la fila -que en horizontal cubre el riel entero-.
+  const [topPanelH, setTopPanelH] = useState<number | null>(null)
+
+  // EL PANEL A LA ALTURA DE SU FICHA, SIN SALIRSE DE LA PANTALLA -tarea 82-. Se mide después de
+  // dibujar: el alto del panel depende de sus opciones -Brillo es una barra, Cámara son tres filas
+  // y voltear-. Si desde el top de la ficha no cabe, se corre hacia arriba hasta que el borde de
+  // abajo quede a 8 del alto útil. El alto máximo y el scroll interno los pone la hoja de estilos.
+  useLayoutEffect(() => {
+    if (!horizontal || !panelAbierto) {
+      setTopPanelH(null)
+      return
+    }
+    const carril = carrilRef.current
+    const panel = panelRef.current
+    const fila = carril?.parentElement
+    if (!carril || !panel || !fila) return
+    const ficha = carril.querySelector('[aria-expanded="true"]') as HTMLElement | null
+    if (!ficha) return
+    const rFila = fila.getBoundingClientRect()
+    const cs = typeof window.getComputedStyle === 'function' ? window.getComputedStyle(fila) : null
+    const n = (v: string | undefined) => (v && Number.isFinite(parseFloat(v)) ? parseFloat(v) : 0)
+    const arriba = n(cs?.paddingTop)
+    const abajo = rFila.height - n(cs?.paddingBottom)
+    const deseado = ficha.getBoundingClientRect().top - rFila.top
+    const alto = panel.offsetHeight
+    const top = Math.max(arriba + 8, Math.min(deseado, abajo - 8 - alto))
+    setTopPanelH(top)
+  }, [horizontal, panelAbierto])
   const [brilloSistema, setBrilloSistema] = useState<number | null>(null)
 
   useEffect(() => {
@@ -119,7 +154,11 @@ export function FichasListo({
     <div className="fila-fichas-listo" data-testid="fila-fichas-listo" onClick={(e) => e.stopPropagation()}>
       {panelAbierto && (
         <div
+          ref={panelRef}
           className="panel-ficha tarjeta-elevada"
+          // 29-09-2026, tarea 82: en horizontal el top sale de la ficha -ver arriba-; en vertical
+          // no hay estilo en línea y manda styles-ajustes.css, como hasta hoy.
+          style={horizontal && topPanelH !== null ? { top: topPanelH } : undefined}
           data-testid={`panel-ficha-${panelAbierto}`}
           data-panel-ajustes-toma=""
           onClick={(e) => e.stopPropagation()}
@@ -346,7 +385,7 @@ export function FichasListo({
         </div>
       )}
 
-      <div className="carril-fichas">
+      <div className="carril-fichas" ref={carrilRef}>
         <button
           type="button"
           className={`ficha-listo${panelAbierto === 'letra' ? ' abierta' : ''}`}
@@ -423,21 +462,41 @@ export function FichasListo({
           </button>
         )}
 
-        <button
-          type="button"
-          className="ficha-listo"
-          data-testid="ficha-mas"
-          data-alias-engranaje="btn-engranaje-toma"
-          aria-label={t('fichaMas')}
-          onClick={() => {
-            setPanelAbierto(null)
-            onAbrirAjustes?.()
-          }}
-        >
-          <IconoEngranaje tamano={16} />
-          <span>{t('fichaMas')}</span>
-        </button>
+        {/* 29-09-2026, tarea 82: en horizontal Más no va en el carril -una sola ficha-mas en
+            pantalla-; la dibuja TeleprompterView arriba del riel derecho. */}
+        {!horizontal && <FichaMas setPanelAbierto={setPanelAbierto} onAbrirAjustes={onAbrirAjustes} />}
       </div>
     </div>
+  )
+}
+
+// LA FICHA MÁS, APARTE -tarea 82, 29-09-2026-. Era el último botón del carril. En el teléfono de
+// lado va arriba del riel derecho, en Leer Y en Grabar -decisión de Javier: el mismo lugar en los
+// dos modos-, y por eso es un componente: el mismo botón, con su testid, en uno u otro lugar.
+export function FichaMas({
+  setPanelAbierto,
+  onAbrirAjustes
+}: {
+  setPanelAbierto: (p: PanelFicha) => void
+  onAbrirAjustes?: () => void
+}) {
+  useTextos()
+  return (
+    <button
+      type="button"
+      className="ficha-listo"
+      data-testid="ficha-mas"
+      data-alias-engranaje="btn-engranaje-toma"
+      aria-label={t('fichaMas')}
+      onClick={(e) => {
+        // En el riel derecho no hay fila que corte el toque: sin esto subiría al lienzo.
+        e.stopPropagation()
+        setPanelAbierto(null)
+        onAbrirAjustes?.()
+      }}
+    >
+      <IconoEngranaje tamano={16} />
+      <span>{t('fichaMas')}</span>
+    </button>
   )
 }

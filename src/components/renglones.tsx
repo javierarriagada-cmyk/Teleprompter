@@ -109,8 +109,11 @@ export function renderFormattedLine(
 
         if (seg.esAcotacion) {
           return (
+            // 29-09-2026, tarea 82: la clase acotacion-lectura es para la cámara detrás. El estilo
+            // en línea queda igual; styles.css lo pisa solo dentro de .lectura-sobre-imagen.
             <span
               key={idx}
+              className="acotacion-lectura"
               style={{
                 opacity: 0.5,
                 fontStyle: 'italic',
@@ -156,6 +159,7 @@ export function renderSegmentContent(
       <span
         key={`tok-${tok.tokenAbsoluto}`}
         data-token={tok.tokenAbsoluto}
+        className={claseDeAtributos(tokAttr)}
         style={Object.keys(style).length > 0 ? style : undefined}
       >
         {tokText}
@@ -210,7 +214,7 @@ export function renderNonTokenText(
         const style = estiloDeAtributos(g)
 
         return Object.keys(style).length > 0 ? (
-          <span key={idx} style={style}>
+          <span key={idx} className={claseDeAtributos(g)} style={style}>
             {g.text}
           </span>
         ) : (
@@ -241,4 +245,13 @@ function estiloDeAtributos(a: { negrita?: boolean; color?: string; destacado?: b
     style.color = DESTACADO.letra
   }
   return style
+}
+
+// EL DESTACADO SE MARCA CON UNA CLASE, ADEMÁS DEL ESTILO -tarea 82, 29-09-2026-. Con la cámara
+// detrás el texto lleva el halo E -styles.css, .lectura-sobre-imagen-, y el destacado amarillo
+// tiene que ir sin halo: un halo negro sobre el amarillo lo ensucia. El estilo en línea no puede
+// quitar una sombra heredada según dónde esté; la clase deja que la hoja de estilos lo haga solo
+// sobre la imagen. Sin destacado no hay clase: el DOM de siempre queda igual.
+function claseDeAtributos(a: { destacado?: boolean }): string | undefined {
+  return a.destacado ? 'destacado-lectura' : undefined
 }

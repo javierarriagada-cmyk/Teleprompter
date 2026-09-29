@@ -5,6 +5,8 @@ import useASR from './hooks/useASR'
 import { useSeguidor } from './hooks/useSeguidor'
 import { useWakeLock } from './hooks/useWakeLock'
 import { usePrecargaModelo } from './hooks/usePrecargaModelo'
+import useLayout from './hooks/useLayout'
+import type { EsquinaRecuadroH } from './components/RecuadroCamara'
 import TeleprompterView, { VeloControles } from './components/TeleprompterView'
 import BarraDeTiempo from './components/BarraDeTiempo'
 import { PanelCorpus } from './components/PanelCorpus'
@@ -229,6 +231,25 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [recuadroY, setRecuadroY] = useState<number>(
     typeof ajustesPrevios.recuadroY === 'number' ? ajustesPrevios.recuadroY : 0.52
   )
+  // LA ESQUINA DEL RECUADRO CON EL TELÉFONO DE LADO -tarea 82, A5, 29-09-2026-. Se guarda aparte,
+  // en su propia clave: la posición en vertical -recuadroX, recuadroY- es un punto de la pantalla
+  // vertical y no se toca al girar. Por omisión abajo a la derecha, como en la hoja de medidas.
+  const [esquinaRecuadroH, setEsquinaRecuadroH] = useState<EsquinaRecuadroH>(() => {
+    try {
+      const v = localStorage.getItem('sigo_recuadro_esquina_h')
+      if (v === 'der-arriba' || v === 'der-abajo' || v === 'izq-arriba' || v === 'izq-abajo') return v
+    } catch (e) {}
+    return 'der-abajo'
+  })
+  const elegirEsquinaRecuadroH = useCallback((e: EsquinaRecuadroH) => {
+    setEsquinaRecuadroH(e)
+    try {
+      localStorage.setItem('sigo_recuadro_esquina_h', e)
+    } catch (err) {}
+  }, [])
+  // EL DISEÑO DE LA VENTANA -tarea 82, A1-: 'tel-h' es el teléfono de lado. Ver hooks/useLayout.ts.
+  const layout = useLayout()
+  const horizontal = layout === 'tel-h'
   const [calidadVideo, setCalidadVideo] = useState<string>(
     typeof ajustesPrevios.calidadVideo === 'string' ? ajustesPrevios.calidadVideo : '1080p'
   )
@@ -1338,6 +1359,37 @@ export default function App({ motor, repoOverride }: AppProps) {
   const hayTransformacionDeEntrada = !movimientoApagado()
     && huecoEntrada !== null
 
+  // UN RIEL DEL TELÉFONO DE LADO AL LEER -tarea 82, A4, 29-09-2026-. De lado envuelve los botones
+  // en su riel -el fondo del tema, o vidrio con la cámara detrás-; en vertical los deja tal cual,
+  // sin envoltorio, para que la pantalla vertical no cambie ni un elemento. hayBoton: el riel
+  // izquierdo de Grabar sin pausa no tiene nada que mostrar y no se dibuja.
+  const enRiel = (lado: 'izquierdo' | 'derecho', hayBoton: boolean, hijos: React.ReactNode) => {
+    if (!horizontal) return hijos
+    if (!hayBoton) return null
+    const sobreImagen = camaraActiva && fondoToma === 'detras'
+    return (
+      <div
+        data-testid={`riel-${lado}`}
+        className={`riel-lectura riel-${lado}${lado === 'izquierdo' && conCamara ? ' riel-grabar' : ''}${sobreImagen ? ' sobre-imagen' : ''}`}
+      >
+        <div className="riel-fondo" aria-hidden="true" />
+        {hijos}
+      </div>
+    )
+  }
+
+  // Dónde empieza y termina la columna, para centrar el aviso en ella -AvisoBreve-. Las mismas
+  // variables que usa TeleprompterView para el relleno de la columna.
+  const columnaDelAviso = () => {
+    const rielIzq = conCamara ? 'var(--riel-izq-grabar)' : 'var(--riel-izq-leer)'
+    const conRecuadro = camaraActiva && fondoToma === 'recuadro'
+    const recuadroIzq = conRecuadro && esquinaRecuadroH.startsWith('izq')
+    return {
+      izquierda: `calc(${rielIzq}${recuadroIzq ? ' + var(--carril-recuadro-h)' : ''} + env(safe-area-inset-left, 0px))`,
+      derecha: `calc(var(--riel-der)${conRecuadro && !recuadroIzq ? ' + var(--carril-recuadro-h)' : ''} + env(safe-area-inset-right, 0px))`
+    }
+  }
+
   return (
     <div
       style={{
@@ -1481,6 +1533,12 @@ export default function App({ motor, repoOverride }: AppProps) {
       {vista === 'lectura' && guionActual && (
         <div
           className="alto-pantalla"
+          // 29-09-2026, tarea 82: con el teléfono de lado la superficie lleva .layout-tel-h y los
+          // estilos del riel cuelgan de ella -styles-horizontal.css-. Va como un className que
+          // pisa al de arriba solo de lado, y no en una sola cadena armada, porque A3
+          // -altoPantalla.test.ts- busca el texto className="alto-pantalla" en este archivo y las
+          // pruebas de hoy no se tocan. En vertical el elemento queda idéntico.
+          {...((horizontal ? { className: 'alto-pantalla layout-tel-h' } : {}) as { className?: string })}
           style={{
             position: 'fixed',
             top: 0,
@@ -1505,7 +1563,17 @@ export default function App({ motor, repoOverride }: AppProps) {
           {estadoToma === 'leyendo' && controlesVisibles && (
             <>
               {/* El velo de abajo, el mismo de LISTO -VeloControles, TeleprompterView.tsx-. */}
-              <VeloControles colorFondo={colorFondo} />
+              {/* 29-09-2026, tarea 82: de lado no va: los controles aparecen en los rieles,
+                  nunca sobre el texto. */}
+              {!horizontal && <VeloControles colorFondo={colorFondo} />}
+              {/* LOS RIELES AL LEER, DE LADO -tarea 82, A4, 29-09-2026-. Con los controles a la
+                  vista aparecen los rieles: a la izquierda salir -Leer- o el tacho -Grabar en
+                  pausa-, en el lugar del ‹ de LISTO; a la derecha la pausa arriba y parar al
+                  centro, en el lugar de Empezar. El riel izquierdo solo se dibuja si tiene un
+                  botón. Los botones son los mismos de vertical, con sus testid: enRiel solo los
+                  envuelve. Sin controles no hay rieles, pero la columna no se ensancha: su
+                  relleno es el mismo -TeleprompterView-. */}
+              {enRiel('izquierdo', (!conCamara || enPausa), <>
               {/* Cada boton flotante lleva data-duracion-entra y data-duracion-sale: son
                   los tiempos de su entrada y su salida, y T201 de tarea45 los lee de aca.
                   Antes los llevaba el cajon panel-controles-lectura, que la 70 elimino.
@@ -1528,7 +1596,8 @@ export default function App({ motor, repoOverride }: AppProps) {
                   style={{
                     position: 'absolute',
                     top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                    left: 'calc(8px + env(safe-area-inset-left, 0px))',
+                    // 29-09-2026, tarea 82: de lado, a 12 del borde, donde está el ‹ de LISTO.
+                    left: horizontal ? 'calc(12px + env(safe-area-inset-left, 0px))' : 'calc(8px + env(safe-area-inset-left, 0px))',
                     zIndex: 100,
                     animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
                   }}
@@ -1558,7 +1627,8 @@ export default function App({ motor, repoOverride }: AppProps) {
                   style={{
                     position: 'absolute',
                     top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                    left: 'calc(8px + env(safe-area-inset-left, 0px))',
+                    // 29-09-2026, tarea 82: de lado, a 12 del borde, en el riel izquierdo.
+                    left: horizontal ? 'calc(12px + env(safe-area-inset-left, 0px))' : 'calc(8px + env(safe-area-inset-left, 0px))',
                     zIndex: 100,
                     // Ancho fijo y no 'auto': CSS no anima un ancho hacia 'auto', salta de golpe,
                     // y la 11.6 pide que el tacho se abra con una transicion de MS_CHICO.
@@ -1586,7 +1656,9 @@ export default function App({ motor, repoOverride }: AppProps) {
                   {confirmandoDescarte ? t('seguro') : <IconoTacho tamano={20} />}
                 </button>
               )}
+              </>)}
 
+              {enRiel('derecho', true, <>
               <button
                 data-testid="btn-pausa-lectura"
                 data-duracion-entra={MS_CHICO}
@@ -1602,7 +1674,8 @@ export default function App({ motor, repoOverride }: AppProps) {
                 style={{
                   position: 'absolute',
                   top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                  right: 'calc(8px + env(safe-area-inset-right, 0px))',
+                  // 29-09-2026, tarea 82: de lado, centrada en el riel derecho -(124 - 40) / 2-.
+                  right: horizontal ? 'calc((var(--riel-der) - 40px) / 2 + env(safe-area-inset-right, 0px))' : 'calc(8px + env(safe-area-inset-right, 0px))',
                   zIndex: 100,
                   animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
                 }}
@@ -1610,8 +1683,11 @@ export default function App({ motor, repoOverride }: AppProps) {
                 {enPausa ? <IconoEmpezar tamano={20} /> : <IconoPausa tamano={20} />}
               </button>
 
+              {/* 29-09-2026, tarea 82: de lado, parar va al centro del riel derecho, donde estaba
+                  Empezar -riel-lugar-centro, styles-horizontal.css-. */}
               <div
-                style={{
+                className={horizontal ? 'riel-lugar-centro riel-lugar-leyendo' : undefined}
+                style={horizontal ? undefined : {
                   position: 'absolute',
                   bottom: 'calc(var(--circulo-desde-abajo) + env(safe-area-inset-bottom, 0px))',
                   left: 0,
@@ -1647,6 +1723,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                   <IconoParar tamano={44} />
                 </button>
               </div>
+              </>)}
             </>
           )}
 
@@ -1730,6 +1807,9 @@ export default function App({ motor, repoOverride }: AppProps) {
               onNavegacionManual={irAToken}
               onModoManualChange={setModoManual}
               onEstadoAvanceChange={handleEstadoAvanceChange}
+              horizontal={horizontal}
+              esquinaRecuadroH={esquinaRecuadroH}
+              setEsquinaRecuadroH={elegirEsquinaRecuadroH}
             />
             {/* EL RELEVO del texto chico de la tarjeta al texto grande de la lectura.
                 Es un velo del mismo color de fondo que se desvanece por encima, NO un
@@ -1785,6 +1865,8 @@ export default function App({ motor, repoOverride }: AppProps) {
                 totalTokens={totalTokens}
                 tInicioLecturaMs={tInicioLecturaMs}
                 vistaPrevia={estadoToma === 'listo'}
+                // 29-09-2026, tarea 82: de lado, abajo del riel derecho.
+                enRiel={horizontal}
               />
             )}
           </div>
@@ -1929,7 +2011,15 @@ export default function App({ motor, repoOverride }: AppProps) {
           En la lectura no: ahi manda el lienzo, de borde a borde. */}
       {vista !== 'lectura' && <div className="franja-hora" aria-hidden="true" />}
 
-      <AvisoBreve avisoInfo={avisoInfo} enLectura={vista === 'lectura'} cerrarAviso={cerrarAviso} />
+      {/* 29-09-2026, tarea 82: de lado el aviso va centrado en la columna, entre los rieles. Los
+          anchos son las variables del riel -styles-horizontal.css-; el carril del recuadro se suma
+          del lado donde está, igual que en TeleprompterView. */}
+      <AvisoBreve
+        avisoInfo={avisoInfo}
+        enLectura={vista === 'lectura'}
+        cerrarAviso={cerrarAviso}
+        columnaHorizontal={horizontal ? columnaDelAviso() : null}
+      />
     </div>
   )
 }

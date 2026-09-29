@@ -53,6 +53,20 @@
      mismo alto al relleno de abajo, así el final del texto no queda tapado. */
   --alto-miniatura-banda: 56px;
   --alto-banda-tomas: calc(var(--texto-meta) * 1.4 + var(--aire-1) + var(--alto-miniatura-banda));
+  /* LOS RIELES DEL TELÉFONO DE LADO -tarea 82, 29-09-2026-. En horizontal los controles salen de
+     encima del texto y viven en dos rieles a los lados -styles-horizontal.css-. Los rieles son parte
+     de la app, no de la lectura: siguen al TEMA, con el suelo y el borde de las tarjetas de cada uno.
+     Con la cámara detrás el riel es vidrio: el mismo suelo al 62 % -como las láminas aprobadas- y un
+     desenfoque que pone styles-horizontal.css. */
+  --riel-fondo: var(--bg-suelo);
+  --riel-borde: var(--borde-tarjeta);
+  --riel-fondo-sobre-imagen: color-mix(in srgb, var(--bg-suelo) 62%, transparent);
+  /* EMPEZAR DE LEER -tarea 82, parte C, 29-09-2026-. En el tema oscuro es el crema de siempre. */
+  --empezar-fondo: var(--color-acento);
+  --empezar-icono: var(--color-texto-acento);
+  /* La variante oscura para la pareja de fondo blanco -empezar-sobre-blanco- no va acá sino en
+     cada tema: T241 -tarea50- cuida que :root no tenga colores del tema claro, y el ícono claro de
+     Empezar es el suelo del tema claro. */
 }
 
 [data-tema="claro"] {
@@ -79,6 +93,17 @@
   --redondeo: 10px;
   --redondeo-grande: 24px;
   --redondeo-pildora: 999px;
+  /* Los rieles del teléfono de lado -tarea 82-: toman el suelo y el borde de este tema. */
+  --riel-fondo: var(--bg-suelo);
+  --riel-borde: var(--borde-tarjeta);
+  --riel-fondo-sobre-imagen: color-mix(in srgb, var(--bg-suelo) 62%, transparent);
+  /* EMPEZAR DE LEER EN TEMA CLARO -tarea 82, parte C, 29-09-2026-. El crema -#E7E1DE- daba 1,15 a
+     1 sobre el suelo claro: casi no se veía, y Android pide 3 a 1 para un control. #1A1815 con el
+     ícono #F3F1ED da 15,7 a 1. */
+  --empezar-fondo: #1A1815;
+  --empezar-icono: #F3F1ED;
+  --empezar-fondo-sobre-blanco: #1A1815;
+  --empezar-icono-sobre-blanco: #F3F1ED;
 }
 
 [data-tema="oscuro"] {
@@ -102,6 +127,16 @@
   --redondeo: 10px;
   --redondeo-grande: 24px;
   --redondeo-pildora: 999px;
+  /* Los rieles del teléfono de lado -tarea 82-: toman el suelo y el borde de este tema. */
+  --riel-fondo: var(--bg-suelo);
+  --riel-borde: var(--borde-tarjeta);
+  --riel-fondo-sobre-imagen: color-mix(in srgb, var(--bg-suelo) 62%, transparent);
+  /* EMPEZAR DE LEER -tarea 82, parte C, 29-09-2026-. En el tema oscuro es el crema de siempre. */
+  --empezar-fondo: var(--color-acento);
+  --empezar-icono: var(--color-texto-acento);
+  /* La variante oscura, para cuando Empezar flota sobre la pareja de fondo blanco en vertical. */
+  --empezar-fondo-sobre-blanco: #1A1815;
+  --empezar-icono-sobre-blanco: #F3F1ED;
 }
 
 body {
@@ -1086,6 +1121,11 @@ label.selector-aa-opcion {
   background-color: var(--color-acento);
   border: none;
   color: var(--color-texto-acento);
+  /* EL PULSO USA EL COLOR DEL BOTÓN -tarea 82, parte C, 29-09-2026-. El botón ya no es siempre
+     crema -sobre la pareja blanca y en el riel del tema claro es oscuro-, así que el halo toma el
+     color de esta variable y no --color-acento fijo: un pulso crema saliendo de un círculo
+     oscuro se vería como otro objeto. */
+  --pulso-empezar: var(--color-acento);
   /* EL CIRCULO RESPIRA MIENTRAS ESPERA -27-09-2026-. Una persona abrio Leer y dos veces empezo
      a hablar sin tocarlo. Un halo que sale y se apaga, con box-shadow y NO con transform: el
      transform es del efecto de apretado de .btn-deformable. Espera 1,5 s para no molestar a
@@ -1093,10 +1133,22 @@ label.selector-aa-opcion {
      leeria como "ya estas grabando". */
   animation: pulsoEmpezar 1.8s ease-out 1.5s infinite;
 }
+/* 29-09-2026, tarea 82: los tres cuadros decían var(--color-acento); ahora var(--pulso-empezar),
+   que es el color del botón en cada caso -ver .btn-empezar-leer y .empezar-sobre-blanco-. */
 @keyframes pulsoEmpezar {
-  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-acento) 55%, transparent); }
-  70% { box-shadow: 0 0 0 18px color-mix(in srgb, var(--color-acento) 0%, transparent); }
-  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-acento) 0%, transparent); }
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pulso-empezar, var(--color-acento)) 55%, transparent); }
+  70% { box-shadow: 0 0 0 18px color-mix(in srgb, var(--pulso-empezar, var(--color-acento)) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pulso-empezar, var(--color-acento)) 0%, transparent); }
+}
+/* EMPEZAR EN VERTICAL SIGUE A LA PAREJA, NO AL TEMA -tarea 82, parte C, 29-09-2026-. En vertical
+   el círculo flota sobre el lienzo de lectura, que es de la pareja elegida -negro, blanco...- y
+   no del tema. Sobre la pareja blanca el crema desaparece igual que en el tema claro: va la
+   variante oscura. Es el mismo criterio que isWhiteBg en TeleprompterView, que pone esta clase.
+   En horizontal el botón vive en el riel, que sí sigue al tema: styles-horizontal.css. */
+.btn-empezar-leer.empezar-sobre-blanco {
+  background-color: var(--empezar-fondo-sobre-blanco);
+  color: var(--empezar-icono-sobre-blanco);
+  --pulso-empezar: var(--empezar-fondo-sobre-blanco);
 }
 @media (prefers-reduced-motion: reduce) {
   .btn-empezar-leer { animation: none; }
@@ -1258,11 +1310,53 @@ label.selector-aa-opcion {
   background-color: var(--panel-color);
   box-shadow: 0 0 22px 10px var(--panel-color);
 }
+/* LA REGLA E: UN HALO DIFUSO DEL COLOR DE FONDO -tarea 82, parte B, 29-09-2026-.
+   Hasta la 81 la sombra era 0 1px 2px rgba(0, 0, 0, 0.65), 0 0 12px rgba(0, 0, 0, 0.4) -y la
+   clara para .letra-oscura-. Con la cámara detrás, el texto fuera del panel del renglón vivo bajaba
+   a 1,1 a 1 sobre una pared blanca -medido en los bocetos, medir-contraste.js-. Javier comparó
+   cinco variantes con zoom y eligió la E: diez sombras del color de fondo de la pareja, sin trazo
+   -sin -webkit-text-stroke-, que deformaba la letra-, apiladas para que el borde de cada letra se
+   vuelva opaco y el halo se abra hacia afuera. "La letra sigue siendo Sigo y se lee".
+   --fondo-lectura lo pone TeleprompterView en contenedor-lectura con el colorFondo de la pareja:
+   es un dato de la persona, no un color escrito acá. Vale en TODAS las orientaciones.
+
+   PLAN B, LA D -solo si en el moto g86 la E traba la lectura: cinco minutos con la cámara detrás
+   y se ven tirones del desplazamiento-. Diez sombras cuestan en un teléfono de gama media; la D
+   pesa menos en el desplazamiento aunque deforma un poco la letra:
+     -webkit-text-stroke: 2.6px var(--fondo-lectura);
+     paint-order: stroke fill;
+     text-shadow: 0 0 1px var(--fondo-lectura), 0 0 1px var(--fondo-lectura), 0 0 2px var(--fondo-lectura),
+                  0 0 3px color-mix(in srgb, var(--fondo-lectura) 80%, transparent);
+   -la hoja de medidas, docs/pantallas/tarea82/medidas-implementacion.md, sección 6-.
+   La E2 -la E con menos sombras- se midió y no alcanza: queda descartada. */
 .lectura-sobre-imagen {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), 0 0 12px rgba(0, 0, 0, 0.4);
+  text-shadow:
+    0 0 2px var(--fondo-lectura), 0 0 2px var(--fondo-lectura), 0 0 2px var(--fondo-lectura),
+    0 0 2px var(--fondo-lectura), 0 0 2px var(--fondo-lectura),
+    0 0 4px var(--fondo-lectura), 0 0 4px var(--fondo-lectura), 0 0 4px var(--fondo-lectura),
+    0 0 8px var(--fondo-lectura), 0 0 8px var(--fondo-lectura);
 }
+/* .letra-oscura YA NO TIENE SOMBRA PROPIA -tarea 82, 29-09-2026-. Era la sombra clara para la
+   letra negra de la pareja blanca. Con la E el halo sale del fondo de la pareja -blanco en ese
+   caso-, así que ya es claro solo. La clase se conserva a propósito: TeleprompterView la sigue
+   poniendo y alguna prueba puede buscarla. Antes decía:
+     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.65), 0 0 12px rgba(255, 255, 255, 0.4); */
 .lectura-sobre-imagen.letra-oscura {
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.65), 0 0 12px rgba(255, 255, 255, 0.4);
+}
+/* EL DESTACADO AMARILLO VA SIN HALO -tarea 82-. Tiene su propio fondo amarillo detrás de la
+   palabra: un halo negro encima lo ensuciaría. renglones.tsx le pone esta clase. */
+.lectura-sobre-imagen .destacado-lectura {
+  text-shadow: none;
+}
+/* LAS NOTAS ENTRE CORCHETES SOBRE LA CÁMARA -tarea 82-. En la vista normal son un gris #aaa a
+   media opacidad, en línea -renglones.tsx-. Sobre la imagen esa media opacidad deja pasar la pared
+   blanca y la nota desaparece. Acá van opacas, con el mismo gris mezclado mitad y mitad con el
+   fondo de la pareja: se leen más bajo que el texto, como hoy, pero se leen.
+   Los !important son para ganarle al estilo EN LÍNEA del span sin tocarlo: así la vista normal
+   -sin cámara detrás- queda exactamente igual que hoy. */
+.lectura-sobre-imagen .acotacion-lectura {
+  opacity: 1 !important;
+  color: color-mix(in srgb, #aaa 50%, var(--fondo-lectura)) !important;
 }
 .punto-grabando {
   position: absolute;
