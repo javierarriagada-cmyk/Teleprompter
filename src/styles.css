@@ -63,7 +63,10 @@
   --bg-menu: #FFFFFF;
   --color-separador: #E4E0D9;
   --color-texto: #1A1815;
-  --color-apagado: #78706A;
+  /* EL CONTRASTE DEL GRIS SECUNDARIO -28-09-2026-. #78706A sobre #F3F1ED daba 4,3 a 1;
+     las guias de Android (Visual_Contrast) piden 4,5 a 1 para texto chico. #736B65 da
+     4,6 a 1 sobre #F3F1ED y 5,2 a 1 sobre #FFFFFF. */
+  --color-apagado: #736B65;
   --color-borde: #E4E0D9;
   --color-sugerencia: #9A928B;
   --borde-tarjeta: rgba(26, 24, 21, 0.09);

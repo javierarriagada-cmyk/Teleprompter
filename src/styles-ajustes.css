@@ -362,6 +362,26 @@
   justify-content: center;
   padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px));
 }
+
+/* LA CAPA DEL DIALOGO DE MICROFONO -28-09-2026-. Centrada vertical y horizontalmente,
+   z-index 300 por encima de la lectura (150) y de Ajustes (240). */
+.capa-dialogo-microfono {
+  position: fixed;
+  inset: 0;
+  background: var(--velo-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  padding: 16px;
+}
+
+.botones-dialogo {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}
 .dialogo-ajustes {
   width: 100%;
   max-width: 480px;

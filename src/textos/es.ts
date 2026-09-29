@@ -189,7 +189,12 @@ export const es = {
   privacidad: 'Privacidad',
   soporte: 'Soporte',
   espejoExplicacion: 'Para usar con un vidrio de teleprompter',
-  lineaMuestraLectura: 'Lee esto en voz alta, sin apuro.'
+  lineaMuestraLectura: 'Lee esto en voz alta, sin apuro.',
+  // Dialogo de permiso de microfono -28-09-2026-.
+  microfonoTitulo: 'Sigo necesita el micrófono',
+  microfonoExplicacion: 'Escucha tu voz para avanzar el texto al ritmo en que lees. La voz se reconoce en el teléfono, sin internet.',
+  ahoraNo: 'Ahora no',
+  abrirAjustes: 'Abrir ajustes'
 }
 
 export type ClaveTexto = keyof typeof es

@@ -343,6 +343,25 @@ public class VoskNativoPlugin extends Plugin {
     }
 
     /**
+     * Abre la pantalla de ajustes de Sigo en Android cuando la persona nego el permiso
+     * de microfono y Android ya no muestra su cartel -28-09-2026-.
+     */
+    @PluginMethod
+    public void abrirAjustesDeLaApp(PluginCall call) {
+        try {
+            android.content.Intent intent = new android.content.Intent(
+                android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                android.net.Uri.fromParts("package", getContext().getPackageName(), null)
+            );
+            intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(intent);
+            call.resolve();
+        } catch (Exception e) {
+            call.reject("No se pudieron abrir los ajustes de la app: " + e.getMessage());
+        }
+    }
+
+    /**
      * Para el lazo y espera a que entregue lo que quedo pendiente. El hilo cierra el
      * microfono y el reconocedor el mismo -en su finally-: si esto se cortara antes de
      * que termine, cerrar el reconocedor desde aca lo dejaria usando memoria liberada.

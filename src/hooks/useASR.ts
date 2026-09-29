@@ -144,6 +144,12 @@ export default function useASR(options: {
     return m.pedirMicrofono()
   }
 
+  async function abrirAjustesDeLaApp(): Promise<void> {
+    const m = motorRef.current
+    if (!m || !m.abrirAjustesDeLaApp) return
+    await m.abrirAjustesDeLaApp()
+  }
+
   async function stop() {
     if (motorRef.current) {
       try {
@@ -197,6 +203,7 @@ export default function useASR(options: {
     clear,
     precargar,
     pedirMicrofono,
+    abrirAjustesDeLaApp,
     motorListo,
     isRecording,
     transcript: (transcript + (transcripcionParcial ? '\n' + transcripcionParcial : '')).trim(),

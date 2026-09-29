@@ -42,6 +42,7 @@ import { t, useTextos, TITULO_SIN_NOMBRE } from './textos'
 import { IdiomaApp, idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
 import { PASOS_LETRA } from './components/estiloLectura'
 import { PantallaAjustes } from './components/PantallaAjustes'
+import { DialogoMicrofono } from './components/DialogoMicrofono'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
 const MS_CONTROLES_A_LA_VISTA = 4000
@@ -355,6 +356,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [ajustesAbiertos, setAjustesAbiertos] = useState(false)
   // Desde donde se abrio: cada puerta muestra lo suyo -PantallaAjustes, origen-.
   const [origenAjustes, setOrigenAjustes] = useState<'portada' | 'editor' | 'leer' | 'grabar'>('portada')
+  const [mostrarDialogoMicrofono, setMostrarDialogoMicrofono] = useState(false)
   // MARGEN 5% POR OMISION. Javier lo eligio mirando, el 13 de septiembre de 2026: puso 5 y
   // dijo que asi queda bien. Con el tope de 90% que lleva la columna por dentro, 5% de
   // padding deja el texto en el 81% del ancho de la pantalla. Estaba en 10, que da 72%.
@@ -992,6 +994,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     motorActivo,
     precargar,
     pedirMicrofono,
+    abrirAjustesDeLaApp,
     motorListo
   } = useASR({
     engine,
@@ -1183,7 +1186,14 @@ export default function App({ motor, repoOverride }: AppProps) {
     // EL PERMISO DEL MICROFONO, ANTES DE LA CUENTA -28-09-2026-. Ver MotorNativo.pedirMicrofono:
     // en la primera lectura el cartel de Android aparecia con la toma andando y tapaba el guion.
     // Si la persona lo niega, se lee igual, como antes: el motivo queda a la vista.
-    await pedirMicrofono()
+    // CAMBIO Y MOTIVO (28-09-2026): si pedirMicrofono() devuelve false, NO se empieza -no se llama
+    // setEstadoToma('leyendo') ni handleStart()-: se abre el dialogo explicativo y la pantalla
+    // queda en LISTO. Motivo: sin microfono el texto no avanza y, con camara, la toma saldria muda.
+    const concedido = await pedirMicrofono()
+    if (!concedido) {
+      setMostrarDialogoMicrofono(true)
+      return
+    }
     setEstadoToma('leyendo')
     setControlesVisibles(false)
     await handleStart()
@@ -1402,6 +1412,11 @@ export default function App({ motor, repoOverride }: AppProps) {
   const handleVolverAtrasRef = useRef<() => Promise<void> | void>(() => {})
   useEffect(() => {
     handleVolverAtrasRef.current = async () => {
+      // El dialogo de microfono abierto es lo PRIMERO que se cierra -28-09-2026-.
+      if (mostrarDialogoMicrofono) {
+        setMostrarDialogoMicrofono(false)
+        return
+      }
       // 1. Si hay un modal abierto, cerrarlo
       if (cerrarModalRef.current && cerrarModalRef.current()) {
         return
@@ -2164,6 +2179,15 @@ export default function App({ motor, repoOverride }: AppProps) {
               console.warn('[App] no se pudo borrar la toma:', e)
             }
             setGrabacionAbierta(null)
+          }}
+        />
+      )}
+
+      {mostrarDialogoMicrofono && (
+        <DialogoMicrofono
+          onCerrar={() => setMostrarDialogoMicrofono(false)}
+          onAbrirAjustes={() => {
+            abrirAjustesDeLaApp()
           }}
         />
       )}

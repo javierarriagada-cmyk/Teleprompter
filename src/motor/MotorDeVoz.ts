@@ -19,6 +19,8 @@ export interface MotorDeVoz {
   precargar?(lang: string): Promise<void>
   // Pide el permiso del microfono si falta, ANTES de la cuenta regresiva. true si quedo dado.
   pedirMicrofono?(): Promise<boolean>
+  // Abre la pantalla de ajustes de Sigo en el sistema si se nego el permiso -28-09-2026-.
+  abrirAjustesDeLaApp?(): Promise<void>
 
   // cada suscripción devuelve su propia función para darse de baja
   onParcial(cb: (e: EventoParcial) => void): () => void

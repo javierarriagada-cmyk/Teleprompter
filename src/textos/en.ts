@@ -178,5 +178,10 @@ export const en: Textos = {
   privacidad: 'Privacy',
   soporte: 'Support',
   espejoExplicacion: 'For use with a teleprompter glass',
-  lineaMuestraLectura: 'Read this out loud, at your own pace.'
+  lineaMuestraLectura: 'Read this out loud, at your own pace.',
+  // Dialogo de permiso de microfono -28-09-2026-.
+  microfonoTitulo: 'Sigo needs the microphone',
+  microfonoExplicacion: 'It listens to your voice to move the text as you read. Your voice is recognized on the phone, offline.',
+  ahoraNo: 'Not now',
+  abrirAjustes: 'Open settings'
 }

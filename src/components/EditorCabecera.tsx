@@ -88,6 +88,8 @@ export function EditorCabecera({
           }}
           className="btn-deformable boton-aa"
           data-testid="btn-menu-opciones-editor"
+          /* Nombre para lectores de pantalla -28-09-2026-: TalkBack leia "A, a", que no explicaba la funcion. */
+          aria-label={t('ajustesLectura')}
           title={t('ajustesLectura')}
         >
           Aa

@@ -44,6 +44,7 @@ interface VoskNativoPlugin {
   iniciar(opciones?: { idioma?: 'es' | 'en' }): Promise<void>
   escuchar(opciones?: { guardarAudio?: boolean; fuente?: string; frecuenciaMic?: number }): Promise<{ inicioEpochMs?: number; rutaAudio?: string; muestrasPorTrozo?: number } | void>
   detener(): Promise<void>
+  abrirAjustesDeLaApp(): Promise<void>
   // Los pone Capacitor solo, por el @Permission del plugin -alias 'microfono'-.
   checkPermissions(): Promise<{ microfono: string }>
   requestPermissions(opciones?: { permissions: Array<'microfono'> }): Promise<{ microfono: string }>
@@ -164,6 +165,16 @@ export class MotorNativo implements MotorDeVoz {
     } catch {
       // Si no se puede preguntar, escuchar() lo pide como siempre: leer no se bloquea.
       return true
+    }
+  }
+
+  // Abre la pantalla de ajustes de la app en Android si se nego el permiso -28-09-2026-.
+  async abrirAjustesDeLaApp(): Promise<void> {
+    if (!Capacitor.isNativePlatform()) return
+    try {
+      await Nativo.abrirAjustesDeLaApp()
+    } catch (e) {
+      console.warn('[MotorNativo] Error al abrir ajustes de la app:', e)
     }
   }
 
