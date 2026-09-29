@@ -142,11 +142,46 @@
   font-size: 20px;
   line-height: 1;
 }
+/* EL DESLIZADOR COMO EN EL DIBUJO APROBADO -28-09-2026-: pista gruesa de 16 con el relleno en crema
+   y un tirador de barra, el de Material 3 expresivo. Era la pista fina con bolita del navegador. */
 .barra-pasos,
 .barra-brillo {
   flex: 1;
+  height: 32px;
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.barra-pasos::-webkit-slider-runnable-track,
+.barra-brillo::-webkit-slider-runnable-track {
   height: 16px;
-  accent-color: var(--color-acento);
+  border-radius: 8px;
+  background: linear-gradient(to right, var(--color-acento) var(--relleno, 50%), var(--bg-menu) var(--relleno, 50%));
+}
+.barra-pasos::-webkit-slider-thumb,
+.barra-brillo::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 4px;
+  height: 32px;
+  margin-top: -8px;
+  border-radius: 2px;
+  background: var(--color-acento);
+  box-shadow: 0 0 0 4px var(--bg-superficie);
+}
+.barra-pasos::-moz-range-track,
+.barra-brillo::-moz-range-track {
+  height: 16px;
+  border-radius: 8px;
+  background: linear-gradient(to right, var(--color-acento) var(--relleno, 50%), var(--bg-menu) var(--relleno, 50%));
+}
+.barra-pasos::-moz-range-thumb,
+.barra-brillo::-moz-range-thumb {
+  width: 4px;
+  height: 32px;
+  border: none;
+  border-radius: 2px;
+  background: var(--color-acento);
 }
 .brillo-ficha {
   display: flex;

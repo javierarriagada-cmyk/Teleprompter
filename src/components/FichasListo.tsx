@@ -152,6 +152,8 @@ export function FichasListo({
                     const n = PASOS_LETRA[Number(e.target.value)]
                     if (n !== undefined) onElegirLetra?.(n)
                   }}
+                  // El relleno de la pista hasta el paso elegido -styles-ajustes.css, --relleno-.
+                  style={{ ['--relleno' as string]: `${((idxLetra >= 0 ? idxLetra : 0) / (PASOS_LETRA.length - 1)) * 100}%` }}
                 />
                 <button
                   type="button"
@@ -291,6 +293,7 @@ export function FichasListo({
                     setBrillo(v)
                     aplicarBrillo(v)
                   }}
+                  style={{ ['--relleno' as string]: `${((valorBrillo - BRILLO_MINIMO) / (1 - BRILLO_MINIMO)) * 100}%` }}
                 />
                 <IconoSol tamano={26} />
               </div>
