@@ -1,0 +1,128 @@
+TAREA 86 - LA FICHA DE SIGO EN GOOGLE PLAY: TEXTOS, GRÁFICO Y CAPTURAS
+Encargo para el bot de Grok, 29-09-2026. Punto de partida: main, commit 04b2c04.
+
+==============================================================================
+QUÉ ES Y POR QUÉ IMPORTA
+==============================================================================
+Es lo primero que ve una persona antes de instalar Sigo: la vitrina. Tiene que verse al nivel del
+producto -moderno, elegante, profesional- y decir SOLO la verdad. La app ya está creada en Play
+Console -com.sigoteleprompter.app, gratuita, categoría Productividad- y todas las declaraciones
+están hechas. Falta la ficha. Tú preparas TODO el material; Javier lo sube a la consola. Tú no
+entras a Play Console.
+
+Entrega en docs/play/ficha/:
+  textos-es-419.txt, textos-en-US.txt     -nombre, descripción breve, descripción completa-
+  grafico-1024x500.png                     -uno por idioma si lleva texto: -es y -en-
+  capturas/es-419/01...08.png, capturas/en-US/01...08.png
+  lamina-ficha.png                          -todo junto, como se vería, para que Javier apruebe-
+  herramientas/                             -los guiones que generan y comprueban todo-
+Nada se sube a la consola sin la aprobación de Javier mirando la lámina.
+
+==============================================================================
+REGLAS QUE NO SE NEGOCIAN
+==============================================================================
+1. VERDAD. Solo funciones que existen HOY en main y que Javier probó. Prohibido prometer lo que
+   no está: gestos, control Bluetooth, nube, cuentas, tabletas, más idiomas que español e inglés,
+   iPhone. Prohibido inventar historia personal: nada de "durante años", "miles de usuarios",
+   testimonios ni cifras. Javier lo pidió expresamente -29-09-: no partir con algo falso.
+2. POLÍTICA DE METADATOS DE GOOGLE PLAY -support.google.com/googleplay/android-developer, "Metadata"-:
+   - Sin superlativos ni rankings: "el mejor", "número 1", "top", "#1", "gratis" en el nombre.
+   - Sin llamados a la acción del tipo "¡Descárgala ya!", sin precios ni promociones.
+   - Sin emojis de adorno, sin MAYÚSCULAS sostenidas, sin símbolos repetidos, sin listas de
+     palabras clave para búsquedas.
+   - Sin nombres de otras apps, marcas o empresas -además es regla de la casa: nunca nombrar a la
+     competencia-. Sin mencionar otras plataformas -iOS, iPhone-.
+   - Sin testimonios de usuarios ni reseñas.
+3. IDIOMA. es-419: español NEUTRO, sin modismos de ningún país -nada de chilenismos, ni "vos", ni
+   "ahorita"-; tuteo. en-US: inglés natural, no traducción literal. Los dos al mismo nivel.
+4. MARCA. Los colores, la letra -Source Serif 4 y Source Sans 3- y la marca "Sig●" son los de la
+   app: styles.css, docs/el-sitio.md y sigoteleprompter.com -sitio/-. Nada de estilos nuevos.
+
+==============================================================================
+1. LOS TEXTOS
+==============================================================================
+  NOMBRE -30 máximo-:
+    es-419: "Sigo — Teleprompter de voz" -26; ya está en la consola, no cambiarlo-
+    en-US:  "Sigo — Voice Teleprompter"
+  DESCRIPCIÓN BREVE -80 máximo, contando espacios-: una sola idea, la que diferencia a Sigo: el
+    texto sigue tu voz, sin internet. Dos o tres propuestas por idioma, con su conteo.
+  DESCRIPCIÓN COMPLETA -4.000 máximo-: texto plano con saltos de línea -sin HTML, sin markdown-.
+    Estructura sugerida: una apertura de dos líneas; qué hace, en párrafos cortos o viñetas con
+    guion; para quién sirve -video largo, redes, clases, presentaciones, entrevistas-; privacidad
+    -todo queda en el teléfono, sin cuentas, la voz se reconoce sin internet-; y un cierre sobrio.
+    Entre 1.500 y 2.500 caracteres es lo ideal: se lee completa.
+  LO QUE SIGO HACE HOY -fuente de la verdad; verificar cada punto en el código antes de escribirlo-:
+    - Sigue la voz en español y en inglés, sin internet: el texto avanza al ritmo en que lees y te
+      espera si te detienes.
+    - Graba video con la cámara: la imagen detrás del texto o en un recuadro que se mueve; cámara
+      frontal o trasera; calidad de video a elegir.
+    - Se puede grabar con el teléfono vertical u horizontal.
+    - Subtítulos quemados en el video al guardar, en tres estilos, sacados del propio guion.
+    - Editor de guiones: negrita, colores -ámbar, celeste, verde- y destacado amarillo; notas entre
+      corchetes que no se leen en voz alta; importar texto y documentos.
+    - Ajustes de lectura: tamaño y tipo de letra, ancho de la columna, colores de pantalla, espejo
+      para vidrio de teleprompter, dónde lees en la pantalla, brillo.
+    - Guardar la toma en la galería y compartirla.
+    - Tema claro y oscuro; app en español e inglés.
+    - Los guiones se respaldan con la copia de seguridad de Android.
+  Entrega: cada texto con su conteo de caracteres, y las propuestas de la descripción breve.
+
+==============================================================================
+2. EL GRÁFICO DE FUNCIONES -1024 x 500-
+==============================================================================
+  - PNG o JPEG de 24 bits, SIN transparencia -sin canal alfa-; exactamente 1024 x 500; menos de 15 MB.
+  - Google lo pide así: sin imágenes de teléfonos ni capturas de pantalla, sin texto chico, que no
+    parezca un aviso publicitario. Se ve chico en muchos lugares: tiene que leerse en miniatura.
+  - Lo importante, centrado: Google puede recortar los bordes o poner el botón de video encima.
+    Nada esencial a menos de 64 px de cualquier borde.
+  - Contenido: la marca Sigo y, como mucho, una frase corta -es y en-, por ejemplo la idea de la
+    descripción breve. Puede evocar la lectura: renglones, la línea bajo las palabras, el punto de
+    grabar. Una imagen, no un collage.
+  - Dos o tres propuestas para que Javier elija.
+
+==============================================================================
+3. LAS CAPTURAS DE TELÉFONO
+==============================================================================
+  REQUISITOS: entre 4 y 8; PNG o JPEG sin transparencia; menos de 8 MB cada una; relación EXACTA 9:16
+  o 16:9; para que Google pueda recomendar Sigo, al menos 4 con 1080 px o más en cada lado.
+  Tamaño a usar: 1080 x 1920 -vertical- y 1920 x 1080 -la de horizontal-.
+  OJO: la pantalla del moto g86 no es 9:16. Una captura tomada del teléfono tal cual NO sirve: hay
+  que componerla.
+  CÓMO: la app REAL, no dibujos. Tú ya tienes herramientas que la renderizan en Chrome -docs/pantallas/
+  tarea82/herramientas-: 360 x 640 CSS a escala 3 da 1080 x 1920 exacto. Donde la cámara aparece,
+  una imagen de persona leyendo: SOLO una foto con derechos claros -propia de Javier o con licencia
+  libre para uso comercial, anotando cuál y de dónde-; si no hay, pedírsela a Javier.
+  Se permite un título corto arriba de cada captura, en una franja con los colores de Sigo, de hasta
+  7 palabras. La pantalla de la app tiene que verse grande y nítida.
+  LAS 8, EN ESTE ORDEN -la primera es la que más se ve-:
+    1. Leer: el texto siguiendo la voz, con la línea bajo las palabras.
+    2. Grabar con la cámara detrás del texto -con la regla E de la tarea 82-.
+    3. Grabar con el recuadro.
+    4. El teléfono de lado -1920 x 1080-.
+    5. El editor con formatos: negrita, colores, destacado, una nota entre corchetes.
+    6. Los subtítulos en el visor de la toma.
+    7. La portada con varios guiones.
+    8. Los ajustes de lectura, tema claro u oscuro.
+  El guion de ejemplo: un texto real y atractivo para un creador, en cada idioma. Nada de
+  "lorem ipsum" ni guiones de prueba. Sin datos personales.
+  Idiomas: un juego en es-419 con la app en español y otro en en-US con la app en inglés.
+
+==============================================================================
+4. LO QUE NO VA AHORA
+==============================================================================
+  - Capturas de tableta: NO. El diseño para tableta es la tarea 83, que no está hecha; mostrar la
+    tableta de hoy sería mostrar algo que se ve mal. Se agregan después de la 83.
+  - Video de YouTube: NO por ahora. Si quieres, propone en un párrafo qué mostraría.
+  - Ícono: ya existe, no se toca. Es android/app/src/main/ic_launcher-playstore.png -512 x 512,
+    PNG con alfa, 48 KB-. OJO: docs/ic-play-512.png es un ícono VIEJO; no usarlo.
+
+==============================================================================
+TERMINADO CUANDO
+==============================================================================
+  1. Un guion en herramientas/ comprueba cada archivo e imprime OK o FALLA: tamaño exacto,
+     relación 9:16 o 16:9, sin canal alfa, peso máximo, y los conteos de caracteres de los textos.
+     Todo en OK.
+  2. lamina-ficha.png muestra el gráfico, las 8 capturas en orden y los textos, en los dos idiomas.
+  3. En el mensaje final: de dónde salió cada foto de persona -con su licencia-, y qué punto de
+     "lo que Sigo hace hoy" comprobaste en el código.
+  4. Entrega: un PR contra main solo con docs/play/ficha/. No se toca el código de la app.
