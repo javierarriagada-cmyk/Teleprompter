@@ -1,20 +1,39 @@
 #!/usr/bin/env bash
-# LO QUE LA CÁMARA "VE" EN LAS CAPTURAS -tarea 86-. Sale de fuente/persona-v.jpg -vertical- y
-# fuente/persona-h.jpg -horizontal-, con ffmpeg:
-#   medios/persona-v.jpg y -h.jpg      la imagen de la cámara, ya recortada a 9:16 y 16:9
+# LO QUE LA CÁMARA "VE" EN LAS CAPTURAS -tarea 86-. Sale de las cinco personas de fuente/ -todas
+# generadas por computador, ver fuente/LICENCIA-personas.txt-, con ffmpeg:
+#   medios/persona-{A,B,D}.jpg          verticales, 1080 x 1920
+#   medios/persona-{C,E}.jpg            horizontales, 1920 x 1080
 #   medios/toma-es.mp4 y toma-en.mp4    la toma de ejemplo del visor -captura 6-, con sonido mudo
 #   medios/miniatura-*.jpg              su miniatura
 # medios/ no va al repositorio -.gitignore-: se rearma con este guion.
+#
+# Qué persona va en qué captura está en capturar.cjs -LISTA-. Varias y no una sola -Javier,
+# 29-09-2026-: mujeres y hombres de distintas edades, repartidos entre teléfono y tableta.
 set -euo pipefail
 cd "$(dirname "$0")"
 mkdir -p medios
-# Dos fotos y no una: la vertical es 2:3 y, recortada a 16:9 para el teléfono de lado, dejaba
-# solo la cara, más cerca de lo que se ve nunca con la cámara frontal. La horizontal es 3:2.
-ffmpeg -loglevel error -y -i fuente/persona-v.jpg -vf "crop=ih*9/16:ih,scale=1080:1920" -q:v 2 medios/persona-v.jpg
-ffmpeg -loglevel error -y -i fuente/persona-h.jpg -vf "crop=iw:iw*9/16,scale=1920:1080" -q:v 2 medios/persona-h.jpg
+# Las fuentes ya vienen en 9:16 -576 x 1024- o 16:9 -1024 x 576-, como salieron del generador: se
+# agrandan, y tres se recortan antes -abajo-. Van detrás del texto, con el velo de la app encima,
+# o en el recuadro chico, así que la ampliación casi no se nota; en el visor -la 6- se ve más, y
+# ahí va la D, que no se recorta.
+# La A se recorta antes -444 x 790, sigue en 9:16-: abajo a la derecha el generador dibujó una mano
+# que no calzaba con el brazo. Se revisaron las cinco una por una: se recortaron esta, la C y la E.
+declare -A RECORTE=([A]="crop=444:790:78:0," [B]="" [D]="")
+for p in A B D; do
+  ffmpeg -loglevel error -y -i fuente/persona-$p.png -vf "${RECORTE[$p]}scale=1080:1920:flags=lanczos" -q:v 2 medios/persona-$p.jpg
+done
+# La C y la E también se recortan, y siguen en 16:9. A la C, 747 x 420, se le quitan las manos
+# abiertas hacia la cámara: la izquierda no salió bien dibujada. A la E, 942 x 530, un borde gris
+# desenfocado abajo, como un objeto delante de la cámara, que distraía.
+RECORTE[C]="crop=747:420:117:0,"
+RECORTE[E]="crop=942:530:41:0,"
+for p in C E; do
+  ffmpeg -loglevel error -y -i fuente/persona-$p.png -vf "${RECORTE[$p]}scale=1920:1080:flags=lanczos" -q:v 2 medios/persona-$p.jpg
+done
+# La toma del visor es la D -la cocinera-, que calza con el guion del pan.
 for l in es en; do
-  ffmpeg -loglevel error -y -loop 1 -i medios/persona-v.jpg -f lavfi -i anullsrc=r=44100:cl=mono -t 42 -r 30 \
+  ffmpeg -loglevel error -y -loop 1 -i medios/persona-D.jpg -f lavfi -i anullsrc=r=44100:cl=mono -t 42 -r 30 \
     -vf "scale=1080:1920,format=yuv420p" -c:v libx264 -preset veryfast -crf 28 -c:a aac -shortest medios/toma-$l.mp4
-  cp medios/persona-v.jpg medios/miniatura-$l.jpg
+  cp medios/persona-D.jpg medios/miniatura-$l.jpg
 done
 ls -la medios

@@ -7,9 +7,9 @@
 //
 // LO ÚNICO QUE NO ES DE LA APP: la imagen de la cámara. En el teléfono, la vista previa nativa va
 // DETRÁS del WebView -src/lib/camara.ts, toBack: true, aspectMode: 'cover'- y el navegador no la
-// tiene. Aquí se pone la foto de medios/persona-v.jpg -o -h.jpg de lado- exactamente donde el teléfono pone la vista
-// previa: toda la pantalla con la cámara detrás, o el rectángulo del recuadro. Mismo método que
-// las láminas aprobadas de la tarea 82.
+// tiene. Aquí se pone la foto de medios/persona-X.jpg -la persona que dice LISTA- exactamente
+// donde el teléfono pone la vista previa: toda la pantalla con la cámara detrás, o el rectángulo
+// del recuadro. Mismo método que las láminas aprobadas de la tarea 82.
 const puppeteer = require(process.env.PUPPETEER || '/workspace/tp-shot/node_modules/puppeteer-core')
 const fs = require('fs')
 const path = require('path')
@@ -18,8 +18,9 @@ const BASE = process.env.SIGO_URL || 'http://127.0.0.1:5186/docs/play/ficha/herr
 const CRUDAS = path.join(__dirname, 'crudas')
 const filtro = process.argv[2] || ''
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
-const fotoV = 'data:image/jpeg;base64,' + fs.readFileSync(path.join(__dirname, 'medios', 'persona-v.jpg')).toString('base64')
-const fotoH = 'data:image/jpeg;base64,' + fs.readFileSync(path.join(__dirname, 'medios', 'persona-h.jpg')).toString('base64')
+// Las personas -preparar-medios.sh, fuente/LICENCIA-personas.txt-: A, B y D verticales; C y E
+// horizontales. Qué persona va en cada captura lo dice LISTA, abajo.
+const foto = (p) => 'data:image/jpeg;base64,' + fs.readFileSync(path.join(__dirname, 'medios', `persona-${p}.jpg`)).toString('base64')
 
 // Las pantallas. El teléfono vertical se captura en 360 x 640 -9:16- y el horizontal en 800 x 360,
 // el de un teléfono común de lado: componer.cjs los pone en su marco. Las tabletas van a pantalla
@@ -67,7 +68,7 @@ async function abrir(b, { idioma, pantalla, ajustes = {}, subtitulos = 'no' }) {
 
 // La imagen de la cámara donde la pondría el teléfono -ver arriba-. El video del navegador se
 // oculta: su cámara falsa no es la del teléfono.
-async function camara(p, { recuadro = false, horizontal = false } = {}) {
+async function camara(p, { recuadro = false, persona } = {}) {
   await p.addStyleTag({ content: 'video{opacity:0 !important}' })
   await p.evaluate((src, recuadro) => {
     let d = document.getElementById('camara-de-la-ficha')
@@ -79,7 +80,7 @@ async function camara(p, { recuadro = false, horizontal = false } = {}) {
     const r = recuadro ? document.querySelector('[data-testid="recuadro-camara"]')?.getBoundingClientRect() : null
     const caja = r ? `left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;border-radius:inherit` : 'inset:0'
     d.style.cssText = `position:fixed;${caja};z-index:-1;background:url(${src}) center 30%/cover no-repeat;pointer-events:none`
-  }, horizontal ? fotoH : fotoV, recuadro)
+  }, foto(persona), recuadro)
 }
 
 async function entrar(p, puerta) {
@@ -163,36 +164,38 @@ const ESCENAS = {
   }
 }
 
-// Qué se captura: [nombre del archivo, escena, pantalla].
+// Qué se captura: [nombre del archivo, escena, pantalla, persona]. Las personas se reparten para
+// que haya variedad: A mujer de 30, B hombre de 60, C hombre de 25, D mujer de 55 -la toma del
+// visor, en la cocina del guion del pan-, E mujer de 40.
 const LISTA = [
   ['tel-01-leer', 'leer', 'tel-v'],
-  ['tel-02-grabar-detras', 'grabar-detras', 'tel-v'],
-  ['tel-03-grabar-recuadro', 'grabar-recuadro', 'tel-v'],
-  ['tel-04-de-lado', 'grabar-detras', 'tel-h'],
+  ['tel-02-grabar-detras', 'grabar-detras', 'tel-v', 'A'],
+  ['tel-03-grabar-recuadro', 'grabar-recuadro', 'tel-v', 'B'],
+  ['tel-04-de-lado', 'grabar-detras', 'tel-h', 'E'],
   ['tel-05-editor', 'editor', 'tel-v'],
   ['tel-06-subtitulos', 'visor', 'tel-v'],
   ['tel-07-portada', 'portada', 'tel-v'],
   ['tel-08-ajustes', 'ajustes', 'tel-v'],
   ['tab7-01-leer', 'leer', 'tab7-v'],
-  ['tab7-02-grabar-detras', 'grabar-detras', 'tab7-v'],
-  ['tab7-03-de-lado', 'grabar-detras', 'tab7-h'],
+  ['tab7-02-grabar-detras', 'grabar-detras', 'tab7-v', 'B'],
+  ['tab7-03-de-lado', 'grabar-detras', 'tab7-h', 'C'],
   ['tab7-04-editor', 'editor', 'tab7-v'],
   ['tab10-01-leer', 'leer', 'tab10-v'],
-  ['tab10-02-grabar-detras', 'grabar-detras', 'tab10-v'],
-  ['tab10-03-de-lado', 'grabar-detras', 'tab10-h'],
+  ['tab10-02-grabar-detras', 'grabar-detras', 'tab10-v', 'D'],
+  ['tab10-03-de-lado', 'grabar-detras', 'tab10-h', 'C'],
   ['tab10-04-editor', 'editor', 'tab10-v']
 ]
 
 ;(async () => {
   fs.mkdirSync(CRUDAS, { recursive: true })
   for (const idioma of ['es', 'en']) {
-    for (const [nombre, escena, pantalla] of LISTA) {
+    for (const [nombre, escena, pantalla, persona] of LISTA) {
       const id = `${idioma}-${nombre}`
       if (filtro && !id.includes(filtro)) continue
       // Un navegador limpio por captura: cada una parte de la misma portada sembrada.
       const b = await puppeteer.launch({ executablePath: process.env.CHROME || '/usr/bin/google-chrome', args: ['--no-sandbox', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--autoplay-policy=no-user-gesture-required', '--hide-scrollbars'] })
       try {
-        const p = await ESCENAS[escena](b, { idioma, pantalla, horizontal: pantalla.endsWith('-h') })
+        const p = await ESCENAS[escena](b, { idioma, pantalla, persona })
         await p.screenshot({ path: path.join(CRUDAS, `${id}.png`) })
         console.log('  lista', id)
       } catch (e) {

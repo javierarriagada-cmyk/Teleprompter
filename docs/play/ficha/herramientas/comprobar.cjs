@@ -33,7 +33,7 @@ function imagen(rel, w, h, maxMB, libre = false) {
 }
 
 console.log('— Gráfico de funciones')
-for (const i of ['es', 'en']) for (const v of ['A', 'B', 'C']) imagen(`grafico-1024x500-${i}-${v}.png`, 1024, 500, 15)
+for (const i of ['es', 'en']) imagen(`grafico-1024x500-${i}.png`, 1024, 500, 15)
 
 console.log('— Capturas de teléfono')
 for (const c of ['es-419', 'en-US']) for (let n = 1; n <= 8; n++) imagen(`capturas/${c}/${String(n).padStart(2, '0')}.png`, n === 4 ? 1920 : 1080, n === 4 ? 1080 : 1920, 8)
@@ -62,14 +62,11 @@ const PROHIBIDAS_BREVE = /\b(best|#1|top|new|free|mejor|gratis|nuevo|nueva|desca
 for (const archivo of ['textos-es-419.txt', 'textos-en-US.txt']) {
   const t = fs.readFileSync(path.join(FICHA, archivo), 'utf8')
   const bloques = [...t.matchAll(/\[\[([\s\S]*?)\]\]/g)].map((m) => m[1])
-  const alternativas = [...t.matchAll(/\{\{(.*?)\}\}/g)].map((m) => m[1])
-  ok(bloques.length === 5, `${archivo}: 5 bloques [[ ]] -nombre, tres breves, completa- (hay ${bloques.length})`)
-  const [nombre, b1, b2, b3, completa] = bloques
-  for (const n of [nombre, ...alternativas]) ok(largo(n) <= 30, `${archivo}: nombre "${n}" ${largo(n)} de 30`)
-  for (const b of [b1, b2, b3]) {
-    ok(largo(b) <= 80, `${archivo}: breve ${largo(b)} de 80`)
-    ok(!PROHIBIDAS_BREVE.test(b), `${archivo}: breve sin palabras que Play no quiere -mejor, gratis, nuevo, descarga-`)
-  }
+  ok(bloques.length === 3, `${archivo}: 3 bloques [[ ]] -nombre, breve, completa- (hay ${bloques.length})`)
+  const [nombre, breve, completa] = bloques
+  ok(largo(nombre) <= 30, `${archivo}: nombre "${nombre}" ${largo(nombre)} de 30`)
+  ok(largo(breve) <= 80, `${archivo}: breve ${largo(breve)} de 80`)
+  ok(!PROHIBIDAS_BREVE.test(breve), `${archivo}: breve sin palabras que Play no quiere -mejor, gratis, nuevo, descarga-`)
   ok(largo(completa) <= 4000, `${archivo}: completa ${largo(completa)} de 4000`)
   ok(largo(completa) >= 1500 && largo(completa) <= 2500, `${archivo}: completa entre 1500 y 2500 -lo ideal del encargo-`)
   for (const s of bloques) {

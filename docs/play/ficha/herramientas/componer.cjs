@@ -3,7 +3,7 @@
 // Toma las pantallas de crudas/ -las saca capturar.cjs de la app real- y arma, en ../:
 //   capturas/{es-419,en-US}/01..08.png            teléfono, con su titular arriba
 //   capturas/tableta-provisional/{es-419,en-US}/{7,10}/  tabletas, a pantalla completa
-//   grafico-1024x500-{es,en}-{A,B,C}.png            tres propuestas de gráfico por idioma
+//   grafico-1024x500-{es,en}.png                    el gráfico de funciones, uno por idioma
 // Cada imagen se dibuja en HTML en Chrome sin ventana y se pasa por ffmpeg a PNG RGB de 24 bits:
 // Play no acepta alfa -support.google.com/googleplay/android-developer/answer/9866151-, y la
 // captura de Chrome puede traer canal alfa aunque la página sea opaca.
@@ -55,13 +55,20 @@ h1{font-size:${tit.tam}px;font-weight:600;line-height:1.08;letter-spacing:-.018e
 
 // ---------- el gráfico de funciones ----------
 // 1024 x 500. Play -answer/9866151-: sin dispositivos ni capturas, lo esencial al centro y lejos
-// de los bordes, colores vivos y no blanco puro, negro ni gris oscuro. Por eso ninguna de las
-// tres propuestas usa el suelo oscuro de la app: van en ámbar, celeste y crema, colores de Sigo.
-// Todo lo que importa queda dentro de la zona segura de 64 px -docs/tarea86.txt-.
+// de los bordes, colores vivos y no blanco puro, negro ni gris oscuro. Por eso no usa el suelo
+// oscuro de la app: va en ámbar, color de Sigo. Todo lo que importa queda dentro de la zona segura
+// de 64 px -docs/tarea86.txt-.
+//
+// ES LA PROPUESTA A. Había tres -A ámbar, B celeste, C crema-; Javier dejó la elección a criterio
+// y queda la A: es la única que muestra la idea entera -la marca, la frase y los renglones con la
+// línea que sigue la voz-. Las otras dos están en la historia del PR #60.
+//
+// La bajada ya no dice "sin internet" -Javier, 29-09-2026: el uso sin conexión no es el titular-;
+// dice para qué sirve, con las palabras que se buscan: teleprompter, voz, video.
 const FRASES = {
-  es: { A: 'El texto sigue|tu voz.', B: ['Tú hablas.', 'El texto ==te sigue==.'], C: 'Lee en voz alta.|El texto ==te sigue==.', bajada: 'Teleprompter de voz, sin internet',
+  es: { frase: 'El texto sigue|tu voz.', bajada: 'Teleprompter de voz para tus videos',
     renglones: [['Hola, hoy vamos a hacer', 0], ['pan casero en menos', 1], ['de una hora, con cuatro', 2]] },
-  en: { A: 'The script|follows|your voice.', B: ['You speak.', 'The script ==follows==.'], C: 'Read aloud.|The script ==follows==.', bajada: 'Voice teleprompter, on your phone',
+  en: { frase: 'The script|follows|your voice.', bajada: 'Voice teleprompter for your videos',
     renglones: [['Hi, today we are going', 0], ['to make homemade bread', 1], ['in under an hour, with', 2]] }
 }
 // Los renglones son el primer párrafo del guion del pan -guiones.ts-: el ya leído, apagado; el
@@ -73,38 +80,17 @@ function renglones(r, tinta, linea, tam) {
     return `<div style="opacity:${op};white-space:nowrap"><span style="${sub}padding-bottom:2px">${html(t)}</span></div>`
   }).join('')
 }
-function grafico(idioma, v) {
+function grafico(idioma) {
   const f = FRASES[idioma]
-  const base = `<!doctype html><html><head><meta charset="utf-8"><style>${LETRAS}body{width:1024px;height:500px;position:relative;overflow:hidden}</style></head><body>`
-  if (v === 'A') {
-    // A: ÁMBAR. La marca y la frase a la izquierda; a la derecha, tres renglones del guion con la
-    // línea que sigue la voz. Es la idea entera de Sigo en una mirada.
-    return base + `<div style="position:absolute;inset:0;background:radial-gradient(ellipse 700px 420px at 30% 40%, #F6D495 0%, ${C.ambar} 60%, #E8B45E 100%)"></div>
+  return `<!doctype html><html><head><meta charset="utf-8"><style>${LETRAS}body{width:1024px;height:500px;position:relative;overflow:hidden}</style></head><body>
+<div style="position:absolute;inset:0;background:radial-gradient(ellipse 700px 420px at 30% 40%, #F6D495 0%, ${C.ambar} 60%, #E8B45E 100%)"></div>
 <div style="position:absolute;left:84px;top:50%;transform:translateY(-50%);width:440px">
   ${marca({ alto: 112, color: C.suelo, id: `a${idioma}` })}
-  <div class="serif" style="margin-top:34px;font-size:${idioma === 'es' ? 56 : 50}px;font-weight:600;line-height:1.04;letter-spacing:-.02em;color:${C.suelo}">${f.A.split('|').map(html).join('<br>')}</div>
+  <div class="serif" style="margin-top:34px;font-size:${idioma === 'es' ? 56 : 50}px;font-weight:600;line-height:1.04;letter-spacing:-.02em;color:${C.suelo}">${f.frase.split('|').map(html).join('<br>')}</div>
   <div class="sans" style="margin-top:22px;font-size:24px;font-weight:600;color:rgba(21,19,18,.72)">${html(f.bajada)}</div>
 </div>
 <div class="serif" style="position:absolute;right:84px;top:50%;transform:translateY(-50%);font-size:32px;line-height:1.6;color:${C.suelo};padding:28px 34px;border-radius:24px;background:rgba(242,236,232,.55);box-shadow:0 20px 50px rgba(120,70,0,.25)">${renglones(f.renglones, C.suelo, C.suelo, 32)}</div>
 </body></html>`
-  }
-  if (v === 'B') {
-    // B: CELESTE, AL CENTRO. La marca grande y la frase en dos tiempos, con el destacado: lo que
-    // se ve primero en el carrusel de Play es la marca.
-    return base + `<div style="position:absolute;inset:0;background:radial-gradient(ellipse 620px 360px at 50% 44%, #B4D0EA 0%, ${C.celeste} 62%, #79A6D2 100%)"></div>
-<div style="position:absolute;inset:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
-  ${marca({ alto: 150, color: C.suelo, id: `b${idioma}` })}
-  <div class="serif" style="margin-top:34px;font-size:52px;font-weight:600;line-height:1.1;letter-spacing:-.015em;color:${C.suelo}">${html(f.B[0])} ${conDestacado(f.B[1])}</div>
-  <div class="sans" style="margin-top:18px;font-size:23px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(21,19,18,.7)">${html(f.bajada)}</div>
-</div></body></html>`
-  }
-  // C: CREMA CON LUZ TIBIA. Tipográfica: una frase grande con el destacado barriendo la mitad, y
-  // la marca abajo. Crema -#F2ECE8-, no blanco puro.
-  return base + `<div style="position:absolute;inset:0;background:radial-gradient(ellipse 560px 380px at 82% 20%, rgba(240,192,112,.55), rgba(240,192,112,0) 70%),radial-gradient(ellipse 500px 300px at 8% 100%, rgba(143,184,222,.45), rgba(143,184,222,0) 70%),${C.crema}"></div>
-<div style="position:absolute;inset:64px 84px;display:flex;flex-direction:column;justify-content:center">
-  <div class="serif" style="font-size:${idioma === 'es' ? 76 : 74}px;font-weight:600;line-height:1.08;letter-spacing:-.025em;color:${C.suelo};max-width:856px">${f.C.split('|').map(conDestacado).join('<br>')}</div>
-  <div style="margin-top:44px;display:flex;align-items:center;gap:26px">${marca({ alto: 72, color: C.suelo, id: `c${idioma}` })}<div class="sans" style="font-size:24px;font-weight:600;color:rgba(21,19,18,.7);border-left:2px solid rgba(21,19,18,.25);padding-left:24px">${html(f.bajada)}</div></div>
-</div></body></html>`
 }
 
 // ---------- a PNG sin alfa ----------
@@ -155,10 +141,8 @@ const TABLETAS = { 7: ['01-leer', '02-grabar-detras', '03-de-lado', '04-editor']
         }
       }
       if (!solo || solo === 'grafico') {
-        for (const v of ['A', 'B', 'C']) {
-          await dibujar(b, grafico(idioma, v), 1024, 500, path.join(FICHA, `grafico-1024x500-${idioma}-${v}.png`))
-          console.log('  gráfico', idioma, v)
-        }
+        await dibujar(b, grafico(idioma), 1024, 500, path.join(FICHA, `grafico-1024x500-${idioma}.png`))
+        console.log('  gráfico', idioma)
       }
     }
   } finally {

@@ -27,8 +27,7 @@ const CARPETA = { es: 'es-419', en: 'en-US' }
 const NOMBRE_IDIOMA = { es: 'Español (Latinoamérica)', en: 'English (United States)' }
 
 function graficos() {
-  const nota = { A: 'Recomendada: la idea entera en una mirada, la marca y la línea que sigue la voz.', B: 'La marca primero, al centro. La más limpia en el carrusel.', C: 'Tipográfica, en crema con luz tibia. La más sobria.' }
-  return ['es', 'en'].map((i) => `<div class="fila">${['A', 'B', 'C'].map((v) => `<figure>${mini(`grafico-1024x500-${i}-${v}.png`, 740)}<figcaption><b>${i.toUpperCase()} · ${v}</b> ${esc(nota[v])}</figcaption></figure>`).join('')}</div>`).join('')
+  return `<div class="fila">${['es', 'en'].map((i) => `<figure>${mini(`grafico-1024x500-${i}.png`, 1100)}<figcaption><b>${CARPETA[i]}</b> grafico-1024x500-${i}.png</figcaption></figure>`).join('')}</div>`
 }
 function telefonos(i) {
   const figs = []
@@ -55,8 +54,7 @@ function textos(i) {
   return `<div class="col">
 <h3>${NOMBRE_IDIOMA[i]} — ${t.archivo}</h3>
 <div class="k">Nombre · ${largo(t.nombre)}/30</div><div class="nombre">${esc(t.nombre)}</div><div class="nota">${esc(t.nombreNota)}</div>
-<div class="k">Alternativas de nombre, opcionales</div>${t.nombresAlternativos.map(([a, nota]) => `<div class="alt"><span>${esc(a)}</span> <em>${largo(a)}/30</em> — ${esc(nota)}</div>`).join('')}
-<div class="k">Descripción breve · elegir una</div>${t.breves.map(([b, nota], k) => `<div class="breve"><b>${'ABC'[k]}</b> <span>${esc(b)}</span> <em>${largo(b)}/80</em><div class="nota">${esc(nota)}</div></div>`).join('')}
+<div class="k">Descripción breve · ${largo(t.breve)}/80</div><div class="breve"><span>${esc(t.breve)}</span><div class="nota">${esc(t.breveNota)}</div></div>
 <div class="k">Descripción completa · ${largo(t.completa)}/4000</div><div class="completa">${esc(t.completa)}</div>
 </div>`
 }
@@ -95,12 +93,12 @@ table{border-collapse:collapse;width:100%;font-size:18px}td{padding:6px 12px;bor
 </style></head><body>
 <header>${marca({ alto: 120, color: C.crema, id: 'lam' })}<div><h1>La ficha de Google Play</h1><p>Propuesta para revisar · tarea 86 · 29-09-2026 · todo sale de la app real de main -5efe959-</p></div></header>
 
-<h2>Gráfico de funciones <small>1024 x 500 · PNG 24 bits sin alfa · tres propuestas por idioma</small></h2>
-<div class="bajada">Sin dispositivos ni capturas, como pide Play. Fondos en colores de Sigo -ámbar, celeste, crema-: Play pide colores vivos y no blanco puro, negro ni gris oscuro, así que el suelo oscuro de la app no sirve aquí. Todo lo esencial queda a más de 64 px del borde.</div>
+<h2>Gráfico de funciones <small>1024 x 500 · PNG 24 bits sin alfa · la propuesta A</small></h2>
+<div class="bajada">Sin dispositivos ni capturas, como pide Play. En ámbar, color de Sigo: Play pide colores vivos y no blanco puro, negro ni gris oscuro. Todo lo esencial queda a más de 64 px del borde. La bajada ya no dice "sin internet": dice para qué sirve.</div>
 ${graficos()}
 
 <h2>Capturas de teléfono <small>1080 x 1920 · la 4 en 1920 x 1080 · en este orden</small></h2>
-<div class="bajada">Una historia en ocho pasos: hablas y el texto te sigue, te grabas leyendo -detrás, en recuadro, de lado-, marcas tu guion, el video sale con subtítulos, todos tus guiones a mano, y a tu manera. El titular dice el beneficio en 7 palabras o menos y ocupa menos del 20 % de alto. Sin marco de teléfono: Play no quiere imágenes de dispositivos.</div>
+<div class="bajada">Una historia en ocho pasos, desde la persona y lo que le cuesta: hablas y el texto te sigue; miras a la cámara sin memorizar; te ves sin perder el hilo; también de lado; lo importante a la vista; el video sale con subtítulos; tus guiones a mano; y a tu manera. El titular dice el beneficio en 7 palabras o menos y ocupa menos del 20 % de alto. Sin marco de teléfono: Play no quiere imágenes de dispositivos. Las personas son generadas por computador -ver abajo-.</div>
 ${telefonos('es')}
 ${telefonos('en')}
 
@@ -114,11 +112,11 @@ ${tabletas()}
 <h2>Lo que hay que saber</h2>
 <div class="cols">
 <div class="col caja"><b>Qué no sale de la app en las capturas</b><ul>
-<li><b>La imagen de la cámara</b> es una foto puesta donde el teléfono pone la vista previa: el navegador no tiene la cámara nativa. Mismo método de las láminas de la tarea 82.</li>
-<li><b>La toma del visor -6-</b> es la foto quieta con un registro de voz sintético; los subtítulos los dibuja la app con ese registro.</li>
+<li><b>La imagen de la cámara</b> es una imagen puesta donde el teléfono pone la vista previa: el navegador no tiene la cámara nativa. Mismo método de las láminas de la tarea 82.</li>
+<li><b>La toma del visor -6-</b> es una imagen quieta con un registro de voz sintético; los subtítulos los dibuja la app con ese registro.</li>
 <li><b>La voz</b> es guiada: entrega las palabras del guion como si alguien leyera. El seguidor y la línea son los de la app.</li>
-<li><b>Fotos</b>, CC0 1.0 de Wikimedia Commons: "Happy daughter" de Michael Dam -vertical- y "Sitting And Smiling" de Brooke Cagle -de lado-. La primera trae aviso de derechos de la personalidad. Para la versión final, mejor fotos propias o con permiso firmado: se cambian en herramientas/fuente/ y se corre todo.sh.</li>
-<li><b>No se dice</b> que los guiones se respaldan con la copia de Android: no está comprobado -evidencia.md-.</li>
+<li><b>Las cinco personas son generadas</b> con FLUX.1 [schnell] -Apache 2.0, uso comercial- en la box. No son personas reales: no hace falta autorización de modelo. Se descartaron las fotos CC0 de Wikimedia. Prompts y semillas en herramientas/fuente/LICENCIA-personas.txt.</li>
+<li><b>La copia de seguridad</b>: guiones y ajustes vuelven al reinstalar, con la copia de Google activada -probado con bmgr en la tarea 84, en el emulador; falta el moto g86-. Los videos no entran.</li>
 </ul></div>
 <div class="col caja"><b>Evidencia -completa en evidencia.md-</b><table>
 <tr><td>Sigue tu voz, es y en</td><td><code>src/motor/MotorNativo.ts:46, 67</code></td></tr>
@@ -130,6 +128,7 @@ ${tabletas()}
 <tr><td>Negrita, colores, destacado</td><td><code>EditorView.tsx:245-252, 511-513</code></td></tr>
 <tr><td>Acotaciones · .txt .md .docx</td><td><code>acotaciones.ts:1-12 · EditorView.tsx:350</code></td></tr>
 <tr><td>Ajustes de lectura · espejo · tema</td><td><code>PantallaAjustes.tsx:231-260, 291</code></td></tr>
+<tr><td>Copia de seguridad de guiones y ajustes</td><td><code>release/AndroidManifest.xml:8-9 · reglas_respaldo.xml · PR #58 E2</code></td></tr>
 </table><p style="margin-top:14px;font-size:18px;color:${C.apagado}">Play: answer/9866151 -activos de vista previa-, answer/9898842 -metadatos-, answer/9859152 -límites de texto-.</p></div>
 </div>
 </body></html>`

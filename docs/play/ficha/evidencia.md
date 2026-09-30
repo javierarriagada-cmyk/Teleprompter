@@ -34,17 +34,53 @@ hoy -rama main en 5efe959-. Si algo de aquí deja de ser cierto, se corrige la f
 | Espejo para vidrio de teleprompter | `src/textos/es.ts:191` -espejoExplicacion-, `src/components/PantallaAjustes.tsx:260` |
 | Tema claro u oscuro | `src/components/PantallaAjustes.tsx:291`, `:444` |
 | La app en español y en inglés | `src/components/PantallaAjustes.tsx:297`, `:475` |
+| Guiones y ajustes en la copia de seguridad de Android; vuelven al reinstalar | ver "La copia de seguridad", abajo |
+| Los videos no entran en la copia | `android/app/src/release/res/xml/reglas_respaldo.xml`: solo se incluyen IndexedDB, Local Storage, sharedprefs y el archivo de idioma; `files/grabaciones` no se nombra |
+
+## La copia de seguridad -tarea 84, E1 y E2-
+
+**Corrección.** La primera versión de esta ficha decía que el respaldo no estaba comprobado, porque
+solo miré `android/app/src/main/res/xml`. Me equivoqué: las reglas están en el conjunto `release`,
+que es la versión de Play, y la tarea 84 sí las probó.
+
+- `android/app/src/release/AndroidManifest.xml:8-9`: `android:dataExtractionRules="@xml/reglas_respaldo"`
+  -Android 12 o más- y `android:fullBackupContent="@xml/respaldo_completo"` -Android 10 y 11-.
+- `android/app/src/release/res/xml/reglas_respaldo.xml` y `respaldo_completo.xml`: incluyen solo
+  `app_webview/Default/IndexedDB/` -los guiones-, `app_webview/Default/Local Storage/` -los ajustes-,
+  las sharedprefs y el archivo de idioma de AppCompat. Dejan fuera los blobs de IndexedDB, los
+  modelos de voz, las tomas -`files/grabaciones`- y los cachés. El comentario del XML dice qué se
+  comprobó, y lo dejó así el commit 14b955e.
+- **Prueba con bmgr, 29-09-2026**, emulador con Android 15 y LocalTransport. Está en el PR #58,
+  sección E2:
+  `bmgr enable true` → `bmgr transport …LocalTransport` → abrir la app → `bmgr backupnow
+  com.sigoteleprompter.app` (Success) → `adb uninstall` → `bmgr autorestore true` → reinstalar con
+  bundletool (restoreAtInstall). El log `FullBackup_native` de la copia -se guardó en la box como
+  bmgr2.log- muestra que entraron `Local Storage/leveldb/*`,
+  `IndexedDB/https_localhost_0.indexeddb.leveldb/000003.log` y `shared_prefs/*`, y la carpeta
+  `.blob` no. Según el PR #58, al reinstalar volvieron la base y el localStorage con su contenido.
+- Tarea 85, commit 1e5fabf: después de restaurar, las tomas cuyo video no volvió no aparecen.
+
+**Qué dice la ficha, y qué no.** Dice que los guiones y los ajustes entran en la copia de seguridad
+de Android, que vuelven al reinstalar si la copia de seguridad de Google está activada, y que los
+videos no entran. No promete el paso de un teléfono a otro. Las reglas de `device-transfer` existen,
+pero no se probaron.
+
+**Salvedades:**
+- La prueba fue en el emulador de la box. Ahí el WebView se caía al dibujar, así que la base
+  IndexedDB se puso a mano con `adb root`; la carpeta Local Storage sí la creó el WebView.
+- El PR #58 anota que falta verlo con guiones reales en el moto g86.
+- El log de la restauración no quedó guardado en un archivo: el que hay, bmgr3.log, es un intento
+  fallido de reinstalación. El resultado bueno está escrito en el PR #58 y en el comentario del XML.
+- La copia en la nube depende de que la persona tenga activada la copia de seguridad de Google en
+  su teléfono. La ficha lo dice.
 
 ## Lo que NO se dice, y por qué
 
-- **Que los guiones se respaldan con la copia de seguridad de Android.** El manifiesto tiene
-  `android:allowBackup="true"` -`android/app/src/main/AndroidManifest.xml:14`-, pero no hay
-  `dataExtractionRules` ni `fullBackupContent`: en `res/xml` solo están config, file_paths y
-  locales_config. Sin reglas, Android respalda todo o nada, y con más de 25 MB -las tomas viven
-  en files/- no respalda nada. No está comprobado en un teléfono; hasta que lo esté, no va.
-- **"Sin internet" en inglés, a secas.** La voz en inglés se baja de Play una vez. Se dice así.
-- Gestos, Bluetooth, nube, cuentas, tabletas, otros idiomas, iPhone, precios, "el mejor": nada de
-  eso existe o corresponde -docs/tarea86.txt-.
+- **Que el paso a otro teléfono conserva los guiones.** No se probó; ver arriba.
+- **"Sin internet" como titular.** Javier pidió que sea una posibilidad, no el titular. Va al final
+  de la completa, con el detalle del inglés: la voz se baja de Play una vez.
+- Gestos, Bluetooth, nube propia, cuentas, tabletas, otros idiomas, iPhone, precios, "el mejor": nada
+  de eso existe o corresponde -docs/tarea86.txt-.
 
 ## Lo que en las capturas no sale de la app
 
@@ -56,7 +92,9 @@ hoy -rama main en 5efe959-. Si algo de aquí deja de ser cierto, se corrige la f
   se ven son los que la app dibuja con ese registro.
 - **La voz.** Un motor guiado -herramientas/vozGuiada.ts- entrega las palabras del guion como si
   alguien las leyera. El seguidor, el avance y la línea son los de la app.
-- **Las fotos**: ver herramientas/fuente/LICENCIA-persona.txt.
+- **Las personas**: las cinco fueron generadas por computador. No son fotos ni personas reales,
+  así que no hace falta autorización de modelo. Origen, modelo, licencia y prompt de cada una:
+  `herramientas/fuente/LICENCIA-personas.txt`.
 
 ## Documentación de Google Play que se siguió -consultada el 29-09-2026-
 
