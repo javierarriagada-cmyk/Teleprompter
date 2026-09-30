@@ -20,3 +20,21 @@ sube pegado arriba, cerca del lente). La regla de la 82 de conservar el espacio 
 de lado y no se aplica a la tableta.
 
 Las capturas de la app real que se agreguen en esta carpeta van al lado de estas dos hojas.
+
+CAPTURAS DE LA APP REAL (30-09-2026, Chrome sin ventana, escala 1,5)
+
+  comparar-<pantalla>-<estado>-<tema>.png   la app a la izquierda, el boceto aprobado a la derecha
+    pantalla  tab-v (820×1180) · tab-h (1180×820)
+    estado    leer-listo · leer-leyendo · leer-leyendo-controles ·
+              grabar-listo-detras · grabar-listo-recuadro ·
+              grabar-grabando-detras · grabar-grabando-detras-controles ·
+              grabar-grabando-recuadro · grabar-grabando-recuadro-controles · grabar-pausa-tacho
+    tema      oscuro (hoja-tableta.png) · claro (hoja-tableta-claro.png)
+  editor-tab-v-final-del-texto.png, editor-tab-h-final-del-texto.png
+    el editor al final del guion: Leer y Grabar no tapan el último renglón.
+
+  Se rehacen con npx vite --host 127.0.0.1 --port 5183 desde la raíz y, en herramientas/:
+    node capturar.cjs    (las sueltas, en herramientas/crudas/, que no entran al repositorio)
+    node componer.cjs    (las comparar-*.png; BOCETOS apunta a los PNG sueltos del 29-09)
+  La imagen de la cámara es la de referencia de los bocetos: en el navegador no hay cámara nativa.
+  Por lo mismo no se ve el punto rojo: sale solo con la grabación nativa andando.
