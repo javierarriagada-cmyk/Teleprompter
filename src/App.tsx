@@ -5,7 +5,7 @@ import useASR from './hooks/useASR'
 import { useSeguidor } from './hooks/useSeguidor'
 import { useWakeLock } from './hooks/useWakeLock'
 import { usePrecargaModelo } from './hooks/usePrecargaModelo'
-import useLayout from './hooks/useLayout'
+import useLayout, { letraPorOmision } from './hooks/useLayout'
 import type { EsquinaRecuadroH } from './components/RecuadroCamara'
 import TeleprompterView, { VeloControles } from './components/TeleprompterView'
 import BarraDeTiempo from './components/BarraDeTiempo'
@@ -73,6 +73,17 @@ export { PAREJAS_COLOR }
 // tituloDeBienvenida y bloqueDeBienvenida viven en app/bienvenida.ts desde el 29-09-2026
 // -tarea 81-; se vuelven a exportar desde aca porque las pruebas las importan de '../App'.
 export { tituloDeBienvenida, bloqueDeBienvenida } from './app/bienvenida'
+
+
+// La esquina guardada del recuadro, o abajo a la derecha si no hay ninguna o no es válida
+// -tarea 83, 30-09-2026: la leen las dos claves de la tableta-.
+function leerEsquina(clave: string): EsquinaRecuadroH {
+  try {
+    const v = localStorage.getItem(clave)
+    if (v === 'der-arriba' || v === 'der-abajo' || v === 'izq-arriba' || v === 'izq-abajo') return v
+  } catch (e) {}
+  return 'der-abajo'
+}
 
 export default function App({ motor, repoOverride }: AppProps) {
   // El idioma de la app: al cambiarlo en el cajon de la portada, App y todo lo que cuelga de
@@ -157,7 +168,15 @@ export default function App({ motor, repoOverride }: AppProps) {
   )
   const [verTranscripcion, setVerTranscripcion] = useState<boolean>(Boolean(ajustesPrevios.verTranscripcion))
   const [mostrarTiempo, setMostrarTiempo] = useState<boolean>(ajustesPrevios.mostrarTiempo !== undefined ? Boolean(ajustesPrevios.mostrarTiempo) : true)
-  const [fontSize, setFontSize] = useState<number>(ajustarFuenteValida(ajustesPrevios.fontSize))
+  // LA LETRA DE LA TABLETA -tarea 83, 30-09-2026-. Si los ajustes traen un tamaño guardado, manda
+  // ese: no se pisa una elección previa. Si no traen ninguno, en tableta -y en el caso borde de la
+  // hoja- la lectura parte en 32; en el teléfono sigue en 24, como siempre -letraPorOmision,
+  // hooks/useLayout.ts-.
+  const [fontSize, setFontSize] = useState<number>(() =>
+    ajustesPrevios.fontSize !== undefined && ajustesPrevios.fontSize !== null
+      ? ajustarFuenteValida(ajustesPrevios.fontSize)
+      : letraPorOmision()
+  )
   // Ajustes es capa, no piso -tarea 77, 28-09-2026-. Encima de todo; atras solo la cierra.
   const [ajustesAbiertos, setAjustesAbiertos] = useState(false)
   // Desde donde se abrio: cada puerta muestra lo suyo -PantallaAjustes, origen-.
@@ -263,9 +282,34 @@ export default function App({ motor, repoOverride }: AppProps) {
       localStorage.setItem('sigo_recuadro_esquina_h', e)
     } catch (err) {}
   }, [])
+  // LA ESQUINA DEL RECUADRO EN TABLETA -tarea 83, 30-09-2026-. Una clave por diseño, aparte de la
+  // del teléfono: la zona libre de cada uno es otra -entre la barra y el dock en vertical, entre
+  // los rieles de lado- y la esquina que se eligió en una no tiene por qué valer en la otra.
+  const [esquinaRecuadroTabV, setEsquinaRecuadroTabV] = useState<EsquinaRecuadroH>(() => leerEsquina('sigo_recuadro_esquina_tab_v'))
+  const [esquinaRecuadroTabH, setEsquinaRecuadroTabH] = useState<EsquinaRecuadroH>(() => leerEsquina('sigo_recuadro_esquina_tab_h'))
+  const elegirEsquinaRecuadroTabV = useCallback((e: EsquinaRecuadroH) => {
+    setEsquinaRecuadroTabV(e)
+    try {
+      localStorage.setItem('sigo_recuadro_esquina_tab_v', e)
+    } catch (err) {}
+  }, [])
+  const elegirEsquinaRecuadroTabH = useCallback((e: EsquinaRecuadroH) => {
+    setEsquinaRecuadroTabH(e)
+    try {
+      localStorage.setItem('sigo_recuadro_esquina_tab_h', e)
+    } catch (err) {}
+  }, [])
   // EL DISEÑO DE LA VENTANA -tarea 82, A1-: 'tel-h' es el teléfono de lado. Ver hooks/useLayout.ts.
   const layout = useLayout()
-  const horizontal = layout === 'tel-h'
+  // 30-09-2026, tarea 83: horizontal quiere decir "con rieles a los lados", y los rieles están en
+  // el teléfono de lado Y en la tableta de lado -con sus propias medidas, styles-tableta.css-. La
+  // tableta vertical no tiene rieles: tiene barra arriba y dock abajo -tabletaVertical-.
+  const horizontal = layout === 'tel-h' || layout === 'tab-h'
+  const tabletaVertical = layout === 'tab-v'
+  const tableta = layout === 'tab-v' || layout === 'tab-h'
+  // La esquina que vale en el diseño de ahora, y quién la guarda.
+  const esquinaRecuadroActual = layout === 'tab-v' ? esquinaRecuadroTabV : layout === 'tab-h' ? esquinaRecuadroTabH : esquinaRecuadroH
+  const elegirEsquinaRecuadroActual = layout === 'tab-v' ? elegirEsquinaRecuadroTabV : layout === 'tab-h' ? elegirEsquinaRecuadroTabH : elegirEsquinaRecuadroH
   const [calidadVideo, setCalidadVideo] = useState<string>(
     typeof ajustesPrevios.calidadVideo === 'string' ? ajustesPrevios.calidadVideo : '1080p'
   )
@@ -1448,12 +1492,162 @@ export default function App({ motor, repoOverride }: AppProps) {
   const columnaDelAviso = () => {
     const rielIzq = conCamara ? 'var(--riel-izq-grabar)' : 'var(--riel-izq-leer)'
     const conRecuadro = camaraActiva && fondoToma === 'recuadro'
-    const recuadroIzq = conRecuadro && esquinaRecuadroH.startsWith('izq')
+    const recuadroIzq = conRecuadro && esquinaRecuadroActual.startsWith('izq')
     return {
       izquierda: `calc(${rielIzq}${recuadroIzq ? ' + var(--carril-recuadro-h)' : ''} + env(safe-area-inset-left, 0px))`,
       derecha: `calc(var(--riel-der)${conRecuadro && !recuadroIzq ? ' + var(--carril-recuadro-h)' : ''} + env(safe-area-inset-right, 0px))`
     }
   }
+
+  // LOS BOTONES DE LEER CON CONTROLES, ARMADOS UNA VEZ -tarea 83, 30-09-2026-. Hasta la 82 vivían
+  // escritos adentro del bloque de los controles, y con la tableta el mismo botón va en tres
+  // envoltorios: flotando en vertical, en un riel de lado, o en la barra y el dock de la tableta
+  // vertical. Se arman acá para que haya una sola copia de cada uno, con su testid. En tableta el
+  // lugar exacto lo pone styles-tableta.css -tab-boton-izq y tab-boton-der-: un estilo en línea le
+  // ganaría a la hoja.
+  //
+  // Cada boton flotante lleva data-duracion-entra y data-duracion-sale: son
+  // los tiempos de su entrada y su salida, y T201 de tarea45 los lee de aca.
+  // Antes los llevaba el cajon panel-controles-lectura, que la 70 elimino.
+  // Si se sacan, esa prueba se pone roja: no ponerle valores por omision.
+  const lugarEnLinea = (lugar: React.CSSProperties): React.CSSProperties => (tableta ? {} : lugar)
+  const botonSalirLectura = (
+                <button
+                  data-testid="btn-salir-lectura"
+                  data-duracion-entra={MS_CHICO}
+                  data-duracion-sale={MS_PANTALLA}
+                  type="button"
+                  className={`btn-deformable btn-flotante-40${tableta ? ' tab-boton-izq' : ''}`}
+                  aria-label={t('salir')}
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    hapticaToqueMedio()
+                    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
+                    const resumen = await handleStop()
+                    if (!resumen) avisarFinDeToma(duracionMs)
+                  }}
+                  style={{
+                    ...lugarEnLinea({
+                      position: 'absolute',
+                      top: 'calc(8px + env(safe-area-inset-top, 0px))',
+                      // 29-09-2026, tarea 82: de lado, a 12 del borde, donde está el ‹ de LISTO.
+                      left: horizontal ? 'calc(12px + env(safe-area-inset-left, 0px))' : 'calc(8px + env(safe-area-inset-left, 0px))'
+                    }),
+                    zIndex: 100,
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                  }}
+                >
+                  <IconoAtras tamano={20} />
+                </button>
+  )
+
+  const botonDescartarToma = (
+                <button
+                  data-testid="btn-descartar-toma"
+                  data-duracion-entra={MS_CHICO}
+                  data-duracion-sale={MS_PANTALLA}
+                  data-confirmando={confirmandoDescarte ? 'si' : 'no'}
+                  type="button"
+                  className={`btn-deformable btn-flotante-40${tableta ? ' tab-boton-izq' : ''}`}
+                  aria-label={t('descartarToma')}
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    if (!confirmandoDescarte) {
+                      setConfirmandoDescarte(true)
+                    } else {
+                      setConfirmandoDescarte(false)
+                      await handleDescartarToma()
+                    }
+                  }}
+                  style={{
+                    ...lugarEnLinea({
+                      position: 'absolute',
+                      top: 'calc(8px + env(safe-area-inset-top, 0px))',
+                      // 29-09-2026, tarea 82: de lado, a 12 del borde, en el riel izquierdo.
+                      left: horizontal ? 'calc(12px + env(safe-area-inset-left, 0px))' : 'calc(8px + env(safe-area-inset-left, 0px))'
+                    }),
+                    zIndex: 100,
+                    // Ancho fijo y no 'auto': CSS no anima un ancho hacia 'auto', salta de golpe,
+                    // y la 11.6 pide que el tacho se abra con una transicion de MS_CHICO.
+                    // 96 le alcanza a '¿Seguro?' en negrita con su aire a los lados; 'Sure?' es
+                    // mas corto.
+                    // 40 cerrado desde el 24-09-2026: las esquinas de arriba miden lo
+                    // mismo que la pausa de la otra esquina -btn-flotante-40-.
+                    width: confirmandoDescarte ? 96 : 40,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    padding: confirmandoDescarte ? '0 var(--aire-2)' : 0,
+                    borderColor: confirmandoDescarte ? 'var(--color-grabando)' : undefined,
+                    color: confirmandoDescarte ? 'var(--color-grabando-texto)' : undefined,
+                    fontSize: 'var(--texto-meta)',
+                    fontWeight: confirmandoDescarte ? 'bold' : 'normal',
+                    // Un transition en linea pisa el de .btn-deformable -styles.css- y el
+                    // tacho se apretaria de golpe, sin el resorte de sus hermanos. Por eso
+                    // se repiten aca el border-radius y el transform con la misma curva.
+                    transition: movimientoApagado()
+                      ? 'none'
+                      : `width ${MS_CHICO}ms ${CURVA_ENTRA}, border-radius ${MS_CHICO}ms ${CURVA_RESORTE}, transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                  }}
+                >
+                  {confirmandoDescarte ? t('seguro') : <IconoTacho tamano={20} />}
+                </button>
+  )
+
+  const botonPausaLectura = (
+              <button
+                data-testid="btn-pausa-lectura"
+                data-duracion-entra={MS_CHICO}
+                data-duracion-sale={MS_PANTALLA}
+                type="button"
+                className={`btn-deformable btn-flotante-40${tableta ? ' tab-boton-der' : ''}`}
+                aria-label={enPausa ? t('seguir') : t('pausa')}
+                onClick={async (e) => {
+                  e.stopPropagation()
+                  setConfirmandoDescarte(false)
+                  await handleTogglePausa()
+                }}
+                style={{
+                  ...lugarEnLinea({
+                    position: 'absolute',
+                    top: 'calc(8px + env(safe-area-inset-top, 0px))',
+                    // 29-09-2026, tarea 82: de lado, centrada en el riel derecho -(124 - 40) / 2-.
+                    right: horizontal ? 'calc((var(--riel-der) - 40px) / 2 + env(safe-area-inset-right, 0px))' : 'calc(8px + env(safe-area-inset-right, 0px))'
+                  }),
+                  zIndex: 100,
+                  animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                }}
+              >
+                {enPausa ? <IconoEmpezar tamano={20} /> : <IconoPausa tamano={20} />}
+              </button>
+  )
+
+  const botonPararLectura = (
+                <button
+                  data-testid="btn-parar-lectura"
+                  data-duracion-entra={MS_CHICO}
+                  data-duracion-sale={MS_PANTALLA}
+                  type="button"
+                  className="btn-deformable btn-flotante-72 btn-flotante-rojo"
+                  aria-label={t('parar')}
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    hapticaToqueMedio()
+                    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
+                    const resumen = await handleStop()
+                    if (!resumen) avisarFinDeToma(duracionMs)
+                  }}
+                  style={{
+                    pointerEvents: 'auto',
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                  }}
+                >
+                  {/* 44 y no 26: IconoParar dibuja su cuadrado en 12 de las 24 unidades de la
+                      grilla, como los demas iconos dejan aire. A 44 el cuadrado mide los 22 px
+                      que pide la 11.3 del encargo 70, y el redondeo queda en unos 3 px. */}
+                  <IconoParar tamano={44} />
+                </button>
+  )
 
   return (
     <div
@@ -1605,7 +1799,9 @@ export default function App({ motor, repoOverride }: AppProps) {
           // pisa al de arriba solo de lado, y no en una sola cadena armada, porque A3
           // -altoPantalla.test.ts- busca el texto className="alto-pantalla" en este archivo y las
           // pruebas de hoy no se tocan. En vertical el elemento queda idéntico.
-          {...((horizontal ? { className: 'alto-pantalla layout-tel-h' } : {}) as { className?: string })}
+          // 30-09-2026, tarea 83: en tableta, .layout-tab-v o .layout-tab-h -styles-tableta.css-, por
+          // el mismo camino.
+          {...((layout !== 'tel-v' ? { className: `alto-pantalla layout-${layout}` } : {}) as { className?: string })}
           style={{
             position: 'fixed',
             top: 0,
@@ -1632,7 +1828,9 @@ export default function App({ motor, repoOverride }: AppProps) {
               {/* El velo de abajo, el mismo de LISTO -VeloControles, TeleprompterView.tsx-. */}
               {/* 29-09-2026, tarea 82: de lado no va: los controles aparecen en los rieles,
                   nunca sobre el texto. */}
-              {!horizontal && <VeloControles colorFondo={colorFondo} />}
+              {/* 30-09-2026, tarea 83: en tableta tampoco: en vertical los controles vuelven en
+                  su barra y su dock, que son franjas propias con su fondo. */}
+              {!horizontal && !tabletaVertical && <VeloControles colorFondo={colorFondo} />}
               {/* LOS RIELES AL LEER, DE LADO -tarea 82, A4, 29-09-2026-. Con los controles a la
                   vista aparecen los rieles: a la izquierda salir -Leer- o el tacho -Grabar en
                   pausa-, en el lugar del ‹ de LISTO; a la derecha la pausa arriba y parar al
@@ -1640,115 +1838,43 @@ export default function App({ motor, repoOverride }: AppProps) {
                   botón. Los botones son los mismos de vertical, con sus testid: enRiel solo los
                   envuelve. Sin controles no hay rieles, pero la columna no se ensancha: su
                   relleno es el mismo -TeleprompterView-. */}
+              {/* LA BARRA Y EL DOCK AL LEER, EN LA TABLETA VERTICAL -tarea 83, 30-09-2026-. Al
+                  tocar la pantalla vuelven las dos franjas de LISTO: arriba salir o el tacho a la
+                  izquierda y la pausa a la derecha -donde estaba Más, como en hoja-tableta.png-, y
+                  abajo parar, centrado en el dock. Son los mismos botones, con sus testid: acá
+                  solo cambia el envoltorio. El texto baja los 72 de la barra y el renglón vivo
+                  queda justo debajo de ella -TeleprompterView, --tab-texto-arriba-: la barra no
+                  se dibuja encima de la palabra viva. */}
+              {tabletaVertical ? (
+                <>
+                  <div
+                    data-testid="tab-barra"
+                    className={`tab-barra tab-barra-leyendo${camaraActiva && fondoToma === 'detras' ? ' sobre-imagen' : ''}`}
+                  >
+                    {/* El fondo es una capa aparte, como el del riel: la franja no arma su propio
+                        apilamiento y el punto rojo y la pastilla siguen por encima de ella. */}
+                    <div className="tab-fondo" aria-hidden="true" />
+                    {!conCamara && botonSalirLectura}
+                    {conCamara && enPausa && botonDescartarToma}
+                    {botonPausaLectura}
+                  </div>
+                  <div
+                    data-testid="tab-dock"
+                    className={`tab-dock tab-dock-leyendo${camaraActiva && fondoToma === 'detras' ? ' sobre-imagen' : ''}`}
+                  >
+                    <div className="tab-fondo" aria-hidden="true" />
+                    {botonPararLectura}
+                  </div>
+                </>
+              ) : (
+                <>
               {enRiel('izquierdo', (!conCamara || enPausa), <>
-              {/* Cada boton flotante lleva data-duracion-entra y data-duracion-sale: son
-                  los tiempos de su entrada y su salida, y T201 de tarea45 los lee de aca.
-                  Antes los llevaba el cajon panel-controles-lectura, que la 70 elimino.
-                  Si se sacan, esa prueba se pone roja: no ponerle valores por omision. */}
-              {!conCamara && (
-                <button
-                  data-testid="btn-salir-lectura"
-                  data-duracion-entra={MS_CHICO}
-                  data-duracion-sale={MS_PANTALLA}
-                  type="button"
-                  className="btn-deformable btn-flotante-40"
-                  aria-label={t('salir')}
-                  onClick={async (e) => {
-                    e.stopPropagation()
-                    hapticaToqueMedio()
-                    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
-                    const resumen = await handleStop()
-                    if (!resumen) avisarFinDeToma(duracionMs)
-                  }}
-                  style={{
-                    position: 'absolute',
-                    top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                    // 29-09-2026, tarea 82: de lado, a 12 del borde, donde está el ‹ de LISTO.
-                    left: horizontal ? 'calc(12px + env(safe-area-inset-left, 0px))' : 'calc(8px + env(safe-area-inset-left, 0px))',
-                    zIndex: 100,
-                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
-                  }}
-                >
-                  <IconoAtras tamano={20} />
-                </button>
-              )}
-
-              {conCamara && enPausa && (
-                <button
-                  data-testid="btn-descartar-toma"
-                  data-duracion-entra={MS_CHICO}
-                  data-duracion-sale={MS_PANTALLA}
-                  data-confirmando={confirmandoDescarte ? 'si' : 'no'}
-                  type="button"
-                  className="btn-deformable btn-flotante-40"
-                  aria-label={t('descartarToma')}
-                  onClick={async (e) => {
-                    e.stopPropagation()
-                    if (!confirmandoDescarte) {
-                      setConfirmandoDescarte(true)
-                    } else {
-                      setConfirmandoDescarte(false)
-                      await handleDescartarToma()
-                    }
-                  }}
-                  style={{
-                    position: 'absolute',
-                    top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                    // 29-09-2026, tarea 82: de lado, a 12 del borde, en el riel izquierdo.
-                    left: horizontal ? 'calc(12px + env(safe-area-inset-left, 0px))' : 'calc(8px + env(safe-area-inset-left, 0px))',
-                    zIndex: 100,
-                    // Ancho fijo y no 'auto': CSS no anima un ancho hacia 'auto', salta de golpe,
-                    // y la 11.6 pide que el tacho se abra con una transicion de MS_CHICO.
-                    // 96 le alcanza a '¿Seguro?' en negrita con su aire a los lados; 'Sure?' es
-                    // mas corto.
-                    // 40 cerrado desde el 24-09-2026: las esquinas de arriba miden lo
-                    // mismo que la pausa de la otra esquina -btn-flotante-40-.
-                    width: confirmandoDescarte ? 96 : 40,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    padding: confirmandoDescarte ? '0 var(--aire-2)' : 0,
-                    borderColor: confirmandoDescarte ? 'var(--color-grabando)' : undefined,
-                    color: confirmandoDescarte ? 'var(--color-grabando-texto)' : undefined,
-                    fontSize: 'var(--texto-meta)',
-                    fontWeight: confirmandoDescarte ? 'bold' : 'normal',
-                    // Un transition en linea pisa el de .btn-deformable -styles.css- y el
-                    // tacho se apretaria de golpe, sin el resorte de sus hermanos. Por eso
-                    // se repiten aca el border-radius y el transform con la misma curva.
-                    transition: movimientoApagado()
-                      ? 'none'
-                      : `width ${MS_CHICO}ms ${CURVA_ENTRA}, border-radius ${MS_CHICO}ms ${CURVA_RESORTE}, transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
-                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
-                  }}
-                >
-                  {confirmandoDescarte ? t('seguro') : <IconoTacho tamano={20} />}
-                </button>
-              )}
+              {!conCamara && botonSalirLectura}
+              {conCamara && enPausa && botonDescartarToma}
               </>)}
 
               {enRiel('derecho', true, <>
-              <button
-                data-testid="btn-pausa-lectura"
-                data-duracion-entra={MS_CHICO}
-                data-duracion-sale={MS_PANTALLA}
-                type="button"
-                className="btn-deformable btn-flotante-40"
-                aria-label={enPausa ? t('seguir') : t('pausa')}
-                onClick={async (e) => {
-                  e.stopPropagation()
-                  setConfirmandoDescarte(false)
-                  await handleTogglePausa()
-                }}
-                style={{
-                  position: 'absolute',
-                  top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                  // 29-09-2026, tarea 82: de lado, centrada en el riel derecho -(124 - 40) / 2-.
-                  right: horizontal ? 'calc((var(--riel-der) - 40px) / 2 + env(safe-area-inset-right, 0px))' : 'calc(8px + env(safe-area-inset-right, 0px))',
-                  zIndex: 100,
-                  animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
-                }}
-              >
-                {enPausa ? <IconoEmpezar tamano={20} /> : <IconoPausa tamano={20} />}
-              </button>
+              {botonPausaLectura}
 
               {/* 29-09-2026, tarea 82: de lado, parar va al centro del riel derecho, donde estaba
                   Empezar -riel-lugar-centro, styles-horizontal.css-. */}
@@ -1765,32 +1891,11 @@ export default function App({ motor, repoOverride }: AppProps) {
                   pointerEvents: 'none'
                 }}
               >
-                <button
-                  data-testid="btn-parar-lectura"
-                  data-duracion-entra={MS_CHICO}
-                  data-duracion-sale={MS_PANTALLA}
-                  type="button"
-                  className="btn-deformable btn-flotante-72 btn-flotante-rojo"
-                  aria-label={t('parar')}
-                  onClick={async (e) => {
-                    e.stopPropagation()
-                    hapticaToqueMedio()
-                    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
-                    const resumen = await handleStop()
-                    if (!resumen) avisarFinDeToma(duracionMs)
-                  }}
-                  style={{
-                    pointerEvents: 'auto',
-                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
-                  }}
-                >
-                  {/* 44 y no 26: IconoParar dibuja su cuadrado en 12 de las 24 unidades de la
-                      grilla, como los demas iconos dejan aire. A 44 el cuadrado mide los 22 px
-                      que pide la 11.3 del encargo 70, y el redondeo queda en unos 3 px. */}
-                  <IconoParar tamano={44} />
-                </button>
+                {botonPararLectura}
               </div>
               </>)}
+                </>
+              )}
             </>
           )}
 
@@ -1875,8 +1980,13 @@ export default function App({ motor, repoOverride }: AppProps) {
               onModoManualChange={setModoManual}
               onEstadoAvanceChange={handleEstadoAvanceChange}
               horizontal={horizontal}
-              esquinaRecuadroH={esquinaRecuadroH}
-              setEsquinaRecuadroH={elegirEsquinaRecuadroH}
+              // 30-09-2026, tarea 83: el diseño entero -la tableta vertical no tiene rieles, tiene
+              // barra y dock- y si los controles de la lectura están a la vista: con ellos vuelve
+              // la barra y el texto baja lo que ella mide.
+              layout={layout}
+              controlesVisibles={controlesVisibles}
+              esquinaRecuadroH={esquinaRecuadroActual}
+              setEsquinaRecuadroH={elegirEsquinaRecuadroActual}
             />
             {/* EL RELEVO del texto chico de la tarjeta al texto grande de la lectura.
                 Es un velo del mismo color de fondo que se desvanece por encima, NO un
@@ -1933,7 +2043,9 @@ export default function App({ motor, repoOverride }: AppProps) {
                 tInicioLecturaMs={tInicioLecturaMs}
                 vistaPrevia={estadoToma === 'listo'}
                 // 29-09-2026, tarea 82: de lado, abajo del riel derecho.
-                enRiel={horizontal}
+                // 30-09-2026, tarea 83: en tableta el lugar también lo pone la hoja -a la derecha
+                // del dock en vertical, abajo del riel derecho de lado-.
+                enRiel={horizontal || tabletaVertical}
               />
             )}
           </div>
@@ -2117,6 +2229,8 @@ export default function App({ motor, repoOverride }: AppProps) {
         enLectura={vista === 'lectura'}
         cerrarAviso={cerrarAviso}
         columnaHorizontal={horizontal ? columnaDelAviso() : null}
+        // 30-09-2026, tarea 83: en la tableta vertical, encima del dock.
+        sobreDock={vista === 'lectura' && tabletaVertical}
       />
     </div>
   )

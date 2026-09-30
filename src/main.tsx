@@ -18,6 +18,9 @@ import './styles-ajustes.css'
 // El teléfono de lado -tarea 82, 29-09-2026-: va después de las otras dos porque las pisa
 // solo dentro de .layout-tel-h.
 import './styles-horizontal.css'
+// La tableta -tarea 83, 30-09-2026-: va después del teléfono de lado porque de lado usa sus mismos
+// rieles con otras medidas, y las pisa solo dentro de .layout-tab-v y .layout-tab-h.
+import './styles-tableta.css'
 
 import { instalarRecargaAlActualizar, sacarServiceWorkerEnNativo } from './lib/actualizacion'
 
