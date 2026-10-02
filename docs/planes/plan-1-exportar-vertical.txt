@@ -1,0 +1,401 @@
+PLAN 1 - EXPORTAR EN VERTICAL, LISTO PARA REDES -VERSIÓN 2, A FONDO-
+Plan para Javier, 29-09-2026. Leído en main, commit 60b34ac -29-09-2026 22:01 -0300-; git pull no trajo
+nada nuevo. Es un plan, no un encargo: nada del repositorio se tocó -sin ramas, commits, PR ni issues-.
+Lo que no se pudo comprobar leyendo queda como PREGUNTA ABIERTA, con cómo se responde.
+
+Las citas son archivo:línea en ese commit. capgo = @capgo/camera-preview 8.11.4 -package-lock.json la
+fija en 8.11.4; package.json dice ^8.11.4-, leído en /workspace/tarea84/node_modules. Media3 = 1.9.0,
+comprobado con javap sobre los AAR del caché de Gradle, no en la documentación.
+
+==============================================================================
+0. RESUMEN EN CINCO LÍNEAS
+==============================================================================
+  - Una toma grabada con el teléfono DERECHO ya es 9:16: el archivo viene en 1920x1080 con rotación
+    90 y se ve en 1080x1920 -CapaDeSubtitulos.java:67-68-. No hay que recortar nada.
+  - Lo que falta: 1) que la toma sepa su forma; 2) poder subir el subtítulo fuera de la franja que
+    tapan las redes -hoy termina a 0,125 del alto desde abajo, CapaDeSubtitulos.java:192, dentro
+    del 35 % inferior que Meta pide dejar libre-; 3) compartir desde la toma recién grabada.
+  - Se elige en el visor de la toma, dentro del bloque de subtítulos, con el efecto a la vista.
+  - "Normal" -lo de hoy- no cambia ni un píxel. Recortar tomas horizontales es la fase B.
+  - Se propone un contrato de exportación común a los tres planes -la "receta"-, para no sumar un
+    parámetro suelto por plan al método nativo.
+
+Criterio de la casa -docs/lo-que-hay-que-saber.txt-: "ES PARA TODO, NO PARA SHORTS". Esto es una
+opción más al guardar, nunca la omisión.
+
+==============================================================================
+1. EL FLUJO DE HOY, DE EXTREMO A EXTREMO
+==============================================================================
+1.1 ENCENDER LA CÁMARA
+  - App.tsx:772-791: un efecto enciende o apaga la cámara según la vista y conCamara -:237-.
+  - src/lib/camara.ts:173 encenderCamara(lado, fondo, config) -> CameraPreview.start({ position,
+    toBack: true, aspectMode: 'cover', includeSafeAreaInsets: false, disableAudio: false,
+    enableOpacity: true, enableVideoMode: true, force: true, x, y, width, height, storeToFile:
+    false }) -camara.ts:192-206-. Después fijarModoSuperficie({ modo: 'sistema' }) -:210-: la
+    PreviewView pasa a PERFORMANCE -SurfaceView con setZOrderMediaOverlay(false),
+    CamaraNativaPlugin.java:28-60-, porque en TEXTURA no se componía debajo del WebView
+    -docs/archivo/tarea61.txt:33-41-.
+  - camara.ts NO pasa aspectRatio. En capgo, CameraPreview.java:1306 lo pone en "4:3" por omisión, y
+    :1320 rechaza pasar aspectRatio junto con width/height. Dentro, CameraXView.bindCameraUseCases
+    -:1049- usa ResolutionSelector HIGHEST_AVAILABLE y la relación pedida -:1068-1078- para la vista
+    previa y la foto. El VIDEO no sigue esa relación: sale del QualitySelector -:1109-1150, "high" =
+    FHD, HD, SD-. O sea: la vista previa podría ser 4:3 recortada con 'cover' y el video 16:9
+    -PREGUNTA ABIERTA P8: capgo lo escribe en el logcat, "Actual preview aspect ratio",
+    CameraXView.java:1241-.
+1.2 GRABAR
+  - App.tsx:906 handleStart -> cuenta de 3 -> tomaVideo.iniciarTomaVideo -App.tsx:981- ->
+    grabandoVideoRef.current = ok -:1001-.
+  - src/lib/tomaVideo.ts:83 iniciarTomaVideo: sidecar antes de grabar, camara.empezarGrabacionVideo
+    -camara.ts:106, startRecordVideo({ disableAudio: false })-, s.inicioVideoEpochMs = Date.now()
+    -tomaVideo.ts:137-, heartbeat cada MS_HEARTBEAT = 2000 -:36, :144-.
+  - capgo CameraXView.startRecordVideo -:5065/:5094-: videoCapture.setTargetRotation(
+    getRotationFromAccelerometer()) AL EMPEZAR -:5104-5105-. getRotationFromAccelerometer -:1992-: si
+    |x| e |y| son menores que 1 -teléfono acostado- usa la rotación de la pantalla. La orientación
+    del archivo queda fija en el instante de Grabar; girar a mitad de toma -tarea 82- no la cambia.
+    Deducido del código, NO medido -paso 0.2-.
+  - Archivo: Movies/CameraPreview/video_<epoch>.mp4 -:5120 aprox.-; lo medido el 21-09-2026
+    -commit 1d5d6c8-: H.264 1080p a ~20 Mbps y 30 cuadros, AAC 48 kHz estéreo 256 kbps.
+1.3 CORTAR
+  - App.tsx:1223 handleStop -> cortarTomaSiHay -:1166- -> tomaVideo.cortarTomaVideo -:149-:
+    cortarGrabacionVideo -camara.ts:121-, recuperar por hora con emparejarMp4PorTiempo -sidecar.ts:82-
+    si hace falta, mover a <id>.mp4, CamaraNativa.analizarVideo, extraerMiniatura a 1000 ms, veredicto
+    mudo, escribe <id>.motor.txt -cabecera con "# inicio del video (epoch ms)", tomaVideo.ts:243-,
+    marcarLista, grabacionNueva.
+  - CamaraNativaPlugin.analizarVideo -:222-274- devuelve duracionMs, bytes, tienePistaAudio,
+    nivelRmsDb. NADA de ancho, alto ni rotación. SidecarToma -sidecar.ts:12-26- y ResumenGrabacion
+    -modelo.ts:117-137- tampoco los guardan. Sí guardan calidad -modelo.ts:130-, galeriaUri -:134- y
+    estiloGaleria -:136-. grabacionNueva -modelo.ts:139-155- y parsearSidecar -sidecar.ts:107-124-
+    copian CAMPO POR CAMPO: un campo nuevo que no se agregue ahí se pierde en silencio.
+1.4 EL VISOR
+  - App.tsx:1989 <ReproductorGrabacion grabacion=... onCambio=...> -onCambio guarda en
+    repoGrabaciones-.
+  - ReproductorGrabacion.tsx: estados subtitulos -:47- y estilo -:48, estiloSubtituloGuardado()-.
+    Lee <id>.motor.txt y llama armarSubtitulos(registro) -:56-. guardada = !!grabacion.galeriaUri
+    -:106-; estiloVisible -:109- es 'no' si ya está guardada -la copia trae el quemado-.
+  - <video data-testid="video-grabacion"> -:181-, CapaSubtitulos -:182-, SelectorSubtitulos solo si
+    hay subtítulos y no está guardada -:211-220-, .acciones-toma -:237-: recién grabada = Guardar
+    -guardar-galeria-desde-reproductor-, Repetir -btn-repetir-toma-, Borrar -borrar-desde-
+    reproductor-; guardada = btn-compartir-toma y Borrar.
+  - SubtitulosVisor.tsx: CapaSubtitulos({ video, subtitulos, estilo }) -:32-40-; rectDeLaImagen mide
+    la imagen dentro del <video>; fontSize rect.h / 32 -:102-; marginBottom rect.h * 0.125 -:105-.
+    styles.css: .capa-subtitulos -:1549-, .subtitulo -:1560, margin 0 6 %-.
+1.5 GUARDAR
+  - ReproductorGrabacion.handleGuardar -:114-: conSubtitulos = estilo !== 'no' && subtitulos.length
+    > 0 -:118-; con subtítulos -> archivosNativos.guardarEnGaleriaConSubtitulos(ruta, subtitulos,
+    estilo, alAvanzar) -archivosNativos.ts:105-117: addListener('progresoGuardado') y
+    CamaraNativa.guardarConSubtitulos({ ruta, subtitulos: JSON.stringify(...), estilo })-; sin
+    subtítulos -> guardarEnGaleria -:88-. Si sale bien: borrarArchivo(grabacion.ruta) -"UNA SOLA
+    COPIA POR TOMA"- y onCambio({ ...grabacion, ruta: uri, galeriaUri: uri, estiloGaleria }) -:135-.
+  - CamaraNativaPlugin.guardarConSubtitulos -:397-496-: lee METADATA_KEY_VIDEO_ROTATION con
+    MediaMetadataRetriever -:408-418-; new CapaDeSubtitulos(json, estilo, rotacion) -:421-; salida en
+    cache "con-subtitulos-<ms>.mp4"; EditedMediaItem con Effects([], [OverlayEffect([capa])])
+    -:431-436-; DefaultEncoderFactory a 12 Mbps -:444-446-; onCompleted -> copiarAGaleria(salida,
+    nombre) -:363, Movies/Sigo con IS_PENDING- -> resolve { ok, uri }; onError -> reject "No se
+    pudieron poner los subtítulos"; avance cada 400 ms como "progresoGuardado" { porcentaje }.
+  - guardarEnGaleria -:335- COPIA el mp4, no recodifica.
+  - CapaDeSubtitulos.java: configure(videoSize) -:99- guarda el tamaño del cuadro; getBitmap(
+    presentationTimeUs) -:109- busca el subtítulo por ms y reusa el bitmap si la clave no cambió;
+    dibujar -:144-227-: gira según rotación -:147-165-, letra H / 32 -:169-, anchoMax W * 0,88 -:173-,
+    base = H * (1 - 0.125f) - (n - 1) * alto -:192-, franja FRANJA en 'formal', caja ROJO en 'rojo'.
+1.6 COMPARTIR
+  - ReproductorGrabacion.handleCompartir -:152-: solo con galeriaUri; compartirDeGaleria
+    -archivosNativos.ts:99- -> CamaraNativaPlugin.compartir -:522, ACTION_SEND video/mp4 con
+    createChooser-. Si "no existe", la toma se quita -onBorrar-.
+
+==============================================================================
+2. LAS ZONAS SEGURAS -LO VERIFICADO Y LO QUE NO-
+==============================================================================
+  - INSTAGRAM Y FACEBOOK REELS -VERIFICADO-. Guía de anuncios de Meta, Instagram Reels
+    -https://www.facebook.com/business/ads-guide/update/image/instagram-reels-, leída el
+    29-09-2026: dejar libre ~14 % arriba, ~35 % abajo y ~6 % por lado. Es para ANUNCIOS; un Reel
+    orgánico tiene menos encima, así que es el lado seguro.
+  - YOUTUBE SHORTS -NO VERIFICADO-. La ayuda de Google Ads -https://support.google.com/google-ads/
+    answer/9128498- la publica como imagen y plantilla PNG, sin cifras en el texto. Las cifras de
+    terceros -288 arriba, 672 abajo, 48 izquierda, 192 derecha sobre 1080x1920- no están
+    comprobadas: la descarga de la plantilla la bloqueó la revisión automática y no se forzó.
+  - TIKTOK -NO VERIFICADO-: no publica cifras, entrega plantillas.
+  - Contra lo de hoy: el subtítulo termina a 0,125 del alto desde abajo -dentro del 35 % de Meta-;
+    el margen lateral 0,88 -6 % por lado- coincide exacto con Meta.
+
+==============================================================================
+3. ALTERNATIVAS EVALUADAS
+==============================================================================
+A. GRABAR VERTICAL Y SUBIR EL SUBTÍTULO -RECOMENDADA-
+   + Sin pérdida: 1080x1920 reales. No toca capgo ni la grabación.
+   + El tiempo de guardado es el de hoy: mismos píxeles, solo cambia dónde se dibuja.
+   - Exige tomar la toma con el teléfono derecho: la forma la decide cómo se sostiene.
+B. RECORTAR UNA TOMA HORIZONTAL A 9:16 -FASE B, LA DECIDE JAVIER-
+   + Una misma toma larga sirve para el video largo y para un corte vertical.
+   - La ventana 9:16 de 1920x1080 mide 608x1080: llevarla a 1080x1920 es ampliar ~1,78 veces; desde
+     720p -405x720- ~2,67 veces. Se verá blanda.
+   - Siempre recodifica, aun sin subtítulos. La persona no siempre está al centro: hace falta
+     reencuadrar. Choca con "una sola copia": el original ancho no puede borrarse.
+   Con Media3 1.9.0 -javap-: Crop(float, float, float, float) y Presentation.createForWidthAndHeight(
+   int, int, int) con LAYOUT_SCALE_TO_FIT_WITH_CROP = 1.
+C. GRABAR 9:16 CON EL TELÉFONO ACOSTADO -recorte del sensor-: capgo no lo ofrece; habría que
+   parcharlo -ViewPort / UseCaseGroup-. Fuera.
+D. "PARA REDES" EN LA GRABACIÓN -elegirlo en LISTO-: no hay nada que mostrar mientras se graba; el
+   subtítulo se quema al guardar. Fuera: "cada control muestra su efecto" se cumple en el visor.
+E. PASAR margenAbajo COMO PARÁMETRO SUELTO de guardarConSubtitulos vs. UNA RECETA DE EXPORTACIÓN
+   COMÚN -sección 4-: el plan 2 suma tramos y el plan 3 filtros. Tres parámetros sueltos en tres
+   tareas distintas dejan tres combinaciones sin probar. RECOMENDADA la receta, introducida como
+   una tarea de refactor sin cambio de conducta.
+
+==============================================================================
+4. EL CONTRATO COMÚN: LA RECETA DE EXPORTACIÓN -compartido con los planes 2 y 3-
+==============================================================================
+4.1 TIPOS -src/lib/recetaExportacion.ts, nuevo, TypeScript puro-
+    export type PosicionSubtitulos = 'normal' | 'redes'
+    export type TramoMs = { desdeMs: number; hastaMs: number }          // plan 2
+    export type RecetaExportacion = {
+      version: 1
+      estilo: EstiloSubtitulo                // 'no' | 'amarillo' | 'rojo' | 'formal'
+      subtitulos: Subtitulo[]                // [] si no lleva; ya recortados si hay tramos
+      margenAbajo: number                    // de posicionSubtitulos: 0.125 o 0.35
+      tramos: TramoMs[] | null               // plan 2; null = la toma entera
+      filtro: FiltroToma | null              // plan 3; null = sin filtro
+    }
+    export function recetaDe(opts: { estilo; subtitulos; posicion; tramos?; filtro? }):
+      RecetaExportacion
+    export function esCopia(r: RecetaExportacion): boolean
+      // true si no hay nada que dibujar ni cortar ni filtrar: el nativo copia sin recodificar,
+      // exactamente como guardarEnGaleria hoy.
+    export function validarReceta(r): string | null   // motivo, o null si está bien
+4.2 EL PUENTE -src/lib/camara.ts, interfaz CamaraNativaPlugin :4-30-
+    exportarToma(options: { ruta: string; receta: string /* JSON de RecetaExportacion */ }):
+      Promise<{ ok: boolean; uri?: string; recodifico: boolean; msGuardado: number }>
+    addListener('progresoGuardado', cb: (d: { porcentaje: number }) => void)   // el de hoy
+  - guardarEnGaleria y guardarConSubtitulos quedan -no se borran, llamadas desde tareas viejas y
+    pruebas-; guardarConSubtitulos pasa a ser exportarToma con la receta { estilo, subtitulos,
+    margenAbajo: 0.125, tramos: null, filtro: null }.
+  - archivosNativos.ts: exportarAGaleria(ruta, receta, alAvanzar) con el mismo addListener/remove
+    que guardarEnGaleriaConSubtitulos -:105-117-.
+  - msGuardado: lo mide el nativo -System.nanoTime al empezar y en onCompleted-, y además lo
+    escribe en el logcat con la etiqueta "SigoExport" -duración de la toma, bytes, recodificó-.
+    Hoy NO hay en el repositorio una sola cifra de cuánto tarda guardar: con esto se mide.
+4.3 JAVA -android/app/src/main/java/com/sigoteleprompter/app/-
+    final class RecetaExportacion {                   // nuevo
+      static RecetaExportacion desdeJson(String json) throws JSONException
+      final String estilo; final String subtitulosJson; final float margenAbajo;
+      final List<long[]> tramosMs;   // null = entera   -plan 2-
+      final JSONObject filtro;       // null = sin      -plan 3-
+      boolean esCopia()
+    }
+    final class ExportadorDeTomas {                   // nuevo
+      @OptIn(UnstableApi.class)
+      static Object armar(Context ctx, File origen, RecetaExportacion r, int rotacion)
+        // devuelve EditedMediaItem si tramos == null, Composition si hay tramos -plan 2-
+      static ImmutableList<Effect> efectosDeVideo(Context ctx, RecetaExportacion r, int rotacion)
+        // ORDEN FIJO: [recorte fase B] -> [filtros plan 3] -> [OverlayEffect(CapaDeSubtitulos)]
+        // Los subtítulos van al final: no se tiñen, no se suavizan, no se recortan.
+    }
+    CamaraNativaPlugin.exportarToma(PluginCall)       // nuevo @PluginMethod
+      // lee rotación como hoy (:408-418), r.esCopia() ? copiarAGaleria : Transformer con
+      // ExportadorDeTomas.armar; mismo codificador a 12 Mbps, mismo avance cada 400 ms, mismo
+      // copiarAGaleria y mismo borrado del temporal que guardarConSubtitulos (:397-496).
+    CapaDeSubtitulos(String json, String estilo, int rotacion, float margenAbajo)  // + parámetro
+      // el constructor de 3 argumentos queda y llama al de 4 con 0.125f.
+
+==============================================================================
+5. DISEÑO DE ESTE PLAN, ARCHIVO POR ARCHIVO
+==============================================================================
+5.1 android/.../CamaraNativaPlugin.java - analizarVideo -:222-274-
+  - Con el MediaMetadataRetriever que ya abre, agrega al JSObject: anchoPx
+    -METADATA_KEY_VIDEO_WIDTH-, altoPx -_HEIGHT-, rotacion -_ROTATION-, todos int, 0 si no se leen.
+    Nada más cambia.
+5.2 src/lib/camara.ts - interfaz :13-18
+  - analizarVideo devuelve además anchoPx?: number; altoPx?: number; rotacion?: number
+    -opcionales: un APK viejo con la web nueva no los manda-.
+5.3 src/lib/orientacion.ts - nuevo, puro
+    export type Orientacion = 'vertical' | 'horizontal' | 'cuadrada'
+    export function orientacionDeToma(d: { anchoPx?: number; altoPx?: number; rotacion?: number }):
+      Orientacion | null
+      // null si falta ancho o alto. rotacion 90 o 270 -> se dan vuelta los lados.
+      // ancho visible > alto -> horizontal; < -> vertical; = -> cuadrada.
+5.4 src/lib/sidecar.ts y src/datos/modelo.ts
+  - SidecarToma.orientacion?: Orientacion; agregarlo en parsearSidecar -:107-124- con el mismo
+    patrón que calidad -:124-.
+  - ResumenGrabacion.orientacion?: Orientacion y posicionGaleria?: PosicionSubtitulos -junto a
+    estiloGaleria :136-; agregarlos en grabacionNueva -:139-155-. IndexedDB: campo opcional, sin
+    subir DB_VERSION -src/datos/abrirDb.ts, versión 2, store 'grabaciones' con keyPath id-.
+5.5 src/lib/tomaVideo.ts
+  - cortarTomaVideo -:149-: con la respuesta de analizarVideo, orientacion =
+    orientacionDeToma(info) y va al sidecar -marcarLista- y a grabacionNueva.
+  - recuperarTomasPendientes -:290-: lo mismo para las tomas recuperadas.
+  - Tomas viejas sin el dato: el visor llama analizarVideo al abrir -una vez- y lo guarda por
+    onCambio. Sin avisar a nadie: no hay usuarios todavía.
+5.6 src/lib/posicionSubtitulos.ts - nuevo, puro
+    // Zona de Meta para Reels -URL y fecha de lectura en el comentario-
+    export const ZONA_REDES = { arriba: 0.14, abajo: 0.35, lados: 0.06 } as const
+    export const MARGEN_ABAJO_NORMAL = 0.125   // lo aprobado; mismas medidas que CapaDeSubtitulos
+    export function margenAbajo(p: PosicionSubtitulos): number   // normal 0.125, redes 0.35
+    const CLAVE_POSICION = 'sigo_subtitulos_posicion'
+    export function posicionGuardada(): PosicionSubtitulos       // 'normal' si no hay o es basura
+    export function guardarPosicion(p: PosicionSubtitulos): void
+  - Trampa de la casa: hoy el 0,125 vive en DOS lugares -SubtitulosVisor.tsx:105 y
+    CapaDeSubtitulos.java:192-. En TS sale de aquí; en Java viaja en la receta. El comentario de
+    CapaDeSubtitulos.java:166-168 "Las mismas medidas que el visor..." se conserva y se le agrega
+    debajo de dónde viene ahora el margen.
+  - Si después se verifican YouTube o TikTok, se toma el más exigente de cada lado con su fuente.
+    No antes. Los lados: hoy 0,88 ya da el 6 % de Meta; si YouTube pide 192 px a la derecha
+    -no verificado-, habría que angostar a la derecha -PREGUNTA P1-.
+5.7 src/components/SubtitulosVisor.tsx
+  - CapaSubtitulos recibe margenAbajo?: number -por omisión MARGEN_ABAJO_NORMAL- y lo usa en :105:
+    marginBottom: rect.h * margenAbajo. fontSize -:102- no cambia -PREGUNTA P7-.
+  - SelectorPosicion({ posicion, onCambiar }) nuevo, mismo patrón que SelectorSubtitulos -:148-, con
+    dos botones: data-testid btn-posicion-normal y btn-posicion-redes, aria-pressed. El contenedor
+    selector-posicion-subtitulos. Estilos con variables en styles.css junto a .selector-subtitulos.
+    SubtitulosVisor.tsx ya está en la lista de T209 -src/pruebas/tarea46.test.tsx-; si el selector
+    va en un archivo nuevo, se agrega a esa lista.
+5.8 src/components/ReproductorGrabacion.tsx
+  - Estado nuevo posicion: PosicionSubtitulos = posicionGuardada().
+  - Se muestra SelectorPosicion debajo de SelectorSubtitulos -dentro del bloque :211-220- SOLO si:
+    !guardada && subtitulos.length > 0 && estilo !== 'no' && grabacion.orientacion === 'vertical'.
+  - CapaSubtitulos -:182- recibe margenAbajo(guardada ? 'normal' : posicion) -guardada no dibuja
+    nada: estiloVisible es 'no'-.
+  - handleGuardar -:114- arma recetaDe({ estilo, subtitulos, posicion }) y llama exportarAGaleria;
+    onCambio agrega posicionGaleria.
+  - handleGuardarYCompartir nuevo: mismo cuerpo que handleGuardar y, si res.ok, await
+    compartirDeGaleria(res.uri). Si compartir falla: aviso noSeCompartio -es.ts:102-; la toma YA
+    quedó guardada -una sola copia-, y así se dice.
+  - Botón nuevo en .acciones-toma -:237- para la recién grabada: data-testid
+    btn-compartir-nueva, IconoCompartir, aria-label t('guardarYCompartir'), disabled={guardando}.
+5.9 Textos -src/textos/es.ts y en.ts, mismas claves; en.ts está tipado con Textos-
+    posicionSubtitulos: 'Posición' / 'Position'
+    posicionNormal: 'Normal' / 'Standard'
+    posicionRedes: 'Para redes' / 'For social'
+    posicionRedesExplicacion: 'Más arriba, donde la aplicación no lo tapa' / 'Higher up, clear of
+      the app's buttons'
+    guardarYCompartir: 'Guardar y compartir' / 'Save and share'
+    compartirTrasGuardar: 'Quedó guardada, pero no se pudo compartir' / 'Saved, but it could not
+      be shared'
+  - Ninguna red por su nombre -regla de la casa y política de Play- -PREGUNTA P6-.
+
+==============================================================================
+6. PASO 0 - VERIFICAR EN EL MOTO G86, ANTES DE PROGRAMAR PANTALLA
+==============================================================================
+  0.1 Cuatro tomas de 10 s: vertical 1080p, 720p y 480p, y horizontal 1080p. De cada una, ancho,
+      alto y rotación: adb pull del mp4 y ffprobe en la caja, o un Log.d temporal en
+      analizarVideo. Confirma "1920x1080 con rotación 90" y contesta la forma del 480p -CameraX lo
+      llama SD y ese cuadro puede no ser 16:9-. Si no es 9:16, "Para redes" no se ofrece en 480p.
+  0.2 Una toma que empieza derecha y se gira a mitad: ¿el archivo queda vertical entero?
+  0.3 Una toma empezada con el teléfono acostado de espaldas: ¿qué rotación elige capgo?
+  0.4 Lo que se ve contra lo que se graba: adb logcat | grep "Actual preview aspect ratio" al
+      encender la cámara, y una captura de pantalla de LISTO contra el primer cuadro de la toma.
+      Si la vista previa es 4:3 y el video 16:9, el encuadre visto no es el grabado -P8-.
+  0.5 El tiempo de guardado de hoy: tomas de 1, 5 y 15 minutos, guardadas con subtítulos amarillo,
+      cronometradas -hasta que haya msGuardado, con cronómetro-. Da la cifra por minuto de toma.
+
+==============================================================================
+7. TAREAS, UNA A UNA -en el estilo de docs/tareaNN; numeración a definir, la última es la 86-
+==============================================================================
+T1-A  LA RECETA, SIN CAMBIO DE CONDUCTA -común a los tres planes; va primero en el que se haga-
+  Archivos: src/lib/recetaExportacion.ts -nuevo-, src/lib/archivosNativos.ts, src/lib/camara.ts,
+  android/.../RecetaExportacion.java y ExportadorDeTomas.java -nuevos-, CamaraNativaPlugin.java,
+  CapaDeSubtitulos.java -constructor de 4-, ReproductorGrabacion.tsx -handleGuardar usa la receta-.
+  Cambia: nada visible. Sin subtítulos sigue siendo copia; con subtítulos, la misma pasada.
+  Vitest -src/pruebas/recetaExportacion.test.ts, nuevo-:
+    'recetaDe sin subtítulos es copia': estilo 'no' -> esCopia true.
+    'recetaDe con estilo pero sin subtítulos es copia': estilo 'amarillo', subtitulos [] -> true.
+    'recetaDe con subtítulos lleva el margen de hoy': margenAbajo === 0.125 exacto.
+    'validarReceta rechaza margen fuera de 0 a 0,5' y 'rechaza tramos desordenados' -plan 2-.
+  Vitest a través de <App> -"construir no es conectar"-, vi.mock de '../lib/archivosNativos':
+    'GUARDAR CON SUBTÍTULOS PASA LA RECETA AL NATIVO': toma con registro, estilo amarillo, tocar
+    guardar-galeria-desde-reproductor -> exportarAGaleria recibió estilo 'amarillo', margenAbajo
+    0.125, tramos null, filtro null, y los subtítulos de armarSubtitulos -todos, no solo el
+    primero: prueba de trayectoria-.
+  Manual moto g86: guardar una toma sin subtítulos -> el mp4 de la galería tiene el MISMO tamaño
+  en bytes que el original -copia-; con amarillo -> se ve igual que una guardada antes del
+  cambio. Logcat "SigoExport" imprime msGuardado.
+  Guardiana que se rompe una vez: poner margenAbajo 0.13 en recetaDe -> la prueba de App falla.
+T1-B  LA TOMA SABE SU FORMA
+  Archivos: CamaraNativaPlugin.java -analizarVideo-, camara.ts, orientacion.ts -nuevo-, sidecar.ts,
+  modelo.ts, tomaVideo.ts.
+  Vitest -src/pruebas/orientacion.test.ts-: 'orientacionDeToma 1920x1080 con 90 es vertical'; 'con
+  270 es vertical'; 'con 0 y 180 es horizontal'; '1080x1920 con 0 es vertical'; '1080x1080 es
+  cuadrada'; 'sin ancho es null'. 'parsearSidecar conserva orientacion' y 'grabacionNueva conserva
+  orientacion y posicionGaleria' -los dos copian campo por campo-.
+  Vitest de tomaVideo con CamaraNativa fingido -analizarVideo devuelve 1920x1080, 90-:
+  'cortarTomaVideo anota la orientación en el resumen y en el sidecar'.
+  Manual: las cuatro tomas del 0.1 quedan con la orientación correcta en el índice.
+T1-C  LA POSICIÓN EN UN SOLO LUGAR, Y EL VISOR
+  Archivos: posicionSubtitulos.ts -nuevo-, SubtitulosVisor.tsx, styles.css.
+  Vitest: 'margenAbajo normal es EXACTAMENTE 0,125' -guardiana de lo aprobado-; 'redes es 0,35';
+  'posicionGuardada devuelve normal con basura en localStorage'. En subtitulosVisor.test.tsx:
+  'CapaSubtitulos con margenAbajo 0,35 pone marginBottom = alto de la imagen * 0,35' y 'sin la prop,
+  0,125' -con rectDeLaImagen fingido como en las pruebas de hoy-.
+T1-D  EL NATIVO DIBUJA DONDE LE DICEN
+  Archivos: CapaDeSubtitulos.java -:192 usa margenAbajo-, RecetaExportacion.java.
+  Prueba: hoy no hay pruebas de Java propias -solo la plantilla, PREGUNTA P9-. Manual: la misma
+  toma guardada
+  con 0,125 y con 0,35; en la de 0,35 el borde inferior del renglón de abajo queda a 0,35 del alto
+  -medido en una captura del cuadro: 1920 * 0,35 = 672 px desde abajo-.
+T1-E  EL SELECTOR EN EL VISOR
+  Archivos: ReproductorGrabacion.tsx, SubtitulosVisor.tsx, es.ts, en.ts, styles.css.
+  Vitest a través de <App>: 'TOMA VERTICAL: se elige Para redes y el subtítulo del visor sube'
+  -marginBottom del .subtitulo = alto * 0,35- 'y al guardar la receta lleva 0,35'. 'TOMA
+  HORIZONTAL: no hay selector-posicion-subtitulos'. 'ESTILO NO: no hay selector'. 'TOMA GUARDADA:
+  no hay selector'. 'LA ELECCIÓN SE RECUERDA': cerrar y abrir otra toma vertical -> sigue en redes.
+  Manual: TalkBack lee "Para redes, seleccionado".
+T1-F  COMPARTIR DIRECTO
+  Archivos: ReproductorGrabacion.tsx, es.ts, en.ts.
+  Vitest: 'GUARDAR Y COMPARTIR: si el guardado sale bien, compartir recibe esa uri'; 'SI EL
+  GUARDADO FALLA, NO SE ABRE COMPARTIR y hay aviso'; 'SI COMPARTIR FALLA, la toma igual queda
+  guardada -onCambio con galeriaUri- y el aviso es compartirTrasGuardar'.
+  Manual: se abre el menú de Android y la aplicación de destino recibe el video.
+T1-G  FASE B -solo si Javier la decide-: recorte de la horizontal
+  Nativo: ExportadorDeTomas.efectosDeVideo antepone Crop(izq, der, abajo, arriba) -coordenadas NDC
+  de -1 a 1- y Presentation.createForWidthAndHeight(1080, 1920, LAYOUT_SCALE_TO_FIT_WITH_CROP).
+  Receta: recorte?: { centroX: number /* 0 a 1 */ }. Visor: máscara 9:16 sobre el video que se
+  corre con el dedo. Segunda copia: el original horizontal NO se borra -excepción a "una sola
+  copia" que aprueba Javier-. A verificar en un prototipo: que CapaDeSubtitulos.configure reciba
+  el cuadro YA recortado -1080x1920- y no el original.
+
+==============================================================================
+8. RIESGOS Y MITIGACIÓN
+==============================================================================
+  - La zona de Meta es de anuncios: el subtítulo puede verse "muy arriba" en un Reel orgánico, a
+    la altura del pecho. Mitigación: "Normal" queda igual; Javier lo juzga con una toma real.
+  - Una sola copia: guardar "Para redes" deja solo esa copia -hoy pasa lo mismo con el quemado-.
+  - Rotación mal elegida con el teléfono acostado -0.3-. Mitigación: orientacion sale del archivo,
+    no del acelerómetro; si el archivo quedó mal, el selector simplemente no aparece.
+  - Web nueva con APK viejo: analizarVideo sin anchoPx -> orientacion null -> no hay selector.
+  - La receta toca el único camino de guardado: T1-A va sola, con la comparación en bytes.
+  - Fase B: pérdida de nitidez y siempre recodifica.
+
+==============================================================================
+9. QUÉ NO HACER
+==============================================================================
+  - No cambiar "Normal": 0,125, 1/32, 0,88, los tres estilos y el 12 Mbps quedan.
+  - No tocar la grabación ni capgo. No agregar dependencias.
+  - No poner cifras de YouTube o TikTok sin fuente comprobada. No nombrar redes en pantalla.
+  - No apuntar el compartir a una aplicación -setPackage-.
+  - No hacer de vertical la omisión de nada. Fase B: nunca borrar el original horizontal.
+  - No borrar ni acortar comentarios -contar antes y después-. No mover umbrales de pruebas.
+
+==============================================================================
+10. CRITERIO DE ÉXITO -medible-
+==============================================================================
+  1. "Normal": la toma guardada es idéntica a la de antes -sin subtítulos, mismos bytes-.
+  2. "Para redes": el borde inferior del subtítulo a 672 ± 4 px del borde de abajo en 1080x1920;
+     en Reels, subida en privado, la interfaz no lo tapa -captura de Javier-.
+  3. msGuardado de "Para redes" dentro de ± 5 % del de "Normal" en la misma toma.
+  4. De toma recién grabada a menú de compartir: un toque más la espera del guardado.
+  5. npx tsc --noEmit limpio, npx vitest run en verde, comentarios que no bajan.
+
+==============================================================================
+11. PREGUNTAS ABIERTAS -y cómo se responden-
+==============================================================================
+  P1. Zona de YouTube Shorts: bajar la plantilla oficial de Google -con aprobación- y medirla en
+      píxeles. ¿Obliga a angostar a la derecha?
+  P2. Zona de TikTok: bajar sus plantillas y medirlas.
+  P3. Forma del 480p en el moto g86 -0.1, ffprobe-.
+  P4. Tiempo de guardado por minuto de toma -0.5, luego msGuardado-.
+  P5. ¿Fase B? Si sí, ¿como segunda copia?
+  P6. ¿"Para redes" o nombrar las redes? ¿Menú de Android o accesos directos?
+  P7. ¿La letra en "Para redes" sigue en 1/32 del alto?
+  P8. ¿La vista previa es 4:3 y el video 16:9? -0.4, logcat-. Si sí, lo que se ve en LISTO no es
+      el encuadre grabado: es un defecto aparte, anterior a este plan.
+  P9. ¿Se aceptan pruebas de Java para RecetaExportacion.desdeJson? JUnit ya está declarado
+      -android/app/build.gradle:224, testImplementation junit 4.13.2- pero en src/test solo existe
+      el ExampleUnitTest de la plantilla de Capacitor. No es dependencia nueva; sí es costumbre nueva.
