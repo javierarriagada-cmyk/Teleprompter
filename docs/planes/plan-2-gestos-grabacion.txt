@@ -5,6 +5,15 @@ nada nuevo. Es un plan, no un encargo: nada del repositorio se tocó. Parte del 
 ABIERTA con cómo se responde. Citas archivo:línea en ese commit; capgo 8.11.4 leído en
 /workspace/tarea84/node_modules; Media3 1.9.0 comprobado con javap.
 
+CORRECCIÓN 02-10-2026 -antes de encargar, no es código-
+  - NO se encarga ahora. Premium, después de la prueba cerrada.
+  - El paso 0 NO es parchar capgo. Primero PreviewView.getBitmap() -sección 4.B-. El parche solo
+    si eso no sirve, y solo con el sí de Javier: MPL-2.0 obliga a publicar los archivos tocados.
+  - El criterio "la mano no sale en el archivo" no cuadra con el margen de 1 s antes de la palma:
+    la mano que sube puede quedar. Se dice, no se promete.
+  - El visor que salta un corte con currentTime necesita una traba de "estoy saltando". Si no,
+    timeupdate vuelve a entrar al corte y se queda en un bucle.
+
 ==============================================================================
 0. RESUMEN
 ==============================================================================
@@ -15,8 +24,9 @@ ABIERTA con cómo se responde. Citas archivo:línea en ese commit; capgo 8.11.4 
     subtítulos. Los subtítulos se recalculan sobre la toma cortada.
   - Botón de pausa, tacho y gestos pasan por UNA máquina de estados pura -src/lib/pausaToma.ts-,
     lista para un control Bluetooth después.
-  - Para mirar la cámara hay que parchar capgo: un ImageAnalysis de baja resolución ligado junto al
-    video. El paso 0 mide si el moto g86 lo aguanta sin bajar la calidad.
+  - Para mirar la cámara, PRIMERO PreviewView.getBitmap() -sin parche-. El parche de capgo
+    -ImageAnalysis de baja resolución- solo si eso no sirve y Javier lo aprueba -MPL-2.0-.
+    El paso 0 mide si el moto g86 lo aguanta sin bajar la calidad.
   - No existe una señal de silencio del motor nativo: se deriva de los parciales -sección 1.6-.
 
 ==============================================================================
@@ -132,7 +142,8 @@ DECISIONES
   - La pausa marca tramos que se cortan al guardar, en la pasada de Media3, con ~1 s de margen;
     a los subtítulos se les restan los tramos.
   - Botón y palma: la MISMA máquina, lista para un control Bluetooth -no se construye-.
-  - Paso 0: parchar capgo y medir en el moto g86; si no aguanta, se desactiva en ese equipo.
+  - Paso 0: probar PreviewView.getBitmap() en el moto g86. Parchar capgo solo si no sirve y
+    Javier lo aprueba. Si el análisis baja la calidad, se desactiva en ese equipo.
 CORRECCIONES AL BORRADOR
   1. CamaraNativaPlugin no graba: graba capgo.
   2. No hay Recording.pause(): tramos de corte.
@@ -340,7 +351,9 @@ RECONOCEDOR
 7.4 EL VISOR -ReproductorGrabacion.tsx-
   - Reproduce el archivo entero y SALTA los cortes: en el bucle de CapaSubtitulos o un
     requestAnimationFrame propio, si video.currentTime * 1000 cae en un corte, currentTime =
-    corte.hastaMs / 1000. La barra -avance-toma, :196-212- muestra duracionFinal; total y actual
+    corte.hastaMs / 1000. Hace falta una traba de "estoy saltando": si no, timeupdate vuelve a
+    ver el corte y se queda en un bucle -corrección del 02-10-. La barra -avance-toma, :196-212-
+    muestra duracionFinal; total y actual
     en reloj de salida. Los subtítulos del visor: armarSubtitulos de hoy -reloj del archivo-; la
     diferencia con los guardados está solo en las uniones.
   - Miniatura: extraerMiniatura con atMs = inicio del primer tramo que queda + 1000.
@@ -543,7 +556,8 @@ T2-9  LA VERSIÓN DE PLAY
   1. Interruptor apagado: pruebas de hoy verdes sin tocarlas; la misma toma medida con
      medir-toma.mjs da lo mismo; el mp4 tiene la misma resolución y cuadros por segundo.
   2. Encendido en el moto g86: 20 de 20 palmas a 50 cm pausan; 0 pausas solas en 2 min hablando
-     con las manos; la toma guardada no tiene lo pausado ni la mano; subtítulos con la voz.
+     con las manos; la toma guardada no tiene lo pausado. La mano que sube puede quedar en el
+     segundo de margen: no se promete que no salga. Subtítulos con la voz.
   3. Botón y palma dejan el mismo tramo en el sidecar -la misma máquina-.
   4. npx tsc --noEmit limpio, npx vitest run en verde, comentarios que no bajan.
 

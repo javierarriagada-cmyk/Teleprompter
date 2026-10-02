@@ -1,6 +1,18 @@
 PLAN 1 - EXPORTAR EN VERTICAL, LISTO PARA REDES -VERSIÓN 2, A FONDO-
 Plan para Javier, 29-09-2026. Leído en main, commit 60b34ac -29-09-2026 22:01 -0300-; git pull no trajo
 nada nuevo. Es un plan, no un encargo: nada del repositorio se tocó -sin ramas, commits, PR ni issues-.
+CORRECCIÓN 02-10-2026 -antes de encargar, no es código-
+  - El 0,35 es el BORDE PINTADO de abajo del renglón, no la línea de base. Hoy dibujar pone la
+    base en H * (1 - margen) y la letra sigue bajando por el descent. "Para redes" tiene que dejar
+    ese borde a H * 0,35. En 1080x1920 son 672 px. Si se cambia solo el número, no da.
+  - Meta también pide ~14 % libre arriba -ZONA_REDES.arriba-. Con dos o tres renglones el bloque
+    crece hacia arriba. Si el borde de arriba del bloque entraría en ese 14 %, se achica la letra.
+    No se invade. "Normal" no cambia: sigue en 1/32 y 0,125.
+  - "Guardar y compartir" no depende del selector. El selector solo sale en toma vertical con
+    subtítulos y estilo distinto de "no". El botón sale en toda toma recién grabada, también sin
+    subtítulos. Si compartir falla, la toma ya quedó guardada y se dice.
+  - No se encarga la fase B -T1-G-. No se toca capgo. El 4:3 contra 16:9 sigue siendo P8, no un hecho.
+
 Lo que no se pudo comprobar leyendo queda como PREGUNTA ABIERTA, con cómo se responde.
 
 Las citas son archivo:línea en ese commit. capgo = @capgo/camera-preview 8.11.4 -package-lock.json la
@@ -195,6 +207,9 @@ E. PASAR margenAbajo COMO PARÁMETRO SUELTO de guardarConSubtitulos vs. UNA RECE
       // copiarAGaleria y mismo borrado del temporal que guardarConSubtitulos (:397-496).
     CapaDeSubtitulos(String json, String estilo, int rotacion, float margenAbajo)  // + parámetro
       // el constructor de 3 argumentos queda y llama al de 4 con 0.125f.
+      // margenAbajo es el borde PINTADO de abajo, no la línea de base: base = H * (1 - margen)
+      // - descent, y si el bloque entraría en el 14 % de arriba se achica la letra -corrección
+      // del 02-10-.
 
 ==============================================================================
 5. DISEÑO DE ESTE PLAN, ARCHIVO POR ARCHIVO
@@ -241,7 +256,9 @@ E. PASAR margenAbajo COMO PARÁMETRO SUELTO de guardarConSubtitulos vs. UNA RECE
     -no verificado-, habría que angostar a la derecha -PREGUNTA P1-.
 5.7 src/components/SubtitulosVisor.tsx
   - CapaSubtitulos recibe margenAbajo?: number -por omisión MARGEN_ABAJO_NORMAL- y lo usa en :105:
-    marginBottom: rect.h * margenAbajo. fontSize -:102- no cambia -PREGUNTA P7-.
+    marginBottom: rect.h * margenAbajo. El borde pintado de abajo del renglón queda a esa distancia,
+    no la línea de base. fontSize -:102- no cambia en "Normal". En "Para redes", si el bloque
+    entraría en el 14 % de arriba, se achica la letra -corrección del 02-10; P7 queda para "Normal"-.
   - SelectorPosicion({ posicion, onCambiar }) nuevo, mismo patrón que SelectorSubtitulos -:148-, con
     dos botones: data-testid btn-posicion-normal y btn-posicion-redes, aria-pressed. El contenedor
     selector-posicion-subtitulos. Estilos con variables en styles.css junto a .selector-subtitulos.
@@ -258,8 +275,9 @@ E. PASAR margenAbajo COMO PARÁMETRO SUELTO de guardarConSubtitulos vs. UNA RECE
   - handleGuardarYCompartir nuevo: mismo cuerpo que handleGuardar y, si res.ok, await
     compartirDeGaleria(res.uri). Si compartir falla: aviso noSeCompartio -es.ts:102-; la toma YA
     quedó guardada -una sola copia-, y así se dice.
-  - Botón nuevo en .acciones-toma -:237- para la recién grabada: data-testid
-    btn-compartir-nueva, IconoCompartir, aria-label t('guardarYCompartir'), disabled={guardando}.
+  - Botón nuevo en .acciones-toma -:237- para TODA toma recién grabada, con o sin subtítulos:
+    data-testid btn-compartir-nueva, IconoCompartir, aria-label t('guardarYCompartir'),
+    disabled={guardando}. No se ata al selector de posición.
 5.9 Textos -src/textos/es.ts y en.ts, mismas claves; en.ts está tipado con Textos-
     posicionSubtitulos: 'Posición' / 'Position'
     posicionNormal: 'Normal' / 'Standard'
@@ -377,8 +395,9 @@ T1-G  FASE B -solo si Javier la decide-: recorte de la horizontal
 10. CRITERIO DE ÉXITO -medible-
 ==============================================================================
   1. "Normal": la toma guardada es idéntica a la de antes -sin subtítulos, mismos bytes-.
-  2. "Para redes": el borde inferior del subtítulo a 672 ± 4 px del borde de abajo en 1080x1920;
-     en Reels, subida en privado, la interfaz no lo tapa -captura de Javier-.
+  2. "Para redes": el borde PINTADO de abajo del subtítulo a 672 ± 4 px del borde de abajo en
+     1080x1920, y el borde de arriba del bloque no entra en el 14 % superior. En Reels, subida
+     en privado, la interfaz no lo tapa -captura de Javier-.
   3. msGuardado de "Para redes" dentro de ± 5 % del de "Normal" en la misma toma.
   4. De toma recién grabada a menú de compartir: un toque más la espera del guardado.
   5. npx tsc --noEmit limpio, npx vitest run en verde, comentarios que no bajan.

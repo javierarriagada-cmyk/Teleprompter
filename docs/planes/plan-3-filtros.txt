@@ -5,6 +5,14 @@ encargo: nada del repositorio se tocó. Citas archivo:línea en ese commit; capg
 con javap sobre los AAR del caché de Gradle de la caja -/home/box/.gradle/caches/8.14.3/transforms-.
 Lo que no se pudo comprobar va como PREGUNTA ABIERTA, con qué medir y dónde.
 
+CORRECCIÓN 02-10-2026 -antes de encargar, no es código-
+  - NO se encarga junto con el plan 1.
+  - feColorMatrix sobre <video> en el WebView de Android muchas veces no se aplica. "Lo que ves es
+    lo que se guarda" no se afirma hasta medirlo en el moto g86. Si el filtro no se ve en el
+    <video>, el selector no se construye encima de esa mentira.
+  - "Piel suave" no entra en el primer corte. Primero los seis tonos, y Javier los mira en su cara.
+    La piel alisa camisa y pared del mismo color, y no se puede mostrar mientras el video corre.
+
 ==============================================================================
 0. RESUMEN
 ==============================================================================
@@ -15,12 +23,14 @@ Lo que no se pudo comprobar va como PREGUNTA ABIERTA, con qué medir y dónde.
     propio -BaseGlShaderProgram-.
   - El filtro se aplica AL GUARDAR, en la misma pasada que quema los subtítulos, antes de ellos.
   - EN VIVO NO SE PUEDE SIN PARCHE: la vista previa es una SurfaceView detrás del WebView; un
-    filtro CSS no la alcanza. Se previsualiza en el VISOR con el MISMO número: una matriz de color
-    calculada en TypeScript que usan el <video> -feColorMatrix- y Media3 -RgbMatrix-.
+    filtro CSS no la alcanza. Se QUIERE previsualizar en el VISOR con el MISMO número: una matriz
+    calculada en TypeScript que usarían el <video> -feColorMatrix- y Media3 -RgbMatrix-. En el
+    WebView de Android el filtro sobre <video> hay que medirlo antes: a menudo no se aplica
+    -corrección del 02-10-.
   - Lo de Google para "belleza" no sirve para grabar: las Extensions de CameraX -FACE_RETOUCH- son
     solo para vista previa y foto, NO para video -documentación oficial-.
-  - Conjunto inicial: seis tonos -Natural, Cálido, Frío, Vivo, Suave, B/N- y "Piel suave". Sin LUTs
-    de terceros.
+  - Primer corte: seis tonos -Natural, Cálido, Frío, Vivo, Suave, B/N-. "Piel suave" es tarea
+    aparte, después de que Javier vea los tonos. Sin LUTs de terceros.
 
 ==============================================================================
 1. EL FLUJO DE HOY QUE TOCA ESTE PLAN
@@ -55,7 +65,8 @@ Lo que no se pudo comprobar va como PREGUNTA ABIERTA, con qué medir y dónde.
   - ReproductorGrabacion.tsx: <video data-testid="video-grabacion"> -:181- dentro de .visor-video;
     CapaSubtitulos -:182- mide la imagen con rectDeLaImagen -SubtitulosVisor.tsx:20-30- y la dibuja
     encima. SelectorSubtitulos -:211-220-. guardada -:106- = ya en la galería: no se ofrece nada.
-  - El <video> SÍ es parte del WebView: un filtro CSS o SVG sobre él funciona.
+  - El <video> es parte del WebView, pero un filtro CSS o SVG sobre <video> en Android a menudo
+    no se aplica. No se da por hecho: se mide en el moto g86 antes de construir el selector.
 1.4 EL GUARDADO
   - handleGuardar -:114-: con subtítulos -> guardarEnGaleriaConSubtitulos -archivosNativos.ts:105-
     -> CamaraNativaPlugin.guardarConSubtitulos -:397-496-: MediaMetadataRetriever para la rotación
