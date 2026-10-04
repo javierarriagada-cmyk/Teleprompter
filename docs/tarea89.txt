@@ -9,8 +9,9 @@ RESUMEN
   - DEFECTO 1 -seguimiento de lado-: NO HAY ARREGLO DE CONDUCCIÓN, y es a propósito. La regla
     del encargo: "si de verdad necesitas los registros completos de las 5 tomas para concluir,
     DETENTE". Se necesitan -ver más abajo por qué-. Lo que SÍ se hizo: líneas de registro nuevas,
-    sin cambio de conducta, para que Claude vea en el moto g86 lo que hoy no se ve, y una prueba
-    guardiana que fija la salida vertical de hoy.
+    sin cambio de conducta, para que Claude vea en el moto g86 lo que hoy no se ve, y pruebas
+    guardianas que fijan la salida vertical de hoy -Hola y Larralde-. En la segunda vuelta los
+    registros de las 5 tomas no estaban en la rama indicada: sigue detenido.
   - DEFECTO 2 -visor de lado-: NO SE PROGRAMÓ. Boceto en docs/pantallas/tarea89/, con la causa
     del corte con archivo:línea, en tema claro y oscuro.
   - DEFECTO 3 -barra de tres botones-: lista de pantallas sin borde seguro y arreglo de las cuatro
@@ -31,25 +32,30 @@ DEFECTO 1 - SEGUIMIENTO DE LADO
 LO MEDIDO -del encargo-: 3 tomas de pie avanzan. 2 tomas de lado quedan en pos=0,
 freno=sin-calce, y el registro anota un calce en el token 60.
 
-QUÉ DICE EL GUION EN SUS PRIMERAS ~70 PALABRAS
-  En la caja NO están los registros de las 5 tomas. Se buscaron *.motor.txt en /workspace y en el
-  repo: los únicos son los del corpus, src/pruebas/corpus/toma-008a7133-palabras.motor.txt -otro
-  guion, "concepción trágica"- y toma-a5bc922c-salto.motor.txt, que lleva en su cabecera el guion
-  "Hola" -src/app/bienvenida.ts, bienvenidaEspanol-. Se supone que las 5 tomas son con "Hola",
-  el guion que viene puesto: ES UNA SUPOSICIÓN, no está en ningún registro de la caja.
-  "Hola" tokenizado con tokenizarGuion -lo mismo que usa useSeguidor-, con número de token y el
-  t.linea de cada párrafo:
-    0-11   l0  hola lee esto en voz alta con o sin apuro como prefieras
-    12-40  l2  ahora fíjate en el texto se está moviendo solo al ritmo en que hablas sin que
-               toques nada la línea suave bajo las palabras te muestra por dónde vas
-    41-55  l4  si te detienes a pensar el texto te espera cuando vuelves a hablar sigue contigo
-    56-79  l6  lo que escribes entre corchetes es una nota solo para ti se ve en la pantalla pero
-               no hace falta leerla en voz alta
-    80-84      [como esta: respira y sonríe] -acotación-
-  EL TOKEN 60 ES "corchetes", en el cuarto párrafo. Para llegar ahí leyendo hay que haber dicho
-  unas 60 palabras -unos 25 segundos a ritmo normal-. t.linea es el PÁRRAFO del guion -cada
-  línea del texto-, no el renglón de la pantalla: los límites de renglón del motor no dependen
-  del alto ni de tel-h, como dice el encargo.
+QUÉ DICE EL GUION EN SUS PRIMERAS ~70 PALABRAS -CORREGIDO el 04-10-2026: es LARRALDE, no Hola-
+  La primera versión de este texto supuso "Hola". Javier y Claude dicen que las 5 tomas son con el
+  guion "Larralde". En el repo está en la cabecera de las cinco lecturas del corpus
+  src/pruebas/corpus/lectura-2026-09-12-2311, -2328, 09-13-0055, -1118 y -1148.txt -541 tokens
+  en las cinco-. OJO: es la versión del 12 y 13 de septiembre. Si el guion que se leyó en las 5
+  tomas se retocó después, los números de token pueden correrse: se confirma con la cabecera
+  "# |" de los registros de las tomas.
+  Tokenizado con tokenizarGuion, con el número de token y el t.linea -párrafo- de cada uno:
+    0-25   l0  enero de 1969 sale un disco que se llama hombre doce cortes cinco milongas tres
+               canciones y en cuatro de ellos josé larralde no canta habla
+    26-58  l1  es el más largo cuatro minutos de un hombre de treinta y un años recitando un
+               poema sin melodía que lo cubra ni guitarra donde apoyarse se llama si me vieras
+               por dentro
+    59-... l2  un hombre le pide a alguien que lo mire la esencia no le pide compañía no le pide
+               perdón le pide ...
+  EL TOKEN 60 ES "hombre", la segunda palabra del tercer párrafo: "UN HOMBRE le pide a alguien".
+  El 59 -"un"- es el primer token de ese párrafo. Lo que importa para el defecto: "un hombre" está
+  TRES veces en las primeras 61 palabras -"se llama hombre" 8-9, "de un hombre de treinta" 33-34,
+  "un hombre le pide" 59-60-, y "se llama" dos -7-8 y 52-53-. Un calce en el 60 con el motor en 0
+  puede ser el lector de verdad en el tercer párrafo -unos 25 s de lectura- o una frase corta del
+  primero o el segundo ubicada en la repetición equivocada. Con el guion no alcanza para saber
+  cuál: hace falta lo que "oyo" anotó en esas tomas.
+  t.linea es el PÁRRAFO del guion, no el renglón de la pantalla: los límites de renglón del motor
+  no dependen del alto ni de tel-h, como dice el encargo.
 
 LO QUE HACE EL CÓDIGO CON UN CALCE EN EL 60 Y EL MOTOR EN 0
   - src/lib/conduccion.ts:36 -parcial- y :66 -final- anotan 'calce' ANTES de mirar la ventana
@@ -88,12 +94,30 @@ LO QUE CAMBIA ENTRE DE PIE Y DE LADO EN EL CAMINO DE LA VOZ AL MOTOR -revisado-
           -la posición no acompañó porque la ventana mira al motor y el motor nunca arrancó-.
           Para eso hace falta ver qué se oyó ANTES del 60: si las primeras frases -tokens 0-40-
           calzaron o no, y por qué no.
-      H3. Que no estaba en el 60: un calce falso -palabras repetidas: "texto", "voz alta",
-          "en"- y descartarlo estuvo bien; entonces la causa del no avance es que las primeras
+      H3. Que no estaba en el 60: un calce falso -con Larralde, "un hombre" repetido en
+          8-9, 33-34 y 59-60, y "se llama" en 7-8 y 52-53- y descartarlo estuvo bien; entonces la causa del no avance es que las primeras
           frases de lado no calzaron, y eso es el audio/reconocedor -lo que "oyo" anota-, no la
           conducción.
   Distinguir H1, H2 y H3 necesita las líneas 'oyo' y 'calce' de las dos tomas de lado, desde el
   primer segundo. Por eso:
+
+LOS REGISTROS DE LAS 5 TOMAS -04-10-2026, segunda vuelta-: NO ESTÁN. Javier y Claude dicen que
+  están en la rama remota registros-tarea89, en docs/registros/tarea89/, con un LEEME. Esa rama NO
+  EXISTE en origin: "git fetch origin registros-tarea89" responde "couldn't find remote ref", y ni
+  git ls-remote ni la API de GitHub -ramas que empiezan con "regis"- la muestran. Tampoco hay
+  docs/registros en ninguna otra rama, ni .motor.txt de Larralde en la caja. Sin LEEME no se
+  sabe cuáles son de lado ni de pie. POR ESO EL DEFECTO 1 SIGUE SIN ARREGLO: no se inventa.
+
+LO QUE SÍ SE PUDO MIRAR CON LARRALDE, DE PIE
+  Las cinco lecturas de septiembre son anteriores al diseño de lado -tarea 82, 29-09-2026-: se
+  leyeron con el diseño vertical. Repetidas por la conducción de hoy, en los primeros 40 s:
+    lectura-2026-09-12-2311: motor [0,0,0,0,0,8,11,14,17,25,...,70] cada 2 s, 0 calces FUERA.
+    lectura-2026-09-13-1148: motor [0,0,0,0,0,10,15,18,24,26,...,77] cada 2 s, 0 calces FUERA.
+  O sea: con Larralde de pie, el primer calce llega a los ~8-10 s -"que se llama" a los 8 s en la
+  1148-, cae DENTRO de 0-40 y el motor arranca. En las tomas de lado el primer calce que se ve es
+  el 60, fuera de la ventana. La diferencia está ANTES del 60: o de lado los primeros calces no
+  llegaron -lo que se oyó, H3-, o el seguidor ya iba adelantado -H1 o H2-. Eso es lo que hay que
+  leer en el registro de lado.
 
 LO QUE NECESITA CLAUDE -SE DETIENE AQUÍ EL ARREGLO-
   Una de estas dos cosas:
@@ -133,16 +157,25 @@ LO QUE SE HIZO -sin cambio de conducta: todo anota solo con el diagnóstico ence
 PRUEBAS -src/pruebas/tarea89.test.tsx-
   - "las tres líneas nuevas se escriben legibles", "un calce fuera de la ventana anota 'ventana
     FUERA' y el motor no se mueve" -guion Hola, seguidor en 55, frase de los corchetes, motor
-    queda en 0-, "el arrastre que mueve seguidor y motor queda anotado", "los renglones del
+    queda en 0; es una prueba de la línea de registro, no depende del guion de las tomas-, "el arrastre que mueve seguidor y motor queda anotado", "los renglones del
     registro llevan el diseño". LAS CUATRO FALLAN CONTRA 71166e5: verificado sacando el código
     de la rama -git stash de src/lib, src/hooks, TeleprompterView.tsx y App.tsx- y corriendo solo
     esta prueba: 7 fallidas de 8 -estas cuatro y las tres del defecto 3 que había entonces-. La
     octava es la guardiana.
+  - GUARDIANA DE LARRALDE, DE PIE -segunda vuelta-: "lectura Larralde 2026-09-13-1148 -de pie-":
+    los primeros 40 s por la conducción, el motor cada 2 s
+    [0,0,0,0,0,10,15,18,24,26,28,35,40,45,49,53,58,62,68,72,77] y ningún "ventana FUERA". Además
+    fija que el token 60 sea "hombre". Rotura a propósito: con motor.tentativo(token - 3) en
+    conduccion.ts fallan las dos guardianas; se volvió atrás. -Con la ventana achicada a ref+8 o
+    con tUltimoCalce corrido 3 s NO fallaron: la guardiana mira la salida, no cada pieza.-
   - GUARDIANA DEL VERTICAL: "toma a5bc922c -Hola, de pie-: mismas posiciones que hoy". Repite
     la toma del corpus por la conducción y fija la posición del motor cada medio segundo:
     [0,0,0,0,0,1,4,5,6,6,7,8,8], sacada de 71166e5. Pasa hoy y tiene que seguir pasando con el
     arreglo que venga. OJO: que esa toma sea de pie es también una suposición -su cabecera no lo
     dice, la línea '# diseño' es nueva-; es la única toma del corpus con el guion Hola.
+    Revisado en la segunda vuelta: no hay LEEME para confirmarlo. Es del 24-09-2026 -epoch
+    1790301070112-, cinco días antes de que existiera el diseño de lado, así que se leyó con el
+    diseño vertical. Se queda, y la de Larralde es la guardiana con el guion de las tomas.
 
 ==============================================================================
 DEFECTO 2 - VISOR DE LADO -SOLO BOCETO-
@@ -202,13 +235,15 @@ video al tope de 70vh la tarjeta mide 825 dp -de 45 a 870-, y con el selector de
 unos 60 más. El alto útil es 915 menos la barra de estado -~24-, la de tres botones -48- y el
 aire -2 x 16-: ~811. NO CABE. Centrada y sin desplazamiento, la tarjeta se reparte por los dos
 lados y con el selector la fila de acciones vuelve a quedar bajo la barra aunque haya padding.
+APROBADO POR JAVIER el 04-10-2026: que el visor se desplace, también de pie. Queda como está.
 Por eso la raíz va con overflowY auto y la tarjeta con margin auto -ReproductorGrabacion.tsx en
 la rama, junto al comentario "TAREA 89"-: si cabe queda centrada igual que hoy; si no, empieza
 arriba y se desplaza hasta que las acciones queden sobre la barra. Esto también toca lo de lado:
 lo cortado ahora se alcanza desplazando -captura docs/pantallas/tarea89/visor-de-lado-rama-
 desplazado-*.png-. NO es el arreglo del defecto 2 -la tarjeta sigue siendo de una columna y más
 alta que la pantalla-: ese va con su boceto. Si Javier prefiere que de lado no cambie nada hasta
-aprobar el boceto, se saca el overflowY y el margin y de pie se pierde el desplazamiento.
+aprobar el boceto, se saca el overflowY y el margin y de pie se pierde el desplazamiento. -Ya no
+corre: Javier lo aprobó.-
 Los paneles de corpus mantienen su maxHeight 90vh: si en un teléfono bajo eso pasa del alto
 menos los bordes, se recorta igual que hoy -es herramienta, no se rehizo-.
 
@@ -248,7 +283,7 @@ PASOS PARA JAVIER, EN EL MOTO G86
 ==============================================================================
 RESULTADOS
 ==============================================================================
-  - npx vitest run: 57 archivos, 434 pruebas, todas pasan.
+  - npx vitest run: 57 archivos, 435 pruebas, todas pasan -segunda vuelta-.
   - npx tsc --noEmit: sin errores.
   - npm run build -vite build-: bien.
   - npm run apk: bien -BUILD SUCCESSFUL-. Copia en /workspace/apk/Sigo-tarea89.apk.

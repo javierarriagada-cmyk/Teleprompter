@@ -93,6 +93,9 @@ describe('Tarea 89, defecto 1: el registro muestra lo que hoy no se ve', () => {
 // GUARDIANA DEL VERTICAL: la toma del corpus con el guion Hola -de pie-, repetida frase por frase por
 // la conducción. Estos números son los de hoy, 04-10-2026. Si un cambio para lo de lado los mueve,
 // esta prueba lo dice.
+// CORRECCIÓN del 04-10-2026, más tarde: el guion de las 5 tomas es "Larralde", no "Hola". Que a5bc922c
+// sea de pie no lo dice su cabecera; es del 24-09, antes de que existiera el diseño de lado -tarea 82,
+// 29-09-, así que se leyó con el diseño vertical. Se queda, y se suma la guardiana de Larralde de abajo.
 describe('Tarea 89, defecto 1: la salida vertical de hoy no cambia', () => {
   test('toma a5bc922c (Hola, de pie): mismas posiciones que hoy', () => {
     const corpus = leerCorpus(fs.readFileSync(path.join(__dirname, 'corpus', 'toma-a5bc922c-salto.motor.txt'), 'utf8'))
@@ -111,7 +114,33 @@ describe('Tarea 89, defecto 1: la salida vertical de hoy no cambia', () => {
     }
     expect(posiciones).toEqual(POSICIONES_VERTICALES_DE_HOY)
   })
+
+  // GUARDIANA CON EL GUION LARRALDE: la lectura del 13-09 a las 11:48 -del corpus, anterior al diseño
+  // de lado-, sus primeros 40 segundos. De pie, el motor arranca a los ~10 s y avanza sin un solo
+  // calce fuera de la ventana. Números de hoy, contra main 71166e5.
+  test('lectura Larralde 2026-09-13-1148 (de pie): mismas posiciones y ningún calce fuera de la ventana', () => {
+    const corpus = leerCorpus(fs.readFileSync(path.join(__dirname, 'corpus', 'lectura-2026-09-13-1148.txt'), 'utf8'))
+    const c = conduccionDe(corpus.guion as any)
+    expect(c.tokens[60].palabra).toBe('hombre')
+    activarDiagnostico(true)
+    const oyos = corpus.eventos.filter((e: any) => e.tipo === 'oyo') as any[]
+    const posiciones: number[] = []
+    let k = 0
+    for (let t = 0; t <= 40000; t += 16) {
+      while (k < oyos.length && oyos[k].ms <= t) {
+        if (oyos[k].final) procesarFinal(c, oyos[k].texto, t)
+        else procesarParcial(c, oyos[k].texto, t)
+        k++
+      }
+      if (t % 2000 < 16) posiciones.push(Math.round(c.motor.estadoEn(t).posicion))
+    }
+    expect(posiciones).toEqual(LARRALDE_VERTICAL_DE_HOY)
+    expect(comoTexto()).not.toMatch(/ventana\tFUERA/)
+  })
 })
+
+// Una muestra cada 2 segundos, los primeros 40, redondeada. 04-10-2026, main 71166e5.
+const LARRALDE_VERTICAL_DE_HOY: number[] = [0, 0, 0, 0, 0, 10, 15, 18, 24, 26, 28, 35, 40, 45, 49, 53, 58, 62, 68, 72, 77]
 
 // Una muestra cada medio segundo, redondeada. Sacadas el 04-10-2026 contra main 71166e5.
 const POSICIONES_VERTICALES_DE_HOY: number[] = [0, 0, 0, 0, 0, 1, 4, 5, 6, 6, 7, 8, 8]
