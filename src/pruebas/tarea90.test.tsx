@@ -261,6 +261,20 @@ describe('Tarea 90: las medidas de cada caso -915x411 y 800x360, giro 90 y 270-'
     expect(bloque).toContain('width: 320px')
   })
 
+  test('caso 1: tocar la franja del recorte no cierra el visor; en el caso 2, tocar el fondo sí', async () => {
+    ponerVentana(915, 411, 90)
+    const onCerrar = vi.fn()
+    await abrir({}, { onCerrar })
+    cargarVideo(1920, 1080)
+    await esperar()
+    fireEvent.click(document.querySelector('[data-testid="visor-lado-franja"]')!)
+    expect(onCerrar).not.toHaveBeenCalled()
+    cargarVideo(1080, 1920)
+    await esperar()
+    fireEvent.click(raiz())
+    expect(onCerrar).toHaveBeenCalledTimes(1)
+  })
+
   test('la toma guardada: Compartir y Borrar, una fila cada uno', async () => {
     ponerVentana(915, 411, 90)
     await abrir({ galeriaUri: 'content://media/1' })

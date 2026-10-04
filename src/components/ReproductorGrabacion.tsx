@@ -440,7 +440,9 @@ export default function ReproductorGrabacion({
       // como el video -el resto ya es la superficie de la barra-.
       return (
         <div ref={raizLado} data-testid="reproductor-grabacion" data-tema="oscuro" data-visor="lado" data-caso="1" className="visor-lado visor-lado-caso1" onClick={onCerrar} style={raiz}>
-          {m.video.x > 0 && <div aria-hidden="true" data-testid="visor-lado-franja" style={{ position: 'absolute', left: 0, top: m.video.y, width: m.video.x, height: m.video.alto, background: '#000' }} />}
+          {/* Tocar la franja no cierra: en el caso 1 no hay «afuera», y es justo donde cae el pulgar al
+              tomar el teléfono de lado. El caso 2 sí cierra al tocar el fondo, como hoy fuera de la tarjeta. */}
+          {m.video.x > 0 && <div aria-hidden="true" data-testid="visor-lado-franja" onClick={parar} style={{ position: 'absolute', left: 0, top: m.video.y, width: m.video.x, height: m.video.alto, background: '#000' }} />}
           {cajaVideo({ left: m.video.x, top: m.video.y, width: m.video.ancho, height: m.video.alto })}
           {barra({ position: 'absolute', left: m.barra.x, top: m.barra.y, width: m.barra.ancho })}
           <div className="visor-lado-columna" data-testid="visor-lado-columna" onClick={parar} style={{ position: 'absolute', left: m.columna.x, top: m.columna.y, width: m.columna.ancho, height: m.columna.alto }}>

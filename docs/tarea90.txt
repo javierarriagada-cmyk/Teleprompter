@@ -1,0 +1,224 @@
+TAREA 90 - EL VISOR DE LADO, SEGÚN EL BOCETO APROBADO
+Encargo de Javier, 04-10-2026, 11:35. Lo hizo el bot de Grok. Punto de partida: main ACTUALIZADO
+-git fetch-, commit c03d734. Rama tarea90-visor-de-lado. Citas archivo:línea contra la rama salvo que
+diga otra cosa. Lo que no calzó se DESCRIBE abajo, no se improvisó.
+
+==============================================================================
+RESUMEN
+==============================================================================
+  - EL BOCETO ES EL PISO: el de la tarea 89, cuarta versión, aprobado por Javier -PR #67, rama
+    tarea89-tres-defectos, commit 492165c-, con su ajuste: el botón y el avance de la barra de
+    reproducción también en 48, así que la barra pasa de 48 a 52.
+  - EL #67 NO ESTÁ EN MAIN. No se trajeron sus documentos a esta rama: se CITAN por rama y commit
+    -docs/pantallas/tarea89/medidas-implementacion.md y docs/tarea89.txt en 492165c-. Lo único que se
+    copió es su herramienta de dibujo, como docs/pantallas/tarea90/herramientas/boceto-aprobado.tsx,
+    con la barra de 52, para sacar las láminas «boceto | app real».
+  - IMPLEMENTADO: caso 1 -toma 16:9 de lado- y caso 2 -toma 9:16 de lado-, con Subtítulos abierto y
+    la toma guardada; detección por la forma del video; siempre oscuro; rótulos de 12 y toques de 48;
+    bordes seguros en los dos giros; SystemBars hide/show/setStyle; registro 'visor-lado' para el
+    moto g86. De pie no cambia nada.
+  - LA COMPARACIÓN: en las 32 láminas -8 vistas, 2 temas, 2 tamaños- NINGUNA medida de la app queda
+    por debajo del boceto. Video, barra, columna, X, botón, avance, filas y rótulos dan igual; la
+    tarjeta del caso 2 sale 8 dp MÁS alta -ver LO QUE NO CALZÓ-.
+  - PRUEBAS: src/pruebas/tarea90.test.tsx, 36. Contra main c03d734: 31 fallan y 4 pasan -3
+    guardianas de pie y la del bloque oscuro de styles.css, que es la condición de la que cuelga el
+    siempre oscuro-. La 36 -la franja que no cierra- se sumó después y también falla contra main.
+    Suite completa, typecheck y build: bien. APK: /workspace/apk/Sigo-visor-de-lado.apk.
+
+==============================================================================
+LAS MEDIDAS -recalculadas con la barra de 52-
+==============================================================================
+  Bordes del moto g86 -tarea 89-: recorte de la cámara 125 px / (450/160) = 44 dp; barra de tres
+  botones 48 dp. Giro 90: recorte a la izquierda, barra a la derecha. Giro 270: al revés. Barra de
+  estado oculta: arriba 0. Los dos giros suman 92: mismas medidas, en espejo.
+
+  CASO 1 -16:9-:  útil = ancho − 92; video alto = alto − 52; video ancho = round(alto × 16/9);
+                  columna = útil − video -mínimo 112; si faltara, se achica el video en 16:9-.
+    - 915x411: útil 823; video 359 de alto × 16/9 = 638,2 → 638 × 359; barra 638 × 52;
+      columna 823 − 638 = 185. Giro 90: video en x 44, columna en x 682. Giro 270: 48 y 686.
+    - 800x360: útil 708; 308 × 16/9 = 547,6 → 548 × 308; barra 548 × 52; columna 160. Giro 90: x 44
+      y 592. Giro 270: 48 y 596.
+    - El encargo decía ~641 × 359 y ~182 a 915: 641 no es 16:9 de 359 -641/359 = 1,786-. Lo exacto es
+      638 × 359 y columna 185. A 800 coincide: 548 × 308 y 160.
+    - Filas de la columna -cabecera de 56: 8 de aire y la X de 48-: 88, 89, 89, 89 a 411 y 75, 76, 76,
+      76 a 360. Toma guardada: 176 y 177; 151 y 152. Avance de la barra: 505 × 48 a 915 y 415 × 48 a 800.
+    - Panel de Subtítulos abierto: 320 × 124, a 8 a la izquierda de la columna, a la altura de su fila.
+  CASO 2 -9:16-: video a todo el alto, 231 × 411 y 203 × 360; tarjeta de 320 a 16 del video; el grupo
+    centrado: 128 de fondo a cada lado a 915 y 85 a 800. Giro 90: video en x 172 / 129; giro 270:
+    176 / 133. Tarjeta 320 × 250 -el boceto, 242; ver LO QUE NO CALZÓ-.
+
+==============================================================================
+LO IMPLEMENTADO, CON ARCHIVO:LÍNEA
+==============================================================================
+  src/lib/visorDeLado.ts
+    :23-33   TOQUE_MINIMO 48, ALTO_BARRA_REPRODUCCION 52, ROTULO_MINIMO 12, COLUMNA_MINIMA 112,
+             ANCHO_TARJETA 320, SEPARACION_TARJETA 16.
+    :55      formaDeVideo: ancho > alto es horizontal; un cuadrado es vertical; sin datos, null.
+    :64      medidasVisorDeLado: las cuentas de los dos casos, con los bordes que lleguen.
+  src/hooks/useBordesSeguros.ts
+    :54      leerBordesSeguros: mide env(safe-area-inset-*) con una sonda invisible; si el navegador no
+             entiende env() -o da todo 0 y Capacitor no-, usa --safe-area-inset-* que escribe Capacitor
+             -SystemBars.java, injectSafeAreaCSS-. Lee también el tamaño, el visualViewport, el dpr y
+             screen.orientation.
+    :104     useBordesSeguros: vuelve a medir con resize, orientationchange, screen.orientation change,
+             visualViewport resize, un MutationObserver sobre el style del documento -cuando Capacitor
+             reescribe sus variables- y cada 500 ms mientras el visor de lado está abierto.
+  src/lib/barrasDelSistema.ts -el único que llama a SystemBars-
+    :40      fijarEstiloDeLaApp: lo que pide App -App.tsx:323-; si el visor de lado tiene las barras,
+             espera.
+    :54      tomarBarrasParaElVisor: SystemBars.hide({ bar: SystemBarType.StatusBar }) y
+             setStyle({ style: Dark }).
+    :64      soltarBarrasDelVisor: SystemBars.show({ bar: SystemBarType.StatusBar }) y el estilo de la
+             app. Se usa bar StatusBar y no show() a secas, que mostraría también la de navegación: el
+             visor solo deshace lo que hizo. Sin plugin nuevo: @capacitor/core 8.5.1 -package.json:24-.
+  src/components/ReproductorGrabacion.tsx
+    :92-108  al cargar el video -loadedmetadata-: la forma con videoWidth/videoHeight, y si se giró el
+             teléfono con el video a medias, sigue desde donde iba -reanudarEn, :115-.
+    :206-207 useLayout() y deLado = 'tel-h' -la consulta de la 82, hooks/useLayout.ts:22-.
+    :212-228 la miniatura -rutaMiniatura, el mismo mp4- decide antes de que cargue el video; sin ella,
+             el caso 2. El video manda sobre la miniatura.
+    :248     los bordes; :251-262 el efecto de las barras: abrir de lado → tomar; cerrar, volver de pie
+             o desmontar → soltar, más el volcado del registro.
+    :264-296 registro (c); :298-322 registro (e).
+    :324     if (deLado): el visor de lado. :329 la X de 48; :357-379 la barra de 52 con botón y avance
+             de 48; :393-436 las acciones con min 48 y rótulo de 12 -los mismos data-testid de hoy-;
+             :438-457 el caso 1 -franja negra junto al video que no cierra, video, barra, columna-;
+             :459 el caso 2 -fondo --bg-suelo, video, tarjeta compacta centrada en el alto-.
+    Las dos raíces llevan data-tema="oscuro": el bloque [data-tema="oscuro"] de styles.css:109 no
+    exige :root -siempre oscuro aunque la app esté en claro-.
+    De pie, el return de siempre: sin cambios -mismo desplazamiento de la tarea 89 y mismos bordes de
+    la barra de tres botones-.
+  src/styles-visor-de-lado.css -importado en src/main.tsx:22, después de styles-horizontal-
+    :25-31  botón y avance de 48 dentro de .visor-lado; la columna, la cabecera, las filas; el
+            SelectorSubtitulos vestido de fila -el CC y el estilo elegido-; :118 el panel abierto de
+            320 a la izquierda de la columna, con su título desde aria-label -en el idioma de la app-;
+            :154 el botón de Subtítulos de la tarjeta con min 48.
+  src/App.tsx:316-323  el estilo de las barras pasa por fijarEstiloDeLaApp. El comentario del catch de
+    antes quedó citado ahí mismo.
+  src/lib/diagnostico.ts:60-65 y :137-138  el tipo 'visor-lado' -evento y detalle- y su línea en
+    comoTexto.
+  src/lib/registroVisorLado.ts  ver EL REGISTRO DEL VISOR DE LADO.
+
+==============================================================================
+EL REGISTRO DEL VISOR DE LADO -formato-
+==============================================================================
+  Cada línea: «visor-lado <evento> clave=valor clave=valor ...». Un valor sin dato es «-».
+  Va a tres lugares -src/lib/registroVisorLado.ts:45-:
+    1. Al registro de diagnóstico -anotar, tipo 'visor-lado'-, si está encendido: durante una toma.
+       En comoTexto: «<ms>\tvisor-lado\t<evento> <detalle>».
+    2. A la consola: «[visor-lado] <evento> <detalle>» -adb logcat, chromium; o chrome://inspect-.
+    3. A <grabaciones>/visor-lado.txt, al cerrar el visor de lado o al volver de pie -:71-. Cada línea
+       con la hora del teléfono: «AAAA-MM-DD HH:MM:SS.mmm\tvisor-lado\t<evento> <detalle>». Se agrega
+       al final y quedan las últimas 4000. Hace falta porque el diagnóstico se apaga al terminar la
+       toma y el visor se abre después. Para sacarlo, con la APK de depuración:
+         adb shell run-as com.sigoteleprompter.app cat files/grabaciones/visor-lado.txt
+
+  EVENTOS
+    abrir   toma=<id> layout=tel-h ancho=<innerWidth> alto=<innerHeight>
+    cerrar  toma=<id>
+    barras  accion=hide|show bar=StatusBar estilo=Dark|Light nativo=true|false
+    bordes  motivo=apertura|resize|orientacion|capacitor|sondeo giro=<screen.orientation.angle>
+            tipo=<screen.orientation.type> fuente=env|capacitor l= r= t= b= -los que usa el visor-
+            envL= envR= envT= envB= -env()- capL= capR= capT= capB= -las variables de Capacitor-
+            viewport=<innerWidth>x<innerHeight> visual=<visualViewport> dpr=<devicePixelRatio>
+            msDesdeHide=<ms desde SystemBars.hide, o - si el visor no tiene las barras>
+            Se anota al abrir y CADA VEZ QUE ALGO CAMBIA -no en cada sondeo igual-.
+    video   toma=<id> videoWidth= videoHeight= forma=horizontal|vertical|sin-dato usada=horizontal|
+            vertical miniatura=<ancho>x<alto>|cargando|sin-miniatura|no-cargo
+            rotacionSidecar=<valor>|sin-campo|sin-sidecar calidad=<del sidecar>
+            -el sidecar de hoy no guarda rotación, lib/sidecar.ts:28-49: sale sin-campo-.
+    letra   rotulos=guardar:<px>,subtitulos:<px>,... escala=<px más chico / 12> filas=<alto de cada
+            fila de acción> bajo48=si|no
+
+==============================================================================
+QUÉ MIRA CLAUDE EN EL MOTO G86 -APK /workspace/apk/Sigo-visor-de-lado.apk-
+==============================================================================
+  Antes: grabar una toma de lado -16:9- y una de pie -9:16- con la 87/89 o tener las del corpus.
+  (a) LA BARRA DE ESTADO SE VUELVE A OCULTAR. Abrir el visor de lado, deslizar desde arriba, esperar
+      3 s sin tocar. En visor-lado.txt: «barras accion=hide», después «bordes motivo=capacitor|sondeo
+      ... t=24 ... msDesdeHide=N» y, si se vuelve a ocultar sola, otra «bordes ... t=0». Si no vuelve
+      a 0, el comportamiento por omisión -SystemBars no fija systemBarsBehavior- la deja a la vista: se
+      decide entonces -volver a llamar a hide o un ajuste nativo-.
+  (b) GIRO 270. Girar a 90 y a 270 con el visor abierto. Esperado: giro=90 l=44 r=48 y giro=270 l=48
+      r=44 -recorte y barra de tres botones-. Ver también fuente=env y que envL/envR coincidan.
+  (c) LA FORMA. Abrir una toma de lado y una de pie: «video videoWidth=1920 videoHeight=1080
+      forma=horizontal» y «videoWidth=1080 videoHeight=1920 forma=vertical» -o la resolución que
+      sea-, con la miniatura de la misma forma. Si una toma de pie sale horizontal, el lado nativo
+      escribe la rotación de otra manera y la detección tiene que leerla.
+  (d) LOS BORDES DE LA WEBVIEW. viewport=915x411 -o el real-, dpr=2.81 -450/160-, t=0 con la barra
+      oculta, y envL/envR contra capL/capR: si env da 0 y Capacitor no, la WebView es vieja
+      -antes de la 140- y el visor usa las variables -fuente=capacitor-.
+  (e) LA LETRA AGRANDADA. Ajustes del teléfono → tamaño de letra al máximo, abrir el visor de lado.
+      «letra rotulos=guardar:<px> escala=<n> filas=... bajo48=si|no». Si escala sigue en 1, la WebView
+      no sigue la escala del sistema -textZoom en 100-; si sube, mirar que bajo48 siga en no.
+  Y a la vista: el caso 1 con la toma de lado -video a todo el alto, barra debajo, columna con X,
+  nombre, Guardar, Subtítulos, Repetir y Borrar-, el caso 2 con la de pie, los dos con la app en tema
+  claro -tienen que salir oscuros, con los íconos de la barra de tres botones claros-, Subtítulos
+  abierto y una toma guardada. De pie, el visor igual que antes.
+
+==============================================================================
+PRUEBAS -src/pruebas/tarea90.test.tsx-
+==============================================================================
+  Fallan contra main c03d734 -verificado: worktree de origin/main con este archivo copiado; 31 de 35
+  fallan, cada una por su nombre: los módulos nuevos se cargan con import() dentro de la prueba-:
+    - detección: 16:9 → caso 1; 9:16 → caso 2; la miniatura decide antes; el video manda sobre la
+      miniatura; sin nada, caso 2; formaDeVideo.
+    - medidas: caso 1 y caso 2 en 915x411 y 800x360, giro 90 y 270 -8 pruebas, tolerancia 1 dp-; la
+      columna nunca baja de 112; sin registro del motor, tres filas; Subtítulos abierto -el panel sale
+      de la fila de la columna, con 4 opciones-; toma guardada -Compartir y Borrar-.
+    - toques de 48 y rótulos de 12: X, botón, avance, barra de 52; filas de la columna; tarjeta del
+      caso 2.
+    - siempre oscuro: data-tema="oscuro" en la raíz con la app en claro.
+    - SystemBars: hide y Dark al abrir; show y el estilo de la app al cerrar; show al volver de pie y
+      hide al volver de lado; el estilo de la app espera mientras el visor tiene las barras; App ya no
+      llama a SystemBars directo.
+    - registro: (a)(b)(d) bordes con giro 270 y el cambio de t=0 a t=24 con msDesdeHide; (c) video y
+      sidecar; (e) letra; visor-lado.txt al cerrar.
+    - la franja del caso 1 no cierra y el fondo del caso 2 sí -sumada después; falla contra main-.
+  Pasan contra main y tienen que seguir pasando -guardianas-:
+    - de pie: la tarjeta de siempre -tarjeta-elevada, min(720px, 100%), los hijos de hoy, sin
+      data-tema propio, fondo #111111, overflowY auto-, sin filas ni toques nuevos;
+    - de pie no se tocan las barras del sistema;
+    - de pie el video sigue en 100% y 70vh;
+    - el bloque [data-tema="oscuro"] de styles.css no exige :root.
+  Las de la tarea 89 sobre el visor de pie -bordes seguros y desplazamiento- siguen pasando.
+
+==============================================================================
+CAPTURAS Y LÁMINAS -docs/pantallas/tarea90/-
+==============================================================================
+  lamina-comparada-resumen.png y 32 lamina-comparada-caso{1-horizontal,2-vertical}-giro{90,270}
+  [-subtitulos|-guardada]-{915x411,800x360}-{oscuro,claro}.png: a la izquierda el boceto aprobado con
+  la barra de 52 -boceto/-, a la derecha la app real -app-real/-, y debajo la tabla de medidas de las
+  dos, en rojo lo que la app deje por debajo -nada-. medidas-comparadas.json: todas las cajas.
+  CÓMO SE REHACEN: un vite con la configuración del repo, server.fs.strict=false y un plugin que cambia
+  src/lib/archivosNativos.ts por herramientas/archivosNativos-de-prueba.ts -entrega el registro del
+  motor de la toma 008a7133 del corpus para que haya subtítulos-, en 127.0.0.1:5190; después
+  node docs/pantallas/tarea90/herramientas/capturas-app-real.cjs y laminas-comparadas.cjs.
+  herramientas/app-real.tsx monta el ReproductorGrabacion de verdad con medios/horizontal.mp4
+  -1280x720- o medios/vertical.mp4 -720x1280-, y los bordes del g86 escritos como los escribe
+  Capacitor -Chrome no tiene recorte ni barra, y env() da 0-. La barra de tres botones y el agujero
+  de la cámara están dibujados encima, como en el boceto.
+
+==============================================================================
+LO QUE NO CALZÓ
+==============================================================================
+  - LAS MEDIDAS DEL ENCARGO A 915: ~641 × 359 y ~182 no son 16:9; lo exacto es 638 × 359 y 185.
+  - LA TARJETA DEL CASO 2 SALE 8 DP MÁS ALTA QUE EN EL BOCETO -250 contra 242-: el botón de Subtítulos
+    medía ~40 en el boceto y el encargo pide toques de 48; se le puso min-height 48. Queda por encima
+    del piso, no por debajo. Todo lo demás de la tarjeta se corre 4 dp hacia arriba por el centrado.
+  - EL PANEL DE SUBTÍTULOS ABIERTO salía de 94 de alto: el boceto le ponía el título «Subtítulos» con
+    ::before. Se agregó igual, con la palabra del aria-label -en el idioma de la app- y en 1rem: 124,
+    como el boceto.
+  - AL GIRAR CON EL VISOR ABIERTO el <video> es otro elemento -cambia la disposición-: sigue desde
+    donde iba, pero en pausa. No se le dio play solo.
+  - EL REGISTRO DE DIAGNÓSTICO está apagado fuera de una toma, y el visor se abre después: por eso
+    visor-lado.txt y la consola, además de anotar.
+  - LOS BORDES EN LAS CAPTURAS son las variables de Capacitor, no env(): Chrome no tiene recorte. En
+    el teléfono manda env(); si da todo 0 y Capacitor no, se usan las variables. A verificar en (d).
+  - EL SIDECAR NO TRAE ROTACIÓN -lib/sidecar.ts-: el registro (c) lo anota como sin-campo. La forma
+    sale solo de videoWidth/videoHeight y de la miniatura.
+  - LA LETRA DEL SISTEMA no se puede agrandar en Chrome: (e) se mira en el teléfono.
+  - LOS VIDEOS DE LAS CAPTURAS son de 1280x720 y 720x1280 -un fondo y una silueta hechos con ffmpeg-,
+    no de 1080p: para el visor cuenta la forma. Los subtítulos son los de la toma 008a7133 a los 2,5 s.
+  - CASO 1, LA FRANJA DEL RECORTE: tocarla no cierra el visor -en el caso 1 no hay «afuera»-. El
+    boceto no lo decía; de pie, tocar fuera de la tarjeta cierra, y en el caso 2 el fondo también.
