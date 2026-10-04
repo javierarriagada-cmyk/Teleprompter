@@ -79,7 +79,10 @@ export const EVENTOS = {
   ensayo: ['id', 'ensayo'],
   forma: ['id', 'dur_ms', 'bytes', 'ancho_px', 'alto_px', 'rot_grados', 'fps', 'bitrate_bps', 'mime_video', 'mime_audio', 'audio_hz', 'audio_canales', 'calidad_toma'],
   guardado_inicio: ['id', 'modo', 'estilo', 'margen', 'dur_toma_ms', 'bytes_entrada', 'rot_grados'],
-  capa: ['id', 'H_px', 'W_px', 'letra_px', 'alto_renglon_px', 'renglones', 'base_px', 'ascent_px', 'descent_px', 'contorno_px', 'caja_abajo_px', 'pintado_abajo_px', 'pintado_arriba_px'],
+  capa: ['id', 'H_px', 'W_px', 'letra_px', 'alto_renglon_px', 'renglones', 'base_px', 'ascent_px', 'descent_px', 'contorno_px', 'caja_abajo_px', 'pintado_abajo_px', 'pintado_arriba_px',
+    // -tarea 87, subtítulos en horizontal- La letra antes del ajuste, el renglón más ancho a esa letra,
+    // el ancho útil -88 %- y el largo de renglón de la forma del cuadro -32 o 47-.
+    'letra_base_px', 'renglon_ancho_px', 'util_px', 'letras_renglon'],
   guardado_fin: ['id', 'resultado', 'msTransformer', 'msCopia', 'msGuardado', 'bytes_salida', 'cuadros', 'bitrate_salida_bps', 'error'],
   copias_borradas: ['pedidas', 'borradas', 'fallidas']
 } as const

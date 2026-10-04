@@ -1,6 +1,6 @@
 import React from 'react'
 import { hapticaSeleccion } from '../haptica'
-import { ESTILOS_SUBTITULO, EstiloSubtitulo, Subtitulo, subtituloEn, MARGEN_ABAJO_SUBTITULOS } from '../lib/subtitulos'
+import { ESTILOS_SUBTITULO, EstiloSubtitulo, Subtitulo, subtituloEn, MARGEN_ABAJO_SUBTITULOS, letraSubtitulo } from '../lib/subtitulos'
 import { t, useTextos, ClaveTexto } from '../textos'
 import { IconoSubtitulos } from './IconosApp'
 
@@ -99,7 +99,9 @@ export function CapaSubtitulos({
         // La letra es una proporcion del alto de la imagen, igual que tendra
         // quemada: 1/32 del alto, la del prototipo que Javier aprobo -40 sobre
         // 1280-.
-        fontSize: rect.h / 32
+        // -tarea 87, subtítulos en horizontal- Contra el lado corto de la imagen, la misma cuenta del
+        // archivo: en vertical es la de siempre; en horizontal ya no sale chica. Antes: rect.h / 32.
+        fontSize: letraSubtitulo(rect.w, rect.h)
       }}
     >
       {/* -tarea 87, 04-10-2026- Un sexto del alto de la imagen, en vertical y en horizontal: la

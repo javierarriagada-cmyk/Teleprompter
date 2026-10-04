@@ -1,0 +1,170 @@
+{
+ "etapa": "despues",
+ "letrasMW": 47,
+ "pieNormal": {
+  "imagen": {
+   "ancho": 371.5,
+   "alto": 209
+  },
+  "letra": 11.61,
+  "disponible": 327,
+  "renglones": [
+   {
+    "texto": "que podríamos llamar la concepción",
+    "letras": 34,
+    "ancho": 189,
+    "lineas": 1
+   },
+   {
+    "texto": "trágica de la naturaleza humana.",
+    "letras": 32,
+    "ancho": 170.1,
+    "lineas": 1
+   }
+  ],
+  "cabe": true,
+  "abajo": 34.8
+ },
+ "pieMW": {
+  "imagen": {
+   "ancho": 371.5,
+   "alto": 209
+  },
+  "letra": 11.61,
+  "disponible": 327,
+  "renglones": [
+   {
+    "texto": "MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM",
+    "letras": 47,
+    "ancho": 477.6,
+    "lineas": 1
+   }
+  ],
+  "cabe": false,
+  "abajo": 34.8
+ },
+ "ladoNormal": {
+  "imagen": {
+   "ancho": 638,
+   "alto": 358.9
+  },
+  "letra": 19.94,
+  "disponible": 561.4,
+  "renglones": [
+   {
+    "texto": "que podríamos llamar la concepción",
+    "letras": 34,
+    "ancho": 324.3,
+    "lineas": 1
+   },
+   {
+    "texto": "trágica de la naturaleza humana.",
+    "letras": 32,
+    "ancho": 291.8,
+    "lineas": 1
+   }
+  ],
+  "cabe": true,
+  "abajo": 59.8
+ },
+ "ladoMW": {
+  "imagen": {
+   "ancho": 638,
+   "alto": 358.9
+  },
+  "letra": 19.94,
+  "disponible": 561.4,
+  "renglones": [
+   {
+    "texto": "MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM",
+    "letras": 47,
+    "ancho": 819.5,
+    "lineas": 1
+   }
+  ],
+  "cabe": false,
+  "abajo": 59.8
+ },
+ "cuadro-normal": {
+  "W": 1920,
+  "H": 1080,
+  "forma": "horizontal",
+  "maxLetras": 47,
+  "letraBase": 60,
+  "letra": 60,
+  "ajustada": false,
+  "renglonMasAnchoBase": 976.7,
+  "renglonMasAncho": 976.7,
+  "disponible": 1689.6,
+  "renglones": [
+   "que podríamos llamar la concepción",
+   "trágica de la naturaleza humana."
+  ],
+  "letrasPorRenglon": [
+   34,
+   32
+  ],
+  "hora": 3500
+ },
+ "cuadro-mw": {
+  "W": 1920,
+  "H": 1080,
+  "forma": "horizontal",
+  "maxLetras": 47,
+  "letraBase": 60,
+  "letra": 41.07,
+  "ajustada": true,
+  "renglonMasAnchoBase": 2468.2,
+  "renglonMasAncho": 1689.2,
+  "disponible": 1689.6,
+  "renglones": [
+   "MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
+  ],
+  "letrasPorRenglon": [
+   47
+  ],
+  "hora": 3500
+ },
+ "cuadro-vertical": {
+  "W": 1080,
+  "H": 1920,
+  "forma": "vertical",
+  "maxLetras": 32,
+  "letraBase": 60,
+  "letra": 60,
+  "ajustada": false,
+  "renglonMasAnchoBase": 588.1,
+  "renglonMasAncho": 588.1,
+  "disponible": 950.4,
+  "renglones": [
+   "que podríamos llamar",
+   "la concepción trágica"
+  ],
+  "letrasPorRenglon": [
+   20,
+   21
+  ],
+  "hora": 3500
+ },
+ "cuadro-720": {
+  "W": 1280,
+  "H": 720,
+  "forma": "horizontal",
+  "maxLetras": 47,
+  "letraBase": 40,
+  "letra": 40,
+  "ajustada": false,
+  "renglonMasAnchoBase": 651.2,
+  "renglonMasAncho": 651.2,
+  "disponible": 1126.4,
+  "renglones": [
+   "que podríamos llamar la concepción",
+   "trágica de la naturaleza humana."
+  ],
+  "letrasPorRenglon": [
+   34,
+   32
+  ],
+  "hora": 3500
+ }
+}

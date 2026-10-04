@@ -294,6 +294,62 @@ Comparado con el boceto **aprobado** (24 dp), el video mide 21 dp menos con el p
 con gestos, donde el tope de 70vh ya lo cortaba). Es la barra de estado real, no un cambio de diseño.
 Con el panel abierto mide 137 más (antes de sacar Posición, 31).
 
+### El subtítulo en la toma horizontal (04-10-2026, pedido de Javier)
+
+Antes, la toma horizontal usaba las medidas de la vertical: renglones de 32 letras y la letra a
+alto/32. Por eso se veía angosta y chica.
+
+Ahora hay una constante por lado, con el mismo criterio:
+
+- **Renglones:** hasta 47 letras en horizontal y 32 en vertical. Cuadrado cuenta como vertical.
+  - TS: `LETRAS_POR_RENGLON` en `src/lib/subtitulos.ts`.
+  - Java: `UbicacionSubtitulos.LETRAS_VERTICAL` y `LETRAS_HORIZONTAL`.
+- **Letra:** el lado corto del cuadro / 18, o sea 1/32 de 1920 en una imagen de 1080.
+  - TS: `LADO_CORTO_EN_LETRAS` y `letraSubtitulo`.
+  - Java: `UbicacionSubtitulos.letra`.
+
+| Cuadro | Letra antes | Letra después | Renglón máximo |
+|---|---|---|---|
+| 1920×1080 (horizontal) | 33,75 | **60** | 32 → **47** |
+| 1280×720 (horizontal) | 22,5 | **40** | 32 → **47** |
+| 1080×1920 (vertical) | 60 | 60 (igual al píxel) | 32 |
+| 720×1280 (vertical) | 40 | 40 | 32 |
+| Visor de pie, imagen 371,5×209 | 6,53 | **11,61** | 32 → 47 |
+| Visor de lado caso 1, imagen 638×358,9 | 11,21 | **19,94** | 32 → 47 |
+
+El subtítulo del corpus a los 3,5 s:
+
+- antes: «que podríamos llamar / la concepción trágica», 20 y 21 letras;
+- después: «que podríamos llamar la concepción / trágica de la naturaleza humana.», 34 y 32 letras;
+- en el archivo de 1920 mide 976,7 px de 1689,6 disponibles, y cabe.
+
+**Un renglón de 47 «MW»** (una sola palabra), medido con Roboto 700, la letra del sistema. Los
+avances salen del ttf con fontTools y el canvas de Chrome mide lo mismo: M = 1793/2048 em y
+W = 1792/2048 em, o sea 41,14 em.
+
+| Dónde | Ancho a la letra nueva | Disponible (88 %) | Resultado |
+|---|---|---|---|
+| Archivo 1920×1080, letra 60 | 2468,2 px | 1689,6 | **No cabe** (+778,6). Lo resuelve el ajuste que ya tenía CapaDeSubtitulos, ahora en `UbicacionSubtitulos.letraQueCabe`: la letra de ese subtítulo baja a **41,07** y el renglón mide 1689,2 |
+| Visor de pie, letra 11,61 | 477,6 | 327 | **Se sale 150,6** (46 %): pasa el borde de la imagen |
+| Visor de lado caso 1, letra 19,94 | 819,5 | 561,4 | **Se sale 258,1**: pasa sobre la franja y la columna |
+
+Antes, con 32 «MW», cabía en todos los casos: 945,3 de 1689,6 en el archivo, 182,5 de 327 de pie y
+313,8 de 561,4 de lado. En vertical pasa lo mismo hoy: 32 «MW» a 60 px miden 1680 de 950,4, el
+archivo achica la letra y el visor no.
+
+Un renglón ancho con espacios, como «MW MW …» de 47 letras (31,7 em), mide en el archivo 1904 px:
+la letra baja a 53,2. En el visor no se sale: se parte en dos líneas y el subtítulo queda de tres.
+
+**Salida propuesta para el visor (NO aplicada):** que el visor haga lo mismo que el archivo. Se mide
+el renglón más ancho con un canvas, con Roboto 700 a la letra calculada, y si pasa del 88 % de la
+imagen se achica la letra de todo el subtítulo con la misma cuenta de `letraQueCabe`. Así el visor
+mostraría lo mismo que queda guardado. La otra salida es partir antes, por ancho medido en vez de por
+letras; esa cambiaría los renglones también en el archivo.
+
+La lámina es `horizontal/lamina-horizontal.png`, con las sueltas `horizontal/{antes,despues}-*.png`.
+Las herramientas están en `horizontal/herramientas/`: `capturas.cjs antes|despues`, `cuadro.tsx` (el
+cuadro exportado simulado en canvas) y `laminas.cjs`.
+
 ### Las láminas
 
 Están en `implementacion/`:

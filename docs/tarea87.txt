@@ -936,3 +936,33 @@ GUARDAR Y COMPARTIR DE LADO -04-10-2026, pedido de Javier en el #71-
   Pruebas: src/pruebas/tarea87-lado-compartir.test.tsx, 7 pruebas que fallaban antes del cambio.
   En tarea90.test.tsx se pusieron al día, con «Antes:», tres guardianas de la 90 que contaban las
   filas o los rótulos de la columna.
+
+SUBTÍTULOS EN LA TOMA HORIZONTAL -04-10-2026, pedido de Javier en el #71-
+  En horizontal, el subtítulo se veía angosto y chico porque usaba las medidas de la vertical:
+  renglones de 32 letras y la letra a alto/32. Ahora:
+  1. Renglones de hasta 47 letras en horizontal; en vertical siguen siendo 32 y cuadrado cuenta como
+     vertical.
+     - TS: LETRAS_POR_RENGLON en src/lib/subtitulos.ts. armarSubtitulos(registro, forma) y
+       partirEnRenglones(ws, maxLetras); sin forma, vertical.
+     - El visor arma los subtítulos con la forma del cuadro: la orientación de la toma o, sin ella,
+       la del video. Los mismos renglones van al archivo.
+     - Java: UbicacionSubtitulos.LETRAS_VERTICAL y LETRAS_HORIZONTAL. Java no parte renglones,
+       porque llegan hechos en el JSON. La cifra va a evento=capa -letras_renglon- y a las pruebas,
+       y una guardiana comprueba que TS y Java dicen lo mismo.
+  2. La letra se mide contra el lado corto del cuadro: lado corto / 18, en las dos orientaciones.
+     - TS: LADO_CORTO_EN_LETRAS y letraSubtitulo. Java: UbicacionSubtitulos.letra.
+     - Da 60 px en 1080 y 40 en 720 (antes, en horizontal, 33,75 y 22,5).
+     - La vertical de 9:16 queda igual al píxel: 1080/18 = 1920/32 = 60.
+  La posición a 1/6 no se toca.
+  El renglón ancho: 47 «MW» a 60 px miden 2468 px y el útil de 1920 es 1689,6, así que no cabe.
+  - En el archivo lo resuelve el ajuste que ya existía en CapaDeSubtitulos, que achica la letra de
+    ese subtítulo a 41,07. Se sacó a UbicacionSubtitulos.letraQueCabe para probarlo.
+  - En el visor no hay ajuste: se sale 150,6 dp de pie y 258,1 de lado. La salida propuesta, sin
+    aplicar, está en docs/pantallas/tarea87/medidas-implementacion.md.
+  Lo que no calza:
+  - Una vertical que no sea 9:16, como un 480p de 480×640 si lo fuera, cambia la letra: 20 → 26,7.
+    Lo dice evento=forma.
+  - Un APK anterior sigue dibujando la horizontal a alto/32.
+  Pruebas: src/pruebas/tarea87-horizontal.test.tsx y UbicacionSubtitulosTest.java. La foto de los
+  renglones verticales de antes está en src/pruebas/corpus/subtitulos-verticales-d9e9c83.json.
+  Lámina: docs/pantallas/tarea87/horizontal/lamina-horizontal.png.

@@ -4,7 +4,7 @@ import { srcDeRuta, formatearDuracionMs, nombreDeToma } from './TiraGrabaciones'
 import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo } from '../lib/archivosNativos'
 import { orientacionDeToma } from '../lib/orientacion'
 import { anotar87, medirBordesSeguros, anotarOrientacion } from '../lib/medicionesTarea87'
-import { armarSubtitulos, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo } from '../lib/subtitulos'
+import { armarSubtitulos, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
 import { CapaSubtitulos, SelectorSubtitulos } from './SubtitulosVisor'
 import { t, useTextos } from '../textos'
 import { IconoGuardar, IconoCompartir, IconoRepetir, IconoCerrar, IconoTacho, IconoEmpezar, IconoPausa } from './IconosApp'
@@ -93,17 +93,18 @@ export default function ReproductorGrabacion({
   // guardo a su lado -<id>.motor.txt-. Una toma sin registro -anterior al
   // registro, o de la version web- no ofrece el boton: no hay con que armarlos.
   const [video, setVideo] = React.useState<HTMLVideoElement | null>(null)
-  const [subtitulos, setSubtitulos] = React.useState<Subtitulo[]>([])
+  // -tarea 87, subtítulos en horizontal- Se guarda el registro y los subtítulos se arman más abajo,
+  // con la forma del cuadro -32 o 47 letras por renglón-. Antes: setSubtitulos(armarSubtitulos(registro)).
+  const [registroMotor, setRegistroMotor] = React.useState<string | null>(null)
   const [estilo, setEstilo] = React.useState<EstiloSubtitulo>(() => estiloSubtituloGuardado())
   React.useEffect(() => {
     let vigente = true
-    setSubtitulos([])
+    setRegistroMotor(null)
     ;(async () => {
       try {
         const dir = await directorioGrabaciones()
         const registro = await leerTexto(juntos(dir, `${grabacion.id}.motor.txt`))
-        const subs = armarSubtitulos(registro)
-        if (vigente) setSubtitulos(subs)
+        if (vigente) setRegistroMotor(registro)
       } catch (e) {
         // sin registro no hay subtitulos, y la toma se ve igual
       }
@@ -267,6 +268,19 @@ export default function ReproductorGrabacion({
     })()
     return () => { vigente = false }
   }, [grabacion.id])
+
+  // -tarea 87, subtítulos en horizontal- LOS SUBTÍTULOS, con el largo de renglón de la forma del
+  // cuadro: la orientación de la toma -parte C, la del archivo visto derecho- y, sin ella, la forma que
+  // entrega el video. Sin ninguna, vertical. Los mismos renglones van al archivo guardado.
+  const formaCuadro: FormaCuadro = orientacion === 'horizontal' || orientacion === 'vertical' ? orientacion : forma ?? 'vertical'
+  const subtitulos = React.useMemo<Subtitulo[]>(() => {
+    if (!registroMotor) return []
+    try {
+      return armarSubtitulos(registroMotor, formaCuadro)
+    } catch (e) {
+      return []
+    }
+  }, [registroMotor, formaCuadro])
 
   // El panel de Subtítulos abierto esconde el nombre de la toma: el video gana ~52 dp -respuesta de
   // Claude del 04-10-.

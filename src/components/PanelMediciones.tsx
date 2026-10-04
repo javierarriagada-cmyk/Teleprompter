@@ -201,7 +201,8 @@ export function PanelMediciones({
     setAvance(0)
     try {
       const dir = await directorioGrabaciones()
-      const subs = armarSubtitulos(await leerTexto(juntos(dir, `${g.id}.motor.txt`)))
+      // -tarea 87, subtítulos en horizontal- Con la forma de la toma, como el visor. Antes sin forma.
+      const subs = armarSubtitulos(await leerTexto(juntos(dir, `${g.id}.motor.txt`)), g.orientacion ?? 'vertical')
       if (!subs.length) {
         setAviso('El registro de esa toma no da subtítulos: no hay qué quemar.')
         return

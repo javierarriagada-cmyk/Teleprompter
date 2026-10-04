@@ -86,6 +86,9 @@ final class CapaDeSubtitulos extends BitmapOverlay {
     // Lo que dejó dibujar en su última pasada, para la línea evento=capa.
     private int medW, medH, medRenglones, medGiro;
     private float medLetra, medAlto, medBase, medAscent, medDescent, medContorno, medCajaAbajo;
+    // -tarea 87, subtítulos en horizontal- La letra antes del ajuste, el renglón más ancho a esa letra y
+    // el ancho útil.
+    private float medLetraBase, medMasAncho, medUtil;
 
     void medirCon(String id, MedicionExport.Anotador anotador) {
         this.idMedicion = id;
@@ -191,18 +194,23 @@ final class CapaDeSubtitulos extends BitmapOverlay {
         // 1,25, un octavo del alto desde abajo, 6% de margen a los lados.
         // -tarea 87, 04-10-2026, Javier simplifica la 87- Ya no es un octavo: un sexto del alto,
         // en vertical y en horizontal -UbicacionSubtitulos.MARGEN_ABAJO, la misma cifra del visor-.
-        float letra = H / 32f;
+        // -tarea 87, subtítulos en horizontal- Contra el lado corto. Antes: float letra = H / 32f;
+        float letra = UbicacionSubtitulos.letra(W, H);
         Paint relleno = new Paint(Paint.ANTI_ALIAS_FLAG);
         relleno.setTypeface(Typeface.create("sans-serif", formal ? Typeface.NORMAL : Typeface.BOLD));
         relleno.setTextSize(letra);
-        float anchoMax = W * 0.88f;
+        float anchoMax = W * UbicacionSubtitulos.ANCHO_UTIL;
         // Un renglon demasiado ancho para el cuadro -una toma horizontal con letra
         // grande- achica la letra de todo el subtitulo, en vez de salirse.
         float espacio = relleno.measureText(" ");
         float masAncho = 0;
         for (List<Palabra> r : s.renglones) masAncho = Math.max(masAncho, anchoDe(r, relleno, espacio));
+        medLetraBase = letra;
+        medMasAncho = masAncho;
+        medUtil = anchoMax;
+        // Antes: letra = letra * anchoMax / masAncho, escrito aquí. Ahora en UbicacionSubtitulos.
         if (masAncho > anchoMax) {
-            letra = letra * anchoMax / masAncho;
+            letra = UbicacionSubtitulos.letraQueCabe(letra, masAncho, W);
             relleno.setTextSize(letra);
             espacio = relleno.measureText(" ");
         }
@@ -302,7 +310,12 @@ final class CapaDeSubtitulos extends BitmapOverlay {
                 "contorno_px", MedicionExport.decimal(medContorno),
                 "caja_abajo_px", MedicionExport.decimal(medCajaAbajo),
                 "pintado_abajo_px", pintadoAbajo,
-                "pintado_arriba_px", pintadoArriba));
+                "pintado_arriba_px", pintadoArriba,
+                // -tarea 87, subtítulos en horizontal-
+                "letra_base_px", MedicionExport.decimal(medLetraBase),
+                "renglon_ancho_px", MedicionExport.decimal(medMasAncho),
+                "util_px", MedicionExport.decimal(medUtil),
+                "letras_renglon", UbicacionSubtitulos.letrasPorRenglon(medW, medH)));
         } catch (Exception e) {
             // una medición que falla no puede romper el guardado
         }
