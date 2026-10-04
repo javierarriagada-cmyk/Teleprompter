@@ -234,9 +234,11 @@ export default function ReproductorGrabacion({
       motivo,
       giro: l.giro,
       tipo: l.tipo,
-      l: l.env.izquierda, r: l.env.derecha, t: l.env.arriba, b: l.env.abajo,
-      capL: l.capacitor.izquierda, capR: l.capacitor.derecha, capT: l.capacitor.arriba, capB: l.capacitor.abajo,
+      // Los que usa el visor -de env() o, si no hay, de Capacitor- y después los dos por separado.
       fuente: l.fuente,
+      l: l.usados.izquierda, r: l.usados.derecha, t: l.usados.arriba, b: l.usados.abajo,
+      envL: l.env.izquierda, envR: l.env.derecha, envT: l.env.arriba, envB: l.env.abajo,
+      capL: l.capacitor.izquierda, capR: l.capacitor.derecha, capT: l.capacitor.arriba, capB: l.capacitor.abajo,
       viewport: `${l.ancho}x${l.alto}`,
       visual: l.visual,
       dpr: l.dpr,
