@@ -2,6 +2,11 @@
 // docs/pantallas/tarea89/herramientas/boceto.tsx de la rama tarea89-tres-defectos -PR #67, 492165c,
 // cuarta versión aprobada por Javier- con su único ajuste: el botón y el avance de la barra de
 // reproducción en 48, así que la barra pasa de 48 a 52. NO es código de la app.
+// -04-10-2026, (4)- Y un segundo ajuste de Javier, que lo vio en su moto: la columna del caso 1 era
+// demasiado ancha. Pasa al 70% de lo que era -185 → 130 a 915, 160 → 112 a 800, nunca menos de 112- y el
+// video, con la misma altura en 16:9 y la barra de 52 debajo a su ancho, se centra en lo que sobra entre
+// el borde seguro y la columna. Las franjas de los lados, negras a la altura del video. El caso 2 no
+// cambia: no tiene columna, tiene la tarjeta de 320.
 // BOCETO DEL VISOR DE LADO, CUARTA VERSIÓN -tarea 89, defecto 2, 04-10-2026, 11:26-. Claude aprobó la
 // tercera -boceto-descartado-3.tsx- como piso, con dos ajustes que se hacen aquí:
 //   A. El visor de lado es SIEMPRE OSCURO, también con la app en tema claro, como cualquier reproductor de
@@ -129,22 +134,28 @@ function Caso1() {
   const util = W - IN.izquierda - IN.derecha
   const altoVideo = H - IN.arriba - IN.abajo - ALTO_BARRA_AVANCE
   const anchoVideo = Math.round(altoVideo * 16 / 9)
-  const columna = util - anchoVideo
-  const ajuste = columna < RIEL_IZQ_LEER
-  ;(window as any).medidas = { caso: 1, giro, estado, W, H, IN, util, altoBarra: ALTO_BARRA_AVANCE, altoVideo, anchoVideo, columna, ajuste }
+  // -(4)- Antes: const columna = util - anchoVideo, y el video pegado al borde seguro.
+  const resto = util - anchoVideo
+  const columna = resto >= RIEL_IZQ_LEER ? Math.max(RIEL_IZQ_LEER, Math.round(resto * 0.7)) : resto
+  const ajuste = resto < RIEL_IZQ_LEER
+  const espacio = util - columna
+  const xVideo = IN.izquierda + Math.round((espacio - anchoVideo) / 2)
+  ;(window as any).medidas = { caso: 1, giro, estado, W, H, IN, util, altoBarra: ALTO_BARRA_AVANCE, altoVideo, anchoVideo, columna, ajuste, xVideo, espacio }
   React.useEffect(() => {
     if (estado === 'subtitulos') (document.querySelector('[data-testid="btn-subtitulos"]') as HTMLElement | null)?.click()
   }, [])
   return (
     <div style={{ position: 'fixed', inset: 0, background: 'var(--bg-superficie)', color: 'var(--color-texto)' }}>
-      <div className="visor-video" data-medida="video" style={{ position: 'absolute', left: IN.izquierda, top: IN.arriba, width: anchoVideo, height: altoVideo }}>
+      <div style={{ position: 'absolute', left: 0, top: IN.arriba, width: xVideo, height: altoVideo, background: '#000' }} />
+      <div style={{ position: 'absolute', left: xVideo + anchoVideo, top: IN.arriba, width: IN.izquierda + espacio - xVideo - anchoVideo, height: altoVideo, background: '#000' }} />
+      <div className="visor-video" data-medida="video" style={{ position: 'absolute', left: xVideo, top: IN.arriba, width: anchoVideo, height: altoVideo }}>
         <VideoDeMentira ancho={anchoVideo} alto={altoVideo} horizontal />
         <span className="play-visor" aria-hidden="true"><IconoEmpezar tamano={30} /></span>
       </div>
-      <div style={{ position: 'absolute', left: IN.izquierda, top: IN.arriba + altoVideo, width: anchoVideo, height: ALTO_BARRA_AVANCE }}>
+      <div style={{ position: 'absolute', left: xVideo, top: IN.arriba + altoVideo, width: anchoVideo, height: ALTO_BARRA_AVANCE }}>
         <BarraDeAvance actual="1:04" total="4:12" avance={25} />
       </div>
-      <div data-medida="columna" style={{ position: 'absolute', top: IN.arriba, bottom: IN.abajo, left: IN.izquierda + anchoVideo, width: columna, boxSizing: 'border-box', borderLeft: '1px solid var(--color-separador)', display: 'flex', flexDirection: 'column' }}>
+      <div data-medida="columna" style={{ position: 'absolute', top: IN.arriba, bottom: IN.abajo, left: IN.izquierda + espacio, width: columna, boxSizing: 'border-box', borderLeft: '1px solid var(--color-separador)', display: 'flex', flexDirection: 'column' }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', padding: 'var(--aire-2) var(--aire-1) 0 var(--aire-3)' }}>
           <div style={{ flex: 1, minWidth: 0, paddingTop: 'var(--aire-2)' }}>
             <div style={{ fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Larralde</div>

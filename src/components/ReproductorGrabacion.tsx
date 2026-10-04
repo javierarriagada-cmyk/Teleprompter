@@ -75,7 +75,14 @@ export default function ReproductorGrabacion({
   const [total, setTotal] = React.useState(grabacion.duracionMs / 1000)
   // -tarea 90-: al girar el teléfono el visor cambia de disposición y el <video> es otro elemento. El
   // nuevo sigue desde donde iba el anterior -reanudarEn- en vez de volver a 0.
+  // -04-10-2026, después del #68-: además de la posición se guarda si iba reproduciéndose. Antes el
+  // nuevo quedaba siempre en pausa; ahora, si el de antes andaba, el nuevo sigue andando -play() al
+  // cargar-, y si estaba en pausa, sigue en pausa. «iba» se lleva con los eventos play/pause del
+  // elemento MIENTRAS ESTÁ EN LA PÁGINA: al sacarlo, Chromium lo pausa solo -y dispara pause-, y esa
+  // pausa no cuenta.
   const reanudarEn = React.useRef(0)
+  const ibaReproduciendo = React.useRef(false)
+  const reanudarReproduciendo = React.useRef<boolean | null>(null)
   // La forma que trae el archivo -tarea 90, (c)-: la anota el visor de lado.
   const medidaVideo = React.useRef<{ ancho: number; alto: number } | null>(null)
   const [forma, setForma] = React.useState<FormaVideo | null>(null)
@@ -84,8 +91,16 @@ export default function ReproductorGrabacion({
   React.useEffect(() => {
     if (!video) return
     setReproduciendo(!video.paused && !video.ended)
-    const alReproducir = () => setReproduciendo(true)
-    const alPausar = () => setReproduciendo(false)
+    // El elemento nuevo empieza con lo suyo: si después el play del giro no resulta, no queda «iba».
+    ibaReproduciendo.current = !video.paused && !video.ended
+    const alReproducir = () => {
+      setReproduciendo(true)
+      if (video.isConnected) ibaReproduciendo.current = true
+    }
+    const alPausar = () => {
+      setReproduciendo(false)
+      if (video.isConnected) ibaReproduciendo.current = false
+    }
     const alAvanzar = () => setActual(video.currentTime)
     const alCargar = () => {
       if (Number.isFinite(video.duration) && video.duration > 0) setTotal(video.duration)
@@ -103,6 +118,36 @@ export default function ReproductorGrabacion({
         }
         reanudarEn.current = 0
       }
+      // Lo de reproduciendo o en pausa -ver reanudarEn-. Se anota en el registro visor-lado, también si
+      // Android o la WebView no dejan reproducir sin un toque: Capacitor pone
+      // setMediaPlaybackRequiresUserGesture(false) -Bridge.java:592-, así que no debería pasar.
+      const retomar = reanudarReproduciendo.current
+      if (retomar !== null) {
+        reanudarReproduciendo.current = null
+        const t = Number(video.currentTime) || 0
+        if (!retomar) {
+          anotarVisorLado('giro-video', { toma: grabacion.id, estado: 'pausa', t, resultado: 'pausa' })
+          volcarRegistroVisorLado()
+        } else {
+          let promesa: Promise<void> | undefined
+          try {
+            promesa = video.play()
+          } catch (e: any) {
+            promesa = Promise.reject(e)
+          }
+          Promise.resolve(promesa).then(
+            () => {
+              anotarVisorLado('giro-video', { toma: grabacion.id, estado: 'reproduciendo', t, resultado: 'ok' })
+              volcarRegistroVisorLado()
+            },
+            (e: any) => {
+              // Bloqueado: queda en pausa, con el botón de reproducir a la vista, en la misma posición.
+              anotarVisorLado('giro-video', { toma: grabacion.id, estado: 'reproduciendo', t, resultado: 'bloqueado', error: (e && e.name) || String(e) })
+              volcarRegistroVisorLado()
+            }
+          )
+        }
+      }
     }
     video.addEventListener('play', alReproducir)
     video.addEventListener('pause', alPausar)
@@ -113,6 +158,9 @@ export default function ReproductorGrabacion({
     if (video.readyState >= 1) alCargar()
     return () => {
       reanudarEn.current = video.currentTime || 0
+      // En pausa y en 0 no hay nada que retomar -pasa cuando la miniatura cambia el caso antes de que
+      // la toma empiece-: no se anota.
+      reanudarReproduciendo.current = ibaReproduciendo.current || reanudarEn.current > 0 ? ibaReproduciendo.current : null
       video.removeEventListener('play', alReproducir)
       video.removeEventListener('pause', alPausar)
       video.removeEventListener('ended', alPausar)
@@ -443,6 +491,10 @@ export default function ReproductorGrabacion({
           {/* Tocar la franja no cierra: en el caso 1 no hay «afuera», y es justo donde cae el pulgar al
               tomar el teléfono de lado. El caso 2 sí cierra al tocar el fondo, como hoy fuera de la tarjeta. */}
           {m.video.x > 0 && <div aria-hidden="true" data-testid="visor-lado-franja" onClick={parar} style={{ position: 'absolute', left: 0, top: m.video.y, width: m.video.x, height: m.video.alto, background: '#000' }} />}
+          {/* -(4), 04-10-2026- Con la columna al 70% el video queda centrado y sobra una franja también
+              entre el video y la columna: negra como la otra, a la altura del video, y tampoco cierra. Al
+              lado de la barra sigue la superficie oscura de la raíz. */}
+          {m.franjas.derecha.ancho > 0 && <div aria-hidden="true" data-testid="visor-lado-franja-derecha" onClick={parar} style={{ position: 'absolute', left: m.franjas.derecha.x, top: m.franjas.derecha.y, width: m.franjas.derecha.ancho, height: m.franjas.derecha.alto, background: '#000' }} />}
           {cajaVideo({ left: m.video.x, top: m.video.y, width: m.video.ancho, height: m.video.alto })}
           {barra({ position: 'absolute', left: m.barra.x, top: m.barra.y, width: m.barra.ancho })}
           <div className="visor-lado-columna" data-testid="visor-lado-columna" onClick={parar} style={{ position: 'absolute', left: m.columna.x, top: m.columna.y, width: m.columna.ancho, height: m.columna.alto }}>

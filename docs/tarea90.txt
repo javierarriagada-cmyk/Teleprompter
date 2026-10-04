@@ -20,7 +20,11 @@ RESUMEN
   - LA COMPARACIÓN: en las 32 láminas -8 vistas, 2 temas, 2 tamaños- NINGUNA medida de la app queda
     por debajo del boceto. Video, barra, columna, X, botón, avance, filas y rótulos dan igual; la
     tarjeta del caso 2 sale 8 dp MÁS alta -ver LO QUE NO CALZÓ-.
-  - PRUEBAS: src/pruebas/tarea90.test.tsx, 36. Contra main c03d734: 31 fallan y 4 pasan -3
+  - PRUEBAS: src/pruebas/tarea90.test.tsx, 45 -36 más 4 del giro con el video andando, ver GIRAR
+    CON EL VIDEO ANDANDO, y 5 de la columna al 70%, ver LAS MEDIDAS-.
+  - -(4), 04-10-2026- LA COLUMNA AL 70%: 130 a 915 y 112 a 800 -era 185 y 160-, con el video centrado
+    en lo que sobra. Se actualizó también el boceto -herramientas/boceto-aprobado.tsx- y se rehicieron
+    las 32 láminas y la resumen: siguen sin medidas por debajo. Contra main c03d734: 31 fallan y 4 pasan -3
     guardianas de pie y la del bloque oscuro de styles.css, que es la condición de la que cuelga el
     siempre oscuro-. La 36 -la franja que no cierra- se sumó después y también falla contra main.
     Suite completa, typecheck y build: bien. APK: /workspace/apk/Sigo-visor-de-lado.apk.
@@ -43,6 +47,26 @@ LAS MEDIDAS -recalculadas con la barra de 52-
     - Filas de la columna -cabecera de 56: 8 de aire y la X de 48-: 88, 89, 89, 89 a 411 y 75, 76, 76,
       76 a 360. Toma guardada: 176 y 177; 151 y 152. Avance de la barra: 505 × 48 a 915 y 415 × 48 a 800.
     - Panel de Subtítulos abierto: 320 × 124, a 8 a la izquierda de la columna, a la altura de su fila.
+    - ESTAS ERAN LAS MEDIDAS HASTA EL 04-10-2026, 14:08. Las de ahora, abajo -(4)-.
+  CASO 1 DESDE EL 04-10-2026 -(4), Javier lo vio en su moto: «la columna es demasiado ancha»-:
+                  resto = útil − video; columna = round(resto × 0,7), mínimo 112 -FRACCION_COLUMNA y
+                  COLUMNA_MINIMA, src/lib/visorDeLado.ts-; el video, del mismo alto en 16:9 y con la
+                  barra de 52 debajo a su ancho, centrado en espacio = útil − columna.
+    - 915x411: resto 185 → 185 × 0,7 = 129,5 → 130. Espacio 693 = 28 + 638 + 27. Giro 90: video
+      638 × 359 en x 72, barra 638 × 52 en x 72, columna 130 en x 737 -termina en 867 = 915 − 48-.
+      Giro 270: video y barra en x 76, columna en x 741 -termina en 871 = 915 − 44-.
+    - 800x360: resto 160 → 112 -justo el mínimo-. Espacio 596 = 24 + 548 + 24. Giro 90: video
+      548 × 308 en x 68, columna 112 en x 640. Giro 270: video en x 72, columna en x 644.
+    - Las franjas: a cada lado del video, a su altura, negras como el video -#000; la izquierda incluye
+      el borde seguro, como antes-. Al lado de la barra sigue la superficie oscura de la raíz
+      ---bg-superficie del bloque oscuro, rgb(34, 31, 29)-. Ninguna franja cierra el visor.
+    - La X sigue de 48 -a 130: en x 815 en giro 90-, el botón y el avance de la barra de 48 -avance
+      505 × 48 y 415 × 48, igual que antes porque la barra mide lo mismo-, las filas 88/89 y 75/76, los
+      rótulos de 12. El recorte de 44 y la barra de tres botones de 48 quedan fuera en los dos giros.
+    - El mínimo de 112 se queda: a 800 lo toca justo; a 112 el nombre de la toma se corta con «…»
+      -«Larr…» en las capturas, en el boceto igual-; a 130 entra «Larralde».
+    - CASO 2: no cambia. No tiene columna sino la tarjeta de 320 -el ancho de los paneles de ficha de
+      lado-, que Javier no pidió tocar.
   CASO 2 -9:16-: video a todo el alto, 231 × 411 y 203 × 360; tarjeta de 320 a 16 del video; el grupo
     centrado: 128 de fondo a cada lado a 915 y 85 a 800. Giro 90: video en x 172 / 129; giro 270:
     176 / 133. Tarjeta 320 × 250 -el boceto, 242; ver LO QUE NO CALZÓ-.
@@ -51,10 +75,12 @@ LAS MEDIDAS -recalculadas con la barra de 52-
 LO IMPLEMENTADO, CON ARCHIVO:LÍNEA
 ==============================================================================
   src/lib/visorDeLado.ts
-    :23-33   TOQUE_MINIMO 48, ALTO_BARRA_REPRODUCCION 52, ROTULO_MINIMO 12, COLUMNA_MINIMA 112,
+    :23-37   TOQUE_MINIMO 48, ALTO_BARRA_REPRODUCCION 52, ROTULO_MINIMO 12, COLUMNA_MINIMA 112,
+             FRACCION_COLUMNA 0,7 -:33, (4)-,
              ANCHO_TARJETA 320, SEPARACION_TARJETA 16.
-    :55      formaDeVideo: ancho > alto es horizontal; un cuadrado es vertical; sin datos, null.
-    :64      medidasVisorDeLado: las cuentas de los dos casos, con los bordes que lleguen.
+    :59      formaDeVideo: ancho > alto es horizontal; un cuadrado es vertical; sin datos, null.
+    :68      medidasVisorDeLado: las cuentas de los dos casos, con los bordes que lleguen. -(4)- La
+             columna al 70% -:76-79-, el video centrado y las dos franjas -:89-106-.
   src/hooks/useBordesSeguros.ts
     :54      leerBordesSeguros: mide env(safe-area-inset-*) con una sonda invisible; si el navegador no
              entiende env() -o da todo 0 y Capacitor no-, usa --safe-area-inset-* que escribe Capacitor
@@ -72,18 +98,22 @@ LO IMPLEMENTADO, CON ARCHIVO:LÍNEA
              app. Se usa bar StatusBar y no show() a secas, que mostraría también la de navegación: el
              visor solo deshace lo que hizo. Sin plugin nuevo: @capacitor/core 8.5.1 -package.json:24-.
   src/components/ReproductorGrabacion.tsx
-    :92-108  al cargar el video -loadedmetadata-: la forma con videoWidth/videoHeight, y si se giró el
-             teléfono con el video a medias, sigue desde donde iba -reanudarEn, :115-.
-    :206-207 useLayout() y deLado = 'tel-h' -la consulta de la 82, hooks/useLayout.ts:22-.
-    :212-228 la miniatura -rutaMiniatura, el mismo mp4- decide antes de que cargue el video; sin ella,
+    :105-157 al cargar el video -loadedmetadata-: la forma con videoWidth/videoHeight, y si se giró el
+             teléfono con el video a medias, sigue desde donde iba -reanudarEn, :76-85 y :160-163-.
+             -04-10-2026, después del #68- y COMO IBA: si se estaba reproduciendo, play() en el video
+             nuevo -:121-156-; si estaba en pausa, sigue en pausa. «iba» se lleva con play/pause
+             mientras el elemento está en la página -:94-103-: la pausa que pone Chromium al sacarlo no
+             cuenta. Ver GIRAR CON EL VIDEO ANDANDO.
+    :254-255 useLayout() y deLado = 'tel-h' -la consulta de la 82, hooks/useLayout.ts:22-.
+    :260-276 la miniatura -rutaMiniatura, el mismo mp4- decide antes de que cargue el video; sin ella,
              el caso 2. El video manda sobre la miniatura.
-    :248     los bordes; :251-262 el efecto de las barras: abrir de lado → tomar; cerrar, volver de pie
+    :296     los bordes; :298-310 el efecto de las barras: abrir de lado → tomar; cerrar, volver de pie
              o desmontar → soltar, más el volcado del registro.
-    :264-296 registro (c); :298-322 registro (e).
-    :324     if (deLado): el visor de lado. :329 la X de 48; :357-379 la barra de 52 con botón y avance
-             de 48; :393-436 las acciones con min 48 y rótulo de 12 -los mismos data-testid de hoy-;
-             :438-457 el caso 1 -franja negra junto al video que no cierra, video, barra, columna-;
-             :459 el caso 2 -fondo --bg-suelo, video, tarjeta compacta centrada en el alto-.
+    :312-343 registro (c); :345-370 registro (e).
+    :372     if (deLado): el visor de lado. :377 la X de 48; :405-427 la barra de 52 con botón y avance
+             de 48; :437-484 las acciones con min 48 y rótulo de 12 -los mismos data-testid de hoy-;
+             :486-507 el caso 1 -franja negra junto al video que no cierra -:493-, video, barra,
+             columna-; :497 la franja derecha -(4)-; :513 el caso 2 -fondo --bg-suelo, video, tarjeta compacta centrada en el alto-.
     Las dos raíces llevan data-tema="oscuro": el bloque [data-tema="oscuro"] de styles.css:109 no
     exige :root -siempre oscuro aunque la app esté en claro-.
     De pie, el return de siempre: sin cambios -mismo desplazamiento de la tarea 89 y mismos bordes de
@@ -127,6 +157,11 @@ EL REGISTRO DEL VISOR DE LADO -formato-
             vertical miniatura=<ancho>x<alto>|cargando|sin-miniatura|no-cargo
             rotacionSidecar=<valor>|sin-campo|sin-sidecar calidad=<del sidecar>
             -el sidecar de hoy no guarda rotación, lib/sidecar.ts:28-49: sale sin-campo-.
+    giro-video  toma=<id> estado=reproduciendo|pausa t=<s> resultado=ok|pausa|bloqueado [error=<nombre>]
+            Cuando el <video> cambia -al girar entre de pie y de lado- y había algo que retomar. estado:
+            cómo iba el de antes; resultado: ok si el play() del nuevo resultó, pausa si iba en pausa,
+            bloqueado si Android o la WebView no lo dejaron -error=NotAllowedError, por ejemplo; queda en
+            pausa en la misma posición-. Se vuelca a visor-lado.txt en el acto, también de pie.
     letra   rotulos=guardar:<px>,subtitulos:<px>,... escala=<px más chico / 12> filas=<alto de cada
             fila de acción> bajo48=si|no
 
@@ -151,10 +186,36 @@ QUÉ MIRA CLAUDE EN EL MOTO G86 -APK /workspace/apk/Sigo-visor-de-lado.apk-
   (e) LA LETRA AGRANDADA. Ajustes del teléfono → tamaño de letra al máximo, abrir el visor de lado.
       «letra rotulos=guardar:<px> escala=<n> filas=... bajo48=si|no». Si escala sigue en 1, la WebView
       no sigue la escala del sistema -textZoom en 100-; si sube, mirar que bajo48 siga en no.
+  (f) GIRAR CON EL VIDEO ANDANDO -04-10-2026-. Reproducir de pie y girar de lado, y al revés: tiene
+      que seguir andando desde donde iba; en pausa, seguir en pausa. En visor-lado.txt: «giro-video ...
+      estado=reproduciendo ... resultado=ok». Si dice resultado=bloqueado, la WebView no deja el play()
+      sin toque: se anota el error y se decide.
   Y a la vista: el caso 1 con la toma de lado -video a todo el alto, barra debajo, columna con X,
   nombre, Guardar, Subtítulos, Repetir y Borrar-, el caso 2 con la de pie, los dos con la app en tema
   claro -tienen que salir oscuros, con los íconos de la barra de tres botones claros-, Subtítulos
   abierto y una toma guardada. De pie, el visor igual que antes.
+
+==============================================================================
+GIRAR CON EL VIDEO ANDANDO -04-10-2026, pedido de Javier después del #68-
+==============================================================================
+  Al girar entre de pie y de lado el visor cambia de disposición y el <video> es otro elemento. Antes
+  el nuevo seguía en la misma posición pero en pausa. Ahora, en la limpieza del efecto del video viejo
+  se guardan la posición -reanudarEn- y si iba reproduciéndose -reanudarReproduciendo-; al cargar el
+  nuevo se pone la posición y, si iba andando, play(). Si estaba en pausa, sigue en pausa.
+  Entre 90 y 270 el visor no cambia de disposición: es el mismo <video> y no se toca.
+  En Chrome real -herramientas/giro-reproduciendo.cjs, vite de las capturas-: de pie a de lado
+  andando, t 5,0 → 6,4 y paused=false; de lado a de pie andando, 2,5 → 3,9 y paused=false; de lado a
+  de pie en pausa, 2,50 → 2,50 y paused=true; con «giro-video ... resultado=ok|pausa» en la consola.
+  No cambia nada a la vista: las láminas de las capturas no se rehicieron, salvo la resumen -por su
+  frase-.
+  Tres pruebas que fallaban -antes del arreglo: 3 fallan, 1 pasa-:
+    - reproduciéndose de pie, al girar de lado el video nuevo sigue reproduciéndose desde la misma
+      posición;
+    - reproduciéndose de lado, al girar de pie el video nuevo sigue reproduciéndose desde la misma
+      posición;
+    - si el navegador no deja reproducir solo, queda en pausa y lo anota el registro visor-lado.
+  Guardiana -pasaba y sigue pasando-: en pausa de lado, al girar de pie el video nuevo sigue en pausa
+  en la misma posición.
 
 ==============================================================================
 PRUEBAS -src/pruebas/tarea90.test.tsx-
@@ -186,7 +247,9 @@ PRUEBAS -src/pruebas/tarea90.test.tsx-
 ==============================================================================
 CAPTURAS Y LÁMINAS -docs/pantallas/tarea90/-
 ==============================================================================
-  lamina-comparada-resumen.png y 32 lamina-comparada-caso{1-horizontal,2-vertical}-giro{90,270}
+  lamina-comparada-resumen.png -su frase se arregló el 04-10-2026: mostraba «${resumen.length}» tal
+  cual y no decía bien cuáles de las 32 trae; ahora: 20 de las 32, las 16 con la app en claro y las 4
+  básicas a 915×411 en oscuro- y 32 lamina-comparada-caso{1-horizontal,2-vertical}-giro{90,270}
   [-subtitulos|-guardada]-{915x411,800x360}-{oscuro,claro}.png: a la izquierda el boceto aprobado con
   la barra de 52 -boceto/-, a la derecha la app real -app-real/-, y debajo la tabla de medidas de las
   dos, en rojo lo que la app deje por debajo -nada-. medidas-comparadas.json: todas las cajas.
@@ -209,8 +272,13 @@ LO QUE NO CALZÓ
   - EL PANEL DE SUBTÍTULOS ABIERTO salía de 94 de alto: el boceto le ponía el título «Subtítulos» con
     ::before. Se agregó igual, con la palabra del aria-label -en el idioma de la app- y en 1rem: 124,
     como el boceto.
-  - AL GIRAR CON EL VISOR ABIERTO el <video> es otro elemento -cambia la disposición-: sigue desde
-    donde iba, pero en pausa. No se le dio play solo.
+  - -resuelto el 04-10-2026; antes decía:- «AL GIRAR CON EL VISOR ABIERTO el <video> es otro elemento
+    -cambia la disposición-: sigue desde donde iba, pero en pausa. No se le dio play solo.» Ahora sigue
+    como iba: ver GIRAR CON EL VIDEO ANDANDO.
+  - EL PLAY() DESPUÉS DEL GIRO no viene de un toque. Capacitor deja reproducir sin gesto
+    -setMediaPlaybackRequiresUserGesture(false), Bridge.java:592-, así que en el moto g86 no debería
+    bloquearse; en Chrome se comprobó con --autoplay-policy=no-user-gesture-required y el video mudo. Si
+    el teléfono lo bloquea, queda en pausa y el registro dice resultado=bloqueado.
   - EL REGISTRO DE DIAGNÓSTICO está apagado fuera de una toma, y el visor se abre después: por eso
     visor-lado.txt y la consola, además de anotar.
   - LOS BORDES EN LAS CAPTURAS son las variables de Capacitor, no env(): Chrome no tiene recorte. En

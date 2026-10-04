@@ -1,0 +1,20 @@
+const p = require('/workspace/tp-shot/node_modules/puppeteer-core')
+;(async () => {
+  const b = await p.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required'] })
+  const pg = await b.newPage()
+  pg.on('console', (m) => { if (m.text().includes('visor-lado] giro')) console.log('CONSOLA', m.text()) })
+  for (const [inicio, fin, pausar] of [[[411, 915], [915, 411], false], [[915, 411], [411, 915], false], [[915, 411], [411, 915], true]]) {
+    await pg.setViewport({ width: inicio[0], height: inicio[1], deviceScaleFactor: 1 })
+    await pg.goto('http://127.0.0.1:5190/docs/pantallas/tarea90/herramientas/app-real.html?caso=1&giro=90', { waitUntil: 'networkidle0' })
+    await pg.waitForSelector('video')
+    await pg.evaluate(async () => { const v = document.querySelector('video'); v.muted = true; await v.play() })
+    await new Promise((r) => setTimeout(r, 2500))
+    if (pausar) await pg.evaluate(() => document.querySelector('video').pause())
+    const a = await pg.evaluate(() => { const v = document.querySelector('video'); return { t: v.currentTime, paused: v.paused, lado: !!document.querySelector('[data-visor="lado"]') } })
+    await pg.setViewport({ width: fin[0], height: fin[1], deviceScaleFactor: 1 })
+    await new Promise((r) => setTimeout(r, 1500))
+    const d = await pg.evaluate(() => { const v = document.querySelector('video'); return { t: v.currentTime, paused: v.paused, lado: !!document.querySelector('[data-visor="lado"]') } })
+    console.log(JSON.stringify({ pausar, antes: a, despues: d }))
+  }
+  await b.close()
+})()

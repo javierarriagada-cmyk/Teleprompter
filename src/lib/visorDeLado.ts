@@ -27,6 +27,10 @@ export const ALTO_BARRA_REPRODUCCION = 4 + TOQUE_MINIMO
 export const ROTULO_MINIMO = 12
 // La columna nunca baja del riel izquierdo de Leer -styles-horizontal.css:20, --riel-izq-leer 112-.
 export const COLUMNA_MINIMA = 112
+// -04-10-2026, (4)- Javier lo vio en su moto: la columna era demasiado ancha. Ahora es el 70% de lo que
+// deja el video de 16:9 -antes era todo eso-: 185 → 130 a 915x411 y 160 → 112 a 800x360. El mínimo de
+// 112 se queda: a 800 justo lo toca, y en una ventana más angosta sigue mandando.
+export const FRACCION_COLUMNA = 0.7
 // La tarjeta del caso 2: el ancho de los paneles de ficha de lado -docs/tarea82.txt:90-93-, y su
 // separación del video.
 export const ANCHO_TARJETA = 320
@@ -47,7 +51,7 @@ export interface Caja {
 }
 
 export type MedidasVisorDeLado =
-  | { caso: 1; util: number; video: Caja; barra: Caja; columna: Caja; ajustado: boolean }
+  | { caso: 1; util: number; video: Caja; barra: Caja; columna: Caja; franjas: { izquierda: Caja; derecha: Caja }; ajustado: boolean }
   | { caso: 2; util: number; video: Caja; tarjeta: { x: number; ancho: number }; margen: number; ajustado: boolean }
 
 // LA FORMA DEL VIDEO. Ancho mayor que alto: horizontal. Un cuadrado o sin datos -0 x 0, el video aún
@@ -71,6 +75,9 @@ export function medidasVisorDeLado(p: { ancho: number; alto: number; bordes: Bor
     let anchoVideo = redondo((altoVideo * 16) / 9)
     let columna = util - anchoVideo
     let ajustado = false
+    // -(4)- La columna es el 70% de ese resto, con el mínimo de 112. Lo demás queda a los dos lados del
+    // video, que se centra en el espacio entre el borde seguro y la columna.
+    if (columna >= COLUMNA_MINIMA) columna = Math.max(COLUMNA_MINIMA, redondo(columna * FRACCION_COLUMNA))
     if (columna < COLUMNA_MINIMA) {
       // Si no alcanza, primero la columna llega a 112 y después se achica el video, en 16:9 y centrado
       // en el alto -no se recorta-. En 915x411 y 800x360 no pasa.
@@ -80,12 +87,22 @@ export function medidasVisorDeLado(p: { ancho: number; alto: number; bordes: Bor
       altoVideo = redondo((anchoVideo * 9) / 16)
     }
     const y = b.arriba + redondo((altoUtil - altoVideo - ALTO_BARRA_REPRODUCCION) / 2)
+    // -(4)- El espacio del video y su franja de cada lado: a 915x411, 693 = 28 + 638 + 27; a 800x360,
+    // 596 = 24 + 548 + 24. La franja izquierda incluye el borde seguro -el recorte o la barra de tres
+    // botones-, como la de antes.
+    const espacio = Math.max(0, util - columna)
+    const xVideo = b.izquierda + Math.max(0, redondo((espacio - anchoVideo) / 2))
+    const xColumna = b.izquierda + espacio
     return {
       caso: 1,
       util,
-      video: { x: b.izquierda, y, ancho: anchoVideo, alto: altoVideo },
-      barra: { x: b.izquierda, y: y + altoVideo, ancho: anchoVideo, alto: ALTO_BARRA_REPRODUCCION },
-      columna: { x: b.izquierda + anchoVideo, y: b.arriba, ancho: columna, alto: altoUtil },
+      video: { x: xVideo, y, ancho: anchoVideo, alto: altoVideo },
+      barra: { x: xVideo, y: y + altoVideo, ancho: anchoVideo, alto: ALTO_BARRA_REPRODUCCION },
+      columna: { x: xColumna, y: b.arriba, ancho: columna, alto: altoUtil },
+      franjas: {
+        izquierda: { x: 0, y, ancho: xVideo, alto: altoVideo },
+        derecha: { x: xVideo + anchoVideo, y, ancho: Math.max(0, xColumna - xVideo - anchoVideo), alto: altoVideo }
+      },
       ajustado
     }
   }

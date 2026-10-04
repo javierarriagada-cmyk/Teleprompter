@@ -177,11 +177,15 @@ describe('Tarea 90: cuál de los dos casos -la forma del video-', () => {
 })
 
 // Las medidas del boceto con la barra de 52 -tolerancia de 1 dp por el redondeo-.
+// -04-10-2026, (4)- Javier lo vio en su moto: la columna era demasiado ancha. Pasa al 70% de lo que era
+// -185 → 130 a 915, 160 → 112 a 800- y el video, de la misma altura en 16:9, queda centrado en lo que
+// sobra entre el borde seguro y la columna. Antes: video en x 44/48 y columna de 185 en 682/686 a 915;
+// video en 44/48 y columna de 160 en 592/596 a 800.
 const CASO1: Record<string, { video: [number, number, number, number]; columna: [number, number] }> = {
-  '915x411-90': { video: [44, 0, 638, 359], columna: [682, 185] },
-  '915x411-270': { video: [48, 0, 638, 359], columna: [686, 185] },
-  '800x360-90': { video: [44, 0, 548, 308], columna: [592, 160] },
-  '800x360-270': { video: [48, 0, 548, 308], columna: [596, 160] }
+  '915x411-90': { video: [72, 0, 638, 359], columna: [737, 130] },
+  '915x411-270': { video: [76, 0, 638, 359], columna: [741, 130] },
+  '800x360-90': { video: [68, 0, 548, 308], columna: [640, 112] },
+  '800x360-270': { video: [72, 0, 548, 308], columna: [644, 112] }
 }
 const CASO2: Record<string, { video: [number, number]; tarjeta: number; margen: number }> = {
   '915x411-90': { video: [172, 231], tarjeta: 419, margen: 128 },
@@ -220,6 +224,41 @@ describe('Tarea 90: las medidas de cada caso -915x411 y 800x360, giro 90 y 270-'
       expect(raiz().style.background).toContain('--bg-suelo')
     })
   }
+
+  for (const [w, h, giro] of [[915, 411, 90], [915, 411, 270], [800, 360, 90], [800, 360, 270]] as const) {
+    test(`caso 1 ${w}x${h}-${giro}: el video queda centrado entre el borde seguro y la columna, con franjas oscuras a los dos lados`, async () => {
+      ponerVentana(w, h, giro)
+      await abrir()
+      cargarVideo(1920, 1080)
+      await esperar()
+      const izq = giro === 90 ? 44 : 48
+      const v = document.querySelector('[data-testid="visor-lado-video"]') as HTMLElement
+      const c = document.querySelector('[data-testid="visor-lado-columna"]') as HTMLElement
+      const antes = px(v.style.left) - izq
+      const despues = px(c.style.left) - (px(v.style.left) + px(v.style.width))
+      expect(antes).toBeGreaterThan(0)
+      cerca(antes, despues)
+      const fi = document.querySelector('[data-testid="visor-lado-franja"]') as HTMLElement
+      const fd = document.querySelector('[data-testid="visor-lado-franja-derecha"]') as HTMLElement
+      expect(fi).toBeTruthy()
+      expect(fd).toBeTruthy()
+      cerca(px(fi.style.width), px(v.style.left))
+      cerca(px(fd.style.left), px(v.style.left) + px(v.style.width))
+      cerca(px(fd.style.width), despues)
+      for (const f of [fi, fd]) expect(f.style.background).toMatch(/#000|rgb\(0, 0, 0\)/)
+    })
+  }
+
+  test('las cuentas: la columna es el 70% de lo que deja el video -130 a 915, 112 a 800-', async () => {
+    const { medidasVisorDeLado, FRACCION_COLUMNA } = await cargar('../lib/visorDeLado')
+    expect(FRACCION_COLUMNA).toBe(0.7)
+    const a = medidasVisorDeLado({ ancho: 915, alto: 411, bordes: { arriba: 0, derecha: 48, abajo: 0, izquierda: 44 }, forma: 'horizontal' })
+    expect(a.columna.ancho).toBe(130)
+    expect(a.ajustado).toBe(false)
+    const b = medidasVisorDeLado({ ancho: 800, alto: 360, bordes: { arriba: 0, derecha: 44, abajo: 0, izquierda: 48 }, forma: 'horizontal' })
+    expect(b.columna.ancho).toBe(112)
+    expect(b.ajustado).toBe(false)
+  })
 
   test('las cuentas: la columna nunca baja de 112 -si falta, se achica el video en 16:9-', async () => {
     const { medidasVisorDeLado } = await cargar('../lib/visorDeLado')
@@ -480,5 +519,127 @@ describe('Tarea 90, guardianas: de pie no cambia nada', () => {
     const v = document.querySelector('video') as HTMLVideoElement
     expect(v.style.width).toBe('100%')
     expect(v.style.maxHeight).toBe('70vh')
+  })
+})
+
+// GIRAR CON EL VIDEO ANDANDO -04-10-2026, pedido de Javier después del #68-: al girar, el visor cambia de
+// disposición y el <video> es otro elemento. Si el de antes se estaba reproduciendo, el nuevo sigue
+// reproduciéndose desde la misma posición; si estaba en pausa, sigue en pausa en la misma posición.
+// jsdom no reproduce: play y pause se reemplazan por unos que mueven paused y disparan los eventos, como
+// el navegador.
+describe('Tarea 90: girar con el video del visor', () => {
+  const play = vi.fn(function (this: HTMLVideoElement) {
+    Object.defineProperty(this, 'paused', { configurable: true, value: false })
+    this.dispatchEvent(new Event('play'))
+    return Promise.resolve()
+  })
+  const pause = vi.fn(function (this: HTMLVideoElement) {
+    Object.defineProperty(this, 'paused', { configurable: true, value: true })
+    this.dispatchEvent(new Event('pause'))
+  })
+  let playAntes: any
+  let pauseAntes: any
+  beforeEach(() => {
+    play.mockClear()
+    pause.mockClear()
+    playAntes = HTMLMediaElement.prototype.play
+    pauseAntes = HTMLMediaElement.prototype.pause
+    HTMLMediaElement.prototype.play = play as any
+    HTMLMediaElement.prototype.pause = pause as any
+  })
+  afterEach(() => {
+    HTMLMediaElement.prototype.play = playAntes
+    HTMLMediaElement.prototype.pause = pauseAntes
+  })
+  // La posición: jsdom no avanza el video; se fija a mano en el elemento.
+  const ponerTiempo = (v: HTMLVideoElement, t: number) => {
+    let actual = t
+    Object.defineProperty(v, 'currentTime', { configurable: true, get: () => actual, set: (n: number) => { actual = n } })
+  }
+  const elVideo = () => document.querySelector('video') as HTMLVideoElement
+
+  test('reproduciéndose de pie, al girar de lado el video nuevo sigue reproduciéndose desde la misma posición', async () => {
+    ponerVentana(915, 411, 90, false)
+    await abrir()
+    cargarVideo(1920, 1080)
+    const antes = elVideo()
+    await act(async () => { await antes.play() })
+    ponerTiempo(antes, 12.5)
+    play.mockClear()
+    await act(async () => { girarDeLado() })
+    await esperar()
+    const nuevo = elVideo()
+    expect(nuevo).not.toBe(antes)
+    expect(raiz().getAttribute('data-visor')).toBe('lado')
+    ponerTiempo(nuevo, 0)
+    cargarVideo(1920, 1080)
+    await esperar()
+    expect(nuevo.currentTime).toBeCloseTo(12.5, 1)
+    expect(play.mock.instances).toContain(nuevo)
+    expect(nuevo.paused).toBe(false)
+  })
+
+  test('reproduciéndose de lado, al girar de pie el video nuevo sigue reproduciéndose desde la misma posición', async () => {
+    ponerVentana(915, 411, 270)
+    await abrir()
+    cargarVideo(1080, 1920)
+    const antes = elVideo()
+    await act(async () => { await antes.play() })
+    ponerTiempo(antes, 40)
+    play.mockClear()
+    await act(async () => { girarDePie() })
+    await esperar()
+    const nuevo = elVideo()
+    expect(nuevo).not.toBe(antes)
+    expect(raiz().getAttribute('data-visor')).toBeNull()
+    ponerTiempo(nuevo, 0)
+    cargarVideo(1080, 1920)
+    await esperar()
+    expect(nuevo.currentTime).toBeCloseTo(40, 1)
+    expect(play.mock.instances).toContain(nuevo)
+    expect(nuevo.paused).toBe(false)
+  })
+
+  // Guardiana: hoy ya queda en pausa; tiene que seguir así cuando el giro retome la reproducción.
+  test('en pausa de lado, al girar de pie el video nuevo sigue en pausa en la misma posición', async () => {
+    ponerVentana(915, 411, 90)
+    await abrir()
+    cargarVideo(1920, 1080)
+    const antes = elVideo()
+    await act(async () => { await antes.play() })
+    await act(async () => { antes.pause() })
+    ponerTiempo(antes, 7.25)
+    play.mockClear()
+    await act(async () => { girarDePie() })
+    await esperar()
+    const nuevo = elVideo()
+    expect(nuevo).not.toBe(antes)
+    ponerTiempo(nuevo, 0)
+    cargarVideo(1920, 1080)
+    await esperar()
+    expect(nuevo.currentTime).toBeCloseTo(7.25, 1)
+    expect(play).not.toHaveBeenCalled()
+    expect(nuevo.paused).toBe(true)
+  })
+
+  test('si el navegador no deja reproducir solo, queda en pausa y lo anota el registro visor-lado', async () => {
+    const { lineasVisorLado, limpiarRegistroVisorLado } = await cargar('../lib/registroVisorLado')
+    limpiarRegistroVisorLado()
+    ponerVentana(915, 411, 90, false)
+    await abrir()
+    cargarVideo(1920, 1080)
+    const antes = elVideo()
+    await act(async () => { await antes.play() })
+    ponerTiempo(antes, 3)
+    play.mockImplementationOnce(() => Promise.reject(Object.assign(new Error('sin gesto'), { name: 'NotAllowedError' })))
+    await act(async () => { girarDeLado() })
+    await esperar()
+    cargarVideo(1920, 1080)
+    await esperar()
+    const linea = lineasVisorLado().find((l: string) => l.includes('\tgiro-video '))
+    expect(linea).toBeTruthy()
+    expect(linea).toContain('estado=reproduciendo')
+    expect(linea).toContain('resultado=bloqueado')
+    expect(linea).toContain('error=NotAllowedError')
   })
 })

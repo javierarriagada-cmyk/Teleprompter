@@ -69,9 +69,22 @@ function filasTabla(b, a) {
   const sel = resumen.filter((r) => r.v.tema === 'claro' || (r.v.estado === 'normal' && r.v.w === 915));
   const celdas = sel.map((r) => `<div class="c"><div class="r">${r.v.caso === 1 ? 'Caso 1' : 'Caso 2'} · giro ${r.v.giro}${ESTADO[r.v.estado]} · ${r.v.w}×${r.v.h} · app en ${r.v.tema}${r.bajo ? ' · <span class="bajo">POR DEBAJO</span>' : ''}</div><div class="par" style="gap:6px"><img src="${b64(path.join(D, 'boceto', r.n + '.png'))}" style="width:${r.v.w / 2.6}px;height:${r.v.h / 2.6}px"><img src="${b64(path.join(D, 'app-real', r.n + '.png'))}" style="width:${r.v.w / 2.6}px;height:${r.v.h / 2.6}px"></div><div class="r2">${r.a.video ? `video ${r.a.video.ancho}×${r.a.video.alto}` : ''}${r.a.columna ? ` · columna ${r.a.columna.ancho}` : ''}${r.a.tarjeta ? ` · tarjeta ${r.a.tarjeta.ancho}×${r.a.tarjeta.alto}` : ''} · filas ${r.a.filas.join(',')}</div></div>`).join('');
   const nBajo = resumen.filter((r) => r.bajo).length;
+  // -04-10-2026- La frase de antes ponía «${resumen.length}» tal cual: era una plantilla anidada dentro de
+  // comillas simples. Y decía «todas las vistas con la app en claro y las de 915×411 en oscuro», que no
+  // dejaba claro cuáles hay en esta hoja. Ahora se arma aparte, con las cuentas de verdad.
+  const nClaro = sel.filter((r) => r.v.tema === 'claro').length;
+  const nOscuro = sel.length - nClaro;
+  const frase = [
+    `Esta hoja reúne ${sel.length} de las ${resumen.length} láminas: las ${nClaro} con la app en tema claro -todas las vistas, en los dos giros y los dos tamaños; el visor de lado sale oscuro igual, que es lo que se comprueba- y, con la app en tema oscuro, solo las ${nOscuro} vistas básicas -sin Subtítulos abierto ni toma guardada- a 915×411.`,
+    'En cada par, a la izquierda el boceto aprobado -PR #67, con la barra de 52- y a la derecha la app real.',
+    nBajo === 0
+      ? `Ninguna medida de la app queda por debajo del boceto, en ninguna de las ${resumen.length} láminas.`
+      : `<span class="bajo">${nBajo} de las ${resumen.length} láminas tienen medidas por debajo del boceto.</span>`,
+    'Caso 1: video 638×359 a 915 y 548×308 a 800, centrado -franjas de 28 y 27 a 915, de 24 y 24 a 800-, barra de 52 a su ancho, columna de 130 y de 112 -el 70% de las 185 y 160 de antes-. Caso 2: video 231×411 y 203×360, tarjeta de 320 de ancho, y 128 y 85 de fondo a cada lado del grupo.'
+  ].join(' ');
   const html = `<html><head><meta charset="utf-8"><style>${CSS}.g{display:grid;grid-template-columns:repeat(3,auto);gap:14px 22px}.r{font-size:13px;color:#ddd;margin-bottom:3px}.r2{font-size:12px;color:#ff9fc8;margin-top:3px}</style></head><body>
 <h1>Tarea 90 · visor de lado · RESUMEN · boceto aprobado | app real</h1>
-<div class="s">En cada par: a la izquierda el boceto -PR #67 con la barra de 52-, a la derecha la app real. Todas las vistas con la app en claro -el visor sale oscuro igual- y las de 915×411 en oscuro. ${nBajo === 0 ? 'Ninguna medida de la app queda por debajo del boceto -${resumen.length} de ${resumen.length} láminas-.' : `<span class="bajo">${nBajo} láminas con medidas por debajo del boceto.</span>`} Caso 1: video 638×359 a 915 y 548×308 a 800, barra de 52, columna 185 y 160. Caso 2: video 231×411 y 203×360, tarjeta 320 de ancho, 128 y 85 de fondo a cada lado.</div>
+<div class="s">${frase}</div>
 <div class="g">${celdas}</div></body></html>`;
   await p.setViewport({ width: 1900, height: 200, deviceScaleFactor: 1 });
   await p.setContent(html, { waitUntil: 'load' });
