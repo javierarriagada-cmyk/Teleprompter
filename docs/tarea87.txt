@@ -833,3 +833,32 @@ PREGUNTAS QUE QUEDAN ABIERTAS -nada se inventa-
 
 Después, Claude lee el registro del paso 0, Javier aprueba la lámina del boceto, y al final
 Claude lo prueba en el moto g86 con las mediciones de la parte F.
+
+==============================================================================
+RESPUESTAS DE CLAUDE AL BOCETO APROBADO -04-10-2026, #63 ab86ccc, aprobado como piso-
+==============================================================================
+  1. El nombre de la toma -con su duración y el tiempo estimado- se ESCONDE mientras el panel de
+     Subtítulos está abierto: el video gana ~52 dp. Medido en la app: 416 dp con tres botones y 440
+     con gestos, contra 364 y 388 del boceto con la barra de 45 dp (+52).
+  2. Elegir Posición NO cierra el panel: se puede cambiar de Normal a Para redes y volver mirando
+     el video.
+  3. La X mientras se guarda NO cancela: el guardado sigue y al terminar aparece el aviso de
+     guardado aunque el visor esté cerrado. El visor no se vuelve a abrir solo -App.tsx, onCambio
+     solo reemplaza la toma abierta si sigue siendo la misma- y "Guardar y compartir" no abre el
+     menú de compartir si el visor ya se cerró.
+     Lo que no calza: el aviso es el de siempre -galeriaGuardada, «Quedó en la galería…»-, no la
+     palabra "Guardado" sola.
+  4. La barra de estado del moto g86 mide 45 dp, no 24 -del registro visor-lado t=45 y del
+     comentario de TeleprompterView-. Las cuentas se rehicieron con 45 -ver
+     docs/pantallas/tarea87/medidas-implementacion.md-: el video baja 21 dp respecto del boceto
+     aprobado; las acciones no se mueven. La franja de gestos NO se fija en el código: la app usa
+     los bordes seguros reales -env(safe-area-inset-*)- y deja la línea evento=bordes con lo que
+     mide, para que Claude la anote en el teléfono.
+
+IMPLEMENTACIÓN -rama tarea87-implementacion, desde main c03d734, con el paso 0 -#64- y el
+boceto -#63- mezclados-
+  - Partes B, C, D -sin la corrección del visor de D3, que espera la medición-, E1, E2 y A4.
+  - Registros nuevos para el moto g86 -SigoExport, solo con las herramientas-: evento=orientacion,
+    evento=bordes, evento=visor y evento=tiempo_guardado -src/lib/medicionesTarea87.ts-; además
+    guardado_inicio lleva margen=0.350 con Para redes -modo=receta-.
+  - Láminas: docs/pantallas/tarea87/implementacion/ -lamina-resumen.png primero-.

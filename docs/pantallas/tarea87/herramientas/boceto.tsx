@@ -70,7 +70,9 @@ function textoTiempo(s: number): string {
 // -04-10, segunda vuelta- Con navegación por gestos, la franja de abajo mide 24 dp -lo que Android
 // documenta para la barra de gestos; el borde seguro de abajo es ese alto-. ?nav=gestos.
 const nav = q.get('nav') === 'gestos' ? 'gestos' : 'botones'
-const ESTADO = 24
+// -04-10, implementación- ?estado_dp= cambia el alto de la barra de estado, para comparar con la app
+// implementada con los 45 dp medidos del moto g86. Sin el parámetro, los 24 del boceto aprobado.
+const ESTADO = Number(q.get('estado_dp') || '24')
 const BARRA = nav === 'gestos' ? 24 : 48
 const ALTO = 915
 const CSS_BORDES = `

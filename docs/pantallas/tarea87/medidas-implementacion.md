@@ -211,3 +211,81 @@ Si el #68 entra antes de programar la 87, se saca la lámina de lado con esta he
    los ~2 s que dura (`useAviso`, 2000 ms). Hoy pasa lo mismo cuando la fila queda a la vista. No lo
    moví porque es de la App, no del visor. Si molesta, que el aviso suba sobre la fila mientras el
    visor está abierto.
+
+## Implementación (04-10-2026): las cuentas con la barra de estado de 45 dp
+
+Claude aprobó el boceto (#63, ab86ccc) como piso, con cuatro respuestas:
+
+1. **El nombre de la toma se esconde con el panel de Subtítulos abierto.** El video gana ~52 dp.
+2. **Elegir Posición no cierra el panel.**
+3. **La X mientras se guarda no cancela.** El guardado sigue y, al terminar, sale el aviso aunque el
+   visor esté cerrado. El visor no se vuelve a abrir.
+4. **La barra de estado del moto g86 mide 45 dp, no 24.** La franja de gestos la mide Claude en el
+   teléfono: la app no la fija, usa los bordes seguros reales y deja la línea `evento=bordes`.
+
+### El alto disponible, recalculado
+
+- Tres botones: 915 − 45 − 48 − 2 × 20 = **782 dp** (antes 803).
+- Gestos: 915 − 45 − gestos − 2 × 20 = 830 − gestos. Con los 24 dp que supone la captura,
+  **806 dp** (antes 827). La cifra real sale de `evento=bordes abajo_dp=`.
+
+Las acciones no se mueven: siguen pegadas a la barra de abajo. Lo que pierde los 21 dp es el video.
+
+### Medido en la app (vite + Chrome headless, 412×915, barra de estado de 45)
+
+| Estado | Tres botones: app · piso (boceto con 45) · boceto aprobado (24) | Gestos (24 supuestos): app · piso · aprobado |
+|---|---|---|
+| 1 y 4 · panel cerrado | **546** · 546 · 567 | **570** · 570 · 591 |
+| 2 y 3 · panel abierto | **416** · 364 · 385 (+52 por el nombre escondido) | **440** · 388 · 409 (+52) |
+| 5 · horizontal | 209 · 209 · 209 | 209 · 209 · 209 |
+| 6 · sin subtítulos | 598 · 598 · 619 | 622 · 622 · 641 |
+| 7 · guardando, 5 min | 546 · 546 · 567 | 570 · 570 · 591 |
+| 8 y 9 · guardada | 603 · 603 · 624 | 627 · 627 · 641 |
+| 10 · tiempo estimado, 5 min | 528 · 528 · 549 | 552 · 552 · 573 |
+
+Fila de acciones: 777–846 con tres botones y 801–870 con gestos, con el límite en 867 y 891. Quedan
+completas sobre la barra en los 40 casos, y no se desplaza ni la raíz ni lo de arriba.
+
+Ninguna medida queda bajo el piso. `laminas.cjs` lo comprueba caso por caso:
+
+- acciones de 69 (64 con dos), letra 11;
+- segmentado de 40, letra 13;
+- estilos de 68;
+- avance y cerrar de 44;
+- meta de 13.
+
+Con el panel abierto hay una sola línea de meta, porque el nombre está escondido.
+
+Comparado con el boceto **aprobado** (24 dp), el video mide 21 dp menos con el panel cerrado (14 a 21
+con gestos, donde el tope de 70vh ya lo cortaba). Es la barra de estado real, no un cambio de diseño.
+Con el panel abierto mide 31 más.
+
+### Las láminas
+
+Están en `implementacion/`:
+
+- `lamina-resumen.png`: la primera que se mira.
+- `comparar-visor-{botones,gestos}-{oscuro,claro}.png`: al lado de cada `boceto-visor-…png`, con
+  tres columnas por estado: el aprobado, el boceto con 45 (el piso) y la app.
+- Las sueltas `app-estado-N-…png` y `boceto45-estado-N-…png`.
+- `herramientas/medidas-app.json`.
+
+Para rehacerlas:
+
+1. El vite de la app en 5183, desde esta rama.
+2. El del boceto en 5184, desde un worktree de main con `docs/pantallas/tarea87/herramientas`
+   copiado, para que use el `ReproductorGrabacion` aprobado.
+3. `node implementacion/herramientas/capturas.cjs`.
+4. `node implementacion/herramientas/laminas.cjs`.
+
+### Lo que no está medido (lo mira Claude en el moto g86)
+
+- **Franja de gestos y barra de estado reales:** `evento=bordes`.
+- **Video y acciones contra el borde:** `evento=visor`.
+- **La forma de 480p:** `evento=forma`.
+- **Vista previa 4:3 contra 16:9:** `evento=camara`.
+- **El 1920×1080 con rotación 90/270:** `evento=orientacion` (`vista=vertical`).
+- **Tiempo estimado contra el real:** `evento=tiempo_guardado`.
+- **Para redes en el archivo:** `pintado_abajo_px` de `evento=capa` con `margen=0.350`.
+
+Las líneas están en `docs/mediciones/tarea87/LEEME.md`.

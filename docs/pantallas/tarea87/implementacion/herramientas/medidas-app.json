@@ -1,0 +1,7346 @@
+{
+ "app-1-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 612,
+   "height": 546,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 307.1,
+   "alto": 546
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.0625,
+  "subtituloAbajo": 68.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-1-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 611.9,
+   "height": 546,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 307.1,
+   "alto": 546
+  },
+  "fila": {
+   "top": 777.1,
+   "bottom": 846.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.0625,
+  "subtituloAbajo": 68.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-2-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 482,
+   "height": 416,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 234,
+   "alto": 416
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 13,
+  "subtituloAbajo": 52,
+  "nombreVisible": false,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-2-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.8,
+   "bottom": 429.8,
+   "height": 364,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 204.8,
+   "alto": 364
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 11.375,
+  "subtituloAbajo": 45.5,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-3-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 482,
+   "height": 416,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 234,
+   "alto": 416
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 13,
+  "subtituloAbajo": 145.6,
+  "nombreVisible": false,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "boceto45-3-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.8,
+   "bottom": 429.8,
+   "height": 364,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 204.8,
+   "alto": 364
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 11.375,
+  "subtituloAbajo": 127.4,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "app-4-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 612,
+   "height": 546,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 307.1,
+   "alto": 546
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.0625,
+  "subtituloAbajo": 191.1,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "boceto45-4-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 611.9,
+   "height": 546,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 307.1,
+   "alto": 546
+  },
+  "fila": {
+   "top": 777.1,
+   "bottom": 846.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.0625,
+  "subtituloAbajo": 191.1,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "app-5-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 234.3,
+   "bottom": 443.5,
+   "height": 209.3,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 371.6,
+   "alto": 209
+  },
+  "fila": {
+   "top": 608.7,
+   "bottom": 677.7
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 6.53125,
+  "subtituloAbajo": 26.1,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-5-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 234.3,
+   "bottom": 443.5,
+   "height": 209.3,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 371.6,
+   "alto": 209
+  },
+  "fila": {
+   "top": 608.7,
+   "bottom": 677.7
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 6.53125,
+  "subtituloAbajo": 26.1,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-6-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 664,
+   "height": 598,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 336.4,
+   "alto": 598
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "boceto45-6-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 663.9,
+   "height": 598,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 336.4,
+   "alto": 598
+  },
+  "fila": {
+   "top": 777.1,
+   "bottom": 846.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "app-7-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 612,
+   "height": 546,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 307.1,
+   "alto": 546
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardando… 37%"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.0625,
+  "subtituloAbajo": 68.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-7-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 611.9,
+   "height": 546,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 307.1,
+   "alto": 546
+  },
+  "fila": {
+   "top": 777.1,
+   "bottom": 846.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardando… 37%"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.0625,
+  "subtituloAbajo": 68.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-8-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 669,
+   "height": 603,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 339.2,
+   "alto": 603
+  },
+  "fila": {
+   "top": 782.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 782.2,
+    "bottom": 846.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 782.2,
+    "bottom": 846.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": "Quedó guardada, pero no se pudo compartir"
+ },
+ "boceto45-8-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 668.9,
+   "height": 603,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 339.2,
+   "alto": 603
+  },
+  "fila": {
+   "top": 782.1,
+   "bottom": 846.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 782.1,
+    "bottom": 846.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 782.1,
+    "bottom": 846.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": "Quedó guardada, pero no se pudo compartir"
+ },
+ "app-9-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 669,
+   "height": 603,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 339.2,
+   "alto": 603
+  },
+  "fila": {
+   "top": 782.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 782.2,
+    "bottom": 846.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 782.2,
+    "bottom": 846.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "boceto45-9-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 668.9,
+   "height": 603,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 339.2,
+   "alto": 603
+  },
+  "fila": {
+   "top": 782.1,
+   "bottom": 846.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 782.1,
+    "bottom": 846.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 782.1,
+    "bottom": 846.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "app-10-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 594,
+   "height": 528,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 297,
+   "alto": 528
+  },
+  "fila": {
+   "top": 777.4,
+   "bottom": 846.4
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.4,
+    "bottom": 846.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.4,
+    "bottom": 846.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.4,
+    "bottom": 846.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.4,
+    "bottom": 846.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 16.5,
+  "subtituloAbajo": 66,
+  "nombreVisible": true,
+  "tiempoEstimado": "Guardar tarda alrededor de 1 min",
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-10-botones-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.8,
+   "bottom": 593.8,
+   "height": 528,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 297,
+   "alto": 528
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 16.5,
+  "subtituloAbajo": 66,
+  "nombreVisible": true,
+  "tiempoEstimado": "Guardar tarda alrededor de 1 min",
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-1-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 612,
+   "height": 546,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 307.1,
+   "alto": 546
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.0625,
+  "subtituloAbajo": 68.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-1-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 611.9,
+   "height": 546,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 307.1,
+   "alto": 546
+  },
+  "fila": {
+   "top": 777.1,
+   "bottom": 846.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.0625,
+  "subtituloAbajo": 68.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-2-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 482,
+   "height": 416,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 234,
+   "alto": 416
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 13,
+  "subtituloAbajo": 52,
+  "nombreVisible": false,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-2-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.8,
+   "bottom": 429.8,
+   "height": 364,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 204.8,
+   "alto": 364
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 11.375,
+  "subtituloAbajo": 45.5,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-3-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 482,
+   "height": 416,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 234,
+   "alto": 416
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 13,
+  "subtituloAbajo": 145.6,
+  "nombreVisible": false,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "boceto45-3-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.8,
+   "bottom": 429.8,
+   "height": 364,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 204.8,
+   "alto": 364
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 11.375,
+  "subtituloAbajo": 127.4,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "app-4-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 612,
+   "height": 546,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 307.1,
+   "alto": 546
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.0625,
+  "subtituloAbajo": 191.1,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "boceto45-4-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 611.9,
+   "height": 546,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 307.1,
+   "alto": 546
+  },
+  "fila": {
+   "top": 777.1,
+   "bottom": 846.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.0625,
+  "subtituloAbajo": 191.1,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "app-5-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 234.3,
+   "bottom": 443.5,
+   "height": 209.3,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 371.6,
+   "alto": 209
+  },
+  "fila": {
+   "top": 608.7,
+   "bottom": 677.7
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 6.53125,
+  "subtituloAbajo": 26.1,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-5-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 234.3,
+   "bottom": 443.5,
+   "height": 209.3,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 371.6,
+   "alto": 209
+  },
+  "fila": {
+   "top": 608.7,
+   "bottom": 677.7
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 608.7,
+    "bottom": 677.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 6.53125,
+  "subtituloAbajo": 26.1,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-6-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 664,
+   "height": 598,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 336.4,
+   "alto": 598
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "boceto45-6-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 663.9,
+   "height": 598,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 336.4,
+   "alto": 598
+  },
+  "fila": {
+   "top": 777.1,
+   "bottom": 846.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "app-7-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 612,
+   "height": 546,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 307.1,
+   "alto": 546
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardando… 37%"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.0625,
+  "subtituloAbajo": 68.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-7-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 611.9,
+   "height": 546,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 307.1,
+   "alto": 546
+  },
+  "fila": {
+   "top": 777.1,
+   "bottom": 846.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardando… 37%"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.1,
+    "bottom": 846.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.0625,
+  "subtituloAbajo": 68.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-8-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 669,
+   "height": 603,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 339.2,
+   "alto": 603
+  },
+  "fila": {
+   "top": 782.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 782.2,
+    "bottom": 846.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 782.2,
+    "bottom": 846.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": "Quedó guardada, pero no se pudo compartir"
+ },
+ "boceto45-8-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 668.9,
+   "height": 603,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 339.2,
+   "alto": 603
+  },
+  "fila": {
+   "top": 782.1,
+   "bottom": 846.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 782.1,
+    "bottom": 846.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 782.1,
+    "bottom": 846.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": "Quedó guardada, pero no se pudo compartir"
+ },
+ "app-9-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 669,
+   "height": 603,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 339.2,
+   "alto": 603
+  },
+  "fila": {
+   "top": 782.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 782.2,
+    "bottom": 846.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 782.2,
+    "bottom": 846.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "boceto45-9-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 668.9,
+   "height": 603,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 339.2,
+   "alto": 603
+  },
+  "fila": {
+   "top": 782.1,
+   "bottom": 846.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 782.1,
+    "bottom": 846.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 782.1,
+    "bottom": 846.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "app-10-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 594,
+   "height": 528,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 297,
+   "alto": 528
+  },
+  "fila": {
+   "top": 777.4,
+   "bottom": 846.4
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.4,
+    "bottom": 846.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.4,
+    "bottom": 846.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.4,
+    "bottom": 846.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.4,
+    "bottom": 846.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 16.5,
+  "subtituloAbajo": 66,
+  "nombreVisible": true,
+  "tiempoEstimado": "Guardar tarda alrededor de 1 min",
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-10-botones-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.8,
+   "bottom": 593.8,
+   "height": 528,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 297,
+   "alto": 528
+  },
+  "fila": {
+   "top": 777.2,
+   "bottom": 846.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 777.2,
+    "bottom": 846.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 867,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 16.5,
+  "subtituloAbajo": 66,
+  "nombreVisible": true,
+  "tiempoEstimado": "Guardar tarda alrededor de 1 min",
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-1-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 636,
+   "height": 570,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 320.6,
+   "alto": 570
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.8125,
+  "subtituloAbajo": 71.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-1-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 635.9,
+   "height": 570,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 320.6,
+   "alto": 570
+  },
+  "fila": {
+   "top": 801.1,
+   "bottom": 870.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.8125,
+  "subtituloAbajo": 71.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-2-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 506,
+   "height": 440,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 247.5,
+   "alto": 440
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 13.75,
+  "subtituloAbajo": 55,
+  "nombreVisible": false,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-2-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.8,
+   "bottom": 453.8,
+   "height": 388,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 218.2,
+   "alto": 388
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 12.125,
+  "subtituloAbajo": 48.5,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-3-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 506,
+   "height": 440,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 247.5,
+   "alto": 440
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 13.75,
+  "subtituloAbajo": 154,
+  "nombreVisible": false,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "boceto45-3-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.8,
+   "bottom": 453.8,
+   "height": 388,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 218.2,
+   "alto": 388
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 12.125,
+  "subtituloAbajo": 135.8,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "app-4-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 636,
+   "height": 570,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 320.6,
+   "alto": 570
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.8125,
+  "subtituloAbajo": 199.5,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "boceto45-4-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 635.9,
+   "height": 570,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 320.6,
+   "alto": 570
+  },
+  "fila": {
+   "top": 801.1,
+   "bottom": 870.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.8125,
+  "subtituloAbajo": 199.5,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "app-5-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 246.3,
+   "bottom": 455.5,
+   "height": 209.3,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 371.6,
+   "alto": 209
+  },
+  "fila": {
+   "top": 620.7,
+   "bottom": 689.7
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 6.53125,
+  "subtituloAbajo": 26.1,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-5-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 246.3,
+   "bottom": 455.5,
+   "height": 209.3,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 371.6,
+   "alto": 209
+  },
+  "fila": {
+   "top": 620.7,
+   "bottom": 689.7
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 6.53125,
+  "subtituloAbajo": 26.1,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-6-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 688,
+   "height": 622,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 349.9,
+   "alto": 622
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "boceto45-6-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 687.9,
+   "height": 622,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 349.9,
+   "alto": 622
+  },
+  "fila": {
+   "top": 801.1,
+   "bottom": 870.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "app-7-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 636,
+   "height": 570,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 320.6,
+   "alto": 570
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardando… 37%"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.8125,
+  "subtituloAbajo": 71.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-7-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 635.9,
+   "height": 570,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 320.6,
+   "alto": 570
+  },
+  "fila": {
+   "top": 801.1,
+   "bottom": 870.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardando… 37%"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.8125,
+  "subtituloAbajo": 71.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-8-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 693,
+   "height": 627,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 352.7,
+   "alto": 627
+  },
+  "fila": {
+   "top": 806.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 806.2,
+    "bottom": 870.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 806.2,
+    "bottom": 870.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": "Quedó guardada, pero no se pudo compartir"
+ },
+ "boceto45-8-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 692.9,
+   "height": 627,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 352.7,
+   "alto": 627
+  },
+  "fila": {
+   "top": 806.1,
+   "bottom": 870.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 806.1,
+    "bottom": 870.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 806.1,
+    "bottom": 870.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": "Quedó guardada, pero no se pudo compartir"
+ },
+ "app-9-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 693,
+   "height": 627,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 352.7,
+   "alto": 627
+  },
+  "fila": {
+   "top": 806.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 806.2,
+    "bottom": 870.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 806.2,
+    "bottom": 870.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "boceto45-9-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 692.9,
+   "height": 627,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 352.7,
+   "alto": 627
+  },
+  "fila": {
+   "top": 806.1,
+   "bottom": 870.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 806.1,
+    "bottom": 870.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 806.1,
+    "bottom": 870.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "app-10-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 618,
+   "height": 552,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 310.5,
+   "alto": 552
+  },
+  "fila": {
+   "top": 801.4,
+   "bottom": 870.4
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.4,
+    "bottom": 870.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.4,
+    "bottom": 870.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.4,
+    "bottom": 870.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.4,
+    "bottom": 870.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.25,
+  "subtituloAbajo": 69,
+  "nombreVisible": true,
+  "tiempoEstimado": "Guardar tarda alrededor de 1 min",
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-10-gestos-oscuro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.8,
+   "bottom": 617.8,
+   "height": 552,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 310.5,
+   "alto": 552
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.25,
+  "subtituloAbajo": 69,
+  "nombreVisible": true,
+  "tiempoEstimado": "Guardar tarda alrededor de 1 min",
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-1-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 636,
+   "height": 570,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 320.6,
+   "alto": 570
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.8125,
+  "subtituloAbajo": 71.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-1-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 635.9,
+   "height": 570,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 320.6,
+   "alto": 570
+  },
+  "fila": {
+   "top": 801.1,
+   "bottom": 870.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.8125,
+  "subtituloAbajo": 71.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-2-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 506,
+   "height": 440,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 247.5,
+   "alto": 440
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 13.75,
+  "subtituloAbajo": 55,
+  "nombreVisible": false,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-2-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.8,
+   "bottom": 453.8,
+   "height": 388,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 218.2,
+   "alto": 388
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 12.125,
+  "subtituloAbajo": 48.5,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-3-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 506,
+   "height": 440,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 247.5,
+   "alto": 440
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 13.75,
+  "subtituloAbajo": 154,
+  "nombreVisible": false,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "boceto45-3-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.8,
+   "bottom": 453.8,
+   "height": 388,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 218.2,
+   "alto": 388
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [
+   40,
+   40
+  ],
+  "letraSegmentado": [
+   13,
+   13
+  ],
+  "altoOpciones": [
+   68,
+   68,
+   68,
+   68
+  ],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 12.125,
+  "subtituloAbajo": 135.8,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "app-4-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 636,
+   "height": 570,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 320.6,
+   "alto": 570
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.8125,
+  "subtituloAbajo": 199.5,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "boceto45-4-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 635.9,
+   "height": 570,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 320.6,
+   "alto": 570
+  },
+  "fila": {
+   "top": 801.1,
+   "bottom": 870.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.8125,
+  "subtituloAbajo": 199.5,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo · Para redes",
+  "aviso": null
+ },
+ "app-5-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 246.3,
+   "bottom": 455.5,
+   "height": 209.3,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 371.6,
+   "alto": 209
+  },
+  "fila": {
+   "top": 620.7,
+   "bottom": 689.7
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 6.53125,
+  "subtituloAbajo": 26.1,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-5-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 246.3,
+   "bottom": 455.5,
+   "height": 209.3,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 371.6,
+   "alto": 209
+  },
+  "fila": {
+   "top": 620.7,
+   "bottom": 689.7
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 620.7,
+    "bottom": 689.7,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 6.53125,
+  "subtituloAbajo": 26.1,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-6-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 688,
+   "height": 622,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 349.9,
+   "alto": 622
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "boceto45-6-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 687.9,
+   "height": 622,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 349.9,
+   "alto": 622
+  },
+  "fila": {
+   "top": 801.1,
+   "bottom": 870.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "app-7-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 636,
+   "height": 570,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 320.6,
+   "alto": 570
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardando… 37%"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.8125,
+  "subtituloAbajo": 71.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-7-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 635.9,
+   "height": 570,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 320.6,
+   "alto": 570
+  },
+  "fila": {
+   "top": 801.1,
+   "bottom": 870.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardando… 37%"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.1,
+    "bottom": 870.1,
+    "height": 69,
+    "width": 93,
+    "desactivada": true,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.8125,
+  "subtituloAbajo": 71.3,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "app-8-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 693,
+   "height": 627,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 352.7,
+   "alto": 627
+  },
+  "fila": {
+   "top": 806.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 806.2,
+    "bottom": 870.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 806.2,
+    "bottom": 870.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": "Quedó guardada, pero no se pudo compartir"
+ },
+ "boceto45-8-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 692.9,
+   "height": 627,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 352.7,
+   "alto": 627
+  },
+  "fila": {
+   "top": 806.1,
+   "bottom": 870.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 806.1,
+    "bottom": 870.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 806.1,
+    "bottom": 870.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": "Quedó guardada, pero no se pudo compartir"
+ },
+ "app-9-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 693,
+   "height": 627,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 352.7,
+   "alto": 627
+  },
+  "fila": {
+   "top": 806.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 806.2,
+    "bottom": 870.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 806.2,
+    "bottom": 870.2,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "boceto45-9-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.9,
+   "bottom": 692.9,
+   "height": 627,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 352.7,
+   "alto": 627
+  },
+  "fila": {
+   "top": 806.1,
+   "bottom": 870.1
+  },
+  "acciones": [
+   {
+    "etiqueta": "Compartir",
+    "top": 806.1,
+    "bottom": 870.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 806.1,
+    "bottom": 870.1,
+    "height": 64,
+    "width": 186,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [],
+  "altoAcciones": [
+   64,
+   64
+  ],
+  "anchoAcciones": [
+   186,
+   186
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [],
+  "letraSubtitulo": null,
+  "subtituloAbajo": null,
+  "nombreVisible": true,
+  "tiempoEstimado": null,
+  "ficha": null,
+  "aviso": null
+ },
+ "app-10-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 66,
+   "bottom": 618,
+   "height": 552,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 310.5,
+   "alto": 552
+  },
+  "fila": {
+   "top": 801.4,
+   "bottom": 870.4
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.4,
+    "bottom": 870.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.4,
+    "bottom": 870.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.4,
+    "bottom": 870.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.4,
+    "bottom": 870.4,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.25,
+  "subtituloAbajo": 69,
+  "nombreVisible": true,
+  "tiempoEstimado": "Guardar tarda alrededor de 1 min",
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ },
+ "boceto45-10-gestos-claro": {
+  "raizSeDesplaza": false,
+  "arribaSeDesplaza": false,
+  "video": {
+   "top": 65.8,
+   "bottom": 617.8,
+   "height": 552,
+   "width": 372
+  },
+  "imagen": {
+   "ancho": 310.5,
+   "alto": 552
+  },
+  "fila": {
+   "top": 801.2,
+   "bottom": 870.2
+  },
+  "acciones": [
+   {
+    "etiqueta": "Guardar en galería",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar"
+   },
+   {
+    "etiqueta": "Guardar y compartir",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": "Guardar y compartir"
+   },
+   {
+    "etiqueta": "Repetir toma",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   },
+   {
+    "etiqueta": "Borrar",
+    "top": 801.2,
+    "bottom": 870.2,
+    "height": 69,
+    "width": 93,
+    "desactivada": false,
+    "texto": ""
+   }
+  ],
+  "todasSobreLaBarra": true,
+  "limite": 891,
+  "letraAcciones": [
+   11,
+   11
+  ],
+  "altoAcciones": [
+   69,
+   69,
+   69,
+   69
+  ],
+  "anchoAcciones": [
+   93,
+   93,
+   93,
+   93
+  ],
+  "altoSegmentado": [],
+  "letraSegmentado": [],
+  "altoOpciones": [],
+  "letraMeta": [
+   13,
+   13
+  ],
+  "altoBotonVisor": [
+   44
+  ],
+  "altoCerrar": [
+   44
+  ],
+  "altoFicha": [
+   40
+  ],
+  "letraSubtitulo": 17.25,
+  "subtituloAbajo": 69,
+  "nombreVisible": true,
+  "tiempoEstimado": "Guardar tarda alrededor de 1 min",
+  "ficha": "SubtítulosAmarillo",
+  "aviso": null
+ }
+}
