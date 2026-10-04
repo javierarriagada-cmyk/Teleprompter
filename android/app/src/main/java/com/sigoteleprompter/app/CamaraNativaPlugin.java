@@ -246,6 +246,12 @@ public class CamaraNativaPlugin extends Plugin {
             }
             String hasAudio = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_AUDIO);
             if ("yes".equalsIgnoreCase(hasAudio)) hayPista = true;
+            // -tarea 87, parte C, 04-10-2026- La forma del archivo, con el mismo retriever: ancho y
+            // alto codificados y la rotación. 0 si no se leen. La app saca la orientación
+            // -src/lib/orientacion.ts-: un 1920x1080 con rotación 90 se ve de pie.
+            ret.put("anchoPx", entero(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)));
+            ret.put("altoPx", entero(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)));
+            ret.put("rotacion", entero(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION)));
         } catch (Exception ignored) {
         } finally {
             try { retriever.release(); } catch (Exception ignored) {}
@@ -496,6 +502,183 @@ public class CamaraNativaPlugin extends Plugin {
                                     JSObject ret = new JSObject();
                                     ret.put("ok", true);
                                     ret.put("uri", uri.toString());
+                                    ret.put("msGuardado", msGuardado);
+                                    ret.put("msTransformer", msTransformer);
+                                    ret.put("msCopia", msCopia);
+                                    if (midiendo) medir(MedicionExport.linea("guardado_fin",
+                                        "id", idMedicion, "resultado", "ok", "msTransformer", msTransformer,
+                                        "msCopia", msCopia, "msGuardado", msGuardado, "bytes_salida", bytesSalida,
+                                        "cuadros", cuadros, "bitrate_salida_bps", bitrateSalida, "error", null));
+                                    call.resolve(ret);
+                                } catch (Exception e) {
+                                    if (midiendo) medir(MedicionExport.linea("guardado_fin",
+                                        "id", idMedicion, "resultado", "error", "msTransformer", msTransformer,
+                                        "msCopia", MedicionExport.msDesde(nanoCopia), "msGuardado", MedicionExport.msDesde(nanoInicio),
+                                        "bytes_salida", bytesSalida, "cuadros", cuadros, "bitrate_salida_bps", bitrateSalida,
+                                        "error", e.getMessage()));
+                                    call.reject("Error al guardar en galería: " + e.getMessage(), e);
+                                } finally {
+                                    salida.delete();
+                                }
+                            }).start();
+                        }
+
+                        @Override
+                        public void onError(androidx.media3.transformer.Composition c, androidx.media3.transformer.ExportResult r, androidx.media3.transformer.ExportException e) {
+                            terminado[0] = true;
+                            salida.delete();
+                            if (midiendo) medir(MedicionExport.linea("guardado_fin",
+                                "id", idMedicion, "resultado", "error", "msTransformer", MedicionExport.msDesde(nanoInicio),
+                                "msCopia", null, "msGuardado", MedicionExport.msDesde(nanoInicio), "bytes_salida", null,
+                                "cuadros", null, "bitrate_salida_bps", null, "error", e.getMessage()));
+                            call.reject("No se pudieron poner los subtítulos: " + e.getMessage(), e);
+                        }
+                    })
+                    .build();
+                t[0].start(item, salida.getAbsolutePath());
+                androidx.media3.transformer.ProgressHolder avance = new androidx.media3.transformer.ProgressHolder();
+                hilo.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (terminado[0]) return;
+                        if (t[0].getProgress(avance) == androidx.media3.transformer.Transformer.PROGRESS_STATE_AVAILABLE) {
+                            JSObject d = new JSObject();
+                            d.put("porcentaje", avance.progress);
+                            notifyListeners("progresoGuardado", d);
+                        }
+                        hilo.postDelayed(this, 400);
+                    }
+                }, 400);
+            } catch (Exception e) {
+                salida.delete();
+                if (midiendo) medir(MedicionExport.linea("guardado_fin",
+                    "id", idMedicion, "resultado", "error", "msTransformer", null, "msCopia", null,
+                    "msGuardado", MedicionExport.msDesde(nanoInicio), "bytes_salida", null, "cuadros", null,
+                    "bitrate_salida_bps", null, "error", e.getMessage()));
+                call.reject("No se pudieron poner los subtítulos: " + e.getMessage(), e);
+            }
+        });
+    }
+
+    // LO QUE SABE HACER ESTE APK -tarea 87, parte B, 04-10-2026-. Un APK viejo no tiene este
+    // método: la app lo entiende como "no hay exportarToma" y no ofrece "Para redes".
+    @PluginMethod
+    public void capacidades(PluginCall call) {
+        JSObject ret = new JSObject();
+        ret.put("exportarToma", true);
+        call.resolve(ret);
+    }
+
+    // LA RECETA COMÚN -tarea 87, parte B, 04-10-2026-. El mismo flujo de guardarConSubtitulos
+    // -que NO se cambia: queda para un APK viejo y para comparar-, pero con la receta de la app
+    // -RecetaExportacion.java-: la rotación como allá; si la receta es copia, copiarAGaleria tal
+    // cual; si no, Transformer con los efectos de ExportadorDeTomas. Mismo 12 Mbps, mismo avance
+    // cada 400 ms, misma copia a la galería y mismo borrado del temporal, con las marcas de tiempo
+    // y las líneas SigoExport del paso 0 -guardado_inicio lleva el margen de la receta-.
+    @PluginMethod
+    @androidx.annotation.OptIn(markerClass = androidx.media3.common.util.UnstableApi.class)
+    public void exportarToma(PluginCall call) {
+        String ruta = call.getString("ruta");
+        String recetaJson = call.getString("receta");
+        final long nanoInicio = System.nanoTime();
+        if (ruta == null || ruta.isEmpty()) { call.reject("ruta requerida"); return; }
+        File origen = archivoDe(ruta);
+        if (!origen.exists()) {
+            call.reject("El archivo no existe: " + ruta);
+            return;
+        }
+        final RecetaExportacion receta;
+        try {
+            receta = RecetaExportacion.desdeJson(recetaJson == null ? "{}" : recetaJson);
+        } catch (Exception e) {
+            call.reject("receta inválida: " + e.getMessage(), e);
+            return;
+        }
+        final String idMedicion = MedicionExport.idDeArchivo(origen);
+        final boolean midiendo = MedicionExport.activa(getContext());
+        int[] rd = rotacionYDuracion(origen);
+        int rotacion = rd[0];
+
+        if (receta.esCopia()) {
+            // Nada que dibujar: la copia de siempre, sin recodificar -los mismos bytes-.
+            if (midiendo) medir(MedicionExport.linea("guardado_inicio",
+                "id", idMedicion, "modo", "copia", "estilo", receta.estilo, "margen", null,
+                "dur_toma_ms", rd[1], "bytes_entrada", origen.length(), "rot_grados", rotacion));
+            new Thread(() -> {
+                try {
+                    android.net.Uri itemUri = copiarAGaleria(origen, origen.getName());
+                    long msGuardado = MedicionExport.msDesde(nanoInicio);
+                    JSObject ret = new JSObject();
+                    ret.put("ok", true);
+                    ret.put("uri", itemUri.toString());
+                    ret.put("recodifico", false);
+                    ret.put("msGuardado", msGuardado);
+                    if (midiendo) medir(MedicionExport.linea("guardado_fin",
+                        "id", idMedicion, "resultado", "ok", "msTransformer", 0, "msCopia", msGuardado,
+                        "msGuardado", msGuardado, "bytes_salida", origen.length(), "cuadros", null,
+                        "bitrate_salida_bps", null, "error", null));
+                    call.resolve(ret);
+                } catch (Exception e) {
+                    if (midiendo) medir(MedicionExport.linea("guardado_fin",
+                        "id", idMedicion, "resultado", "error", "msTransformer", 0, "msCopia", null,
+                        "msGuardado", MedicionExport.msDesde(nanoInicio), "bytes_salida", null, "cuadros", null,
+                        "bitrate_salida_bps", null, "error", e.getMessage()));
+                    call.reject("Error al guardar en galería: " + e.getMessage(), e);
+                }
+            }).start();
+            return;
+        }
+
+        final CapaDeSubtitulos capa;
+        try {
+            capa = ExportadorDeTomas.capaDe(receta, rotacion);
+        } catch (Exception e) {
+            call.reject("subtitulos ilegibles: " + e.getMessage(), e);
+            return;
+        }
+        if (midiendo) {
+            if (capa != null) capa.medirCon(idMedicion, this::medir);
+            medir(MedicionExport.linea("guardado_inicio",
+                "id", idMedicion, "modo", "receta", "estilo", receta.estilo, "margen", receta.margenTexto(),
+                "dur_toma_ms", rd[1], "bytes_entrada", origen.length(), "rot_grados", rotacion));
+        }
+        File salida = new File(getContext().getCacheDir(), "receta-" + System.currentTimeMillis() + ".mp4");
+        String nombre = origen.getName().replace(".mp4", "") + "-subtitulos.mp4";
+        android.os.Handler hilo = new android.os.Handler(android.os.Looper.getMainLooper());
+        hilo.post(() -> {
+            try {
+                androidx.media3.transformer.EditedMediaItem item = new androidx.media3.transformer.EditedMediaItem.Builder(
+                    androidx.media3.common.MediaItem.fromUri(android.net.Uri.fromFile(origen)))
+                    .setEffects(new androidx.media3.transformer.Effects(
+                        com.google.common.collect.ImmutableList.of(),
+                        ExportadorDeTomas.efectosDeVideo(receta, capa)))
+                    .build();
+                final androidx.media3.transformer.Transformer[] t = new androidx.media3.transformer.Transformer[1];
+                final boolean[] terminado = { false };
+                // 12 Mbps, como guardarConSubtitulos -ver allá por qué-.
+                androidx.media3.transformer.DefaultEncoderFactory codificador = new androidx.media3.transformer.DefaultEncoderFactory.Builder(getContext())
+                    .setRequestedVideoEncoderSettings(new androidx.media3.transformer.VideoEncoderSettings.Builder().setBitrate(12_000_000).build())
+                    .build();
+                t[0] = new androidx.media3.transformer.Transformer.Builder(getContext())
+                    .setEncoderFactory(codificador)
+                    .addListener(new androidx.media3.transformer.Transformer.Listener() {
+                        @Override
+                        public void onCompleted(androidx.media3.transformer.Composition c, androidx.media3.transformer.ExportResult r) {
+                            terminado[0] = true;
+                            final long msTransformer = MedicionExport.msDesde(nanoInicio);
+                            final long nanoCopia = System.nanoTime();
+                            final long bytesSalida = salida.length();
+                            final Object cuadros = r.videoFrameCount > 0 ? r.videoFrameCount : null;
+                            final Object bitrateSalida = r.averageVideoBitrate > 0 ? r.averageVideoBitrate : null;
+                            new Thread(() -> {
+                                try {
+                                    android.net.Uri uri = copiarAGaleria(salida, nombre);
+                                    long msCopia = MedicionExport.msDesde(nanoCopia);
+                                    long msGuardado = MedicionExport.msDesde(nanoInicio);
+                                    JSObject ret = new JSObject();
+                                    ret.put("ok", true);
+                                    ret.put("uri", uri.toString());
+                                    ret.put("recodifico", true);
                                     ret.put("msGuardado", msGuardado);
                                     ret.put("msTransformer", msTransformer);
                                     ret.put("msCopia", msCopia);
