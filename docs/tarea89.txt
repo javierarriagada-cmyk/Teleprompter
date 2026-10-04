@@ -6,7 +6,10 @@ salvo que diga "en la rama". Lo que no calzó se DESCRIBE abajo, no se improvis�
 ==============================================================================
 RESUMEN
 ==============================================================================
-  - DEFECTO 1 -seguimiento de lado-: NO HAY ARREGLO DE CONDUCCIÓN, y es a propósito. La regla
+  - DEFECTO 1 -seguimiento de lado-: ARREGLADO EN LA TERCERA VUELTA, con los registros reales
+    -rama registros-tarea89, 176d635-. Ver "DEFECTO 1, TERCERA VUELTA" justo abajo: manda sobre
+    todo lo que dice la sección del defecto 1 de las dos primeras vueltas, que se deja como
+    historia. Lo de abajo, de la primera vuelta: NO HAY ARREGLO DE CONDUCCIÓN, y es a propósito. La regla
     del encargo: "si de verdad necesitas los registros completos de las 5 tomas para concluir,
     DETENTE". Se necesitan -ver más abajo por qué-. Lo que SÍ se hizo: líneas de registro nuevas,
     sin cambio de conducta, para que Claude vea en el moto g86 lo que hoy no se ve, y pruebas
@@ -27,7 +30,144 @@ PULL REQUESTS ABIERTOS QUE TOCAN LOS MISMOS ARCHIVOS -revisado antes de crear la
   #62 o #64 entran antes, se buscan por nombre.
 
 ==============================================================================
-DEFECTO 1 - SEGUIMIENTO DE LADO
+DEFECTO 1, TERCERA VUELTA -04-10-2026, con los cinco registros-
+==============================================================================
+LOS REGISTROS: rama registros-tarea89, commit 176d635, docs/registros/tarea89/. Se leyeron con
+git show, sin mezclar esa rama con esta. El LEEME dice:
+  1-vertical-1080p   de pie, 1080p, cámara frontal     avanza hasta el token ~26
+  2-vertical-720p    de pie, 720p                      avanza hasta el token ~61
+  3-vertical-480p    de pie, 480p                      avanza hasta el token ~31
+  4-de-lado-1080p    DE LADO, 1080p                    pos=0 toda la toma -calce=1, sin-calce-
+  5-de-lado-1080p    DE LADO, 1080p                    pos=0 toda la toma -ningún calce aplicado-
+  Sacados con la APK del paso 0 de la 87 -52e9361-: NO tienen las líneas nuevas de esta tarea.
+  Mismo guion en los cinco -la cabecera "# |" es idéntica, md5 0273b9db…-, 2610 tokens.
+
+EL GUION -la versión que se leyó, distinta de la de septiembre del corpus-:
+    0-5    l0  si me vieras por dentro larralde                 -el título-
+    6-30   l1  en 1969 sale un disco que se llama hombre doce cortes cinco milongas tres
+               canciones y en cuatro de ellos josé larralde no canta habla
+    31-60  l2  en el más largo son cuatro minutos de un hombre de treinta y un años recitando un
+               poema este poema se llama SI ME VIERAS POR DENTRO ES una obra
+    61-..  l3  un hombre le pide a alguien que lo mire no le pide compañía ...
+  EL TOKEN 60 ES "obra" -no "hombre": eso era en la versión de septiembre-. Lo que importa: EL
+  TÍTULO ESTÁ DOS VECES, en 0-4 y en 53-57, y en la segunda va seguido de "es" -58-. "1969" es un
+  solo token y el reconocedor dice "mil novecientos sesenta y nueve": cinco palabras que no calzan.
+
+QUÉ SE OYÓ Y LOS PRIMEROS CALCES DE CADA TOMA
+  1-vertical-1080p-1b30bd7e.motor.txt:
+      1657  oyo    parcial: si me
+      1658  calce  token 1: si me
+      2108  calce  NO CALZO: si me por dentro
+      6409  calce  token 10: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+  2-vertical-720p-47c29ca5.motor.txt -empieza donde quedó la 1-:
+        28  cuadro pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+      1748  oyo    parcial: en
+      5568  calce  token 31: en con ellos coser ellos coser la ral de no canta habla en
+  3-vertical-480p-d910b9ae.motor.txt:
+         0  cuadro pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+      2069  calce  token 4: por dentro
+      5688  calce  token 10: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco
+  4-de-lado-1080p-58e1b5f8.motor.txt:
+        18  cuadro pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+      1822  calce  token 1: si me
+      2773  oyo    parcial: si me das por dentro las
+      2773  calce  NO CALZO: si me das por dentro las
+      2793  oyo    parcial: si me das por dentro es
+      2793  calce  token 58: si me das por dentro es          <- el calce falso
+      2871  calce  token 60: si me das por dentro es por dentro
+      3787  calce  token 63: si me das por dentro es por dentro narra el de
+      8066  calce  NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos
+                   sesenta y nueve sale un disco que se llama hombre
+     16580  oyo    FINAL: si me das por dentro las por dentro narra el de en mil novecientos sesenta
+                   y nueve se un disco que se llama hombre doce cortés cinco milongas tres canciones
+                   en cuatro de ellos josé la real de no canta habla
+     19949  cuadro pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+    Después de 3787: 149 líneas 'calce', LAS 149 "NO CALZO".
+  5-de-lado-1080p-4c98b14d.motor.txt -empieza donde quedó la 4-:
+         0  cuadro pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+      2464  calce  NO CALZO: sí por dentro
+      8458  calce  NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y
+                   nueve salud disco que se llama hombre
+    94 líneas 'calce', LAS 94 "NO CALZO".
+
+CUÁL HIPÓTESIS ES: LA TERCERA, UN CALCE FALSO. NO hubo arrastre -los registros no tienen
+irAToken, pero la 4 y la 5 tampoco muestran ningún salto de posición: pos=0 de punta a punta-, y
+el lector NO estaba en el 53-60: la FINAL de 16580 dice lo que leyó, el título -"si me das por
+dentro, las... por dentro, narra el de" = "Si me vieras por dentro — Larralde"- y siguió con el
+párrafo 1 -"en mil novecientos sesenta y nueve se un disco que se llama hombre..."-. En el
+parcial de 2793 el reconocedor cambió "las" por "es" y "si me das por dentro es" calza mejor con
+la repetición del título del párrafo 2 -"si me vieras por dentro es", 53-58: cinco de seis- que
+con el título de verdad -"si me vieras por dentro larralde": cuatro de seis-. Descartarlo estuvo
+bien. LA CAUSA DEL NO AVANCE ESTÁ EN EL SEGUIDOR, después del descarte:
+  - src/lib/conduccion.ts:38-44 -71166e5- rechaza el 58: ventana 0-41 con ref=1. Bien.
+  - src/lib/seguidor.ts:474 -posTentativa = Math.max(posTentativa, candPos)- ya había corrido la
+    posición tentativa a 58, y en 2871-3787 a 60-63. Nadie la devuelve.
+  - src/lib/seguidor.ts:250-258 -calcularPosPredicha parte de max(pos, posTentativa)- y :429-446
+    -base = max(predicha, posTentativa), desde = posMinima - frase - VENTANA_ATRAS-: cada búsqueda
+    siguiente empieza en ~45 o más. Las frases reales -tokens 6 a 30- quedan FUERA DE LO QUE SE
+    BUSCA: "NO CALZO" el resto de la toma. Lo mismo en la FINAL -:359-366-.
+  - avance.ts:302-306: sin calces aplicados, DETENIDO 'sin-calce' en 0 -19949 cuadro-.
+  - La toma 5 empezó con todo eso puesto: handleStart -App.tsx:906- no reinicia seguidor ni motor
+    entre tomas -la 5 arranca en "calce=1 freno=sin-calce", lo mismo que dejó la 4; la 2 arranca en
+    25.87, lo que dejó la 1-. La pantalla mostraba 0 y la persona leyó el título, pero el seguidor
+    seguía en ~63: 94 de 94 "NO CALZO". -La 3 y la 4 sí empezaron en 0: algo reinició entre la 2 y
+    la 3 y entre la 3 y la 4; los registros no dicen qué. No se tocó.-
+
+POR QUÉ DE PIE SÍ Y DE LADO NO: NO ES LA ORIENTACIÓN. En el camino de la voz al motor nada mira
+si el teléfono está de lado -revisado en la primera vuelta-, y repetidas en la caja con la
+conducción, las cinco tomas dan lo mismo que en el teléfono SIN SABER LA ORIENTACIÓN -solo
+entran las frases-: la 1 llega a 26, la 2 a 61, la 3 a 31, la 4 y la 5 quedan en 0. Lo que
+cambió fue LO QUE SE OYÓ: de pie, el título salió como "si me por dentro" -toma 1- o "por
+dentro" -toma 3-, sin el "es"; ninguna frase calzó con la repetición del 53-58 y el primer calce
+largo fue el de "sale un disco" en el 10. De lado, en la 4, "las" se oyó "es" durante 20 ms y
+eso bastó. La 5 heredó el seguidor envenenado de la 4. Los renglones de la pantalla sí cambian
+-'renglones' de pie "0 6 14 18 23…", de lado "0 6 17 27 31…"- pero la conducción usa los
+párrafos -t.linea-, no los renglones. No se tocó "la ventana de 2 renglones".
+
+EL ARREGLO -mínimo, en src/lib/conduccion.ts, en la rama junto al comentario "tercera vuelta"-:
+cuando la conducción rechaza un calce fuera de la ventana, devuelve el seguidor a donde está el
+motor -seg.irAToken(ref)- y lo anota -'seguidor devuelto token=N'-. La ventana no cambia; el
+calce rechazado se sigue rechazando; lo único nuevo es que el seguidor deja de buscar desde un
+lugar donde el motor no está. -irAToken también limpia el parcial pendiente: la frase siguiente
+se mira entera, como cuando el usuario mueve el texto.- Con eso la toma 4 tiene UN solo rechazo
+-el 58- y después calza el título y el párrafo 1: llega a ~31, como las de pie.
+
+PRUEBAS -src/pruebas/tarea89.test.tsx, "tercera vuelta"-
+  FIXTURES: EXTRACTOS de los cinco registros en src/pruebas/corpus/tarea89/*.oyo.txt -solo la
+  cabecera con el guion y las líneas 'oyo', 22-41 kB cada uno; se dice en la primera línea de
+  cada archivo de dónde salen-. Los .motor.txt completos y el LEEME NO se copiaron.
+  - "las cinco tomas son del mismo guion": y que el título está en 0-5 y repetido en 53-60.
+  - GUARDIANAS DE PIE: "toma 1 nueva, y la 2 seguida sobre lo que dejó la 1" -como en el
+    teléfono- y "toma 3 nueva": posición del motor cada 2 s, [0,1,2,2,12,17,21,25,26],
+    [26,26,26,27,40,46,51,57,60,61] y [0,0,5,6,14,20,26,30,31]. Sacadas contra el código SIN el
+    arreglo; pasan con el arreglo: en las tres no hay ni un calce fuera de la ventana, así que el
+    arreglo no se dispara.
+  - LA QUE FALLA HOY: "toma 4 -de lado, 1080p-, nueva: el motor sale de 0" -un solo FUERA, el
+    58; 'seguidor devuelto token=1'; el motor llega a 25 o más-. Y "toma 5, seguida sobre lo que
+    dejó la 4: no queda trabada en 0".
+  - ROTURA A PROPÓSITO: con git stash de src/lib/conduccion.ts -sin el arreglo- fallan las dos
+    de lado -"expected 19 to be 1": diecinueve rechazos en vez de uno; "expected 0 to be
+    greater than 0"- y pasan las 13 restantes, guardianas incluidas. Commit 42f939c: las pruebas
+    sin el arreglo; bf4d92d: el arreglo.
+  - TODO EL CORPUS DE ANTES -las siete lecturas y tomas de src/pruebas/corpus/*.txt, por
+    repetirLectura- da EXACTAMENTE lo mismo con y sin el arreglo.
+
+LO QUE NO CALZA
+  - LA TOMA 5 SOLA, SIN LA 4 ANTES, TAMPOCO AVANZA en sus 12 s: el título salió "sí por dentro"
+    -con tilde: "sí" no es "si"- y "1969" dicho en cinco palabras diluye cada frase. Calza en el
+    12 y el 13 recién a los 7,9 y 8,4 s, como parciales, y la toma termina. Es la arrancada lenta
+    con un reconocimiento pobre, no el defecto de lado: NO SE TOCÓ. Por eso la prueba de la 5 dice
+    solo que no arranca trabada: con el arreglo la 4 deja el texto en ~31 y esas frases de la 5
+    -leídas con la pantalla en 0- ya no son las que se leerían.
+  - Que seguidor y motor no se reinicien entre tomas -App.tsx:906- es lo que llevó el veneno de la
+    4 a la 5, y a la vez lo que hizo que la 2 siguiera donde quedó la 1. No se cambió: es una
+    conducta visible -la pantalla muestra dónde quedó- y no es lo que pide este defecto.
+  - La línea 'ventana FUERA … seguidor=N' de la primera vuelta muestra seg.posicionToken(), que es
+    "pos" -lo confirmado-, no la posición tentativa: en un parcial rechazado dice seguidor=0
+    aunque la tentativa esté en 58. Lo que se ve ahora es 'seguidor devuelto'.
+
+==============================================================================
+DEFECTO 1 - SEGUIMIENTO DE LADO -primera y segunda vuelta, se deja como historia-
 ==============================================================================
 LO MEDIDO -del encargo-: 3 tomas de pie avanzan. 2 tomas de lado quedan en pos=0,
 freno=sin-calce, y el registro anota un calce en el token 60.
@@ -283,7 +423,7 @@ PASOS PARA JAVIER, EN EL MOTO G86
 ==============================================================================
 RESULTADOS
 ==============================================================================
-  - npx vitest run: 57 archivos, 435 pruebas, todas pasan -segunda vuelta-.
+  - npx vitest run: 57 archivos, 440 pruebas, todas pasan -tercera vuelta-.
   - npx tsc --noEmit: sin errores.
   - npm run build -vite build-: bien.
   - npm run apk: bien -BUILD SUCCESSFUL-. Copia en /workspace/apk/Sigo-tarea89.apk.
