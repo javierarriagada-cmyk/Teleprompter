@@ -376,7 +376,9 @@ describe('Tarea 90: el visor de lado es siempre oscuro', () => {
   })
 
   test('el bloque oscuro de styles.css vale en cualquier elemento, no solo en :root', () => {
-    expect(fuente('styles.css')).toMatch(/^\[data-tema="oscuro"\] \{\n\s*--bg-suelo: #151312;/m)
+    // \r?\n -04-10-2026, Claude-: en Windows git deja styles.css con saltos \r\n y la prueba fallaba
+    // ahí sin que la app tuviera nada; en Linux pasaba.
+    expect(fuente('styles.css')).toMatch(/^\[data-tema="oscuro"\] \{\r?\n\s*--bg-suelo: #151312;/m)
   })
 })
 
