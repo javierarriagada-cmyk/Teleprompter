@@ -1629,6 +1629,12 @@ button.boton-subtitulos {
 button.boton-subtitulos.con-subtitulos {
   border-color: var(--color-acento);
 }
+/* -tarea 87, 04-10-2026- Mientras se guarda, la ficha de Subtítulos queda desactivada, como las
+   acciones de la toma -.accion-toma:disabled-. */
+button.boton-subtitulos:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
 .boton-subtitulos-nombre {
   font-weight: 600;
 }

@@ -82,6 +82,15 @@ export const es = {
   subtitulosAmarillo: 'Amarillo',
   subtitulosRojo: 'Rojo',
   subtitulosFormal: 'Formal',
+  // -tarea 87, 04-10-2026- Posición de los subtítulos, Guardar y compartir y el tiempo estimado.
+  // Los aprobó Javier en el boceto -docs/tarea87.txt, A1 y E2-.
+  posicionSubtitulos: 'Posición',
+  posicionNormal: 'Normal',
+  posicionRedes: 'Para redes',
+  posicionRedesExplicacion: 'Instagram, TikTok y YouTube Shorts',
+  guardarYCompartir: 'Guardar y compartir',
+  compartirTrasGuardar: 'Quedó guardada, pero no se pudo compartir',
+  tiempoEstimadoGuardado: 'Guardar tarda alrededor de {tiempo}',
   avisoTomaRecuperada: 'Se recuperó una toma de una sesión interrumpida.',
   avisoTomasRecuperadas: 'Se recuperaron {n} tomas de una sesión interrumpida.',
   verla: 'Verla',

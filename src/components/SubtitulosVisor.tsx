@@ -3,6 +3,7 @@ import { hapticaSeleccion } from '../haptica'
 import { ESTILOS_SUBTITULO, EstiloSubtitulo, Subtitulo, subtituloEn } from '../lib/subtitulos'
 import { t, useTextos, ClaveTexto } from '../textos'
 import { IconoSubtitulos } from './IconosApp'
+import { MARGEN_ABAJO_NORMAL } from '../lib/posicionSubtitulos'
 
 // LOS SUBTITULOS EN EL VISOR DE LA TOMA -24-09-2026-.
 //
@@ -32,11 +33,16 @@ function rectDeLaImagen(v: HTMLVideoElement): { x: number; y: number; w: number;
 export function CapaSubtitulos({
   video,
   subtitulos,
-  estilo
+  estilo,
+  margenAbajo = MARGEN_ABAJO_NORMAL
 }: {
   video: HTMLVideoElement | null
   subtitulos: Subtitulo[]
   estilo: EstiloSubtitulo
+  // -tarea 87, parte D, 04-10-2026- A qué altura va el subtítulo, como fracción del alto de la
+  // imagen desde abajo: 0,125 en "Normal" -lo de siempre- y 0,35 en "Para redes"
+  // -lib/posicionSubtitulos.ts-. Sin la prop, como antes.
+  margenAbajo?: number
 }) {
   const [ms, setMs] = React.useState(0)
   const [rect, setRect] = React.useState<{ x: number; y: number; w: number; h: number } | null>(null)
@@ -102,7 +108,8 @@ export function CapaSubtitulos({
         fontSize: rect.h / 32
       }}
     >
-      <div className="subtitulo" style={{ marginBottom: rect.h * 0.125 }}>
+      {/* -tarea 87, parte D- El margen sale de la prop. Antes: marginBottom: rect.h * 0.125. */}
+      <div className="subtitulo" style={{ marginBottom: rect.h * margenAbajo }}>
         {s.renglones.map((r, i) => (
           <div key={i} className="subtitulo-renglon">
             {r.map((w, j) => {
@@ -145,22 +152,45 @@ function nombreDeEstilo(estilo: EstiloSubtitulo): string {
   return clave ? t(clave) : estilo
 }
 
+// -tarea 87, A4, 04-10-2026- Cuatro props opcionales; sin ellas queda EXACTAMENTE como antes:
+//   extra: lo que va dentro del panel, debajo de los cuatro estilos -SelectorPosicion-;
+//   resumen: lo que se suma a lo elegido en la píldora -«Amarillo · Para redes»-;
+//   abierto y onAbrir: el visor sabe si el panel está abierto -esconde el nombre de la toma para
+//   que el video gane alto- y lo maneja él;
+//   desactivado: mientras se guarda, la ficha no se abre -respuesta de Claude del 04-10-.
 export function SelectorSubtitulos({
   estilo,
-  onCambiar
+  onCambiar,
+  extra,
+  resumen,
+  abierto: abiertoDeAfuera,
+  onAbrir,
+  desactivado
 }: {
   estilo: EstiloSubtitulo
   onCambiar: (e: EstiloSubtitulo) => void
+  extra?: React.ReactNode
+  resumen?: string
+  abierto?: boolean
+  onAbrir?: (abierto: boolean) => void
+  desactivado?: boolean
 }) {
   useTextos()
-  const [abierto, setAbierto] = React.useState(false)
-  const nombre = nombreDeEstilo(estilo)
+  const [abiertoPropio, setAbiertoPropio] = React.useState(false)
+  const abierto = abiertoDeAfuera ?? abiertoPropio
+  const setAbierto = (a: boolean | ((previo: boolean) => boolean)) => {
+    const nuevo = typeof a === 'function' ? a(abierto) : a
+    setAbiertoPropio(nuevo)
+    onAbrir?.(nuevo)
+  }
+  const nombre = nombreDeEstilo(estilo) + (resumen ? ` · ${resumen}` : '')
   return (
     <div className="selector-subtitulos">
       <button
         type="button"
         data-testid="btn-subtitulos"
         aria-expanded={abierto}
+        disabled={desactivado}
         className={`btn-deformable boton-subtitulos${estilo !== 'no' ? ' con-subtitulos' : ''}`}
         onClick={() => setAbierto((a) => !a)}
       >
@@ -194,6 +224,7 @@ export function SelectorSubtitulos({
           ))}
         </div>
       )}
+      {abierto && extra}
     </div>
   )
 }

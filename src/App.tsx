@@ -2112,7 +2112,10 @@ export default function App({ motor, repoOverride }: AppProps) {
           onCambio={async (g) => {
             // Guardada en la galeria -o su copia ya no esta-: se anota en el
             // indice, y el visor abierto cambia de botones al tiro.
-            setGrabacionAbierta(g)
+            // -tarea 87, 04-10-2026- Solo si el visor sigue abierto en ESA toma: la X mientras se
+            // guarda no cancela, y al terminar el guardado no tiene que volver a abrir el visor
+            // -respuesta de Claude del 04-10-. Antes: setGrabacionAbierta(g).
+            setGrabacionAbierta((abierta) => (abierta && abierta.id === g.id ? g : abierta))
             try {
               await repoGrabacionesRef.current.guardar(g)
               setGrabaciones(await repoGrabacionesRef.current.listar())
