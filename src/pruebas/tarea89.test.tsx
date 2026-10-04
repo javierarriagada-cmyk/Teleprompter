@@ -185,3 +185,87 @@ describe('Tarea 89, defecto 3: lo que la barra de tres botones tapa', () => {
     }
   })
 })
+
+// LAS CINCO TOMAS DE VERDAD -tarea 89, tercera vuelta, 04-10-2026-. Extractos de la rama
+// registros-tarea89 -commit 176d635-: solo la cabecera -el guion "Larralde" tal cual se leyó- y las
+// líneas 'oyo', en src/pruebas/corpus/tarea89/. Se repiten por la conducción en el mismo orden en que
+// Javier las grabó y SIN reiniciar entre una y otra donde el teléfono tampoco reinició: la toma 2
+// empieza en pos=25.87 -donde quedó la 1- y la 5 en calce=1 -donde quedó la 4-, según la primera línea
+// 'cuadro' de cada registro. La 3 y la 4 empiezan en 0.
+const T89 = path.join(__dirname, 'corpus', 'tarea89')
+const TOMA = {
+  1: '1-vertical-1080p-1b30bd7e.oyo.txt',
+  2: '2-vertical-720p-47c29ca5.oyo.txt',
+  3: '3-vertical-480p-d910b9ae.oyo.txt',
+  4: '4-de-lado-1080p-58e1b5f8.oyo.txt',
+  5: '5-de-lado-1080p-4c98b14d.oyo.txt'
+} as const
+const corpusDe = (n: keyof typeof TOMA) => leerCorpus(fs.readFileSync(path.join(T89, TOMA[n]), 'utf8'))
+
+// Repite una toma sobre una conducción -nueva o la que dejó la anterior- y devuelve la posición del
+// motor cada 2 s. El reloj sigue corriendo entre tomas, como en el teléfono.
+let relojTomas = 0
+function repetirToma(c: Conduccion, n: keyof typeof TOMA): number[] {
+  const corpus = corpusDe(n)
+  const oyos = corpus.eventos.filter((e: any) => e.tipo === 'oyo') as any[]
+  const fin = oyos[oyos.length - 1].ms + 3000
+  const base = relojTomas
+  const posiciones: number[] = []
+  let k = 0
+  for (let t = 0; t <= fin; t += 16) {
+    while (k < oyos.length && oyos[k].ms <= t) {
+      if (oyos[k].final) procesarFinal(c, oyos[k].texto, base + t)
+      else procesarParcial(c, oyos[k].texto, base + t)
+      k++
+    }
+    if (t % 2000 < 16) posiciones.push(Math.round(c.motor.estadoEn(base + t).posicion))
+  }
+  relojTomas = base + fin + 5000
+  return posiciones
+}
+const guionLarralde = () => corpusDe(1).guion
+
+describe('Tarea 89, defecto 1: Larralde de pie, las tomas 1, 2 y 3 no cambian', () => {
+  test('las cinco tomas son del mismo guion', () => {
+    const g = guionLarralde()
+    for (const n of [2, 3, 4, 5] as const) expect(corpusDe(n).guion).toBe(g)
+    const tokens = tokenizarGuion(g)
+    // El título se repite en el párrafo 2: "Se llama 'Si me vieras por dentro'. Es una obra".
+    expect(tokens.slice(0, 6).map((t) => t.palabra).join(' ')).toBe('si me vieras por dentro larralde')
+    expect(tokens.slice(53, 61).map((t) => t.palabra).join(' ')).toBe('si me vieras por dentro es una obra')
+  })
+
+  test('toma 1 -de pie, 1080p-, nueva, y la 2 -720p- seguida sobre lo que dejó la 1', () => {
+    relojTomas = 0
+    const c = conduccionDe(guionLarralde())
+    expect(repetirToma(c, 1)).toEqual([0, 1, 2, 2, 12, 17, 21, 25, 26])
+    expect(repetirToma(c, 2)).toEqual([26, 26, 26, 27, 40, 46, 51, 57, 60, 61])
+  })
+
+  test('toma 3 -de pie, 480p-, nueva', () => {
+    relojTomas = 0
+    expect(repetirToma(conduccionDe(guionLarralde()), 3)).toEqual([0, 0, 5, 6, 14, 20, 26, 30, 31])
+  })
+})
+
+describe('Tarea 89, defecto 1: Larralde de lado, las tomas 4 y 5 mueven la posición', () => {
+  // La toma 4 oyó "si me das por dentro es" -el título, con "las" oído como "es"- y el seguidor lo
+  // ubicó en 53-58, la repetición del título en el párrafo 2. La conducción lo rechazó -fuera de
+  // 0-41- pero el seguidor ya había corrido su posición tentativa, y desde ahí no volvió a buscar
+  // cerca del título. Con el arreglo, el seguidor vuelve a donde está el motor.
+  test('toma 4 -de lado, 1080p-, nueva: el motor sale de 0', () => {
+    relojTomas = 0
+    activarDiagnostico(true)
+    const pos = repetirToma(conduccionDe(guionLarralde()), 4)
+    expect(comoTexto()).toMatch(/ventana\tFUERA parcial token=58 ref=1/)
+    expect(Math.max(...pos)).toBeGreaterThanOrEqual(10)
+  })
+
+  test('toma 5 -de lado-, seguida sobre lo que dejó la 4, como en el teléfono: no queda trabada en 0', () => {
+    relojTomas = 0
+    const c = conduccionDe(guionLarralde())
+    repetirToma(c, 4)
+    const pos = repetirToma(c, 5)
+    expect(Math.max(...pos)).toBeGreaterThan(0)
+  })
+})

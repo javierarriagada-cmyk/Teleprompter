@@ -1,0 +1,228 @@
+# EXTRACTO PARA PRUEBAS -tarea 89, 04-10-2026-: solo la cabecera y las líneas 'oyo' de
+# docs/registros/tarea89/1-vertical-1080p-1b30bd7e.motor.txt -rama registros-tarea89, commit 176d635-.
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: 1b30bd7e-f315-454c-ba89-3402c0af318b
+# inicio del video (epoch ms): 1791083414102
+# motor de voz: nativo
+# letra: 24 px, sans
+# columna: completa, margen 5%
+# donde lees: arriba
+# idioma: es
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Si me vieras por dentro — Larralde
+# | En 1969 sale un disco que se llama Hombre. Doce cortes: cinco milongas, tres canciones. Y en cuatro de ellos José Larralde no canta. Habla.
+# | En el más largo, son cuatro minutos de un hombre de treinta y un años recitando un poema, este poema Se llama “Si me vieras por dentro”. Es una obra
+# | Un hombre le pide a alguien que lo mire. No le pide compañía. No le pide perdón. Le pide una respuesta. Quiere que el otro le diga por qué existe, cuál es su razón de ser.
+# | Es un pedido raro, extraño. La filosofía se pasa la vida dándole vueltas. Y en el fondo, en distintos momentos, lo hacemos todos: al que nos quiere le pasamos la pelota, le pasamos la pregunta sobre lo que no podemos contestar solos —por qué estoy aquí— con la esperanza de que desde afuera se vea mejor. Larralde escribe esa esperanza y después la desarma entera, sin rencor.. en la mayoria de Nosotros, cuando no nos ven, inventamos el rencor: “tú no me entiendes”, no me comprendes. no soy yo el que de un mo u otro encajo o me adapto o no, eres tú 
+# | Si me vieras por dentro / Seguro hallarías el porqué que yo no encuentro
+# | si me vieras por dentro seguro hallarás el por que, El orden. Primero está la certeza de que el otro lo va a encontrar y después viene la confesión de que él no puede. No dice que no tiene un porqué. Dice que no lo encuentra. La diferencia: existe algo ahí, está adentro, pero el dueño de casa no da con él.
+# | y es por que Somos el peor testigo de nuestra propia vida, por estar demasiado cerca y por tener intereses. tenemos la esperanza de que Cualquiera que nos quiera un poco vera con facilidad cosas nuestras que podemos negar hace veinte años.
+# | Sartre lo dice a su manera: no somos una cosa terminada. Somos también lo que los otros hacen de nosotros con su mirada, cuando me miras, me construyes
+# | Larralde no lo dice como queja. Lo dice como quien pide ayuda para encontrar. Porque hay cosas de uno que sólo existen cuando alguien más las nombra.
+# | 2. Ese porqué que me empuja y mantiene mis raíces frescas / Aunque mi cerebro piense que están secas
+# | Ese por que que mantiene raices frescas, aunque mi cerebro piense que estan secas. Acá se parte en dos. Hay algo que lo empuja y le mantiene las raíces con agua, lo mantiene bien, y hay un cerebro convencido de que esas raíces están secas. Y esas dos esferas son él.
+# | Eso desarma una idea que damos por hecha: que uno sabe cómo está. El diagnóstico que hacemos sobre nosotros mismos puede estar equivocado, pero podemos seguir igual, sostenidos por algo que no controlamos y que ni siquiera reconocemos.
+# | No es menor que desconfíe del cerebro. El cerebro no es un juez imparcial. Se calibró durante millones de años para un mundo que ya no existe: el animal que se acerca, el invierno que nos alcanza, el grupo de treinta personas desde donde ser expulsado era morirse. y quedan reminiscencias, recuerdos… al mirar el fuego, el mar; personalmente pienso que me gusta pescar por que es la excusa perfecta para mirar el mar y el rio, y esta explicacion me gusta mucho por que justicia por que soy tan mal pescador, voolviendo al tema  la tarea del cerebro siempre fue Anticipar la desgracia, y el que anticipaba mal no dejaba nietos, se extingue.
+# | . La evolución trabaja en decenas de miles de años; nuestras circunstancias se dieron vuelta en dos siglos, algunas en veinte años. en terminos biologicos, la realidad que esta planteando es que existe un desajuste, y larralde lo identifica.
+# | 3. Mi tallo partido desde hace siglos, desde ayer / Desde este mismo momento, desde siempre
+# | Cuatro tiempos para una sola herida.
+# | Siglos. Ayer. Este mismo momento. Siempre.
+# | Una herida con fecha se puede tratar: uno dice me pasó tal cosa, tal año, y a partir de ahí hay un antes y un después, hay un culpable, hay un proceso. Larralde le saca la fecha, y al sacársela deja de ser un episodio y pasa a ser una condición. El orden: va de lo más lejano a lo más cercano y termina en el ahora. No está diciendo que se partió alguna vez. Dice que se está partiendo mientras habla. Por eso “siempre” no cierra la serie: la condena. Nombra una herida que no va a encontrar la forma de terminar.
+# | 4. Mi niña juventud, mi vejez niña, mi vieja niñez.
+# | No habla de tres edades: habla de una vida donde las edades dejaron de respetar el orden. La juventud aparece como niña porque conserva una fragilidad que no se fue; la vejez, como niña, porque hay cansancios que también desamparan.
+# | Y “mi vieja niñez” se puede leer de dos maneras, entre otras mas geniales,. Una: la niñez es vieja para quienes aprendieron demasiado temprano lo que no les correspondía saber. Otra: los niños todavía están cerca del porqué. Preguntan sin vergüenza, insisten, desarman lo que para nosotros ya parece natural. Después crecemos, nos llenamos de explicaciones, y un día dejamos de preguntar. dejamos de hinchar las pelotas, No porque hayamos entendido más. Porque nos acostumbramos a vivir entre respuestas ajenas.
+# | 5. Porque aunque mi existencia sea un accidente, tengo razón de ser / El hecho de haber nacido encierra una verdad
+# | Heidegger dice que somos arrojados al mundo: nadie nos pidió permiso para nacer y sin embargo la vida es nuestra responsabilidad. Sartre lleva eso hasta el final: la existencia antes que la esencia. No venimos con un para qué, y el para qué nos lo tenemos que fabricar. Larralde acepta la primera parte y se sale de la segunda.
+# | Sí, es un accidente, o puede serlo. No estaba escrito, podría no haber existido. Pero no dice que va a inventarse una razón: dice que la tiene, que el hecho de haber nacido ya encierra una verdad, esté él o no esté para poder descifrarla.
+# | Es una posición más incómoda que la de los otros dos. El que inventa su sentido, al menos manda. El que no tiene ninguno, al menos tiene que estar en paz con eso, porque también es una decisión. El ateo y el creyente son dos tipos de creyentes: alcanzan verdades. Larralde queda en el peor lugar: hay un sentido, es suyo, pero no puede leerlo.
+# | 6. Yo mismo soy savia de un tronco partido que no cicatriza / Porque transmite desde hace siglos
+# | El tronco no cierra. Y no cierra por una razón: está transmitiendo. Si cicatrizara, se cortaría el paso. Pienso en todo lo que nos dijeron sobre esto. Sanar. Cerrar procesos. Dar vuelta la página. Superar. Mindfulness. Una herida abierta, en el vocabulario con el que vivimos, es una tarea pendiente, algo que no resolvimos, una falla nuestra.
+# | Larralde dice lo contrario, y lo dice sin levantar la voz: la herida abierta es el conducto. Por ahí pasa la savia. Cerrarla no sería sanar. Sería dejar de dar.
+# | Y hay algo más duro. Un tronco partido que transmite no está transmitiendo su dolor, como podria decirlo el gran novelista de Freud: está transmitiendo vida a través de su dolor. La grieta no es lo que entrega. Es por donde entrega. Todo el que crió a un hijo sabe esto sin haberlo pensado. Lo que uno le pasa a un hijo no sale de la parte sana. No viene de lo que aprendimos felices en vacaciones. Viene de lo que aprendimos del dolor, de las dificultades, de la frustración.
+# | 7. Pero no puede ser, porque vos sos también una verdad / Desde el corazón de tu médula
+# | Acá se da vuelta el poema entero.
+# | Venía pidiendo que lo miraran por dentro, y en una línea retira el pedido. No lo retira porque el otro sea indiferente, ni porque no lo quiera lo suficiente, ni por que no lo sepa entender: lo retira porque el otro también está lleno, y esta lleno con su verdad.
+# | Lévinas se pasó la vida en esto: el otro no es un pedazo de mi mundo. Es alguien que me desborda. Larralde llega ahí por otro camino y en menos palabras, mucho mas contundente. No me puedes ver por dentro porque tú también tienes un adentro, y está ocupado, y de hecho tampoco lo conoces. No me conozco yo. Qué te voy a conocer a ti.
+# | 8. Por eso no podrás, porque sos verdad tuya / Porque en tu verdad no cabe mi verdad
+# | Escucha bien lo que no está diciendo. No dice que no lo entienden, o  que esté solo. No hay reproche
+# | Está describiendo una estructura. “No me entiendes” es una queja, y una queja se puede reparar pidiendo más esfuerzo. “No cabe” es otra cosa: es una medida, y contra una medida no hay voluntad que sirva. Es más triste y es más tranquilo.
+# | Humberto Maturana lo decía con palabras de biólogo: entre dos sistemas vivos no existe la interacción instructiva. Yo no puedo determinar lo que pasa dentro de ti. Lo único que puedo hacer es gatillar algo que después lo decide tu estructura, no la mía. No, es que por que tu hiciste esto… x. no, no, es que estaba borracho. entonces a comprobar, todos los borrachos tienen esa conducta?, no, entonces eres tu, no el alcohol, tan vilipendiado
+# | ya que hablamos de Maturana: La autopoiesis, como sabemos si algo esta vivo o esta muerto?, por que el organismo que esta vivo, se sigue regenerando en forma autonoma, no dependiente.
+# | 9. Porque en tu corazón cabe mi corazón como alimento a tu amor / En cambio, la verdad no se alimenta con verdad ajena
+# | Separa dos cosas que vivimos juntas y confundimos siempre. Al amor sí lo puedo alimentar: mi corazón entra en el tuyo, te doy tiempo, cuerpo, presencia, compañía. Todo eso pasa de una persona a otra. Puede cuidar, sostener, acompañar, dañar.
+# | A tu verdad no.
+# | Porque amar no es absorber al otro ni convertirse en su explicación definitiva. El otro puede darme alimento, pero no puede vivir por mí; puede reconocer mi herida, pero no terminar de saber qué significa. Puede hacer más habitable mi mundo, pero no ocupar mi lugar dentro de él.
+# | Y esa distinción se lleva puesta, denuevo a freud, pero tambien la promesa más repetida: “me completas”, “sin ti no soy nada”, “encontré mi otra mitad”. Larralde no rebaja el amor: lo salva de esa exigencia imposible. Lo que se puede dar es alimento; lo que nadie puede entregar es sustancia. Nos sostenemos. No nos constituimos.
+# | Por eso no habla desde el desengaño ni desde la distancia. Está midiendo. Está constatando que dos corazones pueden caber uno en otro sin dejar de ser dos.
+# | 10. Porque no acaba, porque es siempre / Y siempre soy yo, y vos sos nunca
+# | Acá hace algo con el idioma que hay que mirar de cerca.
+# | Siempre y nunca son palabras de tiempo. Uno las usa para decir cuándo pasa algo. Larralde las saca de ahí y las convierte en nombres de personas. Yo soy siempre. Tú eres nunca. Deja de hablar de cuándo se encuentran y pasa a decir que están hechos de tiempos distintos.
+# | Cualquiera que haya vivido con otro conoce esto: lo que para mí es urgente para ti puede esperar, lo que para ti es definitivo para mí es una etapa, y en consecuencia no estamos discutiendo el mismo tema en el mismo momento aunque lo parezca. Y ninguno de los dos está mal. Simplemente no somos el mismo reloj.
+# | 11. Y así marchamos juntos por un camino de préstamos de verdades mentidas / Y corazones devorados por amor sin retorno
+# | Préstamos de verdades mentidas. aqui se fue a la puta madre y tenemos que ir despacio con esas tres palabras, porque cada una está haciendo un trabajo distinto.
+# | Empecemos por la primera, préstamo. Uno presta lo que tiene, no se puede prestar lo que no se tiene, y lo prestado, además, se devuelve. Ahora la segunda: no dice mentiras, dice verdades mentidas, y eso es otra cosa. Mentida no es un sustantivo: es algo que le pasó a la verdad. Alguien la agarró entera y la entregó incompleta.
+# | Eso deja fuera la intención. El que habla quiere decir la verdad, y por eso son verdades y no mentiras. Está entregando lo que cree que tiene, lo que puede entregar. La falla no está en la voluntad. Está en él.
+# | Y acá vuelve todo el poema sobre sí mismo. Larralde empezó diciendo que no encuentra su propio porqué, que hay una verdad adentro suyo y él no da con ella. Entonces, cuando le entrega su verdad a otro, ¿qué le está entregando? Le está prestando algo sobre lo que él mismo no tiene completa claridad. Está pagando con una moneda que no terminó de saber su valor. Eso es ser carente. No mentiroso. Carente.
+# | Y reconocerlo cambia dónde ponemos la culpa. La lectura cómoda de las mentiras de una pareja siempre tiene un culpable enfrente: el que ocultó, el que no se animó, el que dijo lo que convenía. Larralde no reparte esa carta. Dice marchamos. Los dos. Los dos vamos apenas prestando lo que no terminamos de entender, y los dos recibiendo eso mismo, convencidos de haber entregado y recibido algo entero.
+# | No hay un villano. Hay dos personas haciéndose entrega de sus carencias y llamándole a eso conocerse.
+# | 12. Y sin embargo / Y sin embargo yo soy tu verdad y vos la mía
+# | Lo dice dos veces. Y sin embargo. Y sin embargo.
+# | Se pasó el poema entero demostrando que no se puede, y acá lo afirma igual. por que No es una contradicción. Una cosa es que me entiendas y otra distinta es que yo sea tu verdad.
+# | Se puede ser la verdad de alguien que no nos entiende. De hecho es lo más común que hay. La imposibilidad no es del vínculo. Es de la comprensión.
+# | 13. Sigo creyendo en mi Dios
+# | Y termina ahí.
+# | Después de mostrar, de demostrar que nadie puede verlo por dentro, dice esto. Suena a cierre religioso de campo. al canto a lo divino, No lo creo.
+# | Todo empezó con un pedido: que alguien lo mirara por dentro y le dijera el porqué. Larralde demostró, uno por uno, que ninguna persona puede hacerlo. Ni la que lo ama. Ni la que camina a su lado. Ninguna, y no por falta de ganas, sino por estructura. que hacemos? Queda un solo destinatario posible. No porque Dios venga a completar lo que el amor no pudo. No dice “creo en Dios”. Dice “creo en mi Dios”. No es una doctrina. Es un vínculo personal. Quizá la última intimidad que le queda cuando admite que ni él ni los demás pueden descifrarlo.
+# | El poema no termina en una respuesta. Termina con una fidelidad: la fidelidad a la pregunta. así como socrates.  Después de comprobar que el amor no puede poseer la verdad del otro, Larralde se niega a aceptar que la verdad sea definitivamente inaccesible. Sigue creyendo que hay una mirada capaz de sostenerla. Porque Dios, para la tradición mística, no es lo contrario del misterio: es su nombre más profundo, mas hondo. No aquello que termina de explicarlo todo, sino aquello que impide que todo pueda ser explicado. Lo sagrado visto como un misterio que a la vez sobrecoge y atrae, y excede el lenguaje y la comprension. Y eso es lo que Larralde parece conservar: La certeza de que el porqué no es una pregunta pequeña ni abandonada en el vacío, aunque no tenga respuesta.
+# ---------------------------------------------
+ms	tipo	detalle
+1619	oyo	parcial: sí
+1657	oyo	parcial: si me
+1723	oyo	parcial: si me
+1800	oyo	parcial: si me
+1910	oyo	parcial: si me
+2018	oyo	parcial: si me
+2038	oyo	parcial: si me por
+2108	oyo	parcial: si me por dentro
+2188	oyo	parcial: si me por dentro
+2303	oyo	parcial: si me por dentro
+2386	oyo	parcial: si me por dentro
+2413	oyo	parcial: si me por dentro
+2429	oyo	parcial: si me por dentro
+2445	oyo	parcial: si me por dentro
+2468	oyo	parcial: si me por dentro por
+2515	oyo	parcial: si me por dentro por
+2535	oyo	parcial: si me por dentro por
+2548	oyo	parcial: si me por dentro por dentro
+2573	oyo	parcial: si me por dentro por dentro
+2627	oyo	parcial: si me por dentro por dentro
+2645	oyo	parcial: si me por dentro por dentro
+2661	oyo	parcial: si me por dentro por dentro
+2696	oyo	parcial: si me por dentro por dentro
+2725	oyo	parcial: si me por dentro por dentro
+2730	oyo	parcial: si me por dentro por dentro la
+2833	oyo	parcial: si me por dentro por dentro la
+2925	oyo	parcial: si me por dentro por dentro la
+3047	oyo	parcial: si me por dentro por dentro la
+3147	oyo	parcial: si me por dentro por dentro la ral
+3156	oyo	parcial: si me por dentro por dentro la rural
+3222	oyo	parcial: si me por dentro por dentro la rural de
+3325	oyo	parcial: si me por dentro por dentro la rural de
+3411	oyo	parcial: si me por dentro por dentro la rural de
+3508	oyo	parcial: si me por dentro por dentro la rural de
+3623	oyo	parcial: si me por dentro por dentro la rural de
+3707	oyo	parcial: si me por dentro por dentro la rural de
+3816	oyo	parcial: si me por dentro por dentro la rural de
+3915	oyo	parcial: si me por dentro por dentro la rural de
+4010	oyo	parcial: si me por dentro por dentro la rural de
+4165	oyo	parcial: si me por dentro por dentro la rural de
+4219	oyo	parcial: si me por dentro por dentro la rural de
+4310	oyo	parcial: si me por dentro por dentro la rural de
+4451	oyo	parcial: si me por dentro por dentro la rural de
+4567	oyo	parcial: si me por dentro por dentro la rural de mil novecientos
+4619	oyo	parcial: si me por dentro por dentro la rural de mil novecientos
+4708	oyo	parcial: si me por dentro por dentro la rural de mil novecientos
+4814	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta
+4909	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta
+5010	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y
+5111	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5200	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5307	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5408	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5502	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5616	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5712	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5806	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5910	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+6015	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+6029	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve salón
+6089	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un
+6208	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un
+6280	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un
+6407	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+6492	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+6580	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+6684	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+6730	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que
+6822	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que
+6940	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que
+7059	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que
+7082	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que si
+7113	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7213	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7306	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7425	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7508	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7606	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7727	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7808	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7876	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+7959	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8073	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8170	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8270	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8381	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8478	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8567	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8675	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+8772	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+8875	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+8972	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+9074	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+9162	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+9261	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9342	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9446	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9550	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9645	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9684	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+9783	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+9868	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil
+9968	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil
+10004	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil once
+10085	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+10143	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10239	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10361	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10444	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10540	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10646	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10747	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10839	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10869	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres
+10970	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres
+10994	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11078	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11187	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11287	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11382	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11489	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11588	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11681	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11789	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11836	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y
+11924	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y
+11950	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un
+11979	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+12079	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y en
+12131	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un
+12219	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un
+12314	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuadro de
+12406	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuadro de
+12512	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuadro de
+12577	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de
+12682	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de
+12711	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+12785	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+12878	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+12982	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13088	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13187	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13285	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13391	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13480	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13606	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13686	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13781	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13883	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+14014	oyo	FINAL: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos

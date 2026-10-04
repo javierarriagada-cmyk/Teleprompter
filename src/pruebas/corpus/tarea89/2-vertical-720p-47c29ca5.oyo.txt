@@ -1,0 +1,264 @@
+# EXTRACTO PARA PRUEBAS -tarea 89, 04-10-2026-: solo la cabecera y las líneas 'oyo' de
+# docs/registros/tarea89/2-vertical-720p-47c29ca5.motor.txt -rama registros-tarea89, commit 176d635-.
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: 47c29ca5-6c6a-4681-8e08-9403164ea798
+# inicio del video (epoch ms): 1791083450397
+# motor de voz: nativo
+# letra: 24 px, sans
+# columna: completa, margen 5%
+# donde lees: arriba
+# idioma: es
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Si me vieras por dentro — Larralde
+# | En 1969 sale un disco que se llama Hombre. Doce cortes: cinco milongas, tres canciones. Y en cuatro de ellos José Larralde no canta. Habla.
+# | En el más largo, son cuatro minutos de un hombre de treinta y un años recitando un poema, este poema Se llama “Si me vieras por dentro”. Es una obra
+# | Un hombre le pide a alguien que lo mire. No le pide compañía. No le pide perdón. Le pide una respuesta. Quiere que el otro le diga por qué existe, cuál es su razón de ser.
+# | Es un pedido raro, extraño. La filosofía se pasa la vida dándole vueltas. Y en el fondo, en distintos momentos, lo hacemos todos: al que nos quiere le pasamos la pelota, le pasamos la pregunta sobre lo que no podemos contestar solos —por qué estoy aquí— con la esperanza de que desde afuera se vea mejor. Larralde escribe esa esperanza y después la desarma entera, sin rencor.. en la mayoria de Nosotros, cuando no nos ven, inventamos el rencor: “tú no me entiendes”, no me comprendes. no soy yo el que de un mo u otro encajo o me adapto o no, eres tú 
+# | Si me vieras por dentro / Seguro hallarías el porqué que yo no encuentro
+# | si me vieras por dentro seguro hallarás el por que, El orden. Primero está la certeza de que el otro lo va a encontrar y después viene la confesión de que él no puede. No dice que no tiene un porqué. Dice que no lo encuentra. La diferencia: existe algo ahí, está adentro, pero el dueño de casa no da con él.
+# | y es por que Somos el peor testigo de nuestra propia vida, por estar demasiado cerca y por tener intereses. tenemos la esperanza de que Cualquiera que nos quiera un poco vera con facilidad cosas nuestras que podemos negar hace veinte años.
+# | Sartre lo dice a su manera: no somos una cosa terminada. Somos también lo que los otros hacen de nosotros con su mirada, cuando me miras, me construyes
+# | Larralde no lo dice como queja. Lo dice como quien pide ayuda para encontrar. Porque hay cosas de uno que sólo existen cuando alguien más las nombra.
+# | 2. Ese porqué que me empuja y mantiene mis raíces frescas / Aunque mi cerebro piense que están secas
+# | Ese por que que mantiene raices frescas, aunque mi cerebro piense que estan secas. Acá se parte en dos. Hay algo que lo empuja y le mantiene las raíces con agua, lo mantiene bien, y hay un cerebro convencido de que esas raíces están secas. Y esas dos esferas son él.
+# | Eso desarma una idea que damos por hecha: que uno sabe cómo está. El diagnóstico que hacemos sobre nosotros mismos puede estar equivocado, pero podemos seguir igual, sostenidos por algo que no controlamos y que ni siquiera reconocemos.
+# | No es menor que desconfíe del cerebro. El cerebro no es un juez imparcial. Se calibró durante millones de años para un mundo que ya no existe: el animal que se acerca, el invierno que nos alcanza, el grupo de treinta personas desde donde ser expulsado era morirse. y quedan reminiscencias, recuerdos… al mirar el fuego, el mar; personalmente pienso que me gusta pescar por que es la excusa perfecta para mirar el mar y el rio, y esta explicacion me gusta mucho por que justicia por que soy tan mal pescador, voolviendo al tema  la tarea del cerebro siempre fue Anticipar la desgracia, y el que anticipaba mal no dejaba nietos, se extingue.
+# | . La evolución trabaja en decenas de miles de años; nuestras circunstancias se dieron vuelta en dos siglos, algunas en veinte años. en terminos biologicos, la realidad que esta planteando es que existe un desajuste, y larralde lo identifica.
+# | 3. Mi tallo partido desde hace siglos, desde ayer / Desde este mismo momento, desde siempre
+# | Cuatro tiempos para una sola herida.
+# | Siglos. Ayer. Este mismo momento. Siempre.
+# | Una herida con fecha se puede tratar: uno dice me pasó tal cosa, tal año, y a partir de ahí hay un antes y un después, hay un culpable, hay un proceso. Larralde le saca la fecha, y al sacársela deja de ser un episodio y pasa a ser una condición. El orden: va de lo más lejano a lo más cercano y termina en el ahora. No está diciendo que se partió alguna vez. Dice que se está partiendo mientras habla. Por eso “siempre” no cierra la serie: la condena. Nombra una herida que no va a encontrar la forma de terminar.
+# | 4. Mi niña juventud, mi vejez niña, mi vieja niñez.
+# | No habla de tres edades: habla de una vida donde las edades dejaron de respetar el orden. La juventud aparece como niña porque conserva una fragilidad que no se fue; la vejez, como niña, porque hay cansancios que también desamparan.
+# | Y “mi vieja niñez” se puede leer de dos maneras, entre otras mas geniales,. Una: la niñez es vieja para quienes aprendieron demasiado temprano lo que no les correspondía saber. Otra: los niños todavía están cerca del porqué. Preguntan sin vergüenza, insisten, desarman lo que para nosotros ya parece natural. Después crecemos, nos llenamos de explicaciones, y un día dejamos de preguntar. dejamos de hinchar las pelotas, No porque hayamos entendido más. Porque nos acostumbramos a vivir entre respuestas ajenas.
+# | 5. Porque aunque mi existencia sea un accidente, tengo razón de ser / El hecho de haber nacido encierra una verdad
+# | Heidegger dice que somos arrojados al mundo: nadie nos pidió permiso para nacer y sin embargo la vida es nuestra responsabilidad. Sartre lleva eso hasta el final: la existencia antes que la esencia. No venimos con un para qué, y el para qué nos lo tenemos que fabricar. Larralde acepta la primera parte y se sale de la segunda.
+# | Sí, es un accidente, o puede serlo. No estaba escrito, podría no haber existido. Pero no dice que va a inventarse una razón: dice que la tiene, que el hecho de haber nacido ya encierra una verdad, esté él o no esté para poder descifrarla.
+# | Es una posición más incómoda que la de los otros dos. El que inventa su sentido, al menos manda. El que no tiene ninguno, al menos tiene que estar en paz con eso, porque también es una decisión. El ateo y el creyente son dos tipos de creyentes: alcanzan verdades. Larralde queda en el peor lugar: hay un sentido, es suyo, pero no puede leerlo.
+# | 6. Yo mismo soy savia de un tronco partido que no cicatriza / Porque transmite desde hace siglos
+# | El tronco no cierra. Y no cierra por una razón: está transmitiendo. Si cicatrizara, se cortaría el paso. Pienso en todo lo que nos dijeron sobre esto. Sanar. Cerrar procesos. Dar vuelta la página. Superar. Mindfulness. Una herida abierta, en el vocabulario con el que vivimos, es una tarea pendiente, algo que no resolvimos, una falla nuestra.
+# | Larralde dice lo contrario, y lo dice sin levantar la voz: la herida abierta es el conducto. Por ahí pasa la savia. Cerrarla no sería sanar. Sería dejar de dar.
+# | Y hay algo más duro. Un tronco partido que transmite no está transmitiendo su dolor, como podria decirlo el gran novelista de Freud: está transmitiendo vida a través de su dolor. La grieta no es lo que entrega. Es por donde entrega. Todo el que crió a un hijo sabe esto sin haberlo pensado. Lo que uno le pasa a un hijo no sale de la parte sana. No viene de lo que aprendimos felices en vacaciones. Viene de lo que aprendimos del dolor, de las dificultades, de la frustración.
+# | 7. Pero no puede ser, porque vos sos también una verdad / Desde el corazón de tu médula
+# | Acá se da vuelta el poema entero.
+# | Venía pidiendo que lo miraran por dentro, y en una línea retira el pedido. No lo retira porque el otro sea indiferente, ni porque no lo quiera lo suficiente, ni por que no lo sepa entender: lo retira porque el otro también está lleno, y esta lleno con su verdad.
+# | Lévinas se pasó la vida en esto: el otro no es un pedazo de mi mundo. Es alguien que me desborda. Larralde llega ahí por otro camino y en menos palabras, mucho mas contundente. No me puedes ver por dentro porque tú también tienes un adentro, y está ocupado, y de hecho tampoco lo conoces. No me conozco yo. Qué te voy a conocer a ti.
+# | 8. Por eso no podrás, porque sos verdad tuya / Porque en tu verdad no cabe mi verdad
+# | Escucha bien lo que no está diciendo. No dice que no lo entienden, o  que esté solo. No hay reproche
+# | Está describiendo una estructura. “No me entiendes” es una queja, y una queja se puede reparar pidiendo más esfuerzo. “No cabe” es otra cosa: es una medida, y contra una medida no hay voluntad que sirva. Es más triste y es más tranquilo.
+# | Humberto Maturana lo decía con palabras de biólogo: entre dos sistemas vivos no existe la interacción instructiva. Yo no puedo determinar lo que pasa dentro de ti. Lo único que puedo hacer es gatillar algo que después lo decide tu estructura, no la mía. No, es que por que tu hiciste esto… x. no, no, es que estaba borracho. entonces a comprobar, todos los borrachos tienen esa conducta?, no, entonces eres tu, no el alcohol, tan vilipendiado
+# | ya que hablamos de Maturana: La autopoiesis, como sabemos si algo esta vivo o esta muerto?, por que el organismo que esta vivo, se sigue regenerando en forma autonoma, no dependiente.
+# | 9. Porque en tu corazón cabe mi corazón como alimento a tu amor / En cambio, la verdad no se alimenta con verdad ajena
+# | Separa dos cosas que vivimos juntas y confundimos siempre. Al amor sí lo puedo alimentar: mi corazón entra en el tuyo, te doy tiempo, cuerpo, presencia, compañía. Todo eso pasa de una persona a otra. Puede cuidar, sostener, acompañar, dañar.
+# | A tu verdad no.
+# | Porque amar no es absorber al otro ni convertirse en su explicación definitiva. El otro puede darme alimento, pero no puede vivir por mí; puede reconocer mi herida, pero no terminar de saber qué significa. Puede hacer más habitable mi mundo, pero no ocupar mi lugar dentro de él.
+# | Y esa distinción se lleva puesta, denuevo a freud, pero tambien la promesa más repetida: “me completas”, “sin ti no soy nada”, “encontré mi otra mitad”. Larralde no rebaja el amor: lo salva de esa exigencia imposible. Lo que se puede dar es alimento; lo que nadie puede entregar es sustancia. Nos sostenemos. No nos constituimos.
+# | Por eso no habla desde el desengaño ni desde la distancia. Está midiendo. Está constatando que dos corazones pueden caber uno en otro sin dejar de ser dos.
+# | 10. Porque no acaba, porque es siempre / Y siempre soy yo, y vos sos nunca
+# | Acá hace algo con el idioma que hay que mirar de cerca.
+# | Siempre y nunca son palabras de tiempo. Uno las usa para decir cuándo pasa algo. Larralde las saca de ahí y las convierte en nombres de personas. Yo soy siempre. Tú eres nunca. Deja de hablar de cuándo se encuentran y pasa a decir que están hechos de tiempos distintos.
+# | Cualquiera que haya vivido con otro conoce esto: lo que para mí es urgente para ti puede esperar, lo que para ti es definitivo para mí es una etapa, y en consecuencia no estamos discutiendo el mismo tema en el mismo momento aunque lo parezca. Y ninguno de los dos está mal. Simplemente no somos el mismo reloj.
+# | 11. Y así marchamos juntos por un camino de préstamos de verdades mentidas / Y corazones devorados por amor sin retorno
+# | Préstamos de verdades mentidas. aqui se fue a la puta madre y tenemos que ir despacio con esas tres palabras, porque cada una está haciendo un trabajo distinto.
+# | Empecemos por la primera, préstamo. Uno presta lo que tiene, no se puede prestar lo que no se tiene, y lo prestado, además, se devuelve. Ahora la segunda: no dice mentiras, dice verdades mentidas, y eso es otra cosa. Mentida no es un sustantivo: es algo que le pasó a la verdad. Alguien la agarró entera y la entregó incompleta.
+# | Eso deja fuera la intención. El que habla quiere decir la verdad, y por eso son verdades y no mentiras. Está entregando lo que cree que tiene, lo que puede entregar. La falla no está en la voluntad. Está en él.
+# | Y acá vuelve todo el poema sobre sí mismo. Larralde empezó diciendo que no encuentra su propio porqué, que hay una verdad adentro suyo y él no da con ella. Entonces, cuando le entrega su verdad a otro, ¿qué le está entregando? Le está prestando algo sobre lo que él mismo no tiene completa claridad. Está pagando con una moneda que no terminó de saber su valor. Eso es ser carente. No mentiroso. Carente.
+# | Y reconocerlo cambia dónde ponemos la culpa. La lectura cómoda de las mentiras de una pareja siempre tiene un culpable enfrente: el que ocultó, el que no se animó, el que dijo lo que convenía. Larralde no reparte esa carta. Dice marchamos. Los dos. Los dos vamos apenas prestando lo que no terminamos de entender, y los dos recibiendo eso mismo, convencidos de haber entregado y recibido algo entero.
+# | No hay un villano. Hay dos personas haciéndose entrega de sus carencias y llamándole a eso conocerse.
+# | 12. Y sin embargo / Y sin embargo yo soy tu verdad y vos la mía
+# | Lo dice dos veces. Y sin embargo. Y sin embargo.
+# | Se pasó el poema entero demostrando que no se puede, y acá lo afirma igual. por que No es una contradicción. Una cosa es que me entiendas y otra distinta es que yo sea tu verdad.
+# | Se puede ser la verdad de alguien que no nos entiende. De hecho es lo más común que hay. La imposibilidad no es del vínculo. Es de la comprensión.
+# | 13. Sigo creyendo en mi Dios
+# | Y termina ahí.
+# | Después de mostrar, de demostrar que nadie puede verlo por dentro, dice esto. Suena a cierre religioso de campo. al canto a lo divino, No lo creo.
+# | Todo empezó con un pedido: que alguien lo mirara por dentro y le dijera el porqué. Larralde demostró, uno por uno, que ninguna persona puede hacerlo. Ni la que lo ama. Ni la que camina a su lado. Ninguna, y no por falta de ganas, sino por estructura. que hacemos? Queda un solo destinatario posible. No porque Dios venga a completar lo que el amor no pudo. No dice “creo en Dios”. Dice “creo en mi Dios”. No es una doctrina. Es un vínculo personal. Quizá la última intimidad que le queda cuando admite que ni él ni los demás pueden descifrarlo.
+# | El poema no termina en una respuesta. Termina con una fidelidad: la fidelidad a la pregunta. así como socrates.  Después de comprobar que el amor no puede poseer la verdad del otro, Larralde se niega a aceptar que la verdad sea definitivamente inaccesible. Sigue creyendo que hay una mirada capaz de sostenerla. Porque Dios, para la tradición mística, no es lo contrario del misterio: es su nombre más profundo, mas hondo. No aquello que termina de explicarlo todo, sino aquello que impide que todo pueda ser explicado. Lo sagrado visto como un misterio que a la vez sobrecoge y atrae, y excede el lenguaje y la comprension. Y eso es lo que Larralde parece conservar: La certeza de que el porqué no es una pregunta pequeña ni abandonada en el vacío, aunque no tenga respuesta.
+# ---------------------------------------------
+ms	tipo	detalle
+1748	oyo	parcial: en
+1835	oyo	parcial: en
+1947	oyo	parcial: en
+1996	oyo	parcial: en cualquier
+2085	oyo	parcial: en con
+2125	oyo	parcial: en
+2188	oyo	parcial: en
+2233	oyo	parcial: en con
+2300	oyo	parcial: en con ellos
+2407	oyo	parcial: en con ellos
+2496	oyo	parcial: en con ellos
+2608	oyo	parcial: en con ellos
+2703	oyo	parcial: en con ellos
+2794	oyo	parcial: en con ellos
+2836	oyo	parcial: en con ellos
+2884	oyo	parcial: en con ellos coser
+2926	oyo	parcial: en con ellos coser
+2966	oyo	parcial: en con ellos coser
+3004	oyo	parcial: en con ellos coser
+3034	oyo	parcial: en con ellos coser
+3040	oyo	parcial: en con ellos coser ellos
+3064	oyo	parcial: en con ellos coser ellos
+3087	oyo	parcial: en con ellos coser ellos
+3109	oyo	parcial: en con ellos coser ellos
+3146	oyo	parcial: en con ellos coser ellos
+3166	oyo	parcial: en con ellos coser ellos
+3184	oyo	parcial: en con ellos coser ellos cocer
+3197	oyo	parcial: en con ellos coser ellos coser
+3204	oyo	parcial: en con ellos coser ellos cocer las
+3213	oyo	parcial: en con ellos coser ellos coser la
+3238	oyo	parcial: en con ellos coser ellos coser la
+3287	oyo	parcial: en con ellos coser ellos coser la
+3331	oyo	parcial: en con ellos coser ellos coser la ral
+3390	oyo	parcial: en con ellos coser ellos coser la real de
+3407	oyo	parcial: en con ellos coser ellos coser la ral
+3502	oyo	parcial: en con ellos coser ellos coser la ral
+3618	oyo	parcial: en con ellos coser ellos coser la ral
+3644	oyo	parcial: en con ellos coser ellos coser la ral de no
+3745	oyo	parcial: en con ellos coser ellos coser la ral de no
+3837	oyo	parcial: en con ellos coser ellos coser la ral de no
+3959	oyo	parcial: en con ellos coser ellos coser la ral de no
+4039	oyo	parcial: en con ellos coser ellos coser la ral de no
+4102	oyo	parcial: en con ellos coser ellos coser la ral de no canta
+4194	oyo	parcial: en con ellos coser ellos coser la ral de no canta
+4304	oyo	parcial: en con ellos coser ellos coser la ral de no canta
+4407	oyo	parcial: en con ellos coser ellos coser la ral de no canta
+4495	oyo	parcial: en con ellos coser ellos coser la ral de no canta
+4606	oyo	parcial: en con ellos coser ellos coser la ral de no canta
+4664	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+4768	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+4861	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+4971	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+5069	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+5158	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+5268	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+5368	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+5459	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+5567	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en
+5667	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en
+5761	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en
+5791	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el
+5874	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el
+5964	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en alemán
+6051	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el mar
+6067	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el
+6084	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el mar la
+6109	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6176	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6281	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6387	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6475	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6580	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6629	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son
+6720	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son
+6754	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro
+6839	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro
+6941	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro
+7009	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7100	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7194	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7302	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7398	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7498	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de
+7559	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de
+7593	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de una
+7609	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de unos
+7677	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+7766	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+7856	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+7972	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+8066	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+8142	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de
+8244	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta
+8341	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta
+8456	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y
+8565	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y
+8637	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno
+8729	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+8818	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+8922	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9028	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9118	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9226	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9328	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9424	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9527	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9635	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9721	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9846	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9938	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9985	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando
+10077	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando
+10106	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un
+10177	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10258	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10370	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10460	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10556	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10661	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10760	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10856	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10974	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+11062	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+11156	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+11264	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+11317	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este
+11400	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este
+11508	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este podemos
+11556	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este
+11603	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas
+11689	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas y
+11788	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas y
+11860	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este puede
+11934	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este puede
+11969	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas y
+12039	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12169	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12235	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12340	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12440	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12539	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12650	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12754	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12779	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si
+12874	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si
+12900	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me dieran
+12993	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me dieran
+13043	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras
+13101	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras podido
+13169	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras
+13230	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por
+13321	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por
+13362	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13459	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13555	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13660	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13763	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13854	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13958	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14063	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14155	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14270	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14359	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14456	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14500	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14601	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14695	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14799	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14901	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14930	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una
+15042	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una
+15116	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una
+15229	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una
+15261	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15356	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15460	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15563	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15656	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15761	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15862	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15955	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+16071	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+16175	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+16255	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+16367	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+16452	oyo	FINAL: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas se llama si me hubieras por dentro es una obra
