@@ -308,6 +308,55 @@ ensayos, el registro tiene una línea evento=forma por toma y un par guardado_in
 para t1min, t5min y t20min, y Claude dio el visto bueno. Sin eso no se empieza la parte A.
 
 ==============================================================================
+PASO 0 - LO QUE SE MIDIÓ EN EL MOTO G86 -04-10-2026, luz verde de Javier y Claude-
+==============================================================================
+Esto cierra el paso 0. Lo de arriba queda tal cual, como registro de lo que se pidió.
+  GUARDAR CON SUBTÍTULOS: ~11,2 s por minuto de toma, parejo con la duración.
+    t1min   12,2 s.
+    t5min   58,7 s.
+    Sin cuadros perdidos.
+  LA FORMA: las tomas verticales salen 1080x1920 con rotación.
+  EL ENSAYO DE 20 MINUTOS -t20min- NO HACE FALTA: la cifra es pareja entre 1 y 5 minutos. El
+  "TERMINADO EL PASO 0 CUANDO" de arriba pedía un par guardado_inicio/guardado_fin para t20min:
+  queda sin efecto por esta decisión, no por olvido.
+  LO NO MEDIDO se verifica al probar la implementación en el teléfono -no antes, y no frena el
+  paso a la parte A-:
+    - la forma del 480p -v480-10s-: decide si "Para redes" se oculta en 480p -C1, D3-. Mientras
+      no haya cifra, la prueba 'TOMA 480P: no hay selector' no se escribe y el selector se ofrece
+      también en 480p; si al probar sale que no es 9:16, se oculta ahí mismo, con su prueba;
+    - la vista previa 4:3 contra el video 16:9 -vista-4x3-: si se confirma, sigue siendo la tarea
+      aparte que viene justo después de esta.
+  EL #64 SE INCORPORA JUNTO CON LA 87. El PR del paso 0 -rama tarea87-paso0-mediciones- no se
+  fusiona solo: la implementación de la 87 parte de main con esa rama mezclada adentro, y los dos
+  entran juntos. Así el panel de mediciones sigue en la APK de prueba para lo que se mide en las
+  partes B a F -msGuardado ± 5 %, evento=capa, evento=forma- y nunca en la de Play -regla 8-.
+
+  LO QUE NO CALZA -regla 4, descrito, no arreglado-:
+    1. 11,2 s por minuto no sale exacto de los dos puntos: 12,2 s en 1 min da 12,2 s/min, 58,7 s
+       en 5 min da 11,74 s/min, y la recta entre los dos tiene pendiente (58,7 - 12,2) / 4 =
+       11,6 s/min con ~0,6 s fijos. Con 11,2 s/min, una toma de 5 min se estimaría en 56,0 s:
+       2,7 s -4,6 %- menos que lo medido. Se usa 11,2 como se decidió, y el estimado se redondea
+       HACIA ARRIBA -E2- para que nunca prometa menos de lo que se midió. Si 11,2 viene de otra
+       cifra -por ejemplo msTransformer sin la copia, u otro ensayo-, que Claude lo diga y se
+       anota aquí.
+    2. "1080x1920 con rotación": puede ser el cuadro codificado 1080 de ancho y 1920 de alto con
+       rotación 0, o 1920x1080 codificado con rotación 90 que se muestra 1080x1920. La parte C
+       cubre las dos -'1080x1920 con 0 es vertical' y '1920x1080 con 90 es vertical'-; el número
+       de rotación exacto -rot_grados de evento=forma- conviene copiarlo aquí cuando esté.
+    3. No llegaron cifras de evento=capa -caja_abajo_px, pintado_abajo_px-, ni de v720, h1080,
+       giro-30s ni acostado-10s. D0 se confirma con evento=capa al probar la parte D; giro y
+       acostado, al probar la parte C. No se adivina ninguna.
+    4. docs/mediciones/tarea87/registro-sigoexport.txt y resumen.md siguen sin estar en el
+       repositorio: solo el LEEME.md del #64. Las cifras de este apartado son las que mandaron
+       Javier y Claude.
+  El inicio de este encargo dice "Punto de partida: main, commit 71166e5". Desde el 04-10 main
+  está en c03d734 -tarea 89: seguimiento de lado, Parar reinicia la toma, bordes seguros y visor
+  desplazable- y esta rama ya lo tiene mezclado. Las líneas citadas de ReproductorGrabacion.tsx y
+  App.tsx se corrieron: se buscan por nombre -decisión 11-. En c03d734: handleGuardar :114,
+  handleCompartir :152, <video> :189, CapaSubtitulos :190, bloque del SelectorSubtitulos
+  :220-230, nombre y duración :231-239, .acciones-toma :245.
+
+==============================================================================
 PARTE A - EL BOCETO DE LO VISIBLE, Y LA APROBACIÓN
 ==============================================================================
 Tu boceto y su hoja de medidas SON EL PISO: la implementación no puede quedar por debajo de lo
@@ -341,6 +390,9 @@ A1  CON LAS PIEZAS QUE YA HAY -nada de estilos nuevos-
     nombran redes. guardarYCompartir 'Guardar y compartir' / 'Save and share';
     compartirTrasGuardar 'Quedó guardada, pero no se pudo compartir' / 'Saved, but it could not
     be shared'. Los dos últimos siguen siendo propuesta: Javier los confirma en la lámina.
+  - -sumado el 04-10- El tiempo estimado antes de guardar -E2-: una línea .texto-meta con
+    --color-apagado debajo de la duración, en el bloque del nombre. Texto tiempoEstimadoGuardado
+    'Guardar tarda alrededor de {tiempo}' / 'Saving takes about {tiempo}' -propuesta-.
 
 A2  LOS ESTADOS QUE MUESTRA LA LÁMINA -cada uno en tema OSCURO y en tema CLARO-
     1. Toma vertical recién grabada, con subtítulos, en "Normal".
@@ -350,6 +402,8 @@ A2  LOS ESTADOS QUE MUESTRA LA LÁMINA -cada uno en tema OSCURO y en tema CLARO-
     5. Guardando, con el avance en el botón que se tocó y los demás deshabilitados.
     6. Guardada pero no se pudo compartir: el aviso compartirTrasGuardar.
     7. Toma ya guardada: como hoy -Compartir y Borrar, sin selector, sin "Guardar y compartir"-.
+    8. -sumado el 04-10- Toma vertical de 5 min con subtítulos: la línea del tiempo estimado
+       antes de guardar -E2-. Y la misma toma guardando: la línea ya no está.
   Teléfono vertical 1080x2400 -moto g86-; y uno con el teléfono acostado si el visor gira.
 
 A3  QUÉ SE ENTREGA Y DÓNDE -docs/pantallas/tarea87/-
@@ -601,6 +655,65 @@ E1  Archivos: src/components/ReproductorGrabacion.tsx, es.ts, en.ts, styles.css 
   aplicación de destino recibe el video vertical; toma horizontal sin subtítulos -> lo mismo;
   modo avión no aplica -compartir es local-: cancelar el menú deja la toma guardada.
 
+E2  EL TIEMPO ESTIMADO ANTES DE GUARDAR -sumado el 04-10-2026, con la cifra del paso 0-
+  Por qué: guardar con subtítulos tarda ~11,2 s por minuto de toma -paso 0-. En una toma de 5
+  minutos es casi un minuto mirando un porcentaje sin saber cuánto falta. Es la decisión 4: basta
+  con mostrar el tiempo estimado antes de guardar. No cambia el guardado ni su avance.
+  Archivos: src/lib/tiempoGuardado.ts -NUEVO, puro-, src/components/ReproductorGrabacion.tsx,
+  es.ts, en.ts. Sin estilos nuevos.
+  LA FÓRMULA:
+    // Moto g86, paso 0 de la tarea 87 -04-10-2026-: ~11,2 s por minuto de toma, parejo.
+    export const MS_GUARDADO_POR_MINUTO = 11200
+    export const UMBRAL_TIEMPO_ESTIMADO_MS = 60000
+    export function segundosEstimados(duracionMs: number): number | null
+      null si duracionMs < UMBRAL_TIEMPO_ESTIMADO_MS o no es un número.
+      Si no: estimadoMs = duracionMs * MS_GUARDADO_POR_MINUTO / 60000, y se devuelve redondeado
+      HACIA ARRIBA al múltiplo de 5 s: Math.ceil(estimadoMs / 5000) * 5.
+    export function textoTiempo(segundos: number): string
+      menos de 60 -> "15 s"; justo minutos -> "1 min"; si no -> "3 min 45 s".
+    Ejemplos: 1 min -> 11,2 s -> 15 s -medido 12,2-; 5 min -> 56 s -> 60 s, "1 min" -medido 58,7-;
+    20 min -> 224 s -> 225 s, "3 min 45 s".
+    Por qué hacia arriba y de a 5 s: con 11,2 s/min lineal, 5 min quedaría 2,7 s bajo lo medido
+    -NO CALZA 1 del paso 0-. Redondeando hacia arriba de a 5 s, las dos cifras medidas quedan
+    dentro y el número no finge una precisión que no tiene. Si se ajusta la cifra -otro teléfono,
+    otra medición-, cambia solo MS_GUARDADO_POR_MINUTO.
+  EL UMBRAL: 1 minuto de toma -estimado de 11,2 s o más, mostrado como 15 s-. Bajo el minuto el
+    guardado dura menos de ~12 s y el porcentaje del botón alcanza; además 1 min es la toma medida
+    más corta: bajo eso no hay cifra. Es una propuesta: Javier la confirma en la lámina.
+  CUÁNDO SE VE -todo junto-: !guardada && !guardando && subtitulos.length > 0 && estilo !== 'no'
+    && segundosEstimados(grabacion.duracionMs) !== null. Sin subtítulos se guarda la copia tal cual
+    -copiarAGaleria-: eso no se midió y no se estima. "Para redes" no cambia el tiempo -criterio de
+    éxito 3: ± 5 %-, así que el estimado no depende de la posición. Vale igual para Guardar y para
+    "Guardar y compartir", que guardan con la misma función -E1-. Mientras guarda se oculta: el
+    botón ya muestra el avance -es.ts guardandoAvance-.
+  DÓNDE SE VE: en la tarjeta del visor, en el bloque del nombre y la duración -c03d734 :231-239-,
+    como una SEGUNDA línea .texto-meta con --color-apagado, debajo de la duración: data-testid
+    tiempo-estimado-guardado. Queda junto a la duración de la toma, que es de donde sale, y justo
+    encima de los botones de guardar. Con el visor de pie de main, la tarjeta crece una línea de
+    texto meta -~18 dp-; la 89 ya la hace desplazable si no cabe. En el visor de lado del #68
+    -todavía no en main- va en la misma posición de la columna de la derecha, entre la duración y
+    las acciones.
+  TEXTOS -propuesta; Javier los confirma en la lámina-: tiempoEstimadoGuardado
+    'Guardar tarda alrededor de {tiempo}' / 'Saving takes about {tiempo}'. Las unidades "s" y "min"
+    son iguales en los dos idiomas.
+  Vitest -src/pruebas/tiempoGuardado.test.ts-:
+    'UNA TOMA DE 1 MIN ESTIMA 15 S'; 'UNA DE 5 MIN ESTIMA 60 S'; 'UNA DE 20 MIN ESTIMA 225 S';
+    'BAJO EL UMBRAL NO HAY ESTIMADO' -59 999 ms -> null; 60 000 ms -> 15-;
+    'LO MEDIDO EN EL MOTO G86 QUEDA DENTRO' -guardiana: 12,2 <= est(1 min) y 58,7 <= est(5 min),
+     y ninguno pasa en más de 5 s lo medido-;
+    'textoTiempo: 15 s, 1 min y 3 min 45 s'.
+  Vitest -src/pruebas/tarea87-tiempo.test.tsx, <ReproductorGrabacion> como en tarea89.test.tsx,
+    con vi.mock de '../lib/archivosNativos' como en subtitulosVisor.test.tsx-:
+    'TOMA DE 5 MIN CON SUBTÍTULOS: dice "Guardar tarda alrededor de 1 min"';
+    'TOMA DE 30 S: no hay tiempo-estimado-guardado'; 'ESTILO NO: no hay';
+    'SIN REGISTRO DE PALABRAS: no hay'; 'TOMA GUARDADA: no hay';
+    'MIENTRAS GUARDA: no hay, y el botón muestra el avance como hoy'.
+  Rotura a propósito -regla 3-: MS_GUARDADO_POR_MINUTO = 11000 -> 5 min da 55 s y la guardiana
+    falla; Math.round en vez de Math.ceil con pasos de 1 s -> 5 min da 56 s y falla; sin la
+    condición !guardada -> 'TOMA GUARDADA' falla.
+  Manual moto g86: una toma de 5 min con amarillo: la línea dice "alrededor de 1 min" y el
+    guardado real -msGuardado del panel- no la pasa.
+
 ==============================================================================
 PARTE F - LAS PRUEBAS Y EL CRITERIO DE ÉXITO
 ==============================================================================
@@ -617,6 +730,8 @@ TERMINADO CUANDO -medible-
      tapa.
   3. msGuardado de "Para redes" dentro de ± 5 % del de "Normal" en la misma toma.
   4. De toma recién grabada al menú de compartir: un toque más la espera del guardado.
+     -04-10- Y en tomas de 1 min o más, esa espera se anuncia antes -E2-: el guardado real no
+     pasa el estimado.
   5. Las cifras del paso 0 y las de después, juntas en docs/mediciones/tarea87/resumen.md.
   6. Lo implementado no queda por debajo de lo aprobado en el boceto: lámina final con la app
      real al lado del boceto aprobado, los dos temas -docs/pantallas/tarea87/lamina-final.png-.
@@ -630,6 +745,8 @@ DECISIONES DEL 03-10-2026 -Javier y Claude respondieron las doce preguntas; ya e
   3. Vista previa 4:3 y video 16:9: si se confirma, tarea aparte, justo después de esta.
   4. Tiempo de guardado: se decide con la cifra del paso 0; probablemente baste mostrar el
      tiempo estimado antes de guardar.
+     -04-10- Decidido con la cifra: ~11,2 s por minuto de toma; se muestra el tiempo estimado
+     antes de guardar en tomas de 1 minuto o más -E2-.
   5. "Para redes" / "For social media", con la línea chica "Instagram, TikTok y YouTube Shorts" /
      "Instagram, TikTok and YouTube Shorts" -A1-.
   6. La letra en "Para redes" sigue en 1/32 del alto -D0-.
