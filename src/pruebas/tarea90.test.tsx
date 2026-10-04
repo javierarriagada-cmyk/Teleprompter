@@ -268,13 +268,15 @@ describe('Tarea 90: las medidas de cada caso -915x411 y 800x360, giro 90 y 270-'
     cerca(m.video.ancho / m.video.alto, 16 / 9)
   })
 
-  test('sin registro del motor no hay Subtítulos -como hoy-: tres filas', async () => {
+  // -tarea 87, 04-10-2026- Con «Guardar y compartir» de lado, una fila más: cuatro sin Subtítulos.
+  // Antes: 'tres filas' y toBe(3).
+  test('sin registro del motor no hay Subtítulos -como hoy-: cuatro filas', async () => {
     ponerVentana(915, 411, 90)
     await abrir()
     cargarVideo(1920, 1080)
     await esperar()
     expect(document.querySelector('[data-testid="visor-lado-subtitulos"]')).toBeNull()
-    expect(document.querySelectorAll('[data-fila-accion]').length).toBe(3)
+    expect(document.querySelectorAll('[data-fila-accion]').length).toBe(4)
   })
 
   test('Subtítulos abierto: el panel de las cuatro opciones sale desde la fila de la columna', async () => {
@@ -285,7 +287,8 @@ describe('Tarea 90: las medidas de cada caso -915x411 y 800x360, giro 90 y 270-'
     await esperar()
     registro.texto = null
     const filas = Array.from(document.querySelectorAll('[data-fila-accion]')).map((f) => f.getAttribute('data-testid'))
-    expect(filas).toEqual(['guardar-galeria-desde-reproductor', 'visor-lado-subtitulos', 'btn-repetir-toma', 'borrar-desde-reproductor'])
+    // -tarea 87, 04-10-2026- Guardar y compartir va debajo de Guardar. Antes: sin 'btn-compartir-nueva'.
+    expect(filas).toEqual(['guardar-galeria-desde-reproductor', 'btn-compartir-nueva', 'visor-lado-subtitulos', 'btn-repetir-toma', 'borrar-desde-reproductor'])
     fireEvent.click(document.querySelector('[data-testid="btn-subtitulos"]')!)
     const op = document.querySelector('[data-testid="opciones-subtitulos"]')!
     expect(op.closest('[data-testid="visor-lado-subtitulos"]')).toBeTruthy()
@@ -468,7 +471,8 @@ describe("Tarea 90: el registro 'visor-lado' para el moto g86", () => {
     await esperar(40)
     const texto = comoTexto()
     activarDiagnostico(false)
-    expect(texto).toMatch(/visor-lado\tletra rotulos=guardar:12 escala=1 filas=[\d,]+ bajo48=(si|no)/)
+    // -tarea 87, 04-10-2026- Con el rótulo de Guardar y compartir. Antes: rotulos=guardar:12 escala=1.
+    expect(texto).toMatch(/visor-lado\tletra rotulos=guardar:12,compartir:12 escala=1 filas=[\d,]+ bajo48=(si|no)/)
   })
 
   test('al cerrar el visor de lado, el registro queda en visor-lado.txt junto a las tomas', async () => {

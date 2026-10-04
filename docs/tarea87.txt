@@ -906,11 +906,33 @@ MEZCLA CON LAS TAREAS 90 Y 91 -main 900a982: #68 visor de lado, #69 orientación
   useBordesSeguros, los registros visor-lado, seguir reproduciendo al girar, diagnostico.ts y lo
   nativo de la orientación.
   Lo que no calza:
-  - De lado no hay «Guardar y compartir» ni el aviso del botón apretado de la 87. El guardar de lado
-    se desactiva mientras guarda, como en la 90, pero Repetir y Borrar no. Se dejó así para no
-    cambiar la columna aprobada de la 90; lo decide Javier.
+  - Antes: «De lado no hay Guardar y compartir ni el aviso del botón apretado de la 87; Repetir y
+    Borrar no se desactivan mientras guarda». Ya está resuelto: ver GUARDAR Y COMPARTIR DE LADO.
   - evento=bordes de la 87 mide solo env(safe-area-inset-*). La 90 usa además lo que escribe
     Capacitor -useBordesSeguros- y anota visor-lado bordes. Hay dos registros de lo mismo.
   - De lado no sale evento=visor de la 87: el 1/6 de lado se mira con una captura.
   Láminas de lado: docs/pantallas/tarea87/implementacion/comparar-visor-lado.png, a 915×411, caso 1
   y caso 2, con el subtítulo a 1/6.
+
+GUARDAR Y COMPARTIR DE LADO -04-10-2026, pedido de Javier en el #71-
+  «Guardar y compartir» va también en el visor de lado de la 90, con la misma acción
+  -handleGuardarYCompartir- y el mismo comportamiento que de pie:
+    - caso 1: una fila más en la columna, debajo de Guardar. Quedan Guardar, Guardar y compartir,
+      Subtítulos, Repetir y Borrar;
+    - caso 2: un botón más en la fila de la tarjeta, después de Guardar.
+  Mientras se guarda, solo el botón apretado muestra el avance -aria-busy- y el otro de guardar
+  queda desactivado. También quedan desactivados Subtítulos, Repetir y Borrar, como de pie. La X
+  sigue activa y cerrar no cancela.
+  La columna de la 90 no cambia: 130 de ancho a 915 y 112 a 800, rótulos de 12 y toques de 48 -el
+  mismo estiloFila-. Código: src/components/ReproductorGrabacion.tsx, en acciones(enColumna) y en el
+  selector de lado -desactivado={guardando}-.
+  Medido en Chrome headless, giro 90 y 270, con el panel cerrado y abierto, y con «Guardando… 37%»:
+    - 915×411, caso 1: cinco filas de 70/71/71/71/71 -antes cuatro de ~88-.
+    - 800×360, caso 1: cinco filas de 59,8/60,8/60,8/60,8/60,8 -antes cuatro de ~76-.
+    - Caso 2, en los dos tamaños: botones de 79,5×88. «Guardar y compartir» va en dos renglones de
+      12 y la tarjeta pasa de 250 a 267 de alto, y de 326 a 343 con el panel abierto. A 800×360 eso
+      cabe en 360 sin desplazar.
+    - Nada desborda, nada baja de 48 y nada se achica.
+  Pruebas: src/pruebas/tarea87-lado-compartir.test.tsx, 7 pruebas que fallaban antes del cambio.
+  En tarea90.test.tsx se pusieron al día, con «Antes:», tres guardianas de la 90 que contaban las
+  filas o los rótulos de la columna.

@@ -605,6 +605,8 @@ export default function ReproductorGrabacion({
     const selector = subtitulos.length > 0 && !guardada ? (
       <SelectorSubtitulos
         estilo={estilo}
+        // -tarea 87, de lado, 04-10-2026- Como de pie: desactivado mientras se guarda.
+        desactivado={guardando}
         onCambiar={(e) => {
           setEstilo(e)
           guardarEstiloSubtitulo(e)
@@ -625,9 +627,19 @@ export default function ReproductorGrabacion({
             </button>
           ) : (
             <>
-              <button type="button" className="accion-toma" data-testid="guardar-galeria-desde-reproductor" aria-label={t('guardarEnGaleria')} disabled={guardando} onClick={handleGuardar} style={estiloFila} {...fila}>
+              {/* -tarea 87, de lado, 04-10-2026- Lo mismo que de pie: desactivado si se apretó el otro, y
+                  solo el apretado muestra el avance. Antes: disabled={guardando} y el avance en Guardar
+                  con cualquiera de los dos. */}
+              <button type="button" className="accion-toma" data-testid="guardar-galeria-desde-reproductor" aria-label={t('guardarEnGaleria')} disabled={guardando && apretado !== 'guardar'} aria-busy={apretado === 'guardar'} onClick={handleGuardar} style={estiloFila} {...fila}>
                 <IconoGuardar tamano={26} />
-                <span data-rotulo="guardar" style={{ fontSize: ROTULO_MINIMO }}>{guardando ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardar')}</span>
+                <span data-rotulo="guardar" style={{ fontSize: ROTULO_MINIMO }}>{apretado === 'guardar' ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardar')}</span>
+              </button>
+              {/* -tarea 87, de lado, 04-10-2026- Guardar y compartir también de lado: en la columna, una
+                  fila más debajo de Guardar; en la tarjeta, en la misma fila. La misma acción que de pie
+                  -handleGuardarYCompartir-, con el toque de 48 y el rótulo de 12 de la 90. */}
+              <button type="button" className="accion-toma" data-testid="btn-compartir-nueva" aria-label={t('guardarYCompartir')} disabled={guardando && apretado !== 'compartir'} aria-busy={apretado === 'compartir'} onClick={handleGuardarYCompartir} style={estiloFila} {...fila}>
+                <IconoCompartir tamano={26} />
+                <span data-rotulo="compartir" style={{ fontSize: ROTULO_MINIMO }}>{apretado === 'compartir' ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardarYCompartir')}</span>
               </button>
               {enColumna && selector && (
                 <div className="visor-lado-subtitulos" data-testid="visor-lado-subtitulos" style={{ ...toque, fontSize: ROTULO_MINIMO }} {...fila}>
@@ -635,7 +647,8 @@ export default function ReproductorGrabacion({
                 </div>
               )}
               {onRepetir && (
-                <button type="button" className="accion-toma" data-testid="btn-repetir-toma" aria-label={t('repetirToma')} title={t('repetirToma')} onClick={onRepetir} style={estiloFila} {...fila}>
+                // -tarea 87, de lado- Desactivado mientras se guarda, como de pie. Antes sin disabled.
+                <button type="button" className="accion-toma" data-testid="btn-repetir-toma" aria-label={t('repetirToma')} title={t('repetirToma')} disabled={guardando} onClick={onRepetir} style={estiloFila} {...fila}>
                   <IconoRepetir tamano={26} />
                 </button>
               )}
@@ -648,6 +661,8 @@ export default function ReproductorGrabacion({
             data-confirmando={confirmando ? 'si' : 'no'}
             aria-label={confirmando ? t('seguro') : t('borrar')}
             title={t('borrar')}
+            // -tarea 87, de lado- Desactivado mientras se guarda, como de pie. Antes sin disabled.
+            disabled={guardando}
             onClick={() => { if (confirmando) { onBorrar(grabacion.id) } else { setConfirmando(true) } }}
             style={estiloFila}
             {...fila}
