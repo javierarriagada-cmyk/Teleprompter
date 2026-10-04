@@ -10,6 +10,10 @@ import type { EsquinaRecuadroH } from './components/RecuadroCamara'
 import TeleprompterView, { VeloControles } from './components/TeleprompterView'
 import BarraDeTiempo from './components/BarraDeTiempo'
 import { PanelCorpus } from './components/PanelCorpus'
+// Tarea 87, paso 0 -03-10-2026-: el panel de mediciones de exportación, solo con HERRAMIENTAS.
+import { PanelMediciones } from './components/PanelMediciones'
+import { recibirLineaNativa } from './lib/medicionesExport'
+import { anotarCamara } from './lib/medicionesCamara'
 import { bloquearRecargaAutomatica } from './lib/actualizacion'
 import { iniciarGrabacion, detenerGrabacion } from './lib/grabadorCorpus'
 import BibliotecaView from './components/BibliotecaView'
@@ -18,7 +22,7 @@ import CuentaRegresiva from './components/CuentaRegresiva'
 import { Entrada } from './components/Entrada'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
 import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo, alNegarseLaCamara } from './lib/camara'
-import { obtenerEspacioLibre } from './lib/archivosNativos'
+import { obtenerEspacioLibre, escucharMediciones } from './lib/archivosNativos'
 import { calcularMinutosDisponibles } from './lib/espacio'
 import { hapticaToqueMedio, hapticaToqueSuave, hapticaSeleccion } from './haptica'
 import { IdMotor, MotorDeVoz, ResultadoVoz } from './motor/MotorDeVoz'
@@ -289,7 +293,32 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [modoManual, setModoManual] = useState<boolean>(false)
   const [mostrarDiagnostico, setMostrarDiagnostico] = useState<boolean>(false)
   const [mostrarPanelCorpus, setMostrarPanelCorpus] = useState<boolean>(false)
+  const [mostrarPanelMediciones, setMostrarPanelMediciones] = useState<boolean>(false)
+  // LAS LÍNEAS SigoExport DEL NATIVO -tarea 87, paso 0, 03-10-2026-. Se juntan mientras la app está
+  // abierta, con el panel abierto o no: el guardado desde el visor también se mide. Solo en la APK
+  // de prueba -HERRAMIENTAS-; en Play esta rama no existe.
+  useEffect(() => {
+    if (!HERRAMIENTAS) return
+    let dejar: (() => Promise<void>) | null = null
+    let vigente = true
+    escucharMediciones(recibirLineaNativa).then((f) => {
+      if (vigente) dejar = f
+      else void f()
+    })
+    return () => {
+      vigente = false
+      if (dejar) void dejar()
+    }
+  }, [])
   const [camaraActiva, setCamaraActiva] = useState<boolean>(false)
+  // evento=camara SOLO AL ENCENDERSE -tarea 87, paso 0, 03-10-2026-. Con la cámara detrás, la franja
+  // de diagnóstico se esconde y el panel no se abre en LISTO: se anota sola, un segundo y medio
+  // después de encender -capgo ya armó la vista previa-. Solo en la APK de prueba.
+  useEffect(() => {
+    if (!HERRAMIENTAS || !camaraActiva) return
+    const t = setTimeout(() => { void anotarCamara(calidadVideo).catch(() => {}) }, 1500)
+    return () => clearTimeout(t)
+  }, [camaraActiva, calidadVideo])
   const [grabaciones, setGrabaciones] = useState<ResumenGrabacion[]>([])
   const [grabandoVideo, setGrabandoVideo] = useState<boolean>(false)
   const [grabacionAbierta, setGrabacionAbierta] = useState<ResumenGrabacion | null>(null)
@@ -1510,6 +1539,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           verTranscripcion={verTranscripcion}
           setVerTranscripcion={setVerTranscripcion}
           setMostrarPanelCorpus={setMostrarPanelCorpus}
+          setMostrarPanelMediciones={setMostrarPanelMediciones}
         />
       )}
 
@@ -1981,6 +2011,54 @@ export default function App({ motor, repoOverride }: AppProps) {
               </button>
             </div>
             <PanelCorpus medir={medirLectura} setMedir={setMedirLectura} />
+          </div>
+        </div>
+      )}
+
+      {/* Tarea 87, paso 0 -03-10-2026-: el panel de mediciones de exportación, con el mismo marco
+          que el de corpus. Tampoco viaja a Play. */}
+      {HERRAMIENTAS && mostrarPanelMediciones && (
+        <div
+          data-testid="modal-mediciones"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'var(--bg-suelo)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 200,
+            padding: 'var(--aire-4)'
+          }}
+          onClick={() => setMostrarPanelMediciones(false)}
+        >
+          <div
+            className="panel-superficie"
+            style={{
+              backgroundColor: 'var(--bg-panel)',
+              color: 'var(--color-texto)',
+              padding: 'var(--aire-4)',
+              borderRadius: 'var(--redondeo)',
+              maxWidth: 600,
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              boxSizing: 'border-box'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-3)' }}>
+              <h3 className="texto-titulo" style={{ margin: 0 }}>Medición / Exportación</h3>
+              <button
+                type="button"
+                data-testid="btn-cerrar-mediciones"
+                onClick={() => setMostrarPanelMediciones(false)}
+                style={{ background: 'transparent', border: 'none', color: 'var(--color-texto)', fontSize: 'var(--texto-titulo)', cursor: 'pointer' }}
+              >
+                ✕
+              </button>
+            </div>
+            <PanelMediciones grabaciones={grabaciones} calidadPedida={calidadVideo} camaraActiva={camaraActiva} />
           </div>
         </div>
       )}

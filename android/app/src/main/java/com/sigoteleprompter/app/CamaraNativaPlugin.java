@@ -345,14 +345,34 @@ public class CamaraNativaPlugin extends Plugin {
             return;
         }
 
+        // Medición -tarea 87, paso 0-: el tiempo de la copia tal cual, para comparar con la quemada.
+        final long nanoInicio = System.nanoTime();
+        final String idMedicion = MedicionExport.idDeArchivo(origen);
+        if (MedicionExport.activa(getContext())) {
+            int[] rd = rotacionYDuracion(origen);
+            medir(MedicionExport.linea("guardado_inicio",
+                "id", idMedicion, "modo", "copia", "estilo", "no", "margen", null,
+                "dur_toma_ms", rd[1], "bytes_entrada", origen.length(), "rot_grados", rd[0]));
+        }
+
         new Thread(() -> {
             try {
                 android.net.Uri itemUri = copiarAGaleria(origen, origen.getName());
+                long msGuardado = MedicionExport.msDesde(nanoInicio);
                 JSObject ret = new JSObject();
                 ret.put("ok", true);
                 ret.put("uri", itemUri.toString());
+                ret.put("msGuardado", msGuardado);
+                medir(MedicionExport.linea("guardado_fin",
+                    "id", idMedicion, "resultado", "ok", "msTransformer", 0, "msCopia", msGuardado,
+                    "msGuardado", msGuardado, "bytes_salida", origen.length(), "cuadros", null,
+                    "bitrate_salida_bps", null, "error", null));
                 call.resolve(ret);
             } catch (Exception e) {
+                medir(MedicionExport.linea("guardado_fin",
+                    "id", idMedicion, "resultado", "error", "msTransformer", 0, "msCopia", null,
+                    "msGuardado", MedicionExport.msDesde(nanoInicio), "bytes_salida", null, "cuadros", null,
+                    "bitrate_salida_bps", null, "error", e.getMessage()));
                 call.reject("Error al guardar en galería: " + e.getMessage(), e);
             }
         }).start();
@@ -400,11 +420,16 @@ public class CamaraNativaPlugin extends Plugin {
         String ruta = call.getString("ruta");
         String subtitulos = call.getString("subtitulos");
         String estilo = call.getString("estilo", "amarillo");
+        // Medición -tarea 87, paso 0-: msGuardado va desde que entra la llamada hasta que la copia
+        // está en la galería. Es EL dato que pide el encargo.
+        final long nanoInicio = System.nanoTime();
         File origen = archivoDe(ruta);
         if (!origen.exists() || subtitulos == null) {
             call.reject("El archivo no existe: " + ruta);
             return;
         }
+        final String idMedicion = MedicionExport.idDeArchivo(origen);
+        final boolean midiendo = MedicionExport.activa(getContext());
         int rotacion = 0;
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         try {
@@ -422,6 +447,12 @@ public class CamaraNativaPlugin extends Plugin {
         } catch (Exception e) {
             call.reject("subtitulos ilegibles: " + e.getMessage(), e);
             return;
+        }
+        if (midiendo) {
+            capa.medirCon(idMedicion, this::medir);
+            medir(MedicionExport.linea("guardado_inicio",
+                "id", idMedicion, "modo", "subtitulos", "estilo", estilo, "margen", "0.125",
+                "dur_toma_ms", rotacionYDuracion(origen)[1], "bytes_entrada", origen.length(), "rot_grados", rotacion));
         }
         File salida = new File(getContext().getCacheDir(), "con-subtitulos-" + System.currentTimeMillis() + ".mp4");
         String nombre = origen.getName().replace(".mp4", "") + "-subtitulos.mp4";
@@ -451,14 +482,34 @@ public class CamaraNativaPlugin extends Plugin {
                         @Override
                         public void onCompleted(androidx.media3.transformer.Composition c, androidx.media3.transformer.ExportResult r) {
                             terminado[0] = true;
+                            // Medición -paso 0-: el Transformer terminó; lo que sigue es la copia.
+                            final long msTransformer = MedicionExport.msDesde(nanoInicio);
+                            final long nanoCopia = System.nanoTime();
+                            final long bytesSalida = salida.length();
+                            final Object cuadros = r.videoFrameCount > 0 ? r.videoFrameCount : null;
+                            final Object bitrateSalida = r.averageVideoBitrate > 0 ? r.averageVideoBitrate : null;
                             new Thread(() -> {
                                 try {
                                     android.net.Uri uri = copiarAGaleria(salida, nombre);
+                                    long msCopia = MedicionExport.msDesde(nanoCopia);
+                                    long msGuardado = MedicionExport.msDesde(nanoInicio);
                                     JSObject ret = new JSObject();
                                     ret.put("ok", true);
                                     ret.put("uri", uri.toString());
+                                    ret.put("msGuardado", msGuardado);
+                                    ret.put("msTransformer", msTransformer);
+                                    ret.put("msCopia", msCopia);
+                                    if (midiendo) medir(MedicionExport.linea("guardado_fin",
+                                        "id", idMedicion, "resultado", "ok", "msTransformer", msTransformer,
+                                        "msCopia", msCopia, "msGuardado", msGuardado, "bytes_salida", bytesSalida,
+                                        "cuadros", cuadros, "bitrate_salida_bps", bitrateSalida, "error", null));
                                     call.resolve(ret);
                                 } catch (Exception e) {
+                                    if (midiendo) medir(MedicionExport.linea("guardado_fin",
+                                        "id", idMedicion, "resultado", "error", "msTransformer", msTransformer,
+                                        "msCopia", MedicionExport.msDesde(nanoCopia), "msGuardado", MedicionExport.msDesde(nanoInicio),
+                                        "bytes_salida", bytesSalida, "cuadros", cuadros, "bitrate_salida_bps", bitrateSalida,
+                                        "error", e.getMessage()));
                                     call.reject("Error al guardar en galería: " + e.getMessage(), e);
                                 } finally {
                                     salida.delete();
@@ -470,6 +521,10 @@ public class CamaraNativaPlugin extends Plugin {
                         public void onError(androidx.media3.transformer.Composition c, androidx.media3.transformer.ExportResult r, androidx.media3.transformer.ExportException e) {
                             terminado[0] = true;
                             salida.delete();
+                            if (midiendo) medir(MedicionExport.linea("guardado_fin",
+                                "id", idMedicion, "resultado", "error", "msTransformer", MedicionExport.msDesde(nanoInicio),
+                                "msCopia", null, "msGuardado", MedicionExport.msDesde(nanoInicio), "bytes_salida", null,
+                                "cuadros", null, "bitrate_salida_bps", null, "error", e.getMessage()));
                             call.reject("No se pudieron poner los subtítulos: " + e.getMessage(), e);
                         }
                     })
@@ -490,9 +545,176 @@ public class CamaraNativaPlugin extends Plugin {
                 }, 400);
             } catch (Exception e) {
                 salida.delete();
+                if (midiendo) medir(MedicionExport.linea("guardado_fin",
+                    "id", idMedicion, "resultado", "error", "msTransformer", null, "msCopia", null,
+                    "msGuardado", MedicionExport.msDesde(nanoInicio), "bytes_salida", null, "cuadros", null,
+                    "bitrate_salida_bps", null, "error", e.getMessage()));
                 call.reject("No se pudieron poner los subtítulos: " + e.getMessage(), e);
             }
         });
+    }
+
+    // ===================================================================================
+    // LAS MEDICIONES DE EXPORTACIÓN -tarea 87, paso 0, 03-10-2026-. Solo para el panel de
+    // mediciones de la APK de prueba -PanelMediciones.tsx-. Nada de esto cambia lo que hace la
+    // app: escribe al logcat -etiqueta SigoExport, formato de MedicionExport.java- y mide.
+    // ===================================================================================
+
+    // Escribe la línea al logcat y se la manda al panel. Solo si la app es depurable.
+    private void medir(String linea) {
+        if (!MedicionExport.activa(getContext())) return;
+        android.util.Log.i(MedicionExport.ETIQUETA, linea);
+        JSObject d = new JSObject();
+        d.put("linea", linea);
+        notifyListeners("medicion", d);
+    }
+
+    // [rotación en grados, duración en ms] del archivo; 0 si no se leen.
+    private static int[] rotacionYDuracion(File f) {
+        int[] r = { 0, 0 };
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        try {
+            mmr.setDataSource(f.getAbsolutePath());
+            String rot = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+            if (rot != null) r[0] = Integer.parseInt(rot);
+            String dur = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            if (dur != null) r[1] = (int) Math.min(Integer.MAX_VALUE, Long.parseLong(dur));
+        } catch (Exception ignorada) {
+        } finally {
+            try { mmr.release(); } catch (Exception ignorada) {}
+        }
+        return r;
+    }
+
+    private static int entero(String v) {
+        if (v == null) return 0;
+        try { return Integer.parseInt(v.trim()); } catch (NumberFormatException e) { return 0; }
+    }
+
+    // LA FORMA REAL DEL ARCHIVO -P0-2-. Lo que analizarVideo no da: ancho y alto codificados,
+    // rotación, fps, bitrate, y los datos del audio. No cambia analizarVideo -eso es la parte C-.
+    // La línea evento=forma la arma la app, porque la calidad de la toma solo la sabe el índice.
+    @PluginMethod
+    public void medirToma(PluginCall call) {
+        String ruta = call.getString("ruta");
+        if (ruta == null) { call.reject("ruta requerida"); return; }
+        File f = archivoDe(ruta);
+        new Thread(() -> {
+            JSObject ret = new JSObject();
+            ret.put("existe", f.exists());
+            ret.put("bytes", f.exists() ? f.length() : 0);
+            ret.put("duracionMs", 0);
+            ret.put("anchoPx", 0);
+            ret.put("altoPx", 0);
+            ret.put("rotacion", 0);
+            ret.put("fps", 0);
+            ret.put("bitrateBps", 0);
+            ret.put("mimeVideo", "");
+            ret.put("mimeAudio", "");
+            ret.put("audioHz", 0);
+            ret.put("audioCanales", 0);
+            if (!f.exists()) { call.resolve(ret); return; }
+            long duracionMs = 0;
+            int cuadros = 0;
+            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+            try {
+                mmr.setDataSource(f.getAbsolutePath());
+                duracionMs = entero(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+                ret.put("duracionMs", duracionMs);
+                ret.put("anchoPx", entero(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)));
+                ret.put("altoPx", entero(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)));
+                ret.put("rotacion", entero(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION)));
+                ret.put("bitrateBps", entero(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_BITRATE)));
+                cuadros = entero(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_FRAME_COUNT));
+            } catch (Exception ignorada) {
+            } finally {
+                try { mmr.release(); } catch (Exception ignorada) {}
+            }
+            double fps = 0;
+            MediaExtractor ex = new MediaExtractor();
+            try {
+                ex.setDataSource(f.getAbsolutePath());
+                for (int i = 0; i < ex.getTrackCount(); i++) {
+                    MediaFormat fmt = ex.getTrackFormat(i);
+                    String mime = fmt.getString(MediaFormat.KEY_MIME);
+                    if (mime == null) continue;
+                    if (mime.startsWith("video/")) {
+                        ret.put("mimeVideo", mime);
+                        if (fmt.containsKey(MediaFormat.KEY_FRAME_RATE)) {
+                            try { fps = fmt.getInteger(MediaFormat.KEY_FRAME_RATE); }
+                            catch (Exception e) {
+                                try { fps = fmt.getFloat(MediaFormat.KEY_FRAME_RATE); } catch (Exception ignorada) {}
+                            }
+                        }
+                    } else if (mime.startsWith("audio/")) {
+                        ret.put("mimeAudio", mime);
+                        if (fmt.containsKey(MediaFormat.KEY_SAMPLE_RATE)) ret.put("audioHz", fmt.getInteger(MediaFormat.KEY_SAMPLE_RATE));
+                        if (fmt.containsKey(MediaFormat.KEY_CHANNEL_COUNT)) ret.put("audioCanales", fmt.getInteger(MediaFormat.KEY_CHANNEL_COUNT));
+                    }
+                }
+            } catch (Exception ignorada) {
+            } finally {
+                ex.release();
+            }
+            // Sin KEY_FRAME_RATE en el archivo: cuadros entre duración.
+            if (fps <= 0 && cuadros > 0 && duracionMs > 0) fps = cuadros * 1000.0 / duracionMs;
+            ret.put("fps", Math.round(fps * 100) / 100.0);
+            call.resolve(ret);
+        }).start();
+    }
+
+    // Una línea armada por la app -lib/medicionesExport.ts- al logcat.
+    @PluginMethod
+    public void anotarMedicion(PluginCall call) {
+        String linea = call.getString("linea");
+        JSObject ret = new JSObject();
+        boolean escrita = linea != null && !linea.isEmpty() && MedicionExport.activa(getContext());
+        if (escrita) android.util.Log.i(MedicionExport.ETIQUETA, linea);
+        ret.put("escrita", escrita);
+        call.resolve(ret);
+    }
+
+    @PluginMethod
+    public void equipoMedicion(PluginCall call) {
+        JSObject ret = new JSObject();
+        ret.put("modelo", android.os.Build.MODEL);
+        ret.put("android", android.os.Build.VERSION.RELEASE);
+        String version = "";
+        try {
+            version = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionName;
+        } catch (Exception ignorada) {}
+        ret.put("app", version == null ? "" : version);
+        ret.put("depurable", MedicionExport.activa(getContext()));
+        call.resolve(ret);
+    }
+
+    // BORRAR LAS COPIAS DE MEDICIÓN -decidido el 03-10-. Solo las uris que el panel anotó al medir,
+    // y solo de la galería -content://media/-. Si Android no deja borrar una -la app se reinstaló y
+    // ya no es dueña-, va en fallidas y el panel la deja en su lista.
+    @PluginMethod
+    public void borrarCopiasDeMedicion(PluginCall call) {
+        JSArray uris = call.getArray("uris");
+        if (uris == null) { call.reject("uris requeridas"); return; }
+        new Thread(() -> {
+            JSArray borradas = new JSArray();
+            JSArray fallidas = new JSArray();
+            android.content.ContentResolver resolver = getContext().getContentResolver();
+            for (int i = 0; i < uris.length(); i++) {
+                String u = uris.optString(i, "");
+                if (u == null || !u.startsWith("content://media/")) { fallidas.put(u); continue; }
+                try {
+                    android.net.Uri uri = android.net.Uri.parse(u);
+                    if (!existeEnGaleria(uri) || resolver.delete(uri, null, null) > 0) borradas.put(u);
+                    else fallidas.put(u);
+                } catch (Exception e) {
+                    fallidas.put(u);
+                }
+            }
+            JSObject ret = new JSObject();
+            ret.put("borradas", borradas);
+            ret.put("fallidas", fallidas);
+            call.resolve(ret);
+        }).start();
     }
 
     // Si la copia de una toma sigue en la galeria. Javier, 24-09-2026: "si no

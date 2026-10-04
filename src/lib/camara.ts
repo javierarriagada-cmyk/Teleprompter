@@ -24,6 +24,31 @@ export interface CamaraNativaPlugin {
   existeEnGaleria(options: { uri: string }): Promise<{ existe: boolean }>
   guardarConSubtitulos(options: { ruta: string; subtitulos: string; estilo: string }): Promise<{ ok: boolean; uri?: string }>
   addListener(evento: 'progresoGuardado', cb: (d: { porcentaje: number }) => void): Promise<{ remove: () => Promise<void> }>
+  // LAS MEDICIONES DE EXPORTACIÓN -tarea 87, paso 0, 03-10-2026-. Solo las usa el panel de
+  // mediciones de la APK de prueba -PanelMediciones.tsx-. El nativo escribe al logcat con la
+  // etiqueta SigoExport solo si la app es depurable; en Play no escribe nada.
+  // Cada línea que el nativo escribe -guardado_inicio, capa, guardado_fin- llega también acá.
+  addListener(evento: 'medicion', cb: (d: { linea: string }) => void): Promise<{ remove: () => Promise<void> }>
+  // La forma real del archivo: lo que analizarVideo no da. 0 o vacío si no se pudo leer.
+  medirToma(options: { ruta: string }): Promise<{
+    existe: boolean
+    bytes: number
+    duracionMs: number
+    anchoPx: number
+    altoPx: number
+    rotacion: number
+    fps: number
+    bitrateBps: number
+    mimeVideo: string
+    mimeAudio: string
+    audioHz: number
+    audioCanales: number
+  }>
+  // Escribe UNA línea al logcat -etiqueta SigoExport-. La arma lib/medicionesExport.ts.
+  anotarMedicion(options: { linea: string }): Promise<{ escrita: boolean }>
+  equipoMedicion(): Promise<{ modelo: string; android: string; app: string; depurable: boolean }>
+  // Borra de la galería SOLO las uris que se le pasan -las copias que dejó el panel-.
+  borrarCopiasDeMedicion(options: { uris: string[] }): Promise<{ borradas: string[]; fallidas: string[] }>
   fijarBrillo(options: { valor: number }): Promise<{ ok: boolean }>
   restaurarBrillo(): Promise<{ ok: boolean }>
   leerBrillo(): Promise<{ valor: number }>
