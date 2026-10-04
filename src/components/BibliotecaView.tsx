@@ -976,7 +976,12 @@ export default function BibliotecaView({
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 200,
-            padding: 'var(--aire-4)'
+            // TAREA 89 -04-10-2026-: la capa llega bajo las barras del sistema; cada lado suma su
+            // borde seguro para que el panel no quede detrás de la barra de tres botones.
+            paddingTop: 'calc(var(--aire-4) + env(safe-area-inset-top, 0px))',
+            paddingRight: 'calc(var(--aire-4) + env(safe-area-inset-right, 0px))',
+            paddingBottom: 'calc(var(--aire-4) + env(safe-area-inset-bottom, 0px))',
+            paddingLeft: 'calc(var(--aire-4) + env(safe-area-inset-left, 0px))'
           }}
           onClick={() => setMostrarPanelCorpus(false)}
         >

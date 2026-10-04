@@ -5,6 +5,7 @@ import { crearRegistro, RegistroDeLectura } from '../lib/registro'
 import { EventoFinal } from '../motor/MotorDeVoz'
 import { Guion } from '../datos/modelo'
 import { Conduccion, procesarFinal, procesarParcial } from '../lib/conduccion'
+import { anotar } from '../lib/diagnostico'
 
 export function useSeguidor(guionEntrada: Guion | string) {
   const [posicion, setPosicion] = useState<Posicion>({ bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
@@ -66,6 +67,9 @@ export function useSeguidor(guionEntrada: Guion | string) {
     registroRef.current = crearRegistro()
     bloqueConfirmadoRef.current = 0
     setPosicion({ bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
+    // -tarea 89, 04-10-2026-: un seguidor y un motor nuevos empiezan de 0. Si esto pasa en medio
+    // de una toma, el registro lo tiene que mostrar.
+    anotar({ tipo: 'seguidor', evento: 'creado', token: 0 })
   }, [guionEntrada])
 
   function obtenerConduccion(): Conduccion | null {
@@ -132,6 +136,8 @@ export function useSeguidor(guionEntrada: Guion | string) {
     const destino = Math.max(0, Math.min(token, tokens.length - 1))
     seg.irAToken(destino)
     motor.irAToken(destino, performance.now())
+    // -tarea 89-: el arrastre del texto mueve los dos y reinicia el arranque del motor.
+    anotar({ tipo: 'seguidor', evento: 'irAToken', token: destino })
 
     const t = tokens[destino]
     bloqueConfirmadoRef.current = t.bloque

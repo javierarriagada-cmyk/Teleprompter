@@ -41,6 +41,9 @@ export function procesarParcial(c: Conduccion, texto: string, tMs: number): Posi
     const posMin = Math.max(0, ref - 10)
     const posMax = ref + 40
     enVentana = pos.hastaToken >= posMin && pos.hastaToken <= posMax
+    // -tarea 89, 04-10-2026-: el 'calce' de arriba ya quedó anotado; si cae fuera de la
+    // ventana no se aplica, y el registro tiene que decirlo para no leerlo como avance.
+    if (!enVentana) anotar({ tipo: 'ventana', token: pos.hastaToken, ref, desde: posMin, hasta: posMax, final: false, seguidor: typeof seg.posicionToken === 'function' ? seg.posicionToken() : -1 })
   }
 
   if (pos.movio && enVentana) {
@@ -71,6 +74,9 @@ export function procesarFinal(c: Conduccion, texto: string, tMs: number): Posici
     const posMin = Math.max(0, ref - 10)
     const posMax = ref + 40
     enVentana = pos.hastaToken >= posMin && pos.hastaToken <= posMax
+    // -tarea 89, 04-10-2026-: el 'calce' de arriba ya quedó anotado; si cae fuera de la
+    // ventana no se aplica, y el registro tiene que decirlo para no leerlo como avance.
+    if (!enVentana) anotar({ tipo: 'ventana', token: pos.hastaToken, ref, desde: posMin, hasta: posMax, final: true, seguidor: typeof seg.posicionToken === 'function' ? seg.posicionToken() : -1 })
   }
 
   if (pos.movio && enVentana) {

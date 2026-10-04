@@ -41,6 +41,18 @@ export type EntradaDiagnostico =
   // El arranque del oido: donde quedo guardado el audio que escucho Vosk y de a
   // cuantas muestras lo lee. Con el audio se afina el reconocedor en el PC.
   | { ms: number; tipo: 'oido'; inicio: number; ruta: string; muestrasPorTrozo: number }
+  // UN CALCE QUE NO SE APLICÓ -tarea 89, 04-10-2026-. 'calce' se anota ANTES de mirar la
+  // ventana de conduccion.ts -ref - 10 a ref + 40-: un 'calce token 60' no prueba que el
+  // motor se haya movido. Esta línea dice cuándo el calce cayó fuera y con qué ventana, y
+  // dónde quedó el seguidor por dentro -que avanza aunque el motor no lo acepte-.
+  | { ms: number; tipo: 'ventana'; token: number; ref: number; desde: number; hasta: number; final: boolean; seguidor: number }
+  // QUIÉN MOVIÓ AL SEGUIDOR Y AL MOTOR SIN LA VOZ -tarea 89-: el arrastre del texto
+  // -irAToken- o un seguidor nuevo -cambió el guion que recibe useSeguidor-. Los dos
+  // vuelven a empezar el arranque del motor.
+  | { ms: number; tipo: 'seguidor'; evento: 'irAToken' | 'creado'; token: number }
+  // LA PANTALLA QUE SE ESTABA LEYENDO -tarea 89-: el diseño y el tamaño del contenedor
+  // del texto, junto a los renglones. De lado los renglones son otros.
+  | { ms: number; tipo: 'pantalla'; diseno: string; ancho: number; alto: number }
 
 const MAX_ENTRADAS = 60000
 
@@ -105,6 +117,13 @@ export function comoTexto(): string {
       filas.push(`${e.ms}\tllegada\t${e.final ? 'FINAL' : 'parcial'} nativo=${e.nativo}${extra}`)
     } else if (e.tipo === 'oido') {
       filas.push(`${e.ms}\toido\tinicio=${e.inicio} trozo=${e.muestrasPorTrozo} ruta=${e.ruta}`)
+    } else if (e.tipo === 'ventana') {
+      // -tarea 89-: el calce de arriba NO se aplicó.
+      filas.push(`${e.ms}\tventana\tFUERA ${e.final ? 'FINAL' : 'parcial'} token=${e.token} ref=${e.ref} desde=${e.desde} hasta=${e.hasta} seguidor=${e.seguidor}`)
+    } else if (e.tipo === 'seguidor') {
+      filas.push(`${e.ms}\tseguidor\t${e.evento} token=${e.token}`)
+    } else if (e.tipo === 'pantalla') {
+      filas.push(`${e.ms}\tpantalla\t${e.diseno} ${e.ancho}x${e.alto}`)
     } else {
       filas.push(
         `${e.ms}\tcuadro\tpos=${e.posicion.toFixed(2)} calce=${e.calce} scroll=${e.scroll} freno=${e.freno} trabado=${e.trabado}`

@@ -990,6 +990,10 @@ export default function App({ motor, repoOverride }: AppProps) {
               `# letra: ${fontSize} px, ${tipoFuente}`,
               `# columna: ${columnaAngosta ? 'angosta' : 'completa'}, margen ${marginPercent}%`,
               `# donde lees: ${anclajeZona}`,
+              // EL DISEÑO DE LA PANTALLA -tarea 89, 04-10-2026-. Para separar en el registro las
+              // tomas de pie -tel-v- de las de lado -tel-h-: de lado no avanzaba y desde el
+              // registro no se sabía cómo estaba el teléfono. Va con el tamaño de la ventana.
+              `# diseño: ${horizontal ? 'tel-h' : 'tel-v'}, ventana ${typeof window !== 'undefined' ? window.innerWidth : 0}x${typeof window !== 'undefined' ? window.innerHeight : 0}`,
               // El idioma del guion -28-09-2026-: elige el reconocedor y, en ingles, la
               // comparacion por sonido del seguidor. Sin esto habia que deducirlo del texto.
               `# idioma: ${guionActual ? guionActual.idioma : '?'}`,
@@ -1951,7 +1955,12 @@ export default function App({ motor, repoOverride }: AppProps) {
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 200,
-            padding: 'var(--aire-4)'
+            // TAREA 89 -04-10-2026-: la capa llega bajo las barras del sistema; cada lado suma su
+            // borde seguro para que el panel no quede detrás de la barra de tres botones.
+            paddingTop: 'calc(var(--aire-4) + env(safe-area-inset-top, 0px))',
+            paddingRight: 'calc(var(--aire-4) + env(safe-area-inset-right, 0px))',
+            paddingBottom: 'calc(var(--aire-4) + env(safe-area-inset-bottom, 0px))',
+            paddingLeft: 'calc(var(--aire-4) + env(safe-area-inset-left, 0px))'
           }}
           onClick={() => setMostrarPanelCorpus(false)}
         >
