@@ -28,7 +28,9 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
       'src/components/IndicadorPrecarga.tsx',
       'src/components/PanelDiagnostico.tsx',
       // Tarea 84 -29-09-2026-: el componente nuevo entra a la lista, como pide la regla de la casa.
-      'src/components/DialogoPermiso.tsx'
+      'src/components/DialogoPermiso.tsx',
+      // Tarea 87, paso 0 -03-10-2026-: el panel de mediciones es un componente nuevo y entra.
+      'src/components/PanelMediciones.tsx'
     ]
 
     const regexHexColor = /#(?:[0-9a-fA-F]{3,4}){1,2}\b/g
