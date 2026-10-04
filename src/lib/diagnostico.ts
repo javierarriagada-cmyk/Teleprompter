@@ -57,6 +57,12 @@ export type EntradaDiagnostico =
   // LA PANTALLA QUE SE ESTABA LEYENDO -tarea 89-: el diseño y el tamaño del contenedor
   // del texto, junto a los renglones. De lado los renglones son otros.
   | { ms: number; tipo: 'pantalla'; diseno: string; ancho: number; alto: number }
+  // EL VISOR DE LADO -tarea 90, 04-10-2026-: lo que Claude tiene que ver en el moto g86 -la barra de
+  // estado que vuelve a ocultarse, el giro 270, la forma del video, los bordes de la WebView y la letra
+  // del sistema-. evento es la primera palabra de la línea y detalle el resto, en clave=valor. Ver
+  // src/lib/registroVisorLado.ts, que además las guarda fuera de la toma -el registro de diagnóstico
+  // solo está encendido mientras se graba-.
+  | { ms: number; tipo: 'visor-lado'; evento: string; detalle: string }
 
 const MAX_ENTRADAS = 60000
 
@@ -128,6 +134,8 @@ export function comoTexto(): string {
       filas.push(`${e.ms}\tseguidor\t${e.evento} token=${e.token}`)
     } else if (e.tipo === 'pantalla') {
       filas.push(`${e.ms}\tpantalla\t${e.diseno} ${e.ancho}x${e.alto}`)
+    } else if (e.tipo === 'visor-lado') {
+      filas.push(`${e.ms}\tvisor-lado\t${e.evento} ${e.detalle}`)
     } else {
       filas.push(
         `${e.ms}\tcuadro\tpos=${e.posicion.toFixed(2)} calce=${e.calce} scroll=${e.scroll} freno=${e.freno} trabado=${e.trabado}`

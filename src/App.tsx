@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Capacitor, registerPlugin, SystemBars, SystemBarsStyle } from '@capacitor/core'
+import { Capacitor, registerPlugin } from '@capacitor/core'
+import { fijarEstiloDeLaApp } from './lib/barrasDelSistema'
 import { App as CapacitorApp } from '@capacitor/app'
 import useASR from './hooks/useASR'
 import { useSeguidor } from './hooks/useSeguidor'
@@ -314,9 +315,12 @@ export default function App({ motor, repoOverride }: AppProps) {
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return
     const oscuro = tema !== 'claro' || vista === 'lectura'
-    SystemBars.setStyle({ style: oscuro ? SystemBarsStyle.Dark : SystemBarsStyle.Light }).catch(() => {
-      // sin el plugin -WebView muy viejo- quedan las barras del telefono, como antes
-    })
+    // TAREA 90 -04-10-2026-: el estilo pasa por barrasDelSistema.ts, que es el único que llama a
+    // SystemBars. Así el visor de lado -que esconde la barra de estado y pone el estilo oscuro- y la app
+    // no se pisan: mientras el visor tiene las barras, este pedido espera y se aplica al soltarlas.
+    // Antes era SystemBars.setStyle(...) aquí mismo, con este comentario en el catch:
+    // sin el plugin -WebView muy viejo- quedan las barras del telefono, como antes
+    fijarEstiloDeLaApp(oscuro)
   }, [tema, vista])
 
   // Guardar ajustes en localStorage ante cambios
