@@ -105,10 +105,60 @@ describe('Tarea 88: el vigía', () => {
     expect(correr(vigiaNuevo(0), { activo: true, estado: 'confirmando' }, 0, 5000).pedidos).toEqual([])
   })
 
+  // -tarea 88, segunda vuelta, 04-10-2026- Toma 6cce33b4 del moto g86: «ellos» terminó a los 15 108 y el
+  // FINAL llegó a los 16 453 con el mismo texto que el último parcial.
+  test('un FINAL con el mismo texto que el último parcial no mueve el reloj de voz', () => {
+    let v = oirParcial(vigiaNuevo(0), 'y para ellos', 15_400).vigia
+    const f = oirFinal(v, 'y para ellos', 16_453, 15_108)
+    expect(f.cambio).toBe(false)
+    expect(f.vigia.ultimoCambioMs).toBe(15_400)
+    // Con el reloj quieto, a los 2 s del último parcial ya pide -no a los 2 s del FINAL-.
+    v = f.vigia
+    expect(debePedir(v, grabando, 17_400)).toBe(true)
+    // Un FINAL distinto del último parcial sí es cambio.
+    expect(oirFinal(oirParcial(vigiaNuevo(0), 'y para', 15_000).vigia, 'y para ellos', 16_453, 15_108).cambio).toBe(true)
+  })
+
+  test('finVozMs sale del fin de la última palabra del FINAL', () => {
+    const v = oirParcial(vigiaNuevo(0), 'y para ellos', 15_400).vigia
+    expect(v.finVozMs).toBe(15_400)
+    expect(oirFinal(v, 'y para ellos', 16_453, 15_108).vigia.finVozMs).toBe(15_108)
+  })
+
+  test('sin palabras con hora, finVozMs es la hora del último cambio de texto', () => {
+    const v = oirParcial(vigiaNuevo(0), 'el poema', 47_900).vigia
+    // Mismo texto: el último cambio fue el parcial.
+    expect(oirFinal(v, 'el poema', 49_000, null).vigia.finVozMs).toBe(47_900)
+    // Texto distinto: el cambio es el FINAL mismo.
+    expect(oirFinal(v, 'el poema entero', 49_000, null).vigia.finVozMs).toBe(49_000)
+    // Recién empezada la toma -o vuelta la pausa- sin voz: el comienzo.
+    expect(vigiaNuevo(30_000).finVozMs).toBe(30_000)
+  })
+
   test('nunca dos pedidos en vuelo', () => {
     // La respuesta tarda 1,2 s: el siguiente pedido espera la respuesta.
     const r = correr(vigiaNuevo(0), { activo: true, estado: 'pausada' }, 0, 5000, { demoraMs: 1200 })
     expect(r.maxEnVuelo).toBe(1)
     expect(r.pedidos).toEqual([0, 1200, 2400, 3600, 4800])
+  })
+})
+
+// -tarea 88, segunda vuelta, 04-10-2026- «No disponible» falso: lib/gestos.ts, decidirPreparar.
+import { decidirPreparar, NEGROS_PARA_NO_DISPONIBLE } from '../lib/gestos'
+describe('Tarea 88, segunda vuelta: preparar los gestos', () => {
+  test('sin vista previa se reintenta siempre; el reconocedor que no arranca es no disponible', () => {
+    expect(decidirPreparar({ ok: false, estado: 'sinVistaPrevia' }, 0)).toBe('reintentar')
+    expect(decidirPreparar({ ok: false, estado: 'sinVistaPrevia' }, 0)).toBe('reintentar')
+    expect(decidirPreparar({ ok: false, estado: 'reconocedor' }, 0)).toBe('no')
+    expect(decidirPreparar({ ok: true, estado: 'listo' }, 0)).toBe('si')
+  })
+  test('negro: no disponible recién cuando sigue negro', () => {
+    expect(NEGROS_PARA_NO_DISPONIBLE).toBe(3)
+    expect(decidirPreparar({ ok: false, estado: 'negro' }, 1)).toBe('reintentar')
+    expect(decidirPreparar({ ok: false, estado: 'negro' }, 2)).toBe('reintentar')
+    expect(decidirPreparar({ ok: false, estado: 'negro' }, 3)).toBe('no')
+    // Un lado nativo sin estado: ok decide, como en la primera vuelta.
+    expect(decidirPreparar({ ok: true }, 0)).toBe('si')
+    expect(decidirPreparar({ ok: false }, 0)).toBe('no')
   })
 })

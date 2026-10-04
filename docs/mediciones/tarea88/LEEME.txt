@@ -34,3 +34,17 @@ LOS VALORES DE PARTIDA
   REVISIONES_PARA_CONFIRMAR = 3 y PUNTAJE_MINIMO = 0.6 -src/lib/confirmadorGestos.ts-;
   MS_SILENCIO_PARA_MIRAR = 2000 y MS_ENTRE_CUADROS = 500 -src/lib/vigiaGestos.ts-; MARGEN_MANO_MS = 1000
   -src/lib/pausaToma.ts-.
+
+SEGUNDA VUELTA -04-10-2026, después de la toma 6cce33b4 en el moto g86-
+  Líneas nuevas:
+      vigia final cambio=<true|false> conHora=<true|false> finVozVideoMs=…
+        Un FINAL con el mismo texto que el último parcial da cambio=false. finVozVideoMs es el fin de la
+        última palabra -de las palabras con hora del FINAL- en el reloj del video.
+      maquina entrada=gesto:palma vistaVideoMs=… finVozVideoMs=… … pausar(origen=palma,videoMs=…)
+        videoMs = max(finVoz, vista - 5000). Antes era vista - 1000 -MARGEN_MANO_MS-.
+      gestos preparar intento=N ok=… estado=<listo|sinVistaPrevia|negro|reconocedor> decide=<si|no|reintentar>
+        Sin vista previa se reintenta cada 1 s sin límite; negro, «No disponible» al tercero seguido.
+      gestos datatransport claseCct=<si|no> backendCct=<si|no|sinServicio>   -Java, una vez por sesión-
+        Si hay con qué mandar las estadísticas de MediaPipe. La exclusión NO se aplicó: ver
+        android/app/build.gradle, junto a tasks-vision. Para ver intentos de envío:
+        adb logcat | grep -iE "TRuntime|CctTransportBackend|datatransport"

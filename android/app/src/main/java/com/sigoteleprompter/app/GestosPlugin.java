@@ -47,10 +47,17 @@ public class GestosPlugin extends Plugin {
     private final AtomicBoolean ocupado = new AtomicBoolean(false);
     private volatile GestureRecognizer reconocedor;
 
+    // -tarea 88, segunda vuelta, 04-10-2026- preparar devuelve además "estado" -lib/gestos.ts,
+    // EstadoPreparar-: 'listo', 'sinVistaPrevia' -todavía no hay cuadro: App vuelve a intentar-, 'negro'
+    // -hay vista previa y el cuadro es negro: App vuelve a intentar y recién al tercero dice «No
+    // disponible»- o 'reconocedor' -MediaPipe no arranca-. El reconocedor creado se queda: un segundo
+    // preparar no crea otro -reconocedor == null, abajo-. Antes, cualquier cuadro no nulo daba ok true,
+    // aunque fuera negro, y uno nulo daba ok false y dejaba el interruptor apagado.
     @PluginMethod
     public void preparar(PluginCall call) {
         hilo.execute(() -> {
             JSObject ret = new JSObject();
+            anotarDatatransport();
             try {
                 if (reconocedor == null) {
                     long t0 = SystemClock.elapsedRealtime();
@@ -66,21 +73,56 @@ public class GestosPlugin extends Plugin {
                 Log.i(ETIQUETA_LOG, "gestos reconocedor no arranca: " + e);
                 ret.put("ok", false);
                 ret.put("motivo", "reconocedor: " + e.getMessage());
+                ret.put("estado", "reconocedor");
                 call.resolve(ret);
                 return;
             }
             // La vista previa tiene que entregar imagen: si no, el equipo no puede -punto 18-.
             Bitmap cuadro = cuadroDeLaVistaPrevia();
             if (cuadro == null) {
-                Log.i(ETIQUETA_LOG, "gestos la vista previa no entrega imagen");
+                Log.i(ETIQUETA_LOG, "gestos la vista previa no entrega imagen todavía");
                 ret.put("ok", false);
                 ret.put("motivo", "sin imagen de la vista previa");
+                ret.put("estado", "sinVistaPrevia");
+            } else if (esNegro(cuadro)) {
+                Log.i(ETIQUETA_LOG, "gestos preparar cuadro negro " + cuadro.getWidth() + "x" + cuadro.getHeight());
+                ret.put("ok", false);
+                ret.put("motivo", "cuadro negro");
+                ret.put("estado", "negro");
             } else {
-                Log.i(ETIQUETA_LOG, "gestos preparar ok cuadro=" + cuadro.getWidth() + "x" + cuadro.getHeight() + " negro=" + esNegro(cuadro));
+                Log.i(ETIQUETA_LOG, "gestos preparar ok cuadro=" + cuadro.getWidth() + "x" + cuadro.getHeight() + " negro=false");
                 ret.put("ok", true);
+                ret.put("estado", "listo");
             }
             call.resolve(ret);
         });
+    }
+
+    // LAS ESTADÍSTICAS DE MEDIAPIPE -tarea 88, segunda vuelta, 04-10-2026-. Para que Claude lea en el
+    // logcat si queda con qué mandarlas: si está la clase CCTDestination -transport-backend-cct, la que
+    // usa RemoteLoggingClient de tasks-core- y si el manifiesto registra el backend
+    // CctBackendFactory en TransportBackendDiscovery. Ver app/build.gradle, junto a tasks-vision.
+    private boolean datatransportAnotado = false;
+    private void anotarDatatransport() {
+        if (datatransportAnotado) return;
+        datatransportAnotado = true;
+        boolean clase;
+        try {
+            Class.forName("com.google.android.datatransport.cct.CCTDestination");
+            clase = true;
+        } catch (Throwable e) {
+            clase = false;
+        }
+        String backend = "no";
+        try {
+            android.content.pm.ServiceInfo si = getContext().getPackageManager().getServiceInfo(
+                new android.content.ComponentName(getContext(), "com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"),
+                android.content.pm.PackageManager.GET_META_DATA);
+            if (si != null && si.metaData != null && si.metaData.containsKey("backend:com.google.android.datatransport.cct.CctBackendFactory")) backend = "si";
+        } catch (Throwable e) {
+            backend = "sinServicio";
+        }
+        Log.i(ETIQUETA_LOG, "gestos datatransport claseCct=" + (clase ? "si" : "no") + " backendCct=" + backend);
     }
 
     @PluginMethod

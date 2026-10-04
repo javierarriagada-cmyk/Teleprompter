@@ -1,12 +1,14 @@
 // UN PLUGIN DE GESTOS FINGIDO -tarea 88, 04-10-2026-. Para las pruebas a través de <App>: anota cada
 // llamada y contesta con la etiqueta que la prueba le ponga. Ver lib/gestos.ts.
-import type { GestosPlugin, RevisionCuadro } from '../lib/gestos'
+import type { GestosPlugin, RevisionCuadro, RespuestaPreparar } from '../lib/gestos'
 
 export class GestosFake implements GestosPlugin {
   llamadas: string[] = []
   etiqueta = 'None'
   puntaje = 0.9
-  prepararResponde: { ok: boolean; motivo?: string } = { ok: true }
+  prepararResponde: RespuestaPreparar = { ok: true }
+  // -tarea 88, segunda vuelta- Respuestas en orden para los primeros preparar; después, prepararResponde.
+  prepararCola: RespuestaPreparar[] = []
   enVuelo = 0
   maxEnVuelo = 0
 
@@ -15,13 +17,15 @@ export class GestosFake implements GestosPlugin {
     this.etiqueta = 'None'
     this.puntaje = 0.9
     this.prepararResponde = { ok: true }
+    this.prepararCola = []
     this.enVuelo = 0
     this.maxEnVuelo = 0
   }
 
   async preparar() {
     this.llamadas.push('preparar')
-    return this.prepararResponde
+    // -tarea 88, segunda vuelta- Antes: return this.prepararResponde
+    return this.prepararCola.length ? this.prepararCola.shift()! : this.prepararResponde
   }
 
   async revisarCuadro(): Promise<RevisionCuadro> {

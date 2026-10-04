@@ -5,6 +5,8 @@
 // UNA vez por racha: la palma sostenida no vuelve a emitir hasta que la racha se corta. vistoDesdeMs es
 // la hora -tMs- de la primera revisión de la racha: de ahí sale el margen de 1 s de la pausa por palma
 // -pausaToma.ts, MARGEN_MANO_MS-.
+// -tarea 88, segunda vuelta, 04-10-2026- Ese margen ya no corta: el corte sale del fin de la última
+// palabra, acotado a 5 s antes de vistoDesdeMs -pausaToma.ts, desdeDePalma-.
 //
 // 'ninguno' también se confirma -tres revisiones sin palma ni V-: es lo que la máquina llama "bajar la
 // mano" -manoBajada- antes de que otra palma pueda seguir.

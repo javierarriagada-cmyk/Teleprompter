@@ -2,7 +2,7 @@
 // Botón de pausa, tacho y gestos pasan por la MISMA máquina: docs/tarea88.txt, sección 3. Todas estas
 // pruebas tienen lógica: se rompieron a propósito contra una máquina que no hacía nada antes de escribirla.
 import { describe, test, expect } from 'vitest'
-import { paso, MARGEN_MANO_MS, type EstadoPausa, type Entrada } from '../lib/pausaToma'
+import { paso, MARGEN_MANO_MS, desdeDePalma, MS_MAX_ANTES_DE_LA_VISTA, type EstadoPausa, type Entrada } from '../lib/pausaToma'
 
 const grabando: EstadoPausa = { tipo: 'grabando' }
 // Una secuencia de entradas desde un estado; devuelve el estado final y todas las acciones en orden.
@@ -16,7 +16,10 @@ function correr(e: EstadoPausa, entradas: Entrada[]) {
   }
   return { estado, acciones }
 }
-const palma = (tMs: number, vistoDesdeMs = tMs): Entrada => ({ tipo: 'gesto', gesto: 'palma', tMs, vistoDesdeMs })
+// -tarea 88, segunda vuelta- La palma lleva finVozMs; por omisión 1 s antes de la primera vista, para
+// que las pruebas de abajo sigan con el mismo desde -19 000-. Antes:
+// const palma = (tMs: number, vistoDesdeMs = tMs): Entrada => ({ tipo: 'gesto', gesto: 'palma', tMs, vistoDesdeMs })
+const palma = (tMs: number, vistoDesdeMs = tMs, finVozMs = vistoDesdeMs - 1000): Entrada => ({ tipo: 'gesto', gesto: 'palma', tMs, vistoDesdeMs, finVozMs })
 const ninguno = (tMs: number): Entrada => ({ tipo: 'gesto', gesto: 'ninguno', tMs, vistoDesdeMs: tMs })
 const victoria = (tMs: number): Entrada => ({ tipo: 'gesto', gesto: 'victoria', tMs, vistoDesdeMs: tMs })
 
@@ -32,11 +35,30 @@ describe('Tarea 88: la máquina de pausa', () => {
     expect(r.estado).toEqual({ tipo: 'grabando' })
     expect(r.acciones).toEqual([{ tipo: 'reanudar', hastaMs: 14_500 }])
   })
-  test('palma grabando pausa 1 s antes de la primera vista', () => {
+  // -tarea 88, segunda vuelta- Antes se llamaba 'palma grabando pausa 1 s antes de la primera vista' y
+  // esperaba desdeMs = vistoDesde - MARGEN_MANO_MS. Ahora el corte empieza en el fin de la última palabra.
+  test('palma grabando pausa en el fin de la última palabra', () => {
     expect(MARGEN_MANO_MS).toBe(1000)
-    const r = paso(grabando, palma(21_000, 20_000))
-    expect(r.estado).toEqual({ tipo: 'pausada', desdeMs: 19_000, origen: 'palma', manoBajada: false, contando: false })
-    expect(r.acciones).toEqual([{ tipo: 'pausar', desdeMs: 19_000, origen: 'palma' }])
+    const r = paso(grabando, palma(19_500, 18_537, 15_108))
+    expect(r.estado).toEqual({ tipo: 'pausada', desdeMs: 15_108, origen: 'palma', manoBajada: false, contando: false })
+    expect(r.acciones).toEqual([{ tipo: 'pausar', desdeMs: 15_108, origen: 'palma' }])
+  })
+  // -tarea 88, segunda vuelta, 04-10-2026- Con los números medidos en el moto g86.
+  test('desde de la palma: el fin de la última palabra, nunca más de 5 s antes de la vista', () => {
+    expect(MS_MAX_ANTES_DE_LA_VISTA).toBe(5000)
+    // Toma 6cce33b4: «ellos» terminó a los 15 108 y la palma se vio a los 18 537.
+    expect(desdeDePalma(15_108, 18_537)).toBe(15_108)
+    // «poema»: fin 48 064 y vista 51 333.
+    expect(desdeDePalma(48_064, 51_333)).toBe(48_064)
+    // Callado mucho rato: no más de 5 s antes de la vista.
+    expect(desdeDePalma(10_000, 30_000)).toBe(25_000)
+    // Acotado a 0.
+    expect(desdeDePalma(0, 3_000)).toBe(0)
+    expect(desdeDePalma(undefined, 2_000)).toBe(2_000)
+  })
+  test('el botón no cambia: corta en el toque aunque haya voz antes', () => {
+    const r = paso(grabando, { tipo: 'alternar', tMs: 18_537 })
+    expect(r.acciones).toEqual([{ tipo: 'pausar', desdeMs: 18_537, origen: 'boton' }])
   })
   test('palma sostenida no reanuda', () => {
     const p = paso(grabando, palma(21_000, 20_000)).estado

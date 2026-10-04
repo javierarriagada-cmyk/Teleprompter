@@ -22,7 +22,9 @@ export type EstadoPausa =
 export type Entrada =
   | { tipo: 'alternar'; tMs: number } // el botón de pausa
   | { tipo: 'tacho' }
-  | { tipo: 'gesto'; gesto: Gesto; tMs: number; vistoDesdeMs: number } // ya confirmado
+  // ya confirmado. finVozMs -tarea 88, segunda vuelta-: el fin de la última palabra dicha, en Date.now()
+  // -vigiaGestos.ts-. Solo lo usa la palma que pausa.
+  | { tipo: 'gesto'; gesto: Gesto; tMs: number; vistoDesdeMs: number; finVozMs?: number }
   | { tipo: 'finCuenta'; tMs: number }
 export type Accion =
   | { tipo: 'pausar'; desdeMs: number; origen: OrigenPausa }
@@ -33,7 +35,21 @@ export type Accion =
 // El margen ANTES de una pausa con la palma: la mano que sube no queda en la toma -o casi: la que sube
 // más lento puede quedar, no se promete-. Nunca baja de 0: lo acota tramos.ts. El botón no lleva margen,
 // ni antes ni después -P4 del plan, cerrada-.
+// -tarea 88, segunda vuelta, 04-10-2026- Antes: este margen era el corte de la palma -desde = vistoDesde
+// - MARGEN_MANO_MS-. En el moto g86 la mano quedaba unos 2 s en el archivo: el vigía empieza a mirar 2 s
+// después de la voz y la mano sube antes. Ya NO se usa para el corte -ver desdeDePalma-; queda
+// exportada para no romper a quien la lea.
 export const MARGEN_MANO_MS = 1000
+
+// EL CORTE DE UNA PAUSA POR PALMA -tarea 88, segunda vuelta-: empieza en el fin de la última palabra
+// dicha, pero nunca más de MS_MAX_ANTES_DE_LA_VISTA antes de la primera vista de la palma, y nunca
+// antes de 0. Los dos en Date.now(). Sin finVozMs -nadie lo dio-, empieza en la primera vista.
+// Medido -toma 6cce33b4-: fin 15 108 y vista 18 537 dan 15 108.
+export const MS_MAX_ANTES_DE_LA_VISTA = 5000
+export function desdeDePalma(finVozMs: number | undefined, vistoDesdeMs: number): number {
+  const fin = typeof finVozMs === 'number' && Number.isFinite(finVozMs) ? finVozMs : vistoDesdeMs
+  return Math.max(0, Math.max(fin, vistoDesdeMs - MS_MAX_ANTES_DE_LA_VISTA))
+}
 
 const quieto = (e: EstadoPausa) => ({ estado: e, acciones: [] as Accion[] })
 
@@ -48,7 +64,8 @@ export function paso(e: EstadoPausa, en: Entrada): { estado: EstadoPausa; accion
     }
     if (en.tipo === 'gesto' && en.gesto === 'palma') {
       // La palma que pausó sigue arriba: manoBajada false, para que sostenerla no reanude.
-      const desdeMs = en.vistoDesdeMs - MARGEN_MANO_MS
+      // -tarea 88, segunda vuelta- Antes: const desdeMs = en.vistoDesdeMs - MARGEN_MANO_MS
+      const desdeMs = desdeDePalma(en.finVozMs, en.vistoDesdeMs)
       return {
         estado: { tipo: 'pausada', desdeMs, origen: 'palma', manoBajada: false, contando: false },
         acciones: [{ tipo: 'pausar', desdeMs, origen: 'palma' }]

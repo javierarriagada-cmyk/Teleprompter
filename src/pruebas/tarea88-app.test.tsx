@@ -60,10 +60,13 @@ vi.mock('../lib/archivosNativos', async (importOriginal) => {
     obtenerEspacioLibre: async () => null
   }
 })
-vi.mock('../lib/gestos', async () => {
+// -tarea 88, segunda vuelta- Con lo puro de lib/gestos -decidirPreparar y sus constantes-. Antes:
+// return { Gestos: gestos.fake }
+vi.mock('../lib/gestos', async (importOriginal) => {
+  const actual: any = await importOriginal()
   const { GestosFake } = await import('./GestosFake')
   gestos.fake = new GestosFake()
-  return { Gestos: gestos.fake }
+  return { ...actual, Gestos: gestos.fake }
 })
 vi.mock('../lib/tomaVideo', async () => {
   const actual = await vi.importActual<typeof import('../lib/tomaVideo')>('../lib/tomaVideo')
@@ -275,6 +278,36 @@ describe('Tarea 88: la pausa con cortes y los gestos, a través de <App>', () =>
 
   // -punto 9- Pausa apenas empezó y luego Parar: lo que queda dura menos de 1 s y la toma se trata como
   // una sin video -no abre el visor y sale el aviso de fin de siempre-.
+  // -tarea 88, segunda vuelta, 04-10-2026- «No disponible» falso.
+  test('SIN VISTA PREVIA AL PREPARAR, SE VUELVE A INTENTAR Y LA FILA NO QUEDA NO DISPONIBLE', async () => {
+    gestos.fake.prepararCola = [{ ok: false, estado: 'sinVistaPrevia' }, { ok: false, estado: 'sinVistaPrevia' }]
+    gestos.fake.prepararResponde = { ok: true, estado: 'listo' }
+    await abrirGrabar(new MotorEspia(), true)
+    await esperar(2600)
+    expect(gestos.fake.llamadas.filter((l: string) => l === 'preparar').length).toBe(3)
+    // Ningún soltar entre intentos: el mismo reconocedor.
+    expect(gestos.fake.llamadas).not.toContain('soltar')
+    fireEvent.click(screen.getByTestId('ficha-camara'))
+    const fila = await screen.findByTestId('fila-gestos')
+    expect(fila.getAttribute('data-motivo')).toBe('ninguno')
+    // Y graba con gestos: tres palmas pausan.
+    await empezar()
+    gestos.fake.etiqueta = 'Open_Palm'
+    await esperar(3600)
+    expect(sidecar().pausas[0].origen).toBe('palma')
+  }, 20000)
+
+  test('NO DISPONIBLE SOLO SI EL RECONOCEDOR NO ARRANCA O EL CUADRO SIGUE NEGRO', async () => {
+    gestos.fake.prepararResponde = { ok: false, estado: 'negro' }
+    await abrirGrabar(new MotorEspia(), true)
+    fireEvent.click(screen.getByTestId('ficha-camara'))
+    // Primer negro: todavía no.
+    expect((await screen.findByTestId('fila-gestos')).getAttribute('data-motivo')).toBe('ninguno')
+    await esperar(2300)
+    expect(gestos.fake.llamadas.filter((l: string) => l === 'preparar').length).toBe(3)
+    expect(screen.getByTestId('fila-gestos').getAttribute('data-motivo')).toBe('noDisponible')
+  }, 20000)
+
   test('SI QUEDA MENOS DE 1 S, NO SE ABRE EL VISOR', async () => {
     await abrirGrabar()
     await empezar()

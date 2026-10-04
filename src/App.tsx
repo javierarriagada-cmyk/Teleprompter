@@ -51,9 +51,11 @@ import {
 // -tarea 88, 04-10-2026- La pausa con cortes y el control por gestos -docs/tarea88.txt-.
 import { paso, EstadoPausa, Entrada as EntradaPausa, Accion as AccionPausa } from './lib/pausaToma'
 import { duracionVisible, MS_MINIMO_QUE_QUEDA } from './lib/tramos'
-import { Gestos } from './lib/gestos'
+import { Gestos, decidirPreparar, MS_ENTRE_INTENTOS_PREPARAR } from './lib/gestos'
 import { confirmadorNuevo, revisar as revisarGesto } from './lib/confirmadorGestos'
 import { vigiaNuevo, oirParcial, oirFinal, debePedir, alPedir, alResponder, Vigia } from './lib/vigiaGestos'
+// -tarea 88, segunda vuelta- El fin de la última palabra del FINAL, para el corte de la palma.
+import { tomarFinUltimaPalabraEpochMs } from './lib/diagnostico'
 import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar } from './components/IconosApp'
 import { t, useTextos, TITULO_SIN_NOMBRE } from './textos'
 import { idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
@@ -1558,7 +1560,13 @@ export default function App({ motor, repoOverride }: AppProps) {
     return msPausadoRef.current + (abierta !== null ? Math.max(0, Date.now() - abierta) : 0)
   }
   function describirEntrada(en: EntradaPausa): string {
-    if (en.tipo === 'gesto') return `gesto:${en.gesto}`
+    // -tarea 88, segunda vuelta- La palma lleva además la primera vista y el fin de la voz, en el reloj del
+    // video, para que Claude vea de dónde salió el corte. Antes: if (en.tipo === 'gesto') return `gesto:${en.gesto}`
+    if (en.tipo === 'gesto') {
+      if (en.gesto !== 'palma') return `gesto:${en.gesto}`
+      const v = (ms: number | undefined) => { const x = typeof ms === 'number' ? msDelVideo(ms) : null; return x === null ? '-' : String(x) }
+      return `gesto:palma vistaVideoMs=${v(en.vistoDesdeMs)} finVozVideoMs=${v(en.finVozMs)}`
+    }
     return en.tipo
   }
   function despachar(en: EntradaPausa): Promise<void> {
@@ -1675,24 +1683,46 @@ export default function App({ motor, repoOverride }: AppProps) {
   const motivoSinGestos: 'soloFrontal' | 'noDisponible' | null =
     ladoCamara === 'trasera' ? 'soloFrontal' : gestosApto === 'no' ? 'noDisponible' : null
   const quiereGestos = gestosAlGrabar && conCamara && vista === 'lectura' && ladoCamara === 'frontal' && camaraActiva
+  // -tarea 88, segunda vuelta, 04-10-2026- «No disponible» falso: sin vista previa todavía, o con un cuadro
+  // negro, se vuelve a intentar mientras la cámara siga encendida -lib/gestos.ts, decidirPreparar-. El lado
+  // nativo guarda el reconocedor: los intentos no crean otro. Se suelta al salir, si se llamó a preparar.
+  // Antes: una sola llamada a preparar, y ok false dejaba 'no' hasta que cambiara quiereGestos:
+  //   Gestos.preparar().then((r) => { preparado = !!(r && r.ok); ... if (vigente) setGestosApto(preparado ? 'si' : 'no') ... })
+  //     .catch(() => { if (vigente) setGestosApto('no') })
+  //   y en la limpieza: if (preparado) Gestos.soltar().
   useEffect(() => {
     if (!quiereGestos) return
     let vigente = true
-    let preparado = false
-    Gestos.preparar()
-      .then((r) => {
-        preparado = !!(r && r.ok)
-        console.info('Sigo88', `gestos preparar ok=${preparado}${r && r.motivo ? ` motivo=${r.motivo}` : ''}`)
-        if (vigente) setGestosApto(preparado ? 'si' : 'no')
-        if (!vigente && preparado) Gestos.soltar().catch(() => {})
-      })
-      .catch((e: any) => {
-        console.info('Sigo88', `gestos preparar falló: ${e?.message || e}`)
-        if (vigente) setGestosApto('no')
-      })
+    let llamado = false
+    let negros = 0
+    let intentos = 0
+    let timer: number | null = null
+    const intentar = () => {
+      timer = null
+      llamado = true
+      intentos++
+      Gestos.preparar()
+        .then((r) => {
+          if (!vigente) return
+          negros = r && r.estado === 'negro' ? negros + 1 : 0
+          const d = decidirPreparar(r, negros)
+          console.info('Sigo88', `gestos preparar intento=${intentos} ok=${!!(r && r.ok)} estado=${r?.estado ?? '-'}${r && r.motivo ? ` motivo=${r.motivo}` : ''} decide=${d}`)
+          if (d === 'reintentar') {
+            timer = window.setTimeout(intentar, MS_ENTRE_INTENTOS_PREPARAR)
+            return
+          }
+          setGestosApto(d)
+        })
+        .catch((e: any) => {
+          console.info('Sigo88', `gestos preparar falló: ${e?.message || e}`)
+          if (vigente) setGestosApto('no')
+        })
+    }
+    intentar()
     return () => {
       vigente = false
-      if (preparado) {
+      if (timer !== null) window.clearTimeout(timer)
+      if (llamado) {
         console.info('Sigo88', 'gestos soltar')
         Gestos.soltar().catch(() => {})
       }
@@ -1705,10 +1735,19 @@ export default function App({ motor, repoOverride }: AppProps) {
   vigiaActivoRef.current = vigiaActivo
   const vigiaRef = useRef<Vigia>(vigiaNuevo(0))
   function oirVozParaGestos(tipo: 'parcial' | 'final', texto: string) {
+    // -tarea 88, segunda vuelta- El FINAL lleva el fin de su última palabra, ya en Date.now() -lo convierte
+    // tomarFinUltimaPalabraEpochMs una sola vez-. Se toma con cada FINAL, aun con el vigía apagado, para
+    // que un fin viejo no quede para el FINAL siguiente. Antes:
+    // const r = tipo === 'parcial' ? oirParcial(vigiaRef.current, texto, Date.now()) : oirFinal(vigiaRef.current, texto, Date.now())
+    const finPalabra = tipo === 'final' ? tomarFinUltimaPalabraEpochMs() : null
     if (!vigiaActivoRef.current) return
-    const r = tipo === 'parcial' ? oirParcial(vigiaRef.current, texto, Date.now()) : oirFinal(vigiaRef.current, texto, Date.now())
+    const r = tipo === 'parcial' ? oirParcial(vigiaRef.current, texto, Date.now()) : oirFinal(vigiaRef.current, texto, Date.now(), finPalabra)
     vigiaRef.current = r.vigia
     if (r.cambio) console.info('Sigo88', `vigia voz ${tipo} cambia`)
+    if (tipo === 'final') {
+      const fv = msDelVideo(r.vigia.finVozMs)
+      console.info('Sigo88', `vigia final cambio=${r.cambio} conHora=${finPalabra !== null} finVozVideoMs=${fv ?? '-'}`)
+    }
   }
   useEffect(() => {
     if (!vigiaActivo) return
@@ -1738,7 +1777,9 @@ export default function App({ motor, repoOverride }: AppProps) {
           console.info('Sigo88', `revision etiqueta=${r.etiqueta} puntaje=${r.puntaje} msCuadro=${r.msCuadro ?? '-'} msReconocer=${r.msReconocer ?? '-'} estado=${estadoPausaRef.current.tipo}`)
           if (sale.confirmado) {
             const c = sale.confirmado
-            void despacharRef.current({ tipo: 'gesto', gesto: c.gesto, tMs: c.tMs, vistoDesdeMs: c.vistoDesdeMs })
+            // -tarea 88, segunda vuelta- Con finVozMs: la palma corta desde el fin de la última palabra.
+            // Antes: { tipo: 'gesto', gesto: c.gesto, tMs: c.tMs, vistoDesdeMs: c.vistoDesdeMs }
+            void despacharRef.current({ tipo: 'gesto', gesto: c.gesto, tMs: c.tMs, vistoDesdeMs: c.vistoDesdeMs, finVozMs: vigiaRef.current.finVozMs })
           }
         })
         .catch(() => {
