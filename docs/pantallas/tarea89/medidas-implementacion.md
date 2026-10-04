@@ -1,4 +1,115 @@
-# Tarea 89 · defecto 2 · visor de lado (BOCETO, sin código)
+# Tarea 89 · defecto 2 · visor de lado (BOCETO APROBADO COMO PISO, sin código)
+
+> **APROBADO COMO PISO (Claude, 04-10-2026, 11:26).** Claude revisó el PR #67 y aprueba el boceto como piso,
+> con dos ajustes que hace la **cuarta versión**, abajo: el visor de lado siempre oscuro y los rótulos de
+> la columna de 12 como mínimo, con toques de 48. La tercera versión se movió a
+> `descartado/tercera-version/` (láminas, capturas y `medidas-de-lado.json`) y sus herramientas quedaron como
+> `herramientas/*-descartado-3.*`. Su texto sigue abajo y vale salvo en esos dos puntos. Sigue sin código.
+
+## Cuarta versión (APROBADA COMO PISO): visor siempre oscuro, rótulos de 12 y toques de 48
+
+Lámina resumen: **`lamina-visor-de-lado-resumen.png`**. Son las mismas 24 láminas, con los mismos nombres
+(`lamina-visor-de-lado-caso…-{oscuro,claro}.png`). Ahora «claro» quiere decir **la app en tema claro**: el visor
+sale oscuro igual. Las herramientas son las mismas (`herramientas/boceto.{html,tsx}`, `capturas-de-lado.cjs`,
+`laminas-de-lado.cjs`). `medidas-de-lado.json` trae además el tamaño de letra de los rótulos, la caja de la X y el
+color de fondo medidos en Chrome.
+
+### 1. El visor de lado es SIEMPRE OSCURO
+
+- **Cómo:** todo el visor (también el recorte) va dentro de un elemento con `data-tema="oscuro"`. En `src/styles.css:109` el selector es `[data-tema="oscuro"]`, sin `:root`, así que vale en cualquier elemento y sus hijos heredan las superficies oscuras aunque el documento esté en claro. No hace falta ningún token nuevo. Además se pone `color-scheme: dark`.
+- **Los tokens que usa**, del bloque `[data-tema="oscuro"]` de `src/styles.css`. Son los mismos valores que trae `:root`, en `:3-11`.
+
+  | Token | Valor | Línea |
+  |---|---|---|
+  | `--bg-suelo` | `#151312` | `:110` |
+  | `--bg-fila` | `#1E1B19` | `:111` |
+  | `--bg-superficie` | `#221F1D` | `:112` |
+  | `--bg-panel` | `#2D2927` | `:113` |
+  | `--color-separador` | `#4B4643` | `:115` |
+  | `--borde-tarjeta` | `rgba(255,255,255,.08)` | `:118` |
+  | `--color-apagado` | `#CAC5C2` | `:120` |
+  | `--color-texto` | `#E7E1DE` | `:121` |
+
+  - **Caso 1:** la columna y la barra de avance son `--bg-superficie`, medido en Chrome como `rgb(34,31,29)` en los dos temas.
+  - **Caso 2:** el fondo es `--bg-suelo`, la tarjeta es `--bg-superficie` y el panel de Subtítulos abierto es `--bg-panel`.
+- **Lo de afuera del visor que cambia con el tema:**
+  - **Las barras de Android.** `App.tsx:314-319` llama a `SystemBars.setStyle` con `oscuro = tema !== 'claro' || vista === 'lectura'`. Con la app en claro pone `SystemBarsStyle.Light`, y los íconos de la barra de tres botones salen oscuros sobre el visor oscuro: casi invisibles.
+  - **Al implementar:** mientras el visor de lado esté abierto, `setStyle({ style: SystemBarsStyle.Dark })`, como ya se hace en la lectura. Al cerrarlo se vuelve al estilo del tema. En el boceto la barra se dibujó con íconos claros.
+  - La barra de estado va oculta, así que su estilo no se ve.
+  - Nada más de la app queda a la vista: el visor de lado ocupa toda la pantalla.
+- **De pie, el visor sigue al tema como hoy.** Solo es siempre oscuro con `useLayout() === 'tel-h'`.
+
+### 2. Rótulos de 12 como mínimo y toques de 48
+
+- **Rótulos:** «Guardar» y el estilo elegido («Amarillo», etc.) pasan de `--texto-etiqueta` (11, `styles.css:34`) a **12**, solo dentro del visor de lado. No se cambia el token, porque lo usan otras pantallas. En la tarjeta del caso 2, «Guardar» también va en 12. «Subtítulos Amarillo» del caso 2 ya era de 16. Medido en Chrome: 12 px = 12 dp.
+- **Toques:**
+  - La X (`.cerrar-visor`) pasa de 44 a **48 × 48**.
+  - Cada fila de acción tiene `min-height: 48` y todo el ancho de la columna.
+  - El panel de Subtítulos ya tenía opciones de 68 de alto.
+- **Las medidas nuevas.** Los dos giros dan lo mismo y la columna no cambia de ancho, porque su ancho lo fija el video.
+
+  | | 915×411 | 800×360 |
+  |---|---|---|
+  | Columna | **178 × 411** | **153 × 360** |
+  | Cabecera (8 de aire + X de 48) | **56** | **56** |
+  | Alto para acciones | 411 − 56 = **355** | 360 − 56 = **304** |
+  | 4 filas (Guardar, Subtítulos, Repetir, Borrar) | **88, 89, 89, 89** | **75, 76, 76, 76** |
+  | Ancho de fila | 177 | 152 |
+  | Toma guardada (Compartir, Borrar) | **176 y 177** | **151 y 152** |
+  | Contenido de una fila con rótulo | 26 + 4 + ~15 = ~45 ≤ 48 | ~45 ≤ 48 |
+  | Caso 2: tarjeta | **320 × 238** (era 236) | **320 × 238** |
+  | Caso 2: fondo a cada lado | 128 | 85 |
+
+  - Las filas del caso 1 no cambiaron: la cabecera ya medía 56 por el nombre y la duración.
+  - **Todo cabe**, sin ajustes. Para que una fila bajara de 48, el alto tendría que ser menos de 56 + 4 × 48 = 248.
+  - En la tercera versión, a 800×360, la toma guardada se anotó con filas de 142. Lo medido es 151 y 152.
+
+### Lo que no calza o queda abierto (cuarta versión)
+
+- **12 px no siempre son 12 sp.** En la WebView, `px` es `dp`. 12 px valen 12 sp con la escala de letra del sistema en 1,0. Si la WebView sigue la escala de letra del teléfono (`textZoom`), con 1,3 el rótulo mide ~16 y la fila llega a ~49: sigue cabiendo en 75. Hay que verificarlo en el g86.
+- **La barra de avance** (`.boton-visor` y `.avance-visor`, de 44) no es de la columna y se dejó en 44, que es su medida de hoy. Si también tuviera que medir 48, la barra pasa a 52 y el video pierde 4 más: a 915, 641 × 359 y columna 182; a 800, 548 × 308 y columna 160. No se dibujó.
+- **`SystemBars.setStyle` Dark** mientras el visor de lado esté abierto (ver arriba). Es una llamada más que se agrega a la propuesta, sin programarla.
+
+## Verificación al implementar (Claude, en el moto g86)
+
+Al programar el visor, Claude tiene que confirmar estas cuatro cosas en el moto g86 antes de dar el visor por bueno. Las líneas de registro van por la misma vía de los registros de la tarea 89: `anotar` de `src/lib/diagnostico.ts:89`, con un tipo nuevo en `EntradaDiagnostico` (`:18`), por ejemplo `{ tipo: 'visor-lado', evento, ... }`. Solo se anotan con el diagnóstico encendido. Abajo van escritas como saldrían en `comoTexto()`.
+
+**(a) La barra de estado se vuelve a ocultar después de deslizar desde arriba.**
+- Abrir el visor de lado, deslizar desde el borde de arriba, esperar 3 s y no tocar.
+- Mirar si la barra se esconde sola. Si no se esconde, hay que fijar `systemBarsBehavior` en el lado nativo o volver a llamar a `hide`; eso se decide entonces.
+- Registro:
+  - `visor-lado barra-estado hide t=<ms>`, al llamar a `SystemBars.hide`.
+  - `visor-lado insets top=<env(safe-area-inset-top)> t=<ms>`, en cada `resize` y cada `visualViewport` resize.
+- Con el comportamiento por omisión, al deslizar `top` pasa de 0 a 24 y luego vuelve a 0 si la barra se oculta sola.
+
+**(b) La barra de tres botones queda a la izquierda con el giro 270.**
+- Girar a 90 y a 270 con el visor abierto.
+- Registro: `visor-lado giro=<screen.orientation.angle> tipo=<screen.orientation.type> insets l=<left> r=<right> t=<top> b=<bottom>`, en `screen.orientation` `change` y en `resize`.
+- Lo esperado:
+  - giro 90: `l=44 r=48`;
+  - giro 270: `l=48 r=44`.
+- Si en 270 la barra va a la derecha (`l=0 r=92`, o el recorte en otro lado), las medidas igual suman 92, pero se dibuja en espejo distinto.
+
+**(c) `videoWidth` y `videoHeight` llegan ya girados.**
+- Abrir una toma grabada de pie y una grabada de lado. Sirven las 5 del corpus de la tarea 89: 1 a 3 de pie y 4 y 5 de lado.
+- Registro: `visor-lado video nombre=<archivo> videoWidth=<w> videoHeight=<h> horizontal=<w>h> miniatura=<naturalWidth>x<naturalHeight>`, en el `loadedmetadata` de `ReproductorGrabacion.tsx:75-80` y en el `load` de la miniatura.
+- Lo esperado: las de pie dan `horizontal=false`, como 1080x1920; las de lado `horizontal=true`; y la miniatura da la misma forma.
+
+**(d) Los bordes que informa la WebView.**
+- Registro: `visor-lado bordes css l=<..> r=<..> t=<..> b=<..> viewport=<innerWidth>x<innerHeight> dpr=<devicePixelRatio>`, leyendo `getComputedStyle` de un elemento con `padding: env(safe-area-inset-*)`.
+- Si se puede, también las variables que inyecta Capacitor (`injectSafeAreaCSS` de `SystemBars.java`). Hay que registrarlo al abrir, al girar y después de `hide` y `show`.
+- Lo esperado: viewport de 915x411 en el g86 (o el real), `dpr=2.8125` (450/160), `t=0` con la barra oculta, y 44 y 48 a los costados según el giro.
+- Si los bordes no coinciden, mandan los medidos: la regla del boceto (útil = ancho − izquierda − derecha) los toma tal cual.
+
+---
+
+# TERCERA VERSIÓN, APROBADA COMO PISO CON AJUSTES; LA REEMPLAZA LA CUARTA (04-10-2026, 11:26)
+
+> Sus láminas, capturas y `medidas-de-lado.json` están ahora en `descartado/tercera-version/`, y sus
+> herramientas son `herramientas/{boceto,capturas-de-lado,laminas-de-lado}-descartado-3.*`. Donde abajo
+> dice `lamina-…`, `boceto.html` o `capturas-de-lado.cjs`, se refiere a esos. Vale todo salvo el tema
+> (ahora siempre oscuro) y los rótulos y toques (ahora 12 y 48).
+
 
 > **SEGUNDA VERSIÓN, 04-10-2026 (10:53).** Javier y Claude descartaron la primera propuesta: dibujaba una
 > toma VERTICAL vista de lado, así que el video quedaba angosto y chico, los controles ocupaban más de la

@@ -1,3 +1,4 @@
+// CUARTA VERSIÓN -04-10-2026, 11:26-: mide además el tamaño de letra de los rótulos y la caja de la X.
 // Capturas del boceto del visor de lado, TERCERA VERSIÓN -tarea 89, 04-10-2026, 11:09-. Con vite en
 // 127.0.0.1:5182: node capturas-de-lado.cjs. Caso 1 y caso 2 en los dos giros, los dos temas y los dos
 // tamaños -16-, y el caso 1 con Subtítulos abierto y con la toma guardada, giro 90 -8-. Las cajas
@@ -28,7 +29,10 @@ for (const estado of ['subtitulos', 'guardada']) VISTAS.push({ caso: 1, giro: 90
       if (op) { const r = op.getBoundingClientRect(); cajas.panelSubtitulos = { x: Math.round(r.x), y: Math.round(r.y), ancho: Math.round(r.width), alto: Math.round(r.height) }; }
       const acc = document.querySelector('[data-medida="acciones"]');
       const hijos = acc ? [...acc.children].map((c) => Math.round(c.getBoundingClientRect().height)) : null;
-      return { calculo: window.medidas, cajas, altosAcciones: hijos };
+      const rotulos = [...document.querySelectorAll('.accion-toma span, .boton-subtitulos-valor')].filter((e) => e.offsetParent).map((e) => ({ texto: e.textContent, px: parseFloat(getComputedStyle(e).fontSize) }));
+      const x = document.querySelector('.cerrar-visor'); const rx = x && x.getBoundingClientRect();
+      const fondo = getComputedStyle(document.querySelector('[data-medida="columna"]') ? document.querySelector('[data-medida="columna"]').parentElement : document.querySelector('[data-medida="panel"]')).backgroundColor;
+      return { calculo: window.medidas, cajas, altosAcciones: hijos, rotulos, cerrar: rx ? { ancho: Math.round(rx.width), alto: Math.round(rx.height) } : null, fondo };
     });
   }
   fs.writeFileSync(path.join(OUT, 'medidas-de-lado.json'), JSON.stringify(medidas, null, 2));

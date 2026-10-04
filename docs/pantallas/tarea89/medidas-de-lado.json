@@ -56,7 +56,22 @@
       89,
       89,
       89
-    ]
+    ],
+    "rotulos": [
+      {
+        "texto": "Guardar",
+        "px": 12
+      },
+      {
+        "texto": "Amarillo",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro90-800x360-oscuro": {
     "calculo": {
@@ -115,7 +130,22 @@
       76,
       76,
       76
-    ]
+    ],
+    "rotulos": [
+      {
+        "texto": "Guardar",
+        "px": 12
+      },
+      {
+        "texto": "Amarillo",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro90-915x411-claro": {
     "calculo": {
@@ -174,7 +204,22 @@
       89,
       89,
       89
-    ]
+    ],
+    "rotulos": [
+      {
+        "texto": "Guardar",
+        "px": 12
+      },
+      {
+        "texto": "Amarillo",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro90-800x360-claro": {
     "calculo": {
@@ -233,7 +278,22 @@
       76,
       76,
       76
-    ]
+    ],
+    "rotulos": [
+      {
+        "texto": "Guardar",
+        "px": 12
+      },
+      {
+        "texto": "Amarillo",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro270-915x411-oscuro": {
     "calculo": {
@@ -292,7 +352,22 @@
       89,
       89,
       89
-    ]
+    ],
+    "rotulos": [
+      {
+        "texto": "Guardar",
+        "px": 12
+      },
+      {
+        "texto": "Amarillo",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro270-800x360-oscuro": {
     "calculo": {
@@ -351,7 +426,22 @@
       76,
       76,
       76
-    ]
+    ],
+    "rotulos": [
+      {
+        "texto": "Guardar",
+        "px": 12
+      },
+      {
+        "texto": "Amarillo",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro270-915x411-claro": {
     "calculo": {
@@ -410,7 +500,22 @@
       89,
       89,
       89
-    ]
+    ],
+    "rotulos": [
+      {
+        "texto": "Guardar",
+        "px": 12
+      },
+      {
+        "texto": "Amarillo",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro270-800x360-claro": {
     "calculo": {
@@ -469,7 +574,22 @@
       76,
       76,
       76
-    ]
+    ],
+    "rotulos": [
+      {
+        "texto": "Guardar",
+        "px": 12
+      },
+      {
+        "texto": "Amarillo",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso2-vertical-giro90-915x411-oscuro": {
     "calculo": {
@@ -501,13 +621,13 @@
       },
       "panel": {
         "x": 419,
-        "y": 87,
+        "y": 86,
         "ancho": 320,
-        "alto": 236
+        "alto": 238
       },
       "barra-avance": {
         "x": 420,
-        "y": 145,
+        "y": 144,
         "ancho": 318,
         "alto": 48
       },
@@ -518,7 +638,22 @@
         "alto": 411
       }
     },
-    "altosAcciones": null
+    "altosAcciones": null,
+    "rotulos": [
+      {
+        "texto": "Amarillo",
+        "px": 16
+      },
+      {
+        "texto": "Guardar",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso2-vertical-giro90-800x360-oscuro": {
     "calculo": {
@@ -550,13 +685,13 @@
       },
       "panel": {
         "x": 348,
-        "y": 62,
+        "y": 61,
         "ancho": 320,
-        "alto": 236
+        "alto": 238
       },
       "barra-avance": {
         "x": 349,
-        "y": 119,
+        "y": 118,
         "ancho": 318,
         "alto": 48
       },
@@ -567,7 +702,22 @@
         "alto": 360
       }
     },
-    "altosAcciones": null
+    "altosAcciones": null,
+    "rotulos": [
+      {
+        "texto": "Amarillo",
+        "px": 16
+      },
+      {
+        "texto": "Guardar",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso2-vertical-giro90-915x411-claro": {
     "calculo": {
@@ -599,13 +749,13 @@
       },
       "panel": {
         "x": 419,
-        "y": 87,
+        "y": 86,
         "ancho": 320,
-        "alto": 236
+        "alto": 238
       },
       "barra-avance": {
         "x": 420,
-        "y": 145,
+        "y": 144,
         "ancho": 318,
         "alto": 48
       },
@@ -616,7 +766,22 @@
         "alto": 411
       }
     },
-    "altosAcciones": null
+    "altosAcciones": null,
+    "rotulos": [
+      {
+        "texto": "Amarillo",
+        "px": 16
+      },
+      {
+        "texto": "Guardar",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso2-vertical-giro90-800x360-claro": {
     "calculo": {
@@ -648,13 +813,13 @@
       },
       "panel": {
         "x": 348,
-        "y": 62,
+        "y": 61,
         "ancho": 320,
-        "alto": 236
+        "alto": 238
       },
       "barra-avance": {
         "x": 349,
-        "y": 119,
+        "y": 118,
         "ancho": 318,
         "alto": 48
       },
@@ -665,7 +830,22 @@
         "alto": 360
       }
     },
-    "altosAcciones": null
+    "altosAcciones": null,
+    "rotulos": [
+      {
+        "texto": "Amarillo",
+        "px": 16
+      },
+      {
+        "texto": "Guardar",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso2-vertical-giro270-915x411-oscuro": {
     "calculo": {
@@ -697,13 +877,13 @@
       },
       "panel": {
         "x": 423,
-        "y": 87,
+        "y": 86,
         "ancho": 320,
-        "alto": 236
+        "alto": 238
       },
       "barra-avance": {
         "x": 424,
-        "y": 145,
+        "y": 144,
         "ancho": 318,
         "alto": 48
       },
@@ -714,7 +894,22 @@
         "alto": 411
       }
     },
-    "altosAcciones": null
+    "altosAcciones": null,
+    "rotulos": [
+      {
+        "texto": "Amarillo",
+        "px": 16
+      },
+      {
+        "texto": "Guardar",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso2-vertical-giro270-800x360-oscuro": {
     "calculo": {
@@ -746,13 +941,13 @@
       },
       "panel": {
         "x": 352,
-        "y": 62,
+        "y": 61,
         "ancho": 320,
-        "alto": 236
+        "alto": 238
       },
       "barra-avance": {
         "x": 353,
-        "y": 119,
+        "y": 118,
         "ancho": 318,
         "alto": 48
       },
@@ -763,7 +958,22 @@
         "alto": 360
       }
     },
-    "altosAcciones": null
+    "altosAcciones": null,
+    "rotulos": [
+      {
+        "texto": "Amarillo",
+        "px": 16
+      },
+      {
+        "texto": "Guardar",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso2-vertical-giro270-915x411-claro": {
     "calculo": {
@@ -795,13 +1005,13 @@
       },
       "panel": {
         "x": 423,
-        "y": 87,
+        "y": 86,
         "ancho": 320,
-        "alto": 236
+        "alto": 238
       },
       "barra-avance": {
         "x": 424,
-        "y": 145,
+        "y": 144,
         "ancho": 318,
         "alto": 48
       },
@@ -812,7 +1022,22 @@
         "alto": 411
       }
     },
-    "altosAcciones": null
+    "altosAcciones": null,
+    "rotulos": [
+      {
+        "texto": "Amarillo",
+        "px": 16
+      },
+      {
+        "texto": "Guardar",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso2-vertical-giro270-800x360-claro": {
     "calculo": {
@@ -844,13 +1069,13 @@
       },
       "panel": {
         "x": 352,
-        "y": 62,
+        "y": 61,
         "ancho": 320,
-        "alto": 236
+        "alto": 238
       },
       "barra-avance": {
         "x": 353,
-        "y": 119,
+        "y": 118,
         "ancho": 318,
         "alto": 48
       },
@@ -861,7 +1086,22 @@
         "alto": 360
       }
     },
-    "altosAcciones": null
+    "altosAcciones": null,
+    "rotulos": [
+      {
+        "texto": "Amarillo",
+        "px": 16
+      },
+      {
+        "texto": "Guardar",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro90-subtitulos-915x411-oscuro": {
     "calculo": {
@@ -926,7 +1166,22 @@
       89,
       89,
       89
-    ]
+    ],
+    "rotulos": [
+      {
+        "texto": "Guardar",
+        "px": 12
+      },
+      {
+        "texto": "Amarillo",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro90-subtitulos-800x360-oscuro": {
     "calculo": {
@@ -991,7 +1246,22 @@
       76,
       76,
       76
-    ]
+    ],
+    "rotulos": [
+      {
+        "texto": "Guardar",
+        "px": 12
+      },
+      {
+        "texto": "Amarillo",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro90-subtitulos-915x411-claro": {
     "calculo": {
@@ -1056,7 +1326,22 @@
       89,
       89,
       89
-    ]
+    ],
+    "rotulos": [
+      {
+        "texto": "Guardar",
+        "px": 12
+      },
+      {
+        "texto": "Amarillo",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro90-subtitulos-800x360-claro": {
     "calculo": {
@@ -1121,7 +1406,22 @@
       76,
       76,
       76
-    ]
+    ],
+    "rotulos": [
+      {
+        "texto": "Guardar",
+        "px": 12
+      },
+      {
+        "texto": "Amarillo",
+        "px": 12
+      }
+    ],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro90-guardada-915x411-oscuro": {
     "calculo": {
@@ -1178,7 +1478,13 @@
     "altosAcciones": [
       176,
       177
-    ]
+    ],
+    "rotulos": [],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro90-guardada-800x360-oscuro": {
     "calculo": {
@@ -1235,7 +1541,13 @@
     "altosAcciones": [
       151,
       152
-    ]
+    ],
+    "rotulos": [],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro90-guardada-915x411-claro": {
     "calculo": {
@@ -1292,7 +1604,13 @@
     "altosAcciones": [
       176,
       177
-    ]
+    ],
+    "rotulos": [],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   },
   "visor-de-lado-caso1-horizontal-giro90-guardada-800x360-claro": {
     "calculo": {
@@ -1349,6 +1667,12 @@
     "altosAcciones": [
       151,
       152
-    ]
+    ],
+    "rotulos": [],
+    "cerrar": {
+      "ancho": 48,
+      "alto": 48
+    },
+    "fondo": "rgb(34, 31, 29)"
   }
 }

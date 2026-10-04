@@ -28,6 +28,10 @@ RESUMEN
     avance bajo el video, sin barra de estado -SystemBars.hide de @capacitor/core 8, sin plugin
     nuevo-, recorte de 44 dp y los dos giros. Ver "DEFECTO 2, TERCERA VERSIÓN DEL BOCETO". Sigue
     sin programarse; va en un PR aparte, para revisar.-
+    -04-10-2026, 11:26: Claude APROBÓ el boceto COMO PISO -PR #67- con dos ajustes que hace la CUARTA
+    VERSIÓN: el visor de lado siempre oscuro, también en tema claro, y rótulos de la columna de 12 con
+    toques de 48. Ver "DEFECTO 2, CUARTA VERSIÓN DEL BOCETO -APROBADA COMO PISO-" y "VERIFICACIÓN AL
+    IMPLEMENTAR". Sigue sin programarse.-
   - DEFECTO 3 -barra de tres botones-: lista de pantallas sin borde seguro y arreglo de las cuatro
     que lo necesitan, sin tocar los rieles de leer y grabar. Prueba que fallaba hoy. El emulador
     NO sirvió para las capturas -ver EMULADOR-.
@@ -555,6 +559,10 @@ DEFECTO 2, SEGUNDA VERSIÓN DEL BOCETO -04-10-2026, 10:53; SOLO BOCETO, SIN CÓD
     panel de Subtítulos abierto y la toma guardada están descritos, no dibujados.
 
 DEFECTO 2, TERCERA VERSIÓN DEL BOCETO -04-10-2026, 11:09; SOLO BOCETO, SIN CÓDIGO-
+  -04-10-2026, 11:26: APROBADA COMO PISO por Claude con dos ajustes; la reemplaza la CUARTA VERSIÓN, más
+  abajo. Sus láminas, capturas y medidas-de-lado.json están ahora en
+  docs/pantallas/tarea89/descartado/tercera-version/ y sus herramientas son herramientas/*-descartado-3.*.
+  Vale todo salvo el tema -ahora siempre oscuro- y los rótulos y toques -ahora 12 y 48-.-
   Respuestas de Javier y Claude sobre la segunda. Detalle completo en
   docs/pantallas/tarea89/medidas-implementacion.md, "Tercera versión".
   LÁMINAS -docs/pantallas/tarea89/-: lamina-visor-de-lado-resumen.png -para aprobar- y 24 láminas
@@ -587,6 +595,57 @@ DEFECTO 2, TERCERA VERSIÓN DEL BOCETO -04-10-2026, 11:09; SOLO BOCETO, SIN CÓD
     videoHeight vengan girados; la columna -178/153- es más ancha que el riel de 124 porque el video
     está limitado por el alto; la franja del recorte va vacía, con el fondo vecino; la barra de
     navegación sigue visible, a propósito.
+
+DEFECTO 2, CUARTA VERSIÓN DEL BOCETO -APROBADA COMO PISO, Claude, 04-10-2026, 11:26; SIN CÓDIGO-
+  Detalle en docs/pantallas/tarea89/medidas-implementacion.md, "Cuarta versión". Mismas 24 láminas y
+  la resumen, lamina-visor-de-lado-resumen.png; "claro" quiere decir la APP en claro: el visor sale
+  oscuro igual.
+  SIEMPRE OSCURO: el visor entero dentro de un data-tema="oscuro" -el selector de src/styles.css:109 no
+    exige :root-. Tokens: --bg-suelo #151312 :110, --bg-fila #1E1B19 :111, --bg-superficie #221F1D
+    :112, --bg-panel #2D2927 :113, --color-separador #4B4643 :115, --borde-tarjeta :118,
+    --color-apagado #CAC5C2 :120, --color-texto #E7E1DE :121. La columna del caso 1 y la tarjeta del
+    caso 2, --bg-superficie; el fondo del caso 2, --bg-suelo; el panel de Subtítulos, --bg-panel. De
+    pie, el visor sigue al tema como hoy.
+    LO DE AFUERA QUE CAMBIA CON EL TEMA: App.tsx:314-319 pone SystemBarsStyle.Light con la app en
+    claro, y los íconos de la barra de tres botones saldrían oscuros sobre el visor oscuro. Al
+    implementar: SystemBars.setStyle({ style: SystemBarsStyle.Dark }) mientras el visor de lado está
+    abierto, como en la lectura, y al cerrar el estilo del tema. Nada más de la app queda a la vista.
+  RÓTULOS Y TOQUES: "Guardar" y el estilo elegido pasan de --texto-etiqueta -11, styles.css:34- a 12,
+    solo dentro del visor de lado -el token no se toca-. La X pasa de 44 a 48 x 48; cada fila tiene
+    min-height 48.
+  MEDIDAS -iguales en los dos giros; la columna no cambia de ancho, la fija el video-:
+    - 915x411: columna 178 x 411; cabecera 56; filas 88, 89, 89, 89 de 177 de ancho; toma guardada
+      176 y 177.
+    - 800x360: columna 153 x 360; cabecera 56; filas 75, 76, 76, 76 de 152; toma guardada 151 y 152
+      -la tercera anotó 142: estaba mal-.
+    - Caso 2: tarjeta 320 x 238 -era 236, por la X de 48-; 128 y 85 de fondo a cada lado.
+    - Una fila con rótulo necesita ~45 -26 + 4 + 15-: cabe todo. Bajaría de 48 con menos de 248 de
+      alto.
+  LO QUE NO CALZÓ: 12 px son 12 sp solo con la escala de letra en 1,0 -si la WebView sigue la escala,
+    con 1,3 el rótulo mide ~16 y la fila ~49: cabe igual-; la barra de avance queda en 44 de toque,
+    como hoy -con 48, la barra pasa a 52 y el video a 641 x 359 y 548 x 308, no se dibujó-;
+    setStyle Dark es una llamada más, sin programar.
+
+VERIFICACIÓN AL IMPLEMENTAR -Claude, en el moto g86, antes de dar el visor por bueno-
+  Los registros van por anotar -src/lib/diagnostico.ts:89-, con un tipo nuevo 'visor-lado' en
+  EntradaDiagnostico -:18-, solo con el diagnóstico encendido.
+  (a) LA BARRA DE ESTADO SE VUELVE A OCULTAR DESPUÉS DE DESLIZAR DESDE ARRIBA. Deslizar con el visor
+      abierto y esperar 3 s. Registro: "visor-lado barra-estado hide t=<ms>" al llamar a hide y
+      "visor-lado insets top=<env(safe-area-inset-top)> t=<ms>" en cada resize. Esperado: top 0 → 24
+      → 0. Si no vuelve a 0, se decide entonces: systemBarsBehavior nativo o volver a llamar a hide.
+  (b) LA BARRA DE TRES BOTONES QUEDA A LA IZQUIERDA CON EL GIRO 270. Registro: "visor-lado
+      giro=<screen.orientation.angle> tipo=<type> insets l=<..> r=<..> t=<..> b=<..>" en
+      orientation change y resize. Esperado: 90 → l=44 r=48; 270 → l=48 r=44.
+  (c) videoWidth Y videoHeight LLEGAN YA GIRADOS. Con las tomas 1 a 3 -de pie- y 4 y 5 -de lado- del
+      corpus. Registro: "visor-lado video nombre=<archivo> videoWidth=<w> videoHeight=<h>
+      horizontal=<bool> miniatura=<naturalWidth>x<naturalHeight>", en el loadedmetadata de
+      ReproductorGrabacion.tsx:75-80 y en el load de la miniatura. Esperado: de pie false, de lado
+      true, y la miniatura con la misma forma.
+  (d) LOS BORDES QUE INFORMA LA WEBVIEW. Registro: "visor-lado bordes css l=<..> r=<..> t=<..> b=<..>
+      viewport=<innerWidth>x<innerHeight> dpr=<devicePixelRatio>" al abrir, al girar y después de hide
+      y show, leyendo env(safe-area-inset-*) con getComputedStyle y, si se puede, las variables de
+      injectSafeAreaCSS. Esperado: dpr 2.8125, t=0 con la barra oculta, y 44 y 48 a los costados. Si no
+      coinciden, mandan los medidos.
 
 ==============================================================================
 DEFECTO 3 - LA BARRA DE TRES BOTONES

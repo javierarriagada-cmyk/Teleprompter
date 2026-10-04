@@ -1,3 +1,15 @@
+// BOCETO DEL VISOR DE LADO, CUARTA VERSIÓN -tarea 89, defecto 2, 04-10-2026, 11:26-. Claude aprobó la
+// tercera -boceto-descartado-3.tsx- como piso, con dos ajustes que se hacen aquí:
+//   A. El visor de lado es SIEMPRE OSCURO, también con la app en tema claro, como cualquier reproductor de
+//      video de lado. Todo el visor va dentro de un data-tema="oscuro": así toma las superficies oscuras
+//      de Sigo -src/styles.css:109-133, el bloque [data-tema="oscuro"]: --bg-suelo #151312 :110,
+//      --bg-fila #1E1B19 :111, --bg-superficie #221F1D :112, --bg-panel #2D2927 :113, --color-separador
+//      #4B4643 :115, --borde-tarjeta :118, --color-apagado #CAC5C2 :120, --color-texto #E7E1DE :121- sin
+//      un token nuevo. La columna del caso 1 es --bg-superficie y el fondo del caso 2 --bg-suelo.
+//   B. Los rótulos de la columna -"Guardar", "Amarillo"- van en 12 como mínimo ---texto-etiqueta es 11,
+//      styles.css:34; se sube solo dentro del visor de lado- y todo lo que se toca en la columna mide 48
+//      como mínimo: la X pasa de 44 a 48 y cada fila de acción tiene min-height 48.
+// Lo que sigue es el comentario de la tercera versión, que vale salvo en esos dos puntos.
 // BOCETO DEL VISOR DE LADO, TERCERA VERSIÓN -tarea 89, defecto 2, 04-10-2026, 11:09-. NO es código de la
 // app: no lo importa nada de src/ y vite build no lo empaqueta. Ajusta la segunda -boceto-descartado-2.tsx-
 // con las respuestas de Javier y Claude:
@@ -30,6 +42,8 @@ const caso = q.get('caso') === '2' ? 2 : 1
 const giro = q.get('giro') === '270' ? 270 : 90
 const tema = q.get('tema') === 'claro' ? 'claro' : 'oscuro'
 const estado = q.get('estado') || 'normal'
+// El tema de la app sigue en el documento: lo de afuera del visor -nada a la vista de lado, salvo las barras
+// de Android- sería claro. El visor va siempre en oscuro -ver VisorOscuro, abajo-.
 document.documentElement.setAttribute('data-tema', tema)
 fijarIdioma('es')
 
@@ -49,6 +63,9 @@ const IN = giro === 90
 const ALTO_BARRA_AVANCE = 48
 export const RIEL_DER = 124 // styles-horizontal.css:22
 export const RIEL_IZQ_LEER = 112 // styles-horizontal.css:20
+// CUARTA VERSIÓN: zona de toque mínima y rótulo mínimo dentro del visor de lado.
+const TOQUE = 48
+const ROTULO = 12
 
 function BarraDeTresBotones() {
   const s: React.CSSProperties = { width: 16, height: 16, border: '2px solid #ddd', opacity: 0.9 }
@@ -128,7 +145,7 @@ function Caso1() {
             <div style={{ fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Larralde</div>
             <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>4:12</div>
           </div>
-          <button type="button" className="cerrar-visor" aria-label="Cerrar" style={{ position: 'static', background: 'transparent', color: 'var(--color-texto)' }}><IconoCerrar tamano={22} /></button>
+          <button type="button" className="cerrar-visor" aria-label="Cerrar" style={{ position: 'static', width: TOQUE, height: TOQUE, background: 'transparent', color: 'var(--color-texto)' }}><IconoCerrar tamano={22} /></button>
         </div>
         {/* Las acciones en una columna, una por fila, a todo el ancho: Guardar, Subtítulos, Repetir y
             Borrar recién grabada; Compartir y Borrar ya guardada -como hoy: solo el símbolo y sin selector-. */}
@@ -151,7 +168,7 @@ function Caso1() {
       <style>{`
         .columna-acciones { margin-top: 0; }
         /* Las filas se reparten el alto de la columna: sin hueco entre el nombre y las acciones. */
-        .columna-acciones > .accion-toma, .columna-acciones > .columna-subtitulos { flex: 1 1 0; min-height: 0; box-sizing: border-box; padding: 0; justify-content: center; }
+        .columna-acciones > .accion-toma, .columna-acciones > .columna-subtitulos { flex: 1 1 0; min-height: ${TOQUE}px; box-sizing: border-box; padding: 0; justify-content: center; }
         .columna-subtitulos { display: flex; } .columna-subtitulos .selector-subtitulos { flex: 1; }
         .columna-subtitulos button.boton-subtitulos { height: 100%; justify-content: center !important; }
         .columna-acciones > .accion-toma + .accion-toma, .columna-acciones > * + * { border-top: 1px solid var(--color-separador); }
@@ -164,6 +181,8 @@ function Caso1() {
         .columna-subtitulos button.boton-subtitulos > svg:first-child { width: 26px; height: 26px; }
         .columna-subtitulos .boton-subtitulos-nombre, .columna-subtitulos .boton-subtitulos-flecha { display: none; }
         .columna-subtitulos .boton-subtitulos-valor { flex: none; text-align: center; color: var(--color-texto); }
+        /* CUARTA VERSIÓN: los rótulos de la columna en ${ROTULO} como mínimo -era --texto-etiqueta, 11-. */
+        .columna-acciones .accion-toma, .columna-subtitulos button.boton-subtitulos { font-size: ${ROTULO}px; }
         .columna-subtitulos button.boton-subtitulos[aria-expanded="true"] { background: var(--bg-fila); }
         .columna-subtitulos .opciones-subtitulos { position: absolute; right: calc(100% + 8px); top: 0; width: 320px; box-sizing: border-box; padding: var(--aire-3); background: var(--bg-panel); border: 1px solid var(--borde-tarjeta); box-shadow: var(--sombra-tarjeta); border-radius: var(--redondeo); z-index: 5; }
         .columna-subtitulos .opciones-subtitulos::before { content: 'Subtítulos'; grid-column: 1 / -1; font-weight: 600; }
@@ -196,14 +215,15 @@ function Caso2() {
               <div style={{ fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Larralde</div>
               <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>0:19</div>
             </div>
-            <button type="button" className="cerrar-visor" aria-label="Cerrar" style={{ position: 'static', background: 'transparent', color: 'var(--color-texto)' }}><IconoCerrar tamano={22} /></button>
+            <button type="button" className="cerrar-visor" aria-label="Cerrar" style={{ position: 'static', width: TOQUE, height: TOQUE, background: 'transparent', color: 'var(--color-texto)' }}><IconoCerrar tamano={22} /></button>
           </div>
           <BarraDeAvance actual="0:04" total="0:19" avance={21} />
           <div style={{ padding: 'var(--aire-2) var(--aire-3) 0' }}>
             <SelectorSubtitulos estilo={estilo} onCambiar={setEstilo} />
           </div>
-          <div className="acciones-toma">
-            <button type="button" className="accion-toma" aria-label="Guardar en la galería"><IconoGuardar tamano={26} /><span>Guardar</span></button>
+          {/* CUARTA VERSIÓN: el rótulo de Guardar también en 12 en la tarjeta. */}
+          <div className="acciones-toma" style={{ fontSize: ROTULO }}>
+            <button type="button" className="accion-toma" aria-label="Guardar en la galería" style={{ fontSize: ROTULO }}><IconoGuardar tamano={26} /><span>Guardar</span></button>
             <button type="button" className="accion-toma" aria-label="Repetir"><IconoRepetir tamano={26} /></button>
             <button type="button" className="accion-toma" aria-label="Borrar"><IconoTacho tamano={26} strokeWidth={1.6} /></button>
           </div>
@@ -213,12 +233,15 @@ function Caso2() {
   )
 }
 
+// CUARTA VERSIÓN: el visor entero -también el recorte- dentro de data-tema="oscuro". El selector
+// [data-tema="oscuro"] de styles.css:109 no exige :root, así que vale en cualquier elemento y sus
+// hijos heredan las superficies oscuras aunque el documento esté en claro.
 createRoot(document.getElementById('root')!).render(
-  <>
+  <div data-tema="oscuro" style={{ colorScheme: 'dark' }}>
     {caso === 1 ? <Caso1 /> : <Caso2 />}
     {/* El recorte toma el fondo de lo que tiene al lado: a 90 el video -negro- y la barra de avance, a 270 la
         columna. */}
     <Recorte fondo={caso === 2 ? 'var(--bg-suelo)' : giro === 90 ? `linear-gradient(#000 0 ${H - ALTO_BARRA_AVANCE}px, var(--bg-superficie) ${H - ALTO_BARRA_AVANCE}px)` : 'var(--bg-superficie)'} />
     <BarraDeTresBotones />
-  </>
+  </div>
 )
