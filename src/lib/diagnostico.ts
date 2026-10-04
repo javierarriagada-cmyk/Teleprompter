@@ -67,10 +67,38 @@ let t0 = 0
 // renglones- mira esto para volver a anotarse si el registro empezo despues.
 let generacion = 0
 
+// LO QUE PASA ENTRE DOS TOMAS -tarea 89, 04-10-2026-. Parar reinicia el seguidor DESPUÉS de cortar la
+// toma -App.tsx, handleStop-: para entonces el registro de esa toma ya está escrito y el diagnóstico
+// volvió a como estaba antes -apagado, si no se abrieron las herramientas; tomaVideo.ts-. anotar no
+// guardaba nada, y la toma siguiente empezaba con las entradas vacías: la línea 'seguidor reiniciado'
+// no llegaba a ningún registro aunque el reinicio sí ocurría. Con las herramientas abiertas pasaba lo
+// mismo por otro lado: la línea entraba en memoria, pero la toma siguiente la borraba al encender.
+// anotarParaLaProxima anota como siempre y, si el diagnóstico está apagado, deja la línea esperando.
+// Al encender el registro van primero, con ms=0 -pasaron antes de ese cero, entre la toma anterior y
+// esta-, las que esperaban y, si ya estaba encendido, las mismas líneas que se anotaron en memoria
+// desde la última vez que se encendió. Después se olvidan: cada reinicio sale una vez, en el
+// registro de la toma que parte limpia por él.
+const MAX_PARA_LA_PROXIMA = 20
+let paraLaProxima: EntradaDiagnostico[] = []
+const esParaLaProxima = (e: EntradaDiagnostico) => e.tipo === 'seguidor' && e.evento === 'reiniciado'
+
+export function anotarParaLaProxima(e: SinMs<EntradaDiagnostico>) {
+  if (activo) {
+    anotar(e)
+    return
+  }
+  if (paraLaProxima.length >= MAX_PARA_LA_PROXIMA) paraLaProxima.shift()
+  paraLaProxima.push({ ...e, ms: 0 } as EntradaDiagnostico)
+}
+
 export function activarDiagnostico(valor: boolean) {
+  const yaEncendido = activo
   activo = valor
   if (valor) {
-    entradas = []
+    // -04-10-2026- Antes: entradas = []. Ahora parte con lo que quedó de entre tomas -ver arriba-.
+    const enMemoria = yaEncendido ? entradas.filter(esParaLaProxima).map((e) => ({ ...e, ms: 0 })) : []
+    entradas = [...paraLaProxima, ...enMemoria].slice(-MAX_PARA_LA_PROXIMA)
+    paraLaProxima = []
     t0 = performance.now()
     generacion++
   }

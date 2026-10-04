@@ -5,7 +5,7 @@ import { crearRegistro, RegistroDeLectura } from '../lib/registro'
 import { EventoFinal } from '../motor/MotorDeVoz'
 import { Guion } from '../datos/modelo'
 import { Conduccion, procesarFinal, procesarParcial, reiniciarToma } from '../lib/conduccion'
-import { anotar } from '../lib/diagnostico'
+import { anotar, anotarParaLaProxima } from '../lib/diagnostico'
 
 export function useSeguidor(guionEntrada: Guion | string) {
   const [posicion, setPosicion] = useState<Posicion>({ bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
@@ -155,7 +155,10 @@ export function useSeguidor(guionEntrada: Guion | string) {
     if (!seg || !motor || tokens.length === 0) return
     const destino = reiniciarToma({ seguidor: seg, motor, tokens }, token)
     if (registroRef.current) registroRef.current.limpiar()
-    anotar({ tipo: 'seguidor', evento: 'reiniciado', token: destino })
+    // -04-10-2026- Antes: anotar(...). Al Parar esto corre con el registro de la toma ya escrito y el
+    // diagnóstico apagado: la línea se perdía. anotarParaLaProxima la deja también para el registro
+    // siguiente -diagnostico.ts-.
+    anotarParaLaProxima({ tipo: 'seguidor', evento: 'reiniciado', token: destino })
     const t = tokens[destino]
     bloqueConfirmadoRef.current = t.bloque
     setPosicion({ bloque: t.bloque, linea: t.linea, palabra: t.indiceEnLinea, desdeToken: destino, hastaToken: destino, movio: destino > 0 })
