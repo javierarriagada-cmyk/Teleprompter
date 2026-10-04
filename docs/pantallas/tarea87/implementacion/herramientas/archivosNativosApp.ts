@@ -4,6 +4,8 @@
 //   ?subs=si           leerTexto devuelve el registro de palabras de la toma del corpus 008a7133;
 //   ?guardar=colgado   el guardado no termina y avisa un avance de 37 % -estado 7-;
 //   ?compartir=falla   el guardado sale bien y compartir falla -estado 8-.
+// También lo usa, servida por el mismo vite, la página de la tarea 90 -docs/pantallas/tarea90/
+// herramientas/app-real.html- para las capturas del visor de lado con el subtítulo a 1/6.
 // NO es código de la app: solo lo usa vite.app.config.mjs.
 import registro from '../../../../../src/pruebas/corpus/toma-008a7133-palabras.motor.txt?raw'
 
@@ -40,8 +42,8 @@ export async function guardarEnGaleriaConSubtitulos(_r: string, _s: unknown, _e:
   return guardado(alAvanzar)
 }
 export async function exportarAGaleria(): Promise<{ ok: boolean; uri?: string }> { return guardado() }
-export async function tieneExportarToma(): Promise<boolean> { return true }
-export function olvidarCapacidades(): void {}
+// -04-10-2026, Javier simplifica la 87- Sin tieneExportarToma ni olvidarCapacidades: se sacaron de
+// src/lib/archivosNativos.ts con "Normal / Para redes".
 export async function medirToma(): Promise<FormaDeToma> { return {} }
 export async function anotarMedicion(_l: string): Promise<boolean> { return false }
 export async function equipoMedicion(): Promise<null> { return null }

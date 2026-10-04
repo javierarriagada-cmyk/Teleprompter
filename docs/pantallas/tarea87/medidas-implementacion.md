@@ -235,21 +235,55 @@ Las acciones no se mueven: siguen pegadas a la barra de abajo. Lo que pierde los
 
 | Estado | Tres botones: app · piso (boceto con 45) · boceto aprobado (24) | Gestos (24 supuestos): app · piso · aprobado |
 |---|---|---|
-| 1 y 4 · panel cerrado | **546** · 546 · 567 | **570** · 570 · 591 |
-| 2 y 3 · panel abierto | **416** · 364 · 385 (+52 por el nombre escondido) | **440** · 388 · 409 (+52) |
+| 1 · panel cerrado | **546** · 546 · 567 | **570** · 570 · 591 |
+| 2 · panel abierto, sin Posición | **522** · 364 · 385 (+158: el nombre escondido y sin Posición) | **546** · 388 · 409 (+158) |
 | 5 · horizontal | 209 · 209 · 209 | 209 · 209 · 209 |
 | 6 · sin subtítulos | 598 · 598 · 619 | 622 · 622 · 641 |
 | 7 · guardando, 5 min | 546 · 546 · 567 | 570 · 570 · 591 |
 | 8 y 9 · guardada | 603 · 603 · 624 | 627 · 627 · 641 |
-| 10 · tiempo estimado, 5 min | 528 · 528 · 549 | 552 · 552 · 573 |
+
+Los estados 3 y 4 (Para redes) y 10 (tiempo estimado) **se sacaron** (04-10-2026, Javier simplifica
+la 87). Antes de sacar Posición, con el panel abierto: **416** con tres botones y **440** con gestos.
+Sin Posición el panel se achica: pierde el segmentado de 40 dp y la línea de ayuda, y el video crece
+106 dp, a **522** y **546**. Con el panel cerrado no cambia nada: 546 y 570.
 
 Fila de acciones: 777–846 con tres botones y 801–870 con gestos, con el límite en 867 y 891. Quedan
-completas sobre la barra en los 40 casos, y no se desplaza ni la raíz ni lo de arriba.
+completas sobre la barra en los 28 casos que quedan, y no se desplaza ni la raíz ni lo de arriba.
+
+### El subtítulo a 1/6 (antes 1/8)
+
+Una sola posición: el borde de abajo de la caja del subtítulo a 1/6 del alto de la imagen. Vale en
+vertical y en horizontal, de pie y de lado, en el visor y en el archivo. Hay una constante por lado:
+
+- `MARGEN_ABAJO_SUBTITULOS` en `src/lib/subtitulos.ts`, para el visor;
+- `UbicacionSubtitulos.MARGEN_ABAJO` en Java, para el archivo.
+
+Medido en las capturas:
+
+- de pie, 91 dp sobre una imagen de 546 (95 sobre 570 con gestos);
+- con el panel abierto, 87 sobre 522;
+- horizontal, 34,8 sobre 209;
+- de lado, caso 1: 59,8 sobre 358,9 (915×411);
+- de lado, caso 2: 68,4 sobre 410,7.
+
+Son las 24 capturas con subtítulo y ninguna queda fuera por más de 1 dp. En el archivo: 320 px en
+1920 y 180 en 1080 (`RecetaExportacionTest`).
+
+### De lado (mezcla con la tarea 90, main 900a982)
+
+A 915×411, giro 90, el visor de lado es el de la 90 y no tiene la fila fija de abajo de la 87 (A4
+aplica solo de pie):
+
+- caso 1: video de 638×359 y columna de 130 (la del 70 %);
+- caso 2: video de 231×411 y tarjeta de 320×250, que pasa a 320×326 con el panel abierto.
+
+El panel de Subtítulos de lado no tiene Posición. La lámina es `implementacion/comparar-visor-lado.png`
+y tiene tres columnas: el boceto aprobado de la 90, la app de main (a 1/8) y esta rama (a 1/6).
 
 Ninguna medida queda bajo el piso. `laminas.cjs` lo comprueba caso por caso:
 
 - acciones de 69 (64 con dos), letra 11;
-- segmentado de 40, letra 13;
+- segmentado de 40, letra 13 (era el de Posición; se sacó);
 - estilos de 68;
 - avance y cerrar de 44;
 - meta de 13.
@@ -258,13 +292,14 @@ Con el panel abierto hay una sola línea de meta, porque el nombre está escondi
 
 Comparado con el boceto **aprobado** (24 dp), el video mide 21 dp menos con el panel cerrado (14 a 21
 con gestos, donde el tope de 70vh ya lo cortaba). Es la barra de estado real, no un cambio de diseño.
-Con el panel abierto mide 31 más.
+Con el panel abierto mide 137 más (antes de sacar Posición, 31).
 
 ### Las láminas
 
 Están en `implementacion/`:
 
-- `lamina-resumen.png`: la primera que se mira.
+- `lamina-resumen.png`: la primera que se mira. Al final tiene el visor de lado.
+- `comparar-visor-lado.png`: de lado, a 915×411, en el caso 1 y el caso 2, con el panel cerrado y abierto.
 - `comparar-visor-{botones,gestos}-{oscuro,claro}.png`: al lado de cada `boceto-visor-…png`, con
   tres columnas por estado: el aprobado, el boceto con 45 (el piso) y la app.
 - Las sueltas `app-estado-N-…png` y `boceto45-estado-N-…png`.
@@ -273,9 +308,11 @@ Están en `implementacion/`:
 Para rehacerlas:
 
 1. El vite de la app en 5183, desde esta rama.
-2. El del boceto en 5184, desde un worktree de main con `docs/pantallas/tarea87/herramientas`
-   copiado, para que use el `ReproductorGrabacion` aprobado.
-3. `node implementacion/herramientas/capturas.cjs`.
+2. Antes, el del boceto en 5184, desde un worktree de main con `docs/pantallas/tarea87/herramientas`
+   copiado. Ya no hace falta: el boceto no se vuelve a capturar y sus medidas quedan en
+   `medidas-app.json`. De lado se usa la página de la 90 (`docs/pantallas/tarea90/herramientas/
+   app-real.html`), servida por el mismo vite de 5183.
+3. `sh herramientas/videos.sh` y `node implementacion/herramientas/capturas.cjs`.
 4. `node implementacion/herramientas/laminas.cjs`.
 
 ### Lo que no está medido (lo mira Claude en el moto g86)
@@ -285,7 +322,12 @@ Para rehacerlas:
 - **La forma de 480p:** `evento=forma`.
 - **Vista previa 4:3 contra 16:9:** `evento=camara`.
 - **El 1920×1080 con rotación 90/270:** `evento=orientacion` (`vista=vertical`).
-- **Tiempo estimado contra el real:** `evento=tiempo_guardado`.
-- **Para redes en el archivo:** `pintado_abajo_px` de `evento=capa` con `margen=0.350`.
+- **La posición de abajo del subtítulo en el archivo:** `caja_abajo_px` de `evento=capa`, en px.
+  Se espera en alto/6: 320 en 1920 y 180 en 1080, con `guardado_inicio … margen=0.167`.
+  `pintado_abajo_px` queda algo menor, por el contorno.
+- **El subtítulo en el visor:** de pie, `subtitulo_abajo_dp` ≈ `imagen_alto_dp` / 6 en `evento=visor`.
+  De lado, con una captura del caso 1 y del caso 2.
+- Antes: tiempo estimado contra el real (`evento=tiempo_guardado`) y Para redes en el archivo
+  (`margen=0.350`). Se sacaron los dos.
 
 Las líneas están en `docs/mediciones/tarea87/LEEME.md`.

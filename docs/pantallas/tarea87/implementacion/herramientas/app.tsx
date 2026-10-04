@@ -63,7 +63,8 @@ function BarrasDelSistema() {
 const VIDEOS = '/docs/pantallas/tarea87/herramientas/videos/'
 function tomaDe(): ResumenGrabacion {
   const horizontal = estado === 5
-  const larga = estado === 7 || estado === 10
+  // El 10 -la toma de 5 min con el tiempo estimado- se sacó el 04-10-2026. Antes: estado === 7 || estado === 10.
+  const larga = estado === 7
   const archivo = horizontal ? 'horizontal-50s' : larga ? 'vertical-5min' : 'vertical-50s'
   return grabacionNueva({
     id: `app-${estado}`,

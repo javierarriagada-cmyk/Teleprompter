@@ -862,3 +862,55 @@ boceto -#63- mezclados-
     evento=bordes, evento=visor y evento=tiempo_guardado -src/lib/medicionesTarea87.ts-; además
     guardado_inicio lleva margen=0.350 con Para redes -modo=receta-.
   - Láminas: docs/pantallas/tarea87/implementacion/ -lamina-resumen.png primero-.
+
+SIMPLIFICACIÓN -04-10-2026, pedido de Javier, en el mismo PR #71-
+  Lo que se sacó, entero, con sus registros y sus pruebas:
+  - La opción «Normal / Para redes»: SelectorPosicion, src/lib/posicionSubtitulos.ts, la clave
+    sigo_subtitulos_posicion y posicionGaleria, el margenAbajo de la receta, extraAbajo y la guardia
+    del 14 % en UbicacionSubtitulos.java. También el método nativo capacidades -tieneExportarToma- y
+    margen=0.350 de guardado_inicio. Las respuestas 2 de Claude -elegir Posición no cierra el panel-
+    y los estados 3 y 4 del boceto ya no aplican.
+  - El tiempo estimado: src/lib/tiempoGuardado.ts, la línea del visor, la clave tiempoEstimadoGuardado
+    y evento=tiempo_guardado. El estado 10 del boceto ya no aplica.
+  El subtítulo va en UNA posición: el borde de abajo de su caja a 1/6 del alto de la imagen -antes
+  1/8-, en vertical y en horizontal, en el visor y en el archivo. Hay una constante por lado:
+    - visor: MARGEN_ABAJO_SUBTITULOS = 1/6, en src/lib/subtitulos.ts, que usa SubtitulosVisor;
+    - archivo: UbicacionSubtitulos.MARGEN_ABAJO = 1f/6f, en Java, que usa CapaDeSubtitulos. Los dos
+      guardado_inicio -paso 0 y exportarToma- anotan margen=0.167.
+  Se queda todo lo demás: Guardar y compartir, exportar vertical, la orientación de la toma -parte C,
+  también el análisis de una toma vieja en el visor-, A4, la X que no cancela y el paso 0.
+  Una APK anterior a esta rama sigue dibujando el archivo a 1/8.
+  Cifras -vite + Chrome, 412×915, barra de estado de 45-: con el panel abierto y el nombre
+  escondido, el video mide 522 dp con tres botones y 546 con gestos. Con Posición medía 416 y 440.
+  Con el panel cerrado no cambia: 546 y 570. Ver docs/pantallas/tarea87/medidas-implementacion.md.
+
+MEZCLA CON LAS TAREAS 90 Y 91 -main 900a982: #68 visor de lado, #69 orientación fija en la toma-
+  Fue un merge de origin/main en tarea87-implementacion, sin rebase. Git no tuvo choques de texto:
+  CamaraNativaPlugin.java, App.tsx, ReproductorGrabacion.tsx y camara.ts se mezclaron solos.
+  Choques de fondo y cómo quedaron:
+  1. De pie, la tarjeta. La 87 la cambia por A4: arriba lo que puede achicarse -visor-arriba- y abajo
+     las acciones fijas. La guardiana de la 90 en tarea90.test.tsx -«de pie: la tarjeta de
+     siempre»- esperaba los hijos de antes. Se puso al día con la estructura A4, con «Antes:».
+     De lado manda la rama de la 90, que no tiene visor-arriba y conserva la columna al 70 %.
+     Prueba: mezcla-87-90-91.test.tsx, «DE PIE A4» y «DE LADO CASO 1».
+  2. El subtítulo de lado. La rama de lado de la 90 usa la misma CapaSubtitulos, así que hereda el
+     1/6. Pruebas: caso 1 -1920×1080 en 548×308- y caso 2 -1080×1920 en 203×411-. Fallan con la
+     constante en 1/8.
+  3. El panel de Subtítulos de lado: sin Posición en los dos casos.
+  4. La orientación. La 91 fija la orientación de la PANTALLA mientras dura la toma -fijarOrientacion
+     y soltarOrientacion, OrientacionDeToma.java, orientacionToma-. La 87 lee la forma del ARCHIVO
+     -anchoPx, altoPx y rotación en analizarVideo- para la toma vieja y para exportar vertical. No
+     se pisan: en el visor no hay orientación bloqueada y la toma vieja se sigue analizando. Prueba:
+     «87+91», que falla con el ReproductorGrabacion de main, que no analiza.
+  Se conserva de la 90 y de la 91: la rama de lado de ReproductorGrabacion, barrasDelSistema,
+  useBordesSeguros, los registros visor-lado, seguir reproduciendo al girar, diagnostico.ts y lo
+  nativo de la orientación.
+  Lo que no calza:
+  - De lado no hay «Guardar y compartir» ni el aviso del botón apretado de la 87. El guardar de lado
+    se desactiva mientras guarda, como en la 90, pero Repetir y Borrar no. Se dejó así para no
+    cambiar la columna aprobada de la 90; lo decide Javier.
+  - evento=bordes de la 87 mide solo env(safe-area-inset-*). La 90 usa además lo que escribe
+    Capacitor -useBordesSeguros- y anota visor-lado bordes. Hay dos registros de lo mismo.
+  - De lado no sale evento=visor de la 87: el 1/6 de lado se mira con una captura.
+  Láminas de lado: docs/pantallas/tarea87/implementacion/comparar-visor-lado.png, a 915×411, caso 1
+  y caso 2, con el subtítulo a 1/6.
