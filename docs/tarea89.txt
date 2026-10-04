@@ -15,6 +15,10 @@ RESUMEN
     sin cambio de conducta, para que Claude vea en el moto g86 lo que hoy no se ve, y pruebas
     guardianas que fijan la salida vertical de hoy -Hola y Larralde-. En la segunda vuelta los
     registros de las 5 tomas no estaban en la rama indicada: sigue detenido.
+  - ESTADO HEREDADO ENTRE TOMAS -cuarta vuelta, 04-10-2026-: Javier y Claude lo definen como
+    DEFECTO. ARREGLADO: Parar termina la toma y la siguiente parte limpia desde el principio o desde
+    donde quedó el texto en LISTO. Ver "CUARTA VUELTA" más abajo: manda sobre lo que dice la
+    tercera vuelta de que eso "no se cambió".
   - DEFECTO 2 -visor de lado-: NO SE PROGRAMÓ. Boceto en docs/pantallas/tarea89/, con la causa
     del corte con archivo:línea, en tema claro y oscuro.
   - DEFECTO 3 -barra de tres botones-: lista de pantallas sin borde seguro y arreglo de las cuatro
@@ -162,6 +166,8 @@ LO QUE NO CALZA
   - Que seguidor y motor no se reinicien entre tomas -App.tsx:906- es lo que llevó el veneno de la
     4 a la 5, y a la vez lo que hizo que la 2 siguiera donde quedó la 1. No se cambió: es una
     conducta visible -la pantalla muestra dónde quedó- y no es lo que pide este defecto.
+    -CORRECCIÓN, cuarta vuelta: Javier y Claude dicen que es un DEFECTO, no un diseño. Se arregló;
+    ver "CUARTA VUELTA".-
   - La línea 'ventana FUERA … seguidor=N' de la primera vuelta muestra seg.posicionToken(), que es
     "pos" -lo confirmado-, no la posición tentativa: en un parcial rechazado dice seguidor=0
     aunque la tentativa esté en 58. Lo que se ve ahora es 'seguidor devuelto'.
@@ -176,6 +182,8 @@ QUÉ MIRA CLAUDE EN EL MOTO G86 -APK /workspace/apk/Sigo-tarea89.apk, diagnósti
   4. Las 'cuadro' tienen que salir de pos=0.00 en las dos de lado, como en las de pie.
   5. Una toma de lado justo después de otra: la primera 'cuadro' dice dónde quedó la anterior; el
      texto debe seguir desde ahí -como la 2 de pie-, no quedar en "calce=1 freno=sin-calce".
+     -CORRECCIÓN, cuarta vuelta: ya NO debe seguir desde ahí. Ver "QUÉ MIRA CLAUDE, CUARTA
+     VUELTA" abajo.-
 
 ==============================================================================
 DEFECTO 1 - SEGUIMIENTO DE LADO -primera y segunda vuelta, se deja como historia-
@@ -329,6 +337,138 @@ PRUEBAS -src/pruebas/tarea89.test.tsx-
     diseño vertical. Se queda, y la de Larralde es la guardiana con el guion de las tomas.
 
 ==============================================================================
+CUARTA VUELTA -04-10-2026, 10:09-: EL ESTADO HEREDADO ENTRE TOMAS ES UN DEFECTO
+==============================================================================
+LO QUE PIDEN JAVIER Y CLAUDE
+  - Pausa → Seguir continúa donde quedó, como antes -no cambia-.
+  - Parar termina la toma. La siguiente lectura o grabación parte desde el principio del guion, o
+    desde donde quedó el texto en LISTO si el usuario lo movió antes de Empezar. Sin calces,
+    frenos, seguidor, motor ni reloj de la toma anterior.
+
+CAUSA -citas contra 71166e5-
+  - El seguidor y el motor viven en useSeguidor -src/hooks/useSeguidor.ts:21-69- y solo se crean
+    de nuevo cuando cambia el OBJETO guion -dependencia [guionEntrada], :69-. Nada más los crea o
+    los reinicia.
+  - reiniciar() existe -useSeguidor.ts:141-147- y nadie lo llama: App.tsx:809-819 ni siquiera lo
+    toma. El comentario de App.tsx:1374-1376 dice que el reinicio "es reiniciar() de useSeguidor más
+    clear() de useASR" para cuando se haga.
+  - Ninguna salida de la toma reinicia nada: handleStop -App.tsx:1223-1239- corta la toma, para el
+    oído y la grabación y pone setEstadoToma('listo') -:1233-; handleDescartarToma -:1186-1206- lo
+    mismo y borra; handleEmpezarDesdeListo -:1026- y handleStart -:906- arrancan sobre lo que haya.
+    Repetir del visor -App.tsx:1993-1996- va derecho a handleEmpezarDesdeListo.
+  - LO QUE SOBREVIVE A PARAR:
+    · Seguidor -seguidor.ts:227-232-: pos, posTentativa, fallosSeguidos, ultimoParcial,
+      pendientes y fallosParcialesSeguidos. Ojo: seguidor.reiniciar() -:500-506- NO limpia
+      fallosParcialesSeguidos; irAToken -:490-498- sí.
+    · Motor -avance.ts, lo que limpia reiniciar() en :444-458-: ppmEstimadas -la velocidad medida
+      en la toma anterior, :80-, muestrasVelocidad, ultimaConfirmada -el último calce-,
+      anclaTentativa, fallosFinalesSeguidos -el freno BUSCANDO-, tUltimoCalce -el reloj-, hayVoz y
+      tUltimaVozTrue -la voz queda "encendida": por eso la toma heredada empieza en
+      freno=sin-calce y la nueva en freno=silencio-, posicionMostrada, vActual,
+      palabrasConfirmadasDesdeArranque y arranqueCumplido.
+    · Más el registro de useSeguidor y la posición en React.
+  - MOVER EL TEXTO EN LISTO usaba el mismo irAToken que el arrastre leyendo -App.tsx:1874,
+    useSeguidor.ts:126-139-: pone seguidor y motor en el renglón, pero deja las ppm de la toma
+    anterior, y motor.irAToken(destino, performance.now()) -useSeguidor.ts:134, avance.ts:437- pone
+    el reloj del último calce en la HORA DEL GESTO. Desde ahí el seguidor predice ppm/60 tokens por
+    segundo -calcularPosPredicha, seguidor.ts:250-258- hasta que se empiece: otro reloj heredado.
+
+LOS REGISTROS -primera 'cuadro' de cada toma; 'creado' de los .json pasado a hora de Chile; el fin
+  es 'creado' más el último ms del registro-
+  toma  empieza              fin de la anterior  hueco  primera 'cuadro'
+  1     00:10:14 -1080p-     -                   -      nueva
+  2     00:10:50 -720p-      00:10:29            21 s   pos=25.87 calce=25 freno=sin-calce  HEREDADA
+  3     00:11:35 -480p-      00:11:08            27 s   pos=0.00 calce=0 freno=silencio     NUEVA
+  4     00:13:58 -de lado-   00:11:51            128 s  pos=0.00 calce=0 freno=silencio     NUEVA
+  5     00:15:27 -de lado-   00:14:18            69 s   pos=0.00 calce=1 freno=sin-calce    HEREDADA
+  - La 2 empieza EXACTAMENTE donde termina la 1 repetida por la conducción: pos=25.874,
+    ultimoCalce=25, freno sin-calce, 131 ppm. La 5 empieza donde se quedó trabada la 4 de la APK
+    vieja -calce=1-.
+  - POR QUÉ A VECES SE REINICIABA: solo se reinicia si cambia el objeto guion, y eso pasa al abrir
+    el guion otra vez desde la biblioteca -handleLeerDirecto y handleGrabarDirecto,
+    App.tsx:1083-1105, repoRef.current.abrir da un objeto nuevo-, al guardar desde el editor
+    -App.tsx:1567- o al archivar -:732-. No es el tiempo -la 5 heredó tras 69 s y la 3 empezó
+    limpia tras 27 s- ni la calidad -de la 1 a la 2 cambió 1080p→720p y heredó-. Lo más probable:
+    entre la 2 y la 3 y entre la 3 y la 4 -ahí además giró el teléfono- Javier volvió a la
+    biblioteca y entró otra vez por Grabar. La firma de un motor nuevo es freno=silencio en la
+    primera 'cuadro' -hayVoz en false-; la de uno heredado, freno=sin-calce. NO SE PUEDE
+    CONFIRMAR: la APK de esos registros -paso 0 de la 87- no anotaba 'seguidor creado'. La de esta
+    rama sí.
+
+ARREGLO -en la rama, commit c341f12-
+  - UN SOLO PUNTO DE REINICIO: reiniciarToma -src/lib/conduccion.ts, al final-. seguidor.irAToken
+    -limpia todo el seguidor, también fallosParcialesSeguidos-, motor.reiniciar() -ppm iniciales,
+    sin voz, sin calce, sin freno, sin reloj- y, si el destino no es 0, motor.irAToken(destino, 0):
+    con el reloj en 0 no hay deriva -calcularPosPredicha mira tUltimoCalce > 0-.
+  - useSeguidor.reiniciarEn(token): llama a reiniciarToma, limpia el registro, mueve la posición y
+    anota 'seguidor reiniciado token=N' -evento nuevo en diagnostico.ts, con su comentario-.
+  - App: reiniciarEn(0) al Parar -handleStop- y al Descartar -handleDescartarToma, que es parar y
+    borrar-. Como el lazo de TeleprompterView también corre en LISTO, el texto vuelve deslizándose
+    al principio. Salir de Leer y el corte por ir al fondo pasan por handleStop.
+  - LA POSICIÓN DE LISTO: onNavegacionManual={estadoToma === 'listo' ? reiniciarEn : irAToken}. En
+    LISTO mover el texto ES elegir desde dónde parte la toma: seguidor y motor como nuevos en ese
+    renglón, sin el reloj del gesto. Leyendo, el arrastre sigue siendo irAToken, como siempre. Es
+    la misma función de reinicio, no un segundo reinicio: Parar pone 0, LISTO lo cambia si el
+    usuario mueve el texto, Empezar arranca sobre eso.
+  - Pausa → Seguir -handleTogglePausa- no se tocó.
+  - clear() de useASR no hace falta: solo vacía el texto oído que se muestra, no lo que sigue el
+    seguidor. reiniciar() viejo se deja -sin uso- con un comentario.
+
+PRUEBAS -src/pruebas/tarea89-tomas.test.tsx, nuevo-
+  Un guion de seis renglones de diez palabras sin repetir: el renglón k termina en el token 10k+9.
+  En la App -con MotorFake, Leer-:
+  (a) "tras Parar, la toma nueva parte del principio": lee los seis renglones, Para, Empieza y dice
+      el renglón 1. FALLA SIN EL ARREGLO: 'NO CALZO' -el seguidor sigue en 59 y busca desde 44-.
+      Con el arreglo: 'token 9'.
+  (a) "Parar deja anotado el reinicio en 0": FALLA SIN EL ARREGLO -no hay línea-.
+  (b) "Pausa → Seguir sigue donde quedó": renglones 1 a 3, Pausa, Seguir, renglón 4 → token 39, sin
+      'reiniciado' ni 'creado'. PASA HOY Y CON EL ARREGLO: es una guardiana, la conducta ya estaba
+      bien.
+  (c) "si el texto se movió en LISTO, la toma parte desde ahí": tras una toma y Parar, la rueda
+      mueve el texto en LISTO al renglón 4 -en jsdom cada renglón se finge a 1000 px- y Empezar:
+      el renglón 4 calza en 39. Esa parte PASA HOY -irAToken ya ponía al seguidor en 30-. Lo que
+      FALLA SIN EL ARREGLO es la línea 'seguidor reiniciado token=30'.
+  En useSeguidor -lo que la App no deja ver-:
+  (a) reiniciarEn(0) tras una toma: motor en 0, último calce 0, reloj 0, ppm y freno de un motor
+      nuevo, y el renglón 1 vuelve a calzar en 9.
+  (c) reiniciarEn(30) tras una toma: motor en 30, reloj 0, ppm iniciales, renglón 4 en 39.
+      Las dos FALLAN SIN EL ARREGLO -reiniciarEn no existe-. Lo que hacía hoy irAToken, medido con
+      la toma 1 de Larralde: ppm 131,15 heredadas y tUltimoCalce = hora del gesto; con
+      reiniciarToma, 150 y 0.
+  Las fallas se vieron con git stash de App.tsx, useSeguidor.ts, conduccion.ts y diagnostico.ts:
+  5 fallan, 1 pasa -(b)-.
+
+PRUEBAS AJUSTADAS -tarea89.test.tsx; los comentarios viejos se dejan, con CORRECCIÓN y AJUSTADA-
+  - "toma 1 nueva, y la 2 seguida sobre lo que dejó la 1" → "toma 1 nueva; Parar; y la 2 parte
+    limpia, igual que sola". Esperaba [26, 26, 26, 27, 40, 46, 51, 57, 60, 61] -la 2 partiendo en
+    26, heredado-. Ahora pasa por reiniciarToma entre las dos y espera
+    [0, 0, 0, 0, 14, 39, 51, 57, 60, 61], y que sea igual a la 2 sola.
+  - "toma 5 seguida sobre la 4: no queda trabada en 0" → "toma 5 después de Parar la 4: parte
+    limpia en 0, igual que sola". La vieja pasaba SOLO por la herencia: la 5 quedaba quieta en el
+    31 que dejó la 4 -[31, 31, 31, 31, 31, 31, 31]-. Ahora: tras reiniciarToma el motor está en 0,
+    con último calce 0 y reloj 0, y la 5 da lo mismo que sola -[0, 0, 0, 0, 0, 0, 0]-. Que la 5 sola
+    no avance en sus 12 s ya estaba en "lo que no calza": el oído entregó "sí por dentro las por
+    dentro la ral de".
+  - LAS GUARDIANAS DE PIE NO CAMBIARON: toma 1 [0, 1, 2, 2, 12, 17, 21, 25, 26], toma 3
+    [0, 0, 5, 6, 14, 20, 26, 30, 31], Hola a5bc922c y Larralde 2026-09-13-1148. Tampoco la de la
+    toma 4 sola.
+
+QUÉ MIRA CLAUDE, CUARTA VUELTA -moto g86, APK /workspace/apk/Sigo-tarea89.apk de las 10:25,
+diagnóstico encendido-
+  1. Grabar una toma de pie con Larralde, Parar, y en el visor Repetir -o cerrarlo y Empezar-. La
+     primera 'cuadro' de la segunda toma tiene que decir pos=0.00 calce=0 freno=silencio, no
+     "pos=25.87 calce=25 freno=sin-calce" como la 2 de Javier. Al Parar la primera, el texto vuelve
+     solo al título en LISTO.
+  2. En el registro de la primera toma, al final, 'seguidor reiniciado token=0'.
+  3. Lo mismo de lado: dos tomas seguidas, las dos empiezan en pos=0.00 calce=0 y siguen el título.
+  4. En LISTO, mover el texto con el dedo a un párrafo y Empezar: 'seguidor reiniciado token=N' con
+     N el primer token de ese renglón, la primera 'cuadro' en pos=N.00, y leyendo ese párrafo el
+     texto sigue desde ahí.
+  5. Pausa a mitad de un párrafo y Seguir: el texto sigue desde ahí, sin 'seguidor reiniciado'.
+  6. Que no aparezca 'seguidor creado' entre tomas sin haber salido a la biblioteca -si aparece,
+     hay otro camino que cambia el guion-.
+
+==============================================================================
 DEFECTO 2 - VISOR DE LADO -SOLO BOCETO-
 ==============================================================================
 CAUSA: src/components/ReproductorGrabacion.tsx:168 -la raíz: position fixed, inset 0, flex
@@ -435,6 +575,8 @@ PASOS PARA JAVIER, EN EL MOTO G86
 RESULTADOS
 ==============================================================================
   - npx vitest run: 57 archivos, 440 pruebas, todas pasan -tercera vuelta-.
+  - CUARTA VUELTA: npx vitest run 58 archivos, 446 pruebas, todas pasan; tsc sin errores; build
+    bien; npm run apk BUILD SUCCESSFUL, /workspace/apk/Sigo-tarea89.apk de las 10:25.
   - npx tsc --noEmit: sin errores.
   - npm run build -vite build-: bien.
   - npm run apk: bien -BUILD SUCCESSFUL-. Copia en /workspace/apk/Sigo-tarea89.apk.
