@@ -1,0 +1,257 @@
+TAREA 89 - TRES DEFECTOS: SEGUIMIENTO DE LADO, VISOR DE LADO -BOCETO- Y BARRA DE TRES BOTONES
+Encargo de Javier y Claude, 04-10-2026. Lo hizo el bot de Grok. Punto de partida: main
+ACTUALIZADO, commit 71166e5. Rama tarea89-tres-defectos. Citas archivo:línea contra 71166e5
+salvo que diga "en la rama". Lo que no calzó se DESCRIBE abajo, no se improvisó.
+
+==============================================================================
+RESUMEN
+==============================================================================
+  - DEFECTO 1 -seguimiento de lado-: NO HAY ARREGLO DE CONDUCCIÓN, y es a propósito. La regla
+    del encargo: "si de verdad necesitas los registros completos de las 5 tomas para concluir,
+    DETENTE". Se necesitan -ver más abajo por qué-. Lo que SÍ se hizo: líneas de registro nuevas,
+    sin cambio de conducta, para que Claude vea en el moto g86 lo que hoy no se ve, y una prueba
+    guardiana que fija la salida vertical de hoy.
+  - DEFECTO 2 -visor de lado-: NO SE PROGRAMÓ. Boceto en docs/pantallas/tarea89/, con la causa
+    del corte con archivo:línea, en tema claro y oscuro.
+  - DEFECTO 3 -barra de tres botones-: lista de pantallas sin borde seguro y arreglo de las cuatro
+    que lo necesitan, sin tocar los rieles de leer y grabar. Prueba que fallaba hoy. El emulador
+    NO sirvió para las capturas -ver EMULADOR-.
+
+PULL REQUESTS ABIERTOS QUE TOCAN LOS MISMOS ARCHIVOS -revisado antes de crear la rama-:
+  - #62 -tarea 83-: src/App.tsx y src/components/TeleprompterView.tsx. Choca.
+  - #64 -tarea 87, paso 0-: src/App.tsx. Choca. -y tarea46.test.tsx, que esta tarea no toca-.
+  - #60, #61, #63, #65: solo docs. No chocan.
+  Los cambios de esta tarea en App.tsx y TeleprompterView.tsx son de pocas líneas y van junto a
+  comentarios con nombre -"# diseño", 'renglones', HERRAMIENTAS && mostrarPanelCorpus-: si
+  #62 o #64 entran antes, se buscan por nombre.
+
+==============================================================================
+DEFECTO 1 - SEGUIMIENTO DE LADO
+==============================================================================
+LO MEDIDO -del encargo-: 3 tomas de pie avanzan. 2 tomas de lado quedan en pos=0,
+freno=sin-calce, y el registro anota un calce en el token 60.
+
+QUÉ DICE EL GUION EN SUS PRIMERAS ~70 PALABRAS
+  En la caja NO están los registros de las 5 tomas. Se buscaron *.motor.txt en /workspace y en el
+  repo: los únicos son los del corpus, src/pruebas/corpus/toma-008a7133-palabras.motor.txt -otro
+  guion, "concepción trágica"- y toma-a5bc922c-salto.motor.txt, que lleva en su cabecera el guion
+  "Hola" -src/app/bienvenida.ts, bienvenidaEspanol-. Se supone que las 5 tomas son con "Hola",
+  el guion que viene puesto: ES UNA SUPOSICIÓN, no está en ningún registro de la caja.
+  "Hola" tokenizado con tokenizarGuion -lo mismo que usa useSeguidor-, con número de token y el
+  t.linea de cada párrafo:
+    0-11   l0  hola lee esto en voz alta con o sin apuro como prefieras
+    12-40  l2  ahora fíjate en el texto se está moviendo solo al ritmo en que hablas sin que
+               toques nada la línea suave bajo las palabras te muestra por dónde vas
+    41-55  l4  si te detienes a pensar el texto te espera cuando vuelves a hablar sigue contigo
+    56-79  l6  lo que escribes entre corchetes es una nota solo para ti se ve en la pantalla pero
+               no hace falta leerla en voz alta
+    80-84      [como esta: respira y sonríe] -acotación-
+  EL TOKEN 60 ES "corchetes", en el cuarto párrafo. Para llegar ahí leyendo hay que haber dicho
+  unas 60 palabras -unos 25 segundos a ritmo normal-. t.linea es el PÁRRAFO del guion -cada
+  línea del texto-, no el renglón de la pantalla: los límites de renglón del motor no dependen
+  del alto ni de tel-h, como dice el encargo.
+
+LO QUE HACE EL CÓDIGO CON UN CALCE EN EL 60 Y EL MOTOR EN 0
+  - src/lib/conduccion.ts:36 -parcial- y :66 -final- anotan 'calce' ANTES de mirar la ventana
+    :38-44 y :68-74 -de ref-10 a ref+40, ref = posición del motor-. Con el motor en 0 la ventana
+    es 0-40: el 60 cae afuera, se llama motor.falloCalce -:54 y :87- y el motor no se mueve. El
+    "calce token 60" del registro NO prueba que se aplicó.
+  - src/lib/seguidor.ts:385 y :474 -posTentativa = candPos / Math.max(posTentativa, candPos)-: el
+    seguidor guarda su propia posición AUNQUE la conducción rechace el calce. Las búsquedas que
+    siguen arrancan cerca de esa posición -:363 y :444, desde = posMinima - frase - VENTANA_ATRAS-.
+    Si el seguidor quedó en ~60 y el motor en 0, cada calce nuevo cae otra vez fuera de 0-40 y el
+    motor no sale de 0. Es un bloqueo entre los dos que hoy el registro no deja ver.
+  - src/lib/avance.ts:302-306: sin arranque o con tUltimoCalce 0 queda DETENIDO 'sin-calce', pos
+    0. Es exactamente lo medido de lado.
+  - Cómo puede el seguidor calzar lejos sin que nadie lo empuje: calcularPosPredicha
+    -seguidor.ts:250- deriva con ppm desde tUltimoCalce. motor.irAToken -avance.ts:430-442- pone
+    tUltimoCalce = ahora -:437- y a partir de ahí la predicha avanza sola unas 2,5 palabras por
+    segundo. irAToken solo se llama desde useSeguidor.ts:126-139, por onNavegacionManual
+    -App.tsx:1874-, o sea arrastrar el texto o la rueda -TeleprompterView.tsx:651-660-.
+  - El seguidor y el motor se crean de nuevo solo si cambia la identidad del guion
+    -useSeguidor.ts:21-69, dependencia [guionEntrada] en :69; App.tsx:807 y :819-. handleStart
+    -App.tsx:906- no los reinicia entre tomas.
+
+LO QUE CAMBIA ENTRE DE PIE Y DE LADO EN EL CAMINO DE LA VOZ AL MOTOR -revisado-
+  - useASR, MotorNativo, useSeguidor, conduccion, seguidor y avance: NINGUNO mira la orientación.
+  - La actividad no se reinicia al girar: AndroidManifest.xml, configChanges con orientation. No
+    hay remontaje de App ni reinicio del reconocedor por girar.
+  - useLayout escucha matchMedia 'change' y pasa a tel-h; TeleprompterView recalcula renglones y
+    geometría -recalcularGeometria, altoContenedor-. Eso mueve el DIBUJO, no los tokens: la lista
+    de tokens sale del guion.
+  - Lo que sí es distinto de lado, y pudo pesar, pero NO se puede confirmar sin el registro:
+      H1. Un toque o arrastre sobre el texto -en tel-h el texto ocupa casi toda la pantalla y se
+          sujeta el teléfono con las dos manos- que llama irAToken y deja seguidor y motor en
+          lugares distintos, o arranca la deriva de la predicha. Se ve con 'seguidor irAToken'.
+      H2. Que de lado la persona efectivamente estaba en el 60 -siguió leyendo aunque el texto no
+          se moviera-: entonces el calce era verdadero y el bloqueo es el de seguidor.ts:385/:474
+          -la posición no acompañó porque la ventana mira al motor y el motor nunca arrancó-.
+          Para eso hace falta ver qué se oyó ANTES del 60: si las primeras frases -tokens 0-40-
+          calzaron o no, y por qué no.
+      H3. Que no estaba en el 60: un calce falso -palabras repetidas: "texto", "voz alta",
+          "en"- y descartarlo estuvo bien; entonces la causa del no avance es que las primeras
+          frases de lado no calzaron, y eso es el audio/reconocedor -lo que "oyo" anota-, no la
+          conducción.
+  Distinguir H1, H2 y H3 necesita las líneas 'oyo' y 'calce' de las dos tomas de lado, desde el
+  primer segundo. Por eso:
+
+LO QUE NECESITA CLAUDE -SE DETIENE AQUÍ EL ARREGLO-
+  Una de estas dos cosas:
+    a) Los 5 <id>.motor.txt completos -3 de pie y 2 de lado-, con su cabecera -el guion tal cual
+       se leyó-. Están en el teléfono, en la carpeta de grabaciones de Sigo -la misma ruta que
+       guarda el .mp4 de cada toma-. Con decir cuáles son las dos de lado basta.
+    b) O, mejor, 2 tomas nuevas de lado y 1 de pie con la APK de esta rama
+       -/workspace/apk/Sigo-tarea89.apk- y el diagnóstico encendido. En el registro de cada toma
+       buscar:
+         # diseño: tel-h, ventana 915x411          -en la cabecera: confirma que fue de lado-
+         pantalla   tel-h 915x411                  -con qué diseño salieron los renglones-
+         seguidor   creado token=0                 -si aparece a mitad de toma, se rehizo todo-
+         seguidor   irAToken token=N               -H1: alguien movió el texto-
+         ventana    FUERA FINAL token=60 ref=0 desde=0 hasta=40 seguidor=62
+                                                   -el calce rechazado y dónde estaba el seguidor-
+       Si "seguidor=" va por delante del motor -ref- y no baja, es el bloqueo de seguidor.ts:385
+       /:474. Si hay 'irAToken' antes del primer FUERA, es H1. Si no hay ni uno ni otro y las
+       primeras líneas 'oyo' no se parecen al guion, es H3.
+  Con eso se escribe el arreglo y su prueba que falle -el mismo guion y las mismas frases, de
+  lado, mueven la posición-. Hoy esa prueba no se puede escribir con honestidad: sin saber qué
+  frases se oyeron de lado, cualquier secuencia sería inventada.
+
+LO QUE SE HIZO -sin cambio de conducta: todo anota solo con el diagnóstico encendido-
+  - src/lib/diagnostico.ts -en la rama :48-55 y en comoTexto-: tres tipos nuevos,
+    'ventana', 'seguidor' y 'pantalla', con sus líneas de texto.
+  - src/lib/conduccion.ts -en la rama :46 y :79-: si el calce cae fuera de la ventana, anota
+    'ventana FUERA parcial|FINAL token ref desde hasta seguidor'. Lo que hacía antes -anotar
+    'calce', falloCalce- sigue igual y en el mismo orden.
+  - src/hooks/useSeguidor.ts -en la rama :72 y :140-: 'seguidor creado' al crear seguidor y
+    motor, 'seguidor irAToken token=N' al mover el texto a mano.
+  - src/components/TeleprompterView.tsx -en la rama :449-452, :476 y :820-: 'pantalla tel-h|tel-v
+    ancho x alto' junto a cada 'renglones'. El diseño va en una referencia porque
+    recalcularGeometria y el lazo no se rearman al girar.
+  - src/App.tsx -en la rama :996-: '# diseño: tel-h|tel-v, ventana WxH' en la cabecera del
+    registro de la toma. scripts/medir-toma.mjs ignora las cabeceras que no conoce.
+
+PRUEBAS -src/pruebas/tarea89.test.tsx-
+  - "las tres líneas nuevas se escriben legibles", "un calce fuera de la ventana anota 'ventana
+    FUERA' y el motor no se mueve" -guion Hola, seguidor en 55, frase de los corchetes, motor
+    queda en 0-, "el arrastre que mueve seguidor y motor queda anotado", "los renglones del
+    registro llevan el diseño". LAS CUATRO FALLAN CONTRA 71166e5: verificado sacando el código
+    de la rama -git stash de src/lib, src/hooks, TeleprompterView.tsx y App.tsx- y corriendo solo
+    esta prueba: 7 fallidas de 8 -estas cuatro y las tres del defecto 3 que había entonces-. La
+    octava es la guardiana.
+  - GUARDIANA DEL VERTICAL: "toma a5bc922c -Hola, de pie-: mismas posiciones que hoy". Repite
+    la toma del corpus por la conducción y fija la posición del motor cada medio segundo:
+    [0,0,0,0,0,1,4,5,6,6,7,8,8], sacada de 71166e5. Pasa hoy y tiene que seguir pasando con el
+    arreglo que venga. OJO: que esa toma sea de pie es también una suposición -su cabecera no lo
+    dice, la línea '# diseño' es nueva-; es la única toma del corpus con el guion Hola.
+
+==============================================================================
+DEFECTO 2 - VISOR DE LADO -SOLO BOCETO-
+==============================================================================
+CAUSA: src/components/ReproductorGrabacion.tsx:168 -la raíz: position fixed, inset 0, flex
+centrado, padding var(--aire-4), SIN overflow- con la tarjeta de :170 -una sola columna,
+width min(720px, 100%)- que apila el video de :181 -maxHeight 70vh-, la barra :189-211, el
+selector de subtítulos :212-222, el nombre :223-231 y las acciones .acciones-toma :237-290. De
+lado, a 915x411, la tarjeta mide 472 dp -medido en Chrome, de -30 a 441- en 411 de alto: el
+centrado la corta arriba -la X- y abajo -Guardar, Repetir, Borrar-, y no se puede desplazar.
+
+BOCETO: docs/pantallas/tarea89/
+  - lamina-visor-de-lado-oscuro.png, lamina-visor-de-lado-claro.png -hoy | propuesta-.
+  - visor-de-lado-{hoy,propuesta}-{oscuro,claro}.png.
+  - medidas-implementacion.md -causa, medidas y piezas-.
+  - herramientas/ -boceto.html, boceto.tsx, capturas.cjs, lamina.cjs-. "hoy" es el
+    ReproductorGrabacion de verdad; "propuesta" se arma con las mismas clases e íconos.
+  Propuesta: de lado, el video a todo el alto a la izquierda y los controles a la derecha
+  -nombre con la X, barra de avance, subtítulos, y Guardar / Repetir / Borrar al pie-. De pie no
+  cambia. SIN BOCETO APROBADO NO HAY CÓDIGO.
+
+==============================================================================
+DEFECTO 3 - LA BARRA DE TRES BOTONES
+==============================================================================
+viewport-fit=cover ya está -index.html-. Con eso, todo lo que es fixed e inset 0 llega hasta
+debajo de la barra de navegación, y los botones de abajo quedan detrás de ella si no suman
+env(safe-area-inset-bottom).
+
+YA LO TIENEN -no se tocaron; los rieles de leer y grabar no se rehicieron-:
+  - App.tsx:1462 -raíz de las vistas que no son lectura- y :1759.
+  - TeleprompterView.tsx:1094 y :1483 -los rieles-.
+  - BarraEditorVacio.tsx:44, BarraLeerGrabar.tsx:52, EditorView.tsx:341-342, BarraDeTiempo.tsx:74,
+    AvisoBreve.tsx:42-45.
+  - styles.css:597 y :1813 -banda de tomas-; styles-ajustes.css:8, :16, :288 -Ajustes- y :363
+    -capa-dialogo-ajustes-; styles-horizontal.css:95, :120, :158 y :176.
+
+NO LO TENÍAN Y LO NECESITAN -arreglados-:
+  1. src/components/ReproductorGrabacion.tsx:168 -el visor: Guardar, Repetir, Borrar-. EL DEL
+     REPORTE.
+  2. src/styles-ajustes.css:369-378 -.capa-dialogo-microfono, padding 16px parejo-. La usan
+     DialogoMicrofono y DialogoPermiso.tsx:32: sus botones quedan centrados, pero en un teléfono
+     bajo o de lado se acercan a la barra.
+  3. src/App.tsx:1947-1957 -panel de corpus, solo con HERRAMIENTAS-.
+  4. src/components/BibliotecaView.tsx:969-980 -el otro panel de corpus, solo con HERRAMIENTAS-.
+
+NO LO NECESITAN -anotado, no se tocó-:
+  - Entrada.tsx:156 -la portada de arranque, no se toca nada-.
+  - styles.css:544 .franja-hora y :1899 .aviso-voz -van arriba-.
+  - EditorView.tsx:471 -la barra de formato, arriba-.
+  - styles.css:762 .capa-cajon-aa -CSS sin componente vivo, solo lo mira tarea55.test-.
+
+ARREGLO: en los cuatro, el mismo aire de siempre más el borde seguro de CADA lado -top, right,
+bottom, left-: de pie la barra va abajo, de lado va al costado. Propiedades separadas
+-paddingTop... / padding-top...- y no el atajo padding, para que jsdom las lea en la prueba.
+EN EL VISOR, ADEMÁS, DESPLAZAMIENTO. Medido en Chrome a 412x915 -de pie, ~1080x2400-: con el
+video al tope de 70vh la tarjeta mide 825 dp -de 45 a 870-, y con el selector de subtítulos
+unos 60 más. El alto útil es 915 menos la barra de estado -~24-, la de tres botones -48- y el
+aire -2 x 16-: ~811. NO CABE. Centrada y sin desplazamiento, la tarjeta se reparte por los dos
+lados y con el selector la fila de acciones vuelve a quedar bajo la barra aunque haya padding.
+Por eso la raíz va con overflowY auto y la tarjeta con margin auto -ReproductorGrabacion.tsx en
+la rama, junto al comentario "TAREA 89"-: si cabe queda centrada igual que hoy; si no, empieza
+arriba y se desplaza hasta que las acciones queden sobre la barra. Esto también toca lo de lado:
+lo cortado ahora se alcanza desplazando -captura docs/pantallas/tarea89/visor-de-lado-rama-
+desplazado-*.png-. NO es el arreglo del defecto 2 -la tarjeta sigue siendo de una columna y más
+alta que la pantalla-: ese va con su boceto. Si Javier prefiere que de lado no cambie nada hasta
+aprobar el boceto, se saca el overflowY y el margin y de pie se pierde el desplazamiento.
+Los paneles de corpus mantienen su maxHeight 90vh: si en un teléfono bajo eso pasa del alto
+menos los bordes, se recorta igual que hoy -es herramienta, no se rehizo-.
+
+PRUEBA: tarea89.test.tsx, "defecto 3": el visor con paddingTop/Right/Bottom/Left con
+env(safe-area-inset-*); el visor con overflowY auto y la tarjeta con margin auto; el bloque
+.capa-dialogo-microfono de styles-ajustes.css con env(safe-area-inset-bottom); los dos paneles de
+corpus con env(safe-area-inset-bottom). Las cuatro FALLAN contra 71166e5 y pasan en la rama -la
+del desplazamiento se escribió después, se vio fallar contra el visor con solo el padding y
+después se agregó el desplazamiento-.
+
+EMULADOR -NO CALZÓ-
+  Se creó el AVD sigo89 -system-images;android-35;google_apis;x86_64, 1080x2400, 420 dpi- en
+  ~/android-sdk y se encendió la navegación de tres botones -cmd overlay enable-exclusive
+  --category com.android.internal.systemui.navbar.threebutton: quedó [x]-. La caja no tiene KVM
+  para este usuario -/dev/kvm es del grupo 103 y el usuario no está en él-: el emulador corre por
+  software -swiftshader, -accel off-, arrancó en 1466 s y, después de cambiar la barra, el
+  Watchdog de Android mata system_server una y otra vez -"Watchdog: *** GOODBYE!",
+  DeadSystemException en launcher, systemui y gms; carga 14 dentro del emulador-. "adb install"
+  responde "Can't find service: package". NO HAY CAPTURAS ANTES/DESPUÉS DEL EMULADOR. En su
+  lugar quedan la prueba automatizada de arriba y estos pasos.
+
+PASOS PARA JAVIER, EN EL MOTO G86
+  1. Ajustes del teléfono > Sistema > Gestos > Navegación del sistema > Navegación con 3 botones.
+  2. Instalar /workspace/apk/Sigo-tarea89.apk.
+  3. De pie: grabar una toma corta. Al terminar se abre el visor: Guardar, Repetir y Borrar
+     tienen que quedar ENCIMA de la barra de tres botones, con aire, y se pueden tocar los tres.
+     Comparar con la APK de main: ahí quedan debajo.
+  4. Tocar una toma guardada en la tira: Compartir y Borrar, igual.
+  5. De lado: el visor sigue siendo más alto que la pantalla -defecto 2, falta el boceto
+     aprobado-, pero ahora se desplaza con el dedo hasta Guardar, Repetir y Borrar, y nada
+     queda detrás de la barra del costado.
+  6. Quitar el permiso de micrófono y entrar a Leer: el diálogo de permiso con sus botones
+     encima de la barra.
+
+==============================================================================
+RESULTADOS
+==============================================================================
+  - npx vitest run: 57 archivos, 434 pruebas, todas pasan.
+  - npx tsc --noEmit: sin errores.
+  - npm run build -vite build-: bien.
+  - npm run apk: bien -BUILD SUCCESSFUL-. Copia en /workspace/apk/Sigo-tarea89.apk.
+  - Reglas de la casa: ningún comentario borrado -git diff contra 71166e5: las únicas líneas
+    quitadas son los tres "padding: 'var(--aire-4)'" reemplazados y la línea de estilo de la
+    tarjeta del visor, que ganó margin y flexShrink-; comentarios nuevos con
+    tildes; sin dependencias nuevas -puppeteer-core del boceto vive en /workspace/tp-shot, fuera
+    de package.json-.
