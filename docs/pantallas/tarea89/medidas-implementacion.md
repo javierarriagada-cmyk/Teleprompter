@@ -6,6 +6,109 @@
 > herramienta quedó como `herramientas/boceto-descartado.{html,tsx}`. El texto de la primera versión
 > sigue más abajo, marcado **DESCARTADA**, sin borrar nada.
 
+> **TERCERA VERSIÓN, 04-10-2026 (11:09).** Respuestas de Javier y Claude sobre la segunda: la barra de
+> avance va bajo el video, a todo su ancho; se oculta la barra de estado con `SystemBars`, que Sigo ya
+> usa; el recorte de la cámara está medido (44 dp) y se dibujan los dos giros; se aceptan los huecos del
+> caso 2, sobre el fondo de la app y sin bordes; y se dibujan Subtítulos abierto y la toma guardada. La
+> segunda versión se movió a `descartado/segunda-version/` (láminas, capturas y `medidas-de-lado.json`);
+> sus herramientas quedaron como `herramientas/*-descartado-2.*`. Su texto sigue abajo, marcado
+> **DESCARTADA**, sin borrar nada.
+
+## Tercera versión: barra de avance bajo el video, sin barra de estado, dos giros
+
+Lámina para aprobar: **`lamina-visor-de-lado-resumen.png`**. Una lámina por captura (24):
+`lamina-visor-de-lado-caso{1-horizontal,2-vertical}-giro{90,270}[-subtitulos|-guardada]-{915x411,800x360}-{oscuro,claro}.png`
+(Subtítulos abierto y toma guardada, en el caso 1 con giro 90), con sus capturas sueltas `visor-de-lado-caso…png`
+y las cajas medidas en Chrome en `medidas-de-lado.json`. Herramientas: `herramientas/boceto.html` + `boceto.tsx`
+(`?caso=1|2&giro=90|270&estado=normal|subtitulos|guardada&tema=claro|oscuro`), `capturas-de-lado.cjs`
+(`node docs/pantallas/tarea89/herramientas/capturas-de-lado.cjs`, con un vite sirviendo el boceto) y
+`laminas-de-lado.cjs`.
+
+### La barra de estado: SystemBars de Capacitor 8 SÍ la oculta, sin plugin nuevo
+
+- Sigo ya lo usa: `@capacitor/core` 8.5.1 (`package.json:24`); `App.tsx:2` importa `SystemBars, SystemBarsStyle` y `App.tsx:314-319` llama a `SystemBars.setStyle`. `capacitor.config` no lo configura (no hace falta).
+- La API, en `node_modules/@capacitor/core/types/core-plugins.d.ts`:
+  - `:348` `show(options?: SystemBarsVisibilityOptions): Promise<void>` y `:354` `hide(options?: SystemBarsVisibilityOptions): Promise<void>`.
+  - `:304-312` `SystemBarsVisibilityOptions`: `bar?: SystemBarType` («the system bar to hide or show; if not specified, both bars will be affected») y `animation` (solo iOS).
+  - `:271-284` `SystemBarType.StatusBar = 'StatusBar'` y `SystemBarType.NavigationBar = 'NavigationBar'`.
+- El lado nativo, en `node_modules/@capacitor/android/capacitor/src/main/java/com/getcapacitor/plugin/SystemBars.java`: `show` (`:130-138`) y `hide` (`:140-148`) llaman a `setHidden` (`:302-324`), que hace `WindowInsetsControllerCompat.hide(WindowInsetsCompat.Type.statusBars())` (o `show`). Los insets que llegan al CSS se recalculan con `systemBars | displayCutout` (`calcSafeAreaInsets`, `:168-174`, e `injectSafeAreaCSS`): con la barra oculta, el borde de arriba queda en 0.
+- **La llamada propuesta (NO se programa en este boceto):**
+  - Al abrir el visor con el teléfono de lado (`useLayout() === 'tel-h'`, `App.tsx:267`): `SystemBars.hide({ bar: SystemBarType.StatusBar })`.
+  - Al cerrar el visor, o si el teléfono vuelve a quedar de pie con el visor abierto: `SystemBars.show({ bar: SystemBarType.StatusBar })`. También al desmontar, para no dejarla oculta si el visor se cierra por otro camino.
+  - **La barra de navegación (tres botones) NO se oculta:** sin ella no hay Atrás visible, y ocultarla pide decidir el gesto para recuperarla.
+- El plugin no fija `systemBarsBehavior`, así que queda el comportamiento por omisión de Android: deslizar desde el borde de arriba muestra la barra. **Hay que verificar en el moto g86** si después se vuelve a ocultar sola o queda visible hasta la próxima llamada.
+
+### Los bordes seguros de lado, por giro (moto g86, 450 dpi)
+
+- **Recorte de la cámara: 125 px ÷ (450/160) = 44,4 → 44 dp.** De pie va arriba; de lado queda en el costado que era el de arriba.
+- **Giro 90** (el borde de arriba del teléfono a la izquierda): recorte **44 a la izquierda**, barra de tres botones **48 a la derecha**.
+- **Giro 270** (el borde de arriba a la derecha): barra de tres botones **48 a la izquierda**, recorte **44 a la derecha**. Es lo que hace AOSP en teléfonos (la barra va del lado de abajo del teléfono); hay que verificarlo en el g86.
+- Barra de estado: **oculta**, 0 arriba. Abajo, 0.
+- En los dos giros los costados suman 92: las medidas son las mismas, en espejo.
+- La franja del recorte va sin contenido, pintada con el fondo vecino (el negro del visor en el caso 1, `--bg-suelo` en el caso 2).
+
+### La barra de avance bajo el video
+
+- Es la `.barra-visor` de hoy entera (`styles.css` ~:1405-1435): `.boton-visor` (44) y `.avance-visor` (44 de alto de toque), con el tiempo actual y el total, más el `padding-top` de `--aire-1` (4): **48 dp de alto**. El video pierde esos 48 de alto.
+- Va a todo el ancho del video, debajo: no tapa los subtítulos (la decisión del 28-09 se mantiene) y el avance pasa de 96-120 dp a **unos 420 a 915 y 330 a 800** (el ancho del video menos el botón y los dos tiempos), preciso también en tomas largas.
+
+### Caso 1: toma HORIZONTAL 16:9
+
+Regla: `útil = ancho − 44 − 48`; `altoVideo = alto − 48`; `anchoVideo = round(altoVideo × 16/9)`; `columna = útil − anchoVideo`, con mínimo 112 (si bajara, se achica el video, en 16:9 y centrado; no pasa en ningún tamaño pedido).
+
+| | 915×411 | 800×360 |
+|---|---|---|
+| Ancho útil | 915 − 92 = **823** | 800 − 92 = **708** |
+| Alto del video | 411 − 48 = **363** | 360 − 48 = **312** |
+| Video 16:9 | 363 × 16/9 = 645,3 → **645 × 363** | 312 × 16/9 = 554,7 → **555 × 312** |
+| Barra de avance | **645 × 48**, bajo el video | **555 × 48** |
+| Columna | 823 − 645 = **178 × 411** | 708 − 555 = **153 × 360** |
+| ¿Cabe el riel de 124? | Sí, sobran 54 | Sí, sobran 29 |
+| Giro 90 | recorte 0-44, video x 44, columna x 689, barra 867-915 | recorte 0-44, video x 44, columna x 599, barra 752-800 |
+| Giro 270 | barra 0-48, video x 48, columna x 693, recorte 871-915 | barra 0-48, video x 48, columna x 603, recorte 756-800 |
+
+- **La columna nunca baja de 112.** Queda más ancha que el riel de 124 porque ahora el video está limitado por el alto (perdió 48); los dp que sobran van a la columna. No se agranda el video: ya está a todo el alto que le queda.
+- **Contenido de la columna**, con el fondo y el borde de los rieles (`--riel-fondo`, `--riel-borde`, `styles.css:61-62`): arriba el nombre (una línea, con puntos suspensivos) y la duración, con la X (`.cerrar-visor`, 44) a la derecha; abajo `.acciones-toma` en una fila por acción, que se reparten el alto: **Guardar** (con su palabra), **Subtítulos** (el `SelectorSubtitulos` vestido de `.accion-toma`: el CC y el estilo elegido), **Repetir** y **Borrar**. Cada fila mide ~89 de alto a 411 y ~76 a 360 (mínimo de toque 48).
+- **Subtítulos abierto** (dibujado, giro 90): el panel de las cuatro opciones (No, Amarillo, Rojo, Formal) mide **320 × 124**, a 8 a la izquierda de la columna, a la altura del botón de Subtítulos, sobre el video. Es el ancho de los paneles de ficha de la 82 (`docs/tarea82.txt:90-93`). Tocar una opción la elige y lo cierra, como hoy.
+- **Toma guardada** (dibujado, giro 90): Compartir y Borrar, solo con el símbolo, y sin selector de subtítulos, como hoy. Las dos filas se reparten la columna: **176** de alto a 411 y **142** a 360.
+
+### Caso 2: toma VERTICAL 9:16
+
+| | 915×411 | 800×360 |
+|---|---|---|
+| Video 9:16 a todo el alto | 411 × 9/16 = 231,2 → **231 × 411** | 360 × 9/16 = 202,5 → **203 × 360** |
+| Tarjeta de controles | **320 × 236** | **320 × 236** |
+| Grupo (video + 16 + tarjeta) | 567, centrado en 823 → **128** a cada lado | 539, centrado en 708 → **85** a cada lado (84,5) |
+| Video, giro 90 / 270 | x **172** / **176** | x **129** / **133** |
+
+- **Huecos aceptados (punto 4):** el grupo va centrado sobre el fondo de la app (`--bg-suelo`), sin bordes ni otro color que marquen el hueco. La tarjeta es la de hoy sin el video (nombre con la X, `.barra-visor`, `SelectorSubtitulos`, `.acciones-toma` en fila), centrada en el alto y sin estirarse.
+
+### Cómo distingue el visor horizontal de vertical (igual que la segunda versión)
+
+- El modelo no guarda la forma: `ResumenGrabacion` (`src/datos/modelo.ts:117-136`) no tiene ancho, alto ni orientación, y el sidecar trae `calidad: "1080p"`.
+- Se lee del video: en el `alCargar` de `loadedmetadata` que ya existe (`ReproductorGrabacion.tsx:75-80`), `horizontal = video.videoWidth > video.videoHeight`.
+- Antes de que cargue, la miniatura (`src/lib/tomaVideo.ts:222-224`) con `naturalWidth/naturalHeight`. Sin miniatura, el caso 2.
+- Solo con el teléfono de lado (`useLayout() === 'tel-h'`, `App.tsx:267`). De pie, el visor queda como hoy.
+
+### Lo que no calza o queda abierto (tercera versión)
+
+- **Barra de estado oculta:** no está verificado en el g86 qué pasa al deslizar desde arriba (con el comportamiento por omisión aparece; falta ver si se vuelve a ocultar sola).
+- **Giro 270:** que la barra de tres botones vaya a la izquierda es el comportamiento de AOSP para teléfonos; hay que verificarlo en el g86, igual que los insets que entrega la WebView en cada giro.
+- **La columna (178 / 153) es más ancha que el riel de 124:** el video está limitado por el alto. Si se quisiera la columna de 124, el video no crece (quedaría negro a los lados); se dejó el ancho a la columna.
+- **La franja del recorte (44)** va sin contenido, pintada con el fondo vecino.
+- **La barra de navegación sigue visible** (48), a propósito.
+- Falta verificar en el g86 que `videoWidth/videoHeight` vengan ya girados.
+- El video es de mentira (un degradado con una silueta); la barra de tres botones y el recorte están dibujados, porque Chrome no los tiene.
+
+---
+
+# SEGUNDA VERSIÓN, DESCARTADA (04-10-2026, 11:09)
+
+> Se deja como historia. Sus láminas, capturas y `medidas-de-lado.json` están ahora en
+> `descartado/segunda-version/`, y sus herramientas son `herramientas/boceto-descartado-2.{html,tsx}`,
+> `capturas-de-lado-descartado-2.cjs` y `laminas-de-lado-descartado-2.cjs`: donde abajo dice
+> `lamina-…`, `boceto.html` o `capturas-de-lado.cjs`, se refiere a esos.
+
 ## Segunda versión: dos casos, según la forma del VIDEO
 
 Lámina para aprobar: **`lamina-visor-de-lado-resumen.png`**. Una lámina por caso, tema y tamaño (8):

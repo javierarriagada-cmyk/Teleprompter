@@ -24,6 +24,10 @@ RESUMEN
     -04-10-2026, 10:53: el primer boceto quedó DESCARTADO -dibujaba una toma vertical vista de
     lado-. Lo reemplaza el de la SEGUNDA VERSIÓN, con dos casos -toma horizontal y vertical-: ver
     "DEFECTO 2, SEGUNDA VERSIÓN DEL BOCETO". Sigue sin programarse.-
+    -04-10-2026, 11:09: la segunda versión quedó DESCARTADA. Manda la TERCERA VERSIÓN: barra de
+    avance bajo el video, sin barra de estado -SystemBars.hide de @capacitor/core 8, sin plugin
+    nuevo-, recorte de 44 dp y los dos giros. Ver "DEFECTO 2, TERCERA VERSIÓN DEL BOCETO". Sigue
+    sin programarse; va en un PR aparte, para revisar.-
   - DEFECTO 3 -barra de tres botones-: lista de pantallas sin borde seguro y arreglo de las cuatro
     que lo necesitan, sin tocar los rieles de leer y grabar. Prueba que fallaba hoy. El emulador
     NO sirvió para las capturas -ver EMULADOR-.
@@ -496,6 +500,9 @@ docs/pantallas/tarea89/
   cambia. SIN BOCETO APROBADO NO HAY CÓDIGO.
 
 DEFECTO 2, SEGUNDA VERSIÓN DEL BOCETO -04-10-2026, 10:53; SOLO BOCETO, SIN CÓDIGO-
+  -DESCARTADA el 04-10-2026, 11:09: manda la TERCERA VERSIÓN, más abajo. Sus láminas, capturas y
+  medidas-de-lado.json están ahora en docs/pantallas/tarea89/descartado/segunda-version/, y sus
+  herramientas son herramientas/*-descartado-2.*. Se deja el texto como historia.-
   La disposición la decide la forma del VIDEO, no la del teléfono, y solo con el teléfono de lado
   -useLayout 'tel-h', App.tsx:267-. De pie, el visor queda como hoy. Detalle completo en
   docs/pantallas/tarea89/medidas-implementacion.md, "Segunda versión".
@@ -546,6 +553,40 @@ DEFECTO 2, SEGUNDA VERSIÓN DEL BOCETO -04-10-2026, 10:53; SOLO BOCETO, SIN CÓD
     tomas largas -ponerlo sobre el video contradice la decisión del 28-09 de no tapar los
     subtítulos-; falta verificar en el moto g86 que videoWidth/videoHeight vengan ya girados; el
     panel de Subtítulos abierto y la toma guardada están descritos, no dibujados.
+
+DEFECTO 2, TERCERA VERSIÓN DEL BOCETO -04-10-2026, 11:09; SOLO BOCETO, SIN CÓDIGO-
+  Respuestas de Javier y Claude sobre la segunda. Detalle completo en
+  docs/pantallas/tarea89/medidas-implementacion.md, "Tercera versión".
+  LÁMINAS -docs/pantallas/tarea89/-: lamina-visor-de-lado-resumen.png -para aprobar- y 24 láminas
+  lamina-visor-de-lado-caso{1-horizontal,2-vertical}-giro{90,270}[-subtitulos|-guardada]-
+  {915x411,800x360}-{oscuro,claro}.png, más capturas sueltas y medidas-de-lado.json.
+  BARRA DE ESTADO: SystemBars de @capacitor/core 8.5.1 -package.json:24; ya se usa en App.tsx:2 y
+    :314-319- tiene hide/show -node_modules/@capacitor/core/types/core-plugins.d.ts:348 y :354- con
+    bar?: SystemBarType -:304-312; StatusBar y NavigationBar en :271-284-. En Android hace
+    WindowInsetsControllerCompat.hide(statusBars()) -SystemBars.java:140-148 y setHidden :302-324-.
+    NO pide plugin nuevo. Llamada propuesta, sin programar: al abrir el visor con 'tel-h',
+    SystemBars.hide({ bar: SystemBarType.StatusBar }); al cerrarlo, al volver de pie o al
+    desmontar, SystemBars.show({ bar: SystemBarType.StatusBar }). La de navegación no se oculta.
+  BORDES: recorte del moto g86 125 px / (450/160) = 44 dp. Giro 90: recorte 44 a la izquierda,
+    tres botones 48 a la derecha. Giro 270: tres botones 48 a la izquierda, recorte 44 a la derecha.
+    Arriba 0. Los dos giros suman 92: mismas medidas, en espejo.
+  BARRA DE AVANCE: la .barra-visor de hoy, 48 de alto -botón y avance de 44 más 4 de aire-, bajo el
+    video y a todo su ancho. No tapa los subtítulos.
+  CASO 1 -16:9-: 915x411: útil 823, video 645 x 363 + barra 645 x 48, columna 178. 800x360: útil
+    708, video 555 x 312 + barra 555 x 48, columna 153. La columna nunca baja de 112 -cabe el riel de
+    124 con 54 y 29 de más-. Filas Guardar, Subtítulos, Repetir y Borrar de ~89 / ~76 de alto.
+    Subtítulos abierto: panel 320 x 124 a la izquierda de la columna, sobre el video. Toma guardada:
+    Compartir y Borrar, filas de 176 / 142.
+  CASO 2 -9:16-: video 231 x 411 y 203 x 360, tarjeta 320 x 236, grupo centrado sobre --bg-suelo sin
+    bordes: 128 a cada lado a 915 y 85 a 800.
+  HORIZONTAL O VERTICAL: igual que la segunda -videoWidth > videoHeight en el loadedmetadata de
+    ReproductorGrabacion.tsx:75-80; antes, la miniatura; el modelo, modelo.ts:117-136, no guarda la
+    forma-.
+  LO QUE NO CALZÓ: sin verificar en el g86 qué pasa al deslizar con la barra de estado oculta, los
+    insets del giro 270 -la barra a la izquierda es lo de AOSP para teléfonos- y que videoWidth y
+    videoHeight vengan girados; la columna -178/153- es más ancha que el riel de 124 porque el video
+    está limitado por el alto; la franja del recorte va vacía, con el fondo vecino; la barra de
+    navegación sigue visible, a propósito.
 
 ==============================================================================
 DEFECTO 3 - LA BARRA DE TRES BOTONES
