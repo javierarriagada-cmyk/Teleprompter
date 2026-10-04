@@ -11,6 +11,7 @@ import TeleprompterView, { VeloControles } from './components/TeleprompterView'
 import BarraDeTiempo from './components/BarraDeTiempo'
 import { PanelCorpus } from './components/PanelCorpus'
 import { bloquearRecargaAutomatica } from './lib/actualizacion'
+import { bloquearOrientacion, soltarOrientacion } from './lib/orientacionToma'
 import { iniciarGrabacion, detenerGrabacion } from './lib/grabadorCorpus'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
@@ -894,6 +895,36 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const { activo: wakeLockActivo, solicitar: solicitarWakeLock, soltar: soltarWakeLock } = useWakeLock()
 
+  // LA ORIENTACIÓN QUEDA FIJA MIENTRAS DURA LA TOMA -tarea 91, 04-10-2026-. Javier: de Empezar a
+  // Parar, en Leer y en Grabar, la pantalla se queda como estaba al empezar, como la cámara del
+  // teléfono; en LISTO y en el visor gira libre. Este efecto es el ÚNICO punto de entrada y de salida:
+  // entra cuando la toma pasa a LEYENDO -la cuenta de tres ya es la toma- y sale por cualquier camino
+  // que la deje en LISTO -Parar, Descartar, el atrás, un error al empezar- o al desmontar App. Pausa →
+  // Seguir no cambia estadoToma, así que no suelta. Al ir a segundo plano se suelta -otra app no tiene
+  // por qué quedar trabada-, y al volver con la toma andando se fija la misma de antes. Ver
+  // lib/orientacionToma.ts y CamaraNativaPlugin.fijarOrientacion.
+  const tomaAndando = vista === 'lectura' && estadoToma === 'leyendo'
+  useEffect(() => {
+    if (!tomaAndando) return
+    bloquearOrientacion('empezar')
+    // Quitar el oyente es asíncrono -addListener devuelve una promesa-: uno que llega después de
+    // terminada la toma no tiene que volver a fijarla.
+    let vigente = true
+    const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+      if (!vigente) return
+      if (!isActive) soltarOrientacion('segundo-plano')
+      else bloquearOrientacion('volver')
+    })
+    return () => {
+      vigente = false
+      try {
+        if (sub && typeof sub.then === 'function') sub.then((h: any) => h && h.remove && h.remove()).catch(() => {})
+        else if (sub && typeof sub.remove === 'function') sub.remove()
+      } catch (e) {}
+      soltarOrientacion('fin-de-toma')
+    }
+  }, [tomaAndando])
+
   const handleEstadoAvanceChange = useCallback((
     motivo: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null,
     isAvanzando: boolean,
@@ -1071,7 +1102,16 @@ export default function App({ motor, repoOverride }: AppProps) {
     setDescargaVoz(null)
     setEstadoToma('leyendo')
     setControlesVisibles(false)
-    await handleStart()
+    // -tarea 91- Si la toma no logra empezar, vuelve a LISTO: antes quedaba en LEYENDO sin cuenta ni
+    // motor, y ahora además con la orientación fija. Volver a LISTO la suelta -el efecto de
+    // tomaAndando-. Lo que alcanzó a arrancar se apaga como al Parar.
+    try {
+      await handleStart()
+    } catch (e) {
+      console.warn('[App] la toma no pudo empezar:', e)
+      cancelarCuentaRegresiva()
+      setEstadoToma('listo')
+    }
   }
 
   function handleVolverDesdeListo() {
