@@ -1,9 +1,12 @@
+// DESCARTADO -04-10-2026, 10:53-: la lámina del primer boceto, que ahora vive en descartado/. La vigente
+// es laminas-de-lado.cjs.
 // Lámina hoy | boceto, por tema -tarea 89-. Después de capturas.cjs: node lamina.cjs
 const puppeteer = require('/workspace/tp-shot/node_modules/puppeteer-core');
 const fs = require('fs');
 const path = require('path');
 const D = path.join(__dirname, '..');
-const b64 = (f) => 'data:image/png;base64,' + fs.readFileSync(path.join(D, f)).toString('base64');
+const DD = path.join(D, 'descartado');
+const b64 = (f) => 'data:image/png;base64,' + fs.readFileSync(fs.existsSync(path.join(D, f)) ? path.join(D, f) : path.join(DD, f)).toString('base64');
 (async () => {
   const br = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox'] });
   const p = await br.newPage();
@@ -14,7 +17,7 @@ const b64 = (f) => 'data:image/png;base64,' + fs.readFileSync(path.join(D, f)).t
 <div class="fila"><div><div class="r">Hoy · ReproductorGrabacion.tsx</div><img src="${b64(`visor-de-lado-hoy-${tema}.png`)}"></div><div><div class="r">Propuesta · video a un costado, controles al otro</div><img src="${b64(`visor-de-lado-propuesta-${tema}.png`)}"></div></div></body></html>`;
     await p.setViewport({ width: 1900, height: 600, deviceScaleFactor: 1 });
     await p.setContent(html, { waitUntil: 'load' });
-    await (await p.$('body')).screenshot({ path: path.join(D, `lamina-visor-de-lado-${tema}.png`) });
+    await (await p.$('body')).screenshot({ path: path.join(DD, `lamina-visor-de-lado-${tema}.png`) });
   }
   await br.close();
 })();

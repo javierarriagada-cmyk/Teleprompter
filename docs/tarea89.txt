@@ -21,6 +21,9 @@ RESUMEN
     tercera vuelta de que eso "no se cambió".
   - DEFECTO 2 -visor de lado-: NO SE PROGRAMÓ. Boceto en docs/pantallas/tarea89/, con la causa
     del corte con archivo:línea, en tema claro y oscuro.
+    -04-10-2026, 10:53: el primer boceto quedó DESCARTADO -dibujaba una toma vertical vista de
+    lado-. Lo reemplaza el de la SEGUNDA VERSIÓN, con dos casos -toma horizontal y vertical-: ver
+    "DEFECTO 2, SEGUNDA VERSIÓN DEL BOCETO". Sigue sin programarse.-
   - DEFECTO 3 -barra de tres botones-: lista de pantallas sin borde seguro y arreglo de las cuatro
     que lo necesitan, sin tocar los rieles de leer y grabar. Prueba que fallaba hoy. El emulador
     NO sirvió para las capturas -ver EMULADOR-.
@@ -478,7 +481,11 @@ selector de subtítulos :212-222, el nombre :223-231 y las acciones .acciones-to
 lado, a 915x411, la tarjeta mide 472 dp -medido en Chrome, de -30 a 441- en 411 de alto: el
 centrado la corta arriba -la X- y abajo -Guardar, Repetir, Borrar-, y no se puede desplazar.
 
-BOCETO: docs/pantallas/tarea89/
+BOCETO -PRIMERA VERSIÓN, DESCARTADA el 04-10-2026 a las 10:53: dibujaba una toma VERTICAL vista de
+lado, con el video angosto y chico, los controles en más de la mitad y un hueco. Sus láminas y
+capturas de la propuesta están ahora en docs/pantallas/tarea89/descartado/, y su herramienta es
+herramientas/boceto-descartado.html y boceto-descartado.tsx. Lo de abajo queda como historia-:
+docs/pantallas/tarea89/
   - lamina-visor-de-lado-oscuro.png, lamina-visor-de-lado-claro.png -hoy | propuesta-.
   - visor-de-lado-{hoy,propuesta}-{oscuro,claro}.png.
   - medidas-implementacion.md -causa, medidas y piezas-.
@@ -487,6 +494,58 @@ BOCETO: docs/pantallas/tarea89/
   Propuesta: de lado, el video a todo el alto a la izquierda y los controles a la derecha
   -nombre con la X, barra de avance, subtítulos, y Guardar / Repetir / Borrar al pie-. De pie no
   cambia. SIN BOCETO APROBADO NO HAY CÓDIGO.
+
+DEFECTO 2, SEGUNDA VERSIÓN DEL BOCETO -04-10-2026, 10:53; SOLO BOCETO, SIN CÓDIGO-
+  La disposición la decide la forma del VIDEO, no la del teléfono, y solo con el teléfono de lado
+  -useLayout 'tel-h', App.tsx:267-. De pie, el visor queda como hoy. Detalle completo en
+  docs/pantallas/tarea89/medidas-implementacion.md, "Segunda versión".
+  LÁMINAS -docs/pantallas/tarea89/-: lamina-visor-de-lado-resumen.png -para aprobar- y 8 láminas
+  lamina-visor-de-lado-caso{1-horizontal,2-vertical}-{915x411,800x360}-{oscuro,claro}.png, más las
+  capturas sueltas y medidas-de-lado.json -las cajas medidas en Chrome-. Herramientas:
+  herramientas/boceto.html y boceto.tsx, capturas-de-lado.cjs, laminas-de-lado.cjs.
+  BORDES SEGUROS DE LADO -rotación 90, tres botones-: barra de tres botones 48 dp a la derecha -AOSP
+  frameworks/base/core/res/res/values/dimens.xml, navigation_bar_width-; barra de estado 24 dp
+  arriba -status_bar_height_landscape = status_bar_height_portrait = 24dp-. Con targetSdkVersion 36
+  -android/variables.gradle:9- el borde a borde es obligatorio: las dos van encima de la app y
+  llegan como env(safe-area-inset-right) y env(safe-area-inset-top). El recorte de la cámara, a la
+  izquierda, no se midió en el moto g86: en el boceto vale 0. A 800x360 también va la barra -el
+  peor caso-.
+  EL ANCHO DE LOS RIELES DE LA 82: --riel-der 124px -src/styles-horizontal.css:22-, --riel-izq-leer
+  112px -:20-, --riel-izq-grabar 128px -:21-; docs/tarea82.txt:71 y :78.
+  CASO 1, EL PRINCIPAL -toma HORIZONTAL 16:9-: columna = máx(112, útil − alto × 16/9), y el video se
+    queda con el resto.
+    - 915x411: útil 867; 411 × 16/9 = 731; columna 867 − 731 = 136 ≥ 124: CABE el riel, y los 12 de
+      más van a la columna. Video 731 x 411, columna 136 x 411.
+    - 800x360: útil 752; 360 × 16/9 = 640; columna 752 − 640 = 112 < 124: NO CABE el riel de 124.
+      Ajuste: la columna queda en 112 -el ancho del riel izquierdo de Leer- y el video SIGUE a todo
+      el alto, 640 x 360. Si un teléfono dejara menos de 112, se achica el video -16:9, centrado-,
+      no se recorta.
+    - La columna lleva el fondo y el borde de los rieles -styles.css:61-62-. De arriba abajo: la X;
+      el nombre y la duración; el avance a todo el ancho y el play con el tiempo actual; y en
+      .acciones-toma dos filas de dos: Guardar y Subtítulos -el SelectorSubtitulos vestido de
+      .accion-toma-, y Repetir y Borrar. Botones de 68 de ancho a 136 y de 56 a 112. El contenido
+      mide 296 dp: sobran 91 en 387 a 915 y 40 en 336 a 800, repartidos entre los grupos. Sus 24 de
+      arriba van en el negro del visor, para que se lean los íconos claros de la barra de estado.
+  CASO 2 -toma VERTICAL 9:16-: video a todo el alto, 231 x 411 y 203 x 360. Al lado, a 16, la
+    tarjeta de controles de 320 -el ancho de los paneles de ficha de lado, docs/tarea82.txt:90-93-,
+    de 320 x 236 en los dos tamaños, centrada en el alto y sin estirarse. Es la tarjeta de hoy sin el
+    video. El grupo va centrado: 150 a cada lado a 915, 107/106 a 800.
+  HORIZONTAL O VERTICAL, DE DÓNDE SE SACA:
+    - ResumenGrabacion -src/datos/modelo.ts:117-136- y el sidecar no traen ancho, alto ni
+      orientación -calidad dice "1080p", no la forma-.
+    - Se lee del video: en el alCargar de loadedmetadata que ya existe -ReproductorGrabacion.tsx:
+      75-80, en la rama-, horizontal = video.videoWidth > video.videoHeight. SubtitulosVisor.tsx:
+      23-24 ya lee los dos valores.
+    - Antes de que cargue, la miniatura -mismo mp4, src/lib/tomaVideo.ts:222-224- con naturalWidth
+      y naturalHeight. Sin miniatura, el caso 2.
+    - Para después: anotar ancho y alto en el sidecar al cortar la toma -cambia el modelo-.
+  LO QUE NO CALZÓ: a 800x360 con barra no cabe el riel de 124 -va en 112-; el recorte del moto g86
+    sin medir -con 24 dp a la izquierda, a 915 la columna baja a 112 y el video sigue igual; con 32
+    el video baja a 723 x 407-; la barra de estado queda encima del video y esconderla pide un plugin
+    -dependencia nueva, no se propone-; el avance en la columna mide 96 a 120 dp y es poco preciso en
+    tomas largas -ponerlo sobre el video contradice la decisión del 28-09 de no tapar los
+    subtítulos-; falta verificar en el moto g86 que videoWidth/videoHeight vengan ya girados; el
+    panel de Subtítulos abierto y la toma guardada están descritos, no dibujados.
 
 ==============================================================================
 DEFECTO 3 - LA BARRA DE TRES BOTONES
