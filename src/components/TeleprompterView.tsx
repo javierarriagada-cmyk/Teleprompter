@@ -260,6 +260,13 @@ interface TeleprompterViewProps {
   // La esquina del recuadro en horizontal -sigo_recuadro_esquina_h, la guarda App-.
   esquinaRecuadroH?: EsquinaRecuadroH
   setEsquinaRecuadroH?: (e: EsquinaRecuadroH) => void
+  // -tarea 88, 04-10-2026- La toma en pausa: el punto de grabar parpadea -P9, cerrada-.
+  enPausa?: boolean
+  // -tarea 88- Control por gestos, para la fila del panel de la cámara -FichasListo-. El motivo lo
+  // arma App: 'soloFrontal' con la trasera, 'noDisponible' si el equipo no puede.
+  gestosAlGrabar?: boolean
+  setGestosAlGrabar?: (v: boolean) => void
+  motivoSinGestos?: 'soloFrontal' | 'noDisponible' | null
 }
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
@@ -343,7 +350,11 @@ export default function TeleprompterView({
   onEstadoAvanceChange,
   horizontal = false,
   esquinaRecuadroH = 'der-abajo',
-  setEsquinaRecuadroH
+  setEsquinaRecuadroH,
+  enPausa = false,
+  gestosAlGrabar = false,
+  setGestosAlGrabar,
+  motivoSinGestos = null
 }: TeleprompterViewProps) {
   useTextos()
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -1019,6 +1030,9 @@ export default function TeleprompterView({
         setPanelAbierto={setPanelFicha}
         onAbrirAjustes={onAbrirAjustes}
         horizontal={enRiel}
+        gestosAlGrabar={gestosAlGrabar}
+        setGestosAlGrabar={setGestosAlGrabar}
+        motivoSinGestos={motivoSinGestos}
       />
   )
 
@@ -1145,7 +1159,10 @@ export default function TeleprompterView({
       {grabandoVideo && (
         <div
           data-testid="punto-grabando"
-          className="punto-grabando"
+          // -tarea 88- En pausa parpadea: 1 s encendido y 1 s apagado; con movimiento reducido, un
+          // anillo rojo sin relleno -styles.css, .punto-grabando.en-pausa-. Antes: className="punto-grabando".
+          className={`punto-grabando${enPausa ? ' en-pausa' : ''}`}
+          data-pausa={enPausa ? 'si' : 'no'}
           style={{
             // La pausa: top 8, right 8, 40 x 40. El punto de 10 va a su izquierda,
             // 12 px de aire, con el centro a la misma altura: 8 + 20 - 5.

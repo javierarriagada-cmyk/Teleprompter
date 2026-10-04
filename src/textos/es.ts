@@ -153,6 +153,11 @@ export const es = {
   parar: 'Parar',
   guionSinBloques: 'Guión sin bloques',
   grabando: 'Grabando',
+  // -tarea 88, 04-10-2026- Control por gestos, en el panel de la cámara de LISTO.
+  controlPorGestos: 'Control por gestos',
+  controlPorGestosExplicacion: 'Palma: pausar o seguir. En pausa, la V termina la toma.',
+  gestosSoloFrontal: 'Solo con la cámara frontal.',
+  gestosNoDisponible: 'No disponible en este teléfono.',
   ajustesEscena: 'Ajustes de la escena',
   imagenCamara: 'Imagen de la cámara',
   imagenDetras: 'Detrás',

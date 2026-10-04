@@ -5,9 +5,13 @@
 // -04-10-2026, Javier simplifica la 87- La receta ya no lleva la altura -margenAbajo, 0,125 en
 // "Normal" y 0,35 en "Para redes"-: el subtítulo va siempre a 1/6 -MARGEN_ABAJO_SUBTITULOS en
 // lib/subtitulos.ts y UbicacionSubtitulos.MARGEN_ABAJO en Java-.
+// -tarea 88, 04-10-2026- Los tramos ya no quedan en null: con pausas, la receta lleva los que quedan
+// -recetaDe, abajo-. El filtro sigue en null.
 import type { EstiloSubtitulo, Subtitulo } from './subtitulos'
 
-export type TramoMs = { desdeMs: number; hastaMs: number } // plan 2; aquí siempre null
+// -tarea 88, 04-10-2026- Los tramos ya se usan: los que QUEDAN de una toma con pausas -tramos.ts,
+// tramosQueQuedan-, en el reloj del archivo. Antes: "plan 2; aquí siempre null".
+export type TramoMs = { desdeMs: number; hastaMs: number }
 export type RecetaExportacion = {
   version: 1
   estilo: EstiloSubtitulo // de subtitulos.ts
@@ -17,13 +21,17 @@ export type RecetaExportacion = {
 }
 
 // Sin estilo o sin subtítulos no hay nada que dibujar: la receta lleva la lista vacía y es copia.
-export function recetaDe(o: { estilo: EstiloSubtitulo; subtitulos: Subtitulo[] }): RecetaExportacion {
+// -tarea 88- tramos: los que quedan de una toma con pausas. Sin pausas no viene -o viene vacío- y la
+// receta lleva null, como hasta hoy: el camino de guardado es el de siempre. Con tramos la receta
+// NUNCA es copia, aunque el estilo sea "No" -esCopia, abajo-.
+export function recetaDe(o: { estilo: EstiloSubtitulo; subtitulos: Subtitulo[]; tramos?: TramoMs[] | null }): RecetaExportacion {
   const lleva = o.estilo !== 'no' && Array.isArray(o.subtitulos) && o.subtitulos.length > 0
   return {
     version: 1,
     estilo: o.estilo,
     subtitulos: lleva ? o.subtitulos : [],
-    tramos: null,
+    // Antes: tramos: null, siempre.
+    tramos: o.tramos && o.tramos.length > 0 ? o.tramos : null,
     filtro: null
   }
 }

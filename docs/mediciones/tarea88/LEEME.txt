@@ -1,0 +1,36 @@
+TAREA 88 -04-10-2026-: LA PAUSA CON CORTES Y EL CONTROL POR GESTOS. Lo que queda para medir en el moto g86
+-docs/tarea88.txt, sección 8- y dónde mirar. Todas las líneas nuevas llevan la etiqueta Sigo88:
+  adb logcat -s Sigo88:I Capacitor/Console:I
+
+LAS LÍNEAS
+  - JavaScript -console.info('Sigo88', …), salen por Capacitor/Console-:
+      maquina entrada=<alternar|tacho|gesto:palma|gesto:victoria|finCuenta> <antes>-><después> acciones=…
+        pausar(origen=…,videoMs=…) y reanudar(videoMs=…) van en el reloj del video.
+      vigia voz parcial|final cambia      cada cambio de texto que el vigía cuenta
+      vigia empieza a pedir cuadros estado=…
+      revision etiqueta=… puntaje=… msCuadro=… msReconocer=… estado=…
+      gestos preparar ok=… / gestos soltar
+      visor salta desdeMs=… hastaMs=…
+      guardar tramos=0-4200,7800-30000 estilo=… subtitulos=…
+      toma sin video: quedan … ms de …   -lo que queda dura menos de 1 s, punto 9-
+  - Java -Log.i("Sigo88", …)-:
+      gestos reconocedor creado ms=… / gestos preparar ok cuadro=WxH negro=…
+      revision etiqueta=… puntaje=… msCuadro=… msReconocer=… cuadro=WxH
+      receta tramos=… estilo=… subtitulos=…      -solo en la APK de prueba-
+      capa tramo=k primerUs=… inicioSalidaUs=…   -solo en la APK de prueba y con subtítulos: con estilo
+                                                  "No" no hay capa y esta línea no sale-
+
+LO QUE SE ESPERA
+  A. primerUs de cada tramo ≈ inicioSalidaUs: la capa recibe el reloj de la SALIDA -el informe de la
+     tarea dice por qué, con las líneas de Media3 1.9.0-.
+  B. Con el interruptor apagado no sale ninguna línea gestos/vigia/revision.
+  C. msCuadro -getBitmap- y msReconocer -MediaPipe en 640 de lado mayor-.
+  D. fondoToma 'oculta': mirar que preparar diga ok=true y que las revisiones no sean sinCuadro. Por
+     el código debería entregar imagen -PreviewView.getBitmap copia el Surface con PixelCopy y el alpha
+     de la vista no lo toca-; si no, la fila tiene que decir el motivo y hay que sumar
+     gestosCamaraOculta -docs/tarea88.txt, 6.1-.
+
+LOS VALORES DE PARTIDA
+  REVISIONES_PARA_CONFIRMAR = 3 y PUNTAJE_MINIMO = 0.6 -src/lib/confirmadorGestos.ts-;
+  MS_SILENCIO_PARA_MIRAR = 2000 y MS_ENTRE_CUADROS = 500 -src/lib/vigiaGestos.ts-; MARGEN_MANO_MS = 1000
+  -src/lib/pausaToma.ts-.

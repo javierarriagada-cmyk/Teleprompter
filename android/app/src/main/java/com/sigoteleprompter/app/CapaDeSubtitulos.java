@@ -90,6 +90,28 @@ final class CapaDeSubtitulos extends BitmapOverlay {
     // el ancho útil.
     private float medLetraBase, medMasAncho, medUtil;
 
+    // -tarea 88, 04-10-2026- EL RELOJ DE LA CAPA EN UNA TOMA CON CORTES. Con tramos, exportarToma le
+    // pasa dónde empieza cada tramo en el reloj de la salida, y la capa anota UNA línea Sigo88 por
+    // tramo con el primer presentationTimeUs que ve en él: así Claude comprueba en el teléfono que la
+    // capa recibe el reloj de la salida -ver ExportadorDeTomas.composicionConTramos-. Solo en la APK de
+    // prueba -MedicionExport.activa-. No cambia lo que se dibuja.
+    private long[] iniciosTramosUs = null;
+    private boolean[] tramoAnotado = null;
+
+    void anotarTramos(long[] iniciosEnSalidaUs) {
+        this.iniciosTramosUs = iniciosEnSalidaUs;
+        this.tramoAnotado = new boolean[iniciosEnSalidaUs.length];
+    }
+
+    private void anotarTramoSiToca(long presentationTimeUs) {
+        if (iniciosTramosUs == null) return;
+        int k = 0;
+        while (k + 1 < iniciosTramosUs.length && presentationTimeUs >= iniciosTramosUs[k + 1]) k++;
+        if (tramoAnotado[k]) return;
+        tramoAnotado[k] = true;
+        android.util.Log.i("Sigo88", "capa tramo=" + k + " primerUs=" + presentationTimeUs + " inicioSalidaUs=" + iniciosTramosUs[k]);
+    }
+
     void medirCon(String id, MedicionExport.Anotador anotador) {
         this.idMedicion = id;
         this.anotador = anotador;
@@ -128,6 +150,7 @@ final class CapaDeSubtitulos extends BitmapOverlay {
 
     @Override
     public Bitmap getBitmap(long presentationTimeUs) {
+        anotarTramoSiToca(presentationTimeUs);
         long ms = presentationTimeUs / 1000;
         int indice = -1;
         for (int i = 0; i < subs.size(); i++) {

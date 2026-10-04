@@ -1,3 +1,4 @@
+import type { PausaToma } from '../lib/tramos'
 export type TramoFormato = {
   desde: number
   hasta: number
@@ -138,6 +139,9 @@ export type ResumenGrabacion = {
   // rotación 90 es vertical. Sin el dato -toma vieja o APK viejo- el visor la analiza al abrirla.
   // Campo opcional: no se sube DB_VERSION.
   orientacion?: 'vertical' | 'horizontal' | 'cuadrada'
+  // -tarea 88, 04-10-2026- Las pausas de la toma, en el reloj del video -lib/tramos.ts-. Lo pausado no
+  // está en la toma: el visor lo salta y Guardar lo corta. Campo opcional: no se sube DB_VERSION.
+  pausas?: PausaToma[]
 }
 
 export function grabacionNueva(parcial: Partial<ResumenGrabacion> & Pick<ResumenGrabacion, 'tituloGuion'>): ResumenGrabacion {
@@ -157,7 +161,8 @@ export function grabacionNueva(parcial: Partial<ResumenGrabacion> & Pick<Resumen
     calidad: parcial.calidad,
     galeriaUri: parcial.galeriaUri,
     estiloGaleria: parcial.estiloGaleria,
-    orientacion: parcial.orientacion
+    orientacion: parcial.orientacion,
+    ...(parcial.pausas && parcial.pausas.length > 0 ? { pausas: parcial.pausas } : {})
   }
 }
 

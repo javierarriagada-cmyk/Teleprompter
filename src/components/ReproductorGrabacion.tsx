@@ -1,11 +1,13 @@
 import React from 'react'
 import { ResumenGrabacion, ResumenGuion } from '../datos/modelo'
 import { srcDeRuta, formatearDuracionMs, nombreDeToma } from './TiraGrabaciones'
-import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo } from '../lib/archivosNativos'
+import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo } from '../lib/archivosNativos'
 import { orientacionDeToma } from '../lib/orientacion'
 import { anotar87, medirBordesSeguros, anotarOrientacion } from '../lib/medicionesTarea87'
-import { armarSubtitulos, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
+import { subtitulosConCortes, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
 import { CapaSubtitulos, SelectorSubtitulos } from './SubtitulosVisor'
+import { cortesDe, aSalidaCercana, aArchivo, duracionFinal, duracionVisible, tramosQueQuedan } from '../lib/tramos'
+import { recetaDe, TramoMs } from '../lib/recetaExportacion'
 import { t, useTextos } from '../textos'
 import { IconoGuardar, IconoCompartir, IconoRepetir, IconoCerrar, IconoTacho, IconoEmpezar, IconoPausa } from './IconosApp'
 // EL VISOR DE LADO -tarea 90-. Ver lib/visorDeLado.ts y styles-visor-de-lado.css.
@@ -116,7 +118,14 @@ export default function ReproductorGrabacion({
   // video; si el archivo no lo trae -Infinity en algunos WebView-, de lo que mide el indice.
   const [reproduciendo, setReproduciendo] = React.useState(false)
   const [actual, setActual] = React.useState(0)
-  const [total, setTotal] = React.useState(grabacion.duracionMs / 1000)
+  // -tarea 88- La duración que se muestra es la FINAL, sin lo pausado. Antes: grabacion.duracionMs / 1000.
+  const [total, setTotal] = React.useState(duracionVisible(grabacion) / 1000)
+  // -tarea 88, 04-10-2026- LOS CORTES de una toma con pausas -lib/tramos.ts-, en el reloj del archivo.
+  // El visor muestra la toma como quedará: salta cada corte, y la barra y los tiempos van en el reloj
+  // de la SALIDA. El efecto del video los lee por esta ref -se arma una vez por elemento-. «saltando»
+  // es la traba: entre que se pide el salto y llega seeked no se pide otro.
+  const cortesRef = React.useRef<TramoMs[]>([])
+  const saltando = React.useRef(false)
   // -tarea 90-: al girar el teléfono el visor cambia de disposición y el <video> es otro elemento. El
   // nuevo sigue desde donde iba el anterior -reanudarEn- en vez de volver a 0.
   // -04-10-2026, después del #68-: además de la posición se guarda si iba reproduciéndose. Antes el
@@ -145,9 +154,51 @@ export default function ReproductorGrabacion({
       setReproduciendo(false)
       if (video.isConnected) ibaReproduciendo.current = false
     }
-    const alAvanzar = () => setActual(video.currentTime)
+    // -tarea 88- Si la hora cae dentro de un corte, salta a su final: una sola vez -la traba se suelta
+    // en seeked-. Se anota con la etiqueta Sigo88 para el logcat de Claude.
+    const saltarSiToca = () => {
+      const c = cortesRef.current
+      if (c.length === 0 || saltando.current) return
+      const ms = video.currentTime * 1000
+      const corte = c.find((x) => ms >= x.desdeMs && ms < x.hastaMs)
+      if (!corte) return
+      saltando.current = true
+      console.info('Sigo88', `visor salta desdeMs=${Math.round(ms)} hastaMs=${corte.hastaMs}`)
+      try {
+        video.currentTime = corte.hastaMs / 1000
+      } catch (e) {
+        saltando.current = false
+      }
+    }
+    // Antes: const alAvanzar = () => setActual(video.currentTime).
+    const alAvanzar = () => {
+      const c = cortesRef.current
+      if (c.length === 0) return setActual(video.currentTime)
+      saltarSiToca()
+      setActual(aSalidaCercana(video.currentTime * 1000, c) / 1000)
+    }
+    const alTerminarSalto = () => {
+      saltando.current = false
+      if (cortesRef.current.length > 0) alAvanzar()
+    }
+    // Mientras reproduce, timeupdate llega unas cuatro veces por segundo: para no mostrar un cuarto de
+    // segundo de lo cortado, se revisa también en cada cuadro -solo si hay cortes-.
+    let cuadro = 0
+    const bucleCortes = () => {
+      saltarSiToca()
+      if (!video.paused && !video.ended) cuadro = requestAnimationFrame(bucleCortes)
+    }
+    const alReproducirCortes = () => {
+      if (cortesRef.current.length === 0) return
+      cancelAnimationFrame(cuadro)
+      cuadro = requestAnimationFrame(bucleCortes)
+    }
     const alCargar = () => {
-      if (Number.isFinite(video.duration) && video.duration > 0) setTotal(video.duration)
+      // -tarea 88- Con cortes, el total es la duración final. Antes: setTotal(video.duration).
+      if (Number.isFinite(video.duration) && video.duration > 0) {
+        const c = cortesRef.current
+        setTotal(c.length === 0 ? video.duration : duracionFinal(c, video.duration * 1000) / 1000)
+      }
       // TAREA 90: la forma del video manda en el visor de lado. Chromium entrega videoWidth y
       // videoHeight ya girados según la rotación del mp4 -a verificar en el moto g86, (c)-.
       medidaVideo.current = { ancho: video.videoWidth, alto: video.videoHeight }
@@ -198,6 +249,8 @@ export default function ReproductorGrabacion({
     video.addEventListener('ended', alPausar)
     video.addEventListener('timeupdate', alAvanzar)
     video.addEventListener('loadedmetadata', alCargar)
+    video.addEventListener('seeked', alTerminarSalto)
+    video.addEventListener('play', alReproducirCortes)
     // Si el video ya cargó -el mismo elemento de antes, o jsdom-, se lee ya.
     if (video.readyState >= 1) alCargar()
     return () => {
@@ -210,6 +263,10 @@ export default function ReproductorGrabacion({
       video.removeEventListener('ended', alPausar)
       video.removeEventListener('timeupdate', alAvanzar)
       video.removeEventListener('loadedmetadata', alCargar)
+      video.removeEventListener('seeked', alTerminarSalto)
+      video.removeEventListener('play', alReproducirCortes)
+      cancelAnimationFrame(cuadro)
+      saltando.current = false
     }
   }, [video])
   const alternarVideo = (e: React.MouseEvent) => {
@@ -233,6 +290,9 @@ export default function ReproductorGrabacion({
   // Una toma guardada se ve desde su copia de la galeria, que ya trae los
   // subtitulos quemados: encima no se dibuja nada, o saldrian dos veces.
   const estiloVisible: EstiloSubtitulo = guardada ? 'no' : estilo
+  // -tarea 88- Una toma guardada ya quedó cortada en la galería: no lleva cortes.
+  const cortes = React.useMemo<TramoMs[]>(() => (guardada ? [] : cortesDe(grabacion)), [guardada, grabacion.pausas, grabacion.duracionMs])
+  cortesRef.current = cortes
   const [avance, setAvance] = React.useState<number | null>(null)
 
   // -tarea 87, 04-10-2026- Cuál de los dos botones de guardar se apretó: solo ese muestra el avance
@@ -276,11 +336,13 @@ export default function ReproductorGrabacion({
   const subtitulos = React.useMemo<Subtitulo[]>(() => {
     if (!registroMotor) return []
     try {
-      return armarSubtitulos(registroMotor, formaCuadro)
+      // -tarea 88- Con los cortes: los mismos subtítulos que lleva la receta, en el reloj de la salida.
+      // Sin cortes es armarSubtitulos, como antes. Antes: armarSubtitulos(registroMotor, formaCuadro).
+      return subtitulosConCortes(registroMotor, formaCuadro, cortes)
     } catch (e) {
       return []
     }
-  }, [registroMotor, formaCuadro])
+  }, [registroMotor, formaCuadro, cortes])
 
   // El panel de Subtítulos abierto esconde el nombre de la toma: el video gana ~52 dp -respuesta de
   // Claude del 04-10-.
@@ -357,8 +419,15 @@ export default function ReproductorGrabacion({
     setPanelAbierto(false)
     setAvance(null)
     const conSubtitulos = estilo !== 'no' && subtitulos.length > 0
+    // -tarea 88- Con cortes se guarda SIEMPRE por la receta con los tramos que quedan -también con
+    // estilo "No"-: no hay camino viejo que corte. Un APK sin exportarToma rechaza y sale el aviso.
+    const tramos = cortes.length > 0 ? tramosQueQuedan(cortes, grabacion.duracionMs) : null
     try {
-      const res = conSubtitulos
+      if (tramos) console.info('Sigo88', `guardar tramos=${tramos.map((x) => `${x.desdeMs}-${x.hastaMs}`).join(',')} estilo=${estilo} subtitulos=${conSubtitulos ? subtitulos.length : 0}`)
+      // Antes: conSubtitulos ? guardarEnGaleriaConSubtitulos(...) : guardarEnGaleria(...), siempre.
+      const res = tramos
+        ? await exportarAGaleria(grabacion.ruta, recetaDe({ estilo, subtitulos: conSubtitulos ? subtitulos : [], tramos }), (pct) => setAvance(pct))
+        : conSubtitulos
         ? await guardarEnGaleriaConSubtitulos(grabacion.ruta, subtitulos, estilo, (pct) => setAvance(pct))
         : await guardarEnGaleria(grabacion.ruta)
       if (res && res.ok && res.uri) {
@@ -380,7 +449,9 @@ export default function ReproductorGrabacion({
           ruta: res.uri,
           galeriaUri: res.uri,
           estiloGaleria: conSubtitulos ? estilo : 'no',
-          ...(orientacion ? { orientacion } : {})
+          ...(orientacion ? { orientacion } : {}),
+          // -tarea 88- La copia ya va cortada: sin pausas y con la duración final.
+          ...(tramos ? { pausas: undefined, duracionMs: duracionFinal(cortes, grabacion.duracionMs) } : {})
         })
         onGuardadoEnGaleria?.(true, t('galeriaGuardada'))
         return res
@@ -572,7 +643,7 @@ export default function ReproductorGrabacion({
       <div className="visor-lado-nombre">
         <div>{nombreDeToma(grabacion, guiones)}</div>
         <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
-          {formatearDuracionMs(grabacion.duracionMs)}
+          {formatearDuracionMs(duracionVisible(grabacion))}
           {grabacion.incompleta ? ` · ${t('incompleta')}` : ''}
           {grabacion.errorMudo ? ` · ${t('metaErrorMudo')}` : ''}
           {grabacion.avisoMudo ? ` · ${t('metaAvisoMudo')}` : ''}
@@ -582,7 +653,7 @@ export default function ReproductorGrabacion({
     const cajaVideo = (estilo: React.CSSProperties) => (
       <div className="visor-video" data-testid="visor-lado-video" onClick={alternarVideo} style={{ position: 'absolute', ...estilo }}>
         <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} />
-        {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} />}
+        {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} cortes={cortes} />}
         {!reproduciendo && (
           <span className="play-visor" aria-hidden="true">
             <IconoEmpezar tamano={30} />
@@ -608,7 +679,8 @@ export default function ReproductorGrabacion({
           value={Math.min(actual, total || 0)}
           onChange={(e) => {
             const s = Number(e.target.value)
-            if (video) video.currentTime = s
+            // -tarea 88- En el reloj de la salida, como de pie. Antes: video.currentTime = s.
+            if (video) video.currentTime = cortes.length > 0 ? aArchivo(s * 1000, cortes) / 1000 : s
             setActual(s)
           }}
           style={{ height: TOQUE_MINIMO, ['--avance' as any]: `${total > 0 ? (actual / total) * 100 : 0}%` }}
@@ -764,7 +836,7 @@ export default function ReproductorGrabacion({
           {/* -tarea 87, A4- El alto del video sale de usarAltoDelVideo; sin medir, el 70vh de antes.
               Antes: maxHeight: '70vh'. */}
           <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ width: '100%', maxHeight: altoVideo ?? '70vh', background: '#000', display: 'block' }} />
-          {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} />}
+          {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} cortes={cortes} />}
           {!reproduciendo && (
             <span className="play-visor" aria-hidden="true">
               <IconoEmpezar tamano={30} />
@@ -787,7 +859,9 @@ export default function ReproductorGrabacion({
             value={Math.min(actual, total || 0)}
             onChange={(e) => {
               const s = Number(e.target.value)
-              if (video) video.currentTime = s
+              // -tarea 88- La barra va en el reloj de la salida: al arrastrar se lleva al del archivo.
+              // Antes: video.currentTime = s.
+              if (video) video.currentTime = cortes.length > 0 ? aArchivo(s * 1000, cortes) / 1000 : s
               setActual(s)
             }}
             style={{ ['--avance' as any]: `${total > 0 ? (actual / total) * 100 : 0}%` }}
@@ -816,7 +890,7 @@ export default function ReproductorGrabacion({
           <div style={{ padding: 'var(--aire-3) var(--aire-3) 0' }}>
             <div style={{ fontWeight: 700 }}>{nombreDeToma(grabacion, guiones)}</div>
             <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
-              {formatearDuracionMs(grabacion.duracionMs)}
+              {formatearDuracionMs(duracionVisible(grabacion))}
               {grabacion.incompleta ? ` · ${t('incompleta')}` : ''}
               {grabacion.errorMudo ? ` · ${t('metaErrorMudo')}` : ''}
               {grabacion.avisoMudo ? ` · ${t('metaAvisoMudo')}` : ''}

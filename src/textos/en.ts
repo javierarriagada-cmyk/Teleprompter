@@ -142,6 +142,11 @@ export const en: Textos = {
   parar: 'Stop',
   guionSinBloques: 'This script has no text',
   grabando: 'Recording',
+  // -tarea 88, 04-10-2026- Gesture control, in the camera panel of READY.
+  controlPorGestos: 'Gesture control',
+  controlPorGestosExplicacion: 'Palm: pause or resume. While paused, a V sign ends the take.',
+  gestosSoloFrontal: 'Front camera only.',
+  gestosNoDisponible: 'Not available on this phone.',
   ajustesEscena: 'Scene settings',
   imagenCamara: 'Camera view',
   imagenDetras: 'Behind the text',

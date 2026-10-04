@@ -74,6 +74,8 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(VoskNativoPlugin.class);
         registerPlugin(CamaraNativaPlugin.class);
         registerPlugin(IdiomaAppPlugin.class);
+        // -tarea 88- El control por gestos -GestosPlugin.java-.
+        registerPlugin(GestosPlugin.class);
         super.onCreate(savedInstanceState);
 
         if (this.bridge != null && this.bridge.getWebView() != null) {

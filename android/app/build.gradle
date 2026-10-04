@@ -128,6 +128,13 @@ android {
             assets.srcDirs += "$buildDir/generated/assets"
         }
     }
+
+    // EL MODELO DE GESTOS SIN COMPRIMIR -tarea 88, 04-10-2026-. MediaPipe abre gesture_recognizer.task
+    // directo desde los assets -BaseOptions.setModelAssetPath- y para eso el archivo tiene que ir sin
+    // comprimir en el paquete. Va en las dos construcciones, la de prueba y la de Play.
+    androidResources {
+        noCompress 'task'
+    }
 }
 
 // EL uuid DEL MODELO. ESTO NO ES OPCIONAL Y NO SE ADIVINA.
@@ -220,6 +227,14 @@ dependencies {
     // src/debug/java, que no pide nada a nadie. Es la única dependencia nueva, y la permite el
     // encargo -"en Android se permiten SOLO las de Google para Play"-.
     releaseImplementation 'com.google.android.play:asset-delivery:2.3.0'
+
+    // CONTROL POR GESTOS -tarea 88, 04-10-2026, aprobada por Javier para esta tarea-. MediaPipe Tasks
+    // Vision, de Google, Apache 2.0: reconoce la palma y la V en un cuadro de la vista previa
+    // -GestosPlugin.java-. La 1.0.0 es la última estable -julio de 2026- y sus .so vienen alineados a
+    // 16 KB, como pide Play: todos los LOAD de libmediapipe_tasks_jni.so -tasks-core-1.0.0.aar- con
+    // alineación 0x4000, mirado con readelf. Trae tasks-core 1.0.0 -con protobuf-javalite, flogger y
+    // guava-. El modelo -gesture_recognizer.task, float16, de Google- va en src/main/assets.
+    implementation 'com.google.mediapipe:tasks-vision:1.0.0'
 
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"

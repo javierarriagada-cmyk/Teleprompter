@@ -635,6 +635,12 @@ public class CamaraNativaPlugin extends Plugin {
             call.reject("subtitulos ilegibles: " + e.getMessage(), e);
             return;
         }
+        // -tarea 88- Los tramos de la receta, al logcat, y la capa anota en qué reloj recibe cada uno.
+        // Solo en la APK de prueba.
+        if (midiendo && receta.tramosMs != null) {
+            android.util.Log.i("Sigo88", "receta tramos=" + ExportadorDeTomas.tramosTexto(receta.tramosMs) + " estilo=" + receta.estilo + " subtitulos=" + receta.cantidadSubtitulos);
+            if (capa != null) capa.anotarTramos(ExportadorDeTomas.iniciosEnSalidaUs(receta.tramosMs));
+        }
         if (midiendo) {
             if (capa != null) capa.medirCon(idMedicion, this::medir);
             medir(MedicionExport.linea("guardado_inicio",
@@ -711,7 +717,10 @@ public class CamaraNativaPlugin extends Plugin {
                         }
                     })
                     .build();
-                t[0].start(item, salida.getAbsolutePath());
+                // -tarea 88- Con tramos, la Composition de ExportadorDeTomas: un MediaItem por tramo que
+                // queda. Sin tramos, el EditedMediaItem de siempre. Antes: t[0].start(item, ...) a secas.
+                if (receta.tramosMs != null) t[0].start(ExportadorDeTomas.composicionConTramos(origen, receta, capa), salida.getAbsolutePath());
+                else t[0].start(item, salida.getAbsolutePath());
                 androidx.media3.transformer.ProgressHolder avance = new androidx.media3.transformer.ProgressHolder();
                 hilo.postDelayed(new Runnable() {
                     @Override

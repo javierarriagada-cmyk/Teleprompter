@@ -247,6 +247,36 @@
   height: 24px;
   background: var(--color-texto-acento);
 }
+/* -tarea 88- Deshabilitado: apagado a la vista y a media opacidad, como Material 3. */
+.interruptor.deshabilitado {
+  opacity: 0.38;
+}
+
+/* LA FILA DE CONTROL POR GESTOS -tarea 88, 04-10-2026-, en el panel de la cámara, debajo de Voltear:
+   el nombre, su explicación -o el motivo- debajo y el interruptor a la derecha. */
+.fila-gestos {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+.fila-gestos-texto {
+  flex: 1;
+  min-width: 0;
+}
+.fila-gestos-nombre {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-texto);
+}
+.fila-gestos-explicacion {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--color-apagado);
+}
+.fila-gestos.deshabilitada .fila-gestos-nombre {
+  color: var(--color-apagado);
+}
 
 .pantalla-ajustes {
   position: fixed;

@@ -146,8 +146,16 @@ function leerOidasYCalces(registro: string): { oidas: Oida[]; calces: Calce[] } 
 }
 
 // forma: la del cuadro de la toma, que decide el largo del renglón -sin dato, vertical-.
+// -tarea 88, 04-10-2026, refactor sin cambio de conducta- El armado de las palabras con hora pasó a
+// armarPalabras, y esto es cortarEnSubtitulos(armarPalabras(...)). Así subtitulosConCortes -abajo-
+// parte de las mismas palabras. Antes el cuerpo de armarPalabras estaba aquí y terminaba en
+// return cortarEnSubtitulos(palabras, maxLetras).
 export function armarSubtitulos(registro: string, forma: FormaCuadro | 'cuadrada' | null = 'vertical'): Subtitulo[] {
-  const maxLetras = letrasPorRenglon(forma)
+  return cortarEnSubtitulos(armarPalabras(registro), letrasPorRenglon(forma))
+}
+
+// LAS PALABRAS DEL GUION CON SU HORA, en el reloj del video -tarea 88: era el cuerpo de armarSubtitulos-.
+export function armarPalabras(registro: string): PalabraSubtitulo[] {
   const corpus = leerCorpus(registro)
   if (!corpus.guion.trim()) return []
   // Las acotaciones entre corchetes no se dicen -B9- y no van al subtitulo.
@@ -242,7 +250,8 @@ export function armarSubtitulos(registro: string, forma: FormaCuadro | 'cuadrada
   const palabras: PalabraSubtitulo[] = []
   for (let k = 0; k < fin; k++) palabras.push({ texto: tokens[k].texto, desdeMs: hora[k].a, hastaMs: hora[k].b })
 
-  return cortarEnSubtitulos(palabras, maxLetras)
+  // Antes: return cortarEnSubtitulos(palabras, maxLetras) -ahora lo hace armarSubtitulos-.
+  return palabras
 }
 
 const largo = (ws: PalabraSubtitulo[]) => ws.reduce((s, x) => s + x.texto.length, 0) + Math.max(0, ws.length - 1)
@@ -272,14 +281,19 @@ export function partirEnRenglones(ws: PalabraSubtitulo[], maxLetras: number = MA
   return ls
 }
 
-function cortarEnSubtitulos(palabras: PalabraSubtitulo[], maxLetras: number = MAX_LETRAS_RENGLON): Subtitulo[] {
+// -tarea 88- uniones: dónde quedan, en el reloj de la SALIDA, las uniones de una toma con cortes. En una
+// unión se corta SIEMPRE, como en un punto: "de la" no pasa al siguiente. Y ningún subtítulo dura más
+// allá de la unión que sigue a su última palabra. Sin uniones, todo igual que antes.
+function cortarEnSubtitulos(palabras: PalabraSubtitulo[], maxLetras: number = MAX_LETRAS_RENGLON, uniones: number[] = []): Subtitulo[] {
   const grupos: PalabraSubtitulo[][] = []
   let actual: PalabraSubtitulo[] = []
   for (const x of palabras) {
     if (actual.length) {
       const prev = actual[actual.length - 1]
       const pausa = x.desdeMs - prev.hastaMs
-      const cierra = /[.?!:;…]$/.test(prev.texto)
+      const cruzaUnion = uniones.some((u) => prev.hastaMs <= u && u <= x.desdeMs)
+      // Antes: const cierra = /[.?!:;…]$/.test(prev.texto). Una unión cierra como un punto.
+      const cierra = /[.?!:;…]$/.test(prev.texto) || cruzaUnion
       const coma = /[,—–)]$/.test(prev.texto)
       const noCabe = partirEnRenglones([...actual, x], maxLetras).length > 2
       const muyLargo = x.hastaMs - actual[0].desdeMs > MAX_MS_SUBTITULO
@@ -300,12 +314,49 @@ function cortarEnSubtitulos(palabras: PalabraSubtitulo[], maxLetras: number = MA
 
   return grupos.map((ws, q) => {
     const siguiente = q + 1 < grupos.length ? grupos[q + 1][0].desdeMs : Infinity
+    const fin = ws[ws.length - 1].hastaMs
+    // -tarea 88- La unión que viene después de su última palabra lo corta: no pasa al otro tramo.
+    const union = uniones.filter((u) => u >= fin).reduce((m, u) => Math.min(m, u), Infinity)
     return {
       desdeMs: Math.max(0, ws[0].desdeMs),
-      hastaMs: Math.min(siguiente, ws[ws.length - 1].hastaMs + SE_QUEDA_MS),
+      // Antes: Math.min(siguiente, ws[ws.length - 1].hastaMs + SE_QUEDA_MS).
+      hastaMs: Math.min(siguiente, fin + SE_QUEDA_MS, union),
       renglones: partirEnRenglones(ws, maxLetras)
     }
   })
+}
+
+// LOS SUBTÍTULOS DE UNA TOMA CON CORTES -tarea 88, 04-10-2026, docs/tarea88.txt, 5.1-. Son los que se
+// queman al guardar Y los que muestra el visor: lo que se ve es lo que queda. Los cortes vienen en el
+// reloj del archivo -tramos.ts, tramosACortar-; los subtítulos salen en el de la SALIDA.
+//   - La palabra cuyo MEDIO cae en un corte se va.
+//   - La que pisa el borde de un corte se recorta a ese borde.
+//   - Las uniones -cada corte llevado a la salida- cortan siempre.
+// Sin cortes es exactamente armarSubtitulos. Respeta la forma del cuadro -32 o 47 letras, tarea 87-.
+export function subtitulosConCortes(
+  registro: string,
+  forma: FormaCuadro | 'cuadrada' | null,
+  cortes: Array<{ desdeMs: number; hastaMs: number }>
+): Subtitulo[] {
+  if (!cortes || cortes.length === 0) return armarSubtitulos(registro, forma)
+  const ordenados = [...cortes].sort((a, b) => a.desdeMs - b.desdeMs)
+  // Del archivo a la salida, para un instante que no cae dentro de un corte -o cae justo en su borde-.
+  const menosAntes = (t: number) => t - ordenados.reduce((s, c) => s + (c.hastaMs <= t ? c.hastaMs - c.desdeMs : 0), 0)
+  const quedan: PalabraSubtitulo[] = []
+  for (const w of armarPalabras(registro)) {
+    const medio = (w.desdeMs + w.hastaMs) / 2
+    if (ordenados.some((c) => medio >= c.desdeMs && medio < c.hastaMs)) continue
+    let d = w.desdeMs
+    let h = w.hastaMs
+    for (const c of ordenados) {
+      if (c.hastaMs <= d || c.desdeMs >= h) continue
+      if (medio < c.desdeMs) h = Math.min(h, c.desdeMs)
+      else d = Math.max(d, c.hastaMs)
+    }
+    quedan.push({ texto: w.texto, desdeMs: menosAntes(d), hastaMs: menosAntes(h) })
+  }
+  const uniones = ordenados.map((c) => menosAntes(c.hastaMs))
+  return cortarEnSubtitulos(quedan, letrasPorRenglon(forma), uniones)
 }
 
 // LOS TRES ESTILOS, CERRADOS -Javier, 24-09-2026-: el amarillo del prototipo,
