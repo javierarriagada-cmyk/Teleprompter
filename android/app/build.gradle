@@ -270,6 +270,9 @@ dependencies {
     //   implementation('com.google.mediapipe:tasks-vision:1.0.0') {
     //       exclude group: 'com.google.android.datatransport', module: 'transport-backend-cct'
     //   }
+    // -2026-10-04, decisión de Javier- Se eligió lo primero: el registro del backend "cct" sale del
+    // manifiesto con tools:node="remove" -src/main/AndroidManifest.xml, junto a
+    // TransportBackendDiscovery-. Aquí no hay exclusión y las versiones de transport-* quedan como estaban.
     implementation 'com.google.mediapipe:tasks-vision:1.0.0'
 
     testImplementation "junit:junit:$junitVersion"

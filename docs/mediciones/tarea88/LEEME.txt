@@ -48,3 +48,6 @@ SEGUNDA VUELTA -04-10-2026, después de la toma 6cce33b4 en el moto g86-
         Si hay con qué mandar las estadísticas de MediaPipe. La exclusión NO se aplicó: ver
         android/app/build.gradle, junto a tasks-vision. Para ver intentos de envío:
         adb logcat | grep -iE "TRuntime|CctTransportBackend|datatransport"
+  -2026-10-04, decisión de Javier- El backend "cct" sale del manifiesto -tools:node="remove" en
+  android/app/src/main/AndroidManifest.xml-. En el teléfono la línea debería decir claseCct=si
+  backendCct=no, el reconocedor arranca y no hay intentos de envío en el logcat.
