@@ -1,0 +1,170 @@
+{
+ "etapa": "antes",
+ "letrasMW": 32,
+ "pieNormal": {
+  "imagen": {
+   "ancho": 371.5,
+   "alto": 209
+  },
+  "letra": 6.53,
+  "disponible": 327,
+  "renglones": [
+   {
+    "texto": "que podríamos llamar",
+    "letras": 20,
+    "ancho": 63.9,
+    "lineas": 1
+   },
+   {
+    "texto": "la concepción trágica",
+    "letras": 21,
+    "ancho": 62.5,
+    "lineas": 1
+   }
+  ],
+  "cabe": true,
+  "abajo": 34.8
+ },
+ "pieMW": {
+  "imagen": {
+   "ancho": 371.5,
+   "alto": 209
+  },
+  "letra": 6.53,
+  "disponible": 327,
+  "renglones": [
+   {
+    "texto": "MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW",
+    "letras": 32,
+    "ancho": 182.5,
+    "lineas": 1
+   }
+  ],
+  "cabe": true,
+  "abajo": 34.8
+ },
+ "ladoNormal": {
+  "imagen": {
+   "ancho": 638,
+   "alto": 358.9
+  },
+  "letra": 11.21,
+  "disponible": 561.4,
+  "renglones": [
+   {
+    "texto": "que podríamos llamar",
+    "letras": 20,
+    "ancho": 109.8,
+    "lineas": 1
+   },
+   {
+    "texto": "la concepción trágica",
+    "letras": 21,
+    "ancho": 107.5,
+    "lineas": 1
+   }
+  ],
+  "cabe": true,
+  "abajo": 59.8
+ },
+ "ladoMW": {
+  "imagen": {
+   "ancho": 638,
+   "alto": 358.9
+  },
+  "letra": 11.21,
+  "disponible": 561.4,
+  "renglones": [
+   {
+    "texto": "MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW",
+    "letras": 32,
+    "ancho": 313.8,
+    "lineas": 1
+   }
+  ],
+  "cabe": true,
+  "abajo": 59.8
+ },
+ "cuadro-normal": {
+  "W": 1920,
+  "H": 1080,
+  "forma": "horizontal",
+  "maxLetras": 32,
+  "letraBase": 33.75,
+  "letra": 33.75,
+  "ajustada": false,
+  "renglonMasAnchoBase": 330.8,
+  "renglonMasAncho": 330.8,
+  "disponible": 1689.6,
+  "renglones": [
+   "que podríamos llamar",
+   "la concepción trágica"
+  ],
+  "letrasPorRenglon": [
+   20,
+   21
+  ],
+  "hora": 3500
+ },
+ "cuadro-mw": {
+  "W": 1920,
+  "H": 1080,
+  "forma": "horizontal",
+  "maxLetras": 32,
+  "letraBase": 33.75,
+  "letra": 33.75,
+  "ajustada": false,
+  "renglonMasAnchoBase": 945.3,
+  "renglonMasAncho": 945.3,
+  "disponible": 1689.6,
+  "renglones": [
+   "MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW"
+  ],
+  "letrasPorRenglon": [
+   32
+  ],
+  "hora": 3500
+ },
+ "cuadro-vertical": {
+  "W": 1080,
+  "H": 1920,
+  "forma": "vertical",
+  "maxLetras": 32,
+  "letraBase": 60,
+  "letra": 60,
+  "ajustada": false,
+  "renglonMasAnchoBase": 588.1,
+  "renglonMasAncho": 588.1,
+  "disponible": 950.4,
+  "renglones": [
+   "que podríamos llamar",
+   "la concepción trágica"
+  ],
+  "letrasPorRenglon": [
+   20,
+   21
+  ],
+  "hora": 3500
+ },
+ "cuadro-720": {
+  "W": 1280,
+  "H": 720,
+  "forma": "horizontal",
+  "maxLetras": 32,
+  "letraBase": 22.5,
+  "letra": 22.5,
+  "ajustada": false,
+  "renglonMasAnchoBase": 220.5,
+  "renglonMasAncho": 220.5,
+  "disponible": 1126.4,
+  "renglones": [
+   "que podríamos llamar",
+   "la concepción trágica"
+  ],
+  "letrasPorRenglon": [
+   20,
+   21
+  ],
+  "hora": 3500
+ }
+}

@@ -24,6 +24,9 @@ interface PanelDiagnosticoProps {
   verTranscripcion: boolean
   setVerTranscripcion: (ver: boolean) => void
   setMostrarPanelCorpus: (mostrar: boolean) => void
+  // Tarea 87, paso 0 -03-10-2026-: el panel de mediciones de exportación. Opcional: sin él, el
+  // botón no aparece.
+  setMostrarPanelMediciones?: (mostrar: boolean) => void
 }
 
 export function PanelDiagnostico({
@@ -42,7 +45,8 @@ export function PanelDiagnostico({
   setEngine,
   verTranscripcion,
   setVerTranscripcion,
-  setMostrarPanelCorpus
+  setMostrarPanelCorpus,
+  setMostrarPanelMediciones
 }: PanelDiagnosticoProps) {
   return (
     /* Franja de estado escondida por omision - se activa mediante toque largo en el resumen de la biblioteca */
@@ -141,6 +145,27 @@ export function PanelDiagnostico({
         >
           Medición / Panel Corpus
         </button>
+        {/* Tarea 87, paso 0 -03-10-2026-: medir la exportación en el moto g86 -cuánto tarda guardar
+            con subtítulos, la forma real del archivo, la cámara-. Mismo estilo que el de arriba. */}
+        {setMostrarPanelMediciones && (
+          <button
+            type="button"
+            data-testid="btn-abrir-mediciones"
+            onClick={() => setMostrarPanelMediciones(true)}
+            style={{
+              display: 'block',
+              padding: 'var(--aire-2) 0',
+              textAlign: 'left',
+              background: 'transparent',
+              border: 'none',
+              color: 'var(--color-texto)',
+              fontSize: 'var(--texto-cuerpo)',
+              cursor: 'pointer'
+            }}
+          >
+            Medición / Exportación
+          </button>
+        )}
       </div>
     </div>
   )

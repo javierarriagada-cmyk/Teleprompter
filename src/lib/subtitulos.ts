@@ -31,6 +31,15 @@ import { tokenizarGuion } from './seguidor'
 // apretar el boton la cierra. Si alguien corta hablando, esas palabras toman
 // la hora del seguidor -el calce- y no se pierden. No se toco el orden del corte.
 
+// DÓNDE VA EL SUBTÍTULO -tarea 87, 04-10-2026, decidido por Javier-. UNA sola posición para todo:
+// el borde de abajo del bloque -la caja del último renglón- queda a 1/6 del alto de la IMAGEN,
+// contado desde abajo, igual en vertical y en horizontal. La usan el visor -CapaSubtitulos, en
+// SubtitulosVisor.tsx- y, del lado nativo, la MISMA cifra está en UbicacionSubtitulos.java
+// -MARGEN_ABAJO-, que usa CapaDeSubtitulos.java para el archivo guardado: si se cambia una, se
+// cambia la otra. Antes: un octavo -0,125, "160 sobre 1280" del prototipo-, escrito a mano en los
+// dos lados.
+export const MARGEN_ABAJO_SUBTITULOS = 1 / 6
+
 export type PalabraSubtitulo = {
   texto: string      // como esta en el guion, con su puntuacion
   desdeMs: number
@@ -46,7 +55,42 @@ export type Subtitulo = {
 // Renglones de hasta 32 letras, dos como maximo. Una frase de 57 letras
 // cortada de a 32 da tres renglones: por eso "no cabe" se decide armando los
 // renglones, no contando letras.
-export const MAX_LETRAS_RENGLON = 32
+// -tarea 87, subtítulos en horizontal, 04-10-2026, pedido de Javier- El largo del renglón depende de
+// la forma del cuadro -la imagen vista derecha-: 32 letras en vertical, como siempre, y 47 en
+// horizontal, que con la letra medida contra el lado corto ocupan lo mismo del ancho. UNA constante,
+// la misma de UbicacionSubtitulos.java -LETRAS_VERTICAL y LETRAS_HORIZONTAL-: si se cambia una, se
+// cambia la otra. Cuadrado cuenta como vertical. Antes: MAX_LETRAS_RENGLON = 32, para todo.
+export type FormaCuadro = 'vertical' | 'horizontal'
+export const LETRAS_POR_RENGLON: Readonly<Record<FormaCuadro, number>> = { vertical: 32, horizontal: 47 }
+// La de la vertical, con su nombre de siempre.
+export const MAX_LETRAS_RENGLON = LETRAS_POR_RENGLON.vertical
+export function formaDelCuadro(ancho: number, alto: number): FormaCuadro {
+  return ancho > alto ? 'horizontal' : 'vertical'
+}
+export function letrasPorRenglon(forma: FormaCuadro | 'cuadrada' | null | undefined): number {
+  return forma === 'horizontal' ? LETRAS_POR_RENGLON.horizontal : LETRAS_POR_RENGLON.vertical
+}
+// LA LETRA, contra el LADO CORTO del cuadro -mismo pedido-: 1/32 de 1920 en una imagen de 1080 de
+// lado corto, o sea 60 px en 1080 y 40 en 720, en las dos orientaciones. En la vertical de 9:16 es la
+// letra de siempre -1/32 del alto, la del prototipo, 40 sobre 1280-. La misma cuenta que
+// UbicacionSubtitulos.letra en Java. Antes: alto / 32, que en horizontal daba 33,75 en 1080.
+// -04-10-2026, aprobado por Javier- El MENOR entre lado corto / 18 y lado largo / 32: en 16:9 los dos
+// dan lo mismo -60 en 1920×1080 y en 1080×1920- y ninguna vertical cambia -un 480×640 sigue en 20,
+// lado largo / 32, como antes; con solo el lado corto daba 26,7-. Antes: lado corto / 18 a secas.
+export const LADO_CORTO_EN_LETRAS = 18
+export const LADO_LARGO_EN_LETRAS = 32
+export function letraSubtitulo(ancho: number, alto: number): number {
+  return Math.min(Math.min(ancho, alto) / LADO_CORTO_EN_LETRAS, Math.max(ancho, alto) / LADO_LARGO_EN_LETRAS)
+}
+// EL AJUSTE DEL RENGLÓN ANCHO -04-10-2026, aprobado por Javier-: si el renglón más ancho del subtítulo,
+// medido a la letra "letra", pasa del 88 % del ancho de la imagen, se achica la letra de todo ese
+// subtítulo en la misma proporción. La misma cuenta que UbicacionSubtitulos.letraQueCabe del archivo:
+// así el visor muestra lo mismo que se guarda.
+export const ANCHO_UTIL_SUBTITULOS = 0.88
+export function letraQueCabe(letra: number, masAncho: number, ancho: number): number {
+  const util = ancho * ANCHO_UTIL_SUBTITULOS
+  return masAncho > util ? (letra * util) / masAncho : letra
+}
 // Una pausa de la voz de mas de esto corta el subtitulo aunque la oracion siga.
 export const PAUSA_QUE_CORTA_MS = 450
 export const MAX_MS_SUBTITULO = 5000
@@ -101,7 +145,9 @@ function leerOidasYCalces(registro: string): { oidas: Oida[]; calces: Calce[] } 
   return { oidas, calces }
 }
 
-export function armarSubtitulos(registro: string): Subtitulo[] {
+// forma: la del cuadro de la toma, que decide el largo del renglón -sin dato, vertical-.
+export function armarSubtitulos(registro: string, forma: FormaCuadro | 'cuadrada' | null = 'vertical'): Subtitulo[] {
+  const maxLetras = letrasPorRenglon(forma)
   const corpus = leerCorpus(registro)
   if (!corpus.guion.trim()) return []
   // Las acotaciones entre corchetes no se dicen -B9- y no van al subtitulo.
@@ -196,7 +242,7 @@ export function armarSubtitulos(registro: string): Subtitulo[] {
   const palabras: PalabraSubtitulo[] = []
   for (let k = 0; k < fin; k++) palabras.push({ texto: tokens[k].texto, desdeMs: hora[k].a, hastaMs: hora[k].b })
 
-  return cortarEnSubtitulos(palabras)
+  return cortarEnSubtitulos(palabras, maxLetras)
 }
 
 const largo = (ws: PalabraSubtitulo[]) => ws.reduce((s, x) => s + x.texto.length, 0) + Math.max(0, ws.length - 1)
@@ -204,7 +250,7 @@ const largo = (ws: PalabraSubtitulo[]) => ws.reduce((s, x) => s + x.texto.length
 // Renglones parejos, como armar(L) de FiloStudio: si la frase ocupa dos
 // renglones, se busca el ancho mas chico que siga dando dos, para que no quede
 // uno largo y uno cojo.
-export function partirEnRenglones(ws: PalabraSubtitulo[]): PalabraSubtitulo[][] {
+export function partirEnRenglones(ws: PalabraSubtitulo[], maxLetras: number = MAX_LETRAS_RENGLON): PalabraSubtitulo[][] {
   const armar = (L: number) => {
     const ls: PalabraSubtitulo[][] = []
     let cur: PalabraSubtitulo[] = []
@@ -215,9 +261,10 @@ export function partirEnRenglones(ws: PalabraSubtitulo[]): PalabraSubtitulo[][] 
     if (cur.length) ls.push(cur)
     return ls
   }
-  let ls = armar(MAX_LETRAS_RENGLON)
+  // Antes: armar(MAX_LETRAS_RENGLON) y L < MAX_LETRAS_RENGLON.
+  let ls = armar(maxLetras)
   if (ls.length > 1) {
-    for (let L = Math.ceil(largo(ws) / ls.length); L < MAX_LETRAS_RENGLON; L++) {
+    for (let L = Math.ceil(largo(ws) / ls.length); L < maxLetras; L++) {
       const t = armar(L)
       if (t.length === ls.length) { ls = t; break }
     }
@@ -225,7 +272,7 @@ export function partirEnRenglones(ws: PalabraSubtitulo[]): PalabraSubtitulo[][] 
   return ls
 }
 
-function cortarEnSubtitulos(palabras: PalabraSubtitulo[]): Subtitulo[] {
+function cortarEnSubtitulos(palabras: PalabraSubtitulo[], maxLetras: number = MAX_LETRAS_RENGLON): Subtitulo[] {
   const grupos: PalabraSubtitulo[][] = []
   let actual: PalabraSubtitulo[] = []
   for (const x of palabras) {
@@ -234,9 +281,9 @@ function cortarEnSubtitulos(palabras: PalabraSubtitulo[]): Subtitulo[] {
       const pausa = x.desdeMs - prev.hastaMs
       const cierra = /[.?!:;…]$/.test(prev.texto)
       const coma = /[,—–)]$/.test(prev.texto)
-      const noCabe = partirEnRenglones([...actual, x]).length > 2
+      const noCabe = partirEnRenglones([...actual, x], maxLetras).length > 2
       const muyLargo = x.hastaMs - actual[0].desdeMs > MAX_MS_SUBTITULO
-      if (cierra || pausa > PAUSA_QUE_CORTA_MS || noCabe || muyLargo || (coma && largo(actual) > MAX_LETRAS_RENGLON)) {
+      if (cierra || pausa > PAUSA_QUE_CORTA_MS || noCabe || muyLargo || (coma && largo(actual) > maxLetras)) {
         // En un punto o en una pausa real manda la voz; solo cuando se corta por
         // espacio o por tiempo, "de la" pasa al subtitulo siguiente.
         const pasan: PalabraSubtitulo[] = []
@@ -256,7 +303,7 @@ function cortarEnSubtitulos(palabras: PalabraSubtitulo[]): Subtitulo[] {
     return {
       desdeMs: Math.max(0, ws[0].desdeMs),
       hastaMs: Math.min(siguiente, ws[ws.length - 1].hastaMs + SE_QUEDA_MS),
-      renglones: partirEnRenglones(ws)
+      renglones: partirEnRenglones(ws, maxLetras)
     }
   })
 }

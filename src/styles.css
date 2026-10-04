@@ -1561,6 +1561,8 @@ label.selector-aa-opcion {
   /* Un octavo del alto desde abajo, como el prototipo -160 sobre 1280-. Va en
      linea, en SubtitulosVisor.tsx: un margen en % se mide contra el ANCHO, y en
      una toma vertical quedaba a la mitad de altura. */
+  /* -tarea 87, 04-10-2026- Ahora es un sexto, en vertical y en horizontal:
+     MARGEN_ABAJO_SUBTITULOS en lib/subtitulos.ts, la misma cifra del archivo. */
   margin: 0 6%;
   text-align: center;
   line-height: 1.25;
@@ -1628,6 +1630,12 @@ button.boton-subtitulos {
 }
 button.boton-subtitulos.con-subtitulos {
   border-color: var(--color-acento);
+}
+/* -tarea 87, 04-10-2026- Mientras se guarda, la ficha de Subtítulos queda desactivada, como las
+   acciones de la toma -.accion-toma:disabled-. */
+button.boton-subtitulos:disabled {
+  opacity: 0.7;
+  cursor: default;
 }
 .boton-subtitulos-nombre {
   font-weight: 600;

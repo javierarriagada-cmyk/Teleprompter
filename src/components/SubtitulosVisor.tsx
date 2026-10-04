@@ -1,6 +1,7 @@
 import React from 'react'
 import { hapticaSeleccion } from '../haptica'
-import { ESTILOS_SUBTITULO, EstiloSubtitulo, Subtitulo, subtituloEn } from '../lib/subtitulos'
+import { ESTILOS_SUBTITULO, EstiloSubtitulo, Subtitulo, subtituloEn, MARGEN_ABAJO_SUBTITULOS, letraSubtitulo, letraQueCabe } from '../lib/subtitulos'
+import { anchoDelRenglonMasAncho } from '../lib/medirTexto'
 import { t, useTextos, ClaveTexto } from '../textos'
 import { IconoSubtitulos } from './IconosApp'
 
@@ -84,12 +85,19 @@ export function CapaSubtitulos({
   if (estilo === 'no' || !rect) return null
   const s = subtituloEn(subtitulos, ms)
   if (!s) return null
+  // -tarea 87, 04-10-2026, aprobado por Javier- La letra del cuadro y, si el renglón más ancho no cabe
+  // en el 88 % de la imagen, la misma letra achicada que tendrá quemada -letraQueCabe, la cuenta de
+  // UbicacionSubtitulos.java-. Medido con canvas y Roboto -lib/medirTexto.ts-; sin medida, sin ajuste.
+  const letraBase = letraSubtitulo(rect.w, rect.h)
+  const masAncho = anchoDelRenglonMasAncho(s.renglones.map((r) => r.map((w) => w.texto).join(' ')), letraBase, estilo !== 'formal')
+  const letra = masAncho === null ? letraBase : letraQueCabe(letraBase, masAncho, rect.w)
 
   return (
     <div
       className="capa-subtitulos"
       data-testid="capa-subtitulos"
       data-estilo={estilo}
+      data-letra-base={letraBase}
       aria-hidden="true"
       style={{
         left: rect.x,
@@ -99,10 +107,16 @@ export function CapaSubtitulos({
         // La letra es una proporcion del alto de la imagen, igual que tendra
         // quemada: 1/32 del alto, la del prototipo que Javier aprobo -40 sobre
         // 1280-.
-        fontSize: rect.h / 32
+        // -tarea 87, subtítulos en horizontal- Contra el lado corto de la imagen, la misma cuenta del
+        // archivo: en vertical es la de siempre; en horizontal ya no sale chica. Antes: rect.h / 32.
+        // Antes, en esta misma tarea: letraSubtitulo(rect.w, rect.h), sin el ajuste del renglón ancho.
+        fontSize: letra
       }}
     >
-      <div className="subtitulo" style={{ marginBottom: rect.h * 0.125 }}>
+      {/* -tarea 87, 04-10-2026- Un sexto del alto de la imagen, en vertical y en horizontal: la
+          constante compartida de lib/subtitulos.ts, la misma cifra del archivo guardado. Antes:
+          marginBottom: rect.h * 0.125. */}
+      <div className="subtitulo" style={{ marginBottom: rect.h * MARGEN_ABAJO_SUBTITULOS }}>
         {s.renglones.map((r, i) => (
           <div key={i} className="subtitulo-renglon">
             {r.map((w, j) => {
@@ -145,15 +159,31 @@ function nombreDeEstilo(estilo: EstiloSubtitulo): string {
   return clave ? t(clave) : estilo
 }
 
+// -tarea 87, A4, 04-10-2026- Tres props opcionales; sin ellas queda EXACTAMENTE como antes:
+//   abierto y onAbrir: el visor sabe si el panel está abierto -esconde el nombre de la toma para
+//   que el video gane alto- y lo maneja él;
+//   desactivado: mientras se guarda, la ficha no se abre -respuesta de Claude del 04-10-.
 export function SelectorSubtitulos({
   estilo,
-  onCambiar
+  onCambiar,
+  abierto: abiertoDeAfuera,
+  onAbrir,
+  desactivado
 }: {
   estilo: EstiloSubtitulo
   onCambiar: (e: EstiloSubtitulo) => void
+  abierto?: boolean
+  onAbrir?: (abierto: boolean) => void
+  desactivado?: boolean
 }) {
   useTextos()
-  const [abierto, setAbierto] = React.useState(false)
+  const [abiertoPropio, setAbiertoPropio] = React.useState(false)
+  const abierto = abiertoDeAfuera ?? abiertoPropio
+  const setAbierto = (a: boolean | ((previo: boolean) => boolean)) => {
+    const nuevo = typeof a === 'function' ? a(abierto) : a
+    setAbiertoPropio(nuevo)
+    onAbrir?.(nuevo)
+  }
   const nombre = nombreDeEstilo(estilo)
   return (
     <div className="selector-subtitulos">
@@ -161,6 +191,7 @@ export function SelectorSubtitulos({
         type="button"
         data-testid="btn-subtitulos"
         aria-expanded={abierto}
+        disabled={desactivado}
         className={`btn-deformable boton-subtitulos${estilo !== 'no' ? ' con-subtitulos' : ''}`}
         onClick={() => setAbierto((a) => !a)}
       >

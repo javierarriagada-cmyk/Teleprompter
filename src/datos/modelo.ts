@@ -134,6 +134,10 @@ export type ResumenGrabacion = {
   galeriaUri?: string
   // Con que subtitulos quedo esa copia: el visor la muestra igual.
   estiloGaleria?: 'no' | 'amarillo' | 'rojo' | 'formal'
+  // -tarea 87, parte C, 04-10-2026- Cómo se VE la toma -lib/orientacion.ts-: un 1920x1080 con
+  // rotación 90 es vertical. Sin el dato -toma vieja o APK viejo- el visor la analiza al abrirla.
+  // Campo opcional: no se sube DB_VERSION.
+  orientacion?: 'vertical' | 'horizontal' | 'cuadrada'
 }
 
 export function grabacionNueva(parcial: Partial<ResumenGrabacion> & Pick<ResumenGrabacion, 'tituloGuion'>): ResumenGrabacion {
@@ -152,7 +156,8 @@ export function grabacionNueva(parcial: Partial<ResumenGrabacion> & Pick<Resumen
     errorMudo: parcial.errorMudo,
     calidad: parcial.calidad,
     galeriaUri: parcial.galeriaUri,
-    estiloGaleria: parcial.estiloGaleria
+    estiloGaleria: parcial.estiloGaleria,
+    orientacion: parcial.orientacion
   }
 }
 
