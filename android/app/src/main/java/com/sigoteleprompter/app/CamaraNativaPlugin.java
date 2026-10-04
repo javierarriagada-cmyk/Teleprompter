@@ -1,9 +1,14 @@
 package com.sigoteleprompter.app;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
+import android.util.Log;
+import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1019,6 +1024,83 @@ public class CamaraNativaPlugin extends Plugin {
                 call.resolve(ret);
             } catch (Exception e) {
                 call.reject("Error al restaurar brillo: " + e.getMessage(), e);
+            }
+        });
+    }
+
+    // LA ORIENTACIÓN DE LA TOMA -tarea 91, 04-10-2026-. Mientras dura una toma -de Empezar a Parar, en
+    // Leer y en Grabar- la pantalla se queda en la orientación que tenía al empezar, como la cámara del
+    // teléfono. La web lo pide desde un solo lugar -src/lib/orientacionToma.ts-. Va en este plugin
+    // porque es el de la toma y ya maneja la ventana de la actividad -fijarBrillo-: sin plugin nuevo.
+    // El mapeo de la rotación está en OrientacionDeToma, con su prueba JVM.
+    private static final String ETIQUETA_ORIENTACION = "SigoOrientacion";
+    // La que pedía la actividad antes de fijar -la del manifiesto, UNSPECIFIED-; null si no hay nada fijado.
+    private Integer orientacionAntesDeLaToma = null;
+    // La que se fijó al empezar: al volver de segundo plano con la toma andando se fija la misma.
+    private Integer orientacionDeLaToma = null;
+
+    private Display pantallaDe(Activity a) {
+        if (android.os.Build.VERSION.SDK_INT >= 30) return a.getDisplay();
+        return a.getWindowManager().getDefaultDisplay();
+    }
+
+    @PluginMethod
+    public void fijarOrientacion(PluginCall call) {
+        boolean repetir = Boolean.TRUE.equals(call.getBoolean("repetir", false));
+        Activity a = getActivity();
+        a.runOnUiThread(() -> {
+            try {
+                Display d = pantallaDe(a);
+                int rotacion = d != null ? d.getRotation() : 0;
+                boolean ahoraVertical = a.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+                boolean natural = OrientacionDeToma.naturalEsVertical(rotacion, ahoraVertical);
+                int calculada = OrientacionDeToma.paraRotacion(rotacion, natural);
+                int fijar = repetir && orientacionDeLaToma != null ? orientacionDeLaToma : calculada;
+                if (orientacionAntesDeLaToma == null) orientacionAntesDeLaToma = a.getRequestedOrientation();
+                orientacionDeLaToma = fijar;
+                a.setRequestedOrientation(fijar);
+                Log.i(ETIQUETA_ORIENTACION, "fijar rotacion=" + OrientacionDeToma.grados(rotacion)
+                    + " natural=" + (natural ? "vertical" : "horizontal")
+                    + " ahora=" + (ahoraVertical ? "vertical" : "horizontal")
+                    + " orientacion=" + OrientacionDeToma.nombre(fijar) + "(" + fijar + ")"
+                    + " repetir=" + repetir
+                    + " anterior=" + OrientacionDeToma.nombre(orientacionAntesDeLaToma) + "(" + orientacionAntesDeLaToma + ")");
+                JSObject ret = new JSObject();
+                ret.put("rotacion", OrientacionDeToma.grados(rotacion));
+                ret.put("orientacion", OrientacionDeToma.nombre(fijar));
+                ret.put("valor", fijar);
+                ret.put("anterior", OrientacionDeToma.nombre(orientacionAntesDeLaToma));
+                ret.put("natural", natural ? "vertical" : "horizontal");
+                call.resolve(ret);
+            } catch (Exception e) {
+                Log.w(ETIQUETA_ORIENTACION, "no se pudo fijar: " + e.getMessage());
+                call.reject("Error al fijar la orientación: " + e.getMessage(), e);
+            }
+        });
+    }
+
+    @PluginMethod
+    public void soltarOrientacion(PluginCall call) {
+        // olvidar=false al ir a segundo plano: se suelta, pero la toma sigue y al volver se fija la misma.
+        boolean olvidar = !Boolean.FALSE.equals(call.getBoolean("olvidar", true));
+        Activity a = getActivity();
+        a.runOnUiThread(() -> {
+            try {
+                int volver = orientacionAntesDeLaToma != null ? orientacionAntesDeLaToma : ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+                a.setRequestedOrientation(volver);
+                orientacionAntesDeLaToma = null;
+                if (olvidar) orientacionDeLaToma = null;
+                Display d = pantallaDe(a);
+                int rotacion = d != null ? d.getRotation() : 0;
+                Log.i(ETIQUETA_ORIENTACION, "soltar orientacion=" + OrientacionDeToma.nombre(volver) + "(" + volver + ")"
+                    + " rotacion=" + OrientacionDeToma.grados(rotacion) + " olvidar=" + olvidar);
+                JSObject ret = new JSObject();
+                ret.put("orientacion", OrientacionDeToma.nombre(volver));
+                ret.put("rotacion", OrientacionDeToma.grados(rotacion));
+                call.resolve(ret);
+            } catch (Exception e) {
+                Log.w(ETIQUETA_ORIENTACION, "no se pudo soltar: " + e.getMessage());
+                call.reject("Error al soltar la orientación: " + e.getMessage(), e);
             }
         });
     }

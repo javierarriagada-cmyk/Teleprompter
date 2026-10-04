@@ -8,6 +8,12 @@ import { armarSubtitulos, estiloSubtituloGuardado, guardarEstiloSubtitulo, Estil
 import { CapaSubtitulos, SelectorSubtitulos } from './SubtitulosVisor'
 import { t, useTextos } from '../textos'
 import { IconoGuardar, IconoCompartir, IconoRepetir, IconoCerrar, IconoTacho, IconoEmpezar, IconoPausa } from './IconosApp'
+// EL VISOR DE LADO -tarea 90-. Ver lib/visorDeLado.ts y styles-visor-de-lado.css.
+import useLayout from '../hooks/useLayout'
+import useBordesSeguros, { LecturaBordes } from '../hooks/useBordesSeguros'
+import { FormaVideo, formaDeVideo, medidasVisorDeLado, TOQUE_MINIMO, ROTULO_MINIMO, ALTO_BARRA_REPRODUCCION } from '../lib/visorDeLado'
+import { tomarBarrasParaElVisor, soltarBarrasDelVisor, msDesdeQueSeOculto } from '../lib/barrasDelSistema'
+import { anotarVisorLado, volcarRegistroVisorLado } from '../lib/registroVisorLado'
 
 // EL ALTO DEL VIDEO -tarea 87, A4, corrección (1), 04-10-2026-. Como en el boceto aprobado
 // -docs/pantallas/tarea87/herramientas/boceto.tsx, usarAltoDelVideo-: la tarjeta mide como mucho el
@@ -110,18 +116,94 @@ export default function ReproductorGrabacion({
   const [reproduciendo, setReproduciendo] = React.useState(false)
   const [actual, setActual] = React.useState(0)
   const [total, setTotal] = React.useState(grabacion.duracionMs / 1000)
+  // -tarea 90-: al girar el teléfono el visor cambia de disposición y el <video> es otro elemento. El
+  // nuevo sigue desde donde iba el anterior -reanudarEn- en vez de volver a 0.
+  // -04-10-2026, después del #68-: además de la posición se guarda si iba reproduciéndose. Antes el
+  // nuevo quedaba siempre en pausa; ahora, si el de antes andaba, el nuevo sigue andando -play() al
+  // cargar-, y si estaba en pausa, sigue en pausa. «iba» se lleva con los eventos play/pause del
+  // elemento MIENTRAS ESTÁ EN LA PÁGINA: al sacarlo, Chromium lo pausa solo -y dispara pause-, y esa
+  // pausa no cuenta.
+  const reanudarEn = React.useRef(0)
+  const ibaReproduciendo = React.useRef(false)
+  const reanudarReproduciendo = React.useRef<boolean | null>(null)
+  // La forma que trae el archivo -tarea 90, (c)-: la anota el visor de lado.
+  const medidaVideo = React.useRef<{ ancho: number; alto: number } | null>(null)
+  const [forma, setForma] = React.useState<FormaVideo | null>(null)
+  // Cambia cuando carga el video, para que el registro (c) anote videoWidth y videoHeight.
+  const [cargasDelVideo, setCargasDelVideo] = React.useState(0)
   React.useEffect(() => {
     if (!video) return
-    const alReproducir = () => setReproduciendo(true)
-    const alPausar = () => setReproduciendo(false)
+    setReproduciendo(!video.paused && !video.ended)
+    // El elemento nuevo empieza con lo suyo: si después el play del giro no resulta, no queda «iba».
+    ibaReproduciendo.current = !video.paused && !video.ended
+    const alReproducir = () => {
+      setReproduciendo(true)
+      if (video.isConnected) ibaReproduciendo.current = true
+    }
+    const alPausar = () => {
+      setReproduciendo(false)
+      if (video.isConnected) ibaReproduciendo.current = false
+    }
     const alAvanzar = () => setActual(video.currentTime)
-    const alCargar = () => { if (Number.isFinite(video.duration) && video.duration > 0) setTotal(video.duration) }
+    const alCargar = () => {
+      if (Number.isFinite(video.duration) && video.duration > 0) setTotal(video.duration)
+      // TAREA 90: la forma del video manda en el visor de lado. Chromium entrega videoWidth y
+      // videoHeight ya girados según la rotación del mp4 -a verificar en el moto g86, (c)-.
+      medidaVideo.current = { ancho: video.videoWidth, alto: video.videoHeight }
+      const f = formaDeVideo(video.videoWidth, video.videoHeight)
+      if (f) setForma(f)
+      setCargasDelVideo((n) => n + 1)
+      if (reanudarEn.current > 0) {
+        try {
+          video.currentTime = reanudarEn.current
+        } catch (e) {
+          // si no deja, vuelve a empezar: no se pierde nada
+        }
+        reanudarEn.current = 0
+      }
+      // Lo de reproduciendo o en pausa -ver reanudarEn-. Se anota en el registro visor-lado, también si
+      // Android o la WebView no dejan reproducir sin un toque: Capacitor pone
+      // setMediaPlaybackRequiresUserGesture(false) -Bridge.java:592-, así que no debería pasar.
+      const retomar = reanudarReproduciendo.current
+      if (retomar !== null) {
+        reanudarReproduciendo.current = null
+        const t = Number(video.currentTime) || 0
+        if (!retomar) {
+          anotarVisorLado('giro-video', { toma: grabacion.id, estado: 'pausa', t, resultado: 'pausa' })
+          volcarRegistroVisorLado()
+        } else {
+          let promesa: Promise<void> | undefined
+          try {
+            promesa = video.play()
+          } catch (e: any) {
+            promesa = Promise.reject(e)
+          }
+          Promise.resolve(promesa).then(
+            () => {
+              anotarVisorLado('giro-video', { toma: grabacion.id, estado: 'reproduciendo', t, resultado: 'ok' })
+              volcarRegistroVisorLado()
+            },
+            (e: any) => {
+              // Bloqueado: queda en pausa, con el botón de reproducir a la vista, en la misma posición.
+              anotarVisorLado('giro-video', { toma: grabacion.id, estado: 'reproduciendo', t, resultado: 'bloqueado', error: (e && e.name) || String(e) })
+              volcarRegistroVisorLado()
+            }
+          )
+        }
+      }
+    }
     video.addEventListener('play', alReproducir)
     video.addEventListener('pause', alPausar)
     video.addEventListener('ended', alPausar)
     video.addEventListener('timeupdate', alAvanzar)
     video.addEventListener('loadedmetadata', alCargar)
+    // Si el video ya cargó -el mismo elemento de antes, o jsdom-, se lee ya.
+    if (video.readyState >= 1) alCargar()
     return () => {
+      reanudarEn.current = video.currentTime || 0
+      // En pausa y en 0 no hay nada que retomar -pasa cuando la miniatura cambia el caso antes de que
+      // la toma empiece-: no se anota.
+      reanudarReproduciendo.current = ibaReproduciendo.current || reanudarEn.current > 0 ? ibaReproduciendo.current : null
       video.removeEventListener('play', alReproducir)
       video.removeEventListener('pause', alPausar)
       video.removeEventListener('ended', alPausar)
@@ -338,6 +420,287 @@ export default function ReproductorGrabacion({
         onGuardadoEnGaleria?.(false, t('noSeCompartio'))
       }
     }
+  }
+
+  // ==================================================================================================
+  // EL VISOR DE LADO -tarea 90, 04-10-2026-. Con el teléfono de lado -useLayout() === 'tel-h', la misma
+  // consulta de la 82- el visor se arma según el boceto aprobado -PR #67, docs/pantallas/tarea89/
+  // medidas-implementacion.md, cuarta versión, con la barra de reproducción de 52-. De pie no cambia nada:
+  // el return de más abajo es el de siempre.
+  const layout = useLayout()
+  const deLado = layout === 'tel-h'
+
+  // LA FORMA, ANTES DE QUE CARGUE EL VIDEO: la miniatura sale del mismo mp4 -tomaVideo.ts- y trae la
+  // misma forma. Sin miniatura, el caso 2 -forma null-, que es el que menos supone. El video, al cargar,
+  // manda sobre la miniatura.
+  const medidaMiniatura = React.useRef<string>('sin-miniatura')
+  React.useEffect(() => {
+    const ruta = grabacion.rutaMiniatura
+    medidaMiniatura.current = ruta ? 'cargando' : 'sin-miniatura'
+    if (!ruta || typeof Image === 'undefined') return
+    let vigente = true
+    const img = new Image()
+    img.onload = () => {
+      if (!vigente) return
+      medidaMiniatura.current = `${img.naturalWidth}x${img.naturalHeight}`
+      const f = formaDeVideo(img.naturalWidth, img.naturalHeight)
+      if (f && !medidaVideo.current?.ancho) setForma(f)
+    }
+    img.onerror = () => { medidaMiniatura.current = 'no-cargo' }
+    img.src = srcDeRuta(ruta)
+    return () => { vigente = false }
+  }, [grabacion.rutaMiniatura])
+  const formaUsada: FormaVideo = forma ?? 'vertical'
+
+  // (a), (b) y (d): cada cambio de los bordes, con los ms desde que se ocultó la barra de estado.
+  const anotarBordes = React.useCallback((l: LecturaBordes, motivo: string) => {
+    anotarVisorLado('bordes', {
+      motivo,
+      giro: l.giro,
+      tipo: l.tipo,
+      // Los que usa el visor -de env() o, si no hay, de Capacitor- y después los dos por separado.
+      fuente: l.fuente,
+      l: l.usados.izquierda, r: l.usados.derecha, t: l.usados.arriba, b: l.usados.abajo,
+      envL: l.env.izquierda, envR: l.env.derecha, envT: l.env.arriba, envB: l.env.abajo,
+      capL: l.capacitor.izquierda, capR: l.capacitor.derecha, capT: l.capacitor.arriba, capB: l.capacitor.abajo,
+      viewport: `${l.ancho}x${l.alto}`,
+      visual: l.visual,
+      dpr: l.dpr,
+      msDesdeHide: msDesdeQueSeOculto()
+    })
+  }, [])
+  const bordes = useBordesSeguros(deLado, anotarBordes)
+
+  // LAS BARRAS DE ANDROID: al abrir el visor de lado, hide({ bar: StatusBar }) y el estilo oscuro; al
+  // cerrar, al volver de pie o al desmontar -la limpieza del efecto-, show y el estilo de la app. Ver
+  // lib/barrasDelSistema.ts.
+  React.useEffect(() => {
+    if (!deLado) return
+    tomarBarrasParaElVisor()
+    anotarVisorLado('abrir', { toma: grabacion.id, layout, ancho: window.innerWidth, alto: window.innerHeight })
+    return () => {
+      soltarBarrasDelVisor()
+      anotarVisorLado('cerrar', { toma: grabacion.id })
+      volcarRegistroVisorLado()
+    }
+  }, [deLado])
+
+  // (c): la forma que entrega el video, la de la miniatura y la rotación del sidecar si la trae. Hoy el
+  // sidecar -lib/sidecar.ts- no guarda rotación: se anota qué campos trae, por si el lado nativo la suma.
+  React.useEffect(() => {
+    if (!deLado) return
+    let vigente = true
+    ;(async () => {
+      let rotacion = 'sin-sidecar'
+      let calidad = '-'
+      try {
+        const dir = await directorioGrabaciones()
+        const sc = JSON.parse(await leerTexto(juntos(dir, `${grabacion.id}.json`)))
+        const r = sc?.rotacion ?? sc?.rotation ?? sc?.orientacion ?? sc?.orientation
+        rotacion = r === undefined ? 'sin-campo' : String(r)
+        calidad = sc?.calidad ?? '-'
+      } catch (e) {
+        // sin sidecar se anota igual
+      }
+      if (!vigente) return
+      const m = medidaVideo.current
+      anotarVisorLado('video', {
+        toma: grabacion.id,
+        videoWidth: m ? m.ancho : null,
+        videoHeight: m ? m.alto : null,
+        forma: forma ?? 'sin-dato',
+        usada: formaUsada,
+        miniatura: medidaMiniatura.current,
+        rotacionSidecar: rotacion,
+        calidad
+      })
+    })()
+    return () => { vigente = false }
+  }, [deLado, forma, cargasDelVideo, grabacion.id])
+
+  // (e): la letra del sistema. El tamaño calculado de los rótulos -12 si la escala de letra está en 1- y
+  // el alto de cada fila de acción; si alguna baja de 48, se dice.
+  const raizLado = React.useRef<HTMLDivElement | null>(null)
+  const claveLetra = React.useRef('')
+  React.useEffect(() => {
+    if (!deLado) return
+    const id = requestAnimationFrame(() => {
+      const raiz = raizLado.current
+      if (!raiz || typeof getComputedStyle !== 'function') return
+      const rotulos = Array.from(raiz.querySelectorAll<HTMLElement>('[data-rotulo], .visor-lado-subtitulos .boton-subtitulos-valor, .visor-lado-tarjeta .boton-subtitulos-valor'))
+      const px = rotulos.map((r) => parseFloat(getComputedStyle(r).fontSize) || 0)
+      const filas = Array.from(raiz.querySelectorAll<HTMLElement>('[data-fila-accion]')).map((f) => Math.round(f.getBoundingClientRect().height))
+      const minimo = px.length ? Math.min(...px) : null
+      const detalle = {
+        rotulos: rotulos.map((r, i) => `${r.dataset.rotulo || 'subtitulos'}:${px[i]}`).join(','),
+        escala: minimo ? minimo / ROTULO_MINIMO : null,
+        filas: filas.join(','),
+        bajo48: filas.some((h) => h > 0 && h < TOQUE_MINIMO) ? 'si' : 'no'
+      }
+      const k = JSON.stringify(detalle)
+      if (k === claveLetra.current) return
+      claveLetra.current = k
+      anotarVisorLado('letra', detalle)
+    })
+    return () => cancelAnimationFrame(id)
+  })
+
+  if (deLado) {
+    const m = medidasVisorDeLado({ ancho: bordes.ancho, alto: bordes.alto, bordes: bordes.usados, forma: formaUsada })
+    const parar = (e: React.MouseEvent) => e.stopPropagation()
+    const toque = { minWidth: TOQUE_MINIMO, minHeight: TOQUE_MINIMO }
+    const cerrar = (
+      <button type="button" className="cerrar-visor" data-testid="btn-cerrar-reproductor" aria-label={t('cerrar')} title={t('cerrar')} onClick={(e) => { e.stopPropagation(); onCerrar() }} style={{ width: TOQUE_MINIMO, height: TOQUE_MINIMO }}>
+        <IconoCerrar tamano={22} />
+      </button>
+    )
+    const nombre = (
+      <div className="visor-lado-nombre">
+        <div>{nombreDeToma(grabacion, guiones)}</div>
+        <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
+          {formatearDuracionMs(grabacion.duracionMs)}
+          {grabacion.incompleta ? ` · ${t('incompleta')}` : ''}
+          {grabacion.errorMudo ? ` · ${t('metaErrorMudo')}` : ''}
+          {grabacion.avisoMudo ? ` · ${t('metaAvisoMudo')}` : ''}
+        </div>
+      </div>
+    )
+    const cajaVideo = (estilo: React.CSSProperties) => (
+      <div className="visor-video" data-testid="visor-lado-video" onClick={alternarVideo} style={{ position: 'absolute', ...estilo }}>
+        <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} />
+        {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} />}
+        {!reproduciendo && (
+          <span className="play-visor" aria-hidden="true">
+            <IconoEmpezar tamano={30} />
+          </span>
+        )}
+      </div>
+    )
+    // La barra de reproducción: la de hoy con el botón y el avance de 48 -52 de alto con el aire-.
+    const barra = (estilo: React.CSSProperties) => (
+      <div className="barra-visor" data-testid="visor-lado-barra" onClick={parar} style={{ height: ALTO_BARRA_REPRODUCCION, ...estilo }}>
+        <button type="button" className="boton-visor" data-testid="btn-reproducir-toma" aria-label={reproduciendo ? t('pausa') : t('reproducir')} onClick={alternarVideo} style={{ width: TOQUE_MINIMO, height: TOQUE_MINIMO }}>
+          {reproduciendo ? <IconoPausa tamano={20} /> : <IconoEmpezar tamano={20} />}
+        </button>
+        <span>{formatearSegundos(actual)}</span>
+        <input
+          type="range"
+          className="avance-visor"
+          data-testid="avance-toma"
+          aria-label={t('avanceDelVideo')}
+          min={0}
+          max={total || 0}
+          step={0.1}
+          value={Math.min(actual, total || 0)}
+          onChange={(e) => {
+            const s = Number(e.target.value)
+            if (video) video.currentTime = s
+            setActual(s)
+          }}
+          style={{ height: TOQUE_MINIMO, ['--avance' as any]: `${total > 0 ? (actual / total) * 100 : 0}%` }}
+        />
+        <span>{formatearSegundos(total)}</span>
+      </div>
+    )
+    const selector = subtitulos.length > 0 && !guardada ? (
+      <SelectorSubtitulos
+        estilo={estilo}
+        onCambiar={(e) => {
+          setEstilo(e)
+          guardarEstiloSubtitulo(e)
+        }}
+      />
+    ) : null
+    // Las acciones: las mismas de hoy, con los mismos data-testid. fila=true en la columna del caso 1
+    // -una por fila, con el rótulo de 12-; en la tarjeta del caso 2 van en fila, como hoy.
+    const acciones = (enColumna: boolean) => {
+      const fila = enColumna ? { 'data-fila-accion': '' } : {}
+      // En los dos casos: toque de 48 como mínimo y rótulo de 12.
+      const estiloFila: React.CSSProperties = { ...toque, fontSize: ROTULO_MINIMO }
+      return (
+        <>
+          {guardada ? (
+            <button type="button" className="accion-toma" data-testid="btn-compartir-toma" aria-label={t('compartir')} title={t('compartir')} onClick={handleCompartir} style={estiloFila} {...fila}>
+              <IconoCompartir tamano={26} />
+            </button>
+          ) : (
+            <>
+              <button type="button" className="accion-toma" data-testid="guardar-galeria-desde-reproductor" aria-label={t('guardarEnGaleria')} disabled={guardando} onClick={handleGuardar} style={estiloFila} {...fila}>
+                <IconoGuardar tamano={26} />
+                <span data-rotulo="guardar" style={{ fontSize: ROTULO_MINIMO }}>{guardando ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardar')}</span>
+              </button>
+              {enColumna && selector && (
+                <div className="visor-lado-subtitulos" data-testid="visor-lado-subtitulos" style={{ ...toque, fontSize: ROTULO_MINIMO }} {...fila}>
+                  {selector}
+                </div>
+              )}
+              {onRepetir && (
+                <button type="button" className="accion-toma" data-testid="btn-repetir-toma" aria-label={t('repetirToma')} title={t('repetirToma')} onClick={onRepetir} style={estiloFila} {...fila}>
+                  <IconoRepetir tamano={26} />
+                </button>
+              )}
+            </>
+          )}
+          <button
+            type="button"
+            className="accion-toma"
+            data-testid="borrar-desde-reproductor"
+            data-confirmando={confirmando ? 'si' : 'no'}
+            aria-label={confirmando ? t('seguro') : t('borrar')}
+            title={t('borrar')}
+            onClick={() => { if (confirmando) { onBorrar(grabacion.id) } else { setConfirmando(true) } }}
+            style={estiloFila}
+            {...fila}
+          >
+            <IconoTacho tamano={26} strokeWidth={1.6} />
+            {confirmando && <span data-rotulo="seguro" style={{ fontSize: ROTULO_MINIMO }}>{t('seguro')}</span>}
+          </button>
+        </>
+      )
+    }
+    const raiz: React.CSSProperties = { position: 'fixed', inset: 0, zIndex: 400, overflow: 'hidden', background: m.caso === 1 ? 'var(--bg-superficie)' : 'var(--bg-suelo)' }
+    if (m.caso === 1) {
+      // La franja del recorte o de la barra de tres botones junto al video: negra a la altura del video,
+      // como el video -el resto ya es la superficie de la barra-.
+      return (
+        <div ref={raizLado} data-testid="reproductor-grabacion" data-tema="oscuro" data-visor="lado" data-caso="1" className="visor-lado visor-lado-caso1" onClick={onCerrar} style={raiz}>
+          {/* Tocar la franja no cierra: en el caso 1 no hay «afuera», y es justo donde cae el pulgar al
+              tomar el teléfono de lado. El caso 2 sí cierra al tocar el fondo, como hoy fuera de la tarjeta. */}
+          {m.video.x > 0 && <div aria-hidden="true" data-testid="visor-lado-franja" onClick={parar} style={{ position: 'absolute', left: 0, top: m.video.y, width: m.video.x, height: m.video.alto, background: '#000' }} />}
+          {/* -(4), 04-10-2026- Con la columna al 70% el video queda centrado y sobra una franja también
+              entre el video y la columna: negra como la otra, a la altura del video, y tampoco cierra. Al
+              lado de la barra sigue la superficie oscura de la raíz. */}
+          {m.franjas.derecha.ancho > 0 && <div aria-hidden="true" data-testid="visor-lado-franja-derecha" onClick={parar} style={{ position: 'absolute', left: m.franjas.derecha.x, top: m.franjas.derecha.y, width: m.franjas.derecha.ancho, height: m.franjas.derecha.alto, background: '#000' }} />}
+          {cajaVideo({ left: m.video.x, top: m.video.y, width: m.video.ancho, height: m.video.alto })}
+          {barra({ position: 'absolute', left: m.barra.x, top: m.barra.y, width: m.barra.ancho })}
+          <div className="visor-lado-columna" data-testid="visor-lado-columna" onClick={parar} style={{ position: 'absolute', left: m.columna.x, top: m.columna.y, width: m.columna.ancho, height: m.columna.alto }}>
+            <div className="visor-lado-cabecera">
+              {nombre}
+              {cerrar}
+            </div>
+            <div className="acciones-toma visor-lado-acciones" data-testid="visor-lado-acciones">
+              {acciones(true)}
+            </div>
+          </div>
+        </div>
+      )
+    }
+    return (
+      <div ref={raizLado} data-testid="reproductor-grabacion" data-tema="oscuro" data-visor="lado" data-caso="2" className="visor-lado visor-lado-caso2" onClick={onCerrar} style={raiz}>
+        {cajaVideo({ left: m.video.x, top: m.video.y, width: m.video.ancho, height: m.video.alto })}
+        <div style={{ position: 'absolute', left: m.tarjeta.x, top: bordes.usados.arriba, bottom: bordes.usados.abajo, width: m.tarjeta.ancho, display: 'flex', alignItems: 'center' }}>
+          <div className="tarjeta-elevada visor-lado-tarjeta" data-testid="visor-lado-tarjeta" onClick={parar}>
+            <div className="visor-lado-cabecera">
+              {nombre}
+              {cerrar}
+            </div>
+            {barra({})}
+            {selector && <div style={{ padding: 'var(--aire-2) var(--aire-3) 0' }}>{selector}</div>}
+            <div className="acciones-toma">{acciones(false)}</div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (

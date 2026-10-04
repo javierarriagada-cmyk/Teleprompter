@@ -1,0 +1,164 @@
+TAREA 91 - LA ORIENTACIÓN QUEDA FIJA MIENTRAS DURA LA TOMA
+Encargo de Javier, 04-10-2026, 13:46. Lo hizo el bot de Grok. Punto de partida: main ACTUALIZADO
+-git fetch-, commit c03d734. Rama tarea91-bloqueo-orientacion. Citas archivo:línea contra la rama.
+Lo que no calzó se DESCRIBE abajo, no se improvisó. NO depende del #68 -tarea 90, visor de lado- y no
+choca con él: git merge-tree de las dos ramas sale limpio -ver CON EL #68-.
+
+==============================================================================
+RESUMEN
+==============================================================================
+  - Mientras dura una toma -de Empezar a Parar, en Leer y en Grabar- la pantalla se queda en la
+    orientación que tenía al empezar, como la cámara del teléfono. En LISTO y en el visor gira libre.
+  - Llamada nativa propia, SIN plugin nuevo: dos métodos en el plugin local que ya existía,
+    CamaraNativaPlugin -el de la toma: ya maneja la ventana de la actividad con fijarBrillo/
+    restaurarBrillo-. Fijan con Activity.setRequestedOrientation según la rotación del momento -también
+    la 270, SCREEN_ORIENTATION_REVERSE_LANDSCAPE, y la 180, REVERSE_PORTRAIT- y sueltan devolviendo la
+    que había, que es la del manifiesto: la actividad no declara screenOrientation -AndroidManifest.xml-,
+    o sea SCREEN_ORIENTATION_UNSPECIFIED.
+  - Del lado web, un módulo único -src/lib/orientacionToma.ts, bloquearOrientacion/soltarOrientacion-
+    llamado desde UN solo efecto de App.tsx, que es la entrada y la salida de la toma.
+  - Sin UI visible: no lleva boceto. Lo único que se ve es que la pantalla no gira durante la toma.
+  - Pruebas: 11 vitest -9 fallan contra main, 2 guardianas pasan- y 4 JVM -3 fallan con el mapeo
+    vacío, 1 guardiana-. Suite 59 archivos y 457 pruebas, typecheck, build y APK bien.
+    APK: /workspace/apk/Sigo-bloqueo-orientacion.apk.
+
+==============================================================================
+DÓNDE SE ENGANCHA -por qué ahí-
+==============================================================================
+  La toma ya tiene su estado: estadoToma 'listo' | 'leyendo' -App.tsx:239-. Pasa a 'leyendo' en
+  handleEmpezarDesdeListo -antes de la cuenta de tres- y vuelve a 'listo' en TODOS los caminos que la
+  terminan: handleStop -Parar, el atrás, salir-, handleDescartarToma, handleVolverDesdeListo y, ahora,
+  el error al empezar. Pausa → Seguir no lo toca -handleTogglePausa solo apaga y prende el motor-.
+  reiniciarToma -conduccion.ts- es el reinicio del seguidor y el motor, no el ciclo de la toma: no sirve
+  para esto. Así que el punto único es un efecto sobre «tomaAndando = vista === 'lectura' &&
+  estadoToma === 'leyendo'»:
+    src/App.tsx:897-926   el efecto. Entra -bloquearOrientacion('empezar')- cuando tomaAndando pasa a
+                          true; su limpieza -soltarOrientacion('fin-de-toma')- corre cuando pasa a
+                          false y al desmontar App. Dentro, un oyente de appStateChange: a segundo plano
+                          suelta -soltarOrientacion('segundo-plano')-; al volver con la toma andando fija
+                          la MISMA de antes -bloquearOrientacion('volver') → repetir=true-. Un oyente que
+                          llega tarde -quitarlo es asíncrono- no hace nada -«vigente»-.
+    src/App.tsx:1101-1114 EL ERROR AL EMPEZAR: si handleStart lanza, la toma vuelve a LISTO
+                          -cancelarCuentaRegresiva y setEstadoToma('listo')-, y eso la suelta. Antes
+                          quedaba en LEYENDO sin cuenta ni motor.
+    src/App.tsx:14        el import.
+
+==============================================================================
+LO IMPLEMENTADO, CON ARCHIVO:LÍNEA
+==============================================================================
+  src/lib/orientacionToma.ts -nuevo, el único que fija y suelta-
+    :68  bloquearOrientacion(motivo 'empezar' | 'volver'): si ya está fija no hace nada; llama a
+         CamaraNativa.fijarOrientacion({ repetir: motivo === 'volver' }) y anota «fijada ...».
+    :81  soltarOrientacion(motivo 'fin-de-toma' | 'segundo-plano'): si no está fija no hace nada;
+         llama a CamaraNativa.soltarOrientacion({ olvidar: motivo !== 'segundo-plano' }) y anota
+         «soltada ...».
+    :22-33 lineasOrientacion, limpiarRegistroOrientacion, orientacionBloqueada -para las pruebas-.
+    En la web el plugin no existe: anota «no-disponible» y sigue.
+  src/lib/camara.ts:30-32  la interfaz de CamaraNativa con las dos llamadas.
+  android/app/src/main/java/com/sigoteleprompter/app/CamaraNativaPlugin.java
+    :632-647 el comentario, la etiqueta de logcat SigoOrientacion, la orientación de antes y la de la
+             toma, y la pantalla -Activity.getDisplay desde la API 30; antes, getDefaultDisplay-.
+    :648     fijarOrientacion: Display.getRotation, Configuration.orientation, el mapeo de
+             OrientacionDeToma, guarda la que pedía la actividad -getRequestedOrientation- la primera
+             vez, setRequestedOrientation y Log.i. Con repetir=true usa la que se fijó al empezar.
+    :683     soltarOrientacion: setRequestedOrientation con la de antes -o UNSPECIFIED- y Log.i; con
+             olvidar=false -segundo plano- guarda la de la toma para el repetir.
+  android/app/src/main/java/com/sigoteleprompter/app/OrientacionDeToma.java -nuevo, Java puro-
+    :20  paraRotacion(rotacion, naturalEsVertical): teléfono -natural de pie-: 0 PORTRAIT, 90
+         LANDSCAPE, 180 REVERSE_PORTRAIT, 270 REVERSE_LANDSCAPE. Aparato natural de lado -tableta-:
+         0 LANDSCAPE, 90 REVERSE_PORTRAIT, 180 REVERSE_LANDSCAPE, 270 PORTRAIT. Otra: UNSPECIFIED.
+    :42  naturalEsVertical(rotacion, ahoraVertical).
+    :47  grados; :57 nombre -para el registro-.
+
+==============================================================================
+LOS REGISTROS -para que Claude lo verifique en el moto g86-
+==============================================================================
+  NATIVO -adb logcat -s SigoOrientacion-:
+    fijar rotacion=<0|90|180|270> natural=vertical|horizontal ahora=vertical|horizontal
+          orientacion=<PORTRAIT|LANDSCAPE|REVERSE_PORTRAIT|REVERSE_LANDSCAPE>(<valor>) repetir=true|false
+          anterior=<la que pedía la actividad, UNSPECIFIED(-1) por el manifiesto>
+    soltar orientacion=<la que se devuelve>(<valor>) rotacion=<la del momento> olvidar=true|false
+  WEB -consola: adb logcat | grep '\[orientacion\]', o chrome://inspect-:
+    [orientacion] fijada motivo=empezar|volver rotacion= orientacion= anterior= natural= anguloWeb=
+                  tipoWeb= ventana=<ancho>x<alto>
+    [orientacion] soltada motivo=fin-de-toma|segundo-plano orientacion= rotacion= anguloWeb= tipoWeb=
+                  ventana=
+    [orientacion] no-disponible motivo= accion=fijar|soltar error=   -en la web, o si el plugin falla-
+  La rotación al empezar está dos veces: la nativa -rotacion=, Display.getRotation- y la de la web
+  -anguloWeb=, screen.orientation.angle-. Tienen que coincidir.
+
+==============================================================================
+PRUEBAS
+==============================================================================
+  VITEST -src/pruebas/tarea91.test.tsx, 11-. Espían CamaraNativa.fijarOrientacion y
+  soltarOrientacion -lo que llega al teléfono-. Contra main c03d734 -worktree de origin/main con el
+  archivo copiado-: 9 fallan y 2 pasan.
+    Fallan hoy:
+      - Empezar en Leer fija la orientación, una vez
+      - Empezar en Grabar fija la orientación, una vez
+      - la orientación queda fija desde Empezar, ya durante la cuenta de tres
+      - Parar la suelta y en LISTO no se vuelve a fijar
+      - Pausa → Seguir mantiene la orientación fija: no se suelta ni se vuelve a fijar
+      - si la toma no logra empezar -un error al empezar-, vuelve a LISTO y la orientación se suelta
+      - si la app se desmonta con la toma andando, la orientación se suelta
+      - al ir a segundo plano se suelta; al volver con la toma andando se fija la misma -repetir-
+      - el registro para el moto g86: la rotación al empezar, la orientación fijada y la soltada
+    Guardianas -pasan hoy y siguen pasando-:
+      - en LISTO, en Leer y en Grabar, no se fija nada
+      - el visor de una toma no fija la orientación
+    El error al empezar se provoca haciendo fallar el pedido de pantalla encendida -lo primero de
+    handleStart-. El segundo plano, con visibilitychange: es lo que escucha @capacitor/app en la web.
+  JVM -android/app/src/test/java/com/sigoteleprompter/app/OrientacionDeTomaTest.java, 4-. Ya había
+  infraestructura -testImplementation junit, app/build.gradle:224, y el ExampleUnitTest-. Se corre con
+  «cd android && ./gradlew :app:testDebugUnitTest» -antes hace falta npm run build y npx cap sync
+  android, o falla por cordova.variables.gradle-. Con OrientacionDeToma vacío -siempre UNSPECIFIED-:
+  3 de 4 fallan -teléfono de pie, tableta de lado, la posición natural-; pasa la de «una rotación
+  desconocida no fija nada», que es guardiana. Con el mapeo: 4 de 4.
+
+==============================================================================
+CON EL #68 -tarea 90, visor de lado-
+==============================================================================
+  No depende de él: sale de main y no usa nada del visor de lado. git merge-tree --write-tree
+  origin/tarea90-visor-de-lado origin/tarea91-bloqueo-orientacion: sin conflictos. Los dos tocan
+  src/App.tsx, en lugares distintos -el #68 el estilo de las barras, :316-323; este el efecto de la
+  toma y el error al empezar-. No se tocó src/lib/diagnostico.ts, que el #68 sí cambia: los registros
+  de la orientación van a logcat y a la consola, no al registro de la toma. Juntos calzan: al Parar la
+  orientación se suelta en el mismo paso en que se abre el visor, y el visor de lado necesita girar
+  libre.
+
+==============================================================================
+QUÉ MIRA CLAUDE EN EL MOTO G86
+==============================================================================
+  Instalar /workspace/apk/Sigo-bloqueo-orientacion.apk; «adb logcat -s SigoOrientacion» en una
+  ventana y «adb logcat | grep '\[orientacion\]'» en otra.
+  1. Leer de pie: Empezar y girar el teléfono durante la cuenta y durante la lectura: no gira.
+     «fijar rotacion=0 ... orientacion=PORTRAIT(1) ... anterior=UNSPECIFIED(-1)». Parar: «soltar
+     orientacion=UNSPECIFIED(-1) ...» y la pantalla gira si el teléfono está de lado.
+  2. Grabar de lado con la barra de tres botones a la DERECHA -giro 90-: «rotacion=90
+     orientacion=LANDSCAPE(0)»; girarlo hasta 270 no lo da vuelta.
+  3. Grabar de lado con la barra de tres botones a la IZQUIERDA -giro 270-: «rotacion=270
+     orientacion=REVERSE_LANDSCAPE(8)»; la web, «anguloWeb=270». Este es el que más importa.
+  4. Pausa y Seguir: sin soltar ni fijar de nuevo en el registro; sigue sin girar.
+  5. En LISTO y en el visor: gira libre, sin líneas nuevas.
+  6. Con la toma andando, ir al inicio y volver: «soltar ... olvidar=false» y, al volver, «fijar ...
+     repetir=true» con la MISMA orientación de antes, aunque el teléfono esté en otra posición.
+     -Al ir a segundo plano, Grabar ya corta el video: cortarTomaSiHay(true), App.tsx-.
+  7. Cabeza abajo -180-: si el sistema no deja la pantalla al revés -«rotación automática» la limita
+     en muchos teléfonos-, el registro dice rotacion=0 o 90 y se fija esa.
+
+==============================================================================
+LO QUE NO CALZÓ
+==============================================================================
+  - ANDROID 16 Y PANTALLAS GRANDES: con targetSdkVersion 36 -android/variables.gradle:9-, Android 16
+    ignora setRequestedOrientation en pantallas de 600 dp o más de ancho mínimo -tabletas y plegables
+    abiertos-. En el moto g86 -411 dp- vale; en la tableta de la tarea 83 el bloqueo no va a hacer
+    nada. No se buscó otra forma: sería pelear con el sistema.
+  - EL ERROR AL EMPEZAR CAMBIA ALGO: antes, si handleStart lanzaba, la toma quedaba en LEYENDO sin
+    cuenta ni motor; ahora vuelve a LISTO -y suelta la orientación-. No encontré otro camino por el
+    que una toma «termine por error»: si falla el grabador de video o el micrófono, la lectura sigue
+    -App.tsx, «la voz manda sobre el video»- y la orientación sigue fija hasta Parar.
+  - AL VOLVER DE SEGUNDO PLANO se fija la misma orientación del comienzo, no la del momento: es la de
+    la toma. Si se prefiere la del momento, es repetir=false en orientacionToma.ts.
+  - LOS REGISTROS NO VAN AL REGISTRO DE LA TOMA -diagnostico.ts- para no chocar con el #68, que agrega
+    un tipo ahí mismo. Van a logcat y a la consola.
+  - SIN UI: no se agregó nada a la vista y no lleva boceto.

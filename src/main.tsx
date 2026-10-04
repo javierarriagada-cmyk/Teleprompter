@@ -18,6 +18,8 @@ import './styles-ajustes.css'
 // El teléfono de lado -tarea 82, 29-09-2026-: va después de las otras dos porque las pisa
 // solo dentro de .layout-tel-h.
 import './styles-horizontal.css'
+// El visor de lado -tarea 90-: va después, porque viste piezas de styles.css dentro de .visor-lado.
+import './styles-visor-de-lado.css'
 
 import { instalarRecargaAlActualizar, sacarServiceWorkerEnNativo } from './lib/actualizacion'
 

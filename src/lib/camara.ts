@@ -61,6 +61,9 @@ export interface CamaraNativaPlugin {
   fijarBrillo(options: { valor: number }): Promise<{ ok: boolean }>
   restaurarBrillo(): Promise<{ ok: boolean }>
   leerBrillo(): Promise<{ valor: number }>
+  // -tarea 91- La orientación fija mientras dura la toma: lib/orientacionToma.ts.
+  fijarOrientacion(options: { repetir?: boolean }): Promise<{ rotacion: number; orientacion: string; valor: number; anterior: string; natural: string }>
+  soltarOrientacion(options: { olvidar?: boolean }): Promise<{ orientacion: string; rotacion: number }>
 }
 
 // Un solo registerPlugin. PruebaCamaraNativaView importa este mismo
