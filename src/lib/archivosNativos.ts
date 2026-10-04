@@ -116,6 +116,78 @@ export async function guardarEnGaleriaConSubtitulos(
   }
 }
 
+// LAS MEDICIONES DE EXPORTACIÓN -tarea 87, paso 0, 03-10-2026-. Solo para el panel de mediciones
+// de la APK de prueba -components/PanelMediciones.tsx-. Ver lib/medicionesExport.ts.
+export type FormaDeToma = {
+  existe: boolean
+  bytes: number
+  duracionMs: number
+  anchoPx: number
+  altoPx: number
+  rotacion: number
+  fps: number
+  bitrateBps: number
+  mimeVideo: string
+  mimeAudio: string
+  audioHz: number
+  audioCanales: number
+}
+
+export async function medirToma(ruta: string): Promise<FormaDeToma> {
+  const r = await CamaraNativa.medirToma({ ruta })
+  const n = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : Number(v) || 0)
+  return {
+    existe: r.existe === true,
+    bytes: n(r.bytes),
+    duracionMs: n(r.duracionMs),
+    anchoPx: n(r.anchoPx),
+    altoPx: n(r.altoPx),
+    rotacion: n(r.rotacion),
+    fps: n(r.fps),
+    bitrateBps: n(r.bitrateBps),
+    mimeVideo: typeof r.mimeVideo === 'string' ? r.mimeVideo : '',
+    mimeAudio: typeof r.mimeAudio === 'string' ? r.mimeAudio : '',
+    audioHz: n(r.audioHz),
+    audioCanales: n(r.audioCanales)
+  }
+}
+
+// Una línea al logcat. Si el nativo no la tiene -un APK viejo, o el navegador-, no pasa nada: el
+// panel igual la guarda en su registro.
+export async function anotarMedicion(linea: string): Promise<boolean> {
+  try {
+    const r = await CamaraNativa.anotarMedicion({ linea })
+    return r.escrita === true
+  } catch {
+    return false
+  }
+}
+
+export async function equipoMedicion(): Promise<{ modelo: string; android: string; app: string; depurable: boolean } | null> {
+  try {
+    return await CamaraNativa.equipoMedicion()
+  } catch {
+    return null
+  }
+}
+
+export async function borrarCopiasDeMedicion(uris: string[]): Promise<{ borradas: string[]; fallidas: string[] }> {
+  if (!uris.length) return { borradas: [], fallidas: [] }
+  const r = await CamaraNativa.borrarCopiasDeMedicion({ uris })
+  return { borradas: r.borradas || [], fallidas: r.fallidas || [] }
+}
+
+// Escucha las líneas que escribe el nativo -guardado_inicio, capa, guardado_fin-. Devuelve con
+// qué dejar de escuchar.
+export async function escucharMediciones(cb: (linea: string) => void): Promise<() => Promise<void>> {
+  try {
+    const h = await CamaraNativa.addListener('medicion', (d) => { if (d && typeof d.linea === 'string') cb(d.linea) })
+    return () => h.remove()
+  } catch {
+    return async () => {}
+  }
+}
+
 export function juntos(dir: string, nombre: string): string {
   if (!dir) return nombre
   if (dir.endsWith('/')) return dir + nombre

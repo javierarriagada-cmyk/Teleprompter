@@ -74,6 +74,24 @@ final class CapaDeSubtitulos extends BitmapOverlay {
     private Bitmap actual;
     private String claveActual = null;
 
+    // LA MEDICIÓN DE LA CAPA -tarea 87, paso 0, 03-10-2026-. Solo en la APK de prueba: el plugin
+    // llama a medirCon antes de exportar si la app es depurable. Se anota UNA línea evento=capa por
+    // cada cantidad de renglones -uno y dos- la primera vez que se dibuja un subtítulo así, con la
+    // geometría que usó dibujar y, contados en el bitmap, el píxel pintado más bajo y el más alto,
+    // medidos desde el borde de ABAJO de la toma vista derecha. Con eso se calibra "Para redes"
+    // -docs/tarea87.txt, D0-. No mueve un píxel de lo que se dibuja.
+    private String idMedicion = null;
+    private MedicionExport.Anotador anotador = null;
+    private final java.util.Set<Integer> renglonesMedidos = new java.util.HashSet<>();
+    // Lo que dejó dibujar en su última pasada, para la línea evento=capa.
+    private int medW, medH, medRenglones, medGiro;
+    private float medLetra, medAlto, medBase, medAscent, medDescent, medContorno, medCajaAbajo;
+
+    void medirCon(String id, MedicionExport.Anotador anotador) {
+        this.idMedicion = id;
+        this.anotador = anotador;
+    }
+
     CapaDeSubtitulos(String subtitulosJson, String estilo, int rotacion) throws Exception {
         this.estilo = estilo;
         this.rotacion = ((rotacion % 360) + 360) % 360;
@@ -129,6 +147,7 @@ final class CapaDeSubtitulos extends BitmapOverlay {
         if (actual != null && k.equals(claveActual)) return actual;
         Bitmap b = Bitmap.createBitmap(anchoCuadro, altoCuadro, Bitmap.Config.ARGB_8888);
         dibujar(new Canvas(b), s, ms);
+        if (anotador != null && renglonesMedidos.add(s.renglones.size())) medirCapa(b);
         actual = b;
         claveActual = k;
         return b;
@@ -148,6 +167,10 @@ final class CapaDeSubtitulos extends BitmapOverlay {
         boolean cuadroYaDerecho = ladeado ? altoCuadro > anchoCuadro : true;
         int W = anchoCuadro;
         int H = altoCuadro;
+        // Medición -paso 0-: cómo se giró el dibujo, para contar los píxeles en la toma vista derecha.
+        medGiro = 0;
+        if (ladeado && !cuadroYaDerecho) medGiro = rotacion;
+        else if (rotacion == 180 && !cuadroYaDerecho) medGiro = 180;
         if (ladeado && !cuadroYaDerecho) {
             W = altoCuadro;
             H = anchoCuadro;
@@ -191,6 +214,18 @@ final class CapaDeSubtitulos extends BitmapOverlay {
         int n = s.renglones.size();
         float base = H * (1 - 0.125f) - (n - 1) * alto;
         Paint.FontMetrics fm = relleno.getFontMetrics();
+        // Medición -paso 0-: la geometría tal como se usa abajo. caja_abajo es lo que queda entre
+        // el borde de abajo de la caja de descent del último renglón y el borde de abajo.
+        medW = W;
+        medH = H;
+        medLetra = letra;
+        medAlto = alto;
+        medRenglones = n;
+        medBase = base;
+        medAscent = -fm.ascent;
+        medDescent = fm.descent;
+        medContorno = formal ? 0f : letra * 0.14f;
+        medCajaAbajo = H - ((base + (n - 1) * alto - fm.descent) + fm.descent);
         for (int i = 0; i < n; i++) {
             List<Palabra> r = s.renglones.get(i);
             float ancho = anchoDe(r, relleno, espacio);
@@ -223,6 +258,50 @@ final class CapaDeSubtitulos extends BitmapOverlay {
                 }
                 x += aw + espacio;
             }
+        }
+    }
+
+    // Recorre el bitmap una vez y busca el píxel pintado -alfa mayor que cero, la franja del formal
+    // incluida- más bajo y más alto, en filas de la toma vista derecha. Una sola vez por cantidad de
+    // renglones: son ~2 millones de píxeles en 1080x1920.
+    private void medirCapa(Bitmap b) {
+        try {
+            int bw = b.getWidth();
+            int bh = b.getHeight();
+            int[] fila = new int[bw];
+            int yMin = Integer.MAX_VALUE;
+            int yMax = Integer.MIN_VALUE;
+            for (int by = 0; by < bh; by++) {
+                b.getPixels(fila, 0, bw, 0, by, bw, 1);
+                for (int bx = 0; bx < bw; bx++) {
+                    if ((fila[bx] >>> 24) == 0) continue;
+                    int y;
+                    if (medGiro == 90) y = bx;
+                    else if (medGiro == 270) y = anchoCuadro - 1 - bx;
+                    else if (medGiro == 180) y = altoCuadro - 1 - by;
+                    else y = by;
+                    if (y < yMin) yMin = y;
+                    if (y > yMax) yMax = y;
+                }
+            }
+            Object pintadoAbajo = yMax == Integer.MIN_VALUE ? null : MedicionExport.decimal(medH - (yMax + 1));
+            Object pintadoArriba = yMin == Integer.MAX_VALUE ? null : MedicionExport.decimal(medH - yMin);
+            anotador.anotar(MedicionExport.linea("capa",
+                "id", idMedicion,
+                "H_px", medH,
+                "W_px", medW,
+                "letra_px", MedicionExport.decimal(medLetra),
+                "alto_renglon_px", MedicionExport.decimal(medAlto),
+                "renglones", medRenglones,
+                "base_px", MedicionExport.decimal(medBase),
+                "ascent_px", MedicionExport.decimal(medAscent),
+                "descent_px", MedicionExport.decimal(medDescent),
+                "contorno_px", MedicionExport.decimal(medContorno),
+                "caja_abajo_px", MedicionExport.decimal(medCajaAbajo),
+                "pintado_abajo_px", pintadoAbajo,
+                "pintado_arriba_px", pintadoArriba));
+        } catch (Exception e) {
+            // una medición que falla no puede romper el guardado
         }
     }
 
