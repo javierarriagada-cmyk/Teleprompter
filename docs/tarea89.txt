@@ -166,6 +166,17 @@ LO QUE NO CALZA
     "pos" -lo confirmado-, no la posición tentativa: en un parcial rechazado dice seguidor=0
     aunque la tentativa esté en 58. Lo que se ve ahora es 'seguidor devuelto'.
 
+QUÉ MIRA CLAUDE EN EL MOTO G86 -APK /workspace/apk/Sigo-tarea89.apk, diagnóstico encendido-
+  1. Repetir lo de Javier: Larralde, dos de pie y dos de lado, leyendo desde el título.
+  2. En cada registro: '# diseño: tel-h|tel-v' en la cabecera y 'pantalla tel-h ...' junto a
+     'renglones'.
+  3. Si aparece 'ventana FUERA … token=5x', justo después tiene que venir 'seguidor devuelto
+     token=N' con N cerca de la posición del motor, y las líneas 'calce' siguientes tienen que
+     volver a dar "token …" en el título o el párrafo 1, no "NO CALZO" toda la toma.
+  4. Las 'cuadro' tienen que salir de pos=0.00 en las dos de lado, como en las de pie.
+  5. Una toma de lado justo después de otra: la primera 'cuadro' dice dónde quedó la anterior; el
+     texto debe seguir desde ahí -como la 2 de pie-, no quedar en "calce=1 freno=sin-calce".
+
 ==============================================================================
 DEFECTO 1 - SEGUIMIENTO DE LADO -primera y segunda vuelta, se deja como historia-
 ==============================================================================
