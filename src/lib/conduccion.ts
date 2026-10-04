@@ -41,6 +41,18 @@ export function procesarParcial(c: Conduccion, texto: string, tMs: number): Posi
     const posMin = Math.max(0, ref - 10)
     const posMax = ref + 40
     enVentana = pos.hastaToken >= posMin && pos.hastaToken <= posMax
+    // -tarea 89, 04-10-2026-: el 'calce' de arriba ya quedó anotado; si cae fuera de la
+    // ventana no se aplica, y el registro tiene que decirlo para no leerlo como avance.
+    if (!enVentana) anotar({ tipo: 'ventana', token: pos.hastaToken, ref, desde: posMin, hasta: posMax, final: false, seguidor: typeof seg.posicionToken === 'function' ? seg.posicionToken() : -1 })
+    // -tarea 89, tercera vuelta-: EL CALCE RECHAZADO NO SE QUEDA EN EL SEGUIDOR. avanzar y
+    // avanzarTentativo ya corrieron su posición -seguidor.ts:384-385 y :474- y las búsquedas que
+    // siguen arrancan de ahí. En la toma 4 de lado "si me das por dentro es" cayó en 53-58 -el título
+    // repetido en el párrafo 2- con el motor en 1, y el seguidor no volvió a mirar el título: el resto
+    // de la toma y toda la toma 5 sin un calce. Se lo devuelve a donde está el motor.
+    if (!enVentana && typeof seg.irAToken === 'function') {
+      seg.irAToken(ref)
+      anotar({ tipo: 'seguidor', evento: 'devuelto', token: ref })
+    }
   }
 
   if (pos.movio && enVentana) {
@@ -71,6 +83,18 @@ export function procesarFinal(c: Conduccion, texto: string, tMs: number): Posici
     const posMin = Math.max(0, ref - 10)
     const posMax = ref + 40
     enVentana = pos.hastaToken >= posMin && pos.hastaToken <= posMax
+    // -tarea 89, 04-10-2026-: el 'calce' de arriba ya quedó anotado; si cae fuera de la
+    // ventana no se aplica, y el registro tiene que decirlo para no leerlo como avance.
+    if (!enVentana) anotar({ tipo: 'ventana', token: pos.hastaToken, ref, desde: posMin, hasta: posMax, final: true, seguidor: typeof seg.posicionToken === 'function' ? seg.posicionToken() : -1 })
+    // -tarea 89, tercera vuelta-: EL CALCE RECHAZADO NO SE QUEDA EN EL SEGUIDOR. avanzar y
+    // avanzarTentativo ya corrieron su posición -seguidor.ts:384-385 y :474- y las búsquedas que
+    // siguen arrancan de ahí. En la toma 4 de lado "si me das por dentro es" cayó en 53-58 -el título
+    // repetido en el párrafo 2- con el motor en 1, y el seguidor no volvió a mirar el título: el resto
+    // de la toma y toda la toma 5 sin un calce. Se lo devuelve a donde está el motor.
+    if (!enVentana && typeof seg.irAToken === 'function') {
+      seg.irAToken(ref)
+      anotar({ tipo: 'seguidor', evento: 'devuelto', token: ref })
+    }
   }
 
   if (pos.movio && enVentana) {
@@ -87,4 +111,23 @@ export function procesarFinal(c: Conduccion, texto: string, tMs: number): Posici
     motor.falloCalce(tMs)
   }
   return null
+}
+
+// EL ÚNICO PUNTO DE REINICIO ENTRE TOMAS -tarea 89, cuarta vuelta, 04-10-2026-. Parar termina la
+// toma: la siguiente parte limpia desde `token` -0, el principio del guion, o donde el usuario dejó
+// el texto en LISTO-, como en cualquier grabadora. Antes nada se reiniciaba al Parar: el seguidor
+// -pos, posTentativa, fallos, pendientes-, el motor -ppm estimadas, último calce, ancla, freno,
+// arranque- y su reloj pasaban de una toma a la siguiente.
+// - seguidor.irAToken limpia TODO el seguidor -también fallosParcialesSeguidos, que
+//   seguidor.reiniciar() no limpia-.
+// - motor.reiniciar() vuelve las ppm a las iniciales y apaga la voz; motor.irAToken(token, 0) lo pone
+//   en el destino con el reloj del último calce en 0: el arrastre en LISTO usaba la hora del gesto,
+//   y desde ahí posPredicha del seguidor derivaba ppm/60 tokens por segundo hasta Empezar.
+// Pausa → Seguir NO pasa por aquí: sigue donde quedó.
+export function reiniciarToma(c: Pick<Conduccion, 'seguidor' | 'motor' | 'tokens'>, token: number): number {
+  const destino = Math.max(0, Math.min(token, Math.max(0, c.tokens.length - 1)))
+  c.seguidor.irAToken(destino)
+  c.motor.reiniciar()
+  if (destino > 0) c.motor.irAToken(destino, 0)
+  return destino
 }

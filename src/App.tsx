@@ -844,6 +844,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     alRecibirFinal: seguidorFinal,
     alNotificarVoz: seguidorVoz,
     irAToken,
+    reiniciarEn,
     motorAvance
   } = useSeguidor(guionParaSeguidor)
 
@@ -1019,6 +1020,10 @@ export default function App({ motor, repoOverride }: AppProps) {
               `# letra: ${fontSize} px, ${tipoFuente}`,
               `# columna: ${columnaAngosta ? 'angosta' : 'completa'}, margen ${marginPercent}%`,
               `# donde lees: ${anclajeZona}`,
+              // EL DISEÑO DE LA PANTALLA -tarea 89, 04-10-2026-. Para separar en el registro las
+              // tomas de pie -tel-v- de las de lado -tel-h-: de lado no avanzaba y desde el
+              // registro no se sabía cómo estaba el teléfono. Va con el tamaño de la ventana.
+              `# diseño: ${horizontal ? 'tel-h' : 'tel-v'}, ventana ${typeof window !== 'undefined' ? window.innerWidth : 0}x${typeof window !== 'undefined' ? window.innerHeight : 0}`,
               // El idioma del guion -28-09-2026-: elige el reconocedor y, en ingles, la
               // comparacion por sonido del seguidor. Sin esto habia que deducirlo del texto.
               `# idioma: ${guionActual ? guionActual.idioma : '?'}`,
@@ -1220,6 +1225,8 @@ export default function App({ motor, repoOverride }: AppProps) {
     await stop()
     await detenerGrabacion()
     await soltarWakeLock()
+    // -tarea 89, cuarta vuelta-: descartar también termina la toma -ver handleStop-.
+    reiniciarEn(0)
     setEstadoToma('listo')
     setControlesVisibles(false)
     if (resumen) {
@@ -1259,6 +1266,11 @@ export default function App({ motor, repoOverride }: AppProps) {
     // calces quedarian anotados con un milisegundo que ya no existe en el archivo.
     await detenerGrabacion()
     await soltarWakeLock()
+    // PARAR TERMINA LA TOMA -tarea 89, cuarta vuelta, 04-10-2026-. Hasta hoy nada se reiniciaba
+    // aquí: el seguidor, el motor y su reloj pasaban a la toma siguiente -la toma 2 de Javier empezó
+    // en pos=25.87, donde quedó la 1-. LISTO vuelve al principio del guion; si el usuario mueve el
+    // texto en LISTO, la toma parte desde ahí -onNavegacionManual, abajo-. Pausa no pasa por aquí.
+    reiniciarEn(0)
     setEstadoToma('listo')
     setControlesVisibles(false)
     // Si hubo toma, el visor la confirma. El aviso "Grabado" solo queda
@@ -1403,6 +1415,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   // -24-09-2026: aca estaba handleClear -vaciar lo oido y reiniciar el seguidor-, sin uso desde
   // que la Tarea 34 saco el boton "Volver al inicio". Cuando B24 -detener a mitad: continuar o
   // empezar de nuevo- se haga, el reinicio es reiniciar() de useSeguidor mas clear() de useASR.
+  // -04-10-2026, tarea 89, cuarta vuelta-: el reinicio al Parar ya está, y es reiniciarEn de
+  // useSeguidor -handleStop y handleDescartarToma-. clear() de useASR no hace falta: solo vacía el
+  // texto oído que se muestra, no lo que sigue el seguidor.
 
   // PAUSA Y SEGUIR VAN EN FILA -tarea 85, 29-09-2026-. Cada toque esperaba solo lo suyo: si
   // Seguir llegaba mientras Pausa todavía estaba apagando el micrófono, start() corría en
@@ -1901,7 +1916,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                 if (estadoToma !== 'leyendo') return
                 setControlesVisibles((prev) => !prev)
               }}
-              onNavegacionManual={irAToken}
+              // -tarea 89, cuarta vuelta-: en LISTO mover el texto es elegir desde dónde parte la toma
+              // -reiniciarEn, seguidor y motor como nuevos ahí, sin el reloj del gesto-; leyendo es
+              // corregir el rumbo de la toma en curso -irAToken, como siempre-.
+              onNavegacionManual={estadoToma === 'listo' ? reiniciarEn : irAToken}
               onModoManualChange={setModoManual}
               onEstadoAvanceChange={handleEstadoAvanceChange}
               horizontal={horizontal}
@@ -1981,7 +1999,12 @@ export default function App({ motor, repoOverride }: AppProps) {
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 200,
-            padding: 'var(--aire-4)'
+            // TAREA 89 -04-10-2026-: la capa llega bajo las barras del sistema; cada lado suma su
+            // borde seguro para que el panel no quede detrás de la barra de tres botones.
+            paddingTop: 'calc(var(--aire-4) + env(safe-area-inset-top, 0px))',
+            paddingRight: 'calc(var(--aire-4) + env(safe-area-inset-right, 0px))',
+            paddingBottom: 'calc(var(--aire-4) + env(safe-area-inset-bottom, 0px))',
+            paddingLeft: 'calc(var(--aire-4) + env(safe-area-inset-left, 0px))'
           }}
           onClick={() => setMostrarPanelCorpus(false)}
         >
@@ -2028,7 +2051,13 @@ export default function App({ motor, repoOverride }: AppProps) {
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 200,
-            padding: 'var(--aire-4)'
+            // -mezcla con la 89, 04-10-2026- El mismo marco que el de corpus, también en los bordes
+            // seguros: la 89 los sumó allá para que la barra de tres botones no tape el panel. Antes:
+            // padding: 'var(--aire-4)'.
+            paddingTop: 'calc(var(--aire-4) + env(safe-area-inset-top, 0px))',
+            paddingRight: 'calc(var(--aire-4) + env(safe-area-inset-right, 0px))',
+            paddingBottom: 'calc(var(--aire-4) + env(safe-area-inset-bottom, 0px))',
+            paddingLeft: 'calc(var(--aire-4) + env(safe-area-inset-left, 0px))'
           }}
           onClick={() => setMostrarPanelMediciones(false)}
         >

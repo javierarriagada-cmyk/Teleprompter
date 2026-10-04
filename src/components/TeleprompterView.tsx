@@ -446,6 +446,10 @@ export default function TeleprompterView({
   const destacadoPrevRef = useRef<{ clave: string; renglones: Renglon[] | null }>({ clave: '', renglones: null })
   const estadoTomaRef = useRef(estadoToma)
   estadoTomaRef.current = estadoToma
+  // -tarea 89, 04-10-2026-: el diseño, para la línea 'pantalla' del registro. En una referencia
+  // porque recalcularGeometria y el lazo no se rearman al girar el teléfono.
+  const horizontalRef = useRef(horizontal)
+  horizontalRef.current = horizontal
   const ultimoCuadroRef = useRef<number | null>(null)
 
   const recalcularGeometria = React.useCallback(() => {
@@ -468,6 +472,8 @@ export default function TeleprompterView({
     // Para medir el atraso en RENGLONES y no solo en palabras -24-09-2026-: el primer
     // token de cada renglon. No cuesta nada con el registro apagado.
     anotar({ tipo: 'renglones', inicios: r.map((x) => x.desdeToken) })
+    // -tarea 89-: el diseño y el tamaño con que salieron estos renglones.
+    anotar({ tipo: 'pantalla', diseno: horizontalRef.current ? 'tel-h' : 'tel-v', ancho: container.clientWidth || 0, alto: alto })
     renglonesAnotadosRef.current = generacionDiagnostico()
     origenRef.current = medidas.length > 0 ? medidas[0].top : 0
   }, [filaPx])
@@ -810,6 +816,8 @@ export default function TeleprompterView({
       // anotar() devuelve en la primera linea si no esta activo.
       if (diagnosticoActivo() && renglonesAnotadosRef.current !== generacionDiagnostico() && renglonesRef.current.length > 0) {
         anotar({ tipo: 'renglones', inicios: renglonesRef.current.map((x) => x.desdeToken) })
+        // -tarea 89, 04-10-2026-: con qué diseño y tamaño salieron esos renglones.
+        anotar({ tipo: 'pantalla', diseno: horizontalRef.current ? 'tel-h' : 'tel-v', ancho: containerRef.current?.clientWidth || 0, alto: containerRef.current?.clientHeight || 0 })
         renglonesAnotadosRef.current = generacionDiagnostico()
       }
       anotar({
