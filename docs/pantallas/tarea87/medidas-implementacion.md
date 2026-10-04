@@ -1,182 +1,213 @@
 # Tarea 87 · boceto del visor de la toma (BOCETO, sin código)
 
-Estado: **boceto para que Claude lo revise, y después Javier lo apruebe.** Sin lámina aprobada no se
-programa nada de lo que se ve en las partes D y E (`docs/tarea87.txt`, parte A). La versión aprobada,
-con los cambios de Javier anotados aquí con su fecha, es el piso.
+Estado: **segunda vuelta (04-10-2026)**, con las correcciones de la revisión de Claude. Va primero a
+Claude y después a Javier para que lo apruebe. Sin lámina aprobada no se programa nada de lo visible
+de las partes D y E (`docs/tarea87.txt`, parte A). La versión aprobada es el piso.
 
-Hecho el 04-10-2026 sobre el visor **de pie** de main **c03d734** (ya con la tarea 89: bordes seguros
-y visor desplazable), con las piezas de Sigo de hoy, al estilo de `docs/pantallas/tarea89/`.
+El boceto parte del visor **de pie** de main **c03d734**, que ya trae la tarea 89 (bordes seguros y
+visor desplazable), y usa las piezas de Sigo de hoy.
+
+## Qué cambió desde la primera vuelta
+
+| Corrección | Antes (primera vuelta) | Ahora |
+|---|---|---|
+| (1) Acciones | Al final de la tarjeta. De pie, la tarjeta medía 1095 a 1114 dp, así que había que desplazar para llegar a las acciones | **Fila fija abajo**, completa sobre la barra del sistema. El video se achica para que lo demás quepa |
+| (2) Posición | Bloque siempre a la vista bajo la ficha de Subtítulos | **Dentro del panel de Subtítulos**, que se abre al tocar la ficha, bajo los cuatro estilos |
+| (3) Guías | Líneas punteadas sin rótulo | Rotuladas «GUÍAS DEL BOCETO · no van en la app», en la imagen y en las láminas |
+| Guardando (estado 5, ahora 7) | Desactivados los dos botones de guardar | **Solo el apretado** muestra el avance. Los otros tres, y la ficha de Subtítulos, quedan desactivados (respuesta de Claude) |
+
+Respuestas de Claude que también quedan aquí:
+
+- El tiempo estimado se redondea hacia arriba.
+- «1080×1920 con rotación» significa que el archivo viene en 1920×1080 con rotación 90/270 y se ve
+  en 1080×1920. No cambia nada visible del boceto: las tomas verticales se ven igual.
 
 ## Qué mirar primero
 
-1. `lamina-resumen.png`: hoy, Normal y Para redes con guías, el tiempo estimado y el guardando, en
-   los dos temas.
-2. `lamina-aprobacion.png`: hoy | boceto, estado por estado, los dos temas.
-3. `boceto-visor-oscuro.png`, `boceto-visor-claro.png`: los ocho estados del boceto en una hoja.
-4. `app-hoy-oscuro.png`, `app-hoy-claro.png`: la app real de hoy en los estados 1, 3, 4 y 7.
-5. Las sueltas: `boceto-estado-N-{tema}.png`, `hoy-estado-N-{tema}.png` y
-   `guias-estado-{1,2}-{tema}.png`.
+Todas las láminas están a 412×915 dp, en claro y oscuro, con la barra de tres botones y con
+navegación por gestos:
 
-## Cómo se hizo (herramientas/)
+1. `lamina-resumen.png`
+2. `lamina-aprobacion.png`: hoy | boceto, estado por estado, en las dos navegaciones y los dos temas.
+3. `boceto-visor-{botones,gestos}-{oscuro,claro}.png`: los diez estados.
+4. `app-hoy-{botones,gestos}-{oscuro,claro}.png`: la app de hoy en los estados 1, 5, 6 y 9.
+5. Las sueltas: `boceto-estado-N-{nav}-{tema}.png`, `hoy-estado-N-{nav}-{tema}.png` y
+   `guias-estado-{1,3}-{nav}-{tema}.png`.
+6. `herramientas/medidas-capturas.json`: lo medido en cada captura.
 
-- `vite.boceto.config.mjs`: el servidor del boceto, que no es el de la app. Cambia
-  `src/lib/archivosNativos` por `archivosNativosFingido.ts`, para que el `ReproductorGrabacion` de
-  verdad arme sus subtítulos en Chrome con el registro de la toma del corpus
-  `toma-008a7133-palabras.motor.txt`, el mismo de las pruebas.
-- `videos.sh`: videos de mentira hechos con ffmpeg (vertical 9:16 de 50 s y de 5 min, horizontal
-  16:9 de 50 s). No se suben al repositorio (`.gitignore`).
-- `boceto.tsx` y `boceto.html`:
-  - `modo=hoy` muestra el `ReproductorGrabacion` de verdad;
-  - `modo=propuesta` arma la misma tarjeta con las mismas clases, más lo nuevo.
-- `capturas.cjs`: saca las capturas con puppeteer-core desde `/workspace/tp-shot` (fuera del repo) y
-  Chrome headless.
-  - Teléfono de pie de 412×915 dp, a 2 px por dp.
-  - Las barras del sistema van dibujadas encima: la de estado arriba (24 dp) y la de tres botones
-    abajo (48 dp). La raíz del visor suma esos bordes como lo hace en el teléfono con
-    `env(safe-area-inset-*)`, que en Chrome vale 0.
-  - Si la tarjeta no cabe, se captura entera, y la raya roja marca el fin de la pantalla (915 dp).
-  - El video está en el segundo 3,5, donde aparece el subtítulo de dos renglones «que podríamos
-    llamar / la concepción trágica».
-  - `--resumen` saca las de guías.
-- `laminas.cjs`: arma las láminas.
-- Cómo correrlo, desde la raíz del repo:
-  1. `sh docs/pantallas/tarea87/herramientas/videos.sh`
-  2. `npx vite --config docs/pantallas/tarea87/herramientas/vite.boceto.config.mjs --port 5182 --host 127.0.0.1`
-  3. `node capturas.cjs && node capturas.cjs --resumen && node laminas.cjs`
+## Las barras del sistema que se suponen
 
-## Los estados (A2 más el 8, que se agregó el 04-10)
+- **Barra de estado:** 24 dp arriba.
+- **Barra de tres botones:** 48 dp abajo.
+- **Navegación por gestos:** una franja de **24 dp** abajo. Es el alto que Android documenta para la
+  barra de gestos, y es lo que vale el borde seguro de abajo con gestos. Se dibuja la píldora.
+- Chrome no tiene barras. Las dibujo encima, y la raíz del visor suma esos bordes como lo hace en el
+  teléfono con `env(safe-area-inset-*)`.
+- **No medido en el moto g86:** la barra de estado real y la franja de gestos real. Si la barra de
+  estado es más alta (por ejemplo, 30 dp por la cámara), el video pierde esa diferencia; las acciones
+  no se mueven.
 
-| # | Estado | Toma | Qué se ve nuevo |
-|---|--------|------|-----------------|
-| 1 | Vertical recién grabada con subtítulos, en Normal | 0:50, amarillo | Posición (Normal activo), la línea de las redes, «Guardar y compartir» |
-| 2 | La misma, en Para redes | 0:50 | Para redes activo, el subtítulo del visor a 0,35 |
-| 3 | Horizontal con subtítulos | 0:50, 16:9 | **sin** Posición; con «Guardar y compartir» |
-| 4 | Sin subtítulos (sin registro) | 0:50 | sin selector de subtítulos ni Posición; con «Guardar y compartir» |
-| 5 | Guardando | 5:00 | «Guardando… 37%» en el botón que se tocó («Guardar y compartir»); los dos de guardar deshabilitados; el tiempo estimado ya no está |
-| 6 | Guardada, pero compartir falló | 0:50 | visor de toma guardada (Compartir y Borrar) y el aviso breve «Quedó guardada, pero no se pudo compartir» |
-| 7 | Ya guardada | 0:50 | como hoy: Compartir y Borrar, sin selector, sin «Guardar y compartir» |
-| 8 | Vertical de 5 min con subtítulos | 5:00 | «Guardar tarda alrededor de 1 min» bajo la duración |
+## (1) Las acciones fijas abajo, y cómo conviven con el visor desplazable de la 89
 
-## Las piezas, con su origen (main c03d734)
+### La estructura que se propone, sobre `ReproductorGrabacion.tsx` de c03d734
 
-### Posición: Normal / Para redes (A1, D3)
+- **La raíz** (`:176`) queda igual que en la 89: `position: fixed`, `inset: 0`, los cuatro bordes
+  seguros más `--aire-4` (20 dp) y `overflowY: auto`. Además se vuelve una columna
+  (`flexDirection: column`).
+- **La tarjeta** (`:178`): `display: flex`, `flexDirection: column`, **`maxHeight: 100%`** del alto
+  disponible y `overflow: hidden`. No pasa de lo que cabe entre las barras.
+- **Dentro de la tarjeta, dos partes:**
+  - **Arriba** (`data-testid="visor-arriba"`, nuevo): video, barra de avance, ficha de Subtítulos
+    (con su panel) y nombre con duración y tiempo estimado. Lleva `flex: 1 1 auto`, `minHeight: 0` y
+    `overflowY: auto`.
+  - **Abajo**, `.acciones-toma` **fuera** de lo de arriba, con `flexShrink: 0`. Nunca se desplaza
+    ni se achica.
+- **El video** toma lo que queda:
 
-- **Dónde:** debajo del bloque del `SelectorSubtitulos` (`ReproductorGrabacion.tsx:220-230`), en un
-  bloque propio con el mismo `padding: var(--aire-3) var(--aire-3) 0`.
-- **Cuándo se ve:**
-  `!guardada && subtitulos.length > 0 && estilo !== 'no' && orientacion === 'vertical'`, y además
-  que el APK tenga `exportarToma`. Lo del 480p queda pendiente: ver «Lo que no calza».
-- **La cabeza:** `.panel-ficha-cabeza` (`styles-ajustes.css:85`).
-  - A la izquierda «POSICIÓN»: 12 px, 700, mayúsculas, `--color-apagado`.
-  - A la derecha lo elegido: 13 px, 500, `--color-texto` (`:97`).
-  - Es la cabeza del panel de subtítulos de las fichas de LISTO (`FichasListo.tsx`,
-    `panelAbierto === 'subtitulos'`).
-- **El control:** `.segmentado` (`:105`), con borde `--borde-tarjeta` y radio 10.
-  - Dos `.segmentado-opcion` (`:111`): alto 40, 13 px, 500.
-  - La activa es `.segmentado-opcion.activa` (`:125`): fondo `--color-acento`, letra
-    `--color-texto-acento`.
-  - Lleva `role="group"`, `aria-label` «Posición» y `aria-pressed` en cada botón, como el de
-    subtítulos de LISTO.
-  - Para la implementación: `data-testid` `selector-posicion-subtitulos`, `btn-posicion-normal` y
-    `btn-posicion-redes`.
-- **La línea de las redes:** `.texto-meta` (`styles.css:238`, `--texto-meta` 13), `--color-apagado`,
-  `margin-top: var(--aire-1)`, alineada a la derecha para que termine bajo «Para redes», en un solo
-  renglón a 412 dp. Es el único lugar donde se nombran redes.
-- **Por qué el segmentado y no el patrón del SelectorSubtitulos:**
-  - Son dos opciones fijas y conviene ver las dos a la vez. El desplegable esconde la otra.
-  - Además, `.opcion-subtitulos` tiene colores fijos (#1c1a19, #CFC8C3). El segmentado no tiene
-    ninguno: todo sale de variables.
-  - Javier elige (A1).
+  ```
+  disponible = alto de la raíz − borde seguro de arriba − borde seguro de abajo − 2 × --aire-4
+  resto      = lo de arriba sin el video + .acciones-toma (con su margin-top de --aire-3) + bordes de la tarjeta
+  altoVideo  = máx(240, mín(70vh, disponible − resto))
+  ```
 
-### El subtítulo «Para redes» en el visor (D3)
+  Va como `maxHeight` del `<video>`, con `width: 100%`. La imagen se ajusta sin recortar, como hoy.
+  En la app, `resto` se mide con un `ResizeObserver`: cambia al abrir o cerrar el panel y al aparecer
+  el tiempo estimado. El boceto lo hace así (`usarAltoDelVideo` en `herramientas/boceto.tsx`).
 
-- Hoy `CapaSubtitulos` (`SubtitulosVisor.tsx:105`) usa `marginBottom: rect.h * 0.125`. En el boceto
-  se sube a mano a `rect.h * 0.35`; en la app lo hará la prop `margenAbajo`.
-- La letra sigue en `rect.h / 32` (`:102`).
-- Las guías de la lámina resumen, contadas sobre la imagen y no sobre el elemento:
-  - celeste: 0,125 desde abajo;
-  - naranja: 0,35;
-  - gris: el 14 % de arriba (zona de Meta).
-- En 1080×1920, el bloque de dos renglones queda a ~817 px desde abajo, muy lejos del 14 % de
-  arriba, como dice D0.
-- El boceto **no** resta el medio interlineado ni `extraAbajo`. Eso se mide primero (D0 y D3) y
-  puede mover el visor unos píxeles.
+### Qué se desplaza y qué no
 
-### Guardar y compartir (E1)
+| Pieza | ¿Se desplaza? |
+|---|---|
+| Fila de acciones | **Nunca.** Siempre completa sobre la barra |
+| Video, avance, ficha y panel, nombre | Solo si ni con el video en 240 dp cabe, o sea con menos de 240 + resto de alto disponible: unos 476 dp con el panel cerrado y 658 con el panel abierto (resto de 236 y 418). Ahí se desplaza **lo de arriba**, dentro de la tarjeta. En 412×915 no pasa en ningún estado: lo verificó `capturas.cjs` (`arribaSeDesplaza: false` en los 40 casos) |
+| Raíz de la 89 (`overflowY: auto`) | Queda como red de seguridad. Como la tarjeta no pasa de `maxHeight: 100%`, la raíz solo se desplazaría si ni la fila de acciones (82 dp con su margen) cupiera. En 412×915 no se desplaza (`raizSeDesplaza: false` en los 40) |
 
-- Es una `.accion-toma` más (`styles.css:1477`: `min-height` 64, `--texto-etiqueta` 11,
-  `gap var(--aire-1)`; deshabilitado en `:1493`, opacidad 0,7).
-- Va dentro de `.acciones-toma` (`:1472`), **entre Guardar y Repetir**, con `IconoCompartir`
-  (`IconosApp.tsx:333`) de 26.
-- Lleva la etiqueta visible «Guardar y compartir», igual que Guardar lleva la suya.
-- Con cuatro acciones, cada una mide ~95 dp de ancho a 412 dp. Hoy son tres de ~127. La etiqueta
-  entra en un renglón.
-- **Mientras guarda:** el botón que se tocó muestra el texto de hoy, `guardandoAvance`
-  («Guardando… 37%», `es.ts:75`), y los dos de guardar quedan deshabilitados (E1).
-- Solo en toma recién grabada (`!guardada`). Con la toma guardada siguen Compartir y Borrar, como hoy.
+### Medidas exactas, de pie a 412×915 (dp)
 
-### El aviso cuando compartir falla (E1, estado 6)
+La tarjeta mide 372 de ancho (412 − 2 × 20). El alto disponible es 803 con tres botones
+(915 − 44 − 68) y 827 con gestos (915 − 44 − 44).
 
-Es el `AvisoBreve` de verdad (`AvisoBreve.tsx:17`): `--bg-superficie`, borde `--color-borde`,
-`--redondeo-pildora`, `--texto-cuerpo` 15, 600, sobre la barra. Dice «Quedó guardada, pero no se pudo
-compartir» (`compartirTrasGuardar`, propuesta). El visor queda como toma guardada.
+| Estado | Tres botones: video (alto · imagen) | Gestos: video (alto · imagen) |
+|---|---|---|
+| Hoy, vertical con subtítulos | 641 · 360×641; **fila 851–920, bajo el borde** | 641 · 360×641; **fila 851–920, bajo el borde** |
+| 1 y 4 · panel cerrado | **567 · 319×567** | **591 · 332×591** |
+| 2 y 3 · panel abierto, con Posición | **385 · 217×385** | **409 · 230×409** |
+| 5 · horizontal | 209 · 372×209 (no se achica) | 209 · 372×209 |
+| 6 · sin subtítulos | 619 · 348×619 | 641 · 361×641 (tope de 70vh) |
+| 7 · guardando, 5 min | 567 · 319×567 | 591 · 332×591 |
+| 8 y 9 · guardada | 624 · 351×624 | 641 · 361×641 |
+| 10 · tiempo estimado, 5 min | **549 · 309×549** | **573 · 322×573** |
 
-### El tiempo estimado antes de guardar (E2, estado 8)
+**La fila de acciones** (de arriba a abajo; límite = donde empieza la barra):
 
-- **Dónde:** segunda línea `.texto-meta`, `--color-apagado`, bajo la duración, en el bloque del
-  nombre (`ReproductorGrabacion.tsx:231-239`). `data-testid` `tiempo-estimado-guardado`.
-- **Texto:** «Guardar tarda alrededor de {tiempo}» (`tiempoEstimadoGuardado`, propuesta). En inglés,
-  «Saving takes about {tiempo}».
-- **Fórmula:** `duracionMs × 11 200 / 60 000`, redondeado hacia arriba de a 5 s.
-  - 1 min → 15 s;
-  - 5 min → «1 min»;
-  - 20 min → «3 min 45 s».
-- **Umbral:** desde 1 minuto de toma. Solo con subtítulos y estilo distinto de No, sin guardar, y
-  se oculta mientras guarda.
-- Agrega ~19 dp a la tarjeta (1095 → 1114).
+| Variante | Fila | Límite | Aire sobre la barra |
+|---|---|---|---|
+| Tres botones | 777–846 | 867 | 21 dp: los 20 de `--aire-4` más el borde |
+| Gestos | 801–870 | 891 | 21 dp |
+| Guardada (dos acciones), tres botones | 782–846 | 867 | — |
+| Guardada (dos acciones), gestos | 803–867 | 891 | — |
 
-## Medidas (Chrome, 412×915 dp, barras de 24 y 48 dp)
+En el horizontal (estado 5) la tarjeta cabe entera y queda centrada: fila 598–667 con tres botones,
+610–679 con gestos.
 
-| Captura | Alto de la raíz con la tarjeta (dp) | ¿Cabe en 915? |
-|---------|------------------------------|---------------|
-| hoy · 1 (vertical con subtítulos) | 989 | no: Guardar, Repetir y Borrar quedan bajo la barra y se alcanzan desplazando |
-| boceto · 1, 2 y 5 | 1095 | no (+106 dp: el bloque de Posición) |
-| boceto · 8 (con el tiempo estimado) | 1114 | no (+19 dp más) |
-| hoy y boceto · 3 (horizontal) | 915 | sí |
-| hoy y boceto · 4 (sin subtítulos) | 937 | casi: 22 dp bajo el borde |
-| hoy y boceto · 6 y 7 (guardada) | 932 | casi: 17 dp bajo el borde |
+### Letra y toques: no bajan de lo de hoy (medido en cada captura)
 
-Lo nuevo no cambia el video (380×640 dp de pie, `maxHeight: 70vh`) ni las piezas de hoy.
+| Pieza | Hoy | Boceto |
+|---|---|---|
+| Acciones (`.accion-toma`) | 69 alto (64 + etiqueta), 3 de ~124 ancho | 69 alto (64 con dos acciones); **4 de 93 ancho** |
+| Letra de las etiquetas | 11 (`--texto-etiqueta`) | 11 |
+| Avance y cerrar | 44 | 44 |
+| Estilos del panel | 68 | 68 |
+| Segmentado de Posición | — | 40, letra 13 (como en LISTO) |
+| Texto meta | 13 | 13 |
+
+## (2) Posición dentro del panel de Subtítulos
+
+- **La ficha** usa el mismo marcado y clases que `SelectorSubtitulos` (`SubtitulosVisor.tsx:148`):
+  la píldora `.boton-subtitulos`, que se despliega, y las cuatro `.opcion-subtitulos` (68 dp).
+- **Lo nuevo va debajo de los cuatro estilos, dentro del panel:**
+  - la cabeza `.panel-ficha-cabeza` (`styles-ajustes.css:85`): «POSICIÓN» a la izquierda y lo elegido
+    a la derecha;
+  - el `.segmentado` (`:105`) con dos `.segmentado-opcion` (`:111`, 40 dp); la activa es
+    `.activa` (`:125`), con `--color-acento` y `--color-texto-acento`;
+  - la línea `.texto-meta` con `--color-apagado`, alineada a la derecha: «Instagram, TikTok y
+    YouTube Shorts». Es el único lugar donde se nombran redes.
+- **Con el panel cerrado no se ve.** Si está en Para redes, la píldora lo resume:
+  «Subtítulos · Amarillo · Para redes» (estado 4).
+- **Propuesta:** elegir un estilo cierra el panel, como hoy. Elegir la posición **no** lo cierra,
+  para ver subir el subtítulo en el video de arriba. Javier decide.
+- **Cuándo hay Posición:** toma vertical recién grabada, con subtítulos y estilo distinto de No (D3).
+  La horizontal (estado 5) abre el panel con sus cuatro estilos y sin Posición.
+- **`data-testid`:** `selector-posicion-subtitulos`, `btn-posicion-normal` y `btn-posicion-redes`,
+  con `aria-pressed`.
+
+## (3) Las guías
+
+- Están en `guias-estado-{1,3}-*.png` y en la lámina resumen.
+- Son tres líneas, contadas sobre la imagen desde abajo: celeste en 0,125 (Normal), naranja en 0,35
+  (Para redes) y gris en el 14 % de arriba (zona de Meta).
+- Llevan el rótulo rojo «GUÍAS DEL BOCETO · no van en la app». **No son de la app.**
+- El subtítulo de Para redes del boceto está a 0,35 a mano, sin el ajuste de D0 y D3 (contorno y
+  medio interlineado). Eso se mide al implementar.
+
+## Los diez estados
+
+| # | Estado | Toma | Lo que se ve |
+|---|--------|------|--------------|
+| 1 | Vertical con subtítulos, panel cerrado | 0:50, amarillo | Ficha cerrada, «Guardar y compartir» |
+| 2 | Panel abierto, Posición en Normal | 0:50 | Cuatro estilos y Posición |
+| 3 | Panel abierto, Para redes | 0:50 | El subtítulo del visor a 0,35 |
+| 4 | Panel cerrado, en Para redes | 0:50 | La ficha dice «Amarillo · Para redes» |
+| 5 | Horizontal con subtítulos | 0:50, 16:9 | Sin Posición |
+| 6 | Sin subtítulos (sin registro) | 0:50 | Sin ficha |
+| 7 | Guardando | 5:00 | «Guardando… 37%» en «Guardar y compartir», el apretado. Guardar, Repetir, Borrar y la ficha desactivados (opacidad 0,7, `.accion-toma:disabled`, `styles.css:1493`). Sin el tiempo estimado |
+| 8 | Guardada, pero compartir falló | 0:50 | Compartir y Borrar, más el aviso breve «Quedó guardada, pero no se pudo compartir» |
+| 9 | Ya guardada | 0:50 | Como hoy |
+| 10 | Toma de 5 min | 5:00 | «Guardar tarda alrededor de 1 min» bajo la duración |
+
+## Las demás piezas (sin cambios desde la primera vuelta)
+
+- **«Guardar y compartir»:** una `.accion-toma` más (`styles.css:1477`), con `IconoCompartir`
+  (`IconosApp.tsx:333`), entre Guardar y Repetir. Lleva la etiqueta visible.
+- **El aviso:** el `AvisoBreve` de verdad (`AvisoBreve.tsx:17`).
+- **El tiempo estimado (E2):** una segunda línea `.texto-meta` con `--color-apagado` bajo la
+  duración, `data-testid="tiempo-estimado-guardado"`. Texto: «Guardar tarda alrededor de {tiempo}».
+  Duración × 11,2 s/min, redondeado hacia arriba de a 5 s, desde 1 minuto.
+- **Textos propuestos que Javier confirma:** `guardarYCompartir`, `compartirTrasGuardar` y
+  `tiempoEstimadoGuardado`.
 
 ## El visor de lado (#68, todavía no en main)
 
-El boceto no lo dibuja, porque en main el visor de lado sigue siendo el de pie desplazable. Con el #68
-(video a la izquierda y controles en una columna a la derecha, que se desplaza), lo nuevo va **en la
-misma columna y en el mismo orden**:
+No se dibuja: en main, de lado sigue el visor de pie desplazable. Con el #68, las acciones van
+fijas al pie de la columna de la derecha, que es la que se desplaza, nunca el video. Las mismas
+piezas, en el mismo orden:
 
-1. el selector de subtítulos;
-2. Posición, con su línea de redes;
+1. avance;
+2. ficha con su panel (Posición adentro);
 3. nombre, duración y tiempo estimado;
-4. las acciones, con «Guardar y compartir» entre Guardar y Repetir.
+4. acciones.
 
-El subtítulo «Para redes» se dibuja sobre el video igual, a 0,35 del alto de la imagen. Si se fusiona
-el #68 antes de programar la 87, se saca una lámina de lado con esta misma herramienta
+Si el #68 entra antes de programar la 87, se saca la lámina de lado con esta herramienta
 (`setViewport` 915×411).
 
-## Lo que no calza o queda para decidir
+## Lo que no calza, con las cifras
 
-1. **A2, estado 5, dice «los demás deshabilitados»; E1 dice «los dos botones de guardar».** Hoy, mientras
-   se guarda, Repetir y Borrar siguen activos. El boceto sigue E1 (solo los dos de guardar). Javier
-   decide.
-2. **La tarjeta de pie crece 106 dp (125 con el tiempo estimado),** y ya hoy no cabe en 915: las
-   acciones quedan bajo la barra y se llega desplazando (tarea 89). Una alternativa más baja sería
-   poner Posición dentro del desplegable de subtítulos, pero esconde la elección y usa
-   `.opcion-subtitulos`, con sus colores fijos. No se dibujó: se describe para que Javier elija.
-3. **480p:** no se midió la forma (paso 0). El boceto ofrece Posición en toda toma vertical. Si al
-   probar sale que el 480p no es 9:16, se oculta ahí (C1 y D3).
-4. **El subtítulo «Para redes» del boceto** está a 0,35 sin el ajuste del medio interlineado ni del
-   contorno (D0 y D3). La posición final se mide.
-5. **Textos propuestos que Javier confirma en la lámina:** `guardarYCompartir`,
-   `compartirTrasGuardar` y `tiempoEstimadoGuardado`.
-6. **El texto de la cabeza:** el encargo dice `posicionSubtitulos` «Posición». La cabeza lo muestra en
-   mayúsculas porque `.panel-ficha-cabeza` hace `text-transform: uppercase`, como en LISTO.
+1. **Con el panel abierto, el video queda chico:** 385 dp de alto (imagen 217×385) con tres botones
+   y 409 (230×409) con gestos. Hoy mide 641 (360×641): es el 60 % y el 64 %. El subtítulo del visor
+   se dibuja a 1/32 del alto de la imagen, así que mientras el panel está abierto la letra baja de
+   20 a **12 dp** (13 con gestos). La letra y los toques de la interfaz no bajan; la vista previa del
+   subtítulo sí, mientras se elige. Si es demasiado, una salida sería esconder la línea del nombre
+   con el panel abierto (+52 dp de video). No la dibujé: Javier y Claude deciden.
+2. **Con el panel cerrado, el video baja de 641 a 567 dp** con tres botones (−74) y a 591 con gestos
+   (−50). Es el precio de que se vean las acciones. Hoy, para verlas, hay que desplazar.
+3. **Las cuatro acciones miden 93 dp de ancho;** hoy las tres miden ~124. Siguen sobre los 48 dp
+   mínimos de Android, con la misma letra y el mismo alto.
+4. **La barra de estado (24) y la franja de gestos (24) son supuestas,** no medidas en el moto g86.
+5. **Guardando:** la X de cerrar sigue activa, como hoy. La respuesta de Claude habla de «los otros
+   botones»; no la desactivé porque no sé si cerrar el visor cancela el guardado. Que lo confirmen.
+6. **480p:** la forma no se midió, así que el boceto ofrece Posición en toda toma vertical (C1 y D3).
+7. **Estado 8:** el `AvisoBreve` de la App va fijo a `--aire-5` (32 dp) más el borde seguro desde
+   abajo (`AvisoBreve.tsx`). Con las acciones fijas abajo, tapa la fila de Compartir y Borrar durante
+   los ~2 s que dura (`useAviso`, 2000 ms). Hoy pasa lo mismo cuando la fila queda a la vista. No lo
+   moví porque es de la App, no del visor. Si molesta, que el aviso suba sobre la fila mientras el
+   visor está abierto.

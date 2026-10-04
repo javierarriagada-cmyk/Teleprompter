@@ -343,6 +343,8 @@ Esto cierra el paso 0. Lo de arriba queda tal cual, como registro de lo que se p
        rotación 0, o 1920x1080 codificado con rotación 90 que se muestra 1080x1920. La parte C
        cubre las dos -'1080x1920 con 0 es vertical' y '1920x1080 con 90 es vertical'-; el número
        de rotación exacto -rot_grados de evento=forma- conviene copiarlo aquí cuando esté.
+       -04-10, Claude- Resuelto: el archivo viene en 1920x1080 con rotación 90 o 270 y se ve en
+       1080x1920 -ver A4-.
     3. No llegaron cifras de evento=capa -caja_abajo_px, pintado_abajo_px-, ni de v720, h1080,
        giro-30s ni acostado-10s. D0 se confirma con evento=capa al probar la parte D; giro y
        acostado, al probar la parte C. No se adivina ninguna.
@@ -400,6 +402,7 @@ A2  LOS ESTADOS QUE MUESTRA LA LÁMINA -cada uno en tema OSCURO y en tema CLARO-
     3. Toma horizontal recién grabada con subtítulos: SIN selector, con "Guardar y compartir".
     4. Toma sin subtítulos -estilo "No" o sin registro-: sin selector, con "Guardar y compartir".
     5. Guardando, con el avance en el botón que se tocó y los demás deshabilitados.
+       -04-10, A4- Así queda: los demás son el otro de guardar, Repetir, Borrar y la ficha.
     6. Guardada pero no se pudo compartir: el aviso compartirTrasGuardar.
     7. Toma ya guardada: como hoy -Compartir y Borrar, sin selector, sin "Guardar y compartir"-.
     8. -sumado el 04-10- Toma vertical de 5 min con subtítulos: la línea del tiempo estimado
@@ -421,6 +424,65 @@ A3  QUÉ SE ENTREGA Y DÓNDE -docs/pantallas/tarea87/-
   pueda -componentes de hoy montados con datos fingidos-, no dibujado a mano.
   Javier aprueba mirando lamina-aprobacion.png. Sus cambios se anotan en medidas-implementacion.md
   con fecha, y esa versión es el piso.
+
+A4  LA REVISIÓN DEL BOCETO -04-10-2026, segunda vuelta; Claude-
+  Lo nuevo de la primera vuelta quedó bien, pero no se aprobó por un problema de fondo: en el moto
+  g86 las acciones -Guardar, Guardar y compartir, Repetir, Borrar- quedaban bajo el borde de la
+  pantalla y había que desplazar para verlas. Lo de A1 y A2 sigue valiendo, con estas correcciones:
+  1. LA FILA DE ACCIONES QUEDA FIJA ABAJO, siempre completa sobre la barra del sistema -con el
+     borde seguro de abajo-. El resto de la tarjeta se acomoda arriba, y el video se achica si hace
+     falta. Se programa así, en ReproductorGrabacion.tsx:
+       - La raíz queda como la dejó la 89 -fixed, inset 0, bordes seguros, overflowY auto-.
+       - La tarjeta pasa a columna con maxHeight 100%. Conserva su margin auto: la prueba de la 89
+         'si la tarjeta no cabe, el visor se desplaza' lo mira y no se toca.
+       - Video, avance, ficha de Subtítulos y nombre van en un bloque de arriba -flex 1 1 auto,
+         minHeight 0, overflowY auto-.
+       - .acciones-toma va fuera de ese bloque, con flexShrink 0.
+       - El video toma lo que queda, como maxHeight: máx(240, mín(70vh, disponible - resto)).
+         Disponible es el alto de la raíz menos sus bordes seguros y 2 x --aire-4. Resto es lo de
+         arriba sin el video, más las acciones con su margin-top, más los bordes de la tarjeta. Se
+         mide con ResizeObserver.
+     Qué se desplaza: la fila de acciones, nunca. Lo de arriba, solo si ni con el video en 240 dp
+     cabe, y en 412x915 no pasa. La raíz, solo de red de seguridad.
+     Medidas en 412x915 -docs/pantallas/tarea87/medidas-implementacion.md-, como video de alto y
+     fila de acciones, en dp:
+       - con la barra de tres botones: panel cerrado 567, panel abierto 385; fila 777-846, barra
+         desde 867;
+       - con gestos -franja de 24 dp-: 591 y 409; fila 801-870, barra desde 891;
+       - hoy: video de 641, con la fila en 851-920, bajo el borde.
+     Prueba nueva -src/pruebas/tarea87-visor.test.tsx; jsdom no mide, así que se mira la estructura-:
+       'LAS ACCIONES NO SE DESPLAZAN': .acciones-toma no está dentro de visor-arriba, y visor-arriba
+       tiene overflowY auto. Rotura a propósito: meter las acciones dentro de visor-arriba.
+     Manual moto g86, en vertical, con tres botones y con gestos: las cuatro acciones se ven
+     completas al abrir el visor, con el panel cerrado y abierto, sin desplazar.
+  2. POSICIÓN VA DENTRO DEL PANEL DE SUBTÍTULOS, el que se abre al tocar la ficha, debajo de los
+     cuatro estilos. Con el panel cerrado no se ve, y la ficha dice «Amarillo · Para redes» cuando
+     corresponde. Esto cambia D3:
+       - SelectorPosicion ya no va «debajo del SelectorSubtitulos, bloque :212-220». Va dentro del
+         panel de SelectorSubtitulos -SubtitulosVisor.tsx:148-, que recibe una prop opcional
+         extra?: ReactNode -sin ella queda exactamente como hoy- y el resumen de la posición para la
+         píldora.
+       - Elegir la posición NO cierra el panel. Elegir un estilo lo cierra, como hoy. Esto es
+         propuesta: Javier lo confirma en la lámina.
+       - Las pruebas de D3 abren la ficha -btn-subtitulos- antes de buscar
+         selector-posicion-subtitulos. subtitulosVisor.test.tsx no se toca.
+  3. LAS LÍNEAS PUNTEADAS DE GUÍA -0,125, 0,35 y el 14 % de arriba- SON SOLO DEL BOCETO, no de la
+     app. Así están rotuladas en las láminas y en el doc.
+  RESPUESTAS DE CLAUDE DEL 04-10:
+    - El tiempo estimado redondea hacia arriba -E2-, y así queda.
+    - «1080x1920 con rotación» quiere decir que el archivo viene en 1920x1080 con rotación 90 o
+      270 y se ve en 1080x1920. Eso resuelve el NO CALZA 2 del paso 0. La prueba de la parte C que
+      lo cuida es '1920x1080 con 90 es vertical' y 'con 270 es vertical'.
+    - Mientras se guarda, los otros botones quedan desactivados y solo el apretado muestra el
+      avance. Eso es Guardar o Guardar y compartir, más Repetir, Borrar y la ficha de Subtítulos.
+      Cambia E1 -ver abajo- y el estado 5 de A2. La X de cerrar sigue activa como hoy: si cerrar
+      el visor a mitad de guardado debe impedirse, falta decirlo.
+  LOS ESTADOS DE LA LÁMINA, renumerados -los de A2, con el panel cerrado y abierto-:
+    1 vertical con subtítulos, panel cerrado; 2 panel abierto con Posición en Normal; 3 abierto en
+    Para redes; 4 cerrado en Para redes; 5 horizontal; 6 sin subtítulos; 7 guardando; 8 guardada
+    pero sin compartir; 9 ya guardada; 10 toma de 5 min con el tiempo estimado.
+    Cada uno en claro y en oscuro, a 412x915, con la barra de tres botones -48 dp- y con
+    navegación por gestos -24 dp-.
 
 ==============================================================================
 PARTE B - LA RECETA COMÚN exportarToma, SIN CAMBIAR LA CONDUCTA
@@ -592,6 +654,8 @@ D3  VISOR -src/components/SubtitulosVisor.tsx y un componente NUEVO-
     se corrige el VISOR para que calce con el archivo guardado -decidido el 03-10-. El archivo
     no se mueve: en "Normal" no cambia ni un píxel. Prueba: 'EL VISOR CALZA CON EL ARCHIVO: el
     fondo del último renglón queda donde lo pone CapaDeSubtitulos', con las cifras medidas.
+  - -04-10, A4- OJO: SelectorPosicion va DENTRO del panel de Subtítulos, no debajo de la
+    ficha; lo que sigue de «debajo del SelectorSubtitulos» queda corregido por A4.
   - SelectorPosicion({ posicion, onCambiar }) en src/components/SelectorPosicion.tsx -NUEVO,
     entra a la lista de T209-, con lo aprobado en el boceto: data-testid
     selector-posicion-subtitulos, botones btn-posicion-normal y btn-posicion-redes, aria-pressed,
@@ -649,6 +713,10 @@ E1  Archivos: src/components/ReproductorGrabacion.tsx, es.ts, en.ts, styles.css 
     'SI COMPARTIR FALLA, la toma igual queda guardada -onCambio con galeriaUri- y el aviso es
      compartirTrasGuardar';
     'MIENTRAS GUARDA, los dos botones de guardar están deshabilitados';
+    -04-10, A4- Corregido por Claude: mientras guarda, solo el botón apretado muestra el avance y
+     los otros -el otro de guardar, Repetir, Borrar y la ficha de Subtítulos- quedan desactivados.
+     La prueba pasa a 'MIENTRAS GUARDA, el apretado muestra el avance y los demás están
+     desactivados'.
     'TOMA YA GUARDADA: no hay btn-compartir-nueva'.
   Rotura a propósito: compartir antes de mirar res.ok -> la de guardado fallido falla.
   Manual moto g86: toma vertical con amarillo en "Para redes" -> se abre el menú de Android y la
