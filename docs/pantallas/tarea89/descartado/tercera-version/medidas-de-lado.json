@@ -1,0 +1,1354 @@
+{
+  "visor-de-lado-caso1-horizontal-giro90-915x411-oscuro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "normal",
+      "W": 915,
+      "H": 411,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 823,
+      "altoBarra": 48,
+      "altoVideo": 363,
+      "anchoVideo": 645,
+      "columna": 178,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 44,
+        "y": 0,
+        "ancho": 645,
+        "alto": 363
+      },
+      "barra-avance": {
+        "x": 44,
+        "y": 363,
+        "ancho": 645,
+        "alto": 48
+      },
+      "columna": {
+        "x": 689,
+        "y": 0,
+        "ancho": 178,
+        "alto": 411
+      },
+      "acciones": {
+        "x": 690,
+        "y": 56,
+        "ancho": 177,
+        "alto": 355
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 411
+      }
+    },
+    "altosAcciones": [
+      88,
+      89,
+      89,
+      89
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro90-800x360-oscuro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "normal",
+      "W": 800,
+      "H": 360,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 708,
+      "altoBarra": 48,
+      "altoVideo": 312,
+      "anchoVideo": 555,
+      "columna": 153,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 44,
+        "y": 0,
+        "ancho": 555,
+        "alto": 312
+      },
+      "barra-avance": {
+        "x": 44,
+        "y": 312,
+        "ancho": 555,
+        "alto": 48
+      },
+      "columna": {
+        "x": 599,
+        "y": 0,
+        "ancho": 153,
+        "alto": 360
+      },
+      "acciones": {
+        "x": 600,
+        "y": 56,
+        "ancho": 152,
+        "alto": 304
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 360
+      }
+    },
+    "altosAcciones": [
+      75,
+      76,
+      76,
+      76
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro90-915x411-claro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "normal",
+      "W": 915,
+      "H": 411,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 823,
+      "altoBarra": 48,
+      "altoVideo": 363,
+      "anchoVideo": 645,
+      "columna": 178,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 44,
+        "y": 0,
+        "ancho": 645,
+        "alto": 363
+      },
+      "barra-avance": {
+        "x": 44,
+        "y": 363,
+        "ancho": 645,
+        "alto": 48
+      },
+      "columna": {
+        "x": 689,
+        "y": 0,
+        "ancho": 178,
+        "alto": 411
+      },
+      "acciones": {
+        "x": 690,
+        "y": 56,
+        "ancho": 177,
+        "alto": 355
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 411
+      }
+    },
+    "altosAcciones": [
+      88,
+      89,
+      89,
+      89
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro90-800x360-claro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "normal",
+      "W": 800,
+      "H": 360,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 708,
+      "altoBarra": 48,
+      "altoVideo": 312,
+      "anchoVideo": 555,
+      "columna": 153,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 44,
+        "y": 0,
+        "ancho": 555,
+        "alto": 312
+      },
+      "barra-avance": {
+        "x": 44,
+        "y": 312,
+        "ancho": 555,
+        "alto": 48
+      },
+      "columna": {
+        "x": 599,
+        "y": 0,
+        "ancho": 153,
+        "alto": 360
+      },
+      "acciones": {
+        "x": 600,
+        "y": 56,
+        "ancho": 152,
+        "alto": 304
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 360
+      }
+    },
+    "altosAcciones": [
+      75,
+      76,
+      76,
+      76
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro270-915x411-oscuro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "normal",
+      "W": 915,
+      "H": 411,
+      "IN": {
+        "arriba": 0,
+        "derecha": 44,
+        "abajo": 0,
+        "izquierda": 48
+      },
+      "util": 823,
+      "altoBarra": 48,
+      "altoVideo": 363,
+      "anchoVideo": 645,
+      "columna": 178,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 48,
+        "y": 0,
+        "ancho": 645,
+        "alto": 363
+      },
+      "barra-avance": {
+        "x": 48,
+        "y": 363,
+        "ancho": 645,
+        "alto": 48
+      },
+      "columna": {
+        "x": 693,
+        "y": 0,
+        "ancho": 178,
+        "alto": 411
+      },
+      "acciones": {
+        "x": 694,
+        "y": 56,
+        "ancho": 177,
+        "alto": 355
+      },
+      "recorte": {
+        "x": 871,
+        "y": 0,
+        "ancho": 44,
+        "alto": 411
+      }
+    },
+    "altosAcciones": [
+      88,
+      89,
+      89,
+      89
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro270-800x360-oscuro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "normal",
+      "W": 800,
+      "H": 360,
+      "IN": {
+        "arriba": 0,
+        "derecha": 44,
+        "abajo": 0,
+        "izquierda": 48
+      },
+      "util": 708,
+      "altoBarra": 48,
+      "altoVideo": 312,
+      "anchoVideo": 555,
+      "columna": 153,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 48,
+        "y": 0,
+        "ancho": 555,
+        "alto": 312
+      },
+      "barra-avance": {
+        "x": 48,
+        "y": 312,
+        "ancho": 555,
+        "alto": 48
+      },
+      "columna": {
+        "x": 603,
+        "y": 0,
+        "ancho": 153,
+        "alto": 360
+      },
+      "acciones": {
+        "x": 604,
+        "y": 56,
+        "ancho": 152,
+        "alto": 304
+      },
+      "recorte": {
+        "x": 756,
+        "y": 0,
+        "ancho": 44,
+        "alto": 360
+      }
+    },
+    "altosAcciones": [
+      75,
+      76,
+      76,
+      76
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro270-915x411-claro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "normal",
+      "W": 915,
+      "H": 411,
+      "IN": {
+        "arriba": 0,
+        "derecha": 44,
+        "abajo": 0,
+        "izquierda": 48
+      },
+      "util": 823,
+      "altoBarra": 48,
+      "altoVideo": 363,
+      "anchoVideo": 645,
+      "columna": 178,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 48,
+        "y": 0,
+        "ancho": 645,
+        "alto": 363
+      },
+      "barra-avance": {
+        "x": 48,
+        "y": 363,
+        "ancho": 645,
+        "alto": 48
+      },
+      "columna": {
+        "x": 693,
+        "y": 0,
+        "ancho": 178,
+        "alto": 411
+      },
+      "acciones": {
+        "x": 694,
+        "y": 56,
+        "ancho": 177,
+        "alto": 355
+      },
+      "recorte": {
+        "x": 871,
+        "y": 0,
+        "ancho": 44,
+        "alto": 411
+      }
+    },
+    "altosAcciones": [
+      88,
+      89,
+      89,
+      89
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro270-800x360-claro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "normal",
+      "W": 800,
+      "H": 360,
+      "IN": {
+        "arriba": 0,
+        "derecha": 44,
+        "abajo": 0,
+        "izquierda": 48
+      },
+      "util": 708,
+      "altoBarra": 48,
+      "altoVideo": 312,
+      "anchoVideo": 555,
+      "columna": 153,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 48,
+        "y": 0,
+        "ancho": 555,
+        "alto": 312
+      },
+      "barra-avance": {
+        "x": 48,
+        "y": 312,
+        "ancho": 555,
+        "alto": 48
+      },
+      "columna": {
+        "x": 603,
+        "y": 0,
+        "ancho": 153,
+        "alto": 360
+      },
+      "acciones": {
+        "x": 604,
+        "y": 56,
+        "ancho": 152,
+        "alto": 304
+      },
+      "recorte": {
+        "x": 756,
+        "y": 0,
+        "ancho": 44,
+        "alto": 360
+      }
+    },
+    "altosAcciones": [
+      75,
+      76,
+      76,
+      76
+    ]
+  },
+  "visor-de-lado-caso2-vertical-giro90-915x411-oscuro": {
+    "calculo": {
+      "caso": 2,
+      "giro": 90,
+      "estado": "normal",
+      "W": 915,
+      "H": 411,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 823,
+      "anchoVideo": 231,
+      "altoVideo": 411,
+      "panel": 320,
+      "separacion": 16,
+      "grupo": 567,
+      "margen": 128
+    },
+    "cajas": {
+      "video": {
+        "x": 172,
+        "y": 0,
+        "ancho": 231,
+        "alto": 411
+      },
+      "panel": {
+        "x": 419,
+        "y": 87,
+        "ancho": 320,
+        "alto": 236
+      },
+      "barra-avance": {
+        "x": 420,
+        "y": 145,
+        "ancho": 318,
+        "alto": 48
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 411
+      }
+    },
+    "altosAcciones": null
+  },
+  "visor-de-lado-caso2-vertical-giro90-800x360-oscuro": {
+    "calculo": {
+      "caso": 2,
+      "giro": 90,
+      "estado": "normal",
+      "W": 800,
+      "H": 360,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 708,
+      "anchoVideo": 203,
+      "altoVideo": 360,
+      "panel": 320,
+      "separacion": 16,
+      "grupo": 539,
+      "margen": 85
+    },
+    "cajas": {
+      "video": {
+        "x": 129,
+        "y": 0,
+        "ancho": 203,
+        "alto": 360
+      },
+      "panel": {
+        "x": 348,
+        "y": 62,
+        "ancho": 320,
+        "alto": 236
+      },
+      "barra-avance": {
+        "x": 349,
+        "y": 119,
+        "ancho": 318,
+        "alto": 48
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 360
+      }
+    },
+    "altosAcciones": null
+  },
+  "visor-de-lado-caso2-vertical-giro90-915x411-claro": {
+    "calculo": {
+      "caso": 2,
+      "giro": 90,
+      "estado": "normal",
+      "W": 915,
+      "H": 411,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 823,
+      "anchoVideo": 231,
+      "altoVideo": 411,
+      "panel": 320,
+      "separacion": 16,
+      "grupo": 567,
+      "margen": 128
+    },
+    "cajas": {
+      "video": {
+        "x": 172,
+        "y": 0,
+        "ancho": 231,
+        "alto": 411
+      },
+      "panel": {
+        "x": 419,
+        "y": 87,
+        "ancho": 320,
+        "alto": 236
+      },
+      "barra-avance": {
+        "x": 420,
+        "y": 145,
+        "ancho": 318,
+        "alto": 48
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 411
+      }
+    },
+    "altosAcciones": null
+  },
+  "visor-de-lado-caso2-vertical-giro90-800x360-claro": {
+    "calculo": {
+      "caso": 2,
+      "giro": 90,
+      "estado": "normal",
+      "W": 800,
+      "H": 360,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 708,
+      "anchoVideo": 203,
+      "altoVideo": 360,
+      "panel": 320,
+      "separacion": 16,
+      "grupo": 539,
+      "margen": 85
+    },
+    "cajas": {
+      "video": {
+        "x": 129,
+        "y": 0,
+        "ancho": 203,
+        "alto": 360
+      },
+      "panel": {
+        "x": 348,
+        "y": 62,
+        "ancho": 320,
+        "alto": 236
+      },
+      "barra-avance": {
+        "x": 349,
+        "y": 119,
+        "ancho": 318,
+        "alto": 48
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 360
+      }
+    },
+    "altosAcciones": null
+  },
+  "visor-de-lado-caso2-vertical-giro270-915x411-oscuro": {
+    "calculo": {
+      "caso": 2,
+      "giro": 270,
+      "estado": "normal",
+      "W": 915,
+      "H": 411,
+      "IN": {
+        "arriba": 0,
+        "derecha": 44,
+        "abajo": 0,
+        "izquierda": 48
+      },
+      "util": 823,
+      "anchoVideo": 231,
+      "altoVideo": 411,
+      "panel": 320,
+      "separacion": 16,
+      "grupo": 567,
+      "margen": 128
+    },
+    "cajas": {
+      "video": {
+        "x": 176,
+        "y": 0,
+        "ancho": 231,
+        "alto": 411
+      },
+      "panel": {
+        "x": 423,
+        "y": 87,
+        "ancho": 320,
+        "alto": 236
+      },
+      "barra-avance": {
+        "x": 424,
+        "y": 145,
+        "ancho": 318,
+        "alto": 48
+      },
+      "recorte": {
+        "x": 871,
+        "y": 0,
+        "ancho": 44,
+        "alto": 411
+      }
+    },
+    "altosAcciones": null
+  },
+  "visor-de-lado-caso2-vertical-giro270-800x360-oscuro": {
+    "calculo": {
+      "caso": 2,
+      "giro": 270,
+      "estado": "normal",
+      "W": 800,
+      "H": 360,
+      "IN": {
+        "arriba": 0,
+        "derecha": 44,
+        "abajo": 0,
+        "izquierda": 48
+      },
+      "util": 708,
+      "anchoVideo": 203,
+      "altoVideo": 360,
+      "panel": 320,
+      "separacion": 16,
+      "grupo": 539,
+      "margen": 85
+    },
+    "cajas": {
+      "video": {
+        "x": 133,
+        "y": 0,
+        "ancho": 203,
+        "alto": 360
+      },
+      "panel": {
+        "x": 352,
+        "y": 62,
+        "ancho": 320,
+        "alto": 236
+      },
+      "barra-avance": {
+        "x": 353,
+        "y": 119,
+        "ancho": 318,
+        "alto": 48
+      },
+      "recorte": {
+        "x": 756,
+        "y": 0,
+        "ancho": 44,
+        "alto": 360
+      }
+    },
+    "altosAcciones": null
+  },
+  "visor-de-lado-caso2-vertical-giro270-915x411-claro": {
+    "calculo": {
+      "caso": 2,
+      "giro": 270,
+      "estado": "normal",
+      "W": 915,
+      "H": 411,
+      "IN": {
+        "arriba": 0,
+        "derecha": 44,
+        "abajo": 0,
+        "izquierda": 48
+      },
+      "util": 823,
+      "anchoVideo": 231,
+      "altoVideo": 411,
+      "panel": 320,
+      "separacion": 16,
+      "grupo": 567,
+      "margen": 128
+    },
+    "cajas": {
+      "video": {
+        "x": 176,
+        "y": 0,
+        "ancho": 231,
+        "alto": 411
+      },
+      "panel": {
+        "x": 423,
+        "y": 87,
+        "ancho": 320,
+        "alto": 236
+      },
+      "barra-avance": {
+        "x": 424,
+        "y": 145,
+        "ancho": 318,
+        "alto": 48
+      },
+      "recorte": {
+        "x": 871,
+        "y": 0,
+        "ancho": 44,
+        "alto": 411
+      }
+    },
+    "altosAcciones": null
+  },
+  "visor-de-lado-caso2-vertical-giro270-800x360-claro": {
+    "calculo": {
+      "caso": 2,
+      "giro": 270,
+      "estado": "normal",
+      "W": 800,
+      "H": 360,
+      "IN": {
+        "arriba": 0,
+        "derecha": 44,
+        "abajo": 0,
+        "izquierda": 48
+      },
+      "util": 708,
+      "anchoVideo": 203,
+      "altoVideo": 360,
+      "panel": 320,
+      "separacion": 16,
+      "grupo": 539,
+      "margen": 85
+    },
+    "cajas": {
+      "video": {
+        "x": 133,
+        "y": 0,
+        "ancho": 203,
+        "alto": 360
+      },
+      "panel": {
+        "x": 352,
+        "y": 62,
+        "ancho": 320,
+        "alto": 236
+      },
+      "barra-avance": {
+        "x": 353,
+        "y": 119,
+        "ancho": 318,
+        "alto": 48
+      },
+      "recorte": {
+        "x": 756,
+        "y": 0,
+        "ancho": 44,
+        "alto": 360
+      }
+    },
+    "altosAcciones": null
+  },
+  "visor-de-lado-caso1-horizontal-giro90-subtitulos-915x411-oscuro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "subtitulos",
+      "W": 915,
+      "H": 411,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 823,
+      "altoBarra": 48,
+      "altoVideo": 363,
+      "anchoVideo": 645,
+      "columna": 178,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 44,
+        "y": 0,
+        "ancho": 645,
+        "alto": 363
+      },
+      "barra-avance": {
+        "x": 44,
+        "y": 363,
+        "ancho": 645,
+        "alto": 48
+      },
+      "columna": {
+        "x": 689,
+        "y": 0,
+        "ancho": 178,
+        "alto": 411
+      },
+      "acciones": {
+        "x": 690,
+        "y": 56,
+        "ancho": 177,
+        "alto": 355
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 411
+      },
+      "panelSubtitulos": {
+        "x": 362,
+        "y": 146,
+        "ancho": 320,
+        "alto": 124
+      }
+    },
+    "altosAcciones": [
+      88,
+      89,
+      89,
+      89
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro90-subtitulos-800x360-oscuro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "subtitulos",
+      "W": 800,
+      "H": 360,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 708,
+      "altoBarra": 48,
+      "altoVideo": 312,
+      "anchoVideo": 555,
+      "columna": 153,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 44,
+        "y": 0,
+        "ancho": 555,
+        "alto": 312
+      },
+      "barra-avance": {
+        "x": 44,
+        "y": 312,
+        "ancho": 555,
+        "alto": 48
+      },
+      "columna": {
+        "x": 599,
+        "y": 0,
+        "ancho": 153,
+        "alto": 360
+      },
+      "acciones": {
+        "x": 600,
+        "y": 56,
+        "ancho": 152,
+        "alto": 304
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 360
+      },
+      "panelSubtitulos": {
+        "x": 272,
+        "y": 133,
+        "ancho": 320,
+        "alto": 124
+      }
+    },
+    "altosAcciones": [
+      75,
+      76,
+      76,
+      76
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro90-subtitulos-915x411-claro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "subtitulos",
+      "W": 915,
+      "H": 411,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 823,
+      "altoBarra": 48,
+      "altoVideo": 363,
+      "anchoVideo": 645,
+      "columna": 178,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 44,
+        "y": 0,
+        "ancho": 645,
+        "alto": 363
+      },
+      "barra-avance": {
+        "x": 44,
+        "y": 363,
+        "ancho": 645,
+        "alto": 48
+      },
+      "columna": {
+        "x": 689,
+        "y": 0,
+        "ancho": 178,
+        "alto": 411
+      },
+      "acciones": {
+        "x": 690,
+        "y": 56,
+        "ancho": 177,
+        "alto": 355
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 411
+      },
+      "panelSubtitulos": {
+        "x": 362,
+        "y": 146,
+        "ancho": 320,
+        "alto": 124
+      }
+    },
+    "altosAcciones": [
+      88,
+      89,
+      89,
+      89
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro90-subtitulos-800x360-claro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "subtitulos",
+      "W": 800,
+      "H": 360,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 708,
+      "altoBarra": 48,
+      "altoVideo": 312,
+      "anchoVideo": 555,
+      "columna": 153,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 44,
+        "y": 0,
+        "ancho": 555,
+        "alto": 312
+      },
+      "barra-avance": {
+        "x": 44,
+        "y": 312,
+        "ancho": 555,
+        "alto": 48
+      },
+      "columna": {
+        "x": 599,
+        "y": 0,
+        "ancho": 153,
+        "alto": 360
+      },
+      "acciones": {
+        "x": 600,
+        "y": 56,
+        "ancho": 152,
+        "alto": 304
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 360
+      },
+      "panelSubtitulos": {
+        "x": 272,
+        "y": 133,
+        "ancho": 320,
+        "alto": 124
+      }
+    },
+    "altosAcciones": [
+      75,
+      76,
+      76,
+      76
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro90-guardada-915x411-oscuro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "guardada",
+      "W": 915,
+      "H": 411,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 823,
+      "altoBarra": 48,
+      "altoVideo": 363,
+      "anchoVideo": 645,
+      "columna": 178,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 44,
+        "y": 0,
+        "ancho": 645,
+        "alto": 363
+      },
+      "barra-avance": {
+        "x": 44,
+        "y": 363,
+        "ancho": 645,
+        "alto": 48
+      },
+      "columna": {
+        "x": 689,
+        "y": 0,
+        "ancho": 178,
+        "alto": 411
+      },
+      "acciones": {
+        "x": 690,
+        "y": 56,
+        "ancho": 177,
+        "alto": 355
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 411
+      }
+    },
+    "altosAcciones": [
+      176,
+      177
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro90-guardada-800x360-oscuro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "guardada",
+      "W": 800,
+      "H": 360,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 708,
+      "altoBarra": 48,
+      "altoVideo": 312,
+      "anchoVideo": 555,
+      "columna": 153,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 44,
+        "y": 0,
+        "ancho": 555,
+        "alto": 312
+      },
+      "barra-avance": {
+        "x": 44,
+        "y": 312,
+        "ancho": 555,
+        "alto": 48
+      },
+      "columna": {
+        "x": 599,
+        "y": 0,
+        "ancho": 153,
+        "alto": 360
+      },
+      "acciones": {
+        "x": 600,
+        "y": 56,
+        "ancho": 152,
+        "alto": 304
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 360
+      }
+    },
+    "altosAcciones": [
+      151,
+      152
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro90-guardada-915x411-claro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "guardada",
+      "W": 915,
+      "H": 411,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 823,
+      "altoBarra": 48,
+      "altoVideo": 363,
+      "anchoVideo": 645,
+      "columna": 178,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 44,
+        "y": 0,
+        "ancho": 645,
+        "alto": 363
+      },
+      "barra-avance": {
+        "x": 44,
+        "y": 363,
+        "ancho": 645,
+        "alto": 48
+      },
+      "columna": {
+        "x": 689,
+        "y": 0,
+        "ancho": 178,
+        "alto": 411
+      },
+      "acciones": {
+        "x": 690,
+        "y": 56,
+        "ancho": 177,
+        "alto": 355
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 411
+      }
+    },
+    "altosAcciones": [
+      176,
+      177
+    ]
+  },
+  "visor-de-lado-caso1-horizontal-giro90-guardada-800x360-claro": {
+    "calculo": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "guardada",
+      "W": 800,
+      "H": 360,
+      "IN": {
+        "arriba": 0,
+        "derecha": 48,
+        "abajo": 0,
+        "izquierda": 44
+      },
+      "util": 708,
+      "altoBarra": 48,
+      "altoVideo": 312,
+      "anchoVideo": 555,
+      "columna": 153,
+      "ajuste": false
+    },
+    "cajas": {
+      "video": {
+        "x": 44,
+        "y": 0,
+        "ancho": 555,
+        "alto": 312
+      },
+      "barra-avance": {
+        "x": 44,
+        "y": 312,
+        "ancho": 555,
+        "alto": 48
+      },
+      "columna": {
+        "x": 599,
+        "y": 0,
+        "ancho": 153,
+        "alto": 360
+      },
+      "acciones": {
+        "x": 600,
+        "y": 56,
+        "ancho": 152,
+        "alto": 304
+      },
+      "recorte": {
+        "x": 0,
+        "y": 0,
+        "ancho": 44,
+        "alto": 360
+      }
+    },
+    "altosAcciones": [
+      151,
+      152
+    ]
+  }
+}

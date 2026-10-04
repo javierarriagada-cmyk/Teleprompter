@@ -21,6 +21,17 @@ RESUMEN
     tercera vuelta de que eso "no se cambió".
   - DEFECTO 2 -visor de lado-: NO SE PROGRAMÓ. Boceto en docs/pantallas/tarea89/, con la causa
     del corte con archivo:línea, en tema claro y oscuro.
+    -04-10-2026, 10:53: el primer boceto quedó DESCARTADO -dibujaba una toma vertical vista de
+    lado-. Lo reemplaza el de la SEGUNDA VERSIÓN, con dos casos -toma horizontal y vertical-: ver
+    "DEFECTO 2, SEGUNDA VERSIÓN DEL BOCETO". Sigue sin programarse.-
+    -04-10-2026, 11:09: la segunda versión quedó DESCARTADA. Manda la TERCERA VERSIÓN: barra de
+    avance bajo el video, sin barra de estado -SystemBars.hide de @capacitor/core 8, sin plugin
+    nuevo-, recorte de 44 dp y los dos giros. Ver "DEFECTO 2, TERCERA VERSIÓN DEL BOCETO". Sigue
+    sin programarse; va en un PR aparte, para revisar.-
+    -04-10-2026, 11:26: Claude APROBÓ el boceto COMO PISO -PR #67- con dos ajustes que hace la CUARTA
+    VERSIÓN: el visor de lado siempre oscuro, también en tema claro, y rótulos de la columna de 12 con
+    toques de 48. Ver "DEFECTO 2, CUARTA VERSIÓN DEL BOCETO -APROBADA COMO PISO-" y "VERIFICACIÓN AL
+    IMPLEMENTAR". Sigue sin programarse.-
   - DEFECTO 3 -barra de tres botones-: lista de pantallas sin borde seguro y arreglo de las cuatro
     que lo necesitan, sin tocar los rieles de leer y grabar. Prueba que fallaba hoy. El emulador
     NO sirvió para las capturas -ver EMULADOR-.
@@ -478,7 +489,11 @@ selector de subtítulos :212-222, el nombre :223-231 y las acciones .acciones-to
 lado, a 915x411, la tarjeta mide 472 dp -medido en Chrome, de -30 a 441- en 411 de alto: el
 centrado la corta arriba -la X- y abajo -Guardar, Repetir, Borrar-, y no se puede desplazar.
 
-BOCETO: docs/pantallas/tarea89/
+BOCETO -PRIMERA VERSIÓN, DESCARTADA el 04-10-2026 a las 10:53: dibujaba una toma VERTICAL vista de
+lado, con el video angosto y chico, los controles en más de la mitad y un hueco. Sus láminas y
+capturas de la propuesta están ahora en docs/pantallas/tarea89/descartado/, y su herramienta es
+herramientas/boceto-descartado.html y boceto-descartado.tsx. Lo de abajo queda como historia-:
+docs/pantallas/tarea89/
   - lamina-visor-de-lado-oscuro.png, lamina-visor-de-lado-claro.png -hoy | propuesta-.
   - visor-de-lado-{hoy,propuesta}-{oscuro,claro}.png.
   - medidas-implementacion.md -causa, medidas y piezas-.
@@ -487,6 +502,150 @@ BOCETO: docs/pantallas/tarea89/
   Propuesta: de lado, el video a todo el alto a la izquierda y los controles a la derecha
   -nombre con la X, barra de avance, subtítulos, y Guardar / Repetir / Borrar al pie-. De pie no
   cambia. SIN BOCETO APROBADO NO HAY CÓDIGO.
+
+DEFECTO 2, SEGUNDA VERSIÓN DEL BOCETO -04-10-2026, 10:53; SOLO BOCETO, SIN CÓDIGO-
+  -DESCARTADA el 04-10-2026, 11:09: manda la TERCERA VERSIÓN, más abajo. Sus láminas, capturas y
+  medidas-de-lado.json están ahora en docs/pantallas/tarea89/descartado/segunda-version/, y sus
+  herramientas son herramientas/*-descartado-2.*. Se deja el texto como historia.-
+  La disposición la decide la forma del VIDEO, no la del teléfono, y solo con el teléfono de lado
+  -useLayout 'tel-h', App.tsx:267-. De pie, el visor queda como hoy. Detalle completo en
+  docs/pantallas/tarea89/medidas-implementacion.md, "Segunda versión".
+  LÁMINAS -docs/pantallas/tarea89/-: lamina-visor-de-lado-resumen.png -para aprobar- y 8 láminas
+  lamina-visor-de-lado-caso{1-horizontal,2-vertical}-{915x411,800x360}-{oscuro,claro}.png, más las
+  capturas sueltas y medidas-de-lado.json -las cajas medidas en Chrome-. Herramientas:
+  herramientas/boceto.html y boceto.tsx, capturas-de-lado.cjs, laminas-de-lado.cjs.
+  BORDES SEGUROS DE LADO -rotación 90, tres botones-: barra de tres botones 48 dp a la derecha -AOSP
+  frameworks/base/core/res/res/values/dimens.xml, navigation_bar_width-; barra de estado 24 dp
+  arriba -status_bar_height_landscape = status_bar_height_portrait = 24dp-. Con targetSdkVersion 36
+  -android/variables.gradle:9- el borde a borde es obligatorio: las dos van encima de la app y
+  llegan como env(safe-area-inset-right) y env(safe-area-inset-top). El recorte de la cámara, a la
+  izquierda, no se midió en el moto g86: en el boceto vale 0. A 800x360 también va la barra -el
+  peor caso-.
+  EL ANCHO DE LOS RIELES DE LA 82: --riel-der 124px -src/styles-horizontal.css:22-, --riel-izq-leer
+  112px -:20-, --riel-izq-grabar 128px -:21-; docs/tarea82.txt:71 y :78.
+  CASO 1, EL PRINCIPAL -toma HORIZONTAL 16:9-: columna = máx(112, útil − alto × 16/9), y el video se
+    queda con el resto.
+    - 915x411: útil 867; 411 × 16/9 = 731; columna 867 − 731 = 136 ≥ 124: CABE el riel, y los 12 de
+      más van a la columna. Video 731 x 411, columna 136 x 411.
+    - 800x360: útil 752; 360 × 16/9 = 640; columna 752 − 640 = 112 < 124: NO CABE el riel de 124.
+      Ajuste: la columna queda en 112 -el ancho del riel izquierdo de Leer- y el video SIGUE a todo
+      el alto, 640 x 360. Si un teléfono dejara menos de 112, se achica el video -16:9, centrado-,
+      no se recorta.
+    - La columna lleva el fondo y el borde de los rieles -styles.css:61-62-. De arriba abajo: la X;
+      el nombre y la duración; el avance a todo el ancho y el play con el tiempo actual; y en
+      .acciones-toma dos filas de dos: Guardar y Subtítulos -el SelectorSubtitulos vestido de
+      .accion-toma-, y Repetir y Borrar. Botones de 68 de ancho a 136 y de 56 a 112. El contenido
+      mide 296 dp: sobran 91 en 387 a 915 y 40 en 336 a 800, repartidos entre los grupos. Sus 24 de
+      arriba van en el negro del visor, para que se lean los íconos claros de la barra de estado.
+  CASO 2 -toma VERTICAL 9:16-: video a todo el alto, 231 x 411 y 203 x 360. Al lado, a 16, la
+    tarjeta de controles de 320 -el ancho de los paneles de ficha de lado, docs/tarea82.txt:90-93-,
+    de 320 x 236 en los dos tamaños, centrada en el alto y sin estirarse. Es la tarjeta de hoy sin el
+    video. El grupo va centrado: 150 a cada lado a 915, 107/106 a 800.
+  HORIZONTAL O VERTICAL, DE DÓNDE SE SACA:
+    - ResumenGrabacion -src/datos/modelo.ts:117-136- y el sidecar no traen ancho, alto ni
+      orientación -calidad dice "1080p", no la forma-.
+    - Se lee del video: en el alCargar de loadedmetadata que ya existe -ReproductorGrabacion.tsx:
+      75-80, en la rama-, horizontal = video.videoWidth > video.videoHeight. SubtitulosVisor.tsx:
+      23-24 ya lee los dos valores.
+    - Antes de que cargue, la miniatura -mismo mp4, src/lib/tomaVideo.ts:222-224- con naturalWidth
+      y naturalHeight. Sin miniatura, el caso 2.
+    - Para después: anotar ancho y alto en el sidecar al cortar la toma -cambia el modelo-.
+  LO QUE NO CALZÓ: a 800x360 con barra no cabe el riel de 124 -va en 112-; el recorte del moto g86
+    sin medir -con 24 dp a la izquierda, a 915 la columna baja a 112 y el video sigue igual; con 32
+    el video baja a 723 x 407-; la barra de estado queda encima del video y esconderla pide un plugin
+    -dependencia nueva, no se propone-; el avance en la columna mide 96 a 120 dp y es poco preciso en
+    tomas largas -ponerlo sobre el video contradice la decisión del 28-09 de no tapar los
+    subtítulos-; falta verificar en el moto g86 que videoWidth/videoHeight vengan ya girados; el
+    panel de Subtítulos abierto y la toma guardada están descritos, no dibujados.
+
+DEFECTO 2, TERCERA VERSIÓN DEL BOCETO -04-10-2026, 11:09; SOLO BOCETO, SIN CÓDIGO-
+  -04-10-2026, 11:26: APROBADA COMO PISO por Claude con dos ajustes; la reemplaza la CUARTA VERSIÓN, más
+  abajo. Sus láminas, capturas y medidas-de-lado.json están ahora en
+  docs/pantallas/tarea89/descartado/tercera-version/ y sus herramientas son herramientas/*-descartado-3.*.
+  Vale todo salvo el tema -ahora siempre oscuro- y los rótulos y toques -ahora 12 y 48-.-
+  Respuestas de Javier y Claude sobre la segunda. Detalle completo en
+  docs/pantallas/tarea89/medidas-implementacion.md, "Tercera versión".
+  LÁMINAS -docs/pantallas/tarea89/-: lamina-visor-de-lado-resumen.png -para aprobar- y 24 láminas
+  lamina-visor-de-lado-caso{1-horizontal,2-vertical}-giro{90,270}[-subtitulos|-guardada]-
+  {915x411,800x360}-{oscuro,claro}.png, más capturas sueltas y medidas-de-lado.json.
+  BARRA DE ESTADO: SystemBars de @capacitor/core 8.5.1 -package.json:24; ya se usa en App.tsx:2 y
+    :314-319- tiene hide/show -node_modules/@capacitor/core/types/core-plugins.d.ts:348 y :354- con
+    bar?: SystemBarType -:304-312; StatusBar y NavigationBar en :271-284-. En Android hace
+    WindowInsetsControllerCompat.hide(statusBars()) -SystemBars.java:140-148 y setHidden :302-324-.
+    NO pide plugin nuevo. Llamada propuesta, sin programar: al abrir el visor con 'tel-h',
+    SystemBars.hide({ bar: SystemBarType.StatusBar }); al cerrarlo, al volver de pie o al
+    desmontar, SystemBars.show({ bar: SystemBarType.StatusBar }). La de navegación no se oculta.
+  BORDES: recorte del moto g86 125 px / (450/160) = 44 dp. Giro 90: recorte 44 a la izquierda,
+    tres botones 48 a la derecha. Giro 270: tres botones 48 a la izquierda, recorte 44 a la derecha.
+    Arriba 0. Los dos giros suman 92: mismas medidas, en espejo.
+  BARRA DE AVANCE: la .barra-visor de hoy, 48 de alto -botón y avance de 44 más 4 de aire-, bajo el
+    video y a todo su ancho. No tapa los subtítulos.
+  CASO 1 -16:9-: 915x411: útil 823, video 645 x 363 + barra 645 x 48, columna 178. 800x360: útil
+    708, video 555 x 312 + barra 555 x 48, columna 153. La columna nunca baja de 112 -cabe el riel de
+    124 con 54 y 29 de más-. Filas Guardar, Subtítulos, Repetir y Borrar de ~89 / ~76 de alto.
+    Subtítulos abierto: panel 320 x 124 a la izquierda de la columna, sobre el video. Toma guardada:
+    Compartir y Borrar, filas de 176 / 142.
+  CASO 2 -9:16-: video 231 x 411 y 203 x 360, tarjeta 320 x 236, grupo centrado sobre --bg-suelo sin
+    bordes: 128 a cada lado a 915 y 85 a 800.
+  HORIZONTAL O VERTICAL: igual que la segunda -videoWidth > videoHeight en el loadedmetadata de
+    ReproductorGrabacion.tsx:75-80; antes, la miniatura; el modelo, modelo.ts:117-136, no guarda la
+    forma-.
+  LO QUE NO CALZÓ: sin verificar en el g86 qué pasa al deslizar con la barra de estado oculta, los
+    insets del giro 270 -la barra a la izquierda es lo de AOSP para teléfonos- y que videoWidth y
+    videoHeight vengan girados; la columna -178/153- es más ancha que el riel de 124 porque el video
+    está limitado por el alto; la franja del recorte va vacía, con el fondo vecino; la barra de
+    navegación sigue visible, a propósito.
+
+DEFECTO 2, CUARTA VERSIÓN DEL BOCETO -APROBADA COMO PISO, Claude, 04-10-2026, 11:26; SIN CÓDIGO-
+  Detalle en docs/pantallas/tarea89/medidas-implementacion.md, "Cuarta versión". Mismas 24 láminas y
+  la resumen, lamina-visor-de-lado-resumen.png; "claro" quiere decir la APP en claro: el visor sale
+  oscuro igual.
+  SIEMPRE OSCURO: el visor entero dentro de un data-tema="oscuro" -el selector de src/styles.css:109 no
+    exige :root-. Tokens: --bg-suelo #151312 :110, --bg-fila #1E1B19 :111, --bg-superficie #221F1D
+    :112, --bg-panel #2D2927 :113, --color-separador #4B4643 :115, --borde-tarjeta :118,
+    --color-apagado #CAC5C2 :120, --color-texto #E7E1DE :121. La columna del caso 1 y la tarjeta del
+    caso 2, --bg-superficie; el fondo del caso 2, --bg-suelo; el panel de Subtítulos, --bg-panel. De
+    pie, el visor sigue al tema como hoy.
+    LO DE AFUERA QUE CAMBIA CON EL TEMA: App.tsx:314-319 pone SystemBarsStyle.Light con la app en
+    claro, y los íconos de la barra de tres botones saldrían oscuros sobre el visor oscuro. Al
+    implementar: SystemBars.setStyle({ style: SystemBarsStyle.Dark }) mientras el visor de lado está
+    abierto, como en la lectura, y al cerrar el estilo del tema. Nada más de la app queda a la vista.
+  RÓTULOS Y TOQUES: "Guardar" y el estilo elegido pasan de --texto-etiqueta -11, styles.css:34- a 12,
+    solo dentro del visor de lado -el token no se toca-. La X pasa de 44 a 48 x 48; cada fila tiene
+    min-height 48.
+  MEDIDAS -iguales en los dos giros; la columna no cambia de ancho, la fija el video-:
+    - 915x411: columna 178 x 411; cabecera 56; filas 88, 89, 89, 89 de 177 de ancho; toma guardada
+      176 y 177.
+    - 800x360: columna 153 x 360; cabecera 56; filas 75, 76, 76, 76 de 152; toma guardada 151 y 152
+      -la tercera anotó 142: estaba mal-.
+    - Caso 2: tarjeta 320 x 238 -era 236, por la X de 48-; 128 y 85 de fondo a cada lado.
+    - Una fila con rótulo necesita ~45 -26 + 4 + 15-: cabe todo. Bajaría de 48 con menos de 248 de
+      alto.
+  LO QUE NO CALZÓ: 12 px son 12 sp solo con la escala de letra en 1,0 -si la WebView sigue la escala,
+    con 1,3 el rótulo mide ~16 y la fila ~49: cabe igual-; la barra de avance queda en 44 de toque,
+    como hoy -con 48, la barra pasa a 52 y el video a 641 x 359 y 548 x 308, no se dibujó-;
+    setStyle Dark es una llamada más, sin programar.
+
+VERIFICACIÓN AL IMPLEMENTAR -Claude, en el moto g86, antes de dar el visor por bueno-
+  Los registros van por anotar -src/lib/diagnostico.ts:89-, con un tipo nuevo 'visor-lado' en
+  EntradaDiagnostico -:18-, solo con el diagnóstico encendido.
+  (a) LA BARRA DE ESTADO SE VUELVE A OCULTAR DESPUÉS DE DESLIZAR DESDE ARRIBA. Deslizar con el visor
+      abierto y esperar 3 s. Registro: "visor-lado barra-estado hide t=<ms>" al llamar a hide y
+      "visor-lado insets top=<env(safe-area-inset-top)> t=<ms>" en cada resize. Esperado: top 0 → 24
+      → 0. Si no vuelve a 0, se decide entonces: systemBarsBehavior nativo o volver a llamar a hide.
+  (b) LA BARRA DE TRES BOTONES QUEDA A LA IZQUIERDA CON EL GIRO 270. Registro: "visor-lado
+      giro=<screen.orientation.angle> tipo=<type> insets l=<..> r=<..> t=<..> b=<..>" en
+      orientation change y resize. Esperado: 90 → l=44 r=48; 270 → l=48 r=44.
+  (c) videoWidth Y videoHeight LLEGAN YA GIRADOS. Con las tomas 1 a 3 -de pie- y 4 y 5 -de lado- del
+      corpus. Registro: "visor-lado video nombre=<archivo> videoWidth=<w> videoHeight=<h>
+      horizontal=<bool> miniatura=<naturalWidth>x<naturalHeight>", en el loadedmetadata de
+      ReproductorGrabacion.tsx:75-80 y en el load de la miniatura. Esperado: de pie false, de lado
+      true, y la miniatura con la misma forma.
+  (d) LOS BORDES QUE INFORMA LA WEBVIEW. Registro: "visor-lado bordes css l=<..> r=<..> t=<..> b=<..>
+      viewport=<innerWidth>x<innerHeight> dpr=<devicePixelRatio>" al abrir, al girar y después de hide
+      y show, leyendo env(safe-area-inset-*) con getComputedStyle y, si se puede, las variables de
+      injectSafeAreaCSS. Esperado: dpr 2.8125, t=0 con la barra oculta, y 44 y 48 a los costados. Si no
+      coinciden, mandan los medidos.
 
 ==============================================================================
 DEFECTO 3 - LA BARRA DE TRES BOTONES
