@@ -1,10 +1,16 @@
 import { CamaraNativa } from './camara'
+import { recetaDe, validarReceta, type RecetaExportacion } from './recetaExportacion'
+import type { PosicionSubtitulos } from './posicionSubtitulos'
 
 export type AnalisisVideo = {
   duracionMs: number
   bytes: number
   tienePistaAudio: boolean | null
   nivelRmsDb: number | null
+  // -tarea 87, parte C- La forma del archivo. Solo vienen si el APK los manda; si no, no están.
+  anchoPx?: number
+  altoPx?: number
+  rotacion?: number
 }
 
 function boolONulo(v: unknown): boolean | null {
@@ -57,7 +63,11 @@ export async function analizarVideo(ruta: string): Promise<AnalisisVideo> {
     duracionMs: Number(r.duracionMs) || 0,
     bytes: Number(r.bytes) || 0,
     tienePistaAudio: boolONulo(r.tienePistaAudio),
-    nivelRmsDb: typeof r.nivelRmsDb === 'number' ? r.nivelRmsDb : null
+    nivelRmsDb: typeof r.nivelRmsDb === 'number' ? r.nivelRmsDb : null,
+    // -tarea 87, parte C- Solo si el APK los manda: un APK viejo deja la toma sin orientación.
+    ...(typeof r.anchoPx === 'number' && r.anchoPx > 0 && typeof r.altoPx === 'number' && r.altoPx > 0
+      ? { anchoPx: r.anchoPx, altoPx: r.altoPx, rotacion: Number(r.rotacion) || 0 }
+      : {})
   }
 }
 
@@ -102,18 +112,75 @@ export async function compartirDeGaleria(uri: string): Promise<void> {
 
 // Guarda en la galeria una copia con los subtitulos quemados -Media3, en el
 // telefono-. alAvanzar recibe de 0 a 100 mientras se codifica.
+//
+// -tarea 87, parte B, 04-10-2026- Por dentro arma la receta común -recetaDe- y llama exportarToma.
+// El visor sigue llamando esta función -y guardarEnGaleria sin subtítulos- porque
+// subtitulosVisor.test.tsx revisa sus argumentos y no se toca -docs/tarea87.txt, B2-. posicion es
+// el quinto parámetro, "Normal" por omisión. Un APK viejo, sin exportarToma -"not implemented"-,
+// cae a guardarConSubtitulos, que no se cambió: ahí "Para redes" ni se ofrece -tieneExportarToma-.
 export async function guardarEnGaleriaConSubtitulos(
   ruta: string,
   subtitulos: unknown,
   estilo: string,
-  alAvanzar?: (porcentaje: number) => void
+  alAvanzar?: (porcentaje: number) => void,
+  posicion: PosicionSubtitulos = 'normal'
 ): Promise<{ ok: boolean; uri?: string }> {
+  const receta = recetaDe({
+    estilo: estilo as RecetaExportacion['estilo'],
+    subtitulos: Array.isArray(subtitulos) ? (subtitulos as RecetaExportacion['subtitulos']) : [],
+    posicion
+  })
+  try {
+    return await exportarAGaleria(ruta, receta, alAvanzar)
+  } catch (e: any) {
+    if (!esNoImplementado(e)) throw e
+  }
   const escucha = alAvanzar ? await CamaraNativa.addListener('progresoGuardado', (d) => alAvanzar(d.porcentaje)) : null
   try {
     return await CamaraNativa.guardarConSubtitulos({ ruta, subtitulos: JSON.stringify(subtitulos), estilo })
   } finally {
     await escucha?.remove()
   }
+}
+
+// Capacitor rechaza así un método que el APK no tiene: "... is not implemented on android", con
+// code UNIMPLEMENTED.
+function esNoImplementado(e: any): boolean {
+  if (e && e.code === 'UNIMPLEMENTED') return true
+  return /not implemented/i.test(String(e?.message || e))
+}
+
+// LA RECETA AL NATIVO -tarea 87, parte B-, con el mismo addListener/remove del avance de arriba.
+// Una receta que no sirve no se manda: el nativo la valida igual -RecetaExportacion.java-.
+export async function exportarAGaleria(
+  ruta: string,
+  receta: RecetaExportacion,
+  alAvanzar?: (porcentaje: number) => void
+): Promise<{ ok: boolean; uri?: string; recodifico?: boolean; msGuardado?: number }> {
+  const motivo = validarReceta(receta)
+  if (motivo) throw new Error('receta inválida: ' + motivo)
+  const escucha = alAvanzar ? await CamaraNativa.addListener('progresoGuardado', (d) => alAvanzar(d.porcentaje)) : null
+  try {
+    return await CamaraNativa.exportarToma({ ruta, receta: JSON.stringify(receta) })
+  } finally {
+    await escucha?.remove()
+  }
+}
+
+// ¿Este APK tiene exportarToma? Sin él, el visor no ofrece "Para redes" -D3-. Se pregunta una vez
+// por sesión; en el navegador y con un APK viejo, no.
+let capacidadExportar: Promise<boolean> | null = null
+export function tieneExportarToma(): Promise<boolean> {
+  if (!capacidadExportar) {
+    capacidadExportar = CamaraNativa.capacidades()
+      .then((r) => r?.exportarToma === true)
+      .catch(() => false)
+  }
+  return capacidadExportar
+}
+// Solo para las pruebas: que cada una pregunte de nuevo.
+export function olvidarCapacidades(): void {
+  capacidadExportar = null
 }
 
 // LAS MEDICIONES DE EXPORTACIÓN -tarea 87, paso 0, 03-10-2026-. Solo para el panel de mediciones

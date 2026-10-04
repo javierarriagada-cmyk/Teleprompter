@@ -15,6 +15,11 @@ export interface CamaraNativaPlugin {
     bytes: number
     tienePistaAudio: boolean | null
     nivelRmsDb: number | null
+    // -tarea 87, parte C, 04-10-2026- La forma del archivo, con el MediaMetadataRetriever que ya
+    // abre. Opcionales: un APK viejo no los manda.
+    anchoPx?: number
+    altoPx?: number
+    rotacion?: number
   }>
   extraerMiniatura(options: { ruta: string; destino: string; atMs?: number }): Promise<{ ruta: string }>
   buscarMp4Recientes(): Promise<{ rutas: string[] }>
@@ -23,6 +28,12 @@ export interface CamaraNativaPlugin {
   compartir(options: { uri: string }): Promise<void>
   existeEnGaleria(options: { uri: string }): Promise<{ existe: boolean }>
   guardarConSubtitulos(options: { ruta: string; subtitulos: string; estilo: string }): Promise<{ ok: boolean; uri?: string }>
+  // LA RECETA COMÚN -tarea 87, parte B, 04-10-2026-. La receta va como JSON -lib/recetaExportacion.ts-;
+  // el nativo la lee en RecetaExportacion.java. Un APK viejo no la tiene: rechaza "not implemented"
+  // y guardarEnGaleriaConSubtitulos cae a guardarConSubtitulos.
+  exportarToma(options: { ruta: string; receta: string }): Promise<{ ok: boolean; uri?: string; recodifico: boolean; msGuardado: number }>
+  // Lo que sabe hacer este APK. Un APK viejo no lo tiene: rechaza y se entiende que no hay nada nuevo.
+  capacidades(): Promise<{ exportarToma: boolean }>
   addListener(evento: 'progresoGuardado', cb: (d: { porcentaje: number }) => void): Promise<{ remove: () => Promise<void> }>
   // LAS MEDICIONES DE EXPORTACIÓN -tarea 87, paso 0, 03-10-2026-. Solo las usa el panel de
   // mediciones de la APK de prueba -PanelMediciones.tsx-. El nativo escribe al logcat con la

@@ -23,6 +23,9 @@ export type SidecarToma = {
   rutaMp4?: string
   rutaPlugin?: string
   calidad?: string
+  // -tarea 87, parte C, 04-10-2026- Cómo se ve el archivo -lib/orientacion.ts-. Sin el dato si el
+  // APK no manda ancho y alto.
+  orientacion?: 'vertical' | 'horizontal' | 'cuadrada'
 }
 
 export function sidecarInicial(parcial: {
@@ -121,7 +124,8 @@ export function parsearSidecar(texto: string): SidecarToma | null {
       rutaPart: typeof o.rutaPart === 'string' ? o.rutaPart : undefined,
       rutaMp4: typeof o.rutaMp4 === 'string' ? o.rutaMp4 : undefined,
       rutaPlugin: typeof o.rutaPlugin === 'string' ? o.rutaPlugin : undefined,
-      calidad: typeof o.calidad === 'string' ? o.calidad : undefined
+      calidad: typeof o.calidad === 'string' ? o.calidad : undefined,
+      orientacion: o.orientacion === 'vertical' || o.orientacion === 'horizontal' || o.orientacion === 'cuadrada' ? o.orientacion : undefined
     }
   } catch {
     return null

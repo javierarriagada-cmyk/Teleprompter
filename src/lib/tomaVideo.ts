@@ -22,6 +22,9 @@ import {
   listarDirectorio,
   moverArchivo
 } from './archivosNativos'
+import type { AnalisisVideo } from './archivosNativos'
+import { orientacionDeToma } from './orientacion'
+import { anotarOrientacion } from './medicionesTarea87'
 import {
   SidecarToma,
   sidecarInicial,
@@ -255,6 +258,11 @@ export async function cortarTomaVideo(opts?: {
   s.sidecar.milisegundos = analisis.duracionMs || s.sidecar.milisegundos
   s.sidecar.tienePistaAudio = analisis.tienePistaAudio
   s.sidecar.rutaMp4 = rutaFinal
+  // -tarea 87, parte C, 04-10-2026- Cómo se ve la toma. Un APK viejo no manda ancho ni alto: queda
+  // sin el dato y el visor la analiza al abrirla.
+  const orientacion = orientacionDeToma(analisis as Partial<AnalisisVideo>) ?? undefined
+  if (orientacion) s.sidecar.orientacion = orientacion
+  anotarOrientacion(s.sidecar.id, analisis as Partial<AnalisisVideo>, s.sidecar.calidad, 'corte')
   s.sidecar = incompleta ? marcarIncompleta(s.sidecar) : marcarLista(s.sidecar)
   await persistirSidecar(s)
 
@@ -271,7 +279,8 @@ export async function cortarTomaVideo(opts?: {
     incompleta,
     avisoMudo: veredicto.aviso || undefined,
     errorMudo: veredicto.errorDuro || undefined,
-    calidad: s.sidecar.calidad
+    calidad: s.sidecar.calidad,
+    orientacion
   })
 
   sesion = null
@@ -405,6 +414,10 @@ export async function recuperarTomasPendientes(
       nivelRmsDb: analisis.nivelRmsDb ?? null,
       frasesOidas: s.frasesOidas
     })
+    // -tarea 87, parte C- La orientación, también al recuperar: la del análisis de ahora o, si el
+    // APK no la da, la que ya traía el sidecar.
+    const orientacion = orientacionDeToma(analisis as Partial<AnalisisVideo>) ?? s.orientacion
+    if (orientacionDeToma(analisis as Partial<AnalisisVideo>)) anotarOrientacion(s.id, analisis as Partial<AnalisisVideo>, s.calidad, 'recuperada')
 
     const resumen = grabacionNueva({
       id: s.id,
@@ -419,7 +432,8 @@ export async function recuperarTomasPendientes(
       incompleta,
       avisoMudo: veredicto.aviso || undefined,
       errorMudo: veredicto.errorDuro || undefined,
-      calidad: s.calidad
+      calidad: s.calidad,
+      orientacion
     })
     await repo.guardar(resumen)
     porId.set(resumen.id, resumen)
@@ -428,7 +442,8 @@ export async function recuperarTomasPendientes(
     try {
       await escribirTexto(
         juntos(dir, `${s.id}.json`),
-        JSON.stringify(incompleta ? marcarIncompleta(s, { rutaMp4: ruta, bytes: resumen.bytes, milisegundos: resumen.duracionMs }) : marcarLista(s))
+        // -tarea 87- Con la orientación. Antes: marcarIncompleta(s, ...) : marcarLista(s).
+        JSON.stringify(incompleta ? marcarIncompleta({ ...s, orientacion }, { rutaMp4: ruta, bytes: resumen.bytes, milisegundos: resumen.duracionMs }) : marcarLista({ ...s, orientacion }))
       )
     } catch {}
   }
@@ -512,3 +527,4 @@ export async function borrarGrabacionEnDisco(g: ResumenGrabacion): Promise<void>
     await borrarArchivo(base + '.jpg')
   }
 }
+
