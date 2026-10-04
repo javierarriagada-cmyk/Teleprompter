@@ -51,7 +51,9 @@ export type EntradaDiagnostico =
   // vuelven a empezar el arranque del motor.
   // 'devuelto' -tercera vuelta-: la conducción rechazó un calce fuera de la ventana y devolvió el
   // seguidor a donde está el motor -conduccion.ts-.
-  | { ms: number; tipo: 'seguidor'; evento: 'irAToken' | 'creado' | 'devuelto'; token: number }
+  // 'reiniciado' -cuarta vuelta-: Parar terminó la toma -token 0- o el texto se movió en LISTO
+  // -token N-; seguidor y motor quedan como recién creados -conduccion.ts, reiniciarToma-.
+  | { ms: number; tipo: 'seguidor'; evento: 'irAToken' | 'creado' | 'devuelto' | 'reiniciado'; token: number }
   // LA PANTALLA QUE SE ESTABA LEYENDO -tarea 89-: el diseño y el tamaño del contenedor
   // del texto, junto a los renglones. De lado los renglones son otros.
   | { ms: number; tipo: 'pantalla'; diseno: string; ancho: number; alto: number }

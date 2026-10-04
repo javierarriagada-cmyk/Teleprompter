@@ -815,6 +815,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     alRecibirFinal: seguidorFinal,
     alNotificarVoz: seguidorVoz,
     irAToken,
+    reiniciarEn,
     motorAvance
   } = useSeguidor(guionParaSeguidor)
 
@@ -1195,6 +1196,8 @@ export default function App({ motor, repoOverride }: AppProps) {
     await stop()
     await detenerGrabacion()
     await soltarWakeLock()
+    // -tarea 89, cuarta vuelta-: descartar también termina la toma -ver handleStop-.
+    reiniciarEn(0)
     setEstadoToma('listo')
     setControlesVisibles(false)
     if (resumen) {
@@ -1234,6 +1237,11 @@ export default function App({ motor, repoOverride }: AppProps) {
     // calces quedarian anotados con un milisegundo que ya no existe en el archivo.
     await detenerGrabacion()
     await soltarWakeLock()
+    // PARAR TERMINA LA TOMA -tarea 89, cuarta vuelta, 04-10-2026-. Hasta hoy nada se reiniciaba
+    // aquí: el seguidor, el motor y su reloj pasaban a la toma siguiente -la toma 2 de Javier empezó
+    // en pos=25.87, donde quedó la 1-. LISTO vuelve al principio del guion; si el usuario mueve el
+    // texto en LISTO, la toma parte desde ahí -onNavegacionManual, abajo-. Pausa no pasa por aquí.
+    reiniciarEn(0)
     setEstadoToma('listo')
     setControlesVisibles(false)
     // Si hubo toma, el visor la confirma. El aviso "Grabado" solo queda
@@ -1378,6 +1386,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   // -24-09-2026: aca estaba handleClear -vaciar lo oido y reiniciar el seguidor-, sin uso desde
   // que la Tarea 34 saco el boton "Volver al inicio". Cuando B24 -detener a mitad: continuar o
   // empezar de nuevo- se haga, el reinicio es reiniciar() de useSeguidor mas clear() de useASR.
+  // -04-10-2026, tarea 89, cuarta vuelta-: el reinicio al Parar ya está, y es reiniciarEn de
+  // useSeguidor -handleStop y handleDescartarToma-. clear() de useASR no hace falta: solo vacía el
+  // texto oído que se muestra, no lo que sigue el seguidor.
 
   // PAUSA Y SEGUIR VAN EN FILA -tarea 85, 29-09-2026-. Cada toque esperaba solo lo suyo: si
   // Seguir llegaba mientras Pausa todavía estaba apagando el micrófono, start() corría en
@@ -1875,7 +1886,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                 if (estadoToma !== 'leyendo') return
                 setControlesVisibles((prev) => !prev)
               }}
-              onNavegacionManual={irAToken}
+              // -tarea 89, cuarta vuelta-: en LISTO mover el texto es elegir desde dónde parte la toma
+              // -reiniciarEn, seguidor y motor como nuevos ahí, sin el reloj del gesto-; leyendo es
+              // corregir el rumbo de la toma en curso -irAToken, como siempre-.
+              onNavegacionManual={estadoToma === 'listo' ? reiniciarEn : irAToken}
               onModoManualChange={setModoManual}
               onEstadoAvanceChange={handleEstadoAvanceChange}
               horizontal={horizontal}

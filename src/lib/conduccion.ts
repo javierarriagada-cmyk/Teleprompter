@@ -112,3 +112,22 @@ export function procesarFinal(c: Conduccion, texto: string, tMs: number): Posici
   }
   return null
 }
+
+// EL ÚNICO PUNTO DE REINICIO ENTRE TOMAS -tarea 89, cuarta vuelta, 04-10-2026-. Parar termina la
+// toma: la siguiente parte limpia desde `token` -0, el principio del guion, o donde el usuario dejó
+// el texto en LISTO-, como en cualquier grabadora. Antes nada se reiniciaba al Parar: el seguidor
+// -pos, posTentativa, fallos, pendientes-, el motor -ppm estimadas, último calce, ancla, freno,
+// arranque- y su reloj pasaban de una toma a la siguiente.
+// - seguidor.irAToken limpia TODO el seguidor -también fallosParcialesSeguidos, que
+//   seguidor.reiniciar() no limpia-.
+// - motor.reiniciar() vuelve las ppm a las iniciales y apaga la voz; motor.irAToken(token, 0) lo pone
+//   en el destino con el reloj del último calce en 0: el arrastre en LISTO usaba la hora del gesto,
+//   y desde ahí posPredicha del seguidor derivaba ppm/60 tokens por segundo hasta Empezar.
+// Pausa → Seguir NO pasa por aquí: sigue donde quedó.
+export function reiniciarToma(c: Pick<Conduccion, 'seguidor' | 'motor' | 'tokens'>, token: number): number {
+  const destino = Math.max(0, Math.min(token, Math.max(0, c.tokens.length - 1)))
+  c.seguidor.irAToken(destino)
+  c.motor.reiniciar()
+  if (destino > 0) c.motor.irAToken(destino, 0)
+  return destino
+}

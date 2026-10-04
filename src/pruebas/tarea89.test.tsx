@@ -27,7 +27,7 @@ import { grabacionNueva, Guion } from '../datos/modelo'
 import { activarDiagnostico, anotar, comoTexto } from '../lib/diagnostico'
 import { crearSeguidor, tokenizarGuion } from '../lib/seguidor'
 import { crearMotorDeAvance } from '../lib/avance'
-import { Conduccion, procesarFinal, procesarParcial } from '../lib/conduccion'
+import { Conduccion, procesarFinal, procesarParcial, reiniciarToma } from '../lib/conduccion'
 import { bloqueDeBienvenida } from '../app/bienvenida'
 import { useSeguidor } from '../hooks/useSeguidor'
 import { leerCorpus } from '../lib/repetidor'
@@ -192,6 +192,11 @@ describe('Tarea 89, defecto 3: lo que la barra de tres botones tapa', () => {
 // Javier las grabó y SIN reiniciar entre una y otra donde el teléfono tampoco reinició: la toma 2
 // empieza en pos=25.87 -donde quedó la 1- y la 5 en calce=1 -donde quedó la 4-, según la primera línea
 // 'cuadro' de cada registro. La 3 y la 4 empiezan en 0.
+// CORRECCIÓN -cuarta vuelta, 04-10-2026-: esa herencia era el DEFECTO, no el diseño -Javier y Claude-.
+// Parar termina la toma y la siguiente parte limpia -reiniciarToma, conduccion.ts-. Las pruebas que
+// encadenaban tomas ahora pasan por reiniciarToma entre una y otra, como hace la App al Parar. Lo de
+// arriba sigue siendo lo que pasó en el teléfono -por eso se deja-: la 3 y la 4 empezaron limpias porque
+// algo cambió el objeto guion antes -ver docs/tarea89.txt, "CUARTA VUELTA"-.
 const T89 = path.join(__dirname, 'corpus', 'tarea89')
 const TOMA = {
   1: '1-vertical-1080p-1b30bd7e.oyo.txt',
@@ -235,11 +240,18 @@ describe('Tarea 89, defecto 1: Larralde de pie, las tomas 1, 2 y 3 no cambian', 
     expect(tokens.slice(53, 61).map((t) => t.palabra).join(' ')).toBe('si me vieras por dentro es una obra')
   })
 
-  test('toma 1 -de pie, 1080p-, nueva, y la 2 -720p- seguida sobre lo que dejó la 1', () => {
+  // AJUSTADA -cuarta vuelta-: era "la 2 seguida sobre lo que dejó la 1" y esperaba
+  // [26, 26, 26, 27, 40, 46, 51, 57, 60, 61] -la 2 partía en 26, heredado de la 1-. Con Parar entre las
+  // dos, la 2 parte en 0 y da lo mismo que la 2 sola. La toma 1 -guardiana de pie- no cambia.
+  test('toma 1 -de pie, 1080p-, nueva; Parar; y la 2 -720p- parte limpia, igual que sola', () => {
     relojTomas = 0
     const c = conduccionDe(guionLarralde())
     expect(repetirToma(c, 1)).toEqual([0, 1, 2, 2, 12, 17, 21, 25, 26])
-    expect(repetirToma(c, 2)).toEqual([26, 26, 26, 27, 40, 46, 51, 57, 60, 61])
+    reiniciarToma(c, 0)
+    const segunda = repetirToma(c, 2)
+    expect(segunda).toEqual([0, 0, 0, 0, 14, 39, 51, 57, 60, 61])
+    relojTomas = 0
+    expect(repetirToma(conduccionDe(guionLarralde()), 2)).toEqual(segunda)
   })
 
   test('toma 3 -de pie, 480p-, nueva', () => {
@@ -271,11 +283,23 @@ describe('Tarea 89, defecto 1: Larralde de lado, las tomas 4 y 5 mueven la posic
   // se leerían: lo único que prueba es que la 5 no arranca trabada -en el teléfono empezó en
   // calce=1, freno=sin-calce, y no salió de ahí-. La toma 5 sola, sin la 4 antes, tampoco avanza en
   // sus 12 s: ver docs/tarea89.txt, "lo que no calza".
-  test('toma 5 -de lado-, seguida sobre lo que dejó la 4, como en el teléfono: no queda trabada en 0', () => {
+  // AJUSTADA -cuarta vuelta-: era "toma 5 seguida sobre lo que dejó la 4: no queda trabada en 0", con
+  // expect(Math.max(...pos)).toBeGreaterThan(0). Pasaba SOLO por la herencia: la 5 quedaba quieta en el
+  // 31 que dejó la 4 -[31, 31, 31, 31, 31, 31, 31]-, no porque avanzara. Con Parar entre las dos, la 5
+  // parte en 0 sin calce ni freno de la 4 y da lo mismo que la 5 sola: quieta en 0 sus 12 s. Eso es lo
+  // que el oído entregó -"sí por dentro las por dentro la ral de"-, y queda en "lo que no calza".
+  test('toma 5 -de lado-, después de Parar la 4: parte limpia en 0, igual que sola, sin el 31 de la 4', () => {
     relojTomas = 0
     const c = conduccionDe(guionLarralde())
     repetirToma(c, 4)
+    reiniciarToma(c, 0)
+    const st = c.motor.estadoEn(relojTomas)
+    expect(Math.round(st.posicion)).toBe(0)
+    expect(st.ultimoCalce).toBe(0)
+    expect(st.tUltimoCalceMs).toBe(0)
     const pos = repetirToma(c, 5)
-    expect(Math.max(...pos)).toBeGreaterThan(0)
+    relojTomas = 0
+    expect(pos).toEqual(repetirToma(conduccionDe(guionLarralde()), 5))
+    expect(pos[0]).toBe(0)
   })
 })
