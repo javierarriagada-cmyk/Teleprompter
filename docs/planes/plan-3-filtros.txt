@@ -1,0 +1,475 @@
+PLAN 3 - FILTROS DE TONO Y DE BELLEZA CON LO QUE YA TENEMOS
+Plan para Javier, 29-09-2026. Leído en main, commit 60b34ac -29-09-2026 22:01 -0300-. Es un plan, no un
+encargo: nada del repositorio se tocó. Citas archivo:línea en ese commit; capgo 8.11.4 leído en
+/workspace/tarea84/node_modules; Media3 1.9.0, CameraX 1.6.2 y camera-extensions 1.6.2 comprobados
+con javap sobre los AAR del caché de Gradle de la caja -/home/box/.gradle/caches/8.14.3/transforms-.
+Lo que no se pudo comprobar va como PREGUNTA ABIERTA, con qué medir y dónde.
+
+CORRECCIÓN 02-10-2026 -antes de encargar, no es código-
+  - NO se encarga junto con el plan 1.
+  - feColorMatrix sobre <video> en el WebView de Android muchas veces no se aplica. "Lo que ves es
+    lo que se guarda" no se afirma hasta medirlo en el moto g86. Si el filtro no se ve en el
+    <video>, el selector no se construye encima de esa mentira.
+  - "Piel suave" no entra en el primer corte. Primero los seis tonos, y Javier los mira en su cara.
+    La piel alisa camisa y pared del mismo color, y no se puede mostrar mientras el video corre.
+
+==============================================================================
+0. RESUMEN
+==============================================================================
+  - Media3 1.9.0, que YA está en el APK -android/app/build.gradle:212-214-, trae todo lo de tono:
+    Brightness, Contrast, RgbAdjustment, RgbFilter -B/N-, HslAdjustment, SingleColorLut, GaussianBlur
+    y la interfaz RgbMatrix para una matriz propia. No hay viñeta ni suavizado de piel: la viñeta
+    sale con un BitmapOverlay -el mismo mecanismo de los subtítulos-, el suavizado con un shader
+    propio -BaseGlShaderProgram-.
+  - El filtro se aplica AL GUARDAR, en la misma pasada que quema los subtítulos, antes de ellos.
+  - EN VIVO NO SE PUEDE SIN PARCHE: la vista previa es una SurfaceView detrás del WebView; un
+    filtro CSS no la alcanza. Se QUIERE previsualizar en el VISOR con el MISMO número: una matriz
+    calculada en TypeScript que usarían el <video> -feColorMatrix- y Media3 -RgbMatrix-. En el
+    WebView de Android el filtro sobre <video> hay que medirlo antes: a menudo no se aplica
+    -corrección del 02-10-.
+  - Lo de Google para "belleza" no sirve para grabar: las Extensions de CameraX -FACE_RETOUCH- son
+    solo para vista previa y foto, NO para video -documentación oficial-.
+  - Primer corte: seis tonos -Natural, Cálido, Frío, Vivo, Suave, B/N-. "Piel suave" es tarea
+    aparte, después de que Javier vea los tonos. Sin LUTs de terceros.
+
+==============================================================================
+1. EL FLUJO DE HOY QUE TOCA ESTE PLAN
+==============================================================================
+1.1 LA VISTA PREVIA: POR QUÉ UN FILTRO CSS NO LLEGA
+  - camara.ts:173 encenderCamara -> CameraPreview.start({ toBack: true, aspectMode: 'cover',
+    enableOpacity: true, enableVideoMode: true, ... }) -:192-206- y fijarModoSuperficie({ modo:
+    'sistema' }) -:210-.
+  - CamaraNativaPlugin.fijarModoSuperficie -:28-60-: busca la PreviewView de capgo y le pone
+    ImplementationMode.PERFORMANCE -una SurfaceView, con setZOrderMediaOverlay(false)-.
+  - docs/archivo/tarea61.txt:33-41: en COMPATIBLE -TextureView- la vista previa NO se componía
+    debajo del WebView; por eso se pasó a SurfaceView. MainActivity.java pone el WebView
+    transparente -setBackgroundColor(TRANSPARENT)- tras super.onCreate.
+  - Consecuencia: la cámara la compone el sistema POR FUERA del WebView. Un filter o
+    backdrop-filter de CSS solo procesa lo que el WebView dibuja; los píxeles de la SurfaceView no
+    pasan por ahí. Lo que SÍ se ve sobre la cámara es lo que el WebView pinta encima con
+    transparencia -así se ve hoy el texto sobre la imagen, TeleprompterView.tsx:932
+    textoSobreImagen-. Una viñeta -oscurecer bordes- sí se podría pintar encima; un cambio de
+    color de verdad, no. Esto es deducción del modo de composición: se comprueba en 1 minuto en el
+    paso 0.1.
+  - Y la vuelta a TextureView -donde View.setRenderEffect o TextureView.setLayerPaint sí filtran-
+    está descartada por la tarea 61.
+1.2 CAPGO Y CAMERAX
+  - capgo android/build.gradle:62-67: CameraX 1.6.2 -core, camera2, lifecycle, view Y
+    camera-extensions-. Pero en su código NO hay ninguna llamada a ExtensionsManager ni a
+    CameraEffect ni a UseCaseGroup -buscado "Extension", "CameraEffect", "UseCaseGroup",
+    "setEffects" en CameraXView.java y CameraPreview.java: cero-. bindConfiguredUseCases
+    -CameraXView.java:1641- liga los casos de uso con bindToLifecycle sin UseCaseGroup.
+  - O sea: para cualquier filtro en vivo hay que parchar capgo -ver el plan 2, 4.A, sobre cómo
+    parchar y la licencia MPL-2.0 de capgo-.
+1.3 EL VISOR
+  - ReproductorGrabacion.tsx: <video data-testid="video-grabacion"> -:181- dentro de .visor-video;
+    CapaSubtitulos -:182- mide la imagen con rectDeLaImagen -SubtitulosVisor.tsx:20-30- y la dibuja
+    encima. SelectorSubtitulos -:211-220-. guardada -:106- = ya en la galería: no se ofrece nada.
+  - El <video> es parte del WebView, pero un filtro CSS o SVG sobre <video> en Android a menudo
+    no se aplica. No se da por hecho: se mide en el moto g86 antes de construir el selector.
+1.4 EL GUARDADO
+  - handleGuardar -:114-: con subtítulos -> guardarEnGaleriaConSubtitulos -archivosNativos.ts:105-
+    -> CamaraNativaPlugin.guardarConSubtitulos -:397-496-: MediaMetadataRetriever para la rotación
+    -:408-418-, new CapaDeSubtitulos -:421-, EditedMediaItem.setEffects(new Effects(of(), of(new
+    OverlayEffect(of(capa))))) -:431-436-, DefaultEncoderFactory 12 Mbps -:444-446-,
+    Transformer.Builder(...).addListener -onCompleted: copiarAGaleria; onError: reject-, avance cada
+    400 ms. Sin subtítulos -> guardarEnGaleria -:335-, COPIA sin recodificar.
+  - CapaDeSubtitulos.java:38 extends BitmapOverlay; configure(videoSize) -:99-; getBitmap(
+    presentationTimeUs) -:109-; dibujar -:144- gira según la rotación -:147-165- porque el cuadro
+    puede llegar ladeado -1920x1080 con 90- o ya derecho.
+  - CON FILTRO, GUARDAR SIEMPRE RECODIFICA, aun sin subtítulos: hoy sin subtítulos es copia.
+  - No hay en el repositorio una cifra de cuánto tarda la pasada de hoy -plan 1, P4-.
+
+==============================================================================
+2. LO QUE HAY EN MEDIA3 1.9.0 -javap sobre media3-effect-1.9.0-api.jar-
+==============================================================================
+  Clase                           Firma pública -javap-                       Rango -documentación-
+  Brightness                      Brightness(float) implements RgbMatrix       -1 a 1, SUMA a r,g,b
+  Contrast                        Contrast(float) implements RgbMatrix         -1 gris a 1
+  RgbAdjustment.Builder           setRedScale/GreenScale/BlueScale(float)      escalas por canal
+  RgbFilter                       createGrayscaleFilter(), createInvertedFilter()
+  HslAdjustment.Builder           adjustHue, adjustSaturation, adjustLightness saturación -100..100
+  SingleColorLut                  createFromCube(int[][][]), createFromBitmap(Bitmap)
+                                    -HALD de N x N², ARGB_8888-
+  RgbMatrix -interfaz-            float[] getMatrix(long presentationTimeUs, boolean useHdr)
+                                    "4x4 RGB transformation matrix"
+  GlEffect -interfaz-             GlShaderProgram toGlShaderProgram(Context, boolean); isNoOp(int,int)
+  BaseGlShaderProgram -abstracta- BaseGlShaderProgram(boolean, int); Size configure(int, int);
+                                    void drawFrame(int texId, long presentationTimeUs)
+  GlProgram -media3-common-       GlProgram(String vertex, String fragment) y (Context, rutaV,
+                                    rutaF) desde assets; setSamplerTexIdUniform, setFloatUniform,
+                                    setFloatsUniform, setBufferAttribute, bindAttributesAndUniforms
+  GlUtil                          getNormalizedCoordinateBounds(), checkGlError()
+  GaussianBlur                    GaussianBlur(float sigma[, float nDesv]) extends
+                                    SeparableConvolution -desenfoca TODO el cuadro-
+  ByteBufferGlEffect<T>           ByteBufferGlEffect(Processor<T>); Processor: configure,
+                                    getScaledRegion, processImage(Image, long) -> ListenableFuture<T>,
+                                    finishProcessingAndBlend -para mirar píxeles en CPU, p. ej. ML-
+  OverlayEffect, BitmapOverlay, StaticOverlaySettings.Builder -setAlphaScale, setScale, anclas-
+  DefaultVideoFrameProcessor.Factory.Builder.setSdrWorkingColorSpace(int): DEFAULT = 0 -"para SDR
+    usa el espacio de color de la entrada"-, ORIGINAL = 1, LINEAR = 2. Transformer.Builder
+    .setVideoFrameProcessorFactory(...) existe. O sea: por omisión los efectos operan sobre valores
+    con gamma, como CSS -sección 4.3-.
+  ExportResult: durationMs, fileSizeBytes, averageVideoBitrate, width, height, videoFrameCount
+    -sirve para medir-.
+  ExoPlayer.setVideoEffects(List<Effect>) -media3-exoplayer 1.9.0, en el caché como dependencia
+    de transformer; build.gradle no lo declara-. media3-ui -PlayerView- NO está en el caché.
+  Fuentes de los rangos: developer.android.com/reference/androidx/media3/effect/Brightness,
+  .../Contrast, .../HslAdjustment.Builder, .../SingleColorLut, .../GaussianBlur,
+  .../DefaultVideoFrameProcessor.
+  NO HAY: viñeta, suavizado de piel, temperatura en Kelvin, lector de archivos .cube.
+
+==============================================================================
+3. LO QUE OFRECEN GOOGLE Y ANDROID -fuentes oficiales, leídas el 29-09-2026-
+==============================================================================
+3.1 CAMERAX EXTENSIONS -FACE_RETOUCH / BEAUTY-
+  - https://developer.android.com/media/camera/camera-extensions: Auto, Bokeh, Face Retouch
+    -"touches up skin texture, under-eye tone, and more"-, HDR, Night. TEXTUAL: "Camera2 and CameraX
+    extensions are only available for the preview and image capture use cases, not video
+    capture". Y dependen del fabricante: "Not all devices support extensions".
+  - javap camera-extensions 1.6.2: ExtensionMode.FACE_RETOUCH = 4 -BOKEH 1, HDR 2, NIGHT 3, AUTO 5-;
+    ExtensionsManager.getInstanceAsync, isExtensionAvailable(CameraSelector, int),
+    getExtensionEnabledCameraSelector.
+  - capgo trae la dependencia y no la usa. VEREDICTO: no sirve para Sigo, que graba video. Lo único
+    útil: saber si el moto g86 la tiene -paso 0.8, informativo-.
+3.2 CAMERAX CameraEffect Y Media3Effect
+  - https://developer.android.com/reference/androidx/camera/core/CameraEffect: inyecta un
+    SurfaceProcessor en la tubería; objetivos PREVIEW = 1, VIDEO_CAPTURE = 2, IMAGE_CAPTURE = 4;
+    combinaciones válidas PREVIEW, PREVIEW|VIDEO_CAPTURE, PREVIEW|VIDEO_CAPTURE|IMAGE_CAPTURE.
+    javap camera-core 1.6.2: UseCaseGroup.Builder.addEffect(CameraEffect).
+  - https://developer.android.com/reference/androidx/camera/media3/effect/Media3Effect: "applies
+    media3 Effect to the CameraX pipeline... on the fly without restarting the camera";
+    Media3Effect(Context, int targets, Executor, Consumer<Throwable>), setEffects(List<Effect>).
+    Artefacto androidx.camera.media3:media3-effect: versiones 1.0.0-alpha01, alpha03 y alpha04
+    -group-index de maven.google.com-, TODAS ALFA. El pom de alpha04 depende de camera-core 1.4.0 y
+    media3-common / media3-effect 1.6.0: con nuestra 1.9.0, compatibilidad SIN comprobar.
+  - OverlayEffect de CameraX -androidx.camera:camera-effects, hay 1.6.2-: dibuja con Canvas sobre
+    los cuadros. Es para superponer, no para color.
+  - VEREDICTO: es LA vía para ver el filtro en vivo, con un parche a capgo que ligue con
+    UseCaseGroup y addEffect. Con objetivo PREVIEW solo, el archivo queda limpio y el filtro se
+    pone al guardar con las MISMAS clases: lo visto es lo guardado. Fase 2, sección 6.
+3.3 CAMERA2 CONTROL_EFFECT_MODE
+  - https://developer.android.com/reference/android/hardware/camera2/CaptureRequest
+    #CONTROL_EFFECT_MODE: MONO, NEGATIVE, SOLARIZE, SEPIA, POSTERIZE, WHITEBOARD, BLACKBOARD, AQUA;
+    "left to the implementor... should not be depended on to be consistent (or present)". Queda
+    quemado en el archivo y varía por teléfono. Fuera.
+3.4 ML KIT
+  - https://developers.google.com/ml-kit/vision/face-mesh-detection: Face Mesh, 468 puntos 3D, "~14
+    ms on Pixel 3", hasta 2 caras, caras a menos de ~2 m, solo empaquetado -~6,4 MB-, EN BETA "not
+    subject to any SLA or deprecation policy". La misma página: Face Detection con contornos -133
+    puntos, 1 cara-, "~60 ms on Pixel 3" en modo rápido, empaquetado ~6,9 MB o sin empaquetar ~0,6 MB.
+  - Servirían para una máscara de la cara -sin ojos, cejas ni boca- que limite el suavizado.
+3.5 MEDIAPIPE
+  - https://ai.google.dev/edge/mediapipe/solutions/vision/image_segmenter: modelo SelfieMulticlass
+    256x256 con categorías 0 fondo, 1 pelo, 2 piel del cuerpo, 3 PIEL DE LA CARA, 4 ropa, 5 otros.
+    Latencia publicada en Pixel 6: 217,76 ms CPU / 71,24 ms GPU por imagen.
+  - https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker: puntos 3D de la cara,
+    blendshapes y matrices "to apply facial filters and effects".
+  - La cuenta: una toma a 30 cuadros tiene 1.800 cuadros por minuto. Con el segmentador a 71 ms por
+    cuadro -Pixel 6, GPU- son ~128 s de análisis por minuto de toma, cuadro a cuadro. Aunque se
+    analice uno de cada cinco y se reuse la máscara, ~26 s por minuto más la lectura de píxeles.
+    El moto g86 no tiene cifra publicada -PREGUNTA P6-. Por eso el suavizado v1 NO usa ML.
+
+==============================================================================
+4. EL DISEÑO -FASE 1: SIN PARCHE, EN EL VISOR Y AL GUARDAR-
+==============================================================================
+4.1 EL CONJUNTO INICIAL -realista, los números son el PUNTO DE PARTIDA a ajustar en el teléfono-
+    Tono      Qué hace                                       Cómo -todo en UNA matriz 4x4-
+    Natural   nada                                           identidad -esCopia sigue valiendo-
+    Cálido    más rojo, menos azul                           escalas R 1,06 · G 1,00 · B 0,92
+    Frío      menos rojo, más azul                           escalas R 0,94 · G 1,00 · B 1,06
+    Vivo      más color y un poco más de contraste           saturate 1,25 · contrast 1,08
+    Suave     menos contraste, un poco más de luz            contrast 0,92 · brillo +0,03
+    B/N       blanco y negro                                 grayscale -luma 0,2126/0,7152/0,0722-
+    + Piel suave -interruptor, 0 o 1; 2 niveles si el paso 0 lo justifica-: shader propio, 4.6.
+    + Viñeta: NO en el conjunto inicial -P3-: en un video hablado a cámara oscurece justo donde
+      van los subtítulos "Para redes" del plan 1. Queda diseñada -4.7- por si Javier la quiere.
+  - Brillo, contraste, saturación y calidez sueltos, con deslizadores: NO en la fase 1 -"debemos
+    tender a lo simple"-; la matriz ya los soporta, así que agregarlos es solo pantalla -P2-.
+  - LUTs: sin archivos .cube de terceros -licencias- y sin lector de .cube. SingleColorLut queda
+    para un tono que una matriz no logre -una curva-. Ninguno de los seis la necesita.
+4.2 TIPOS -src/lib/filtros.ts, nuevo, TypeScript puro-
+    export type TonoFiltro = 'natural' | 'calido' | 'frio' | 'vivo' | 'suave' | 'bn'
+    export type FiltroToma = { version: 1; tono: TonoFiltro; pielSuave: 0 | 1 }
+    export const TONOS: Array<{ valor: TonoFiltro; clave: ClaveTexto }>
+    export type Matriz4x5 = number[]   // 20 números, por filas, como feColorMatrix
+    export function matrizDeTono(t: TonoFiltro): Matriz4x5
+    export function componer(a: Matriz4x5, b: Matriz4x5): Matriz4x5   // primero b, después a
+    export const IDENTIDAD: Matriz4x5
+    export function valoresFeColorMatrix(m: Matriz4x5): string        // para el visor
+    export function matrizParaMedia3(m: Matriz4x5): number[]          // 16, orden a fijar en 0.3
+    export function esNeutro(f: FiltroToma | null): boolean           // natural y sin piel suave
+    const CLAVE_FILTRO = 'sigo_filtro'
+    export function filtroGuardado(): FiltroToma                      // natural si no hay o basura
+    export function guardarFiltro(f: FiltroToma): void
+  - Las matrices salen de las fórmulas de la especificación Filter Effects del W3C -saturate,
+    contrast, brightness, grayscale-, escritas en el comentario con su fuente. La MISMA matriz va
+    al visor y al nativo: una sola fuente de verdad.
+4.3 POR QUÉ LA MISMA MATRIZ DA LO MISMO EN LOS DOS LADOS
+  - Visor: <svg><filter id="filtro-toma" color-interpolation-filters="sRGB"><feColorMatrix
+    type="matrix" values={valoresFeColorMatrix(m)}/></filter></svg> y style={{ filter:
+    'url(#filtro-toma)' }} en el <video>. sRGB: opera sobre valores con gamma.
+  - Nativo: MatrizDeColor implements RgbMatrix devuelve esa matriz; con WORKING_COLOR_SPACE_DEFAULT
+    Media3 opera en el espacio de la entrada para SDR -con gamma-. Coinciden salvo la función de
+    transferencia -sRGB contra BT.709- y el redondeo.
+  - A COMPROBAR -0.3-: si la 4x4 de RgbMatrix actúa sobre (r, g, b, 1) -Brightness es RgbMatrix y
+    SUMA, lo que sugiere que sí- y si es por columnas -convención de OpenGL-. Con una matriz que
+    deja solo el rojo se ve en un cuadro.
+4.4 LA RECETA -contrato común, plan 1 sección 4-
+    RecetaExportacion.filtro: null | { tono: TonoFiltro; matriz: number[] /* 16 */; pielSuave: 0|1 }
+  - recetaDe arma matriz = matrizParaMedia3(matrizDeTono(tono)); con esNeutro -> filtro null.
+  - esCopia(r) = estilo 'no' o sin subtítulos, Y tramos null, Y filtro null. Con filtro, NUNCA es
+    copia.
+  - El nativo no conoce los nombres de los tonos: recibe números. Afinar un tono no pide APK.
+4.5 JAVA -android/app/src/main/java/com/sigoteleprompter/app/-
+    @UnstableApi final class MatrizDeColor implements RgbMatrix {          // nuevo
+      MatrizDeColor(float[] m16)
+      @Override public float[] getMatrix(long presentationTimeUs, boolean useHdr) { return m; }
+      @Override public boolean isNoOp(int w, int h) { return esIdentidad(m); }
+    }
+    ExportadorDeTomas.efectosDeVideo(ctx, r, rotacion) -plan 1, 4.3-, ORDEN FIJO:
+      1. [recorte de la fase B del plan 1]
+      2. SuavizadoDePiel(fuerza)        si r.filtro.pielSuave > 0   -mira colores ORIGINALES-
+      3. MatrizDeColor(r.filtro.matriz) si hay filtro
+      4. [OverlayEffect(CapaDeVineta)]  si algún día hay viñeta
+      5. OverlayEffect(CapaDeSubtitulos) si hay subtítulos     -al final: no se tiñen ni suavizan-
+    Si Media3 junta varias RgbMatrix seguidas en un solo shader no importa: mandamos una sola.
+    CamaraNativaPlugin.exportarToma -plan 1, 4.3-: sin cambios de fondo; el log "SigoExport" suma
+    tono, pielSuave, ExportResult.videoFrameCount y msGuardado.
+4.6 PIEL SUAVE: EL SHADER -SuavizadoDePiel.java + assets/shaders/suavizado.frag-
+    @UnstableApi final class SuavizadoDePiel implements GlEffect {
+      SuavizadoDePiel(float fuerza)
+      @Override public GlShaderProgram toGlShaderProgram(Context c, boolean useHdr)
+          throws VideoFrameProcessingException { return new Programa(c, fuerza); }
+    }
+    final class Programa extends BaseGlShaderProgram {
+      Programa(Context c, float fuerza) { super(false, 1); glProgram = new GlProgram(c,
+        "shaders/suavizado.vert", "shaders/suavizado.frag"); ... }
+      // el significado exacto de (boolean, int) del constructor: fuentes de Media3 1.9.0 -P9-
+      @Override public Size configure(int w, int h) { texel = (1/w, 1/h); return new Size(w, h); }
+      @Override public void drawFrame(int texId, long pts) {
+        glProgram.use(); glProgram.setSamplerTexIdUniform("uTex", texId, 0);
+        glProgram.setFloatsUniform("uTexel", texel); glProgram.setFloatUniform("uFuerza", fuerza);
+        glProgram.setBufferAttribute("aPos", GlUtil.getNormalizedCoordinateBounds(), 4);
+        glProgram.bindAttributesAndUniforms(); GLES20.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        GlUtil.checkGlError(); }
+    }
+    Fragment shader, pseudocódigo:
+      c = texture(uTex, v)
+      // 1) probabilidad de piel por color, en YCbCr -rango clásico de la literatura, Chai y Ngan
+      //    1999: Cb 77-127, Cr 133-173 sobre 255-, con bordes suaves -smoothstep- para que no haya
+      //    costuras. Es un PUNTO DE PARTIDA: se ajusta mirando tomas reales -0.5-.
+      p = piel(c)
+      // 2) filtro bilateral chico: 2 anillos de 8 muestras -radio 1,5 y 3 texeles en 1080p-; cada
+      //    muestra pesa gauss(distancia) * exp(-|ci - c|² / σr²): alisa poros y granito, NO cruza
+      //    bordes -ojos, cejas, labios, contorno-.
+      s = bilateral(c, 16 muestras)
+      salida = mix(c, s, uFuerza * p)
+    Costo: 17 lecturas de textura por píxel, 1920x1080, 30 cuadros: la GPU del moto g86 sin cifra
+    -0.5 mide msGuardado con y sin-.
+    Límites honestos: una pared de madera o una camisa color piel también se alisan -no hay
+    máscara de cara-. Si el 0.5 lo muestra, la fase 3 limita a la cara con ML -sección 6.2-.
+4.7 VIÑETA -diseñada, fuera del conjunto inicial-
+  - Nativo: CapaDeVineta extends BitmapOverlay: en configure(videoSize) arma UNA vez un bitmap del
+    tamaño del cuadro con RadialGradient negro de alfa 0 en el centro a ~0,35 en las esquinas;
+    getBitmap devuelve siempre ese. Mismo mecanismo que CapaDeSubtitulos, sin shader.
+  - Visor: un <div className="vineta-visor"> sobre la imagen con el rect de rectDeLaImagen y
+    background radial-gradient con los mismos números -variables CSS-.
+4.8 EL VISOR -ReproductorGrabacion.tsx- Y DÓNDE SE ELIGE
+  - Estado filtro: FiltroToma = filtroGuardado().
+  - Debajo de SelectorSubtitulos -o solo, si la toma no tiene subtítulos-: SelectorFiltro nuevo
+    -src/components/SelectorFiltro.tsx, a la lista de T209 en src/pruebas/tarea46.test.tsx-, con el
+    mismo patrón desplegable que SelectorSubtitulos -SubtitulosVisor.tsx:148-: botón btn-filtro con
+    el nombre del tono; al abrir, seis opciones btn-tono-<valor> -aria-pressed- y el interruptor
+    switch-piel-suave. Solo si !guardada.
+  - El <video> -:181- lleva filter: url(#filtro-toma) con la matriz del tono elegido: se ve AL
+    TIRO, reproduciendo -"cada control muestra su efecto"-.
+  - Piel suave NO se puede mostrar con CSS: al encenderla, el visor pide una imagen fija del
+    cuadro actual con el filtro completo -vistaPreviaFiltro, 4.9- y la muestra encima del video
+    en pausa, con "Antes / Después" al mantener apretado. Mientras se reproduce, vuelve el video
+    con solo el tono. PREGUNTA P5: si esa espera es aceptable.
+  - handleGuardar arma la receta con el filtro; onCambio agrega filtroGaleria: FiltroToma
+    -ResumenGrabacion, junto a estiloGaleria-. La toma guardada se ve desde la galería ya filtrada:
+    el visor NO aplica el filtro encima -igual que estiloVisible 'no', :109-.
+  - Sidecar: en la fase 1 el filtro se elige DESPUÉS de grabar, así que el sidecar -que se escribe
+    al grabar, tomaVideo.ts:83-147- no lo necesita. En la fase 2 -elegido en LISTO- va en
+    SidecarToma.filtro?: FiltroToma, validado en parsearSidecar, para que una toma recuperada
+    conserve lo que se vio al grabar.
+  - Textos -es.ts y en.ts, mismas claves-: filtro 'Filtro' / 'Filter'; tonoNatural 'Natural';
+    tonoCalido 'Cálido' / 'Warm'; tonoFrio 'Frío' / 'Cool'; tonoVivo 'Vivo' / 'Vivid'; tonoSuave
+    'Suave' / 'Soft'; tonoBN 'B/N' / 'B&W'; pielSuave 'Piel suave' / 'Smooth skin';
+    pielSuaveExplicacion 'Se nota al guardar; aquí, en la imagen fija' / 'Applied when saving;
+    shown here on a still'; filtroPreparando 'Preparando la vista…' / 'Preparing preview…'.
+4.9 EL PUENTE
+    exportarToma({ ruta, receta }) -plan 1- con receta.filtro. Sin evento nuevo: 'progresoGuardado'.
+    vistaPreviaFiltro(options: { ruta: string; atMs: number; filtro: string /* JSON */ }):
+      Promise<{ ruta: string /* jpg en cache */; msTardo: number }>
+      // nativo: Transformer sobre un tramo [atMs, atMs + 200] con ClippingConfiguration y los
+      // mismos efectos, salida en cache; extraerMiniatura -:276- de ese mp4; borra el mp4.
+      // Alternativa si tarda mucho -0.6-: MediaMetadataRetriever.getFrameAtTime + el shader en un
+      // contexto GL propio: más código, sin Transformer.
+    Contra ExoPlayer + setVideoEffects: daría video filtrado de verdad, pero ExoPlayer dibuja en
+    una Surface nativa: habría que poner una SurfaceView detrás del WebView en el visor, como la
+    cámara, y abrirle un hueco transparente en la tarjeta del visor. Es una pantalla nativa nueva.
+    Descartado para la fase 1; se reconsidera si la imagen fija no convence.
+
+==============================================================================
+5. COSTO EN TIEMPO DE GUARDADO
+==============================================================================
+  - Con filtro, guardar recodifica siempre -hoy sin subtítulos es copia, casi instantáneo-.
+  - La matriz es una multiplicación por píxel en la GPU: el cuello de botella sigue siendo
+    decodificar y codificar -a verificar: msGuardado con B/N contra sin filtro, 0.2-.
+  - Piel suave suma 17 lecturas por píxel: sin cifra -0.5-.
+  - Tomas de 30 a 40 minutos: si la pasada de hoy ya tarda -P4 del plan 1, sin medir-, el filtro no
+    debería sumar mucho y Piel suave sí puede. El criterio de éxito lo fija con números.
+
+==============================================================================
+6. FASES SIGUIENTES -solo si Javier las decide-
+==============================================================================
+6.1 FASE 2: EL FILTRO EN VIVO, EN LISTO Y AL GRABAR
+  - Parche a capgo -mismo mecanismo y licencia que el plan 2-: bindConfiguredUseCases -:1641- liga
+    con UseCaseGroup.Builder().addUseCase(preview).addUseCase(imageCapture).addUseCase(
+    videoCapture).addEffect(efecto).build(). efecto = Media3Effect(ctx, CameraEffect.PREVIEW,
+    executor, onError) -solo vista previa: el archivo sale limpio y el filtro se pone al guardar
+    con las mismas clases-. setEffects(of(new MatrizDeColor(m))) cambia en caliente.
+  - Puente nuevo en CamaraNativaPlugin: fijarFiltroEnVivo({ matriz: number[] }) -> { ok, motivo? }.
+  - Si Media3Effect alfa no calza con media3 1.9.0 -0.7-, un SurfaceProcessor propio con el mismo
+    shader: más código, sin dependencia alfa.
+  - UI: ficha-filtro en FichasListo -PanelFicha :27 suma 'filtro'-, visible solo con conCamara.
+6.2 FASE 3: PIEL SUAVE SOLO EN LA CARA
+  - ByteBufferGlEffect con un Processor que, cada N cuadros, corre ML Kit Face Mesh -beta- o el
+    segmentador multiclase de MediaPipe -piel de la cara- y deja la máscara para el shader.
+    Dependencia nueva de Google -la tarea 84 permitió solo las de Google para Play-, costo por
+    minuto alto -3.5-. Solo si la máscara por color falla en tomas reales.
+6.3 PREMIUM
+  - No existe mecanismo de pago -plan 2, P10-. Propuesta: tonos gratis; Piel suave y el filtro en
+    vivo premium. Regla de la casa "no ofrecer una versión degradada": un tono gratis no degrada
+    nada -la toma sale entera y a 12 Mbps-. Lo decide Javier -P1-.
+
+==============================================================================
+7. ALTERNATIVAS EVALUADAS
+==============================================================================
+  A. Media3 al guardar + matriz compartida con el visor -RECOMENDADA, fase 1-. + Sin dependencias
+     ni parche; lo visto en el visor es lo guardado. - No se ve al grabar; recodifica siempre.
+  B. Filtro CSS sobre la vista previa. No llega a la SurfaceView -1.1-. Fuera -salvo una viñeta
+     pintada encima, que no es color-.
+  C. Volver a TextureView para usar RenderEffect / setLayerPaint. La tarea 61 lo descartó. Fuera.
+  D. CameraX Extensions FACE_RETOUCH. No aplica a video -doc oficial-. Fuera.
+  E. Camera2 CONTROL_EFFECT_MODE. Inconsistente por equipo y quemado. Fuera.
+  F. CameraEffect / Media3Effect en vivo con parche. + En vivo. - Parche, dependencia alfa, calor.
+     Fase 2.
+  G. Filtro quemado al grabar -CameraEffect con VIDEO_CAPTURE-. + Guardar vuelve a ser copia. -
+     Irreversible: la toma no se puede "des-filtrar"; más carga al grabar -calor en 40 min-. No.
+  H. ML para suavizar solo la piel. + Mejor resultado. - Dependencia, beta -Face Mesh-, 26 a 128 s
+     por minuto de toma estimados con cifras de Pixel 6. Fase 3.
+  I. ExoPlayer + setVideoEffects en el visor. + Video filtrado real. - Pantalla nativa nueva.
+     Solo si la imagen fija no convence.
+  J. LUTs .cube de terceros. - Licencias y un lector nuevo. Fuera; SingleColorLut queda a mano.
+
+==============================================================================
+8. PASO 0 - EN EL MOTO G86
+==============================================================================
+  0.1 CSS NO LLEGA: en una compilación de prueba, backdrop-filter: grayscale(1) sobre un div en
+      LISTO con la cámara detrás. Esperado: la cámara sigue en color. Si se viera gris, se
+      reabre la alternativa B.
+  0.2 MATRIZ Y TIEMPO: prototipo en guardarConSubtitulos con [MatrizDeColor(B/N), capa]. Tomas de
+      1 y 5 minutos, 1080p: msGuardado con y sin filtro -y ExportResult.videoFrameCount igual al
+      de la toma-. En la caja, ffmpeg de un cuadro: en B/N, |r-g| y |g-b| <= 2 en todos los
+      píxeles; los subtítulos siguen amarillos -van después-.
+  0.3 CONVENCIÓN: una matriz que deja solo el rojo, y otra que suma 0,1: ¿el cuadro sale rojo? ¿más
+      claro? Fija el orden -filas o columnas- y si la cuarta columna suma.
+  0.4 EL VISOR: feColorMatrix sobre el <video> en el WebView del moto g86: ¿reproduce a 30 cuadros
+      -chrome://inspect, panel Performance-? Captura del visor en B/N, Cálido y Vivo contra el mismo
+      cuadro de la toma guardada: diferencia media por canal, con un script en la caja. El umbral
+      lo fija Javier con los números.
+  0.5 PIEL SUAVE: toma de 1 minuto de Javier con un fondo de madera: msGuardado con y sin; mirar
+      poros, ojos, pelo, la madera y la ropa. Ajusta el rango de piel y la fuerza.
+  0.6 IMAGEN FIJA: cuánto tarda vistaPreviaFiltro en una toma de 20 minutos -el salto al atMs-.
+  0.7 FASE 2, solo si se decide: ¿Media3Effect 1.0.0-alpha04 compila y corre con media3 1.9.0?
+      ¿cuadros por segundo de la vista previa con el efecto? ¿el mp4 sale con la misma calidad?
+  0.8 INFORMATIVO: ExtensionsManager.isExtensionAvailable(frontal, FACE_RETOUCH) en el log: si el
+      moto g86 la tiene -aunque no sirva para video-.
+
+==============================================================================
+9. TAREAS, UNA A UNA
+==============================================================================
+T3-1  LAS MATRICES, PURAS
+  Archivos: src/lib/filtros.ts; src/pruebas/filtros.test.ts.
+  Vitest: 'natural es la identidad exacta'; 'B/N deja r = g = b en DIEZ colores de prueba'
+  -trayectoria, no un color-; 'cálido sube el rojo y baja el azul de un gris'; 'componer con la
+  identidad no cambia nada'; 'vivo y suave quedan dentro de 0..1 para blanco y negro puros';
+  'valoresFeColorMatrix da 20 números en orden de filas'; 'matrizParaMedia3 da 16 números en el
+  orden del 0.3'; 'filtroGuardado con basura devuelve natural'; 'esNeutro natural sin piel suave'.
+T3-2  EL FILTRO VIAJA AL GUARDAR
+  Archivos: recetaExportacion.ts, MatrizDeColor.java, ExportadorDeTomas.java, RecetaExportacion.java.
+  Vitest: 'con tono B/N la receta NO es copia aunque no haya subtítulos'; 'natural no cambia la
+  receta de hoy'. A través de <App>, vi.mock de '../lib/archivosNativos': 'ELEGIR CÁLIDO Y GUARDAR
+  MANDA LA MATRIZ DE CÁLIDO' -los 16 números, no solo el tono-.
+  Manual: 0.2 y 0.3 con el código de verdad; los subtítulos no se tiñen.
+  Guardiana rota una vez: poner el filtro después de la capa -> los subtítulos salen grises en B/N.
+T3-3  EL VISOR
+  Archivos: SelectorFiltro.tsx -nuevo, a T209-, ReproductorGrabacion.tsx, styles.css, es.ts, en.ts.
+  Vitest: 'elegir B/N pone en el video filter url(#filtro-toma) y el feColorMatrix con la matriz de
+  B/N'; 'la toma guardada no muestra el selector ni el filtro'; 'la elección se recuerda en
+  sigo_filtro'; 'guardar deja filtroGaleria en la toma'.
+  Manual: 0.4; TalkBack lee "Cálido, seleccionado".
+T3-4  PIEL SUAVE
+  Archivos: SuavizadoDePiel.java, assets/shaders/suavizado.vert y .frag, ExportadorDeTomas.java,
+  CamaraNativaPlugin.java -vistaPreviaFiltro-, camara.ts, ReproductorGrabacion.tsx.
+  Vitest: 'encender piel suave pide vistaPreviaFiltro con el cuadro actual y muestra la imagen';
+  'si vistaPreviaFiltro falla, el interruptor sigue y hay aviso'; 'la receta lleva pielSuave 1'.
+  Manual: 0.5 y 0.6; proguard-rules.pro si R8 quita algo -probar en npm run play-.
+T3-5  VIÑETA -solo si Javier la pide-: CapaDeVineta.java, .vineta-visor.
+T3-6  PREMIUM -cuando exista el mecanismo-.
+T3-7  FASE 2 EN VIVO -solo si se decide, tras el 0.7-.
+
+==============================================================================
+10. RIESGOS Y MITIGACIÓN
+==============================================================================
+  - Visor y guardado no coinciden -transferencia, redondeo, WebView- -> 0.4 lo mide; una sola
+    matriz para los dos.
+  - Tomas largas: recodificar siempre -> msGuardado en el log; aviso con avance como hoy.
+  - Piel suave alisa lo que no es piel -> rango ajustado con tomas reales; fase 3 si no alcanza.
+  - Piel suave "de plástico" -> fuerza moderada por omisión; lo juzga Javier en su cara.
+  - Un codificador que falla -> el rechazo de hoy cubre esto; la toma original no se toca.
+  - R8 en la versión de Play quita clases de efectos -> probar en npm run play -tarea 85-.
+  - Media3Effect alfa -fase 2- -> alternativa con SurfaceProcessor propio.
+  - Viñeta y "Para redes" -> fuera del conjunto inicial.
+
+==============================================================================
+11. QUÉ NO HACER
+==============================================================================
+  - No quemar el filtro al grabar. No tocar la grabación ni capgo en la fase 1.
+  - No usar CameraX Extensions ni CONTROL_EFFECT_MODE para esto.
+  - No agregar dependencias -ML Kit, MediaPipe, camera-media3-effect- sin el visto bueno.
+  - No usar LUTs de terceros. No nombrar otras aplicaciones ni "filtros como los de...".
+  - No teñir ni suavizar los subtítulos. No aplicar el filtro encima de una toma ya guardada.
+  - No borrar ni acortar comentarios; no mover umbrales; colores en CSS con variables.
+
+==============================================================================
+12. CRITERIO DE ÉXITO
+==============================================================================
+  1. Natural: la toma guardada es idéntica a la de hoy -sin subtítulos, mismos bytes-.
+  2. B/N: todos los píxeles con |r-g| y |g-b| <= 2; subtítulos amarillos intactos.
+  3. Visor contra guardado: diferencia media por canal bajo el umbral que fije Javier -0.4-.
+  4. msGuardado con un tono dentro de lo que Javier acepte frente a la pasada de hoy -0.2-.
+  5. Piel suave: Javier la aprueba en su cara con el fondo real; tiempo medido -0.5-.
+  6. npx tsc --noEmit limpio, npx vitest run en verde, comentarios que no bajan.
+
+==============================================================================
+13. PREGUNTAS ABIERTAS -y cómo se responden-
+==============================================================================
+  P1. ¿Qué es premium: todo, o solo Piel suave y lo en vivo? No hay mecanismo de pago.
+  P2. ¿Seis tonos fijos, o también deslizadores de brillo, contraste, saturación y calidez?
+  P3. ¿Viñeta sí o no?
+  P4. ¿Los números de cada tono? Se afinan en el moto g86 con tomas reales.
+  P5. ¿La imagen fija para Piel suave basta, o hace falta video filtrado en el visor -ExoPlayer-?
+      Depende de 0.6.
+  P6. ¿Cuánto tarda el segmentador o Face Mesh en el moto g86? Sin cifra publicada; se mide solo
+      si la fase 3 se decide.
+  P7. ¿Fase 2 en vivo? Pide parche a capgo y una dependencia alfa -0.7-.
+  P8. ¿La matriz de RgbMatrix actúa sobre (r,g,b,1) y en qué orden? -0.3-.
+  P9. El significado de los parámetros de BaseGlShaderProgram(boolean, int): leer las fuentes de
+      media3-effect 1.9.0 -no están en el caché de la caja; se bajan del repositorio de Media3-.
+  P10. ¿Cuánto tarda hoy la pasada de subtítulos por minuto? -plan 1, P4-. Es la base de todo el
+       cálculo de tiempo.

@@ -4,7 +4,8 @@ import { crearMotorDeAvance, MotorDeAvance } from '../lib/avance'
 import { crearRegistro, RegistroDeLectura } from '../lib/registro'
 import { EventoFinal } from '../motor/MotorDeVoz'
 import { Guion } from '../datos/modelo'
-import { Conduccion, procesarFinal, procesarParcial } from '../lib/conduccion'
+import { Conduccion, procesarFinal, procesarParcial, reiniciarToma } from '../lib/conduccion'
+import { anotar } from '../lib/diagnostico'
 
 export function useSeguidor(guionEntrada: Guion | string) {
   const [posicion, setPosicion] = useState<Posicion>({ bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
@@ -66,6 +67,9 @@ export function useSeguidor(guionEntrada: Guion | string) {
     registroRef.current = crearRegistro()
     bloqueConfirmadoRef.current = 0
     setPosicion({ bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
+    // -tarea 89, 04-10-2026-: un seguidor y un motor nuevos empiezan de 0. Si esto pasa en medio
+    // de una toma, el registro lo tiene que mostrar.
+    anotar({ tipo: 'seguidor', evento: 'creado', token: 0 })
   }, [guionEntrada])
 
   function obtenerConduccion(): Conduccion | null {
@@ -132,10 +136,29 @@ export function useSeguidor(guionEntrada: Guion | string) {
     const destino = Math.max(0, Math.min(token, tokens.length - 1))
     seg.irAToken(destino)
     motor.irAToken(destino, performance.now())
+    // -tarea 89-: el arrastre del texto mueve los dos y reinicia el arranque del motor.
+    anotar({ tipo: 'seguidor', evento: 'irAToken', token: destino })
 
     const t = tokens[destino]
     bloqueConfirmadoRef.current = t.bloque
     setPosicion({ bloque: t.bloque, linea: t.linea, palabra: t.indiceEnLinea, desdeToken: destino, hastaToken: destino, movio: true })
+  }
+
+  // PARAR TERMINA LA TOMA -tarea 89, cuarta vuelta, 04-10-2026-. Seguidor y motor como recién
+  // creados, puestos en `token`: 0 al Parar, o donde el usuario deja el texto en LISTO. Lo hace
+  // reiniciarToma -conduccion.ts-, el único punto de reinicio entre tomas. Pausa → Seguir no pasa por
+  // aquí. reiniciar() de abajo -sin uso- no limpiaba fallosParcialesSeguidos ni dejaba elegir dónde.
+  function reiniciarEn(token: number) {
+    const seg = seguidorRef.current
+    const motor = motorAvanceRef.current
+    const tokens = tokensRef.current
+    if (!seg || !motor || tokens.length === 0) return
+    const destino = reiniciarToma({ seguidor: seg, motor, tokens }, token)
+    if (registroRef.current) registroRef.current.limpiar()
+    anotar({ tipo: 'seguidor', evento: 'reiniciado', token: destino })
+    const t = tokens[destino]
+    bloqueConfirmadoRef.current = t.bloque
+    setPosicion({ bloque: t.bloque, linea: t.linea, palabra: t.indiceEnLinea, desdeToken: destino, hastaToken: destino, movio: destino > 0 })
   }
 
   function reiniciar() {
@@ -157,6 +180,7 @@ export function useSeguidor(guionEntrada: Guion | string) {
     alNotificarVoz,
     irAToken,
     reiniciar,
+    reiniciarEn,
     motorAvance,
     registro: registroRef.current
   }

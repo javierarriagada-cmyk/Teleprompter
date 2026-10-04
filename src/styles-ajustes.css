@@ -374,6 +374,13 @@
   justify-content: center;
   z-index: 300;
   padding: 16px;
+  /* TAREA 89 -04-10-2026-: la capa es inset 0 y llega bajo la barra de tres botones. Los mismos
+     16px de siempre más el borde seguro de cada lado, para que los botones del diálogo no queden
+     detrás de la barra ni de pie ni de lado. */
+  padding-top: calc(16px + env(safe-area-inset-top, 0px));
+  padding-right: calc(16px + env(safe-area-inset-right, 0px));
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  padding-left: calc(16px + env(safe-area-inset-left, 0px));
 }
 
 .botones-dialogo {
