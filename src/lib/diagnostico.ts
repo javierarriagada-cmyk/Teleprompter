@@ -49,7 +49,9 @@ export type EntradaDiagnostico =
   // QUIÉN MOVIÓ AL SEGUIDOR Y AL MOTOR SIN LA VOZ -tarea 89-: el arrastre del texto
   // -irAToken- o un seguidor nuevo -cambió el guion que recibe useSeguidor-. Los dos
   // vuelven a empezar el arranque del motor.
-  | { ms: number; tipo: 'seguidor'; evento: 'irAToken' | 'creado'; token: number }
+  // 'devuelto' -tercera vuelta-: la conducción rechazó un calce fuera de la ventana y devolvió el
+  // seguidor a donde está el motor -conduccion.ts-.
+  | { ms: number; tipo: 'seguidor'; evento: 'irAToken' | 'creado' | 'devuelto'; token: number }
   // LA PANTALLA QUE SE ESTABA LEYENDO -tarea 89-: el diseño y el tamaño del contenedor
   // del texto, junto a los renglones. De lado los renglones son otros.
   | { ms: number; tipo: 'pantalla'; diseno: string; ancho: number; alto: number }

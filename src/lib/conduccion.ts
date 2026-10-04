@@ -44,6 +44,15 @@ export function procesarParcial(c: Conduccion, texto: string, tMs: number): Posi
     // -tarea 89, 04-10-2026-: el 'calce' de arriba ya quedó anotado; si cae fuera de la
     // ventana no se aplica, y el registro tiene que decirlo para no leerlo como avance.
     if (!enVentana) anotar({ tipo: 'ventana', token: pos.hastaToken, ref, desde: posMin, hasta: posMax, final: false, seguidor: typeof seg.posicionToken === 'function' ? seg.posicionToken() : -1 })
+    // -tarea 89, tercera vuelta-: EL CALCE RECHAZADO NO SE QUEDA EN EL SEGUIDOR. avanzar y
+    // avanzarTentativo ya corrieron su posición -seguidor.ts:384-385 y :474- y las búsquedas que
+    // siguen arrancan de ahí. En la toma 4 de lado "si me das por dentro es" cayó en 53-58 -el título
+    // repetido en el párrafo 2- con el motor en 1, y el seguidor no volvió a mirar el título: el resto
+    // de la toma y toda la toma 5 sin un calce. Se lo devuelve a donde está el motor.
+    if (!enVentana && typeof seg.irAToken === 'function') {
+      seg.irAToken(ref)
+      anotar({ tipo: 'seguidor', evento: 'devuelto', token: ref })
+    }
   }
 
   if (pos.movio && enVentana) {
@@ -77,6 +86,15 @@ export function procesarFinal(c: Conduccion, texto: string, tMs: number): Posici
     // -tarea 89, 04-10-2026-: el 'calce' de arriba ya quedó anotado; si cae fuera de la
     // ventana no se aplica, y el registro tiene que decirlo para no leerlo como avance.
     if (!enVentana) anotar({ tipo: 'ventana', token: pos.hastaToken, ref, desde: posMin, hasta: posMax, final: true, seguidor: typeof seg.posicionToken === 'function' ? seg.posicionToken() : -1 })
+    // -tarea 89, tercera vuelta-: EL CALCE RECHAZADO NO SE QUEDA EN EL SEGUIDOR. avanzar y
+    // avanzarTentativo ya corrieron su posición -seguidor.ts:384-385 y :474- y las búsquedas que
+    // siguen arrancan de ahí. En la toma 4 de lado "si me das por dentro es" cayó en 53-58 -el título
+    // repetido en el párrafo 2- con el motor en 1, y el seguidor no volvió a mirar el título: el resto
+    // de la toma y toda la toma 5 sin un calce. Se lo devuelve a donde está el motor.
+    if (!enVentana && typeof seg.irAToken === 'function') {
+      seg.irAToken(ref)
+      anotar({ tipo: 'seguidor', evento: 'devuelto', token: ref })
+    }
   }
 
   if (pos.movio && enVentana) {

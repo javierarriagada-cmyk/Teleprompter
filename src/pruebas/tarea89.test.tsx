@@ -257,10 +257,20 @@ describe('Tarea 89, defecto 1: Larralde de lado, las tomas 4 y 5 mueven la posic
     relojTomas = 0
     activarDiagnostico(true)
     const pos = repetirToma(conduccionDe(guionLarralde()), 4)
-    expect(comoTexto()).toMatch(/ventana\tFUERA parcial token=58 ref=1/)
-    expect(Math.max(...pos)).toBeGreaterThanOrEqual(10)
+    const txt = comoTexto()
+    expect(txt).toMatch(/ventana\tFUERA parcial token=58 ref=1/)
+    // Un solo rechazo: después el seguidor vuelve a buscar cerca del título y la toma avanza como
+    // las de pie -la 1 llegó a 26, la 3 a 31-.
+    expect(txt.match(/ventana\tFUERA/g)!.length).toBe(1)
+    expect(txt).toMatch(/seguidor\tdevuelto token=1/)
+    expect(Math.max(...pos)).toBeGreaterThanOrEqual(25)
   })
 
+  // OJO, LO QUE ESTA PRUEBA NO DICE: la toma 5 se grabó con la pantalla en 0, y la persona leyó el
+  // título. Con el arreglo la 4 deja el texto en ~31, así que esas mismas frases ya no son las que
+  // se leerían: lo único que prueba es que la 5 no arranca trabada -en el teléfono empezó en
+  // calce=1, freno=sin-calce, y no salió de ahí-. La toma 5 sola, sin la 4 antes, tampoco avanza en
+  // sus 12 s: ver docs/tarea89.txt, "lo que no calza".
   test('toma 5 -de lado-, seguida sobre lo que dejó la 4, como en el teléfono: no queda trabada en 0', () => {
     relojTomas = 0
     const c = conduccionDe(guionLarralde())
