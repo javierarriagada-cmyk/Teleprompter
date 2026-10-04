@@ -1,0 +1,587 @@
+TAREA 89 - TRES DEFECTOS: SEGUIMIENTO DE LADO, VISOR DE LADO -BOCETO- Y BARRA DE TRES BOTONES
+Encargo de Javier y Claude, 04-10-2026. Lo hizo el bot de Grok. Punto de partida: main
+ACTUALIZADO, commit 71166e5. Rama tarea89-tres-defectos. Citas archivo:línea contra 71166e5
+salvo que diga "en la rama". Lo que no calzó se DESCRIBE abajo, no se improvisó.
+
+==============================================================================
+RESUMEN
+==============================================================================
+  - DEFECTO 1 -seguimiento de lado-: ARREGLADO EN LA TERCERA VUELTA, con los registros reales
+    -rama registros-tarea89, 176d635-. Ver "DEFECTO 1, TERCERA VUELTA" justo abajo: manda sobre
+    todo lo que dice la sección del defecto 1 de las dos primeras vueltas, que se deja como
+    historia. Lo de abajo, de la primera vuelta: NO HAY ARREGLO DE CONDUCCIÓN, y es a propósito. La regla
+    del encargo: "si de verdad necesitas los registros completos de las 5 tomas para concluir,
+    DETENTE". Se necesitan -ver más abajo por qué-. Lo que SÍ se hizo: líneas de registro nuevas,
+    sin cambio de conducta, para que Claude vea en el moto g86 lo que hoy no se ve, y pruebas
+    guardianas que fijan la salida vertical de hoy -Hola y Larralde-. En la segunda vuelta los
+    registros de las 5 tomas no estaban en la rama indicada: sigue detenido.
+  - ESTADO HEREDADO ENTRE TOMAS -cuarta vuelta, 04-10-2026-: Javier y Claude lo definen como
+    DEFECTO. ARREGLADO: Parar termina la toma y la siguiente parte limpia desde el principio o desde
+    donde quedó el texto en LISTO. Ver "CUARTA VUELTA" más abajo: manda sobre lo que dice la
+    tercera vuelta de que eso "no se cambió".
+  - DEFECTO 2 -visor de lado-: NO SE PROGRAMÓ. Boceto en docs/pantallas/tarea89/, con la causa
+    del corte con archivo:línea, en tema claro y oscuro.
+  - DEFECTO 3 -barra de tres botones-: lista de pantallas sin borde seguro y arreglo de las cuatro
+    que lo necesitan, sin tocar los rieles de leer y grabar. Prueba que fallaba hoy. El emulador
+    NO sirvió para las capturas -ver EMULADOR-.
+
+PULL REQUESTS ABIERTOS QUE TOCAN LOS MISMOS ARCHIVOS -revisado antes de crear la rama-:
+  - #62 -tarea 83-: src/App.tsx y src/components/TeleprompterView.tsx. Choca.
+  - #64 -tarea 87, paso 0-: src/App.tsx. Choca. -y tarea46.test.tsx, que esta tarea no toca-.
+  - #60, #61, #63, #65: solo docs. No chocan.
+  Los cambios de esta tarea en App.tsx y TeleprompterView.tsx son de pocas líneas y van junto a
+  comentarios con nombre -"# diseño", 'renglones', HERRAMIENTAS && mostrarPanelCorpus-: si
+  #62 o #64 entran antes, se buscan por nombre.
+
+==============================================================================
+DEFECTO 1, TERCERA VUELTA -04-10-2026, con los cinco registros-
+==============================================================================
+LOS REGISTROS: rama registros-tarea89, commit 176d635, docs/registros/tarea89/. Se leyeron con
+git show, sin mezclar esa rama con esta. El LEEME dice:
+  1-vertical-1080p   de pie, 1080p, cámara frontal     avanza hasta el token ~26
+  2-vertical-720p    de pie, 720p                      avanza hasta el token ~61
+  3-vertical-480p    de pie, 480p                      avanza hasta el token ~31
+  4-de-lado-1080p    DE LADO, 1080p                    pos=0 toda la toma -calce=1, sin-calce-
+  5-de-lado-1080p    DE LADO, 1080p                    pos=0 toda la toma -ningún calce aplicado-
+  Sacados con la APK del paso 0 de la 87 -52e9361-: NO tienen las líneas nuevas de esta tarea.
+  Mismo guion en los cinco -la cabecera "# |" es idéntica, md5 0273b9db…-, 2610 tokens.
+
+EL GUION -la versión que se leyó, distinta de la de septiembre del corpus-:
+    0-5    l0  si me vieras por dentro larralde                 -el título-
+    6-30   l1  en 1969 sale un disco que se llama hombre doce cortes cinco milongas tres
+               canciones y en cuatro de ellos josé larralde no canta habla
+    31-60  l2  en el más largo son cuatro minutos de un hombre de treinta y un años recitando un
+               poema este poema se llama SI ME VIERAS POR DENTRO ES una obra
+    61-..  l3  un hombre le pide a alguien que lo mire no le pide compañía ...
+  EL TOKEN 60 ES "obra" -no "hombre": eso era en la versión de septiembre-. Lo que importa: EL
+  TÍTULO ESTÁ DOS VECES, en 0-4 y en 53-57, y en la segunda va seguido de "es" -58-. "1969" es un
+  solo token y el reconocedor dice "mil novecientos sesenta y nueve": cinco palabras que no calzan.
+
+QUÉ SE OYÓ Y LOS PRIMEROS CALCES DE CADA TOMA
+  1-vertical-1080p-1b30bd7e.motor.txt:
+      1657  oyo    parcial: si me
+      1658  calce  token 1: si me
+      2108  calce  NO CALZO: si me por dentro
+      6409  calce  token 10: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+  2-vertical-720p-47c29ca5.motor.txt -empieza donde quedó la 1-:
+        28  cuadro pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+      1748  oyo    parcial: en
+      5568  calce  token 31: en con ellos coser ellos coser la ral de no canta habla en
+  3-vertical-480p-d910b9ae.motor.txt:
+         0  cuadro pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+      2069  calce  token 4: por dentro
+      5688  calce  token 10: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco
+  4-de-lado-1080p-58e1b5f8.motor.txt:
+        18  cuadro pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+      1822  calce  token 1: si me
+      2773  oyo    parcial: si me das por dentro las
+      2773  calce  NO CALZO: si me das por dentro las
+      2793  oyo    parcial: si me das por dentro es
+      2793  calce  token 58: si me das por dentro es          <- el calce falso
+      2871  calce  token 60: si me das por dentro es por dentro
+      3787  calce  token 63: si me das por dentro es por dentro narra el de
+      8066  calce  NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos
+                   sesenta y nueve sale un disco que se llama hombre
+     16580  oyo    FINAL: si me das por dentro las por dentro narra el de en mil novecientos sesenta
+                   y nueve se un disco que se llama hombre doce cortés cinco milongas tres canciones
+                   en cuatro de ellos josé la real de no canta habla
+     19949  cuadro pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+    Después de 3787: 149 líneas 'calce', LAS 149 "NO CALZO".
+  5-de-lado-1080p-4c98b14d.motor.txt -empieza donde quedó la 4-:
+         0  cuadro pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+      2464  calce  NO CALZO: sí por dentro
+      8458  calce  NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y
+                   nueve salud disco que se llama hombre
+    94 líneas 'calce', LAS 94 "NO CALZO".
+
+CUÁL HIPÓTESIS ES: LA TERCERA, UN CALCE FALSO. NO hubo arrastre -los registros no tienen
+irAToken, pero la 4 y la 5 tampoco muestran ningún salto de posición: pos=0 de punta a punta-, y
+el lector NO estaba en el 53-60: la FINAL de 16580 dice lo que leyó, el título -"si me das por
+dentro, las... por dentro, narra el de" = "Si me vieras por dentro — Larralde"- y siguió con el
+párrafo 1 -"en mil novecientos sesenta y nueve se un disco que se llama hombre..."-. En el
+parcial de 2793 el reconocedor cambió "las" por "es" y "si me das por dentro es" calza mejor con
+la repetición del título del párrafo 2 -"si me vieras por dentro es", 53-58: cinco de seis- que
+con el título de verdad -"si me vieras por dentro larralde": cuatro de seis-. Descartarlo estuvo
+bien. LA CAUSA DEL NO AVANCE ESTÁ EN EL SEGUIDOR, después del descarte:
+  - src/lib/conduccion.ts:38-44 -71166e5- rechaza el 58: ventana 0-41 con ref=1. Bien.
+  - src/lib/seguidor.ts:474 -posTentativa = Math.max(posTentativa, candPos)- ya había corrido la
+    posición tentativa a 58, y en 2871-3787 a 60-63. Nadie la devuelve.
+  - src/lib/seguidor.ts:250-258 -calcularPosPredicha parte de max(pos, posTentativa)- y :429-446
+    -base = max(predicha, posTentativa), desde = posMinima - frase - VENTANA_ATRAS-: cada búsqueda
+    siguiente empieza en ~45 o más. Las frases reales -tokens 6 a 30- quedan FUERA DE LO QUE SE
+    BUSCA: "NO CALZO" el resto de la toma. Lo mismo en la FINAL -:359-366-.
+  - avance.ts:302-306: sin calces aplicados, DETENIDO 'sin-calce' en 0 -19949 cuadro-.
+  - La toma 5 empezó con todo eso puesto: handleStart -App.tsx:906- no reinicia seguidor ni motor
+    entre tomas -la 5 arranca en "calce=1 freno=sin-calce", lo mismo que dejó la 4; la 2 arranca en
+    25.87, lo que dejó la 1-. La pantalla mostraba 0 y la persona leyó el título, pero el seguidor
+    seguía en ~63: 94 de 94 "NO CALZO". -La 3 y la 4 sí empezaron en 0: algo reinició entre la 2 y
+    la 3 y entre la 3 y la 4; los registros no dicen qué. No se tocó.-
+
+POR QUÉ DE PIE SÍ Y DE LADO NO: NO ES LA ORIENTACIÓN. En el camino de la voz al motor nada mira
+si el teléfono está de lado -revisado en la primera vuelta-, y repetidas en la caja con la
+conducción, las cinco tomas dan lo mismo que en el teléfono SIN SABER LA ORIENTACIÓN -solo
+entran las frases-: la 1 llega a 26, la 2 a 61, la 3 a 31, la 4 y la 5 quedan en 0. Lo que
+cambió fue LO QUE SE OYÓ: de pie, el título salió como "si me por dentro" -toma 1- o "por
+dentro" -toma 3-, sin el "es"; ninguna frase calzó con la repetición del 53-58 y el primer calce
+largo fue el de "sale un disco" en el 10. De lado, en la 4, "las" se oyó "es" durante 20 ms y
+eso bastó. La 5 heredó el seguidor envenenado de la 4. Los renglones de la pantalla sí cambian
+-'renglones' de pie "0 6 14 18 23…", de lado "0 6 17 27 31…"- pero la conducción usa los
+párrafos -t.linea-, no los renglones. No se tocó "la ventana de 2 renglones".
+
+EL ARREGLO -mínimo, en src/lib/conduccion.ts, en la rama junto al comentario "tercera vuelta"-:
+cuando la conducción rechaza un calce fuera de la ventana, devuelve el seguidor a donde está el
+motor -seg.irAToken(ref)- y lo anota -'seguidor devuelto token=N'-. La ventana no cambia; el
+calce rechazado se sigue rechazando; lo único nuevo es que el seguidor deja de buscar desde un
+lugar donde el motor no está. -irAToken también limpia el parcial pendiente: la frase siguiente
+se mira entera, como cuando el usuario mueve el texto.- Con eso la toma 4 tiene UN solo rechazo
+-el 58- y después calza el título y el párrafo 1: llega a ~31, como las de pie.
+
+PRUEBAS -src/pruebas/tarea89.test.tsx, "tercera vuelta"-
+  FIXTURES: EXTRACTOS de los cinco registros en src/pruebas/corpus/tarea89/*.oyo.txt -solo la
+  cabecera con el guion y las líneas 'oyo', 22-41 kB cada uno; se dice en la primera línea de
+  cada archivo de dónde salen-. Los .motor.txt completos y el LEEME NO se copiaron.
+  - "las cinco tomas son del mismo guion": y que el título está en 0-5 y repetido en 53-60.
+  - GUARDIANAS DE PIE: "toma 1 nueva, y la 2 seguida sobre lo que dejó la 1" -como en el
+    teléfono- y "toma 3 nueva": posición del motor cada 2 s, [0,1,2,2,12,17,21,25,26],
+    [26,26,26,27,40,46,51,57,60,61] y [0,0,5,6,14,20,26,30,31]. Sacadas contra el código SIN el
+    arreglo; pasan con el arreglo: en las tres no hay ni un calce fuera de la ventana, así que el
+    arreglo no se dispara.
+  - LA QUE FALLA HOY: "toma 4 -de lado, 1080p-, nueva: el motor sale de 0" -un solo FUERA, el
+    58; 'seguidor devuelto token=1'; el motor llega a 25 o más-. Y "toma 5, seguida sobre lo que
+    dejó la 4: no queda trabada en 0".
+  - ROTURA A PROPÓSITO: con git stash de src/lib/conduccion.ts -sin el arreglo- fallan las dos
+    de lado -"expected 19 to be 1": diecinueve rechazos en vez de uno; "expected 0 to be
+    greater than 0"- y pasan las 13 restantes, guardianas incluidas. Commit 42f939c: las pruebas
+    sin el arreglo; bf4d92d: el arreglo.
+  - TODO EL CORPUS DE ANTES -las siete lecturas y tomas de src/pruebas/corpus/*.txt, por
+    repetirLectura- da EXACTAMENTE lo mismo con y sin el arreglo.
+
+LO QUE NO CALZA
+  - LA TOMA 5 SOLA, SIN LA 4 ANTES, TAMPOCO AVANZA en sus 12 s: el título salió "sí por dentro"
+    -con tilde: "sí" no es "si"- y "1969" dicho en cinco palabras diluye cada frase. Calza en el
+    12 y el 13 recién a los 7,9 y 8,4 s, como parciales, y la toma termina. Es la arrancada lenta
+    con un reconocimiento pobre, no el defecto de lado: NO SE TOCÓ. Por eso la prueba de la 5 dice
+    solo que no arranca trabada: con el arreglo la 4 deja el texto en ~31 y esas frases de la 5
+    -leídas con la pantalla en 0- ya no son las que se leerían.
+  - Que seguidor y motor no se reinicien entre tomas -App.tsx:906- es lo que llevó el veneno de la
+    4 a la 5, y a la vez lo que hizo que la 2 siguiera donde quedó la 1. No se cambió: es una
+    conducta visible -la pantalla muestra dónde quedó- y no es lo que pide este defecto.
+    -CORRECCIÓN, cuarta vuelta: Javier y Claude dicen que es un DEFECTO, no un diseño. Se arregló;
+    ver "CUARTA VUELTA".-
+  - La línea 'ventana FUERA … seguidor=N' de la primera vuelta muestra seg.posicionToken(), que es
+    "pos" -lo confirmado-, no la posición tentativa: en un parcial rechazado dice seguidor=0
+    aunque la tentativa esté en 58. Lo que se ve ahora es 'seguidor devuelto'.
+
+QUÉ MIRA CLAUDE EN EL MOTO G86 -APK /workspace/apk/Sigo-tarea89.apk, diagnóstico encendido-
+  1. Repetir lo de Javier: Larralde, dos de pie y dos de lado, leyendo desde el título.
+  2. En cada registro: '# diseño: tel-h|tel-v' en la cabecera y 'pantalla tel-h ...' junto a
+     'renglones'.
+  3. Si aparece 'ventana FUERA … token=5x', justo después tiene que venir 'seguidor devuelto
+     token=N' con N cerca de la posición del motor, y las líneas 'calce' siguientes tienen que
+     volver a dar "token …" en el título o el párrafo 1, no "NO CALZO" toda la toma.
+  4. Las 'cuadro' tienen que salir de pos=0.00 en las dos de lado, como en las de pie.
+  5. Una toma de lado justo después de otra: la primera 'cuadro' dice dónde quedó la anterior; el
+     texto debe seguir desde ahí -como la 2 de pie-, no quedar en "calce=1 freno=sin-calce".
+     -CORRECCIÓN, cuarta vuelta: ya NO debe seguir desde ahí. Ver "QUÉ MIRA CLAUDE, CUARTA
+     VUELTA" abajo.-
+
+==============================================================================
+DEFECTO 1 - SEGUIMIENTO DE LADO -primera y segunda vuelta, se deja como historia-
+==============================================================================
+LO MEDIDO -del encargo-: 3 tomas de pie avanzan. 2 tomas de lado quedan en pos=0,
+freno=sin-calce, y el registro anota un calce en el token 60.
+
+QUÉ DICE EL GUION EN SUS PRIMERAS ~70 PALABRAS -CORREGIDO el 04-10-2026: es LARRALDE, no Hola-
+  La primera versión de este texto supuso "Hola". Javier y Claude dicen que las 5 tomas son con el
+  guion "Larralde". En el repo está en la cabecera de las cinco lecturas del corpus
+  src/pruebas/corpus/lectura-2026-09-12-2311, -2328, 09-13-0055, -1118 y -1148.txt -541 tokens
+  en las cinco-. OJO: es la versión del 12 y 13 de septiembre. Si el guion que se leyó en las 5
+  tomas se retocó después, los números de token pueden correrse: se confirma con la cabecera
+  "# |" de los registros de las tomas.
+  Tokenizado con tokenizarGuion, con el número de token y el t.linea -párrafo- de cada uno:
+    0-25   l0  enero de 1969 sale un disco que se llama hombre doce cortes cinco milongas tres
+               canciones y en cuatro de ellos josé larralde no canta habla
+    26-58  l1  es el más largo cuatro minutos de un hombre de treinta y un años recitando un
+               poema sin melodía que lo cubra ni guitarra donde apoyarse se llama si me vieras
+               por dentro
+    59-... l2  un hombre le pide a alguien que lo mire la esencia no le pide compañía no le pide
+               perdón le pide ...
+  EL TOKEN 60 ES "hombre", la segunda palabra del tercer párrafo: "UN HOMBRE le pide a alguien".
+  El 59 -"un"- es el primer token de ese párrafo. Lo que importa para el defecto: "un hombre" está
+  TRES veces en las primeras 61 palabras -"se llama hombre" 8-9, "de un hombre de treinta" 33-34,
+  "un hombre le pide" 59-60-, y "se llama" dos -7-8 y 52-53-. Un calce en el 60 con el motor en 0
+  puede ser el lector de verdad en el tercer párrafo -unos 25 s de lectura- o una frase corta del
+  primero o el segundo ubicada en la repetición equivocada. Con el guion no alcanza para saber
+  cuál: hace falta lo que "oyo" anotó en esas tomas.
+  t.linea es el PÁRRAFO del guion, no el renglón de la pantalla: los límites de renglón del motor
+  no dependen del alto ni de tel-h, como dice el encargo.
+
+LO QUE HACE EL CÓDIGO CON UN CALCE EN EL 60 Y EL MOTOR EN 0
+  - src/lib/conduccion.ts:36 -parcial- y :66 -final- anotan 'calce' ANTES de mirar la ventana
+    :38-44 y :68-74 -de ref-10 a ref+40, ref = posición del motor-. Con el motor en 0 la ventana
+    es 0-40: el 60 cae afuera, se llama motor.falloCalce -:54 y :87- y el motor no se mueve. El
+    "calce token 60" del registro NO prueba que se aplicó.
+  - src/lib/seguidor.ts:385 y :474 -posTentativa = candPos / Math.max(posTentativa, candPos)-: el
+    seguidor guarda su propia posición AUNQUE la conducción rechace el calce. Las búsquedas que
+    siguen arrancan cerca de esa posición -:363 y :444, desde = posMinima - frase - VENTANA_ATRAS-.
+    Si el seguidor quedó en ~60 y el motor en 0, cada calce nuevo cae otra vez fuera de 0-40 y el
+    motor no sale de 0. Es un bloqueo entre los dos que hoy el registro no deja ver.
+  - src/lib/avance.ts:302-306: sin arranque o con tUltimoCalce 0 queda DETENIDO 'sin-calce', pos
+    0. Es exactamente lo medido de lado.
+  - Cómo puede el seguidor calzar lejos sin que nadie lo empuje: calcularPosPredicha
+    -seguidor.ts:250- deriva con ppm desde tUltimoCalce. motor.irAToken -avance.ts:430-442- pone
+    tUltimoCalce = ahora -:437- y a partir de ahí la predicha avanza sola unas 2,5 palabras por
+    segundo. irAToken solo se llama desde useSeguidor.ts:126-139, por onNavegacionManual
+    -App.tsx:1874-, o sea arrastrar el texto o la rueda -TeleprompterView.tsx:651-660-.
+  - El seguidor y el motor se crean de nuevo solo si cambia la identidad del guion
+    -useSeguidor.ts:21-69, dependencia [guionEntrada] en :69; App.tsx:807 y :819-. handleStart
+    -App.tsx:906- no los reinicia entre tomas.
+
+LO QUE CAMBIA ENTRE DE PIE Y DE LADO EN EL CAMINO DE LA VOZ AL MOTOR -revisado-
+  - useASR, MotorNativo, useSeguidor, conduccion, seguidor y avance: NINGUNO mira la orientación.
+  - La actividad no se reinicia al girar: AndroidManifest.xml, configChanges con orientation. No
+    hay remontaje de App ni reinicio del reconocedor por girar.
+  - useLayout escucha matchMedia 'change' y pasa a tel-h; TeleprompterView recalcula renglones y
+    geometría -recalcularGeometria, altoContenedor-. Eso mueve el DIBUJO, no los tokens: la lista
+    de tokens sale del guion.
+  - Lo que sí es distinto de lado, y pudo pesar, pero NO se puede confirmar sin el registro:
+      H1. Un toque o arrastre sobre el texto -en tel-h el texto ocupa casi toda la pantalla y se
+          sujeta el teléfono con las dos manos- que llama irAToken y deja seguidor y motor en
+          lugares distintos, o arranca la deriva de la predicha. Se ve con 'seguidor irAToken'.
+      H2. Que de lado la persona efectivamente estaba en el 60 -siguió leyendo aunque el texto no
+          se moviera-: entonces el calce era verdadero y el bloqueo es el de seguidor.ts:385/:474
+          -la posición no acompañó porque la ventana mira al motor y el motor nunca arrancó-.
+          Para eso hace falta ver qué se oyó ANTES del 60: si las primeras frases -tokens 0-40-
+          calzaron o no, y por qué no.
+      H3. Que no estaba en el 60: un calce falso -con Larralde, "un hombre" repetido en
+          8-9, 33-34 y 59-60, y "se llama" en 7-8 y 52-53- y descartarlo estuvo bien; entonces la causa del no avance es que las primeras
+          frases de lado no calzaron, y eso es el audio/reconocedor -lo que "oyo" anota-, no la
+          conducción.
+  Distinguir H1, H2 y H3 necesita las líneas 'oyo' y 'calce' de las dos tomas de lado, desde el
+  primer segundo. Por eso:
+
+LOS REGISTROS DE LAS 5 TOMAS -04-10-2026, segunda vuelta-: NO ESTÁN. Javier y Claude dicen que
+  están en la rama remota registros-tarea89, en docs/registros/tarea89/, con un LEEME. Esa rama NO
+  EXISTE en origin: "git fetch origin registros-tarea89" responde "couldn't find remote ref", y ni
+  git ls-remote ni la API de GitHub -ramas que empiezan con "regis"- la muestran. Tampoco hay
+  docs/registros en ninguna otra rama, ni .motor.txt de Larralde en la caja. Sin LEEME no se
+  sabe cuáles son de lado ni de pie. POR ESO EL DEFECTO 1 SIGUE SIN ARREGLO: no se inventa.
+
+LO QUE SÍ SE PUDO MIRAR CON LARRALDE, DE PIE
+  Las cinco lecturas de septiembre son anteriores al diseño de lado -tarea 82, 29-09-2026-: se
+  leyeron con el diseño vertical. Repetidas por la conducción de hoy, en los primeros 40 s:
+    lectura-2026-09-12-2311: motor [0,0,0,0,0,8,11,14,17,25,...,70] cada 2 s, 0 calces FUERA.
+    lectura-2026-09-13-1148: motor [0,0,0,0,0,10,15,18,24,26,...,77] cada 2 s, 0 calces FUERA.
+  O sea: con Larralde de pie, el primer calce llega a los ~8-10 s -"que se llama" a los 8 s en la
+  1148-, cae DENTRO de 0-40 y el motor arranca. En las tomas de lado el primer calce que se ve es
+  el 60, fuera de la ventana. La diferencia está ANTES del 60: o de lado los primeros calces no
+  llegaron -lo que se oyó, H3-, o el seguidor ya iba adelantado -H1 o H2-. Eso es lo que hay que
+  leer en el registro de lado.
+
+LO QUE NECESITA CLAUDE -SE DETIENE AQUÍ EL ARREGLO-
+  Una de estas dos cosas:
+    a) Los 5 <id>.motor.txt completos -3 de pie y 2 de lado-, con su cabecera -el guion tal cual
+       se leyó-. Están en el teléfono, en la carpeta de grabaciones de Sigo -la misma ruta que
+       guarda el .mp4 de cada toma-. Con decir cuáles son las dos de lado basta.
+    b) O, mejor, 2 tomas nuevas de lado y 1 de pie con la APK de esta rama
+       -/workspace/apk/Sigo-tarea89.apk- y el diagnóstico encendido. En el registro de cada toma
+       buscar:
+         # diseño: tel-h, ventana 915x411          -en la cabecera: confirma que fue de lado-
+         pantalla   tel-h 915x411                  -con qué diseño salieron los renglones-
+         seguidor   creado token=0                 -si aparece a mitad de toma, se rehizo todo-
+         seguidor   irAToken token=N               -H1: alguien movió el texto-
+         ventana    FUERA FINAL token=60 ref=0 desde=0 hasta=40 seguidor=62
+                                                   -el calce rechazado y dónde estaba el seguidor-
+       Si "seguidor=" va por delante del motor -ref- y no baja, es el bloqueo de seguidor.ts:385
+       /:474. Si hay 'irAToken' antes del primer FUERA, es H1. Si no hay ni uno ni otro y las
+       primeras líneas 'oyo' no se parecen al guion, es H3.
+  Con eso se escribe el arreglo y su prueba que falle -el mismo guion y las mismas frases, de
+  lado, mueven la posición-. Hoy esa prueba no se puede escribir con honestidad: sin saber qué
+  frases se oyeron de lado, cualquier secuencia sería inventada.
+
+LO QUE SE HIZO -sin cambio de conducta: todo anota solo con el diagnóstico encendido-
+  - src/lib/diagnostico.ts -en la rama :48-55 y en comoTexto-: tres tipos nuevos,
+    'ventana', 'seguidor' y 'pantalla', con sus líneas de texto.
+  - src/lib/conduccion.ts -en la rama :46 y :79-: si el calce cae fuera de la ventana, anota
+    'ventana FUERA parcial|FINAL token ref desde hasta seguidor'. Lo que hacía antes -anotar
+    'calce', falloCalce- sigue igual y en el mismo orden.
+  - src/hooks/useSeguidor.ts -en la rama :72 y :140-: 'seguidor creado' al crear seguidor y
+    motor, 'seguidor irAToken token=N' al mover el texto a mano.
+  - src/components/TeleprompterView.tsx -en la rama :449-452, :476 y :820-: 'pantalla tel-h|tel-v
+    ancho x alto' junto a cada 'renglones'. El diseño va en una referencia porque
+    recalcularGeometria y el lazo no se rearman al girar.
+  - src/App.tsx -en la rama :996-: '# diseño: tel-h|tel-v, ventana WxH' en la cabecera del
+    registro de la toma. scripts/medir-toma.mjs ignora las cabeceras que no conoce.
+
+PRUEBAS -src/pruebas/tarea89.test.tsx-
+  - "las tres líneas nuevas se escriben legibles", "un calce fuera de la ventana anota 'ventana
+    FUERA' y el motor no se mueve" -guion Hola, seguidor en 55, frase de los corchetes, motor
+    queda en 0; es una prueba de la línea de registro, no depende del guion de las tomas-, "el arrastre que mueve seguidor y motor queda anotado", "los renglones del
+    registro llevan el diseño". LAS CUATRO FALLAN CONTRA 71166e5: verificado sacando el código
+    de la rama -git stash de src/lib, src/hooks, TeleprompterView.tsx y App.tsx- y corriendo solo
+    esta prueba: 7 fallidas de 8 -estas cuatro y las tres del defecto 3 que había entonces-. La
+    octava es la guardiana.
+  - GUARDIANA DE LARRALDE, DE PIE -segunda vuelta-: "lectura Larralde 2026-09-13-1148 -de pie-":
+    los primeros 40 s por la conducción, el motor cada 2 s
+    [0,0,0,0,0,10,15,18,24,26,28,35,40,45,49,53,58,62,68,72,77] y ningún "ventana FUERA". Además
+    fija que el token 60 sea "hombre". Rotura a propósito: con motor.tentativo(token - 3) en
+    conduccion.ts fallan las dos guardianas; se volvió atrás. -Con la ventana achicada a ref+8 o
+    con tUltimoCalce corrido 3 s NO fallaron: la guardiana mira la salida, no cada pieza.-
+  - GUARDIANA DEL VERTICAL: "toma a5bc922c -Hola, de pie-: mismas posiciones que hoy". Repite
+    la toma del corpus por la conducción y fija la posición del motor cada medio segundo:
+    [0,0,0,0,0,1,4,5,6,6,7,8,8], sacada de 71166e5. Pasa hoy y tiene que seguir pasando con el
+    arreglo que venga. OJO: que esa toma sea de pie es también una suposición -su cabecera no lo
+    dice, la línea '# diseño' es nueva-; es la única toma del corpus con el guion Hola.
+    Revisado en la segunda vuelta: no hay LEEME para confirmarlo. Es del 24-09-2026 -epoch
+    1790301070112-, cinco días antes de que existiera el diseño de lado, así que se leyó con el
+    diseño vertical. Se queda, y la de Larralde es la guardiana con el guion de las tomas.
+
+==============================================================================
+CUARTA VUELTA -04-10-2026, 10:09-: EL ESTADO HEREDADO ENTRE TOMAS ES UN DEFECTO
+==============================================================================
+LO QUE PIDEN JAVIER Y CLAUDE
+  - Pausa → Seguir continúa donde quedó, como antes -no cambia-.
+  - Parar termina la toma. La siguiente lectura o grabación parte desde el principio del guion, o
+    desde donde quedó el texto en LISTO si el usuario lo movió antes de Empezar. Sin calces,
+    frenos, seguidor, motor ni reloj de la toma anterior.
+
+CAUSA -citas contra 71166e5-
+  - El seguidor y el motor viven en useSeguidor -src/hooks/useSeguidor.ts:21-69- y solo se crean
+    de nuevo cuando cambia el OBJETO guion -dependencia [guionEntrada], :69-. Nada más los crea o
+    los reinicia.
+  - reiniciar() existe -useSeguidor.ts:141-147- y nadie lo llama: App.tsx:809-819 ni siquiera lo
+    toma. El comentario de App.tsx:1374-1376 dice que el reinicio "es reiniciar() de useSeguidor más
+    clear() de useASR" para cuando se haga.
+  - Ninguna salida de la toma reinicia nada: handleStop -App.tsx:1223-1239- corta la toma, para el
+    oído y la grabación y pone setEstadoToma('listo') -:1233-; handleDescartarToma -:1186-1206- lo
+    mismo y borra; handleEmpezarDesdeListo -:1026- y handleStart -:906- arrancan sobre lo que haya.
+    Repetir del visor -App.tsx:1993-1996- va derecho a handleEmpezarDesdeListo.
+  - LO QUE SOBREVIVE A PARAR:
+    · Seguidor -seguidor.ts:227-232-: pos, posTentativa, fallosSeguidos, ultimoParcial,
+      pendientes y fallosParcialesSeguidos. Ojo: seguidor.reiniciar() -:500-506- NO limpia
+      fallosParcialesSeguidos; irAToken -:490-498- sí.
+    · Motor -avance.ts, lo que limpia reiniciar() en :444-458-: ppmEstimadas -la velocidad medida
+      en la toma anterior, :80-, muestrasVelocidad, ultimaConfirmada -el último calce-,
+      anclaTentativa, fallosFinalesSeguidos -el freno BUSCANDO-, tUltimoCalce -el reloj-, hayVoz y
+      tUltimaVozTrue -la voz queda "encendida": por eso la toma heredada empieza en
+      freno=sin-calce y la nueva en freno=silencio-, posicionMostrada, vActual,
+      palabrasConfirmadasDesdeArranque y arranqueCumplido.
+    · Más el registro de useSeguidor y la posición en React.
+  - MOVER EL TEXTO EN LISTO usaba el mismo irAToken que el arrastre leyendo -App.tsx:1874,
+    useSeguidor.ts:126-139-: pone seguidor y motor en el renglón, pero deja las ppm de la toma
+    anterior, y motor.irAToken(destino, performance.now()) -useSeguidor.ts:134, avance.ts:437- pone
+    el reloj del último calce en la HORA DEL GESTO. Desde ahí el seguidor predice ppm/60 tokens por
+    segundo -calcularPosPredicha, seguidor.ts:250-258- hasta que se empiece: otro reloj heredado.
+
+LOS REGISTROS -primera 'cuadro' de cada toma; 'creado' de los .json pasado a hora de Chile; el fin
+  es 'creado' más el último ms del registro-
+  toma  empieza              fin de la anterior  hueco  primera 'cuadro'
+  1     00:10:14 -1080p-     -                   -      nueva
+  2     00:10:50 -720p-      00:10:29            21 s   pos=25.87 calce=25 freno=sin-calce  HEREDADA
+  3     00:11:35 -480p-      00:11:08            27 s   pos=0.00 calce=0 freno=silencio     NUEVA
+  4     00:13:58 -de lado-   00:11:51            128 s  pos=0.00 calce=0 freno=silencio     NUEVA
+  5     00:15:27 -de lado-   00:14:18            69 s   pos=0.00 calce=1 freno=sin-calce    HEREDADA
+  - La 2 empieza EXACTAMENTE donde termina la 1 repetida por la conducción: pos=25.874,
+    ultimoCalce=25, freno sin-calce, 131 ppm. La 5 empieza donde se quedó trabada la 4 de la APK
+    vieja -calce=1-.
+  - POR QUÉ A VECES SE REINICIABA: solo se reinicia si cambia el objeto guion, y eso pasa al abrir
+    el guion otra vez desde la biblioteca -handleLeerDirecto y handleGrabarDirecto,
+    App.tsx:1083-1105, repoRef.current.abrir da un objeto nuevo-, al guardar desde el editor
+    -App.tsx:1567- o al archivar -:732-. No es el tiempo -la 5 heredó tras 69 s y la 3 empezó
+    limpia tras 27 s- ni la calidad -de la 1 a la 2 cambió 1080p→720p y heredó-. Lo más probable:
+    entre la 2 y la 3 y entre la 3 y la 4 -ahí además giró el teléfono- Javier volvió a la
+    biblioteca y entró otra vez por Grabar. La firma de un motor nuevo es freno=silencio en la
+    primera 'cuadro' -hayVoz en false-; la de uno heredado, freno=sin-calce. NO SE PUEDE
+    CONFIRMAR: la APK de esos registros -paso 0 de la 87- no anotaba 'seguidor creado'. La de esta
+    rama sí.
+
+ARREGLO -en la rama, commit c341f12-
+  - UN SOLO PUNTO DE REINICIO: reiniciarToma -src/lib/conduccion.ts, al final-. seguidor.irAToken
+    -limpia todo el seguidor, también fallosParcialesSeguidos-, motor.reiniciar() -ppm iniciales,
+    sin voz, sin calce, sin freno, sin reloj- y, si el destino no es 0, motor.irAToken(destino, 0):
+    con el reloj en 0 no hay deriva -calcularPosPredicha mira tUltimoCalce > 0-.
+  - useSeguidor.reiniciarEn(token): llama a reiniciarToma, limpia el registro, mueve la posición y
+    anota 'seguidor reiniciado token=N' -evento nuevo en diagnostico.ts, con su comentario-.
+  - App: reiniciarEn(0) al Parar -handleStop- y al Descartar -handleDescartarToma, que es parar y
+    borrar-. Como el lazo de TeleprompterView también corre en LISTO, el texto vuelve deslizándose
+    al principio. Salir de Leer y el corte por ir al fondo pasan por handleStop.
+  - LA POSICIÓN DE LISTO: onNavegacionManual={estadoToma === 'listo' ? reiniciarEn : irAToken}. En
+    LISTO mover el texto ES elegir desde dónde parte la toma: seguidor y motor como nuevos en ese
+    renglón, sin el reloj del gesto. Leyendo, el arrastre sigue siendo irAToken, como siempre. Es
+    la misma función de reinicio, no un segundo reinicio: Parar pone 0, LISTO lo cambia si el
+    usuario mueve el texto, Empezar arranca sobre eso.
+  - Pausa → Seguir -handleTogglePausa- no se tocó.
+  - clear() de useASR no hace falta: solo vacía el texto oído que se muestra, no lo que sigue el
+    seguidor. reiniciar() viejo se deja -sin uso- con un comentario.
+
+PRUEBAS -src/pruebas/tarea89-tomas.test.tsx, nuevo-
+  Un guion de seis renglones de diez palabras sin repetir: el renglón k termina en el token 10k+9.
+  En la App -con MotorFake, Leer-:
+  (a) "tras Parar, la toma nueva parte del principio": lee los seis renglones, Para, Empieza y dice
+      el renglón 1. FALLA SIN EL ARREGLO: 'NO CALZO' -el seguidor sigue en 59 y busca desde 44-.
+      Con el arreglo: 'token 9'.
+  (a) "Parar deja anotado el reinicio en 0": FALLA SIN EL ARREGLO -no hay línea-.
+  (b) "Pausa → Seguir sigue donde quedó": renglones 1 a 3, Pausa, Seguir, renglón 4 → token 39, sin
+      'reiniciado' ni 'creado'. PASA HOY Y CON EL ARREGLO: es una guardiana, la conducta ya estaba
+      bien.
+  (c) "si el texto se movió en LISTO, la toma parte desde ahí": tras una toma y Parar, la rueda
+      mueve el texto en LISTO al renglón 4 -en jsdom cada renglón se finge a 1000 px- y Empezar:
+      el renglón 4 calza en 39. Esa parte PASA HOY -irAToken ya ponía al seguidor en 30-. Lo que
+      FALLA SIN EL ARREGLO es la línea 'seguidor reiniciado token=30'.
+  En useSeguidor -lo que la App no deja ver-:
+  (a) reiniciarEn(0) tras una toma: motor en 0, último calce 0, reloj 0, ppm y freno de un motor
+      nuevo, y el renglón 1 vuelve a calzar en 9.
+  (c) reiniciarEn(30) tras una toma: motor en 30, reloj 0, ppm iniciales, renglón 4 en 39.
+      Las dos FALLAN SIN EL ARREGLO -reiniciarEn no existe-. Lo que hacía hoy irAToken, medido con
+      la toma 1 de Larralde: ppm 131,15 heredadas y tUltimoCalce = hora del gesto; con
+      reiniciarToma, 150 y 0.
+  Las fallas se vieron con git stash de App.tsx, useSeguidor.ts, conduccion.ts y diagnostico.ts:
+  5 fallan, 1 pasa -(b)-.
+
+PRUEBAS AJUSTADAS -tarea89.test.tsx; los comentarios viejos se dejan, con CORRECCIÓN y AJUSTADA-
+  - "toma 1 nueva, y la 2 seguida sobre lo que dejó la 1" → "toma 1 nueva; Parar; y la 2 parte
+    limpia, igual que sola". Esperaba [26, 26, 26, 27, 40, 46, 51, 57, 60, 61] -la 2 partiendo en
+    26, heredado-. Ahora pasa por reiniciarToma entre las dos y espera
+    [0, 0, 0, 0, 14, 39, 51, 57, 60, 61], y que sea igual a la 2 sola.
+  - "toma 5 seguida sobre la 4: no queda trabada en 0" → "toma 5 después de Parar la 4: parte
+    limpia en 0, igual que sola". La vieja pasaba SOLO por la herencia: la 5 quedaba quieta en el
+    31 que dejó la 4 -[31, 31, 31, 31, 31, 31, 31]-. Ahora: tras reiniciarToma el motor está en 0,
+    con último calce 0 y reloj 0, y la 5 da lo mismo que sola -[0, 0, 0, 0, 0, 0, 0]-. Que la 5 sola
+    no avance en sus 12 s ya estaba en "lo que no calza": el oído entregó "sí por dentro las por
+    dentro la ral de".
+  - LAS GUARDIANAS DE PIE NO CAMBIARON: toma 1 [0, 1, 2, 2, 12, 17, 21, 25, 26], toma 3
+    [0, 0, 5, 6, 14, 20, 26, 30, 31], Hola a5bc922c y Larralde 2026-09-13-1148. Tampoco la de la
+    toma 4 sola.
+
+QUÉ MIRA CLAUDE, CUARTA VUELTA -moto g86, APK /workspace/apk/Sigo-tarea89.apk de las 10:25,
+diagnóstico encendido-
+  1. Grabar una toma de pie con Larralde, Parar, y en el visor Repetir -o cerrarlo y Empezar-. La
+     primera 'cuadro' de la segunda toma tiene que decir pos=0.00 calce=0 freno=silencio, no
+     "pos=25.87 calce=25 freno=sin-calce" como la 2 de Javier. Al Parar la primera, el texto vuelve
+     solo al título en LISTO.
+  2. En el registro de la primera toma, al final, 'seguidor reiniciado token=0'.
+  3. Lo mismo de lado: dos tomas seguidas, las dos empiezan en pos=0.00 calce=0 y siguen el título.
+  4. En LISTO, mover el texto con el dedo a un párrafo y Empezar: 'seguidor reiniciado token=N' con
+     N el primer token de ese renglón, la primera 'cuadro' en pos=N.00, y leyendo ese párrafo el
+     texto sigue desde ahí.
+  5. Pausa a mitad de un párrafo y Seguir: el texto sigue desde ahí, sin 'seguidor reiniciado'.
+  6. Que no aparezca 'seguidor creado' entre tomas sin haber salido a la biblioteca -si aparece,
+     hay otro camino que cambia el guion-.
+
+==============================================================================
+DEFECTO 2 - VISOR DE LADO -SOLO BOCETO-
+==============================================================================
+CAUSA: src/components/ReproductorGrabacion.tsx:168 -la raíz: position fixed, inset 0, flex
+centrado, padding var(--aire-4), SIN overflow- con la tarjeta de :170 -una sola columna,
+width min(720px, 100%)- que apila el video de :181 -maxHeight 70vh-, la barra :189-211, el
+selector de subtítulos :212-222, el nombre :223-231 y las acciones .acciones-toma :237-290. De
+lado, a 915x411, la tarjeta mide 472 dp -medido en Chrome, de -30 a 441- en 411 de alto: el
+centrado la corta arriba -la X- y abajo -Guardar, Repetir, Borrar-, y no se puede desplazar.
+
+BOCETO: docs/pantallas/tarea89/
+  - lamina-visor-de-lado-oscuro.png, lamina-visor-de-lado-claro.png -hoy | propuesta-.
+  - visor-de-lado-{hoy,propuesta}-{oscuro,claro}.png.
+  - medidas-implementacion.md -causa, medidas y piezas-.
+  - herramientas/ -boceto.html, boceto.tsx, capturas.cjs, lamina.cjs-. "hoy" es el
+    ReproductorGrabacion de verdad; "propuesta" se arma con las mismas clases e íconos.
+  Propuesta: de lado, el video a todo el alto a la izquierda y los controles a la derecha
+  -nombre con la X, barra de avance, subtítulos, y Guardar / Repetir / Borrar al pie-. De pie no
+  cambia. SIN BOCETO APROBADO NO HAY CÓDIGO.
+
+==============================================================================
+DEFECTO 3 - LA BARRA DE TRES BOTONES
+==============================================================================
+viewport-fit=cover ya está -index.html-. Con eso, todo lo que es fixed e inset 0 llega hasta
+debajo de la barra de navegación, y los botones de abajo quedan detrás de ella si no suman
+env(safe-area-inset-bottom).
+
+YA LO TIENEN -no se tocaron; los rieles de leer y grabar no se rehicieron-:
+  - App.tsx:1462 -raíz de las vistas que no son lectura- y :1759.
+  - TeleprompterView.tsx:1094 y :1483 -los rieles-.
+  - BarraEditorVacio.tsx:44, BarraLeerGrabar.tsx:52, EditorView.tsx:341-342, BarraDeTiempo.tsx:74,
+    AvisoBreve.tsx:42-45.
+  - styles.css:597 y :1813 -banda de tomas-; styles-ajustes.css:8, :16, :288 -Ajustes- y :363
+    -capa-dialogo-ajustes-; styles-horizontal.css:95, :120, :158 y :176.
+
+NO LO TENÍAN Y LO NECESITAN -arreglados-:
+  1. src/components/ReproductorGrabacion.tsx:168 -el visor: Guardar, Repetir, Borrar-. EL DEL
+     REPORTE.
+  2. src/styles-ajustes.css:369-378 -.capa-dialogo-microfono, padding 16px parejo-. La usan
+     DialogoMicrofono y DialogoPermiso.tsx:32: sus botones quedan centrados, pero en un teléfono
+     bajo o de lado se acercan a la barra.
+  3. src/App.tsx:1947-1957 -panel de corpus, solo con HERRAMIENTAS-.
+  4. src/components/BibliotecaView.tsx:969-980 -el otro panel de corpus, solo con HERRAMIENTAS-.
+
+NO LO NECESITAN -anotado, no se tocó-:
+  - Entrada.tsx:156 -la portada de arranque, no se toca nada-.
+  - styles.css:544 .franja-hora y :1899 .aviso-voz -van arriba-.
+  - EditorView.tsx:471 -la barra de formato, arriba-.
+  - styles.css:762 .capa-cajon-aa -CSS sin componente vivo, solo lo mira tarea55.test-.
+
+ARREGLO: en los cuatro, el mismo aire de siempre más el borde seguro de CADA lado -top, right,
+bottom, left-: de pie la barra va abajo, de lado va al costado. Propiedades separadas
+-paddingTop... / padding-top...- y no el atajo padding, para que jsdom las lea en la prueba.
+EN EL VISOR, ADEMÁS, DESPLAZAMIENTO. Medido en Chrome a 412x915 -de pie, ~1080x2400-: con el
+video al tope de 70vh la tarjeta mide 825 dp -de 45 a 870-, y con el selector de subtítulos
+unos 60 más. El alto útil es 915 menos la barra de estado -~24-, la de tres botones -48- y el
+aire -2 x 16-: ~811. NO CABE. Centrada y sin desplazamiento, la tarjeta se reparte por los dos
+lados y con el selector la fila de acciones vuelve a quedar bajo la barra aunque haya padding.
+APROBADO POR JAVIER el 04-10-2026: que el visor se desplace, también de pie. Queda como está.
+Por eso la raíz va con overflowY auto y la tarjeta con margin auto -ReproductorGrabacion.tsx en
+la rama, junto al comentario "TAREA 89"-: si cabe queda centrada igual que hoy; si no, empieza
+arriba y se desplaza hasta que las acciones queden sobre la barra. Esto también toca lo de lado:
+lo cortado ahora se alcanza desplazando -captura docs/pantallas/tarea89/visor-de-lado-rama-
+desplazado-*.png-. NO es el arreglo del defecto 2 -la tarjeta sigue siendo de una columna y más
+alta que la pantalla-: ese va con su boceto. Si Javier prefiere que de lado no cambie nada hasta
+aprobar el boceto, se saca el overflowY y el margin y de pie se pierde el desplazamiento. -Ya no
+corre: Javier lo aprobó.-
+Los paneles de corpus mantienen su maxHeight 90vh: si en un teléfono bajo eso pasa del alto
+menos los bordes, se recorta igual que hoy -es herramienta, no se rehizo-.
+
+PRUEBA: tarea89.test.tsx, "defecto 3": el visor con paddingTop/Right/Bottom/Left con
+env(safe-area-inset-*); el visor con overflowY auto y la tarjeta con margin auto; el bloque
+.capa-dialogo-microfono de styles-ajustes.css con env(safe-area-inset-bottom); los dos paneles de
+corpus con env(safe-area-inset-bottom). Las cuatro FALLAN contra 71166e5 y pasan en la rama -la
+del desplazamiento se escribió después, se vio fallar contra el visor con solo el padding y
+después se agregó el desplazamiento-.
+
+EMULADOR -NO CALZÓ-
+  Se creó el AVD sigo89 -system-images;android-35;google_apis;x86_64, 1080x2400, 420 dpi- en
+  ~/android-sdk y se encendió la navegación de tres botones -cmd overlay enable-exclusive
+  --category com.android.internal.systemui.navbar.threebutton: quedó [x]-. La caja no tiene KVM
+  para este usuario -/dev/kvm es del grupo 103 y el usuario no está en él-: el emulador corre por
+  software -swiftshader, -accel off-, arrancó en 1466 s y, después de cambiar la barra, el
+  Watchdog de Android mata system_server una y otra vez -"Watchdog: *** GOODBYE!",
+  DeadSystemException en launcher, systemui y gms; carga 14 dentro del emulador-. "adb install"
+  responde "Can't find service: package". En el último intento -01:15 aprox.- el servicio
+  volvió, pero "adb install" terminó sin instalar nada -Sigo no aparece en pm list packages- y el
+  registro ya llevaba 4 "GOODBYE". Se apagó el emulador para no trabar la tarea. NO HAY CAPTURAS ANTES/DESPUÉS DEL EMULADOR. En su
+  lugar quedan la prueba automatizada de arriba y estos pasos.
+
+PASOS PARA JAVIER, EN EL MOTO G86
+  1. Ajustes del teléfono > Sistema > Gestos > Navegación del sistema > Navegación con 3 botones.
+  2. Instalar /workspace/apk/Sigo-tarea89.apk.
+  3. De pie: grabar una toma corta. Al terminar se abre el visor: Guardar, Repetir y Borrar
+     tienen que quedar ENCIMA de la barra de tres botones, con aire, y se pueden tocar los tres.
+     Comparar con la APK de main: ahí quedan debajo.
+  4. Tocar una toma guardada en la tira: Compartir y Borrar, igual.
+  5. De lado: el visor sigue siendo más alto que la pantalla -defecto 2, falta el boceto
+     aprobado-, pero ahora se desplaza con el dedo hasta Guardar, Repetir y Borrar, y nada
+     queda detrás de la barra del costado.
+  6. Quitar el permiso de micrófono y entrar a Leer: el diálogo de permiso con sus botones
+     encima de la barra.
+
+==============================================================================
+RESULTADOS
+==============================================================================
+  - npx vitest run: 57 archivos, 440 pruebas, todas pasan -tercera vuelta-.
+  - CUARTA VUELTA: npx vitest run 58 archivos, 446 pruebas, todas pasan; tsc sin errores; build
+    bien; npm run apk BUILD SUCCESSFUL, /workspace/apk/Sigo-tarea89.apk de las 10:25.
+  - npx tsc --noEmit: sin errores.
+  - npm run build -vite build-: bien.
+  - npm run apk: bien -BUILD SUCCESSFUL-. Copia en /workspace/apk/Sigo-tarea89.apk.
+  - Reglas de la casa: ningún comentario borrado -git diff contra 71166e5: las únicas líneas
+    quitadas son los tres "padding: 'var(--aire-4)'" reemplazados y la línea de estilo de la
+    tarjeta del visor, que ganó margin y flexShrink-; comentarios nuevos con
+    tildes; sin dependencias nuevas -puppeteer-core del boceto vive en /workspace/tp-shot, fuera
+    de package.json-.
