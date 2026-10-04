@@ -227,7 +227,9 @@ EMULADOR -NO CALZÓ-
   software -swiftshader, -accel off-, arrancó en 1466 s y, después de cambiar la barra, el
   Watchdog de Android mata system_server una y otra vez -"Watchdog: *** GOODBYE!",
   DeadSystemException en launcher, systemui y gms; carga 14 dentro del emulador-. "adb install"
-  responde "Can't find service: package". NO HAY CAPTURAS ANTES/DESPUÉS DEL EMULADOR. En su
+  responde "Can't find service: package". En el último intento -01:15 aprox.- el servicio
+  volvió, pero "adb install" terminó sin instalar nada -Sigo no aparece en pm list packages- y el
+  registro ya llevaba 4 "GOODBYE". Se apagó el emulador para no trabar la tarea. NO HAY CAPTURAS ANTES/DESPUÉS DEL EMULADOR. En su
   lugar quedan la prueba automatizada de arriba y estos pasos.
 
 PASOS PARA JAVIER, EN EL MOTO G86
