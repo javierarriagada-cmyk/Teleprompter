@@ -1,7 +1,7 @@
 // LOS REGISTROS DE LA TAREA 87 PARA EL MOTO G86 -04-10-2026-. Lo que no se pudo medir en Chrome y
 // Claude verifica en el teléfono: la forma de cada toma -también la de 480p y la de 1920x1080 con
 // rotación 90/270-, los bordes seguros reales -la barra de estado y la franja de gestos-, dónde
-// quedan el video y las acciones en el visor, y el tiempo estimado contra el real. Son líneas
+// quedan el video, las acciones y el subtítulo en el visor. Son líneas
 // SigoExport con el MISMO formato del paso 0 -lib/medicionesExport.ts, docs/tarea87.txt P0-5-: van
 // al registro del panel de mediciones y al logcat. Solo en la APK de prueba -HERRAMIENTAS-; en Play
 // esta rama no existe. Una medición que falla no puede romper nada: todo va en try.
@@ -19,9 +19,9 @@ export const EVENTOS_87 = {
   bordes: ['arriba_dp', 'abajo_dp', 'izquierda_dp', 'derecha_dp', 'ventana_ancho_dp', 'ventana_alto_dp', 'dpr'],
   // Cada vez que el visor se acomoda -abrir, abrir o cerrar el panel-: lo que de verdad quedó.
   visor: ['id', 'panel', 'disponible_dp', 'video_alto_dp', 'imagen_ancho_dp', 'imagen_alto_dp', 'acciones_arriba_dp',
-    'acciones_abajo_dp', 'limite_abajo_dp', 'arriba_se_desplaza', 'nombre_visible', 'posicion', 'subtitulo_abajo_dp'],
-  // Al terminar un guardado desde el visor: lo anunciado contra lo que tardó.
-  tiempo_guardado: ['id', 'dur_toma_ms', 'estimado_s', 'real_ms', 'resultado', 'boton', 'estilo', 'posicion']
+    'acciones_abajo_dp', 'limite_abajo_dp', 'arriba_se_desplaza', 'nombre_visible', 'subtitulo_abajo_dp']
+  // -04-10-2026, Javier simplifica la 87- Se sacaron la clave posicion de visor y la línea
+  // tiempo_guardado -el tiempo estimado contra el real-, con la posición y el tiempo estimado.
 } as const
 
 export type Evento87 = keyof typeof EVENTOS_87

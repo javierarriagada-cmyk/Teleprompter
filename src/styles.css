@@ -1561,6 +1561,8 @@ label.selector-aa-opcion {
   /* Un octavo del alto desde abajo, como el prototipo -160 sobre 1280-. Va en
      linea, en SubtitulosVisor.tsx: un margen en % se mide contra el ANCHO, y en
      una toma vertical quedaba a la mitad de altura. */
+  /* -tarea 87, 04-10-2026- Ahora es un sexto, en vertical y en horizontal:
+     MARGEN_ABAJO_SUBTITULOS en lib/subtitulos.ts, la misma cifra del archivo. */
   margin: 0 6%;
   text-align: center;
   line-height: 1.25;

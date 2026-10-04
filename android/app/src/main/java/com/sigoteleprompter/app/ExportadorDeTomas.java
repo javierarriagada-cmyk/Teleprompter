@@ -9,10 +9,11 @@ import com.google.common.collect.ImmutableList;
 final class ExportadorDeTomas {
     private ExportadorDeTomas() {}
 
-    // La capa de la receta, con su margen. null si la receta es copia: no hay nada que dibujar.
+    // La capa de la receta. null si la receta es copia: no hay nada que dibujar. El subtítulo va a
+    // 1/6 del alto -UbicacionSubtitulos.MARGEN_ABAJO-; antes la receta traía su margen.
     static CapaDeSubtitulos capaDe(RecetaExportacion receta, int rotacion) throws Exception {
         if (receta.esCopia() || "no".equals(receta.estilo) || receta.cantidadSubtitulos == 0) return null;
-        return new CapaDeSubtitulos(receta.subtitulosJson, receta.estilo, rotacion, receta.margenAbajo);
+        return new CapaDeSubtitulos(receta.subtitulosJson, receta.estilo, rotacion);
     }
 
     static ImmutableList<androidx.media3.common.Effect> efectosDeVideo(RecetaExportacion receta, CapaDeSubtitulos capa) {

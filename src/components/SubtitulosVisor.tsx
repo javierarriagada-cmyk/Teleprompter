@@ -1,9 +1,8 @@
 import React from 'react'
 import { hapticaSeleccion } from '../haptica'
-import { ESTILOS_SUBTITULO, EstiloSubtitulo, Subtitulo, subtituloEn } from '../lib/subtitulos'
+import { ESTILOS_SUBTITULO, EstiloSubtitulo, Subtitulo, subtituloEn, MARGEN_ABAJO_SUBTITULOS } from '../lib/subtitulos'
 import { t, useTextos, ClaveTexto } from '../textos'
 import { IconoSubtitulos } from './IconosApp'
-import { MARGEN_ABAJO_NORMAL } from '../lib/posicionSubtitulos'
 
 // LOS SUBTITULOS EN EL VISOR DE LA TOMA -24-09-2026-.
 //
@@ -33,16 +32,11 @@ function rectDeLaImagen(v: HTMLVideoElement): { x: number; y: number; w: number;
 export function CapaSubtitulos({
   video,
   subtitulos,
-  estilo,
-  margenAbajo = MARGEN_ABAJO_NORMAL
+  estilo
 }: {
   video: HTMLVideoElement | null
   subtitulos: Subtitulo[]
   estilo: EstiloSubtitulo
-  // -tarea 87, parte D, 04-10-2026- A qué altura va el subtítulo, como fracción del alto de la
-  // imagen desde abajo: 0,125 en "Normal" -lo de siempre- y 0,35 en "Para redes"
-  // -lib/posicionSubtitulos.ts-. Sin la prop, como antes.
-  margenAbajo?: number
 }) {
   const [ms, setMs] = React.useState(0)
   const [rect, setRect] = React.useState<{ x: number; y: number; w: number; h: number } | null>(null)
@@ -108,8 +102,10 @@ export function CapaSubtitulos({
         fontSize: rect.h / 32
       }}
     >
-      {/* -tarea 87, parte D- El margen sale de la prop. Antes: marginBottom: rect.h * 0.125. */}
-      <div className="subtitulo" style={{ marginBottom: rect.h * margenAbajo }}>
+      {/* -tarea 87, 04-10-2026- Un sexto del alto de la imagen, en vertical y en horizontal: la
+          constante compartida de lib/subtitulos.ts, la misma cifra del archivo guardado. Antes:
+          marginBottom: rect.h * 0.125. */}
+      <div className="subtitulo" style={{ marginBottom: rect.h * MARGEN_ABAJO_SUBTITULOS }}>
         {s.renglones.map((r, i) => (
           <div key={i} className="subtitulo-renglon">
             {r.map((w, j) => {
@@ -152,25 +148,19 @@ function nombreDeEstilo(estilo: EstiloSubtitulo): string {
   return clave ? t(clave) : estilo
 }
 
-// -tarea 87, A4, 04-10-2026- Cuatro props opcionales; sin ellas queda EXACTAMENTE como antes:
-//   extra: lo que va dentro del panel, debajo de los cuatro estilos -SelectorPosicion-;
-//   resumen: lo que se suma a lo elegido en la píldora -«Amarillo · Para redes»-;
+// -tarea 87, A4, 04-10-2026- Tres props opcionales; sin ellas queda EXACTAMENTE como antes:
 //   abierto y onAbrir: el visor sabe si el panel está abierto -esconde el nombre de la toma para
 //   que el video gane alto- y lo maneja él;
 //   desactivado: mientras se guarda, la ficha no se abre -respuesta de Claude del 04-10-.
 export function SelectorSubtitulos({
   estilo,
   onCambiar,
-  extra,
-  resumen,
   abierto: abiertoDeAfuera,
   onAbrir,
   desactivado
 }: {
   estilo: EstiloSubtitulo
   onCambiar: (e: EstiloSubtitulo) => void
-  extra?: React.ReactNode
-  resumen?: string
   abierto?: boolean
   onAbrir?: (abierto: boolean) => void
   desactivado?: boolean
@@ -183,7 +173,7 @@ export function SelectorSubtitulos({
     setAbiertoPropio(nuevo)
     onAbrir?.(nuevo)
   }
-  const nombre = nombreDeEstilo(estilo) + (resumen ? ` · ${resumen}` : '')
+  const nombre = nombreDeEstilo(estilo)
   return (
     <div className="selector-subtitulos">
       <button
@@ -224,7 +214,6 @@ export function SelectorSubtitulos({
           ))}
         </div>
       )}
-      {abierto && extra}
     </div>
   )
 }

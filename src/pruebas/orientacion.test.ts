@@ -31,9 +31,9 @@ describe('orientacionDeToma', () => {
     expect(parsearSidecar(JSON.stringify(s))!.orientacion).toBe('vertical')
     expect(parsearSidecar(JSON.stringify({ ...s, orientacion: 'diagonal' }))!.orientacion).toBeUndefined()
   })
-  test('grabacionNueva conserva orientacion y posicionGaleria', () => {
-    const g = grabacionNueva({ tituloGuion: 'x', orientacion: 'vertical', posicionGaleria: 'redes' })
+  // -04-10-2026, Javier simplifica la 87- Sin posicionGaleria: se sacó con "Para redes".
+  test('grabacionNueva conserva orientacion', () => {
+    const g = grabacionNueva({ tituloGuion: 'x', orientacion: 'vertical' })
     expect(g.orientacion).toBe('vertical')
-    expect(g.posicionGaleria).toBe('redes')
   })
 })

@@ -31,6 +31,15 @@ import { tokenizarGuion } from './seguidor'
 // apretar el boton la cierra. Si alguien corta hablando, esas palabras toman
 // la hora del seguidor -el calce- y no se pierden. No se toco el orden del corte.
 
+// DÓNDE VA EL SUBTÍTULO -tarea 87, 04-10-2026, decidido por Javier-. UNA sola posición para todo:
+// el borde de abajo del bloque -la caja del último renglón- queda a 1/6 del alto de la IMAGEN,
+// contado desde abajo, igual en vertical y en horizontal. La usan el visor -CapaSubtitulos, en
+// SubtitulosVisor.tsx- y, del lado nativo, la MISMA cifra está en UbicacionSubtitulos.java
+// -MARGEN_ABAJO-, que usa CapaDeSubtitulos.java para el archivo guardado: si se cambia una, se
+// cambia la otra. Antes: un octavo -0,125, "160 sobre 1280" del prototipo-, escrito a mano en los
+// dos lados.
+export const MARGEN_ABAJO_SUBTITULOS = 1 / 6
+
 export type PalabraSubtitulo = {
   texto: string      // como esta en el guion, con su puntuacion
   desdeMs: number

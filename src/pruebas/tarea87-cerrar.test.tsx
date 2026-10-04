@@ -6,7 +6,6 @@ import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { screen, fireEvent, act, cleanup } from '@testing-library/react'
 import 'fake-indexeddb/auto'
 import type { ResumenGrabacion } from '../datos/modelo'
-import { olvidarCapacidades } from '../lib/archivosNativos'
 import { registroGuardado, leerLineaSigoExport, vaciarRegistro } from '../lib/medicionesExport'
 import { lineaEvento87, EVENTOS_87 } from '../lib/medicionesTarea87'
 import { es } from '../textos/es'
@@ -43,7 +42,6 @@ function reiniciar() {
   cleanup()
   localStorage.clear()
   vaciarRegistro()
-  olvidarCapacidades()
   const e = h.estado
   if (e) {
     e.llamadas.length = 0
@@ -95,23 +93,18 @@ describe('Tarea 87: los registros para Claude', () => {
   test('LAS LÍNEAS NUEVAS TIENEN EL FORMATO DEL PASO 0, con las claves en su orden fijo', () => {
     const l = lineaEvento87('bordes', { arriba_dp: 45, abajo_dp: 48 }, 1000)
     expect(l.startsWith('v=1 evento=bordes t_ms=1000 arriba_dp=45 abajo_dp=48 izquierda_dp=NA')).toBe(true)
-    expect(Object.keys(EVENTOS_87)).toEqual(['orientacion', 'bordes', 'visor', 'tiempo_guardado'])
+    // -04-10-2026, Javier simplifica la 87- Sin tiempo_guardado. Antes: [..., 'visor', 'tiempo_guardado'].
+    expect(Object.keys(EVENTOS_87)).toEqual(['orientacion', 'bordes', 'visor'])
   })
 
-  test('AL ABRIR EL VISOR SE ANOTAN LOS BORDES SEGUROS, Y AL GUARDAR, LO ESTIMADO CONTRA LO REAL', async () => {
+  // -04-10-2026, Javier simplifica la 87- Sin la línea tiempo_guardado: se sacó con el tiempo estimado.
+  test('AL ABRIR EL VISOR SE ANOTAN LOS BORDES SEGUROS', async () => {
     h.tomas.push(tomaDePrueba({ orientacion: 'vertical', duracionMs: 300_000 }))
     await abrirTomaEnApp('008a7133')
     const bordes = lineas('bordes')
     expect(bordes.length).toBe(1)
     // En jsdom env() no existe: dan 0. En el moto g86, la barra de estado y la de abajo de verdad.
     expect(bordes[0].arriba_dp).toBe('0')
-    await elegirEstilo('Amarillo')
-    await act(async () => { fireEvent.click(screen.getByTestId('guardar-galeria-desde-reproductor')) })
-    await esperar(50)
-    const t = lineas('tiempo_guardado')
-    expect(t.length).toBe(1)
-    expect(t[0]).toMatchObject({ id: '008a7133', dur_toma_ms: '300000', estimado_s: '60', resultado: 'ok', boton: 'guardar', estilo: 'amarillo', posicion: 'normal' })
-    expect(Number(t[0].real_ms)).toBeGreaterThanOrEqual(0)
   })
 
   test('UNA TOMA VIEJA QUE SE ANALIZA EN EL VISOR ANOTA SU FORMA: 1920x1080 con 90 se ve vertical', async () => {

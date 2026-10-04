@@ -1,12 +1,9 @@
 import React from 'react'
 import { ResumenGrabacion, ResumenGuion } from '../datos/modelo'
 import { srcDeRuta, formatearDuracionMs, nombreDeToma } from './TiraGrabaciones'
-import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo, tieneExportarToma } from '../lib/archivosNativos'
-import { margenAbajo, posicionGuardada, guardarPosicion, type PosicionSubtitulos } from '../lib/posicionSubtitulos'
+import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo } from '../lib/archivosNativos'
 import { orientacionDeToma } from '../lib/orientacion'
-import { segundosEstimados, textoTiempo } from '../lib/tiempoGuardado'
 import { anotar87, medirBordesSeguros, anotarOrientacion } from '../lib/medicionesTarea87'
-import { SelectorPosicion } from './SelectorPosicion'
 import { armarSubtitulos, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo } from '../lib/subtitulos'
 import { CapaSubtitulos, SelectorSubtitulos } from './SubtitulosVisor'
 import { t, useTextos } from '../textos'
@@ -163,19 +160,13 @@ export default function ReproductorGrabacion({
   const cerrado = React.useRef(false)
   React.useEffect(() => () => { cerrado.current = true }, [])
 
-  // LA POSICIÓN -parte D-: la última elegida; "Para redes" solo se ofrece en una toma vertical
-  // recién grabada, con subtítulos, con un estilo y con un APK que tiene exportarToma. Si no se
-  // ofrece, se guarda en "Normal" aunque lo recordado sea "Para redes".
-  const [posicion, setPosicion] = React.useState<PosicionSubtitulos>(() => posicionGuardada())
+  // LA ORIENTACIÓN -parte C-. Una toma vieja sin el dato -o de un APK viejo-: se analiza una vez al
+  // abrirla y se guarda por onCambio, con su línea evento=orientacion. Si el APK no manda ancho y
+  // alto, sigue sin el dato.
+  // -04-10-2026, Javier simplifica la 87- Se sacó la posición "Normal / Para redes": el subtítulo va
+  // siempre a 1/6 -MARGEN_ABAJO_SUBTITULOS, lib/subtitulos.ts-. Antes la orientación decidía si se
+  // ofrecía "Para redes" -solo en vertical, con un APK con exportarToma-.
   const [orientacion, setOrientacion] = React.useState(grabacion.orientacion)
-  const [puedeExportar, setPuedeExportar] = React.useState(false)
-  React.useEffect(() => {
-    let vigente = true
-    void tieneExportarToma().then((si) => { if (vigente) setPuedeExportar(si) })
-    return () => { vigente = false }
-  }, [])
-  // Una toma vieja sin el dato -o de un APK viejo-: se analiza una vez al abrirla y se guarda por
-  // onCambio -parte C-. Si el APK no manda ancho y alto, sigue sin el dato y no hay selector.
   React.useEffect(() => {
     setOrientacion(grabacion.orientacion)
     if (grabacion.orientacion || grabacion.galeriaUri) return
@@ -189,13 +180,11 @@ export default function ReproductorGrabacion({
         setOrientacion(o)
         onCambio?.({ ...grabacion, orientacion: o })
       } catch {
-        // sin análisis la toma se ve igual, sin "Para redes"
+        // sin análisis la toma se ve igual
       }
     })()
     return () => { vigente = false }
   }, [grabacion.id])
-  const conPosicion = !guardada && subtitulos.length > 0 && estilo !== 'no' && orientacion === 'vertical' && puedeExportar
-  const posicionEfectiva: PosicionSubtitulos = conPosicion ? posicion : 'normal'
 
   // El panel de Subtítulos abierto esconde el nombre de la toma: el video gana ~52 dp -respuesta de
   // Claude del 04-10-.
@@ -203,18 +192,16 @@ export default function ReproductorGrabacion({
   const conFicha = subtitulos.length > 0 && !guardada
   const nombreVisible = !(conFicha && panelAbierto)
 
-  // E2: el tiempo estimado, antes de guardar y desde 1 minuto de toma.
-  const segundos = !guardada && !guardando && subtitulos.length > 0 && estilo !== 'no' ? segundosEstimados(grabacion.duracionMs) : null
-
   // EL LAYOUT -A4- y lo que mide para Claude.
   const raizRef = React.useRef<HTMLDivElement>(null)
   const tarjetaRef = React.useRef<HTMLDivElement>(null)
   const videoCajaRef = React.useRef<HTMLDivElement>(null)
   const anotadoVisor = React.useRef<string>('')
   const altoVideo = usarAltoDelVideo(raizRef, tarjetaRef, videoCajaRef, ({ disponible, alto }) => {
-    // Una línea evento=visor por cada forma en que se acomoda -abrir, panel abierto o cerrado,
-    // posición-: dónde quedaron el video y las acciones de verdad. Solo en la APK de prueba.
-    const clave = `${panelAbierto}|${alto}|${posicionEfectiva}|${apretado}`
+    // Una línea evento=visor por cada forma en que se acomoda -abrir, panel abierto o cerrado-: dónde
+    // quedaron el video, las acciones y el subtítulo de verdad. Solo en la APK de prueba.
+    // subtitulo_abajo_dp se espera en imagen_alto_dp / 6 -MARGEN_ABAJO_SUBTITULOS-.
+    const clave = `${panelAbierto}|${alto}|${apretado}`
     if (anotadoVisor.current === clave) return
     anotadoVisor.current = clave
     try {
@@ -240,7 +227,6 @@ export default function ReproductorGrabacion({
         limite_abajo_dp: r1(raiz.clientHeight - (parseFloat(cs.paddingBottom) - 20)),
         arriba_se_desplaza: arriba ? arriba.scrollHeight > arriba.clientHeight + 1 : null,
         nombre_visible: nombreVisible,
-        posicion: posicionEfectiva,
         subtitulo_abajo_dp: capa && sub ? r1(capa.getBoundingClientRect().bottom - sub.getBoundingClientRect().bottom) : null
       })
     } catch {
@@ -268,7 +254,6 @@ export default function ReproductorGrabacion({
   // quemados -Media3, CapaDeSubtitulos.java-; con "No", va la toma tal cual.
   // -tarea 87, E1- UNA sola función que guarda, para Guardar y para Guardar y compartir: devuelve
   // lo que dio el guardado -null si falló-. Antes era el cuerpo de handleGuardar; no se copia.
-  // Lleva la posición -parte D- y anota lo que tardó contra lo estimado -E2-.
   const guardarToma = async (boton: 'guardar' | 'compartir'): Promise<{ ok: boolean; uri?: string } | null> => {
     if (guardando) return null
     setGuardando(true)
@@ -276,14 +261,9 @@ export default function ReproductorGrabacion({
     setPanelAbierto(false)
     setAvance(null)
     const conSubtitulos = estilo !== 'no' && subtitulos.length > 0
-    const inicio = Date.now()
-    const estimado = conSubtitulos ? segundosEstimados(grabacion.duracionMs) : null
-    let resultado = 'error'
     try {
-      // -tarea 87, parte D- El quinto parámetro es la posición. Antes:
-      // guardarEnGaleriaConSubtitulos(grabacion.ruta, subtitulos, estilo, (pct) => setAvance(pct)).
       const res = conSubtitulos
-        ? await guardarEnGaleriaConSubtitulos(grabacion.ruta, subtitulos, estilo, (pct) => setAvance(pct), posicionEfectiva)
+        ? await guardarEnGaleriaConSubtitulos(grabacion.ruta, subtitulos, estilo, (pct) => setAvance(pct))
         : await guardarEnGaleria(grabacion.ruta)
       if (res && res.ok && res.uri) {
         // UNA SOLA COPIA POR TOMA -24-09-2026-. Javier: "si se guarda con
@@ -297,18 +277,16 @@ export default function ReproductorGrabacion({
         } catch (e) {
           // si no se pudo borrar, queda la copia de Sigo: nada se pierde
         }
-        // -tarea 87- Con la orientación y la posición. Antes: onCambio?.({ ...grabacion, ruta:
+        // -tarea 87- Con la orientación. Antes: onCambio?.({ ...grabacion, ruta:
         // res.uri, galeriaUri: res.uri, estiloGaleria: conSubtitulos ? estilo : 'no' }).
         onCambio?.({
           ...grabacion,
           ruta: res.uri,
           galeriaUri: res.uri,
           estiloGaleria: conSubtitulos ? estilo : 'no',
-          ...(orientacion ? { orientacion } : {}),
-          ...(conSubtitulos ? { posicionGaleria: posicionEfectiva } : {})
+          ...(orientacion ? { orientacion } : {})
         })
         onGuardadoEnGaleria?.(true, t('galeriaGuardada'))
-        resultado = 'ok'
         return res
       } else {
         onGuardadoEnGaleria?.(false, t('galeriaNoSeGuardo'))
@@ -324,17 +302,6 @@ export default function ReproductorGrabacion({
       setGuardando(false)
       setApretado(null)
       setAvance(null)
-      // E2 -para Claude-: lo anunciado contra lo que de verdad tardó, visto desde el visor.
-      anotar87('tiempo_guardado', {
-        id: grabacion.id,
-        dur_toma_ms: grabacion.duracionMs,
-        estimado_s: estimado,
-        real_ms: Date.now() - inicio,
-        resultado,
-        boton,
-        estilo: conSubtitulos ? estilo : 'no',
-        posicion: conSubtitulos ? posicionEfectiva : null
-      })
     }
   }
   const handleGuardar = async () => {
@@ -405,8 +372,7 @@ export default function ReproductorGrabacion({
           {/* -tarea 87, A4- El alto del video sale de usarAltoDelVideo; sin medir, el 70vh de antes.
               Antes: maxHeight: '70vh'. */}
           <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ width: '100%', maxHeight: altoVideo ?? '70vh', background: '#000', display: 'block' }} />
-          {/* -tarea 87, parte D- Con la posición elegida: "Para redes" sube el subtítulo a 0,35. */}
-          {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} margenAbajo={margenAbajo(posicionEfectiva)} />}
+          {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} />}
           {!reproduciendo && (
             <span className="play-visor" aria-hidden="true">
               <IconoEmpezar tamano={30} />
@@ -438,8 +404,8 @@ export default function ReproductorGrabacion({
         </div>
         {subtitulos.length > 0 && !guardada && (
           <div style={{ padding: 'var(--aire-3) var(--aire-3) 0' }}>
-            {/* -tarea 87, A4 y D3- Posición va DENTRO del panel, debajo de los cuatro estilos; la
-                píldora la resume -«Amarillo · Para redes»-. Mientras se guarda, la ficha no se abre. */}
+            {/* -tarea 87, A4- El visor sabe si el panel está abierto -esconde el nombre-. Mientras se
+                guarda, la ficha no se abre. */}
             <SelectorSubtitulos
               estilo={estilo}
               onCambiar={(e) => {
@@ -449,16 +415,6 @@ export default function ReproductorGrabacion({
               abierto={panelAbierto}
               onAbrir={setPanelAbierto}
               desactivado={guardando}
-              resumen={conPosicion && posicion === 'redes' ? t('posicionRedes') : undefined}
-              extra={conPosicion ? (
-                <SelectorPosicion
-                  posicion={posicion}
-                  onCambiar={(p) => {
-                    setPosicion(p)
-                    guardarPosicion(p)
-                  }}
-                />
-              ) : undefined}
             />
           </div>
         )}
@@ -473,12 +429,6 @@ export default function ReproductorGrabacion({
               {grabacion.errorMudo ? ` · ${t('metaErrorMudo')}` : ''}
               {grabacion.avisoMudo ? ` · ${t('metaAvisoMudo')}` : ''}
             </div>
-            {/* -tarea 87, E2- El tiempo estimado antes de guardar, en una segunda línea meta. */}
-            {segundos !== null && (
-              <div data-testid="tiempo-estimado-guardado" className="texto-meta" style={{ color: 'var(--color-apagado)' }}>
-                {t('tiempoEstimadoGuardado', { tiempo: textoTiempo(segundos) })}
-              </div>
-            )}
           </div>
         )}
         </div>

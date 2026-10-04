@@ -73,14 +73,10 @@ export const en: Textos = {
   subtitulosAmarillo: 'Yellow',
   subtitulosRojo: 'Red',
   subtitulosFormal: 'Formal',
-  // -tarea 87, 04-10-2026- Caption position, Save and share, and the estimated time.
-  posicionSubtitulos: 'Position',
-  posicionNormal: 'Normal',
-  posicionRedes: 'For social media',
-  posicionRedesExplicacion: 'Instagram, TikTok and YouTube Shorts',
+  // -tarea 87, 04-10-2026- Save and share. The caption position and the estimated time were
+  // removed the same day.
   guardarYCompartir: 'Save and share',
   compartirTrasGuardar: 'Saved, but it couldn’t be shared',
-  tiempoEstimadoGuardado: 'Saving takes about {tiempo}',
   avisoTomaRecuperada: 'A take from an interrupted session was recovered.',
   avisoTomasRecuperadas: '{n} takes from an interrupted session were recovered.',
   verla: 'View it',

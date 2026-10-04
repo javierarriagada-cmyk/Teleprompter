@@ -12,21 +12,16 @@ describe('La receta de exportación', () => {
   test('recetaDe con estilo pero sin subtítulos es copia', () => {
     expect(esCopia(recetaDe({ estilo: 'amarillo', subtitulos: [] }))).toBe(true)
   })
-  test('recetaDe con subtítulos lleva el margen de hoy', () => {
+  // -04-10-2026, Javier simplifica la 87- La receta ya no lleva margen: se sacaron "Normal / Para
+  // redes" y su validación de 0 a 0,5. Antes: 'recetaDe con subtítulos lleva el margen de hoy'.
+  test('recetaDe con subtítulos no es copia y no lleva margen', () => {
     const r = recetaDe({ estilo: 'amarillo', subtitulos: UN_SUB })
-    expect(r.margenAbajo).toBe(0.125)
+    expect('margenAbajo' in r).toBe(false)
+    expect(validarReceta(r)).toBeNull()
     expect(esCopia(r)).toBe(false)
     expect(r.tramos).toBeNull()
     expect(r.filtro).toBeNull()
     expect(r.subtitulos).toBe(UN_SUB)
-    expect(recetaDe({ estilo: 'formal', subtitulos: UN_SUB, posicion: 'redes' }).margenAbajo).toBe(0.35)
-  })
-  test('validarReceta rechaza margen fuera de 0 a 0,5', () => {
-    const r = recetaDe({ estilo: 'amarillo', subtitulos: UN_SUB })
-    expect(validarReceta(r)).toBeNull()
-    expect(validarReceta({ ...r, margenAbajo: -0.01 })).toBe('margen fuera de 0 a 0,5')
-    expect(validarReceta({ ...r, margenAbajo: 0.51 })).toBe('margen fuera de 0 a 0,5')
-    expect(validarReceta({ ...r, margenAbajo: Number.NaN })).toBe('margen fuera de 0 a 0,5')
   })
   test('validarReceta rechaza tramos desordenados', () => {
     const r: RecetaExportacion = { ...recetaDe({ estilo: 'amarillo', subtitulos: UN_SUB }), tramos: [{ desdeMs: 5000, hastaMs: 9000 }, { desdeMs: 1000, hastaMs: 2000 }] }

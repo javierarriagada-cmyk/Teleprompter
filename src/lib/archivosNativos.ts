@@ -1,6 +1,5 @@
 import { CamaraNativa } from './camara'
 import { recetaDe, validarReceta, type RecetaExportacion } from './recetaExportacion'
-import type { PosicionSubtitulos } from './posicionSubtitulos'
 
 export type AnalisisVideo = {
   duracionMs: number
@@ -115,20 +114,21 @@ export async function compartirDeGaleria(uri: string): Promise<void> {
 //
 // -tarea 87, parte B, 04-10-2026- Por dentro arma la receta común -recetaDe- y llama exportarToma.
 // El visor sigue llamando esta función -y guardarEnGaleria sin subtítulos- porque
-// subtitulosVisor.test.tsx revisa sus argumentos y no se toca -docs/tarea87.txt, B2-. posicion es
-// el quinto parámetro, "Normal" por omisión. Un APK viejo, sin exportarToma -"not implemented"-,
-// cae a guardarConSubtitulos, que no se cambió: ahí "Para redes" ni se ofrece -tieneExportarToma-.
+// subtitulosVisor.test.tsx revisa sus argumentos y no se toca -docs/tarea87.txt, B2-. Un APK
+// viejo, sin exportarToma -"not implemented"-, cae a guardarConSubtitulos, que no se cambió. El
+// subtítulo va a 1/6 del alto en los dos caminos del APK nuevo -UbicacionSubtitulos.MARGEN_ABAJO-;
+// un APK anterior a la 87 lo sigue dibujando a 1/8.
+// -04-10-2026, Javier simplifica la 87- Se sacó el quinto parámetro, la posición -"Normal / Para
+// redes"-, y con ella tieneExportarToma, que solo servía para ofrecerla.
 export async function guardarEnGaleriaConSubtitulos(
   ruta: string,
   subtitulos: unknown,
   estilo: string,
-  alAvanzar?: (porcentaje: number) => void,
-  posicion: PosicionSubtitulos = 'normal'
+  alAvanzar?: (porcentaje: number) => void
 ): Promise<{ ok: boolean; uri?: string }> {
   const receta = recetaDe({
     estilo: estilo as RecetaExportacion['estilo'],
-    subtitulos: Array.isArray(subtitulos) ? (subtitulos as RecetaExportacion['subtitulos']) : [],
-    posicion
+    subtitulos: Array.isArray(subtitulos) ? (subtitulos as RecetaExportacion['subtitulos']) : []
   })
   try {
     return await exportarAGaleria(ruta, receta, alAvanzar)
@@ -165,22 +165,6 @@ export async function exportarAGaleria(
   } finally {
     await escucha?.remove()
   }
-}
-
-// ¿Este APK tiene exportarToma? Sin él, el visor no ofrece "Para redes" -D3-. Se pregunta una vez
-// por sesión; en el navegador y con un APK viejo, no.
-let capacidadExportar: Promise<boolean> | null = null
-export function tieneExportarToma(): Promise<boolean> {
-  if (!capacidadExportar) {
-    capacidadExportar = CamaraNativa.capacidades()
-      .then((r) => r?.exportarToma === true)
-      .catch(() => false)
-  }
-  return capacidadExportar
-}
-// Solo para las pruebas: que cada una pregunte de nuevo.
-export function olvidarCapacidades(): void {
-  capacidadExportar = null
 }
 
 // LAS MEDICIONES DE EXPORTACIÓN -tarea 87, paso 0, 03-10-2026-. Solo para el panel de mediciones

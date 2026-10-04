@@ -32,8 +32,6 @@ export interface CamaraNativaPlugin {
   // el nativo la lee en RecetaExportacion.java. Un APK viejo no la tiene: rechaza "not implemented"
   // y guardarEnGaleriaConSubtitulos cae a guardarConSubtitulos.
   exportarToma(options: { ruta: string; receta: string }): Promise<{ ok: boolean; uri?: string; recodifico: boolean; msGuardado: number }>
-  // Lo que sabe hacer este APK. Un APK viejo no lo tiene: rechaza y se entiende que no hay nada nuevo.
-  capacidades(): Promise<{ exportarToma: boolean }>
   addListener(evento: 'progresoGuardado', cb: (d: { porcentaje: number }) => void): Promise<{ remove: () => Promise<void> }>
   // LAS MEDICIONES DE EXPORTACIÓN -tarea 87, paso 0, 03-10-2026-. Solo las usa el panel de
   // mediciones de la APK de prueba -PanelMediciones.tsx-. El nativo escribe al logcat con la

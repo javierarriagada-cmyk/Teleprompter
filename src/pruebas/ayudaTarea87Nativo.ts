@@ -8,7 +8,7 @@ export const TOMA_REGISTRO = fs.readFileSync(path.join(__dirname, 'corpus', 'tom
 
 export type EstadoNativo = {
   llamadas: Array<[string, any]>
-  // Un APK viejo: sin exportarToma ni capacidades -Capacitor rechaza "not implemented"-.
+  // Un APK viejo: sin exportarToma -Capacitor rechaza "not implemented"-.
   apkViejo: boolean
   // Lo que devuelve analizarVideo -una toma vieja que se analiza al abrir el visor-.
   analisis: Record<string, unknown> | null
@@ -52,7 +52,6 @@ export function camaraNativaFingida(estado: EstadoNativo): any {
     guardarEnGaleria: guardar('guardarEnGaleria', 'content://media/copia'),
     guardarConSubtitulos: guardar('guardarConSubtitulos', 'content://media/vieja'),
     exportarToma: guardar('exportarToma', 'content://media/87', { recodifico: true, msGuardado: 1 }),
-    capacidades: async () => ({ exportarToma: true }),
     compartir: async (o) => {
       estado.llamadas.push(['compartir', o])
       if (estado.compartirFalla) throw new Error(estado.compartirFalla)
@@ -64,7 +63,7 @@ export function camaraNativaFingida(estado: EstadoNativo): any {
   return new Proxy({}, {
     get(_t, prop: string) {
       if (prop === 'then') return undefined
-      if (estado.apkViejo && (prop === 'exportarToma' || prop === 'capacidades')) return () => noImplementado(prop)
+      if (estado.apkViejo && prop === 'exportarToma') return () => noImplementado(prop)
       if (prop in metodos) return metodos[prop]
       return () => noImplementado(prop)
     }

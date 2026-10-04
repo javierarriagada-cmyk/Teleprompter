@@ -10,25 +10,24 @@ import org.json.JSONObject;
 // La lectura va en dos partes para que JUnit la pruebe sin dependencias nuevas: en las pruebas
 // locales de Android, org.json es un esqueleto que lanza "Method ... not mocked". desdeJson es
 // delgada -solo saca los valores del JSONObject- y desdeValores, en Java puro, valida y decide.
+//
+// -04-10-2026, Javier simplifica la 87- La receta ya no trae margenAbajo -0,125 en "Normal", 0,35 en
+// "Para redes"-: el subtítulo va siempre a 1/6, UbicacionSubtitulos.MARGEN_ABAJO. Si un JSON viejo
+// lo trae, se ignora.
 final class RecetaExportacion {
-    // El margen de hoy -"Normal"-. Con este valor CapaDeSubtitulos dibuja EXACTAMENTE lo de antes.
-    static final float MARGEN_ABAJO_NORMAL = 0.125f;
-
     final String estilo;
     // La lista de subtítulos como JSON, tal como la lee CapaDeSubtitulos. "[]" si no lleva.
     final String subtitulosJson;
     final int cantidadSubtitulos;
-    final float margenAbajo;
     // Plan 2: null = la toma entera. Aquí siempre null.
     final long[][] tramosMs;
     // Plan 3: aquí siempre null. Su forma la define el plan 3.
     final Object filtro = null;
 
-    private RecetaExportacion(String estilo, String subtitulosJson, int cantidad, float margenAbajo, long[][] tramosMs) {
+    private RecetaExportacion(String estilo, String subtitulosJson, int cantidad, long[][] tramosMs) {
         this.estilo = estilo;
         this.subtitulosJson = subtitulosJson;
         this.cantidadSubtitulos = cantidad;
-        this.margenAbajo = margenAbajo;
         this.tramosMs = tramosMs;
     }
 
@@ -37,7 +36,6 @@ final class RecetaExportacion {
         int version = o.optInt("version", 0);
         String estilo = o.optString("estilo", "");
         JSONArray subs = o.optJSONArray("subtitulos");
-        double margen = o.has("margenAbajo") && !o.isNull("margenAbajo") ? o.getDouble("margenAbajo") : Double.NaN;
         long[][] tramos = null;
         if (o.has("tramos") && !o.isNull("tramos")) {
             JSONArray ts = o.getJSONArray("tramos");
@@ -48,21 +46,18 @@ final class RecetaExportacion {
             }
         }
         boolean hayFiltro = o.has("filtro") && !o.isNull("filtro");
-        return desdeValores(version, estilo, subs == null ? null : subs.toString(), subs == null ? -1 : subs.length(), margen, tramos, hayFiltro);
+        return desdeValores(version, estilo, subs == null ? null : subs.toString(), subs == null ? -1 : subs.length(), tramos, hayFiltro);
     }
 
     // Java puro: lo que valida y decide. Lanza IllegalArgumentException con el motivo, como
     // validarReceta en TypeScript.
     static RecetaExportacion desdeValores(int version, String estilo, String subtitulosJson, int cantidad,
-                                          double margen, long[][] tramos, boolean hayFiltro) {
+                                          long[][] tramos, boolean hayFiltro) {
         if (version != 1) throw new IllegalArgumentException("versión desconocida");
         if (!"no".equals(estilo) && !"amarillo".equals(estilo) && !"rojo".equals(estilo) && !"formal".equals(estilo)) {
             throw new IllegalArgumentException("estilo desconocido");
         }
         if (subtitulosJson == null || cantidad < 0) throw new IllegalArgumentException("subtítulos no es una lista");
-        if (Double.isNaN(margen) || Double.isInfinite(margen) || margen < 0 || margen > 0.5) {
-            throw new IllegalArgumentException("margen fuera de 0 a 0,5");
-        }
         if (tramos != null) {
             long fin = -1;
             for (long[] t : tramos) {
@@ -73,18 +68,12 @@ final class RecetaExportacion {
             }
         }
         if (hayFiltro) throw new IllegalArgumentException("filtro no va en esta tarea");
-        return new RecetaExportacion(estilo, subtitulosJson, cantidad, (float) margen, tramos);
+        return new RecetaExportacion(estilo, subtitulosJson, cantidad, tramos);
     }
 
     // Nada que dibujar, cortar ni filtrar: se copia la toma tal cual, sin recodificar.
     boolean esCopia() {
         boolean sinSubtitulos = "no".equals(estilo) || cantidadSubtitulos == 0;
         return sinSubtitulos && tramosMs == null && filtro == null;
-    }
-
-    // El margen como texto para la línea SigoExport -guardado_inicio margen=-, con tres cifras como
-    // el "0.125" del paso 0: con dos -MedicionExport.decimal- saldría "0.13".
-    String margenTexto() {
-        return String.format(java.util.Locale.ROOT, "%.3f", margenAbajo);
     }
 }

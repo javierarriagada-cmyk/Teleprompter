@@ -27,11 +27,10 @@ vi.mock('../lib/archivosNativos', async (importOriginal) => {
     ...actual,
     directorioGrabaciones: async () => '/grabaciones',
     leerTexto: async () => TOMA,
-    tieneExportarToma: async () => true,
     analizarVideo: async () => { throw new Error('sin análisis') },
     guardarEnGaleria: async (ruta: string) => { m.llamadas.push(['tal cual', ruta]); return responder('content://media/1') },
-    guardarEnGaleriaConSubtitulos: async (ruta: string, subs: any[], estilo: string, alAvanzar?: (n: number) => void, posicion?: string) => {
-      m.llamadas.push(['quemada', ruta, subs.length, estilo, posicion])
+    guardarEnGaleriaConSubtitulos: async (ruta: string, subs: any[], estilo: string, alAvanzar?: (n: number) => void) => {
+      m.llamadas.push(['quemada', ruta, subs.length, estilo])
       m.avanzar = alAvanzar || null
       return responder('content://media/2')
     },
@@ -81,7 +80,7 @@ describe('Tarea 87, E1: Guardar y compartir', () => {
     expect(m.llamadas).toContainEqual(['compartir', 'content://media/2'])
     // Una sola copia: el original se borra como al guardar.
     expect(m.llamadas).toContainEqual(['borrar', '/grabaciones/008a7133.mp4'])
-    expect(onCambio).toHaveBeenCalledWith(expect.objectContaining({ galeriaUri: 'content://media/2', posicionGaleria: 'normal' }))
+    expect(onCambio).toHaveBeenCalledWith(expect.objectContaining({ galeriaUri: 'content://media/2' }))
   })
 
   test('SIN SUBTÍTULOS TAMBIÉN: va la copia tal cual y después compartir', async () => {

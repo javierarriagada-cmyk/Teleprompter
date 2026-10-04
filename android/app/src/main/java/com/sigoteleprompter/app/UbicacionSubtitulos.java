@@ -1,43 +1,40 @@
 package com.sigoteleprompter.app;
 
-// DÓNDE VA EL BLOQUE DE SUBTÍTULOS CON UN MARGEN QUE NO ES EL DE HOY -tarea 87, partes D0 y D2,
-// 04-10-2026-. En Java puro, para que JUnit lo pruebe con un cuadro fingido: CapaDeSubtitulos usa
-// android.graphics y no se puede cargar en las pruebas locales.
+// DÓNDE VA EL BLOQUE DE SUBTÍTULOS EN EL ARCHIVO GUARDADO -tarea 87, 04-10-2026, decidido por Javier-.
+// UNA sola posición para todo: el borde de abajo del bloque -la caja del último renglón, hasta su
+// descent- queda a 1/6 del alto de la imagen vista derecha, contado desde abajo, igual en vertical
+// y en horizontal. Es la MISMA cifra del visor -MARGEN_ABAJO_SUBTITULOS en src/lib/subtitulos.ts,
+// que usa CapaSubtitulos en SubtitulosVisor.tsx-: si se cambia una, se cambia la otra.
+// Antes: un octavo -H * (1 - 0.125f)-, escrito a mano en CapaDeSubtitulos.java.
 //
-// Con "Para redes" el píxel PINTADO más bajo -el contorno, y en formal la franja- queda en
-// H*(1-margen): por eso se resta extraAbajo = formal ? 0,08*letra : 0,07*letra -la mitad del
-// contorno de 0,14-. Si el borde de arriba del bloque entraría en el 14 % superior -la zona de
-// Meta-, la letra se achica hasta que no entre. Con lo de hoy -a lo más dos renglones y letra
-// H/32- la guardia no se activa nunca: es una guardia.
+// En Java puro, para que JUnit lo pruebe: CapaDeSubtitulos usa android.graphics y no se puede
+// cargar en las pruebas locales.
 //
-// Con el margen de hoy -0,125- CapaDeSubtitulos NO llama esto: usa su cálculo de siempre.
+// -04-10-2026, Javier simplifica la 87- Esta clase nació para "Para redes" -extraAbajo, el píxel
+// pintado más bajo en H*(1-margen), y la guardia del 14 % de arriba-; eso se sacó con la posición
+// y quedó solo la posición única.
 final class UbicacionSubtitulos {
-    static final float ZONA_ARRIBA = 0.14f;
+    // 1/6 del alto de la imagen, desde abajo.
+    static final float MARGEN_ABAJO = 1f / 6f;
 
     private UbicacionSubtitulos() {}
 
-    // ascentPorLetra y descentPorLetra son -fm.ascent/letra y fm.descent/letra: crecen parejo con la
-    // letra. Devuelve { letra, base }, con base como la de CapaDeSubtitulos: y del renglón i es
-    // base + i*alto - descent.
-    static float[] ubicar(float H, float letra, int renglones, float ascentPorLetra, float descentPorLetra,
-                          float margen, boolean formal) {
-        float l = letra;
-        float base = 0;
-        for (int vuelta = 0; vuelta < 60; vuelta++) {
-            float alto = l * 1.25f;
-            float extraAbajo = formal ? 0.08f * l : 0.07f * l;
-            base = H * (1 - margen) - extraAbajo - (renglones - 1) * alto;
-            if (bordeDeArriba(base, l, ascentPorLetra, descentPorLetra, formal) >= H * ZONA_ARRIBA) break;
-            l = l * 0.95f;
-        }
-        return new float[] { l, base };
+    // La base de CapaDeSubtitulos para un bloque de n renglones de alto "alto" en una imagen de alto
+    // H: y del renglón i es base + i*alto - descent, así que la caja del último renglón termina en
+    // base + (n-1)*alto = H * (1 - MARGEN_ABAJO).
+    static float base(float H, float alto, int renglones) {
+        return H * (1 - MARGEN_ABAJO) - (renglones - 1) * alto;
     }
 
-    // El borde de arriba del bloque, contado desde arriba: el ascent del primer renglón y lo que
-    // sobresale -la franja en formal, medio contorno si no-.
-    static float bordeDeArriba(float base, float letra, float ascentPorLetra, float descentPorLetra, boolean formal) {
-        float y0 = base - descentPorLetra * letra;
-        float extraArriba = formal ? 0.08f * letra : 0.07f * letra;
-        return y0 - ascentPorLetra * letra - extraArriba;
+    // Lo que queda entre la caja del último renglón y el borde de abajo: H / 6. Es lo que la línea
+    // evento=capa anota como caja_abajo_px.
+    static float cajaAbajo(float H, float alto, int renglones) {
+        return H - (base(H, alto, renglones) + (renglones - 1) * alto);
+    }
+
+    // El margen como texto para la línea SigoExport -guardado_inicio margen=-, con tres cifras como
+    // el "0.125" del paso 0: "0.167".
+    static String margenTexto() {
+        return String.format(java.util.Locale.ROOT, "%.3f", MARGEN_ABAJO);
     }
 }

@@ -138,8 +138,6 @@ export type ResumenGrabacion = {
   // rotación 90 es vertical. Sin el dato -toma vieja o APK viejo- el visor la analiza al abrirla.
   // Campo opcional: no se sube DB_VERSION.
   orientacion?: 'vertical' | 'horizontal' | 'cuadrada'
-  // -tarea 87, parte D- A qué altura quedaron los subtítulos de la copia guardada.
-  posicionGaleria?: 'normal' | 'redes'
 }
 
 export function grabacionNueva(parcial: Partial<ResumenGrabacion> & Pick<ResumenGrabacion, 'tituloGuion'>): ResumenGrabacion {
@@ -159,8 +157,7 @@ export function grabacionNueva(parcial: Partial<ResumenGrabacion> & Pick<Resumen
     calidad: parcial.calidad,
     galeriaUri: parcial.galeriaUri,
     estiloGaleria: parcial.estiloGaleria,
-    orientacion: parcial.orientacion,
-    posicionGaleria: parcial.posicionGaleria
+    orientacion: parcial.orientacion
   }
 }
 

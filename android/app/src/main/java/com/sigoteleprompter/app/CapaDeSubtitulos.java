@@ -67,9 +67,6 @@ final class CapaDeSubtitulos extends BitmapOverlay {
     // Cuantos grados hay que girar el cuadro para verlo derecho -la toma del
     // telefono viene en 1920x1080 con rotacion 90-.
     private final int rotacion;
-    // -tarea 87, parte D, 04-10-2026- Dónde va el último renglón, como fracción del alto desde abajo:
-    // 0,125 en "Normal" -lo de siempre- y 0,35 en "Para redes". Llega en la receta.
-    private final float margenAbajo;
 
     private int anchoCuadro;
     private int altoCuadro;
@@ -95,14 +92,7 @@ final class CapaDeSubtitulos extends BitmapOverlay {
         this.anotador = anotador;
     }
 
-    // El de tres queda como estaba para guardarConSubtitulos -un APK viejo y para comparar- y llama
-    // al de cuatro con el margen de hoy: con 0,125 se dibuja EXACTAMENTE lo de antes.
     CapaDeSubtitulos(String subtitulosJson, String estilo, int rotacion) throws Exception {
-        this(subtitulosJson, estilo, rotacion, RecetaExportacion.MARGEN_ABAJO_NORMAL);
-    }
-
-    CapaDeSubtitulos(String subtitulosJson, String estilo, int rotacion, float margenAbajo) throws Exception {
-        this.margenAbajo = margenAbajo;
         this.estilo = estilo;
         this.rotacion = ((rotacion % 360) + 360) % 360;
         JSONArray arr = new JSONArray(subtitulosJson);
@@ -199,10 +189,8 @@ final class CapaDeSubtitulos extends BitmapOverlay {
         boolean formal = "formal".equals(estilo);
         // Las mismas medidas que el visor: letra de 1/32 del alto, renglones de
         // 1,25, un octavo del alto desde abajo, 6% de margen a los lados.
-        // -tarea 87, parte D, 04-10-2026- El margen de abajo ahora viene en la receta: 0,125 -"Normal",
-        // el octavo de siempre- o 0,35 -"Para redes"-. Con 0,125 todo lo de abajo es el código de
-        // antes, tal cual; con otro margen lo ubica UbicacionSubtitulos -el píxel pintado más bajo
-        // en H*(1-margen), y la guardia del 14 % de arriba-.
+        // -tarea 87, 04-10-2026, Javier simplifica la 87- Ya no es un octavo: un sexto del alto,
+        // en vertical y en horizontal -UbicacionSubtitulos.MARGEN_ABAJO, la misma cifra del visor-.
         float letra = H / 32f;
         Paint relleno = new Paint(Paint.ANTI_ALIAS_FLAG);
         relleno.setTypeface(Typeface.create("sans-serif", formal ? Typeface.NORMAL : Typeface.BOLD));
@@ -226,23 +214,9 @@ final class CapaDeSubtitulos extends BitmapOverlay {
 
         float alto = letra * 1.25f;
         int n = s.renglones.size();
-        float base = H * (1 - 0.125f) - (n - 1) * alto;
+        // Antes: float base = H * (1 - 0.125f) - (n - 1) * alto;
+        float base = UbicacionSubtitulos.base(H, alto, n);
         Paint.FontMetrics fm = relleno.getFontMetrics();
-        if (margenAbajo != RecetaExportacion.MARGEN_ABAJO_NORMAL) {
-            // "Para redes": la letra sigue en 1/32 del alto -decidido el 03-10-; solo la achica la
-            // guardia del 14 %. Si la achica, el contorno y las métricas se rehacen con la nueva.
-            float[] lb = UbicacionSubtitulos.ubicar(H, letra, n, -fm.ascent / letra, fm.descent / letra, margenAbajo, formal);
-            if (lb[0] != letra) {
-                letra = lb[0];
-                relleno.setTextSize(letra);
-                espacio = relleno.measureText(" ");
-                contorno.setTextSize(letra);
-                contorno.setStrokeWidth(letra * 0.14f);
-                alto = letra * 1.25f;
-                fm = relleno.getFontMetrics();
-            }
-            base = lb[1];
-        }
         // Medición -paso 0-: la geometría tal como se usa abajo. caja_abajo es lo que queda entre
         // el borde de abajo de la caja de descent del último renglón y el borde de abajo.
         medW = W;

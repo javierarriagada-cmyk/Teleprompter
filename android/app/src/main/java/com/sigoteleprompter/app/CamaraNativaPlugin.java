@@ -456,8 +456,10 @@ public class CamaraNativaPlugin extends Plugin {
         }
         if (midiendo) {
             capa.medirCon(idMedicion, this::medir);
+            // -tarea 87, 04-10-2026- El margen es el de CapaDeSubtitulos, ahora 1/6 -"0.167"-.
+            // Antes: "margen", "0.125".
             medir(MedicionExport.linea("guardado_inicio",
-                "id", idMedicion, "modo", "subtitulos", "estilo", estilo, "margen", "0.125",
+                "id", idMedicion, "modo", "subtitulos", "estilo", estilo, "margen", UbicacionSubtitulos.margenTexto(),
                 "dur_toma_ms", rotacionYDuracion(origen)[1], "bytes_entrada", origen.length(), "rot_grados", rotacion));
         }
         File salida = new File(getContext().getCacheDir(), "con-subtitulos-" + System.currentTimeMillis() + ".mp4");
@@ -560,21 +562,13 @@ public class CamaraNativaPlugin extends Plugin {
         });
     }
 
-    // LO QUE SABE HACER ESTE APK -tarea 87, parte B, 04-10-2026-. Un APK viejo no tiene este
-    // método: la app lo entiende como "no hay exportarToma" y no ofrece "Para redes".
-    @PluginMethod
-    public void capacidades(PluginCall call) {
-        JSObject ret = new JSObject();
-        ret.put("exportarToma", true);
-        call.resolve(ret);
-    }
-
     // LA RECETA COMÚN -tarea 87, parte B, 04-10-2026-. El mismo flujo de guardarConSubtitulos
     // -que NO se cambia: queda para un APK viejo y para comparar-, pero con la receta de la app
     // -RecetaExportacion.java-: la rotación como allá; si la receta es copia, copiarAGaleria tal
     // cual; si no, Transformer con los efectos de ExportadorDeTomas. Mismo 12 Mbps, mismo avance
     // cada 400 ms, misma copia a la galería y mismo borrado del temporal, con las marcas de tiempo
-    // y las líneas SigoExport del paso 0 -guardado_inicio lleva el margen de la receta-.
+    // y las líneas SigoExport del paso 0 -guardado_inicio lleva el margen, que ya no viene en la
+    // receta: es el 1/6 de UbicacionSubtitulos-.
     @PluginMethod
     @androidx.annotation.OptIn(markerClass = androidx.media3.common.util.UnstableApi.class)
     public void exportarToma(PluginCall call) {
@@ -639,7 +633,7 @@ public class CamaraNativaPlugin extends Plugin {
         if (midiendo) {
             if (capa != null) capa.medirCon(idMedicion, this::medir);
             medir(MedicionExport.linea("guardado_inicio",
-                "id", idMedicion, "modo", "receta", "estilo", receta.estilo, "margen", receta.margenTexto(),
+                "id", idMedicion, "modo", "receta", "estilo", receta.estilo, "margen", UbicacionSubtitulos.margenTexto(),
                 "dur_toma_ms", rd[1], "bytes_entrada", origen.length(), "rot_grados", rotacion));
         }
         File salida = new File(getContext().getCacheDir(), "receta-" + System.currentTimeMillis() + ".mp4");
