@@ -38,6 +38,13 @@ public class UbicacionSubtitulosTest {
         assertEquals(40f, UbicacionSubtitulos.letra(1280, 720), 0f);
     }
 
+    // -04-10-2026- El menor entre lado corto / 18 y lado largo / 32: una vertical 3:4 sigue como antes.
+    @Test
+    public void unaVertical480x640SigueEn20() {
+        assertEquals(20f, UbicacionSubtitulos.letra(480, 640), 0f);
+        assertEquals(20f, UbicacionSubtitulos.letra(640, 480), 0f);
+    }
+
     // GUARDIANA: la vertical, igual que antes -H / 32f-, al píxel.
     @Test
     public void enVerticalLaLetraEsLaDeAntes() {

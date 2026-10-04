@@ -74,9 +74,22 @@ export function letrasPorRenglon(forma: FormaCuadro | 'cuadrada' | null | undefi
 // lado corto, o sea 60 px en 1080 y 40 en 720, en las dos orientaciones. En la vertical de 9:16 es la
 // letra de siempre -1/32 del alto, la del prototipo, 40 sobre 1280-. La misma cuenta que
 // UbicacionSubtitulos.letra en Java. Antes: alto / 32, que en horizontal daba 33,75 en 1080.
+// -04-10-2026, aprobado por Javier- El MENOR entre lado corto / 18 y lado largo / 32: en 16:9 los dos
+// dan lo mismo -60 en 1920×1080 y en 1080×1920- y ninguna vertical cambia -un 480×640 sigue en 20,
+// lado largo / 32, como antes; con solo el lado corto daba 26,7-. Antes: lado corto / 18 a secas.
 export const LADO_CORTO_EN_LETRAS = 18
+export const LADO_LARGO_EN_LETRAS = 32
 export function letraSubtitulo(ancho: number, alto: number): number {
-  return Math.min(ancho, alto) / LADO_CORTO_EN_LETRAS
+  return Math.min(Math.min(ancho, alto) / LADO_CORTO_EN_LETRAS, Math.max(ancho, alto) / LADO_LARGO_EN_LETRAS)
+}
+// EL AJUSTE DEL RENGLÓN ANCHO -04-10-2026, aprobado por Javier-: si el renglón más ancho del subtítulo,
+// medido a la letra "letra", pasa del 88 % del ancho de la imagen, se achica la letra de todo ese
+// subtítulo en la misma proporción. La misma cuenta que UbicacionSubtitulos.letraQueCabe del archivo:
+// así el visor muestra lo mismo que se guarda.
+export const ANCHO_UTIL_SUBTITULOS = 0.88
+export function letraQueCabe(letra: number, masAncho: number, ancho: number): number {
+  const util = ancho * ANCHO_UTIL_SUBTITULOS
+  return masAncho > util ? (letra * util) / masAncho : letra
 }
 // Una pausa de la voz de mas de esto corta el subtitulo aunque la oracion siga.
 export const PAUSA_QUE_CORTA_MS = 450

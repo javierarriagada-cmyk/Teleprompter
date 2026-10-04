@@ -330,8 +330,8 @@ W = 1792/2048 em, o sea 41,14 em.
 | Dónde | Ancho a la letra nueva | Disponible (88 %) | Resultado |
 |---|---|---|---|
 | Archivo 1920×1080, letra 60 | 2468,2 px | 1689,6 | **No cabe** (+778,6). Lo resuelve el ajuste que ya tenía CapaDeSubtitulos, ahora en `UbicacionSubtitulos.letraQueCabe`: la letra de ese subtítulo baja a **41,07** y el renglón mide 1689,2 |
-| Visor de pie, letra 11,61 | 477,6 | 327 | **Se sale 150,6** (46 %): pasa el borde de la imagen |
-| Visor de lado caso 1, letra 19,94 | 819,5 | 561,4 | **Se sale 258,1**: pasa sobre la franja y la columna |
+| Visor de pie, letra 11,61 | 477,6 | 327 | Antes del ajuste del visor se salía 150,6 (46 %). **Ahora** la letra baja a **7,95** y el renglón mide 326,5 |
+| Visor de lado caso 1, letra 19,94 | 819,5 | 561,4 | Antes del ajuste se salía 258,1. **Ahora** la letra baja a **13,66** y el renglón mide 561,1 |
 
 Antes, con 32 «MW», cabía en todos los casos: 945,3 de 1689,6 en el archivo, 182,5 de 327 de pie y
 313,8 de 561,4 de lado. En vertical pasa lo mismo hoy: 32 «MW» a 60 px miden 1680 de 950,4, el
@@ -340,11 +340,21 @@ archivo achica la letra y el visor no.
 Un renglón ancho con espacios, como «MW MW …» de 47 letras (31,7 em), mide en el archivo 1904 px:
 la letra baja a 53,2. En el visor no se sale: se parte en dos líneas y el subtítulo queda de tres.
 
-**Salida propuesta para el visor (NO aplicada):** que el visor haga lo mismo que el archivo. Se mide
-el renglón más ancho con un canvas, con Roboto 700 a la letra calculada, y si pasa del 88 % de la
-imagen se achica la letra de todo el subtítulo con la misma cuenta de `letraQueCabe`. Así el visor
-mostraría lo mismo que queda guardado. La otra salida es partir antes, por ancho medido en vez de por
-letras; esa cambiaría los renglones también en el archivo.
+**El visor achica como el archivo (04-10-2026, aprobado por Javier).**
+
+- `src/lib/medirTexto.ts` mide el renglón más ancho con un canvas (`measureText`), en Roboto 700, o 400
+  en formal.
+- Si pasa del 88 % de la imagen, la letra de ese subtítulo baja con la misma cuenta del archivo:
+  `letraQueCabe` en `src/lib/subtitulos.ts`, igual a `UbicacionSubtitulos.letraQueCabe`.
+- Llevadas a 1920 de ancho, las letras coinciden: 41,08 de pie (7,95 en 371,5), 41,11 de lado (13,66
+  en 638) y 41,07 en el archivo. La diferencia es el redondeo de la letra en la medida.
+- Sin canvas (jsdom) no hay ajuste.
+
+**La letra es el menor entre lado corto / 18 y lado largo / 32** (aprobado por Javier). En 16:9 da lo
+mismo que lado corto / 18 y ninguna vertical cambia: un 480×640 sigue en 20, cuando con solo el lado
+corto daba 26,7.
+
+Antes estaba propuesto partir antes, por ancho medido; no se hizo.
 
 La lámina es `horizontal/lamina-horizontal.png`, con las sueltas `horizontal/{antes,despues}-*.png`.
 Las herramientas están en `horizontal/herramientas/`: `capturas.cjs antes|despues`, `cuadro.tsx` (el

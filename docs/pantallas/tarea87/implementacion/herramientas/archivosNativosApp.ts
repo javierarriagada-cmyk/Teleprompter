@@ -14,7 +14,12 @@ export type AnalisisVideo = { duracionMs: number; bytes: number; tienePistaAudio
 export type FormaDeToma = Record<string, unknown>
 export async function directorioGrabaciones(): Promise<string> { return '/grabaciones' }
 export async function escribirTexto(_r: string, _c: string): Promise<void> {}
+// ?mw=47 -tarea 87, el renglón ancho, 04-10-2026-: la palabra «concepción» del registro -en el guion y
+// en lo oído- pasa a ser una sola palabra de 47 letras «MW», para ver el ajuste del visor con un
+// subtítulo de verdad.
 export async function leerTexto(_ruta: string): Promise<string> {
+  const mw = Number(q.get('mw') || '0')
+  if (q.get('subs') === 'si' && mw > 0) return registro.split('concepción').join('MW'.repeat(mw).slice(0, mw))
   if (q.get('subs') === 'si') return registro
   throw new Error('sin registro')
 }

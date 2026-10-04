@@ -1,6 +1,7 @@
 import React from 'react'
 import { hapticaSeleccion } from '../haptica'
-import { ESTILOS_SUBTITULO, EstiloSubtitulo, Subtitulo, subtituloEn, MARGEN_ABAJO_SUBTITULOS, letraSubtitulo } from '../lib/subtitulos'
+import { ESTILOS_SUBTITULO, EstiloSubtitulo, Subtitulo, subtituloEn, MARGEN_ABAJO_SUBTITULOS, letraSubtitulo, letraQueCabe } from '../lib/subtitulos'
+import { anchoDelRenglonMasAncho } from '../lib/medirTexto'
 import { t, useTextos, ClaveTexto } from '../textos'
 import { IconoSubtitulos } from './IconosApp'
 
@@ -84,12 +85,19 @@ export function CapaSubtitulos({
   if (estilo === 'no' || !rect) return null
   const s = subtituloEn(subtitulos, ms)
   if (!s) return null
+  // -tarea 87, 04-10-2026, aprobado por Javier- La letra del cuadro y, si el renglón más ancho no cabe
+  // en el 88 % de la imagen, la misma letra achicada que tendrá quemada -letraQueCabe, la cuenta de
+  // UbicacionSubtitulos.java-. Medido con canvas y Roboto -lib/medirTexto.ts-; sin medida, sin ajuste.
+  const letraBase = letraSubtitulo(rect.w, rect.h)
+  const masAncho = anchoDelRenglonMasAncho(s.renglones.map((r) => r.map((w) => w.texto).join(' ')), letraBase, estilo !== 'formal')
+  const letra = masAncho === null ? letraBase : letraQueCabe(letraBase, masAncho, rect.w)
 
   return (
     <div
       className="capa-subtitulos"
       data-testid="capa-subtitulos"
       data-estilo={estilo}
+      data-letra-base={letraBase}
       aria-hidden="true"
       style={{
         left: rect.x,
@@ -101,7 +109,8 @@ export function CapaSubtitulos({
         // 1280-.
         // -tarea 87, subtítulos en horizontal- Contra el lado corto de la imagen, la misma cuenta del
         // archivo: en vertical es la de siempre; en horizontal ya no sale chica. Antes: rect.h / 32.
-        fontSize: letraSubtitulo(rect.w, rect.h)
+        // Antes, en esta misma tarea: letraSubtitulo(rect.w, rect.h), sin el ajuste del renglón ancho.
+        fontSize: letra
       }}
     >
       {/* -tarea 87, 04-10-2026- Un sexto del alto de la imagen, en vertical y en horizontal: la

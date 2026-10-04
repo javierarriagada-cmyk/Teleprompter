@@ -43,5 +43,5 @@ dibujando el archivo a 1/8.
   - `letra_base_px=60` en 1080 de lado corto, o 40 en 720;
   - `caja_abajo_px` = H/6, sin cambio.
 - **El visor**, con una captura de pie y de lado (caso 1): el subtítulo ya no es chico. En una imagen de 209 dp de alto la letra es de 11,6 dp (antes 6,5), y los renglones son de hasta 47 letras.
-- **Un renglón muy ancho:** en el archivo, la letra de ese subtítulo baja hasta que cabe; mirar `letra_px` contra `letra_base_px`. En el visor no hay ajuste: un renglón más ancho que el 88 % se parte en dos líneas o, si es una sola palabra, se sale del margen (ver `docs/pantallas/tarea87/medidas-implementacion.md`).
-- **La forma del 480p (`evento=forma`):** si no es 9:16 (por ejemplo, 480×640), su letra en vertical cambia: era alto/32 = 20 y ahora es lado corto/18 = 26,7.
+- **Un renglón muy ancho:** la letra de ese subtítulo baja hasta que cabe, en el archivo (mirar `letra_px` contra `letra_base_px`) y también en el visor, con la misma cuenta. En una captura el visor tiene que verse igual que el archivo.
+- **La letra** es el menor entre lado corto / 18 y lado largo / 32. Ninguna vertical cambia: un 480p de 480×640, si lo es, sigue en 20.

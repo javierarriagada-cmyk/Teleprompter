@@ -36,9 +36,13 @@ final class UbicacionSubtitulos {
     // píxel: 1080 / 18 = 1920 / 32 = 60. La misma cuenta que letraSubtitulo en src/lib/subtitulos.ts.
     // Antes: H / 32f en CapaDeSubtitulos, que en horizontal daba 33,75 en 1080.
     static final float LADO_CORTO_EN_LETRAS = 18f;
+    // -04-10-2026, aprobado por Javier- El MENOR entre lado corto / 18 y lado largo / 32: en 16:9 da lo
+    // mismo y ninguna vertical cambia -480×640 sigue en 20-. LADO_LARGO_EN_LETRAS en subtitulos.ts.
+    // Antes: Math.min(W, H) / LADO_CORTO_EN_LETRAS a secas.
+    static final float LADO_LARGO_EN_LETRAS = 32f;
 
     static float letra(float W, float H) {
-        return Math.min(W, H) / LADO_CORTO_EN_LETRAS;
+        return Math.min(Math.min(W, H) / LADO_CORTO_EN_LETRAS, Math.max(W, H) / LADO_LARGO_EN_LETRAS);
     }
 
     // El ancho que puede ocupar un renglón: el 88 % del cuadro -6 % de margen a cada lado, como el

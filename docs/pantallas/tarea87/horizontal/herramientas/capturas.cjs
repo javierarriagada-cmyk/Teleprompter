@@ -11,7 +11,11 @@
 const puppeteer = require('/workspace/tp-shot/node_modules/puppeteer-core');
 const fs = require('fs');
 const path = require('path');
-const etapa = process.argv[2] === 'despues' ? 'despues' : 'antes';
+// despues-mw -04-10-2026, el visor achica el renglón ancho-: rehace solo las dos vistas «MW» del visor
+// del después, con un subtítulo de verdad -?mw=47, archivosNativosApp.ts- en vez de escribirlo encima:
+// así se ve el ajuste de la letra.
+const soloMW = process.argv[2] === 'despues-mw';
+const etapa = process.argv[2] === 'despues' || soloMW ? 'despues' : 'antes';
 const N = etapa === 'despues' ? 47 : 32;
 const OUT = path.join(__dirname, '..');
 // PUERTO: 5183 por omisión; para el antes, el vite de un worktree en d9e9c83.
@@ -56,7 +60,40 @@ async function seek(p, t) {
   await new Promise((r) => setTimeout(r, 500));
 }
 
+// Busca, avanzando de a 0,25 s, la hora en que el subtítulo de la capa trae «MWMW».
+async function buscarMW(p) {
+  for (let t = 0.5; t < 20; t += 0.25) {
+    await p.evaluate(async (t) => { const v = document.querySelector('video'); v.pause(); v.currentTime = t; await new Promise((r) => v.addEventListener('seeked', r, { once: true })); }, t);
+    await new Promise((r) => setTimeout(r, 80));
+    if (await p.evaluate(() => /MWMW/.test((document.querySelector('.capa-subtitulos') || {}).textContent || ''))) { await new Promise((r) => setTimeout(r, 300)); return t; }
+  }
+  return null;
+}
+async function soloLasDeMW() {
+  const br = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox'] });
+  const p = await br.newPage();
+  const archivo = path.join(__dirname, 'medidas-despues.json');
+  const medidas = JSON.parse(fs.readFileSync(archivo, 'utf8'));
+  await p.evaluateOnNewDocument(() => { localStorage.clear(); localStorage.setItem('sigo_subtitulos_estilo', 'amarillo'); });
+  await p.setViewport({ width: 412, height: 915, deviceScaleFactor: 2 });
+  await p.goto(`${BASE}/tarea87/implementacion/herramientas/app.html?estado=5&tema=oscuro&nav=botones&subs=si&mw=47`, { waitUntil: 'networkidle0' });
+  await seek(p, 0.5);
+  const t1 = await buscarMW(p);
+  medidas.pieMW = { ...(await medirVisor(p)), hora: t1, letraBase: await p.evaluate(() => +parseFloat(document.querySelector('.capa-subtitulos').dataset.letraBase).toFixed(2)) };
+  await p.screenshot({ path: path.join(OUT, 'despues-pie-mw.png') });
+  await p.setViewport({ width: 915, height: 411, deviceScaleFactor: 2 });
+  await p.goto(`${BASE}/tarea90/herramientas/app-real.html?caso=1&giro=90&tema=oscuro&subs=si&mw=47`, { waitUntil: 'networkidle0' });
+  await p.waitForFunction(() => window.listo === true, { timeout: 10000 }).catch(() => {});
+  const t2 = await buscarMW(p);
+  medidas.ladoMW = { ...(await medirVisor(p)), hora: t2, letraBase: await p.evaluate(() => +parseFloat(document.querySelector('.capa-subtitulos').dataset.letraBase).toFixed(2)) };
+  await p.screenshot({ path: path.join(OUT, 'despues-lado-mw.png') });
+  fs.writeFileSync(archivo, JSON.stringify(medidas, null, 1));
+  console.log(JSON.stringify({ pieMW: medidas.pieMW, ladoMW: medidas.ladoMW }, null, 1));
+  await br.close();
+}
+
 (async () => {
+  if (soloMW) return soloLasDeMW();
   const br = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required'] });
   const p = await br.newPage();
   const medidas = { etapa, letrasMW: N };
