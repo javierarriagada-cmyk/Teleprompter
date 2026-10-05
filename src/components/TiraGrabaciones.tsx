@@ -64,6 +64,25 @@ interface Props {
 // Antes: para llegar a Eliminar hay que MANTENER APRETADA la toma, y el menú
 // pregunta "¿Seguro?" una segunda vez. Un video grabado no se recupera.
 // Ahora el tacho de la barra saca las marcadas y Deshacer las devuelve 5 s.
+//
+// Antes, el comentario entero -repuesto en la revisión de la 94, los comentarios no se borran-:
+// BORRAR PREGUNTA UNA VEZ, Y ES LA UNICA ACCION DE LA APLICACION QUE NO SE
+// PUEDE DESHACER. Un video grabado no se recupera.
+//
+// Antes se iba con un solo toque sobre una palabra chica y gris, del tamano de
+// una nota al pie. Esa palabra ya no esta: para llegar a Eliminar hay que
+// MANTENER APRETADA la toma, que es el gesto de esta aplicacion y el mismo que
+// la fila de guion -MS_MANTENER_APRETADO, 500 ms, un solo lugar-.
+//
+// Lo que NO cambio es que despues de abrir el menu sigue preguntando: el boton
+// pasa a decir "¿Seguro?" y hay que tocarlo otra vez. Si la persona no vuelve,
+// a los cuatro segundos se arrepiente solo. Un toque sin querer no borra nada.
+//
+// Y una toma no se archiva, asi que su menu lleva Eliminar y Cerrar, no los
+// tres de la fila. Tampoco hay deslizar: la tira se desplaza en horizontal y
+// los dos gestos chocarian.
+// -28-09-2026- SIMBOLOS: el tacho -antes "Eliminar"- y la X, como en el menu del guion
+// -.boton-menu-chico-.
 
 function TarjetaToma({
   g, nombre, marcada, enSeleccion, onAbrir, onMantener, onAlternar
