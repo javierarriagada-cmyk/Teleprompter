@@ -85,7 +85,9 @@ describe('Tarea 89, defecto 1: el registro muestra lo que hoy no se ve', () => {
   })
 
   test('los renglones del registro llevan el diseño con que salieron', () => {
-    expect(fuente('components/TeleprompterView.tsx')).toMatch(/tipo: 'pantalla', diseno: horizontalRef\.current \? 'tel-h' : 'tel-v'/)
+    // -mezcla con la 83, 04-10-2026- Con la tableta la línea anota el diseño entero -disenoRef-. Antes:
+    // toMatch(/tipo: 'pantalla', diseno: horizontalRef\.current \? 'tel-h' : 'tel-v'/)
+    expect(fuente('components/TeleprompterView.tsx')).toMatch(/tipo: 'pantalla', diseno: disenoRef\.current/)
     expect(fuente('App.tsx')).toMatch(/# diseño: /)
   })
 })

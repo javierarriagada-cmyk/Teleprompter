@@ -24,6 +24,9 @@ export interface RecuadroHorizontal {
   // se cambia el riel, el tope del arrastre lo sigue solo.
   esquina: EsquinaRecuadroH
   onEsquina: (e: EsquinaRecuadroH) => void
+  // El diseño de la ventana -tarea 83, 30-09-2026-: al pasar de uno a otro -girar la tableta- la
+  // posición que dejó un arrastre ya no vale, igual que al pasar de vertical a horizontal.
+  diseno?: string
 }
 
 // 144 x 81 -16:9-: la forma del video que se graba de lado, del tamaño de la hoja de medidas
@@ -33,16 +36,34 @@ export const RECUADRO_H_ANCHO = 144
 export const RECUADRO_H_ALTO = 81
 export const RECUADRO_H_MARGEN = 12
 
+// LA MEDIDA Y LA ZONA EN TABLETA -tarea 83, 30-09-2026-. En la tableta el recuadro es otro
+// -180 x 240 en vertical, 256 x 144 de lado- y la zona libre también: entre la barra de 72 y el
+// dock de 172 en vertical, entre los rieles de 168 de lado. Esas medidas las escribe
+// styles-tableta.css en variables -las mismas que dibujan la barra, el dock y los rieles- y acá se
+// leen. En el teléfono de lado no hay variables y quedan las constantes de arriba: la 82 no cambia.
+interface MedidaEsquinas {
+  ancho: number
+  alto: number
+  margenX: number
+  margenY: number
+  // Lo que ocupan los controles a cada lado de la zona libre, sin el área segura.
+  zonaIzq: number
+  zonaDer: number
+  zonaArr: number
+  zonaAba: number
+}
+
 // La zona libre entre los rieles, en px del contenedor, con el área segura y el margen de 12.
 function zonaLibreH(
   W: number,
   H: number,
-  pad: { izq: number; der: number; arr: number; aba: number; rielIzq: number; rielDer: number }
+  pad: { izq: number; der: number; arr: number; aba: number; rielIzq: number; rielDer: number; medida: MedidaEsquinas }
 ) {
-  const minX = pad.izq + pad.rielIzq + RECUADRO_H_MARGEN
-  const maxX = Math.max(minX, W - pad.der - pad.rielDer - RECUADRO_H_MARGEN - RECUADRO_H_ANCHO)
-  const minY = pad.arr + RECUADRO_H_MARGEN
-  const maxY = Math.max(minY, H - pad.aba - RECUADRO_H_MARGEN - RECUADRO_H_ALTO)
+  const m = pad.medida
+  const minX = pad.izq + m.zonaIzq + m.margenX
+  const maxX = Math.max(minX, W - pad.der - m.zonaDer - m.margenX - m.ancho)
+  const minY = pad.arr + m.zonaArr + m.margenY
+  const maxY = Math.max(minY, H - pad.aba - m.zonaAba - m.margenY - m.alto)
   return { minX, maxX, minY, maxY }
 }
 
@@ -109,9 +130,11 @@ export function RecuadroCamara({
   // Al girar el teléfono la posición que dejó un arrastre ya no vale: en vertical es un punto de
   // la pantalla vertical y en horizontal manda la esquina. Tarea 82, 29-09-2026.
   const esHorizontal = !!horizontal
+  // 30-09-2026, tarea 83: y al pasar entre los diseños de tableta.
+  const disenoEsquinas = horizontal?.diseno ?? ''
   useEffect(() => {
     setDragPos(null)
-  }, [esHorizontal])
+  }, [esHorizontal, disenoEsquinas])
 
   const getContainerDimensions = () => {
     if (dimensiones) return dimensiones
@@ -127,28 +150,62 @@ export function RecuadroCamara({
   // libre del teléfono de lado no se meta bajo la muesca ni la barra de navegación.
   const leerPadding = () => {
     const parent = containerRef.current?.parentElement
+    const medidaTelefono = (rielIzq: number, rielDer: number): MedidaEsquinas => ({
+      ancho: RECUADRO_H_ANCHO,
+      alto: RECUADRO_H_ALTO,
+      margenX: RECUADRO_H_MARGEN,
+      margenY: RECUADRO_H_MARGEN,
+      zonaIzq: rielIzq,
+      zonaDer: rielDer,
+      zonaArr: 0,
+      zonaAba: 0
+    })
     if (!parent || typeof window === 'undefined' || typeof window.getComputedStyle !== 'function') {
-      return { izq: 0, der: 0, arr: 0, aba: 0, rielIzq: 0, rielDer: 0 }
+      return { izq: 0, der: 0, arr: 0, aba: 0, rielIzq: 0, rielDer: 0, medida: medidaTelefono(0, 0) }
     }
     const cs = window.getComputedStyle(parent)
     const n = (v: string) => (Number.isFinite(parseFloat(v)) ? parseFloat(v) : 0)
+    // Una variable de la hoja, o null si no está -en el teléfono no está-.
+    const v = (nombre: string): number | null => {
+      const x = parseFloat(cs.getPropertyValue(nombre))
+      return Number.isFinite(x) ? x : null
+    }
+    // El recuadro solo existe en Grabar: el riel izquierdo es el de Grabar.
+    const rielIzq = n(cs.getPropertyValue('--riel-izq-grabar'))
+    const rielDer = n(cs.getPropertyValue('--riel-der'))
+    const ancho = v('--recuadro-esq-ancho')
+    const alto = v('--recuadro-esq-alto')
+    const medida: MedidaEsquinas = ancho !== null && alto !== null
+      ? {
+          ancho,
+          alto,
+          margenX: v('--recuadro-esq-margen-x') ?? RECUADRO_H_MARGEN,
+          margenY: v('--recuadro-esq-margen-y') ?? RECUADRO_H_MARGEN,
+          zonaIzq: v('--recuadro-zona-izq') ?? rielIzq,
+          zonaDer: v('--recuadro-zona-der') ?? rielDer,
+          zonaArr: v('--recuadro-zona-arr') ?? 0,
+          zonaAba: v('--recuadro-zona-aba') ?? 0
+        }
+      : medidaTelefono(rielIzq, rielDer)
     return {
       izq: n(cs.paddingLeft),
       der: n(cs.paddingRight),
       arr: n(cs.paddingTop),
       aba: n(cs.paddingBottom),
-      // El recuadro solo existe en Grabar: el riel izquierdo es el de Grabar.
-      rielIzq: n(cs.getPropertyValue('--riel-izq-grabar')),
-      rielDer: n(cs.getPropertyValue('--riel-der'))
+      rielIzq,
+      rielDer,
+      medida
     }
   }
 
   const { W, H } = dimensiones || getContainerDimensions()
   // 29-09-2026, tarea 82: en horizontal mide 144 x 81; en vertical, la fórmula de siempre.
-  const recuadroW = horizontal ? RECUADRO_H_ANCHO : W * 0.32
-  const recuadroH = horizontal ? RECUADRO_H_ALTO : recuadroW * (4 / 3)
+  // 30-09-2026, tarea 83: en tableta, la medida de la hoja -leerPadding, medida-.
+  const padEsquinas = horizontal ? leerPadding() : null
+  const recuadroW = padEsquinas ? padEsquinas.medida.ancho : W * 0.32
+  const recuadroH = padEsquinas ? padEsquinas.medida.alto : recuadroW * (4 / 3)
 
-  const zonaH = horizontal ? zonaLibreH(W, H, leerPadding()) : null
+  const zonaH = horizontal && padEsquinas ? zonaLibreH(W, H, padEsquinas) : null
   const posEsquina = horizontal && zonaH ? posicionDeEsquina(horizontal.esquina, zonaH) : null
 
   const currentX = dragPos ? dragPos.x : posEsquina ? posEsquina.x : recuadroX * W

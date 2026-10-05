@@ -116,18 +116,24 @@ describe('Tarea 82 - El teléfono de lado', () => {
     expect(screen.queryByTestId('velo-controles')).toBeNull()
   })
 
-  test('T82d Grabar en pausa con controles: el tacho a la izquierda; pausa y parar a la derecha.', async () => {
+  // -tarea 83, parte B, 04-10-2026- El tacho dejó el riel izquierdo: va en la fila de la toma, debajo de
+  // Parar, en el riel derecho. Antes: 'T82d Grabar en pausa con controles: el tacho a la izquierda; pausa
+  // y parar a la derecha.', con
+  //   const izq = await screen.findByTestId('riel-izquierdo')
+  //   expect(within(izq).getByTestId('btn-descartar-toma')).toBeTruthy()
+  test('T82d Grabar en pausa con controles: pausa, parar y el tacho, los tres en el riel derecho.', async () => {
     fingirTelefonoDeLado(true)
     await abrir('grabar')
     await empezarYMostrarControles()
     // Grabando, sin pausa: el riel izquierdo no tiene botón y no se dibuja.
     expect(screen.queryByTestId('riel-izquierdo')).toBeNull()
     fireEvent.click(screen.getByTestId('btn-pausa-lectura'))
-    const izq = await screen.findByTestId('riel-izquierdo')
     const der = screen.getByTestId('riel-derecho')
-    expect(within(izq).getByTestId('btn-descartar-toma')).toBeTruthy()
     expect(within(der).getByTestId('btn-pausa-lectura')).toBeTruthy()
     expect(within(der).getByTestId('btn-parar-lectura')).toBeTruthy()
+    expect(await within(der).findByTestId('btn-descartar-toma')).toBeTruthy()
+    // En pausa tampoco hay riel izquierdo: ya no lleva nada en Grabar.
+    expect(screen.queryByTestId('riel-izquierdo')).toBeNull()
   })
 
   test.each([

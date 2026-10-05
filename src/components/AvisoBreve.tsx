@@ -12,9 +12,12 @@ interface AvisoBreveProps {
   // los rieles, como largos CSS. Con esto el aviso va abajo y centrado en la columna, a 16 más el
   // área segura: en horizontal no hay círculo abajo al centro sobre el que calcularlo.
   columnaHorizontal?: { izquierda: string; derecha: string } | null
+  // TABLETA VERTICAL -tarea 83, 30-09-2026-: el aviso va encima del dock, a 16 de su borde, para
+  // no taparlo; la altura la pone la hoja -styles-tableta.css, --aviso-tab-v-abajo-.
+  sobreDock?: boolean
 }
 
-export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizontal = null }: AvisoBreveProps) {
+export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizontal = null, sobreDock = false }: AvisoBreveProps) {
   const enRieles = enLectura && !!columnaHorizontal
   return (
     /* EL LECTOR DE PANTALLA ANUNCIA EL AVISO -tarea 84, G1, 29-09-2026-. role="status" con
@@ -38,7 +41,9 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
             // sobre el, visto en el moto g86 el mismo dia.
             // 29-09-2026, tarea 82: en el teléfono de lado va a 16 más el área segura y entre
             // los rieles -columnaHorizontal-; en vertical sigue exactamente como arriba.
-            bottom: enRieles
+            bottom: sobreDock
+              ? 'calc(var(--aviso-tab-v-abajo) + env(safe-area-inset-bottom, 0px))'
+              : enRieles
               ? 'calc(16px + env(safe-area-inset-bottom, 0px))'
               : enLectura
               ? 'calc(var(--circulo-desde-abajo) + 72px + var(--aire-3) + env(safe-area-inset-bottom, 0px))'

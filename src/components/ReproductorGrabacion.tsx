@@ -513,7 +513,11 @@ export default function ReproductorGrabacion({
   // medidas-implementacion.md, cuarta versión, con la barra de reproducción de 52-. De pie no cambia nada:
   // el return de más abajo es el de siempre.
   const layout = useLayout()
-  const deLado = layout === 'tel-h'
+  // -tarea 83, parte B, 04-10-2026- También en la tableta de lado -'tab-h'-, con la misma regla
+  // -medidasVisorDeLado, sin medidas propias-: aprobado por Javier en la parte A.2. A 1180 x 820 la
+  // columna queda en el mínimo de 112 y el video de 16:9 se achica a 1068 x 601: un 16:9 a todo el alto
+  // no cabe en una pantalla de 1,44. Antes: const deLado = layout === 'tel-h'.
+  const deLado = layout === 'tel-h' || layout === 'tab-h'
 
   // LA FORMA, ANTES DE QUE CARGUE EL VIDEO: la miniatura sale del mismo mp4 -tomaVideo.ts- y trae la
   // misma forma. Sin miniatura, el caso 2 -forma null-, que es el que menos supone. El video, al cargar,

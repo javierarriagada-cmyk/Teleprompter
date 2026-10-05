@@ -68,6 +68,9 @@ export function FichasListo({
   setPanelAbierto,
   onAbrirAjustes,
   horizontal = false,
+  grandes = false,
+  anchas = false,
+  masAparte = false,
   gestosAlGrabar = false,
   setGestosAlGrabar,
   motivoSinGestos = null
@@ -95,6 +98,13 @@ export function FichasListo({
   // sale del carril -la dibuja TeleprompterView arriba del riel derecho, con FichaMas- y el panel
   // se abre a la derecha del riel, a la altura de su ficha.
   horizontal?: boolean
+  // LA TABLETA -tarea 83, 30-09-2026-. grandes: las fichas de la hoja de tableta -44 de alto, letra
+  // 15, radio 10-, con la clase grande del boceto. anchas: además a lo ancho del riel -tableta de
+  // lado, la clase ancha-. masAparte: Más no va en el carril porque TeleprompterView la dibuja en
+  // la barra de arriba -tableta vertical-. Los tamaños están en styles-tableta.css.
+  grandes?: boolean
+  anchas?: boolean
+  masAparte?: boolean
   // CONTROL POR GESTOS -tarea 88, 04-10-2026, docs/tarea88.txt, 6.5-. El valor elegido y, si hoy no se
   // puede, por qué: 'soloFrontal' con la trasera, 'noDisponible' si el equipo no puede. Con motivo la
   // fila se ve deshabilitada y apagada, pero el valor elegido no se toca.
@@ -103,6 +113,8 @@ export function FichasListo({
   motivoSinGestos?: 'soloFrontal' | 'noDisponible' | null
 }) {
   useTextos()
+  // Las clases de tamaño que se suman a .ficha-listo -tarea 83-.
+  const tam = `${grandes ? ' grande' : ''}${anchas ? ' ancha' : ''}`
   const carrilRef = useRef<HTMLDivElement | null>(null)
   const panelRef = useRef<HTMLDivElement | null>(null)
   // El top del panel en horizontal, en px de la fila -que en horizontal cubre el riel entero-.
@@ -426,7 +438,7 @@ export function FichasListo({
       <div className="carril-fichas" ref={carrilRef}>
         <button
           type="button"
-          className={`ficha-listo${panelAbierto === 'letra' ? ' abierta' : ''}`}
+          className={`ficha-listo${tam}${panelAbierto === 'letra' ? ' abierta' : ''}`}
           data-testid="ficha-letra"
           aria-label={`${t('tamanoLetra')}, ${fontSize}`}
           aria-expanded={panelAbierto === 'letra'}
@@ -438,7 +450,7 @@ export function FichasListo({
         {conCamara && (
           <button
             type="button"
-            className={`ficha-listo${panelAbierto === 'camara' ? ' abierta' : ''}`}
+            className={`ficha-listo${tam}${panelAbierto === 'camara' ? ' abierta' : ''}`}
             data-testid="ficha-camara"
             aria-label={`${t('imagenCamara')}, ${etiquetaCamara(fondoToma)}`}
             aria-expanded={panelAbierto === 'camara'}
@@ -451,7 +463,7 @@ export function FichasListo({
 
         <button
           type="button"
-          className={`ficha-listo${panelAbierto === 'anclaje' ? ' abierta' : ''}`}
+          className={`ficha-listo${tam}${panelAbierto === 'anclaje' ? ' abierta' : ''}`}
           data-testid="ficha-anclaje"
           aria-label={`${t('dondeLees')}, ${etiquetaAnclaje(anclajeZona)}`}
           aria-expanded={panelAbierto === 'anclaje'}
@@ -463,7 +475,7 @@ export function FichasListo({
 
         <button
           type="button"
-          className={`ficha-listo${panelAbierto === 'brillo' ? ' abierta' : ''}`}
+          className={`ficha-listo${tam}${panelAbierto === 'brillo' ? ' abierta' : ''}`}
           data-testid="ficha-brillo"
           aria-label={`${t('brillo')}, ${etiquetaBrillo(brillo)}`}
           aria-expanded={panelAbierto === 'brillo'}
@@ -476,7 +488,7 @@ export function FichasListo({
         {mostrarCalidad && (
           <button
             type="button"
-            className={`ficha-listo${panelAbierto === 'calidad' ? ' abierta' : ''}`}
+            className={`ficha-listo${tam}${panelAbierto === 'calidad' ? ' abierta' : ''}`}
             data-testid="ficha-calidad"
             aria-label={`${t('calidadVideo')}, ${calidadVideo}`}
             aria-expanded={panelAbierto === 'calidad'}
@@ -489,7 +501,7 @@ export function FichasListo({
         {conCamara && (
           <button
             type="button"
-            className={`ficha-listo${panelAbierto === 'subtitulos' ? ' abierta' : ''}`}
+            className={`ficha-listo${tam}${panelAbierto === 'subtitulos' ? ' abierta' : ''}`}
             data-testid="ficha-subtitulos"
             aria-label={`${t('subtitulos')}, ${t(CLAVE_SUBTITULO[estiloSub])}`}
             aria-expanded={panelAbierto === 'subtitulos'}
@@ -502,7 +514,8 @@ export function FichasListo({
 
         {/* 29-09-2026, tarea 82: en horizontal Más no va en el carril -una sola ficha-mas en
             pantalla-; la dibuja TeleprompterView arriba del riel derecho. */}
-        {!horizontal && <FichaMas setPanelAbierto={setPanelAbierto} onAbrirAjustes={onAbrirAjustes} />}
+        {/* 30-09-2026, tarea 83: en la tableta vertical tampoco -va en la barra de arriba-. */}
+        {!horizontal && !masAparte && <FichaMas setPanelAbierto={setPanelAbierto} onAbrirAjustes={onAbrirAjustes} grande={grandes} />}
       </div>
     </div>
   )
@@ -513,16 +526,19 @@ export function FichasListo({
 // dos modos-, y por eso es un componente: el mismo botón, con su testid, en uno u otro lugar.
 export function FichaMas({
   setPanelAbierto,
-  onAbrirAjustes
+  onAbrirAjustes,
+  grande = false
 }: {
   setPanelAbierto: (p: PanelFicha) => void
   onAbrirAjustes?: () => void
+  // La ficha grande de la tableta -tarea 83, 30-09-2026-.
+  grande?: boolean
 }) {
   useTextos()
   return (
     <button
       type="button"
-      className="ficha-listo"
+      className={`ficha-listo${grande ? ' grande' : ''}`}
       data-testid="ficha-mas"
       data-alias-engranaje="btn-engranaje-toma"
       aria-label={t('fichaMas')}
