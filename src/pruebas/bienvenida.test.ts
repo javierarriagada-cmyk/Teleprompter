@@ -55,12 +55,15 @@ describe('Guion de bienvenida en ingles', () => {
       ['without you touching anything', 'negrita'],
       ['the text waits for you', 'celeste'],
       ['so your eyes go to the camera', 'ambar'],
-      ['just as you see it', 'salvia'],
+      // Antes: ['just as you see it', 'salvia'],
+      ['stays out of the video', 'negrita'],
+      ['Gesture control', 'ambar'],
+      ['What you see is what gets saved', 'salvia'],
       ["You don't have to memorize anything.", 'negrita'],
       ['whenever you want', 'destacado'],
       ['hello@sigoteleprompter.com', 'celeste']
     ]))
-    // Doce en espanol, doce en ingles: ninguno se cayo por no encontrar su frase.
+    // Antes: doce en espanol, doce en ingles. -tarea 97- salio una y entraron tres: catorce.
     expect(pintado.length).toBe((bloqueDeBienvenida('es').tramos || []).length)
   })
 

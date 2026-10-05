@@ -236,8 +236,11 @@ nivel". Punto I1 de docs/decisiones-de-diseno.txt.
   Mismos formatos que el espanol, sobre las palabras que los nombran: bold, amber, light
   blue, green, yellow highlight. Y los extra de la grabacion de prueba: "without you
   touching anything" en negrita, "the text waits for you" celeste, "so your eyes go to the
-  camera" ambar, "just as you see it" verde, "You don't have to memorize anything." negrita,
+  camera" ambar, "You don't have to memorize anything." negrita,
   "whenever you want" destacado, el correo celeste.
+  Antes: "just as you see it" verde.
+  -tarea 97, 05-10-2026- Entran "stays out of the video" negrita, "Gesture control" ambar
+  y "What you see is what gets saved" verde.
 
 Hi. Read this out loud, as slowly or as quickly as you like.
 
@@ -249,11 +252,15 @@ Anything you write in square brackets is a note just for you. It shows on the sc
 
 Your script can also help you read better. Use bold for what you want to say with more force. Color words in amber, light blue or green to set apart ideas or shifts in tone. And use the yellow highlight for what you can't afford to miss. Just select the text in the editor and pick one.
 
-With the Aa button you choose the text size, the typeface, the column width and the screen colors. Set it up however feels most comfortable.
+Aa changes the text size. The typeface, the column width and the screen colors are in Settings. Set it up however feels most comfortable.
 
-When you want to record yourself, tap Record. The camera films while you read, and the text sits right under the lens, so your eyes go to the camera and not to the screen. You can see yourself full screen, behind the text, or in a small window. That way you know how you look, without giving up the comfort of reading.
+When you want to record yourself, tap Record. The camera films while you read, and the text sits right under the lens, so your eyes go to the camera and not to the screen. You can see yourself full screen, behind the text, or in a small window. Record in portrait or landscape, whichever you need.
 
-When you're done, your video can have captions. They come from your script, in time with your voice. Pick the style you like best and save it to your gallery just as you see it.
+If you need to stop for a moment, tap pause. Whatever happens during the pause stays out of the video: when you resume, the take carries on as if you never stopped.
+
+And if you're recording away from the phone, turn on Gesture control in the camera panel. Show your palm to pause or resume and, while paused, make a V sign to finish.
+
+When you're done, your video can have captions, which come from your script in time with your voice, and a filter to give it the look you want. What you see is what gets saved: save it to your gallery or share it right away.
 
 Sigo is here to give you the comfort and the calm you need. We want all your focus to be where it belongs. You don't have to memorize anything. You don't have to rush to keep up with the text. You can bring whatever emotion you want, whenever you want.
 
