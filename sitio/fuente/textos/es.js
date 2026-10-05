@@ -36,8 +36,8 @@ export default {
   e1: { capitulo: 'Leer', titular: 'Sigue tu voz.', bajada: 'Hablas y el texto avanza contigo. Sin tocar nada.' },
   e2: { capitulo: 'Te espera', titular: 'Los demás corren. <span class="acento">Sigo te espera.</span>', bajada: 'Si te detienes a pensar, el texto espera. Cuando vuelves a hablar, sigue contigo.' },
   e3: { capitulo: 'Tu guion', titular: 'Tu guion, con intención.', bajada: 'Marca lo que quieres decir con fuerza. Pinta los cambios de tono. Destaca lo que no se te puede pasar.' },
-  e4: { capitulo: 'Grabar', titular: 'Mirando al lente.', bajada: 'El texto queda bajo la cámara. Tu mirada va al lente, no a la pantalla.' },
-  e5: { capitulo: 'Subtítulos', titular: 'Subtítulos, al ritmo de tu voz.', bajada: 'Al terminar, tu video lleva subtítulos que salen de tu guion, al ritmo de tu voz.' },
+  e4: { capitulo: 'Grabar', titular: 'Mirando al lente.', bajada: 'El texto queda bajo la cámara. Tu mirada va al lente, no a la pantalla. Pausa cuando quieras: lo que pasa en la pausa no queda en el video. Lejos del teléfono, la palma pausa o sigue, y en pausa la V termina. Viene apagado, y solo con la cámara frontal.' },
+  e5: { capitulo: 'Tu video', titular: 'Subtítulos, al ritmo de tu voz.', bajada: 'Al terminar, tu video lleva subtítulos que salen de tu guion, al ritmo de tu voz. Elige un filtro mirando el video: Natural, Cálido, Frío, Vivo, Suave o blanco y negro. Lo que ves es lo que se guarda. Guárdalo en la galería o compártelo, de pie, de lado o en tableta.' },
   e6: { capitulo: 'Sin internet', titular: 'Sin internet.', bajada: 'Funciona sin internet. Tu voz no sale del teléfono.' },
 
   // Los tres estilos de subtitulos de la aplicacion. La pagina los usa tambien en la etiqueta
@@ -77,6 +77,8 @@ export default {
       'Tus tomas también.<small>Si guardas una en la galería, queda ahí.</small>',
       'Sigo usa el micrófono para seguir tu voz.<small>El reconocimiento de voz corre en el teléfono. El audio no se manda a ningún servidor.</small>',
       'Sigo usa la cámara cuando la enciendes para grabarte.<small>El video se guarda en tu teléfono y no sale de ahí.</small>',
+      'Los gestos se reconocen en el teléfono.<small>Ninguna imagen sale de él.</small>',
+      'Sigo no envía estadísticas de uso.',
       'Sigo no tiene cuentas.',
       'Este sitio no usa cookies de seguimiento ni analítica.'
     ],
@@ -95,9 +97,9 @@ export default {
   // elemento.
   lectura: {
     guion: [
-      'Hoy quiero contarte algo **importante**. Durante años grabé videos mirando un papel, y se notaba. Ahora leo, hablo y {salvia}el texto me sigue{/}. {ambar}Sin apuro.{/} {celeste}Sin perder el hilo.{/} Y lo que no se me puede pasar, ==lo marco en amarillo==.',
+      'Hoy quiero contarte algo **importante**. Al grabar un video, corto o largo, leer de un papel siempre se nota. Ahora leo, hablo y {salvia}el texto me sigue{/}. {ambar}Sin apuro.{/} {celeste}Sin perder el hilo.{/} Y lo que no se me puede pasar, ==lo marco en amarillo==.',
       'Si me detengo a pensar, el texto me espera. Cuando vuelvo a hablar, sigue conmigo. Miro al lente, no a la pantalla, y quien me ve siente que le hablo directamente.',
-      'Grabo de principio a fin, sin cortes, y al terminar el video ya lleva sus subtítulos. Lo comparto así, tal como salió.'
+      'Si pauso, ese tramo no queda. Al terminar, el video ya lleva sus subtítulos. Lo comparto así, tal como salió.'
     ],
     // Cuantos parrafos se leen. El ultimo no: esta para que debajo del renglon vivo siempre
     // haya guion, y para que el teleprompter comun de E2 tenga por donde correr.

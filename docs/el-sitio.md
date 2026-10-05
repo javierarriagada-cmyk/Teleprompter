@@ -155,6 +155,9 @@ puntos- y se dice en el informe que son estimados.
 - Solo lo que es cierto hoy: sigue la voz, espera, funciona sin internet, graba con el texto
   bajo el lente, subtitulos en tres estilos, formatos del editor. Nada de precios, IA, "el
   mejor", usuarios, otros idiomas, version web.
+  Antes: la página no contaba la pausa con cortes, el control por gestos, los filtros ni
+  Guardar y compartir. -tarea 98, 05-10-2026- Van en las escenas de Grabar y de Subtítulos,
+  no en cuatro escenas nuevas: cuatro más alargaban la página.
 - Sin nombres de otras aplicaciones. Sin botones que no lleven a nada.
 - `/privacidad` y `/soporte` se mantienen, con el mismo nivel visual. En privacidad, nombrar
   el microfono y la camara: la app los usa y nada sale del telefono.
