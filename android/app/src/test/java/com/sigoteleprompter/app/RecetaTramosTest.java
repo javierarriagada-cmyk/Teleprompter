@@ -17,7 +17,7 @@ import org.junit.Test;
 public class RecetaTramosTest {
 
     private static RecetaExportacion receta(String estilo, long[][] tramos) {
-        return RecetaExportacion.desdeValores(1, estilo, "[]", 0, tramos, false);
+        return RecetaExportacion.desdeValores(1, estilo, "[]", 0, tramos, null, null);
     }
 
     @Test

@@ -19,7 +19,7 @@ public class RecetaExportacionTest {
     // desdeJsonLeeEstiloYMargen, con 0,35 -"Para redes"- y 0,125 -"Normal"-.
     @Test
     public void desdeJsonLeeEstilo() {
-        RecetaExportacion r = RecetaExportacion.desdeValores(1, "amarillo", DOS_SUBS, 2, null, false);
+        RecetaExportacion r = RecetaExportacion.desdeValores(1, "amarillo", DOS_SUBS, 2, null, null, null);
         assertEquals("amarillo", r.estilo);
         assertEquals(DOS_SUBS, r.subtitulosJson);
         assertEquals(2, r.cantidadSubtitulos);
@@ -27,22 +27,25 @@ public class RecetaExportacionTest {
 
     @Test
     public void desdeJsonSinTramosEsNull() {
-        RecetaExportacion r = RecetaExportacion.desdeValores(1, "rojo", DOS_SUBS, 2, null, false);
+        RecetaExportacion r = RecetaExportacion.desdeValores(1, "rojo", DOS_SUBS, 2, null, null, null);
         assertNull(r.tramosMs);
-        assertNull(r.filtro);
+        // -tarea 96- El filtro ya tiene forma: sin él, tono y matriz en null. Antes: assertNull(r.filtro).
+        assertNull(r.filtroMatriz);
+        assertNull(r.filtroTono);
+        assertFalse(r.hayFiltro());
     }
 
     @Test
     public void esCopiaSinSubtitulos() {
-        assertTrue(RecetaExportacion.desdeValores(1, "no", "[]", 0, null, false).esCopia());
-        assertTrue(RecetaExportacion.desdeValores(1, "amarillo", "[]", 0, null, false).esCopia());
-        assertFalse(RecetaExportacion.desdeValores(1, "amarillo", DOS_SUBS, 2, null, false).esCopia());
+        assertTrue(RecetaExportacion.desdeValores(1, "no", "[]", 0, null, null, null).esCopia());
+        assertTrue(RecetaExportacion.desdeValores(1, "amarillo", "[]", 0, null, null, null).esCopia());
+        assertFalse(RecetaExportacion.desdeValores(1, "amarillo", DOS_SUBS, 2, null, null, null).esCopia());
     }
 
     @Test
     public void rechazaTramosDesordenados() {
         try {
-            RecetaExportacion.desdeValores(1, "amarillo", DOS_SUBS, 2, new long[][] { { 5000, 9000 }, { 1000, 2000 } }, false);
+            RecetaExportacion.desdeValores(1, "amarillo", DOS_SUBS, 2, new long[][] { { 5000, 9000 }, { 1000, 2000 } }, null, null);
             fail("aceptó tramos desordenados");
         } catch (IllegalArgumentException e) {
             assertEquals("tramos desordenados", e.getMessage());

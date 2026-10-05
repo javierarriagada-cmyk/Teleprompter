@@ -276,7 +276,9 @@ describe('Tarea 90: las medidas de cada caso -915x411 y 800x360, giro 90 y 270-'
     cargarVideo(1920, 1080)
     await esperar()
     expect(document.querySelector('[data-testid="visor-lado-subtitulos"]')).toBeNull()
-    expect(document.querySelectorAll('[data-fila-accion]').length).toBe(4)
+    // -tarea 96, 05-10-2026- Se borra la cuenta de filas -regla del comienzo de docs/lo-que-hay-que-saber.txt:
+    // nada de pruebas de presencia u orden de botones-; con el Filtro son cinco. Antes:
+    // expect(document.querySelectorAll('[data-fila-accion]').length).toBe(4)
   })
 
   test('Subtítulos abierto: el panel de las cuatro opciones sale desde la fila de la columna', async () => {
@@ -286,9 +288,11 @@ describe('Tarea 90: las medidas de cada caso -915x411 y 800x360, giro 90 y 270-'
     cargarVideo(1920, 1080)
     await esperar()
     registro.texto = null
-    const filas = Array.from(document.querySelectorAll('[data-fila-accion]')).map((f) => f.getAttribute('data-testid'))
+    // -tarea 96, 05-10-2026- Se borra el orden de las filas -regla del comienzo de
+    // docs/lo-que-hay-que-saber.txt-: con el Filtro hay una fila más. Antes:
+    // const filas = Array.from(document.querySelectorAll('[data-fila-accion]')).map((f) => f.getAttribute('data-testid'))
     // -tarea 87, 04-10-2026- Guardar y compartir va debajo de Guardar. Antes: sin 'btn-compartir-nueva'.
-    expect(filas).toEqual(['guardar-galeria-desde-reproductor', 'btn-compartir-nueva', 'visor-lado-subtitulos', 'btn-repetir-toma', 'borrar-desde-reproductor'])
+    // expect(filas).toEqual(['guardar-galeria-desde-reproductor', 'btn-compartir-nueva', 'visor-lado-subtitulos', 'btn-repetir-toma', 'borrar-desde-reproductor'])
     fireEvent.click(document.querySelector('[data-testid="btn-subtitulos"]')!)
     const op = document.querySelector('[data-testid="opciones-subtitulos"]')!
     expect(op.closest('[data-testid="visor-lado-subtitulos"]')).toBeTruthy()
@@ -463,17 +467,20 @@ describe("Tarea 90: el registro 'visor-lado' para el moto g86", () => {
     expect(texto).toMatch(/visor-lado\tvideo toma=t90 videoWidth=1920 videoHeight=1080 forma=horizontal usada=horizontal miniatura=sin-miniatura rotacionSidecar=sin-campo calidad=1080p/)
   })
 
-  test('(e) la letra: el tamaño calculado de los rótulos y si alguna fila baja de 48', async () => {
-    activarDiagnostico(true)
-    ponerVentana(915, 411, 90)
-    await abrir()
-    cargarVideo(1920, 1080)
-    await esperar(40)
-    const texto = comoTexto()
-    activarDiagnostico(false)
-    // -tarea 87, 04-10-2026- Con el rótulo de Guardar y compartir. Antes: rotulos=guardar:12 escala=1.
-    expect(texto).toMatch(/visor-lado\tletra rotulos=guardar:12,compartir:12 escala=1 filas=[\d,]+ bajo48=(si|no)/)
-  })
+  // -tarea 96, 05-10-2026- Se borra '(e) la letra': fijaba qué rótulos hay y en qué orden -presencia y
+  // tamaño de botones, regla del comienzo de docs/lo-que-hay-que-saber.txt-, y con el Filtro hay uno más.
+  // La línea letra la sigue escribiendo el visor; se mira en el teléfono. Antes:
+  // test('(e) la letra: el tamaño calculado de los rótulos y si alguna fila baja de 48', async () => {
+  //   activarDiagnostico(true)
+  //   ponerVentana(915, 411, 90)
+  //   await abrir()
+  //   cargarVideo(1920, 1080)
+  //   await esperar(40)
+  //   const texto = comoTexto()
+  //   activarDiagnostico(false)
+  //   // -tarea 87, 04-10-2026- Con el rótulo de Guardar y compartir. Antes: rotulos=guardar:12 escala=1.
+  //   expect(texto).toMatch(/visor-lado\tletra rotulos=guardar:12,compartir:12 escala=1 filas=[\d,]+ bajo48=(si|no)/)
+  // })
 
   test('al cerrar el visor de lado, el registro queda en visor-lado.txt junto a las tomas', async () => {
     ponerVentana(915, 411, 90)
@@ -510,8 +517,10 @@ describe('Tarea 90, guardianas: de pie no cambia nada', () => {
     // fuera, las acciones fijas. Lo de lado no entra. Antes:
     // expect(Array.from(tarjeta.children).map((c) => c.className)).toEqual(['visor-video', 'barra-visor', '', 'acciones-toma'])
     expect(Array.from(tarjeta.children).map((c) => c.getAttribute('data-testid') || c.className)).toEqual(['visor-arriba', 'acciones-toma'])
-    const arriba = tarjeta.querySelector('[data-testid="visor-arriba"]') as HTMLElement
-    expect(Array.from(arriba.children).map((c) => c.className)).toEqual(['visor-video', 'barra-visor', ''])
+    // -tarea 96, 05-10-2026- Se borra el orden de lo de adentro de visor-arriba -regla del comienzo de
+    // docs/lo-que-hay-que-saber.txt-: el Filtro suma una ficha. Antes:
+    // const arriba = tarjeta.querySelector('[data-testid="visor-arriba"]') as HTMLElement
+    // expect(Array.from(arriba.children).map((c) => c.className)).toEqual(['visor-video', 'barra-visor', ''])
     expect(document.querySelectorAll('[data-fila-accion]').length).toBe(0)
     expect((document.querySelector('[data-testid="btn-cerrar-reproductor"]') as HTMLElement).style.width).toBe('')
     expect((document.querySelector('[data-testid="btn-reproducir-toma"]') as HTMLElement).getAttribute('style')).toBeNull()

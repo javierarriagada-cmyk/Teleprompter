@@ -1,0 +1,158 @@
+{
+ "visor-de-pie-tira-calido-oscuro": {
+  "filas": [],
+  "columna": null,
+  "tira": {
+   "x": 32,
+   "y": 725,
+   "ancho": 348,
+   "alto": 87
+  },
+  "tiraDesborda": false,
+  "miniatura": {
+   "x": 36,
+   "y": 729,
+   "ancho": 50,
+   "alto": 63
+  },
+  "video": {
+   "x": 20,
+   "y": 21,
+   "ancho": 372,
+   "alto": 548
+  },
+  "filtroVideo": "url(\"#filtro-sigo-calido\")",
+  "videoWidth": 720,
+  "ventana": [
+   412,
+   915
+  ]
+ },
+ "visor-de-pie-bn-oscuro": {
+  "filas": [],
+  "columna": null,
+  "tira": null,
+  "tiraDesborda": null,
+  "miniatura": null,
+  "video": {
+   "x": 20,
+   "y": 21,
+   "ancho": 372,
+   "alto": 591
+  },
+  "filtroVideo": "url(\"#filtro-sigo-bn\")",
+  "videoWidth": 720,
+  "ventana": [
+   412,
+   915
+  ]
+ },
+ "medida-de-lado-915x412": {
+  "filas": [
+   {
+    "id": "guardar-galeria-desde-reproductor",
+    "alto": 58
+   },
+   {
+    "id": "btn-compartir-nueva",
+    "alto": 59
+   },
+   {
+    "id": "visor-lado-subtitulos",
+    "alto": 59
+   },
+   {
+    "id": "visor-lado-filtro",
+    "alto": 59
+   },
+   {
+    "id": "btn-repetir-toma",
+    "alto": 59
+   },
+   {
+    "id": "borrar-desde-reproductor",
+    "alto": 59
+   }
+  ],
+  "columna": {
+   "x": 739,
+   "y": 0,
+   "ancho": 128,
+   "alto": 412
+  },
+  "tira": null,
+  "tiraDesborda": null,
+  "miniatura": null,
+  "video": {
+   "x": 72,
+   "y": 0,
+   "ancho": 640,
+   "alto": 360
+  },
+  "filtroVideo": "url(\"#filtro-sigo-calido\")",
+  "videoWidth": 1280,
+  "ventana": [
+   915,
+   412
+  ]
+ },
+ "visor-de-lado-800x360-tira-calido-oscuro": {
+  "filas": [
+   {
+    "id": "guardar-galeria-desde-reproductor",
+    "alto": 50
+   },
+   {
+    "id": "btn-compartir-nueva",
+    "alto": 51
+   },
+   {
+    "id": "visor-lado-subtitulos",
+    "alto": 51
+   },
+   {
+    "id": "visor-lado-filtro",
+    "alto": 51
+   },
+   {
+    "id": "btn-repetir-toma",
+    "alto": 51
+   },
+   {
+    "id": "borrar-desde-reproductor",
+    "alto": 51
+   }
+  ],
+  "columna": {
+   "x": 640,
+   "y": 0,
+   "ancho": 112,
+   "alto": 360
+  },
+  "tira": {
+   "x": 183,
+   "y": 132,
+   "ancho": 450,
+   "alto": 126
+  },
+  "tiraDesborda": false,
+  "miniatura": {
+   "x": 196,
+   "y": 145,
+   "ancho": 64,
+   "alto": 80
+  },
+  "video": {
+   "x": 68,
+   "y": 0,
+   "ancho": 548,
+   "alto": 308
+  },
+  "filtroVideo": "url(\"#filtro-sigo-calido\")",
+  "videoWidth": 1280,
+  "ventana": [
+   800,
+   360
+  ]
+ }
+}

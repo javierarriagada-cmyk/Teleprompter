@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 
 // LOS EFECTOS DE VIDEO DE UNA RECETA -tarea 87, parte B, 04-10-2026-. ORDEN FIJO:
 // [filtros -plan 3, vacío aquí-] -> [OverlayEffect(CapaDeSubtitulos)]. Sin recorte: no hay fase B.
+// -tarea 96, 05-10-2026- El filtro ya va: [MatrizDeColor] -> [OverlayEffect(CapaDeSubtitulos)].
 // Lo usa CamaraNativaPlugin.exportarToma.
 @androidx.annotation.OptIn(markerClass = androidx.media3.common.util.UnstableApi.class)
 final class ExportadorDeTomas {
@@ -80,6 +81,9 @@ final class ExportadorDeTomas {
     static ImmutableList<androidx.media3.common.Effect> efectosDeVideo(RecetaExportacion receta, CapaDeSubtitulos capa) {
         ImmutableList.Builder<androidx.media3.common.Effect> efectos = ImmutableList.builder();
         // 1. Filtros -plan 3-: vacío en esta tarea -receta.filtro es siempre null-.
+        // -tarea 96, 05-10-2026- Ya no está vacío: el filtro de la receta, ANTES de la capa, para que los
+        // subtítulos no se tiñan -en B/N siguen amarillos-. Sin filtro, nada: el camino de hoy.
+        if (receta.hayFiltro()) efectos.add(new MatrizDeColor(receta.filtroMatriz));
         // 2. Subtítulos, encima de todo.
         if (capa != null) efectos.add(new androidx.media3.effect.OverlayEffect(ImmutableList.of(capa)));
         return efectos.build();

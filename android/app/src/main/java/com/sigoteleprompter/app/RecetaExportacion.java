@@ -21,14 +21,25 @@ final class RecetaExportacion {
     final int cantidadSubtitulos;
     // Plan 2: null = la toma entera. Aquí siempre null.
     final long[][] tramosMs;
-    // Plan 3: aquí siempre null. Su forma la define el plan 3.
-    final Object filtro = null;
+    // -tarea 96, 05-10-2026- EL FILTRO -plan 3, fase 1-: null = Natural, sin filtro. Si viene, el tono
+    // -solo para el registro Sigo96: el nativo no conoce los nombres- y los 16 números de RgbMatrix, por
+    // columnas, que arma la app -lib/filtros.ts, matrizParaMedia3-. Los aplica MatrizDeColor.
+    // Antes: "Plan 3: aquí siempre null. Su forma la define el plan 3." y final Object filtro = null.
+    final String filtroTono;
+    final float[] filtroMatriz;
 
-    private RecetaExportacion(String estilo, String subtitulosJson, int cantidad, long[][] tramosMs) {
+    private RecetaExportacion(String estilo, String subtitulosJson, int cantidad, long[][] tramosMs,
+                              String filtroTono, float[] filtroMatriz) {
         this.estilo = estilo;
         this.subtitulosJson = subtitulosJson;
         this.cantidadSubtitulos = cantidad;
         this.tramosMs = tramosMs;
+        this.filtroTono = filtroTono;
+        this.filtroMatriz = filtroMatriz;
+    }
+
+    boolean hayFiltro() {
+        return filtroMatriz != null;
     }
 
     static RecetaExportacion desdeJson(String json) throws Exception {
@@ -45,14 +56,33 @@ final class RecetaExportacion {
                 tramos[i] = new long[] { t.getLong("desdeMs"), t.getLong("hastaMs") };
             }
         }
+        // -tarea 96- El filtro: el tono y la matriz tal como vienen. Lo que falte o no sea número llega
+        // como null o NaN y lo rechaza desdeValores, con el mismo motivo que validarReceta.
+        // Antes: boolean hayFiltro = o.has("filtro") && !o.isNull("filtro"), y se rechazaba entero.
         boolean hayFiltro = o.has("filtro") && !o.isNull("filtro");
-        return desdeValores(version, estilo, subs == null ? null : subs.toString(), subs == null ? -1 : subs.length(), tramos, hayFiltro);
+        String filtroTono = null;
+        float[] filtroMatriz = null;
+        if (hayFiltro) {
+            JSONObject f = o.optJSONObject("filtro");
+            if (f == null) throw new IllegalArgumentException("filtro no es un objeto");
+            filtroTono = f.isNull("tono") ? null : f.optString("tono", null);
+            JSONArray m = f.optJSONArray("matriz");
+            if (m != null) {
+                filtroMatriz = new float[m.length()];
+                for (int i = 0; i < m.length(); i++) filtroMatriz[i] = (float) m.optDouble(i, Double.NaN);
+            }
+            // Un filtro sin matriz no es "sin filtro": se rechaza.
+            if (filtroMatriz == null) filtroMatriz = new float[0];
+        }
+        return desdeValores(version, estilo, subs == null ? null : subs.toString(), subs == null ? -1 : subs.length(), tramos, filtroTono, filtroMatriz);
     }
 
     // Java puro: lo que valida y decide. Lanza IllegalArgumentException con el motivo, como
     // validarReceta en TypeScript.
+    // -tarea 96- Los dos últimos son el filtro: filtroMatriz null = sin filtro -Natural-. Antes el último
+    // era boolean hayFiltro, y con true se rechazaba siempre.
     static RecetaExportacion desdeValores(int version, String estilo, String subtitulosJson, int cantidad,
-                                          long[][] tramos, boolean hayFiltro) {
+                                          long[][] tramos, String filtroTono, float[] filtroMatriz) {
         if (version != 1) throw new IllegalArgumentException("versión desconocida");
         if (!"no".equals(estilo) && !"amarillo".equals(estilo) && !"rojo".equals(estilo) && !"formal".equals(estilo)) {
             throw new IllegalArgumentException("estilo desconocido");
@@ -67,13 +97,23 @@ final class RecetaExportacion {
                 fin = t[1];
             }
         }
-        if (hayFiltro) throw new IllegalArgumentException("filtro no va en esta tarea");
-        return new RecetaExportacion(estilo, subtitulosJson, cantidad, tramos);
+        // -tarea 96, 05-10-2026- Las reglas de validarReceta: un tono que es texto no vacío y 16 números
+        // finitos. No se exige que el tono sea uno de los seis: así un tono nuevo no pide APK.
+        // Antes: if (hayFiltro) throw new IllegalArgumentException("filtro no va en esta tarea").
+        if (filtroMatriz != null) {
+            if (filtroTono == null || filtroTono.isEmpty()) throw new IllegalArgumentException("filtro sin tono");
+            if (filtroMatriz.length != 16) throw new IllegalArgumentException("matriz de filtro sin 16 números");
+            for (float n : filtroMatriz) {
+                if (Float.isNaN(n) || Float.isInfinite(n)) throw new IllegalArgumentException("matriz de filtro sin cifras");
+            }
+        }
+        return new RecetaExportacion(estilo, subtitulosJson, cantidad, tramos, filtroMatriz == null ? null : filtroTono, filtroMatriz);
     }
 
     // Nada que dibujar, cortar ni filtrar: se copia la toma tal cual, sin recodificar.
+    // -tarea 96- Con filtro, NUNCA es copia. Antes: ... && filtro == null, con filtro siempre null.
     boolean esCopia() {
         boolean sinSubtitulos = "no".equals(estilo) || cantidadSubtitulos == 0;
-        return sinSubtitulos && tramosMs == null && filtro == null;
+        return sinSubtitulos && tramosMs == null && filtroMatriz == null;
     }
 }

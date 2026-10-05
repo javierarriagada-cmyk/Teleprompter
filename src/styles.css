@@ -1855,6 +1855,105 @@ button.opcion-subtitulos.activa {
   .boton-subtitulos-flecha { transition: none; }
 }
 
+/* EL FILTRO DE LA TOMA -tarea 96, 05-10-2026, SelectorFiltro.tsx-. El control es el mismo de
+   Subtítulos -.boton-subtitulos-; lo nuevo es la tira de miniaturas, como los filtros del editor de
+   otra aplicación de fotos -imagen modelo aprobada por Javier-: una fila de cuadros de la toma, cada uno con su
+   filtro, el nombre debajo y la elegida con un anillo claro separado del cuadro. Nada de "Aa" ni de
+   botones de solo texto: eso ya se rechazó.
+   Las seis caben de pie a 412 de ancho -tarjeta de 372, 348 por dentro: seis de ~51 con 8 de aire-; si
+   el ancho no alcanza -la tarjeta de lado, de 320- la tira se desplaza de lado. */
+.filtros-svg {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+button.boton-subtitulos.con-filtro {
+  border-color: var(--color-acento);
+}
+.tira-filtros {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(50px, 1fr);
+  gap: var(--aire-2);
+  /* El aire de arriba y de los lados deja ver entero el anillo de la elegida. */
+  padding: var(--aire-1) var(--aire-1) 0;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  animation: subtitulosDespliega 180ms ease-out;
+}
+.tira-filtros::-webkit-scrollbar {
+  display: none;
+}
+button.miniatura-filtro {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  min-width: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-apagado);
+  font: inherit;
+  /* 12, el rótulo más chico de los controles del visor -ROTULO_MINIMO, lib/visorDeLado.ts-. */
+  font-size: 12px;
+  line-height: 1.2;
+  cursor: pointer;
+  scroll-snap-align: start;
+  -webkit-tap-highlight-color: transparent;
+}
+button.miniatura-filtro:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+/* El cuadro: 4:5, más alto que ancho, para que la cara entre aunque la toma sea horizontal -se recorta
+   al centro-. */
+.miniatura-filtro-marco {
+  display: block;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--redondeo);
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 0 0 1px var(--borde-tarjeta);
+  transition: transform 140ms ease, outline-color 140ms ease;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.miniatura-filtro-imagen {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+button.miniatura-filtro:active .miniatura-filtro-marco {
+  transform: scale(0.96);
+}
+button.miniatura-filtro.activa .miniatura-filtro-marco {
+  outline-color: var(--color-texto);
+}
+button.miniatura-filtro.activa {
+  color: var(--color-texto);
+  font-weight: 600;
+}
+.miniatura-filtro-nombre {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+button.miniatura-filtro:focus-visible {
+  outline: none;
+}
+button.miniatura-filtro:focus-visible .miniatura-filtro-marco {
+  outline-color: var(--color-acento);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tira-filtros { animation: none; }
+  .miniatura-filtro-marco { transition: none; }
+}
+
 /* ==========================================================================
    TAREA 76 -28-09-2026-: LA PORTADA QUE NO CRECE SIN FIN, LOS VIDEOS VACÍOS CON
    DIBUJO Y LAS TOMAS DEL GUION ABIERTO. Javier: "de excelencia visual" y "cuida la
