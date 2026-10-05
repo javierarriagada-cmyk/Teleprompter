@@ -1,3 +1,4 @@
+import type { PausaToma } from '../lib/tramos'
 export type TramoFormato = {
   desde: number
   hasta: number
@@ -134,6 +135,13 @@ export type ResumenGrabacion = {
   galeriaUri?: string
   // Con que subtitulos quedo esa copia: el visor la muestra igual.
   estiloGaleria?: 'no' | 'amarillo' | 'rojo' | 'formal'
+  // -tarea 87, parte C, 04-10-2026- Cómo se VE la toma -lib/orientacion.ts-: un 1920x1080 con
+  // rotación 90 es vertical. Sin el dato -toma vieja o APK viejo- el visor la analiza al abrirla.
+  // Campo opcional: no se sube DB_VERSION.
+  orientacion?: 'vertical' | 'horizontal' | 'cuadrada'
+  // -tarea 88, 04-10-2026- Las pausas de la toma, en el reloj del video -lib/tramos.ts-. Lo pausado no
+  // está en la toma: el visor lo salta y Guardar lo corta. Campo opcional: no se sube DB_VERSION.
+  pausas?: PausaToma[]
 }
 
 export function grabacionNueva(parcial: Partial<ResumenGrabacion> & Pick<ResumenGrabacion, 'tituloGuion'>): ResumenGrabacion {
@@ -152,7 +160,9 @@ export function grabacionNueva(parcial: Partial<ResumenGrabacion> & Pick<Resumen
     errorMudo: parcial.errorMudo,
     calidad: parcial.calidad,
     galeriaUri: parcial.galeriaUri,
-    estiloGaleria: parcial.estiloGaleria
+    estiloGaleria: parcial.estiloGaleria,
+    orientacion: parcial.orientacion,
+    ...(parcial.pausas && parcial.pausas.length > 0 ? { pausas: parcial.pausas } : {})
   }
 }
 

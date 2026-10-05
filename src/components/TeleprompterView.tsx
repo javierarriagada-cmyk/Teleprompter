@@ -268,6 +268,13 @@ interface TeleprompterViewProps {
   // Si los controles de la lectura están a la vista. En la tableta vertical, con ellos vuelve la
   // barra de arriba y el texto baja lo que ella mide, para que no quede encima de la palabra viva.
   controlesVisibles?: boolean
+  // -tarea 88, 04-10-2026- La toma en pausa: el punto de grabar parpadea -P9, cerrada-.
+  enPausa?: boolean
+  // -tarea 88- Control por gestos, para la fila del panel de la cámara -FichasListo-. El motivo lo
+  // arma App: 'soloFrontal' con la trasera, 'noDisponible' si el equipo no puede.
+  gestosAlGrabar?: boolean
+  setGestosAlGrabar?: (v: boolean) => void
+  motivoSinGestos?: 'soloFrontal' | 'noDisponible' | null
 }
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
@@ -353,7 +360,11 @@ export default function TeleprompterView({
   esquinaRecuadroH = 'der-abajo',
   setEsquinaRecuadroH,
   layout,
-  controlesVisibles = false
+  controlesVisibles = false,
+  enPausa = false,
+  gestosAlGrabar = false,
+  setGestosAlGrabar,
+  motivoSinGestos = null
 }: TeleprompterViewProps) {
   useTextos()
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -1057,6 +1068,9 @@ export default function TeleprompterView({
         grandes={tableta}
         anchas={tableta && enRiel}
         masAparte={tabletaVertical}
+        gestosAlGrabar={gestosAlGrabar}
+        setGestosAlGrabar={setGestosAlGrabar}
+        motivoSinGestos={motivoSinGestos}
       />
   )
 
@@ -1198,7 +1212,12 @@ export default function TeleprompterView({
           data-testid="punto-grabando"
           // 30-09-2026, tarea 83: en tableta el lugar lo pone la hoja -punto-tab, styles-tableta.css-:
           // a la izquierda de la pausa, 12 de aire y el mismo centro, como en el teléfono.
-          className={`punto-grabando${tableta ? ' punto-tab' : ''}`}
+          // -tarea 88, 04-10-2026- En pausa parpadea: 1 s encendido y 1 s apagado; con movimiento reducido, un
+          // anillo rojo sin relleno -styles.css, .punto-grabando.en-pausa-. Antes: className="punto-grabando".
+          // Mezcla de la 83 con la 88 -04-10-2026-: las dos clases juntas. Antes, en la 83:
+          //   className={`punto-grabando${tableta ? ' punto-tab' : ''}`}
+          className={`punto-grabando${tableta ? ' punto-tab' : ''}${enPausa ? ' en-pausa' : ''}`}
+          data-pausa={enPausa ? 'si' : 'no'}
           style={tableta ? undefined : {
             // La pausa: top 8, right 8, 40 x 40. El punto de 10 va a su izquierda,
             // 12 px de aire, con el centro a la misma altura: 8 + 20 - 5.

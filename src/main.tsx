@@ -21,6 +21,8 @@ import './styles-horizontal.css'
 // La tableta -tarea 83, 30-09-2026-: va después del teléfono de lado porque de lado usa sus mismos
 // rieles con otras medidas, y las pisa solo dentro de .layout-tab-v y .layout-tab-h.
 import './styles-tableta.css'
+// El visor de lado -tarea 90-: va después, porque viste piezas de styles.css dentro de .visor-lado.
+import './styles-visor-de-lado.css'
 
 import { instalarRecargaAlActualizar, sacarServiceWorkerEnNativo } from './lib/actualizacion'
 

@@ -1,0 +1,79 @@
+TAREA 83, PUESTA AL DÍA - LA TABLETA SOBRE EL MAIN DE HOY
+Encargo de Javier y Claude, 04-10-2026. Para el bot de Grok. La 83 ya está programada en la rama
+tarea-83 -PR #62, commits 02f4e1f, 3e0b4a8, 3918fba, c74acf6, del 30-09 y el 04-10-, pero sobre un
+main viejo: desde entonces entraron la 87, la 90 y la 91, y entra la 88. Hoy choca con main en
+src/App.tsx, FichasListo.tsx, TeleprompterView.tsx y main.tsx. Esta tarea NO rediseña la tableta:
+la deja al día y le suma lo que trajeron las tareas nuevas, con los bocetos aprobados el 29-09 como
+vara -docs/pantallas/tarea83/LEEME.txt y docs/pantallas/tarea82/medidas-implementacion.md-.
+
+==============================================================================
+0. CÓMO SE TRABAJA
+==============================================================================
+  - En la rama tarea-83, mezclando main -sin rebase ni push forzado-. NO se empieza la parte B hasta
+    que main tenga la 88 -PR #72-; Claude avisa. La parte A se puede hacer ya: no toca código.
+  - No armes APK. Láminas SOLO de los estados que cambian en esta tarea -parte B, punto 3-.
+  - Rompe a propósito solo las pruebas nuevas con lógica. Suite completa, tsc, build y JUnit una vez,
+    al final.
+  - Commits con javierarriagada-cmyk@users.noreply.github.com. No se borran comentarios. Ningún nombre
+    de otra app en código ni en docs/. Textos en español neutro con tuteo.
+  - No se tocan src/motor/, el seguidor, avance.ts ni la conducción.
+  - Lo que no calce se describe en el informe con archivo:línea; no se improvisa.
+
+==============================================================================
+A. ANTES DE MEZCLAR -solo leer, entrega en el chat-
+==============================================================================
+  1. LA GUÍA DE ANDROID PARA PANTALLAS GRANDES: la lista oficial de calidad de apps para pantallas
+     grandes -developer.android.com, "Large screen app quality"-, en sus tres niveles. Por cada punto
+     que aplique a Sigo: cumple / no cumple / no aplica, con el porqué y archivo:línea, mirando la
+     rama tarea-83. Sin arreglar nada: solo la tabla. Javier decide qué entra.
+  2. QUÉ NECESITA LA TABLETA DE CADA TAREA NUEVA. Por cada una, qué cambia en tab-v y tab-h y con qué
+     medida de la vara:
+       - 87: el visor con "Guardar y compartir"; el subtítulo a 1/6 y la letra contra el lado corto
+         -no depende del aparato: comprobar que en tableta da lo mismo que en teléfono-.
+       - 89: la barra de tres botones -bordes seguros- en las pantallas de tableta.
+       - 90: el visor de lado -columna al 70 %, video protagonista, siempre oscuro-: en tab-h, ¿qué
+         ancho de columna da la misma regla? En tab-v, el visor de pie.
+       - 91: la orientación fija mientras dura la toma, también en tableta.
+       - 88: el punto que parpadea en pausa, el símbolo grande de pausa y la fila "Control por
+         gestos" en el panel de la cámara, en tab-v y tab-h.
+     Si alguna no tiene medida en la vara, se propone una que siga la regla del teléfono y se marca
+     "propuesta"; Javier la aprueba antes de la parte B.
+
+==============================================================================
+B. LA MEZCLA -después de que main tenga la 88-
+==============================================================================
+  1. Mezclar main en tarea-83. En cada choque manda lo que ya está en main -87, 88, 89, 90, 91- y se
+     le suma la tableta: ninguna conducta de teléfono cambia. Lista de cada choque resuelto, con
+     archivo y qué quedó de cada lado.
+  2. Aplicar lo de la parte A.2 que Javier apruebe.
+  3. Láminas, en docs/pantallas/tarea83/, claro y oscuro, tab-v 820×1180 y tab-h 1180×820, solo de:
+     el visor -de pie y de lado, con Guardar y compartir-, la pausa -punto y símbolo- y el panel de
+     la cámara con la fila de gestos. Las comparar-*.png que ya existen se rehacen SOLO si la mezcla
+     las cambió.
+  4. Pruebas: las de hoy y las de tarea83.test.tsx verdes. Nuevas -a través de <App>, con el tamaño
+     de tableta-: 'EN TAB-H EL VISOR DE LADO USA LA COLUMNA DE LA VARA'; 'EN TABLETA LA FILA DE GESTOS
+     ESTÁ EN EL PANEL DE LA CÁMARA'; 'EN TABLETA LA ORIENTACIÓN QUEDA FIJA DURANTE LA TOMA'; 'EN
+     TABLETA EL SUBTÍTULO VA A 1/6 COMO EN TELÉFONO'.
+
+==============================================================================
+C. LO QUE YA ESTÁ Y NO SE TOCA -revisado por Claude el 04-10 en la rama-
+==============================================================================
+  - La vara y los bocetos en el repositorio -02f4e1f, docs/pantallas/tarea83/LEEME.txt-.
+  - En tab-v, al Empezar desaparecen la barra y el dock y el texto sube cerca del lente.
+  - La letra 32 por omisión en tableta, sin pisar una elección guardada.
+  - La portada y el editor no se rediseñaron.
+  - Los textos van con tuteo.
+
+==============================================================================
+D. LO QUE MIDE CLAUDE
+==============================================================================
+  En un emulador de tableta -Pixel Tablet, Android 16- con la APK de la rama: leer y grabar de pie y
+  de lado, el visor, la pausa y la fila de gestos -sin cámara real, los gestos solo se ven, no se
+  prueban-. Si Javier consigue una tableta Android, se repite ahí.
+
+==============================================================================
+E. INFORMES
+==============================================================================
+  - Parte A: las dos tablas, en el chat.
+  - Parte B: commit, choques resueltos, lo aplicado de A.2, pruebas -cuántas, nuevas, rotas a
+    propósito-, láminas y lo que no calzó.

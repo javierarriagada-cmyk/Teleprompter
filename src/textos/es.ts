@@ -82,6 +82,10 @@ export const es = {
   subtitulosAmarillo: 'Amarillo',
   subtitulosRojo: 'Rojo',
   subtitulosFormal: 'Formal',
+  // -tarea 87, 04-10-2026- Guardar y compartir -E1-. La posición de los subtítulos y el tiempo
+  // estimado se sacaron el mismo día -Javier simplifica la 87-.
+  guardarYCompartir: 'Guardar y compartir',
+  compartirTrasGuardar: 'Quedó guardada, pero no se pudo compartir',
   avisoTomaRecuperada: 'Se recuperó una toma de una sesión interrumpida.',
   avisoTomasRecuperadas: 'Se recuperaron {n} tomas de una sesión interrumpida.',
   verla: 'Verla',
@@ -149,6 +153,11 @@ export const es = {
   parar: 'Parar',
   guionSinBloques: 'Guión sin bloques',
   grabando: 'Grabando',
+  // -tarea 88, 04-10-2026- Control por gestos, en el panel de la cámara de LISTO.
+  controlPorGestos: 'Control por gestos',
+  controlPorGestosExplicacion: 'Palma: pausar o seguir. En pausa, la V termina la toma.',
+  gestosSoloFrontal: 'Solo con la cámara frontal.',
+  gestosNoDisponible: 'No disponible en este teléfono.',
   ajustesEscena: 'Ajustes de la escena',
   imagenCamara: 'Imagen de la cámara',
   imagenDetras: 'Detrás',

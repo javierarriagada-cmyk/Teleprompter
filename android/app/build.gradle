@@ -128,6 +128,13 @@ android {
             assets.srcDirs += "$buildDir/generated/assets"
         }
     }
+
+    // EL MODELO DE GESTOS SIN COMPRIMIR -tarea 88, 04-10-2026-. MediaPipe abre gesture_recognizer.task
+    // directo desde los assets -BaseOptions.setModelAssetPath- y para eso el archivo tiene que ir sin
+    // comprimir en el paquete. Va en las dos construcciones, la de prueba y la de Play.
+    androidResources {
+        noCompress 'task'
+    }
 }
 
 // EL uuid DEL MODELO. ESTO NO ES OPCIONAL Y NO SE ADIVINA.
@@ -220,6 +227,53 @@ dependencies {
     // src/debug/java, que no pide nada a nadie. Es la única dependencia nueva, y la permite el
     // encargo -"en Android se permiten SOLO las de Google para Play"-.
     releaseImplementation 'com.google.android.play:asset-delivery:2.3.0'
+
+    // CONTROL POR GESTOS -tarea 88, 04-10-2026, aprobada por Javier para esta tarea-. MediaPipe Tasks
+    // Vision, de Google, Apache 2.0: reconoce la palma y la V en un cuadro de la vista previa
+    // -GestosPlugin.java-. La 1.0.0 es la última estable -julio de 2026- y sus .so vienen alineados a
+    // 16 KB, como pide Play: todos los LOAD de libmediapipe_tasks_jni.so -tasks-core-1.0.0.aar- con
+    // alineación 0x4000, mirado con readelf. Trae tasks-core 1.0.0 -con protobuf-javalite, flogger y
+    // guava-. El modelo -gesture_recognizer.task, float16, de Google- va en src/main/assets.
+    //
+    // LA LICENCIA DEL MODELO -2026-10-04, tarea 88, segunda vuelta-: SIN VERIFICAR. La ficha oficial,
+    // https://ai.google.dev/edge/mediapipe/solutions/vision/gesture_recognizer, enlaza el modelo
+    // -storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/latest/
+    // gesture_recognizer.task- y su model card -https://storage.googleapis.com/mediapipe-assets/
+    // gesture_recognizer/model_card_hand_gesture_classification_with_faireness_2022.pdf-. La model card
+    // -6 páginas: arquitectura, usos, límites, ética y equidad- NO dice ninguna licencia. La página solo
+    // dice, al pie, "the content of this page is licensed under the Creative Commons Attribution 4.0
+    // License, and code samples are licensed under the Apache 2.0 License": eso es el texto de la página
+    // y sus ejemplos, no el modelo. La model card remite para la parte de la mano a
+    // google.github.io/mediapipe/solutions/models.html#hands, que hoy da 404.
+    //
+    // LAS ESTADÍSTICAS A GOOGLE -2026-10-04, tarea 88, segunda vuelta-. Javier decidió bloquearlas
+    // excluyendo transport-backend-cct de esta dependencia. NO SE APLICÓ, porque no calza -mirado aquí,
+    // sin teléfono-:
+    //   1. tasks-core 1.0.0 trae datatransport -transport-api 3.0.0, transport-runtime 3.1.0 y
+    //      transport-backend-cct 3.1.0- y manda estadísticas de uso de cada tarea -RemoteLoggingClient,
+    //      fuente "COREML_ON_DEVICE_SOLUTIONS"-.
+    //   2. En el bytecode de tasks-core-1.0.0.aar, TaskRunner.create llama a TasksStatsLoggerFactory.create
+    //      -> TasksStatsProtoLogger.create -> new RemoteLoggingClient(context), que lee
+    //      CCTDestination.INSTANCE -una clase de transport-backend-cct-. Ninguno de los tres tiene try/catch
+    //      ni carga perezosa: sin esa clase el reconocedor no arranca -NoClassDefFoundError-.
+    //   3. capgo/camera-preview trae ML Kit -play-services-mlkit-barcode-scanning 18.3.1-, que también
+    //      depende de transport-backend-cct. Con la exclusión solo aquí, la clase y el backend siguen: en el
+    //      manifiesto combinado -processDebugMainManifest y processReleaseMainManifest- sigue
+    //      "backend:com.google.android.datatransport.cct.CctBackendFactory" -valor "cct"- dentro de
+    //      TransportBackendDiscovery, igual que antes de la tarea 88. Y transport-backend-cct BAJA de 3.1.0
+    //      a 2.3.3, la de ML Kit, junto a transport-runtime 3.1.0: una mezcla que antes no estaba.
+    // Así, la exclusión no bloquea nada y agrega un riesgo. Lo que quedaría -decide Javier-: sacar el
+    // registro del backend del manifiesto -tools:node="remove" sobre ese meta-data-, que deja las clases
+    // y bloquea también lo de ML Kit, o excluirlo en toda la app, que tumba el reconocedor -punto 2-.
+    // GestosPlugin.anotarDatatransport deja "Sigo88 gestos datatransport claseCct=... backendCct=...".
+    // Lo que se probó y no queda:
+    //   implementation('com.google.mediapipe:tasks-vision:1.0.0') {
+    //       exclude group: 'com.google.android.datatransport', module: 'transport-backend-cct'
+    //   }
+    // -2026-10-04, decisión de Javier- Se eligió lo primero: el registro del backend "cct" sale del
+    // manifiesto con tools:node="remove" -src/main/AndroidManifest.xml, junto a
+    // TransportBackendDiscovery-. Aquí no hay exclusión y las versiones de transport-* quedan como estaban.
+    implementation 'com.google.mediapipe:tasks-vision:1.0.0'
 
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"

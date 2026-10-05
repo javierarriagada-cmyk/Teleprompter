@@ -102,6 +102,7 @@
 # Los cuatro plugins de Sigo -ArranquePlugin, CamaraNativaPlugin, IdiomaAppPlugin,
 # VoskNativoPlugin-, enteros: MainActivity los registra por clase y JavaScript los llama por
 # nombre. Con sus clases de adentro -Oido, el lazo del micrófono- y PaqueteDeVoz.
+# -tarea 88, 04-10-2026- Y el quinto, GestosPlugin: la misma regla lo cubre.
 -keep class com.sigoteleprompter.app.** { *; }
 
 # Los de las dependencias: capgo camera-preview, @capacitor/app, clipboard y haptics. Capacitor
@@ -123,3 +124,21 @@
 
 # MEDIA3 Y CAMERAX: traen sus propias reglas de consumidor. No se agrega nada hasta que algo falle
 # -encargo, C2-: una regla de más solo engorda el paquete y esconde lo que de verdad hace falta.
+
+# MEDIAPIPE -tarea 88, 04-10-2026, el control por gestos, GestosPlugin.java-. Los .aar de MediaPipe
+# Tasks 1.0.0 NO traen reglas de consumidor -no hay proguard.txt en tasks-core ni en tasks-vision-.
+# Su biblioteca nativa -libmediapipe_tasks_jni.so- llama de vuelta a clases de Java POR NOMBRE desde
+# JNI -los paquetes, los resultados y las opciones de cada tarea- y arma las opciones con protobuf, que
+# lee sus campos por reflexión: si R8 renombra o quita algo de eso, el reconocedor no arranca y la
+# fila dice "No disponible en este teléfono." en la versión de Play aunque en la de prueba funcione.
+# Es lo que pasó con Capacitor en la tarea 85: se conserva entero, sin buscar clase por clase.
+-keep class com.google.mediapipe.** { *; }
+-keep interface com.google.mediapipe.** { *; }
+-dontwarn com.google.mediapipe.**
+# Protobuf liviano, el que usa MediaPipe para sus opciones y resultados: lee los campos por nombre.
+-keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
+-dontwarn com.google.protobuf.**
+# Lo que MediaPipe trae y en Android no siempre está: anotaciones de compilación y AutoValue.
+-dontwarn com.google.auto.value.**
+-dontwarn javax.annotation.**
+-dontwarn com.google.errorprone.annotations.**
