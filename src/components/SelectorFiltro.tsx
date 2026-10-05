@@ -3,6 +3,9 @@ import { hapticaSeleccion } from '../haptica'
 import { TONOS, TonoFiltro, matrizDeTono, valoresFeColorMatrix, idFiltroSvg, filtroCss } from '../lib/filtros'
 import { t, useTextos } from '../textos'
 import { IconoFiltro } from './IconosApp'
+import { srcDeRuta } from './TiraGrabaciones'
+import { extraerMiniatura } from '../lib/archivosNativos'
+import { destinoDelCuadro, elegirCuadro, msDelCuadro } from '../lib/miniaturaFiltro'
 
 // EL FILTRO DE LA TOMA, EN EL VISOR -tarea 96, 05-10-2026, plan 3, fase 1-. Solo en una toma que no
 // está guardada: la guardada se ve desde la galería ya filtrada y el visor no le pone nada encima.
@@ -16,11 +19,15 @@ import { IconoFiltro } from './IconosApp'
 // LO QUE YA SE RECHAZÓ Y NO VUELVE: cuadros con "Aa" o con letras dentro, listas de botones de solo
 // texto, desplegables de texto.
 //
-// LAS MINIATURAS: al abrir la tira se dibuja UNA vez el cuadro actual del <video> -recortado al centro-
+// LAS MINIATURAS -segunda vuelta, 05-10-2026-: el cuadro lo pide extraerMiniatura, en currentTime,
+// y se muestra seis veces con filter: url(#...) y la misma matriz. La ruta pasa por srcDeRuta.
+// Mientras llega, el marco usa el fondo de la tira. Si el nativo falla, queda el poster.
+// Antes: al abrir la tira se dibuja UNA vez el cuadro actual del <video> -recortado al centro-
 // en seis canvas, y cada canvas lleva su filter: url(#...) con la MISMA matriz que el video y que el
 // archivo -FiltrosSvg, abajo-. No se leen píxeles -no hay getImageData ni toDataURL-: un canvas
 // "manchado" por otro origen igual se puede mostrar. Sin cuadro todavía -el video sin cargar-, la
 // miniatura de la toma -poster-; sin ninguna de las dos, el fondo oscuro de la tira.
+// En el WebView de Android ese canvas salía negro.
 
 // LOS FILTROS SVG del visor: uno por tono, salvo Natural, que va sin filtro. color-interpolation-filters
 // = sRGB: la matriz opera sobre los valores con gamma, como Media3 con WORKING_COLOR_SPACE_DEFAULT
@@ -45,6 +52,7 @@ export function nombreDeTono(tono: TonoFiltro): string {
   return x ? t(x.clave) : tono
 }
 
+// Antes: el cuadro se leía del <video> con canvas. En el WebView salía negro.
 // jsdom no tiene canvas -lib/medirTexto.ts hace lo mismo-: ahí la tira sale sin imagen.
 function contexto(c: HTMLCanvasElement | null): CanvasRenderingContext2D | null {
   if (!c) return null
@@ -79,6 +87,7 @@ export function SelectorFiltro({
   tono,
   onCambiar,
   video,
+  ruta,
   poster,
   abierto,
   onAbrir,
@@ -86,53 +95,44 @@ export function SelectorFiltro({
 }: {
   tono: TonoFiltro
   onCambiar: (t: TonoFiltro) => void
-  // El <video> del visor: de ahí sale el cuadro de las miniaturas.
+  // El <video> del visor: solo para saber currentTime. El cuadro no se lee de acá.
   video: HTMLVideoElement | null
-  // La miniatura de la toma, si el video todavía no tiene cuadro.
+  // La toma, para pedir el cuadro al nativo. El destino es el mismo archivo cada vez.
+  ruta?: string
+  // La miniatura que la toma ya tiene, si el nativo falla.
   poster?: string
   abierto: boolean
   onAbrir: (abierto: boolean) => void
   desactivado?: boolean
 }) {
   useTextos()
-  const lienzos = React.useRef<Array<HTMLCanvasElement | null>>([])
+  const [cuadro, setCuadro] = React.useState('')
+  const tiraRef = React.useRef<HTMLDivElement | null>(null)
 
-  // UNA vez al abrir: el cuadro actual en las seis miniaturas.
+  // Cada vez que se abre: un cuadro, en la posición actual. Seis imágenes, la misma.
   React.useEffect(() => {
     if (!abierto) return
     let vigente = true
-    // Si la tira se desplaza -la tarjeta de lado, de 320- y la elegida quedó fuera, se trae a la vista.
-    const activa = lienzos.current[TONOS.findIndex((x) => x.valor === tono)]?.closest('button') as HTMLElement | null | undefined
+    setCuadro('')
+    const activa = tiraRef.current?.querySelector('button[aria-pressed="true"]') as HTMLElement | null
     try { activa?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' }) } catch { /* sin desplazar no pasa nada */ }
-    const pintar = (fuente: CanvasImageSource, fw: number, fh: number) => {
-      if (!vigente) return
-      for (const c of lienzos.current) if (c) dibujar(c, fuente, fw, fh)
-    }
-    const desdeVideo = () => {
-      if (video && video.readyState >= 2 && video.videoWidth && video.videoHeight) {
-        pintar(video, video.videoWidth, video.videoHeight)
-        return true
+    const pedir = async () => {
+      let nativa = ''
+      if (ruta) {
+        try {
+          const sacada = await extraerMiniatura(ruta, destinoDelCuadro(ruta), msDelCuadro(video?.currentTime || 0))
+          nativa = sacada
+        } catch {
+          nativa = ''
+        }
       }
-      return false
+      if (!vigente) return
+      const elegida = elegirCuadro(nativa, poster)
+      setCuadro(elegida ? srcDeRuta(elegida) + (nativa ? `?t=${Date.now()}` : '') : '')
     }
-    if (desdeVideo()) return () => { vigente = false }
-    // Sin cuadro todavía: la miniatura de la toma, y el cuadro de verdad apenas llegue.
-    if (poster && typeof Image !== 'undefined') {
-      const img = new Image()
-      img.onload = () => { if (!desdeVideo()) pintar(img, img.naturalWidth, img.naturalHeight) }
-      img.src = poster
-    }
-    // El cuadro puede llegar por cualquiera de los tres: al girar el teléfono el <video> es otro y
-    // primero salta a donde iba -reanudarEn, ReproductorGrabacion-. Con el primero que pinte, se sueltan.
-    const EVENTOS = ['loadeddata', 'seeked', 'canplay']
-    const alCargar = () => { if (desdeVideo()) soltar() }
-    const soltar = () => { for (const e of EVENTOS) video?.removeEventListener(e, alCargar) }
-    for (const e of EVENTOS) video?.addEventListener(e, alCargar)
-    return () => {
-      vigente = false
-      soltar()
-    }
-  }, [abierto, video])
+    void pedir()
+    return () => { vigente = false }
+  }, [abierto, ruta, video, poster])
 
   const nombre = nombreDeTono(tono)
   return (
@@ -157,8 +157,8 @@ export function SelectorFiltro({
         </svg>
       </button>
       {abierto && (
-        <div className="tira-filtros" role="group" aria-label={t('filtro')} data-testid="tira-filtros">
-          {TONOS.map((x, i) => (
+        <div className="tira-filtros" role="group" aria-label={t('filtro')} data-testid="tira-filtros" ref={tiraRef}>
+          {TONOS.map((x) => (
             <button
               key={x.valor}
               type="button"
@@ -174,12 +174,15 @@ export function SelectorFiltro({
               }}
             >
               <span className="miniatura-filtro-marco">
-                <canvas
-                  ref={(c) => { lienzos.current[i] = c }}
-                  className="miniatura-filtro-imagen"
-                  aria-hidden="true"
-                  style={{ filter: filtroCss(x.valor) }}
-                />
+                {cuadro && (
+                  <img
+                    src={cuadro}
+                    alt=""
+                    className="miniatura-filtro-imagen"
+                    aria-hidden="true"
+                    style={{ filter: filtroCss(x.valor) }}
+                  />
+                )}
               </span>
               <span className="miniatura-filtro-nombre">{t(x.clave)}</span>
             </button>

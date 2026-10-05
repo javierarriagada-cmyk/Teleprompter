@@ -748,6 +748,7 @@ export default function ReproductorGrabacion({
         tono={filtro.tono}
         onCambiar={cambiarFiltro}
         video={video}
+        ruta={grabacion.ruta}
         poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined}
         abierto={filtroAbierto}
         onAbrir={abrirFiltro}
@@ -958,7 +959,8 @@ export default function ReproductorGrabacion({
               tono={filtro.tono}
               onCambiar={cambiarFiltro}
               video={video}
-              poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined}
+              ruta={grabacion.ruta}
+        poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined}
               abierto={filtroAbierto}
               onAbrir={abrirFiltro}
               desactivado={guardando}

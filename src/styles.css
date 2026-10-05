@@ -1916,7 +1916,8 @@ button.miniatura-filtro:disabled {
   aspect-ratio: 4 / 5;
   border-radius: var(--redondeo);
   overflow: hidden;
-  background: #000;
+  /* Antes: background #000. En el teléfono, sin cuadro, las seis se leían negras. */
+  background: var(--bg-superficie);
   box-shadow: 0 0 0 1px var(--borde-tarjeta);
   transition: transform 140ms ease, outline-color 140ms ease;
   outline: 2px solid transparent;
@@ -1926,6 +1927,7 @@ button.miniatura-filtro:disabled {
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 button.miniatura-filtro:active .miniatura-filtro-marco {
   transform: scale(0.96);
