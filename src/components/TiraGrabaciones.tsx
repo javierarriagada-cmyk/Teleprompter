@@ -2,7 +2,7 @@ import React from 'react'
 import { Capacitor } from '@capacitor/core'
 import { ResumenGrabacion, ResumenGuion } from '../datos/modelo'
 import { t, useTextos, tituloVisible, tituloOInicio, fechaCortaDosDigitos } from '../textos'
-import { IconoSinVideos, IconoTacho, IconoCerrar, IconoEmpezar } from './IconosApp'
+import { IconoSinVideos, IconoEmpezar } from './IconosApp'
 import { duracionVisible } from '../lib/tramos'
 
 // UNA RUTA DE DISCO TAMBIEN HAY QUE CONVERTIRLA. El WebView no puede abrir
@@ -53,8 +53,19 @@ interface Props {
   onBorrar: (id: string) => void
   // Para nombrar cada toma por su guion -nombreDeToma-.
   guiones?: ResumenGuion[]
+  // -tarea 94- null: modo normal. Con ids: modo selección. El menú chico se fue.
+  seleccion?: string[] | null
+  onEntrarSeleccion?: (id: string) => void
+  onAlternarSeleccion?: (id: string) => void
 }
 
+// BORRAR UNA TOMA -tarea 94, 05-10-2026-. Mantener apretada entra al modo
+// selección y la marca. El menú chico -tacho y X- se fue.
+// Antes: para llegar a Eliminar hay que MANTENER APRETADA la toma, y el menú
+// pregunta "¿Seguro?" una segunda vez. Un video grabado no se recupera.
+// Ahora el tacho de la barra saca las marcadas y Deshacer las devuelve 5 s.
+//
+// Antes, el comentario entero -repuesto en la revisión de la 94, los comentarios no se borran-:
 // BORRAR PREGUNTA UNA VEZ, Y ES LA UNICA ACCION DE LA APLICACION QUE NO SE
 // PUEDE DESHACER. Un video grabado no se recupera.
 //
@@ -70,32 +81,27 @@ interface Props {
 // Y una toma no se archiva, asi que su menu lleva Eliminar y Cerrar, no los
 // tres de la fila. Tampoco hay deslizar: la tira se desplaza en horizontal y
 // los dos gestos chocarian.
-const MS_PARA_ARREPENTIRSE = 4000
+// -28-09-2026- SIMBOLOS: el tacho -antes "Eliminar"- y la X, como en el menu del guion
+// -.boton-menu-chico-.
 
 function TarjetaToma({
-  g, nombre, menuAbierto, confirmando, onAbrir, onPedirMenu, onCerrarMenu, onPedirBorrar, onConfirmarBorrar
+  g, nombre, marcada, enSeleccion, onAbrir, onMantener, onAlternar
 }: {
   g: any
   nombre: string
-  menuAbierto: boolean
-  confirmando: boolean
+  marcada: boolean
+  enSeleccion: boolean
   onAbrir: () => void
-  onPedirMenu: () => void
-  onCerrarMenu: () => void
-  onPedirBorrar: () => void
-  onConfirmarBorrar: () => void
+  onMantener: () => void
+  onAlternar: () => void
 }) {
   useTextos()
-  const gesto = useMantenerApretado({
-    onMantener: () => {
-      onPedirMenu()
-    }
-  })
+  const gesto = useMantenerApretado({ onMantener })
   return (
     <div
       data-testid={`tarjeta-grabacion-${g.id}`}
       data-incompleta={g.incompleta ? 'si' : 'no'}
-      style={{ flex: '0 0 auto', width: 132, position: 'relative', zIndex: menuAbierto ? 6 : 1 }}
+      style={{ flex: '0 0 auto', width: 132, position: 'relative' }}
     >
       <button
         type="button"
@@ -103,16 +109,25 @@ function TarjetaToma({
         onClick={(e) => {
           e.stopPropagation()
           if (gesto.fueLongPressRef.current) return
-          onAbrir()
+          if (enSeleccion) onAlternar()
+          else onAbrir()
         }}
+        aria-pressed={enSeleccion ? marcada : undefined}
         // 28-09-2026: el borde gris -color-borde- paso a uno de un pelo, el de las cajas: .borde-suave.
         className="borde-suave"
-        style={{ display: 'block', width: '100%', padding: 0, borderRadius: 'var(--redondeo)', overflow: 'hidden', background: 'var(--bg-suelo)', cursor: 'pointer', ...estiloComprimirPorAviso(gesto.avisado) }}
+        // -tarea 94, revision, 05-10-2026- SIN SELECCION DEL SISTEMA: en el moto g86, tras mantener
+        // apretada una toma, el toque sobre la segunda no la marcaba. Mantener apretado texto o una
+        // imagen en el WebView abre la seleccion nativa, y el toque siguiente solo la cierra. La fila
+        // de guion ya lo evitaba con userSelect none -BibliotecaView-; la tarjeta no.
+        style={{ display: 'block', width: '100%', padding: 0, borderRadius: 'var(--redondeo)', overflow: 'hidden', background: 'var(--bg-suelo)', cursor: 'pointer', userSelect: 'none', WebkitUserSelect: 'none', WebkitTouchCallout: 'none', ...estiloComprimirPorAviso(gesto.avisado) } as React.CSSProperties}
       >
         <div style={{ width: '100%', height: 88, background: 'var(--bg-superficie)', position: 'relative' }}>
-          {g.rutaMiniatura ? <img src={srcDeRuta(g.rutaMiniatura)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} /> : <div style={{ width: '100%', height: '100%', background: '#1a1a1a' }} />}
+          {g.rutaMiniatura ? <img draggable={false} src={srcDeRuta(g.rutaMiniatura)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} /> : <div style={{ width: '100%', height: '100%', background: '#1a1a1a' }} />}
           <span className="play-miniatura" aria-hidden="true"><IconoEmpezar tamano={16} /></span>
           <span style={{ position: 'absolute', right: 6, bottom: 6, background: 'rgba(0,0,0,0.7)', color: '#fff', fontSize: 11, padding: '1px 5px', borderRadius: 4 }}>{/* -tarea 88- La duración FINAL, sin lo pausado. Antes: formatearDuracionMs(g.duracionMs). */}{formatearDuracionMs(duracionVisible(g))}</span>
+          {marcada && (
+            <span data-testid={`marca-seleccion-${g.id}`} className="marca-seleccion" aria-hidden="true">✓</span>
+          )}
           {g.incompleta && <span data-testid={`marca-incompleta-${g.id}`} style={{ position: 'absolute', left: 6, top: 6, background: 'rgba(180, 40, 40, 0.9)', color: '#fff', fontSize: 10, padding: '1px 5px', borderRadius: 4, fontWeight: 700 }}>{t('incompleta')}</span>}
           {g.errorMudo && <span style={{ position: 'absolute', left: 6, bottom: 6, background: 'rgba(180, 40, 40, 0.9)', color: '#fff', fontSize: 10, padding: '1px 5px', borderRadius: 4 }}>{t('sinAudio')}</span>}
         </div>
@@ -121,49 +136,13 @@ function TarjetaToma({
           <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>{formatearFechaCorta(g.creado)}</div>
         </div>
       </button>
-      {menuAbierto && (
-        <div data-testid={`menu-toma-${g.id}`} onClick={(e) => e.stopPropagation()} style={{ marginTop: 4, display: 'flex', gap: 8, position: 'relative', zIndex: 7 }}>
-          {/* SIMBOLOS -28-09-2026-: el tacho -antes "Eliminar"- y la X, como en el menu del
-              guion -.boton-menu-chico-. Al pedir confirmacion el tacho se pone rojo y dice
-              "¿Seguro?" a su lado. */}
-          <button
-            type="button"
-            className={`boton-menu-chico${confirmando ? '' : ' solo-simbolo'}`}
-            data-testid={`borrar-grabacion-${g.id}`}
-            data-confirmando={confirmando ? 'si' : 'no'}
-            aria-label={confirmando ? t('seguro') : t('borrar')}
-            title={t('borrar')}
-            onClick={(e) => {
-              e.stopPropagation()
-              if (confirmando) onConfirmarBorrar()
-              else onPedirBorrar()
-            }}
-          >
-            <IconoTacho tamano={20} strokeWidth={1.6} />
-            {confirmando && <span>{t('seguro')}</span>}
-          </button>
-          <button type="button" className="boton-menu-chico solo-simbolo cerrar-menu" aria-label={t('cerrar')} title={t('cerrar')} onClick={(e) => { e.stopPropagation(); onCerrarMenu() }}>
-            <IconoCerrar tamano={20} />
-          </button>
-        </div>
-      )}
     </div>
   )
 }
 
-export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar, guiones }: Props) {
+export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar: _onBorrar, guiones, seleccion = null, onEntrarSeleccion, onAlternarSeleccion }: Props) {
   useTextos()
-  const [menuId, setMenuId] = React.useState<string | null>(null)
-  const [confirmando, setConfirmando] = React.useState<string | null>(null)
-  const temporizador = React.useRef<ReturnType<typeof setTimeout> | null>(null)
-  React.useEffect(() => {
-    return () => { if (temporizador.current) clearTimeout(temporizador.current) }
-  }, [])
-  function pedirConfirmacion(id: string) {
-    setConfirmando(id)
-    if (temporizador.current) clearTimeout(temporizador.current)
-    temporizador.current = setTimeout(() => setConfirmando(null), MS_PARA_ARREPENTIRSE)
-  }
+  const enSeleccion = seleccion !== null
   return (
     <div data-testid="tira-grabaciones" style={{ marginTop: 'var(--aire-4)', marginBottom: 'var(--aire-3)' }}>
       {/* "Videos" y no "Tomas": hermano de "Guiones" en la portada, mismo
@@ -192,18 +171,11 @@ export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar, guione
               key={g.id}
               g={g}
               nombre={nombreDeToma(g, guiones)}
-              menuAbierto={menuId === g.id}
-              confirmando={confirmando === g.id}
+              marcada={!!seleccion?.includes(g.id)}
+              enSeleccion={enSeleccion}
               onAbrir={() => onAbrir(g)}
-              onPedirMenu={() => { setMenuId(g.id); setConfirmando(null) }}
-              onCerrarMenu={() => { setMenuId(null); setConfirmando(null) }}
-              onPedirBorrar={() => pedirConfirmacion(g.id)}
-              onConfirmarBorrar={() => {
-                if (temporizador.current) clearTimeout(temporizador.current)
-                setConfirmando(null)
-                setMenuId(null)
-                onBorrar(g.id)
-              }}
+              onMantener={() => onEntrarSeleccion?.(g.id)}
+              onAlternar={() => onAlternarSeleccion?.(g.id)}
             />
           ))}
         </div>

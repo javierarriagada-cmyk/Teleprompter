@@ -144,7 +144,9 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
     }
   })
 
-  test('mantener apretada una toma abre Eliminar y Cerrar; no hay boton Borrar a la vista', async () => {
+  // Antes: mantener apretada una toma abre Eliminar y Cerrar; no hay boton Borrar a la vista.
+  // -tarea 94- ese menú se fue: mantener entra al modo selección. La prueba nueva está en seleccionTomas.test.ts.
+  test.skip('mantener apretada una toma abre Eliminar y Cerrar; no hay boton Borrar a la vista', async () => {
     vi.useFakeTimers()
     try {
       const toma = grabacionNueva({ id: 'toma-1', tituloGuion: 'Ensayo', ruta: '/x.mp4', duracionMs: 4000 })

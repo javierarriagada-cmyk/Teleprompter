@@ -104,7 +104,9 @@ describe('Tarea 67 - la casa de cada ajuste y el gesto que se siente', () => {
     expect(sucios).toEqual([])
   })
 
-  test('soltar entre los 300 y los 500 no abre el menu', async () => {
+  // Antes: soltar entre los 300 y los 500 no abre el menu.
+  // -tarea 94- el menú chico se fue. Soltar antes de los 500 sigue sin entrar al modo: lo cubre el gesto, no esta prueba.
+  test.skip('soltar entre los 300 y los 500 no abre el menu', async () => {
     vi.useFakeTimers()
     try {
       const toma = grabacionNueva({ id: 'toma-67', tituloGuion: 'Ensayo', ruta: '/x.mp4', duracionMs: 4000 })
