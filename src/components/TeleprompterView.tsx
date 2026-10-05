@@ -1200,6 +1200,8 @@ export default function TeleprompterView({
           o no, y B14 dice que el punto rojo es GRABANDO. Ahora lo enciende
           grabandoVideo, que solo es cierto despues de la cuenta regresiva y si
           el grabador arranco de verdad.
+          04-10-2026 -tarea 83, parte B, B23-: queda SOLO arriba a la derecha, en las mismas
+          coordenadas; la pausa bajó a la fila de la toma y ya no está a su lado. Antes:
           24-09-2026: ARRIBA A LA DERECHA, AL LADO DE LA PAUSA. Estaba a 16 px de
           la esquina y el boton de pausa -la esquina de 40, App.tsx- lo tapaba
           cada vez que aparecian los controles: pendiente B22. Primero lo movi

@@ -264,6 +264,9 @@
   justify-content: center;
   padding-top: 0;
 }
+/* -tarea 83, parte B- En el dock va la fila de la toma entera -pausa, Parar y tacho-. Antes: solo
+   .tab-dock-leyendo > .btn-flotante-72. */
+.tab-dock-leyendo > .fila-toma,
 .tab-dock-leyendo > .btn-flotante-72 {
   position: relative;
   z-index: 100;
@@ -366,6 +369,9 @@
 /* EL PUNTO ROJO: la pausa está a 20 del borde derecho y 16 del de arriba de la barra, así que el
    punto va 12 a su izquierda -20 + 40 + 12 = 72- con el mismo centro -16 + 20 - 5 = 31-. Se ve
    siempre, estén o no los controles: criterio de la 82. */
+/* 04-10-2026 -tarea 83, parte B, B23-: el punto queda solo arriba a la derecha, en estas mismas
+   coordenadas; la pausa ya no está a su lado -bajó a la fila de la toma-. Antes estaba alineado con la
+   pausa de la esquina. */
 .layout-tab-v .punto-grabando.punto-tab {
   top: calc(31px + env(safe-area-inset-top, 0px));
   right: calc(72px + env(safe-area-inset-right, 0px));
@@ -455,6 +461,9 @@
   min-width: 128px;
 }
 /* EL PUNTO ROJO, 12 a la izquierda de la pausa y con su centro -20 + 20 - 5 = 35-. */
+/* 04-10-2026 -tarea 83, parte B, B23-: el punto queda solo arriba a la derecha, en estas mismas
+   coordenadas; la pausa ya no está a su lado -bajó a la fila de la toma-. Antes estaba alineado con la
+   pausa de la esquina. */
 .layout-tab-h .punto-grabando.punto-tab {
   top: calc(35px + env(safe-area-inset-top, 0px));
   right: calc(var(--riel-der) / 2 + 32px + env(safe-area-inset-right, 0px));

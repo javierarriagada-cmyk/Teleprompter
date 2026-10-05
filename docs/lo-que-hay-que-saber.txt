@@ -116,10 +116,21 @@ mapa del codigo; esto es el criterio. Lo pendiente vive en docs/decisiones-de-di
   ni "Listo" ni nombres al lado. Cada control se DIBUJA; los nombres van en aria-label.
   Controles a todo el ancho, un solo objeto por fila.
 
-  LOS BOTONES FLOTANTES SON UN SOLO OBJETO EN TRES TAMANOS: 32 esquina secundaria, 40
-  esquina principal, 72 accion central -docs/tarea70.txt, seccion 11-. Mismo fondo
-  translucido y btn-deformable. El rojo es solo para grabar. Un control distinto a sus
-  hermanos es un defecto. Ojo: un transform en linea mata el efecto de apretado.
+  LOS BOTONES FLOTANTES SON UN SOLO OBJETO EN CUATRO TAMAÑOS -corregido el 2026-10-04,
+  tarea 83, parte B-: 32 esquina secundaria, 40 esquina principal, 56 acción secundaria
+  AL LADO de la principal, 72 acción central -docs/tarea70.txt, sección 11-. El 56 es
+  solo para Pausa/Seguir y el tacho junto a Parar -clase .btn-flotante-56, ícono 24-.
+  Razón: es el botón flotante de Material 3 -https://m3.material.io/components/
+  floating-action-button/specs- y Javier apretaba Parar queriendo pausar: la pausa
+  chica en la esquina quedaba lejos y la acción grande al centro se llevaba el dedo.
+  Mismo fondo translúcido y btn-deformable. El rojo es solo para grabar. Un control
+  distinto a sus hermanos es un defecto. Ojo: un transform en línea mata el efecto de
+  apretado.
+  Antes: «LOS BOTONES FLOTANTES SON UN SOLO OBJETO EN TRES TAMANOS: 32 esquina
+  secundaria, 40 esquina principal, 72 accion central -docs/tarea70.txt, seccion 11-.
+  Mismo fondo translucido y btn-deformable. El rojo es solo para grabar. Un control
+  distinto a sus hermanos es un defecto. Ojo: un transform en linea mata el efecto de
+  apretado.»
 
   DEBEMOS TENDER A LO SIMPLE -Javier, 25-09-2026-. Ante la duda, menos texto y menos
   controles.

@@ -17,6 +17,7 @@ import { recibirLineaNativa } from './lib/medicionesExport'
 import { anotarCamara } from './lib/medicionesCamara'
 import { bloquearRecargaAutomatica } from './lib/actualizacion'
 import { bloquearOrientacion, soltarOrientacion } from './lib/orientacionToma'
+import { vigilarRecursos, avisoDePerdida, type PerdidaDeRecurso } from './lib/recursosToma'
 import { iniciarGrabacion, detenerGrabacion } from './lib/grabadorCorpus'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
@@ -1471,6 +1472,51 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }, [])
 
+  // LA CÁMARA O EL MICRÓFONO TOMADOS POR OTRA APP -tarea 83, parte B, LS-M2, 04-10-2026-. En
+  // pantalla dividida Sigo sigue al frente y el appStateChange de arriba no llega. Con la toma de Grabar
+  // andando se vigilan las dos señales del nativo -lib/recursosToma.ts-; si una llega, la toma se corta
+  // por el MISMO camino que al pasar a segundo plano -cortarTomaSiHay(true): queda guardada como
+  // incompleta y se recupera como siempre-, la toma termina -vuelve a LISTO, como Parar pero sin abrir
+  // el visor- y sale un aviso que dice qué pasó. En Leer no se vigila: no hay nada que guardar.
+  async function cortarPorRecursoPerdido(p: PerdidaDeRecurso): Promise<void> {
+    if (!tomaEnCurso() && !grabandoVideoRef.current) return
+    console.info('Sigo83', `toma cortada: recurso=${p.recurso} motivo=${p.motivo || '-'}`)
+    cancelarCuentaRegresiva()
+    setTInicioLecturaMs(null)
+    ponerEstadoPausa({ tipo: 'grabando' })
+    await cortarTomaSiHay(true)
+    try {
+      setGrabaciones(await repoGrabacionesRef.current.listar())
+    } catch (e) {}
+    await stop()
+    await detenerGrabacion()
+    await soltarWakeLock()
+    reiniciarEn(0)
+    setEstadoToma('listo')
+    setControlesVisibles(false)
+    // Más largo que el aviso de siempre -2 s-: dice algo que no se ve venir.
+    mostrarAviso(t(avisoDePerdida(p.recurso)), { duracionMs: 6000 })
+  }
+  const cortarPorRecursoPerdidoRef = useRef(cortarPorRecursoPerdido)
+  cortarPorRecursoPerdidoRef.current = cortarPorRecursoPerdido
+  const tomaGrabandoAndando = tomaAndando && conCamara
+  useEffect(() => {
+    if (!tomaGrabandoAndando) return
+    let vigente = true
+    let soltar: (() => void) | null = null
+    vigilarRecursos((p) => {
+      if (vigente) void cortarPorRecursoPerdidoRef.current(p)
+    }, { camara: true }).then((f) => {
+      if (vigente) soltar = f
+      else f()
+    })
+    return () => {
+      vigente = false
+      soltar?.()
+    }
+  }, [tomaGrabandoAndando])
+
+
   // Ref para manejar el evento de botón de atrás en Android
   const handleVolverAtrasRef = useRef<() => Promise<void> | void>(() => {})
   useEffect(() => {
@@ -1949,7 +1995,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                   data-duracion-sale={MS_PANTALLA}
                   data-confirmando={confirmandoDescarte ? 'si' : 'no'}
                   type="button"
-                  className={`btn-deformable btn-flotante-40${tableta ? ' tab-boton-izq' : ''}`}
+                  // -tarea 83, parte B, 04-10-2026- EL TACHO VA EN LA FILA DE LA TOMA, a la derecha de
+                  // Parar, a 56 como la pausa -fila-toma, styles.css-. Antes, en una esquina de arriba:
+                  //   className={`btn-deformable btn-flotante-40${tableta ? ' tab-boton-izq' : ''}`}
+                  className="btn-deformable btn-flotante-56 fila-toma-tacho"
                   aria-label={t('descartarToma')}
                   onClick={async (e) => {
                     e.stopPropagation()
@@ -1960,12 +2009,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                     await despachar({ tipo: 'tacho' })
                   }}
                   style={{
-                    ...lugarEnLinea({
-                      position: 'absolute',
-                      top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                      // 29-09-2026, tarea 82: de lado, a 12 del borde, en el riel izquierdo.
-                      left: horizontal ? 'calc(12px + env(safe-area-inset-left, 0px))' : 'calc(8px + env(safe-area-inset-left, 0px))'
-                    }),
+                    // -tarea 83, parte B- Sin lugar en línea: lo pone la celda de la fila. Antes:
+                    //   ...lugarEnLinea({ position: 'absolute', top: 'calc(8px + env(safe-area-inset-top, 0px))',
+                    //     left: horizontal ? 'calc(12px + …)' : 'calc(8px + …)' }),
+                    //   con el comentario «29-09-2026, tarea 82: de lado, a 12 del borde, en el riel izquierdo.»
                     zIndex: 100,
                     // Ancho fijo y no 'auto': CSS no anima un ancho hacia 'auto', salta de golpe,
                     // y la 11.6 pide que el tacho se abra con una transicion de MS_CHICO.
@@ -1973,7 +2020,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                     // mas corto.
                     // 40 cerrado desde el 24-09-2026: las esquinas de arriba miden lo
                     // mismo que la pausa de la otra esquina -btn-flotante-40-.
-                    width: confirmandoDescarte ? 96 : 40,
+                    // -tarea 83, parte B, 04-10-2026- 56 cerrado, como la pausa a la izquierda de Parar
+                    // -docs/lo-que-hay-que-saber.txt, la regla de tamaños-; abierto sigue en 96, con el
+                    // alto de 56. Antes: width: confirmandoDescarte ? 96 : 40.
+                    width: confirmandoDescarte ? 96 : 56,
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     padding: confirmandoDescarte ? '0 var(--aire-2)' : 0,
@@ -1990,7 +2040,9 @@ export default function App({ motor, repoOverride }: AppProps) {
                     animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
                   }}
                 >
-                  {confirmandoDescarte ? t('seguro') : <IconoTacho tamano={20} />}
+                  {/* -tarea 83, parte B- El ícono a 24, el de los botones de 56 -FAB de Material 3-.
+                      Antes: <IconoTacho tamano={20} />. */}
+                  {confirmandoDescarte ? t('seguro') : <IconoTacho tamano={24} />}
                 </button>
   )
 
@@ -2000,7 +2052,13 @@ export default function App({ motor, repoOverride }: AppProps) {
                 data-duracion-entra={MS_CHICO}
                 data-duracion-sale={MS_PANTALLA}
                 type="button"
-                className={`btn-deformable btn-flotante-40${tableta ? ' tab-boton-der' : ''}`}
+                // -tarea 83, parte B, 04-10-2026- LA PAUSA VA AL LADO DE PARAR. Javier, queriendo
+                // pausar, apretaba Parar: la pausa era de 40 en una esquina de arriba y Parar el botón
+                // grande. Ahora es de 56 -el botón flotante de Material 3, m3.material.io/components/
+                // floating-action-button/specs- a la izquierda de Parar en la misma fila, o encima de
+                // él en la columna de lado -fila-toma, styles.css-. Antes:
+                //   className={`btn-deformable btn-flotante-40${tableta ? ' tab-boton-der' : ''}`}
+                className="btn-deformable btn-flotante-56"
                 aria-label={enPausa ? t('seguir') : t('pausa')}
                 onClick={async (e) => {
                   e.stopPropagation()
@@ -2009,17 +2067,17 @@ export default function App({ motor, repoOverride }: AppProps) {
                   await handleTogglePausa()
                 }}
                 style={{
-                  ...lugarEnLinea({
-                    position: 'absolute',
-                    top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                    // 29-09-2026, tarea 82: de lado, centrada en el riel derecho -(124 - 40) / 2-.
-                    right: horizontal ? 'calc((var(--riel-der) - 40px) / 2 + env(safe-area-inset-right, 0px))' : 'calc(8px + env(safe-area-inset-right, 0px))'
-                  }),
+                  // -tarea 83, parte B- Sin lugar en línea: lo pone la celda de la fila. Antes:
+                  //   ...lugarEnLinea({ position: 'absolute', top: 'calc(8px + env(safe-area-inset-top, 0px))',
+                  //     right: horizontal ? 'calc((var(--riel-der) - 40px) / 2 + …)' : 'calc(8px + …)' }),
+                  //   con el comentario «29-09-2026, tarea 82: de lado, centrada en el riel derecho -(124 - 40) / 2-.»
                   zIndex: 100,
                   animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
                 }}
               >
-                {enPausa ? <IconoEmpezar tamano={20} /> : <IconoPausa tamano={20} />}
+                {/* -tarea 83, parte B- A 24, el ícono del botón de 56. En pausa el mismo botón es
+                    Seguir. Antes: tamano={20} en los dos. */}
+                {enPausa ? <IconoEmpezar tamano={24} /> : <IconoPausa tamano={24} />}
               </button>
   )
 
@@ -2048,6 +2106,20 @@ export default function App({ motor, repoOverride }: AppProps) {
                       que pide la 11.3 del encargo 70, y el redondeo queda en unos 3 px. */}
                   <IconoParar tamano={44} />
                 </button>
+  )
+
+  // LA FILA DE LA TOMA -tarea 83, parte B, 04-10-2026, boceto aprobado: docs/pantallas/tarea83/
+  // controles-*.png-. Lo estándar de las cámaras de los teléfonos: Parar al centro, a 72 y rojo; la
+  // pausa a su izquierda, a 56; en pausa, el tacho a su derecha, también a 56. De pie es una fila; de
+  // lado -teléfono y tableta- una columna en el riel derecho: la pausa encima de Parar y el tacho
+  // debajo. Tres celdas fijas -56, 72, 56- con 32 entre ellas -.fila-toma, styles.css-: sin el tacho la
+  // tercera queda vacía y Parar no se corre del centro. En Leer no hay tacho.
+  const filaDeLaToma = (
+    <div data-testid="fila-toma" className={`fila-toma${horizontal ? ' en-columna' : ''}`}>
+      {botonPausaLectura}
+      {botonPararLectura}
+      {conCamara && enPausa ? botonDescartarToma : <span className="fila-toma-hueco" aria-hidden="true" />}
+    </div>
   )
 
   return (
@@ -2257,26 +2329,30 @@ export default function App({ motor, repoOverride }: AppProps) {
                         apilamiento y el punto rojo y la pastilla siguen por encima de ella. */}
                     <div className="tab-fondo" aria-hidden="true" />
                     {!conCamara && botonSalirLectura}
-                    {conCamara && enPausa && botonDescartarToma}
-                    {botonPausaLectura}
+                    {/* -tarea 83, parte B- El tacho y la pausa bajan a la fila del dock. Antes:
+                        {conCamara && enPausa && botonDescartarToma}
+                        {botonPausaLectura} */}
                   </div>
                   <div
                     data-testid="tab-dock"
                     className={`tab-dock tab-dock-leyendo${camaraActiva && fondoToma === 'detras' ? ' sobre-imagen' : ''}`}
                   >
                     <div className="tab-fondo" aria-hidden="true" />
-                    {botonPararLectura}
+                    {/* -tarea 83, parte B- La fila entera, centrada en el dock. Antes: {botonPararLectura} */}
+                    {filaDeLaToma}
                   </div>
                 </>
               ) : (
                 <>
-              {enRiel('izquierdo', (!conCamara || enPausa), <>
+              {/* -tarea 83, parte B- El riel izquierdo queda solo para salir, en Leer: el tacho pasó a la
+                  fila. Antes: enRiel('izquierdo', (!conCamara || enPausa), …) con
+                  {conCamara && enPausa && botonDescartarToma} adentro. */}
+              {enRiel('izquierdo', !conCamara, <>
               {!conCamara && botonSalirLectura}
-              {conCamara && enPausa && botonDescartarToma}
               </>)}
 
               {enRiel('derecho', true, <>
-              {botonPausaLectura}
+              {/* -tarea 83, parte B- La pausa va en la fila, con Parar. Antes: {botonPausaLectura} */}
 
               {/* 29-09-2026, tarea 82: de lado, parar va al centro del riel derecho, donde estaba
                   Empezar -riel-lugar-centro, styles-horizontal.css-. */}
@@ -2293,7 +2369,9 @@ export default function App({ motor, repoOverride }: AppProps) {
                   pointerEvents: 'none'
                 }}
               >
-                {botonPararLectura}
+                {/* -tarea 83, parte B- La fila entera: de pie al centro, a la altura de siempre; de lado,
+                    en columna al centro del riel derecho. Antes: {botonPararLectura} */}
+                {filaDeLaToma}
               </div>
               </>)}
                 </>
@@ -2470,6 +2548,8 @@ export default function App({ motor, repoOverride }: AppProps) {
                 // 30-09-2026, tarea 83: en tableta el lugar también lo pone la hoja -a la derecha
                 // del dock en vertical, abajo del riel derecho de lado-.
                 enRiel={horizontal || tabletaVertical}
+                // -tarea 83, parte B- De pie en el teléfono, leyendo: centrada encima de la fila de la toma.
+                encimaDeLaFila={layout === 'tel-v' && estadoToma === 'leyendo'}
               />
             )}
           </div>

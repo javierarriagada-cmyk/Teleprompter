@@ -1082,10 +1082,15 @@ A12 EL ESTANDAR DE LOS AJUSTES.                                 CERRADA / 24 sep
     menu de ajustes". Ya lo tienen el Aa del editor, el engranaje de la toma y el de la
     portada.
 
-B23 EL PUNTO ROJO DE GRABACION Y LA PAUSA.                      HECHA / 24 sept 2026
+B23 EL PUNTO ROJO DE GRABACIÓN.                                 HECHA / 4 oct 2026
+    2026-10-04 -tarea 83, parte B-: el punto rojo queda SOLO arriba a la derecha, en el
+    mismo lugar de siempre. La pausa ya no vive en esa esquina: bajó a la fila de la toma,
+    a 56, a la izquierda de Parar -y de lado, encima de Parar en la columna-. Arriba a la
+    derecha no queda ningún botón al lado del punto. En Leer no hay punto.
+    Antes: «B23 EL PUNTO ROJO DE GRABACION Y LA PAUSA. HECHA / 24 sept 2026.
     24-09-2026: arriba a la derecha, a la izquierda de la pausa y alineado con su centro.
     Anotado en la Tarea 72 -seccion 2.6-: el punto rojo de grabando quedaba tapado por el
-    boton de pausa. No se volvio a mirar despues de que las esquinas pasaran a 40.
+    boton de pausa. No se volvio a mirar despues de que las esquinas pasaran a 40.»
 
 D5  EL TECLADO Y LA BARRA LEER / GRABAR.                        ABIERTA / CLAUDE
     Con el teclado abierto, la barra de Leer y Grabar del editor tapa un renglon del guion.

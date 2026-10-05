@@ -514,7 +514,10 @@ textarea::placeholder {
    renglon, que esta arriba sin holgura -calcularBanda- y no se baja. Con el desenfoque, lo de
    atras se vuelve una mancha y el boton se lee como un objeto encima. Un WebView sin
    backdrop-filter se queda con el translucido de siempre. */
+/* -tarea 83, parte B- También el de 56 -la pausa y el tacho al lado de Parar-. Antes: solo 40, 72 y
+   la pastilla. */
 .btn-flotante-40,
+.btn-flotante-56,
 .btn-flotante-72,
 .pastilla-tiempo {
   -webkit-backdrop-filter: blur(10px);
@@ -618,6 +621,60 @@ textarea::placeholder {
   background-color: var(--color-grabando);
 }
 
+/* EL BOTÓN FLOTANTE DE 56 -tarea 83, parte B, 04-10-2026-. La acción secundaria al lado de la
+   principal: la pausa -Seguir en pausa- y el tacho junto a Parar. 56 es el botón flotante de
+   Material 3 -m3.material.io/components/floating-action-button/specs: contenedor de 56, ícono de 24-
+   y la regla de tamaños lo admite desde hoy -docs/lo-que-hay-que-saber.txt-. El mismo fondo
+   translúcido y el mismo borde que sus hermanos de 40 y 72; nunca rojo: el rojo es de grabar. */
+.btn-flotante-56 {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--redondeo-pildora);
+  background-color: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  cursor: pointer;
+}
+
+/* LA FILA DE LA TOMA -tarea 83, parte B, App.tsx, filaDeLaToma-. Tres celdas fijas: la pausa de 56,
+   Parar de 72 y el tacho de 56, con --aire-5 -32- entre ellas y los centros alineados. Sin el tacho
+   -grabando, o en Leer- la tercera celda queda vacía y Parar sigue al centro. De lado, la misma fila en
+   columna: la pausa encima de Parar y el tacho debajo. */
+.fila-toma {
+  display: grid;
+  grid-template-columns: 56px 72px 56px;
+  column-gap: var(--aire-5);
+  align-items: center;
+  justify-items: center;
+  pointer-events: none;
+}
+.fila-toma > * {
+  pointer-events: auto;
+}
+.fila-toma.en-columna {
+  grid-template-columns: auto;
+  grid-template-rows: 56px 72px 56px;
+  column-gap: 0;
+  row-gap: var(--aire-5);
+}
+/* El «¿Seguro?» abre el tacho a 96: de pie crece hacia afuera -a la derecha- y Parar no se mueve; de
+   lado crece parejo a los dos lados, centrado en el riel. */
+.fila-toma > .fila-toma-tacho {
+  justify-self: start;
+}
+.fila-toma.en-columna > .fila-toma-tacho {
+  justify-self: center;
+}
+.fila-toma-hueco {
+  width: 56px;
+  height: 56px;
+  pointer-events: none;
+}
+
 /* INTERRUPTOR (Tarea 72). La casilla real se esconde a la vista pero sigue
    en el documento: recibe el toque a traves de su label, el teclado y el
    lector de pantalla. Ver Interruptor.tsx. */
@@ -673,6 +730,14 @@ textarea::placeholder {
   justify-content: flex-end;
 }
 .pastilla-tiempo { letter-spacing: 0.04em; }
+/* -tarea 83, parte B, 04-10-2026- Leyendo de pie, centrada encima de la fila de la toma -el bottom lo
+   pone BarraDeTiempo-: a la derecha de Parar la pisaba el tacho en pausa. Pesa más que el lugar de
+   arriba y que el del teléfono angosto -abajo-. */
+.pastilla-tiempo-lugar.encima-de-la-fila {
+  left: calc(16px + env(safe-area-inset-left, 0px));
+  right: calc(16px + env(safe-area-inset-right, 0px));
+  justify-content: center;
+}
 /* En 380 px o menos la hora no entra con su aire: "00:00 / 02:23" no se puede partir. Medido
    a 360 -Redmi 13C-: quedaban 120 px y la pastilla pedia 144. Se juntan las letras, el
    relleno baja al minimo y la pastilla gana 8 px a cada lado. */

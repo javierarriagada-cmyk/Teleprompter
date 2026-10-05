@@ -13,6 +13,10 @@ export interface BarraDeTiempoProps {
   // pone entero styles-horizontal.css. El bottom en línea, medido desde el círculo de la pantalla
   // vertical, ahí no corresponde y un estilo en línea le ganaría a la hoja.
   enRiel?: boolean
+  // -tarea 83, parte B, 04-10-2026- TELÉFONO DE PIE, LEYENDO: la pastilla va centrada justo encima de la
+  // fila de la toma -pausa, Parar y tacho-. A la derecha de Parar, donde estaba, la pisaba el tacho en
+  // pausa. En LISTO sigue donde estaba.
+  encimaDeLaFila?: boolean
 }
 
 // El mismo ritmo que usa el editor para decir "1 min", y el que usa esta
@@ -49,7 +53,8 @@ function Pastilla({
   etiqueta,
   testid,
   conTestidsDeProgreso,
-  enRiel = false
+  enRiel = false,
+  encimaDeLaFila = false
 }: {
   texto: string
   progresoPct: number
@@ -57,12 +62,14 @@ function Pastilla({
   testid?: string
   conTestidsDeProgreso: boolean
   enRiel?: boolean
+  encimaDeLaFila?: boolean
 }) {
   return (
     <div
       // El lado izquierdo lo pone .pastilla-tiempo-lugar -styles.css-: termina en el
       // circulo, para no pisarlo en telefonos angostos -27-09-2026-.
-      className="pastilla-tiempo-lugar"
+      // -tarea 83, parte B- encima-de-la-fila la centra -styles.css-. Antes: className="pastilla-tiempo-lugar".
+      className={`pastilla-tiempo-lugar${encimaDeLaFila ? ' encima-de-la-fila' : ''}`}
       style={{
         position: 'absolute',
         // El circulo de abajo mide 72 y esta a 24 del borde: su centro queda a
@@ -71,7 +78,13 @@ function Pastilla({
         // Desde el 27-09-2026 el circulo se mide con --circulo-desde-abajo
         // -styles.css-: la pastilla va 14 px mas arriba que el borde del circulo,
         // (72 - 44) / 2, y asi los centros siguen calzando si el circulo se mueve.
-        bottom: enRiel ? undefined : 'calc(var(--circulo-desde-abajo) + 14px + env(safe-area-inset-bottom, 0px))',
+        // -tarea 83, parte B- Encima de la fila: el borde de arriba de Parar -72- más --aire-3 -12-. Antes,
+        // sin ese caso: bottom: enRiel ? undefined : 'calc(var(--circulo-desde-abajo) + 14px + …)'.
+        bottom: enRiel
+          ? undefined
+          : encimaDeLaFila
+            ? 'calc(var(--circulo-desde-abajo) + 72px + var(--aire-3) + env(safe-area-inset-bottom, 0px))'
+            : 'calc(var(--circulo-desde-abajo) + 14px + env(safe-area-inset-bottom, 0px))',
         // 29-09-2026, tarea 82: en el riel -teléfono de lado- el bottom lo pone styles-horizontal.css.
         // right -16 px mas el area segura- tambien vive en .pastilla-tiempo-lugar: en
         // pantallas angostas baja a 12 -27-09-2026-.
@@ -132,7 +145,8 @@ export default function BarraDeTiempo({
   totalTokens,
   tInicioLecturaMs,
   vistaPrevia = false,
-  enRiel = false
+  enRiel = false,
+  encimaDeLaFila = false
 }: BarraDeTiempoProps) {
   useTextos()
   const [ahora, setAhora] = useState<number>(() => performance.now())
@@ -168,6 +182,7 @@ export default function BarraDeTiempo({
           testid="barra-tiempo-previa"
           conTestidsDeProgreso={false}
           enRiel={enRiel}
+          encimaDeLaFila={encimaDeLaFila}
         />
       )
     }
@@ -191,6 +206,7 @@ export default function BarraDeTiempo({
       etiqueta={t('tiempoTranscurrido')}
       conTestidsDeProgreso={true}
       enRiel={enRiel}
+      encimaDeLaFila={encimaDeLaFila}
     />
   )
 }

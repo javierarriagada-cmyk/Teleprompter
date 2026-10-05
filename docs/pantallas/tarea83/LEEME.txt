@@ -38,3 +38,24 @@ CAPTURAS DE LA APP REAL (30-09-2026, Chrome sin ventana, escala 1,5)
     node componer.cjs    (las comparar-*.png; BOCETOS apunta a los PNG sueltos del 29-09)
   La imagen de la cámara es la de referencia de los bocetos: en el navegador no hay cámara nativa.
   Por lo mismo no se ve el punto rojo: sale solo con la grabación nativa andando.
+
+PARTE B -04-10-2026-: LOS CONTROLES NUEVOS Y EL AVISO DE LS-M2
+  Herramienta: herramientas/controles.cjs -la app real servida con
+  docs/pantallas/tarea88/herramientas/vite.config.mjs en el puerto 5183-. Uso:
+  node docs/pantallas/tarea83/herramientas/controles.cjs [filtro]
+  controles-tel-v-grabar-{grabando,pausa,pausa-seguro}-{claro,oscuro}.png
+    Pausa 56 a la izquierda de Parar 72, separación 32; en pausa Seguir, Parar y el
+    tacho 56 -con su «¿Seguro?» a 96x56-. La pastilla del tiempo va centrada justo
+    encima de la fila, grabando y en pausa.
+  controles-{tel-h,tab-v,tab-h}-grabar-{pausa,pausa-seguro}-{claro,oscuro}.png
+    De lado, la columna lateral: Seguir encima de Parar y el tacho debajo. En tab-v la
+    fila va en el dock. La pastilla queda donde estaba: no choca.
+  controles-tel-v-grabar-aviso-{camara,microfono-en}-{claro,oscuro}.png y
+  controles-tab-h-grabar-aviso-camara-{claro,oscuro}.png
+    El aviso de LS-M2 sobre LISTO de Grabar -herramientas/aviso-m2.html: la app real y
+    el AvisoBreve real con el texto real; en el navegador no hay nativo que avise-.
+  Lo que el navegador no muestra: el punto rojo de grabar -solo con grabación nativa;
+  queda arriba a la derecha, sin cambios de lugar- y la cámara real -va dibujada la de
+  referencia de los bocetos-.
+  Los 48 de abajo con la barra de tres botones -tarea 89- los confirma Claude en el
+  emulador: estas láminas van sin área segura.

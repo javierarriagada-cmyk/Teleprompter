@@ -1306,7 +1306,10 @@ describe('Pruebas TAREA 43: El sistema operativo no puede meterse en la pantalla
 
     const btnParar = screen.getByTestId('btn-parar-lectura') as HTMLElement
     expect(btnParar).not.toBeNull()
-    const parentContainer = btnParar.parentElement as HTMLElement
+    // -tarea 83, parte B, 04-10-2026- Parar va ahora dentro de la fila de la toma -con la pausa y el
+    // tacho-, y la que lleva el bottom es la caja de la fila. Antes:
+    //   const parentContainer = btnParar.parentElement as HTMLElement
+    const parentContainer = (btnParar.closest('[data-testid="fila-toma"]') as HTMLElement).parentElement as HTMLElement
     // Desde el 27-09-2026 la altura sale de --circulo-desde-abajo -styles.css-, compartida con
     // Empezar y la barra de tiempo. Antes esta prueba pedia '24px'.
     expect(parentContainer.style.bottom).toContain('--circulo-desde-abajo')
