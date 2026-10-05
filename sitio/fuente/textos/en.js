@@ -31,8 +31,8 @@ export default {
   e1: { capitulo: 'Read', titular: 'You talk. It&nbsp;follows.', bajada: 'Speak, and the text moves with you. No hands, no scrolling.' },
   e2: { capitulo: 'It waits', titular: 'Others keep scrolling. <span class="acento">Sigo waits.</span>', bajada: 'Stop to think, and the text waits for you. Start talking again, and it picks up right where you are.' },
   e3: { capitulo: 'Your script', titular: 'Mark what matters.', bajada: 'Bold the lines you want to land. Color the shifts in tone. Highlight what you can’t afford to miss.' },
-  e4: { capitulo: 'Record', titular: 'Eyes on the lens.', bajada: 'The text sits right under the camera. You look into the lens, not down at the screen. Pause whenever you want: what happens during the pause stays out of the video. Away from the phone, your palm pauses or resumes, and while paused a V sign finishes. It starts off, and only works with the front camera.' },
-  e5: { capitulo: 'Your video', titular: 'Captions that keep time.', bajada: 'When you’re done, your video comes with captions built from your script, in step with your voice. Pick a filter while you watch it: Natural, Warm, Cool, Vivid, Soft or black and white. What you see is what gets saved. Save it to your gallery or share it, portrait, landscape or on a tablet.' },
+  e4: { capitulo: 'Record', titular: 'Eyes on the lens.', bajada: 'The text sits under the camera: you look at the lens, not the screen. Pause whenever you like, and the pause stays out of the video. Away from the phone, pause with your palm.' },
+  e5: { capitulo: 'Your video', titular: 'Captions that keep time.', bajada: 'When you’re done, your video has captions in time with your voice and the filter you choose. What you see is what gets saved.' },
   e6: { capitulo: 'Offline', titular: 'No signal? No problem.', bajada: 'Works without internet. Your voice never leaves your phone.' },
 
   estilos: { amarillo: 'Yellow', rojo: 'Red', formal: 'Formal' },

@@ -36,8 +36,8 @@ export default {
   e1: { capitulo: 'Leer', titular: 'Sigue tu voz.', bajada: 'Hablas y el texto avanza contigo. Sin tocar nada.' },
   e2: { capitulo: 'Te espera', titular: 'Los demás corren. <span class="acento">Sigo te espera.</span>', bajada: 'Si te detienes a pensar, el texto espera. Cuando vuelves a hablar, sigue contigo.' },
   e3: { capitulo: 'Tu guion', titular: 'Tu guion, con intención.', bajada: 'Marca lo que quieres decir con fuerza. Pinta los cambios de tono. Destaca lo que no se te puede pasar.' },
-  e4: { capitulo: 'Grabar', titular: 'Mirando al lente.', bajada: 'El texto queda bajo la cámara. Tu mirada va al lente, no a la pantalla. Pausa cuando quieras: lo que pasa en la pausa no queda en el video. Lejos del teléfono, la palma pausa o sigue, y en pausa la V termina. Viene apagado, y solo con la cámara frontal.' },
-  e5: { capitulo: 'Tu video', titular: 'Subtítulos, al ritmo de tu voz.', bajada: 'Al terminar, tu video lleva subtítulos que salen de tu guion, al ritmo de tu voz. Elige un filtro mirando el video: Natural, Cálido, Frío, Vivo, Suave o blanco y negro. Lo que ves es lo que se guarda. Guárdalo en la galería o compártelo, de pie, de lado o en tableta.' },
+  e4: { capitulo: 'Grabar', titular: 'Mirando al lente.', bajada: 'El texto queda bajo la cámara: miras al lente, no a la pantalla. Pausa cuando quieras y la pausa no queda en el video. Lejos del teléfono, pausa con la palma.' },
+  e5: { capitulo: 'Tu video', titular: 'Subtítulos, al ritmo de tu voz.', bajada: 'Al terminar, tu video lleva subtítulos al ritmo de tu voz y el filtro que elijas. Lo que ves es lo que se guarda.' },
   e6: { capitulo: 'Sin internet', titular: 'Sin internet.', bajada: 'Funciona sin internet. Tu voz no sale del teléfono.' },
 
   // Los tres estilos de subtitulos de la aplicacion. La pagina los usa tambien en la etiqueta
