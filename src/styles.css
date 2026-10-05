@@ -1181,6 +1181,18 @@ label.selector-aa-opcion {
   background-color: color-mix(in srgb, var(--color-grabando) 22%, rgba(0, 0, 0, 0.5));
   border: 2px solid var(--color-grabando);
   color: #fff;
+  /* EL CÍRCULO DE GRABAR TAMBIÉN RESPIRA MIENTRAS ESPERA -2026-10-05, tarea 83, correcciones-. Mismo
+     pulso que Leer -pulsoEmpezar, 1,8 s, espera de 1,5 s, box-shadow y no transform- pero con halo
+     BLANCO, de 45 % hasta 0: un halo blanco no se lee como "ya estás grabando", que era la razón para
+     no tenerlo -ver el comentario de .btn-empezar-leer-. El botón no cambia: el punto rojo sigue al
+     medio. Se apaga al apretarlo -:active abajo, y después el botón deja de estar-; Parar no late:
+     es otro botón -btn-parar-lectura-, sin esta clase. */
+  --pulso-empezar: #fff;
+  --pulso-empezar-opacidad: 45%;
+  animation: pulsoEmpezar 1.8s ease-out 1.5s infinite;
+}
+.btn-empezar-grabar:active {
+  animation: none;
 }
 .btn-empezar-leer {
   background-color: var(--color-acento);
@@ -1194,14 +1206,18 @@ label.selector-aa-opcion {
   /* EL CIRCULO RESPIRA MIENTRAS ESPERA -27-09-2026-. Una persona abrio Leer y dos veces empezo
      a hablar sin tocarlo. Un halo que sale y se apaga, con box-shadow y NO con transform: el
      transform es del efecto de apretado de .btn-deformable. Espera 1,5 s para no molestar a
-     quien ya iba a tocar. Solo en Leer: en Grabar el inicio es deliberado y un pulso rojo se
-     leeria como "ya estas grabando". */
+     quien ya iba a tocar.
+     2026-10-05: Grabar también late, con halo blanco y no rojo -ver .btn-empezar-grabar-. Antes:
+     «Solo en Leer: en Grabar el inicio es deliberado y un pulso rojo se leeria como "ya estas
+     grabando".» */
   animation: pulsoEmpezar 1.8s ease-out 1.5s infinite;
 }
 /* 29-09-2026, tarea 82: los tres cuadros decían var(--color-acento); ahora var(--pulso-empezar),
    que es el color del botón en cada caso -ver .btn-empezar-leer y .empezar-sobre-blanco-. */
+/* 2026-10-05: la opacidad de salida es --pulso-empezar-opacidad -45 % en Grabar-; sin ella, 55 % como
+   siempre. Antes: 0% { box-shadow: 0 0 0 0 color-mix(... var(--color-acento)) 55%, transparent); } */
 @keyframes pulsoEmpezar {
-  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pulso-empezar, var(--color-acento)) 55%, transparent); }
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pulso-empezar, var(--color-acento)) var(--pulso-empezar-opacidad, 55%), transparent); }
   70% { box-shadow: 0 0 0 18px color-mix(in srgb, var(--pulso-empezar, var(--color-acento)) 0%, transparent); }
   100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pulso-empezar, var(--color-acento)) 0%, transparent); }
 }
@@ -1216,7 +1232,9 @@ label.selector-aa-opcion {
   --pulso-empezar: var(--empezar-fondo-sobre-blanco);
 }
 @media (prefers-reduced-motion: reduce) {
-  .btn-empezar-leer { animation: none; }
+  /* 2026-10-05: también Grabar. Antes: .btn-empezar-leer { animation: none; } */
+  .btn-empezar-leer,
+  .btn-empezar-grabar { animation: none; }
 }
 .punto-grabar {
   display: block;

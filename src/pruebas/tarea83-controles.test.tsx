@@ -11,6 +11,8 @@ import React from 'react'
 import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest'
 import { render, screen, fireEvent, act, cleanup, waitFor } from '@testing-library/react'
 import 'fake-indexeddb/auto'
+import fs from 'node:fs'
+import path from 'node:path'
 
 const h = vi.hoisted(() => ({
   escritos: new Map<string, string>(),
@@ -302,4 +304,65 @@ describe('Tarea 83, parte B: LS-M2, otra app toma la cámara o el micrófono', (
     expect(sidecar()).toBeNull()
     expect(screen.queryByTestId('aviso-flotante')).toBeNull()
   })
+})
+
+// CORRECCIONES FINALES -2026-10-05-: el halo de Grabar en LISTO y la pastilla congelada en pausa.
+const CSS = fs.readFileSync(path.resolve(__dirname, '../styles.css'), 'utf8')
+function regla(selector: string): string {
+  const i = CSS.indexOf(`\n${selector} {`)
+  return i < 0 ? '' : CSS.slice(i, CSS.indexOf('}', i))
+}
+
+describe('Tarea 83, correcciones: el halo de Grabar y la pastilla en pausa', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    h.escritos.clear()
+    h.encendida = false
+    h.oyente = null
+    vi.spyOn(console, 'info').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+  })
+
+  test('EL BOTÓN DE GRABAR EN LISTO LATE CON HALO BLANCO Y SE APAGA AL APRETARLO', async () => {
+    await abrir('grabar')
+    const boton = screen.getByTestId('btn-empezar-toma')
+    expect(boton.classList.contains('btn-empezar-grabar')).toBe(true)
+    // El círculo del medio sigue siendo el punto rojo.
+    expect(boton.querySelector('.punto-grabar')).not.toBeNull()
+    // La hoja: el mismo pulso que Leer, halo blanco al 45 %, apagado al apretar y con movimiento reducido.
+    const r = regla('.btn-empezar-grabar')
+    expect(r).toMatch(/animation:\s*pulsoEmpezar 1\.8s ease-out 1\.5s infinite/)
+    expect(r).toMatch(/--pulso-empezar:\s*#fff/)
+    expect(r).toMatch(/--pulso-empezar-opacidad:\s*45%/)
+    expect(regla('.btn-empezar-grabar:active')).toMatch(/animation:\s*none/)
+    expect(CSS).toMatch(/\.btn-empezar-leer,\s*\n\s*\.btn-empezar-grabar \{ animation: none; \}/)
+    expect(CSS).toMatch(/@keyframes pulsoEmpezar\s*\{[^}]*box-shadow[^}]*var\(--pulso-empezar-opacidad, 55%\)/)
+    // Al apretarlo se apaga: el botón deja de estar; grabando, Parar no lleva el pulso.
+    await empezarYMostrarControles()
+    expect(screen.queryByTestId('btn-empezar-toma')).toBeNull()
+    expect(screen.getByTestId('btn-parar-lectura').classList.contains('btn-empezar-grabar')).toBe(false)
+  })
+
+  test.each([['grabar'], ['leer']])('EN PAUSA LA PASTILLA NO AVANZA -%s-', async (puerta) => {
+    localStorage.setItem('teleprompter_ajustes', JSON.stringify({ mostrarTiempo: true }))
+    await abrir(puerta as 'grabar' | 'leer')
+    await empezarYMostrarControles()
+    await esperar(1200)
+    const texto = () => document.querySelector('.pastilla-tiempo')?.textContent || ''
+    await tocarPausa()
+    const enPausa = texto()
+    expect(enPausa).toMatch(/\d\d:\d\d \/ \d\d:\d\d/)
+    await esperar(2600)
+    expect(texto()).toBe(enPausa)
+    // Al seguir, el transcurrido arranca desde donde quedó, sin sumar lo pausado.
+    await tocarPausa()
+    await esperar(300)
+    const [ant] = enPausa.split(' / ')
+    const [desp] = texto().split(' / ')
+    const seg = (m: string) => Number(m.slice(0, 2)) * 60 + Number(m.slice(3, 5))
+    expect(seg(desp) - seg(ant)).toBeLessThanOrEqual(1)
+  }, 20000)
 })

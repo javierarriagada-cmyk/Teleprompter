@@ -2550,6 +2550,9 @@ export default function App({ motor, repoOverride }: AppProps) {
                 enRiel={horizontal || tabletaVertical}
                 // -tarea 83, parte B- De pie en el teléfono, leyendo: centrada encima de la fila de la toma.
                 encimaDeLaFila={layout === 'tel-v' && estadoToma === 'leyendo'}
+                // 2026-10-05, tarea 83: en pausa la pastilla se congela; el transcurrido va sin pausas.
+                enPausa={enPausa}
+                msPausadoAhora={msPausadoAhora}
               />
             )}
           </div>

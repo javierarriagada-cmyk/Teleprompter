@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { MotorDeAvance } from '../lib/avance'
 import { t, useTextos } from '../textos'
 
@@ -6,6 +6,11 @@ export interface BarraDeTiempoProps {
   motorAvance: MotorDeAvance | null
   totalTokens: number
   tInicioLecturaMs: number | null
+  // EN PAUSA LA PASTILLA SE CONGELA -2026-10-05, tarea 83, correcciones-. enPausa es la máquina de la
+  // tarea 88 -lib/pausaToma.ts- y msPausadoAhora lo que lleva pausado la toma, con la pausa abierta
+  // incluida -App.msPausadoAhora-. El transcurrido es el de la toma sin pausas, el mismo del archivo.
+  enPausa?: boolean
+  msPausadoAhora?: () => number
   // En LISTO, antes de empezar: la barra se dibuja quieta con la duracion
   // estimada del guion. Ver el comentario de la vista previa, abajo.
   vistaPrevia?: boolean
@@ -146,10 +151,14 @@ export default function BarraDeTiempo({
   tInicioLecturaMs,
   vistaPrevia = false,
   enRiel = false,
-  encimaDeLaFila = false
+  encimaDeLaFila = false,
+  enPausa = false,
+  msPausadoAhora
 }: BarraDeTiempoProps) {
   useTextos()
   const [ahora, setAhora] = useState<number>(() => performance.now())
+  // El último estado del motor antes de la pausa: en pausa el estimado sale de aquí y no se mueve.
+  const estadoAntesDePausaRef = useRef<ReturnType<MotorDeAvance['estadoEn']> | null>(null)
 
   useEffect(() => {
     if (!tInicioLecturaMs || totalTokens === 0 || !motorAvance) return
@@ -189,9 +198,19 @@ export default function BarraDeTiempo({
     return null
   }
 
-  const estado = motorAvance.estadoEn(ahora)
+  // 2026-10-05: en pausa, el estado congelado. Antes: const estado = motorAvance.estadoEn(ahora)
+  let estado: ReturnType<MotorDeAvance['estadoEn']>
+  if (enPausa && estadoAntesDePausaRef.current) {
+    estado = estadoAntesDePausaRef.current
+  } else {
+    estado = motorAvance.estadoEn(ahora)
+    if (!enPausa) estadoAntesDePausaRef.current = estado
+  }
 
-  const transcurridoSeg = (ahora - tInicioLecturaMs) / 1000
+  // 2026-10-05: sin lo pausado -con la pausa abierta, ahora y lo pausado crecen juntos y el número
+  // queda quieto-. Antes: const transcurridoSeg = (ahora - tInicioLecturaMs) / 1000
+  const pausadoMs = msPausadoAhora ? msPausadoAhora() : 0
+  const transcurridoSeg = Math.max(0, ahora - tInicioLecturaMs - pausadoMs) / 1000
   const palabrasQueFaltan = Math.max(0, totalTokens - estado.posicion)
   const ppm = estado.ppmEstimadas > 0 ? estado.ppmEstimadas : PALABRAS_POR_MINUTO_ESTIMADAS
   const segundosQueFaltan = palabrasQueFaltan / (ppm / 60)

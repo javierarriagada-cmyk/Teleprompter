@@ -87,6 +87,9 @@ const ESTADOS = [
   ['grabar-pausa-seguro', 'grabar', async (p) => { await empezar(p); await tocar(p); await pausar(p); await p.click('[data-testid="btn-descartar-toma"]'); await sleep(600) }],
   ['leer-leyendo', 'leer', async (p) => { await empezar(p); await tocar(p) }],
   ['leer-pausa', 'leer', async (p) => { await empezar(p); await tocar(p); await pausar(p) }],
+  // 2026-10-05: el halo de Grabar en LISTO, detenido en su punto más visible -0,45 s de 1,8: el halo ya
+  // salió unos 6 px y todavía conserva cerca de un tercio de su blanco-.
+  ['grabar-listo-halo', 'grabar', async (p) => { await p.addStyleTag({ content: '.btn-empezar-grabar{animation-delay:-0.45s !important;animation-play-state:paused !important}' }); await sleep(300) }],
   // El aviso de LS-M2 sobre LISTO de Grabar -donde queda la toma después del corte-: aviso-m2.html.
   ['grabar-aviso-camara', 'grabar', async (p) => { await p.evaluate(() => window.mostrarAvisoM2()); await sleep(700) }, 'docs/pantallas/tarea83/herramientas/aviso-m2.html?recurso=camara'],
   ['grabar-aviso-microfono-en', 'grabar', async (p) => { await p.evaluate(() => window.mostrarAvisoM2()); await sleep(700) }, 'docs/pantallas/tarea83/herramientas/aviso-m2.html?recurso=microfono&idioma=en']
