@@ -213,7 +213,10 @@ export const es = {
   // La voz en inglés se baja de Google Play la primera vez -tarea 84, D3-.
   vozSinConexion: 'Para leer en inglés hace falta conexión una vez, para bajar la voz en inglés. Después funciona sin internet.',
   // El nombre del campo del título del guion para el lector de pantalla -tarea 84, G3-.
-  nombreCampoTitulo: 'Título del guion'
+  nombreCampoTitulo: 'Título del guion',
+  // La flecha de las fichas de Grabar, para el lector de pantalla -tarea 93, 05-10-2026-.
+  masOpciones: 'Más opciones',
+  menosOpciones: 'Menos opciones'
 }
 
 export type ClaveTexto = keyof typeof es

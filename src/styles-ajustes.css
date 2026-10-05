@@ -492,3 +492,37 @@
   font-weight: 600;
   border: 1px solid var(--borde-tarjeta);
 }
+
+/* LA FLECHA Y LA SEGUNDA FILA DE GRABAR -tarea 93, 05-10-2026-. La flecha es una ficha más -mismo
+   alto, mismo borde- con solo el chevron. Abierta, el chevron gira 180° -˅ pasa a ˄-; no se pinta
+   de acento: la flecha no abre un panel, abre fichas. El giro y la aparición los pone FichasListo en
+   línea -MS_CHICO y 240 ms, CURVA_RESORTE de movimiento.tsx-; aquí quedan los keyframes. */
+.ficha-flecha {
+  justify-content: center;
+}
+/* De pie la segunda fila va ENCIMA de la primera, a 8: abajo está Empezar y no hay lugar. Así
+   la primera fila y la flecha no se mueven al tocarla. */
+.segunda-fila-fichas {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(100% + 8px);
+}
+/* El panel de una ficha, con la segunda fila abierta, sube por encima de ella: 52 + 32 + 8. */
+.fila-fichas-listo.segunda-abierta > .panel-ficha {
+  bottom: 92px;
+}
+@keyframes aparece-segunda-fila {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+/* De lado entra desde el riel, hacia la derecha. */
+@keyframes aparece-segunda-columna {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: none; }
+}
+/* Respaldo en CSS de movimientoApagado(): con prefers-reduced-motion no hay giro ni aparición. */
+@media (prefers-reduced-motion: reduce) {
+  .flecha-ficha { transition: none !important; }
+  .segunda-fila-fichas { animation: none !important; }
+}

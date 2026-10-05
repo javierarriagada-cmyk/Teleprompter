@@ -202,5 +202,8 @@ export const en: Textos = {
   // The English voice is downloaded from Google Play the first time -tarea 84, D3-.
   vozSinConexion: 'To read in English you need a connection once, to download the English voice. After that it works offline.',
   // The name of the script title field for screen readers -tarea 84, G3-.
-  nombreCampoTitulo: 'Script title'
+  nombreCampoTitulo: 'Script title',
+  // The arrow of the Record chips, for screen readers -tarea 93, 05-10-2026-.
+  masOpciones: 'More options',
+  menosOpciones: 'Fewer options'
 }

@@ -20,6 +20,8 @@ vi.mock('@capgo/camera-preview', () => ({
 // lo que falla es conectar: los botones podian estar dibujados y no mover el ajuste.
 // 28-09-2026: el cajon y el engranaje de LISTO se fueron. La letra se cambia en la ficha
 // Aa; el ancho vive en la pantalla de Ajustes, abierta con Mas.
+// 05-10-2026, tarea 93: en Grabar la pantalla de Ajustes se abre con la ficha Ajustes de la
+// segunda fila -la flecha la muestra-; Más ya no está en Grabar.
 describe('Letra y ancho en el cajon de la toma', () => {
   beforeEach(() => {
     localStorage.clear()
@@ -52,7 +54,10 @@ describe('Letra y ancho en el cajon de la toma', () => {
       expect(JSON.parse(localStorage.getItem('teleprompter_ajustes') || '{}').fontSize).toBe(32)
     })
 
-    fireEvent.click(screen.getByTestId('ficha-mas'))
+    // Antes (2026-10-05): fireEvent.click(screen.getByTestId('ficha-mas'))
+    // Tarea 93: en Grabar ya no hay Más; Ajustes está en la segunda fila, detrás de la flecha.
+    fireEvent.click(screen.getByTestId('ficha-flecha'))
+    fireEvent.click(screen.getByTestId('ficha-ajustes'))
     fireEvent.click(screen.getByTestId('fila-ancho-texto'))
     fireEvent.click(within(screen.getByTestId('dialogo-ancho')).getByRole('button', { name: 'Angosto' }))
     await waitFor(() => {
