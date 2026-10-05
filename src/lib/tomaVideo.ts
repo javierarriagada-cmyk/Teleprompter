@@ -22,6 +22,9 @@ import {
   listarDirectorio,
   moverArchivo
 } from './archivosNativos'
+import type { AnalisisVideo } from './archivosNativos'
+import { orientacionDeToma } from './orientacion'
+import { anotarOrientacion } from './medicionesTarea87'
 import {
   SidecarToma,
   sidecarInicial,
@@ -31,6 +34,8 @@ import {
   emparejarMp4PorTiempo
 } from './sidecar'
 import { veredictoMudo } from './detectorMudo'
+import { tramosACortar, tramosQueQuedan, type PausaToma } from './tramos'
+import type { OrigenPausa } from './pausaToma'
 import { activarDiagnostico, diagnosticoActivo, comoTexto } from './diagnostico'
 
 const MS_HEARTBEAT = 2000
@@ -71,6 +76,53 @@ async function persistirSidecar(s: SesionToma): Promise<void> {
   } catch (e) {
     console.warn('[tomaVideo] no se pudo escribir sidecar:', e)
   }
+}
+
+// LAS PAUSAS DE LA TOMA -tarea 88, 04-10-2026, docs/tarea88.txt, sección 4-. App las abre y las cierra
+// con la hora de Date.now() -la máquina de pausaToma.ts-; aquí pasan al RELOJ DEL VIDEO -el mismo cero
+// que el registro del motor, inicioVideoEpochMs- y se escriben al tiro en el sidecar, además del
+// latido. Sin toma andando -Leer sin cámara- no hacen nada: Pausa solo pausa la voz.
+export function abrirPausa(desdeEpochMs: number, origen: OrigenPausa): void {
+  const s = sesion
+  if (!s || !s.inicioVideoEpochMs) return
+  const pausas = s.sidecar.pausas || []
+  if (pausas.some((p) => p.hastaMs === null)) return
+  s.sidecar.pausas = [...pausas, { desdeMs: Math.round(desdeEpochMs - s.inicioVideoEpochMs), hastaMs: null, origen }]
+  persistirSidecar(s)
+}
+
+export function cerrarPausa(hastaEpochMs: number): void {
+  const s = sesion
+  if (!s || !s.sidecar.pausas) return
+  const abierta = s.sidecar.pausas.findIndex((p) => p.hastaMs === null)
+  if (abierta < 0) return
+  const p = s.sidecar.pausas[abierta]
+  const hastaMs = Math.max(p.desdeMs, Math.round(hastaEpochMs - s.inicioVideoEpochMs))
+  s.sidecar.pausas = s.sidecar.pausas.map((x, i) => (i === abierta ? { ...x, hastaMs } : x))
+  persistirSidecar(s)
+}
+
+// La hora de Date.now() en el reloj del video, para los registros Sigo88 de App. Sin toma andando, null.
+export function msDelVideo(epochMs: number): number | null {
+  const s = sesion
+  if (!s || !s.inicioVideoEpochMs) return null
+  return Math.round(epochMs - s.inicioVideoEpochMs)
+}
+
+// Una pausa abierta se cierra en el final de la toma: Parar en pausa termina donde se pausó.
+function cerrarAbiertas(pausas: PausaToma[] | undefined, duracionMs: number): PausaToma[] | undefined {
+  if (!pausas || pausas.length === 0) return pausas
+  return pausas.map((p) => (p.hastaMs === null ? { ...p, hastaMs: Math.max(p.desdeMs, duracionMs) } : p))
+}
+
+// La miniatura sale del primer tramo que queda: a 1 s de su comienzo, o en su medio si dura menos de
+// 2 s. Sin pausas, a 1 s como siempre.
+export function msDeMiniatura(pausas: PausaToma[] | undefined, duracionMs: number): number {
+  if (!pausas || pausas.length === 0) return 1000
+  const primero = tramosQueQuedan(tramosACortar(pausas, duracionMs), duracionMs)[0]
+  if (!primero) return 1000
+  const largo = primero.hastaMs - primero.desdeMs
+  return Math.round(largo < 2000 ? primero.desdeMs + largo / 2 : primero.desdeMs + 1000)
 }
 
 function detenerHeartbeat(): void {
@@ -219,9 +271,13 @@ export async function cortarTomaVideo(opts?: {
     } catch {}
   }
 
+  // -tarea 88- La pausa que quedó abierta se cierra en la duración medida.
+  if (s.sidecar.pausas) s.sidecar.pausas = cerrarAbiertas(s.sidecar.pausas, analisis.duracionMs || s.sidecar.milisegundos)
+
   let rutaMiniatura = juntos(s.dir, `${s.sidecar.id}.jpg`)
   try {
-    rutaMiniatura = await extraerMiniatura(rutaFinal, rutaMiniatura, 1000)
+    // Antes: extraerMiniatura(rutaFinal, rutaMiniatura, 1000). Sin pausas sigue en 1000.
+    rutaMiniatura = await extraerMiniatura(rutaFinal, rutaMiniatura, msDeMiniatura(s.sidecar.pausas, analisis.duracionMs || s.sidecar.milisegundos))
   } catch (e) {
     console.warn('[tomaVideo] miniatura no se pudo extraer:', e)
     rutaMiniatura = ''
@@ -241,6 +297,8 @@ export async function cortarTomaVideo(opts?: {
       `# toma: ${s.sidecar.id}`,
       ...(motivoCorte ? [`# corte con problema: ${motivoCorte}${recuperadoPorHora ? ' (video recuperado por la hora)' : ' (sin video)'}`] : []),
       `# inicio del video (epoch ms): ${s.inicioVideoEpochMs}`,
+      // -tarea 88- Una línea por pausa, en el reloj del video. El resto del registro no cambia.
+      ...(s.sidecar.pausas || []).map((p) => `# pausa desdeMs=${p.desdeMs} hastaMs=${p.hastaMs} origen=${p.origen}`),
       s.cabeceraMotor,
       '',
       comoTexto()
@@ -255,6 +313,11 @@ export async function cortarTomaVideo(opts?: {
   s.sidecar.milisegundos = analisis.duracionMs || s.sidecar.milisegundos
   s.sidecar.tienePistaAudio = analisis.tienePistaAudio
   s.sidecar.rutaMp4 = rutaFinal
+  // -tarea 87, parte C, 04-10-2026- Cómo se ve la toma. Un APK viejo no manda ancho ni alto: queda
+  // sin el dato y el visor la analiza al abrirla.
+  const orientacion = orientacionDeToma(analisis as Partial<AnalisisVideo>) ?? undefined
+  if (orientacion) s.sidecar.orientacion = orientacion
+  anotarOrientacion(s.sidecar.id, analisis as Partial<AnalisisVideo>, s.sidecar.calidad, 'corte')
   s.sidecar = incompleta ? marcarIncompleta(s.sidecar) : marcarLista(s.sidecar)
   await persistirSidecar(s)
 
@@ -271,7 +334,9 @@ export async function cortarTomaVideo(opts?: {
     incompleta,
     avisoMudo: veredicto.aviso || undefined,
     errorMudo: veredicto.errorDuro || undefined,
-    calidad: s.sidecar.calidad
+    calidad: s.sidecar.calidad,
+    orientacion,
+    pausas: s.sidecar.pausas
   })
 
   sesion = null
@@ -392,9 +457,13 @@ export async function recuperarTomasPendientes(
       }
     }
 
+    // -tarea 88- Una pausa abierta -la app murió en pausa- se cierra en el final del archivo.
+    const pausas = cerrarAbiertas(s.pausas, analisis.duracionMs || s.milisegundos)
+
     let rutaMiniatura = juntos(dir, `${s.id}.jpg`)
     try {
-      rutaMiniatura = await extraerMiniatura(ruta, rutaMiniatura, 1000)
+      // Antes: extraerMiniatura(ruta, rutaMiniatura, 1000). Sin pausas sigue en 1000.
+      rutaMiniatura = await extraerMiniatura(ruta, rutaMiniatura, msDeMiniatura(pausas, analisis.duracionMs || s.milisegundos))
     } catch {
       rutaMiniatura = nombres.includes(`${s.id}.jpg`) ? juntos(dir, `${s.id}.jpg`) : ''
     }
@@ -405,6 +474,10 @@ export async function recuperarTomasPendientes(
       nivelRmsDb: analisis.nivelRmsDb ?? null,
       frasesOidas: s.frasesOidas
     })
+    // -tarea 87, parte C- La orientación, también al recuperar: la del análisis de ahora o, si el
+    // APK no la da, la que ya traía el sidecar.
+    const orientacion = orientacionDeToma(analisis as Partial<AnalisisVideo>) ?? s.orientacion
+    if (orientacionDeToma(analisis as Partial<AnalisisVideo>)) anotarOrientacion(s.id, analisis as Partial<AnalisisVideo>, s.calidad, 'recuperada')
 
     const resumen = grabacionNueva({
       id: s.id,
@@ -419,7 +492,9 @@ export async function recuperarTomasPendientes(
       incompleta,
       avisoMudo: veredicto.aviso || undefined,
       errorMudo: veredicto.errorDuro || undefined,
-      calidad: s.calidad
+      calidad: s.calidad,
+      orientacion,
+      pausas
     })
     await repo.guardar(resumen)
     porId.set(resumen.id, resumen)
@@ -428,7 +503,9 @@ export async function recuperarTomasPendientes(
     try {
       await escribirTexto(
         juntos(dir, `${s.id}.json`),
-        JSON.stringify(incompleta ? marcarIncompleta(s, { rutaMp4: ruta, bytes: resumen.bytes, milisegundos: resumen.duracionMs }) : marcarLista(s))
+        // -tarea 87- Con la orientación. Antes: marcarIncompleta(s, ...) : marcarLista(s).
+        // -tarea 88- Y con las pausas cerradas, si había. Antes: { ...s, orientacion }.
+        JSON.stringify(incompleta ? marcarIncompleta({ ...s, orientacion, ...(pausas ? { pausas } : {}) }, { rutaMp4: ruta, bytes: resumen.bytes, milisegundos: resumen.duracionMs }) : marcarLista({ ...s, orientacion, ...(pausas ? { pausas } : {}) }))
       )
     } catch {}
   }
@@ -512,3 +589,4 @@ export async function borrarGrabacionEnDisco(g: ResumenGrabacion): Promise<void>
     await borrarArchivo(base + '.jpg')
   }
 }
+

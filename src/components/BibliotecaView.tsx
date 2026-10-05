@@ -12,6 +12,7 @@ import { hapticaToqueSuave, hapticaAvisoMantener } from '../haptica'
 import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_RESORTE } from './movimiento'
 import { ESCALA_AVISO, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
 import { t, useTextos, tituloVisible, tituloOInicio, fechaCorta } from '../textos'
+import { entrarSeleccion, seleccionarTodas, trasAlternar } from '../lib/seleccionTomas'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -42,6 +43,8 @@ interface BibliotecaViewProps {
   grabaciones?: ResumenGrabacion[]
   onAbrirGrabacion?: (g: ResumenGrabacion) => void
   onBorrarGrabacion?: (id: string) => void
+  // -tarea 94- el tacho de la selección. App esconde la lista al tiro y borra los archivos a los 5 s.
+  onBorrarTomas?: (ids: string[]) => void
   'data-pantalla-direccion'?: string
   style?: React.CSSProperties
   onAnimationEnd?: (e: React.AnimationEvent) => void
@@ -482,6 +485,7 @@ export default function BibliotecaView({
   grabaciones = [],
   onAbrirGrabacion,
   onBorrarGrabacion,
+  onBorrarTomas,
   'data-pantalla-direccion': dataPantallaDireccion,
   style,
   onAnimationEnd
@@ -490,6 +494,8 @@ export default function BibliotecaView({
   const [busqueda, setBusqueda] = useState('')
   const [mostrarArchivados, setMostrarArchivados] = useState(false)
   const [mostrarPanelCorpus, setMostrarPanelCorpus] = useState(false)
+  // -tarea 94- null: la barra de la portada. Con ids: la barra de selección.
+  const [seleccionTomas, setSeleccionTomas] = useState<string[] | null>(null)
   const [menuId, setMenuId] = useState<string | null>(null)
   // 28-09-2026, tarea 77: el cajon de la portada -tema e idioma-, su estado y su arrastre se
   // fueron. El engranaje llama a onAbrirAjustes: la pantalla de Ajustes es capa de App.
@@ -656,6 +662,11 @@ export default function BibliotecaView({
           setMostrarPanelCorpus(false)
           return true
         }
+        // -tarea 94- el gesto de atrás sale del modo selección sin borrar.
+        if (seleccionTomas) {
+          setSeleccionTomas(null)
+          return true
+        }
         // 28-09-2026: el cajon de la portada se fue. Ajustes lo cierra App: es capa de App.
         return false
       })
@@ -665,7 +676,7 @@ export default function BibliotecaView({
         onRegistrarCerrarModal(null)
       }
     }
-  }, [mostrarPanelCorpus, onRegistrarCerrarModal])
+  }, [mostrarPanelCorpus, seleccionTomas, onRegistrarCerrarModal])
 
   const animacionTituloStyle: React.CSSProperties = (esInicial && !movimientoApagado())
     ? {
@@ -695,6 +706,45 @@ export default function BibliotecaView({
           aplicacion"; ahora la tarjeta es solo del guion. La marca ancla la
           pantalla: antes la portada empezaba con un hueco y la tarjeta. */}
       <header className="portada-cabeza" style={animacionTituloStyle}>
+        {seleccionTomas && (
+          <div className="barra-seleccion-tomas" data-testid="barra-seleccion-tomas">
+            <button type="button" className="btn-deformable boton-portada" data-testid="btn-salir-seleccion" aria-label={t('cerrar')} onClick={() => setSeleccionTomas(null)}>
+              <IconoCerrar tamano={22} />
+            </button>
+            {/* -tarea 94, revision, 05-10-2026, Javier- MARCAR TODAS VA CON LA CUENTA, LEJOS DEL TACHO.
+                Con "Seleccionar todo" pegado al tacho se leia "borrar todo" y hacia dudar antes de
+                borrar unas pocas. Ahora es una casilla junto a la cuenta, como en las apps de correo y de archivos de
+                Android: marca todas, y si ya estan todas las desmarca -con cero, se sale del modo-. El
+                tacho queda solo a la derecha. Antes: <span cuenta> y un boton de texto
+                "Seleccionar todo" entre la cuenta y el tacho. */}
+            {(() => {
+              const ids = (grabaciones || []).map((g) => g.id)
+              const todas = ids.length > 0 && ids.every((id) => seleccionTomas.includes(id))
+              return (
+                <button
+                  type="button"
+                  role="checkbox"
+                  aria-checked={todas}
+                  aria-label={t('seleccionarTodo')}
+                  className="btn-deformable casilla-todas"
+                  data-testid="btn-seleccionar-todo"
+                  onClick={() => setSeleccionTomas(todas ? null : seleccionarTodas(ids))}
+                >
+                  <span className={`casilla-cuadro${todas ? ' marcada' : ''}`} aria-hidden="true">{todas ? '✓' : ''}</span>
+                  <span className="cuenta-seleccion" data-testid="cuenta-seleccion" aria-live="polite">{t('tomasSeleccionadas', { n: seleccionTomas.length })}</span>
+                </button>
+              )
+            })()}
+            <button type="button" className="btn-deformable boton-portada" data-testid="btn-borrar-seleccion" aria-label={t('borrar')} disabled={seleccionTomas.length === 0} onClick={() => {
+              onBorrarTomas?.(seleccionTomas)
+              setSeleccionTomas(null)
+            }}>
+              <IconoTacho tamano={22} />
+            </button>
+          </div>
+        )}
+        {!seleccionTomas && (
+        <>
         {/* LA MARCA ES EL NOMBRE CON SU PUNTO. Primero fueron los cinco
             renglones del icono al lado del nombre, y en chico se leian como
             el icono de menu -tres rayas-: algo que se toca y no hace nada.
@@ -722,6 +772,8 @@ export default function BibliotecaView({
         >
           <IconoEngranaje tamano={22} />
         </button>
+        </>
+        )}
       </header>
 
       {/* LO QUE VA DEBAJO DE LA BARRA ENTRA SUBIENDO. Mientras la marca viaja
@@ -958,6 +1010,9 @@ export default function BibliotecaView({
           onAbrir={onAbrirGrabacion}
           onBorrar={onBorrarGrabacion}
           guiones={guiones}
+          seleccion={seleccionTomas}
+          onEntrarSeleccion={(id) => setSeleccionTomas(entrarSeleccion(id))}
+          onAlternarSeleccion={(id) => setSeleccionTomas((actual) => trasAlternar(actual || [], id))}
         />
       )}
 
@@ -976,7 +1031,12 @@ export default function BibliotecaView({
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 200,
-            padding: 'var(--aire-4)'
+            // TAREA 89 -04-10-2026-: la capa llega bajo las barras del sistema; cada lado suma su
+            // borde seguro para que el panel no quede detrás de la barra de tres botones.
+            paddingTop: 'calc(var(--aire-4) + env(safe-area-inset-top, 0px))',
+            paddingRight: 'calc(var(--aire-4) + env(safe-area-inset-right, 0px))',
+            paddingBottom: 'calc(var(--aire-4) + env(safe-area-inset-bottom, 0px))',
+            paddingLeft: 'calc(var(--aire-4) + env(safe-area-inset-left, 0px))'
           }}
           onClick={() => setMostrarPanelCorpus(false)}
         >

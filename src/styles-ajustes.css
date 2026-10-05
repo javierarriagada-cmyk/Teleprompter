@@ -247,6 +247,36 @@
   height: 24px;
   background: var(--color-texto-acento);
 }
+/* -tarea 88- Deshabilitado: apagado a la vista y a media opacidad, como Material 3. */
+.interruptor.deshabilitado {
+  opacity: 0.38;
+}
+
+/* LA FILA DE CONTROL POR GESTOS -tarea 88, 04-10-2026-, en el panel de la cámara, debajo de Voltear:
+   el nombre, su explicación -o el motivo- debajo y el interruptor a la derecha. */
+.fila-gestos {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+.fila-gestos-texto {
+  flex: 1;
+  min-width: 0;
+}
+.fila-gestos-nombre {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-texto);
+}
+.fila-gestos-explicacion {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--color-apagado);
+}
+.fila-gestos.deshabilitada .fila-gestos-nombre {
+  color: var(--color-apagado);
+}
 
 .pantalla-ajustes {
   position: fixed;
@@ -374,6 +404,13 @@
   justify-content: center;
   z-index: 300;
   padding: 16px;
+  /* TAREA 89 -04-10-2026-: la capa es inset 0 y llega bajo la barra de tres botones. Los mismos
+     16px de siempre más el borde seguro de cada lado, para que los botones del diálogo no queden
+     detrás de la barra ni de pie ni de lado. */
+  padding-top: calc(16px + env(safe-area-inset-top, 0px));
+  padding-right: calc(16px + env(safe-area-inset-right, 0px));
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  padding-left: calc(16px + env(safe-area-inset-left, 0px));
 }
 
 .botones-dialogo {
@@ -454,4 +491,38 @@
   font-size: 14px;
   font-weight: 600;
   border: 1px solid var(--borde-tarjeta);
+}
+
+/* LA FLECHA Y LA SEGUNDA FILA DE GRABAR -tarea 93, 05-10-2026-. La flecha es una ficha más -mismo
+   alto, mismo borde- con solo el chevron. Abierta, el chevron gira 180° -˅ pasa a ˄-; no se pinta
+   de acento: la flecha no abre un panel, abre fichas. El giro y la aparición los pone FichasListo en
+   línea -MS_CHICO y 240 ms, CURVA_RESORTE de movimiento.tsx-; aquí quedan los keyframes. */
+.ficha-flecha {
+  justify-content: center;
+}
+/* De pie la segunda fila va ENCIMA de la primera, a 8: abajo está Empezar y no hay lugar. Así
+   la primera fila y la flecha no se mueven al tocarla. */
+.segunda-fila-fichas {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(100% + 8px);
+}
+/* El panel de una ficha, con la segunda fila abierta, sube por encima de ella: 52 + 32 + 8. */
+.fila-fichas-listo.segunda-abierta > .panel-ficha {
+  bottom: 92px;
+}
+@keyframes aparece-segunda-fila {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+/* De lado entra desde el riel, hacia la derecha. */
+@keyframes aparece-segunda-columna {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: none; }
+}
+/* Respaldo en CSS de movimientoApagado(): con prefers-reduced-motion no hay giro ni aparición. */
+@media (prefers-reduced-motion: reduce) {
+  .flecha-ficha { transition: none !important; }
+  .segunda-fila-fichas { animation: none !important; }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { MotorDeAvance } from '../lib/avance'
 import { t, useTextos } from '../textos'
 
@@ -6,6 +6,11 @@ export interface BarraDeTiempoProps {
   motorAvance: MotorDeAvance | null
   totalTokens: number
   tInicioLecturaMs: number | null
+  // EN PAUSA LA PASTILLA SE CONGELA -2026-10-05, tarea 83, correcciones-. enPausa es la máquina de la
+  // tarea 88 -lib/pausaToma.ts- y msPausadoAhora lo que lleva pausado la toma, con la pausa abierta
+  // incluida -App.msPausadoAhora-. El transcurrido es el de la toma sin pausas, el mismo del archivo.
+  enPausa?: boolean
+  msPausadoAhora?: () => number
   // En LISTO, antes de empezar: la barra se dibuja quieta con la duracion
   // estimada del guion. Ver el comentario de la vista previa, abajo.
   vistaPrevia?: boolean
@@ -13,6 +18,10 @@ export interface BarraDeTiempoProps {
   // pone entero styles-horizontal.css. El bottom en línea, medido desde el círculo de la pantalla
   // vertical, ahí no corresponde y un estilo en línea le ganaría a la hoja.
   enRiel?: boolean
+  // -tarea 83, parte B, 04-10-2026- TELÉFONO DE PIE, LEYENDO: la pastilla va centrada justo encima de la
+  // fila de la toma -pausa, Parar y tacho-. A la derecha de Parar, donde estaba, la pisaba el tacho en
+  // pausa. En LISTO sigue donde estaba.
+  encimaDeLaFila?: boolean
 }
 
 // El mismo ritmo que usa el editor para decir "1 min", y el que usa esta
@@ -49,7 +58,8 @@ function Pastilla({
   etiqueta,
   testid,
   conTestidsDeProgreso,
-  enRiel = false
+  enRiel = false,
+  encimaDeLaFila = false
 }: {
   texto: string
   progresoPct: number
@@ -57,12 +67,14 @@ function Pastilla({
   testid?: string
   conTestidsDeProgreso: boolean
   enRiel?: boolean
+  encimaDeLaFila?: boolean
 }) {
   return (
     <div
       // El lado izquierdo lo pone .pastilla-tiempo-lugar -styles.css-: termina en el
       // circulo, para no pisarlo en telefonos angostos -27-09-2026-.
-      className="pastilla-tiempo-lugar"
+      // -tarea 83, parte B- encima-de-la-fila la centra -styles.css-. Antes: className="pastilla-tiempo-lugar".
+      className={`pastilla-tiempo-lugar${encimaDeLaFila ? ' encima-de-la-fila' : ''}`}
       style={{
         position: 'absolute',
         // El circulo de abajo mide 72 y esta a 24 del borde: su centro queda a
@@ -71,7 +83,13 @@ function Pastilla({
         // Desde el 27-09-2026 el circulo se mide con --circulo-desde-abajo
         // -styles.css-: la pastilla va 14 px mas arriba que el borde del circulo,
         // (72 - 44) / 2, y asi los centros siguen calzando si el circulo se mueve.
-        bottom: enRiel ? undefined : 'calc(var(--circulo-desde-abajo) + 14px + env(safe-area-inset-bottom, 0px))',
+        // -tarea 83, parte B- Encima de la fila: el borde de arriba de Parar -72- más --aire-3 -12-. Antes,
+        // sin ese caso: bottom: enRiel ? undefined : 'calc(var(--circulo-desde-abajo) + 14px + …)'.
+        bottom: enRiel
+          ? undefined
+          : encimaDeLaFila
+            ? 'calc(var(--circulo-desde-abajo) + 72px + var(--aire-3) + env(safe-area-inset-bottom, 0px))'
+            : 'calc(var(--circulo-desde-abajo) + 14px + env(safe-area-inset-bottom, 0px))',
         // 29-09-2026, tarea 82: en el riel -teléfono de lado- el bottom lo pone styles-horizontal.css.
         // right -16 px mas el area segura- tambien vive en .pastilla-tiempo-lugar: en
         // pantallas angostas baja a 12 -27-09-2026-.
@@ -132,10 +150,15 @@ export default function BarraDeTiempo({
   totalTokens,
   tInicioLecturaMs,
   vistaPrevia = false,
-  enRiel = false
+  enRiel = false,
+  encimaDeLaFila = false,
+  enPausa = false,
+  msPausadoAhora
 }: BarraDeTiempoProps) {
   useTextos()
   const [ahora, setAhora] = useState<number>(() => performance.now())
+  // El último estado del motor antes de la pausa: en pausa el estimado sale de aquí y no se mueve.
+  const estadoAntesDePausaRef = useRef<ReturnType<MotorDeAvance['estadoEn']> | null>(null)
 
   useEffect(() => {
     if (!tInicioLecturaMs || totalTokens === 0 || !motorAvance) return
@@ -168,15 +191,32 @@ export default function BarraDeTiempo({
           testid="barra-tiempo-previa"
           conTestidsDeProgreso={false}
           enRiel={enRiel}
+          encimaDeLaFila={encimaDeLaFila}
         />
       )
     }
     return null
   }
 
-  const estado = motorAvance.estadoEn(ahora)
+  // 2026-10-05: en pausa, el estado congelado. Antes: const estado = motorAvance.estadoEn(ahora)
+  let estado: ReturnType<MotorDeAvance['estadoEn']>
+  if (enPausa && estadoAntesDePausaRef.current) {
+    estado = estadoAntesDePausaRef.current
+  } else {
+    estado = motorAvance.estadoEn(ahora)
+    if (!enPausa) estadoAntesDePausaRef.current = estado
+  }
 
-  const transcurridoSeg = (ahora - tInicioLecturaMs) / 1000
+  // 2026-10-05: sin lo pausado -con la pausa abierta, ahora y lo pausado crecen juntos y el número
+  // queda quieto-. Antes: const transcurridoSeg = (ahora - tInicioLecturaMs) / 1000
+  // 2026-10-05, segundo ajuste: la hora se toma al dibujar y no del último refresco de 250 ms. Con la
+  // hora vieja la pastilla se congelaba hasta 250 ms antes de la pausa y al seguir se adelantaba de golpe.
+  // Ahora, en pausa, la hora y lo pausado crecen juntos y el número queda en el ms en que se pausó; al
+  // seguir continúa desde ahí. El refresco -ahora- solo hace que se vuelva a dibujar. Antes:
+  //   const transcurridoSeg = Math.max(0, ahora - tInicioLecturaMs - pausadoMs) / 1000
+  const pausadoMs = msPausadoAhora ? msPausadoAhora() : 0
+  const horaDeDibujo = Math.max(ahora, performance.now())
+  const transcurridoSeg = Math.max(0, horaDeDibujo - tInicioLecturaMs - pausadoMs) / 1000
   const palabrasQueFaltan = Math.max(0, totalTokens - estado.posicion)
   const ppm = estado.ppmEstimadas > 0 ? estado.ppmEstimadas : PALABRAS_POR_MINUTO_ESTIMADAS
   const segundosQueFaltan = palabrasQueFaltan / (ppm / 60)
@@ -191,6 +231,7 @@ export default function BarraDeTiempo({
       etiqueta={t('tiempoTranscurrido')}
       conTestidsDeProgreso={true}
       enRiel={enRiel}
+      encimaDeLaFila={encimaDeLaFila}
     />
   )
 }

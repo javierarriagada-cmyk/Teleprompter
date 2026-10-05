@@ -1,0 +1,3986 @@
+{
+  "visor-de-lado-caso1-horizontal-giro90-915x411-oscuro": {
+    "vista": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "normal",
+      "tema": "oscuro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 72,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 737,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 815,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 72,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 737,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 815,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro90-800x360-oscuro": {
+    "vista": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "normal",
+      "tema": "oscuro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 68,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 68,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 640,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 700,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 72,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 159,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 68,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 68,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 640,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 700,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 72,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 159,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro90-915x411-claro": {
+    "vista": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "normal",
+      "tema": "claro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 72,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 737,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 815,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 72,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 737,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 815,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro90-800x360-claro": {
+    "vista": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "normal",
+      "tema": "claro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 68,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 68,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 640,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 700,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 72,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 159,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 68,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 68,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 640,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 700,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 72,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 159,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro270-915x411-oscuro": {
+    "vista": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "normal",
+      "tema": "oscuro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 76,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 76,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 741,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 819,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 80,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 167,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 76,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 76,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 741,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 819,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 80,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 167,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro270-800x360-oscuro": {
+    "vista": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "normal",
+      "tema": "oscuro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 72,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 644,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 704,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 72,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 644,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 704,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro270-915x411-claro": {
+    "vista": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "normal",
+      "tema": "claro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 76,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 76,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 741,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 819,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 80,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 167,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 76,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 76,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 741,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 819,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 80,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 167,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro270-800x360-claro": {
+    "vista": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "normal",
+      "tema": "claro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 72,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 644,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 704,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 72,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 644,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 704,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso2-vertical-giro90-915x411-oscuro": {
+    "vista": {
+      "caso": 2,
+      "giro": 90,
+      "estado": "normal",
+      "tema": "oscuro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 172,
+        "y": 0,
+        "ancho": 231,
+        "alto": 411
+      },
+      "barra": {
+        "x": 420,
+        "y": 142,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 419,
+        "y": 84,
+        "ancho": 320,
+        "alto": 242
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 682,
+        "y": 93,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 424,
+        "y": 146,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 511,
+        "y": 146,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "2",
+      "fondoRaiz": "rgb(21, 19, 18)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 172,
+        "y": 0,
+        "ancho": 231,
+        "alto": 411
+      },
+      "barra": {
+        "x": 420,
+        "y": 138,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 419,
+        "y": 80,
+        "ancho": 320,
+        "alto": 250
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 682,
+        "y": 89,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 424,
+        "y": 142,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 511,
+        "y": 142,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ],
+      "videoWidth": 720,
+      "videoHeight": 1280
+    }
+  },
+  "visor-de-lado-caso2-vertical-giro90-800x360-oscuro": {
+    "vista": {
+      "caso": 2,
+      "giro": 90,
+      "estado": "normal",
+      "tema": "oscuro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 129,
+        "y": 0,
+        "ancho": 203,
+        "alto": 360
+      },
+      "barra": {
+        "x": 349,
+        "y": 116,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 348,
+        "y": 59,
+        "ancho": 320,
+        "alto": 242
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 611,
+        "y": 68,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 353,
+        "y": 120,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 440,
+        "y": 120,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "2",
+      "fondoRaiz": "rgb(21, 19, 18)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 129,
+        "y": 0,
+        "ancho": 203,
+        "alto": 360
+      },
+      "barra": {
+        "x": 349,
+        "y": 112,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 348,
+        "y": 55,
+        "ancho": 320,
+        "alto": 250
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 611,
+        "y": 64,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 353,
+        "y": 116,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 440,
+        "y": 116,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ],
+      "videoWidth": 720,
+      "videoHeight": 1280
+    }
+  },
+  "visor-de-lado-caso2-vertical-giro90-915x411-claro": {
+    "vista": {
+      "caso": 2,
+      "giro": 90,
+      "estado": "normal",
+      "tema": "claro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 172,
+        "y": 0,
+        "ancho": 231,
+        "alto": 411
+      },
+      "barra": {
+        "x": 420,
+        "y": 142,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 419,
+        "y": 84,
+        "ancho": 320,
+        "alto": 242
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 682,
+        "y": 93,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 424,
+        "y": 146,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 511,
+        "y": 146,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "2",
+      "fondoRaiz": "rgb(21, 19, 18)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 172,
+        "y": 0,
+        "ancho": 231,
+        "alto": 411
+      },
+      "barra": {
+        "x": 420,
+        "y": 138,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 419,
+        "y": 80,
+        "ancho": 320,
+        "alto": 250
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 682,
+        "y": 89,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 424,
+        "y": 142,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 511,
+        "y": 142,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ],
+      "videoWidth": 720,
+      "videoHeight": 1280
+    }
+  },
+  "visor-de-lado-caso2-vertical-giro90-800x360-claro": {
+    "vista": {
+      "caso": 2,
+      "giro": 90,
+      "estado": "normal",
+      "tema": "claro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 129,
+        "y": 0,
+        "ancho": 203,
+        "alto": 360
+      },
+      "barra": {
+        "x": 349,
+        "y": 116,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 348,
+        "y": 59,
+        "ancho": 320,
+        "alto": 242
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 611,
+        "y": 68,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 353,
+        "y": 120,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 440,
+        "y": 120,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "2",
+      "fondoRaiz": "rgb(21, 19, 18)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 129,
+        "y": 0,
+        "ancho": 203,
+        "alto": 360
+      },
+      "barra": {
+        "x": 349,
+        "y": 112,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 348,
+        "y": 55,
+        "ancho": 320,
+        "alto": 250
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 611,
+        "y": 64,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 353,
+        "y": 116,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 440,
+        "y": 116,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ],
+      "videoWidth": 720,
+      "videoHeight": 1280
+    }
+  },
+  "visor-de-lado-caso2-vertical-giro270-915x411-oscuro": {
+    "vista": {
+      "caso": 2,
+      "giro": 270,
+      "estado": "normal",
+      "tema": "oscuro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 176,
+        "y": 0,
+        "ancho": 231,
+        "alto": 411
+      },
+      "barra": {
+        "x": 424,
+        "y": 142,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 423,
+        "y": 84,
+        "ancho": 320,
+        "alto": 242
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 686,
+        "y": 93,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 428,
+        "y": 146,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 515,
+        "y": 146,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "2",
+      "fondoRaiz": "rgb(21, 19, 18)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 176,
+        "y": 0,
+        "ancho": 231,
+        "alto": 411
+      },
+      "barra": {
+        "x": 424,
+        "y": 138,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 423,
+        "y": 80,
+        "ancho": 320,
+        "alto": 250
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 686,
+        "y": 89,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 428,
+        "y": 142,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 515,
+        "y": 142,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ],
+      "videoWidth": 720,
+      "videoHeight": 1280
+    }
+  },
+  "visor-de-lado-caso2-vertical-giro270-800x360-oscuro": {
+    "vista": {
+      "caso": 2,
+      "giro": 270,
+      "estado": "normal",
+      "tema": "oscuro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 133,
+        "y": 0,
+        "ancho": 203,
+        "alto": 360
+      },
+      "barra": {
+        "x": 353,
+        "y": 116,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 352,
+        "y": 59,
+        "ancho": 320,
+        "alto": 242
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 615,
+        "y": 68,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 357,
+        "y": 120,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 444,
+        "y": 120,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "2",
+      "fondoRaiz": "rgb(21, 19, 18)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 133,
+        "y": 0,
+        "ancho": 203,
+        "alto": 360
+      },
+      "barra": {
+        "x": 353,
+        "y": 112,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 352,
+        "y": 55,
+        "ancho": 320,
+        "alto": 250
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 615,
+        "y": 64,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 357,
+        "y": 116,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 444,
+        "y": 116,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ],
+      "videoWidth": 720,
+      "videoHeight": 1280
+    }
+  },
+  "visor-de-lado-caso2-vertical-giro270-915x411-claro": {
+    "vista": {
+      "caso": 2,
+      "giro": 270,
+      "estado": "normal",
+      "tema": "claro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 176,
+        "y": 0,
+        "ancho": 231,
+        "alto": 411
+      },
+      "barra": {
+        "x": 424,
+        "y": 142,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 423,
+        "y": 84,
+        "ancho": 320,
+        "alto": 242
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 686,
+        "y": 93,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 428,
+        "y": 146,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 515,
+        "y": 146,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "2",
+      "fondoRaiz": "rgb(21, 19, 18)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 176,
+        "y": 0,
+        "ancho": 231,
+        "alto": 411
+      },
+      "barra": {
+        "x": 424,
+        "y": 138,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 423,
+        "y": 80,
+        "ancho": 320,
+        "alto": 250
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 686,
+        "y": 89,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 428,
+        "y": 142,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 515,
+        "y": 142,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ],
+      "videoWidth": 720,
+      "videoHeight": 1280
+    }
+  },
+  "visor-de-lado-caso2-vertical-giro270-800x360-claro": {
+    "vista": {
+      "caso": 2,
+      "giro": 270,
+      "estado": "normal",
+      "tema": "claro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 133,
+        "y": 0,
+        "ancho": 203,
+        "alto": 360
+      },
+      "barra": {
+        "x": 353,
+        "y": 116,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 352,
+        "y": 59,
+        "ancho": 320,
+        "alto": 242
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 615,
+        "y": 68,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 357,
+        "y": 120,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 444,
+        "y": 120,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "2",
+      "fondoRaiz": "rgb(21, 19, 18)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 133,
+        "y": 0,
+        "ancho": 203,
+        "alto": 360
+      },
+      "barra": {
+        "x": 353,
+        "y": 112,
+        "ancho": 318,
+        "alto": 52
+      },
+      "columna": null,
+      "tarjeta": {
+        "x": 352,
+        "y": 55,
+        "ancho": 320,
+        "alto": 250
+      },
+      "panelSubtitulos": null,
+      "filas": [
+        71,
+        71,
+        71
+      ],
+      "cerrar": {
+        "x": 615,
+        "y": 64,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 357,
+        "y": 116,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 444,
+        "y": 116,
+        "ancho": 185,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Amarillo",
+          "px": 16
+        },
+        {
+          "t": "Guardar",
+          "px": 12
+        }
+      ],
+      "videoWidth": 720,
+      "videoHeight": 1280
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro90-subtitulos-915x411-oscuro": {
+    "vista": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "subtitulos",
+      "tema": "oscuro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 72,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 737,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 410,
+        "y": 146,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 815,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 72,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 737,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 410,
+        "y": 146,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 815,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro90-subtitulos-800x360-oscuro": {
+    "vista": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "subtitulos",
+      "tema": "oscuro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 68,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 68,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 640,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 313,
+        "y": 133,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 700,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 72,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 159,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 68,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 68,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 640,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 313,
+        "y": 133,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 700,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 72,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 159,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro90-subtitulos-915x411-claro": {
+    "vista": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "subtitulos",
+      "tema": "claro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 72,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 737,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 410,
+        "y": 146,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 815,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 72,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 737,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 410,
+        "y": 146,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 815,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro90-subtitulos-800x360-claro": {
+    "vista": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "subtitulos",
+      "tema": "claro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 68,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 68,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 640,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 313,
+        "y": 133,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 700,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 72,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 159,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 68,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 68,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 640,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 313,
+        "y": 133,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 700,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 72,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 159,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro270-subtitulos-915x411-oscuro": {
+    "vista": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "subtitulos",
+      "tema": "oscuro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 76,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 76,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 741,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 414,
+        "y": 146,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 819,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 80,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 167,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 76,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 76,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 741,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 414,
+        "y": 146,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 819,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 80,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 167,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro270-subtitulos-800x360-oscuro": {
+    "vista": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "subtitulos",
+      "tema": "oscuro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 72,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 644,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 317,
+        "y": 133,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 704,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 72,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 644,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 317,
+        "y": 133,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 704,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro270-subtitulos-915x411-claro": {
+    "vista": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "subtitulos",
+      "tema": "claro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 76,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 76,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 741,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 414,
+        "y": 146,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 819,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 80,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 167,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 76,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 76,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 741,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 414,
+        "y": 146,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        88,
+        89,
+        89,
+        89
+      ],
+      "cerrar": {
+        "x": 819,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 80,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 167,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro270-subtitulos-800x360-claro": {
+    "vista": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "subtitulos",
+      "tema": "claro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 72,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 644,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 317,
+        "y": 133,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 704,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ]
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 72,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 644,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": {
+        "x": 317,
+        "y": 133,
+        "ancho": 320,
+        "alto": 124
+      },
+      "filas": [
+        75,
+        76,
+        76,
+        76
+      ],
+      "cerrar": {
+        "x": 704,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [
+        {
+          "t": "Guardar",
+          "px": 12
+        },
+        {
+          "t": "Amarillo",
+          "px": 12
+        }
+      ],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro90-guardada-915x411-oscuro": {
+    "vista": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "guardada",
+      "tema": "oscuro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 72,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 737,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        176,
+        177
+      ],
+      "cerrar": {
+        "x": 815,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": []
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 72,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 737,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        176,
+        177
+      ],
+      "cerrar": {
+        "x": 815,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro90-guardada-800x360-oscuro": {
+    "vista": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "guardada",
+      "tema": "oscuro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 68,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 68,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 640,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        151,
+        152
+      ],
+      "cerrar": {
+        "x": 700,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 72,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 159,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": []
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 68,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 68,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 640,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        151,
+        152
+      ],
+      "cerrar": {
+        "x": 700,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 72,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 159,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro90-guardada-915x411-claro": {
+    "vista": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "guardada",
+      "tema": "claro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 72,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 737,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        176,
+        177
+      ],
+      "cerrar": {
+        "x": 815,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": []
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 72,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 737,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        176,
+        177
+      ],
+      "cerrar": {
+        "x": 815,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro90-guardada-800x360-claro": {
+    "vista": {
+      "caso": 1,
+      "giro": 90,
+      "estado": "guardada",
+      "tema": "claro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 68,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 68,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 640,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        151,
+        152
+      ],
+      "cerrar": {
+        "x": 700,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 72,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 159,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": []
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 68,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 68,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 640,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        151,
+        152
+      ],
+      "cerrar": {
+        "x": 700,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 72,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 159,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro270-guardada-915x411-oscuro": {
+    "vista": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "guardada",
+      "tema": "oscuro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 76,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 76,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 741,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        176,
+        177
+      ],
+      "cerrar": {
+        "x": 819,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 80,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 167,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": []
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 76,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 76,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 741,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        176,
+        177
+      ],
+      "cerrar": {
+        "x": 819,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 80,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 167,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro270-guardada-800x360-oscuro": {
+    "vista": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "guardada",
+      "tema": "oscuro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 72,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 644,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        151,
+        152
+      ],
+      "cerrar": {
+        "x": 704,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": []
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 72,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 644,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        151,
+        152
+      ],
+      "cerrar": {
+        "x": 704,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro270-guardada-915x411-claro": {
+    "vista": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "guardada",
+      "tema": "claro",
+      "w": 915,
+      "h": 411
+    },
+    "boceto": {
+      "video": {
+        "x": 76,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 76,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 741,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        176,
+        177
+      ],
+      "cerrar": {
+        "x": 819,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 80,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 167,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": []
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 76,
+        "y": 0,
+        "ancho": 638,
+        "alto": 359
+      },
+      "barra": {
+        "x": 76,
+        "y": 359,
+        "ancho": 638,
+        "alto": 52
+      },
+      "columna": {
+        "x": 741,
+        "y": 0,
+        "ancho": 130,
+        "alto": 411
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        176,
+        177
+      ],
+      "cerrar": {
+        "x": 819,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 80,
+        "y": 363,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 167,
+        "y": 363,
+        "ancho": 505,
+        "alto": 48
+      },
+      "rotulos": [],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  },
+  "visor-de-lado-caso1-horizontal-giro270-guardada-800x360-claro": {
+    "vista": {
+      "caso": 1,
+      "giro": 270,
+      "estado": "guardada",
+      "tema": "claro",
+      "w": 800,
+      "h": 360
+    },
+    "boceto": {
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 72,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 644,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        151,
+        152
+      ],
+      "cerrar": {
+        "x": 704,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": []
+    },
+    "app": {
+      "tema": "oscuro",
+      "caso": "1",
+      "fondoRaiz": "rgb(34, 31, 29)",
+      "fondoControles": "rgb(34, 31, 29)",
+      "video": {
+        "x": 72,
+        "y": 0,
+        "ancho": 548,
+        "alto": 308
+      },
+      "barra": {
+        "x": 72,
+        "y": 308,
+        "ancho": 548,
+        "alto": 52
+      },
+      "columna": {
+        "x": 644,
+        "y": 0,
+        "ancho": 112,
+        "alto": 360
+      },
+      "tarjeta": null,
+      "panelSubtitulos": null,
+      "filas": [
+        151,
+        152
+      ],
+      "cerrar": {
+        "x": 704,
+        "y": 8,
+        "ancho": 48,
+        "alto": 48
+      },
+      "boton": {
+        "x": 76,
+        "y": 312,
+        "ancho": 48,
+        "alto": 48
+      },
+      "avance": {
+        "x": 163,
+        "y": 312,
+        "ancho": 415,
+        "alto": 48
+      },
+      "rotulos": [],
+      "videoWidth": 1280,
+      "videoHeight": 720
+    }
+  }
+}

@@ -73,13 +73,32 @@ export const en: Textos = {
   subtitulosAmarillo: 'Yellow',
   subtitulosRojo: 'Red',
   subtitulosFormal: 'Formal',
+  // -tarea 96, 05-10-2026- The take's filters, in the viewer.
+  filtro: 'Filter',
+  filtroNatural: 'Natural',
+  filtroCalido: 'Warm',
+  filtroFrio: 'Cool',
+  filtroVivo: 'Vivid',
+  filtroSuave: 'Soft',
+  filtroBN: 'B&W',
+  // -tarea 87, 04-10-2026- Save and share. The caption position and the estimated time were
+  // removed the same day.
+  guardarYCompartir: 'Save and share',
+  compartirTrasGuardar: 'Saved, but it couldn’t be shared',
   avisoTomaRecuperada: 'A take from an interrupted session was recovered.',
   avisoTomasRecuperadas: '{n} takes from an interrupted session were recovered.',
   verla: 'View it',
   guardado: 'Saved',
   guionBorrado: 'Script deleted',
   deshacer: 'Undo',
+  // -tarea 94, 05-10-2026- Take selection. {n} is the count.
+  tomasSeleccionadas: '{n} selected',
+  seleccionarTodo: 'Select all',
+  tomasBorradas: '{n} takes deleted',
   tomaDescartada: 'Take discarded',
+  // -tarea 83, parte B, LS-M2- Another app took the camera or the microphone mid-take.
+  tomaCortadaCamara: 'Another app took the camera. The take stopped and was saved as incomplete.',
+  tomaCortadaMicrofono: 'Another app took the microphone. The take stopped and was saved as incomplete.',
   grabado: 'Recorded',
   grabadoDuracion: 'Recorded: {duracion}',
   // Al parar una lectura -28-09-2026-: antes decia Grabado aunque no se grababa nada.
@@ -106,6 +125,10 @@ export const en: Textos = {
   coloresLectura: 'Reading colors',
   parejaNegroBlanco: 'White on black',
   parejaNegroAmbar: 'Amber on black',
+  // 05-10-2026, tarea 95: las dos parejas que vuelven de A9 -modelo.ts, PAREJAS_COLOR-. "Bone"
+  // y no "ivory": es el nombre del color en ingles de Estados Unidos para el blanco calido.
+  parejaNegroVerde: 'Green on black',
+  parejaGrisHueso: 'Bone on dark gray',
   parejaBlancoNegro: 'Black on white',
   errorAbrirArchivo: 'Couldn’t open the file: {detalle}',
   archivoSinTexto: 'There’s no text in it to import.',
@@ -138,6 +161,11 @@ export const en: Textos = {
   parar: 'Stop',
   guionSinBloques: 'This script has no text',
   grabando: 'Recording',
+  // -tarea 88, 04-10-2026- Gesture control, in the camera panel of READY.
+  controlPorGestos: 'Gesture control',
+  controlPorGestosExplicacion: 'Palm: pause or resume. While paused, a V sign ends the take.',
+  gestosSoloFrontal: 'Front camera only.',
+  gestosNoDisponible: 'Not available on this phone.',
   ajustesEscena: 'Scene settings',
   imagenCamara: 'Camera view',
   imagenDetras: 'Behind the text',
@@ -190,5 +218,8 @@ export const en: Textos = {
   // The English voice is downloaded from Google Play the first time -tarea 84, D3-.
   vozSinConexion: 'To read in English you need a connection once, to download the English voice. After that it works offline.',
   // The name of the script title field for screen readers -tarea 84, G3-.
-  nombreCampoTitulo: 'Script title'
+  nombreCampoTitulo: 'Script title',
+  // The arrow of the Record chips, for screen readers -tarea 93, 05-10-2026-.
+  masOpciones: 'More options',
+  menosOpciones: 'Fewer options'
 }

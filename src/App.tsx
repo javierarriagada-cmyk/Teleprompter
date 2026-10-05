@@ -1,16 +1,23 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Capacitor, registerPlugin, SystemBars, SystemBarsStyle } from '@capacitor/core'
+import { Capacitor, registerPlugin } from '@capacitor/core'
+import { fijarEstiloDeLaApp } from './lib/barrasDelSistema'
 import { App as CapacitorApp } from '@capacitor/app'
 import useASR from './hooks/useASR'
 import { useSeguidor } from './hooks/useSeguidor'
 import { useWakeLock } from './hooks/useWakeLock'
 import { usePrecargaModelo } from './hooks/usePrecargaModelo'
-import useLayout from './hooks/useLayout'
+import useLayout, { letraPorOmision } from './hooks/useLayout'
 import type { EsquinaRecuadroH } from './components/RecuadroCamara'
 import TeleprompterView, { VeloControles } from './components/TeleprompterView'
 import BarraDeTiempo from './components/BarraDeTiempo'
 import { PanelCorpus } from './components/PanelCorpus'
+// Tarea 87, paso 0 -03-10-2026-: el panel de mediciones de exportación, solo con HERRAMIENTAS.
+import { PanelMediciones } from './components/PanelMediciones'
+import { recibirLineaNativa } from './lib/medicionesExport'
+import { anotarCamara } from './lib/medicionesCamara'
 import { bloquearRecargaAutomatica } from './lib/actualizacion'
+import { bloquearOrientacion, soltarOrientacion } from './lib/orientacionToma'
+import { vigilarRecursos, avisoDePerdida, type PerdidaDeRecurso } from './lib/recursosToma'
 import { iniciarGrabacion, detenerGrabacion } from './lib/grabadorCorpus'
 import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
@@ -18,7 +25,7 @@ import CuentaRegresiva from './components/CuentaRegresiva'
 import { Entrada } from './components/Entrada'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
 import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo, alNegarseLaCamara } from './lib/camara'
-import { obtenerEspacioLibre } from './lib/archivosNativos'
+import { obtenerEspacioLibre, escucharMediciones } from './lib/archivosNativos'
 import { calcularMinutosDisponibles } from './lib/espacio'
 import { hapticaToqueMedio, hapticaToqueSuave, hapticaSeleccion } from './haptica'
 import { IdMotor, MotorDeVoz, ResultadoVoz } from './motor/MotorDeVoz'
@@ -37,8 +44,20 @@ import {
   quitarTomasSinVideo,
   tomaEnCurso,
   anotarFraseOida,
-  borrarGrabacionEnDisco
+  borrarGrabacionEnDisco,
+  abrirPausa,
+  cerrarPausa,
+  msDelVideo
 } from './lib/tomaVideo'
+import { debeBorrarArchivos, loteNuevo, MS_DESHACER_TOMA } from './lib/seleccionTomas'
+// -tarea 88, 04-10-2026- La pausa con cortes y el control por gestos -docs/tarea88.txt-.
+import { paso, EstadoPausa, Entrada as EntradaPausa, Accion as AccionPausa } from './lib/pausaToma'
+import { duracionVisible, MS_MINIMO_QUE_QUEDA } from './lib/tramos'
+import { Gestos, decidirPreparar, MS_ENTRE_INTENTOS_PREPARAR } from './lib/gestos'
+import { confirmadorNuevo, revisar as revisarGesto } from './lib/confirmadorGestos'
+import { vigiaNuevo, oirParcial, oirFinal, debePedir, alPedir, alResponder, Vigia } from './lib/vigiaGestos'
+// -tarea 88, segunda vuelta- El fin de la última palabra del FINAL, para el corte de la palma.
+import { tomarFinUltimaPalabraEpochMs } from './lib/diagnostico'
 import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar } from './components/IconosApp'
 import { t, useTextos, TITULO_SIN_NOMBRE } from './textos'
 import { idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
@@ -73,6 +92,17 @@ export { PAREJAS_COLOR }
 // tituloDeBienvenida y bloqueDeBienvenida viven en app/bienvenida.ts desde el 29-09-2026
 // -tarea 81-; se vuelven a exportar desde aca porque las pruebas las importan de '../App'.
 export { tituloDeBienvenida, bloqueDeBienvenida } from './app/bienvenida'
+
+
+// La esquina guardada del recuadro, o abajo a la derecha si no hay ninguna o no es válida
+// -tarea 83, 30-09-2026: la leen las dos claves de la tableta-.
+function leerEsquina(clave: string): EsquinaRecuadroH {
+  try {
+    const v = localStorage.getItem(clave)
+    if (v === 'der-arriba' || v === 'der-abajo' || v === 'izq-arriba' || v === 'izq-abajo') return v
+  } catch (e) {}
+  return 'der-abajo'
+}
 
 export default function App({ motor, repoOverride }: AppProps) {
   // El idioma de la app: al cambiarlo en el cajon de la portada, App y todo lo que cuelga de
@@ -157,7 +187,15 @@ export default function App({ motor, repoOverride }: AppProps) {
   )
   const [verTranscripcion, setVerTranscripcion] = useState<boolean>(Boolean(ajustesPrevios.verTranscripcion))
   const [mostrarTiempo, setMostrarTiempo] = useState<boolean>(ajustesPrevios.mostrarTiempo !== undefined ? Boolean(ajustesPrevios.mostrarTiempo) : true)
-  const [fontSize, setFontSize] = useState<number>(ajustarFuenteValida(ajustesPrevios.fontSize))
+  // LA LETRA DE LA TABLETA -tarea 83, 30-09-2026-. Si los ajustes traen un tamaño guardado, manda
+  // ese: no se pisa una elección previa. Si no traen ninguno, en tableta -y en el caso borde de la
+  // hoja- la lectura parte en 32; en el teléfono sigue en 24, como siempre -letraPorOmision,
+  // hooks/useLayout.ts-.
+  const [fontSize, setFontSize] = useState<number>(() =>
+    ajustesPrevios.fontSize !== undefined && ajustesPrevios.fontSize !== null
+      ? ajustarFuenteValida(ajustesPrevios.fontSize)
+      : letraPorOmision()
+  )
   // Ajustes es capa, no piso -tarea 77, 28-09-2026-. Encima de todo; atras solo la cierra.
   const [ajustesAbiertos, setAjustesAbiertos] = useState(false)
   // Desde donde se abrio: cada puerta muestra lo suyo -PantallaAjustes, origen-.
@@ -244,6 +282,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [recuadroX, setRecuadroX] = useState<number>(
     typeof ajustesPrevios.recuadroX === 'number' ? ajustesPrevios.recuadroX : 0.64
   )
+  // CONTROL POR GESTOS -tarea 88, 04-10-2026-. Apagado de fábrica. Se guarda en teleprompter_ajustes.
+  const [gestosAlGrabar, setGestosAlGrabar] = useState<boolean>(ajustesPrevios.gestosAlGrabar === true)
   const [recuadroY, setRecuadroY] = useState<number>(
     typeof ajustesPrevios.recuadroY === 'number' ? ajustesPrevios.recuadroY : 0.52
   )
@@ -263,9 +303,34 @@ export default function App({ motor, repoOverride }: AppProps) {
       localStorage.setItem('sigo_recuadro_esquina_h', e)
     } catch (err) {}
   }, [])
+  // LA ESQUINA DEL RECUADRO EN TABLETA -tarea 83, 30-09-2026-. Una clave por diseño, aparte de la
+  // del teléfono: la zona libre de cada uno es otra -entre la barra y el dock en vertical, entre
+  // los rieles de lado- y la esquina que se eligió en una no tiene por qué valer en la otra.
+  const [esquinaRecuadroTabV, setEsquinaRecuadroTabV] = useState<EsquinaRecuadroH>(() => leerEsquina('sigo_recuadro_esquina_tab_v'))
+  const [esquinaRecuadroTabH, setEsquinaRecuadroTabH] = useState<EsquinaRecuadroH>(() => leerEsquina('sigo_recuadro_esquina_tab_h'))
+  const elegirEsquinaRecuadroTabV = useCallback((e: EsquinaRecuadroH) => {
+    setEsquinaRecuadroTabV(e)
+    try {
+      localStorage.setItem('sigo_recuadro_esquina_tab_v', e)
+    } catch (err) {}
+  }, [])
+  const elegirEsquinaRecuadroTabH = useCallback((e: EsquinaRecuadroH) => {
+    setEsquinaRecuadroTabH(e)
+    try {
+      localStorage.setItem('sigo_recuadro_esquina_tab_h', e)
+    } catch (err) {}
+  }, [])
   // EL DISEÑO DE LA VENTANA -tarea 82, A1-: 'tel-h' es el teléfono de lado. Ver hooks/useLayout.ts.
   const layout = useLayout()
-  const horizontal = layout === 'tel-h'
+  // 30-09-2026, tarea 83: horizontal quiere decir "con rieles a los lados", y los rieles están en
+  // el teléfono de lado Y en la tableta de lado -con sus propias medidas, styles-tableta.css-. La
+  // tableta vertical no tiene rieles: tiene barra arriba y dock abajo -tabletaVertical-.
+  const horizontal = layout === 'tel-h' || layout === 'tab-h'
+  const tabletaVertical = layout === 'tab-v'
+  const tableta = layout === 'tab-v' || layout === 'tab-h'
+  // La esquina que vale en el diseño de ahora, y quién la guarda.
+  const esquinaRecuadroActual = layout === 'tab-v' ? esquinaRecuadroTabV : layout === 'tab-h' ? esquinaRecuadroTabH : esquinaRecuadroH
+  const elegirEsquinaRecuadroActual = layout === 'tab-v' ? elegirEsquinaRecuadroTabV : layout === 'tab-h' ? elegirEsquinaRecuadroTabH : elegirEsquinaRecuadroH
   const [calidadVideo, setCalidadVideo] = useState<string>(
     typeof ajustesPrevios.calidadVideo === 'string' ? ajustesPrevios.calidadVideo : '1080p'
   )
@@ -289,7 +354,32 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [modoManual, setModoManual] = useState<boolean>(false)
   const [mostrarDiagnostico, setMostrarDiagnostico] = useState<boolean>(false)
   const [mostrarPanelCorpus, setMostrarPanelCorpus] = useState<boolean>(false)
+  const [mostrarPanelMediciones, setMostrarPanelMediciones] = useState<boolean>(false)
+  // LAS LÍNEAS SigoExport DEL NATIVO -tarea 87, paso 0, 03-10-2026-. Se juntan mientras la app está
+  // abierta, con el panel abierto o no: el guardado desde el visor también se mide. Solo en la APK
+  // de prueba -HERRAMIENTAS-; en Play esta rama no existe.
+  useEffect(() => {
+    if (!HERRAMIENTAS) return
+    let dejar: (() => Promise<void>) | null = null
+    let vigente = true
+    escucharMediciones(recibirLineaNativa).then((f) => {
+      if (vigente) dejar = f
+      else void f()
+    })
+    return () => {
+      vigente = false
+      if (dejar) void dejar()
+    }
+  }, [])
   const [camaraActiva, setCamaraActiva] = useState<boolean>(false)
+  // evento=camara SOLO AL ENCENDERSE -tarea 87, paso 0, 03-10-2026-. Con la cámara detrás, la franja
+  // de diagnóstico se esconde y el panel no se abre en LISTO: se anota sola, un segundo y medio
+  // después de encender -capgo ya armó la vista previa-. Solo en la APK de prueba.
+  useEffect(() => {
+    if (!HERRAMIENTAS || !camaraActiva) return
+    const t = setTimeout(() => { void anotarCamara(calidadVideo).catch(() => {}) }, 1500)
+    return () => clearTimeout(t)
+  }, [camaraActiva, calidadVideo])
   const [grabaciones, setGrabaciones] = useState<ResumenGrabacion[]>([])
   const [grabandoVideo, setGrabandoVideo] = useState<boolean>(false)
   const [grabacionAbierta, setGrabacionAbierta] = useState<ResumenGrabacion | null>(null)
@@ -314,9 +404,12 @@ export default function App({ motor, repoOverride }: AppProps) {
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return
     const oscuro = tema !== 'claro' || vista === 'lectura'
-    SystemBars.setStyle({ style: oscuro ? SystemBarsStyle.Dark : SystemBarsStyle.Light }).catch(() => {
-      // sin el plugin -WebView muy viejo- quedan las barras del telefono, como antes
-    })
+    // TAREA 90 -04-10-2026-: el estilo pasa por barrasDelSistema.ts, que es el único que llama a
+    // SystemBars. Así el visor de lado -que esconde la barra de estado y pone el estilo oscuro- y la app
+    // no se pisan: mientras el visor tiene las barras, este pedido espera y se aplica al soltarlas.
+    // Antes era SystemBars.setStyle(...) aquí mismo, con este comentario en el catch:
+    // sin el plugin -WebView muy viejo- quedan las barras del telefono, como antes
+    fijarEstiloDeLaApp(oscuro)
   }, [tema, vista])
 
   // Guardar ajustes en localStorage ante cambios
@@ -341,12 +434,14 @@ export default function App({ motor, repoOverride }: AppProps) {
         fondoToma,
         recuadroX,
         recuadroY,
-        calidadVideo
+        calidadVideo,
+        // -tarea 88-
+        gestosAlGrabar
       }
       localStorage.setItem('teleprompter_ajustes', JSON.stringify(objetoAjustes))
     } catch (e) {
     }
-  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente, ladoCamara, fondoToma, recuadroX, recuadroY, calidadVideo])
+  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente, ladoCamara, fondoToma, recuadroX, recuadroY, calidadVideo, gestosAlGrabar])
 
   useEffect(() => {
     if (vista === 'lectura' && estadoToma === 'listo' && conCamara) {
@@ -722,6 +817,78 @@ export default function App({ motor, repoOverride }: AppProps) {
     })
   }, [guionActual, cargarBiblioteca, mostrarAviso])
 
+  // -tarea 94- Borrar tomas marcadas. Salen de la lista al tiro. Los archivos
+  // esperan a que se vaya el aviso. Si llega otra tanda, la anterior se confirma
+  // porque el aviso nuevo reemplaza al anterior. A segundo plano, al tiro.
+  const pendientesTomasRef = useRef<Map<string, ResumenGrabacion>>(new Map())
+  const loteTomasRef = useRef<ReturnType<typeof loteNuevo> | null>(null)
+  const timerTomasRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const confirmarTomasPendientes = useCallback(async () => {
+    const ids = [...pendientesTomasRef.current.keys()]
+    loteTomasRef.current = null
+    if (timerTomasRef.current) {
+      clearTimeout(timerTomasRef.current)
+      timerTomasRef.current = null
+    }
+    for (const id of ids) {
+      const g = pendientesTomasRef.current.get(id)
+      pendientesTomasRef.current.delete(id)
+      if (!g) continue
+      try {
+        await borrarGrabacionEnDisco(g)
+        await repoGrabacionesRef.current.borrar(id)
+      } catch (e) {
+        console.warn('[App] no se pudo borrar la toma:', e)
+      }
+    }
+    if (ids.length) setGrabaciones(await repoGrabacionesRef.current.listar())
+  }, [])
+
+  const handleBorrarTomas = useCallback((ids: string[]) => {
+    if (pendientesTomasRef.current.size) {
+      void confirmarTomasPendientes()
+    }
+    const elegidas = grabaciones.filter((g) => ids.includes(g.id))
+    for (const g of elegidas) pendientesTomasRef.current.set(g.id, g)
+    setGrabaciones((prev) => prev.filter((g) => !ids.includes(g.id)))
+    const lote = loteNuevo(ids, Date.now())
+    loteTomasRef.current = lote
+    timerTomasRef.current = setTimeout(() => {
+      if (loteTomasRef.current && debeBorrarArchivos(loteTomasRef.current, Date.now(), false)) {
+        void confirmarTomasPendientes()
+      }
+    }, MS_DESHACER_TOMA)
+    mostrarAviso(t('tomasBorradas', { n: ids.length }), {
+      accionTexto: t('deshacer'),
+      duracionMs: MS_DESHACER_TOMA,
+      alEjecutarAccion: () => {
+        if (timerTomasRef.current) {
+          clearTimeout(timerTomasRef.current)
+          timerTomasRef.current = null
+        }
+        loteTomasRef.current = null
+        const devueltas = ids.map((id) => pendientesTomasRef.current.get(id)).filter(Boolean) as ResumenGrabacion[]
+        ids.forEach((id) => pendientesTomasRef.current.delete(id))
+        setGrabaciones((prev) => [...devueltas, ...prev.filter((g) => !devueltas.some((d) => d.id === g.id))])
+      }
+    })
+  }, [grabaciones, confirmarTomasPendientes, mostrarAviso])
+
+  useEffect(() => {
+    const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive && loteTomasRef.current && debeBorrarArchivos(loteTomasRef.current, Date.now(), true)) {
+        void confirmarTomasPendientes()
+      }
+    })
+    return () => {
+      try {
+        if (sub && typeof sub.then === 'function') sub.then((h: any) => h && h.remove && h.remove()).catch(() => {})
+        else if (sub && typeof sub.remove === 'function') sub.remove()
+      } catch (e) {}
+    }
+  }, [confirmarTomasPendientes])
+
   async function handleArchivarGuion(id: string, archivado: boolean) {
     try {
       const g = await repoRef.current.abrir(id)
@@ -746,8 +913,25 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [estadoModo, setEstadoModo] = useState<'SIGUIENDO' | 'BUSCANDO' | 'DETENIDO'>('SIGUIENDO')
   const [tInicioLecturaMs, setTInicioLecturaMs] = useState<number | null>(null)
   const [cuentaRegresiva, setCuentaRegresiva] = useState<number | null>(null)
-  const [enPausa, setEnPausa] = useState<boolean>(false)
-  const [confirmandoDescarte, setConfirmandoDescarte] = useState<boolean>(false)
+  // -tarea 88, 04-10-2026- LA PAUSA ES UNA MÁQUINA -lib/pausaToma.ts-: el botón, el tacho y los gestos
+  // entran por despachar() -más abajo- y App ejecuta lo que devuelve. enPausa y confirmandoDescarte se
+  // derivan del único estado, con los mismos nombres de antes: los botones y sus testid no cambian.
+  // Antes: const [enPausa, setEnPausa] = useState<boolean>(false)
+  //        const [confirmandoDescarte, setConfirmandoDescarte] = useState<boolean>(false)
+  const [estadoPausa, setEstadoPausa] = useState<EstadoPausa>({ tipo: 'grabando' })
+  const estadoPausaRef = useRef<EstadoPausa>({ tipo: 'grabando' })
+  const ponerEstadoPausa = (e: EstadoPausa) => {
+    estadoPausaRef.current = e
+    setEstadoPausa(e)
+  }
+  const enPausa = estadoPausa.tipo !== 'grabando'
+  const confirmandoDescarte = estadoPausa.tipo === 'confirmando'
+  // Lo pausado de la toma en curso, en ms de Date.now(): el aviso de fin dice la duración FINAL.
+  const msPausadoRef = useRef(0)
+  const pausaAbiertaDesdeRef = useRef<number | null>(null)
+  // El símbolo grande de pausa -solo cuando pausa un gesto-: a la vista, saliendo o nada.
+  const [simboloPausa, setSimboloPausa] = useState<'visible' | 'saliendo' | null>(null)
+  const timerSimboloRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Referencia para la función que cierra el modal abierto si existe
   const cerrarModalRef = useRef<(() => boolean) | null>(null)
@@ -815,6 +999,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     alRecibirFinal: seguidorFinal,
     alNotificarVoz: seguidorVoz,
     irAToken,
+    reiniciarEn,
     motorAvance
   } = useSeguidor(guionParaSeguidor)
 
@@ -844,8 +1029,14 @@ export default function App({ motor, repoOverride }: AppProps) {
     lang: langMotor,
     motor,
     acumularTexto: verTranscripcion,
-    alRecibirParcial: seguidorParcial,
+    // -tarea 88- El vigía de los gestos oye la voz ANTES que el seguidor; el seguidor recibe exactamente
+    // lo mismo que antes. Antes: alRecibirParcial: seguidorParcial.
+    alRecibirParcial: (texto: string) => {
+      oirVozParaGestos('parcial', texto)
+      seguidorParcial(texto)
+    },
     alRecibirFraseFinal: (e: any) => {
+      oirVozParaGestos('final', e && typeof e === 'object' ? String(e.texto || '') : String(e || ''))
       if (grabandoVideoRef.current && e && String(e.texto || '').trim()) {
         anotarFraseOida()
       }
@@ -893,6 +1084,36 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   const { activo: wakeLockActivo, solicitar: solicitarWakeLock, soltar: soltarWakeLock } = useWakeLock()
 
+  // LA ORIENTACIÓN QUEDA FIJA MIENTRAS DURA LA TOMA -tarea 91, 04-10-2026-. Javier: de Empezar a
+  // Parar, en Leer y en Grabar, la pantalla se queda como estaba al empezar, como la cámara del
+  // teléfono; en LISTO y en el visor gira libre. Este efecto es el ÚNICO punto de entrada y de salida:
+  // entra cuando la toma pasa a LEYENDO -la cuenta de tres ya es la toma- y sale por cualquier camino
+  // que la deje en LISTO -Parar, Descartar, el atrás, un error al empezar- o al desmontar App. Pausa →
+  // Seguir no cambia estadoToma, así que no suelta. Al ir a segundo plano se suelta -otra app no tiene
+  // por qué quedar trabada-, y al volver con la toma andando se fija la misma de antes. Ver
+  // lib/orientacionToma.ts y CamaraNativaPlugin.fijarOrientacion.
+  const tomaAndando = vista === 'lectura' && estadoToma === 'leyendo'
+  useEffect(() => {
+    if (!tomaAndando) return
+    bloquearOrientacion('empezar')
+    // Quitar el oyente es asíncrono -addListener devuelve una promesa-: uno que llega después de
+    // terminada la toma no tiene que volver a fijarla.
+    let vigente = true
+    const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+      if (!vigente) return
+      if (!isActive) soltarOrientacion('segundo-plano')
+      else bloquearOrientacion('volver')
+    })
+    return () => {
+      vigente = false
+      try {
+        if (sub && typeof sub.then === 'function') sub.then((h: any) => h && h.remove && h.remove()).catch(() => {})
+        else if (sub && typeof sub.remove === 'function') sub.remove()
+      } catch (e) {}
+      soltarOrientacion('fin-de-toma')
+    }
+  }, [tomaAndando])
+
   const handleEstadoAvanceChange = useCallback((
     motivo: 'silencio' | 'sin-calce' | 'correa' | 'fin-de-linea' | 'fin-de-bloque' | null,
     isAvanzando: boolean,
@@ -905,7 +1126,8 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   async function handleStart() {
     if (cuentaRegresiva !== null || isRecording) return
-    setEnPausa(false)
+    // -tarea 88- Antes: setEnPausa(false).
+    volverAGrabando()
     await solicitarWakeLock()
 
     // MEDIR ES PARTE DE LEER, NO UN BOTON APARTE.
@@ -990,6 +1212,12 @@ export default function App({ motor, repoOverride }: AppProps) {
               `# letra: ${fontSize} px, ${tipoFuente}`,
               `# columna: ${columnaAngosta ? 'angosta' : 'completa'}, margen ${marginPercent}%`,
               `# donde lees: ${anclajeZona}`,
+              // EL DISEÑO DE LA PANTALLA -tarea 89, 04-10-2026-. Para separar en el registro las
+              // tomas de pie -tel-v- de las de lado -tel-h-: de lado no avanzaba y desde el
+              // registro no se sabía cómo estaba el teléfono. Va con el tamaño de la ventana.
+              // -mezcla con la 83, 04-10-2026- El diseño entero, con la tableta: «horizontal» también
+              // es tab-h. Antes: ${horizontal ? 'tel-h' : 'tel-v'}.
+              `# diseño: ${layout}, ventana ${typeof window !== 'undefined' ? window.innerWidth : 0}x${typeof window !== 'undefined' ? window.innerHeight : 0}`,
               // El idioma del guion -28-09-2026-: elige el reconocedor y, en ingles, la
               // comparacion por sonido del seguidor. Sin esto habia que deducirlo del texto.
               `# idioma: ${guionActual ? guionActual.idioma : '?'}`,
@@ -1066,7 +1294,16 @@ export default function App({ motor, repoOverride }: AppProps) {
     setDescargaVoz(null)
     setEstadoToma('leyendo')
     setControlesVisibles(false)
-    await handleStart()
+    // -tarea 91- Si la toma no logra empezar, vuelve a LISTO: antes quedaba en LEYENDO sin cuenta ni
+    // motor, y ahora además con la orientación fija. Volver a LISTO la suelta -el efecto de
+    // tomaAndando-. Lo que alcanzó a arrancar se apaga como al Parar.
+    try {
+      await handleStart()
+    } catch (e) {
+      console.warn('[App] la toma no pudo empezar:', e)
+      cancelarCuentaRegresiva()
+      setEstadoToma('listo')
+    }
   }
 
   function handleVolverDesdeListo() {
@@ -1186,11 +1423,14 @@ export default function App({ motor, repoOverride }: AppProps) {
   async function handleDescartarToma(): Promise<void> {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
-    setEnPausa(false)
+    // -tarea 88- Antes: setEnPausa(false).
+    ponerEstadoPausa({ tipo: 'grabando' })
     const resumen = await cortarTomaSiHay(false)
     await stop()
     await detenerGrabacion()
     await soltarWakeLock()
+    // -tarea 89, cuarta vuelta-: descartar también termina la toma -ver handleStop-.
+    reiniciarEn(0)
     setEstadoToma('listo')
     setControlesVisibles(false)
     if (resumen) {
@@ -1210,6 +1450,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   // "Grabado" queda para una toma que no llego al reproductor. Era el mismo bloque copiado en
   // Salir y en Parar: ahora vive aca.
   function avisarFinDeToma(duracionMs: number | null) {
+    // -tarea 88- Con cámara, la duración FINAL: sin lo pausado. Leer sigue como hoy.
+    if (conCamara && duracionMs !== null) duracionMs = Math.max(0, duracionMs - msPausadoAhora())
     if (duracionMs !== null && duracionMs > 0) {
       const totalSeg = Math.floor(duracionMs / 1000)
       const mins = Math.floor(totalSeg / 60)
@@ -1223,13 +1465,34 @@ export default function App({ motor, repoOverride }: AppProps) {
   async function handleStop(): Promise<ResumenGrabacion | null> {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
-    setEnPausa(false)
-    const resumen = await cortarTomaSiHay(false)
+    // -tarea 88- Antes: setEnPausa(false).
+    ponerEstadoPausa({ tipo: 'grabando' })
+    // Antes: const resumen = await cortarTomaSiHay(false).
+    let resumen = await cortarTomaSiHay(false)
+    // -tarea 88, punto 9- Si después de cortar lo pausado queda menos de 1 s, la toma se trata como hoy
+    // se trata una toma sin video: no se abre el visor, se borra del disco y del índice, y el que llamó
+    // muestra el aviso de fin de siempre. Sin mensajes nuevos.
+    if (resumen && resumen.pausas && resumen.pausas.length > 0 && duracionVisible(resumen) < MS_MINIMO_QUE_QUEDA) {
+      console.info('Sigo88', `toma sin video: quedan ${duracionVisible(resumen)} ms de ${resumen.duracionMs}`)
+      try {
+        await borrarGrabacionEnDisco(resumen)
+        await repoGrabacionesRef.current.borrar(resumen.id)
+        setGrabaciones(await repoGrabacionesRef.current.listar())
+      } catch (e) {
+        console.warn('[App] no se pudo borrar la toma sin video:', e)
+      }
+      resumen = null
+    }
     await stop()
     // El audio se corta DESPUES del motor, no antes: si se cortara primero, los ultimos
     // calces quedarian anotados con un milisegundo que ya no existe en el archivo.
     await detenerGrabacion()
     await soltarWakeLock()
+    // PARAR TERMINA LA TOMA -tarea 89, cuarta vuelta, 04-10-2026-. Hasta hoy nada se reiniciaba
+    // aquí: el seguidor, el motor y su reloj pasaban a la toma siguiente -la toma 2 de Javier empezó
+    // en pos=25.87, donde quedó la 1-. LISTO vuelve al principio del guion; si el usuario mueve el
+    // texto en LISTO, la toma parte desde ahí -onNavegacionManual, abajo-. Pausa no pasa por aquí.
+    reiniciarEn(0)
     setEstadoToma('listo')
     setControlesVisibles(false)
     // Si hubo toma, el visor la confirma. El aviso "Grabado" solo queda
@@ -1281,6 +1544,51 @@ export default function App({ motor, repoOverride }: AppProps) {
       }
     }
   }, [])
+
+  // LA CÁMARA O EL MICRÓFONO TOMADOS POR OTRA APP -tarea 83, parte B, LS-M2, 04-10-2026-. En
+  // pantalla dividida Sigo sigue al frente y el appStateChange de arriba no llega. Con la toma de Grabar
+  // andando se vigilan las dos señales del nativo -lib/recursosToma.ts-; si una llega, la toma se corta
+  // por el MISMO camino que al pasar a segundo plano -cortarTomaSiHay(true): queda guardada como
+  // incompleta y se recupera como siempre-, la toma termina -vuelve a LISTO, como Parar pero sin abrir
+  // el visor- y sale un aviso que dice qué pasó. En Leer no se vigila: no hay nada que guardar.
+  async function cortarPorRecursoPerdido(p: PerdidaDeRecurso): Promise<void> {
+    if (!tomaEnCurso() && !grabandoVideoRef.current) return
+    console.info('Sigo83', `toma cortada: recurso=${p.recurso} motivo=${p.motivo || '-'}`)
+    cancelarCuentaRegresiva()
+    setTInicioLecturaMs(null)
+    ponerEstadoPausa({ tipo: 'grabando' })
+    await cortarTomaSiHay(true)
+    try {
+      setGrabaciones(await repoGrabacionesRef.current.listar())
+    } catch (e) {}
+    await stop()
+    await detenerGrabacion()
+    await soltarWakeLock()
+    reiniciarEn(0)
+    setEstadoToma('listo')
+    setControlesVisibles(false)
+    // Más largo que el aviso de siempre -2 s-: dice algo que no se ve venir.
+    mostrarAviso(t(avisoDePerdida(p.recurso)), { duracionMs: 6000 })
+  }
+  const cortarPorRecursoPerdidoRef = useRef(cortarPorRecursoPerdido)
+  cortarPorRecursoPerdidoRef.current = cortarPorRecursoPerdido
+  const tomaGrabandoAndando = tomaAndando && conCamara
+  useEffect(() => {
+    if (!tomaGrabandoAndando) return
+    let vigente = true
+    let soltar: (() => void) | null = null
+    vigilarRecursos((p) => {
+      if (vigente) void cortarPorRecursoPerdidoRef.current(p)
+    }, { camara: true }).then((f) => {
+      if (vigente) soltar = f
+      else f()
+    })
+    return () => {
+      vigente = false
+      soltar?.()
+    }
+  }, [tomaGrabandoAndando])
+
 
   // Ref para manejar el evento de botón de atrás en Android
   const handleVolverAtrasRef = useRef<() => Promise<void> | void>(() => {})
@@ -1374,6 +1682,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   // -24-09-2026: aca estaba handleClear -vaciar lo oido y reiniciar el seguidor-, sin uso desde
   // que la Tarea 34 saco el boton "Volver al inicio". Cuando B24 -detener a mitad: continuar o
   // empezar de nuevo- se haga, el reinicio es reiniciar() de useSeguidor mas clear() de useASR.
+  // -04-10-2026, tarea 89, cuarta vuelta-: el reinicio al Parar ya está, y es reiniciarEn de
+  // useSeguidor -handleStop y handleDescartarToma-. clear() de useASR no hace falta: solo vacía el
+  // texto oído que se muestra, no lo que sigue el seguidor.
 
   // PAUSA Y SEGUIR VAN EN FILA -tarea 85, 29-09-2026-. Cada toque esperaba solo lo suyo: si
   // Seguir llegaba mientras Pausa todavía estaba apagando el micrófono, start() corría en
@@ -1385,13 +1696,266 @@ export default function App({ motor, repoOverride }: AppProps) {
   // El .catch es para que un fallo no deje la fila trabada: start() y stop() ya avisan el error
   // por su cuenta -ultimoError-.
   const filaPausaRef = useRef<Promise<void>>(Promise.resolve())
-  const handleTogglePausa = async () => {
-    const paso = enPausa ? start : stop
-    setEnPausa(!enPausa)
-    const turno = filaPausaRef.current.then(() => paso()).catch(() => {})
+  // -tarea 88- La fila de siempre, ahora para las acciones pausar y reanudar de la máquina.
+  const enFilaDeLaVoz = (hacer: () => Promise<void> | void): Promise<void> => {
+    const turno = filaPausaRef.current.then(() => hacer()).catch(() => {})
     filaPausaRef.current = turno
-    await turno
+    return turno
   }
+  // -tarea 88- El botón de pausa entra a la máquina como 'alternar', con la hora del toque.
+  // Antes:
+  //   const paso = enPausa ? start : stop
+  //   setEnPausa(!enPausa)
+  //   const turno = filaPausaRef.current.then(() => paso()).catch(() => {})
+  //   filaPausaRef.current = turno
+  //   await turno
+  const handleTogglePausa = async () => {
+    await despachar({ tipo: 'alternar', tMs: Date.now() })
+  }
+
+  // LA MÁQUINA DE PAUSA, CABLEADA -tarea 88, 04-10-2026-. Cada entrada pasa por paso() y App ejecuta
+  // las acciones que vuelven. El botón y la palma dejan así el MISMO tramo en el sidecar.
+  function volverAGrabando() {
+    ponerEstadoPausa({ tipo: 'grabando' })
+    msPausadoRef.current = 0
+    pausaAbiertaDesdeRef.current = null
+  }
+  function msPausadoAhora(): number {
+    const abierta = pausaAbiertaDesdeRef.current
+    return msPausadoRef.current + (abierta !== null ? Math.max(0, Date.now() - abierta) : 0)
+  }
+  function describirEntrada(en: EntradaPausa): string {
+    // -tarea 88, segunda vuelta- La palma lleva además la primera vista y el fin de la voz, en el reloj del
+    // video, para que Claude vea de dónde salió el corte. Antes: if (en.tipo === 'gesto') return `gesto:${en.gesto}`
+    if (en.tipo === 'gesto') {
+      if (en.gesto !== 'palma') return `gesto:${en.gesto}`
+      const v = (ms: number | undefined) => { const x = typeof ms === 'number' ? msDelVideo(ms) : null; return x === null ? '-' : String(x) }
+      return `gesto:palma vistaVideoMs=${v(en.vistoDesdeMs)} finVozVideoMs=${v(en.finVozMs)}`
+    }
+    return en.tipo
+  }
+  function despachar(en: EntradaPausa): Promise<void> {
+    const antes = estadoPausaRef.current
+    const r = paso(antes, en)
+    ponerEstadoPausa(r.estado)
+    if (r.acciones.length > 0) {
+      const enVideo = (ms: number) => { const v = msDelVideo(ms); return v === null ? '-' : String(v) }
+      const detalle = r.acciones.map((a) => (a.tipo === 'pausar' ? `pausar(origen=${a.origen},videoMs=${enVideo(a.desdeMs)})` : a.tipo === 'reanudar' ? `reanudar(videoMs=${enVideo(a.hastaMs)})` : a.tipo)).join(',')
+      console.info('Sigo88', `maquina entrada=${describirEntrada(en)} ${antes.tipo}->${r.estado.tipo} acciones=${detalle}`)
+    }
+    return Promise.all(r.acciones.map((a) => ejecutarAccionPausa(a, en))).then(() => {})
+  }
+  const despacharRef = useRef(despachar)
+  despacharRef.current = despachar
+
+  function mostrarSimboloPausa() {
+    if (timerSimboloRef.current) clearTimeout(timerSimboloRef.current)
+    setSimboloPausa('visible')
+    timerSimboloRef.current = setTimeout(() => {
+      // Con "reducir movimiento" se va sin desvanecerse.
+      if (movimientoApagado()) {
+        timerSimboloRef.current = null
+        setSimboloPausa(null)
+        return
+      }
+      setSimboloPausa('saliendo')
+      timerSimboloRef.current = setTimeout(() => {
+        timerSimboloRef.current = null
+        setSimboloPausa(null)
+      }, 300)
+    }, 1000)
+  }
+  useEffect(() => () => { if (timerSimboloRef.current) clearTimeout(timerSimboloRef.current) }, [])
+
+  // La MISMA cuenta de 3 s del comienzo de la toma -handleStart, CuentaRegresiva-. Al llegar a 0 entra
+  // finCuenta: recién ahí vuelve la voz.
+  function empezarCuentaDePausa() {
+    if (timerCuentaRef.current !== null) clearInterval(timerCuentaRef.current)
+    setCuentaRegresiva(3)
+    let c = 3
+    timerCuentaRef.current = setInterval(() => {
+      c -= 1
+      if (c > 0) {
+        setCuentaRegresiva(c)
+        return
+      }
+      if (timerCuentaRef.current !== null) {
+        clearInterval(timerCuentaRef.current)
+        timerCuentaRef.current = null
+      }
+      setCuentaRegresiva(null)
+      void despacharRef.current({ tipo: 'finCuenta', tMs: Date.now() })
+    }, 1000)
+  }
+
+  // Terminar con la V es exactamente Parar: el mismo camino del botón rojo.
+  async function pararComoElBoton() {
+    hapticaToqueMedio()
+    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
+    const resumen = await handleStop()
+    if (!resumen) avisarFinDeToma(duracionMs)
+  }
+
+  function ejecutarAccionPausa(a: AccionPausa, en: EntradaPausa): Promise<void> {
+    const porGesto = en.tipo === 'gesto' || en.tipo === 'finCuenta'
+    switch (a.tipo) {
+      case 'pausar':
+        pausaAbiertaDesdeRef.current = a.desdeMs
+        abrirPausa(a.desdeMs, a.origen)
+        if (a.origen === 'palma') {
+          // Confirmación a distancia -punto 16-: los controles, la vibración, el aviso para TalkBack
+          // y el símbolo grande. Con el botón no aparece el símbolo.
+          setControlesVisibles(true)
+          hapticaToqueMedio()
+          mostrarAviso(t('pausa'))
+          mostrarSimboloPausa()
+        }
+        return enFilaDeLaVoz(() => stop())
+      case 'reanudar':
+        if (pausaAbiertaDesdeRef.current !== null) {
+          msPausadoRef.current += Math.max(0, a.hastaMs - pausaAbiertaDesdeRef.current)
+          pausaAbiertaDesdeRef.current = null
+        }
+        cerrarPausa(a.hastaMs)
+        // El reloj de la voz del vigía vuelve a empezar: los primeros 2 s no se mira.
+        vigiaRef.current = vigiaNuevo(Date.now())
+        if (porGesto) {
+          setControlesVisibles(true)
+          hapticaToqueMedio()
+          mostrarAviso(t('grabando'))
+        }
+        return enFilaDeLaVoz(() => start())
+      case 'empezarCuenta':
+        empezarCuentaDePausa()
+        return Promise.resolve()
+      case 'cancelarCuenta':
+        cancelarCuentaRegresiva()
+        return Promise.resolve()
+      case 'terminar':
+        return pararComoElBoton()
+      case 'pedirConfirmacion':
+        // El "¿Seguro?" del tacho se dibuja solo: confirmandoDescarte sale del estado.
+        return Promise.resolve()
+      case 'borrar':
+        return handleDescartarToma()
+    }
+    return Promise.resolve()
+  }
+
+  // CONTROL POR GESTOS -tarea 88, docs/tarea88.txt, 6.1 a 6.4-. Con el interruptor apagado no se llama a
+  // nada de Gestos: ni preparar. apto: 'sinProbar' hasta que preparar responde.
+  const [gestosApto, setGestosApto] = useState<'sinProbar' | 'si' | 'no'>('sinProbar')
+  const motivoSinGestos: 'soloFrontal' | 'noDisponible' | null =
+    ladoCamara === 'trasera' ? 'soloFrontal' : gestosApto === 'no' ? 'noDisponible' : null
+  const quiereGestos = gestosAlGrabar && conCamara && vista === 'lectura' && ladoCamara === 'frontal' && camaraActiva
+  // -tarea 88, segunda vuelta, 04-10-2026- «No disponible» falso: sin vista previa todavía, o con un cuadro
+  // negro, se vuelve a intentar mientras la cámara siga encendida -lib/gestos.ts, decidirPreparar-. El lado
+  // nativo guarda el reconocedor: los intentos no crean otro. Se suelta al salir, si se llamó a preparar.
+  // Antes: una sola llamada a preparar, y ok false dejaba 'no' hasta que cambiara quiereGestos:
+  //   Gestos.preparar().then((r) => { preparado = !!(r && r.ok); ... if (vigente) setGestosApto(preparado ? 'si' : 'no') ... })
+  //     .catch(() => { if (vigente) setGestosApto('no') })
+  //   y en la limpieza: if (preparado) Gestos.soltar().
+  useEffect(() => {
+    if (!quiereGestos) return
+    let vigente = true
+    let llamado = false
+    let negros = 0
+    let intentos = 0
+    let timer: number | null = null
+    const intentar = () => {
+      timer = null
+      llamado = true
+      intentos++
+      Gestos.preparar()
+        .then((r) => {
+          if (!vigente) return
+          negros = r && r.estado === 'negro' ? negros + 1 : 0
+          const d = decidirPreparar(r, negros)
+          console.info('Sigo88', `gestos preparar intento=${intentos} ok=${!!(r && r.ok)} estado=${r?.estado ?? '-'}${r && r.motivo ? ` motivo=${r.motivo}` : ''} decide=${d}`)
+          if (d === 'reintentar') {
+            timer = window.setTimeout(intentar, MS_ENTRE_INTENTOS_PREPARAR)
+            return
+          }
+          setGestosApto(d)
+        })
+        .catch((e: any) => {
+          console.info('Sigo88', `gestos preparar falló: ${e?.message || e}`)
+          if (vigente) setGestosApto('no')
+        })
+    }
+    intentar()
+    return () => {
+      vigente = false
+      if (timer !== null) window.clearTimeout(timer)
+      if (llamado) {
+        console.info('Sigo88', 'gestos soltar')
+        Gestos.soltar().catch(() => {})
+      }
+    }
+  }, [quiereGestos])
+
+  // EL VIGÍA Y SU LAZO: setInterval de 100 ms solo con el vigía activo; nunca dos pedidos en vuelo.
+  const vigiaActivo = quiereGestos && grabandoVideo && gestosApto === 'si'
+  const vigiaActivoRef = useRef(false)
+  vigiaActivoRef.current = vigiaActivo
+  const vigiaRef = useRef<Vigia>(vigiaNuevo(0))
+  function oirVozParaGestos(tipo: 'parcial' | 'final', texto: string) {
+    // -tarea 88, segunda vuelta- El FINAL lleva el fin de su última palabra, ya en Date.now() -lo convierte
+    // tomarFinUltimaPalabraEpochMs una sola vez-. Se toma con cada FINAL, aun con el vigía apagado, para
+    // que un fin viejo no quede para el FINAL siguiente. Antes:
+    // const r = tipo === 'parcial' ? oirParcial(vigiaRef.current, texto, Date.now()) : oirFinal(vigiaRef.current, texto, Date.now())
+    const finPalabra = tipo === 'final' ? tomarFinUltimaPalabraEpochMs() : null
+    if (!vigiaActivoRef.current) return
+    const r = tipo === 'parcial' ? oirParcial(vigiaRef.current, texto, Date.now()) : oirFinal(vigiaRef.current, texto, Date.now(), finPalabra)
+    vigiaRef.current = r.vigia
+    if (r.cambio) console.info('Sigo88', `vigia voz ${tipo} cambia`)
+    if (tipo === 'final') {
+      const fv = msDelVideo(r.vigia.finVozMs)
+      console.info('Sigo88', `vigia final cambio=${r.cambio} conHora=${finPalabra !== null} finVozVideoMs=${fv ?? '-'}`)
+    }
+  }
+  useEffect(() => {
+    if (!vigiaActivo) return
+    let vigente = true
+    let confirmador = confirmadorNuevo()
+    let pidiendo = false
+    vigiaRef.current = vigiaNuevo(Date.now())
+    const id = setInterval(() => {
+      const ahora = Date.now()
+      const e = estadoPausaRef.current
+      const estado = e.tipo === 'pausada' ? 'pausada' : e.tipo === 'confirmando' ? 'confirmando' : 'grabando'
+      if (!debePedir(vigiaRef.current, { activo: true, estado }, ahora)) {
+        if (pidiendo && estado === 'grabando' && !vigiaRef.current.enVuelo && ahora - vigiaRef.current.ultimoCambioMs < 2000) pidiendo = false
+        return
+      }
+      if (!pidiendo) {
+        pidiendo = true
+        console.info('Sigo88', `vigia empieza a pedir cuadros estado=${estado}`)
+      }
+      vigiaRef.current = alPedir(vigiaRef.current, ahora)
+      Gestos.revisarCuadro()
+        .then((r) => {
+          if (!vigente) return
+          vigiaRef.current = alResponder(vigiaRef.current)
+          const sale = revisarGesto(confirmador, r)
+          confirmador = sale.confirmador
+          console.info('Sigo88', `revision etiqueta=${r.etiqueta} puntaje=${r.puntaje} msCuadro=${r.msCuadro ?? '-'} msReconocer=${r.msReconocer ?? '-'} estado=${estadoPausaRef.current.tipo}`)
+          if (sale.confirmado) {
+            const c = sale.confirmado
+            // -tarea 88, segunda vuelta- Con finVozMs: la palma corta desde el fin de la última palabra.
+            // Antes: { tipo: 'gesto', gesto: c.gesto, tMs: c.tMs, vistoDesdeMs: c.vistoDesdeMs }
+            void despacharRef.current({ tipo: 'gesto', gesto: c.gesto, tMs: c.tMs, vistoDesdeMs: c.vistoDesdeMs, finVozMs: vigiaRef.current.finVozMs })
+          }
+        })
+        .catch(() => {
+          if (vigente) vigiaRef.current = alResponder(vigiaRef.current)
+        })
+    }, 100)
+    return () => {
+      vigente = false
+      clearInterval(id)
+    }
+  }, [vigiaActivo])
 
   let textoFreno = ''
   if (estadoModo === 'BUSCANDO') {
@@ -1448,12 +2012,188 @@ export default function App({ motor, repoOverride }: AppProps) {
   const columnaDelAviso = () => {
     const rielIzq = conCamara ? 'var(--riel-izq-grabar)' : 'var(--riel-izq-leer)'
     const conRecuadro = camaraActiva && fondoToma === 'recuadro'
-    const recuadroIzq = conRecuadro && esquinaRecuadroH.startsWith('izq')
+    const recuadroIzq = conRecuadro && esquinaRecuadroActual.startsWith('izq')
     return {
       izquierda: `calc(${rielIzq}${recuadroIzq ? ' + var(--carril-recuadro-h)' : ''} + env(safe-area-inset-left, 0px))`,
       derecha: `calc(var(--riel-der)${conRecuadro && !recuadroIzq ? ' + var(--carril-recuadro-h)' : ''} + env(safe-area-inset-right, 0px))`
     }
   }
+
+  // LOS BOTONES DE LEER CON CONTROLES, ARMADOS UNA VEZ -tarea 83, 30-09-2026-. Hasta la 82 vivían
+  // escritos adentro del bloque de los controles, y con la tableta el mismo botón va en tres
+  // envoltorios: flotando en vertical, en un riel de lado, o en la barra y el dock de la tableta
+  // vertical. Se arman acá para que haya una sola copia de cada uno, con su testid. En tableta el
+  // lugar exacto lo pone styles-tableta.css -tab-boton-izq y tab-boton-der-: un estilo en línea le
+  // ganaría a la hoja.
+  //
+  // Cada boton flotante lleva data-duracion-entra y data-duracion-sale: son
+  // los tiempos de su entrada y su salida, y T201 de tarea45 los lee de aca.
+  // Antes los llevaba el cajon panel-controles-lectura, que la 70 elimino.
+  // Si se sacan, esa prueba se pone roja: no ponerle valores por omision.
+  const lugarEnLinea = (lugar: React.CSSProperties): React.CSSProperties => (tableta ? {} : lugar)
+  const botonSalirLectura = (
+                <button
+                  data-testid="btn-salir-lectura"
+                  data-duracion-entra={MS_CHICO}
+                  data-duracion-sale={MS_PANTALLA}
+                  type="button"
+                  className={`btn-deformable btn-flotante-40${tableta ? ' tab-boton-izq' : ''}`}
+                  aria-label={t('salir')}
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    hapticaToqueMedio()
+                    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
+                    const resumen = await handleStop()
+                    if (!resumen) avisarFinDeToma(duracionMs)
+                  }}
+                  style={{
+                    ...lugarEnLinea({
+                      position: 'absolute',
+                      top: 'calc(8px + env(safe-area-inset-top, 0px))',
+                      // 29-09-2026, tarea 82: de lado, a 12 del borde, donde está el ‹ de LISTO.
+                      left: horizontal ? 'calc(12px + env(safe-area-inset-left, 0px))' : 'calc(8px + env(safe-area-inset-left, 0px))'
+                    }),
+                    zIndex: 100,
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                  }}
+                >
+                  <IconoAtras tamano={20} />
+                </button>
+  )
+
+  const botonDescartarToma = (
+                <button
+                  data-testid="btn-descartar-toma"
+                  data-duracion-entra={MS_CHICO}
+                  data-duracion-sale={MS_PANTALLA}
+                  data-confirmando={confirmandoDescarte ? 'si' : 'no'}
+                  type="button"
+                  // -tarea 83, parte B, 04-10-2026- EL TACHO VA EN LA FILA DE LA TOMA, a la derecha de
+                  // Parar, a 56 como la pausa -fila-toma, styles.css-. Antes, en una esquina de arriba:
+                  //   className={`btn-deformable btn-flotante-40${tableta ? ' tab-boton-izq' : ''}`}
+                  className="btn-deformable btn-flotante-56 fila-toma-tacho"
+                  aria-label={t('descartarToma')}
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    // -tarea 88- Por la máquina: en pausa pide el "¿Seguro?", y confirmando borra. Durante
+                    // la cuenta de la palma, la corta. Antes:
+                    //   if (!confirmandoDescarte) setConfirmandoDescarte(true)
+                    //   else { setConfirmandoDescarte(false); await handleDescartarToma() }
+                    await despachar({ tipo: 'tacho' })
+                  }}
+                  style={{
+                    // -tarea 83, parte B- Sin lugar en línea: lo pone la celda de la fila. Antes:
+                    //   ...lugarEnLinea({ position: 'absolute', top: 'calc(8px + env(safe-area-inset-top, 0px))',
+                    //     left: horizontal ? 'calc(12px + …)' : 'calc(8px + …)' }),
+                    //   con el comentario «29-09-2026, tarea 82: de lado, a 12 del borde, en el riel izquierdo.»
+                    zIndex: 100,
+                    // Ancho fijo y no 'auto': CSS no anima un ancho hacia 'auto', salta de golpe,
+                    // y la 11.6 pide que el tacho se abra con una transicion de MS_CHICO.
+                    // 96 le alcanza a '¿Seguro?' en negrita con su aire a los lados; 'Sure?' es
+                    // mas corto.
+                    // 40 cerrado desde el 24-09-2026: las esquinas de arriba miden lo
+                    // mismo que la pausa de la otra esquina -btn-flotante-40-.
+                    // -tarea 83, parte B, 04-10-2026- 56 cerrado, como la pausa a la izquierda de Parar
+                    // -docs/lo-que-hay-que-saber.txt, la regla de tamaños-; abierto sigue en 96, con el
+                    // alto de 56. Antes: width: confirmandoDescarte ? 96 : 40.
+                    width: confirmandoDescarte ? 96 : 56,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    padding: confirmandoDescarte ? '0 var(--aire-2)' : 0,
+                    borderColor: confirmandoDescarte ? 'var(--color-grabando)' : undefined,
+                    color: confirmandoDescarte ? 'var(--color-grabando-texto)' : undefined,
+                    fontSize: 'var(--texto-meta)',
+                    fontWeight: confirmandoDescarte ? 'bold' : 'normal',
+                    // Un transition en linea pisa el de .btn-deformable -styles.css- y el
+                    // tacho se apretaria de golpe, sin el resorte de sus hermanos. Por eso
+                    // se repiten aca el border-radius y el transform con la misma curva.
+                    transition: movimientoApagado()
+                      ? 'none'
+                      : `width ${MS_CHICO}ms ${CURVA_ENTRA}, border-radius ${MS_CHICO}ms ${CURVA_RESORTE}, transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                  }}
+                >
+                  {/* -tarea 83, parte B- El ícono a 24, el de los botones de 56 -FAB de Material 3-.
+                      Antes: <IconoTacho tamano={20} />. */}
+                  {confirmandoDescarte ? t('seguro') : <IconoTacho tamano={24} />}
+                </button>
+  )
+
+  const botonPausaLectura = (
+              <button
+                data-testid="btn-pausa-lectura"
+                data-duracion-entra={MS_CHICO}
+                data-duracion-sale={MS_PANTALLA}
+                type="button"
+                // -tarea 83, parte B, 04-10-2026- LA PAUSA VA AL LADO DE PARAR. Javier, queriendo
+                // pausar, apretaba Parar: la pausa era de 40 en una esquina de arriba y Parar el botón
+                // grande. Ahora es de 56 -el botón flotante de Material 3, m3.material.io/components/
+                // floating-action-button/specs- a la izquierda de Parar en la misma fila, o encima de
+                // él en la columna de lado -fila-toma, styles.css-. Antes:
+                //   className={`btn-deformable btn-flotante-40${tableta ? ' tab-boton-der' : ''}`}
+                className="btn-deformable btn-flotante-56"
+                aria-label={enPausa ? t('seguir') : t('pausa')}
+                onClick={async (e) => {
+                  e.stopPropagation()
+                  // -tarea 88- Confirmando, 'alternar' reanuda y deja el tacho cerrado: lo hace la
+                  // máquina. Antes: setConfirmandoDescarte(false) antes de handleTogglePausa().
+                  await handleTogglePausa()
+                }}
+                style={{
+                  // -tarea 83, parte B- Sin lugar en línea: lo pone la celda de la fila. Antes:
+                  //   ...lugarEnLinea({ position: 'absolute', top: 'calc(8px + env(safe-area-inset-top, 0px))',
+                  //     right: horizontal ? 'calc((var(--riel-der) - 40px) / 2 + …)' : 'calc(8px + …)' }),
+                  //   con el comentario «29-09-2026, tarea 82: de lado, centrada en el riel derecho -(124 - 40) / 2-.»
+                  zIndex: 100,
+                  animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                }}
+              >
+                {/* -tarea 83, parte B- A 24, el ícono del botón de 56. En pausa el mismo botón es
+                    Seguir. Antes: tamano={20} en los dos. */}
+                {enPausa ? <IconoEmpezar tamano={24} /> : <IconoPausa tamano={24} />}
+              </button>
+  )
+
+  const botonPararLectura = (
+                <button
+                  data-testid="btn-parar-lectura"
+                  data-duracion-entra={MS_CHICO}
+                  data-duracion-sale={MS_PANTALLA}
+                  type="button"
+                  className="btn-deformable btn-flotante-72 btn-flotante-rojo"
+                  aria-label={t('parar')}
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    hapticaToqueMedio()
+                    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
+                    const resumen = await handleStop()
+                    if (!resumen) avisarFinDeToma(duracionMs)
+                  }}
+                  style={{
+                    pointerEvents: 'auto',
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                  }}
+                >
+                  {/* 44 y no 26: IconoParar dibuja su cuadrado en 12 de las 24 unidades de la
+                      grilla, como los demas iconos dejan aire. A 44 el cuadrado mide los 22 px
+                      que pide la 11.3 del encargo 70, y el redondeo queda en unos 3 px. */}
+                  <IconoParar tamano={44} />
+                </button>
+  )
+
+  // LA FILA DE LA TOMA -tarea 83, parte B, 04-10-2026, boceto aprobado: docs/pantallas/tarea83/
+  // controles-*.png-. Lo estándar de las cámaras de los teléfonos: Parar al centro, a 72 y rojo; la
+  // pausa a su izquierda, a 56; en pausa, el tacho a su derecha, también a 56. De pie es una fila; de
+  // lado -teléfono y tableta- una columna en el riel derecho: la pausa encima de Parar y el tacho
+  // debajo. Tres celdas fijas -56, 72, 56- con 32 entre ellas -.fila-toma, styles.css-: sin el tacho la
+  // tercera queda vacía y Parar no se corre del centro. En Leer no hay tacho.
+  const filaDeLaToma = (
+    <div data-testid="fila-toma" className={`fila-toma${horizontal ? ' en-columna' : ''}`}>
+      {botonPausaLectura}
+      {botonPararLectura}
+      {conCamara && enPausa ? botonDescartarToma : <span className="fila-toma-hueco" aria-hidden="true" />}
+    </div>
+  )
 
   return (
     <div
@@ -1510,6 +2250,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           verTranscripcion={verTranscripcion}
           setVerTranscripcion={setVerTranscripcion}
           setMostrarPanelCorpus={setMostrarPanelCorpus}
+          setMostrarPanelMediciones={setMostrarPanelMediciones}
         />
       )}
 
@@ -1545,6 +2286,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               }
               if (grabacionAbierta && grabacionAbierta.id === id) setGrabacionAbierta(null)
             }}
+            onBorrarTomas={handleBorrarTomas}
             style={{
               // La biblioteca se oscurece MIENTRAS crece la ventana, no de golpe: un
               // apagon instantaneo se lee como un corte, que es justo lo que la
@@ -1605,7 +2347,9 @@ export default function App({ motor, repoOverride }: AppProps) {
           // pisa al de arriba solo de lado, y no en una sola cadena armada, porque A3
           // -altoPantalla.test.ts- busca el texto className="alto-pantalla" en este archivo y las
           // pruebas de hoy no se tocan. En vertical el elemento queda idéntico.
-          {...((horizontal ? { className: 'alto-pantalla layout-tel-h' } : {}) as { className?: string })}
+          // 30-09-2026, tarea 83: en tableta, .layout-tab-v o .layout-tab-h -styles-tableta.css-, por
+          // el mismo camino.
+          {...((layout !== 'tel-v' ? { className: `alto-pantalla layout-${layout}` } : {}) as { className?: string })}
           style={{
             position: 'fixed',
             top: 0,
@@ -1632,7 +2376,9 @@ export default function App({ motor, repoOverride }: AppProps) {
               {/* El velo de abajo, el mismo de LISTO -VeloControles, TeleprompterView.tsx-. */}
               {/* 29-09-2026, tarea 82: de lado no va: los controles aparecen en los rieles,
                   nunca sobre el texto. */}
-              {!horizontal && <VeloControles colorFondo={colorFondo} />}
+              {/* 30-09-2026, tarea 83: en tableta tampoco: en vertical los controles vuelven en
+                  su barra y su dock, que son franjas propias con su fondo. */}
+              {!horizontal && !tabletaVertical && <VeloControles colorFondo={colorFondo} />}
               {/* LOS RIELES AL LEER, DE LADO -tarea 82, A4, 29-09-2026-. Con los controles a la
                   vista aparecen los rieles: a la izquierda salir -Leer- o el tacho -Grabar en
                   pausa-, en el lugar del ‹ de LISTO; a la derecha la pausa arriba y parar al
@@ -1640,115 +2386,47 @@ export default function App({ motor, repoOverride }: AppProps) {
                   botón. Los botones son los mismos de vertical, con sus testid: enRiel solo los
                   envuelve. Sin controles no hay rieles, pero la columna no se ensancha: su
                   relleno es el mismo -TeleprompterView-. */}
-              {enRiel('izquierdo', (!conCamara || enPausa), <>
-              {/* Cada boton flotante lleva data-duracion-entra y data-duracion-sale: son
-                  los tiempos de su entrada y su salida, y T201 de tarea45 los lee de aca.
-                  Antes los llevaba el cajon panel-controles-lectura, que la 70 elimino.
-                  Si se sacan, esa prueba se pone roja: no ponerle valores por omision. */}
-              {!conCamara && (
-                <button
-                  data-testid="btn-salir-lectura"
-                  data-duracion-entra={MS_CHICO}
-                  data-duracion-sale={MS_PANTALLA}
-                  type="button"
-                  className="btn-deformable btn-flotante-40"
-                  aria-label={t('salir')}
-                  onClick={async (e) => {
-                    e.stopPropagation()
-                    hapticaToqueMedio()
-                    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
-                    const resumen = await handleStop()
-                    if (!resumen) avisarFinDeToma(duracionMs)
-                  }}
-                  style={{
-                    position: 'absolute',
-                    top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                    // 29-09-2026, tarea 82: de lado, a 12 del borde, donde está el ‹ de LISTO.
-                    left: horizontal ? 'calc(12px + env(safe-area-inset-left, 0px))' : 'calc(8px + env(safe-area-inset-left, 0px))',
-                    zIndex: 100,
-                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
-                  }}
-                >
-                  <IconoAtras tamano={20} />
-                </button>
-              )}
-
-              {conCamara && enPausa && (
-                <button
-                  data-testid="btn-descartar-toma"
-                  data-duracion-entra={MS_CHICO}
-                  data-duracion-sale={MS_PANTALLA}
-                  data-confirmando={confirmandoDescarte ? 'si' : 'no'}
-                  type="button"
-                  className="btn-deformable btn-flotante-40"
-                  aria-label={t('descartarToma')}
-                  onClick={async (e) => {
-                    e.stopPropagation()
-                    if (!confirmandoDescarte) {
-                      setConfirmandoDescarte(true)
-                    } else {
-                      setConfirmandoDescarte(false)
-                      await handleDescartarToma()
-                    }
-                  }}
-                  style={{
-                    position: 'absolute',
-                    top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                    // 29-09-2026, tarea 82: de lado, a 12 del borde, en el riel izquierdo.
-                    left: horizontal ? 'calc(12px + env(safe-area-inset-left, 0px))' : 'calc(8px + env(safe-area-inset-left, 0px))',
-                    zIndex: 100,
-                    // Ancho fijo y no 'auto': CSS no anima un ancho hacia 'auto', salta de golpe,
-                    // y la 11.6 pide que el tacho se abra con una transicion de MS_CHICO.
-                    // 96 le alcanza a '¿Seguro?' en negrita con su aire a los lados; 'Sure?' es
-                    // mas corto.
-                    // 40 cerrado desde el 24-09-2026: las esquinas de arriba miden lo
-                    // mismo que la pausa de la otra esquina -btn-flotante-40-.
-                    width: confirmandoDescarte ? 96 : 40,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    padding: confirmandoDescarte ? '0 var(--aire-2)' : 0,
-                    borderColor: confirmandoDescarte ? 'var(--color-grabando)' : undefined,
-                    color: confirmandoDescarte ? 'var(--color-grabando-texto)' : undefined,
-                    fontSize: 'var(--texto-meta)',
-                    fontWeight: confirmandoDescarte ? 'bold' : 'normal',
-                    // Un transition en linea pisa el de .btn-deformable -styles.css- y el
-                    // tacho se apretaria de golpe, sin el resorte de sus hermanos. Por eso
-                    // se repiten aca el border-radius y el transform con la misma curva.
-                    transition: movimientoApagado()
-                      ? 'none'
-                      : `width ${MS_CHICO}ms ${CURVA_ENTRA}, border-radius ${MS_CHICO}ms ${CURVA_RESORTE}, transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
-                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
-                  }}
-                >
-                  {confirmandoDescarte ? t('seguro') : <IconoTacho tamano={20} />}
-                </button>
-              )}
+              {/* LA BARRA Y EL DOCK AL LEER, EN LA TABLETA VERTICAL -tarea 83, 30-09-2026-. Al
+                  tocar la pantalla vuelven las dos franjas de LISTO: arriba salir o el tacho a la
+                  izquierda y la pausa a la derecha -donde estaba Más, como en hoja-tableta.png-, y
+                  abajo parar, centrado en el dock. Son los mismos botones, con sus testid: acá
+                  solo cambia el envoltorio. El texto baja los 72 de la barra y el renglón vivo
+                  queda justo debajo de ella -TeleprompterView, --tab-texto-arriba-: la barra no
+                  se dibuja encima de la palabra viva. */}
+              {tabletaVertical ? (
+                <>
+                  <div
+                    data-testid="tab-barra"
+                    className={`tab-barra tab-barra-leyendo${camaraActiva && fondoToma === 'detras' ? ' sobre-imagen' : ''}`}
+                  >
+                    {/* El fondo es una capa aparte, como el del riel: la franja no arma su propio
+                        apilamiento y el punto rojo y la pastilla siguen por encima de ella. */}
+                    <div className="tab-fondo" aria-hidden="true" />
+                    {!conCamara && botonSalirLectura}
+                    {/* -tarea 83, parte B- El tacho y la pausa bajan a la fila del dock. Antes:
+                        {conCamara && enPausa && botonDescartarToma}
+                        {botonPausaLectura} */}
+                  </div>
+                  <div
+                    data-testid="tab-dock"
+                    className={`tab-dock tab-dock-leyendo${camaraActiva && fondoToma === 'detras' ? ' sobre-imagen' : ''}`}
+                  >
+                    <div className="tab-fondo" aria-hidden="true" />
+                    {/* -tarea 83, parte B- La fila entera, centrada en el dock. Antes: {botonPararLectura} */}
+                    {filaDeLaToma}
+                  </div>
+                </>
+              ) : (
+                <>
+              {/* -tarea 83, parte B- El riel izquierdo queda solo para salir, en Leer: el tacho pasó a la
+                  fila. Antes: enRiel('izquierdo', (!conCamara || enPausa), …) con
+                  {conCamara && enPausa && botonDescartarToma} adentro. */}
+              {enRiel('izquierdo', !conCamara, <>
+              {!conCamara && botonSalirLectura}
               </>)}
 
               {enRiel('derecho', true, <>
-              <button
-                data-testid="btn-pausa-lectura"
-                data-duracion-entra={MS_CHICO}
-                data-duracion-sale={MS_PANTALLA}
-                type="button"
-                className="btn-deformable btn-flotante-40"
-                aria-label={enPausa ? t('seguir') : t('pausa')}
-                onClick={async (e) => {
-                  e.stopPropagation()
-                  setConfirmandoDescarte(false)
-                  await handleTogglePausa()
-                }}
-                style={{
-                  position: 'absolute',
-                  top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                  // 29-09-2026, tarea 82: de lado, centrada en el riel derecho -(124 - 40) / 2-.
-                  right: horizontal ? 'calc((var(--riel-der) - 40px) / 2 + env(safe-area-inset-right, 0px))' : 'calc(8px + env(safe-area-inset-right, 0px))',
-                  zIndex: 100,
-                  animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
-                }}
-              >
-                {enPausa ? <IconoEmpezar tamano={20} /> : <IconoPausa tamano={20} />}
-              </button>
+              {/* -tarea 83, parte B- La pausa va en la fila, con Parar. Antes: {botonPausaLectura} */}
 
               {/* 29-09-2026, tarea 82: de lado, parar va al centro del riel derecho, donde estaba
                   Empezar -riel-lugar-centro, styles-horizontal.css-. */}
@@ -1765,32 +2443,13 @@ export default function App({ motor, repoOverride }: AppProps) {
                   pointerEvents: 'none'
                 }}
               >
-                <button
-                  data-testid="btn-parar-lectura"
-                  data-duracion-entra={MS_CHICO}
-                  data-duracion-sale={MS_PANTALLA}
-                  type="button"
-                  className="btn-deformable btn-flotante-72 btn-flotante-rojo"
-                  aria-label={t('parar')}
-                  onClick={async (e) => {
-                    e.stopPropagation()
-                    hapticaToqueMedio()
-                    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
-                    const resumen = await handleStop()
-                    if (!resumen) avisarFinDeToma(duracionMs)
-                  }}
-                  style={{
-                    pointerEvents: 'auto',
-                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
-                  }}
-                >
-                  {/* 44 y no 26: IconoParar dibuja su cuadrado en 12 de las 24 unidades de la
-                      grilla, como los demas iconos dejan aire. A 44 el cuadrado mide los 22 px
-                      que pide la 11.3 del encargo 70, y el redondeo queda en unos 3 px. */}
-                  <IconoParar tamano={44} />
-                </button>
+                {/* -tarea 83, parte B- La fila entera: de pie al centro, a la altura de siempre; de lado,
+                    en columna al centro del riel derecho. Antes: {botonPararLectura} */}
+                {filaDeLaToma}
               </div>
               </>)}
+                </>
+              )}
             </>
           )}
 
@@ -1871,12 +2530,28 @@ export default function App({ motor, repoOverride }: AppProps) {
                 if (estadoToma !== 'leyendo') return
                 setControlesVisibles((prev) => !prev)
               }}
-              onNavegacionManual={irAToken}
+              // -tarea 89, cuarta vuelta-: en LISTO mover el texto es elegir desde dónde parte la toma
+              // -reiniciarEn, seguidor y motor como nuevos ahí, sin el reloj del gesto-; leyendo es
+              // corregir el rumbo de la toma en curso -irAToken, como siempre-.
+              onNavegacionManual={estadoToma === 'listo' ? reiniciarEn : irAToken}
               onModoManualChange={setModoManual}
               onEstadoAvanceChange={handleEstadoAvanceChange}
               horizontal={horizontal}
-              esquinaRecuadroH={esquinaRecuadroH}
-              setEsquinaRecuadroH={elegirEsquinaRecuadroH}
+              // 30-09-2026, tarea 83: el diseño entero -la tableta vertical no tiene rieles, tiene
+              // barra y dock- y si los controles de la lectura están a la vista: con ellos vuelve
+              // la barra y el texto baja lo que ella mide.
+              layout={layout}
+              controlesVisibles={controlesVisibles}
+              esquinaRecuadroH={esquinaRecuadroActual}
+              setEsquinaRecuadroH={elegirEsquinaRecuadroActual}
+              // -tarea 88-
+              enPausa={enPausa}
+              gestosAlGrabar={gestosAlGrabar}
+              setGestosAlGrabar={(v) => {
+                hapticaSeleccion()
+                setGestosAlGrabar(v)
+              }}
+              motivoSinGestos={motivoSinGestos}
             />
             {/* EL RELEVO del texto chico de la tarjeta al texto grande de la lectura.
                 Es un velo del mismo color de fondo que se desvanece por encima, NO un
@@ -1922,6 +2597,17 @@ export default function App({ motor, repoOverride }: AppProps) {
               />
             )}
             <CuentaRegresiva valor={cuentaRegresiva} />
+            {/* -tarea 88, punto 16- EL SÍMBOLO GRANDE DE PAUSA: solo cuando pausa un gesto. Ver
+                .simbolo-pausa-grande en styles.css. */}
+            {simboloPausa && (
+              <div
+                data-testid="simbolo-pausa-grande"
+                className={`simbolo-pausa-grande${simboloPausa === 'saliendo' ? ' saliendo' : ''}`}
+                aria-hidden="true"
+              >
+                <IconoPausa tamano={48} />
+              </div>
+            )}
 
             {/* La barra de tiempo va ADENTRO del lienzo -position relative, 100dvh-
                 y se ubica sola abajo a la derecha. Afuera quedaba debajo del borde
@@ -1933,7 +2619,14 @@ export default function App({ motor, repoOverride }: AppProps) {
                 tInicioLecturaMs={tInicioLecturaMs}
                 vistaPrevia={estadoToma === 'listo'}
                 // 29-09-2026, tarea 82: de lado, abajo del riel derecho.
-                enRiel={horizontal}
+                // 30-09-2026, tarea 83: en tableta el lugar también lo pone la hoja -a la derecha
+                // del dock en vertical, abajo del riel derecho de lado-.
+                enRiel={horizontal || tabletaVertical}
+                // -tarea 83, parte B- De pie en el teléfono, leyendo: centrada encima de la fila de la toma.
+                encimaDeLaFila={layout === 'tel-v' && estadoToma === 'leyendo'}
+                // 2026-10-05, tarea 83: en pausa la pastilla se congela; el transcurrido va sin pausas.
+                enPausa={enPausa}
+                msPausadoAhora={msPausadoAhora}
               />
             )}
           </div>
@@ -1951,7 +2644,12 @@ export default function App({ motor, repoOverride }: AppProps) {
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 200,
-            padding: 'var(--aire-4)'
+            // TAREA 89 -04-10-2026-: la capa llega bajo las barras del sistema; cada lado suma su
+            // borde seguro para que el panel no quede detrás de la barra de tres botones.
+            paddingTop: 'calc(var(--aire-4) + env(safe-area-inset-top, 0px))',
+            paddingRight: 'calc(var(--aire-4) + env(safe-area-inset-right, 0px))',
+            paddingBottom: 'calc(var(--aire-4) + env(safe-area-inset-bottom, 0px))',
+            paddingLeft: 'calc(var(--aire-4) + env(safe-area-inset-left, 0px))'
           }}
           onClick={() => setMostrarPanelCorpus(false)}
         >
@@ -1985,6 +2683,60 @@ export default function App({ motor, repoOverride }: AppProps) {
         </div>
       )}
 
+      {/* Tarea 87, paso 0 -03-10-2026-: el panel de mediciones de exportación, con el mismo marco
+          que el de corpus. Tampoco viaja a Play. */}
+      {HERRAMIENTAS && mostrarPanelMediciones && (
+        <div
+          data-testid="modal-mediciones"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'var(--bg-suelo)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 200,
+            // -mezcla con la 89, 04-10-2026- El mismo marco que el de corpus, también en los bordes
+            // seguros: la 89 los sumó allá para que la barra de tres botones no tape el panel. Antes:
+            // padding: 'var(--aire-4)'.
+            paddingTop: 'calc(var(--aire-4) + env(safe-area-inset-top, 0px))',
+            paddingRight: 'calc(var(--aire-4) + env(safe-area-inset-right, 0px))',
+            paddingBottom: 'calc(var(--aire-4) + env(safe-area-inset-bottom, 0px))',
+            paddingLeft: 'calc(var(--aire-4) + env(safe-area-inset-left, 0px))'
+          }}
+          onClick={() => setMostrarPanelMediciones(false)}
+        >
+          <div
+            className="panel-superficie"
+            style={{
+              backgroundColor: 'var(--bg-panel)',
+              color: 'var(--color-texto)',
+              padding: 'var(--aire-4)',
+              borderRadius: 'var(--redondeo)',
+              maxWidth: 600,
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              boxSizing: 'border-box'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--aire-3)' }}>
+              <h3 className="texto-titulo" style={{ margin: 0 }}>Medición / Exportación</h3>
+              <button
+                type="button"
+                data-testid="btn-cerrar-mediciones"
+                onClick={() => setMostrarPanelMediciones(false)}
+                style={{ background: 'transparent', border: 'none', color: 'var(--color-texto)', fontSize: 'var(--texto-titulo)', cursor: 'pointer' }}
+              >
+                ✕
+              </button>
+            </div>
+            <PanelMediciones grabaciones={grabaciones} calidadPedida={calidadVideo} camaraActiva={camaraActiva} />
+          </div>
+        </div>
+      )}
+
       {grabacionAbierta && (
         <ReproductorGrabacion
           grabacion={grabacionAbierta}
@@ -2005,7 +2757,10 @@ export default function App({ motor, repoOverride }: AppProps) {
           onCambio={async (g) => {
             // Guardada en la galeria -o su copia ya no esta-: se anota en el
             // indice, y el visor abierto cambia de botones al tiro.
-            setGrabacionAbierta(g)
+            // -tarea 87, 04-10-2026- Solo si el visor sigue abierto en ESA toma: la X mientras se
+            // guarda no cancela, y al terminar el guardado no tiene que volver a abrir el visor
+            // -respuesta de Claude del 04-10-. Antes: setGrabacionAbierta(g).
+            setGrabacionAbierta((abierta) => (abierta && abierta.id === g.id ? g : abierta))
             try {
               await repoGrabacionesRef.current.guardar(g)
               setGrabaciones(await repoGrabacionesRef.current.listar())
@@ -2117,6 +2872,8 @@ export default function App({ motor, repoOverride }: AppProps) {
         enLectura={vista === 'lectura'}
         cerrarAviso={cerrarAviso}
         columnaHorizontal={horizontal ? columnaDelAviso() : null}
+        // 30-09-2026, tarea 83: en la tableta vertical, encima del dock.
+        sobreDock={vista === 'lectura' && tabletaVertical}
       />
     </div>
   )

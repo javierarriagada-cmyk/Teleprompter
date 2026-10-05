@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- hasFragileUserData -24-09-2026-: las tomas que no se guardaron en la
          galeria viven en la carpeta privada de Sigo, que la galeria no muestra
@@ -56,6 +57,23 @@
             <meta-data
                 android:name="autoStoreLocales"
                 android:value="true" />
+        </service>
+
+        <!-- SIN ENVÍO DE ESTADÍSTICAS A GOOGLE -2026-10-04, tarea 88, decisión de Javier-. Sigo declara
+             en Play que no recopila datos. MediaPipe -tasks-core, RemoteLoggingClient- manda estadísticas
+             de uso por datatransport, y el que las sube es el backend "cct" -CctBackendFactory, de
+             transport-backend-cct-. Aquí se quita SOLO ese registro del manifiesto combinado: el servicio
+             TransportBackendDiscovery se mezcla -tools:node="merge"- y su meta-data se saca. Las clases
+             quedan en el paquete, así que el reconocedor arranca igual -CCTDestination existe; sin ella no
+             arrancaría, ver app/build.gradle-; sin backend registrado, datatransport no tiene a dónde subir.
+             Esto corta también el envío de ML Kit, que trae capgo/camera-preview -lectura de códigos de
+             barras- y que Sigo no usa. -->
+        <service
+            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+            tools:node="merge">
+            <meta-data
+                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+                tools:node="remove" />
         </service>
     </application>
 

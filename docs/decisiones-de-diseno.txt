@@ -6,6 +6,12 @@ una sesion en la nube. Vivia en la carpeta privada teleprom/00-arquitectura, que
 en el repositorio: donde este documento nombre algo de teleprom/ -tomas, capturas, la
 patente-, eso NO esta a tu alcance. Aca las otras aplicaciones van sin nombre.
 
+PUESTA AL DÍA EL 05-10-2026, TAREA 95. La última había sido el 27-09-2026. Se leyeron
+docs/tarea80.txt a tarea91.txt, docs/pantallas/*/LEEME.txt y el git log de main hasta cb48241
+-tarea 94-. Lo que cambió se escribió en su punto, con fecha y tarea, y lo de antes quedó como
+"Antes: ...". Lo que no tenía lugar está al final, en AGREGADOS DEL 28 DE SEPTIEMBRE AL 5 DE
+OCTUBRE DE 2026.
+
 COMO SE USA
     Una por vez, como se hizo con la pantalla de lectura: se estudia, se mide o se dibuja,
     se le muestra a Javier algo que pueda MIRAR, el corta, y de ahi sale una tarea para
@@ -48,6 +54,11 @@ COMO SE USA
 
     Todo lo demas -espejo, anclaje de la zona, lineas de zona, mostrar el tiempo, pantalla
     completa- es de ajustar una vez y no volver a mirar. Va detras de ajustes.
+
+    05-10-2026, decidido por Javier -tarea 95 lo anota-: la TIPOGRAFÍA y el ANCHO se eligen SOLO
+    en Ajustes, y se quedan así. En LISTO, a la mano, quedan las fichas -tamaño de letra en Aa,
+    y en Grabar la cámara, la posición y el brillo; ver B10-. Antes: el conjunto esencial de
+    arriba ponía la tipografía y el ancho de columna "a un toque" antes de empezar.
 
     DOS CONSECUENCIAS QUE APARECIERON AL APLICAR LA REGLA:
 
@@ -104,6 +115,10 @@ A1  TIPOGRAFIA DE LECTURA.                                      CERRADA / 7 sept
     DONDE SE ELIGE: Javier lo dio por supuesto en la pantalla donde se ve el guion, "de un
     modo facil". Va en los ajustes rapidos de la pantalla de lectura, a un toque, junto al
     tamano y el margen. No en una pantalla de configuracion aparte.
+
+    CAMBIADO: desde el 28-09-2026 -tarea 77- la tipografía se elige en la pantalla de Ajustes, y
+    el 05-10-2026 Javier decidió que se queda ahí: tipografía y ancho SOLO en Ajustes. Antes:
+    "DONDE SE ELIGE ... Va en los ajustes rapidos de la pantalla de lectura, a un toque".
 
 A2  TIPOGRAFIA DE INTERFAZ.                                     DECIDIDA / tarea 19
     La de los botones, titulos y listas, que puede ser otra que la de lectura. Hoy tampoco
@@ -213,6 +228,21 @@ A9  FONDO Y COLOR DEL TEXTO AL LEER.                            CERRADA / 7 sept
     Detalle que aparecio al construirlo: la banda de B4 es LUZ sobre fondo oscuro y SOMBRA
     sobre fondo claro. Con el fondo blanco, un blanco al 7% no existe.
 
+    05-10-2026, TAREA 95: VUELVEN LAS DOS PAREJAS QUE FALTABAN. En la tarea 44 quedaron tres
+    parejas -negro/blanco, negro/ámbar #F5C24B, blanco/negro- y se cayeron el gris y el verde
+    sin razón escrita. Desde la 95 son cinco -src/datos/modelo.ts, PAREJAS_COLOR-:
+        negro    #000000 con blanco  #FFFFFF    21:1     por omisión
+        negro    #000000 con ámbar   #F5C24B    12,70:1
+        negro    #000000 con verde   #4ADE80    12,05:1  verde fuerte sin ser fosforescente:
+                                                         el #00FF00 da 15,3:1 y encandila
+        gris     #121212 con hueso   #EDE6D6    15,07:1  el remedio de la halación: no es
+                                                         negro puro y la letra es un blanco
+                                                         cálido al ~80 % de la luminancia
+        blanco   #FFFFFF con negro   #000000    21:1     exterior
+    Contraste medido con la fórmula de WCAG 2.x; todas pasan AAA -7:1-. Las dos nuevas son
+    oscuras: la banda es luz, los tramos de color son los claros y el halo de Grabar es blanco,
+    igual que en las otras oscuras. Se eligen en Ajustes, fila Colores.
+
 A10 PALETA DE LA APLICACION.                                    CERRADA / 7 sept 2026
     Javier: "usualmente veo algo de la paleta de akva group que en sus software ocupan
     elementos que se ven modernos, pero se puede revisar".
@@ -301,6 +331,13 @@ A4  CLARO Y OSCURO, LAS DOS.                                    CERRADA / 7 sept
     Si al probarlo no toma: arranca clara, con el interruptor de oscuro en ajustes. En los
     dos casos el interruptor existe.
 
+    CAMBIADO, Y SE QUEDA ASÍ -Javier, 05-10-2026-: LA APP PARTE EN TEMA OSCURO LA PRIMERA VEZ, y
+    después recuerda lo que la persona eligió en Ajustes. "Sistema" salió como opción el
+    21-09-2026 -App.tsx, el estado tema y teleprompter_oscuro_impuesto-. Antes: "CON CUAL
+    ARRANCA ... SIGUE EL AJUSTE DEL TELEFONO".
+    28-09-2026, tarea 80: el gris secundario del tema claro pasó de #78706A a #736B65 -4,3 a 4,6
+    sobre el suelo #F3F1ED-, por la guía de contraste de Android.
+
     Y EL PASO ENTRE LOS DOS MUNDOS ES A FAVOR: apretas Leer y el mundo se apaga. Entrar a
     leer es cambiar de modo y conviene que se sienta. Con la aplicacion clara ese contraste
     es mucho mas fuerte que si todo fuera negro.
@@ -353,6 +390,10 @@ B2  ANCHO DE COLUMNA.                                           CERRADA / 7 sept
     Nota: es la unica de la pantalla de lectura que queda como opcion elegible. El tamano
     de letra tambien lo es; el interlineado no. Si al final se quiere una sola pantalla sin
     ajustes, esta es la primera candidata a fijar.
+
+    CAMBIADO: hoy son TRES ANCHOS -Angosto, Medio y Ancho, en Ajustes, PantallaAjustes.tsx-, y se
+    eligen SOLO en Ajustes. Javier decidió el 05-10-2026 que se quedan así. Antes: "la opcion de
+    dos anchos de columna esta bien", todo el ancho y angosta.
 
 B3  INTERLINEADO.                                               CERRADA / 7 sept 2026
     Fijo en 1,4 y NO se ofrece como opcion al usuario. Decidido por Javier, que descarto
@@ -427,6 +468,18 @@ B10 LOS CONTROLES DURANTE LA LECTURA.                           HECHA / tareas 1
     Que queda a la vista y que se esconde. En la tarea 16: quedan empezar, detener, letra
     y margen; el resto detras de ajustes.
 
+    28-09-2026, TAREA 77: FUERA EL CAJÓN Y EL ENGRANAJE DE LA TOMA. En LISTO van FICHAS que dicen
+    su valor; tocar una abre un panel solo con sus opciones, pegado a ella -FichasListo.tsx-. Lo
+    que no es de la toma va a la pantalla de Ajustes -E1-. Antes: "Arriba: volver y el engranaje,
+    los dos de 40 ... Todo lo demas vive en el cajon del engranaje".
+    05-10-2026, TAREA 93: EN GRABAR LA FILA ES Aa, CÁMARA, POSICIÓN, BRILLO Y UNA FLECHA ˅ al
+    final. La flecha abre una segunda fila con Calidad, Subtítulos y Ajustes -Ajustes reemplaza a
+    la ficha Más, que en Grabar ya no va en otro lugar-. De pie la segunda fila aparece encima de
+    la primera, porque abajo está Empezar; de lado -teléfono y tableta- es una segunda columna
+    que se abre al costado del riel. Leer no cambia. Antes: Calidad y Subtítulos iban en la
+    primera fila, y Más también.
+    Los controles MIENTRAS SE GRABA están en B25.
+
 B11 LOS CONTROLES SE VAN SOLOS.                                 CERRADA / 7 sept 2026
     Javier: "en la pantalla los controles se deberian ir al empezar a grabar y aparecer con
     el touch". Al arrancar desaparecen todos; un toque en la pantalla los trae de vuelta.
@@ -457,6 +510,13 @@ B14 EL PUNTO DE ESTADO.                                         CERRADA / 7 sept
     si el programa se rompio, si no lo oyo, o si el que se salio del guion es el. El punto
     rojo solo dice que la camara corre. Ahi es donde entra el ambar, o el texto
     "buscando tu posicion". Va junto con la observacion 3 del plan.
+
+    CERRADO EL 29-09-2026, DECISIÓN DE JAVIER: NO HAY INDICADOR "TE ESCUCHO / TE PERDÍ". El
+    seguidor no depende solo del reconocimiento. No se reabre. Antes: "QUEDA POR DECIDIR ... como se ve 'estoy grabando PERO
+    perdi tu posicion'", con el ámbar o el texto "buscando tu posición".
+    04-10-2026, TAREA 88: EN PAUSA EL PUNTO PARPADEA -1 s encendido y 1 s apagado, suave-; con
+    "reducir movimiento" no parpadea y queda como anillo rojo sin relleno. Al seguir vuelve a ser
+    el punto fijo. El punto vive solo arriba a la derecha -B23-.
 
 B15 NAVEGAR A MANO MIENTRAS SE LEE.                             ABIERTA / JAVIER
     Existe el arrastre. Falta si hay algo mas visible para retomar en un punto, porque hoy
@@ -495,6 +555,12 @@ B16 LA CAMARA DETRAS DEL TEXTO, Y EL VELO.                      CERRADA / 7 sept
     funcionar -el velo baja el video, la banda sube la linea actual respecto de ese fondo-
     pero es de las cosas que se ven raras recien cuando estan armadas.
 
+    29-09-2026, TAREA 82: LA REGLA E. Con la cámara detrás, la letra lleva un HALO DIFUSO del
+    color de fondo de la pareja -diez sombras apiladas, sin trazo-, en todas las orientaciones.
+    Javier comparó cinco variantes con zoom y eligió la E: "la letra sigue siendo Sigo y se lee".
+    La D -con trazo- queda como plan B si la E traba el desplazamiento en el teléfono. Detalle en
+    src/styles.css, .lectura-sobre-imagen, y docs/pantallas/tarea82/medidas-implementacion.md.
+
 B17 ORIENTACION.                                                CERRADA / 7 sept 2026
     VERTICAL POR OMISION, CON OPCION A HORIZONTAL. Javier: "mucha gente graba de esa
     forma". Se descarta la propuesta de hacer solo vertical.
@@ -522,6 +588,19 @@ B17 ORIENTACION.                                                CERRADA / 7 sept
     LO QUE SI SIRVE TAL CUAL: el ancho de columna, porque se especifico en CARACTERES y no
     en porcentaje. En horizontal la columna se queda angosta sola en vez de estirarse a lo
     ancho de la pantalla. Si se hubiera puesto un porcentaje, habria que rehacerlo.
+
+    29-09-2026, TAREA 82: EL TELÉFONO DE LADO, con el diseño aprobado por Javier -"tremendamente
+    profesional, y respeta todo nuestro trabajo"-: los controles de LISTO pasan a dos rieles a
+    los costados y el texto queda entre ellos. La vara es docs/pantallas/tarea82/.
+
+    04-10-2026, TAREA 91: LA ORIENTACIÓN QUEDA FIJA MIENTRAS DURA LA TOMA EN EL TELÉFONO. De
+    Empezar a Parar, en Leer y en Grabar, la pantalla se queda en la orientación que tenía al
+    empezar, como la cámara del teléfono; Pausa y Seguir no la sueltan. En LISTO y en el visor
+    gira libre. Al volver de segundo plano se fija la misma del comienzo.
+    04-10-2026, TAREA 83, APROBADO POR JAVIER: EN LA TABLETA NO SE BLOQUEA. Android 16 ignora el
+    bloqueo en pantallas de 600 dp o más; no se pelea con el sistema. En la tableta la pantalla
+    gira durante la toma y vale la regla de la vara: se cambia de diseño sin cortar la grabación
+    ni mover el renglón vivo -docs/pantallas/tarea82/medidas-implementacion.md, sección 1-.
 
 B19 POSICION DE LA COLUMNA EN HORIZONTAL.                       CERRADA / 7 sept 2026
     CENTRADA TAMBIEN EN HORIZONTAL. NO se agrega control de posicion. Yo habia propuesto
@@ -604,6 +683,18 @@ C7  ARCHIVAR ES UN ESTADO NUEVO.                                CERRADA / 7 sept
     no una pantalla mas. Los archivados salen de la lista principal pero SIGUEN APARECIENDO
     AL BUSCAR POR TITULO, que es como la gente los va a ir a buscar cuando los necesite.
 
+C8  BORRAR VARIAS TOMAS A LA VEZ.                               HECHA / 5 oct 2026, tarea 94
+    MANTENER APRETADA una toma entra al modo selección y la deja marcada; los toques siguientes
+    marcan o desmarcan. Arriba, una CASILLA de "todas" junto a la cuenta -marca todas; si ya están
+    todas, las desmarca- y el TACHO SOLO, a la derecha. El tacho saca las marcadas de la lista al
+    tiro y ofrece DESHACER durante 5 s; recién después se borran los archivos. El gesto de atrás
+    sale del modo sin borrar.
+    Ajuste de Javier del mismo día: con "Seleccionar todo" pegado al tacho se leía "borrar todo".
+    Antes, en la primera vuelta de la 94: la cuenta, un botón de texto "Seleccionar todo" y el
+    tacho, en fila. Y antes de la 94: mantener apretada abría un menú chico con el tacho, que
+    preguntaba "¿Seguro?".
+    NO TOCA LA GALERÍA: borra la copia de Sigo. Borrar también de la galería: PENDIENTE.
+
 
 ===============================================================================
 D. EDITOR
@@ -661,6 +752,8 @@ D4  ENFASIS: NEGRITA Y COLOR.                                   CERRADA / 7 sept
 D5  PEGAR DESDE OTRO LADO.                                      DECIDIDA / tarea 19
     Pegar de WhatsApp o de un documento trae saltos de linea raros, guiones y comillas
     curvas. Hoy entra tal cual.
+    05-10-2026, decidido por Javier: LAS COMILLAS CURVAS AL PEGAR NO SE TOCAN. Se quedan como
+    vienen.
 
 D6  EL BOTON DE LEER.                                           DECIDIDA / tarea 19
     Tiene que ser el mas grande de la pantalla y estar siempre a la vista.
@@ -670,7 +763,15 @@ D6  EL BOTON DE LEER.                                           DECIDIDA / tarea
 E. AJUSTES
 ===============================================================================
 
-E1  QUE VIVE EN AJUSTES Y QUE EN LA PANTALLA DE LECTURA.        HECHA / 24 sept 2026
+E1  QUE VIVE EN AJUSTES Y QUE EN LA PANTALLA DE LECTURA.        HECHA / 28 sept 2026, tarea 77
+    28-09-2026, TAREA 77: UNA PANTALLA DE AJUSTES, A PANTALLA COMPLETA, con secciones, filas que
+    dicen su valor y diálogos -PantallaAjustes.tsx-. La abren el engranaje de la portada, el Aa
+    del guion y la ficha Ajustes de LISTO -en Grabar, en la segunda fila, B10-; cada puerta
+    muestra lo suyo. Lo de la toma vive en las fichas de LISTO. Sigue siendo así el 05-10-2026.
+    Decidido por Javier el 05-10-2026, y se queda así: la TIPOGRAFÍA y el ANCHO solo se eligen en
+    Ajustes; SIN AJUSTE DE VIBRACIÓN -Sigo respeta la del sistema; el interruptor propio se fue el
+    25-09-2026-.
+    Antes: HECHA / 24 sept 2026, con las tres casas y el cajón estándar del párrafo siguiente.
     24-09-2026: Tres casas: el Aa del editor es del TEXTO, el engranaje del lienzo es de la
     TOMA, el engranaje de la portada es de la APLICACION -tema y vibracion-. Los
     tres con el cajon estandar.
@@ -690,6 +791,12 @@ E4  ELEGIR EL MOTOR DE VOZ.                                     HECHA / tarea 18
 
 E5  QUE VE EL USUARIO DE LA DESCARGA DEL MODELO.                ENCARGADA / tarea 13
     Hecho el indicador. Falta el texto: "modelo de voz" no significa nada para nadie.
+
+E6  UNA HOJA DE AJUSTES DE LECTURA.                             RECHAZADA / 5 oct 2026
+    Se propuso una hoja con los ajustes de lectura. Javier la RECHAZÓ el
+    05-10-2026: repetía el cajón antiguo de cuadros "Aa". Ajustes sigue siendo la pantalla
+    completa de E1. PENDIENTE: rediseñar esa hoja partiendo de una IMAGEN MODELO, no de lo que
+    ya hubo.
 
 
 ===============================================================================
@@ -841,16 +948,86 @@ F2  DONDE QUEDA EL VIDEO.                                       HECHA
     guardarlos en la galeria.
     En la galeria del telefono o dentro de la aplicacion.
 
-F3  SUBTITULOS A PARTIR DEL GUION.                              ABIERTA / JAVIER
+F3  SUBTITULOS A PARTIR DEL GUION.                              CERRADA / 4 oct 2026, tarea 87
+    Antes del estado: ABIERTA / JAVIER.
+    LO DECIDIDO, con lo que trajo la tarea 87 -docs/tarea87.txt, PR #71-:
+      - TRES ESTILOS Y "NO": Amarillo, Rojo y Formal, cerrados, más la opción de no ponerlos.
+        Se eligen en el visor de la toma y en la ficha Subtítulos de LISTO.
+      - SE QUEMAN AL GUARDAR, con Media3 -CapaDeSubtitulos.java-. Una sola copia por toma.
+      - EL VISOR ES LO QUE SE GUARDA: los mismos renglones, la misma posición y la misma letra
+        -el visor achica el renglón ancho con la misma cuenta del archivo-.
+      - POSICIÓN: el borde de abajo de la caja a 1/6 DEL ALTO de la imagen, en vertical y en
+        horizontal, en el visor y en el archivo. Antes: a 1/8 -0,125-. La opción "Normal / Para
+        redes" se probó en la misma tarea y SE SACÓ, pedido de Javier del 04-10-2026: el
+        subtítulo va en una sola posición.
+      - RENGLONES de hasta 47 LETRAS en horizontal y 32 en vertical; cuadrado cuenta como
+        vertical. Antes: 32 también en horizontal, que lo dejaba angosto y chico.
+      - LA LETRA SE MIDE CONTRA EL LADO CORTO del cuadro: lado corto / 18. Da 60 px en 1080 y 40
+        en 720; la vertical 9:16 queda igual al píxel. Afinado el mismo día, aprobado por Javier:
+        la letra es la MENOR entre lado corto / 18 y lado largo / 32, para que ninguna vertical
+        que no sea 9:16 cambie. Antes: alto / 32, que de lado daba 33,75 en 1080.
+    El texto de antes, tal cual:
     Tenemos el guion y las marcas de tiempo. Falta averiguar que hace AutoCap antes de
     apoyarse en esto, porque si no usa guion hace algo mas dificil, no menos.
+
+F8  GUARDAR Y GUARDAR Y COMPARTIR.                              HECHA / 4 oct 2026, tarea 87
+    En el visor de toda toma recién grabada -con o sin subtítulos, de pie o de lado- hay dos
+    botones: GUARDAR, como siempre, y GUARDAR Y COMPARTIR, que guarda y abre el menú de compartir
+    de Android. De pie van en las acciones fijas de abajo; de lado, en la columna -caso 1, toma
+    16:9- o en la fila de la tarjeta -caso 2, toma 9:16-. Mientras guarda, solo el botón
+    apretado muestra el avance, y Subtítulos, Repetir y Borrar se desactivan; la X sigue activa
+    y cerrar no cancela. Sin tiempo estimado de guardado: se probó y se sacó el 04-10-2026.
+
+F9  EL VISOR DE LADO.                                           HECHA / 4 oct 2026, tarea 90
+    Con el teléfono de lado, el VIDEO ES EL PROTAGONISTA y las acciones van en una COLUMNA al
+    costado, que mide el 70 % de lo que medía en el boceto -130 dp a 915 de ancho y 112 a 800;
+    antes 185 y 160-, con el video centrado en lo que sobra. SIEMPRE OSCURO, aunque la app esté
+    en claro. Rótulos de 12 y toques de 48. Al girar, el video sigue reproduciendo como iba.
+    Vale también en la tableta de lado, con las mismas cuentas -tarea 83-.
+
+F10 PAUSA CON CORTES.                                           HECHA / 4 oct 2026, tareas 88 y 83
+    LO PAUSADO NO QUEDA EN EL ARCHIVO. Con el botón, el corte cae EXACTO en el toque de Pausa y en
+    el de Seguir, sin margen, como cualquier grabadora. Parar en pausa termina donde se pausó.
+    Toda duración que se le muestra a la persona es la final, sin las pausas, y el visor muestra
+    la toma como va a quedar -salta los cortes, y los subtítulos son los que se queman-. Sin
+    pausas, todo es como antes. Leer sin cámara: Pausa solo pausa la voz.
+    En pausa el PUNTO ROJO PARPADEA -B14- y LA PASTILLA DEL TIEMPO SE CONGELA -tarea 83,
+    05-10-2026-, y al seguir sigue exacta.
+
+F11 CONTROL POR GESTOS.                                         HECHA / 4 oct 2026, tarea 88
+    "Control por gestos": un interruptor APAGADO DE FÁBRICA, en el panel de la ficha CÁMARA de
+    LISTO, debajo de Voltear cámara -la regla de Javier del 28-09: todo lo de la cámara en un
+    solo lugar-. No va en Ajustes. Funciona SOLO CON LA CÁMARA FRONTAL y solo grabando; con la
+    trasera la fila se ve deshabilitada con "Solo con la cámara frontal.", y en un equipo que no
+    puede, con "No disponible en este teléfono."
+      - Grabando: la PALMA abierta pausa. Nada más funciona grabando.
+      - En pausa: bajar la mano y volver a mostrar la palma arranca la MISMA CUENTA DE 3 s del
+        comienzo y al terminar sigue grabando. La V termina la toma, como Parar.
+      - SIN BORRAR POR GESTO -Javier, 04-10-2026: lejos del teléfono importa pausar, seguir y
+        terminar; borrar se decide con el teléfono en la mano-.
+      - Al pausar con la palma, un SÍMBOLO DE PAUSA GRANDE al centro durante 1 s; con el botón,
+        no.
+      - EL CORTE EMPIEZA EN EL FIN DE LA ÚLTIMA PALABRA DICHA -segunda vuelta de la 88,
+        04-10-2026-, con un tope de 5 s antes de que se vio la palma. Antes, en el encargo: 1 s
+        antes de la primera vez que se vio la palma -MARGEN_MANO_MS-.
+    SIGO NO ENVÍA ESTADÍSTICAS: el reconocedor de gestos trae un envío de datos de Google -el
+    backend cct de datatransport-; Javier decidió quitarlo del manifiesto el 04-10-2026. Corta
+    también el de una biblioteca de la cámara que Sigo no usa.
 
 
 ===============================================================================
 G. OPERACION - lo que pasa cuando algo sale mal
 ===============================================================================
 
-G1  EL PERMISO DEL MICROFONO.                                   ABIERTA / CLAUDE
+G1  EL PERMISO DEL MICROFONO.                                   CERRADA / 29 sept 2026, tarea 80
+    Antes del estado: ABIERTA / CLAUDE.
+    27-09-2026: el permiso se pide ANTES de la cuenta regresiva, no al terminarla.
+    28 y 29-09-2026, TAREA 80: si se niega, la lectura NO parte -sin micrófono el texto no avanza
+    y la toma saldría muda-: un diálogo "Sigo necesita el micrófono" explica para qué es -la voz
+    se reconoce en el teléfono, sin internet- y ofrece "Ahora no" y "Abrir ajustes", que abre los
+    ajustes de Sigo en Android. Al volver no parte solo: se aprieta Empezar otra vez.
+    29-09-2026, TAREA 84: la CÁMARA negada, igual -el mismo diálogo, con su texto-.
+    Lo de antes:
     Que ve la persona la primera vez que se lo piden, y que ve si dijo que no. Hoy no hay
     nada: el motor tira un error tecnico.
 
@@ -940,6 +1117,10 @@ G7  RUIDO AMBIENTE.                                             ABIERTA / CLAUDE
 
 G8  LA COPIA DE SEGURIDAD DE LOS GUIONES.                       ABIERTA / JAVIER
     Javier la dejo para el final. Si se pierde IndexedDB se pierde todo lo escrito.
+    29-09-2026, TAREA 84: el respaldo de Android ya respalda SOLO los guiones y los ajustes, y
+    deja fuera los modelos de voz, las tomas y los cachés -antes no había reglas y pasaba los
+    25 MB que Android respalda como máximo-. Con eso, quien cambia de teléfono recupera sus
+    guiones. Una copia propia, que la persona maneje, sigue abierta.
 
 G9  EL ALTO DE PANTALLA Y LA BARRA DE GESTOS.                   HECHA
     24-09-2026: El lienzo usa 100dvh y env(safe-area-inset-*).
@@ -947,6 +1128,8 @@ G9  EL ALTO DE PANTALLA Y LA BARRA DE GESTOS.                   HECHA
     barra de gestos de abajo: el ultimo renglon puede quedar debajo de donde el dedo
     desliza. Se corrige con dvh y con env(safe-area-inset-*), y hay que decidirlo antes
     del APK porque en el navegador del escritorio no se nota.
+    04-10-2026, TAREA 89: también con la BARRA DE TRES BOTONES de Android -48 dp-, que no es la
+    de gestos: las pantallas que no tenían borde seguro lo tienen.
 
 G10 CUANTOS RENGLONES ENTRAN EN EL TELEFONO MAS CHICO.          ABIERTA / CLAUDE
     Los telefonos van de unos 360 a 430 puntos de ancho, y de 640 a 950 de alto. La
@@ -973,10 +1156,15 @@ H. LO QUE BLOQUEA Y ES DE JAVIER
 H1  IDENTIFICADOR DEL PAQUETE.                                  ABIERTA / JAVIER
     Hoy com.teleprompter.app, que es relleno. ES PERMANENTE: cambiarlo despues de publicar
     es publicar otra aplicacion y perder las instalaciones. Bloquea la tienda.
+    YA ESTÁ: com.sigoteleprompter.app, y con ese nombre está creada la app en Play Console
+    -docs/tarea86.txt, 29-09-2026-.
 
 H2  MODELO DE NEGOCIO.                                          ABIERTA / JAVIER
     Gratis, pago unico o suscripcion. Si hay cobro dentro de la aplicacion hay que integrar
     la facturacion de Google Play, que es trabajo aparte.
+    29-09-2026: la app está creada en Play Console como GRATUITA, categoría Productividad
+    -docs/tarea86.txt-. Lo de pago se decide en monetización, aparte: la tarea 88 no le puso
+    candado a los gestos por eso.
 
 H3  SI LA LISTA DE LA VERSION 1 ES DEMASIADO LARGA.             ABIERTA / JAVIER
     Lo imprescindible para que alguien grabe un video es biblioteca, seguimiento por voz,
@@ -984,6 +1172,9 @@ H3  SI LA LISTA DE LA VERSION 1 ES DEMASIADO LARGA.             ABIERTA / JAVIER
 
 H4  LOS 25 DOLARES Y EL RELOJ DE LOS 14 DIAS.                   ABIERTA / JAVIER
     Se decide con el APK ya listo, no antes.
+    29-09-2026: la cuenta de Play Console de Javier está APROBADA. Lo primero que se sube es una
+    prueba cerrada: 12 probadores durante 14 días -docs/tarea84.txt-. Android 10 como mínimo,
+    decisión de Javier del 29-09-2026 -570d069-.
 
 
 ===============================================================================
@@ -1076,22 +1267,57 @@ A11 LA MARCA Y EL ARRANQUE.                                     CERRADA / 24 sep
     y debajo TELEPROMPTER. La entrada lleva la marca en arco a la barra de la portada y
     TELEPROMPTER se queda. El trazo es el mismo en el splash, la entrada y la barra.
 
-A12 EL ESTANDAR DE LOS AJUSTES.                                 CERRADA / 24 sept 2026
+A12 EL ESTANDAR DE LOS AJUSTES.                                 CAMBIADA / 28 sept 2026, tarea 77
+    Antes del estado: CERRADA / 24 sept 2026.
+    28-09-2026, TAREA 77: el cajón se fue. Lo de la toma va en las FICHAS de LISTO, cada una con
+    su panel, y todo lo demás en la PANTALLA DE AJUSTES, a pantalla completa, con secciones,
+    filas que dicen su valor y diálogos -E1-. 05-10-2026: Javier rechazó una hoja de ajustes de
+    lectura por repetir el cajón antiguo de cuadros "Aa" -E6-.
+    Lo de antes:
     Cajon desde abajo, esquinas redondeadas, sin velo, sin palabras, controles dibujados
     a todo el ancho. Javier: "deberia imponer un tipo de standar para nuestros otros
     menu de ajustes". Ya lo tienen el Aa del editor, el engranaje de la toma y el de la
     portada.
 
-B23 EL PUNTO ROJO DE GRABACION Y LA PAUSA.                      HECHA / 24 sept 2026
+B23 EL PUNTO ROJO DE GRABACIÓN.                                 HECHA / 4 oct 2026
+    2026-10-04 -tarea 83, parte B-: el punto rojo queda SOLO arriba a la derecha, en el
+    mismo lugar de siempre. La pausa ya no vive en esa esquina: bajó a la fila de la toma,
+    a 56, a la izquierda de Parar -y de lado, encima de Parar en la columna-. Arriba a la
+    derecha no queda ningún botón al lado del punto. En Leer no hay punto.
+    Antes: «B23 EL PUNTO ROJO DE GRABACION Y LA PAUSA. HECHA / 24 sept 2026.
     24-09-2026: arriba a la derecha, a la izquierda de la pausa y alineado con su centro.
     Anotado en la Tarea 72 -seccion 2.6-: el punto rojo de grabando quedaba tapado por el
-    boton de pausa. No se volvio a mirar despues de que las esquinas pasaran a 40.
+    boton de pausa. No se volvio a mirar despues de que las esquinas pasaran a 40.»
+
+B25 LOS CONTROLES AL GRABAR.                                    HECHA / 4 y 5 oct 2026, tarea 83
+    GRABANDO: PAUSA de 56 a la IZQUIERDA de PARAR de 72 -rojo, cuadrado-, en una fila abajo.
+    Javier apretaba Parar queriendo pausar: la pausa chica en la esquina quedaba lejos y la
+    acción grande al centro se llevaba el dedo.
+    EN PAUSA: SEGUIR en el mismo botón de la pausa, Parar al medio y el TACHO de 56 a la DERECHA,
+    con su "¿Seguro?". El tacho borra la toma entera.
+    DE LADO: los mismos, en COLUMNA -Seguir encima de Parar y el tacho debajo-. En la tableta de
+    pie la fila va en el dock.
+    El punto rojo, solo arriba a la derecha -B23-. La pastilla del tiempo va centrada encima de
+    la fila y se congela en pausa -F10-.
+    EL HALO DE GRABAR EN LISTO -05-10-2026, dos ajustes de Javier-: el botón de Grabar late
+    mientras espera, como el de Leer. Halo BLANCO sobre fondo oscuro y GRIS OSCURO TRANSLÚCIDO
+    sobre fondo claro, donde el blanco no se veía. NUNCA ROJO: un halo rojo se leería como "ya
+    estás grabando". Antes: Grabar no latía.
+    Los tamaños son los del botón flotante de Material 3 -32, 40, 56 y 72-;
+    docs/lo-que-hay-que-saber.txt, sección 4.
 
 D5  EL TECLADO Y LA BARRA LEER / GRABAR.                        ABIERTA / CLAUDE
     Con el teclado abierto, la barra de Leer y Grabar del editor tapa un renglon del guion.
     Viene de antes de la Tarea 73.
 
-B24 DETENER A MITAD DEL GUION: CONTINUAR O EMPEZAR DE NUEVO.       ABIERTA / JAVIER
+B24 DETENER A MITAD DEL GUION: CONTINUAR O EMPEZAR DE NUEVO.       CERRADA / 4 oct 2026, tarea 89
+    Antes del estado: ABIERTA / JAVIER.
+    04-10-2026, TAREA 89, CUARTA VUELTA -Javier y Claude-: que la toma nueva heredara la
+    posición de la anterior era un DEFECTO, no un diseño. PARAR TERMINA LA TOMA y la siguiente
+    lectura o grabación PARTE LIMPIA: desde el principio del guion, o desde donde quedó el texto
+    en LISTO si la persona lo movió antes de Empezar, sin nada del seguidor, el motor ni el reloj
+    de la toma anterior. CONTINUAR es la PAUSA: Pausa y Seguir sigue donde quedó -F10, B25-.
+    Lo de antes:
     Hoy, si se detiene una toma y se aprieta Grabar sin salir de la lectura, la toma nueva
     sigue desde la palabra donde quedo la anterior; si la persona lee desde el comienzo, el
     motor la busca ahi y no la encuentra (visto el 24-09-2026: una toma con letra 14 que
@@ -1112,6 +1338,8 @@ M1  EL MOTOR: LO QUE QUEDA POR AFINAR, Y EN QUE SENTIDO.            EN ESPERA / 
        porque el oido abre al terminar la cuenta. Abrirlo al empezarla lo arregla, pero
        choca con una decision de la Tarea 16 -el motor no arranca durante la cuenta, y no
        arranca si se cancela-. La decide Javier.
+       HECHO EL 27-09-2026 -6bbf426-: el reconocedor arranca con la cuenta regresiva, no al
+       terminarla; el micrófono llegaba 1,2 a 3,3 s tarde.
     c. EL CAMBIO DE PARRAFO: casi siempre bien; un caso de 1,3 s. Revisar con las tomas.
     d. LA LECTURA REAL: no literal, salirse del guion, silencios, volver atras. No esta
        probado: todo lo medido fue leyendo el guion al pie de la letra.
@@ -1148,6 +1376,14 @@ P1  AL PUBLICAR: PROTEGER EL CODIGO Y LA MARCA.                    ABIERTA / AL 
        lectura -esconderla del lector mientras se lee, riesgo algo mayor: toca la navegacion-.
        Solo afecta a quien usa TalkBack y no impide publicar. Javier: dejarlo para esta ronda,
        con la version de publicacion ya probada.
+    29-09-2026, TAREA 84 -la versión para Google Play-: hay un SEGUNDO CAMINO, el de Play, y la
+    APK de prueba sigue igual. En el de Play: AAB firmado con la llave fuera del repositorio
+    -a, b-, R8 -a-, y sin herramientas de prueba -f: sin panel de diagnóstico ni de corpus, sin
+    guardar el audio de cada lectura, sin la app web instalable-. Los modelos de voz van en
+    paquetes de Play aparte. Y tres arreglos de TalkBack: el aviso breve se anuncia, Ajustes es
+    un diálogo con nombre y el título del guion tiene nombre. Los dos puntos de g -los marcos de
+    la cámara y la portada debajo de la lectura- no estaban en el encargo de la 84.
+    04-10-2026, TAREA 88: Sigo no envía estadísticas -ver F11-.
 
 I1  OTROS IDIOMAS: GUIONES EN INGLES Y LA APP EN INGLES.            EN ESPERA / JAVIER
     25-09-2026. Conversado, NO se avanza todavia -Javier: "no vamos a avanzar en nada de
@@ -1190,3 +1426,38 @@ I1  OTROS IDIOMAS: GUIONES EN INGLES Y LA APP EN INGLES.            EN ESPERA / 
     navegador, el ingles escrito y no traducido, y el telefono de la pagina con un guion en
     ingles -encargado a la nube en el PR #48-. Javier tiene una traductora que puede grabar
     las lecturas en ingles que hagan falta, para la pagina y para medir el motor.
+
+===============================================================================
+AGREGADOS DEL 28 DE SEPTIEMBRE AL 5 DE OCTUBRE DE 2026 -puestos el 05-10, tarea 95-
+===============================================================================
+Lo que cambió en un punto que ya existía está escrito en ese punto: A1, A4, A9, A12, B2, B10,
+B14, B16, B17, B24, B25 -nuevo, junto a B23-, C8 -nuevo-, D5, E1, E6 -nuevo-, F3, F8 a F11
+-nuevos-, G1, G8, G9, H1, H2, H4, M1 b y P1. Aquí va lo que no tenía lugar.
+
+T1  LA TABLETA: LEER Y GRABAR DE PIE Y DE LADO.                 HECHA / 30 sept y 4-5 oct 2026, tarea 83
+    Los bocetos de tableta aprobados el 29-09-2026 son la vara -docs/pantallas/tarea83/LEEME.txt
+    y docs/pantallas/tarea82/medidas-implementacion.md, secciones 3 a 5-. Un solo cambio sobre
+    ellos: en la tableta de pie, al Empezar, la barra de arriba y el dock desaparecen y el texto
+    usa todo el alto, con el renglón vivo pegado arriba, cerca del lente. La letra por omisión
+    en tableta es 32, sin pisar una elección guardada.
+    Lo de las tareas nuevas también vale en la tableta: el visor de lado -F9-, Guardar y
+    compartir -F8-, el subtítulo a 1/6 -F3-, la pausa -F10, B25- y los gestos -F11-.
+    La orientación en la tableta NO se bloquea durante la toma -B17-.
+    Si OTRA APP TOMA LA CÁMARA O EL MICRÓFONO en plena toma -LS-M2 de la guía de pantallas
+    grandes-, Sigo lo avisa en vez de seguir grabando sin imagen o mudo.
+
+R1  LAS PRUEBAS SOLO CUBREN LÓGICA QUE NO SE VE.                CERRADA / 5 oct 2026, regla a fuego
+    Javier, 05-10-2026: corte de la pausa, tramos, subtítulos, seguimiento de voz, guardado,
+    recetas, recuperación de tomas. NUNCA pruebas de posición, orden, tamaño o presencia de
+    botones y fichas: fallan cada vez que algo se mueve a propósito -la tarea 93 gastó tres
+    commits en ponerlas al día-. Que algo se vea bien lo juzga Javier mirando y Claude en el
+    teléfono. Una prueba vieja de posición que estorba se BORRA, con su "Antes:" en el
+    comentario del archivo. Texto completo en docs/lo-que-hay-que-saber.txt, arriba de todo.
+
+S1  LO QUE SE QUEDA COMO ESTÁ.                                  CERRADA / 5 oct 2026, Javier
+    Revisado por Javier el 05-10-2026, y no se reabre:
+      - la app parte en tema OSCURO la primera vez -A4-;
+      - TRES ANCHOS de texto -B2-;
+      - SIN AJUSTE DE VIBRACIÓN: respeta la del sistema -E1-;
+      - la TIPOGRAFÍA y el ANCHO, solo en Ajustes -A1, B2, E1-;
+      - las COMILLAS CURVAS al pegar no se tocan -D5-.

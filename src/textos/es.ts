@@ -82,13 +82,33 @@ export const es = {
   subtitulosAmarillo: 'Amarillo',
   subtitulosRojo: 'Rojo',
   subtitulosFormal: 'Formal',
+  // -tarea 96, 05-10-2026- Los filtros de la toma, en el visor. "Filtro" y no "Tono": Javier, es el
+  // nombre más reconocido.
+  filtro: 'Filtro',
+  filtroNatural: 'Natural',
+  filtroCalido: 'Cálido',
+  filtroFrio: 'Frío',
+  filtroVivo: 'Vivo',
+  filtroSuave: 'Suave',
+  filtroBN: 'B/N',
+  // -tarea 87, 04-10-2026- Guardar y compartir -E1-. La posición de los subtítulos y el tiempo
+  // estimado se sacaron el mismo día -Javier simplifica la 87-.
+  guardarYCompartir: 'Guardar y compartir',
+  compartirTrasGuardar: 'Quedó guardada, pero no se pudo compartir',
   avisoTomaRecuperada: 'Se recuperó una toma de una sesión interrumpida.',
   avisoTomasRecuperadas: 'Se recuperaron {n} tomas de una sesión interrumpida.',
   verla: 'Verla',
   guardado: 'Guardado',
   guionBorrado: 'Guion borrado',
   deshacer: 'Deshacer',
+  // -tarea 94, 05-10-2026- Selección de tomas. {n} es la cuenta.
+  tomasSeleccionadas: '{n} seleccionadas',
+  seleccionarTodo: 'Seleccionar todo',
+  tomasBorradas: '{n} tomas borradas',
   tomaDescartada: 'Toma descartada',
+  // -tarea 83, parte B, LS-M2- Otra app tomó la cámara o el micrófono en plena toma.
+  tomaCortadaCamara: 'Otra app tomó la cámara. La toma se cortó y quedó guardada como incompleta.',
+  tomaCortadaMicrofono: 'Otra app tomó el micrófono. La toma se cortó y quedó guardada como incompleta.',
   grabado: 'Grabado',
   grabadoDuracion: 'Grabado: {duracion}',
   // Al parar una lectura -28-09-2026-: antes decia Grabado aunque no se grababa nada.
@@ -115,6 +135,9 @@ export const es = {
   coloresLectura: 'Colores de lectura',
   parejaNegroBlanco: 'Negro con blanco',
   parejaNegroAmbar: 'Negro con ámbar',
+  // 05-10-2026, tarea 95: las dos parejas que vuelven de A9 -modelo.ts, PAREJAS_COLOR-.
+  parejaNegroVerde: 'Negro con verde',
+  parejaGrisHueso: 'Gris con hueso',
   parejaBlancoNegro: 'Blanco con negro',
   errorAbrirArchivo: 'Error al abrir archivo: {detalle}',
   archivoSinTexto: 'El archivo no contiene texto importable.',
@@ -149,6 +172,11 @@ export const es = {
   parar: 'Parar',
   guionSinBloques: 'Guión sin bloques',
   grabando: 'Grabando',
+  // -tarea 88, 04-10-2026- Control por gestos, en el panel de la cámara de LISTO.
+  controlPorGestos: 'Control por gestos',
+  controlPorGestosExplicacion: 'Palma: pausar o seguir. En pausa, la V termina la toma.',
+  gestosSoloFrontal: 'Solo con la cámara frontal.',
+  gestosNoDisponible: 'No disponible en este teléfono.',
   ajustesEscena: 'Ajustes de la escena',
   imagenCamara: 'Imagen de la cámara',
   imagenDetras: 'Detrás',
@@ -201,7 +229,10 @@ export const es = {
   // La voz en inglés se baja de Google Play la primera vez -tarea 84, D3-.
   vozSinConexion: 'Para leer en inglés hace falta conexión una vez, para bajar la voz en inglés. Después funciona sin internet.',
   // El nombre del campo del título del guion para el lector de pantalla -tarea 84, G3-.
-  nombreCampoTitulo: 'Título del guion'
+  nombreCampoTitulo: 'Título del guion',
+  // La flecha de las fichas de Grabar, para el lector de pantalla -tarea 93, 05-10-2026-.
+  masOpciones: 'Más opciones',
+  menosOpciones: 'Menos opciones'
 }
 
 export type ClaveTexto = keyof typeof es

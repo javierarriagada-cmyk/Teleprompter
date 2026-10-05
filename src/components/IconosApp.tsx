@@ -386,6 +386,18 @@ export function IconoSubtitulos(props: PropsIcono) {
   )
 }
 
+/** Tres círculos que se cruzan: el filtro de la toma -tarea 96, 05-10-2026-. Es el dibujo con que se
+ *  reconocen los filtros de fotos: la mezcla de tres luces. */
+export function IconoFiltro(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <circle cx="12" cy="8.6" r="5" />
+      <circle cx="8.6" cy="14.6" r="5" />
+      <circle cx="15.4" cy="14.6" r="5" />
+    </Trazo>
+  )
+}
+
 // LOS ICONOS DE LAS FILAS DE AJUSTES -28-09-2026-. El dibujo aprobado llevaba un icono a la izquierda
 // de cada fila; la pantalla salio sin ellos y Javier lo noto: "con dibujito... mejor espaciado".
 // Mismo trazo que el resto -Trazo, 1.6-.

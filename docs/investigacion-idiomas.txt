@@ -1,0 +1,122 @@
+INVESTIGACIÓN - QUÉ IDIOMAS PUEDE SUMAR SIGO, EN QUÉ ORDEN, Y CON QUÉ MOTOR DE VOZ
+Encargo para un bot dedicado, 29-09-2026. Es INVESTIGACIÓN: no se programa nada, no se toca la app.
+Punto de partida: main.
+
+==============================================================================
+POR QUÉ
+==============================================================================
+Desde la tarea 84, cada modelo de voz viaja como un paquete aparte de Google Play: la persona baja
+solo el de su idioma. Sumar un idioma ya no engorda la app para nadie. Cada idioma nuevo es un
+mercado nuevo. Javier quiere saber cuáles son VIABLES de verdad, en qué orden, y qué cuesta cada uno.
+El primer candidato es el PORTUGUÉS DE BRASIL: mercado enorme, y el padre de Javier lo habla de forma
+nativa -vivió 40 años allá-, así que puede grabar las lecturas de prueba.
+
+==============================================================================
+LO QUE SIGO TIENE HOY -leerlo en el código antes de opinar-
+==============================================================================
+  - Motor: Vosk -Kaldi-, sin internet, en el teléfono. Biblioteca com.alphacephei:vosk-android
+    0.3.75 -android/app/build.gradle-, puente en VoskNativoPlugin.java.
+  - Modelos: español -assets/model-es, unos 58 MB- y inglés -model-en, unos 68 MB-. Ver
+    src/motor/modeloVosk.ts y el comentario del uuid en build.gradle. En Play: paquetes model_es
+    -viene con la instalación- y model_en -a pedido- -tarea 84-.
+  - Cómo se usa lo que oye Vosk: el seguidor -src/lib/seguidor.ts- compara las palabras que llegan,
+    parciales y finales, con el guion ya tokenizado -tokenizarGuion-; el avance -src/lib/avance.ts- y
+    la conducción -src/lib/conduccion.ts- deciden cuánto sube el texto. Lo que hace que Sigo funcione
+    es recibir PALABRAS PARCIALES EN VIVO, con poca demora, mientras la persona lee.
+  - Normalización: acentos, números escritos, signos. Revisar qué supone el código sobre el idioma
+    -espacios entre palabras, alfabeto latino, dirección de izquierda a derecha-.
+  - Hay un motor "nativo" además de vosk y fake -MOTORES_VALIDOS en src/app/ajustesIniciales.ts-:
+    averiguar qué es y si sirve de referencia.
+  - Cómo se mide: docs/ y la memoria del motor hablan de medir sobre grabaciones reales -el
+    grabador de corpus, src/lib/grabadorCorpus.ts, y el panel de corpus de la APK de prueba-. Ningún
+    cambio del motor entra sin mover el número sobre grabaciones.
+
+==============================================================================
+LAS CONDICIONES QUE TIENE QUE CUMPLIR UN IDIOMA -todas-
+==============================================================================
+  1. GRATIS PARA NOSOTROS Y QUE NOS DEJE COBRAR. La licencia del modelo -y del motor, si no es
+     Vosk- tiene que permitir el uso COMERCIAL dentro de una app que cobra una suscripción, sin
+     pagar regalías ni por uso. Sirven: Apache 2.0, MIT, BSD, CC-BY -con atribución-. NO sirven:
+     CC-BY-NC -no comercial-, "solo investigación", licencias sin aclarar. Anotar la licencia EXACTA
+     de cada modelo, con su enlace, y cualquier condición -atribución, aviso en la app-.
+  2. SIN INTERNET Y EN EL TELÉFONO. Nada que mande la voz a un servidor: es una promesa de Sigo y
+     está declarado así en Play.
+  3. EN VIVO. Resultados parciales palabra por palabra mientras se habla, con demora baja. Un motor
+     que solo transcribe al final de cada frase no sirve para seguir la lectura.
+  4. QUE CORRA EN UN TELÉFONO DE GAMA MEDIA -el moto g86 de Javier es la vara- mientras además se
+     graba video: memoria, procesador y batería.
+  5. PESO RAZONABLE. Play acepta paquetes a pedido de hasta 512 MB, pero cada MB es tiempo de
+     descarga para la persona. Informar el peso comprimido y desempaquetado.
+
+==============================================================================
+LO QUE HAY QUE INVESTIGAR
+==============================================================================
+A. MODELOS VOSK POR IDIOMA. La lista oficial -alphacephei.com/vosk/models-: para cada idioma, los
+   modelos "small" y los grandes, su peso, su licencia exacta y el error publicado -WER-, si lo hay.
+   Idiomas a cubrir como mínimo: portugués -Brasil y Portugal-, francés, alemán, italiano, catalán,
+   neerlandés, polaco, ucraniano, ruso, turco, hindi, indonesio, vietnamita, japonés, chino, coreano,
+   árabe, farsi. Y cualquier otro que tenga modelo pequeño con licencia libre.
+
+B. ALTERNATIVAS A VOSK, para los idiomas donde Vosk no alcanza. Comparar con las cinco condiciones:
+   - sherpa-onnx -k2, modelos "streaming zipformer"-: licencia del motor y de CADA modelo por separado.
+   - whisper.cpp y derivados: calidad alta, pero comprobar si da resultados en vivo o solo por
+     trozos, y cuánto demora y consume en un teléfono.
+   - El reconocedor de voz del propio Android -SpeechRecognizer con paquetes sin conexión-: gratis,
+     pero comprobar si da parciales, si funciona sin internet de verdad en cada idioma, si depende de
+     la app de Google, y qué dicen sus condiciones de uso.
+   - Otros motores abiertos que aparezcan. Para cada uno: cuánto trabajo sería conectarlo al
+     seguidor que ya existe -reemplazar solo la fuente de palabras, sin tocar seguidor, avance ni
+     conducción-.
+
+C. COMPATIBILIDAD CON EL SEGUIDOR -lo más fácil de subestimar-:
+   - Idiomas con espacios entre palabras y alfabeto latino -portugués, francés, italiano, alemán-:
+     casi seguro funcionan con el seguidor de hoy. Confirmarlo leyendo tokenizarGuion y la
+     normalización: acentos y signos propios, números escritos, contracciones -"do", "na", "à"-.
+   - Idiomas sin espacios -japonés, chino, tailandés-: el seguidor compara palabras; ¿cómo se
+     tokeniza el guion y lo que oye el motor? Estimar el trabajo.
+   - Escritura de derecha a izquierda -árabe, hebreo, farsi-: la lectura, el editor, el destacado y
+     los subtítulos. Estimar el trabajo.
+   - Alfabetos no latinos con espacios -ruso, ucraniano, hindi-: normalización y fuentes tipográficas.
+   Una idea para evaluar: Vosk acepta una GRAMÁTICA -una lista cerrada de palabras-. Como Sigo conoce
+   el guion de antemano, restringir el reconocedor a las palabras del guion podría mejorar mucho la
+   precisión en cualquier idioma. Investigar si funciona con los modelos pequeños, cuánto cambia la
+   demora y qué pasa con lo que la persona dice fuera del guion. Solo investigar: no se programa.
+
+D. EL MERCADO, por idioma: cuántas personas lo hablan, cuántos teléfonos Android activos hay en esos
+   países, y el tamaño aproximado de la economía de creadores de video en ese idioma -YouTube,
+   Instagram, TikTok, clases en línea-. Fuentes públicas, citadas. No hace falta precisión fina:
+   hace falta el orden de magnitud para comparar.
+
+E. LO QUE CUESTA CADA IDIOMA, además del modelo: traducir la app -contar las claves de
+   src/textos/es.ts-, la ficha de Play -docs/play/ficha/- y el sitio -sitio/fuente/textos/-, y
+   quién lo revisa -un hablante nativo; para el portugués, el padre de Javier-.
+
+F. EL PORTUGUÉS DE BRASIL, EN DETALLE -es el primero-:
+   - El mejor modelo disponible, su licencia, peso y calidad.
+   - Qué del seguidor habría que ajustar para el portugués.
+   - UN PROTOCOLO DE MEDICIÓN PARA EL PADRE DE JAVIER: qué guion leer -uno de prueba, de 2 a 3
+     minutos, con números, nombres propios y una pausa-, cómo grabarlo con el grabador de corpus de
+     la APK de prueba, cuántas tomas, y con qué números se decide si el portugués está listo
+     -comparados con los del español sobre el mismo tipo de guion-. Que sea simple de seguir para
+     alguien que no es técnico.
+
+==============================================================================
+REGLAS
+==============================================================================
+  - No se programa ni se cambia nada de la app. Se puede bajar un modelo al computador para medirlo
+    con grabaciones públicas -Common Voice u otras-, anotando la licencia de esas grabaciones.
+  - Cada dato con su fuente -enlace-. Si algo no se pudo comprobar, se dice.
+  - Sin nombres de otras apps de teleprompter en lo que entre al repositorio: si hace falta hablar
+    de la competencia, eso va en un texto aparte, fuera del repositorio, que Javier guarda.
+  - Español, con tildes.
+
+==============================================================================
+LO QUE SE ENTREGA
+==============================================================================
+  Un PR contra main que solo agrega docs/investigacion/idiomas.md con:
+    1. Una tabla de todos los idiomas: motor y modelo, licencia -¿permite cobrar? sí/no-, peso,
+       calidad publicada, compatibilidad con el seguidor -fácil / media / difícil-, tamaño de mercado.
+    2. Los idiomas agrupados en tres niveles: listos para hacer, posibles con trabajo, no viables hoy.
+    3. El orden recomendado de los próximos 3 a 5 idiomas, con el porqué de cada uno.
+    4. El detalle del portugués de Brasil y el protocolo de medición para el padre de Javier.
+    5. Lo que no se pudo comprobar.

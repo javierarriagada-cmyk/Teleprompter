@@ -1,6 +1,7 @@
 import React from 'react'
 import { ResumenGrabacion } from '../datos/modelo'
 import { srcDeRuta, formatearDuracionMs } from './TiraGrabaciones'
+import { duracionVisible } from '../lib/tramos'
 import { movimientoApagado, MS_CHICO, CURVA_ENTRA } from './movimiento'
 import { hapticaToqueSuave } from '../haptica'
 import { t, useTextos } from '../textos'
@@ -42,7 +43,8 @@ export default function BandaTomas({ tomas, onAbrirToma }: Props) {
       <div className="banda-tomas-titulo">{t('tomasConteo', { n: tomas.length })}</div>
       <div className="banda-tomas-fila">
         {tomas.map((g) => {
-          const duracion = formatearDuracionMs(g.duracionMs)
+          // -tarea 88- La duración FINAL, sin lo pausado. Antes: formatearDuracionMs(g.duracionMs).
+          const duracion = formatearDuracionMs(duracionVisible(g))
           return (
             <button
               key={g.id}

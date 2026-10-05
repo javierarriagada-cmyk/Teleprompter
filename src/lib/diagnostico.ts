@@ -41,6 +41,28 @@ export type EntradaDiagnostico =
   // El arranque del oido: donde quedo guardado el audio que escucho Vosk y de a
   // cuantas muestras lo lee. Con el audio se afina el reconocedor en el PC.
   | { ms: number; tipo: 'oido'; inicio: number; ruta: string; muestrasPorTrozo: number }
+  // UN CALCE QUE NO SE APLICÓ -tarea 89, 04-10-2026-. 'calce' se anota ANTES de mirar la
+  // ventana de conduccion.ts -ref - 10 a ref + 40-: un 'calce token 60' no prueba que el
+  // motor se haya movido. Esta línea dice cuándo el calce cayó fuera y con qué ventana, y
+  // dónde quedó el seguidor por dentro -que avanza aunque el motor no lo acepte-.
+  | { ms: number; tipo: 'ventana'; token: number; ref: number; desde: number; hasta: number; final: boolean; seguidor: number }
+  // QUIÉN MOVIÓ AL SEGUIDOR Y AL MOTOR SIN LA VOZ -tarea 89-: el arrastre del texto
+  // -irAToken- o un seguidor nuevo -cambió el guion que recibe useSeguidor-. Los dos
+  // vuelven a empezar el arranque del motor.
+  // 'devuelto' -tercera vuelta-: la conducción rechazó un calce fuera de la ventana y devolvió el
+  // seguidor a donde está el motor -conduccion.ts-.
+  // 'reiniciado' -cuarta vuelta-: Parar terminó la toma -token 0- o el texto se movió en LISTO
+  // -token N-; seguidor y motor quedan como recién creados -conduccion.ts, reiniciarToma-.
+  | { ms: number; tipo: 'seguidor'; evento: 'irAToken' | 'creado' | 'devuelto' | 'reiniciado'; token: number }
+  // LA PANTALLA QUE SE ESTABA LEYENDO -tarea 89-: el diseño y el tamaño del contenedor
+  // del texto, junto a los renglones. De lado los renglones son otros.
+  | { ms: number; tipo: 'pantalla'; diseno: string; ancho: number; alto: number }
+  // EL VISOR DE LADO -tarea 90, 04-10-2026-: lo que Claude tiene que ver en el moto g86 -la barra de
+  // estado que vuelve a ocultarse, el giro 270, la forma del video, los bordes de la WebView y la letra
+  // del sistema-. evento es la primera palabra de la línea y detalle el resto, en clave=valor. Ver
+  // src/lib/registroVisorLado.ts, que además las guarda fuera de la toma -el registro de diagnóstico
+  // solo está encendido mientras se graba-.
+  | { ms: number; tipo: 'visor-lado'; evento: string; detalle: string }
 
 const MAX_ENTRADAS = 60000
 
@@ -51,13 +73,34 @@ let t0 = 0
 // renglones- mira esto para volver a anotarse si el registro empezo despues.
 let generacion = 0
 
+// EL FIN DE LA ÚLTIMA PALABRA DEL ÚLTIMO FINAL -tarea 88, segunda vuelta, 04-10-2026-, en el reloj de
+// performance.now(). Lo lee el vigía de los gestos para cortar la pausa por palma donde terminó la voz
+// -vigiaGestos.ts, oirFinal; pausaToma.ts, desdeDePalma-. Se anota aunque el registro esté apagado: no
+// guarda nada más que este número.
+let finUltimaPalabraPerf: number | null = null
+
 export function activarDiagnostico(valor: boolean) {
   activo = valor
   if (valor) {
     entradas = []
     t0 = performance.now()
     generacion++
+    finUltimaPalabraPerf = null
   }
+}
+
+// -tarea 88, segunda vuelta- El fin de la última palabra del FINAL que acaba de llegar, en Date.now(), y
+// lo olvida: un FINAL sin palabras con hora da null. LA CONVERSIÓN, UNA SOLA VEZ: Vosk entrega "end" en
+// segundos desde el arranque del audio -VoskNativoPlugin.escuchar, inicioEpochMs = System.currentTimeMillis()-;
+// MotorNativo.anotarPalabras lo pasa a este registro como ceroAudioPerf + end * 1000 - t0, con
+// ceroAudioPerf = inicioEpochMs - (Date.now() - performance.now()). Aquí se deshace: t0 + fin es
+// performance.now() y se le suma (Date.now() - performance.now()). Queda inicioEpochMs + end * 1000, en
+// el reloj de Date.now(). abrirPausa -tomaVideo.ts- sigue siendo el único que resta inicioVideoEpochMs.
+export function tomarFinUltimaPalabraEpochMs(): number | null {
+  const perf = finUltimaPalabraPerf
+  finUltimaPalabraPerf = null
+  if (perf === null) return null
+  return Math.round(perf + (Date.now() - performance.now()))
 }
 
 export function generacionDiagnostico(): number {
@@ -71,6 +114,11 @@ export function diagnosticoActivo(): boolean {
 type SinMs<T> = T extends { ms: number } ? Omit<T, 'ms'> & { ms?: number } : never
 
 export function anotar(e: SinMs<EntradaDiagnostico>) {
+  // -tarea 88, segunda vuelta- Antes de mirar si está activo: ver finUltimaPalabraPerf.
+  if (e.tipo === 'palabras' && e.final) {
+    const fines = e.palabras.map((p) => p.fin).filter((f) => Number.isFinite(f))
+    if (fines.length) finUltimaPalabraPerf = t0 + Math.max(...fines)
+  }
   if (!activo) return
   if (entradas.length >= MAX_ENTRADAS) return
   const ms = Math.round((e.ms ?? performance.now()) - t0)
@@ -105,6 +153,15 @@ export function comoTexto(): string {
       filas.push(`${e.ms}\tllegada\t${e.final ? 'FINAL' : 'parcial'} nativo=${e.nativo}${extra}`)
     } else if (e.tipo === 'oido') {
       filas.push(`${e.ms}\toido\tinicio=${e.inicio} trozo=${e.muestrasPorTrozo} ruta=${e.ruta}`)
+    } else if (e.tipo === 'ventana') {
+      // -tarea 89-: el calce de arriba NO se aplicó.
+      filas.push(`${e.ms}\tventana\tFUERA ${e.final ? 'FINAL' : 'parcial'} token=${e.token} ref=${e.ref} desde=${e.desde} hasta=${e.hasta} seguidor=${e.seguidor}`)
+    } else if (e.tipo === 'seguidor') {
+      filas.push(`${e.ms}\tseguidor\t${e.evento} token=${e.token}`)
+    } else if (e.tipo === 'pantalla') {
+      filas.push(`${e.ms}\tpantalla\t${e.diseno} ${e.ancho}x${e.alto}`)
+    } else if (e.tipo === 'visor-lado') {
+      filas.push(`${e.ms}\tvisor-lado\t${e.evento} ${e.detalle}`)
     } else {
       filas.push(
         `${e.ms}\tcuadro\tpos=${e.posicion.toFixed(2)} calce=${e.calce} scroll=${e.scroll} freno=${e.freno} trabado=${e.trabado}`

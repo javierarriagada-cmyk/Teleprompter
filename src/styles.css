@@ -514,7 +514,10 @@ textarea::placeholder {
    renglon, que esta arriba sin holgura -calcularBanda- y no se baja. Con el desenfoque, lo de
    atras se vuelve una mancha y el boton se lee como un objeto encima. Un WebView sin
    backdrop-filter se queda con el translucido de siempre. */
+/* -tarea 83, parte B- También el de 56 -la pausa y el tacho al lado de Parar-. Antes: solo 40, 72 y
+   la pastilla. */
 .btn-flotante-40,
+.btn-flotante-56,
 .btn-flotante-72,
 .pastilla-tiempo {
   -webkit-backdrop-filter: blur(10px);
@@ -618,6 +621,60 @@ textarea::placeholder {
   background-color: var(--color-grabando);
 }
 
+/* EL BOTÓN FLOTANTE DE 56 -tarea 83, parte B, 04-10-2026-. La acción secundaria al lado de la
+   principal: la pausa -Seguir en pausa- y el tacho junto a Parar. 56 es el botón flotante de
+   Material 3 -m3.material.io/components/floating-action-button/specs: contenedor de 56, ícono de 24-
+   y la regla de tamaños lo admite desde hoy -docs/lo-que-hay-que-saber.txt-. El mismo fondo
+   translúcido y el mismo borde que sus hermanos de 40 y 72; nunca rojo: el rojo es de grabar. */
+.btn-flotante-56 {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--redondeo-pildora);
+  background-color: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  cursor: pointer;
+}
+
+/* LA FILA DE LA TOMA -tarea 83, parte B, App.tsx, filaDeLaToma-. Tres celdas fijas: la pausa de 56,
+   Parar de 72 y el tacho de 56, con --aire-5 -32- entre ellas y los centros alineados. Sin el tacho
+   -grabando, o en Leer- la tercera celda queda vacía y Parar sigue al centro. De lado, la misma fila en
+   columna: la pausa encima de Parar y el tacho debajo. */
+.fila-toma {
+  display: grid;
+  grid-template-columns: 56px 72px 56px;
+  column-gap: var(--aire-5);
+  align-items: center;
+  justify-items: center;
+  pointer-events: none;
+}
+.fila-toma > * {
+  pointer-events: auto;
+}
+.fila-toma.en-columna {
+  grid-template-columns: auto;
+  grid-template-rows: 56px 72px 56px;
+  column-gap: 0;
+  row-gap: var(--aire-5);
+}
+/* El «¿Seguro?» abre el tacho a 96: de pie crece hacia afuera -a la derecha- y Parar no se mueve; de
+   lado crece parejo a los dos lados, centrado en el riel. */
+.fila-toma > .fila-toma-tacho {
+  justify-self: start;
+}
+.fila-toma.en-columna > .fila-toma-tacho {
+  justify-self: center;
+}
+.fila-toma-hueco {
+  width: 56px;
+  height: 56px;
+  pointer-events: none;
+}
+
 /* INTERRUPTOR (Tarea 72). La casilla real se esconde a la vista pero sigue
    en el documento: recibe el toque a traves de su label, el teclado y el
    lector de pantalla. Ver Interruptor.tsx. */
@@ -673,6 +730,14 @@ textarea::placeholder {
   justify-content: flex-end;
 }
 .pastilla-tiempo { letter-spacing: 0.04em; }
+/* -tarea 83, parte B, 04-10-2026- Leyendo de pie, centrada encima de la fila de la toma -el bottom lo
+   pone BarraDeTiempo-: a la derecha de Parar la pisaba el tacho en pausa. Pesa más que el lugar de
+   arriba y que el del teléfono angosto -abajo-. */
+.pastilla-tiempo-lugar.encima-de-la-fila {
+  left: calc(16px + env(safe-area-inset-left, 0px));
+  right: calc(16px + env(safe-area-inset-right, 0px));
+  justify-content: center;
+}
 /* En 380 px o menos la hora no entra con su aire: "00:00 / 02:23" no se puede partir. Medido
    a 360 -Redmi 13C-: quedaban 120 px y la pastilla pedia 144. Se juntan las letras, el
    relleno baja al minimo y la pastilla gana 8 px a cada lado. */
@@ -1116,6 +1181,30 @@ label.selector-aa-opcion {
   background-color: color-mix(in srgb, var(--color-grabando) 22%, rgba(0, 0, 0, 0.5));
   border: 2px solid var(--color-grabando);
   color: #fff;
+  /* EL CÍRCULO DE GRABAR TAMBIÉN RESPIRA MIENTRAS ESPERA -2026-10-05, tarea 83, correcciones-. Mismo
+     pulso que Leer -pulsoEmpezar, 1,8 s, espera de 1,5 s, box-shadow y no transform- pero con halo
+     BLANCO, de 45 % hasta 0: un halo blanco no se lee como "ya estás grabando", que era la razón para
+     no tenerlo -ver el comentario de .btn-empezar-leer-. El botón no cambia: el punto rojo sigue al
+     medio. Se apaga al apretarlo -:active abajo, y después el botón deja de estar-; Parar no late:
+     es otro botón -btn-parar-lectura-, sin esta clase. */
+  --pulso-empezar: #fff;
+  --pulso-empezar-opacidad: 45%;
+  animation: pulsoEmpezar 1.8s ease-out 1.5s infinite;
+}
+.btn-empezar-grabar:active {
+  animation: none;
+}
+/* EL HALO CONTRASTA CON LO QUE TIENE DETRÁS -2026-10-05, segundo ajuste de Javier-. Blanco sobre fondo
+   oscuro, como arriba; gris oscuro translúcido sobre fondo claro, donde el blanco no se veía. Nunca rojo.
+   De pie en el teléfono el fondo es el de la pareja -halo-sobre-claro lo pone TeleprompterView con
+   isWhiteBg, el mismo criterio que empezar-sobre-blanco-; de lado y en tableta Empezar vive en el riel o
+   el dock, que siguen al tema. */
+.btn-empezar-grabar.halo-sobre-claro,
+[data-tema="claro"] .layout-tel-h .btn-empezar-grabar,
+[data-tema="claro"] .layout-tab-v .btn-empezar-grabar,
+[data-tema="claro"] .layout-tab-h .btn-empezar-grabar {
+  --pulso-empezar: #1f1f1f;
+  --pulso-empezar-opacidad: 50%;
 }
 .btn-empezar-leer {
   background-color: var(--color-acento);
@@ -1129,14 +1218,18 @@ label.selector-aa-opcion {
   /* EL CIRCULO RESPIRA MIENTRAS ESPERA -27-09-2026-. Una persona abrio Leer y dos veces empezo
      a hablar sin tocarlo. Un halo que sale y se apaga, con box-shadow y NO con transform: el
      transform es del efecto de apretado de .btn-deformable. Espera 1,5 s para no molestar a
-     quien ya iba a tocar. Solo en Leer: en Grabar el inicio es deliberado y un pulso rojo se
-     leeria como "ya estas grabando". */
+     quien ya iba a tocar.
+     2026-10-05: Grabar también late, con halo blanco y no rojo -ver .btn-empezar-grabar-. Antes:
+     «Solo en Leer: en Grabar el inicio es deliberado y un pulso rojo se leeria como "ya estas
+     grabando".» */
   animation: pulsoEmpezar 1.8s ease-out 1.5s infinite;
 }
 /* 29-09-2026, tarea 82: los tres cuadros decían var(--color-acento); ahora var(--pulso-empezar),
    que es el color del botón en cada caso -ver .btn-empezar-leer y .empezar-sobre-blanco-. */
+/* 2026-10-05: la opacidad de salida es --pulso-empezar-opacidad -45 % en Grabar-; sin ella, 55 % como
+   siempre. Antes: 0% { box-shadow: 0 0 0 0 color-mix(... var(--color-acento)) 55%, transparent); } */
 @keyframes pulsoEmpezar {
-  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pulso-empezar, var(--color-acento)) 55%, transparent); }
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pulso-empezar, var(--color-acento)) var(--pulso-empezar-opacidad, 55%), transparent); }
   70% { box-shadow: 0 0 0 18px color-mix(in srgb, var(--pulso-empezar, var(--color-acento)) 0%, transparent); }
   100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pulso-empezar, var(--color-acento)) 0%, transparent); }
 }
@@ -1151,7 +1244,9 @@ label.selector-aa-opcion {
   --pulso-empezar: var(--empezar-fondo-sobre-blanco);
 }
 @media (prefers-reduced-motion: reduce) {
-  .btn-empezar-leer { animation: none; }
+  /* 2026-10-05: también Grabar. Antes: .btn-empezar-leer { animation: none; } */
+  .btn-empezar-leer,
+  .btn-empezar-grabar { animation: none; }
 }
 .punto-grabar {
   display: block;
@@ -1368,6 +1463,54 @@ label.selector-aa-opcion {
   z-index: 10;
   pointer-events: none;
 }
+/* -tarea 88, 04-10-2026- EN PAUSA EL PUNTO PARPADEA -P9 del plan 2, cerrada-: 1 s encendido y 1 s
+   apagado, suave. Con "reducir movimiento" no parpadea: queda un anillo rojo sin relleno, que se
+   distingue del punto lleno de grabando sin moverse. */
+.punto-grabando.en-pausa {
+  animation: puntoEnPausa 2s ease-in-out infinite;
+}
+@keyframes puntoEnPausa {
+  0%, 40% { opacity: 1; }
+  50%, 90% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .punto-grabando.en-pausa {
+    animation: none;
+    background-color: transparent;
+    border: 2px solid var(--color-grabando);
+    box-sizing: border-box;
+    box-shadow: none;
+  }
+}
+
+/* -tarea 88- EL SÍMBOLO GRANDE DE PAUSA, cuando pausa un gesto -docs/tarea88.txt, punto 16-: 96 dp en el
+   centro, el ícono de pausa de Sigo en blanco sobre un círculo oscuro translúcido, como el ▶ del visor
+   -.play-visor-. 1 s a la vista y se desvanece en 300 ms; con movimiento reducido, 1 s y se va sin
+   desvanecerse -lo decide App, que lo saca-. */
+.simbolo-pausa-grande {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 96px;
+  height: 96px;
+  margin: -48px 0 0 -48px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 120;
+  pointer-events: none;
+}
+.simbolo-pausa-grande.saliendo {
+  animation: simboloPausaSale 300ms ease-in forwards;
+}
+@keyframes simboloPausaSale {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
 
 /* LOS SUBTITULOS DE LA TOMA, EN EL VISOR -24-09-2026-. Ver SubtitulosVisor.tsx.
    Tres estilos cerrados. La letra es la de la app, Source Sans 3, en 600:
@@ -1561,6 +1704,8 @@ label.selector-aa-opcion {
   /* Un octavo del alto desde abajo, como el prototipo -160 sobre 1280-. Va en
      linea, en SubtitulosVisor.tsx: un margen en % se mide contra el ANCHO, y en
      una toma vertical quedaba a la mitad de altura. */
+  /* -tarea 87, 04-10-2026- Ahora es un sexto, en vertical y en horizontal:
+     MARGEN_ABAJO_SUBTITULOS en lib/subtitulos.ts, la misma cifra del archivo. */
   margin: 0 6%;
   text-align: center;
   line-height: 1.25;
@@ -1628,6 +1773,12 @@ button.boton-subtitulos {
 }
 button.boton-subtitulos.con-subtitulos {
   border-color: var(--color-acento);
+}
+/* -tarea 87, 04-10-2026- Mientras se guarda, la ficha de Subtítulos queda desactivada, como las
+   acciones de la toma -.accion-toma:disabled-. */
+button.boton-subtitulos:disabled {
+  opacity: 0.7;
+  cursor: default;
 }
 .boton-subtitulos-nombre {
   font-weight: 600;
@@ -1702,6 +1853,107 @@ button.opcion-subtitulos.activa {
 @media (prefers-reduced-motion: reduce) {
   .opciones-subtitulos { animation: none; }
   .boton-subtitulos-flecha { transition: none; }
+}
+
+/* EL FILTRO DE LA TOMA -tarea 96, 05-10-2026, SelectorFiltro.tsx-. El control es el mismo de
+   Subtítulos -.boton-subtitulos-; lo nuevo es la tira de miniaturas, como los filtros del editor de
+   otra aplicación de fotos -imagen modelo aprobada por Javier-: una fila de cuadros de la toma, cada uno con su
+   filtro, el nombre debajo y la elegida con un anillo claro separado del cuadro. Nada de "Aa" ni de
+   botones de solo texto: eso ya se rechazó.
+   Las seis caben de pie a 412 de ancho -tarjeta de 372, 348 por dentro: seis de ~51 con 8 de aire-; si
+   el ancho no alcanza -la tarjeta de lado, de 320- la tira se desplaza de lado. */
+.filtros-svg {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+button.boton-subtitulos.con-filtro {
+  border-color: var(--color-acento);
+}
+.tira-filtros {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(50px, 1fr);
+  gap: var(--aire-2);
+  /* El aire de arriba y de los lados deja ver entero el anillo de la elegida. */
+  padding: var(--aire-1) var(--aire-1) 0;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  animation: subtitulosDespliega 180ms ease-out;
+}
+.tira-filtros::-webkit-scrollbar {
+  display: none;
+}
+button.miniatura-filtro {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  min-width: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-apagado);
+  font: inherit;
+  /* 12, el rótulo más chico de los controles del visor -ROTULO_MINIMO, lib/visorDeLado.ts-. */
+  font-size: 12px;
+  line-height: 1.2;
+  cursor: pointer;
+  scroll-snap-align: start;
+  -webkit-tap-highlight-color: transparent;
+}
+button.miniatura-filtro:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+/* El cuadro: 4:5, más alto que ancho, para que la cara entre aunque la toma sea horizontal -se recorta
+   al centro-. */
+.miniatura-filtro-marco {
+  display: block;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--redondeo);
+  overflow: hidden;
+  /* Antes: background #000. En el teléfono, sin cuadro, las seis se leían negras. */
+  background: var(--bg-superficie);
+  box-shadow: 0 0 0 1px var(--borde-tarjeta);
+  transition: transform 140ms ease, outline-color 140ms ease;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.miniatura-filtro-imagen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+button.miniatura-filtro:active .miniatura-filtro-marco {
+  transform: scale(0.96);
+}
+button.miniatura-filtro.activa .miniatura-filtro-marco {
+  outline-color: var(--color-texto);
+}
+button.miniatura-filtro.activa {
+  color: var(--color-texto);
+  font-weight: 600;
+}
+.miniatura-filtro-nombre {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+button.miniatura-filtro:focus-visible {
+  outline: none;
+}
+button.miniatura-filtro:focus-visible .miniatura-filtro-marco {
+  outline-color: var(--color-acento);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tira-filtros { animation: none; }
+  .miniatura-filtro-marco { transition: none; }
 }
 
 /* ==========================================================================
@@ -1904,4 +2156,73 @@ button.btn-deformable.miniatura-banda:not(:active) {
 }
 .aviso-voz > div {
   margin-bottom: 0 !important; /* el indicador trae su margen para el flujo de la página: aquí flota */
+}
+
+/* SELECCIÓN DE TOMAS -tarea 94, 05-10-2026-. La barra reemplaza la de la portada.
+   El círculo con ✓ va en la esquina de la miniatura. Colores de la vara. */
+.barra-seleccion-tomas {
+  display: flex;
+  align-items: center;
+  gap: var(--aire-2);
+  width: 100%;
+}
+.cuenta-seleccion {
+  flex: 1;
+  color: var(--color-texto);
+  font-size: var(--texto-cuerpo);
+  font-weight: 600;
+}
+/* -tarea 94, revision- La casilla de "todas", junto a la cuenta: el boton ocupa el espacio libre
+   y empuja el tacho al borde derecho. Zona de toque de 48 de alto. */
+.casilla-todas {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--aire-2);
+  min-height: 48px;
+  background: transparent;
+  border: none;
+  padding: 0 var(--aire-2);
+  text-align: left;
+  cursor: pointer;
+}
+.casilla-cuadro {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--color-texto);
+  color: var(--bg-suelo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+.casilla-cuadro.marcada {
+  background: var(--color-texto);
+}
+/* Antes: el boton de texto "Seleccionar todo" entre la cuenta y el tacho. Ya no se usa. */
+.enlace-seleccion {
+  background: transparent;
+  border: none;
+  color: var(--color-texto);
+  font-size: var(--texto-meta);
+  padding: var(--aire-2);
+  cursor: pointer;
+}
+.marca-seleccion {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-texto);
+  color: var(--bg-suelo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
 }

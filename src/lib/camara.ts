@@ -15,6 +15,11 @@ export interface CamaraNativaPlugin {
     bytes: number
     tienePistaAudio: boolean | null
     nivelRmsDb: number | null
+    // -tarea 87, parte C, 04-10-2026- La forma del archivo, con el MediaMetadataRetriever que ya
+    // abre. Opcionales: un APK viejo no los manda.
+    anchoPx?: number
+    altoPx?: number
+    rotacion?: number
   }>
   extraerMiniatura(options: { ruta: string; destino: string; atMs?: number }): Promise<{ ruta: string }>
   buscarMp4Recientes(): Promise<{ rutas: string[] }>
@@ -23,10 +28,47 @@ export interface CamaraNativaPlugin {
   compartir(options: { uri: string }): Promise<void>
   existeEnGaleria(options: { uri: string }): Promise<{ existe: boolean }>
   guardarConSubtitulos(options: { ruta: string; subtitulos: string; estilo: string }): Promise<{ ok: boolean; uri?: string }>
+  // LA RECETA COMÚN -tarea 87, parte B, 04-10-2026-. La receta va como JSON -lib/recetaExportacion.ts-;
+  // el nativo la lee en RecetaExportacion.java. Un APK viejo no la tiene: rechaza "not implemented"
+  // y guardarEnGaleriaConSubtitulos cae a guardarConSubtitulos.
+  exportarToma(options: { ruta: string; receta: string }): Promise<{ ok: boolean; uri?: string; recodifico: boolean; msGuardado: number }>
   addListener(evento: 'progresoGuardado', cb: (d: { porcentaje: number }) => void): Promise<{ remove: () => Promise<void> }>
+  // LAS MEDICIONES DE EXPORTACIÓN -tarea 87, paso 0, 03-10-2026-. Solo las usa el panel de
+  // mediciones de la APK de prueba -PanelMediciones.tsx-. El nativo escribe al logcat con la
+  // etiqueta SigoExport solo si la app es depurable; en Play no escribe nada.
+  // Cada línea que el nativo escribe -guardado_inicio, capa, guardado_fin- llega también acá.
+  addListener(evento: 'medicion', cb: (d: { linea: string }) => void): Promise<{ remove: () => Promise<void> }>
+  // La forma real del archivo: lo que analizarVideo no da. 0 o vacío si no se pudo leer.
+  medirToma(options: { ruta: string }): Promise<{
+    existe: boolean
+    bytes: number
+    duracionMs: number
+    anchoPx: number
+    altoPx: number
+    rotacion: number
+    fps: number
+    bitrateBps: number
+    mimeVideo: string
+    mimeAudio: string
+    audioHz: number
+    audioCanales: number
+  }>
+  // Escribe UNA línea al logcat -etiqueta SigoExport-. La arma lib/medicionesExport.ts.
+  anotarMedicion(options: { linea: string }): Promise<{ escrita: boolean }>
+  equipoMedicion(): Promise<{ modelo: string; android: string; app: string; depurable: boolean }>
+  // Borra de la galería SOLO las uris que se le pasan -las copias que dejó el panel-.
+  borrarCopiasDeMedicion(options: { uris: string[] }): Promise<{ borradas: string[]; fallidas: string[] }>
   fijarBrillo(options: { valor: number }): Promise<{ ok: boolean }>
   restaurarBrillo(): Promise<{ ok: boolean }>
   leerBrillo(): Promise<{ valor: number }>
+  // -tarea 91- La orientación fija mientras dura la toma: lib/orientacionToma.ts.
+  fijarOrientacion(options: { repetir?: boolean }): Promise<{ rotacion: number; orientacion: string; valor: number; anterior: string; natural: string }>
+  soltarOrientacion(options: { olvidar?: boolean }): Promise<{ orientacion: string; rotacion: number }>
+  // -tarea 83, parte B, LS-M2- La cámara o el micrófono tomados por otra app en plena toma:
+  // lib/recursosToma.ts y PerdidaDeRecursos.java.
+  vigilarRecursos(options: { camara: boolean }): Promise<{ camara: boolean; microfono: boolean }>
+  soltarRecursos(): Promise<void>
+  addListener(evento: 'recursoPerdido', cb: (d: { recurso: 'camara' | 'microfono'; motivo: string }) => void): Promise<{ remove: () => Promise<void> }>
 }
 
 // Un solo registerPlugin. PruebaCamaraNativaView importa este mismo
@@ -50,6 +92,11 @@ export interface OpcionesConfigCamara {
   // el hueco -el lienzo entero-: en el moto g86 la camara quedaba 26 px mas arriba que el hueco
   // y abajo se veia una franja negra.
   rectRecuadro?: { x: number; y: number; width: number; height: number }
+  // LA VENTANA MEDIDA, EN TABLETA -tarea 83, 30-09-2026-. El rectángulo de la superficie de la
+  // lectura, en px de la pantalla. Con la cámara detrás -u oculta- la vista previa cubre esto y no
+  // window.screen: en una tableta con ventana dividida o en un plegable, la pantalla física no es
+  // la ventana de la app. Solo la manda la tableta; en el teléfono no viene y queda lo de la 82.
+  ventanaMedida?: { x: number; y: number; width: number; height: number }
 }
 
 let estaEncendida = false
@@ -351,6 +398,12 @@ function calcularDimensionesPreview(config?: OpcionesConfigCamara): {
     const y = Math.round(ry * winH)
 
     return { x, y, width: w, height: h }
+  }
+
+  // 30-09-2026, tarea 83: en tableta, la ventana medida -ver ventanaMedida-.
+  const vm = config?.ventanaMedida
+  if (vm && vm.width > 0 && vm.height > 0) {
+    return { x: Math.round(vm.x), y: Math.round(vm.y), width: Math.round(vm.width), height: Math.round(vm.height) }
   }
 
   // Fondo DETRÁS u OCULTA: ocupa toda la pantalla de borde a borde

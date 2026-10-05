@@ -1,0 +1,501 @@
+/* LA TABLETA -tarea 83, 30-09-2026-.
+   En tableta Sigo era el teléfono agrandado: en vertical el cuarto de arriba quedaba vacío y, de
+   lado, la columna angosta quedaba sola al centro. Este archivo es el diseño aprobado por Javier el
+   29-09-2026: la hoja de medidas -docs/pantallas/tarea82/medidas-implementacion.md, secciones 3,
+   4 y 5- y los bocetos hoja-tableta.png y hoja-tableta-claro.png -docs/pantallas/tarea83/-.
+
+   Todo cuelga de .layout-tab-v o .layout-tab-h -las pone App cuando useLayout dice 'tab-v' o
+   'tab-h'-. En el teléfono ninguna regla de acá aplica. Va después de styles-horizontal.css
+   -main.tsx- porque de lado la tableta usa los mismos rieles con otras medidas: acá se cambian las
+   variables y se escriben las reglas del riel que allá cuelgan de .layout-tel-h.
+
+   Las medidas son las de la hoja, en dp -1 px CSS en el WebView-. Están acá como variables y no en
+   los componentes: RecuadroCamara lee las del recuadro de estas mismas variables, así el hueco de
+   la cámara y la zona libre no pueden desalinearse de la barra, el dock y los rieles. */
+
+/* CUÁNTO BAJA EL TEXTO Y CUÁNTO SE RESERVA ABAJO. Se registran como largos para que el navegador
+   pueda animarlas: al apretar Empezar el texto sube suave los 72 de la barra, y la máscara de abajo
+   se mueve en el mismo cuadro que el texto. Un WebView sin @property salta de golpe al lugar final,
+   que es el mismo. */
+@property --tab-texto-arriba {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+@property --tab-reserva-abajo {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+@property --tab-fundido {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+:root {
+  /* Tableta vertical: barra de 72 arriba y dock de 172 abajo, los dos SIN el área segura -cada regla
+     la suma aparte, sección 5-. */
+  --tab-barra: 72px;
+  --tab-dock: 172px;
+  /* La columna en vertical: 56 por lado de la hoja más los 28 de aire que la columna del boceto
+     lleva adentro -el mismo aire que la 82 puso entre el riel y el texto del teléfono de lado-. El
+     texto empieza a 84 del borde, como en hoja-tableta.png. */
+  --columna-lado-tab-v: calc(56px + 28px);
+  /* El aire de arriba de la columna: 24 bajo la barra en vertical, 28 de lado. */
+  --tab-aire-arriba-v: 24px;
+  --tab-aire-arriba-h: 28px;
+  /* Cuánto reserva el recuadro: en vertical la franja de 272 -240 + 16 arriba y abajo- encima del
+     dock; de lado, 192 -144 + 24 arriba y abajo-. */
+  --tab-franja-recuadro-v: 272px;
+  --tab-franja-recuadro-h: 192px;
+  /* El fundido del final de la columna, de la hoja -sección 3-. */
+  --tab-fundido-alto: 60px;
+  /* El aviso breve en la tableta vertical: 16 encima del dock. */
+  --aviso-tab-v-abajo: calc(172px + 16px);
+}
+
+/* ------------------------------------------------------------------------------------------------
+   LAS FICHAS GRANDES -las dos tabletas-. Alto 44, relleno 0 16, radio 10, letra 15 y 8 entre el
+   ícono y el texto, como .ficha.grande del boceto. El toque suma 8 arriba y 8 abajo -::after de
+   .ficha-listo-: 60 de alto, nunca menos que el del teléfono. */
+.layout-tab-v .ficha-listo.grande,
+.layout-tab-h .ficha-listo.grande {
+  height: 44px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 10px;
+  font-size: 15px;
+  gap: 8px;
+}
+/* A lo ancho del riel -.ficha.grande.ancha-: el texto a la izquierda y cortado con puntos si no
+   cabe, como en el riel del teléfono. */
+.layout-tab-h .ficha-listo.ancha {
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+.layout-tab-h .ficha-listo.ancha > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Empezar de Leer sigue al tema en las dos tabletas: vive en el dock o en el riel, que son del
+   tema, igual que en el teléfono de lado -tarea 82, parte C-. */
+.layout-tab-v .btn-empezar-leer,
+.layout-tab-h .btn-empezar-leer {
+  background-color: var(--empezar-fondo);
+  color: var(--empezar-icono);
+  --pulso-empezar: var(--empezar-fondo);
+}
+
+/* ------------------------------------------------------------------------------------------------
+   EL TEXTO. El contenedor que hace scroll, la banda, el velo y el panel de la cámara detrás bajan
+   juntos --tab-texto-arriba-: la geometría del motor -renglones, origen, scroll- no se entera,
+   porque se mide con offsetTop, y el renglón vivo sigue calzando con su ventana. La reserva de
+   abajo es una máscara con fundido: el texto termina encima del dock o del recuadro sin tapar el
+   hueco de la cámara, que un velo pintado encima sí taparía. */
+.layout-tab-v [data-testid="teleprompter-view-container"],
+.layout-tab-h [data-testid="teleprompter-view-container"] {
+  transition:
+    --tab-texto-arriba 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    --tab-reserva-abajo 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    --tab-fundido 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.layout-tab-v [data-testid="contenedor-lectura"],
+.layout-tab-h [data-testid="contenedor-lectura"] {
+  top: var(--tab-texto-arriba);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 calc(100% - var(--tab-texto-arriba) - var(--tab-reserva-abajo) - var(--tab-fundido)),
+    transparent calc(100% - var(--tab-texto-arriba) - var(--tab-reserva-abajo))
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 calc(100% - var(--tab-texto-arriba) - var(--tab-reserva-abajo) - var(--tab-fundido)),
+    transparent calc(100% - var(--tab-texto-arriba) - var(--tab-reserva-abajo))
+  );
+}
+.layout-tab-v [data-testid="banda-lectura"],
+.layout-tab-v [data-testid="velo-lectura"],
+.layout-tab-v [data-testid="panel-lectura"],
+.layout-tab-h [data-testid="banda-lectura"],
+.layout-tab-h [data-testid="velo-lectura"],
+.layout-tab-h [data-testid="panel-lectura"] {
+  margin-top: var(--tab-texto-arriba);
+}
+/* El velo que apaga el texto lejos de la ventana de lectura termina donde termina el texto: en la
+   franja del recuadro no hay texto que apagar, y el velo encima oscurecía -o blanqueaba, en la
+   pareja blanca- la imagen de la persona. La hoja la muestra limpia, como en la 82. */
+.layout-tab-v [data-recuadro="abajo"] [data-testid="velo-lectura"],
+.layout-tab-h [data-recuadro="abajo"] [data-testid="velo-lectura"] {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--tab-reserva-abajo)), transparent calc(100% - var(--tab-reserva-abajo)));
+  mask-image: linear-gradient(to bottom, #000 calc(100% - var(--tab-reserva-abajo)), transparent calc(100% - var(--tab-reserva-abajo)));
+}
+/* Con el recuadro arriba, el velo empieza donde empieza el texto -margin-top, arriba-: la franja
+   del recuadro queda fuera de él sin máscara. */
+
+/* Leyendo sin controles y sin nada que reservar, sin máscara: es el caso de todo el rato, y una
+   máscara sobre el texto que se desplaza no se paga si no hace falta. */
+.layout-tab-v [data-tab-texto="lectura"][data-recuadro="no"] [data-testid="contenedor-lectura"] {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+/* Tableta vertical. En LISTO y con los controles a la vista, el texto va 24 debajo de la barra y
+   termina encima del dock con su fundido. AL APRETAR EMPEZAR la barra y el dock desaparecen y el
+   texto USA TODO EL ALTO: sube los 72 de la barra -una sola vez, con la transición de arriba- y
+   el renglón vivo queda pegado arriba, a 24 del borde útil, lo más cerca posible del lente. Acá no
+   vale la regla de la 82 de conservar el espacio: esa es del teléfono de lado -encargo de la 83-.
+   El área segura de arriba sigue: la pone TeleprompterView como relleno de toda la superficie. */
+.layout-tab-v [data-testid="teleprompter-view-container"] {
+  --tab-texto-arriba: calc(var(--tab-barra) + var(--tab-aire-arriba-v));
+  --tab-reserva-abajo: var(--tab-dock);
+  --tab-fundido: var(--tab-fundido-alto);
+}
+.layout-tab-v [data-tab-texto="lectura"] {
+  --tab-texto-arriba: var(--tab-aire-arriba-v);
+  --tab-reserva-abajo: 0px;
+  --tab-fundido: 0px;
+}
+/* Con el recuadro abajo, la columna reserva su franja encima del dock en los tres momentos: el
+   recuadro no se mueve durante la toma -la cámara nativa está en ese hueco-. */
+.layout-tab-v [data-recuadro="abajo"] {
+  --tab-reserva-abajo: calc(var(--tab-dock) + var(--tab-franja-recuadro-v));
+  --tab-fundido: var(--tab-fundido-alto);
+}
+/* Con el recuadro arriba, la franja va debajo de la barra y el texto empieza después de ella,
+   también leyendo: el recuadro sigue ahí. */
+.layout-tab-v [data-recuadro="arriba"] {
+  --tab-texto-arriba: calc(var(--tab-barra) + var(--tab-franja-recuadro-v) + var(--tab-aire-arriba-v));
+}
+
+/* Tableta de lado: la columna va entre los rieles en LISTO y leyendo -hoja-tableta.png: al leer
+   los rieles no se dibujan, pero su lugar se reserva-, 28 debajo del borde. Con el recuadro, su
+   franja de 192 abajo -o arriba-. */
+.layout-tab-h [data-testid="teleprompter-view-container"] {
+  --tab-texto-arriba: var(--tab-aire-arriba-h);
+  --tab-reserva-abajo: 0px;
+  --tab-fundido: 0px;
+}
+.layout-tab-h [data-recuadro="abajo"] {
+  --tab-reserva-abajo: var(--tab-franja-recuadro-h);
+  --tab-fundido: var(--tab-fundido-alto);
+}
+.layout-tab-h [data-recuadro="arriba"] {
+  --tab-texto-arriba: calc(var(--tab-franja-recuadro-h) + var(--tab-aire-arriba-h));
+}
+
+/* ------------------------------------------------------------------------------------------------
+   TABLETA VERTICAL (referencia 820 x 1180, sección 3). */
+.layout-tab-v {
+  /* La columna completa se topa en 60ch -unos 51 caracteres a 32-; la angosta no cambia. */
+  --columna-tope-h: 60ch;
+  /* El recuadro: 180 x 240 -3:4-, a 32 del borde derecho y 16 sobre el dock. La zona libre va de
+     la barra al dock -RecuadroCamara lee estas variables-. */
+  --recuadro-esq-ancho: 180px;
+  --recuadro-esq-alto: 240px;
+  --recuadro-esq-margen-x: 32px;
+  --recuadro-esq-margen-y: 16px;
+  --recuadro-zona-izq: 0px;
+  --recuadro-zona-der: 0px;
+  --recuadro-zona-arr: var(--tab-barra);
+  --recuadro-zona-aba: var(--tab-dock);
+}
+
+/* LA BARRA DE ARRIBA: 72 más el área segura de arriba -sección 5-, relleno 0 20. El ‹ a la
+   izquierda, el título centrado y Más a la derecha. Leyendo con controles: salir o el tacho a la
+   izquierda y la pausa a la derecha. */
+.tab-barra {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--tab-barra) + env(safe-area-inset-top, 0px));
+  box-sizing: border-box;
+  padding: env(safe-area-inset-top, 0px) calc(20px + env(safe-area-inset-right, 0px)) 0 calc(20px + env(safe-area-inset-left, 0px));
+  background: var(--riel-fondo);
+  border-bottom: 1px solid var(--riel-borde);
+  z-index: 12;
+}
+.tab-dock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--tab-dock) + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+  padding: 20px calc(16px + env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) calc(16px + env(safe-area-inset-left, 0px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--riel-fondo);
+  border-top: 1px solid var(--riel-borde);
+  z-index: 12;
+}
+/* Con la cámara detrás, vidrio -como el riel del teléfono de lado-. */
+.tab-barra.sobre-imagen,
+.tab-dock.sobre-imagen {
+  background: var(--riel-fondo-sobre-imagen);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+/* LEYENDO CON CONTROLES la barra y el dock no arman su propio apilamiento -sin z-index, como el
+   riel de la 82-: el fondo es una capa de adentro -tab-fondo, en 9- y los botones van en 100. Así
+   el punto rojo -10- y la pastilla -12- quedan por encima del fondo y a la vista. Un toque en la
+   franja, fuera de los botones, llega al texto y esconde los controles, como en el resto de la
+   pantalla. Parar va centrado en el alto del dock -hoja-tableta.png, grabando con controles-: ya
+   no hay fila de fichas encima. */
+.tab-barra.tab-barra-leyendo,
+.tab-dock.tab-dock-leyendo {
+  z-index: auto;
+  background: none;
+  border: 0;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  pointer-events: none;
+}
+.tab-barra-leyendo > *,
+.tab-dock-leyendo > * {
+  pointer-events: auto;
+}
+.tab-dock.tab-dock-leyendo {
+  justify-content: center;
+  padding-top: 0;
+}
+/* -tarea 83, parte B- En el dock va la fila de la toma entera -pausa, Parar y tacho-. Antes: solo
+   .tab-dock-leyendo > .btn-flotante-72. */
+.tab-dock-leyendo > .fila-toma,
+.tab-dock-leyendo > .btn-flotante-72 {
+  position: relative;
+  z-index: 100;
+}
+.tab-fondo {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  background: var(--riel-fondo);
+}
+.tab-barra-leyendo > .tab-fondo {
+  pointer-events: none;
+  border-bottom: 1px solid var(--riel-borde);
+}
+.tab-dock-leyendo > .tab-fondo {
+  pointer-events: none;
+  border-top: 1px solid var(--riel-borde);
+}
+.sobre-imagen > .tab-fondo {
+  background: var(--riel-fondo-sobre-imagen);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.tab-titulo {
+  position: absolute;
+  left: 50%;
+  top: env(safe-area-inset-top, 0px);
+  transform: translateX(-50%);
+  height: var(--tab-barra);
+  line-height: var(--tab-barra);
+  max-width: calc(100% - 2 * (20px + 40px + 16px) - 2 * 88px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: "Source Serif 4", serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+/* Los botones de 40 de las esquinas de la barra: centrados en sus 72 -(72 - 40) / 2 = 16-. */
+.layout-tab-v .tab-boton-izq {
+  position: absolute;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  left: calc(20px + env(safe-area-inset-left, 0px));
+}
+.layout-tab-v .tab-boton-der {
+  position: absolute;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  right: calc(20px + env(safe-area-inset-right, 0px));
+}
+/* Más, la ficha grande de 44: centrada en los 72 -(72 - 44) / 2 = 14-. */
+.tab-lugar-mas {
+  position: absolute;
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  right: calc(20px + env(safe-area-inset-right, 0px));
+}
+/* LAS FICHAS EN EL DOCK: una fila centrada, 10 entre fichas. Si en una tableta angosta las seis no
+   caben, la fila se desliza de lado como en el teléfono: nunca se achica una ficha. */
+.layout-tab-v .tab-dock .fila-fichas-listo {
+  position: static;
+  padding: 0;
+  max-width: 100%;
+  pointer-events: auto;
+}
+.layout-tab-v .tab-dock .carril-fichas {
+  gap: 10px;
+  max-width: 100%;
+  margin: 0 auto;
+  width: max-content;
+  /* Aire para el toque de 60 -::after de la ficha- sin que el scroll lo corte. */
+  padding: 8px 0;
+  margin-top: -8px;
+  margin-bottom: -8px;
+}
+/* Empezar, 72 x 72, 16 debajo de la fila. */
+.tab-lugar-empezar {
+  margin-top: 16px;
+}
+/* El panel de una ficha se abre encima del dock, centrado, con 8 de aire. */
+.layout-tab-v .tab-dock .panel-ficha {
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 8px);
+  width: min(360px, calc(100% - 32px));
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+/* LA PASTILLA, a la derecha del dock: right 28, centrada en su alto -bottom 172 / 2 - 22 = 64-,
+   con el área segura de abajo, que el dock también suma. Ancho mínimo 130, como en el boceto. */
+.layout-tab-v .pastilla-tiempo-lugar {
+  left: auto;
+  right: calc(28px + env(safe-area-inset-right, 0px));
+  bottom: calc(var(--tab-dock) / 2 - 22px + env(safe-area-inset-bottom, 0px));
+  justify-content: flex-end;
+}
+.layout-tab-v .pastilla-tiempo {
+  min-width: 130px;
+}
+/* EL PUNTO ROJO: la pausa está a 20 del borde derecho y 16 del de arriba de la barra, así que el
+   punto va 12 a su izquierda -20 + 40 + 12 = 72- con el mismo centro -16 + 20 - 5 = 31-. Se ve
+   siempre, estén o no los controles: criterio de la 82. */
+/* 04-10-2026 -tarea 83, parte B, B23-: el punto queda solo arriba a la derecha, en estas mismas
+   coordenadas; la pausa ya no está a su lado -bajó a la fila de la toma-. Antes estaba alineado con la
+   pausa de la esquina. */
+.layout-tab-v .punto-grabando.punto-tab {
+  top: calc(31px + env(safe-area-inset-top, 0px));
+  right: calc(72px + env(safe-area-inset-right, 0px));
+}
+
+/* ------------------------------------------------------------------------------------------------
+   TABLETA DE LADO (referencia 1180 x 820, sección 4). Los rieles del teléfono de lado, con las
+   medidas de la tableta: 168 cada uno, relleno 20. */
+.layout-tab-h {
+  --riel-izq-leer: 168px;
+  --riel-izq-grabar: 168px;
+  --riel-der: 168px;
+  /* La columna: 28 de aire entre el riel y el texto -el boceto-, también con el recuadro, que acá
+     reserva una franja abajo y no un carril al costado. Tope 58ch, unos 61 caracteres a 32. */
+  --columna-aire-h: 28px;
+  --columna-aire-h-recuadro: 28px;
+  --columna-tope-h: 58ch;
+  --carril-recuadro-h: 0px;
+  /* El recuadro: 256 x 144 -16:9-, a 24 de los rieles y de los bordes. */
+  --recuadro-esq-ancho: 256px;
+  --recuadro-esq-alto: 144px;
+  --recuadro-esq-margen-x: 24px;
+  --recuadro-esq-margen-y: 24px;
+  --recuadro-zona-izq: var(--riel-izq-grabar);
+  --recuadro-zona-der: var(--riel-der);
+  --recuadro-zona-arr: 0px;
+  --recuadro-zona-aba: 0px;
+}
+/* El ‹ -y salir o el tacho al leer- arriba del riel izquierdo, a 20 del borde; la pausa arriba
+   del riel derecho, a 20 del borde de arriba y centrada en el riel -(168 - 40) / 2 = 64-. */
+.layout-tab-h .tab-boton-izq {
+  position: absolute;
+  top: calc(20px + env(safe-area-inset-top, 0px));
+  left: calc(20px + env(safe-area-inset-left, 0px));
+}
+.layout-tab-h .tab-boton-der {
+  position: absolute;
+  top: calc(20px + env(safe-area-inset-top, 0px));
+  right: calc((var(--riel-der) - 40px) / 2 + env(safe-area-inset-right, 0px));
+}
+/* Más arriba del riel derecho, a 18. */
+.layout-tab-h .riel-lugar-arriba {
+  top: calc(18px + env(safe-area-inset-top, 0px));
+}
+/* LAS FICHAS EN EL RIEL IZQUIERDO: a lo ancho, 10 entre fichas, desde 32 debajo del ‹
+   -20 + 40 + 32 = 92-. Si el alto útil no alcanza para las seis, el riel hace scroll como último
+   recurso -sección 5-: nunca se achica una ficha ni su toque. */
+.layout-tab-h .riel-izquierdo .fila-fichas-listo {
+  inset: 0;
+  bottom: 0;
+  padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+}
+.layout-tab-h .riel-izquierdo .carril-fichas {
+  position: absolute;
+  top: calc(92px + env(safe-area-inset-top, 0px));
+  bottom: env(safe-area-inset-bottom, 0px);
+  left: calc(20px + env(safe-area-inset-left, 0px));
+  right: 20px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  overflow-x: visible;
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+/* El panel de la ficha, a la derecha del riel, a la altura de su ficha -la mide FichasListo-. */
+.layout-tab-h .riel-izquierdo .panel-ficha {
+  left: calc(100% + 8px);
+  right: auto;
+  bottom: auto;
+  top: calc(92px + env(safe-area-inset-top, 0px));
+  width: 360px;
+  box-sizing: border-box;
+  max-height: calc(100% - 16px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+}
+/* LA PASTILLA, abajo del riel derecho: ancho 128, bottom 24, centrada en el riel -(168 - 128) / 2
+   = 20-. */
+.layout-tab-h .pastilla-tiempo-lugar {
+  left: auto;
+  right: calc((var(--riel-der) - 128px) / 2 + env(safe-area-inset-right, 0px));
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  width: 128px;
+  justify-content: center;
+}
+.layout-tab-h .pastilla-tiempo {
+  min-width: 128px;
+}
+/* EL PUNTO ROJO, 12 a la izquierda de la pausa y con su centro -20 + 20 - 5 = 35-. */
+/* 04-10-2026 -tarea 83, parte B, B23-: el punto queda solo arriba a la derecha, en estas mismas
+   coordenadas; la pausa ya no está a su lado -bajó a la fila de la toma-. Antes estaba alineado con la
+   pausa de la esquina. */
+.layout-tab-h .punto-grabando.punto-tab {
+  top: calc(35px + env(safe-area-inset-top, 0px));
+  right: calc(var(--riel-der) / 2 + 32px + env(safe-area-inset-right, 0px));
+}
+
+/* LA SEGUNDA FILA DE GRABAR EN LA TABLETA -tarea 93, 05-10-2026-.
+   Vertical: como en el teléfono de pie, encima de la fila del dock, centrada, 8 entre las dos filas.
+   La fila del dock es static, así que la segunda se ubica respecto del dock: la primera fila empieza
+   20 debajo del borde del dock -su relleno de arriba-. bottom 100% - 20 pone el borde de abajo de la
+   segunda ahí, y sus 8 de relleno -el aire del toque, como en la primera- dejan 8 entre fichas.
+   El panel de una ficha sube por encima de ella: la segunda fila termina arriba en 100% + 32
+   -20 - 8 - 44 = -32- y el panel va 8 más arriba. */
+.layout-tab-v .tab-dock .carril-fichas.segunda-fila-fichas {
+  left: 0;
+  right: 0;
+  bottom: calc(100% - 20px);
+  margin: 0 auto;
+}
+.layout-tab-v .tab-dock .fila-fichas-listo.segunda-abierta > .panel-ficha {
+  bottom: calc(100% + 32px + 8px);
+}
+/* De lado: una columna al costado del riel, 8 a su derecha, desde la misma altura que la primera
+   -y = 92- y con el mismo ancho de ficha -168 - 20 - 20 = 128-. El panel se corre a su derecha. */
+.layout-tab-h .riel-izquierdo .carril-fichas.segunda-fila-fichas {
+  top: calc(92px + env(safe-area-inset-top, 0px));
+  bottom: auto;
+  left: calc(100% + 8px);
+  right: auto;
+  width: calc(var(--riel-izq-grabar) - 40px);
+  overflow: visible;
+  padding-bottom: 0;
+}
+.layout-tab-h .riel-izquierdo .fila-fichas-listo.segunda-abierta > .panel-ficha {
+  left: calc(100% + 8px + var(--riel-izq-grabar) - 40px + 8px);
+}

@@ -1,0 +1,181 @@
+/* EL VISOR DE LADO -tarea 90, 04-10-2026-. Ver lib/visorDeLado.ts y ReproductorGrabacion.tsx.
+   Según el boceto aprobado -PR #67, docs/pantallas/tarea89/, cuarta versión- con el ajuste de Javier:
+   el botón y el avance de la barra de reproducción en 48. Las posiciones y los tamaños de las cajas
+   -video, barra, columna, tarjeta- van en línea, calculados en dp; aquí va lo de adentro.
+   SIEMPRE OSCURO: la raíz lleva data-tema="oscuro" -el selector de styles.css:109 no exige :root-, y
+   así toma --bg-suelo, --bg-superficie, --bg-panel, --color-texto y --color-apagado del tema oscuro
+   aunque la app esté en claro. */
+.visor-lado {
+  color-scheme: dark;
+  color: var(--color-texto);
+  font-variant-numeric: tabular-nums;
+}
+.visor-lado .visor-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+  display: block;
+}
+/* La barra de reproducción: 52 de alto -4 de aire arriba y el botón y el avance de 48-. */
+.visor-lado .barra-visor {
+  box-sizing: border-box;
+  background: var(--bg-superficie);
+}
+.visor-lado .boton-visor,
+.visor-lado .avance-visor {
+  height: 48px;
+}
+.visor-lado .boton-visor {
+  width: 48px;
+}
+
+/* CASO 1: la columna. El fondo y el borde son los de la barra -una sola superficie, como la tarjeta de
+   hoy-; arriba el nombre y la duración con la X, y debajo una acción por fila que se reparten el alto. */
+.visor-lado-columna {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-superficie);
+  border-left: 1px solid var(--color-separador);
+}
+.visor-lado-cabecera {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--aire-2) var(--aire-1) 0 var(--aire-3);
+}
+.visor-lado-nombre {
+  flex: 1;
+  min-width: 0;
+  padding-top: var(--aire-2);
+}
+.visor-lado-nombre > :first-child {
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.visor-lado .cerrar-visor {
+  position: static;
+  flex-shrink: 0;
+  background: transparent;
+  color: var(--color-texto);
+}
+.visor-lado-acciones {
+  flex: 1;
+  flex-direction: column;
+  margin-top: 0;
+  min-height: 0;
+}
+/* -tarea 96- La fila del filtro lleva también la clase visor-lado-subtitulos: entra aquí sola. */
+.visor-lado-acciones > .accion-toma,
+.visor-lado-acciones > .visor-lado-subtitulos {
+  flex: 1 1 0;
+  box-sizing: border-box;
+  padding: 0;
+  justify-content: center;
+}
+.visor-lado-acciones > * + * {
+  border-top: 1px solid var(--color-separador);
+}
+/* Subtítulos en la columna: el SelectorSubtitulos de verdad vestido como .accion-toma -el CC y el
+   estilo elegido debajo, sin la palabra ni la flecha-. Abierto, sus cuatro opciones salen en un panel
+   de 320 a la izquierda de la columna, sobre el video, a la altura del botón -como los paneles de ficha
+   de la 82, docs/tarea82.txt:90-93-. */
+.visor-lado-subtitulos {
+  position: relative;
+  display: flex;
+}
+.visor-lado-subtitulos .selector-subtitulos {
+  flex: 1;
+}
+.visor-lado-subtitulos button.boton-subtitulos {
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--aire-1);
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+.visor-lado-subtitulos button.boton-subtitulos > svg:first-child {
+  width: 26px;
+  height: 26px;
+}
+.visor-lado-subtitulos .boton-subtitulos-nombre,
+.visor-lado-subtitulos .boton-subtitulos-flecha {
+  display: none;
+}
+.visor-lado-subtitulos .boton-subtitulos-valor {
+  flex: none;
+  text-align: center;
+  color: var(--color-texto);
+}
+.visor-lado-subtitulos button.boton-subtitulos[aria-expanded="true"] {
+  background: var(--bg-fila);
+}
+.visor-lado-subtitulos .opciones-subtitulos {
+  position: absolute;
+  right: calc(100% + 8px);
+  top: 0;
+  width: 320px;
+  box-sizing: border-box;
+  padding: var(--aire-3);
+  background: var(--bg-panel);
+  border: 1px solid var(--borde-tarjeta);
+  box-shadow: var(--sombra-tarjeta);
+  border-radius: var(--redondeo);
+  z-index: 5;
+}
+/* El título del panel, como en el boceto: la palabra sale del aria-label del grupo -t('subtitulos')-, así
+   va en el idioma de la app sin texto escrito aquí. */
+.visor-lado-subtitulos .opciones-subtitulos::before {
+  content: attr(aria-label);
+  grid-column: 1 / -1;
+  font-weight: 600;
+  /* 1rem, como el título del boceto -heredaba la letra del documento-. */
+  font-size: 1rem;
+  text-align: left;
+}
+
+/* EL FILTRO EN LA COLUMNA -tarea 96, 05-10-2026-. La fila lleva las dos clases -visor-lado-subtitulos
+   y visor-lado-filtro-: se viste igual que Subtítulos, los tres círculos y el filtro elegido debajo. La
+   tira sale en un panel a la izquierda de la columna, sobre el video, como el de Subtítulos; ahí las
+   seis caben enteras, de 64. Va alineada por ABAJO con el botón -no por arriba, como Subtítulos-: con
+   126 de alto, desde arriba tapaba la barra de reproducción a 800x360 -medido en las láminas-. */
+.visor-lado-filtro .tira-filtros {
+  position: absolute;
+  right: calc(100% + 8px);
+  bottom: 0;
+  grid-auto-columns: 64px;
+  width: max-content;
+  max-width: calc(100vw - 160px);
+  box-sizing: border-box;
+  padding: var(--aire-3);
+  background: var(--bg-panel);
+  border: 1px solid var(--borde-tarjeta);
+  box-shadow: var(--sombra-tarjeta);
+  border-radius: var(--redondeo);
+  z-index: 5;
+}
+
+/* CASO 2: la tarjeta compacta de 320. Es la de hoy sin el video. */
+.visor-lado-tarjeta {
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  background: var(--bg-superficie);
+  color: var(--color-texto);
+  border-radius: var(--redondeo);
+}
+.visor-lado-tarjeta .visor-lado-cabecera {
+  padding: var(--aire-2) var(--aire-2) 0 var(--aire-3);
+}
+.visor-lado-tarjeta button.boton-subtitulos {
+  min-height: 48px;
+}
+.visor-lado-tarjeta .acciones-toma > .accion-toma {
+  min-height: 64px;
+}

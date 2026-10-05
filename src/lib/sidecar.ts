@@ -7,6 +7,8 @@
 // listo. Al arrancar, si hay un .part o un sidecar sin "lista", se
 // promueve o se marca INCOMPLETA. Nunca se borra en silencio.
 
+import type { PausaToma } from './tramos'
+
 export type EstadoSidecar = 'grabando' | 'lista' | 'incompleta'
 
 export type SidecarToma = {
@@ -23,6 +25,33 @@ export type SidecarToma = {
   rutaMp4?: string
   rutaPlugin?: string
   calidad?: string
+  // -tarea 87, parte C, 04-10-2026- Cómo se ve el archivo -lib/orientacion.ts-. Sin el dato si el
+  // APK no manda ancho y alto.
+  orientacion?: 'vertical' | 'horizontal' | 'cuadrada'
+  // -tarea 88, 04-10-2026- Las pausas de la toma, en el reloj del video -lib/tramos.ts-. Una abierta
+  // tiene hastaMs null. Sin pausas, el campo no va.
+  pausas?: PausaToma[]
+}
+
+// -tarea 88- Lo que no sea una lista de objetos con números se descarta ENTERO, con el motivo en la
+// consola: mejor una toma sin cortes que una cortada mal.
+export function pausasValidas(v: unknown): PausaToma[] | undefined {
+  if (v === undefined || v === null) return undefined
+  const malo = (motivo: string) => {
+    console.warn('[sidecar] pausas descartadas:', motivo)
+    return undefined
+  }
+  if (!Array.isArray(v)) return malo('no es una lista')
+  const fuera: PausaToma[] = []
+  for (const p of v) {
+    if (!p || typeof p !== 'object') return malo('una pausa no es un objeto')
+    const o = p as Record<string, unknown>
+    if (typeof o.desdeMs !== 'number' || !Number.isFinite(o.desdeMs)) return malo('desdeMs no es un número')
+    if (o.hastaMs !== null && (typeof o.hastaMs !== 'number' || !Number.isFinite(o.hastaMs))) return malo('hastaMs no es un número')
+    if (o.origen !== 'boton' && o.origen !== 'palma') return malo('origen desconocido')
+    fuera.push({ desdeMs: o.desdeMs, hastaMs: o.hastaMs as number | null, origen: o.origen })
+  }
+  return fuera
 }
 
 export function sidecarInicial(parcial: {
@@ -121,7 +150,10 @@ export function parsearSidecar(texto: string): SidecarToma | null {
       rutaPart: typeof o.rutaPart === 'string' ? o.rutaPart : undefined,
       rutaMp4: typeof o.rutaMp4 === 'string' ? o.rutaMp4 : undefined,
       rutaPlugin: typeof o.rutaPlugin === 'string' ? o.rutaPlugin : undefined,
-      calidad: typeof o.calidad === 'string' ? o.calidad : undefined
+      calidad: typeof o.calidad === 'string' ? o.calidad : undefined,
+      orientacion: o.orientacion === 'vertical' || o.orientacion === 'horizontal' || o.orientacion === 'cuadrada' ? o.orientacion : undefined,
+      // -tarea 88- Solo si viene: el sidecar sin pausas queda como hoy.
+      ...(o.pausas !== undefined ? { pausas: pausasValidas(o.pausas) } : {})
     }
   } catch {
     return null

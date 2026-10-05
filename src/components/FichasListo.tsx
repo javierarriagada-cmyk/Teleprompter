@@ -1,15 +1,20 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import type { FondoToma } from '../App'
 import { AnclajeZona } from './banda'
 import {
   IconoEngranaje, IconoVoltear, IconoImagenDetras, IconoImagenRecuadro,
-  IconoImagenOculta, IconoFranja, IconoSol, IconoSubtitulos
+  IconoImagenOculta, IconoFranja, IconoSol, IconoSubtitulos, IconoChevron
 } from './IconosApp'
 import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
 import type { ClaveTexto } from '../textos'
 import { PASOS_LETRA } from './estiloLectura'
 import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from '../lib/brillo'
 import { t, useTextos } from '../textos'
+import { Interruptor } from './Interruptor'
+import { movimientoApagado, MS_CHICO, CURVA_RESORTE } from './movimiento'
+
+// La aparición de la segunda fila -tarea 93, 05-10-2026-: un resorte de unos 240 ms.
+const MS_SEGUNDA_FILA = 240
 
 // LAS FICHAS DE LISTO -tarea 77, 28-09-2026-.
 //
@@ -23,6 +28,12 @@ import { t, useTextos } from '../textos'
 // barra-brillo, valor-letra-panel, aviso-camara-encendida,
 // linea-minutos-disponibles, btn-voltear-camara- se conservan: las pruebas
 // migran el camino, no las puertas de cada ajuste.
+//
+// LA FLECHA Y LA SEGUNDA FILA -tarea 93, 05-10-2026-. Solo en Grabar -conCamara-: la fila de hoy
+// queda con Aa, Cámara, Posición, Brillo y una flecha al final. La flecha abre una segunda fila con
+// Calidad, Subtítulos y Ajustes -Ajustes es la misma FichaMas, con su mismo manejador, que en Grabar
+// ya no va en ningún otro lugar-. De pie la segunda fila aparece encima de la primera -abajo está
+// Empezar-; de lado -teléfono y tableta- es una segunda columna al costado del riel. Leer no cambia.
 
 export type PanelFicha = 'letra' | 'camara' | 'anclaje' | 'brillo' | 'calidad' | 'subtitulos' | null
 
@@ -66,7 +77,13 @@ export function FichasListo({
   panelAbierto,
   setPanelAbierto,
   onAbrirAjustes,
-  horizontal = false
+  horizontal = false,
+  grandes = false,
+  anchas = false,
+  masAparte = false,
+  gestosAlGrabar = false,
+  setGestosAlGrabar,
+  motivoSinGestos = null
 }: {
   fontSize: number
   onLetraMenos?: () => void
@@ -91,12 +108,32 @@ export function FichasListo({
   // sale del carril -la dibuja TeleprompterView arriba del riel derecho, con FichaMas- y el panel
   // se abre a la derecha del riel, a la altura de su ficha.
   horizontal?: boolean
+  // LA TABLETA -tarea 83, 30-09-2026-. grandes: las fichas de la hoja de tableta -44 de alto, letra
+  // 15, radio 10-, con la clase grande del boceto. anchas: además a lo ancho del riel -tableta de
+  // lado, la clase ancha-. masAparte: Más no va en el carril porque TeleprompterView la dibuja en
+  // la barra de arriba -tableta vertical-. Los tamaños están en styles-tableta.css.
+  grandes?: boolean
+  anchas?: boolean
+  masAparte?: boolean
+  // CONTROL POR GESTOS -tarea 88, 04-10-2026, docs/tarea88.txt, 6.5-. El valor elegido y, si hoy no se
+  // puede, por qué: 'soloFrontal' con la trasera, 'noDisponible' si el equipo no puede. Con motivo la
+  // fila se ve deshabilitada y apagada, pero el valor elegido no se toca.
+  gestosAlGrabar?: boolean
+  setGestosAlGrabar?: (v: boolean) => void
+  motivoSinGestos?: 'soloFrontal' | 'noDisponible' | null
 }) {
   useTextos()
+  // Las clases de tamaño que se suman a .ficha-listo -tarea 83-.
+  const tam = `${grandes ? ' grande' : ''}${anchas ? ' ancha' : ''}`
   const carrilRef = useRef<HTMLDivElement | null>(null)
   const panelRef = useRef<HTMLDivElement | null>(null)
   // El top del panel en horizontal, en px de la fila -que en horizontal cubre el riel entero-.
   const [topPanelH, setTopPanelH] = useState<number | null>(null)
+  // LA SEGUNDA FILA -tarea 93, 05-10-2026-: solo en Grabar. Cerrada al entrar a Listo; vive en este
+  // componente, así que al arrastrar el recuadro -que lo desmonta- vuelve cerrada.
+  const conFlecha = conCamara
+  const [segundaAbierta, setSegundaAbierta] = useState(false)
+  const idSegunda = useId()
 
   // EL PANEL A LA ALTURA DE SU FICHA, SIN SALIRSE DE LA PANTALLA -tarea 82-. Se mide después de
   // dibujar: el alto del panel depende de sus opciones -Brillo es una barra, Cámara son tres filas
@@ -111,7 +148,10 @@ export function FichasListo({
     const panel = panelRef.current
     const fila = carril?.parentElement
     if (!carril || !panel || !fila) return
-    const ficha = carril.querySelector('[aria-expanded="true"]') as HTMLElement | null
+    // Antes -hasta 2026-10-05-: const ficha = carril.querySelector('[aria-expanded="true"]') as HTMLElement | null
+    // Tarea 93, 05-10-2026: la flecha también dice aria-expanded y la ficha abierta puede estar en la
+    // segunda fila; se busca la ficha con su panel abierto -clase abierta- en toda la fila.
+    const ficha = fila.querySelector('.ficha-listo.abierta') as HTMLElement | null
     if (!ficha) return
     const rFila = fila.getBoundingClientRect()
     const cs = typeof window.getComputedStyle === 'function' ? window.getComputedStyle(fila) : null
@@ -136,6 +176,13 @@ export function FichasListo({
     setPanelAbierto(panelAbierto === panel ? null : panel)
   }
 
+  // Tarea 93: abrir o cerrar la segunda fila cierra el panel abierto -si era el de Calidad o
+  // Subtítulos, su ficha se escondería y el panel quedaría colgando-.
+  function alternarSegunda() {
+    setPanelAbierto(null)
+    setSegundaAbierta(!segundaAbierta)
+  }
+
   const calidades = calidadesSoportadas.length > 0 ? calidadesSoportadas : ['1080p', '720p', '480p']
   const mostrarCalidad = conCamara && calidadesSoportadas.length > 0
   // LOS SUBTITULOS, ANTES DE GRABAR -28-09-2026-. Javier: la seccion Video salio de Ajustes; los
@@ -151,7 +198,13 @@ export function FichasListo({
     // El toque en una ficha o en su panel no sube al lienzo: el lienzo cierra el panel abierto al
     // tocar el texto, y con el toque subiendo, tocar "Arriba" con la letra abierta cerraba todo en
     // vez de abrir su panel -lo encontro T77b, 28-09-2026-.
-    <div className="fila-fichas-listo" data-testid="fila-fichas-listo" onClick={(e) => e.stopPropagation()}>
+    // Antes -hasta 2026-10-05-: <div className="fila-fichas-listo" data-testid="fila-fichas-listo" onClick={(e) => e.stopPropagation()}>
+    // Tarea 93: con la segunda fila abierta la fila suma segunda-abierta -el panel se corre para no taparla-.
+    <div
+      className={`fila-fichas-listo${conFlecha && segundaAbierta ? ' segunda-abierta' : ''}`}
+      data-testid="fila-fichas-listo"
+      onClick={(e) => e.stopPropagation()}
+    >
       {panelAbierto && (
         <div
           ref={panelRef}
@@ -253,6 +306,34 @@ export function FichasListo({
                   <span>{t('voltearCamara')}</span>
                 </button>
               </div>
+              {/* CONTROL POR GESTOS -tarea 88-, debajo de Voltear: todo lo de la cámara en un solo
+                  lugar -Javier, 28-09-. El MISMO Interruptor de Ajustes. Con la trasera o un equipo
+                  que no puede, el motivo va en lugar de la explicación. */}
+              {conCamara && (
+                <div
+                  data-testid="fila-gestos"
+                  data-motivo={motivoSinGestos || 'ninguno'}
+                  className={`fila-gestos${motivoSinGestos ? ' deshabilitada' : ''}`}
+                >
+                  <div className="fila-gestos-texto">
+                    <div className="fila-gestos-nombre">{t('controlPorGestos')}</div>
+                    <div className="fila-gestos-explicacion">
+                      {motivoSinGestos === 'soloFrontal'
+                        ? t('gestosSoloFrontal')
+                        : motivoSinGestos === 'noDisponible'
+                        ? t('gestosNoDisponible')
+                        : t('controlPorGestosExplicacion')}
+                    </div>
+                  </div>
+                  <Interruptor
+                    encendido={!motivoSinGestos && gestosAlGrabar}
+                    onCambiar={(v) => setGestosAlGrabar?.(v)}
+                    etiqueta={t('controlPorGestos')}
+                    testid="switch-gestos"
+                    deshabilitado={!!motivoSinGestos}
+                  />
+                </div>
+              )}
             </>
           )}
 
@@ -388,7 +469,7 @@ export function FichasListo({
       <div className="carril-fichas" ref={carrilRef}>
         <button
           type="button"
-          className={`ficha-listo${panelAbierto === 'letra' ? ' abierta' : ''}`}
+          className={`ficha-listo${tam}${panelAbierto === 'letra' ? ' abierta' : ''}`}
           data-testid="ficha-letra"
           aria-label={`${t('tamanoLetra')}, ${fontSize}`}
           aria-expanded={panelAbierto === 'letra'}
@@ -400,7 +481,7 @@ export function FichasListo({
         {conCamara && (
           <button
             type="button"
-            className={`ficha-listo${panelAbierto === 'camara' ? ' abierta' : ''}`}
+            className={`ficha-listo${tam}${panelAbierto === 'camara' ? ' abierta' : ''}`}
             data-testid="ficha-camara"
             aria-label={`${t('imagenCamara')}, ${etiquetaCamara(fondoToma)}`}
             aria-expanded={panelAbierto === 'camara'}
@@ -413,7 +494,7 @@ export function FichasListo({
 
         <button
           type="button"
-          className={`ficha-listo${panelAbierto === 'anclaje' ? ' abierta' : ''}`}
+          className={`ficha-listo${tam}${panelAbierto === 'anclaje' ? ' abierta' : ''}`}
           data-testid="ficha-anclaje"
           aria-label={`${t('dondeLees')}, ${etiquetaAnclaje(anclajeZona)}`}
           aria-expanded={panelAbierto === 'anclaje'}
@@ -425,7 +506,7 @@ export function FichasListo({
 
         <button
           type="button"
-          className={`ficha-listo${panelAbierto === 'brillo' ? ' abierta' : ''}`}
+          className={`ficha-listo${tam}${panelAbierto === 'brillo' ? ' abierta' : ''}`}
           data-testid="ficha-brillo"
           aria-label={`${t('brillo')}, ${etiquetaBrillo(brillo)}`}
           aria-expanded={panelAbierto === 'brillo'}
@@ -435,23 +516,85 @@ export function FichasListo({
           <span>{etiquetaBrillo(brillo)}</span>
         </button>
 
-        {mostrarCalidad && (
+        {/* Antes -hasta 2026-10-05-: Calidad y Subtítulos iban aquí, en la primera fila. La tarea 93
+            las pasa a la segunda fila -mismo marcado, ahora en fichaCalidad y fichaSubtitulos-:
+            {mostrarCalidad && (
+              <button type="button" className={`ficha-listo${tam}${panelAbierto === 'calidad' ? ' abierta' : ''}`}
+                data-testid="ficha-calidad" aria-label={`${t('calidadVideo')}, ${calidadVideo}`}
+                aria-expanded={panelAbierto === 'calidad'} onClick={() => toggle('calidad')}>
+                <span>{calidadVideo}</span>
+              </button>
+            )}
+            {conCamara && (
+              <button type="button" className={`ficha-listo${tam}${panelAbierto === 'subtitulos' ? ' abierta' : ''}`}
+                data-testid="ficha-subtitulos" aria-label={`${t('subtitulos')}, ${t(CLAVE_SUBTITULO[estiloSub])}`}
+                aria-expanded={panelAbierto === 'subtitulos'} onClick={() => toggle('subtitulos')}>
+                <IconoSubtitulos tamano={16} />
+                <span>{t(CLAVE_SUBTITULO[estiloSub])}</span>
+              </button>
+            )} */}
+
+        {/* 29-09-2026, tarea 82: en horizontal Más no va en el carril -una sola ficha-mas en
+            pantalla-; la dibuja TeleprompterView arriba del riel derecho. */}
+        {/* 30-09-2026, tarea 83: en la tableta vertical tampoco -va en la barra de arriba-. */}
+        {/* Antes -hasta 2026-10-05-: {!horizontal && !masAparte && <FichaMas setPanelAbierto={setPanelAbierto} onAbrirAjustes={onAbrirAjustes} grande={grandes} />} */}
+        {/* 05-10-2026, tarea 93: en Grabar Más tampoco va acá -Ajustes, en la segunda fila, la reemplaza-. */}
+        {!horizontal && !masAparte && !conFlecha && <FichaMas setPanelAbierto={setPanelAbierto} onAbrirAjustes={onAbrirAjustes} grande={grandes} />}
+
+        {/* LA FLECHA -tarea 93, 05-10-2026-. Un solo chevron que gira 180° al abrir: ˅ cerrada, ˄
+            abierta. Para TalkBack dice «Más opciones» o «Menos opciones», con aria-expanded. */}
+        {conFlecha && (
           <button
             type="button"
-            className={`ficha-listo${panelAbierto === 'calidad' ? ' abierta' : ''}`}
-            data-testid="ficha-calidad"
-            aria-label={`${t('calidadVideo')}, ${calidadVideo}`}
-            aria-expanded={panelAbierto === 'calidad'}
-            onClick={() => toggle('calidad')}
+            className={`ficha-listo ficha-flecha${tam}`}
+            data-testid="ficha-flecha"
+            aria-label={segundaAbierta ? t('menosOpciones') : t('masOpciones')}
+            aria-expanded={segundaAbierta}
+            aria-controls={idSegunda}
+            onClick={alternarSegunda}
           >
-            <span>{calidadVideo}</span>
+            {/* El giro va en el dibujo, en línea, como el «Ver todos» de BibliotecaView -MS_CHICO,
+                CURVA_RESORTE-, y sin movimiento si el sistema lo pide. */}
+            <IconoChevron
+              tamano={16}
+              className="flecha-ficha"
+              style={{
+                transform: segundaAbierta ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: movimientoApagado() ? 'none' : `transform ${MS_CHICO}ms ${CURVA_RESORTE}`
+              }}
+            />
           </button>
         )}
+      </div>
 
-        {conCamara && (
+      {/* LA SEGUNDA FILA -tarea 93-. Calidad -si la cámara dice sus calidades-, Subtítulos y Ajustes.
+          De pie se dibuja encima de la primera; de lado, como columna al costado del riel. */}
+      {conFlecha && segundaAbierta && (
+        <div
+          className={`carril-fichas segunda-fila-fichas${horizontal ? ' al-costado' : ''}`}
+          data-testid="segunda-fila-fichas"
+          id={idSegunda}
+          // La aparición: resorte de 240 ms -opacidad y un leve desplazamiento, keyframes en
+          // styles-ajustes.css-; con movimientoApagado() aparece de una.
+          style={movimientoApagado()
+            ? { animation: 'none' }
+            : { animation: `${horizontal ? 'aparece-segunda-columna' : 'aparece-segunda-fila'} ${MS_SEGUNDA_FILA}ms ${CURVA_RESORTE} both` }}
+        >
+          {mostrarCalidad && (
+            <button
+              type="button"
+              className={`ficha-listo${tam}${panelAbierto === 'calidad' ? ' abierta' : ''}`}
+              data-testid="ficha-calidad"
+              aria-label={`${t('calidadVideo')}, ${calidadVideo}`}
+              aria-expanded={panelAbierto === 'calidad'}
+              onClick={() => toggle('calidad')}
+            >
+              <span>{calidadVideo}</span>
+            </button>
+          )}
           <button
             type="button"
-            className={`ficha-listo${panelAbierto === 'subtitulos' ? ' abierta' : ''}`}
+            className={`ficha-listo${tam}${panelAbierto === 'subtitulos' ? ' abierta' : ''}`}
             data-testid="ficha-subtitulos"
             aria-label={`${t('subtitulos')}, ${t(CLAVE_SUBTITULO[estiloSub])}`}
             aria-expanded={panelAbierto === 'subtitulos'}
@@ -460,12 +603,9 @@ export function FichasListo({
             <IconoSubtitulos tamano={16} />
             <span>{t(CLAVE_SUBTITULO[estiloSub])}</span>
           </button>
-        )}
-
-        {/* 29-09-2026, tarea 82: en horizontal Más no va en el carril -una sola ficha-mas en
-            pantalla-; la dibuja TeleprompterView arriba del riel derecho. */}
-        {!horizontal && <FichaMas setPanelAbierto={setPanelAbierto} onAbrirAjustes={onAbrirAjustes} />}
-      </div>
+          <FichaMas setPanelAbierto={setPanelAbierto} onAbrirAjustes={onAbrirAjustes} grande={grandes} ancha={anchas} comoAjustes />
+        </div>
+      )}
     </div>
   )
 }
@@ -473,21 +613,35 @@ export function FichasListo({
 // LA FICHA MÁS, APARTE -tarea 82, 29-09-2026-. Era el último botón del carril. En el teléfono de
 // lado va arriba del riel derecho, en Leer Y en Grabar -decisión de Javier: el mismo lugar en los
 // dos modos-, y por eso es un componente: el mismo botón, con su testid, en uno u otro lugar.
+// AJUSTES, EN LA SEGUNDA FILA DE GRABAR -tarea 93, 05-10-2026-: el mismo componente con comoAjustes.
+// Mismo manejador -cierra el panel y abre la pantalla de Ajustes-; cambian la palabra y el testid
+// -ficha-ajustes-. ancha: la clase de la tableta de lado, como el resto de las fichas del riel.
 export function FichaMas({
   setPanelAbierto,
-  onAbrirAjustes
+  onAbrirAjustes,
+  grande = false,
+  ancha = false,
+  comoAjustes = false
 }: {
   setPanelAbierto: (p: PanelFicha) => void
   onAbrirAjustes?: () => void
+  // La ficha grande de la tableta -tarea 83, 30-09-2026-.
+  grande?: boolean
+  ancha?: boolean
+  comoAjustes?: boolean
 }) {
   useTextos()
+  const palabra = comoAjustes ? t('tituloAjustes') : t('fichaMas')
   return (
     <button
       type="button"
-      className="ficha-listo"
-      data-testid="ficha-mas"
+      // Antes -hasta 2026-10-05-: className={`ficha-listo${grande ? ' grande' : ''}`}
+      className={`ficha-listo${grande ? ' grande' : ''}${ancha ? ' ancha' : ''}`}
+      // Antes -hasta 2026-10-05-: data-testid="ficha-mas"
+      data-testid={comoAjustes ? 'ficha-ajustes' : 'ficha-mas'}
       data-alias-engranaje="btn-engranaje-toma"
-      aria-label={t('fichaMas')}
+      // Antes -hasta 2026-10-05-: aria-label={t('fichaMas')}
+      aria-label={palabra}
       onClick={(e) => {
         // En el riel derecho no hay fila que corte el toque: sin esto subiría al lienzo.
         e.stopPropagation()
@@ -496,7 +650,8 @@ export function FichaMas({
       }}
     >
       <IconoEngranaje tamano={16} />
-      <span>{t('fichaMas')}</span>
+      {/* Antes -hasta 2026-10-05-: <span>{t('fichaMas')}</span> */}
+      <span>{palabra}</span>
     </button>
   )
 }

@@ -1,0 +1,580 @@
+PLAN 2 - CONTROL CON GESTOS AL GRABAR -PREMIUM, DESPUÉS DE LA PRUEBA CERRADA- -VERSIÓN 2, A FONDO-
+Plan para Javier, 29-09-2026. Leído en main, commit 60b34ac -29-09-2026 22:01 -0300-; git pull no trajo
+nada nuevo. Es un plan, no un encargo: nada del repositorio se tocó. Parte del borrador
+/workspace/sigo/encargo-gestos-grabacion.txt, corregido -sección 3-. Lo no comprobado va como PREGUNTA
+ABIERTA con cómo se responde. Citas archivo:línea en ese commit; capgo 8.11.4 leído en
+/workspace/tarea84/node_modules; Media3 1.9.0 comprobado con javap.
+
+CORRECCIÓN 02-10-2026 -antes de encargar, no es código-
+  - NO se encarga ahora. Premium, después de la prueba cerrada.
+  - El paso 0 NO es parchar capgo. Primero PreviewView.getBitmap() -sección 4.B-. El parche solo
+    si eso no sirve, y solo con el sí de Javier: MPL-2.0 obliga a publicar los archivos tocados.
+  - El criterio "la mano no sale en el archivo" no cuadra con el margen de 1 s antes de la palma:
+    la mano que sube puede quedar. Se dice, no se promete.
+  - El visor que salta un corte con currentTime necesita una traba de "estoy saltando". Si no,
+    timeupdate vuelve a entrar al corte y se queda en un bucle.
+
+==============================================================================
+0. RESUMEN
+==============================================================================
+  - Quien graba solo, lejos del teléfono, pausa, guarda o borra con la mano. Opcional, apagado,
+    premium, solo cámara frontal, solo en Leer y Grabar.
+  - capgo no pausa el grabador -no hay pause/resume en CameraXView.java ni en definitions.d.ts-: la
+    "pausa" marca TRAMOS que se cortan al guardar, en la misma pasada de Media3 que quema los
+    subtítulos. Los subtítulos se recalculan sobre la toma cortada.
+  - Botón de pausa, tacho y gestos pasan por UNA máquina de estados pura -src/lib/pausaToma.ts-,
+    lista para un control Bluetooth después.
+  - Para mirar la cámara, PRIMERO PreviewView.getBitmap() -sin parche-. El parche de capgo
+    -ImageAnalysis de baja resolución- solo si eso no sirve y Javier lo aprueba -MPL-2.0-.
+    El paso 0 mide si el moto g86 lo aguanta sin bajar la calidad.
+  - No existe una señal de silencio del motor nativo: se deriva de los parciales -sección 1.6-.
+
+==============================================================================
+1. EL FLUJO DE HOY, DE EXTREMO A EXTREMO
+==============================================================================
+1.1 QUIÉN GRABA: CAPGO
+  - camara.ts:106 empezarGrabacionVideo -> CameraPreview.startRecordVideo({ disableAudio: false });
+    camara.ts:121 cortarGrabacionVideo -> stopRecordVideo -> videoFilePath.
+  - capgo CameraXView.java -5385 líneas-: campos videoCapture -:158, VideoCapture<Recorder>- y
+    currentRecording -:159-. bindCameraUseCases -:1049-: Preview, imageCapture MINIMIZE_LATENCY
+    -:1093-1098-, barcodeAnalysis solo SIN modo video -:1101-, QualitySelector -:1109-1150-,
+    Recorder -:1153-1158-, VideoCapture con estabilización y espejo de la frontal -:1159-1167-.
+    bindConfiguredUseCases -:1641-: en modo video liga preview + imageCapture + videoCapture.
+    startBarcodeScanner -:1667- liga su analizador aparte -bindToLifecycle, :1683-;
+    createBarcodeAnalysisUseCase -:1699-: 1280x720, STRATEGY_KEEP_ONLY_LATEST. Es el molde.
+  - startRecordVideo -:5094-: rotación desde el acelerómetro -:5104-5105-,
+    prepareRecording().withAudioEnabled().start -:5140-; sin permiso de micrófono vuelve sin
+    grabar. stopRecordVideo -:5155- = currentRecording.stop(); handleRecordingFinalized -:5167-.
+  - NO hay pause() ni resume() en Java ni en dist/esm/definitions.d.ts.
+  - capgo se incluye desde node_modules -android/capacitor.settings.gradle:14-15, project
+    ':capgo-camera-preview'-. Licencia: MPL-2.0 -package.json de capgo-. Importa para el parche.
+  - Sigo no saca fotos: no hay CameraPreview.capture ni captureSample en src/.
+1.2 LA PAUSA DE HOY
+  - App.tsx:749 enPausa, :750 confirmandoDescarte.
+  - App.tsx:1388-1394 handleTogglePausa: paso = enPausa ? start : stop; setEnPausa(!enPausa); en
+    fila con filaPausaRef -tarea 85-. Pausa APAGA el micrófono y el motor. El video sigue.
+  - btn-pausa-lectura -App.tsx:1730-, su onClick también hace setConfirmandoDescarte(false) -:1738-.
+  - btn-descartar-toma -:1678-: primer toque setConfirmandoDescarte(true) -:1688-, segundo ->
+    handleDescartarToma -:1186-1209: cortarTomaSiHay, stop, detenerGrabacion, soltarWakeLock,
+    borrarGrabacionEnDisco, repo.borrar, aviso tomaDescartada-. btn-parar-lectura -:1769- ->
+    handleStop -:1223-1239- -> setGrabacionAbierta(resumen).
+1.3 LA TOMA EN DISCO
+  - tomaVideo.ts: SesionToma -:38-52, con inicioVideoEpochMs :51-; iniciarTomaVideo -:83-, cero del
+    reloj = Date.now() tras startRecordVideo -:137-; heartbeat cada 2000 ms -:36, :144- que
+    persiste el sidecar -persistirSidecar :68-; cortarTomaVideo -:149- escribe <id>.motor.txt con
+    "# inicio del video (epoch ms)" -:243-.
+  - appStateChange: a segundo plano corta la toma -cortarTomaSiHay(true)-; al volver,
+    quitarTomasSinVideo -:447- y recuperarTomasPendientes -:290-.
+  - SidecarToma -sidecar.ts:12-26- y ResumenGrabacion -modelo.ts:117-137- no tienen pausas.
+    parsearSidecar -:107-124- y grabacionNueva -:139-155- copian campo por campo.
+1.4 SUBTÍTULOS
+  - subtitulos.ts: PalabraSubtitulo -:34-, Subtitulo -:40-; armarSubtitulos -:104- calza lo oído
+    con el guion, reparte la hora de lo no oído y termina en return cortarEnSubtitulos(palabras)
+    -:199-; cortarEnSubtitulos -:228-, PRIVADA, corta por puntuación, pausa > PAUSA_QUE_CORTA_MS
+    450 -:51-, noCabe -partirEnRenglones, :207-, muyLargo > MAX_MS_SUBTITULO 5000 -:52- y coma; cada
+    subtítulo dura hasta el siguiente o su última palabra + SE_QUEDA_MS 600 -:55-.
+1.5 GUARDAR
+  - ReproductorGrabacion.handleGuardar -:114- -> guardarEnGaleriaConSubtitulos -archivosNativos.ts:
+    105-117- -> CamaraNativaPlugin.guardarConSubtitulos -:397-496-: UN EditedMediaItem con
+    Effects([], [OverlayEffect([CapaDeSubtitulos])]), 12 Mbps, Transformer.start(item, salida),
+    copiarAGaleria. CapaDeSubtitulos.getBitmap(presentationTimeUs) -:109- busca el subtítulo por
+    ms: los tiempos que recibe tienen que estar en el reloj en que le llegan los cuadros.
+  - Media3 1.9.0 -javap-: MediaItem.ClippingConfiguration.Builder -setStartPositionMs/Us,
+    setEndPositionMs/Us, setStartsAtKeyFrame-; EditedMediaItemSequence.Builder -addItem, addItems,
+    addGap-; Composition.Builder(EditedMediaItemSequence...) -setEffects, setTransmuxAudio,
+    setTransmuxVideo, setHdrMode-; Transformer.start(Composition, String).
+1.6 LA VOZ Y EL SILENCIO -la corrección: NO hay señal de silencio-
+  - VoskNativoPlugin.java:710-711: el evento "silencio" "queda declarado del lado de JavaScript y
+    no llega". MotorNativo.ts:258 se suscribe con un oyente vacío.
+  - Lo que SÍ llega: el lazo -VoskNativoPlugin.java:574-630- lee trozos de 20 ms -:114- y entrega
+    "parcial" o "final" cuando cerró la frase, cambió el parcial o pasaron TROZOS_POR_ENTREGA = 5
+    trozos -:128, :622-, con rms del trozo -:609-, audioFinMs y horas -entregar :682-693-. O sea: un
+    evento cada 100 ms como mucho, haya voz o no.
+  - MotorNativo.ts:222-231: el parcial solo pasa a los oyentes si su texto no está vacío; el final
+    igual -:234-246-. useASR.ts:61-80: cada parcial y cada final llaman alNotificarVoz(true) ->
+    useSeguidor.alNotificarVoz -:120- -> motorAvance.voz(true, ahora).
+  - Consecuencia: mientras Vosk sostiene una hipótesis sin cambios, sigue llegando el MISMO parcial
+    cada 100 ms y cuenta como "voz" hasta que Vosk cierra la frase. "Tiempo desde el último
+    parcial" mide mal el silencio; "tiempo desde el último CAMBIO de texto -o final-" es mejor.
+    Cuánto tarda Vosk en cerrar la frase tras callarse: sin medir -0-C-.
+  - src/lib/avance.ts: msSilencioParaFrenar 600 -:27/:61-, enSilencio -:276-, motivoFreno
+    'silencio' -:300-: es silencio del SEGUIDOR -600 ms-, con el mismo problema de fondo.
+  - El rms llega a MotorNativo.anotarLlegada -:271-285- pero no sale del motor. Sacarlo es tocar
+    src/motor/ -prohibido sin permiso-.
+1.7 RESPUESTA A LA PERSONA
+  - haptica.ts: hapticaSeleccion :59, hapticaToqueSuave :64, hapticaAvisoMantener :91,
+    hapticaToqueMedio :96, hapticaToqueFuerte :104; vibra solo con la respuesta táctil del sistema.
+  - AvisoBreve.tsx:20-26 role="status" aria-live="polite": TalkBack lo lee.
+  - PantallaAjustes.tsx: FilaAjuste -:54- con Interruptor -fila-espejo/switch-espejo :256-268-.
+    Los ajustes viven en 'teleprompter_ajustes' -App.tsx:324-349-.
+1.8 NATIVO Y VERSIONES
+  - MainActivity.java: registerPlugin ArranquePlugin, VoskNativoPlugin, CamaraNativaPlugin,
+    IdiomaAppPlugin ANTES de super.onCreate -su comentario lo exige-. Un plugin nuevo va ahí.
+  - variables.gradle: minSdk 29, compile/target 36. build.gradle: camera-view 1.6.2 -:196-, capgo
+    usa CameraX 1.6.2 -core, camera2, lifecycle, view, extensions- y ML Kit barcode 18.3.1;
+    vosk-android 0.3.75, jna 5.13.0; media3 transformer/effect/common 1.9.0 -:212-214-;
+    releaseImplementation asset-delivery 2.3.0 -PaqueteDeVoz, tarea 84-. R8 en npm run play: en
+    la tarea 85 tumbó Grabar -commit 04b2c04-.
+
+==============================================================================
+2. EL PR #41: QUÉ FUE -corrección que se mantiene-
+==============================================================================
+  - Era el PR de Jules que TRAJO capgo -"migrar la cámara de la toma a la cámara nativa"-, no una
+    grabación propia con CameraX. Se cerró sin merge el 28-09-2026 21:31 -0300, pero su contenido
+    ya estaba en main como c7b8020 -21-09-2026 11:14- tras docs/tarea63-correccion2, 3 y 4 -313
+    comentarios devueltos, aspectMode cover, fondos opacos, restos de getUserMedia, divs falsos-.
+    La diferencia en src/ entre la cabeza del PR y c7b8020: PruebaCamaraNativaView y una línea de
+    TeleprompterView. Su cierre NO es un "no" a grabar con CameraX propio: eso nunca se probó.
+
+==============================================================================
+3. DECISIONES YA TOMADAS -Javier, no se reabren- Y LO QUE SE CORRIGE DEL BORRADOR
+==============================================================================
+DECISIONES
+  - Interruptor en Ajustes "Control con gestos al grabar", apagado. Solo frontal -ladoCamara parte
+    en 'frontal', App.tsx:228-; con la trasera, nota. Solo en Leer y Grabar.
+  - El seguimiento por voz NO cambia; los gestos controlan solo la grabación.
+  - Palma: pausa. Palma de nuevo, pasados 3 s o más: reanuda. La voz no reanuda. En pausa: un dedo
+    guarda y sale; dos dedos piden "¿Seguro que quieres borrar esta toma?" y hay que bajar la mano
+    y volver a mostrar dos dedos dentro de ~5 s; si no, se cancela.
+  - Nunca análisis continuo: tras 2 s de silencio, un cuadro cada 0,5 s en baja resolución; un gesto
+    cuenta con 2 o 3 revisiones seguidas. MediaPipe Gesture Recognizer -Open_Palm, Pointing_Up,
+    Victory-, sin conexión. El peso del modelo no es problema.
+  - La pausa marca tramos que se cortan al guardar, en la pasada de Media3, con ~1 s de margen;
+    a los subtítulos se les restan los tramos.
+  - Botón y palma: la MISMA máquina, lista para un control Bluetooth -no se construye-.
+  - Paso 0: probar PreviewView.getBitmap() en el moto g86. Parchar capgo solo si no sirve y
+    Javier lo aprueba. Si el análisis baja la calidad, se desactiva en ese equipo.
+CORRECCIONES AL BORRADOR
+  1. CamaraNativaPlugin no graba: graba capgo.
+  2. No hay Recording.pause(): tramos de corte.
+  3. No se puede agregar un ImageAnalysis sin parche.
+  4. "Tras 2 s de silencio según el motor": no hay señal; se deriva -1.6, 0-C-.
+  5. "~1 s al final si se guardó con un dedo": se guarda EN pausa, así que se corta desde el inicio
+     de esa pausa hasta el final.
+  6. En pausa la voz está apagada -stop()-: no hay silencio que esperar; se mira cada 0,5 s.
+  7. PALMA SOSTENIDA: reanudar exige haber visto la mano abajo -"ninguno" confirmado- después de
+     pausar; si no, una palma sostenida 3 s reanudaría sola.
+  8. El tramo empieza en la PRIMERA revisión que vio la palma, menos el margen de 1 s.
+
+==============================================================================
+4. ALTERNATIVAS EVALUADAS
+==============================================================================
+PAUSA
+  A. Tramos que se cortan al guardar -RECOMENDADA, decidida-. + Sin tocar el grabador. + Un solo
+     archivo, recuperable. - Guardar con tramos siempre recodifica. - El visor tiene que saltar.
+  B. Recording.pause() con un parche a capgo. + El archivo ya sale sin lo pausado. - Parche más
+     hondo en el camino que graba; el reloj del registro del motor -Date.now() desde el
+     arranque- deja de coincidir con el del archivo tras cada pausa; la mano que pausa queda en el
+     archivo igual. Fuera.
+  C. Grabar con CameraX propio -dejar capgo-. Reescribe vista previa, tres fondos y recuadro. Fuera
+     de este plan.
+MIRAR LA CÁMARA
+  A. Parche a capgo: ImageAnalysis de baja resolución junto al video, con un analizador que se
+     enchufa desde afuera -RECOMENDADA-. Mecanismo del parche:
+       A1. patch-package -dependencia de desarrollo nueva, pide aprobación-.
+       A2. Fork de capgo -cambia de dónde viene capgo-.
+       A3. Copiar capgo al repositorio como módulo Gradle local -android/capgo-camera-preview- y
+           apuntar capacitor.settings.gradle ahí. Sin dependencia nueva, pero capacitor sync
+           reescribe capacitor.settings.gradle -A VERIFICAR- y son 5.385 líneas ajenas.
+     En las tres: capgo en versión EXACTA -hoy ^8.11.4- y cumplir la MPL-2.0 -los archivos de
+     capgo modificados se publican en fuente si se distribuye el APK- -PREGUNTA P2-.
+  B. Tomar cuadros de la vista previa -PreviewView.getBitmap()-. + Sin parche. - En PERFORMANCE
+     -SurfaceView, CamaraNativaPlugin.java:34-40- getBitmap depende de PixelCopy -A VERIFICAR en
+     el 0-A, es barato probarlo-; si sirve, evita el parche entero. VALE LA PENA PROBARLA PRIMERO.
+  C. CameraX CameraEffect -UseCaseGroup.Builder.addEffect, existe en camera-core 1.6.2 (javap)-:
+     también exige parche, y es para modificar cuadros, no para mirarlos. Fuera.
+SEÑAL DE SILENCIO
+  A. Tiempo desde el último CAMBIO del texto parcial o desde el último final, calculado en App con
+     alRecibirParcial y alRecibirFraseFinal -App.tsx:847-852-. + Sin tocar src/motor. - Arrastra
+     el atraso con que Vosk cierra la frase -0-C-. RECOMENDADA si el 0-C da < 1 s de atraso.
+  B. rms del trozo -VoskNativoPlugin.java:609-. + Es silencio de verdad. - Hay que sacarlo por
+     MotorDeVoz -src/motor/, prohibido sin permiso-.
+  C. motivoFreno 'silencio' de avance.ts. - Es del seguidor, 600 ms, y cambia con el guion.
+RECONOCEDOR
+  A. MediaPipe Gesture Recognizer, RunningMode.IMAGE -RECOMENDADA, decidida-. Gestos
+     predefinidos -ai.google.dev/edge/mediapipe/solutions/vision/gesture_recognizer-: None,
+     Closed_Fist, Open_Palm, Pointing_Up, Thumb_Down, Thumb_Up, Victory, ILoveYou.
+  B. ML Kit: no tiene reconocedor de gestos de mano. Fuera.
+
+==============================================================================
+5. LA MÁQUINA DE ESTADOS -src/lib/pausaToma.ts, TypeScript puro-
+==============================================================================
+5.1 TIPOS Y FIRMAS
+    export type OrigenPausa = 'boton' | 'palma' | 'control'
+    export type Gesto = 'palma' | 'unDedo' | 'dosDedos' | 'ninguno'
+    export type EstadoPausa =
+      | { tipo: 'grabando' }
+      | { tipo: 'pausada'; desdeMs: number; origen: OrigenPausa; manoBajada: boolean }
+      | { tipo: 'confirmando'; desdeMs: number; origen: OrigenPausa; pedidoMs: number;
+          pedidoPor: 'tacho' | 'gesto'; manoBajada: boolean }
+    export type Entrada =
+      | { tipo: 'alternar'; origen: OrigenPausa; tMs: number }   // botón hoy, control mañana
+      | { tipo: 'gesto'; gesto: Gesto; tMs: number; vistoDesdeMs: number }  // ya confirmado
+      | { tipo: 'tacho'; tMs: number }
+      | { tipo: 'tic'; tMs: number }                             // el paso del tiempo
+    export type Accion =
+      | { tipo: 'pausar'; desdeMs: number; origen: OrigenPausa }   // abre tramo, stop() de voz
+      | { tipo: 'reanudar'; hastaMs: number }                       // cierra tramo, start() de voz
+      | { tipo: 'guardarYSalir' } | { tipo: 'pedirConfirmacion' }
+      | { tipo: 'borrar' } | { tipo: 'cancelarBorrado' }
+    export const MS_PARA_REANUDAR_CON_PALMA = 3000
+    export const MS_PARA_CONFIRMAR_BORRADO = 5000
+    export function paso(e: EstadoPausa, en: Entrada): { estado: EstadoPausa; acciones: Accion[] }
+    export const enPausa = (e: EstadoPausa) => e.tipo !== 'grabando'
+    export const confirmandoDescarte = (e: EstadoPausa) => e.tipo === 'confirmando'
+5.2 DIAGRAMA
+                    alternar(boton) | gesto(palma)
+      +----------+ ----------------------------------> +-----------------------------+
+      | GRABANDO |                                      | PAUSADA                     |
+      +----------+ <---------------------------------- | desdeMs, origen, manoBajada |
+           ^        alternar  |  gesto(palma) y        +-----------------------------+
+           |                  |  manoBajada y            |  gesto(ninguno): manoBajada=true
+           |                  |  t - desdeMs >= 3000     |  gesto(unDedo): guardarYSalir
+           |                                             |  tacho | gesto(dosDedos)
+           |        alternar                             v
+           +-------------------------------------- +-----------------------------+
+                                                   | CONFIRMANDO                 |
+                                                   | pedidoMs, pedidoPor,        |
+                                                   | manoBajada=false            |
+                                                   +-----------------------------+
+             gesto(ninguno): manoBajada = true
+             gesto(dosDedos) y manoBajada y t - pedidoMs <= 5000        -> borrar
+             tacho                                                        -> borrar
+             pedidoPor 'gesto' y (tic con t - pedidoMs > 5000 | gesto(palma|unDedo))
+                                                              -> PAUSADA (cancelarBorrado)
+             pedidoPor 'tacho': sin plazo -como hoy: el tacho se queda en "¿Seguro?"-
+  - Palma en GRABANDO: desdeMs = vistoDesdeMs, no la hora de confirmar -corrección 8-.
+  - Palma en PAUSADA sin manoBajada o antes de 3 s: NADA -corrección 7-.
+  - Un dedo o dos dedos en GRABANDO: NADA.
+  - Entrar a CONFIRMANDO pone manoBajada = false: la misma V sostenida no borra.
+  - alternar desde CONFIRMANDO reanuda -hoy btn-pausa-lectura hace setConfirmandoDescarte(false) y
+    reanuda, App.tsx:1738-.
+5.3 CONEXIÓN EN App.tsx
+  - const [estadoPausa, setEstadoPausa] = useState<EstadoPausa>({ tipo: 'grabando' }); enPausa y
+    confirmandoDescarte -:749-750- pasan a ser derivados -const enPausa = enPausa(estadoPausa)-, sin
+    cambiar las props ni los testid de hoy.
+  - function despachar(en: Entrada): calcula paso(), setEstadoPausa y ejecuta acciones:
+      pausar   -> filaPausaRef.then(stop) como hoy -:1391-; abrirPausa(desdeMs, origen)
+      reanudar -> filaPausaRef.then(start); cerrarPausa(hastaMs)
+      guardarYSalir -> handleStop() -:1223-
+      pedirConfirmacion -> hapticaAvisoMantener + AvisoBreve t('gestoConfirmarBorrado')
+      borrar   -> handleDescartarToma() -:1186-
+  - handleTogglePausa -:1388- pasa a despachar({ tipo: 'alternar', origen: 'boton', tMs:
+    Date.now() }). El tacho -:1678-1692- pasa a despachar({ tipo: 'tacho', ... }).
+  - Un setInterval de 250 ms despacha 'tic' solo en CONFIRMANDO por gesto.
+
+==============================================================================
+6. EL CONFIRMADOR Y EL VIGÍA -TypeScript puro-
+==============================================================================
+6.1 src/lib/confirmadorGestos.ts
+    export type Revision = { etiqueta: 'Open_Palm' | 'Pointing_Up' | 'Victory' | 'None' | string;
+                             puntaje: number; tMs: number }
+    export const REVISIONES_PARA_CONFIRMAR = 3   // 2 o 3: lo fija el 0-D
+    export const PUNTAJE_MINIMO = 0.6            // lo fija el 0-D; no es una cifra medida
+    export function crearConfirmador(): { revisar(r: Revision): { gesto: Gesto; vistoDesdeMs:
+      number } | null; reiniciar(): void }
+    // Mapa: Open_Palm -> palma, Pointing_Up -> unDedo, Victory -> dosDedos, None o puntaje bajo
+    // -> ninguno. Cualquier otra etiqueta cuenta como ninguno. Emite UNA vez por racha: la misma
+    // racha no vuelve a emitir hasta que cambia la etiqueta.
+6.2 src/lib/vigiaGestos.ts
+    export const MS_SILENCIO_PARA_MIRAR = 2000
+    export const MS_ENTRE_CUADROS = 500
+    export function debePedirCuadro(c: { activo: boolean; estado: EstadoPausa; msSinVoz: number;
+      msDesdeUltimoPedido: number }): boolean
+      // activo = interruptor && frontal && conCamara && grabando && equipo apto
+      // grabando: msSinVoz >= 2000 && msDesdeUltimoPedido >= 500
+      // pausada o confirmando: msDesdeUltimoPedido >= 500
+    export function crearRelojDeVoz(): { alTexto(texto: string, final: boolean, tMs: number): void;
+      msSinVoz(tMs: number): number }
+      // cuenta desde el último CAMBIO de texto o final no vacío -alternativa A de la señal-
+  - En App: alRecibirParcial -:847- pasa por relojDeVoz.alTexto antes de seguidorParcial; lo mismo
+    alRecibirFraseFinal -:847-852-. El seguidor recibe exactamente lo mismo que hoy.
+  - Un lazo en App -useEffect con setInterval de 100 ms, solo con el vigía activo- llama
+    debePedirCuadro y, si toca, Gestos.revisarCuadro() -una llamada a la vez, nunca en paralelo-.
+6.3 MOTOR DE GESTOS FALSO -src/motor/ no se toca: va en src/pruebas/GestosFake.ts-
+    class GestosFake { respuestas: Revision[]; revisarCuadro(): Promise<Revision>; pedidos: number }
+
+==============================================================================
+7. LOS TRAMOS Y LOS SUBTÍTULOS
+==============================================================================
+7.1 DATOS
+    export type PausaToma = { desdeMs: number; hastaMs: number | null; origen: OrigenPausa }
+  - SesionToma.pausas: PausaToma[] -tomaVideo.ts:38-52-. En el reloj del video: epochMs -
+    s.inicioVideoEpochMs, el mismo cero que el registro -:137, :243-.
+  - tomaVideo.ts, nuevas: export function abrirPausa(desdeEpochMs: number, origen): void y
+    export function cerrarPausa(hastaEpochMs: number): void; las dos persisten el sidecar al tiro
+    -persistirSidecar :68- además del heartbeat. cortarTomaVideo -:149- cierra una pausa abierta
+    en la duración medida.
+  - SidecarToma.pausas?: PausaToma[] -validado en parsearSidecar: array de objetos con números-.
+    ResumenGrabacion.pausas?: PausaToma[] -en grabacionNueva-. recuperarTomasPendientes -:290-:
+    una pausa abierta se cierra en el final del archivo.
+7.2 src/lib/tramos.ts -puro-
+    export const MARGEN_MANO_MS = 1000
+    export function tramosACortar(pausas: PausaToma[], duracionMs: number): TramoMs[]
+    export function tramosQueQuedan(cortes: TramoMs[], duracionMs: number): TramoMs[]
+    export function aSalida(tMs: number, cortes: TramoMs[]): number | null  // null si cae en corte
+    export function duracionFinal(cortes: TramoMs[], duracionMs: number): number
+  Pseudocódigo de tramosACortar:
+    cortes = []
+    para p en pausas ordenadas por desdeMs:
+      margenAntes   = p.origen === 'palma' ? MARGEN_MANO_MS : MARGEN_BOTON_MS   // P4
+      desde = max(0, p.desdeMs - margenAntes)
+      hasta = p.hastaMs === null ? duracionMs : min(duracionMs, p.hastaMs + MARGEN_MANO_MS)
+      si hasta > desde: cortes.push({ desdeMs: desde, hastaMs: hasta })
+    juntar los que se tocan o se pisan; devolver ordenados
+  Pseudocódigo de aSalida:
+    menos = 0
+    para c en cortes:  si t >= c.hastaMs: menos += c.hastaMs - c.desdeMs
+                       si c.desdeMs <= t < c.hastaMs: devolver null
+                       si t < c.desdeMs: salir
+    devolver t - menos
+7.3 RECALCULAR LOS SUBTÍTULOS -src/lib/subtitulos.ts-
+  - Refactor sin cambio de conducta: export function armarPalabras(registro): PalabraSubtitulo[] con
+    el cuerpo de armarSubtitulos hasta :198; armarSubtitulos(registro) = cortarEnSubtitulos(
+    armarPalabras(registro)). Las pruebas de hoy -subtitulos.test.ts, siete casos de :27 a :111-
+    siguen verdes sin tocarlas.
+  - cortarEnSubtitulos -:228- recibe un segundo parámetro opcional unionesMs: number[] y agrega una
+    condición de corte: cruzaUnion = hay una unión u con prev.hastaMs <= u <= x.desdeMs. En una
+    unión manda el corte, como en un punto -no pasan "de la"-.
+  - export function subtitulosConCortes(registro: string, cortes: TramoMs[]): Subtitulo[]
+      palabras = armarPalabras(registro)
+      quedan = []
+      para w en palabras:
+        medio = (w.desdeMs + w.hastaMs) / 2
+        si aSalida(medio, cortes) === null: seguir            // la palabra cae en un corte
+        d = recortar w.desdeMs al borde del corte que la pise; h igual con w.hastaMs
+        quedan.push({ texto: w.texto, desdeMs: aSalida(d), hastaMs: aSalida(h) })
+      uniones = cortes.map(c => aSalida(c.hastaMs))  // dónde queda cada unión en la salida
+      devolver cortarEnSubtitulos(quedan, uniones)
+    Así ningún subtítulo cruza una unión y los tiempos quedan en el reloj de la SALIDA.
+  - El registro del motor -<id>.motor.txt- no se toca.
+7.4 EL VISOR -ReproductorGrabacion.tsx-
+  - Reproduce el archivo entero y SALTA los cortes: en el bucle de CapaSubtitulos o un
+    requestAnimationFrame propio, si video.currentTime * 1000 cae en un corte, currentTime =
+    corte.hastaMs / 1000. Hace falta una traba de "estoy saltando": si no, timeupdate vuelve a
+    ver el corte y se queda en un bucle -corrección del 02-10-. La barra -avance-toma, :196-212-
+    muestra duracionFinal; total y actual
+    en reloj de salida. Los subtítulos del visor: armarSubtitulos de hoy -reloj del archivo-; la
+    diferencia con los guardados está solo en las uniones.
+  - Miniatura: extraerMiniatura con atMs = inicio del primer tramo que queda + 1000.
+
+==============================================================================
+8. EL GUARDADO CON TRAMOS -la receta común del plan 1, sección 4-
+==============================================================================
+  - La receta lleva tramos: TramoMs[] -los que QUEDAN, tramosQueQuedan- y subtitulos =
+    subtitulosConCortes. Sin pausas, tramos = null y el camino es EXACTAMENTE el de hoy.
+  - Estilo "No" con tramos: misma pasada sin capa -recodifica; hoy "No" es copia-.
+  - ExportadorDeTomas.armar -Java-, pseudocódigo:
+      si r.tramosMs == null: devolver EditedMediaItem como hoy
+      items = []
+      para [a, b] en r.tramosMs:
+        mi = new MediaItem.Builder().setUri(Uri.fromFile(origen))
+               .setClippingConfiguration(new MediaItem.ClippingConfiguration.Builder()
+                   .setStartPositionMs(a).setEndPositionMs(b).build()).build()
+        items.add(new EditedMediaItem.Builder(mi).build())
+      seq = new EditedMediaItemSequence.Builder(items).build()     // Builder(List<...>) existe
+      MODO_1 -la capa ve el reloj de la salida-:
+        comp = new Composition.Builder(seq).setEffects(new Effects(of(), efectosDeVideo(r)))
+      MODO_2 -la capa ve el reloj de cada tramo-: una CapaDeSubtitulos por item, con los
+        subtítulos del tramo corridos a su cero, en el Effects de cada EditedMediaItem
+      devolver comp.build()
+    Cuál de los dos se usa lo decide el 0-B -PREGUNTA P8-. El código elige uno solo.
+  - Transformer.start(Composition, ruta) -existe, javap-. Mismo codificador 12 Mbps, mismo avance.
+
+==============================================================================
+9. EL LADO NATIVO
+==============================================================================
+9.1 EL PARCHE A CAPGO -si la alternativa B, getBitmap, no sirve-
+  - CameraSessionConfiguration -model/-: campo boolean enableFrameAnalysis.
+  - CameraPreview.startCamera -:1269-: final boolean enableFrameAnalysis = Boolean.TRUE.equals(
+    call.getBoolean("enableFrameAnalysis", false)) junto a enableVideoMode -:1314-; al
+    constructor de la sesión -:1623 aprox.-.
+  - CameraXView:
+      private ImageAnalysis frameAnalysis;
+      private static volatile ImageAnalysis.Analyzer analizadorExterno;
+      public static void setExternalFrameAnalyzer(@Nullable ImageAnalysis.Analyzer a)
+      // en bindCameraUseCases, con modo video y enableFrameAnalysis:
+      frameAnalysis = new ImageAnalysis.Builder()
+          .setResolutionSelector(<640x480, FALLBACK_RULE_CLOSEST_LOWER_THEN_HIGHER>)
+          .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+          .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888).build();
+      frameAnalysis.setAnalyzer(cameraExecutor, img -> {
+          ImageAnalysis.Analyzer a = analizadorExterno;
+          if (a != null) a.analyze(img); else img.close(); });
+      // en bindConfiguredUseCases (:1641), modo video: bindToLifecycle(preview, imageCapture,
+      // videoCapture, frameAnalysis) si frameAnalysis != null
+    Sin la opción, capgo queda idéntico. dist/esm/definitions.d.ts: enableFrameAnalysis?: boolean.
+  - camara.ts:192-206: enableFrameAnalysis: gestosActivos en CameraPreview.start. Cambiar el
+    interruptor con la cámara encendida re-arranca la cámara -force: true-.
+9.2 GestosPlugin.java -nuevo, registrado en MainActivity antes de super.onCreate-
+    @CapacitorPlugin(name = "Gestos")
+    @PluginMethod preparar(call)   -> { ok: boolean, motivo?: 'sinModelo' | 'sinAnalisis' | ... }
+      // crea GestureRecognizer -RunningMode.IMAGE, numHands 1- y llama
+      // CameraXView.setExternalFrameAnalyzer(this::recibir)
+    @PluginMethod revisarCuadro(call) -> { etiqueta: string, puntaje: number, tMs: number,
+      msReconocer: number }
+      // marca "quiero el siguiente cuadro"; recibir(ImageProxy) lo toma una vez: toBitmap(),
+      // rotar según imageInfo.getRotationDegrees(), BitmapImageBuilder, recognize(), resolve.
+      // Entre pedidos, recibir cierra cada ImageProxy sin mirarlo. tMs = Date del cuadro.
+    @PluginMethod soltar(call)      -> setExternalFrameAnalyzer(null), recognizer.close()
+    Sin eventos: el pedido y la respuesta son una sola llamada.
+  - src/lib/gestos.ts: interfaz GestosPlugin y registerPlugin('Gestos'), igual que camara.ts:35.
+  - Modelo gesture_recognizer.task en assets, o en un paquete de Play como PaqueteDeVoz -P11-.
+  - proguard-rules.pro: reglas para com.google.mediapipe -R8, tarea 85-.
+
+==============================================================================
+10. AJUSTES, PANTALLA Y TEXTOS
+==============================================================================
+  - PantallaAjustes: FilaAjuste testid fila-gestos, Interruptor switch-gestos, explicación. Llave
+    'gestosAlGrabar' en teleprompter_ajustes -App.tsx:324-349-, false por omisión. Props nuevas
+    gestosAlGrabar y setGestosAlGrabar, como mirror/setMirror.
+  - Con gestos encendidos y la trasera en LISTO -o al voltear-: AvisoBreve gestosSoloFrontal.
+  - Equipo no apto: el interruptor se ve apagado y deshabilitado con gestosNoDisponible.
+  - Respuesta: ícono breve en el lugar de los controles -en horizontal, en los rieles de la tarea
+    82-, nunca sobre el texto; hapticaToqueMedio al pausar/reanudar, hapticaAvisoMantener al pedir
+    confirmación, hapticaToqueFuerte al borrar; AvisoBreve para TalkBack.
+  - Claves nuevas -es.ts y en.ts, mismas claves-: gestosAlGrabar, gestosAlGrabarExplicacion,
+    gestosSoloFrontal, gestosNoDisponible, gestoPausa, gestoSeguir, gestoConfirmarBorrado
+    -"¿Seguro que quieres borrar esta toma? Baja la mano y muestra dos dedos otra vez"-,
+    gestoBorradoCancelado. Reusa las de hoy: pausa, seguir, tomaDescartada.
+  - Premium: NO existe ningún mecanismo de pago en el repositorio -buscado premium y billing en
+    src/, android/ y docs/- -P10-.
+
+==============================================================================
+11. PASO 0 - EN EL MOTO G86, ANTES DE PROGRAMAR
+==============================================================================
+  0-A. MIRAR LA CÁMARA
+       1) Sin parche: PreviewView.getBitmap() en PERFORMANCE con la toma andando, 1 cada 0,5 s
+          durante 5 min: ¿devuelve imagen? ¿cuánto tarda? ¿la toma pierde cuadros? -ffprobe del
+          mp4 contra una toma sin eso-.
+       2) Con parche, dos variantes: preview + imageCapture + videoCapture + análisis, y sin
+          imageCapture. De cada una: si liga; resolución y cuadros por segundo del mp4 -CameraX
+          puede bajar la calidad en silencio para ligar un flujo más-; fluidez de la vista previa;
+          temperatura y batería en 10 min; node scripts/medir-toma.mjs sobre el <id>.motor.txt.
+       La tolerancia la fija Javier con los números.
+  0-B. MEDIA3 CON TRAMOS: prototipo con tres tramos y capa. ¿En qué reloj le llega
+       presentationTimeUs a la capa en MODO_1 y en MODO_2? ¿el corte cae en el cuadro pedido?
+       ¿el audio chasquea en las uniones? ¿cuánto más tarda que la pasada de hoy?
+  0-C. LA SEÑAL: toma con silencios medidos con cronómetro; registrar hora de cada parcial -con
+       texto-, de cada CAMBIO y de cada final. ¿Cuánto tarda Vosk en cerrar la frase tras
+       callarse? Si > 1 s, la alternativa A llega tarde y se discute la B.
+  0-D. MEDIAPIPE: msReconocer en 640x480; aciertos de las tres manos a 50 cm -vertical- y a 1 m
+       -horizontal-; falsos positivos hablando con las manos 2 min. Fija
+       REVISIONES_PARA_CONFIRMAR y PUNTAJE_MINIMO. Versión de tasks-vision y licencia desde Maven.
+
+==============================================================================
+12. TAREAS, UNA A UNA
+==============================================================================
+T2-1  LA MÁQUINA DE PAUSA, PURA
+  Archivos: src/lib/pausaToma.ts; src/pruebas/pausaToma.test.ts.
+  Vitest: 'palma grabando pausa con desdeMs = vistoDesdeMs'; 'palma a los 2999 ms no reanuda';
+  'palma a los 3000 ms sin bajar la mano no reanuda'; 'ninguno y palma a los 3000 ms reanuda';
+  'alternar en pausa reanuda al tiro'; 'un dedo en pausa: guardarYSalir'; 'un dedo grabando: nada';
+  'dos dedos piden confirmación con manoBajada false'; 'ninguno y dos dedos a los 4999 ms borran';
+  'tic a los 5001 ms cancela'; 'la misma V sostenida no borra'; 'palma en confirmación cancela';
+  'tacho en confirmación borra'; 'confirmación por tacho no vence con tic'; 'alternar en
+  confirmación reanuda'.
+T2-2  EL BOTÓN Y EL TACHO PASAN POR LA MÁQUINA -sin gestos todavía-
+  Archivos: App.tsx -:749-750, :1388-1394, :1678-1692, :1730-1745-.
+  Prueba: las de hoy de pausa y descarte siguen verdes SIN tocarlas -tarea85.test.tsx y las del
+  tacho-. Nueva, a través de <App>: 'PAUSA POR BOTÓN ABRE Y CIERRA UN TRAMO': con la cámara
+  fingida, pausar y seguir -> el sidecar escrito -CamaraNativa.escribirTexto fingido- tiene
+  pausas [{ desdeMs, hastaMs, origen: 'boton' }] con hastaMs > desdeMs.
+  Guardiana rota una vez: no llamar abrirPausa en 'pausar' -> falla.
+T2-3  LOS TRAMOS EN LA TOMA
+  Archivos: tomaVideo.ts, sidecar.ts, modelo.ts.
+  Vitest: 'parsearSidecar conserva pausas'; 'descarta pausas con números inválidos'; 'grabacionNueva
+  conserva pausas'; 'cortarTomaVideo cierra la pausa abierta en la duración';
+  'recuperarTomasPendientes cierra la pausa abierta en el final del archivo'.
+T2-4  TRAMOS Y SUBTÍTULOS, PUROS
+  Archivos: src/lib/tramos.ts, src/lib/subtitulos.ts -armarPalabras, cortarEnSubtitulos con
+  uniones, subtitulosConCortes-.
+  Vitest: 'tramosACortar pone 1 s a cada lado de una pausa con palma'; 'la pausa abierta corta
+  hasta el final'; 'dos cortes que se tocan se juntan'; 'no baja de 0 ni pasa la duración';
+  'aSalida dentro de un corte es null'; 'aSalida después de dos cortes resta los dos';
+  'armarSubtitulos da lo mismo que antes' -los siete casos de hoy verdes-; 'subtitulosConCortes:
+  TODAS las palabras después de un corte se corren lo mismo' -trayectoria, no solo la última-;
+  'ningún subtítulo cruza una unión'; 'la palabra cuyo medio cae en un corte desaparece'; 'sin
+  cortes, subtitulosConCortes === armarSubtitulos'.
+T2-5  GUARDAR CON TRAMOS
+  Archivos: ExportadorDeTomas.java, RecetaExportacion.java, ReproductorGrabacion.tsx.
+  Vitest a través de <App>: 'LA TOMA CON PAUSAS GUARDA LOS TRAMOS QUE QUEDAN': la receta tiene
+  tramos = complemento de los cortes y subtítulos en reloj de salida. 'SIN PAUSAS, tramos null'.
+  Visor: 'el visor salta el corte' -currentTime fingido dentro del corte -> sale al final del
+  corte-; 'la barra muestra la duración final'.
+  Manual: toma de 3 min con dos pausas: ffprobe da la duración final esperada ± 1 cuadro; el
+  audio no chasquea; los subtítulos van con la voz después de cada unión.
+T2-6  MIRAR LA CÁMARA -según el 0-A- Y GestosPlugin
+  Archivos: parche de capgo -o nada si getBitmap sirve-, GestosPlugin.java, MainActivity.java,
+  src/lib/gestos.ts, package.json -capgo en 8.11.4 exacto-, proguard-rules.pro.
+  Manual: con el interruptor apagado, adb logcat no muestra el analizador y la toma pesa y dura lo
+  mismo que antes; encendido, revisarCuadro devuelve Open_Palm con la palma a 50 cm.
+T2-7  VIGÍA, CONFIRMADOR Y RELOJ DE VOZ
+  Archivos: confirmadorGestos.ts, vigiaGestos.ts, App.tsx, src/pruebas/GestosFake.ts.
+  Vitest: 'tres Open_Palm seguidas confirman palma con la hora de la primera'; 'una None en medio
+  reinicia'; 'la racha emite una sola vez'; 'grabando con voz: cero pedidos'; 'dos segundos sin
+  CAMBIO de texto: pedidos cada 500 ms'; 'el mismo parcial repetido cuenta como silencio'; 'vuelve
+  la voz: paran'; 'en pausa: cada 500 ms'; 'interruptor apagado, trasera o Leer: cero pedidos'. A
+  través de <App> con GestosFake: 'TRES PALMAS PAUSAN LA TOMA Y PARAN LA VOZ' -stop llamado,
+  tramo abierto-.
+T2-8  AJUSTES, AVISOS, TEXTOS, TALKBACK
+  Archivos: PantallaAjustes.tsx, App.tsx, es.ts, en.ts, styles.css; componentes nuevos a T209.
+  Vitest: 'el interruptor se guarda en teleprompter_ajustes'; 'trasera con gestos: aviso';
+  'equipo no apto: interruptor deshabilitado con su motivo'.
+T2-9  LA VERSIÓN DE PLAY
+  npm run play; en el moto g86, T2-5 a T2-8 otra vez en esa versión -R8-.
+
+==============================================================================
+13. RIESGOS Y MITIGACIÓN
+==============================================================================
+  - CameraX baja calidad en silencio al ligar el análisis -> el 0-A mide el mp4, no "ligó".
+  - Calor y batería en tomas de 40 min -> análisis solo tras silencio y a 0,5 s; medir 10 min.
+  - Falsos positivos al gesticular -> solo tras 2 s de silencio, 3 revisiones, manoBajada.
+  - Palma sostenida -> manoBajada. V sostenida -> manoBajada al entrar a CONFIRMANDO.
+  - El margen de 1 s se come una palabra -> se mira tras 2 s de silencio: el corte arranca después
+    de la última palabra; T2-5 manual lo comprueba.
+  - El parche se pierde al actualizar capgo -> versión exacta y el parche en el repositorio.
+  - MPL-2.0 -> publicar los archivos de capgo modificados -P2-.
+  - Tomas recuperadas con pausa abierta -> se cierra en el final.
+  - Guardar con tramos recodifica aun sin subtítulos -> Javier lo aceptó; msGuardado lo mide.
+  - Premium sin mecanismo de pago -> no se entrega hasta que exista.
+
+==============================================================================
+14. QUÉ NO HACER
+==============================================================================
+  - No tocar el seguidor, avance.ts, la conducción ni src/motor/.
+  - No analizar continuo, ni crear el analizador con el interruptor apagado.
+  - No encender gestos con la trasera ni fuera de Leer y Grabar.
+  - No reescribir la grabación con CameraX propio. No usar Recording.pause().
+  - No agregar dependencias -MediaPipe, patch-package, fork- sin el visto bueno de Javier.
+  - No dejar capgo con ^ si lleva parche. No construir el control Bluetooth.
+  - No borrar ni acortar comentarios; no mover umbrales.
+
+==============================================================================
+15. CRITERIO DE ÉXITO
+==============================================================================
+  1. Interruptor apagado: pruebas de hoy verdes sin tocarlas; la misma toma medida con
+     medir-toma.mjs da lo mismo; el mp4 tiene la misma resolución y cuadros por segundo.
+  2. Encendido en el moto g86: 20 de 20 palmas a 50 cm pausan; 0 pausas solas en 2 min hablando
+     con las manos; la toma guardada no tiene lo pausado. La mano que sube puede quedar en el
+     segundo de margen: no se promete que no salga. Subtítulos con la voz.
+  3. Botón y palma dejan el mismo tramo en el sidecar -la misma máquina-.
+  4. npx tsc --noEmit limpio, npx vitest run en verde, comentarios que no bajan.
+
+==============================================================================
+16. PREGUNTAS ABIERTAS -y cómo se responden-
+==============================================================================
+  P1. ¿El moto g86 aguanta preview + video + análisis sin bajar calidad? -0-A, ffprobe-. Si no,
+      ¿con qué teléfono se prueba?
+  P2. ¿Cómo se parcha -patch-package, fork o módulo local- y cómo se cumple la MPL-2.0? Antes:
+      ¿sirve getBitmap sin parche? -0-A.1-.
+  P3. La pausa -botón o palma- ¿sigue parando la voz como hoy? El plan supone que sí.
+  P4. ¿La pausa con el botón lleva margen antes -MARGEN_BOTON_MS-? El dedo en la pantalla no sale
+      en cuadro; propongo 0 antes y 1 s después.
+  P5. ¿Reanudar con la palma exige bajar la mano? El plan propone que sí.
+  P6. ¿2 o 3 revisiones y qué puntaje? -0-D-.
+  P7. ¿Cuánto atrasa Vosk el cierre de frase? -0-C-.
+  P8. ¿MODO_1 o MODO_2 para la capa en una Composition? -0-B-.
+  P9. ¿Cómo se ve "en pausa" en el punto rojo -punto-grabando, TeleprompterView.tsx:1139--?
+  P10. ¿Cómo se desbloquea lo premium? No hay nada en el repositorio.
+  P11. ¿Modelo en assets o en paquete de Play? ¿Versión y licencia de tasks-vision?

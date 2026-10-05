@@ -7,6 +7,7 @@ import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
 import { palabrasDelDestacado, segmentosDelDestacado, CajaPalabra } from '../lib/destacado'
+import type { Layout } from '../hooks/useLayout'
 
 // CERO DESDE EL 24-09-2026, MEDIDO. Era 2, puesto con el motor WASM -tarea 36-: el
 // renglon vivo no pasaba al siguiente hasta que el motor llevaba 2 palabras adentro.
@@ -260,6 +261,20 @@ interface TeleprompterViewProps {
   // La esquina del recuadro en horizontal -sigo_recuadro_esquina_h, la guarda App-.
   esquinaRecuadroH?: EsquinaRecuadroH
   setEsquinaRecuadroH?: (e: EsquinaRecuadroH) => void
+  // LA TABLETA -tarea 83, 30-09-2026-. El diseño entero, no solo "de lado": 'tab-v' dibuja LISTO
+  // con barra arriba y dock abajo, y 'tab-h' usa los rieles -horizontal sigue en true- con las
+  // medidas de la tableta. Sin esto -las pruebas de siempre- sale de horizontal: 'tel-h' o 'tel-v'.
+  layout?: Layout
+  // Si los controles de la lectura están a la vista. En la tableta vertical, con ellos vuelve la
+  // barra de arriba y el texto baja lo que ella mide, para que no quede encima de la palabra viva.
+  controlesVisibles?: boolean
+  // -tarea 88, 04-10-2026- La toma en pausa: el punto de grabar parpadea -P9, cerrada-.
+  enPausa?: boolean
+  // -tarea 88- Control por gestos, para la fila del panel de la cámara -FichasListo-. El motivo lo
+  // arma App: 'soloFrontal' con la trasera, 'noDisponible' si el equipo no puede.
+  gestosAlGrabar?: boolean
+  setGestosAlGrabar?: (v: boolean) => void
+  motivoSinGestos?: 'soloFrontal' | 'noDisponible' | null
 }
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
@@ -343,10 +358,22 @@ export default function TeleprompterView({
   onEstadoAvanceChange,
   horizontal = false,
   esquinaRecuadroH = 'der-abajo',
-  setEsquinaRecuadroH
+  setEsquinaRecuadroH,
+  layout,
+  controlesVisibles = false,
+  enPausa = false,
+  gestosAlGrabar = false,
+  setGestosAlGrabar,
+  motivoSinGestos = null
 }: TeleprompterViewProps) {
   useTextos()
   const containerRef = useRef<HTMLDivElement | null>(null)
+  // La superficie entera -tarea 83-: su rectángulo es la ventana de la lectura, y con la cámara
+  // detrás en tableta la vista previa se pone ahí -lib/camara.ts, ventanaMedida-.
+  const superficieRef = useRef<HTMLDivElement | null>(null)
+  const diseno: Layout = layout ?? (horizontal ? 'tel-h' : 'tel-v')
+  const tabletaVertical = diseno === 'tab-v'
+  const tableta = diseno === 'tab-v' || diseno === 'tab-h'
   // null = automatico: el brillo es el del sistema hasta que se toca la barra.
   const [brillo, setBrillo] = useState<number | null>(null)
   const [brilloSistema, setBrilloSistema] = useState<number | null>(null)
@@ -446,6 +473,15 @@ export default function TeleprompterView({
   const destacadoPrevRef = useRef<{ clave: string; renglones: Renglon[] | null }>({ clave: '', renglones: null })
   const estadoTomaRef = useRef(estadoToma)
   estadoTomaRef.current = estadoToma
+  // -tarea 89, 04-10-2026-: el diseño, para la línea 'pantalla' del registro. En una referencia
+  // porque recalcularGeometria y el lazo no se rearman al girar el teléfono.
+  const horizontalRef = useRef(horizontal)
+  horizontalRef.current = horizontal
+  // -mezcla con la 83, 04-10-2026- Con la tableta, «horizontal» también es tab-h, y tab-v no lo es:
+  // la línea 'pantalla' anota el diseño entero -diseno, arriba- para no confundir una tableta con un
+  // teléfono. Antes: diseno: horizontalRef.current ? 'tel-h' : 'tel-v'.
+  const disenoRef = useRef(diseno)
+  disenoRef.current = diseno
   const ultimoCuadroRef = useRef<number | null>(null)
 
   const recalcularGeometria = React.useCallback(() => {
@@ -468,6 +504,8 @@ export default function TeleprompterView({
     // Para medir el atraso en RENGLONES y no solo en palabras -24-09-2026-: el primer
     // token de cada renglon. No cuesta nada con el registro apagado.
     anotar({ tipo: 'renglones', inicios: r.map((x) => x.desdeToken) })
+    // -tarea 89-: el diseño y el tamaño con que salieron estos renglones.
+    anotar({ tipo: 'pantalla', diseno: disenoRef.current, ancho: container.clientWidth || 0, alto: alto })
     renglonesAnotadosRef.current = generacionDiagnostico()
     origenRef.current = medidas.length > 0 ? medidas[0].top : 0
   }, [filaPx])
@@ -486,22 +524,32 @@ export default function TeleprompterView({
     }
   // 29-09-2026, tarea 82: también al cambiar de diseño y de lado del recuadro. El relleno de la
   // columna cambia sin que el contenedor cambie de tamaño, y el ResizeObserver no se entera.
-  }, [script, fontSize, columnaAngosta, marginPercent, recalcularGeometria, horizontal, esquinaRecuadroH, fondoToma, camaraEncendida])
+  // 30-09-2026, tarea 83: y al cambiar de diseño -girar la tableta en plena toma-, para que el
+  // renglón vivo se ancle de nuevo en su palabra con la columna nueva.
+  }, [script, fontSize, columnaAngosta, marginPercent, recalcularGeometria, horizontal, esquinaRecuadroH, fondoToma, camaraEncendida, diseno])
 
   // Donde quedo dibujado el hueco del recuadro -RecuadroCamara, onRect-: la camara va ahi.
   const [rectRecuadro, setRectRecuadro] = React.useState<{ x: number; y: number; width: number; height: number } | undefined>(undefined)
 
   useEffect(() => {
     if (!conCamara) return
+    // LA CÁMARA DETRÁS EN TABLETA CUBRE LA VENTANA -tarea 83, 30-09-2026-. Se mide la superficie de
+    // la lectura -fija, de borde a borde de la ventana- y no window.screen: en ventana dividida o
+    // en un plegable la pantalla física es otra cosa. En el teléfono queda como estaba -la 82-.
+    const r = tableta && superficieRef.current ? superficieRef.current.getBoundingClientRect() : null
+    const ventanaMedida = r && r.width > 0 && r.height > 0
+      ? { x: r.left, y: r.top, width: r.width, height: r.height }
+      : undefined
     actualizarConfigCamara({
       fondoToma,
       recuadroX,
       recuadroY,
       vistaW: anchoContenedor || (typeof window !== 'undefined' ? window.innerWidth : 360),
       vistaH: altoContenedor || (typeof window !== 'undefined' ? window.innerHeight : 640),
-      rectRecuadro: fondoToma === 'recuadro' ? rectRecuadro : undefined
+      rectRecuadro: fondoToma === 'recuadro' ? rectRecuadro : undefined,
+      ventanaMedida
     })
-  }, [conCamara, fondoToma, recuadroX, recuadroY, anchoContenedor, altoContenedor, rectRecuadro])
+  }, [conCamara, fondoToma, recuadroX, recuadroY, anchoContenedor, altoContenedor, rectRecuadro, tableta])
 
   useEffect(() => {
     if (motorAvance || isRecording) return
@@ -810,6 +858,8 @@ export default function TeleprompterView({
       // anotar() devuelve en la primera linea si no esta activo.
       if (diagnosticoActivo() && renglonesAnotadosRef.current !== generacionDiagnostico() && renglonesRef.current.length > 0) {
         anotar({ tipo: 'renglones', inicios: renglonesRef.current.map((x) => x.desdeToken) })
+        // -tarea 89, 04-10-2026-: con qué diseño y tamaño salieron esos renglones.
+        anotar({ tipo: 'pantalla', diseno: disenoRef.current, ancho: containerRef.current?.clientWidth || 0, alto: containerRef.current?.clientHeight || 0 })
         renglonesAnotadosRef.current = generacionDiagnostico()
       }
       anotar({
@@ -970,13 +1020,15 @@ export default function TeleprompterView({
       <button
         data-testid="btn-volver-listo"
         type="button"
-        className="btn-deformable btn-flotante-40"
+        // 30-09-2026, tarea 83: en tableta el lugar lo pone la hoja -tab-boton-izq,
+        // styles-tableta.css-: en la barra de arriba en vertical, arriba del riel de lado.
+        className={`btn-deformable btn-flotante-40${tableta ? ' tab-boton-izq' : ''}`}
         onClick={(e) => {
           e.stopPropagation()
           onVolverListo?.()
         }}
         aria-label={t('volver')}
-        style={{
+        style={tableta ? { zIndex: 10 } : {
           position: 'absolute',
           top: 'calc(8px + env(safe-area-inset-top, 0px))',
           // 29-09-2026, tarea 82: de lado, arriba del riel izquierdo a 12 del borde.
@@ -1011,6 +1063,14 @@ export default function TeleprompterView({
         setPanelAbierto={setPanelFicha}
         onAbrirAjustes={onAbrirAjustes}
         horizontal={enRiel}
+        // 30-09-2026, tarea 83: en tableta las fichas son las grandes de la hoja -44 de alto-; de
+        // lado, además, a lo ancho del riel. En la tableta vertical Más va en la barra de arriba.
+        grandes={tableta}
+        anchas={tableta && enRiel}
+        masAparte={tabletaVertical}
+        gestosAlGrabar={gestosAlGrabar}
+        setGestosAlGrabar={setGestosAlGrabar}
+        motivoSinGestos={motivoSinGestos}
       />
   )
 
@@ -1021,7 +1081,12 @@ export default function TeleprompterView({
       // 29-09-2026, tarea 82, parte C: en vertical, sobre la pareja de fondo blanco,
       // Empezar de Leer va en su variante oscura -empezar-sobre-blanco, styles.css-.
       // De lado vive en el riel, que sigue al tema: ahí manda styles-horizontal.css.
-      className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${!conCamara && !horizontal && isWhiteBg ? ' empezar-sobre-blanco' : ''}`}
+      // 30-09-2026, tarea 83: en tableta Empezar vive en el dock o en el riel, que también siguen
+      // al tema: tampoco lleva la variante sobre blanco.
+      // 2026-10-05, tarea 83: en Grabar, de pie en el teléfono y sobre la pareja blanca, el halo va gris
+      // oscuro -halo-sobre-claro, styles.css-: el blanco no se veía. Antes, sin esa clase:
+      // className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${… ' empezar-sobre-blanco' : ''}`}
+      className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${!conCamara && !horizontal && !tableta && isWhiteBg ? ' empezar-sobre-blanco' : ''}${conCamara && !horizontal && !tableta && isWhiteBg ? ' halo-sobre-claro' : ''}`}
       aria-label={t('empezar')}
       onClick={(e) => {
         e.stopPropagation()
@@ -1047,8 +1112,16 @@ export default function TeleprompterView({
 
   return (
     <div
+      ref={superficieRef}
       data-testid="teleprompter-view-container"
       data-estado-toma={estadoToma}
+      // LO QUE LA HOJA DE LA TABLETA NECESITA SABER -tarea 83, 30-09-2026-. styles-tableta.css
+      // cuelga de acá cuánto baja el texto y cuánto se reserva abajo: en LISTO y con los controles
+      // a la vista el texto va debajo de la barra; leyendo sin controles sube los 72 de la barra y
+      // el renglón vivo queda pegado arriba, cerca del lente. Y si hay recuadro, de qué lado está.
+      data-layout={diseno}
+      data-tab-texto={estadoToma === 'listo' ? 'listo' : controlesVisibles ? 'controles' : 'lectura'}
+      data-recuadro={recuadroEnPantalla ? (esquinaRecuadroH.endsWith('arriba') ? 'arriba' : 'abajo') : 'no'}
       data-con-camara={conCamara ? 'si' : 'no'}
       data-columna={columnaAngosta ? 'angosta' : 'completo'}
       data-fondo={colorFondo}
@@ -1116,7 +1189,10 @@ export default function TeleprompterView({
           onArrastrandoChange={setArrastrandoRecuadro}
           onRect={setRectRecuadro}
           // 29-09-2026, tarea 82: de lado, 144 x 81 en una esquina de la zona libre.
-          horizontal={horizontal ? { esquina: esquinaRecuadroH, onEsquina: (e) => setEsquinaRecuadroH?.(e) } : null}
+          // 30-09-2026, tarea 83: en tableta también vive en una esquina -180 x 240 entre la barra
+          // y el dock en vertical, 256 x 144 entre los rieles de lado-; la medida y la zona las
+          // pone styles-tableta.css. diseno es para que al girar se suelte la posición del dedo.
+          horizontal={horizontal || tabletaVertical ? { esquina: esquinaRecuadroH, onEsquina: (e) => setEsquinaRecuadroH?.(e), diseno } : null}
         />
       )}
 
@@ -1127,6 +1203,8 @@ export default function TeleprompterView({
           o no, y B14 dice que el punto rojo es GRABANDO. Ahora lo enciende
           grabandoVideo, que solo es cierto despues de la cuenta regresiva y si
           el grabador arranco de verdad.
+          04-10-2026 -tarea 83, parte B, B23-: queda SOLO arriba a la derecha, en las mismas
+          coordenadas; la pausa bajó a la fila de la toma y ya no está a su lado. Antes:
           24-09-2026: ARRIBA A LA DERECHA, AL LADO DE LA PAUSA. Estaba a 16 px de
           la esquina y el boton de pausa -la esquina de 40, App.tsx- lo tapaba
           cada vez que aparecian los controles: pendiente B22. Primero lo movi
@@ -1137,8 +1215,15 @@ export default function TeleprompterView({
       {grabandoVideo && (
         <div
           data-testid="punto-grabando"
-          className="punto-grabando"
-          style={{
+          // 30-09-2026, tarea 83: en tableta el lugar lo pone la hoja -punto-tab, styles-tableta.css-:
+          // a la izquierda de la pausa, 12 de aire y el mismo centro, como en el teléfono.
+          // -tarea 88, 04-10-2026- En pausa parpadea: 1 s encendido y 1 s apagado; con movimiento reducido, un
+          // anillo rojo sin relleno -styles.css, .punto-grabando.en-pausa-. Antes: className="punto-grabando".
+          // Mezcla de la 83 con la 88 -04-10-2026-: las dos clases juntas. Antes, en la 83:
+          //   className={`punto-grabando${tableta ? ' punto-tab' : ''}`}
+          className={`punto-grabando${tableta ? ' punto-tab' : ''}${enPausa ? ' en-pausa' : ''}`}
+          data-pausa={enPausa ? 'si' : 'no'}
+          style={tableta ? undefined : {
             // La pausa: top 8, right 8, 40 x 40. El punto de 10 va a su izquierda,
             // 12 px de aire, con el centro a la misma altura: 8 + 20 - 5.
             top: 'calc(23px + env(safe-area-inset-top, 0px))',
@@ -1252,8 +1337,10 @@ export default function TeleprompterView({
           overflowY: 'auto',
           // 29-09-2026, tarea 82: de lado, el relleno de la columna entre los rieles -ver
           // rellenoIzqH-; en vertical, marginPercent como siempre.
-          paddingLeft: horizontal ? rellenoIzqH : `${marginPercent}%`,
-          paddingRight: horizontal ? rellenoDerH : `${marginPercent}%`,
+          paddingLeft: horizontal ? rellenoIzqH : tabletaVertical ? 'var(--columna-lado-tab-v)' : `${marginPercent}%`,
+          paddingRight: horizontal ? rellenoDerH : tabletaVertical ? 'var(--columna-lado-tab-v)' : `${marginPercent}%`,
+          // 30-09-2026, tarea 83: en la tableta vertical, 56 de la hoja más los 28 de aire de la
+          // columna del boceto -styles-tableta.css-; marginPercent es del teléfono.
           // EL FONDO DE LA PAREJA, PARA EL HALO E -tarea 82, parte B, 29-09-2026-. styles.css
           // -.lectura-sobre-imagen- pinta las diez sombras con esta variable. Es el dato que eligió
           // la persona -colorFondo-, no un color escrito acá. Va siempre, haya o no cámara: solo
@@ -1334,7 +1421,9 @@ export default function TeleprompterView({
             fontSize,
             // 29-09-2026, tarea 82: de lado la columna completa se topa en 56ch -unos 51
             // caracteres a 800 y 55 a 844-; la angosta -22ch- no cambia.
-            maxWidth: horizontal && !columnaAngosta ? 'var(--columna-tope-h)' : columnaLectura(columnaAngosta).maxWidth,
+            // 30-09-2026, tarea 83: en tableta, el mismo camino con el tope de la hoja -60ch en
+            // vertical y 58ch de lado, styles-tableta.css-.
+            maxWidth: (horizontal || tabletaVertical) && !columnaAngosta ? 'var(--columna-tope-h)' : columnaLectura(columnaAngosta).maxWidth,
             margin: '0 auto',
             width: '100%',
             // EN COLUMNA ANGOSTA EL TEXTO VA CENTRADO.
@@ -1403,7 +1492,8 @@ export default function TeleprompterView({
         <>
           {/* 29-09-2026, tarea 82: de lado NO va el velo: los controles ya no están encima del
               texto, están en los rieles. */}
-          {!horizontal && <VeloControles colorFondo={colorFondo} />}
+          {/* 30-09-2026, tarea 83: en la tableta vertical tampoco: el dock es una franja propia. */}
+          {!horizontal && !tabletaVertical && <VeloControles colorFondo={colorFondo} />}
           {/* EL RIEL IZQUIERDO DE LISTO -tarea 82, A2, 29-09-2026-. De lado, el ‹ arriba y las
               fichas en columna debajo -112 de ancho en Leer, 128 en Grabar-. El riel es un
               envoltorio sin z-index -no arma su propio apilamiento- para que el ‹ y las fichas
@@ -1417,6 +1507,24 @@ export default function TeleprompterView({
               <div className="riel-fondo" aria-hidden="true" />
               {botonVolverListo}
               {!arrastrandoRecuadro && fichasListo(true)}
+            </div>
+          ) : tabletaVertical ? (
+            // LA BARRA DE ARRIBA DE LA TABLETA VERTICAL -tarea 83, 30-09-2026-. 72 de alto más el
+            // área segura: el ‹ a la izquierda, el título del guion al centro y Más a la derecha
+            // -el mismo botón, con su testid-. Al empezar desaparece y el texto sube.
+            <div
+              data-testid="tab-barra"
+              className={`tab-barra${textoSobreImagen ? ' sobre-imagen' : ''}`}
+            >
+              {botonVolverListo}
+              <div className="tab-titulo" data-testid="tab-titulo">{guionObj.titulo}</div>
+              {/* Antes -hasta 2026-10-05-: {!arrastrandoRecuadro && ( */}
+              {/* 05-10-2026, tarea 93: en Grabar Más no va acá -Ajustes vive en la segunda fila de fichas-. */}
+              {!arrastrandoRecuadro && !conCamara && (
+                <div className="tab-lugar-mas">
+                  <FichaMas setPanelAbierto={setPanelFicha} onAbrirAjustes={onAbrirAjustes} grande />
+                </div>
+              )}
             </div>
           ) : botonVolverListo}
 
@@ -1446,7 +1554,7 @@ export default function TeleprompterView({
               }}
             />
           )}
-          {!horizontal && !arrastrandoRecuadro && fichasListo(false)}
+          {!horizontal && !tabletaVertical && !arrastrandoRecuadro && fichasListo(false)}
 
           {/* EL RIEL DERECHO DE LISTO -tarea 82, A2-. Más arriba -en Leer y en Grabar, decisión
               de Javier-, Empezar al centro del alto útil y la pastilla abajo -la monta App,
@@ -1457,12 +1565,27 @@ export default function TeleprompterView({
               className={`riel-lectura riel-derecho${textoSobreImagen ? ' sobre-imagen' : ''}`}
             >
               <div className="riel-fondo" aria-hidden="true" />
-              {!arrastrandoRecuadro && (
+              {/* Antes -hasta 2026-10-05-: {!arrastrandoRecuadro && ( */}
+              {/* 05-10-2026, tarea 93: en Grabar Más sale del riel derecho -Ajustes vive en la segunda
+                  columna de fichas-. Rompe la regla de la tarea 82 "Más en el mismo lugar en Leer y en
+                  Grabar": en Leer sigue aquí. */}
+              {!arrastrandoRecuadro && !conCamara && (
                 <div className="riel-lugar-arriba riel-lugar-ficha-mas">
-                  <FichaMas setPanelAbierto={setPanelFicha} onAbrirAjustes={onAbrirAjustes} />
+                  <FichaMas setPanelAbierto={setPanelFicha} onAbrirAjustes={onAbrirAjustes} grande={tableta} />
                 </div>
               )}
               {!arrastrandoRecuadro && <div className="riel-lugar-centro">{botonEmpezar}</div>}
+            </div>
+          ) : tabletaVertical ? (
+            // EL DOCK DE LA TABLETA VERTICAL -tarea 83-. 172 de alto más el área segura: las fichas
+            // grandes en una fila centrada y Empezar 16 más abajo. La pastilla la monta App, a la
+            // derecha del dock -BarraDeTiempo con enRiel-. El panel de cada ficha se abre encima.
+            <div
+              data-testid="tab-dock"
+              className={`tab-dock${textoSobreImagen ? ' sobre-imagen' : ''}`}
+            >
+              {!arrastrandoRecuadro && fichasListo(false)}
+              {!arrastrandoRecuadro && <div className="tab-lugar-empezar">{botonEmpezar}</div>}
             </div>
           ) : (
             <>

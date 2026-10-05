@@ -1,0 +1,61 @@
+TAREA 83 - LA TABLETA: LEER Y GRABAR EN VERTICAL Y DE LADO
+
+La vara de medidas NO se duplica acá. Está en:
+
+  docs/pantallas/tarea82/medidas-implementacion.md
+    sección 1 - Qué layout se activa (tel-v, tel-h, tab-v, tab-h y casos borde)
+    sección 3 - Tableta vertical (referencia 820×1180)
+    sección 4 - Tableta horizontal (referencia 1180×820)
+    sección 5 - Áreas seguras
+  docs/pantallas/tarea82/medidas-implementacion.png
+
+Los bocetos de tableta aprobados el 29-09-2026 (hora de Chile) son los dos de esta carpeta:
+
+  hoja-tableta.png         tema oscuro
+  hoja-tableta-claro.png   tema claro
+
+Un solo cambio sobre la hoja, decidido en el encargo de la 83: en tableta vertical, al apretar
+Empezar, la barra de arriba y el dock desaparecen y el texto usa todo el alto (el renglón vivo
+sube pegado arriba, cerca del lente). La regla de la 82 de conservar el espacio es del teléfono
+de lado y no se aplica a la tableta.
+
+Las capturas de la app real que se agreguen en esta carpeta van al lado de estas dos hojas.
+
+CAPTURAS DE LA APP REAL (30-09-2026, Chrome sin ventana, escala 1,5)
+
+  comparar-<pantalla>-<estado>-<tema>.png   la app a la izquierda, el boceto aprobado a la derecha
+    pantalla  tab-v (820×1180) · tab-h (1180×820)
+    estado    leer-listo · leer-leyendo · leer-leyendo-controles ·
+              grabar-listo-detras · grabar-listo-recuadro ·
+              grabar-grabando-detras · grabar-grabando-detras-controles ·
+              grabar-grabando-recuadro · grabar-grabando-recuadro-controles · grabar-pausa-tacho
+    tema      oscuro (hoja-tableta.png) · claro (hoja-tableta-claro.png)
+  editor-tab-v-final-del-texto.png, editor-tab-h-final-del-texto.png
+    el editor al final del guion: Leer y Grabar no tapan el último renglón.
+
+  Se rehacen con npx vite --host 127.0.0.1 --port 5183 desde la raíz y, en herramientas/:
+    node capturar.cjs    (las sueltas, en herramientas/crudas/, que no entran al repositorio)
+    node componer.cjs    (las comparar-*.png; BOCETOS apunta a los PNG sueltos del 29-09)
+  La imagen de la cámara es la de referencia de los bocetos: en el navegador no hay cámara nativa.
+  Por lo mismo no se ve el punto rojo: sale solo con la grabación nativa andando.
+
+PARTE B -04-10-2026-: LOS CONTROLES NUEVOS Y EL AVISO DE LS-M2
+  Herramienta: herramientas/controles.cjs -la app real servida con
+  docs/pantallas/tarea88/herramientas/vite.config.mjs en el puerto 5183-. Uso:
+  node docs/pantallas/tarea83/herramientas/controles.cjs [filtro]
+  controles-tel-v-grabar-{grabando,pausa,pausa-seguro}-{claro,oscuro}.png
+    Pausa 56 a la izquierda de Parar 72, separación 32; en pausa Seguir, Parar y el
+    tacho 56 -con su «¿Seguro?» a 96x56-. La pastilla del tiempo va centrada justo
+    encima de la fila, grabando y en pausa.
+  controles-{tel-h,tab-v,tab-h}-grabar-{pausa,pausa-seguro}-{claro,oscuro}.png
+    De lado, la columna lateral: Seguir encima de Parar y el tacho debajo. En tab-v la
+    fila va en el dock. La pastilla queda donde estaba: no choca.
+  controles-tel-v-grabar-aviso-{camara,microfono-en}-{claro,oscuro}.png y
+  controles-tab-h-grabar-aviso-camara-{claro,oscuro}.png
+    El aviso de LS-M2 sobre LISTO de Grabar -herramientas/aviso-m2.html: la app real y
+    el AvisoBreve real con el texto real; en el navegador no hay nativo que avise-.
+  Lo que el navegador no muestra: el punto rojo de grabar -solo con grabación nativa;
+  queda arriba a la derecha, sin cambios de lugar- y la cámara real -va dibujada la de
+  referencia de los bocetos-.
+  Los 48 de abajo con la barra de tres botones -tarea 89- los confirma Claude en el
+  emulador: estas láminas van sin área segura.

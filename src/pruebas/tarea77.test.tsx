@@ -148,7 +148,10 @@ describe('Letra y ancho, migrados a fichas y Ajustes', () => {
       expect(JSON.parse(localStorage.getItem('teleprompter_ajustes') || '{}').fontSize).toBe(32)
     })
 
-    fireEvent.click(screen.getByTestId('ficha-mas'))
+    // Antes (2026-10-05): fireEvent.click(screen.getByTestId('ficha-mas'))
+    // Tarea 93: en Grabar ya no hay Más; Ajustes está en la segunda fila, detrás de la flecha.
+    fireEvent.click(screen.getByTestId('ficha-flecha'))
+    fireEvent.click(screen.getByTestId('ficha-ajustes'))
     fireEvent.click(screen.getByTestId('fila-ancho-texto'))
     fireEvent.click(within(screen.getByTestId('dialogo-ancho')).getByRole('button', { name: 'Angosto' }))
     await waitFor(() => {
@@ -170,11 +173,14 @@ describe('Letra y ancho, migrados a fichas y Ajustes', () => {
     const { unmount } = render(<App repoOverride={repo} motor={new MotorFake()} />)
     fireEvent.click(await screen.findByTestId('fila-guion-g-77'))
     fireEvent.click(await screen.findByTestId('btn-grabar-guion-fijo'))
+    // Tarea 93, 05-10-2026: Subtítulos está en la segunda fila; la flecha la muestra.
+    fireEvent.click(await screen.findByTestId('ficha-flecha'))
     fireEvent.click(await screen.findByTestId('ficha-subtitulos'))
     fireEvent.click(screen.getByTestId('btn-subtitulo-formal'))
     expect(localStorage.getItem('sigo_subtitulos_estilo')).toBe('formal')
     expect(screen.getByTestId('ficha-subtitulos').textContent).toContain('Formal')
-    fireEvent.click(screen.getByTestId('ficha-mas'))
+    // Antes (2026-10-05): fireEvent.click(screen.getByTestId('ficha-mas'))
+    fireEvent.click(screen.getByTestId('ficha-ajustes'))
     expect(screen.queryByTestId('fila-subtitulos')).toBeNull()
     expect(screen.queryByTestId('fila-calidad')).toBeNull()
     unmount()
