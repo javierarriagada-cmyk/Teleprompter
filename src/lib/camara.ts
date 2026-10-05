@@ -64,6 +64,11 @@ export interface CamaraNativaPlugin {
   // -tarea 91- La orientación fija mientras dura la toma: lib/orientacionToma.ts.
   fijarOrientacion(options: { repetir?: boolean }): Promise<{ rotacion: number; orientacion: string; valor: number; anterior: string; natural: string }>
   soltarOrientacion(options: { olvidar?: boolean }): Promise<{ orientacion: string; rotacion: number }>
+  // -tarea 83, parte B, LS-M2- La cámara o el micrófono tomados por otra app en plena toma:
+  // lib/recursosToma.ts y PerdidaDeRecursos.java.
+  vigilarRecursos(options: { camara: boolean }): Promise<{ camara: boolean; microfono: boolean }>
+  soltarRecursos(): Promise<void>
+  addListener(evento: 'recursoPerdido', cb: (d: { recurso: 'camara' | 'microfono'; motivo: string }) => void): Promise<{ remove: () => Promise<void> }>
 }
 
 // Un solo registerPlugin. PruebaCamaraNativaView importa este mismo

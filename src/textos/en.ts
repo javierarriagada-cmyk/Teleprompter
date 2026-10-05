@@ -84,6 +84,9 @@ export const en: Textos = {
   guionBorrado: 'Script deleted',
   deshacer: 'Undo',
   tomaDescartada: 'Take discarded',
+  // -tarea 83, parte B, LS-M2- Another app took the camera or the microphone mid-take.
+  tomaCortadaCamara: 'Another app took the camera. The take stopped and was saved as incomplete.',
+  tomaCortadaMicrofono: 'Another app took the microphone. The take stopped and was saved as incomplete.',
   grabado: 'Recorded',
   grabadoDuracion: 'Recorded: {duracion}',
   // Al parar una lectura -28-09-2026-: antes decia Grabado aunque no se grababa nada.

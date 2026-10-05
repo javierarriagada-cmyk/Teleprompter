@@ -1067,6 +1067,9 @@ public class CamaraNativaPlugin extends Plugin {
                 int fijar = repetir && orientacionDeLaToma != null ? orientacionDeLaToma : calculada;
                 if (orientacionAntesDeLaToma == null) orientacionAntesDeLaToma = a.getRequestedOrientation();
                 orientacionDeLaToma = fijar;
+                // -tarea 83, parte B, 04-10-2026- En pantallas de 600 dp o más -la tableta- Android 16 ignora
+                // esta llamada con targetSdk 36, y se acepta: ahí la toma sigue al girar y cambia el diseño
+                // -medidas-implementacion.md:29-. Sin la excepción de compatibilidad. Ver orientacionToma.ts.
                 a.setRequestedOrientation(fijar);
                 Log.i(ETIQUETA_ORIENTACION, "fijar rotacion=" + OrientacionDeToma.grados(rotacion)
                     + " natural=" + (natural ? "vertical" : "horizontal")
@@ -1111,6 +1114,133 @@ public class CamaraNativaPlugin extends Plugin {
                 Log.w(ETIQUETA_ORIENTACION, "no se pudo soltar: " + e.getMessage());
                 call.reject("Error al soltar la orientación: " + e.getMessage(), e);
             }
+        });
+    }
+
+    // LA CÁMARA O EL MICRÓFONO SE PIERDEN EN PLENA TOMA -tarea 83, parte B, LS-M2, 04-10-2026-. Con la
+    // toma de Grabar andando, la web pide vigilar -src/lib/recursosToma.ts- y este plugin mira las dos
+    // señales que explica PerdidaDeRecursos: la vista previa que deja de transmitir con la actividad al
+    // frente, y la grabación propia que el sistema silencia. Si una dice que se perdió, avisa UNA vez con
+    // el evento recursoPerdido -{ recurso: 'camara' | 'microfono', motivo }- y la web corta la toma como
+    // al pasar a segundo plano. soltarRecursos deja de mirar. Sin dependencias nuevas: camera-view ya está
+    // en build.gradle y AudioManager es del sistema.
+    private static final String ETIQUETA_RECURSOS = "SigoRecursos";
+    private boolean vigilandoRecursos = false;
+    private boolean recursoPerdidoAvisado = false;
+    private boolean actividadAlFrente = true;
+    private boolean vistaPreviaTransmitia = false;
+    private PreviewView vistaPreviaVigilada = null;
+    private androidx.lifecycle.Observer<PreviewView.StreamState> observadorVistaPrevia = null;
+    private android.media.AudioManager.AudioRecordingCallback observadorGrabacion = null;
+
+    @Override
+    protected void handleOnPause() {
+        super.handleOnPause();
+        actividadAlFrente = false;
+    }
+
+    @Override
+    protected void handleOnResume() {
+        super.handleOnResume();
+        actividadAlFrente = true;
+    }
+
+    private void avisarRecursoPerdido(String recurso, String motivo) {
+        if (recursoPerdidoAvisado) return;
+        recursoPerdidoAvisado = true;
+        Log.i(ETIQUETA_RECURSOS, "perdido recurso=" + recurso + " motivo=" + motivo);
+        JSObject d = new JSObject();
+        d.put("recurso", recurso);
+        d.put("motivo", motivo);
+        notifyListeners("recursoPerdido", d);
+    }
+
+    private void dejarDeVigilarRecursos() {
+        vigilandoRecursos = false;
+        if (vistaPreviaVigilada != null && observadorVistaPrevia != null) {
+            vistaPreviaVigilada.getPreviewStreamState().removeObserver(observadorVistaPrevia);
+        }
+        vistaPreviaVigilada = null;
+        observadorVistaPrevia = null;
+        if (observadorGrabacion != null) {
+            try {
+                android.media.AudioManager am = (android.media.AudioManager) getContext().getSystemService(android.content.Context.AUDIO_SERVICE);
+                if (am != null) am.unregisterAudioRecordingCallback(observadorGrabacion);
+            } catch (Exception e) {
+                Log.w(ETIQUETA_RECURSOS, "no se pudo quitar el observador del micrófono: " + e.getMessage());
+            }
+        }
+        observadorGrabacion = null;
+    }
+
+    @PluginMethod
+    public void vigilarRecursos(PluginCall call) {
+        boolean camara = Boolean.TRUE.equals(call.getBoolean("camara", false));
+        Activity a = getActivity();
+        if (a == null) {
+            call.reject("Sin actividad para vigilar la cámara y el micrófono");
+            return;
+        }
+        a.runOnUiThread(() -> {
+            try {
+                dejarDeVigilarRecursos();
+                vigilandoRecursos = true;
+                recursoPerdidoAvisado = false;
+                boolean camaraVigilada = false;
+                if (camara) {
+                    PreviewView pv = buscarPreviewView(a.findViewById(android.R.id.content));
+                    if (pv != null) {
+                        vistaPreviaVigilada = pv;
+                        vistaPreviaTransmitia = pv.getPreviewStreamState().getValue() == PreviewView.StreamState.STREAMING;
+                        observadorVistaPrevia = (estado) -> {
+                            boolean ahora = estado == PreviewView.StreamState.STREAMING;
+                            if (PerdidaDeRecursos.camaraPerdida(vigilandoRecursos, vistaPreviaTransmitia, ahora, actividadAlFrente)) {
+                                avisarRecursoPerdido("camara", "vista-previa-detenida");
+                            }
+                            vistaPreviaTransmitia = ahora;
+                        };
+                        pv.getPreviewStreamState().observeForever(observadorVistaPrevia);
+                        camaraVigilada = true;
+                    }
+                }
+                boolean microfonoVigilado = false;
+                android.media.AudioManager am = (android.media.AudioManager) getContext().getSystemService(android.content.Context.AUDIO_SERVICE);
+                if (am != null) {
+                    observadorGrabacion = new android.media.AudioManager.AudioRecordingCallback() {
+                        @Override
+                        public void onRecordingConfigChanged(java.util.List<android.media.AudioRecordingConfiguration> configs) {
+                            java.util.List<Boolean> silenciadas = new java.util.ArrayList<>();
+                            if (configs != null) for (android.media.AudioRecordingConfiguration c : configs) silenciadas.add(c.isClientSilenced());
+                            if (PerdidaDeRecursos.microfonoPerdido(vigilandoRecursos, silenciadas)) {
+                                avisarRecursoPerdido("microfono", "silenciado-por-el-sistema");
+                            }
+                        }
+                    };
+                    am.registerAudioRecordingCallback(observadorGrabacion, new android.os.Handler(android.os.Looper.getMainLooper()));
+                    microfonoVigilado = true;
+                }
+                Log.i(ETIQUETA_RECURSOS, "vigilar camara=" + camaraVigilada + " microfono=" + microfonoVigilado);
+                JSObject r = new JSObject();
+                r.put("camara", camaraVigilada);
+                r.put("microfono", microfonoVigilado);
+                call.resolve(r);
+            } catch (Exception e) {
+                call.reject("Error al vigilar la cámara y el micrófono: " + e.getMessage(), e);
+            }
+        });
+    }
+
+    @PluginMethod
+    public void soltarRecursos(PluginCall call) {
+        Activity a = getActivity();
+        if (a == null) {
+            call.resolve();
+            return;
+        }
+        a.runOnUiThread(() -> {
+            dejarDeVigilarRecursos();
+            Log.i(ETIQUETA_RECURSOS, "soltar");
+            call.resolve();
         });
     }
 }

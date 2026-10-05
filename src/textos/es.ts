@@ -93,6 +93,9 @@ export const es = {
   guionBorrado: 'Guion borrado',
   deshacer: 'Deshacer',
   tomaDescartada: 'Toma descartada',
+  // -tarea 83, parte B, LS-M2- Otra app tomó la cámara o el micrófono en plena toma.
+  tomaCortadaCamara: 'Otra app tomó la cámara. La toma se cortó y quedó guardada como incompleta.',
+  tomaCortadaMicrofono: 'Otra app tomó el micrófono. La toma se cortó y quedó guardada como incompleta.',
   grabado: 'Grabado',
   grabadoDuracion: 'Grabado: {duracion}',
   // Al parar una lectura -28-09-2026-: antes decia Grabado aunque no se grababa nada.
