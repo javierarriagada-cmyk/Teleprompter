@@ -14,6 +14,15 @@
 // SigoOrientacion. Aquí cada paso se anota como «[orientacion] <evento> clave=valor ...» en la consola
 // -chromium en logcat, o chrome://inspect- y en una memoria que leen las pruebas. En la web el plugin no
 // existe: se anota «no-disponible» y no pasa nada más.
+//
+// EN LA TABLETA NO SE BLOQUEA, Y SE ACEPTA -tarea 83, parte B, 04-10-2026, aprobado por Javier-. Con
+// targetSdkVersion 36 -android/variables.gradle-, Android 16 ignora setRequestedOrientation en pantallas
+// de 600 dp o más de ancho mínimo -developer.android.com/about/versions/16/behavior-changes-16-. Aquí se
+// sigue llamando igual -en el teléfono vale y la llamada no hace daño-, pero en la tableta la pantalla
+// gira durante la toma y vale la vara: «Rotación en plena toma: se cambia de layout sin cortar la
+// grabación ni mover el renglón vivo» -docs/pantallas/tarea82/medidas-implementacion.md:29-. NO se usa
+// la excepción PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY: pondría la app en modo de compatibilidad
+// en la tableta -LS-C1 de la guía de pantallas grandes-.
 import { CamaraNativa } from './camara'
 
 let bloqueada = false

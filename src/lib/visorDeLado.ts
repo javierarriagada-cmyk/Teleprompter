@@ -10,6 +10,9 @@
 //   CASO 2 -toma vertical 9:16-: el video a todo el alto y una tarjeta compacta de 320 a su lado; el
 //     grupo centrado sobre --bg-suelo, sin bordes que marquen el hueco.
 // De pie el visor no cambia: este archivo solo se usa en 'tel-h'.
+// -tarea 83, parte B, 04-10-2026- Y en 'tab-h', la tableta de lado, con estas mismas cuentas: ahí la
+// columna queda en COLUMNA_MINIMA y el video se ajusta -ajustado = true-, porque un 16:9 a todo el alto
+// mide más que el ancho de la pantalla. Antes: solo 'tel-h'.
 //
 // Todo en dp -px de CSS en la WebView-. Los bordes seguros llegan de env(safe-area-inset-*): el
 // recorte de la cámara del moto g86 -125 px a 450 dpi = 44 dp- y la barra de tres botones -48 dp-,
