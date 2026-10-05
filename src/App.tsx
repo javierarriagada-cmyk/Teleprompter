@@ -49,6 +49,7 @@ import {
   cerrarPausa,
   msDelVideo
 } from './lib/tomaVideo'
+import { debeBorrarArchivos, loteNuevo, MS_DESHACER_TOMA } from './lib/seleccionTomas'
 // -tarea 88, 04-10-2026- La pausa con cortes y el control por gestos -docs/tarea88.txt-.
 import { paso, EstadoPausa, Entrada as EntradaPausa, Accion as AccionPausa } from './lib/pausaToma'
 import { duracionVisible, MS_MINIMO_QUE_QUEDA } from './lib/tramos'
@@ -815,6 +816,78 @@ export default function App({ motor, repoOverride }: AppProps) {
       }
     })
   }, [guionActual, cargarBiblioteca, mostrarAviso])
+
+  // -tarea 94- Borrar tomas marcadas. Salen de la lista al tiro. Los archivos
+  // esperan a que se vaya el aviso. Si llega otra tanda, la anterior se confirma
+  // porque el aviso nuevo reemplaza al anterior. A segundo plano, al tiro.
+  const pendientesTomasRef = useRef<Map<string, ResumenGrabacion>>(new Map())
+  const loteTomasRef = useRef<ReturnType<typeof loteNuevo> | null>(null)
+  const timerTomasRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const confirmarTomasPendientes = useCallback(async () => {
+    const ids = [...pendientesTomasRef.current.keys()]
+    loteTomasRef.current = null
+    if (timerTomasRef.current) {
+      clearTimeout(timerTomasRef.current)
+      timerTomasRef.current = null
+    }
+    for (const id of ids) {
+      const g = pendientesTomasRef.current.get(id)
+      pendientesTomasRef.current.delete(id)
+      if (!g) continue
+      try {
+        await borrarGrabacionEnDisco(g)
+        await repoGrabacionesRef.current.borrar(id)
+      } catch (e) {
+        console.warn('[App] no se pudo borrar la toma:', e)
+      }
+    }
+    if (ids.length) setGrabaciones(await repoGrabacionesRef.current.listar())
+  }, [])
+
+  const handleBorrarTomas = useCallback((ids: string[]) => {
+    if (pendientesTomasRef.current.size) {
+      void confirmarTomasPendientes()
+    }
+    const elegidas = grabaciones.filter((g) => ids.includes(g.id))
+    for (const g of elegidas) pendientesTomasRef.current.set(g.id, g)
+    setGrabaciones((prev) => prev.filter((g) => !ids.includes(g.id)))
+    const lote = loteNuevo(ids, Date.now())
+    loteTomasRef.current = lote
+    timerTomasRef.current = setTimeout(() => {
+      if (loteTomasRef.current && debeBorrarArchivos(loteTomasRef.current, Date.now(), false)) {
+        void confirmarTomasPendientes()
+      }
+    }, MS_DESHACER_TOMA)
+    mostrarAviso(t('tomasBorradas', { n: ids.length }), {
+      accionTexto: t('deshacer'),
+      duracionMs: MS_DESHACER_TOMA,
+      alEjecutarAccion: () => {
+        if (timerTomasRef.current) {
+          clearTimeout(timerTomasRef.current)
+          timerTomasRef.current = null
+        }
+        loteTomasRef.current = null
+        const devueltas = ids.map((id) => pendientesTomasRef.current.get(id)).filter(Boolean) as ResumenGrabacion[]
+        ids.forEach((id) => pendientesTomasRef.current.delete(id))
+        setGrabaciones((prev) => [...devueltas, ...prev.filter((g) => !devueltas.some((d) => d.id === g.id))])
+      }
+    })
+  }, [grabaciones, confirmarTomasPendientes, mostrarAviso])
+
+  useEffect(() => {
+    const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive && loteTomasRef.current && debeBorrarArchivos(loteTomasRef.current, Date.now(), true)) {
+        void confirmarTomasPendientes()
+      }
+    })
+    return () => {
+      try {
+        if (sub && typeof sub.then === 'function') sub.then((h: any) => h && h.remove && h.remove()).catch(() => {})
+        else if (sub && typeof sub.remove === 'function') sub.remove()
+      } catch (e) {}
+    }
+  }, [confirmarTomasPendientes])
 
   async function handleArchivarGuion(id: string, archivado: boolean) {
     try {
@@ -2213,6 +2286,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               }
               if (grabacionAbierta && grabacionAbierta.id === id) setGrabacionAbierta(null)
             }}
+            onBorrarTomas={handleBorrarTomas}
             style={{
               // La biblioteca se oscurece MIENTRAS crece la ventana, no de golpe: un
               // apagon instantaneo se lee como un corte, que es justo lo que la

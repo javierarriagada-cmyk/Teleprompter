@@ -2056,3 +2056,41 @@ button.btn-deformable.miniatura-banda:not(:active) {
 .aviso-voz > div {
   margin-bottom: 0 !important; /* el indicador trae su margen para el flujo de la página: aquí flota */
 }
+
+/* SELECCIÓN DE TOMAS -tarea 94, 05-10-2026-. La barra reemplaza la de la portada.
+   El círculo con ✓ va en la esquina de la miniatura. Colores de la vara. */
+.barra-seleccion-tomas {
+  display: flex;
+  align-items: center;
+  gap: var(--aire-2);
+  width: 100%;
+}
+.cuenta-seleccion {
+  flex: 1;
+  color: var(--color-texto);
+  font-size: var(--texto-cuerpo);
+  font-weight: 600;
+}
+.enlace-seleccion {
+  background: transparent;
+  border: none;
+  color: var(--color-texto);
+  font-size: var(--texto-meta);
+  padding: var(--aire-2);
+  cursor: pointer;
+}
+.marca-seleccion {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-texto);
+  color: var(--bg-suelo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}

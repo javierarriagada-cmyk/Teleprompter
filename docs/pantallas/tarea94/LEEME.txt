@@ -1,0 +1,3 @@
+Tarea 94. Láminas pedidas: teléfono de pie, oscuro, modo selección con 3 marcadas, y el aviso de Deshacer.
+No se generaron acá: no hay emulador en esta pasada, y la sesión anterior se cortó antes de escribirlas.
+Los dos estados están en la rama. Claude las saca en el moto g86 o en el emulador al armar.

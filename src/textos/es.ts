@@ -92,6 +92,10 @@ export const es = {
   guardado: 'Guardado',
   guionBorrado: 'Guion borrado',
   deshacer: 'Deshacer',
+  // -tarea 94, 05-10-2026- Selección de tomas. {n} es la cuenta.
+  tomasSeleccionadas: '{n} seleccionadas',
+  seleccionarTodo: 'Seleccionar todo',
+  tomasBorradas: '{n} tomas borradas',
   tomaDescartada: 'Toma descartada',
   // -tarea 83, parte B, LS-M2- Otra app tomó la cámara o el micrófono en plena toma.
   tomaCortadaCamara: 'Otra app tomó la cámara. La toma se cortó y quedó guardada como incompleta.',

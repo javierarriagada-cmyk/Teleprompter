@@ -83,6 +83,10 @@ export const en: Textos = {
   guardado: 'Saved',
   guionBorrado: 'Script deleted',
   deshacer: 'Undo',
+  // -tarea 94, 05-10-2026- Take selection. {n} is the count.
+  tomasSeleccionadas: '{n} selected',
+  seleccionarTodo: 'Select all',
+  tomasBorradas: '{n} takes deleted',
   tomaDescartada: 'Take discarded',
   // -tarea 83, parte B, LS-M2- Another app took the camera or the microphone mid-take.
   tomaCortadaCamara: 'Another app took the camera. The take stopped and was saved as incomplete.',
