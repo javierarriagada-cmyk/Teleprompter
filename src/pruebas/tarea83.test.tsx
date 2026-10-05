@@ -151,12 +151,17 @@ describe('Tarea 83 - La tableta: leer y grabar en vertical y de lado', () => {
     expect(regla('.tab-dock')).toContain('height: calc(var(--tab-dock) + env(safe-area-inset-bottom, 0px))')
   })
 
-  test('T83b 820 x 1180, Grabar LISTO: las seis fichas en el dock, en orden, y Más en la barra.', async () => {
+  // Antes (2026-10-05): test('T83b 820 x 1180, Grabar LISTO: las seis fichas en el dock, en orden, y Más en la barra.', async () => {
+  test('T83b 820 x 1180, Grabar LISTO: las cuatro fichas y la flecha en el dock, en orden; sin Más en la barra.', async () => {
     fingirVentana(820, 1180)
     await abrir('grabar')
     const dock = screen.getByTestId('tab-dock')
-    expect(fichasEn(dock)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-calidad', 'ficha-subtitulos'])
-    expect(within(screen.getByTestId('tab-barra')).getByTestId('ficha-mas')).toBeTruthy()
+    // Tarea 93, 05-10-2026: en Grabar la primera fila termina en la flecha; Calidad y Subtítulos
+    // pasaron a la segunda fila, y Más ya no está en Grabar.
+    // Antes (2026-10-05): expect(fichasEn(dock)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-calidad', 'ficha-subtitulos'])
+    expect(fichasEn(dock)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha'])
+    // Antes (2026-10-05): expect(within(screen.getByTestId('tab-barra')).getByTestId('ficha-mas')).toBeTruthy()
+    expect(within(screen.getByTestId('tab-barra')).queryByTestId('ficha-mas')).toBeNull()
     expect(within(dock).queryByTestId('ficha-mas')).toBeNull()
     expect(screen.queryByTestId('velo-controles')).toBeNull()
   })
@@ -205,15 +210,20 @@ describe('Tarea 83 - La tableta: leer y grabar en vertical y de lado', () => {
     expect(screen.getByTestId('ficha-letra').textContent).toBe('Aa 24')
   })
 
-  test('T83f 1180 x 820 es tab-h: rieles de 168, fichas a la izquierda y Más a la derecha.', async () => {
+  // Antes (2026-10-05): test('T83f 1180 x 820 es tab-h: rieles de 168, fichas a la izquierda y Más a la derecha.', async () => {
+  test('T83f 1180 x 820 es tab-h: rieles de 168, fichas y flecha a la izquierda; sin Más en Grabar.', async () => {
     fingirVentana(1180, 820)
     await abrir('grabar')
     expect(document.querySelector('.layout-tab-h')).not.toBeNull()
     const izq = screen.getByTestId('riel-izquierdo')
     const der = screen.getByTestId('riel-derecho')
-    expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-calidad', 'ficha-subtitulos'])
+    // Tarea 93, 05-10-2026: en Grabar la primera fila termina en la flecha; Calidad y Subtítulos
+    // pasaron a la segunda fila, y Más ya no está en Grabar.
+    // Antes (2026-10-05): expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-calidad', 'ficha-subtitulos'])
+    expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha'])
     izq.querySelectorAll('[data-testid^="ficha-"]').forEach((f) => expect(f.className).toContain('grande ancha'))
-    expect(within(der).getByTestId('ficha-mas')).toBeTruthy()
+    // Antes (2026-10-05): expect(within(der).getByTestId('ficha-mas')).toBeTruthy()
+    expect(within(der).queryByTestId('ficha-mas')).toBeNull()
     expect(within(izq).queryByTestId('ficha-mas')).toBeNull()
     expect(within(der).getByTestId('btn-empezar-toma')).toBeTruthy()
     expect(screen.queryByTestId('velo-controles')).toBeNull()
@@ -263,8 +273,12 @@ describe('Tarea 83 - La tableta: leer y grabar en vertical y de lado', () => {
     await abrir('grabar')
     expect(document.querySelector('.layout-tel-h')).not.toBeNull()
     const izq = screen.getByTestId('riel-izquierdo')
-    expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-calidad', 'ficha-subtitulos'])
-    expect(within(screen.getByTestId('riel-derecho')).getByTestId('ficha-mas')).toBeTruthy()
+    // Tarea 93, 05-10-2026: en Grabar la primera fila termina en la flecha; Calidad y Subtítulos
+    // pasaron a la segunda fila, y Más ya no está en Grabar.
+    // Antes (2026-10-05): expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-calidad', 'ficha-subtitulos'])
+    expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha'])
+    // Antes (2026-10-05): expect(within(screen.getByTestId('riel-derecho')).getByTestId('ficha-mas')).toBeTruthy()
+    expect(within(screen.getByTestId('riel-derecho')).queryByTestId('ficha-mas')).toBeNull()
     expect(screen.getByTestId('ficha-letra').className).not.toContain('grande')
     expect(screen.getByTestId('ficha-letra').textContent).toContain('24')
     expect(screen.queryByTestId('tab-barra')).toBeNull()
