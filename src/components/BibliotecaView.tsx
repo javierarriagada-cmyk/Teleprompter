@@ -713,8 +713,8 @@ export default function BibliotecaView({
             </button>
             {/* -tarea 94, revision, 05-10-2026, Javier- MARCAR TODAS VA CON LA CUENTA, LEJOS DEL TACHO.
                 Con "Seleccionar todo" pegado al tacho se leia "borrar todo" y hacia dudar antes de
-                borrar unas pocas. Ahora es una casilla junto a la cuenta, como en Gmail y Archivos de
-                Google: marca todas, y si ya estan todas las desmarca -con cero, se sale del modo-. El
+                borrar unas pocas. Ahora es una casilla junto a la cuenta, como en las apps de correo y de archivos de
+                Android: marca todas, y si ya estan todas las desmarca -con cero, se sale del modo-. El
                 tacho queda solo a la derecha. Antes: <span cuenta> y un boton de texto
                 "Seleccionar todo" entre la cuenta y el tacho. */}
             {(() => {
