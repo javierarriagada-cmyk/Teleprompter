@@ -31,8 +31,8 @@ export default {
   e1: { capitulo: 'Read', titular: 'You talk. It&nbsp;follows.', bajada: 'Speak, and the text moves with you. No hands, no scrolling.' },
   e2: { capitulo: 'It waits', titular: 'Others keep scrolling. <span class="acento">Sigo waits.</span>', bajada: 'Stop to think, and the text waits for you. Start talking again, and it picks up right where you are.' },
   e3: { capitulo: 'Your script', titular: 'Mark what matters.', bajada: 'Bold the lines you want to land. Color the shifts in tone. Highlight what you can’t afford to miss.' },
-  e4: { capitulo: 'Record', titular: 'Eyes on the lens.', bajada: 'The text sits right under the camera. You look into the lens, not down at the screen.' },
-  e5: { capitulo: 'Captions', titular: 'Captions that keep time.', bajada: 'When you’re done, your video comes with captions built from your script, in step with your voice.' },
+  e4: { capitulo: 'Record', titular: 'Eyes on the lens.', bajada: 'The text sits under the camera: you look at the lens, not the screen. Pause whenever you like, and the pause stays out of the video. Away from the phone, pause with your palm.' },
+  e5: { capitulo: 'Your video', titular: 'Captions that keep time.', bajada: 'When you’re done, your video has captions in time with your voice and the filter you choose. What you see is what gets saved.' },
   e6: { capitulo: 'Offline', titular: 'No signal? No problem.', bajada: 'Works without internet. Your voice never leaves your phone.' },
 
   estilos: { amarillo: 'Yellow', rojo: 'Red', formal: 'Formal' },
@@ -69,6 +69,8 @@ export default {
       'So do your takes.<small>If you save one to your gallery, that’s where it stays.</small>',
       'Sigo uses the microphone to follow your voice.<small>Speech recognition runs on the phone. Your audio is never sent to any server.</small>',
       'Sigo uses the camera when you turn it on to record yourself.<small>The video is saved on your phone and stays there.</small>',
+      'Gestures are recognized on the phone.<small>No image leaves it.</small>',
+      'Sigo does not send usage statistics.',
       'Sigo has no accounts.',
       'This site uses no tracking cookies and no analytics.'
     ],
@@ -86,9 +88,9 @@ export default {
   // apostrofo va recto -I'm, can't-: es lo que escribe un teclado, y el guion es un guion.
   lectura: {
     guion: [
-      'Today I want to tell you something **important**. For years I filmed videos reading off a sheet of paper, and it showed. Now I read, I talk, and {salvia}the text follows me{/}. {ambar}No rushing.{/} {celeste}No losing my place.{/} And whatever I can\'t afford to miss, ==I mark in yellow==.',
+      'Today I want to tell you something **important**. In a short video or a long one, reading off a sheet of paper always shows. Now I read, I talk, and {salvia}the text follows me{/}. {ambar}No rushing.{/} {celeste}No losing my place.{/} And whatever I can\'t afford to miss, ==I mark in yellow==.',
       'If I stop to think, the text waits for me. When I start talking again, it keeps up with me. I look at the lens, not at the screen, and whoever is watching feels I\'m talking straight to them.',
-      'I record from start to finish, no cuts, and when I\'m done the video already has its captions. I share it just as it came out.'
+      'If I pause, that stretch stays out. When I\'m done the video already has its captions. I share it just as it came out.'
     ],
     parrafosLeidos: 2,
     pausaDespuesDe: 'think,',
