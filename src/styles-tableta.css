@@ -468,3 +468,34 @@
   top: calc(35px + env(safe-area-inset-top, 0px));
   right: calc(var(--riel-der) / 2 + 32px + env(safe-area-inset-right, 0px));
 }
+
+/* LA SEGUNDA FILA DE GRABAR EN LA TABLETA -tarea 93, 05-10-2026-.
+   Vertical: como en el teléfono de pie, encima de la fila del dock, centrada, 8 entre las dos filas.
+   La fila del dock es static, así que la segunda se ubica respecto del dock: la primera fila empieza
+   20 debajo del borde del dock -su relleno de arriba-. bottom 100% - 20 pone el borde de abajo de la
+   segunda ahí, y sus 8 de relleno -el aire del toque, como en la primera- dejan 8 entre fichas.
+   El panel de una ficha sube por encima de ella: la segunda fila termina arriba en 100% + 32
+   -20 - 8 - 44 = -32- y el panel va 8 más arriba. */
+.layout-tab-v .tab-dock .carril-fichas.segunda-fila-fichas {
+  left: 0;
+  right: 0;
+  bottom: calc(100% - 20px);
+  margin: 0 auto;
+}
+.layout-tab-v .tab-dock .fila-fichas-listo.segunda-abierta > .panel-ficha {
+  bottom: calc(100% + 32px + 8px);
+}
+/* De lado: una columna al costado del riel, 8 a su derecha, desde la misma altura que la primera
+   -y = 92- y con el mismo ancho de ficha -168 - 20 - 20 = 128-. El panel se corre a su derecha. */
+.layout-tab-h .riel-izquierdo .carril-fichas.segunda-fila-fichas {
+  top: calc(92px + env(safe-area-inset-top, 0px));
+  bottom: auto;
+  left: calc(100% + 8px);
+  right: auto;
+  width: calc(var(--riel-izq-grabar) - 40px);
+  overflow: visible;
+  padding-bottom: 0;
+}
+.layout-tab-h .riel-izquierdo .fila-fichas-listo.segunda-abierta > .panel-ficha {
+  left: calc(100% + 8px + var(--riel-izq-grabar) - 40px + 8px);
+}

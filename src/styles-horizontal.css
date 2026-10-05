@@ -181,3 +181,18 @@
   min-width: 100px;
   padding: 6px 8px 8px;
 }
+
+/* LA SEGUNDA COLUMNA DE FICHAS EN GRABAR -tarea 93, 05-10-2026-. De lado la flecha no abre una fila
+   debajo: abre una columna al costado del riel, 8 a su derecha, desde la misma altura que la primera
+   -y = 60- y con el mismo ancho de ficha -128 - 10 - 10 = 108-. El panel de una ficha se corre a la
+   derecha de esa columna para no taparla. */
+.layout-tel-h .riel-izquierdo.riel-grabar .carril-fichas.segunda-fila-fichas {
+  top: calc(60px + env(safe-area-inset-top, 0px));
+  bottom: auto;
+  left: calc(100% + 8px);
+  right: auto;
+  width: calc(var(--riel-izq-grabar) - 20px);
+}
+.layout-tel-h .riel-izquierdo .fila-fichas-listo.segunda-abierta > .panel-ficha {
+  left: calc(100% + 8px + var(--riel-izq-grabar) - 20px + 8px);
+}

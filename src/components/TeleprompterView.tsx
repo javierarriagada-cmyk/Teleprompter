@@ -1518,7 +1518,9 @@ export default function TeleprompterView({
             >
               {botonVolverListo}
               <div className="tab-titulo" data-testid="tab-titulo">{guionObj.titulo}</div>
-              {!arrastrandoRecuadro && (
+              {/* Antes -hasta 2026-10-05-: {!arrastrandoRecuadro && ( */}
+              {/* 05-10-2026, tarea 93: en Grabar Más no va acá -Ajustes vive en la segunda fila de fichas-. */}
+              {!arrastrandoRecuadro && !conCamara && (
                 <div className="tab-lugar-mas">
                   <FichaMas setPanelAbierto={setPanelFicha} onAbrirAjustes={onAbrirAjustes} grande />
                 </div>
@@ -1563,7 +1565,11 @@ export default function TeleprompterView({
               className={`riel-lectura riel-derecho${textoSobreImagen ? ' sobre-imagen' : ''}`}
             >
               <div className="riel-fondo" aria-hidden="true" />
-              {!arrastrandoRecuadro && (
+              {/* Antes -hasta 2026-10-05-: {!arrastrandoRecuadro && ( */}
+              {/* 05-10-2026, tarea 93: en Grabar Más sale del riel derecho -Ajustes vive en la segunda
+                  columna de fichas-. Rompe la regla de la tarea 82 "Más en el mismo lugar en Leer y en
+                  Grabar": en Leer sigue aquí. */}
+              {!arrastrandoRecuadro && !conCamara && (
                 <div className="riel-lugar-arriba riel-lugar-ficha-mas">
                   <FichaMas setPanelAbierto={setPanelFicha} onAbrirAjustes={onAbrirAjustes} grande={tableta} />
                 </div>
