@@ -33,6 +33,11 @@
 // backend cct de datatransport fuera del manifiesto, F11-. Evidencia en ../evidencia.md.
 // En inglés, la misma idea, con los nombres que la app usa en inglés -Warm, Cool, Vivid, Soft, B&W,
 // src/textos/en.ts-. Las rayas del inglés van pegadas, a la manera de Estados Unidos.
+// LA LÍNEA DE GESTOS, PRECISADA -Javier, 05-10-2026-: dice que es con la cámara frontal y que la V
+// termina en pausa -src/lib/pausaToma.ts:74 y :95; grabando, la V no hace nada-. Antes:
+// "- Control por gestos: lejos del teléfono, muestra la palma para pausar o seguir, y la V para
+// terminar." y "- Gesture control: when you are away from the phone, show your palm to pause or
+// resume, and a V sign to finish."
 // Antes, en GRABA TU VIDEO: "- Cámara frontal o trasera, en 1080p, 720p o 480p. En vertical o de lado."
 // y en A TU MANERA: "- Tamaño de letra, tipografía, ancho del texto y colores de lectura." -y en
 // inglés "Portrait or landscape." y "Font size, typeface, text width and reading colors."-.
@@ -63,7 +68,7 @@ GRABA TU VIDEO AHÍ MISMO
 - Tu imagen va detrás del texto, en un recuadro que mueves donde quieras, u oculta mientras grabas.
 - Cámara frontal o trasera, en 1080p, 720p o 480p. En vertical o de lado, en teléfono o tableta.
 - Pausa cuando quieras: lo que pasa en la pausa no queda en el video.
-- Control por gestos: lejos del teléfono, muestra la palma para pausar o seguir, y la V para terminar.
+- Control por gestos con la cámara frontal: lejos del teléfono, muestra la palma para pausar o seguir y, en pausa, la V para terminar.
 - Subtítulos en tres estilos: Amarillo, Rojo y Formal. Salen de tu guion y del tiempo de tu voz, y quedan dentro del video al guardarlo.
 - Seis filtros —Natural, Cálido, Frío, Vivo, Suave y B/N— que eliges mirando tu video. Lo que ves es lo que se guarda.
 - Guarda tu video en la galería o compártelo.
@@ -115,7 +120,7 @@ RECORD YOUR VIDEO RIGHT THERE
 - Your camera image goes behind the text, in a small frame you can drag anywhere, or stays hidden while you record.
 - Front or back camera, in 1080p, 720p or 480p. Portrait or landscape, on a phone or a tablet.
 - Pause whenever you want: nothing that happens during the pause ends up in the video.
-- Gesture control: when you are away from the phone, show your palm to pause or resume, and a V sign to finish.
+- Gesture control with the front camera: away from the phone, show your palm to pause or resume and, while paused, a V sign to finish.
 - Captions in three styles: Yellow, Red and Formal. They come from your script and the timing of your voice, and are burned into the video when you save it.
 - Six filters—Natural, Warm, Cool, Vivid, Soft and B&W—that you choose while watching your video. What you see is what gets saved.
 - Save your video to the gallery or share it.

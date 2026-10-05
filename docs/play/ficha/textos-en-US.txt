@@ -15,7 +15,7 @@ DESCRIPCIÓN BREVE (máximo 80) — 75 caracteres
 La A, elegida por Javier, sin cambios: nunca dijo "offline".
 
 ==============================================================================
-DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2779 caracteres
+DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2802 caracteres
 ==============================================================================
 [[Forget your lines the moment you hit record? With Sigo you read aloud and the script moves with you, at your pace. Pause, and it waits.
 
@@ -36,7 +36,7 @@ RECORD YOUR VIDEO RIGHT THERE
 - Your camera image goes behind the text, in a small frame you can drag anywhere, or stays hidden while you record.
 - Front or back camera, in 1080p, 720p or 480p. Portrait or landscape, on a phone or a tablet.
 - Pause whenever you want: nothing that happens during the pause ends up in the video.
-- Gesture control: when you are away from the phone, show your palm to pause or resume, and a V sign to finish.
+- Gesture control with the front camera: away from the phone, show your palm to pause or resume and, while paused, a V sign to finish.
 - Captions in three styles: Yellow, Red and Formal. They come from your script and the timing of your voice, and are burned into the video when you save it.
 - Six filters—Natural, Warm, Cool, Vivid, Soft and B&W—that you choose while watching your video. What you see is what gets saved.
 - Save your video to the gallery or share it.

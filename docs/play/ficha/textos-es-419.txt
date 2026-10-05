@@ -15,7 +15,7 @@ DESCRIPCIÓN BREVE (máximo 80) — 73 caracteres
 La A, elegida por Javier, sin "sin internet": eso ahora va al final de la completa.
 
 ==============================================================================
-DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2813 caracteres
+DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2845 caracteres
 ==============================================================================
 [[¿Se te olvida el guion justo cuando empiezas a grabar? Con Sigo lees en voz alta y el texto avanza contigo, a tu ritmo. Si haces una pausa, te espera.
 
@@ -36,7 +36,7 @@ GRABA TU VIDEO AHÍ MISMO
 - Tu imagen va detrás del texto, en un recuadro que mueves donde quieras, u oculta mientras grabas.
 - Cámara frontal o trasera, en 1080p, 720p o 480p. En vertical o de lado, en teléfono o tableta.
 - Pausa cuando quieras: lo que pasa en la pausa no queda en el video.
-- Control por gestos: lejos del teléfono, muestra la palma para pausar o seguir, y la V para terminar.
+- Control por gestos con la cámara frontal: lejos del teléfono, muestra la palma para pausar o seguir y, en pausa, la V para terminar.
 - Subtítulos en tres estilos: Amarillo, Rojo y Formal. Salen de tu guion y del tiempo de tu voz, y quedan dentro del video al guardarlo.
 - Seis filtros —Natural, Cálido, Frío, Vivo, Suave y B/N— que eliges mirando tu video. Lo que ves es lo que se guarda.
 - Guarda tu video en la galería o compártelo.
