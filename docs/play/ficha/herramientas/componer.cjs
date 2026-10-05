@@ -26,6 +26,14 @@ const { LETRAS, marca, html, conDestacado, C } = require('./componer-base.cjs')
 const datos = (f) => 'data:image/png;base64,' + fs.readFileSync(f).toString('base64')
 
 // ---------- el marco del teléfono ----------
+// El interlineado del titular, en em -ver marcoTelefono-. De lado el aire pedido es proporcional al
+// ancho -16 x 1920 / 1080, 28,4 px- con una letra de 66 y no de 80: por eso el número es más alto.
+// MEDIDO con aire.cjs, 05-10-2026, el peor renglón de arriba es el que tiene colas -la «g» de «Elige»-:
+//   de pie, 1.08 -> 0 a 2 px; 1.40 -> 10; 1.50 -> 18. Queda 1.52, con dos de margen: unos 19.
+//   de lado, con un titular de prueba de dos renglones con «g» y «p» -hoy ninguno de lado tiene dos-:
+//   1.60 -> 22; 1.72 -> 30; 1.80 -> 36. Queda 1.76, unos 33. Ojo: de lado, dos renglones no caben
+//   sobre la pantalla con ningún interlineado -ni con 1.08-: el titular de lado tiene que ser de uno.
+const INTERLINEADO = { pie: 1.52, lado: 1.76 }
 // SIN DIBUJO DE TELÉFONO: Play pide no usar imágenes de dispositivos -answer/9866151-. La
 // pantalla va sola, con esquinas redondeadas y una sombra larga -"sombras largas del teléfono",
 // docs/el-sitio.md 6-. El titular ocupa menos del 20 % de alto -Play: "taglines" hasta 20 %-:
@@ -37,6 +45,16 @@ function marcoTelefono({ cruda, etiqueta, titular, horizontal }) {
   // -1600 x 720, un teléfono común acostado-.
   const p = horizontal ? { w: 1600, h: 720, x: 160, y: 250 } : { w: 792, h: 1408, x: 144, y: 420 }
   const tit = horizontal ? { top: 58, eti: 26, tam: 66 } : { top: 92, eti: 30, tam: 80 }
+  // EL AIRE ENTRE LOS RENGLONES DEL TITULAR -Javier, 05-10-2026-. Con line-height 1.08 la franja
+  // amarilla del segundo renglón tocaba el primero: la cola de la «p» de «Las pausas», la coma de «Mira
+  // a la cámara,». La franja pinta el área de contenido de la letra, que es más alta que un renglón
+  // de 1.08. Se pidió un aire visible de al menos 16 px a 1080 de ancho, y proporcional al ancho en
+  // los otros tamaños -28,4 a 1920-; lo mide comprobar.cjs en los píxeles, con aire.cjs.
+  // Solo cambia el interlineado: la letra, el color y el texto son los mismos. Y el margen negativo de
+  // arriba le devuelve al primer renglón el medio interlineado que se agregó, para que quede donde
+  // estaba: los titulares de un renglón no se mueven, y en los de dos baja solo el segundo.
+  // Antes: line-height 1.08 en los dos, sin margen.
+  const interlineado = horizontal ? INTERLINEADO.lado : INTERLINEADO.pie
   return `<!doctype html><html><head><meta charset="utf-8"><style>${LETRAS}
 body{width:${W}px;height:${H}px;position:relative;background:
   radial-gradient(ellipse ${W * 0.9}px ${H * 0.55}px at 50% ${horizontal ? 70 : 62}%, rgba(240,192,112,.22), rgba(240,192,112,0) 70%),
@@ -45,7 +63,7 @@ body{width:${W}px;height:${H}px;position:relative;background:
 .arriba{position:absolute;left:0;right:0;top:${tit.top}px;text-align:center;padding:0 72px}
 .eti{font-size:${tit.eti}px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:${C.ambar};margin-bottom:${horizontal ? 14 : 20}px}
 .eti:before{content:"";display:inline-block;width:.42em;height:.42em;border-radius:50%;background:${C.ambar};margin-right:.6em;vertical-align:.12em}
-h1{font-size:${tit.tam}px;font-weight:600;line-height:1.08;letter-spacing:-.018em;color:${C.crema};text-wrap:balance}
+h1{font-size:${tit.tam}px;font-weight:600;line-height:${interlineado};margin-top:${((1.08 - interlineado) / 2).toFixed(4)}em;letter-spacing:-.018em;color:${C.crema};text-wrap:balance}
 .pantalla{position:absolute;left:${p.x}px;top:${p.y}px;width:${p.w}px;height:${p.h}px;border-radius:${horizontal ? 40 : 52}px;overflow:hidden;
   box-shadow:0 0 0 2px rgba(231,225,222,.16),0 0 0 12px rgba(11,10,9,.9),0 0 0 13px rgba(231,225,222,.10),0 50px 110px rgba(0,0,0,.65),0 18px 40px rgba(0,0,0,.45)}
 .pantalla img{display:block;width:100%;height:100%}

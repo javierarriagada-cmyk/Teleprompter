@@ -18,6 +18,7 @@ const path = require('path')
 const FICHA = path.resolve(__dirname, '..')
 const TITULARES = require('./titulares.cjs')
 const { TELEFONO, TABLETA, deLado } = require('./escenas.cjs')
+const { aireDeTitular } = require('./aire.cjs')
 let fallas = 0
 const ok = (bien, que) => { if (!bien) fallas++; console.log(`${bien ? 'OK   ' : 'FALLA'} ${que}`) }
 // Un AVISO se imprime y no cuenta como falla: es lo ideal, no lo que Play exige.
@@ -68,6 +69,24 @@ for (const c of ['es-419', 'en-US']) {
   })
   soloEstas(`capturas/${c}`, esperadas)
 }
+
+console.log('— Aire entre los renglones de los titulares')
+// -Javier, 05-10-2026- La franja amarilla del segundo renglón no puede tocar el primero: entre la parte
+// más baja del primer renglón y el borde de arriba de la franja, al menos 16 px a 1080 de ancho, y
+// proporcional al ancho en los otros tamaños. Se mide en los píxeles del PNG -aire.cjs-. La zona del
+// titular llega hasta donde empieza la pantalla -componer.cjs, marcoTelefono: 420 de pie, 250 de lado-,
+// y se sube hasta un renglón y medio de la letra -80 y 66- buscando el renglón de arriba. Las tabletas
+// no llevan titular. Un titular de un renglón no tiene nada que medir y lo dice.
+for (const c of ['es-419', 'en-US']) TELEFONO.forEach((e, i) => {
+  const rel = `capturas/${c}/${String(i + 1).padStart(2, '0')}.png`
+  if (!fs.existsSync(path.join(FICHA, rel))) return
+  const lado = deLado(e)
+  const ancho = lado ? 1920 : 1080
+  const minimo = Math.ceil(16 * ancho / 1080)
+  const aires = aireDeTitular(path.join(FICHA, rel), { altoZona: lado ? 250 : 420, ventana: lado ? 106 : 128 })
+  if (!aires.length) return console.log(`OK    ${rel}: titular de un renglón, sin franja debajo de otro`)
+  for (const { y, aire } of aires) ok(aire >= minimo, `${rel}: aire de ${aire} px sobre la franja de la fila ${y} (al menos ${minimo})`)
+})
 
 console.log('— Capturas de tableta')
 // Antes, en capturas/tableta-provisional/, con «al menos 4» contados en la carpeta.

@@ -51,7 +51,8 @@ guiones, a mano · 8. Letra y colores, a tu manera. El recuadro, la portada y lo
 
 Levanta vite si no está andando -en modo play-, captura la app real con Chrome sin ventana, compone,
 arma los textos y la lámina, y termina con `comprobar.cjs`, que imprime OK o FALLA de cada imagen
--tamaño, proporción, lados, sin alfa, peso, que no sobre ninguna- y de cada texto -conteos, emojis,
+-tamaño, proporción, lados, sin alfa, peso, que no sobre ninguna, y el aire entre los renglones del
+titular, medido en los píxeles con `herramientas/aire.cjs`- y de cada texto -conteos, emojis,
 puntuación, palabras que Play no quiere-. Si algo falla, el guion sale con error. Se necesitan
 Node 22, ffmpeg, Chrome o Chromium y puppeteer-core -variables CHROME y PUPPETEER si no están donde
 el guion las busca-. Sin Chrome, usa el Chromium que instala Playwright -/opt/pw-browsers-; ese no
