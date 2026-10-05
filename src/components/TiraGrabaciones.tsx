@@ -115,10 +115,14 @@ function TarjetaToma({
         aria-pressed={enSeleccion ? marcada : undefined}
         // 28-09-2026: el borde gris -color-borde- paso a uno de un pelo, el de las cajas: .borde-suave.
         className="borde-suave"
-        style={{ display: 'block', width: '100%', padding: 0, borderRadius: 'var(--redondeo)', overflow: 'hidden', background: 'var(--bg-suelo)', cursor: 'pointer', ...estiloComprimirPorAviso(gesto.avisado) }}
+        // -tarea 94, revision, 05-10-2026- SIN SELECCION DEL SISTEMA: en el moto g86, tras mantener
+        // apretada una toma, el toque sobre la segunda no la marcaba. Mantener apretado texto o una
+        // imagen en el WebView abre la seleccion nativa, y el toque siguiente solo la cierra. La fila
+        // de guion ya lo evitaba con userSelect none -BibliotecaView-; la tarjeta no.
+        style={{ display: 'block', width: '100%', padding: 0, borderRadius: 'var(--redondeo)', overflow: 'hidden', background: 'var(--bg-suelo)', cursor: 'pointer', userSelect: 'none', WebkitUserSelect: 'none', WebkitTouchCallout: 'none', ...estiloComprimirPorAviso(gesto.avisado) } as React.CSSProperties}
       >
         <div style={{ width: '100%', height: 88, background: 'var(--bg-superficie)', position: 'relative' }}>
-          {g.rutaMiniatura ? <img src={srcDeRuta(g.rutaMiniatura)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} /> : <div style={{ width: '100%', height: '100%', background: '#1a1a1a' }} />}
+          {g.rutaMiniatura ? <img draggable={false} src={srcDeRuta(g.rutaMiniatura)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} /> : <div style={{ width: '100%', height: '100%', background: '#1a1a1a' }} />}
           <span className="play-miniatura" aria-hidden="true"><IconoEmpezar tamano={16} /></span>
           <span style={{ position: 'absolute', right: 6, bottom: 6, background: 'rgba(0,0,0,0.7)', color: '#fff', fontSize: 11, padding: '1px 5px', borderRadius: 4 }}>{/* -tarea 88- La duración FINAL, sin lo pausado. Antes: formatearDuracionMs(g.duracionMs). */}{formatearDuracionMs(duracionVisible(g))}</span>
           {marcada && (
