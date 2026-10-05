@@ -1,9 +1,11 @@
 // EL MARCO DE CADA CAPTURA Y EL GRÁFICO DE FUNCIONES -tarea 86-. node componer.cjs
 //
 // Toma las pantallas de crudas/ -las saca capturar.cjs de la app real- y arma, en ../:
-//   capturas/{es-419,en-US}/01..08.png            teléfono, con su titular arriba
-//   capturas/tableta-provisional/{es-419,en-US}/{7,10}/  tabletas, a pantalla completa
+//   capturas/{es-419,en-US}/01..07.png            teléfono, con su titular arriba
+//   capturas/tableta/{es-419,en-US}/{7,10}/       tabletas, a pantalla completa
 //   grafico-1024x500-{es,en}.png                    el gráfico de funciones, uno por idioma
+// Qué va en cada número, y cuál va de lado, lo dice escenas.cjs. Antes: 01..08 y
+// capturas/tableta-provisional/, mientras la tableta -tarea 83- no estaba en main.
 // Cada imagen se dibuja en HTML en Chrome sin ventana y se pasa por ffmpeg a PNG RGB de 24 bits:
 // Play no acepta alfa -support.google.com/googleplay/android-developer/answer/9866151-, y la
 // captura de Chrome puede traer canal alfa aunque la página sea opaca.
@@ -112,11 +114,13 @@ function sinAlfa(entrada, salida) {
   execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', entrada, '-pix_fmt', 'rgb24', '-pred', 'mixed', '-compression_level', '9', '-frames:v', '1', salida])
 }
 
-const NOMBRES_TEL = ['01-leer', '02-grabar-detras', '03-grabar-recuadro', '04-de-lado', '05-editor', '06-subtitulos', '07-portada', '08-ajustes']
-// Las tabletas que se ven bien con el diseño de teléfono de hoy -ver LEEME.md-. Van a pantalla
-// completa y sin titular: para pantallas grandes Play pide "excluir texto adicional que no sea
-// parte de la app" -answer/9866151, tabletas y Chromebook-.
-const TABLETAS = { 7: ['01-leer', '02-grabar-detras', '03-de-lado', '04-editor'], 10: ['01-leer', '02-grabar-detras', '03-de-lado', '04-editor'] }
+// Qué se compone y en qué orden: escenas.cjs. Antes estaba aquí, repetido:
+//   const NOMBRES_TEL = ['01-leer', '02-grabar-detras', '03-grabar-recuadro', '04-de-lado', '05-editor', '06-subtitulos', '07-portada', '08-ajustes']
+//   const TABLETAS = { 7: ['01-leer', '02-grabar-detras', '03-de-lado', '04-editor'], 10: [...lo mismo] }
+// con el comentario «Las tabletas que se ven bien con el diseño de teléfono de hoy -ver LEEME.md-».
+// Las tabletas van a pantalla completa y sin titular: para pantallas grandes Play pide "excluir texto
+// adicional que no sea parte de la app" -answer/9866151, tabletas y Chromebook-.
+const { TELEFONO, TABLETA, deLado } = require('./escenas.cjs')
 
 ;(async () => {
   fs.mkdirSync(TMP, { recursive: true })
@@ -125,17 +129,19 @@ const TABLETAS = { 7: ['01-leer', '02-grabar-detras', '03-de-lado', '04-editor']
   try {
     for (const [idioma, carpeta] of [['es', 'es-419'], ['en', 'en-US']]) {
       if (!solo || solo === 'tel') {
-        for (let i = 0; i < 8; i++) {
-          const cruda = path.join(CRUDAS, `${idioma}-tel-${NOMBRES_TEL[i]}.png`)
-          const horizontal = i === 3
-          await dibujar(b, marcoTelefono({ cruda, ...TITULARES[idioma][i], horizontal }), horizontal ? 1920 : 1080, horizontal ? 1080 : 1920, path.join(FICHA, 'capturas', carpeta, `${String(i + 1).padStart(2, '0')}.png`))
-          console.log('  captura', carpeta, i + 1)
+        for (const [i, e] of TELEFONO.entries()) {
+          const cruda = path.join(CRUDAS, `${idioma}-tel-${e.nombre}.png`)
+          const horizontal = deLado(e)
+          const titular = TITULARES[idioma][e.nombre]
+          if (!titular) throw new Error(`falta el titular de ${e.nombre} en titulares.cjs (${idioma})`)
+          await dibujar(b, marcoTelefono({ cruda, ...titular, horizontal }), horizontal ? 1920 : 1080, horizontal ? 1080 : 1920, path.join(FICHA, 'capturas', carpeta, `${String(i + 1).padStart(2, '0')}.png`))
+          console.log('  captura', carpeta, i + 1, e.nombre)
         }
       }
       if (!solo || solo === 'tab') {
-        for (const [pulgadas, lista] of Object.entries(TABLETAS)) {
-          for (const n of lista) {
-            sinAlfa(path.join(CRUDAS, `${idioma}-tab${pulgadas}-${n}.png`), path.join(FICHA, 'capturas', 'tableta-provisional', carpeta, String(pulgadas), `${n}.png`))
+        for (const [pulgadas, lista] of Object.entries(TABLETA)) {
+          for (const e of lista) {
+            sinAlfa(path.join(CRUDAS, `${idioma}-tab${pulgadas}-${e.nombre}.png`), path.join(FICHA, 'capturas', 'tableta', carpeta, String(pulgadas), `${e.nombre}.png`))
           }
           console.log('  tableta', carpeta, pulgadas)
         }

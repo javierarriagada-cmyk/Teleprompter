@@ -1,7 +1,8 @@
 # Evidencia de la ficha de Sigo en Google Play — tarea 86
 
 Cada cosa que dicen los textos, los titulares y el gráfico, con el lugar del código que la hace
-hoy -rama main en 5efe959-. Si algo de aquí deja de ser cierto, se corrige la ficha.
+hoy -rama main en 5efe959; lo sumado el 05-10-2026, en beb2522-. Si algo de aquí deja de ser
+cierto, se corrige la ficha.
 
 ## Lo que se dice y dónde está
 
@@ -21,6 +22,14 @@ hoy -rama main en 5efe959-. Si algo de aquí deja de ser cierto, se corrige la f
 | Cámara frontal o trasera | `src/components/FichasListo.tsx:248` -voltearCamara- |
 | 1080p, 720p o 480p | `src/components/FichasListo.tsx:139`, `:356` |
 | En vertical o de lado | `src/styles-horizontal.css:8`, `:117`; `src/hooks/useLayout.ts:19-20` |
+| En teléfono o tableta -05-10- | `src/hooks/useLayout.ts:28`, `:72` -'tab-v' y 'tab-h'-; `src/styles-tableta.css`; decisión T1, tarea 83 |
+| Lo que pasa en la pausa no queda en el video -05-10- | `src/lib/pausaToma.ts:57-63` -Pausa abre el corte-; `src/lib/tramos.ts:18` -tramosACortar-, `:79` -duracionFinal-; decisión F10 |
+| Palma para pausar o seguir; la V para terminar -05-10- | `src/lib/confirmadorGestos.ts:26-27` -Open_Palm y Victory de MediaPipe-; `src/lib/pausaToma.ts:65-74` -la palma pausa; la V grabando no hace nada-, `:95` -en pausa, la V termina-; `src/App.tsx:1850` -solo con la cámara frontal-; decisión F11 |
+| Seis filtros: Natural, Cálido, Frío, Vivo, Suave y B/N -05-10- | `src/lib/filtros.ts:25-32` -TONOS-; `src/textos/es.ts:88-93`, `src/textos/en.ts:78-83` |
+| Se eligen mirando el video; lo que ves es lo que se guarda -05-10- | `src/components/SelectorFiltro.tsx` -la tira en el visor-; la misma matriz al `<video>` -`src/lib/filtros.ts:141`, valoresFeColorMatrix- y al archivo -`:162`, matrizParaMedia3; `MatrizDeColor.java`-; `src/components/ReproductorGrabacion.tsx:449-462` -con filtro se guarda por la receta- |
+| Cinco combinaciones de colores de lectura -05-10- | `src/datos/modelo.ts:63-69` -PAREJAS_COLOR-; `src/components/PantallaAjustes.tsx:37-44` |
+| Los gestos se reconocen en el teléfono; ninguna imagen sale de él -05-10- | `android/.../GestosPlugin.java:29-39` -el cuadro de la vista previa se reconoce con MediaPipe y el modelo de assets, en un hilo del teléfono- |
+| Sigo no envía estadísticas de uso -05-10- | `android/app/src/main/AndroidManifest.xml:62-77` -se quita el backend cct de datatransport-; `android/app/build.gradle:256-275`; decisión F11 |
 | Subtítulos Amarillo, Rojo y Formal | `src/lib/subtitulos.ts:268-273` |
 | Salen del guion y del tiempo de tu voz | `src/lib/subtitulos.ts:8-14` |
 | Las acotaciones no van en los subtítulos | `src/lib/subtitulos.ts:107` |
@@ -79,17 +88,33 @@ pero no se probaron.
 - **Que el paso a otro teléfono conserva los guiones.** No se probó; ver arriba.
 - **"Sin internet" como titular.** Javier pidió que sea una posibilidad, no el titular. Va al final
   de la completa, con el detalle del inglés: la voz se baja de Play una vez.
-- Gestos, Bluetooth, nube propia, cuentas, tabletas, otros idiomas, iPhone, precios, "el mejor": nada
-  de eso existe o corresponde -docs/tarea86.txt-.
+- Bluetooth, nube propia, cuentas, otros idiomas, iPhone, precios, "el mejor": nada de eso existe o
+  corresponde -docs/tarea86.txt-.
+- **Que la V termina grabando.** Solo termina en pausa -`src/lib/pausaToma.ts:74`-. La línea que
+  pidió Javier dice "muestra la palma para pausar o seguir, y la V para terminar", sin el "en pausa".
+- **Que los gestos funcionan con la cámara trasera.** Solo con la frontal -F11-; la ficha no lo dice
+  ni lo niega.
+- Antes del 05-10-2026 esta lista decía también "gestos" y "tabletas": la tarea 88 trajo los gestos
+  y la 83 la tableta, y ya están en main.
 
 ## Lo que en las capturas no sale de la app
 
 - **La imagen de la cámara.** En el teléfono la vista previa nativa va detrás del WebView y el
   navegador no la tiene. Se puso una foto donde el teléfono pone la vista previa -método de las
   láminas de la tarea 82-: pantalla completa con la cámara detrás, o el rectángulo del recuadro.
-- **La toma del visor -captura 6-** es un video armado con la foto quieta, y su registro de voz es
-  sintético: el formato real de `leerCorpus`, con horas de palabra inventadas. Los subtítulos que
-  se ven son los que la app dibuja con ese registro.
+- **La toma del visor -capturas 5 y 6, y la cuarta de cada tableta-** es un video armado con la
+  foto quieta, y su registro de voz es sintético: el formato real de `leerCorpus`, con horas de
+  palabra inventadas. Los subtítulos que se ven son los que la app dibuja con ese registro. Antes
+  -29-09-2026- era la captura 6.
+- **Las miniaturas de la tira de filtros -captura 6-.** En el teléfono el cuadro lo saca el nativo
+  -`extraerMiniatura`-; en el navegador ese plugin no existe y la app usa la miniatura de la toma
+  -`SelectorFiltro.tsx`, "Si el nativo falla, queda el poster"-. Como la toma es una imagen quieta,
+  es el mismo cuadro. El filtro de cada miniatura y del video lo pone la app, con la misma matriz.
+- **La pausa -captura 4-** sale sin el punto rojo que parpadea. Lo enciende `grabandoVideo`, que
+  solo es cierto si arrancó el grabador nativo -`src/lib/tomaVideo.ts:144`-; en el navegador no hay
+  grabador y no se finge. Lo demás es la app: Seguir al lado de Parar, y el tacho.
+- **La app es la versión de Play.** Vite se levanta con `--mode play` -`.env.play`,
+  `VITE_HERRAMIENTAS=0`-: sin panel de diagnóstico ni de corpus, como la que baja la gente.
 - **La voz.** Un motor guiado -herramientas/vozGuiada.ts- entrega las palabras del guion como si
   alguien las leyera. El seguidor, el avance y la línea son los de la app.
 - **Las personas**: las cinco fueron generadas por computador. No son fotos ni personas reales,

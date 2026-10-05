@@ -31,9 +31,13 @@ for p in C E; do
   ffmpeg -loglevel error -y -i fuente/persona-$p.png -vf "${RECORTE[$p]}scale=1920:1080:flags=lanczos" -q:v 2 medios/persona-$p.jpg
 done
 # La toma del visor es la D -la cocinera-, que calza con el guion del pan.
+# En VP9 con Opus dentro del MP4, no en H.264 -05-10-2026, puesta al día de la 86-: el Chromium que
+# instala Playwright no trae H.264 -canPlayType('video/mp4; codecs="avc1.42E01E"') da ''- y el visor
+# se quedaba esperando el cuadro. VP9 en MP4 lo abren ese Chromium y Chrome. Lo que se ve es lo
+# mismo: una imagen quieta. Antes: -c:v libx264 -preset veryfast -crf 28 -c:a aac.
 for l in es en; do
-  ffmpeg -loglevel error -y -loop 1 -i medios/persona-D.jpg -f lavfi -i anullsrc=r=44100:cl=mono -t 42 -r 30 \
-    -vf "scale=1080:1920,format=yuv420p" -c:v libx264 -preset veryfast -crf 28 -c:a aac -shortest medios/toma-$l.mp4
+  ffmpeg -loglevel error -y -loop 1 -i medios/persona-D.jpg -f lavfi -i anullsrc=r=48000:cl=mono -t 42 -r 30 \
+    -vf "scale=1080:1920,format=yuv420p" -c:v libvpx-vp9 -deadline realtime -cpu-used 8 -crf 40 -b:v 0 -c:a libopus -shortest medios/toma-$l.mp4
   cp medios/persona-D.jpg medios/miniatura-$l.jpg
 done
 ls -la medios

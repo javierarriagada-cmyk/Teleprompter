@@ -34,12 +34,14 @@ Prompt común -a cada una se le suma su descripción-:
   A  semilla 11  vertical     "A Latina woman in her early 30s with long dark wavy hair, cream knit
                              sweater, in a cozy home office with a warm lamp and plants softly
                              blurred behind her."
-                             Captura 2. Se recorta en preparar-medios.sh: el generador dibujó abajo
+                             Captura 3 -antes del 05-10-2026, la 2-. Se recorta en
+                             preparar-medios.sh: el generador dibujó abajo
                              a la derecha una mano que no calzaba.
   B  semilla 22  vertical     "A man in his early 60s with short grey hair, trimmed grey beard and
                              thin glasses, dark navy cardigan over a white shirt, in a warm study
                              with wooden bookshelves softly blurred behind him."
-                             Captura 3 -recuadro- y tableta 7" Grabar. Su mano, abajo a la
+                             Captura 4 -la pausa- y tableta 7" Grabar. Antes del 05-10-2026, la 3
+                             -recuadro-. Su mano, abajo a la
                              izquierda, se revisó y está bien dibujada.
   C  semilla 47  horizontal   un hombre de unos 25, pelo negro crespo, polera verde oliva, en un
                              departamento de noche. Prompt completo en PROMPT-C, abajo.
@@ -51,13 +53,15 @@ Prompt común -a cada una se le suma su descripción-:
   D  semilla 33  vertical     "A woman in her mid 50s with short grey hair, linen apron over a
                              rust-colored shirt, in a warm home kitchen with a wooden counter, a
                              bowl of flour and a loaf of bread softly blurred behind her."
-                             Captura 6 -la toma del visor, que calza con el guion del pan- y
-                             tableta 10" Grabar.
+                             Capturas 5 y 6 -la toma del visor, que calza con el guion del pan-,
+                             tableta 10" Grabar y el visor de las dos tabletas. Antes del
+                             05-10-2026, la 6 y la tableta 10" Grabar.
   E  semilla 56  horizontal   "A Black woman around 40 with natural hair tied back, mustard yellow
                              blouse, sitting on a sofa in a warm living room in the evening, lamp
                              light and a framed print softly blurred behind her, the woman is
                              centered in the frame, head and shoulders."
-                             Captura 4 -de lado-. Segunda vuelta: la primera -semilla 55- salió
+                             Captura 7 -de lado; antes del 05-10-2026, la 4-. Segunda vuelta: la
+                             primera -semilla 55- salió
                              seria. Se recorta abajo un borde gris desenfocado.
 
 PROMPT-C

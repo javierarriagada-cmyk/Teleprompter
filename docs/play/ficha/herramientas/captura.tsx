@@ -16,6 +16,10 @@ import App from '../../../../src/App'
 import '../../../../src/styles.css'
 import '../../../../src/styles-ajustes.css'
 import '../../../../src/styles-horizontal.css'
+// -05-10-2026- Las dos hojas que main.tsx sumó después de la 86: la tableta -tarea 83- y el visor de
+// lado -tarea 90-. Sin ellas las tabletas salían con el diseño de teléfono agrandado.
+import '../../../../src/styles-tableta.css'
+import '../../../../src/styles-visor-de-lado.css'
 import { RepositorioIndexedDB } from '../../../../src/datos/RepositorioIndexedDB'
 import { RepositorioGrabacionesIndexedDB } from '../../../../src/datos/RepositorioGrabacionesIndexedDB'
 import { guionesDeEjemplo } from './guiones'

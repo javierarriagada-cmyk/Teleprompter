@@ -15,7 +15,7 @@ DESCRIPCIÓN BREVE (máximo 80) — 75 caracteres
 La A, elegida por Javier, sin cambios: nunca dijo "offline".
 
 ==============================================================================
-DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2306 caracteres
+DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2779 caracteres
 ==============================================================================
 [[Forget your lines the moment you hit record? With Sigo you read aloud and the script moves with you, at your pace. Pause, and it waits.
 
@@ -34,8 +34,11 @@ WHAT CHANGES WHEN THE SCRIPT FOLLOWS YOU
 
 RECORD YOUR VIDEO RIGHT THERE
 - Your camera image goes behind the text, in a small frame you can drag anywhere, or stays hidden while you record.
-- Front or back camera, in 1080p, 720p or 480p. Portrait or landscape.
+- Front or back camera, in 1080p, 720p or 480p. Portrait or landscape, on a phone or a tablet.
+- Pause whenever you want: nothing that happens during the pause ends up in the video.
+- Gesture control: when you are away from the phone, show your palm to pause or resume, and a V sign to finish.
 - Captions in three styles: Yellow, Red and Formal. They come from your script and the timing of your voice, and are burned into the video when you save it.
+- Six filters—Natural, Warm, Cool, Vivid, Soft and B&W—that you choose while watching your video. What you see is what gets saved.
 - Save your video to the gallery or share it.
 
 YOUR SCRIPT, CLEAR AT A GLANCE
@@ -45,13 +48,14 @@ YOUR SCRIPT, CLEAR AT A GLANCE
 - All your scripts in one place, with their estimated length.
 
 YOUR WAY
-- Font size, typeface, text width and reading colors.
+- Font size, typeface, text width and five reading color combinations.
 - Mirror mode, for use with teleprompter glass.
 - Light or dark theme. The app is in English and Spanish, and follows your voice in both.
 
 TRUST AND PRIVACY
 - No account, no sign-up.
 - Your voice is recognized on your phone. The audio is not sent to any server.
+- Gestures are recognized on your phone, and no image leaves it. Sigo does not send usage statistics.
 - Your scripts and videos stay on your phone until you share them.
 - Your scripts and settings are included in Android backup: if you reinstall Sigo with Google backup turned on, they come back. Videos are not part of that backup.
 - You can also use it offline. English needs a one-time download of the speech model from Google Play; Spanish works right after install.

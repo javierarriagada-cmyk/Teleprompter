@@ -9,12 +9,19 @@
 // - Textos: nombre hasta 30, breve hasta 80, completa hasta 4000 -y aviso fuera de 1500 a 2500-,
 //   sin emojis, sin "…" ni "--" ni "!!", sin palabras prohibidas en la breve.
 // - Titulares de las capturas: 7 palabras o menos.
+// - PUESTA AL DÍA DEL 05-10-2026: qué capturas hay y en qué orden lo dice escenas.cjs; cada carpeta
+//   tiene que tener esas y ninguna más -una 08.png vieja olvidada se subiría a Play sin que nadie la
+//   viera-. Teléfono: entre 2 y 8, lados de 320 a 3840 px y el largo no más del doble del corto.
+//   Tableta: lados de 1080 a 7680. La carpeta tableta-provisional/ ya no debe existir.
 const fs = require('fs')
 const path = require('path')
 const FICHA = path.resolve(__dirname, '..')
 const TITULARES = require('./titulares.cjs')
+const { TELEFONO, TABLETA, deLado } = require('./escenas.cjs')
 let fallas = 0
 const ok = (bien, que) => { if (!bien) fallas++; console.log(`${bien ? 'OK   ' : 'FALLA'} ${que}`) }
+// Un AVISO se imprime y no cuenta como falla: es lo ideal, no lo que Play exige.
+const aviso = (bien, que) => console.log(`${bien ? 'OK   ' : 'AVISO'} ${que}`)
 
 function png(ruta) {
   const b = fs.readFileSync(ruta)
@@ -30,24 +37,50 @@ function imagen(rel, w, h, maxMB, libre = false) {
   ok(d.w === w && d.h === h && proporcion, `${rel}: ${d.w} x ${d.h} (se pide ${w} x ${h})`)
   ok(d.color === 2 && d.bits === 8, `${rel}: RGB de 24 bits, sin alfa (tipo de color ${d.color}, ${d.bits} bits)`)
   ok(d.peso < maxMB * 1024 * 1024, `${rel}: ${(d.peso / 1024 / 1024).toFixed(2)} MB (menos de ${maxMB} MB)`)
+  return d
+}
+// Los lados que acepta Play -answer/9866151-: teléfono de 320 a 3840 y el largo no más del doble del
+// corto; tableta de 1080 a 7680.
+function lados(rel, d, min, max) {
+  if (!d) return
+  const corto = Math.min(d.w, d.h)
+  const largo = Math.max(d.w, d.h)
+  ok(corto >= min && largo <= max && largo <= corto * 2, `${rel}: lados ${corto} y ${largo}, entre ${min} y ${max}, el largo no más del doble`)
+}
+// Que en la carpeta estén justo las que se esperan, ni una más.
+function soloEstas(dir, esperadas) {
+  const hay = fs.existsSync(path.join(FICHA, dir)) ? fs.readdirSync(path.join(FICHA, dir)).filter((f) => !f.startsWith('.')).sort() : []
+  const sobran = hay.filter((f) => !esperadas.includes(f))
+  ok(sobran.length === 0, `${dir}: solo las ${esperadas.length} de escenas.cjs${sobran.length ? ` (sobran: ${sobran.join(', ')})` : ''}`)
 }
 
 console.log('— Gráfico de funciones')
 for (const i of ['es', 'en']) imagen(`grafico-1024x500-${i}.png`, 1024, 500, 15)
 
 console.log('— Capturas de teléfono')
-for (const c of ['es-419', 'en-US']) for (let n = 1; n <= 8; n++) imagen(`capturas/${c}/${String(n).padStart(2, '0')}.png`, n === 4 ? 1920 : 1080, n === 4 ? 1080 : 1920, 8)
+// Antes: for (let n = 1; n <= 8; n++), con la 4 de lado.
+ok(TELEFONO.length >= 2 && TELEFONO.length <= 8, `teléfono: ${TELEFONO.length} capturas por idioma (Play pide entre 2 y 8)`)
+for (const c of ['es-419', 'en-US']) {
+  const esperadas = TELEFONO.map((_, i) => `${String(i + 1).padStart(2, '0')}.png`)
+  TELEFONO.forEach((e, i) => {
+    const rel = `capturas/${c}/${esperadas[i]}`
+    lados(rel, imagen(rel, deLado(e) ? 1920 : 1080, deLado(e) ? 1080 : 1920, 8), 320, 3840)
+  })
+  soloEstas(`capturas/${c}`, esperadas)
+}
 
-console.log('— Capturas de tableta (provisionales)')
+console.log('— Capturas de tableta')
+// Antes, en capturas/tableta-provisional/, con «al menos 4» contados en la carpeta.
 const TAB = { 7: [1440, 2560], 10: [2160, 3840] }
+ok(!fs.existsSync(path.join(FICHA, 'capturas/tableta-provisional')), 'capturas/tableta-provisional/ ya no está: la tableta de la tarea 83 está en main')
 for (const c of ['es-419', 'en-US']) for (const [p, [a, b]] of Object.entries(TAB)) {
-  const dir = path.join(FICHA, 'capturas/tableta-provisional', c, p)
-  const lista = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith('.png')).sort() : []
+  const lista = TABLETA[p] || []
   ok(lista.length >= 4, `tableta ${p}" ${c}: ${lista.length} capturas (Play pide al menos 4)`)
-  for (const f of lista) {
-    const lado = f.includes('de-lado')
-    imagen(`capturas/tableta-provisional/${c}/${p}/${f}`, lado ? b : a, lado ? a : b, 8)
+  for (const e of lista) {
+    const rel = `capturas/tableta/${c}/${p}/${e.nombre}.png`
+    lados(rel, imagen(rel, deLado(e) ? b : a, deLado(e) ? a : b, 8), 1080, 7680)
   }
+  soloEstas(`capturas/tableta/${c}/${p}`, lista.map((e) => `${e.nombre}.png`))
 }
 
 console.log('— Lámina')
@@ -68,16 +101,22 @@ for (const archivo of ['textos-es-419.txt', 'textos-en-US.txt']) {
   ok(largo(breve) <= 80, `${archivo}: breve ${largo(breve)} de 80`)
   ok(!PROHIBIDAS_BREVE.test(breve), `${archivo}: breve sin palabras que Play no quiere -mejor, gratis, nuevo, descarga-`)
   ok(largo(completa) <= 4000, `${archivo}: completa ${largo(completa)} de 4000`)
-  ok(largo(completa) >= 1500 && largo(completa) <= 2500, `${archivo}: completa entre 1500 y 2500 -lo ideal del encargo-`)
+  // -05-10-2026- AVISO y no FALLA, como dice la cabecera: 1500 a 2500 es lo ideal del encargo de la 86,
+  // y el límite de Play es 4000. Con lo que Javier pidió sumar el 05-10 -la pausa, los gestos, los
+  // filtros, la tableta- la completa pasa de 2500. Antes: ok(...), que la contaba como falla.
+  aviso(largo(completa) >= 1500 && largo(completa) <= 2500, `${archivo}: completa ${largo(completa)}, lo ideal del encargo es entre 1500 y 2500`)
   for (const s of bloques) {
     ok(!EMOJI.test(s) && !/…|--|!!|\?\?/.test(s), `${archivo}: "${s.slice(0, 32)}…" sin emojis ni puntuación repetida`)
   }
 }
 
 console.log('— Titulares de las capturas')
-for (const [i, lista] of Object.entries(TITULARES)) lista.forEach(({ titular }, n) => {
-  const palabras = titular.replace(/==|\|/g, ' ').split(/\s+/).filter((p) => /[\p{L}\p{N}]/u.test(p)).length
-  ok(palabras <= 7, `${i} ${n + 1}: "${titular.replace(/==|\|/g, '')}" ${palabras} palabras de 7`)
+// Por escena, en el orden de escenas.cjs. Antes: lista.forEach sobre un arreglo de 8.
+for (const [i, porEscena] of Object.entries(TITULARES)) TELEFONO.forEach((e, n) => {
+  const t = porEscena[e.nombre]
+  if (!t) return ok(false, `${i} ${n + 1}: falta el titular de ${e.nombre}`)
+  const palabras = t.titular.replace(/==|\|/g, ' ').split(/\s+/).filter((p) => /[\p{L}\p{N}]/u.test(p)).length
+  ok(palabras <= 7, `${i} ${n + 1}: "${t.titular.replace(/==|\|/g, '')}" ${palabras} palabras de 7`)
 })
 
 console.log(fallas ? `\n${fallas} FALLA(S)` : '\nTODO OK')

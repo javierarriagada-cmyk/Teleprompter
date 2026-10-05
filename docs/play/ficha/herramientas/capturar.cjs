@@ -7,7 +7,7 @@
 //
 // LO ÚNICO QUE NO ES DE LA APP: la imagen de la cámara. En el teléfono, la vista previa nativa va
 // DETRÁS del WebView -src/lib/camara.ts, toBack: true, aspectMode: 'cover'- y el navegador no la
-// tiene. Aquí se pone la foto de medios/persona-X.jpg -la persona que dice LISTA- exactamente
+// tiene. Aquí se pone la foto de medios/persona-X.jpg -la persona que dice escenas.cjs- exactamente
 // donde el teléfono pone la vista previa: toda la pantalla con la cámara detrás, o el rectángulo
 // del recuadro. Mismo método que las láminas aprobadas de la tarea 82.
 const puppeteer = require(process.env.PUPPETEER || '/workspace/tp-shot/node_modules/puppeteer-core')
@@ -19,31 +19,42 @@ const CRUDAS = path.join(__dirname, 'crudas')
 const filtro = process.argv[2] || ''
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 // Las personas -preparar-medios.sh, fuente/LICENCIA-personas.txt-: A, B y D verticales; C y E
-// horizontales. Qué persona va en cada captura lo dice LISTA, abajo.
+// horizontales. Qué persona va en cada captura lo dice escenas.cjs.
 const foto = (p) => 'data:image/jpeg;base64,' + fs.readFileSync(path.join(__dirname, 'medios', `persona-${p}.jpg`)).toString('base64')
 
 // Las pantallas. El teléfono vertical se captura en 360 x 640 -9:16- y el horizontal en 800 x 360,
 // el de un teléfono común de lado: componer.cjs los pone en su marco. Las tabletas van a pantalla
-// completa, en su tamaño exacto de Play -9:16 y 16:9-: 576 x 1024 por 2,5 da 1440 x 2560 y
-// 720 x 1280 por 3 da 2160 x 3840.
+// completa, en su tamaño exacto de Play -9:16 y 16:9-.
+//
+// LAS TABLETAS, CON EL DISEÑO DE TABLETA -05-10-2026-. La tarea 83 está en main y useLayout ya
+// devuelve 'tab-v' y 'tab-h', pero solo con 600 dp o más de ancho: el 576 x 1024 de antes caía en
+// 'tel-v' y mostraba el teléfono agrandado. Ahora el 7" va en 612 x 1088 -un 7" común mide unos
+// 600 dp de ancho- y el 10" en 810 x 1440 -unos 800 dp-, los dos en 9:16 justo; por su escala dan
+// 1440 x 2560 y 2160 x 3840. De lado, lo mismo girado: 1088 x 612 y 1440 x 810 son 'tab-h'.
+// Antes: tab7 576 x 1024 por 2,5 y tab10 720 x 1280 por 3.
 const PANTALLAS = {
   'tel-v': { w: 360, h: 640, dsf: 3 },
   'tel-h': { w: 800, h: 360, dsf: 3 },
-  'tab7-v': { w: 576, h: 1024, dsf: 2.5 },
-  'tab7-h': { w: 1024, h: 576, dsf: 2.5 },
-  'tab10-v': { w: 720, h: 1280, dsf: 3 },
-  'tab10-h': { w: 1280, h: 720, dsf: 3 }
+  'tab7-v': { w: 612, h: 1088, dsf: 1440 / 612 },
+  'tab7-h': { w: 1088, h: 612, dsf: 2560 / 1088 },
+  'tab10-v': { w: 810, h: 1440, dsf: 2160 / 810 },
+  'tab10-h': { w: 1440, h: 810, dsf: 3840 / 1440 }
 }
 
-// En tableta se captura con la letra en 32 -uno de los pasos de Ajustes, PASOS_LETRA de
-// src/components/estiloLectura.ts-: con 24 la
-// pantalla grande quedaba medio vacía. Es lo que haría quien lee en una tableta, y es un ajuste
-// que la app tiene hoy: no se inventa nada. Se probó también el ancho Angosto de lado: la columna
-// quedaba sola al medio de la tableta y se veía peor; por eso de lado va con el ancho completo.
-const AJUSTES_PANTALLA = { 'tab7-v': { fontSize: 32 }, 'tab10-v': { fontSize: 32 }, 'tab7-h': { fontSize: 32 }, 'tab10-h': { fontSize: 32 } }
+// LA LETRA LA PONE LA APP -05-10-2026-: 24 en el teléfono y 32 en la tableta, letraPorOmision de
+// src/hooks/useLayout.ts, que se usa cuando los ajustes no traen fontSize. Por eso los ajustes
+// sembrados ya no la llevan. Antes se forzaba 24 en todo y 32 en las tabletas, a mano, porque la
+// app todavía no tenía tableta: «En tableta se captura con la letra en 32 -uno de los pasos de
+// Ajustes-: con 24 la pantalla grande quedaba medio vacía». Se probó también el ancho Angosto de
+// lado: la columna quedaba sola al medio de la tableta y se veía peor; de lado va con el ancho
+// completo.
 
 // Hasta qué palabra del guion del pan "lee" la voz en cada captura de lectura.
 const HASTA = { es: 'tibia,', en: 'warm,' }
+
+// El filtro elegido en la captura de la tira: B/N, el único que se nota en una miniatura de la ficha. Se
+// probó Cálido: en el visor apenas se distingue de Natural. Los seis están en src/lib/filtros.ts, TONOS.
+const FILTRO = 'bn'
 
 async function abrir(b, { idioma, pantalla, ajustes = {}, subtitulos = 'no' }) {
   const p = await b.newPage()
@@ -58,7 +69,7 @@ async function abrir(b, { idioma, pantalla, ajustes = {}, subtitulos = 'no' }) {
     // El estilo de subtítulos que la app recuerda -src/lib/subtitulos.ts, CLAVE_ESTILO-: así
     // el visor abre con el Amarillo puesto, como lo vería quien ya lo eligió una vez.
     localStorage.setItem('sigo_subtitulos_estilo', sub)
-  }, lang, { tema: 'oscuro', colorFondo: '#000000', colorLetra: '#FFFFFF', fontSize: 24, columnaAngosta: false, mostrarTiempo: true, anclajeZona: 'medio', fondoToma: 'detras', modoCamara: 'frontal', ladoCamara: 'frontal', calidadVideo: '1080p', ...AJUSTES_PANTALLA[pantalla], ...ajustes }, subtitulos)
+  }, lang, { tema: 'oscuro', colorFondo: '#000000', colorLetra: '#FFFFFF', columnaAngosta: false, mostrarTiempo: true, anclajeZona: 'medio', fondoToma: 'detras', modoCamara: 'frontal', ladoCamara: 'frontal', calidadVideo: '1080p', ...ajustes }, subtitulos)
   p.on('pageerror', (e) => console.log('  error de la página:', e.message))
   await p.goto(`${BASE}?idioma=${idioma}`, { waitUntil: 'networkidle2' })
   await p.waitForSelector('[data-testid="btn-leer-tarjeta"]', { timeout: 30000 })
@@ -154,6 +165,34 @@ const ESCENAS = {
     await sleep(800)
     return p
   },
+  // LA PAUSA -05-10-2026-. Grabando con la cámara detrás, se toca la pantalla para ver los controles
+  // y se aprieta Pausa: el mismo botón queda en Seguir, al lado de Parar -F10, App.tsx,
+  // btn-pausa-lectura-. Lo que en el teléfono se ve además y aquí no: el punto rojo que parpadea.
+  // Lo enciende grabandoVideo, que solo es cierto cuando el grabador NATIVO arrancó -tomaVideo.ts,
+  // iniciarTomaVideo, Capacitor.isNativePlatform-; en el navegador no hay grabador y no se finge.
+  async pausa(b, o) {
+    const p = await abrir(b, o); await entrar(p, 'grabar'); await camara(p, o)
+    await leerHasta(p, o.idioma); await tocar(p)
+    await p.click('[data-testid="btn-pausa-lectura"]')
+    await sleep(1500)
+    await camara(p, o); return p
+  },
+  // LA TIRA DE FILTROS ABIERTA -tarea 96, 05-10-2026-. El visor de la misma toma, con la tira abierta y
+  // un filtro elegido para que se vea el cambio en el video. Las miniaturas: en el teléfono el cuadro lo
+  // saca el nativo -extraerMiniatura-; aquí el plugin web no lo tiene y la app usa la miniatura de la
+  // toma -SelectorFiltro.tsx, "Si el nativo falla, queda el poster"-, que es el mismo cuadro: la toma de
+  // ejemplo es una imagen quieta.
+  async filtros(b, o) {
+    const p = await ESCENAS.visor(b, o)
+    await p.click('[data-testid="btn-filtro"]')
+    await p.waitForSelector('[data-testid="tira-filtros"]')
+    await sleep(600)
+    await p.click(`[data-testid="filtro-${FILTRO}"]`)
+    await sleep(1200)
+    return p
+  },
+  // La portada, el recuadro y los ajustes no van en la ficha desde el 05-10-2026 -escenas.cjs-: quedan
+  // aquí, andando, por si vuelven.
   async portada(b, o) { return abrir(b, o) },
   async ajustes(b, o) {
     const p = await abrir(b, { ...o, ajustes: { tema: 'claro', colorFondo: '#000000', colorLetra: '#FFFFFF' } })
@@ -164,26 +203,12 @@ const ESCENAS = {
   }
 }
 
-// Qué se captura: [nombre del archivo, escena, pantalla, persona]. Las personas se reparten para
-// que haya variedad: A mujer de 30, B hombre de 60, C hombre de 25, D mujer de 55 -la toma del
-// visor, en la cocina del guion del pan-, E mujer de 40.
+// Qué se captura, en qué pantalla y con qué persona: escenas.cjs. Cada archivo de crudas/ se llama
+// <idioma>-tel-<nombre> o <idioma>-tab<pulgadas>-<nombre>.
+const { TELEFONO, TABLETA } = require('./escenas.cjs')
 const LISTA = [
-  ['tel-01-leer', 'leer', 'tel-v'],
-  ['tel-02-grabar-detras', 'grabar-detras', 'tel-v', 'A'],
-  ['tel-03-grabar-recuadro', 'grabar-recuadro', 'tel-v', 'B'],
-  ['tel-04-de-lado', 'grabar-detras', 'tel-h', 'E'],
-  ['tel-05-editor', 'editor', 'tel-v'],
-  ['tel-06-subtitulos', 'visor', 'tel-v'],
-  ['tel-07-portada', 'portada', 'tel-v'],
-  ['tel-08-ajustes', 'ajustes', 'tel-v'],
-  ['tab7-01-leer', 'leer', 'tab7-v'],
-  ['tab7-02-grabar-detras', 'grabar-detras', 'tab7-v', 'B'],
-  ['tab7-03-de-lado', 'grabar-detras', 'tab7-h', 'C'],
-  ['tab7-04-editor', 'editor', 'tab7-v'],
-  ['tab10-01-leer', 'leer', 'tab10-v'],
-  ['tab10-02-grabar-detras', 'grabar-detras', 'tab10-v', 'D'],
-  ['tab10-03-de-lado', 'grabar-detras', 'tab10-h', 'C'],
-  ['tab10-04-editor', 'editor', 'tab10-v']
+  ...TELEFONO.map((e) => [`tel-${e.nombre}`, e.escena, e.pantalla, e.persona]),
+  ...Object.entries(TABLETA).flatMap(([pulgadas, lista]) => lista.map((e) => [`tab${pulgadas}-${e.nombre}`, e.escena, e.pantalla, e.persona]))
 ]
 
 ;(async () => {

@@ -1,7 +1,8 @@
 // LA LÁMINA DE REVISIÓN DE LA FICHA -tarea 86-. node lamina.cjs -> ../lamina-ficha.png
-// Todo en una imagen, para que Javier elija sin abrir veinte archivos: los tres gráficos, las 8
-// capturas por idioma en su orden, los textos con sus conteos, las tabletas marcadas PROVISIONAL,
-// las fotos con su licencia y la evidencia. Las imágenes van reducidas a JPEG solo aquí dentro:
+// Todo en una imagen, para que Javier elija sin abrir veinte archivos: los gráficos, las capturas
+// de teléfono por idioma en su orden -escenas.cjs-, los textos con sus conteos, las tabletas, las
+// fotos con su licencia y la evidencia. Antes: «las 8 capturas por idioma» y «las tabletas marcadas
+// PROVISIONAL», hasta que la tarea 83 entró a main. Las imágenes van reducidas a JPEG solo aquí dentro:
 // los PNG que se suben a Play son los de ../capturas y ../grafico-*.png, sin tocar.
 const puppeteer = require(process.env.PUPPETEER || '/workspace/tp-shot/node_modules/puppeteer-core')
 const fs = require('fs')
@@ -9,6 +10,7 @@ const path = require('path')
 const { execFileSync } = require('child_process')
 const { LETRAS, marca, conDestacado, C } = require('./componer-base.cjs')
 const T = require('./textos.cjs')
+const { TELEFONO, TABLETA, deLado } = require('./escenas.cjs')
 const FICHA = path.resolve(__dirname, '..')
 const TMP = path.join(__dirname, 'crudas', 'tmp', 'lamina')
 fs.mkdirSync(TMP, { recursive: true })
@@ -29,21 +31,21 @@ const NOMBRE_IDIOMA = { es: 'Español (Latinoamérica)', en: 'English (United St
 function graficos() {
   return `<div class="fila">${['es', 'en'].map((i) => `<figure>${mini(`grafico-1024x500-${i}.png`, 1100)}<figcaption><b>${CARPETA[i]}</b> grafico-1024x500-${i}.png</figcaption></figure>`).join('')}</div>`
 }
+// Antes: for (let k = 1; k <= 8; k++), con la 4 de lado.
 function telefonos(i) {
-  const figs = []
-  for (let k = 1; k <= 8; k++) {
-    const h = k === 4
-    figs.push(`<figure class="tel"><div class="num">${k}</div>${mini(`capturas/${CARPETA[i]}/${String(k).padStart(2, '0')}.png`, h ? 684 : 216)}</figure>`)
-  }
-  return `<h3>${NOMBRE_IDIOMA[i]} — capturas/${CARPETA[i]}/01..08.png</h3><div class="fila tels">${figs.join('')}</div>`
+  const figs = TELEFONO.map((e, n) => {
+    const k = n + 1
+    return `<figure class="tel"><div class="num">${k}</div>${mini(`capturas/${CARPETA[i]}/${String(k).padStart(2, '0')}.png`, deLado(e) ? 684 : 216)}</figure>`
+  })
+  return `<h3>${NOMBRE_IDIOMA[i]} — capturas/${CARPETA[i]}/01..${String(TELEFONO.length).padStart(2, '0')}.png</h3><div class="fila tels">${figs.join('')}</div>`
 }
 function tabletas() {
   const filas = []
   for (const p of ['7', '10']) {
+    // En el orden de escenas.cjs. Antes: lo que hubiera en capturas/tableta-provisional/, por nombre.
     const grupos = ['es', 'en'].map((i) => {
-      const dir = `capturas/tableta-provisional/${CARPETA[i]}/${p}`
-      const lista = fs.readdirSync(path.join(FICHA, dir)).filter((f) => f.endsWith('.png')).sort()
-      return `<div class="grupo"><div class="eti-g">${p}" · ${CARPETA[i]}</div><div class="fila">${lista.map((f) => mini(`${dir}/${f}`, f.includes('de-lado') ? 480 : 152)).join('')}</div></div>`
+      const dir = `capturas/tableta/${CARPETA[i]}/${p}`
+      return `<div class="grupo"><div class="eti-g">${p}" · ${CARPETA[i]}</div><div class="fila">${TABLETA[p].map((e) => mini(`${dir}/${e.nombre}.png`, deLado(e) ? 480 : 152)).join('')}</div></div>`
     })
     filas.push(`<div class="fila">${grupos.join('')}</div>`)
   }
@@ -91,29 +93,31 @@ em{font-style:normal;color:${C.verde};font-size:18px;font-weight:600}
 code{font-family:ui-monospace,monospace;font-size:.86em;color:${C.celeste}}
 table{border-collapse:collapse;width:100%;font-size:18px}td{padding:6px 12px;border-bottom:1px solid rgba(231,225,222,.08);vertical-align:top}td:first-child{color:${C.crema};width:34%}
 </style></head><body>
-<header>${marca({ alto: 120, color: C.crema, id: 'lam' })}<div><h1>La ficha de Google Play</h1><p>Propuesta para revisar · tarea 86 · 29-09-2026 · todo sale de la app real de main -5efe959-</p></div></header>
+<header>${marca({ alto: 120, color: C.crema, id: 'lam' })}<div><h1>La ficha de Google Play</h1><p>Para revisar · tarea 86, puesta al día del 05-10-2026 · todo sale de la app real de main -beb2522-, en su versión de Play</p></div></header>
 
 <h2>Gráfico de funciones <small>1024 x 500 · PNG 24 bits sin alfa · la propuesta A</small></h2>
 <div class="bajada">Sin dispositivos ni capturas, como pide Play. En ámbar, color de Sigo: Play pide colores vivos y no blanco puro, negro ni gris oscuro. Todo lo esencial queda a más de 64 px del borde. La bajada ya no dice "sin internet": dice para qué sirve.</div>
 ${graficos()}
 
-<h2>Capturas de teléfono <small>1080 x 1920 · la 4 en 1920 x 1080 · en este orden</small></h2>
-<div class="bajada">Una historia en ocho pasos, desde la persona y lo que le cuesta: hablas y el texto te sigue; miras a la cámara sin memorizar; te ves sin perder el hilo; también de lado; lo importante a la vista; el video sale con subtítulos; tus guiones a mano; y a tu manera. El titular dice el beneficio en 7 palabras o menos y ocupa menos del 20 % de alto. Sin marco de teléfono: Play no quiere imágenes de dispositivos. Las personas son generadas por computador -ver abajo-.</div>
+<h2>Capturas de teléfono <small>1080 x 1920 · la ${TELEFONO.findIndex(deLado) + 1} en 1920 x 1080 · en este orden</small></h2>
+<div class="bajada">Las escenas que pidió Javier el 05-10-2026, en su orden: hablas y el texto te sigue; lo importante a la vista; miras a la cámara sin memorizar; las pausas no quedan en tu video; el video sale con subtítulos; eliges el filtro mirando tu video; y también de lado. El titular dice el beneficio en 7 palabras o menos y ocupa menos del 20 % de alto. Sin marco de teléfono: Play no quiere imágenes de dispositivos. Las personas son generadas por computador -ver abajo-.</div>
 ${telefonos('es')}
 ${telefonos('en')}
 
 <h2>Textos <small>los conteos los hace herramientas/armar-textos.cjs</small></h2>
 <div class="cols">${textos('es')}${textos('en')}</div>
 
-<h2>Tabletas <span class="provisional">PROVISIONAL</span> <small>7": 1440 x 2560 / 2560 x 1440 · 10": 2160 x 3840 / 3840 x 2160</small></h2>
-<div class="bajada">La app tal como se ve HOY en una tableta: el diseño de teléfono, más grande -la tarea 83 no está hecha; <code>useLayout</code> solo da tel-v y tel-h-. Leer, Grabar con la cámara detrás, de lado y el editor, con la letra en 32. A pantalla completa y sin titulares: para pantallas grandes Play pide no agregar texto fuera de la app. Cuando la 83 esté en main: <code>bash docs/play/ficha/herramientas/todo.sh tab</code>.</div>
+<h2>Tabletas <small>7": 1440 x 2560 / 2560 x 1440 · 10": 2160 x 3840 / 3840 x 2160</small></h2>
+<div class="bajada">Con el diseño de tableta de la tarea 83 -<code>useLayout</code> da tab-v y tab-h-: el 7" en 612 x 1088 dp y el 10" en 810 x 1440 dp, 9:16 justo. La letra la pone la app: 32 en tableta. De pie: leer, grabar con la cámara detrás y el visor con la tira de filtros; de lado: grabar con la cámara detrás. A pantalla completa y sin titulares: para pantallas grandes Play pide no agregar texto fuera de la app.</div>
 ${tabletas()}
 
 <h2>Lo que hay que saber</h2>
 <div class="cols">
 <div class="col caja"><b>Qué no sale de la app en las capturas</b><ul>
 <li><b>La imagen de la cámara</b> es una imagen puesta donde el teléfono pone la vista previa: el navegador no tiene la cámara nativa. Mismo método de las láminas de la tarea 82.</li>
-<li><b>La toma del visor -6-</b> es una imagen quieta con un registro de voz sintético; los subtítulos los dibuja la app con ese registro.</li>
+<li><b>La toma del visor -5 y 6-</b> es una imagen quieta con un registro de voz sintético; los subtítulos los dibuja la app con ese registro. Las miniaturas de la tira de filtros son la miniatura de la toma -en el teléfono las saca el nativo del mismo cuadro-; el filtro lo aplica la app con la misma matriz que se guarda.</li>
+<li><b>La pausa -4-</b> sale sin el punto rojo que parpadea: lo enciende el grabador nativo, que el navegador no tiene. Se ve Seguir al lado de Parar y el tacho, como en el teléfono.</li>
+<li><b>Sin herramientas de prueba</b>: la app se sirve como la versión de Play -<code>vite --mode play</code>, <code>VITE_HERRAMIENTAS=0</code>-, sin panel de diagnóstico.</li>
 <li><b>La voz</b> es guiada: entrega las palabras del guion como si alguien leyera. El seguidor y la línea son los de la app.</li>
 <li><b>Las cinco personas son generadas</b> con FLUX.1 [schnell] -Apache 2.0, uso comercial- en la box. No son personas reales: no hace falta autorización de modelo. Se descartaron las fotos CC0 de Wikimedia. Prompts y semillas en herramientas/fuente/LICENCIA-personas.txt.</li>
 <li><b>La copia de seguridad</b>: guiones y ajustes vuelven al reinstalar, con la copia de Google activada -probado con bmgr en la tarea 84, en el emulador; falta el moto g86-. Los videos no entran.</li>
@@ -125,6 +129,12 @@ ${tabletas()}
 <tr><td>Cámara detrás, recuadro u oculta</td><td><code>FichasListo.tsx:216-220 · camara.ts:192-206</code></td></tr>
 <tr><td>Frontal o trasera · 1080p/720p/480p</td><td><code>FichasListo.tsx:248 · 139, 356</code></td></tr>
 <tr><td>Subtítulos en tres estilos, quemados</td><td><code>subtitulos.ts:268-273 · CamaraNativaPlugin.java:436</code></td></tr>
+<tr><td>Teléfono o tableta</td><td><code>useLayout.ts:28, 72 · styles-tableta.css</code></td></tr>
+<tr><td>Lo pausado no queda en el video</td><td><code>pausaToma.ts:57-63 · tramos.ts:18, 79</code></td></tr>
+<tr><td>Palma pausa y sigue; en pausa, la V termina</td><td><code>confirmadorGestos.ts:26-27 · pausaToma.ts:65-74, 95</code></td></tr>
+<tr><td>Seis filtros, la misma matriz en el visor y al guardar</td><td><code>filtros.ts:25-32, 141, 162 · MatrizDeColor.java</code></td></tr>
+<tr><td>Cinco combinaciones de colores</td><td><code>modelo.ts:63-69 · PantallaAjustes.tsx:37-44</code></td></tr>
+<tr><td>Gestos en el teléfono · sin estadísticas</td><td><code>GestosPlugin.java:29-39 · AndroidManifest.xml:62-77</code></td></tr>
 <tr><td>Negrita, colores, destacado</td><td><code>EditorView.tsx:245-252, 511-513</code></td></tr>
 <tr><td>Acotaciones · .txt .md .docx</td><td><code>acotaciones.ts:1-12 · EditorView.tsx:350</code></td></tr>
 <tr><td>Ajustes de lectura · espejo · tema</td><td><code>PantallaAjustes.tsx:231-260, 291</code></td></tr>
