@@ -56,6 +56,12 @@ const HASTA = { es: 'tibia,', en: 'warm,' }
 // probó Cálido: en el visor apenas se distingue de Natural. Los seis están en src/lib/filtros.ts, TONOS.
 const FILTRO = 'bn'
 
+// Dónde va el recuadro en la 08, en fracciones de la pantalla: recuadroY es el borde de arriba -ver la
+// escena grabar-recuadro-. Probado el 05-10-2026: 0,52 -el de fábrica- y 0,22 tapan el renglón que
+// se lee; 0,70 y 0,80 lo dejan abajo, oscurecido por el velo de la lectura, y con 0,80 se corta. En
+// 0,04 queda arriba a la derecha, con la cara clara, y la lectura libre en los dos idiomas.
+const RECUADRO = { x: 0.64, y: 0.04 }
+
 async function abrir(b, { idioma, pantalla, ajustes = {}, subtitulos = 'no' }) {
   const p = await b.newPage()
   const { w, h, dsf } = PANTALLAS[pantalla]
@@ -126,8 +132,13 @@ const ESCENAS = {
     const p = await abrir(b, o); await entrar(p, 'grabar'); await camara(p, o)
     await leerHasta(p, o.idioma); await tocar(p); await camara(p, o); return p
   },
+  // EL RECUADRO -la 08, 05-10-2026-. Arriba a la derecha, sobre lo ya leído: así el renglón que se lee
+  // queda libre debajo y al lado, y la cara no tapa la lectura. Es un lugar que cualquiera elige arrastrándolo
+  // -RecuadroCamara.tsx; la app lo guarda en recuadroX y recuadroY-. En el lugar de fábrica -0,64 y
+  // 0,52, App.tsx- el recuadro caía sobre el renglón que se lee: en inglés la lectura pasaba detrás de
+  // la cara. Antes: abrir(b, { ...o, ajustes: { fondoToma: 'recuadro' } }).
   async 'grabar-recuadro'(b, o) {
-    const p = await abrir(b, { ...o, ajustes: { fondoToma: 'recuadro' } }); await entrar(p, 'grabar')
+    const p = await abrir(b, { ...o, ajustes: { fondoToma: 'recuadro', recuadroX: RECUADRO.x, recuadroY: RECUADRO.y } }); await entrar(p, 'grabar')
     await leerHasta(p, o.idioma); await sleep(500); await camara(p, { ...o, recuadro: true }); return p
   },
   async editor(b, o) {
@@ -191,8 +202,9 @@ const ESCENAS = {
     await sleep(1200)
     return p
   },
-  // La portada, el recuadro y los ajustes no van en la ficha desde el 05-10-2026 -escenas.cjs-: quedan
-  // aquí, andando, por si vuelven.
+  // La portada y los ajustes no van en la ficha desde el 05-10-2026 -escenas.cjs-: quedan aquí,
+  // andando, por si vuelven. El recuadro volvió el mismo día, como la 08. Antes: «La portada, el
+  // recuadro y los ajustes no van en la ficha desde el 05-10-2026».
   async portada(b, o) { return abrir(b, o) },
   async ajustes(b, o) {
     const p = await abrir(b, { ...o, ajustes: { tema: 'claro', colorFondo: '#000000', colorLetra: '#FFFFFF' } })

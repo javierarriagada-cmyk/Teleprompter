@@ -69,7 +69,9 @@ const esFranja = (r, g, b) => r > 120 && r - b > 60 && g > 0.85 * r
 // "aire" contra la etiqueta. Y más clara que 100 en los tres canales: los bordes de color de la
 // etiqueta quedan bajo 100 -77,95,83 medido-, y la letra crema llega a 100 con algo más de un tercio
 // del píxel cubierto: lo que queda fuera es un borde que casi no se ve.
-const esTinta = (r, g, b) => Math.min(r, g, b) > 100 && Math.max(r, g, b) - Math.min(r, g, b) < 25
+// -con la 08- Y menos de 20 entre canales, no 25: un píxel suelto de la etiqueta, 103,125,101, pasaba
+// con 24 y un titular de un renglón medía "aire" contra ella. La crema mezclada con el fondo no pasa de 14.
+const esTinta = (r, g, b) => Math.min(r, g, b) > 100 && Math.max(r, g, b) - Math.min(r, g, b) < 20
 
 // Devuelve, por cada franja que tiene un renglón arriba, cuántas filas limpias las separan.
 // altoZona: hasta dónde llega el titular -la pantalla empieza ahí-. ventana: cuánto subir buscando el
@@ -89,9 +91,12 @@ function aireDeTitular(ruta, { altoZona, ventana }) {
   // Tinta: letra crema en cualquier punto de la fila, o una fila de franja -el renglón de arriba
   // destacado-. Un píxel amarillo suelto no es franja: los bordes de color de la etiqueta pasan por
   // amarillo -174,176,112 medido- y medían "aire" contra ella.
+  // Y al menos dos píxeles de tinta en la fila: la cola de una letra o una coma de 80 px tiene varios;
+  // un píxel solo es un borde suelto.
   const tintaEnFila = (y) => {
     if (franjaEnFila[y]) return true
-    for (let x = 0; x < w; x++) if (esTinta(...at(x, y))) return true
+    let n = 0
+    for (let x = 0; x < w; x++) if (esTinta(...at(x, y)) && ++n >= 2) return true
     return false
   }
   const aires = []

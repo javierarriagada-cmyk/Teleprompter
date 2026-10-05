@@ -1,11 +1,12 @@
 // EL MARCO DE CADA CAPTURA Y EL GRÁFICO DE FUNCIONES -tarea 86-. node componer.cjs
 //
 // Toma las pantallas de crudas/ -las saca capturar.cjs de la app real- y arma, en ../:
-//   capturas/{es-419,en-US}/01..07.png            teléfono, con su titular arriba
+//   capturas/{es-419,en-US}/01..08.png            teléfono, con su titular arriba
 //   capturas/tableta/{es-419,en-US}/{7,10}/       tabletas, a pantalla completa
 //   grafico-1024x500-{es,en}.png                    el gráfico de funciones, uno por idioma
-// Qué va en cada número, y cuál va de lado, lo dice escenas.cjs. Antes: 01..08 y
-// capturas/tableta-provisional/, mientras la tableta -tarea 83- no estaba en main.
+// Qué va en cada número, y cuál va de lado, lo dice escenas.cjs. Antes: la 4 de lado y
+// capturas/tableta-provisional/, mientras la tableta -tarea 83- no estaba en main; el 05-10-2026 fueron
+// 7 hasta que volvió el recuadro como la 08.
 // Cada imagen se dibuja en HTML en Chrome sin ventana y se pasa por ffmpeg a PNG RGB de 24 bits:
 // Play no acepta alfa -support.google.com/googleplay/android-developer/answer/9866151-, y la
 // captura de Chrome puede traer canal alfa aunque la página sea opaca.

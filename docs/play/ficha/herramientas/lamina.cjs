@@ -100,7 +100,7 @@ table{border-collapse:collapse;width:100%;font-size:18px}td{padding:6px 12px;bor
 ${graficos()}
 
 <h2>Capturas de teléfono <small>1080 x 1920 · la ${TELEFONO.findIndex(deLado) + 1} en 1920 x 1080 · en este orden</small></h2>
-<div class="bajada">Las escenas que pidió Javier el 05-10-2026, en su orden: hablas y el texto te sigue; lo importante a la vista; miras a la cámara sin memorizar; las pausas no quedan en tu video; el video sale con subtítulos; eliges el filtro mirando tu video; y también de lado. El titular dice el beneficio en 7 palabras o menos y ocupa menos del 20 % de alto. Sin marco de teléfono: Play no quiere imágenes de dispositivos. Las personas son generadas por computador -ver abajo-.</div>
+<div class="bajada">Las escenas que pidió Javier el 05-10-2026, en su orden: hablas y el texto te sigue; lo importante a la vista; miras a la cámara sin memorizar; las pausas no quedan en tu video; el video sale con subtítulos; eliges el filtro mirando tu video; también de lado; y te miras en un recuadro. El titular dice el beneficio en 7 palabras o menos y ocupa menos del 20 % de alto. Sin marco de teléfono: Play no quiere imágenes de dispositivos. Las personas son generadas por computador -ver abajo-.</div>
 ${telefonos('es')}
 ${telefonos('en')}
 

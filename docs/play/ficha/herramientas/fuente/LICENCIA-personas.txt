@@ -45,7 +45,8 @@ Prompt común -a cada una se le suma su descripción-:
                              izquierda, se revisó y está bien dibujada.
   C  semilla 47  horizontal   un hombre de unos 25, pelo negro crespo, polera verde oliva, en un
                              departamento de noche. Prompt completo en PROMPT-C, abajo.
-                             Tabletas de lado. Tercera vuelta: la primera -semilla 44- salió seria
+                             Captura 8 -el recuadro, desde el 05-10-2026- y tabletas de lado.
+                             Tercera vuelta: la primera -semilla 44- salió seria
                              y sin el pelo crespo; la segunda -semilla 45- traía un computador
                              portátil delante. En la tercera abre las manos hacia la cámara y la
                              izquierda no salió bien: se recorta justo sobre las manos, 747 x 420,

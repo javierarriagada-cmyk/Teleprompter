@@ -6,6 +6,9 @@
 // EL ORDEN DEL TELÉFONO es el que pidió Javier el 05-10-2026: leer siguiendo la voz, el guion con
 // formatos, grabar con la cámara detrás, la pausa, los subtítulos en el visor, la tira de filtros
 // abierta y de lado. Play acepta entre 2 y 8; son 7. La primera es la que más se ve.
+// -Javier, 05-10-2026, más tarde- Vuelve el recuadro, como la 08: grabar con la cámara en el recuadro
+// chico y el texto leyéndose al lado. Con la C, que en el teléfono no salía y en el recuadro chico no
+// se nota blanda. Son 8, el máximo de Play.
 // Antes -29-09-2026-: 01 leer, 02 grabar detrás, 03 recuadro, 04 de lado, 05 editor,
 // 06 subtítulos, 07 portada, 08 ajustes.
 //
@@ -28,7 +31,8 @@ const TELEFONO = [
   { nombre: '04-pausa', escena: 'pausa', pantalla: 'tel-v', persona: 'B' },
   { nombre: '05-subtitulos', escena: 'visor', pantalla: 'tel-v' },
   { nombre: '06-filtros', escena: 'filtros', pantalla: 'tel-v' },
-  { nombre: '07-de-lado', escena: 'grabar-detras', pantalla: 'tel-h', persona: 'E' }
+  { nombre: '07-de-lado', escena: 'grabar-detras', pantalla: 'tel-h', persona: 'E' },
+  { nombre: '08-recuadro', escena: 'grabar-recuadro', pantalla: 'tel-v', persona: 'C' }
 ]
 
 const TABLETA = {

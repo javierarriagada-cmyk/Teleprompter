@@ -33,7 +33,12 @@ module.exports = {
     '04-pausa': { etiqueta: 'Pausa', titular: 'Las pausas|==no quedan en tu video==' },
     '05-subtitulos': { etiqueta: 'Subtítulos en tres estilos', titular: 'Tu video sale ==con subtítulos==' },
     '06-filtros': { etiqueta: 'Seis filtros', titular: 'Elige el filtro|==mirando tu video==' },
-    '07-de-lado': { etiqueta: 'Horizontal', titular: '¿Grabas de lado? ==También funciona==.' }
+    '07-de-lado': { etiqueta: 'Horizontal', titular: '¿Grabas de lado? ==También funciona==.' },
+    // -Javier, 05-10-2026- La 08, de un renglón. La etiqueta es la de antes del recuadro. Javier pidió
+    // «Tu imagen en un recuadro» / «Your image in a small frame», pero con la letra de 80 miden 1001 y
+    // 1060 px y el titular tiene 936: salían en dos renglones con la franja partida. Eligió estos, que
+    // caben: 852 y 838 px.
+    '08-recuadro': { etiqueta: 'La cámara en un recuadro', titular: 'Mírate ==en un recuadro==' }
   },
   en: {
     '01-leer': { etiqueta: 'Voice teleprompter', titular: 'You speak.|The script ==follows==.' },
@@ -42,6 +47,7 @@ module.exports = {
     '04-pausa': { etiqueta: 'Pause', titular: 'Pauses|==stay out of your video==' },
     '05-subtitulos': { etiqueta: 'Captions in three styles', titular: 'Your video comes ==with captions==' },
     '06-filtros': { etiqueta: 'Six filters', titular: 'Pick a filter|==while you watch==' },
-    '07-de-lado': { etiqueta: 'Landscape', titular: 'Recording sideways? ==That works too==.' }
+    '07-de-lado': { etiqueta: 'Landscape', titular: 'Recording sideways? ==That works too==.' },
+    '08-recuadro': { etiqueta: 'Camera in a small frame', titular: 'Your image ==in a frame==' }
   }
 }

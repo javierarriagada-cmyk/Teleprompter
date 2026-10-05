@@ -6,7 +6,7 @@ Todo lo que se sube a Play Console, listo para revisar. Nada de esto toca la app
 |---|---|---|
 | Nombre, descripción breve y completa, con conteos | `textos-es-419.txt`, `textos-en-US.txt` | se copia lo que va entre dobles corchetes |
 | Gráfico de funciones | `grafico-1024x500-es.png`, `grafico-1024x500-en.png` | uno por idioma |
-| 7 capturas de teléfono por idioma, en orden | `capturas/es-419/01..07.png`, `capturas/en-US/01..07.png` | en ese orden |
+| 8 capturas de teléfono por idioma, en orden | `capturas/es-419/01..08.png`, `capturas/en-US/01..08.png` | en ese orden |
 | Tabletas de 7" y 10", 4 por idioma | `capturas/tableta/{es-419,en-US}/{7,10}/01..04-*.png` | en ese orden, ver abajo |
 | La lámina para elegir | `lamina-ficha.png` | no se sube |
 | De dónde sale cada cosa que se dice | `evidencia.md` | no se sube |
@@ -20,7 +20,7 @@ Puesta al día del 05-10-2026, con la app de hoy -main beb2522- y las escenas qu
 a la vista- · 3. grabar con la cámara detrás -Mira a la cámara, sin memorizar- · 4. la pausa -Las
 pausas no quedan en tu video- · 5. los subtítulos en el visor -Tu video sale con subtítulos- · 6. la
 tira de filtros abierta -Elige el filtro mirando tu video- · 7. de lado -¿Grabas de lado? También
-funciona.-. El orden y los archivos están en `herramientas/escenas.cjs`; los titulares, en
+funciona.- · 8. grabar con la cámara en el recuadro -Mírate en un recuadro-, sumada el mismo día. El orden y los archivos están en `herramientas/escenas.cjs`; los titulares, en
 `herramientas/titulares.cjs`.
 
 Antes -29-09-2026-, ocho, empezando por la persona y lo que le cuesta: 1. Tú hablas. El texto te
@@ -42,7 +42,8 @@ guiones, a mano · 8. Letra y colores, a tu manera. El recuadro, la portada y lo
   combinaciones de colores y que los gestos se reconocen en el teléfono y Sigo no envía
   estadísticas. Lo demás quedó igual. Con eso pasa de 2500 -lo ideal del encargo-: 2813 en es-419 y
   2779 en en-US, de 4000. `comprobar.cjs` lo marca como AVISO, no como falla.
-- Capturas nuevas con la app de hoy: 7 de teléfono y 4 por tableta, ya con el diseño de tableta.
+- Capturas nuevas con la app de hoy: 8 de teléfono -la 8, el recuadro, se sumó después- y 4 por
+  tableta, ya con el diseño de tableta. Antes de sumar el recuadro eran 7.
 - Las capturas se toman de la versión de Play -`vite --mode play`-: sin panel de diagnóstico.
 
 ## Cómo se rehace
@@ -101,7 +102,7 @@ reales, así que no hay a quién pedirle una autorización de modelo.
 |---|---|---|
 | A | mujer de unos 30, pelo oscuro largo, suéter crema | captura 3 -Grabar, cámara detrás- |
 | B | hombre de unos 60, barba gris, lentes | captura 4 -la pausa- y tableta 7" Grabar |
-| C | hombre de unos 25, pelo negro, polera verde oliva | tabletas de lado, 7" y 10" |
+| C | hombre de unos 25, pelo negro, polera verde oliva | captura 8 -el recuadro- y tabletas de lado, 7" y 10" |
 | D | mujer de unos 55, pelo gris corto, delantal, en la cocina | capturas 5 y 6 -el visor-, tableta 10" Grabar y el visor de las dos tabletas |
 | E | mujer de unos 40, polera mostaza, en el sofá | captura 7 -de lado- |
 
