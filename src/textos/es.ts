@@ -126,6 +126,9 @@ export const es = {
   coloresLectura: 'Colores de lectura',
   parejaNegroBlanco: 'Negro con blanco',
   parejaNegroAmbar: 'Negro con ámbar',
+  // 05-10-2026, tarea 95: las dos parejas que vuelven de A9 -modelo.ts, PAREJAS_COLOR-.
+  parejaNegroVerde: 'Negro con verde',
+  parejaGrisHueso: 'Gris con hueso',
   parejaBlancoNegro: 'Blanco con negro',
   errorAbrirArchivo: 'Error al abrir archivo: {detalle}',
   archivoSinTexto: 'El archivo no contiene texto importable.',

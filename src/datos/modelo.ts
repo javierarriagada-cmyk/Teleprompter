@@ -10,8 +10,10 @@ export type TramoFormato = {
   destacado?: boolean
 }
 
-// LAS TRES PAREJAS DE FONDO Y LETRA DE LA LECTURA, y los tres colores con que se
-// puede pintar un tramo de texto.
+// LAS CINCO PAREJAS DE FONDO Y LETRA DE LA LECTURA -cinco desde el 05-10-2026, tarea 95-, y
+// los tres colores con que se puede pintar un tramo de texto.
+// Antes: «LAS TRES PAREJAS DE FONDO Y LETRA DE LA LECTURA, y los tres colores con que se
+// puede pintar un tramo de texto.»
 //
 // Viven aca y no en styles.css a proposito: NO SON TEMA, SON DATO. El usuario los
 // elige, se guardan con sus ajustes y se dibujan sobre la superficie de lectura,
@@ -21,9 +23,48 @@ export type TramoFormato = {
 // la necesita EditorView para dibujar los cuadraditos donde se eligen. Una sola
 // fuente de la verdad: si se agrega una pareja, se agrega aca y en ningun otro
 // lado. sanitizarColores -src/app/ajustesIniciales.ts desde la tarea 81- la usa para descartar combinaciones viejas.
+//
+// 05-10-2026, TAREA 95: DE TRES A CINCO PAREJAS. Javier aprobo el 07-09-2026 -decisiones-de-
+// diseno.txt, A9- TRES FONDOS -negro interior, gris muy oscuro para la halacion, blanco
+// exterior- y TRES LETRAS sobre los fondos oscuros -blanco, ambar y verde fuerte-. En la tarea
+// 44 quedaron tres parejas y se cayeron el gris y el verde sin ninguna razon escrita. Vuelven:
+//
+//   GRIS MUY OSCURO CON LETRA HUESO, #121212 / #EDE6D6. Es el remedio de A9 contra la
+//   HALACION: cerca de la mitad de la gente tiene algo de astigmatismo y la letra blanca sobre
+//   negro puro le "brilla" y se desdibuja. Lo que la produce es el salto de luminancia, 21:1
+//   del blanco sobre negro. #121212 es el gris que la guia de tema oscuro de Material propone
+//   como superficie justamente por eso -no es negro puro y sigue sin iluminar la cara-, y el
+//   hueso #EDE6D6 es un blanco calido al ~80 % de la luminancia del blanco: le saca el filo sin
+//   que se lea gris. Contraste medido con la formula de WCAG 2.x -luminancia relativa,
+//   (L1 + 0,05) / (L2 + 0,05)-: 15,07:1. Sobra para AAA -7:1- y baja de 21 a 15.
+//
+//   NEGRO CON LETRA VERDE FUERTE, #000000 / #4ADE80. Verde saturado pero no fosforescente: el
+//   verde puro #00FF00 da 15,3:1 y encandila de reojo, que es como se lee un teleprompter. El
+//   #4ADE80 da 12,05:1, casi lo mismo que el ambar de al lado -12,70:1-, asi las dos letras de
+//   color pesan igual a la vista y ninguna llega al brillo duro del blanco. AAA con holgura.
+//
+// Medido el 05-10-2026 con la misma formula sobre las cinco: negro/blanco 21:1, negro/ambar
+// 12,70:1, negro/verde 12,05:1, gris/hueso 15,07:1, blanco/negro 21:1.
+//
+// TODO LO QUE DISTINGUE CLARO DE OSCURO MIRA SOLO SI EL FONDO ES #FFFFFF -colorLetraEfectiva y
+// colorDeTramo en estiloLectura.ts, isWhiteBg en TeleprompterView.tsx: la banda de B4, la
+// capsula del destacado, la sombra de la letra sobre la camara, el halo de Grabar-. Las dos
+// nuevas son oscuras, asi que toman el camino de las oscuras sin tocar nada de eso: banda de
+// LUZ, tramos claros, letra de la pareja. El velo de los controles y el halo de la letra sobre
+// la camara usan el color de fondo de la pareja tal cual -hexToRgb, --fondo-lectura-.
+//
+// EL ORDEN es el de la lista donde se eligen -PantallaAjustes.tsx-: primero las tres letras
+// sobre negro, despues el gris, al final el blanco, que es la de exterior. La primera sigue
+// siendo la de omision: sanitizarColores cae en PAREJAS_COLOR[0].
+// Antes, desde la tarea 44:
+//   { fondo: '#000000', letra: '#FFFFFF' },
+//   { fondo: '#000000', letra: '#F5C24B' },
+//   { fondo: '#FFFFFF', letra: '#000000' }
 export const PAREJAS_COLOR = [
   { fondo: '#000000', letra: '#FFFFFF' },
   { fondo: '#000000', letra: '#F5C24B' },
+  { fondo: '#000000', letra: '#4ADE80' },
+  { fondo: '#121212', letra: '#EDE6D6' },
   { fondo: '#FFFFFF', letra: '#000000' }
 ]
 

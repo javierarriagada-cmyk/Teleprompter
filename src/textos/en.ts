@@ -117,6 +117,10 @@ export const en: Textos = {
   coloresLectura: 'Reading colors',
   parejaNegroBlanco: 'White on black',
   parejaNegroAmbar: 'Amber on black',
+  // 05-10-2026, tarea 95: las dos parejas que vuelven de A9 -modelo.ts, PAREJAS_COLOR-. "Bone"
+  // y no "ivory": es el nombre del color en ingles de Estados Unidos para el blanco calido.
+  parejaNegroVerde: 'Green on black',
+  parejaGrisHueso: 'Bone on dark gray',
   parejaBlancoNegro: 'Black on white',
   errorAbrirArchivo: 'Couldn’t open the file: {detalle}',
   archivoSinTexto: 'There’s no text in it to import.',
