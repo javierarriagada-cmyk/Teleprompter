@@ -180,10 +180,12 @@ for (const caso of ['1', '2'] as const) {
 describe('Tarea 87 de lado, caso 1: la fila nueva entra en la columna de la 90 sin cambiarla', () => {
   test('el orden de las filas, el rótulo de 12 y el toque de 48', async () => {
     await abrirDeLado('1')
-    const filas = Array.from(document.querySelectorAll('[data-testid="visor-lado-acciones"] > [data-fila-accion]')) as HTMLElement[]
-    expect(filas.map((f) => f.getAttribute('data-testid'))).toEqual([
-      'guardar-galeria-desde-reproductor', 'btn-compartir-nueva', 'visor-lado-subtitulos', 'btn-repetir-toma', 'borrar-desde-reproductor'
-    ])
+    // -tarea 96, 05-10-2026- Se borra el orden de las filas -regla del comienzo de
+    // docs/lo-que-hay-que-saber.txt-: con el Filtro hay una más. Antes:
+    // const filas = Array.from(document.querySelectorAll('[data-testid="visor-lado-acciones"] > [data-fila-accion]')) as HTMLElement[]
+    // expect(filas.map((f) => f.getAttribute('data-testid'))).toEqual([
+    //   'guardar-galeria-desde-reproductor', 'btn-compartir-nueva', 'visor-lado-subtitulos', 'btn-repetir-toma', 'borrar-desde-reproductor'
+    // ])
     const nueva = q('btn-compartir-nueva')!
     expect(nueva.style.fontSize).toBe('12px')
     expect(nueva.style.minHeight).toBe('48px')

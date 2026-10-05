@@ -82,6 +82,15 @@ export const es = {
   subtitulosAmarillo: 'Amarillo',
   subtitulosRojo: 'Rojo',
   subtitulosFormal: 'Formal',
+  // -tarea 96, 05-10-2026- Los filtros de la toma, en el visor. "Filtro" y no "Tono": Javier, es el
+  // nombre más reconocido.
+  filtro: 'Filtro',
+  filtroNatural: 'Natural',
+  filtroCalido: 'Cálido',
+  filtroFrio: 'Frío',
+  filtroVivo: 'Vivo',
+  filtroSuave: 'Suave',
+  filtroBN: 'B/N',
   // -tarea 87, 04-10-2026- Guardar y compartir -E1-. La posición de los subtítulos y el tiempo
   // estimado se sacaron el mismo día -Javier simplifica la 87-.
   guardarYCompartir: 'Guardar y compartir',

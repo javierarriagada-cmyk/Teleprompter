@@ -73,6 +73,14 @@ export const en: Textos = {
   subtitulosAmarillo: 'Yellow',
   subtitulosRojo: 'Red',
   subtitulosFormal: 'Formal',
+  // -tarea 96, 05-10-2026- The take's filters, in the viewer.
+  filtro: 'Filter',
+  filtroNatural: 'Natural',
+  filtroCalido: 'Warm',
+  filtroFrio: 'Cool',
+  filtroVivo: 'Vivid',
+  filtroSuave: 'Soft',
+  filtroBN: 'B&W',
   // -tarea 87, 04-10-2026- Save and share. The caption position and the estimated time were
   // removed the same day.
   guardarYCompartir: 'Save and share',

@@ -641,6 +641,12 @@ public class CamaraNativaPlugin extends Plugin {
             android.util.Log.i("Sigo88", "receta tramos=" + ExportadorDeTomas.tramosTexto(receta.tramosMs) + " estilo=" + receta.estilo + " subtitulos=" + receta.cantidadSubtitulos);
             if (capa != null) capa.anotarTramos(ExportadorDeTomas.iniciosEnSalidaUs(receta.tramosMs));
         }
+        // -tarea 96, 05-10-2026- El filtro de la receta, al logcat: el tono y los 16 números que van a
+        // MatrizDeColor, para comprobar en el teléfono que llegó lo que se eligió. Solo en la APK de
+        // prueba, como Sigo88.
+        if (midiendo && receta.hayFiltro()) {
+            android.util.Log.i("Sigo96", "receta filtro tono=" + receta.filtroTono + " matriz=" + MatrizDeColor.texto(receta.filtroMatriz) + " estilo=" + receta.estilo + " subtitulos=" + receta.cantidadSubtitulos + " tramos=" + (receta.tramosMs != null));
+        }
         if (midiendo) {
             if (capa != null) capa.medirCon(idMedicion, this::medir);
             medir(MedicionExport.linea("guardado_inicio",

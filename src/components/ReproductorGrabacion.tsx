@@ -6,6 +6,9 @@ import { orientacionDeToma } from '../lib/orientacion'
 import { anotar87, medirBordesSeguros, anotarOrientacion } from '../lib/medicionesTarea87'
 import { subtitulosConCortes, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
 import { CapaSubtitulos, SelectorSubtitulos } from './SubtitulosVisor'
+// EL FILTRO DE LA TOMA -tarea 96-. Ver lib/filtros.ts y SelectorFiltro.tsx.
+import { SelectorFiltro } from './SelectorFiltro'
+import { filtroGuardado, guardarFiltro, filtroCss, esNeutro, FiltroToma, TonoFiltro } from '../lib/filtros'
 import { cortesDe, aSalidaCercana, aArchivo, duracionFinal, duracionVisible, tramosQueQuedan } from '../lib/tramos'
 import { recetaDe, TramoMs } from '../lib/recetaExportacion'
 import { t, useTextos } from '../textos'
@@ -99,6 +102,15 @@ export default function ReproductorGrabacion({
   // con la forma del cuadro -32 o 47 letras por renglón-. Antes: setSubtitulos(armarSubtitulos(registro)).
   const [registroMotor, setRegistroMotor] = React.useState<string | null>(null)
   const [estilo, setEstilo] = React.useState<EstiloSubtitulo>(() => estiloSubtituloGuardado())
+  // -tarea 96, 05-10-2026- EL FILTRO: se recuerda como el estilo de subtítulos -lib/filtros.ts,
+  // filtroGuardado-. Se ve en el <video> al tiro y se quema al guardar con la misma matriz.
+  const [filtro, setFiltro] = React.useState<FiltroToma>(() => filtroGuardado())
+  const [filtroAbierto, setFiltroAbierto] = React.useState(false)
+  const cambiarFiltro = (tono: TonoFiltro) => {
+    const f: FiltroToma = { version: 1, tono }
+    setFiltro(f)
+    guardarFiltro(f)
+  }
   React.useEffect(() => {
     let vigente = true
     setRegistroMotor(null)
@@ -290,6 +302,8 @@ export default function ReproductorGrabacion({
   // Una toma guardada se ve desde su copia de la galeria, que ya trae los
   // subtitulos quemados: encima no se dibuja nada, o saldrian dos veces.
   const estiloVisible: EstiloSubtitulo = guardada ? 'no' : estilo
+  // -tarea 96- Lo mismo con el filtro: la copia de la galería ya lo trae; encima no se aplica nada.
+  const filtroVideo = guardada ? undefined : filtroCss(filtro.tono)
   // -tarea 88- Una toma guardada ya quedó cortada en la galería: no lleva cortes.
   const cortes = React.useMemo<TramoMs[]>(() => (guardada ? [] : cortesDe(grabacion)), [guardada, grabacion.pausas, grabacion.duracionMs])
   cortesRef.current = cortes
@@ -348,7 +362,18 @@ export default function ReproductorGrabacion({
   // Claude del 04-10-.
   const [panelAbierto, setPanelAbierto] = React.useState(false)
   const conFicha = subtitulos.length > 0 && !guardada
-  const nombreVisible = !(conFicha && panelAbierto)
+  // -tarea 96- La tira de filtros abierta también esconde el nombre, por lo mismo. Antes:
+  // const nombreVisible = !(conFicha && panelAbierto).
+  const nombreVisible = !((conFicha && panelAbierto) || (!guardada && filtroAbierto))
+  // Un panel a la vez: abrir Subtítulos cierra la tira de filtros, y al revés.
+  const abrirSubtitulos = (a: boolean) => {
+    setPanelAbierto(a)
+    if (a) setFiltroAbierto(false)
+  }
+  const abrirFiltro = (a: boolean) => {
+    setFiltroAbierto(a)
+    if (a) setPanelAbierto(false)
+  }
 
   // EL LAYOUT -A4- y lo que mide para Claude.
   const raizRef = React.useRef<HTMLDivElement>(null)
@@ -359,7 +384,8 @@ export default function ReproductorGrabacion({
     // Una línea evento=visor por cada forma en que se acomoda -abrir, panel abierto o cerrado-: dónde
     // quedaron el video, las acciones y el subtítulo de verdad. Solo en la APK de prueba.
     // subtitulo_abajo_dp se espera en imagen_alto_dp / 6 -MARGEN_ABAJO_SUBTITULOS-.
-    const clave = `${panelAbierto}|${alto}|${apretado}`
+    // -tarea 96- Con la tira de filtros. Antes: `${panelAbierto}|${alto}|${apretado}`.
+    const clave = `${panelAbierto}|${filtroAbierto}|${alto}|${apretado}`
     if (anotadoVisor.current === clave) return
     anotadoVisor.current = clave
     try {
@@ -417,16 +443,23 @@ export default function ReproductorGrabacion({
     setGuardando(true)
     setApretado(boton)
     setPanelAbierto(false)
+    setFiltroAbierto(false)
     setAvance(null)
     const conSubtitulos = estilo !== 'no' && subtitulos.length > 0
+    // -tarea 96- Con un filtro que no es Natural se guarda SIEMPRE por la receta -recodifica, aunque no
+    // haya subtítulos ni pausas-. Natural deja el camino de hoy: sin subtítulos ni pausas, copia.
+    const conFiltro = !esNeutro(filtro)
     // -tarea 88- Con cortes se guarda SIEMPRE por la receta con los tramos que quedan -también con
     // estilo "No"-: no hay camino viejo que corte. Un APK sin exportarToma rechaza y sale el aviso.
     const tramos = cortes.length > 0 ? tramosQueQuedan(cortes, grabacion.duracionMs) : null
     try {
       if (tramos) console.info('Sigo88', `guardar tramos=${tramos.map((x) => `${x.desdeMs}-${x.hastaMs}`).join(',')} estilo=${estilo} subtitulos=${conSubtitulos ? subtitulos.length : 0}`)
       // Antes: conSubtitulos ? guardarEnGaleriaConSubtitulos(...) : guardarEnGaleria(...), siempre.
-      const res = tramos
-        ? await exportarAGaleria(grabacion.ruta, recetaDe({ estilo, subtitulos: conSubtitulos ? subtitulos : [], tramos }), (pct) => setAvance(pct))
+      // -tarea 96- Con filtro, también la receta, con el filtro. Antes: tramos ? exportarAGaleria(...,
+      // recetaDe({ estilo, subtitulos: ..., tramos }), ...).
+      if (conFiltro) console.info('Sigo96', `guardar filtro=${filtro.tono} estilo=${estilo} subtitulos=${conSubtitulos ? subtitulos.length : 0} tramos=${tramos ? tramos.length : 0}`)
+      const res = tramos || conFiltro
+        ? await exportarAGaleria(grabacion.ruta, recetaDe({ estilo, subtitulos: conSubtitulos ? subtitulos : [], tramos, filtro }), (pct) => setAvance(pct))
         : conSubtitulos
         ? await guardarEnGaleriaConSubtitulos(grabacion.ruta, subtitulos, estilo, (pct) => setAvance(pct))
         : await guardarEnGaleria(grabacion.ruta)
@@ -656,7 +689,9 @@ export default function ReproductorGrabacion({
     )
     const cajaVideo = (estilo: React.CSSProperties) => (
       <div className="visor-video" data-testid="visor-lado-video" onClick={alternarVideo} style={{ position: 'absolute', ...estilo }}>
-        <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} />
+        {/* -tarea 96- El filtro elegido, sobre el video y no sobre los subtítulos -van encima, como en el
+            archivo-. Antes: sin style. */}
+        <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ filter: filtroVideo }} />
         {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} cortes={cortes} />}
         {!reproduciendo && (
           <span className="play-visor" aria-hidden="true">
@@ -701,6 +736,23 @@ export default function ReproductorGrabacion({
           setEstilo(e)
           guardarEstiloSubtitulo(e)
         }}
+        // -tarea 96- Abierto lo maneja el visor, para que abrir uno cierre la tira de filtros: los dos
+        // paneles salen en el mismo lugar. Antes, de lado, sin abierto ni onAbrir.
+        abierto={panelAbierto}
+        onAbrir={abrirSubtitulos}
+      />
+    ) : null
+    // -tarea 96- EL FILTRO, en toda toma que no está guardada -tenga o no subtítulos-.
+    const selectorFiltro = !guardada ? (
+      <SelectorFiltro
+        tono={filtro.tono}
+        onCambiar={cambiarFiltro}
+        video={video}
+        ruta={grabacion.ruta}
+        poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined}
+        abierto={filtroAbierto}
+        onAbrir={abrirFiltro}
+        desactivado={guardando}
       />
     ) : null
     // Las acciones: las mismas de hoy, con los mismos data-testid. fila=true en la columna del caso 1
@@ -734,6 +786,13 @@ export default function ReproductorGrabacion({
               {enColumna && selector && (
                 <div className="visor-lado-subtitulos" data-testid="visor-lado-subtitulos" style={{ ...toque, fontSize: ROTULO_MINIMO }} {...fila}>
                   {selector}
+                </div>
+              )}
+              {/* -tarea 96- El filtro, una fila más debajo de Subtítulos, vestida igual -las dos clases,
+                  styles-visor-de-lado.css-. */}
+              {enColumna && selectorFiltro && (
+                <div className="visor-lado-subtitulos visor-lado-filtro" data-testid="visor-lado-filtro" style={{ ...toque, fontSize: ROTULO_MINIMO }} {...fila}>
+                  {selectorFiltro}
                 </div>
               )}
               {onRepetir && (
@@ -801,6 +860,8 @@ export default function ReproductorGrabacion({
             </div>
             {barra({})}
             {selector && <div style={{ padding: 'var(--aire-2) var(--aire-3) 0' }}>{selector}</div>}
+            {/* -tarea 96- El filtro debajo de Subtítulos, igual. */}
+            {selectorFiltro && <div style={{ padding: 'var(--aire-2) var(--aire-3) 0' }}>{selectorFiltro}</div>}
             <div className="acciones-toma">{acciones(false)}</div>
           </div>
         </div>
@@ -839,7 +900,8 @@ export default function ReproductorGrabacion({
           </button>
           {/* -tarea 87, A4- El alto del video sale de usarAltoDelVideo; sin medir, el 70vh de antes.
               Antes: maxHeight: '70vh'. */}
-          <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ width: '100%', maxHeight: altoVideo ?? '70vh', background: '#000', display: 'block' }} />
+          {/* -tarea 96- Con el filtro elegido -filtroVideo-, que no alcanza a los subtítulos. */}
+          <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ width: '100%', maxHeight: altoVideo ?? '70vh', background: '#000', display: 'block', filter: filtroVideo }} />
           {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} cortes={cortes} />}
           {!reproduciendo && (
             <span className="play-visor" aria-hidden="true">
@@ -883,7 +945,24 @@ export default function ReproductorGrabacion({
                 guardarEstiloSubtitulo(e)
               }}
               abierto={panelAbierto}
-              onAbrir={setPanelAbierto}
+              // -tarea 96- abrirSubtitulos cierra la tira de filtros. Antes: onAbrir={setPanelAbierto}.
+              onAbrir={abrirSubtitulos}
+              desactivado={guardando}
+            />
+          </div>
+        )}
+        {/* -tarea 96, 05-10-2026- EL FILTRO, junto al de Subtítulos y con su mismo aspecto -o solo, si la
+            toma no tiene subtítulos-. Solo si la toma no está guardada. */}
+        {!guardada && (
+          <div style={{ padding: subtitulos.length > 0 ? 'var(--aire-2) var(--aire-3) 0' : 'var(--aire-3) var(--aire-3) 0' }}>
+            <SelectorFiltro
+              tono={filtro.tono}
+              onCambiar={cambiarFiltro}
+              video={video}
+              ruta={grabacion.ruta}
+        poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined}
+              abierto={filtroAbierto}
+              onAbrir={abrirFiltro}
               desactivado={guardando}
             />
           </div>
