@@ -711,10 +711,30 @@ export default function BibliotecaView({
             <button type="button" className="btn-deformable boton-portada" data-testid="btn-salir-seleccion" aria-label={t('cerrar')} onClick={() => setSeleccionTomas(null)}>
               <IconoCerrar tamano={22} />
             </button>
-            <span className="cuenta-seleccion" data-testid="cuenta-seleccion" aria-live="polite">{t('tomasSeleccionadas', { n: seleccionTomas.length })}</span>
-            <button type="button" className="btn-deformable enlace-seleccion" data-testid="btn-seleccionar-todo" onClick={() => setSeleccionTomas(seleccionarTodas((grabaciones || []).map((g) => g.id)))}>
-              {t('seleccionarTodo')}
-            </button>
+            {/* -tarea 94, revision, 05-10-2026, Javier- MARCAR TODAS VA CON LA CUENTA, LEJOS DEL TACHO.
+                Con "Seleccionar todo" pegado al tacho se leia "borrar todo" y hacia dudar antes de
+                borrar unas pocas. Ahora es una casilla junto a la cuenta, como en Gmail y Archivos de
+                Google: marca todas, y si ya estan todas las desmarca -con cero, se sale del modo-. El
+                tacho queda solo a la derecha. Antes: <span cuenta> y un boton de texto
+                "Seleccionar todo" entre la cuenta y el tacho. */}
+            {(() => {
+              const ids = (grabaciones || []).map((g) => g.id)
+              const todas = ids.length > 0 && ids.every((id) => seleccionTomas.includes(id))
+              return (
+                <button
+                  type="button"
+                  role="checkbox"
+                  aria-checked={todas}
+                  aria-label={t('seleccionarTodo')}
+                  className="btn-deformable casilla-todas"
+                  data-testid="btn-seleccionar-todo"
+                  onClick={() => setSeleccionTomas(todas ? null : seleccionarTodas(ids))}
+                >
+                  <span className={`casilla-cuadro${todas ? ' marcada' : ''}`} aria-hidden="true">{todas ? '✓' : ''}</span>
+                  <span className="cuenta-seleccion" data-testid="cuenta-seleccion" aria-live="polite">{t('tomasSeleccionadas', { n: seleccionTomas.length })}</span>
+                </button>
+              )
+            })()}
             <button type="button" className="btn-deformable boton-portada" data-testid="btn-borrar-seleccion" aria-label={t('borrar')} disabled={seleccionTomas.length === 0} onClick={() => {
               onBorrarTomas?.(seleccionTomas)
               setSeleccionTomas(null)
