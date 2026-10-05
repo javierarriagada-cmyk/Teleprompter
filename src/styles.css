@@ -1194,6 +1194,18 @@ label.selector-aa-opcion {
 .btn-empezar-grabar:active {
   animation: none;
 }
+/* EL HALO CONTRASTA CON LO QUE TIENE DETRÁS -2026-10-05, segundo ajuste de Javier-. Blanco sobre fondo
+   oscuro, como arriba; gris oscuro translúcido sobre fondo claro, donde el blanco no se veía. Nunca rojo.
+   De pie en el teléfono el fondo es el de la pareja -halo-sobre-claro lo pone TeleprompterView con
+   isWhiteBg, el mismo criterio que empezar-sobre-blanco-; de lado y en tableta Empezar vive en el riel o
+   el dock, que siguen al tema. */
+.btn-empezar-grabar.halo-sobre-claro,
+[data-tema="claro"] .layout-tel-h .btn-empezar-grabar,
+[data-tema="claro"] .layout-tab-v .btn-empezar-grabar,
+[data-tema="claro"] .layout-tab-h .btn-empezar-grabar {
+  --pulso-empezar: #1f1f1f;
+  --pulso-empezar-opacidad: 50%;
+}
 .btn-empezar-leer {
   background-color: var(--color-acento);
   border: none;

@@ -209,8 +209,14 @@ export default function BarraDeTiempo({
 
   // 2026-10-05: sin lo pausado -con la pausa abierta, ahora y lo pausado crecen juntos y el número
   // queda quieto-. Antes: const transcurridoSeg = (ahora - tInicioLecturaMs) / 1000
+  // 2026-10-05, segundo ajuste: la hora se toma al dibujar y no del último refresco de 250 ms. Con la
+  // hora vieja la pastilla se congelaba hasta 250 ms antes de la pausa y al seguir se adelantaba de golpe.
+  // Ahora, en pausa, la hora y lo pausado crecen juntos y el número queda en el ms en que se pausó; al
+  // seguir continúa desde ahí. El refresco -ahora- solo hace que se vuelva a dibujar. Antes:
+  //   const transcurridoSeg = Math.max(0, ahora - tInicioLecturaMs - pausadoMs) / 1000
   const pausadoMs = msPausadoAhora ? msPausadoAhora() : 0
-  const transcurridoSeg = Math.max(0, ahora - tInicioLecturaMs - pausadoMs) / 1000
+  const horaDeDibujo = Math.max(ahora, performance.now())
+  const transcurridoSeg = Math.max(0, horaDeDibujo - tInicioLecturaMs - pausadoMs) / 1000
   const palabrasQueFaltan = Math.max(0, totalTokens - estado.posicion)
   const ppm = estado.ppmEstimadas > 0 ? estado.ppmEstimadas : PALABRAS_POR_MINUTO_ESTIMADAS
   const segundosQueFaltan = palabrasQueFaltan / (ppm / 60)

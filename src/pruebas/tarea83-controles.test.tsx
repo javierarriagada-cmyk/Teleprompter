@@ -338,6 +338,8 @@ describe('Tarea 83, correcciones: el halo de Grabar y la pastilla en pausa', () 
     expect(r).toMatch(/--pulso-empezar:\s*#fff/)
     expect(r).toMatch(/--pulso-empezar-opacidad:\s*45%/)
     expect(regla('.btn-empezar-grabar:active')).toMatch(/animation:\s*none/)
+    // 2026-10-05: sobre fondo claro, gris oscuro translúcido; nunca rojo.
+    expect(CSS).toMatch(/\.btn-empezar-grabar\.halo-sobre-claro,[^{]*\{\s*--pulso-empezar:\s*#1f1f1f;/)
     expect(CSS).toMatch(/\.btn-empezar-leer,\s*\n\s*\.btn-empezar-grabar \{ animation: none; \}/)
     expect(CSS).toMatch(/@keyframes pulsoEmpezar\s*\{[^}]*box-shadow[^}]*var\(--pulso-empezar-opacidad, 55%\)/)
     // Al apretarlo se apaga: el botón deja de estar; grabando, Parar no lleva el pulso.
@@ -357,12 +359,40 @@ describe('Tarea 83, correcciones: el halo de Grabar y la pastilla en pausa', () 
     expect(enPausa).toMatch(/\d\d:\d\d \/ \d\d:\d\d/)
     await esperar(2600)
     expect(texto()).toBe(enPausa)
-    // Al seguir, el transcurrido arranca desde donde quedó, sin sumar lo pausado.
+    // 2026-10-05: lo de seguir pasó a 'AL SEGUIR, LA PASTILLA CONTINÚA DESDE DONDE SE CONGELÓ', exacta.
+    // Antes, aquí, con un segundo de tolerancia:
+    //   await tocarPausa(); await esperar(300)
+    //   expect(seg(desp) - seg(ant)).toBeLessThanOrEqual(1)
+  }, 20000)
+
+  test.each([['grabar'], ['leer']])('AL SEGUIR, LA PASTILLA CONTINÚA DESDE DONDE SE CONGELÓ -%s-', async (puerta) => {
+    // El reloj lo maneja la prueba -performance.now y Date.now-: así se pausa justo después de cruzar un
+    // segundo y antes del refresco de 250 ms, que es donde la pastilla se adelantaba al seguir.
+    let reloj = 1_000_000
+    const base = Date.now()
+    vi.spyOn(performance, 'now').mockImplementation(() => reloj)
+    vi.spyOn(Date, 'now').mockImplementation(() => base + reloj)
+    localStorage.setItem('teleprompter_ajustes', JSON.stringify({ mostrarTiempo: true }))
+    await abrir(puerta as 'grabar' | 'leer')
+    await empezarYMostrarControles()
+    const inicio = reloj
+    const texto = () => (document.querySelector('.pastilla-tiempo')?.textContent || '').split(' / ')[0]
+    reloj = inicio + 4_900
+    await esperar(300)
+    expect(texto()).toBe('00:04')
+    reloj = inicio + 5_100
+    await tocarPausa()
+    expect(texto()).toBe('00:05')
+    // Diez segundos de pausa.
+    reloj += 10_000
+    await esperar(300)
+    expect(texto()).toBe('00:05')
     await tocarPausa()
     await esperar(300)
-    const [ant] = enPausa.split(' / ')
-    const [desp] = texto().split(' / ')
-    const seg = (m: string) => Number(m.slice(0, 2)) * 60 + Number(m.slice(3, 5))
-    expect(seg(desp) - seg(ant)).toBeLessThanOrEqual(1)
+    expect(texto()).toBe('00:05')
+    // Y sigue contando desde ahí, sin la pausa.
+    reloj += 1_000
+    await esperar(300)
+    expect(texto()).toBe('00:06')
   }, 20000)
 })

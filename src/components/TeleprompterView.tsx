@@ -1083,7 +1083,10 @@ export default function TeleprompterView({
       // De lado vive en el riel, que sigue al tema: ahí manda styles-horizontal.css.
       // 30-09-2026, tarea 83: en tableta Empezar vive en el dock o en el riel, que también siguen
       // al tema: tampoco lleva la variante sobre blanco.
-      className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${!conCamara && !horizontal && !tableta && isWhiteBg ? ' empezar-sobre-blanco' : ''}`}
+      // 2026-10-05, tarea 83: en Grabar, de pie en el teléfono y sobre la pareja blanca, el halo va gris
+      // oscuro -halo-sobre-claro, styles.css-: el blanco no se veía. Antes, sin esa clase:
+      // className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${… ' empezar-sobre-blanco' : ''}`}
+      className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${!conCamara && !horizontal && !tableta && isWhiteBg ? ' empezar-sobre-blanco' : ''}${conCamara && !horizontal && !tableta && isWhiteBg ? ' halo-sobre-claro' : ''}`}
       aria-label={t('empezar')}
       onClick={(e) => {
         e.stopPropagation()
