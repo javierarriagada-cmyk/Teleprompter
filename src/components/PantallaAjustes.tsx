@@ -30,10 +30,16 @@ export type DialogoAjustes =
   | 'idioma'
   | null
 
+// 05-10-2026, tarea 95: dos nombres mas, para las dos parejas que vuelven de A9 -verde sobre
+// negro y hueso sobre gris muy oscuro, modelo.ts-. Se reconocen por el valor exacto, igual que
+// el ambar; lo que no calce con ninguna sigue cayendo en "Negro con blanco", que es la de
+// omision. Antes, sin las dos lineas del verde y el gris.
 function nombrePareja(fondo: string, letra: string): string {
   const f = fondo.toUpperCase()
   const l = letra.toUpperCase()
   if (f === '#000000' && l === '#F5C24B') return t('parejaNegroAmbar')
+  if (f === '#000000' && l === '#4ADE80') return t('parejaNegroVerde')
+  if (f === '#121212' && l === '#EDE6D6') return t('parejaGrisHueso')
   if (f === '#FFFFFF') return t('parejaBlancoNegro')
   return t('parejaNegroBlanco')
 }
