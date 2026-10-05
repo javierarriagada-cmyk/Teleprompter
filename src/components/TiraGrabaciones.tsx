@@ -3,6 +3,7 @@ import { Capacitor } from '@capacitor/core'
 import { ResumenGrabacion, ResumenGuion } from '../datos/modelo'
 import { t, useTextos, tituloVisible, tituloOInicio, fechaCortaDosDigitos } from '../textos'
 import { IconoSinVideos, IconoTacho, IconoCerrar, IconoEmpezar } from './IconosApp'
+import { duracionVisible } from '../lib/tramos'
 
 // UNA RUTA DE DISCO TAMBIEN HAY QUE CONVERTIRLA. El WebView no puede abrir
 // /storage/... directo: necesita la direccion que arma convertFileSrc.
@@ -111,7 +112,7 @@ function TarjetaToma({
         <div style={{ width: '100%', height: 88, background: 'var(--bg-superficie)', position: 'relative' }}>
           {g.rutaMiniatura ? <img src={srcDeRuta(g.rutaMiniatura)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} /> : <div style={{ width: '100%', height: '100%', background: '#1a1a1a' }} />}
           <span className="play-miniatura" aria-hidden="true"><IconoEmpezar tamano={16} /></span>
-          <span style={{ position: 'absolute', right: 6, bottom: 6, background: 'rgba(0,0,0,0.7)', color: '#fff', fontSize: 11, padding: '1px 5px', borderRadius: 4 }}>{formatearDuracionMs(g.duracionMs)}</span>
+          <span style={{ position: 'absolute', right: 6, bottom: 6, background: 'rgba(0,0,0,0.7)', color: '#fff', fontSize: 11, padding: '1px 5px', borderRadius: 4 }}>{/* -tarea 88- La duración FINAL, sin lo pausado. Antes: formatearDuracionMs(g.duracionMs). */}{formatearDuracionMs(duracionVisible(g))}</span>
           {g.incompleta && <span data-testid={`marca-incompleta-${g.id}`} style={{ position: 'absolute', left: 6, top: 6, background: 'rgba(180, 40, 40, 0.9)', color: '#fff', fontSize: 10, padding: '1px 5px', borderRadius: 4, fontWeight: 700 }}>{t('incompleta')}</span>}
           {g.errorMudo && <span style={{ position: 'absolute', left: 6, bottom: 6, background: 'rgba(180, 40, 40, 0.9)', color: '#fff', fontSize: 10, padding: '1px 5px', borderRadius: 4 }}>{t('sinAudio')}</span>}
         </div>

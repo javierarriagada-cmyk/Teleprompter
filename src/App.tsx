@@ -43,8 +43,19 @@ import {
   quitarTomasSinVideo,
   tomaEnCurso,
   anotarFraseOida,
-  borrarGrabacionEnDisco
+  borrarGrabacionEnDisco,
+  abrirPausa,
+  cerrarPausa,
+  msDelVideo
 } from './lib/tomaVideo'
+// -tarea 88, 04-10-2026- La pausa con cortes y el control por gestos -docs/tarea88.txt-.
+import { paso, EstadoPausa, Entrada as EntradaPausa, Accion as AccionPausa } from './lib/pausaToma'
+import { duracionVisible, MS_MINIMO_QUE_QUEDA } from './lib/tramos'
+import { Gestos, decidirPreparar, MS_ENTRE_INTENTOS_PREPARAR } from './lib/gestos'
+import { confirmadorNuevo, revisar as revisarGesto } from './lib/confirmadorGestos'
+import { vigiaNuevo, oirParcial, oirFinal, debePedir, alPedir, alResponder, Vigia } from './lib/vigiaGestos'
+// -tarea 88, segunda vuelta- El fin de la última palabra del FINAL, para el corte de la palma.
+import { tomarFinUltimaPalabraEpochMs } from './lib/diagnostico'
 import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar } from './components/IconosApp'
 import { t, useTextos, TITULO_SIN_NOMBRE } from './textos'
 import { idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
@@ -250,6 +261,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [recuadroX, setRecuadroX] = useState<number>(
     typeof ajustesPrevios.recuadroX === 'number' ? ajustesPrevios.recuadroX : 0.64
   )
+  // CONTROL POR GESTOS -tarea 88, 04-10-2026-. Apagado de fábrica. Se guarda en teleprompter_ajustes.
+  const [gestosAlGrabar, setGestosAlGrabar] = useState<boolean>(ajustesPrevios.gestosAlGrabar === true)
   const [recuadroY, setRecuadroY] = useState<number>(
     typeof ajustesPrevios.recuadroY === 'number' ? ajustesPrevios.recuadroY : 0.52
   )
@@ -375,12 +388,14 @@ export default function App({ motor, repoOverride }: AppProps) {
         fondoToma,
         recuadroX,
         recuadroY,
-        calidadVideo
+        calidadVideo,
+        // -tarea 88-
+        gestosAlGrabar
       }
       localStorage.setItem('teleprompter_ajustes', JSON.stringify(objetoAjustes))
     } catch (e) {
     }
-  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente, ladoCamara, fondoToma, recuadroX, recuadroY, calidadVideo])
+  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente, ladoCamara, fondoToma, recuadroX, recuadroY, calidadVideo, gestosAlGrabar])
 
   useEffect(() => {
     if (vista === 'lectura' && estadoToma === 'listo' && conCamara) {
@@ -780,8 +795,25 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [estadoModo, setEstadoModo] = useState<'SIGUIENDO' | 'BUSCANDO' | 'DETENIDO'>('SIGUIENDO')
   const [tInicioLecturaMs, setTInicioLecturaMs] = useState<number | null>(null)
   const [cuentaRegresiva, setCuentaRegresiva] = useState<number | null>(null)
-  const [enPausa, setEnPausa] = useState<boolean>(false)
-  const [confirmandoDescarte, setConfirmandoDescarte] = useState<boolean>(false)
+  // -tarea 88, 04-10-2026- LA PAUSA ES UNA MÁQUINA -lib/pausaToma.ts-: el botón, el tacho y los gestos
+  // entran por despachar() -más abajo- y App ejecuta lo que devuelve. enPausa y confirmandoDescarte se
+  // derivan del único estado, con los mismos nombres de antes: los botones y sus testid no cambian.
+  // Antes: const [enPausa, setEnPausa] = useState<boolean>(false)
+  //        const [confirmandoDescarte, setConfirmandoDescarte] = useState<boolean>(false)
+  const [estadoPausa, setEstadoPausa] = useState<EstadoPausa>({ tipo: 'grabando' })
+  const estadoPausaRef = useRef<EstadoPausa>({ tipo: 'grabando' })
+  const ponerEstadoPausa = (e: EstadoPausa) => {
+    estadoPausaRef.current = e
+    setEstadoPausa(e)
+  }
+  const enPausa = estadoPausa.tipo !== 'grabando'
+  const confirmandoDescarte = estadoPausa.tipo === 'confirmando'
+  // Lo pausado de la toma en curso, en ms de Date.now(): el aviso de fin dice la duración FINAL.
+  const msPausadoRef = useRef(0)
+  const pausaAbiertaDesdeRef = useRef<number | null>(null)
+  // El símbolo grande de pausa -solo cuando pausa un gesto-: a la vista, saliendo o nada.
+  const [simboloPausa, setSimboloPausa] = useState<'visible' | 'saliendo' | null>(null)
+  const timerSimboloRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Referencia para la función que cierra el modal abierto si existe
   const cerrarModalRef = useRef<(() => boolean) | null>(null)
@@ -879,8 +911,14 @@ export default function App({ motor, repoOverride }: AppProps) {
     lang: langMotor,
     motor,
     acumularTexto: verTranscripcion,
-    alRecibirParcial: seguidorParcial,
+    // -tarea 88- El vigía de los gestos oye la voz ANTES que el seguidor; el seguidor recibe exactamente
+    // lo mismo que antes. Antes: alRecibirParcial: seguidorParcial.
+    alRecibirParcial: (texto: string) => {
+      oirVozParaGestos('parcial', texto)
+      seguidorParcial(texto)
+    },
     alRecibirFraseFinal: (e: any) => {
+      oirVozParaGestos('final', e && typeof e === 'object' ? String(e.texto || '') : String(e || ''))
       if (grabandoVideoRef.current && e && String(e.texto || '').trim()) {
         anotarFraseOida()
       }
@@ -970,7 +1008,8 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   async function handleStart() {
     if (cuentaRegresiva !== null || isRecording) return
-    setEnPausa(false)
+    // -tarea 88- Antes: setEnPausa(false).
+    volverAGrabando()
     await solicitarWakeLock()
 
     // MEDIR ES PARTE DE LEER, NO UN BOTON APARTE.
@@ -1264,7 +1303,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   async function handleDescartarToma(): Promise<void> {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
-    setEnPausa(false)
+    // -tarea 88- Antes: setEnPausa(false).
+    ponerEstadoPausa({ tipo: 'grabando' })
     const resumen = await cortarTomaSiHay(false)
     await stop()
     await detenerGrabacion()
@@ -1290,6 +1330,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   // "Grabado" queda para una toma que no llego al reproductor. Era el mismo bloque copiado en
   // Salir y en Parar: ahora vive aca.
   function avisarFinDeToma(duracionMs: number | null) {
+    // -tarea 88- Con cámara, la duración FINAL: sin lo pausado. Leer sigue como hoy.
+    if (conCamara && duracionMs !== null) duracionMs = Math.max(0, duracionMs - msPausadoAhora())
     if (duracionMs !== null && duracionMs > 0) {
       const totalSeg = Math.floor(duracionMs / 1000)
       const mins = Math.floor(totalSeg / 60)
@@ -1303,8 +1345,24 @@ export default function App({ motor, repoOverride }: AppProps) {
   async function handleStop(): Promise<ResumenGrabacion | null> {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
-    setEnPausa(false)
-    const resumen = await cortarTomaSiHay(false)
+    // -tarea 88- Antes: setEnPausa(false).
+    ponerEstadoPausa({ tipo: 'grabando' })
+    // Antes: const resumen = await cortarTomaSiHay(false).
+    let resumen = await cortarTomaSiHay(false)
+    // -tarea 88, punto 9- Si después de cortar lo pausado queda menos de 1 s, la toma se trata como hoy
+    // se trata una toma sin video: no se abre el visor, se borra del disco y del índice, y el que llamó
+    // muestra el aviso de fin de siempre. Sin mensajes nuevos.
+    if (resumen && resumen.pausas && resumen.pausas.length > 0 && duracionVisible(resumen) < MS_MINIMO_QUE_QUEDA) {
+      console.info('Sigo88', `toma sin video: quedan ${duracionVisible(resumen)} ms de ${resumen.duracionMs}`)
+      try {
+        await borrarGrabacionEnDisco(resumen)
+        await repoGrabacionesRef.current.borrar(resumen.id)
+        setGrabaciones(await repoGrabacionesRef.current.listar())
+      } catch (e) {
+        console.warn('[App] no se pudo borrar la toma sin video:', e)
+      }
+      resumen = null
+    }
     await stop()
     // El audio se corta DESPUES del motor, no antes: si se cortara primero, los ultimos
     // calces quedarian anotados con un milisegundo que ya no existe en el archivo.
@@ -1473,13 +1531,266 @@ export default function App({ motor, repoOverride }: AppProps) {
   // El .catch es para que un fallo no deje la fila trabada: start() y stop() ya avisan el error
   // por su cuenta -ultimoError-.
   const filaPausaRef = useRef<Promise<void>>(Promise.resolve())
-  const handleTogglePausa = async () => {
-    const paso = enPausa ? start : stop
-    setEnPausa(!enPausa)
-    const turno = filaPausaRef.current.then(() => paso()).catch(() => {})
+  // -tarea 88- La fila de siempre, ahora para las acciones pausar y reanudar de la máquina.
+  const enFilaDeLaVoz = (hacer: () => Promise<void> | void): Promise<void> => {
+    const turno = filaPausaRef.current.then(() => hacer()).catch(() => {})
     filaPausaRef.current = turno
-    await turno
+    return turno
   }
+  // -tarea 88- El botón de pausa entra a la máquina como 'alternar', con la hora del toque.
+  // Antes:
+  //   const paso = enPausa ? start : stop
+  //   setEnPausa(!enPausa)
+  //   const turno = filaPausaRef.current.then(() => paso()).catch(() => {})
+  //   filaPausaRef.current = turno
+  //   await turno
+  const handleTogglePausa = async () => {
+    await despachar({ tipo: 'alternar', tMs: Date.now() })
+  }
+
+  // LA MÁQUINA DE PAUSA, CABLEADA -tarea 88, 04-10-2026-. Cada entrada pasa por paso() y App ejecuta
+  // las acciones que vuelven. El botón y la palma dejan así el MISMO tramo en el sidecar.
+  function volverAGrabando() {
+    ponerEstadoPausa({ tipo: 'grabando' })
+    msPausadoRef.current = 0
+    pausaAbiertaDesdeRef.current = null
+  }
+  function msPausadoAhora(): number {
+    const abierta = pausaAbiertaDesdeRef.current
+    return msPausadoRef.current + (abierta !== null ? Math.max(0, Date.now() - abierta) : 0)
+  }
+  function describirEntrada(en: EntradaPausa): string {
+    // -tarea 88, segunda vuelta- La palma lleva además la primera vista y el fin de la voz, en el reloj del
+    // video, para que Claude vea de dónde salió el corte. Antes: if (en.tipo === 'gesto') return `gesto:${en.gesto}`
+    if (en.tipo === 'gesto') {
+      if (en.gesto !== 'palma') return `gesto:${en.gesto}`
+      const v = (ms: number | undefined) => { const x = typeof ms === 'number' ? msDelVideo(ms) : null; return x === null ? '-' : String(x) }
+      return `gesto:palma vistaVideoMs=${v(en.vistoDesdeMs)} finVozVideoMs=${v(en.finVozMs)}`
+    }
+    return en.tipo
+  }
+  function despachar(en: EntradaPausa): Promise<void> {
+    const antes = estadoPausaRef.current
+    const r = paso(antes, en)
+    ponerEstadoPausa(r.estado)
+    if (r.acciones.length > 0) {
+      const enVideo = (ms: number) => { const v = msDelVideo(ms); return v === null ? '-' : String(v) }
+      const detalle = r.acciones.map((a) => (a.tipo === 'pausar' ? `pausar(origen=${a.origen},videoMs=${enVideo(a.desdeMs)})` : a.tipo === 'reanudar' ? `reanudar(videoMs=${enVideo(a.hastaMs)})` : a.tipo)).join(',')
+      console.info('Sigo88', `maquina entrada=${describirEntrada(en)} ${antes.tipo}->${r.estado.tipo} acciones=${detalle}`)
+    }
+    return Promise.all(r.acciones.map((a) => ejecutarAccionPausa(a, en))).then(() => {})
+  }
+  const despacharRef = useRef(despachar)
+  despacharRef.current = despachar
+
+  function mostrarSimboloPausa() {
+    if (timerSimboloRef.current) clearTimeout(timerSimboloRef.current)
+    setSimboloPausa('visible')
+    timerSimboloRef.current = setTimeout(() => {
+      // Con "reducir movimiento" se va sin desvanecerse.
+      if (movimientoApagado()) {
+        timerSimboloRef.current = null
+        setSimboloPausa(null)
+        return
+      }
+      setSimboloPausa('saliendo')
+      timerSimboloRef.current = setTimeout(() => {
+        timerSimboloRef.current = null
+        setSimboloPausa(null)
+      }, 300)
+    }, 1000)
+  }
+  useEffect(() => () => { if (timerSimboloRef.current) clearTimeout(timerSimboloRef.current) }, [])
+
+  // La MISMA cuenta de 3 s del comienzo de la toma -handleStart, CuentaRegresiva-. Al llegar a 0 entra
+  // finCuenta: recién ahí vuelve la voz.
+  function empezarCuentaDePausa() {
+    if (timerCuentaRef.current !== null) clearInterval(timerCuentaRef.current)
+    setCuentaRegresiva(3)
+    let c = 3
+    timerCuentaRef.current = setInterval(() => {
+      c -= 1
+      if (c > 0) {
+        setCuentaRegresiva(c)
+        return
+      }
+      if (timerCuentaRef.current !== null) {
+        clearInterval(timerCuentaRef.current)
+        timerCuentaRef.current = null
+      }
+      setCuentaRegresiva(null)
+      void despacharRef.current({ tipo: 'finCuenta', tMs: Date.now() })
+    }, 1000)
+  }
+
+  // Terminar con la V es exactamente Parar: el mismo camino del botón rojo.
+  async function pararComoElBoton() {
+    hapticaToqueMedio()
+    const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
+    const resumen = await handleStop()
+    if (!resumen) avisarFinDeToma(duracionMs)
+  }
+
+  function ejecutarAccionPausa(a: AccionPausa, en: EntradaPausa): Promise<void> {
+    const porGesto = en.tipo === 'gesto' || en.tipo === 'finCuenta'
+    switch (a.tipo) {
+      case 'pausar':
+        pausaAbiertaDesdeRef.current = a.desdeMs
+        abrirPausa(a.desdeMs, a.origen)
+        if (a.origen === 'palma') {
+          // Confirmación a distancia -punto 16-: los controles, la vibración, el aviso para TalkBack
+          // y el símbolo grande. Con el botón no aparece el símbolo.
+          setControlesVisibles(true)
+          hapticaToqueMedio()
+          mostrarAviso(t('pausa'))
+          mostrarSimboloPausa()
+        }
+        return enFilaDeLaVoz(() => stop())
+      case 'reanudar':
+        if (pausaAbiertaDesdeRef.current !== null) {
+          msPausadoRef.current += Math.max(0, a.hastaMs - pausaAbiertaDesdeRef.current)
+          pausaAbiertaDesdeRef.current = null
+        }
+        cerrarPausa(a.hastaMs)
+        // El reloj de la voz del vigía vuelve a empezar: los primeros 2 s no se mira.
+        vigiaRef.current = vigiaNuevo(Date.now())
+        if (porGesto) {
+          setControlesVisibles(true)
+          hapticaToqueMedio()
+          mostrarAviso(t('grabando'))
+        }
+        return enFilaDeLaVoz(() => start())
+      case 'empezarCuenta':
+        empezarCuentaDePausa()
+        return Promise.resolve()
+      case 'cancelarCuenta':
+        cancelarCuentaRegresiva()
+        return Promise.resolve()
+      case 'terminar':
+        return pararComoElBoton()
+      case 'pedirConfirmacion':
+        // El "¿Seguro?" del tacho se dibuja solo: confirmandoDescarte sale del estado.
+        return Promise.resolve()
+      case 'borrar':
+        return handleDescartarToma()
+    }
+    return Promise.resolve()
+  }
+
+  // CONTROL POR GESTOS -tarea 88, docs/tarea88.txt, 6.1 a 6.4-. Con el interruptor apagado no se llama a
+  // nada de Gestos: ni preparar. apto: 'sinProbar' hasta que preparar responde.
+  const [gestosApto, setGestosApto] = useState<'sinProbar' | 'si' | 'no'>('sinProbar')
+  const motivoSinGestos: 'soloFrontal' | 'noDisponible' | null =
+    ladoCamara === 'trasera' ? 'soloFrontal' : gestosApto === 'no' ? 'noDisponible' : null
+  const quiereGestos = gestosAlGrabar && conCamara && vista === 'lectura' && ladoCamara === 'frontal' && camaraActiva
+  // -tarea 88, segunda vuelta, 04-10-2026- «No disponible» falso: sin vista previa todavía, o con un cuadro
+  // negro, se vuelve a intentar mientras la cámara siga encendida -lib/gestos.ts, decidirPreparar-. El lado
+  // nativo guarda el reconocedor: los intentos no crean otro. Se suelta al salir, si se llamó a preparar.
+  // Antes: una sola llamada a preparar, y ok false dejaba 'no' hasta que cambiara quiereGestos:
+  //   Gestos.preparar().then((r) => { preparado = !!(r && r.ok); ... if (vigente) setGestosApto(preparado ? 'si' : 'no') ... })
+  //     .catch(() => { if (vigente) setGestosApto('no') })
+  //   y en la limpieza: if (preparado) Gestos.soltar().
+  useEffect(() => {
+    if (!quiereGestos) return
+    let vigente = true
+    let llamado = false
+    let negros = 0
+    let intentos = 0
+    let timer: number | null = null
+    const intentar = () => {
+      timer = null
+      llamado = true
+      intentos++
+      Gestos.preparar()
+        .then((r) => {
+          if (!vigente) return
+          negros = r && r.estado === 'negro' ? negros + 1 : 0
+          const d = decidirPreparar(r, negros)
+          console.info('Sigo88', `gestos preparar intento=${intentos} ok=${!!(r && r.ok)} estado=${r?.estado ?? '-'}${r && r.motivo ? ` motivo=${r.motivo}` : ''} decide=${d}`)
+          if (d === 'reintentar') {
+            timer = window.setTimeout(intentar, MS_ENTRE_INTENTOS_PREPARAR)
+            return
+          }
+          setGestosApto(d)
+        })
+        .catch((e: any) => {
+          console.info('Sigo88', `gestos preparar falló: ${e?.message || e}`)
+          if (vigente) setGestosApto('no')
+        })
+    }
+    intentar()
+    return () => {
+      vigente = false
+      if (timer !== null) window.clearTimeout(timer)
+      if (llamado) {
+        console.info('Sigo88', 'gestos soltar')
+        Gestos.soltar().catch(() => {})
+      }
+    }
+  }, [quiereGestos])
+
+  // EL VIGÍA Y SU LAZO: setInterval de 100 ms solo con el vigía activo; nunca dos pedidos en vuelo.
+  const vigiaActivo = quiereGestos && grabandoVideo && gestosApto === 'si'
+  const vigiaActivoRef = useRef(false)
+  vigiaActivoRef.current = vigiaActivo
+  const vigiaRef = useRef<Vigia>(vigiaNuevo(0))
+  function oirVozParaGestos(tipo: 'parcial' | 'final', texto: string) {
+    // -tarea 88, segunda vuelta- El FINAL lleva el fin de su última palabra, ya en Date.now() -lo convierte
+    // tomarFinUltimaPalabraEpochMs una sola vez-. Se toma con cada FINAL, aun con el vigía apagado, para
+    // que un fin viejo no quede para el FINAL siguiente. Antes:
+    // const r = tipo === 'parcial' ? oirParcial(vigiaRef.current, texto, Date.now()) : oirFinal(vigiaRef.current, texto, Date.now())
+    const finPalabra = tipo === 'final' ? tomarFinUltimaPalabraEpochMs() : null
+    if (!vigiaActivoRef.current) return
+    const r = tipo === 'parcial' ? oirParcial(vigiaRef.current, texto, Date.now()) : oirFinal(vigiaRef.current, texto, Date.now(), finPalabra)
+    vigiaRef.current = r.vigia
+    if (r.cambio) console.info('Sigo88', `vigia voz ${tipo} cambia`)
+    if (tipo === 'final') {
+      const fv = msDelVideo(r.vigia.finVozMs)
+      console.info('Sigo88', `vigia final cambio=${r.cambio} conHora=${finPalabra !== null} finVozVideoMs=${fv ?? '-'}`)
+    }
+  }
+  useEffect(() => {
+    if (!vigiaActivo) return
+    let vigente = true
+    let confirmador = confirmadorNuevo()
+    let pidiendo = false
+    vigiaRef.current = vigiaNuevo(Date.now())
+    const id = setInterval(() => {
+      const ahora = Date.now()
+      const e = estadoPausaRef.current
+      const estado = e.tipo === 'pausada' ? 'pausada' : e.tipo === 'confirmando' ? 'confirmando' : 'grabando'
+      if (!debePedir(vigiaRef.current, { activo: true, estado }, ahora)) {
+        if (pidiendo && estado === 'grabando' && !vigiaRef.current.enVuelo && ahora - vigiaRef.current.ultimoCambioMs < 2000) pidiendo = false
+        return
+      }
+      if (!pidiendo) {
+        pidiendo = true
+        console.info('Sigo88', `vigia empieza a pedir cuadros estado=${estado}`)
+      }
+      vigiaRef.current = alPedir(vigiaRef.current, ahora)
+      Gestos.revisarCuadro()
+        .then((r) => {
+          if (!vigente) return
+          vigiaRef.current = alResponder(vigiaRef.current)
+          const sale = revisarGesto(confirmador, r)
+          confirmador = sale.confirmador
+          console.info('Sigo88', `revision etiqueta=${r.etiqueta} puntaje=${r.puntaje} msCuadro=${r.msCuadro ?? '-'} msReconocer=${r.msReconocer ?? '-'} estado=${estadoPausaRef.current.tipo}`)
+          if (sale.confirmado) {
+            const c = sale.confirmado
+            // -tarea 88, segunda vuelta- Con finVozMs: la palma corta desde el fin de la última palabra.
+            // Antes: { tipo: 'gesto', gesto: c.gesto, tMs: c.tMs, vistoDesdeMs: c.vistoDesdeMs }
+            void despacharRef.current({ tipo: 'gesto', gesto: c.gesto, tMs: c.tMs, vistoDesdeMs: c.vistoDesdeMs, finVozMs: vigiaRef.current.finVozMs })
+          }
+        })
+        .catch(() => {
+          if (vigente) vigiaRef.current = alResponder(vigiaRef.current)
+        })
+    }, 100)
+    return () => {
+      vigente = false
+      clearInterval(id)
+    }
+  }, [vigiaActivo])
 
   let textoFreno = ''
   if (estadoModo === 'BUSCANDO') {
@@ -1773,12 +2084,11 @@ export default function App({ motor, repoOverride }: AppProps) {
                   aria-label={t('descartarToma')}
                   onClick={async (e) => {
                     e.stopPropagation()
-                    if (!confirmandoDescarte) {
-                      setConfirmandoDescarte(true)
-                    } else {
-                      setConfirmandoDescarte(false)
-                      await handleDescartarToma()
-                    }
+                    // -tarea 88- Por la máquina: en pausa pide el "¿Seguro?", y confirmando borra. Durante
+                    // la cuenta de la palma, la corta. Antes:
+                    //   if (!confirmandoDescarte) setConfirmandoDescarte(true)
+                    //   else { setConfirmandoDescarte(false); await handleDescartarToma() }
+                    await despachar({ tipo: 'tacho' })
                   }}
                   style={{
                     position: 'absolute',
@@ -1824,7 +2134,8 @@ export default function App({ motor, repoOverride }: AppProps) {
                 aria-label={enPausa ? t('seguir') : t('pausa')}
                 onClick={async (e) => {
                   e.stopPropagation()
-                  setConfirmandoDescarte(false)
+                  // -tarea 88- Confirmando, 'alternar' reanuda y deja el tacho cerrado: lo hace la
+                  // máquina. Antes: setConfirmandoDescarte(false) antes de handleTogglePausa().
                   await handleTogglePausa()
                 }}
                 style={{
@@ -1969,6 +2280,14 @@ export default function App({ motor, repoOverride }: AppProps) {
               horizontal={horizontal}
               esquinaRecuadroH={esquinaRecuadroH}
               setEsquinaRecuadroH={elegirEsquinaRecuadroH}
+              // -tarea 88-
+              enPausa={enPausa}
+              gestosAlGrabar={gestosAlGrabar}
+              setGestosAlGrabar={(v) => {
+                hapticaSeleccion()
+                setGestosAlGrabar(v)
+              }}
+              motivoSinGestos={motivoSinGestos}
             />
             {/* EL RELEVO del texto chico de la tarjeta al texto grande de la lectura.
                 Es un velo del mismo color de fondo que se desvanece por encima, NO un
@@ -2014,6 +2333,17 @@ export default function App({ motor, repoOverride }: AppProps) {
               />
             )}
             <CuentaRegresiva valor={cuentaRegresiva} />
+            {/* -tarea 88, punto 16- EL SÍMBOLO GRANDE DE PAUSA: solo cuando pausa un gesto. Ver
+                .simbolo-pausa-grande en styles.css. */}
+            {simboloPausa && (
+              <div
+                data-testid="simbolo-pausa-grande"
+                className={`simbolo-pausa-grande${simboloPausa === 'saliendo' ? ' saliendo' : ''}`}
+                aria-hidden="true"
+              >
+                <IconoPausa tamano={48} />
+              </div>
+            )}
 
             {/* La barra de tiempo va ADENTRO del lienzo -position relative, 100dvh-
                 y se ubica sola abajo a la derecha. Afuera quedaba debajo del borde

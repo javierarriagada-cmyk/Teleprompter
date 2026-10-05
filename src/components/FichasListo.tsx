@@ -10,6 +10,7 @@ import type { ClaveTexto } from '../textos'
 import { PASOS_LETRA } from './estiloLectura'
 import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from '../lib/brillo'
 import { t, useTextos } from '../textos'
+import { Interruptor } from './Interruptor'
 
 // LAS FICHAS DE LISTO -tarea 77, 28-09-2026-.
 //
@@ -66,7 +67,10 @@ export function FichasListo({
   panelAbierto,
   setPanelAbierto,
   onAbrirAjustes,
-  horizontal = false
+  horizontal = false,
+  gestosAlGrabar = false,
+  setGestosAlGrabar,
+  motivoSinGestos = null
 }: {
   fontSize: number
   onLetraMenos?: () => void
@@ -91,6 +95,12 @@ export function FichasListo({
   // sale del carril -la dibuja TeleprompterView arriba del riel derecho, con FichaMas- y el panel
   // se abre a la derecha del riel, a la altura de su ficha.
   horizontal?: boolean
+  // CONTROL POR GESTOS -tarea 88, 04-10-2026, docs/tarea88.txt, 6.5-. El valor elegido y, si hoy no se
+  // puede, por qué: 'soloFrontal' con la trasera, 'noDisponible' si el equipo no puede. Con motivo la
+  // fila se ve deshabilitada y apagada, pero el valor elegido no se toca.
+  gestosAlGrabar?: boolean
+  setGestosAlGrabar?: (v: boolean) => void
+  motivoSinGestos?: 'soloFrontal' | 'noDisponible' | null
 }) {
   useTextos()
   const carrilRef = useRef<HTMLDivElement | null>(null)
@@ -253,6 +263,34 @@ export function FichasListo({
                   <span>{t('voltearCamara')}</span>
                 </button>
               </div>
+              {/* CONTROL POR GESTOS -tarea 88-, debajo de Voltear: todo lo de la cámara en un solo
+                  lugar -Javier, 28-09-. El MISMO Interruptor de Ajustes. Con la trasera o un equipo
+                  que no puede, el motivo va en lugar de la explicación. */}
+              {conCamara && (
+                <div
+                  data-testid="fila-gestos"
+                  data-motivo={motivoSinGestos || 'ninguno'}
+                  className={`fila-gestos${motivoSinGestos ? ' deshabilitada' : ''}`}
+                >
+                  <div className="fila-gestos-texto">
+                    <div className="fila-gestos-nombre">{t('controlPorGestos')}</div>
+                    <div className="fila-gestos-explicacion">
+                      {motivoSinGestos === 'soloFrontal'
+                        ? t('gestosSoloFrontal')
+                        : motivoSinGestos === 'noDisponible'
+                        ? t('gestosNoDisponible')
+                        : t('controlPorGestosExplicacion')}
+                    </div>
+                  </div>
+                  <Interruptor
+                    encendido={!motivoSinGestos && gestosAlGrabar}
+                    onCambiar={(v) => setGestosAlGrabar?.(v)}
+                    etiqueta={t('controlPorGestos')}
+                    testid="switch-gestos"
+                    deshabilitado={!!motivoSinGestos}
+                  />
+                </div>
+              )}
             </>
           )}
 

@@ -1,6 +1,8 @@
 import React from 'react'
 import { hapticaSeleccion } from '../haptica'
 import { ESTILOS_SUBTITULO, EstiloSubtitulo, Subtitulo, subtituloEn, MARGEN_ABAJO_SUBTITULOS, letraSubtitulo, letraQueCabe } from '../lib/subtitulos'
+import { aSalida } from '../lib/tramos'
+import type { TramoMs } from '../lib/recetaExportacion'
 import { anchoDelRenglonMasAncho } from '../lib/medirTexto'
 import { t, useTextos, ClaveTexto } from '../textos'
 import { IconoSubtitulos } from './IconosApp'
@@ -33,11 +35,16 @@ function rectDeLaImagen(v: HTMLVideoElement): { x: number; y: number; w: number;
 export function CapaSubtitulos({
   video,
   subtitulos,
-  estilo
+  estilo,
+  cortes
 }: {
   video: HTMLVideoElement | null
   subtitulos: Subtitulo[]
   estilo: EstiloSubtitulo
+  // -tarea 88, 04-10-2026- Los cortes de una toma con pausas, en el reloj del archivo. Los subtítulos
+  // vienen en el de la SALIDA -subtitulosConCortes, los mismos que se queman-: la hora del video se
+  // lleva a la salida con aSalida; dentro de un corte no se muestra nada. Sin cortes, como siempre.
+  cortes?: TramoMs[]
 }) {
   const [ms, setMs] = React.useState(0)
   const [rect, setRect] = React.useState<{ x: number; y: number; w: number; h: number } | null>(null)
@@ -63,7 +70,13 @@ export function CapaSubtitulos({
   React.useEffect(() => {
     if (!video || estilo === 'no') return
     let id = 0
-    const leer = () => setMs(video.currentTime * 1000)
+    // Antes: setMs(video.currentTime * 1000).
+    const leer = () => {
+      const ms = video.currentTime * 1000
+      if (!cortes || cortes.length === 0) return setMs(ms)
+      const enSalida = aSalida(ms, cortes)
+      setMs(enSalida === null ? -1 : enSalida)
+    }
     const bucle = () => {
       leer()
       if (!video.paused && !video.ended) id = requestAnimationFrame(bucle)
@@ -80,7 +93,7 @@ export function CapaSubtitulos({
       video.removeEventListener('seeked', leer)
       video.removeEventListener('timeupdate', leer)
     }
-  }, [video, estilo])
+  }, [video, estilo, cortes])
 
   if (estilo === 'no' || !rect) return null
   const s = subtituloEn(subtitulos, ms)

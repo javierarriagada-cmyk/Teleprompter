@@ -16,12 +16,17 @@ export function Interruptor({
   encendido,
   onCambiar,
   etiqueta,
-  testid
+  testid,
+  deshabilitado = false
 }: {
   encendido: boolean
   onCambiar: (v: boolean) => void
   etiqueta: string
   testid?: string
+  // -tarea 88, 04-10-2026- Para la fila de Control por gestos: con la trasera o en un equipo que no
+  // puede, el interruptor se ve apagado y no responde. Quien lo usa decide qué valor mostrar -el
+  // elegido se conserva afuera-. Sin la prop, el de siempre.
+  deshabilitado?: boolean
 }) {
   return (
     <button
@@ -30,9 +35,11 @@ export function Interruptor({
       aria-checked={encendido}
       aria-label={etiqueta}
       data-testid={testid}
-      className={`interruptor${encendido ? ' encendido' : ''}`}
+      disabled={deshabilitado}
+      className={`interruptor${encendido ? ' encendido' : ''}${deshabilitado ? ' deshabilitado' : ''}`}
       onClick={(e) => {
         e.stopPropagation()
+        if (deshabilitado) return
         onCambiar(!encendido)
       }}
     >
