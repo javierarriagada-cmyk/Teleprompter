@@ -1,10 +1,14 @@
 import { describe, expect, test } from 'vitest'
 import crypto from 'node:crypto'
 import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
-import {
+import { join, resolve } from 'node:path'
+
+// La ruta va en una variable para que TypeScript no pida tipos de un .mjs de scripts/ -el mismo
+// recurso de tarea85-r8.test.ts-. Con el import directo, npx tsc daba TS7016.
+const SCRIPTS = resolve(__dirname, '..', '..', 'scripts')
+const {
   armarJwt, leerNotas, leerBloques, cuerpoDePista, pistaPedida, juntarConPista, rangoDe28Dias
-} from '../../scripts/playApi.mjs'
+} = await import(/* @vite-ignore */ join(SCRIPTS, 'playApi.mjs'))
 
 describe('play', () => {
   test('arma el JWT con una llave de prueba', () => {
@@ -65,8 +69,8 @@ describe('play', () => {
   test('simular no llama a fetch', async () => {
     const original = globalThis.fetch
     let llamadas = 0
-    globalThis.fetch = () => { llamadas++; return Promise.resolve({ ok: true, json: async () => ({}) }) }
-    const { subirAInterna } = await import('../../scripts/playSubir.mjs')
+    globalThis.fetch = (() => { llamadas++; return Promise.resolve({ ok: true, json: async () => ({}) }) }) as unknown as typeof fetch
+    const { subirAInterna } = await import(/* @vite-ignore */ join(SCRIPTS, 'playSubir.mjs'))
     await subirAInterna({ aab: 'no-existe.aab', lanzar: false, simular: true })
     expect(llamadas).toBe(0)
     globalThis.fetch = original
