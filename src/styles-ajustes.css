@@ -539,6 +539,23 @@
 .ficha-flecha {
   justify-content: center;
 }
+/* -07-10-2026, Claude, revision de la 101- La flecha sola mide 43 de ancho -12 + chevron + 12- y
+   medida en el moto quedaba bajo los 48. La caja llega a 48 y crece 2,5 hacia cada lado -margen
+   negativo-; la pastilla -::before- se angosta lo mismo, asi se ve y ocupa igual que antes. Solo de
+   pie en el telefono: de lado la flecha va a lo ancho del riel y en tableta -grande- ya pasa de 48. */
+.carril-fichas .ficha-flecha:not(.grande) {
+  min-width: 48px;
+  margin-inline: -2.5px;
+}
+.carril-fichas .ficha-flecha:not(.grande)::before {
+  inset: 8px 2.5px;
+}
+.layout-tel-h .riel-izquierdo .ficha-flecha:not(.grande) {
+  margin-inline: 0;
+}
+.layout-tel-h .riel-izquierdo .ficha-flecha:not(.grande)::before {
+  inset: 8px 0;
+}
 /* De pie la segunda fila va ENCIMA de la primera, a 8: abajo está Empezar y no hay lugar. Así
    la primera fila y la flecha no se mueven al tocarla. */
 .segunda-fila-fichas {
