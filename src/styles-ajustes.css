@@ -31,6 +31,14 @@
   scrollbar-width: none;
 }
 .carril-fichas::-webkit-scrollbar { display: none; }
+/* -07-10-2026, Claude, revision de la 101- La caja de la ficha mide 48 y sobresale 8 arriba y 8
+   abajo de su pastilla de 32 -margin -8px 0, abajo-. El carril recorta en vertical -overflow-y
+   hidden-, asi que sin este relleno el toque y lo que mide el escaner volvian a quedar en 32.
+   El relleno agranda el carril por dentro y el margen negativo lo devuelve: nada se mueve. */
+.carril-fichas {
+  padding-block: 8px;
+  margin-block: -8px;
+}
 
 /* 06-10-2026, tarea 101: la caja mide 48 de alto -el escáner mide la caja, no un ::after-.
    Antes: height/min-height 32, padding 0 12px, fondo/borde/sombra en el botón. La pastilla
@@ -42,6 +50,11 @@
   min-height: 48px;
   box-sizing: border-box;
   padding: 8px 12px;
+  /* -07-10-2026, Claude- Sin este margen la fila de LISTO crecia de 32 a 48 y de lado la columna
+     pasaba de un paso de 48 a uno de 64: todo se corria, y la orden pedia que no se moviera nada.
+     Con -8 arriba y abajo la ficha ocupa 32 en el flujo, como antes, y toca en 48. En tableta la
+     ficha grande -60- usa el mismo margen y ocupa 44, como antes. */
+  margin: -8px 0;
   border-radius: 8px;
   border: 1px solid transparent;
   background: transparent;
