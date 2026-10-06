@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useRef, useState } from 'react'
+import React, { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, ResumenGuion, ResumenGrabacion, duracionDeLectura } from '../datos/modelo'
@@ -13,6 +13,7 @@ import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_
 import { ESCALA_AVISO, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
 import { t, useTextos, tituloVisible, tituloOInicio, fechaCorta } from '../textos'
 import { entrarSeleccion, seleccionarTodas, trasAlternar } from '../lib/seleccionTomas'
+import { bordesSeguros, colocarMenu } from '../lib/bordesSeguros'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -276,8 +277,45 @@ function FilaGuion({
 
   const menuAbierto = menuId === g.id
 
+  // Donde va el menu del guion -portal, abajo-: se mide al abrirse y se vuelve a medir si la
+  // pagina se mueve o cambia de tamano.
+  const refTarjeta = useRef<HTMLDivElement>(null)
+  const refMenuEl = useRef<HTMLDivElement | null>(null)
+  const [posMenu, setPosMenu] = useState<{ top: number; left: number } | null>(null)
+  useLayoutEffect(() => {
+    if (!menuAbierto) {
+      setPosMenu(null)
+      return
+    }
+    function colocar() {
+      const tarjeta = refTarjeta.current
+      const menu = refMenuEl.current
+      if (!tarjeta || !menu) return
+      const r = tarjeta.getBoundingClientRect()
+      const c = colocarMenu(
+        { top: r.top, bottom: r.bottom, left: r.left, right: r.right },
+        { alto: menu.offsetHeight, ancho: menu.offsetWidth },
+        { alto: window.innerHeight, ancho: window.innerWidth },
+        bordesSeguros(),
+        'izquierda',
+        12
+      )
+      setPosMenu({ top: c.top, left: c.left })
+    }
+    colocar()
+    const id = requestAnimationFrame(colocar)
+    window.addEventListener('resize', colocar)
+    window.addEventListener('scroll', colocar, true)
+    return () => {
+      cancelAnimationFrame(id)
+      window.removeEventListener('resize', colocar)
+      window.removeEventListener('scroll', colocar, true)
+    }
+  }, [menuAbierto])
+
   return (
     <div
+      ref={refTarjeta}
       // La caja se levanta del suelo -borde de un pelo y sombra, .tarjeta-elevada, 28-09-2026-. Va en
       // este envoltorio y no en la fila: el overflow hidden de aca recortaria la sombra de adentro.
       // Boceto 102: con el menu adjunto abierto hay que dejar overflow visible para que no lo recorte.
@@ -423,11 +461,22 @@ function FilaGuion({
             -.boton-menu-chico-: Archivar con su palabra, el tacho solo y una ✕ para cerrar.
             SIMBOLOS -28-09-2026-: Archivar con su palabra; Borrar -antes "Eliminar"- y
             Cerrar con el simbolo solo y su nombre en aria-label. Ver .boton-menu-chico. */}
-        {menuAbierto && (
+        {/* -07-10-2026, Claude, revision de la 102- EN UN PORTAL, FIJO A LA PANTALLA. Dentro de la
+            fila quedaba debajo de las miniaturas de Videos -medido en el moto g86 con "Hola", el
+            ultimo guion: "Borrar" no se veia ni se podia tocar-. La fila lleva el transform del
+            deslizamiento y eso encierra al menu en su capa: ningun z-index lo saca. Desde body, con
+            colocarMenu -el mismo de Ajustes-, va debajo de la fila o arriba si no cabe, sin meterse
+            bajo la barra de botones. Antes: el div iba aca, en linea, con .menu-adjunto-guion en
+            position absolute -top 100% + 4, left 12-. */}
+        {menuAbierto && createPortal(
           <div
-            ref={refMenuFila}
+            ref={(el) => {
+              (refMenuFila as React.MutableRefObject<HTMLDivElement | null>).current = el
+              refMenuEl.current = el
+            }}
             data-testid={`menu-opciones-${g.id}`}
             className="menu-adjunto-guion"
+            style={{ position: 'fixed', top: posMenu?.top ?? -9999, left: posMenu?.left ?? 0, right: 'auto' }}
             onClick={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
           >
@@ -455,7 +504,8 @@ function FilaGuion({
               <IconoTacho tamano={22} strokeWidth={1.6} />
               <span>{t('borrar')}</span>
             </button>
-          </div>
+          </div>,
+          document.body
         )}
       </div>
     </div>

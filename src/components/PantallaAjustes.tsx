@@ -10,6 +10,7 @@ import { PantallaLicencias } from './PantallaLicencias'
 import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, PASOS_LETRA } from './estiloLectura'
 import { PAREJAS_COLOR } from '../datos/modelo'
 import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
+import { bordesSeguros, colocarMenu } from '../lib/bordesSeguros'
 import { t, useTextos } from '../textos'
 import { CURVA_RESORTE, MS_CHICO, movimientoApagado } from './movimiento'
 
@@ -139,14 +140,21 @@ function MenuAdjuntoAjustes({
       const r = ancla.getBoundingClientRect()
       const mh = menu.offsetHeight
       const mw = menu.offsetWidth
-      const gap = 4
-      const espacioAbajo = window.innerHeight - r.bottom - gap
-      const abrirArriba = mh > espacioAbajo && r.top - gap >= espacioAbajo
-      let top = abrirArriba ? r.top - mh - gap : r.bottom + gap
-      top = Math.max(8, Math.min(top, window.innerHeight - mh - 8))
-      let left = r.right - mw
-      left = Math.max(8, Math.min(left, window.innerWidth - mw - 8))
-      setCoords({ top, left })
+      // -07-10-2026, Claude, revision de la 102- La app dibuja de borde a borde: innerHeight
+      // incluye lo que queda bajo la barra de botones de Android. Medido en el moto g86: el menu de
+      // Idioma -la ultima fila- se abria hacia abajo y "English" quedaba tapado por la barra. La
+      // cuenta pasa a colocarMenu -lib/bordesSeguros.ts-, que descuenta los bordes seguros y la
+      // comparte el menu del guion.
+      // Antes: espacioAbajo = window.innerHeight - r.bottom - 4; arriba si no cabia; top acotado
+      // entre 8 y innerHeight - mh - 8; left = r.right - mw acotado a la pantalla.
+      const c = colocarMenu(
+        { top: r.top, bottom: r.bottom, left: r.left, right: r.right },
+        { alto: mh, ancho: mw },
+        { alto: window.innerHeight, ancho: window.innerWidth },
+        bordesSeguros(),
+        'derecha'
+      )
+      setCoords({ top: c.top, left: c.left })
     }
     colocar()
     const id = requestAnimationFrame(colocar)
