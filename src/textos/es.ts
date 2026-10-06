@@ -216,6 +216,8 @@ export const es = {
   version: 'Versión',
   privacidad: 'Privacidad',
   soporte: 'Soporte',
+  licencias: 'Licencias de código abierto',
+  licenciaSinTexto: 'Sin texto de licencia.',
   espejoExplicacion: 'Para usar con un vidrio de teleprompter',
   lineaMuestraLectura: 'Lee esto en voz alta, sin apuro.',
   // Dialogo de permiso de microfono -28-09-2026-.

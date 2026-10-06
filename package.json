@@ -15,6 +15,7 @@
     "modelo": "node scripts/bajar-modelo.mjs",
     "apk": "node scripts/apk.mjs",
     "play": "node scripts/play.mjs",
+    "licencias": "node scripts/licencias.mjs",
     "ficha": "node scripts/ficha.mjs",
     "calidad": "node scripts/calidad.mjs"
   },

@@ -264,6 +264,13 @@ if (await asegurarBundletool()) {
   anotarResultado(false, 'sin bundletool no se pueden hacer las comprobaciones de 16 KB, peso y versión')
 }
 
+try {
+  const r = spawnSync('node', ['scripts/licencias.mjs', '--verificar'], { cwd: RAIZ, encoding: 'utf8' })
+  anotarResultado(r.status === 0, r.status === 0 ? 'licencias al día' : 'licencias al día: public/licencias.json no coincide. Corre npm run licencias.')
+} catch (e) {
+  anotarResultado(false, 'licencias al día: ' + e.message)
+}
+
 if (resultados.includes(false)) {
   console.log('\nHay comprobaciones en FALLA: no subas este AAB sin revisarlas.')
   process.exitCode = 1
