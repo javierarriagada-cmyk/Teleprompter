@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
 import androidx.core.splashscreen.SplashScreen;
@@ -80,6 +81,36 @@ public class MainActivity extends BridgeActivity {
 
         if (this.bridge != null && this.bridge.getWebView() != null) {
             this.bridge.getWebView().setBackgroundColor(android.graphics.Color.TRANSPARENT);
+
+            // Test Lab 06-10-2026: el plugin Capgo agrega al padre del WebView un
+            // previewContainer a pantalla completa, clickable y focusable, sin nombre.
+            // TalkBack lo anuncia duplicado detras del WebView. No tocamos clickable ni
+            // focusable -el toque sigue igual-: solo lo sacamos del arbol de accesibilidad
+            // con NO_HIDE_DESCENDANTS, a el y a lo que Capgo meta despues.
+            final View webView = this.bridge.getWebView();
+            ViewGroup parent = (ViewGroup) webView.getParent();
+            if (parent != null) {
+                for (int i = 0; i < parent.getChildCount(); i++) {
+                    View hijo = parent.getChildAt(i);
+                    if (hijo != webView) {
+                        hijo.setImportantForAccessibility(
+                            View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+                    }
+                }
+                parent.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
+                    @Override
+                    public void onChildViewAdded(View padre, View hijo) {
+                        if (hijo != webView) {
+                            hijo.setImportantForAccessibility(
+                                View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+                        }
+                    }
+
+                    @Override
+                    public void onChildViewRemoved(View padre, View hijo) {
+                    }
+                });
+            }
         }
     }
 }
