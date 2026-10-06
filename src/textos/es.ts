@@ -211,6 +211,7 @@ export const es = {
   seccionVideo: 'Video',
   seccionApariencia: 'Apariencia',
   seccionAcerca: 'Acerca de',
+  acercaDeSigo: 'Acerca de Sigo',
   tipoSans: 'Sans',
   tipoSerif: 'Serif',
   version: 'Versión',

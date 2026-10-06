@@ -366,6 +366,28 @@
   text-transform: uppercase;
   color: var(--color-apagado);
 }
+
+/* TARJETAS DE SECCIÓN -boceto tarea 102, 06-10-2026-. El título de sección queda ARRIBA
+   de la card. Filas y muestra de lectura no cambian de tamaño: la card se adapta a ellas. */
+.tarjeta-seccion-ajustes {
+  margin: 0 16px;
+  border-radius: 18px;
+  background: var(--bg-superficie);
+  border: 1px solid var(--borde-tarjeta);
+  box-shadow: var(--sombra-tarjeta);
+  overflow: visible;
+}
+.tarjeta-seccion-ajustes .muestra-lectura-ajustes {
+  /* Dentro de la card no hace falta el margen lateral de 16: la card ya lo aporta. */
+  margin: 12px 12px 8px;
+}
+.tarjeta-seccion-ajustes .fila-ajuste:last-child {
+  border-bottom: none;
+}
+.envoltorio-fila-con-menu {
+  position: relative;
+}
+
 .muestra-lectura-ajustes {
   margin: 8px 16px 16px;
   padding: 16px;
@@ -422,18 +444,73 @@
   flex-shrink: 0;
 }
 
+/* MENÚ ADJUNTO A LA FILA -boceto tarea 102, 06-10-2026-. Reemplaza la hoja inferior
+   con scrim. La capa atrapa el toque afuera sin oscurecer; el panel se ancla a la fila
+   (posición fixed calculada en TSX). Sin ✕: se cierra tocando afuera o Escape. */
+.capa-menu-adjunto {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  background: transparent;
+}
+.menu-adjunto-ajustes {
+  position: fixed;
+  z-index: 260;
+  min-width: 220px;
+  max-width: 280px;
+  border-radius: 14px;
+  padding: 6px 0;
+  background: var(--bg-menu);
+  border: 1px solid var(--borde-tarjeta);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+.lista-menu-adjunto {
+  display: flex;
+  flex-direction: column;
+}
+.fila-menu-adjunto {
+  min-height: 48px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-texto);
+  font-size: 16px;
+  text-align: left;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.fila-menu-adjunto-etiqueta {
+  flex: 1;
+  min-width: 0;
+}
+.check-menu-adjunto {
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--color-texto);
+}
+.fila-menu-adjunto.elegida {
+  background: transparent;
+}
+
+/* Respaldo: la hoja inferior antigua, por si algún test o pantalla residual la usa. */
 .capa-dialogo-ajustes {
   position: absolute;
   inset: 0;
-  background: var(--velo-modal);
+  background: transparent;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px));
 }
 
-/* LA CAPA DEL DIALOGO DE MICROFONO -28-09-2026-. Centrada vertical y horizontalmente,
-   z-index 300 por encima de la lectura (150) y de Ajustes (240). */
 .capa-dialogo-microfono {
   position: fixed;
   inset: 0;
@@ -581,4 +658,49 @@
 @media (prefers-reduced-motion: reduce) {
   .flecha-ficha { transition: none !important; }
   .segunda-fila-fichas { animation: none !important; }
+}
+
+/* MENÚ DEL GUION AL MANTENER -boceto tarea 102, 06-10-2026-. Adjunto a la fila,
+   no a la fila alargada ni al botón "+". Cabecera con el título; Archivar; Borrar
+   en rojo. Sin ✕. Opciones ≥ 48 dp, fuente 16 px. */
+.menu-adjunto-guion {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 12px;
+  right: auto;
+  z-index: 30;
+  min-width: 220px;
+  max-width: 280px;
+  border-radius: 14px;
+  padding: 6px 0;
+  background: var(--bg-menu);
+  border: 1px solid var(--borde-tarjeta);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+.menu-adjunto-guion-titulo {
+  padding: 8px 14px 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-apagado);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fila-menu-adjunto-guion {
+  min-height: 48px;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  background: transparent;
+  color: var(--color-texto);
+  font-size: 16px;
+  text-align: left;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.fila-menu-adjunto-guion.peligro {
+  color: var(--color-grabando-texto);
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { App as CapacitorApp } from '@capacitor/app'
 import {
   IconoAtras, IconoChevron, IconoTamanoLetra, IconoTipografia, IconoAnchoTexto, IconoPaleta, IconoEspejo,
@@ -21,6 +21,9 @@ import { t, useTextos } from '../textos'
 // Cada fila muestra el valor actual. Tocar abre un dialogo; elegir aplica y
 // cierra, sin "Aceptar". Los interruptores viven en la fila. Las claves de
 // guardado no cambian: teleprompter_ajustes y sigo_subtitulos_estilo.
+//
+// 06-10-2026, boceto tarea 102: secciones en cards; opciones en menu adjunto a
+// la fila (sin hoja inferior ni scrim); Acerca de pasa a una subpantalla.
 
 export type DialogoAjustes =
   | 'letra'
@@ -107,6 +110,86 @@ function FilaAjuste({
   )
 }
 
+// Menu anclado a la fila que lo abrio -boceto tarea 102-. Sin scrim: la capa
+// atrapa el toque afuera con fondo transparente. Se coloca debajo (o arriba si
+// no cabe) alineado a la derecha, para no tapar el nombre ni el valor de la fila.
+function MenuAdjuntoAjustes({
+  anclaRef,
+  onCerrar,
+  testid,
+  children
+}: {
+  anclaRef: React.RefObject<HTMLElement | null>
+  onCerrar: () => void
+  testid: string
+  children: React.ReactNode
+}) {
+  const menuRef = useRef<HTMLDivElement>(null)
+  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null)
+
+  useLayoutEffect(() => {
+    function colocar() {
+      const ancla = anclaRef.current
+      const menu = menuRef.current
+      if (!ancla || !menu) return
+      const r = ancla.getBoundingClientRect()
+      const mh = menu.offsetHeight
+      const mw = menu.offsetWidth
+      const gap = 4
+      const espacioAbajo = window.innerHeight - r.bottom - gap
+      const abrirArriba = mh > espacioAbajo && r.top - gap >= espacioAbajo
+      let top = abrirArriba ? r.top - mh - gap : r.bottom + gap
+      top = Math.max(8, Math.min(top, window.innerHeight - mh - 8))
+      let left = r.right - mw
+      left = Math.max(8, Math.min(left, window.innerWidth - mw - 8))
+      setCoords({ top, left })
+    }
+    colocar()
+    const id = requestAnimationFrame(colocar)
+    window.addEventListener('resize', colocar)
+    window.addEventListener('scroll', colocar, true)
+    return () => {
+      cancelAnimationFrame(id)
+      window.removeEventListener('resize', colocar)
+      window.removeEventListener('scroll', colocar, true)
+    }
+  }, [anclaRef, children])
+
+  useEffect(() => {
+    const alTeclear = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onCerrar()
+    }
+    document.addEventListener('keydown', alTeclear)
+    return () => document.removeEventListener('keydown', alTeclear)
+  }, [onCerrar])
+
+  return (
+    <>
+      <div
+        className="capa-menu-adjunto"
+        data-testid="capa-dialogo-ajustes"
+        onClick={onCerrar}
+        aria-hidden="true"
+      />
+      <div
+        ref={menuRef}
+        className="menu-adjunto-ajustes"
+        data-testid={testid}
+        role="listbox"
+        style={coords ? { top: coords.top, left: coords.left } : { top: -9999, left: 0 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </div>
+    </>
+  )
+}
+
+function CheckMenu({ visible }: { visible: boolean }) {
+  if (!visible) return <span className="check-menu-adjunto" aria-hidden="true" />
+  return <span className="check-menu-adjunto" aria-hidden="true">✓</span>
+}
+
 export function PantallaAjustes({
   onCerrar,
   origen = 'portada',
@@ -161,6 +244,14 @@ export function PantallaAjustes({
   const idioma = useTextos()
   const [dialogo, setDialogo] = useState<DialogoAjustes>(null)
   const [licencias, setLicencias] = useState(false)
+  const [pantallaAcerca, setPantallaAcerca] = useState(false)
+
+  const anclaLetra = useRef<HTMLDivElement>(null)
+  const anclaTipo = useRef<HTMLDivElement>(null)
+  const anclaAncho = useRef<HTMLDivElement>(null)
+  const anclaColores = useRef<HTMLDivElement>(null)
+  const anclaTema = useRef<HTMLDivElement>(null)
+  const anclaIdioma = useRef<HTMLDivElement>(null)
 
   const letra = colorLetraEfectiva(colorFondo, colorLetra)
   const col = columnaLectura(columnaAngosta)
@@ -193,6 +284,68 @@ export function PantallaAjustes({
 
   if (licencias) return <PantallaLicencias onCerrar={() => setLicencias(false)} />
 
+  // Subpantalla Acerca de Sigo -boceto tarea 102-: Versión, Privacidad, Soporte, Licencias.
+  if (pantallaAcerca) {
+    return (
+      <div
+        className="pantalla-ajustes"
+        data-testid="pantalla-acerca-sigo"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titulo-pantalla-acerca"
+      >
+        <header className="barra-ajustes">
+          <button
+            type="button"
+            className="btn-atras-ajustes"
+            data-testid="btn-cerrar-acerca"
+            aria-label={t('volver')}
+            onClick={() => setPantallaAcerca(false)}
+          >
+            <IconoAtras tamano={22} />
+          </button>
+          <h1 className="titulo-ajustes" id="titulo-pantalla-acerca">{t('acercaDeSigo')}</h1>
+        </header>
+        <div className="cuerpo-ajustes">
+          <div className="tarjeta-seccion-ajustes" style={{ marginTop: 16 }}>
+            <div className="fila-ajuste" data-testid="fila-version">
+              <span className="fila-ajuste-icono" aria-hidden="true"><IconoInfo tamano={22} /></span>
+              <div className="fila-ajuste-nombre">{t('version')}</div>
+              <span className="fila-ajuste-valor">{version ?? '—'}</span>
+            </div>
+            <FilaAjuste
+              testid="fila-privacidad"
+              icono={<IconoCandado tamano={22} />}
+              nombre={t('privacidad')}
+              onClick={() => abrirEnlace(enlacePrivacidad)}
+            />
+            <FilaAjuste
+              testid="fila-soporte"
+              icono={<IconoAyuda tamano={22} />}
+              nombre={t('soporte')}
+              onClick={() => abrirEnlace(enlaceSoporte)}
+            />
+            <FilaAjuste
+              testid="fila-licencias"
+              icono={<IconoInfo tamano={22} />}
+              nombre={t('licencias')}
+              onClick={() => setLicencias(true)}
+            />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const anclaActiva =
+    dialogo === 'letra' ? anclaLetra
+    : dialogo === 'tipo' ? anclaTipo
+    : dialogo === 'ancho' ? anclaAncho
+    : dialogo === 'colores' ? anclaColores
+    : dialogo === 'tema' ? anclaTema
+    : dialogo === 'idioma' ? anclaIdioma
+    : null
+
   return (
     // UNA PANTALLA QUE TAPA TODO, DICHA COMO TAL -tarea 84, G2, 29-09-2026-. Para TalkBack era
     // un bloque más de la página: al abrirla seguía leyendo lo de atrás. role="dialog" con
@@ -219,284 +372,274 @@ export function PantallaAjustes({
 
       <div className="cuerpo-ajustes">
         <h2 className="titulo-seccion-ajustes">{t('seccionLectura')}</h2>
-        <div
-          className="muestra-lectura-ajustes"
-          data-testid="muestra-lectura-ajustes"
-          style={{
-            backgroundColor: colorFondo,
-            color: letra,
-            fontFamily: familiaLectura(tipoFuente),
-            fontSize,
-            lineHeight: INTERLINEADO_LECTURA,
-            maxWidth: col.maxWidth,
-            textAlign: col.textAlign
-          }}
-        >
-          {t('lineaMuestraLectura')}
-        </div>
+        <div className="tarjeta-seccion-ajustes">
+          <div
+            className="muestra-lectura-ajustes"
+            data-testid="muestra-lectura-ajustes"
+            style={{
+              backgroundColor: colorFondo,
+              color: letra,
+              fontFamily: familiaLectura(tipoFuente),
+              fontSize,
+              lineHeight: INTERLINEADO_LECTURA,
+              maxWidth: col.maxWidth,
+              textAlign: col.textAlign
+            }}
+          >
+            {t('lineaMuestraLectura')}
+          </div>
 
-        <FilaAjuste
-          testid="fila-tamano-letra"
-          icono={<IconoTamanoLetra tamano={22} />}
-          nombre={t('tamanoLetra')}
-          valor={String(fontSize)}
-          onClick={() => setDialogo('letra')}
-        />
-        <FilaAjuste
-          testid="fila-tipo-letra"
-          icono={<IconoTipografia tamano={22} />}
-          nombre={t('tipografia')}
-          valor={tipoFuente === 'serif' ? t('tipoSerif') : t('tipoSans')}
-          onClick={() => setDialogo('tipo')}
-        />
-        <FilaAjuste
-          testid="fila-ancho-texto"
-          icono={<IconoAnchoTexto tamano={22} />}
-          nombre={t('anchoTexto')}
-          valor={nombreAncho(columnaAngosta, marginPercent)}
-          onClick={() => setDialogo('ancho')}
-        />
-        <FilaAjuste
-          testid="fila-colores"
-          icono={<IconoPaleta tamano={22} />}
-          nombre={t('coloresLectura')}
-          valor={nombrePareja(colorFondo, colorLetra)}
-          onClick={() => setDialogo('colores')}
-        />
-        <FilaAjuste
-          testid="fila-espejo"
-          icono={<IconoEspejo tamano={22} />}
-          nombre={t('espejo')}
-          explicacion={t('espejoExplicacion')}
-          extra={(
-            <Interruptor
-              encendido={mirror}
-              onCambiar={setMirror}
-              etiqueta={t('espejo')}
-              testid="switch-espejo"
+          <div className="envoltorio-fila-con-menu" ref={anclaLetra}>
+            <FilaAjuste
+              testid="fila-tamano-letra"
+              icono={<IconoTamanoLetra tamano={22} />}
+              nombre={t('tamanoLetra')}
+              valor={String(fontSize)}
+              onClick={() => setDialogo(dialogo === 'letra' ? null : 'letra')}
             />
-          )}
-        />
-        <FilaAjuste
-          testid="fila-mostrar-tiempo"
-          icono={<IconoReloj tamano={22} />}
-          nombre={t('mostrarTiempo')}
-          extra={(
-            <Interruptor
-              encendido={mostrarTiempo}
-              onCambiar={setMostrarTiempo}
-              etiqueta={t('mostrarTiempo')}
-              testid="switch-mostrar-tiempo"
+          </div>
+          <div className="envoltorio-fila-con-menu" ref={anclaTipo}>
+            <FilaAjuste
+              testid="fila-tipo-letra"
+              icono={<IconoTipografia tamano={22} />}
+              nombre={t('tipografia')}
+              valor={tipoFuente === 'serif' ? t('tipoSerif') : t('tipoSans')}
+              onClick={() => setDialogo(dialogo === 'tipo' ? null : 'tipo')}
             />
-          )}
-        />
+          </div>
+          <div className="envoltorio-fila-con-menu" ref={anclaAncho}>
+            <FilaAjuste
+              testid="fila-ancho-texto"
+              icono={<IconoAnchoTexto tamano={22} />}
+              nombre={t('anchoTexto')}
+              valor={nombreAncho(columnaAngosta, marginPercent)}
+              onClick={() => setDialogo(dialogo === 'ancho' ? null : 'ancho')}
+            />
+          </div>
+          <div className="envoltorio-fila-con-menu" ref={anclaColores}>
+            <FilaAjuste
+              testid="fila-colores"
+              icono={<IconoPaleta tamano={22} />}
+              nombre={t('coloresLectura')}
+              valor={nombrePareja(colorFondo, colorLetra)}
+              onClick={() => setDialogo(dialogo === 'colores' ? null : 'colores')}
+            />
+          </div>
+          <FilaAjuste
+            testid="fila-espejo"
+            icono={<IconoEspejo tamano={22} />}
+            nombre={t('espejo')}
+            explicacion={t('espejoExplicacion')}
+            extra={(
+              <Interruptor
+                encendido={mirror}
+                onCambiar={setMirror}
+                etiqueta={t('espejo')}
+                testid="switch-espejo"
+              />
+            )}
+          />
+          <FilaAjuste
+            testid="fila-mostrar-tiempo"
+            icono={<IconoReloj tamano={22} />}
+            nombre={t('mostrarTiempo')}
+            extra={(
+              <Interruptor
+                encendido={mostrarTiempo}
+                onCambiar={setMostrarTiempo}
+                etiqueta={t('mostrarTiempo')}
+                testid="switch-mostrar-tiempo"
+              />
+            )}
+          />
+        </div>
 
         {verApp && (
           <>
             <h2 className="titulo-seccion-ajustes">{t('seccionApariencia')}</h2>
-            <FilaAjuste
-              testid="fila-tema"
-              icono={<IconoTema tamano={22} />}
-              nombre={t('tema')}
-              valor={tema === 'claro' ? t('temaClaro') : t('temaOscuro')}
-              onClick={() => setDialogo('tema')}
-            />
-            <FilaAjuste
-              testid="fila-idioma"
-              icono={<IconoIdioma tamano={22} />}
-              nombre={t('idiomaDeLaApp')}
-              valor={idioma === 'es' ? 'Español' : 'English'}
-              onClick={() => setDialogo('idioma')}
-            />
+            <div className="tarjeta-seccion-ajustes">
+              <div className="envoltorio-fila-con-menu" ref={anclaTema}>
+                <FilaAjuste
+                  testid="fila-tema"
+                  icono={<IconoTema tamano={22} />}
+                  nombre={t('tema')}
+                  valor={tema === 'claro' ? t('temaClaro') : t('temaOscuro')}
+                  onClick={() => setDialogo(dialogo === 'tema' ? null : 'tema')}
+                />
+              </div>
+              <div className="envoltorio-fila-con-menu" ref={anclaIdioma}>
+                <FilaAjuste
+                  testid="fila-idioma"
+                  icono={<IconoIdioma tamano={22} />}
+                  nombre={t('idiomaDeLaApp')}
+                  valor={idioma === 'es' ? 'Español' : 'English'}
+                  onClick={() => setDialogo(dialogo === 'idioma' ? null : 'idioma')}
+                />
+              </div>
+            </div>
 
             <h2 className="titulo-seccion-ajustes">{t('seccionAcerca')}</h2>
-            <div className="fila-ajuste" data-testid="fila-version">
-              <span className="fila-ajuste-icono" aria-hidden="true"><IconoInfo tamano={22} /></span>
-              <div className="fila-ajuste-nombre">{t('version')}</div>
-              <span className="fila-ajuste-valor">{version ?? '—'}</span>
+            <div className="tarjeta-seccion-ajustes">
+              <FilaAjuste
+                testid="fila-acerca-de-sigo"
+                icono={<IconoInfo tamano={22} />}
+                nombre={t('acercaDeSigo')}
+                onClick={() => setPantallaAcerca(true)}
+              />
             </div>
-            <FilaAjuste
-              testid="fila-privacidad"
-              icono={<IconoCandado tamano={22} />}
-              nombre={t('privacidad')}
-              onClick={() => abrirEnlace(enlacePrivacidad)}
-            />
-            <FilaAjuste
-              testid="fila-soporte"
-              icono={<IconoAyuda tamano={22} />}
-              nombre={t('soporte')}
-              onClick={() => abrirEnlace(enlaceSoporte)}
-            />
-            <FilaAjuste
-              testid="fila-licencias"
-              icono={<IconoInfo tamano={22} />}
-              nombre={t('licencias')}
-              onClick={() => setLicencias(true)}
-            />
           </>
         )}
       </div>
 
-      {dialogo && (
-        <div
-          className="capa-dialogo-ajustes"
-          data-testid="capa-dialogo-ajustes"
-          onClick={() => setDialogo(null)}
+      {dialogo && anclaActiva && (
+        <MenuAdjuntoAjustes
+          anclaRef={anclaActiva}
+          onCerrar={() => setDialogo(null)}
+          testid={`dialogo-${dialogo}`}
         >
-          <div
-            className="dialogo-ajustes tarjeta-elevada"
-            data-testid={`dialogo-${dialogo}`}
-            role="dialog"
-            aria-modal="true"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="dialogo-ajustes-titulo">
-              {dialogo === 'letra' && t('tamanoLetra')}
-              {dialogo === 'tipo' && t('tipografia')}
-              {dialogo === 'ancho' && t('anchoTexto')}
-              {dialogo === 'colores' && t('coloresLectura')}
-              {dialogo === 'tema' && t('tema')}
-              {dialogo === 'idioma' && t('idiomaDeLaApp')}
-            </h2>
+          {/* Cada tamano se muestra a su tamano: se elige mirando, no leyendo un numero. */}
+          {dialogo === 'letra' && (
+            <div className="lista-menu-adjunto">
+              {PASOS_LETRA.map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  data-testid={`opcion-letra-${n}`}
+                  className={`fila-menu-adjunto${fontSize === n ? ' elegida' : ''}`}
+                  aria-pressed={fontSize === n}
+                  aria-label={`${t('tamanoLetra')} ${n}`}
+                  onClick={() => elegirYCerrar(() => onElegirLetra?.(n))}
+                >
+                  <span style={{ fontFamily: familiaLectura(tipoFuente), fontSize: Math.min(n, 32) }}>Aa</span>
+                  <span className="fila-menu-adjunto-etiqueta">{n}</span>
+                  <CheckMenu visible={fontSize === n} />
+                </button>
+              ))}
+            </div>
+          )}
 
-            {/* Cada tamano se muestra a su tamano: se elige mirando, no leyendo un numero. */}
-            {dialogo === 'letra' && (
-              <div className="lista-dialogo">
-                {PASOS_LETRA.map((n) => (
-                  <button
-                    key={n}
-                    type="button"
-                    data-testid={`opcion-letra-${n}`}
-                    className={`fila-dialogo${fontSize === n ? ' elegida' : ''}`}
-                    aria-pressed={fontSize === n}
-                    aria-label={`${t('tamanoLetra')} ${n}`}
-                    onClick={() => elegirYCerrar(() => onElegirLetra?.(n))}
-                  >
-                    <span style={{ fontFamily: familiaLectura(tipoFuente), fontSize: Math.min(n, 32) }}>Aa</span>
-                    <span className="fila-ajuste-valor">{n}</span>
-                  </button>
-                ))}
-              </div>
-            )}
+          {dialogo === 'tipo' && (
+            <div className="lista-menu-adjunto">
+              {([
+                { v: 'sans' as const, n: t('tipoSans') },
+                { v: 'serif' as const, n: t('tipoSerif') }
+              ]).map((o) => (
+                <button
+                  key={o.v}
+                  type="button"
+                  className={`fila-menu-adjunto${tipoFuente === o.v ? ' elegida' : ''}`}
+                  aria-pressed={tipoFuente === o.v}
+                  onClick={() => elegirYCerrar(() => setTipoFuente(o.v))}
+                >
+                  <span className="fila-menu-adjunto-etiqueta">{o.n}</span>
+                  <CheckMenu visible={tipoFuente === o.v} />
+                </button>
+              ))}
+            </div>
+          )}
 
-            {dialogo === 'tipo' && (
-              <div className="lista-dialogo">
-                {([
-                  { v: 'sans' as const, n: t('tipoSans') },
-                  { v: 'serif' as const, n: t('tipoSerif') }
-                ]).map((o) => (
-                  <button
-                    key={o.v}
-                    type="button"
-                    className={`fila-dialogo${tipoFuente === o.v ? ' elegida' : ''}`}
-                    aria-pressed={tipoFuente === o.v}
-                    onClick={() => elegirYCerrar(() => setTipoFuente(o.v))}
-                  >
-                    {o.n}
-                  </button>
-                ))}
-              </div>
-            )}
+          {dialogo === 'ancho' && (
+            <div className="lista-menu-adjunto">
+              {([
+                { n: t('ancho'), angosta: false, margen: 5, activo: !columnaAngosta && marginPercent !== 12 },
+                { n: t('medio'), angosta: false, margen: 12, activo: !columnaAngosta && marginPercent === 12 },
+                { n: t('angosto'), angosta: true, margen: 5, activo: !!columnaAngosta }
+              ]).map((o) => (
+                <button
+                  key={o.n}
+                  type="button"
+                  className={`fila-menu-adjunto${o.activo ? ' elegida' : ''}`}
+                  aria-label={o.n}
+                  aria-pressed={o.activo}
+                  onClick={() => elegirYCerrar(() => {
+                    // La vibracion corta de elegir, como en el cajon que reemplaza -T203-.
+                    hapticaSeleccion()
+                    setColumnaAngosta(o.angosta)
+                    setMarginPercent(o.margen)
+                  })}
+                >
+                  <span className="fila-menu-adjunto-etiqueta">{o.n}</span>
+                  <CheckMenu visible={o.activo} />
+                </button>
+              ))}
+            </div>
+          )}
 
-            {dialogo === 'ancho' && (
-              <div className="lista-dialogo">
-                {([
-                  { n: t('ancho'), angosta: false, margen: 5, activo: !columnaAngosta && marginPercent !== 12 },
-                  { n: t('medio'), angosta: false, margen: 12, activo: !columnaAngosta && marginPercent === 12 },
-                  { n: t('angosto'), angosta: true, margen: 5, activo: !!columnaAngosta }
-                ]).map((o) => (
+          {dialogo === 'colores' && (
+            <div className="lista-menu-adjunto">
+              {PAREJAS_COLOR.map((p) => {
+                const activa = colorFondo.toUpperCase() === p.fondo.toUpperCase() && colorLetra.toUpperCase() === p.letra.toUpperCase()
+                return (
                   <button
-                    key={o.n}
+                    key={`${p.fondo}-${p.letra}`}
                     type="button"
-                    className={`fila-dialogo${o.activo ? ' elegida' : ''}`}
-                    aria-label={o.n}
-                    aria-pressed={o.activo}
+                    className={`fila-menu-adjunto${activa ? ' elegida' : ''}`}
+                    aria-label={nombrePareja(p.fondo, p.letra)}
+                    aria-pressed={activa}
                     onClick={() => elegirYCerrar(() => {
-                      // La vibracion corta de elegir, como en el cajon que reemplaza -T203-.
                       hapticaSeleccion()
-                      setColumnaAngosta(o.angosta)
-                      setMarginPercent(o.margen)
+                      setColorFondo(p.fondo)
+                      setColorLetra(p.letra)
                     })}
                   >
-                    {o.n}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {dialogo === 'colores' && (
-              <div className="lista-dialogo">
-                {PAREJAS_COLOR.map((p) => {
-                  const activa = colorFondo.toUpperCase() === p.fondo.toUpperCase() && colorLetra.toUpperCase() === p.letra.toUpperCase()
-                  return (
-                    <button
-                      key={`${p.fondo}-${p.letra}`}
-                      type="button"
-                      className={`fila-dialogo${activa ? ' elegida' : ''}`}
-                      aria-label={nombrePareja(p.fondo, p.letra)}
-                      aria-pressed={activa}
-                      onClick={() => elegirYCerrar(() => {
-                        hapticaSeleccion()
-                        setColorFondo(p.fondo)
-                        setColorLetra(p.letra)
-                      })}
+                    <span
+                      className="muestra-pareja"
+                      style={{ backgroundColor: p.fondo, color: colorLetraEfectiva(p.fondo, p.letra) }}
                     >
-                      <span
-                        className="muestra-pareja"
-                        style={{ backgroundColor: p.fondo, color: colorLetraEfectiva(p.fondo, p.letra) }}
-                      >
-                        Aa
-                      </span>
-                      <span>{nombrePareja(p.fondo, p.letra)}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-
-            {dialogo === 'tema' && (
-              <div className="lista-dialogo">
-                {([
-                  { v: 'oscuro' as const, n: t('temaOscuro') },
-                  { v: 'claro' as const, n: t('temaClaro') }
-                ]).map((o) => (
-                  <button
-                    key={o.v}
-                    type="button"
-                    className={`fila-dialogo${tema === o.v ? ' elegida' : ''}`}
-                    aria-label={o.n}
-                    aria-pressed={tema === o.v}
-                    onClick={() => elegirYCerrar(() => setTema(o.v))}
-                  >
-                    {o.n}
+                      Aa
+                    </span>
+                    <span className="fila-menu-adjunto-etiqueta">{nombrePareja(p.fondo, p.letra)}</span>
+                    <CheckMenu visible={activa} />
                   </button>
-                ))}
-              </div>
-            )}
+                )
+              })}
+            </div>
+          )}
 
-            {dialogo === 'idioma' && (
-              <div className="lista-dialogo" data-testid="selector-idioma-app">
-                {([
-                  { v: 'es' as IdiomaApp, n: 'Español' },
-                  { v: 'en' as IdiomaApp, n: 'English' }
-                ]).map((o) => (
-                  <button
-                    key={o.v}
-                    type="button"
-                    lang={o.v}
-                    data-testid={`btn-idioma-${o.v}`}
-                    className={`fila-dialogo${idiomaApp() === o.v ? ' elegida' : ''}`}
-                    aria-label={o.n}
-                    aria-pressed={idiomaApp() === o.v}
-                    onClick={() => elegirYCerrar(() => fijarIdioma(o.v))}
-                  >
-                    {o.n}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+          {dialogo === 'tema' && (
+            <div className="lista-menu-adjunto">
+              {([
+                { v: 'oscuro' as const, n: t('temaOscuro') },
+                { v: 'claro' as const, n: t('temaClaro') }
+              ]).map((o) => (
+                <button
+                  key={o.v}
+                  type="button"
+                  className={`fila-menu-adjunto${tema === o.v ? ' elegida' : ''}`}
+                  aria-label={o.n}
+                  aria-pressed={tema === o.v}
+                  onClick={() => elegirYCerrar(() => setTema(o.v))}
+                >
+                  <span className="fila-menu-adjunto-etiqueta">{o.n}</span>
+                  <CheckMenu visible={tema === o.v} />
+                </button>
+              ))}
+            </div>
+          )}
+
+          {dialogo === 'idioma' && (
+            <div className="lista-menu-adjunto" data-testid="selector-idioma-app">
+              {([
+                { v: 'es' as IdiomaApp, n: 'Español' },
+                { v: 'en' as IdiomaApp, n: 'English' }
+              ]).map((o) => (
+                <button
+                  key={o.v}
+                  type="button"
+                  lang={o.v}
+                  data-testid={`btn-idioma-${o.v}`}
+                  className={`fila-menu-adjunto${idiomaApp() === o.v ? ' elegida' : ''}`}
+                  aria-label={o.n}
+                  aria-pressed={idiomaApp() === o.v}
+                  onClick={() => elegirYCerrar(() => fijarIdioma(o.v))}
+                >
+                  <span className="fila-menu-adjunto-etiqueta">{o.n}</span>
+                  <CheckMenu visible={idiomaApp() === o.v} />
+                </button>
+              ))}
+            </div>
+          )}
+        </MenuAdjuntoAjustes>
       )}
     </div>
   )

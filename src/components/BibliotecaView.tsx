@@ -274,16 +274,20 @@ function FilaGuion({
   const fechaNat = formatearFechaNatural(g.modificado)
   const metaTexto = `${duracionDeLectura(g.palabras || 0)} · ${fechaNat}`
 
+  const menuAbierto = menuId === g.id
+
   return (
     <div
       // La caja se levanta del suelo -borde de un pelo y sombra, .tarjeta-elevada, 28-09-2026-. Va en
       // este envoltorio y no en la fila: el overflow hidden de aca recortaria la sombra de adentro.
+      // Boceto 102: con el menu adjunto abierto hay que dejar overflow visible para que no lo recorte.
       className="tarjeta-elevada"
       style={{
         position: 'relative',
         borderRadius: 'var(--redondeo)',
         marginBottom: 'var(--aire-3)',
-        overflow: 'hidden'
+        overflow: menuAbierto ? 'visible' : 'hidden',
+        zIndex: menuAbierto ? 20 : undefined
       }}
     >
       {/* Fondo revelado según la dirección del deslizamiento al superar el umbral */}
@@ -411,52 +415,41 @@ function FilaGuion({
         <IconoChevron tamano={18} className="flecha-fila" />
         </div>
 
-        {menuId === g.id && (
+        {/* MENU ADJUNTO AL MANTENER -boceto tarea 102, 06-10-2026-. Sustituye la fila
+            alargada con Archivar + tacho + ✕. Cabecera = titulo del guion; Archivar;
+            Borrar en rojo. Sin ✕: se cierra tocando afuera (useCerrarAfuera). Se ancla
+            debajo de la fila para no tapar el "+" de crear. */}
+        {menuAbierto && (
           <div
             ref={refMenuFila}
             data-testid={`menu-opciones-${g.id}`}
+            className="menu-adjunto-guion"
             onClick={(e) => e.stopPropagation()}
-            style={{
-              marginTop: 'var(--aire-2)',
-              paddingTop: 'var(--aire-2)',
-              display: 'flex',
-              gap: 'var(--aire-2)',
-              justifyContent: 'flex-start'
-            }}
+            onPointerDown={(e) => e.stopPropagation()}
           >
-            {/* SIMBOLOS -28-09-2026-: Archivar con su palabra; Borrar -antes "Eliminar"- y
-                Cerrar con el simbolo solo y su nombre en aria-label. Ver .boton-menu-chico. */}
+            <div className="menu-adjunto-guion-titulo">{tituloMostrar}</div>
             <button
               type="button"
-              className="boton-menu-chico"
+              className="fila-menu-adjunto-guion"
               onClick={() => {
                 onArchivar(g.id, !g.archivado)
                 setMenuId(null)
               }}
             >
-              <IconoArchivar tamano={18} />
+              <IconoArchivar tamano={22} />
               <span>{g.archivado ? t('desarchivar') : t('archivar')}</span>
             </button>
             <button
               type="button"
-              className="boton-menu-chico solo-simbolo"
+              className="fila-menu-adjunto-guion peligro"
               aria-label={t('borrar')}
-              title={t('borrar')}
               onClick={() => {
                 onBorrar(g.id)
                 setMenuId(null)
               }}
             >
-              <IconoTacho tamano={20} strokeWidth={1.6} />
-            </button>
-            <button
-              type="button"
-              className="boton-menu-chico solo-simbolo cerrar-menu"
-              aria-label={t('cerrar')}
-              title={t('cerrar')}
-              onClick={() => setMenuId(null)}
-            >
-              <IconoCerrar tamano={20} />
+              <IconoTacho tamano={22} strokeWidth={1.6} />
+              <span>{t('borrar')}</span>
             </button>
           </div>
         )}
