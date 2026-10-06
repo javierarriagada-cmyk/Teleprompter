@@ -52,3 +52,21 @@ export function columnaLectura(columnaAngosta: boolean): { maxWidth: string; tex
 export function colorDeTramo(color: keyof typeof COLORES_TRAMO, colorFondo: string): string {
   return colorFondo.toUpperCase() === '#FFFFFF' ? COLORES_TRAMO_SOBRE_CLARO[color] : COLORES_TRAMO[color]
 }
+
+// COLOR DEL PLACEHOLDER DEL CUERPO DEL EDITOR -tarea 101, 06-10-2026-.
+// El ::before de TipTap usaba opacity 0.45 sobre la letra: el contraste caía bajo 4,5:1
+// (Test Lab A3). Aquí va un gris/tono por fondo de PAREJAS_COLOR que:
+//   1) da ≥ 4,5:1 contra ese fondo (WCAG 2.x, luminancia relativa),
+//   2) sigue más tenue que la letra de esa pareja (menor ratio contra el fondo).
+//
+// Medido con (L1+0,05)/(L2+0,05):
+//   #000000 / sugerencia #7A7572 ≈ 4,62  |  letra #FFFFFF ≈ 21,00; #F5C24B ≈ 12,70; #4ADE80 ≈ 12,05
+//   #121212 / sugerencia #827D7A ≈ 4,61  |  letra #EDE6D6 ≈ 15,07
+//   #FFFFFF / sugerencia #6E6660 ≈ 5,63  |  letra #000000 ≈ 21,00
+export function colorSugerenciaLectura(colorFondo: string): string {
+  const f = colorFondo.trim().toUpperCase()
+  if (f === '#FFFFFF') return '#6E6660'
+  if (f === '#121212') return '#827D7A'
+  // Negro y cualquier otro fondo oscuro de las parejas.
+  return '#7A7572'
+}

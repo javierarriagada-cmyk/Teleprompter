@@ -16,6 +16,7 @@
   --velo-modal: rgba(21, 19, 18, 0.72);
   /* EL TEXTO DE SUGERENCIA -placeholder- -28-09-2026-. Usaba --color-borde, que en el tema claro
      es casi el fondo: "Titulo del guion" no se veia en el moto g86. En el oscuro queda igual. */
+  /* 06-10-2026, tarea 101: #968F8B sobre #151312 ≈5,82:1 (≥4,5). Se deja. El del tema claro se oscurece aparte. */
   --color-sugerencia: #968F8B;
   /* LAS CAJAS SE LEVANTAN DEL SUELO -28-09-2026-. Javier comparo la portada con una propuesta mas
      profesional: "la nuestra si parece mas prototipo". Las cajas eran rellenos planos. Ahora un
@@ -82,7 +83,9 @@
      4,6 a 1 sobre #F3F1ED y 5,2 a 1 sobre #FFFFFF. */
   --color-apagado: #736B65;
   --color-borde: #E4E0D9;
-  --color-sugerencia: #9A928B;
+  /* Antes: #9A928B -~2,7:1 sobre #F3F1ED / ~3,1:1 sobre #FFFFFF-. 06-10-2026, tarea 101:
+     #6E6660 da ≥4,5:1 sobre el suelo claro (#F3F1ED ≈4,99; #FFFFFF ≈5,63). */
+  --color-sugerencia: #6E6660;
   --borde-tarjeta: rgba(26, 24, 21, 0.09);
   --sombra-tarjeta: 0 1px 2px rgba(26, 24, 21, 0.06), 0 6px 16px rgba(26, 24, 21, 0.07);
   --color-acento: #E7E1DE;
@@ -839,7 +842,10 @@ textarea::placeholder {
   content: attr(data-placeholder);
   float: left;
   height: 0;
-  opacity: 0.45;
+  /* Antes: opacity 0.45 sobre la letra -bajaba el contraste bajo 4,5:1 en Test Lab A3-.
+     06-10-2026, tarea 101: color explícito de sugerencia de lectura, opacity 1. */
+  color: var(--color-sugerencia-lectura);
+  opacity: 1;
   pointer-events: none;
   white-space: pre-wrap;
 }
