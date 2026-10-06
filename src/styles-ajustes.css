@@ -31,16 +31,33 @@
   scrollbar-width: none;
 }
 .carril-fichas::-webkit-scrollbar { display: none; }
+/* -07-10-2026, Claude, revision de la 101- La caja de la ficha mide 48 y sobresale 8 arriba y 8
+   abajo de su pastilla de 32 -margin -8px 0, abajo-. El carril recorta en vertical -overflow-y
+   hidden-, asi que sin este relleno el toque y lo que mide el escaner volvian a quedar en 32.
+   El relleno agranda el carril por dentro y el margen negativo lo devuelve: nada se mueve. */
+.carril-fichas {
+  padding-block: 8px;
+  margin-block: -8px;
+}
 
+/* 06-10-2026, tarea 101: la caja mide 48 de alto -el escáner mide la caja, no un ::after-.
+   Antes: height/min-height 32, padding 0 12px, fondo/borde/sombra en el botón. La pastilla
+   visible de 32 queda en ::before con inset 8px 0. */
 .ficha-listo {
   position: relative;
   flex: 0 0 auto;
-  height: 32px;
-  min-height: 32px;
-  padding: 0 12px;
+  height: 48px;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  /* -07-10-2026, Claude- Sin este margen la fila de LISTO crecia de 32 a 48 y de lado la columna
+     pasaba de un paso de 48 a uno de 64: todo se corria, y la orden pedia que no se moviera nada.
+     Con -8 arriba y abajo la ficha ocupa 32 en el flujo, como antes, y toca en 48. En tableta la
+     ficha grande -60- usa el mismo margen y ocupa 44, como antes. */
+  margin: -8px 0;
   border-radius: 8px;
-  border: 1px solid var(--borde-tarjeta);
-  background: var(--bg-panel);
+  border: 1px solid transparent;
+  background: transparent;
   color: var(--color-texto);
   font-size: 13px;
   font-weight: 500;
@@ -48,17 +65,39 @@
   align-items: center;
   gap: 6px;
   white-space: nowrap;
-  box-shadow: var(--sombra-tarjeta);
+  box-shadow: none;
 }
-.ficha-listo::after {
+.ficha-listo::before {
+  content: "";
+  position: absolute;
+  inset: 8px 0;
+  border-radius: 8px;
+  border: 1px solid var(--borde-tarjeta);
+  background: var(--bg-panel);
+  box-shadow: var(--sombra-tarjeta);
+  pointer-events: none;
+}
+.ficha-listo > * {
+  position: relative;
+  z-index: 1;
+}
+/* Antes: .ficha-listo::after { inset: -8px 0 } -28-09-2026-. No sirve: el escáner mide la
+   caja del botón, no el pseudo-elemento. 06-10-2026. */
+/* .ficha-listo::after {
   content: "";
   position: absolute;
   inset: -8px 0;
-}
+} */
 .ficha-listo.abierta {
-  background: var(--color-acento);
+  /* Antes: background/border-color del acento en el botón. Ahora en ::before. */
+  background: transparent;
   color: var(--color-texto-acento);
+  border-color: transparent;
+}
+.ficha-listo.abierta::before {
+  background: var(--color-acento);
   border-color: var(--color-acento);
+  box-shadow: var(--sombra-tarjeta);
 }
 
 .capa-panel-ficha {
@@ -499,6 +538,23 @@
    línea -MS_CHICO y 240 ms, CURVA_RESORTE de movimiento.tsx-; aquí quedan los keyframes. */
 .ficha-flecha {
   justify-content: center;
+}
+/* -07-10-2026, Claude, revision de la 101- La flecha sola mide 43 de ancho -12 + chevron + 12- y
+   medida en el moto quedaba bajo los 48. La caja llega a 48 y crece 2,5 hacia cada lado -margen
+   negativo-; la pastilla -::before- se angosta lo mismo, asi se ve y ocupa igual que antes. Solo de
+   pie en el telefono: de lado la flecha va a lo ancho del riel y en tableta -grande- ya pasa de 48. */
+.carril-fichas .ficha-flecha:not(.grande) {
+  min-width: 48px;
+  margin-inline: -2.5px;
+}
+.carril-fichas .ficha-flecha:not(.grande)::before {
+  inset: 8px 2.5px;
+}
+.layout-tel-h .riel-izquierdo .ficha-flecha:not(.grande) {
+  margin-inline: 0;
+}
+.layout-tel-h .riel-izquierdo .ficha-flecha:not(.grande)::before {
+  inset: 8px 0;
 }
 /* De pie la segunda fila va ENCIMA de la primera, a 8: abajo está Empezar y no hay lugar. Así
    la primera fila y la flecha no se mueven al tocarla. */

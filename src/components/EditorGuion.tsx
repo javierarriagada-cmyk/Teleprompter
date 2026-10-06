@@ -8,7 +8,7 @@ import { Slice, Fragment } from '@tiptap/pm/model'
 import { TramoFormato, DESTACADO } from '../datos/modelo'
 import { aDocumento, deDocumento, llaveGuion } from '../datos/docEditor'
 import { REGEX_ACOTACION } from '../lib/acotaciones'
-import { familiaLectura, colorLetraEfectiva, columnaLectura, colorDeTramo, INTERLINEADO_LECTURA } from './estiloLectura'
+import { familiaLectura, colorLetraEfectiva, columnaLectura, colorDeTramo, colorSugerenciaLectura, INTERLINEADO_LECTURA } from './estiloLectura'
 
 // EL EDITOR DEL GUION, CON FORMATO DE VERDAD. 24-09-2026.
 //
@@ -214,7 +214,9 @@ export function EditorGuion({
         ['--tramo-celeste' as string]: colorDeTramo('celeste', colorFondo),
         ['--tramo-salvia' as string]: colorDeTramo('salvia', colorFondo),
         ['--destacado-fondo' as string]: DESTACADO.fondo,
-        ['--destacado-letra' as string]: DESTACADO.letra
+        ['--destacado-letra' as string]: DESTACADO.letra,
+        // Placeholder del cuerpo: contraste ≥4,5:1 y más tenue que la letra -colorSugerenciaLectura-.
+        ['--color-sugerencia-lectura' as string]: colorSugerenciaLectura(colorFondo)
       }}
     >
       <div
