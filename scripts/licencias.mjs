@@ -172,7 +172,9 @@ if (!textoApache) {
 const generado = armar(lista, textoApache)
 const json = JSON.stringify(generado, null, 2) + '\n'
 if (verificar) {
-  const actual = fs.existsSync(SALIDA) ? fs.readFileSync(SALIDA, 'utf8') : ''
+  // -07-10-2026, Claude- Git en Windows deja el archivo con \r\n al hacer checkout; sin normalizar,
+  // la comprobacion daba FALLA despues de cada cambio de rama aunque el contenido fuera el mismo.
+  const actual = fs.existsSync(SALIDA) ? fs.readFileSync(SALIDA, 'utf8').replace(/\r\n/g, '\n') : ''
   if (actual !== json) {
     console.error('FALLA  licencias al día: public/licencias.json no coincide. Corre npm run licencias.')
     process.exit(1)
