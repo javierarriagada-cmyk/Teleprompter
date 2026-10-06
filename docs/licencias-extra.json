@@ -1,0 +1,23 @@
+[
+  {
+    "nombre": "gesture_recognizer.task",
+    "version": "float16",
+    "licencia": "Apache-2.0",
+    "fuente": "https://ai.google.dev/edge/mediapipe/solutions/vision/gesture_recognizer",
+    "nota": "El comentario de android/app/build.gradle (2026-10-07) confirma Apache 2.0 en la model card del landmarker. La model card del clasificador de gestos no declara licencia: sin verificar esa pieza."
+  },
+  {
+    "nombre": "modelo de voz es",
+    "version": "vosk-model-small-es-0.42",
+    "licencia": "Apache-2.0",
+    "fuente": "https://alphacephei.com/vosk/models",
+    "nota": "Copyright 2022-2050 AC Technologies LLC, segun el README del modelo. La pagina de modelos de Vosk declara vosk-model-small-es-0.42 Apache 2.0 (verificado el 2026-10-07)."
+  },
+  {
+    "nombre": "modelo de voz en",
+    "version": "vosk-model-small-en-us-0.15",
+    "licencia": "Apache-2.0",
+    "fuente": "https://alphacephei.com/vosk/models",
+    "nota": "Copyright 2020 Alpha Cephei Inc, segun el README del modelo. La pagina de modelos de Vosk declara vosk-model-small-en-us-0.15 Apache 2.0 (verificado el 2026-10-07)."
+  }
+]

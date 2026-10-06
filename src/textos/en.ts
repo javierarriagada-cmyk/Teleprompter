@@ -205,6 +205,8 @@ export const en: Textos = {
   version: 'Version',
   privacidad: 'Privacy',
   soporte: 'Support',
+  licencias: 'Open source licenses',
+  licenciaSinTexto: 'No license text.',
   espejoExplicacion: 'For use with a teleprompter glass',
   lineaMuestraLectura: 'Read this out loud, at your own pace.',
   // Dialogo de permiso de microfono -28-09-2026-.

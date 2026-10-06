@@ -6,6 +6,7 @@ import {
 } from './IconosApp'
 import { hapticaSeleccion } from '../haptica'
 import { Interruptor } from './Interruptor'
+import { PantallaLicencias } from './PantallaLicencias'
 import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, PASOS_LETRA } from './estiloLectura'
 import { PAREJAS_COLOR } from '../datos/modelo'
 import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
@@ -159,6 +160,7 @@ export function PantallaAjustes({
 }) {
   const idioma = useTextos()
   const [dialogo, setDialogo] = useState<DialogoAjustes>(null)
+  const [licencias, setLicencias] = useState(false)
 
   const letra = colorLetraEfectiva(colorFondo, colorLetra)
   const col = columnaLectura(columnaAngosta)
@@ -188,6 +190,8 @@ export function PantallaAjustes({
   const enlaceSoporte = idioma === 'es'
     ? 'https://sigoteleprompter.com/soporte'
     : 'https://sigoteleprompter.com/en/support'
+
+  if (licencias) return <PantallaLicencias onCerrar={() => setLicencias(false)} />
 
   return (
     // UNA PANTALLA QUE TAPA TODO, DICHA COMO TAL -tarea 84, G2, 29-09-2026-. Para TalkBack era
@@ -322,6 +326,12 @@ export function PantallaAjustes({
               icono={<IconoAyuda tamano={22} />}
               nombre={t('soporte')}
               onClick={() => abrirEnlace(enlaceSoporte)}
+            />
+            <FilaAjuste
+              testid="fila-licencias"
+              icono={<IconoInfo tamano={22} />}
+              nombre={t('licencias')}
+              onClick={() => setLicencias(true)}
             />
           </>
         )}
