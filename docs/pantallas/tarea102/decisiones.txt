@@ -1,0 +1,77 @@
+Tarea 102 — Decisiones de diseño NO pedidas en el encargo (para que Javier apruebe o corrija).
+2026-10-06 (America/Santiago).
+
+1. Color de superficie del menú adjunto
+   Oscuro: --bg-menu #383432 (token actual de Sigo).
+   Claro: --bg-menu #FFFFFF.
+   Motivo: continuidad con paneles ya usados en LISTO/fichas; se eleva sobre la card
+   (--bg-superficie #221F1D / #FFFFFF) sin inventar un color nuevo ni oro.
+
+2. Radio de esquinas
+   Cards de sección: 18 px.
+   Menús adjuntos: 14 px.
+   Sample de lectura dentro de la card: 12 px.
+   Motivo: cerca de --redondeo-grande (24) y del redondeo de diálogos actuales (16),
+   sin llegar al “globo” excesivo. Ajustable.
+
+3. Cierre del menú: sin ✕
+   Material: tocar fuera o atrás del sistema.
+   Motivo: refs wa-1 / wa-2 no traen ✕; el ✕ de hoy en el menú del guion es lo que se
+   quiere dejar atrás. Si en revisión se pide affordance visible, se puede añadir ✕
+   discreto arriba a la derecha del menú (queda como opción B).
+
+4. Chrome de la pantalla «Acerca de Sigo»
+   Flecha atrás a la izquierda + título serif «Acerca de Sigo» (mismo peso que «Ajustes»).
+   Contenido en una sola card con filas: Versión (valor a la derecha, sin chevron),
+   Privacidad, Soporte, Licencias de código abierto (con chevron).
+   Motivo: misma jerarquía que Ajustes; Versión no navega.
+
+5. Ancho y anclaje de menús
+   Teléfono: ~220–280 px según contenido (Tema ~200, Tamaño ~220, Colores ~280).
+   Anclado a la derecha, cerca del valor/chevron de la fila.
+   Alto de fila de opción ≈ 52 px (≥ 48 dp).
+   Motivo: caber sin tapar el label de la fila; check a la derecha como wa-1.
+
+6. Check de selección
+   Trazo neutro del color de texto (--color-texto), no dorado ni rojo.
+   Motivo: pedido explícito (neutral como Claude wa-1); el rojo queda solo para Borrar
+   y el punto de marca Sigo.
+
+7. Tableta (lámina g)
+   Misma UI WebView del teléfono, escalada dentro de un marco 1840×2944 (proporción
+   del capture tb-12), con leyenda clara.
+   Motivo: no hay captura de Ajustes en TB370FU; no se inventa layout tablet-only.
+   tb-12 es pantalla de lectura, no sirve como ANTES de Ajustes.
+
+8. Capturas faltantes
+   - Menú al mantener: ANTES = portada real + texto overlay (no se dibujó un menú inventado).
+   - Claro + hoja abierta: ANTES = cerrado Play + nota; DESPUÉS = menú sobre ese cerrado.
+   - Portada clara: no producida (sin fuente).
+   Motivo: fidelidad al pedido de no inventar ANTES.
+
+9. Iconos en boceto claro
+   Trazos redibujados (line-art) en vez de recortes de la ficha Play, porque los crops
+   del claro dejaban cuadrados grises. En oscuro se reutilizaron crops de frankel cuando
+   el fondo se pudo enmascarar; si un ícono se ve flojo, preferir el set de trazo.
+   Motivo: legibilidad del boceto; la programación usará los IconosApp reales.
+
+10. Sample «Lee esto en voz alta, sin apuro.»
+    Redibujado limpio dentro del sample box (no stretch del crop) para que no se corte
+    el texto en claro. Tipografía Sans aprox. del tamaño actual de muestra.
+    Motivo: el crop de la ficha Play truncaba «apuro».
+
+11. Interruptores Espejo / Mostrar tiempo
+    Se mantienen en su sitio dentro de la card Lectura (pedido: sin cambio).
+    En el boceto oscuro: Espejo off, Mostrar tiempo on (como frankel-5).
+    En claro: igual patrón.
+
+12. Tipografía / Ancho / Idioma
+    También pasan a menú adjunto en el mismo patrón del punto 2, aunque no hay lámina
+    dedicada (el pedido listó b=Tamaño, c=Colores, d=Tema como ejemplos suficientes).
+
+13. Sombra / elevación
+    Sombra suave bajo cards y menús (blur ~14–16, offset 4). Sin scrim modal.
+    Motivo: elevar sin oscurecer el resto (continuidad del encargo).
+
+14. Intermedios de trabajo
+    No se versionan PNG crudos _despues-* ; solo las láminas comparadas y estos textos.

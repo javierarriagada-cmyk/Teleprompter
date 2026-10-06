@@ -1,0 +1,82 @@
+Tarea 102 — PASO 1 bocetos (solo docs). Índice de láminas.
+Fecha de armado: 2026-10-06 (America/Santiago).
+
+Convención: cada lámina es ANTES | DESPUÉS (salvo e-acerca-de-pantalla-*, que son dos paneles DESPUÉS).
+Los ANTES son píxeles reales de /workspace/tarea102/antes/ salvo donde se indica "sin captura".
+
+---
+a-ajustes-cerrado-oscuro.png
+  Punto 1. Ajustes cerrado, tema oscuro.
+  ANTES: frankel-5.png (Test Lab, secciones Lectura/Apariencia/Acerca parcial).
+  DESPUÉS: cards Lectura / Apariencia / Acerca de; Acerca = fila única «Acerca de Sigo».
+
+a-ajustes-cerrado-claro.png
+  Punto 1. Ajustes cerrado, tema claro.
+  ANTES: ajustes-claro-ficha.png (ficha Play Listing; Test Lab Robo no cambió a claro).
+  DESPUÉS: misma estructura de cards en claro.
+
+b-tamano-letra-oscuro.png
+  Punto 2. Menú Tamaño de letra.
+  ANTES: frankel-9.png (hoja inferior + scrim).
+  DESPUÉS: menú adjunto al valor; Aa por tamaño; ✓ en 24; sin scrim.
+
+b-tamano-letra-claro.png
+  Punto 2. Menú Tamaño en claro.
+  ANTES: no hay captura de hoja abierta en claro — se muestra ajustes-claro-ficha.png cerrado
+         con nota. La hoja real solo existe en oscuro (frankel-9).
+  DESPUÉS: menú adjunto propuesto sobre el cerrado claro.
+
+c-colores-oscuro.png
+  Punto 2. Menú Colores de lectura.
+  ANTES: frankel-10.png.
+  DESPUÉS: menú adjunto con swatches Aa; ✓ en «Negro con blanco»; sin scrim.
+
+c-colores-claro.png
+  Punto 2. Colores en claro (propuesta).
+  ANTES: hoja solo en oscuro (frankel-10); panel = ficha Play cerrada + nota.
+  DESPUÉS: menú adjunto sobre cerrado claro.
+
+d-tema-oscuro.png
+  Punto 2. Menú Tema.
+  ANTES: frankel-7.png.
+  DESPUÉS: menú adjunto Oscuro/Claro con ✓; sin scrim.
+
+d-tema-claro.png
+  Punto 2. Tema en claro (propuesta).
+  ANTES: hoja solo en oscuro (frankel-7); panel = ficha Play cerrada + nota.
+  DESPUÉS: menú adjunto sobre cerrado claro.
+
+e-acerca-de-oscuro.png
+  Punto 3. Acerca de — cerrado.
+  ANTES: frankel-15.png (Versión, Privacidad, Soporte visibles; Licencias bajo el pliegue
+         en la app real, no alcanzó a verse en esa captura).
+  DESPUÉS: card Acerca con una sola fila «Acerca de Sigo».
+
+e-acerca-de-pantalla-oscuro.png
+  Punto 3. Dos paneles DESPUÉS: fila única en Ajustes + pantalla «Acerca de Sigo»
+  (Versión, Privacidad, Soporte, Licencias de código abierto).
+
+e-acerca-de-claro.png / e-acerca-de-pantalla-claro.png
+  Punto 3 en claro. ANTES cerrado = ficha Play (Acerca no visible ahí).
+  Pantalla Acerca propuesta en claro.
+
+f-menu-guion-oscuro.png
+  Punto 4. Menú al mantener un guion.
+  ANTES: frankel-2.png (portada) + overlay de texto — NO hay frame de Test Lab del menú
+         alargado de hoy (Archivar, tacho, ✕). No se inventó un ANTES falso.
+  DESPUÉS: portada real + menú adjunto (título = nombre del guion; Archivar; Borrar en rojo).
+  Hueco: no hay portada clara capturada → no hay f-menu-guion-claro.png.
+
+g-ajustes-menu-tableta.png
+  Tableta. Robo nunca abrió Ajustes en TB370FU.
+  ANTES: frankel-5 (UI teléfono) en marco de proporción tableta, con leyenda.
+  DESPUÉS: mismo WebView (DESPUÉS teléfono con menú Tamaño) en marco tableta.
+  No se fingió un layout distinto solo-tableta. tb-12.png es lectura/teleprompter, no Ajustes.
+
+---
+Huecos documentados
+- Menú al mantener guion (hoy): sin captura → overlay honesto en f.
+- Ajustes tableta: sin captura → UI teléfono + nota en g.
+- Hojas abiertas en tema claro: no existen → b/c/d claro usan cerrado + DESPUÉS menú.
+- Portada clara: no hay captura → f solo oscuro.
+- Licencias en frankel-15: fila existe en código pero no entró en el frame; la pantalla DESPUÉS sí la incluye.

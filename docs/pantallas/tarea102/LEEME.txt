@@ -1,0 +1,25 @@
+Tarea 102 — PASO 1: bocetos de Ajustes (cards + menús adjuntos + menú del guion).
+
+Qué es esto
+  Láminas ANTES | DESPUÉS para que Javier evalúe el UX antes de programar.
+  No hay cambios de código de la app. Solo archivos bajo docs/pantallas/tarea102/.
+
+Qué cambió en el DESPUÉS (resumen)
+  1. Lectura / Apariencia / Acerca de van en cards con etiqueta de sección arriba.
+  2. Tamaño, Tipografía, Ancho, Colores, Tema, Idioma: hoja inferior → menú adjunto
+     al valor (sin oscurecer la pantalla; opción elegida con ✓).
+  3. Acerca de pasa a una fila «Acerca de Sigo» que abre su pantalla.
+  4. Mantener un guion: menú adjunto (Archivar / Borrar en rojo), no fila alargada.
+
+Qué NO cambia en estos bocetos
+  Interruptores Espejo y Mostrar tiempo; sample de lectura; pantalla de Licencias
+  (solo cambia cómo se llega); chips de LISTO; selección de tomas.
+
+Cómo mirarlas
+  Empezá por a (cerrado), después b–d (menús), e (Acerca), f (guion), g (tableta).
+  Lees indice.txt para la fuente de cada ANTES y decisiones.txt para lo que no estaba
+  en el pedido (✕, radios, color del menú, tableta, huecos de captura).
+
+Huecos honestos
+  No hay captura del menú al mantener ni de Ajustes en tableta ni de hojas en claro.
+  Esas láminas lo dicen en el panel ANTES; no se inventó UI falsa.
