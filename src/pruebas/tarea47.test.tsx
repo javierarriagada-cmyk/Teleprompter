@@ -196,11 +196,11 @@ describe('Pruebas TAREA 47 (T213-T217)', () => {
     // "Sistema" ya no existe.
     expect(screen.queryByRole('button', { name: /^Sistema$/i })).toBeNull()
 
-    fireEvent.click(screen.getByRole('button', { name: /^Claro$/i }))
+    fireEvent.click(screen.getByRole('menuitemradio', { name: /^Claro$/i }))
     expect(document.documentElement.getAttribute('data-tema')).toBe('claro')
 
     fireEvent.click(screen.getByTestId('fila-tema'))
-    fireEvent.click(screen.getByRole('button', { name: /^Oscuro$/i }))
+    fireEvent.click(screen.getByRole('menuitemradio', { name: /^Oscuro$/i }))
     expect(document.documentElement.getAttribute('data-tema')).toBe('oscuro')
   })
 

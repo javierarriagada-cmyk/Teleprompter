@@ -444,9 +444,10 @@
   flex-shrink: 0;
 }
 
-/* MENÚ ADJUNTO A LA FILA -boceto tarea 102, 06-10-2026-. Reemplaza la hoja inferior
-   con scrim. La capa atrapa el toque afuera sin oscurecer; el panel se ancla a la fila
-   (posición fixed calculada en TSX). Sin ✕: se cierra tocando afuera o Escape. */
+/* MENÚ ADJUNTO A LA FILA -boceto tarea 102, 06-10-2026; PASO 2 endurece cierre y a11y-.
+   Reemplaza la hoja inferior con scrim. La capa atrapa el toque afuera sin oscurecer;
+   el panel se ancla a la fila (posición fixed calculada en TSX). Sin ✕: se cierra
+   tocando afuera, Escape o el gesto de atrás de Android. */
 .capa-menu-adjunto {
   position: fixed;
   inset: 0;
@@ -463,6 +464,15 @@
   background: var(--bg-menu);
   border: 1px solid var(--borde-tarjeta);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  /* Apertura corta: MS_CHICO + CURVA_RESORTE en TSX; sin animación si movimientoApagado(). */
+  transform-origin: top right;
+}
+@keyframes menu-adjunto-abre {
+  from { opacity: 0; transform: scale(0.96) translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-adjunto-ajustes { animation: none !important; }
 }
 .lista-menu-adjunto {
   display: flex;
@@ -500,7 +510,12 @@
   background: transparent;
 }
 
-/* Respaldo: la hoja inferior antigua, por si algún test o pantalla residual la usa. */
+/* Antes: .capa-dialogo-ajustes era el envoltorio de la hoja inferior con scrim
+   (align flex-end, padding inferior). Los menús adjuntos a la fila la reemplazaron
+   -tarea 102-: el toque afuera lo atrapa .capa-menu-adjunto (transparente) y el
+   testid "capa-dialogo-ajustes" vive ahí. Se conserva la clase comentada por si
+   alguna referencia residual la menciona; no se borra el comentario. */
+/*
 .capa-dialogo-ajustes {
   position: absolute;
   inset: 0;
@@ -510,6 +525,7 @@
   justify-content: center;
   padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px));
 }
+*/
 
 .capa-dialogo-microfono {
   position: fixed;

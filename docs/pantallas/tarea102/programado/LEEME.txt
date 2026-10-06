@@ -1,0 +1,22 @@
+Tarea 102 — PASO 2: capturas de la app programada (español).
+Fecha: 2026-10-06 (America/Santiago).
+
+Qué es
+  Capturas del branch tarea102-programar (implementación PASO 2), en español,
+  mismos casos a–g que las láminas aprobadas de PASO 1 (esas van en inglés a
+  propósito). Comparar forma/tamaño/orden; los textos no coinciden letra a letra.
+
+Viewport
+  Teléfono 412×915 @ DPR 2.625. Tableta 800×1280 @ DPR 2.
+
+Archivos
+  a-ajustes-cerrado-{oscuro,claro}.png
+  b-tamano-letra-{oscuro,claro}.png
+  c-colores-oscuro.png
+  d-tema-oscuro.png
+  e-acerca-de-{oscuro,claro}.png
+  e-acerca-de-pantalla-{oscuro,claro}.png
+  f-menu-guion-{oscuro,claro}.png
+  g-ajustes-menu-tableta.png
+
+Copia en el box (no en el repo): /workspace/tarea102/caps/programado-es/

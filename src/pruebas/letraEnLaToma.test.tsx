@@ -59,7 +59,7 @@ describe('Letra y ancho en el cajon de la toma', () => {
     fireEvent.click(screen.getByTestId('ficha-flecha'))
     fireEvent.click(screen.getByTestId('ficha-ajustes'))
     fireEvent.click(screen.getByTestId('fila-ancho-texto'))
-    fireEvent.click(within(screen.getByTestId('dialogo-ancho')).getByRole('button', { name: 'Angosto' }))
+    fireEvent.click(within(screen.getByTestId('dialogo-ancho')).getByRole('menuitemradio', { name: 'Angosto' }))
     await waitFor(() => {
       expect(JSON.parse(localStorage.getItem('teleprompter_ajustes') || '{}').columnaAngosta).toBe(true)
     })

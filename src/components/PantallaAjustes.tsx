@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { App as CapacitorApp } from '@capacitor/app'
 import {
   IconoAtras, IconoChevron, IconoTamanoLetra, IconoTipografia, IconoAnchoTexto, IconoPaleta, IconoEspejo,
-  IconoReloj, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda
+  IconoReloj, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda, IconoDocumento
 } from './IconosApp'
 import { hapticaSeleccion } from '../haptica'
 import { Interruptor } from './Interruptor'
@@ -11,6 +11,7 @@ import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTUR
 import { PAREJAS_COLOR } from '../datos/modelo'
 import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
 import { t, useTextos } from '../textos'
+import { CURVA_RESORTE, MS_CHICO, movimientoApagado } from './movimiento'
 
 // PANTALLA DE AJUSTES -tarea 77, 28-09-2026-.
 //
@@ -110,9 +111,11 @@ function FilaAjuste({
   )
 }
 
-// Menu anclado a la fila que lo abrio -boceto tarea 102-. Sin scrim: la capa
-// atrapa el toque afuera con fondo transparente. Se coloca debajo (o arriba si
-// no cabe) alineado a la derecha, para no tapar el nombre ni el valor de la fila.
+// Menu anclado a la fila que lo abrio -boceto tarea 102; endurecido PASO 2-.
+// Sin scrim: la capa atrapa el toque afuera con fondo transparente. Se coloca
+// debajo (o arriba si no cabe) alineado a la derecha. Cierre: afuera, Escape
+// y el gesto de atras de Android (via onRegistrarCerrarDentro en App).
+// Antes: role="listbox" / aria-pressed; ahora role="menu" / menuitemradio.
 function MenuAdjuntoAjustes({
   anclaRef,
   onCerrar,
@@ -125,6 +128,7 @@ function MenuAdjuntoAjustes({
   children: React.ReactNode
 }) {
   const menuRef = useRef<HTMLDivElement>(null)
+  const focoPrevioRef = useRef<HTMLElement | null>(null)
   const [coords, setCoords] = useState<{ top: number; left: number } | null>(null)
 
   useLayoutEffect(() => {
@@ -155,6 +159,28 @@ function MenuAdjuntoAjustes({
     }
   }, [anclaRef, children])
 
+  // Al abrir: foco al primer menuitemradio. Al cerrar: devolver el foco a la fila.
+  useEffect(() => {
+    const activo = document.activeElement
+    focoPrevioRef.current =
+      (activo instanceof HTMLElement ? activo : null)
+      ?? (anclaRef.current?.querySelector('button') as HTMLElement | null)
+      ?? (anclaRef.current as HTMLElement | null)
+    const menu = menuRef.current
+    const primera = menu?.querySelector('[role="menuitemradio"]') as HTMLElement | null
+    if (primera) {
+      primera.focus()
+    } else if (menu) {
+      menu.focus()
+    }
+    return () => {
+      const devolver = focoPrevioRef.current
+      if (devolver && typeof devolver.focus === 'function') {
+        try { devolver.focus() } catch { /* el ancla pudo desmontarse */ }
+      }
+    }
+  }, [anclaRef])
+
   useEffect(() => {
     const alTeclear = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onCerrar()
@@ -162,6 +188,17 @@ function MenuAdjuntoAjustes({
     document.addEventListener('keydown', alTeclear)
     return () => document.removeEventListener('keydown', alTeclear)
   }, [onCerrar])
+
+  const animar = !movimientoApagado()
+  const estiloMenu: React.CSSProperties = coords
+    ? {
+        top: coords.top,
+        left: coords.left,
+        ...(animar
+          ? { animation: `menu-adjunto-abre ${MS_CHICO}ms ${CURVA_RESORTE} forwards` }
+          : {})
+      }
+    : { top: -9999, left: 0 }
 
   return (
     <>
@@ -175,8 +212,9 @@ function MenuAdjuntoAjustes({
         ref={menuRef}
         className="menu-adjunto-ajustes"
         data-testid={testid}
-        role="listbox"
-        style={coords ? { top: coords.top, left: coords.left } : { top: -9999, left: 0 }}
+        role="menu"
+        tabIndex={-1}
+        style={estiloMenu}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
@@ -192,6 +230,7 @@ function CheckMenu({ visible }: { visible: boolean }) {
 
 export function PantallaAjustes({
   onCerrar,
+  onRegistrarCerrarDentro,
   origen = 'portada',
   fontSize,
   onElegirLetra,
@@ -213,6 +252,9 @@ export function PantallaAjustes({
   setTema
 }: {
   onCerrar: () => void
+  // Tarea 102 PASO 2: el gesto de atras cierra menu / Acerca / Licencias antes
+  // de salir de Ajustes. App lo engancha junto a handleVolverAtras.
+  onRegistrarCerrarDentro?: (fn: (() => boolean) | null) => void
   // DESDE DONDE SE ABRE -28-09-2026-. Javier: "por que subtitulos esta en ajustes que pueden
   // estar para leer". Cada puerta muestra lo suyo: el guion y Leer, solo la lectura; Grabar,
   // lectura y video; la portada, todo -tambien apariencia y acerca de-.
@@ -269,6 +311,27 @@ export function PantallaAjustes({
       setVersion(null)
     }
   }, [verApp])
+
+  // El gesto de atras: menu abierto → Acerca → Licencias → (App cierra Ajustes).
+  useEffect(() => {
+    if (!onRegistrarCerrarDentro) return
+    onRegistrarCerrarDentro(() => {
+      if (dialogo !== null) {
+        setDialogo(null)
+        return true
+      }
+      if (licencias) {
+        setLicencias(false)
+        return true
+      }
+      if (pantallaAcerca) {
+        setPantallaAcerca(false)
+        return true
+      }
+      return false
+    })
+    return () => onRegistrarCerrarDentro(null)
+  }, [dialogo, licencias, pantallaAcerca, onRegistrarCerrarDentro])
 
   function elegirYCerrar(fn: () => void) {
     fn()
@@ -327,7 +390,7 @@ export function PantallaAjustes({
             />
             <FilaAjuste
               testid="fila-licencias"
-              icono={<IconoInfo tamano={22} />}
+              icono={<IconoDocumento tamano={22} />}
               nombre={t('licencias')}
               onClick={() => setLicencias(true)}
             />
@@ -506,7 +569,8 @@ export function PantallaAjustes({
                   type="button"
                   data-testid={`opcion-letra-${n}`}
                   className={`fila-menu-adjunto${fontSize === n ? ' elegida' : ''}`}
-                  aria-pressed={fontSize === n}
+                  role="menuitemradio"
+                  aria-checked={fontSize === n}
                   aria-label={`${t('tamanoLetra')} ${n}`}
                   onClick={() => elegirYCerrar(() => onElegirLetra?.(n))}
                 >
@@ -528,7 +592,8 @@ export function PantallaAjustes({
                   key={o.v}
                   type="button"
                   className={`fila-menu-adjunto${tipoFuente === o.v ? ' elegida' : ''}`}
-                  aria-pressed={tipoFuente === o.v}
+                  role="menuitemradio"
+                  aria-checked={tipoFuente === o.v}
                   onClick={() => elegirYCerrar(() => setTipoFuente(o.v))}
                 >
                   <span className="fila-menu-adjunto-etiqueta">{o.n}</span>
@@ -549,8 +614,9 @@ export function PantallaAjustes({
                   key={o.n}
                   type="button"
                   className={`fila-menu-adjunto${o.activo ? ' elegida' : ''}`}
+                  role="menuitemradio"
                   aria-label={o.n}
-                  aria-pressed={o.activo}
+                  aria-checked={o.activo}
                   onClick={() => elegirYCerrar(() => {
                     // La vibracion corta de elegir, como en el cajon que reemplaza -T203-.
                     hapticaSeleccion()
@@ -574,8 +640,9 @@ export function PantallaAjustes({
                     key={`${p.fondo}-${p.letra}`}
                     type="button"
                     className={`fila-menu-adjunto${activa ? ' elegida' : ''}`}
+                    role="menuitemradio"
                     aria-label={nombrePareja(p.fondo, p.letra)}
-                    aria-pressed={activa}
+                    aria-checked={activa}
                     onClick={() => elegirYCerrar(() => {
                       hapticaSeleccion()
                       setColorFondo(p.fondo)
@@ -606,8 +673,9 @@ export function PantallaAjustes({
                   key={o.v}
                   type="button"
                   className={`fila-menu-adjunto${tema === o.v ? ' elegida' : ''}`}
+                  role="menuitemradio"
                   aria-label={o.n}
-                  aria-pressed={tema === o.v}
+                  aria-checked={tema === o.v}
                   onClick={() => elegirYCerrar(() => setTema(o.v))}
                 >
                   <span className="fila-menu-adjunto-etiqueta">{o.n}</span>
@@ -629,8 +697,9 @@ export function PantallaAjustes({
                   lang={o.v}
                   data-testid={`btn-idioma-${o.v}`}
                   className={`fila-menu-adjunto${idiomaApp() === o.v ? ' elegida' : ''}`}
+                  role="menuitemradio"
                   aria-label={o.n}
-                  aria-pressed={idiomaApp() === o.v}
+                  aria-checked={idiomaApp() === o.v}
                   onClick={() => elegirYCerrar(() => fijarIdioma(o.v))}
                 >
                   <span className="fila-menu-adjunto-etiqueta">{o.n}</span>

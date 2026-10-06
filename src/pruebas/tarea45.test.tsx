@@ -323,7 +323,7 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     await act(async () => {
       fireEvent.click(screen.getByTestId('fila-ancho-texto'))
     })
-    const btnMedio = screen.getByRole('button', { name: 'Medio' })
+    const btnMedio = screen.getByRole('menuitemradio', { name: 'Medio' })
     await act(async () => {
       fireEvent.click(btnMedio)
     })
@@ -379,8 +379,8 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     await act(async () => {
       fireEvent.click(screen.getByTestId('fila-tema'))
     })
-    expect(screen.getByRole('button', { name: 'Claro' })).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Oscuro' })).toBeTruthy()
+    expect(screen.getByRole('menuitemradio', { name: 'Claro' })).toBeTruthy()
+    expect(screen.getByRole('menuitemradio', { name: 'Oscuro' })).toBeTruthy()
 
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))

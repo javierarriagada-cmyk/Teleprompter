@@ -69,7 +69,7 @@ describe('Tarea 72 - cada ajuste muestra lo que hace', () => {
     // sigue montado y es el que se revisa.
     const elegir = (fila: string, nombre: string) => {
       fireEvent.click(screen.getByTestId(fila))
-      fireEvent.click(screen.getByRole('button', { name: nombre }))
+      fireEvent.click(screen.getByRole('menuitemradio', { name: nombre }))
     }
 
     // Tipografia
@@ -92,11 +92,11 @@ describe('Tarea 72 - cada ajuste muestra lo que hace', () => {
 
     // Colores
     fireEvent.click(screen.getByTestId('fila-colores'))
-    fireEvent.click(screen.getByRole('button', { name: 'Blanco con negro' }))
+    fireEvent.click(screen.getByRole('menuitemradio', { name: 'Blanco con negro' }))
     expect(mismoColor(caja().style.backgroundColor, '#FFFFFF'), 'el fondo blanco no llego al guion').toBe(true)
     expect(mismoColor(col().style.color, '#000000'), 'la letra negra no llego al guion').toBe(true)
     fireEvent.click(screen.getByTestId('fila-colores'))
-    fireEvent.click(screen.getByRole('button', { name: 'Negro con ámbar' }))
+    fireEvent.click(screen.getByRole('menuitemradio', { name: 'Negro con ámbar' }))
     expect(mismoColor(caja().style.backgroundColor, '#000000'), 'el fondo negro no llego al guion').toBe(true)
     expect(mismoColor(col().style.color, '#F5C24B'), 'la letra ambar no llego al guion').toBe(true)
   })

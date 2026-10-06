@@ -935,6 +935,8 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   // Referencia para la función que cierra el modal abierto si existe
   const cerrarModalRef = useRef<(() => boolean) | null>(null)
+  // Tarea 102 PASO 2: menus / Acerca / Licencias dentro de Ajustes consumen atras primero.
+  const cerrarDentroAjustesRef = useRef<(() => boolean) | null>(null)
 
   const timerCuentaRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const prompterContainerRef = useRef<HTMLDivElement | null>(null)
@@ -1609,7 +1611,11 @@ export default function App({ motor, repoOverride }: AppProps) {
         return
       }
       // Ajustes es capa, no piso: el atras solo la cierra. 28-09-2026.
+      // 06-10-2026, tarea 102 PASO 2: primero menu adjunto / Acerca / Licencias.
       if (ajustesAbiertos) {
+        if (cerrarDentroAjustesRef.current && cerrarDentroAjustesRef.current()) {
+          return
+        }
         setAjustesAbiertos(false)
         return
       }
@@ -2824,6 +2830,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       {ajustesAbiertos && (
         <PantallaAjustes
           onCerrar={() => setAjustesAbiertos(false)}
+          onRegistrarCerrarDentro={(fn) => { cerrarDentroAjustesRef.current = fn }}
           origen={origenAjustes}
           fontSize={fontSize}
           onElegirLetra={handleElegirLetra}

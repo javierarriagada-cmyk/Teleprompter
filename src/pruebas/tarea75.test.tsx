@@ -257,8 +257,8 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
     fireEvent.click(await screen.findByTestId('fila-idioma'))
     const selector = await screen.findByTestId('selector-idioma-app')
     expect(selector).toBeTruthy()
-    expect(screen.getByTestId('btn-idioma-es').getAttribute('aria-pressed')).toBe('true')
-    expect(screen.getByTestId('btn-idioma-en').getAttribute('aria-pressed')).toBe('false')
+    expect(screen.getByTestId('btn-idioma-es').getAttribute('aria-checked')).toBe('true')
+    expect(screen.getByTestId('btn-idioma-en').getAttribute('aria-checked')).toBe('false')
 
     fireEvent.click(screen.getByTestId('btn-idioma-en'))
     // Sin reiniciar: la misma App, ya en ingles, y Ajustes sigue abierto.
@@ -272,7 +272,7 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
     expect(localStorage.getItem('sigo_idioma')).toBe('en')
 
     fireEvent.click(screen.getByTestId('fila-idioma'))
-    expect(screen.getByTestId('btn-idioma-en').getAttribute('aria-pressed')).toBe('true')
+    expect(screen.getByTestId('btn-idioma-en').getAttribute('aria-checked')).toBe('true')
     fireEvent.click(screen.getByTestId('btn-idioma-es'))
     expect(screen.getByTestId('btn-leer-tarjeta').textContent).toContain(es.leer)
     expect(screen.getByText(es.guiones)).toBeDefined()

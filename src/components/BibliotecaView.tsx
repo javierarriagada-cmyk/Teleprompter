@@ -651,6 +651,11 @@ export default function BibliotecaView({
   useEffect(() => {
     if (onRegistrarCerrarModal) {
       onRegistrarCerrarModal(() => {
+        // Tarea 102 PASO 2: el menu del guion (mantener) cierra con atras antes de salir.
+        if (menuId !== null) {
+          setMenuId(null)
+          return true
+        }
         if (mostrarPanelCorpus) {
           setMostrarPanelCorpus(false)
           return true
@@ -669,7 +674,7 @@ export default function BibliotecaView({
         onRegistrarCerrarModal(null)
       }
     }
-  }, [mostrarPanelCorpus, seleccionTomas, onRegistrarCerrarModal])
+  }, [menuId, mostrarPanelCorpus, seleccionTomas, onRegistrarCerrarModal])
 
   const animacionTituloStyle: React.CSSProperties = (esInicial && !movimientoApagado())
     ? {
