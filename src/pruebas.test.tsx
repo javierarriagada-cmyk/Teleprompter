@@ -1400,7 +1400,9 @@ describe('Pruebas TAREA 4 (T33-T36)', () => {
       await new Promise((r) => setTimeout(r, 50))
     })
     // 28-09-2026: los botones pasaron a simbolos; se buscan por su nombre -aria-label-, que es lo que lee TalkBack. "Eliminar" ahora es "Borrar".
-    const botonBorrar = Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Borrar')
+    // 07-10-2026, tarea 102: el menu del guion va en un portal colgado de body, fuera del container.
+    // Antes: Array.from(container!.querySelectorAll('button'))
+    const botonBorrar = Array.from(document.body.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Borrar')
     expect(botonBorrar).not.toBeUndefined()
 
     await act(async () => {
@@ -2415,10 +2417,11 @@ describe('Pruebas TAREA 18 (T94-T99)', () => {
 
       // NO abre el editor, muestra el menú
       expect(container!.textContent).not.toContain('← Biblioteca')
-      expect(container!.querySelector(`[data-testid="menu-opciones-${guion.id}"]`)).not.toBeNull()
-      expect(container!.textContent).toContain('Archivar')
+      // 07-10-2026, tarea 102: el menu va en un portal colgado de body. Antes se buscaba en container.
+      expect(document.body.querySelector(`[data-testid="menu-opciones-${guion.id}"]`)).not.toBeNull()
+      expect(document.body.textContent).toContain('Archivar')
       // 28-09-2026: los botones pasaron a simbolos; se buscan por su nombre -aria-label-, que es lo que lee TalkBack. "Eliminar" ahora es "Borrar".
-      expect(container!.querySelector('button[aria-label="Borrar"]')).not.toBeNull()
+      expect(document.body.querySelector('button[aria-label="Borrar"]')).not.toBeNull()
     } finally {
       vi.useRealTimers()
     }

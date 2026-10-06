@@ -1010,7 +1010,7 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
     const { rerender } = render(ajustesDelEditor(props()))
     const elegir = (nombre: string) => {
       fireEvent.click(screen.getByTestId('fila-ancho-texto'))
-      fireEvent.click(screen.getByRole('button', { name: nombre }))
+      fireEvent.click(screen.getByRole('menuitemradio', { name: nombre }))
     }
     elegir('Ancho')
     expect(columna).toBe(false)
@@ -1037,7 +1037,7 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
     expect(container.querySelector('select[aria-label="Color de letra"]')).toBeNull()
     const elegir = (nombre: string) => {
       fireEvent.click(screen.getByTestId('fila-colores'))
-      fireEvent.click(screen.getByRole('button', { name: nombre }))
+      fireEvent.click(screen.getByRole('menuitemradio', { name: nombre }))
     }
     elegir('Negro con ámbar')
     expect(fondo).toBe('#000000')
@@ -1150,8 +1150,8 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
     await act(async () => {
       fireEvent.click(screen.getByTestId('fila-tema'))
     })
-    const btnClaro = screen.getByRole('button', { name: 'Claro' })
-    const btnOscuro = screen.getByRole('button', { name: 'Oscuro' })
+    const btnClaro = screen.getByRole('menuitemradio', { name: 'Claro' })
+    const btnOscuro = screen.getByRole('menuitemradio', { name: 'Oscuro' })
     expect(btnClaro).not.toBeNull()
     expect(btnOscuro).not.toBeNull()
 
@@ -1166,7 +1166,7 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
       fireEvent.click(screen.getByTestId('fila-tema'))
     })
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Claro' }))
+      fireEvent.click(screen.getByRole('menuitemradio', { name: 'Claro' }))
     })
     expect(document.documentElement.getAttribute('data-tema')).toBe('claro')
   })

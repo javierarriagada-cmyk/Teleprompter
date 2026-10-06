@@ -92,7 +92,7 @@ describe('Tarea 77: fichas de LISTO y pantalla de Ajustes', () => {
     fireEvent.click(await screen.findByTestId('btn-menu-superior-biblioteca'))
     fireEvent.click(await screen.findByTestId('fila-tipo-letra'))
     expect(screen.getByTestId('dialogo-tipo')).toBeTruthy()
-    fireEvent.click(screen.getByRole('button', { name: 'Serif' }))
+    fireEvent.click(screen.getByRole('menuitemradio', { name: 'Serif' }))
     await waitFor(() => {
       expect(screen.queryByTestId('dialogo-tipo')).toBeNull()
       expect(JSON.parse(localStorage.getItem('teleprompter_ajustes') || '{}').tipoFuente).toBe('serif')
@@ -153,7 +153,7 @@ describe('Letra y ancho, migrados a fichas y Ajustes', () => {
     fireEvent.click(screen.getByTestId('ficha-flecha'))
     fireEvent.click(screen.getByTestId('ficha-ajustes'))
     fireEvent.click(screen.getByTestId('fila-ancho-texto'))
-    fireEvent.click(within(screen.getByTestId('dialogo-ancho')).getByRole('button', { name: 'Angosto' }))
+    fireEvent.click(within(screen.getByTestId('dialogo-ancho')).getByRole('menuitemradio', { name: 'Angosto' }))
     await waitFor(() => {
       expect(JSON.parse(localStorage.getItem('teleprompter_ajustes') || '{}').columnaAngosta).toBe(true)
     })

@@ -497,6 +497,20 @@ export function IconoAyuda(props: PropsIcono) {
   )
 }
 
+/** Una hoja con lineas: las licencias -tarea 102 PASO 2-. No reusa IconoInfo
+ *  (ese es Version en Acerca de). Mismo trazo 1.6 que el resto. */
+export function IconoDocumento(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M7 3.5h7.5L19 8v12.5a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-16a1 1 0 0 1 1-1z" />
+      <path d="M14.5 3.5V8H19" />
+      <path d="M9 12h6" />
+      <path d="M9 15.5h6" />
+      <path d="M9 19h4" />
+    </Trazo>
+  )
+}
+
 /** SIN VIDEOS -tarea 76, 28-09-2026-. Un visor de cámara: cuatro esquinas en L en el rojo de
  * grabar y, adentro, una filmadora de líneas con el triángulo de reproducir. Javier lo eligió
  * de la imagen de una auditoría; está hecho con las piezas de este archivo.

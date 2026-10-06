@@ -200,6 +200,7 @@ export const en: Textos = {
   seccionVideo: 'Video',
   seccionApariencia: 'Appearance',
   seccionAcerca: 'About',
+  acercaDeSigo: 'About Sigo',
   tipoSans: 'Sans',
   tipoSerif: 'Serif',
   version: 'Version',

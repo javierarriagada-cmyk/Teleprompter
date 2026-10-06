@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useRef, useState } from 'react'
+import React, { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 import { Guion, ResumenGuion, ResumenGrabacion, duracionDeLectura } from '../datos/modelo'
@@ -13,6 +13,7 @@ import { movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_
 import { ESCALA_AVISO, MS_MANTENER_APRETADO, programarMantener } from './mantenerApretado'
 import { t, useTextos, tituloVisible, tituloOInicio, fechaCorta } from '../textos'
 import { entrarSeleccion, seleccionarTodas, trasAlternar } from '../lib/seleccionTomas'
+import { bordesSeguros, colocarMenu } from '../lib/bordesSeguros'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -274,16 +275,57 @@ function FilaGuion({
   const fechaNat = formatearFechaNatural(g.modificado)
   const metaTexto = `${duracionDeLectura(g.palabras || 0)} · ${fechaNat}`
 
+  const menuAbierto = menuId === g.id
+
+  // Donde va el menu del guion -portal, abajo-: se mide al abrirse y se vuelve a medir si la
+  // pagina se mueve o cambia de tamano.
+  const refTarjeta = useRef<HTMLDivElement>(null)
+  const refMenuEl = useRef<HTMLDivElement | null>(null)
+  const [posMenu, setPosMenu] = useState<{ top: number; left: number } | null>(null)
+  useLayoutEffect(() => {
+    if (!menuAbierto) {
+      setPosMenu(null)
+      return
+    }
+    function colocar() {
+      const tarjeta = refTarjeta.current
+      const menu = refMenuEl.current
+      if (!tarjeta || !menu) return
+      const r = tarjeta.getBoundingClientRect()
+      const c = colocarMenu(
+        { top: r.top, bottom: r.bottom, left: r.left, right: r.right },
+        { alto: menu.offsetHeight, ancho: menu.offsetWidth },
+        { alto: window.innerHeight, ancho: window.innerWidth },
+        bordesSeguros(),
+        'izquierda',
+        12
+      )
+      setPosMenu({ top: c.top, left: c.left })
+    }
+    colocar()
+    const id = requestAnimationFrame(colocar)
+    window.addEventListener('resize', colocar)
+    window.addEventListener('scroll', colocar, true)
+    return () => {
+      cancelAnimationFrame(id)
+      window.removeEventListener('resize', colocar)
+      window.removeEventListener('scroll', colocar, true)
+    }
+  }, [menuAbierto])
+
   return (
     <div
+      ref={refTarjeta}
       // La caja se levanta del suelo -borde de un pelo y sombra, .tarjeta-elevada, 28-09-2026-. Va en
       // este envoltorio y no en la fila: el overflow hidden de aca recortaria la sombra de adentro.
+      // Boceto 102: con el menu adjunto abierto hay que dejar overflow visible para que no lo recorte.
       className="tarjeta-elevada"
       style={{
         position: 'relative',
         borderRadius: 'var(--redondeo)',
         marginBottom: 'var(--aire-3)',
-        overflow: 'hidden'
+        overflow: menuAbierto ? 'visible' : 'hidden',
+        zIndex: menuAbierto ? 20 : undefined
       }}
     >
       {/* Fondo revelado según la dirección del deslizamiento al superar el umbral */}
@@ -411,54 +453,59 @@ function FilaGuion({
         <IconoChevron tamano={18} className="flecha-fila" />
         </div>
 
-        {menuId === g.id && (
+        {/* MENU ADJUNTO AL MANTENER -boceto tarea 102, 06-10-2026-. Sustituye la fila
+            alargada con Archivar + tacho + ✕. Cabecera = titulo del guion; Archivar;
+            Borrar en rojo. Sin ✕: se cierra tocando afuera (useCerrarAfuera). Se ancla
+            debajo de la fila para no tapar el "+" de crear. */}
+        {/* Antes -hasta la tarea 102-: la fila se alargaba con una fila de botones chicos
+            -.boton-menu-chico-: Archivar con su palabra, el tacho solo y una ✕ para cerrar.
+            SIMBOLOS -28-09-2026-: Archivar con su palabra; Borrar -antes "Eliminar"- y
+            Cerrar con el simbolo solo y su nombre en aria-label. Ver .boton-menu-chico. */}
+        {/* -07-10-2026, Claude, revision de la 102- EN UN PORTAL, FIJO A LA PANTALLA. Dentro de la
+            fila quedaba debajo de las miniaturas de Videos -medido en el moto g86 con "Hola", el
+            ultimo guion: "Borrar" no se veia ni se podia tocar-. La fila lleva el transform del
+            deslizamiento y eso encierra al menu en su capa: ningun z-index lo saca. Desde body, con
+            colocarMenu -el mismo de Ajustes-, va debajo de la fila o arriba si no cabe, sin meterse
+            bajo la barra de botones. Antes: el div iba aca, en linea, con .menu-adjunto-guion en
+            position absolute -top 100% + 4, left 12-. */}
+        {menuAbierto && createPortal(
           <div
-            ref={refMenuFila}
-            data-testid={`menu-opciones-${g.id}`}
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              marginTop: 'var(--aire-2)',
-              paddingTop: 'var(--aire-2)',
-              display: 'flex',
-              gap: 'var(--aire-2)',
-              justifyContent: 'flex-start'
+            ref={(el) => {
+              (refMenuFila as React.MutableRefObject<HTMLDivElement | null>).current = el
+              refMenuEl.current = el
             }}
+            data-testid={`menu-opciones-${g.id}`}
+            className="menu-adjunto-guion"
+            style={{ position: 'fixed', top: posMenu?.top ?? -9999, left: posMenu?.left ?? 0, right: 'auto' }}
+            onClick={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
           >
-            {/* SIMBOLOS -28-09-2026-: Archivar con su palabra; Borrar -antes "Eliminar"- y
-                Cerrar con el simbolo solo y su nombre en aria-label. Ver .boton-menu-chico. */}
+            <div className="menu-adjunto-guion-titulo">{tituloMostrar}</div>
             <button
               type="button"
-              className="boton-menu-chico"
+              className="fila-menu-adjunto-guion"
               onClick={() => {
                 onArchivar(g.id, !g.archivado)
                 setMenuId(null)
               }}
             >
-              <IconoArchivar tamano={18} />
+              <IconoArchivar tamano={22} />
               <span>{g.archivado ? t('desarchivar') : t('archivar')}</span>
             </button>
             <button
               type="button"
-              className="boton-menu-chico solo-simbolo"
+              className="fila-menu-adjunto-guion peligro"
               aria-label={t('borrar')}
-              title={t('borrar')}
               onClick={() => {
                 onBorrar(g.id)
                 setMenuId(null)
               }}
             >
-              <IconoTacho tamano={20} strokeWidth={1.6} />
+              <IconoTacho tamano={22} strokeWidth={1.6} />
+              <span>{t('borrar')}</span>
             </button>
-            <button
-              type="button"
-              className="boton-menu-chico solo-simbolo cerrar-menu"
-              aria-label={t('cerrar')}
-              title={t('cerrar')}
-              onClick={() => setMenuId(null)}
-            >
-              <IconoCerrar tamano={20} />
-            </button>
-          </div>
+          </div>,
+          document.body
         )}
       </div>
     </div>
@@ -658,6 +705,11 @@ export default function BibliotecaView({
   useEffect(() => {
     if (onRegistrarCerrarModal) {
       onRegistrarCerrarModal(() => {
+        // Tarea 102 PASO 2: el menu del guion (mantener) cierra con atras antes de salir.
+        if (menuId !== null) {
+          setMenuId(null)
+          return true
+        }
         if (mostrarPanelCorpus) {
           setMostrarPanelCorpus(false)
           return true
@@ -676,7 +728,7 @@ export default function BibliotecaView({
         onRegistrarCerrarModal(null)
       }
     }
-  }, [mostrarPanelCorpus, seleccionTomas, onRegistrarCerrarModal])
+  }, [menuId, mostrarPanelCorpus, seleccionTomas, onRegistrarCerrarModal])
 
   const animacionTituloStyle: React.CSSProperties = (esInicial && !movimientoApagado())
     ? {
@@ -756,8 +808,11 @@ export default function BibliotecaView({
             MarcaSigo.tsx, el mismo del arranque y de la entrada: la marca que
             viaja desde la mitad de la pantalla aterriza exactamente aca
             -data-marca-portada es a donde apunta Entrada.tsx-. */}
+        {/* 07-10-2026, Javier: "el sigo de la portada lo agrandaria un poquito". Pasa de 24 a 28
+            de alto -unos 55 de ancho-. La entrada mide este elemento para aterrizar, asi que el viaje
+            se ajusta solo. Antes: alto={24}. */}
         <div className="portada-marca" onClick={handleToqueMarcaDiag}>
-          <MarcaSigo alto={24} data-marca-portada="" />
+          <MarcaSigo alto={28} data-marca-portada="" />
         </div>
         <button
           type="button"
