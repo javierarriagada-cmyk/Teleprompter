@@ -5,7 +5,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
-  PAQUETE, leerLlave, armarJwt, leerNotas, cuerpoDePista, versionNameDe, planDeSubida, pistaPedida
+  PAQUETE, leerLlave, armarJwt, leerNotas, cuerpoDePista, versionNameDe, planDeSubida, pistaPedida, juntarConPista
 } from './playApi.mjs'
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -48,7 +48,13 @@ export async function subirAInterna({ aab, lanzar, simular, pista = 'internal' }
     })
     if (!sube.ok) throw new Error(await sube.text())
     const bundle = await sube.json()
-    const cuerpo = cuerpoDePista({ versionName, notas, lanzar, versionCode: bundle.versionCode })
+    const actual = await fetch(`${base}/edits/${id}/tracks/internal`, { headers: auth })
+    if (!actual.ok) throw new Error(await actual.text())
+    const cuerpo = juntarConPista(
+      cuerpoDePista({ versionName, notas, lanzar, versionCode: bundle.versionCode }),
+      (await actual.json()).releases,
+      lanzar
+    )
     const pistaRes = await fetch(`${base}/edits/${id}/tracks/internal`, {
       method: 'PUT',
       headers: { ...auth, 'content-type': 'application/json' },

@@ -3,7 +3,7 @@ import crypto from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import {
-  armarJwt, leerNotas, leerBloques, cuerpoDePista, pistaPedida
+  armarJwt, leerNotas, leerBloques, cuerpoDePista, pistaPedida, juntarConPista, rangoDe28Dias
 } from '../../scripts/playApi.mjs'
 
 describe('play', () => {
@@ -40,6 +40,22 @@ describe('play', () => {
       { language: 'en-US', text: 'hi' }
     ])
     expect(cuerpoDePista({ versionName: '0.9.0', notas, lanzar: true }).releases[0].status).toBe('completed')
+  })
+
+  test('un borrador conserva la version que tienen los testers; lanzar la reemplaza', () => {
+    const notas = { 'es-419': 'hola', 'en-US': 'hi' }
+    const actuales = [{ status: 'completed', versionCodes: ['597'] }, { status: 'draft', versionCodes: ['598'] }]
+    const borrador = juntarConPista(cuerpoDePista({ versionName: '0.9.1', notas, lanzar: false, versionCode: 599 }), actuales, false)
+    expect(borrador.releases.map((r: { versionCodes: string[] }) => r.versionCodes[0])).toEqual(['597', '599'])
+    const lanzada = juntarConPista(cuerpoDePista({ versionName: '0.9.1', notas, lanzar: true, versionCode: 599 }), actuales, true)
+    expect(lanzada.releases.map((r: { versionCodes: string[] }) => r.versionCodes[0])).toEqual(['599'])
+  })
+
+  test('el rango de calidad son 28 dias calendario hasta el ultimo con datos', () => {
+    const r = rangoDe28Dias({ year: 2026, month: 3, day: 10 })
+    expect(r.startTime).toMatchObject({ year: 2026, month: 2, day: 10 })
+    expect(r.endTime).toMatchObject({ year: 2026, month: 3, day: 10 })
+    expect(r.endTime.timeZone.id).toBe('America/Los_Angeles')
   })
 
   test('se niega a producción', () => {

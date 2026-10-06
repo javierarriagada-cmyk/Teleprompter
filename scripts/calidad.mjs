@@ -9,7 +9,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { PAQUETE, leerLlave, armarJwt } from './playApi.mjs'
+import { PAQUETE, leerLlave, armarJwt, rangoDe28Dias } from './playApi.mjs'
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const simular = process.argv.includes('--simular')
@@ -20,7 +20,7 @@ function resumen(detalle) {
   lineas.push(detalle.fallas ? `Fallas: ${detalle.fallas}` : 'Fallas: sin datos todavía')
   lineas.push(detalle.anr ? `ANR: ${detalle.anr}` : 'ANR: sin datos todavía')
   if (!detalle.problemas.length) lineas.push('Problemas: sin datos todavía')
-  else for (const p of detalle.problemas) lineas.push(`${p.version} · ${p.dispositivo} · ${p.rastro}`)
+  else for (const p of detalle.problemas) lineas.push(`${p.version} · ${p.tipo} · ${p.rastro} · ${p.reportes} reportes`)
   return lineas.join('\n')
 }
 
@@ -43,22 +43,49 @@ if (!tokenRes.ok) throw new Error(await tokenRes.text())
 const { access_token: token } = await tokenRes.json()
 const base = `https://playdeveloperreporting.googleapis.com/v1beta1/apps/${PAQUETE}`
 const auth = { authorization: `Bearer ${token}`, 'content-type': 'application/json' }
-async function consultar(ruta, cuerpo) {
-  const r = await fetch(`${base}/${ruta}`, { method: 'POST', headers: auth, body: JSON.stringify(cuerpo) })
-  if (r.status === 404) return null
-  if (!r.ok) throw new Error(await r.text())
+// -06-10-2026, Claude- Antes todo iba por POST y un 404 se leia como «sin datos todavía». La
+// busqueda de problemas es GET -discovery de la API-, asi que ese 404 lo causaba el metodo
+// equivocado y el resumen habria mentido sin avisar. Ahora cualquier error de Google se muestra
+// y corta; «sin datos» sale solo cuando la API dice que no tiene dias con datos.
+// Antes: if (r.status === 404) return null
+async function pedir(ruta, cuerpo) {
+  const r = await fetch(`${base}/${ruta}`, cuerpo ? { method: 'POST', headers: auth, body: JSON.stringify(cuerpo) } : { headers: auth })
+  if (!r.ok) throw new Error(`${ruta}: ${await r.text()}`)
   return r.json()
 }
-const cuerpo = { timelineSpec: { aggregationPeriod: 'DAILY', startTime: { seconds: Math.floor(Date.now() / 1000) - 28 * 86400 } } }
-const fallas = await consultar('crashRateMetricSet:query', cuerpo)
-const anr = await consultar('anrRateMetricSet:query', cuerpo)
-const issues = await consultar('errorIssues:search', { pageSize: 10 })
-const problemas = (issues?.errorIssues || []).slice(0, 10).map((p) => ({
-  version: p.versionCode || p.appVersion || 'sin versión',
-  dispositivo: p.deviceModel || p.device || 'sin dispositivo',
-  rastro: String(p.cause || p.errorReport || '').split('\n')[0] || 'sin rastro'
-}))
-const detalle = { fallas: fallas?.rows?.length ? fallas : null, anr: anr?.rows?.length ? anr : null, problemas }
+// La tasa es crashRate28dUserWeighted -o la de ANR- del ultimo dia con datos: ya es el promedio
+// de 28 dias pesado por usuarios. Antes la consulta no pedia metricas y mandaba la fecha en
+// segundos; Google rechaza las dos cosas. La API da la tasa como fraccion -0.0109 es 1,09 %-:
+// confirmar contra la consola el primer dia que haya datos.
+async function tasa(conjunto, metrica) {
+  const info = await pedir(conjunto)
+  const fin = (info.freshnessInfo?.freshnesses || []).find((f) => f.aggregationPeriod === 'DAILY')?.latestEndTime
+  if (!fin) return { texto: null, crudo: info }
+  const r = await pedir(`${conjunto}:query`, {
+    timelineSpec: { aggregationPeriod: 'DAILY', ...rangoDe28Dias(fin) },
+    metrics: [metrica, 'distinctUsers']
+  })
+  const ultima = (r.rows || []).at(-1)
+  const valor = ultima?.metrics?.find((m) => m.metric === metrica)?.decimalValue?.value
+  const usuarios = ultima?.metrics?.find((m) => m.metric === 'distinctUsers')?.decimalValue?.value
+  if (valor === undefined) return { texto: null, crudo: r }
+  return { texto: `${(Number(valor) * 100).toFixed(2)} % (${usuarios ?? '?'} usuarios el último día)`, crudo: r }
+}
+const fallas = await tasa('crashRateMetricSet', 'crashRate28dUserWeighted')
+const anr = await tasa('anrRateMetricSet', 'anrRate28dUserWeighted')
+const issues = await pedir('errorIssues:search?pageSize=10')
+// Antes: version: p.versionCode || p.appVersion, dispositivo: p.deviceModel || p.device. Esos
+// campos no existen en ErrorIssue; el problema trae tipo, causa, lugar y cantidad de reportes.
+const problemas = (issues.errorIssues || [])
+  .sort((a, b) => Number(b.errorReportCount || 0) - Number(a.errorReportCount || 0))
+  .slice(0, 10)
+  .map((p) => ({
+    version: p.lastAppVersion?.versionCode || 'sin versión',
+    tipo: p.type || 'sin tipo',
+    rastro: [p.cause, p.location].filter(Boolean).join(' en ') || 'sin rastro',
+    reportes: p.errorReportCount || '?'
+  }))
+const detalle = { fallas: fallas.texto, anr: anr.texto, problemas, crudo: { fallas: fallas.crudo, anr: anr.crudo, problemas: issues } }
 console.log(resumen(detalle))
 const dir = path.join(RAIZ, 'docs', 'play', 'calidad')
 fs.mkdirSync(dir, { recursive: true })

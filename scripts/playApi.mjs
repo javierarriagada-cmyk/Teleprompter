@@ -92,6 +92,26 @@ export function cuerpoDePista({ versionName, notas, lanzar, versionCode }) {
   return { track: 'internal', releases: [release] }
 }
 
+// -06-10-2026, Claude- El PUT de la pista la reemplaza entera. Con solo la release nueva, un
+// borrador podia sacar de la pista la version que ya tienen los testers -la 597-. Al dejar un
+// borrador se conservan las releases que no son borrador; al lanzar, la nueva reemplaza a todas.
+export function juntarConPista(cuerpo, actuales = [], lanzar) {
+  if (lanzar) return cuerpo
+  return { ...cuerpo, releases: [...actuales.filter((r) => r.status !== 'draft'), ...cuerpo.releases] }
+}
+
+// -06-10-2026, Claude- La API de calidad pide fechas como dia calendario -anio, mes, dia- en
+// America/Los_Angeles, no segundos: con { seconds } Google rechaza la consulta. El fin es el
+// ultimo dia con datos que informa la propia API -latestEndTime-, y el inicio, 28 dias antes.
+export function rangoDe28Dias(fin) {
+  const d = new Date(Date.UTC(fin.year, fin.month - 1, fin.day - 28))
+  const zona = { id: 'America/Los_Angeles' }
+  return {
+    startTime: { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1, day: d.getUTCDate(), timeZone: zona },
+    endTime: { year: fin.year, month: fin.month, day: fin.day, timeZone: zona }
+  }
+}
+
 export function versionNameDe(gradle) {
   const linea = gradle.split(/\r?\n/).find((l) => /^\s*versionName\s+"/.test(l))
   const m = linea && linea.match(/versionName\s+"([^"]+)"/)
