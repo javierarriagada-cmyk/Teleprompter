@@ -32,15 +32,19 @@
 }
 .carril-fichas::-webkit-scrollbar { display: none; }
 
+/* 06-10-2026, tarea 101: la caja mide 48 de alto -el escáner mide la caja, no un ::after-.
+   Antes: height/min-height 32, padding 0 12px, fondo/borde/sombra en el botón. La pastilla
+   visible de 32 queda en ::before con inset 8px 0. */
 .ficha-listo {
   position: relative;
   flex: 0 0 auto;
-  height: 32px;
-  min-height: 32px;
-  padding: 0 12px;
+  height: 48px;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 8px 12px;
   border-radius: 8px;
-  border: 1px solid var(--borde-tarjeta);
-  background: var(--bg-panel);
+  border: 1px solid transparent;
+  background: transparent;
   color: var(--color-texto);
   font-size: 13px;
   font-weight: 500;
@@ -48,17 +52,39 @@
   align-items: center;
   gap: 6px;
   white-space: nowrap;
-  box-shadow: var(--sombra-tarjeta);
+  box-shadow: none;
 }
-.ficha-listo::after {
+.ficha-listo::before {
+  content: "";
+  position: absolute;
+  inset: 8px 0;
+  border-radius: 8px;
+  border: 1px solid var(--borde-tarjeta);
+  background: var(--bg-panel);
+  box-shadow: var(--sombra-tarjeta);
+  pointer-events: none;
+}
+.ficha-listo > * {
+  position: relative;
+  z-index: 1;
+}
+/* Antes: .ficha-listo::after { inset: -8px 0 } -28-09-2026-. No sirve: el escáner mide la
+   caja del botón, no el pseudo-elemento. 06-10-2026. */
+/* .ficha-listo::after {
   content: "";
   position: absolute;
   inset: -8px 0;
-}
+} */
 .ficha-listo.abierta {
-  background: var(--color-acento);
+  /* Antes: background/border-color del acento en el botón. Ahora en ::before. */
+  background: transparent;
   color: var(--color-texto-acento);
+  border-color: transparent;
+}
+.ficha-listo.abierta::before {
+  background: var(--color-acento);
   border-color: var(--color-acento);
+  box-shadow: var(--sombra-tarjeta);
 }
 
 .capa-panel-ficha {

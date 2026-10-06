@@ -165,6 +165,13 @@ body {
   line-height: 1.12;
   letter-spacing: -0.02em;
 }
+/* 06-10-2026, tarea 101 / Test Lab A2: el título del editor medía ~36-37 dp -font 28 + padding
+   vertical 4+4-. Android pide 48. min-height en la caja; el padding inline de EditorView
+   -var(--aire-1) var(--aire-2)- se mantiene. */
+input.texto-display {
+  min-height: 48px;
+  box-sizing: border-box;
+}
 
 .texto-titulo {
   font-family: "Source Serif 4", serif;
@@ -202,9 +209,15 @@ body {
    circulo queda alineado al borde de las filas y no se corre. */
 /* 48 y no 44 -28-09-2026-: el minimo tocable de Android. El circulo sigue en 34 y el margen
    negativo crece lo mismo, asi nada se mueve en la pantalla. */
+/* 06-10-2026, tarea 101: min-width/min-height 48 y box-sizing border-box. El margen negativo
+   puede hacer que el escáner de Test Lab mida menos de 48 dp en un eje -midió ~45-: no se
+   achica el círculo de 34 para compensar. */
 .boton-crear-guion {
   width: 48px;
   height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  box-sizing: border-box;
   margin: calc(-1 * var(--aire-1) - 2px) calc(-1 * var(--aire-1) - 2px) calc(-1 * var(--aire-1) - 2px) 0;
   padding: 0;
   border: none;
@@ -479,25 +492,50 @@ textarea::placeholder {
    para que no se vuelvan a separar: un control distinto a sus hermanos es un
    defecto. Ninguna de estas clases lleva transform: .btn-deformable lo usa
    para el apretado, y cualquier transform aca se lo comeria. */
+/* Antes: width/height 40 -28-09-2026 y antes-. El escáner de accesibilidad mide la CAJA del
+   control, no un ::after que la agranda. 06-10-2026, tarea 101 / Test Lab: caja 48×48; el
+   círculo visible de 40 queda en ::before con inset 4px. */
 .btn-flotante-40 {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  box-sizing: border-box;
+  /* Margen -4: la caja crece hacia afuera y el ::before (inset 4) queda donde estaba el círculo de 40. */
+  margin: -4px;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--redondeo-pildora);
-  background-color: rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  /* Antes: background-color rgba(0,0,0,0.45) y border 1px solid rgba(255,255,255,0.35) en el
+     botón. Ahora transparentes: el vidrio y el borde van en ::before para no agrandar el dibujo. */
+  background-color: transparent;
+  border: 1px solid transparent;
   color: #fff;
   cursor: pointer;
+  position: relative;
+}
+.btn-flotante-40::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: inherit;
+  background-color: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  /* El vidrio esmerilado del 40 se mueve al ::before -antes estaba en el botón-. */
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+}
+.btn-flotante-40 > * {
+  position: relative;
+  z-index: 1;
 }
 
-/* LA ZONA DE TOQUE LLEGA A 48 -28-09-2026-. El engranaje de la portada y los botones de 40 de
-   la lectura -volver, engranaje, pausa- median 41 dp en el moto g86; Android pide 48. El dibujo
-   sigue en 40: lo que crece es un borde invisible de 4 px que tambien recibe el toque. Con
-   position relative solo los que no traen otra en linea -la de linea gana-. */
-.boton-portada,
+/* Antes: LA ZONA DE TOQUE LLEGA A 48 -28-09-2026- con ::after inset -4px. No sirve: el escáner
+   mide la caja del botón (~41×40 dp en Test Lab), no el pseudo-elemento. 06-10-2026. */
+/* .boton-portada,
 .btn-flotante-40 {
   position: relative;
 }
@@ -507,6 +545,10 @@ textarea::placeholder {
   position: absolute;
   inset: -4px;
   border-radius: inherit;
+} */
+
+.boton-portada {
+  position: relative;
 }
 
 /* VIDRIO ESMERILADO -28-09-2026-. Los controles flotantes eran translucidos sin mas, y la letra
@@ -516,7 +558,7 @@ textarea::placeholder {
    backdrop-filter se queda con el translucido de siempre. */
 /* -tarea 83, parte B- También el de 56 -la pausa y el tacho al lado de Parar-. Antes: solo 40, 72 y
    la pastilla. */
-.btn-flotante-40,
+/* 06-10-2026: .btn-flotante-40 ya no está aquí; su blur vive en ::before. */
 .btn-flotante-56,
 .btn-flotante-72,
 .pastilla-tiempo {
@@ -1283,19 +1325,41 @@ label.selector-aa-opcion {
 /* El engranaje de la portada: el mismo circulo de 40 de las esquinas del
    lienzo, pero sobre el suelo y no sobre una imagen, asi que va con los
    colores del tema y no con el negro translucido. */
+/* Antes: width/height 40. 06-10-2026, tarea 101: caja 48×48; el círculo visible de 40 va en
+   ::before con inset 4px -mismos colores/borde/sombra-. */
 .boton-portada {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  box-sizing: border-box;
+  /* Margen -4: igual que .btn-flotante-40, el círculo visible no se corre. */
+  margin: -4px;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* 28-09-2026: el borde y la sombra de las cajas -ver --borde-tarjeta-, en toda la app y no solo en la portada. */
+  border-radius: var(--redondeo-pildora);
+  /* Antes: border, box-shadow y background-color del círculo en el botón. Ahora transparentes. */
+  border: 1px solid transparent;
+  box-shadow: none;
+  background-color: transparent;
+  color: var(--color-texto);
+  cursor: pointer;
+}
+.boton-portada::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: inherit;
   border: 1px solid var(--borde-tarjeta);
   box-shadow: var(--sombra-tarjeta);
   background-color: var(--bg-fila);
-  color: var(--color-texto);
-  cursor: pointer;
+  pointer-events: none;
+}
+.boton-portada > * {
+  position: relative;
+  z-index: 1;
 }
 /* La duracion en la tarjeta: la letra de la aplicacion, no un reloj
    monoespaciado -es cuanto dura leerlo, no una hora-. */

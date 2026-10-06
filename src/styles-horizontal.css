@@ -111,9 +111,9 @@
 }
 
 /* LAS FICHAS EN COLUMNA, EN EL RIEL IZQUIERDO. La fila cubre el riel entero -así el panel se
-   ubica respecto del riel- y el carril baja en columna desde y = 60: el ‹ termina en 52 -8 + 40 +
-   4 de su toque- y la ficha suma 8 de su propio toque. Paso 48: ficha de 32 y 16 de separación, y
-   el ::after de .ficha-listo -inset -8px 0- da exactamente 48 de toque sin que se pisen. */
+   ubica respecto del riel- y el carril baja en columna desde y = 60: el ‹ termina en 56 -8 + 48-
+   y las fichas siguen con gap 16. Antes: ficha visual 32 + ::after -8 → toque 48. 06-10-2026,
+   tarea 101: la caja de .ficha-listo ya mide 48; gap 16 evita que se pisen. */
 .layout-tel-h .riel-izquierdo .fila-fichas-listo {
   inset: 0;
   bottom: 0;

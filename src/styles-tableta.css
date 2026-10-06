@@ -56,17 +56,22 @@
 }
 
 /* ------------------------------------------------------------------------------------------------
-   LAS FICHAS GRANDES -las dos tabletas-. Alto 44, relleno 0 16, radio 10, letra 15 y 8 entre el
-   ícono y el texto, como .ficha.grande del boceto. El toque suma 8 arriba y 8 abajo -::after de
-   .ficha-listo-: 60 de alto, nunca menos que el del teléfono. */
+   LAS FICHAS GRANDES -las dos tabletas-. Antes: alto 44 + ::after -8 → toque 60. 06-10-2026,
+   tarea 101: sin ::after el escáner mide la caja; se deja 60 de alto y la pastilla visible de
+   44 en ::before -inset 8px 0-, radio 10 como el boceto. */
 .layout-tab-v .ficha-listo.grande,
 .layout-tab-h .ficha-listo.grande {
-  height: 44px;
-  min-height: 44px;
-  padding: 0 16px;
+  height: 60px;
+  min-height: 60px;
+  padding: 8px 16px;
   border-radius: 10px;
   font-size: 15px;
   gap: 8px;
+}
+.layout-tab-v .ficha-listo.grande::before,
+.layout-tab-h .ficha-listo.grande::before {
+  inset: 8px 0;
+  border-radius: 10px;
 }
 /* A lo ancho del riel -.ficha.grande.ancha-: el texto a la izquierda y cortado con puntos si no
    cabe, como en el riel del teléfono. */
