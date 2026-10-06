@@ -1,0 +1,63 @@
+FICHA DE SIGO EN GOOGLE PLAY — Español (Latinoamérica) — es-419
+Generado por herramientas/armar-textos.cjs desde herramientas/textos.cjs. Los conteos son de la máquina.
+Lo que va entre dobles corchetes se copia tal cual a Play Console; lo demás son notas.
+
+==============================================================================
+NOMBRE (máximo 30) — 26 caracteres
+==============================================================================
+[[Sigo — Teleprompter de voz]]
+El que ya está en Play Console. Se queda igual -Javier, 29-09-2026-.
+
+==============================================================================
+DESCRIPCIÓN BREVE (máximo 80) — 73 caracteres
+==============================================================================
+[[Teleprompter que sigue tu voz: el texto avanza mientras lees en voz alta.]]
+La A, elegida por Javier, sin "sin internet": eso ahora va al final de la completa.
+
+==============================================================================
+DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2845 caracteres
+==============================================================================
+[[¿Se te olvida el guion justo cuando empiezas a grabar? Con Sigo lees en voz alta y el texto avanza contigo, a tu ritmo. Si haces una pausa, te espera.
+
+Mira a la cámara con calma. No tienes que aprenderte el texto de memoria ni repetir la toma porque perdiste el hilo.
+
+ES PARA TI SI
+- Grabas videos para redes, clases o tu trabajo, y te cuesta hablarle a la cámara.
+- Se te olvida lo que sigue o pierdes el hilo a mitad de una frase.
+- Repites la misma toma una y otra vez.
+- Ensayas una presentación, un discurso o una lectura, y necesitas un apuntador que no se adelante ni se quede atrás.
+
+LO QUE CAMBIA CUANDO EL TEXTO TE SIGUE
+- Hablas a tu ritmo. Sigo escucha tu voz y marca con una línea lo que estás leyendo.
+- Si te detienes, el texto se detiene. No hay velocidades que ajustar.
+- Eliges si lees arriba, cerca de la cámara, o al medio de la pantalla.
+
+GRABA TU VIDEO AHÍ MISMO
+- Tu imagen va detrás del texto, en un recuadro que mueves donde quieras, u oculta mientras grabas.
+- Cámara frontal o trasera, en 1080p, 720p o 480p. En vertical o de lado, en teléfono o tableta.
+- Pausa cuando quieras: lo que pasa en la pausa no queda en el video.
+- Control por gestos con la cámara frontal: lejos del teléfono, muestra la palma para pausar o seguir y, en pausa, la V para terminar.
+- Subtítulos en tres estilos: Amarillo, Rojo y Formal. Salen de tu guion y del tiempo de tu voz, y quedan dentro del video al guardarlo.
+- Seis filtros —Natural, Cálido, Frío, Vivo, Suave y B/N— que eliges mirando tu video. Lo que ves es lo que se guarda.
+- Guarda tu video en la galería o compártelo.
+
+TU GUION, CLARO DE UN VISTAZO
+- Negrita, tres colores y destacado para ver de lejos lo importante.
+- Notas entre [corchetes] o (paréntesis) que no se leen en voz alta ni salen en los subtítulos.
+- Pega tu texto o abre un archivo .txt, .md o .docx.
+- Todos tus guiones en un lugar, con su duración estimada.
+
+A TU MANERA
+- Tamaño de letra, tipografía, ancho del texto y cinco combinaciones de colores de lectura.
+- Modo espejo, para usar con un vidrio de teleprompter.
+- Tema claro u oscuro. La app está en español y en inglés, y sigue tu voz en los dos idiomas.
+
+CONFIANZA Y PRIVACIDAD
+- Sin cuenta ni registro.
+- Tu voz se reconoce en el teléfono. El audio no se manda a ningún servidor.
+- Los gestos se reconocen en el teléfono y ninguna imagen sale de él. Sigo no envía estadísticas de uso.
+- Tus guiones y tus videos se quedan en tu teléfono, hasta que tú los compartes.
+- Tus guiones y ajustes entran en la copia de seguridad de Android: si reinstalas Sigo con la copia de seguridad de Google activada, vuelven. Los videos no entran en esa copia.
+- También puedes usarlo sin conexión. En español, desde que lo instalas; en inglés, después de descargar una vez la voz desde Google Play.
+
+Escribe tu guion, toca Leer o Grabar, y habla. Sigo te sigue.]]
