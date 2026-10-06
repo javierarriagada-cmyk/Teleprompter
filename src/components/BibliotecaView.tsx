@@ -808,8 +808,11 @@ export default function BibliotecaView({
             MarcaSigo.tsx, el mismo del arranque y de la entrada: la marca que
             viaja desde la mitad de la pantalla aterriza exactamente aca
             -data-marca-portada es a donde apunta Entrada.tsx-. */}
+        {/* 07-10-2026, Javier: "el sigo de la portada lo agrandaria un poquito". Pasa de 24 a 28
+            de alto -unos 55 de ancho-. La entrada mide este elemento para aterrizar, asi que el viaje
+            se ajusta solo. Antes: alto={24}. */}
         <div className="portada-marca" onClick={handleToqueMarcaDiag}>
-          <MarcaSigo alto={24} data-marca-portada="" />
+          <MarcaSigo alto={28} data-marca-portada="" />
         </div>
         <button
           type="button"
