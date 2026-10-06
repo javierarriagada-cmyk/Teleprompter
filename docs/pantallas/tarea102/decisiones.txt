@@ -1,77 +1,45 @@
-Tarea 102 — Decisiones de diseño NO pedidas en el encargo (para que Javier apruebe o corrija).
+Tarea 102 — Decisiones de diseño (segunda vuelta, app real).
 2026-10-06 (America/Santiago).
 
-1. Color de superficie del menú adjunto
-   Oscuro: --bg-menu #383432 (token actual de Sigo).
-   Claro: --bg-menu #FFFFFF.
-   Motivo: continuidad con paneles ya usados en LISTO/fichas; se eleva sobre la card
-   (--bg-superficie #221F1D / #FFFFFF) sin inventar un color nuevo ni oro.
+Método (obligatorio tras rechazo de 1fb5fae)
+  Bocetos = capturas de la app real en el navegador (CSS + IconosApp).
+  Rama boceto/tarea102 NO se mezcla a main; solo sirve para mirar.
+  Docs en tarea102-ajustes. Teléfono 412×915; tableta 800×1280.
 
-2. Radio de esquinas
-   Cards de sección: 18 px.
-   Menús adjuntos: 14 px.
-   Sample de lectura dentro de la card: 12 px.
-   Motivo: cerca de --redondeo-grande (24) y del redondeo de diálogos actuales (16),
-   sin llegar al “globo” excesivo. Ajustable.
+1. Color de superficie del menú adjunto
+   Oscuro: --bg-menu. Claro: --bg-menu claro.
+   Continuidad con paneles ya usados; sin oro.
+
+2. Radios
+   Cards de sección: 18 px. Menús adjuntos: ~14 px.
+   Sample dentro de la card conserva su redondeo.
 
 3. Cierre del menú: sin ✕
-   Material: tocar fuera o atrás del sistema.
-   Motivo: refs wa-1 / wa-2 no traen ✕; el ✕ de hoy en el menú del guion es lo que se
-   quiere dejar atrás. Si en revisión se pide affordance visible, se puede añadir ✕
-   discreto arriba a la derecha del menú (queda como opción B).
+   Tocar fuera (capa transparente) o Escape.
+   Borrar del guion en rojo; Archivar neutro.
 
-4. Chrome de la pantalla «Acerca de Sigo»
-   Flecha atrás a la izquierda + título serif «Acerca de Sigo» (mismo peso que «Ajustes»).
-   Contenido en una sola card con filas: Versión (valor a la derecha, sin chevron),
-   Privacidad, Soporte, Licencias de código abierto (con chevron).
-   Motivo: misma jerarquía que Ajustes; Versión no navega.
+4. Pantalla «Acerca de Sigo»
+   Flecha atrás + título. Card con Versión (sin chevron), Privacidad, Soporte,
+   Licencias. Versión puede mostrar "—" en web sin Capacitor.
 
-5. Ancho y anclaje de menús
-   Teléfono: ~220–280 px según contenido (Tema ~200, Tamaño ~220, Colores ~280).
-   Anclado a la derecha, cerca del valor/chevron de la fila.
-   Alto de fila de opción ≈ 52 px (≥ 48 dp).
-   Motivo: caber sin tapar el label de la fila; check a la derecha como wa-1.
+5. Anclaje de menús
+   Debajo de la fila (arriba si no hay espacio). Fixed calculado al ancla.
+   Filas de opción ≥ 48 dp. Check ✓ neutro a la derecha.
 
-6. Check de selección
-   Trazo neutro del color de texto (--color-texto), no dorado ni rojo.
-   Motivo: pedido explícito (neutral como Claude wa-1); el rojo queda solo para Borrar
-   y el punto de marca Sigo.
+6. Tamaños que NO cambian
+   Texto de fila 16 px, íconos 22, alturas 56/72, sample a fontSize actual.
+   La card se adapta; no se achica el contenido (fallo de la primera vuelta).
 
-7. Tableta (lámina g)
-   Misma UI WebView del teléfono, escalada dentro de un marco 1840×2944 (proporción
-   del capture tb-12), con leyenda clara.
-   Motivo: no hay captura de Ajustes en TB370FU; no se inventa layout tablet-only.
-   tb-12 es pantalla de lectura, no sirve como ANTES de Ajustes.
+7. Tableta
+   Misma UI WebView a 800×1280 (no layout tablet-only inventado).
+   Lámina g: menú Tamaño abierto ANTES (hoja) vs DESPUÉS (adjunto + cards).
 
-8. Capturas faltantes
-   - Menú al mantener: ANTES = portada real + texto overlay (no se dibujó un menú inventado).
-   - Claro + hoja abierta: ANTES = cerrado Play + nota; DESPUÉS = menú sobre ese cerrado.
-   - Portada clara: no producida (sin fuente).
-   Motivo: fidelidad al pedido de no inventar ANTES.
+8. Idioma de las capturas
+   English en ANTES y DESPUÉS para comparar apples-to-apples.
+   Textos i18n (acercaDeSigo, etc.) ya están en es.ts / en.ts del boceto.
 
-9. Iconos en boceto claro
-   Trazos redibujados (line-art) en vez de recortes de la ficha Play, porque los crops
-   del claro dejaban cuadrados grises. En oscuro se reutilizaron crops de frankel cuando
-   el fondo se pudo enmascarar; si un ícono se ve flojo, preferir el set de trazo.
-   Motivo: legibilidad del boceto; la programación usará los IconosApp reales.
+9. Qué queda fuera de PASO 1
+   No merge a main. Implementación en app = PASO 2 solo si Javier aprueba.
 
-10. Sample «Lee esto en voz alta, sin apuro.»
-    Redibujado limpio dentro del sample box (no stretch del crop) para que no se corte
-    el texto en claro. Tipografía Sans aprox. del tamaño actual de muestra.
-    Motivo: el crop de la ficha Play truncaba «apuro».
-
-11. Interruptores Espejo / Mostrar tiempo
-    Se mantienen en su sitio dentro de la card Lectura (pedido: sin cambio).
-    En el boceto oscuro: Espejo off, Mostrar tiempo on (como frankel-5).
-    En claro: igual patrón.
-
-12. Tipografía / Ancho / Idioma
-    También pasan a menú adjunto en el mismo patrón del punto 2, aunque no hay lámina
-    dedicada (el pedido listó b=Tamaño, c=Colores, d=Tema como ejemplos suficientes).
-
-13. Sombra / elevación
-    Sombra suave bajo cards y menús (blur ~14–16, offset 4). Sin scrim modal.
-    Motivo: elevar sin oscurecer el resto (continuidad del encargo).
-
-14. Intermedios de trabajo
-    No se versionan PNG crudos _despues-* ; solo las láminas comparadas y estos textos.
+10. Intermedios
+    Caps crudos en el box (/workspace/tarea102/caps/); en el repo solo láminas + textos.

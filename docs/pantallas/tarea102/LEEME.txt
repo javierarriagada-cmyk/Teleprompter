@@ -1,25 +1,34 @@
-Tarea 102 — PASO 1: bocetos de Ajustes (cards + menús adjuntos + menú del guion).
+Tarea 102 — PASO 1 segunda vuelta: bocetos desde la app real.
 
 Qué es esto
-  Láminas ANTES | DESPUÉS para que Javier evalúe el UX antes de programar.
-  No hay cambios de código de la app. Solo archivos bajo docs/pantallas/tarea102/.
+  Láminas ANTES | DESPUÉS para que Javier evalúe el UX antes de mezclar nada en main.
+  Las capturas salen de la app corriendo en el navegador (misma escala), no de
+  redibujos ni de Test Lab.
 
-Qué cambió en el DESPUÉS (resumen)
-  1. Lectura / Apariencia / Acerca de van en cards con etiqueta de sección arriba.
-  2. Tamaño, Tipografía, Ancho, Colores, Tema, Idioma: hoja inferior → menú adjunto
-     al valor (sin oscurecer la pantalla; opción elegida con ✓).
-  3. Acerca de pasa a una fila «Acerca de Sigo» que abre su pantalla.
-  4. Mantener un guion: menú adjunto (Archivar / Borrar en rojo), no fila alargada.
+Ramas (NO mezclar el boceto en main)
+  docs (estas láminas):  tarea102-ajustes  → PR de docs
+  boceto runnable:       boceto/tarea102   → solo para mirar; no merge
 
-Qué NO cambia en estos bocetos
-  Interruptores Espejo y Mostrar tiempo; sample de lectura; pantalla de Licencias
-  (solo cambia cómo se llega); chips de LISTO; selección de tomas.
+Cómo levantar ANTES vs DESPUÉS
+  Ver como-levantar-boceto.txt en esta misma carpeta.
+  Resumen: DESPUÉS en :5173 (boceto/tarea102), ANTES en :5174 (main ef37590).
+  Teléfono 412×915; tableta 800×1280.
+
+Qué cambió en el DESPUÉS
+  1. Lectura / Apariencia / Acerca de van en cards (etiqueta de sección arriba).
+  2. Tamaño, Tipografía, Ancho, Colores, Tema, Idioma: menú adjunto a la fila
+     (sin scrim; opción con ✓). Sin ✕: se cierra tocando afuera o Escape.
+  3. Acerca de → una fila «Acerca de Sigo» / «About Sigo» que abre subpantalla.
+  4. Mantener un guion: menú adjunto (título + Archivar + Borrar rojo), sin ✕.
+
+Qué NO cambia
+  Tamaño de filas (16 px), íconos (IconosApp 22), alturas 56/72, sample a fontSize.
+  Interruptores Espejo / Mostrar tiempo; chips de LISTO.
 
 Cómo mirarlas
-  Empezá por a (cerrado), después b–d (menús), e (Acerca), f (guion), g (tableta).
-  Lees indice.txt para la fuente de cada ANTES y decisiones.txt para lo que no estaba
-  en el pedido (✕, radios, color del menú, tableta, huecos de captura).
+  a (cerrado) → b–d (menús) → e (Acerca) → f (guion) → g (tableta).
+  Idioma de captura: English (App language), para que ANTES y DESPUÉS coincidan.
 
-Huecos honestos
-  No hay captura del menú al mantener ni de Ajustes en tableta ni de hojas en claro.
-  Esas láminas lo dicen en el panel ANTES; no se inventó UI falsa.
+Segunda vuelta vs primera
+  La primera (1fb5fae) se rechazó por escala y menús diminutos. Esta entrega
+  usa pantallas reales de la app a 412×915 (y 800×1280 en tableta).
