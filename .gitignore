@@ -16,3 +16,8 @@ android/keystore.properties
 
 # Bundletool se baja una vez aquí -scripts/play.mjs-, no al repositorio.
 .herramientas/
+
+# LA LLAVE DE LA API DE PLAY NO ENTRA NUNCA -tarea 99, 06-10-2026-. Vive en el computador de Javier.
+play-api.json
+*-api.json
+docs/play/calidad/

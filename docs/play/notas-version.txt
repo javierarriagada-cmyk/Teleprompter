@@ -1,0 +1,7 @@
+Prueba interna de Sigo.
+<es-419>
+El texto sigue la voz. La pausa no queda en el video. Se graba de pie, de lado y en tableta.
+</es-419>
+<en-US>
+The text follows your voice. A pause stays out of the video. Record portrait, landscape or on a tablet.
+</en-US>
