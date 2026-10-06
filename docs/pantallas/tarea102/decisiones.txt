@@ -1,0 +1,45 @@
+Tarea 102 — Decisiones de diseño (segunda vuelta, app real).
+2026-10-06 (America/Santiago).
+
+Método (obligatorio tras rechazo de 1fb5fae)
+  Bocetos = capturas de la app real en el navegador (CSS + IconosApp).
+  Rama boceto/tarea102 NO se mezcla a main; solo sirve para mirar.
+  Docs en tarea102-ajustes. Teléfono 412×915; tableta 800×1280.
+
+1. Color de superficie del menú adjunto
+   Oscuro: --bg-menu. Claro: --bg-menu claro.
+   Continuidad con paneles ya usados; sin oro.
+
+2. Radios
+   Cards de sección: 18 px. Menús adjuntos: ~14 px.
+   Sample dentro de la card conserva su redondeo.
+
+3. Cierre del menú: sin ✕
+   Tocar fuera (capa transparente) o Escape.
+   Borrar del guion en rojo; Archivar neutro.
+
+4. Pantalla «Acerca de Sigo»
+   Flecha atrás + título. Card con Versión (sin chevron), Privacidad, Soporte,
+   Licencias. Versión puede mostrar "—" en web sin Capacitor.
+
+5. Anclaje de menús
+   Debajo de la fila (arriba si no hay espacio). Fixed calculado al ancla.
+   Filas de opción ≥ 48 dp. Check ✓ neutro a la derecha.
+
+6. Tamaños que NO cambian
+   Texto de fila 16 px, íconos 22, alturas 56/72, sample a fontSize actual.
+   La card se adapta; no se achica el contenido (fallo de la primera vuelta).
+
+7. Tableta
+   Misma UI WebView a 800×1280 (no layout tablet-only inventado).
+   Lámina g: menú Tamaño abierto ANTES (hoja) vs DESPUÉS (adjunto + cards).
+
+8. Idioma de las capturas
+   English en ANTES y DESPUÉS para comparar apples-to-apples.
+   Textos i18n (acercaDeSigo, etc.) ya están en es.ts / en.ts del boceto.
+
+9. Qué queda fuera de PASO 1
+   No merge a main. Implementación en app = PASO 2 solo si Javier aprueba.
+
+10. Intermedios
+    Caps crudos en el box (/workspace/tarea102/caps/); en el repo solo láminas + textos.

@@ -1,0 +1,37 @@
+Tarea 102 — PASO 1 segunda vuelta. Índice de láminas.
+Fecha de armado: 2026-10-06 (America/Santiago).
+
+Convención: cada lámina es ANTES | DESPUÉS (salvo e-acerca-de-pantalla-*, solo DESPUÉS).
+Fuente: capturas reales de Vite — ANTES main ef37590 (:5174), DESPUÉS boceto/tarea102 (:5173).
+Viewport teléfono: 412×915. Tableta: 800×1280 (captura a DPR 2 reescalada a CSS).
+
+---
+a-ajustes-cerrado-oscuro.png / a-ajustes-cerrado-claro.png
+  Ajustes cerrado. ANTES lista plana; DESPUÉS cards Lectura / Apariencia / Acerca.
+
+b-tamano-letra-oscuro.png / b-tamano-letra-claro.png
+  Menú Tamaño. ANTES hoja inferior + scrim; DESPUÉS menú adjunto + ✓, sin scrim.
+
+c-colores-oscuro.png
+  Menú Colores de lectura (oscuro). Mismo patrón que b. (Claro: mismo patrón que b-claro;
+  no se duplicó lámina c-claro en esta vuelta.)
+
+d-tema-oscuro.png
+  Menú Tema (oscuro). Mismo patrón. (Claro: ver b-claro / cambiar Tema → Light.)
+
+e-acerca-de-oscuro.png / e-acerca-de-claro.png
+  ANTES: filas Versión/Privacidad/Soporte/Licencias (o Versión visible).
+  DESPUÉS: card con fila única «About Sigo».
+
+e-acerca-de-pantalla-oscuro.png / e-acerca-de-pantalla-claro.png
+  Solo DESPUÉS: Ajustes con fila única | subpantalla Acerca de Sigo.
+
+f-menu-guion-oscuro.png / f-menu-guion-claro.png
+  Mantener guion. ANTES: Archivar + tacho + ✕. DESPUÉS: título + Archivar + Borrar rojo, sin ✕.
+
+g-ajustes-menu-tableta.png
+  Tableta 800×1280, tema oscuro, menú Tamaño abierto en ambos lados.
+
+---
+Boceto runnable (no docs): rama boceto/tarea102, commit con cards + menús.
+Cómo levantarlo: como-levantar-boceto.txt.

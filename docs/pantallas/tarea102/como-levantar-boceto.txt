@@ -1,0 +1,32 @@
+Tarea 102 — Cómo ver ANTES vs DESPUÉS (boceto en app real)
+Fecha: 2026-10-06 (America/Santiago).
+
+NO mezclar boceto/tarea102 en main. Solo capturas.
+
+URLs (ya levantadas en el box):
+  DESPUÉS (branch boceto/tarea102):  http://127.0.0.1:5173/
+  ANTES   (main ef37590, worktree):  http://127.0.0.1:5174/
+
+Worktrees:
+  /workspace/sigo-boceto102  → boceto/tarea102 (commit con cards + menús)
+  /workspace/sigo-antes102   → origin/main @ ef37590 (sin cambios)
+
+Viewport para capturas:
+  Teléfono: 412×915, deviceScaleFactor 2.625
+  Tableta:  800×1280, mismo scale
+
+Cómo abrir Ajustes (ambas URLs iguales):
+  1. Portada → engranaje arriba a la derecha.
+  2. DESPUÉS: cards Lectura / Apariencia / Acerca de; tocar una fila
+     (Tamaño, Tipografía, Ancho, Colores, Tema, Idioma) abre menú adjunto
+     sin oscurecer; "Acerca de Sigo" abre subpantalla.
+  3. ANTES: lista plana + hoja inferior con scrim; cuatro filas de Acerca.
+
+Menú del guion:
+  Mantener apretado (o clic derecho / contextmenu) sobre una fila de guion.
+  DESPUÉS: menú adjunto debajo de la fila (título + Archivar + Borrar rojo).
+  ANTES: fila se alarga con Archivar + tacho + ✕.
+
+Relanzar si caen:
+  cd /workspace/sigo-boceto102 && npm run dev -- --host 127.0.0.1 --port 5173
+  cd /workspace/sigo-antes102  && npm run dev -- --host 127.0.0.1 --port 5174

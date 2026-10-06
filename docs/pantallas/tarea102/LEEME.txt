@@ -1,0 +1,34 @@
+Tarea 102 — PASO 1 segunda vuelta: bocetos desde la app real.
+
+Qué es esto
+  Láminas ANTES | DESPUÉS para que Javier evalúe el UX antes de mezclar nada en main.
+  Las capturas salen de la app corriendo en el navegador (misma escala), no de
+  redibujos ni de Test Lab.
+
+Ramas (NO mezclar el boceto en main)
+  docs (estas láminas):  tarea102-ajustes  → PR de docs
+  boceto runnable:       boceto/tarea102   → solo para mirar; no merge
+
+Cómo levantar ANTES vs DESPUÉS
+  Ver como-levantar-boceto.txt en esta misma carpeta.
+  Resumen: DESPUÉS en :5173 (boceto/tarea102), ANTES en :5174 (main ef37590).
+  Teléfono 412×915; tableta 800×1280.
+
+Qué cambió en el DESPUÉS
+  1. Lectura / Apariencia / Acerca de van en cards (etiqueta de sección arriba).
+  2. Tamaño, Tipografía, Ancho, Colores, Tema, Idioma: menú adjunto a la fila
+     (sin scrim; opción con ✓). Sin ✕: se cierra tocando afuera o Escape.
+  3. Acerca de → una fila «Acerca de Sigo» / «About Sigo» que abre subpantalla.
+  4. Mantener un guion: menú adjunto (título + Archivar + Borrar rojo), sin ✕.
+
+Qué NO cambia
+  Tamaño de filas (16 px), íconos (IconosApp 22), alturas 56/72, sample a fontSize.
+  Interruptores Espejo / Mostrar tiempo; chips de LISTO.
+
+Cómo mirarlas
+  a (cerrado) → b–d (menús) → e (Acerca) → f (guion) → g (tableta).
+  Idioma de captura: English (App language), para que ANTES y DESPUÉS coincidan.
+
+Segunda vuelta vs primera
+  La primera (1fb5fae) se rechazó por escala y menús diminutos. Esta entrega
+  usa pantallas reales de la app a 412×915 (y 800×1280 en tableta).
