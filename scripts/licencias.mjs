@@ -6,7 +6,7 @@
 // Nada escrito de memoria: JavaScript sale de npm ls y del LICENSE del paquete; Android, del POM.
 // Apache 2.0 se guarda una sola vez. @capacitor/cli no viaja en la app y se excluye.
 
-import { execFileSync } from 'node:child_process'
+import { spawnSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -32,27 +32,45 @@ function leerLicense(dir) {
 }
 
 function paquetesJs() {
-  const crudo = execFileSync('npm', ['ls', '--omit=dev', '--all', '--json'], { cwd: RAIZ, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 })
+  // -07-10-2026, Claude- En Windows npm es npm.cmd y sin shell daba "spawnSync npm ENOENT": la
+  // comprobacion de npm run play salia siempre en FALLA. shell solo en Windows, como apk.mjs.
+  // --long trae la ruta de cada paquete: los anidados -argparse/node_modules/sprintf-js- no estan en
+  // node_modules/<nombre> y salian "sin verificar" teniendo su LICENSE.
+  // Antes: execFileSync('npm', ['ls', '--omit=dev', '--all', '--json'], { cwd: RAIZ, ... })
+  // npm ls sale con codigo 1 si node_modules tiene paquetes de mas -"extraneous", en el PC de Javier
+  // hay varios @babel- aunque el JSON venga completo: se lee stdout igual y solo se corta si no es JSON.
+  const r = spawnSync('npm', ['ls', '--omit=dev', '--all', '--json', '--long'], { cwd: RAIZ, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, shell: process.platform === 'win32' })
+  const crudo = r.stdout || ''
+  if (!crudo.trim().startsWith('{')) throw new Error('npm ls no devolvio JSON: ' + (r.error?.message || r.stderr || '').slice(0, 500))
   const arbol = JSON.parse(crudo)
   const vistos = new Map()
   const porCli = new Set()
   const fuera = new Set()
   function caminar(nodo, esCli) {
     for (const [nombre, hijo] of Object.entries(nodo.dependencies || {})) {
+      // Lo que sobra en node_modules no viaja en la app y cambia de un PC a otro: con eso adentro,
+      // --verificar fallaria segun la maquina.
+      if (hijo.extraneous || hijo.missing) continue
       const cli = esCli || nombre === '@capacitor/cli'
       const clave = nombre + '@' + (hijo.version || '')
       if (cli) porCli.add(clave)
       else fuera.add(clave)
       caminar(hijo, cli)
       if (cli || nombre === '@capacitor/cli') continue
-      const dir = path.join(RAIZ, 'node_modules', ...nombre.split('/'))
+      const dir = hijo.path || path.join(RAIZ, 'node_modules', ...nombre.split('/'))
       const pkg = fs.existsSync(path.join(dir, 'package.json')) ? JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8')) : {}
+      // -07-10-2026, Claude- Si el paquete declara Apache 2.0 y no trae archivo, el texto es el mismo
+      // de siempre -va una sola vez en el JSON-: queda verificado por su package.json. Otra licencia
+      // sin archivo sigue "sin verificar": a BSD y MIT les falta el copyright, que va en el texto.
+      const declaradaApache = !leerLicense(dir) && normalizar(pkg.license) === 'Apache-2.0'
       vistos.set(clave, {
         nombre,
         version: hijo.version || pkg.version || '',
-        licencia: leerLicense(dir) ? normalizar(pkg.license) : 'sin verificar',
+        licencia: leerLicense(dir) || declaradaApache ? normalizar(pkg.license) : 'sin verificar',
         texto: leerLicense(dir),
-        nota: leerLicense(dir) ? '' : 'El paquete no trae archivo de licencia. Sin verificar.',
+        nota: leerLicense(dir) ? '' : declaradaApache
+          ? 'El paquete no trae archivo de licencia; su package.json declara Apache-2.0.'
+          : `El paquete no trae archivo de licencia${pkg.license ? `; su package.json declara ${pkg.license}` : ''}. Sin verificar.`,
         origen: 'npm'
       })
     }

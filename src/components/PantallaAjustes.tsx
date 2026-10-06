@@ -6,6 +6,7 @@ import {
 } from './IconosApp'
 import { hapticaSeleccion } from '../haptica'
 import { Interruptor } from './Interruptor'
+import { PantallaLicencias } from './PantallaLicencias'
 import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, PASOS_LETRA } from './estiloLectura'
 import { PAREJAS_COLOR } from '../datos/modelo'
 import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'

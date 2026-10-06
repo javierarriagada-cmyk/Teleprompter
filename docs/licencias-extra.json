@@ -8,16 +8,16 @@
   },
   {
     "nombre": "modelo de voz es",
-    "version": "vosk",
+    "version": "vosk-model-small-es-0.42",
     "licencia": "Apache-2.0",
     "fuente": "https://alphacephei.com/vosk/models",
-    "nota": "Sin verificar en este entorno: android/model-es no está en el repositorio. La ficha de Vosk declara los modelos Apache 2.0."
+    "nota": "Copyright 2022-2050 AC Technologies LLC, segun el README del modelo. La pagina de modelos de Vosk declara vosk-model-small-es-0.42 Apache 2.0 (verificado el 2026-10-07)."
   },
   {
     "nombre": "modelo de voz en",
-    "version": "vosk",
+    "version": "vosk-model-small-en-us-0.15",
     "licencia": "Apache-2.0",
     "fuente": "https://alphacephei.com/vosk/models",
-    "nota": "Sin verificar en este entorno: android/model-en no está en el repositorio. La ficha de Vosk declara los modelos Apache 2.0."
+    "nota": "Copyright 2020 Alpha Cephei Inc, segun el README del modelo. La pagina de modelos de Vosk declara vosk-model-small-en-us-0.15 Apache 2.0 (verificado el 2026-10-07)."
   }
 ]
