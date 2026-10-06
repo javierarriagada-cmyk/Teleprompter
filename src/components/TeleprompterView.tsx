@@ -69,6 +69,7 @@ import { App as CapacitorApp } from '@capacitor/app'
 import { aplicarBrillo, leerBrilloSistema, restaurarBrillo } from '../lib/brillo'
 import { FichasListo, FichaMas, PanelFicha } from './FichasListo'
 import { t, useTextos } from '../textos'
+import type { EstadoModeloGestos } from '../lib/gestos'
 
 // UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
 //
@@ -275,6 +276,11 @@ interface TeleprompterViewProps {
   gestosAlGrabar?: boolean
   setGestosAlGrabar?: (v: boolean) => void
   motivoSinGestos?: 'soloFrontal' | 'noDisponible' | null
+  // -tarea 104- El modelo de gestos a pedido y el aviso de la voz que falta: los arma App y van tal
+  // cual a FichasListo -láminas b y c-.
+  modeloGestos?: EstadoModeloGestos | null
+  pidiendoGestos?: boolean
+  avisoVoz?: { texto: string; onReintentar: () => void } | null
 }
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
@@ -364,7 +370,10 @@ export default function TeleprompterView({
   enPausa = false,
   gestosAlGrabar = false,
   setGestosAlGrabar,
-  motivoSinGestos = null
+  motivoSinGestos = null,
+  modeloGestos = null,
+  pidiendoGestos = false,
+  avisoVoz = null
 }: TeleprompterViewProps) {
   useTextos()
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -1071,6 +1080,9 @@ export default function TeleprompterView({
         gestosAlGrabar={gestosAlGrabar}
         setGestosAlGrabar={setGestosAlGrabar}
         motivoSinGestos={motivoSinGestos}
+        modeloGestos={modeloGestos}
+        pidiendoGestos={pidiendoGestos}
+        avisoVoz={avisoVoz}
       />
   )
 

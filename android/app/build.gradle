@@ -29,6 +29,7 @@ if (archivoLlaveSubida.exists()) {
 }
 def hayLlaveSubida = archivoLlaveSubida.exists()
 
+// -tarea 104- Desde la tarea 104 son tres paquetes, los tres a pedido: model-es, model-en y gestos.
 // LA VERSIÓN DE PLAY VA POR OTRO CAMINO -tarea 84-. npm run play -scripts/play.mjs- construye con
 // -PparaPlay: solo entonces los modelos de voz salen del paquete base y viajan en sus paquetes de
 // recursos -model-es, model-en, parte D-. Sin la propiedad -npm run apk, la APK de prueba- todo
@@ -120,10 +121,19 @@ android {
     // '<dir>model-es' saca la carpeta de assets con ese nombre -la del modelo y la del uuid de
     // genUUID-. El patrón es el de siempre -el que ya estaba en aaptOptions- más esas dos. Sin
     // -PparaPlay no se toca nada: la APK de prueba sigue con los dos modelos dentro -D4-.
+    //
+    // -tarea 104, PASO 2, 06-10-2026- AHORA LOS TRES A PEDIDO. model-es pasó a on-demand -ya no viene
+    // con la instalación; se pide en silencio al abrir la app- y gesture_recognizer.task sale del paquete
+    // base a su propio paquete a pedido, ':gestos' -android/gestos-, que se baja la primera vez que
+    // alguien enciende Control por gestos. '<file>gesture_recognizer.task' lo saca de los assets del
+    // paquete base, igual que '<dir>model-es' saca la carpeta. La APK de prueba sigue trayendo todo.
+    // Antes:
+    //   assetPacks = [':model-es', ':model-en']
+    //   ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~:<dir>model-es:<dir>model-en'
     if (paraPlay) {
-        assetPacks = [':model-es', ':model-en']
+        assetPacks = [':model-es', ':model-en', ':gestos']
         androidResources {
-            ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~:<dir>model-es:<dir>model-en'
+            ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~:<dir>model-es:<dir>model-en:<file>gesture_recognizer.task'
         }
     }
 
@@ -136,9 +146,15 @@ android {
     // EL MODELO DE GESTOS SIN COMPRIMIR -tarea 88, 04-10-2026-. MediaPipe abre gesture_recognizer.task
     // directo desde los assets -BaseOptions.setModelAssetPath- y para eso el archivo tiene que ir sin
     // comprimir en el paquete. Va en las dos construcciones, la de prueba y la de Play.
-    androidResources {
-        noCompress 'task'
-    }
+    //
+    // -tarea 104, PASO 2- Antes: androidResources { noCompress 'task' }
+    // Se quita porque no servía para lo que decía. Con una ruta relativa MediaPipe NO abre el asset en
+    // su lugar: lo lee entero con el AssetManager y lo copia a getCacheDir()/drishti_asset_cache/ cada
+    // vez que crea el reconocedor -mediapipe v1.0.0, resource_util_android.cc:83-87 y
+    // asset_manager_util.cc:156-180-, y el AssetManager lee igual un asset comprimido. En la versión de
+    // Play el .task ya no va en el APK sino en el paquete a pedido ':gestos', que Play deja como archivo
+    // común sin comprimir; GestosPlugin lo abre con su ruta absoluta y MediaPipe lo mapea sin copia.
+    // En la APK de prueba sigue en assets, ahora comprimido, con la misma copia en caché de siempre.
 }
 
 // EL uuid DEL MODELO. ESTO NO ES OPCIONAL Y NO SE ADIVINA.
@@ -213,6 +229,11 @@ dependencies {
     // poniendo el telefono en modo avion: no arranca- y despues tarda en armar el
     // modelo adentro del navegador. Aca el modelo viaja en el APK y la biblioteca
     // es codigo compilado: no se baja nada y no se arma nada en tiempo de ejecucion.
+    // -tarea 104- En la versión de Play el modelo ya no viaja en el APK: se baja de Play una vez, en
+    // silencio, al abrir la app -PaqueteDeVoz-. En la APK de prueba, sí.
+    // JNA -tarea 104, sin cambiar-: se propone subir a 5.18.1@aar -la que pide vosk-android 0.3.75; la
+    // 5.13.0 llegó en c4b6384 sin motivo escrito y es anterior a los arreglos de 16 KB #1618 y #1647-.
+    // Espera la aprobación de Javier: ver el PR de la tarea 104.
     implementation 'com.alphacephei:vosk-android:0.3.75@aar'
     implementation 'net.java.dev.jna:jna:5.13.0@aar'
 
@@ -238,6 +259,8 @@ dependencies {
     // 16 KB, como pide Play: todos los LOAD de libmediapipe_tasks_jni.so -tasks-core-1.0.0.aar- con
     // alineación 0x4000, mirado con readelf. Trae tasks-core 1.0.0 -con protobuf-javalite, flogger y
     // guava-. El modelo -gesture_recognizer.task, float16, de Google- va en src/main/assets.
+    // -tarea 104- Sigue en git en src/main/assets, pero en la versión de Play viaja en el paquete a
+    // pedido ':gestos' -android/gestos- y sale del paquete base. La APK de prueba lo trae dentro.
     //
     // LA LICENCIA DEL MODELO -2026-10-04, tarea 88, segunda vuelta-: SIN VERIFICAR. La ficha oficial,
     // https://ai.google.dev/edge/mediapipe/solutions/vision/gesture_recognizer, enlaza el modelo

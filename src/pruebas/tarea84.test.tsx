@@ -50,13 +50,17 @@ async function montar(motor = new MotorFake(), idioma: 'es' | 'en' = 'es') {
 }
 
 // El motor de la versión de Play, fingido: la voz en inglés no está y hay que bajarla.
+// -tarea 104- llamadas cuenta solo las de Empezar: la precarga al abrir y al entrar a LISTO también
+// llaman, en silencio -opciones.silencioso-, y esas se cuentan aparte.
 class MotorQueBaja extends MotorFake {
   llamadas = 0
+  silenciosas = 0
   constructor(private respuesta: ResultadoVoz, private avances: number[] = []) {
     super()
   }
-  async asegurarVoz(_lang: string, alProgreso: (f: number) => void): Promise<ResultadoVoz> {
-    this.llamadas++
+  async asegurarVoz(_lang: string, alProgreso: (f: number) => void, opciones?: { silencioso?: boolean }): Promise<ResultadoVoz> {
+    if (opciones?.silencioso) this.silenciosas++
+    else this.llamadas++
     for (const a of this.avances) {
       alProgreso(a)
       await new Promise((r) => setTimeout(r, 20))
@@ -149,7 +153,8 @@ describe('Tarea 84 - La versión para Google Play', () => {
     fireEvent.click(screen.getByTestId('btn-leer-tarjeta'))
     fireEvent.click(await screen.findByTestId('btn-empezar-toma'))
     const aviso = await screen.findByTestId('aviso-voz-sin-conexion')
-    expect(aviso.textContent).toContain(es.vozSinConexion)
+    // -tarea 104- El texto es para cualquier idioma. Antes: expect(aviso.textContent).toContain(es.vozSinConexion)
+    expect(aviso.textContent).toContain(es.vozSinConexion.replace('{idioma}', es.idiomaEn))
     await act(async () => {
       await new Promise((r) => setTimeout(r, 200))
     })
@@ -158,15 +163,17 @@ describe('Tarea 84 - La versión para Google Play', () => {
     expect(motor.llamadas).toBe(1)
   })
 
-  test('T84h Voz en inglés bajándose: el IndicadorPrecarga muestra el avance real y al terminar parte la cuenta.', async () => {
+  // -tarea 104- El avance ya no va en el IndicadorPrecarga de arriba sino en la pastilla del tiempo
+  // -lámina a-. Antes: findByTestId('aviso-voz') con es.descargandoModelo y /25%|50%/.
+  test('T84h Voz en inglés bajándose: la pastilla muestra el avance real y al terminar parte la cuenta.', async () => {
     const motor = new MotorQueBaja('lista', [0.25, 0.5])
     await montar(motor, 'en')
     fireEvent.click(screen.getByTestId('btn-leer-tarjeta'))
     fireEvent.click(await screen.findByTestId('btn-empezar-toma'))
-    const aviso = await screen.findByTestId('aviso-voz')
-    expect(aviso.textContent).toContain(es.descargandoModelo)
-    expect(aviso.textContent).toMatch(/25%|50%/)
+    const pastilla = await screen.findByTestId('pastilla-preparando-voz')
+    expect(pastilla.textContent).toContain(es.preparandoVoz)
+    expect(pastilla.textContent).toMatch(/25 %|50 %/)
     expect(await screen.findByTestId('cuenta-regresiva')).toBeTruthy()
-    expect(screen.queryByTestId('aviso-voz')).toBeNull()
+    expect(screen.queryByTestId('pastilla-preparando-voz')).toBeNull()
   })
 })

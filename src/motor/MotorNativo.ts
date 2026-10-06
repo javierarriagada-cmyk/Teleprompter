@@ -33,6 +33,9 @@ type DatosResultado = {
 //
 // Aca el modelo viaja adentro del APK y la biblioteca es codigo compilado: no hay
 // descarga y no hay que armar nada en tiempo de ejecucion.
+// -tarea 104- Eso sigue siendo cierto en la APK de prueba. En la versión de Play el modelo del idioma
+// se baja de Play una vez -en silencio, al abrir la app- y después funciona sin internet: ver
+// asegurarVoz y lib/vozAPedido.ts.
 //
 // LO QUE NO CAMBIA, Y ES A PROPOSITO.
 //
@@ -64,7 +67,10 @@ interface VoskNativoPlugin {
   addListener(eventName: 'progresoVoz', listener: (data: { idioma: string; progreso: number }) => void): Promise<PluginListenerHandle>
   // Resuelve cuando el modelo del idioma está en el teléfono; rechaza con code 'SIN_CONEXION' si
   // hay que bajarlo y no hay internet -VoskNativoPlugin.asegurarVoz, tarea 84-.
-  asegurarVoz(opciones: { idioma: 'es' | 'en' }): Promise<{ estado: string; descargada?: boolean }>
+  // -tarea 104- silencioso: sin el diálogo de Play; si Play lo pediría, resuelve estado 'en-pausa'.
+  // Sin silencioso, si la persona dice que no al diálogo, rechaza con code 'RECHAZADA'.
+  // Antes: asegurarVoz(opciones: { idioma: 'es' | 'en' }): Promise<{ estado: string; descargada?: boolean }>
+  asegurarVoz(opciones: { idioma: 'es' | 'en'; silencioso?: boolean }): Promise<{ estado: string; descargada?: boolean }>
 }
 
 const Nativo = registerPlugin<VoskNativoPlugin>('VoskNativo')
@@ -144,6 +150,9 @@ export class MotorNativo implements MotorDeVoz {
 
   private filaDeCarga: Promise<void> = Promise.resolve()
 
+  // -tarea 104- Esto sigue sin pedir nada a Play: solo carga el modelo si ya está en el teléfono. La
+  // descarga en silencio al abrir la app la hace App con asegurarVoz -silencioso- y lib/vozAPedido.ts,
+  // y al terminar App vuelve a llamar a esto.
   // PRECARGA EN SILENCIO -28-09-2026-. Medido con una instalacion limpia en el emulador: la
   // primera lectura desempaquetaba el modelo DESPUES de apretar Empezar, y el permiso del
   // microfono aparecia con el reloj de la lectura ya en 00:04, tapando el guion. Ahora se
@@ -183,17 +192,28 @@ export class MotorNativo implements MotorDeVoz {
   // 'progresoVoz' y App lo muestra en el IndicadorPrecarga. Sin internet responde 'sin-conexion' y
   // App dice que hace falta conexión una vez; la lectura no parte. Cualquier otro error se lanza:
   // App lo muestra, nunca en silencio.
-  async asegurarVoz(lang: string, alProgreso: (fraccion: number) => void): Promise<ResultadoVoz> {
+  //
+  // -tarea 104, 06-10-2026- Ahora también el español viaja aparte -on-demand-, y esto lo llama además
+  // la precarga silenciosa al abrir la app -lib/vozAPedido.ts- con silencioso: true. En silencio nunca
+  // sale el diálogo de Play: si Play lo pediría -WAITING_FOR_WIFI o REQUIRES_USER_CONFIRMATION- el
+  // plugin responde 'en-pausa' y Play la retoma sola con Wi-Fi. Al apretar Empezar -sin silencioso- el
+  // diálogo sí sale, y si la persona dice que no, 'rechazada': App lo dice con Reintentar, en vez de
+  // quedarse esperando.
+  // El avance se filtra por idioma: con las dos descargas a la vez, cada una mira la suya.
+  // Antes: async asegurarVoz(lang: string, alProgreso: (fraccion: number) => void): Promise<ResultadoVoz> {
+  //   ... await Nativo.asegurarVoz({ idioma }) ... if (e && e.code === 'SIN_CONEXION') return 'sin-conexion'
+  async asegurarVoz(lang: string, alProgreso: (fraccion: number) => void, opciones?: { silencioso?: boolean }): Promise<ResultadoVoz> {
     if (!Capacitor.isNativePlatform()) return 'lista'
     const idioma: 'es' | 'en' = (lang || '').toLowerCase().startsWith('en') ? 'en' : 'es'
     const oyente = await Nativo.addListener('progresoVoz', (d) => {
-      if (d && typeof d.progreso === 'number') alProgreso(d.progreso)
+      if (d && typeof d.progreso === 'number' && (!d.idioma || d.idioma === idioma)) alProgreso(d.progreso)
     })
     try {
-      await Nativo.asegurarVoz({ idioma })
-      return 'lista'
+      const r = await Nativo.asegurarVoz({ idioma, silencioso: opciones?.silencioso === true })
+      return r && r.estado === 'en-pausa' ? 'en-pausa' : 'lista'
     } catch (e: any) {
       if (e && e.code === 'SIN_CONEXION') return 'sin-conexion'
+      if (e && e.code === 'RECHAZADA') return 'rechazada'
       throw e
     } finally {
       oyente.remove()

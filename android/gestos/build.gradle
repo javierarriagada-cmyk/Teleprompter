@@ -1,0 +1,43 @@
+// EL MODELO DE GESTOS COMO PAQUETE DE RECURSOS DE PLAY, A PEDIDO -tarea 104, PASO 2, 06-10-2026-.
+//
+// gesture_recognizer.task -8 MB, 6,1 MB comprimido- salió del paquete base de Play: casi nadie usa
+// Control por gestos, y cada 6 MB de descarga cuestan cerca de 1 % de instalaciones. Se pide a Play la
+// primera vez que alguien enciende el interruptor -GestosPlugin.asegurarModelo, PaqueteDeVoz.bajarGestos-.
+//
+// on-demand y no fast-follow ni install-time: así Play lo deja como archivo común -STORAGE_FILES- en
+// la memoria de la app y GestosPlugin lo abre con su ruta absoluta; MediaPipe lo mapea sin copiarlo a
+// la caché. Ver GestosPlugin.java.
+//
+// Solo existe en la construcción para Play -settings.gradle, -PparaPlay-. La APK de prueba lo trae en
+// android/app/src/main/assets, como siempre. No usa paquete-de-modelo.gradle: aquí no hay uuid ni
+// carpeta "am"; es un solo archivo.
+apply plugin: 'com.android.asset-pack'
+
+assetPack {
+    // Solo letras, números y guion bajo -un nombre de "split" válido, ver model-es/build.gradle-.
+    packName = 'gestos'
+    dynamicDelivery {
+        deliveryType = 'on-demand'
+    }
+}
+
+// El .task vive en git en app/src/main/assets. Esta tarea lo copia, antes de cada construcción, a
+// src/main/assets/gestos/ de este módulo -ignorada por git-: adentro del paquete queda
+// gestos/gesture_recognizer.task, que es lo que busca PaqueteDeVoz.rutaGestosSiEsta.
+def origenGestos = file('../app/src/main/assets/gesture_recognizer.task')
+
+tasks.register('copiarModeloGestos', Sync) {
+    doFirst {
+        if (!origenGestos.exists()) {
+            throw new GradleException("Falta android/app/src/main/assets/gesture_recognizer.task")
+        }
+    }
+    from(origenGestos)
+    into(file('src/main/assets/gestos'))
+}
+
+tasks.configureEach { t ->
+    if (t.name != 'copiarModeloGestos' && !t.name.toLowerCase().contains('clean')) {
+        t.dependsOn 'copiarModeloGestos'
+    }
+}

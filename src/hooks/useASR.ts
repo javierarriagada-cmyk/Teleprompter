@@ -146,10 +146,14 @@ export default function useASR(options: {
 
   // Ver MotorDeVoz.asegurarVoz -tarea 84, D3-. Sin el método -el falso de las pruebas, el web-
   // el modelo ya está donde tiene que estar: 'lista', y la lectura sigue como siempre.
-  async function asegurarVoz(l: string, alProgreso: (fraccion: number) => void): Promise<ResultadoVoz> {
+  // -tarea 104- opciones.silencioso: la precarga al abrir, sin el diálogo de Play -MotorDeVoz-. Sin
+  // opciones se llama igual que antes, para que los motores de siempre no vean nada distinto.
+  // Antes: async function asegurarVoz(l: string, alProgreso: (fraccion: number) => void): Promise<ResultadoVoz> {
+  //   ... return m.asegurarVoz(l, alProgreso)
+  async function asegurarVoz(l: string, alProgreso: (fraccion: number) => void, opciones?: { silencioso?: boolean }): Promise<ResultadoVoz> {
     const m = motorRef.current
     if (!m || !m.asegurarVoz) return 'lista'
-    return m.asegurarVoz(l, alProgreso)
+    return opciones ? m.asegurarVoz(l, alProgreso, opciones) : m.asegurarVoz(l, alProgreso)
   }
 
   async function abrirAjustesDeLaApp(): Promise<void> {

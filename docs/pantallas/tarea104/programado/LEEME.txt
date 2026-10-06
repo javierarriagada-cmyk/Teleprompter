@@ -1,0 +1,38 @@
+Tarea 104 — PASO 2: capturas de lo programado (no del boceto)
+Fecha: 6-10-2026 (hora de Chile).
+
+Qué es esto
+  Las láminas a, b y c aprobadas en PASO 1, sacadas ahora de la implementación real de la rama
+  tarea104-modelos-a-pedido, en español, tema oscuro y claro. Cada captura mide 1082 × 2402 px
+  (412 × 915 px CSS, DPR 2,625), Chrome sin pantalla, como los bocetos.
+
+Cómo se fuerzan los estados (solo en desarrollo, no viaja a Play)
+  src/lib/forzado104.ts lee la dirección SOLO si import.meta.env.DEV es true, o sea con el servidor
+  de Vite (npm run dev). En vite build -la APK de prueba y la de Play- vale false y la rama se cae:
+    ?t104voz=bajando     la voz queda bajando en 70 % -lámina a-
+    ?t104voz=sinred      la voz responde "sin conexión" -lámina b-
+    ?t104gestos=bajando  el modelo de gestos queda bajando en 70 % -lámina c-
+    ?t104gestos=sinred   el modelo de gestos responde "sin conexión" -lámina c-
+  Lo forzado reemplaza solo la respuesta del plugin nativo; lo demás -cuándo se pide, cuándo sale la
+  pastilla, cuándo el aviso, si el interruptor se enciende- es el código de verdad.
+
+Láminas
+  a-preparando-voz-leer-*.png / a-preparando-voz-grabar-*.png
+      Con "Mostrar tiempo" APAGADO a propósito: la pastilla "Preparando la voz… 70 %" sale igual
+      mientras baja la voz, al lado de Empezar.
+  b-sin-internet-leer-*.png / b-sin-internet-grabar-*.png
+      "Para leer en español hace falta conexión una vez, para bajar la voz. Después funciona sin
+      internet." con Reintentar, abajo, donde se abren los paneles. En el color normal del texto, no
+      en rojo (cambio de Javier).
+  c-gestos-bajando-*.png
+      Panel de la cámara en Grabar, después de tocar el interruptor: "Preparando los gestos… 70 %"
+      con la barra fina y el interruptor encendido.
+  c-gestos-sin-internet-*.png
+      Igual, sin internet: el aviso en la fila, en el color normal, y el interruptor apagado.
+
+Sin verificar
+  - Nada se vio en un teléfono. La cámara es la imagen gris de prueba de Chrome.
+  - Solo teléfono de pie; no se capturó teléfono de lado, tableta ni inglés.
+
+Cómo repetirlas (scripts fuera del repo, en el box): /workspace/tarea104/programado/
+  npx vite --port 5192 (en la rama) y después ./todo.sh -usa cap.js, copia del de PASO 1 con TIEMPO=0-.

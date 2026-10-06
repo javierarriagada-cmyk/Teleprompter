@@ -53,7 +53,11 @@ import { debeBorrarArchivos, loteNuevo, MS_DESHACER_TOMA } from './lib/seleccion
 // -tarea 88, 04-10-2026- La pausa con cortes y el control por gestos -docs/tarea88.txt-.
 import { paso, EstadoPausa, Entrada as EntradaPausa, Accion as AccionPausa } from './lib/pausaToma'
 import { duracionVisible, MS_MINIMO_QUE_QUEDA } from './lib/tramos'
-import { Gestos, decidirPreparar, MS_ENTRE_INTENTOS_PREPARAR } from './lib/gestos'
+// -tarea 104- Más el modelo de gestos a pedido: asegurarModeloGestos y encenderGestos.
+// Antes: import { Gestos, decidirPreparar, MS_ENTRE_INTENTOS_PREPARAR } from './lib/gestos'
+import { Gestos, decidirPreparar, MS_ENTRE_INTENTOS_PREPARAR, asegurarModeloGestos, encenderGestos, EstadoModeloGestos } from './lib/gestos'
+import { crearVozEnSilencio, escucharRedDelNavegador, idiomaDeVoz, EstadoVozEnSilencio, IdiomaVoz, VozEnSilencio } from './lib/vozAPedido'
+import { descargaForzada } from './lib/forzado104'
 import { confirmadorNuevo, revisar as revisarGesto } from './lib/confirmadorGestos'
 import { vigiaNuevo, oirParcial, oirFinal, debePedir, alPedir, alResponder, Vigia } from './lib/vigiaGestos'
 // -tarea 88, segunda vuelta- El fin de la última palabra del FINAL, para el corte de la palma.
@@ -107,7 +111,9 @@ function leerEsquina(clave: string): EsquinaRecuadroH {
 export default function App({ motor, repoOverride }: AppProps) {
   // El idioma de la app: al cambiarlo en el cajon de la portada, App y todo lo que cuelga de
   // ella se redibuja con los textos nuevos -textos/index.ts-.
-  useTextos()
+  // -tarea 104- Además se guarda: al cambiarlo se baja en silencio la voz del otro idioma.
+  // Antes: useTextos()
+  const idiomaDeLaApp = useTextos()
   const repoRef = useRef<RepositorioGuiones>(repoOverride || new RepositorioIndexedDB())
   const repoGrabacionesRef = useRef<RepositorioGrabaciones>(
     repoOverride ? new RepositorioGrabacionesMemoria() : new RepositorioGrabacionesIndexedDB()
@@ -208,9 +214,20 @@ export default function App({ motor, repoOverride }: AppProps) {
   // LA VOZ DEL IDIOMA, BAJÁNDOSE ANTES DE LEER -tarea 84, D3-. Solo en la versión de Play y solo
   // para el inglés, la primera vez: el avance real de la descarga, o el aviso de que falta
   // conexión. null es "no hay nada que mostrar", que es lo de siempre en la APK de prueba.
+  // -tarea 104- Se suma 'rechazada': la persona dijo que no al diálogo de Play al apretar Empezar.
+  // Antes: { estado: 'descargando' | 'sin-conexion' | 'error'; progreso: number; error: string | null } | null
   const [descargaVoz, setDescargaVoz] = useState<
-    { estado: 'descargando' | 'sin-conexion' | 'error'; progreso: number; error: string | null } | null
+    { estado: 'descargando' | 'sin-conexion' | 'rechazada' | 'error'; progreso: number; error: string | null } | null
   >(null)
+  // LA VOZ PEDIDA EN SILENCIO -tarea 104, PASO 2-. Lo que va de cada idioma: bajando con su avance,
+  // lista, sin conexión, en pausa o con error -lib/vozAPedido.ts-. vozBajadaN sube cada vez que una
+  // termina, para que la precarga cargue el modelo recién bajado. idiomaLeido: ya se sabe el idioma de
+  // la app -el plugin de Android contesta un instante después de abrir-; antes no se pide nada, para no
+  // bajar el modelo equivocado.
+  const [vozEnSilencio, setVozEnSilencio] = useState<Partial<Record<IdiomaVoz, EstadoVozEnSilencio>>>({})
+  const [vozBajadaN, setVozBajadaN] = useState(0)
+  const [idiomaLeido, setIdiomaLeido] = useState(false)
+  const vozEnSilencioRef = useRef<VozEnSilencio | null>(null)
   const bajandoVozRef = useRef(false)
   // Sube al volver de LISTO: si la descarga termina después, la cuenta ya no parte en otra pantalla.
   const intentoVozRef = useRef(0)
@@ -490,6 +507,8 @@ export default function App({ motor, repoOverride }: AppProps) {
       // de mas abajo se crea en ese idioma.
       await leerIdiomaDelTelefono()
       if (!montadoRef.current) return
+      // -tarea 104- Recién ahora se sabe qué voz pedir en silencio.
+      setIdiomaLeido(true)
       // Verificar si el repositorio funciona o caer a fallback si no está disponible
       try {
         await repoRef.current.listar()
@@ -1051,11 +1070,88 @@ export default function App({ motor, repoOverride }: AppProps) {
   // que cambia el idioma del guion en uso. Asi Empezar no espera a desempaquetar: en una
   // instalacion limpia eso tardaba mas que los tres segundos de la cuenta. Nunca mientras se
   // lee: cambiar de modelo con el microfono abierto no se puede -VoskNativoPlugin.iniciar-.
+  // -tarea 104- También cuando termina de bajar una voz -vozBajadaN-: ahí recién se puede cargar.
+  // Antes: }, [motorListo, langMotor])
   useEffect(() => {
     if (!motorListo || isRecording || cuentaRegresiva !== null) return
     precargar(langMotor)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [motorListo, langMotor])
+  }, [motorListo, langMotor, vozBajadaN])
+
+  // LA VOZ SE BAJA SOLA, EN SILENCIO -tarea 104, PASO 2, 06-10-2026-. Ver lib/vozAPedido.ts.
+  //
+  // ANTES -tarea 84, 29-09-2026-: el español venía con la instalación y la precarga al abrir NO pedía
+  // ningún modelo a Play -bajar 68 MB sin que nadie lo pida no correspondía-; el inglés lo pedía
+  // asegurarVoz al apretar Empezar. Motivo del cambio -Javier-: el español install-time más su copia
+  // de StorageService.unpack ocupaban unos 150 MB instalados, y cada 6 MB de descarga cuestan cerca de
+  // 1 % de instalaciones. Ahora ninguna voz viene con la instalación y, al abrir la app, se pide la del
+  // idioma de la app, sin avisos y sin el diálogo de Play. asegurarVoz en Empezar sigue de respaldo.
+  const asegurarVozRef = useRef(asegurarVoz)
+  asegurarVozRef.current = asegurarVoz
+  useEffect(() => {
+    const voz = crearVozEnSilencio({
+      // En silencio: sin el diálogo de Play -opción B, Javier-. Con el servidor de desarrollo la
+      // dirección puede forzar el estado para las capturas -lib/forzado104.ts-.
+      asegurar: (idioma, alProgreso) =>
+        descargaForzada('t104voz', alProgreso) ||
+        asegurarVozRef.current(idioma === 'en' ? 'en-US' : 'es-ES', alProgreso, { silencioso: true }),
+      alCambiar: (idioma, estado) => {
+        if (!montadoRef.current) return
+        setVozEnSilencio((antes) => ({ ...antes, [idioma]: estado }))
+        if (estado.estado === 'lista') setVozBajadaN((n) => n + 1)
+      },
+      escucharRed: escucharRedDelNavegador
+    })
+    vozEnSilencioRef.current = voz
+    return () => voz.soltar()
+  }, [])
+  // Al abrir y al cambiar el idioma de la app: la voz de ESE idioma -la misma regla que elige entre
+  // "Hola" y "Hi"-. La del otro idioma solo si se cambia, o si se entra a leer un guion en él.
+  useEffect(() => {
+    if (!motorListo || !idiomaLeido) return
+    vozEnSilencioRef.current?.pedir(idiomaDeVoz(idiomaDeLaApp))
+  }, [motorListo, idiomaLeido, idiomaDeLaApp])
+  // Al entrar a Leer o Grabar: la voz del guion. Si ya está o ya se está bajando no hace nada; si no
+  // hay internet, deja el aviso de abajo -lámina b-; si baja, la pastilla lo muestra -lámina a-.
+  useEffect(() => {
+    if (vista !== 'lectura' || !motorListo) return
+    vozEnSilencioRef.current?.pedir(idiomaDeVoz(langMotor))
+  }, [vista, motorListo, langMotor])
+
+  // LO QUE SE VE EN LISTO MIENTRAS FALTA LA VOZ -tarea 104, láminas a y b-. Solo en LISTO de Leer o
+  // Grabar y solo por la voz del guion: el avance de Empezar si se apretó, o el de la descarga en
+  // silencio. El aviso de abajo, solo si no hay voz y no hay conexión -o si se dijo que no a Play-.
+  const idiomaVozGuion = idiomaDeVoz(langMotor)
+  const vozDelGuion = vozEnSilencio[idiomaVozGuion]
+  const enListo = vista === 'lectura' && estadoToma === 'listo'
+  const preparandoVoz: number | null = !enListo
+    ? null
+    : descargaVoz && descargaVoz.estado === 'descargando'
+    ? descargaVoz.progreso
+    : !descargaVoz && vozDelGuion && vozDelGuion.estado === 'bajando'
+    ? vozDelGuion.progreso
+    : null
+  const nombreIdiomaVoz = t(idiomaVozGuion === 'en' ? 'idiomaEn' : 'idiomaEs')
+  const avisoVoz: { texto: string; onReintentar: () => void } | null = !enListo
+    ? null
+    : descargaVoz && (descargaVoz.estado === 'sin-conexion' || descargaVoz.estado === 'rechazada')
+    ? {
+        texto: descargaVoz.estado === 'sin-conexion'
+          ? t('vozSinConexion', { idioma: nombreIdiomaVoz })
+          : t('vozRechazada', { idioma: nombreIdiomaVoz }),
+        // Venía de Empezar: Reintentar vuelve a apretarlo, como en la tarea 84.
+        onReintentar: () => {
+          setDescargaVoz(null)
+          handleEmpezarDesdeListo()
+        }
+      }
+    : !descargaVoz && vozDelGuion && vozDelGuion.estado === 'sin-conexion'
+    ? {
+        texto: t('vozSinConexion', { idioma: nombreIdiomaVoz }),
+        // Venía de entrar a LISTO: Reintentar vuelve a pedir la voz; si baja, se ve la pastilla.
+        onReintentar: () => vozEnSilencioRef.current?.reintentar(idiomaVozGuion)
+      }
+    : null
 
   // Los controles vuelven a irse solos. Un toque los trae, y si el que lee no aprieta nada
   // se van otra vez: si se quedaran encendidos hasta el siguiente toque, bastaria con
@@ -1267,6 +1363,10 @@ export default function App({ motor, repoOverride }: AppProps) {
       setMostrarDialogoMicrofono(true)
       return
     }
+    // -tarea 104- Ahora también el español viaja aparte y se pide solo al abrir la app; esto queda de
+    // respaldo si todavía no llegó. Mientras baja, el avance va en la pastilla del tiempo -lámina a,
+    // 'Preparando la voz…'- y no arriba; sin internet, el aviso va abajo -lámina b-. Aquí sí puede
+    // salir el diálogo de Play -el que dice el tamaño-, nunca en la precarga silenciosa.
     // LA VOZ DEL GUION TIENE QUE ESTAR EN EL TELÉFONO ANTES DE LA CUENTA -tarea 84, D3, 29-09-2026-.
     // En la versión de Play el modelo inglés no viene con la instalación: la primera vez se baja
     // aquí, con el avance a la vista -IndicadorPrecarga-, y la cuenta parte cuando termina. Sin
@@ -1293,7 +1393,16 @@ export default function App({ motor, repoOverride }: AppProps) {
       setDescargaVoz({ estado: 'sin-conexion', progreso: 0, error: null })
       return
     }
+    // -tarea 104- Dijo que no al diálogo de Play: se dice claro, con Reintentar, en vez de quedarse
+    // esperando. 'en-pausa' no debería llegar sin silencioso; si llega, es lo mismo.
+    if (voz === 'rechazada' || voz === 'en-pausa') {
+      setDescargaVoz({ estado: 'rechazada', progreso: 0, error: null })
+      return
+    }
     setDescargaVoz(null)
+    // -tarea 104- La voz ya está: si la de silencio había quedado sin conexión, que se entere -así el
+    // aviso de abajo no vuelve al volver a LISTO-.
+    vozEnSilencioRef.current?.reintentar(idiomaDeVoz(langMotor))
     setEstadoToma('leyendo')
     setControlesVisibles(false)
     // -tarea 91- Si la toma no logra empezar, vuelve a LISTO: antes quedaba en LEYENDO sin cuenta ni
@@ -1851,6 +1960,34 @@ export default function App({ motor, repoOverride }: AppProps) {
   // CONTROL POR GESTOS -tarea 88, docs/tarea88.txt, 6.1 a 6.4-. Con el interruptor apagado no se llama a
   // nada de Gestos: ni preparar. apto: 'sinProbar' hasta que preparar responde.
   const [gestosApto, setGestosApto] = useState<'sinProbar' | 'si' | 'no'>('sinProbar')
+  // -tarea 104, lámina c- El modelo de gestos a pedido. pidiendoGestos: se encendió el interruptor y se
+  // espera el modelo -el interruptor se ve encendido-; quiereGestosRef: si lo apagan mientras baja, no
+  // se enciende al terminar. Sin el modelo, gestosAlGrabar NO se enciende -lib/gestos.ts, encenderGestos-.
+  const [modeloGestos, setModeloGestos] = useState<EstadoModeloGestos>({ estado: 'nada' })
+  const [pidiendoGestos, setPidiendoGestos] = useState(false)
+  const quiereGestosRef = useRef(false)
+  function alCambiarGestos(v: boolean) {
+    hapticaSeleccion()
+    if (!v) {
+      quiereGestosRef.current = false
+      setPidiendoGestos(false)
+      setModeloGestos({ estado: 'nada' })
+      setGestosAlGrabar(false)
+      return
+    }
+    quiereGestosRef.current = true
+    setPidiendoGestos(true)
+    encenderGestos({
+      asegurar: asegurarModeloGestos,
+      alCambiar: (e) => {
+        if (montadoRef.current) setModeloGestos(e)
+      },
+      encender: () => setGestosAlGrabar(true),
+      sigueQueriendo: () => quiereGestosRef.current && montadoRef.current
+    }).finally(() => {
+      if (montadoRef.current) setPidiendoGestos(false)
+    })
+  }
   const motivoSinGestos: 'soloFrontal' | 'noDisponible' | null =
     ladoCamara === 'trasera' ? 'soloFrontal' : gestosApto === 'no' ? 'noDisponible' : null
   const quiereGestos = gestosAlGrabar && conCamara && vista === 'lectura' && ladoCamara === 'frontal' && camaraActiva
@@ -1889,7 +2026,19 @@ export default function App({ motor, repoOverride }: AppProps) {
           if (vigente) setGestosApto('no')
         })
     }
-    intentar()
+    // -tarea 104- Primero el modelo: quien ya tenía los gestos encendidos de antes -0.9.0, cuando el
+    // modelo venía con la instalación- lo baja aquí, con el avance en la fila. Sin internet el
+    // interruptor se apaga y la fila lo dice. Antes: intentar()
+    encenderGestos({
+      asegurar: asegurarModeloGestos,
+      alCambiar: (e) => {
+        if (vigente) setModeloGestos(e)
+      },
+      encender: intentar,
+      sigueQueriendo: () => vigente
+    }).then((encendido) => {
+      if (vigente && !encendido) setGestosAlGrabar(false)
+    })
     return () => {
       vigente = false
       if (timer !== null) window.clearTimeout(timer)
@@ -2553,11 +2702,13 @@ export default function App({ motor, repoOverride }: AppProps) {
               // -tarea 88-
               enPausa={enPausa}
               gestosAlGrabar={gestosAlGrabar}
-              setGestosAlGrabar={(v) => {
-                hapticaSeleccion()
-                setGestosAlGrabar(v)
-              }}
+              // -tarea 104- Encender pasa por el modelo a pedido -alCambiarGestos-. Antes:
+              //   setGestosAlGrabar={(v) => { hapticaSeleccion(); setGestosAlGrabar(v) }}
+              setGestosAlGrabar={alCambiarGestos}
               motivoSinGestos={motivoSinGestos}
+              modeloGestos={modeloGestos}
+              pidiendoGestos={pidiendoGestos}
+              avisoVoz={avisoVoz}
             />
             {/* EL RELEVO del texto chico de la tarjeta al texto grande de la lectura.
                 Es un velo del mismo color de fondo que se desvanece por encima, NO un
@@ -2618,7 +2769,9 @@ export default function App({ motor, repoOverride }: AppProps) {
             {/* La barra de tiempo va ADENTRO del lienzo -position relative, 100dvh-
                 y se ubica sola abajo a la derecha. Afuera quedaba debajo del borde
                 de la pantalla y no se veia nunca. Tarea 72. */}
-            {mostrarTiempo && (
+            {/* -tarea 104, lámina a- También con "Mostrar tiempo" apagado mientras baja la voz: la
+                pastilla dice "Preparando la voz…". Antes: {mostrarTiempo && ( */}
+            {(mostrarTiempo || preparandoVoz !== null) && (
               <BarraDeTiempo
                 motorAvance={motorAvance}
                 totalTokens={totalTokens}
@@ -2633,6 +2786,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                 // 2026-10-05, tarea 83: en pausa la pastilla se congela; el transcurrido va sin pausas.
                 enPausa={enPausa}
                 msPausadoAhora={msPausadoAhora}
+                preparandoVoz={preparandoVoz}
               />
             )}
           </div>
@@ -2812,7 +2966,9 @@ export default function App({ motor, repoOverride }: AppProps) {
       {/* La voz en inglés bajándose, o el aviso de que falta conexión -tarea 84, D3-. El mismo
           IndicadorPrecarga de siempre, en una capa fija arriba -.aviso-voz, styles.css-: se abre
           desde LISTO, donde el indicador del flujo de la página queda tapado por la lectura. */}
-      {descargaVoz && (
+      {/* -tarea 104- Arriba queda solo el error. El avance va en la pastilla del tiempo -lámina a- y la
+          falta de conexión abajo -lámina b, avisoVoz-. Antes: {descargaVoz && ( */}
+      {descargaVoz && descargaVoz.estado === 'error' && (
         <div className="aviso-voz" data-testid="aviso-voz">
           <IndicadorPrecarga
             estadoPrecarga={descargaVoz.estado}

@@ -15,7 +15,7 @@ DESCRIPCIÓN BREVE (máximo 80) — 75 caracteres
 La A, elegida por Javier, sin cambios: nunca dijo "offline".
 
 ==============================================================================
-DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2802 caracteres
+DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2812 caracteres
 ==============================================================================
 [[Forget your lines the moment you hit record? With Sigo you read aloud and the script moves with you, at your pace. Pause, and it waits.
 
@@ -58,6 +58,6 @@ TRUST AND PRIVACY
 - Gestures are recognized on your phone, and no image leaves it. Sigo does not send usage statistics.
 - Your scripts and videos stay on your phone until you share them.
 - Your scripts and settings are included in Android backup: if you reinstall Sigo with Google backup turned on, they come back. Videos are not part of that backup.
-- You can also use it offline. English needs a one-time download of the speech model from Google Play; Spanish works right after install.
+- You can also use it offline. The voice for your language downloads on its own the first time you open Sigo; after that it works without internet.
 
 Write your script, tap Read or Record, and start talking. Sigo follows.]]

@@ -7,7 +7,9 @@ apply from: 'capacitor.settings.gradle'
 // LOS PAQUETES DE LOS MODELOS DE VOZ -tarea 84, parte D-: solo existen en la construcción para Play
 // -npm run play, que pasa -PparaPlay-. En la APK de prueba ni se declaran, y el proyecto queda
 // idéntico al de antes.
+// -tarea 104- Más el paquete del modelo de gestos -android/gestos-, a pedido como los dos de voz.
 if (startParameter.projectProperties.containsKey('paraPlay')) {
     include ':model-es'
     include ':model-en'
+    include ':gestos'
 }

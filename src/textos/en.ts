@@ -219,7 +219,17 @@ export const en: Textos = {
   camaraTitulo: 'Sigo needs the camera',
   camaraExplicacion: 'The camera films while you read. The image and the video stay on the phone.',
   // The English voice is downloaded from Google Play the first time -tarea 84, D3-.
-  vozSinConexion: 'To read in English you need a connection once, to download the English voice. After that it works offline.',
+  // -tarea 104- Now the voice of any language comes from Play -Spanish too-: {idioma} is idiomaEs or
+  // idiomaEn. Shown at the bottom, where the chip panels open, in the normal text color.
+  // Antes: vozSinConexion: 'To read in English you need a connection once, to download the English voice. After that it works offline.',
+  vozSinConexion: 'To read in {idioma} you need a connection once, to download the voice. After that it works offline.',
+  idiomaEs: 'Spanish',
+  idiomaEn: 'English',
+  preparandoVoz: 'Preparing the voice…',
+  vozRechazada: 'The {idioma} voice will download when you have Wi-Fi. To download it now with mobile data, tap Retry and accept.',
+  preparandoGestos: 'Preparing gestures… {n}%',
+  gestosSinConexion: 'To use gestures you need a connection once, to download them. After that they work offline.',
+  gestosRechazados: 'Gestures will download when you have Wi-Fi. To download them now with mobile data, turn the switch on and accept.',
   // The name of the script title field for screen readers -tarea 84, G3-.
   nombreCampoTitulo: 'Script title',
   // The arrow of the Record chips, for screen readers -tarea 93, 05-10-2026-.

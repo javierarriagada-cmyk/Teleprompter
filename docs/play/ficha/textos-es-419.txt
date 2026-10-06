@@ -15,7 +15,7 @@ DESCRIPCIÓN BREVE (máximo 80) — 73 caracteres
 La A, elegida por Javier, sin "sin internet": eso ahora va al final de la completa.
 
 ==============================================================================
-DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2845 caracteres
+DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2843 caracteres
 ==============================================================================
 [[¿Se te olvida el guion justo cuando empiezas a grabar? Con Sigo lees en voz alta y el texto avanza contigo, a tu ritmo. Si haces una pausa, te espera.
 
@@ -58,6 +58,6 @@ CONFIANZA Y PRIVACIDAD
 - Los gestos se reconocen en el teléfono y ninguna imagen sale de él. Sigo no envía estadísticas de uso.
 - Tus guiones y tus videos se quedan en tu teléfono, hasta que tú los compartes.
 - Tus guiones y ajustes entran en la copia de seguridad de Android: si reinstalas Sigo con la copia de seguridad de Google activada, vuelven. Los videos no entran en esa copia.
-- También puedes usarlo sin conexión. En español, desde que lo instalas; en inglés, después de descargar una vez la voz desde Google Play.
+- También puedes usarlo sin conexión. La voz de tu idioma se descarga sola la primera vez que abres Sigo; después funciona sin internet.
 
 Escribe tu guion, toca Leer o Grabar, y habla. Sigo te sigue.]]

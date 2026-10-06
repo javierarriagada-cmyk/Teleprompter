@@ -1,5 +1,12 @@
 // EL MODELO DE VOZ EN ESPAÑOL COMO PAQUETE DE RECURSOS DE PLAY -tarea 84, D1, 29-09-2026-.
 //
+// -tarea 104, PASO 2, 06-10-2026- AHORA ES on-demand, como model-en. Ya no viene con la instalación:
+// la app lo pide en silencio a Play la primera vez que se abre -si el idioma de la app es español- y
+// Vosk lo abre directo desde la carpeta del paquete -PaqueteDeVoz.rutaSiEsta-, sin copiarlo. Motivo
+// -Javier-: install-time más la copia de StorageService.unpack lo dejaban dos veces en el teléfono
+// -unos 150 MB instalados-, y cada 6 MB de descarga cuestan cerca de 1 % de instalaciones. Lo de abajo
+// es la decisión de la tarea 84, que se revierte:
+//
 // install-time: viene con la instalación, porque el español es el mercado principal y nadie tiene
 // que esperar una descarga para leer. Android lo junta con los assets de la app, así que
 // VoskNativoPlugin lo sigue desempaquetando con el mismo AssetManager y la misma marca uuid que
@@ -15,7 +22,8 @@ assetPack {
     // La carpeta del modelo adentro sigue llamándose model-es, la que busca VoskNativoPlugin.
     packName = 'model_es'
     dynamicDelivery {
-        deliveryType = 'install-time'
+        // Antes: deliveryType = 'install-time' -ver arriba por qué cambió-.
+        deliveryType = 'on-demand'
     }
 }
 

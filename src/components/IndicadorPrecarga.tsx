@@ -4,6 +4,7 @@
 import React from 'react'
 import { t } from '../textos'
 import { EstadoPrecarga } from '../hooks/usePrecargaModelo'
+import { idiomaApp } from '../lib/idioma'
 
 interface IndicadorPrecargaProps {
   estadoPrecarga: EstadoPrecarga
@@ -37,9 +38,12 @@ export function IndicadorPrecarga({ estadoPrecarga, progresoPrecarga, errorPreca
       )}
       {/* Sin internet para bajar la voz en inglés -tarea 84, D3-: qué pasa y que es una sola vez.
           Reintentar vuelve a apretar Empezar. */}
+      {/* -tarea 104- App ya no llega aquí sin conexión: ese aviso va abajo, donde se abren los paneles
+          de las fichas -FichasListo, lámina b-, y aquí queda solo el error. Si alguna vez llega, el
+          texto es el de cualquier idioma, con el de la app. Antes: ⚠️ {t('vozSinConexion')} */}
       {estadoPrecarga === 'sin-conexion' && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)', width: '100%', justifyContent: 'space-between' }}>
-          <span data-testid="aviso-voz-sin-conexion">⚠️ {t('vozSinConexion')}</span>
+          <span data-testid="aviso-voz-sin-conexion">⚠️ {t('vozSinConexion', { idioma: t(idiomaApp() === 'en' ? 'idiomaEn' : 'idiomaEs') })}</span>
           <button
             onClick={reintentarPrecarga}
             style={{ padding: 'var(--aire-1) var(--aire-2)', fontSize: 'var(--texto-meta)', cursor: 'pointer' }}

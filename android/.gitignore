@@ -118,4 +118,8 @@ model-es/src/
 model-en/src/
 model-es/build/
 model-en/build/
+# -tarea 104- La copia de gesture_recognizer.task para el paquete de gestos: la arma gestos/build.gradle
+# desde app/src/main/assets, donde sí está en git.
+gestos/src/
+gestos/build/
 

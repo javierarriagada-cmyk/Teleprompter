@@ -2216,7 +2216,10 @@ button.btn-deformable.miniatura-banda:not(:active) {
 /* LA VOZ EN INGLÉS BAJÁNDOSE, SOBRE LA LECTURA -tarea 84, D3, 29-09-2026-. App monta aquí el mismo
    IndicadorPrecarga de siempre cuando la versión de Play baja el modelo inglés al apretar Empezar,
    o cuando falta conexión para bajarlo. Fijo arriba y por encima de la lectura -LISTO tapa el flujo
-   de la página, donde vive el indicador del motor web-, respetando la barra del sistema. */
+   de la página, donde vive el indicador del motor web-, respetando la barra del sistema.
+   -tarea 104- Ahora queda solo para un error de la descarga. El avance va en la pastilla del tiempo
+   -lámina a, BarraDeTiempo- y la falta de conexión abajo, donde se abren los paneles -lámina b,
+   FichasListo-: arriba tapaba la flecha de volver y el primer renglón. */
 .aviso-voz {
   position: fixed;
   top: calc(env(safe-area-inset-top, 0px) + var(--aire-3));
