@@ -219,7 +219,13 @@ export const en: Textos = {
   camaraTitulo: 'Sigo needs the camera',
   camaraExplicacion: 'The camera films while you read. The image and the video stay on the phone.',
   // The English voice is downloaded from Google Play the first time -tarea 84, D3-.
-  vozSinConexion: 'To read in English you need a connection once, to download the English voice. After that it works offline.',
+  // SKETCH TAREA 104: the text for any language -{idioma} is idiomaEs or idiomaEn-.
+  vozSinConexion: 'To read in {idioma} you need a connection once, to download the voice. After that it works offline.',
+  idiomaEs: 'Spanish',
+  idiomaEn: 'English',
+  preparandoVoz: 'Preparing the voice…',
+  preparandoGestos: 'Preparing gestures… {n}%',
+  gestosSinConexion: 'To use gestures you need a connection once, to download them. After that they work offline.',
   // The name of the script title field for screen readers -tarea 84, G3-.
   nombreCampoTitulo: 'Script title',
   // The arrow of the Record chips, for screen readers -tarea 93, 05-10-2026-.

@@ -230,7 +230,13 @@ export const es = {
   camaraTitulo: 'Sigo necesita la cámara',
   camaraExplicacion: 'La cámara filma mientras lees. La imagen y el video quedan en el teléfono.',
   // La voz en inglés se baja de Google Play la primera vez -tarea 84, D3-.
-  vozSinConexion: 'Para leer en inglés hace falta conexión una vez, para bajar la voz en inglés. Después funciona sin internet.',
+  // BOCETO TAREA 104: el texto para cualquier idioma -{idioma} es idiomaEs o idiomaEn-.
+  vozSinConexion: 'Para leer en {idioma} hace falta conexión una vez, para bajar la voz. Después funciona sin internet.',
+  idiomaEs: 'español',
+  idiomaEn: 'inglés',
+  preparandoVoz: 'Preparando la voz…',
+  preparandoGestos: 'Preparando los gestos… {n} %',
+  gestosSinConexion: 'Para usar gestos hace falta conexión una vez, para bajarlos. Después funcionan sin internet.',
   // El nombre del campo del título del guion para el lector de pantalla -tarea 84, G3-.
   nombreCampoTitulo: 'Título del guion',
   // La flecha de las fichas de Grabar, para el lector de pantalla -tarea 93, 05-10-2026-.

@@ -22,6 +22,8 @@ export interface BarraDeTiempoProps {
   // fila de la toma -pausa, Parar y tacho-. A la derecha de Parar, donde estaba, la pisaba el tacho en
   // pausa. En LISTO sigue donde estaba.
   encimaDeLaFila?: boolean
+  // BOCETO TAREA 104: la voz bajándose al entrar a LISTO -fracción 0..1-; la pastilla lo dice en lugar del tiempo.
+  preparandoVoz?: number | null
 }
 
 // El mismo ritmo que usa el editor para decir "1 min", y el que usa esta
@@ -59,8 +61,11 @@ function Pastilla({
   testid,
   conTestidsDeProgreso,
   enRiel = false,
-  encimaDeLaFila = false
+  encimaDeLaFila = false,
+  porcentaje
 }: {
+  // BOCETO TAREA 104: con porcentaje, el número va a la derecha de la barra -segundo renglón-.
+  porcentaje?: string
   texto: string
   progresoPct: number
   etiqueta: string
@@ -119,7 +124,8 @@ function Pastilla({
           userSelect: 'none'
         }}
       >
-        <div>{texto}</div>
+        <div style={porcentaje ? { letterSpacing: 0, whiteSpace: 'normal' } : undefined}>{texto}</div>
+        <div style={porcentaje ? { display: 'flex', alignItems: 'center', gap: 8 } : { display: 'contents' }}>
         <div
           data-testid={conTestidsDeProgreso ? 'barra-progreso-pista' : undefined}
           className="pastilla-tiempo-pista"
@@ -140,6 +146,8 @@ function Pastilla({
             }}
           />
         </div>
+        {porcentaje && <span style={{ letterSpacing: 0 }}>{porcentaje}</span>}
+        </div>
       </div>
     </div>
   )
@@ -153,7 +161,8 @@ export default function BarraDeTiempo({
   enRiel = false,
   encimaDeLaFila = false,
   enPausa = false,
-  msPausadoAhora
+  msPausadoAhora,
+  preparandoVoz = null
 }: BarraDeTiempoProps) {
   useTextos()
   const [ahora, setAhora] = useState<number>(() => performance.now())
@@ -179,6 +188,21 @@ export default function BarraDeTiempo({
     // Lleva OTRA etiqueta y OTRO testid a proposito: no es el reloj de la
     // lectura. T83 cuida que ese reloj arranque con la lectura y no con el
     // boton, y el reloj sigue sin aparecer hasta que la lectura empieza.
+    if (vistaPrevia && preparandoVoz !== null) {
+      const n = Math.round(preparandoVoz * 100)
+      return (
+        <Pastilla
+          texto={t('preparandoVoz')}
+          porcentaje={`${n} %`}
+          progresoPct={n}
+          etiqueta={`${t('preparandoVoz')} ${n} %`}
+          testid="pastilla-preparando-voz"
+          conTestidsDeProgreso={false}
+          enRiel={enRiel}
+          encimaDeLaFila={encimaDeLaFila}
+        />
+      )
+    }
     if (vistaPrevia && totalTokens > 0) {
       // REDONDEADO COMO EN EL EDITOR -28-09-2026-: formatearTiempo corta los decimales, y el
       // editor -duracionDeLectura- redondea. 214 palabras eran 1:26 en el editor y 01:25 aca.

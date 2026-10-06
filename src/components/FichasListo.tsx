@@ -190,6 +190,12 @@ export function FichasListo({
   // lo que se elige aca es con lo que abre la toma, y ahi se puede cambiar mirando el video.
   const [estiloSub, setEstiloSub] = useState<EstiloSubtitulo>(estiloSubtituloGuardado)
   const valorBrillo = brillo ?? brilloSistema ?? 0.5
+  // BOCETO TAREA 104 -no mezclar-: ?b104=sinred muestra el aviso de la voz sin internet donde se abren
+  // los paneles; ?b104gestos=bajando | sinred fuerza la fila de Control por gestos.
+  const b104 = typeof location !== 'undefined' ? new URLSearchParams(location.search) : null
+  const [avisoVozB104, setAvisoVozB104] = useState(b104?.get('b104') === 'sinred')
+  const gestosB104 = b104?.get('b104gestos') || null
+  const [gestosEstadoB104, setGestosEstadoB104] = useState<'nada' | 'bajando' | 'sinred'>('nada')
   const idxLetra = PASOS_LETRA.indexOf(fontSize)
   const puedeMenos = idxLetra > 0 || (idxLetra < 0 && PASOS_LETRA.some((p) => p < fontSize))
   const puedeMas = (idxLetra >= 0 && idxLetra < PASOS_LETRA.length - 1) || (idxLetra < 0 && PASOS_LETRA.some((p) => p > fontSize))
@@ -205,6 +211,16 @@ export function FichasListo({
       data-testid="fila-fichas-listo"
       onClick={(e) => e.stopPropagation()}
     >
+      {!panelAbierto && avisoVozB104 && (
+        <div className="panel-ficha tarjeta-elevada aviso-voz-listo" data-testid="aviso-voz-sin-conexion" role="status">
+          <div className="aviso-voz-listo-texto">{t('vozSinConexion', { idioma: t('idiomaEs') })}</div>
+          <div className="segmentado">
+            <button type="button" className="segmentado-opcion" onClick={() => setAvisoVozB104(false)}>
+              <span>{t('reintentar')}</span>
+            </button>
+          </div>
+        </div>
+      )}
       {panelAbierto && (
         <div
           ref={panelRef}
@@ -317,6 +333,16 @@ export function FichasListo({
                 >
                   <div className="fila-gestos-texto">
                     <div className="fila-gestos-nombre">{t('controlPorGestos')}</div>
+                    {gestosEstadoB104 === 'bajando' ? (
+                      <div className="fila-gestos-explicacion" data-testid="gestos-preparando">
+                        {t('preparandoGestos', { n: 70 })}
+                        <div className="fila-gestos-pista"><div className="fila-gestos-relleno" style={{ width: '70%' }} /></div>
+                      </div>
+                    ) : gestosEstadoB104 === 'sinred' ? (
+                      <div className="fila-gestos-explicacion aviso-ficha-urgente" data-testid="gestos-sin-conexion" role="status">
+                        {t('gestosSinConexion')}
+                      </div>
+                    ) : (
                     <div className="fila-gestos-explicacion">
                       {motivoSinGestos === 'soloFrontal'
                         ? t('gestosSoloFrontal')
@@ -324,10 +350,15 @@ export function FichasListo({
                         ? t('gestosNoDisponible')
                         : t('controlPorGestosExplicacion')}
                     </div>
+                    )}
                   </div>
                   <Interruptor
-                    encendido={!motivoSinGestos && gestosAlGrabar}
-                    onCambiar={(v) => setGestosAlGrabar?.(v)}
+                    encendido={gestosB104 ? gestosEstadoB104 === 'bajando' : !motivoSinGestos && gestosAlGrabar}
+                    onCambiar={(v) => {
+                      if (gestosB104 === 'bajando') return setGestosEstadoB104(v ? 'bajando' : 'nada')
+                      if (gestosB104 === 'sinred') return setGestosEstadoB104(v ? 'sinred' : 'nada')
+                      setGestosAlGrabar?.(v)
+                    }}
                     etiqueta={t('controlPorGestos')}
                     testid="switch-gestos"
                     deshabilitado={!!motivoSinGestos}

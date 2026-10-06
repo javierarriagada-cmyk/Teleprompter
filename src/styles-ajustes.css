@@ -724,3 +724,25 @@
 .fila-menu-adjunto-guion.peligro {
   color: var(--color-grabando-texto);
 }
+
+/* BOCETO TAREA 104 -no mezclar-. El aviso de la voz sin internet, donde se abren los paneles de las
+   fichas; y el avance de los gestos, debajo de su nombre. */
+.aviso-voz-listo-texto {
+  font-size: 13px;
+  color: var(--color-grabando-texto);
+  margin-bottom: 12px;
+}
+.fila-gestos-pista {
+  margin-top: 6px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--color-borde);
+  overflow: hidden;
+}
+.fila-gestos-relleno {
+  height: 100%;
+  background: var(--color-texto);
+}
+.fila-gestos-explicacion.aviso-ficha-urgente {
+  color: var(--color-grabando-texto);
+}

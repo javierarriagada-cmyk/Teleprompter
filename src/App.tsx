@@ -104,6 +104,9 @@ function leerEsquina(clave: string): EsquinaRecuadroH {
   return 'der-abajo'
 }
 
+// BOCETO TAREA 104 -no mezclar-: ?b104=preparando | sinred fuerza el estado de la voz al entrar a LISTO.
+const B104 = typeof location !== 'undefined' ? new URLSearchParams(location.search).get('b104') : null
+
 export default function App({ motor, repoOverride }: AppProps) {
   // El idioma de la app: al cambiarlo en el cajon de la portada, App y todo lo que cuelga de
   // ella se redibuja con los textos nuevos -textos/index.ts-.
@@ -2618,7 +2621,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             {/* La barra de tiempo va ADENTRO del lienzo -position relative, 100dvh-
                 y se ubica sola abajo a la derecha. Afuera quedaba debajo del borde
                 de la pantalla y no se veia nunca. Tarea 72. */}
-            {mostrarTiempo && (
+            {(mostrarTiempo || B104 === 'preparando') && (
               <BarraDeTiempo
                 motorAvance={motorAvance}
                 totalTokens={totalTokens}
@@ -2633,6 +2636,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                 // 2026-10-05, tarea 83: en pausa la pastilla se congela; el transcurrido va sin pausas.
                 enPausa={enPausa}
                 msPausadoAhora={msPausadoAhora}
+                preparandoVoz={B104 === 'preparando' && estadoToma === 'listo' ? 0.7 : null}
               />
             )}
           </div>
