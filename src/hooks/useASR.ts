@@ -147,6 +147,11 @@ export default function useASR(options: {
   // Ver MotorDeVoz.asegurarVoz -tarea 84, D3-. Sin el método -el falso de las pruebas, el web-
   // el modelo ya está donde tiene que estar: 'lista', y la lectura sigue como siempre.
   async function asegurarVoz(l: string, alProgreso: (fraccion: number) => void): Promise<ResultadoVoz> {
+    // BOCETO TAREA 104 -no mezclar-: ?b104voz=bajando deja la descarga en 70 % para siempre;
+    // ?b104voz=sinred responde 'sin-conexion'. Solo para sacar capturas en el navegador.
+    const b104 = typeof location !== 'undefined' ? new URLSearchParams(location.search).get('b104voz') : null
+    if (b104 === 'bajando') { alProgreso(0.7); return new Promise<ResultadoVoz>(() => {}) }
+    if (b104 === 'sinred') return 'sin-conexion'
     const m = motorRef.current
     if (!m || !m.asegurarVoz) return 'lista'
     return m.asegurarVoz(l, alProgreso)
