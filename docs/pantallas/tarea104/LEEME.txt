@@ -1,0 +1,76 @@
+Tarea 104 — PASO 1: bocetos (sin código de producción)
+Fecha: 6-10-2026 (hora de Chile).
+
+Qué es esto
+  Láminas ANTES | DESPUÉS sacadas de la app real en el navegador, en español, con la voz y los
+  gestos en estados forzados. Sirven para que Javier apruebe antes de escribir el código (PASO 2).
+
+Cómo se sacaron
+  - Teléfono de 412 × 915 px CSS, DPR 2,625 (como un Pixel), Chrome sin pantalla (puppeteer-core
+    fuera del repo). Cada captura mide 1082 × 2402 px; en la lámina va al 42 %.
+  - Tema oscuro y claro. Ojo: la pantalla de lectura sigue los "colores de lectura" (aquí blanco
+    sobre negro), así que el texto se ve oscuro en ambos; lo que cambia con el tema son las fichas,
+    los paneles y los avisos.
+  - La cámara es una imagen gris de prueba del navegador, no una cámara real.
+  - ANTES: commit b29f24c de boceto/tarea104 = 1d72aeb + solo un estado forzado de la voz
+    (?b104voz=bajando | sinred, que responde como el plugin al tocar Empezar). La pantalla es la
+    de hoy, sin cambios.
+  - DESPUÉS: commit 12dc169 de boceto/tarea104 (?b104=preparando | sinred, ?b104gestos=bajando |
+    sinred). Esa rama se subió pero NO se mezcla nunca.
+
+Láminas
+  a-preparando-voz-oscuro.png / -claro.png   Leer y Grabar, ANTES | DESPUÉS.
+  b-sin-internet-oscuro.png / -claro.png     Leer y Grabar, ANTES | DESPUÉS.
+  c-gestos-oscuro.png / -claro.png           Panel de la cámara en Grabar: hoy | bajando | sin internet.
+
+a. Preparando la voz (no es un aviso de error)
+  Texto: "Preparando la voz…" y debajo la barra con "70 %".
+  (Inglés: "Preparing the voice…" / "70 %".)
+  Dónde: dentro de la pastilla del tiempo, abajo a la derecha, al lado de Empezar. Mientras baja
+  la voz reemplaza "00:00 / 02:50"; al terminar vuelve el tiempo. Sale aunque "Mostrar tiempo"
+  esté apagado (solo mientras baja).
+  Cuándo: solo si se entra a Leer o Grabar antes de que termine la descarga que se pidió sola al
+  abrir la app (idioma de la app, el mismo que elige entre "Hola" y "Hi"). Si ya está la voz, no
+  se ve nada.
+  Si se toca Empezar mientras baja: no pasa nada raro; la cuenta parte sola cuando termina
+  (asegurarVoz sigue de respaldo). No tapa el texto ni los botones.
+  ANTES: hoy no hay descarga al abrir; el aviso "Descargando modelo de voz para uso offline: 70%"
+  sale recién al tocar Empezar, arriba, y tapa la flecha de volver y el primer renglón.
+
+b. Voz sin internet
+  Texto (para cualquier idioma, {idioma} = "español" o "inglés"):
+    "Para leer en {idioma} hace falta conexión una vez, para bajar la voz. Después funciona sin internet."
+  Inglés: "To read in {idioma} you need a connection once, to download the voice. After that it works offline."
+  ({idioma} en inglés: "Spanish" / "English".) Botón: "Reintentar" (el de hoy).
+  Dónde: abajo, en la tarjeta del mismo lugar donde se abren los paneles de las fichas (encima de
+  las fichas). No tapa la flecha, el renglón que se lee, las fichas ni Empezar. Si se abre una
+  ficha, su panel ocupa ese lugar.
+  Cuándo: solo al entrar a Leer o Grabar sin la voz en el teléfono y sin internet. Reintentar
+  vuelve a pedir la voz; si llega, el aviso se va (y si baja, se ve la pastilla de a).
+  ANTES: sale al tocar Empezar, arriba, tapando la flecha y el primer renglón, y habla solo del
+  inglés ("…para bajar la voz en inglés").
+
+c. Control por gestos
+  Bajando: "Preparando los gestos… 70 %" debajo de "Control por gestos", con una barra fina; el
+    interruptor queda encendido. Al terminar vuelve la explicación de siempre.
+    Inglés: "Preparing gestures… 70%".
+  Sin internet: "Para usar gestos hace falta conexión una vez, para bajarlos. Después funcionan
+    sin internet." en rojo, en la misma fila; el interruptor NO se enciende.
+    Inglés: "To use gestures you need a connection once, to download them. After that they work offline."
+  Cuándo: la primera vez que alguien enciende el interruptor (el modelo de gestos pasa a un
+  paquete a pedido). Es un aviso de la fila, distinto del de la voz, y no tapa nada.
+  ANTES: no hay equivalente; el modelo viene instalado y la fila siempre dice "Palma: pausar o
+  seguir. En pausa, la V termina la toma."
+
+Sin verificar
+  - Nada se vio en un teléfono: todo es Chrome emulando 412 × 915 a DPR 2,625, con estados
+    forzados (sin el plugin nativo ni Play).
+  - La fila "Control por gestos" no está en Ajustes: vive en el panel de la cámara de Grabar
+    (FichasListo). Se dibujó ahí, donde está hoy.
+  - Solo teléfono de pie. No se bocetó teléfono de lado, tableta ni un teléfono angosto (360 px):
+    ahí la pastilla de a podría partir "Preparando la voz…" en dos renglones.
+  - Que la lectura parta sola al terminar la descarga se describe, no se muestra.
+  - Los textos en inglés son propuesta; no se capturaron.
+
+Cómo repetir las capturas (scripts fuera del repo, en el box): /workspace/tarea104/
+  cap.js (una captura), todo.sh (todas), laminas.py (arma las láminas con PIL).
