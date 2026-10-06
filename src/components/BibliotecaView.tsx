@@ -419,6 +419,10 @@ function FilaGuion({
             alargada con Archivar + tacho + ✕. Cabecera = titulo del guion; Archivar;
             Borrar en rojo. Sin ✕: se cierra tocando afuera (useCerrarAfuera). Se ancla
             debajo de la fila para no tapar el "+" de crear. */}
+        {/* Antes -hasta la tarea 102-: la fila se alargaba con una fila de botones chicos
+            -.boton-menu-chico-: Archivar con su palabra, el tacho solo y una ✕ para cerrar.
+            SIMBOLOS -28-09-2026-: Archivar con su palabra; Borrar -antes "Eliminar"- y
+            Cerrar con el simbolo solo y su nombre en aria-label. Ver .boton-menu-chico. */}
         {menuAbierto && (
           <div
             ref={refMenuFila}

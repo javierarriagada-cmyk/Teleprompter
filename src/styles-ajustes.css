@@ -527,6 +527,10 @@
 }
 */
 
+/* LA CAPA DEL DIALOGO DE MICROFONO -28-09-2026-. Centrada vertical y horizontalmente,
+   z-index 300 por encima de la lectura (150) y de Ajustes (240). */
+/* -07-10-2026, Claude- Este comentario se habia perdido en la tarea 102 al comentar la capa de
+   arriba: se repone tal cual. */
 .capa-dialogo-microfono {
   position: fixed;
   inset: 0;
