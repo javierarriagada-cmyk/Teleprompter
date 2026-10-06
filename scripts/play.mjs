@@ -267,4 +267,8 @@ if (await asegurarBundletool()) {
 if (resultados.includes(false)) {
   console.log('\nHay comprobaciones en FALLA: no subas este AAB sin revisarlas.')
   process.exitCode = 1
+} else if (args.includes('subir')) {
+  // -tarea 99- Solo si todas las comprobaciones dan OK. Nunca producción.
+  const { subirAInterna } = await import('./playSubir.mjs')
+  await subirAInterna({ aab: AAB, lanzar: args.includes('lanzar'), simular: args.includes('--simular') })
 }

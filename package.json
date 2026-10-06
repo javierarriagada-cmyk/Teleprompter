@@ -14,7 +14,9 @@
     "cap:build": "cap build android",
     "modelo": "node scripts/bajar-modelo.mjs",
     "apk": "node scripts/apk.mjs",
-    "play": "node scripts/play.mjs"
+    "play": "node scripts/play.mjs",
+    "ficha": "node scripts/ficha.mjs",
+    "calidad": "node scripts/calidad.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.1",
