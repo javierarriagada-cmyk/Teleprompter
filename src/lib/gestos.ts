@@ -70,10 +70,16 @@ export function decidirPreparar(r: RespuestaPreparar | null | undefined, negrosS
 
 // EL MODELO DE GESTOS A PEDIDO -tarea 104, PASO 2, 06-10-2026-.
 //
-// gesture_recognizer.task -8 MB- salió de la instalación de Play: va en un paquete a pedido y se baja,
-// sin avisos, la primera vez que alguien enciende Control por gestos. Mientras baja, la fila dice
-// "Preparando los gestos… 70 %" con una barra fina y el interruptor se ve encendido. Sin internet la
-// fila lo dice y el interruptor NO se enciende -lámina c-.
+// gesture_recognizer.task -8 MB- salió de la instalación de Play: va en un paquete a pedido y se baja
+// la primera vez que alguien enciende Control por gestos. Mientras baja, la fila dice "Preparando los
+// gestos… 70 %" con una barra fina y el interruptor se ve encendido. Sin internet la fila lo dice y el
+// interruptor NO se enciende -lámina c-.
+//
+// Diálogo de Play -opción B, Javier, 06-10-2026-: al encender el interruptor SÍ se muestra
+// showConfirmationDialog si Play pide Wi-Fi / datos -WAITING_FOR_WIFI o REQUIRES_USER_CONFIRMATION-,
+// igual que Empezar con la voz. Si dice que no, el interruptor queda apagado y la fila muestra el aviso
+// en el color normal -gestosRechazados-. No hay precarga silenciosa de gestos al abrir la app: no hay
+// otro camino que omita el diálogo.
 export type ResultadoModeloGestos = 'lista' | 'sin-conexion' | 'rechazada'
 
 export type EstadoModeloGestos =

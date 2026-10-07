@@ -25,7 +25,8 @@ import java.util.Collections;
  * Lo pide la precarga silenciosa al abrir la app -bajar con silencioso: true-, el del idioma de la
  * app, y asegurarVoz al apretar Empezar queda de respaldo. El modelo de gestos va en su propio paquete
  * a pedido -android/gestos- y se pide la primera vez que alguien enciende Control por gestos
- * -bajarGestos, rutaGestosSiEsta-. Lo que sigue, del inglés, vale ahora para los tres.
+ * -bajarGestos, rutaGestosSiEsta-, con el diálogo de Play si hace falta -opción B, igual que Empezar-.
+ * Lo que sigue, del inglés, vale ahora para los tres.
  *
  * EL MODELO INGLÉS SE PIDE A GOOGLE PLAY LA PRIMERA VEZ -tarea 84, D2, 29-09-2026-.
  *
@@ -79,6 +80,10 @@ final class PaqueteDeVoz {
         return archivo.isFile() ? archivo.getAbsolutePath() : null;
     }
 
+    // -tarea 104, Javier 06-10-2026- silencioso: false a propósito: encender Control por gestos es una
+    // acción explícita, como Empezar con la voz -opción B-. Si Play pide confirmación -Wi-Fi / datos-,
+    // sale showConfirmationDialog; si dice que no, llega RECHAZADA y la fila lo dice con el interruptor
+    // apagado. No hay precarga silenciosa de gestos al abrir la app.
     static void bajarGestos(Activity actividad, Context contexto, Aviso aviso) {
         bajarPaquete(actividad, contexto, PAQUETE_GESTOS, false, () -> rutaGestosSiEsta(contexto), aviso);
     }

@@ -231,9 +231,10 @@ dependencies {
     // es codigo compilado: no se baja nada y no se arma nada en tiempo de ejecucion.
     // -tarea 104- En la versión de Play el modelo ya no viaja en el APK: se baja de Play una vez, en
     // silencio, al abrir la app -PaqueteDeVoz-. En la APK de prueba, sí.
-    // JNA -tarea 104, sin cambiar-: se propone subir a 5.18.1@aar -la que pide vosk-android 0.3.75; la
-    // 5.13.0 llegó en c4b6384 sin motivo escrito y es anterior a los arreglos de 16 KB #1618 y #1647-.
-    // Espera la aprobación de Javier: ver el PR de la tarea 104.
+    // JNA -tarea 104, Javier 06-10-2026-: se deja 5.13.0. En arm64 el AAB ya midió libjnidispatch.so
+    // alineado a 64 KB, así que no hace falta subirla por el requisito de páginas de 16 KB. Se vuelve a
+    // mirar cuando se actualice Vosk: vosk-android 0.3.75 pide 5.18.1, pero el @aar se salta esa
+    // dependencia transitiva.
     implementation 'com.alphacephei:vosk-android:0.3.75@aar'
     implementation 'net.java.dev.jna:jna:5.13.0@aar'
 

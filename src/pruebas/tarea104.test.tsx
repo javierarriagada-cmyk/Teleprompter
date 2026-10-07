@@ -105,4 +105,21 @@ describe('Tarea 104 - La voz y los gestos a pedido', () => {
     expect(ok).toBe(true)
     expect(encender).toHaveBeenCalledTimes(1)
   })
+
+  // -tarea 104, Javier 06-10-2026- Opción B también en gestos: al encender el interruptor Play puede
+  // pedir confirmación -Wi-Fi / datos-; si dice que no, el interruptor queda apagado y la fila muestra
+  // el aviso -gestosRechazados-, igual que Empezar con la voz deja el aviso con Reintentar.
+  test('T104e Si dice que no al diálogo de Play, el interruptor de gestos queda apagado y se muestra el aviso.', async () => {
+    const estados: EstadoModeloGestos[] = []
+    const encender = vi.fn()
+    const encendido = await encenderGestos({
+      asegurar: async () => 'rechazada',
+      alCambiar: (e) => estados.push(e),
+      encender,
+      sigueQueriendo: () => true
+    })
+    expect(encendido).toBe(false)
+    expect(encender).not.toHaveBeenCalled()
+    expect(estados).toEqual([{ estado: 'rechazada' }])
+  })
 })
