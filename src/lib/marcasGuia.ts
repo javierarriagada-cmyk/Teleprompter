@@ -1,13 +1,13 @@
 // MARCAS DE GUÍA DE PRIMERA VEZ -tarea 105, PASO 2, 06-10-2026-.
 //
-// Tres marcas, una vez en la vida, máx. una por sesión. Cada una queda vista en
-// localStorage para siempre SOLO con «Entendido» o al usar el control señalado -mismo
-// try/catch que teleprompter_bienvenida_puesta-. Tocar afuera la cierra pero NO la gasta:
-// vuelve la próxima vez que se haga la acción. Si el componente se desmonta con la marca
-// a la vista, no queda vista y se libera la de la sesión.
+// Tres marcas, una vez en la vida cada una. Un usuario nuevo: la primera vez que
+// usa cada opción sale esa marca; si encuentra las tres en su primera sesión, en
+// las tres le sale. Nunca dos a la vista a la vez: si hay una abierta, la otra
+// espera a que se cierre; luego al hacer su acción sale.
 //
-// La de la sesión vive en memoria: si ya salió una, la siguiente espera -salvo que se
-// libere al desmontar o al tocar afuera-.
+// Cada una queda vista en localStorage para siempre SOLO con «Entendido» o al usar
+// el control señalado -mismo try/catch que teleprompter_bienvenida_puesta-. Tocar
+// afuera la cierra pero NO la gasta: vuelve la próxima vez que se haga la acción.
 //
 // La lógica es pura para probarla sin montar la UI. MarcaGuia solo dibuja.
 
@@ -26,21 +26,30 @@ const CLAVES: Record<IdMarcaGuia, string> = {
   palma: CLAVE_MARCA_PALMA
 }
 
-// Una sola marca por apertura de la app. No se persiste.
-let marcaEnSesion = false
+// Mientras hay una marca a la vista, no sale otra. No se persiste.
+// Antes: tope de «una marca por apertura/sesión» — al salir una quedaba true y
+// bloqueaba las demás aunque se hubiera cerrado con Entendido.
+let marcaALaVista = false
 
+export function hayMarcaALaVista(): boolean {
+  return marcaALaVista
+}
+
+// Antes: nombre hayMarcaEnSesion; el flag ya no es tope de sesión.
 export function hayMarcaEnSesion(): boolean {
-  return marcaEnSesion
+  return marcaALaVista
 }
 
 export function registrarMarcaEnSesion(): void {
-  marcaEnSesion = true
+  marcaALaVista = true
 }
 
-// Si se desmonta con la marca a la vista, o se toca afuera: no quedó vista; la sesión
-// vuelve a estar libre para que la marca pueda salir otra vez al repetir la acción.
+// Al cerrar (Entendido, afuera, usar el control o desmontar): libera para que otra
+// pueda salir al hacer su acción en la misma sesión.
+// Antes: solo se llamaba al desmontar o tocar afuera; con Entendido o al usar el
+// control no se liberaba y las demás quedaban bloqueadas.
 export function liberarMarcaEnSesion(): void {
-  marcaEnSesion = false
+  marcaALaVista = false
 }
 
 export function marcaYaVista(id: IdMarcaGuia): boolean {
@@ -59,9 +68,9 @@ export function marcarComoVista(id: IdMarcaGuia): void {
   } catch (e) {}
 }
 
-// Solo para las pruebas: deja la sesión y el almacenamiento como al abrir la app.
+// Solo para las pruebas: deja la marca a la vista y el almacenamiento como al abrir.
 export function reiniciarMarcasGuiaParaPruebas(): void {
-  marcaEnSesion = false
+  marcaALaVista = false
   try {
     localStorage.removeItem(CLAVE_MARCA_IDIOMA)
     localStorage.removeItem(CLAVE_MARCA_RECUADRO)
@@ -82,7 +91,7 @@ export function esGuionHola(
 }
 
 // Condiciones comunes: nunca sobre el Hola, ni durante lectura/toma, ni encima de aviso de
-// voz o diálogo de permiso, ni si ya salió otra en esta sesión.
+// voz o diálogo de permiso, ni si ya hay otra marca a la vista.
 export type CondicionesComunes = {
   idGuion?: string | null
   idsBloques?: Array<string | null | undefined> | null
@@ -96,7 +105,7 @@ export function condicionesComunesOk(c: CondicionesComunes): boolean {
   if (c.enLecturaOToma) return false
   if (c.hayAvisoVoz) return false
   if (c.hayDialogoPermiso) return false
-  if (hayMarcaEnSesion()) return false
+  if (marcaALaVista) return false
   return true
 }
 
@@ -152,12 +161,13 @@ export function debeMostrarMarcaPalma(opts: {
   return true
 }
 
-// Si puede salir: registra la sesión. NO la deja vista: eso solo con Entendido o el control.
-// Antes: marcarComoVista(id) al abrir.
+// Si puede salir: marca que hay una a la vista. NO la deja vista: eso solo con
+// Entendido o el control. Antes: marcarComoVista(id) al abrir; y el tope era de
+// sesión (no se liberaba con Entendido).
 export function abrirMarcaSiCorresponde(id: IdMarcaGuia, puede: boolean): boolean {
   if (!puede) return false
   if (marcaYaVista(id)) return false
-  if (hayMarcaEnSesion()) return false
+  if (marcaALaVista) return false
   registrarMarcaEnSesion()
   return true
 }

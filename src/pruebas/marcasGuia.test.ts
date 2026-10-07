@@ -6,6 +6,7 @@ import {
   debeMostrarMarcaPalma,
   debeMostrarMarcaRecuadro,
   esGuionHola,
+  hayMarcaALaVista,
   hayMarcaEnSesion,
   liberarMarcaEnSesion,
   marcaYaVista,
@@ -48,9 +49,11 @@ describe('marcasGuia', () => {
     ).toBe(true)
     expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
     expect(marcaYaVista('idioma')).toBe(false)
-    expect(hayMarcaEnSesion()).toBe(true)
+    expect(hayMarcaALaVista()).toBe(true)
     marcarComoVista('idioma')
+    liberarMarcaEnSesion()
     expect(marcaYaVista('idioma')).toBe(true)
+    expect(hayMarcaALaVista()).toBe(false)
     expect(
       debeMostrarMarcaIdioma({
         yaVista: marcaYaVista('idioma'),
@@ -63,23 +66,23 @@ describe('marcasGuia', () => {
     expect(abrirMarcaSiCorresponde('idioma', true)).toBe(false)
   })
 
-  test('desmontar con la marca a la vista no la marca como vista ni gasta la sesión', () => {
+  test('desmontar con la marca a la vista no la marca como vista ni deja otra bloqueada', () => {
     expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
     expect(marcaYaVista('idioma')).toBe(false)
-    expect(hayMarcaEnSesion()).toBe(true)
+    expect(hayMarcaALaVista()).toBe(true)
     liberarMarcaEnSesion()
     expect(marcaYaVista('idioma')).toBe(false)
-    expect(hayMarcaEnSesion()).toBe(false)
+    expect(hayMarcaALaVista()).toBe(false)
     expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
   })
 
   test('tocar afuera no la marca como vista', () => {
     expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
     expect(marcaYaVista('idioma')).toBe(false)
-    // Simula onCerrar('afuera'): libera sesión sin marcar vista.
+    // Simula onCerrar('afuera'): libera sin marcar vista.
     liberarMarcaEnSesion()
     expect(marcaYaVista('idioma')).toBe(false)
-    expect(hayMarcaEnSesion()).toBe(false)
+    expect(hayMarcaALaVista()).toBe(false)
     // Vuelve la próxima vez que se haga la acción.
     expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
   })
@@ -88,6 +91,7 @@ describe('marcasGuia', () => {
     expect(abrirMarcaSiCorresponde('recuadro', true)).toBe(true)
     expect(marcaYaVista('recuadro')).toBe(false)
     marcarComoVista('recuadro')
+    liberarMarcaEnSesion()
     expect(marcaYaVista('recuadro')).toBe(true)
     expect(abrirMarcaSiCorresponde('recuadro', true)).toBe(false)
 
@@ -98,7 +102,36 @@ describe('marcasGuia', () => {
     expect(abrirMarcaSiCorresponde('idioma', true)).toBe(false)
   })
 
-  test('una sola marca por sesión: la segunda espera', () => {
+  // Corrección Javier: cerrar idioma con Entendido y elegir Recuadro en la misma
+  // sesión → sale recuadro. Antes: tope de una por apertura bloqueaba la segunda.
+  test('cerrar idioma con Entendido y elegir Recuadro en la misma sesión → sale recuadro', () => {
+    const comunes = {
+      idGuion: 'g-1',
+      enLecturaOToma: false,
+      hayAvisoVoz: false,
+      hayDialogoPermiso: false
+    }
+    expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
+    // Entendido: gasta idioma y libera la a la vista.
+    marcarComoVista('idioma')
+    liberarMarcaEnSesion()
+    expect(marcaYaVista('idioma')).toBe(true)
+    expect(hayMarcaALaVista()).toBe(false)
+    expect(
+      debeMostrarMarcaRecuadro({
+        yaVista: false,
+        fondoEsRecuadro: true,
+        estadoListo: true,
+        yaArrastro: false,
+        ...comunes
+      })
+    ).toBe(true)
+    expect(abrirMarcaSiCorresponde('recuadro', true)).toBe(true)
+    expect(hayMarcaALaVista()).toBe(true)
+  })
+
+  // Con una a la vista no sale otra; al cerrarla (sin gastar) la siguiente puede.
+  test('con una a la vista no sale otra; al cerrarla la siguiente puede', () => {
     const comunes = {
       idGuion: 'g-1',
       enLecturaOToma: false,
@@ -116,6 +149,35 @@ describe('marcasGuia', () => {
       })
     ).toBe(false)
     expect(abrirMarcaSiCorresponde('recuadro', true)).toBe(false)
+    // Cierra idioma tocando afuera (no gasta).
+    liberarMarcaEnSesion()
+    expect(hayMarcaEnSesion()).toBe(false)
+    expect(
+      debeMostrarMarcaRecuadro({
+        yaVista: false,
+        fondoEsRecuadro: true,
+        estadoListo: true,
+        yaArrastro: false,
+        ...comunes
+      })
+    ).toBe(true)
+    expect(abrirMarcaSiCorresponde('recuadro', true)).toBe(true)
+  })
+
+  test('las tres pueden salir en la misma sesión si se cierran de a una', () => {
+    expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
+    marcarComoVista('idioma')
+    liberarMarcaEnSesion()
+    expect(abrirMarcaSiCorresponde('recuadro', true)).toBe(true)
+    marcarComoVista('recuadro')
+    liberarMarcaEnSesion()
+    expect(abrirMarcaSiCorresponde('palma', true)).toBe(true)
+    marcarComoVista('palma')
+    liberarMarcaEnSesion()
+    expect(marcaYaVista('idioma')).toBe(true)
+    expect(marcaYaVista('recuadro')).toBe(true)
+    expect(marcaYaVista('palma')).toBe(true)
+    expect(hayMarcaALaVista()).toBe(false)
   })
 
   test('no sale sobre el Hola', () => {

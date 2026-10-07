@@ -447,6 +447,8 @@ export default function TeleprompterView({
         setMarcaActiva(null)
         setAnclaMarcaEl(null)
       }
+      // Liberar: arrastrar gasta la marca y deja libre para otra en esta sesión.
+      liberarMarcaEnSesion()
     }
   }
   function cerrarMarcaActiva(motivo: 'entendido' | 'afuera') {
@@ -455,9 +457,10 @@ export default function TeleprompterView({
         marcarComoVista(marcaActiva)
       } else {
         // Antes: marcarComoVista(marcaActiva) también al tocar afuera.
-        liberarMarcaEnSesion()
       }
     }
+    // Antes: liberar solo con afuera/desmontar; Entendido dejaba el tope de sesión.
+    liberarMarcaEnSesion()
     setMarcaActiva(null)
     setAnclaMarcaEl(null)
   }
@@ -579,6 +582,7 @@ export default function TeleprompterView({
     if (marcaActiva !== 'palma') return
     if (gestosAlGrabar || pidiendoGestos) return
     marcarComoVista('palma')
+    liberarMarcaEnSesion()
     setMarcaActiva(null)
     setAnclaMarcaEl(null)
   }, [gestosAlGrabar, pidiendoGestos, marcaActiva])

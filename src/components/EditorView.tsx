@@ -359,8 +359,10 @@ export default function EditorView({
       marcarComoVista('idioma')
     } else {
       // Antes: marcarComoVista('idioma') también al tocar afuera.
-      liberarMarcaEnSesion()
     }
+    // Antes: liberar solo con afuera/desmontar; Entendido dejaba el tope de sesión
+    // y bloqueaba recuadro/palma en la misma apertura.
+    liberarMarcaEnSesion()
     setMarcaIdioma(null)
   }
 
@@ -368,6 +370,8 @@ export default function EditorView({
     hapticaSeleccion()
     // -tarea 105- Tocar ES/EN cuenta como marca vista, aunque no hubiera salido.
     marcarComoVista('idioma')
+    // Liberar por si la marca estaba a la vista: otra puede salir en esta sesión.
+    liberarMarcaEnSesion()
     setMarcaIdioma(null)
     onChangeGuion({
       ...guion,

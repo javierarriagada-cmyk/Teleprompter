@@ -240,5 +240,7 @@ export const en: Textos = {
   marcaGuiaIdioma: 'Sigo listens for your voice in this language. Tap it if your script is in another one.',
   marcaGuiaIdiomaDetectado: 'Your script is in {idioma}: Sigo will listen in {idioma}. Tap to change it.',
   marcaGuiaRecuadro: "Drag it where it won't cover you.",
+  // Antes: 'To resume, lower your hand and show your palm again: it counts down 3 seconds.'
+  // Why it changed: it only explained resume, not pause or stop talking.
   marcaGuiaPalma: 'To pause, stop talking and show your palm. To resume, lower your hand and show it again: it counts down 3 seconds.'
 }
