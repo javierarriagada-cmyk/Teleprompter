@@ -24,7 +24,10 @@ export default defineConfig(({ mode }) => ({
     environment: 'jsdom',
     globals: true,
     // Fija el idioma de la app en espanol antes de cada prueba -tarea 75-.
-    setupFiles: ['./src/pruebas/preparacion.ts']
+    setupFiles: ['./src/pruebas/preparacion.ts'],
+    // Solo las pruebas de src. Una carpeta vieja al lado no entra en la cuenta.
+    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+    exclude: ['node_modules', 'dist', '.claude']
   },
   plugins: [
     react(),
