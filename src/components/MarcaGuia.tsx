@@ -14,7 +14,8 @@ export type MarcaGuiaProps = {
   texto: string
   // Id del párrafo de la marca: el control anclado lo pone en aria-describedby.
   idDescripcion: string
-  onCerrar: () => void
+  // 'entendido' gasta la marca; 'afuera' solo la cierra -vuelve al repetir la acción-.
+  onCerrar: (motivo: 'entendido' | 'afuera') => void
   // Mano de línea limpia solo en la marca del recuadro; si no queda refinada se omite.
   conMano?: boolean
   alinear?: 'derecha' | 'izquierda'
@@ -66,15 +67,16 @@ export function MarcaGuia({
     }
   }, [anclaEl, alinear, texto, conMano])
 
-  // Tocar afuera -ni la burbuja ni el ancla- apaga para siempre. El ancla se deja pasar: usarlo
-  // también cuenta como cierre -lo marca quien cablea onCerrar al usar el control-.
+  // Tocar afuera -ni la burbuja ni el ancla- cierra sin gastar. El ancla se deja pasar: usarlo
+  // cuenta como cierre con vista -lo marca quien cablea al usar el control-.
+  // Antes: onCerrar() sin motivo; el padre marcaba vista también al tocar afuera.
   useEffect(() => {
     function fuera(e: Event) {
       const t = e.target as Node | null
       if (!t) return
       if (refBurbuja.current && refBurbuja.current.contains(t)) return
       if (anclaEl && anclaEl.contains(t)) return
-      onCerrarRef.current()
+      onCerrarRef.current('afuera')
     }
     // pointerdown: llega antes que el click del control; el ancla se excluye arriba.
     document.addEventListener('pointerdown', fuera, true)
@@ -119,7 +121,7 @@ export function MarcaGuia({
           type="button"
           className="boton-texto-ficha marca-guia-entendido"
           data-testid="marca-guia-entendido"
-          onClick={() => onCerrarRef.current()}
+          onClick={() => onCerrarRef.current('entendido')}
         >
           {t('entendido')}
         </button>

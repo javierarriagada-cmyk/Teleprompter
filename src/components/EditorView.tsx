@@ -267,7 +267,9 @@ export default function EditorView({
         modificado: Date.now()
       })
       // -tarea 105- Justo después de importar con «Abrir archivo».
-      queueMicrotask(() => intentarMarcaIdioma('pegar'))
+      // El guion del props aún no se actualizó: se cuentan las palabras del texto nuevo.
+      const palabrasImport = textoNuevo.trim().split(/\s+/).filter(Boolean).length
+      queueMicrotask(() => intentarMarcaIdioma('pegar', palabrasImport))
     } catch (err: any) {
       // El detalle de importarArchivo -en espanol, capa de datos- va a la consola; en la
       // pantalla, la frase en el idioma de la app.
@@ -326,13 +328,24 @@ export default function EditorView({
 
   // -tarea 105- Intenta sacar la marca de idioma. disparo 'pegar' = pegar/importar;
   // 'blur' exige ≥12 palabras -mismo umbral que detectarIdioma-.
-  function intentarMarcaIdioma(disparo: 'pegar' | 'blur') {
+  function intentarMarcaIdioma(disparo: 'pegar' | 'blur', palabrasOverride?: number) {
+    // Tras pegar, el guion del props puede estar viejo: se lee el editor o el override.
+    let palabras = palabrasOverride
+    if (palabras === undefined) {
+      if (disparo === 'pegar' && editorRef.current) {
+        const texto = editorRef.current.getText()
+        palabras = texto.trim() ? texto.trim().split(/\s+/).filter(Boolean).length : 0
+      } else {
+        palabras = contarPalabras(guion)
+      }
+    }
     const puede = debeMostrarMarcaIdioma({
       yaVista: marcaYaVista('idioma'),
       disparo,
-      palabras: contarPalabras(guion),
+      palabras,
       umbralPalabras: PALABRAS_MINIMAS_PARA_DETECTAR,
       idGuion: guion.id,
+      idsBloques: (guion.bloques || []).map((b) => b.id),
       enLecturaOToma: false,
       hayAvisoVoz: false,
       hayDialogoPermiso: false
@@ -341,8 +354,13 @@ export default function EditorView({
     setMarcaIdioma(idiomaAutoCambiadoRef.current ? 'detectado' : 'base')
   }
 
-  function cerrarMarcaIdioma() {
-    marcarComoVista('idioma')
+  function cerrarMarcaIdioma(motivo: 'entendido' | 'afuera') {
+    if (motivo === 'entendido') {
+      marcarComoVista('idioma')
+    } else {
+      // Antes: marcarComoVista('idioma') también al tocar afuera.
+      liberarMarcaEnSesion()
+    }
     setMarcaIdioma(null)
   }
 

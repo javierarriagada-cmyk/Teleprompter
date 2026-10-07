@@ -19,15 +19,18 @@ describe('marcasGuia', () => {
     reiniciarMarcasGuiaParaPruebas()
   })
 
-  test('el Hola se reconoce por id de guion bienvenida-, no por b-bienvenida-1', () => {
+  test('el Hola se reconoce por id bienvenida- y por el molde b-bienvenida-1', () => {
     expect(esGuionHola('bienvenida-123')).toBe(true)
     expect(esGuionHola('bienvenida-')).toBe(true)
+    // El id de bloque solo, pasado como id de guion, no alcanza.
     expect(esGuionHola('b-bienvenida-1')).toBe(false)
-    expect(esGuionHola('g-otro')).toBe(false)
+    // El molde en los bloques sí identifica al Hola.
+    expect(esGuionHola('g-copiado', ['b-bienvenida-1'])).toBe(true)
+    expect(esGuionHola('g-otro', ['b-otro'])).toBe(false)
     expect(esGuionHola(null)).toBe(false)
   })
 
-  test('cada marca sale una vez y no vuelve', () => {
+  test('cada marca sale una vez y no vuelve tras Entendido', () => {
     const comunes = {
       idGuion: 'g-1',
       enLecturaOToma: false,
@@ -44,12 +47,10 @@ describe('marcasGuia', () => {
       })
     ).toBe(true)
     expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
-    // Abrir reserva la sesión pero NO la deja vista -solo al cerrar-.
     expect(marcaYaVista('idioma')).toBe(false)
     expect(hayMarcaEnSesion()).toBe(true)
     marcarComoVista('idioma')
     expect(marcaYaVista('idioma')).toBe(true)
-    // Ya vista: no vuelve.
     expect(
       debeMostrarMarcaIdioma({
         yaVista: marcaYaVista('idioma'),
@@ -66,21 +67,35 @@ describe('marcasGuia', () => {
     expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
     expect(marcaYaVista('idioma')).toBe(false)
     expect(hayMarcaEnSesion()).toBe(true)
-    // Simula el cleanup al desmontar EditorView / TeleprompterView con la marca abierta.
     liberarMarcaEnSesion()
     expect(marcaYaVista('idioma')).toBe(false)
     expect(hayMarcaEnSesion()).toBe(false)
-    // Puede volver a salir -otro día, o otra marca en esta apertura-.
     expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
   })
 
-  test('cerrarla con Entendido sí la marca como vista', () => {
+  test('tocar afuera no la marca como vista', () => {
+    expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
+    expect(marcaYaVista('idioma')).toBe(false)
+    // Simula onCerrar('afuera'): libera sesión sin marcar vista.
+    liberarMarcaEnSesion()
+    expect(marcaYaVista('idioma')).toBe(false)
+    expect(hayMarcaEnSesion()).toBe(false)
+    // Vuelve la próxima vez que se haga la acción.
+    expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
+  })
+
+  test('Entendido y el control sí la marcan como vista', () => {
     expect(abrirMarcaSiCorresponde('recuadro', true)).toBe(true)
     expect(marcaYaVista('recuadro')).toBe(false)
-    // Entendido / tocar afuera / usar el control → marcarComoVista.
     marcarComoVista('recuadro')
     expect(marcaYaVista('recuadro')).toBe(true)
     expect(abrirMarcaSiCorresponde('recuadro', true)).toBe(false)
+
+    reiniciarMarcasGuiaParaPruebas()
+    // Usar el control sin haber abierto: también gasta.
+    marcarComoVista('idioma')
+    expect(marcaYaVista('idioma')).toBe(true)
+    expect(abrirMarcaSiCorresponde('idioma', true)).toBe(false)
   })
 
   test('una sola marca por sesión: la segunda espera', () => {
@@ -91,7 +106,6 @@ describe('marcasGuia', () => {
       hayDialogoPermiso: false
     }
     expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
-    // Otra marca distinta: la sesión ya gastó su cupo.
     expect(
       debeMostrarMarcaRecuadro({
         yaVista: false,
@@ -107,7 +121,6 @@ describe('marcasGuia', () => {
   test('no sale sobre el Hola', () => {
     const base = {
       yaVista: false,
-      idGuion: 'bienvenida-99',
       enLecturaOToma: false,
       hayAvisoVoz: false,
       hayDialogoPermiso: false
@@ -115,6 +128,17 @@ describe('marcasGuia', () => {
     expect(
       debeMostrarMarcaIdioma({
         ...base,
+        idGuion: 'bienvenida-99',
+        disparo: 'pegar',
+        palabras: 20,
+        umbralPalabras: PALABRAS_MINIMAS_PARA_DETECTAR
+      })
+    ).toBe(false)
+    expect(
+      debeMostrarMarcaIdioma({
+        ...base,
+        idGuion: 'g-copiado',
+        idsBloques: ['b-bienvenida-1'],
         disparo: 'pegar',
         palabras: 20,
         umbralPalabras: PALABRAS_MINIMAS_PARA_DETECTAR
@@ -123,6 +147,7 @@ describe('marcasGuia', () => {
     expect(
       debeMostrarMarcaRecuadro({
         ...base,
+        idGuion: 'bienvenida-1',
         fondoEsRecuadro: true,
         estadoListo: true,
         yaArrastro: false
@@ -131,12 +156,27 @@ describe('marcasGuia', () => {
     expect(
       debeMostrarMarcaPalma({
         ...base,
+        idGuion: 'g-x',
+        idsBloques: ['b-bienvenida-1'],
         gestosEncendidos: true,
         motivoSinGestos: null,
         modeloBajando: false,
         pidiendoGestos: false
       })
     ).toBe(false)
+  })
+
+  test('pegado vacío no saca la marca de idioma', () => {
+    const comunes = {
+      yaVista: false,
+      idGuion: 'g-1',
+      enLecturaOToma: false,
+      hayAvisoVoz: false,
+      hayDialogoPermiso: false,
+      umbralPalabras: PALABRAS_MINIMAS_PARA_DETECTAR
+    }
+    expect(debeMostrarMarcaIdioma({ ...comunes, disparo: 'pegar', palabras: 0 })).toBe(false)
+    expect(debeMostrarMarcaIdioma({ ...comunes, disparo: 'pegar', palabras: 1 })).toBe(true)
   })
 
   test('no sale si ya eligió idioma a mano -marca vista sin abrir-', () => {
@@ -155,7 +195,7 @@ describe('marcasGuia', () => {
     ).toBe(false)
   })
 
-  test('idioma en blur exige el umbral de 12 palabras; pegar no', () => {
+  test('idioma en blur exige el umbral de 12 palabras; pegar con texto sí', () => {
     const comunes = {
       yaVista: false,
       idGuion: 'g-1',
@@ -208,7 +248,6 @@ describe('marcasGuia', () => {
   })
 
   test('se apaga al tocar el control señalado: marcarComoVista deja de mostrar', () => {
-    // Simula usar ES/EN, arrastrar recuadro o el interruptor: queda vista sin haber abierto.
     for (const id of ['idioma', 'recuadro', 'palma'] as const) {
       reiniciarMarcasGuiaParaPruebas()
       marcarComoVista(id)

@@ -449,8 +449,15 @@ export default function TeleprompterView({
       }
     }
   }
-  function cerrarMarcaActiva() {
-    if (marcaActiva) marcarComoVista(marcaActiva)
+  function cerrarMarcaActiva(motivo: 'entendido' | 'afuera') {
+    if (marcaActiva) {
+      if (motivo === 'entendido') {
+        marcarComoVista(marcaActiva)
+      } else {
+        // Antes: marcarComoVista(marcaActiva) también al tocar afuera.
+        liberarMarcaEnSesion()
+      }
+    }
     setMarcaActiva(null)
     setAnclaMarcaEl(null)
   }
@@ -498,6 +505,7 @@ export default function TeleprompterView({
     if (marcaActiva) return
     const comunes = {
       idGuion: guionObj.id,
+      idsBloques: (guionObj.bloques || []).map((b) => b.id),
       enLecturaOToma: estadoToma !== 'listo',
       hayAvisoVoz: !!avisoVoz || hayAvisoDescargaVoz,
       hayDialogoPermiso
@@ -535,6 +543,7 @@ export default function TeleprompterView({
     const modeloBajando = !!(modeloGestos && modeloGestos.estado === 'bajando')
     const comunes = {
       idGuion: guionObj.id,
+      idsBloques: (guionObj.bloques || []).map((b) => b.id),
       enLecturaOToma: estadoToma !== 'listo',
       hayAvisoVoz: !!avisoVoz || hayAvisoDescargaVoz,
       hayDialogoPermiso

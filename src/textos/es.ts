@@ -258,7 +258,7 @@ export const es = {
   // {idioma} es idiomaEs / idiomaEn -minúscula en español-.
   marcaGuiaIdiomaDetectado: 'Tu guion está en {idioma}: Sigo te escuchará en {idioma}. Toca para cambiarlo.',
   marcaGuiaRecuadro: 'Arrástralo a donde no te tape.',
-  marcaGuiaPalma: 'Para seguir, baja la mano y vuelve a mostrar la palma: cuenta 3 segundos.'
+  marcaGuiaPalma: 'Para pausar, deja de hablar y muestra la palma. Para seguir, baja la mano y muéstrala de nuevo: cuenta 3 segundos.'
 }
 
 export type ClaveTexto = keyof typeof es
