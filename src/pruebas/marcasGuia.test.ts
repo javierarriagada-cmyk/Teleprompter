@@ -181,7 +181,7 @@ describe('marcasGuia', () => {
     expect(hayMarcaALaVista()).toBe(false)
   })
 
-  test('no sale sobre el Hola', () => {
+  test('el Hola bloquea solo la del idioma; recuadro y palma salen', () => {
     const base = {
       yaVista: false,
       enLecturaOToma: false,
@@ -215,7 +215,7 @@ describe('marcasGuia', () => {
         estadoListo: true,
         yaArrastro: false
       })
-    ).toBe(false)
+    ).toBe(true)
     expect(
       debeMostrarMarcaPalma({
         ...base,
@@ -226,7 +226,7 @@ describe('marcasGuia', () => {
         modeloBajando: false,
         pidiendoGestos: false
       })
-    ).toBe(false)
+    ).toBe(true)
   })
 
   test('pegado vacío no saca la marca de idioma', () => {

@@ -107,8 +107,9 @@ export function esGuionHola(
   return false
 }
 
-// Condiciones comunes: nunca sobre el Hola, ni durante lectura/toma, ni encima de aviso de
-// voz o diálogo de permiso, ni si ya hay otra marca a la vista.
+// Condiciones comunes: ni durante lectura/toma, ni encima de aviso de voz o diálogo de
+// permiso, ni si ya hay otra marca a la vista.
+// Antes: también rechazaban el Hola. Eso solo tiene sentido para la marca del idioma.
 export type CondicionesComunes = {
   idGuion?: string | null
   idsBloques?: Array<string | null | undefined> | null
@@ -118,7 +119,6 @@ export type CondicionesComunes = {
 }
 
 export function condicionesComunesOk(c: CondicionesComunes): boolean {
-  if (esGuionHola(c.idGuion, c.idsBloques)) return false
   if (c.enLecturaOToma) return false
   if (c.hayAvisoVoz) return false
   if (c.hayDialogoPermiso) return false
@@ -137,6 +137,7 @@ export function debeMostrarMarcaIdioma(opts: {
   umbralPalabras: number
 } & CondicionesComunes): boolean {
   if (opts.yaVista) return false
+  if (esGuionHola(opts.idGuion, opts.idsBloques)) return false
   if (!condicionesComunesOk(opts)) return false
   // Pegar/importar sin texto: no sale.
   if (opts.disparo === 'pegar' && opts.palabras < 1) return false
