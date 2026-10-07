@@ -12,6 +12,7 @@ import {
   abrirMarcaSiCorresponde,
   debeMostrarMarcaPalma,
   debeMostrarMarcaRecuadro,
+  liberarMarcaEnSesion,
   marcarComoVista,
   marcaYaVista
 } from '../lib/marcasGuia'
@@ -453,6 +454,16 @@ export default function TeleprompterView({
     setMarcaActiva(null)
     setAnclaMarcaEl(null)
   }
+  const marcaActivaRef = useRef(marcaActiva)
+  marcaActivaRef.current = marcaActiva
+  // Si se sale de Grabar con la marca a la vista: no queda vista; se libera la sesión.
+  useEffect(() => {
+    return () => {
+      if (marcaActivaRef.current) {
+        liberarMarcaEnSesion()
+      }
+    }
+  }, [])
   // 28-09-2026, tarea 77: el cajon panel-ajustes-toma y el engranaje de LISTO
   // se fueron. Queda panelFicha: un panel chico a la vez, pegado a su ficha.
   // panelTomaAbierto era el cajon entero, y se cerraba tambien arrastrandolo

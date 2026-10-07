@@ -4,7 +4,7 @@ import { Guion, Bloque, TramoFormato, ResumenGrabacion, contarPalabras, duracion
 import { consolidarGuion } from '../datos/consolidar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { hapticaSeleccion } from '../haptica'
-import { movimientoApagado, MS_DEDO, MS_CHICO, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
+import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANTALLA, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
 import { IconoEmpezar } from './IconosApp'
 import { EditorCabecera } from './EditorCabecera'
 import { BarraEditorVacio } from './BarraEditorVacio'
@@ -16,6 +16,7 @@ import { detectarIdioma, PALABRAS_MINIMAS_PARA_DETECTAR } from '../lib/detectarI
 import {
   abrirMarcaSiCorresponde,
   debeMostrarMarcaIdioma,
+  liberarMarcaEnSesion,
   marcarComoVista,
   marcaYaVista
 } from '../lib/marcasGuia'
@@ -161,10 +162,29 @@ export default function EditorView({
   const idiomaBtnRef = useRef<HTMLButtonElement | null>(null)
   // Si idiomaSegunTexto acaba de cambiar el idioma, la marca usa el texto 1-bis.
   const idiomaAutoCambiadoRef = useRef(false)
+  const montadoEditorRef = useRef(true)
+  const marcaIdiomaRef = useRef(marcaIdioma)
+  marcaIdiomaRef.current = marcaIdioma
+  const blurMarcaTimerRef = useRef<number | null>(null)
   useLayoutEffect(() => {
     if (marcaIdioma) setIdiomaAnclaEl(idiomaBtnRef.current)
     else setIdiomaAnclaEl(null)
   }, [marcaIdioma])
+  // Si se desmonta con la marca a la vista: no queda vista y se libera la de la sesión.
+  // El disparo blur espera MS_PANTALLA y se cancela aquí si ya no hay editor.
+  useEffect(() => {
+    montadoEditorRef.current = true
+    return () => {
+      montadoEditorRef.current = false
+      if (blurMarcaTimerRef.current != null) {
+        window.clearTimeout(blurMarcaTimerRef.current)
+        blurMarcaTimerRef.current = null
+      }
+      if (marcaIdiomaRef.current) {
+        liberarMarcaEnSesion()
+      }
+    }
+  }, [])
   const [barraLeerVisible, setBarraLeerVisible] = useState(true)
   const ultimoScrollTopRef = useRef<number>(0)
   const timerScrollStopRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -505,8 +525,18 @@ export default function EditorView({
         onFocus={() => setTextoEnfocado(true)}
         onBlur={() => {
           setTextoEnfocado(false)
-          // -tarea 105- Teclado cerrado y guion con ≥12 palabras.
-          intentarMarcaIdioma('blur')
+          // -tarea 105- Teclado cerrado y guion con ≥12 palabras. Espera lo que dura el
+          // cambio de pantalla: el toque que quita el foco suele ser Leer/Grabar/«‹ Guiones»
+          // y desmonta el editor; si ya no estamos montados, no sale la marca.
+          // Antes: intentarMarcaIdioma('blur') al tiro.
+          if (blurMarcaTimerRef.current != null) {
+            window.clearTimeout(blurMarcaTimerRef.current)
+          }
+          blurMarcaTimerRef.current = window.setTimeout(() => {
+            blurMarcaTimerRef.current = null
+            if (!montadoEditorRef.current) return
+            intentarMarcaIdioma('blur')
+          }, MS_PANTALLA)
         }}
       >
         {/* Controles de formato: SOLO SI HAY TEXTO SELECCIONADO */}

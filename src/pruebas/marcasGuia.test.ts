@@ -7,6 +7,7 @@ import {
   debeMostrarMarcaRecuadro,
   esGuionHola,
   hayMarcaEnSesion,
+  liberarMarcaEnSesion,
   marcaYaVista,
   marcarComoVista,
   reiniciarMarcasGuiaParaPruebas
@@ -43,8 +44,11 @@ describe('marcasGuia', () => {
       })
     ).toBe(true)
     expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
-    expect(marcaYaVista('idioma')).toBe(true)
+    // Abrir reserva la sesión pero NO la deja vista -solo al cerrar-.
+    expect(marcaYaVista('idioma')).toBe(false)
     expect(hayMarcaEnSesion()).toBe(true)
+    marcarComoVista('idioma')
+    expect(marcaYaVista('idioma')).toBe(true)
     // Ya vista: no vuelve.
     expect(
       debeMostrarMarcaIdioma({
@@ -56,6 +60,27 @@ describe('marcasGuia', () => {
       })
     ).toBe(false)
     expect(abrirMarcaSiCorresponde('idioma', true)).toBe(false)
+  })
+
+  test('desmontar con la marca a la vista no la marca como vista ni gasta la sesión', () => {
+    expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
+    expect(marcaYaVista('idioma')).toBe(false)
+    expect(hayMarcaEnSesion()).toBe(true)
+    // Simula el cleanup al desmontar EditorView / TeleprompterView con la marca abierta.
+    liberarMarcaEnSesion()
+    expect(marcaYaVista('idioma')).toBe(false)
+    expect(hayMarcaEnSesion()).toBe(false)
+    // Puede volver a salir -otro día, o otra marca en esta apertura-.
+    expect(abrirMarcaSiCorresponde('idioma', true)).toBe(true)
+  })
+
+  test('cerrarla con Entendido sí la marca como vista', () => {
+    expect(abrirMarcaSiCorresponde('recuadro', true)).toBe(true)
+    expect(marcaYaVista('recuadro')).toBe(false)
+    // Entendido / tocar afuera / usar el control → marcarComoVista.
+    marcarComoVista('recuadro')
+    expect(marcaYaVista('recuadro')).toBe(true)
+    expect(abrirMarcaSiCorresponde('recuadro', true)).toBe(false)
   })
 
   test('una sola marca por sesión: la segunda espera', () => {

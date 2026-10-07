@@ -1,8 +1,12 @@
 // MARCAS DE GUÍA DE PRIMERA VEZ -tarea 105, PASO 2, 06-10-2026-.
 //
-// Tres marcas, una vez en la vida, máx. una por sesión. Cada una vista se guarda en
-// localStorage para siempre -mismo try/catch que teleprompter_bienvenida_puesta-. La de la
-// sesión vive en memoria: si ya salió una, la siguiente espera a la próxima apertura.
+// Tres marcas, una vez en la vida, máx. una por sesión. Cada una queda vista en
+// localStorage para siempre SOLO cuando la persona la cierra -Entendido, tocar afuera o
+// usar el control-; mismo try/catch que teleprompter_bienvenida_puesta. Si el componente
+// se desmonta con la marca a la vista, no queda vista y se libera la de la sesión.
+//
+// La de la sesión vive en memoria: si ya salió una, la siguiente espera a la próxima
+// apertura -salvo que se libere al desmontar sin cerrar-.
 //
 // La lógica es pura para probarla sin montar la UI. MarcaGuia solo dibuja.
 
@@ -29,6 +33,12 @@ export function registrarMarcaEnSesion(): void {
   marcaEnSesion = true
 }
 
+// Si se desmonta con la marca a la vista: no quedó vista; la sesión vuelve a estar libre
+// para que pueda salir otro día -o otra marca en esta misma apertura-.
+export function liberarMarcaEnSesion(): void {
+  marcaEnSesion = false
+}
+
 export function marcaYaVista(id: IdMarcaGuia): boolean {
   try {
     return localStorage.getItem(CLAVES[id]) === 'true'
@@ -37,8 +47,8 @@ export function marcaYaVista(id: IdMarcaGuia): boolean {
   }
 }
 
-// Queda vista para siempre: al salir la marca, o si la persona ya usó el control -ES/EN,
-// arrastrar el recuadro, interruptor de gestos- sin que hubiera salido.
+// Queda vista para siempre: al cerrar la marca -Entendido, afuera o usar el control-, o si
+// la persona ya usó el control -ES/EN, arrastrar el recuadro- sin que hubiera salido.
 export function marcarComoVista(id: IdMarcaGuia): void {
   try {
     localStorage.setItem(CLAVES[id], 'true')
@@ -129,12 +139,14 @@ export function debeMostrarMarcaPalma(opts: {
   return true
 }
 
-// Si puede salir: registra la sesión y la deja vista para siempre -una vez en la vida-.
+// Si puede salir: registra la sesión. NO la deja vista: eso solo al cerrar -Entendido, afuera
+// o usar el control-. Antes: marcarComoVista(id) al abrir; con el disparo blur el toque que
+// quitaba el foco -Leer, Grabar, «‹ Guiones»- desmontaba el editor y la marca quedaba vista
+// para siempre sin que nadie la leyera.
 export function abrirMarcaSiCorresponde(id: IdMarcaGuia, puede: boolean): boolean {
   if (!puede) return false
   if (marcaYaVista(id)) return false
   if (hayMarcaEnSesion()) return false
   registrarMarcaEnSesion()
-  marcarComoVista(id)
   return true
 }

@@ -237,8 +237,8 @@ export const en: Textos = {
   menosOpciones: 'Fewer options',
   // First-time guide marks -tarea 105, PASO 2-.
   entendido: 'Got it',
-  marcaGuiaIdioma: 'Sigo listens to your voice in this language. Tap it if your script is in another.',
+  marcaGuiaIdioma: 'Sigo listens for your voice in this language. Tap it if your script is in another one.',
   marcaGuiaIdiomaDetectado: 'Your script is in {idioma}: Sigo will listen in {idioma}. Tap to change it.',
   marcaGuiaRecuadro: "Drag it where it won't cover you.",
-  marcaGuiaPalma: 'To resume, lower your hand and show your palm again: it counts 3 seconds.'
+  marcaGuiaPalma: 'To resume, lower your hand and show your palm again: it counts down 3 seconds.'
 }

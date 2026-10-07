@@ -154,7 +154,7 @@ function ManoArrastre({ className }: { className?: string }) {
       <path d="M28 20 V10" />
       {/* Pulgar */}
       <path d="M14 24 L6 18" />
-      {/* Flecha de arrastre hacia abajo-derecha */}
+      {/* Flecha de arrastre hacia abajo-izquierda */}
       <path d="M14 34 L4 42" />
       <path d="M4 42 L12 41" />
       <path d="M4 42 L5 34" />
