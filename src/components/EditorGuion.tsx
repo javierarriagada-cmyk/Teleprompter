@@ -96,7 +96,8 @@ export function EditorGuion({
   colorFondo,
   colorLetra,
   columnaAngosta,
-  marginPercent
+  marginPercent,
+  onPegado
 }: {
   texto: string
   tramos: TramoFormato[]
@@ -110,11 +111,15 @@ export function EditorGuion({
   colorLetra: string
   columnaAngosta: boolean
   marginPercent: number
+  // -tarea 105- Aviso al pegar a mano: dispara la marca de idioma.
+  onPegado?: () => void
 }) {
   const onCambioRef = useRef(onCambio)
   onCambioRef.current = onCambio
   const onSeleccionRef = useRef(onSeleccion)
   onSeleccionRef.current = onSeleccion
+  const onPegadoRef = useRef(onPegado)
+  onPegadoRef.current = onPegado
 
   const editor = useEditor({
     extensions: [
@@ -153,6 +158,11 @@ export function EditorGuion({
           esquema.nodes.paragraph.create(null, linea ? esquema.text(linea) : null)
         )
         return new Slice(Fragment.from(parrafos), 1, 1)
+      },
+      // -tarea 105- Pegar a mano en el editor: avisa para la marca de idioma.
+      handlePaste(_vista, _evento, _trozo) {
+        onPegadoRef.current?.()
+        return false
       },
       attributes: {
         'data-testid': 'editor-guion',

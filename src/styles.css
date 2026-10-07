@@ -2299,3 +2299,88 @@ button.btn-deformable.miniatura-banda:not(:active) {
   font-size: 13px;
   font-weight: 700;
 }
+
+/* MARCAS DE GUÍA -tarea 105, PASO 2, 06-10-2026-. Burbuja opaca con sombra suave redondeada
+   (NO blur/rectángulo duro) y flecha hacia el control. Tipografía Source Sans -hereda del body-.
+   Oscuro: burbuja #383432 (--bg-menu), texto #E7E1DE. Claro: burbuja #FAF9F6 (--bg-fila), no el
+   --bg-menu blanco del tema claro. Sin título: solo texto + Entendido (.boton-texto-ficha). */
+.marca-guia {
+  z-index: 1100;
+  max-width: min(280px, calc(100vw - 24px));
+  padding: 14px 16px 8px;
+  border-radius: 12px;
+  background: #383432;
+  color: #E7E1DE;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+  box-sizing: border-box;
+  font-family: "Source Sans 3", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: 400;
+}
+[data-tema="claro"] .marca-guia {
+  background: #FAF9F6;
+  color: #1A1815;
+  box-shadow: 0 4px 18px rgba(26, 24, 21, 0.14);
+}
+.marca-guia-cuerpo {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.marca-guia-mano {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.marca-guia-texto {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+.marca-guia-entendido {
+  /* Antes: .boton-texto-ficha trae margin-top 12px y padding 8px 0. Aquí el mínimo táctil es 48 dp
+     y alinea a la derecha, sin lila/azul. */
+  display: block;
+  margin-top: 4px;
+  margin-left: auto;
+  min-height: 48px;
+  min-width: 48px;
+  padding: 12px 4px;
+  color: inherit;
+  cursor: pointer;
+}
+.marca-guia-flecha {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: inherit;
+  transform: rotate(45deg);
+  box-shadow: none;
+}
+/* Abajo del ancla: flecha en el borde de arriba, apuntando al control. */
+.marca-guia-abajo .marca-guia-flecha {
+  top: -6px;
+  right: 20px;
+  box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.06);
+}
+/* Arriba del ancla: flecha en el borde de abajo. */
+.marca-guia-arriba .marca-guia-flecha {
+  bottom: -6px;
+  right: 20px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.08);
+}
+[data-tema="claro"] .marca-guia-abajo .marca-guia-flecha {
+  box-shadow: -2px -2px 4px rgba(26, 24, 21, 0.04);
+}
+[data-tema="claro"] .marca-guia-arriba .marca-guia-flecha {
+  box-shadow: 2px 2px 4px rgba(26, 24, 21, 0.06);
+}
+@keyframes marcaGuiaEntra {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marca-guia {
+    animation: none !important;
+  }
+}

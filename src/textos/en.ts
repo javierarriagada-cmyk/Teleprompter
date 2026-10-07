@@ -234,5 +234,11 @@ export const en: Textos = {
   nombreCampoTitulo: 'Script title',
   // The arrow of the Record chips, for screen readers -tarea 93, 05-10-2026-.
   masOpciones: 'More options',
-  menosOpciones: 'Fewer options'
+  menosOpciones: 'Fewer options',
+  // First-time guide marks -tarea 105, PASO 2-.
+  entendido: 'Got it',
+  marcaGuiaIdioma: 'Sigo listens to your voice in this language. Tap it if your script is in another.',
+  marcaGuiaIdiomaDetectado: 'Your script is in {idioma}: Sigo will listen in {idioma}. Tap to change it.',
+  marcaGuiaRecuadro: "Drag it where it won't cover you.",
+  marcaGuiaPalma: 'To resume, lower your hand and show your palm again: it counts 3 seconds.'
 }

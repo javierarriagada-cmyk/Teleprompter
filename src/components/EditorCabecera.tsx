@@ -13,6 +13,9 @@ interface EditorCabeceraProps {
   onAlternarIdioma: () => void
   onAbrirAjustes: () => void
   editorRef?: React.RefObject<Editor | null>
+  // -tarea 105- Ancla de la marca de guía del idioma y su descripción.
+  idiomaBtnRef?: React.Ref<HTMLButtonElement>
+  idiomaDescribedBy?: string
 }
 
 export function EditorCabecera({
@@ -22,7 +25,9 @@ export function EditorCabecera({
   nombreIdioma,
   onAlternarIdioma,
   onAbrirAjustes,
-  editorRef
+  editorRef,
+  idiomaBtnRef,
+  idiomaDescribedBy
 }: EditorCabeceraProps) {
   return (
     /* Fila superior discreta: a la izquierda ‹ Guiones, a la derecha Aa */
@@ -63,11 +68,13 @@ export function EditorCabecera({
       <div className="fila-editor-derecha">
         <button
           type="button"
+          ref={idiomaBtnRef}
           onClick={onAlternarIdioma}
           className="btn-deformable boton-aa boton-idioma-guion"
           data-testid="btn-idioma-guion"
           data-idioma={idiomaGuion}
           aria-label={t('idiomaDelGuion', { idioma: nombreIdioma })}
+          aria-describedby={idiomaDescribedBy}
           title={t('idiomaDelGuion', { idioma: nombreIdioma })}
         >
           {idiomaGuion.toUpperCase()}

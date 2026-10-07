@@ -2709,6 +2709,10 @@ export default function App({ motor, repoOverride }: AppProps) {
               modeloGestos={modeloGestos}
               pidiendoGestos={pidiendoGestos}
               avisoVoz={avisoVoz}
+              hayDialogoPermiso={mostrarDialogoMicrofono || mostrarDialogoCamara}
+              hayAvisoDescargaVoz={
+                !!(descargaVoz && (descargaVoz.estado === 'descargando' || descargaVoz.estado === 'error'))
+              }
             />
             {/* EL RELEVO del texto chico de la tarjeta al texto grande de la lectura.
                 Es un velo del mismo color de fondo que se desvanece por encima, NO un

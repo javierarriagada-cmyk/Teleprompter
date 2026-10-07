@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Guion, Bloque, TramoFormato, ResumenGrabacion, contarPalabras, duracionDeLectura, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
 import { consolidarGuion } from '../datos/consolidar'
@@ -12,7 +12,14 @@ import { BarraLeerGrabar } from './BarraLeerGrabar'
 import { EditorGuion } from './EditorGuion'
 import type { Editor } from '@tiptap/react'
 import { t, useTextos, numeroLocal, TITULO_SIN_NOMBRE, ClaveTexto } from '../textos'
-import { detectarIdioma } from '../lib/detectarIdioma'
+import { detectarIdioma, PALABRAS_MINIMAS_PARA_DETECTAR } from '../lib/detectarIdioma'
+import {
+  abrirMarcaSiCorresponde,
+  debeMostrarMarcaIdioma,
+  marcarComoVista,
+  marcaYaVista
+} from '../lib/marcasGuia'
+import { MarcaGuia } from './MarcaGuia'
 
 // reubicarTramos vivia aca: con el <textarea>, cada tecla llegaba como un
 // texto nuevo entero y habia que adivinar donde habia quedado cada marca
@@ -148,6 +155,16 @@ export default function EditorView({
   // El texto del guion tiene el foco -tarea 76-: mientras se escribe, en el título o en el
   // texto, la banda de tomas se esconde para devolverle el espacio al texto y al teclado.
   const [textoEnfocado, setTextoEnfocado] = useState(false)
+  // -tarea 105- Marca de guía del idioma: 'base' o 'detectado' (1-bis) mientras está a la vista.
+  const [marcaIdioma, setMarcaIdioma] = useState<'base' | 'detectado' | null>(null)
+  const [idiomaAnclaEl, setIdiomaAnclaEl] = useState<HTMLElement | null>(null)
+  const idiomaBtnRef = useRef<HTMLButtonElement | null>(null)
+  // Si idiomaSegunTexto acaba de cambiar el idioma, la marca usa el texto 1-bis.
+  const idiomaAutoCambiadoRef = useRef(false)
+  useLayoutEffect(() => {
+    if (marcaIdioma) setIdiomaAnclaEl(idiomaBtnRef.current)
+    else setIdiomaAnclaEl(null)
+  }, [marcaIdioma])
   const [barraLeerVisible, setBarraLeerVisible] = useState(true)
   const ultimoScrollTopRef = useRef<number>(0)
   const timerScrollStopRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -229,6 +246,8 @@ export default function EditorView({
         bloques: [{ ...b0, texto: textoNuevo }],
         modificado: Date.now()
       })
+      // -tarea 105- Justo después de importar con «Abrir archivo».
+      queueMicrotask(() => intentarMarcaIdioma('pegar'))
     } catch (err: any) {
       // El detalle de importarArchivo -en espanol, capa de datos- va a la consola; en la
       // pantalla, la frase en el idioma de la app.
@@ -272,13 +291,46 @@ export default function EditorView({
   // se queda como lo dejo. Con menos de 12 palabras o un texto mezclado, detectarIdioma no
   // decide y el guion se queda con el que tenia.
   function idiomaSegunTexto(texto: string): { idioma?: string } {
-    if (guion.idiomaElegido) return {}
+    if (guion.idiomaElegido) {
+      idiomaAutoCambiadoRef.current = false
+      return {}
+    }
     const detectado = detectarIdioma(texto)
-    return detectado && detectado !== guion.idioma ? { idioma: detectado } : {}
+    if (detectado && detectado !== guion.idioma) {
+      idiomaAutoCambiadoRef.current = true
+      return { idioma: detectado }
+    }
+    idiomaAutoCambiadoRef.current = false
+    return {}
+  }
+
+  // -tarea 105- Intenta sacar la marca de idioma. disparo 'pegar' = pegar/importar;
+  // 'blur' exige ≥12 palabras -mismo umbral que detectarIdioma-.
+  function intentarMarcaIdioma(disparo: 'pegar' | 'blur') {
+    const puede = debeMostrarMarcaIdioma({
+      yaVista: marcaYaVista('idioma'),
+      disparo,
+      palabras: contarPalabras(guion),
+      umbralPalabras: PALABRAS_MINIMAS_PARA_DETECTAR,
+      idGuion: guion.id,
+      enLecturaOToma: false,
+      hayAvisoVoz: false,
+      hayDialogoPermiso: false
+    })
+    if (!abrirMarcaSiCorresponde('idioma', puede)) return
+    setMarcaIdioma(idiomaAutoCambiadoRef.current ? 'detectado' : 'base')
+  }
+
+  function cerrarMarcaIdioma() {
+    marcarComoVista('idioma')
+    setMarcaIdioma(null)
   }
 
   function handleAlternarIdioma() {
     hapticaSeleccion()
+    // -tarea 105- Tocar ES/EN cuenta como marca vista, aunque no hubiera salido.
+    marcarComoVista('idioma')
+    setMarcaIdioma(null)
     onChangeGuion({
       ...guion,
       idioma: guion.idioma === 'en' ? 'es' : 'en',
@@ -360,6 +412,8 @@ export default function EditorView({
         onAlternarIdioma={handleAlternarIdioma}
         onAbrirAjustes={() => onAbrirAjustes?.()}
         editorRef={editorRef}
+        idiomaBtnRef={idiomaBtnRef}
+        idiomaDescribedBy={marcaIdioma ? 'marca-guia-idioma-desc' : undefined}
       />
 
       {/* Titulo es el titulo: Display, editable, sin etiqueta ni recuadro.
@@ -449,7 +503,11 @@ export default function EditorView({
       <div
         style={{ position: 'relative' }}
         onFocus={() => setTextoEnfocado(true)}
-        onBlur={() => setTextoEnfocado(false)}
+        onBlur={() => {
+          setTextoEnfocado(false)
+          // -tarea 105- Teclado cerrado y guion con ≥12 palabras.
+          intentarMarcaIdioma('blur')
+        }}
       >
         {/* Controles de formato: SOLO SI HAY TEXTO SELECCIONADO */}
         {/* LA BARRA DE FORMATO FLOTA ARRIBA, NO EMPUJA EL GUION. Tarea 72.
@@ -593,6 +651,7 @@ export default function EditorView({
           colorLetra={colorLetra}
           columnaAngosta={columnaAngosta}
           marginPercent={marginPercent}
+          onPegado={() => queueMicrotask(() => intentarMarcaIdioma('pegar'))}
         />
         {/* CUANTO VA A DURAR, MIENTRAS SE ESCRIBE -27-09-2026-. Una auditoria proponia
             "0 palabras · ~0s"; las palabras no le dicen nada a quien va a grabar, el tiempo
@@ -612,6 +671,7 @@ export default function EditorView({
           editorRef={editorRef}
           fileInputRef={fileInputRef}
           cargandoArchivo={cargandoArchivo}
+          onPegado={() => queueMicrotask(() => intentarMarcaIdioma('pegar'))}
         />
       )}
 
@@ -627,6 +687,24 @@ export default function EditorView({
           onEntrarGrabar={onEntrarGrabar}
           tomas={tomas}
           onAbrirToma={onAbrirToma}
+        />
+      )}
+
+      {/* -tarea 105- Marca de guía del idioma, anclada a btn-idioma-guion. */}
+      {marcaIdioma && (
+        <MarcaGuia
+          anclaEl={idiomaAnclaEl}
+          texto={
+            marcaIdioma === 'detectado'
+              ? t('marcaGuiaIdiomaDetectado', {
+                  idioma: t(idiomaGuion === 'en' ? 'idiomaEn' : 'idiomaEs')
+                })
+              : t('marcaGuiaIdioma')
+          }
+          idDescripcion="marca-guia-idioma-desc"
+          onCerrar={cerrarMarcaIdioma}
+          alinear="derecha"
+          testid="marca-guia-idioma"
         />
       )}
     </div>

@@ -251,7 +251,14 @@ export const es = {
   nombreCampoTitulo: 'Título del guion',
   // La flecha de las fichas de Grabar, para el lector de pantalla -tarea 93, 05-10-2026-.
   masOpciones: 'Más opciones',
-  menosOpciones: 'Menos opciones'
+  menosOpciones: 'Menos opciones',
+  // Marcas de guía de primera vez -tarea 105, PASO 2-.
+  entendido: 'Entendido',
+  marcaGuiaIdioma: 'Sigo escucha tu voz en este idioma. Tócalo si tu guion es en otro.',
+  // {idioma} es idiomaEs / idiomaEn -minúscula en español-.
+  marcaGuiaIdiomaDetectado: 'Tu guion está en {idioma}: Sigo te escuchará en {idioma}. Toca para cambiarlo.',
+  marcaGuiaRecuadro: 'Arrástralo a donde no te tape.',
+  marcaGuiaPalma: 'Para seguir, baja la mano y vuelve a mostrar la palma: cuenta 3 segundos.'
 }
 
 export type ClaveTexto = keyof typeof es
