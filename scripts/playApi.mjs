@@ -61,6 +61,10 @@ export function leerNotas(texto) {
 }
 
 export function leerBloques(texto) {
+  // -07-10-2026, Claude- En Windows git deja los textos con \r\n y la ficha se subia asi a Play:
+  // comparada con la publicada, todas las lineas salian distintas aunque se veian iguales.
+  // Antes: texto.matchAll(...) sobre el texto tal como llegaba.
+  texto = texto.replace(/\r\n/g, '\n')
   const bloques = [...texto.matchAll(/\[\[([\s\S]*?)\]\]/g)].map((m) => m[1])
   if (bloques.length < 3) throw new Error('la ficha no trae los tres bloques [[ ]]: nombre, breve y completa')
   return { nombre: bloques[0], breve: bloques[1], completa: bloques[2] }

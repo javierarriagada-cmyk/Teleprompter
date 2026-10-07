@@ -120,8 +120,12 @@ try {
       const ruta = im.tipo === 'featureGraphic'
         ? path.join(FICHA, im.nombre)
         : path.join(FICHA, 'capturas', im.tipo === 'phoneScreenshots' ? idioma : path.join('tableta', idioma, im.tipo === 'sevenInchScreenshots' ? '7' : '10'), im.nombre)
-      const sube = await fetch(`${base}/edits/${id}/listings/${idioma}/${tipo}?uploadType=media`, {
-        method: 'POST', headers: { ...auth, 'content-type': 'application/octet-stream' }, body: fs.readFileSync(ruta)
+      // -07-10-2026, Claude- Primera corrida real: Google respondio 400 "Invalid JSON payload" con el PNG.
+      // Los archivos van a la direccion de subida -/upload/androidpublisher/...-, como el AAB en
+      // playSubir.mjs, y con su tipo de imagen.
+      // Antes: fetch(`${base}/edits/${id}/listings/${idioma}/${tipo}?uploadType=media`, { ... 'application/octet-stream' ... })
+      const sube = await fetch(`https://androidpublisher.googleapis.com/upload/androidpublisher/v3/applications/${PAQUETE}/edits/${id}/listings/${idioma}/${tipo}?uploadType=media`, {
+        method: 'POST', headers: { ...auth, 'content-type': 'image/png' }, body: fs.readFileSync(ruta)
       })
       if (!sube.ok) throw new Error(await sube.text())
     }
