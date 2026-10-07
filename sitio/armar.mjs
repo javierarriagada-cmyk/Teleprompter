@@ -137,11 +137,14 @@ function selector(t, pagina, lugar) {
   return `<nav class="idioma idioma-${lugar}" aria-label="${t.selector.etiqueta}">${enlace('es')}<span aria-hidden="true">·</span>${enlace('en')}</nav>`
 }
 
+// Antes, en el pie: <a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a>
+// en los dos idiomas. Desde el 07-10-2026 el correo es el de cada idioma -textos, correo-: en
+// ingles, hello@.
 function pie(t, pagina) {
   return `<footer class="pie">
   <ul>
     <li><span><a href="${t.rutas.privacidad}">${t.pie.privacidad}</a></span><span><a href="${t.rutas.soporte}">${t.pie.soporte}</a></span></li>
-    <li><span><a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></span><span>© Sigo</span></li>
+    <li><span><a href="mailto:${t.correo}">${t.correo}</a></span><span>© Sigo</span></li>
   </ul>
   ${selector(t, pagina, 'pie')}
 </footer>`

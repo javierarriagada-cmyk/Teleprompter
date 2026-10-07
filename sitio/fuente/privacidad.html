@@ -24,7 +24,9 @@
   <ul class="lista">
     {{privacidad.lista}}
   </ul>
-  <p>{{privacidad.contacto}}<br><a class="correo" href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></p>
+  <!-- Antes: el enlace era <a class="correo" href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a>,
+       igual en los dos idiomas. El correo de cada idioma sale de textos/<idioma>.js -correo-: en ingles es hello@. -->
+  <p>{{privacidad.contacto}}<br><a class="correo" href="mailto:{{correo}}">{{correo}}</a></p>
 </main>
 <!--@pie-->
 </body>

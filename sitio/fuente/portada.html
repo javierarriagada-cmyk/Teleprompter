@@ -14,12 +14,23 @@
 <link rel="apple-touch-icon" href="/icono.png">
 <link rel="preload" href="/fuentes/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>document.documentElement.classList.add('js')</script>
+<!-- La franja de la invitacion, si ya se cerro en esta visita, no se dibuja: se lee aca, antes
+     de pintar, para que no aparezca y desaparezca. Ver franja.js. -->
+<script>try{if(sessionStorage.getItem('sigo-franja-prueba')==='cerrada')document.documentElement.classList.add('franja-cerrada')}catch(e){}</script>
 <style>
 /*@estilo*/
 </style>
 </head>
 <body class="portada">
 <div class="grano" aria-hidden="true"></div>
+<!-- LA INVITACION A PROBAR SIGO, arriba de todo y dentro de la pagina: no flota ni tapa nada,
+     y al bajar se va con el resto. Es un enlace de verdad a #prueba -funciona sin JavaScript-;
+     la X la cierra por esta visita -franja.js-. Va antes del selector: estilo.css baja el
+     selector mientras la franja se ve. Solo en la portada. -->
+<div class="franja-prueba" id="franja-prueba">
+  <a href="#prueba">{{prueba.franja}} <span>{{prueba.franjaAccion}}</span></a>
+  <button class="franja-cerrar" type="button" aria-label="{{prueba.cerrar}}" aria-controls="franja-prueba"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11"/></svg></button>
+</div>
 <!--@selector-->
 
 <main>
@@ -120,6 +131,14 @@
     <div class="marca-cierre"><!--@marca-cierre--></div>
     <p class="frase-cierre">{{cierre.frase}}</p>
     <p class="disponible">{{cierre.disponible}}</p>
+  </section>
+
+  <!-- LA INVITACION: despues del cierre -"Pronto en Google Play."- y antes del pie. No corta el
+       escenario, y se lee como lo que sigue: todavia no esta en Play, pero se puede probar.
+       tabindex="-1": al saltar desde la franja, el foco queda aca. -->
+  <section class="prueba" id="prueba" aria-labelledby="prueba-titulo" tabindex="-1">
+    <h2 class="prueba-titulo" id="prueba-titulo">{{prueba.titulo}}</h2>
+    <p class="prueba-texto">{{prueba.antesDelCorreo}} <a href="mailto:{{correo}}">{{correo}}</a> {{prueba.despuesDelCorreo}}</p>
   </section>
 </main>
 <!--@pie-->

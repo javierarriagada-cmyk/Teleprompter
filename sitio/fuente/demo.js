@@ -9,8 +9,11 @@
 // GSAP, ScrollTrigger y Lenis llegan antes, cada uno en su <script>, desde /vendor.
 
 import { iniciarEscenas } from './escenas.js'
+import { iniciarFranja } from './franja.js'
 
 function iniciar() {
+  // La franja de la invitacion no espera a las letras ni a GSAP: su X tiene que andar ya.
+  iniciarFranja()
   const datosEl = document.getElementById('demo-datos')
   if (!datosEl) return
   const datos = JSON.parse(datosEl.textContent)

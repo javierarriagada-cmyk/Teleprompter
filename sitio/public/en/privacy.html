@@ -793,6 +793,101 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 @media (min-width: 900px) {
   .idioma-arriba { top: 22px; right: 26px; }
 }
+.franja-prueba {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 9px 44px;
+  background: var(--suelo);
+  border-bottom: 1px solid var(--filete);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--apagado);
+}
+.franja-prueba a { color: var(--apagado); text-decoration: none; text-wrap: balance; }
+.franja-prueba a span { color: var(--crema); font-weight: 600; white-space: nowrap; }
+.franja-prueba a:hover span { text-decoration: underline; text-decoration-color: rgba(242, 236, 232, 0.4); }
+.franja-cerrar {
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: rgba(156, 148, 142, 0.75);
+  cursor: pointer;
+}
+.franja-cerrar:hover { color: var(--letra); }
+.franja-cerrar svg { display: block; width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+html:not(.js) .franja-cerrar { display: none; }
+.franja-cerrada .franja-prueba, .franja-prueba[hidden] { display: none; }
+html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idioma-arriba { top: calc(52px + env(safe-area-inset-top, 0px)); }
+@media (min-width: 900px) {
+  .franja-prueba { min-height: 42px; font-size: 15px; }
+  .franja-cerrar { right: 14px; }
+  html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idioma-arriba { top: 62px; }
+}
+.prueba {
+  position: relative;
+  padding: 4svh var(--margen) 14svh;
+  background: var(--hondo);
+  text-align: center;
+  overflow: hidden;
+}
+.prueba::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100svh;
+  pointer-events: none;
+  background: radial-gradient(70% 60% at 50% -10%, rgba(255, 196, 140, 0.10), rgba(0, 0, 0, 0) 70%);
+}
+.prueba > * { position: relative; }
+.prueba:focus { outline: none; }
+.prueba-titulo {
+  margin: 0 auto;
+  max-width: 11em;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(40px, 10.5vw, 56px);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--crema);
+  text-wrap: balance;
+}
+.prueba-texto {
+  margin: 22px auto 0;
+  max-width: 28em;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--apagado);
+  text-wrap: pretty;
+}
+.prueba-texto a {
+  color: var(--crema);
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-color: rgba(242, 236, 232, 0.35);
+}
+.prueba-texto a:hover { text-decoration-color: var(--crema); }
+@media (min-width: 900px) {
+  .prueba { padding: 2svh var(--margen) 16svh; }
+  .prueba-titulo { font-size: clamp(64px, 5vw, 96px); max-width: 14em; }
+  .prueba-texto { margin-top: 28px; font-size: 20px; max-width: 30em; }
+}
 html:not(.js) .escenario { height: auto; }
 html:not(.js) .fijo { position: relative; height: auto; padding-bottom: 60px; }
 html:not(.js) .entrada, html:not(.js) .texto-escena { position: relative; inset: auto; opacity: 1; visibility: visible; transform: none; width: auto; left: auto; right: auto; top: auto; padding: 48px var(--margen); }
@@ -832,12 +927,14 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
     <li>Sigo has no accounts.</li>
     <li>This site uses no tracking cookies and no analytics.</li>
   </ul>
-  <p>Questions? Write to us.<br><a class="correo" href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></p>
+  <!-- Antes: el enlace era <a class="correo" href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a>,
+       igual en los dos idiomas. El correo de cada idioma sale de textos/<idioma>.js -correo-: en ingles es hello@. -->
+  <p>Questions? Write to us.<br><a class="correo" href="mailto:hello@sigoteleprompter.com">hello@sigoteleprompter.com</a></p>
 </main>
 <footer class="pie">
   <ul>
     <li><span><a href="/en/privacy">Privacy</a></span><span><a href="/en/support">Support</a></span></li>
-    <li><span><a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></span><span>© Sigo</span></li>
+    <li><span><a href="mailto:hello@sigoteleprompter.com">hello@sigoteleprompter.com</a></span><span>© Sigo</span></li>
   </ul>
   <nav class="idioma idioma-pie" aria-label="Language"><a href="/privacidad" lang="es" hreflang="es" data-idioma="es">ES</a><span aria-hidden="true">·</span><a href="/en/privacy" lang="en" hreflang="en" data-idioma="en" aria-current="page">EN</a></nav>
 </footer>

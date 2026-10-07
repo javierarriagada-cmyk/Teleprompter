@@ -21,6 +21,9 @@
 <link rel="apple-touch-icon" href="/icono.png">
 <link rel="preload" href="/fuentes/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>document.documentElement.classList.add('js')</script>
+<!-- La franja de la invitacion, si ya se cerro en esta visita, no se dibuja: se lee aca, antes
+     de pintar, para que no aparezca y desaparezca. Ver franja.js. -->
+<script>try{if(sessionStorage.getItem('sigo-franja-prueba')==='cerrada')document.documentElement.classList.add('franja-cerrada')}catch(e){}</script>
 <style>
 @font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 400; font-display: swap; src: url(/fuentes/source-serif-4-latin-400-normal.woff2) format("woff2"); }
 @font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 600; font-display: swap; src: url(/fuentes/source-serif-4-latin-600-normal.woff2) format("woff2"); }
@@ -798,6 +801,101 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 @media (min-width: 900px) {
   .idioma-arriba { top: 22px; right: 26px; }
 }
+.franja-prueba {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 9px 44px;
+  background: var(--suelo);
+  border-bottom: 1px solid var(--filete);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--apagado);
+}
+.franja-prueba a { color: var(--apagado); text-decoration: none; text-wrap: balance; }
+.franja-prueba a span { color: var(--crema); font-weight: 600; white-space: nowrap; }
+.franja-prueba a:hover span { text-decoration: underline; text-decoration-color: rgba(242, 236, 232, 0.4); }
+.franja-cerrar {
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: rgba(156, 148, 142, 0.75);
+  cursor: pointer;
+}
+.franja-cerrar:hover { color: var(--letra); }
+.franja-cerrar svg { display: block; width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+html:not(.js) .franja-cerrar { display: none; }
+.franja-cerrada .franja-prueba, .franja-prueba[hidden] { display: none; }
+html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idioma-arriba { top: calc(52px + env(safe-area-inset-top, 0px)); }
+@media (min-width: 900px) {
+  .franja-prueba { min-height: 42px; font-size: 15px; }
+  .franja-cerrar { right: 14px; }
+  html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idioma-arriba { top: 62px; }
+}
+.prueba {
+  position: relative;
+  padding: 4svh var(--margen) 14svh;
+  background: var(--hondo);
+  text-align: center;
+  overflow: hidden;
+}
+.prueba::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100svh;
+  pointer-events: none;
+  background: radial-gradient(70% 60% at 50% -10%, rgba(255, 196, 140, 0.10), rgba(0, 0, 0, 0) 70%);
+}
+.prueba > * { position: relative; }
+.prueba:focus { outline: none; }
+.prueba-titulo {
+  margin: 0 auto;
+  max-width: 11em;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(40px, 10.5vw, 56px);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--crema);
+  text-wrap: balance;
+}
+.prueba-texto {
+  margin: 22px auto 0;
+  max-width: 28em;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--apagado);
+  text-wrap: pretty;
+}
+.prueba-texto a {
+  color: var(--crema);
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-color: rgba(242, 236, 232, 0.35);
+}
+.prueba-texto a:hover { text-decoration-color: var(--crema); }
+@media (min-width: 900px) {
+  .prueba { padding: 2svh var(--margen) 16svh; }
+  .prueba-titulo { font-size: clamp(64px, 5vw, 96px); max-width: 14em; }
+  .prueba-texto { margin-top: 28px; font-size: 20px; max-width: 30em; }
+}
 html:not(.js) .escenario { height: auto; }
 html:not(.js) .fijo { position: relative; height: auto; padding-bottom: 60px; }
 html:not(.js) .entrada, html:not(.js) .texto-escena { position: relative; inset: auto; opacity: 1; visibility: visible; transform: none; width: auto; left: auto; right: auto; top: auto; padding: 48px var(--margen); }
@@ -821,6 +919,14 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
 </head>
 <body class="portada">
 <div class="grano" aria-hidden="true"></div>
+<!-- LA INVITACION A PROBAR SIGO, arriba de todo y dentro de la pagina: no flota ni tapa nada,
+     y al bajar se va con el resto. Es un enlace de verdad a #prueba -funciona sin JavaScript-;
+     la X la cierra por esta visita -franja.js-. Va antes del selector: estilo.css baja el
+     selector mientras la franja se ve. Solo en la portada. -->
+<div class="franja-prueba" id="franja-prueba">
+  <a href="#prueba">Sigo is in testing. <span>Be one of the first to use it&nbsp;→</span></a>
+  <button class="franja-cerrar" type="button" aria-label="Close notice" aria-controls="franja-prueba"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11"/></svg></button>
+</div>
 <nav class="idioma idioma-arriba" aria-label="Language"><a href="/" lang="es" hreflang="es" data-idioma="es">ES</a><span aria-hidden="true">·</span><a href="/en" lang="en" hreflang="en" data-idioma="en" aria-current="page">EN</a></nav>
 
 <main>
@@ -1040,11 +1146,19 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
     <p class="frase-cierre">The teleprompter that follows your&nbsp;voice.</p>
     <p class="disponible">Coming soon to Google Play.</p>
   </section>
+
+  <!-- LA INVITACION: despues del cierre -"Pronto en Google Play."- y antes del pie. No corta el
+       escenario, y se lee como lo que sigue: todavia no esta en Play, pero se puede probar.
+       tabindex="-1": al saltar desde la franja, el foco queda aca. -->
+  <section class="prueba" id="prueba" aria-labelledby="prueba-titulo" tabindex="-1">
+    <h2 class="prueba-titulo" id="prueba-titulo">Try Sigo before anyone else</h2>
+    <p class="prueba-texto">We’re inviting a small group to use Sigo on Android before launch. Write to <a href="mailto:hello@sigoteleprompter.com">hello@sigoteleprompter.com</a> with your Google account email and we’ll send you the invitation.</p>
+  </section>
 </main>
 <footer class="pie">
   <ul>
     <li><span><a href="/en/privacy">Privacy</a></span><span><a href="/en/support">Support</a></span></li>
-    <li><span><a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></span><span>© Sigo</span></li>
+    <li><span><a href="mailto:hello@sigoteleprompter.com">hello@sigoteleprompter.com</a></span><span>© Sigo</span></li>
   </ul>
   <nav class="idioma idioma-pie" aria-label="Language"><a href="/" lang="es" hreflang="es" data-idioma="es">ES</a><span aria-hidden="true">·</span><a href="/en" lang="en" hreflang="en" data-idioma="en" aria-current="page">EN</a></nav>
 </footer>

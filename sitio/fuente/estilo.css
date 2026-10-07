@@ -873,6 +873,121 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   .idioma-arriba { top: 22px; right: 26px; }
 }
 
+/* ---------- la invitacion a probar Sigo: la franja y la seccion #prueba ---------- */
+
+/* LA FRANJA -Javier, 07-10-2026, bocetos en 03-pruebas/sitio-testers-. Delgada, arriba de
+   todo y dentro de la pagina: no flota ni oscurece nada, y al bajar se va con el resto. Solo
+   lo que ya trae el sitio: el suelo, un filete, la letra sans. La primera frase apagada, la
+   segunda en crema. Va bajo el grano -z-index menor que 50-: la misma textura que el resto. */
+.franja-prueba {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 9px 44px;
+  background: var(--suelo);
+  border-bottom: 1px solid var(--filete);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--apagado);
+}
+.franja-prueba a { color: var(--apagado); text-decoration: none; text-wrap: balance; }
+.franja-prueba a span { color: var(--crema); font-weight: 600; white-space: nowrap; }
+.franja-prueba a:hover span { text-decoration: underline; text-decoration-color: rgba(242, 236, 232, 0.4); }
+/* La X: discreta, 12 px de dibujo y 40x40 para el dedo. */
+.franja-cerrar {
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: rgba(156, 148, 142, 0.75);
+  cursor: pointer;
+}
+.franja-cerrar:hover { color: var(--letra); }
+.franja-cerrar svg { display: block; width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+/* Cerrar necesita JavaScript: sin el, la X no se muestra y la franja queda como enlace. */
+html:not(.js) .franja-cerrar { display: none; }
+/* Cerrada en esta visita -sessionStorage, ver franja.js y el <script> del <head>-. */
+.franja-cerrada .franja-prueba, .franja-prueba[hidden] { display: none; }
+/* EL SELECTOR ES · EN baja 40 px mientras la franja se ve: si no, quedaria encima de la X.
+   Cuando la franja sale de la pantalla -franja-fuera, franja.js- o se cierra, vuelve. */
+html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idioma-arriba { top: calc(52px + env(safe-area-inset-top, 0px)); }
+@media (min-width: 900px) {
+  .franja-prueba { min-height: 42px; font-size: 15px; }
+  .franja-cerrar { right: 14px; }
+  html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idioma-arriba { top: 62px; }
+}
+
+/* LA SECCION #prueba: entre el cierre y el pie, centrada como el cierre. El titulo es la serif
+   de los titulares; el texto, como las bajadas; el correo, crema con un subrayado fino. */
+.prueba {
+  position: relative;
+  padding: 4svh var(--margen) 14svh;
+  background: var(--hondo);
+  text-align: center;
+  overflow: hidden;
+}
+/* La luz tibia de abajo del cierre -.luz-cierre, "70% 60% at 50% 110%"- se cortaba en seco
+   donde empieza esta seccion y dejaba una raya. Aca se refleja con la misma forma y el mismo
+   alto -el cierre mide 100svh-: la luz se lee como un solo resplandor. */
+.prueba::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100svh;
+  pointer-events: none;
+  background: radial-gradient(70% 60% at 50% -10%, rgba(255, 196, 140, 0.10), rgba(0, 0, 0, 0) 70%);
+}
+.prueba > * { position: relative; }
+/* El foco llega aca al saltar desde la franja -tabindex="-1"-: la seccion no es un control,
+   no lleva anillo. */
+.prueba:focus { outline: none; }
+.prueba-titulo {
+  margin: 0 auto;
+  max-width: 11em;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(40px, 10.5vw, 56px);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--crema);
+  text-wrap: balance;
+}
+.prueba-texto {
+  margin: 22px auto 0;
+  max-width: 28em;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--apagado);
+  text-wrap: pretty;
+}
+.prueba-texto a {
+  color: var(--crema);
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-color: rgba(242, 236, 232, 0.35);
+}
+.prueba-texto a:hover { text-decoration-color: var(--crema); }
+@media (min-width: 900px) {
+  .prueba { padding: 2svh var(--margen) 16svh; }
+  .prueba-titulo { font-size: clamp(64px, 5vw, 96px); max-width: 14em; }
+  .prueba-texto { margin-top: 28px; font-size: 20px; max-width: 30em; }
+}
+
 /* ---------- sin JavaScript: las escenas en fila, quietas ---------- */
 html:not(.js) .escenario { height: auto; }
 html:not(.js) .fijo { position: relative; height: auto; padding-bottom: 60px; }

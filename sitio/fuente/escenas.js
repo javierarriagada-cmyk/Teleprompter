@@ -534,6 +534,22 @@ export function iniciarEscenas(datos) {
     else window.scrollTo({ top: y, behavior: reducido ? 'auto' : 'smooth' })
   }))
 
+  // EL SALTO DESDE LA FRANJA DE LA INVITACION -Javier, 07-10-2026-: DIRECTO a #prueba, sin
+  // recorrer las ~10.000 px de escenas. Con Lenis hay que pedirselo a Lenis, immediate: un
+  // salto por fuera lo pisaria si estaba deslizando. Sin Lenis -movimiento reducido- el enlace
+  // salta solo: la hoja no tiene scroll-behavior smooth. El foco lo pone franja.js.
+  const enlacePrueba = document.querySelector('.franja-prueba a[href="#prueba"]')
+  const seccionPrueba = document.getElementById('prueba')
+  if (enlacePrueba && seccionPrueba) {
+    enlacePrueba.addEventListener('click', (ev) => {
+      if (!lenis) return
+      ev.preventDefault()
+      lenis.scrollTo(seccionPrueba, { immediate: true, force: true })
+      // Como lo haria el enlace solo: la direccion queda en #prueba.
+      history.pushState(null, '', '#prueba')
+    })
+  }
+
   // ---------- el scroll suave ----------
 
   let lenis = null

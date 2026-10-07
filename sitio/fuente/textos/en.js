@@ -62,6 +62,20 @@ export default {
 
   pie: { privacidad: 'Privacy', soporte: 'Support' },
 
+  // EL CORREO DE CONTACTO en ingles -Javier, 07-10-2026-: hello@. Antes las paginas en ingles
+  // decian hola@, el de espanol. Los dos reciben.
+  correo: 'hello@sigoteleprompter.com',
+
+  // LA INVITACION A PROBAR SIGO -ver textos/es.js, prueba-.
+  prueba: {
+    franja: 'Sigo is in testing.',
+    franjaAccion: 'Be one of the first to use it&nbsp;→',
+    cerrar: 'Close notice',
+    titulo: 'Try Sigo before anyone else',
+    antesDelCorreo: 'We’re inviting a small group to use Sigo on Android before launch. Write to',
+    despuesDelCorreo: 'with your Google account email and we’ll send you the invitation.'
+  },
+
   privacidad: {
     titulo: 'Privacy',
     puntos: [

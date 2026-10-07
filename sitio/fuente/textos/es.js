@@ -70,6 +70,23 @@ export default {
 
   pie: { privacidad: 'Privacidad', soporte: 'Soporte' },
 
+  // EL CORREO DE CONTACTO de cada idioma -Javier, 07-10-2026-: en espanol hola@, en ingles
+  // hello@. Los dos reciben. Lo usan el pie, privacidad, soporte y la invitacion a probar.
+  correo: 'hola@sigoteleprompter.com',
+
+  // LA INVITACION A PROBAR SIGO -franja de arriba y seccion #prueba de la portada, Javier,
+  // 07-10-2026-. La regla de la tarea 98 que no dejaba hablar de prueba, testers ni
+  // lanzamiento queda sin efecto SOLO para esta franja y esta seccion; el resto del sitio la
+  // sigue. El correo va entre antesDelCorreo y despuesDelCorreo, como enlace: sale de correo.
+  prueba: {
+    franja: 'Sigo está en prueba.',
+    franjaAccion: 'Sé de los primeros en usarlo&nbsp;→',
+    cerrar: 'Cerrar aviso',
+    titulo: 'Prueba Sigo antes que nadie',
+    antesDelCorreo: 'Estamos invitando a un grupo pequeño a usar Sigo en Android antes del lanzamiento. Escríbenos a',
+    despuesDelCorreo: 'con el correo de tu cuenta de Google y te enviamos la invitación.'
+  },
+
   privacidad: {
     titulo: 'Privacidad',
     puntos: [
