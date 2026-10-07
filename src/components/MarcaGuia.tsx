@@ -14,7 +14,7 @@ export type MarcaGuiaProps = {
   texto: string
   // Id del párrafo de la marca: el control anclado lo pone en aria-describedby.
   idDescripcion: string
-  // 'entendido' gasta la marca; 'afuera' solo la cierra -vuelve al repetir la acción-.
+  // 'entendido' gasta la marca; 'afuera' solo la cierra (no forever). Recuadro/palma no vuelven hasta reelegir / reencender.
   onCerrar: (motivo: 'entendido' | 'afuera') => void
   // Mano de línea limpia solo en la marca del recuadro; si no queda refinada se omite.
   conMano?: boolean

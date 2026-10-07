@@ -7,7 +7,10 @@
 //
 // Cada una queda vista en localStorage para siempre SOLO con «Entendido» o al usar
 // el control señalado -mismo try/catch que teleprompter_bienvenida_puesta-. Tocar
-// afuera la cierra pero NO la gasta: vuelve la próxima vez que se haga la acción.
+// afuera la cierra pero NO la gasta. Idioma: vuelve al pegar/blur de nuevo. Recuadro y
+// palma: no vuelven mientras la condición siga igual — recuadro solo si el fondo sale
+// de Recuadro y se vuelve a elegir; palma solo si se apagan gestos y se vuelven a encender.
+// Antes: afuera no gastaba pero el efecto las volvía a sacar al instante (condición igual).
 //
 // La lógica es pura para probarla sin montar la UI. MarcaGuia solo dibuja.
 
@@ -31,6 +34,11 @@ const CLAVES: Record<IdMarcaGuia, string> = {
 // bloqueaba las demás aunque se hubiera cerrado con Entendido.
 let marcaALaVista = false
 
+// Tras tocar afuera, recuadro/palma no vuelven mientras la condición siga.
+// No se persisten. Idioma no usa esto: su disparo es por acción (pegar/blur).
+let suspenderRecuadroHastaSalir = false
+let suspenderPalmaHastaApagar = false
+
 export function hayMarcaALaVista(): boolean {
   return marcaALaVista
 }
@@ -52,6 +60,13 @@ export function liberarMarcaEnSesion(): void {
   marcaALaVista = false
 }
 
+// Tocar afuera: no gasta forever, pero recuadro/palma no reaparecen con la misma
+// condición. Se limpia al salir de Recuadro / apagar gestos (ver debeMostrar*).
+export function registrarCierreAfuera(id: IdMarcaGuia): void {
+  if (id === 'recuadro') suspenderRecuadroHastaSalir = true
+  else if (id === 'palma') suspenderPalmaHastaApagar = true
+}
+
 export function marcaYaVista(id: IdMarcaGuia): boolean {
   try {
     return localStorage.getItem(CLAVES[id]) === 'true'
@@ -71,6 +86,8 @@ export function marcarComoVista(id: IdMarcaGuia): void {
 // Solo para las pruebas: deja la marca a la vista y el almacenamiento como al abrir.
 export function reiniciarMarcasGuiaParaPruebas(): void {
   marcaALaVista = false
+  suspenderRecuadroHastaSalir = false
+  suspenderPalmaHastaApagar = false
   try {
     localStorage.removeItem(CLAVE_MARCA_IDIOMA)
     localStorage.removeItem(CLAVE_MARCA_RECUADRO)
@@ -135,6 +152,13 @@ export function debeMostrarMarcaRecuadro(opts: {
   estadoListo: boolean
   yaArrastro: boolean
 } & CondicionesComunes): boolean {
+  // Si el fondo ya no es Recuadro, se puede volver a elegir después.
+  // Antes: sin esta suspensión; al tocar afuera el efecto la sacaba otra vez al instante.
+  if (!opts.fondoEsRecuadro) {
+    suspenderRecuadroHastaSalir = false
+  } else if (suspenderRecuadroHastaSalir) {
+    return false
+  }
   if (opts.yaVista) return false
   if (opts.yaArrastro) return false
   if (!opts.fondoEsRecuadro || !opts.estadoListo) return false
@@ -152,6 +176,13 @@ export function debeMostrarMarcaPalma(opts: {
   modeloBajando: boolean
   pidiendoGestos: boolean
 } & CondicionesComunes): boolean {
+  // Si los gestos se apagan, se pueden volver a encender después.
+  // Antes: sin esta suspensión; al tocar afuera el efecto la sacaba otra vez al instante.
+  if (!opts.gestosEncendidos) {
+    suspenderPalmaHastaApagar = false
+  } else if (suspenderPalmaHastaApagar) {
+    return false
+  }
   if (opts.yaVista) return false
   if (!opts.gestosEncendidos) return false
   if (opts.motivoSinGestos != null) return false

@@ -14,7 +14,8 @@ import {
   debeMostrarMarcaRecuadro,
   liberarMarcaEnSesion,
   marcarComoVista,
-  marcaYaVista
+  marcaYaVista,
+  registrarCierreAfuera
 } from '../lib/marcasGuia'
 import { MarcaGuia } from './MarcaGuia'
 
@@ -457,6 +458,8 @@ export default function TeleprompterView({
         marcarComoVista(marcaActiva)
       } else {
         // Antes: marcarComoVista(marcaActiva) también al tocar afuera.
+        // No gasta forever, pero no reaparece mientras recuadro/gestos sigan igual.
+        registrarCierreAfuera(marcaActiva)
       }
     }
     // Antes: liberar solo con afuera/desmontar; Entendido dejaba el tope de sesión.

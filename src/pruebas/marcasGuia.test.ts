@@ -11,6 +11,7 @@ import {
   liberarMarcaEnSesion,
   marcaYaVista,
   marcarComoVista,
+  registrarCierreAfuera,
   reiniciarMarcasGuiaParaPruebas
 } from '../lib/marcasGuia'
 
@@ -331,5 +332,92 @@ describe('marcasGuia', () => {
         hayDialogoPermiso: false
       })
     ).toBe(false)
+  })
+
+  // Corrección: tocar afuera con Recuadro elegido no la vuelve a sacar al instante.
+  // Antes: liberarMarcaEnSesion + efecto veía fondoEsRecuadro y la abría otra vez.
+  test('tocar afuera con recuadro elegido no la vuelve a sacar', () => {
+    const comunes = {
+      idGuion: 'g-1',
+      enLecturaOToma: false,
+      hayAvisoVoz: false,
+      hayDialogoPermiso: false
+    }
+    const opts = {
+      yaVista: false,
+      fondoEsRecuadro: true,
+      estadoListo: true,
+      yaArrastro: false,
+      ...comunes
+    }
+    expect(debeMostrarMarcaRecuadro(opts)).toBe(true)
+    expect(abrirMarcaSiCorresponde('recuadro', true)).toBe(true)
+    // Simula onCerrar('afuera'): no gasta forever; suspende hasta salir de Recuadro.
+    registrarCierreAfuera('recuadro')
+    liberarMarcaEnSesion()
+    expect(marcaYaVista('recuadro')).toBe(false)
+    expect(hayMarcaALaVista()).toBe(false)
+    // Condición igual → no vuelve (el efecto de TeleprompterView no llega a abrir).
+    const puede = debeMostrarMarcaRecuadro(opts)
+    expect(puede).toBe(false)
+    expect(abrirMarcaSiCorresponde('recuadro', puede)).toBe(false)
+  })
+
+  test('cambiar a Detrás y volver a Recuadro sí saca la marca tras afuera', () => {
+    const comunes = {
+      idGuion: 'g-1',
+      enLecturaOToma: false,
+      hayAvisoVoz: false,
+      hayDialogoPermiso: false
+    }
+    expect(abrirMarcaSiCorresponde('recuadro', true)).toBe(true)
+    registrarCierreAfuera('recuadro')
+    liberarMarcaEnSesion()
+    // Sale de Recuadro (p. ej. Detrás): limpia la suspensión.
+    expect(
+      debeMostrarMarcaRecuadro({
+        yaVista: false,
+        fondoEsRecuadro: false,
+        estadoListo: true,
+        yaArrastro: false,
+        ...comunes
+      })
+    ).toBe(false)
+    // Vuelve a elegir Recuadro → sí.
+    expect(
+      debeMostrarMarcaRecuadro({
+        yaVista: false,
+        fondoEsRecuadro: true,
+        estadoListo: true,
+        yaArrastro: false,
+        ...comunes
+      })
+    ).toBe(true)
+    expect(abrirMarcaSiCorresponde('recuadro', true)).toBe(true)
+  })
+
+  test('tocar afuera con gestos encendidos no vuelve la palma; apagar y encender sí', () => {
+    const base = {
+      yaVista: false,
+      idGuion: 'g-1',
+      enLecturaOToma: false,
+      hayAvisoVoz: false,
+      hayDialogoPermiso: false,
+      gestosEncendidos: true,
+      motivoSinGestos: null as 'soloFrontal' | 'noDisponible' | null,
+      modeloBajando: false,
+      pidiendoGestos: false
+    }
+    expect(debeMostrarMarcaPalma(base)).toBe(true)
+    expect(abrirMarcaSiCorresponde('palma', true)).toBe(true)
+    registrarCierreAfuera('palma')
+    liberarMarcaEnSesion()
+    expect(marcaYaVista('palma')).toBe(false)
+    expect(debeMostrarMarcaPalma(base)).toBe(false)
+    // Apagar gestos limpia la suspensión.
+    expect(debeMostrarMarcaPalma({ ...base, gestosEncendidos: false })).toBe(false)
+    // Volver a encender → sí.
+    expect(debeMostrarMarcaPalma(base)).toBe(true)
+    expect(abrirMarcaSiCorresponde('palma', true)).toBe(true)
   })
 })
