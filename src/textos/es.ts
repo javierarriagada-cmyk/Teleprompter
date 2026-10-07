@@ -230,12 +230,37 @@ export const es = {
   camaraTitulo: 'Sigo necesita la cámara',
   camaraExplicacion: 'La cámara filma mientras lees. La imagen y el video quedan en el teléfono.',
   // La voz en inglés se baja de Google Play la primera vez -tarea 84, D3-.
-  vozSinConexion: 'Para leer en inglés hace falta conexión una vez, para bajar la voz en inglés. Después funciona sin internet.',
+  // -tarea 104- Ahora la voz de cualquier idioma se baja de Play -también el español-: {idioma} es
+  // idiomaEs o idiomaEn. Sale abajo, donde se abren los paneles de las fichas, en el color normal del
+  // texto -el rojo queda para grabar y borrar, Javier-.
+  // Antes: vozSinConexion: 'Para leer en inglés hace falta conexión una vez, para bajar la voz en inglés. Después funciona sin internet.',
+  vozSinConexion: 'Para leer en {idioma} hace falta conexión una vez, para bajar la voz. Después funciona sin internet.',
+  // El idioma dentro de una frase, en minúscula -vozSinConexion, vozRechazada-. idiomaEspanol es el
+  // de la lista, con mayúscula.
+  idiomaEs: 'español',
+  idiomaEn: 'inglés',
+  // -tarea 104, lámina a- En la pastilla del tiempo, al lado de Empezar, mientras baja la voz.
+  preparandoVoz: 'Preparando la voz…',
+  // -tarea 104- Al apretar Empezar Play preguntó si bajar con datos móviles y la persona dijo que no.
+  vozRechazada: 'La voz en {idioma} se va a bajar cuando tengas Wi-Fi. Para bajarla ahora con datos, toca Reintentar y acepta.',
+  // -tarea 104, lámina c- La fila de Control por gestos mientras baja su modelo, y sin internet.
+  preparandoGestos: 'Preparando los gestos… {n} %',
+  gestosSinConexion: 'Para usar gestos hace falta conexión una vez, para bajarlos. Después funcionan sin internet.',
+  gestosRechazados: 'Los gestos se van a bajar cuando tengas Wi-Fi. Para bajarlos ahora con datos, enciende el interruptor y acepta.',
   // El nombre del campo del título del guion para el lector de pantalla -tarea 84, G3-.
   nombreCampoTitulo: 'Título del guion',
   // La flecha de las fichas de Grabar, para el lector de pantalla -tarea 93, 05-10-2026-.
   masOpciones: 'Más opciones',
-  menosOpciones: 'Menos opciones'
+  menosOpciones: 'Menos opciones',
+  // Marcas de guía de primera vez -tarea 105, PASO 2-.
+  entendido: 'Entendido',
+  marcaGuiaIdioma: 'Sigo escucha tu voz en este idioma. Tócalo si tu guion es en otro.',
+  // {idioma} es idiomaEs / idiomaEn -minúscula en español-.
+  marcaGuiaIdiomaDetectado: 'Tu guion está en {idioma}: Sigo te escuchará en {idioma}. Toca para cambiarlo.',
+  marcaGuiaRecuadro: 'Arrástralo a donde no te tape.',
+  // Antes: 'Para seguir, baja la mano y vuelve a mostrar la palma: cuenta 3 segundos.'
+  // Por qué cambió: explicaba solo seguir, no pausar ni dejar de hablar.
+  marcaGuiaPalma: 'Para pausar, deja de hablar y muestra la palma. Para seguir, baja la mano y muéstrala de nuevo: cuenta 3 segundos.'
 }
 
 export type ClaveTexto = keyof typeof es

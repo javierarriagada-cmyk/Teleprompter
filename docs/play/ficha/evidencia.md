@@ -11,8 +11,9 @@ cierto, se corrige la ficha.
 | El texto sigue tu voz, en español y en inglés | `src/motor/MotorNativo.ts:46`, `:67` -asegurarVoz es/en- |
 | Si haces una pausa, espera | `src/lib/avance.ts:43`, `:300` -motivoFreno 'silencio'- |
 | Una línea bajo lo que lees | el seguidor, `src/lib/seguidor.ts`; se ve en las capturas 1 a 4 |
-| Español sin internet desde la instalación | `android/model-es/build.gradle:18` -deliveryType 'install-time'- |
-| Inglés: el modelo se baja de Play una vez y después funciona sin internet | `android/model-en/build.gradle:18` -'on-demand'- y `src/textos/es.ts:202` -vozSinConexion- |
+| ~~Español sin internet desde la instalación~~ -ya no es cierto desde la tarea 104- | ~~`android/model-es/build.gradle:18` -deliveryType 'install-time'-~~ |
+| ~~Inglés: el modelo se baja de Play una vez y después funciona sin internet~~ | ~~`android/model-en/build.gradle:18` -'on-demand'- y `src/textos/es.ts:202` -vozSinConexion-~~ |
+| La voz de tu idioma se descarga sola la primera vez que abres Sigo; después funciona sin internet -tarea 104- | `android/model-es/build.gradle` y `android/model-en/build.gradle` -los dos 'on-demand'-; `src/lib/vozAPedido.ts` -se pide en silencio al abrir-; `src/textos/es.ts`, vozSinConexion |
 | La voz se reconoce en el teléfono | `src/textos/es.ts:195` -microfonoExplicacion-; `sitio/fuente/textos/es.js:78` -privacidad- |
 | No hay cuentas | `sitio/fuente/textos/es.js:80`; no hay inicio de sesión en `src/` |
 | Leer arriba o al medio | `src/components/FichasListo.tsx:293` |

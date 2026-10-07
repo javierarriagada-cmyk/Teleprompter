@@ -37,6 +37,22 @@ import java.util.concurrent.atomic.AtomicBoolean;
 // Con el interruptor apagado nadie llama a nada de esto: ni preparar, así que el reconocedor no existe.
 //
 // El modelo es gesture_recognizer.task de Google, en assets -sin comprimir, app/build.gradle-.
+//
+// -tarea 104, PASO 2, 06-10-2026- Eso queda solo para la APK de prueba. En la versión de Play el .task
+// -8 MB- viaja en su propio paquete a pedido -android/gestos- y se baja la primera vez que alguien
+// enciende Control por gestos -asegurarModelo, con el avance en el evento "progresoGestos"-. Se abre
+// con su RUTA ABSOLUTA dentro del paquete, y así MediaPipe lo mapea sin copiarlo. Evidencia, en
+// google-ai-edge/mediapipe v1.0.0 -la versión de tasks-vision 1.0.0-:
+//   - mediapipe/util/resource_util_android.cc:77-78: si la ruta empieza con "/", se devuelve tal cual.
+//     Con una ruta relativa -83-87- llama a AssetManager::CachedFileFromAsset, que lee el asset entero
+//     y lo escribe en getCacheDir()/drishti_asset_cache/gesture_recognizer.task -asset_manager_util.cc
+//     156-180, "we overwrite the cache file unconditionally"-: 8 MB copiados cada vez que se crea el
+//     reconocedor. Eso es lo que pasaba hasta hoy con setModelAssetPath("gesture_recognizer.task").
+//   - mediapipe/tasks/cc/core/external_file_handler.cc:124-127 abre esa ruta y :223-224 la mapea con
+//     mmap(PROT_READ, MAP_SHARED): no hay copia ni en la caché ni en la memoria.
+// Un paquete on-demand Play lo deja como archivos comunes -AssetPackLocation.assetsPath(), "These
+// packs are then expanded in the app's internal storage"-: el .task es un archivo de verdad, sin
+// comprimir, y se puede abrir por ruta. Sin verificar en un teléfono.
 @CapacitorPlugin(name = "Gestos")
 public class GestosPlugin extends Plugin {
     private static final String ETIQUETA_LOG = "Sigo88";
@@ -60,9 +76,22 @@ public class GestosPlugin extends Plugin {
             anotarDatatransport();
             try {
                 if (reconocedor == null) {
+                    // -tarea 104- Sin el modelo -su paquete de Play no se bajó- no hay reconocedor que
+                    // crear: 'sinModelo'. App lo pide antes con asegurarModelo, así que no debería llegar.
+                    String rutaModelo = rutaDelModelo();
+                    if (rutaModelo == null) {
+                        Log.i(ETIQUETA_LOG, "gestos sin modelo: el paquete " + "gestos" + " no está");
+                        ret.put("ok", false);
+                        ret.put("motivo", "sin modelo");
+                        ret.put("estado", "sinModelo");
+                        call.resolve(ret);
+                        return;
+                    }
                     long t0 = SystemClock.elapsedRealtime();
+                    // -tarea 104- La ruta: relativa en la APK de prueba -assets, con la copia en caché de
+                    // siempre-, absoluta en la de Play -sin copia-. Antes: .setModelAssetPath(MODELO)
                     GestureRecognizer.GestureRecognizerOptions opciones = GestureRecognizer.GestureRecognizerOptions.builder()
-                        .setBaseOptions(BaseOptions.builder().setModelAssetPath(MODELO).build())
+                        .setBaseOptions(BaseOptions.builder().setModelAssetPath(rutaModelo).build())
                         .setRunningMode(RunningMode.IMAGE)
                         .setNumHands(1)
                         .build();
@@ -95,6 +124,63 @@ public class GestosPlugin extends Plugin {
                 ret.put("estado", "listo");
             }
             call.resolve(ret);
+        });
+    }
+
+    /**
+     * -tarea 104- De dónde sale el modelo: "gesture_recognizer.task" -relativa, de los assets- si viene
+     * en el APK -la APK de prueba-; la ruta absoluta dentro de su paquete si ya se bajó de Play; o null.
+     */
+    private String rutaDelModelo() {
+        try {
+            getContext().getAssets().open(MODELO).close();
+            return MODELO;
+        } catch (java.io.IOException e) {
+            return PaqueteDeVoz.rutaGestosSiEsta(getContext());
+        }
+    }
+
+    /**
+     * EL MODELO DE GESTOS, EN EL TELÉFONO ANTES DE PREPARAR -tarea 104-. Lo llama App al encender el
+     * interruptor -lib/gestos.ts, asegurarModeloGestos-. Si ya está, responde al instante. Si no, lo
+     * pide a Play y avisa el avance con "progresoGestos" -de 0 a 1-: la fila lo muestra. Sin internet
+     * rechaza con SIN_CONEXION y el interruptor no se enciende; si la persona dice que no al diálogo de
+     * Play, RECHAZADA.
+     */
+    @PluginMethod
+    public void asegurarModelo(PluginCall call) {
+        if (rutaDelModelo() != null) {
+            JSObject r = new JSObject();
+            r.put("estado", "lista");
+            call.resolve(r);
+            return;
+        }
+        PaqueteDeVoz.bajarGestos(getActivity(), getContext(), new PaqueteDeVoz.Aviso() {
+            @Override
+            public void progreso(double fraccion) {
+                JSObject d = new JSObject();
+                d.put("progreso", fraccion);
+                notifyListeners("progresoGestos", d);
+            }
+
+            @Override
+            public void listo(String ruta) {
+                JSObject r = new JSObject();
+                r.put("estado", "lista");
+                r.put("descargada", true);
+                call.resolve(r);
+            }
+
+            @Override
+            public void fallo(String codigo, String mensaje) {
+                call.reject(mensaje, codigo);
+            }
+
+            @Override
+            public void enPausa() {
+                // No llega: los gestos no se piden en silencio.
+                call.reject("La descarga de los gestos quedó en pausa", "RECHAZADA");
+            }
         });
     }
 

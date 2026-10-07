@@ -18,6 +18,9 @@
 // "funciona sin internet" siga siendo cierto desde el primer momento. Es el modelo chico
 // oficial para ingles de Estados Unidos, del mismo tamano que el espanol. Cada idioma va en
 // su carpeta -model-es, model-en- y VoskNativoPlugin carga la del idioma del guion.
+// -tarea 104- Eso sigue así en la APK de prueba. En la versión de Play los dos van en paquetes a
+// pedido -android/model-es y model-en- y la voz del idioma de la app se baja sola al abrirla por
+// primera vez: "funciona sin internet" vale después de esa descarga.
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'

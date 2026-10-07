@@ -724,3 +724,23 @@
 .fila-menu-adjunto-guion.peligro {
   color: var(--color-grabando-texto);
 }
+
+/* -tarea 104, láminas b y c- El aviso de la voz que falta, donde se abren los paneles de las fichas; y
+   el avance de los gestos, debajo de su nombre. En el color normal del texto: el rojo queda para grabar
+   y borrar -Javier-. En el boceto -boceto/tarea104- los dos avisos iban en --color-grabando-texto. */
+.aviso-voz-listo-texto {
+  font-size: 13px;
+  color: var(--color-texto);
+  margin-bottom: 12px;
+}
+.fila-gestos-pista {
+  margin-top: 6px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--color-borde);
+  overflow: hidden;
+}
+.fila-gestos-relleno {
+  height: 100%;
+  background: var(--color-texto);
+}

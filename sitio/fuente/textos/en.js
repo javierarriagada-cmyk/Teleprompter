@@ -33,7 +33,9 @@ export default {
   e3: { capitulo: 'Your script', titular: 'Mark what matters.', bajada: 'Bold the lines you want to land. Color the shifts in tone. Highlight what you can’t afford to miss.' },
   e4: { capitulo: 'Record', titular: 'Eyes on the lens.', bajada: 'The text sits under the camera: you look at the lens, not the screen. Pause whenever you like, and the pause stays out of the video. Away from the phone, pause with your palm.' },
   e5: { capitulo: 'Your video', titular: 'Captions that keep time.', bajada: 'When you’re done, your video has captions in time with your voice and the filter you choose. What you see is what gets saved.' },
-  e6: { capitulo: 'Offline', titular: 'No signal? No problem.', bajada: 'Works without internet. Your voice never leaves your phone.' },
+  // -tarea 104- No voice comes with the install anymore: it downloads once, on its own, when Sigo first
+  // opens. Antes: bajada: 'Works without internet. Your voice never leaves your phone.'
+  e6: { capitulo: 'Offline', titular: 'No signal? No problem.', bajada: 'The voice for your language downloads on its own the first time you open Sigo. After that it works offline, and your voice never leaves your phone.' },
 
   estilos: { amarillo: 'Yellow', rojo: 'Red', formal: 'Formal' },
 

@@ -219,10 +219,28 @@ export const en: Textos = {
   camaraTitulo: 'Sigo needs the camera',
   camaraExplicacion: 'The camera films while you read. The image and the video stay on the phone.',
   // The English voice is downloaded from Google Play the first time -tarea 84, D3-.
-  vozSinConexion: 'To read in English you need a connection once, to download the English voice. After that it works offline.',
+  // -tarea 104- Now the voice of any language comes from Play -Spanish too-: {idioma} is idiomaEs or
+  // idiomaEn. Shown at the bottom, where the chip panels open, in the normal text color.
+  // Antes: vozSinConexion: 'To read in English you need a connection once, to download the English voice. After that it works offline.',
+  vozSinConexion: 'To read in {idioma} you need a connection once, to download the voice. After that it works offline.',
+  idiomaEs: 'Spanish',
+  idiomaEn: 'English',
+  preparandoVoz: 'Preparing the voice…',
+  vozRechazada: 'The {idioma} voice will download when you have Wi-Fi. To download it now with mobile data, tap Retry and accept.',
+  preparandoGestos: 'Preparing gestures… {n}%',
+  gestosSinConexion: 'To use gestures you need a connection once, to download them. After that they work offline.',
+  gestosRechazados: 'Gestures will download when you have Wi-Fi. To download them now with mobile data, turn the switch on and accept.',
   // The name of the script title field for screen readers -tarea 84, G3-.
   nombreCampoTitulo: 'Script title',
   // The arrow of the Record chips, for screen readers -tarea 93, 05-10-2026-.
   masOpciones: 'More options',
-  menosOpciones: 'Fewer options'
+  menosOpciones: 'Fewer options',
+  // First-time guide marks -tarea 105, PASO 2-.
+  entendido: 'Got it',
+  marcaGuiaIdioma: 'Sigo listens for your voice in this language. Tap it if your script is in another one.',
+  marcaGuiaIdiomaDetectado: 'Your script is in {idioma}: Sigo will listen in {idioma}. Tap to change it.',
+  marcaGuiaRecuadro: "Drag it where it won't cover you.",
+  // Antes: 'To resume, lower your hand and show your palm again: it counts down 3 seconds.'
+  // Why it changed: it only explained resume, not pause or stop talking.
+  marcaGuiaPalma: 'To pause, stop talking and show your palm. To resume, lower your hand and show it again: it counts down 3 seconds.'
 }

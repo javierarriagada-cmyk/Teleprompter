@@ -38,7 +38,9 @@ export default {
   e3: { capitulo: 'Tu guion', titular: 'Tu guion, con intención.', bajada: 'Marca lo que quieres decir con fuerza. Pinta los cambios de tono. Destaca lo que no se te puede pasar.' },
   e4: { capitulo: 'Grabar', titular: 'Mirando al lente.', bajada: 'El texto queda bajo la cámara: miras al lente, no a la pantalla. Pausa cuando quieras y la pausa no queda en el video. Lejos del teléfono, pausa con la palma.' },
   e5: { capitulo: 'Tu video', titular: 'Subtítulos, al ritmo de tu voz.', bajada: 'Al terminar, tu video lleva subtítulos al ritmo de tu voz y el filtro que elijas. Lo que ves es lo que se guarda.' },
-  e6: { capitulo: 'Sin internet', titular: 'Sin internet.', bajada: 'Funciona sin internet. Tu voz no sale del teléfono.' },
+  // -tarea 104- Desde la tarea 104 ninguna voz viene con la instalación: se baja sola, una vez, al abrir
+  // Sigo. La bajada lo dice. Antes: bajada: 'Funciona sin internet. Tu voz no sale del teléfono.'
+  e6: { capitulo: 'Sin internet', titular: 'Sin internet.', bajada: 'La voz de tu idioma se baja sola la primera vez que abres Sigo. Después funciona sin internet, y tu voz no sale del teléfono.' },
 
   // Los tres estilos de subtitulos de la aplicacion. La pagina los usa tambien en la etiqueta
   // que va sobre el video -escenas.js, por el JSON-.

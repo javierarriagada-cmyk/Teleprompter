@@ -13,6 +13,8 @@
 // La carpeta de adentro se llama como el módulo -model-es/..., aunque el paquete se llame model_es,
 // ver model-es/build.gradle-: el AssetManager ve los paquetes install-time mezclados con los assets
 // de la app, y VoskNativoPlugin busca "model-es/uuid", el mismo camino de siempre.
+// -tarea 104- Ya no hay paquetes install-time: los dos son on-demand y PaqueteDeVoz.rutaSiEsta busca
+// <carpeta del paquete>/model-es/am. El uuid sigue viajando, pero ya solo lo mira la APK de prueba.
 def carpeta = project.name
 def origen = file("../app/src/main/assets/$carpeta")
 def destino = file("src/main/assets/$carpeta")

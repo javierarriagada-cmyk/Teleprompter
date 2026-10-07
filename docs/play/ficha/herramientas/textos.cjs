@@ -17,6 +17,11 @@
 //   con la copia de Google activada- y que los videos no entran.
 // - Sin conexión: el español desde la instalación; el inglés después de bajar la voz una vez de
 //   Play -android/model-en/build.gradle, on-demand-.
+//   -tarea 104, 06-10-2026- Ya no: el español también es on-demand -android/model-es/build.gradle- y
+//   la voz del idioma de la app se baja sola, en silencio, la primera vez que se abre Sigo
+//   -src/lib/vozAPedido.ts-. Ahora se dice eso. Antes decía: "En español, desde que lo instalas; en
+//   inglés, después de descargar una vez la voz desde Google Play." / "English needs a one-time
+//   download of the speech model from Google Play; Spanish works right after install."
 // - Nada de "el mejor", "gratis", "nuevo", "n.º 1", emojis, MAYÚSCULAS de énfasis, "…" ni "--":
 //   la política de Metadatos -answer/9898842- y la guía de la descripción breve -answer/9866151-.
 //   Los títulos de sección en mayúsculas no son énfasis: ordenan un texto plano, sin formato.
@@ -90,7 +95,7 @@ CONFIANZA Y PRIVACIDAD
 - Los gestos se reconocen en el teléfono y ninguna imagen sale de él. Sigo no envía estadísticas de uso.
 - Tus guiones y tus videos se quedan en tu teléfono, hasta que tú los compartes.
 - Tus guiones y ajustes entran en la copia de seguridad de Android: si reinstalas Sigo con la copia de seguridad de Google activada, vuelven. Los videos no entran en esa copia.
-- También puedes usarlo sin conexión. En español, desde que lo instalas; en inglés, después de descargar una vez la voz desde Google Play.
+- También puedes usarlo sin conexión. La voz de tu idioma se descarga sola la primera vez que abres Sigo; después funciona sin internet.
 
 Escribe tu guion, toca Leer o Grabar, y habla. Sigo te sigue.`
   },
@@ -142,7 +147,7 @@ TRUST AND PRIVACY
 - Gestures are recognized on your phone, and no image leaves it. Sigo does not send usage statistics.
 - Your scripts and videos stay on your phone until you share them.
 - Your scripts and settings are included in Android backup: if you reinstall Sigo with Google backup turned on, they come back. Videos are not part of that backup.
-- You can also use it offline. English needs a one-time download of the speech model from Google Play; Spanish works right after install.
+- You can also use it offline. The voice for your language downloads on its own the first time you open Sigo; after that it works without internet.
 
 Write your script, tap Read or Record, and start talking. Sigo follows.`
   }

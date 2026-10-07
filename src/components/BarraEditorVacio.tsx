@@ -27,6 +27,8 @@ interface BarraEditorVacioProps {
   editorRef: React.RefObject<Editor | null>
   fileInputRef: React.RefObject<HTMLInputElement | null>
   cargandoArchivo: boolean
+  // -tarea 105- Tras pegar con el botón: dispara la marca de idioma.
+  onPegado?: () => void
 }
 
 export function BarraEditorVacio({
@@ -34,7 +36,8 @@ export function BarraEditorVacio({
   fontSize,
   editorRef,
   fileInputRef,
-  cargandoArchivo
+  cargandoArchivo,
+  onPegado
 }: BarraEditorVacioProps) {
   return (
     /* Barra fija abajo cuando numPalabras === 0: Pegar texto y Abrir archivo */
@@ -82,6 +85,7 @@ export function BarraEditorVacio({
             const trozo = vista.someProp('clipboardTextParser', (f) => f(texto, vista.state.selection.$from, true, vista))
             if (trozo) vista.dispatch(vista.state.tr.replaceSelection(trozo).scrollIntoView())
             else e.commands.insertContent(texto)
+            onPegado?.()
           })
         }}
         style={{

@@ -17,6 +17,10 @@ El reconocedor es Vosk en las dos formas en que corre:
   con el modelo empaquetado adentro. No descarga nada y arranca de inmediato -la
   version WASM tarda 11 a 13 segundos en entregar la primera palabra, medido con
   el telefono en modo avion.
+  *Nota, tarea 104:* eso vale para la APK de prueba (`npm run apk`). En la version
+  de Google Play (`npm run play`) ningun modelo viene con la instalacion: la voz del
+  idioma de la app se baja sola, en silencio, la primera vez que se abre, y despues
+  funciona sin internet. El modelo de gestos se baja al encender Control por gestos.
 
 Cual se usa no se elige a mano: `Capacitor.isNativePlatform()` decide sola
 (`src/App.tsx`, `sanitizarEngine`). El selector de motor en Ajustes sigue

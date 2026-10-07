@@ -50,6 +50,10 @@ import java.util.Arrays;
  * Aca el modelo viaja adentro del APK -assets/model-es- y la biblioteca es codigo
  * compilado. No se baja nada y no se arma nada en tiempo de ejecucion.
  *
+ * -tarea 104, 06-10-2026- Eso sigue siendo así en la APK de prueba. En la versión de Play ningún
+ * modelo viene en el APK: el del idioma de la app se baja de Play una vez, en silencio, al abrir la
+ * app -asegurarVoz con silencioso, PaqueteDeVoz-, y después funciona sin internet.
+ *
  * LO QUE ESTE ARCHIVO NO DECIDE.
  *
  * Nada del motor de lectura. El seguidor, avance.ts, el renglon trabado y la banda
@@ -167,6 +171,9 @@ public class VoskNativoPlugin extends Plugin {
     }
 
     /**
+     * -tarea 104- En la versión de Play ya no copia nada: abre el modelo desde la carpeta de su paquete
+     * -cargarDesdeCarpeta-. La copia de abajo queda solo para la APK de prueba, que lo trae en assets.
+     *
      * Copia el modelo a la memoria interna la primera vez y lo deja cargado.
      *
      * NO ARRANCA EL MICROFONO. Son dos pasos a proposito: esto es lo lento -la copia
@@ -194,6 +201,16 @@ public class VoskNativoPlugin extends Plugin {
             idiomaModelo = null;
         }
         borrarCarpetaVieja();
+        // -tarea 104, PASO 2, 06-10-2026- AHORA: en la versión de Play NINGÚN modelo viene en assets. El
+        // español también es on-demand -android/model-es- y se abre directo de la carpeta de su
+        // paquete con PaqueteDeVoz.rutaSiEsta, sin StorageService.unpack: se acabó la copia de 57,5 MB
+        // que lo dejaba dos veces en el teléfono. Y AL ABRIR LA APP SÍ se pide, en silencio, el modelo
+        // del idioma de la app: la precarga llama primero a esto -que, si falta, sigue rechazando con
+        // VOZ_NO_DESCARGADA- y después a asegurarVoz con silencioso, que lo baja sin avisos y sin el
+        // diálogo de Play. asegurarVoz al apretar Empezar queda de respaldo, por si todavía no llegó.
+        // Motivo -Javier-: unos 150 MB instalados por la copia, y cada 6 MB de descarga cuestan cerca
+        // de 1 % de instalaciones. La APK de prueba sigue igual: los dos en assets, por unpack.
+        // Antes, con su motivo de entonces:
         // EL MODELO QUE NO VIENE EN ASSETS -tarea 84, D2, 29-09-2026-. En la APK de prueba los dos
         // vienen en assets y en la versión de Play el español también -su paquete es install-time
         // y Android lo junta con los assets de la app-: los dos siguen por StorageService.unpack,
@@ -243,9 +260,14 @@ public class VoskNativoPlugin extends Plugin {
      * muestra en el mismo IndicadorPrecarga de siempre. Sin internet rechaza con SIN_CONEXION y la
      * app dice que hace falta conexión una vez; la lectura no parte.
      */
+    //
+    // -tarea 104- silencioso: lo pide la precarga al abrir la app -lib/vozAPedido.ts-. Nunca muestra el
+    // diálogo de Play: si Play lo pediría, responde estado "en-pausa" y Play la retoma sola con Wi-Fi
+    // -opción B, Javier-. Sin silencioso, si la persona dice que no al diálogo, rechaza con RECHAZADA.
     @PluginMethod
     public void asegurarVoz(PluginCall call) {
         String idioma = "en".equals(call.getString("idioma", "es")) ? "en" : "es";
+        final boolean silencioso = Boolean.TRUE.equals(call.getBoolean("silencioso", false));
         final String paquete = carpetaModelo(idioma);
         if (enAssets(paquete) || PaqueteDeVoz.rutaSiEsta(getContext(), paquete) != null) {
             JSObject r = new JSObject();
@@ -253,7 +275,8 @@ public class VoskNativoPlugin extends Plugin {
             call.resolve(r);
             return;
         }
-        PaqueteDeVoz.bajar(getActivity(), getContext(), paquete, new PaqueteDeVoz.Aviso() {
+        // Antes: PaqueteDeVoz.bajar(getActivity(), getContext(), paquete, new PaqueteDeVoz.Aviso() {
+        PaqueteDeVoz.bajar(getActivity(), getContext(), paquete, silencioso, new PaqueteDeVoz.Aviso() {
             @Override
             public void progreso(double fraccion) {
                 JSObject d = new JSObject();
@@ -274,12 +297,21 @@ public class VoskNativoPlugin extends Plugin {
             public void fallo(String codigo, String mensaje) {
                 call.reject(mensaje, codigo);
             }
+
+            @Override
+            public void enPausa() {
+                JSObject r = new JSObject();
+                r.put("estado", "en-pausa");
+                call.resolve(r);
+            }
         });
     }
 
     /**
      * Si la carpeta del modelo está en los assets -los de la app o los de un paquete install-time,
      * que Android junta con ellos-. Se mira el uuid, que genUUID pone en cada carpeta de modelo.
+     * -tarea 104- Ya no hay paquetes install-time: en la versión de Play esto da false para los dos
+     * modelos, y true solo en la APK de prueba.
      */
     private boolean enAssets(String carpeta) {
         try {
@@ -302,6 +334,9 @@ public class VoskNativoPlugin extends Plugin {
                 modelo = cargado;
                 idiomaModelo = idioma;
                 call.resolve();
+                // -tarea 104- El español ya abrió desde su paquete: la copia vieja de la 0.9.0 sobra.
+                // Aquí, en este hilo, para no borrar 57 MB en el hilo del plugin.
+                if ("es".equals(idioma)) borrarCopiaViejaDelEspanol();
             } catch (Exception e) {
                 call.reject("No se pudo cargar el modelo: " + e.getMessage());
             }
@@ -320,10 +355,31 @@ public class VoskNativoPlugin extends Plugin {
         if (vieja.exists()) borrarRecursivo(vieja);
     }
 
+    /**
+     * -tarea 104, PASO 2- LA OTRA COPIA VIEJA, sobre la misma idea que borrarCarpetaVieja. Hasta la
+     * 0.9.0 el español venía con la instalación y StorageService.unpack lo copiaba a
+     * getExternalFilesDir(null)/model-es -57 MB-. Ahora se abre desde su paquete y esa copia sobra: se
+     * borra una vez, solo esa carpeta, solo en la versión de Play -en la APK de prueba el español sigue
+     * en assets y esa copia es la que usa-. La decisión está en CopiaViejaDelModelo, con su prueba.
+     */
+    private void borrarCopiaViejaDelEspanol() {
+        try {
+            java.io.File base = getContext().getExternalFilesDir(null);
+            if (CopiaViejaDelModelo.limpiar(base, "es", enAssets(CopiaViejaDelModelo.CARPETA_ESPANOL))) {
+                android.util.Log.i("VoskNativo", "Se borró la copia vieja del modelo español en " + base);
+            }
+        } catch (Exception e) {
+            android.util.Log.w("VoskNativo", "No se pudo borrar la copia vieja del español: " + e.getMessage());
+        }
+    }
+
+    // -tarea 104- El borrado de verdad está en CopiaViejaDelModelo -sin seguir enlaces simbólicos-.
+    // Antes:
+    //   java.io.File[] hijos = f.listFiles();
+    //   if (hijos != null) for (java.io.File h : hijos) borrarRecursivo(h);
+    //   if (!f.delete()) android.util.Log.w("VoskNativo", "No se pudo borrar " + f);
     private static void borrarRecursivo(java.io.File f) {
-        java.io.File[] hijos = f.listFiles();
-        if (hijos != null) for (java.io.File h : hijos) borrarRecursivo(h);
-        if (!f.delete()) android.util.Log.w("VoskNativo", "No se pudo borrar " + f);
+        CopiaViejaDelModelo.borrarRecursivo(f);
     }
 
     @PluginMethod

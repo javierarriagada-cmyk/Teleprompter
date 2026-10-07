@@ -12,6 +12,7 @@ import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from
 import { t, useTextos } from '../textos'
 import { Interruptor } from './Interruptor'
 import { movimientoApagado, MS_CHICO, CURVA_RESORTE } from './movimiento'
+import type { EstadoModeloGestos } from '../lib/gestos'
 
 // La aparición de la segunda fila -tarea 93, 05-10-2026-: un resorte de unos 240 ms.
 const MS_SEGUNDA_FILA = 240
@@ -83,7 +84,10 @@ export function FichasListo({
   masAparte = false,
   gestosAlGrabar = false,
   setGestosAlGrabar,
-  motivoSinGestos = null
+  motivoSinGestos = null,
+  modeloGestos = null,
+  pidiendoGestos = false,
+  avisoVoz = null
 }: {
   fontSize: number
   onLetraMenos?: () => void
@@ -121,6 +125,15 @@ export function FichasListo({
   gestosAlGrabar?: boolean
   setGestosAlGrabar?: (v: boolean) => void
   motivoSinGestos?: 'soloFrontal' | 'noDisponible' | null
+  // -tarea 104, lámina c- El modelo de gestos a pedido: bajando -con su avance-, sin internet, rechazado
+  // en el diálogo de Play o con error. pidiendoGestos: se encendió el interruptor y se está esperando el
+  // modelo; mientras tanto el interruptor se ve encendido. Sin el modelo, gestosAlGrabar no se enciende.
+  modeloGestos?: EstadoModeloGestos | null
+  pidiendoGestos?: boolean
+  // -tarea 104, lámina b- El aviso de la voz que falta, abajo, donde se abren los paneles de las
+  // fichas. Lo arma App: solo al intentar leer sin la voz en el teléfono y sin internet -o si se dijo
+  // que no al diálogo de Play-. Si se abre una ficha, su panel ocupa ese lugar.
+  avisoVoz?: { texto: string; onReintentar: () => void } | null
 }) {
   useTextos()
   // Las clases de tamaño que se suman a .ficha-listo -tarea 83-.
@@ -205,6 +218,23 @@ export function FichasListo({
       data-testid="fila-fichas-listo"
       onClick={(e) => e.stopPropagation()}
     >
+      {/* -tarea 104, lámina b- En el color normal del texto, no en rojo: el rojo queda para grabar y
+          borrar -Javier-. No tapa la flecha, el renglón, las fichas ni Empezar. */}
+      {!panelAbierto && avisoVoz && (
+        <div className="panel-ficha tarjeta-elevada aviso-voz-listo" data-testid="aviso-voz-sin-conexion" role="status">
+          <div className="aviso-voz-listo-texto">{avisoVoz.texto}</div>
+          <div className="segmentado">
+            <button
+              type="button"
+              className="segmentado-opcion"
+              data-testid="btn-reintentar-voz"
+              onClick={() => avisoVoz.onReintentar()}
+            >
+              <span>{t('reintentar')}</span>
+            </button>
+          </div>
+        </div>
+      )}
       {panelAbierto && (
         <div
           ref={panelRef}
@@ -317,16 +347,34 @@ export function FichasListo({
                 >
                   <div className="fila-gestos-texto">
                     <div className="fila-gestos-nombre">{t('controlPorGestos')}</div>
+                    {/* -tarea 104, lámina c- Mientras baja el modelo, el avance con una barra fina; sin
+                        internet -o si se dijo que no a Play-, el aviso en la misma fila, en el color normal.
+                        Al terminar vuelve la explicación de siempre. */}
+                    {!motivoSinGestos && modeloGestos && modeloGestos.estado === 'bajando' ? (
+                      <div className="fila-gestos-explicacion" data-testid="gestos-preparando">
+                        {t('preparandoGestos', { n: Math.round(modeloGestos.progreso * 100) })}
+                        <div className="fila-gestos-pista">
+                          <div className="fila-gestos-relleno" style={{ width: `${Math.round(modeloGestos.progreso * 100)}%` }} />
+                        </div>
+                      </div>
+                    ) : !motivoSinGestos && modeloGestos && (modeloGestos.estado === 'sin-conexion' || modeloGestos.estado === 'rechazada') ? (
+                      <div className="fila-gestos-explicacion" data-testid="gestos-sin-conexion" role="status">
+                        {modeloGestos.estado === 'sin-conexion' ? t('gestosSinConexion') : t('gestosRechazados')}
+                      </div>
+                    ) : (
                     <div className="fila-gestos-explicacion">
                       {motivoSinGestos === 'soloFrontal'
                         ? t('gestosSoloFrontal')
-                        : motivoSinGestos === 'noDisponible'
+                        : motivoSinGestos === 'noDisponible' || (modeloGestos && modeloGestos.estado === 'error')
                         ? t('gestosNoDisponible')
                         : t('controlPorGestosExplicacion')}
                     </div>
+                    )}
                   </div>
+                  {/* -tarea 104- Encendido también mientras se espera el modelo -pidiendoGestos-. Antes:
+                      encendido={!motivoSinGestos && gestosAlGrabar} */}
                   <Interruptor
-                    encendido={!motivoSinGestos && gestosAlGrabar}
+                    encendido={!motivoSinGestos && (gestosAlGrabar || pidiendoGestos)}
                     onCambiar={(v) => setGestosAlGrabar?.(v)}
                     etiqueta={t('controlPorGestos')}
                     testid="switch-gestos"

@@ -8,6 +8,16 @@ import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnos
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
 import { palabrasDelDestacado, segmentosDelDestacado, CajaPalabra } from '../lib/destacado'
 import type { Layout } from '../hooks/useLayout'
+import {
+  abrirMarcaSiCorresponde,
+  debeMostrarMarcaPalma,
+  debeMostrarMarcaRecuadro,
+  liberarMarcaEnSesion,
+  marcarComoVista,
+  marcaYaVista,
+  registrarCierreAfuera
+} from '../lib/marcasGuia'
+import { MarcaGuia } from './MarcaGuia'
 
 // CERO DESDE EL 24-09-2026, MEDIDO. Era 2, puesto con el motor WASM -tarea 36-: el
 // renglon vivo no pasaba al siguiente hasta que el motor llevaba 2 palabras adentro.
@@ -69,6 +79,7 @@ import { App as CapacitorApp } from '@capacitor/app'
 import { aplicarBrillo, leerBrilloSistema, restaurarBrillo } from '../lib/brillo'
 import { FichasListo, FichaMas, PanelFicha } from './FichasListo'
 import { t, useTextos } from '../textos'
+import type { EstadoModeloGestos } from '../lib/gestos'
 
 // UN RENGLON DE HOLGURA ARRIBA, Y DOS HACIA ADELANTE.
 //
@@ -275,6 +286,14 @@ interface TeleprompterViewProps {
   gestosAlGrabar?: boolean
   setGestosAlGrabar?: (v: boolean) => void
   motivoSinGestos?: 'soloFrontal' | 'noDisponible' | null
+  // -tarea 104- El modelo de gestos a pedido y el aviso de la voz que falta: los arma App y van tal
+  // cual a FichasListo -láminas b y c-.
+  modeloGestos?: EstadoModeloGestos | null
+  pidiendoGestos?: boolean
+  avisoVoz?: { texto: string; onReintentar: () => void } | null
+  // -tarea 105- Bloqueos de las marcas de guía (recuadro / palma).
+  hayDialogoPermiso?: boolean
+  hayAvisoDescargaVoz?: boolean
 }
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
@@ -364,7 +383,12 @@ export default function TeleprompterView({
   enPausa = false,
   gestosAlGrabar = false,
   setGestosAlGrabar,
-  motivoSinGestos = null
+  motivoSinGestos = null,
+  modeloGestos = null,
+  pidiendoGestos = false,
+  avisoVoz = null,
+  hayDialogoPermiso = false,
+  hayAvisoDescargaVoz = false
 }: TeleprompterViewProps) {
   useTextos()
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -410,6 +434,49 @@ export default function TeleprompterView({
   const modoManualRef = useRef(false)
   const finManualRef = useRef<number | null>(null)
   const [arrastrandoRecuadro, setArrastrandoRecuadro] = React.useState(false)
+  // -tarea 105- Marcas de guía del recuadro y de la palma.
+  const [marcaActiva, setMarcaActiva] = useState<'recuadro' | 'palma' | null>(null)
+  const [anclaMarcaEl, setAnclaMarcaEl] = useState<HTMLElement | null>(null)
+  // Si la posición ya no es la de fábrica, la persona arrastró en una sesión anterior.
+  const arrastroRecuadroRef = useRef(recuadroX !== 0.64 || recuadroY !== 0.52)
+  function alArrastrandoRecuadro(v: boolean) {
+    setArrastrandoRecuadro(v)
+    if (v) {
+      arrastroRecuadroRef.current = true
+      marcarComoVista('recuadro')
+      if (marcaActiva === 'recuadro') {
+        setMarcaActiva(null)
+        setAnclaMarcaEl(null)
+      }
+      // Liberar: arrastrar gasta la marca y deja libre para otra en esta sesión.
+      liberarMarcaEnSesion()
+    }
+  }
+  function cerrarMarcaActiva(motivo: 'entendido' | 'afuera') {
+    if (marcaActiva) {
+      if (motivo === 'entendido') {
+        marcarComoVista(marcaActiva)
+      } else {
+        // Antes: marcarComoVista(marcaActiva) también al tocar afuera.
+        // No gasta forever, pero no reaparece mientras recuadro/gestos sigan igual.
+        registrarCierreAfuera(marcaActiva)
+      }
+    }
+    // Antes: liberar solo con afuera/desmontar; Entendido dejaba el tope de sesión.
+    liberarMarcaEnSesion()
+    setMarcaActiva(null)
+    setAnclaMarcaEl(null)
+  }
+  const marcaActivaRef = useRef(marcaActiva)
+  marcaActivaRef.current = marcaActiva
+  // Si se sale de Grabar con la marca a la vista: no queda vista; se libera la sesión.
+  useEffect(() => {
+    return () => {
+      if (marcaActivaRef.current) {
+        liberarMarcaEnSesion()
+      }
+    }
+  }, [])
   // 28-09-2026, tarea 77: el cajon panel-ajustes-toma y el engranaje de LISTO
   // se fueron. Queda panelFicha: un panel chico a la vez, pegado a su ficha.
   // panelTomaAbierto era el cajon entero, y se cerraba tambien arrastrandolo
@@ -437,6 +504,103 @@ export default function TeleprompterView({
   useEffect(() => {
     tokensRef.current = tokenizarGuion(guionObj)
   }, [script])
+
+  // -tarea 105- Marca del recuadro: primera vez que el fondo pasa a 'recuadro' en LISTO.
+  // Solo se marca vista si el ancla está en el DOM -si no, se reintenta en el siguiente frame-.
+  useEffect(() => {
+    if (marcaActiva) return
+    const comunes = {
+      idGuion: guionObj.id,
+      idsBloques: (guionObj.bloques || []).map((b) => b.id),
+      enLecturaOToma: estadoToma !== 'listo',
+      hayAvisoVoz: !!avisoVoz || hayAvisoDescargaVoz,
+      hayDialogoPermiso
+    }
+    const puede = debeMostrarMarcaRecuadro({
+      yaVista: marcaYaVista('recuadro'),
+      fondoEsRecuadro: fondoToma === 'recuadro' && camaraEncendida,
+      estadoListo: estadoToma === 'listo',
+      yaArrastro: arrastroRecuadroRef.current,
+      ...comunes
+    })
+    if (!puede) return
+    let cancelado = false
+    const intentar = () => {
+      if (cancelado) return
+      const el = document.querySelector('[data-testid="recuadro-camara"]') as HTMLElement | null
+      if (!el) return
+      if (!abrirMarcaSiCorresponde('recuadro', true)) return
+      setAnclaMarcaEl(el)
+      setMarcaActiva('recuadro')
+    }
+    intentar()
+    const id = requestAnimationFrame(intentar)
+    return () => {
+      cancelado = true
+      cancelAnimationFrame(id)
+    }
+  }, [fondoToma, estadoToma, camaraEncendida, avisoVoz, hayAvisoDescargaVoz, hayDialogoPermiso, marcaActiva, guionObj.id])
+
+  // -tarea 105- Marca de la palma: primera vez que se encienden los gestos.
+  // Espera mientras modeloGestos.estado === 'bajando' o pidiendoGestos (diálogo de Play).
+  // preparandoGestos es SOLO la clave i18n, no el estado.
+  useEffect(() => {
+    if (marcaActiva) return
+    const modeloBajando = !!(modeloGestos && modeloGestos.estado === 'bajando')
+    const comunes = {
+      idGuion: guionObj.id,
+      idsBloques: (guionObj.bloques || []).map((b) => b.id),
+      enLecturaOToma: estadoToma !== 'listo',
+      hayAvisoVoz: !!avisoVoz || hayAvisoDescargaVoz,
+      hayDialogoPermiso
+    }
+    const puede = debeMostrarMarcaPalma({
+      yaVista: marcaYaVista('palma'),
+      gestosEncendidos: !!gestosAlGrabar,
+      motivoSinGestos: motivoSinGestos ?? null,
+      modeloBajando,
+      pidiendoGestos: !!pidiendoGestos,
+      ...comunes
+    })
+    if (!puede) return
+    let cancelado = false
+    const intentar = () => {
+      if (cancelado) return
+      const el = document.querySelector('[data-testid="switch-gestos"]') as HTMLElement | null
+      if (!el) return
+      if (!abrirMarcaSiCorresponde('palma', true)) return
+      setAnclaMarcaEl(el)
+      setMarcaActiva('palma')
+    }
+    intentar()
+    const id = requestAnimationFrame(intentar)
+    return () => {
+      cancelado = true
+      cancelAnimationFrame(id)
+    }
+  }, [gestosAlGrabar, motivoSinGestos, modeloGestos, pidiendoGestos, estadoToma, avisoVoz, hayAvisoDescargaVoz, hayDialogoPermiso, marcaActiva, guionObj.id])
+
+  // Si se apaga el interruptor de gestos con la marca de palma a la vista, cuenta como usada.
+  useEffect(() => {
+    if (marcaActiva !== 'palma') return
+    if (gestosAlGrabar || pidiendoGestos) return
+    marcarComoVista('palma')
+    liberarMarcaEnSesion()
+    setMarcaActiva(null)
+    setAnclaMarcaEl(null)
+  }, [gestosAlGrabar, pidiendoGestos, marcaActiva])
+
+  // aria-describedby del control anclado mientras la marca está a la vista.
+  useEffect(() => {
+    if (!marcaActiva || !anclaMarcaEl) return
+    const id = marcaActiva === 'recuadro' ? 'marca-guia-recuadro-desc' : 'marca-guia-palma-desc'
+    const prev = anclaMarcaEl.getAttribute('aria-describedby')
+    anclaMarcaEl.setAttribute('aria-describedby', id)
+    return () => {
+      if (prev) anclaMarcaEl.setAttribute('aria-describedby', prev)
+      else anclaMarcaEl.removeAttribute('aria-describedby')
+    }
+  }, [marcaActiva, anclaMarcaEl])
 
   const filaPx = fontSize * 1.4
   const alturaLineaPx = filaPx + 16
@@ -1071,6 +1235,9 @@ export default function TeleprompterView({
         gestosAlGrabar={gestosAlGrabar}
         setGestosAlGrabar={setGestosAlGrabar}
         motivoSinGestos={motivoSinGestos}
+        modeloGestos={modeloGestos}
+        pidiendoGestos={pidiendoGestos}
+        avisoVoz={avisoVoz}
       />
   )
 
@@ -1186,7 +1353,7 @@ export default function TeleprompterView({
             setRecuadroX?.(x)
             setRecuadroY?.(y)
           }}
-          onArrastrandoChange={setArrastrandoRecuadro}
+          onArrastrandoChange={alArrastrandoRecuadro}
           onRect={setRectRecuadro}
           // 29-09-2026, tarea 82: de lado, 144 x 81 en una esquina de la zona libre.
           // 30-09-2026, tarea 83: en tableta también vive en una esquina -180 x 240 entre la barra
@@ -1625,7 +1792,19 @@ export default function TeleprompterView({
           )}
         </>
       )}
+
+      {/* -tarea 105- Marca de guía (recuadro o palma). Una sola a la vez; la sesión la reserva marcasGuia. */}
+      {marcaActiva && (
+        <MarcaGuia
+          anclaEl={anclaMarcaEl}
+          texto={marcaActiva === 'recuadro' ? t('marcaGuiaRecuadro') : t('marcaGuiaPalma')}
+          idDescripcion={marcaActiva === 'recuadro' ? 'marca-guia-recuadro-desc' : 'marca-guia-palma-desc'}
+          onCerrar={cerrarMarcaActiva}
+          conMano={marcaActiva === 'recuadro'}
+          alinear={marcaActiva === 'recuadro' ? 'izquierda' : 'derecha'}
+          testid={marcaActiva === 'recuadro' ? 'marca-guia-recuadro' : 'marca-guia-palma'}
+        />
+      )}
     </div>
   )
 }
-

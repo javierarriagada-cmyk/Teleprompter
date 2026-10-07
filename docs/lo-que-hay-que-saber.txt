@@ -34,6 +34,8 @@ REGLA A FUEGO -Javier, 05-10-2026-: LAS PRUEBAS SOLO CUBREN LOGICA QUE NO SE VE.
   TODO OCURRE EN EL TELEFONO. Sin servidor, sin cuentas, sin telemetria. El
   reconocedor es Vosk compilado para Android -src/motor/MotorNativo.ts y
   VoskNativoPlugin.java-, con el modelo espanol dentro del APK. Funciona sin internet.
+  -Nota, tarea 104: en la version de Play la voz ya no viene dentro: se baja sola de Play la
+  primera vez que se abre la app y despues funciona sin internet. La APK de prueba la trae dentro.-
 
   EN PANTALLA, ESPANOL NEUTRO: sin voseo, sin chilenismos, sin modismos de ningun pais.
 

@@ -19,6 +19,8 @@ final class PaqueteDeVoz {
         void progreso(double fraccion);
         void listo(String rutaModelo);
         void fallo(String codigo, String mensaje);
+        // -tarea 104- El mismo de la versión de Play; aquí nunca se llama.
+        void enPausa();
     }
 
     private PaqueteDeVoz() {}
@@ -28,7 +30,21 @@ final class PaqueteDeVoz {
         return null;
     }
 
-    static void bajar(Activity actividad, Context contexto, String paquete, Aviso aviso) {
+    /**
+     * -tarea 104- La APK de prueba trae también el modelo de gestos en assets -gesture_recognizer.task-:
+     * GestosPlugin lo encuentra ahí y nunca llega a preguntar por su paquete.
+     */
+    static String rutaGestosSiEsta(Context contexto) {
+        return null;
+    }
+
+    static void bajarGestos(Activity actividad, Context contexto, Aviso aviso) {
+        aviso.fallo("SIN_MODELO", "La APK de prueba no trae gesture_recognizer.task en assets");
+    }
+
+    // -tarea 104- Se suma silencioso, como en la versión de Play. Antes:
+    // static void bajar(Activity actividad, Context contexto, String paquete, Aviso aviso) {
+    static void bajar(Activity actividad, Context contexto, String paquete, boolean silencioso, Aviso aviso) {
         // No es un fallo mudo: si alguna vez se llega aquí es porque falta el modelo en assets,
         // y el mensaje dice qué hacer.
         aviso.fallo("SIN_MODELO", "La APK de prueba no trae " + paquete + " en assets. Corre: npm run modelo");
