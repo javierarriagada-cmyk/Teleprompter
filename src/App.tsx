@@ -64,7 +64,7 @@ import { confirmadorNuevo, revisar as revisarGesto } from './lib/confirmadorGest
 import { vigiaNuevo, oirParcial, oirFinal, debePedir, alPedir, alResponder, Vigia } from './lib/vigiaGestos'
 // -tarea 88, segunda vuelta- El fin de la última palabra del FINAL, para el corte de la palma.
 import { tomarFinUltimaPalabraEpochMs } from './lib/diagnostico'
-import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar } from './components/IconosApp'
+import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar, IconoEmpezarAPausa } from './components/IconosApp'
 import { t, useTextos, TITULO_SIN_NOMBRE } from './textos'
 import { idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
 import { PASOS_LETRA } from './components/estiloLectura'
@@ -2367,7 +2367,8 @@ export default function App({ motor, repoOverride }: AppProps) {
               >
                 {/* -tarea 83, parte B- A 24, el ícono del botón de 56. En pausa el mismo botón es
                     Seguir. Antes: tamano={20} en los dos. */}
-                {enPausa ? <IconoEmpezar tamano={24} /> : <IconoPausa tamano={24} />}
+                {/* Antes: {enPausa ? <IconoEmpezar tamano={24} /> : <IconoPausa tamano={24} />} */}
+                <IconoEmpezarAPausa esPlay={enPausa} tamano={24} />
               </button>
   )
 

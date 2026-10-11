@@ -1,5 +1,6 @@
 :root {
   color-scheme: dark light;
+  --curva-resorte: cubic-bezier(.34, 1.3, .64, 1);
   --bg-suelo: #151312;
   --bg-fila: #1E1B19;
   --bg-superficie: #221F1D;
@@ -1323,6 +1324,7 @@ label.selector-aa-opcion {
   /* 2026-10-05: también Grabar. Antes: .btn-empezar-leer { animation: none; } */
   .btn-empezar-leer,
   .btn-empezar-grabar { animation: none; }
+  .punto-grabar { transition: none !important; }
 }
 .punto-grabar {
   display: block;
@@ -1330,6 +1332,24 @@ label.selector-aa-opcion {
   height: 26px;
   border-radius: 50%;
   background-color: var(--color-grabando);
+  transition: border-radius 300ms var(--curva-resorte), transform 300ms var(--curva-resorte);
+}
+
+/* Indicador de carga M3 Expressive para Preparando la voz... */
+@keyframes girarCargaM3 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes siluetaCargaM3 {
+  0%, 100% { border-radius: 50%; }
+  25% { border-radius: 20% 80% 20% 80% / 80% 20% 80% 20%; }
+  50% { border-radius: 3px; }
+  75% { border-radius: 80% 20% 80% 20% / 20% 80% 20% 80%; }
+}
+.punto-grabar.cuadrado,
+.punto-grabar.iniciando {
+  border-radius: 6px;
 }
 /* El cajon es de la aplicacion, no del guion: lleva la letra de la
    aplicacion. En la toma colgaba del lienzo y heredaba la tipografia de

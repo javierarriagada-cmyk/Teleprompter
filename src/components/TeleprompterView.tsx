@@ -74,7 +74,7 @@ import { AnclajeZona, calcularBanda, calcularBgVelo, calcularTramosVelo } from '
 import { RecuadroCamara, EsquinaRecuadroH } from './RecuadroCamara'
 import { FondoToma } from '../App'
 import {
-  IconoAtras, IconoEmpezar
+  IconoAtras, IconoEmpezar, IconoEmpezarAPausa
 } from './IconosApp'
 import { movimientoApagado } from './movimiento'
 // Antes: import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
@@ -515,6 +515,12 @@ export default function TeleprompterView({
   // se fueron. Queda panelFicha: un panel chico a la vez, pegado a su ficha.
   // panelTomaAbierto era el cajon entero, y se cerraba tambien arrastrandolo
   // hacia abajo -como el Aa-; ese arrastre se fue con el cajon.
+  const [botonTransformado, setBotonTransformado] = useState(false)
+  useEffect(() => {
+    if (estadoToma === 'listo') {
+      setBotonTransformado(false)
+    }
+  }, [estadoToma])
   const [panelFicha, setPanelFicha] = React.useState<PanelFicha>(null)
   // La barra de brillo parte del brillo que tiene la pantalla ahora.
   useEffect(() => {
@@ -1316,6 +1322,7 @@ export default function TeleprompterView({
       aria-label={t('empezar')}
       onClick={(e) => {
         e.stopPropagation()
+        setBotonTransformado(true)
         onEmpezar?.()
       }}
       style={{
@@ -1330,7 +1337,12 @@ export default function TeleprompterView({
         borderRadius: 'var(--redondeo-pildora)'
       }}
     >
-      {conCamara ? <span className="punto-grabar" aria-hidden="true" /> : <IconoEmpezar tamano={30} />}
+      {/* Antes: {conCamara ? <span className="punto-grabar" aria-hidden="true" /> : <IconoEmpezar tamano={30} />} */}
+      {conCamara ? (
+        <span className={`punto-grabar${botonTransformado ? ' cuadrado' : ''}`} aria-hidden="true" />
+      ) : (
+        <IconoEmpezarAPausa esPlay={!botonTransformado} tamano={30} />
+      )}
     </button>
   )
 

@@ -1,4 +1,49 @@
 import React from 'react'
+import { CURVA_RESORTE, movimientoApagado } from './movimiento'
+
+/** Ícono M3 Expressive que se transforma suavemente con resorte entre Play (triángulo) y Pausa (dos barras). */
+export function IconoEmpezarAPausa({
+  esPlay = true,
+  tamano = 22,
+  ...props
+}: { esPlay?: boolean; tamano?: number } & React.SVGProps<SVGSVGElement>) {
+  const animar = !movimientoApagado()
+  /* Antes:
+  {esPlay ? <IconoEmpezar tamano={tamano} /> : <IconoPausa tamano={tamano} />}
+  */
+  const path1Play = "M 7 4 L 19 12 L 7 12 L 7 4 Z"
+  const path1Pausa = "M 6 4 L 10 4 L 10 20 L 6 20 Z"
+
+  const path2Play = "M 7 12 L 19 12 L 7 20 L 7 12 Z"
+  const path2Pausa = "M 14 4 L 18 4 L 18 20 L 14 20 Z"
+
+  return (
+    <svg
+      width={tamano}
+      height={tamano}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="currentColor"
+      strokeWidth="1.2"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path
+        d={esPlay ? path1Play : path1Pausa}
+        style={{
+          transition: animar ? `d 300ms ${CURVA_RESORTE}` : 'none'
+        }}
+      />
+      <path
+        d={esPlay ? path2Play : path2Pausa}
+        style={{
+          transition: animar ? `d 300ms ${CURVA_RESORTE}` : 'none'
+        }}
+      />
+    </svg>
+  )
+}
 
 /** Engranaje de trazo fino. Sin relleno; ocho dientes en línea, no el cog de librería.
  *
