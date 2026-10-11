@@ -1190,7 +1190,9 @@ export default function TeleprompterView({
   // en los rieles. Se arman una vez acá para no tener dos copias que después se desalineen.
   // EL DOCK DE LISTO -ajustes de pantallas, 10-10-2026-: solo en Grabar y con el teléfono de pie. En
   // horizontal y en tableta, por ahora, solo cambia el orden de las fichas -FichasListo-.
-  const conDock = conCamara && !horizontal && !tableta
+  // -cuarta vuelta, 10-10-2026- Leer también: el mismo dock, con TEXTO, PANTALLA y el engranaje arriba y el
+  // play de hoy abajo al centro. Antes: const conDock = conCamara && !horizontal && !tableta
+  const conDock = !horizontal && !tableta
   // Sin ajustesLectura -las pruebas que montan TeleprompterView sola- el panel muestra los valores que
   // llegan; lo que no tiene manejador acá no cambia y lo dice en la consola. App siempre los pasa.
   const sinManejador = (que: string) => () => {

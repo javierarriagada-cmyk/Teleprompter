@@ -68,7 +68,9 @@ import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar } from './
 import { t, useTextos, TITULO_SIN_NOMBRE } from './textos'
 import { idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
 import { PASOS_LETRA } from './components/estiloLectura'
-import { PantallaAjustes } from './components/PantallaAjustes'
+// -ajustes de pantallas, cuarta vuelta, 10-10-2026- Ninguna puerta abre ya la pantalla completa de Ajustes:
+// todas abren el panel de vidrio en el lugar. Antes: import { PantallaAjustes } from './components/PantallaAjustes'
+import { PanelAjustesFlotante } from './components/PanelAjustes'
 import type { AjustesLectura } from './components/FilasAjustesLectura'
 import { DialogoMicrofono } from './components/DialogoMicrofono'
 import { DialogoPermiso } from './components/DialogoPermiso'
@@ -1530,6 +1532,18 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }
 
+  // LA CALIDAD Y EL ESPACIO DE LA TOMA, ARMADOS UNA VEZ -ajustes de pantallas, cuarta vuelta, 10-10-2026-.
+  // Los reciben TeleprompterView -fichas y dock- y el panel de Ajustes que abre la ficha Más.
+  const setCalidadVideoToma = (q: string) => {
+    hapticaSeleccion()
+    setCalidadVideo(q)
+    fijarCalidadVideo(q)
+  }
+  const minutosDisponiblesToma =
+    bytesLibres !== null
+      ? calcularMinutosDisponibles(bytesLibres, calidadVideo, grabaciones)
+      : null
+
   async function persistirResumenToma(resumen: ResumenGrabacion | null) {
     if (!resumen) return
     try {
@@ -2698,17 +2712,13 @@ export default function App({ motor, repoOverride }: AppProps) {
               setRecuadroX={setRecuadroX}
               setRecuadroY={setRecuadroY}
               calidadVideo={calidadVideo}
-              setCalidadVideo={(q) => {
-                hapticaSeleccion()
-                setCalidadVideo(q)
-                fijarCalidadVideo(q)
-              }}
+              // -cuarta vuelta- Armados una vez -setCalidadVideoToma, minutosDisponiblesToma-: los recibe también
+              // el panel de Ajustes de la ficha Más. Antes, aquí:
+              // setCalidadVideo={(q) => { hapticaSeleccion(); setCalidadVideo(q); fijarCalidadVideo(q) }}
+              // minutosDisponibles={bytesLibres !== null ? calcularMinutosDisponibles(bytesLibres, calidadVideo, grabaciones) : null}
+              setCalidadVideo={setCalidadVideoToma}
               calidadesSoportadas={calidadesSoportadas}
-              minutosDisponibles={
-                bytesLibres !== null
-                  ? calcularMinutosDisponibles(bytesLibres, calidadVideo, grabaciones)
-                  : null
-              }
+              minutosDisponibles={minutosDisponiblesToma}
               onVoltear={() => {
                 hapticaSeleccion()
                 setLadoCamara((l) => (l === 'frontal' ? 'trasera' : 'frontal'))
@@ -2821,7 +2831,9 @@ export default function App({ motor, repoOverride }: AppProps) {
                 adentro del dock, en el lugar de la duración, y la pastilla no sale en LISTO -nunca encima
                 del dock-. De lado y en tableta, sin dock, queda como hoy. Antes:
                 {((mostrarTiempo && !(conCamara && layout === 'tel-v' && estadoToma === 'listo')) || preparandoVoz !== null) && ( */}
-            {(mostrarTiempo || preparandoVoz !== null) && !(conCamara && layout === 'tel-v' && estadoToma === 'listo') && (
+            {/* -cuarta vuelta- Leer, de pie en el teléfono, también tiene el dock con lo que dura. Antes:
+                {(mostrarTiempo || preparandoVoz !== null) && !(conCamara && layout === 'tel-v' && estadoToma === 'listo') && ( */}
+            {(mostrarTiempo || preparandoVoz !== null) && !(layout === 'tel-v' && estadoToma === 'listo') && (
               <BarraDeTiempo
                 motorAvance={motorAvance}
                 totalTokens={totalTokens}
@@ -3036,17 +3048,43 @@ export default function App({ motor, repoOverride }: AppProps) {
         </div>
       )}
 
+      {/* UN SOLO PANEL DE AJUSTES -ajustes de pantallas, cuarta vuelta, 10-10-2026-. Javier: «Reemplaza a la
+          pantalla completa de Ajustes en todas las puertas». La portada, el editor y la ficha Más de lado y en
+          tableta abren aquí el panel de vidrio, abajo, sin cambiar de pantalla; de pie en LISTO lo abre el
+          engranaje del dock. Antes:
+          {ajustesAbiertos && (
+            <PantallaAjustes
+              onCerrar={() => setAjustesAbiertos(false)}
+              onRegistrarCerrarDentro={(fn) => { cerrarDentroAjustesRef.current = fn }}
+              origen={origenAjustes}
+              // Antes -hasta 2026-10-10-: fontSize, onElegirLetra={handleElegirLetra}, tipoFuente, setTipoFuente
+              // con hapticaSeleccion, columnaAngosta, marginPercent, setColumnaAngosta, setMarginPercent,
+              // colorFondo, colorLetra, setColorFondo, setColorLetra, mirror y setMirror con hapticaSeleccion,
+              // mostrarTiempo y setMostrarTiempo con hapticaSeleccion, escritos aquí uno por uno. Ajustes de
+              // pantallas: son ajustesLectura, los mismos que recibe el panel de Ajustes de la toma.
+              {...ajustesLectura}
+              tema={tema}
+              setTema={(v) => {
+                hapticaSeleccion()
+                setTema(v)
+              }}
+            />
+          )} */}
       {ajustesAbiertos && (
-        <PantallaAjustes
+        <PanelAjustesFlotante
+          origen={origenAjustes}
           onCerrar={() => setAjustesAbiertos(false)}
           onRegistrarCerrarDentro={(fn) => { cerrarDentroAjustesRef.current = fn }}
-          origen={origenAjustes}
-          // Antes -hasta 2026-10-10-: fontSize, onElegirLetra={handleElegirLetra}, tipoFuente, setTipoFuente
-          // con hapticaSeleccion, columnaAngosta, marginPercent, setColumnaAngosta, setMarginPercent,
-          // colorFondo, colorLetra, setColorFondo, setColorLetra, mirror y setMirror con hapticaSeleccion,
-          // mostrarTiempo y setMostrarTiempo con hapticaSeleccion, escritos aquí uno por uno. Ajustes de
-          // pantallas: son ajustesLectura, los mismos que recibe el panel de Ajustes de la toma.
-          {...ajustesLectura}
+          ajustesLectura={ajustesLectura}
+          // La sección Video solo la muestra Grabar -la ficha Más de lado y en tableta-: los mismos datos que
+          // recibe la toma.
+          video={{
+            conCamara,
+            calidadVideo,
+            setCalidadVideo: setCalidadVideoToma,
+            calidadesSoportadas,
+            minutosDisponibles: minutosDisponiblesToma
+          }}
           tema={tema}
           setTema={(v) => {
             hapticaSeleccion()

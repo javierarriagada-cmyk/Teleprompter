@@ -1,14 +1,22 @@
-import React, { useRef, useState } from 'react'
-import { IconoCerrar, IconoSubtitulos, IconoVoltear } from './IconosApp'
-import {
-  AjustesLectura, FilaAjuste, MenuAdjuntoAjustes, CheckMenu, MuestraLectura, FilasLectura, FilasPantalla,
-  MenuLectura, esMenuLectura, useAnclasLectura
-} from './FilasAjustesLectura'
-import { hayCalidad } from './FichasListo'
-import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
-import type { ClaveTexto } from '../textos'
+import React, { useState } from 'react'
+// Antes -hasta 2026-10-10, cuarta vuelta-:
+// import React, { useRef, useState } from 'react'
+// import { IconoCerrar, IconoSubtitulos, IconoVoltear } from './IconosApp'
+// import {
+//   AjustesLectura, FilaAjuste, MenuAdjuntoAjustes, CheckMenu, MuestraLectura, FilasLectura, FilasPantalla,
+//   MenuLectura, esMenuLectura, useAnclasLectura
+// } from './FilasAjustesLectura'
+// import { hayCalidad } from './FichasListo'
+// import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
+// import type { ClaveTexto } from '../textos'
+// import { CURVA_RESORTE, MS_CHICO, movimientoApagado } from './movimiento'
+// Cuarta vuelta: el panel de Ajustes de la toma, sus filas y sus menús viven en PanelAjustes.tsx -un solo
+// panel para toda la app-; el dock lo monta adentro.
+import { IconoVoltear } from './IconosApp'
+import type { AjustesLectura } from './FilasAjustesLectura'
+import { PanelAjustes } from './PanelAjustes'
 import { t, useTextos } from '../textos'
-import { CURVA_RESORTE, MS_CHICO, movimientoApagado } from './movimiento'
+import { movimientoApagado } from './movimiento'
 
 // GRABAR EN LISTO: UN SOLO DOCK DE VIDRIO -ajustes de pantallas, 10-10-2026, boceto 5-.
 //
@@ -23,13 +31,14 @@ import { CURVA_RESORTE, MS_CHICO, movimientoApagado } from './movimiento'
 //
 // Las filas de LECTURA y PANTALLA, sus menús y la línea de muestra son las de PantallaAjustes
 // -FilasAjustesLectura.tsx-. VIDEO -Calidad y Subtítulos- existe solo aquí.
+//
+// -cuarta vuelta, 10-10-2026- El panel es PanelAjustes, el mismo de la portada, el editor y la ficha Más:
+// en Grabar con Lectura, Video y Pantalla; en Leer -que ahora también tiene dock- con Lectura y Pantalla.
+// En Leer abajo va el play de hoy al centro, nada a la izquierda y lo que dura a la derecha.
 
-// Los nombres de los estilos, en el idioma de la app -los mismos de FichasListo y SubtitulosVisor-.
-const CLAVE_SUBTITULO: Record<EstiloSubtitulo, ClaveTexto> = {
-  no: 'subtitulosNo', amarillo: 'subtitulosAmarillo', rojo: 'subtitulosRojo', formal: 'subtitulosFormal'
-}
-
-type MenuDock = 'letra' | 'tipo' | 'ancho' | 'colores' | 'calidad' | 'subtitulos' | null
+// Antes -hasta 2026-10-10, cuarta vuelta-: CLAVE_SUBTITULO y
+// type MenuDock = 'letra' | 'tipo' | 'ancho' | 'colores' | 'calidad' | 'subtitulos' | null
+// vivían aquí. Se mudaron a PanelAjustes.tsx con la sección Video.
 
 export function DockListo({
   fichas,
@@ -72,23 +81,21 @@ export function DockListo({
 }) {
   useTextos()
   const [abierto, setAbierto] = useState(false)
-  const [menu, setMenu] = useState<MenuDock>(null)
-  const anclasLectura = useAnclasLectura()
-  const anclaCalidad = useRef<HTMLDivElement>(null)
-  const anclaSubtitulos = useRef<HTMLDivElement>(null)
-  // Los subtítulos: la MISMA clave que la ficha de hoy y el reproductor -sigo_subtitulos_estilo-.
-  const [estiloSub, setEstiloSub] = useState<EstiloSubtitulo>(estiloSubtituloGuardado)
-  const mostrarCalidad = hayCalidad(conCamara, calidadesSoportadas)
+  // Antes -hasta 2026-10-10, cuarta vuelta-: const [menu, setMenu] = useState<MenuDock>(null), las anclas
+  // -useAnclasLectura, anclaCalidad, anclaSubtitulos-, estiloSub y mostrarCalidad. Viven en PanelAjustes.
+  // Donde PanelAjustes pone sus menús: al lado del dock, afuera del vidrio.
+  const [hostMenus, setHostMenus] = useState<HTMLDivElement | null>(null)
   const animar = !movimientoApagado()
 
   function cerrar() {
-    setMenu(null)
+    // Antes -hasta 2026-10-10, cuarta vuelta-: setMenu(null) -el menú abierto se va con el panel-.
     setAbierto(false)
   }
 
-  function alternarMenu(m: Exclude<MenuDock, null>) {
-    setMenu(menu === m ? null : m)
-  }
+  // Antes -hasta 2026-10-10, cuarta vuelta-:
+  // function alternarMenu(m: Exclude<MenuDock, null>) {
+  //   setMenu(menu === m ? null : m)
+  // }
 
   return (
     <>
@@ -116,62 +123,18 @@ export function DockListo({
         onClick={(e) => e.stopPropagation()}
       >
         {abierto ? (
-          <div
-            className="dock-panel-ajustes"
-            data-testid="panel-ajustes-toma"
-            role="region"
-            aria-labelledby="titulo-ajustes-toma"
-            // Crece hacia arriba con una animación corta; sin movimiento si el sistema lo pide.
-            style={animar ? { animation: `dock-crece ${MS_CHICO}ms ${CURVA_RESORTE} both` } : undefined}
-          >
-            <div className="dock-panel-cabeza">
-              <h2 className="dock-panel-titulo" id="titulo-ajustes-toma">{t('tituloAjustesToma')}</h2>
-              <button
-                type="button"
-                className="dock-panel-cerrar"
-                data-testid="btn-cerrar-ajustes-toma"
-                aria-label={t('cerrar')}
-                onClick={cerrar}
-              >
-                <IconoCerrar tamano={18} />
-              </button>
-            </div>
-            <MuestraLectura ajustes={ajustesLectura} />
-            <div className="dock-panel-cuerpo">
-              <h3 className="dock-seccion">{t('seccionLectura')}</h3>
-              <FilasLectura
-                ajustes={ajustesLectura}
-                anclas={anclasLectura}
-                dialogo={menu}
-                setDialogo={setMenu}
-              />
-              <h3 className="dock-seccion">{t('seccionVideo')}</h3>
-              {/* Calidad, con la misma condición de hoy -hayCalidad-. Sin ícono: Calidad no tiene uno en
-                  Sigo, y no se dibuja ninguno nuevo; el hueco del ícono queda para que alinee. */}
-              {mostrarCalidad && (
-                <div className="envoltorio-fila-con-menu" ref={anclaCalidad}>
-                  <FilaAjuste
-                    testid="fila-calidad"
-                    icono={<span />}
-                    nombre={t('calidad')}
-                    valor={calidadVideo}
-                    onClick={() => alternarMenu('calidad')}
-                  />
-                </div>
-              )}
-              <div className="envoltorio-fila-con-menu" ref={anclaSubtitulos}>
-                <FilaAjuste
-                  testid="fila-subtitulos"
-                  icono={<IconoSubtitulos tamano={22} />}
-                  nombre={t('subtitulos')}
-                  valor={t(CLAVE_SUBTITULO[estiloSub])}
-                  onClick={() => alternarMenu('subtitulos')}
-                />
-              </div>
-              <h3 className="dock-seccion">{t('seccionPantalla')}</h3>
-              <FilasPantalla ajustes={ajustesLectura} />
-            </div>
-          </div>
+          // Antes -hasta 2026-10-10, cuarta vuelta-: el panel estaba escrito aquí -dock-panel-ajustes con
+          // panel-ajustes-toma, el título tituloAjustesToma, btn-cerrar-ajustes-toma, MuestraLectura y en
+          // dock-panel-cuerpo LECTURA -FilasLectura-, VIDEO -fila-calidad con hayCalidad, fila-subtitulos- y
+          // PANTALLA -FilasPantalla-, con la animación dock-crece-. Es PanelAjustes, sin cambios de marcado.
+          <PanelAjustes
+            origen={conCamara ? 'grabar' : 'leer'}
+            ajustesLectura={ajustesLectura}
+            video={{ conCamara, calidadVideo, setCalidadVideo, calidadesSoportadas, minutosDisponibles }}
+            onCerrar={cerrar}
+            hostMenus={hostMenus}
+            animar={animar}
+          />
         ) : (
           fichas(() => setAbierto(true))
         )}
@@ -196,7 +159,9 @@ export function DockListo({
           </div>
           {/* Grabar: el botón de hoy, con un brillo rojo suave alrededor. Con el panel abierto, tocarlo
               lo cierra y arranca -el toque llega igual al botón-. */}
-          <div className="dock-lugar-grabar" onClickCapture={cerrar}>
+          {/* -cuarta vuelta- En Leer el lugar es el mismo, sin el brillo rojo: el rojo es de grabar.
+              Antes: <div className="dock-lugar-grabar" onClickCapture={cerrar}> */}
+          <div className={`dock-lugar-grabar${conCamara ? '' : ' sin-brillo'}`} onClickCapture={cerrar}>
             {botonGrabar}
           </div>
           <div className="dock-lugar-duracion" data-testid="dock-duracion">
@@ -221,77 +186,11 @@ export function DockListo({
       </div>
 
       {/* Los menús de las filas, afuera del dock -el desenfoque del dock haría que un fixed se colocara
-          contra el dock y no contra la pantalla-. En tema oscuro, como el dock. */}
-      {abierto && menu && (
-        <div data-tema="oscuro" className="menus-dock">
-          {esMenuLectura(menu) && (
-            <MenuLectura
-              ajustes={ajustesLectura}
-              anclas={anclasLectura}
-              dialogo={menu}
-              onCerrar={() => setMenu(null)}
-            />
-          )}
-          {menu === 'calidad' && (
-            <MenuAdjuntoAjustes anclaRef={anclaCalidad} onCerrar={() => setMenu(null)} testid="dialogo-calidad">
-              <div className="lista-menu-adjunto">
-                {calidadesSoportadas.map((q) => (
-                  <button
-                    key={q}
-                    type="button"
-                    data-testid={`btn-calidad-${q}`}
-                    className={`fila-menu-adjunto${calidadVideo === q ? ' elegida' : ''}`}
-                    role="menuitemradio"
-                    aria-checked={calidadVideo === q}
-                    onClick={() => {
-                      setCalidadVideo?.(q)
-                      setMenu(null)
-                    }}
-                  >
-                    <span className="fila-menu-adjunto-etiqueta">{q}</span>
-                    <CheckMenu visible={calidadVideo === q} />
-                  </button>
-                ))}
-              </div>
-              {/* Lo que alcanza el espacio, como en el panel de la ficha de Calidad. */}
-              {typeof minutosDisponibles === 'number' && (
-                <div
-                  data-testid="linea-minutos-disponibles"
-                  className={`aviso-ficha menu-dock-aviso${minutosDisponibles < 2 ? ' aviso-ficha-urgente' : ''}`}
-                >
-                  {minutosDisponibles >= 2
-                    ? t('minutosDisponibles', { n: Math.floor(minutosDisponibles) })
-                    : t('menosDeDosMinutos')}
-                </div>
-              )}
-            </MenuAdjuntoAjustes>
-          )}
-          {menu === 'subtitulos' && (
-            <MenuAdjuntoAjustes anclaRef={anclaSubtitulos} onCerrar={() => setMenu(null)} testid="dialogo-subtitulos">
-              <div className="lista-menu-adjunto">
-                {ESTILOS_SUBTITULO.map((e) => (
-                  <button
-                    key={e.valor}
-                    type="button"
-                    data-testid={`btn-subtitulo-${e.valor}`}
-                    className={`fila-menu-adjunto${estiloSub === e.valor ? ' elegida' : ''}`}
-                    role="menuitemradio"
-                    aria-checked={estiloSub === e.valor}
-                    onClick={() => {
-                      setEstiloSub(e.valor)
-                      guardarEstiloSubtitulo(e.valor)
-                      setMenu(null)
-                    }}
-                  >
-                    <span className="fila-menu-adjunto-etiqueta">{t(CLAVE_SUBTITULO[e.valor])}</span>
-                    <CheckMenu visible={estiloSub === e.valor} />
-                  </button>
-                ))}
-              </div>
-            </MenuAdjuntoAjustes>
-          )}
-        </div>
-      )}
+          contra el dock y no contra la pantalla-. En tema oscuro, como el dock.
+          Antes -hasta 2026-10-10, cuarta vuelta-: aquí iban, con {abierto && menu && (...)}, MenuLectura, el
+          menú de Calidad -dialogo-calidad con btn-calidad-*, linea-minutos-disponibles- y el de Subtítulos
+          -dialogo-subtitulos con btn-subtitulo-*-. Los dibuja PanelAjustes, en este mismo lugar. */}
+      <div data-tema="oscuro" className="menus-dock" ref={setHostMenus} />
     </>
   )
 }

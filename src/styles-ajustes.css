@@ -751,7 +751,10 @@
    lado, sobre la barra del sistema. Si el WebView no pinta el desenfoque queda el 62 % oscuro: no se
    inventa otro efecto. El velo del color del fondo -VeloControles- sigue detrás. La letra es la de la
    aplicación, como .cajon-aa: no hereda la de lectura del lienzo. */
-.dock-listo {
+/* -cuarta vuelta, 10-10-2026- El panel flotante de Ajustes -portada, editor, la ficha Más de lado y en
+   tableta- es el mismo vidrio con el mismo borde: comparte esta caja. Antes el selector era solo .dock-listo. */
+.dock-listo,
+.panel-ajustes-flotante {
   position: absolute;
   left: 10px;
   right: 10px;
@@ -782,7 +785,9 @@
    tamaño y forma, detrás del contenido -z-index -1 dentro del dock, que ya es un contexto de apilamiento
    por su z-index-: desenfoca lo que hay detrás del dock y no depende de lo que el dock lleva adentro. Se
    ve igual: el mismo fondo, el mismo desenfoque, las mismas esquinas; -1 px para quedar bajo el borde. */
-.dock-listo::before {
+/* -cuarta vuelta- El mismo vidrio para el panel flotante. Antes el selector era solo .dock-listo::before. */
+.dock-listo::before,
+.panel-ajustes-flotante::before {
   content: "";
   position: absolute;
   inset: -1px;
@@ -800,8 +805,31 @@
 }
 /* -ajustes de pantallas, tercera vuelta- Abierto, el fondo sube al 90 %: la lista se lee aunque el
    desenfoque no pinte. Cerrado sigue en 62 %. */
-.dock-listo.abierto::before {
+.dock-listo.abierto::before,
+.panel-ajustes-flotante::before {
+  /* -cuarta vuelta- El panel flotante es siempre el panel abierto: también al 90 %. Antes el selector era
+     solo .dock-listo.abierto::before. */
   background: rgba(0, 0, 0, 0.9);
+}
+/* EL PANEL FLOTANTE DE AJUSTES -cuarta vuelta, 10-10-2026-. Donde no hay dock, el mismo panel sube desde
+   abajo, en el lugar del dock, y crece solo lo que pide su contenido hasta el mismo tope del dock abierto.
+   Va encima de todo -donde iba la pantalla de Ajustes- y no oscurece: la capa de atrás es transparente. */
+.panel-ajustes-flotante {
+  position: fixed;
+  z-index: 240;
+  max-height: calc(100% - 64px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  transform-origin: bottom center;
+}
+.capa-panel-ajustes {
+  position: fixed;
+  inset: 0;
+  z-index: 239;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel-ajustes-flotante { animation: none !important; }
 }
 .capa-dock-ajustes {
   position: absolute;
@@ -942,6 +970,10 @@
   box-shadow: 0 0 28px 6px color-mix(in srgb, var(--color-grabando) 45%, transparent);
   pointer-events: none;
 }
+/* -cuarta vuelta- En Leer el play de hoy va en el mismo lugar, sin el brillo rojo de Grabar. */
+.dock-lugar-grabar.sin-brillo::before {
+  display: none;
+}
 .dock-lugar-grabar > * {
   position: relative;
 }
@@ -983,6 +1015,16 @@
   gap: 12px;
   padding: 0 0 8px 8px;
 }
+/* -cuarta vuelta- En Acerca de Sigo, dentro del panel: volver a la izquierda, el título y la X. */
+.panel-cabeza-con-volver {
+  padding-left: 0;
+}
+.panel-cabeza-con-volver .dock-panel-titulo {
+  flex: 1 1 auto;
+}
+.panel-cabeza-con-volver .dock-panel-cerrar:first-child {
+  margin: -8px 0 -8px -8px;
+}
 .dock-panel-titulo {
   margin: 0;
   font-size: 18px;
@@ -1014,7 +1056,9 @@
 .dock-panel-cerrar > * {
   position: relative;
 }
-.dock-listo .muestra-lectura-ajustes {
+/* -cuarta vuelta- También en el panel flotante. Antes: .dock-listo .muestra-lectura-ajustes solo. */
+.dock-listo .muestra-lectura-ajustes,
+.panel-ajustes-flotante .muestra-lectura-ajustes {
   margin: 0 0 4px;
   border-color: rgba(255, 255, 255, 0.10);
 }
@@ -1032,24 +1076,36 @@
   text-transform: uppercase;
   color: var(--color-apagado);
 }
-.dock-listo .fila-ajuste {
+/* -cuarta vuelta- También en el panel flotante. Antes: .dock-listo .fila-ajuste solo. */
+.dock-listo .fila-ajuste,
+.panel-ajustes-flotante .fila-ajuste {
   min-height: 48px;
   padding: 0 8px;
 }
 /* La explicación de Espejo no va en el dock -el boceto 5 la deja fuera-: la fila queda de 48. */
-.dock-listo .fila-ajuste.con-explicacion {
+/* -cuarta vuelta- También en el panel flotante. Antes: .dock-listo .fila-ajuste.con-explicacion solo. */
+.dock-listo .fila-ajuste.con-explicacion,
+.panel-ajustes-flotante .fila-ajuste.con-explicacion {
   min-height: 48px;
 }
-.dock-listo .fila-ajuste-explicacion {
+/* -cuarta vuelta- También en el panel flotante. Antes: .dock-listo .fila-ajuste-explicacion solo. */
+.dock-listo .fila-ajuste-explicacion,
+.panel-ajustes-flotante .fila-ajuste-explicacion {
   display: none;
 }
-.dock-listo .fila-ajuste-nombre {
+/* -cuarta vuelta- También en el panel flotante. Antes: .dock-listo .fila-ajuste-nombre solo. */
+.dock-listo .fila-ajuste-nombre,
+.panel-ajustes-flotante .fila-ajuste-nombre {
   font-size: 15px;
 }
-.dock-listo .fila-ajuste-valor {
+/* -cuarta vuelta- También en el panel flotante. Antes: .dock-listo .fila-ajuste-valor solo. */
+.dock-listo .fila-ajuste-valor,
+.panel-ajustes-flotante .fila-ajuste-valor {
   font-size: 13px;
 }
-.dock-listo .dock-panel-cuerpo .fila-ajuste:last-child {
+/* -cuarta vuelta- También en el panel flotante. Antes: .dock-listo .dock-panel-cuerpo .fila-ajuste:last-child solo. */
+.dock-listo .dock-panel-cuerpo .fila-ajuste:last-child,
+.panel-ajustes-flotante .dock-panel-cuerpo .fila-ajuste:last-child {
   border-bottom: none;
 }
 .menu-dock-aviso {

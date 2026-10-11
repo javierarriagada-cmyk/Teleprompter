@@ -617,6 +617,19 @@ export function FichasListo({
               <span className="filete-grupos-fichas" aria-hidden="true" />
             </>
           )}
+          {/* -cuarta vuelta, 10-10-2026- En Leer el dock lleva PANTALLA con el brillo -sin cámara no hay
+              imagen-, y después el engranaje, que reemplaza a la ficha Más. */}
+          {!conCamara && (
+            <>
+              <div className="grupo-fichas" role="group" aria-label={t('seccionPantalla')}>
+                <span className="rotulo-grupo-fichas" aria-hidden="true">{t('seccionPantalla')}</span>
+                <div className="grupo-fichas-fila">
+                  {fichaBrillo}
+                </div>
+              </div>
+              <span className="filete-grupos-fichas" aria-hidden="true" />
+            </>
+          )}
           {/* Ajustes, solo el engranaje -el ícono de Sigo para Ajustes-. Abre el panel en el mismo dock. */}
           <button
             type="button"
