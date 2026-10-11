@@ -53,11 +53,15 @@ interface EntradaProps {
   // En el telefono, el splash nativo ya mostro la marca: esta capa la recibe
   // encendida. En el navegador no hubo splash, y la marca aparece.
   desdeSplashNativo?: boolean
+  // En el teléfono la capa se monta quieta y tapa la portada; la animación de
+  // salida empieza recién cuando llega el aviso del plugin Arranque (o el tope).
+  // Antes: (no existía; la línea de tiempo arrancaba al montar)
+  puedeAnimar?: boolean
 }
 
 type Viaje = { dx: number; dy: number; escala: number; color: string } | null
 
-export function Entrada({ onFinish, desdeSplashNativo = false }: EntradaProps) {
+export function Entrada({ onFinish, desdeSplashNativo = false, puedeAnimar = true }: EntradaProps) {
   const [desmontado, setDesmontado] = useState<boolean>(false)
   const [viajando, setViajando] = useState<boolean>(false)
   const [viaje, setViaje] = useState<Viaje>(null)
@@ -83,6 +87,10 @@ export function Entrada({ onFinish, desdeSplashNativo = false }: EntradaProps) {
   const arrancoRef = useRef<boolean>(false)
 
   useEffect(() => {
+    // Antes:
+    //   if (arrancoRef.current) return
+    //   arrancoRef.current = true
+    if (!puedeAnimar) return
     if (arrancoRef.current) return
     arrancoRef.current = true
 
@@ -137,7 +145,8 @@ export function Entrada({ onFinish, desdeSplashNativo = false }: EntradaProps) {
       quitarClases()
     }
     // Sin dependencias: la entrada corre una sola vez, no una por redibujo de App.
-  }, [])
+    // Antes: }, [])
+  }, [puedeAnimar])
 
   if (movimientoApagado() || desmontado) {
     return null
@@ -156,7 +165,9 @@ export function Entrada({ onFinish, desdeSplashNativo = false }: EntradaProps) {
         position: 'fixed',
         inset: 0,
         zIndex: 1000,
-        pointerEvents: 'none',
+        // Antes: pointerEvents: 'none',
+        // Mientras tapa la portada, los toques no llegan a ella.
+        pointerEvents: 'auto',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
