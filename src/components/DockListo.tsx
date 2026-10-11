@@ -54,6 +54,9 @@ export function DockListo({
   setCalidadVideo,
   calidadesSoportadas,
   minutosDisponibles,
+  estabilizar,
+  setEstabilizar,
+  soportaEstabilizacion,
   oculto = false
 }: {
   // Las fichas de la fila de arriba: FichasListo con enDock, que llama a abrirAjustes con el engranaje.
@@ -76,6 +79,9 @@ export function DockListo({
   setCalidadVideo?: (q: string) => void
   calidadesSoportadas: string[]
   minutosDisponibles: number | null
+  estabilizar?: boolean
+  setEstabilizar?: (v: boolean) => void
+  soportaEstabilizacion?: boolean
   // Mientras se arrastra el recuadro el dock no se ve, como hoy las fichas y el círculo.
   oculto?: boolean
 }) {
@@ -130,7 +136,7 @@ export function DockListo({
           <PanelAjustes
             origen={conCamara ? 'grabar' : 'leer'}
             ajustesLectura={ajustesLectura}
-            video={{ conCamara, calidadVideo, setCalidadVideo, calidadesSoportadas, minutosDisponibles }}
+            video={{ conCamara, calidadVideo, setCalidadVideo, calidadesSoportadas, minutosDisponibles, estabilizar, setEstabilizar, soportaEstabilizacion }}
             onCerrar={cerrar}
             hostMenus={hostMenus}
             animar={animar}

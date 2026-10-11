@@ -251,5 +251,7 @@ export const en: Textos = {
   duraAprox: 'approx.',
   tituloAjustesToma: 'Recording settings',
   seccionPantalla: 'Screen',
-  calidad: 'Quality'
+  calidad: 'Quality',
+  estabilizar: 'Stabilize',
+  estabilizarExplicacion: 'Smooths hand shake. Crops the edges slightly.'
 }
