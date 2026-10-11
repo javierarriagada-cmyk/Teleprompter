@@ -16,7 +16,7 @@ import { IconoVoltear } from './IconosApp'
 import type { AjustesLectura } from './FilasAjustesLectura'
 import { PanelAjustes } from './PanelAjustes'
 import { t, useTextos } from '../textos'
-import { movimientoApagado } from './movimiento'
+import { movimientoApagado, CURVA_RESORTE } from './movimiento'
 
 // GRABAR EN LISTO: UN SOLO DOCK DE VIDRIO -ajustes de pantallas, 10-10-2026, boceto 5-.
 //
@@ -39,6 +39,30 @@ import { movimientoApagado } from './movimiento'
 // Antes -hasta 2026-10-10, cuarta vuelta-: CLAVE_SUBTITULO y
 // type MenuDock = 'letra' | 'tipo' | 'ancho' | 'colores' | 'calidad' | 'subtitulos' | null
 // vivían aquí. Se mudaron a PanelAjustes.tsx con la sección Video.
+
+export function IndicadorCargaExpressive() {
+  const animar = !movimientoApagado()
+  return (
+    <span
+      data-testid="indicador-carga-expressive"
+      aria-hidden="true"
+      style={{
+        display: 'inline-block',
+        width: 12,
+        height: 12,
+        marginRight: 8,
+        verticalAlign: 'middle',
+        backgroundColor: 'currentColor',
+        borderRadius: animar ? '50%' : '3px',
+        animation: animar
+          // La silueta cambia con el resorte de la app -CURVA_RESORTE, movimiento.tsx-, el mismo de
+          // Grabar y Play. Antes: 'girarCargaM3 2s linear infinite, siluetaCargaM3 3s cubic-bezier(.34, 1.3, .64, 1) infinite'
+          ? `girarCargaM3 2s linear infinite, siluetaCargaM3 3s ${CURVA_RESORTE} infinite`
+          : 'none'
+      }}
+    />
+  )
+}
 
 export function DockListo({
   fichas,
@@ -178,7 +202,13 @@ export function DockListo({
                 data-testid="dock-preparando-voz"
                 aria-label={`${t('preparandoVoz')} ${Math.round(preparandoVoz * 100)} %`}
               >
+                {/* Antes:
                 <span className="dock-duracion">{Math.round(preparandoVoz * 100)} %</span>
+                */}
+                <span className="dock-duracion" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <IndicadorCargaExpressive />
+                  <span>{Math.round(preparandoVoz * 100)} %</span>
+                </span>
                 <span className="dock-rotulo-chico">{t('preparandoVoz')}</span>
               </span>
             ) : mostrarDuracion && (
