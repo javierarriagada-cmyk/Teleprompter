@@ -4,4 +4,5 @@
     <string name="title_activity_main">Sigo</string>
     <string name="package_name">com.sigoteleprompter.app</string>
     <string name="custom_url_scheme">com.sigoteleprompter.app</string>
+    <string name="acceso_nuevo_guion">Nuevo guion con lo copiado</string>
 </resources>

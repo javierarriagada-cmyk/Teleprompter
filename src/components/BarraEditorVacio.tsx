@@ -8,7 +8,8 @@ import { t } from '../textos'
 // LO QUE HAY COPIADO, EN EL TELEFONO O EN EL NAVEGADOR. En el APK lo lee el plugin oficial
 // de Capacitor -el portapapeles de Android-; en el navegador, la API del navegador. Si no se
 // puede leer -permiso negado, portapapeles vacio o con una imagen- devuelve ''.
-async function leerPortapapeles(): Promise<string> {
+// Antes: async function leerPortapapeles(): Promise<string> {
+export async function leerPortapapeles(): Promise<string> {
   try {
     if (Capacitor.isNativePlatform()) {
       const r = await Clipboard.read()

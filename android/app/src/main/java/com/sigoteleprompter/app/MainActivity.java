@@ -227,6 +227,23 @@ public class MainActivity extends BridgeActivity {
         Log.i(AtrasPredictivoPlugin.ETIQUETA, "hayAdondeVolver=" + hay + " camara=" + camara);
     }
 
+    private void procesarIntentAccion(android.content.Intent intent) {
+        if (intent == null || intent.getAction() == null) return;
+        String action = intent.getAction();
+        if ("com.sigoteleprompter.app.GRABAR".equals(action)) {
+            AccesosDirectosPlugin.notificarAccion("grabar");
+        } else if ("com.sigoteleprompter.app.NUEVO_GUION".equals(action)) {
+            AccesosDirectosPlugin.notificarAccion("nuevo");
+        }
+    }
+
+    @Override
+    protected void onNewIntent(android.content.Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        procesarIntentAccion(intent);
+    }
+
     private void avisarAtras(String evento, JSObject datos) {
         PluginHandle handle = this.bridge != null ? this.bridge.getPlugin("AtrasPredictivo") : null;
         if (handle == null || !(handle.getInstance() instanceof AtrasPredictivoPlugin)) {
@@ -293,7 +310,10 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(GestosPlugin.class);
         // -atrás predictivo- El puente del gesto de atrás con la web -AtrasPredictivoPlugin.java-.
         registerPlugin(AtrasPredictivoPlugin.class);
+        // -accesos directos- El puente de los accesos directos del ícono -AccesosDirectosPlugin.java-.
+        registerPlugin(AccesosDirectosPlugin.class);
         super.onCreate(savedInstanceState);
+        procesarIntentAccion(getIntent());
 
         // DESPUÉS de super.onCreate, a propósito: ahí adentro se arma el puente y AppPlugin de
         // Capacitor registra su propio callback en load(). El despachador le da el gesto al ÚLTIMO

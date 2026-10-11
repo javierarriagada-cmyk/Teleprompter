@@ -253,5 +253,9 @@ export const en: Textos = {
   seccionPantalla: 'Screen',
   calidad: 'Quality',
   estabilizar: 'Stabilize',
-  estabilizarExplicacion: 'Smooths hand shake. Crops the edges slightly.'
+  estabilizarExplicacion: 'Smooths hand shake. Crops the edges slightly.',
+  // Shortcut labels -11-10-2026-.
+  accesoGrabar: 'Record',
+  accesoGrabarTitulo: 'Record "{titulo}"',
+  accesoNuevoGuion: 'New script with copied text'
 }

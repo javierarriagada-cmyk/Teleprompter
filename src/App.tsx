@@ -44,6 +44,8 @@ import { RepositorioGrabaciones } from './datos/RepositorioGrabaciones'
 import { RepositorioGrabacionesIndexedDB } from './datos/RepositorioGrabacionesIndexedDB'
 import { RepositorioGrabacionesMemoria } from './datos/RepositorioGrabacionesMemoria'
 import ReproductorGrabacion from './components/ReproductorGrabacion'
+import { actualizarAccesoGrabar, tomarAccionPendiente, escucharAccionShortcut } from './lib/accesosDirectos'
+import { leerPortapapeles } from './components/BarraEditorVacio'
 import {
   iniciarTomaVideo,
   cortarTomaVideo,
@@ -797,15 +799,19 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   // Un guion nuevo nace en el idioma de la app -D2-. Al escribir o pegar, el editor lo
   // corrige si el texto es de otro idioma -EditorView, detectarIdioma-.
-  async function handleCrearNuevoGuion() {
+  // Antes: async function handleCrearNuevoGuion() {
+  async function handleCrearNuevoGuion(): Promise<Guion | null> {
     const nuevo = guionNuevo(idiomaApp())
     try {
       await repoRef.current.guardar(nuevo)
       setGuionActual(nuevo)
+      guionActualRef.current = nuevo
       await cargarBiblioteca()
       setVista('editor')
+      return nuevo
     } catch (e) {
       console.warn('[App] Error al crear nuevo guion:', e)
+      return null
     }
   }
 
@@ -987,6 +993,128 @@ export default function App({ motor, repoOverride }: AppProps) {
       console.warn('[App] Error al archivar/desarchivar guion:', e)
     }
   }
+
+  // ACCESOS DIRECTOS DEL ÍCONO -accesos-directos, 11-10-2026-.
+  // Mantiene actualizado el acceso dinámico ("Grabar «título»") con el guion de la tarjeta
+  // de la portada y procesa las acciones que llegan al tocar los accesos.
+  const guionesActivosAcceso = guionesResumen.filter((g) => !idsPendientesBorrado.includes(g.id))
+  const guionPortadaAcceso = guionesActivosAcceso.length > 0 ? guionesActivosAcceso[0] : null
+
+  useEffect(() => {
+    if (!cargado) return
+    void actualizarAccesoGrabar(guionPortadaAcceso)
+  }, [cargado, guionPortadaAcceso?.id, guionPortadaAcceso?.titulo, guionesActivosAcceso.length])
+
+  const guionesResumenRef = useRef(guionesResumen)
+  guionesResumenRef.current = guionesResumen
+  const idsPendientesBorradoRef = useRef(idsPendientesBorrado)
+  idsPendientesBorradoRef.current = idsPendientesBorrado
+  const guionActualRef = useRef(guionActual)
+  guionActualRef.current = guionActual
+  const mostrarDialogoMicrofonoRef = useRef(mostrarDialogoMicrofono)
+  mostrarDialogoMicrofonoRef.current = mostrarDialogoMicrofono
+  const mostrarDialogoCamaraRef = useRef(mostrarDialogoCamara)
+  mostrarDialogoCamaraRef.current = mostrarDialogoCamara
+  const mostrarPanelCorpusRef = useRef(mostrarPanelCorpus)
+  mostrarPanelCorpusRef.current = mostrarPanelCorpus
+  const grabacionAbiertaRef = useRef(grabacionAbierta)
+  grabacionAbiertaRef.current = grabacionAbierta
+
+  const procesandoShortcutRef = useRef<boolean>(false)
+  const ultimaAccionRef = useRef<{ accion: string; ts: number }>({ accion: '', ts: 0 })
+
+  const ejecutarAccionShortcut = useCallback(async (accion: string) => {
+    if (!accion) return
+    const ahora = Date.now()
+    if (
+      procesandoShortcutRef.current ||
+      (ultimaAccionRef.current.accion === accion && ahora - ultimaAccionRef.current.ts < 2000)
+    ) {
+      return
+    }
+    procesandoShortcutRef.current = true
+    ultimaAccionRef.current = { accion, ts: ahora }
+
+    try {
+      // Si Sigo estaba en una toma, en el editor con cambios o con un panel abierto,
+      // se cierra igual que con el atrás antes de abrir la acción.
+      let limite = 10
+      while (limite > 0) {
+        if (
+          vistaRef.current === 'biblioteca' &&
+          !mostrarDialogoMicrofonoRef.current &&
+          !mostrarDialogoCamaraRef.current &&
+          !ajustesAbiertosRef.current &&
+          !mostrarPanelCorpusRef.current &&
+          !grabacionAbiertaRef.current
+        ) {
+          break
+        }
+        if (handleVolverAtrasRef.current) {
+          await handleVolverAtrasRef.current()
+        }
+        limite--
+      }
+
+      if (accion === 'grabar') {
+        const lista = guionesResumenRef.current.filter((g) => !idsPendientesBorradoRef.current.includes(g.id))
+        if (lista.length > 0) {
+          await handleGrabarDirecto(lista[0].id)
+        }
+      } else if (accion === 'nuevo') {
+        // Android solo deja leer lo copiado cuando la app tiene el foco.
+        if (typeof document !== 'undefined' && !document.hasFocus()) {
+          await new Promise<void>((resolve) => {
+            const alEnfocar = () => {
+              window.removeEventListener('focus', alEnfocar)
+              resolve()
+            }
+            window.addEventListener('focus', alEnfocar)
+          })
+        }
+
+        const nuevoGuion = await handleCrearNuevoGuion()
+
+        // Se lee lo copiado después de que la ventana tiene el foco.
+        const textoCopiar = await leerPortapapeles()
+        if (textoCopiar && textoCopiar.trim() !== '' && nuevoGuion) {
+          const idBloque = nuevoGuion.bloques[0]?.id || 'b1'
+          const gActualizado: Guion = {
+            ...nuevoGuion,
+            modificado: Date.now(),
+            bloques: [{ id: idBloque, nombre: '', texto: textoCopiar }]
+          }
+          await repoRef.current.guardar(gActualizado)
+          setGuionActual(gActualizado)
+          guionActualRef.current = gActualizado
+          guionModificadoRef.current = true
+          await cargarBiblioteca()
+        }
+      }
+    } catch (e) {
+      console.warn('[App] Error al ejecutar acción shortcut:', e)
+    } finally {
+      procesandoShortcutRef.current = false
+    }
+  }, [cargarBiblioteca])
+
+  useEffect(() => {
+    let sub: { remove: () => void } | null = null
+    void escucharAccionShortcut((accion) => {
+      void ejecutarAccionShortcut(accion)
+    }).then((s) => { sub = s })
+
+    return () => {
+      if (sub) sub.remove()
+    }
+  }, [ejecutarAccionShortcut])
+
+  useEffect(() => {
+    if (!cargado || mostrarEntrada) return
+    void tomarAccionPendiente().then((accion) => {
+      if (accion) void ejecutarAccionShortcut(accion)
+    })
+  }, [cargado, mostrarEntrada, ejecutarAccionShortcut])
 
   const [controlesVisibles, setControlesVisibles] = useState<boolean>(false)
   const timerControlesRef = useRef<number | null>(null)

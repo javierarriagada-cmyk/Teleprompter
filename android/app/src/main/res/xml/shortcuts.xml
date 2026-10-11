@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="nuevo_guion"
+        android:enabled="true"
+        android:icon="@drawable/ic_acceso_nuevo"
+        android:shortcutShortLabel="@string/acceso_nuevo_guion"
+        android:shortcutLongLabel="@string/acceso_nuevo_guion">
+        <intent
+            android:action="com.sigoteleprompter.app.NUEVO_GUION"
+            android:targetPackage="com.sigoteleprompter.app"
+            android:targetClass="com.sigoteleprompter.app.MainActivity" />
+    </shortcut>
+</shortcuts>
