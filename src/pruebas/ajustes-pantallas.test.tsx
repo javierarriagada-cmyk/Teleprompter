@@ -79,6 +79,24 @@ import { Guion, contarPalabras, duracionDeLectura, duracionDeLecturaReloj } from
 import { hayCalidad } from '../components/FichasListo'
 import { es } from '../textos/es'
 import { fijarIdioma } from '../lib/idioma'
+// -ajustes de pantallas, segunda vuelta- La única estimación y «Preparando la voz…» en el dock.
+import BarraDeTiempo from '../components/BarraDeTiempo'
+import { DockListo } from '../components/DockListo'
+import { CONSULTA_TEL_H } from '../hooks/useLayout'
+
+const matchMediaOriginal = window.matchMedia
+function fingirDeLado(consulta: string) {
+  window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+    matches: query === consulta,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn()
+  })) as any
+}
 
 // 425 palabras: 170 s a 150 por minuto, el «2:50» del boceto.
 const guion: Guion = {
@@ -114,6 +132,8 @@ describe('Ajustes de pantallas: el dock de LISTO en Grabar', () => {
   afterEach(() => {
     cleanup()
     vi.restoreAllMocks()
+    window.matchMedia = matchMediaOriginal
+    window.history.replaceState(null, '', '/')
     fijarIdioma('es')
   })
 
@@ -215,5 +235,85 @@ describe('Ajustes de pantallas: el dock de LISTO en Grabar', () => {
     await screen.findByTestId('panel-ajustes-toma')
     expect(screen.queryByTestId('fila-calidad')).toBeNull()
     expect(screen.getByTestId('fila-subtitulos')).toBeTruthy()
+  })
+
+  // -SEGUNDA VUELTA, 10-10-2026- Una sola estimación. El guion lleva una nota entre corchetes: la nota
+  // se ve pero no se lee, y el editor no la cuenta. Antes la pastilla contaba los tokens -con la nota-
+  // y daba otro número.
+  test('EL EDITOR, EL DOCK Y EL TOTAL DEL CONTADOR DAN LA MISMA DURACIÓN', async () => {
+    const conNota: Guion = {
+      ...guion,
+      id: 'g-nota',
+      bloques: [{ id: 'b1', nombre: '', texto: guion.bloques[0].texto + ' [una nota que no se lee en voz alta, solo para mí]' }]
+    }
+    const palabras = contarPalabras(conNota)
+    expect(palabras).toBe(425)
+    const repo = new RepositorioMemoria()
+    await repo.guardar(conNota)
+
+    // El editor.
+    render(<App repoOverride={repo} motor={new MotorFake()} />)
+    fireEvent.click(await screen.findByTestId('fila-guion-g-nota'))
+    expect((await screen.findByTestId('duracion-editor')).textContent).toBe(duracionDeLectura(palabras))
+    expect(duracionDeLectura(palabras)).toBe('2:50 min')
+    // El dock de LISTO.
+    fireEvent.click(await screen.findByTestId('btn-grabar-guion-fijo'))
+    await screen.findByTestId('btn-empezar-toma')
+    expect(screen.getByTestId('dock-duracion-valor').textContent).toBe('2:50')
+    cleanup()
+
+    // El total de la pastilla quieta -de lado no hay dock y la pastilla sale en LISTO-.
+    fingirDeLado(CONSULTA_TEL_H)
+    render(<App repoOverride={repo} motor={new MotorFake()} />)
+    fireEvent.click(await screen.findByTestId('btn-grabar-tarjeta'))
+    expect((await screen.findByTestId('barra-tiempo-previa')).textContent).toBe('00:00 / 02:50')
+    cleanup()
+
+    // El total del contador al arrancar la toma: posición 0, sin ritmo medido todavía. Los tokens -440,
+    // con la nota- ya no cambian el total; antes daban 02:56.
+    const motorQuieto = { estadoEn: () => ({ posicion: 0, ppmEstimadas: 150 }) } as any
+    render(
+      <BarraDeTiempo motorAvance={motorQuieto} totalTokens={440} palabrasGuion={palabras} tInicioLecturaMs={performance.now()} />
+    )
+    expect(screen.getByLabelText(es.tiempoTranscurrido).textContent).toBe('00:00 / 02:50')
+  })
+
+  test('MIENTRAS BAJA LA VOZ, EL DOCK DICE «PREPARANDO LA VOZ…» EN VEZ DE LA DURACIÓN', async () => {
+    // La voz forzada bajando en 70 % -lib/forzado104.ts, solo en desarrollo y pruebas-.
+    window.history.replaceState(null, '', '/?t104voz=bajando')
+    await abrirGrabar()
+    const preparando = await screen.findByTestId('dock-preparando-voz')
+    expect(preparando.textContent).toContain(es.preparandoVoz)
+    expect(preparando.textContent).toContain('70 %')
+    expect(screen.queryByTestId('dock-duracion-valor')).toBeNull()
+    // Nunca encima del dock: la pastilla no sale.
+    expect(screen.queryByTestId('pastilla-preparando-voz')).toBeNull()
+    cleanup()
+
+    // De lado, sin dock, queda como hoy: la pastilla.
+    fingirDeLado(CONSULTA_TEL_H)
+    await abrirGrabar()
+    expect(await screen.findByTestId('pastilla-preparando-voz')).toBeTruthy()
+    cleanup()
+
+    // Al terminar de bajar -null- vuelve la duración.
+    const props = {
+      fichas: () => null,
+      botonGrabar: <button type="button">Grabar</button>,
+      conVoltear: false,
+      duracion: '2:50',
+      mostrarDuracion: true,
+      ajustesLectura: {} as any,
+      conCamara: true,
+      calidadVideo: '1080p',
+      calidadesSoportadas: ['1080p'],
+      minutosDisponibles: null
+    }
+    const { rerender } = render(<DockListo {...props} preparandoVoz={0.4} />)
+    expect(screen.getByTestId('dock-preparando-voz').textContent).toContain('40 %')
+    expect(screen.queryByTestId('dock-duracion-valor')).toBeNull()
+    rerender(<DockListo {...props} preparandoVoz={null} />)
+    expect(screen.queryByTestId('dock-preparando-voz')).toBeNull()
+    expect(screen.getByTestId('dock-duracion-valor').textContent).toBe('2:50')
   })
 })
