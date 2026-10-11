@@ -150,8 +150,11 @@ describe('Letra y ancho, migrados a fichas y Ajustes', () => {
 
     // Antes (2026-10-05): fireEvent.click(screen.getByTestId('ficha-mas'))
     // Tarea 93: en Grabar ya no hay Más; Ajustes está en la segunda fila, detrás de la flecha.
-    fireEvent.click(screen.getByTestId('ficha-flecha'))
-    fireEvent.click(screen.getByTestId('ficha-ajustes'))
+    // -ajustes de pantallas, 10-10-2026- De pie Ajustes es el botón del dock y abre el panel ahí mismo,
+    // con la misma fila de ancho. Antes:
+    // fireEvent.click(screen.getByTestId('ficha-flecha'))
+    // fireEvent.click(screen.getByTestId('ficha-ajustes'))
+    fireEvent.click(screen.getByTestId('btn-ajustes-toma'))
     fireEvent.click(screen.getByTestId('fila-ancho-texto'))
     fireEvent.click(within(screen.getByTestId('dialogo-ancho')).getByRole('menuitemradio', { name: 'Angosto' }))
     await waitFor(() => {
@@ -174,16 +177,30 @@ describe('Letra y ancho, migrados a fichas y Ajustes', () => {
     fireEvent.click(await screen.findByTestId('fila-guion-g-77'))
     fireEvent.click(await screen.findByTestId('btn-grabar-guion-fijo'))
     // Tarea 93, 05-10-2026: Subtítulos está en la segunda fila; la flecha la muestra.
-    fireEvent.click(await screen.findByTestId('ficha-flecha'))
-    fireEvent.click(await screen.findByTestId('ficha-subtitulos'))
+    // -ajustes de pantallas, 10-10-2026- De pie Subtítulos es una fila del panel de Ajustes del dock de
+    // LISTO -sección Video-; la pantalla Ajustes de la biblioteca sigue sin Subtítulos ni Calidad. Antes:
+    // fireEvent.click(await screen.findByTestId('ficha-flecha'))
+    // fireEvent.click(await screen.findByTestId('ficha-subtitulos'))
+    // fireEvent.click(screen.getByTestId('btn-subtitulo-formal'))
+    // expect(localStorage.getItem('sigo_subtitulos_estilo')).toBe('formal')
+    // expect(screen.getByTestId('ficha-subtitulos').textContent).toContain('Formal')
+    // // Antes (2026-10-05): fireEvent.click(screen.getByTestId('ficha-mas'))
+    // fireEvent.click(screen.getByTestId('ficha-ajustes'))
+    // expect(screen.queryByTestId('fila-subtitulos')).toBeNull()
+    // expect(screen.queryByTestId('fila-calidad')).toBeNull()
+    // unmount()
+    fireEvent.click(await screen.findByTestId('btn-ajustes-toma'))
+    fireEvent.click(await screen.findByTestId('fila-subtitulos'))
     fireEvent.click(screen.getByTestId('btn-subtitulo-formal'))
     expect(localStorage.getItem('sigo_subtitulos_estilo')).toBe('formal')
-    expect(screen.getByTestId('ficha-subtitulos').textContent).toContain('Formal')
-    // Antes (2026-10-05): fireEvent.click(screen.getByTestId('ficha-mas'))
-    fireEvent.click(screen.getByTestId('ficha-ajustes'))
+    expect(screen.getByTestId('fila-subtitulos').textContent).toContain('Formal')
+    unmount()
+    const portada = render(<App repoOverride={await sembrar()} motor={new MotorFake()} />)
+    fireEvent.click(await screen.findByTestId('btn-menu-superior-biblioteca'))
+    await screen.findByTestId('pantalla-ajustes')
     expect(screen.queryByTestId('fila-subtitulos')).toBeNull()
     expect(screen.queryByTestId('fila-calidad')).toBeNull()
-    unmount()
+    portada.unmount()
     const u2 = await abrirListo(await sembrar())
     expect(screen.queryByTestId('ficha-subtitulos')).toBeNull()
     u2()

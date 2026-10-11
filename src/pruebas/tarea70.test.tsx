@@ -51,7 +51,9 @@ describe('Tarea 70 - El estado LISTO y LEYENDO del lienzo se hace como la foto, 
   // 05-10-2026, tarea 93: en Grabar Más se fue; la puerta de Ajustes es la ficha Ajustes de la
   // segunda fila, que abre la flecha. El nombre viejo hablaba del engranaje, que ya no existe.
   // Antes (2026-10-05): test('a) En Leer Y en Grabar, btn-engranaje-toma existe, tiene style.position absolute, top 8px y right 8px', async () => {
-  test('a) En Leer y en Grabar LISTO monta las fichas; en Leer está Más y en Grabar la flecha abre Ajustes', async () => {
+  // -ajustes de pantallas, 10-10-2026- De pie en el teléfono la flecha se fue: Ajustes es el botón del
+  // dock de LISTO. Antes: test('a) En Leer y en Grabar LISTO monta las fichas; en Leer está Más y en Grabar la flecha abre Ajustes', async () => {
+  test('a) En Leer y en Grabar LISTO monta las fichas; en Leer está Más y en Grabar está Ajustes en el dock', async () => {
     await crearAppConGuion()
 
     // 1. En Leer
@@ -67,8 +69,11 @@ describe('Tarea 70 - El estado LISTO y LEYENDO del lienzo se hace como la foto, 
     expect(await screen.findByTestId('fila-fichas-listo')).toBeDefined()
     // Antes (2026-10-05): expect(screen.getByTestId('ficha-mas')).toBeDefined()
     expect(screen.queryByTestId('ficha-mas')).toBeNull()
-    fireEvent.click(screen.getByTestId('ficha-flecha'))
-    expect(screen.getByTestId('ficha-ajustes')).toBeDefined()
+    // -ajustes de pantallas- Antes:
+    // fireEvent.click(screen.getByTestId('ficha-flecha'))
+    // expect(screen.getByTestId('ficha-ajustes')).toBeDefined()
+    expect(screen.queryByTestId('ficha-flecha')).toBeNull()
+    expect(screen.getByTestId('btn-ajustes-toma')).toBeDefined()
     expect(screen.getByTestId('ficha-camara')).toBeDefined()
   })
 

@@ -34,7 +34,11 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
       // Tarea 87 -04-10-2026-: el selector de posición de los subtítulos entró y se sacó el mismo día
       // -Javier simplifica la 87-. Antes: 'src/components/SelectorPosicion.tsx'.
       // Tarea 96 -05-10-2026-: el selector de filtro es un componente nuevo y entra -plan 3, 4.8-.
-      'src/components/SelectorFiltro.tsx'
+      'src/components/SelectorFiltro.tsx',
+      // -ajustes de pantallas, 10-10-2026-: el dock de LISTO y las filas de Lectura y Pantalla que comparte
+      // con Ajustes son componentes nuevos y entran. Antes: 'src/components/SelectorFiltro.tsx' cerraba la lista.
+      'src/components/DockListo.tsx',
+      'src/components/FilasAjustesLectura.tsx'
     ]
 
     const regexHexColor = /#(?:[0-9a-fA-F]{3,4}){1,2}\b/g

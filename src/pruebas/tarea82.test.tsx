@@ -101,7 +101,9 @@ describe('Tarea 82 - El teléfono de lado', () => {
     // Tarea 93, 05-10-2026: en Grabar la primera fila termina en la flecha; Calidad y Subtítulos
     // pasaron a la segunda fila, y Más ya no está en Grabar.
     // Antes (2026-10-05): expect(fichas).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-calidad', 'ficha-subtitulos'])
-    expect(fichas).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha'])
+    // -ajustes de pantallas, 10-10-2026- El orden de las fichas pasa a Texto -letra, anclaje- y Cámara
+    // -cámara, brillo-. Antes: expect(fichas).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha'])
+    expect(fichas).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'])
     // Antes (2026-10-05): expect(within(der).getByTestId('ficha-mas')).toBeTruthy()
     expect(within(der).queryByTestId('ficha-mas')).toBeNull()
     expect(within(izq).queryByTestId('ficha-mas')).toBeNull()

@@ -140,6 +140,10 @@ describe('Tarea 93: la flecha y la segunda fila de fichas en Grabar', () => {
   })
 
   test('LA FLECHA MUESTRA Y ESCONDE LA SEGUNDA FILA', async () => {
+    // -ajustes de pantallas, 10-10-2026- De pie en el teléfono la flecha ya no está -el dock de LISTO,
+    // Calidad y Subtítulos van al panel de Ajustes-: la flecha se prueba de lado, donde sigue. Antes:
+    // await abrirGrabar() -de pie-.
+    fingirDeLado(CONSULTA_TEL_H)
     await abrirGrabar()
     const flecha = await screen.findByTestId('ficha-flecha')
     expect(flecha.getAttribute('aria-expanded')).toBe('false')
@@ -162,8 +166,10 @@ describe('Tarea 93: la flecha y la segunda fila de fichas en Grabar', () => {
     // Calidad y Subtítulos ya no están en la primera fila.
     const primera = screen.getByTestId('fila-fichas-listo')
       .querySelector('.carril-fichas:not(.segunda-fila-fichas)') as HTMLElement
+    // -ajustes de pantallas- El orden pasa a Texto -letra, anclaje- y Cámara -cámara, brillo-. Antes:
+    // ['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha']
     expect(testidsDelCarril(primera)).toEqual([
-      'ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha'
+      'ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'
     ])
 
     fireEvent.click(flecha)
@@ -175,17 +181,29 @@ describe('Tarea 93: la flecha y la segunda fila de fichas en Grabar', () => {
     // jsdom no mide anchos: se comprueba el orden -cinco fichas, flecha al final- y la regla CSS
     // que pone la segunda fila encima -bottom calc(100% + 8px)-. Si a 412 px no cabe, se anota
     // en el informe; no se achican las fichas.
+    // -ajustes de pantallas, 10-10-2026- De pie en el teléfono la fila es la de arriba del dock de
+    // LISTO: Texto -letra, anclaje-, Cámara -cámara, brillo- y Ajustes; sin flecha ni segunda fila,
+    // a propósito. Antes:
+    // await abrirGrabar()
+    // const primera = screen.getByTestId('fila-fichas-listo')
+    //   .querySelector('.carril-fichas:not(.segunda-fila-fichas)') as HTMLElement
+    // expect(testidsDelCarril(primera)).toEqual([
+    //   'ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha'
+    // ])
+    // expect(CSS_AJUSTES).toMatch(/\.segunda-fila-fichas\s*\{[^}]*bottom:\s*calc\(100%\s*\+\s*8px\)/s)
+    // // De pie no lleva al-costado.
+    // fireEvent.click(screen.getByTestId('ficha-flecha'))
+    // const segunda = await screen.findByTestId('segunda-fila-fichas')
+    // expect(segunda.classList.contains('al-costado')).toBe(false)
     await abrirGrabar()
-    const primera = screen.getByTestId('fila-fichas-listo')
-      .querySelector('.carril-fichas:not(.segunda-fila-fichas)') as HTMLElement
-    expect(testidsDelCarril(primera)).toEqual([
-      'ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha'
+    const fila = screen.getByTestId('dock-listo').querySelector('.carril-dock') as HTMLElement
+    expect(testidsDelCarril(fila).filter((id) => id.startsWith('ficha-') || id === 'btn-ajustes-toma')).toEqual([
+      'ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'btn-ajustes-toma'
     ])
+    expect(screen.queryByTestId('ficha-flecha')).toBeNull()
+    expect(screen.queryByTestId('segunda-fila-fichas')).toBeNull()
+    // La regla de la segunda fila sigue para el teléfono de lado y la tableta.
     expect(CSS_AJUSTES).toMatch(/\.segunda-fila-fichas\s*\{[^}]*bottom:\s*calc\(100%\s*\+\s*8px\)/s)
-    // De pie no lleva al-costado.
-    fireEvent.click(screen.getByTestId('ficha-flecha'))
-    const segunda = await screen.findByTestId('segunda-fila-fichas')
-    expect(segunda.classList.contains('al-costado')).toBe(false)
   })
 
   // Un solo nombre exacto (sin sufijo) para el informe: se corre de pie, que es el caso base.
@@ -203,6 +221,9 @@ describe('Tarea 93: la flecha y la segunda fila de fichas en Grabar', () => {
   })
 
   test('AJUSTES EN LA SEGUNDA FILA ABRE LA PANTALLA DE AJUSTES', async () => {
+    // -ajustes de pantallas, 10-10-2026- De lado: de pie la segunda fila ya no está -Ajustes abre el
+    // panel en el dock, ajustes-pantallas.test.tsx-. Antes: await abrirGrabar() -de pie-.
+    fingirDeLado(CONSULTA_TEL_H)
     await abrirGrabar()
     fireEvent.click(await screen.findByTestId('ficha-flecha'))
     const ajustes = await screen.findByTestId('ficha-ajustes')

@@ -56,8 +56,11 @@ describe('Letra y ancho en el cajon de la toma', () => {
 
     // Antes (2026-10-05): fireEvent.click(screen.getByTestId('ficha-mas'))
     // Tarea 93: en Grabar ya no hay Más; Ajustes está en la segunda fila, detrás de la flecha.
-    fireEvent.click(screen.getByTestId('ficha-flecha'))
-    fireEvent.click(screen.getByTestId('ficha-ajustes'))
+    // -ajustes de pantallas, 10-10-2026- De pie Ajustes es el botón del dock y abre el panel ahí mismo,
+    // con la misma fila de ancho. Antes:
+    // fireEvent.click(screen.getByTestId('ficha-flecha'))
+    // fireEvent.click(screen.getByTestId('ficha-ajustes'))
+    fireEvent.click(screen.getByTestId('btn-ajustes-toma'))
     fireEvent.click(screen.getByTestId('fila-ancho-texto'))
     fireEvent.click(within(screen.getByTestId('dialogo-ancho')).getByRole('menuitemradio', { name: 'Angosto' }))
     await waitFor(() => {
