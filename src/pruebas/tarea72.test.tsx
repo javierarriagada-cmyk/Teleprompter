@@ -114,21 +114,31 @@ describe('Tarea 72 - cada ajuste muestra lo que hace', () => {
     // enciende a mano, asi la prueba cuida el montaje y no un default.
     // 28-09-2026: el interruptor vive en Ajustes, ficha Mas. Es un switch,
     // no una casilla.
-    fireEvent.click(await screen.findByTestId('ficha-mas'))
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(await screen.findByTestId('ficha-mas'))
+    fireEvent.click(await screen.findByTestId('btn-ajustes-toma'))
     const interruptor = screen.getByTestId('switch-mostrar-tiempo')
     if (interruptor.getAttribute('aria-checked') !== 'true') fireEvent.click(interruptor)
-    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
 
-    const previa = await screen.findByTestId('barra-tiempo-previa')
-    expect(previa.textContent).toMatch(/^00:00 \/ \d\d:\d\d$/)
-
-    fireEvent.click(screen.getByTestId('ficha-mas'))
-    fireEvent.click(screen.getByTestId('switch-mostrar-tiempo'))
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: const previa = await screen.findByTestId('barra-tiempo-previa')
+    // De pie en Leer, LISTO dice lo que dura en el dock -como Grabar-: la pastilla quieta no sale.
+    const previa = await screen.findByTestId('dock-duracion-valor')
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(previa.textContent).toMatch(/^00:00 \/ \d\d:\d\d$/)
+    expect(previa.textContent).toMatch(/^\d+:\d\d$/)
     expect(screen.queryByTestId('barra-tiempo-previa')).toBeNull()
-    fireEvent.click(screen.getByTestId('switch-mostrar-tiempo'))
-    expect(screen.getByTestId('barra-tiempo-previa')).toBeDefined()
 
-    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('ficha-mas'))
+    fireEvent.click(screen.getByTestId('btn-ajustes-toma'))
+    fireEvent.click(screen.getByTestId('switch-mostrar-tiempo'))
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.queryByTestId('barra-tiempo-previa')).toBeNull()
+    expect(screen.queryByTestId('dock-duracion-valor')).toBeNull()
+    fireEvent.click(screen.getByTestId('switch-mostrar-tiempo'))
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.getByTestId('barra-tiempo-previa')).toBeDefined()
+    expect(screen.getByTestId('dock-duracion-valor')).toBeDefined()
+
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
     fireEvent.click(screen.getByTestId('btn-empezar-toma'))
     // Desde el 28-09-2026 Empezar primero resuelve el permiso del microfono -asincrono- y recien
     // despues pasa a leyendo: la previa se va un instante despues del toque, no en el mismo.

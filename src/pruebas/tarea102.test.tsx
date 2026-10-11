@@ -264,17 +264,20 @@ describe('Tarea 102 PASO 2: menú del guion y gesto de atrás', () => {
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
     })
-    expect(screen.getByTestId('pantalla-ajustes')).toBeTruthy()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.getByTestId('pantalla-ajustes')).toBeTruthy()
+    expect(screen.getByTestId('panel-ajustes-flotante')).toBeTruthy()
 
     fireEvent.click(screen.getByTestId('fila-tamano-letra'))
     expect(screen.getByTestId('dialogo-letra')).toBeTruthy()
 
     await simularGestoAtras()
     expect(screen.queryByTestId('dialogo-letra')).toBeNull()
-    expect(screen.getByTestId('pantalla-ajustes')).toBeTruthy()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.getByTestId('pantalla-ajustes')).toBeTruthy()
+    expect(screen.getByTestId('panel-ajustes-flotante')).toBeTruthy()
 
     await simularGestoAtras()
-    expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
+    expect(screen.queryByTestId('panel-ajustes-flotante')).toBeNull()
   })
 
   test('El gesto de atrás en Acerca vuelve a Ajustes sin cerrar Ajustes', async () => {
@@ -292,7 +295,8 @@ describe('Tarea 102 PASO 2: menú del guion y gesto de atrás', () => {
 
     await simularGestoAtras()
     expect(screen.queryByTestId('pantalla-acerca-sigo')).toBeNull()
-    expect(screen.getByTestId('pantalla-ajustes')).toBeTruthy()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.getByTestId('pantalla-ajustes')).toBeTruthy()
+    expect(screen.getByTestId('panel-ajustes-flotante')).toBeTruthy()
   })
 
   test('El gesto de atrás cierra el menú del guion en la biblioteca', async () => {

@@ -59,7 +59,8 @@ describe('Tarea 70 - El estado LISTO y LEYENDO del lienzo se hace como la foto, 
     // 1. En Leer
     fireEvent.click(await screen.findByTestId('btn-leer-tarjeta'))
     expect(await screen.findByTestId('fila-fichas-listo')).toBeDefined()
-    expect(screen.getByTestId('ficha-mas')).toBeDefined()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.getByTestId('ficha-mas')).toBeDefined()
+    expect(screen.getByTestId('btn-ajustes-toma')).toBeDefined()
 
     // Volver
     fireEvent.click(screen.getByTestId('btn-volver-listo'))

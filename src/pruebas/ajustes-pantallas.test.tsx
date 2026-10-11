@@ -82,7 +82,8 @@ import { fijarIdioma } from '../lib/idioma'
 // -ajustes de pantallas, segunda vuelta- La única estimación y «Preparando la voz…» en el dock.
 import BarraDeTiempo from '../components/BarraDeTiempo'
 import { DockListo } from '../components/DockListo'
-import { CONSULTA_TEL_H } from '../hooks/useLayout'
+// -cuarta vuelta- Antes: import { CONSULTA_TEL_H } from '../hooks/useLayout'
+import { CONSULTA_TEL_H, CONSULTA_TAB_V } from '../hooks/useLayout'
 
 const matchMediaOriginal = window.matchMedia
 function fingirDeLado(consulta: string) {
@@ -169,7 +170,8 @@ describe('Ajustes de pantallas: el dock de LISTO en Grabar', () => {
     // La pantalla Ajustes de la biblioteca muestra lo elegido en el panel, en las mismas filas.
     render(<App repoOverride={await sembrar()} motor={new MotorFake()} />)
     fireEvent.click(await screen.findByTestId('btn-menu-superior-biblioteca'))
-    await screen.findByTestId('pantalla-ajustes')
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: await screen.findByTestId('pantalla-ajustes')
+    await screen.findByTestId('panel-ajustes-flotante')
     expect(screen.getByTestId('fila-ancho-texto').textContent).toContain(es.angosto)
     expect(screen.getByTestId('switch-espejo').getAttribute('aria-checked')).toBe('true')
   })
@@ -315,5 +317,284 @@ describe('Ajustes de pantallas: el dock de LISTO en Grabar', () => {
     rerender(<DockListo {...props} preparandoVoz={null} />)
     expect(screen.queryByTestId('dock-preparando-voz')).toBeNull()
     expect(screen.getByTestId('dock-duracion-valor').textContent).toBe('2:50')
+  })
+})
+
+// -AJUSTES DE PANTALLAS, CUARTA VUELTA, 10-10-2026- UN SOLO PANEL DE AJUSTES EN TODA LA APP. Javier: el de
+// «Ajustes de la toma», que se abre en el lugar, de vidrio, sin oscurecer, y se cierra con la X o tocando
+// afuera; reemplaza a la pantalla completa de Ajustes en todas las puertas. Solo lógica: qué se abre, en
+// qué pantalla se queda, qué secciones muestra y qué ajuste cambia. Sin posiciones ni medidas.
+describe('Ajustes de pantallas, cuarta vuelta: un solo panel de Ajustes', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    h.encendida = false
+    h.lado = 'frontal'
+    h.calidades = ['1080p', '720p', '480p']
+    vi.spyOn(console, 'info').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+    window.matchMedia = matchMediaOriginal
+    fijarIdioma('es')
+  })
+
+  // Los títulos de las secciones del panel abierto, en el orden en que se ven.
+  const secciones = () =>
+    Array.from(screen.getByTestId('panel-ajustes-toma').querySelectorAll('.dock-seccion')).map((e) => e.textContent)
+  const LECTURA_PANTALLA = [es.seccionLectura, es.seccionPantalla]
+  const LECTURA_VIDEO_PANTALLA = [es.seccionLectura, es.seccionVideo, es.seccionPantalla]
+  const sinPantallaCompleta = () => {
+    expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
+    expect(screen.queryByRole('dialog', { name: es.tituloAjustes })).toBeNull()
+  }
+
+  async function montar() {
+    render(<App repoOverride={await sembrar()} motor={new MotorFake()} />)
+    await screen.findByTestId('btn-menu-superior-biblioteca')
+    await esperar(80)
+  }
+  async function abrirLeer() {
+    await montar()
+    fireEvent.click(await screen.findByTestId('btn-leer-tarjeta'))
+    await screen.findByTestId('btn-empezar-toma')
+    await esperar(80)
+  }
+
+  test('DESDE LA PORTADA SE ABRE EN EL LUGAR CON LECTURA, PANTALLA, APARIENCIA Y ACERCA DE SIGO', async () => {
+    await montar()
+    fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
+    const panel = await screen.findByTestId('panel-ajustes-toma')
+    expect(panel.getAttribute('data-origen')).toBe('portada')
+    expect(within(panel).getByText(es.tituloAjustes)).toBeTruthy()
+    expect(secciones()).toEqual([es.seccionLectura, es.seccionPantalla, es.seccionApariencia, es.seccionAcerca])
+    expect(screen.getByTestId('fila-tema')).toBeTruthy()
+    expect(screen.getByTestId('fila-idioma')).toBeTruthy()
+    expect(screen.getByTestId('fila-acerca-de-sigo')).toBeTruthy()
+    // Sin cambiar de pantalla: la portada sigue ahí, y no hay pantalla completa.
+    expect(screen.getByTestId('btn-menu-superior-biblioteca')).toBeTruthy()
+    sinPantallaCompleta()
+    // Tocar afuera lo cierra.
+    fireEvent.click(screen.getByTestId('capa-panel-ajustes'))
+    expect(screen.queryByTestId('panel-ajustes-toma')).toBeNull()
+    expect(screen.getByTestId('btn-menu-superior-biblioteca')).toBeTruthy()
+  })
+
+  test('ACERCA DE SIGO SE ABRE DENTRO DEL MISMO PANEL; LICENCIAS SIGUE SIENDO SU PANTALLA', async () => {
+    await montar()
+    fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
+    fireEvent.click(await screen.findByTestId('fila-acerca-de-sigo'))
+    const panel = screen.getByTestId('panel-ajustes-toma')
+    const acerca = within(panel).getByTestId('pantalla-acerca-sigo')
+    expect(within(panel).getByText(es.acercaDeSigo)).toBeTruthy()
+    for (const id of ['fila-version', 'fila-privacidad', 'fila-soporte', 'fila-licencias']) {
+      expect(within(acerca).getByTestId(id)).toBeTruthy()
+    }
+    sinPantallaCompleta()
+    // Volver deja el panel con sus secciones.
+    fireEvent.click(screen.getByTestId('btn-cerrar-acerca'))
+    expect(screen.queryByTestId('pantalla-acerca-sigo')).toBeNull()
+    expect(secciones()).toContain(es.seccionAcerca)
+    // Licencias, su propia pantalla.
+    fireEvent.click(screen.getByTestId('fila-acerca-de-sigo'))
+    fireEvent.click(screen.getByTestId('fila-licencias'))
+    expect(await screen.findByTestId('pantalla-licencias')).toBeTruthy()
+  })
+
+  test('DESDE EL EDITOR SE ABRE EN EL LUGAR CON LECTURA Y PANTALLA', async () => {
+    await montar()
+    fireEvent.click(await screen.findByTestId('fila-guion-g-ap'))
+    fireEvent.click(await screen.findByTestId('btn-menu-opciones-editor'))
+    const panel = await screen.findByTestId('panel-ajustes-toma')
+    expect(panel.getAttribute('data-origen')).toBe('editor')
+    expect(within(panel).getByText(es.tituloAjustes)).toBeTruthy()
+    expect(secciones()).toEqual(LECTURA_PANTALLA)
+    expect(screen.queryByTestId('fila-tema')).toBeNull()
+    expect(screen.queryByTestId('fila-subtitulos')).toBeNull()
+    expect(screen.getByTestId('input-titulo-guion')).toBeTruthy()
+    sinPantallaCompleta()
+    // La X lo cierra y el editor sigue.
+    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
+    expect(screen.queryByTestId('panel-ajustes-toma')).toBeNull()
+    expect(screen.getByTestId('input-titulo-guion')).toBeTruthy()
+  })
+
+  test('LEER DE PIE TIENE EL DOCK: TEXTO, PANTALLA Y EL ENGRANAJE; EL PLAY Y LO QUE DURA ABAJO', async () => {
+    await abrirLeer()
+    const dock = screen.getByTestId('dock-listo')
+    const grupos = Array.from(dock.querySelectorAll('.grupo-fichas')).map((g) => g.getAttribute('aria-label'))
+    expect(grupos).toEqual([es.rotuloGrupoTexto, es.seccionPantalla])
+    const ids = Array.from(dock.querySelectorAll('[data-testid]')).map((e) => e.getAttribute('data-testid'))
+    expect(ids.filter((id) => id!.startsWith('ficha-') || id === 'btn-ajustes-toma')).toEqual([
+      'ficha-letra', 'ficha-anclaje', 'ficha-brillo', 'btn-ajustes-toma'
+    ])
+    // El engranaje reemplaza a Más, y no hay Voltear ni cámara.
+    expect(screen.queryByTestId('ficha-mas')).toBeNull()
+    expect(screen.queryByTestId('btn-voltear-listo')).toBeNull()
+    expect(screen.queryByTestId('ficha-camara')).toBeNull()
+    // Abajo, el play de hoy y lo que dura, con la única estimación.
+    expect(within(dock).getByTestId('btn-empezar-toma').classList.contains('btn-empezar-leer')).toBe(true)
+    expect(within(dock).getByTestId('dock-duracion-valor').textContent).toBe(duracionDeLecturaReloj(contarPalabras(guion)))
+    expect(within(dock).getByTestId('dock-duracion').textContent).toContain(es.duraAprox)
+  })
+
+  test('EN LEER EL ENGRANAJE ABRE EL PANEL EN EL DOCK CON LECTURA Y PANTALLA, SIN VIDEO', async () => {
+    await abrirLeer()
+    fireEvent.click(screen.getByTestId('btn-ajustes-toma'))
+    const panel = await screen.findByTestId('panel-ajustes-toma')
+    expect(panel.getAttribute('data-origen')).toBe('leer')
+    expect(within(panel).getByText(es.tituloAjustes)).toBeTruthy()
+    expect(secciones()).toEqual(LECTURA_PANTALLA)
+    expect(screen.queryByTestId('fila-subtitulos')).toBeNull()
+    expect(screen.queryByTestId('fila-calidad')).toBeNull()
+    expect(screen.getByTestId('dock-listo').contains(panel)).toBe(true)
+    expect(estadoToma()).toBe('listo')
+    sinPantallaCompleta()
+    // Tocar afuera lo cierra.
+    fireEvent.click(screen.getByTestId('capa-dock-ajustes'))
+    expect(screen.queryByTestId('panel-ajustes-toma')).toBeNull()
+  })
+
+  test('EN GRABAR EL PANEL SIGUE COMO HOY: LECTURA, VIDEO Y PANTALLA, «AJUSTES DE LA TOMA»', async () => {
+    await abrirGrabar()
+    fireEvent.click(screen.getByTestId('btn-ajustes-toma'))
+    const panel = await screen.findByTestId('panel-ajustes-toma')
+    expect(panel.getAttribute('data-origen')).toBe('grabar')
+    expect(within(panel).getByText(es.tituloAjustesToma)).toBeTruthy()
+    expect(secciones()).toEqual(LECTURA_VIDEO_PANTALLA)
+    sinPantallaCompleta()
+  })
+
+  test('DE LADO Y EN TABLETA, MÁS ABRE EL MISMO PANEL EN EL LUGAR CON LAS SECCIONES DE SU PANTALLA', async () => {
+    // Leer de lado: Más, en el riel derecho.
+    fingirDeLado(CONSULTA_TEL_H)
+    await abrirLeer()
+    fireEvent.click(screen.getByTestId('ficha-mas'))
+    let panel = await screen.findByTestId('panel-ajustes-toma')
+    expect(screen.getByTestId('panel-ajustes-flotante').contains(panel)).toBe(true)
+    expect(panel.getAttribute('data-origen')).toBe('leer')
+    expect(within(panel).getByText(es.tituloAjustes)).toBeTruthy()
+    expect(secciones()).toEqual(LECTURA_PANTALLA)
+    expect(estadoToma()).toBe('listo')
+    sinPantallaCompleta()
+    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
+    expect(screen.queryByTestId('panel-ajustes-toma')).toBeNull()
+    cleanup()
+
+    // Grabar de lado: Ajustes en la segunda fila -la Más de Grabar-.
+    fingirDeLado(CONSULTA_TEL_H)
+    await abrirGrabar()
+    fireEvent.click(await screen.findByTestId('ficha-flecha'))
+    fireEvent.click(await screen.findByTestId('ficha-ajustes'))
+    panel = await screen.findByTestId('panel-ajustes-toma')
+    expect(panel.getAttribute('data-origen')).toBe('grabar')
+    expect(within(panel).getByText(es.tituloAjustesToma)).toBeTruthy()
+    expect(secciones()).toEqual(LECTURA_VIDEO_PANTALLA)
+    expect(estadoToma()).toBe('listo')
+    sinPantallaCompleta()
+    cleanup()
+
+    // Leer en la tableta de pie: Más, en la barra de arriba.
+    fingirDeLado(CONSULTA_TAB_V)
+    await abrirLeer()
+    fireEvent.click(screen.getByTestId('ficha-mas'))
+    panel = await screen.findByTestId('panel-ajustes-toma')
+    expect(screen.getByTestId('panel-ajustes-flotante').contains(panel)).toBe(true)
+    expect(secciones()).toEqual(LECTURA_PANTALLA)
+    expect(estadoToma()).toBe('listo')
+    sinPantallaCompleta()
+  })
+
+  test('UN CAMBIO HECHO EN CUALQUIER PANEL ES EL MISMO AJUSTE EN LOS OTROS', async () => {
+    // En la portada: ancho angosto.
+    await montar()
+    fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
+    fireEvent.click(await screen.findByTestId('fila-ancho-texto'))
+    fireEvent.click(within(screen.getByTestId('dialogo-ancho')).getByRole('menuitemradio', { name: es.angosto }))
+    await waitFor(() => expect(ajustesGuardados().columnaAngosta).toBe(true))
+    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
+
+    // En el editor se ve lo mismo; ahí, el espejo.
+    fireEvent.click(await screen.findByTestId('fila-guion-g-ap'))
+    fireEvent.click(await screen.findByTestId('btn-menu-opciones-editor'))
+    expect((await screen.findByTestId('fila-ancho-texto')).textContent).toContain(es.angosto)
+    fireEvent.click(screen.getByTestId('switch-espejo'))
+    await waitFor(() => expect(ajustesGuardados().mirror).toBe(true))
+    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
+
+    // En el dock de Leer, los dos; ahí, la tipografía.
+    fireEvent.click(screen.getByTestId('btn-leer-guion-fijo'))
+    fireEvent.click(await screen.findByTestId('btn-ajustes-toma'))
+    expect((await screen.findByTestId('fila-ancho-texto')).textContent).toContain(es.angosto)
+    expect(screen.getByTestId('switch-espejo').getAttribute('aria-checked')).toBe('true')
+    fireEvent.click(screen.getByTestId('fila-tipo-letra'))
+    fireEvent.click(screen.getByRole('menuitemradio', { name: 'Serif' }))
+    await waitFor(() => expect(ajustesGuardados().tipoFuente).toBe('serif'))
+    cleanup()
+
+    // En el panel de Grabar y otra vez en la portada, los tres.
+    await abrirGrabar()
+    fireEvent.click(screen.getByTestId('btn-ajustes-toma'))
+    expect((await screen.findByTestId('fila-ancho-texto')).textContent).toContain(es.angosto)
+    expect(screen.getByTestId('switch-espejo').getAttribute('aria-checked')).toBe('true')
+    expect(screen.getByTestId('fila-tipo-letra').textContent).toContain('Serif')
+    cleanup()
+    await montar()
+    fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
+    expect((await screen.findByTestId('fila-tipo-letra')).textContent).toContain('Serif')
+    expect(screen.getByTestId('switch-espejo').getAttribute('aria-checked')).toBe('true')
+  })
+
+  test('LA PANTALLA COMPLETA DE AJUSTES YA NO SE ABRE DESDE NINGUNA PUERTA', async () => {
+    const puertas: Array<[string, () => Promise<void>]> = [
+      ['portada', async () => {
+        await montar()
+        fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
+      }],
+      ['editor', async () => {
+        await montar()
+        fireEvent.click(await screen.findByTestId('fila-guion-g-ap'))
+        fireEvent.click(await screen.findByTestId('btn-menu-opciones-editor'))
+      }],
+      ['Leer de pie', async () => {
+        await abrirLeer()
+        fireEvent.click(screen.getByTestId('btn-ajustes-toma'))
+      }],
+      ['Grabar de pie', async () => {
+        await abrirGrabar()
+        fireEvent.click(screen.getByTestId('btn-ajustes-toma'))
+      }],
+      ['Leer de lado', async () => {
+        fingirDeLado(CONSULTA_TEL_H)
+        await abrirLeer()
+        fireEvent.click(screen.getByTestId('ficha-mas'))
+      }],
+      ['Grabar de lado', async () => {
+        fingirDeLado(CONSULTA_TEL_H)
+        await abrirGrabar()
+        fireEvent.click(await screen.findByTestId('ficha-flecha'))
+        fireEvent.click(await screen.findByTestId('ficha-ajustes'))
+      }]
+    ]
+    for (const [puerta, abrir] of puertas) {
+      await abrir()
+      expect(await screen.findByTestId('panel-ajustes-toma'), puerta).toBeTruthy()
+      expect(screen.queryByTestId('pantalla-ajustes'), puerta).toBeNull()
+      expect(screen.queryByRole('dialog', { name: es.tituloAjustes }), puerta).toBeNull()
+      cleanup()
+      window.matchMedia = matchMediaOriginal
+    }
+  })
+
+  test('SIN MOVIMIENTO SI EL SISTEMA LO PIDE: EL PANEL SUBE SIN ANIMACIÓN', async () => {
+    await montar()
+    fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
+    expect((await screen.findByTestId('panel-ajustes-flotante')).style.animation).toContain('dock-crece')
+    cleanup()
+    fingirDeLado('(prefers-reduced-motion: reduce)')
+    await montar()
+    fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
+    expect((await screen.findByTestId('panel-ajustes-flotante')).style.animation).toBe('')
+    expect(screen.getByTestId('panel-ajustes-toma').style.animation).toBe('')
   })
 })

@@ -127,13 +127,24 @@ describe('Tarea 84 - La versión para Google Play', () => {
     expect(within(region).getByTestId('aviso-flotante').textContent).toContain('Guardado')
   })
 
-  test('T84e Ajustes, abierto desde la portada, es un diálogo modal con el título como nombre.', async () => {
+  // -ajustes de pantallas, cuarta vuelta, 10-10-2026- Ajustes ya no es una pantalla que tapa todo: es el
+  // panel de vidrio, abajo, que no oscurece. Es una región con el título como nombre, no un diálogo modal.
+  // Antes:
+  // test('T84e Ajustes, abierto desde la portada, es un diálogo modal con el título como nombre.', async () => {
+  //   await montar()
+  //   fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
+  //   const pantalla = await screen.findByTestId('pantalla-ajustes')
+  //   expect(pantalla.getAttribute('role')).toBe('dialog')
+  //   expect(pantalla.getAttribute('aria-modal')).toBe('true')
+  //   expect(screen.getByRole('dialog', { name: es.tituloAjustes })).toBe(pantalla)
+  // })
+  test('T84e Ajustes, abierto desde la portada, es una región con el título como nombre y no un diálogo modal.', async () => {
     await montar()
     fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
-    const pantalla = await screen.findByTestId('pantalla-ajustes')
-    expect(pantalla.getAttribute('role')).toBe('dialog')
-    expect(pantalla.getAttribute('aria-modal')).toBe('true')
-    expect(screen.getByRole('dialog', { name: es.tituloAjustes })).toBe(pantalla)
+    const panel = await screen.findByTestId('panel-ajustes-toma')
+    expect(panel.getAttribute('role')).toBe('region')
+    expect(screen.getByRole('region', { name: es.tituloAjustes })).toBe(panel)
+    expect(screen.queryByRole('dialog', { name: es.tituloAjustes })).toBeNull()
   })
 
   test('T84f El campo del título del guion tiene nombre para el lector.', () => {
@@ -170,10 +181,12 @@ describe('Tarea 84 - La versión para Google Play', () => {
     await montar(motor, 'en')
     fireEvent.click(screen.getByTestId('btn-leer-tarjeta'))
     fireEvent.click(await screen.findByTestId('btn-empezar-toma'))
-    const pastilla = await screen.findByTestId('pastilla-preparando-voz')
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: const pastilla = await screen.findByTestId('pastilla-preparando-voz')
+    const pastilla = await screen.findByTestId('dock-preparando-voz')
     expect(pastilla.textContent).toContain(es.preparandoVoz)
     expect(pastilla.textContent).toMatch(/25 %|50 %/)
     expect(await screen.findByTestId('cuenta-regresiva')).toBeTruthy()
-    expect(screen.queryByTestId('pastilla-preparando-voz')).toBeNull()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.queryByTestId('pastilla-preparando-voz')).toBeNull()
+    expect(screen.queryByTestId('dock-preparando-voz')).toBeNull()
   })
 })

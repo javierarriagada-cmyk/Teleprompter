@@ -760,7 +760,8 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
 
     // El cajon ya no tiene "Listo" -24-09-2026-: se cierra tocando afuera,
     // sobre el guion, que es la capa transparente.
-    const btnCerrar = container!.querySelector('[data-testid="btn-cerrar-ajustes"]') as HTMLElement
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: const btnCerrar = container!.querySelector('[data-testid="btn-cerrar-ajustes"]') as HTMLElement
+    const btnCerrar = container!.querySelector('[data-testid="btn-cerrar-ajustes-toma"]') as HTMLElement
     await act(async () => {
       fireEvent.click(btnCerrar)
     })
@@ -790,7 +791,8 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(Array.from(container!.querySelectorAll('button')).find((b) => b.getAttribute('aria-label') === 'Ancho')!)
     })
     await act(async () => {
-      fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes"]')!)
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes"]')!)
+      fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes-toma"]')!)
     })
 
     // Volver a lectura
@@ -839,7 +841,8 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       fireEvent.click(btnAmbar)
     })
 
-    const btnCerrar = container!.querySelector('[data-testid="btn-cerrar-ajustes"]') as HTMLElement
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: const btnCerrar = container!.querySelector('[data-testid="btn-cerrar-ajustes"]') as HTMLElement
+    const btnCerrar = container!.querySelector('[data-testid="btn-cerrar-ajustes-toma"]') as HTMLElement
     await act(async () => {
       fireEvent.click(btnCerrar)
     })
@@ -873,7 +876,8 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
     })
 
     await act(async () => {
-      fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes"]')!)
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes"]')!)
+      fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes-toma"]')!)
     })
 
     await act(async () => {
@@ -2185,15 +2189,18 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
     })
 
     // 28-09-2026: el Aa del editor abre la pantalla de Ajustes; cada ajuste se elige en su dialogo.
-    expect(container!.querySelector('[data-testid="pantalla-ajustes"]')).not.toBeNull()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(container!.querySelector('[data-testid="pantalla-ajustes"]')).not.toBeNull()
+    expect(container!.querySelector('[data-testid="panel-ajustes-flotante"]')).not.toBeNull()
     expect(container!.textContent).not.toContain('Dónde lees:')
 
-    const btnCerrar = container!.querySelector('[data-testid="btn-cerrar-ajustes"]') as HTMLElement
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: const btnCerrar = container!.querySelector('[data-testid="btn-cerrar-ajustes"]') as HTMLElement
+    const btnCerrar = container!.querySelector('[data-testid="btn-cerrar-ajustes-toma"]') as HTMLElement
     await act(async () => {
       fireEvent.click(btnCerrar)
     })
 
-    expect(container!.querySelector('[data-testid="pantalla-ajustes"]')).toBeNull()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(container!.querySelector('[data-testid="pantalla-ajustes"]')).toBeNull()
+    expect(container!.querySelector('[data-testid="panel-ajustes-flotante"]')).toBeNull()
     expect(container!.textContent).not.toContain('Dónde lees:')
   })
 
@@ -2224,7 +2231,8 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       })
       // 28-09-2026: Mostrar tiempo salio del cajon. Vive en Ajustes, ficha Mas.
       await act(async () => {
-        fireEvent.click(container!.querySelector('[data-testid="ficha-mas"]')!)
+        // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(container!.querySelector('[data-testid="ficha-mas"]')!)
+        fireEvent.click(container!.querySelector('[data-testid="btn-ajustes-toma"]')!)
       })
       const swTiempo = container!.querySelector('[data-testid="switch-mostrar-tiempo"]') as HTMLElement
       expect(swTiempo).not.toBeNull()
@@ -2232,7 +2240,8 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
         fireEvent.click(swTiempo)
       })
       await act(async () => {
-        fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes"]')!)
+        // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes"]')!)
+        fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes-toma"]')!)
       })
       await act(async () => {
         fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)
@@ -2254,14 +2263,16 @@ describe('Pruebas TAREA 16 (T81-T87)', () => {
       // 28-09-2026: al salir de la lectura sin camara se vuelve a LISTO -tarea 68-, con las fichas
       // a la vista: no hace falta volver a entrar por el editor.
       await act(async () => {
-        fireEvent.click(container!.querySelector('[data-testid="ficha-mas"]')!)
+        // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(container!.querySelector('[data-testid="ficha-mas"]')!)
+        fireEvent.click(container!.querySelector('[data-testid="btn-ajustes-toma"]')!)
       })
       const swTiempo2 = container!.querySelector('[data-testid="switch-mostrar-tiempo"]') as HTMLElement
       await act(async () => {
         fireEvent.click(swTiempo2)
       })
       await act(async () => {
-        fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes"]')!)
+        // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes"]')!)
+        fireEvent.click(container!.querySelector('[data-testid="btn-cerrar-ajustes-toma"]')!)
       })
       await act(async () => {
         fireEvent.click(container!.querySelector('[data-testid="btn-empezar-toma"]')!)

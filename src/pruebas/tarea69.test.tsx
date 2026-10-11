@@ -48,7 +48,8 @@ describe('Pruebas TAREA 69 - EN LEER: EL ENGRANAJE SUBE A LA ESQUINA, EMPEZAR PA
     expect(btnEmpezar.classList.contains('btn-empezar-leer')).toBe(true)
 
     expect(screen.getByTestId('fila-fichas-listo')).toBeDefined()
-    expect(screen.getByTestId('ficha-mas')).toBeDefined()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.getByTestId('ficha-mas')).toBeDefined()
+    expect(screen.getByTestId('btn-ajustes-toma')).toBeDefined()
     expect(screen.queryByTestId('btn-engranaje-toma')).toBeNull()
   })
 

@@ -277,16 +277,22 @@ describe('Pruebas TAREA 31 (T160)', () => {
       )
       const btn = screen.getByTestId('btn-menu-superior-biblioteca')
       fireEvent.click(btn)
-      expect(screen.queryByTestId('pantalla-ajustes')).not.toBeNull()
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.queryByTestId('pantalla-ajustes')).not.toBeNull()
+      expect(screen.queryByTestId('panel-ajustes-flotante')).not.toBeNull()
       expect(screen.queryByTestId('menu-superior-biblioteca')).toBeNull()
 
-      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
-      expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
+      expect(screen.queryByTestId('panel-ajustes-flotante')).toBeNull()
 
       fireEvent.click(btn)
-      expect(screen.queryByTestId('pantalla-ajustes')).not.toBeNull()
-      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
-      expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.queryByTestId('pantalla-ajustes')).not.toBeNull()
+      expect(screen.queryByTestId('panel-ajustes-flotante')).not.toBeNull()
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
+      expect(screen.queryByTestId('panel-ajustes-flotante')).toBeNull()
       unmount()
     }
 
@@ -403,7 +409,9 @@ describe('Pruebas TAREA 34: La Toma es Negro y Texto (T163-T166)', () => {
 
     expect(screen.getByTestId('teleprompter-view-container')).not.toBeNull()
     expect(screen.getByTestId('columna-texto')).not.toBeNull()
-    expect(screen.getByText('Texto')).not.toBeNull()
+    // -ajustes de pantallas, cuarta vuelta- Leer tiene el dock con el rótulo TEXTO: se busca la palabra del guion.
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.getByText('Texto')).not.toBeNull()
+    expect(screen.getByText('Texto', { selector: '[data-token]' })).not.toBeNull()
   })
 
   test('T165 - Un toque trae la barra minima: esta Salir, NO el control de letra (vive en el Aa del editor), y NO estan el selector de motor ni el panel de corpus.', async () => {
@@ -696,7 +704,8 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
 
     // Cerrar Ajustes
     await act(async () => {
-      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
     })
 
     // Entrar al lienzo. Leer deja en LISTO; Empezar pasa a LEYENDO.
@@ -901,12 +910,14 @@ describe('Pruebas TAREA 41: El gesto de atrás y deshabilitación de Leer (T188-
       fireEvent.click(screen.getByTestId('btn-menu-opciones-editor'))
     })
 
-    expect(screen.getByTestId('pantalla-ajustes')).not.toBeNull()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.getByTestId('pantalla-ajustes')).not.toBeNull()
+    expect(screen.getByTestId('panel-ajustes-flotante')).not.toBeNull()
 
     await simularGestoAtras()
 
     // Ajustes se cierra, pero SE MANTIENE en la vista del editor
-    expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
+    expect(screen.queryByTestId('panel-ajustes-flotante')).toBeNull()
     expect(screen.getByTestId('input-titulo-guion')).not.toBeNull()
   })
 
@@ -1128,12 +1139,14 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
     })
 
     // 28-09-2026: desde el guion, Ajustes no muestra el Tema -es de la app, no del texto-.
-    expect(screen.getByTestId('pantalla-ajustes')).not.toBeNull()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.getByTestId('pantalla-ajustes')).not.toBeNull()
+    expect(screen.getByTestId('panel-ajustes-flotante')).not.toBeNull()
     expect(screen.queryByTestId('fila-tema')).toBeNull()
 
     // Cerrar Ajustes y volver a la Biblioteca
     await act(async () => {
-      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
     })
     await act(async () => {
       fireEvent.click(screen.getByText('Guiones'))
@@ -1145,7 +1158,8 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
       fireEvent.click(btnMenuBiblio)
     })
 
-    expect(screen.getByTestId('pantalla-ajustes')).not.toBeNull()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.getByTestId('pantalla-ajustes')).not.toBeNull()
+    expect(screen.getByTestId('panel-ajustes-flotante')).not.toBeNull()
     expect(screen.getByTestId('fila-tema')).not.toBeNull()
     await act(async () => {
       fireEvent.click(screen.getByTestId('fila-tema'))

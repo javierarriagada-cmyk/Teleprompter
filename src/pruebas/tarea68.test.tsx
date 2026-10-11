@@ -146,7 +146,8 @@ describe('Tarea 68 - que pasa cuando la toma termina', () => {
     await portadaConGuion()
     fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
     // 28-09-2026: el cajon se fue. Lo mismo se mira en Ajustes.
-    const ajustes = await screen.findByTestId('pantalla-ajustes')
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: const ajustes = await screen.findByTestId('pantalla-ajustes')
+    const ajustes = await screen.findByTestId('panel-ajustes-flotante')
     expect(ajustes.textContent).not.toContain('Motor de voz')
     expect(ajustes.textContent).not.toContain('Ver transcripción en vivo')
     expect(ajustes.textContent).not.toContain('Medición / Panel Corpus')

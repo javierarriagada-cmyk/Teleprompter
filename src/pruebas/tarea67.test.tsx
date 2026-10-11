@@ -68,7 +68,8 @@ describe('Tarea 67 - la casa de cada ajuste y el gesto que se siente', () => {
     fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
     // 28-09-2026: el cajon se fue. El engranaje abre Ajustes; ahi esta Tema
     // y no estan los tres instrumentos.
-    const ajustes = await screen.findByTestId('pantalla-ajustes')
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: const ajustes = await screen.findByTestId('pantalla-ajustes')
+    const ajustes = await screen.findByTestId('panel-ajustes-flotante')
     expect(screen.getByTestId('fila-tema')).not.toBeNull()
     expect(ajustes.textContent).not.toContain('Motor de voz')
     expect(ajustes.textContent).not.toContain('Ver transcripción en vivo')
@@ -136,7 +137,8 @@ describe('Tarea 67 - la casa de cada ajuste y el gesto que se siente', () => {
     // Se busca SOLO adentro de Ajustes: el diagnostico de la portada tiene
     // su propio <select> -el del motor, App.tsx- y no tiene que ver con esto.
     // 28-09-2026: el Aa abre la pantalla de Ajustes, no el cajon.
-    const panel = await screen.findByTestId('pantalla-ajustes')
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: const panel = await screen.findByTestId('pantalla-ajustes')
+    const panel = await screen.findByTestId('panel-ajustes-flotante')
     expect(panel.textContent).not.toContain('Idioma del guion')
     expect(panel.querySelector('select')).toBeNull()
   })

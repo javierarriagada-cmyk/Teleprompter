@@ -331,7 +331,8 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     expect(hapticsCalls.selectionChanged).toBe(1)
 
     // Cerrar Ajustes
-    const btnCerrar = screen.getByTestId('btn-cerrar-ajustes')
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: const btnCerrar = screen.getByTestId('btn-cerrar-ajustes')
+    const btnCerrar = screen.getByTestId('btn-cerrar-ajustes-toma')
     await act(async () => {
       fireEvent.click(btnCerrar)
     })
@@ -374,7 +375,8 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     await act(async () => {
       fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
     })
-    expect(screen.getByTestId('pantalla-ajustes')).toBeTruthy()
+    // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.getByTestId('pantalla-ajustes')).toBeTruthy()
+    expect(screen.getByTestId('panel-ajustes-flotante')).toBeTruthy()
     expect(screen.queryByLabelText('Vibración')).toBeNull()
     await act(async () => {
       fireEvent.click(screen.getByTestId('fila-tema'))
@@ -383,7 +385,8 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     expect(screen.getByRole('menuitemradio', { name: 'Oscuro' })).toBeTruthy()
 
     await act(async () => {
-      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
     })
 
     hapticsCalls.impact = []

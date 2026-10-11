@@ -38,7 +38,10 @@ describe('Pruebas TAREA 46 (T209-T212)', () => {
       // -ajustes de pantallas, 10-10-2026-: el dock de LISTO y las filas de Lectura y Pantalla que comparte
       // con Ajustes son componentes nuevos y entran. Antes: 'src/components/SelectorFiltro.tsx' cerraba la lista.
       'src/components/DockListo.tsx',
-      'src/components/FilasAjustesLectura.tsx'
+      // -ajustes de pantallas, cuarta vuelta, 10-10-2026-: el panel único de Ajustes es un componente nuevo y
+      // entra. Antes: 'src/components/FilasAjustesLectura.tsx' cerraba la lista.
+      'src/components/FilasAjustesLectura.tsx',
+      'src/components/PanelAjustes.tsx'
     ]
 
     const regexHexColor = /#(?:[0-9a-fA-F]{3,4}){1,2}\b/g
