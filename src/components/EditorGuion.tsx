@@ -8,7 +8,9 @@ import { Slice, Fragment } from '@tiptap/pm/model'
 import { TramoFormato, DESTACADO } from '../datos/modelo'
 import { aDocumento, deDocumento, llaveGuion } from '../datos/docEditor'
 import { REGEX_ACOTACION } from '../lib/acotaciones'
-import { familiaLectura, colorLetraEfectiva, columnaLectura, colorDeTramo, colorSugerenciaLectura, INTERLINEADO_LECTURA } from './estiloLectura'
+// Antes: import { familiaLectura, colorLetraEfectiva, columnaLectura, colorDeTramo, colorSugerenciaLectura, INTERLINEADO_LECTURA } from './estiloLectura'
+import { familiaLectura, colorLetraEfectiva, columnaLectura, rellenoLecturaDePie, colorDeTramo, colorSugerenciaLectura, INTERLINEADO_LECTURA } from './estiloLectura'
+import useLayout from '../hooks/useLayout'
 
 // EL EDITOR DEL GUION, CON FORMATO DE VERDAD. 24-09-2026.
 //
@@ -205,6 +207,14 @@ export function EditorGuion({
   }, [editor, texto, tramos])
 
   const columna = columnaLectura(columnaAngosta)
+  // LA COLUMNA DEL EDITOR ES LA DE LA LECTURA -editor-ancho-texto, 11-10-2026-. Con el teléfono de
+  // pie, el editor corta los renglones igual que la lectura: la columna tiene el mismo ancho y los
+  // mismos bordes, con cualquier letra y cualquier ancho de Ajustes. Para eso arma las mismas dos
+  // cajas que la lectura -contenedor-lectura y columna-texto, TeleprompterView.tsx-: una del ancho
+  // de la pantalla con rellenoLecturaDePie y, adentro, la de columnaLectura. Las dos salen de las
+  // mismas funciones, no de números copiados. De lado y en tableta la lectura tiene otra columna
+  // -rieles, --columna-tope-h- y el editor queda como estaba.
+  const dePie = useLayout() === 'tel-v'
 
   // La hoja se dibuja como la lectura: su fondo, su letra, su tamano, su
   // interlineado, su margen y su columna. Lo que se toca en el panel Aa se ve
@@ -212,11 +222,19 @@ export function EditorGuion({
   return (
     <div
       data-testid="hoja-editor"
-      className="hoja-editor"
+      // Antes: className="hoja-editor"
+      // De pie, la hoja va a 16 dp de cada borde de la pantalla, como las tarjetas de la biblioteca
+      // -.hoja-editor-de-pie, styles.css-.
+      className={dePie ? 'hoja-editor hoja-editor-de-pie' : 'hoja-editor'}
       style={{
         backgroundColor: colorFondo,
-        paddingLeft: `${marginPercent}%`,
-        paddingRight: `${marginPercent}%`,
+        // Antes: paddingLeft: `${marginPercent}%`,
+        // Antes: paddingRight: `${marginPercent}%`,
+        // De pie el margen del ajuste de ancho lo pone la caja de adentro, sobre el ancho de la
+        // pantalla, como en la lectura. Era el 5% de la hoja -16 dp en el Redmi- más el 93% de lo que
+        // quedaba: la columna iba de 63 a 330 dp y la de la lectura de 32 a 361.
+        paddingLeft: dePie ? 0 : `${marginPercent}%`,
+        paddingRight: dePie ? 0 : `${marginPercent}%`,
         // Los colores de los tramos cambian con el fondo -colorDeTramo- y
         // llegan a styles.css como variables: las clases .tramo-* no saben
         // sobre que fondo estan.
@@ -229,6 +247,13 @@ export function EditorGuion({
         ['--color-sugerencia-lectura' as string]: colorSugerenciaLectura(colorFondo)
       }}
     >
+      {/* Las cajas de la lectura -editor-ancho-texto-. De pie, la de afuera mide lo que la pantalla
+          -100vw, centrada sobre la hoja, que está centrada en la pantalla-, como la capa fija de la
+          lectura. La de adentro lleva el relleno de la lectura: su porcentaje se toma de la caja que
+          la contiene, que así es la pantalla y no la hoja. Después el 93% o los 22ch de la columna se
+          toman del mismo ancho que en la lectura. De lado y en tableta no llevan estilo. */}
+      <div style={dePie ? { width: '100vw', marginLeft: 'calc(50% - 50vw)' } : undefined}>
+      <div style={dePie ? rellenoLecturaDePie(marginPercent) : undefined}>
       <div
         style={{
           fontSize,
@@ -241,6 +266,8 @@ export function EditorGuion({
         }}
       >
         <EditorContent editor={editor} />
+      </div>
+      </div>
       </div>
     </div>
   )

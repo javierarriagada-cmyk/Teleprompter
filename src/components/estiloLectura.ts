@@ -47,6 +47,18 @@ export function columnaLectura(columnaAngosta: boolean): { maxWidth: string; tex
     : { maxWidth: '93%', textAlign: 'left' }
 }
 
+// EL RELLENO DE LA LECTURA CON EL TELÉFONO DE PIE -editor-ancho-texto, 11-10-2026-.
+// La lectura de pie ocupa la pantalla entera -contenedor-lectura, TeleprompterView.tsx- y deja a
+// cada lado el margen del ajuste de ancho -marginPercent, 5 en «Ancho» y «Angosto», 12 en «Medio»-.
+// Adentro va la columna de columnaLectura. El editor arma las mismas dos cajas con esta función y
+// con columnaLectura, así su columna tiene el mismo ancho y los mismos bordes que la de la lectura y
+// corta los renglones igual, con cualquier letra y cualquier ancho. Medido en el Redmi -392 dp, Aa 32,
+// «Ancho»-: la lectura iba de 32 a 361 y el editor de 63 a 330, porque su 5% y su 93% se tomaban de
+// la hoja -320 dp- y no de la pantalla.
+export function rellenoLecturaDePie(marginPercent: number): { paddingLeft: string; paddingRight: string } {
+  return { paddingLeft: `${marginPercent}%`, paddingRight: `${marginPercent}%` }
+}
+
 // El color de un tramo depende del fondo: claro sobre negro, oscuro sobre
 // blanco. Lo usan la lectura -renglones.tsx- y el editor -EditorGuion.tsx-.
 export function colorDeTramo(color: keyof typeof COLORES_TRAMO, colorFondo: string): string {

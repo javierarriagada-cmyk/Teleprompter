@@ -63,7 +63,10 @@ describe('Tarea 72 - cada ajuste muestra lo que hace', () => {
     await appConGuion()
     await abrirPanelAa()
     const caja = () => screen.getByTestId('hoja-editor') as HTMLElement
-    const col = () => caja().firstElementChild as HTMLElement
+    // Antes: const col = () => caja().firstElementChild as HTMLElement
+    // -editor-ancho-texto, 11-10-2026- Entre la hoja y la columna van las dos cajas de la lectura -la del
+    // ancho de la pantalla y la del relleno, EditorGuion.tsx-: la columna es la de adentro.
+    const col = () => caja().firstElementChild!.firstElementChild!.firstElementChild as HTMLElement
 
     // 28-09-2026: los ajustes se eligen en la pantalla de Ajustes, fila y opcion; el guion de atras
     // sigue montado y es el que se revisa.

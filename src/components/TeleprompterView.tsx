@@ -74,7 +74,8 @@ import {
   IconoAtras, IconoEmpezar
 } from './IconosApp'
 import { movimientoApagado } from './movimiento'
-import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
+// Antes: import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
+import { familiaLectura, colorLetraEfectiva, columnaLectura, rellenoLecturaDePie, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
 import { actualizarConfigCamara } from '../lib/camara'
 import { App as CapacitorApp } from '@capacitor/app'
 import { aplicarBrillo, leerBrilloSistema, restaurarBrillo } from '../lib/brillo'
@@ -1561,8 +1562,12 @@ export default function TeleprompterView({
           overflowY: 'auto',
           // 29-09-2026, tarea 82: de lado, el relleno de la columna entre los rieles -ver
           // rellenoIzqH-; en vertical, marginPercent como siempre.
-          paddingLeft: horizontal ? rellenoIzqH : tabletaVertical ? 'var(--columna-lado-tab-v)' : `${marginPercent}%`,
-          paddingRight: horizontal ? rellenoDerH : tabletaVertical ? 'var(--columna-lado-tab-v)' : `${marginPercent}%`,
+          // Antes: paddingLeft: horizontal ? rellenoIzqH : tabletaVertical ? 'var(--columna-lado-tab-v)' : `${marginPercent}%`,
+          // Antes: paddingRight: horizontal ? rellenoDerH : tabletaVertical ? 'var(--columna-lado-tab-v)' : `${marginPercent}%`,
+          // -editor-ancho-texto, 11-10-2026- El mismo valor, ahora de rellenoLecturaDePie -estiloLectura.ts-:
+          // el editor lo toma de ahí para que su columna corte los renglones igual que esta.
+          paddingLeft: horizontal ? rellenoIzqH : tabletaVertical ? 'var(--columna-lado-tab-v)' : rellenoLecturaDePie(marginPercent).paddingLeft,
+          paddingRight: horizontal ? rellenoDerH : tabletaVertical ? 'var(--columna-lado-tab-v)' : rellenoLecturaDePie(marginPercent).paddingRight,
           // 30-09-2026, tarea 83: en la tableta vertical, 56 de la hoja más los 28 de aire de la
           // columna del boceto -styles-tableta.css-; marginPercent es del teléfono.
           // EL FONDO DE LA PAREJA, PARA EL HALO E -tarea 82, parte B, 29-09-2026-. styles.css

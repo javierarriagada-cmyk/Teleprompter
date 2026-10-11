@@ -830,6 +830,15 @@ textarea::placeholder {
   box-shadow: var(--sombra-tarjeta);
   border-radius: var(--redondeo-grande);
 }
+/* LA HOJA A 16 DP DE LA PANTALLA -editor-ancho-texto, 11-10-2026-. Con el teléfono de pie la hoja
+   quedaba a 36 dp de cada borde: los 16 del marco de App.tsx más los 20 -var(--aire-4)- del relleno
+   de EditorView.tsx. Ahora sale esos 20 hacia afuera y queda a 16, como las tarjetas de la biblioteca.
+   El borde, las esquinas y la sombra son los de .hoja-editor, sin cambios. De lado y en tableta no se
+   aplica -EditorGuion.tsx-. */
+.hoja-editor-de-pie {
+  margin-left: calc(-1 * var(--aire-4));
+  margin-right: calc(-1 * var(--aire-4));
+}
 .editor-guion {
   outline: none;
   min-height: 30vh;
