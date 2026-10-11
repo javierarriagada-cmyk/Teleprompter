@@ -242,11 +242,28 @@ export function duracionDeLectura(palabras: number): string {
   if (!palabras || palabras <= 0) return t('vacio')
   // Nunca "0 s" para un guion con palabras -28-09-2026-: uno de una palabra decia "0 s" en la
   // portada, como si estuviera vacio.
-  const segundos = Math.max(1, Math.round((palabras / 150) * 60))
+  // Antes -hasta 2026-10-10-: const segundos = Math.max(1, Math.round((palabras / 150) * 60))
+  // Ajustes de pantallas, 10-10-2026: la cuenta pasa a segundosDeLectura, que comparte con la
+  // duración del dock de LISTO -«2:50», la misma estimación del editor-.
+  const segundos = segundosDeLectura(palabras)
   if (segundos < 60) return `${segundos} s`
   const m = Math.floor(segundos / 60)
   const s = segundos % 60
   return s === 0 ? `${m} min` : `${m}:${String(s).padStart(2, '0')} min`
+}
+
+// LA ESTIMACIÓN DEL EDITOR, EN SEGUNDOS -ajustes de pantallas, 10-10-2026-. La misma cuenta de
+// duracionDeLectura -150 palabras por minuto, nunca 0 con palabras-; 0 si no hay palabras.
+export function segundosDeLectura(palabras: number): number {
+  if (!palabras || palabras <= 0) return 0
+  return Math.max(1, Math.round((palabras / 150) * 60))
+}
+
+// LA DURACIÓN DEL DOCK DE LISTO -ajustes de pantallas, 10-10-2026-: la misma estimación del editor,
+// en reloj y sin la unidad -«2:50» y debajo «dura aprox.»-. 45 s se ve «0:45».
+export function duracionDeLecturaReloj(palabras: number): string {
+  const segundos = segundosDeLectura(palabras)
+  return `${Math.floor(segundos / 60)}:${String(segundos % 60).padStart(2, '0')}`
 }
 
 export function contarPalabras(g: Guion): number {

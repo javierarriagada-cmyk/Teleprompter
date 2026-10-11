@@ -260,7 +260,16 @@ export const es = {
   marcaGuiaRecuadro: 'Arrástralo a donde no te tape.',
   // Antes: 'Para seguir, baja la mano y vuelve a mostrar la palma: cuenta 3 segundos.'
   // Por qué cambió: explicaba solo seguir, no pausar ni dejar de hablar.
-  marcaGuiaPalma: 'Para pausar, deja de hablar y muestra la palma. Para seguir, baja la mano y muéstrala de nuevo: cuenta 3 segundos.'
+  marcaGuiaPalma: 'Para pausar, deja de hablar y muestra la palma. Para seguir, baja la mano y muéstrala de nuevo: cuenta 3 segundos.',
+  // Ajustes de pantallas -10-10-2026-: el dock de LISTO en Grabar, de pie en el teléfono. Los rótulos
+  // de los grupos de fichas, Voltear de la fila de abajo, la duración y el panel de Ajustes de la toma.
+  rotuloGrupoTexto: 'Texto',
+  rotuloGrupoCamara: 'Cámara',
+  voltear: 'Voltear',
+  duraAprox: 'dura aprox.',
+  tituloAjustesToma: 'Ajustes de la toma',
+  seccionPantalla: 'Pantalla',
+  calidad: 'Calidad'
 }
 
 export type ClaveTexto = keyof typeof es

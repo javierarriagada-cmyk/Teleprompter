@@ -838,6 +838,17 @@ textarea::placeholder {
 .editor-guion p {
   margin: 16px 0;
 }
+/* EL EDITOR SEPARA LOS PÁRRAFOS COMO LA LECTURA -ajustes de pantallas, 10-10-2026, boceto 1-. La línea
+   en blanco entre dos párrafos es un <p> vacío -con el <br> de relleno de ProseMirror- y ocupaba un
+   renglón entero más los 16 de arriba y abajo: unos 71 dp en el moto g86 con Aa 24, contra unos 26 en
+   la lectura, donde la línea vacía no dibuja nada -renderFormattedLine devuelve null- y solo quedan los
+   16 de margen. Sin el <br> el párrafo vacío no tiene renglón, sus márgenes se juntan con los de al lado
+   y queda la misma separación que en la lectura. El vacío donde está el cursor -is-empty, lo pone el
+   Placeholder solo ahí- y el del editor vacío -is-editor-empty, el del texto de sugerencia- conservan su
+   renglón, para que el cursor se vea al escribir. La lectura no se toca. */
+.editor-guion p:not(.is-empty):not(.is-editor-empty) > br.ProseMirror-trailingBreak:only-child {
+  display: none;
+}
 .editor-guion p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;
@@ -1707,6 +1718,15 @@ label.selector-aa-opcion {
   opacity: 0.7;
   cursor: default;
 }
+/* COMPARTIR Y BORRAR CON SU NOMBRE AL LADO DEL ÍCONO -ajustes de pantallas, 10-10-2026, boceto 3-. El
+   resto de las acciones sigue con el nombre debajo. */
+.accion-toma.con-nombre {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--aire-2);
+  font-size: var(--texto-cuerpo);
+}
 /* Borrar pregunta una vez: el tacho se pone rojo y aparece "¿Seguro?" debajo. */
 .accion-toma[data-confirmando="si"],
 .boton-menu-chico[data-confirmando="si"] {
@@ -1721,8 +1741,10 @@ label.selector-aa-opcion {
 }
 .cerrar-visor {
   position: absolute;
-  top: var(--aire-2);
-  right: var(--aire-2);
+  /* -ajustes de pantallas, 10-10-2026, boceto 3- La X entra 8 hacia el centro: su círculo quedaba
+     cortado por el borde del video. Antes: top: var(--aire-2); right: var(--aire-2); */
+  top: calc(var(--aire-2) + 8px);
+  right: calc(var(--aire-2) + 8px);
   z-index: 2;
   width: 44px;
   height: 44px;

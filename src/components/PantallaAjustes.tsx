@@ -1,18 +1,28 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { App as CapacitorApp } from '@capacitor/app'
+// Antes -hasta 2026-10-10-: los íconos de las filas de lectura y pantalla, Interruptor, hapticaSeleccion,
+// estiloLectura, PAREJAS_COLOR, bordesSeguros y movimiento se importaban aquí. Ajustes de pantallas,
+// 10-10-2026: esas filas y sus menús viven en FilasAjustesLectura.tsx, compartidas con el panel de la toma.
+// import {
+//   IconoAtras, IconoChevron, IconoTamanoLetra, IconoTipografia, IconoAnchoTexto, IconoPaleta, IconoEspejo,
+//   IconoReloj, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda, IconoDocumento
+// } from './IconosApp'
+// import { hapticaSeleccion } from '../haptica'
+// import { Interruptor } from './Interruptor'
+// import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, PASOS_LETRA } from './estiloLectura'
+// import { PAREJAS_COLOR } from '../datos/modelo'
+// import { bordesSeguros, colocarMenu } from '../lib/bordesSeguros'
+// import { CURVA_RESORTE, MS_CHICO, movimientoApagado } from './movimiento'
 import {
-  IconoAtras, IconoChevron, IconoTamanoLetra, IconoTipografia, IconoAnchoTexto, IconoPaleta, IconoEspejo,
-  IconoReloj, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda, IconoDocumento
+  IconoAtras, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda, IconoDocumento
 } from './IconosApp'
-import { hapticaSeleccion } from '../haptica'
-import { Interruptor } from './Interruptor'
 import { PantallaLicencias } from './PantallaLicencias'
-import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, PASOS_LETRA } from './estiloLectura'
-import { PAREJAS_COLOR } from '../datos/modelo'
 import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
-import { bordesSeguros, colocarMenu } from '../lib/bordesSeguros'
 import { t, useTextos } from '../textos'
-import { CURVA_RESORTE, MS_CHICO, movimientoApagado } from './movimiento'
+import {
+  AjustesLectura, FilaAjuste, MenuAdjuntoAjustes, CheckMenu, MuestraLectura, FilasLectura, FilasPantalla,
+  MenuLectura, esMenuLectura, useAnclasLectura
+} from './FilasAjustesLectura'
 
 // PANTALLA DE AJUSTES -tarea 77, 28-09-2026-.
 //
@@ -36,25 +46,8 @@ export type DialogoAjustes =
   | 'idioma'
   | null
 
-// 05-10-2026, tarea 95: dos nombres mas, para las dos parejas que vuelven de A9 -verde sobre
-// negro y hueso sobre gris muy oscuro, modelo.ts-. Se reconocen por el valor exacto, igual que
-// el ambar; lo que no calce con ninguna sigue cayendo en "Negro con blanco", que es la de
-// omision. Antes, sin las dos lineas del verde y el gris.
-function nombrePareja(fondo: string, letra: string): string {
-  const f = fondo.toUpperCase()
-  const l = letra.toUpperCase()
-  if (f === '#000000' && l === '#F5C24B') return t('parejaNegroAmbar')
-  if (f === '#000000' && l === '#4ADE80') return t('parejaNegroVerde')
-  if (f === '#121212' && l === '#EDE6D6') return t('parejaGrisHueso')
-  if (f === '#FFFFFF') return t('parejaBlancoNegro')
-  return t('parejaNegroBlanco')
-}
-
-function nombreAncho(columnaAngosta: boolean, marginPercent: number): string {
-  if (columnaAngosta) return t('angosto')
-  if (marginPercent === 12) return t('medio')
-  return t('ancho')
-}
+// Antes -hasta 2026-10-10-: nombrePareja y nombreAncho vivían aquí. Ajustes de pantallas, 10-10-2026:
+// se mudaron sin cambios -con su comentario de la tarea 95- a FilasAjustesLectura.tsx.
 
 // Privacidad y soporte se abren en el navegador del telefono. @capacitor/app no tiene openUrl
 // -eso es de otro plugin-; en Android, Capacitor manda los enlaces externos al navegador del
@@ -63,178 +56,9 @@ function abrirEnlace(url: string) {
   window.open(url, '_blank')
 }
 
-function FilaAjuste({
-  testid,
-  nombre,
-  valor,
-  explicacion,
-  onClick,
-  extra,
-  icono
-}: {
-  // El icono de la izquierda -28-09-2026-: lo traia el dibujo aprobado y la pantalla salio sin el.
-  icono?: React.ReactNode
-  testid: string
-  nombre: string
-  valor?: string
-  explicacion?: string
-  onClick?: () => void
-  extra?: React.ReactNode
-}) {
-  if (extra) {
-    return (
-      <div className={`fila-ajuste${explicacion ? ' con-explicacion' : ''}`} data-testid={testid}>
-        {icono && <span className="fila-ajuste-icono" aria-hidden="true">{icono}</span>}
-        <div className="fila-ajuste-textos">
-          <div className="fila-ajuste-nombre">{nombre}</div>
-          {explicacion && <div className="fila-ajuste-explicacion">{explicacion}</div>}
-        </div>
-        {extra}
-      </div>
-    )
-  }
-  return (
-    <button
-      type="button"
-      className={`fila-ajuste${explicacion ? ' con-explicacion' : ''}`}
-      data-testid={testid}
-      aria-label={valor ? `${nombre}, ${valor}` : nombre}
-      onClick={onClick}
-    >
-      {icono && <span className="fila-ajuste-icono" aria-hidden="true">{icono}</span>}
-      <div className="fila-ajuste-textos">
-        <div className="fila-ajuste-nombre">{nombre}</div>
-        {explicacion && <div className="fila-ajuste-explicacion">{explicacion}</div>}
-      </div>
-      {valor && <span className="fila-ajuste-valor">{valor}</span>}
-      <IconoChevron tamano={18} className="flecha-fila" />
-    </button>
-  )
-}
-
-// Menu anclado a la fila que lo abrio -boceto tarea 102; endurecido PASO 2-.
-// Sin scrim: la capa atrapa el toque afuera con fondo transparente. Se coloca
-// debajo (o arriba si no cabe) alineado a la derecha. Cierre: afuera, Escape
-// y el gesto de atras de Android (via onRegistrarCerrarDentro en App).
-// Antes: role="listbox" / aria-pressed; ahora role="menu" / menuitemradio.
-function MenuAdjuntoAjustes({
-  anclaRef,
-  onCerrar,
-  testid,
-  children
-}: {
-  anclaRef: React.RefObject<HTMLElement | null>
-  onCerrar: () => void
-  testid: string
-  children: React.ReactNode
-}) {
-  const menuRef = useRef<HTMLDivElement>(null)
-  const focoPrevioRef = useRef<HTMLElement | null>(null)
-  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null)
-
-  useLayoutEffect(() => {
-    function colocar() {
-      const ancla = anclaRef.current
-      const menu = menuRef.current
-      if (!ancla || !menu) return
-      const r = ancla.getBoundingClientRect()
-      const mh = menu.offsetHeight
-      const mw = menu.offsetWidth
-      // -07-10-2026, Claude, revision de la 102- La app dibuja de borde a borde: innerHeight
-      // incluye lo que queda bajo la barra de botones de Android. Medido en el moto g86: el menu de
-      // Idioma -la ultima fila- se abria hacia abajo y "English" quedaba tapado por la barra. La
-      // cuenta pasa a colocarMenu -lib/bordesSeguros.ts-, que descuenta los bordes seguros y la
-      // comparte el menu del guion.
-      // Antes: espacioAbajo = window.innerHeight - r.bottom - 4; arriba si no cabia; top acotado
-      // entre 8 y innerHeight - mh - 8; left = r.right - mw acotado a la pantalla.
-      const c = colocarMenu(
-        { top: r.top, bottom: r.bottom, left: r.left, right: r.right },
-        { alto: mh, ancho: mw },
-        { alto: window.innerHeight, ancho: window.innerWidth },
-        bordesSeguros(),
-        'derecha'
-      )
-      setCoords({ top: c.top, left: c.left })
-    }
-    colocar()
-    const id = requestAnimationFrame(colocar)
-    window.addEventListener('resize', colocar)
-    window.addEventListener('scroll', colocar, true)
-    return () => {
-      cancelAnimationFrame(id)
-      window.removeEventListener('resize', colocar)
-      window.removeEventListener('scroll', colocar, true)
-    }
-  }, [anclaRef, children])
-
-  // Al abrir: foco al primer menuitemradio. Al cerrar: devolver el foco a la fila.
-  useEffect(() => {
-    const activo = document.activeElement
-    focoPrevioRef.current =
-      (activo instanceof HTMLElement ? activo : null)
-      ?? (anclaRef.current?.querySelector('button') as HTMLElement | null)
-      ?? (anclaRef.current as HTMLElement | null)
-    const menu = menuRef.current
-    const primera = menu?.querySelector('[role="menuitemradio"]') as HTMLElement | null
-    if (primera) {
-      primera.focus()
-    } else if (menu) {
-      menu.focus()
-    }
-    return () => {
-      const devolver = focoPrevioRef.current
-      if (devolver && typeof devolver.focus === 'function') {
-        try { devolver.focus() } catch { /* el ancla pudo desmontarse */ }
-      }
-    }
-  }, [anclaRef])
-
-  useEffect(() => {
-    const alTeclear = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onCerrar()
-    }
-    document.addEventListener('keydown', alTeclear)
-    return () => document.removeEventListener('keydown', alTeclear)
-  }, [onCerrar])
-
-  const animar = !movimientoApagado()
-  const estiloMenu: React.CSSProperties = coords
-    ? {
-        top: coords.top,
-        left: coords.left,
-        ...(animar
-          ? { animation: `menu-adjunto-abre ${MS_CHICO}ms ${CURVA_RESORTE} forwards` }
-          : {})
-      }
-    : { top: -9999, left: 0 }
-
-  return (
-    <>
-      <div
-        className="capa-menu-adjunto"
-        data-testid="capa-dialogo-ajustes"
-        onClick={onCerrar}
-        aria-hidden="true"
-      />
-      <div
-        ref={menuRef}
-        className="menu-adjunto-ajustes"
-        data-testid={testid}
-        role="menu"
-        tabIndex={-1}
-        style={estiloMenu}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {children}
-      </div>
-    </>
-  )
-}
-
-function CheckMenu({ visible }: { visible: boolean }) {
-  if (!visible) return <span className="check-menu-adjunto" aria-hidden="true" />
-  return <span className="check-menu-adjunto" aria-hidden="true">✓</span>
-}
+// Antes -hasta 2026-10-10-: FilaAjuste, MenuAdjuntoAjustes y CheckMenu vivían aquí. Ajustes de
+// pantallas, 10-10-2026: se mudaron sin cambios -con sus comentarios- a FilasAjustesLectura.tsx, para
+// que el panel de Ajustes de la toma use las mismas filas y los mismos menús.
 
 export function PantallaAjustes({
   onCerrar,
@@ -296,15 +120,20 @@ export function PantallaAjustes({
   const [licencias, setLicencias] = useState(false)
   const [pantallaAcerca, setPantallaAcerca] = useState(false)
 
-  const anclaLetra = useRef<HTMLDivElement>(null)
-  const anclaTipo = useRef<HTMLDivElement>(null)
-  const anclaAncho = useRef<HTMLDivElement>(null)
-  const anclaColores = useRef<HTMLDivElement>(null)
+  // Antes -hasta 2026-10-10-: anclaLetra, anclaTipo, anclaAncho y anclaColores, cuatro useRef aquí.
+  // Ajustes de pantallas: son las anclas de las filas compartidas -useAnclasLectura-.
+  const anclasLectura = useAnclasLectura()
   const anclaTema = useRef<HTMLDivElement>(null)
   const anclaIdioma = useRef<HTMLDivElement>(null)
 
-  const letra = colorLetraEfectiva(colorFondo, colorLetra)
-  const col = columnaLectura(columnaAngosta)
+  // Antes -hasta 2026-10-10-: const letra = colorLetraEfectiva(colorFondo, colorLetra) y
+  // const col = columnaLectura(columnaAngosta), para la muestra. Ahora la pinta MuestraLectura.
+  // Los ajustes de lectura y pantalla, juntos, para las filas compartidas: los mismos que llegan.
+  const ajustesLectura: AjustesLectura = {
+    fontSize, onElegirLetra, tipoFuente, setTipoFuente, columnaAngosta, marginPercent, setColumnaAngosta,
+    setMarginPercent, colorFondo, colorLetra, setColorFondo, setColorLetra, mirror, setMirror,
+    mostrarTiempo, setMostrarTiempo
+  }
   const verApp = origen === 'portada'
   // La version real, la del paquete -1.0 (457)-. Estaba escrita a mano como 0.2.0.
   const [version, setVersion] = useState<string | null>(null)
@@ -408,12 +237,12 @@ export function PantallaAjustes({
     )
   }
 
+  // Antes -hasta 2026-10-10-: las cuatro de lectura también se elegían aquí:
+  //   dialogo === 'letra' ? anclaLetra : dialogo === 'tipo' ? anclaTipo : dialogo === 'ancho' ? anclaAncho
+  //   : dialogo === 'colores' ? anclaColores : ...
+  // Ahora sus menús los dibuja MenuLectura con sus propias anclas; aquí quedan Tema e Idioma.
   const anclaActiva =
-    dialogo === 'letra' ? anclaLetra
-    : dialogo === 'tipo' ? anclaTipo
-    : dialogo === 'ancho' ? anclaAncho
-    : dialogo === 'colores' ? anclaColores
-    : dialogo === 'tema' ? anclaTema
+    dialogo === 'tema' ? anclaTema
     : dialogo === 'idioma' ? anclaIdioma
     : null
 
@@ -444,85 +273,17 @@ export function PantallaAjustes({
       <div className="cuerpo-ajustes">
         <h2 className="titulo-seccion-ajustes">{t('seccionLectura')}</h2>
         <div className="tarjeta-seccion-ajustes">
-          <div
-            className="muestra-lectura-ajustes"
-            data-testid="muestra-lectura-ajustes"
-            style={{
-              backgroundColor: colorFondo,
-              color: letra,
-              fontFamily: familiaLectura(tipoFuente),
-              fontSize,
-              lineHeight: INTERLINEADO_LECTURA,
-              maxWidth: col.maxWidth,
-              textAlign: col.textAlign
-            }}
-          >
-            {t('lineaMuestraLectura')}
-          </div>
-
-          <div className="envoltorio-fila-con-menu" ref={anclaLetra}>
-            <FilaAjuste
-              testid="fila-tamano-letra"
-              icono={<IconoTamanoLetra tamano={22} />}
-              nombre={t('tamanoLetra')}
-              valor={String(fontSize)}
-              onClick={() => setDialogo(dialogo === 'letra' ? null : 'letra')}
-            />
-          </div>
-          <div className="envoltorio-fila-con-menu" ref={anclaTipo}>
-            <FilaAjuste
-              testid="fila-tipo-letra"
-              icono={<IconoTipografia tamano={22} />}
-              nombre={t('tipografia')}
-              valor={tipoFuente === 'serif' ? t('tipoSerif') : t('tipoSans')}
-              onClick={() => setDialogo(dialogo === 'tipo' ? null : 'tipo')}
-            />
-          </div>
-          <div className="envoltorio-fila-con-menu" ref={anclaAncho}>
-            <FilaAjuste
-              testid="fila-ancho-texto"
-              icono={<IconoAnchoTexto tamano={22} />}
-              nombre={t('anchoTexto')}
-              valor={nombreAncho(columnaAngosta, marginPercent)}
-              onClick={() => setDialogo(dialogo === 'ancho' ? null : 'ancho')}
-            />
-          </div>
-          <div className="envoltorio-fila-con-menu" ref={anclaColores}>
-            <FilaAjuste
-              testid="fila-colores"
-              icono={<IconoPaleta tamano={22} />}
-              nombre={t('coloresLectura')}
-              valor={nombrePareja(colorFondo, colorLetra)}
-              onClick={() => setDialogo(dialogo === 'colores' ? null : 'colores')}
-            />
-          </div>
-          <FilaAjuste
-            testid="fila-espejo"
-            icono={<IconoEspejo tamano={22} />}
-            nombre={t('espejo')}
-            explicacion={t('espejoExplicacion')}
-            extra={(
-              <Interruptor
-                encendido={mirror}
-                onCambiar={setMirror}
-                etiqueta={t('espejo')}
-                testid="switch-espejo"
-              />
-            )}
+          {/* Antes -hasta 2026-10-10-: la muestra, las cuatro filas de lectura -envoltorio-fila-con-menu con
+              su ancla- y las filas de Espejo y Mostrar tiempo estaban escritas aquí. Ajustes de pantallas,
+              10-10-2026: son las mismas del panel de Ajustes de la toma, en FilasAjustesLectura.tsx. */}
+          <MuestraLectura ajustes={ajustesLectura} />
+          <FilasLectura
+            ajustes={ajustesLectura}
+            anclas={anclasLectura}
+            dialogo={dialogo}
+            setDialogo={setDialogo}
           />
-          <FilaAjuste
-            testid="fila-mostrar-tiempo"
-            icono={<IconoReloj tamano={22} />}
-            nombre={t('mostrarTiempo')}
-            extra={(
-              <Interruptor
-                encendido={mostrarTiempo}
-                onCambiar={setMostrarTiempo}
-                etiqueta={t('mostrarTiempo')}
-                testid="switch-mostrar-tiempo"
-              />
-            )}
-          />
+          <FilasPantalla ajustes={ajustesLectura} />
         </div>
 
         {verApp && (
@@ -562,115 +323,22 @@ export function PantallaAjustes({
         )}
       </div>
 
+      {/* Ajustes de pantallas, 10-10-2026: los menús de Letra, Tipografía, Ancho y Colores -con el
+          comentario de cada tamaño a su tamaño- se mudaron a MenuLectura, en FilasAjustesLectura.tsx. */}
+      {dialogo && esMenuLectura(dialogo) && (
+        <MenuLectura
+          ajustes={ajustesLectura}
+          anclas={anclasLectura}
+          dialogo={dialogo}
+          onCerrar={() => setDialogo(null)}
+        />
+      )}
       {dialogo && anclaActiva && (
         <MenuAdjuntoAjustes
           anclaRef={anclaActiva}
           onCerrar={() => setDialogo(null)}
           testid={`dialogo-${dialogo}`}
         >
-          {/* Cada tamano se muestra a su tamano: se elige mirando, no leyendo un numero. */}
-          {dialogo === 'letra' && (
-            <div className="lista-menu-adjunto">
-              {PASOS_LETRA.map((n) => (
-                <button
-                  key={n}
-                  type="button"
-                  data-testid={`opcion-letra-${n}`}
-                  className={`fila-menu-adjunto${fontSize === n ? ' elegida' : ''}`}
-                  role="menuitemradio"
-                  aria-checked={fontSize === n}
-                  aria-label={`${t('tamanoLetra')} ${n}`}
-                  onClick={() => elegirYCerrar(() => onElegirLetra?.(n))}
-                >
-                  <span style={{ fontFamily: familiaLectura(tipoFuente), fontSize: Math.min(n, 32) }}>Aa</span>
-                  <span className="fila-menu-adjunto-etiqueta">{n}</span>
-                  <CheckMenu visible={fontSize === n} />
-                </button>
-              ))}
-            </div>
-          )}
-
-          {dialogo === 'tipo' && (
-            <div className="lista-menu-adjunto">
-              {([
-                { v: 'sans' as const, n: t('tipoSans') },
-                { v: 'serif' as const, n: t('tipoSerif') }
-              ]).map((o) => (
-                <button
-                  key={o.v}
-                  type="button"
-                  className={`fila-menu-adjunto${tipoFuente === o.v ? ' elegida' : ''}`}
-                  role="menuitemradio"
-                  aria-checked={tipoFuente === o.v}
-                  onClick={() => elegirYCerrar(() => setTipoFuente(o.v))}
-                >
-                  <span className="fila-menu-adjunto-etiqueta">{o.n}</span>
-                  <CheckMenu visible={tipoFuente === o.v} />
-                </button>
-              ))}
-            </div>
-          )}
-
-          {dialogo === 'ancho' && (
-            <div className="lista-menu-adjunto">
-              {([
-                { n: t('ancho'), angosta: false, margen: 5, activo: !columnaAngosta && marginPercent !== 12 },
-                { n: t('medio'), angosta: false, margen: 12, activo: !columnaAngosta && marginPercent === 12 },
-                { n: t('angosto'), angosta: true, margen: 5, activo: !!columnaAngosta }
-              ]).map((o) => (
-                <button
-                  key={o.n}
-                  type="button"
-                  className={`fila-menu-adjunto${o.activo ? ' elegida' : ''}`}
-                  role="menuitemradio"
-                  aria-label={o.n}
-                  aria-checked={o.activo}
-                  onClick={() => elegirYCerrar(() => {
-                    // La vibracion corta de elegir, como en el cajon que reemplaza -T203-.
-                    hapticaSeleccion()
-                    setColumnaAngosta(o.angosta)
-                    setMarginPercent(o.margen)
-                  })}
-                >
-                  <span className="fila-menu-adjunto-etiqueta">{o.n}</span>
-                  <CheckMenu visible={o.activo} />
-                </button>
-              ))}
-            </div>
-          )}
-
-          {dialogo === 'colores' && (
-            <div className="lista-menu-adjunto">
-              {PAREJAS_COLOR.map((p) => {
-                const activa = colorFondo.toUpperCase() === p.fondo.toUpperCase() && colorLetra.toUpperCase() === p.letra.toUpperCase()
-                return (
-                  <button
-                    key={`${p.fondo}-${p.letra}`}
-                    type="button"
-                    className={`fila-menu-adjunto${activa ? ' elegida' : ''}`}
-                    role="menuitemradio"
-                    aria-label={nombrePareja(p.fondo, p.letra)}
-                    aria-checked={activa}
-                    onClick={() => elegirYCerrar(() => {
-                      hapticaSeleccion()
-                      setColorFondo(p.fondo)
-                      setColorLetra(p.letra)
-                    })}
-                  >
-                    <span
-                      className="muestra-pareja"
-                      style={{ backgroundColor: p.fondo, color: colorLetraEfectiva(p.fondo, p.letra) }}
-                    >
-                      Aa
-                    </span>
-                    <span className="fila-menu-adjunto-etiqueta">{nombrePareja(p.fondo, p.letra)}</span>
-                    <CheckMenu visible={activa} />
-                  </button>
-                )
-              })}
-            </div>
-          )}
-
           {dialogo === 'tema' && (
             <div className="lista-menu-adjunto">
               {([

@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { MotorDeAvance, EstadoModo } from '../lib/avance'
 import { tokenizarGuion, Token } from '../lib/seguidor'
-import { Guion } from '../datos/modelo'
+// Antes -hasta 2026-10-10-: import { Guion } from '../datos/modelo'
+import { Guion, contarPalabras, duracionDeLecturaReloj } from '../datos/modelo'
 import { agruparEnRenglones, indiceDeRenglon, Renglon, MedidaToken } from '../lib/renglones'
 import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
@@ -78,6 +79,8 @@ import { actualizarConfigCamara } from '../lib/camara'
 import { App as CapacitorApp } from '@capacitor/app'
 import { aplicarBrillo, leerBrilloSistema, restaurarBrillo } from '../lib/brillo'
 import { FichasListo, FichaMas, PanelFicha } from './FichasListo'
+import { DockListo } from './DockListo'
+import type { AjustesLectura } from './FilasAjustesLectura'
 import { t, useTextos } from '../textos'
 import type { EstadoModeloGestos } from '../lib/gestos'
 
@@ -294,7 +297,19 @@ interface TeleprompterViewProps {
   // -tarea 105- Bloqueos de las marcas de guía (recuadro / palma).
   hayDialogoPermiso?: boolean
   hayAvisoDescargaVoz?: boolean
+  // -ajustes de pantallas, 10-10-2026- Los ajustes de lectura y pantalla con sus manejadores, para el
+  // panel de Ajustes de la toma del dock -los mismos que recibe PantallaAjustes, armados en App-.
+  ajustesLectura?: AjustesLectura
 }
+
+// LA SANGRÍA DE LA PRIMERA LÍNEA -ajustes de pantallas, 10-10-2026, boceto 2-. Con el teléfono de pie,
+// la flecha de volver -btn-volver-listo, 40 a 8 del borde- tapaba unos 11 dp de la primera letra, en
+// Leer y en Grabar: la flecha y el texto están en el mismo lugar en las dos puertas. Solo la primera
+// línea del guion entra 14 dp hacia la derecha -text-indent, así que nunca baja: queda a la misma
+// altura, pegada al lente-; si la última palabra no cabe, pasa a la segunda línea. La sangría se
+// queda también leyendo, para que el texto no se mueva al empezar. Los renglones se siguen midiendo
+// del DOM, como siempre.
+export const SANGRIA_PRIMERA_LINEA_PX = 14
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
   let clean = hex.replace('#', '').trim()
@@ -387,6 +402,7 @@ export default function TeleprompterView({
   modeloGestos = null,
   pidiendoGestos = false,
   avisoVoz = null,
+  ajustesLectura,
   hayDialogoPermiso = false,
   hayAvisoDescargaVoz = false
 }: TeleprompterViewProps) {
@@ -1168,6 +1184,21 @@ export default function TeleprompterView({
   // LOS PEDAZOS DE LISTO QUE CAMBIAN DE LUGAR SEGÚN EL DISEÑO -tarea 82, 29-09-2026-. El mismo ‹,
   // las mismas fichas y el mismo Empezar -con sus testid- van en vertical donde siempre y de lado
   // en los rieles. Se arman una vez acá para no tener dos copias que después se desalineen.
+  // EL DOCK DE LISTO -ajustes de pantallas, 10-10-2026-: solo en Grabar y con el teléfono de pie. En
+  // horizontal y en tableta, por ahora, solo cambia el orden de las fichas -FichasListo-.
+  const conDock = conCamara && !horizontal && !tableta
+  // Sin ajustesLectura -las pruebas que montan TeleprompterView sola- el panel muestra los valores que
+  // llegan; lo que no tiene manejador acá no cambia y lo dice en la consola. App siempre los pasa.
+  const sinManejador = (que: string) => () => {
+    console.warn(`[TeleprompterView] ${que}: sin ajustesLectura, el cambio no llega a App`)
+  }
+  const ajustesLecturaDeRespaldo: AjustesLectura = {
+    fontSize, onElegirLetra, tipoFuente, setTipoFuente: sinManejador('tipografía'), columnaAngosta, marginPercent,
+    setColumnaAngosta: (v) => setColumnaAngosta?.(v), setMarginPercent: (v) => setMarginPercent?.(v),
+    colorFondo, colorLetra, setColorFondo: sinManejador('color de fondo'), setColorLetra: sinManejador('color de letra'),
+    mirror, setMirror: (v) => setMirror?.(v), mostrarTiempo, setMostrarTiempo: (v) => setMostrarTiempo?.(v)
+  }
+
   const botonVolverListo = (
     <>
       {/* La flecha usa el tratamiento comun de 32 -btn-flotante-32, styles.css-,
@@ -1205,7 +1236,10 @@ export default function TeleprompterView({
     </>
   )
 
-  const fichasListo = (enRiel: boolean) => (
+  // Antes -hasta 2026-10-10-: const fichasListo = (enRiel: boolean) => (
+  // Ajustes de pantallas: con abrirAjustesToma son las fichas del dock -enDock- y el engranaje abre el
+  // panel de Ajustes de la toma en vez de la pantalla de Ajustes.
+  const fichasListo = (enRiel: boolean, abrirAjustesToma?: () => void) => (
       <FichasListo
         fontSize={fontSize}
         onLetraMenos={onLetraMenos}
@@ -1238,6 +1272,8 @@ export default function TeleprompterView({
         modeloGestos={modeloGestos}
         pidiendoGestos={pidiendoGestos}
         avisoVoz={avisoVoz}
+        enDock={!!abrirAjustesToma}
+        onAbrirAjustesToma={abrirAjustesToma}
       />
   )
 
@@ -1276,6 +1312,18 @@ export default function TeleprompterView({
   )
 
   const allTokens = tokensRef.current
+
+  // La primera línea con texto del guion -ver SANGRIA_PRIMERA_LINEA_PX-. Solo con el teléfono de pie:
+  // de lado la flecha va en el riel y en tableta en la barra de arriba; ahí no tapa el texto.
+  const sangrarPrimeraLinea = !horizontal && !tableta
+  let primeraLinea: { bloque: number; linea: number } | null = null
+  if (sangrarPrimeraLinea) {
+    for (let b = 0; b < guionObj.bloques.length && !primeraLinea; b++) {
+      const ls = (guionObj.bloques[b].texto || '').split(/\r?\n/)
+      const l = ls.findIndex((x) => x.trim() !== '')
+      if (l >= 0) primeraLinea = { bloque: b, linea: l }
+    }
+  }
 
   return (
     <div
@@ -1639,10 +1687,14 @@ export default function TeleprompterView({
                       className="line"
                       data-block={bIdx}
                       data-line={lIdx}
+                      // -ajustes de pantallas, 10-10-2026- textIndent: solo la primera línea del guion, de pie.
                       style={{
                         fontSize,
                         margin: `${MARGEN_RENGLON_LECTURA_PX}px 0`,
-                        lineHeight: INTERLINEADO_LECTURA
+                        lineHeight: INTERLINEADO_LECTURA,
+                        textIndent: primeraLinea && primeraLinea.bloque === bIdx && primeraLinea.linea === lIdx
+                          ? SANGRIA_PRIMERA_LINEA_PX
+                          : undefined
                       }}
                     >
                       {renderFormattedLine(linea, lineStart, lineTokens, bloque.tramos, colorFondo)}
@@ -1721,7 +1773,9 @@ export default function TeleprompterView({
               }}
             />
           )}
-          {!horizontal && !tabletaVertical && !arrastrandoRecuadro && fichasListo(false)}
+          {/* Antes -hasta 2026-10-10-: {!horizontal && !tabletaVertical && !arrastrandoRecuadro && fichasListo(false)}
+              Ajustes de pantallas: en Grabar, de pie en el teléfono, las fichas van dentro del dock. */}
+          {!horizontal && !tabletaVertical && !conDock && !arrastrandoRecuadro && fichasListo(false)}
 
           {/* EL RIEL DERECHO DE LISTO -tarea 82, A2-. Más arriba -en Leer y en Grabar, decisión
               de Javier-, Empezar al centro del alto útil y la pastilla abajo -la monta App,
@@ -1754,6 +1808,28 @@ export default function TeleprompterView({
               {!arrastrandoRecuadro && fichasListo(false)}
               {!arrastrandoRecuadro && <div className="tab-lugar-empezar">{botonEmpezar}</div>}
             </div>
+          ) : conDock ? (
+            // GRABAR EN LISTO, DE PIE EN EL TELÉFONO: UN SOLO DOCK DE VIDRIO -ajustes de pantallas,
+            // 10-10-2026, boceto 5-. Las fichas arriba, con el engranaje que abre Ajustes de la toma en
+            // el mismo dock; abajo Voltear, el Grabar de siempre y lo que dura el guion. Al empezar se
+            // va y vuelve el contador de hoy -la pastilla de BarraDeTiempo, la monta App-.
+            <DockListo
+              fichas={(abrirAjustes) => fichasListo(false, abrirAjustes)}
+              botonGrabar={botonEmpezar}
+              onVoltear={onVoltear}
+              // La misma condición del Voltear del panel de la cámara: la ficha Cámara está con la cámara.
+              conVoltear={conCamara}
+              duracion={duracionDeLecturaReloj(contarPalabras(guionObj))}
+              // Como la pastilla que reemplaza en LISTO: la apaga Mostrar tiempo.
+              mostrarDuracion={mostrarTiempo}
+              ajustesLectura={ajustesLectura ?? ajustesLecturaDeRespaldo}
+              conCamara={conCamara}
+              calidadVideo={calidadVideo}
+              setCalidadVideo={setCalidadVideo}
+              calidadesSoportadas={calidadesSoportadas}
+              minutosDisponibles={minutosDisponibles}
+              oculto={arrastrandoRecuadro}
+            />
           ) : (
             <>
             {/* ABAJO AL CENTRO: EMPEZAR. Un circulo translucido flotando sobre

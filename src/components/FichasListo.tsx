@@ -36,6 +36,20 @@ const MS_SEGUNDA_FILA = 240
 // ya no va en ningún otro lugar-. De pie la segunda fila aparece encima de la primera -abajo está
 // Empezar-; de lado -teléfono y tableta- es una segunda columna al costado del riel. Leer no cambia.
 
+// EL DOCK DE LISTO -ajustes de pantallas, 10-10-2026, boceto 5-. Solo en Grabar y con el teléfono
+// de pie: las fichas van en la fila de arriba del dock de vidrio -DockListo.tsx-, en dos grupos con su
+// rótulo -TEXTO: letra y anclaje; CÁMARA: cámara y brillo- y un filete fino entre grupos; al final,
+// Ajustes solo con el engranaje, que abre el panel de Ajustes de la toma en el mismo dock -no la
+// pantalla de Ajustes-. La flecha y la segunda fila se quitan a propósito ahí: Calidad y Subtítulos
+// pasan al panel. En horizontal y en tableta, por ahora, solo cambia el orden de las fichas: letra,
+// anclaje, cámara, brillo.
+
+// Calidad aparece con la cámara y si la cámara dijo sus calidades: la misma condición en la segunda
+// fila y en el panel de Ajustes de la toma.
+export function hayCalidad(conCamara: boolean, calidadesSoportadas: string[]): boolean {
+  return conCamara && calidadesSoportadas.length > 0
+}
+
 export type PanelFicha = 'letra' | 'camara' | 'anclaje' | 'brillo' | 'calidad' | 'subtitulos' | null
 
 // Los nombres de los estilos, en el idioma de la app -las claves de SubtitulosVisor.tsx-.
@@ -87,7 +101,9 @@ export function FichasListo({
   motivoSinGestos = null,
   modeloGestos = null,
   pidiendoGestos = false,
-  avisoVoz = null
+  avisoVoz = null,
+  enDock = false,
+  onAbrirAjustesToma
 }: {
   fontSize: number
   onLetraMenos?: () => void
@@ -134,6 +150,10 @@ export function FichasListo({
   // fichas. Lo arma App: solo al intentar leer sin la voz en el teléfono y sin internet -o si se dijo
   // que no al diálogo de Play-. Si se abre una ficha, su panel ocupa ese lugar.
   avisoVoz?: { texto: string; onReintentar: () => void } | null
+  // -ajustes de pantallas, 10-10-2026- La fila de arriba del dock de LISTO: grupos con rótulo y Ajustes
+  // solo con el engranaje, que llama a onAbrirAjustesToma -el panel en el mismo dock-.
+  enDock?: boolean
+  onAbrirAjustesToma?: () => void
 }) {
   useTextos()
   // Las clases de tamaño que se suman a .ficha-listo -tarea 83-.
@@ -144,7 +164,9 @@ export function FichasListo({
   const [topPanelH, setTopPanelH] = useState<number | null>(null)
   // LA SEGUNDA FILA -tarea 93, 05-10-2026-: solo en Grabar. Cerrada al entrar a Listo; vive en este
   // componente, así que al arrastrar el recuadro -que lo desmonta- vuelve cerrada.
-  const conFlecha = conCamara
+  // Antes -hasta 2026-10-10-: const conFlecha = conCamara
+  // Ajustes de pantallas: en el dock -Grabar, teléfono de pie- la flecha y la segunda fila se quitan.
+  const conFlecha = conCamara && !enDock
   const [segundaAbierta, setSegundaAbierta] = useState(false)
   const idSegunda = useId()
 
@@ -197,7 +219,8 @@ export function FichasListo({
   }
 
   const calidades = calidadesSoportadas.length > 0 ? calidadesSoportadas : ['1080p', '720p', '480p']
-  const mostrarCalidad = conCamara && calidadesSoportadas.length > 0
+  // Antes -hasta 2026-10-10-: const mostrarCalidad = conCamara && calidadesSoportadas.length > 0
+  const mostrarCalidad = hayCalidad(conCamara, calidadesSoportadas)
   // LOS SUBTITULOS, ANTES DE GRABAR -28-09-2026-. Javier: la seccion Video salio de Ajustes; los
   // subtitulos van en su ficha de Grabar. Es la MISMA clave que el reproductor -sigo_subtitulos_estilo-:
   // lo que se elige aca es con lo que abre la toma, y ahi se puede cambiar mirando el video.
@@ -206,6 +229,60 @@ export function FichasListo({
   const idxLetra = PASOS_LETRA.indexOf(fontSize)
   const puedeMenos = idxLetra > 0 || (idxLetra < 0 && PASOS_LETRA.some((p) => p < fontSize))
   const puedeMas = (idxLetra >= 0 && idxLetra < PASOS_LETRA.length - 1) || (idxLetra < 0 && PASOS_LETRA.some((p) => p > fontSize))
+
+  // LAS CUATRO FICHAS DE SIEMPRE -ajustes de pantallas, 10-10-2026-: armadas una vez y puestas en el
+  // carril de hoy o en los grupos del dock. El marcado es el de antes, sin cambios.
+  const fichaLetra = (
+    <button
+      type="button"
+      className={`ficha-listo${tam}${panelAbierto === 'letra' ? ' abierta' : ''}`}
+      data-testid="ficha-letra"
+      aria-label={`${t('tamanoLetra')}, ${fontSize}`}
+      aria-expanded={panelAbierto === 'letra'}
+      onClick={() => toggle('letra')}
+    >
+      <span>Aa {fontSize}</span>
+    </button>
+  )
+  const fichaAnclaje = (
+    <button
+      type="button"
+      className={`ficha-listo${tam}${panelAbierto === 'anclaje' ? ' abierta' : ''}`}
+      data-testid="ficha-anclaje"
+      aria-label={`${t('dondeLees')}, ${etiquetaAnclaje(anclajeZona)}`}
+      aria-expanded={panelAbierto === 'anclaje'}
+      onClick={() => toggle('anclaje')}
+    >
+      <IconoFranja posicion={anclajeZona === 'medio' ? 'medio' : 'arriba'} tamano={16} />
+      <span>{etiquetaAnclaje(anclajeZona)}</span>
+    </button>
+  )
+  const fichaCamara = conCamara ? (
+    <button
+      type="button"
+      className={`ficha-listo${tam}${panelAbierto === 'camara' ? ' abierta' : ''}`}
+      data-testid="ficha-camara"
+      aria-label={`${t('imagenCamara')}, ${etiquetaCamara(fondoToma)}`}
+      aria-expanded={panelAbierto === 'camara'}
+      onClick={() => toggle('camara')}
+    >
+      {fondoToma === 'recuadro' ? <IconoImagenRecuadro tamano={16} /> : fondoToma === 'oculta' ? <IconoImagenOculta tamano={16} /> : <IconoImagenDetras tamano={16} />}
+      <span>{etiquetaCamara(fondoToma)}</span>
+    </button>
+  ) : null
+  const fichaBrillo = (
+    <button
+      type="button"
+      className={`ficha-listo${tam}${panelAbierto === 'brillo' ? ' abierta' : ''}`}
+      data-testid="ficha-brillo"
+      aria-label={`${t('brillo')}, ${etiquetaBrillo(brillo)}`}
+      aria-expanded={panelAbierto === 'brillo'}
+      onClick={() => toggle('brillo')}
+    >
+      <IconoSol tamano={16} />
+      <span>{etiquetaBrillo(brillo)}</span>
+    </button>
+  )
 
   return (
     // El toque en una ficha o en su panel no sube al lienzo: el lienzo cierra el panel abierto al
@@ -514,55 +591,53 @@ export function FichasListo({
         </div>
       )}
 
-      <div className="carril-fichas" ref={carrilRef}>
-        <button
-          type="button"
-          className={`ficha-listo${tam}${panelAbierto === 'letra' ? ' abierta' : ''}`}
-          data-testid="ficha-letra"
-          aria-label={`${t('tamanoLetra')}, ${fontSize}`}
-          aria-expanded={panelAbierto === 'letra'}
-          onClick={() => toggle('letra')}
-        >
-          <span>Aa {fontSize}</span>
-        </button>
-
-        {conCamara && (
+      {/* Antes -hasta 2026-10-10-: el carril llevaba las fichas escritas aquí, en el orden letra, cámara,
+          anclaje, brillo. Ajustes de pantallas, 10-10-2026: el orden es letra, anclaje, cámara, brillo
+          -TEXTO y CÁMARA del boceto 5- en todos los diseños; las fichas son las mismas, armadas arriba
+          -fichaLetra, fichaAnclaje, fichaCamara, fichaBrillo-. En el dock van en grupos con su rótulo. */}
+      {enDock ? (
+        <div className="carril-fichas carril-dock" ref={carrilRef}>
+          <div className="grupo-fichas" role="group" aria-label={t('rotuloGrupoTexto')}>
+            <span className="rotulo-grupo-fichas" aria-hidden="true">{t('rotuloGrupoTexto')}</span>
+            <div className="grupo-fichas-fila">
+              {fichaLetra}
+              {fichaAnclaje}
+            </div>
+          </div>
+          <span className="filete-grupos-fichas" aria-hidden="true" />
+          {conCamara && (
+            <>
+              <div className="grupo-fichas" role="group" aria-label={t('rotuloGrupoCamara')}>
+                <span className="rotulo-grupo-fichas" aria-hidden="true">{t('rotuloGrupoCamara')}</span>
+                <div className="grupo-fichas-fila">
+                  {fichaCamara}
+                  {fichaBrillo}
+                </div>
+              </div>
+              <span className="filete-grupos-fichas" aria-hidden="true" />
+            </>
+          )}
+          {/* Ajustes, solo el engranaje -el ícono de Sigo para Ajustes-. Abre el panel en el mismo dock. */}
           <button
             type="button"
-            className={`ficha-listo${tam}${panelAbierto === 'camara' ? ' abierta' : ''}`}
-            data-testid="ficha-camara"
-            aria-label={`${t('imagenCamara')}, ${etiquetaCamara(fondoToma)}`}
-            aria-expanded={panelAbierto === 'camara'}
-            onClick={() => toggle('camara')}
+            className="ficha-listo ficha-ajustes-dock"
+            data-testid="btn-ajustes-toma"
+            aria-label={t('tituloAjustes')}
+            onClick={(e) => {
+              e.stopPropagation()
+              setPanelAbierto(null)
+              onAbrirAjustesToma?.()
+            }}
           >
-            {fondoToma === 'recuadro' ? <IconoImagenRecuadro tamano={16} /> : fondoToma === 'oculta' ? <IconoImagenOculta tamano={16} /> : <IconoImagenDetras tamano={16} />}
-            <span>{etiquetaCamara(fondoToma)}</span>
+            <IconoEngranaje tamano={16} />
           </button>
-        )}
-
-        <button
-          type="button"
-          className={`ficha-listo${tam}${panelAbierto === 'anclaje' ? ' abierta' : ''}`}
-          data-testid="ficha-anclaje"
-          aria-label={`${t('dondeLees')}, ${etiquetaAnclaje(anclajeZona)}`}
-          aria-expanded={panelAbierto === 'anclaje'}
-          onClick={() => toggle('anclaje')}
-        >
-          <IconoFranja posicion={anclajeZona === 'medio' ? 'medio' : 'arriba'} tamano={16} />
-          <span>{etiquetaAnclaje(anclajeZona)}</span>
-        </button>
-
-        <button
-          type="button"
-          className={`ficha-listo${tam}${panelAbierto === 'brillo' ? ' abierta' : ''}`}
-          data-testid="ficha-brillo"
-          aria-label={`${t('brillo')}, ${etiquetaBrillo(brillo)}`}
-          aria-expanded={panelAbierto === 'brillo'}
-          onClick={() => toggle('brillo')}
-        >
-          <IconoSol tamano={16} />
-          <span>{etiquetaBrillo(brillo)}</span>
-        </button>
+        </div>
+      ) : (
+      <div className="carril-fichas" ref={carrilRef}>
+        {fichaLetra}
+        {fichaAnclaje}
+        {fichaCamara}
+        {fichaBrillo}
 
         {/* Antes -hasta 2026-10-05-: Calidad y Subtítulos iban aquí, en la primera fila. La tarea 93
             las pasa a la segunda fila -mismo marcado, ahora en fichaCalidad y fichaSubtitulos-:
@@ -614,6 +689,7 @@ export function FichasListo({
           </button>
         )}
       </div>
+      )}
 
       {/* LA SEGUNDA FILA -tarea 93-. Calidad -si la cámara dice sus calidades-, Subtítulos y Ajustes.
           De pie se dibuja encima de la primera; de lado, como columna al costado del riel. */}

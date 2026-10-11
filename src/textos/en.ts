@@ -242,5 +242,14 @@ export const en: Textos = {
   marcaGuiaRecuadro: "Drag it where it won't cover you.",
   // Antes: 'To resume, lower your hand and show your palm again: it counts down 3 seconds.'
   // Why it changed: it only explained resume, not pause or stop talking.
-  marcaGuiaPalma: 'To pause, stop talking and show your palm. To resume, lower your hand and show it again: it counts down 3 seconds.'
+  marcaGuiaPalma: 'To pause, stop talking and show your palm. To resume, lower your hand and show it again: it counts down 3 seconds.',
+  // Ajustes de pantallas -10-10-2026-: el dock de LISTO en Grabar, de pie en el teléfono. Los rótulos
+  // de los grupos de fichas, Voltear de la fila de abajo, la duración y el panel de Ajustes de la toma.
+  rotuloGrupoTexto: 'Text',
+  rotuloGrupoCamara: 'Camera',
+  voltear: 'Flip',
+  duraAprox: 'approx.',
+  tituloAjustesToma: 'Recording settings',
+  seccionPantalla: 'Screen',
+  calidad: 'Quality'
 }

@@ -744,3 +744,285 @@
   height: 100%;
   background: var(--color-texto);
 }
+
+/* GRABAR EN LISTO: UN SOLO DOCK DE VIDRIO -ajustes de pantallas, 10-10-2026, boceto 5-. Solo en Grabar
+   con el teléfono de pie -DockListo.tsx-. Translúcido: fondo oscuro al 62 %, el fondo desenfocado
+   detrás -backdrop-filter, unos 28-, borde de 1 blanco al 12 %, esquinas de 28 y 10 de margen a cada
+   lado, sobre la barra del sistema. Si el WebView no pinta el desenfoque queda el 62 % oscuro: no se
+   inventa otro efecto. El velo del color del fondo -VeloControles- sigue detrás. La letra es la de la
+   aplicación, como .cajon-aa: no hereda la de lectura del lienzo. */
+.dock-listo {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  z-index: 12;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 28px;
+  background: rgba(0, 0, 0, 0.62);
+  -webkit-backdrop-filter: blur(28px);
+  backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--color-texto);
+  font-family: "Source Sans 3", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+/* Abierto crece hacia arriba hasta debajo de la flecha de volver -8 + 40 + 16 de aire-; lo que no cabe
+   se desplaza adentro del panel, y la fila de abajo queda siempre a la vista. */
+.dock-listo.abierto {
+  max-height: calc(100% - 64px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+}
+.capa-dock-ajustes {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+/* Los menús de las filas viven afuera del dock: este envoltorio no dibuja nada, solo lleva el tema. */
+.menus-dock {
+  display: contents;
+}
+
+/* LA FILA DE ARRIBA: las fichas en grupos con su rótulo chico en mayúsculas y un filete fino entre
+   grupos. Las fichas de vidrio: relleno blanco al 7 %, borde blanco al 10 %, redondas, 32 de alto -la
+   pastilla ::before; la caja sigue en 48 para el dedo-. */
+.dock-listo .fila-fichas-listo {
+  position: static;
+  padding: 0;
+}
+.dock-listo .panel-ficha {
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 8px);
+}
+.carril-fichas.carril-dock {
+  align-items: flex-end;
+  gap: 6px;
+}
+.grupo-fichas {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+.rotulo-grupo-fichas {
+  padding-left: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-apagado);
+}
+.grupo-fichas-fila {
+  display: flex;
+  gap: 4px;
+}
+.filete-grupos-fichas {
+  flex: 0 0 1px;
+  align-self: stretch;
+  margin: 18px 0 8px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.dock-listo .ficha-listo {
+  padding: 8px 9px;
+  font-size: 12px;
+  gap: 4px;
+}
+.dock-listo .ficha-listo::before {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: none;
+}
+.dock-listo .ficha-listo.abierta::before {
+  background: var(--color-acento);
+  border-color: var(--color-acento);
+}
+/* Ajustes: solo el engranaje, en un círculo de 32 -caja de 48-. */
+.dock-listo .ficha-ajustes-dock {
+  min-width: 48px;
+  padding: 8px;
+  margin-left: auto;
+  justify-content: center;
+}
+.dock-listo .ficha-ajustes-dock::before {
+  inset: 8px;
+}
+
+/* LA FILA DE ABAJO: Voltear a la izquierda, Grabar al centro y la duración a la derecha. */
+.dock-fila-abajo {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  flex: 0 0 auto;
+}
+.dock-lugar-voltear {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 8px;
+}
+.dock-voltear {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 48px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-texto);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.dock-voltear-circulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+.dock-rotulo-chico {
+  font-size: 11px;
+  color: var(--color-apagado);
+}
+/* Grabar, el botón de hoy, con un brillo rojo suave alrededor. El brillo va en el lugar y no en el
+   botón: el botón ya usa box-shadow para su pulso -pulsoEmpezar- y uno pisaría al otro. */
+.dock-lugar-grabar {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.dock-lugar-grabar::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 72px;
+  height: 72px;
+  margin: -36px 0 0 -36px;
+  border-radius: 999px;
+  box-shadow: 0 0 28px 6px rgba(225, 29, 46, 0.45);
+  box-shadow: 0 0 28px 6px color-mix(in srgb, var(--color-grabando) 45%, transparent);
+  pointer-events: none;
+}
+.dock-lugar-grabar > * {
+  position: relative;
+}
+.dock-lugar-duracion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: end;
+  min-width: 72px;
+  padding-right: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.dock-duracion {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
+/* AJUSTES DE LA TOMA, ABIERTOS AHÍ MISMO: el mismo dock crece hacia arriba. No es una hoja modal: no
+   hay velo que oscurezca la pantalla. Las filas son las de PantallaAjustes, un poco más juntas. */
+.dock-panel-ajustes {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  transform-origin: bottom center;
+}
+@keyframes dock-crece {
+  from { opacity: 0; transform: translateY(16px) scaleY(0.96); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dock-panel-ajustes { animation: none !important; }
+}
+.dock-panel-cabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 0 8px 8px;
+}
+.dock-panel-titulo {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+.dock-panel-cerrar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin: -8px -8px -8px 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-texto);
+  cursor: pointer;
+}
+.dock-panel-cerrar::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+.dock-panel-cerrar > * {
+  position: relative;
+}
+.dock-listo .muestra-lectura-ajustes {
+  margin: 0 0 4px;
+  border-color: rgba(255, 255, 255, 0.10);
+}
+.dock-panel-cuerpo {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.dock-seccion {
+  margin: 12px 8px 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-apagado);
+}
+.dock-listo .fila-ajuste {
+  min-height: 48px;
+  padding: 0 8px;
+}
+/* La explicación de Espejo no va en el dock -el boceto 5 la deja fuera-: la fila queda de 48. */
+.dock-listo .fila-ajuste.con-explicacion {
+  min-height: 48px;
+}
+.dock-listo .fila-ajuste-explicacion {
+  display: none;
+}
+.dock-listo .fila-ajuste-nombre {
+  font-size: 15px;
+}
+.dock-listo .fila-ajuste-valor {
+  font-size: 13px;
+}
+.dock-listo .dock-panel-cuerpo .fila-ajuste:last-child {
+  border-bottom: none;
+}
+.menu-dock-aviso {
+  padding: 8px 14px 4px;
+}

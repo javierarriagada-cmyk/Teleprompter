@@ -764,8 +764,11 @@ export default function ReproductorGrabacion({
       return (
         <>
           {guardada ? (
-            <button type="button" className="accion-toma" data-testid="btn-compartir-toma" aria-label={t('compartir')} title={t('compartir')} onClick={handleCompartir} style={estiloFila} {...fila}>
+            // -ajustes de pantallas, 10-10-2026- Con su nombre al lado del ícono. Antes: className="accion-toma"
+            // y solo <IconoCompartir tamano={26} />.
+            <button type="button" className="accion-toma con-nombre" data-testid="btn-compartir-toma" aria-label={t('compartir')} title={t('compartir')} onClick={handleCompartir} style={estiloFila} {...fila}>
               <IconoCompartir tamano={26} />
+              <span data-rotulo="compartir-toma" style={{ fontSize: ROTULO_MINIMO }}>{t('compartir')}</span>
             </button>
           ) : (
             <>
@@ -805,7 +808,10 @@ export default function ReproductorGrabacion({
           )}
           <button
             type="button"
-            className="accion-toma"
+            // -ajustes de pantallas, 10-10-2026- Con su nombre al lado del ícono. Antes: className="accion-toma".
+            // En la toma sin guardar, la fila tiene Guardar y Guardar y compartir con su nombre debajo: ahí
+            // Borrar lleva el nombre debajo como ellos, para que la fila no mezcle dos formas.
+            className={guardada ? 'accion-toma con-nombre' : 'accion-toma'}
             data-testid="borrar-desde-reproductor"
             data-confirmando={confirmando ? 'si' : 'no'}
             aria-label={confirmando ? t('seguro') : t('borrar')}
@@ -817,7 +823,11 @@ export default function ReproductorGrabacion({
             {...fila}
           >
             <IconoTacho tamano={26} strokeWidth={1.6} />
-            {confirmando && <span data-rotulo="seguro" style={{ fontSize: ROTULO_MINIMO }}>{t('seguro')}</span>}
+            {/* -ajustes de pantallas- Dice «Borrar»; al primer toque, «¿Seguro?» en su lugar, como hoy. Antes:
+                {confirmando && <span data-rotulo="seguro" style={{ fontSize: ROTULO_MINIMO }}>{t('seguro')}</span>} */}
+            {confirmando
+              ? <span data-rotulo="seguro" style={{ fontSize: ROTULO_MINIMO }}>{t('seguro')}</span>
+              : <span data-rotulo="borrar" style={{ fontSize: ROTULO_MINIMO }}>{t('borrar')}</span>}
           </button>
         </>
       )
@@ -992,13 +1002,16 @@ export default function ReproductorGrabacion({
           {guardada ? (
             <button
               type="button"
-              className="accion-toma"
+              // -ajustes de pantallas, 10-10-2026, boceto 3- Compartir con su nombre al lado del ícono.
+              // Antes: className="accion-toma", solo el ícono.
+              className="accion-toma con-nombre"
               data-testid="btn-compartir-toma"
               aria-label={t('compartir')}
               title={t('compartir')}
               onClick={handleCompartir}
             >
               <IconoCompartir tamano={26} />
+              <span>{t('compartir')}</span>
             </button>
           ) : (
             <>
@@ -1045,9 +1058,14 @@ export default function ReproductorGrabacion({
             </>
           )}
           {/* Borrar pregunta una vez: el tacho se pone rojo y dice "¿Seguro?" debajo. */}
+          {/* -ajustes de pantallas, 10-10-2026, boceto 3- Borrar con su nombre al lado del ícono; sigue
+              preguntando una vez: al primer toque dice «¿Seguro?» en lugar de «Borrar». Antes:
+              className="accion-toma" y {confirmando && <span>{t('seguro')}</span>} */}
+          {/* En la toma sin guardar, el nombre debajo del ícono, como Guardar y Guardar y compartir en la
+              misma fila. */}
           <button
             type="button"
-            className="accion-toma"
+            className={guardada ? 'accion-toma con-nombre' : 'accion-toma'}
             data-testid="borrar-desde-reproductor"
             data-confirmando={confirmando ? 'si' : 'no'}
             aria-label={confirmando ? t('seguro') : t('borrar')}
@@ -1056,7 +1074,7 @@ export default function ReproductorGrabacion({
             onClick={() => { if (confirmando) { onBorrar(grabacion.id) } else { setConfirmando(true) } }}
           >
             <IconoTacho tamano={26} strokeWidth={1.6} />
-            {confirmando && <span>{t('seguro')}</span>}
+            <span>{confirmando ? t('seguro') : t('borrar')}</span>
           </button>
         </div>
       </div>

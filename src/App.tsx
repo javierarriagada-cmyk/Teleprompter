@@ -67,6 +67,7 @@ import { t, useTextos, TITULO_SIN_NOMBRE } from './textos'
 import { idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
 import { PASOS_LETRA } from './components/estiloLectura'
 import { PantallaAjustes } from './components/PantallaAjustes'
+import type { AjustesLectura } from './components/FilasAjustesLectura'
 import { DialogoMicrofono } from './components/DialogoMicrofono'
 import { DialogoPermiso } from './components/DialogoPermiso'
 import { tituloDeBienvenida, bloqueDeBienvenida } from './app/bienvenida'
@@ -1496,6 +1497,37 @@ export default function App({ motor, repoOverride }: AppProps) {
     setAjustesAbiertos(true)
   }
 
+  // LOS AJUSTES DE LECTURA Y PANTALLA, ARMADOS UNA VEZ -ajustes de pantallas, 10-10-2026-. Los reciben
+  // PantallaAjustes y el panel de Ajustes de la toma del dock de LISTO -TeleprompterView, DockListo-:
+  // un cambio hecho en uno es el mismo ajuste que en el otro, con la misma vibración.
+  const ajustesLectura: AjustesLectura = {
+    fontSize,
+    onElegirLetra: handleElegirLetra,
+    tipoFuente,
+    setTipoFuente: (v) => {
+      hapticaSeleccion()
+      setTipoFuente(v)
+    },
+    columnaAngosta,
+    marginPercent,
+    setColumnaAngosta,
+    setMarginPercent,
+    colorFondo,
+    colorLetra,
+    setColorFondo,
+    setColorLetra,
+    mirror,
+    setMirror: (v) => {
+      hapticaSeleccion()
+      setMirror(v)
+    },
+    mostrarTiempo,
+    setMostrarTiempo: (v) => {
+      hapticaSeleccion()
+      setMostrarTiempo(v)
+    }
+  }
+
   async function persistirResumenToma(resumen: ResumenGrabacion | null) {
     if (!resumen) return
     try {
@@ -2709,6 +2741,8 @@ export default function App({ motor, repoOverride }: AppProps) {
               modeloGestos={modeloGestos}
               pidiendoGestos={pidiendoGestos}
               avisoVoz={avisoVoz}
+              // -ajustes de pantallas, 10-10-2026- El panel de Ajustes de la toma del dock.
+              ajustesLectura={ajustesLectura}
               hayDialogoPermiso={mostrarDialogoMicrofono || mostrarDialogoCamara}
               hayAvisoDescargaVoz={
                 !!(descargaVoz && (descargaVoz.estado === 'descargando' || descargaVoz.estado === 'error'))
@@ -2775,7 +2809,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                 de la pantalla y no se veia nunca. Tarea 72. */}
             {/* -tarea 104, lámina a- También con "Mostrar tiempo" apagado mientras baja la voz: la
                 pastilla dice "Preparando la voz…". Antes: {mostrarTiempo && ( */}
-            {(mostrarTiempo || preparandoVoz !== null) && (
+            {/* -ajustes de pantallas, 10-10-2026- En Grabar, de pie en el teléfono, LISTO dice lo que dura
+                el guion en el dock -DockListo-: la pastilla quieta no va; al empezar vuelve el contador de
+                hoy. Mientras baja la voz la pastilla sí sale. Antes: {(mostrarTiempo || preparandoVoz !== null) && ( */}
+            {((mostrarTiempo && !(conCamara && layout === 'tel-v' && estadoToma === 'listo')) || preparandoVoz !== null) && (
               <BarraDeTiempo
                 motorAvance={motorAvance}
                 totalTokens={totalTokens}
@@ -2992,31 +3029,12 @@ export default function App({ motor, repoOverride }: AppProps) {
           onCerrar={() => setAjustesAbiertos(false)}
           onRegistrarCerrarDentro={(fn) => { cerrarDentroAjustesRef.current = fn }}
           origen={origenAjustes}
-          fontSize={fontSize}
-          onElegirLetra={handleElegirLetra}
-          tipoFuente={tipoFuente}
-          setTipoFuente={(v) => {
-            hapticaSeleccion()
-            setTipoFuente(v)
-          }}
-          columnaAngosta={columnaAngosta}
-          marginPercent={marginPercent}
-          setColumnaAngosta={setColumnaAngosta}
-          setMarginPercent={setMarginPercent}
-          colorFondo={colorFondo}
-          colorLetra={colorLetra}
-          setColorFondo={setColorFondo}
-          setColorLetra={setColorLetra}
-          mirror={mirror}
-          setMirror={(v) => {
-            hapticaSeleccion()
-            setMirror(v)
-          }}
-          mostrarTiempo={mostrarTiempo}
-          setMostrarTiempo={(v) => {
-            hapticaSeleccion()
-            setMostrarTiempo(v)
-          }}
+          // Antes -hasta 2026-10-10-: fontSize, onElegirLetra={handleElegirLetra}, tipoFuente, setTipoFuente
+          // con hapticaSeleccion, columnaAngosta, marginPercent, setColumnaAngosta, setMarginPercent,
+          // colorFondo, colorLetra, setColorFondo, setColorLetra, mirror y setMirror con hapticaSeleccion,
+          // mostrarTiempo y setMostrarTiempo con hapticaSeleccion, escritos aquí uno por uno. Ajustes de
+          // pantallas: son ajustesLectura, los mismos que recibe el panel de Ajustes de la toma.
+          {...ajustesLectura}
           tema={tema}
           setTema={(v) => {
             hapticaSeleccion()
