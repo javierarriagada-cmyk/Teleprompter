@@ -763,17 +763,45 @@
   gap: 12px;
   padding: 12px;
   border-radius: 28px;
-  background: rgba(0, 0, 0, 0.62);
-  -webkit-backdrop-filter: blur(28px);
-  backdrop-filter: blur(28px);
+  /* -ajustes de pantallas, tercera vuelta, 10-10-2026- El vidrio -fondo y desenfoque- pasa a una capa
+     propia, .dock-listo::before, debajo del contenido. Antes, aquí:
+       background: rgba(0, 0, 0, 0.62);
+       -webkit-backdrop-filter: blur(28px);
+       backdrop-filter: blur(28px); */
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--color-texto);
   font-family: "Source Sans 3", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+/* EL VIDRIO EN SU PROPIA CAPA -ajustes de pantallas, tercera vuelta, 10-10-2026-. En el Redmi -Chrome
+   153- el dock abierto no desenfocaba: el guion se leía a través del panel. Ningún contenedor de más
+   arriba es raíz del fondo -ni opacity, filter, transform, will-change, isolation, contain, máscara,
+   clip-path ni mezcla; los overflow hidden de arriba no tienen esquinas-, y en Chromium con GPU el dock
+   abierto sí desenfocaba: la causa del teléfono no quedó comprobada. Lo que el dock abierto suma es
+   contenido con capas propias adentro del mismo elemento que desenfoca: la lista que se desplaza y el
+   panel con su animación de opacidad y movimiento. El desenfoque va ahora en una capa sin hijos, del mismo
+   tamaño y forma, detrás del contenido -z-index -1 dentro del dock, que ya es un contexto de apilamiento
+   por su z-index-: desenfoca lo que hay detrás del dock y no depende de lo que el dock lleva adentro. Se
+   ve igual: el mismo fondo, el mismo desenfoque, las mismas esquinas; -1 px para quedar bajo el borde. */
+.dock-listo::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.62);
+  -webkit-backdrop-filter: blur(28px);
+  backdrop-filter: blur(28px);
+  pointer-events: none;
 }
 /* Abierto crece hacia arriba hasta debajo de la flecha de volver -8 + 40 + 16 de aire-; lo que no cabe
    se desplaza adentro del panel, y la fila de abajo queda siempre a la vista. */
 .dock-listo.abierto {
   max-height: calc(100% - 64px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+}
+/* -ajustes de pantallas, tercera vuelta- Abierto, el fondo sube al 90 %: la lista se lee aunque el
+   desenfoque no pinte. Cerrado sigue en 62 %. */
+.dock-listo.abierto::before {
+  background: rgba(0, 0, 0, 0.9);
 }
 .capa-dock-ajustes {
   position: absolute;
@@ -847,7 +875,8 @@
 .dock-listo .ficha-ajustes-dock {
   min-width: 48px;
   padding: 8px;
-  margin-left: auto;
+  /* -ajustes de pantallas, tercera vuelta- Junto a las fichas, después del filete, como en el boceto 5;
+     no empujado al borde derecho. Antes: margin-left: auto; */
   justify-content: center;
 }
 .dock-listo .ficha-ajustes-dock::before {
