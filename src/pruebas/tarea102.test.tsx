@@ -10,17 +10,39 @@ import { Guion } from '../datos/modelo'
 import { idiomaApp, fijarIdioma } from '../lib/idioma'
 
 // Mismo fingido del gesto de atras que pantallas.test.tsx: captura el listener real.
+// -atrás predictivo, 11-10-2026- Ahora el del plugin AtrasPredictivo: el 'confirmado'. Antes:
+// const listenersAtras: Array<() => void> = []
+// vi.mock('@capacitor/app', () => ({
+//   App: {
+//     addListener: (evento: string, cb: () => void) => {
+//       if (evento === 'backButton') listenersAtras.push(cb)
+//       return Promise.resolve({ remove: () => {} })
+//     },
+//     exitApp: vi.fn(),
+//     getInfo: vi.fn().mockResolvedValue({ version: '1.0', build: '1' })
+//   }
+// }))
 const listenersAtras: Array<() => void> = []
 vi.mock('@capacitor/app', () => ({
   App: {
-    addListener: (evento: string, cb: () => void) => {
-      if (evento === 'backButton') listenersAtras.push(cb)
-      return Promise.resolve({ remove: () => {} })
-    },
+    addListener: () => Promise.resolve({ remove: () => {} }),
     exitApp: vi.fn(),
-    getInfo: vi.fn().mockResolvedValue({ version: '1.0', build: '1' })
+    getInfo: vi.fn().mockResolvedValue({ version: '1.0', build: '1' }),
+    // Función común y no vi.fn: vi.restoreAllMocks de cada prueba la dejaría sin respuesta.
+    toggleBackButtonHandler: () => Promise.resolve()
   }
 }))
+vi.mock('../lib/atrasPredictivo', async (importOriginal) => {
+  const real = await importOriginal<typeof import('../lib/atrasPredictivo')>()
+  const plugin = {
+    hayAdondeVolver: async () => {},
+    addListener: async (evento: string, cb: () => void) => {
+      if (evento === 'confirmado') listenersAtras.push(cb)
+      return { remove: async () => {} }
+    }
+  }
+  return { ...real, pluginAtras: () => plugin }
+})
 
 async function simularGestoAtras() {
   expect(listenersAtras.length).toBeGreaterThan(0)

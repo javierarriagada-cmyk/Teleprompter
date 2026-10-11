@@ -28,11 +28,15 @@ describe('Desplazar sobre la lista de guiones', () => {
       await new Promise((r) => setTimeout(r, 600))
     })
     const fila = () => container.querySelector('[data-testid="fila-guion-g-despl"]') as HTMLElement | null
-    return { fila }
+    // -atrás predictivo, 11-10-2026- La biblioteca queda montada debajo del editor: la fila sigue en la
+    // página aunque el guion se abra. Lo que dice si se abrió es el editor.
+    const editor = () => container.querySelector('[data-testid="input-titulo-guion"]')
+    return { fila, editor }
   }
 
   test('D1 Un desplazamiento que el telefono cancela -pointercancel y touchend- no abre el guion', async () => {
-    const { fila } = await portadaConUnGuion()
+    // Antes: const { fila } = await portadaConUnGuion()
+    const { fila, editor } = await portadaConUnGuion()
     const f = fila()!
     await act(async () => {
       fireEvent.pointerDown(f, { clientX: 100, clientY: 300 })
@@ -41,16 +45,19 @@ describe('Desplazar sobre la lista de guiones', () => {
       fireEvent.touchEnd(f)
       await new Promise((r) => setTimeout(r, 50))
     })
-    expect(fila(), 'la portada se fue: el guion se abrio al desplazar').not.toBeNull()
+    // Antes: expect(fila(), 'la portada se fue: el guion se abrio al desplazar').not.toBeNull()
+    expect(editor(), 'la portada se fue: el guion se abrio al desplazar').toBeNull()
   })
 
   test('D2 La fila deja el gesto vertical a la pagina, y un toque normal si abre', async () => {
-    const { fila } = await portadaConUnGuion()
+    // Antes: const { fila } = await portadaConUnGuion()
+    const { fila, editor } = await portadaConUnGuion()
     expect(fila()!.style.touchAction).toBe('pan-y')
     await act(async () => {
       fireEvent.click(fila()!)
       await new Promise((r) => setTimeout(r, 50))
     })
-    expect(fila()).toBeNull()
+    // Antes: expect(fila()).toBeNull()
+    expect(editor()).not.toBeNull()
   })
 })

@@ -187,7 +187,9 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
     revisar('editor, barra de formato')
     // Un cambio y la salida: el aviso "Saved".
     escribirEnGuion('Thanks for being here today. This is my talk, and I changed it a little.')
-    fireEvent.click(screen.getByText(en.guiones))
+    // -atrás predictivo, 11-10-2026- La biblioteca queda montada debajo del editor y su título «Guiones» también está en la página: se toca la flecha del editor por su clase, como T76-4.
+    // Antes: fireEvent.click(screen.getByText(en.guiones))
+    fireEvent.click(document.querySelector('.volver-guiones') as HTMLElement)
     await screen.findByTestId('aviso-flotante')
     revisar('portada, aviso de guardado')
 
@@ -195,7 +197,8 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
     fireEvent.click(screen.getByTestId('btn-crear-guion'))
     await screen.findByTestId('btn-pegar-texto')
     revisar('editor vacio')
-    fireEvent.click(screen.getByText(en.guiones))
+    // -atrás predictivo- Lo mismo: la flecha del editor por su clase. Antes: fireEvent.click(screen.getByText(en.guiones))
+    fireEvent.click(document.querySelector('.volver-guiones') as HTMLElement)
     await screen.findByTestId('btn-leer-tarjeta')
 
     // --- LECTURA: el estado listo y las fichas, en Leer

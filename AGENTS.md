@@ -58,6 +58,7 @@ ni con el motor de voz.
 | `src/textos/` | los textos de la app: `es.ts` y `en.ts` con las mismas claves, `t()` y el gancho `useTextos`. |
 | `src/lib/idioma.ts` | el idioma de la APP: sigue al telefono, se cambia en el cajon del engranaje. |
 | `src/lib/detectarIdioma.ts` | el idioma de cada GUION, detectado al escribir o pegar. |
+| `src/lib/atrasPredictivo.ts` | el atrás predictivo: si hay adónde volver, cuándo se anima, el plugin. Receptor único: `MainActivity.java`. |
 
 ## No tocar salvo que la tarea lo pida por su nombre
 
