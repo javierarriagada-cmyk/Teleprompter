@@ -104,14 +104,18 @@ describe('Entrada a tiempo: Pruebas de lógica (ArranquePlugin y Relevo)', () =>
         await vi.advanceTimersByTimeAsync(200)
       })
 
-      // La entrada aún no se muestra porque listo() no ha resuelto
-      expect(screen.queryByTestId('capa-entrada-espejo')).toBeNull()
+      // En nativo la capa existe desde el primer render, quieta, tapando la portada.
+      // Antes: expect(screen.queryByTestId('capa-entrada-espejo')).toBeNull()
+      expect(screen.queryByTestId('capa-entrada-espejo')).not.toBeNull()
 
       // La persona abre los ajustes desde el menú superior de la portada antes de que listo() resuelva
       const btnAjustes = screen.getByTestId('btn-menu-superior-biblioteca')
       await act(async () => {
         fireEvent.click(btnAjustes)
       })
+
+      // Al salir de la portada la entrada se cancela, aunque listo() todavía no resolvió.
+      expect(screen.queryByTestId('capa-entrada-espejo')).toBeNull()
 
       // Ahora la vista ya no es sólo la portada (se abrió Ajustes)
       // Resolver listo() de Arranque

@@ -196,8 +196,10 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
         await vi.advanceTimersByTimeAsync(100)
       })
 
-      console.log('TEST: checking null')
-      expect(screen.queryByTestId('capa-entrada-espejo')).toBeNull()
+      // En nativo la capa ya está montada y quieta desde el primer render.
+      // Antes: expect(screen.queryByTestId('capa-entrada-espejo')).toBeNull()
+      console.log('TEST: checking present quiet')
+      expect(screen.queryByTestId('capa-entrada-espejo')).not.toBeNull()
 
       console.log('TEST: calling resolverPromesa')
       await act(async () => {
@@ -205,6 +207,7 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
         await Promise.resolve()
         await vi.advanceTimersByTimeAsync(50)
       })
+      // Sigue en la portada: la animación de salida arranca, la capa sigue.
       expect(screen.queryByTestId('capa-entrada-espejo')).not.toBeNull()
 
       unmount()

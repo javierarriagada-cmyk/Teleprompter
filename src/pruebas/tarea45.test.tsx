@@ -514,7 +514,11 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
       const rootApp2 = res2.container.firstElementChild as HTMLElement
 
       // La cantidad de hijos/niveles entre la raíz de App y la raíz de la vista es exactamente la misma
-      expect(rootApp1.children.length).toBe(rootApp2.children.length)
+      // La capa de la entrada es un overlay temporal, no un nivel del árbol de la vista.
+      // Antes: expect(rootApp1.children.length).toBe(rootApp2.children.length)
+      const sinEntrada = (el: HTMLElement) =>
+        Array.from(el.children).filter(c => c.getAttribute('data-testid') !== 'capa-entrada-espejo')
+      expect(sinEntrada(rootApp1).length).toBe(sinEntrada(rootApp2).length)
       expect(rootApp1.firstElementChild?.tagName).toBe(rootApp2.firstElementChild?.tagName)
     } finally {
       window.matchMedia = originalMatchMedia

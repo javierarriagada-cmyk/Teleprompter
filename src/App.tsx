@@ -138,7 +138,11 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [usandoMemoriaFallback, setUsandoMemoriaFallback] = useState<boolean>(false)
   const [errorRepositorio, setErrorRepositorio] = useState<string | null>(null)
 
-  const [mostrarEntrada, setMostrarEntrada] = useState<boolean>(false)
+  // En el teléfono la entrada se monta desde el primer render, con la marca quieta,
+  // tapando la portada. El aviso del plugin (o el tope) solo suelta la animación.
+  // Antes: const [mostrarEntrada, setMostrarEntrada] = useState<boolean>(false)
+  const [mostrarEntrada, setMostrarEntrada] = useState<boolean>(Capacitor.isNativePlatform())
+  const [entradaPuedeAnimar, setEntradaPuedeAnimar] = useState<boolean>(false)
   const [vista, setVista] = useState<Vista>('biblioteca')
   const origenLecturaRef = useRef<'biblioteca' | 'editor'>('editor')
   const [rectTarjeta, setRectTarjeta] = useState<DOMRect | null>(null)
@@ -665,64 +669,38 @@ export default function App({ motor, repoOverride }: AppProps) {
   const ajustesAbiertosRef = useRef<boolean>(ajustesAbiertos)
   ajustesAbiertosRef.current = ajustesAbiertos
 
+  // Si la persona sale de la portada, la entrada se cancela para esta apertura.
+  // Antes:
+  //   if (vista !== 'biblioteca' || ajustesAbiertos) {
+  //     disparoEntradaRef.current = true
+  //   }
   useEffect(() => {
     if (vista !== 'biblioteca' || ajustesAbiertos) {
       disparoEntradaRef.current = true
+      setMostrarEntrada(false)
     }
   }, [vista, ajustesAbiertos])
 
-  // Relevo del splash nativo al espejo SIGO en la web
-  // Antes:
-  // useEffect(() => {
-  //   if (movimientoApagado() || disparoEntradaRef.current) {
-  //     return
-  //   }
-  //
-  //   if (!Capacitor.isNativePlatform()) {
-  //     disparoEntradaRef.current = true
-  //     setMostrarEntrada(true)
-  //     return
-  //   }
-  //
-  //   let cancelado = false
-  //   const timerTope = setTimeout(() => {
-  //     if (!cancelado && !disparoEntradaRef.current) {
+  // Relevo del splash nativo al espejo SIGO en la web.
+  // En el teléfono la capa ya está montada y quieta; este efecto solo suelta
+  // la animación de salida cuando llega el aviso, y solo si sigue en la portada.
+  // Antes (las líneas que cambiaron):
   //       disparoEntradaRef.current = true
   //       setMostrarEntrada(true)
-  //     }
-  //   }, 3000)
-  //
-  //   if (cargado) {
-  //     requestAnimationFrame(() => {
-  //       requestAnimationFrame(() => {
-  //         registerPlugin<any>('Arranque')
-  //           .listo()
-  //           .then(() => {
-  //             if (!cancelado && !disparoEntradaRef.current) {
-  //               disparoEntradaRef.current = true
-  //               setMostrarEntrada(true)
-  //             }
-  //           })
-  //           .catch(() => {
-  //             if (!cancelado && !disparoEntradaRef.current) {
-  //               disparoEntradaRef.current = true
-  //               setMostrarEntrada(true)
-  //             }
-  //           })
-  //           .finally(() => {
-  //             clearTimeout(timerTope)
-  //           })
-  //       })
-  //     })
-  //   }
-  //
-  //   return () => {
-  //     cancelado = true
-  //     clearTimeout(timerTope)
-  //   }
-  // }, [cargado])
+  // (las tres veces, sin mirar si la vista seguía siendo la portada)
   useEffect(() => {
-    if (movimientoApagado() || disparoEntradaRef.current) {
+    if (movimientoApagado()) {
+      setMostrarEntrada(false)
+      return
+    }
+    // Antes:
+    // if (disparoEntradaRef.current) {
+    //   setMostrarEntrada(false)
+    //   return
+    // }
+    // Re-correr el efecto (cargado pasa a true) no cancela lo ya mostrado.
+    // Solo se cancela si la persona salió de la portada.
+    if (disparoEntradaRef.current) {
       return
     }
 
@@ -732,41 +710,31 @@ export default function App({ motor, repoOverride }: AppProps) {
       disparoEntradaRef.current = true
       if (esPortada()) {
         setMostrarEntrada(true)
+        setEntradaPuedeAnimar(true)
       }
       return
     }
 
     let cancelado = false
-    const timerTope = setTimeout(() => {
-      if (!cancelado && !disparoEntradaRef.current) {
-        disparoEntradaRef.current = true
-        if (esPortada()) {
-          setMostrarEntrada(true)
-        }
+    const soltar = () => {
+      if (cancelado || disparoEntradaRef.current) return
+      disparoEntradaRef.current = true
+      if (esPortada()) {
+        setEntradaPuedeAnimar(true)
+      } else {
+        setMostrarEntrada(false)
       }
-    }, 3000)
+    }
+
+    const timerTope = setTimeout(soltar, 3000)
 
     if (cargado) {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           registerPlugin<any>('Arranque')
             .listo()
-            .then(() => {
-              if (!cancelado && !disparoEntradaRef.current) {
-                disparoEntradaRef.current = true
-                if (esPortada()) {
-                  setMostrarEntrada(true)
-                }
-              }
-            })
-            .catch(() => {
-              if (!cancelado && !disparoEntradaRef.current) {
-                disparoEntradaRef.current = true
-                if (esPortada()) {
-                  setMostrarEntrada(true)
-                }
-              }
-            })
+            .then(soltar)
+            .catch(soltar)
             .finally(() => {
               clearTimeout(timerTope)
             })
@@ -2504,7 +2472,11 @@ export default function App({ motor, repoOverride }: AppProps) {
     >
 
       {mostrarEntrada && (
-        <Entrada onFinish={() => setMostrarEntrada(false)} desdeSplashNativo={Capacitor.isNativePlatform()} />
+        <Entrada
+          onFinish={() => setMostrarEntrada(false)}
+          desdeSplashNativo={Capacitor.isNativePlatform()}
+          puedeAnimar={entradaPuedeAnimar}
+        />
       )}
 
       {(estadoPrecarga === 'descargando' || estadoPrecarga === 'error') && (
