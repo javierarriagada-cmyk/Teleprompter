@@ -27,6 +27,9 @@ public class MainActivity extends BridgeActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // Antes:
+        // listoParaMostrar = false;
+        ArranquePlugin.reiniciarEstado();
         listoParaMostrar = false;
         inicioActivityMs = System.currentTimeMillis();
 

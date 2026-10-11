@@ -660,16 +660,79 @@ export default function App({ motor, repoOverride }: AppProps) {
   }, [cargarBiblioteca, repoOverride])
 
   const disparoEntradaRef = useRef<boolean>(false)
+  const vistaRef = useRef<Vista>(vista)
+  vistaRef.current = vista
+  const ajustesAbiertosRef = useRef<boolean>(ajustesAbiertos)
+  ajustesAbiertosRef.current = ajustesAbiertos
+
+  useEffect(() => {
+    if (vista !== 'biblioteca' || ajustesAbiertos) {
+      disparoEntradaRef.current = true
+    }
+  }, [vista, ajustesAbiertos])
 
   // Relevo del splash nativo al espejo SIGO en la web
+  // Antes:
+  // useEffect(() => {
+  //   if (movimientoApagado() || disparoEntradaRef.current) {
+  //     return
+  //   }
+  //
+  //   if (!Capacitor.isNativePlatform()) {
+  //     disparoEntradaRef.current = true
+  //     setMostrarEntrada(true)
+  //     return
+  //   }
+  //
+  //   let cancelado = false
+  //   const timerTope = setTimeout(() => {
+  //     if (!cancelado && !disparoEntradaRef.current) {
+  //       disparoEntradaRef.current = true
+  //       setMostrarEntrada(true)
+  //     }
+  //   }, 3000)
+  //
+  //   if (cargado) {
+  //     requestAnimationFrame(() => {
+  //       requestAnimationFrame(() => {
+  //         registerPlugin<any>('Arranque')
+  //           .listo()
+  //           .then(() => {
+  //             if (!cancelado && !disparoEntradaRef.current) {
+  //               disparoEntradaRef.current = true
+  //               setMostrarEntrada(true)
+  //             }
+  //           })
+  //           .catch(() => {
+  //             if (!cancelado && !disparoEntradaRef.current) {
+  //               disparoEntradaRef.current = true
+  //               setMostrarEntrada(true)
+  //             }
+  //           })
+  //           .finally(() => {
+  //             clearTimeout(timerTope)
+  //           })
+  //       })
+  //     })
+  //   }
+  //
+  //   return () => {
+  //     cancelado = true
+  //     clearTimeout(timerTope)
+  //   }
+  // }, [cargado])
   useEffect(() => {
     if (movimientoApagado() || disparoEntradaRef.current) {
       return
     }
 
+    const esPortada = () => vistaRef.current === 'biblioteca' && !ajustesAbiertosRef.current
+
     if (!Capacitor.isNativePlatform()) {
       disparoEntradaRef.current = true
-      setMostrarEntrada(true)
+      if (esPortada()) {
+        setMostrarEntrada(true)
+      }
       return
     }
 
@@ -677,7 +740,9 @@ export default function App({ motor, repoOverride }: AppProps) {
     const timerTope = setTimeout(() => {
       if (!cancelado && !disparoEntradaRef.current) {
         disparoEntradaRef.current = true
-        setMostrarEntrada(true)
+        if (esPortada()) {
+          setMostrarEntrada(true)
+        }
       }
     }, 3000)
 
@@ -689,13 +754,17 @@ export default function App({ motor, repoOverride }: AppProps) {
             .then(() => {
               if (!cancelado && !disparoEntradaRef.current) {
                 disparoEntradaRef.current = true
-                setMostrarEntrada(true)
+                if (esPortada()) {
+                  setMostrarEntrada(true)
+                }
               }
             })
             .catch(() => {
               if (!cancelado && !disparoEntradaRef.current) {
                 disparoEntradaRef.current = true
-                setMostrarEntrada(true)
+                if (esPortada()) {
+                  setMostrarEntrada(true)
+                }
               }
             })
             .finally(() => {
