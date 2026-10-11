@@ -64,7 +64,7 @@ import { confirmadorNuevo, revisar as revisarGesto } from './lib/confirmadorGest
 import { vigiaNuevo, oirParcial, oirFinal, debePedir, alPedir, alResponder, Vigia } from './lib/vigiaGestos'
 // -tarea 88, segunda vuelta- El fin de la última palabra del FINAL, para el corte de la palma.
 import { tomarFinUltimaPalabraEpochMs } from './lib/diagnostico'
-import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar } from './components/IconosApp'
+import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar, IconoEmpezarAPausa } from './components/IconosApp'
 import { t, useTextos, TITULO_SIN_NOMBRE } from './textos'
 import { idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
 import { PASOS_LETRA } from './components/estiloLectura'
@@ -2336,38 +2336,30 @@ export default function App({ motor, repoOverride }: AppProps) {
                 </button>
   )
 
+  /* Antes:
+  const botonPausaLectura = (
+    ...
+    {enPausa ? <IconoEmpezar tamano={24} /> : <IconoPausa tamano={24} />}
+  )
+  */
   const botonPausaLectura = (
               <button
                 data-testid="btn-pausa-lectura"
                 data-duracion-entra={MS_CHICO}
                 data-duracion-sale={MS_PANTALLA}
                 type="button"
-                // -tarea 83, parte B, 04-10-2026- LA PAUSA VA AL LADO DE PARAR. Javier, queriendo
-                // pausar, apretaba Parar: la pausa era de 40 en una esquina de arriba y Parar el botón
-                // grande. Ahora es de 56 -el botón flotante de Material 3, m3.material.io/components/
-                // floating-action-button/specs- a la izquierda de Parar en la misma fila, o encima de
-                // él en la columna de lado -fila-toma, styles.css-. Antes:
-                //   className={`btn-deformable btn-flotante-40${tableta ? ' tab-boton-der' : ''}`}
                 className="btn-deformable btn-flotante-56"
                 aria-label={enPausa ? t('seguir') : t('pausa')}
                 onClick={async (e) => {
                   e.stopPropagation()
-                  // -tarea 88- Confirmando, 'alternar' reanuda y deja el tacho cerrado: lo hace la
-                  // máquina. Antes: setConfirmandoDescarte(false) antes de handleTogglePausa().
                   await handleTogglePausa()
                 }}
                 style={{
-                  // -tarea 83, parte B- Sin lugar en línea: lo pone la celda de la fila. Antes:
-                  //   ...lugarEnLinea({ position: 'absolute', top: 'calc(8px + env(safe-area-inset-top, 0px))',
-                  //     right: horizontal ? 'calc((var(--riel-der) - 40px) / 2 + …)' : 'calc(8px + …)' }),
-                  //   con el comentario «29-09-2026, tarea 82: de lado, centrada en el riel derecho -(124 - 40) / 2-.»
                   zIndex: 100,
                   animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
                 }}
               >
-                {/* -tarea 83, parte B- A 24, el ícono del botón de 56. En pausa el mismo botón es
-                    Seguir. Antes: tamano={20} en los dos. */}
-                {enPausa ? <IconoEmpezar tamano={24} /> : <IconoPausa tamano={24} />}
+                <IconoEmpezarAPausa esPlay={enPausa} tamano={24} />
               </button>
   )
 
