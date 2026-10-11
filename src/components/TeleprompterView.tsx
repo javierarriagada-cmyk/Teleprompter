@@ -1303,19 +1303,21 @@ export default function TeleprompterView({
       />
   )
 
-  /* Antes:
-  const botonEmpezar = (
-    <button
-      data-testid="btn-empezar-toma"
-      ...
-      {conCamara ? <span className="punto-grabar" aria-hidden="true" /> : <IconoEmpezar tamano={30} />}
-    </button>
-  )
-  */
   const botonEmpezar = (
     <button
       data-testid="btn-empezar-toma"
       type="button"
+      // 29-09-2026, tarea 82, parte C: en vertical, sobre la pareja de fondo blanco,
+      // Empezar de Leer va en su variante oscura -empezar-sobre-blanco, styles.css-.
+      // De lado vive en el riel, que sigue al tema: ahí manda styles-horizontal.css.
+      // 30-09-2026, tarea 83: en tableta Empezar vive en el dock o en el riel, que también siguen
+      // al tema: tampoco lleva la variante sobre blanco.
+      // 2026-10-05, tarea 83: en Grabar, de pie en el teléfono y sobre la pareja blanca, el halo va gris
+      // oscuro -halo-sobre-claro, styles.css-: el blanco no se veía. Antes, sin esa clase:
+      // className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${… ' empezar-sobre-blanco' : ''}`}
+      // -últimos detalles del PR #87, 11-10-2026- Dentro del dock -oscuro siempre- el play de Leer va en su
+      // versión clara, también con el fondo de lectura blanco: sin empezar-sobre-blanco con dock. Antes:
+      // className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${!conCamara && !horizontal && !tableta && isWhiteBg ? ' empezar-sobre-blanco' : ''}${conCamara && !horizontal && !tableta && isWhiteBg ? ' halo-sobre-claro' : ''}`}
       className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${!conCamara && !horizontal && !tableta && !conDock && isWhiteBg ? ' empezar-sobre-blanco' : ''}${conCamara && !horizontal && !tableta && isWhiteBg ? ' halo-sobre-claro' : ''}`}
       aria-label={t('empezar')}
       onClick={(e) => {
@@ -1335,6 +1337,7 @@ export default function TeleprompterView({
         borderRadius: 'var(--redondeo-pildora)'
       }}
     >
+      {/* Antes: {conCamara ? <span className="punto-grabar" aria-hidden="true" /> : <IconoEmpezar tamano={30} />} */}
       {conCamara ? (
         <span className={`punto-grabar${botonTransformado ? ' cuadrado' : ''}`} aria-hidden="true" />
       ) : (

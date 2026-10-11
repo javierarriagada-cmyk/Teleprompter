@@ -753,20 +753,12 @@
    aplicación, como .cajon-aa: no hereda la de lectura del lienzo. */
 /* -cuarta vuelta, 10-10-2026- El panel flotante de Ajustes -portada, editor, la ficha Más de lado y en
    tableta- es el mismo vidrio con el mismo borde: comparte esta caja. Antes el selector era solo .dock-listo. */
-/* Antes:
 .dock-listo,
 .panel-ajustes-flotante {
   position: absolute;
-  left: 10px;
-  right: 10px;
-  bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-*/
-.dock-listo,
-.panel-ajustes-flotante {
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  left: 16px; /* Antes: 10px */
+  right: 16px; /* Antes: 10px */
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px)); /* Antes: 10px */
   max-width: 480px;
   margin-left: auto;
   margin-right: auto;
@@ -844,35 +836,18 @@
 }
 /* -ÚLTIMOS DETALLES DEL PR #87, 11-10-2026- De lado, el panel no va a lo ancho: 480 como máximo, junto a la
    ficha que lo abrió -el lado lo pone PanelAjustesFlotante, medido al abrir-. */
-/* Antes:
 .panel-ajustes-flotante.de-lado {
-  width: calc(100% - 20px);
-  max-width: 480px;
-}
-*/
-.panel-ajustes-flotante.de-lado {
-  width: calc(100% - 32px);
+  width: calc(100% - 32px); /* Antes: 20px */
   max-width: 480px;
 }
 /* En el editor, la franja entre el borde de abajo del panel y la barra del sistema, tapada con el suelo. Vive
    dentro de .capa-panel-ajustes -debajo del panel, encima del guion-. */
-/* Antes:
 .franja-bajo-panel-ajustes {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   height: calc(10px + env(safe-area-inset-bottom, 0px) + 28px);
-  background: var(--bg-suelo);
-  pointer-events: none;
-}
-*/
-.franja-bajo-panel-ajustes {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: calc(16px + env(safe-area-inset-bottom, 0px) + 28px);
   background: var(--bg-suelo);
   pointer-events: none;
 }
@@ -1167,23 +1142,4 @@
 }
 .dock-preparando-voz .dock-rotulo-chico {
   white-space: nowrap;
-}
-
-/* Indicador de carga M3 Expressive para Preparando la voz... */
-@keyframes girarCargaM3 {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes siluetaCargaM3 {
-  0%, 100% { border-radius: 50%; }
-  25% { border-radius: 20% 80% 20% 80% / 80% 20% 80% 20%; }
-  50% { border-radius: 3px; }
-  75% { border-radius: 80% 20% 80% 20% / 20% 80% 20% 80%; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  [data-testid="indicador-carga-expressive"] {
-    animation: none !important;
-  }
 }
