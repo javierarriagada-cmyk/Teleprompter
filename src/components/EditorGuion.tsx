@@ -11,6 +11,7 @@ import { REGEX_ACOTACION } from '../lib/acotaciones'
 // Antes: import { familiaLectura, colorLetraEfectiva, columnaLectura, colorDeTramo, colorSugerenciaLectura, INTERLINEADO_LECTURA } from './estiloLectura'
 import { familiaLectura, colorLetraEfectiva, columnaLectura, rellenoLecturaDePie, colorDeTramo, colorSugerenciaLectura, INTERLINEADO_LECTURA } from './estiloLectura'
 import useLayout from '../hooks/useLayout'
+import { SANGRIA_PRIMERA_LINEA_PX, ESPACIOS_EDITOR, primeraLineaConTexto } from '../lib/cortesDeRenglon'
 
 // EL EDITOR DEL GUION, CON FORMATO DE VERDAD. 24-09-2026.
 //
@@ -86,6 +87,34 @@ const Acotaciones = Extension.create({
   }
 })
 
+// LA PRIMERA LÍNEA ENTRA COMO EN LEER -editor-ancho-texto, 11-10-2026-. Con el teléfono de pie, la
+// primera línea con texto del guion entra SANGRIA_PRIMERA_LINEA_PX en la lectura -la flecha de volver
+// tapaba la primera letra, ajustes de pantallas-. El editor marca el mismo párrafo -el primero con
+// texto, saltando los vacíos, con primeraLineaConTexto, la misma cuenta que la lectura- con la clase
+// primera-linea-guion. Cuánto entra lo pone la variable --sangria-primera-linea, que EditorGuion
+// arma con la constante solo de pie -styles.css-. Así corta el primer renglón donde lo corta Leer.
+const PrimeraLinea = Extension.create({
+  name: 'primeraLinea',
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        props: {
+          decorations(state) {
+            const parrafos: { pos: number; tam: number; texto: string }[] = []
+            state.doc.forEach((node, pos) => {
+              parrafos.push({ pos, tam: node.nodeSize, texto: node.textContent })
+            })
+            const i = primeraLineaConTexto(parrafos.map((p) => p.texto))
+            if (i < 0) return DecorationSet.empty
+            const p = parrafos[i]
+            return DecorationSet.create(state.doc, [Decoration.node(p.pos, p.pos + p.tam, { class: 'primera-linea-guion' })])
+          }
+        }
+      })
+    ]
+  }
+})
+
 export function EditorGuion({
   texto,
   tramos,
@@ -145,6 +174,7 @@ export function EditorGuion({
       ColorTramo,
       Destacado,
       Acotaciones,
+      PrimeraLinea,
       Placeholder.configure({ placeholder })
     ],
     content: aDocumento(texto, tramos),
@@ -170,7 +200,17 @@ export function EditorGuion({
         'data-testid': 'editor-guion',
         class: 'editor-guion',
         spellcheck: 'true',
-        autocapitalize: 'sentences'
+        autocapitalize: 'sentences',
+        // EL ESPACIO DEL FINAL DEL RENGLÓN NO OCUPA LUGAR, COMO EN LA LECTURA -editor-ancho-texto,
+        // 11-10-2026-. Tiptap pone en .ProseMirror white-space: break-spaces: el espacio que queda al
+        // final de un renglón ocupa lugar, y una palabra que en la lectura entra justa -white-space:
+        // normal, el espacio del final se cae- bajaba al renglón siguiente. Medido a 392 dp, Aa 32
+        // «Medio»: «empecé a grabar mis» en la lectura y «empecé a grabar» en el editor. Con pre-wrap
+        // el espacio del final cuelga fuera del renglón y no cuenta, y el editor sigue aceptando
+        // espacios, el cursor y los párrafos. Va en línea porque la hoja de estilos de Tiptap se
+        // inserta después de la nuestra y con la misma fuerza le ganaría a styles.css. El porqué de
+        // pre-wrap y no normal está en lib/cortesDeRenglon.ts.
+        style: `white-space: ${ESPACIOS_EDITOR}`
       }
     },
     onUpdate: ({ editor }) => {
@@ -262,7 +302,9 @@ export function EditorGuion({
           color: colorLetraEfectiva(colorFondo, colorLetra),
           maxWidth: columna.maxWidth,
           textAlign: columna.textAlign,
-          margin: '0 auto'
+          margin: '0 auto',
+          // La sangría de la primera línea -PrimeraLinea, arriba-: solo de pie, como en la lectura.
+          ['--sangria-primera-linea' as string]: dePie ? `${SANGRIA_PRIMERA_LINEA_PX}px` : '0px'
         }}
       >
         <EditorContent editor={editor} />

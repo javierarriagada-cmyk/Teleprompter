@@ -847,6 +847,14 @@ textarea::placeholder {
 .editor-guion p {
   margin: 16px 0;
 }
+/* LA PRIMERA LÍNEA DEL GUION ENTRA COMO EN LEER -editor-ancho-texto, 11-10-2026-. EditorGuion.tsx
+   marca el primer párrafo con texto y pone en --sangria-primera-linea la misma constante que la
+   lectura -SANGRIA_PRIMERA_LINEA_PX, lib/cortesDeRenglon.ts-, solo de pie. text-indent, igual que
+   en la lectura: mueve solo el primer renglón. El white-space del editor -pre-wrap, para que el
+   espacio del final del renglón no ocupe lugar- va en línea en EditorGuion.tsx. */
+.editor-guion .primera-linea-guion {
+  text-indent: var(--sangria-primera-linea, 0px);
+}
 /* EL EDITOR SEPARA LOS PÁRRAFOS COMO LA LECTURA -ajustes de pantallas, 10-10-2026, boceto 1-. La línea
    en blanco entre dos párrafos es un <p> vacío -con el <br> de relleno de ProseMirror- y ocupaba un
    renglón entero más los 16 de arriba y abajo: unos 71 dp en el moto g86 con Aa 24, contra unos 26 en

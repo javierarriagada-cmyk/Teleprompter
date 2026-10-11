@@ -4,6 +4,7 @@ import { tokenizarGuion, Token } from '../lib/seguidor'
 // Antes -hasta 2026-10-10-: import { Guion } from '../datos/modelo'
 import { Guion, contarPalabras, duracionDeLecturaReloj } from '../datos/modelo'
 import { agruparEnRenglones, indiceDeRenglon, Renglon, MedidaToken } from '../lib/renglones'
+import { SANGRIA_PRIMERA_LINEA_PX, primeraLineaConTexto } from '../lib/cortesDeRenglon'
 import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
@@ -313,7 +314,11 @@ interface TeleprompterViewProps {
 // altura, pegada al lente-; si la última palabra no cabe, pasa a la segunda línea. La sangría se
 // queda también leyendo, para que el texto no se mueva al empezar. Los renglones se siguen midiendo
 // del DOM, como siempre.
-export const SANGRIA_PRIMERA_LINEA_PX = 14
+// Antes: export const SANGRIA_PRIMERA_LINEA_PX = 14
+// -editor-ancho-texto, 11-10-2026- El mismo valor vive ahora en lib/cortesDeRenglon.ts, para que el
+// editor lo use sin importar este archivo -que importa App, que importa el editor-. Se sigue
+// exportando desde acá con el mismo nombre; la lectura no cambia.
+export { SANGRIA_PRIMERA_LINEA_PX }
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
   let clean = hex.replace('#', '').trim()
@@ -1330,7 +1335,9 @@ export default function TeleprompterView({
   if (sangrarPrimeraLinea) {
     for (let b = 0; b < guionObj.bloques.length && !primeraLinea; b++) {
       const ls = (guionObj.bloques[b].texto || '').split(/\r?\n/)
-      const l = ls.findIndex((x) => x.trim() !== '')
+      // Antes: const l = ls.findIndex((x) => x.trim() !== '')
+      // -editor-ancho-texto- La misma cuenta, ahora compartida con el editor -lib/cortesDeRenglon.ts-.
+      const l = primeraLineaConTexto(ls)
       if (l >= 0) primeraLinea = { bloque: b, linea: l }
     }
   }
