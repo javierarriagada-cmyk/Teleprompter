@@ -24,7 +24,7 @@ import EditorView from './components/EditorView'
 import CuentaRegresiva from './components/CuentaRegresiva'
 import { Entrada } from './components/Entrada'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
-import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo, alNegarseLaCamara } from './lib/camara'
+import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo, alNegarseLaCamara, estabilizacionSoportada } from './lib/camara'
 import { obtenerEspacioLibre, escucharMediciones } from './lib/archivosNativos'
 import { calcularMinutosDisponibles } from './lib/espacio'
 import { hapticaToqueMedio, hapticaToqueSuave, hapticaSeleccion } from './haptica'
@@ -306,6 +306,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   )
   // CONTROL POR GESTOS -tarea 88, 04-10-2026-. Apagado de fábrica. Se guarda en teleprompter_ajustes.
   const [gestosAlGrabar, setGestosAlGrabar] = useState<boolean>(ajustesPrevios.gestosAlGrabar === true)
+  const [estabilizar, setEstabilizar] = useState<boolean>(
+    ajustesPrevios.estabilizar !== undefined ? Boolean(ajustesPrevios.estabilizar) : true
+  )
   const [recuadroY, setRecuadroY] = useState<number>(
     typeof ajustesPrevios.recuadroY === 'number' ? ajustesPrevios.recuadroY : 0.52
   )
@@ -458,12 +461,13 @@ export default function App({ motor, repoOverride }: AppProps) {
         recuadroY,
         calidadVideo,
         // -tarea 88-
-        gestosAlGrabar
+        gestosAlGrabar,
+        estabilizar
       }
       localStorage.setItem('teleprompter_ajustes', JSON.stringify(objetoAjustes))
     } catch (e) {
     }
-  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente, ladoCamara, fondoToma, recuadroX, recuadroY, calidadVideo, gestosAlGrabar])
+  }, [fontSize, marginPercent, mirror, lineasZona, anclajeZona, mostrarTiempo, verTranscripcion, tema, engine, columnaAngosta, colorFondo, colorLetra, tipoFuente, ladoCamara, fondoToma, recuadroX, recuadroY, calidadVideo, gestosAlGrabar, estabilizar])
 
   useEffect(() => {
     if (vista === 'lectura' && estadoToma === 'listo' && conCamara) {
@@ -993,12 +997,12 @@ export default function App({ motor, repoOverride }: AppProps) {
       }
     } else {
       if (!camaraEncendida() || ladoCamara !== ladoActual()) {
-        encenderCamara(ladoCamara, { fondoToma, recuadroX, recuadroY }).then(() => {
+        encenderCamara(ladoCamara, { fondoToma, recuadroX, recuadroY, estabilizar }).then(() => {
           setCamaraActiva(camaraEncendida())
         })
       }
     }
-  }, [vista, cancelarCuentaRegresiva, conCamara, ladoCamara, fondoToma, recuadroX, recuadroY])
+  }, [vista, cancelarCuentaRegresiva, conCamara, ladoCamara, fondoToma, recuadroX, recuadroY, estabilizar])
 
   useEffect(() => {
     if (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && vista === 'lectura') {
@@ -1538,6 +1542,16 @@ export default function App({ motor, repoOverride }: AppProps) {
     hapticaSeleccion()
     setCalidadVideo(q)
     fijarCalidadVideo(q)
+  }
+
+  const handleSetEstabilizar = (v: boolean) => {
+    hapticaSeleccion()
+    setEstabilizar(v)
+    if (vista === 'lectura' && conCamara && estadoToma === 'listo') {
+      void encenderCamara(ladoCamara, { fondoToma, recuadroX, recuadroY, estabilizar: v }).then(() => {
+        setCamaraActiva(camaraEncendida())
+      })
+    }
   }
   const minutosDisponiblesToma =
     bytesLibres !== null
@@ -2719,6 +2733,9 @@ export default function App({ motor, repoOverride }: AppProps) {
               setCalidadVideo={setCalidadVideoToma}
               calidadesSoportadas={calidadesSoportadas}
               minutosDisponibles={minutosDisponiblesToma}
+              estabilizar={estabilizar}
+              setEstabilizar={handleSetEstabilizar}
+              soportaEstabilizacion={estabilizacionSoportada()}
               onVoltear={() => {
                 hapticaSeleccion()
                 setLadoCamara((l) => (l === 'frontal' ? 'trasera' : 'frontal'))
@@ -3083,7 +3100,10 @@ export default function App({ motor, repoOverride }: AppProps) {
             calidadVideo,
             setCalidadVideo: setCalidadVideoToma,
             calidadesSoportadas,
-            minutosDisponibles: minutosDisponiblesToma
+            minutosDisponibles: minutosDisponiblesToma,
+            estabilizar,
+            setEstabilizar: handleSetEstabilizar,
+            soportaEstabilizacion: estabilizacionSoportada()
           }}
           tema={tema}
           setTema={(v) => {

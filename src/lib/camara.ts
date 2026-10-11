@@ -86,6 +86,7 @@ export interface OpcionesConfigCamara {
   recuadroY?: number // fracción 0..1
   vistaW?: number    // ancho px de la pantalla/vista
   vistaH?: number    // alto px de la pantalla/vista
+  estabilizar?: boolean
   // EL HUECO TAL COMO SE DIBUJO -28-09-2026-, en px de la pantalla -getBoundingClientRect del
   // recuadro-. Cuando viene, la camara va exactamente ahi. Antes se recalculaba con la fraccion
   // por vistaH, y vistaH -el alto del contenedor que hace scroll- no es el alto donde se dibuja
@@ -102,6 +103,16 @@ export interface OpcionesConfigCamara {
 let estaEncendida = false
 let ladoEstado: LadoCamara = 'frontal'
 let fondoEstado: FondoToma = 'detras'
+let estabilizacionSoportadaVal = true
+
+export function estabilizacionSoportada(): boolean {
+  return estabilizacionSoportadaVal
+}
+
+function esErrorDeEstabilizacion(err: unknown): boolean {
+  const msg = err instanceof Error ? err.message : String(err || '')
+  return /Video stabilization mode/i.test(msg) || /stabilization/i.test(msg)
+}
 // La ultima medida del hueco -rectRecuadro-. Al dar vuelta la camara, encenderCamara arranca de
 // nuevo sin ella en la config: se usa esta, o la camara volveria al lugar mal calculado.
 let rectRecuadroGuardado: OpcionesConfigCamara['rectRecuadro'] = undefined
@@ -235,7 +246,11 @@ export async function encenderCamara(
   // Calcular dimensiones para el modo de inicio
   const { x, y, width, height } = calcularDimensionesPreview(config)
 
+  const querraEstabilizar = config?.estabilizar !== undefined ? config.estabilizar : true
+  const modoEstabilizacion = (querraEstabilizar && estabilizacionSoportadaVal) ? 'standard' : 'off'
+
   try {
+    // Antes: sin videoStabilizationMode en los parámetros de start
     await CameraPreview.start({
       position: posNativa,
       toBack: true,            // SIEMPRE DETRÁS DEL WEBVIEW EN TODOS LOS FONDOS
@@ -249,7 +264,8 @@ export async function encenderCamara(
       y,
       width,
       height,
-      storeToFile: false
+      storeToFile: false,
+      videoStabilizationMode: modoEstabilizacion
     })
 
     // Fijar superficie de sistema inmediatamente tras arrancar
@@ -277,6 +293,46 @@ export async function encenderCamara(
     return null
   } catch (err) {
     console.error('[Camara] Error al encender cámara nativa:', err)
+    if (modoEstabilizacion === 'standard' && esErrorDeEstabilizacion(err)) {
+      estabilizacionSoportadaVal = false
+      try {
+        await CameraPreview.start({
+          position: posNativa,
+          toBack: true,
+          aspectMode: 'cover',
+          includeSafeAreaInsets: false,
+          disableAudio: false,
+          enableOpacity: true,
+          enableVideoMode: true,
+          force: true,
+          x,
+          y,
+          width,
+          height,
+          storeToFile: false,
+          videoStabilizationMode: 'off'
+        })
+        try {
+          await CamaraNativa.fijarModoSuperficie({ modo: 'sistema' })
+        } catch (e) {}
+        estaEncendida = true
+        if (fondoEstado === 'oculta') {
+          try {
+            await CameraPreview.setOpacity({ opacity: 0 })
+          } catch (e) {}
+        } else {
+          try {
+            await CameraPreview.setOpacity({ opacity: 1 })
+          } catch (e) {}
+        }
+        return null
+      } catch (retryErr) {
+        console.error('[Camara] Error al reintentar encender cámara sin estabilización:', retryErr)
+        estaEncendida = false
+        if (esPermisoDeCamaraNegado(retryErr)) oyentesCamaraNegada.forEach((cb) => cb())
+        return null
+      }
+    }
     estaEncendida = false
     if (esPermisoDeCamaraNegado(err)) oyentesCamaraNegada.forEach((cb) => cb())
     return null
