@@ -89,8 +89,8 @@ export function BarraEditorVacio({
           // el cursor al final del guion.
           const ed = editorRef.current
           if (!ed) return
+          ed.commands.focus('end')
           // Antes:
-          // ed.commands.focus('end')
           // leerPortapapeles().then((texto) => {
           //   const e = editorRef.current
           //   if (!texto || !e) return
