@@ -2,7 +2,7 @@ import React from 'react'
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest'
 import { render, act, fireEvent, screen } from '@testing-library/react'
 import 'fake-indexeddb/auto'
-import { PantallaAjustes } from '../components/PantallaAjustes'
+import { PanelAjustesFlotante } from '../components/PanelAjustes'
 import BibliotecaView from '../components/BibliotecaView'
 import App from '../App'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
@@ -30,30 +30,40 @@ async function simularGestoAtras() {
   })
 }
 
+// Antes: React.createElement(PantallaAjustes, { origen: 'portada', ... })
 function ajustesPortada(p: Record<string, unknown> = {}) {
-  return React.createElement(PantallaAjustes, {
-    onCerrar: () => {},
+  const {
+    onCerrar = () => {},
+    fontSize = 24,
+    onElegirLetra = () => {},
+    tipoFuente = 'sans',
+    setTipoFuente = () => {},
+    columnaAngosta = false,
+    marginPercent = 5,
+    setColumnaAngosta = () => {},
+    setMarginPercent = () => {},
+    colorFondo = '#000000',
+    colorLetra = '#FFFFFF',
+    setColorFondo = () => {},
+    setColorLetra = () => {},
+    mirror = false,
+    setMirror = () => {},
+    mostrarTiempo = true,
+    setMostrarTiempo = () => {},
+    tema = 'oscuro',
+    setTema = () => {},
+  } = p as any
+  return React.createElement(PanelAjustesFlotante, {
     origen: 'portada',
-    fontSize: 24,
-    onElegirLetra: () => {},
-    tipoFuente: 'sans',
-    setTipoFuente: () => {},
-    columnaAngosta: false,
-    marginPercent: 5,
-    setColumnaAngosta: () => {},
-    setMarginPercent: () => {},
-    colorFondo: '#000000',
-    colorLetra: '#FFFFFF',
-    setColorFondo: () => {},
-    setColorLetra: () => {},
-    mirror: false,
-    setMirror: () => {},
-    mostrarTiempo: true,
-    setMostrarTiempo: () => {},
-    tema: 'oscuro',
-    setTema: () => {},
-    ...p
-  } as any)
+    onCerrar,
+    tema,
+    setTema,
+    ajustesLectura: {
+      fontSize, onElegirLetra, tipoFuente, setTipoFuente, columnaAngosta, marginPercent,
+      setColumnaAngosta, setMarginPercent, colorFondo, colorLetra, setColorFondo, setColorLetra,
+      mirror, setMirror, mostrarTiempo, setMostrarTiempo
+    }
+  })
 }
 
 describe('Tarea 102 PASO 2: menús adjuntos de Ajustes', () => {
@@ -157,10 +167,12 @@ describe('Tarea 102 PASO 2: menús adjuntos de Ajustes', () => {
     expect(screen.getByTestId('pantalla-acerca-sigo')).toBeTruthy()
     expect(screen.getByTestId('fila-version')).toBeTruthy()
     expect(screen.getByTestId('fila-licencias')).toBeTruthy()
-    expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
+    // Antes: expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
+    // El panel no se reemplaza: Acerca se abre adentro.
+    expect(screen.getByTestId('panel-ajustes-toma')).toBeTruthy()
 
     fireEvent.click(screen.getByTestId('btn-cerrar-acerca'))
-    expect(screen.getByTestId('pantalla-ajustes')).toBeTruthy()
+    expect(screen.getByTestId('panel-ajustes-toma')).toBeTruthy()
     expect(screen.queryByTestId('pantalla-acerca-sigo')).toBeNull()
   })
 })

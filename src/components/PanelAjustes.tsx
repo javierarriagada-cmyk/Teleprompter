@@ -41,8 +41,30 @@ import useLayout from '../hooks/useLayout'
 // mudaron aquí sin cambios de marcado ni de testid. Acerca de Sigo se abre dentro del mismo panel;
 // Licencias sigue siendo su propia pantalla.
 
+// -venía de PantallaAjustes.tsx, borrada el 12-10-2026-
+// Capa encima de todo, no un piso de navegacion. El atras del sistema solo
+// la cierra: si se abrio desde LISTO, la lectura sigue ahi con la camara
+// encendida. El engranaje de la portada y la ficha Mas llegan al mismo sitio.
+//
+// Cada fila muestra el valor actual. Tocar abre un dialogo; elegir aplica y
+// cierra, sin "Aceptar". Los interruptores viven en la fila. Las claves de
+// guardado no cambian: teleprompter_ajustes y sigo_subtitulos_estilo.
+
 export type SeccionAjustes = 'lectura' | 'video' | 'pantalla' | 'apariencia' | 'acerca'
 export type OrigenAjustes = 'portada' | 'editor' | 'leer' | 'grabar'
+
+// -venía de PantallaAjustes.tsx, borrada el 12-10-2026-
+// DESDE DONDE SE ABRE -28-09-2026-. Javier: "por que subtitulos esta en ajustes que pueden
+// estar para leer". Cada puerta muestra lo suyo: el guion y Leer, solo la lectura; Grabar,
+// lectura y video; la portada, todo -tambien apariencia y acerca de-.
+// 28-09-2026, mas tarde: LA SECCION VIDEO SALIO DE AJUSTES EN TODAS LAS PUERTAS. Javier: la calidad
+// ya esta en su ficha de Grabar, y los subtitulos pasan a la suya. Queda la lectura, y en la
+// portada tambien apariencia y acerca de.
+
+// -venía de PantallaAjustes.tsx, borrada el 12-10-2026-
+// PANTALLA DE AJUSTES -tarea 77, 28-09-2026-. 06-10-2026, boceto tarea 102: secciones en cards;
+// opciones en menu adjunto a la fila (sin hoja inferior ni scrim); Acerca de pasa a una subpantalla.
+// Es el origen de la regla de continuidad de Javier: elegir pegado al boton, sin oscurecer la pantalla.
 
 // Las secciones de cada puerta, en el orden en que se ven.
 export function seccionesDeAjustes(origen: OrigenAjustes): SeccionAjustes[] {
@@ -313,7 +335,12 @@ export function PanelAjustes({
         // Es el mismo panel en todas las puertas: el mismo testid, y la puerta en data-origen.
         data-testid="panel-ajustes-toma"
         data-origen={origen}
-        role="region"
+        // -venía de PantallaAjustes.tsx, borrada el 12-10-2026-
+        // UNA PANTALLA QUE TAPA TODO, DICHA COMO TAL -tarea 84, G2, 29-09-2026-. Para TalkBack era
+        // un bloque más de la página: al abrirla seguía leyendo lo de atrás. role="dialog" con
+        // aria-modal la marca como la capa de encima, y su nombre es el título -"Ajustes"-.
+        // El panel de vidrio usa role="region"; el comentario queda como historia de la pantalla completa.
+                role="region"
         aria-labelledby={idTitulo}
         // Crece hacia arriba con una animación corta; sin movimiento si el sistema lo pide.
         style={conMovimiento ? { animation: `dock-crece ${MS_CHICO}ms ${CURVA_RESORTE} both` } : undefined}

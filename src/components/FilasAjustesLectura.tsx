@@ -295,6 +295,10 @@ export function MuestraLectura({ ajustes }: { ajustes: AjustesLectura }) {
   )
 }
 
+// -venía de PantallaAjustes.tsx, borrada el 12-10-2026-
+// El tamano tambien vive aca -28-09-2026-: el Aa del editor abre esta misma pantalla, y
+// Javier pidio un solo estilo de ajustes en toda la app. Los pasos son PASOS_LETRA.
+
 // LECTURA: Tamaño de letra, Tipografía, Ancho del texto, Colores de lectura. Cada fila con su valor y
 // la flecha; tocarla abre -o cierra- su menú pegado a la fila.
 export function FilasLectura({

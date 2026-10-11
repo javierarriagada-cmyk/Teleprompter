@@ -42,7 +42,7 @@ async function simularGestoAtras() {
 import App from '../App'
 import BibliotecaView from '../components/BibliotecaView'
 import EditorView from '../components/EditorView'
-import { PantallaAjustes } from '../components/PantallaAjustes'
+import { PanelAjustesFlotante } from '../components/PanelAjustes'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { Guion } from '../datos/modelo'
 import { MotorFake } from '../motor/MotorFake'
@@ -281,7 +281,7 @@ describe('Pruebas TAREA 31 (T160)', () => {
       expect(screen.queryByTestId('panel-ajustes-flotante')).not.toBeNull()
       expect(screen.queryByTestId('menu-superior-biblioteca')).toBeNull()
 
-      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
       fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
       // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
       expect(screen.queryByTestId('panel-ajustes-flotante')).toBeNull()
@@ -289,7 +289,7 @@ describe('Pruebas TAREA 31 (T160)', () => {
       fireEvent.click(btn)
       // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.queryByTestId('pantalla-ajustes')).not.toBeNull()
       expect(screen.queryByTestId('panel-ajustes-flotante')).not.toBeNull()
-      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
       fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
       // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
       expect(screen.queryByTestId('panel-ajustes-flotante')).toBeNull()
@@ -615,15 +615,41 @@ describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)
 // 28-09-2026, tarea 77: EL CAJON Aa DEL EDITOR SE FUE. El Aa abre la pantalla de Ajustes de App
 // -origen "editor"-, la misma de la portada y de LISTO. Las pruebas que cuidaban el tamano, el ancho,
 // la tipografia y las parejas de color desde el cajon las cuidan ahora en esa pantalla.
-function ajustesDelEditor(p: Record<string, unknown> = {}) {
-  return React.createElement(PantallaAjustes, {
-    onCerrar: () => {}, origen: 'editor', fontSize: 24, tipoFuente: 'sans', setTipoFuente: () => {},
-    columnaAngosta: false, marginPercent: 5, setColumnaAngosta: () => {}, setMarginPercent: () => {},
-    colorFondo: '#000000', colorLetra: '#FFFFFF', setColorFondo: () => {}, setColorLetra: () => {},
-    mirror: false, setMirror: () => {}, mostrarTiempo: true, setMostrarTiempo: () => {},
-    calidadVideo: '1080p', setCalidadVideo: () => {}, calidadesSoportadas: ['1080p'], minutosDisponibles: null,
-    conCamara: false, tema: 'oscuro', setTema: () => {}, ...p
-  } as any)
+// Antes: React.createElement(PantallaAjustes, { origen: 'editor', ... })
+// Ahora el mismo panel de vidrio, abierto desde la portada.
+function ajustesDePortada(p: Record<string, unknown> = {}) {
+  const {
+    onCerrar = () => {},
+    fontSize = 24,
+    onElegirLetra = () => {},
+    tipoFuente = 'sans',
+    setTipoFuente = () => {},
+    columnaAngosta = false,
+    marginPercent = 5,
+    setColumnaAngosta = () => {},
+    setMarginPercent = () => {},
+    colorFondo = '#000000',
+    colorLetra = '#FFFFFF',
+    setColorFondo = () => {},
+    setColorLetra = () => {},
+    mirror = false,
+    setMirror = () => {},
+    mostrarTiempo = true,
+    setMostrarTiempo = () => {},
+    tema = 'oscuro',
+    setTema = () => {},
+  } = p as any
+  return React.createElement(PanelAjustesFlotante, {
+    origen: 'portada',
+    onCerrar,
+    tema,
+    setTema,
+    ajustesLectura: {
+      fontSize, onElegirLetra, tipoFuente, setTipoFuente, columnaAngosta, marginPercent,
+      setColumnaAngosta, setMarginPercent, colorFondo, colorLetra, setColorFondo, setColorLetra,
+      mirror, setMirror, mostrarTiempo, setMostrarTiempo
+    }
+  })
 }
 
 describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () => {
@@ -636,23 +662,26 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
   })
 
   test('T183 - Desde el guion, Ajustes muestra solo lo del texto: tamaño, tipografía, ancho y colores. Dónde lees, video y apariencia no están acá.', () => {
-    render(ajustesDelEditor())
-    const pantalla = screen.getByTestId('pantalla-ajustes')
+    render(ajustesDePortada())
+    const panel = screen.getByTestId('panel-ajustes-toma')
+    expect(panel.getAttribute('data-origen')).toBe('portada')
     expect(screen.getByTestId('fila-tamano-letra')).toBeTruthy()
     expect(screen.getByTestId('fila-tipo-letra')).toBeTruthy()
     expect(screen.getByTestId('fila-ancho-texto')).toBeTruthy()
     expect(screen.getByTestId('fila-colores')).toBeTruthy()
     expect(screen.getByTestId('muestra-lectura-ajustes')).toBeTruthy()
-    // Lo de otras puertas no aparece desde el guion -origen editor, 28-09-2026-.
+    // Desde la portada: apariencia y acerca sí; video no (eso es Grabar).
+    // Antes -origen editor-: expect(screen.queryByTestId('fila-tema')).toBeNull()
+    expect(screen.getByTestId('fila-tema')).toBeTruthy()
+    expect(screen.getByTestId('fila-acerca-de-sigo')).toBeTruthy()
     expect(screen.queryByTestId('fila-calidad')).toBeNull()
     expect(screen.queryByTestId('fila-subtitulos')).toBeNull()
-    expect(screen.queryByTestId('fila-tema')).toBeNull()
-    expect(pantalla.textContent).not.toContain('Dónde lees')
+    expect(panel.textContent).not.toContain('Dónde lees')
   })
 
   test('T184 - El tamaño de letra se elige en Ajustes entre los cinco pasos, y cada opción entrega su paso.', () => {
     const elegir = vi.fn()
-    render(ajustesDelEditor({ fontSize: 24, onElegirLetra: elegir }))
+    render(ajustesDePortada({ fontSize: 24, onElegirLetra: elegir }))
     expect(screen.getByTestId('fila-tamano-letra').textContent).toContain('24')
     for (const n of [14, 18, 24, 32, 42]) {
       fireEvent.click(screen.getByTestId('fila-tamano-letra'))
@@ -704,7 +733,7 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
 
     // Cerrar Ajustes
     await act(async () => {
-      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
       fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
     })
 
@@ -811,14 +840,14 @@ describe('Pruebas TAREA 40: Los Ajustes, Agrupados y Completos (T183-T187)', () 
     // 28-09-2026: el cajon se fue. Lo que cuidaba -nada de "Listo"- sigue: en Ajustes no hay
     // boton de confirmar; cada eleccion aplica al tocarla.
     const cerrar = vi.fn()
-    render(ajustesDelEditor({ onCerrar: cerrar }))
-    expect(screen.getByTestId('pantalla-ajustes').textContent).not.toContain('Listo')
+    render(ajustesDePortada({ onCerrar: cerrar }))
+    expect(screen.getByTestId('panel-ajustes-toma').textContent).not.toContain('Listo')
     fireEvent.click(screen.getByTestId('fila-tipo-letra'))
     expect(screen.getByTestId('capa-dialogo-ajustes')).toBeTruthy()
     expect(screen.getByTestId('capa-dialogo-ajustes').textContent).not.toContain('Listo')
     fireEvent.click(screen.getByTestId('capa-dialogo-ajustes'))
     expect(screen.queryByTestId('capa-dialogo-ajustes')).toBeNull()
-    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+    fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
     expect(cerrar).toHaveBeenCalledTimes(1)
   })
 })
@@ -1015,10 +1044,10 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
     let margen = 5
     const props = () => ({
       columnaAngosta: columna, marginPercent: margen,
-      setColumnaAngosta: (c: boolean) => { columna = c; rerender(ajustesDelEditor(props())) },
-      setMarginPercent: (m: number) => { margen = m; rerender(ajustesDelEditor(props())) }
+      setColumnaAngosta: (c: boolean) => { columna = c; rerender(ajustesDePortada(props())) },
+      setMarginPercent: (m: number) => { margen = m; rerender(ajustesDePortada(props())) }
     })
-    const { rerender } = render(ajustesDelEditor(props()))
+    const { rerender } = render(ajustesDePortada(props()))
     const elegir = (nombre: string) => {
       fireEvent.click(screen.getByTestId('fila-ancho-texto'))
       fireEvent.click(screen.getByRole('menuitemradio', { name: nombre }))
@@ -1040,10 +1069,10 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
     let letra = '#FFFFFF'
     const props = () => ({
       colorFondo: fondo, colorLetra: letra,
-      setColorFondo: (v: string) => { fondo = v; rerender(ajustesDelEditor(props())) },
-      setColorLetra: (v: string) => { letra = v; rerender(ajustesDelEditor(props())) }
+      setColorFondo: (v: string) => { fondo = v; rerender(ajustesDePortada(props())) },
+      setColorLetra: (v: string) => { letra = v; rerender(ajustesDePortada(props())) }
     })
-    const { container, rerender } = render(ajustesDelEditor(props()))
+    const { container, rerender } = render(ajustesDePortada(props()))
     expect(container.querySelector('select[aria-label="Color de fondo"]')).toBeNull()
     expect(container.querySelector('select[aria-label="Color de letra"]')).toBeNull()
     const elegir = (nombre: string) => {
@@ -1145,7 +1174,7 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
 
     // Cerrar Ajustes y volver a la Biblioteca
     await act(async () => {
-      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes'))
+      // Antes -hasta 2026-10-10, cuarta vuelta: un solo panel de Ajustes-: fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
       fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
     })
     await act(async () => {
