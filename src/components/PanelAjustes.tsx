@@ -1,4 +1,5 @@
-import React, { useEffect, useId, useRef, useState } from 'react'
+// Antes -hasta 2026-10-11-: import React, { useEffect, useId, useRef, useState } from 'react'
+import React, { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { App as CapacitorApp } from '@capacitor/app'
 import {
@@ -16,6 +17,8 @@ import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
 import type { ClaveTexto } from '../textos'
 import { t, useTextos } from '../textos'
 import { CURVA_RESORTE, MS_CHICO, movimientoApagado } from './movimiento'
+// -últimos detalles, 11-10-2026- De lado el panel va angosto y junto a la ficha que lo abrió.
+import useLayout from '../hooks/useLayout'
 
 // UN SOLO PANEL DE AJUSTES EN TODA LA APP -ajustes de pantallas, cuarta vuelta, 10-10-2026-.
 //
@@ -477,6 +480,41 @@ export function PanelAjustesFlotante({
 }: Omit<React.ComponentProps<typeof PanelAjustes>, 'hostMenus' | 'animar'>) {
   const [hostMenus, setHostMenus] = useState<HTMLDivElement | null>(null)
   const conMovimiento = !movimientoApagado()
+  const layout = useLayout()
+  const deLado = layout === 'tel-h' || layout === 'tab-h'
+  // -ÚLTIMOS DETALLES DEL PR #87, 11-10-2026, Javier en el Redmi- Lo que cambia según dónde se abre, medido al
+  // abrir:
+  //   portada → el panel empieza debajo de la cabecera de la biblioteca -la marca y el engranaje enteros a la
+  //             vista-; si el contenido no cabe, la lista se desplaza por dentro.
+  //   de lado → 480 de ancho como máximo -styles-ajustes.css, .de-lado-, alineado con el borde de la ficha
+  //             que lo abrió -Más en Leer, Ajustes de la segunda fila en Grabar-, del lado en que está.
+  const [colocacion, setColocacion] = useState<React.CSSProperties>({})
+  useLayoutEffect(() => {
+    const estilo: React.CSSProperties = {}
+    if (origen === 'portada') {
+      const cabeza = document.querySelector('.portada-cabeza')
+      const abajo = cabeza ? cabeza.getBoundingClientRect().bottom : 0
+      // Si la cabecera se fue con el desplazamiento -abajo ≤ 0- queda el tope de siempre, el de la hoja.
+      if (abajo > 0) {
+        estilo.maxHeight = `calc(100% - ${Math.ceil(abajo)}px - var(--aire-2) - 10px - env(safe-area-inset-bottom, 0px))`
+      }
+    }
+    if (deLado) {
+      const ficha = document.querySelector('[data-testid="ficha-mas"], [data-testid="ficha-ajustes"]')
+      const r = ficha ? ficha.getBoundingClientRect() : null
+      const ancho = window.innerWidth
+      if (r && r.left + r.width / 2 < ancho / 2) {
+        estilo.left = `${Math.round(r.left)}px`
+        estilo.right = 'auto'
+      } else if (r) {
+        estilo.right = `${Math.round(ancho - r.right)}px`
+        estilo.left = 'auto'
+      } else {
+        estilo.left = 'auto'
+      }
+    }
+    setColocacion(estilo)
+  }, [origen, deLado])
   return (
     <>
       <button
@@ -488,9 +526,15 @@ export function PanelAjustesFlotante({
           e.stopPropagation()
           onCerrar()
         }}
-      />
+      >
+        {/* -últimos detalles- En el editor, entre el borde de abajo del panel y la barra del sistema asomaba el
+            texto del guion: esa franja queda tapada con el suelo, como en Leer y Grabar, donde detrás está el
+            lienzo. Es parte de la capa: tocarla cierra el panel, igual que afuera. */}
+        {origen === 'editor' && <span className="franja-bajo-panel-ajustes" aria-hidden="true" />}
+      </button>
       <div
-        className="panel-ajustes-flotante"
+        // Antes -hasta 2026-10-11-: className="panel-ajustes-flotante"
+        className={`panel-ajustes-flotante${deLado ? ' de-lado' : ''}`}
         data-testid="panel-ajustes-flotante"
         data-origen={origen}
         // El vidrio es oscuro siempre, como el dock: adentro manda el tema oscuro.
@@ -499,7 +543,8 @@ export function PanelAjustesFlotante({
         // backwards y no both: terminada, la animación no deja opacidad ni transformación puestas en la caja
         // del vidrio -con both la caja quedaba como raíz del fondo y su ::before no desenfocaba lo de atrás,
         // visto en Chromium con GPU-.
-        style={conMovimiento ? { animation: `dock-crece ${MS_CHICO}ms ${CURVA_RESORTE} backwards` } : undefined}
+        // Antes -hasta 2026-10-11-: style={conMovimiento ? { animation: ... } : undefined}, sin colocación.
+        style={conMovimiento ? { ...colocacion, animation: `dock-crece ${MS_CHICO}ms ${CURVA_RESORTE} backwards` } : colocacion}
         onClick={(e) => e.stopPropagation()}
       >
         <PanelAjustes origen={origen} onCerrar={onCerrar} {...resto} hostMenus={hostMenus} animar={false} />

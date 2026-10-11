@@ -831,6 +831,23 @@
 @media (prefers-reduced-motion: reduce) {
   .panel-ajustes-flotante { animation: none !important; }
 }
+/* -ÚLTIMOS DETALLES DEL PR #87, 11-10-2026- De lado, el panel no va a lo ancho: 480 como máximo, junto a la
+   ficha que lo abrió -el lado lo pone PanelAjustesFlotante, medido al abrir-. */
+.panel-ajustes-flotante.de-lado {
+  width: calc(100% - 20px);
+  max-width: 480px;
+}
+/* En el editor, la franja entre el borde de abajo del panel y la barra del sistema, tapada con el suelo. Vive
+   dentro de .capa-panel-ajustes -debajo del panel, encima del guion-. */
+.franja-bajo-panel-ajustes {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(10px + env(safe-area-inset-bottom, 0px) + 28px);
+  background: var(--bg-suelo);
+  pointer-events: none;
+}
 .capa-dock-ajustes {
   position: absolute;
   inset: 0;

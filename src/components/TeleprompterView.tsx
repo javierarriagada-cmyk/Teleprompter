@@ -1295,7 +1295,10 @@ export default function TeleprompterView({
       // 2026-10-05, tarea 83: en Grabar, de pie en el teléfono y sobre la pareja blanca, el halo va gris
       // oscuro -halo-sobre-claro, styles.css-: el blanco no se veía. Antes, sin esa clase:
       // className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${… ' empezar-sobre-blanco' : ''}`}
-      className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${!conCamara && !horizontal && !tableta && isWhiteBg ? ' empezar-sobre-blanco' : ''}${conCamara && !horizontal && !tableta && isWhiteBg ? ' halo-sobre-claro' : ''}`}
+      // -últimos detalles del PR #87, 11-10-2026- Dentro del dock -oscuro siempre- el play de Leer va en su
+      // versión clara, también con el fondo de lectura blanco: sin empezar-sobre-blanco con dock. Antes:
+      // className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${!conCamara && !horizontal && !tableta && isWhiteBg ? ' empezar-sobre-blanco' : ''}${conCamara && !horizontal && !tableta && isWhiteBg ? ' halo-sobre-claro' : ''}`}
+      className={`btn-deformable ${conCamara ? 'btn-empezar-grabar' : 'btn-empezar-leer'}${!conCamara && !horizontal && !tableta && !conDock && isWhiteBg ? ' empezar-sobre-blanco' : ''}${conCamara && !horizontal && !tableta && isWhiteBg ? ' halo-sobre-claro' : ''}`}
       aria-label={t('empezar')}
       onClick={(e) => {
         e.stopPropagation()
