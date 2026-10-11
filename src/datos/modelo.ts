@@ -254,9 +254,22 @@ export function duracionDeLectura(palabras: number): string {
 
 // LA ESTIMACIÓN DEL EDITOR, EN SEGUNDOS -ajustes de pantallas, 10-10-2026-. La misma cuenta de
 // duracionDeLectura -150 palabras por minuto, nunca 0 con palabras-; 0 si no hay palabras.
-export function segundosDeLectura(palabras: number): number {
+// UNA SOLA ESTIMACIÓN -ajustes de pantallas, segunda vuelta, 10-10-2026-. Es la ÚNICA cuenta de lo que
+// dura un guion: la usan el editor -duracionDeLectura-, el dock de LISTO -duracionDeLecturaReloj- y el
+// total de la pastilla de tiempo -BarraDeTiempo, antes y durante la toma-. Antes la pastilla contaba
+// los tokens del seguidor -que incluyen las notas entre corchetes- a su propio ritmo, y el mismo guion
+// decía 2:48 en el dock y 02:53 al arrancar. Las palabras son las de contarPalabras. Durante la toma,
+// cuando el motor ya midió el ritmo del que lee, la pastilla pasa ese ritmo en ppm: la cuenta es la
+// misma, con otro ritmo. Antes:
+//   export function segundosDeLectura(palabras: number): number {
+//     if (!palabras || palabras <= 0) return 0
+//     return Math.max(1, Math.round((palabras / 150) * 60))
+//   }
+export const PALABRAS_POR_MINUTO = 150
+export function segundosDeLectura(palabras: number, ppm: number = PALABRAS_POR_MINUTO): number {
   if (!palabras || palabras <= 0) return 0
-  return Math.max(1, Math.round((palabras / 150) * 60))
+  const ritmo = ppm > 0 ? ppm : PALABRAS_POR_MINUTO
+  return Math.max(1, Math.round((palabras / ritmo) * 60))
 }
 
 // LA DURACIÓN DEL DOCK DE LISTO -ajustes de pantallas, 10-10-2026-: la misma estimación del editor,

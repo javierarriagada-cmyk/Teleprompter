@@ -1,10 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import { MotorDeAvance } from '../lib/avance'
 import { t, useTextos } from '../textos'
+import { PALABRAS_POR_MINUTO, segundosDeLectura } from '../datos/modelo'
 
 export interface BarraDeTiempoProps {
   motorAvance: MotorDeAvance | null
   totalTokens: number
+  // UNA SOLA ESTIMACIÓN -ajustes de pantallas, segunda vuelta, 10-10-2026-: las palabras del guion como
+  // las cuenta el editor -contarPalabras-. El total sale de segundosDeLectura, la misma cuenta del
+  // editor y del dock. Sin este dato -quien monta la barra sola- se usan los tokens, como antes.
+  palabrasGuion?: number
   tInicioLecturaMs: number | null
   // EN PAUSA LA PASTILLA SE CONGELA -2026-10-05, tarea 83, correcciones-. enPausa es la máquina de la
   // tarea 88 -lib/pausaToma.ts- y msPausadoAhora lo que lleva pausado la toma, con la pausa abierta
@@ -29,7 +34,8 @@ export interface BarraDeTiempoProps {
 
 // El mismo ritmo que usa el editor para decir "1 min", y el que usa esta
 // barra mientras el motor todavia no midio el del que lee.
-const PALABRAS_POR_MINUTO_ESTIMADAS = 150
+// -ajustes de pantallas, segunda vuelta- El ritmo vive en modelo.ts -PALABRAS_POR_MINUTO-, junto a la
+// única cuenta -segundosDeLectura-. Antes: const PALABRAS_POR_MINUTO_ESTIMADAS = 150
 
 function formatearTiempo(segundosTotales: number): string {
   const s = Math.max(0, Math.floor(segundosTotales))
@@ -157,6 +163,7 @@ function Pastilla({
 export default function BarraDeTiempo({
   motorAvance,
   totalTokens,
+  palabrasGuion,
   tInicioLecturaMs,
   vistaPrevia = false,
   enRiel = false,
@@ -166,6 +173,8 @@ export default function BarraDeTiempo({
   preparandoVoz = null
 }: BarraDeTiempoProps) {
   useTextos()
+  // -ajustes de pantallas, segunda vuelta- Las palabras de la única estimación; los tokens si no llegan.
+  const palabras = palabrasGuion ?? totalTokens
   const [ahora, setAhora] = useState<number>(() => performance.now())
   // El último estado del motor antes de la pausa: en pausa el estimado sale de aquí y no se mueve.
   const estadoAntesDePausaRef = useRef<ReturnType<MotorDeAvance['estadoEn']> | null>(null)
@@ -209,7 +218,9 @@ export default function BarraDeTiempo({
     if (vistaPrevia && totalTokens > 0) {
       // REDONDEADO COMO EN EL EDITOR -28-09-2026-: formatearTiempo corta los decimales, y el
       // editor -duracionDeLectura- redondea. 214 palabras eran 1:26 en el editor y 01:25 aca.
-      const totalSeg = Math.round(totalTokens / (PALABRAS_POR_MINUTO_ESTIMADAS / 60))
+      // -ajustes de pantallas, segunda vuelta- La misma cuenta del editor y del dock. Antes:
+      // const totalSeg = Math.round(totalTokens / (PALABRAS_POR_MINUTO_ESTIMADAS / 60))
+      const totalSeg = segundosDeLectura(palabras)
       return (
         <Pastilla
           texto={`${formatearTiempo(0)} / ${formatearTiempo(totalSeg)}`}
@@ -244,9 +255,17 @@ export default function BarraDeTiempo({
   const pausadoMs = msPausadoAhora ? msPausadoAhora() : 0
   const horaDeDibujo = Math.max(ahora, performance.now())
   const transcurridoSeg = Math.max(0, horaDeDibujo - tInicioLecturaMs - pausadoMs) / 1000
-  const palabrasQueFaltan = Math.max(0, totalTokens - estado.posicion)
-  const ppm = estado.ppmEstimadas > 0 ? estado.ppmEstimadas : PALABRAS_POR_MINUTO_ESTIMADAS
-  const segundosQueFaltan = palabrasQueFaltan / (ppm / 60)
+  // -ajustes de pantallas, segunda vuelta- Lo que falta, en palabras del editor: la fracción del guion
+  // que queda por leer -por tokens- aplicada a las palabras de contarPalabras, y los segundos con
+  // segundosDeLectura. Al arrancar -posición 0, ritmo de 150- el total es el del editor y el dock;
+  // cuando el motor mide el ritmo del que lee, la misma cuenta corre con ese ritmo. Antes:
+  //   const palabrasQueFaltan = Math.max(0, totalTokens - estado.posicion)
+  //   const ppm = estado.ppmEstimadas > 0 ? estado.ppmEstimadas : PALABRAS_POR_MINUTO_ESTIMADAS
+  //   const segundosQueFaltan = palabrasQueFaltan / (ppm / 60)
+  const fraccionQueFalta = Math.max(0, totalTokens - estado.posicion) / totalTokens
+  const palabrasQueFaltan = palabras * fraccionQueFalta
+  const ppm = estado.ppmEstimadas > 0 ? estado.ppmEstimadas : PALABRAS_POR_MINUTO
+  const segundosQueFaltan = segundosDeLectura(palabrasQueFaltan, ppm)
   const totalEstimadoSeg = transcurridoSeg + segundosQueFaltan
 
   const progresoPct = Math.min(100, Math.max(0, (estado.posicion / totalTokens) * 100))

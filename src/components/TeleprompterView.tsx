@@ -300,6 +300,9 @@ interface TeleprompterViewProps {
   // -ajustes de pantallas, 10-10-2026- Los ajustes de lectura y pantalla con sus manejadores, para el
   // panel de Ajustes de la toma del dock -los mismos que recibe PantallaAjustes, armados en App-.
   ajustesLectura?: AjustesLectura
+  // -ajustes de pantallas, segunda vuelta, 10-10-2026- La voz bajándose en LISTO -fracción 0..1, o null-,
+  // la misma que recibe la pastilla de BarraDeTiempo. Con el dock va adentro, en el lugar de la duración.
+  preparandoVoz?: number | null
 }
 
 // LA SANGRÍA DE LA PRIMERA LÍNEA -ajustes de pantallas, 10-10-2026, boceto 2-. Con el teléfono de pie,
@@ -403,6 +406,7 @@ export default function TeleprompterView({
   pidiendoGestos = false,
   avisoVoz = null,
   ajustesLectura,
+  preparandoVoz = null,
   hayDialogoPermiso = false,
   hayAvisoDescargaVoz = false
 }: TeleprompterViewProps) {
@@ -1822,6 +1826,7 @@ export default function TeleprompterView({
               duracion={duracionDeLecturaReloj(contarPalabras(guionObj))}
               // Como la pastilla que reemplaza en LISTO: la apaga Mostrar tiempo.
               mostrarDuracion={mostrarTiempo}
+              preparandoVoz={preparandoVoz}
               ajustesLectura={ajustesLectura ?? ajustesLecturaDeRespaldo}
               conCamara={conCamara}
               calidadVideo={calidadVideo}

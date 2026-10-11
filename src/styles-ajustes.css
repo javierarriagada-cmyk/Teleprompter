@@ -1026,3 +1026,15 @@
 .menu-dock-aviso {
   padding: 8px 14px 4px;
 }
+
+/* «PREPARANDO LA VOZ…» EN EL DOCK -ajustes de pantallas, segunda vuelta, 10-10-2026-. En el lugar de la
+   duración y con su misma forma: el porcentaje arriba, el rótulo chico debajo. */
+.dock-preparando-voz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.dock-preparando-voz .dock-rotulo-chico {
+  white-space: nowrap;
+}

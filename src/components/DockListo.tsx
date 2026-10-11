@@ -38,6 +38,7 @@ export function DockListo({
   conVoltear,
   duracion,
   mostrarDuracion,
+  preparandoVoz = null,
   ajustesLectura,
   conCamara,
   calidadVideo,
@@ -56,6 +57,10 @@ export function DockListo({
   // Lo que dura el guion, con la misma estimación del editor -duracionDeLecturaReloj-.
   duracion: string
   mostrarDuracion: boolean
+  // -ajustes de pantallas, segunda vuelta, 10-10-2026- Mientras baja la voz -fracción 0..1-, el lugar de
+  // la duración dice «Preparando la voz…» con el porcentaje; al terminar -null- vuelve la duración.
+  // Como la pastilla de hoy, sale aunque Mostrar tiempo esté apagado.
+  preparandoVoz?: number | null
   ajustesLectura: AjustesLectura
   conCamara: boolean
   calidadVideo: string
@@ -195,7 +200,17 @@ export function DockListo({
             {botonGrabar}
           </div>
           <div className="dock-lugar-duracion" data-testid="dock-duracion">
-            {mostrarDuracion && (
+            {/* -ajustes de pantallas, segunda vuelta- Antes, solo: {mostrarDuracion && ( ...la duración... )} */}
+            {preparandoVoz !== null ? (
+              <span
+                className="dock-preparando-voz"
+                data-testid="dock-preparando-voz"
+                aria-label={`${t('preparandoVoz')} ${Math.round(preparandoVoz * 100)} %`}
+              >
+                <span className="dock-duracion">{Math.round(preparandoVoz * 100)} %</span>
+                <span className="dock-rotulo-chico">{t('preparandoVoz')}</span>
+              </span>
+            ) : mostrarDuracion && (
               <>
                 <span className="dock-duracion" data-testid="dock-duracion-valor">{duracion}</span>
                 <span className="dock-rotulo-chico">{t('duraAprox')}</span>

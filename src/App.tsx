@@ -29,7 +29,9 @@ import { obtenerEspacioLibre, escucharMediciones } from './lib/archivosNativos'
 import { calcularMinutosDisponibles } from './lib/espacio'
 import { hapticaToqueMedio, hapticaToqueSuave, hapticaSeleccion } from './haptica'
 import { IdMotor, MotorDeVoz, ResultadoVoz } from './motor/MotorDeVoz'
-import { Guion, Bloque, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR } from './datos/modelo'
+// -ajustes de pantallas, segunda vuelta- contarPalabras para la única estimación de la pastilla. Antes:
+// import { Guion, Bloque, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR } from './datos/modelo'
+import { Guion, Bloque, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR, contarPalabras } from './datos/modelo'
 import { RepositorioGuiones } from './datos/RepositorioGuiones'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
@@ -2743,6 +2745,9 @@ export default function App({ motor, repoOverride }: AppProps) {
               avisoVoz={avisoVoz}
               // -ajustes de pantallas, 10-10-2026- El panel de Ajustes de la toma del dock.
               ajustesLectura={ajustesLectura}
+              // -ajustes de pantallas, segunda vuelta- La voz bajándose en LISTO: en el dock va en el
+              // lugar de la duración.
+              preparandoVoz={preparandoVoz}
               hayDialogoPermiso={mostrarDialogoMicrofono || mostrarDialogoCamara}
               hayAvisoDescargaVoz={
                 !!(descargaVoz && (descargaVoz.estado === 'descargando' || descargaVoz.estado === 'error'))
@@ -2812,10 +2817,17 @@ export default function App({ motor, repoOverride }: AppProps) {
             {/* -ajustes de pantallas, 10-10-2026- En Grabar, de pie en el teléfono, LISTO dice lo que dura
                 el guion en el dock -DockListo-: la pastilla quieta no va; al empezar vuelve el contador de
                 hoy. Mientras baja la voz la pastilla sí sale. Antes: {(mostrarTiempo || preparandoVoz !== null) && ( */}
-            {((mostrarTiempo && !(conCamara && layout === 'tel-v' && estadoToma === 'listo')) || preparandoVoz !== null) && (
+            {/* -ajustes de pantallas, segunda vuelta, 10-10-2026- Con el dock, «Preparando la voz…» va
+                adentro del dock, en el lugar de la duración, y la pastilla no sale en LISTO -nunca encima
+                del dock-. De lado y en tableta, sin dock, queda como hoy. Antes:
+                {((mostrarTiempo && !(conCamara && layout === 'tel-v' && estadoToma === 'listo')) || preparandoVoz !== null) && ( */}
+            {(mostrarTiempo || preparandoVoz !== null) && !(conCamara && layout === 'tel-v' && estadoToma === 'listo') && (
               <BarraDeTiempo
                 motorAvance={motorAvance}
                 totalTokens={totalTokens}
+                // -ajustes de pantallas, segunda vuelta- Las palabras del editor: el total sale de la misma
+                // cuenta que el editor y el dock -segundosDeLectura-.
+                palabrasGuion={contarPalabras(guionParaSeguidor)}
                 tInicioLecturaMs={tInicioLecturaMs}
                 vistaPrevia={estadoToma === 'listo'}
                 // 29-09-2026, tarea 82: de lado, abajo del riel derecho.
