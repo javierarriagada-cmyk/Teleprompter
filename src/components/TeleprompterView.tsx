@@ -1430,6 +1430,68 @@ export default function TeleprompterView({
         />
       )}
 
+      {/* Capa transparente exactamente sobre el recuadro de la cámara en LISTO (zIndex 5, por encima del texto zIndex 1) para capturar el arrastre sobre el recuadro y pasárselo a RecuadroCamara */}
+      {estadoToma === 'listo' && camaraEncendida && fondoToma === 'recuadro' && (() => {
+        const wContenedor = anchoContenedor || (typeof window !== 'undefined' ? window.innerWidth : 360)
+        const hContenedor = altoContenedor || (typeof window !== 'undefined' ? window.innerHeight : 640)
+        const leftPx = rectRecuadro
+          ? rectRecuadro.x - (superficieRef.current ? superficieRef.current.getBoundingClientRect().left : 0)
+          : recuadroX * wContenedor
+        const topPx = rectRecuadro
+          ? rectRecuadro.y - (superficieRef.current ? superficieRef.current.getBoundingClientRect().top : 0)
+          : recuadroY * hContenedor
+        const widthPx = rectRecuadro ? rectRecuadro.width : wContenedor * 0.32
+        const heightPx = rectRecuadro ? rectRecuadro.height : widthPx * (4 / 3)
+
+        return (
+          <div
+            data-testid="capa-recuadro-arrastre"
+            style={{
+              position: 'absolute',
+              left: leftPx,
+              top: topPx,
+              width: widthPx,
+              height: heightPx,
+              zIndex: 5,
+              pointerEvents: 'auto',
+              background: 'transparent'
+            }}
+            onPointerDown={(e) => {
+              e.stopPropagation()
+              const recuadroEl = document.querySelector('[data-testid="recuadro-camara"]') as HTMLElement | null
+              if (recuadroEl) {
+                const EventCtor = typeof PointerEvent !== 'undefined' ? PointerEvent : CustomEvent
+                recuadroEl.dispatchEvent(new EventCtor('pointerdown', e.nativeEvent as any))
+              }
+            }}
+            onPointerMove={(e) => {
+              e.stopPropagation()
+              const recuadroEl = document.querySelector('[data-testid="recuadro-camara"]') as HTMLElement | null
+              if (recuadroEl) {
+                const EventCtor = typeof PointerEvent !== 'undefined' ? PointerEvent : CustomEvent
+                recuadroEl.dispatchEvent(new EventCtor('pointermove', e.nativeEvent as any))
+              }
+            }}
+            onPointerUp={(e) => {
+              e.stopPropagation()
+              const recuadroEl = document.querySelector('[data-testid="recuadro-camara"]') as HTMLElement | null
+              if (recuadroEl) {
+                const EventCtor = typeof PointerEvent !== 'undefined' ? PointerEvent : CustomEvent
+                recuadroEl.dispatchEvent(new EventCtor('pointerup', e.nativeEvent as any))
+              }
+            }}
+            onPointerCancel={(e) => {
+              e.stopPropagation()
+              const recuadroEl = document.querySelector('[data-testid="recuadro-camara"]') as HTMLElement | null
+              if (recuadroEl) {
+                const EventCtor = typeof PointerEvent !== 'undefined' ? PointerEvent : CustomEvent
+                recuadroEl.dispatchEvent(new EventCtor('pointercancel', e.nativeEvent as any))
+              }
+            }}
+          />
+        )
+      })()}
+
       {/* PUNTO ROJO: GRABANDO VIDEO, no "el motor esta escuchando".
           Hasta la tarea 64 este punto lo encendia isRecording, que viene del
           reconocedor de voz -src/hooks/useASR.ts- y quiere decir que el motor
@@ -1622,7 +1684,10 @@ export default function TeleprompterView({
           //
           // Entonces depende del estado, no es un valor fijo: en LISTO el texto
           // es una vista previa y nadie lo navega; en LEYENDO manda el gesto.
-          pointerEvents: estadoToma === 'listo' ? 'none' : 'auto'
+          // Antes: pointerEvents: estadoToma === 'listo' ? 'none' : 'auto'
+          // Ahora en LISTO el texto recibe el dedo para desplazarse y elegir desde dónde parte la toma.
+          // El arrastre sobre el recuadro de la cámara se atiende mediante la capa transparente encima.
+          pointerEvents: 'auto'
         }}
       >
         {/* EL DESTACADO DE LECTURA -lib/destacado.ts-. Detras del texto: zIndex -1 dentro del

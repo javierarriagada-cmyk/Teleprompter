@@ -103,14 +103,17 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
   // No se puede comprobar arrastrando: jsdom no hace hit-testing y el arrastre
   // pasaria igual con la capa encima. Lo que de verdad falla es esto, asi que
   // esto es lo que se comprueba.
-  test('en LISTO la capa de texto deja pasar el dedo al recuadro; en LEYENDO se queda el gesto', async () => {
+  // Antes: expect(screen.getByTestId('contenedor-lectura').style.pointerEvents).toBe('none')
+  // Ahora en LISTO contenedor-lectura tiene pointerEvents 'auto' para permitir desplazar el texto,
+  // mientras que el recuadro captura los eventos a través de capa-recuadro-arrastre.
+  test('en LISTO la capa de texto permite el desplazamiento; en LEYENDO se queda el gesto', async () => {
     await abrirGuionConTexto()
     fireEvent.click(await screen.findByTestId('btn-grabar-guion-fijo'))
 
     await waitFor(() => {
       expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
     })
-    expect(screen.getByTestId('contenedor-lectura').style.pointerEvents).toBe('none')
+    expect(screen.getByTestId('contenedor-lectura').style.pointerEvents).toBe('auto')
 
     fireEvent.click(screen.getByTestId('btn-empezar-toma'))
     await waitFor(() => {
