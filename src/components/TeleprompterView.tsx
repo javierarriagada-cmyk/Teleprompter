@@ -261,6 +261,9 @@ interface TeleprompterViewProps {
   setCalidadVideo?: (q: string) => void
   calidadesSoportadas?: string[]
   minutosDisponibles?: number | null
+  estabilizar?: boolean
+  setEstabilizar?: (v: boolean) => void
+  soportaEstabilizacion?: boolean
   onVoltear?: () => void
   onEmpezar?: () => void
   onVolverListo?: () => void
@@ -394,6 +397,9 @@ export default function TeleprompterView({
   setCalidadVideo,
   calidadesSoportadas = [],
   minutosDisponibles = null,
+  estabilizar,
+  setEstabilizar,
+  soportaEstabilizacion,
   onVoltear,
   onEmpezar,
   onVolverListo,
@@ -1856,6 +1862,9 @@ export default function TeleprompterView({
               setCalidadVideo={setCalidadVideo}
               calidadesSoportadas={calidadesSoportadas}
               minutosDisponibles={minutosDisponibles}
+              estabilizar={estabilizar}
+              setEstabilizar={setEstabilizar}
+              soportaEstabilizacion={soportaEstabilizacion}
               oculto={arrastrandoRecuadro}
             />
           ) : (

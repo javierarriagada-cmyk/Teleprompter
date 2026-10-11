@@ -269,7 +269,9 @@ export const es = {
   duraAprox: 'dura aprox.',
   tituloAjustesToma: 'Ajustes de la toma',
   seccionPantalla: 'Pantalla',
-  calidad: 'Calidad'
+  calidad: 'Calidad',
+  estabilizar: 'Estabilizar',
+  estabilizarExplicacion: 'Corrige el temblor de la mano. Recorta un poco los bordes.'
 }
 
 export type ClaveTexto = keyof typeof es

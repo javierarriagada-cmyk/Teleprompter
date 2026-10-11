@@ -11,6 +11,7 @@ import {
   MenuLectura, esMenuLectura, useAnclasLectura
 } from './FilasAjustesLectura'
 import { hayCalidad } from './FichasListo'
+import { Interruptor } from './Interruptor'
 import { PantallaLicencias } from './PantallaLicencias'
 import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
 import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
@@ -72,12 +73,23 @@ function abrirEnlace(url: string) {
 type MenuPanel = 'letra' | 'tipo' | 'ancho' | 'colores' | 'calidad' | 'subtitulos' | 'tema' | 'idioma' | null
 
 // Lo de la sección Video: solo Grabar la tiene.
+// Antes:
+// export interface DatosVideoAjustes {
+//   conCamara: boolean
+//   calidadVideo: string
+//   setCalidadVideo?: (q: string) => void
+//   calidadesSoportadas: string[]
+//   minutosDisponibles: number | null
+// }
 export interface DatosVideoAjustes {
   conCamara: boolean
   calidadVideo: string
   setCalidadVideo?: (q: string) => void
   calidadesSoportadas: string[]
   minutosDisponibles: number | null
+  estabilizar?: boolean
+  setEstabilizar?: (v: boolean) => void
+  soportaEstabilizacion?: boolean
 }
 
 export function PanelAjustes({
@@ -410,6 +422,21 @@ export function PanelAjustes({
                       onClick={() => alternarMenu('subtitulos')}
                     />
                   </div>
+                  <FilaAjuste
+                    testid="fila-estabilizar"
+                    icono={<span />}
+                    nombre={t('estabilizar')}
+                    explicacion={video.soportaEstabilizacion === false ? t('gestosNoDisponible') : t('estabilizarExplicacion')}
+                    extra={(
+                      <Interruptor
+                        encendido={video.soportaEstabilizacion === false ? false : (video.estabilizar !== false)}
+                        onCambiar={(v: boolean) => video.setEstabilizar?.(v)}
+                        etiqueta={t('estabilizar')}
+                        testid="switch-estabilizar"
+                        deshabilitado={video.soportaEstabilizacion === false}
+                      />
+                    )}
+                  />
                 </>
               )}
               {con('pantalla') && (
