@@ -22,6 +22,11 @@ import com.getcapacitor.annotation.CapacitorPlugin;
  *   de la web al nativo -hayAdondeVolver-: la web avisa cada vez que cambia algo que decide si hay
  *   adónde volver. Con true el callback de MainActivity queda activo y recibe el gesto; con false
  *   queda inactivo, nadie lo recibe y Android hace su propia animación de volver al inicio.
+ *
+ *   -corrección del PR 94, 11-10-2026- hayAdondeVolver trae también camara: true cuando el gesto se
+ *   va a animar y la cámara está prendida detrás del texto o en el recuadro. Con eso MainActivity
+ *   achica la vista previa nativa en cada avance, sin esperar a la web. Si la web llama sin el campo,
+ *   camara vale false.
  */
 @CapacitorPlugin(name = "AtrasPredictivo")
 public class AtrasPredictivoPlugin extends Plugin {
@@ -42,9 +47,15 @@ public class AtrasPredictivoPlugin extends Plugin {
             return;
         }
         final MainActivity actividad = (MainActivity) getActivity();
+        final boolean camara = Boolean.TRUE.equals(call.getBoolean("camara", false));
         // setEnabled del callback va en el hilo de la pantalla: el despachador de atrás vive ahí.
+        // Antes:
+        // actividad.runOnUiThread(() -> {
+        //     actividad.fijarHayAdondeVolver(hay);
+        //     call.resolve();
+        // });
         actividad.runOnUiThread(() -> {
-            actividad.fijarHayAdondeVolver(hay);
+            actividad.fijarHayAdondeVolver(hay, camara);
             call.resolve();
         });
     }

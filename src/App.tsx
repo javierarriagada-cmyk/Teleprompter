@@ -26,7 +26,9 @@ import { Entrada } from './components/Entrada'
 // -atrás predictivo, 11-10-2026- Suma CURVA_SALE: la pantalla que se va al confirmar el gesto. Antes:
 // import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_SALE, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
-import { pluginAtras, hayAdondeVolver as hayAdondeVolverAtras, conAnimacionAtras, leerBorde, leerAvance, escalaAtras, corrimientoAtras, type BordeAtras, type EstadoAtras } from './lib/atrasPredictivo'
+// -corrección del PR 94- Suma camaraConElGesto. Antes:
+// import { pluginAtras, hayAdondeVolver as hayAdondeVolverAtras, conAnimacionAtras, leerBorde, leerAvance, escalaAtras, corrimientoAtras, type BordeAtras, type EstadoAtras } from './lib/atrasPredictivo'
+import { pluginAtras, hayAdondeVolver as hayAdondeVolverAtras, conAnimacionAtras, camaraConElGesto, leerBorde, leerAvance, escalaAtras, corrimientoAtras, type BordeAtras, type EstadoAtras } from './lib/atrasPredictivo'
 import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo, alNegarseLaCamara, estabilizacionSoportada } from './lib/camara'
 import { obtenerEspacioLibre, escucharMediciones } from './lib/archivosNativos'
 import { calcularMinutosDisponibles } from './lib/espacio'
@@ -1941,13 +1943,25 @@ export default function App({ motor, repoOverride }: AppProps) {
   // cerrar Ajustes, un menú, el visor-. Con false, en la biblioteca sin nada abierto, nadie recibe el
   // gesto y Android hace su propia animación de volver al inicio del teléfono: reemplaza al
   // CapacitorApp.exitApp de handleVolverAtras, que queda solo por si el aviso no llegó a tiempo.
+  // -corrección del PR 94, 11-10-2026- Junto va camara: en Grabar con la cámara detrás o en recuadro, la
+  // vista previa nativa se achica con el gesto igual que el texto, y eso lo hace MainActivity en cada avance
+  // sin esperar a la web -lib/atrasPredictivo.ts, camaraConElGesto-. Por eso se le avisa antes, acá.
+  // Antes:
+  // useEffect(() => {
+  //   const p = pluginAtras()
+  //   if (!p) return
+  //   p.hayAdondeVolver({ hay: hayAdondeVolver })
+  //     .then(() => console.info('[atras]', `hayAdondeVolver=${hayAdondeVolver}`))
+  //     .catch((e: unknown) => console.warn('[atras]', `hayAdondeVolver=${hayAdondeVolver} no llegó al nativo:`, e))
+  // }, [hayAdondeVolver])
+  const camaraAtras = camaraConElGesto(estadoAtras, camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro'))
   useEffect(() => {
     const p = pluginAtras()
     if (!p) return
-    p.hayAdondeVolver({ hay: hayAdondeVolver })
-      .then(() => console.info('[atras]', `hayAdondeVolver=${hayAdondeVolver}`))
-      .catch((e: unknown) => console.warn('[atras]', `hayAdondeVolver=${hayAdondeVolver} no llegó al nativo:`, e))
-  }, [hayAdondeVolver])
+    p.hayAdondeVolver({ hay: hayAdondeVolver, camara: camaraAtras })
+      .then(() => console.info('[atras]', `hayAdondeVolver=${hayAdondeVolver} camara=${camaraAtras}`))
+      .catch((e: unknown) => console.warn('[atras]', `hayAdondeVolver=${hayAdondeVolver} camara=${camaraAtras} no llegó al nativo:`, e))
+  }, [hayAdondeVolver, camaraAtras])
 
   // EL GESTO MIENTRAS EL DEDO SE DESLIZA. Solo existe cuando se anima -conAnimacionAtras-: desde el
   // editor, o desde Leer o Grabar en LISTO. desde: la vista donde empezó; los estilos se aplican solo

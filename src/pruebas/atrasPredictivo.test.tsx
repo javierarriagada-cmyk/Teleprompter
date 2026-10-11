@@ -9,12 +9,17 @@ import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, act, fireEvent, screen, cleanup } from '@testing-library/react'
 import 'fake-indexeddb/auto'
 
+// -corrección del PR 94, 11-10-2026- Suma camara -lo que la web le manda al nativo junto con hay- y la
+// cámara fingida: prendida o no, y de qué lado. Antes: sin camara, encendida ni lado.
 const h = vi.hoisted(() => ({
   oyentes: {} as Record<string, Array<(d?: unknown) => void>>,
   hay: [] as boolean[],
+  camara: [] as Array<boolean | undefined>,
   eventosCapacitor: [] as string[],
   exitApp: null as null | ((...a: unknown[]) => void),
-  toggle: null as null | ((...a: unknown[]) => unknown)
+  toggle: null as null | ((...a: unknown[]) => unknown),
+  encendida: false,
+  lado: 'frontal' as 'frontal' | 'trasera'
 }))
 
 vi.mock('@capacitor/app', () => {
@@ -37,7 +42,11 @@ vi.mock('@capacitor/app', () => {
 vi.mock('../lib/atrasPredictivo', async (importOriginal) => {
   const real = await importOriginal<typeof import('../lib/atrasPredictivo')>()
   const plugin = {
-    hayAdondeVolver: async ({ hay }: { hay: boolean }) => { h.hay.push(hay) },
+    // Antes: hayAdondeVolver: async ({ hay }: { hay: boolean }) => { h.hay.push(hay) },
+    hayAdondeVolver: async ({ hay, camara }: { hay: boolean; camara?: boolean }) => {
+      h.hay.push(hay)
+      h.camara.push(camara)
+    },
     addListener: async (evento: string, cb: (d?: unknown) => void) => {
       ;(h.oyentes[evento] = h.oyentes[evento] || []).push(cb)
       return { remove: async () => {} }
@@ -46,11 +55,33 @@ vi.mock('../lib/atrasPredictivo', async (importOriginal) => {
   return { ...real, pluginAtras: () => plugin }
 })
 
+// -corrección del PR 94- La cámara de Grabar, fingida como en tarea83-controles.test.tsx: prender y
+// apagar solo cambian h.encendida, y la vista previa de Capgo no se toca.
+vi.mock('@capgo/camera-preview', () => ({
+  CameraPreview: {
+    start: vi.fn().mockResolvedValue({ width: 360, height: 640, x: 0, y: 0 }),
+    stop: vi.fn().mockResolvedValue(undefined),
+    setOpacity: vi.fn().mockResolvedValue(undefined),
+    setPreviewSize: vi.fn().mockResolvedValue({ width: 360, height: 640, x: 0, y: 0 })
+  }
+}))
+vi.mock('../lib/camara', async (importOriginal) => {
+  const real = await importOriginal<typeof import('../lib/camara')>()
+  return {
+    ...real,
+    camaraEncendida: () => h.encendida,
+    ladoActual: () => h.lado,
+    encenderCamara: async (lado: 'frontal' | 'trasera') => { h.lado = lado; h.encendida = true },
+    apagarCamara: async () => { h.encendida = false }
+  }
+})
+
 import App from '../App'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { Guion } from '../datos/modelo'
 import { MotorFake } from '../motor/MotorFake'
-import { conAnimacionAtras, hayAdondeVolver } from '../lib/atrasPredictivo'
+// -corrección del PR 94- Suma camaraConElGesto. Antes: import { conAnimacionAtras, hayAdondeVolver } from '../lib/atrasPredictivo'
+import { conAnimacionAtras, hayAdondeVolver, camaraConElGesto } from '../lib/atrasPredictivo'
 
 // Lo que manda el nativo, por el último oyente registrado de cada evento.
 async function nativo(evento: 'inicio' | 'avance' | 'cancelado' | 'confirmado', datos?: unknown) {
@@ -89,6 +120,7 @@ async function entrarAlEditor() {
 
 const enElEditor = () => screen.queryByTestId('input-titulo-guion') !== null
 const ultimoHay = () => h.hay[h.hay.length - 1]
+const ultimaCamara = () => h.camara[h.camara.length - 1]
 // ¿La pantalla que contiene a este elemento se está achicando? Se sube por sus ancestros buscando la escala
 // del gesto en el estilo: es el marco del editor o la lectura. Solo los ancestros: otros controles de la
 // pantalla pueden tener su propio scale. Se lee el atributo a mano: el selector [style*="scale("] no
@@ -106,6 +138,9 @@ describe('Atrás predictivo: la lógica, a través de <App>', () => {
   beforeEach(() => {
     h.oyentes = {}
     h.hay = []
+    // -corrección del PR 94-
+    h.camara = []
+    h.encendida = false
     h.eventosCapacitor = []
     localStorage.clear()
   })
@@ -226,6 +261,38 @@ describe('Atrás predictivo: la lógica, a través de <App>', () => {
     expect(enElEditor()).toBe(false)
   })
 
+  // -corrección del PR 94, 11-10-2026- La vista previa nativa se achica con el gesto: la web le avisa al
+  // nativo con camara. Sin fondo guardado, Grabar abre con la cámara detrás -fondoToma 'detras'-.
+  test('En Grabar con la cámara detrás la web manda camara: true; sin cámara, camara: false', async () => {
+    await abrirApp(new MotorFake())
+    expect(ultimaCamara()).toBe(false)
+
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-grabar-tarjeta'))
+      await new Promise((r) => setTimeout(r, 200))
+    })
+    expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
+    expect(h.encendida).toBe(true)
+    expect(ultimoHay()).toBe(true)
+    expect(ultimaCamara()).toBe(true)
+
+    // Al soltar, como siempre: vuelve a la biblioteca y la cámara se apaga.
+    await nativo('confirmado')
+    await esperar(200)
+    expect(h.encendida).toBe(false)
+    expect(ultimoHay()).toBe(false)
+    expect(ultimaCamara()).toBe(false)
+
+    // Leer: la misma pantalla de la toma, sin cámara.
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-leer-tarjeta'))
+      await new Promise((r) => setTimeout(r, 200))
+    })
+    expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
+    expect(ultimoHay()).toBe(true)
+    expect(ultimaCamara()).toBe(false)
+  })
+
   test('La biblioteca está montada debajo del editor, oculta para TalkBack y sin recibir toques', async () => {
     await abrirApp()
     await entrarAlEditor()
@@ -249,5 +316,11 @@ describe('Atrás predictivo: la lógica, a través de <App>', () => {
     expect(conAnimacionAtras({ ...base, vista: 'lectura', tomaAndando: true })).toBe(false)
     expect(conAnimacionAtras({ ...base, vista: 'editor', algoAbierto: true })).toBe(false)
     expect(conAnimacionAtras({ ...base, vista: 'editor', movimientoApagado: true })).toBe(false)
+
+    // -corrección del PR 94- La cámara se achica solo si el gesto se anima y está al fondo.
+    expect(camaraConElGesto({ ...base, vista: 'lectura' }, true)).toBe(true)
+    expect(camaraConElGesto({ ...base, vista: 'lectura' }, false)).toBe(false)
+    expect(camaraConElGesto({ ...base, vista: 'lectura', tomaAndando: true }, true)).toBe(false)
+    expect(camaraConElGesto({ ...base, vista: 'lectura', movimientoApagado: true }, true)).toBe(false)
   })
 })
