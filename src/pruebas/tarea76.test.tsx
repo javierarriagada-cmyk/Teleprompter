@@ -163,7 +163,10 @@ describe('Tarea 76 - la portada plegada', () => {
       fireEvent.click(screen.getByTestId('fila-guion-g-2'))
       await new Promise((r) => setTimeout(r, 100))
     })
-    expect(screen.queryByTestId('lista-guiones-biblioteca')).toBeNull()
+    // -atrás predictivo, 11-10-2026- La biblioteca queda montada debajo del editor, oculta para TalkBack: lo
+    // que se comprueba ahora es que quedó tapada, no que se fue.
+    // Antes: expect(screen.queryByTestId('lista-guiones-biblioteca')).toBeNull()
+    expect(screen.getByTestId('lista-guiones-biblioteca').closest('[aria-hidden="true"]')).not.toBeNull()
     expect(screen.getByTestId('editor-guion')).not.toBeNull()
     await act(async () => {
       fireEvent.click(document.querySelector('.volver-guiones') as HTMLElement)
@@ -269,7 +272,10 @@ describe('Tarea 76 - la portada plegada', () => {
       fireEvent.touchEnd(fila)
       await new Promise((r) => setTimeout(r, 50))
     })
-    expect(screen.queryByTestId('fila-guion-g-1')).not.toBeNull()
+    // -atrás predictivo, 11-10-2026- Con la biblioteca montada debajo del editor la fila sigue en la página
+    // aunque el guion se abra: lo que dice que no se abrió es que el editor no está.
+    // Antes: expect(screen.queryByTestId('fila-guion-g-1')).not.toBeNull()
+    expect(screen.queryByTestId('input-titulo-guion')).toBeNull()
   })
 })
 

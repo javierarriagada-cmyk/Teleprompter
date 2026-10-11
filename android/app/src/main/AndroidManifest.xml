@@ -9,7 +9,13 @@
          al desinstalar, Android pregunta si conservar los datos de la app. -->
     <!-- localeConfig -27-09-2026, docs/ingles.txt D1-: los idiomas que la app ofrece, para
          que Android 13 o mas nuevo muestre el selector en Ajustes -> Apps -> Sigo -> Idioma. -->
+    <!-- enableOnBackInvokedCallback -atrás predictivo, 11-10-2026-: Sigo se suma al gesto de atrás
+         predictivo -developer.android.com/guide/navigation/custom-back/predictive-back-gesture-.
+         Con esto Android le entrega a MainActivity el avance del gesto mientras el dedo se desliza
+         -su OnBackPressedCallback, el único receptor- y, cuando ese callback está inactivo -en la
+         biblioteca sin nada abierto-, hace él mismo la animación de volver al inicio del teléfono. -->
     <application
+        android:enableOnBackInvokedCallback="true"
         android:hasFragileUserData="true"
         android:localeConfig="@xml/locales_config"
         android:allowBackup="true"

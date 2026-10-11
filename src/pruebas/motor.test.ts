@@ -123,7 +123,9 @@ describe('Pruebas T57-T59 (Motor por omisión y transcripción en vivo)', () => 
     })
 
     // 3. Activar el checkbox en la Biblioteca
-    const btnSalir = screen.getByText('Guiones')
+    // -atrás predictivo, 11-10-2026- La biblioteca queda montada debajo del editor y su título «Guiones» también está en la página: se toca la flecha del editor por su clase, como T76-4.
+    // Antes: const btnSalir = screen.getByText('Guiones')
+    const btnSalir = document.querySelector('.volver-guiones') as HTMLElement
     await act(async () => {
       fireEvent.click(btnSalir)
     })

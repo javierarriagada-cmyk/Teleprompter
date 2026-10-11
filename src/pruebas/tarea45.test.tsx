@@ -144,7 +144,9 @@ describe('Pruebas TAREA 45: Movimiento y Háptica (T199-T208)', () => {
     expect(pantallaDiv?.getAttribute('data-pantalla-direccion')).toBe('adentro')
 
     // 3. Volver a biblioteca (nivel 2 -> nivel 1 = atras)
-    const btnVolver = screen.getByText('Guiones')
+    // -atrás predictivo, 11-10-2026- La biblioteca queda montada debajo del editor y su título «Guiones» también está en la página: se toca la flecha del editor por su clase, como T76-4.
+    // Antes: const btnVolver = screen.getByText('Guiones')
+    const btnVolver = document.querySelector('.volver-guiones') as HTMLElement
     await act(async () => {
       fireEvent.click(btnVolver)
     })

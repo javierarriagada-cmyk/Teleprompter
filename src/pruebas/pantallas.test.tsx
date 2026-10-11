@@ -19,18 +19,44 @@ import { editorDelGuion, seleccionarEnGuion, textoDelGuion } from './ayudaEditor
 //
 // Asi, en cambio, se captura el listener que la aplicacion registra de verdad. Si
 // alguien borra el addListener, no hay listener que capturar y la prueba falla.
+//
+// -atrás predictivo, 11-10-2026- El gesto ya no llega por el 'backButton' de Capacitor: el único receptor
+// es el callback de MainActivity, que avisa por el plugin AtrasPredictivo -lib/atrasPredictivo.ts-. Se
+// finge ESE plugin y se captura el oyente de 'confirmado' que App registra de verdad: si alguien borra
+// el addListener de App, no hay oyente y la prueba falla, igual que antes. Antes:
+// const listenersAtras: Array<() => void> = []
+// vi.mock('@capacitor/app', () => ({
+//   App: {
+//     addListener: (evento: string, cb: () => void) => {
+//       if (evento === 'backButton') listenersAtras.push(cb)
+//       return Promise.resolve({ remove: () => {} })
+//     },
+//     exitApp: vi.fn()
+//   }
+// }))
 const listenersAtras: Array<() => void> = []
 vi.mock('@capacitor/app', () => ({
   App: {
-    addListener: (evento: string, cb: () => void) => {
-      if (evento === 'backButton') listenersAtras.push(cb)
-      return Promise.resolve({ remove: () => {} })
-    },
-    exitApp: vi.fn()
+    addListener: () => Promise.resolve({ remove: () => {} }),
+    exitApp: vi.fn(),
+    // Función común y no vi.fn: vi.restoreAllMocks de cada prueba la dejaría sin respuesta.
+    toggleBackButtonHandler: () => Promise.resolve()
   }
 }))
+vi.mock('../lib/atrasPredictivo', async (importOriginal) => {
+  const real = await importOriginal<typeof import('../lib/atrasPredictivo')>()
+  const plugin = {
+    hayAdondeVolver: async () => {},
+    addListener: async (evento: string, cb: () => void) => {
+      if (evento === 'confirmado') listenersAtras.push(cb)
+      return { remove: async () => {} }
+    }
+  }
+  return { ...real, pluginAtras: () => plugin }
+})
 
 // Dispara el gesto de atras como lo haria Android: por el listener registrado.
+// -atrás predictivo- Un atrás sin deslizar -la barra de tres botones-: solo 'confirmado', sin 'inicio'.
 async function simularGestoAtras() {
   expect(listenersAtras.length).toBeGreaterThan(0)
   await act(async () => {
@@ -1178,7 +1204,9 @@ describe('Pruebas TAREA 44: Los Ajustes, de diez controles a siete (T195-T198)',
       fireEvent.click(screen.getByTestId('btn-cerrar-ajustes-toma'))
     })
     await act(async () => {
-      fireEvent.click(screen.getByText('Guiones'))
+      // -atrás predictivo, 11-10-2026- La biblioteca queda montada debajo del editor y su título «Guiones» también está en la página: se toca la flecha del editor por su clase, como T76-4.
+      // Antes: fireEvent.click(screen.getByText('Guiones'))
+      fireEvent.click(document.querySelector('.volver-guiones') as HTMLElement)
     })
 
     // 2. El engranaje abre Ajustes; Tema esta ahi.

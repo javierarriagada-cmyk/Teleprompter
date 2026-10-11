@@ -3,13 +3,18 @@ package com.sigoteleprompter.app;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
+import androidx.activity.BackEventCompat;
+import androidx.activity.OnBackPressedCallback;
 import androidx.core.splashscreen.SplashScreen;
 
 import com.getcapacitor.BridgeActivity;
+import com.getcapacitor.JSObject;
+import com.getcapacitor.PluginHandle;
 
 public class MainActivity extends BridgeActivity {
     private static boolean listoParaMostrar = false;
@@ -23,6 +28,65 @@ public class MainActivity extends BridgeActivity {
 
     public static void notificarListo() {
         listoParaMostrar = true;
+    }
+
+    // EL ÚNICO RECEPTOR DEL GESTO DE ATRÁS -atrás predictivo, 11-10-2026-.
+    //
+    // Hasta hoy el gesto lo recibía el callback de Capacitor -AppPlugin- y la web lo escuchaba con
+    // CapacitorApp.addListener('backButton'). Ese camino entrega el gesto recién al soltar: no hay con
+    // qué animar mientras el dedo se desliza. Este callback de androidx sí recibe el avance
+    // -handleOnBackStarted, handleOnBackProgressed, handleOnBackCancelled- y se lo pasa a la web por el
+    // plugin AtrasPredictivo. El de Capacitor queda apagado desde la web
+    // -CapacitorApp.toggleBackButtonHandler({ enabled: false }), App.tsx-: así handleVolverAtras nunca
+    // corre dos veces.
+    //
+    // Nace INACTIVO: la app abre en la biblioteca, donde no hay adónde volver. La web lo prende y lo
+    // apaga con hayAdondeVolver -AtrasPredictivoPlugin-. Inactivo, Android hace su propia animación de
+    // volver al inicio del teléfono, que reemplaza al exitApp de antes.
+    private final OnBackPressedCallback atrasPredictivo = new OnBackPressedCallback(false) {
+        @Override
+        public void handleOnBackStarted(BackEventCompat evento) {
+            JSObject d = new JSObject();
+            // El borde desde donde parte el dedo: la pantalla se corre hacia el opuesto. Con la barra
+            // de tres botones no hay borde -y en Android 13 o anterior ni siquiera llega este aviso-.
+            int borde = evento.getSwipeEdge();
+            d.put("borde", borde == BackEventCompat.EDGE_LEFT ? "izquierdo"
+                : borde == BackEventCompat.EDGE_RIGHT ? "derecho"
+                : "ninguno");
+            avisarAtras("inicio", d);
+        }
+
+        @Override
+        public void handleOnBackProgressed(BackEventCompat evento) {
+            JSObject d = new JSObject();
+            d.put("avance", evento.getProgress());
+            avisarAtras("avance", d);
+        }
+
+        @Override
+        public void handleOnBackCancelled() {
+            avisarAtras("cancelado", new JSObject());
+        }
+
+        @Override
+        public void handleOnBackPressed() {
+            avisarAtras("confirmado", new JSObject());
+        }
+    };
+
+    // Lo llama AtrasPredictivoPlugin.hayAdondeVolver, ya en el hilo de la pantalla.
+    void fijarHayAdondeVolver(boolean hay) {
+        atrasPredictivo.setEnabled(hay);
+        Log.i(AtrasPredictivoPlugin.ETIQUETA, "hayAdondeVolver=" + hay);
+    }
+
+    private void avisarAtras(String evento, JSObject datos) {
+        PluginHandle handle = this.bridge != null ? this.bridge.getPlugin("AtrasPredictivo") : null;
+        if (handle == null || !(handle.getInstance() instanceof AtrasPredictivoPlugin)) {
+            Log.w(AtrasPredictivoPlugin.ETIQUETA, "gesto '" + evento + "' sin el plugin AtrasPredictivo: la web no se entera");
+            return;
+        }
+        ((AtrasPredictivoPlugin) handle.getInstance()).avisar(evento, datos);
     }
 
     @Override
@@ -80,7 +144,14 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(IdiomaAppPlugin.class);
         // -tarea 88- El control por gestos -GestosPlugin.java-.
         registerPlugin(GestosPlugin.class);
+        // -atrás predictivo- El puente del gesto de atrás con la web -AtrasPredictivoPlugin.java-.
+        registerPlugin(AtrasPredictivoPlugin.class);
         super.onCreate(savedInstanceState);
+
+        // DESPUÉS de super.onCreate, a propósito: ahí adentro se arma el puente y AppPlugin de
+        // Capacitor registra su propio callback en load(). El despachador le da el gesto al ÚLTIMO
+        // callback activo que se agregó, así que este queda por encima del de Capacitor.
+        getOnBackPressedDispatcher().addCallback(this, atrasPredictivo);
 
         if (this.bridge != null && this.bridge.getWebView() != null) {
             this.bridge.getWebView().setBackgroundColor(android.graphics.Color.TRANSPARENT);

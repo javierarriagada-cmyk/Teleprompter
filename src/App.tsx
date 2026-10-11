@@ -23,7 +23,10 @@ import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
 import CuentaRegresiva from './components/CuentaRegresiva'
 import { Entrada } from './components/Entrada'
-import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
+// -atrás predictivo, 11-10-2026- Suma CURVA_SALE: la pantalla que se va al confirmar el gesto. Antes:
+// import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
+import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_SALE, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
+import { pluginAtras, hayAdondeVolver as hayAdondeVolverAtras, conAnimacionAtras, leerBorde, leerAvance, escalaAtras, corrimientoAtras, type BordeAtras, type EstadoAtras } from './lib/atrasPredictivo'
 import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo, alNegarseLaCamara, estabilizacionSoportada } from './lib/camara'
 import { obtenerEspacioLibre, escucharMediciones } from './lib/archivosNativos'
 import { calcularMinutosDisponibles } from './lib/espacio'
@@ -157,11 +160,24 @@ export default function App({ motor, repoOverride }: AppProps) {
     return 3
   }
 
+  // -atrás predictivo, 11-10-2026- La vuelta que llega de un gesto de atrás confirmado con animación
+  // -ver el cableado del gesto, junto a handleVolverAtras-. La consume el efecto de abajo en el cambio
+  // de vista que ese mismo gesto provoca.
+  const vueltaPredictivaRef = useRef<boolean>(false)
+
   useEffect(() => {
     if (prevVistaRef.current !== null && prevVistaRef.current !== vista) {
       const prevNivel = getNivelVista(prevVistaRef.current)
       const actualNivel = getNivelVista(vista)
-      setDireccion(actualNivel >= prevNivel ? 'adentro' : 'atras')
+      // -atrás predictivo- Si la vuelta llegó del gesto y el destino es la biblioteca, la biblioteca ya
+      // estaba a la vista detrás de la pantalla que se fue: no vuelve a entrar. Con su entrada de
+      // siempre -pantallaEntraAtras, desde opacidad 0- se apagaba y se volvía a prender. La vuelta al
+      // editor desde Leer o Grabar abiertos desde él entra como siempre: el editor no estaba detrás.
+      // Antes: setDireccion(actualNivel >= prevNivel ? 'adentro' : 'atras')
+      if (!(vueltaPredictivaRef.current && vista === 'biblioteca')) {
+        setDireccion(actualNivel >= prevNivel ? 'adentro' : 'atras')
+      }
+      vueltaPredictivaRef.current = false
     }
     prevVistaRef.current = vista
   }, [vista])
@@ -1000,6 +1016,10 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   // Referencia para la función que cierra el modal abierto si existe
   const cerrarModalRef = useRef<(() => boolean) | null>(null)
+  // -atrás predictivo, 11-10-2026- Si la biblioteca tiene abierto un menú, el modo selección o su panel
+  // del corpus: lo que su cerrarModalRef cerraría. Llega por el mismo registro -onRegistrarCerrarModal- y
+  // decide si hay adónde volver: en la biblioteca, con algo de eso abierto, el atrás lo cierra.
+  const [menuBibliotecaAbierto, setMenuBibliotecaAbierto] = useState<boolean>(false)
   // Tarea 102 PASO 2: menus / Acerca / Licencias dentro de Ajustes consumen atras primero.
   const cerrarDentroAjustesRef = useRef<(() => boolean) | null>(null)
 
@@ -1871,27 +1891,235 @@ export default function App({ motor, repoOverride }: AppProps) {
   // comprobara que estuviera conectada al gesto: borrando el addListener de abajo,
   // el gesto quedaba muerto y T188 seguia verde. La prueba finge el plugin -ver el
   // vi.mock de pantallas.test.tsx- y captura ESTE listener.
+  //
+  // -atrás predictivo, 11-10-2026- UN SOLO CAMINO PARA RECIBIR EL GESTO. El 'backButton' de Capacitor
+  // entregaba el gesto recién al soltar: no había con qué animar mientras el dedo se desliza. Ahora el
+  // único receptor es el OnBackPressedCallback de MainActivity.java, que pasa por el plugin
+  // AtrasPredictivo -lib/atrasPredictivo.ts- el inicio, el avance, el cancelado y el confirmado. El
+  // confirmado corre handleVolverAtras, el mismo de siempre. El listener de abajo queda comentado: si
+  // siguiera, con el manejo de Capacitor apagado no le llegaría nada, y prendido correría
+  // handleVolverAtras por segunda vez en cada atrás. Las pruebas ahora fingen ese plugin y capturan
+  // los oyentes de ESTE efecto -pantallas.test.tsx, tarea102.test.tsx, atrasPredictivo.test.tsx-.
+  // Antes:
+  // useEffect(() => {
+  //   let listenerHandle: any = null
+  //   const handler = () => {
+  //     if (handleVolverAtrasRef.current) {
+  //       handleVolverAtrasRef.current()
+  //     }
+  //   }
+  //
+  //   const sub = CapacitorApp.addListener('backButton', handler)
+  //   if (sub && typeof sub.then === 'function') {
+  //     sub.then((h: any) => { listenerHandle = h })
+  //   } else {
+  //     listenerHandle = sub
+  //   }
+  //
+  //   return () => {
+  //     if (listenerHandle && typeof listenerHandle.remove === 'function') {
+  //       listenerHandle.remove()
+  //     }
+  //   }
+  // }, [])
+
+  // LO QUE DECIDE EL ATRÁS. Lo mismo que recorre handleVolverAtras, en el mismo orden: primero lo abierto
+  // -diálogos, el menú de la biblioteca, Ajustes, el panel del corpus, el visor-, después la toma, después
+  // la vista. Con esto se sabe si hay adónde volver y si el gesto se anima.
+  const estadoAtras: EstadoAtras = {
+    vista,
+    algoAbierto: mostrarDialogoMicrofono || mostrarDialogoCamara || menuBibliotecaAbierto || ajustesAbiertos
+      || mostrarPanelCorpus || grabacionAbierta !== null,
+    tomaAndando: estadoToma === 'leyendo' || isRecording || cuentaRegresiva !== null,
+    movimientoApagado: movimientoApagado()
+  }
+  const estadoAtrasRef = useRef<EstadoAtras>(estadoAtras)
+  estadoAtrasRef.current = estadoAtras
+  const hayAdondeVolver = hayAdondeVolverAtras(estadoAtras)
+
+  // De la web al nativo: cada vez que cambia algo que decide si hay adónde volver -la vista, abrir o
+  // cerrar Ajustes, un menú, el visor-. Con false, en la biblioteca sin nada abierto, nadie recibe el
+  // gesto y Android hace su propia animación de volver al inicio del teléfono: reemplaza al
+  // CapacitorApp.exitApp de handleVolverAtras, que queda solo por si el aviso no llegó a tiempo.
   useEffect(() => {
-    let listenerHandle: any = null
-    const handler = () => {
-      if (handleVolverAtrasRef.current) {
-        handleVolverAtrasRef.current()
+    const p = pluginAtras()
+    if (!p) return
+    p.hayAdondeVolver({ hay: hayAdondeVolver })
+      .then(() => console.info('[atras]', `hayAdondeVolver=${hayAdondeVolver}`))
+      .catch((e: unknown) => console.warn('[atras]', `hayAdondeVolver=${hayAdondeVolver} no llegó al nativo:`, e))
+  }, [hayAdondeVolver])
+
+  // EL GESTO MIENTRAS EL DEDO SE DESLIZA. Solo existe cuando se anima -conAnimacionAtras-: desde el
+  // editor, o desde Leer o Grabar en LISTO. desde: la vista donde empezó; los estilos se aplican solo
+  // ahí, así la pantalla que llega después de confirmar no hereda el marco del gesto.
+  //   arrastre  sigue al dedo, sin transición;
+  //   volviendo se canceló: vuelve a su lugar con la curva de la app y después se suelta;
+  //   yendose   se confirmó: termina de irse y recién ahí corre handleVolverAtras.
+  // editor: el editor vive en el flujo de la página y tiene una barra fija -BarraLeerGrabar-; achicarlo
+  // en su lugar dejaba la barra pegada al fondo del guion. Mientras dura el gesto pasa a un marco fijo
+  // del tamaño de la pantalla -ver el render- y esto es dónde estaba, para que no se mueva al pasar.
+  type GestoAtras = {
+    desde: Vista
+    borde: BordeAtras
+    avance: number
+    fase: 'arrastre' | 'volviendo' | 'yendose'
+    editor: { arriba: number; izquierda: number; ancho: number; altoHueco: number } | null
+  }
+  const [gestoAtras, setGestoAtras] = useState<GestoAtras | null>(null)
+  const gestoAtrasRef = useRef<GestoAtras | null>(null)
+  gestoAtrasRef.current = gestoAtras
+  const huecoEditorRef = useRef<HTMLDivElement | null>(null)
+  const marcoEditorRef = useRef<HTMLDivElement | null>(null)
+  const timerGestoAtrasRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // Entre el confirmado animado y el final de handleVolverAtras: un confirmado repetido no vuelve dos veces.
+  const volviendoPorGestoRef = useRef<boolean>(false)
+
+  // Del nativo a la web. Un solo efecto, una sola vez, como el 'backButton' de antes.
+  useEffect(() => {
+    const p = pluginAtras()
+    if (!p) return
+    // El manejo propio de Capacitor queda apagado: si no, el gesto llega por los dos lados y
+    // handleVolverAtras corre dos veces. Si esto falla, se dice. Va dentro de una promesa para que un
+    // fallo al llamar -no solo al responder- también termine en el aviso y no tumbe la pantalla.
+    Promise.resolve()
+      .then(() => CapacitorApp.toggleBackButtonHandler({ enabled: false }))
+      .then(() => console.info('[atras] el atrás de Capacitor quedó apagado'))
+      .catch((e: unknown) => console.warn('[atras] no se pudo apagar el atrás de Capacitor: el gesto podría llegar dos veces', e))
+
+    const soltarTimer = () => {
+      if (timerGestoAtrasRef.current !== null) {
+        clearTimeout(timerGestoAtrasRef.current)
+        timerGestoAtrasRef.current = null
       }
     }
 
-    const sub = CapacitorApp.addListener('backButton', handler)
-    if (sub && typeof sub.then === 'function') {
-      sub.then((h: any) => { listenerHandle = h })
-    } else {
-      listenerHandle = sub
+    // La vuelta, por el camino de siempre. predictiva: llega de un gesto animado que ya mostró lo de detrás.
+    const volver = async (predictiva: boolean) => {
+      vueltaPredictivaRef.current = predictiva
+      // Desde el editor se vio la biblioteca desde arriba: que quede así al llegar. El editor está en su
+      // marco fijo y transparente, y el hueco sostiene el alto de la página: subir no se ve.
+      if (predictiva && gestoAtrasRef.current?.desde === 'editor') {
+        const raiz = document.scrollingElement || document.documentElement
+        raiz.scrollTop = 0
+      }
+      try {
+        await handleVolverAtrasRef.current()
+      } catch (e) {
+        console.warn('[atras] handleVolverAtras falló:', e)
+      } finally {
+        volviendoPorGestoRef.current = false
+        setGestoAtras(null)
+      }
     }
+
+    const alIniciar = (d: unknown) => {
+      soltarTimer()
+      vueltaPredictivaRef.current = false
+      const e = estadoAtrasRef.current
+      if (!conAnimacionAtras(e)) {
+        console.info('[atras]', `inicio sin animación vista=${e.vista} abierto=${e.algoAbierto} toma=${e.tomaAndando} movimientoApagado=${e.movimientoApagado}`)
+        setGestoAtras(null)
+        return
+      }
+      let editor: GestoAtras['editor'] = null
+      if (e.vista === 'editor') {
+        const previo = gestoAtrasRef.current
+        const el = marcoEditorRef.current?.firstElementChild as HTMLElement | null | undefined
+        if (previo && previo.desde === 'editor' && previo.editor) {
+          // Un gesto nuevo mientras el anterior todavía vuelve: el editor ya está en el marco, y medirlo
+          // ahí daría su lugar achicado. Vale el de antes.
+          editor = previo.editor
+        } else if (el && huecoEditorRef.current) {
+          const r = el.getBoundingClientRect()
+          editor = { arriba: r.top, izquierda: r.left, ancho: r.width, altoHueco: huecoEditorRef.current.getBoundingClientRect().height }
+        } else {
+          console.warn('[atras] inicio en el editor sin el editor montado: sin animación')
+          return
+        }
+      }
+      setGestoAtras({ desde: e.vista, borde: leerBorde(d), avance: 0, fase: 'arrastre', editor })
+    }
+
+    const alAvanzar = (d: unknown) => {
+      const avance = leerAvance(d)
+      if (avance === null) {
+        console.warn('[atras] avance descartado: no es un número', d)
+        return
+      }
+      setGestoAtras((g) => (g && g.fase === 'arrastre' ? { ...g, avance } : g))
+    }
+
+    // Sin mirar gestoAtrasRef: un cancelado que llega antes de que el inicio se dibuje igual tiene que
+    // soltar el marco. Sin gesto, el temporizador solo deja null donde ya había null.
+    const alCancelar = () => {
+      setGestoAtras((g) => (g ? { ...g, avance: 0, fase: 'volviendo' } : g))
+      soltarTimer()
+      timerGestoAtrasRef.current = setTimeout(() => {
+        timerGestoAtrasRef.current = null
+        setGestoAtras(null)
+      }, MS_PANTALLA)
+    }
+
+    const alConfirmar = () => {
+      if (volviendoPorGestoRef.current) {
+        console.info('[atras] confirmado repetido mientras se vuelve: se ignora')
+        return
+      }
+      soltarTimer()
+      const g = gestoAtrasRef.current
+      // Sin animación -o si algo cambió desde el inicio y ya no corresponde-: como siempre, al soltar.
+      if (!g || g.fase !== 'arrastre' || !conAnimacionAtras(estadoAtrasRef.current)) {
+        setGestoAtras(null)
+        void handleVolverAtrasRef.current()
+        return
+      }
+      volviendoPorGestoRef.current = true
+      setGestoAtras({ ...g, fase: 'yendose' })
+      timerGestoAtrasRef.current = setTimeout(() => {
+        timerGestoAtrasRef.current = null
+        void volver(true)
+      }, MS_CHICO)
+    }
+
+    const escuchas = [
+      p.addListener('inicio', alIniciar),
+      p.addListener('avance', alAvanzar),
+      p.addListener('cancelado', alCancelar),
+      p.addListener('confirmado', alConfirmar)
+    ]
+    escuchas.forEach((escucha) => escucha.catch((e: unknown) => console.warn('[atras] no se pudo escuchar el gesto:', e)))
 
     return () => {
-      if (listenerHandle && typeof listenerHandle.remove === 'function') {
-        listenerHandle.remove()
-      }
+      soltarTimer()
+      escuchas.forEach((escucha) => {
+        escucha
+          .then((h) => h.remove())
+          .catch((e: unknown) => console.warn('[atras] no se pudo soltar la escucha del gesto:', e))
+      })
     }
   }, [])
+
+  // CÓMO SE VE LA PANTALLA QUE SE VA -lib/atrasPredictivo.ts, escalaAtras y corrimientoAtras-. Esquinas
+  // redondeadas con el radio grande del sistema, el mismo del recorte de revelarLectura. Volviendo: la
+  // curva de las pantallas -movimiento.tsx-; yéndose: la de salida, en el tiempo de algo chico.
+  const avanceVisibleAtras = (g: GestoAtras): number => (g.fase === 'yendose' ? 1 : g.fase === 'volviendo' ? 0 : g.avance)
+  const transicionAtras = (g: GestoAtras): string | null => (
+    g.fase === 'volviendo' ? `${MS_PANTALLA}ms ${CURVA_ENTRA}` : g.fase === 'yendose' ? `${MS_CHICO}ms ${CURVA_SALE}` : null
+  )
+  const estiloAtras = (g: GestoAtras): React.CSSProperties => {
+    const a = avanceVisibleAtras(g)
+    const ancho = typeof window !== 'undefined' ? window.innerWidth : 0
+    const t = transicionAtras(g)
+    return {
+      transform: `translateX(${corrimientoAtras(a, g.borde, ancho)}px) scale(${escalaAtras(a)})`,
+      borderRadius: 'var(--redondeo-grande)',
+      overflow: 'hidden',
+      opacity: g.fase === 'yendose' ? 0 : 1,
+      transition: t ? `transform ${t}, opacity ${t}` : 'none'
+    }
+  }
+  const gestoEnEditor = gestoAtras && gestoAtras.desde === 'editor' && vista === 'editor' ? gestoAtras : null
+  const gestoEnLectura = gestoAtras && gestoAtras.desde === 'lectura' && vista === 'lectura' ? gestoAtras : null
 
   // -24-09-2026: aca estaba handleClear -vaciar lo oido y reiniciar el seguidor-, sin uso desde
   // que la Tarea 34 saco el boton "Volver al inicio". Cuando B24 -detener a mitad: continuar o
@@ -2450,13 +2678,28 @@ export default function App({ motor, repoOverride }: AppProps) {
     </div>
   )
 
+  // EL BORDE DEL MARCO DE LA APP -atrás predictivo, 11-10-2026-: el relleno del contenedor de abajo, en un
+  // solo lugar. Lo usa también la biblioteca cuando queda debajo del editor, fuera del flujo: así detrás se
+  // ve donde va a quedar al volver.
+  const bordeMarco = {
+    arriba: 'calc(16px + env(safe-area-inset-top, 0px))',
+    abajo: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+    izquierda: 'calc(16px + env(safe-area-inset-left, 0px))',
+    derecha: 'calc(16px + env(safe-area-inset-right, 0px))'
+  }
+
   return (
     <div
       style={{
-        paddingTop: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-top, 0px))',
-        paddingBottom: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-bottom, 0px))',
-        paddingLeft: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-left, 0px))',
-        paddingRight: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-right, 0px))',
+        // Antes, con el borde escrito acá:
+        // paddingTop: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-top, 0px))',
+        // paddingBottom: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-bottom, 0px))',
+        // paddingLeft: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-left, 0px))',
+        // paddingRight: vista === 'lectura' ? 0 : 'calc(16px + env(safe-area-inset-right, 0px))',
+        paddingTop: vista === 'lectura' ? 0 : bordeMarco.arriba,
+        paddingBottom: vista === 'lectura' ? 0 : bordeMarco.abajo,
+        paddingLeft: vista === 'lectura' ? 0 : bordeMarco.izquierda,
+        paddingRight: vista === 'lectura' ? 0 : bordeMarco.derecha,
         // SIN fontFamily AQUI, A PROPOSITO.
         //
         // Esta linea decia fontFamily: 'sans-serif' -la palabra generica- y pisaba
@@ -2513,7 +2756,15 @@ export default function App({ motor, repoOverride }: AppProps) {
         />
       )}
 
-      {(vista === 'biblioteca' || (vista === 'lectura' && origenLecturaRef.current === 'biblioteca')) && (
+      {/* -atrás predictivo, 11-10-2026- LA BIBLIOTECA QUEDA MONTADA DEBAJO DEL EDITOR, igual que queda debajo
+          de Leer y Grabar cuando se llegó desde ella: es lo que se ve detrás mientras el dedo desliza el
+          atrás desde el editor. Ahí no recibe toques -pointerEvents none-, TalkBack no la ve -aria-hidden- y
+          sale del flujo de la página -position fixed, con el borde del marco-: el editor no se corre. Fuera
+          del gesto está escondida -visibility hidden-: el editor no tiene fondo propio y se vería a través.
+          Desde Leer o Grabar abiertos desde el editor, detrás se ve el fondo de la app: el editor no queda
+          montado.
+          Antes: {(vista === 'biblioteca' || (vista === 'lectura' && origenLecturaRef.current === 'biblioteca')) && ( */}
+      {(vista === 'biblioteca' || vista === 'editor' || (vista === 'lectura' && origenLecturaRef.current === 'biblioteca')) && (
         <Pantalla direccion={direccion}>
           <BibliotecaView
             guiones={guionesResumen.filter((g) => !idsPendientesBorrado.includes(g.id))}
@@ -2531,7 +2782,15 @@ export default function App({ motor, repoOverride }: AppProps) {
             tema={tema}
             setTema={setTema}
             onAbrirAjustes={() => handleAbrirAjustes('portada')}
-            onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
+            // -atrás predictivo- Con la biblioteca debajo del editor, su cierre no se registra: en el editor
+            // cerrarModalRef queda vacío, como cuando la biblioteca se desmontaba, y un menú olvidado ahí
+            // abajo no se traga el atrás. Junto con el cierre llega si hay algo abierto -lib/atrasPredictivo-.
+            // Antes: onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
+            onRegistrarCerrarModal={vista === 'editor' ? undefined : (fn, hayAbierto) => {
+              cerrarModalRef.current = fn
+              setMenuBibliotecaAbierto(hayAbierto === true)
+            }}
+            aria-hidden={vista === 'editor' ? true : undefined}
             grabaciones={grabaciones}
             onAbrirGrabacion={(g) => setGrabacionAbierta(g)}
             onBorrarGrabacion={async (id) => {
@@ -2550,18 +2809,67 @@ export default function App({ motor, repoOverride }: AppProps) {
               // La biblioteca se oscurece MIENTRAS crece la ventana, no de golpe: un
               // apagon instantaneo se lee como un corte, que es justo lo que la
               // transformacion existe para evitar.
-              filter: vista === 'lectura' ? 'brightness(0.15)' : 'none',
+              // -atrás predictivo- Mientras el dedo desliza el atrás desde LISTO, la biblioteca se aclara
+              // con el avance: es lo que se ve detrás, y a 0.15 casi no se veía. Arrastrando, sin
+              // transición -sigue al dedo-; al cancelar o confirmar, con la de la pantalla que se mueve.
+              // Antes: filter: vista === 'lectura' ? 'brightness(0.15)' : 'none',
+              filter: vista === 'lectura'
+                ? `brightness(${gestoEnLectura ? 0.15 + 0.85 * avanceVisibleAtras(gestoEnLectura) : 0.15})`
+                : 'none',
               display: (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && vista === 'lectura') ? 'none' : undefined,
-              transition: movimientoApagado() ? 'none' : `filter ${MS_PANTALLA}ms ${CURVA_ENTRA}`,
-              pointerEvents: vista === 'lectura' ? 'none' : 'auto'
+              // Antes: transition: movimientoApagado() ? 'none' : `filter ${MS_PANTALLA}ms ${CURVA_ENTRA}`,
+              transition: movimientoApagado()
+                ? 'none'
+                : gestoEnLectura
+                  ? (transicionAtras(gestoEnLectura) ? `filter ${transicionAtras(gestoEnLectura)}` : 'none')
+                  : `filter ${MS_PANTALLA}ms ${CURVA_ENTRA}`,
+              // Antes: pointerEvents: vista === 'lectura' ? 'none' : 'auto'
+              pointerEvents: vista !== 'biblioteca' ? 'none' : 'auto',
+              ...(vista === 'editor'
+                ? {
+                    position: 'fixed',
+                    top: bordeMarco.arriba,
+                    left: bordeMarco.izquierda,
+                    right: bordeMarco.derecha,
+                    visibility: gestoEnEditor ? 'visible' : 'hidden'
+                  }
+                : {})
             }}
           />
         </Pantalla>
       )}
 
+      {/* -atrás predictivo, 11-10-2026- EL EDITOR EN SU MARCO MIENTRAS DURA EL GESTO. El editor vive en el
+          flujo de la página -la página entera es la que se desplaza- y su barra de Leer y Grabar es fija:
+          achicar el editor en su lugar dejaría la barra pegada al fondo del guion, porque un transform
+          vuelve a su caja la referencia de lo fijo -razonado, no probado: no hay teléfono en la nube-.
+          Mientras el dedo desliza, el marco pasa a fijo, del
+          tamaño de la pantalla, con el fondo de la app, y es él lo que se achica; el editor se queda donde
+          estaba -top, left y ancho medidos al empezar- y la barra queda abajo, en el marco. El hueco
+          sostiene el alto de la página para que el desplazamiento no se pierda: al cancelar, el editor
+          vuelve al flujo en el mismo lugar. Fuera del gesto, los dos divs no tienen estilo.
+          Antes, sin el hueco, sin el marco y sin el style de EditorView -las demás props, iguales-:
+          {vista === 'editor' && guionActual && (
+            <Pantalla direccion={direccion}>
+              <EditorView
+                guion={guionActual}
+                ...
+              />
+            </Pantalla>
+          )} */}
       {vista === 'editor' && guionActual && (
+        <div ref={huecoEditorRef} style={gestoEnEditor?.editor ? { height: gestoEnEditor.editor.altoHueco } : undefined}>
+        <div
+          ref={marcoEditorRef}
+          style={gestoEnEditor
+            ? { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'var(--bg-suelo)', ...estiloAtras(gestoEnEditor) }
+            : undefined}
+        >
         <Pantalla direccion={direccion}>
           <EditorView
+            style={gestoEnEditor?.editor
+              ? { position: 'absolute', top: gestoEnEditor.editor.arriba, left: gestoEnEditor.editor.izquierda, width: gestoEnEditor.editor.ancho, margin: 0 }
+              : undefined}
             guion={guionActual}
             onChangeGuion={(nuevoG) => {
               guionModificadoRef.current = true
@@ -2596,6 +2904,8 @@ export default function App({ motor, repoOverride }: AppProps) {
             onAbrirToma={(g) => setGrabacionAbierta(g)}
           />
         </Pantalla>
+        </div>
+        </div>
       )}
 
       {vista === 'lectura' && guionActual && (
@@ -2627,7 +2937,11 @@ export default function App({ motor, repoOverride }: AppProps) {
             '--tarjeta-arriba': huecoEntrada ? `${huecoEntrada.arriba}px` : '0px',
             '--tarjeta-derecha': huecoEntrada ? `${huecoEntrada.derecha}px` : '0px',
             '--tarjeta-abajo': huecoEntrada ? `${huecoEntrada.abajo}px` : '0px',
-            '--tarjeta-izquierda': huecoEntrada ? `${huecoEntrada.izquierda}px` : '0px'
+            '--tarjeta-izquierda': huecoEntrada ? `${huecoEntrada.izquierda}px` : '0px',
+            // -atrás predictivo, 11-10-2026- Mientras el dedo desliza el atrás desde LISTO, la lectura se
+            // achica: ya es fija y del tamaño de la pantalla, así que lo fijo de adentro no se mueve.
+            // Detrás, la biblioteca si se llegó desde ella; si no, el fondo de la app.
+            ...(gestoEnLectura ? estiloAtras(gestoEnLectura) : {})
           } as React.CSSProperties}
         >
           {estadoToma === 'leyendo' && controlesVisibles && (

@@ -38,7 +38,10 @@ interface BibliotecaViewProps {
   // 28-09-2026, tarea 77: el engranaje abre la pantalla de Ajustes, no el
   // cajon de tema e idioma. El cajon menu-superior-biblioteca se fue.
   onAbrirAjustes?: () => void
-  onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
+  // -atrás predictivo, 11-10-2026- Junto con el cierre va si hay algo abierto que ese cierre cerraría: App
+  // lo necesita para decirle al nativo si hay adónde volver. Antes:
+  // onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
+  onRegistrarCerrarModal?: (fn: (() => boolean) | null, hayAbierto?: boolean) => void
   // LA TIRA DE GRABACIONES vive aca, debajo de los guiones, y no en una
   // pantalla aparte: el video al lado del guion que lo produjo.
   grabaciones?: ResumenGrabacion[]
@@ -47,6 +50,8 @@ interface BibliotecaViewProps {
   // -tarea 94- el tacho de la selección. App esconde la lista al tiro y borra los archivos a los 5 s.
   onBorrarTomas?: (ids: string[]) => void
   'data-pantalla-direccion'?: string
+  // -atrás predictivo- Debajo del editor la biblioteca queda montada pero TalkBack no la ve.
+  'aria-hidden'?: boolean
   style?: React.CSSProperties
   onAnimationEnd?: (e: React.AnimationEvent) => void
 }
@@ -534,6 +539,7 @@ export default function BibliotecaView({
   onBorrarGrabacion,
   onBorrarTomas,
   'data-pantalla-direccion': dataPantallaDireccion,
+  'aria-hidden': ariaHidden,
   style,
   onAnimationEnd
 }: BibliotecaViewProps) {
@@ -558,6 +564,12 @@ export default function BibliotecaView({
   // ahí, no entran de nuevo.
   const [desplegada, setDesplegada] = useState<boolean>(listaDesplegadaEnSesion)
   const [animarDespliegue, setAnimarDespliegue] = useState(false)
+  // -atrás predictivo, 11-10-2026- Debajo del editor la biblioteca ya no se desmonta, y animarDespliegue
+  // ya no vuelve solo a false al montarse de nuevo. Vuelve acá, al quedar tapada: al volver de un guion
+  // con la lista desplegada, las filas están ahí, no entran de nuevo -T76-4, tarea76.test.tsx-.
+  useEffect(() => {
+    if (ariaHidden) setAnimarDespliegue(false)
+  }, [ariaHidden])
   const idLista = useId()
   const refTituloGuiones = useRef<HTMLDivElement | null>(null)
   const refVerTodos = useRef<HTMLButtonElement | null>(null)
@@ -721,7 +733,8 @@ export default function BibliotecaView({
         }
         // 28-09-2026: el cajon de la portada se fue. Ajustes lo cierra App: es capa de App.
         return false
-      })
+      // -atrás predictivo- Lo mismo que mira el cierre de arriba. Antes: })
+      }, menuId !== null || mostrarPanelCorpus || seleccionTomas !== null)
     }
     return () => {
       if (onRegistrarCerrarModal) {
@@ -747,6 +760,7 @@ export default function BibliotecaView({
   return (
     <div
       data-pantalla-direccion={dataPantallaDireccion}
+      aria-hidden={ariaHidden}
       onAnimationEnd={onAnimationEnd}
       style={{ padding: 'var(--aire-4)', maxWidth: 800, margin: '0 auto', position: 'relative', minHeight: '80vh', ...style }}
     >
