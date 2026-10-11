@@ -1,10 +1,15 @@
 import React from 'react'
 import { describe, expect, test } from 'vitest'
-import { render, cleanup } from '@testing-library/react'
+// Antes: import { render, cleanup } from '@testing-library/react'
+// -segunda vuelta- act, para escribir y pegar en el editor.
+import { render, cleanup, act } from '@testing-library/react'
+import type { Editor } from '@tiptap/react'
 import TeleprompterView from '../components/TeleprompterView'
 import { EditorGuion } from '../components/EditorGuion'
 import { PASOS_LETRA, columnaLectura, rellenoLecturaDePie } from '../components/estiloLectura'
-import { cortarRenglones, ModoEspacios, SANGRIA_PRIMERA_LINEA_PX, ESPACIOS_LECTURA, ESPACIOS_EDITOR } from '../lib/cortesDeRenglon'
+// Antes: import { cortarRenglones, ModoEspacios, SANGRIA_PRIMERA_LINEA_PX, ESPACIOS_LECTURA, ESPACIOS_EDITOR } from '../lib/cortesDeRenglon'
+// -segunda vuelta- también el margen de las acotaciones y las ligaduras.
+import { cortarRenglones, ModoEspacios, SANGRIA_PRIMERA_LINEA_PX, ESPACIOS_LECTURA, ESPACIOS_EDITOR, MARGEN_ACOTACION_PX, LIGADURAS_TEXTO } from '../lib/cortesDeRenglon'
 import { Guion } from '../datos/modelo'
 
 // EL EDITOR CORTA LOS RENGLONES EN LA MISMA PALABRA QUE LA LECTURA -editor-ancho-texto, 11-10-2026-.
@@ -130,4 +135,101 @@ describe('editor-ancho-texto: el editor corta los renglones como la lectura', ()
       })
     }
   }
+})
+
+// SEGUNDA VUELTA -11-10-2026, aprobada por Javier-: las tres diferencias que quedaban. Las acotaciones
+// con el mismo margen, las ligaduras apagadas en los dos y los espacios repetidos juntados en el editor.
+
+function editorDePrueba(texto: string) {
+  const guardado = { texto }
+  const ref: { current: Editor | null } = { current: null }
+  const v = render(
+    <EditorGuion texto={texto} tramos={[]} onCambio={(t) => { guardado.texto = t }} onSeleccion={() => {}} editorRef={ref} placeholder=""
+      fontSize={32} tipoFuente="sans" colorFondo="#000000" colorLetra="#FFFFFF" columnaAngosta={false} marginPercent={5} />
+  )
+  return { v, guardado, editor: ref.current! }
+}
+
+describe('editor-ancho-texto, segunda vuelta: acotaciones, ligaduras y espacios', () => {
+  test('una acotación cerca del borde baja en los dos: el mismo margen a cada lado en el editor y en la lectura', () => {
+    const texto = 'Hola (pausa) sigo'
+    const lec = render(<TeleprompterView script={guion(texto)} currentLineIndex={0} currentWordIndex={0} fontSize={32} marginPercent={5} columnaAngosta={false} />)
+    const span = lec.container.querySelector<HTMLElement>('.acotacion-lectura')!
+    const margenLectura = parseFloat(span.style.marginLeft)
+    expect(span.style.marginRight).toBe(span.style.marginLeft)
+    cleanup()
+
+    const { editor } = editorDePrueba(texto)
+    const pm = editor.view.dom as HTMLElement
+    const izq = pm.querySelector<HTMLElement>('[style*="margin-left"]')!
+    const der = pm.querySelector<HTMLElement>('[style*="margin-right"]')!
+    // El margen va en la primera y en la última letra de la acotación, no en cada corte de formato.
+    expect(izq.textContent).toBe('(')
+    expect(der.textContent).toBe(')')
+    const margenEditor = parseFloat(izq.style.marginLeft)
+    expect(parseFloat(der.style.marginRight)).toBe(margenEditor)
+    cleanup()
+
+    expect(margenLectura).toBe(MARGEN_ACOTACION_PX)
+    expect(margenEditor).toBe(MARGEN_ACOTACION_PX)
+
+    // «Hola (pausa)» cabe justo sin margen y no con los 2 + 2 px: la acotación baja.
+    const letra = 32
+    const o = { ancho: medir('Hola (pausa)', letra) + 2, letra, medir, sangriaPrimeraLinea: 0 }
+    const enLectura = cortarRenglones(texto, { ...o, espacios: ESPACIOS_LECTURA, margenAcotacion: margenLectura })
+    const enEditor = cortarRenglones(texto, { ...o, espacios: ESPACIOS_EDITOR, margenAcotacion: margenEditor })
+    expect(enLectura).toEqual(['Hola', '(pausa) sigo'])
+    expect(enEditor).toEqual(enLectura)
+    // Antes, sin margen en el editor, la acotación se quedaba arriba.
+    expect(cortarRenglones(texto, { ...o, espacios: ESPACIOS_EDITOR, margenAcotacion: 0 })).toEqual(['Hola (pausa)', 'sigo'])
+  })
+
+  test('las ligaduras: la misma propiedad y el mismo valor en la lectura y en el editor', () => {
+    const lec = render(<TeleprompterView script={guion(TEXTO)} currentLineIndex={0} currentWordIndex={0} fontSize={32} marginPercent={5} columnaAngosta={false} />)
+    const enLectura = lec.getByTestId('columna-texto').style.fontVariantLigatures
+    cleanup()
+    const { editor } = editorDePrueba(TEXTO)
+    const enEditor = (editor.view.dom as HTMLElement).style.fontVariantLigatures
+    cleanup()
+    expect(enLectura).toBe(LIGADURAS_TEXTO)
+    expect(enEditor).toBe(LIGADURAS_TEXTO)
+    expect(LIGADURAS_TEXTO).toBe('none')
+  })
+
+  test('dos o más espacios seguidos quedan en uno al escribir y al pegar, sin tocar los párrafos, y cortan como la lectura', () => {
+    const { editor, guardado } = editorDePrueba('Hola')
+    const vista = editor.view
+    // Escribir letra por letra, como el teclado: cada letra pasa por handleTextInput.
+    const escribir = (t: string) => {
+      for (const c of t) {
+        act(() => {
+          const { from, to } = vista.state.selection
+          const deflt = () => vista.state.tr.insertText(c, from, to)
+          const hecho = vista.someProp('handleTextInput', (f) => f(vista, from, to, c, deflt))
+          if (!hecho) vista.dispatch(deflt())
+        })
+      }
+    }
+    act(() => { editor.commands.setTextSelection(vista.state.doc.content.size - 1) })
+    escribir('  ,  hoy   les  quiero')
+    expect(guardado.texto).toBe('Hola , hoy les quiero')
+
+    // jsdom no tiene ClipboardEvent: va un evento de pegar común.
+    // Pegar texto: los espacios repetidos se juntan, también contra el espacio que ya estaba, y los
+    // saltos de línea quedan como párrafos -la línea en blanco también-.
+    escribir(' ')
+    act(() => { vista.pasteText('  contar   por qué\n\nempecé  a    grabar mis propios videos', new Event('paste') as ClipboardEvent) })
+    expect(guardado.texto).toBe('Hola , hoy les quiero contar por qué\n\nempecé a grabar mis propios videos')
+    expect(guardado.texto).not.toMatch(/ {2,}/)
+    cleanup()
+
+    // Lo guardado corta igual en el editor -pre-wrap- que en la lectura -normal-, con cualquier ancho.
+    for (const a of ANCHOS) {
+      for (const letra of PASOS_LETRA) {
+        const ancho = anchoColumna(a.marginPercent, a.columnaAngosta, letra)
+        const o = { ancho, letra, medir, sangriaPrimeraLinea: SANGRIA_PRIMERA_LINEA_PX, margenAcotacion: MARGEN_ACOTACION_PX }
+        expect(cortarRenglones(guardado.texto, { ...o, espacios: ESPACIOS_EDITOR })).toEqual(cortarRenglones(guardado.texto, { ...o, espacios: ESPACIOS_LECTURA }))
+      }
+    }
+  })
 })

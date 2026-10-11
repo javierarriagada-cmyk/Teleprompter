@@ -2,7 +2,9 @@ import React, { useEffect, useRef } from 'react'
 import { useEditor, EditorContent, Editor, Mark, Extension } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { Placeholder } from '@tiptap/extensions'
-import { Plugin } from '@tiptap/pm/state'
+// Antes: import { Plugin } from '@tiptap/pm/state'
+// -segunda vuelta de editor-ancho-texto- EditorState y Transaction para juntar los espacios.
+import { Plugin, EditorState, Transaction } from '@tiptap/pm/state'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
 import { Slice, Fragment } from '@tiptap/pm/model'
 import { TramoFormato, DESTACADO } from '../datos/modelo'
@@ -11,7 +13,9 @@ import { REGEX_ACOTACION } from '../lib/acotaciones'
 // Antes: import { familiaLectura, colorLetraEfectiva, columnaLectura, colorDeTramo, colorSugerenciaLectura, INTERLINEADO_LECTURA } from './estiloLectura'
 import { familiaLectura, colorLetraEfectiva, columnaLectura, rellenoLecturaDePie, colorDeTramo, colorSugerenciaLectura, INTERLINEADO_LECTURA } from './estiloLectura'
 import useLayout from '../hooks/useLayout'
-import { SANGRIA_PRIMERA_LINEA_PX, ESPACIOS_EDITOR, primeraLineaConTexto } from '../lib/cortesDeRenglon'
+// Antes: import { SANGRIA_PRIMERA_LINEA_PX, ESPACIOS_EDITOR, primeraLineaConTexto } from '../lib/cortesDeRenglon'
+// -segunda vuelta- también el margen de las acotaciones, las ligaduras y juntar espacios.
+import { SANGRIA_PRIMERA_LINEA_PX, ESPACIOS_EDITOR, primeraLineaConTexto, MARGEN_ACOTACION_PX, LIGADURAS_TEXTO, juntarEspacios } from '../lib/cortesDeRenglon'
 
 // EL EDITOR DEL GUION, CON FORMATO DE VERDAD. 24-09-2026.
 //
@@ -76,6 +80,14 @@ const Acotaciones = Extension.create({
               for (const m of texto.matchAll(REGEX_ACOTACION)) {
                 const desde = pos + 1 + (m.index ?? 0)
                 decos.push(Decoration.inline(desde, desde + m[0].length, { class: 'acotacion-editor' }))
+                // EL MARGEN DE LA LECTURA -editor-ancho-texto, segunda vuelta, 11-10-2026-. En la lectura la
+                // acotación es un <span> con MARGEN_ACOTACION_PX a cada lado. Acá no va en .acotacion-editor:
+                // si dentro de la acotación hay negrita o color, ProseMirror parte la decoración en varios
+                // <span> y el margen saldría también en cada corte. Va solo en la primera letra -a la
+                // izquierda- y en la última -a la derecha-, como en la lectura.
+                const fin = desde + m[0].length
+                decos.push(Decoration.inline(desde, desde + 1, { style: `margin-left: ${MARGEN_ACOTACION_PX}px` }))
+                decos.push(Decoration.inline(fin - 1, fin, { style: `margin-right: ${MARGEN_ACOTACION_PX}px` }))
               }
               return false
             })
@@ -108,6 +120,66 @@ const PrimeraLinea = Extension.create({
             if (i < 0) return DecorationSet.empty
             const p = parrafos[i]
             return DecorationSet.create(state.doc, [Decoration.node(p.pos, p.pos + p.tam, { class: 'primera-linea-guion' })])
+          }
+        }
+      })
+    ]
+  }
+})
+
+// DOS O MÁS ESPACIOS SEGUIDOS SE GUARDAN COMO UNO -editor-ancho-texto, segunda vuelta, 11-10-2026,
+// aprobado por Javier-. La lectura junta los espacios al dibujar -white-space: normal- y el editor
+// -pre-wrap- los dibujaba todos, así que dos espacios seguidos cortaban distinto. Ahora el editor no
+// los deja pasar:
+//   - al escribir, handleTextInput -en EditorGuion- no agrega un espacio al lado de otro;
+//   - al pegar texto, transformPastedText lo junta antes de armar los párrafos;
+//   - y como red, este plugin junta lo que haya quedado -un pegado en HTML, un espacio pegado al
+//     borde de otro- después de cada cambio hecho a mano.
+// No toca los cambios mientras Gboard está componiendo una palabra -meta composition-: cambiar el
+// texto debajo de una composición la corta. Al terminar la composición se junta -compositionend-.
+// Tampoco los cambios que vienen de afuera sin aviso -preventUpdate, abrir un guion-: no se reescribe
+// un guion guardado solo por abrirlo. Los saltos de línea y los párrafos no se tocan: solo el
+// espacio común dentro de cada párrafo.
+function juntarEspaciosDelDocumento(estado: EditorState): Transaction | null {
+  const cortes: { desde: number; hasta: number }[] = []
+  estado.doc.descendants((node, pos) => {
+    if (!node.isTextblock) return true
+    // Los párrafos del guion son solo texto -sin saltos blandos-: cada letra es una posición.
+    const texto = node.textBetween(0, node.content.size, undefined, '\ufffc')
+    for (const m of texto.matchAll(/ {2,}/g)) {
+      const desde = pos + 1 + (m.index ?? 0) + 1
+      cortes.push({ desde, hasta: desde + m[0].length - 1 })
+    }
+    return false
+  })
+  if (cortes.length === 0) return null
+  const tr = estado.tr
+  // De atrás para adelante, para que las posiciones de los cortes que faltan no se muevan.
+  for (const c of cortes.reverse()) tr.delete(c.desde, c.hasta)
+  return tr
+}
+
+const JuntarEspacios = Extension.create({
+  name: 'juntarEspacios',
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        appendTransaction(trs, _antes, estado) {
+          if (!trs.some((t) => t.docChanged)) return null
+          if (trs.some((t) => t.getMeta('composition') != null || t.getMeta('preventUpdate'))) return null
+          return juntarEspaciosDelDocumento(estado)
+        },
+        props: {
+          handleDOMEvents: {
+            compositionend(vista) {
+              // ProseMirror termina de leer la composición después de este evento.
+              setTimeout(() => {
+                if (vista.isDestroyed || vista.composing) return
+                const tr = juntarEspaciosDelDocumento(vista.state)
+                if (tr) vista.dispatch(tr)
+              }, 0)
+              return false
+            }
           }
         }
       })
@@ -175,6 +247,7 @@ export function EditorGuion({
       Destacado,
       Acotaciones,
       PrimeraLinea,
+      JuntarEspacios,
       Placeholder.configure({ placeholder })
     ],
     content: aDocumento(texto, tramos),
@@ -184,6 +257,27 @@ export function EditorGuion({
       // linea en blanco llegan pegados- y esa linea en blanco se perdia. Aca
       // cada salto abre un parrafo, vacio si la linea lo esta: pegar deja el
       // texto igual que como lo guardaba el textarea.
+      // -segunda vuelta de editor-ancho-texto- Al pegar, dos o más espacios seguidos quedan en uno.
+      // Solo los espacios: los saltos de línea siguen y clipboardTextParser arma los párrafos.
+      transformPastedText(texto) {
+        return juntarEspacios(texto)
+      },
+      // -segunda vuelta- Al escribir, un espacio al lado de otro no entra -JuntarEspacios, arriba-.
+      // Mientras Gboard compone no se toca: lo junta el plugin al terminar la composición.
+      handleTextInput(vista, desde, hasta, texto) {
+        if (vista.composing || !texto.includes(' ')) return false
+        const { doc } = vista.state
+        const antes = doc.textBetween(Math.max(doc.resolve(desde).start(), desde - 1), desde)
+        const despues = doc.textBetween(hasta, Math.min(doc.resolve(hasta).end(), hasta + 1))
+        let limpio = juntarEspacios(texto)
+        if (antes === ' ') limpio = limpio.replace(/^ /, '')
+        if (despues === ' ') limpio = limpio.replace(/ $/, '')
+        if (limpio === texto) return false
+        // Con limpio vacío y sin selección no se escribe nada; con selección, se borra lo elegido.
+        if (limpio === '' && desde === hasta) return true
+        vista.dispatch(vista.state.tr.insertText(limpio, desde, hasta))
+        return true
+      },
       clipboardTextParser(texto, _contexto, _plano, vista) {
         const esquema = vista.state.schema
         const parrafos = texto.replace(/\r\n?/g, '\n').split('\n').map((linea) =>
@@ -210,7 +304,10 @@ export function EditorGuion({
         // espacios, el cursor y los párrafos. Va en línea porque la hoja de estilos de Tiptap se
         // inserta después de la nuestra y con la misma fuerza le ganaría a styles.css. El porqué de
         // pre-wrap y no normal está en lib/cortesDeRenglon.ts.
-        style: `white-space: ${ESPACIOS_EDITOR}`
+        // Antes: style: `white-space: ${ESPACIOS_EDITOR}`
+        // -segunda vuelta- con las ligaduras apagadas en línea, el mismo valor que la lectura
+        // -LIGADURAS_TEXTO-. Tiptap ya las apagaba; acá queda escrito que sale de la misma regla.
+        style: `white-space: ${ESPACIOS_EDITOR}; font-variant-ligatures: ${LIGADURAS_TEXTO}`
       }
     },
     onUpdate: ({ editor }) => {

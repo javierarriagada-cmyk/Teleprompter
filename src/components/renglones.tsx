@@ -3,6 +3,7 @@ import { Token } from '../lib/seguidor'
 import { TramoFormato, DESTACADO } from '../datos/modelo'
 import { colorDeTramo } from './estiloLectura'
 import { esCaracterApertura, esCaracterCierre } from '../lib/acotaciones'
+import { MARGEN_ACOTACION_PX } from '../lib/cortesDeRenglon'
 
 export function renderFormattedLine(
   linea: string,
@@ -118,7 +119,10 @@ export function renderFormattedLine(
                 opacity: 0.5,
                 fontStyle: 'italic',
                 color: '#aaa',
-                margin: '0 2px'
+                // Antes: margin: '0 2px'
+                // -editor-ancho-texto, segunda vuelta- El mismo valor, ahora compartido con el editor
+                // -MARGEN_ACOTACION_PX, lib/cortesDeRenglon.ts-. La lectura no cambia.
+                margin: `0 ${MARGEN_ACOTACION_PX}px`
               }}
             >
               {content}

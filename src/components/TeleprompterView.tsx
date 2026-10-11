@@ -4,7 +4,9 @@ import { tokenizarGuion, Token } from '../lib/seguidor'
 // Antes -hasta 2026-10-10-: import { Guion } from '../datos/modelo'
 import { Guion, contarPalabras, duracionDeLecturaReloj } from '../datos/modelo'
 import { agruparEnRenglones, indiceDeRenglon, Renglon, MedidaToken } from '../lib/renglones'
-import { SANGRIA_PRIMERA_LINEA_PX, primeraLineaConTexto } from '../lib/cortesDeRenglon'
+// Antes: import { SANGRIA_PRIMERA_LINEA_PX, primeraLineaConTexto } from '../lib/cortesDeRenglon'
+// -segunda vuelta- también las ligaduras.
+import { SANGRIA_PRIMERA_LINEA_PX, primeraLineaConTexto, LIGADURAS_TEXTO } from '../lib/cortesDeRenglon'
 import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
@@ -1655,6 +1657,10 @@ export default function TeleprompterView({
           data-testid="columna-texto"
           style={{
             fontSize,
+            // LAS LIGADURAS APAGADAS -editor-ancho-texto, segunda vuelta, 11-10-2026, aprobado por Javier-.
+            // El editor las tiene apagadas -Tiptap- y la lectura no: la misma palabra podía medir distinto
+            // y cortar en otro lugar. Misma propiedad y mismo valor que el editor -LIGADURAS_TEXTO-.
+            fontVariantLigatures: LIGADURAS_TEXTO,
             // 29-09-2026, tarea 82: de lado la columna completa se topa en 56ch -unos 51
             // caracteres a 800 y 55 a 844-; la angosta -22ch- no cambia.
             // 30-09-2026, tarea 83: en tableta, el mismo camino con el tope de la hoja -60ch en
