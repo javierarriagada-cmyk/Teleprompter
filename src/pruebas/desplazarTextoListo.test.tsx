@@ -3,6 +3,7 @@ import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import 'fake-indexeddb/auto'
 import App from '../App'
+import TeleprompterView from '../components/TeleprompterView'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { MotorFake } from '../motor/MotorFake'
 
@@ -36,7 +37,7 @@ describe('Pruebas solo de lógica - Desplazar texto en LISTO', () => {
   beforeEach(() => {
     localStorage.clear()
     vi.clearAllMocks()
-    // Omitir splash de entrada
+    vi.useRealTimers()
     localStorage.setItem('teleprompter_oscuro_impuesto', 'true')
   })
 
@@ -61,7 +62,6 @@ describe('Pruebas solo de lógica - Desplazar texto en LISTO', () => {
   })
 
   test('un arrastre que empieza sobre el recuadro mueve el recuadro y no el texto', async () => {
-    // Definimos dimensiones del contenedor
     Object.defineProperty(HTMLElement.prototype, 'clientHeight', {
       configurable: true,
       get() { return 800 }
@@ -86,38 +86,66 @@ describe('Pruebas solo de lógica - Desplazar texto en LISTO', () => {
     const recuadroEl = await screen.findByTestId('recuadro-camara')
     const contLectura = screen.getByTestId('contenedor-lectura')
 
-    // Si existe la capa transparente de arrastre sobre el recuadro
     const capaArrastre = screen.getByTestId('capa-recuadro-arrastre')
     expect(capaArrastre).toBeDefined()
 
     const initialScrollTop = contLectura.scrollTop
 
-    // Iniciar arrastre sobre la capa de arrastre del recuadro
     fireEvent.pointerDown(capaArrastre, { clientX: 200, clientY: 200, pointerId: 1 })
     fireEvent.pointerMove(capaArrastre, { clientX: 250, clientY: 250, pointerId: 1 })
     fireEvent.pointerUp(capaArrastre, { clientX: 250, clientY: 250, pointerId: 1 })
 
-    // El scroll del texto no debe haber cambiado por el arrastre del recuadro
     expect(contLectura.scrollTop).toBe(initialScrollTop)
   })
 
   test('después de desplazar, la toma parte desde el renglón de la banda', async () => {
-    const { container } = await abrirGuionPrueba('Palabra0 Palabra1 Palabra2 Palabra3\nPalabra4 Palabra5 Palabra6 Palabra7\nPalabra8 Palabra9 Palabra10 Palabra11')
-    fireEvent.click(await screen.findByTestId('btn-grabar-guion-fijo'))
+    const origClientHeight = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'clientHeight')
+    const origOffsetTop = Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'offsetTop')
 
-    await waitFor(() => {
-      expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('listo')
-    })
+    try {
+      Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', { configurable: true, get() { return 720 } })
+      Object.defineProperty(window.HTMLElement.prototype, 'offsetTop', {
+        configurable: true,
+        get(this: HTMLElement) {
+          const t = this.dataset && this.dataset.token
+          return t === undefined ? 0 : Math.floor(Number(t) / 4) * 100
+        }
+      })
 
-    const contLectura = screen.getByTestId('contenedor-lectura')
+      const onNavegacionManual = vi.fn()
+      const textoLargo = Array.from({ length: 40 }, (_, i) => 'palabra' + i).join(' ')
 
-    // Mover scroll en LISTO
-    fireEvent.pointerDown(contLectura, { clientX: 100, clientY: 300 })
-    fireEvent.pointerMove(contLectura, { clientX: 100, clientY: 100 })
-    contLectura.scrollTop = 200
-    fireEvent.pointerUp(contLectura, { clientX: 100, clientY: 100 })
+      render(
+        <TeleprompterView
+          script={textoLargo}
+          currentLineIndex={0}
+          currentWordIndex={0}
+          fontSize={24}
+          estadoToma="listo"
+          onNavegacionManual={onNavegacionManual}
+        />
+      )
 
-    // Comprobar que contLectura conserva el scroll desplazado
-    expect(contLectura.scrollTop).toBe(200)
+      const contLectura = screen.getByTestId('contenedor-lectura')
+
+      // Mover scroll en LISTO
+      fireEvent.touchStart(contLectura, { touches: [{ clientX: 100, clientY: 300 }] })
+      fireEvent.touchMove(contLectura, { touches: [{ clientX: 100, clientY: 100 }] })
+      contLectura.scrollTop = 200
+      fireEvent.touchEnd(contLectura)
+
+      // Esperar los 350ms del temporizador de fin manual para que llame a onNavegacionManual(tokenEnLaBanda())
+      await new Promise((r) => setTimeout(r, 450))
+
+      // Verificar que se llamó a onNavegacionManual con el token de la banda (> 0)
+      expect(onNavegacionManual).toHaveBeenCalledTimes(1)
+      const tokenElegido = onNavegacionManual.mock.calls[0][0]
+      expect(tokenElegido).toBeGreaterThan(0)
+    } finally {
+      if (origClientHeight) Object.defineProperty(window.HTMLElement.prototype, 'clientHeight', origClientHeight)
+      else delete (window.HTMLElement.prototype as any).clientHeight
+      if (origOffsetTop) Object.defineProperty(window.HTMLElement.prototype, 'offsetTop', origOffsetTop)
+      else delete (window.HTMLElement.prototype as any).offsetTop
+    }
   })
 })
