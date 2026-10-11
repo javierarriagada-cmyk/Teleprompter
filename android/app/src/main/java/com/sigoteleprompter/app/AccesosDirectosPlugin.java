@@ -30,10 +30,19 @@ public class AccesosDirectosPlugin extends Plugin {
         accionPendiente = accion;
     }
 
+    // Si la web ya escucha el evento, no dejes la acción como pendiente.
+    // Antes:
+    // public static void notificarAccion(String accion) {
+    //     accionPendiente = accion;
+    //     if (instanciaActual != null) {
+    //         instanciaActual.notificarEventoAccion(accion);
+    //     }
+    // }
     public static void notificarAccion(String accion) {
-        accionPendiente = accion;
-        if (instanciaActual != null) {
+        if (instanciaActual != null && instanciaActual.hasListeners("accionShortcut")) {
             instanciaActual.notificarEventoAccion(accion);
+        } else {
+            accionPendiente = accion;
         }
     }
 

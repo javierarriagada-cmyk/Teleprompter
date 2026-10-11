@@ -256,6 +256,5 @@ export const en: Textos = {
   estabilizarExplicacion: 'Smooths hand shake. Crops the edges slightly.',
   // Shortcut labels -11-10-2026-.
   accesoGrabar: 'Record',
-  accesoGrabarTitulo: 'Record "{titulo}"',
-  accesoNuevoGuion: 'New script with copied text'
+  accesoGrabarTitulo: 'Record "{titulo}"'
 }

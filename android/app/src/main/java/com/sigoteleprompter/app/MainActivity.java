@@ -227,8 +227,21 @@ public class MainActivity extends BridgeActivity {
         Log.i(AtrasPredictivoPlugin.ETIQUETA, "hayAdondeVolver=" + hay + " camara=" + camara);
     }
 
-    private void procesarIntentAccion(android.content.Intent intent) {
+    // No procesar la acción si la actividad se recrea (savedInstanceState != null) ni si viene de Recientes.
+    // Antes:
+    // private void procesarIntentAccion(android.content.Intent intent) {
+    //     if (intent == null || intent.getAction() == null) return;
+    //     String action = intent.getAction();
+    //     if ("com.sigoteleprompter.app.GRABAR".equals(action)) {
+    //         AccesosDirectosPlugin.notificarAccion("grabar");
+    //     } else if ("com.sigoteleprompter.app.NUEVO_GUION".equals(action)) {
+    //         AccesosDirectosPlugin.notificarAccion("nuevo");
+    //     }
+    // }
+    private void procesarIntentAccion(Bundle savedInstanceState, android.content.Intent intent) {
+        if (savedInstanceState != null) return;
         if (intent == null || intent.getAction() == null) return;
+        if ((intent.getFlags() & android.content.Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) return;
         String action = intent.getAction();
         if ("com.sigoteleprompter.app.GRABAR".equals(action)) {
             AccesosDirectosPlugin.notificarAccion("grabar");
@@ -241,7 +254,7 @@ public class MainActivity extends BridgeActivity {
     protected void onNewIntent(android.content.Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        procesarIntentAccion(intent);
+        procesarIntentAccion(null, intent);
     }
 
     private void avisarAtras(String evento, JSObject datos) {
@@ -313,7 +326,8 @@ public class MainActivity extends BridgeActivity {
         // -accesos directos- El puente de los accesos directos del ícono -AccesosDirectosPlugin.java-.
         registerPlugin(AccesosDirectosPlugin.class);
         super.onCreate(savedInstanceState);
-        procesarIntentAccion(getIntent());
+        // Antes: procesarIntentAccion(getIntent());
+        procesarIntentAccion(savedInstanceState, getIntent());
 
         // DESPUÉS de super.onCreate, a propósito: ahí adentro se arma el puente y AppPlugin de
         // Capacitor registra su propio callback en load(). El despachador le da el gesto al ÚLTIMO

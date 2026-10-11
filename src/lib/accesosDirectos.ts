@@ -13,7 +13,7 @@ export interface AccesosDirectosPluginContract {
 
 const pluginNativo = registerPlugin<AccesosDirectosPluginContract>('AccesosDirectos')
 
-export function recortarTituloAcceso(titulo: string, maxLen = 20): string {
+export function recortarTituloAcceso(titulo: string, maxLen = 16): string {
   const texto = (titulo || '').trim()
   if (!texto) return ''
   if (texto.length <= maxLen) return texto
@@ -27,9 +27,12 @@ export async function actualizarAccesoGrabar(guion: { titulo: string } | null): 
       await pluginNativo.quitarAccesoGrabar()
       return
     }
-    const titulo = recortarTituloAcceso(guion.titulo)
-    const etiquetaCorta = t('accesoGrabar')
-    const etiquetaLarga = t('accesoGrabarTitulo', { titulo })
+    const titulo = recortarTituloAcceso(guion.titulo, 16)
+    const etiquetaCorta = t('accesoGrabar').slice(0, 10)
+    let etiquetaLarga = t('accesoGrabarTitulo', { titulo })
+    if (etiquetaLarga.length > 25) {
+      etiquetaLarga = etiquetaLarga.slice(0, 24) + '…'
+    }
     await pluginNativo.fijarAccesoGrabar({ etiquetaCorta, etiquetaLarga })
   } catch (e) {
     console.warn('[accesosDirectos] Error al actualizar acceso Grabar:', e)

@@ -22,6 +22,17 @@ export async function leerPortapapeles(): Promise<string> {
   return ''
 }
 
+// PEGAR TEXTO EN EL EDITOR, USADO POR EL BOTÓN PEGAR Y POR EL ACCESO DIRECTO NUEVO.
+export function pegarTextoEnEditor(editor: Editor | null, texto: string, onPegado?: () => void) {
+  if (!editor || !texto) return
+  editor.commands.focus('end')
+  const vista = editor.view
+  const trozo = vista.someProp('clipboardTextParser', (f) => f(texto, vista.state.selection.$from, true, vista))
+  if (trozo) vista.dispatch(vista.state.tr.replaceSelection(trozo).scrollIntoView())
+  else editor.commands.insertContent(texto)
+  onPegado?.()
+}
+
 interface BarraEditorVacioProps {
   guion: Guion
   fontSize?: number
@@ -78,15 +89,19 @@ export function BarraEditorVacio({
           // el cursor al final del guion.
           const ed = editorRef.current
           if (!ed) return
-          ed.commands.focus('end')
+          // Antes:
+          // ed.commands.focus('end')
+          // leerPortapapeles().then((texto) => {
+          //   const e = editorRef.current
+          //   if (!texto || !e) return
+          //   const vista = e.view
+          //   const trozo = vista.someProp('clipboardTextParser', (f) => f(texto, vista.state.selection.$from, true, vista))
+          //   if (trozo) vista.dispatch(vista.state.tr.replaceSelection(trozo).scrollIntoView())
+          //   else e.commands.insertContent(texto)
+          //   onPegado?.()
+          // })
           leerPortapapeles().then((texto) => {
-            const e = editorRef.current
-            if (!texto || !e) return
-            const vista = e.view
-            const trozo = vista.someProp('clipboardTextParser', (f) => f(texto, vista.state.selection.$from, true, vista))
-            if (trozo) vista.dispatch(vista.state.tr.replaceSelection(trozo).scrollIntoView())
-            else e.commands.insertContent(texto)
-            onPegado?.()
+            pegarTextoEnEditor(editorRef.current, texto, onPegado)
           })
         }}
         style={{

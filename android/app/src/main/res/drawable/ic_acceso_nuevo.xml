@@ -4,10 +4,15 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
+    <!-- Círculo de fondo contrastante -->
     <path
-        android:strokeColor="#E7E1DE"
-        android:strokeWidth="2"
+        android:fillColor="#E7E1DE"
+        android:pathData="M12,12m-10,0a10,10 0 1,0 20,0a10,10 0 1,0 -20,0" />
+    <!-- Glifo de suma (+) en color oscuro -->
+    <path
+        android:strokeColor="#151312"
+        android:strokeWidth="2.2"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
-        android:pathData="M12,5v14M5,12h14" />
+        android:pathData="M12,7v10M7,12h10" />
 </vector>

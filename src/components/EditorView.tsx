@@ -68,6 +68,7 @@ interface EditorViewProps {
   'data-pantalla-direccion'?: string
   style?: React.CSSProperties
   onAnimationEnd?: (e: React.AnimationEvent) => void
+  editorRef?: React.MutableRefObject<Editor | null>
 }
 
 
@@ -122,7 +123,8 @@ export default function EditorView({
   onAbrirToma,
   'data-pantalla-direccion': dataPantallaDireccion,
   style,
-  onAnimationEnd
+  onAnimationEnd,
+  editorRef: editorRefExternal
 }: EditorViewProps) {
   useTextos()
   // 28-09-2026, tarea 77: el cajon Aa del editor -CajonAaEditor, mostrarModalAjustes, su Escape y
@@ -150,7 +152,9 @@ export default function EditorView({
   const [cargandoArchivo, setCargandoArchivo] = useState(false)
   const [errorArchivo, setErrorArchivo] = useState<string | null>(null)
 
-  const editorRef = useRef<Editor | null>(null)
+  // Antes: const editorRef = useRef<Editor | null>(null)
+  const editorRefLocal = useRef<Editor | null>(null)
+  const editorRef = editorRefExternal || editorRefLocal
   const [hayTextoSeleccionado, setHayTextoSeleccionado] = useState(false)
   const [tituloEnfocado, setTituloEnfocado] = useState(false)
   // El texto del guion tiene el foco -tarea 76-: mientras se escribe, en el título o en el

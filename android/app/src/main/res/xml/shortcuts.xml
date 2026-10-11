@@ -4,7 +4,7 @@
         android:shortcutId="nuevo_guion"
         android:enabled="true"
         android:icon="@drawable/ic_acceso_nuevo"
-        android:shortcutShortLabel="@string/acceso_nuevo_guion"
+        android:shortcutShortLabel="@string/acceso_nuevo_guion_corta"
         android:shortcutLongLabel="@string/acceso_nuevo_guion">
         <intent
             android:action="com.sigoteleprompter.app.NUEVO_GUION"

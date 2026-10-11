@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="acceso_nuevo_guion">New script with copied text</string>
+    <string name="acceso_nuevo_guion_corta">New script</string>
+</resources>

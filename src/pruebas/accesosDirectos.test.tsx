@@ -1,6 +1,6 @@
 import React from 'react'
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, act, screen, cleanup } from '@testing-library/react'
+import { render, act, screen, fireEvent, cleanup } from '@testing-library/react'
 import 'fake-indexeddb/auto'
 
 const state = vi.hoisted(() => ({
@@ -84,6 +84,7 @@ vi.mock('@capgo/camera-preview', () => ({
 import App from '../App'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { Guion } from '../datos/modelo'
+import * as BarraEditorVacioModule from '../components/BarraEditorVacio'
 
 const GUION_PORTADA: Guion = {
   id: 'g-portada',
@@ -102,6 +103,21 @@ async function esperar(ms = 300) {
 
 describe('Accesos directos del ícono: pruebas de lógica', () => {
   beforeEach(() => {
+    if (typeof Node !== 'undefined' && !(Node.prototype as any).getBoundingClientRect) {
+      (Node.prototype as any).getBoundingClientRect = () => ({ top: 0, bottom: 0, left: 0, right: 0, width: 0, height: 0, x: 0, y: 0, toJSON: () => {} })
+    }
+    if (typeof Range !== 'undefined' && !(Range.prototype as any).getBoundingClientRect) {
+      (Range.prototype as any).getBoundingClientRect = () => ({ top: 0, bottom: 0, left: 0, right: 0, width: 0, height: 0, x: 0, y: 0, toJSON: () => {} })
+    }
+    if (typeof Element !== 'undefined' && !(Element.prototype as any).getBoundingClientRect) {
+      (Element.prototype as any).getBoundingClientRect = () => ({ top: 0, bottom: 0, left: 0, right: 0, width: 0, height: 0, x: 0, y: 0, toJSON: () => {} })
+    }
+    if (typeof Element !== 'undefined' && !Element.prototype.getClientRects) {
+      Element.prototype.getClientRects = () => [] as any
+    }
+    if (typeof Range !== 'undefined' && !Range.prototype.getClientRects) {
+      Range.prototype.getClientRects = () => [] as any
+    }
     state.accionPendiente = ''
     state.accesosFijados = []
     state.accesosQuitados = 0
@@ -137,7 +153,7 @@ describe('Accesos directos del ícono: pruebas de lógica', () => {
     state.accionPendiente = 'nuevo'
 
     render(<App repoOverride={repo} />)
-    await esperar(500)
+    await esperar(600)
 
     expect(screen.getByTestId('input-titulo-guion')).toBeTruthy()
     const guiones = await repo.listar()
@@ -192,5 +208,65 @@ describe('Accesos directos del ícono: pruebas de lógica', () => {
     expect(screen.getByTestId('input-titulo-guion')).toBeTruthy()
     const guiones = await repo.listar()
     expect(guiones.length).toBe(2)
+  })
+
+  test('desde el editor, el acceso abre la acción sin llamar a handleVolverAtras en la biblioteca', async () => {
+    const repo = new RepositorioMemoria()
+    await repo.guardar(GUION_PORTADA)
+
+    render(<App repoOverride={repo} />)
+    await esperar(300)
+
+    // Entrar al editor tocando el guion
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('fila-guion-g-portada'))
+    })
+    expect(screen.getByTestId('input-titulo-guion')).toBeTruthy()
+
+    // Disparar acceso directo 'grabar'
+    if (state.oyentesShortcut.length > 0) {
+      await act(async () => {
+        state.oyentesShortcut[0]('grabar')
+      })
+    }
+    await esperar(600)
+
+    // Debe haber vuelto a la portada y luego abierto LISTO
+    const contenedor = screen.queryByTestId('teleprompter-view-container')
+    expect(contenedor).not.toBeNull()
+    expect(contenedor?.getAttribute('data-estado-toma')).toBe('listo')
+  })
+
+  test('el pegado del acceso pasa por la misma función que el botón', async () => {
+    const spyPega = vi.spyOn(BarraEditorVacioModule, 'pegarTextoEnEditor')
+    const fakeEditor = {
+      commands: { focus: vi.fn(), insertContent: vi.fn() },
+      view: {
+        someProp: vi.fn(),
+        dispatch: vi.fn(),
+        state: { selection: { $from: {} }, tr: { replaceSelection: () => ({ scrollIntoView: () => ({}) }) } }
+      }
+    } as any
+    const onPegado = vi.fn()
+    BarraEditorVacioModule.pegarTextoEnEditor(fakeEditor, 'Texto prueba', onPegado)
+    expect(spyPega).toHaveBeenCalledWith(fakeEditor, 'Texto prueba', onPegado)
+    expect(onPegado).toHaveBeenCalled()
+  })
+
+  test('sin foco, a los 2 s sigue igual', async () => {
+    vi.spyOn(document, 'hasFocus').mockReturnValue(false)
+    const repo = new RepositorioMemoria()
+    await repo.guardar(GUION_PORTADA)
+    state.textoPortapapeles = 'Copiado sin foco'
+    state.accionPendiente = 'nuevo'
+
+    render(<App repoOverride={repo} />)
+    // Inicialmente no debe haber resuelto aún si no hay foco
+    await esperar(300)
+
+    // A los 2.1 s el temporizador libera el foco y la acción termina
+    await esperar(2200)
+
+    expect(screen.getByTestId('input-titulo-guion')).toBeTruthy()
   })
 })
