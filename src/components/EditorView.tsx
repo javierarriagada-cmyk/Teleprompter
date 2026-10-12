@@ -7,7 +7,7 @@ import { hapticaSeleccion } from '../haptica'
 import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANTALLA, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
 import { IconoEmpezar } from './IconosApp'
 import { EditorCabecera } from './EditorCabecera'
-import { BarraEditorVacio } from './BarraEditorVacio'
+import { BarraEditorVacio, pegarTextoEnEditor } from './BarraEditorVacio'
 import { BarraLeerGrabar } from './BarraLeerGrabar'
 import { EditorGuion } from './EditorGuion'
 import type { Editor } from '@tiptap/react'
@@ -358,7 +358,19 @@ export default function EditorView({
     setMarcaIdioma(idiomaAutoCambiadoRef.current ? 'detectado' : 'base')
   }
 
-  function cerrarMarcaIdioma(motivo: 'entendido' | 'afuera') {
+  // Expone pegar(texto) por el editorRef: pega con el onPegado propio del editor,
+  // el que detecta el idioma del guion. Antes: el acceso pegaba desde App con un
+  // onPegado vacío y reescribía los bloques a mano.
+  if (editorRefExternal) {
+    (editorRefExternal as React.MutableRefObject<Editor | null> & { pegar?: (texto: string) => void }).pegar =
+      (texto: string) => {
+        pegarTextoEnEditor(editorRef.current, texto, () => {
+          queueMicrotask(() => intentarMarcaIdioma('pegar'))
+        })
+      }
+  }
+
+    function cerrarMarcaIdioma(motivo: 'entendido' | 'afuera') {
     if (motivo === 'entendido') {
       marcarComoVista('idioma')
     } else {

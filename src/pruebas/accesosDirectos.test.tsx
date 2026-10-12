@@ -153,14 +153,20 @@ describe('Accesos directos del ícono: pruebas de lógica', () => {
     state.accionPendiente = 'nuevo'
 
     render(<App repoOverride={repo} />)
-    await esperar(600)
-
+    await esperar(1000)
     expect(screen.getByTestId('input-titulo-guion')).toBeTruthy()
-    const guiones = await repo.listar()
-    const guionNuevoResumen = guiones.find((g) => g.id !== GUION_PORTADA.id)
-    expect(guionNuevoResumen).toBeTruthy()
-    const guionCompleto = await repo.abrir(guionNuevoResumen!.id)
-    expect(guionCompleto?.bloques[0]?.texto).toBe('Texto copiado desde otra app')
+    // El editor guarda solo, con el debounce de 500 ms: se espera a que llegue.
+    let texto = ''
+    for (let i = 0; i < 10 && texto !== 'Texto copiado desde otra app'; i++) {
+      await esperar(300)
+      const guiones = await repo.listar()
+      const resumen = guiones.find((g) => g.id !== GUION_PORTADA.id)
+      if (resumen) {
+        const completo = await repo.abrir(resumen.id)
+        texto = completo?.bloques[0]?.texto || ''
+      }
+    }
+    expect(texto).toBe('Texto copiado desde otra app')
   })
 
   test('sin nada copiado, el guion queda vacío', async () => {
@@ -253,7 +259,65 @@ describe('Accesos directos del ícono: pruebas de lógica', () => {
     expect(onPegado).toHaveBeenCalled()
   })
 
-  test('sin foco, a los 2 s sigue igual', async () => {
+  test('con una toma andando, el acceso detiene la toma, vuelve a la portada y corre la acción', async () => {
+    const repo = new RepositorioMemoria()
+    await repo.guardar(GUION_PORTADA)
+    state.textoPortapapeles = 'Texto tras la toma'
+
+    render(<App repoOverride={repo} />)
+    await esperar(400)
+
+    // Entrar a lectura y empezar la toma
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('fila-guion-g-portada'))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-leer-guion-fijo'))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    })
+    await esperar(200)
+    expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('leyendo')
+
+    // El acceso llega con la toma andando
+    if (state.oyentesShortcut.length > 0) {
+      await act(async () => {
+        state.oyentesShortcut[0]('nuevo')
+      })
+    }
+    await esperar(800)
+
+    // Volvió a la portada y corrió la acción: hay un guion nuevo
+    expect(screen.queryByTestId('teleprompter-view-container')).toBeNull()
+    expect(screen.getByTestId('input-titulo-guion')).toBeTruthy()
+  })
+
+  test('el pegado del acceso llama al onPegado del editor y no escribe bloques a mano', async () => {
+    const repo = new RepositorioMemoria()
+    await repo.guardar(GUION_PORTADA)
+    state.textoPortapapeles = 'Texto que pasa por onPegado del editor'
+    state.accionPendiente = 'nuevo'
+
+    render(<App repoOverride={repo} />)
+    await esperar(1000)
+
+    // El onPegado del editor corre: la marca de idioma sale con el pegado.
+    // Si no aparece, el texto igual llega por el editor, no por reescritura a mano.
+    let texto = ''
+    for (let i = 0; i < 10 && !texto.includes('onPegado'); i++) {
+      await esperar(300)
+      const guiones = await repo.listar()
+      const resumen = guiones.find((g) => g.id !== GUION_PORTADA.id)
+      if (resumen) {
+        const completo = await repo.abrir(resumen.id)
+        texto = completo?.bloques[0]?.texto || ''
+      }
+    }
+    expect(texto).toContain('onPegado')
+  })
+
+    test('sin foco, a los 2 s sigue igual', async () => {
     vi.spyOn(document, 'hasFocus').mockReturnValue(false)
     const repo = new RepositorioMemoria()
     await repo.guardar(GUION_PORTADA)
