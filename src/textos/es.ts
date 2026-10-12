@@ -271,7 +271,10 @@ export const es = {
   seccionPantalla: 'Pantalla',
   calidad: 'Calidad',
   estabilizar: 'Estabilizar',
-  estabilizarExplicacion: 'Corrige el temblor de la mano. Recorta un poco los bordes.'
+  estabilizarExplicacion: 'Corrige el temblor de la mano. Recorta un poco los bordes.',
+  // Accesos directos del ícono -11-10-2026-.
+  accesoGrabar: 'Grabar',
+  accesoGrabarTitulo: 'Grabar «{titulo}»'
 }
 
 export type ClaveTexto = keyof typeof es
