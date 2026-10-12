@@ -44,6 +44,9 @@ import { RepositorioGrabaciones } from './datos/RepositorioGrabaciones'
 import { RepositorioGrabacionesIndexedDB } from './datos/RepositorioGrabacionesIndexedDB'
 import { RepositorioGrabacionesMemoria } from './datos/RepositorioGrabacionesMemoria'
 import ReproductorGrabacion from './components/ReproductorGrabacion'
+import { actualizarAccesoGrabar, tomarAccionPendiente, escucharAccionShortcut } from './lib/accesosDirectos'
+import { leerPortapapeles } from './components/BarraEditorVacio'
+import type { Editor } from '@tiptap/react'
 import {
   iniciarTomaVideo,
   cortarTomaVideo,
@@ -154,6 +157,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   const prevVistaRef = useRef<Vista | null>(null)
   const [direccion, setDireccion] = useState<'adentro' | 'atras' | 'inicial'>('inicial')
   const guionModificadoRef = useRef<boolean>(false)
+  // Antes: const editorRef = useRef<Editor | null>(null)
+  // El editor expone pegar(texto): pega con el onPegado propio del editor.
+  const editorRef = useRef<Editor | null>(null) as React.MutableRefObject<Editor | null> & { pegar?: (texto: string) => void }
   const { avisoInfo, mostrarAviso, cerrarAviso } = useAviso()
 
   const getNivelVista = (v: Vista): number => {
@@ -797,15 +803,19 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   // Un guion nuevo nace en el idioma de la app -D2-. Al escribir o pegar, el editor lo
   // corrige si el texto es de otro idioma -EditorView, detectarIdioma-.
-  async function handleCrearNuevoGuion() {
+  // Antes: async function handleCrearNuevoGuion() {
+  async function handleCrearNuevoGuion(): Promise<Guion | null> {
     const nuevo = guionNuevo(idiomaApp())
     try {
       await repoRef.current.guardar(nuevo)
       setGuionActual(nuevo)
+      guionActualRef.current = nuevo
       await cargarBiblioteca()
       setVista('editor')
+      return nuevo
     } catch (e) {
       console.warn('[App] Error al crear nuevo guion:', e)
+      return null
     }
   }
 
@@ -987,6 +997,59 @@ export default function App({ motor, repoOverride }: AppProps) {
       console.warn('[App] Error al archivar/desarchivar guion:', e)
     }
   }
+
+  // ACCESOS DIRECTOS DEL ÍCONO -accesos-directos, 11-10-2026-.
+  // Mantiene actualizado el acceso dinámico ("Grabar «título»") con el guion de la tarjeta
+  // de la portada y procesa las acciones que llegan al tocar los accesos.
+  const guionesActivosAcceso = guionesResumen.filter((g) => !idsPendientesBorrado.includes(g.id))
+  const guionPortadaAcceso = guionesActivosAcceso.length > 0 ? guionesActivosAcceso[0] : null
+
+  useEffect(() => {
+    if (!cargado) return
+    void actualizarAccesoGrabar(guionPortadaAcceso)
+  }, [cargado, guionPortadaAcceso?.id, guionPortadaAcceso?.titulo, guionesActivosAcceso.length])
+
+  const guionesResumenRef = useRef(guionesResumen)
+  guionesResumenRef.current = guionesResumen
+  const idsPendientesBorradoRef = useRef(idsPendientesBorrado)
+  idsPendientesBorradoRef.current = idsPendientesBorrado
+  const guionActualRef = useRef(guionActual)
+  guionActualRef.current = guionActual
+
+  const [accionPendienteShortcut, setAccionPendienteShortcut] = useState<string | null>(null)
+  const procesandoShortcutRef = useRef<boolean>(false)
+  const ultimaAccionRef = useRef<{ accion: string; ts: number }>({ accion: '', ts: 0 })
+
+  const programarAccionShortcut = useCallback((accion: string) => {
+    if (!accion) return
+    const ahora = Date.now()
+    if (
+      procesandoShortcutRef.current ||
+      (ultimaAccionRef.current.accion === accion && ahora - ultimaAccionRef.current.ts < 2000)
+    ) {
+      return
+    }
+    ultimaAccionRef.current = { accion, ts: ahora }
+    setAccionPendienteShortcut(accion)
+  }, [])
+
+  useEffect(() => {
+    let sub: { remove: () => void } | null = null
+    void escucharAccionShortcut((accion) => {
+      programarAccionShortcut(accion)
+    }).then((s) => { sub = s })
+
+    return () => {
+      if (sub) sub.remove()
+    }
+  }, [programarAccionShortcut])
+
+  useEffect(() => {
+    if (!cargado || mostrarEntrada) return
+    void tomarAccionPendiente().then((accion) => {
+      if (accion) programarAccionShortcut(accion)
+    })
+  }, [cargado, mostrarEntrada, programarAccionShortcut])
 
   const [controlesVisibles, setControlesVisibles] = useState<boolean>(false)
   const timerControlesRef = useRef<number | null>(null)
@@ -1879,6 +1942,110 @@ export default function App({ motor, repoOverride }: AppProps) {
       }
     }
   })
+
+  // Volver a la portada antes de la acción, de a un paso por render
+  useEffect(() => {
+    if (!accionPendienteShortcut) return
+    // Antes:
+    // const estaEnPortadaLimpia =
+    //   vista === 'biblioteca' &&
+    //   !mostrarDialogoMicrofono &&
+    //   !mostrarDialogoCamara &&
+    //   !ajustesAbiertos &&
+    //   !mostrarPanelCorpus &&
+    //   !grabacionAbierta
+    const estaEnPortadaLimpia =
+      vista === 'biblioteca' &&
+      !mostrarDialogoMicrofono &&
+      !mostrarDialogoCamara &&
+      !ajustesAbiertos &&
+      !mostrarPanelCorpus &&
+      !grabacionAbierta &&
+      !menuBibliotecaAbierto &&
+      estadoToma === 'listo' &&
+      !isRecording &&
+      cuentaRegresiva === null
+
+    if (!estaEnPortadaLimpia) {
+      if (handleVolverAtrasRef.current) {
+        void handleVolverAtrasRef.current()
+      }
+      return
+    }
+
+    if (procesandoShortcutRef.current) return
+    procesandoShortcutRef.current = true
+
+    const accion = accionPendienteShortcut
+    setAccionPendienteShortcut(null)
+
+    const ejecutar = async () => {
+      try {
+        if (accion === 'grabar') {
+          const lista = guionesResumenRef.current.filter((g) => !idsPendientesBorradoRef.current.includes(g.id))
+          if (lista.length > 0) {
+            await handleGrabarDirecto(lista[0].id)
+          }
+        } else if (accion === 'nuevo') {
+          // La espera del foco tiene un tope de 2 s
+          if (typeof document !== 'undefined' && !document.hasFocus()) {
+            await new Promise<void>((resolve) => {
+              let resuelto = false
+              const terminar = () => {
+                if (resuelto) return
+                resuelto = true
+                if (typeof window !== 'undefined') window.removeEventListener('focus', alEnfocar)
+                clearTimeout(timer)
+                resolve()
+              }
+              const alEnfocar = () => terminar()
+              const timer = setTimeout(terminar, 2000)
+              if (typeof window !== 'undefined') window.addEventListener('focus', alEnfocar)
+            })
+          }
+
+          const nuevoGuion = await handleCrearNuevoGuion()
+
+          // Antes:
+          // BarraEditorVacioModule.pegarTextoEnEditor(editorRef.current, textoCopiar, () => {
+          //   guionModificadoRef.current = true
+          // })
+          // y después getText, armar un solo bloque, guardar y setGuionActual,
+          // o la rama de respaldo que escribía los bloques a mano.
+          // Ahora pega con el onPegado propio del editor; el editor guarda solo.
+          const textoCopiar = await leerPortapapeles()
+          if (textoCopiar && textoCopiar.trim() !== '' && nuevoGuion) {
+            const tope = Date.now() + 2000
+            while (!editorRef.current && Date.now() < tope) {
+              await new Promise((r) => setTimeout(r, 50))
+            }
+            if (editorRef.pegar) {
+              editorRef.pegar(textoCopiar)
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('[App] Error al ejecutar acción shortcut:', e)
+      } finally {
+        procesandoShortcutRef.current = false
+      }
+    }
+
+    void ejecutar()
+  }, [
+    accionPendienteShortcut,
+    vista,
+    mostrarDialogoMicrofono,
+    mostrarDialogoCamara,
+    ajustesAbiertos,
+    mostrarPanelCorpus,
+    grabacionAbierta,
+    menuBibliotecaAbierto,
+    estadoToma,
+    isRecording,
+    cuentaRegresiva,
+    cargarBiblioteca
+  ])
 
   // EL GESTO DE ATRAS DE ANDROID.
   //
@@ -2881,6 +3048,7 @@ export default function App({ motor, repoOverride }: AppProps) {
         >
         <Pantalla direccion={direccion}>
           <EditorView
+            editorRef={editorRef}
             style={gestoEnEditor?.editor
               ? { position: 'absolute', top: gestoEnEditor.editor.arriba, left: gestoEnEditor.editor.izquierda, width: gestoEnEditor.editor.ancho, margin: 0 }
               : undefined}

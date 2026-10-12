@@ -8,7 +8,8 @@ import { t } from '../textos'
 // LO QUE HAY COPIADO, EN EL TELEFONO O EN EL NAVEGADOR. En el APK lo lee el plugin oficial
 // de Capacitor -el portapapeles de Android-; en el navegador, la API del navegador. Si no se
 // puede leer -permiso negado, portapapeles vacio o con una imagen- devuelve ''.
-async function leerPortapapeles(): Promise<string> {
+// Antes: async function leerPortapapeles(): Promise<string> {
+export async function leerPortapapeles(): Promise<string> {
   try {
     if (Capacitor.isNativePlatform()) {
       const r = await Clipboard.read()
@@ -19,6 +20,17 @@ async function leerPortapapeles(): Promise<string> {
     // sin portapapeles legible: el boton cae a dejar el cursor en el guion
   }
   return ''
+}
+
+// PEGAR TEXTO EN EL EDITOR, USADO POR EL BOTÓN PEGAR Y POR EL ACCESO DIRECTO NUEVO.
+export function pegarTextoEnEditor(editor: Editor | null, texto: string, onPegado?: () => void) {
+  if (!editor || !texto) return
+  editor.commands.focus('end')
+  const vista = editor.view
+  const trozo = vista.someProp('clipboardTextParser', (f) => f(texto, vista.state.selection.$from, true, vista))
+  if (trozo) vista.dispatch(vista.state.tr.replaceSelection(trozo).scrollIntoView())
+  else editor.commands.insertContent(texto)
+  onPegado?.()
 }
 
 interface BarraEditorVacioProps {
@@ -78,14 +90,18 @@ export function BarraEditorVacio({
           const ed = editorRef.current
           if (!ed) return
           ed.commands.focus('end')
+          // Antes:
+          // leerPortapapeles().then((texto) => {
+          //   const e = editorRef.current
+          //   if (!texto || !e) return
+          //   const vista = e.view
+          //   const trozo = vista.someProp('clipboardTextParser', (f) => f(texto, vista.state.selection.$from, true, vista))
+          //   if (trozo) vista.dispatch(vista.state.tr.replaceSelection(trozo).scrollIntoView())
+          //   else e.commands.insertContent(texto)
+          //   onPegado?.()
+          // })
           leerPortapapeles().then((texto) => {
-            const e = editorRef.current
-            if (!texto || !e) return
-            const vista = e.view
-            const trozo = vista.someProp('clipboardTextParser', (f) => f(texto, vista.state.selection.$from, true, vista))
-            if (trozo) vista.dispatch(vista.state.tr.replaceSelection(trozo).scrollIntoView())
-            else e.commands.insertContent(texto)
-            onPegado?.()
+            pegarTextoEnEditor(editorRef.current, texto, onPegado)
           })
         }}
         style={{

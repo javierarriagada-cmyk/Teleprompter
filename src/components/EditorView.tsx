@@ -7,7 +7,7 @@ import { hapticaSeleccion } from '../haptica'
 import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANTALLA, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
 import { IconoEmpezar } from './IconosApp'
 import { EditorCabecera } from './EditorCabecera'
-import { BarraEditorVacio } from './BarraEditorVacio'
+import { BarraEditorVacio, pegarTextoEnEditor } from './BarraEditorVacio'
 import { BarraLeerGrabar } from './BarraLeerGrabar'
 import { EditorGuion } from './EditorGuion'
 import type { Editor } from '@tiptap/react'
@@ -68,6 +68,7 @@ interface EditorViewProps {
   'data-pantalla-direccion'?: string
   style?: React.CSSProperties
   onAnimationEnd?: (e: React.AnimationEvent) => void
+  editorRef?: React.MutableRefObject<Editor | null>
 }
 
 
@@ -122,7 +123,8 @@ export default function EditorView({
   onAbrirToma,
   'data-pantalla-direccion': dataPantallaDireccion,
   style,
-  onAnimationEnd
+  onAnimationEnd,
+  editorRef: editorRefExternal
 }: EditorViewProps) {
   useTextos()
   // 28-09-2026, tarea 77: el cajon Aa del editor -CajonAaEditor, mostrarModalAjustes, su Escape y
@@ -150,7 +152,9 @@ export default function EditorView({
   const [cargandoArchivo, setCargandoArchivo] = useState(false)
   const [errorArchivo, setErrorArchivo] = useState<string | null>(null)
 
-  const editorRef = useRef<Editor | null>(null)
+  // Antes: const editorRef = useRef<Editor | null>(null)
+  const editorRefLocal = useRef<Editor | null>(null)
+  const editorRef = editorRefExternal || editorRefLocal
   const [hayTextoSeleccionado, setHayTextoSeleccionado] = useState(false)
   const [tituloEnfocado, setTituloEnfocado] = useState(false)
   // El texto del guion tiene el foco -tarea 76-: mientras se escribe, en el título o en el
@@ -354,7 +358,19 @@ export default function EditorView({
     setMarcaIdioma(idiomaAutoCambiadoRef.current ? 'detectado' : 'base')
   }
 
-  function cerrarMarcaIdioma(motivo: 'entendido' | 'afuera') {
+  // Expone pegar(texto) por el editorRef: pega con el onPegado propio del editor,
+  // el que detecta el idioma del guion. Antes: el acceso pegaba desde App con un
+  // onPegado vacío y reescribía los bloques a mano.
+  if (editorRefExternal) {
+    (editorRefExternal as React.MutableRefObject<Editor | null> & { pegar?: (texto: string) => void }).pegar =
+      (texto: string) => {
+        pegarTextoEnEditor(editorRef.current, texto, () => {
+          queueMicrotask(() => intentarMarcaIdioma('pegar'))
+        })
+      }
+  }
+
+    function cerrarMarcaIdioma(motivo: 'entendido' | 'afuera') {
     if (motivo === 'entendido') {
       marcarComoVista('idioma')
     } else {
