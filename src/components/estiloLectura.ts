@@ -41,9 +41,20 @@ export function colorLetraEfectiva(colorFondo: string, colorLetra: string): stri
 // 90 -> 93 el 27-09-2026: Javier comparo capturas -Sigo ~80% del ancho de la pantalla,
 // otra aplicacion de lectura ~86%- y pidio "el punto intermedio". Con el margen de 5%
 // por lado, 93% deja el texto en ~83,5% de la pantalla.
-export function columnaLectura(columnaAngosta: boolean): { maxWidth: string; textAlign: 'center' | 'left' } {
+// Antes: export function columnaLectura(columnaAngosta: boolean): { maxWidth: string; textAlign: 'center' | 'left' } {
+// Antes:   return columnaAngosta
+// Antes:     ? { maxWidth: '22ch', textAlign: 'center' }
+// Antes:     : { maxWidth: '93%', textAlign: 'left' }
+// Antes: }
+// Con el teléfono de pie, la columna vive dentro del relleno de 5 % por lado (rellenoLecturaDePie),
+// así que el 100 % de la columna es el 90 % de la pantalla:
+// - 61 %: es el 55 % de la pantalla. Las guías de teleprompter recomiendan columnas de entre el 50 y el 75 % para que el ojo no se mueva de lado a lado en cámara.
+// - 22ch: el tope de hoy, para que con letra chica no se estire.
+// - 14.5ch: el piso, unas 18 letras, tres palabras. Al leer en voz alta el ojo va dos o tres palabras adelante de la voz, y un renglón más corto obliga a saltar de renglón antes de terminar la frase.
+// - 78.5 %: el ancho del Medio (12 % de relleno y 93 % de columna) medido dentro de la columna del Angosto. Así el Angosto nunca es más ancho que el Medio.
+export function columnaLectura(columnaAngosta: boolean, telefonoDePie: boolean = false): { maxWidth: string; textAlign: 'center' | 'left' } {
   return columnaAngosta
-    ? { maxWidth: '22ch', textAlign: 'center' }
+    ? { maxWidth: telefonoDePie ? 'min(78.5%, clamp(14.5ch, 61%, 22ch))' : '22ch', textAlign: 'center' }
     : { maxWidth: '93%', textAlign: 'left' }
 }
 

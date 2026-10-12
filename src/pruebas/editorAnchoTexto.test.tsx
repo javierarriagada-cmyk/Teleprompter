@@ -36,9 +36,23 @@ function columna(relleno: { izq: string; der: string }, col: HTMLElement) {
   const izq = pct(relleno.izq, PANTALLA)
   const adentro = PANTALLA - izq - pct(relleno.der, PANTALLA)
   const tope = col.style.maxWidth
-  const ancho = tope.endsWith('%')
-    ? (parseFloat(tope) / 100) * adentro
-    : Math.min(parseFloat(tope) * parseFloat(col.style.fontSize) * 0.5, adentro)
+  // Antes: const ancho = tope.endsWith('%')
+  // Antes:   ? (parseFloat(tope) / 100) * adentro
+  // Antes:   : Math.min(parseFloat(tope) * parseFloat(col.style.fontSize) * 0.5, adentro)
+  let ancho: number
+  if (tope.endsWith('%')) {
+    ancho = (parseFloat(tope) / 100) * adentro
+  } else if (tope.startsWith('min(')) {
+    const font = parseFloat(col.style.fontSize)
+    const ch14_5 = 14.5 * 0.5 * font
+    const ch22 = 22 * 0.5 * font
+    const pct61 = 0.61 * adentro
+    const pct78_5 = 0.785 * adentro
+    const clampVal = Math.min(ch22, Math.max(ch14_5, pct61))
+    ancho = Math.min(pct78_5, clampVal)
+  } else {
+    ancho = Math.min(parseFloat(tope) * parseFloat(col.style.fontSize) * 0.5, adentro)
+  }
   expect(col.style.margin).toBe('0px auto')
   return { izq: izq + (adentro - ancho) / 2, ancho, textAlign: col.style.textAlign, fontSize: col.style.fontSize }
 }
