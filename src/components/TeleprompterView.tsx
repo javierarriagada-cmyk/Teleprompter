@@ -1746,9 +1746,10 @@ export default function TeleprompterView({
             fontVariantLigatures: LIGADURAS_TEXTO,
             // 29-09-2026, tarea 82: de lado la columna completa se topa en 56ch -unos 51
             // caracteres a 800 y 55 a 844-; la angosta -22ch- no cambia.
+            // Con el teléfono de pie ahora el Angosto usa la nueva expresión.
             // 30-09-2026, tarea 83: en tableta, el mismo camino con el tope de la hoja -60ch en
             // vertical y 58ch de lado, styles-tableta.css-.
-            maxWidth: (horizontal || tabletaVertical) && !columnaAngosta ? 'var(--columna-tope-h)' : columnaLectura(columnaAngosta).maxWidth,
+            maxWidth: (horizontal || tabletaVertical) && !columnaAngosta ? 'var(--columna-tope-h)' : columnaLectura(columnaAngosta, !(horizontal || tabletaVertical)).maxWidth,
             margin: '0 auto',
             width: '100%',
             // EN COLUMNA ANGOSTA EL TEXTO VA CENTRADO.
@@ -1767,7 +1768,7 @@ export default function TeleprompterView({
             //
             // NO TOCA LA GEOMETRIA DE LA LECTURA: agruparEnRenglones y pixelDeRenglon miran
             // offsetTop, que es vertical. Centrar mueve el texto a lo ancho y nada mas.
-            textAlign: columnaLectura(columnaAngosta).textAlign
+            textAlign: columnaLectura(columnaAngosta, !(horizontal || tabletaVertical)).textAlign
           }}
         >
           {guionObj.bloques.map((bloque, bIdx) => {
