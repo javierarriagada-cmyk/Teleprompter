@@ -83,7 +83,8 @@ describe('Tarea 72 - cada ajuste muestra lo que hace', () => {
 
     // Ancho
     elegir('fila-ancho-texto', 'Angosto')
-    expect(col().style.maxWidth, 'Angosto no llego al guion').toBe('22ch')
+    // Antes: expect(col().style.maxWidth, 'Angosto no llego al guion').toBe('22ch')
+    expect(col().style.maxWidth, 'Angosto no llego al guion').toBe('min(78.5%, clamp(14.5ch, 61%, 22ch))')
     elegir('fila-ancho-texto', 'Ancho')
     expect(col().style.maxWidth, 'Ancho no llego al guion').toBe('93%')
 

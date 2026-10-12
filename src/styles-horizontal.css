@@ -22,7 +22,8 @@
   --riel-der: 124px;
   /* La columna entre los rieles: 28 de aire a cada lado, 20 con el recuadro -la columna ya es
      más angosta por su carril-. Tope de la columna completa: 56ch, unos 51 caracteres por renglón
-     a 800 de ancho y 55 a 844. La angosta -22ch- no cambia. */
+     a 800 de ancho y 55 a 844. La angosta -22ch- no cambia.
+     Con el teléfono de pie ahora el Angosto usa la nueva expresión. */
   --columna-aire-h: 28px;
   --columna-aire-h-recuadro: 20px;
   --columna-tope-h: 56ch;

@@ -343,7 +343,6 @@ export function EditorGuion({
     }
   }, [editor, texto, tramos])
 
-  const columna = columnaLectura(columnaAngosta)
   // LA COLUMNA DEL EDITOR ES LA DE LA LECTURA -editor-ancho-texto, 11-10-2026-. Con el teléfono de
   // pie, el editor corta los renglones igual que la lectura: la columna tiene el mismo ancho y los
   // mismos bordes, con cualquier letra y cualquier ancho de Ajustes. Para eso arma las mismas dos
@@ -352,6 +351,7 @@ export function EditorGuion({
   // mismas funciones, no de números copiados. De lado y en tableta la lectura tiene otra columna
   // -rieles, --columna-tope-h- y el editor queda como estaba.
   const dePie = useLayout() === 'tel-v'
+  const columna = columnaLectura(columnaAngosta, dePie)
 
   // La hoja se dibuja como la lectura: su fondo, su letra, su tamano, su
   // interlineado, su margen y su columna. Lo que se toca en el panel Aa se ve

@@ -774,7 +774,8 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
 
     const colTexto = container!.querySelector('[data-testid="columna-texto"]') as HTMLElement
     expect(colTexto).not.toBeNull()
-    expect(colTexto.style.maxWidth).toBe('22ch')
+    // Antes: expect(colTexto.style.maxWidth).toBe('22ch')
+    expect(colTexto.style.maxWidth).toBe('min(78.5%, clamp(14.5ch, 61%, 22ch))')
 
     await act(async () => {
       fireEvent.click(container!.querySelector('[data-testid="btn-volver-listo"]')!)
