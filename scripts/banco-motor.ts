@@ -50,6 +50,7 @@ const COLUMNAS: Array<[string, (c: CifrasBanco) => string]> = [
   ['tiron', (c) => f0(c.tironMax)],
   ['pasada', (c) => f1(c.pasadaMax)],
   ['solapes', (c) => String(c.solapes)],
+  ['tiron motor', (c) => f1(c.tironMotor)],
   ['dest med', (c) => f1(c.destacadoMedio)],
   ['dest max', (c) => f1(c.destacadoMax)],
   ['cuadro med', (c) => f0(c.cuadroMediana)],

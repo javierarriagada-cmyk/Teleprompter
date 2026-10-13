@@ -31,6 +31,8 @@
 //                           palabras desde la posicion del motor- delante de la voz: media y max.
 //   dif telefono            -correccion- media de la posicion repetida menos la del telefono en
 //                           cada cuadro: cuanto se aleja el banco de lo que paso de verdad.
+//   tiron motor             -motor sin pastilla- el salto de velocidad mas grande del motor entre
+//                           dos cuadros, palabras/s, sin los arrastres a mano.
 //   cuadros                 intervalos entre lineas 'cuadro' del registro del telefono: mediana,
 //                           p95, max y cuantos pasan de 50 ms.
 
@@ -57,6 +59,7 @@ export type CrudosToma = {
   adelantoDestacado: number[]
   intervalos: number[]
   difTelefono: number[]     // posicion repetida menos la del telefono, en cada cuadro
+  tironesMotor: number[]    // -motor sin pastilla- salto de velocidad del motor entre cuadros, palabras/s
 }
 
 export type CambioRenglon = { ms: number; px: number; velMax: number; tiron: number; pasada: number }
@@ -86,6 +89,7 @@ export type CifrasBanco = {
   cuadroMax: number
   cuadrosSobre50: number
   difTelefono: number      // media de posicion repetida menos posicion del telefono, palabras
+  tironMotor: number       // el salto de velocidad mas grande del motor, palabras/s
 }
 
 const media = (a: number[]) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : NaN)
@@ -118,7 +122,8 @@ export function cifrasDe(c: CrudosToma, palabrasDestacado: number | null = null)
     cuadroP95: percentil(c.intervalos, 95),
     cuadroMax: maximo(c.intervalos),
     cuadrosSobre50: c.intervalos.filter((x) => x > 50).length,
-    difTelefono: media(c.difTelefono)
+    difTelefono: media(c.difTelefono),
+    tironMotor: maximo(c.tironesMotor)
   }
 }
 
@@ -131,7 +136,8 @@ export function juntarCrudos(lista: CrudosToma[]): CrudosToma {
     solapes: lista.reduce((s, c) => s + c.solapes, 0),
     adelantoDestacado: lista.flatMap((c) => c.adelantoDestacado),
     intervalos: lista.flatMap((c) => c.intervalos),
-    difTelefono: lista.flatMap((c) => c.difTelefono)
+    difTelefono: lista.flatMap((c) => c.difTelefono),
+    tironesMotor: lista.flatMap((c) => c.tironesMotor)
   }
 }
 
@@ -233,6 +239,17 @@ export function medirTomaEnBanco(texto: string): ResultadoToma {
   const difTelefono: number[] = []
   const n2 = Math.min(cuadros.length, reg.cuadros.length)
   if (cuadros.length === reg.cuadros.length) for (let i = 0; i < n2; i++) difTelefono.push(cuadros[i].pos - reg.cuadros[i].pos)
+  // EL TIRON DEL MOTOR -motor sin pastilla, 13-10-2026-: la misma idea que cambioVelocidadMaximo de
+  // repetidor.ts -el salto de velocidad mas grande entre dos cuadros- pero en palabras por segundo y
+  // sin los cuadros de un arrastre a mano ni el siguiente: ese salto lo hace el dedo, no el motor.
+  const tironesMotor: number[] = []
+  for (let i = 2; i < rep.serie.length; i++) {
+    const a = rep.serie[i - 2], b = rep.serie[i - 1], c = rep.serie[i]
+    if (a.aMano || b.aMano || c.aMano) continue
+    const v1 = ((b.pos - a.pos) * 1000) / Math.max(1, b.ms - a.ms)
+    const v2 = ((c.pos - b.pos) * 1000) / Math.max(1, c.ms - b.ms)
+    tironesMotor.push(Math.abs(v2 - v1))
+  }
   const crudos: CrudosToma = {
     atrasoPal: repetida.atrasoPal,
     atrasoPalTelefono: telefono.atrasoPal,
@@ -241,7 +258,8 @@ export function medirTomaEnBanco(texto: string): ResultadoToma {
     solapes,
     adelantoDestacado,
     intervalos,
-    difTelefono
+    difTelefono,
+    tironesMotor
   }
   return { cifras: cifrasDe(crudos, n), crudos, avisos }
 }
