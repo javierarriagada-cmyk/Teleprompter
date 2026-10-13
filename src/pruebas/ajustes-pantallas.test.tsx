@@ -273,7 +273,9 @@ describe('Ajustes de pantallas: el dock de LISTO en Grabar', () => {
 
     // El total del contador al arrancar la toma: posición 0, sin ritmo medido todavía. Los tokens -440,
     // con la nota- ya no cambian el total; antes daban 02:56.
-    const motorQuieto = { estadoEn: () => ({ posicion: 0, ppmEstimadas: 150 }) } as any
+    // -motor sin pastilla, 13-10-2026- la pastilla lee con leerEstado, sin avanzar el motor.
+    // Antes: const motorQuieto = { estadoEn: () => ({ posicion: 0, ppmEstimadas: 150 }) } as any
+    const motorQuieto = { leerEstado: () => ({ posicion: 0, ppmEstimadas: 150 }) } as any
     render(
       <BarraDeTiempo motorAvance={motorQuieto} totalTokens={440} palabrasGuion={palabras} tInicioLecturaMs={performance.now()} />
     )
