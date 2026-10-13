@@ -35,6 +35,7 @@ function tomasEn(carpeta: string): string[] {
 const f1 = (x: number | null) => (x !== null && Number.isFinite(x) ? x.toFixed(1) : '-')
 const f0 = (x: number | null) => (x !== null && Number.isFinite(x) ? x.toFixed(0) : '-')
 const COLUMNAS: Array<[string, (c: CifrasBanco) => string]> = [
+  ['dif tel', (c) => (Number.isFinite(c.difTelefono) ? c.difTelefono.toFixed(2) : '-')],
   ['atraso med', (c) => f1(c.atrasoMedio)],
   ['p90', (c) => f1(c.atrasoP90)],
   ['tel med', (c) => f1(c.atrasoMedioTelefono)],

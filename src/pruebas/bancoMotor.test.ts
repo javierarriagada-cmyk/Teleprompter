@@ -22,6 +22,9 @@ describe('Banco del motor', () => {
     expect(cifras.atrasoMedio).toBeCloseTo(BASE.atrasoMedio, 6)
     expect(cifras.renglonVivo).toBeCloseTo(BASE.renglonVivo, 6)
     expect(cifras.cambiosDeRenglon).toBe(BASE.cambiosDeRenglon)
+    // -correccion-: el banco reproduce al telefono: la posicion repetida y la grabada, cuadro por
+    // cuadro, a menos de 0,3 palabras en promedio.
+    expect(Math.abs(cifras.difTelefono)).toBeLessThan(0.3)
   })
 
   test('acercarScroll da lo mismo que la cuenta que tenia TeleprompterView', () => {
@@ -45,4 +48,7 @@ describe('Banco del motor', () => {
   })
 })
 
-const BASE = { atrasoMedio: 1.807013325474624, renglonVivo: 84.13597733711048, cambiosDeRenglon: 9 }
+// -13-10-2026, correccion-: el banco repite como el telefono -repetidor.ts, comoElTelefono-, y las
+// cifras de esta toma cambiaron.
+// Antes: const BASE = { atrasoMedio: 1.807013325474624, renglonVivo: 84.13597733711048, cambiosDeRenglon: 9 }
+const BASE = { atrasoMedio: 1.389296431740768, renglonVivo: 84.13597733711048, cambiosDeRenglon: 9 }

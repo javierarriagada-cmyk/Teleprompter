@@ -7,7 +7,8 @@
 // POR CADA TOMA:
 //   1. Se repite la lectura con repetirLectura -lib/repetidor.ts-: los 'oyo' del registro pasan
 //      por lib/conduccion.ts al seguidor y al motor de avance, igual que en la aplicacion, y sale
-//      la posicion del motor cada 16 ms.
+//      la posicion del motor. -correccion, 13-10-2026-: en cada 'cuadro' del registro y como el
+//      telefono, con { comoElTelefono: true } -ver repetidor.ts-. Antes: cada 16 ms.
 //   2. El renglon vivo y el scroll se simulan con lo MISMO que corre la vista: anclaCompensada,
 //      indiceDeRenglon, avanzarTrabado, calcularScrollTop y acercarScroll -lib/deslizar.ts-. Los
 //      renglones son los del registro -linea 'renglones'-, de alto letra x 1,4 -el interlineado de
@@ -24,9 +25,12 @@
 //   deslizamiento           por cada cambio de renglon vivo: ms hasta quedar a menos de 0,5 px,
 //                           velocidad maxima -px/s-, tiron -el salto de velocidad mas grande
 //                           entre dos cuadros, px/s-, pasada de largo -px- y cuantos cambios
-//                           empiezan antes de que termine el anterior. Cuadros de 16 ms.
+//                           empiezan antes de que termine el anterior. Con el dt de los cuadros
+//                           del telefono, topado en 100 como en la vista. Antes: cuadros de 16 ms.
 //   destacado               cuanto va el borde de adelante del destacado -palabrasDelDestacado
 //                           palabras desde la posicion del motor- delante de la voz: media y max.
+//   dif telefono            -correccion- media de la posicion repetida menos la del telefono en
+//                           cada cuadro: cuanto se aleja el banco de lo que paso de verdad.
 //   cuadros                 intervalos entre lineas 'cuadro' del registro del telefono: mediana,
 //                           p95, max y cuantos pasan de 50 ms.
 
@@ -52,6 +56,7 @@ export type CrudosToma = {
   solapes: number
   adelantoDestacado: number[]
   intervalos: number[]
+  difTelefono: number[]     // posicion repetida menos la del telefono, en cada cuadro
 }
 
 export type CambioRenglon = { ms: number; px: number; velMax: number; tiron: number; pasada: number }
@@ -80,6 +85,7 @@ export type CifrasBanco = {
   cuadroP95: number
   cuadroMax: number
   cuadrosSobre50: number
+  difTelefono: number      // media de posicion repetida menos posicion del telefono, palabras
 }
 
 const media = (a: number[]) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : NaN)
@@ -111,7 +117,8 @@ export function cifrasDe(c: CrudosToma, palabrasDestacado: number | null = null)
     cuadroMediana: percentil(c.intervalos, 50),
     cuadroP95: percentil(c.intervalos, 95),
     cuadroMax: maximo(c.intervalos),
-    cuadrosSobre50: c.intervalos.filter((x) => x > 50).length
+    cuadrosSobre50: c.intervalos.filter((x) => x > 50).length,
+    difTelefono: media(c.difTelefono)
   }
 }
 
@@ -123,7 +130,8 @@ export function juntarCrudos(lista: CrudosToma[]): CrudosToma {
     cambios: lista.flatMap((c) => c.cambios),
     solapes: lista.reduce((s, c) => s + c.solapes, 0),
     adelantoDestacado: lista.flatMap((c) => c.adelantoDestacado),
-    intervalos: lista.flatMap((c) => c.intervalos)
+    intervalos: lista.flatMap((c) => c.intervalos),
+    difTelefono: lista.flatMap((c) => c.difTelefono)
   }
 }
 
@@ -133,7 +141,10 @@ export type ResultadoToma = { cifras: CifrasBanco; crudos: CrudosToma; avisos: s
 export function medirTomaEnBanco(texto: string): ResultadoToma {
   const avisos: string[] = []
   const reg = leerRegistro(texto)
-  const rep = repetirLectura(leerCorpus(texto))
+  // -13-10-2026, correccion-: se repite COMO EL TELEFONO -reloj de sus cuadros, la pastilla del
+  // tiempo, el idioma, donde empezo y los arrastres a mano; ver repetidor.ts-.
+  // Antes: const rep = repetirLectura(leerCorpus(texto))
+  const rep = repetirLectura(leerCorpus(texto), { comoElTelefono: true })
 
   const letra = parseFloat(reg.cab.letra || '') || LETRA_POR_OMISION
   const filaPx = letra * INTERLINEADO
@@ -157,6 +168,7 @@ export function medirTomaEnBanco(texto: string): ResultadoToma {
   const cambios: CambioRenglon[] = []
   let solapes = 0
   const cuadros: CuadroRegistro[] = []
+  let msPrevio: number | null = null
   for (const s of rep.serie) {
     let idx: number | null = null
     if (renglones.length > 0) {
@@ -170,11 +182,27 @@ export function medirTomaEnBanco(texto: string): ResultadoToma {
       idx = trabado
       const objetivo = calcularScrollTop(renglones[trabado].top, 0, filaPx)
       const previo: number = scroll === null ? objetivo : scroll
-      scroll = scroll === null ? objetivo : acercarScroll(scroll, objetivo, MS_CUADRO_SIMULADO)
-      const vel = ((scroll - previo) * 1000) / MS_CUADRO_SIMULADO
+      // -correccion-: el dt es el de los cuadros del telefono, con el mismo tope de 100 ms que la vista.
+      // Antes:
+      // scroll = scroll === null ? objetivo : acercarScroll(scroll, objetivo, MS_CUADRO_SIMULADO)
+      // const vel = ((scroll - previo) * 1000) / MS_CUADRO_SIMULADO
+      const dtCuadro = msPrevio === null ? MS_CUADRO_SIMULADO : Math.min(100, s.ms - msPrevio)
+      scroll = scroll === null ? objetivo : acercarScroll(scroll, objetivo, dtCuadro)
+      const vel = ((scroll - previo) * 1000) / Math.max(1, dtCuadro)
+      // -correccion-: un arrastre a mano no es un deslizamiento del motor -en la vista el dedo mueve el
+      // texto-: el scroll queda en su lugar y ese cambio no se cuenta.
+      if (s.aMano) {
+        scroll = objetivo
+        enCurso = null
+        objetivoPrevio = objetivo
+        velPrevia = 0
+        cuadros.push({ ms: s.ms, pos: s.pos, trabado: idx })
+        msPrevio = s.ms
+        continue
+      }
       if (objetivoPrevio !== null && objetivo !== objetivoPrevio) {
         if (enCurso) { solapes++; cambios.push(cerrar(enCurso, s.ms)) }
-        enCurso = { ms: 0, px: objetivo - previo, velMax: 0, tiron: 0, pasada: 0, desde: previo, inicioMs: s.ms - MS_CUADRO_SIMULADO, dir: Math.sign(objetivo - previo) }
+        enCurso = { ms: 0, px: objetivo - previo, velMax: 0, tiron: 0, pasada: 0, desde: previo, inicioMs: s.ms - dtCuadro, dir: Math.sign(objetivo - previo) }
         velPrevia = 0
       }
       if (enCurso) {
@@ -187,6 +215,7 @@ export function medirTomaEnBanco(texto: string): ResultadoToma {
       objetivoPrevio = objetivo
     }
     cuadros.push({ ms: s.ms, pos: s.pos, trabado: idx })
+    msPrevio = s.ms
   }
   if (enCurso) cambios.push(cerrar(enCurso, rep.serie[rep.serie.length - 1].ms))
 
@@ -200,6 +229,10 @@ export function medirTomaEnBanco(texto: string): ResultadoToma {
   const intervalos: number[] = []
   for (let i = 1; i < reg.cuadros.length; i++) intervalos.push(reg.cuadros[i].ms - reg.cuadros[i - 1].ms)
 
+  // Lo que reproduce el banco: la posicion repetida contra la del telefono, cuadro por cuadro.
+  const difTelefono: number[] = []
+  const n2 = Math.min(cuadros.length, reg.cuadros.length)
+  if (cuadros.length === reg.cuadros.length) for (let i = 0; i < n2; i++) difTelefono.push(cuadros[i].pos - reg.cuadros[i].pos)
   const crudos: CrudosToma = {
     atrasoPal: repetida.atrasoPal,
     atrasoPalTelefono: telefono.atrasoPal,
@@ -207,7 +240,8 @@ export function medirTomaEnBanco(texto: string): ResultadoToma {
     cambios,
     solapes,
     adelantoDestacado,
-    intervalos
+    intervalos,
+    difTelefono
   }
   return { cifras: cifrasDe(crudos, n), crudos, avisos }
 }
