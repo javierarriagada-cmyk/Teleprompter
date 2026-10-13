@@ -22,7 +22,10 @@ export type ResultadoRepeticion = {
   cuadrosQuietos: number    // cuadros sin movimiento habiendo voz
   totalCuadros: number
   cambioVelocidadMaximo: number   // el tiron mas grande, en veces el ritmo base
-  serie: Array<{ ms: number; pos: number; calce: number; estado: string }>
+  // -13-10-2026, banco del motor-: freno es st.motivoFreno, solo anotado -la vista lo usa para
+  // decidir si compensa el renglon vivo y el banco lo necesita para simularlo-. No cambia nada.
+  // Antes: serie: Array<{ ms: number; pos: number; calce: number; estado: string }>
+  serie: Array<{ ms: number; pos: number; calce: number; estado: string; freno: string | null }>
 }
 
 export function leerCorpus(texto: string): Corpus {
@@ -183,7 +186,8 @@ export function repetirLectura(corpus: Corpus): ResultadoRepeticion {
       ms: t,
       pos: st.posicion,
       calce: st.ultimoCalce,
-      estado: st.estado
+      estado: st.estado,
+      freno: st.motivoFreno
     })
   }
 

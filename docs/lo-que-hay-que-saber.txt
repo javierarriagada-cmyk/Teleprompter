@@ -92,6 +92,10 @@ REGLA A FUEGO -Javier, 05-10-2026-: LAS PRUEBAS SOLO CUBREN LOGICA QUE NO SE VE.
   mismo reloj-, y cada toma nueva deja su <id>.motor.txt. Medir: node scripts/
   medir-toma.mjs <archivo>. Un cambio se evalua sobre todas las tomas, no sobre dos: el
   25-09 el salto parcial del seguidor se comparo en 28 y dio 27 identicas.
+  -13-10-2026-: `npm run banco` -scripts/banco-motor.ts, fuera de npm test- repite TODAS las
+  tomas -espanol, ingles y Larralde- con el motor de hoy y deja sus cifras en
+  docs/mediciones/banco-motor/<fecha>-<commit>.json: atraso, renglon donde se lee,
+  deslizamiento, destacado y cuadros. Medir antes y despues del cambio y comparar los dos.
 
   UN SOLO COMPORTAMIENTO QUE SE ADAPTA. Javier no quiere reglas distintas por
   combinacion. Tiene que quedar bien con cualquier letra, tamano, ancho de columna,
