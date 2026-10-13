@@ -1,0 +1,1154 @@
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: 4c98b14d-8ef2-43c9-bbcf-60a5e25a0934
+# inicio del video (epoch ms): 1791083727901
+# motor de voz: nativo
+# letra: 24 px, sans
+# columna: completa, margen 5%
+# donde lees: arriba
+# idioma: es
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Si me vieras por dentro — Larralde
+# | En 1969 sale un disco que se llama Hombre. Doce cortes: cinco milongas, tres canciones. Y en cuatro de ellos José Larralde no canta. Habla.
+# | En el más largo, son cuatro minutos de un hombre de treinta y un años recitando un poema, este poema Se llama “Si me vieras por dentro”. Es una obra
+# | Un hombre le pide a alguien que lo mire. No le pide compañía. No le pide perdón. Le pide una respuesta. Quiere que el otro le diga por qué existe, cuál es su razón de ser.
+# | Es un pedido raro, extraño. La filosofía se pasa la vida dándole vueltas. Y en el fondo, en distintos momentos, lo hacemos todos: al que nos quiere le pasamos la pelota, le pasamos la pregunta sobre lo que no podemos contestar solos —por qué estoy aquí— con la esperanza de que desde afuera se vea mejor. Larralde escribe esa esperanza y después la desarma entera, sin rencor.. en la mayoria de Nosotros, cuando no nos ven, inventamos el rencor: “tú no me entiendes”, no me comprendes. no soy yo el que de un mo u otro encajo o me adapto o no, eres tú 
+# | Si me vieras por dentro / Seguro hallarías el porqué que yo no encuentro
+# | si me vieras por dentro seguro hallarás el por que, El orden. Primero está la certeza de que el otro lo va a encontrar y después viene la confesión de que él no puede. No dice que no tiene un porqué. Dice que no lo encuentra. La diferencia: existe algo ahí, está adentro, pero el dueño de casa no da con él.
+# | y es por que Somos el peor testigo de nuestra propia vida, por estar demasiado cerca y por tener intereses. tenemos la esperanza de que Cualquiera que nos quiera un poco vera con facilidad cosas nuestras que podemos negar hace veinte años.
+# | Sartre lo dice a su manera: no somos una cosa terminada. Somos también lo que los otros hacen de nosotros con su mirada, cuando me miras, me construyes
+# | Larralde no lo dice como queja. Lo dice como quien pide ayuda para encontrar. Porque hay cosas de uno que sólo existen cuando alguien más las nombra.
+# | 2. Ese porqué que me empuja y mantiene mis raíces frescas / Aunque mi cerebro piense que están secas
+# | Ese por que que mantiene raices frescas, aunque mi cerebro piense que estan secas. Acá se parte en dos. Hay algo que lo empuja y le mantiene las raíces con agua, lo mantiene bien, y hay un cerebro convencido de que esas raíces están secas. Y esas dos esferas son él.
+# | Eso desarma una idea que damos por hecha: que uno sabe cómo está. El diagnóstico que hacemos sobre nosotros mismos puede estar equivocado, pero podemos seguir igual, sostenidos por algo que no controlamos y que ni siquiera reconocemos.
+# | No es menor que desconfíe del cerebro. El cerebro no es un juez imparcial. Se calibró durante millones de años para un mundo que ya no existe: el animal que se acerca, el invierno que nos alcanza, el grupo de treinta personas desde donde ser expulsado era morirse. y quedan reminiscencias, recuerdos… al mirar el fuego, el mar; personalmente pienso que me gusta pescar por que es la excusa perfecta para mirar el mar y el rio, y esta explicacion me gusta mucho por que justicia por que soy tan mal pescador, voolviendo al tema  la tarea del cerebro siempre fue Anticipar la desgracia, y el que anticipaba mal no dejaba nietos, se extingue.
+# | . La evolución trabaja en decenas de miles de años; nuestras circunstancias se dieron vuelta en dos siglos, algunas en veinte años. en terminos biologicos, la realidad que esta planteando es que existe un desajuste, y larralde lo identifica.
+# | 3. Mi tallo partido desde hace siglos, desde ayer / Desde este mismo momento, desde siempre
+# | Cuatro tiempos para una sola herida.
+# | Siglos. Ayer. Este mismo momento. Siempre.
+# | Una herida con fecha se puede tratar: uno dice me pasó tal cosa, tal año, y a partir de ahí hay un antes y un después, hay un culpable, hay un proceso. Larralde le saca la fecha, y al sacársela deja de ser un episodio y pasa a ser una condición. El orden: va de lo más lejano a lo más cercano y termina en el ahora. No está diciendo que se partió alguna vez. Dice que se está partiendo mientras habla. Por eso “siempre” no cierra la serie: la condena. Nombra una herida que no va a encontrar la forma de terminar.
+# | 4. Mi niña juventud, mi vejez niña, mi vieja niñez.
+# | No habla de tres edades: habla de una vida donde las edades dejaron de respetar el orden. La juventud aparece como niña porque conserva una fragilidad que no se fue; la vejez, como niña, porque hay cansancios que también desamparan.
+# | Y “mi vieja niñez” se puede leer de dos maneras, entre otras mas geniales,. Una: la niñez es vieja para quienes aprendieron demasiado temprano lo que no les correspondía saber. Otra: los niños todavía están cerca del porqué. Preguntan sin vergüenza, insisten, desarman lo que para nosotros ya parece natural. Después crecemos, nos llenamos de explicaciones, y un día dejamos de preguntar. dejamos de hinchar las pelotas, No porque hayamos entendido más. Porque nos acostumbramos a vivir entre respuestas ajenas.
+# | 5. Porque aunque mi existencia sea un accidente, tengo razón de ser / El hecho de haber nacido encierra una verdad
+# | Heidegger dice que somos arrojados al mundo: nadie nos pidió permiso para nacer y sin embargo la vida es nuestra responsabilidad. Sartre lleva eso hasta el final: la existencia antes que la esencia. No venimos con un para qué, y el para qué nos lo tenemos que fabricar. Larralde acepta la primera parte y se sale de la segunda.
+# | Sí, es un accidente, o puede serlo. No estaba escrito, podría no haber existido. Pero no dice que va a inventarse una razón: dice que la tiene, que el hecho de haber nacido ya encierra una verdad, esté él o no esté para poder descifrarla.
+# | Es una posición más incómoda que la de los otros dos. El que inventa su sentido, al menos manda. El que no tiene ninguno, al menos tiene que estar en paz con eso, porque también es una decisión. El ateo y el creyente son dos tipos de creyentes: alcanzan verdades. Larralde queda en el peor lugar: hay un sentido, es suyo, pero no puede leerlo.
+# | 6. Yo mismo soy savia de un tronco partido que no cicatriza / Porque transmite desde hace siglos
+# | El tronco no cierra. Y no cierra por una razón: está transmitiendo. Si cicatrizara, se cortaría el paso. Pienso en todo lo que nos dijeron sobre esto. Sanar. Cerrar procesos. Dar vuelta la página. Superar. Mindfulness. Una herida abierta, en el vocabulario con el que vivimos, es una tarea pendiente, algo que no resolvimos, una falla nuestra.
+# | Larralde dice lo contrario, y lo dice sin levantar la voz: la herida abierta es el conducto. Por ahí pasa la savia. Cerrarla no sería sanar. Sería dejar de dar.
+# | Y hay algo más duro. Un tronco partido que transmite no está transmitiendo su dolor, como podria decirlo el gran novelista de Freud: está transmitiendo vida a través de su dolor. La grieta no es lo que entrega. Es por donde entrega. Todo el que crió a un hijo sabe esto sin haberlo pensado. Lo que uno le pasa a un hijo no sale de la parte sana. No viene de lo que aprendimos felices en vacaciones. Viene de lo que aprendimos del dolor, de las dificultades, de la frustración.
+# | 7. Pero no puede ser, porque vos sos también una verdad / Desde el corazón de tu médula
+# | Acá se da vuelta el poema entero.
+# | Venía pidiendo que lo miraran por dentro, y en una línea retira el pedido. No lo retira porque el otro sea indiferente, ni porque no lo quiera lo suficiente, ni por que no lo sepa entender: lo retira porque el otro también está lleno, y esta lleno con su verdad.
+# | Lévinas se pasó la vida en esto: el otro no es un pedazo de mi mundo. Es alguien que me desborda. Larralde llega ahí por otro camino y en menos palabras, mucho mas contundente. No me puedes ver por dentro porque tú también tienes un adentro, y está ocupado, y de hecho tampoco lo conoces. No me conozco yo. Qué te voy a conocer a ti.
+# | 8. Por eso no podrás, porque sos verdad tuya / Porque en tu verdad no cabe mi verdad
+# | Escucha bien lo que no está diciendo. No dice que no lo entienden, o  que esté solo. No hay reproche
+# | Está describiendo una estructura. “No me entiendes” es una queja, y una queja se puede reparar pidiendo más esfuerzo. “No cabe” es otra cosa: es una medida, y contra una medida no hay voluntad que sirva. Es más triste y es más tranquilo.
+# | Humberto Maturana lo decía con palabras de biólogo: entre dos sistemas vivos no existe la interacción instructiva. Yo no puedo determinar lo que pasa dentro de ti. Lo único que puedo hacer es gatillar algo que después lo decide tu estructura, no la mía. No, es que por que tu hiciste esto… x. no, no, es que estaba borracho. entonces a comprobar, todos los borrachos tienen esa conducta?, no, entonces eres tu, no el alcohol, tan vilipendiado
+# | ya que hablamos de Maturana: La autopoiesis, como sabemos si algo esta vivo o esta muerto?, por que el organismo que esta vivo, se sigue regenerando en forma autonoma, no dependiente.
+# | 9. Porque en tu corazón cabe mi corazón como alimento a tu amor / En cambio, la verdad no se alimenta con verdad ajena
+# | Separa dos cosas que vivimos juntas y confundimos siempre. Al amor sí lo puedo alimentar: mi corazón entra en el tuyo, te doy tiempo, cuerpo, presencia, compañía. Todo eso pasa de una persona a otra. Puede cuidar, sostener, acompañar, dañar.
+# | A tu verdad no.
+# | Porque amar no es absorber al otro ni convertirse en su explicación definitiva. El otro puede darme alimento, pero no puede vivir por mí; puede reconocer mi herida, pero no terminar de saber qué significa. Puede hacer más habitable mi mundo, pero no ocupar mi lugar dentro de él.
+# | Y esa distinción se lleva puesta, denuevo a freud, pero tambien la promesa más repetida: “me completas”, “sin ti no soy nada”, “encontré mi otra mitad”. Larralde no rebaja el amor: lo salva de esa exigencia imposible. Lo que se puede dar es alimento; lo que nadie puede entregar es sustancia. Nos sostenemos. No nos constituimos.
+# | Por eso no habla desde el desengaño ni desde la distancia. Está midiendo. Está constatando que dos corazones pueden caber uno en otro sin dejar de ser dos.
+# | 10. Porque no acaba, porque es siempre / Y siempre soy yo, y vos sos nunca
+# | Acá hace algo con el idioma que hay que mirar de cerca.
+# | Siempre y nunca son palabras de tiempo. Uno las usa para decir cuándo pasa algo. Larralde las saca de ahí y las convierte en nombres de personas. Yo soy siempre. Tú eres nunca. Deja de hablar de cuándo se encuentran y pasa a decir que están hechos de tiempos distintos.
+# | Cualquiera que haya vivido con otro conoce esto: lo que para mí es urgente para ti puede esperar, lo que para ti es definitivo para mí es una etapa, y en consecuencia no estamos discutiendo el mismo tema en el mismo momento aunque lo parezca. Y ninguno de los dos está mal. Simplemente no somos el mismo reloj.
+# | 11. Y así marchamos juntos por un camino de préstamos de verdades mentidas / Y corazones devorados por amor sin retorno
+# | Préstamos de verdades mentidas. aqui se fue a la puta madre y tenemos que ir despacio con esas tres palabras, porque cada una está haciendo un trabajo distinto.
+# | Empecemos por la primera, préstamo. Uno presta lo que tiene, no se puede prestar lo que no se tiene, y lo prestado, además, se devuelve. Ahora la segunda: no dice mentiras, dice verdades mentidas, y eso es otra cosa. Mentida no es un sustantivo: es algo que le pasó a la verdad. Alguien la agarró entera y la entregó incompleta.
+# | Eso deja fuera la intención. El que habla quiere decir la verdad, y por eso son verdades y no mentiras. Está entregando lo que cree que tiene, lo que puede entregar. La falla no está en la voluntad. Está en él.
+# | Y acá vuelve todo el poema sobre sí mismo. Larralde empezó diciendo que no encuentra su propio porqué, que hay una verdad adentro suyo y él no da con ella. Entonces, cuando le entrega su verdad a otro, ¿qué le está entregando? Le está prestando algo sobre lo que él mismo no tiene completa claridad. Está pagando con una moneda que no terminó de saber su valor. Eso es ser carente. No mentiroso. Carente.
+# | Y reconocerlo cambia dónde ponemos la culpa. La lectura cómoda de las mentiras de una pareja siempre tiene un culpable enfrente: el que ocultó, el que no se animó, el que dijo lo que convenía. Larralde no reparte esa carta. Dice marchamos. Los dos. Los dos vamos apenas prestando lo que no terminamos de entender, y los dos recibiendo eso mismo, convencidos de haber entregado y recibido algo entero.
+# | No hay un villano. Hay dos personas haciéndose entrega de sus carencias y llamándole a eso conocerse.
+# | 12. Y sin embargo / Y sin embargo yo soy tu verdad y vos la mía
+# | Lo dice dos veces. Y sin embargo. Y sin embargo.
+# | Se pasó el poema entero demostrando que no se puede, y acá lo afirma igual. por que No es una contradicción. Una cosa es que me entiendas y otra distinta es que yo sea tu verdad.
+# | Se puede ser la verdad de alguien que no nos entiende. De hecho es lo más común que hay. La imposibilidad no es del vínculo. Es de la comprensión.
+# | 13. Sigo creyendo en mi Dios
+# | Y termina ahí.
+# | Después de mostrar, de demostrar que nadie puede verlo por dentro, dice esto. Suena a cierre religioso de campo. al canto a lo divino, No lo creo.
+# | Todo empezó con un pedido: que alguien lo mirara por dentro y le dijera el porqué. Larralde demostró, uno por uno, que ninguna persona puede hacerlo. Ni la que lo ama. Ni la que camina a su lado. Ninguna, y no por falta de ganas, sino por estructura. que hacemos? Queda un solo destinatario posible. No porque Dios venga a completar lo que el amor no pudo. No dice “creo en Dios”. Dice “creo en mi Dios”. No es una doctrina. Es un vínculo personal. Quizá la última intimidad que le queda cuando admite que ni él ni los demás pueden descifrarlo.
+# | El poema no termina en una respuesta. Termina con una fidelidad: la fidelidad a la pregunta. así como socrates.  Después de comprobar que el amor no puede poseer la verdad del otro, Larralde se niega a aceptar que la verdad sea definitivamente inaccesible. Sigue creyendo que hay una mirada capaz de sostenerla. Porque Dios, para la tradición mística, no es lo contrario del misterio: es su nombre más profundo, mas hondo. No aquello que termina de explicarlo todo, sino aquello que impide que todo pueda ser explicado. Lo sagrado visto como un misterio que a la vez sobrecoge y atrae, y excede el lenguaje y la comprension. Y eso es lo que Larralde parece conservar: La certeza de que el porqué no es una pregunta pequeña ni abandonada en el vacío, aunque no tenga respuesta.
+# ---------------------------------------------
+
+ms	tipo	detalle
+0	renglones	0 6 17 27 31 42 52 61 73 82 94 97 108 117 127 136 145 154 163 173 182 195 201 211 214 225 237 247 259 267 276 287 296 305 314 318 328 337 345 346 357 367 373 383 391 400 411 423 432 442 452 460 466 474 480 491 500 511 521 529 537 545 558 567 577 587 594 603 611 619 628 632 642 647 653 659 670 684 693 705 718 729 739 749 759 762 772 783 791 799 809 812 823 833 840 848 854 862 870 878 885 892 901 911 912 920 931 939 949 960 971 981 991 1002 1013 1016 1027 1038 1049 1059 1067 1079 1081 1092 1098 1109 1117 1127 1134 1143 1151 1155 1167 1177 1185 1195 1204 1213 1226 1238 1252 1261 1271 1275 1285 1292 1299 1310 1320 1330 1340 1349 1362 1371 1381 1390 1400 1410 1415 1425 1432 1444 1452 1460 1470 1480 1490 1495 1503 1511 1520 1531 1542 1553 1560 1569 1572 1580 1591 1600 1603 1613 1624 1626 1634 1643 1652 1662 1666 1670 1681 1688 1698 1707 1716 1719 1729 1737 1747 1757 1767 1774 1775 1785 1792 1802 1803 1813 1818 1830 1840 1851 1860 1870 1880 1890 1902 1913 1921 1931 1938 1948 1955 1958 1968 1978 1986 1995 2007 2015 2024 2036 2045 2046 2057 2067 2076 2087 2097 2105 2117 2127 2137 2145 2156 2161 2169 2178 2189 2199 2208 2217 2225 2230 2239 2247 2260 2262 2272 2282 2293 2305 2308 2319 2330 2337 2343 2346 2354 2364 2373 2383 2393 2403 2416 2425 2433 2444 2456 2464 2474 2475 2485 2494 2504 2514 2520 2529 2539 2548 2557 2567 2578 2588 2599 2607
+0	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+25	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+28	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+38	oido	inicio=-2798 trozo=320 ruta=/data/user/0/com.sigoteleprompter.app/files/oido/1791083725103.pcm
+38	llegada	parcial nativo=37 audio=-78 leido=32 procesado=37 rms=0.0008 relevos=0
+44	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+62	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+79	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+98	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+113	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+129	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+134	llegada	parcial nativo=129 audio=22 leido=129 procesado=129 rms=0.0018 relevos=0
+146	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+164	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+178	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+201	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+211	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+228	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+244	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+262	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+282	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+295	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+310	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+328	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+346	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+362	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+378	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+394	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+410	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+433	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+443	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+461	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+476	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+494	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+512	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+527	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+544	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+562	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+576	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+596	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+611	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+627	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+642	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+658	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+677	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+693	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+710	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+725	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+743	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+759	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+776	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+792	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+808	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+826	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+842	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+859	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+875	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+891	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+907	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+923	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+940	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+958	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+974	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+991	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1008	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1024	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1040	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1057	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1073	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1084	llegada	parcial nativo=1083 audio=122 leido=1078 procesado=1083 rms=0.0004 relevos=0
+1089	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1106	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1124	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1140	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1157	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1173	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1190	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1206	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1222	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1239	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1260	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1261	llegada	parcial nativo=1258 audio=222 leido=1250 procesado=1258 rms=0.0000 relevos=0
+1273	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1290	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1306	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1322	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1339	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1356	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1358	llegada	parcial nativo=1354 audio=322 leido=1353 procesado=1354 rms=0.0006 relevos=0
+1372	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1389	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1405	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1423	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1439	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1455	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1462	llegada	parcial nativo=1459 audio=422 leido=1454 procesado=1459 rms=0.0084 relevos=0
+1472	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1488	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1504	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1522	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1537	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1556	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1571	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1575	llegada	parcial nativo=1574 audio=522 leido=1556 procesado=1574 rms=0.0064 relevos=0
+1587	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1603	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1621	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1637	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1655	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1671	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1686	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1703	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1724	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1736	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1753	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1770	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1787	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1804	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1820	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1831	llegada	parcial nativo=1826 audio=622 leido=1825 procesado=1826 rms=0.0103 relevos=0
+1836	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1853	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1869	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1886	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1902	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1919	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1935	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1952	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1956	llegada	parcial nativo=1955 audio=722 leido=1934 procesado=1955 rms=0.0106 relevos=0
+1968	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1985	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2002	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2019	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2035	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2051	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2068	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2085	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2101	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2106	llegada	parcial nativo=2104 audio=822 leido=2044 procesado=2104 rms=0.0927 relevos=0
+2117	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2135	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2151	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2167	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2184	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2192	llegada	parcial nativo=2190 audio=922 leido=2188 procesado=2189 rms=0.0408 relevos=0
+2201	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2217	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2234	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2250	llegada	parcial nativo=2247 audio=1002 leido=2227 procesado=2246 rms=0.0404 relevos=0
+2250	oyo	parcial: por
+2250	calce	NO CALZO: por
+2251	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2267	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2283	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2301	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2312	llegada	parcial nativo=2310 audio=1102 leido=2310 procesado=2310 rms=0.0261 relevos=0
+2312	oyo	parcial: por
+2312	calce	NO CALZO: por
+2317	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2335	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2351	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2366	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2385	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2400	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2416	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2420	llegada	parcial nativo=2418 audio=1202 leido=2412 procesado=2418 rms=0.0093 relevos=0
+2420	oyo	parcial: por
+2420	calce	NO CALZO: por
+2433	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2450	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2464	llegada	parcial nativo=2459 audio=1242 leido=2451 procesado=2459 rms=0.0140 relevos=0
+2464	oyo	parcial: sí por dentro
+2465	calce	NO CALZO: sí por dentro
+2466	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2487	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2500	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2517	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2535	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2549	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2551	llegada	parcial nativo=2550 audio=1342 leido=2549 procesado=2550 rms=0.0120 relevos=0
+2551	oyo	parcial: sí por dentro
+2552	calce	NO CALZO: sí por dentro
+2566	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2582	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2602	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2615	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2633	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2649	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2657	llegada	parcial nativo=2655 audio=1442 leido=2648 procesado=2655 rms=0.0001 relevos=0
+2657	oyo	parcial: sí por dentro
+2659	calce	NO CALZO: sí por dentro
+2665	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2682	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2699	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2716	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2734	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2748	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2751	llegada	parcial nativo=2750 audio=1542 leido=2743 procesado=2750 rms=0.0000 relevos=0
+2751	oyo	parcial: sí por dentro
+2752	calce	NO CALZO: sí por dentro
+2764	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2786	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2799	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2814	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2832	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2849	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2853	llegada	parcial nativo=2851 audio=1642 leido=2850 procesado=2851 rms=0.0011 relevos=0
+2853	oyo	parcial: sí por dentro
+2854	calce	NO CALZO: sí por dentro
+2867	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2880	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2899	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2914	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2933	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2939	llegada	parcial nativo=2935 audio=1736 leido=2934 procesado=2935 rms=0.0289 relevos=1
+2939	oyo	parcial: sí por dentro
+2940	calce	NO CALZO: sí por dentro
+2947	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2956	llegada	parcial nativo=2955 audio=1836 leido=2950 procesado=2955 rms=0.0831 relevos=1
+2956	oyo	parcial: sí por dentro
+2957	calce	NO CALZO: sí por dentro
+2961	llegada	parcial nativo=2959 audio=1876 leido=2954 procesado=2959 rms=0.0927 relevos=1
+2962	oyo	parcial: sí por dentro de
+2966	calce	NO CALZO: sí por dentro de
+2967	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2978	llegada	parcial nativo=2976 audio=1896 leido=2960 procesado=2976 rms=0.0375 relevos=1
+2978	oyo	parcial: sí por dentro la
+2981	calce	NO CALZO: sí por dentro la
+2982	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2997	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3005	llegada	parcial nativo=3004 audio=1956 leido=2985 procesado=3004 rms=0.0408 relevos=1
+3005	oyo	parcial: sí por dentro las
+3005	calce	NO CALZO: sí por dentro las
+3013	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3031	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3040	llegada	parcial nativo=3039 audio=2056 leido=3028 procesado=3039 rms=0.0404 relevos=1
+3040	oyo	parcial: sí por dentro las
+3041	calce	NO CALZO: sí por dentro las
+3046	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3064	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3067	llegada	parcial nativo=3066 audio=2156 leido=3065 procesado=3066 rms=0.0263 relevos=1
+3067	oyo	parcial: sí por dentro las
+3067	calce	NO CALZO: sí por dentro las
+3080	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3089	llegada	parcial nativo=3087 audio=2176 leido=3066 procesado=3087 rms=0.0011 relevos=1
+3089	oyo	parcial: sí por dentro las por
+3090	calce	NO CALZO: sí por dentro las por
+3097	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3107	llegada	parcial nativo=3105 audio=2276 leido=3105 procesado=3105 rms=0.0093 relevos=1
+3107	oyo	parcial: sí por dentro las por
+3109	calce	NO CALZO: sí por dentro las por
+3115	llegada	parcial nativo=3112 audio=2296 leido=3106 procesado=3112 rms=0.0103 relevos=1
+3115	oyo	parcial: sí por dentro las por dentro
+3117	calce	NO CALZO: sí por dentro las por dentro
+3118	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3130	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3147	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3150	llegada	parcial nativo=3145 audio=2396 leido=3144 procesado=3145 rms=0.0140 relevos=1
+3150	oyo	parcial: sí por dentro las por dentro
+3152	calce	NO CALZO: sí por dentro las por dentro
+3164	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3179	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3182	llegada	parcial nativo=3180 audio=2496 leido=3169 procesado=3180 rms=0.0002 relevos=1
+3182	oyo	parcial: sí por dentro las por dentro
+3186	calce	NO CALZO: sí por dentro las por dentro
+3199	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3203	llegada	parcial nativo=3200 audio=2596 leido=3192 procesado=3200 rms=0.0000 relevos=1
+3203	oyo	parcial: sí por dentro las por dentro
+3205	calce	NO CALZO: sí por dentro las por dentro
+3212	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3230	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3235	llegada	parcial nativo=3232 audio=2696 leido=3231 procesado=3232 rms=0.0001 relevos=1
+3235	oyo	parcial: sí por dentro las por dentro
+3236	calce	NO CALZO: sí por dentro las por dentro
+3245	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3250	llegada	parcial nativo=3248 audio=2796 leido=3244 procesado=3248 rms=0.0424 relevos=1
+3250	oyo	parcial: sí por dentro las por dentro
+3250	calce	NO CALZO: sí por dentro las por dentro
+3266	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3268	llegada	parcial nativo=3267 audio=2896 leido=3257 procesado=3267 rms=0.0492 relevos=1
+3268	oyo	parcial: sí por dentro las por dentro
+3268	calce	NO CALZO: sí por dentro las por dentro
+3278	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3288	llegada	parcial nativo=3287 audio=2976 leido=3282 procesado=3287 rms=0.0730 relevos=1
+3288	oyo	parcial: sí por dentro las por dentro la
+3289	calce	NO CALZO: sí por dentro las por dentro la
+3296	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3308	llegada	parcial nativo=3307 audio=3076 leido=3301 procesado=3307 rms=0.0862 relevos=1
+3308	oyo	parcial: sí por dentro las por dentro la
+3309	calce	NO CALZO: sí por dentro las por dentro la
+3311	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3330	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3345	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3348	llegada	parcial nativo=3347 audio=3176 leido=3346 procesado=3347 rms=0.0495 relevos=1
+3348	oyo	parcial: sí por dentro las por dentro la
+3348	calce	NO CALZO: sí por dentro las por dentro la
+3363	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3379	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3395	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3412	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3420	llegada	parcial nativo=3419 audio=3276 leido=3410 procesado=3419 rms=0.0186 relevos=1
+3420	oyo	parcial: sí por dentro las por dentro la
+3421	calce	NO CALZO: sí por dentro las por dentro la
+3428	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3445	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3462	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3478	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3497	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3512	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3521	llegada	parcial nativo=3519 audio=3376 leido=3510 procesado=3519 rms=0.0071 relevos=1
+3521	oyo	parcial: sí por dentro las por dentro la
+3524	calce	NO CALZO: sí por dentro las por dentro la
+3528	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3543	llegada	parcial nativo=3541 audio=3396 leido=3524 procesado=3541 rms=0.0003 relevos=1
+3543	oyo	parcial: sí por dentro las por dentro la ral
+3545	calce	NO CALZO: sí por dentro las por dentro la ral
+3546	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3564	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3576	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3594	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3610	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3629	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3643	llegada	parcial nativo=3641 audio=3496 leido=3633 procesado=3641 rms=0.0005 relevos=1
+3643	oyo	parcial: sí por dentro las por dentro la ral
+3648	calce	NO CALZO: sí por dentro las por dentro la ral
+3648	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3664	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3677	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3695	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3713	llegada	parcial nativo=3707 audio=3556 leido=3689 procesado=3706 rms=0.0001 relevos=1
+3713	oyo	parcial: sí por dentro las por dentro la ral de
+3715	calce	NO CALZO: sí por dentro las por dentro la ral de
+3715	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3728	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3743	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3761	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3776	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3796	llegada	parcial nativo=3791 audio=3656 leido=3789 procesado=3791 rms=0.0001 relevos=1
+3796	oyo	parcial: sí por dentro las por dentro la ral de
+3799	calce	NO CALZO: sí por dentro las por dentro la ral de
+3799	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3810	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3828	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3842	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3866	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3876	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3895	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3900	llegada	parcial nativo=3896 audio=3756 leido=3884 procesado=3896 rms=0.0001 relevos=1
+3900	oyo	parcial: sí por dentro las por dentro la ral de
+3903	calce	NO CALZO: sí por dentro las por dentro la ral de
+3909	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3928	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3943	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3962	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3975	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4013	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4014	llegada	parcial nativo=3995 audio=3856 leido=3984 procesado=3995 rms=0.0000 relevos=1
+4014	oyo	parcial: sí por dentro las por dentro la ral de
+4015	calce	NO CALZO: sí por dentro las por dentro la ral de
+4016	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4026	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4041	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4060	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4074	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4096	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4098	llegada	parcial nativo=4093 audio=3956 leido=4091 procesado=4093 rms=0.0000 relevos=1
+4098	oyo	parcial: sí por dentro las por dentro la ral de
+4099	calce	NO CALZO: sí por dentro las por dentro la ral de
+4109	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4125	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4141	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4160	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4174	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4192	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4201	llegada	parcial nativo=4200 audio=4056 leido=4193 procesado=4200 rms=0.0001 relevos=1
+4201	oyo	parcial: sí por dentro las por dentro la ral de
+4201	calce	NO CALZO: sí por dentro las por dentro la ral de
+4207	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4225	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4240	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4257	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4273	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4291	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4298	llegada	parcial nativo=4297 audio=4156 leido=4287 procesado=4297 rms=0.0610 relevos=1
+4298	oyo	parcial: sí por dentro las por dentro la ral de
+4298	calce	NO CALZO: sí por dentro las por dentro la ral de
+4308	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4325	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4340	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4358	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4373	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4390	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4398	llegada	parcial nativo=4395 audio=4256 leido=4394 procesado=4395 rms=0.0806 relevos=1
+4398	oyo	parcial: sí por dentro las por dentro la ral de
+4400	calce	NO CALZO: sí por dentro las por dentro la ral de
+4406	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4424	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4439	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4457	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4473	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4490	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4506	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4508	llegada	parcial nativo=4504 audio=4356 leido=4490 procesado=4504 rms=0.1322 relevos=1
+4508	oyo	parcial: sí por dentro las por dentro la ral de
+4509	calce	NO CALZO: sí por dentro las por dentro la ral de
+4526	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4539	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4555	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4572	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4590	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4605	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4619	llegada	parcial nativo=4617 audio=4456 leido=4589 procesado=4617 rms=0.1257 relevos=1
+4619	oyo	parcial: sí por dentro las por dentro la ral de
+4627	calce	NO CALZO: sí por dentro las por dentro la ral de
+4628	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4639	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4655	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4672	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4688	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4696	llegada	parcial nativo=4693 audio=4556 leido=4691 procesado=4693 rms=0.0545 relevos=1
+4697	oyo	parcial: sí por dentro las por dentro la ral de
+4699	calce	NO CALZO: sí por dentro las por dentro la ral de
+4704	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4722	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4737	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4755	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4771	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4789	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4804	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4813	llegada	parcial nativo=4812 audio=4656 leido=4795 procesado=4812 rms=0.1072 relevos=1
+4813	oyo	parcial: sí por dentro las por dentro la ral de en menos
+4815	calce	NO CALZO: sí por dentro las por dentro la ral de en menos
+4822	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4837	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4854	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4870	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4887	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4903	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4908	llegada	parcial nativo=4906 audio=4756 leido=4891 procesado=4906 rms=0.0778 relevos=1
+4908	oyo	parcial: sí por dentro las por dentro la ral de
+4910	calce	NO CALZO: sí por dentro las por dentro la ral de
+4917	llegada	parcial nativo=4915 audio=4776 leido=4907 procesado=4915 rms=0.0072 relevos=1
+4917	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos
+4920	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos
+4921	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4936	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4953	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4971	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4987	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5003	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5020	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5026	llegada	parcial nativo=5024 audio=4876 leido=5006 procesado=5024 rms=0.0162 relevos=1
+5026	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos
+5027	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos
+5037	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5052	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5069	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5087	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5102	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5109	llegada	parcial nativo=5108 audio=4976 leido=5108 procesado=5108 rms=0.0245 relevos=1
+5110	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos
+5110	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos
+5120	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5135	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5153	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5169	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5187	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5202	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5211	llegada	parcial nativo=5209 audio=5076 leido=5203 procesado=5209 rms=0.0560 relevos=1
+5211	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta
+5214	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta
+5219	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5235	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5253	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5268	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5286	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5303	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5319	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5322	llegada	parcial nativo=5320 audio=5176 leido=5310 procesado=5319 rms=0.0597 relevos=1
+5322	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta
+5325	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta
+5335	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5352	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5368	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5385	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5401	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5409	llegada	parcial nativo=5408 audio=5276 leido=5406 procesado=5408 rms=0.0925 relevos=1
+5409	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta
+5410	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta
+5419	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5435	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5442	llegada	parcial nativo=5440 audio=5296 leido=5431 procesado=5440 rms=0.0857 relevos=1
+5442	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y
+5445	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y
+5451	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5468	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5485	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5501	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5517	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5532	llegada	parcial nativo=5530 audio=5396 leido=5529 procesado=5530 rms=0.0907 relevos=1
+5532	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y
+5534	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y
+5534	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5551	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5559	llegada	parcial nativo=5555 audio=5416 leido=5545 procesado=5555 rms=0.0762 relevos=1
+5559	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+5561	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+5567	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5583	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5600	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5616	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5633	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5650	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5654	llegada	parcial nativo=5652 audio=5516 leido=5650 procesado=5652 rms=0.0839 relevos=1
+5654	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+5657	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+5666	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5683	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5699	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5716	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5734	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5750	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5765	llegada	parcial nativo=5764 audio=5616 leido=5749 procesado=5764 rms=0.0119 relevos=1
+5765	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+5767	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+5768	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5784	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5799	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5818	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5833	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5849	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5859	llegada	parcial nativo=5857 audio=5716 leido=5850 procesado=5857 rms=0.0001 relevos=1
+5859	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+5860	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+5866	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5882	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5899	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5916	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5932	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5949	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5953	llegada	parcial nativo=5951 audio=5816 leido=5950 procesado=5951 rms=0.0000 relevos=1
+5953	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+5954	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+5965	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5982	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5998	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6015	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6033	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6047	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6049	llegada	parcial nativo=6048 audio=5916 leido=6043 procesado=6048 rms=0.0000 relevos=1
+6049	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6050	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6064	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6082	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6101	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6114	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6131	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6148	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6154	llegada	parcial nativo=6153 audio=6016 leido=6145 procesado=6153 rms=0.0000 relevos=1
+6154	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6155	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6164	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6181	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6200	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6214	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6231	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6249	llegada	parcial nativo=6246 audio=6116 leido=6244 procesado=6245 rms=0.0000 relevos=1
+6249	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6251	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6252	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6264	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6281	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6299	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6312	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6330	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6346	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6351	llegada	parcial nativo=6349 audio=6216 leido=6343 procesado=6349 rms=0.0001 relevos=1
+6351	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6353	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6367	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6379	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6407	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6412	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6429	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6446	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6464	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6466	llegada	parcial nativo=6464 audio=6316 leido=6452 procesado=6464 rms=0.0002 relevos=1
+6466	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6466	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6479	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6496	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6513	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6531	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6546	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6553	llegada	parcial nativo=6551 audio=6416 leido=6550 procesado=6551 rms=0.0345 relevos=1
+6554	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6556	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6564	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6579	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6596	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6612	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6630	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6645	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6654	llegada	parcial nativo=6653 audio=6516 leido=6647 procesado=6653 rms=0.0592 relevos=1
+6654	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6656	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6661	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6678	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6695	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6712	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6729	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6745	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6762	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6773	llegada	parcial nativo=6772 audio=6616 leido=6752 procesado=6772 rms=0.0893 relevos=1
+6773	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6776	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6777	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6800	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6811	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6828	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6845	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6852	llegada	parcial nativo=6850 audio=6716 leido=6849 procesado=6850 rms=0.0642 relevos=1
+6852	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6855	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve
+6864	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6876	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6894	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6910	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6933	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6943	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6962	llegada	parcial nativo=6956 audio=6816 leido=6950 procesado=6956 rms=0.0942 relevos=1
+6962	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud
+6968	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud
+6968	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6976	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6998	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7009	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7029	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7044	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7059	llegada	parcial nativo=7055 audio=6916 leido=7043 procesado=7055 rms=0.0041 relevos=1
+7060	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud
+7062	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud
+7062	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7080	llegada	parcial nativo=7074 audio=6936 leido=7067 procesado=7074 rms=0.0017 relevos=1
+7081	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud y
+7082	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud y
+7082	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7095	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7110	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7128	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7142	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7160	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7175	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7178	llegada	parcial nativo=7176 audio=7036 leido=7166 procesado=7176 rms=0.0672 relevos=1
+7178	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud
+7180	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud
+7193	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7208	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7226	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7241	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7259	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7271	llegada	parcial nativo=7269 audio=7136 leido=7268 procesado=7269 rms=0.0153 relevos=1
+7271	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud
+7274	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud
+7275	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7294	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7308	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7328	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7341	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7354	llegada	parcial nativo=7352 audio=7216 leido=7344 procesado=7352 rms=0.0182 relevos=1
+7355	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco
+7358	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco
+7359	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7375	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7392	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7408	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7428	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7441	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7453	llegada	parcial nativo=7452 audio=7316 leido=7450 procesado=7452 rms=0.0212 relevos=1
+7453	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco
+7453	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco
+7458	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7474	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7495	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7508	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7525	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7541	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7543	llegada	parcial nativo=7539 audio=7396 leido=7530 procesado=7539 rms=0.0679 relevos=1
+7543	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que
+7546	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que
+7558	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7574	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7593	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7607	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7627	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7633	llegada	parcial nativo=7632 audio=7496 leido=7631 procesado=7632 rms=0.0714 relevos=1
+7633	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que
+7634	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que
+7640	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7657	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7674	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7694	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7707	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7725	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7739	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7741	llegada	parcial nativo=7738 audio=7596 leido=7727 procesado=7738 rms=0.0586 relevos=1
+7741	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que
+7743	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que
+7758	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7772	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7791	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7806	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7825	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7839	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7843	llegada	parcial nativo=7841 audio=7696 leido=7829 procesado=7841 rms=0.0081 relevos=1
+7843	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que seamos
+7847	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que seamos
+7857	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7872	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7893	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7905	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7911	llegada	parcial nativo=7909 audio=7756 leido=7891 procesado=7909 rms=0.0659 relevos=1
+7911	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que sea
+7914	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que sea
+7927	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7939	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7956	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7961	llegada	parcial nativo=7957 audio=7816 leido=7949 procesado=7957 rms=0.1019 relevos=1
+7961	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama
+7961	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama
+7971	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7990	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8005	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8022	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8038	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8048	llegada	parcial nativo=8047 audio=7916 leido=8046 procesado=8047 rms=0.0543 relevos=1
+8048	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama
+8049	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama
+8054	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8070	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8089	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8104	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8121	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8136	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8154	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8161	llegada	parcial nativo=8157 audio=8016 leido=8147 procesado=8157 rms=0.0232 relevos=1
+8161	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama
+8163	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama
+8170	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8189	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8204	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8221	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8237	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8253	llegada	parcial nativo=8251 audio=8116 leido=8244 procesado=8251 rms=0.0122 relevos=1
+8253	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama
+8255	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama
+8258	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8270	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8287	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8303	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8320	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8336	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8347	llegada	parcial nativo=8346 audio=8216 leido=8344 procesado=8346 rms=0.0001 relevos=1
+8347	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama
+8348	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama
+8354	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8369	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8386	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8403	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8420	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8435	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8452	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8456	llegada	parcial nativo=8453 audio=8316 leido=8444 procesado=8453 rms=0.0001 relevos=1
+8456	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+8458	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+8469	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8487	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8502	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8519	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8535	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8552	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8558	llegada	parcial nativo=8555 audio=8416 leido=8545 procesado=8555 rms=0.0000 relevos=1
+8558	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+8559	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+8568	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8586	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8602	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8619	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8635	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8651	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8661	llegada	parcial nativo=8659 audio=8516 leido=8654 procesado=8659 rms=0.0000 relevos=1
+8661	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+8661	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+8667	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8685	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8701	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8718	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8734	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8751	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8760	llegada	parcial nativo=8755 audio=8616 leido=8746 procesado=8755 rms=0.0000 relevos=1
+8760	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+8763	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+8767	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8785	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8800	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8818	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8833	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8850	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8856	llegada	parcial nativo=8854 audio=8716 leido=8847 procesado=8854 rms=0.0001 relevos=1
+8856	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+8859	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+8867	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8884	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8900	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8917	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8933	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8952	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8961	llegada	parcial nativo=8953 audio=8816 leido=8951 procesado=8953 rms=0.0001 relevos=1
+8961	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+8964	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+8966	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8989	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8999	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9017	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9033	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9050	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9066	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9067	llegada	parcial nativo=9064 audio=8916 leido=9053 procesado=9064 rms=0.0001 relevos=1
+9067	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+9068	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+9084	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9099	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9116	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9132	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9149	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9165	llegada	parcial nativo=9162 audio=9016 leido=9150 procesado=9162 rms=0.0003 relevos=1
+9165	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+9168	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+9169	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9183	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9198	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9216	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9232	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9249	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9250	llegada	parcial nativo=9246 audio=9116 leido=9245 procesado=9246 rms=0.0002 relevos=1
+9250	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+9251	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+9264	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9282	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9299	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9315	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9331	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9349	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9362	llegada	parcial nativo=9356 audio=9216 leido=9346 procesado=9356 rms=0.0001 relevos=1
+9363	oyo	parcial: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+9364	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+9365	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9382	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9398	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9414	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9430	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9447	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9461	llegada	FINAL nativo=9459 audio=9316 leido=9445 procesado=9459 rms=0.0000 relevos=1
+9461	palabras	FINAL: sí@232-442 por@682-862 dentro@862-1342 las@1612-1758 por@1758-1912 dentro@1912-2422 la@2692-2842 ral@2842-3171 de@3171-3352 en@4072-4218 mil@4218-4372 novecientos@4372-4792 sesenta@4792-5122 y@5122-5152 nueve@5152-5602 salud@6292-6676 disco@6676-7102 que@7132-7252 se@7252-7402 llama@7402-7642 hombre@7702-8122
+9461	oyo	FINAL: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+9463	calce	NO CALZO: sí por dentro las por dentro la ral de en mil novecientos sesenta y nueve salud disco que se llama hombre
+9463	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9516	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9542	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9543	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9544	llegada	parcial nativo=9473 audio=9336 leido=9466 procesado=9473 rms=0.0000 relevos=1
+9546	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9564	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9576	llegada	parcial nativo=9574 audio=9436 leido=9567 procesado=9574 rms=0.0001 relevos=1
+9579	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9596	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9613	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9630	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9646	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9663	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9670	llegada	parcial nativo=9668 audio=9536 leido=9668 procesado=9668 rms=0.0000 relevos=1
+9679	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9697	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9713	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9729	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9746	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9764	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9774	llegada	parcial nativo=9772 audio=9636 leido=9767 procesado=9772 rms=0.0001 relevos=1
+9778	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9795	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9812	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9828	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9845	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9862	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9873	llegada	parcial nativo=9872 audio=9736 leido=9864 procesado=9872 rms=0.0001 relevos=1
+9879	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9896	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9913	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9931	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9945	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9962	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9969	llegada	parcial nativo=9967 audio=9836 leido=9967 procesado=9967 rms=0.0002 relevos=1
+9979	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9995	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10011	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10028	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10045	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10060	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10078	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10080	llegada	parcial nativo=10078 audio=9936 leido=10069 procesado=10078 rms=0.0001 relevos=1
+10094	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10111	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10127	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10146	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10161	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10172	llegada	parcial nativo=10171 audio=10036 leido=10163 procesado=10171 rms=0.0000 relevos=1
+10177	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10194	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10213	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10227	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10244	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10260	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10273	llegada	parcial nativo=10271 audio=10136 leido=10270 procesado=10271 rms=0.0000 relevos=1
+10277	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10293	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10309	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10329	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10346	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10361	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10372	llegada	parcial nativo=10371 audio=10236 leido=10365 procesado=10371 rms=0.0000 relevos=1
+10375	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10393	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10409	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10426	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10443	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10462	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10476	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10480	llegada	parcial nativo=10479 audio=10336 leido=10470 procesado=10479 rms=0.0000 relevos=1
+10493	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10510	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10526	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10542	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10559	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10573	llegada	parcial nativo=10571 audio=10436 leido=10569 procesado=10570 rms=0.0000 relevos=1
+10576	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10593	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10608	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10626	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10642	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10659	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10674	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10675	llegada	parcial nativo=10673 audio=10536 leido=10667 procesado=10672 rms=0.0001 relevos=1
+10692	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10709	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10727	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10740	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10759	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10775	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10781	llegada	parcial nativo=10779 audio=10636 leido=10768 procesado=10779 rms=0.0000 relevos=1
+10790	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10807	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10829	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10840	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10859	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10867	llegada	parcial nativo=10864 audio=10736 leido=10863 procesado=10864 rms=0.0000 relevos=1
+10874	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10893	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10906	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10926	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10941	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10958	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10973	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10975	llegada	parcial nativo=10974 audio=10836 leido=10964 procesado=10974 rms=0.0000 relevos=1
+10991	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11006	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11026	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11039	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11061	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11071	llegada	parcial nativo=11069 audio=10936 leido=11063 procesado=11069 rms=0.0000 relevos=1
+11073	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11090	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11107	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11123	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11139	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11157	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11166	llegada	parcial nativo=11164 audio=11036 leido=11163 procesado=11164 rms=0.0000 relevos=1
+11172	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11191	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11206	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11225	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11239	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11257	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11271	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11275	llegada	parcial nativo=11274 audio=11136 leido=11269 procesado=11274 rms=0.0000 relevos=1
+11290	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11306	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11322	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11339	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11360	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11372	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11380	llegada	parcial nativo=11378 audio=11236 leido=11367 procesado=11377 rms=0.0000 relevos=1
+11390	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11405	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11424	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11437	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11461	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11469	llegada	parcial nativo=11467 audio=11336 leido=11466 procesado=11467 rms=0.0000 relevos=1
+11471	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11489	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11505	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11521	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11538	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11557	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11570	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11574	llegada	parcial nativo=11571 audio=11436 leido=11563 procesado=11571 rms=0.0001 relevos=1
+11589	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11603	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11622	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11637	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11656	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11669	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11681	llegada	parcial nativo=11679 audio=11536 leido=11668 procesado=11679 rms=0.0001 relevos=1
+11688	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11703	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11727	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11735	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11757	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11768	llegada	parcial nativo=11766 audio=11636 leido=11766 procesado=11766 rms=0.0000 relevos=1
+11768	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11787	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11802	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11819	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11835	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11852	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11868	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11873	llegada	parcial nativo=11872 audio=11736 leido=11865 procesado=11872 rms=0.0000 relevos=1
+11916	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11917	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11924	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11934	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11951	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11968	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11973	llegada	parcial nativo=11971 audio=11836 leido=11965 procesado=11971 rms=0.0001 relevos=1
+11986	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12001	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12027	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12039	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12057	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12067	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12083	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12112	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12129	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12141	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12154	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12167	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12184	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12199	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12210	llegada	parcial nativo=12209 audio=11936 leido=12208 procesado=12209 rms=0.0003 relevos=1
+12216	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12234	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12256	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12265	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12282	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12300	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12313	llegada	parcial nativo=12311 audio=12036 leido=12308 procesado=12311 rms=0.0003 relevos=1
+12315	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12332	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12348	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12365	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12383	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12399	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12414	llegada	parcial nativo=12411 audio=12136 leido=12407 procesado=12411 rms=0.0003 relevos=1
+12416	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12433	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12448	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12464	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0

@@ -1,0 +1,1501 @@
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: d910b9ae-94b2-4a2e-bf6d-a09f76572cba
+# inicio del video (epoch ms): 1791083495629
+# motor de voz: nativo
+# letra: 24 px, sans
+# columna: completa, margen 5%
+# donde lees: arriba
+# idioma: es
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Si me vieras por dentro — Larralde
+# | En 1969 sale un disco que se llama Hombre. Doce cortes: cinco milongas, tres canciones. Y en cuatro de ellos José Larralde no canta. Habla.
+# | En el más largo, son cuatro minutos de un hombre de treinta y un años recitando un poema, este poema Se llama “Si me vieras por dentro”. Es una obra
+# | Un hombre le pide a alguien que lo mire. No le pide compañía. No le pide perdón. Le pide una respuesta. Quiere que el otro le diga por qué existe, cuál es su razón de ser.
+# | Es un pedido raro, extraño. La filosofía se pasa la vida dándole vueltas. Y en el fondo, en distintos momentos, lo hacemos todos: al que nos quiere le pasamos la pelota, le pasamos la pregunta sobre lo que no podemos contestar solos —por qué estoy aquí— con la esperanza de que desde afuera se vea mejor. Larralde escribe esa esperanza y después la desarma entera, sin rencor.. en la mayoria de Nosotros, cuando no nos ven, inventamos el rencor: “tú no me entiendes”, no me comprendes. no soy yo el que de un mo u otro encajo o me adapto o no, eres tú 
+# | Si me vieras por dentro / Seguro hallarías el porqué que yo no encuentro
+# | si me vieras por dentro seguro hallarás el por que, El orden. Primero está la certeza de que el otro lo va a encontrar y después viene la confesión de que él no puede. No dice que no tiene un porqué. Dice que no lo encuentra. La diferencia: existe algo ahí, está adentro, pero el dueño de casa no da con él.
+# | y es por que Somos el peor testigo de nuestra propia vida, por estar demasiado cerca y por tener intereses. tenemos la esperanza de que Cualquiera que nos quiera un poco vera con facilidad cosas nuestras que podemos negar hace veinte años.
+# | Sartre lo dice a su manera: no somos una cosa terminada. Somos también lo que los otros hacen de nosotros con su mirada, cuando me miras, me construyes
+# | Larralde no lo dice como queja. Lo dice como quien pide ayuda para encontrar. Porque hay cosas de uno que sólo existen cuando alguien más las nombra.
+# | 2. Ese porqué que me empuja y mantiene mis raíces frescas / Aunque mi cerebro piense que están secas
+# | Ese por que que mantiene raices frescas, aunque mi cerebro piense que estan secas. Acá se parte en dos. Hay algo que lo empuja y le mantiene las raíces con agua, lo mantiene bien, y hay un cerebro convencido de que esas raíces están secas. Y esas dos esferas son él.
+# | Eso desarma una idea que damos por hecha: que uno sabe cómo está. El diagnóstico que hacemos sobre nosotros mismos puede estar equivocado, pero podemos seguir igual, sostenidos por algo que no controlamos y que ni siquiera reconocemos.
+# | No es menor que desconfíe del cerebro. El cerebro no es un juez imparcial. Se calibró durante millones de años para un mundo que ya no existe: el animal que se acerca, el invierno que nos alcanza, el grupo de treinta personas desde donde ser expulsado era morirse. y quedan reminiscencias, recuerdos… al mirar el fuego, el mar; personalmente pienso que me gusta pescar por que es la excusa perfecta para mirar el mar y el rio, y esta explicacion me gusta mucho por que justicia por que soy tan mal pescador, voolviendo al tema  la tarea del cerebro siempre fue Anticipar la desgracia, y el que anticipaba mal no dejaba nietos, se extingue.
+# | . La evolución trabaja en decenas de miles de años; nuestras circunstancias se dieron vuelta en dos siglos, algunas en veinte años. en terminos biologicos, la realidad que esta planteando es que existe un desajuste, y larralde lo identifica.
+# | 3. Mi tallo partido desde hace siglos, desde ayer / Desde este mismo momento, desde siempre
+# | Cuatro tiempos para una sola herida.
+# | Siglos. Ayer. Este mismo momento. Siempre.
+# | Una herida con fecha se puede tratar: uno dice me pasó tal cosa, tal año, y a partir de ahí hay un antes y un después, hay un culpable, hay un proceso. Larralde le saca la fecha, y al sacársela deja de ser un episodio y pasa a ser una condición. El orden: va de lo más lejano a lo más cercano y termina en el ahora. No está diciendo que se partió alguna vez. Dice que se está partiendo mientras habla. Por eso “siempre” no cierra la serie: la condena. Nombra una herida que no va a encontrar la forma de terminar.
+# | 4. Mi niña juventud, mi vejez niña, mi vieja niñez.
+# | No habla de tres edades: habla de una vida donde las edades dejaron de respetar el orden. La juventud aparece como niña porque conserva una fragilidad que no se fue; la vejez, como niña, porque hay cansancios que también desamparan.
+# | Y “mi vieja niñez” se puede leer de dos maneras, entre otras mas geniales,. Una: la niñez es vieja para quienes aprendieron demasiado temprano lo que no les correspondía saber. Otra: los niños todavía están cerca del porqué. Preguntan sin vergüenza, insisten, desarman lo que para nosotros ya parece natural. Después crecemos, nos llenamos de explicaciones, y un día dejamos de preguntar. dejamos de hinchar las pelotas, No porque hayamos entendido más. Porque nos acostumbramos a vivir entre respuestas ajenas.
+# | 5. Porque aunque mi existencia sea un accidente, tengo razón de ser / El hecho de haber nacido encierra una verdad
+# | Heidegger dice que somos arrojados al mundo: nadie nos pidió permiso para nacer y sin embargo la vida es nuestra responsabilidad. Sartre lleva eso hasta el final: la existencia antes que la esencia. No venimos con un para qué, y el para qué nos lo tenemos que fabricar. Larralde acepta la primera parte y se sale de la segunda.
+# | Sí, es un accidente, o puede serlo. No estaba escrito, podría no haber existido. Pero no dice que va a inventarse una razón: dice que la tiene, que el hecho de haber nacido ya encierra una verdad, esté él o no esté para poder descifrarla.
+# | Es una posición más incómoda que la de los otros dos. El que inventa su sentido, al menos manda. El que no tiene ninguno, al menos tiene que estar en paz con eso, porque también es una decisión. El ateo y el creyente son dos tipos de creyentes: alcanzan verdades. Larralde queda en el peor lugar: hay un sentido, es suyo, pero no puede leerlo.
+# | 6. Yo mismo soy savia de un tronco partido que no cicatriza / Porque transmite desde hace siglos
+# | El tronco no cierra. Y no cierra por una razón: está transmitiendo. Si cicatrizara, se cortaría el paso. Pienso en todo lo que nos dijeron sobre esto. Sanar. Cerrar procesos. Dar vuelta la página. Superar. Mindfulness. Una herida abierta, en el vocabulario con el que vivimos, es una tarea pendiente, algo que no resolvimos, una falla nuestra.
+# | Larralde dice lo contrario, y lo dice sin levantar la voz: la herida abierta es el conducto. Por ahí pasa la savia. Cerrarla no sería sanar. Sería dejar de dar.
+# | Y hay algo más duro. Un tronco partido que transmite no está transmitiendo su dolor, como podria decirlo el gran novelista de Freud: está transmitiendo vida a través de su dolor. La grieta no es lo que entrega. Es por donde entrega. Todo el que crió a un hijo sabe esto sin haberlo pensado. Lo que uno le pasa a un hijo no sale de la parte sana. No viene de lo que aprendimos felices en vacaciones. Viene de lo que aprendimos del dolor, de las dificultades, de la frustración.
+# | 7. Pero no puede ser, porque vos sos también una verdad / Desde el corazón de tu médula
+# | Acá se da vuelta el poema entero.
+# | Venía pidiendo que lo miraran por dentro, y en una línea retira el pedido. No lo retira porque el otro sea indiferente, ni porque no lo quiera lo suficiente, ni por que no lo sepa entender: lo retira porque el otro también está lleno, y esta lleno con su verdad.
+# | Lévinas se pasó la vida en esto: el otro no es un pedazo de mi mundo. Es alguien que me desborda. Larralde llega ahí por otro camino y en menos palabras, mucho mas contundente. No me puedes ver por dentro porque tú también tienes un adentro, y está ocupado, y de hecho tampoco lo conoces. No me conozco yo. Qué te voy a conocer a ti.
+# | 8. Por eso no podrás, porque sos verdad tuya / Porque en tu verdad no cabe mi verdad
+# | Escucha bien lo que no está diciendo. No dice que no lo entienden, o  que esté solo. No hay reproche
+# | Está describiendo una estructura. “No me entiendes” es una queja, y una queja se puede reparar pidiendo más esfuerzo. “No cabe” es otra cosa: es una medida, y contra una medida no hay voluntad que sirva. Es más triste y es más tranquilo.
+# | Humberto Maturana lo decía con palabras de biólogo: entre dos sistemas vivos no existe la interacción instructiva. Yo no puedo determinar lo que pasa dentro de ti. Lo único que puedo hacer es gatillar algo que después lo decide tu estructura, no la mía. No, es que por que tu hiciste esto… x. no, no, es que estaba borracho. entonces a comprobar, todos los borrachos tienen esa conducta?, no, entonces eres tu, no el alcohol, tan vilipendiado
+# | ya que hablamos de Maturana: La autopoiesis, como sabemos si algo esta vivo o esta muerto?, por que el organismo que esta vivo, se sigue regenerando en forma autonoma, no dependiente.
+# | 9. Porque en tu corazón cabe mi corazón como alimento a tu amor / En cambio, la verdad no se alimenta con verdad ajena
+# | Separa dos cosas que vivimos juntas y confundimos siempre. Al amor sí lo puedo alimentar: mi corazón entra en el tuyo, te doy tiempo, cuerpo, presencia, compañía. Todo eso pasa de una persona a otra. Puede cuidar, sostener, acompañar, dañar.
+# | A tu verdad no.
+# | Porque amar no es absorber al otro ni convertirse en su explicación definitiva. El otro puede darme alimento, pero no puede vivir por mí; puede reconocer mi herida, pero no terminar de saber qué significa. Puede hacer más habitable mi mundo, pero no ocupar mi lugar dentro de él.
+# | Y esa distinción se lleva puesta, denuevo a freud, pero tambien la promesa más repetida: “me completas”, “sin ti no soy nada”, “encontré mi otra mitad”. Larralde no rebaja el amor: lo salva de esa exigencia imposible. Lo que se puede dar es alimento; lo que nadie puede entregar es sustancia. Nos sostenemos. No nos constituimos.
+# | Por eso no habla desde el desengaño ni desde la distancia. Está midiendo. Está constatando que dos corazones pueden caber uno en otro sin dejar de ser dos.
+# | 10. Porque no acaba, porque es siempre / Y siempre soy yo, y vos sos nunca
+# | Acá hace algo con el idioma que hay que mirar de cerca.
+# | Siempre y nunca son palabras de tiempo. Uno las usa para decir cuándo pasa algo. Larralde las saca de ahí y las convierte en nombres de personas. Yo soy siempre. Tú eres nunca. Deja de hablar de cuándo se encuentran y pasa a decir que están hechos de tiempos distintos.
+# | Cualquiera que haya vivido con otro conoce esto: lo que para mí es urgente para ti puede esperar, lo que para ti es definitivo para mí es una etapa, y en consecuencia no estamos discutiendo el mismo tema en el mismo momento aunque lo parezca. Y ninguno de los dos está mal. Simplemente no somos el mismo reloj.
+# | 11. Y así marchamos juntos por un camino de préstamos de verdades mentidas / Y corazones devorados por amor sin retorno
+# | Préstamos de verdades mentidas. aqui se fue a la puta madre y tenemos que ir despacio con esas tres palabras, porque cada una está haciendo un trabajo distinto.
+# | Empecemos por la primera, préstamo. Uno presta lo que tiene, no se puede prestar lo que no se tiene, y lo prestado, además, se devuelve. Ahora la segunda: no dice mentiras, dice verdades mentidas, y eso es otra cosa. Mentida no es un sustantivo: es algo que le pasó a la verdad. Alguien la agarró entera y la entregó incompleta.
+# | Eso deja fuera la intención. El que habla quiere decir la verdad, y por eso son verdades y no mentiras. Está entregando lo que cree que tiene, lo que puede entregar. La falla no está en la voluntad. Está en él.
+# | Y acá vuelve todo el poema sobre sí mismo. Larralde empezó diciendo que no encuentra su propio porqué, que hay una verdad adentro suyo y él no da con ella. Entonces, cuando le entrega su verdad a otro, ¿qué le está entregando? Le está prestando algo sobre lo que él mismo no tiene completa claridad. Está pagando con una moneda que no terminó de saber su valor. Eso es ser carente. No mentiroso. Carente.
+# | Y reconocerlo cambia dónde ponemos la culpa. La lectura cómoda de las mentiras de una pareja siempre tiene un culpable enfrente: el que ocultó, el que no se animó, el que dijo lo que convenía. Larralde no reparte esa carta. Dice marchamos. Los dos. Los dos vamos apenas prestando lo que no terminamos de entender, y los dos recibiendo eso mismo, convencidos de haber entregado y recibido algo entero.
+# | No hay un villano. Hay dos personas haciéndose entrega de sus carencias y llamándole a eso conocerse.
+# | 12. Y sin embargo / Y sin embargo yo soy tu verdad y vos la mía
+# | Lo dice dos veces. Y sin embargo. Y sin embargo.
+# | Se pasó el poema entero demostrando que no se puede, y acá lo afirma igual. por que No es una contradicción. Una cosa es que me entiendas y otra distinta es que yo sea tu verdad.
+# | Se puede ser la verdad de alguien que no nos entiende. De hecho es lo más común que hay. La imposibilidad no es del vínculo. Es de la comprensión.
+# | 13. Sigo creyendo en mi Dios
+# | Y termina ahí.
+# | Después de mostrar, de demostrar que nadie puede verlo por dentro, dice esto. Suena a cierre religioso de campo. al canto a lo divino, No lo creo.
+# | Todo empezó con un pedido: que alguien lo mirara por dentro y le dijera el porqué. Larralde demostró, uno por uno, que ninguna persona puede hacerlo. Ni la que lo ama. Ni la que camina a su lado. Ninguna, y no por falta de ganas, sino por estructura. que hacemos? Queda un solo destinatario posible. No porque Dios venga a completar lo que el amor no pudo. No dice “creo en Dios”. Dice “creo en mi Dios”. No es una doctrina. Es un vínculo personal. Quizá la última intimidad que le queda cuando admite que ni él ni los demás pueden descifrarlo.
+# | El poema no termina en una respuesta. Termina con una fidelidad: la fidelidad a la pregunta. así como socrates.  Después de comprobar que el amor no puede poseer la verdad del otro, Larralde se niega a aceptar que la verdad sea definitivamente inaccesible. Sigue creyendo que hay una mirada capaz de sostenerla. Porque Dios, para la tradición mística, no es lo contrario del misterio: es su nombre más profundo, mas hondo. No aquello que termina de explicarlo todo, sino aquello que impide que todo pueda ser explicado. Lo sagrado visto como un misterio que a la vez sobrecoge y atrae, y excede el lenguaje y la comprension. Y eso es lo que Larralde parece conservar: La certeza de que el porqué no es una pregunta pequeña ni abandonada en el vacío, aunque no tenga respuesta.
+# ---------------------------------------------
+
+ms	tipo	detalle
+0	renglones	0 6 14 18 23 29 31 38 46 52 59 61 69 76 82 90 97 103 109 116 121 127 132 138 145 151 156 161 168 173 179 184 193 201 207 213 214 220 226 233 240 247 254 260 266 273 276 284 290 295 300 306 311 316 318 325 330 337 343 346 353 359 365 370 373 380 384 390 391 397 402 409 417 423 429 435 442 448 455 460 464 468 474 479 480 486 493 497 503 511 517 523 529 531 537 542 549 558 563 571 576 581 587 593 594 600 604 609 615 620 626 632 639 644 647 652 653 658 659 665 673 683 690 697 704 712 721 728 734 740 746 752 759 762 769 772 779 785 791 796 803 808 811 812 820 825 832 835 840 845 850 854 860 864 870 875 881 885 890 892 898 905 911 912 916 922 929 933 940 946 954 960 967 971 978 984 991 997 1004 1012 1016 1022 1031 1038 1044 1050 1058 1064 1068 1076 1081 1089 1094 1098 1106 1111 1116 1123 1128 1133 1138 1144 1151 1155 1162 1169 1177 1183 1185 1192 1197 1201 1207 1212 1221 1227 1236 1243 1252 1258 1262 1268 1274 1275 1283 1288 1292 1299 1305 1312 1319 1325 1333 1339 1346 1349 1357 1365 1370 1377 1382 1388 1394 1401 1406 1414 1415 1422 1428 1432 1438 1444 1451 1452 1456 1463 1468 1473 1480 1486 1494 1495 1500 1505 1510 1515 1522 1529 1535 1543 1551 1556 1560 1565 1571 1572 1578 1583 1591 1597 1601 1603 1610 1616 1623 1626 1632 1638 1643 1650 1654 1661 1665 1666 1670 1677 1682 1687 1693 1699 1705 1710 1716 1719 1725 1731 1735 1741 1746 1754 1759 1766 1771 1775 1781 1786 1790 1795 1803 1809 1817 1818 1826 1830 1836 1842 1848 1856 1862 1869 1876 1880 1886 1893 1899 1907 1913 1918 1924 1931 1936 1938 1945 1950 1954 1958 1962 1970 1976 1982 1986 1990 1996 2004 2010 2016 2021 2029 2037 2044 2046 2053 2060 2066 2072 2079 2087 2095 2099 2105 2112 2119 2127 2132 2140 2144 2151 2158 2161 2165 2170 2176 2181 2189 2196 2202 2208 2213 2219 2223 2229 2230 2237 2241 2246 2247 2255 2262 2270 2272 2277 2283 2291 2297 2304 2308 2315 2323 2328 2334 2337 2343 2346 2351 2357 2364 2372 2373 2379 2386 2391 2397 2405 2413 2420 2425 2430 2437 2444 2452 2457 2462 2469 2475 2481 2485 2491 2496 2502 2508 2516 2519 2525 2531 2537 2543 2548 2554 2560 2565 2572 2578 2585 2591 2599 2603 2609
+0	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+16	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+26	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+43	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+61	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+67	oido	inicio=-2920 trozo=320 ruta=/data/user/0/com.sigoteleprompter.app/files/oido/1791083492709.pcm
+67	llegada	parcial nativo=64 audio=0 leido=55 procesado=64 rms=0.0016 relevos=0
+76	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+93	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+110	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+126	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+142	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+159	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+177	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+195	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+210	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+227	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+242	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+260	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+281	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+293	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+309	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+325	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+342	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+358	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+375	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+393	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+409	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+426	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+442	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+459	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+476	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+496	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+507	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+524	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+541	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+557	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+575	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+593	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+611	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+624	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+641	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+657	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+673	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+690	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+692	llegada	parcial nativo=691 audio=100 leido=683 procesado=690 rms=0.0013 relevos=0
+707	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+723	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+740	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+757	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+776	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+791	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+806	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+824	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+839	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+857	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+872	llegada	parcial nativo=870 audio=200 leido=869 procesado=870 rms=0.0000 relevos=0
+873	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+890	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+906	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+923	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+939	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+956	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+972	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+978	llegada	parcial nativo=976 audio=300 leido=970 procesado=976 rms=0.0005 relevos=0
+989	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1005	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1023	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1039	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1056	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1071	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1076	llegada	parcial nativo=1075 audio=400 leido=1068 procesado=1075 rms=0.0073 relevos=0
+1089	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1105	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1122	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1138	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1155	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1172	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1174	llegada	parcial nativo=1169 audio=500 leido=1168 procesado=1169 rms=0.0057 relevos=0
+1188	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1204	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1221	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1238	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1255	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1272	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1288	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1304	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1320	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1336	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1354	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1370	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1387	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1405	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1421	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1438	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1454	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1470	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1476	llegada	parcial nativo=1475 audio=600 leido=1465 procesado=1475 rms=0.0103 relevos=0
+1487	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1505	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1520	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1536	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1546	llegada	parcial nativo=1545 audio=660 leido=1524 procesado=1545 rms=0.0107 relevos=0
+1546	oyo	parcial: sin
+1546	calce	NO CALZO: sin
+1553	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1585	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1586	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1607	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1619	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1635	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1653	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1669	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1677	llegada	parcial nativo=1675 audio=760 leido=1623 procesado=1675 rms=0.1134 relevos=0
+1677	oyo	parcial: sin
+1677	calce	NO CALZO: sin
+1684	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1705	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1719	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1735	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1751	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1767	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1780	llegada	parcial nativo=1779 audio=780 leido=1676 procesado=1778 rms=0.0411 relevos=0
+1784	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1801	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1819	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1836	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1851	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1867	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1870	llegada	parcial nativo=1867 audio=880 leido=1835 procesado=1867 rms=0.0608 relevos=0
+1884	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1901	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1916	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1919	llegada	parcial nativo=1918 audio=960 leido=1906 procesado=1918 rms=0.0444 relevos=0
+1919	oyo	parcial: por
+1919	calce	NO CALZO: por
+1933	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1951	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1967	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1984	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2001	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2006	llegada	parcial nativo=2005 audio=1060 leido=1983 procesado=2005 rms=0.0315 relevos=0
+2006	oyo	parcial: por
+2006	calce	NO CALZO: por
+2016	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2026	llegada	parcial nativo=2025 audio=1160 leido=2025 procesado=2025 rms=0.0207 relevos=0
+2026	oyo	parcial: por
+2026	calce	NO CALZO: por
+2032	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2049	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2066	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2069	llegada	parcial nativo=2068 audio=1200 leido=2058 procesado=2068 rms=0.0120 relevos=0
+2069	oyo	parcial: por dentro
+2069	calce	token 4: por dentro
+2093	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+2100	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+2116	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+2135	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+2150	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+2167	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+2182	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+2189	llegada	parcial nativo=2188 audio=1300 leido=2162 procesado=2187 rms=0.0040 relevos=0
+2189	oyo	parcial: por dentro
+2189	calce	token 4: por dentro
+2211	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+2221	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+2225	llegada	parcial nativo=2224 audio=1391 leido=2219 procesado=2224 rms=0.0107 relevos=1
+2225	oyo	parcial: por dentro
+2226	calce	token 4: por dentro
+2243	cuadro	pos=0.01 calce=4 scroll=16 freno=- trabado=0
+2268	llegada	parcial nativo=2242 audio=1491 leido=2242 procesado=2242 rms=0.1134 relevos=1
+2268	oyo	parcial: por dentro
+2269	calce	token 4: por dentro
+2269	cuadro	pos=0.07 calce=4 scroll=16 freno=- trabado=0
+2283	cuadro	pos=0.22 calce=4 scroll=16 freno=- trabado=0
+2298	llegada	parcial nativo=2282 audio=1591 leido=2268 procesado=2282 rms=0.0608 relevos=1
+2298	oyo	parcial: por dentro
+2298	calce	token 4: por dentro
+2321	cuadro	pos=0.71 calce=4 scroll=16 freno=- trabado=0
+2322	llegada	parcial nativo=2317 audio=1691 leido=2301 procesado=2317 rms=0.0593 relevos=1
+2322	oyo	parcial: por dentro
+2323	calce	token 4: por dentro
+2345	cuadro	pos=1.57 calce=4 scroll=16 freno=- trabado=0
+2348	llegada	parcial nativo=2326 audio=1711 leido=2318 procesado=2326 rms=0.0315 relevos=1
+2348	oyo	parcial: por dentro por
+2348	calce	NO CALZO: por dentro por
+2349	cuadro	pos=1.59 calce=4 scroll=16 freno=- trabado=0
+2349	cuadro	pos=1.59 calce=4 scroll=16 freno=- trabado=0
+2366	cuadro	pos=1.70 calce=4 scroll=16 freno=- trabado=0
+2381	cuadro	pos=1.81 calce=4 scroll=16 freno=- trabado=0
+2398	cuadro	pos=1.92 calce=4 scroll=16 freno=- trabado=0
+2414	cuadro	pos=2.02 calce=4 scroll=16 freno=- trabado=0
+2418	llegada	parcial nativo=2416 audio=1811 leido=2410 procesado=2416 rms=0.0163 relevos=1
+2418	oyo	parcial: por dentro por
+2419	calce	NO CALZO: por dentro por
+2434	cuadro	pos=2.14 calce=4 scroll=16 freno=- trabado=0
+2447	cuadro	pos=2.22 calce=4 scroll=16 freno=- trabado=0
+2465	cuadro	pos=2.33 calce=4 scroll=16 freno=- trabado=0
+2472	llegada	parcial nativo=2470 audio=1891 leido=2428 procesado=2470 rms=0.0207 relevos=1
+2472	oyo	parcial: por dentro por dentro
+2472	calce	NO CALZO: por dentro por dentro
+2481	cuadro	pos=2.42 calce=4 scroll=16 freno=- trabado=0
+2492	llegada	parcial nativo=2491 audio=1991 leido=2482 procesado=2491 rms=0.0120 relevos=1
+2492	oyo	parcial: por dentro por dentro
+2492	calce	NO CALZO: por dentro por dentro
+2499	cuadro	pos=2.53 calce=4 scroll=16 freno=- trabado=0
+2515	llegada	parcial nativo=2513 audio=2091 leido=2513 procesado=2513 rms=0.0004 relevos=1
+2515	oyo	parcial: por dentro por dentro
+2515	calce	NO CALZO: por dentro por dentro
+2516	cuadro	pos=2.62 calce=4 scroll=16 freno=- trabado=0
+2531	cuadro	pos=2.71 calce=4 scroll=16 freno=- trabado=0
+2543	llegada	parcial nativo=2542 audio=2191 leido=2529 procesado=2542 rms=0.0433 relevos=1
+2543	oyo	parcial: por dentro por dentro
+2543	calce	NO CALZO: por dentro por dentro
+2547	cuadro	pos=2.80 calce=4 scroll=16 freno=- trabado=0
+2567	cuadro	pos=2.90 calce=4 scroll=16 freno=- trabado=0
+2578	llegada	parcial nativo=2577 audio=2291 leido=2569 procesado=2577 rms=0.0612 relevos=1
+2578	oyo	parcial: por dentro por dentro
+2578	calce	NO CALZO: por dentro por dentro
+2580	cuadro	pos=2.98 calce=4 scroll=16 freno=- trabado=0
+2599	cuadro	pos=3.08 calce=4 scroll=16 freno=- trabado=0
+2608	llegada	parcial nativo=2595 audio=2391 leido=2595 procesado=2595 rms=0.1394 relevos=1
+2608	oyo	parcial: por dentro por dentro
+2608	calce	NO CALZO: por dentro por dentro
+2610	llegada	parcial nativo=2609 audio=2411 leido=2596 procesado=2609 rms=0.1193 relevos=1
+2610	oyo	parcial: por dentro por dentro la
+2610	calce	NO CALZO: por dentro por dentro la
+2613	cuadro	pos=3.16 calce=4 scroll=16 freno=- trabado=0
+2631	cuadro	pos=3.25 calce=4 scroll=16 freno=- trabado=0
+2646	cuadro	pos=3.33 calce=4 scroll=16 freno=- trabado=0
+2656	llegada	parcial nativo=2655 audio=2511 leido=2655 procesado=2655 rms=0.0956 relevos=1
+2656	oyo	parcial: por dentro por dentro la
+2656	calce	NO CALZO: por dentro por dentro la
+2664	cuadro	pos=3.42 calce=4 scroll=16 freno=- trabado=0
+2679	cuadro	pos=3.49 calce=4 scroll=16 freno=- trabado=0
+2690	llegada	parcial nativo=2690 audio=2551 leido=2679 procesado=2689 rms=0.0252 relevos=1
+2690	oyo	parcial: por dentro por dentro
+2690	calce	NO CALZO: por dentro por dentro
+2697	cuadro	pos=3.58 calce=4 scroll=16 freno=- trabado=0
+2712	cuadro	pos=3.65 calce=4 scroll=16 freno=- trabado=0
+2730	cuadro	pos=3.73 calce=4 scroll=16 freno=- trabado=0
+2746	cuadro	pos=3.81 calce=4 scroll=16 freno=- trabado=0
+2765	cuadro	pos=3.89 calce=4 scroll=16 freno=- trabado=0
+2779	cuadro	pos=3.95 calce=4 scroll=16 freno=- trabado=0
+2792	llegada	parcial nativo=2791 audio=2651 leido=2784 procesado=2791 rms=0.0123 relevos=1
+2792	oyo	parcial: por dentro por dentro
+2792	calce	NO CALZO: por dentro por dentro
+2797	cuadro	pos=4.03 calce=4 scroll=16 freno=- trabado=0
+2812	cuadro	pos=4.09 calce=4 scroll=16 freno=- trabado=0
+2832	cuadro	pos=4.17 calce=4 scroll=16 freno=- trabado=0
+2846	cuadro	pos=4.23 calce=4 scroll=16 freno=- trabado=0
+2865	cuadro	pos=4.30 calce=4 scroll=16 freno=- trabado=0
+2878	cuadro	pos=4.35 calce=4 scroll=16 freno=- trabado=0
+2887	llegada	parcial nativo=2886 audio=2731 leido=2861 procesado=2886 rms=0.0042 relevos=1
+2887	oyo	parcial: por dentro por dentro narra
+2887	calce	NO CALZO: por dentro por dentro narra
+2896	cuadro	pos=4.41 calce=4 scroll=16 freno=- trabado=0
+2912	cuadro	pos=4.46 calce=4 scroll=16 freno=- trabado=0
+2919	llegada	parcial nativo=2918 audio=2771 leido=2902 procesado=2918 rms=0.0001 relevos=1
+2919	oyo	parcial: por dentro por dentro la ral
+2919	calce	NO CALZO: por dentro por dentro la ral
+2928	cuadro	pos=4.52 calce=4 scroll=16 freno=- trabado=0
+2945	cuadro	pos=4.58 calce=4 scroll=16 freno=- trabado=0
+2967	cuadro	pos=4.65 calce=4 scroll=16 freno=- trabado=0
+2977	llegada	parcial nativo=2976 audio=2831 leido=2961 procesado=2976 rms=0.0001 relevos=1
+2977	oyo	parcial: por dentro por dentro narra el
+2977	calce	NO CALZO: por dentro por dentro narra el
+2978	cuadro	pos=4.68 calce=4 scroll=16 freno=- trabado=0
+2988	llegada	parcial nativo=2987 audio=2851 leido=2978 procesado=2987 rms=0.0001 relevos=1
+2988	oyo	parcial: por dentro por dentro la ral
+2988	calce	NO CALZO: por dentro por dentro la ral
+2998	cuadro	pos=4.74 calce=4 scroll=16 freno=- trabado=0
+3011	cuadro	pos=4.78 calce=4 scroll=16 freno=- trabado=0
+3029	cuadro	pos=4.83 calce=4 scroll=16 freno=- trabado=0
+3044	cuadro	pos=4.87 calce=4 scroll=16 freno=- trabado=0
+3060	llegada	parcial nativo=3059 audio=2911 leido=3051 procesado=3059 rms=0.0001 relevos=1
+3060	oyo	parcial: por dentro por dentro la ral de
+3061	calce	NO CALZO: por dentro por dentro la ral de
+3065	cuadro	pos=4.93 calce=4 scroll=16 freno=- trabado=0
+3077	cuadro	pos=4.96 calce=4 scroll=16 freno=- trabado=0
+3095	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3111	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3128	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3145	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3150	llegada	parcial nativo=3149 audio=3011 leido=3141 procesado=3149 rms=0.0004 relevos=1
+3150	oyo	parcial: por dentro por dentro la ral de
+3150	calce	NO CALZO: por dentro por dentro la ral de
+3162	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3177	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3196	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3210	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3227	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3242	llegada	parcial nativo=3241 audio=3111 leido=3240 procesado=3241 rms=0.0022 relevos=1
+3242	oyo	parcial: por dentro por dentro la ral de
+3242	calce	NO CALZO: por dentro por dentro la ral de
+3244	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3265	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3277	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3293	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3309	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3327	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3343	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3350	llegada	parcial nativo=3348 audio=3211 leido=3340 procesado=3348 rms=0.0013 relevos=1
+3350	oyo	parcial: por dentro por dentro la ral de
+3351	calce	NO CALZO: por dentro por dentro la ral de
+3360	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3376	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3394	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3409	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3426	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3443	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3448	llegada	parcial nativo=3447 audio=3311 leido=3440 procesado=3447 rms=0.0376 relevos=1
+3448	oyo	parcial: por dentro por dentro la ral de
+3448	calce	NO CALZO: por dentro por dentro la ral de
+3461	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3476	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3493	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3510	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3527	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3548	llegada	parcial nativo=3539 audio=3411 leido=3538 procesado=3539 rms=0.0725 relevos=1
+3548	oyo	parcial: por dentro por dentro la ral de
+3550	calce	NO CALZO: por dentro por dentro la ral de
+3551	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3559	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3577	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3593	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3610	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3625	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3647	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3652	llegada	parcial nativo=3650 audio=3511 leido=3643 procesado=3650 rms=0.1561 relevos=1
+3652	oyo	parcial: por dentro por dentro la ral de
+3653	calce	NO CALZO: por dentro por dentro la ral de
+3658	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3677	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3691	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3708	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3724	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3743	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3750	llegada	parcial nativo=3748 audio=3611 leido=3740 procesado=3748 rms=0.0853 relevos=1
+3750	oyo	parcial: por dentro por dentro la ral de
+3752	calce	NO CALZO: por dentro por dentro la ral de
+3757	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3774	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3791	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3807	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3825	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3839	llegada	parcial nativo=3838 audio=3711 leido=3837 procesado=3838 rms=0.1057 relevos=1
+3839	oyo	parcial: por dentro por dentro la ral de
+3840	calce	NO CALZO: por dentro por dentro la ral de
+3840	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3858	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3877	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3890	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3897	llegada	parcial nativo=3895 audio=3751 leido=3881 procesado=3895 rms=0.0938 relevos=1
+3897	oyo	parcial: por dentro por dentro la ral de en mil
+3898	calce	NO CALZO: por dentro por dentro la ral de en mil
+3908	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3926	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3939	llegada	parcial nativo=3938 audio=3791 leido=3924 procesado=3938 rms=0.0757 relevos=1
+3939	oyo	parcial: por dentro por dentro la ral de en mil novecientos
+3943	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos
+3944	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3957	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3973	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+3990	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4006	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4023	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4029	llegada	parcial nativo=4025 audio=3891 leido=4024 procesado=4025 rms=0.0594 relevos=1
+4029	oyo	parcial: por dentro por dentro la ral de en mil novecientos
+4030	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos
+4039	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4056	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4073	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4089	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4107	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4122	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4132	llegada	parcial nativo=4128 audio=3991 leido=4123 procesado=4128 rms=0.0261 relevos=1
+4132	oyo	parcial: por dentro por dentro la ral de en mil novecientos
+4132	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos
+4140	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4156	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4173	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4188	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4206	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4223	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4238	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4256	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4261	llegada	parcial nativo=4259 audio=4091 leido=4226 procesado=4259 rms=0.0414 relevos=1
+4261	oyo	parcial: por dentro por dentro la ral de en mil novecientos
+4262	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos
+4271	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4288	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4305	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4323	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4330	llegada	parcial nativo=4326 audio=4191 leido=4325 procesado=4326 rms=0.0678 relevos=1
+4330	oyo	parcial: por dentro por dentro la ral de en mil novecientos
+4331	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos
+4338	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4355	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4372	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4375	llegada	parcial nativo=4372 audio=4231 leido=4364 procesado=4372 rms=0.0920 relevos=1
+4375	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta
+4375	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta
+4389	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4404	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4422	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4438	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4454	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4471	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4472	llegada	parcial nativo=4470 audio=4331 leido=4462 procesado=4470 rms=0.0847 relevos=1
+4472	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta
+4473	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta
+4487	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4504	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4521	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4538	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4553	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4567	llegada	parcial nativo=4566 audio=4431 leido=4564 procesado=4565 rms=0.1101 relevos=1
+4567	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta
+4569	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta
+4570	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4586	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4589	llegada	parcial nativo=4588 audio=4451 leido=4581 procesado=4588 rms=0.0926 relevos=1
+4589	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y
+4590	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y
+4604	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4620	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4638	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4653	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4671	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4685	llegada	parcial nativo=4683 audio=4551 leido=4682 procesado=4683 rms=0.0839 relevos=1
+4685	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y
+4687	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y
+4688	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4703	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4711	llegada	parcial nativo=4710 audio=4571 leido=4704 procesado=4710 rms=0.0698 relevos=1
+4711	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+4711	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+4720	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4736	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4753	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4769	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4790	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4802	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4805	llegada	parcial nativo=4802 audio=4671 leido=4800 procesado=4801 rms=0.0621 relevos=1
+4805	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+4806	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+4821	cuadro	pos=5.00 calce=4 scroll=16 freno=- trabado=0
+4836	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+4863	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+4881	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+4889	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+4902	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+4918	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+4926	llegada	parcial nativo=4919 audio=4771 leido=4901 procesado=4919 rms=0.0086 relevos=1
+4926	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+4928	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+4935	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+4951	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+4968	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+4985	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5006	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5012	llegada	parcial nativo=5011 audio=4871 leido=5002 procesado=5011 rms=0.1084 relevos=1
+5012	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+5012	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+5018	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5037	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5051	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5068	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5085	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5102	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5104	llegada	parcial nativo=5102 audio=4971 leido=5100 procesado=5101 rms=0.0908 relevos=1
+5104	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+5105	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+5119	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5135	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5150	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5167	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5183	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5201	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5223	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5233	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5237	llegada	parcial nativo=5236 audio=5071 leido=5204 procesado=5236 rms=0.0539 relevos=1
+5237	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+5237	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+5250	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5266	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5284	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5304	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5312	llegada	parcial nativo=5311 audio=5171 leido=5304 procesado=5311 rms=0.0704 relevos=1
+5312	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+5312	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve
+5316	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5330	llegada	parcial nativo=5327 audio=5191 leido=5318 procesado=5327 rms=0.0057 relevos=1
+5330	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve salud
+5331	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve salud
+5333	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5350	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5370	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5383	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5400	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5417	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5433	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5438	llegada	parcial nativo=5436 audio=5291 leido=5422 procesado=5436 rms=0.0092 relevos=1
+5438	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve salud
+5440	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve salud
+5449	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5450	llegada	parcial nativo=5448 audio=5311 leido=5439 procesado=5448 rms=0.0464 relevos=1
+5450	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un
+5451	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un
+5466	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5483	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5500	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5505	llegada	parcial nativo=5503 audio=5351 leido=5485 procesado=5503 rms=0.0691 relevos=1
+5505	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve salud
+5506	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve salud
+5516	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5532	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5550	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5566	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5582	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5584	llegada	parcial nativo=5581 audio=5451 leido=5579 procesado=5580 rms=0.0492 relevos=1
+5584	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve salud
+5585	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve salud
+5602	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5615	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5634	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5649	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5666	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5685	cuadro	pos=5.00 calce=4 scroll=16 freno=sin-calce trabado=0
+5687	llegada	parcial nativo=5686 audio=5531 leido=5661 procesado=5686 rms=0.0102 relevos=1
+5687	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco
+5688	calce	token 10: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco
+5705	cuadro	pos=6.08 calce=10 scroll=28 freno=- trabado=1
+5731	cuadro	pos=8.07 calce=10 scroll=40 freno=- trabado=1
+5733	cuadro	pos=8.08 calce=10 scroll=40 freno=- trabado=1
+5752	cuadro	pos=8.22 calce=10 scroll=46 freno=- trabado=1
+5764	cuadro	pos=8.31 calce=10 scroll=49 freno=- trabado=1
+5767	llegada	parcial nativo=5764 audio=5631 leido=5763 procesado=5764 rms=0.0273 relevos=1
+5768	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco
+5768	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco
+5780	cuadro	pos=8.41 calce=10 scroll=53 freno=- trabado=1
+5802	cuadro	pos=8.54 calce=10 scroll=56 freno=- trabado=1
+5814	cuadro	pos=8.62 calce=10 scroll=57 freno=- trabado=1
+5833	cuadro	pos=8.72 calce=10 scroll=59 freno=- trabado=1
+5846	cuadro	pos=8.79 calce=10 scroll=60 freno=- trabado=1
+5866	cuadro	pos=8.89 calce=10 scroll=61 freno=- trabado=1
+5872	llegada	parcial nativo=5871 audio=5731 leido=5864 procesado=5871 rms=0.0433 relevos=1
+5872	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que
+5873	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que
+5880	cuadro	pos=8.97 calce=10 scroll=62 freno=- trabado=1
+5898	cuadro	pos=9.06 calce=10 scroll=63 freno=- trabado=1
+5913	cuadro	pos=9.14 calce=10 scroll=63 freno=- trabado=1
+5932	cuadro	pos=9.23 calce=10 scroll=64 freno=- trabado=1
+5946	cuadro	pos=9.30 calce=10 scroll=64 freno=- trabado=1
+5963	cuadro	pos=9.38 calce=10 scroll=64 freno=- trabado=1
+5976	llegada	parcial nativo=5975 audio=5831 leido=5966 procesado=5975 rms=0.0985 relevos=1
+5976	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que
+5976	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que
+5979	cuadro	pos=9.46 calce=10 scroll=64 freno=- trabado=1
+5997	cuadro	pos=9.54 calce=10 scroll=64 freno=- trabado=1
+6012	cuadro	pos=9.61 calce=10 scroll=65 freno=- trabado=1
+6029	cuadro	pos=9.69 calce=10 scroll=65 freno=- trabado=1
+6045	cuadro	pos=9.76 calce=10 scroll=65 freno=- trabado=1
+6065	cuadro	pos=9.85 calce=10 scroll=65 freno=- trabado=1
+6069	llegada	parcial nativo=6062 audio=5931 leido=6059 procesado=6062 rms=0.0741 relevos=1
+6069	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que
+6069	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que
+6079	cuadro	pos=9.91 calce=10 scroll=65 freno=- trabado=1
+6100	cuadro	pos=10.00 calce=10 scroll=65 freno=- trabado=1
+6112	cuadro	pos=10.05 calce=10 scroll=65 freno=- trabado=1
+6123	llegada	parcial nativo=6122 audio=5971 leido=6102 procesado=6122 rms=0.0268 relevos=1
+6123	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6123	calce	token 13: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6141	cuadro	pos=11.39 calce=13 scroll=65 freno=- trabado=1
+6146	cuadro	pos=11.43 calce=13 scroll=65 freno=- trabado=1
+6162	cuadro	pos=11.54 calce=13 scroll=65 freno=- trabado=1
+6183	cuadro	pos=11.68 calce=13 scroll=65 freno=- trabado=1
+6198	cuadro	pos=11.77 calce=13 scroll=65 freno=- trabado=1
+6209	llegada	parcial nativo=6208 audio=6071 leido=6202 procesado=6208 rms=0.0185 relevos=1
+6209	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6209	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6214	cuadro	pos=11.87 calce=13 scroll=65 freno=- trabado=1
+6232	cuadro	pos=11.97 calce=13 scroll=65 freno=- trabado=1
+6245	cuadro	pos=12.04 calce=13 scroll=65 freno=- trabado=1
+6266	cuadro	pos=12.15 calce=13 scroll=65 freno=- trabado=1
+6278	cuadro	pos=12.21 calce=13 scroll=65 freno=- trabado=1
+6295	cuadro	pos=12.29 calce=13 scroll=65 freno=- trabado=1
+6304	llegada	parcial nativo=6302 audio=6171 leido=6301 procesado=6302 rms=0.0792 relevos=1
+6304	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6305	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6311	cuadro	pos=12.36 calce=13 scroll=72 freno=- trabado=2
+6330	cuadro	pos=12.44 calce=13 scroll=78 freno=- trabado=2
+6344	cuadro	pos=12.50 calce=13 scroll=82 freno=- trabado=2
+6363	cuadro	pos=12.58 calce=13 scroll=86 freno=- trabado=2
+6378	cuadro	pos=12.65 calce=13 scroll=89 freno=- trabado=2
+6397	cuadro	pos=12.72 calce=13 scroll=91 freno=- trabado=2
+6410	cuadro	pos=12.78 calce=13 scroll=92 freno=- trabado=2
+6419	llegada	parcial nativo=6418 audio=6271 leido=6398 procesado=6418 rms=0.0467 relevos=1
+6419	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6419	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6428	cuadro	pos=12.85 calce=13 scroll=94 freno=- trabado=2
+6444	cuadro	pos=12.92 calce=13 scroll=95 freno=- trabado=2
+6461	cuadro	pos=12.99 calce=13 scroll=96 freno=- trabado=2
+6477	cuadro	pos=13.05 calce=13 scroll=96 freno=- trabado=2
+6496	cuadro	pos=13.13 calce=13 scroll=97 freno=- trabado=2
+6507	llegada	parcial nativo=6506 audio=6371 leido=6500 procesado=6506 rms=0.0234 relevos=1
+6507	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6507	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6510	cuadro	pos=13.18 calce=13 scroll=97 freno=- trabado=2
+6530	cuadro	pos=13.26 calce=13 scroll=98 freno=- trabado=2
+6544	cuadro	pos=13.31 calce=13 scroll=98 freno=- trabado=2
+6567	cuadro	pos=13.40 calce=13 scroll=98 freno=- trabado=2
+6576	cuadro	pos=13.43 calce=13 scroll=98 freno=- trabado=2
+6598	cuadro	pos=13.50 calce=13 scroll=99 freno=- trabado=2
+6602	llegada	parcial nativo=6599 audio=6471 leido=6599 procesado=6599 rms=0.0116 relevos=1
+6602	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6602	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6611	cuadro	pos=13.55 calce=13 scroll=99 freno=- trabado=2
+6628	cuadro	pos=13.60 calce=13 scroll=99 freno=- trabado=2
+6642	cuadro	pos=13.65 calce=13 scroll=99 freno=- trabado=2
+6665	cuadro	pos=13.72 calce=13 scroll=99 freno=- trabado=2
+6676	cuadro	pos=13.75 calce=13 scroll=99 freno=- trabado=2
+6696	cuadro	pos=13.81 calce=13 scroll=99 freno=- trabado=2
+6706	llegada	parcial nativo=6704 audio=6571 leido=6697 procesado=6704 rms=0.0005 relevos=1
+6706	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6706	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama
+6709	cuadro	pos=13.84 calce=13 scroll=99 freno=- trabado=2
+6729	cuadro	pos=13.90 calce=13 scroll=99 freno=- trabado=2
+6742	cuadro	pos=13.94 calce=13 scroll=99 freno=- trabado=2
+6761	cuadro	pos=13.98 calce=13 scroll=99 freno=- trabado=2
+6775	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+6796	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+6806	llegada	parcial nativo=6804 audio=6671 leido=6797 procesado=6804 rms=0.0001 relevos=1
+6806	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre
+6806	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre
+6808	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+6834	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+6843	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+6863	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+6875	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+6893	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+6903	llegada	parcial nativo=6902 audio=6771 leido=6900 procesado=6901 rms=0.0001 relevos=1
+6903	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre
+6903	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre
+6907	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+6927	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+6942	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+6959	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+6975	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+6993	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7008	llegada	parcial nativo=7006 audio=6871 leido=7001 procesado=7006 rms=0.0295 relevos=1
+7008	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre
+7008	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre
+7008	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7026	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7041	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7060	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7074	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7092	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7110	llegada	parcial nativo=7108 audio=6971 leido=7102 procesado=7108 rms=0.0979 relevos=1
+7110	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre
+7110	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre
+7110	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7123	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7140	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7157	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7174	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7190	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7204	llegada	parcial nativo=7203 audio=7071 leido=7202 procesado=7203 rms=0.0970 relevos=1
+7204	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre
+7204	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre
+7207	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7223	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7240	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7256	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7274	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7289	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7306	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7312	llegada	parcial nativo=7310 audio=7171 leido=7298 procesado=7310 rms=0.0423 relevos=1
+7312	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre
+7312	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre
+7324	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7340	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7356	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7373	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7374	llegada	parcial nativo=7371 audio=7231 leido=7360 procesado=7371 rms=0.0931 relevos=1
+7374	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+7375	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+7390	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7406	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7423	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7440	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7456	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7473	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7476	llegada	parcial nativo=7475 audio=7331 leido=7464 procesado=7475 rms=0.0490 relevos=1
+7476	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+7477	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+7488	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7506	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7523	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7539	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7555	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7563	llegada	parcial nativo=7560 audio=7431 leido=7558 procesado=7560 rms=0.0074 relevos=1
+7563	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+7563	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+7572	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7588	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7607	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7621	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7640	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7654	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7672	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7685	llegada	parcial nativo=7683 audio=7531 leido=7664 procesado=7683 rms=0.0020 relevos=1
+7685	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+7685	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+7687	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7705	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7722	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7740	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7753	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7768	llegada	parcial nativo=7767 audio=7631 leido=7759 procesado=7767 rms=0.0012 relevos=1
+7768	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+7768	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+7770	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7787	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7805	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7821	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7837	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7854	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7861	llegada	parcial nativo=7859 audio=7731 leido=7858 procesado=7859 rms=0.0015 relevos=1
+7862	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+7862	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+7870	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7886	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7904	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7920	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7937	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7953	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7958	llegada	parcial nativo=7955 audio=7811 leido=7943 procesado=7955 rms=0.0038 relevos=1
+7958	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+7960	calce	token 16: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+7982	cuadro	pos=15.61 calce=16 scroll=99 freno=- trabado=2
+7986	cuadro	pos=15.64 calce=16 scroll=99 freno=- trabado=2
+8005	cuadro	pos=15.74 calce=16 scroll=99 freno=- trabado=2
+8020	cuadro	pos=15.82 calce=16 scroll=99 freno=- trabado=2
+8035	cuadro	pos=15.90 calce=16 scroll=99 freno=- trabado=2
+8043	llegada	parcial nativo=8042 audio=7911 leido=8041 procesado=8042 rms=0.0716 relevos=1
+8043	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+8043	calce	token 16: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+8067	cuadro	pos=16.06 calce=16 scroll=99 freno=- trabado=2
+8070	cuadro	pos=16.07 calce=16 scroll=99 freno=- trabado=2
+8085	cuadro	pos=16.11 calce=16 scroll=99 freno=- trabado=2
+8102	cuadro	pos=16.15 calce=16 scroll=99 freno=- trabado=2
+8119	cuadro	pos=16.19 calce=16 scroll=99 freno=- trabado=2
+8135	cuadro	pos=16.23 calce=16 scroll=99 freno=- trabado=2
+8148	llegada	parcial nativo=8146 audio=8011 leido=8140 procesado=8146 rms=0.0755 relevos=1
+8148	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+8149	calce	token 16: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+8170	cuadro	pos=16.27 calce=16 scroll=99 freno=- trabado=2
+8172	cuadro	pos=16.27 calce=16 scroll=99 freno=- trabado=2
+8185	cuadro	pos=16.27 calce=16 scroll=99 freno=- trabado=2
+8201	cuadro	pos=16.27 calce=16 scroll=99 freno=- trabado=2
+8207	llegada	parcial nativo=8205 audio=8071 leido=8198 procesado=8205 rms=0.0800 relevos=1
+8207	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés sin
+8207	calce	token 17: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés sin
+8220	cuadro	pos=17.04 calce=17 scroll=99 freno=- trabado=2
+8237	cuadro	pos=17.08 calce=17 scroll=99 freno=- trabado=2
+8251	cuadro	pos=17.11 calce=17 scroll=99 freno=- trabado=2
+8268	cuadro	pos=17.16 calce=17 scroll=99 freno=- trabado=2
+8276	llegada	parcial nativo=8275 audio=8131 leido=8260 procesado=8275 rms=0.0894 relevos=1
+8276	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+8277	calce	token 16: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+8297	cuadro	pos=17.18 calce=17 scroll=99 freno=- trabado=2
+8301	cuadro	pos=17.18 calce=17 scroll=99 freno=- trabado=2
+8317	cuadro	pos=17.18 calce=17 scroll=99 freno=- trabado=2
+8331	llegada	parcial nativo=8330 audio=8191 leido=8320 procesado=8330 rms=0.0379 relevos=1
+8331	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+8332	calce	token 17: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+8344	cuadro	pos=17.18 calce=17 scroll=99 freno=- trabado=2
+8350	cuadro	pos=17.18 calce=17 scroll=99 freno=- trabado=2
+8367	cuadro	pos=17.18 calce=17 scroll=99 freno=- trabado=2
+8384	cuadro	pos=17.18 calce=17 scroll=99 freno=- trabado=2
+8401	cuadro	pos=17.18 calce=17 scroll=99 freno=- trabado=2
+8422	cuadro	pos=17.24 calce=17 scroll=99 freno=- trabado=2
+8434	cuadro	pos=17.27 calce=17 scroll=99 freno=- trabado=2
+8439	llegada	parcial nativo=8435 audio=8291 leido=8422 procesado=8435 rms=0.0321 relevos=1
+8439	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+8439	calce	token 17: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+8453	cuadro	pos=17.28 calce=17 scroll=99 freno=- trabado=2
+8467	cuadro	pos=17.28 calce=17 scroll=99 freno=- trabado=2
+8483	cuadro	pos=17.28 calce=17 scroll=99 freno=- trabado=2
+8488	llegada	parcial nativo=8487 audio=8351 leido=8478 procesado=8487 rms=0.0248 relevos=1
+8488	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil
+8488	calce	token 18: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil
+8514	cuadro	pos=17.47 calce=18 scroll=111 freno=- trabado=3
+8518	cuadro	pos=17.48 calce=18 scroll=112 freno=- trabado=3
+8533	cuadro	pos=17.54 calce=18 scroll=116 freno=- trabado=3
+8551	cuadro	pos=17.61 calce=18 scroll=119 freno=- trabado=3
+8566	cuadro	pos=17.66 calce=18 scroll=122 freno=- trabado=3
+8583	llegada	parcial nativo=8581 audio=8451 leido=8579 procesado=8581 rms=0.0159 relevos=1
+8583	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil
+8584	calce	token 18: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil
+8584	cuadro	pos=17.73 calce=18 scroll=124 freno=- trabado=3
+8602	cuadro	pos=18.05 calce=18 scroll=126 freno=- trabado=3
+8616	cuadro	pos=18.09 calce=18 scroll=127 freno=- trabado=3
+8631	llegada	parcial nativo=8628 audio=8491 leido=8618 procesado=8627 rms=0.0011 relevos=1
+8631	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil once
+8632	calce	token 19: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil once
+8645	cuadro	pos=18.94 calce=19 scroll=129 freno=- trabado=3
+8652	cuadro	pos=18.97 calce=19 scroll=129 freno=- trabado=3
+8666	cuadro	pos=19.03 calce=19 scroll=130 freno=- trabado=3
+8682	cuadro	pos=19.09 calce=19 scroll=130 freno=- trabado=3
+8695	llegada	parcial nativo=8692 audio=8551 leido=8683 procesado=8692 rms=0.0008 relevos=1
+8695	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+8695	calce	token 17: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+8712	cuadro	pos=19.13 calce=19 scroll=131 freno=- trabado=3
+8715	cuadro	pos=19.13 calce=19 scroll=131 freno=- trabado=3
+8726	llegada	parcial nativo=8725 audio=8591 leido=8718 procesado=8725 rms=0.0001 relevos=1
+8726	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+8726	calce	token 18: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+8748	cuadro	pos=19.13 calce=19 scroll=131 freno=- trabado=3
+8750	cuadro	pos=19.13 calce=19 scroll=131 freno=- trabado=3
+8765	cuadro	pos=19.13 calce=19 scroll=131 freno=- trabado=3
+8784	cuadro	pos=19.16 calce=19 scroll=132 freno=- trabado=3
+8798	cuadro	pos=19.20 calce=19 scroll=132 freno=- trabado=3
+8815	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+8823	llegada	parcial nativo=8820 audio=8691 leido=8820 procesado=8820 rms=0.0000 relevos=1
+8823	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+8824	calce	token 18: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+8843	cuadro	pos=19.27 calce=19 scroll=132 freno=- trabado=3
+8852	cuadro	pos=19.27 calce=19 scroll=132 freno=- trabado=3
+8865	cuadro	pos=19.27 calce=19 scroll=132 freno=- trabado=3
+8882	cuadro	pos=19.27 calce=19 scroll=132 freno=- trabado=3
+8898	cuadro	pos=19.27 calce=19 scroll=132 freno=- trabado=3
+8915	cuadro	pos=19.27 calce=19 scroll=132 freno=- trabado=3
+8935	llegada	parcial nativo=8929 audio=8791 leido=8921 procesado=8929 rms=0.0000 relevos=1
+8935	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+8936	calce	token 18: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+8936	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+8952	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+8964	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+8980	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+8997	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9014	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9032	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9034	llegada	parcial nativo=9032 audio=8891 leido=9022 procesado=9032 rms=0.0511 relevos=1
+9034	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+9035	calce	token 18: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+9059	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9063	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9081	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9097	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9114	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9124	llegada	parcial nativo=9121 audio=8991 leido=9119 procesado=9121 rms=0.0503 relevos=1
+9124	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+9126	calce	token 18: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+9145	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9147	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9163	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9180	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9198	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9215	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9235	cuadro	pos=19.31 calce=19 scroll=132 freno=- trabado=3
+9238	llegada	parcial nativo=9236 audio=9091 leido=9222 procesado=9236 rms=0.0712 relevos=1
+9238	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+9238	calce	token 18: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+9255	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9263	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9280	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9296	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9313	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9332	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9336	llegada	parcial nativo=9334 audio=9191 leido=9323 procesado=9334 rms=0.0134 relevos=1
+9336	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+9337	calce	token 18: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+9361	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9362	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9379	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9395	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9412	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9426	llegada	parcial nativo=9425 audio=9291 leido=9423 procesado=9425 rms=0.0620 relevos=1
+9426	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+9429	calce	token 18: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+9450	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9452	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9458	llegada	parcial nativo=9454 audio=9311 leido=9444 procesado=9454 rms=0.0710 relevos=1
+9458	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres
+9459	calce	token 19: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres
+9482	cuadro	pos=19.32 calce=19 scroll=132 freno=- trabado=3
+9483	llegada	parcial nativo=9475 audio=9331 leido=9463 procesado=9474 rms=0.0581 relevos=1
+9483	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+9483	calce	token 20: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+9496	cuadro	pos=20.04 calce=20 scroll=132 freno=- trabado=3
+9498	cuadro	pos=20.04 calce=20 scroll=132 freno=- trabado=3
+9511	cuadro	pos=20.08 calce=20 scroll=132 freno=- trabado=3
+9529	cuadro	pos=20.13 calce=20 scroll=132 freno=- trabado=3
+9544	cuadro	pos=20.17 calce=20 scroll=132 freno=- trabado=3
+9562	cuadro	pos=20.22 calce=20 scroll=132 freno=- trabado=3
+9570	llegada	parcial nativo=9569 audio=9431 leido=9563 procesado=9569 rms=0.0392 relevos=1
+9570	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+9570	calce	token 20: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+9585	cuadro	pos=20.24 calce=20 scroll=132 freno=- trabado=3
+9594	cuadro	pos=20.24 calce=20 scroll=132 freno=- trabado=3
+9611	cuadro	pos=20.24 calce=20 scroll=132 freno=- trabado=3
+9630	cuadro	pos=20.24 calce=20 scroll=132 freno=- trabado=3
+9644	cuadro	pos=20.24 calce=20 scroll=132 freno=- trabado=3
+9661	cuadro	pos=20.25 calce=20 scroll=132 freno=- trabado=3
+9664	llegada	parcial nativo=9661 audio=9531 leido=9659 procesado=9661 rms=0.0062 relevos=1
+9664	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+9665	calce	token 20: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+9696	cuadro	pos=20.26 calce=20 scroll=132 freno=- trabado=3
+9699	cuadro	pos=20.26 calce=20 scroll=132 freno=- trabado=3
+9710	cuadro	pos=20.26 calce=20 scroll=132 freno=- trabado=3
+9727	cuadro	pos=20.26 calce=20 scroll=132 freno=- trabado=3
+9746	cuadro	pos=20.26 calce=20 scroll=132 freno=- trabado=3
+9762	cuadro	pos=20.27 calce=20 scroll=132 freno=- trabado=3
+9771	llegada	parcial nativo=9769 audio=9631 leido=9763 procesado=9769 rms=0.0001 relevos=1
+9771	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+9772	calce	token 20: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+9796	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+9797	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+9810	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+9829	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+9843	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+9863	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+9874	llegada	parcial nativo=9873 audio=9731 leido=9865 procesado=9873 rms=0.0001 relevos=1
+9874	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+9875	calce	token 20: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+9896	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+9897	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+9911	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+9930	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+9944	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+9960	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+9966	llegada	parcial nativo=9964 audio=9831 leido=9963 procesado=9964 rms=0.0003 relevos=1
+9966	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+9967	calce	token 20: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+9997	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+9998	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+10009	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+10029	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+10042	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+10061	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+10071	llegada	parcial nativo=10070 audio=9931 leido=10065 procesado=10070 rms=0.0005 relevos=1
+10071	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+10071	calce	token 20: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+10091	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+10093	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+10108	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+10125	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+10142	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+10161	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+10175	cuadro	pos=20.29 calce=20 scroll=132 freno=- trabado=3
+10180	llegada	parcial nativo=10179 audio=10031 leido=10165 procesado=10179 rms=0.0002 relevos=1
+10180	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+10181	calce	token 20: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+10200	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10208	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10228	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10242	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10263	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10268	llegada	parcial nativo=10267 audio=10131 leido=10265 procesado=10267 rms=0.0523 relevos=1
+10268	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+10269	calce	token 20: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+10289	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10294	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10308	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10325	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10341	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10361	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10370	llegada	parcial nativo=10369 audio=10231 leido=10360 procesado=10369 rms=0.0448 relevos=1
+10370	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+10370	calce	token 20: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+10393	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10394	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10407	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10431	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10440	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10459	cuadro	pos=20.30 calce=20 scroll=132 freno=- trabado=3
+10472	llegada	parcial nativo=10471 audio=10331 leido=10463 procesado=10471 rms=0.1337 relevos=1
+10472	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en
+10473	calce	token 21: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en
+10498	cuadro	pos=20.42 calce=21 scroll=132 freno=- trabado=3
+10500	cuadro	pos=20.42 calce=21 scroll=132 freno=- trabado=3
+10507	cuadro	pos=20.44 calce=21 scroll=132 freno=- trabado=3
+10525	cuadro	pos=20.51 calce=21 scroll=132 freno=- trabado=3
+10540	cuadro	pos=20.56 calce=21 scroll=132 freno=- trabado=3
+10558	cuadro	pos=20.63 calce=21 scroll=132 freno=- trabado=3
+10562	llegada	parcial nativo=10560 audio=10431 leido=10558 procesado=10560 rms=0.1208 relevos=1
+10563	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en
+10563	calce	token 21: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en
+10583	cuadro	pos=21.03 calce=21 scroll=132 freno=- trabado=3
+10591	cuadro	pos=21.05 calce=21 scroll=132 freno=- trabado=3
+10605	cuadro	pos=21.09 calce=21 scroll=132 freno=- trabado=3
+10627	cuadro	pos=21.15 calce=21 scroll=132 freno=- trabado=3
+10639	cuadro	pos=21.18 calce=21 scroll=132 freno=- trabado=3
+10660	cuadro	pos=21.23 calce=21 scroll=132 freno=- trabado=3
+10667	llegada	parcial nativo=10666 audio=10531 leido=10658 procesado=10666 rms=0.1334 relevos=1
+10667	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en
+10668	calce	token 21: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en
+10686	cuadro	pos=21.25 calce=21 scroll=132 freno=- trabado=3
+10689	cuadro	pos=21.25 calce=21 scroll=132 freno=- trabado=3
+10704	llegada	parcial nativo=10703 audio=10571 leido=10698 procesado=10703 rms=0.1355 relevos=1
+10704	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+10704	calce	token 20: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+10717	cuadro	pos=21.25 calce=21 scroll=132 freno=- trabado=3
+10730	cuadro	pos=21.25 calce=21 scroll=132 freno=- trabado=3
+10738	cuadro	pos=21.25 calce=21 scroll=132 freno=- trabado=3
+10760	cuadro	pos=21.25 calce=21 scroll=132 freno=- trabado=3
+10771	cuadro	pos=21.25 calce=21 scroll=132 freno=- trabado=3
+10774	llegada	parcial nativo=10773 audio=10631 leido=10764 procesado=10773 rms=0.1508 relevos=1
+10774	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro
+10775	calce	token 22: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro
+10792	cuadro	pos=21.52 calce=22 scroll=132 freno=- trabado=3
+10805	cuadro	pos=21.56 calce=22 scroll=132 freno=- trabado=3
+10823	cuadro	pos=21.62 calce=22 scroll=132 freno=- trabado=3
+10838	cuadro	pos=21.67 calce=22 scroll=132 freno=- trabado=3
+10859	cuadro	pos=21.74 calce=22 scroll=132 freno=- trabado=3
+10865	llegada	parcial nativo=10864 audio=10731 leido=10863 procesado=10864 rms=0.1232 relevos=1
+10865	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro
+10865	calce	token 22: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro
+10887	cuadro	pos=22.05 calce=22 scroll=132 freno=- trabado=3
+10895	cuadro	pos=22.07 calce=22 scroll=132 freno=- trabado=3
+10898	llegada	parcial nativo=10892 audio=10751 leido=10883 procesado=10892 rms=0.0549 relevos=1
+10898	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de
+10899	calce	token 23: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de
+10915	cuadro	pos=22.85 calce=23 scroll=140 freno=- trabado=4
+10921	cuadro	pos=22.87 calce=23 scroll=142 freno=- trabado=4
+10937	cuadro	pos=22.93 calce=23 scroll=147 freno=- trabado=4
+10954	cuadro	pos=22.98 calce=23 scroll=151 freno=- trabado=4
+10970	cuadro	pos=23.03 calce=23 scroll=154 freno=- trabado=4
+10979	llegada	parcial nativo=10978 audio=10851 leido=10976 procesado=10977 rms=0.0469 relevos=1
+10979	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de
+10980	calce	token 23: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de
+11004	cuadro	pos=23.06 calce=23 scroll=159 freno=- trabado=4
+11007	cuadro	pos=23.07 calce=23 scroll=159 freno=- trabado=4
+11020	cuadro	pos=23.10 calce=23 scroll=160 freno=- trabado=4
+11037	cuadro	pos=23.14 calce=23 scroll=162 freno=- trabado=4
+11053	cuadro	pos=23.18 calce=23 scroll=162 freno=- trabado=4
+11070	cuadro	pos=23.22 calce=23 scroll=163 freno=- trabado=4
+11086	llegada	parcial nativo=11085 audio=10951 leido=11078 procesado=11085 rms=0.0424 relevos=1
+11086	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de
+11087	calce	token 23: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de
+11087	cuadro	pos=23.26 calce=23 scroll=164 freno=- trabado=4
+11107	cuadro	pos=23.26 calce=23 scroll=164 freno=- trabado=4
+11123	cuadro	pos=23.26 calce=23 scroll=165 freno=- trabado=4
+11137	cuadro	pos=23.26 calce=23 scroll=165 freno=- trabado=4
+11153	cuadro	pos=23.26 calce=23 scroll=165 freno=- trabado=4
+11169	cuadro	pos=23.26 calce=23 scroll=165 freno=- trabado=4
+11185	llegada	parcial nativo=11184 audio=11051 leido=11178 procesado=11184 rms=0.0019 relevos=1
+11185	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos
+11186	calce	token 24: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos
+11201	cuadro	pos=24.04 calce=24 scroll=166 freno=- trabado=4
+11206	cuadro	pos=24.05 calce=24 scroll=166 freno=- trabado=4
+11219	cuadro	pos=24.08 calce=24 scroll=166 freno=- trabado=4
+11236	cuadro	pos=24.12 calce=24 scroll=166 freno=- trabado=4
+11252	cuadro	pos=24.16 calce=24 scroll=166 freno=- trabado=4
+11270	cuadro	pos=24.20 calce=24 scroll=166 freno=- trabado=4
+11284	llegada	parcial nativo=11283 audio=11151 leido=11282 procesado=11283 rms=0.0001 relevos=1
+11284	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos
+11285	calce	token 24: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos
+11307	cuadro	pos=24.24 calce=24 scroll=166 freno=- trabado=4
+11310	cuadro	pos=24.24 calce=24 scroll=166 freno=- trabado=4
+11319	cuadro	pos=24.24 calce=24 scroll=166 freno=- trabado=4
+11336	cuadro	pos=24.24 calce=24 scroll=166 freno=- trabado=4
+11352	cuadro	pos=24.24 calce=24 scroll=166 freno=- trabado=4
+11369	cuadro	pos=24.24 calce=24 scroll=166 freno=- trabado=4
+11385	cuadro	pos=24.24 calce=24 scroll=166 freno=- trabado=4
+11394	llegada	parcial nativo=11388 audio=11251 leido=11381 procesado=11388 rms=0.0268 relevos=1
+11394	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos
+11395	calce	token 24: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos
+11409	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11418	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11435	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11452	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11468	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11491	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11494	llegada	parcial nativo=11490 audio=11351 leido=11482 procesado=11489 rms=0.0502 relevos=1
+11494	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos
+11495	calce	token 24: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos
+11517	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11519	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11534	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11551	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11568	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11584	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11586	llegada	parcial nativo=11584 audio=11451 leido=11583 procesado=11584 rms=0.0625 relevos=1
+11586	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos
+11588	calce	token 24: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos
+11605	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11613	llegada	parcial nativo=11612 audio=11471 leido=11598 procesado=11612 rms=0.0647 relevos=1
+11613	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos o
+11614	calce	token 25: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos o
+11630	cuadro	pos=24.83 calce=25 scroll=166 freno=- trabado=4
+11633	cuadro	pos=24.84 calce=25 scroll=166 freno=- trabado=4
+11651	cuadro	pos=24.90 calce=25 scroll=166 freno=- trabado=4
+11667	cuadro	pos=24.95 calce=25 scroll=166 freno=- trabado=4
+11675	llegada	parcial nativo=11673 audio=11531 leido=11659 procesado=11672 rms=0.0527 relevos=1
+11675	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos o sea
+11676	calce	token 26: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos o sea
+11700	cuadro	pos=25.95 calce=26 scroll=166 freno=- trabado=4
+11702	cuadro	pos=25.96 calce=26 scroll=166 freno=- trabado=4
+11717	cuadro	pos=26.01 calce=26 scroll=166 freno=- trabado=4
+11733	cuadro	pos=26.07 calce=26 scroll=166 freno=- trabado=4
+11750	cuadro	pos=26.13 calce=26 scroll=166 freno=- trabado=4
+11770	llegada	parcial nativo=11752 audio=11611 leido=11737 procesado=11752 rms=0.0451 relevos=1
+11770	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé
+11771	calce	token 25: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé
+11771	cuadro	pos=26.19 calce=26 scroll=166 freno=- trabado=4
+11785	cuadro	pos=26.19 calce=26 scroll=166 freno=- trabado=4
+11802	cuadro	pos=26.19 calce=26 scroll=166 freno=- trabado=4
+11816	cuadro	pos=26.19 calce=26 scroll=166 freno=- trabado=4
+11833	cuadro	pos=26.19 calce=26 scroll=166 freno=- trabado=4
+11849	cuadro	pos=26.19 calce=26 scroll=166 freno=- trabado=4
+11855	llegada	parcial nativo=11853 audio=11711 leido=11841 procesado=11853 rms=0.0495 relevos=1
+11855	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé
+11856	calce	token 25: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé
+11875	cuadro	pos=26.21 calce=26 scroll=166 freno=- trabado=4
+11879	llegada	parcial nativo=11878 audio=11731 leido=11861 procesado=11878 rms=0.0221 relevos=1
+11879	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la
+11880	calce	token 26: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la
+11901	cuadro	pos=26.21 calce=26 scroll=166 freno=- trabado=4
+11904	cuadro	pos=26.21 calce=26 scroll=166 freno=- trabado=4
+11915	cuadro	pos=26.21 calce=26 scroll=166 freno=- trabado=4
+11932	cuadro	pos=26.21 calce=26 scroll=166 freno=- trabado=4
+11949	cuadro	pos=26.21 calce=26 scroll=166 freno=- trabado=4
+11966	cuadro	pos=26.21 calce=26 scroll=166 freno=- trabado=4
+11970	llegada	parcial nativo=11969 audio=11831 leido=11961 procesado=11969 rms=0.0448 relevos=1
+11970	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la
+11971	calce	token 26: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la
+11987	cuadro	pos=26.22 calce=26 scroll=166 freno=- trabado=4
+11999	cuadro	pos=26.22 calce=26 scroll=166 freno=- trabado=4
+12015	cuadro	pos=26.22 calce=26 scroll=166 freno=- trabado=4
+12032	cuadro	pos=26.22 calce=26 scroll=166 freno=- trabado=4
+12048	cuadro	pos=26.22 calce=26 scroll=166 freno=- trabado=4
+12064	llegada	parcial nativo=12063 audio=11931 leido=12061 procesado=12063 rms=0.0251 relevos=1
+12064	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la
+12064	calce	token 26: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la
+12078	cuadro	pos=26.22 calce=26 scroll=166 freno=- trabado=4
+12081	cuadro	pos=26.22 calce=26 scroll=166 freno=- trabado=4
+12098	cuadro	pos=26.22 calce=26 scroll=166 freno=- trabado=4
+12100	llegada	parcial nativo=12099 audio=11951 leido=12083 procesado=12099 rms=0.0068 relevos=1
+12100	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real
+12100	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real
+12115	cuadro	pos=26.22 calce=26 scroll=166 freno=- trabado=4
+12131	cuadro	pos=26.22 calce=26 scroll=166 freno=- trabado=4
+12147	llegada	parcial nativo=12146 audio=12011 leido=12139 procesado=12146 rms=0.0120 relevos=1
+12147	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de
+12148	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de
+12148	cuadro	pos=26.22 calce=26 scroll=166 freno=- trabado=4
+12165	cuadro	pos=26.24 calce=26 scroll=166 freno=- trabado=4
+12183	cuadro	pos=26.29 calce=26 scroll=166 freno=- trabado=4
+12198	cuadro	pos=26.32 calce=26 scroll=166 freno=- trabado=4
+12214	cuadro	pos=26.36 calce=26 scroll=166 freno=- trabado=4
+12231	cuadro	pos=26.40 calce=26 scroll=166 freno=- trabado=4
+12241	llegada	parcial nativo=12238 audio=12111 leido=12238 procesado=12239 rms=0.0329 relevos=1
+12241	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de
+12243	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de
+12248	cuadro	pos=26.44 calce=26 scroll=166 freno=- trabado=4
+12265	cuadro	pos=26.49 calce=26 scroll=166 freno=- trabado=4
+12282	cuadro	pos=26.52 calce=26 scroll=166 freno=- trabado=4
+12298	cuadro	pos=26.56 calce=26 scroll=166 freno=- trabado=4
+12315	cuadro	pos=26.60 calce=26 scroll=166 freno=- trabado=4
+12330	cuadro	pos=26.64 calce=26 scroll=166 freno=- trabado=4
+12347	cuadro	pos=26.68 calce=26 scroll=166 freno=- trabado=4
+12357	llegada	parcial nativo=12355 audio=12211 leido=12340 procesado=12355 rms=0.0251 relevos=1
+12357	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de
+12358	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de
+12364	cuadro	pos=26.72 calce=26 scroll=166 freno=- trabado=4
+12381	cuadro	pos=26.76 calce=26 scroll=166 freno=- trabado=4
+12390	llegada	parcial nativo=12387 audio=12251 leido=12378 procesado=12387 rms=0.0006 relevos=1
+12390	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no
+12393	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no
+12397	cuadro	pos=26.80 calce=26 scroll=166 freno=- trabado=4
+12414	cuadro	pos=26.84 calce=26 scroll=166 freno=- trabado=4
+12430	cuadro	pos=26.88 calce=26 scroll=166 freno=- trabado=4
+12447	cuadro	pos=26.92 calce=26 scroll=166 freno=- trabado=4
+12463	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12481	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12486	llegada	parcial nativo=12484 audio=12351 leido=12482 procesado=12484 rms=0.0082 relevos=1
+12486	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no
+12486	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no
+12497	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12513	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12529	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12547	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12563	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12580	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12596	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12599	llegada	parcial nativo=12598 audio=12451 leido=12584 procesado=12598 rms=0.0030 relevos=1
+12599	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no
+12599	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no
+12614	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12630	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12646	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12662	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12679	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12692	llegada	parcial nativo=12689 audio=12551 leido=12682 procesado=12689 rms=0.0000 relevos=1
+12692	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no
+12693	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no
+12696	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12708	llegada	parcial nativo=12706 audio=12571 leido=12698 procesado=12706 rms=0.0000 relevos=1
+12708	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+12708	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+12713	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12730	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12746	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12762	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12779	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12795	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12811	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12815	llegada	parcial nativo=12809 audio=12671 leido=12801 procesado=12809 rms=0.0000 relevos=1
+12816	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+12816	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+12828	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12845	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12865	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12879	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12894	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12903	llegada	parcial nativo=12902 audio=12771 leido=12900 procesado=12902 rms=0.0380 relevos=1
+12903	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+12903	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+12912	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12929	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12945	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12961	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12978	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+12994	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13009	llegada	parcial nativo=13007 audio=12871 leido=13001 procesado=13007 rms=0.0695 relevos=1
+13010	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+13010	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+13010	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13027	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13044	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13060	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13077	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13093	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13109	llegada	parcial nativo=13107 audio=12971 leido=13101 procesado=13107 rms=0.0275 relevos=1
+13109	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+13110	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+13110	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13128	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13145	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13160	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13177	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13194	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13203	llegada	parcial nativo=13202 audio=13071 leido=13201 procesado=13202 rms=0.0097 relevos=1
+13203	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+13203	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+13211	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13227	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13244	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13259	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13277	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13292	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13309	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13311	llegada	parcial nativo=13309 audio=13171 leido=13300 procesado=13309 rms=0.0023 relevos=1
+13311	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+13312	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+13326	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13343	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13359	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13375	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13393	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13409	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13412	llegada	parcial nativo=13411 audio=13271 leido=13403 procesado=13411 rms=0.0000 relevos=1
+13412	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+13412	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta
+13426	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13442	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13460	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13475	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13494	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13507	cuadro	pos=26.96 calce=26 scroll=166 freno=- trabado=4
+13508	llegada	parcial nativo=13507 audio=13351 leido=13481 procesado=13507 rms=0.0001 relevos=1
+13508	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+13509	calce	token 30: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+13533	cuadro	pos=27.22 calce=30 scroll=176 freno=- trabado=5
+13543	cuadro	pos=27.26 calce=30 scroll=180 freno=- trabado=5
+13560	cuadro	pos=27.33 calce=30 scroll=184 freno=- trabado=5
+13574	cuadro	pos=27.40 calce=30 scroll=187 freno=- trabado=5
+13589	llegada	parcial nativo=13586 audio=13451 leido=13579 procesado=13586 rms=0.0000 relevos=1
+13589	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+13590	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+13591	cuadro	pos=27.48 calce=30 scroll=190 freno=- trabado=5
+13608	cuadro	pos=27.57 calce=30 scroll=192 freno=- trabado=5
+13625	cuadro	pos=27.66 calce=30 scroll=194 freno=- trabado=5
+13640	cuadro	pos=27.75 calce=30 scroll=195 freno=- trabado=5
+13657	cuadro	pos=27.86 calce=30 scroll=196 freno=- trabado=5
+13673	cuadro	pos=27.97 calce=30 scroll=197 freno=- trabado=5
+13682	llegada	parcial nativo=13681 audio=13551 leido=13679 procesado=13681 rms=0.0000 relevos=1
+13682	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+13683	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+13691	cuadro	pos=28.08 calce=30 scroll=198 freno=- trabado=5
+13706	cuadro	pos=28.19 calce=30 scroll=198 freno=- trabado=5
+13724	cuadro	pos=28.30 calce=30 scroll=198 freno=- trabado=5
+13740	cuadro	pos=28.41 calce=30 scroll=199 freno=- trabado=5
+13759	cuadro	pos=28.53 calce=30 scroll=199 freno=- trabado=5
+13773	cuadro	pos=28.62 calce=30 scroll=199 freno=- trabado=5
+13787	llegada	parcial nativo=13786 audio=13651 leido=13778 procesado=13786 rms=0.0000 relevos=1
+13787	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+13788	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+13790	cuadro	pos=28.72 calce=30 scroll=199 freno=- trabado=5
+13806	cuadro	pos=28.82 calce=30 scroll=200 freno=- trabado=5
+13824	cuadro	pos=28.93 calce=30 scroll=200 freno=- trabado=5
+13840	cuadro	pos=29.02 calce=30 scroll=200 freno=- trabado=5
+13856	cuadro	pos=29.11 calce=30 scroll=200 freno=- trabado=5
+13872	cuadro	pos=29.20 calce=30 scroll=210 freno=- trabado=6
+13888	llegada	parcial nativo=13885 audio=13751 leido=13879 procesado=13885 rms=0.0000 relevos=1
+13888	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+13888	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+13890	cuadro	pos=29.30 calce=30 scroll=219 freno=- trabado=6
+13905	cuadro	pos=29.39 calce=30 scroll=225 freno=- trabado=6
+13924	cuadro	pos=29.49 calce=30 scroll=230 freno=- trabado=6
+13939	cuadro	pos=29.57 calce=30 scroll=234 freno=- trabado=6
+13996	cuadro	pos=30.99 calce=30 scroll=242 freno=- trabado=6
+14017	cuadro	pos=31.03 calce=30 scroll=244 freno=- trabado=6
+14023	cuadro	pos=31.03 calce=30 scroll=244 freno=- trabado=6
+14027	cuadro	pos=31.03 calce=30 scroll=245 freno=- trabado=6
+14030	llegada	parcial nativo=13980 audio=13851 leido=13978 procesado=13980 rms=0.0000 relevos=1
+14030	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+14030	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+14039	cuadro	pos=31.03 calce=30 scroll=245 freno=- trabado=6
+14059	cuadro	pos=31.03 calce=30 scroll=246 freno=- trabado=6
+14071	cuadro	pos=31.03 calce=30 scroll=247 freno=- trabado=6
+14083	llegada	parcial nativo=14082 audio=13951 leido=14076 procesado=14082 rms=0.0000 relevos=1
+14083	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+14083	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+14089	cuadro	pos=31.03 calce=30 scroll=247 freno=- trabado=6
+14105	cuadro	pos=31.03 calce=30 scroll=248 freno=- trabado=6
+14125	cuadro	pos=31.03 calce=30 scroll=248 freno=- trabado=6
+14141	cuadro	pos=31.03 calce=30 scroll=248 freno=- trabado=6
+14168	cuadro	pos=31.03 calce=30 scroll=248 freno=- trabado=6
+14175	cuadro	pos=31.03 calce=30 scroll=248 freno=- trabado=6
+14190	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14192	llegada	parcial nativo=14186 audio=14051 leido=14179 procesado=14186 rms=0.0000 relevos=1
+14192	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+14192	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+14204	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14225	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14238	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14259	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14270	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14279	llegada	parcial nativo=14278 audio=14151 leido=14277 procesado=14277 rms=0.0000 relevos=1
+14279	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+14279	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+14288	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14306	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14322	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14338	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14358	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14370	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14388	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14395	llegada	parcial nativo=14394 audio=14251 leido=14385 procesado=14394 rms=0.0000 relevos=1
+14395	oyo	parcial: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+14395	calce	NO CALZO: por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+14404	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14421	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14438	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14456	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14470	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14488	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14503	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14505	llegada	FINAL nativo=14501 audio=14351 leido=14480 procesado=14501 rms=0.0000 relevos=1
+14506	palabras	FINAL: sí@260-467 por@650-800 dentro@800-1250 por@1394-1550 dentro@1550-2000 la@2090-2240 ral@2240-2536 de@2536-2720 en@3260-3407 mil@3407-3560 novecientos@3560-3950 sesenta@3950-4250 y@4250-4310 nueve@4310-4609 sal@4641-4880 un@4882-5000 disco@5002-5420 que@5420-5600 se@5600-5720 llama@5720-5990 hombre@6050-6470 doce@6800-7100 cortés@7100-7549 cinco@7700-8030 milongas@8030-8570 tres@8780-8990 canciones@8990-9560 en@10010-10160 cuadro@10160-10460 de@10460-10610 ellos@10610-11000 josé@11120-11390 la@11390-11510 real@11510-11720 de@11720-11840 no@11840-11960 canta@11960-12410 habla@12680-13160
+14506	oyo	FINAL: sí por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+14507	calce	NO CALZO: sí por dentro por dentro la ral de en mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones en cuadro de ellos josé la real de no canta habla
+14510	llegada	parcial nativo=14508 audio=14371 leido=14501 procesado=14508 rms=0.0000 relevos=1
+14521	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14538	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14556	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14570	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14586	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14603	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14608	llegada	parcial nativo=14606 audio=14471 leido=14599 procesado=14606 rms=0.0000 relevos=1
+14622	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14636	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14657	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14669	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14685	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14701	llegada	parcial nativo=14699 audio=14571 leido=14699 procesado=14699 rms=0.0000 relevos=1
+14702	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14724	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14736	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14752	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14768	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14787	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14802	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14812	llegada	parcial nativo=14810 audio=14671 leido=14800 procesado=14810 rms=0.0000 relevos=1
+14819	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14834	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14851	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14868	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14884	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14903	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14942	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14942	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14943	llegada	parcial nativo=14907 audio=14771 leido=14899 procesado=14907 rms=0.0000 relevos=1
+14950	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14968	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14983	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+14999	llegada	parcial nativo=14998 audio=14871 leido=14998 procesado=14998 rms=0.0001 relevos=1
+15000	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15017	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15033	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15051	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15068	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15083	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15100	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15117	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15134	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15149	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15166	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15182	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15199	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15216	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15233	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15248	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15265	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15276	llegada	parcial nativo=15274 audio=14971 leido=15269 procesado=15274 rms=0.0001 relevos=1
+15282	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6
+15300	cuadro	pos=31.03 calce=30 scroll=249 freno=- trabado=6

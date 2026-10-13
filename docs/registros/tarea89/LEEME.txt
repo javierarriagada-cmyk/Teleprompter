@@ -1,0 +1,13 @@
+REGISTROS DEL MOTOR - TAREA 89 -seguimiento de lado-
+Sacados por Claude del moto g86 de Javier el 04-10-2026, con la APK de prueba del paso 0 de la 87
+-rama tarea87-paso0-mediciones, 52e9361-. Mismo guion en las cinco: "Larralde". Misma persona.
+Solo lo que anota el motor -files/grabaciones/<id>.motor.txt- y el resumen de la toma -<id>.json-;
+sin audio ni video.
+
+  1-vertical-1080p   de pie, 1080p, camara frontal     avanza hasta el token ~26
+  2-vertical-720p    de pie, 720p                      avanza hasta el token ~61
+  3-vertical-480p    de pie, 480p                      avanza hasta el token ~31
+  4-de-lado-1080p    DE LADO, 1080p                    pos=0 toda la toma -calce=1, sin-calce-
+  5-de-lado-1080p    DE LADO, 1080p                    pos=0 toda la toma -ningun calce aplicado-
+
+Orden y orientacion segun Javier, que las grabo en ese orden: tres de pie y despues dos de lado.
