@@ -1,0 +1,1714 @@
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: 47c29ca5-6c6a-4681-8e08-9403164ea798
+# inicio del video (epoch ms): 1791083450397
+# motor de voz: nativo
+# letra: 24 px, sans
+# columna: completa, margen 5%
+# donde lees: arriba
+# idioma: es
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Si me vieras por dentro — Larralde
+# | En 1969 sale un disco que se llama Hombre. Doce cortes: cinco milongas, tres canciones. Y en cuatro de ellos José Larralde no canta. Habla.
+# | En el más largo, son cuatro minutos de un hombre de treinta y un años recitando un poema, este poema Se llama “Si me vieras por dentro”. Es una obra
+# | Un hombre le pide a alguien que lo mire. No le pide compañía. No le pide perdón. Le pide una respuesta. Quiere que el otro le diga por qué existe, cuál es su razón de ser.
+# | Es un pedido raro, extraño. La filosofía se pasa la vida dándole vueltas. Y en el fondo, en distintos momentos, lo hacemos todos: al que nos quiere le pasamos la pelota, le pasamos la pregunta sobre lo que no podemos contestar solos —por qué estoy aquí— con la esperanza de que desde afuera se vea mejor. Larralde escribe esa esperanza y después la desarma entera, sin rencor.. en la mayoria de Nosotros, cuando no nos ven, inventamos el rencor: “tú no me entiendes”, no me comprendes. no soy yo el que de un mo u otro encajo o me adapto o no, eres tú 
+# | Si me vieras por dentro / Seguro hallarías el porqué que yo no encuentro
+# | si me vieras por dentro seguro hallarás el por que, El orden. Primero está la certeza de que el otro lo va a encontrar y después viene la confesión de que él no puede. No dice que no tiene un porqué. Dice que no lo encuentra. La diferencia: existe algo ahí, está adentro, pero el dueño de casa no da con él.
+# | y es por que Somos el peor testigo de nuestra propia vida, por estar demasiado cerca y por tener intereses. tenemos la esperanza de que Cualquiera que nos quiera un poco vera con facilidad cosas nuestras que podemos negar hace veinte años.
+# | Sartre lo dice a su manera: no somos una cosa terminada. Somos también lo que los otros hacen de nosotros con su mirada, cuando me miras, me construyes
+# | Larralde no lo dice como queja. Lo dice como quien pide ayuda para encontrar. Porque hay cosas de uno que sólo existen cuando alguien más las nombra.
+# | 2. Ese porqué que me empuja y mantiene mis raíces frescas / Aunque mi cerebro piense que están secas
+# | Ese por que que mantiene raices frescas, aunque mi cerebro piense que estan secas. Acá se parte en dos. Hay algo que lo empuja y le mantiene las raíces con agua, lo mantiene bien, y hay un cerebro convencido de que esas raíces están secas. Y esas dos esferas son él.
+# | Eso desarma una idea que damos por hecha: que uno sabe cómo está. El diagnóstico que hacemos sobre nosotros mismos puede estar equivocado, pero podemos seguir igual, sostenidos por algo que no controlamos y que ni siquiera reconocemos.
+# | No es menor que desconfíe del cerebro. El cerebro no es un juez imparcial. Se calibró durante millones de años para un mundo que ya no existe: el animal que se acerca, el invierno que nos alcanza, el grupo de treinta personas desde donde ser expulsado era morirse. y quedan reminiscencias, recuerdos… al mirar el fuego, el mar; personalmente pienso que me gusta pescar por que es la excusa perfecta para mirar el mar y el rio, y esta explicacion me gusta mucho por que justicia por que soy tan mal pescador, voolviendo al tema  la tarea del cerebro siempre fue Anticipar la desgracia, y el que anticipaba mal no dejaba nietos, se extingue.
+# | . La evolución trabaja en decenas de miles de años; nuestras circunstancias se dieron vuelta en dos siglos, algunas en veinte años. en terminos biologicos, la realidad que esta planteando es que existe un desajuste, y larralde lo identifica.
+# | 3. Mi tallo partido desde hace siglos, desde ayer / Desde este mismo momento, desde siempre
+# | Cuatro tiempos para una sola herida.
+# | Siglos. Ayer. Este mismo momento. Siempre.
+# | Una herida con fecha se puede tratar: uno dice me pasó tal cosa, tal año, y a partir de ahí hay un antes y un después, hay un culpable, hay un proceso. Larralde le saca la fecha, y al sacársela deja de ser un episodio y pasa a ser una condición. El orden: va de lo más lejano a lo más cercano y termina en el ahora. No está diciendo que se partió alguna vez. Dice que se está partiendo mientras habla. Por eso “siempre” no cierra la serie: la condena. Nombra una herida que no va a encontrar la forma de terminar.
+# | 4. Mi niña juventud, mi vejez niña, mi vieja niñez.
+# | No habla de tres edades: habla de una vida donde las edades dejaron de respetar el orden. La juventud aparece como niña porque conserva una fragilidad que no se fue; la vejez, como niña, porque hay cansancios que también desamparan.
+# | Y “mi vieja niñez” se puede leer de dos maneras, entre otras mas geniales,. Una: la niñez es vieja para quienes aprendieron demasiado temprano lo que no les correspondía saber. Otra: los niños todavía están cerca del porqué. Preguntan sin vergüenza, insisten, desarman lo que para nosotros ya parece natural. Después crecemos, nos llenamos de explicaciones, y un día dejamos de preguntar. dejamos de hinchar las pelotas, No porque hayamos entendido más. Porque nos acostumbramos a vivir entre respuestas ajenas.
+# | 5. Porque aunque mi existencia sea un accidente, tengo razón de ser / El hecho de haber nacido encierra una verdad
+# | Heidegger dice que somos arrojados al mundo: nadie nos pidió permiso para nacer y sin embargo la vida es nuestra responsabilidad. Sartre lleva eso hasta el final: la existencia antes que la esencia. No venimos con un para qué, y el para qué nos lo tenemos que fabricar. Larralde acepta la primera parte y se sale de la segunda.
+# | Sí, es un accidente, o puede serlo. No estaba escrito, podría no haber existido. Pero no dice que va a inventarse una razón: dice que la tiene, que el hecho de haber nacido ya encierra una verdad, esté él o no esté para poder descifrarla.
+# | Es una posición más incómoda que la de los otros dos. El que inventa su sentido, al menos manda. El que no tiene ninguno, al menos tiene que estar en paz con eso, porque también es una decisión. El ateo y el creyente son dos tipos de creyentes: alcanzan verdades. Larralde queda en el peor lugar: hay un sentido, es suyo, pero no puede leerlo.
+# | 6. Yo mismo soy savia de un tronco partido que no cicatriza / Porque transmite desde hace siglos
+# | El tronco no cierra. Y no cierra por una razón: está transmitiendo. Si cicatrizara, se cortaría el paso. Pienso en todo lo que nos dijeron sobre esto. Sanar. Cerrar procesos. Dar vuelta la página. Superar. Mindfulness. Una herida abierta, en el vocabulario con el que vivimos, es una tarea pendiente, algo que no resolvimos, una falla nuestra.
+# | Larralde dice lo contrario, y lo dice sin levantar la voz: la herida abierta es el conducto. Por ahí pasa la savia. Cerrarla no sería sanar. Sería dejar de dar.
+# | Y hay algo más duro. Un tronco partido que transmite no está transmitiendo su dolor, como podria decirlo el gran novelista de Freud: está transmitiendo vida a través de su dolor. La grieta no es lo que entrega. Es por donde entrega. Todo el que crió a un hijo sabe esto sin haberlo pensado. Lo que uno le pasa a un hijo no sale de la parte sana. No viene de lo que aprendimos felices en vacaciones. Viene de lo que aprendimos del dolor, de las dificultades, de la frustración.
+# | 7. Pero no puede ser, porque vos sos también una verdad / Desde el corazón de tu médula
+# | Acá se da vuelta el poema entero.
+# | Venía pidiendo que lo miraran por dentro, y en una línea retira el pedido. No lo retira porque el otro sea indiferente, ni porque no lo quiera lo suficiente, ni por que no lo sepa entender: lo retira porque el otro también está lleno, y esta lleno con su verdad.
+# | Lévinas se pasó la vida en esto: el otro no es un pedazo de mi mundo. Es alguien que me desborda. Larralde llega ahí por otro camino y en menos palabras, mucho mas contundente. No me puedes ver por dentro porque tú también tienes un adentro, y está ocupado, y de hecho tampoco lo conoces. No me conozco yo. Qué te voy a conocer a ti.
+# | 8. Por eso no podrás, porque sos verdad tuya / Porque en tu verdad no cabe mi verdad
+# | Escucha bien lo que no está diciendo. No dice que no lo entienden, o  que esté solo. No hay reproche
+# | Está describiendo una estructura. “No me entiendes” es una queja, y una queja se puede reparar pidiendo más esfuerzo. “No cabe” es otra cosa: es una medida, y contra una medida no hay voluntad que sirva. Es más triste y es más tranquilo.
+# | Humberto Maturana lo decía con palabras de biólogo: entre dos sistemas vivos no existe la interacción instructiva. Yo no puedo determinar lo que pasa dentro de ti. Lo único que puedo hacer es gatillar algo que después lo decide tu estructura, no la mía. No, es que por que tu hiciste esto… x. no, no, es que estaba borracho. entonces a comprobar, todos los borrachos tienen esa conducta?, no, entonces eres tu, no el alcohol, tan vilipendiado
+# | ya que hablamos de Maturana: La autopoiesis, como sabemos si algo esta vivo o esta muerto?, por que el organismo que esta vivo, se sigue regenerando en forma autonoma, no dependiente.
+# | 9. Porque en tu corazón cabe mi corazón como alimento a tu amor / En cambio, la verdad no se alimenta con verdad ajena
+# | Separa dos cosas que vivimos juntas y confundimos siempre. Al amor sí lo puedo alimentar: mi corazón entra en el tuyo, te doy tiempo, cuerpo, presencia, compañía. Todo eso pasa de una persona a otra. Puede cuidar, sostener, acompañar, dañar.
+# | A tu verdad no.
+# | Porque amar no es absorber al otro ni convertirse en su explicación definitiva. El otro puede darme alimento, pero no puede vivir por mí; puede reconocer mi herida, pero no terminar de saber qué significa. Puede hacer más habitable mi mundo, pero no ocupar mi lugar dentro de él.
+# | Y esa distinción se lleva puesta, denuevo a freud, pero tambien la promesa más repetida: “me completas”, “sin ti no soy nada”, “encontré mi otra mitad”. Larralde no rebaja el amor: lo salva de esa exigencia imposible. Lo que se puede dar es alimento; lo que nadie puede entregar es sustancia. Nos sostenemos. No nos constituimos.
+# | Por eso no habla desde el desengaño ni desde la distancia. Está midiendo. Está constatando que dos corazones pueden caber uno en otro sin dejar de ser dos.
+# | 10. Porque no acaba, porque es siempre / Y siempre soy yo, y vos sos nunca
+# | Acá hace algo con el idioma que hay que mirar de cerca.
+# | Siempre y nunca son palabras de tiempo. Uno las usa para decir cuándo pasa algo. Larralde las saca de ahí y las convierte en nombres de personas. Yo soy siempre. Tú eres nunca. Deja de hablar de cuándo se encuentran y pasa a decir que están hechos de tiempos distintos.
+# | Cualquiera que haya vivido con otro conoce esto: lo que para mí es urgente para ti puede esperar, lo que para ti es definitivo para mí es una etapa, y en consecuencia no estamos discutiendo el mismo tema en el mismo momento aunque lo parezca. Y ninguno de los dos está mal. Simplemente no somos el mismo reloj.
+# | 11. Y así marchamos juntos por un camino de préstamos de verdades mentidas / Y corazones devorados por amor sin retorno
+# | Préstamos de verdades mentidas. aqui se fue a la puta madre y tenemos que ir despacio con esas tres palabras, porque cada una está haciendo un trabajo distinto.
+# | Empecemos por la primera, préstamo. Uno presta lo que tiene, no se puede prestar lo que no se tiene, y lo prestado, además, se devuelve. Ahora la segunda: no dice mentiras, dice verdades mentidas, y eso es otra cosa. Mentida no es un sustantivo: es algo que le pasó a la verdad. Alguien la agarró entera y la entregó incompleta.
+# | Eso deja fuera la intención. El que habla quiere decir la verdad, y por eso son verdades y no mentiras. Está entregando lo que cree que tiene, lo que puede entregar. La falla no está en la voluntad. Está en él.
+# | Y acá vuelve todo el poema sobre sí mismo. Larralde empezó diciendo que no encuentra su propio porqué, que hay una verdad adentro suyo y él no da con ella. Entonces, cuando le entrega su verdad a otro, ¿qué le está entregando? Le está prestando algo sobre lo que él mismo no tiene completa claridad. Está pagando con una moneda que no terminó de saber su valor. Eso es ser carente. No mentiroso. Carente.
+# | Y reconocerlo cambia dónde ponemos la culpa. La lectura cómoda de las mentiras de una pareja siempre tiene un culpable enfrente: el que ocultó, el que no se animó, el que dijo lo que convenía. Larralde no reparte esa carta. Dice marchamos. Los dos. Los dos vamos apenas prestando lo que no terminamos de entender, y los dos recibiendo eso mismo, convencidos de haber entregado y recibido algo entero.
+# | No hay un villano. Hay dos personas haciéndose entrega de sus carencias y llamándole a eso conocerse.
+# | 12. Y sin embargo / Y sin embargo yo soy tu verdad y vos la mía
+# | Lo dice dos veces. Y sin embargo. Y sin embargo.
+# | Se pasó el poema entero demostrando que no se puede, y acá lo afirma igual. por que No es una contradicción. Una cosa es que me entiendas y otra distinta es que yo sea tu verdad.
+# | Se puede ser la verdad de alguien que no nos entiende. De hecho es lo más común que hay. La imposibilidad no es del vínculo. Es de la comprensión.
+# | 13. Sigo creyendo en mi Dios
+# | Y termina ahí.
+# | Después de mostrar, de demostrar que nadie puede verlo por dentro, dice esto. Suena a cierre religioso de campo. al canto a lo divino, No lo creo.
+# | Todo empezó con un pedido: que alguien lo mirara por dentro y le dijera el porqué. Larralde demostró, uno por uno, que ninguna persona puede hacerlo. Ni la que lo ama. Ni la que camina a su lado. Ninguna, y no por falta de ganas, sino por estructura. que hacemos? Queda un solo destinatario posible. No porque Dios venga a completar lo que el amor no pudo. No dice “creo en Dios”. Dice “creo en mi Dios”. No es una doctrina. Es un vínculo personal. Quizá la última intimidad que le queda cuando admite que ni él ni los demás pueden descifrarlo.
+# | El poema no termina en una respuesta. Termina con una fidelidad: la fidelidad a la pregunta. así como socrates.  Después de comprobar que el amor no puede poseer la verdad del otro, Larralde se niega a aceptar que la verdad sea definitivamente inaccesible. Sigue creyendo que hay una mirada capaz de sostenerla. Porque Dios, para la tradición mística, no es lo contrario del misterio: es su nombre más profundo, mas hondo. No aquello que termina de explicarlo todo, sino aquello que impide que todo pueda ser explicado. Lo sagrado visto como un misterio que a la vez sobrecoge y atrae, y excede el lenguaje y la comprension. Y eso es lo que Larralde parece conservar: La certeza de que el porqué no es una pregunta pequeña ni abandonada en el vacío, aunque no tenga respuesta.
+# ---------------------------------------------
+
+ms	tipo	detalle
+28	renglones	0 6 14 18 23 29 31 38 46 52 59 61 69 76 82 90 97 103 109 116 121 127 132 138 145 151 156 161 168 173 179 184 193 201 207 213 214 220 226 233 240 247 254 260 266 273 276 284 290 295 300 306 311 316 318 325 330 337 343 346 353 359 365 370 373 380 384 390 391 397 402 409 417 423 429 435 442 448 455 460 464 468 474 479 480 486 493 497 503 511 517 523 529 531 537 542 549 558 563 571 576 581 587 593 594 600 604 609 615 620 626 632 639 644 647 652 653 658 659 665 673 683 690 697 704 712 721 728 734 740 746 752 759 762 769 772 779 785 791 796 803 808 811 812 820 825 832 835 840 845 850 854 860 864 870 875 881 885 890 892 898 905 911 912 916 922 929 933 940 946 954 960 967 971 978 984 991 997 1004 1012 1016 1022 1031 1038 1044 1050 1058 1064 1068 1076 1081 1089 1094 1098 1106 1111 1116 1123 1128 1133 1138 1144 1151 1155 1162 1169 1177 1183 1185 1192 1197 1201 1207 1212 1221 1227 1236 1243 1252 1258 1262 1268 1274 1275 1283 1288 1292 1299 1305 1312 1319 1325 1333 1339 1346 1349 1357 1365 1370 1377 1382 1388 1394 1401 1406 1414 1415 1422 1428 1432 1438 1444 1451 1452 1456 1463 1468 1473 1480 1486 1494 1495 1500 1505 1510 1515 1522 1529 1535 1543 1551 1556 1560 1565 1571 1572 1578 1583 1591 1597 1601 1603 1610 1616 1623 1626 1632 1638 1643 1650 1654 1661 1665 1666 1670 1677 1682 1687 1693 1699 1705 1710 1716 1719 1725 1731 1735 1741 1746 1754 1759 1766 1771 1775 1781 1786 1790 1795 1803 1809 1817 1818 1826 1830 1836 1842 1848 1856 1862 1869 1876 1880 1886 1893 1899 1907 1913 1918 1924 1931 1936 1938 1945 1950 1954 1958 1962 1970 1976 1982 1986 1990 1996 2004 2010 2016 2021 2029 2037 2044 2046 2053 2060 2066 2072 2079 2087 2095 2099 2105 2112 2119 2127 2132 2140 2144 2151 2158 2161 2165 2170 2176 2181 2189 2196 2202 2208 2213 2219 2223 2229 2230 2237 2241 2246 2247 2255 2262 2270 2272 2277 2283 2291 2297 2304 2308 2315 2323 2328 2334 2337 2343 2346 2351 2357 2364 2372 2373 2379 2386 2391 2397 2405 2413 2420 2425 2430 2437 2444 2452 2457 2462 2469 2475 2481 2485 2491 2496 2502 2508 2516 2519 2525 2531 2537 2543 2548 2554 2560 2565 2572 2578 2585 2591 2599 2603 2609
+28	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+29	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+32	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+50	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+66	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+82	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+83	oido	inicio=-2904 trozo=320 ruta=/data/user/0/com.sigoteleprompter.app/files/oido/1791083447493.pcm
+83	llegada	parcial nativo=82 audio=16 leido=76 procesado=82 rms=0.0015 relevos=0
+99	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+117	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+132	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+148	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+165	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+182	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+198	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+216	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+232	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+251	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+266	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+282	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+298	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+315	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+331	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+347	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+365	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+382	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+397	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+415	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+431	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+448	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+463	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+480	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+497	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+514	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+532	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+548	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+565	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+581	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+597	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+615	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+635	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+645	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+662	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+680	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+696	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+713	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+730	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+745	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+763	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+781	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+795	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+813	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+829	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+845	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+862	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+878	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+894	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+912	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+929	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+946	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+962	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+978	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+995	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1011	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1029	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1044	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1062	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1077	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1083	llegada	parcial nativo=1081 audio=116 leido=1072 procesado=1081 rms=0.0001 relevos=0
+1096	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1111	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1127	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1144	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1161	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1175	llegada	parcial nativo=1171 audio=216 leido=1170 procesado=1171 rms=0.0000 relevos=0
+1178	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1197	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1210	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1228	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1243	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1266	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1277	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1282	llegada	parcial nativo=1279 audio=316 leido=1272 procesado=1279 rms=0.0005 relevos=0
+1293	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1310	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1326	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1342	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1361	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1379	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1383	llegada	parcial nativo=1381 audio=416 leido=1371 procesado=1381 rms=0.0042 relevos=0
+1395	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1410	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1426	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1443	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1466	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1475	llegada	parcial nativo=1472 audio=516 leido=1472 procesado=1472 rms=0.0014 relevos=0
+1476	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1492	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1509	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1530	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1543	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1563	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1576	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1594	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1607	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1625	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1643	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1660	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1676	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1693	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1708	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1725	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1740	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1748	llegada	parcial nativo=1744 audio=596 leido=1732 procesado=1744 rms=0.0139 relevos=0
+1748	oyo	parcial: en
+1748	calce	NO CALZO: en
+1760	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1774	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1799	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1808	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1824	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1835	llegada	parcial nativo=1834 audio=696 leido=1833 procesado=1834 rms=0.0119 relevos=0
+1835	oyo	parcial: en
+1835	calce	NO CALZO: en
+1840	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1860	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1873	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1890	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1907	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1926	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1939	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1947	llegada	parcial nativo=1945 audio=796 leido=1933 procesado=1945 rms=0.0249 relevos=0
+1947	oyo	parcial: en
+1947	calce	NO CALZO: en
+1958	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1973	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1989	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+1996	llegada	parcial nativo=1996 audio=836 leido=1976 procesado=1996 rms=0.0162 relevos=0
+1996	oyo	parcial: en cualquier
+1997	calce	NO CALZO: en cualquier
+2005	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2023	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2038	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2058	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2073	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2085	llegada	parcial nativo=2083 audio=896 leido=2032 procesado=2083 rms=0.0078 relevos=0
+2085	oyo	parcial: en con
+2085	calce	NO CALZO: en con
+2090	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2106	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2124	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2125	llegada	parcial nativo=2123 audio=916 leido=2084 procesado=2123 rms=0.0080 relevos=0
+2125	oyo	parcial: en
+2125	calce	NO CALZO: en
+2138	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2156	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2172	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2188	llegada	parcial nativo=2184 audio=1016 leido=2175 procesado=2184 rms=0.0154 relevos=0
+2188	oyo	parcial: en
+2189	calce	NO CALZO: en
+2190	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2205	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2223	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2233	llegada	parcial nativo=2232 audio=1076 leido=2223 procesado=2232 rms=0.0049 relevos=0
+2233	oyo	parcial: en con
+2233	calce	NO CALZO: en con
+2237	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2257	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2272	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2291	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2300	llegada	parcial nativo=2298 audio=1156 leido=2292 procesado=2298 rms=0.0006 relevos=0
+2300	oyo	parcial: en con ellos
+2300	calce	NO CALZO: en con ellos
+2304	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2324	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2337	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2357	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2370	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2389	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2405	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2407	llegada	parcial nativo=2403 audio=1256 leido=2395 procesado=2403 rms=0.0002 relevos=0
+2407	oyo	parcial: en con ellos
+2408	calce	NO CALZO: en con ellos
+2422	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2438	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2457	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2471	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2488	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2496	llegada	parcial nativo=2493 audio=1356 leido=2493 procesado=2493 rms=0.0133 relevos=0
+2496	oyo	parcial: en con ellos
+2496	calce	NO CALZO: en con ellos
+2504	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2522	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2536	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2554	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2570	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2587	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2603	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2608	llegada	parcial nativo=2607 audio=1456 leido=2602 procesado=2607 rms=0.0113 relevos=0
+2608	oyo	parcial: en con ellos
+2609	calce	NO CALZO: en con ellos
+2626	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2636	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2662	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2669	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2686	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2702	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2703	llegada	parcial nativo=2701 audio=1556 leido=2695 procesado=2701 rms=0.0226 relevos=0
+2703	oyo	parcial: en con ellos
+2703	calce	NO CALZO: en con ellos
+2719	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2736	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2753	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2769	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2785	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2794	llegada	parcial nativo=2789 audio=1644 leido=2777 procesado=2789 rms=0.0200 relevos=1
+2794	oyo	parcial: en con ellos
+2795	calce	NO CALZO: en con ellos
+2802	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2818	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2834	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2836	llegada	parcial nativo=2833 audio=1744 leido=2833 procesado=2833 rms=0.0222 relevos=1
+2836	oyo	parcial: en con ellos
+2836	calce	NO CALZO: en con ellos
+2854	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2868	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2884	llegada	parcial nativo=2881 audio=1784 leido=2844 procesado=2881 rms=0.0249 relevos=1
+2884	oyo	parcial: en con ellos coser
+2886	calce	NO CALZO: en con ellos coser
+2886	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2901	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2919	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2926	llegada	parcial nativo=2923 audio=1884 leido=2908 procesado=2923 rms=0.0225 relevos=1
+2926	oyo	parcial: en con ellos coser
+2927	calce	NO CALZO: en con ellos coser
+2934	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2960	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2966	llegada	parcial nativo=2963 audio=1984 leido=2962 procesado=2963 rms=0.0120 relevos=1
+2966	oyo	parcial: en con ellos coser
+2967	calce	NO CALZO: en con ellos coser
+2967	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+2984	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3001	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3004	llegada	parcial nativo=3001 audio=2084 leido=2990 procesado=3001 rms=0.0154 relevos=1
+3004	oyo	parcial: en con ellos coser
+3006	calce	NO CALZO: en con ellos coser
+3016	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3034	llegada	parcial nativo=3029 audio=2184 leido=3018 procesado=3029 rms=0.0009 relevos=1
+3034	oyo	parcial: en con ellos coser
+3035	calce	NO CALZO: en con ellos coser
+3035	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3040	llegada	parcial nativo=3039 audio=2204 leido=3030 procesado=3039 rms=0.0000 relevos=1
+3040	oyo	parcial: en con ellos coser ellos
+3040	calce	NO CALZO: en con ellos coser ellos
+3050	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3064	llegada	parcial nativo=3062 audio=2304 leido=3053 procesado=3062 rms=0.0002 relevos=1
+3064	oyo	parcial: en con ellos coser ellos
+3064	calce	NO CALZO: en con ellos coser ellos
+3068	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3084	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3087	llegada	parcial nativo=3083 audio=2404 leido=3082 procesado=3083 rms=0.0133 relevos=1
+3087	oyo	parcial: en con ellos coser ellos
+3088	calce	NO CALZO: en con ellos coser ellos
+3100	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3109	llegada	parcial nativo=3105 audio=2504 leido=3101 procesado=3106 rms=0.0212 relevos=1
+3109	oyo	parcial: en con ellos coser ellos
+3110	calce	NO CALZO: en con ellos coser ellos
+3117	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3134	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3146	llegada	parcial nativo=3145 audio=2604 leido=3140 procesado=3145 rms=0.0226 relevos=1
+3146	oyo	parcial: en con ellos coser ellos
+3147	calce	NO CALZO: en con ellos coser ellos
+3149	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3166	llegada	parcial nativo=3164 audio=2704 leido=3163 procesado=3164 rms=0.0252 relevos=1
+3166	oyo	parcial: en con ellos coser ellos
+3167	calce	NO CALZO: en con ellos coser ellos
+3168	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3182	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3184	llegada	parcial nativo=3182 audio=2784 leido=3176 procesado=3182 rms=0.0224 relevos=1
+3184	oyo	parcial: en con ellos coser ellos cocer
+3186	calce	NO CALZO: en con ellos coser ellos cocer
+3197	llegada	parcial nativo=3195 audio=2844 leido=3189 procesado=3195 rms=0.0253 relevos=1
+3197	oyo	parcial: en con ellos coser ellos coser
+3198	calce	NO CALZO: en con ellos coser ellos coser
+3199	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3204	llegada	parcial nativo=3202 audio=2864 leido=3195 procesado=3202 rms=0.0152 relevos=1
+3204	oyo	parcial: en con ellos coser ellos cocer las
+3205	calce	NO CALZO: en con ellos coser ellos cocer las
+3213	llegada	parcial nativo=3211 audio=2904 leido=3203 procesado=3211 rms=0.0129 relevos=1
+3213	oyo	parcial: en con ellos coser ellos coser la
+3214	calce	NO CALZO: en con ellos coser ellos coser la
+3216	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3232	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3238	llegada	parcial nativo=3236 audio=3004 leido=3236 procesado=3236 rms=0.0128 relevos=1
+3238	oyo	parcial: en con ellos coser ellos coser la
+3238	calce	NO CALZO: en con ellos coser ellos coser la
+3249	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3266	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3283	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3287	llegada	parcial nativo=3285 audio=3104 leido=3266 procesado=3285 rms=0.0104 relevos=1
+3287	oyo	parcial: en con ellos coser ellos coser la
+3287	calce	NO CALZO: en con ellos coser ellos coser la
+3298	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3317	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3331	llegada	parcial nativo=3329 audio=3164 leido=3312 procesado=3329 rms=0.0025 relevos=1
+3331	oyo	parcial: en con ellos coser ellos coser la ral
+3333	calce	NO CALZO: en con ellos coser ellos coser la ral
+3334	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3349	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3366	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3383	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3389	llegada	parcial nativo=3387 audio=3264 leido=3378 procesado=3387 rms=0.0095 relevos=1
+3390	oyo	parcial: en con ellos coser ellos coser la real de
+3390	calce	NO CALZO: en con ellos coser ellos coser la real de
+3399	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3407	llegada	parcial nativo=3404 audio=3284 leido=3392 procesado=3404 rms=0.0051 relevos=1
+3407	oyo	parcial: en con ellos coser ellos coser la ral
+3408	calce	NO CALZO: en con ellos coser ellos coser la ral
+3415	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3433	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3449	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3464	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3482	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3498	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3502	llegada	parcial nativo=3501 audio=3384 leido=3493 procesado=3501 rms=0.0074 relevos=1
+3502	oyo	parcial: en con ellos coser ellos coser la ral
+3504	calce	NO CALZO: en con ellos coser ellos coser la ral
+3515	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3531	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3549	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3564	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3582	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3598	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3614	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3618	llegada	parcial nativo=3617 audio=3484 leido=3615 procesado=3617 rms=0.0136 relevos=1
+3618	oyo	parcial: en con ellos coser ellos coser la ral
+3619	calce	NO CALZO: en con ellos coser ellos coser la ral
+3631	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3644	llegada	parcial nativo=3642 audio=3524 leido=3632 procesado=3642 rms=0.0083 relevos=1
+3644	oyo	parcial: en con ellos coser ellos coser la ral de no
+3645	calce	NO CALZO: en con ellos coser ellos coser la ral de no
+3648	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3664	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3681	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3698	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3715	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3731	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3745	llegada	parcial nativo=3743 audio=3624 leido=3736 procesado=3743 rms=0.0046 relevos=1
+3745	oyo	parcial: en con ellos coser ellos coser la ral de no
+3746	calce	NO CALZO: en con ellos coser ellos coser la ral de no
+3747	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3763	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3781	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3796	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3814	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3830	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3837	llegada	parcial nativo=3836 audio=3724 leido=3835 procesado=3835 rms=0.0024 relevos=1
+3837	oyo	parcial: en con ellos coser ellos coser la ral de no
+3838	calce	NO CALZO: en con ellos coser ellos coser la ral de no
+3847	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3864	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3880	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3896	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3914	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3929	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3946	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3959	llegada	parcial nativo=3958 audio=3824 leido=3950 procesado=3958 rms=0.0017 relevos=1
+3959	oyo	parcial: en con ellos coser ellos coser la ral de no
+3960	calce	NO CALZO: en con ellos coser ellos coser la ral de no
+3963	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3979	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+3995	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4012	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4029	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4039	llegada	parcial nativo=4038 audio=3924 leido=4032 procesado=4038 rms=0.0003 relevos=1
+4039	oyo	parcial: en con ellos coser ellos coser la ral de no
+4039	calce	NO CALZO: en con ellos coser ellos coser la ral de no
+4045	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4063	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4081	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4096	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4102	llegada	parcial nativo=4100 audio=3984 leido=4094 procesado=4100 rms=0.0097 relevos=1
+4102	oyo	parcial: en con ellos coser ellos coser la ral de no canta
+4102	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta
+4112	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4128	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4145	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4162	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4180	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4194	llegada	parcial nativo=4193 audio=4084 leido=4192 procesado=4193 rms=0.0186 relevos=1
+4194	oyo	parcial: en con ellos coser ellos coser la ral de no canta
+4194	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta
+4194	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4213	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4229	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4244	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4261	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4279	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4295	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4304	llegada	parcial nativo=4303 audio=4184 leido=4293 procesado=4303 rms=0.0109 relevos=1
+4304	oyo	parcial: en con ellos coser ellos coser la ral de no canta
+4306	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta
+4310	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4327	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4343	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4361	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4378	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4394	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4407	llegada	parcial nativo=4404 audio=4284 leido=4394 procesado=4404 rms=0.0049 relevos=1
+4407	oyo	parcial: en con ellos coser ellos coser la ral de no canta
+4407	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta
+4410	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4427	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4444	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4462	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4477	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4493	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4495	llegada	parcial nativo=4494 audio=4384 leido=4494 procesado=4494 rms=0.0006 relevos=1
+4495	oyo	parcial: en con ellos coser ellos coser la ral de no canta
+4496	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta
+4511	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4527	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4543	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4560	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4576	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4592	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4606	llegada	parcial nativo=4605 audio=4484 leido=4593 procesado=4605 rms=0.0000 relevos=1
+4606	oyo	parcial: en con ellos coser ellos coser la ral de no canta
+4606	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta
+4609	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4627	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4642	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4660	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4664	llegada	parcial nativo=4663 audio=4544 leido=4655 procesado=4663 rms=0.0001 relevos=1
+4664	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+4664	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla
+4676	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4692	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4708	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4725	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4743	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4761	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4768	llegada	parcial nativo=4765 audio=4644 leido=4757 procesado=4765 rms=0.0002 relevos=1
+4768	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+4768	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla
+4777	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4792	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4808	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4825	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4842	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4859	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4861	llegada	parcial nativo=4858 audio=4744 leido=4856 procesado=4858 rms=0.0001 relevos=1
+4861	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+4862	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla
+4875	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4892	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4908	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4926	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4941	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4961	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4971	llegada	parcial nativo=4968 audio=4844 leido=4962 procesado=4968 rms=0.0002 relevos=1
+4971	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+4974	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla
+4975	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+4991	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5010	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5024	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5041	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5058	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5069	llegada	parcial nativo=5067 audio=4944 leido=5058 procesado=5067 rms=0.0002 relevos=1
+5069	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+5069	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla
+5074	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5091	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5108	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5126	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5139	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5156	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5158	llegada	parcial nativo=5155 audio=5044 leido=5155 procesado=5155 rms=0.0004 relevos=1
+5158	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+5159	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla
+5173	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5192	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5207	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5223	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5240	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5259	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5268	llegada	parcial nativo=5266 audio=5144 leido=5257 procesado=5266 rms=0.0005 relevos=1
+5268	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+5270	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla
+5273	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5290	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5306	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5323	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5340	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5358	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5368	llegada	parcial nativo=5366 audio=5244 leido=5358 procesado=5366 rms=0.0130 relevos=1
+5368	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+5369	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla
+5373	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5389	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5406	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5428	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5439	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5456	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5459	llegada	parcial nativo=5457 audio=5344 leido=5456 procesado=5457 rms=0.0302 relevos=1
+5459	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla
+5460	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla
+5474	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5488	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5506	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5525	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5540	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5558	cuadro	pos=25.87 calce=25 scroll=166 freno=sin-calce trabado=4
+5567	llegada	parcial nativo=5565 audio=5444 leido=5558 procesado=5565 rms=0.0301 relevos=1
+5567	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en
+5568	calce	token 31: en con ellos coser ellos coser la ral de no canta habla en
+5598	cuadro	pos=26.06 calce=31 scroll=166 freno=- trabado=4
+5620	cuadro	pos=26.55 calce=31 scroll=166 freno=- trabado=4
+5621	cuadro	pos=26.55 calce=31 scroll=166 freno=- trabado=4
+5657	cuadro	pos=26.70 calce=31 scroll=166 freno=- trabado=4
+5659	cuadro	pos=26.71 calce=31 scroll=166 freno=- trabado=4
+5667	llegada	parcial nativo=5666 audio=5544 leido=5655 procesado=5666 rms=0.0203 relevos=1
+5667	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en
+5667	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla en
+5670	cuadro	pos=26.75 calce=31 scroll=166 freno=- trabado=4
+5708	cuadro	pos=26.94 calce=31 scroll=166 freno=- trabado=4
+5721	cuadro	pos=27.00 calce=31 scroll=166 freno=- trabado=4
+5736	cuadro	pos=27.08 calce=31 scroll=166 freno=- trabado=4
+5753	cuadro	pos=27.18 calce=31 scroll=166 freno=- trabado=4
+5761	llegada	parcial nativo=5758 audio=5644 leido=5756 procesado=5758 rms=0.0198 relevos=1
+5761	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en
+5761	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla en
+5769	cuadro	pos=27.27 calce=31 scroll=166 freno=- trabado=4
+5787	cuadro	pos=27.38 calce=31 scroll=166 freno=- trabado=4
+5791	llegada	parcial nativo=5790 audio=5664 leido=5771 procesado=5790 rms=0.0224 relevos=1
+5791	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el
+5791	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla en el
+5802	cuadro	pos=27.47 calce=31 scroll=166 freno=- trabado=4
+5825	cuadro	pos=27.61 calce=31 scroll=166 freno=- trabado=4
+5837	cuadro	pos=27.69 calce=31 scroll=166 freno=- trabado=4
+5854	cuadro	pos=27.81 calce=31 scroll=166 freno=- trabado=4
+5869	cuadro	pos=27.91 calce=31 scroll=166 freno=- trabado=4
+5874	llegada	parcial nativo=5873 audio=5764 leido=5872 procesado=5873 rms=0.0470 relevos=1
+5874	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el
+5874	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla en el
+5887	cuadro	pos=28.02 calce=31 scroll=166 freno=- trabado=4
+5902	cuadro	pos=28.12 calce=31 scroll=166 freno=- trabado=4
+5925	cuadro	pos=28.27 calce=31 scroll=166 freno=- trabado=4
+5935	cuadro	pos=28.34 calce=31 scroll=166 freno=- trabado=4
+5955	cuadro	pos=28.47 calce=31 scroll=166 freno=- trabado=4
+5964	llegada	parcial nativo=5962 audio=5804 leido=5929 procesado=5962 rms=0.0113 relevos=1
+5964	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en alemán
+5964	calce	token 32: en con ellos coser ellos coser la ral de no canta habla en alemán
+5978	cuadro	pos=30.13 calce=32 scroll=176 freno=- trabado=5
+5993	cuadro	pos=30.22 calce=32 scroll=190 freno=- trabado=6
+6002	cuadro	pos=30.28 calce=32 scroll=197 freno=- trabado=6
+6051	llegada	parcial nativo=6017 audio=5844 leido=5964 procesado=6016 rms=0.0104 relevos=1
+6051	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el mar
+6052	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla en el mar
+6053	cuadro	pos=30.56 calce=32 scroll=224 freno=- trabado=6
+6059	cuadro	pos=30.59 calce=32 scroll=226 freno=- trabado=6
+6067	llegada	parcial nativo=6063 audio=5904 leido=6039 procesado=6063 rms=0.0121 relevos=1
+6067	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el
+6067	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla en el
+6069	cuadro	pos=30.65 calce=32 scroll=229 freno=- trabado=6
+6084	llegada	parcial nativo=6076 audio=5924 leido=6064 procesado=6076 rms=0.0173 relevos=1
+6084	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el mar la
+6084	calce	NO CALZO: en con ellos coser ellos coser la ral de no canta habla en el mar la
+6096	cuadro	pos=30.78 calce=32 scroll=235 freno=- trabado=6
+6101	cuadro	pos=30.80 calce=32 scroll=236 freno=- trabado=6
+6109	llegada	parcial nativo=6108 audio=5964 leido=6078 procesado=6108 rms=0.0131 relevos=1
+6109	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6109	calce	token 34: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6128	cuadro	pos=31.72 calce=34 scroll=240 freno=- trabado=6
+6134	cuadro	pos=31.76 calce=34 scroll=241 freno=- trabado=6
+6151	cuadro	pos=31.87 calce=34 scroll=243 freno=- trabado=6
+6167	cuadro	pos=31.96 calce=34 scroll=244 freno=- trabado=6
+6176	llegada	parcial nativo=6175 audio=6064 leido=6174 procesado=6175 rms=0.0085 relevos=1
+6176	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6177	calce	token 34: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6198	cuadro	pos=33.07 calce=34 scroll=246 freno=- trabado=6
+6202	cuadro	pos=33.09 calce=34 scroll=246 freno=- trabado=6
+6221	cuadro	pos=33.18 calce=34 scroll=247 freno=- trabado=6
+6234	cuadro	pos=33.24 calce=34 scroll=247 freno=- trabado=6
+6258	cuadro	pos=33.34 calce=34 scroll=248 freno=- trabado=6
+6268	cuadro	pos=33.38 calce=34 scroll=248 freno=- trabado=6
+6281	llegada	parcial nativo=6280 audio=6164 leido=6273 procesado=6280 rms=0.0021 relevos=1
+6281	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6282	calce	token 34: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6297	cuadro	pos=33.63 calce=34 scroll=248 freno=- trabado=6
+6300	cuadro	pos=33.64 calce=34 scroll=248 freno=- trabado=6
+6318	cuadro	pos=33.69 calce=34 scroll=248 freno=- trabado=6
+6334	cuadro	pos=33.73 calce=34 scroll=249 freno=- trabado=6
+6357	cuadro	pos=33.80 calce=34 scroll=249 freno=- trabado=6
+6367	cuadro	pos=33.83 calce=34 scroll=249 freno=- trabado=6
+6384	cuadro	pos=33.87 calce=34 scroll=249 freno=- trabado=6
+6387	llegada	parcial nativo=6385 audio=6264 leido=6372 procesado=6385 rms=0.0132 relevos=1
+6387	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6388	calce	token 34: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6404	cuadro	pos=34.04 calce=34 scroll=249 freno=- trabado=6
+6417	cuadro	pos=34.07 calce=34 scroll=249 freno=- trabado=6
+6433	cuadro	pos=34.10 calce=34 scroll=249 freno=- trabado=6
+6451	cuadro	pos=34.14 calce=34 scroll=249 freno=- trabado=6
+6466	cuadro	pos=34.17 calce=34 scroll=249 freno=- trabado=6
+6475	llegada	parcial nativo=6474 audio=6364 leido=6472 procesado=6474 rms=0.0227 relevos=1
+6475	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6475	calce	token 34: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6505	cuadro	pos=34.19 calce=34 scroll=249 freno=- trabado=6
+6508	cuadro	pos=34.19 calce=34 scroll=249 freno=- trabado=6
+6516	cuadro	pos=34.19 calce=34 scroll=249 freno=- trabado=6
+6532	cuadro	pos=34.19 calce=34 scroll=249 freno=- trabado=6
+6550	cuadro	pos=34.19 calce=34 scroll=249 freno=- trabado=6
+6565	cuadro	pos=34.20 calce=34 scroll=249 freno=- trabado=6
+6580	llegada	parcial nativo=6579 audio=6464 leido=6572 procesado=6579 rms=0.0309 relevos=1
+6580	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6580	calce	token 34: en con ellos coser ellos coser la ral de no canta habla en el más largo
+6597	cuadro	pos=34.23 calce=34 scroll=249 freno=- trabado=6
+6599	cuadro	pos=34.23 calce=34 scroll=249 freno=- trabado=6
+6615	cuadro	pos=34.23 calce=34 scroll=249 freno=- trabado=6
+6629	llegada	parcial nativo=6628 audio=6504 leido=6613 procesado=6628 rms=0.0097 relevos=1
+6629	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son
+6629	calce	token 35: en con ellos coser ellos coser la ral de no canta habla en el más largo son
+6644	cuadro	pos=34.69 calce=35 scroll=249 freno=- trabado=6
+6648	cuadro	pos=34.70 calce=35 scroll=249 freno=- trabado=6
+6665	cuadro	pos=34.75 calce=35 scroll=249 freno=- trabado=6
+6681	cuadro	pos=34.80 calce=35 scroll=249 freno=- trabado=6
+6698	cuadro	pos=34.84 calce=35 scroll=249 freno=- trabado=6
+6714	cuadro	pos=34.89 calce=35 scroll=249 freno=- trabado=6
+6720	llegada	parcial nativo=6714 audio=6604 leido=6713 procesado=6714 rms=0.0242 relevos=1
+6720	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son
+6721	calce	token 35: en con ellos coser ellos coser la ral de no canta habla en el más largo son
+6748	cuadro	pos=35.06 calce=35 scroll=249 freno=- trabado=6
+6754	llegada	parcial nativo=6740 audio=6624 leido=6732 procesado=6740 rms=0.0231 relevos=1
+6754	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro
+6755	calce	token 36: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro
+6770	cuadro	pos=36.02 calce=36 scroll=249 freno=- trabado=6
+6773	cuadro	pos=36.03 calce=36 scroll=249 freno=- trabado=6
+6781	cuadro	pos=36.05 calce=36 scroll=249 freno=- trabado=6
+6798	cuadro	pos=36.09 calce=36 scroll=249 freno=- trabado=6
+6814	cuadro	pos=36.13 calce=36 scroll=249 freno=- trabado=6
+6831	cuadro	pos=36.17 calce=36 scroll=249 freno=- trabado=6
+6839	llegada	parcial nativo=6839 audio=6724 leido=6838 procesado=6839 rms=0.0254 relevos=1
+6839	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro
+6840	calce	token 36: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro
+6867	cuadro	pos=36.19 calce=36 scroll=249 freno=- trabado=6
+6869	cuadro	pos=36.19 calce=36 scroll=249 freno=- trabado=6
+6880	cuadro	pos=36.19 calce=36 scroll=249 freno=- trabado=6
+6897	cuadro	pos=36.19 calce=36 scroll=249 freno=- trabado=6
+6916	cuadro	pos=36.19 calce=36 scroll=249 freno=- trabado=6
+6930	cuadro	pos=36.20 calce=36 scroll=249 freno=- trabado=6
+6941	llegada	parcial nativo=6940 audio=6824 leido=6933 procesado=6940 rms=0.0344 relevos=1
+6941	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro
+6942	calce	token 36: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro
+6960	cuadro	pos=36.22 calce=36 scroll=249 freno=- trabado=6
+6970	cuadro	pos=36.22 calce=36 scroll=249 freno=- trabado=6
+6980	cuadro	pos=36.22 calce=36 scroll=249 freno=- trabado=6
+6998	cuadro	pos=36.22 calce=36 scroll=249 freno=- trabado=6
+7009	llegada	parcial nativo=7004 audio=6884 leido=6993 procesado=7004 rms=0.0070 relevos=1
+7009	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7010	calce	token 37: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7028	cuadro	pos=36.35 calce=37 scroll=249 freno=- trabado=6
+7030	cuadro	pos=36.35 calce=37 scroll=249 freno=- trabado=6
+7047	cuadro	pos=36.41 calce=37 scroll=249 freno=- trabado=6
+7063	cuadro	pos=36.46 calce=37 scroll=249 freno=- trabado=6
+7079	cuadro	pos=36.51 calce=37 scroll=249 freno=- trabado=6
+7096	cuadro	pos=36.56 calce=37 scroll=249 freno=- trabado=6
+7100	llegada	parcial nativo=7099 audio=6984 leido=7093 procesado=7099 rms=0.0188 relevos=1
+7100	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7100	calce	token 37: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7115	cuadro	pos=36.95 calce=37 scroll=249 freno=- trabado=6
+7129	cuadro	pos=36.99 calce=37 scroll=249 freno=- trabado=6
+7147	cuadro	pos=37.03 calce=37 scroll=249 freno=- trabado=6
+7162	cuadro	pos=37.07 calce=37 scroll=249 freno=- trabado=6
+7180	cuadro	pos=37.11 calce=37 scroll=249 freno=- trabado=6
+7194	llegada	parcial nativo=7193 audio=7084 leido=7192 procesado=7193 rms=0.0052 relevos=1
+7194	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7194	calce	token 37: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7209	cuadro	pos=37.14 calce=37 scroll=249 freno=- trabado=6
+7212	cuadro	pos=37.14 calce=37 scroll=249 freno=- trabado=6
+7228	cuadro	pos=37.14 calce=37 scroll=249 freno=- trabado=6
+7246	cuadro	pos=37.14 calce=37 scroll=249 freno=- trabado=6
+7262	cuadro	pos=37.15 calce=37 scroll=249 freno=- trabado=6
+7278	cuadro	pos=37.18 calce=37 scroll=256 freno=- trabado=7
+7295	cuadro	pos=37.22 calce=37 scroll=262 freno=- trabado=7
+7302	llegada	parcial nativo=7298 audio=7184 leido=7292 procesado=7298 rms=0.0154 relevos=1
+7302	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7302	calce	token 37: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7324	cuadro	pos=37.24 calce=37 scroll=269 freno=- trabado=7
+7328	cuadro	pos=37.24 calce=37 scroll=270 freno=- trabado=7
+7346	cuadro	pos=37.24 calce=37 scroll=273 freno=- trabado=7
+7361	cuadro	pos=37.24 calce=37 scroll=275 freno=- trabado=7
+7378	cuadro	pos=37.24 calce=37 scroll=276 freno=- trabado=7
+7395	cuadro	pos=37.24 calce=37 scroll=278 freno=- trabado=7
+7398	llegada	parcial nativo=7397 audio=7284 leido=7391 procesado=7397 rms=0.0156 relevos=1
+7398	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7398	calce	token 37: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos
+7411	cuadro	pos=37.24 calce=37 scroll=279 freno=- trabado=7
+7427	cuadro	pos=37.24 calce=37 scroll=280 freno=- trabado=7
+7444	cuadro	pos=37.24 calce=37 scroll=280 freno=- trabado=7
+7462	cuadro	pos=37.24 calce=37 scroll=281 freno=- trabado=7
+7477	cuadro	pos=37.24 calce=37 scroll=281 freno=- trabado=7
+7494	cuadro	pos=37.24 calce=37 scroll=282 freno=- trabado=7
+7498	llegada	parcial nativo=7497 audio=7344 leido=7455 procesado=7497 rms=0.0184 relevos=1
+7498	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de
+7498	calce	token 38: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de
+7512	cuadro	pos=37.30 calce=38 scroll=282 freno=- trabado=7
+7527	cuadro	pos=37.35 calce=38 scroll=282 freno=- trabado=7
+7543	cuadro	pos=37.40 calce=38 scroll=282 freno=- trabado=7
+7559	llegada	parcial nativo=7556 audio=7444 leido=7553 procesado=7556 rms=0.0094 relevos=1
+7559	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de
+7560	calce	token 38: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de
+7584	cuadro	pos=37.82 calce=38 scroll=283 freno=- trabado=7
+7587	cuadro	pos=37.83 calce=38 scroll=283 freno=- trabado=7
+7593	llegada	parcial nativo=7592 audio=7464 leido=7571 procesado=7592 rms=0.0129 relevos=1
+7593	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de una
+7593	calce	token 39: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de una
+7607	cuadro	pos=38.50 calce=39 scroll=283 freno=- trabado=7
+7609	llegada	parcial nativo=7603 audio=7484 leido=7592 procesado=7603 rms=0.0133 relevos=1
+7609	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de unos
+7609	calce	token 39: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de unos
+7634	cuadro	pos=39.08 calce=39 scroll=283 freno=- trabado=7
+7636	cuadro	pos=39.08 calce=39 scroll=283 freno=- trabado=7
+7677	llegada	parcial nativo=7663 audio=7544 leido=7653 procesado=7664 rms=0.0095 relevos=1
+7677	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+7677	calce	token 40: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+7678	cuadro	pos=39.21 calce=40 scroll=283 freno=- trabado=7
+7697	cuadro	pos=40.07 calce=40 scroll=283 freno=- trabado=7
+7702	cuadro	pos=40.09 calce=40 scroll=283 freno=- trabado=7
+7713	cuadro	pos=40.12 calce=40 scroll=283 freno=- trabado=7
+7735	cuadro	pos=40.20 calce=40 scroll=283 freno=- trabado=7
+7743	cuadro	pos=40.22 calce=40 scroll=283 freno=- trabado=7
+7760	cuadro	pos=40.28 calce=40 scroll=283 freno=- trabado=7
+7766	llegada	parcial nativo=7765 audio=7644 leido=7752 procesado=7765 rms=0.0082 relevos=1
+7766	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+7766	calce	token 40: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+7779	cuadro	pos=40.30 calce=40 scroll=283 freno=- trabado=7
+7792	cuadro	pos=40.30 calce=40 scroll=283 freno=- trabado=7
+7809	cuadro	pos=40.30 calce=40 scroll=283 freno=- trabado=7
+7825	cuadro	pos=40.30 calce=40 scroll=283 freno=- trabado=7
+7843	cuadro	pos=40.30 calce=40 scroll=283 freno=- trabado=7
+7856	llegada	parcial nativo=7855 audio=7744 leido=7853 procesado=7855 rms=0.0037 relevos=1
+7856	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+7857	calce	token 40: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+7875	cuadro	pos=40.30 calce=40 scroll=283 freno=- trabado=7
+7878	cuadro	pos=40.30 calce=40 scroll=283 freno=- trabado=7
+7892	cuadro	pos=40.30 calce=40 scroll=283 freno=- trabado=7
+7909	cuadro	pos=40.30 calce=40 scroll=283 freno=- trabado=7
+7925	cuadro	pos=40.30 calce=40 scroll=283 freno=- trabado=7
+7941	cuadro	pos=40.30 calce=40 scroll=283 freno=- trabado=7
+7959	cuadro	pos=40.35 calce=40 scroll=283 freno=- trabado=7
+7972	llegada	parcial nativo=7965 audio=7844 leido=7955 procesado=7965 rms=0.0100 relevos=1
+7972	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+7972	calce	token 40: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+7991	cuadro	pos=40.39 calce=40 scroll=283 freno=- trabado=7
+7992	cuadro	pos=40.39 calce=40 scroll=283 freno=- trabado=7
+8008	cuadro	pos=40.39 calce=40 scroll=283 freno=- trabado=7
+8024	cuadro	pos=40.39 calce=40 scroll=283 freno=- trabado=7
+8041	cuadro	pos=40.39 calce=40 scroll=283 freno=- trabado=7
+8059	cuadro	pos=40.39 calce=40 scroll=283 freno=- trabado=7
+8066	llegada	parcial nativo=8065 audio=7944 leido=8056 procesado=8064 rms=0.0058 relevos=1
+8066	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+8066	calce	token 40: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre
+8085	cuadro	pos=40.39 calce=40 scroll=283 freno=- trabado=7
+8091	cuadro	pos=40.39 calce=40 scroll=283 freno=- trabado=7
+8108	cuadro	pos=40.39 calce=40 scroll=283 freno=- trabado=7
+8124	cuadro	pos=40.39 calce=40 scroll=283 freno=- trabado=7
+8140	cuadro	pos=40.39 calce=40 scroll=283 freno=- trabado=7
+8142	llegada	parcial nativo=8141 audio=8024 leido=8133 procesado=8141 rms=0.0108 relevos=1
+8142	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de
+8143	calce	token 41: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de
+8172	cuadro	pos=41.11 calce=41 scroll=283 freno=- trabado=7
+8177	cuadro	pos=41.12 calce=41 scroll=283 freno=- trabado=7
+8191	cuadro	pos=41.17 calce=41 scroll=283 freno=- trabado=7
+8226	cuadro	pos=41.30 calce=41 scroll=283 freno=- trabado=7
+8241	cuadro	pos=41.35 calce=41 scroll=283 freno=- trabado=7
+8244	llegada	parcial nativo=8241 audio=8124 leido=8233 procesado=8241 rms=0.0091 relevos=1
+8244	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta
+8245	calce	token 42: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta
+8264	cuadro	pos=41.51 calce=42 scroll=283 freno=- trabado=7
+8274	cuadro	pos=41.56 calce=42 scroll=283 freno=- trabado=7
+8290	cuadro	pos=41.65 calce=42 scroll=283 freno=- trabado=7
+8307	cuadro	pos=41.73 calce=42 scroll=283 freno=- trabado=7
+8323	cuadro	pos=41.82 calce=42 scroll=283 freno=- trabado=7
+8339	cuadro	pos=41.90 calce=42 scroll=283 freno=- trabado=7
+8341	llegada	parcial nativo=8339 audio=8224 leido=8339 procesado=8339 rms=0.0102 relevos=1
+8341	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta
+8341	calce	token 42: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta
+8367	cuadro	pos=42.09 calce=42 scroll=283 freno=- trabado=7
+8373	cuadro	pos=42.12 calce=42 scroll=283 freno=- trabado=7
+8390	cuadro	pos=42.18 calce=42 scroll=283 freno=- trabado=7
+8406	cuadro	pos=42.24 calce=42 scroll=283 freno=- trabado=7
+8422	cuadro	pos=42.30 calce=42 scroll=283 freno=- trabado=7
+8439	cuadro	pos=42.36 calce=42 scroll=283 freno=- trabado=7
+8456	llegada	parcial nativo=8452 audio=8324 leido=8431 procesado=8452 rms=0.0149 relevos=1
+8456	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y
+8456	calce	token 43: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y
+8457	cuadro	pos=42.43 calce=43 scroll=283 freno=- trabado=7
+8479	cuadro	pos=43.09 calce=43 scroll=283 freno=- trabado=7
+8491	cuadro	pos=43.13 calce=43 scroll=283 freno=- trabado=7
+8509	cuadro	pos=43.21 calce=43 scroll=283 freno=- trabado=7
+8522	cuadro	pos=43.25 calce=43 scroll=283 freno=- trabado=7
+8539	cuadro	pos=43.32 calce=43 scroll=283 freno=- trabado=7
+8565	llegada	parcial nativo=8548 audio=8424 leido=8531 procesado=8548 rms=0.0183 relevos=1
+8565	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y
+8566	calce	token 43: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y
+8566	cuadro	pos=43.42 calce=43 scroll=283 freno=- trabado=7
+8587	cuadro	pos=43.42 calce=43 scroll=283 freno=- trabado=7
+8589	cuadro	pos=43.42 calce=43 scroll=283 freno=- trabado=7
+8605	cuadro	pos=43.42 calce=43 scroll=283 freno=- trabado=7
+8622	cuadro	pos=43.42 calce=43 scroll=283 freno=- trabado=7
+8637	llegada	parcial nativo=8636 audio=8504 leido=8612 procesado=8636 rms=0.0151 relevos=1
+8637	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno
+8637	calce	token 44: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno
+8651	cuadro	pos=44.06 calce=44 scroll=283 freno=- trabado=7
+8661	cuadro	pos=44.10 calce=44 scroll=283 freno=- trabado=7
+8671	cuadro	pos=44.14 calce=44 scroll=283 freno=- trabado=7
+8688	cuadro	pos=44.21 calce=44 scroll=283 freno=- trabado=7
+8706	cuadro	pos=44.28 calce=44 scroll=283 freno=- trabado=7
+8722	cuadro	pos=44.34 calce=44 scroll=283 freno=- trabado=7
+8729	llegada	parcial nativo=8728 audio=8604 leido=8712 procesado=8728 rms=0.0106 relevos=1
+8729	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+8729	calce	token 45: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+8744	cuadro	pos=45.06 calce=45 scroll=283 freno=- trabado=7
+8754	cuadro	pos=45.11 calce=45 scroll=283 freno=- trabado=7
+8771	cuadro	pos=45.18 calce=45 scroll=283 freno=- trabado=7
+8787	cuadro	pos=45.25 calce=45 scroll=283 freno=- trabado=7
+8804	cuadro	pos=45.32 calce=45 scroll=283 freno=- trabado=7
+8818	llegada	parcial nativo=8815 audio=8704 leido=8814 procesado=8815 rms=0.0021 relevos=1
+8818	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+8820	calce	token 45: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+8845	cuadro	pos=45.38 calce=45 scroll=283 freno=- trabado=7
+8847	cuadro	pos=45.38 calce=45 scroll=283 freno=- trabado=7
+8854	cuadro	pos=45.38 calce=45 scroll=283 freno=- trabado=7
+8870	cuadro	pos=45.38 calce=45 scroll=283 freno=- trabado=7
+8887	cuadro	pos=45.38 calce=45 scroll=283 freno=- trabado=7
+8903	cuadro	pos=45.38 calce=45 scroll=283 freno=- trabado=7
+8920	cuadro	pos=45.42 calce=45 scroll=283 freno=- trabado=7
+8922	llegada	parcial nativo=8920 audio=8804 leido=8911 procesado=8920 rms=0.0040 relevos=1
+8922	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+8923	calce	token 45: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+8940	cuadro	pos=45.43 calce=45 scroll=283 freno=- trabado=7
+8954	cuadro	pos=45.43 calce=45 scroll=283 freno=- trabado=7
+8969	cuadro	pos=45.43 calce=45 scroll=290 freno=- trabado=8
+8987	cuadro	pos=45.43 calce=45 scroll=295 freno=- trabado=8
+9003	cuadro	pos=45.43 calce=45 scroll=300 freno=- trabado=8
+9023	cuadro	pos=45.43 calce=45 scroll=304 freno=- trabado=8
+9028	llegada	parcial nativo=9025 audio=8904 leido=9011 procesado=9025 rms=0.0008 relevos=1
+9028	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9028	calce	token 45: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9045	cuadro	pos=45.45 calce=45 scroll=307 freno=- trabado=8
+9053	cuadro	pos=45.45 calce=45 scroll=308 freno=- trabado=8
+9069	cuadro	pos=45.45 calce=45 scroll=310 freno=- trabado=8
+9087	cuadro	pos=45.45 calce=45 scroll=311 freno=- trabado=8
+9102	cuadro	pos=45.45 calce=45 scroll=312 freno=- trabado=8
+9118	llegada	parcial nativo=9115 audio=9004 leido=9113 procesado=9115 rms=0.0003 relevos=1
+9118	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9119	calce	token 45: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9141	cuadro	pos=45.45 calce=45 scroll=314 freno=- trabado=8
+9142	cuadro	pos=45.45 calce=45 scroll=314 freno=- trabado=8
+9153	cuadro	pos=45.45 calce=45 scroll=314 freno=- trabado=8
+9169	cuadro	pos=45.45 calce=45 scroll=314 freno=- trabado=8
+9186	cuadro	pos=45.45 calce=45 scroll=315 freno=- trabado=8
+9202	cuadro	pos=45.45 calce=45 scroll=315 freno=- trabado=8
+9220	cuadro	pos=45.45 calce=45 scroll=315 freno=- trabado=8
+9226	llegada	parcial nativo=9224 audio=9104 leido=9213 procesado=9224 rms=0.0003 relevos=1
+9226	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9227	calce	token 45: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9240	cuadro	pos=45.46 calce=45 scroll=315 freno=- trabado=8
+9251	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9268	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9286	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9303	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9320	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9328	llegada	parcial nativo=9327 audio=9204 leido=9320 procesado=9327 rms=0.0034 relevos=1
+9328	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9329	calce	token 45: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9352	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9357	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9369	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9385	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9402	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9421	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9424	llegada	parcial nativo=9417 audio=9304 leido=9415 procesado=9417 rms=0.0101 relevos=1
+9424	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9425	calce	token 45: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9449	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9452	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9468	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9486	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9501	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9518	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9527	llegada	parcial nativo=9524 audio=9404 leido=9511 procesado=9524 rms=0.0108 relevos=1
+9527	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9527	calce	token 45: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9546	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9559	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9567	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9584	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9602	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9620	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9634	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9635	llegada	parcial nativo=9632 audio=9504 leido=9617 procesado=9632 rms=0.0105 relevos=1
+9635	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9635	calce	token 45: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9654	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9667	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9684	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9699	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9721	llegada	parcial nativo=9714 audio=9604 leido=9712 procesado=9714 rms=0.0142 relevos=1
+9721	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9722	calce	token 45: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9723	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9759	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9760	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9766	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9785	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9799	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9821	cuadro	pos=45.46 calce=45 scroll=316 freno=- trabado=8
+9832	cuadro	pos=45.47 calce=45 scroll=316 freno=- trabado=8
+9846	llegada	parcial nativo=9843 audio=9704 leido=9823 procesado=9843 rms=0.0183 relevos=1
+9846	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9852	calce	token 45: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9852	cuadro	pos=45.53 calce=45 scroll=316 freno=- trabado=8
+9870	cuadro	pos=45.53 calce=45 scroll=316 freno=- trabado=8
+9883	cuadro	pos=45.53 calce=45 scroll=316 freno=- trabado=8
+9899	cuadro	pos=45.53 calce=45 scroll=316 freno=- trabado=8
+9923	cuadro	pos=45.53 calce=45 scroll=316 freno=- trabado=8
+9932	cuadro	pos=45.53 calce=45 scroll=316 freno=- trabado=8
+9938	llegada	parcial nativo=9936 audio=9804 leido=9919 procesado=9936 rms=0.0215 relevos=1
+9938	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9938	calce	token 45: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años
+9961	cuadro	pos=45.53 calce=45 scroll=316 freno=- trabado=8
+9964	cuadro	pos=45.53 calce=45 scroll=316 freno=- trabado=8
+9982	cuadro	pos=45.53 calce=45 scroll=316 freno=- trabado=8
+9985	llegada	parcial nativo=9983 audio=9864 leido=9972 procesado=9983 rms=0.0016 relevos=1
+9985	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando
+9986	calce	token 46: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando
+10001	cuadro	pos=45.61 calce=46 scroll=316 freno=- trabado=8
+10016	cuadro	pos=45.69 calce=46 scroll=316 freno=- trabado=8
+10031	cuadro	pos=45.77 calce=46 scroll=316 freno=- trabado=8
+10049	cuadro	pos=45.86 calce=46 scroll=316 freno=- trabado=8
+10065	cuadro	pos=45.94 calce=46 scroll=316 freno=- trabado=8
+10077	llegada	parcial nativo=10075 audio=9964 leido=10073 procesado=10075 rms=0.0166 relevos=1
+10077	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando
+10079	calce	token 46: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando
+10103	cuadro	pos=46.10 calce=46 scroll=316 freno=- trabado=8
+10106	llegada	parcial nativo=10099 audio=9984 leido=10091 procesado=10099 rms=0.0146 relevos=1
+10106	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un
+10106	calce	token 47: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un
+10130	cuadro	pos=47.02 calce=47 scroll=316 freno=- trabado=8
+10134	cuadro	pos=47.04 calce=47 scroll=316 freno=- trabado=8
+10161	cuadro	pos=47.17 calce=47 scroll=316 freno=- trabado=8
+10165	cuadro	pos=47.19 calce=47 scroll=316 freno=- trabado=8
+10177	llegada	parcial nativo=10176 audio=10044 leido=10153 procesado=10176 rms=0.0131 relevos=1
+10177	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10178	calce	token 48: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10210	cuadro	pos=48.12 calce=48 scroll=316 freno=- trabado=8
+10218	cuadro	pos=48.15 calce=48 scroll=316 freno=- trabado=8
+10242	cuadro	pos=48.24 calce=48 scroll=316 freno=- trabado=8
+10248	cuadro	pos=48.26 calce=48 scroll=316 freno=- trabado=8
+10258	llegada	parcial nativo=10257 audio=10144 leido=10256 procesado=10257 rms=0.0100 relevos=1
+10258	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10258	calce	token 48: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10271	cuadro	pos=48.30 calce=48 scroll=316 freno=- trabado=8
+10281	cuadro	pos=48.30 calce=48 scroll=316 freno=- trabado=8
+10296	cuadro	pos=48.30 calce=48 scroll=316 freno=- trabado=8
+10314	cuadro	pos=48.30 calce=48 scroll=316 freno=- trabado=8
+10330	cuadro	pos=48.30 calce=48 scroll=316 freno=- trabado=8
+10348	cuadro	pos=48.34 calce=48 scroll=316 freno=- trabado=8
+10363	cuadro	pos=48.39 calce=48 scroll=316 freno=- trabado=8
+10370	llegada	parcial nativo=10369 audio=10244 leido=10358 procesado=10369 rms=0.0025 relevos=1
+10370	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10370	calce	token 48: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10385	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10398	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10413	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10437	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10445	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10460	llegada	parcial nativo=10459 audio=10344 leido=10451 procesado=10459 rms=0.0003 relevos=1
+10460	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10461	calce	token 48: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10476	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10478	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10495	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10512	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10528	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10547	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10556	llegada	parcial nativo=10554 audio=10444 leido=10552 procesado=10554 rms=0.0001 relevos=1
+10556	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10557	calce	token 48: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10585	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10586	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10596	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10612	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10629	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10645	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10661	llegada	parcial nativo=10660 audio=10544 leido=10653 procesado=10660 rms=0.0001 relevos=1
+10661	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10661	calce	token 48: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10662	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10678	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10695	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10717	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10728	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10745	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10760	llegada	parcial nativo=10759 audio=10644 leido=10753 procesado=10759 rms=0.0001 relevos=1
+10760	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10761	calce	token 48: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10761	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10781	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10797	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10811	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10827	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10844	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10856	llegada	parcial nativo=10854 audio=10744 leido=10853 procesado=10854 rms=0.0004 relevos=1
+10856	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10856	calce	token 48: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10891	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10892	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10893	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10910	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10927	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10943	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10959	cuadro	pos=48.42 calce=48 scroll=316 freno=- trabado=8
+10974	llegada	parcial nativo=10972 audio=10844 leido=10952 procesado=10972 rms=0.0073 relevos=1
+10974	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10975	calce	token 48: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+10991	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+10996	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11010	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11026	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11043	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11059	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11062	llegada	parcial nativo=11061 audio=10944 leido=11054 procesado=11061 rms=0.0302 relevos=1
+11062	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+11062	calce	token 48: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+11087	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11092	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11111	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11126	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11143	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11156	llegada	parcial nativo=11154 audio=11044 leido=11153 procesado=11154 rms=0.0228 relevos=1
+11156	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+11157	calce	token 48: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+11189	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11190	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11192	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11211	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11225	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11243	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11258	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11264	llegada	parcial nativo=11262 audio=11144 leido=11254 procesado=11262 rms=0.0228 relevos=1
+11264	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+11264	calce	token 48: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema
+11288	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11291	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11309	cuadro	pos=48.44 calce=48 scroll=316 freno=- trabado=8
+11317	llegada	parcial nativo=11307 audio=11184 leido=11291 procesado=11307 rms=0.0111 relevos=1
+11317	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este
+11318	calce	token 49: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este
+11336	cuadro	pos=48.91 calce=49 scroll=316 freno=- trabado=8
+11341	cuadro	pos=48.93 calce=49 scroll=316 freno=- trabado=8
+11357	cuadro	pos=49.00 calce=49 scroll=316 freno=- trabado=8
+11375	cuadro	pos=49.06 calce=49 scroll=316 freno=- trabado=8
+11391	cuadro	pos=49.12 calce=49 scroll=316 freno=- trabado=8
+11400	llegada	parcial nativo=11399 audio=11284 leido=11398 procesado=11399 rms=0.0144 relevos=1
+11400	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este
+11401	calce	token 49: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este
+11424	cuadro	pos=49.15 calce=49 scroll=316 freno=- trabado=8
+11426	cuadro	pos=49.15 calce=49 scroll=316 freno=- trabado=8
+11442	cuadro	pos=49.15 calce=49 scroll=316 freno=- trabado=8
+11457	cuadro	pos=49.18 calce=49 scroll=316 freno=- trabado=8
+11474	cuadro	pos=49.24 calce=49 scroll=316 freno=- trabado=8
+11490	cuadro	pos=49.29 calce=49 scroll=316 freno=- trabado=8
+11508	llegada	parcial nativo=11506 audio=11364 leido=11473 procesado=11506 rms=0.0024 relevos=1
+11508	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este podemos
+11509	calce	token 50: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este podemos
+11509	cuadro	pos=49.35 calce=50 scroll=316 freno=- trabado=8
+11529	cuadro	pos=49.55 calce=50 scroll=316 freno=- trabado=8
+11540	cuadro	pos=49.59 calce=50 scroll=316 freno=- trabado=8
+11556	llegada	parcial nativo=11552 audio=11424 leido=11531 procesado=11551 rms=0.0067 relevos=1
+11556	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este
+11556	calce	token 49: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este
+11574	cuadro	pos=49.99 calce=50 scroll=316 freno=- trabado=8
+11576	cuadro	pos=49.99 calce=50 scroll=316 freno=- trabado=8
+11590	cuadro	pos=50.04 calce=50 scroll=316 freno=- trabado=8
+11603	llegada	parcial nativo=11602 audio=11484 leido=11592 procesado=11602 rms=0.0080 relevos=1
+11603	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas
+11603	calce	token 50: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas
+11623	cuadro	pos=50.08 calce=50 scroll=316 freno=- trabado=8
+11626	cuadro	pos=50.08 calce=50 scroll=316 freno=- trabado=8
+11640	cuadro	pos=50.11 calce=50 scroll=316 freno=- trabado=8
+11656	cuadro	pos=50.15 calce=50 scroll=316 freno=- trabado=8
+11673	cuadro	pos=50.21 calce=50 scroll=316 freno=- trabado=8
+11689	llegada	parcial nativo=11688 audio=11564 leido=11673 procesado=11688 rms=0.0152 relevos=1
+11689	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas y
+11689	calce	token 51: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas y
+11690	cuadro	pos=50.25 calce=51 scroll=316 freno=- trabado=8
+11706	cuadro	pos=51.04 calce=51 scroll=316 freno=- trabado=8
+11722	cuadro	pos=51.09 calce=51 scroll=316 freno=- trabado=8
+11739	cuadro	pos=51.13 calce=51 scroll=316 freno=- trabado=8
+11756	cuadro	pos=51.18 calce=51 scroll=316 freno=- trabado=8
+11772	cuadro	pos=51.22 calce=51 scroll=316 freno=- trabado=8
+11788	llegada	parcial nativo=11787 audio=11664 leido=11774 procesado=11787 rms=0.0107 relevos=1
+11788	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas y
+11789	calce	token 51: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas y
+11809	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+11811	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+11822	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+11838	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+11860	llegada	parcial nativo=11845 audio=11724 leido=11831 procesado=11845 rms=0.0055 relevos=1
+11860	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este puede
+11861	calce	token 50: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este puede
+11861	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+11880	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+11888	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+11906	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+11921	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+11934	llegada	parcial nativo=11933 audio=11824 leido=11932 procesado=11933 rms=0.0043 relevos=1
+11934	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este puede
+11935	calce	token 50: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este puede
+11955	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+11959	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+11969	llegada	parcial nativo=11964 audio=11844 leido=11953 procesado=11964 rms=0.0001 relevos=1
+11969	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas y
+11969	calce	token 51: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas y
+11986	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+11987	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+12004	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+12022	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+12037	cuadro	pos=51.26 calce=51 scroll=316 freno=- trabado=8
+12039	llegada	parcial nativo=12038 audio=11924 leido=12031 procesado=12038 rms=0.0001 relevos=1
+12039	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12039	calce	token 52: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12063	cuadro	pos=51.58 calce=52 scroll=326 freno=- trabado=9
+12071	cuadro	pos=51.61 calce=52 scroll=329 freno=- trabado=9
+12087	cuadro	pos=51.67 calce=52 scroll=333 freno=- trabado=9
+12104	cuadro	pos=51.73 calce=52 scroll=337 freno=- trabado=9
+12120	cuadro	pos=51.79 calce=52 scroll=340 freno=- trabado=9
+12138	cuadro	pos=51.86 calce=52 scroll=342 freno=- trabado=9
+12154	cuadro	pos=51.91 calce=52 scroll=344 freno=- trabado=9
+12169	llegada	parcial nativo=12168 audio=12024 leido=12134 procesado=12168 rms=0.0001 relevos=1
+12169	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12169	calce	token 52: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12186	cuadro	pos=52.05 calce=52 scroll=346 freno=- trabado=9
+12189	cuadro	pos=52.06 calce=52 scroll=346 freno=- trabado=9
+12204	cuadro	pos=52.09 calce=52 scroll=347 freno=- trabado=9
+12234	cuadro	pos=52.18 calce=52 scroll=348 freno=- trabado=9
+12235	llegada	parcial nativo=12233 audio=12124 leido=12232 procesado=12233 rms=0.0004 relevos=1
+12235	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12236	calce	token 52: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12254	cuadro	pos=52.18 calce=52 scroll=348 freno=- trabado=9
+12256	cuadro	pos=52.18 calce=52 scroll=349 freno=- trabado=9
+12270	cuadro	pos=52.18 calce=52 scroll=349 freno=- trabado=9
+12287	cuadro	pos=52.18 calce=52 scroll=349 freno=- trabado=9
+12303	cuadro	pos=52.18 calce=52 scroll=349 freno=- trabado=9
+12320	cuadro	pos=52.23 calce=52 scroll=349 freno=- trabado=9
+12336	cuadro	pos=52.27 calce=52 scroll=350 freno=- trabado=9
+12340	llegada	parcial nativo=12338 audio=12224 leido=12332 procesado=12338 rms=0.0012 relevos=1
+12340	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12340	calce	token 52: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12362	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12369	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12386	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12402	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12419	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12435	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12440	llegada	parcial nativo=12439 audio=12324 leido=12432 procesado=12439 rms=0.0088 relevos=1
+12440	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12441	calce	token 52: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12463	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12470	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12485	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12502	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12520	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12535	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12539	llegada	parcial nativo=12537 audio=12424 leido=12535 procesado=12537 rms=0.0073 relevos=1
+12539	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12539	calce	token 52: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12554	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12569	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12585	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12602	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12619	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12635	cuadro	pos=52.29 calce=52 scroll=350 freno=- trabado=9
+12650	llegada	parcial nativo=12645 audio=12524 leido=12635 procesado=12645 rms=0.0091 relevos=1
+12650	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12650	calce	token 52: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12672	cuadro	pos=52.30 calce=52 scroll=350 freno=- trabado=9
+12674	cuadro	pos=52.30 calce=52 scroll=350 freno=- trabado=9
+12684	cuadro	pos=52.30 calce=52 scroll=350 freno=- trabado=9
+12701	cuadro	pos=52.30 calce=52 scroll=350 freno=- trabado=9
+12723	cuadro	pos=52.30 calce=52 scroll=350 freno=- trabado=9
+12736	cuadro	pos=52.30 calce=52 scroll=350 freno=- trabado=9
+12751	cuadro	pos=52.30 calce=52 scroll=350 freno=- trabado=9
+12754	llegada	parcial nativo=12753 audio=12624 leido=12736 procesado=12753 rms=0.0089 relevos=1
+12754	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12755	calce	token 52: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama
+12768	cuadro	pos=52.30 calce=52 scroll=350 freno=- trabado=9
+12779	llegada	parcial nativo=12777 audio=12644 leido=12753 procesado=12777 rms=0.0042 relevos=1
+12779	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si
+12780	calce	token 53: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si
+12795	cuadro	pos=52.54 calce=53 scroll=350 freno=- trabado=9
+12800	cuadro	pos=52.57 calce=53 scroll=350 freno=- trabado=9
+12818	cuadro	pos=52.63 calce=53 scroll=350 freno=- trabado=9
+12835	cuadro	pos=52.69 calce=53 scroll=350 freno=- trabado=9
+12854	cuadro	pos=52.76 calce=53 scroll=350 freno=- trabado=9
+12868	cuadro	pos=52.81 calce=53 scroll=350 freno=- trabado=9
+12874	llegada	parcial nativo=12872 audio=12744 leido=12856 procesado=12872 rms=0.0015 relevos=1
+12874	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si
+12875	calce	token 53: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si
+12899	cuadro	pos=53.07 calce=53 scroll=350 freno=- trabado=9
+12900	llegada	parcial nativo=12892 audio=12764 leido=12874 procesado=12892 rms=0.0009 relevos=1
+12900	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me dieran
+12901	calce	token 55: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me dieran
+12918	cuadro	pos=54.26 calce=55 scroll=350 freno=- trabado=9
+12926	cuadro	pos=54.31 calce=55 scroll=350 freno=- trabado=9
+12933	cuadro	pos=54.35 calce=55 scroll=350 freno=- trabado=9
+12987	cuadro	pos=54.61 calce=55 scroll=350 freno=- trabado=9
+12993	llegada	parcial nativo=12987 audio=12864 leido=12973 procesado=12987 rms=0.0113 relevos=1
+12993	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me dieran
+12994	calce	token 55: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me dieran
+13007	cuadro	pos=54.73 calce=55 scroll=350 freno=- trabado=9
+13017	cuadro	pos=54.77 calce=55 scroll=350 freno=- trabado=9
+13032	cuadro	pos=54.83 calce=55 scroll=350 freno=- trabado=9
+13043	llegada	parcial nativo=13042 audio=12924 leido=13032 procesado=13042 rms=0.0028 relevos=1
+13043	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras
+13043	calce	token 55: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras
+13067	cuadro	pos=55.07 calce=55 scroll=350 freno=- trabado=9
+13070	cuadro	pos=55.08 calce=55 scroll=350 freno=- trabado=9
+13082	cuadro	pos=55.11 calce=55 scroll=350 freno=- trabado=9
+13099	cuadro	pos=55.16 calce=55 scroll=350 freno=- trabado=9
+13101	llegada	parcial nativo=13100 audio=12984 leido=13093 procesado=13100 rms=0.0074 relevos=1
+13101	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras podido
+13102	calce	token 56: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras podido
+13120	cuadro	pos=55.77 calce=56 scroll=350 freno=- trabado=9
+13132	cuadro	pos=55.82 calce=56 scroll=350 freno=- trabado=9
+13151	cuadro	pos=55.89 calce=56 scroll=350 freno=- trabado=9
+13165	cuadro	pos=55.94 calce=56 scroll=350 freno=- trabado=9
+13169	llegada	parcial nativo=13167 audio=13044 leido=13152 procesado=13167 rms=0.0063 relevos=1
+13169	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras
+13170	calce	token 55: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras
+13195	cuadro	pos=56.07 calce=56 scroll=350 freno=- trabado=9
+13198	cuadro	pos=56.08 calce=56 scroll=350 freno=- trabado=9
+13219	cuadro	pos=56.14 calce=56 scroll=350 freno=- trabado=9
+13230	llegada	parcial nativo=13223 audio=13104 leido=13211 procesado=13223 rms=0.0030 relevos=1
+13230	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por
+13230	calce	token 56: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por
+13258	cuadro	pos=56.17 calce=56 scroll=350 freno=- trabado=9
+13260	cuadro	pos=56.17 calce=56 scroll=350 freno=- trabado=9
+13284	cuadro	pos=56.17 calce=56 scroll=350 freno=- trabado=9
+13287	cuadro	pos=56.17 calce=56 scroll=350 freno=- trabado=9
+13298	cuadro	pos=56.19 calce=56 scroll=350 freno=- trabado=9
+13316	cuadro	pos=56.24 calce=56 scroll=350 freno=- trabado=9
+13321	llegada	parcial nativo=13315 audio=13204 leido=13313 procesado=13315 rms=0.0019 relevos=1
+13321	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por
+13322	calce	token 56: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por
+13339	cuadro	pos=56.26 calce=56 scroll=350 freno=- trabado=9
+13348	cuadro	pos=56.26 calce=56 scroll=350 freno=- trabado=9
+13362	llegada	parcial nativo=13360 audio=13244 leido=13351 procesado=13360 rms=0.0008 relevos=1
+13362	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13362	calce	token 57: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13377	cuadro	pos=56.83 calce=57 scroll=350 freno=- trabado=9
+13381	cuadro	pos=56.85 calce=57 scroll=350 freno=- trabado=9
+13397	cuadro	pos=56.91 calce=57 scroll=350 freno=- trabado=9
+13416	cuadro	pos=56.98 calce=57 scroll=350 freno=- trabado=9
+13430	cuadro	pos=57.04 calce=57 scroll=350 freno=- trabado=9
+13448	cuadro	pos=57.10 calce=57 scroll=350 freno=- trabado=9
+13459	llegada	parcial nativo=13458 audio=13344 leido=13452 procesado=13458 rms=0.0006 relevos=1
+13459	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13460	calce	token 57: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13471	cuadro	pos=57.14 calce=57 scroll=350 freno=- trabado=9
+13482	cuadro	pos=57.14 calce=57 scroll=350 freno=- trabado=9
+13497	cuadro	pos=57.14 calce=57 scroll=350 freno=- trabado=9
+13516	cuadro	pos=57.18 calce=57 scroll=350 freno=- trabado=9
+13538	cuadro	pos=57.25 calce=57 scroll=350 freno=- trabado=9
+13548	cuadro	pos=57.28 calce=57 scroll=350 freno=- trabado=9
+13555	llegada	parcial nativo=13554 audio=13444 leido=13552 procesado=13553 rms=0.0000 relevos=1
+13555	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13556	calce	token 57: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13575	cuadro	pos=57.30 calce=57 scroll=350 freno=- trabado=9
+13580	cuadro	pos=57.30 calce=57 scroll=350 freno=- trabado=9
+13596	cuadro	pos=57.30 calce=57 scroll=350 freno=- trabado=9
+13614	cuadro	pos=57.30 calce=57 scroll=350 freno=- trabado=9
+13630	cuadro	pos=57.30 calce=57 scroll=350 freno=- trabado=9
+13652	cuadro	pos=57.31 calce=57 scroll=350 freno=- trabado=9
+13660	llegada	parcial nativo=13659 audio=13544 leido=13652 procesado=13659 rms=0.0001 relevos=1
+13660	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13660	calce	token 57: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13672	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13682	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13696	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13715	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13730	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13747	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13762	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13763	llegada	parcial nativo=13761 audio=13644 leido=13751 procesado=13761 rms=0.0001 relevos=1
+13763	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13764	calce	token 57: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13783	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13795	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13817	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13830	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13850	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13854	llegada	parcial nativo=13853 audio=13744 leido=13851 procesado=13853 rms=0.0001 relevos=1
+13854	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13855	calce	token 57: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13885	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13887	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13895	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13915	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13928	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13950	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13958	llegada	parcial nativo=13957 audio=13844 leido=13951 procesado=13957 rms=0.0002 relevos=1
+13958	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13959	calce	token 57: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+13977	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13979	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+13997	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14019	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14027	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14047	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14061	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14063	llegada	parcial nativo=14060 audio=13944 leido=14052 procesado=14060 rms=0.0001 relevos=1
+14063	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14063	calce	token 57: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14087	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14094	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14114	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14128	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14146	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14155	llegada	parcial nativo=14153 audio=14044 leido=14152 procesado=14153 rms=0.0013 relevos=1
+14155	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14156	calce	token 57: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14187	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14188	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14195	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14212	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14227	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14244	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14260	cuadro	pos=57.33 calce=57 scroll=350 freno=- trabado=9
+14270	llegada	parcial nativo=14266 audio=14144 leido=14252 procesado=14266 rms=0.0234 relevos=1
+14270	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14270	calce	token 57: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14295	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14296	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14318	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14326	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14346	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14359	llegada	parcial nativo=14358 audio=14244 leido=14352 procesado=14358 rms=0.0086 relevos=1
+14359	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14360	calce	token 57: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14360	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14390	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14392	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14412	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14425	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14444	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14456	llegada	parcial nativo=14454 audio=14344 leido=14453 procesado=14454 rms=0.0006 relevos=1
+14456	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14457	calce	token 57: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro
+14479	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14482	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14491	cuadro	pos=57.36 calce=57 scroll=350 freno=- trabado=9
+14500	llegada	parcial nativo=14498 audio=14384 leido=14492 procesado=14498 rms=0.0000 relevos=1
+14500	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14501	calce	token 58: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14518	cuadro	pos=57.49 calce=58 scroll=350 freno=- trabado=9
+14525	cuadro	pos=57.52 calce=58 scroll=350 freno=- trabado=9
+14542	cuadro	pos=57.59 calce=58 scroll=350 freno=- trabado=9
+14558	cuadro	pos=57.66 calce=58 scroll=350 freno=- trabado=9
+14576	cuadro	pos=57.73 calce=58 scroll=350 freno=- trabado=9
+14591	cuadro	pos=57.79 calce=58 scroll=350 freno=- trabado=9
+14601	llegada	parcial nativo=14599 audio=14484 leido=14591 procesado=14599 rms=0.0039 relevos=1
+14601	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14601	calce	token 58: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14630	cuadro	pos=58.09 calce=58 scroll=350 freno=- trabado=9
+14632	cuadro	pos=58.09 calce=58 scroll=350 freno=- trabado=9
+14641	cuadro	pos=58.12 calce=58 scroll=350 freno=- trabado=9
+14658	cuadro	pos=58.17 calce=58 scroll=350 freno=- trabado=9
+14675	cuadro	pos=58.22 calce=58 scroll=350 freno=- trabado=9
+14692	cuadro	pos=58.28 calce=58 scroll=350 freno=- trabado=9
+14695	llegada	parcial nativo=14694 audio=14584 leido=14693 procesado=14694 rms=0.0108 relevos=1
+14695	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14696	calce	token 58: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14714	cuadro	pos=58.29 calce=58 scroll=350 freno=- trabado=9
+14726	cuadro	pos=58.29 calce=58 scroll=350 freno=- trabado=9
+14740	cuadro	pos=58.29 calce=58 scroll=350 freno=- trabado=9
+14757	cuadro	pos=58.29 calce=58 scroll=350 freno=- trabado=9
+14775	cuadro	pos=58.29 calce=58 scroll=350 freno=- trabado=9
+14790	cuadro	pos=58.29 calce=58 scroll=350 freno=- trabado=9
+14799	llegada	parcial nativo=14798 audio=14684 leido=14793 procesado=14798 rms=0.0104 relevos=1
+14799	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14799	calce	token 58: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14815	cuadro	pos=58.31 calce=58 scroll=350 freno=- trabado=9
+14824	cuadro	pos=58.31 calce=58 scroll=350 freno=- trabado=9
+14840	cuadro	pos=58.31 calce=58 scroll=350 freno=- trabado=9
+14856	cuadro	pos=58.31 calce=58 scroll=350 freno=- trabado=9
+14873	cuadro	pos=58.31 calce=58 scroll=357 freno=- trabado=10
+14890	cuadro	pos=58.31 calce=58 scroll=363 freno=- trabado=10
+14901	llegada	parcial nativo=14900 audio=14784 leido=14893 procesado=14900 rms=0.0178 relevos=1
+14901	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14902	calce	token 58: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es
+14930	cuadro	pos=58.31 calce=58 scroll=372 freno=- trabado=10
+14930	llegada	parcial nativo=14924 audio=14804 leido=14913 procesado=14924 rms=0.0174 relevos=1
+14930	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una
+14931	calce	token 59: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una
+14946	cuadro	pos=59.04 calce=59 scroll=374 freno=- trabado=10
+14953	cuadro	pos=59.06 calce=59 scroll=375 freno=- trabado=10
+14956	cuadro	pos=59.07 calce=59 scroll=376 freno=- trabado=10
+15014	cuadro	pos=59.24 calce=59 scroll=380 freno=- trabado=10
+15024	cuadro	pos=59.27 calce=59 scroll=381 freno=- trabado=10
+15042	llegada	parcial nativo=15029 audio=14904 leido=15014 procesado=15028 rms=0.0134 relevos=1
+15042	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una
+15042	calce	token 59: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una
+15043	cuadro	pos=59.32 calce=59 scroll=382 freno=- trabado=10
+15090	cuadro	pos=59.32 calce=59 scroll=383 freno=- trabado=10
+15099	cuadro	pos=59.32 calce=59 scroll=383 freno=- trabado=10
+15105	cuadro	pos=59.32 calce=59 scroll=383 freno=- trabado=10
+15116	llegada	parcial nativo=15113 audio=15004 leido=15111 procesado=15113 rms=0.0102 relevos=1
+15116	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una
+15116	calce	token 59: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una
+15130	cuadro	pos=59.32 calce=59 scroll=383 freno=- trabado=10
+15138	cuadro	pos=59.32 calce=59 scroll=383 freno=- trabado=10
+15155	cuadro	pos=59.32 calce=59 scroll=384 freno=- trabado=10
+15172	cuadro	pos=59.32 calce=59 scroll=384 freno=- trabado=10
+15188	cuadro	pos=59.32 calce=59 scroll=384 freno=- trabado=10
+15206	cuadro	pos=59.32 calce=59 scroll=384 freno=- trabado=10
+15222	cuadro	pos=59.32 calce=59 scroll=384 freno=- trabado=10
+15229	llegada	parcial nativo=15228 audio=15104 leido=15217 procesado=15228 rms=0.0026 relevos=1
+15229	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una
+15230	calce	token 59: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una
+15243	cuadro	pos=59.32 calce=59 scroll=384 freno=- trabado=10
+15254	cuadro	pos=59.32 calce=59 scroll=384 freno=- trabado=10
+15261	llegada	parcial nativo=15259 audio=15144 leido=15252 procesado=15259 rms=0.0001 relevos=1
+15261	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15261	calce	token 60: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15281	cuadro	pos=59.44 calce=60 scroll=384 freno=- trabado=10
+15299	cuadro	pos=59.51 calce=60 scroll=384 freno=- trabado=10
+15304	cuadro	pos=59.53 calce=60 scroll=384 freno=- trabado=10
+15322	cuadro	pos=59.60 calce=60 scroll=384 freno=- trabado=10
+15338	cuadro	pos=59.67 calce=60 scroll=384 freno=- trabado=10
+15354	cuadro	pos=59.73 calce=60 scroll=384 freno=- trabado=10
+15356	llegada	parcial nativo=15354 audio=15244 leido=15352 procesado=15353 rms=0.0001 relevos=1
+15356	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15357	calce	token 60: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15374	cuadro	pos=60.05 calce=60 scroll=384 freno=- trabado=10
+15388	cuadro	pos=60.09 calce=60 scroll=384 freno=- trabado=10
+15404	cuadro	pos=60.13 calce=60 scroll=384 freno=- trabado=10
+15421	cuadro	pos=60.18 calce=60 scroll=384 freno=- trabado=10
+15437	cuadro	pos=60.23 calce=60 scroll=384 freno=- trabado=10
+15453	cuadro	pos=60.27 calce=60 scroll=384 freno=- trabado=10
+15460	llegada	parcial nativo=15458 audio=15344 leido=15452 procesado=15458 rms=0.0001 relevos=1
+15460	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15460	calce	token 60: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15476	cuadro	pos=60.29 calce=60 scroll=384 freno=- trabado=10
+15487	cuadro	pos=60.29 calce=60 scroll=384 freno=- trabado=10
+15503	cuadro	pos=60.29 calce=60 scroll=384 freno=- trabado=10
+15520	cuadro	pos=60.29 calce=60 scroll=384 freno=- trabado=10
+15536	cuadro	pos=60.29 calce=60 scroll=384 freno=- trabado=10
+15553	cuadro	pos=60.29 calce=60 scroll=384 freno=- trabado=10
+15563	llegada	parcial nativo=15561 audio=15444 leido=15553 procesado=15560 rms=0.0001 relevos=1
+15563	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15563	calce	token 60: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15593	cuadro	pos=60.29 calce=60 scroll=384 freno=- trabado=10
+15595	cuadro	pos=60.29 calce=60 scroll=384 freno=- trabado=10
+15602	cuadro	pos=60.29 calce=60 scroll=384 freno=- trabado=10
+15619	cuadro	pos=60.29 calce=60 scroll=384 freno=- trabado=10
+15637	cuadro	pos=60.29 calce=60 scroll=384 freno=- trabado=10
+15652	cuadro	pos=60.29 calce=60 scroll=384 freno=- trabado=10
+15656	llegada	parcial nativo=15655 audio=15544 leido=15654 procesado=15655 rms=0.0001 relevos=1
+15656	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15657	calce	token 60: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15675	cuadro	pos=60.29 calce=60 scroll=384 freno=- trabado=10
+15686	cuadro	pos=60.29 calce=60 scroll=391 freno=- trabado=11
+15702	cuadro	pos=60.29 calce=60 scroll=400 freno=- trabado=11
+15719	cuadro	pos=60.29 calce=60 scroll=407 freno=- trabado=11
+15737	cuadro	pos=60.29 calce=60 scroll=413 freno=- trabado=11
+15754	cuadro	pos=60.29 calce=60 scroll=417 freno=- trabado=11
+15761	llegada	parcial nativo=15760 audio=15644 leido=15751 procesado=15759 rms=0.0001 relevos=1
+15761	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15762	calce	token 60: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15778	cuadro	pos=60.30 calce=60 scroll=422 freno=- trabado=11
+15785	cuadro	pos=60.30 calce=60 scroll=423 freno=- trabado=11
+15802	cuadro	pos=60.30 calce=60 scroll=425 freno=- trabado=11
+15820	cuadro	pos=60.30 calce=60 scroll=427 freno=- trabado=11
+15835	cuadro	pos=60.30 calce=60 scroll=428 freno=- trabado=11
+15852	cuadro	pos=60.30 calce=60 scroll=429 freno=- trabado=11
+15862	llegada	parcial nativo=15859 audio=15744 leido=15850 procesado=15859 rms=0.0005 relevos=1
+15862	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15863	calce	token 60: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15891	cuadro	pos=60.30 calce=60 scroll=431 freno=- trabado=11
+15892	cuadro	pos=60.30 calce=60 scroll=431 freno=- trabado=11
+15902	cuadro	pos=60.30 calce=60 scroll=431 freno=- trabado=11
+15918	cuadro	pos=60.30 calce=60 scroll=431 freno=- trabado=11
+15935	cuadro	pos=60.30 calce=60 scroll=432 freno=- trabado=11
+15951	cuadro	pos=60.30 calce=60 scroll=432 freno=- trabado=11
+15955	llegada	parcial nativo=15954 audio=15844 leido=15952 procesado=15954 rms=0.0004 relevos=1
+15955	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15955	calce	token 60: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+15974	cuadro	pos=60.30 calce=60 scroll=432 freno=- trabado=11
+15984	cuadro	pos=60.30 calce=60 scroll=432 freno=- trabado=11
+16001	cuadro	pos=60.30 calce=60 scroll=433 freno=- trabado=11
+16017	cuadro	pos=60.30 calce=60 scroll=433 freno=- trabado=11
+16035	cuadro	pos=60.30 calce=60 scroll=433 freno=- trabado=11
+16050	cuadro	pos=60.30 calce=60 scroll=433 freno=- trabado=11
+16068	cuadro	pos=60.32 calce=60 scroll=433 freno=- trabado=11
+16071	llegada	parcial nativo=16069 audio=15944 leido=16053 procesado=16069 rms=0.0001 relevos=1
+16071	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+16071	calce	token 60: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+16099	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16100	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16117	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16134	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16152	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16168	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16174	llegada	parcial nativo=16171 audio=16044 leido=16156 procesado=16171 rms=0.0001 relevos=1
+16175	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+16175	calce	token 60: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+16194	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16200	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16217	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16234	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16250	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16255	llegada	parcial nativo=16253 audio=16144 leido=16252 procesado=16253 rms=0.0001 relevos=1
+16255	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+16256	calce	token 60: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+16283	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16284	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16299	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16317	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16335	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16350	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16366	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16367	llegada	parcial nativo=16365 audio=16244 leido=16352 procesado=16365 rms=0.0001 relevos=1
+16367	oyo	parcial: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+16368	calce	token 60: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poema se llama si me hubieras por dentro es una obra
+16432	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16450	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16451	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16452	llegada	FINAL nativo=16430 audio=16304 leido=16414 procesado=16430 rms=0.0003 relevos=1
+16452	palabras	FINAL: en@306-456 con@456-636 ellos@636-1146 coser@1206-1591 ellos@1691-2166 coser@2226-2585 la@2585-2676 ral@2683-2946 de@2946-3120 no@3156-3306 canta@3306-3816 habla@3936-4356 en@5166-5313 el@5317-5406 más@5406-5586 largo@5620-6005 son@6096-6276 cuatro@6276-6576 minutos@6576-7026 de@7056-7176 un@7176-7266 hombre@7266-7656 de@7716-7866 treinta@7866-8166 y@8166-8196 uno@8196-8375 años@8375-8676 recitando@9156-9756 un@9756-9816 poema@9816-10266 este@10716-10956 poemas@10956-11313 se@11313-11436 llama@11436-11826 si@12096-12306 me@12306-12426 hubieras@12426-12696 por@12704-12876 dentro@12876-13326 es@14016-14286 una@14436-14706 obra@14706-15126
+16452	oyo	FINAL: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas se llama si me hubieras por dentro es una obra
+16452	calce	token 60: en con ellos coser ellos coser la ral de no canta habla en el más largo son cuatro minutos de un hombre de treinta y uno años recitando un poema este poemas se llama si me hubieras por dentro es una obra
+16453	llegada	parcial nativo=16435 audio=16324 leido=16433 procesado=16435 rms=0.0001 relevos=1
+16471	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16483	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16498	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16515	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16531	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16548	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16549	llegada	parcial nativo=16546 audio=16424 leido=16533 procesado=16546 rms=0.0001 relevos=1
+16564	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16594	cuadro	pos=60.33 calce=60 scroll=433 freno=- trabado=11
+16600	cuadro	pos=60.34 calce=60 scroll=433 freno=- trabado=11
+16614	cuadro	pos=60.37 calce=60 scroll=433 freno=- trabado=11
+16631	cuadro	pos=60.41 calce=60 scroll=433 freno=- trabado=11
+16640	llegada	parcial nativo=16639 audio=16524 leido=16634 procesado=16639 rms=0.0001 relevos=1
+16649	cuadro	pos=60.45 calce=60 scroll=433 freno=- trabado=11
+16664	cuadro	pos=60.48 calce=60 scroll=433 freno=- trabado=11
+16681	cuadro	pos=60.52 calce=60 scroll=433 freno=- trabado=11
+16698	cuadro	pos=60.56 calce=60 scroll=433 freno=- trabado=11
+16714	cuadro	pos=60.60 calce=60 scroll=433 freno=- trabado=11
+16731	cuadro	pos=60.64 calce=60 scroll=433 freno=- trabado=11
+16737	llegada	parcial nativo=16734 audio=16624 leido=16733 procesado=16734 rms=0.0002 relevos=1
+16747	cuadro	pos=60.68 calce=60 scroll=433 freno=- trabado=11
+16764	cuadro	pos=60.71 calce=60 scroll=433 freno=- trabado=11
+16781	cuadro	pos=60.75 calce=60 scroll=433 freno=- trabado=11
+16797	cuadro	pos=60.79 calce=60 scroll=433 freno=- trabado=11
+16817	cuadro	pos=60.84 calce=60 scroll=433 freno=- trabado=11
+16832	cuadro	pos=60.87 calce=60 scroll=433 freno=- trabado=11
+16848	cuadro	pos=60.91 calce=60 scroll=433 freno=- trabado=11
+16853	llegada	parcial nativo=16847 audio=16724 leido=16835 procesado=16847 rms=0.0001 relevos=1
+16863	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+16880	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+16897	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+16917	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+16931	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+16949	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+16952	llegada	parcial nativo=16950 audio=16824 leido=16936 procesado=16950 rms=0.0003 relevos=1
+16963	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+16981	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+16996	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17014	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17030	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17036	llegada	parcial nativo=17035 audio=16924 leido=17034 procesado=17035 rms=0.0001 relevos=1
+17048	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17062	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17082	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17096	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17114	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17131	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17146	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17150	llegada	parcial nativo=17147 audio=17024 leido=17136 procesado=17147 rms=0.0001 relevos=1
+17163	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17180	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17196	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17215	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17230	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17249	llegada	parcial nativo=17243 audio=17124 leido=17236 procesado=17243 rms=0.0001 relevos=1
+17250	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17261	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17287	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17294	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17314	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17356	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17357	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17358	llegada	parcial nativo=17333 audio=17224 leido=17332 procesado=17333 rms=0.0001 relevos=1
+17360	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17377	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17393	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17411	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17426	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17444	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17448	llegada	parcial nativo=17441 audio=17324 leido=17433 procesado=17441 rms=0.0010 relevos=1
+17460	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17480	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17493	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17510	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17526	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17543	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17559	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17577	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17592	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17609	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17625	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17646	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17660	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17676	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17693	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17702	llegada	parcial nativo=17701 audio=17424 leido=17696 procesado=17701 rms=0.0008 relevos=1
+17710	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17726	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17743	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11
+17758	cuadro	pos=60.92 calce=60 scroll=433 freno=- trabado=11

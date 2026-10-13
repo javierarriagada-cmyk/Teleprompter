@@ -17,7 +17,8 @@
     "play": "node scripts/play.mjs",
     "licencias": "node scripts/licencias.mjs",
     "ficha": "node scripts/ficha.mjs",
-    "calidad": "node scripts/calidad.mjs"
+    "calidad": "node scripts/calidad.mjs",
+    "banco": "vite-node scripts/banco-motor.ts"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.1",

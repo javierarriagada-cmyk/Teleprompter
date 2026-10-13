@@ -1,0 +1,1442 @@
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: 1b30bd7e-f315-454c-ba89-3402c0af318b
+# inicio del video (epoch ms): 1791083414102
+# motor de voz: nativo
+# letra: 24 px, sans
+# columna: completa, margen 5%
+# donde lees: arriba
+# idioma: es
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Si me vieras por dentro — Larralde
+# | En 1969 sale un disco que se llama Hombre. Doce cortes: cinco milongas, tres canciones. Y en cuatro de ellos José Larralde no canta. Habla.
+# | En el más largo, son cuatro minutos de un hombre de treinta y un años recitando un poema, este poema Se llama “Si me vieras por dentro”. Es una obra
+# | Un hombre le pide a alguien que lo mire. No le pide compañía. No le pide perdón. Le pide una respuesta. Quiere que el otro le diga por qué existe, cuál es su razón de ser.
+# | Es un pedido raro, extraño. La filosofía se pasa la vida dándole vueltas. Y en el fondo, en distintos momentos, lo hacemos todos: al que nos quiere le pasamos la pelota, le pasamos la pregunta sobre lo que no podemos contestar solos —por qué estoy aquí— con la esperanza de que desde afuera se vea mejor. Larralde escribe esa esperanza y después la desarma entera, sin rencor.. en la mayoria de Nosotros, cuando no nos ven, inventamos el rencor: “tú no me entiendes”, no me comprendes. no soy yo el que de un mo u otro encajo o me adapto o no, eres tú 
+# | Si me vieras por dentro / Seguro hallarías el porqué que yo no encuentro
+# | si me vieras por dentro seguro hallarás el por que, El orden. Primero está la certeza de que el otro lo va a encontrar y después viene la confesión de que él no puede. No dice que no tiene un porqué. Dice que no lo encuentra. La diferencia: existe algo ahí, está adentro, pero el dueño de casa no da con él.
+# | y es por que Somos el peor testigo de nuestra propia vida, por estar demasiado cerca y por tener intereses. tenemos la esperanza de que Cualquiera que nos quiera un poco vera con facilidad cosas nuestras que podemos negar hace veinte años.
+# | Sartre lo dice a su manera: no somos una cosa terminada. Somos también lo que los otros hacen de nosotros con su mirada, cuando me miras, me construyes
+# | Larralde no lo dice como queja. Lo dice como quien pide ayuda para encontrar. Porque hay cosas de uno que sólo existen cuando alguien más las nombra.
+# | 2. Ese porqué que me empuja y mantiene mis raíces frescas / Aunque mi cerebro piense que están secas
+# | Ese por que que mantiene raices frescas, aunque mi cerebro piense que estan secas. Acá se parte en dos. Hay algo que lo empuja y le mantiene las raíces con agua, lo mantiene bien, y hay un cerebro convencido de que esas raíces están secas. Y esas dos esferas son él.
+# | Eso desarma una idea que damos por hecha: que uno sabe cómo está. El diagnóstico que hacemos sobre nosotros mismos puede estar equivocado, pero podemos seguir igual, sostenidos por algo que no controlamos y que ni siquiera reconocemos.
+# | No es menor que desconfíe del cerebro. El cerebro no es un juez imparcial. Se calibró durante millones de años para un mundo que ya no existe: el animal que se acerca, el invierno que nos alcanza, el grupo de treinta personas desde donde ser expulsado era morirse. y quedan reminiscencias, recuerdos… al mirar el fuego, el mar; personalmente pienso que me gusta pescar por que es la excusa perfecta para mirar el mar y el rio, y esta explicacion me gusta mucho por que justicia por que soy tan mal pescador, voolviendo al tema  la tarea del cerebro siempre fue Anticipar la desgracia, y el que anticipaba mal no dejaba nietos, se extingue.
+# | . La evolución trabaja en decenas de miles de años; nuestras circunstancias se dieron vuelta en dos siglos, algunas en veinte años. en terminos biologicos, la realidad que esta planteando es que existe un desajuste, y larralde lo identifica.
+# | 3. Mi tallo partido desde hace siglos, desde ayer / Desde este mismo momento, desde siempre
+# | Cuatro tiempos para una sola herida.
+# | Siglos. Ayer. Este mismo momento. Siempre.
+# | Una herida con fecha se puede tratar: uno dice me pasó tal cosa, tal año, y a partir de ahí hay un antes y un después, hay un culpable, hay un proceso. Larralde le saca la fecha, y al sacársela deja de ser un episodio y pasa a ser una condición. El orden: va de lo más lejano a lo más cercano y termina en el ahora. No está diciendo que se partió alguna vez. Dice que se está partiendo mientras habla. Por eso “siempre” no cierra la serie: la condena. Nombra una herida que no va a encontrar la forma de terminar.
+# | 4. Mi niña juventud, mi vejez niña, mi vieja niñez.
+# | No habla de tres edades: habla de una vida donde las edades dejaron de respetar el orden. La juventud aparece como niña porque conserva una fragilidad que no se fue; la vejez, como niña, porque hay cansancios que también desamparan.
+# | Y “mi vieja niñez” se puede leer de dos maneras, entre otras mas geniales,. Una: la niñez es vieja para quienes aprendieron demasiado temprano lo que no les correspondía saber. Otra: los niños todavía están cerca del porqué. Preguntan sin vergüenza, insisten, desarman lo que para nosotros ya parece natural. Después crecemos, nos llenamos de explicaciones, y un día dejamos de preguntar. dejamos de hinchar las pelotas, No porque hayamos entendido más. Porque nos acostumbramos a vivir entre respuestas ajenas.
+# | 5. Porque aunque mi existencia sea un accidente, tengo razón de ser / El hecho de haber nacido encierra una verdad
+# | Heidegger dice que somos arrojados al mundo: nadie nos pidió permiso para nacer y sin embargo la vida es nuestra responsabilidad. Sartre lleva eso hasta el final: la existencia antes que la esencia. No venimos con un para qué, y el para qué nos lo tenemos que fabricar. Larralde acepta la primera parte y se sale de la segunda.
+# | Sí, es un accidente, o puede serlo. No estaba escrito, podría no haber existido. Pero no dice que va a inventarse una razón: dice que la tiene, que el hecho de haber nacido ya encierra una verdad, esté él o no esté para poder descifrarla.
+# | Es una posición más incómoda que la de los otros dos. El que inventa su sentido, al menos manda. El que no tiene ninguno, al menos tiene que estar en paz con eso, porque también es una decisión. El ateo y el creyente son dos tipos de creyentes: alcanzan verdades. Larralde queda en el peor lugar: hay un sentido, es suyo, pero no puede leerlo.
+# | 6. Yo mismo soy savia de un tronco partido que no cicatriza / Porque transmite desde hace siglos
+# | El tronco no cierra. Y no cierra por una razón: está transmitiendo. Si cicatrizara, se cortaría el paso. Pienso en todo lo que nos dijeron sobre esto. Sanar. Cerrar procesos. Dar vuelta la página. Superar. Mindfulness. Una herida abierta, en el vocabulario con el que vivimos, es una tarea pendiente, algo que no resolvimos, una falla nuestra.
+# | Larralde dice lo contrario, y lo dice sin levantar la voz: la herida abierta es el conducto. Por ahí pasa la savia. Cerrarla no sería sanar. Sería dejar de dar.
+# | Y hay algo más duro. Un tronco partido que transmite no está transmitiendo su dolor, como podria decirlo el gran novelista de Freud: está transmitiendo vida a través de su dolor. La grieta no es lo que entrega. Es por donde entrega. Todo el que crió a un hijo sabe esto sin haberlo pensado. Lo que uno le pasa a un hijo no sale de la parte sana. No viene de lo que aprendimos felices en vacaciones. Viene de lo que aprendimos del dolor, de las dificultades, de la frustración.
+# | 7. Pero no puede ser, porque vos sos también una verdad / Desde el corazón de tu médula
+# | Acá se da vuelta el poema entero.
+# | Venía pidiendo que lo miraran por dentro, y en una línea retira el pedido. No lo retira porque el otro sea indiferente, ni porque no lo quiera lo suficiente, ni por que no lo sepa entender: lo retira porque el otro también está lleno, y esta lleno con su verdad.
+# | Lévinas se pasó la vida en esto: el otro no es un pedazo de mi mundo. Es alguien que me desborda. Larralde llega ahí por otro camino y en menos palabras, mucho mas contundente. No me puedes ver por dentro porque tú también tienes un adentro, y está ocupado, y de hecho tampoco lo conoces. No me conozco yo. Qué te voy a conocer a ti.
+# | 8. Por eso no podrás, porque sos verdad tuya / Porque en tu verdad no cabe mi verdad
+# | Escucha bien lo que no está diciendo. No dice que no lo entienden, o  que esté solo. No hay reproche
+# | Está describiendo una estructura. “No me entiendes” es una queja, y una queja se puede reparar pidiendo más esfuerzo. “No cabe” es otra cosa: es una medida, y contra una medida no hay voluntad que sirva. Es más triste y es más tranquilo.
+# | Humberto Maturana lo decía con palabras de biólogo: entre dos sistemas vivos no existe la interacción instructiva. Yo no puedo determinar lo que pasa dentro de ti. Lo único que puedo hacer es gatillar algo que después lo decide tu estructura, no la mía. No, es que por que tu hiciste esto… x. no, no, es que estaba borracho. entonces a comprobar, todos los borrachos tienen esa conducta?, no, entonces eres tu, no el alcohol, tan vilipendiado
+# | ya que hablamos de Maturana: La autopoiesis, como sabemos si algo esta vivo o esta muerto?, por que el organismo que esta vivo, se sigue regenerando en forma autonoma, no dependiente.
+# | 9. Porque en tu corazón cabe mi corazón como alimento a tu amor / En cambio, la verdad no se alimenta con verdad ajena
+# | Separa dos cosas que vivimos juntas y confundimos siempre. Al amor sí lo puedo alimentar: mi corazón entra en el tuyo, te doy tiempo, cuerpo, presencia, compañía. Todo eso pasa de una persona a otra. Puede cuidar, sostener, acompañar, dañar.
+# | A tu verdad no.
+# | Porque amar no es absorber al otro ni convertirse en su explicación definitiva. El otro puede darme alimento, pero no puede vivir por mí; puede reconocer mi herida, pero no terminar de saber qué significa. Puede hacer más habitable mi mundo, pero no ocupar mi lugar dentro de él.
+# | Y esa distinción se lleva puesta, denuevo a freud, pero tambien la promesa más repetida: “me completas”, “sin ti no soy nada”, “encontré mi otra mitad”. Larralde no rebaja el amor: lo salva de esa exigencia imposible. Lo que se puede dar es alimento; lo que nadie puede entregar es sustancia. Nos sostenemos. No nos constituimos.
+# | Por eso no habla desde el desengaño ni desde la distancia. Está midiendo. Está constatando que dos corazones pueden caber uno en otro sin dejar de ser dos.
+# | 10. Porque no acaba, porque es siempre / Y siempre soy yo, y vos sos nunca
+# | Acá hace algo con el idioma que hay que mirar de cerca.
+# | Siempre y nunca son palabras de tiempo. Uno las usa para decir cuándo pasa algo. Larralde las saca de ahí y las convierte en nombres de personas. Yo soy siempre. Tú eres nunca. Deja de hablar de cuándo se encuentran y pasa a decir que están hechos de tiempos distintos.
+# | Cualquiera que haya vivido con otro conoce esto: lo que para mí es urgente para ti puede esperar, lo que para ti es definitivo para mí es una etapa, y en consecuencia no estamos discutiendo el mismo tema en el mismo momento aunque lo parezca. Y ninguno de los dos está mal. Simplemente no somos el mismo reloj.
+# | 11. Y así marchamos juntos por un camino de préstamos de verdades mentidas / Y corazones devorados por amor sin retorno
+# | Préstamos de verdades mentidas. aqui se fue a la puta madre y tenemos que ir despacio con esas tres palabras, porque cada una está haciendo un trabajo distinto.
+# | Empecemos por la primera, préstamo. Uno presta lo que tiene, no se puede prestar lo que no se tiene, y lo prestado, además, se devuelve. Ahora la segunda: no dice mentiras, dice verdades mentidas, y eso es otra cosa. Mentida no es un sustantivo: es algo que le pasó a la verdad. Alguien la agarró entera y la entregó incompleta.
+# | Eso deja fuera la intención. El que habla quiere decir la verdad, y por eso son verdades y no mentiras. Está entregando lo que cree que tiene, lo que puede entregar. La falla no está en la voluntad. Está en él.
+# | Y acá vuelve todo el poema sobre sí mismo. Larralde empezó diciendo que no encuentra su propio porqué, que hay una verdad adentro suyo y él no da con ella. Entonces, cuando le entrega su verdad a otro, ¿qué le está entregando? Le está prestando algo sobre lo que él mismo no tiene completa claridad. Está pagando con una moneda que no terminó de saber su valor. Eso es ser carente. No mentiroso. Carente.
+# | Y reconocerlo cambia dónde ponemos la culpa. La lectura cómoda de las mentiras de una pareja siempre tiene un culpable enfrente: el que ocultó, el que no se animó, el que dijo lo que convenía. Larralde no reparte esa carta. Dice marchamos. Los dos. Los dos vamos apenas prestando lo que no terminamos de entender, y los dos recibiendo eso mismo, convencidos de haber entregado y recibido algo entero.
+# | No hay un villano. Hay dos personas haciéndose entrega de sus carencias y llamándole a eso conocerse.
+# | 12. Y sin embargo / Y sin embargo yo soy tu verdad y vos la mía
+# | Lo dice dos veces. Y sin embargo. Y sin embargo.
+# | Se pasó el poema entero demostrando que no se puede, y acá lo afirma igual. por que No es una contradicción. Una cosa es que me entiendas y otra distinta es que yo sea tu verdad.
+# | Se puede ser la verdad de alguien que no nos entiende. De hecho es lo más común que hay. La imposibilidad no es del vínculo. Es de la comprensión.
+# | 13. Sigo creyendo en mi Dios
+# | Y termina ahí.
+# | Después de mostrar, de demostrar que nadie puede verlo por dentro, dice esto. Suena a cierre religioso de campo. al canto a lo divino, No lo creo.
+# | Todo empezó con un pedido: que alguien lo mirara por dentro y le dijera el porqué. Larralde demostró, uno por uno, que ninguna persona puede hacerlo. Ni la que lo ama. Ni la que camina a su lado. Ninguna, y no por falta de ganas, sino por estructura. que hacemos? Queda un solo destinatario posible. No porque Dios venga a completar lo que el amor no pudo. No dice “creo en Dios”. Dice “creo en mi Dios”. No es una doctrina. Es un vínculo personal. Quizá la última intimidad que le queda cuando admite que ni él ni los demás pueden descifrarlo.
+# | El poema no termina en una respuesta. Termina con una fidelidad: la fidelidad a la pregunta. así como socrates.  Después de comprobar que el amor no puede poseer la verdad del otro, Larralde se niega a aceptar que la verdad sea definitivamente inaccesible. Sigue creyendo que hay una mirada capaz de sostenerla. Porque Dios, para la tradición mística, no es lo contrario del misterio: es su nombre más profundo, mas hondo. No aquello que termina de explicarlo todo, sino aquello que impide que todo pueda ser explicado. Lo sagrado visto como un misterio que a la vez sobrecoge y atrae, y excede el lenguaje y la comprension. Y eso es lo que Larralde parece conservar: La certeza de que el porqué no es una pregunta pequeña ni abandonada en el vacío, aunque no tenga respuesta.
+# ---------------------------------------------
+
+ms	tipo	detalle
+28	renglones	0 6 14 18 23 29 31 38 46 52 59 61 69 76 82 90 97 103 109 116 121 127 132 138 145 151 156 161 168 173 179 184 193 201 207 213 214 220 226 233 240 247 254 260 266 273 276 284 290 295 300 306 311 316 318 325 330 337 343 346 353 359 365 370 373 380 384 390 391 397 402 409 417 423 429 435 442 448 455 460 464 468 474 479 480 486 493 497 503 511 517 523 529 531 537 542 549 558 563 571 576 581 587 593 594 600 604 609 615 620 626 632 639 644 647 652 653 658 659 665 673 683 690 697 704 712 721 728 734 740 746 752 759 762 769 772 779 785 791 796 803 808 811 812 820 825 832 835 840 845 850 854 860 864 870 875 881 885 890 892 898 905 911 912 916 922 929 933 940 946 954 960 967 971 978 984 991 997 1004 1012 1016 1022 1031 1038 1044 1050 1058 1064 1068 1076 1081 1089 1094 1098 1106 1111 1116 1123 1128 1133 1138 1144 1151 1155 1162 1169 1177 1183 1185 1192 1197 1201 1207 1212 1221 1227 1236 1243 1252 1258 1262 1268 1274 1275 1283 1288 1292 1299 1305 1312 1319 1325 1333 1339 1346 1349 1357 1365 1370 1377 1382 1388 1394 1401 1406 1414 1415 1422 1428 1432 1438 1444 1451 1452 1456 1463 1468 1473 1480 1486 1494 1495 1500 1505 1510 1515 1522 1529 1535 1543 1551 1556 1560 1565 1571 1572 1578 1583 1591 1597 1601 1603 1610 1616 1623 1626 1632 1638 1643 1650 1654 1661 1665 1666 1670 1677 1682 1687 1693 1699 1705 1710 1716 1719 1725 1731 1735 1741 1746 1754 1759 1766 1771 1775 1781 1786 1790 1795 1803 1809 1817 1818 1826 1830 1836 1842 1848 1856 1862 1869 1876 1880 1886 1893 1899 1907 1913 1918 1924 1931 1936 1938 1945 1950 1954 1958 1962 1970 1976 1982 1986 1990 1996 2004 2010 2016 2021 2029 2037 2044 2046 2053 2060 2066 2072 2079 2087 2095 2099 2105 2112 2119 2127 2132 2140 2144 2151 2158 2161 2165 2170 2176 2181 2189 2196 2202 2208 2213 2219 2223 2229 2230 2237 2241 2246 2247 2255 2262 2270 2272 2277 2283 2291 2297 2304 2308 2315 2323 2328 2334 2337 2343 2346 2351 2357 2364 2372 2373 2379 2386 2391 2397 2405 2413 2420 2425 2430 2437 2444 2452 2457 2462 2469 2475 2481 2485 2491 2496 2502 2508 2516 2519 2525 2531 2537 2543 2548 2554 2560 2565 2572 2578 2585 2591 2599 2603 2609
+28	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+29	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+37	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+52	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+70	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+87	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+103	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+120	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+137	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+153	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+170	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+186	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+202	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+219	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+236	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+253	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+268	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+286	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+302	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+318	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+328	oido	inicio=-2676 trozo=320 ruta=/data/user/0/com.sigoteleprompter.app/files/oido/1791083411427.pcm
+328	llegada	parcial nativo=327 audio=-56 leido=321 procesado=327 rms=0.0029 relevos=0
+335	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+352	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+369	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+386	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+402	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+417	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+436	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+452	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+469	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+486	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+502	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+518	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+535	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+551	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+571	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+585	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+602	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+617	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+635	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+651	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+668	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+684	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+701	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+717	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+735	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+749	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+766	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+784	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+801	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+816	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+833	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+849	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+857	llegada	parcial nativo=855 audio=44 leido=847 procesado=855 rms=0.0002 relevos=0
+867	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+882	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+899	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+916	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+932	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+949	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+951	llegada	parcial nativo=949 audio=144 leido=948 procesado=949 rms=0.0015 relevos=0
+965	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+982	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+999	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1015	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1032	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1048	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1067	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1069	llegada	parcial nativo=1064 audio=244 leido=1059 procesado=1064 rms=0.1069 relevos=0
+1081	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1099	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1114	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1132	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1148	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1158	llegada	parcial nativo=1156 audio=344 leido=1149 procesado=1156 rms=0.2344 relevos=0
+1167	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1180	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1198	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1215	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1231	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1247	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1264	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1281	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1299	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1313	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1331	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1347	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1363	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1364	llegada	parcial nativo=1362 audio=444 leido=1362 procesado=1362 rms=0.2282 relevos=0
+1380	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1397	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1414	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1431	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1446	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1463	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1480	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1497	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1513	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1530	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1546	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1551	llegada	parcial nativo=1550 audio=544 leido=1540 procesado=1550 rms=0.2130 relevos=0
+1563	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1580	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1596	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1612	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1619	llegada	parcial nativo=1617 audio=584 leido=1581 procesado=1617 rms=0.0004 relevos=0
+1619	oyo	parcial: sí
+1620	calce	NO CALZO: sí
+1629	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1657	llegada	parcial nativo=1633 audio=604 leido=1616 procesado=1633 rms=0.0013 relevos=0
+1657	oyo	parcial: si me
+1658	calce	token 1: si me
+1658	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1679	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1694	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1698	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1712	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1723	llegada	parcial nativo=1714 audio=704 leido=1697 procesado=1714 rms=0.0077 relevos=0
+1723	oyo	parcial: si me
+1723	calce	token 1: si me
+1752	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1753	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1761	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1778	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1794	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1800	llegada	parcial nativo=1799 audio=804 leido=1798 procesado=1799 rms=0.0107 relevos=0
+1800	oyo	parcial: si me
+1801	calce	token 1: si me
+1817	cuadro	pos=0.08 calce=1 scroll=16 freno=- trabado=0
+1842	cuadro	pos=0.33 calce=1 scroll=16 freno=- trabado=0
+1848	cuadro	pos=0.35 calce=1 scroll=16 freno=- trabado=0
+1860	cuadro	pos=0.39 calce=1 scroll=16 freno=- trabado=0
+1877	cuadro	pos=0.45 calce=1 scroll=16 freno=- trabado=0
+1894	cuadro	pos=0.51 calce=1 scroll=16 freno=- trabado=0
+1910	llegada	parcial nativo=1909 audio=904 leido=1896 procesado=1909 rms=0.0120 relevos=0
+1910	oyo	parcial: si me
+1910	calce	token 1: si me
+1911	cuadro	pos=0.57 calce=1 scroll=16 freno=- trabado=0
+1931	cuadro	pos=1.05 calce=1 scroll=16 freno=- trabado=0
+1944	cuadro	pos=1.09 calce=1 scroll=16 freno=- trabado=0
+1960	cuadro	pos=1.12 calce=1 scroll=16 freno=- trabado=0
+1977	cuadro	pos=1.17 calce=1 scroll=16 freno=- trabado=0
+1994	cuadro	pos=1.21 calce=1 scroll=16 freno=- trabado=0
+2013	cuadro	pos=1.26 calce=1 scroll=16 freno=- trabado=0
+2018	llegada	parcial nativo=2017 audio=1004 leido=2000 procesado=2017 rms=0.0090 relevos=0
+2018	oyo	parcial: si me
+2018	calce	token 1: si me
+2034	cuadro	pos=1.27 calce=1 scroll=16 freno=- trabado=0
+2038	llegada	parcial nativo=2034 audio=1024 leido=2019 procesado=2033 rms=0.0010 relevos=0
+2038	oyo	parcial: si me por
+2038	calce	NO CALZO: si me por
+2042	cuadro	pos=1.27 calce=1 scroll=16 freno=- trabado=0
+2059	cuadro	pos=1.27 calce=1 scroll=16 freno=- trabado=0
+2077	cuadro	pos=1.27 calce=1 scroll=16 freno=- trabado=0
+2093	cuadro	pos=1.27 calce=1 scroll=16 freno=- trabado=0
+2108	llegada	parcial nativo=2105 audio=1084 leido=2083 procesado=2105 rms=0.0011 relevos=0
+2108	oyo	parcial: si me por dentro
+2108	calce	NO CALZO: si me por dentro
+2109	cuadro	pos=1.27 calce=1 scroll=16 freno=- trabado=0
+2125	cuadro	pos=1.27 calce=1 scroll=16 freno=- trabado=0
+2145	cuadro	pos=1.32 calce=1 scroll=16 freno=- trabado=0
+2159	cuadro	pos=1.35 calce=1 scroll=16 freno=- trabado=0
+2175	cuadro	pos=1.39 calce=1 scroll=16 freno=- trabado=0
+2188	llegada	parcial nativo=2187 audio=1184 leido=2180 procesado=2187 rms=0.0027 relevos=0
+2188	oyo	parcial: si me por dentro
+2188	calce	NO CALZO: si me por dentro
+2192	cuadro	pos=1.43 calce=1 scroll=16 freno=- trabado=0
+2209	cuadro	pos=1.48 calce=1 scroll=16 freno=- trabado=0
+2226	cuadro	pos=1.52 calce=1 scroll=16 freno=- trabado=0
+2245	cuadro	pos=1.57 calce=1 scroll=16 freno=- trabado=0
+2259	cuadro	pos=1.60 calce=1 scroll=16 freno=- trabado=0
+2279	cuadro	pos=1.65 calce=1 scroll=16 freno=- trabado=0
+2292	cuadro	pos=1.68 calce=1 scroll=16 freno=- trabado=0
+2303	llegada	parcial nativo=2301 audio=1284 leido=2300 procesado=2301 rms=0.0004 relevos=0
+2303	oyo	parcial: si me por dentro
+2303	calce	NO CALZO: si me por dentro
+2309	cuadro	pos=1.73 calce=1 scroll=16 freno=- trabado=0
+2325	cuadro	pos=1.77 calce=1 scroll=16 freno=- trabado=0
+2345	cuadro	pos=1.81 calce=1 scroll=16 freno=- trabado=0
+2359	cuadro	pos=1.85 calce=1 scroll=16 freno=- trabado=0
+2375	cuadro	pos=1.89 calce=1 scroll=16 freno=- trabado=0
+2386	llegada	parcial nativo=2385 audio=1374 leido=2384 procesado=2385 rms=0.0018 relevos=1
+2386	oyo	parcial: si me por dentro
+2386	calce	NO CALZO: si me por dentro
+2391	cuadro	pos=1.93 calce=1 scroll=16 freno=- trabado=0
+2409	cuadro	pos=1.98 calce=1 scroll=16 freno=- trabado=0
+2413	llegada	parcial nativo=2409 audio=1474 leido=2402 procesado=2409 rms=0.0004 relevos=1
+2413	oyo	parcial: si me por dentro
+2413	calce	NO CALZO: si me por dentro
+2424	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2429	llegada	parcial nativo=2427 audio=1574 leido=2423 procesado=2427 rms=0.0077 relevos=1
+2429	oyo	parcial: si me por dentro
+2429	calce	NO CALZO: si me por dentro
+2441	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2445	llegada	parcial nativo=2443 audio=1674 leido=2443 procesado=2443 rms=0.0081 relevos=1
+2445	oyo	parcial: si me por dentro
+2446	calce	NO CALZO: si me por dentro
+2458	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2468	llegada	parcial nativo=2467 audio=1774 leido=2462 procesado=2467 rms=0.0120 relevos=1
+2468	oyo	parcial: si me por dentro por
+2470	calce	NO CALZO: si me por dentro por
+2475	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2491	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2508	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2515	llegada	parcial nativo=2514 audio=1874 leido=2501 procesado=2514 rms=0.0111 relevos=1
+2515	oyo	parcial: si me por dentro por
+2515	calce	NO CALZO: si me por dentro por
+2524	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2535	llegada	parcial nativo=2534 audio=1974 leido=2533 procesado=2534 rms=0.0011 relevos=1
+2535	oyo	parcial: si me por dentro por
+2535	calce	NO CALZO: si me por dentro por
+2545	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2548	llegada	parcial nativo=2542 audio=1994 leido=2533 procesado=2542 rms=0.0011 relevos=1
+2548	oyo	parcial: si me por dentro por dentro
+2548	calce	NO CALZO: si me por dentro por dentro
+2557	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2573	llegada	parcial nativo=2567 audio=2094 leido=2567 procesado=2567 rms=0.0027 relevos=1
+2573	oyo	parcial: si me por dentro por dentro
+2573	calce	NO CALZO: si me por dentro por dentro
+2574	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2591	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2608	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2623	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2627	llegada	parcial nativo=2625 audio=2194 leido=2611 procesado=2625 rms=0.0005 relevos=1
+2627	oyo	parcial: si me por dentro por dentro
+2627	calce	NO CALZO: si me por dentro por dentro
+2641	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2645	llegada	parcial nativo=2641 audio=2294 leido=2635 procesado=2641 rms=0.0018 relevos=1
+2645	oyo	parcial: si me por dentro por dentro
+2646	calce	NO CALZO: si me por dentro por dentro
+2657	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2661	llegada	parcial nativo=2660 audio=2394 leido=2660 procesado=2660 rms=0.0138 relevos=1
+2661	oyo	parcial: si me por dentro por dentro
+2661	calce	NO CALZO: si me por dentro por dentro
+2676	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2690	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2696	llegada	parcial nativo=2695 audio=2494 leido=2688 procesado=2695 rms=0.0153 relevos=1
+2696	oyo	parcial: si me por dentro por dentro
+2696	calce	NO CALZO: si me por dentro por dentro
+2707	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2722	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2725	llegada	parcial nativo=2722 audio=2594 leido=2712 procesado=2722 rms=0.0135 relevos=1
+2725	oyo	parcial: si me por dentro por dentro
+2725	calce	NO CALZO: si me por dentro por dentro
+2730	llegada	parcial nativo=2729 audio=2614 leido=2722 procesado=2729 rms=0.0210 relevos=1
+2730	oyo	parcial: si me por dentro por dentro la
+2730	calce	NO CALZO: si me por dentro por dentro la
+2740	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2757	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2772	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2790	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2807	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2823	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2833	llegada	parcial nativo=2831 audio=2714 leido=2819 procesado=2831 rms=0.0341 relevos=1
+2833	oyo	parcial: si me por dentro por dentro la
+2834	calce	NO CALZO: si me por dentro por dentro la
+2840	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2857	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2873	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2889	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2907	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2922	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2924	llegada	parcial nativo=2922 audio=2814 leido=2921 procesado=2922 rms=0.0077 relevos=1
+2925	oyo	parcial: si me por dentro por dentro la
+2926	calce	NO CALZO: si me por dentro por dentro la
+2943	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2955	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2974	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2989	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3006	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3022	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3041	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3047	llegada	parcial nativo=3045 audio=2914 leido=3018 procesado=3045 rms=0.0037 relevos=1
+3047	oyo	parcial: si me por dentro por dentro la
+3048	calce	NO CALZO: si me por dentro por dentro la
+3055	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3074	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3088	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3107	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3121	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3139	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3147	llegada	parcial nativo=3145 audio=3014 leido=3116 procesado=3145 rms=0.0010 relevos=1
+3147	oyo	parcial: si me por dentro por dentro la ral
+3148	calce	NO CALZO: si me por dentro por dentro la ral
+3154	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3155	llegada	parcial nativo=3153 audio=3034 leido=3145 procesado=3153 rms=0.0004 relevos=1
+3156	oyo	parcial: si me por dentro por dentro la rural
+3158	calce	NO CALZO: si me por dentro por dentro la rural
+3172	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3187	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3208	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3220	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3222	llegada	parcial nativo=3219 audio=3094 leido=3204 procesado=3219 rms=0.0013 relevos=1
+3222	oyo	parcial: si me por dentro por dentro la rural de
+3223	calce	NO CALZO: si me por dentro por dentro la rural de
+3241	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3254	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3271	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3287	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3304	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3320	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3325	llegada	parcial nativo=3324 audio=3194 leido=3300 procesado=3324 rms=0.0002 relevos=1
+3325	oyo	parcial: si me por dentro por dentro la rural de
+3327	calce	NO CALZO: si me por dentro por dentro la rural de
+3339	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3353	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3371	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3386	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3409	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3411	llegada	parcial nativo=3403 audio=3294 leido=3399 procesado=3403 rms=0.0010 relevos=1
+3411	oyo	parcial: si me por dentro por dentro la rural de
+3411	calce	NO CALZO: si me por dentro por dentro la rural de
+3420	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3437	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3452	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3473	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3485	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3503	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3508	llegada	parcial nativo=3507 audio=3394 leido=3495 procesado=3507 rms=0.0011 relevos=1
+3508	oyo	parcial: si me por dentro por dentro la rural de
+3508	calce	NO CALZO: si me por dentro por dentro la rural de
+3518	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3538	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3552	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3569	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3586	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3605	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3618	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3623	llegada	parcial nativo=3621 audio=3494 leido=3601 procesado=3621 rms=0.0079 relevos=1
+3623	oyo	parcial: si me por dentro por dentro la rural de
+3623	calce	NO CALZO: si me por dentro por dentro la rural de
+3641	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3651	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3668	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3685	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3704	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3707	llegada	parcial nativo=3706 audio=3594 leido=3702 procesado=3706 rms=0.0003 relevos=1
+3707	oyo	parcial: si me por dentro por dentro la rural de
+3708	calce	NO CALZO: si me por dentro por dentro la rural de
+3719	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3735	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3751	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3769	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3785	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3804	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3816	llegada	parcial nativo=3814 audio=3694 leido=3802 procesado=3814 rms=0.0026 relevos=1
+3816	oyo	parcial: si me por dentro por dentro la rural de
+3817	calce	NO CALZO: si me por dentro por dentro la rural de
+3818	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3837	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3850	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3867	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3884	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3902	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3915	llegada	parcial nativo=3912 audio=3794 leido=3900 procesado=3912 rms=0.0169 relevos=1
+3915	oyo	parcial: si me por dentro por dentro la rural de
+3916	calce	NO CALZO: si me por dentro por dentro la rural de
+3917	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3934	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3950	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3967	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3983	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4000	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4010	llegada	parcial nativo=4000 audio=3894 leido=3998 procesado=4000 rms=0.0865 relevos=1
+4010	oyo	parcial: si me por dentro por dentro la rural de
+4011	calce	NO CALZO: si me por dentro por dentro la rural de
+4016	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4033	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4049	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4067	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4083	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4099	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4115	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4133	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4149	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4165	llegada	parcial nativo=4163 audio=3994 leido=4104 procesado=4163 rms=0.1148 relevos=1
+4165	oyo	parcial: si me por dentro por dentro la rural de
+4166	calce	NO CALZO: si me por dentro por dentro la rural de
+4167	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4182	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4199	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4215	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4219	llegada	parcial nativo=4217 audio=4094 leido=4200 procesado=4217 rms=0.0984 relevos=1
+4219	oyo	parcial: si me por dentro por dentro la rural de
+4222	calce	NO CALZO: si me por dentro por dentro la rural de
+4232	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4250	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4266	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4282	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4298	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4310	llegada	parcial nativo=4309 audio=4194 leido=4309 procesado=4308 rms=0.0148 relevos=1
+4310	oyo	parcial: si me por dentro por dentro la rural de
+4312	calce	NO CALZO: si me por dentro por dentro la rural de
+4316	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4332	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4347	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4365	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4383	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4398	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4415	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4431	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4447	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4451	llegada	parcial nativo=4448 audio=4294 leido=4418 procesado=4449 rms=0.0333 relevos=1
+4451	oyo	parcial: si me por dentro por dentro la rural de
+4454	calce	NO CALZO: si me por dentro por dentro la rural de
+4464	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4481	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4497	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4514	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4531	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4567	llegada	parcial nativo=4530 audio=4394 leido=4516 procesado=4530 rms=0.0110 relevos=1
+4567	oyo	parcial: si me por dentro por dentro la rural de mil novecientos
+4567	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos
+4567	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4571	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4600	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4619	llegada	parcial nativo=4599 audio=4494 leido=4598 procesado=4599 rms=0.0067 relevos=1
+4619	oyo	parcial: si me por dentro por dentro la rural de mil novecientos
+4619	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos
+4620	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4629	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4646	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4663	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4679	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4696	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4708	llegada	parcial nativo=4705 audio=4594 leido=4694 procesado=4705 rms=0.0115 relevos=1
+4708	oyo	parcial: si me por dentro por dentro la rural de mil novecientos
+4709	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos
+4712	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4730	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4746	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4769	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4782	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4796	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4812	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4814	llegada	parcial nativo=4812 audio=4694 leido=4799 procesado=4812 rms=0.0065 relevos=1
+4814	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta
+4815	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta
+4830	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4845	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4862	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4879	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4895	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4909	llegada	parcial nativo=4903 audio=4794 leido=4902 procesado=4903 rms=0.0233 relevos=1
+4909	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta
+4910	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta
+4912	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4929	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4944	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4962	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4978	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4996	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5010	llegada	parcial nativo=5008 audio=4894 leido=4998 procesado=5008 rms=0.0522 relevos=1
+5010	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y
+5011	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y
+5011	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5028	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5045	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5062	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5078	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5095	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5111	llegada	parcial nativo=5108 audio=4994 leido=5097 procesado=5108 rms=0.0569 relevos=1
+5111	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5115	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5116	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5128	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5147	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5162	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5177	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5194	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5200	llegada	parcial nativo=5198 audio=5094 leido=5197 procesado=5198 rms=0.0392 relevos=1
+5200	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5201	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5210	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5227	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5244	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5260	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5276	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5294	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5307	llegada	parcial nativo=5304 audio=5194 leido=5296 procesado=5304 rms=0.0058 relevos=1
+5307	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5308	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5309	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5328	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5343	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5361	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5376	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5394	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5408	llegada	parcial nativo=5407 audio=5294 leido=5398 procesado=5407 rms=0.0009 relevos=1
+5408	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5411	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5411	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5426	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5444	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5461	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5476	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5493	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5502	llegada	parcial nativo=5498 audio=5394 leido=5497 procesado=5498 rms=0.0085 relevos=1
+5502	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5504	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5509	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5526	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5543	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5559	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5575	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5592	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5611	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5616	llegada	parcial nativo=5614 audio=5494 leido=5599 procesado=5614 rms=0.0355 relevos=1
+5616	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5618	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5625	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5645	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5658	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5675	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5691	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5710	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5712	llegada	parcial nativo=5710 audio=5594 leido=5699 procesado=5710 rms=0.0423 relevos=1
+5712	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5715	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5724	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5742	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5760	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5774	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5791	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5806	llegada	parcial nativo=5800 audio=5694 leido=5798 procesado=5800 rms=0.0584 relevos=1
+5806	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5808	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5809	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5825	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5843	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5857	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5875	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5890	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5908	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5910	llegada	parcial nativo=5907 audio=5794 leido=5896 procesado=5906 rms=0.0328 relevos=1
+5910	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5912	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+5924	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5943	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5958	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5974	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5990	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6006	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6015	llegada	parcial nativo=6014 audio=5894 leido=5997 procesado=6014 rms=0.0372 relevos=1
+6015	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+6017	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve
+6023	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6029	llegada	parcial nativo=6028 audio=5914 leido=6017 procesado=6028 rms=0.0009 relevos=1
+6029	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve salón
+6030	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve salón
+6040	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6056	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6073	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6089	llegada	parcial nativo=6087 audio=5974 leido=6079 procesado=6087 rms=0.0003 relevos=1
+6089	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un
+6090	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un
+6091	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6108	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6122	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6140	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6156	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6175	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6189	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6205	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6208	llegada	parcial nativo=6200 audio=6074 leido=6180 procesado=6200 rms=0.0201 relevos=1
+6208	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un
+6209	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un
+6222	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6241	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6255	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6271	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6280	llegada	parcial nativo=6279 audio=6174 leido=6278 procesado=6279 rms=0.0429 relevos=1
+6280	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un
+6281	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un
+6289	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6306	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6323	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6339	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6356	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6372	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6388	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6405	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6407	llegada	parcial nativo=6405 audio=6274 leido=6379 procesado=6405 rms=0.0034 relevos=1
+6407	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+6409	calce	token 10: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+6429	cuadro	pos=2.76 calce=10 scroll=16 freno=- trabado=0
+6457	cuadro	pos=4.49 calce=10 scroll=16 freno=- trabado=0
+6459	cuadro	pos=4.50 calce=10 scroll=16 freno=- trabado=0
+6484	cuadro	pos=4.68 calce=10 scroll=16 freno=- trabado=0
+6489	cuadro	pos=4.73 calce=10 scroll=16 freno=- trabado=0
+6492	llegada	parcial nativo=6490 audio=6374 leido=6479 procesado=6490 rms=0.0030 relevos=1
+6492	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+6493	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+6506	cuadro	pos=4.86 calce=10 scroll=16 freno=- trabado=0
+6529	cuadro	pos=5.02 calce=10 scroll=16 freno=- trabado=0
+6539	cuadro	pos=5.10 calce=10 scroll=16 freno=- trabado=0
+6553	cuadro	pos=5.21 calce=10 scroll=16 freno=- trabado=0
+6573	cuadro	pos=5.35 calce=10 scroll=16 freno=- trabado=0
+6580	llegada	parcial nativo=6579 audio=6474 leido=6577 procesado=6579 rms=0.0158 relevos=1
+6580	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+6580	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+6586	cuadro	pos=5.46 calce=10 scroll=16 freno=- trabado=0
+6604	cuadro	pos=5.59 calce=10 scroll=16 freno=- trabado=0
+6620	cuadro	pos=5.71 calce=10 scroll=16 freno=- trabado=0
+6637	cuadro	pos=5.84 calce=10 scroll=16 freno=- trabado=0
+6652	cuadro	pos=5.95 calce=10 scroll=16 freno=- trabado=0
+6672	cuadro	pos=6.10 calce=10 scroll=28 freno=- trabado=1
+6684	llegada	parcial nativo=6683 audio=6574 leido=6675 procesado=6683 rms=0.0126 relevos=1
+6684	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+6685	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco
+6686	cuadro	pos=6.20 calce=10 scroll=35 freno=- trabado=1
+6703	cuadro	pos=6.33 calce=10 scroll=41 freno=- trabado=1
+6719	cuadro	pos=6.45 calce=10 scroll=46 freno=- trabado=1
+6730	llegada	parcial nativo=6729 audio=6614 leido=6719 procesado=6729 rms=0.0115 relevos=1
+6730	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que
+6730	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que
+6737	cuadro	pos=6.58 calce=10 scroll=50 freno=- trabado=1
+6752	cuadro	pos=6.70 calce=10 scroll=53 freno=- trabado=1
+6770	cuadro	pos=6.83 calce=10 scroll=56 freno=- trabado=1
+6785	cuadro	pos=6.95 calce=10 scroll=58 freno=- trabado=1
+6803	cuadro	pos=7.08 calce=10 scroll=59 freno=- trabado=1
+6819	cuadro	pos=7.20 calce=10 scroll=60 freno=- trabado=1
+6822	llegada	parcial nativo=6817 audio=6714 leido=6816 procesado=6817 rms=0.0420 relevos=1
+6822	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que
+6822	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que
+6840	cuadro	pos=7.36 calce=10 scroll=62 freno=- trabado=1
+6851	cuadro	pos=7.44 calce=10 scroll=62 freno=- trabado=1
+6869	cuadro	pos=7.57 calce=10 scroll=63 freno=- trabado=1
+6885	cuadro	pos=7.69 calce=10 scroll=63 freno=- trabado=1
+6905	cuadro	pos=7.85 calce=10 scroll=64 freno=- trabado=1
+6919	cuadro	pos=7.95 calce=10 scroll=64 freno=- trabado=1
+6940	llegada	parcial nativo=6924 audio=6814 leido=6915 procesado=6924 rms=0.0643 relevos=1
+6940	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que
+6940	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que
+6941	cuadro	pos=8.11 calce=10 scroll=64 freno=- trabado=1
+6965	cuadro	pos=8.29 calce=10 scroll=64 freno=- trabado=1
+6971	cuadro	pos=8.33 calce=10 scroll=64 freno=- trabado=1
+6984	cuadro	pos=8.43 calce=10 scroll=65 freno=- trabado=1
+7004	cuadro	pos=8.56 calce=10 scroll=65 freno=- trabado=1
+7017	cuadro	pos=8.65 calce=10 scroll=65 freno=- trabado=1
+7036	cuadro	pos=8.77 calce=10 scroll=65 freno=- trabado=1
+7050	cuadro	pos=8.86 calce=10 scroll=65 freno=- trabado=1
+7059	llegada	parcial nativo=7058 audio=6914 leido=7018 procesado=7058 rms=0.0339 relevos=1
+7059	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que
+7059	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que
+7069	cuadro	pos=8.97 calce=10 scroll=65 freno=- trabado=1
+7082	llegada	parcial nativo=7081 audio=6934 leido=7059 procesado=7081 rms=0.0252 relevos=1
+7082	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que si
+7082	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que si
+7084	cuadro	pos=9.06 calce=10 scroll=65 freno=- trabado=1
+7103	cuadro	pos=9.17 calce=10 scroll=65 freno=- trabado=1
+7113	llegada	parcial nativo=7112 audio=6994 leido=7097 procesado=7112 rms=0.0200 relevos=1
+7113	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7113	calce	token 13: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7128	cuadro	pos=10.35 calce=13 scroll=65 freno=- trabado=1
+7145	cuadro	pos=10.48 calce=13 scroll=65 freno=- trabado=1
+7150	cuadro	pos=10.51 calce=13 scroll=65 freno=- trabado=1
+7171	cuadro	pos=10.65 calce=13 scroll=65 freno=- trabado=1
+7183	cuadro	pos=10.74 calce=13 scroll=65 freno=- trabado=1
+7204	cuadro	pos=10.87 calce=13 scroll=65 freno=- trabado=1
+7213	llegada	parcial nativo=7211 audio=7094 leido=7199 procesado=7211 rms=0.0004 relevos=1
+7213	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7214	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7216	cuadro	pos=10.95 calce=13 scroll=65 freno=- trabado=1
+7234	cuadro	pos=11.07 calce=13 scroll=65 freno=- trabado=1
+7249	cuadro	pos=11.16 calce=13 scroll=65 freno=- trabado=1
+7269	cuadro	pos=11.28 calce=13 scroll=65 freno=- trabado=1
+7283	cuadro	pos=11.37 calce=13 scroll=65 freno=- trabado=1
+7303	cuadro	pos=11.49 calce=13 scroll=65 freno=- trabado=1
+7306	llegada	parcial nativo=7298 audio=7194 leido=7296 procesado=7298 rms=0.0367 relevos=1
+7306	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7307	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7315	cuadro	pos=11.56 calce=13 scroll=65 freno=- trabado=1
+7333	cuadro	pos=11.67 calce=13 scroll=65 freno=- trabado=1
+7349	cuadro	pos=11.76 calce=13 scroll=65 freno=- trabado=1
+7368	cuadro	pos=11.87 calce=13 scroll=73 freno=- trabado=2
+7382	cuadro	pos=11.94 calce=13 scroll=78 freno=- trabado=2
+7403	cuadro	pos=12.06 calce=13 scroll=83 freno=- trabado=2
+7425	llegada	parcial nativo=7409 audio=7294 leido=7400 procesado=7409 rms=0.0731 relevos=1
+7425	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7426	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7426	cuadro	pos=12.18 calce=13 scroll=88 freno=- trabado=2
+7433	cuadro	pos=12.22 calce=13 scroll=89 freno=- trabado=2
+7448	cuadro	pos=12.30 calce=13 scroll=91 freno=- trabado=2
+7468	cuadro	pos=12.39 calce=13 scroll=93 freno=- trabado=2
+7482	cuadro	pos=12.47 calce=13 scroll=94 freno=- trabado=2
+7500	cuadro	pos=12.56 calce=13 scroll=95 freno=- trabado=2
+7508	llegada	parcial nativo=7506 audio=7394 leido=7496 procesado=7506 rms=0.0262 relevos=1
+7508	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7508	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7515	cuadro	pos=12.63 calce=13 scroll=96 freno=- trabado=2
+7532	cuadro	pos=12.71 calce=13 scroll=97 freno=- trabado=2
+7548	cuadro	pos=12.79 calce=13 scroll=97 freno=- trabado=2
+7568	cuadro	pos=12.88 calce=13 scroll=98 freno=- trabado=2
+7582	cuadro	pos=12.94 calce=13 scroll=98 freno=- trabado=2
+7601	cuadro	pos=13.02 calce=13 scroll=98 freno=- trabado=2
+7606	llegada	parcial nativo=7601 audio=7494 leido=7598 procesado=7601 rms=0.0058 relevos=1
+7606	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7606	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7614	cuadro	pos=13.07 calce=13 scroll=98 freno=- trabado=2
+7631	cuadro	pos=13.14 calce=13 scroll=98 freno=- trabado=2
+7647	cuadro	pos=13.21 calce=13 scroll=99 freno=- trabado=2
+7664	cuadro	pos=13.27 calce=13 scroll=99 freno=- trabado=2
+7682	cuadro	pos=13.34 calce=13 scroll=99 freno=- trabado=2
+7704	cuadro	pos=13.41 calce=13 scroll=99 freno=- trabado=2
+7714	cuadro	pos=13.45 calce=13 scroll=99 freno=- trabado=2
+7727	llegada	parcial nativo=7726 audio=7594 leido=7714 procesado=7726 rms=0.0007 relevos=1
+7727	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7727	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7730	cuadro	pos=13.51 calce=13 scroll=99 freno=- trabado=2
+7747	cuadro	pos=13.56 calce=13 scroll=99 freno=- trabado=2
+7763	cuadro	pos=13.61 calce=13 scroll=99 freno=- trabado=2
+7780	cuadro	pos=13.67 calce=13 scroll=99 freno=- trabado=2
+7797	cuadro	pos=13.72 calce=13 scroll=99 freno=- trabado=2
+7808	llegada	parcial nativo=7807 audio=7694 leido=7798 procesado=7807 rms=0.0003 relevos=1
+7808	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7808	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama
+7813	cuadro	pos=13.77 calce=13 scroll=99 freno=- trabado=2
+7830	cuadro	pos=13.81 calce=13 scroll=99 freno=- trabado=2
+7846	cuadro	pos=13.86 calce=13 scroll=99 freno=- trabado=2
+7865	cuadro	pos=13.91 calce=13 scroll=99 freno=- trabado=2
+7876	llegada	parcial nativo=7873 audio=7754 leido=7860 procesado=7873 rms=0.0002 relevos=1
+7876	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+7876	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+7880	cuadro	pos=13.95 calce=13 scroll=99 freno=- trabado=2
+7896	cuadro	pos=13.99 calce=13 scroll=99 freno=- trabado=2
+7918	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7929	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7951	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7959	llegada	parcial nativo=7957 audio=7854 leido=7955 procesado=7957 rms=0.0005 relevos=1
+7959	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+7959	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+7962	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7980	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+7997	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8012	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8029	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8045	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8063	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8073	llegada	parcial nativo=8069 audio=7954 leido=8059 procesado=8069 rms=0.0024 relevos=1
+8073	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8073	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8079	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8095	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8111	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8129	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8145	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8162	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8170	llegada	parcial nativo=8166 audio=8054 leido=8158 procesado=8166 rms=0.0029 relevos=1
+8170	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8170	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8179	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8200	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8211	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8228	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8245	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8267	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8270	llegada	parcial nativo=8261 audio=8154 leido=8259 procesado=8261 rms=0.0011 relevos=1
+8270	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8270	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8278	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8295	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8311	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8329	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8345	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8362	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8378	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8381	llegada	parcial nativo=8376 audio=8254 leido=8366 procesado=8376 rms=0.1123 relevos=1
+8381	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8381	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8395	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8410	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8427	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8443	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8461	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8478	llegada	parcial nativo=8474 audio=8354 leido=8460 procesado=8473 rms=0.0478 relevos=1
+8478	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8479	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8480	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8495	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8510	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8527	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8543	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8561	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8567	llegada	parcial nativo=8562 audio=8454 leido=8561 procesado=8562 rms=0.1414 relevos=1
+8567	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8571	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre
+8576	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8593	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8609	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8626	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8644	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8661	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8675	llegada	parcial nativo=8673 audio=8554 leido=8660 procesado=8673 rms=0.1314 relevos=1
+8675	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+8675	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+8676	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8693	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8709	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8726	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8742	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8760	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8772	llegada	parcial nativo=8771 audio=8654 leido=8757 procesado=8771 rms=0.0664 relevos=1
+8772	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+8772	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+8781	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8792	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8808	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8826	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8842	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8860	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8875	llegada	parcial nativo=8866 audio=8754 leido=8863 procesado=8866 rms=0.0038 relevos=1
+8875	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+8875	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+8876	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8892	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8908	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8925	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8945	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8959	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8972	llegada	parcial nativo=8969 audio=8854 leido=8959 procesado=8969 rms=0.0053 relevos=1
+8972	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+8973	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+8974	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+8992	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9007	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9028	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9041	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9058	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9074	llegada	parcial nativo=9071 audio=8954 leido=9059 procesado=9071 rms=0.0036 relevos=1
+9074	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+9074	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+9074	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9091	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9107	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9125	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9141	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9158	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9162	llegada	parcial nativo=9159 audio=9054 leido=9158 procesado=9159 rms=0.0017 relevos=1
+9162	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+9162	calce	NO CALZO: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce
+9173	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9190	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9206	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9224	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9241	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9257	cuadro	pos=14.00 calce=13 scroll=99 freno=- trabado=2
+9261	llegada	parcial nativo=9258 audio=9134 leido=9238 procesado=9258 rms=0.0076 relevos=1
+9261	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9262	calce	token 16: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9289	cuadro	pos=14.22 calce=16 scroll=99 freno=- trabado=2
+9290	cuadro	pos=14.22 calce=16 scroll=99 freno=- trabado=2
+9305	cuadro	pos=14.28 calce=16 scroll=99 freno=- trabado=2
+9323	cuadro	pos=14.35 calce=16 scroll=99 freno=- trabado=2
+9339	cuadro	pos=14.42 calce=16 scroll=99 freno=- trabado=2
+9342	llegada	parcial nativo=9341 audio=9234 leido=9340 procesado=9341 rms=0.0773 relevos=1
+9342	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9343	calce	token 16: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9358	cuadro	pos=15.08 calce=16 scroll=99 freno=- trabado=2
+9372	cuadro	pos=15.15 calce=16 scroll=99 freno=- trabado=2
+9388	cuadro	pos=15.22 calce=16 scroll=99 freno=- trabado=2
+9406	cuadro	pos=15.29 calce=16 scroll=99 freno=- trabado=2
+9422	cuadro	pos=15.35 calce=16 scroll=99 freno=- trabado=2
+9438	cuadro	pos=15.41 calce=16 scroll=99 freno=- trabado=2
+9446	llegada	parcial nativo=9445 audio=9334 leido=9439 procesado=9445 rms=0.0670 relevos=1
+9446	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9449	calce	token 16: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9474	cuadro	pos=16.07 calce=16 scroll=99 freno=- trabado=2
+9478	cuadro	pos=16.08 calce=16 scroll=99 freno=- trabado=2
+9488	cuadro	pos=16.10 calce=16 scroll=99 freno=- trabado=2
+9506	cuadro	pos=16.14 calce=16 scroll=99 freno=- trabado=2
+9521	cuadro	pos=16.18 calce=16 scroll=99 freno=- trabado=2
+9537	cuadro	pos=16.22 calce=16 scroll=99 freno=- trabado=2
+9550	llegada	parcial nativo=9549 audio=9434 leido=9543 procesado=9549 rms=0.1177 relevos=1
+9550	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9551	calce	token 16: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9568	cuadro	pos=16.25 calce=16 scroll=99 freno=- trabado=2
+9573	cuadro	pos=16.25 calce=16 scroll=99 freno=- trabado=2
+9587	cuadro	pos=16.25 calce=16 scroll=99 freno=- trabado=2
+9604	cuadro	pos=16.25 calce=16 scroll=99 freno=- trabado=2
+9620	cuadro	pos=16.25 calce=16 scroll=99 freno=- trabado=2
+9638	cuadro	pos=16.25 calce=16 scroll=99 freno=- trabado=2
+9645	llegada	parcial nativo=9643 audio=9534 leido=9641 procesado=9643 rms=0.1267 relevos=1
+9645	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9645	calce	token 16: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés
+9658	cuadro	pos=16.25 calce=16 scroll=99 freno=- trabado=2
+9671	cuadro	pos=16.25 calce=16 scroll=99 freno=- trabado=2
+9684	llegada	parcial nativo=9683 audio=9574 leido=9675 procesado=9683 rms=0.0523 relevos=1
+9684	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+9685	calce	token 17: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+9708	cuadro	pos=17.00 calce=17 scroll=99 freno=- trabado=2
+9711	cuadro	pos=17.01 calce=17 scroll=99 freno=- trabado=2
+9721	cuadro	pos=17.04 calce=17 scroll=99 freno=- trabado=2
+9737	cuadro	pos=17.09 calce=17 scroll=99 freno=- trabado=2
+9753	cuadro	pos=17.13 calce=17 scroll=99 freno=- trabado=2
+9773	cuadro	pos=17.18 calce=17 scroll=99 freno=- trabado=2
+9783	llegada	parcial nativo=9782 audio=9674 leido=9776 procesado=9782 rms=0.0640 relevos=1
+9783	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+9784	calce	token 17: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+9798	cuadro	pos=17.20 calce=17 scroll=99 freno=- trabado=2
+9805	cuadro	pos=17.20 calce=17 scroll=99 freno=- trabado=2
+9820	cuadro	pos=17.20 calce=17 scroll=99 freno=- trabado=2
+9836	cuadro	pos=17.20 calce=17 scroll=99 freno=- trabado=2
+9853	cuadro	pos=17.20 calce=17 scroll=99 freno=- trabado=2
+9868	llegada	parcial nativo=9866 audio=9754 leido=9858 procesado=9866 rms=0.0307 relevos=1
+9868	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil
+9869	calce	token 18: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil
+9883	cuadro	pos=17.70 calce=18 scroll=111 freno=- trabado=3
+9886	cuadro	pos=17.70 calce=18 scroll=112 freno=- trabado=3
+9903	cuadro	pos=17.75 calce=18 scroll=116 freno=- trabado=3
+9920	cuadro	pos=17.80 calce=18 scroll=119 freno=- trabado=3
+9938	cuadro	pos=17.84 calce=18 scroll=122 freno=- trabado=3
+9952	cuadro	pos=17.88 calce=18 scroll=124 freno=- trabado=3
+9968	llegada	parcial nativo=9965 audio=9854 leido=9956 procesado=9965 rms=0.0062 relevos=1
+9968	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil
+9969	calce	token 18: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil
+9969	cuadro	pos=17.92 calce=18 scroll=126 freno=- trabado=3
+9995	cuadro	pos=18.05 calce=18 scroll=128 freno=- trabado=3
+10004	llegada	parcial nativo=9986 audio=9874 leido=9978 procesado=9986 rms=0.0030 relevos=1
+10004	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil once
+10005	calce	token 19: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco mil once
+10019	cuadro	pos=19.03 calce=19 scroll=129 freno=- trabado=3
+10022	cuadro	pos=19.04 calce=19 scroll=129 freno=- trabado=3
+10054	cuadro	pos=19.10 calce=19 scroll=130 freno=- trabado=3
+10070	cuadro	pos=19.13 calce=19 scroll=131 freno=- trabado=3
+10085	llegada	parcial nativo=10084 audio=9974 leido=10077 procesado=10084 rms=0.0032 relevos=1
+10085	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+10085	calce	token 17: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco
+10086	cuadro	pos=19.17 calce=19 scroll=131 freno=- trabado=3
+10115	cuadro	pos=19.17 calce=19 scroll=131 freno=- trabado=3
+10124	cuadro	pos=19.17 calce=19 scroll=131 freno=- trabado=3
+10135	cuadro	pos=19.17 calce=19 scroll=131 freno=- trabado=3
+10143	llegada	parcial nativo=10142 audio=10034 leido=10135 procesado=10142 rms=0.0017 relevos=1
+10143	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10143	calce	token 18: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10158	cuadro	pos=19.17 calce=19 scroll=132 freno=- trabado=3
+10171	cuadro	pos=19.17 calce=19 scroll=132 freno=- trabado=3
+10185	cuadro	pos=19.17 calce=19 scroll=132 freno=- trabado=3
+10203	cuadro	pos=19.17 calce=19 scroll=132 freno=- trabado=3
+10218	cuadro	pos=19.17 calce=19 scroll=132 freno=- trabado=3
+10234	cuadro	pos=19.19 calce=19 scroll=132 freno=- trabado=3
+10239	llegada	parcial nativo=10238 audio=10134 leido=10237 procesado=10238 rms=0.0007 relevos=1
+10239	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10240	calce	token 18: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10253	cuadro	pos=19.20 calce=19 scroll=132 freno=- trabado=3
+10269	cuadro	pos=19.20 calce=19 scroll=132 freno=- trabado=3
+10284	cuadro	pos=19.20 calce=19 scroll=132 freno=- trabado=3
+10302	cuadro	pos=19.20 calce=19 scroll=132 freno=- trabado=3
+10317	cuadro	pos=19.20 calce=19 scroll=132 freno=- trabado=3
+10334	cuadro	pos=19.20 calce=19 scroll=132 freno=- trabado=3
+10350	cuadro	pos=19.23 calce=19 scroll=132 freno=- trabado=3
+10361	llegada	parcial nativo=10360 audio=10234 leido=10335 procesado=10360 rms=0.0003 relevos=1
+10361	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10362	calce	token 18: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10384	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10386	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10401	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10417	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10435	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10444	llegada	parcial nativo=10443 audio=10334 leido=10437 procesado=10443 rms=0.0017 relevos=1
+10444	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10444	calce	token 18: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10458	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10468	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10483	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10500	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10516	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10537	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10540	llegada	parcial nativo=10537 audio=10434 leido=10535 procesado=10537 rms=0.0636 relevos=1
+10540	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10541	calce	token 18: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10553	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10567	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10583	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10601	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10616	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10635	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10646	llegada	parcial nativo=10645 audio=10534 leido=10639 procesado=10645 rms=0.0120 relevos=1
+10646	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10647	calce	token 18: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10667	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10669	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10682	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10704	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10715	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10734	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10747	llegada	parcial nativo=10746 audio=10634 leido=10737 procesado=10746 rms=0.0901 relevos=1
+10747	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10748	calce	token 18: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10781	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10782	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10803	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10815	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10831	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10839	llegada	parcial nativo=10837 audio=10734 leido=10835 procesado=10837 rms=0.0096 relevos=1
+10839	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10839	calce	token 18: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas
+10855	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10865	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10869	llegada	parcial nativo=10868 audio=10754 leido=10854 procesado=10868 rms=0.0086 relevos=1
+10869	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres
+10870	calce	token 19: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres
+10883	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10900	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10915	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10932	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10948	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10965	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10970	llegada	parcial nativo=10963 audio=10854 leido=10961 procesado=10963 rms=0.0701 relevos=1
+10970	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres
+10970	calce	token 19: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres
+10993	cuadro	pos=19.25 calce=19 scroll=132 freno=- trabado=3
+10994	llegada	parcial nativo=10988 audio=10874 leido=10979 procesado=10988 rms=0.0475 relevos=1
+10994	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+10995	calce	token 20: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11011	cuadro	pos=20.04 calce=20 scroll=132 freno=- trabado=3
+11019	cuadro	pos=20.05 calce=20 scroll=132 freno=- trabado=3
+11031	cuadro	pos=20.08 calce=20 scroll=132 freno=- trabado=3
+11047	cuadro	pos=20.11 calce=20 scroll=132 freno=- trabado=3
+11063	cuadro	pos=20.15 calce=20 scroll=132 freno=- trabado=3
+11078	llegada	parcial nativo=11077 audio=10974 leido=11076 procesado=11077 rms=0.0213 relevos=1
+11078	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11079	calce	token 20: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11094	cuadro	pos=20.18 calce=20 scroll=132 freno=- trabado=3
+11101	cuadro	pos=20.18 calce=20 scroll=132 freno=- trabado=3
+11113	cuadro	pos=20.18 calce=20 scroll=132 freno=- trabado=3
+11133	cuadro	pos=20.18 calce=20 scroll=132 freno=- trabado=3
+11146	cuadro	pos=20.18 calce=20 scroll=132 freno=- trabado=3
+11164	cuadro	pos=20.18 calce=20 scroll=132 freno=- trabado=3
+11180	cuadro	pos=20.22 calce=20 scroll=132 freno=- trabado=3
+11187	llegada	parcial nativo=11186 audio=11074 leido=11176 procesado=11186 rms=0.0038 relevos=1
+11187	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11187	calce	token 20: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11210	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11213	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11233	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11246	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11263	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11280	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11287	llegada	parcial nativo=11286 audio=11174 leido=11277 procesado=11286 rms=0.0038 relevos=1
+11287	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11289	calce	token 20: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11311	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11312	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11331	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11345	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11365	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11379	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11382	llegada	parcial nativo=11381 audio=11274 leido=11378 procesado=11381 rms=0.0003 relevos=1
+11382	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11384	calce	token 20: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11412	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11414	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11430	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11445	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11464	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11478	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11489	llegada	parcial nativo=11488 audio=11374 leido=11476 procesado=11487 rms=0.0003 relevos=1
+11489	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11490	calce	token 20: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11509	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11516	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11528	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11545	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11562	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11578	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11588	llegada	parcial nativo=11587 audio=11474 leido=11580 procesado=11587 rms=0.0002 relevos=1
+11588	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11589	calce	token 20: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11609	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11610	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11628	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11644	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11661	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11678	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11681	llegada	parcial nativo=11679 audio=11574 leido=11677 procesado=11679 rms=0.0347 relevos=1
+11681	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11682	calce	token 20: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11705	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11710	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11726	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11743	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11761	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11776	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11789	llegada	parcial nativo=11787 audio=11674 leido=11778 procesado=11787 rms=0.0317 relevos=1
+11789	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11791	calce	token 20: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11815	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11816	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11827	cuadro	pos=20.23 calce=20 scroll=132 freno=- trabado=3
+11836	llegada	parcial nativo=11834 audio=11714 leido=11821 procesado=11834 rms=0.0267 relevos=1
+11836	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y
+11837	calce	token 21: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y
+11855	cuadro	pos=20.64 calce=21 scroll=132 freno=- trabado=3
+11860	cuadro	pos=20.65 calce=21 scroll=132 freno=- trabado=3
+11876	cuadro	pos=20.70 calce=21 scroll=132 freno=- trabado=3
+11893	cuadro	pos=20.75 calce=21 scroll=132 freno=- trabado=3
+11909	cuadro	pos=20.79 calce=21 scroll=132 freno=- trabado=3
+11924	llegada	parcial nativo=11923 audio=11814 leido=11921 procesado=11923 rms=0.0963 relevos=1
+11924	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y
+11925	calce	token 21: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y
+11946	cuadro	pos=21.05 calce=21 scroll=132 freno=- trabado=3
+11948	cuadro	pos=21.05 calce=21 scroll=132 freno=- trabado=3
+11950	llegada	parcial nativo=11949 audio=11834 leido=11938 procesado=11949 rms=0.0115 relevos=1
+11950	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un
+11950	calce	token 22: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un
+11974	cuadro	pos=21.92 calce=22 scroll=132 freno=- trabado=3
+11977	cuadro	pos=21.94 calce=22 scroll=132 freno=- trabado=3
+11979	llegada	parcial nativo=11975 audio=11854 leido=11956 procesado=11975 rms=0.0125 relevos=1
+11979	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+11980	calce	token 20: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones
+12006	cuadro	pos=22.03 calce=22 scroll=132 freno=- trabado=3
+12011	cuadro	pos=22.04 calce=22 scroll=132 freno=- trabado=3
+12025	cuadro	pos=22.08 calce=22 scroll=132 freno=- trabado=3
+12041	cuadro	pos=22.12 calce=22 scroll=132 freno=- trabado=3
+12058	cuadro	pos=22.16 calce=22 scroll=132 freno=- trabado=3
+12075	cuadro	pos=22.20 calce=22 scroll=132 freno=- trabado=3
+12079	llegada	parcial nativo=12074 audio=11954 leido=12059 procesado=12074 rms=0.1815 relevos=1
+12079	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y en
+12079	calce	token 22: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y en
+12095	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12108	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12124	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12131	llegada	parcial nativo=12130 audio=12014 leido=12116 procesado=12130 rms=0.1380 relevos=1
+12131	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un
+12132	calce	token 22: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un
+12152	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12157	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12174	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12191	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12207	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12219	llegada	parcial nativo=12218 audio=12114 leido=12217 procesado=12218 rms=0.1343 relevos=1
+12219	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un
+12220	calce	token 22: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un
+12243	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12246	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12261	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12274	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12290	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12308	cuadro	pos=22.21 calce=22 scroll=132 freno=- trabado=3
+12314	llegada	parcial nativo=12313 audio=12194 leido=12301 procesado=12313 rms=0.0876 relevos=1
+12314	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuadro de
+12315	calce	token 24: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuadro de
+12330	cuadro	pos=22.50 calce=24 scroll=141 freno=- trabado=4
+12340	cuadro	pos=22.54 calce=24 scroll=145 freno=- trabado=4
+12358	cuadro	pos=22.61 calce=24 scroll=149 freno=- trabado=4
+12373	cuadro	pos=22.67 calce=24 scroll=153 freno=- trabado=4
+12390	cuadro	pos=22.74 calce=24 scroll=155 freno=- trabado=4
+12406	llegada	parcial nativo=12404 audio=12294 leido=12401 procesado=12404 rms=0.0471 relevos=1
+12406	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuadro de
+12407	calce	token 24: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuadro de
+12408	cuadro	pos=22.82 calce=24 scroll=158 freno=- trabado=4
+12432	cuadro	pos=23.60 calce=24 scroll=160 freno=- trabado=4
+12440	cuadro	pos=23.63 calce=24 scroll=161 freno=- trabado=4
+12456	cuadro	pos=23.69 calce=24 scroll=162 freno=- trabado=4
+12487	cuadro	pos=23.79 calce=24 scroll=163 freno=- trabado=4
+12493	cuadro	pos=23.81 calce=24 scroll=164 freno=- trabado=4
+12507	cuadro	pos=23.86 calce=24 scroll=164 freno=- trabado=4
+12512	llegada	parcial nativo=12510 audio=12394 leido=12501 procesado=12510 rms=0.0492 relevos=1
+12512	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuadro de
+12513	calce	token 24: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuadro de
+12529	cuadro	pos=23.98 calce=24 scroll=165 freno=- trabado=4
+12547	cuadro	pos=24.02 calce=24 scroll=165 freno=- trabado=4
+12556	cuadro	pos=24.04 calce=24 scroll=165 freno=- trabado=4
+12572	cuadro	pos=24.08 calce=24 scroll=165 freno=- trabado=4
+12577	llegada	parcial nativo=12575 audio=12454 leido=12563 procesado=12575 rms=0.0383 relevos=1
+12577	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de
+12577	calce	token 24: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de
+12591	cuadro	pos=24.09 calce=24 scroll=165 freno=- trabado=4
+12605	cuadro	pos=24.09 calce=24 scroll=166 freno=- trabado=4
+12622	cuadro	pos=24.10 calce=24 scroll=166 freno=- trabado=4
+12639	cuadro	pos=24.14 calce=24 scroll=166 freno=- trabado=4
+12656	cuadro	pos=24.18 calce=24 scroll=166 freno=- trabado=4
+12672	cuadro	pos=24.22 calce=24 scroll=166 freno=- trabado=4
+12682	llegada	parcial nativo=12681 audio=12554 leido=12659 procesado=12681 rms=0.0054 relevos=1
+12682	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de
+12683	calce	token 24: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de
+12708	cuadro	pos=24.24 calce=24 scroll=166 freno=- trabado=4
+12711	llegada	parcial nativo=12688 audio=12574 leido=12682 procesado=12688 rms=0.0022 relevos=1
+12711	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+12712	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+12724	cuadro	pos=25.03 calce=25 scroll=166 freno=- trabado=4
+12727	cuadro	pos=25.04 calce=25 scroll=166 freno=- trabado=4
+12738	cuadro	pos=25.06 calce=25 scroll=166 freno=- trabado=4
+12754	cuadro	pos=25.10 calce=25 scroll=166 freno=- trabado=4
+12771	cuadro	pos=25.14 calce=25 scroll=166 freno=- trabado=4
+12785	llegada	parcial nativo=12784 audio=12674 leido=12778 procesado=12784 rms=0.0017 relevos=1
+12785	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+12786	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+12808	cuadro	pos=25.17 calce=25 scroll=166 freno=- trabado=4
+12811	cuadro	pos=25.17 calce=25 scroll=166 freno=- trabado=4
+12826	cuadro	pos=25.17 calce=25 scroll=166 freno=- trabado=4
+12838	cuadro	pos=25.17 calce=25 scroll=166 freno=- trabado=4
+12856	cuadro	pos=25.17 calce=25 scroll=166 freno=- trabado=4
+12871	cuadro	pos=25.20 calce=25 scroll=166 freno=- trabado=4
+12878	llegada	parcial nativo=12877 audio=12774 leido=12876 procesado=12877 rms=0.0007 relevos=1
+12878	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+12879	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+12892	cuadro	pos=25.22 calce=25 scroll=166 freno=- trabado=4
+12910	cuadro	pos=25.22 calce=25 scroll=166 freno=- trabado=4
+12921	cuadro	pos=25.22 calce=25 scroll=166 freno=- trabado=4
+12941	cuadro	pos=25.22 calce=25 scroll=166 freno=- trabado=4
+12954	cuadro	pos=25.22 calce=25 scroll=166 freno=- trabado=4
+12970	cuadro	pos=25.22 calce=25 scroll=166 freno=- trabado=4
+12982	llegada	parcial nativo=12980 audio=12874 leido=12974 procesado=12980 rms=0.0004 relevos=1
+12982	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+12982	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13000	cuadro	pos=25.24 calce=25 scroll=166 freno=- trabado=4
+13003	cuadro	pos=25.24 calce=25 scroll=166 freno=- trabado=4
+13020	cuadro	pos=25.24 calce=25 scroll=166 freno=- trabado=4
+13036	cuadro	pos=25.24 calce=25 scroll=166 freno=- trabado=4
+13054	cuadro	pos=25.24 calce=25 scroll=166 freno=- trabado=4
+13070	cuadro	pos=25.24 calce=25 scroll=166 freno=- trabado=4
+13086	cuadro	pos=25.24 calce=25 scroll=166 freno=- trabado=4
+13088	llegada	parcial nativo=13084 audio=12974 leido=13076 procesado=13084 rms=0.0026 relevos=1
+13088	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13088	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13113	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13120	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13136	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13153	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13170	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13186	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13187	llegada	parcial nativo=13185 audio=13074 leido=13184 procesado=13185 rms=0.0011 relevos=1
+13187	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13187	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13207	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13219	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13236	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13253	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13271	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13284	llegada	parcial nativo=13283 audio=13174 leido=13277 procesado=13283 rms=0.0002 relevos=1
+13285	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13285	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13285	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13314	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13318	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13337	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13352	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13370	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13386	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13391	llegada	parcial nativo=13389 audio=13274 leido=13378 procesado=13389 rms=0.0002 relevos=1
+13391	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13392	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13414	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13420	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13434	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13452	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13468	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13480	llegada	parcial nativo=13478 audio=13374 leido=13476 procesado=13478 rms=0.0002 relevos=1
+13480	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13481	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13504	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13505	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13569	cuadro	pos=25.25 calce=25 scroll=166 freno=- trabado=4
+13599	cuadro	pos=25.28 calce=25 scroll=166 freno=- trabado=4
+13602	cuadro	pos=25.28 calce=25 scroll=166 freno=- trabado=4
+13606	llegada	parcial nativo=13583 audio=13474 leido=13578 procesado=13583 rms=0.0002 relevos=1
+13606	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13607	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13618	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13633	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13650	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13668	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13684	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13686	llegada	parcial nativo=13684 audio=13574 leido=13677 procesado=13684 rms=0.0001 relevos=1
+13686	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13687	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13707	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13717	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13733	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13750	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13769	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13780	llegada	parcial nativo=13778 audio=13674 leido=13778 procesado=13778 rms=0.0001 relevos=1
+13781	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13781	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13808	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13809	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13816	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13835	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13849	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13867	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13883	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13883	llegada	parcial nativo=13881 audio=13774 leido=13875 procesado=13881 rms=0.0001 relevos=1
+13883	oyo	parcial: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13884	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+13903	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13916	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13932	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13950	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13966	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13982	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+13998	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+14013	llegada	FINAL nativo=14011 audio=13874 leido=13978 procesado=14011 rms=0.0001 relevos=1
+14013	palabras	FINAL: si@114-354 me@354-504 por@505-744 dentro@744-1224 por@1434-1614 dentro@1614-2094 la@2335-2454 rural@2456-2784 de@2784-2964 mil@3813-3984 novecientos@3984-4404 sesenta@4404-4734 y@4734-4764 nueve@4764-5153 sal@5334-5574 un@5586-5694 disco@5694-6204 que@6324-6444 se@6444-6624 llama@6624-7014 hombre@7104-7552 doce@8124-8424 cortés@8424-8934 cinco@9024-9444 milongas@9444-10014 tres@10284-10494 canciones@10494-11184 y@11484-11545 un@11545-11661 cuatro@11661-11964 de@11964-12114 ellos@12144-12684
+14014	oyo	FINAL: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+14014	calce	token 25: si me por dentro por dentro la rural de mil novecientos sesenta y nueve sal un disco que se llama hombre doce cortés cinco milongas tres canciones y un cuatro de ellos
+14016	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+14035	llegada	parcial nativo=14018 audio=13894 leido=14012 procesado=14018 rms=0.0001 relevos=1
+14035	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+14048	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+14068	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+14081	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+14100	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+14111	llegada	parcial nativo=14110 audio=13994 leido=14104 procesado=14110 rms=0.0004 relevos=1
+14114	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+14132	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+14149	cuadro	pos=25.30 calce=25 scroll=166 freno=- trabado=4
+14166	cuadro	pos=25.33 calce=25 scroll=166 freno=- trabado=4
+14181	cuadro	pos=25.37 calce=25 scroll=166 freno=- trabado=4
+14203	cuadro	pos=25.41 calce=25 scroll=166 freno=- trabado=4
+14206	llegada	parcial nativo=14204 audio=14094 leido=14204 procesado=14204 rms=0.0003 relevos=1
+14216	cuadro	pos=25.44 calce=25 scroll=166 freno=- trabado=4
+14232	cuadro	pos=25.48 calce=25 scroll=166 freno=- trabado=4
+14248	cuadro	pos=25.51 calce=25 scroll=166 freno=- trabado=4
+14268	cuadro	pos=25.56 calce=25 scroll=166 freno=- trabado=4
+14281	cuadro	pos=25.58 calce=25 scroll=166 freno=- trabado=4
+14305	cuadro	pos=25.64 calce=25 scroll=166 freno=- trabado=4
+14306	llegada	parcial nativo=14304 audio=14194 leido=14298 procesado=14304 rms=0.0004 relevos=1
+14314	cuadro	pos=25.66 calce=25 scroll=166 freno=- trabado=4
+14330	cuadro	pos=25.69 calce=25 scroll=166 freno=- trabado=4
+14347	cuadro	pos=25.73 calce=25 scroll=166 freno=- trabado=4
+14394	cuadro	pos=25.83 calce=25 scroll=166 freno=- trabado=4
+14396	cuadro	pos=25.84 calce=25 scroll=166 freno=- trabado=4
+14398	cuadro	pos=25.84 calce=25 scroll=166 freno=- trabado=4
+14402	llegada	parcial nativo=14400 audio=14294 leido=14395 procesado=14400 rms=0.0009 relevos=1
+14413	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14432	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14446	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14467	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14479	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14497	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14501	llegada	parcial nativo=14499 audio=14394 leido=14498 procesado=14499 rms=0.0009 relevos=1
+14531	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14533	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14546	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14563	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14581	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14596	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14605	llegada	parcial nativo=14604 audio=14494 leido=14597 procesado=14603 rms=0.0005 relevos=1
+14612	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14631	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14646	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14664	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14679	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14697	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14704	llegada	parcial nativo=14703 audio=14594 leido=14697 procesado=14703 rms=0.0005 relevos=1
+14712	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14729	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14745	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14764	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14778	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14796	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14798	llegada	parcial nativo=14797 audio=14694 leido=14797 procesado=14797 rms=0.0009 relevos=1
+14811	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14829	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14844	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14863	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14878	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14895	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14902	llegada	parcial nativo=14899 audio=14794 leido=14894 procesado=14899 rms=0.0015 relevos=1
+14910	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4
+14928	cuadro	pos=25.87 calce=25 scroll=166 freno=- trabado=4

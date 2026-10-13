@@ -1,0 +1,1885 @@
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: 58e1b5f8-7a24-48fc-9862-86cf610cd890
+# inicio del video (epoch ms): 1791083638623
+# motor de voz: nativo
+# letra: 24 px, sans
+# columna: completa, margen 5%
+# donde lees: arriba
+# idioma: es
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Si me vieras por dentro — Larralde
+# | En 1969 sale un disco que se llama Hombre. Doce cortes: cinco milongas, tres canciones. Y en cuatro de ellos José Larralde no canta. Habla.
+# | En el más largo, son cuatro minutos de un hombre de treinta y un años recitando un poema, este poema Se llama “Si me vieras por dentro”. Es una obra
+# | Un hombre le pide a alguien que lo mire. No le pide compañía. No le pide perdón. Le pide una respuesta. Quiere que el otro le diga por qué existe, cuál es su razón de ser.
+# | Es un pedido raro, extraño. La filosofía se pasa la vida dándole vueltas. Y en el fondo, en distintos momentos, lo hacemos todos: al que nos quiere le pasamos la pelota, le pasamos la pregunta sobre lo que no podemos contestar solos —por qué estoy aquí— con la esperanza de que desde afuera se vea mejor. Larralde escribe esa esperanza y después la desarma entera, sin rencor.. en la mayoria de Nosotros, cuando no nos ven, inventamos el rencor: “tú no me entiendes”, no me comprendes. no soy yo el que de un mo u otro encajo o me adapto o no, eres tú 
+# | Si me vieras por dentro / Seguro hallarías el porqué que yo no encuentro
+# | si me vieras por dentro seguro hallarás el por que, El orden. Primero está la certeza de que el otro lo va a encontrar y después viene la confesión de que él no puede. No dice que no tiene un porqué. Dice que no lo encuentra. La diferencia: existe algo ahí, está adentro, pero el dueño de casa no da con él.
+# | y es por que Somos el peor testigo de nuestra propia vida, por estar demasiado cerca y por tener intereses. tenemos la esperanza de que Cualquiera que nos quiera un poco vera con facilidad cosas nuestras que podemos negar hace veinte años.
+# | Sartre lo dice a su manera: no somos una cosa terminada. Somos también lo que los otros hacen de nosotros con su mirada, cuando me miras, me construyes
+# | Larralde no lo dice como queja. Lo dice como quien pide ayuda para encontrar. Porque hay cosas de uno que sólo existen cuando alguien más las nombra.
+# | 2. Ese porqué que me empuja y mantiene mis raíces frescas / Aunque mi cerebro piense que están secas
+# | Ese por que que mantiene raices frescas, aunque mi cerebro piense que estan secas. Acá se parte en dos. Hay algo que lo empuja y le mantiene las raíces con agua, lo mantiene bien, y hay un cerebro convencido de que esas raíces están secas. Y esas dos esferas son él.
+# | Eso desarma una idea que damos por hecha: que uno sabe cómo está. El diagnóstico que hacemos sobre nosotros mismos puede estar equivocado, pero podemos seguir igual, sostenidos por algo que no controlamos y que ni siquiera reconocemos.
+# | No es menor que desconfíe del cerebro. El cerebro no es un juez imparcial. Se calibró durante millones de años para un mundo que ya no existe: el animal que se acerca, el invierno que nos alcanza, el grupo de treinta personas desde donde ser expulsado era morirse. y quedan reminiscencias, recuerdos… al mirar el fuego, el mar; personalmente pienso que me gusta pescar por que es la excusa perfecta para mirar el mar y el rio, y esta explicacion me gusta mucho por que justicia por que soy tan mal pescador, voolviendo al tema  la tarea del cerebro siempre fue Anticipar la desgracia, y el que anticipaba mal no dejaba nietos, se extingue.
+# | . La evolución trabaja en decenas de miles de años; nuestras circunstancias se dieron vuelta en dos siglos, algunas en veinte años. en terminos biologicos, la realidad que esta planteando es que existe un desajuste, y larralde lo identifica.
+# | 3. Mi tallo partido desde hace siglos, desde ayer / Desde este mismo momento, desde siempre
+# | Cuatro tiempos para una sola herida.
+# | Siglos. Ayer. Este mismo momento. Siempre.
+# | Una herida con fecha se puede tratar: uno dice me pasó tal cosa, tal año, y a partir de ahí hay un antes y un después, hay un culpable, hay un proceso. Larralde le saca la fecha, y al sacársela deja de ser un episodio y pasa a ser una condición. El orden: va de lo más lejano a lo más cercano y termina en el ahora. No está diciendo que se partió alguna vez. Dice que se está partiendo mientras habla. Por eso “siempre” no cierra la serie: la condena. Nombra una herida que no va a encontrar la forma de terminar.
+# | 4. Mi niña juventud, mi vejez niña, mi vieja niñez.
+# | No habla de tres edades: habla de una vida donde las edades dejaron de respetar el orden. La juventud aparece como niña porque conserva una fragilidad que no se fue; la vejez, como niña, porque hay cansancios que también desamparan.
+# | Y “mi vieja niñez” se puede leer de dos maneras, entre otras mas geniales,. Una: la niñez es vieja para quienes aprendieron demasiado temprano lo que no les correspondía saber. Otra: los niños todavía están cerca del porqué. Preguntan sin vergüenza, insisten, desarman lo que para nosotros ya parece natural. Después crecemos, nos llenamos de explicaciones, y un día dejamos de preguntar. dejamos de hinchar las pelotas, No porque hayamos entendido más. Porque nos acostumbramos a vivir entre respuestas ajenas.
+# | 5. Porque aunque mi existencia sea un accidente, tengo razón de ser / El hecho de haber nacido encierra una verdad
+# | Heidegger dice que somos arrojados al mundo: nadie nos pidió permiso para nacer y sin embargo la vida es nuestra responsabilidad. Sartre lleva eso hasta el final: la existencia antes que la esencia. No venimos con un para qué, y el para qué nos lo tenemos que fabricar. Larralde acepta la primera parte y se sale de la segunda.
+# | Sí, es un accidente, o puede serlo. No estaba escrito, podría no haber existido. Pero no dice que va a inventarse una razón: dice que la tiene, que el hecho de haber nacido ya encierra una verdad, esté él o no esté para poder descifrarla.
+# | Es una posición más incómoda que la de los otros dos. El que inventa su sentido, al menos manda. El que no tiene ninguno, al menos tiene que estar en paz con eso, porque también es una decisión. El ateo y el creyente son dos tipos de creyentes: alcanzan verdades. Larralde queda en el peor lugar: hay un sentido, es suyo, pero no puede leerlo.
+# | 6. Yo mismo soy savia de un tronco partido que no cicatriza / Porque transmite desde hace siglos
+# | El tronco no cierra. Y no cierra por una razón: está transmitiendo. Si cicatrizara, se cortaría el paso. Pienso en todo lo que nos dijeron sobre esto. Sanar. Cerrar procesos. Dar vuelta la página. Superar. Mindfulness. Una herida abierta, en el vocabulario con el que vivimos, es una tarea pendiente, algo que no resolvimos, una falla nuestra.
+# | Larralde dice lo contrario, y lo dice sin levantar la voz: la herida abierta es el conducto. Por ahí pasa la savia. Cerrarla no sería sanar. Sería dejar de dar.
+# | Y hay algo más duro. Un tronco partido que transmite no está transmitiendo su dolor, como podria decirlo el gran novelista de Freud: está transmitiendo vida a través de su dolor. La grieta no es lo que entrega. Es por donde entrega. Todo el que crió a un hijo sabe esto sin haberlo pensado. Lo que uno le pasa a un hijo no sale de la parte sana. No viene de lo que aprendimos felices en vacaciones. Viene de lo que aprendimos del dolor, de las dificultades, de la frustración.
+# | 7. Pero no puede ser, porque vos sos también una verdad / Desde el corazón de tu médula
+# | Acá se da vuelta el poema entero.
+# | Venía pidiendo que lo miraran por dentro, y en una línea retira el pedido. No lo retira porque el otro sea indiferente, ni porque no lo quiera lo suficiente, ni por que no lo sepa entender: lo retira porque el otro también está lleno, y esta lleno con su verdad.
+# | Lévinas se pasó la vida en esto: el otro no es un pedazo de mi mundo. Es alguien que me desborda. Larralde llega ahí por otro camino y en menos palabras, mucho mas contundente. No me puedes ver por dentro porque tú también tienes un adentro, y está ocupado, y de hecho tampoco lo conoces. No me conozco yo. Qué te voy a conocer a ti.
+# | 8. Por eso no podrás, porque sos verdad tuya / Porque en tu verdad no cabe mi verdad
+# | Escucha bien lo que no está diciendo. No dice que no lo entienden, o  que esté solo. No hay reproche
+# | Está describiendo una estructura. “No me entiendes” es una queja, y una queja se puede reparar pidiendo más esfuerzo. “No cabe” es otra cosa: es una medida, y contra una medida no hay voluntad que sirva. Es más triste y es más tranquilo.
+# | Humberto Maturana lo decía con palabras de biólogo: entre dos sistemas vivos no existe la interacción instructiva. Yo no puedo determinar lo que pasa dentro de ti. Lo único que puedo hacer es gatillar algo que después lo decide tu estructura, no la mía. No, es que por que tu hiciste esto… x. no, no, es que estaba borracho. entonces a comprobar, todos los borrachos tienen esa conducta?, no, entonces eres tu, no el alcohol, tan vilipendiado
+# | ya que hablamos de Maturana: La autopoiesis, como sabemos si algo esta vivo o esta muerto?, por que el organismo que esta vivo, se sigue regenerando en forma autonoma, no dependiente.
+# | 9. Porque en tu corazón cabe mi corazón como alimento a tu amor / En cambio, la verdad no se alimenta con verdad ajena
+# | Separa dos cosas que vivimos juntas y confundimos siempre. Al amor sí lo puedo alimentar: mi corazón entra en el tuyo, te doy tiempo, cuerpo, presencia, compañía. Todo eso pasa de una persona a otra. Puede cuidar, sostener, acompañar, dañar.
+# | A tu verdad no.
+# | Porque amar no es absorber al otro ni convertirse en su explicación definitiva. El otro puede darme alimento, pero no puede vivir por mí; puede reconocer mi herida, pero no terminar de saber qué significa. Puede hacer más habitable mi mundo, pero no ocupar mi lugar dentro de él.
+# | Y esa distinción se lleva puesta, denuevo a freud, pero tambien la promesa más repetida: “me completas”, “sin ti no soy nada”, “encontré mi otra mitad”. Larralde no rebaja el amor: lo salva de esa exigencia imposible. Lo que se puede dar es alimento; lo que nadie puede entregar es sustancia. Nos sostenemos. No nos constituimos.
+# | Por eso no habla desde el desengaño ni desde la distancia. Está midiendo. Está constatando que dos corazones pueden caber uno en otro sin dejar de ser dos.
+# | 10. Porque no acaba, porque es siempre / Y siempre soy yo, y vos sos nunca
+# | Acá hace algo con el idioma que hay que mirar de cerca.
+# | Siempre y nunca son palabras de tiempo. Uno las usa para decir cuándo pasa algo. Larralde las saca de ahí y las convierte en nombres de personas. Yo soy siempre. Tú eres nunca. Deja de hablar de cuándo se encuentran y pasa a decir que están hechos de tiempos distintos.
+# | Cualquiera que haya vivido con otro conoce esto: lo que para mí es urgente para ti puede esperar, lo que para ti es definitivo para mí es una etapa, y en consecuencia no estamos discutiendo el mismo tema en el mismo momento aunque lo parezca. Y ninguno de los dos está mal. Simplemente no somos el mismo reloj.
+# | 11. Y así marchamos juntos por un camino de préstamos de verdades mentidas / Y corazones devorados por amor sin retorno
+# | Préstamos de verdades mentidas. aqui se fue a la puta madre y tenemos que ir despacio con esas tres palabras, porque cada una está haciendo un trabajo distinto.
+# | Empecemos por la primera, préstamo. Uno presta lo que tiene, no se puede prestar lo que no se tiene, y lo prestado, además, se devuelve. Ahora la segunda: no dice mentiras, dice verdades mentidas, y eso es otra cosa. Mentida no es un sustantivo: es algo que le pasó a la verdad. Alguien la agarró entera y la entregó incompleta.
+# | Eso deja fuera la intención. El que habla quiere decir la verdad, y por eso son verdades y no mentiras. Está entregando lo que cree que tiene, lo que puede entregar. La falla no está en la voluntad. Está en él.
+# | Y acá vuelve todo el poema sobre sí mismo. Larralde empezó diciendo que no encuentra su propio porqué, que hay una verdad adentro suyo y él no da con ella. Entonces, cuando le entrega su verdad a otro, ¿qué le está entregando? Le está prestando algo sobre lo que él mismo no tiene completa claridad. Está pagando con una moneda que no terminó de saber su valor. Eso es ser carente. No mentiroso. Carente.
+# | Y reconocerlo cambia dónde ponemos la culpa. La lectura cómoda de las mentiras de una pareja siempre tiene un culpable enfrente: el que ocultó, el que no se animó, el que dijo lo que convenía. Larralde no reparte esa carta. Dice marchamos. Los dos. Los dos vamos apenas prestando lo que no terminamos de entender, y los dos recibiendo eso mismo, convencidos de haber entregado y recibido algo entero.
+# | No hay un villano. Hay dos personas haciéndose entrega de sus carencias y llamándole a eso conocerse.
+# | 12. Y sin embargo / Y sin embargo yo soy tu verdad y vos la mía
+# | Lo dice dos veces. Y sin embargo. Y sin embargo.
+# | Se pasó el poema entero demostrando que no se puede, y acá lo afirma igual. por que No es una contradicción. Una cosa es que me entiendas y otra distinta es que yo sea tu verdad.
+# | Se puede ser la verdad de alguien que no nos entiende. De hecho es lo más común que hay. La imposibilidad no es del vínculo. Es de la comprensión.
+# | 13. Sigo creyendo en mi Dios
+# | Y termina ahí.
+# | Después de mostrar, de demostrar que nadie puede verlo por dentro, dice esto. Suena a cierre religioso de campo. al canto a lo divino, No lo creo.
+# | Todo empezó con un pedido: que alguien lo mirara por dentro y le dijera el porqué. Larralde demostró, uno por uno, que ninguna persona puede hacerlo. Ni la que lo ama. Ni la que camina a su lado. Ninguna, y no por falta de ganas, sino por estructura. que hacemos? Queda un solo destinatario posible. No porque Dios venga a completar lo que el amor no pudo. No dice “creo en Dios”. Dice “creo en mi Dios”. No es una doctrina. Es un vínculo personal. Quizá la última intimidad que le queda cuando admite que ni él ni los demás pueden descifrarlo.
+# | El poema no termina en una respuesta. Termina con una fidelidad: la fidelidad a la pregunta. así como socrates.  Después de comprobar que el amor no puede poseer la verdad del otro, Larralde se niega a aceptar que la verdad sea definitivamente inaccesible. Sigue creyendo que hay una mirada capaz de sostenerla. Porque Dios, para la tradición mística, no es lo contrario del misterio: es su nombre más profundo, mas hondo. No aquello que termina de explicarlo todo, sino aquello que impide que todo pueda ser explicado. Lo sagrado visto como un misterio que a la vez sobrecoge y atrae, y excede el lenguaje y la comprension. Y eso es lo que Larralde parece conservar: La certeza de que el porqué no es una pregunta pequeña ni abandonada en el vacío, aunque no tenga respuesta.
+# ---------------------------------------------
+
+ms	tipo	detalle
+18	renglones	0 6 17 27 31 42 52 61 73 82 94 97 108 117 127 136 145 154 163 173 182 195 201 211 214 225 237 247 259 267 276 287 296 305 314 318 328 337 345 346 357 367 373 383 391 400 411 423 432 442 452 460 466 474 480 491 500 511 521 529 537 545 558 567 577 587 594 603 611 619 628 632 642 647 653 659 670 684 693 705 718 729 739 749 759 762 772 783 791 799 809 812 823 833 840 848 854 862 870 878 885 892 901 911 912 920 931 939 949 960 971 981 991 1002 1013 1016 1027 1038 1049 1059 1067 1079 1081 1092 1098 1109 1117 1127 1134 1143 1151 1155 1167 1177 1185 1195 1204 1213 1226 1238 1252 1261 1271 1275 1285 1292 1299 1310 1320 1330 1340 1349 1362 1371 1381 1390 1400 1410 1415 1425 1432 1444 1452 1460 1470 1480 1490 1495 1503 1511 1520 1531 1542 1553 1560 1569 1572 1580 1591 1600 1603 1613 1624 1626 1634 1643 1652 1662 1666 1670 1681 1688 1698 1707 1716 1719 1729 1737 1747 1757 1767 1774 1775 1785 1792 1802 1803 1813 1818 1830 1840 1851 1860 1870 1880 1890 1902 1913 1921 1931 1938 1948 1955 1958 1968 1978 1986 1995 2007 2015 2024 2036 2045 2046 2057 2067 2076 2087 2097 2105 2117 2127 2137 2145 2156 2161 2169 2178 2189 2199 2208 2217 2225 2230 2239 2247 2260 2262 2272 2282 2293 2305 2308 2319 2330 2337 2343 2346 2354 2364 2373 2383 2393 2403 2416 2425 2433 2444 2456 2464 2474 2475 2485 2494 2504 2514 2520 2529 2539 2548 2557 2567 2578 2588 2599 2607
+18	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+19	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+34	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+52	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+69	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+79	oido	inicio=-2911 trozo=320 ruta=/data/user/0/com.sigoteleprompter.app/files/oido/1791083635712.pcm
+79	llegada	parcial nativo=77 audio=9 leido=67 procesado=77 rms=0.0013 relevos=0
+83	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+101	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+117	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+135	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+151	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+169	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+185	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+204	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+217	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+237	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+250	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+268	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+284	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+305	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+316	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+333	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+350	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+371	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+385	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+399	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+416	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+435	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+451	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+470	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+483	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+502	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+517	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+535	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+549	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+566	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+582	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+600	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+616	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+633	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+649	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+670	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+682	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+701	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+716	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+738	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+748	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+764	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+781	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+804	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+814	llegada	parcial nativo=812 audio=109 leido=803 procesado=812 rms=0.0015 relevos=0
+814	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+832	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+848	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+867	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+882	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+898	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+914	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+936	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+947	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+966	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+982	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1000	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1014	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1030	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1046	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1068	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1079	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1096	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1101	llegada	parcial nativo=1100 audio=209 leido=1099 procesado=1100 rms=0.0001 relevos=0
+1111	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1129	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1146	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1165	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1179	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1199	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1210	llegada	parcial nativo=1209 audio=309 leido=1204 procesado=1209 rms=0.0012 relevos=0
+1212	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1229	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1245	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1266	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1278	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1297	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1312	llegada	parcial nativo=1310 audio=409 leido=1301 procesado=1310 rms=0.0079 relevos=0
+1313	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1335	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1344	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1364	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1378	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1397	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1405	llegada	parcial nativo=1402 audio=509 leido=1401 procesado=1402 rms=0.0074 relevos=0
+1411	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1428	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1444	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1461	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1478	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1494	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1511	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1530	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1543	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1561	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1577	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1595	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1611	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1635	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1643	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1661	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1676	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1693	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1709	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1715	llegada	parcial nativo=1713 audio=609 leido=1693 procesado=1713 rms=0.0146 relevos=0
+1715	oyo	parcial: sin
+1716	calce	NO CALZO: sin
+1728	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1754	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1758	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1782	llegada	parcial nativo=1769 audio=669 leido=1750 procesado=1769 rms=0.0147 relevos=0
+1782	oyo	parcial: sí
+1782	calce	NO CALZO: sí
+1782	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1792	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1808	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1821	llegada	parcial nativo=1809 audio=709 leido=1794 procesado=1809 rms=0.0024 relevos=0
+1821	oyo	parcial: si me
+1822	calce	token 1: si me
+1849	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1850	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1858	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1875	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1891	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1908	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1918	llegada	parcial nativo=1917 audio=789 leido=1872 procesado=1917 rms=0.0507 relevos=0
+1918	oyo	parcial: si
+1918	calce	NO CALZO: si
+1924	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1941	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1958	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1971	llegada	parcial nativo=1968 audio=829 leido=1919 procesado=1968 rms=0.0395 relevos=0
+1971	oyo	parcial: sí mediante
+1972	calce	NO CALZO: sí mediante
+1974	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+1990	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2007	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2021	llegada	parcial nativo=2020 audio=849 leido=1969 procesado=2020 rms=0.0328 relevos=0
+2021	oyo	parcial: si me da
+2021	calce	NO CALZO: si me da
+2024	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2040	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2058	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2074	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2091	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2092	llegada	parcial nativo=2090 audio=889 leido=2021 procesado=2090 rms=0.0315 relevos=0
+2092	oyo	parcial: si me das
+2093	calce	NO CALZO: si me das
+2107	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2124	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2139	llegada	parcial nativo=2138 audio=909 leido=2092 procesado=2138 rms=0.0153 relevos=0
+2139	oyo	parcial: si medidas
+2139	calce	NO CALZO: si medidas
+2140	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2158	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2173	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2184	llegada	parcial nativo=2182 audio=969 leido=2154 procesado=2182 rms=0.0344 relevos=0
+2184	oyo	parcial: si me das por
+2185	calce	NO CALZO: si me das por
+2189	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2207	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2223	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2240	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2257	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2264	llegada	parcial nativo=2256 audio=1069 leido=2247 procesado=2256 rms=0.0258 relevos=0
+2264	oyo	parcial: si me das por
+2266	calce	NO CALZO: si me das por
+2272	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2291	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2297	llegada	parcial nativo=2292 audio=1169 leido=2292 procesado=2292 rms=0.0117 relevos=0
+2298	oyo	parcial: si me das por
+2298	calce	NO CALZO: si me das por
+2306	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2324	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2340	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2344	llegada	parcial nativo=2342 audio=1249 leido=2336 procesado=2342 rms=0.0091 relevos=0
+2344	oyo	parcial: si me das por dentro
+2345	calce	NO CALZO: si me das por dentro
+2356	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2374	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2390	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2406	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2422	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2438	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2439	llegada	parcial nativo=2438 audio=1349 leido=2437 procesado=2438 rms=0.0094 relevos=0
+2439	oyo	parcial: si me das por dentro
+2439	calce	NO CALZO: si me das por dentro
+2455	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2472	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2490	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2505	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2521	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2538	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2540	llegada	parcial nativo=2539 audio=1449 leido=2533 procesado=2539 rms=0.0001 relevos=0
+2540	oyo	parcial: si me das por dentro
+2541	calce	NO CALZO: si me das por dentro
+2555	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2572	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2590	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2605	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2622	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2638	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2640	llegada	parcial nativo=2639 audio=1544 leido=2632 procesado=2639 rms=0.0001 relevos=0
+2640	oyo	parcial: si me das por dentro
+2640	calce	NO CALZO: si me das por dentro
+2655	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2671	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2688	llegada	parcial nativo=2686 audio=1644 leido=2686 procesado=2686 rms=0.0147 relevos=1
+2688	oyo	parcial: si me das por dentro
+2688	calce	NO CALZO: si me das por dentro
+2689	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2705	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2710	llegada	parcial nativo=2708 audio=1744 leido=2703 procesado=2708 rms=0.0507 relevos=1
+2710	oyo	parcial: si me das por dentro
+2710	calce	NO CALZO: si me das por dentro
+2720	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2737	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2754	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2759	llegada	parcial nativo=2757 audio=1844 leido=2742 procesado=2757 rms=0.0395 relevos=1
+2759	oyo	parcial: si me das por dentro
+2759	calce	NO CALZO: si me das por dentro
+2770	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2773	llegada	parcial nativo=2772 audio=1864 leido=2758 procesado=2772 rms=0.0153 relevos=1
+2773	oyo	parcial: si me das por dentro las
+2773	calce	NO CALZO: si me das por dentro las
+2787	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2793	llegada	parcial nativo=2790 audio=1924 leido=2783 procesado=2790 rms=0.0344 relevos=1
+2793	oyo	parcial: si me das por dentro es
+2793	calce	token 58: si me das por dentro es
+2803	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2808	llegada	parcial nativo=2807 audio=1964 leido=2791 procesado=2807 rms=0.0258 relevos=1
+2808	oyo	parcial: si me das por dentro es por
+2808	calce	token 59: si me das por dentro es por
+2819	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2836	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2840	llegada	parcial nativo=2838 audio=2064 leido=2837 procesado=2838 rms=0.0211 relevos=1
+2840	oyo	parcial: si me das por dentro es por
+2842	calce	token 59: si me das por dentro es por
+2853	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2861	llegada	parcial nativo=2858 audio=2164 leido=2855 procesado=2858 rms=0.0065 relevos=1
+2861	oyo	parcial: si me das por dentro es por
+2863	calce	token 59: si me das por dentro es por
+2869	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2870	llegada	parcial nativo=2868 audio=2204 leido=2858 procesado=2868 rms=0.0091 relevos=1
+2870	oyo	parcial: si me das por dentro es por dentro
+2871	calce	token 60: si me das por dentro es por dentro
+2887	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2889	llegada	parcial nativo=2887 audio=2304 leido=2887 procesado=2887 rms=0.0094 relevos=1
+2890	oyo	parcial: si me das por dentro es por dentro
+2892	calce	token 60: si me das por dentro es por dentro
+2903	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2916	llegada	parcial nativo=2915 audio=2404 leido=2910 procesado=2915 rms=0.0001 relevos=1
+2916	oyo	parcial: si me das por dentro es por dentro
+2916	calce	token 60: si me das por dentro es por dentro
+2920	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2931	llegada	parcial nativo=2929 audio=2504 leido=2924 procesado=2929 rms=0.0001 relevos=1
+2931	oyo	parcial: si me das por dentro es por dentro
+2931	calce	token 60: si me das por dentro es por dentro
+2936	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2953	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2970	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2977	llegada	parcial nativo=2976 audio=2604 leido=2976 procesado=2976 rms=0.0253 relevos=1
+2977	oyo	parcial: si me das por dentro es por dentro
+2979	calce	token 60: si me das por dentro es por dentro
+2986	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3002	llegada	parcial nativo=3001 audio=2704 leido=2992 procesado=3001 rms=0.0325 relevos=1
+3002	oyo	parcial: si me das por dentro es por dentro
+3002	calce	token 60: si me das por dentro es por dentro
+3003	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3018	llegada	parcial nativo=3017 audio=2804 leido=3012 procesado=3017 rms=0.0398 relevos=1
+3018	oyo	parcial: si me das por dentro es por dentro
+3018	calce	token 60: si me das por dentro es por dentro
+3018	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3035	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3041	llegada	parcial nativo=3039 audio=2904 leido=3039 procesado=3039 rms=0.0428 relevos=1
+3041	oyo	parcial: si me das por dentro es por dentro
+3043	calce	token 60: si me das por dentro es por dentro
+3052	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3069	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3086	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3102	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3119	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3136	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3144	llegada	parcial nativo=3142 audio=3004 leido=3136 procesado=3142 rms=0.0275 relevos=1
+3144	oyo	parcial: si me das por dentro es por dentro
+3145	calce	token 60: si me das por dentro es por dentro
+3152	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3168	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3186	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3201	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3218	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3235	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3243	llegada	parcial nativo=3241 audio=3104 leido=3233 procesado=3241 rms=0.0079 relevos=1
+3243	oyo	parcial: si me das por dentro es por dentro
+3246	calce	token 60: si me das por dentro es por dentro
+3254	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3268	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3286	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3302	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3318	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3330	llegada	parcial nativo=3328 audio=3184 leido=3311 procesado=3328 rms=0.0005 relevos=1
+3330	oyo	parcial: si me das por dentro es por dentro narran
+3331	calce	token 61: si me das por dentro es por dentro narran
+3334	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3351	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3368	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3384	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3385	llegada	parcial nativo=3384 audio=3244 leido=3372 procesado=3384 rms=0.0000 relevos=1
+3385	oyo	parcial: si me das por dentro es por dentro narra el
+3389	calce	NO CALZO: si me das por dentro es por dentro narra el
+3401	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3417	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3433	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3452	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3468	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3483	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3486	llegada	parcial nativo=3484 audio=3344 leido=3472 procesado=3484 rms=0.0000 relevos=1
+3486	oyo	parcial: si me das por dentro es por dentro narra el de
+3490	calce	token 63: si me das por dentro es por dentro narra el de
+3501	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3518	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3536	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3551	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3567	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3577	llegada	parcial nativo=3575 audio=3444 leido=3574 procesado=3575 rms=0.0000 relevos=1
+3577	oyo	parcial: si me das por dentro es por dentro narra el de
+3579	calce	token 63: si me das por dentro es por dentro narra el de
+3583	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3600	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3617	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3636	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3652	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3666	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3681	llegada	parcial nativo=3680 audio=3544 leido=3672 procesado=3680 rms=0.0001 relevos=1
+3681	oyo	parcial: si me das por dentro es por dentro narra el de
+3682	calce	token 63: si me das por dentro es por dentro narra el de
+3683	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3700	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3716	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3733	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3749	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3766	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3782	llegada	parcial nativo=3779 audio=3644 leido=3771 procesado=3779 rms=0.0001 relevos=1
+3782	oyo	parcial: si me das por dentro es por dentro narra el de
+3787	calce	token 63: si me das por dentro es por dentro narra el de
+3788	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3800	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3816	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3835	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3849	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3865	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3873	llegada	parcial nativo=3871 audio=3744 leido=3869 procesado=3871 rms=0.0004 relevos=1
+3873	oyo	parcial: si me das por dentro es por dentro narra el de
+3874	calce	NO CALZO: si me das por dentro es por dentro narra el de
+3883	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3899	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3915	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3931	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3950	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3970	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3981	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+3987	llegada	parcial nativo=3982 audio=3844 leido=3972 procesado=3982 rms=0.0008 relevos=1
+3987	oyo	parcial: si me das por dentro es por dentro narra el de
+3991	calce	NO CALZO: si me das por dentro es por dentro narra el de
+3997	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4015	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4034	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4048	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4064	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4080	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4087	llegada	parcial nativo=4084 audio=3944 leido=4072 procesado=4084 rms=0.0053 relevos=1
+4087	oyo	parcial: si me das por dentro es por dentro narra el de
+4092	calce	NO CALZO: si me das por dentro es por dentro narra el de
+4097	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4114	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4130	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4147	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4166	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4174	llegada	parcial nativo=4173 audio=4044 leido=4172 procesado=4173 rms=0.0464 relevos=1
+4174	oyo	parcial: si me das por dentro es por dentro narra el de
+4174	calce	NO CALZO: si me das por dentro es por dentro narra el de
+4180	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4199	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4213	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4231	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4248	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4264	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4278	llegada	parcial nativo=4277 audio=4144 leido=4269 procesado=4277 rms=0.1084 relevos=1
+4278	oyo	parcial: si me das por dentro es por dentro narra el de
+4278	calce	NO CALZO: si me das por dentro es por dentro narra el de
+4280	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4301	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4314	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4331	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4348	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4363	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4378	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4380	llegada	parcial nativo=4378 audio=4244 leido=4370 procesado=4378 rms=0.1087 relevos=1
+4380	oyo	parcial: si me das por dentro es por dentro narra el de
+4380	calce	NO CALZO: si me das por dentro es por dentro narra el de
+4397	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4412	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4429	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4445	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4462	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4476	llegada	parcial nativo=4474 audio=4344 leido=4473 procesado=4474 rms=0.0666 relevos=1
+4476	oyo	parcial: si me das por dentro es por dentro narra el de
+4476	calce	NO CALZO: si me das por dentro es por dentro narra el de
+4478	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4496	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4511	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4531	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4545	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4562	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4577	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4586	llegada	parcial nativo=4583 audio=4444 leido=4570 procesado=4583 rms=0.0676 relevos=1
+4586	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos
+4586	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos
+4594	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4611	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4631	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4645	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4662	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4678	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4679	llegada	parcial nativo=4677 audio=4544 leido=4670 procesado=4677 rms=0.0264 relevos=1
+4679	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos
+4679	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos
+4704	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4710	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4728	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4745	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4763	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4777	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4784	llegada	parcial nativo=4783 audio=4644 leido=4781 procesado=4782 rms=0.0063 relevos=1
+4784	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos
+4786	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos
+4796	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4811	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4830	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4844	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4862	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4877	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4890	llegada	parcial nativo=4889 audio=4744 leido=4881 procesado=4889 rms=0.0235 relevos=1
+4890	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos
+4891	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos
+4893	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4911	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4930	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4944	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4961	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4977	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4982	llegada	parcial nativo=4981 audio=4844 leido=4973 procesado=4980 rms=0.0193 relevos=1
+4982	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos
+4982	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos
+4996	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5010	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5034	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5042	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5061	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5076	llegada	parcial nativo=5074 audio=4944 leido=5072 procesado=5074 rms=0.0371 relevos=1
+5076	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos
+5076	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos
+5077	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5095	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5109	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5114	llegada	parcial nativo=5112 audio=4964 leido=5098 procesado=5111 rms=0.0193 relevos=1
+5114	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta
+5114	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta
+5126	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5142	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5165	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5176	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5196	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5199	llegada	parcial nativo=5192 audio=5064 leido=5190 procesado=5192 rms=0.0471 relevos=1
+5199	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta
+5199	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta
+5208	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5225	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5241	llegada	parcial nativo=5240 audio=5104 leido=5233 procesado=5240 rms=0.0492 relevos=1
+5241	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y
+5241	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y
+5241	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5259	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5275	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5299	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5307	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5326	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5340	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5342	llegada	parcial nativo=5340 audio=5204 leido=5334 procesado=5340 rms=0.0378 relevos=1
+5342	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5343	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5358	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5373	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5392	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5407	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5431	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5437	llegada	parcial nativo=5435 audio=5304 leido=5433 procesado=5434 rms=0.0388 relevos=1
+5437	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5439	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5440	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5458	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5473	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5492	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5508	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5523	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5539	llegada	parcial nativo=5538 audio=5404 leido=5533 procesado=5538 rms=0.0127 relevos=1
+5539	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5539	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5539	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5557	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5574	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5592	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5606	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5623	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5639	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5657	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5661	llegada	parcial nativo=5654 audio=5504 leido=5632 procesado=5654 rms=0.0005 relevos=1
+5661	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5663	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5672	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5691	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5705	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5724	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5735	llegada	parcial nativo=5733 audio=5604 leido=5732 procesado=5733 rms=0.0001 relevos=1
+5735	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5736	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5738	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5756	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5773	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5789	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5805	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5821	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5838	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5839	llegada	parcial nativo=5836 audio=5704 leido=5831 procesado=5836 rms=0.0208 relevos=1
+5839	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5840	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5855	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5871	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5889	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5904	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5922	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5937	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5943	llegada	parcial nativo=5941 audio=5804 leido=5933 procesado=5941 rms=0.0280 relevos=1
+5943	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5944	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+5954	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5971	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+5987	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6005	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6021	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6036	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6050	llegada	parcial nativo=6048 audio=5884 leido=6010 procesado=6048 rms=0.0285 relevos=1
+6050	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve se
+6051	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve se
+6053	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6070	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6084	llegada	parcial nativo=6083 audio=5944 leido=6073 procesado=6083 rms=0.0286 relevos=1
+6084	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+6085	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+6087	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6103	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6121	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6137	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6156	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6170	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6184	llegada	parcial nativo=6181 audio=6044 leido=6173 procesado=6181 rms=0.0307 relevos=1
+6184	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+6185	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve
+6186	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6203	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6221	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6237	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6253	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6269	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6271	llegada	parcial nativo=6269 audio=6124 leido=6257 procesado=6269 rms=0.0036 relevos=1
+6271	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve salud
+6272	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve salud
+6287	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6302	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6319	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6335	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6352	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6367	llegada	parcial nativo=6366 audio=6224 leido=6355 procesado=6366 rms=0.0007 relevos=1
+6367	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un
+6367	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un
+6369	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6386	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6403	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6419	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6433	llegada	parcial nativo=6431 audio=6284 leido=6411 procesado=6431 rms=0.0363 relevos=1
+6433	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve salud
+6434	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve salud
+6435	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6443	llegada	parcial nativo=6441 audio=6304 leido=6432 procesado=6441 rms=0.0363 relevos=1
+6443	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un
+6444	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un
+6452	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6468	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6484	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6502	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6518	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6536	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6541	llegada	parcial nativo=6539 audio=6404 leido=6532 procesado=6539 rms=0.0287 relevos=1
+6542	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un
+6542	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un
+6552	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6567	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6585	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6601	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6618	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6624	llegada	parcial nativo=6622 audio=6484 leido=6612 procesado=6622 rms=0.0018 relevos=1
+6624	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco
+6625	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco
+6634	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6653	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6667	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6684	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6701	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6718	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6726	llegada	parcial nativo=6724 audio=6584 leido=6713 procesado=6724 rms=0.0003 relevos=1
+6726	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco
+6727	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco
+6733	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6751	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6767	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6784	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6800	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6817	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6821	llegada	parcial nativo=6819 audio=6684 leido=6816 procesado=6819 rms=0.0187 relevos=1
+6821	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco
+6822	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco
+6833	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6851	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6866	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6884	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6899	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6916	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6918	llegada	parcial nativo=6916 audio=6784 leido=6910 procesado=6916 rms=0.0054 relevos=1
+6918	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco
+6919	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco
+6933	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6952	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6967	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6971	llegada	parcial nativo=6969 audio=6824 leido=6956 procesado=6969 rms=0.0186 relevos=1
+6971	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que
+6972	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que
+6983	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+6998	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7016	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7032	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7049	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7062	llegada	parcial nativo=7060 audio=6924 leido=7058 procesado=7060 rms=0.0262 relevos=1
+7062	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que
+7064	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que
+7065	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7082	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7099	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7115	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7133	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7149	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7165	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7181	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7190	llegada	parcial nativo=7188 audio=7024 leido=7157 procesado=7188 rms=0.0261 relevos=1
+7190	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que
+7190	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que
+7198	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7215	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7231	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7248	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7264	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7266	llegada	parcial nativo=7265 audio=7124 leido=7251 procesado=7265 rms=0.0198 relevos=1
+7266	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que si
+7267	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que si
+7281	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7298	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7315	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7330	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7347	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7358	llegada	parcial nativo=7353 audio=7224 leido=7352 procesado=7353 rms=0.0019 relevos=1
+7359	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que si
+7360	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que si
+7364	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7380	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7389	llegada	parcial nativo=7386 audio=7244 leido=7370 procesado=7386 rms=0.0001 relevos=1
+7389	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7390	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7398	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7414	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7432	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7447	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7464	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7477	llegada	parcial nativo=7476 audio=7344 leido=7474 procesado=7476 rms=0.0239 relevos=1
+7477	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7478	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7480	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7497	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7514	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7530	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7548	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7564	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7580	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7596	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7601	llegada	parcial nativo=7600 audio=7444 leido=7571 procesado=7600 rms=0.0533 relevos=1
+7601	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7601	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7613	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7629	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7646	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7663	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7679	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7680	llegada	parcial nativo=7678 audio=7544 leido=7672 procesado=7678 rms=0.0273 relevos=1
+7680	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7681	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7696	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7713	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7729	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7746	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7763	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7775	llegada	parcial nativo=7773 audio=7644 leido=7772 procesado=7773 rms=0.0136 relevos=1
+7775	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7776	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7778	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7795	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7811	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7829	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7846	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7863	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7877	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7895	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7910	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7912	llegada	parcial nativo=7907 audio=7744 leido=7902 procesado=7907 rms=0.0077 relevos=1
+7912	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7912	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7927	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7945	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7963	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7977	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+7993	llegada	parcial nativo=7989 audio=7844 leido=7974 procesado=7990 rms=0.0000 relevos=1
+7993	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7995	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama
+7995	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8010	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8029	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8044	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8061	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8065	llegada	parcial nativo=8064 audio=7924 leido=8053 procesado=8064 rms=0.0000 relevos=1
+8065	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8066	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8078	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8094	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8110	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8128	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8144	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8162	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8164	llegada	parcial nativo=8161 audio=8024 leido=8151 procesado=8161 rms=0.0001 relevos=1
+8164	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8164	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8176	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8197	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8210	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8227	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8243	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8264	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8265	llegada	parcial nativo=8262 audio=8124 leido=8258 procesado=8262 rms=0.0001 relevos=1
+8265	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8266	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8277	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8296	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8309	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8328	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8342	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8362	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8367	llegada	parcial nativo=8364 audio=8224 leido=8353 procesado=8364 rms=0.0001 relevos=1
+8367	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8368	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8375	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8393	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8408	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8425	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8443	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8460	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8475	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8483	llegada	parcial nativo=8480 audio=8324 leido=8460 procesado=8480 rms=0.1258 relevos=1
+8483	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8485	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8491	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8509	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8525	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8541	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8560	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8567	llegada	parcial nativo=8564 audio=8424 leido=8562 procesado=8564 rms=0.0747 relevos=1
+8567	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8568	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8575	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8595	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8608	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8629	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8641	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8660	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8671	llegada	parcial nativo=8670 audio=8524 leido=8651 procesado=8670 rms=0.0622 relevos=1
+8671	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8672	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre
+8673	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8693	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8707	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8725	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8741	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8759	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8771	llegada	parcial nativo=8769 audio=8624 leido=8759 procesado=8769 rms=0.0378 relevos=1
+8771	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce
+8772	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce
+8773	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8798	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8807	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8824	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8840	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8861	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8863	llegada	parcial nativo=8861 audio=8724 leido=8859 procesado=8861 rms=0.0109 relevos=1
+8863	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce
+8863	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce
+8874	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8890	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8906	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8924	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8940	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8961	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8972	llegada	parcial nativo=8970 audio=8824 leido=8955 procesado=8970 rms=0.0049 relevos=1
+8972	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce
+8973	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce
+8974	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+8990	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9006	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9025	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9040	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9056	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9068	llegada	parcial nativo=9066 audio=8924 leido=9059 procesado=9066 rms=0.0010 relevos=1
+9068	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce
+9070	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce
+9072	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9094	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9105	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9124	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9138	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9158	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9160	llegada	parcial nativo=9158 audio=9024 leido=9156 procesado=9158 rms=0.0003 relevos=1
+9160	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce
+9161	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce
+9171	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9190	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9204	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9222	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9237	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9257	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9271	llegada	parcial nativo=9268 audio=9124 leido=9255 procesado=9268 rms=0.0000 relevos=1
+9271	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce
+9273	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce
+9275	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9289	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9304	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9309	llegada	parcial nativo=9307 audio=9164 leido=9298 procesado=9307 rms=0.0001 relevos=1
+9309	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés
+9310	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés
+9321	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9337	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9355	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9370	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9386	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9395	llegada	parcial nativo=9393 audio=9264 leido=9391 procesado=9393 rms=0.0043 relevos=1
+9395	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés
+9395	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés
+9404	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9420	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9437	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9454	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9471	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9487	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9503	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9507	llegada	parcial nativo=9505 audio=9364 leido=9497 procesado=9505 rms=0.1006 relevos=1
+9507	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés
+9508	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés
+9520	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9536	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9555	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9569	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9587	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9602	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9605	llegada	parcial nativo=9603 audio=9464 leido=9597 procesado=9603 rms=0.1095 relevos=1
+9605	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés
+9606	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés
+9619	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9635	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9655	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9669	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9685	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9697	llegada	parcial nativo=9696 audio=9564 leido=9694 procesado=9696 rms=0.0801 relevos=1
+9697	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés
+9697	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés
+9702	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9718	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9730	llegada	parcial nativo=9728 audio=9584 leido=9711 procesado=9728 rms=0.0971 relevos=1
+9730	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés sin
+9730	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés sin
+9735	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9752	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9768	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9784	llegada	parcial nativo=9782 audio=9644 leido=9773 procesado=9782 rms=0.1027 relevos=1
+9784	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés
+9785	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés
+9785	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9801	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9818	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9835	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9843	llegada	parcial nativo=9842 audio=9704 leido=9832 procesado=9842 rms=0.0439 relevos=1
+9843	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco
+9843	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco
+9851	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9868	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9885	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9901	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9918	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9935	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9937	llegada	parcial nativo=9934 audio=9804 leido=9932 procesado=9934 rms=0.0501 relevos=1
+9937	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco
+9938	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco
+9952	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9967	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9984	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+9989	llegada	parcial nativo=9984 audio=9844 leido=9972 procesado=9984 rms=0.0213 relevos=1
+9990	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco mil
+9991	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco mil
+10000	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10017	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10033	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10051	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10067	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10083	llegada	parcial nativo=10081 audio=9944 leido=10072 procesado=10081 rms=0.0100 relevos=1
+10083	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco mil
+10084	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco mil
+10084	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10101	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10118	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10134	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10144	llegada	parcial nativo=10142 audio=10004 leido=10133 procesado=10142 rms=0.0060 relevos=1
+10144	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco mil once
+10145	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco mil once
+10150	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10166	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10183	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10199	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10207	llegada	parcial nativo=10206 audio=10064 leido=10193 procesado=10205 rms=0.0011 relevos=1
+10207	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco
+10207	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco
+10215	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10232	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10250	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10265	llegada	parcial nativo=10264 audio=10124 leido=10254 procesado=10264 rms=0.0005 relevos=1
+10265	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milonga
+10265	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milonga
+10265	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10281	llegada	parcial nativo=10279 audio=10144 leido=10271 procesado=10279 rms=0.0001 relevos=1
+10281	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10281	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10282	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10298	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10316	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10333	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10349	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10365	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10382	llegada	parcial nativo=10380 audio=10244 leido=10371 procesado=10380 rms=0.0001 relevos=1
+10382	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10383	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10383	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10398	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10416	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10432	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10448	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10465	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10477	llegada	parcial nativo=10476 audio=10344 leido=10474 procesado=10476 rms=0.0001 relevos=1
+10477	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10478	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10481	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10498	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10515	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10531	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10548	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10565	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10580	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10582	llegada	parcial nativo=10580 audio=10444 leido=10572 procesado=10580 rms=0.0364 relevos=1
+10582	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10583	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10597	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10615	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10632	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10647	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10664	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10680	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10696	llegada	parcial nativo=10694 audio=10544 leido=10674 procesado=10694 rms=0.0570 relevos=1
+10696	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10697	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10698	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10717	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10730	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10747	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10764	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10773	llegada	parcial nativo=10771 audio=10644 leido=10770 procesado=10771 rms=0.0516 relevos=1
+10773	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10773	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10781	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10796	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10813	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10829	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10846	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10862	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10877	llegada	parcial nativo=10875 audio=10744 leido=10868 procesado=10875 rms=0.0090 relevos=1
+10877	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10878	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10878	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10895	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10915	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10929	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10945	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10962	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10978	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+10982	llegada	parcial nativo=10979 audio=10844 leido=10972 procesado=10979 rms=0.0344 relevos=1
+10982	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10983	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas
+10995	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11004	llegada	parcial nativo=11003 audio=10864 leido=10993 procesado=11003 rms=0.0283 relevos=1
+11004	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres
+11005	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres
+11012	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11029	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11045	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11046	llegada	parcial nativo=11043 audio=10904 leido=11034 procesado=11043 rms=0.0167 relevos=1
+11046	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11048	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11062	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11078	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11097	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11112	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11128	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11137	llegada	parcial nativo=11135 audio=11004 leido=11133 procesado=11135 rms=0.0120 relevos=1
+11137	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11137	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11145	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11162	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11178	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11196	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11215	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11227	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11239	llegada	parcial nativo=11238 audio=11104 leido=11231 procesado=11238 rms=0.0010 relevos=1
+11239	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11240	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11244	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11261	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11277	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11295	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11311	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11328	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11341	llegada	parcial nativo=11339 audio=11204 leido=11332 procesado=11339 rms=0.0000 relevos=1
+11341	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11342	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11343	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11360	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11377	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11393	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11410	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11426	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11434	llegada	parcial nativo=11432 audio=11304 leido=11431 procesado=11432 rms=0.0000 relevos=1
+11434	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11434	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11443	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11463	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11477	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11496	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11510	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11530	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11543	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11545	llegada	parcial nativo=11544 audio=11404 leido=11539 procesado=11544 rms=0.0001 relevos=1
+11545	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11547	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11561	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11577	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11593	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11610	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11626	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11641	llegada	parcial nativo=11640 audio=11504 leido=11633 procesado=11640 rms=0.0016 relevos=1
+11641	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11641	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11642	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11659	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11676	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11698	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11709	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11725	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11734	llegada	parcial nativo=11731 audio=11604 leido=11729 procesado=11731 rms=0.0017 relevos=1
+11734	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11736	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11742	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11762	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11776	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11791	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11810	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11826	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11841	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11843	llegada	parcial nativo=11841 audio=11704 leido=11833 procesado=11841 rms=0.0359 relevos=1
+11844	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11844	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11857	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11875	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11891	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11907	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11924	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11943	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11944	llegada	parcial nativo=11942 audio=11804 leido=11932 procesado=11942 rms=0.0266 relevos=1
+11944	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11946	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+11963	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11974	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+11991	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12007	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12026	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12032	llegada	parcial nativo=12031 audio=11904 leido=12030 procesado=12031 rms=0.1136 relevos=1
+12032	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+12033	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones
+12040	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12060	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12066	llegada	parcial nativo=12065 audio=11924 leido=12057 procesado=12065 rms=0.0484 relevos=1
+12066	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en
+12066	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en
+12074	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12092	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12108	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12124	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12139	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12160	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12164	llegada	parcial nativo=12155 audio=12024 leido=12152 procesado=12155 rms=0.0214 relevos=1
+12164	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en
+12165	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en
+12173	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12189	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12205	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12223	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12239	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12255	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12271	llegada	parcial nativo=12269 audio=12124 leido=12262 procesado=12269 rms=0.0697 relevos=1
+12271	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en
+12272	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en
+12272	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12289	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12306	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12324	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12338	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12355	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12360	llegada	parcial nativo=12359 audio=12224 leido=12350 procesado=12359 rms=0.1096 relevos=1
+12360	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuarenta
+12361	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuarenta
+12372	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12389	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12397	llegada	parcial nativo=12396 audio=12244 leido=12375 procesado=12396 rms=0.0877 relevos=1
+12397	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en
+12397	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en
+12405	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12423	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12438	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12441	llegada	parcial nativo=12439 audio=12304 leido=12433 procesado=12439 rms=0.0765 relevos=1
+12441	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro
+12443	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro
+12460	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12472	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12489	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12501	llegada	parcial nativo=12499 audio=12364 leido=12492 procesado=12499 rms=0.0905 relevos=1
+12501	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de
+12502	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de
+12504	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12525	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12538	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12558	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12571	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12596	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12604	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12606	llegada	parcial nativo=12604 audio=12464 leido=12593 procesado=12604 rms=0.0755 relevos=1
+12606	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de
+12607	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de
+12624	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12636	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12656	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12670	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12691	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12697	llegada	parcial nativo=12696 audio=12564 leido=12694 procesado=12696 rms=0.0438 relevos=1
+12697	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de
+12697	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de
+12703	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12723	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12737	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12758	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12772	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12792	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12801	llegada	parcial nativo=12799 audio=12664 leido=12791 procesado=12799 rms=0.0351 relevos=1
+12801	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de
+12803	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de
+12804	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12824	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12836	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12856	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12870	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12886	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12898	llegada	parcial nativo=12897 audio=12764 leido=12890 procesado=12897 rms=0.0023 relevos=1
+12898	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos
+12898	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos
+12902	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12921	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12936	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12959	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12968	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+12987	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13001	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13002	llegada	parcial nativo=12999 audio=12864 leido=12999 procesado=12999 rms=0.0003 relevos=1
+13002	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos
+13003	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos
+13019	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13035	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13054	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13069	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13084	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13102	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13105	llegada	parcial nativo=13103 audio=12964 leido=13092 procesado=13103 rms=0.0214 relevos=1
+13105	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos
+13107	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos
+13120	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13135	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13152	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13168	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13185	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13200	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13202	llegada	parcial nativo=13201 audio=13064 leido=13193 procesado=13201 rms=0.0137 relevos=1
+13202	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos
+13203	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos
+13217	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13234	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13252	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13267	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13284	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13295	llegada	parcial nativo=13293 audio=13164 leido=13291 procesado=13293 rms=0.0649 relevos=1
+13295	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos
+13296	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos
+13300	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13318	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13330	llegada	parcial nativo=13328 audio=13184 leido=13314 procesado=13328 rms=0.0345 relevos=1
+13330	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos o
+13331	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos o
+13333	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13352	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13368	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13383	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13399	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13406	llegada	parcial nativo=13405 audio=13264 leido=13393 procesado=13405 rms=0.0476 relevos=1
+13406	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos o sea
+13407	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos o sea
+13416	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13433	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13442	llegada	parcial nativo=13441 audio=13304 leido=13431 procesado=13440 rms=0.0371 relevos=1
+13442	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos
+13443	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos
+13450	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13466	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13485	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13499	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13508	llegada	parcial nativo=13506 audio=13364 leido=13493 procesado=13506 rms=0.0320 relevos=1
+13508	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé
+13509	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé
+13516	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13533	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13550	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13565	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13582	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13594	llegada	parcial nativo=13592 audio=13464 leido=13590 procesado=13592 rms=0.0609 relevos=1
+13594	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé
+13596	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé
+13598	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13617	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13630	llegada	parcial nativo=13628 audio=13484 leido=13615 procesado=13628 rms=0.0501 relevos=1
+13630	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la
+13631	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la
+13632	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13650	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13665	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13682	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13698	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13715	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13717	llegada	parcial nativo=13714 audio=13584 leido=13711 procesado=13713 rms=0.0427 relevos=1
+13718	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la
+13719	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la
+13732	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13749	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13764	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13783	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13799	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13815	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13831	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13838	llegada	parcial nativo=13835 audio=13684 leido=13814 procesado=13835 rms=0.0430 relevos=1
+13838	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la
+13839	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la
+13848	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13863	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13880	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13883	llegada	parcial nativo=13881 audio=13744 leido=13873 procesado=13881 rms=0.0178 relevos=1
+13884	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real
+13886	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real
+13897	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13915	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13929	llegada	parcial nativo=13928 audio=13784 leido=13915 procesado=13928 rms=0.0120 relevos=1
+13929	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de
+13930	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de
+13930	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13942	llegada	parcial nativo=13940 audio=13804 leido=13933 procesado=13940 rms=0.0237 relevos=1
+13942	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real
+13943	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real
+13947	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13963	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13980	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+13986	llegada	parcial nativo=13983 audio=13844 leido=13975 procesado=13983 rms=0.0281 relevos=1
+13986	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de
+13986	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de
+13997	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14013	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14030	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14047	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14063	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14071	llegada	parcial nativo=14068 audio=13924 leido=14052 procesado=14068 rms=0.0292 relevos=1
+14071	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no
+14072	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no
+14079	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14096	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14107	llegada	parcial nativo=14106 audio=13964 leido=14096 procesado=14106 rms=0.0078 relevos=1
+14107	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de
+14108	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de
+14113	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14129	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14136	llegada	parcial nativo=14134 audio=13984 leido=14116 procesado=14134 rms=0.0009 relevos=1
+14136	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no
+14137	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no
+14146	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14162	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14180	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14196	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14212	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14228	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14230	llegada	parcial nativo=14228 audio=14084 leido=14213 procesado=14228 rms=0.0122 relevos=1
+14230	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no
+14231	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no
+14245	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14262	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14279	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14295	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14312	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14325	llegada	parcial nativo=14319 audio=14184 leido=14316 procesado=14318 rms=0.0140 relevos=1
+14325	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no
+14326	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no
+14328	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14345	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14362	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14378	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14394	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14411	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14421	llegada	parcial nativo=14418 audio=14284 leido=14411 procesado=14418 rms=0.0001 relevos=1
+14421	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no
+14422	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no
+14428	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14445	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14462	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14478	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14494	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14495	llegada	parcial nativo=14492 audio=14344 leido=14471 procesado=14492 rms=0.0000 relevos=1
+14496	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+14497	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+14512	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14526	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14546	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14560	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14577	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14593	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14596	llegada	parcial nativo=14595 audio=14444 leido=14573 procesado=14595 rms=0.0000 relevos=1
+14596	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+14596	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+14611	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14627	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14643	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14659	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14672	llegada	parcial nativo=14669 audio=14544 leido=14669 procesado=14670 rms=0.0000 relevos=1
+14672	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+14672	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+14676	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14694	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14710	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14727	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14743	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14760	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14776	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14781	llegada	parcial nativo=14779 audio=14644 leido=14770 procesado=14779 rms=0.0011 relevos=1
+14781	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+14783	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+14792	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14810	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14827	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14843	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14860	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14878	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14887	llegada	parcial nativo=14884 audio=14744 leido=14872 procesado=14884 rms=0.0013 relevos=1
+14887	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+14891	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+14892	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14911	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14926	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14942	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14960	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14972	llegada	parcial nativo=14971 audio=14844 leido=14970 procesado=14971 rms=0.0748 relevos=1
+14972	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+14973	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+14976	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+14992	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15008	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15025	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15041	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15058	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15076	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15080	llegada	parcial nativo=15078 audio=14944 leido=15070 procesado=15078 rms=0.1055 relevos=1
+15080	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+15081	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+15091	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15108	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15125	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15141	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15159	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15175	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15189	llegada	parcial nativo=15183 audio=15044 leido=15172 procesado=15183 rms=0.0302 relevos=1
+15189	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+15192	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+15193	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15208	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15225	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15240	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15258	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15275	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15276	llegada	parcial nativo=15272 audio=15144 leido=15270 procesado=15272 rms=0.0226 relevos=1
+15276	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+15277	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+15290	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15307	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15329	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15340	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15360	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15373	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15382	llegada	parcial nativo=15380 audio=15244 leido=15371 procesado=15380 rms=0.0039 relevos=1
+15382	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+15384	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+15390	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15408	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15425	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15439	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15455	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15473	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15477	llegada	parcial nativo=15475 audio=15344 leido=15469 procesado=15475 rms=0.0003 relevos=1
+15478	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+15478	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta
+15491	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15505	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15522	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15538	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15559	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15565	llegada	parcial nativo=15564 audio=15424 leido=15557 procesado=15564 rms=0.0003 relevos=1
+15565	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+15566	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+15572	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15591	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15606	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15621	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15638	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15656	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15671	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15672	llegada	parcial nativo=15669 audio=15524 leido=15652 procesado=15669 rms=0.0001 relevos=1
+15672	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+15674	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+15689	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15704	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15722	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15737	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15755	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15761	llegada	parcial nativo=15756 audio=15624 leido=15754 procesado=15756 rms=0.0002 relevos=1
+15761	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+15762	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+15771	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15787	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15804	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15821	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15837	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15856	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15863	llegada	parcial nativo=15861 audio=15724 leido=15854 procesado=15861 rms=0.0000 relevos=1
+15863	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+15864	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+15871	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15890	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15904	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15925	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15936	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15955	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15962	llegada	parcial nativo=15961 audio=15824 leido=15953 procesado=15961 rms=0.0000 relevos=1
+15962	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+15962	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+15971	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+15987	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16004	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16021	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16036	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16055	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16059	llegada	parcial nativo=16058 audio=15924 leido=16056 procesado=16057 rms=0.0000 relevos=1
+16059	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+16060	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+16070	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16090	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16103	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16123	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16138	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16154	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16164	llegada	parcial nativo=16162 audio=16024 leido=16154 procesado=16162 rms=0.0000 relevos=1
+16164	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+16165	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+16169	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16185	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16204	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16221	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16236	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16257	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16267	llegada	parcial nativo=16265 audio=16124 leido=16255 procesado=16265 rms=0.0000 relevos=1
+16267	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+16268	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+16268	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16285	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16302	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16320	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16335	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16352	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16360	llegada	parcial nativo=16358 audio=16224 leido=16357 procesado=16358 rms=0.0000 relevos=1
+16360	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+16360	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+16368	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16384	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16401	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16421	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16436	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16453	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16467	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16470	llegada	parcial nativo=16466 audio=16324 leido=16458 procesado=16466 rms=0.0001 relevos=1
+16470	oyo	parcial: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+16471	calce	NO CALZO: si me das por dentro es por dentro narra el de en mil novecientos sesenta y nueve sale un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+16488	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16501	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16524	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16535	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16557	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16567	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16580	llegada	FINAL nativo=16577 audio=16424 leido=16558 procesado=16577 rms=0.0006 relevos=1
+16580	palabras	FINAL: si@239-419 me@419-542 das@542-719 por@719-869 dentro@869-1348 las@1529-1649 por@1650-1829 dentro@1829-2309 narra@2519-2906 el@2911-2971 de@2971-3149 en@3899-4048 mil@4048-4229 novecientos@4229-4593 sesenta@4593-4919 y@4919-4949 nueve@4949-5399 se@5579-5741 un@5829-5939 disco@5939-6449 que@6539-6689 se@6689-6839 llama@6839-7169 hombre@7289-7739 doce@8189-8459 cortés@8459-8939 cinco@9179-9539 milongas@9539-10109 tres@10349-10529 canciones@10529-11069 en@11639-11759 cuatro@11759-12089 de@12089-12269 ellos@12269-12749 josé@12869-13139 la@13139-13289 real@13290-13529 de@13529-13619 no@13619-13739 canta@13739-14219 habla@14763-15239
+16580	oyo	FINAL: si me das por dentro las por dentro narra el de en mil novecientos sesenta y nueve se un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+16582	calce	NO CALZO: si me das por dentro las por dentro narra el de en mil novecientos sesenta y nueve se un disco que se llama hombre doce cortés cinco milongas tres canciones en cuatro de ellos josé la real de no canta habla
+16584	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16589	llegada	parcial nativo=16587 audio=16444 leido=16577 procesado=16587 rms=0.0009 relevos=1
+16600	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16618	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16633	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16654	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16667	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16683	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16686	llegada	parcial nativo=16682 audio=16544 leido=16674 procesado=16682 rms=0.0010 relevos=1
+16699	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16718	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16733	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16753	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16766	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16778	llegada	parcial nativo=16774 audio=16644 leido=16774 procesado=16774 rms=0.0009 relevos=1
+16785	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16799	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16817	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16832	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16852	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16866	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16882	llegada	parcial nativo=16880 audio=16744 leido=16870 procesado=16879 rms=0.0008 relevos=1
+16883	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16899	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16918	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16931	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16949	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16966	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16981	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+16990	llegada	parcial nativo=16985 audio=16844 leido=16974 procesado=16985 rms=0.0001 relevos=1
+16998	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17018	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17032	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17052	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17064	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17082	llegada	parcial nativo=17075 audio=16944 leido=17075 procesado=17075 rms=0.0000 relevos=1
+17094	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17097	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17114	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17161	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17186	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17188	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17192	llegada	parcial nativo=17177 audio=17044 leido=17172 procesado=17177 rms=0.0000 relevos=1
+17196	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17213	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17230	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17246	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17263	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17279	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17283	llegada	parcial nativo=17280 audio=17144 leido=17275 procesado=17280 rms=0.0000 relevos=1
+17296	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17313	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17329	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17347	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17362	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17375	llegada	parcial nativo=17374 audio=17244 leido=17373 procesado=17374 rms=0.0000 relevos=1
+17379	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17397	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17413	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17429	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17445	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17462	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17479	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17485	llegada	parcial nativo=17483 audio=17344 leido=17475 procesado=17483 rms=0.0001 relevos=1
+17496	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17513	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17528	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17551	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17562	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17578	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17582	llegada	parcial nativo=17579 audio=17444 leido=17573 procesado=17579 rms=0.0000 relevos=1
+17595	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17612	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17628	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17645	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17661	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17675	llegada	parcial nativo=17671 audio=17544 leido=17671 procesado=17671 rms=0.0000 relevos=1
+17679	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17694	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17712	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17728	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17745	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17761	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17778	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17786	llegada	parcial nativo=17784 audio=17644 leido=17773 procesado=17784 rms=0.0000 relevos=1
+17795	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17811	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17827	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17844	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17860	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17877	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17890	llegada	parcial nativo=17886 audio=17744 leido=17873 procesado=17886 rms=0.0000 relevos=1
+17894	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17910	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17926	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17943	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17960	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17979	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+17980	llegada	parcial nativo=17978 audio=17844 leido=17977 procesado=17978 rms=0.0002 relevos=1
+17993	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18009	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18025	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18043	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18059	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18076	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18093	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18095	llegada	parcial nativo=18093 audio=17944 leido=18078 procesado=18093 rms=0.0002 relevos=1
+18110	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18125	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18144	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18159	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18177	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18187	llegada	parcial nativo=18185 audio=18044 leido=18173 procesado=18185 rms=0.0004 relevos=1
+18193	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18209	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18226	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18244	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18258	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18276	llegada	parcial nativo=18273 audio=18144 leido=18272 procesado=18273 rms=0.0002 relevos=1
+18277	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18293	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18309	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18325	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18343	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18359	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18374	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18387	llegada	parcial nativo=18384 audio=18244 leido=18378 procesado=18384 rms=0.0003 relevos=1
+18391	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18409	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18424	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18440	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18457	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18475	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18484	llegada	parcial nativo=18481 audio=18344 leido=18472 procesado=18481 rms=0.0001 relevos=1
+18490	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18508	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18524	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18542	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18557	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18574	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18576	llegada	parcial nativo=18572 audio=18444 leido=18572 procesado=18572 rms=0.0001 relevos=1
+18590	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18609	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18624	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18640	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18657	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18674	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18689	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18692	llegada	parcial nativo=18690 audio=18544 leido=18676 procesado=18690 rms=0.0000 relevos=1
+18707	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18724	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18740	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18756	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18774	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18787	llegada	parcial nativo=18784 audio=18644 leido=18773 procesado=18784 rms=0.0000 relevos=1
+18789	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18807	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18823	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18839	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18855	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18872	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18878	llegada	parcial nativo=18876 audio=18744 leido=18875 procesado=18875 rms=0.0000 relevos=1
+18888	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18905	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18923	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18938	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18955	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18971	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+18988	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19004	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19016	llegada	parcial nativo=19012 audio=18844 leido=18969 procesado=19012 rms=0.0000 relevos=1
+19021	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19037	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19056	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19072	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19083	llegada	parcial nativo=19080 audio=18944 leido=19074 procesado=19080 rms=0.0000 relevos=1
+19087	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19104	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19122	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19137	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19154	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19172	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19180	llegada	parcial nativo=19176 audio=19044 leido=19175 procesado=19176 rms=0.0001 relevos=1
+19187	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19204	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19220	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19237	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19254	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19271	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19283	llegada	parcial nativo=19279 audio=19144 leido=19270 procesado=19279 rms=0.0008 relevos=1
+19286	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19303	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19323	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19336	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19353	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19369	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19378	llegada	parcial nativo=19376 audio=19244 leido=19369 procesado=19376 rms=0.0001 relevos=1
+19386	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19402	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19418	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19468	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19469	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19476	llegada	parcial nativo=19474 audio=19344 leido=19474 procesado=19474 rms=0.0004 relevos=1
+19486	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19501	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19520	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19535	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19551	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19568	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19590	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19601	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19618	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19634	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19652	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19667	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19684	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19701	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19718	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19734	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19750	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19760	llegada	parcial nativo=19758 audio=19444 leido=19748 procesado=19758 rms=0.0001 relevos=1
+19767	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19783	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19799	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19817	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19833	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19850	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19859	llegada	parcial nativo=19856 audio=19544 leido=19848 procesado=19856 rms=0.0002 relevos=1
+19866	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19884	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19900	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19917	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19934	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19949	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+19950	llegada	parcial nativo=19947 audio=19644 leido=19947 procesado=19947 rms=0.0008 relevos=1

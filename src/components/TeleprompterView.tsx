@@ -11,6 +11,7 @@ import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
 import { palabrasDelDestacado, segmentosDelDestacado, CajaPalabra } from '../lib/destacado'
+import { acercarScroll } from '../lib/deslizar'
 import type { Layout } from '../hooks/useLayout'
 import {
   abrirMarcaSiCorresponde,
@@ -166,7 +167,10 @@ export const MARGEN_RENGLONES_ARRIBA = 0
 
 // Cuanto tarda la pantalla en pasar de un renglon al siguiente. Constante de tiempo de un
 // acercamiento exponencial: con 70 ms, el renglon se recorre casi entero en unos 200.
-export const MS_DESLIZAR = 70
+// -13-10-2026, banco del motor-: la constante y la cuenta del acercamiento viven ahora en
+// lib/deslizar.ts, con este mismo valor; se reexporta aqui para quien la importaba de la vista.
+// Antes: export const MS_DESLIZAR = 70
+export { MS_DESLIZAR } from '../lib/deslizar'
 
 // TOPBANDA SE RESTABA DOS VECES, Y ESO SACABA EL RENGLON VIVO DE LA VENTANA.
 //
@@ -1039,9 +1043,13 @@ export default function TeleprompterView({
       const dtCuadro = ultimoCuadroRef.current === null ? 16 : Math.min(100, tAhora - ultimoCuadroRef.current)
       ultimoCuadroRef.current = tAhora
       if (scrollSuaveRef.current === null) scrollSuaveRef.current = topObjetivo
-      const acercamiento = 1 - Math.exp(-dtCuadro / MS_DESLIZAR)
-      scrollSuaveRef.current += (topObjetivo - scrollSuaveRef.current) * acercamiento
-      if (Math.abs(topObjetivo - scrollSuaveRef.current) < 0.5) scrollSuaveRef.current = topObjetivo
+      // -13-10-2026, banco del motor-: la misma cuenta, sacada a lib/deslizar.ts para que el banco
+      // la simule sin copiarla.
+      // Antes:
+      // const acercamiento = 1 - Math.exp(-dtCuadro / MS_DESLIZAR)
+      // scrollSuaveRef.current += (topObjetivo - scrollSuaveRef.current) * acercamiento
+      // if (Math.abs(topObjetivo - scrollSuaveRef.current) < 0.5) scrollSuaveRef.current = topObjetivo
+      scrollSuaveRef.current = acercarScroll(scrollSuaveRef.current, topObjetivo, dtCuadro)
       const top = scrollSuaveRef.current
 
       if (diagnostico && containerRef.current) {
