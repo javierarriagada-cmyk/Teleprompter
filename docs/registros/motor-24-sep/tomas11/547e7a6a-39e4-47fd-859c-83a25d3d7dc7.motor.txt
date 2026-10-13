@@ -1,0 +1,2260 @@
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: 547e7a6a-39e4-47fd-859c-83a25d3d7dc7
+# inicio del video (epoch ms): 1790271710673
+# motor de voz: nativo
+# letra: 14 px, serif
+# columna: completa, margen 12%
+# donde lees: arriba
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana. No dice solo que a veces somos egoístas o crueles. Dice que hay un límite que nunca vamos a poder superar. Sin importar qué tan buena sea nuestra formación, o las leyes o las circunstancias, y este límite es el interés propio, y se expresa en las ganas de estatus, de aparentar o de engañarnos solos. Esta idea dice que somos así y ninguna reforma o método educativo o entorno familiar lo va a poder cambiar. Somos lo que somos. 
+# | Cuando alguien toma en serio esta idea, casi siempre da un paso más. Dice: si estamos llenos de sesgos, prejuicios y egoísmos, entonces estamos en general contaminados. Y si es asi, todo proyecto de mejora en la política, la ciencia o las instituciones es, en buena parte, un derroche de tiempo, de recursos. Este razonamiento, logico, es la explicación favorita de la desconfianza que vemos hoy hacia la política, aquí en Chile y en el mundo: si los políticos son así por naturaleza —y sobran los ejemplos—, ¿para qué confiar en reformas, instituciones, partidos? de todas formas parece que estamos condenados a repetir lo que somos en todo lo que hacemos. hablemos de un subsecretario o del tesorero del colegio.
+# | con la parte trágica, nuestra naturaleza, tiene evidencia a favor hasta ahogarnos, tenemos poco que hacer. Pero con la conclusión errónea que se saca de ella podemos hacer mucho. Nuestra motivación moral tiene un límite estable que no vamos a superar, pero eso no indica que estamos condenados a la ignorancia política y social para siempre. La naturaleza puede ser trágica. Pero la razón y el conocimiento no tienen por qué serlo.
+# | Platón nos dejo uno de los experimentos mentales más poderosos de toda la filosofía: el anillo de Giges, en La República. Glaucón, el hermano de platón, cuenta la historia de un pastor que encuentra un anillo mágico. Ese anillo lo vuelve invisible cuando quiere. Y en cuanto descubre ese poder, despues de algunas acciones, seduce a la reina, mata al rey y se queda con el trono. El anillo no lo convirtió en una mala persona, pero le quitó las consecuencias de ser una mala persona.
+# ---------------------------------------------
+
+ms	tipo	detalle
+9	renglones	0 7 13 21 29 36 42 50 59 68 75 83 90 94 102 110 116 121 131 139 146 152 158 167 176 182 187 193 200 208 214 220 226 233 240 245 253 261 268 274 282 286 293 300 308 316 323 330 338 346 357 365
+9	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+25	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+42	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+58	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+76	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+93	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+110	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+125	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+142	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+158	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+175	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+191	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+208	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+224	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+241	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+258	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+274	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+291	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+307	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+325	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+342	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+357	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+376	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+390	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+407	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+424	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+440	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+457	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+474	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+490	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+507	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+524	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+540	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+556	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+573	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+589	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+606	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+623	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+639	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+655	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+676	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+689	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+705	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+723	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+740	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+757	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+771	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+788	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+805	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+823	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+838	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+854	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+873	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+889	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+904	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+922	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+937	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+955	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+971	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+988	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1003	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1022	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1037	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1056	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1071	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1089	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1105	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1125	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1136	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1153	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1170	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1187	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1203	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1220	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1236	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1255	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1269	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1287	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1302	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1321	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1336	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1342	oido	inicio=1303 trozo=320 ruta=/data/user/0/com.teleprompter.app/files/oido/1790271711976.pcm
+1342	llegada	parcial nativo=1339 audio=1323 leido=1339 procesado=1339 rms=0.1107 relevos=0
+1353	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1368	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1387	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1402	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1422	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1435	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1443	llegada	parcial nativo=1440 audio=1423 leido=1439 procesado=1440 rms=0.1470 relevos=0
+1453	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1468	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1489	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1501	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1520	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1536	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1541	llegada	parcial nativo=1539 audio=1523 leido=1538 procesado=1538 rms=0.1643 relevos=0
+1554	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1568	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1587	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1601	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1623	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1636	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1646	llegada	parcial nativo=1643 audio=1623 leido=1642 procesado=1643 rms=0.1735 relevos=0
+1652	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1668	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1686	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1700	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1718	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1734	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1751	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1767	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1783	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1799	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1822	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1834	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1857	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1866	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1882	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1900	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1916	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1933	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1950	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1967	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1982	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1999	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2015	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2032	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2048	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2066	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2081	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2098	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2114	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2132	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2149	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2165	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2182	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2199	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2216	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2231	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2248	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2265	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2280	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2297	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2314	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2324	llegada	parcial nativo=2322 audio=1723 leido=2321 procesado=2322 rms=0.0775 relevos=0
+2329	llegada	parcial nativo=2326 audio=1823 leido=2327 procesado=2327 rms=0.1456 relevos=0
+2330	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2333	llegada	parcial nativo=2331 audio=1923 leido=2330 procesado=2331 rms=0.1142 relevos=0
+2346	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2363	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2381	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2397	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2414	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2429	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2447	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2463	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2477	llegada	parcial nativo=2475 audio=2023 leido=2475 procesado=2475 rms=0.1391 relevos=0
+2479	llegada	parcial nativo=2477 audio=2123 leido=2476 procesado=2477 rms=0.1472 relevos=0
+2480	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2496	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+2509	llegada	parcial nativo=2507 audio=2183 leido=2477 procesado=2507 rms=0.0071 relevos=0
+2510	oyo	parcial: la antigua
+2515	calce	NO CALZO: la antigua
+2518	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2529	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2544	llegada	parcial nativo=2542 audio=2283 leido=2541 procesado=2542 rms=0.0084 relevos=0
+2544	oyo	parcial: la antigua
+2544	calce	NO CALZO: la antigua
+2546	llegada	parcial nativo=2544 audio=2383 leido=2544 procesado=2544 rms=0.0924 relevos=0
+2546	oyo	parcial: la antigua
+2547	calce	NO CALZO: la antigua
+2547	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2562	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2579	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2595	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2605	llegada	parcial nativo=2604 audio=2483 leido=2604 procesado=2604 rms=0.1107 relevos=0
+2605	oyo	parcial: la antigua
+2605	calce	NO CALZO: la antigua
+2613	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2630	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2643	llegada	parcial nativo=2641 audio=2580 leido=2641 procesado=2641 rms=0.1173 relevos=1
+2643	oyo	parcial: la antigua
+2643	calce	NO CALZO: la antigua
+2645	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2662	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2679	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2695	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2713	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2728	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2736	llegada	parcial nativo=2734 audio=2660 leido=2681 procesado=2734 rms=0.1255 relevos=1
+2736	oyo	parcial: la antigua que
+2737	calce	NO CALZO: la antigua que
+2745	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2763	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2780	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2781	llegada	parcial nativo=2779 audio=2760 leido=2778 procesado=2779 rms=0.1408 relevos=1
+2782	oyo	parcial: la antigua que
+2782	calce	NO CALZO: la antigua que
+2795	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2812	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2828	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2845	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2861	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2879	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2890	llegada	parcial nativo=2883 audio=2860 leido=2881 procesado=2883 rms=0.1231 relevos=1
+2890	oyo	parcial: la antigua que
+2892	calce	NO CALZO: la antigua que
+2894	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2912	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2928	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2944	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2960	cuadro	pos=0.00 calce=0 scroll=0 freno=sin-calce trabado=0
+2967	llegada	parcial nativo=2965 audio=2900 leido=2918 procesado=2965 rms=0.1068 relevos=1
+2968	oyo	parcial: la antigua que podríamos
+2968	calce	token 5: la antigua que podríamos
+2977	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+2993	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3010	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3021	llegada	parcial nativo=3020 audio=3000 leido=3019 procesado=3020 rms=0.1351 relevos=1
+3021	oyo	parcial: la antigua que podríamos
+3022	calce	token 5: la antigua que podríamos
+3026	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3043	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3060	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3077	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3093	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3110	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3125	llegada	parcial nativo=3121 audio=3100 leido=3119 procesado=3120 rms=0.1456 relevos=1
+3125	oyo	parcial: la antigua que podríamos
+3126	calce	token 5: la antigua que podríamos
+3127	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3144	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3160	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3176	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3192	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3210	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3225	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3242	cuadro	pos=0.00 calce=5 scroll=0 freno=sin-calce trabado=0
+3244	llegada	parcial nativo=3241 audio=3140 leido=3158 procesado=3241 rms=0.0191 relevos=1
+3244	oyo	parcial: la antigua que podríamos llamar
+3244	calce	token 6: la antigua que podríamos llamar
+3258	llegada	parcial nativo=3256 audio=3240 leido=3255 procesado=3256 rms=0.0050 relevos=1
+3258	oyo	parcial: la antigua que podríamos llamar
+3258	calce	token 6: la antigua que podríamos llamar
+3263	cuadro	pos=0.00 calce=6 scroll=0 freno=sin-calce trabado=0
+3275	cuadro	pos=0.00 calce=6 scroll=0 freno=sin-calce trabado=0
+3292	cuadro	pos=0.00 calce=6 scroll=0 freno=sin-calce trabado=0
+3309	cuadro	pos=0.00 calce=6 scroll=0 freno=sin-calce trabado=0
+3326	cuadro	pos=0.00 calce=6 scroll=0 freno=sin-calce trabado=0
+3342	cuadro	pos=0.00 calce=6 scroll=0 freno=sin-calce trabado=0
+3359	cuadro	pos=0.00 calce=6 scroll=0 freno=sin-calce trabado=0
+3362	llegada	parcial nativo=3360 audio=3340 leido=3358 procesado=3360 rms=0.0001 relevos=1
+3362	oyo	parcial: la antigua que podríamos llamar
+3363	calce	token 6: la antigua que podríamos llamar
+3376	cuadro	pos=0.00 calce=6 scroll=0 freno=sin-calce trabado=0
+3392	cuadro	pos=0.00 calce=6 scroll=0 freno=sin-calce trabado=0
+3409	cuadro	pos=0.00 calce=6 scroll=0 freno=sin-calce trabado=0
+3425	cuadro	pos=0.00 calce=6 scroll=0 freno=sin-calce trabado=0
+3442	cuadro	pos=0.00 calce=6 scroll=0 freno=sin-calce trabado=0
+3458	cuadro	pos=0.00 calce=6 scroll=0 freno=sin-calce trabado=0
+3461	llegada	parcial nativo=3459 audio=3440 leido=3458 procesado=3459 rms=0.0031 relevos=1
+3461	oyo	parcial: la antigua que podríamos llamar
+3462	calce	token 6: la antigua que podríamos llamar
+3475	cuadro	pos=1.19 calce=6 scroll=0 freno=- trabado=0
+3491	cuadro	pos=1.29 calce=6 scroll=0 freno=- trabado=0
+3507	cuadro	pos=1.38 calce=6 scroll=0 freno=- trabado=0
+3525	cuadro	pos=1.47 calce=6 scroll=0 freno=- trabado=0
+3541	cuadro	pos=1.57 calce=6 scroll=0 freno=- trabado=0
+3559	cuadro	pos=1.69 calce=6 scroll=4 freno=- trabado=1
+3562	llegada	parcial nativo=3557 audio=3540 leido=3556 procesado=3557 rms=0.0003 relevos=1
+3562	oyo	parcial: la antigua que podríamos llamar
+3563	calce	token 6: la antigua que podríamos llamar
+3574	cuadro	pos=2.48 calce=6 scroll=7 freno=- trabado=1
+3591	cuadro	pos=2.60 calce=6 scroll=10 freno=- trabado=1
+3607	cuadro	pos=2.73 calce=6 scroll=12 freno=- trabado=1
+3625	cuadro	pos=2.86 calce=6 scroll=14 freno=- trabado=1
+3641	cuadro	pos=2.98 calce=6 scroll=15 freno=- trabado=1
+3657	cuadro	pos=3.10 calce=6 scroll=16 freno=- trabado=1
+3668	llegada	parcial nativo=3667 audio=3640 leido=3666 procesado=3667 rms=0.0004 relevos=1
+3668	oyo	parcial: la antigua que podríamos llamar
+3668	calce	token 6: la antigua que podríamos llamar
+3674	cuadro	pos=4.65 calce=6 scroll=17 freno=- trabado=1
+3691	cuadro	pos=4.77 calce=6 scroll=18 freno=- trabado=1
+3706	cuadro	pos=4.87 calce=6 scroll=18 freno=- trabado=1
+3723	cuadro	pos=4.97 calce=6 scroll=19 freno=- trabado=1
+3740	cuadro	pos=5.07 calce=6 scroll=19 freno=- trabado=1
+3756	cuadro	pos=5.17 calce=6 scroll=19 freno=- trabado=1
+3761	llegada	parcial nativo=3759 audio=3740 leido=3757 procesado=3759 rms=0.0423 relevos=1
+3761	oyo	parcial: la antigua que podríamos llamar
+3761	calce	token 6: la antigua que podríamos llamar
+3773	cuadro	pos=5.43 calce=6 scroll=19 freno=- trabado=1
+3790	cuadro	pos=5.50 calce=6 scroll=19 freno=- trabado=1
+3806	cuadro	pos=5.57 calce=6 scroll=20 freno=- trabado=1
+3823	cuadro	pos=5.63 calce=6 scroll=20 freno=- trabado=1
+3840	cuadro	pos=5.69 calce=6 scroll=20 freno=- trabado=1
+3858	cuadro	pos=5.75 calce=6 scroll=20 freno=- trabado=1
+3863	llegada	parcial nativo=3857 audio=3840 leido=3855 procesado=3857 rms=0.1405 relevos=1
+3863	oyo	parcial: la antigua que podríamos llamar
+3863	calce	token 6: la antigua que podríamos llamar
+3872	cuadro	pos=6.02 calce=6 scroll=20 freno=- trabado=1
+3892	cuadro	pos=6.07 calce=6 scroll=20 freno=- trabado=1
+3906	cuadro	pos=6.11 calce=6 scroll=20 freno=- trabado=1
+3922	cuadro	pos=6.15 calce=6 scroll=20 freno=- trabado=1
+3938	cuadro	pos=6.19 calce=6 scroll=20 freno=- trabado=1
+3956	cuadro	pos=6.23 calce=6 scroll=20 freno=- trabado=1
+3964	llegada	parcial nativo=3962 audio=3940 leido=3962 procesado=3962 rms=0.1201 relevos=1
+3964	oyo	parcial: la antigua que podríamos llamar
+3965	calce	token 6: la antigua que podríamos llamar
+3972	cuadro	pos=6.25 calce=6 scroll=20 freno=- trabado=1
+3988	cuadro	pos=6.25 calce=6 scroll=20 freno=- trabado=1
+4005	cuadro	pos=6.25 calce=6 scroll=20 freno=- trabado=1
+4022	cuadro	pos=6.25 calce=6 scroll=20 freno=- trabado=1
+4038	cuadro	pos=6.25 calce=6 scroll=20 freno=- trabado=1
+4055	cuadro	pos=6.25 calce=6 scroll=20 freno=- trabado=1
+4062	llegada	parcial nativo=4060 audio=4040 leido=4059 procesado=4060 rms=0.0516 relevos=1
+4062	oyo	parcial: la antigua que podríamos llamar
+4062	calce	token 6: la antigua que podríamos llamar
+4072	cuadro	pos=6.25 calce=6 scroll=20 freno=- trabado=1
+4090	cuadro	pos=6.25 calce=6 scroll=20 freno=- trabado=1
+4104	cuadro	pos=6.25 calce=6 scroll=20 freno=- trabado=1
+4121	cuadro	pos=6.25 calce=6 scroll=20 freno=- trabado=1
+4137	cuadro	pos=6.25 calce=6 scroll=20 freno=- trabado=1
+4156	cuadro	pos=6.25 calce=6 scroll=20 freno=- trabado=1
+4168	llegada	parcial nativo=4167 audio=4100 leido=4116 procesado=4167 rms=0.0675 relevos=1
+4168	oyo	parcial: la antigua que podríamos llamar la
+4168	calce	token 7: la antigua que podríamos llamar la
+4172	cuadro	pos=7.01 calce=7 scroll=20 freno=- trabado=1
+4187	cuadro	pos=7.05 calce=7 scroll=20 freno=- trabado=1
+4204	cuadro	pos=7.09 calce=7 scroll=20 freno=- trabado=1
+4222	llegada	parcial nativo=4218 audio=4200 leido=4217 procesado=4218 rms=0.0786 relevos=1
+4222	oyo	parcial: la antigua que podríamos llamar la
+4223	calce	token 7: la antigua que podríamos llamar la
+4224	cuadro	pos=7.14 calce=7 scroll=20 freno=- trabado=1
+4237	cuadro	pos=7.14 calce=7 scroll=20 freno=- trabado=1
+4254	cuadro	pos=7.14 calce=7 scroll=20 freno=- trabado=1
+4271	cuadro	pos=7.14 calce=7 scroll=20 freno=- trabado=1
+4290	cuadro	pos=7.17 calce=7 scroll=20 freno=- trabado=1
+4303	cuadro	pos=7.20 calce=7 scroll=20 freno=- trabado=1
+4322	llegada	parcial nativo=4317 audio=4300 leido=4316 procesado=4317 rms=0.1546 relevos=1
+4322	oyo	parcial: la antigua que podríamos llamar la
+4322	calce	token 7: la antigua que podríamos llamar la
+4323	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4337	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4354	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4370	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4387	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4403	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4420	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4422	llegada	parcial nativo=4420 audio=4400 leido=4418 procesado=4420 rms=0.0284 relevos=1
+4422	oyo	parcial: la antigua que podríamos llamar la
+4422	calce	token 7: la antigua que podríamos llamar la
+4436	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4455	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4470	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4486	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4502	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4522	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4524	llegada	parcial nativo=4521 audio=4500 leido=4519 procesado=4521 rms=0.1652 relevos=1
+4524	oyo	parcial: la antigua que podríamos llamar la
+4524	calce	token 7: la antigua que podríamos llamar la
+4536	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4553	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4569	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4587	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4602	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4619	cuadro	pos=7.25 calce=7 scroll=20 freno=- trabado=1
+4635	cuadro	pos=7.28 calce=7 scroll=20 freno=- trabado=1
+4643	llegada	parcial nativo=4642 audio=4580 leido=4594 procesado=4642 rms=0.0366 relevos=1
+4643	oyo	parcial: la antigua que podríamos llamar la concepción
+4643	calce	token 8: la antigua que podríamos llamar la concepción
+4653	cuadro	pos=7.91 calce=8 scroll=20 freno=- trabado=1
+4668	cuadro	pos=7.96 calce=8 scroll=20 freno=- trabado=1
+4687	cuadro	pos=8.02 calce=8 scroll=20 freno=- trabado=1
+4696	llegada	parcial nativo=4695 audio=4680 leido=4694 procesado=4695 rms=0.0673 relevos=1
+4696	oyo	parcial: la antigua que podríamos llamar la concepción
+4697	calce	token 8: la antigua que podríamos llamar la concepción
+4701	cuadro	pos=8.04 calce=8 scroll=20 freno=- trabado=1
+4719	cuadro	pos=8.05 calce=8 scroll=20 freno=- trabado=1
+4735	cuadro	pos=8.09 calce=8 scroll=20 freno=- trabado=1
+4752	cuadro	pos=8.13 calce=8 scroll=20 freno=- trabado=1
+4768	cuadro	pos=8.16 calce=8 scroll=20 freno=- trabado=1
+4786	cuadro	pos=8.20 calce=8 scroll=20 freno=- trabado=1
+4798	llegada	parcial nativo=4796 audio=4780 leido=4795 procesado=4796 rms=0.1790 relevos=1
+4798	oyo	parcial: la antigua que podríamos llamar la concepción
+4798	calce	token 8: la antigua que podríamos llamar la concepción
+4804	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+4831	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+4834	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+4853	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+4867	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+4886	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+4896	llegada	parcial nativo=4894 audio=4880 leido=4894 procesado=4894 rms=0.1212 relevos=1
+4896	oyo	parcial: la antigua que podríamos llamar la concepción
+4896	calce	token 8: la antigua que podríamos llamar la concepción
+4901	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+4918	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+4934	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+4953	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+4967	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+4984	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+4997	llegada	parcial nativo=4995 audio=4980 leido=4994 procesado=4995 rms=0.0064 relevos=1
+4997	oyo	parcial: la antigua que podríamos llamar la concepción
+4997	calce	token 8: la antigua que podríamos llamar la concepción
+5004	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+5018	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+5033	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+5050	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+5066	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+5085	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+5099	cuadro	pos=8.23 calce=8 scroll=20 freno=- trabado=1
+5111	llegada	parcial nativo=5110 audio=5060 leido=5075 procesado=5110 rms=0.0708 relevos=1
+5111	oyo	parcial: la antigua que podríamos llamar la concepción trágica
+5111	calce	token 9: la antigua que podríamos llamar la concepción trágica
+5120	cuadro	pos=8.74 calce=9 scroll=20 freno=- trabado=1
+5133	cuadro	pos=8.78 calce=9 scroll=20 freno=- trabado=1
+5150	cuadro	pos=8.83 calce=9 scroll=20 freno=- trabado=1
+5166	cuadro	pos=8.87 calce=9 scroll=20 freno=- trabado=1
+5179	llegada	parcial nativo=5177 audio=5160 leido=5176 procesado=5177 rms=0.1202 relevos=1
+5179	oyo	parcial: la antigua que podríamos llamar la concepción trágica
+5180	calce	token 9: la antigua que podríamos llamar la concepción trágica
+5190	cuadro	pos=9.02 calce=9 scroll=20 freno=- trabado=1
+5199	cuadro	pos=9.04 calce=9 scroll=20 freno=- trabado=1
+5217	cuadro	pos=9.08 calce=9 scroll=20 freno=- trabado=1
+5232	cuadro	pos=9.11 calce=9 scroll=20 freno=- trabado=1
+5250	cuadro	pos=9.15 calce=9 scroll=20 freno=- trabado=1
+5265	cuadro	pos=9.19 calce=9 scroll=20 freno=- trabado=1
+5280	llegada	parcial nativo=5278 audio=5260 leido=5277 procesado=5278 rms=0.1010 relevos=1
+5280	oyo	parcial: la antigua que podríamos llamar la concepción trágica
+5281	calce	token 9: la antigua que podríamos llamar la concepción trágica
+5289	cuadro	pos=9.22 calce=9 scroll=20 freno=- trabado=1
+5298	cuadro	pos=9.22 calce=9 scroll=20 freno=- trabado=1
+5316	cuadro	pos=9.22 calce=9 scroll=20 freno=- trabado=1
+5332	cuadro	pos=9.22 calce=9 scroll=20 freno=- trabado=1
+5348	cuadro	pos=9.22 calce=9 scroll=20 freno=- trabado=1
+5364	llegada	parcial nativo=5363 audio=5300 leido=5316 procesado=5363 rms=0.0885 relevos=1
+5364	oyo	parcial: la antigua que podríamos llamar la concepción trágica de
+5365	calce	token 10: la antigua que podríamos llamar la concepción trágica de
+5365	cuadro	pos=9.22 calce=10 scroll=20 freno=- trabado=1
+5384	cuadro	pos=9.74 calce=10 scroll=20 freno=- trabado=1
+5398	cuadro	pos=9.79 calce=10 scroll=20 freno=- trabado=1
+5415	cuadro	pos=9.84 calce=10 scroll=20 freno=- trabado=1
+5425	llegada	parcial nativo=5423 audio=5400 leido=5422 procesado=5423 rms=0.1522 relevos=1
+5426	oyo	parcial: la antigua que podríamos llamar la concepción trágica de
+5426	calce	token 10: la antigua que podríamos llamar la concepción trágica de
+5431	cuadro	pos=10.01 calce=10 scroll=20 freno=- trabado=1
+5448	cuadro	pos=10.05 calce=10 scroll=20 freno=- trabado=1
+5464	cuadro	pos=10.08 calce=10 scroll=20 freno=- trabado=1
+5486	cuadro	pos=10.13 calce=10 scroll=20 freno=- trabado=1
+5497	cuadro	pos=10.15 calce=10 scroll=20 freno=- trabado=1
+5516	cuadro	pos=10.19 calce=10 scroll=20 freno=- trabado=1
+5522	llegada	parcial nativo=5518 audio=5500 leido=5517 procesado=5518 rms=0.1342 relevos=1
+5522	oyo	parcial: la antigua que podríamos llamar la concepción trágica de
+5522	calce	token 10: la antigua que podríamos llamar la concepción trágica de
+5530	cuadro	pos=10.21 calce=10 scroll=20 freno=- trabado=1
+5548	cuadro	pos=10.21 calce=10 scroll=20 freno=- trabado=1
+5564	cuadro	pos=10.21 calce=10 scroll=20 freno=- trabado=1
+5583	cuadro	pos=10.21 calce=10 scroll=20 freno=- trabado=1
+5597	cuadro	pos=10.21 calce=10 scroll=20 freno=- trabado=1
+5614	cuadro	pos=10.21 calce=10 scroll=20 freno=- trabado=1
+5630	cuadro	pos=10.23 calce=10 scroll=20 freno=- trabado=1
+5647	cuadro	pos=10.27 calce=10 scroll=20 freno=- trabado=1
+5657	llegada	parcial nativo=5654 audio=5540 leido=5559 procesado=5654 rms=0.0945 relevos=1
+5657	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la
+5657	calce	token 11: la antigua que podríamos llamar la concepción trágica de la
+5663	cuadro	pos=10.90 calce=11 scroll=20 freno=- trabado=1
+5674	llegada	parcial nativo=5672 audio=5640 leido=5671 procesado=5672 rms=0.0708 relevos=1
+5674	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la
+5674	calce	token 11: la antigua que podríamos llamar la concepción trágica de la
+5680	cuadro	pos=11.01 calce=11 scroll=20 freno=- trabado=1
+5696	cuadro	pos=11.05 calce=11 scroll=20 freno=- trabado=1
+5713	cuadro	pos=11.09 calce=11 scroll=20 freno=- trabado=1
+5729	cuadro	pos=11.12 calce=11 scroll=20 freno=- trabado=1
+5746	cuadro	pos=11.16 calce=11 scroll=20 freno=- trabado=1
+5760	llegada	parcial nativo=5759 audio=5740 leido=5757 procesado=5759 rms=0.0816 relevos=1
+5760	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la
+5761	calce	token 11: la antigua que podríamos llamar la concepción trágica de la
+5765	cuadro	pos=11.19 calce=11 scroll=20 freno=- trabado=1
+5780	cuadro	pos=11.19 calce=11 scroll=20 freno=- trabado=1
+5796	cuadro	pos=11.19 calce=11 scroll=20 freno=- trabado=1
+5812	cuadro	pos=11.19 calce=11 scroll=20 freno=- trabado=1
+5829	cuadro	pos=11.19 calce=11 scroll=20 freno=- trabado=1
+5845	cuadro	pos=11.19 calce=11 scroll=20 freno=- trabado=1
+5854	llegada	parcial nativo=5845 audio=5780 leido=5794 procesado=5845 rms=0.0533 relevos=1
+5854	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la naturaleza
+5855	calce	token 12: la antigua que podríamos llamar la concepción trágica de la naturaleza
+5862	cuadro	pos=11.69 calce=12 scroll=20 freno=- trabado=1
+5880	cuadro	pos=11.74 calce=12 scroll=20 freno=- trabado=1
+5895	cuadro	pos=11.79 calce=12 scroll=20 freno=- trabado=1
+5898	llegada	parcial nativo=5895 audio=5880 leido=5894 procesado=5895 rms=0.0427 relevos=1
+5898	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la naturaleza
+5898	calce	token 12: la antigua que podríamos llamar la concepción trágica de la naturaleza
+5912	cuadro	pos=12.03 calce=12 scroll=20 freno=- trabado=1
+5929	cuadro	pos=12.07 calce=12 scroll=20 freno=- trabado=1
+5945	cuadro	pos=12.11 calce=12 scroll=20 freno=- trabado=1
+5962	cuadro	pos=12.14 calce=12 scroll=20 freno=- trabado=1
+5978	cuadro	pos=12.18 calce=12 scroll=20 freno=- trabado=1
+5995	cuadro	pos=12.22 calce=12 scroll=20 freno=- trabado=1
+5997	llegada	parcial nativo=5994 audio=5980 leido=5993 procesado=5994 rms=0.0129 relevos=1
+5997	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la naturaleza
+5998	calce	token 12: la antigua que podríamos llamar la concepción trágica de la naturaleza
+6011	cuadro	pos=12.22 calce=12 scroll=20 freno=- trabado=1
+6028	cuadro	pos=12.22 calce=12 scroll=20 freno=- trabado=1
+6045	cuadro	pos=12.22 calce=12 scroll=20 freno=- trabado=1
+6062	cuadro	pos=12.22 calce=12 scroll=20 freno=- trabado=1
+6078	cuadro	pos=12.22 calce=12 scroll=20 freno=- trabado=1
+6094	cuadro	pos=12.22 calce=12 scroll=20 freno=- trabado=1
+6111	cuadro	pos=12.25 calce=12 scroll=20 freno=- trabado=1
+6129	cuadro	pos=12.29 calce=12 scroll=20 freno=- trabado=1
+6135	llegada	parcial nativo=6130 audio=6020 leido=6037 procesado=6130 rms=0.0012 relevos=1
+6135	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6136	calce	token 13: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6144	cuadro	pos=12.89 calce=13 scroll=24 freno=- trabado=2
+6153	llegada	parcial nativo=6151 audio=6120 leido=6141 procesado=6151 rms=0.0002 relevos=1
+6153	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6153	calce	token 13: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6161	cuadro	pos=13.02 calce=13 scroll=27 freno=- trabado=2
+6177	cuadro	pos=13.06 calce=13 scroll=30 freno=- trabado=2
+6194	cuadro	pos=13.09 calce=13 scroll=32 freno=- trabado=2
+6210	cuadro	pos=13.13 calce=13 scroll=33 freno=- trabado=2
+6227	cuadro	pos=13.17 calce=13 scroll=34 freno=- trabado=2
+6238	llegada	parcial nativo=6237 audio=6220 leido=6235 procesado=6237 rms=0.0001 relevos=1
+6238	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6238	calce	token 13: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6243	cuadro	pos=13.20 calce=13 scroll=35 freno=- trabado=2
+6260	cuadro	pos=13.20 calce=13 scroll=36 freno=- trabado=2
+6277	cuadro	pos=13.20 calce=13 scroll=37 freno=- trabado=2
+6294	cuadro	pos=13.20 calce=13 scroll=37 freno=- trabado=2
+6310	cuadro	pos=13.20 calce=13 scroll=38 freno=- trabado=2
+6326	cuadro	pos=13.20 calce=13 scroll=38 freno=- trabado=2
+6337	llegada	parcial nativo=6335 audio=6320 leido=6335 procesado=6335 rms=0.0003 relevos=1
+6337	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6337	calce	token 13: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6343	cuadro	pos=13.23 calce=13 scroll=38 freno=- trabado=2
+6360	cuadro	pos=13.23 calce=13 scroll=38 freno=- trabado=2
+6376	cuadro	pos=13.23 calce=13 scroll=38 freno=- trabado=2
+6394	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6409	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6426	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6438	llegada	parcial nativo=6436 audio=6420 leido=6435 procesado=6436 rms=0.0018 relevos=1
+6438	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6438	calce	token 13: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6443	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6459	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6476	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6493	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6509	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6527	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6536	llegada	parcial nativo=6535 audio=6520 leido=6534 procesado=6535 rms=0.0015 relevos=1
+6536	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6537	calce	token 13: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6542	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6558	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6575	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6592	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6608	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6625	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6636	llegada	parcial nativo=6634 audio=6620 leido=6634 procesado=6634 rms=0.0029 relevos=1
+6636	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6636	calce	token 13: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6641	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6658	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6675	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6691	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6708	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6724	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6736	llegada	parcial nativo=6735 audio=6720 leido=6734 procesado=6735 rms=0.1104 relevos=1
+6736	oyo	parcial: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6736	calce	token 13: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6741	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6758	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6774	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6775	llegada	FINAL nativo=6773 audio=6740 leido=6753 procesado=6773 rms=0.0627 relevos=1
+6776	palabras	FINAL: la@1303-1363 antigua@1578-2173 que@2233-2353 podríamos@2353-2773 llamar@2773-3222 la@3703-3853 concepción@3853-4333 trágica@4333-4903 de@4963-5113 la@5113-5233 naturaleza@5233-5683 humana@5683-6013
+6776	oyo	FINAL: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6776	calce	token 13: la antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6777	llegada	parcial nativo=6775 audio=6760 leido=6774 procesado=6775 rms=0.0391 relevos=1
+6791	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6807	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6824	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6841	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6858	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6874	cuadro	pos=13.23 calce=13 scroll=39 freno=- trabado=2
+6885	llegada	parcial nativo=6877 audio=6860 leido=6877 procesado=6877 rms=0.1495 relevos=1
+6890	cuadro	pos=13.26 calce=13 scroll=39 freno=- trabado=2
+6907	cuadro	pos=13.30 calce=13 scroll=39 freno=- trabado=2
+6923	cuadro	pos=13.34 calce=13 scroll=39 freno=- trabado=2
+6941	cuadro	pos=13.38 calce=13 scroll=39 freno=- trabado=2
+6957	cuadro	pos=13.42 calce=13 scroll=39 freno=- trabado=2
+6976	cuadro	pos=13.46 calce=13 scroll=39 freno=- trabado=2
+6982	llegada	parcial nativo=6979 audio=6960 leido=6979 procesado=6979 rms=0.1259 relevos=1
+6990	cuadro	pos=13.49 calce=13 scroll=39 freno=- trabado=2
+7007	cuadro	pos=13.53 calce=13 scroll=39 freno=- trabado=2
+7023	cuadro	pos=13.57 calce=13 scroll=39 freno=- trabado=2
+7039	cuadro	pos=13.61 calce=13 scroll=39 freno=- trabado=2
+7053	llegada	parcial nativo=7050 audio=6980 leido=6997 procesado=7050 rms=0.1267 relevos=1
+7053	oyo	parcial: no
+7053	calce	NO CALZO: no
+7056	cuadro	pos=13.64 calce=13 scroll=39 freno=- trabado=2
+7073	cuadro	pos=13.68 calce=13 scroll=39 freno=- trabado=2
+7089	cuadro	pos=13.72 calce=13 scroll=39 freno=- trabado=2
+7099	llegada	parcial nativo=7098 audio=7080 leido=7097 procesado=7098 rms=0.0440 relevos=1
+7099	oyo	parcial: no
+7099	calce	NO CALZO: no
+7106	cuadro	pos=13.76 calce=13 scroll=39 freno=- trabado=2
+7123	cuadro	pos=13.80 calce=13 scroll=39 freno=- trabado=2
+7139	cuadro	pos=13.83 calce=13 scroll=39 freno=- trabado=2
+7156	cuadro	pos=13.87 calce=13 scroll=39 freno=- trabado=2
+7173	cuadro	pos=13.91 calce=13 scroll=39 freno=- trabado=2
+7189	cuadro	pos=13.92 calce=13 scroll=39 freno=- trabado=2
+7197	llegada	parcial nativo=7196 audio=7180 leido=7195 procesado=7196 rms=0.2339 relevos=1
+7197	oyo	parcial: no
+7197	calce	NO CALZO: no
+7205	cuadro	pos=13.92 calce=13 scroll=39 freno=- trabado=2
+7222	cuadro	pos=13.92 calce=13 scroll=39 freno=- trabado=2
+7238	cuadro	pos=13.92 calce=13 scroll=39 freno=- trabado=2
+7256	cuadro	pos=13.92 calce=13 scroll=39 freno=- trabado=2
+7271	cuadro	pos=13.92 calce=13 scroll=39 freno=- trabado=2
+7288	cuadro	pos=13.92 calce=13 scroll=39 freno=- trabado=2
+7300	llegada	parcial nativo=7299 audio=7220 leido=7233 procesado=7298 rms=0.1362 relevos=1
+7300	oyo	parcial: no dices
+7301	calce	token 15: no dices
+7305	cuadro	pos=14.23 calce=15 scroll=39 freno=- trabado=2
+7321	cuadro	pos=14.29 calce=15 scroll=39 freno=- trabado=2
+7337	llegada	parcial nativo=7335 audio=7320 leido=7334 procesado=7335 rms=0.1847 relevos=1
+7337	oyo	parcial: no dices
+7337	calce	token 15: no dices
+7342	cuadro	pos=14.77 calce=15 scroll=39 freno=- trabado=2
+7355	cuadro	pos=14.81 calce=15 scroll=39 freno=- trabado=2
+7371	cuadro	pos=14.86 calce=15 scroll=39 freno=- trabado=2
+7387	cuadro	pos=14.90 calce=15 scroll=39 freno=- trabado=2
+7404	cuadro	pos=14.95 calce=15 scroll=39 freno=- trabado=2
+7422	cuadro	pos=15.00 calce=15 scroll=39 freno=- trabado=2
+7437	llegada	parcial nativo=7435 audio=7420 leido=7434 procesado=7435 rms=0.1820 relevos=1
+7437	oyo	parcial: no dices
+7437	calce	token 15: no dices
+7440	cuadro	pos=15.04 calce=15 scroll=39 freno=- trabado=2
+7454	cuadro	pos=15.04 calce=15 scroll=39 freno=- trabado=2
+7470	cuadro	pos=15.08 calce=15 scroll=39 freno=- trabado=2
+7489	cuadro	pos=15.12 calce=15 scroll=39 freno=- trabado=2
+7504	cuadro	pos=15.16 calce=15 scroll=39 freno=- trabado=2
+7520	cuadro	pos=15.20 calce=15 scroll=39 freno=- trabado=2
+7537	cuadro	pos=15.24 calce=15 scroll=39 freno=- trabado=2
+7554	cuadro	pos=15.28 calce=15 scroll=39 freno=- trabado=2
+7570	cuadro	pos=15.32 calce=15 scroll=39 freno=- trabado=2
+7574	llegada	parcial nativo=7569 audio=7460 leido=7479 procesado=7569 rms=0.1425 relevos=1
+7574	oyo	parcial: nodriza
+7574	calce	NO CALZO: nodriza
+7577	llegada	parcial nativo=7576 audio=7560 leido=7574 procesado=7576 rms=0.0884 relevos=1
+7577	oyo	parcial: nodriza
+7577	calce	NO CALZO: nodriza
+7587	cuadro	pos=15.36 calce=15 scroll=39 freno=- trabado=2
+7603	cuadro	pos=15.40 calce=15 scroll=39 freno=- trabado=2
+7621	cuadro	pos=15.44 calce=15 scroll=39 freno=- trabado=2
+7636	cuadro	pos=15.48 calce=15 scroll=39 freno=- trabado=2
+7653	cuadro	pos=15.52 calce=15 scroll=39 freno=- trabado=2
+7669	cuadro	pos=15.56 calce=15 scroll=39 freno=- trabado=2
+7676	llegada	parcial nativo=7675 audio=7660 leido=7674 procesado=7675 rms=0.0371 relevos=1
+7676	oyo	parcial: nodriza
+7676	calce	NO CALZO: nodriza
+7686	cuadro	pos=15.60 calce=15 scroll=39 freno=- trabado=2
+7702	cuadro	pos=15.64 calce=15 scroll=39 freno=- trabado=2
+7721	cuadro	pos=15.68 calce=15 scroll=39 freno=- trabado=2
+7736	cuadro	pos=15.72 calce=15 scroll=39 freno=- trabado=2
+7752	cuadro	pos=15.76 calce=15 scroll=39 freno=- trabado=2
+7769	cuadro	pos=15.80 calce=15 scroll=39 freno=- trabado=2
+7786	cuadro	pos=15.84 calce=15 scroll=39 freno=- trabado=2
+7802	cuadro	pos=15.88 calce=15 scroll=39 freno=- trabado=2
+7813	llegada	parcial nativo=7810 audio=7700 leido=7722 procesado=7810 rms=0.0183 relevos=1
+7813	oyo	parcial: nodriza solo que a
+7814	calce	token 18: nodriza solo que a
+7819	cuadro	pos=16.35 calce=18 scroll=39 freno=- trabado=2
+7828	llegada	parcial nativo=7826 audio=7800 leido=7826 procesado=7826 rms=0.0073 relevos=1
+7828	oyo	parcial: nodriza solo que a
+7828	calce	token 18: nodriza solo que a
+7835	cuadro	pos=17.02 calce=18 scroll=39 freno=- trabado=2
+7852	cuadro	pos=17.11 calce=18 scroll=39 freno=- trabado=2
+7869	cuadro	pos=17.19 calce=18 scroll=39 freno=- trabado=2
+7886	cuadro	pos=17.27 calce=18 scroll=39 freno=- trabado=2
+7902	cuadro	pos=17.34 calce=18 scroll=39 freno=- trabado=2
+7920	cuadro	pos=17.41 calce=18 scroll=39 freno=- trabado=2
+7925	llegada	parcial nativo=7920 audio=7900 leido=7919 procesado=7920 rms=0.1494 relevos=1
+7925	oyo	parcial: nodriza solo que a
+7926	calce	token 18: nodriza solo que a
+7935	cuadro	pos=18.03 calce=18 scroll=39 freno=- trabado=2
+7952	cuadro	pos=18.07 calce=18 scroll=39 freno=- trabado=2
+7969	cuadro	pos=18.12 calce=18 scroll=39 freno=- trabado=2
+7986	cuadro	pos=18.16 calce=18 scroll=39 freno=- trabado=2
+8001	cuadro	pos=18.20 calce=18 scroll=39 freno=- trabado=2
+8004	llegada	parcial nativo=8002 audio=7940 leido=7955 procesado=8002 rms=0.1127 relevos=1
+8004	oyo	parcial: nodriza solo que a veces
+8004	calce	token 19: nodriza solo que a veces
+8018	cuadro	pos=18.39 calce=19 scroll=39 freno=- trabado=2
+8036	cuadro	pos=18.47 calce=19 scroll=39 freno=- trabado=2
+8052	cuadro	pos=18.53 calce=19 scroll=39 freno=- trabado=2
+8057	llegada	parcial nativo=8055 audio=8040 leido=8054 procesado=8055 rms=0.0729 relevos=1
+8057	oyo	parcial: nodriza solo que a veces
+8057	calce	token 19: nodriza solo que a veces
+8068	cuadro	pos=18.92 calce=19 scroll=39 freno=- trabado=2
+8084	cuadro	pos=18.98 calce=19 scroll=39 freno=- trabado=2
+8101	cuadro	pos=19.03 calce=19 scroll=39 freno=- trabado=2
+8118	cuadro	pos=19.09 calce=19 scroll=39 freno=- trabado=2
+8134	cuadro	pos=19.14 calce=19 scroll=39 freno=- trabado=2
+8151	cuadro	pos=19.19 calce=19 scroll=39 freno=- trabado=2
+8161	llegada	parcial nativo=8159 audio=8140 leido=8158 procesado=8159 rms=0.0024 relevos=1
+8161	oyo	parcial: nodriza solo que a veces
+8161	calce	token 19: nodriza solo que a veces
+8168	cuadro	pos=19.22 calce=19 scroll=39 freno=- trabado=2
+8185	cuadro	pos=19.22 calce=19 scroll=39 freno=- trabado=2
+8200	cuadro	pos=19.22 calce=19 scroll=39 freno=- trabado=2
+8217	cuadro	pos=19.22 calce=19 scroll=39 freno=- trabado=2
+8233	cuadro	pos=19.22 calce=19 scroll=39 freno=- trabado=2
+8250	cuadro	pos=19.26 calce=19 scroll=39 freno=- trabado=2
+8258	llegada	parcial nativo=8257 audio=8240 leido=8255 procesado=8257 rms=0.0966 relevos=1
+8258	oyo	parcial: nodriza solo que a veces
+8259	calce	token 19: nodriza solo que a veces
+8267	cuadro	pos=19.28 calce=19 scroll=39 freno=- trabado=2
+8285	cuadro	pos=19.28 calce=19 scroll=39 freno=- trabado=2
+8300	cuadro	pos=19.28 calce=19 scroll=39 freno=- trabado=2
+8317	cuadro	pos=19.28 calce=19 scroll=39 freno=- trabado=2
+8333	cuadro	pos=19.28 calce=19 scroll=39 freno=- trabado=2
+8350	cuadro	pos=19.28 calce=19 scroll=39 freno=- trabado=2
+8358	llegada	parcial nativo=8357 audio=8340 leido=8354 procesado=8357 rms=0.0682 relevos=1
+8358	oyo	parcial: nodriza solo que a veces
+8358	calce	token 19: nodriza solo que a veces
+8366	cuadro	pos=19.29 calce=19 scroll=39 freno=- trabado=2
+8384	cuadro	pos=19.29 calce=19 scroll=39 freno=- trabado=2
+8399	cuadro	pos=19.29 calce=19 scroll=39 freno=- trabado=2
+8417	cuadro	pos=19.29 calce=19 scroll=39 freno=- trabado=2
+8432	cuadro	pos=19.29 calce=19 scroll=39 freno=- trabado=2
+8452	cuadro	pos=19.29 calce=19 scroll=39 freno=- trabado=2
+8465	cuadro	pos=19.31 calce=19 scroll=39 freno=- trabado=2
+8482	cuadro	pos=19.36 calce=19 scroll=39 freno=- trabado=2
+8489	llegada	parcial nativo=8487 audio=8420 leido=8438 procesado=8487 rms=0.1072 relevos=1
+8489	oyo	parcial: nodriza solo que a veces somos
+8489	calce	token 20: nodriza solo que a veces somos
+8499	cuadro	pos=19.48 calce=20 scroll=39 freno=- trabado=2
+8519	cuadro	pos=19.56 calce=20 scroll=39 freno=- trabado=2
+8532	cuadro	pos=19.62 calce=20 scroll=39 freno=- trabado=2
+8538	llegada	parcial nativo=8536 audio=8520 leido=8535 procesado=8536 rms=0.0211 relevos=1
+8538	oyo	parcial: nodriza solo que a veces somos
+8539	calce	token 20: nodriza solo que a veces somos
+8549	cuadro	pos=19.94 calce=20 scroll=39 freno=- trabado=2
+8565	cuadro	pos=19.99 calce=20 scroll=39 freno=- trabado=2
+8585	cuadro	pos=20.06 calce=20 scroll=39 freno=- trabado=2
+8598	cuadro	pos=20.10 calce=20 scroll=39 freno=- trabado=2
+8617	cuadro	pos=20.16 calce=20 scroll=39 freno=- trabado=2
+8631	cuadro	pos=20.21 calce=20 scroll=39 freno=- trabado=2
+8641	llegada	parcial nativo=8639 audio=8620 leido=8638 procesado=8639 rms=0.0902 relevos=1
+8641	oyo	parcial: nodriza solo que a veces somos
+8641	calce	token 20: nodriza solo que a veces somos
+8653	cuadro	pos=20.24 calce=20 scroll=39 freno=- trabado=2
+8665	cuadro	pos=20.24 calce=20 scroll=39 freno=- trabado=2
+8685	cuadro	pos=20.24 calce=20 scroll=39 freno=- trabado=2
+8698	cuadro	pos=20.24 calce=20 scroll=39 freno=- trabado=2
+8717	cuadro	pos=20.24 calce=20 scroll=39 freno=- trabado=2
+8732	cuadro	pos=20.27 calce=20 scroll=39 freno=- trabado=2
+8741	llegada	parcial nativo=8739 audio=8720 leido=8739 procesado=8739 rms=0.0072 relevos=1
+8741	oyo	parcial: nodriza solo que a veces somos
+8741	calce	token 20: nodriza solo que a veces somos
+8749	cuadro	pos=20.30 calce=20 scroll=39 freno=- trabado=2
+8764	cuadro	pos=20.30 calce=20 scroll=39 freno=- trabado=2
+8782	cuadro	pos=20.30 calce=20 scroll=39 freno=- trabado=2
+8798	cuadro	pos=20.30 calce=20 scroll=39 freno=- trabado=2
+8817	cuadro	pos=20.30 calce=20 scroll=44 freno=- trabado=3
+8831	cuadro	pos=20.30 calce=20 scroll=46 freno=- trabado=3
+8839	llegada	parcial nativo=8837 audio=8820 leido=8837 procesado=8837 rms=0.0354 relevos=1
+8839	oyo	parcial: nodriza solo que a veces somos
+8839	calce	token 20: nodriza solo que a veces somos
+8850	cuadro	pos=20.30 calce=20 scroll=49 freno=- trabado=3
+8863	cuadro	pos=20.30 calce=20 scroll=51 freno=- trabado=3
+8882	cuadro	pos=20.30 calce=20 scroll=53 freno=- trabado=3
+8897	cuadro	pos=20.30 calce=20 scroll=54 freno=- trabado=3
+8915	cuadro	pos=20.30 calce=20 scroll=55 freno=- trabado=3
+8930	cuadro	pos=20.30 calce=20 scroll=56 freno=- trabado=3
+8945	llegada	parcial nativo=8943 audio=8900 leido=8919 procesado=8943 rms=0.0270 relevos=1
+8945	oyo	parcial: nodriza solo que a veces somos egoístas
+8945	calce	token 21: nodriza solo que a veces somos egoístas
+8951	cuadro	pos=21.02 calce=21 scroll=57 freno=- trabado=3
+8963	cuadro	pos=21.05 calce=21 scroll=57 freno=- trabado=3
+8981	cuadro	pos=21.11 calce=21 scroll=58 freno=- trabado=3
+8996	cuadro	pos=21.15 calce=21 scroll=58 freno=- trabado=3
+9014	cuadro	pos=21.20 calce=21 scroll=58 freno=- trabado=3
+9022	llegada	parcial nativo=9020 audio=9000 leido=9019 procesado=9020 rms=0.1521 relevos=1
+9022	oyo	parcial: nodriza solo que a veces somos egoístas
+9022	calce	token 21: nodriza solo que a veces somos egoístas
+9029	cuadro	pos=21.23 calce=21 scroll=58 freno=- trabado=3
+9049	cuadro	pos=21.23 calce=21 scroll=58 freno=- trabado=3
+9062	cuadro	pos=21.23 calce=21 scroll=59 freno=- trabado=3
+9084	cuadro	pos=21.23 calce=21 scroll=59 freno=- trabado=3
+9096	cuadro	pos=21.23 calce=21 scroll=59 freno=- trabado=3
+9112	cuadro	pos=21.27 calce=21 scroll=59 freno=- trabado=3
+9123	llegada	parcial nativo=9120 audio=9100 leido=9119 procesado=9120 rms=0.2162 relevos=1
+9123	oyo	parcial: nodriza solo que a veces somos egoístas
+9123	calce	token 21: nodriza solo que a veces somos egoístas
+9129	cuadro	pos=21.30 calce=21 scroll=59 freno=- trabado=3
+9149	cuadro	pos=21.30 calce=21 scroll=59 freno=- trabado=3
+9163	cuadro	pos=21.30 calce=21 scroll=59 freno=- trabado=3
+9178	cuadro	pos=21.30 calce=21 scroll=59 freno=- trabado=3
+9195	cuadro	pos=21.30 calce=21 scroll=59 freno=- trabado=3
+9206	llegada	parcial nativo=9205 audio=9140 leido=9154 procesado=9205 rms=0.0570 relevos=1
+9206	oyo	parcial: nodriza solo que a veces somos egoístas o
+9206	calce	token 22: nodriza solo que a veces somos egoístas o
+9221	cuadro	pos=22.05 calce=22 scroll=59 freno=- trabado=3
+9228	cuadro	pos=22.07 calce=22 scroll=59 freno=- trabado=3
+9248	cuadro	pos=22.13 calce=22 scroll=59 freno=- trabado=3
+9260	llegada	parcial nativo=9259 audio=9240 leido=9258 procesado=9259 rms=0.0370 relevos=1
+9260	oyo	parcial: nodriza solo que a veces somos egoístas o
+9260	calce	token 22: nodriza solo que a veces somos egoístas o
+9264	cuadro	pos=22.17 calce=22 scroll=59 freno=- trabado=3
+9280	cuadro	pos=22.17 calce=22 scroll=59 freno=- trabado=3
+9295	cuadro	pos=22.17 calce=22 scroll=59 freno=- trabado=3
+9312	cuadro	pos=22.17 calce=22 scroll=59 freno=- trabado=3
+9328	cuadro	pos=22.22 calce=22 scroll=59 freno=- trabado=3
+9349	cuadro	pos=22.28 calce=22 scroll=59 freno=- trabado=3
+9360	llegada	parcial nativo=9358 audio=9340 leido=9357 procesado=9358 rms=0.0019 relevos=1
+9360	oyo	parcial: nodriza solo que a veces somos egoístas o
+9360	calce	token 22: nodriza solo que a veces somos egoístas o
+9364	cuadro	pos=22.32 calce=22 scroll=59 freno=- trabado=3
+9378	cuadro	pos=22.32 calce=22 scroll=59 freno=- trabado=3
+9394	cuadro	pos=22.32 calce=22 scroll=59 freno=- trabado=3
+9416	cuadro	pos=22.32 calce=22 scroll=59 freno=- trabado=3
+9427	cuadro	pos=22.32 calce=22 scroll=59 freno=- trabado=3
+9445	cuadro	pos=22.32 calce=22 scroll=59 freno=- trabado=3
+9460	llegada	parcial nativo=9459 audio=9380 leido=9398 procesado=9459 rms=0.0001 relevos=1
+9460	oyo	parcial: nodriza solo que a veces somos egoístas o crueles
+9460	calce	token 23: nodriza solo que a veces somos egoístas o crueles
+9461	cuadro	pos=22.32 calce=23 scroll=59 freno=- trabado=3
+9477	cuadro	pos=23.06 calce=23 scroll=59 freno=- trabado=3
+9494	cuadro	pos=23.11 calce=23 scroll=59 freno=- trabado=3
+9498	llegada	parcial nativo=9495 audio=9480 leido=9494 procesado=9495 rms=0.0001 relevos=1
+9498	oyo	parcial: nodriza solo que a veces somos egoístas o crueles
+9498	calce	token 23: nodriza solo que a veces somos egoístas o crueles
+9510	cuadro	pos=23.13 calce=23 scroll=59 freno=- trabado=3
+9527	cuadro	pos=23.13 calce=23 scroll=59 freno=- trabado=3
+9544	cuadro	pos=23.15 calce=23 scroll=59 freno=- trabado=3
+9560	cuadro	pos=23.21 calce=23 scroll=59 freno=- trabado=3
+9577	cuadro	pos=23.26 calce=23 scroll=59 freno=- trabado=3
+9593	cuadro	pos=23.32 calce=23 scroll=59 freno=- trabado=3
+9598	llegada	parcial nativo=9596 audio=9580 leido=9595 procesado=9596 rms=0.0004 relevos=1
+9598	oyo	parcial: nodriza solo que a veces somos egoístas o crueles
+9598	calce	token 23: nodriza solo que a veces somos egoístas o crueles
+9611	cuadro	pos=23.33 calce=23 scroll=59 freno=- trabado=3
+9626	cuadro	pos=23.33 calce=23 scroll=59 freno=- trabado=3
+9643	cuadro	pos=23.33 calce=23 scroll=59 freno=- trabado=3
+9660	cuadro	pos=23.33 calce=23 scroll=59 freno=- trabado=3
+9676	cuadro	pos=23.33 calce=23 scroll=59 freno=- trabado=3
+9693	cuadro	pos=23.33 calce=23 scroll=59 freno=- trabado=3
+9698	llegada	parcial nativo=9696 audio=9680 leido=9696 procesado=9696 rms=0.0003 relevos=1
+9698	oyo	parcial: nodriza solo que a veces somos egoístas o crueles
+9699	calce	token 23: nodriza solo que a veces somos egoístas o crueles
+9709	cuadro	pos=23.34 calce=23 scroll=59 freno=- trabado=3
+9726	cuadro	pos=23.34 calce=23 scroll=59 freno=- trabado=3
+9742	cuadro	pos=23.34 calce=23 scroll=59 freno=- trabado=3
+9759	cuadro	pos=23.34 calce=23 scroll=59 freno=- trabado=3
+9776	cuadro	pos=23.34 calce=23 scroll=59 freno=- trabado=3
+9792	cuadro	pos=23.34 calce=23 scroll=59 freno=- trabado=3
+9800	llegada	parcial nativo=9796 audio=9780 leido=9795 procesado=9796 rms=0.0000 relevos=1
+9800	oyo	parcial: nodriza solo que a veces somos egoístas o crueles
+9800	calce	token 23: nodriza solo que a veces somos egoístas o crueles
+9809	cuadro	pos=23.34 calce=23 scroll=59 freno=- trabado=3
+9825	cuadro	pos=23.34 calce=23 scroll=59 freno=- trabado=3
+9842	cuadro	pos=23.34 calce=23 scroll=59 freno=- trabado=3
+9859	cuadro	pos=23.34 calce=23 scroll=59 freno=- trabado=3
+9875	cuadro	pos=23.34 calce=23 scroll=59 freno=- trabado=3
+9892	cuadro	pos=23.34 calce=23 scroll=59 freno=- trabado=3
+9908	cuadro	pos=23.36 calce=23 scroll=59 freno=- trabado=3
+9924	llegada	parcial nativo=9923 audio=9880 leido=9922 procesado=9923 rms=0.1276 relevos=1
+9924	oyo	parcial: nodriza solo que a veces somos egoístas o crueles
+9924	calce	token 23: nodriza solo que a veces somos egoístas o crueles
+9928	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+9941	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+9958	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+9975	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+9992	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10001	llegada	parcial nativo=10000 audio=9980 leido=9998 procesado=10000 rms=0.1318 relevos=1
+10001	oyo	parcial: nodriza solo que a veces somos egoístas o crueles
+10001	calce	token 23: nodriza solo que a veces somos egoístas o crueles
+10016	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10024	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10041	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10058	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10074	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10092	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10099	llegada	parcial nativo=10097 audio=10080 leido=10096 procesado=10097 rms=0.0138 relevos=1
+10099	oyo	parcial: nodriza solo que a veces somos egoístas o crueles
+10099	calce	token 23: nodriza solo que a veces somos egoístas o crueles
+10107	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10124	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10140	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10157	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10174	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10191	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10200	llegada	parcial nativo=10198 audio=10180 leido=10197 procesado=10198 rms=0.1258 relevos=1
+10200	oyo	parcial: nodriza solo que a veces somos egoístas o crueles
+10200	calce	token 23: nodriza solo que a veces somos egoístas o crueles
+10207	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10223	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10241	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10257	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10273	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10291	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10302	llegada	parcial nativo=10299 audio=10280 leido=10298 procesado=10299 rms=0.0514 relevos=1
+10302	oyo	parcial: nodriza solo que a veces somos egoístas o crueles
+10302	calce	token 23: nodriza solo que a veces somos egoístas o crueles
+10311	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10324	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10340	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10356	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10373	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10390	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10400	llegada	parcial nativo=10398 audio=10380 leido=10398 procesado=10398 rms=0.0067 relevos=1
+10400	oyo	parcial: nodriza solo que a veces somos egoístas o crueles
+10400	calce	token 23: nodriza solo que a veces somos egoístas o crueles
+10406	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10422	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10439	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10456	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10473	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10490	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10501	llegada	parcial nativo=10500 audio=10480 leido=10498 procesado=10500 rms=0.1002 relevos=1
+10501	oyo	parcial: nodriza solo que a veces somos egoístas o crueles
+10502	calce	token 23: nodriza solo que a veces somos egoístas o crueles
+10507	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10522	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10540	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10555	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10572	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10589	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10605	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10622	cuadro	pos=23.41 calce=23 scroll=59 freno=- trabado=3
+10634	llegada	parcial nativo=10631 audio=10580 leido=10597 procesado=10631 rms=0.1016 relevos=1
+10634	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice
+10634	calce	token 24: nodriza solo que a veces somos egoístas o crueles dice
+10644	cuadro	pos=24.03 calce=24 scroll=59 freno=- trabado=3
+10655	cuadro	pos=24.06 calce=24 scroll=59 freno=- trabado=3
+10671	cuadro	pos=24.11 calce=24 scroll=59 freno=- trabado=3
+10689	cuadro	pos=24.16 calce=24 scroll=59 freno=- trabado=3
+10702	llegada	parcial nativo=10699 audio=10680 leido=10698 procesado=10699 rms=0.0658 relevos=1
+10702	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice
+10702	calce	token 24: nodriza solo que a veces somos egoístas o crueles dice
+10709	cuadro	pos=24.20 calce=24 scroll=59 freno=- trabado=3
+10721	cuadro	pos=24.20 calce=24 scroll=59 freno=- trabado=3
+10740	cuadro	pos=24.20 calce=24 scroll=59 freno=- trabado=3
+10754	cuadro	pos=24.20 calce=24 scroll=59 freno=- trabado=3
+10770	cuadro	pos=24.20 calce=24 scroll=59 freno=- trabado=3
+10787	cuadro	pos=24.25 calce=24 scroll=59 freno=- trabado=3
+10800	llegada	parcial nativo=10798 audio=10780 leido=10797 procesado=10798 rms=0.1388 relevos=1
+10800	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice
+10800	calce	token 24: nodriza solo que a veces somos egoístas o crueles dice
+10806	cuadro	pos=24.29 calce=24 scroll=59 freno=- trabado=3
+10820	cuadro	pos=24.29 calce=24 scroll=59 freno=- trabado=3
+10837	cuadro	pos=24.29 calce=24 scroll=59 freno=- trabado=3
+10855	cuadro	pos=24.29 calce=24 scroll=59 freno=- trabado=3
+10870	cuadro	pos=24.29 calce=24 scroll=59 freno=- trabado=3
+10886	cuadro	pos=24.29 calce=24 scroll=59 freno=- trabado=3
+10903	cuadro	pos=24.31 calce=24 scroll=59 freno=- trabado=3
+10920	cuadro	pos=24.36 calce=24 scroll=59 freno=- trabado=3
+10929	llegada	parcial nativo=10928 audio=10820 leido=10839 procesado=10928 rms=0.1064 relevos=1
+10929	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un
+10929	calce	token 27: nodriza solo que a veces somos egoístas o crueles dice que hay un
+10936	llegada	parcial nativo=10935 audio=10920 leido=10934 procesado=10935 rms=0.1036 relevos=1
+10936	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un
+10936	calce	token 27: nodriza solo que a veces somos egoístas o crueles dice que hay un
+10936	cuadro	pos=26.10 calce=27 scroll=59 freno=- trabado=3
+10953	cuadro	pos=27.05 calce=27 scroll=59 freno=- trabado=3
+10970	cuadro	pos=27.10 calce=27 scroll=59 freno=- trabado=3
+10987	cuadro	pos=27.15 calce=27 scroll=59 freno=- trabado=3
+11003	cuadro	pos=27.19 calce=27 scroll=59 freno=- trabado=3
+11020	cuadro	pos=27.24 calce=27 scroll=59 freno=- trabado=3
+11036	cuadro	pos=27.29 calce=27 scroll=59 freno=- trabado=3
+11041	llegada	parcial nativo=11039 audio=11020 leido=11038 procesado=11039 rms=0.0761 relevos=1
+11041	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un
+11042	calce	token 27: nodriza solo que a veces somos egoístas o crueles dice que hay un
+11053	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11069	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11086	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11102	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11119	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11135	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11139	llegada	parcial nativo=11138 audio=11120 leido=11137 procesado=11138 rms=0.0623 relevos=1
+11139	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un
+11140	calce	token 27: nodriza solo que a veces somos egoístas o crueles dice que hay un
+11152	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11168	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11185	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11202	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11219	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11235	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11238	llegada	parcial nativo=11236 audio=11220 leido=11236 procesado=11236 rms=0.0051 relevos=1
+11238	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un
+11239	calce	token 27: nodriza solo que a veces somos egoístas o crueles dice que hay un
+11251	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11268	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11284	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11301	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11318	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11334	cuadro	pos=27.31 calce=27 scroll=59 freno=- trabado=3
+11351	cuadro	pos=27.33 calce=27 scroll=59 freno=- trabado=3
+11368	cuadro	pos=27.38 calce=27 scroll=59 freno=- trabado=3
+11379	llegada	parcial nativo=11377 audio=11320 leido=11376 procesado=11377 rms=0.0460 relevos=1
+11379	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un
+11379	calce	token 27: nodriza solo que a veces somos egoístas o crueles dice que hay un
+11384	cuadro	pos=27.41 calce=27 scroll=59 freno=- trabado=3
+11401	cuadro	pos=27.41 calce=27 scroll=59 freno=- trabado=3
+11418	cuadro	pos=27.41 calce=27 scroll=59 freno=- trabado=3
+11435	cuadro	pos=27.41 calce=27 scroll=59 freno=- trabado=3
+11445	llegada	parcial nativo=11443 audio=11420 leido=11442 procesado=11443 rms=0.0748 relevos=1
+11445	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un
+11446	calce	token 27: nodriza solo que a veces somos egoístas o crueles dice que hay un
+11453	cuadro	pos=27.41 calce=27 scroll=59 freno=- trabado=3
+11467	cuadro	pos=27.41 calce=27 scroll=59 freno=- trabado=3
+11485	cuadro	pos=27.41 calce=27 scroll=59 freno=- trabado=3
+11500	cuadro	pos=27.41 calce=27 scroll=59 freno=- trabado=3
+11516	cuadro	pos=27.41 calce=27 scroll=59 freno=- trabado=3
+11534	cuadro	pos=27.41 calce=27 scroll=59 freno=- trabado=3
+11545	llegada	parcial nativo=11541 audio=11520 leido=11540 procesado=11541 rms=0.1047 relevos=1
+11545	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un
+11546	calce	token 27: nodriza solo que a veces somos egoístas o crueles dice que hay un
+11555	cuadro	pos=27.41 calce=27 scroll=59 freno=- trabado=3
+11566	cuadro	pos=27.41 calce=27 scroll=59 freno=- trabado=3
+11579	llegada	parcial nativo=11576 audio=11540 leido=11557 procesado=11576 rms=0.0083 relevos=1
+11579	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que
+11579	calce	token 29: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que
+11584	cuadro	pos=28.07 calce=29 scroll=63 freno=- trabado=4
+11600	cuadro	pos=28.15 calce=29 scroll=66 freno=- trabado=4
+11619	cuadro	pos=28.25 calce=29 scroll=69 freno=- trabado=4
+11633	cuadro	pos=28.31 calce=29 scroll=71 freno=- trabado=4
+11649	cuadro	pos=28.39 calce=29 scroll=72 freno=- trabado=4
+11657	llegada	parcial nativo=11655 audio=11640 leido=11654 procesado=11655 rms=0.1530 relevos=1
+11657	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que
+11658	calce	token 29: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que
+11666	cuadro	pos=29.03 calce=29 scroll=73 freno=- trabado=4
+11683	cuadro	pos=29.08 calce=29 scroll=74 freno=- trabado=4
+11699	cuadro	pos=29.12 calce=29 scroll=75 freno=- trabado=4
+11716	cuadro	pos=29.17 calce=29 scroll=76 freno=- trabado=4
+11732	cuadro	pos=29.22 calce=29 scroll=76 freno=- trabado=4
+11749	cuadro	pos=29.27 calce=29 scroll=77 freno=- trabado=4
+11756	llegada	parcial nativo=11755 audio=11740 leido=11754 procesado=11755 rms=0.1297 relevos=1
+11756	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que
+11757	calce	token 29: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que
+11765	cuadro	pos=29.29 calce=29 scroll=77 freno=- trabado=4
+11782	cuadro	pos=29.29 calce=29 scroll=77 freno=- trabado=4
+11800	cuadro	pos=29.29 calce=29 scroll=77 freno=- trabado=4
+11817	cuadro	pos=29.29 calce=29 scroll=77 freno=- trabado=4
+11832	cuadro	pos=29.29 calce=29 scroll=78 freno=- trabado=4
+11837	llegada	parcial nativo=11834 audio=11780 leido=11795 procesado=11834 rms=0.0820 relevos=1
+11837	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca
+11837	calce	token 30: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca
+11848	cuadro	pos=29.86 calce=30 scroll=78 freno=- trabado=4
+11865	cuadro	pos=29.93 calce=30 scroll=78 freno=- trabado=4
+11883	cuadro	pos=29.99 calce=30 scroll=78 freno=- trabado=4
+11898	llegada	parcial nativo=11896 audio=11880 leido=11895 procesado=11896 rms=0.0767 relevos=1
+11898	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca
+11898	calce	token 30: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca
+11899	cuadro	pos=30.04 calce=30 scroll=78 freno=- trabado=4
+11915	cuadro	pos=30.05 calce=30 scroll=78 freno=- trabado=4
+11931	cuadro	pos=30.10 calce=30 scroll=78 freno=- trabado=4
+11949	cuadro	pos=30.15 calce=30 scroll=78 freno=- trabado=4
+11964	cuadro	pos=30.20 calce=30 scroll=78 freno=- trabado=4
+11981	cuadro	pos=30.25 calce=30 scroll=78 freno=- trabado=4
+11998	cuadro	pos=30.30 calce=30 scroll=78 freno=- trabado=4
+12000	llegada	parcial nativo=11998 audio=11980 leido=11997 procesado=11998 rms=0.0888 relevos=1
+12000	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca
+12000	calce	token 30: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca
+12016	cuadro	pos=30.31 calce=30 scroll=78 freno=- trabado=4
+12031	cuadro	pos=30.31 calce=30 scroll=78 freno=- trabado=4
+12047	cuadro	pos=30.31 calce=30 scroll=78 freno=- trabado=4
+12064	cuadro	pos=30.31 calce=30 scroll=78 freno=- trabado=4
+12081	cuadro	pos=30.31 calce=30 scroll=78 freno=- trabado=4
+12097	cuadro	pos=30.31 calce=30 scroll=78 freno=- trabado=4
+12115	cuadro	pos=30.34 calce=30 scroll=78 freno=- trabado=4
+12128	llegada	parcial nativo=12127 audio=12020 leido=12034 procesado=12127 rms=0.0141 relevos=1
+12128	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos
+12129	calce	token 31: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos
+12132	cuadro	pos=31.01 calce=31 scroll=78 freno=- trabado=4
+12140	llegada	parcial nativo=12139 audio=12120 leido=12138 procesado=12139 rms=0.0612 relevos=1
+12140	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos
+12140	calce	token 31: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos
+12147	cuadro	pos=31.04 calce=31 scroll=78 freno=- trabado=4
+12163	cuadro	pos=31.07 calce=31 scroll=78 freno=- trabado=4
+12182	cuadro	pos=31.13 calce=31 scroll=78 freno=- trabado=4
+12197	cuadro	pos=31.17 calce=31 scroll=78 freno=- trabado=4
+12215	cuadro	pos=31.22 calce=31 scroll=78 freno=- trabado=4
+12230	cuadro	pos=31.27 calce=31 scroll=78 freno=- trabado=4
+12242	llegada	parcial nativo=12238 audio=12220 leido=12238 procesado=12239 rms=0.0674 relevos=1
+12242	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos
+12242	calce	token 31: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos
+12255	cuadro	pos=31.31 calce=31 scroll=78 freno=- trabado=4
+12263	cuadro	pos=31.31 calce=31 scroll=78 freno=- trabado=4
+12284	cuadro	pos=31.31 calce=31 scroll=78 freno=- trabado=4
+12296	cuadro	pos=31.31 calce=31 scroll=78 freno=- trabado=4
+12313	cuadro	pos=31.31 calce=31 scroll=78 freno=- trabado=4
+12327	llegada	parcial nativo=12325 audio=12260 leido=12275 procesado=12325 rms=0.0055 relevos=1
+12327	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a
+12327	calce	token 32: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a
+12331	cuadro	pos=31.80 calce=32 scroll=78 freno=- trabado=4
+12348	cuadro	pos=31.86 calce=32 scroll=78 freno=- trabado=4
+12362	cuadro	pos=31.92 calce=32 scroll=78 freno=- trabado=4
+12382	cuadro	pos=31.99 calce=32 scroll=78 freno=- trabado=4
+12387	llegada	parcial nativo=12382 audio=12360 leido=12380 procesado=12382 rms=0.0259 relevos=1
+12387	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a
+12387	calce	token 32: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a
+12396	cuadro	pos=32.03 calce=32 scroll=78 freno=- trabado=4
+12414	cuadro	pos=32.08 calce=32 scroll=78 freno=- trabado=4
+12429	cuadro	pos=32.13 calce=32 scroll=78 freno=- trabado=4
+12448	cuadro	pos=32.19 calce=32 scroll=78 freno=- trabado=4
+12462	cuadro	pos=32.23 calce=32 scroll=78 freno=- trabado=4
+12479	cuadro	pos=32.28 calce=32 scroll=78 freno=- trabado=4
+12484	llegada	parcial nativo=12477 audio=12460 leido=12475 procesado=12476 rms=0.0262 relevos=1
+12484	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a
+12485	calce	token 32: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a
+12495	cuadro	pos=32.30 calce=32 scroll=78 freno=- trabado=4
+12514	cuadro	pos=32.30 calce=32 scroll=78 freno=- trabado=4
+12528	cuadro	pos=32.30 calce=32 scroll=78 freno=- trabado=4
+12545	cuadro	pos=32.30 calce=32 scroll=78 freno=- trabado=4
+12552	llegada	parcial nativo=12550 audio=12500 leido=12516 procesado=12550 rms=0.0079 relevos=1
+12552	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+12552	calce	token 33: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+12561	cuadro	pos=32.77 calce=33 scroll=78 freno=- trabado=4
+12580	cuadro	pos=32.86 calce=33 scroll=78 freno=- trabado=4
+12594	cuadro	pos=32.92 calce=33 scroll=78 freno=- trabado=4
+12613	cuadro	pos=32.99 calce=33 scroll=78 freno=- trabado=4
+12622	llegada	parcial nativo=12621 audio=12600 leido=12619 procesado=12621 rms=0.0297 relevos=1
+12622	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+12623	calce	token 33: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+12629	cuadro	pos=33.04 calce=33 scroll=78 freno=- trabado=4
+12647	cuadro	pos=33.09 calce=33 scroll=78 freno=- trabado=4
+12661	cuadro	pos=33.14 calce=33 scroll=78 freno=- trabado=4
+12681	cuadro	pos=33.21 calce=33 scroll=78 freno=- trabado=4
+12694	cuadro	pos=33.25 calce=33 scroll=78 freno=- trabado=4
+12714	cuadro	pos=33.33 calce=33 scroll=78 freno=- trabado=4
+12720	llegada	parcial nativo=12718 audio=12700 leido=12717 procesado=12718 rms=0.0025 relevos=1
+12720	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+12721	calce	token 33: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+12727	cuadro	pos=33.35 calce=33 scroll=78 freno=- trabado=4
+12744	cuadro	pos=33.35 calce=33 scroll=78 freno=- trabado=4
+12761	cuadro	pos=33.35 calce=33 scroll=78 freno=- trabado=4
+12781	cuadro	pos=33.35 calce=33 scroll=78 freno=- trabado=4
+12793	cuadro	pos=33.35 calce=33 scroll=78 freno=- trabado=4
+12814	cuadro	pos=33.35 calce=33 scroll=78 freno=- trabado=4
+12821	llegada	parcial nativo=12819 audio=12800 leido=12818 procesado=12819 rms=0.0001 relevos=1
+12821	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+12822	calce	token 33: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+12827	cuadro	pos=33.36 calce=33 scroll=78 freno=- trabado=4
+12844	cuadro	pos=33.36 calce=33 scroll=78 freno=- trabado=4
+12860	cuadro	pos=33.36 calce=33 scroll=78 freno=- trabado=4
+12879	cuadro	pos=33.36 calce=33 scroll=78 freno=- trabado=4
+12893	cuadro	pos=33.36 calce=33 scroll=78 freno=- trabado=4
+12911	cuadro	pos=33.36 calce=33 scroll=78 freno=- trabado=4
+12918	llegada	parcial nativo=12916 audio=12900 leido=12915 procesado=12916 rms=0.0002 relevos=1
+12918	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+12919	calce	token 33: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+12926	cuadro	pos=33.36 calce=33 scroll=78 freno=- trabado=4
+12944	cuadro	pos=33.36 calce=33 scroll=78 freno=- trabado=4
+12959	cuadro	pos=33.36 calce=33 scroll=78 freno=- trabado=4
+12978	cuadro	pos=33.36 calce=33 scroll=78 freno=- trabado=4
+12992	cuadro	pos=33.36 calce=33 scroll=78 freno=- trabado=4
+13009	cuadro	pos=33.36 calce=33 scroll=78 freno=- trabado=4
+13026	cuadro	pos=33.38 calce=33 scroll=78 freno=- trabado=4
+13038	llegada	parcial nativo=13037 audio=12980 leido=12996 procesado=13037 rms=0.0004 relevos=1
+13038	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13038	calce	token 34: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13044	cuadro	pos=33.80 calce=34 scroll=78 freno=- trabado=4
+13059	cuadro	pos=33.87 calce=34 scroll=78 freno=- trabado=4
+13075	cuadro	pos=33.94 calce=34 scroll=78 freno=- trabado=4
+13092	cuadro	pos=34.02 calce=34 scroll=78 freno=- trabado=4
+13099	llegada	parcial nativo=13097 audio=13080 leido=13096 procesado=13097 rms=0.0033 relevos=1
+13099	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13099	calce	token 34: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13111	cuadro	pos=34.05 calce=34 scroll=78 freno=- trabado=4
+13125	cuadro	pos=34.10 calce=34 scroll=78 freno=- trabado=4
+13146	cuadro	pos=34.18 calce=34 scroll=78 freno=- trabado=4
+13159	cuadro	pos=34.22 calce=34 scroll=78 freno=- trabado=4
+13181	cuadro	pos=34.30 calce=34 scroll=78 freno=- trabado=4
+13191	cuadro	pos=34.35 calce=34 scroll=78 freno=- trabado=4
+13203	llegada	parcial nativo=13201 audio=13180 leido=13200 procesado=13201 rms=0.0006 relevos=1
+13203	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13203	calce	token 34: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13213	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13226	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13244	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13258	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13276	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13291	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13298	llegada	parcial nativo=13296 audio=13280 leido=13295 procesado=13296 rms=0.0077 relevos=1
+13298	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13298	calce	token 34: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13308	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13324	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13344	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13357	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13374	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13391	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13398	llegada	parcial nativo=13396 audio=13380 leido=13395 procesado=13396 rms=0.1978 relevos=1
+13398	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13398	calce	token 34: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13408	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13424	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13440	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13457	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13473	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13491	cuadro	pos=34.39 calce=34 scroll=78 freno=- trabado=4
+13506	cuadro	pos=34.41 calce=34 scroll=78 freno=- trabado=4
+13523	cuadro	pos=34.47 calce=34 scroll=78 freno=- trabado=4
+13526	llegada	parcial nativo=13525 audio=13480 leido=13522 procesado=13524 rms=0.1657 relevos=1
+13526	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13526	calce	token 34: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13539	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13556	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13574	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13590	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13599	llegada	parcial nativo=13597 audio=13580 leido=13594 procesado=13597 rms=0.0442 relevos=1
+13599	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13599	calce	token 34: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13606	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13622	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13639	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13656	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13673	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13689	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13699	llegada	parcial nativo=13697 audio=13680 leido=13694 procesado=13697 rms=0.1600 relevos=1
+13699	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13699	calce	token 34: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13705	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13722	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13738	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13755	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13772	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13788	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13796	llegada	parcial nativo=13795 audio=13780 leido=13794 procesado=13795 rms=0.0102 relevos=1
+13796	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13797	calce	token 34: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13805	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13821	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13838	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13855	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13872	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13888	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13902	llegada	parcial nativo=13900 audio=13880 leido=13898 procesado=13900 rms=0.1334 relevos=1
+13902	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13902	calce	token 34: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+13912	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13921	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13938	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13954	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13972	cuadro	pos=34.48 calce=34 scroll=78 freno=- trabado=4
+13988	llegada	parcial nativo=13986 audio=13940 leido=13955 procesado=13986 rms=0.0537 relevos=1
+13988	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin
+13988	calce	token 35: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin
+13989	cuadro	pos=34.48 calce=35 scroll=78 freno=- trabado=4
+14005	cuadro	pos=34.64 calce=35 scroll=78 freno=- trabado=4
+14020	cuadro	pos=34.71 calce=35 scroll=78 freno=- trabado=4
+14037	cuadro	pos=34.78 calce=35 scroll=78 freno=- trabado=4
+14055	cuadro	pos=34.86 calce=35 scroll=78 freno=- trabado=4
+14060	llegada	parcial nativo=14058 audio=14040 leido=14057 procesado=14058 rms=0.0235 relevos=1
+14060	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin
+14060	calce	token 35: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin
+14070	cuadro	pos=35.03 calce=35 scroll=78 freno=- trabado=4
+14087	cuadro	pos=35.09 calce=35 scroll=78 freno=- trabado=4
+14104	cuadro	pos=35.15 calce=35 scroll=78 freno=- trabado=4
+14121	cuadro	pos=35.21 calce=35 scroll=78 freno=- trabado=4
+14137	cuadro	pos=35.26 calce=35 scroll=78 freno=- trabado=4
+14155	cuadro	pos=35.32 calce=35 scroll=78 freno=- trabado=4
+14159	llegada	parcial nativo=14157 audio=14140 leido=14156 procesado=14157 rms=0.0010 relevos=1
+14159	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin
+14160	calce	token 35: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin
+14170	cuadro	pos=35.34 calce=35 scroll=78 freno=- trabado=4
+14186	cuadro	pos=35.34 calce=35 scroll=78 freno=- trabado=4
+14203	cuadro	pos=35.34 calce=35 scroll=78 freno=- trabado=4
+14220	cuadro	pos=35.34 calce=35 scroll=78 freno=- trabado=4
+14236	llegada	parcial nativo=14235 audio=14180 leido=14198 procesado=14235 rms=0.0000 relevos=1
+14236	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+14236	calce	token 36: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+14236	cuadro	pos=35.34 calce=36 scroll=82 freno=- trabado=5
+14253	cuadro	pos=35.47 calce=36 scroll=85 freno=- trabado=5
+14269	cuadro	pos=35.54 calce=36 scroll=88 freno=- trabado=5
+14286	cuadro	pos=35.62 calce=36 scroll=90 freno=- trabado=5
+14297	llegada	parcial nativo=14295 audio=14280 leido=14294 procesado=14295 rms=0.1211 relevos=1
+14298	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+14298	calce	token 36: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+14303	cuadro	pos=35.98 calce=36 scroll=92 freno=- trabado=5
+14319	cuadro	pos=36.04 calce=36 scroll=93 freno=- trabado=5
+14336	cuadro	pos=36.09 calce=36 scroll=94 freno=- trabado=5
+14353	cuadro	pos=36.15 calce=36 scroll=95 freno=- trabado=5
+14369	cuadro	pos=36.21 calce=36 scroll=96 freno=- trabado=5
+14386	cuadro	pos=36.26 calce=36 scroll=96 freno=- trabado=5
+14399	llegada	parcial nativo=14397 audio=14380 leido=14396 procesado=14397 rms=0.1254 relevos=1
+14399	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+14399	calce	token 36: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+14403	cuadro	pos=36.30 calce=36 scroll=97 freno=- trabado=5
+14418	cuadro	pos=36.30 calce=36 scroll=97 freno=- trabado=5
+14436	cuadro	pos=36.30 calce=36 scroll=97 freno=- trabado=5
+14454	cuadro	pos=36.30 calce=36 scroll=97 freno=- trabado=5
+14468	cuadro	pos=36.30 calce=36 scroll=97 freno=- trabado=5
+14485	cuadro	pos=36.30 calce=36 scroll=98 freno=- trabado=5
+14496	llegada	parcial nativo=14495 audio=14480 leido=14494 procesado=14495 rms=0.0634 relevos=1
+14496	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+14496	calce	token 36: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+14502	cuadro	pos=36.31 calce=36 scroll=98 freno=- trabado=5
+14518	cuadro	pos=36.31 calce=36 scroll=98 freno=- trabado=5
+14535	cuadro	pos=36.31 calce=36 scroll=98 freno=- trabado=5
+14551	cuadro	pos=36.31 calce=36 scroll=98 freno=- trabado=5
+14568	cuadro	pos=36.31 calce=36 scroll=98 freno=- trabado=5
+14584	cuadro	pos=36.31 calce=36 scroll=98 freno=- trabado=5
+14597	llegada	parcial nativo=14595 audio=14580 leido=14594 procesado=14595 rms=0.1642 relevos=1
+14597	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+14598	calce	token 36: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+14609	cuadro	pos=36.32 calce=36 scroll=98 freno=- trabado=5
+14617	cuadro	pos=36.32 calce=36 scroll=98 freno=- trabado=5
+14635	cuadro	pos=36.32 calce=36 scroll=98 freno=- trabado=5
+14651	cuadro	pos=36.32 calce=36 scroll=98 freno=- trabado=5
+14667	cuadro	pos=36.32 calce=36 scroll=98 freno=- trabado=5
+14686	cuadro	pos=36.32 calce=36 scroll=98 freno=- trabado=5
+14700	cuadro	pos=36.32 calce=36 scroll=98 freno=- trabado=5
+14720	cuadro	pos=36.38 calce=36 scroll=98 freno=- trabado=5
+14725	llegada	parcial nativo=14722 audio=14660 leido=14676 procesado=14722 rms=0.1485 relevos=1
+14725	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan
+14725	calce	token 38: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan
+14733	cuadro	pos=36.44 calce=38 scroll=98 freno=- trabado=5
+14750	cuadro	pos=36.50 calce=38 scroll=98 freno=- trabado=5
+14767	cuadro	pos=36.58 calce=38 scroll=98 freno=- trabado=5
+14781	llegada	parcial nativo=14777 audio=14760 leido=14776 procesado=14777 rms=0.0658 relevos=1
+14781	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan
+14781	calce	token 38: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan
+14786	cuadro	pos=37.02 calce=38 scroll=98 freno=- trabado=5
+14800	cuadro	pos=37.09 calce=38 scroll=98 freno=- trabado=5
+14816	cuadro	pos=37.18 calce=38 scroll=98 freno=- trabado=5
+14834	cuadro	pos=37.26 calce=38 scroll=98 freno=- trabado=5
+14850	cuadro	pos=37.34 calce=38 scroll=98 freno=- trabado=5
+14867	cuadro	pos=37.43 calce=38 scroll=98 freno=- trabado=5
+14882	llegada	parcial nativo=14879 audio=14860 leido=14877 procesado=14879 rms=0.1069 relevos=1
+14882	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan
+14883	calce	token 38: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan
+14888	cuadro	pos=38.02 calce=38 scroll=98 freno=- trabado=5
+14899	cuadro	pos=38.05 calce=38 scroll=98 freno=- trabado=5
+14916	cuadro	pos=38.10 calce=38 scroll=98 freno=- trabado=5
+14932	cuadro	pos=38.15 calce=38 scroll=98 freno=- trabado=5
+14949	cuadro	pos=38.20 calce=38 scroll=98 freno=- trabado=5
+14952	llegada	parcial nativo=14950 audio=14900 leido=14915 procesado=14950 rms=0.0492 relevos=1
+14952	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas
+14952	calce	token 39: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas
+14965	cuadro	pos=39.04 calce=39 scroll=98 freno=- trabado=5
+14983	cuadro	pos=39.09 calce=39 scroll=98 freno=- trabado=5
+15001	cuadro	pos=39.14 calce=39 scroll=98 freno=- trabado=5
+15017	cuadro	pos=39.19 calce=39 scroll=98 freno=- trabado=5
+15020	llegada	parcial nativo=15019 audio=15000 leido=15018 procesado=15019 rms=0.0474 relevos=1
+15020	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas
+15020	calce	token 39: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas
+15032	cuadro	pos=39.20 calce=39 scroll=98 freno=- trabado=5
+15049	cuadro	pos=39.20 calce=39 scroll=98 freno=- trabado=5
+15065	cuadro	pos=39.20 calce=39 scroll=98 freno=- trabado=5
+15083	cuadro	pos=39.20 calce=39 scroll=98 freno=- trabado=5
+15098	cuadro	pos=39.23 calce=39 scroll=98 freno=- trabado=5
+15116	cuadro	pos=39.28 calce=39 scroll=98 freno=- trabado=5
+15119	llegada	parcial nativo=15116 audio=15100 leido=15115 procesado=15116 rms=0.0389 relevos=1
+15119	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas
+15119	calce	token 39: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas
+15131	cuadro	pos=39.29 calce=39 scroll=98 freno=- trabado=5
+15149	cuadro	pos=39.29 calce=39 scroll=98 freno=- trabado=5
+15164	cuadro	pos=39.29 calce=39 scroll=98 freno=- trabado=5
+15181	cuadro	pos=39.29 calce=39 scroll=98 freno=- trabado=5
+15198	cuadro	pos=39.29 calce=39 scroll=98 freno=- trabado=5
+15217	cuadro	pos=39.29 calce=39 scroll=98 freno=- trabado=5
+15230	llegada	parcial nativo=15229 audio=15200 leido=15228 procesado=15229 rms=0.0062 relevos=1
+15230	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas
+15230	calce	token 39: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas
+15234	cuadro	pos=39.33 calce=39 scroll=98 freno=- trabado=5
+15247	cuadro	pos=39.33 calce=39 scroll=98 freno=- trabado=5
+15265	cuadro	pos=39.33 calce=39 scroll=98 freno=- trabado=5
+15283	cuadro	pos=39.33 calce=39 scroll=98 freno=- trabado=5
+15297	cuadro	pos=39.33 calce=39 scroll=98 freno=- trabado=5
+15314	cuadro	pos=39.33 calce=39 scroll=98 freno=- trabado=5
+15318	llegada	parcial nativo=15316 audio=15300 leido=15315 procesado=15316 rms=0.0204 relevos=1
+15318	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas
+15318	calce	token 39: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas
+15331	cuadro	pos=39.33 calce=39 scroll=98 freno=- trabado=5
+15349	cuadro	pos=39.33 calce=39 scroll=98 freno=- trabado=5
+15363	cuadro	pos=39.33 calce=39 scroll=98 freno=- trabado=5
+15380	cuadro	pos=39.33 calce=39 scroll=98 freno=- trabado=5
+15397	cuadro	pos=39.33 calce=39 scroll=98 freno=- trabado=5
+15414	cuadro	pos=39.33 calce=39 scroll=98 freno=- trabado=5
+15430	cuadro	pos=39.33 calce=39 scroll=98 freno=- trabado=5
+15447	cuadro	pos=39.38 calce=39 scroll=98 freno=- trabado=5
+15463	cuadro	pos=39.43 calce=39 scroll=98 freno=- trabado=5
+15481	cuadro	pos=39.48 calce=39 scroll=98 freno=- trabado=5
+15496	cuadro	pos=39.53 calce=39 scroll=98 freno=- trabado=5
+15500	llegada	parcial nativo=15499 audio=15380 leido=15398 procesado=15499 rms=0.0256 relevos=1
+15500	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra familia
+15500	calce	token 42: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra familia
+15504	llegada	parcial nativo=15503 audio=15480 leido=15502 procesado=15503 rms=0.0036 relevos=1
+15504	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra familia
+15504	calce	token 42: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra familia
+15513	cuadro	pos=39.87 calce=42 scroll=102 freno=- trabado=6
+15530	cuadro	pos=39.97 calce=42 scroll=106 freno=- trabado=6
+15547	cuadro	pos=40.07 calce=42 scroll=108 freno=- trabado=6
+15563	cuadro	pos=40.17 calce=42 scroll=110 freno=- trabado=6
+15579	cuadro	pos=40.28 calce=42 scroll=112 freno=- trabado=6
+15597	cuadro	pos=40.40 calce=42 scroll=113 freno=- trabado=6
+15601	llegada	parcial nativo=15599 audio=15580 leido=15597 procesado=15599 rms=0.1259 relevos=1
+15601	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra familia
+15601	calce	token 42: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra familia
+15613	cuadro	pos=41.31 calce=42 scroll=114 freno=- trabado=6
+15629	cuadro	pos=41.40 calce=42 scroll=115 freno=- trabado=6
+15646	cuadro	pos=41.49 calce=42 scroll=116 freno=- trabado=6
+15662	cuadro	pos=41.57 calce=42 scroll=116 freno=- trabado=6
+15670	llegada	parcial nativo=15669 audio=15620 leido=15635 procesado=15669 rms=0.0853 relevos=1
+15670	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+15670	calce	token 42: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+15679	cuadro	pos=42.03 calce=42 scroll=117 freno=- trabado=6
+15696	cuadro	pos=42.08 calce=42 scroll=117 freno=- trabado=6
+15712	cuadro	pos=42.13 calce=42 scroll=117 freno=- trabado=6
+15729	cuadro	pos=42.18 calce=42 scroll=117 freno=- trabado=6
+15747	llegada	parcial nativo=15743 audio=15720 leido=15742 procesado=15743 rms=0.0454 relevos=1
+15747	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+15747	calce	token 42: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+15748	cuadro	pos=42.23 calce=42 scroll=117 freno=- trabado=6
+15761	cuadro	pos=42.23 calce=42 scroll=118 freno=- trabado=6
+15778	cuadro	pos=42.23 calce=42 scroll=118 freno=- trabado=6
+15795	cuadro	pos=42.23 calce=42 scroll=118 freno=- trabado=6
+15812	cuadro	pos=42.23 calce=42 scroll=118 freno=- trabado=6
+15828	cuadro	pos=42.24 calce=42 scroll=118 freno=- trabado=6
+15838	llegada	parcial nativo=15836 audio=15820 leido=15835 procesado=15836 rms=0.0013 relevos=1
+15838	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+15838	calce	token 42: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+15845	cuadro	pos=42.27 calce=42 scroll=118 freno=- trabado=6
+15861	cuadro	pos=42.27 calce=42 scroll=118 freno=- trabado=6
+15878	cuadro	pos=42.27 calce=42 scroll=118 freno=- trabado=6
+15894	cuadro	pos=42.27 calce=42 scroll=118 freno=- trabado=6
+15911	cuadro	pos=42.27 calce=42 scroll=118 freno=- trabado=6
+15927	cuadro	pos=42.27 calce=42 scroll=118 freno=- trabado=6
+15946	cuadro	pos=42.32 calce=42 scroll=118 freno=- trabado=6
+15951	llegada	parcial nativo=15949 audio=15920 leido=15949 procesado=15949 rms=0.0000 relevos=1
+15951	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+15951	calce	token 42: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+15961	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+15978	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+15994	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16011	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16027	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16043	llegada	parcial nativo=16040 audio=16020 leido=16038 procesado=16039 rms=0.0232 relevos=1
+16043	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+16044	calce	token 42: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+16054	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16060	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16078	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16093	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16110	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16128	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16143	llegada	parcial nativo=16138 audio=16120 leido=16137 procesado=16138 rms=0.0363 relevos=1
+16143	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+16144	calce	token 42: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+16148	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16159	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16177	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16193	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16211	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16226	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16239	llegada	parcial nativo=16236 audio=16220 leido=16235 procesado=16236 rms=0.0154 relevos=1
+16239	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+16239	calce	token 42: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+16246	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16259	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16276	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16293	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16310	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16326	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16343	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16348	llegada	parcial nativo=16341 audio=16320 leido=16339 procesado=16341 rms=0.1521 relevos=1
+16348	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+16349	calce	token 42: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación
+16360	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16379	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16392	cuadro	pos=42.34 calce=42 scroll=118 freno=- trabado=6
+16405	llegada	parcial nativo=16403 audio=16340 leido=16358 procesado=16403 rms=0.1338 relevos=1
+16405	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con la
+16406	calce	token 44: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con la
+16412	cuadro	pos=43.64 calce=44 scroll=118 freno=- trabado=6
+16425	cuadro	pos=43.72 calce=44 scroll=118 freno=- trabado=6
+16443	cuadro	pos=43.83 calce=44 scroll=118 freno=- trabado=6
+16458	cuadro	pos=43.91 calce=44 scroll=118 freno=- trabado=6
+16460	llegada	parcial nativo=16458 audio=16440 leido=16456 procesado=16458 rms=0.1526 relevos=1
+16461	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con la
+16461	calce	token 44: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con la
+16476	cuadro	pos=44.05 calce=44 scroll=118 freno=- trabado=6
+16492	cuadro	pos=44.10 calce=44 scroll=118 freno=- trabado=6
+16509	cuadro	pos=44.15 calce=44 scroll=118 freno=- trabado=6
+16525	cuadro	pos=44.21 calce=44 scroll=118 freno=- trabado=6
+16546	cuadro	pos=44.27 calce=44 scroll=118 freno=- trabado=6
+16558	cuadro	pos=44.31 calce=44 scroll=118 freno=- trabado=6
+16561	llegada	parcial nativo=16557 audio=16540 leido=16555 procesado=16557 rms=0.1020 relevos=1
+16561	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con la
+16561	calce	token 44: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con la
+16576	cuadro	pos=44.32 calce=44 scroll=118 freno=- trabado=6
+16591	cuadro	pos=44.32 calce=44 scroll=118 freno=- trabado=6
+16610	cuadro	pos=44.32 calce=44 scroll=118 freno=- trabado=6
+16624	cuadro	pos=44.32 calce=44 scroll=118 freno=- trabado=6
+16641	cuadro	pos=44.32 calce=44 scroll=118 freno=- trabado=6
+16657	cuadro	pos=44.32 calce=44 scroll=118 freno=- trabado=6
+16678	cuadro	pos=44.37 calce=44 scroll=118 freno=- trabado=6
+16690	cuadro	pos=44.42 calce=44 scroll=118 freno=- trabado=6
+16698	llegada	parcial nativo=16697 audio=16640 leido=16696 procesado=16697 rms=0.0080 relevos=1
+16698	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con la
+16698	calce	token 44: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con la
+16708	cuadro	pos=44.44 calce=44 scroll=118 freno=- trabado=6
+16724	cuadro	pos=44.44 calce=44 scroll=118 freno=- trabado=6
+16744	cuadro	pos=44.44 calce=44 scroll=118 freno=- trabado=6
+16757	cuadro	pos=44.44 calce=44 scroll=118 freno=- trabado=6
+16761	llegada	parcial nativo=16756 audio=16740 leido=16754 procesado=16756 rms=0.0002 relevos=1
+16761	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con la
+16761	calce	token 44: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con la
+16774	cuadro	pos=44.44 calce=44 scroll=118 freno=- trabado=6
+16790	cuadro	pos=44.44 calce=44 scroll=118 freno=- trabado=6
+16811	cuadro	pos=44.44 calce=44 scroll=118 freno=- trabado=6
+16823	cuadro	pos=44.44 calce=44 scroll=118 freno=- trabado=6
+16843	cuadro	pos=44.44 calce=44 scroll=118 freno=- trabado=6
+16856	cuadro	pos=44.44 calce=44 scroll=118 freno=- trabado=6
+16867	llegada	parcial nativo=16866 audio=16820 leido=16835 procesado=16866 rms=0.0374 relevos=1
+16867	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes
+16867	calce	token 45: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes
+16879	cuadro	pos=45.04 calce=45 scroll=118 freno=- trabado=6
+16889	cuadro	pos=45.07 calce=45 scroll=118 freno=- trabado=6
+16908	cuadro	pos=45.13 calce=45 scroll=118 freno=- trabado=6
+16922	cuadro	pos=45.18 calce=45 scroll=118 freno=- trabado=6
+16938	llegada	parcial nativo=16936 audio=16920 leido=16935 procesado=16936 rms=0.0577 relevos=1
+16938	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes
+16938	calce	token 45: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes
+16947	cuadro	pos=45.23 calce=45 scroll=118 freno=- trabado=6
+16955	cuadro	pos=45.23 calce=45 scroll=118 freno=- trabado=6
+16978	cuadro	pos=45.23 calce=45 scroll=118 freno=- trabado=6
+16989	cuadro	pos=45.23 calce=45 scroll=118 freno=- trabado=6
+17006	cuadro	pos=45.23 calce=45 scroll=118 freno=- trabado=6
+17022	cuadro	pos=45.28 calce=45 scroll=118 freno=- trabado=6
+17042	cuadro	pos=45.34 calce=45 scroll=118 freno=- trabado=6
+17049	llegada	parcial nativo=17047 audio=17020 leido=17041 procesado=17046 rms=0.0189 relevos=1
+17049	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes
+17049	calce	token 45: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes
+17056	cuadro	pos=45.36 calce=45 scroll=118 freno=- trabado=6
+17077	cuadro	pos=45.36 calce=45 scroll=118 freno=- trabado=6
+17088	cuadro	pos=45.36 calce=45 scroll=118 freno=- trabado=6
+17110	cuadro	pos=45.36 calce=45 scroll=118 freno=- trabado=6
+17111	llegada	parcial nativo=17104 audio=17060 leido=17081 procesado=17104 rms=0.0239 relevos=1
+17111	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o
+17112	calce	token 46: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o
+17121	cuadro	pos=46.03 calce=46 scroll=118 freno=- trabado=6
+17140	cuadro	pos=46.10 calce=46 scroll=118 freno=- trabado=6
+17154	cuadro	pos=46.14 calce=46 scroll=118 freno=- trabado=6
+17172	cuadro	pos=46.20 calce=46 scroll=118 freno=- trabado=6
+17183	llegada	parcial nativo=17181 audio=17160 leido=17178 procesado=17181 rms=0.0215 relevos=1
+17183	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o
+17183	calce	token 46: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o
+17188	cuadro	pos=46.24 calce=46 scroll=118 freno=- trabado=6
+17207	cuadro	pos=46.24 calce=46 scroll=118 freno=- trabado=6
+17221	cuadro	pos=46.24 calce=46 scroll=118 freno=- trabado=6
+17240	cuadro	pos=46.24 calce=46 scroll=118 freno=- trabado=6
+17254	cuadro	pos=46.24 calce=46 scroll=118 freno=- trabado=6
+17271	cuadro	pos=46.29 calce=46 scroll=118 freno=- trabado=6
+17282	llegada	parcial nativo=17279 audio=17260 leido=17277 procesado=17279 rms=0.0619 relevos=1
+17282	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o
+17282	calce	token 46: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o
+17288	cuadro	pos=46.33 calce=46 scroll=118 freno=- trabado=6
+17304	cuadro	pos=46.33 calce=46 scroll=118 freno=- trabado=6
+17322	cuadro	pos=46.33 calce=46 scroll=118 freno=- trabado=6
+17337	cuadro	pos=46.33 calce=46 scroll=118 freno=- trabado=6
+17354	cuadro	pos=46.33 calce=46 scroll=118 freno=- trabado=6
+17370	cuadro	pos=46.33 calce=46 scroll=118 freno=- trabado=6
+17381	llegada	parcial nativo=17380 audio=17300 leido=17314 procesado=17380 rms=0.0087 relevos=1
+17381	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o la
+17381	calce	token 47: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o la
+17387	cuadro	pos=47.02 calce=47 scroll=118 freno=- trabado=6
+17403	cuadro	pos=47.07 calce=47 scroll=118 freno=- trabado=6
+17418	llegada	parcial nativo=17417 audio=17400 leido=17415 procesado=17417 rms=0.0487 relevos=1
+17418	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o la
+17418	calce	token 47: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o la
+17423	cuadro	pos=47.12 calce=47 scroll=118 freno=- trabado=6
+17436	cuadro	pos=47.12 calce=47 scroll=118 freno=- trabado=6
+17453	cuadro	pos=47.12 calce=47 scroll=118 freno=- trabado=6
+17470	cuadro	pos=47.17 calce=47 scroll=118 freno=- trabado=6
+17486	cuadro	pos=47.23 calce=47 scroll=118 freno=- trabado=6
+17503	cuadro	pos=47.28 calce=47 scroll=118 freno=- trabado=6
+17519	llegada	parcial nativo=17517 audio=17500 leido=17516 procesado=17517 rms=0.0123 relevos=1
+17519	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o la
+17519	calce	token 47: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o la
+17520	cuadro	pos=47.34 calce=47 scroll=118 freno=- trabado=6
+17536	cuadro	pos=47.34 calce=47 scroll=118 freno=- trabado=6
+17553	cuadro	pos=47.34 calce=47 scroll=118 freno=- trabado=6
+17569	cuadro	pos=47.34 calce=47 scroll=118 freno=- trabado=6
+17586	cuadro	pos=47.34 calce=47 scroll=118 freno=- trabado=6
+17601	llegada	parcial nativo=17600 audio=17540 leido=17559 procesado=17600 rms=0.0015 relevos=1
+17601	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+17601	calce	token 48: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+17606	cuadro	pos=48.00 calce=48 scroll=118 freno=- trabado=6
+17618	cuadro	pos=48.06 calce=48 scroll=118 freno=- trabado=6
+17636	cuadro	pos=48.12 calce=48 scroll=118 freno=- trabado=6
+17652	cuadro	pos=48.17 calce=48 scroll=118 freno=- trabado=6
+17658	llegada	parcial nativo=17656 audio=17640 leido=17655 procesado=17656 rms=0.0049 relevos=1
+17658	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+17658	calce	token 48: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+17669	cuadro	pos=48.19 calce=48 scroll=118 freno=- trabado=6
+17685	cuadro	pos=48.19 calce=48 scroll=118 freno=- trabado=6
+17702	cuadro	pos=48.19 calce=48 scroll=118 freno=- trabado=6
+17719	cuadro	pos=48.21 calce=48 scroll=118 freno=- trabado=6
+17735	cuadro	pos=48.26 calce=48 scroll=118 freno=- trabado=6
+17751	cuadro	pos=48.32 calce=48 scroll=118 freno=- trabado=6
+17757	llegada	parcial nativo=17756 audio=17740 leido=17755 procesado=17756 rms=0.0003 relevos=1
+17757	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+17758	calce	token 48: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+17768	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+17785	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+17801	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+17818	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+17834	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+17851	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+17858	llegada	parcial nativo=17855 audio=17840 leido=17854 procesado=17855 rms=0.0001 relevos=1
+17858	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+17858	calce	token 48: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+17869	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+17885	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+17901	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+17917	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+17934	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+17951	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+17958	llegada	parcial nativo=17956 audio=17940 leido=17954 procesado=17956 rms=0.0003 relevos=1
+17958	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+17958	calce	token 48: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+17967	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+17984	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+18000	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+18017	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+18033	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+18050	cuadro	pos=48.34 calce=48 scroll=118 freno=- trabado=6
+18066	cuadro	pos=48.37 calce=48 scroll=118 freno=- trabado=6
+18079	llegada	parcial nativo=18078 audio=18040 leido=18070 procesado=18078 rms=0.0003 relevos=1
+18079	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+18080	calce	token 48: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+18083	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18100	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18116	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18133	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18150	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18157	llegada	parcial nativo=18155 audio=18140 leido=18154 procesado=18155 rms=0.0001 relevos=1
+18157	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+18157	calce	token 48: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+18166	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18183	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18199	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18216	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18232	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18249	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18257	llegada	parcial nativo=18256 audio=18240 leido=18254 procesado=18256 rms=0.1294 relevos=1
+18257	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+18258	calce	token 48: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+18266	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18282	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18298	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18315	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18332	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18349	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18358	llegada	parcial nativo=18356 audio=18340 leido=18355 procesado=18356 rms=0.1226 relevos=1
+18358	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+18358	calce	token 48: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+18365	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18382	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18399	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18415	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18432	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18448	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18466	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18468	llegada	parcial nativo=18462 audio=18440 leido=18461 procesado=18462 rms=0.2641 relevos=1
+18468	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+18469	calce	token 48: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias
+18483	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18499	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18515	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18531	cuadro	pos=48.41 calce=48 scroll=118 freno=- trabado=6
+18535	llegada	parcial nativo=18533 audio=18500 leido=18515 procesado=18533 rms=0.1271 relevos=1
+18535	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y
+18535	calce	token 49: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y
+18547	cuadro	pos=48.69 calce=49 scroll=118 freno=- trabado=6
+18565	cuadro	pos=48.76 calce=49 scroll=118 freno=- trabado=6
+18582	cuadro	pos=48.83 calce=49 scroll=118 freno=- trabado=6
+18598	cuadro	pos=48.89 calce=49 scroll=118 freno=- trabado=6
+18614	cuadro	pos=48.95 calce=49 scroll=118 freno=- trabado=6
+18619	llegada	parcial nativo=18617 audio=18600 leido=18615 procesado=18617 rms=0.1580 relevos=1
+18619	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y
+18620	calce	token 49: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y
+18631	cuadro	pos=49.04 calce=49 scroll=118 freno=- trabado=6
+18647	cuadro	pos=49.09 calce=49 scroll=118 freno=- trabado=6
+18665	cuadro	pos=49.14 calce=49 scroll=118 freno=- trabado=6
+18681	cuadro	pos=49.19 calce=49 scroll=118 freno=- trabado=6
+18698	cuadro	pos=49.24 calce=49 scroll=118 freno=- trabado=6
+18713	cuadro	pos=49.29 calce=49 scroll=118 freno=- trabado=6
+18718	llegada	parcial nativo=18716 audio=18700 leido=18715 procesado=18716 rms=0.1473 relevos=1
+18718	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y
+18718	calce	token 49: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y
+18730	cuadro	pos=49.30 calce=49 scroll=118 freno=- trabado=6
+18747	cuadro	pos=49.30 calce=49 scroll=118 freno=- trabado=6
+18763	cuadro	pos=49.30 calce=49 scroll=118 freno=- trabado=6
+18780	cuadro	pos=49.30 calce=49 scroll=118 freno=- trabado=6
+18796	cuadro	pos=49.30 calce=49 scroll=118 freno=- trabado=6
+18814	cuadro	pos=49.30 calce=49 scroll=118 freno=- trabado=6
+18829	cuadro	pos=49.34 calce=49 scroll=118 freno=- trabado=6
+18831	llegada	parcial nativo=18829 audio=18740 leido=18757 procesado=18829 rms=0.0722 relevos=1
+18831	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este
+18832	calce	token 50: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este
+18846	cuadro	pos=49.88 calce=50 scroll=122 freno=- trabado=7
+18857	llegada	parcial nativo=18856 audio=18840 leido=18855 procesado=18856 rms=0.1625 relevos=1
+18857	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este
+18857	calce	token 50: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este
+18863	cuadro	pos=50.02 calce=50 scroll=125 freno=- trabado=7
+18879	cuadro	pos=50.06 calce=50 scroll=128 freno=- trabado=7
+18896	cuadro	pos=50.11 calce=50 scroll=130 freno=- trabado=7
+18913	cuadro	pos=50.16 calce=50 scroll=131 freno=- trabado=7
+18929	cuadro	pos=50.21 calce=50 scroll=132 freno=- trabado=7
+18945	cuadro	pos=50.26 calce=50 scroll=133 freno=- trabado=7
+18958	llegada	parcial nativo=18956 audio=18940 leido=18955 procesado=18956 rms=0.0146 relevos=1
+18958	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este
+18958	calce	token 50: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este
+18963	cuadro	pos=50.29 calce=50 scroll=134 freno=- trabado=7
+18979	cuadro	pos=50.29 calce=50 scroll=135 freno=- trabado=7
+18995	cuadro	pos=50.29 calce=50 scroll=135 freno=- trabado=7
+19013	cuadro	pos=50.29 calce=50 scroll=136 freno=- trabado=7
+19025	llegada	parcial nativo=19024 audio=18980 leido=18994 procesado=19024 rms=0.0005 relevos=1
+19025	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite
+19026	calce	token 51: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite
+19029	cuadro	pos=50.53 calce=51 scroll=136 freno=- trabado=7
+19045	cuadro	pos=50.59 calce=51 scroll=136 freno=- trabado=7
+19062	cuadro	pos=50.65 calce=51 scroll=136 freno=- trabado=7
+19079	cuadro	pos=50.72 calce=51 scroll=136 freno=- trabado=7
+19095	cuadro	pos=50.78 calce=51 scroll=137 freno=- trabado=7
+19104	llegada	parcial nativo=19100 audio=19080 leido=19099 procesado=19100 rms=0.0001 relevos=1
+19104	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite
+19104	calce	token 51: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite
+19111	cuadro	pos=51.02 calce=51 scroll=137 freno=- trabado=7
+19128	cuadro	pos=51.07 calce=51 scroll=137 freno=- trabado=7
+19146	cuadro	pos=51.12 calce=51 scroll=137 freno=- trabado=7
+19161	cuadro	pos=51.16 calce=51 scroll=137 freno=- trabado=7
+19177	cuadro	pos=51.21 calce=51 scroll=137 freno=- trabado=7
+19194	cuadro	pos=51.26 calce=51 scroll=137 freno=- trabado=7
+19201	llegada	parcial nativo=19199 audio=19180 leido=19197 procesado=19199 rms=0.0000 relevos=1
+19201	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite
+19201	calce	token 51: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite
+19212	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19227	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19244	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19261	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19278	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19293	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19299	llegada	parcial nativo=19296 audio=19280 leido=19295 procesado=19296 rms=0.1154 relevos=1
+19299	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite
+19300	calce	token 51: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite
+19310	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19327	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19344	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19360	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19377	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19393	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19399	llegada	parcial nativo=19397 audio=19380 leido=19396 procesado=19397 rms=0.1133 relevos=1
+19399	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite
+19399	calce	token 51: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite
+19412	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19426	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19443	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19459	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19476	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19493	cuadro	pos=51.28 calce=51 scroll=137 freno=- trabado=7
+19509	cuadro	pos=51.31 calce=51 scroll=137 freno=- trabado=7
+19513	llegada	parcial nativo=19512 audio=19460 leido=19477 procesado=19512 rms=0.0915 relevos=1
+19513	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es
+19513	calce	token 52: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es
+19526	cuadro	pos=51.54 calce=52 scroll=137 freno=- trabado=7
+19542	cuadro	pos=51.61 calce=52 scroll=137 freno=- trabado=7
+19559	cuadro	pos=51.67 calce=52 scroll=137 freno=- trabado=7
+19576	cuadro	pos=51.73 calce=52 scroll=137 freno=- trabado=7
+19581	llegada	parcial nativo=19579 audio=19560 leido=19578 procesado=19579 rms=0.0825 relevos=1
+19581	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es
+19581	calce	token 52: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es
+19592	cuadro	pos=52.03 calce=52 scroll=137 freno=- trabado=7
+19609	cuadro	pos=52.08 calce=52 scroll=137 freno=- trabado=7
+19626	cuadro	pos=52.12 calce=52 scroll=137 freno=- trabado=7
+19643	cuadro	pos=52.17 calce=52 scroll=137 freno=- trabado=7
+19659	cuadro	pos=52.22 calce=52 scroll=137 freno=- trabado=7
+19675	cuadro	pos=52.26 calce=52 scroll=137 freno=- trabado=7
+19683	llegada	parcial nativo=19681 audio=19660 leido=19679 procesado=19681 rms=0.0726 relevos=1
+19683	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es
+19683	calce	token 52: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es
+19692	cuadro	pos=52.28 calce=52 scroll=137 freno=- trabado=7
+19709	cuadro	pos=52.28 calce=52 scroll=137 freno=- trabado=7
+19725	cuadro	pos=52.28 calce=52 scroll=137 freno=- trabado=7
+19743	cuadro	pos=52.28 calce=52 scroll=137 freno=- trabado=7
+19745	llegada	parcial nativo=19742 audio=19700 leido=19716 procesado=19742 rms=0.0809 relevos=1
+19745	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el
+19745	calce	token 53: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el
+19758	cuadro	pos=52.41 calce=53 scroll=137 freno=- trabado=7
+19777	cuadro	pos=52.49 calce=53 scroll=137 freno=- trabado=7
+19791	cuadro	pos=52.55 calce=53 scroll=137 freno=- trabado=7
+19808	cuadro	pos=52.61 calce=53 scroll=137 freno=- trabado=7
+19821	llegada	parcial nativo=19819 audio=19800 leido=19818 procesado=19819 rms=0.0433 relevos=1
+19821	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el
+19822	calce	token 53: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el
+19826	cuadro	pos=53.01 calce=53 scroll=137 freno=- trabado=7
+19842	cuadro	pos=53.06 calce=53 scroll=137 freno=- trabado=7
+19858	cuadro	pos=53.10 calce=53 scroll=137 freno=- trabado=7
+19875	cuadro	pos=53.15 calce=53 scroll=137 freno=- trabado=7
+19892	cuadro	pos=53.20 calce=53 scroll=137 freno=- trabado=7
+19909	cuadro	pos=53.24 calce=53 scroll=137 freno=- trabado=7
+19920	llegada	parcial nativo=19919 audio=19900 leido=19917 procesado=19918 rms=0.0884 relevos=1
+19920	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el
+19920	calce	token 53: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el
+19925	cuadro	pos=53.28 calce=53 scroll=137 freno=- trabado=7
+19941	cuadro	pos=53.28 calce=53 scroll=137 freno=- trabado=7
+19958	cuadro	pos=53.28 calce=53 scroll=137 freno=- trabado=7
+19979	cuadro	pos=53.28 calce=53 scroll=137 freno=- trabado=7
+19990	cuadro	pos=53.28 calce=53 scroll=137 freno=- trabado=7
+19997	llegada	parcial nativo=19994 audio=19940 leido=19955 procesado=19994 rms=0.1598 relevos=1
+19997	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés
+19997	calce	token 54: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés
+20008	cuadro	pos=53.40 calce=54 scroll=137 freno=- trabado=7
+20023	cuadro	pos=53.46 calce=54 scroll=137 freno=- trabado=7
+20040	cuadro	pos=53.53 calce=54 scroll=137 freno=- trabado=7
+20056	cuadro	pos=53.60 calce=54 scroll=137 freno=- trabado=7
+20058	llegada	parcial nativo=20055 audio=20040 leido=20054 procesado=20055 rms=0.1132 relevos=1
+20058	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés
+20058	calce	token 54: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés
+20075	cuadro	pos=53.97 calce=54 scroll=137 freno=- trabado=7
+20090	cuadro	pos=54.02 calce=54 scroll=137 freno=- trabado=7
+20108	cuadro	pos=54.07 calce=54 scroll=137 freno=- trabado=7
+20123	cuadro	pos=54.12 calce=54 scroll=137 freno=- trabado=7
+20140	cuadro	pos=54.17 calce=54 scroll=137 freno=- trabado=7
+20157	cuadro	pos=54.22 calce=54 scroll=137 freno=- trabado=7
+20159	llegada	parcial nativo=20157 audio=20140 leido=20155 procesado=20157 rms=0.0297 relevos=1
+20159	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés
+20160	calce	token 54: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés
+20175	cuadro	pos=54.23 calce=54 scroll=137 freno=- trabado=7
+20189	cuadro	pos=54.23 calce=54 scroll=137 freno=- trabado=7
+20208	cuadro	pos=54.23 calce=54 scroll=137 freno=- trabado=7
+20224	cuadro	pos=54.23 calce=54 scroll=137 freno=- trabado=7
+20240	cuadro	pos=54.23 calce=54 scroll=137 freno=- trabado=7
+20256	cuadro	pos=54.27 calce=54 scroll=137 freno=- trabado=7
+20263	llegada	parcial nativo=20261 audio=20180 leido=20197 procesado=20261 rms=0.0026 relevos=1
+20263	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20263	calce	token 55: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20272	cuadro	pos=54.49 calce=55 scroll=137 freno=- trabado=7
+20288	cuadro	pos=54.55 calce=55 scroll=137 freno=- trabado=7
+20304	llegada	parcial nativo=20300 audio=20280 leido=20298 procesado=20300 rms=0.0017 relevos=1
+20304	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20304	calce	token 55: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20311	cuadro	pos=54.93 calce=55 scroll=137 freno=- trabado=7
+20322	cuadro	pos=54.96 calce=55 scroll=137 freno=- trabado=7
+20343	cuadro	pos=55.03 calce=55 scroll=137 freno=- trabado=7
+20356	cuadro	pos=55.06 calce=55 scroll=137 freno=- trabado=7
+20373	cuadro	pos=55.11 calce=55 scroll=137 freno=- trabado=7
+20388	cuadro	pos=55.16 calce=55 scroll=137 freno=- trabado=7
+20397	llegada	parcial nativo=20395 audio=20380 leido=20394 procesado=20395 rms=0.0002 relevos=1
+20398	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20398	calce	token 55: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20405	cuadro	pos=55.19 calce=55 scroll=137 freno=- trabado=7
+20421	cuadro	pos=55.19 calce=55 scroll=137 freno=- trabado=7
+20439	cuadro	pos=55.19 calce=55 scroll=137 freno=- trabado=7
+20454	cuadro	pos=55.19 calce=55 scroll=137 freno=- trabado=7
+20471	cuadro	pos=55.20 calce=55 scroll=137 freno=- trabado=7
+20488	cuadro	pos=55.25 calce=55 scroll=137 freno=- trabado=7
+20499	llegada	parcial nativo=20497 audio=20480 leido=20496 procesado=20497 rms=0.0013 relevos=1
+20499	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20499	calce	token 55: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20509	cuadro	pos=55.28 calce=55 scroll=137 freno=- trabado=7
+20521	cuadro	pos=55.28 calce=55 scroll=137 freno=- trabado=7
+20538	cuadro	pos=55.28 calce=55 scroll=137 freno=- trabado=7
+20554	cuadro	pos=55.28 calce=55 scroll=137 freno=- trabado=7
+20572	cuadro	pos=55.28 calce=55 scroll=137 freno=- trabado=7
+20587	cuadro	pos=55.28 calce=55 scroll=137 freno=- trabado=7
+20597	llegada	parcial nativo=20596 audio=20580 leido=20595 procesado=20596 rms=0.0254 relevos=1
+20597	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20597	calce	token 55: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20605	cuadro	pos=55.28 calce=55 scroll=137 freno=- trabado=7
+20620	cuadro	pos=55.28 calce=55 scroll=137 freno=- trabado=7
+20639	cuadro	pos=55.28 calce=55 scroll=137 freno=- trabado=7
+20654	cuadro	pos=55.28 calce=55 scroll=137 freno=- trabado=7
+20672	cuadro	pos=55.28 calce=55 scroll=137 freno=- trabado=7
+20687	cuadro	pos=55.28 calce=55 scroll=137 freno=- trabado=7
+20706	cuadro	pos=55.30 calce=55 scroll=137 freno=- trabado=7
+20709	llegada	parcial nativo=20708 audio=20680 leido=20706 procesado=20707 rms=0.0580 relevos=1
+20709	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20709	calce	token 55: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20720	cuadro	pos=55.31 calce=55 scroll=137 freno=- trabado=7
+20738	cuadro	pos=55.31 calce=55 scroll=137 freno=- trabado=7
+20753	cuadro	pos=55.31 calce=55 scroll=137 freno=- trabado=7
+20774	cuadro	pos=55.31 calce=55 scroll=137 freno=- trabado=7
+20786	cuadro	pos=55.31 calce=55 scroll=137 freno=- trabado=7
+20799	llegada	parcial nativo=20797 audio=20780 leido=20796 procesado=20797 rms=0.0860 relevos=1
+20799	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20800	calce	token 55: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20809	cuadro	pos=55.31 calce=55 scroll=137 freno=- trabado=7
+20819	cuadro	pos=55.31 calce=55 scroll=137 freno=- trabado=7
+20839	cuadro	pos=55.31 calce=55 scroll=137 freno=- trabado=7
+20853	cuadro	pos=55.31 calce=55 scroll=137 freno=- trabado=7
+20870	cuadro	pos=55.31 calce=55 scroll=137 freno=- trabado=7
+20886	cuadro	pos=55.31 calce=55 scroll=137 freno=- trabado=7
+20898	llegada	parcial nativo=20897 audio=20880 leido=20895 procesado=20897 rms=0.0082 relevos=1
+20898	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20899	calce	token 55: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio
+20907	cuadro	pos=55.31 calce=55 scroll=137 freno=- trabado=7
+20919	cuadro	pos=55.31 calce=55 scroll=137 freno=- trabado=7
+20933	llegada	parcial nativo=20932 audio=20900 leido=20915 procesado=20932 rms=0.0034 relevos=1
+20933	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y
+20933	calce	token 56: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y
+20943	cuadro	pos=56.03 calce=56 scroll=137 freno=- trabado=7
+20952	cuadro	pos=56.05 calce=56 scroll=137 freno=- trabado=7
+20975	cuadro	pos=56.12 calce=56 scroll=137 freno=- trabado=7
+20985	cuadro	pos=56.15 calce=56 scroll=137 freno=- trabado=7
+21002	cuadro	pos=56.20 calce=56 scroll=137 freno=- trabado=7
+21018	llegada	parcial nativo=21016 audio=21000 leido=21015 procesado=21016 rms=0.2115 relevos=1
+21018	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y
+21018	calce	token 56: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y
+21019	cuadro	pos=56.24 calce=56 scroll=137 freno=- trabado=7
+21035	cuadro	pos=56.24 calce=56 scroll=137 freno=- trabado=7
+21051	cuadro	pos=56.24 calce=56 scroll=137 freno=- trabado=7
+21070	cuadro	pos=56.24 calce=56 scroll=137 freno=- trabado=7
+21085	cuadro	pos=56.24 calce=56 scroll=137 freno=- trabado=7
+21102	cuadro	pos=56.24 calce=56 scroll=137 freno=- trabado=7
+21118	llegada	parcial nativo=21116 audio=21100 leido=21114 procesado=21116 rms=0.0814 relevos=1
+21118	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y
+21118	calce	token 56: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y
+21119	cuadro	pos=56.28 calce=56 scroll=137 freno=- trabado=7
+21136	cuadro	pos=56.28 calce=56 scroll=137 freno=- trabado=7
+21151	cuadro	pos=56.28 calce=56 scroll=137 freno=- trabado=7
+21167	cuadro	pos=56.28 calce=56 scroll=137 freno=- trabado=7
+21184	cuadro	pos=56.28 calce=56 scroll=137 freno=- trabado=7
+21200	cuadro	pos=56.28 calce=56 scroll=137 freno=- trabado=7
+21217	cuadro	pos=56.28 calce=56 scroll=137 freno=- trabado=7
+21234	cuadro	pos=56.33 calce=56 scroll=137 freno=- trabado=7
+21239	llegada	parcial nativo=21234 audio=21140 leido=21155 procesado=21234 rms=0.0239 relevos=1
+21239	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se
+21239	calce	token 57: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se
+21250	cuadro	pos=56.44 calce=57 scroll=137 freno=- trabado=7
+21258	llegada	parcial nativo=21256 audio=21240 leido=21255 procesado=21256 rms=0.1026 relevos=1
+21258	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se
+21258	calce	token 57: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se
+21267	cuadro	pos=56.65 calce=57 scroll=137 freno=- trabado=7
+21283	cuadro	pos=56.71 calce=57 scroll=137 freno=- trabado=7
+21301	cuadro	pos=56.77 calce=57 scroll=137 freno=- trabado=7
+21317	cuadro	pos=56.83 calce=57 scroll=137 freno=- trabado=7
+21333	cuadro	pos=56.89 calce=57 scroll=137 freno=- trabado=7
+21351	cuadro	pos=56.95 calce=57 scroll=137 freno=- trabado=7
+21361	llegada	parcial nativo=21359 audio=21340 leido=21357 procesado=21359 rms=0.0403 relevos=1
+21361	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se
+21361	calce	token 57: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se
+21366	cuadro	pos=57.01 calce=57 scroll=137 freno=- trabado=7
+21383	cuadro	pos=57.06 calce=57 scroll=137 freno=- trabado=7
+21400	cuadro	pos=57.11 calce=57 scroll=137 freno=- trabado=7
+21417	cuadro	pos=57.16 calce=57 scroll=137 freno=- trabado=7
+21429	llegada	parcial nativo=21427 audio=21380 leido=21396 procesado=21427 rms=0.0235 relevos=1
+21429	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa
+21429	calce	token 58: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa
+21434	cuadro	pos=58.01 calce=58 scroll=137 freno=- trabado=7
+21449	cuadro	pos=58.06 calce=58 scroll=137 freno=- trabado=7
+21466	cuadro	pos=58.11 calce=58 scroll=137 freno=- trabado=7
+21483	cuadro	pos=58.16 calce=58 scroll=137 freno=- trabado=7
+21497	llegada	parcial nativo=21496 audio=21480 leido=21495 procesado=21496 rms=0.0639 relevos=1
+21497	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa
+21498	calce	token 58: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa
+21506	cuadro	pos=58.20 calce=58 scroll=137 freno=- trabado=7
+21516	cuadro	pos=58.20 calce=58 scroll=137 freno=- trabado=7
+21532	cuadro	pos=58.20 calce=58 scroll=137 freno=- trabado=7
+21549	cuadro	pos=58.20 calce=58 scroll=137 freno=- trabado=7
+21565	cuadro	pos=58.20 calce=58 scroll=137 freno=- trabado=7
+21582	cuadro	pos=58.25 calce=58 scroll=137 freno=- trabado=7
+21598	llegada	parcial nativo=21596 audio=21580 leido=21595 procesado=21596 rms=0.0702 relevos=1
+21598	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa
+21598	calce	token 58: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa
+21605	cuadro	pos=58.30 calce=58 scroll=137 freno=- trabado=7
+21615	cuadro	pos=58.30 calce=58 scroll=137 freno=- trabado=7
+21632	cuadro	pos=58.30 calce=58 scroll=137 freno=- trabado=7
+21649	cuadro	pos=58.30 calce=58 scroll=137 freno=- trabado=7
+21662	llegada	parcial nativo=21661 audio=21620 leido=21636 procesado=21661 rms=0.0685 relevos=1
+21662	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en
+21662	calce	token 59: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en
+21666	cuadro	pos=59.01 calce=59 scroll=141 freno=- trabado=8
+21681	cuadro	pos=59.06 calce=59 scroll=144 freno=- trabado=8
+21698	cuadro	pos=59.11 calce=59 scroll=147 freno=- trabado=8
+21716	cuadro	pos=59.16 calce=59 scroll=149 freno=- trabado=8
+21731	cuadro	pos=59.21 calce=59 scroll=151 freno=- trabado=8
+21743	llegada	parcial nativo=21740 audio=21720 leido=21738 procesado=21740 rms=0.0922 relevos=1
+21743	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en
+21744	calce	token 59: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en
+21749	cuadro	pos=59.24 calce=59 scroll=152 freno=- trabado=8
+21764	cuadro	pos=59.24 calce=59 scroll=153 freno=- trabado=8
+21781	cuadro	pos=59.24 calce=59 scroll=154 freno=- trabado=8
+21798	cuadro	pos=59.24 calce=59 scroll=155 freno=- trabado=8
+21814	cuadro	pos=59.24 calce=59 scroll=155 freno=- trabado=8
+21831	cuadro	pos=59.26 calce=59 scroll=156 freno=- trabado=8
+21842	llegada	parcial nativo=21840 audio=21820 leido=21837 procesado=21840 rms=0.1532 relevos=1
+21842	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en
+21842	calce	token 59: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en
+21848	cuadro	pos=59.30 calce=59 scroll=156 freno=- trabado=8
+21864	cuadro	pos=59.30 calce=59 scroll=156 freno=- trabado=8
+21881	cuadro	pos=59.30 calce=59 scroll=156 freno=- trabado=8
+21897	cuadro	pos=59.30 calce=59 scroll=156 freno=- trabado=8
+21914	cuadro	pos=59.30 calce=59 scroll=157 freno=- trabado=8
+21930	cuadro	pos=59.30 calce=59 scroll=157 freno=- trabado=8
+21947	cuadro	pos=59.32 calce=59 scroll=157 freno=- trabado=8
+21956	llegada	parcial nativo=21954 audio=21860 leido=21875 procesado=21954 rms=0.0757 relevos=1
+21956	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la
+21956	calce	token 60: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la
+21963	cuadro	pos=60.02 calce=60 scroll=157 freno=- trabado=8
+21980	cuadro	pos=60.07 calce=60 scroll=157 freno=- trabado=8
+21982	llegada	parcial nativo=21979 audio=21960 leido=21978 procesado=21979 rms=0.0406 relevos=1
+21982	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la
+21982	calce	token 60: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la
+21997	cuadro	pos=60.08 calce=60 scroll=157 freno=- trabado=8
+22013	cuadro	pos=60.09 calce=60 scroll=157 freno=- trabado=8
+22030	cuadro	pos=60.14 calce=60 scroll=157 freno=- trabado=8
+22047	cuadro	pos=60.20 calce=60 scroll=157 freno=- trabado=8
+22063	cuadro	pos=60.25 calce=60 scroll=157 freno=- trabado=8
+22080	cuadro	pos=60.30 calce=60 scroll=157 freno=- trabado=8
+22084	llegada	parcial nativo=22079 audio=22060 leido=22077 procesado=22079 rms=0.0569 relevos=1
+22084	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la
+22084	calce	token 60: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la
+22096	cuadro	pos=60.31 calce=60 scroll=157 freno=- trabado=8
+22113	cuadro	pos=60.31 calce=60 scroll=157 freno=- trabado=8
+22129	cuadro	pos=60.31 calce=60 scroll=157 freno=- trabado=8
+22146	cuadro	pos=60.31 calce=60 scroll=157 freno=- trabado=8
+22154	llegada	parcial nativo=22152 audio=22100 leido=22119 procesado=22152 rms=0.0078 relevos=1
+22154	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas
+22154	calce	token 61: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas
+22162	cuadro	pos=61.03 calce=61 scroll=157 freno=- trabado=8
+22179	cuadro	pos=61.08 calce=61 scroll=157 freno=- trabado=8
+22196	cuadro	pos=61.13 calce=61 scroll=157 freno=- trabado=8
+22212	cuadro	pos=61.18 calce=61 scroll=157 freno=- trabado=8
+22221	llegada	parcial nativo=22220 audio=22200 leido=22218 procesado=22220 rms=0.0055 relevos=1
+22221	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas
+22221	calce	token 61: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas
+22228	cuadro	pos=61.21 calce=61 scroll=157 freno=- trabado=8
+22245	cuadro	pos=61.21 calce=61 scroll=157 freno=- trabado=8
+22262	cuadro	pos=61.21 calce=61 scroll=157 freno=- trabado=8
+22278	cuadro	pos=61.21 calce=61 scroll=157 freno=- trabado=8
+22295	cuadro	pos=61.23 calce=61 scroll=157 freno=- trabado=8
+22312	cuadro	pos=61.29 calce=61 scroll=157 freno=- trabado=8
+22322	llegada	parcial nativo=22319 audio=22300 leido=22317 procesado=22319 rms=0.1557 relevos=1
+22322	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas
+22322	calce	token 61: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas
+22328	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22345	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22361	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22378	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22394	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22411	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22417	llegada	parcial nativo=22416 audio=22400 leido=22414 procesado=22415 rms=0.0298 relevos=1
+22417	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas
+22417	calce	token 61: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas
+22428	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22445	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22461	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22477	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22494	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22511	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22519	llegada	parcial nativo=22517 audio=22500 leido=22515 procesado=22517 rms=0.0221 relevos=1
+22519	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas
+22519	calce	token 61: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas
+22527	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22544	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22560	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22577	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22594	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22610	cuadro	pos=61.32 calce=61 scroll=157 freno=- trabado=8
+22627	cuadro	pos=61.34 calce=61 scroll=157 freno=- trabado=8
+22644	cuadro	pos=61.39 calce=61 scroll=157 freno=- trabado=8
+22658	llegada	parcial nativo=22655 audio=22580 leido=22596 procesado=22655 rms=0.0011 relevos=1
+22658	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de
+22658	calce	token 62: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de
+22669	cuadro	pos=62.04 calce=62 scroll=157 freno=- trabado=8
+22676	cuadro	pos=62.06 calce=62 scroll=157 freno=- trabado=8
+22693	cuadro	pos=62.11 calce=62 scroll=157 freno=- trabado=8
+22699	llegada	parcial nativo=22697 audio=22680 leido=22696 procesado=22697 rms=0.0002 relevos=1
+22699	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de
+22700	calce	token 62: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de
+22710	cuadro	pos=62.13 calce=62 scroll=157 freno=- trabado=8
+22726	cuadro	pos=62.13 calce=62 scroll=157 freno=- trabado=8
+22743	cuadro	pos=62.14 calce=62 scroll=157 freno=- trabado=8
+22761	cuadro	pos=62.19 calce=62 scroll=157 freno=- trabado=8
+22777	cuadro	pos=62.24 calce=62 scroll=157 freno=- trabado=8
+22793	cuadro	pos=62.29 calce=62 scroll=157 freno=- trabado=8
+22802	llegada	parcial nativo=22798 audio=22780 leido=22796 procesado=22798 rms=0.0000 relevos=1
+22802	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de
+22803	calce	token 62: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de
+22811	cuadro	pos=62.32 calce=62 scroll=157 freno=- trabado=8
+22826	cuadro	pos=62.32 calce=62 scroll=157 freno=- trabado=8
+22843	cuadro	pos=62.32 calce=62 scroll=157 freno=- trabado=8
+22859	cuadro	pos=62.32 calce=62 scroll=157 freno=- trabado=8
+22861	llegada	parcial nativo=22858 audio=22820 leido=22835 procesado=22858 rms=0.0000 relevos=1
+22861	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+22861	calce	token 63: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+22876	cuadro	pos=63.04 calce=63 scroll=157 freno=- trabado=8
+22892	cuadro	pos=63.10 calce=63 scroll=157 freno=- trabado=8
+22909	cuadro	pos=63.15 calce=63 scroll=157 freno=- trabado=8
+22926	cuadro	pos=63.20 calce=63 scroll=157 freno=- trabado=8
+22943	cuadro	pos=63.26 calce=63 scroll=157 freno=- trabado=8
+22946	llegada	parcial nativo=22942 audio=22920 leido=22939 procesado=22942 rms=0.0000 relevos=1
+22946	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+22947	calce	token 63: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+22958	cuadro	pos=63.27 calce=63 scroll=157 freno=- trabado=8
+22975	cuadro	pos=63.27 calce=63 scroll=157 freno=- trabado=8
+22992	cuadro	pos=63.27 calce=63 scroll=157 freno=- trabado=8
+23008	cuadro	pos=63.27 calce=63 scroll=157 freno=- trabado=8
+23025	cuadro	pos=63.27 calce=63 scroll=157 freno=- trabado=8
+23042	cuadro	pos=63.30 calce=63 scroll=157 freno=- trabado=8
+23046	llegada	parcial nativo=23039 audio=23020 leido=23036 procesado=23039 rms=0.0000 relevos=1
+23046	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23046	calce	token 63: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23100	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23101	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23107	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23124	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23143	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23146	llegada	parcial nativo=23142 audio=23120 leido=23140 procesado=23142 rms=0.0000 relevos=1
+23146	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23146	calce	token 63: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23161	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23177	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23190	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23211	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23223	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23241	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23243	llegada	parcial nativo=23240 audio=23220 leido=23239 procesado=23240 rms=0.0000 relevos=1
+23243	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23243	calce	token 63: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23257	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23274	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23290	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23309	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23324	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23342	cuadro	pos=63.31 calce=63 scroll=157 freno=- trabado=8
+23348	llegada	parcial nativo=23345 audio=23320 leido=23344 procesado=23345 rms=0.0000 relevos=1
+23348	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23348	calce	token 63: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23356	cuadro	pos=63.33 calce=63 scroll=157 freno=- trabado=8
+23373	cuadro	pos=63.33 calce=63 scroll=157 freno=- trabado=8
+23390	cuadro	pos=63.33 calce=63 scroll=157 freno=- trabado=8
+23408	cuadro	pos=63.33 calce=63 scroll=157 freno=- trabado=8
+23423	cuadro	pos=63.33 calce=63 scroll=157 freno=- trabado=8
+23438	llegada	parcial nativo=23436 audio=23420 leido=23434 procesado=23436 rms=0.0000 relevos=1
+23438	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23438	calce	token 63: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23444	cuadro	pos=63.33 calce=63 scroll=157 freno=- trabado=8
+23456	cuadro	pos=63.33 calce=63 scroll=157 freno=- trabado=8
+23473	cuadro	pos=63.33 calce=63 scroll=157 freno=- trabado=8
+23489	cuadro	pos=63.33 calce=63 scroll=157 freno=- trabado=8
+23506	cuadro	pos=63.33 calce=63 scroll=157 freno=- trabado=8
+23523	cuadro	pos=63.33 calce=63 scroll=157 freno=- trabado=8
+23540	cuadro	pos=63.33 calce=63 scroll=157 freno=- trabado=8
+23547	llegada	parcial nativo=23546 audio=23520 leido=23543 procesado=23545 rms=0.0000 relevos=1
+23548	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23548	calce	token 63: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23556	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23572	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23589	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23607	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23624	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23639	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23645	llegada	parcial nativo=23643 audio=23620 leido=23641 procesado=23643 rms=0.0000 relevos=1
+23645	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23646	calce	token 63: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23656	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23674	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23688	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23706	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23723	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23739	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23745	llegada	parcial nativo=23740 audio=23720 leido=23737 procesado=23740 rms=0.0000 relevos=1
+23745	oyo	parcial: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23745	calce	token 63: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23755	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23772	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23789	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23806	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23821	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23822	llegada	FINAL nativo=23818 audio=23780 leido=23796 procesado=23818 rms=0.0000 relevos=1
+23822	palabras	FINAL: nodriza@6613-7003 solo@7033-7333 que@7333-7423 a@7423-7483 veces@7483-7753 somos@7753-8083 egoístas@8143-8683 o@8713-8803 crueles@8803-9313 dice@9763-10273 que@10333-10420 hay@10420-10513 un@10513-10633 límite@10633-11173 que@11233-11353 nunca@11353-11653 vamos@11653-11923 a@11923-11983 poder@11983-12223 superar@12223-12703 sin@13153-13453 importar@13453-14053 que@14143-14293 tan@14293-14473 buenas@14473-14798 a@14807-14867 nuestra@14873-15133 formación@15133-15763 con@15943-16089 las@16089-16213 leyes@16213-16663 o@16753-16843 las@16843-16992 circunstancias@16992-17713 y@18163-18252 este@18252-18463 límite@18463-18973 es@19183-19333 el@19333-19453 interés@19453-19783 propio@19783-20263 y@20563-20653 se@20653-20773 expresa@20773-21313 en@21403-21523 la@21523-21643 ganas@21643-21943 de@21943-22063 estatus@22063-22603
+23823	oyo	FINAL: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23823	calce	token 63: nodriza solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas a nuestra formación con las leyes o las circunstancias y este límite es el interés propio y se expresa en la ganas de estatus
+23828	llegada	parcial nativo=23822 audio=23800 leido=23820 procesado=23822 rms=0.0000 relevos=1
+23841	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23856	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23874	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23887	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23905	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23929	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23930	llegada	parcial nativo=23915 audio=23900 leido=23915 procesado=23915 rms=0.0000 relevos=1
+23938	cuadro	pos=63.34 calce=63 scroll=157 freno=- trabado=8
+23953	cuadro	pos=63.38 calce=63 scroll=157 freno=- trabado=8
+23973	cuadro	pos=63.44 calce=63 scroll=157 freno=- trabado=8
+23987	cuadro	pos=63.48 calce=63 scroll=157 freno=- trabado=8
+24005	cuadro	pos=63.53 calce=63 scroll=157 freno=- trabado=8
+24018	llegada	parcial nativo=24017 audio=24000 leido=24017 procesado=24017 rms=0.0000 relevos=1
+24020	cuadro	pos=63.58 calce=63 scroll=157 freno=- trabado=8
+24038	cuadro	pos=63.63 calce=63 scroll=157 freno=- trabado=8
+24055	cuadro	pos=63.68 calce=63 scroll=157 freno=- trabado=8
+24071	cuadro	pos=63.72 calce=63 scroll=157 freno=- trabado=8
+24086	cuadro	pos=63.77 calce=63 scroll=157 freno=- trabado=8
+24105	cuadro	pos=63.82 calce=63 scroll=157 freno=- trabado=8
+24116	llegada	parcial nativo=24115 audio=24100 leido=24113 procesado=24114 rms=0.0000 relevos=1
+24119	cuadro	pos=63.87 calce=63 scroll=157 freno=- trabado=8
+24137	cuadro	pos=63.92 calce=63 scroll=157 freno=- trabado=8
+24154	cuadro	pos=63.96 calce=63 scroll=157 freno=- trabado=8
+24171	cuadro	pos=64.02 calce=63 scroll=157 freno=- trabado=8
+24186	cuadro	pos=64.06 calce=63 scroll=157 freno=- trabado=8
+24203	cuadro	pos=64.11 calce=63 scroll=157 freno=- trabado=8
+24218	llegada	parcial nativo=24216 audio=24200 leido=24215 procesado=24216 rms=0.0000 relevos=1
+24220	cuadro	pos=64.16 calce=63 scroll=157 freno=- trabado=8
+24237	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24253	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24270	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24287	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24303	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24317	llegada	parcial nativo=24315 audio=24300 leido=24314 procesado=24315 rms=0.0001 relevos=1
+24319	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24337	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24351	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24369	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24386	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24408	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24419	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24425	llegada	parcial nativo=24416 audio=24400 leido=24416 procesado=24416 rms=0.0002 relevos=1
+24438	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24451	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24471	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24484	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24503	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24517	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24535	llegada	parcial nativo=24531 audio=24500 leido=24513 procesado=24531 rms=0.0001 relevos=1
+24537	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24550	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24570	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24584	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24606	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24617	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24620	llegada	parcial nativo=24618 audio=24600 leido=24618 procesado=24618 rms=0.0001 relevos=1
+24636	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24650	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24669	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24683	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24703	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24716	cuadro	pos=64.17 calce=63 scroll=157 freno=- trabado=8
+24718	llegada	parcial nativo=24715 audio=24700 leido=24713 procesado=24715 rms=0.0001 relevos=1

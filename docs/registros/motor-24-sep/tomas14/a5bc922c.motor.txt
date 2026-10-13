@@ -1,0 +1,638 @@
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: a5bc922c-bfd7-4561-9394-5f610436b906
+# inicio del video (epoch ms): 1790301070112
+# motor de voz: nativo
+# letra: 24 px, serif
+# columna: completa, margen 5%
+# donde lees: arriba
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Hola. Lee esto en voz alta, con o sin apuro, como prefieras.
+# | 
+# | Ahora fíjate en el texto. Se está moviendo solo, al ritmo en que hablas, sin que toques nada. La línea suave bajo las palabras te muestra por dónde vas.
+# | 
+# | Si te detienes a pensar, el texto te espera. Cuando vuelves a hablar, sigue contigo.
+# | 
+# | Lo que escribes entre corchetes es una nota solo para ti. Se ve en la pantalla, pero no hace falta leerla en voz alta. [Como esta: respira y sonríe.]
+# | 
+# | Tu guion también puede ayudarte a leer mejor. Marca en negrita lo que quieres decir con más fuerza. Pinta palabras en ámbar, en celeste o en verde salvia para distinguir ideas o cambios de tono. Y usa el destacado amarillo para lo que no se te puede pasar. Basta con seleccionar el texto en el editor y elegir.
+# | 
+# | En el botón Aa eliges el tamaño de la letra, la tipografía, el ancho de la columna y los colores de la pantalla. Déjalo como te resulte más cómodo.
+# | 
+# | Cuando quieras grabarte, toca Grabar. La cámara filma mientras lees, y el texto queda justo bajo el lente, para que tu mirada vaya a la cámara y no a la pantalla. Puedes verte a pantalla completa, detrás del texto, o en un recuadro pequeño. Así sabes cómo te están viendo, sin perder la comodidad para leer.
+# | 
+# | Te acompaña para darte la comodidad y la tranquilidad que necesitas. Queremos que toda tu concentración esté donde debe estar. No tienes que memorizar. No tienes que apurarte para alcanzar el texto. Puedes transmitir la emoción que quieras, en el momento que quieras.
+# | 
+# | Sirve para grabar un video, dar una clase o preparar una entrevista.
+# | 
+# | Cuando termines, borra esto y escribe tu propio guion, o pega uno que ya tengas.
+# | 
+# | Y si algo te gusta, te molesta o se te ocurre cómo mejorarlo, cuéntanos. Tus comentarios son muy valiosos para nosotros. Escríbenos a hola@ejemplo.com. Que te vaya muy bien.
+# ---------------------------------------------
+
+ms	tipo	detalle
+5	renglones	0 7 12 19 24 29 35 40 41 48 53 56 60 65 72 78 84 85 89 94 100 105 111 115 122 127 134 140 143 149 154 159 165 169 172 176 180 186 193 201 206 210 215 220 225 228 233 237 241 245 250 255 259 263 268 271 276 282 283 288 293 298 306 311 314 318 321 324
+5	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+19	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+35	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+51	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+68	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+84	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+101	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+117	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+134	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+151	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+167	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+184	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+200	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+217	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+234	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+250	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+267	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+283	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+300	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+317	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+333	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+350	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+366	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+383	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+399	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+416	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+432	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+450	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+466	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+483	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+499	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+515	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+532	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+549	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+566	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+582	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+599	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+615	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+631	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+648	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+665	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+681	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+698	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+715	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+731	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+748	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+764	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+781	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+797	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+815	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+831	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+847	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+864	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+880	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+897	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+913	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+930	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+947	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+963	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+980	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+996	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1014	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1030	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1046	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1063	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1080	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1100	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1113	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1129	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1146	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1162	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1180	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1196	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1222	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1224	oido	inicio=1179 trozo=320 ruta=/data/user/0/com.sigoteleprompter.app/files/oido/1790301071291.pcm
+1224	llegada	parcial nativo=1217 audio=1199 leido=1217 procesado=1217 rms=0.0001 relevos=0
+1230	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1246	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1262	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1279	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1296	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1313	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1315	llegada	parcial nativo=1312 audio=1299 leido=1312 procesado=1312 rms=0.0001 relevos=0
+1328	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1345	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1361	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1380	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1395	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1412	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1428	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1446	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1461	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1464	llegada	parcial nativo=1463 audio=1399 leido=1415 procesado=1463 rms=0.0122 relevos=0
+1479	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1495	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1511	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1527	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1544	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1560	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1568	llegada	parcial nativo=1567 audio=1499 leido=1563 procesado=1567 rms=0.0943 relevos=0
+1579	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1594	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1614	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1620	llegada	parcial nativo=1618 audio=1599 leido=1618 procesado=1618 rms=0.1210 relevos=0
+1627	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1645	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1662	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1676	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1693	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1711	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1724	llegada	parcial nativo=1723 audio=1699 leido=1715 procesado=1723 rms=0.1228 relevos=0
+1726	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1745	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1760	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1781	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1788	llegada	parcial nativo=1787 audio=1759 leido=1777 procesado=1787 rms=0.0076 relevos=0
+1788	oyo	parcial: le
+1789	calce	NO CALZO: le
+1792	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1810	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1826	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1849	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1859	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1878	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1887	llegada	parcial nativo=1886 audio=1859 leido=1878 procesado=1886 rms=0.0822 relevos=0
+1887	oyo	parcial: leer
+1887	calce	NO CALZO: leer
+1892	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1914	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1925	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1942	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1952	llegada	parcial nativo=1951 audio=1919 leido=1935 procesado=1951 rms=0.0653 relevos=0
+1953	oyo	parcial: le
+1953	calce	NO CALZO: le
+1958	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1976	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1991	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2010	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2025	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2036	llegada	parcial nativo=2035 audio=1999 leido=2015 procesado=2035 rms=0.0372 relevos=0
+2036	oyo	parcial: le estoy
+2038	calce	token 2: le estoy
+2043	cuadro	pos=0.00 calce=2 scroll=16 freno=sin-calce trabado=0
+2058	cuadro	pos=0.00 calce=2 scroll=16 freno=sin-calce trabado=0
+2080	cuadro	pos=0.00 calce=2 scroll=16 freno=sin-calce trabado=0
+2091	cuadro	pos=0.00 calce=2 scroll=16 freno=sin-calce trabado=0
+2110	cuadro	pos=0.00 calce=2 scroll=16 freno=sin-calce trabado=0
+2123	llegada	parcial nativo=2122 audio=2059 leido=2081 procesado=2122 rms=0.0044 relevos=0
+2123	oyo	parcial: le esto en
+2124	calce	token 3: le esto en
+2127	cuadro	pos=0.00 calce=3 scroll=16 freno=sin-calce trabado=0
+2144	cuadro	pos=0.00 calce=3 scroll=16 freno=sin-calce trabado=0
+2157	cuadro	pos=0.00 calce=3 scroll=16 freno=sin-calce trabado=0
+2176	cuadro	pos=0.00 calce=3 scroll=16 freno=sin-calce trabado=0
+2183	llegada	parcial nativo=2182 audio=2099 leido=2123 procesado=2181 rms=0.0586 relevos=0
+2183	oyo	parcial: le esto
+2184	calce	token 2: le esto
+2192	cuadro	pos=0.92 calce=3 scroll=16 freno=- trabado=0
+2212	cuadro	pos=2.39 calce=3 scroll=16 freno=- trabado=0
+2225	cuadro	pos=2.47 calce=3 scroll=16 freno=- trabado=0
+2258	cuadro	pos=2.64 calce=3 scroll=16 freno=- trabado=0
+2265	llegada	parcial nativo=2263 audio=2159 leido=2233 procesado=2263 rms=0.0479 relevos=0
+2265	oyo	parcial: le están volviendo
+2265	calce	token 19: le están volviendo
+2280	cuadro	pos=3.05 calce=19 scroll=38 freno=- trabado=2
+2290	cuadro	pos=3.12 calce=19 scroll=52 freno=- trabado=3
+2311	cuadro	pos=3.26 calce=19 scroll=72 freno=- trabado=3
+2324	cuadro	pos=3.35 calce=19 scroll=83 freno=- trabado=3
+2341	cuadro	pos=3.47 calce=19 scroll=93 freno=- trabado=3
+2347	llegada	parcial nativo=2346 audio=2219 leido=2287 procesado=2345 rms=0.0132 relevos=0
+2347	oyo	parcial: le esto
+2348	calce	token 18: le esto
+2357	cuadro	pos=4.55 calce=19 scroll=102 freno=- trabado=3
+2373	cuadro	pos=4.67 calce=19 scroll=108 freno=- trabado=3
+2390	cuadro	pos=4.79 calce=19 scroll=113 freno=- trabado=3
+2392	llegada	parcial nativo=2389 audio=2239 leido=2347 procesado=2389 rms=0.0019 relevos=0
+2392	oyo	parcial: le esto en
+2392	calce	NO CALZO: le esto en
+2406	cuadro	pos=4.92 calce=19 scroll=117 freno=- trabado=3
+2424	cuadro	pos=5.05 calce=19 scroll=121 freno=- trabado=3
+2440	cuadro	pos=5.17 calce=19 scroll=123 freno=- trabado=3
+2454	llegada	parcial nativo=2453 audio=2279 leido=2391 procesado=2453 rms=0.0010 relevos=0
+2455	oyo	parcial: le esto
+2455	calce	token 18: le esto
+2459	cuadro	pos=7.07 calce=19 scroll=126 freno=- trabado=3
+2470	llegada	parcial nativo=2468 audio=2299 leido=2453 procesado=2468 rms=0.0034 relevos=0
+2470	oyo	parcial: le esto en voz
+2471	calce	NO CALZO: le esto en voz
+2475	cuadro	pos=7.19 calce=19 scroll=127 freno=- trabado=3
+2489	cuadro	pos=7.30 calce=19 scroll=128 freno=- trabado=3
+2499	llegada	parcial nativo=2497 audio=2339 leido=2477 procesado=2497 rms=0.0141 relevos=0
+2499	oyo	parcial: le esto en voz alta
+2500	calce	NO CALZO: le esto en voz alta
+2507	cuadro	pos=7.43 calce=19 scroll=129 freno=- trabado=3
+2522	cuadro	pos=7.55 calce=19 scroll=130 freno=- trabado=3
+2528	llegada	parcial nativo=2520 audio=2439 leido=2520 procesado=2520 rms=0.0059 relevos=0
+2529	oyo	parcial: le esto en voz alta
+2529	calce	NO CALZO: le esto en voz alta
+2541	cuadro	pos=7.69 calce=19 scroll=131 freno=- trabado=3
+2556	cuadro	pos=7.80 calce=19 scroll=131 freno=- trabado=3
+2570	llegada	parcial nativo=2569 audio=2539 leido=2564 procesado=2569 rms=0.0001 relevos=0
+2570	oyo	parcial: le esto en voz alta
+2570	calce	NO CALZO: le esto en voz alta
+2573	cuadro	pos=7.93 calce=19 scroll=132 freno=- trabado=3
+2589	cuadro	pos=8.05 calce=19 scroll=132 freno=- trabado=3
+2609	cuadro	pos=8.20 calce=19 scroll=132 freno=- trabado=3
+2622	cuadro	pos=8.29 calce=19 scroll=132 freno=- trabado=3
+2642	cuadro	pos=8.44 calce=19 scroll=132 freno=- trabado=3
+2656	cuadro	pos=8.55 calce=19 scroll=133 freno=- trabado=3
+2659	llegada	parcial nativo=2658 audio=2639 leido=2651 procesado=2658 rms=0.0000 relevos=0
+2659	oyo	parcial: le esto en voz alta
+2659	calce	NO CALZO: le esto en voz alta
+2677	cuadro	pos=8.71 calce=19 scroll=133 freno=- trabado=3
+2689	cuadro	pos=8.80 calce=19 scroll=133 freno=- trabado=3
+2704	cuadro	pos=8.91 calce=19 scroll=133 freno=- trabado=3
+2722	cuadro	pos=9.05 calce=19 scroll=133 freno=- trabado=3
+2760	llegada	parcial nativo=2755 audio=2739 leido=2755 procesado=2755 rms=0.0000 relevos=0
+2760	oyo	parcial: le esto en voz alta
+2760	calce	NO CALZO: le esto en voz alta
+2760	cuadro	pos=9.33 calce=19 scroll=133 freno=- trabado=3
+2774	cuadro	pos=9.43 calce=19 scroll=133 freno=- trabado=3
+2787	cuadro	pos=9.54 calce=19 scroll=133 freno=- trabado=3
+2804	cuadro	pos=9.66 calce=19 scroll=133 freno=- trabado=3
+2821	cuadro	pos=9.79 calce=19 scroll=133 freno=- trabado=3
+2838	cuadro	pos=9.92 calce=19 scroll=133 freno=- trabado=3
+2855	cuadro	pos=10.04 calce=19 scroll=133 freno=- trabado=3
+2862	llegada	parcial nativo=2860 audio=2839 leido=2852 procesado=2860 rms=0.0000 relevos=0
+2862	oyo	parcial: le esto en voz alta
+2862	calce	NO CALZO: le esto en voz alta
+2870	cuadro	pos=10.16 calce=19 scroll=133 freno=- trabado=3
+2887	cuadro	pos=10.28 calce=19 scroll=133 freno=- trabado=3
+2904	cuadro	pos=10.41 calce=19 scroll=133 freno=- trabado=3
+2922	cuadro	pos=10.54 calce=19 scroll=133 freno=- trabado=3
+2939	cuadro	pos=10.67 calce=19 scroll=133 freno=- trabado=3
+2953	cuadro	pos=10.78 calce=19 scroll=133 freno=- trabado=3
+2963	llegada	parcial nativo=2962 audio=2939 leido=2957 procesado=2962 rms=0.0001 relevos=0
+2963	oyo	parcial: le esto en voz alta
+2963	calce	NO CALZO: le esto en voz alta
+2970	cuadro	pos=10.91 calce=19 scroll=133 freno=- trabado=3
+2987	cuadro	pos=11.03 calce=19 scroll=133 freno=- trabado=3
+3003	cuadro	pos=11.15 calce=19 scroll=133 freno=- trabado=3
+3020	cuadro	pos=11.28 calce=19 scroll=133 freno=- trabado=3
+3037	cuadro	pos=11.41 calce=19 scroll=133 freno=- trabado=3
+3052	cuadro	pos=11.53 calce=19 scroll=133 freno=- trabado=3
+3056	llegada	parcial nativo=3054 audio=3039 leido=3053 procesado=3054 rms=0.0001 relevos=0
+3056	oyo	parcial: le esto en voz alta
+3057	calce	NO CALZO: le esto en voz alta
+3069	cuadro	pos=11.65 calce=19 scroll=133 freno=- trabado=3
+3086	cuadro	pos=11.78 calce=19 scroll=133 freno=- trabado=3
+3102	cuadro	pos=11.90 calce=19 scroll=133 freno=- trabado=3
+3120	cuadro	pos=12.03 calce=19 scroll=133 freno=- trabado=3
+3136	cuadro	pos=12.15 calce=19 scroll=133 freno=- trabado=3
+3153	cuadro	pos=12.28 calce=19 scroll=133 freno=- trabado=3
+3188	llegada	parcial nativo=3167 audio=3139 leido=3155 procesado=3167 rms=0.0000 relevos=0
+3188	oyo	parcial: le esto en voz alta
+3188	calce	NO CALZO: le esto en voz alta
+3188	cuadro	pos=12.54 calce=19 scroll=133 freno=- trabado=3
+3202	cuadro	pos=12.65 calce=19 scroll=133 freno=- trabado=3
+3220	cuadro	pos=12.78 calce=19 scroll=133 freno=- trabado=3
+3236	cuadro	pos=12.90 calce=19 scroll=133 freno=- trabado=3
+3252	cuadro	pos=13.02 calce=19 scroll=133 freno=- trabado=3
+3260	llegada	parcial nativo=3258 audio=3239 leido=3251 procesado=3258 rms=0.0000 relevos=0
+3260	oyo	parcial: le esto en voz alta
+3260	calce	NO CALZO: le esto en voz alta
+3268	cuadro	pos=13.14 calce=19 scroll=133 freno=- trabado=3
+3285	cuadro	pos=13.27 calce=19 scroll=133 freno=- trabado=3
+3302	cuadro	pos=13.40 calce=19 scroll=133 freno=- trabado=3
+3319	cuadro	pos=13.52 calce=19 scroll=133 freno=- trabado=3
+3336	cuadro	pos=13.65 calce=19 scroll=133 freno=- trabado=3
+3352	cuadro	pos=13.77 calce=19 scroll=133 freno=- trabado=3
+3356	llegada	parcial nativo=3353 audio=3339 leido=3352 procesado=3353 rms=0.0000 relevos=0
+3356	oyo	parcial: le esto en voz alta
+3356	calce	NO CALZO: le esto en voz alta
+3368	cuadro	pos=13.89 calce=19 scroll=133 freno=- trabado=3
+3385	cuadro	pos=14.02 calce=19 scroll=133 freno=- trabado=3
+3401	cuadro	pos=14.14 calce=19 scroll=133 freno=- trabado=3
+3418	cuadro	pos=14.27 calce=19 scroll=133 freno=- trabado=3
+3435	cuadro	pos=14.40 calce=19 scroll=133 freno=- trabado=3
+3451	cuadro	pos=14.51 calce=19 scroll=133 freno=- trabado=3
+3463	llegada	parcial nativo=3461 audio=3439 leido=3455 procesado=3461 rms=0.0000 relevos=0
+3463	oyo	parcial: le esto en voz alta
+3463	calce	NO CALZO: le esto en voz alta
+3468	cuadro	pos=14.64 calce=19 scroll=133 freno=- trabado=3
+3484	cuadro	pos=14.76 calce=19 scroll=133 freno=- trabado=3
+3501	cuadro	pos=14.89 calce=19 scroll=133 freno=- trabado=3
+3518	cuadro	pos=15.02 calce=19 scroll=133 freno=- trabado=3
+3534	cuadro	pos=15.13 calce=19 scroll=133 freno=- trabado=3
+3550	cuadro	pos=15.26 calce=19 scroll=133 freno=- trabado=3
+3559	llegada	parcial nativo=3558 audio=3539 leido=3552 procesado=3558 rms=0.0000 relevos=0
+3559	oyo	parcial: le esto en voz alta
+3559	calce	NO CALZO: le esto en voz alta
+3567	cuadro	pos=15.38 calce=19 scroll=133 freno=- trabado=3
+3583	cuadro	pos=15.51 calce=19 scroll=133 freno=- trabado=3
+3600	cuadro	pos=15.63 calce=19 scroll=133 freno=- trabado=3
+3617	cuadro	pos=15.76 calce=19 scroll=133 freno=- trabado=3
+3633	cuadro	pos=15.88 calce=19 scroll=133 freno=- trabado=3
+3648	llegada	FINAL nativo=3644 audio=3619 leido=3634 procesado=3644 rms=0.0000 relevos=0
+3648	palabras	FINAL: le@1359-1629 esto@1631-1839 en@1839-1899 voz@1899-2049 alta@2049-2439
+3648	oyo	FINAL: le esto en voz alta
+3649	calce	token 5: le esto en voz alta
+3650	cuadro	pos=16.00 calce=19 scroll=133 freno=- trabado=3
+3691	llegada	parcial nativo=3655 audio=3639 leido=3654 procesado=3655 rms=0.0000 relevos=0
+3692	cuadro	pos=16.32 calce=19 scroll=133 freno=- trabado=3
+3699	cuadro	pos=16.38 calce=19 scroll=133 freno=- trabado=3
+3716	cuadro	pos=16.50 calce=19 scroll=133 freno=- trabado=3
+3733	cuadro	pos=16.63 calce=19 scroll=133 freno=- trabado=3
+3751	cuadro	pos=16.76 calce=19 scroll=133 freno=- trabado=3
+3761	llegada	parcial nativo=3760 audio=3739 leido=3754 procesado=3760 rms=0.0000 relevos=0
+3766	cuadro	pos=16.87 calce=19 scroll=133 freno=- trabado=3
+3783	cuadro	pos=17.00 calce=19 scroll=133 freno=- trabado=3
+3799	cuadro	pos=17.12 calce=19 scroll=133 freno=- trabado=3
+3817	cuadro	pos=17.26 calce=19 scroll=133 freno=- trabado=3
+3833	cuadro	pos=17.37 calce=19 scroll=133 freno=- trabado=3
+3849	cuadro	pos=17.48 calce=19 scroll=133 freno=- trabado=3
+3860	llegada	parcial nativo=3859 audio=3839 leido=3855 procesado=3859 rms=0.0000 relevos=0
+3865	cuadro	pos=17.59 calce=19 scroll=133 freno=- trabado=3
+3882	cuadro	pos=17.69 calce=19 scroll=133 freno=- trabado=3
+3899	cuadro	pos=17.80 calce=19 scroll=133 freno=- trabado=3
+3916	cuadro	pos=17.91 calce=19 scroll=133 freno=- trabado=3
+3932	cuadro	pos=18.00 calce=19 scroll=133 freno=- trabado=3
+3948	cuadro	pos=18.10 calce=19 scroll=133 freno=- trabado=3
+3952	llegada	parcial nativo=3950 audio=3939 leido=3950 procesado=3950 rms=0.0000 relevos=0
+3966	cuadro	pos=18.20 calce=19 scroll=133 freno=- trabado=3
+3983	cuadro	pos=18.29 calce=19 scroll=133 freno=- trabado=3
+3998	cuadro	pos=18.38 calce=19 scroll=133 freno=- trabado=3
+4015	cuadro	pos=18.46 calce=19 scroll=133 freno=- trabado=3
+4031	cuadro	pos=18.55 calce=19 scroll=133 freno=- trabado=3
+4048	cuadro	pos=18.63 calce=19 scroll=133 freno=- trabado=3
+4057	llegada	parcial nativo=4056 audio=4039 leido=4051 procesado=4056 rms=0.0857 relevos=0
+4067	cuadro	pos=18.72 calce=19 scroll=133 freno=- trabado=3
+4081	cuadro	pos=18.78 calce=19 scroll=133 freno=- trabado=3
+4098	cuadro	pos=18.86 calce=19 scroll=133 freno=- trabado=3
+4114	cuadro	pos=18.93 calce=19 scroll=133 freno=- trabado=3
+4131	cuadro	pos=19.00 calce=19 scroll=133 freno=- trabado=3
+4148	cuadro	pos=19.07 calce=19 scroll=133 freno=- trabado=3
+4161	llegada	parcial nativo=4159 audio=4139 leido=4154 procesado=4159 rms=0.1100 relevos=0
+4164	cuadro	pos=19.14 calce=19 scroll=133 freno=- trabado=3
+4184	cuadro	pos=19.22 calce=19 scroll=133 freno=- trabado=3
+4197	cuadro	pos=19.27 calce=19 scroll=133 freno=- trabado=3
+4214	cuadro	pos=19.33 calce=19 scroll=133 freno=- trabado=3
+4230	cuadro	pos=19.39 calce=19 scroll=133 freno=- trabado=3
+4246	cuadro	pos=19.45 calce=19 scroll=133 freno=- trabado=3
+4256	llegada	parcial nativo=4255 audio=4239 leido=4254 procesado=4255 rms=0.0246 relevos=0
+4264	cuadro	pos=19.50 calce=19 scroll=133 freno=- trabado=3
+4280	cuadro	pos=19.56 calce=19 scroll=133 freno=- trabado=3
+4297	cuadro	pos=19.61 calce=19 scroll=133 freno=- trabado=3
+4313	cuadro	pos=19.66 calce=19 scroll=133 freno=- trabado=3
+4330	cuadro	pos=19.72 calce=19 scroll=133 freno=- trabado=3
+4348	cuadro	pos=19.77 calce=19 scroll=133 freno=- trabado=3
+4361	llegada	parcial nativo=4359 audio=4339 leido=4351 procesado=4359 rms=0.0005 relevos=0
+4361	oyo	parcial: con
+4361	calce	NO CALZO: con
+4363	cuadro	pos=19.81 calce=19 scroll=133 freno=- trabado=3
+4379	cuadro	pos=19.86 calce=19 scroll=133 freno=- trabado=3
+4397	cuadro	pos=19.91 calce=19 scroll=133 freno=- trabado=3
+4413	cuadro	pos=19.95 calce=19 scroll=133 freno=- trabado=3
+4429	cuadro	pos=19.99 calce=19 scroll=133 freno=- trabado=3
+4446	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4483	llegada	parcial nativo=4460 audio=4439 leido=4454 procesado=4459 rms=0.0037 relevos=0
+4483	oyo	parcial: con
+4483	calce	NO CALZO: con
+4484	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4514	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4531	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4545	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4560	llegada	parcial nativo=4558 audio=4539 leido=4557 procesado=4558 rms=0.0425 relevos=0
+4560	oyo	parcial: con
+4560	calce	NO CALZO: con
+4561	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4579	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4595	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4611	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4628	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4645	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4661	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4663	llegada	parcial nativo=4662 audio=4639 leido=4651 procesado=4662 rms=0.0083 relevos=0
+4663	oyo	parcial: con
+4663	calce	NO CALZO: con
+4678	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4695	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4711	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4728	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4744	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4765	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4778	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4785	llegada	parcial nativo=4780 audio=4739 leido=4753 procesado=4779 rms=0.0152 relevos=0
+4785	oyo	parcial: con o
+4786	calce	NO CALZO: con o
+4794	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4811	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4828	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4844	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4846	llegada	parcial nativo=4843 audio=4819 leido=4831 procesado=4843 rms=0.0008 relevos=0
+4846	oyo	parcial: con o sin
+4846	calce	token 8: con o sin
+4861	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4880	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4895	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4911	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4913	llegada	parcial nativo=4909 audio=4879 leido=4894 procesado=4909 rms=0.0002 relevos=0
+4913	oyo	parcial: con
+4913	calce	NO CALZO: con
+4928	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4946	cuadro	pos=20.00 calce=19 scroll=133 freno=- trabado=3
+4953	llegada	parcial nativo=4952 audio=4919 leido=4936 procesado=4952 rms=0.0001 relevos=0
+4953	oyo	parcial: con o sin
+4954	calce	token 8: con o sin
+4960	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+4977	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+4993	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5022	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5027	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5039	llegada	parcial nativo=5037 audio=5019 leido=5035 procesado=5037 rms=0.0001 relevos=0
+5039	oyo	parcial: con o sin
+5039	calce	token 8: con o sin
+5043	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5060	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5078	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5093	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5110	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5126	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5144	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5148	llegada	parcial nativo=5145 audio=5119 leido=5133 procesado=5145 rms=0.0001 relevos=0
+5148	oyo	parcial: con o sin
+5148	calce	token 8: con o sin
+5159	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5178	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5193	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5210	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5227	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5243	llegada	parcial nativo=5238 audio=5219 leido=5232 procesado=5238 rms=0.0000 relevos=0
+5243	oyo	parcial: con o sin
+5243	calce	token 8: con o sin
+5244	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5259	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5276	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5294	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5308	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5326	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5341	llegada	parcial nativo=5336 audio=5319 leido=5334 procesado=5335 rms=0.0000 relevos=0
+5341	oyo	parcial: con o sin
+5342	calce	token 8: con o sin
+5344	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5358	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5376	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5392	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5409	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5425	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5444	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5452	llegada	parcial nativo=5450 audio=5419 leido=5436 procesado=5450 rms=0.0000 relevos=0
+5452	oyo	parcial: con o sin
+5452	calce	token 8: con o sin
+5458	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5478	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5491	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5509	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5524	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5544	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5549	llegada	parcial nativo=5547 audio=5519 leido=5534 procesado=5546 rms=0.0000 relevos=0
+5549	oyo	parcial: con o sin
+5549	calce	token 8: con o sin
+5558	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5574	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5591	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5609	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5624	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5644	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5645	llegada	parcial nativo=5635 audio=5619 leido=5634 procesado=5635 rms=0.0000 relevos=0
+5645	oyo	parcial: con o sin
+5645	calce	token 8: con o sin
+5657	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5674	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5690	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5749	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5763	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5764	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5765	llegada	parcial nativo=5741 audio=5719 leido=5734 procesado=5741 rms=0.0000 relevos=0
+5765	oyo	parcial: con o sin
+5765	calce	token 8: con o sin
+5773	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5790	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5807	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5822	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5839	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5846	llegada	parcial nativo=5845 audio=5819 leido=5834 procesado=5845 rms=0.0000 relevos=0
+5846	oyo	parcial: con o sin
+5846	calce	token 8: con o sin
+5857	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5876	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5891	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5905	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5922	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5936	llegada	parcial nativo=5933 audio=5919 leido=5932 procesado=5933 rms=0.0000 relevos=0
+5937	oyo	parcial: con o sin
+5938	calce	token 8: con o sin
+5946	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5955	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5976	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+5989	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6011	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6021	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6026	llegada	FINAL nativo=6025 audio=5999 leido=6012 procesado=6025 rms=0.0000 relevos=0
+6026	palabras	FINAL: con@3939-4269 o@4389-4509 sin@4509-4809
+6026	oyo	FINAL: con o sin
+6026	calce	token 8: con o sin
+6039	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6049	llegada	parcial nativo=6047 audio=6019 leido=6041 procesado=6047 rms=0.0000 relevos=0
+6055	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6075	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6088	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6107	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6124	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6139	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6147	llegada	parcial nativo=6145 audio=6119 leido=6134 procesado=6145 rms=0.0000 relevos=0
+6155	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6174	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6190	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6207	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6222	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6241	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6246	llegada	parcial nativo=6239 audio=6219 leido=6239 procesado=6239 rms=0.0000 relevos=0
+6255	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6276	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6287	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6308	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6321	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6340	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6352	llegada	parcial nativo=6350 audio=6319 leido=6340 procesado=6350 rms=0.0000 relevos=0
+6353	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6373	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6387	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6406	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6420	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6442	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6446	llegada	parcial nativo=6445 audio=6419 leido=6433 procesado=6445 rms=0.0022 relevos=0
+6455	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6473	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6489	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6509	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6519	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6539	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6542	llegada	parcial nativo=6535 audio=6519 leido=6534 procesado=6535 rms=0.0060 relevos=0
+6553	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6571	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6586	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6602	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6620	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6642	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6646	llegada	parcial nativo=6644 audio=6619 leido=6636 procesado=6644 rms=0.0008 relevos=0
+6651	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6668	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6684	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6700	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6718	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6742	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6752	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6766	llegada	parcial nativo=6764 audio=6719 leido=6733 procesado=6764 rms=0.0006 relevos=0
+6769	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6785	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6800	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6830	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6841	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6845	llegada	parcial nativo=6837 audio=6819 leido=6836 procesado=6836 rms=0.0007 relevos=0
+6851	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6870	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6884	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6900	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6919	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6933	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6950	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6954	llegada	parcial nativo=6949 audio=6919 leido=6936 procesado=6949 rms=0.0001 relevos=0
+6968	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6983	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+6999	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7018	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7033	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7046	llegada	parcial nativo=7043 audio=7019 leido=7038 procesado=7044 rms=0.0001 relevos=0
+7049	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7067	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7083	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7099	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7116	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7132	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7140	llegada	parcial nativo=7134 audio=7119 leido=7134 procesado=7134 rms=0.0112 relevos=0
+7149	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7166	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7183	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7202	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7219	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7233	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7248	llegada	parcial nativo=7247 audio=7219 leido=7237 procesado=7247 rms=0.0126 relevos=0
+7248	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7266	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7282	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7298	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7314	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7331	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7341	llegada	parcial nativo=7337 audio=7319 leido=7330 procesado=7337 rms=0.0006 relevos=0
+7348	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7364	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7382	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7399	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7414	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7431	cuadro	pos=20.00 calce=19 scroll=133 freno=sin-calce trabado=3
+7433	llegada	parcial nativo=7431 audio=7419 leido=7430 procesado=7430 rms=0.0071 relevos=0

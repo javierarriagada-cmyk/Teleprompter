@@ -1,0 +1,2656 @@
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: dfd8ac5f-5d80-45ef-97a6-0c5810610359
+# inicio del video (epoch ms): 1790526728070
+# motor de voz: nativo
+# letra: 24 px, sans
+# columna: completa, margen 5%
+# donde lees: arriba
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Hi. Read this out loud, as slowly or as quickly as you like.
+# | 
+# | Now look at the text. It's moving on its own, at the pace you speak, without you touching anything. The soft line under the words shows you where you are.
+# | 
+# | If you stop to think, the text waits for you. When you start talking again, it picks up right where you left off.
+# | 
+# | Anything you write in square brackets is a note just for you. It shows on the screen, but you don't need to read it out loud. [Like this one: breathe, and smile.]
+# | 
+# | Your script can also help you read better. Use bold for what you want to say with more force. Color words in amber, light blue or green to set apart ideas or shifts in tone. And use the yellow highlight for what you can't afford to miss. Just select the text in the editor and pick one.
+# | 
+# | With the Aa button you choose the text size, the typeface, the column width and the screen colors. Set it up however feels most comfortable.
+# | 
+# | When you want to record yourself, tap Record. The camera films while you read, and the text sits right under the lens, so your eyes go to the camera and not to the screen. You can see yourself full screen, behind the text, or in a small window. That way you know how you look, without giving up the comfort of reading.
+# | 
+# | When you're done, your video can have captions. They come from your script, in time with your voice. Pick the style you like best and save it to your gallery just as you see it.
+# | 
+# | Sigo is here to give you the comfort and the calm you need. We want all your focus to be where it belongs. You don't have to memorize anything. You don't have to rush to keep up with the text. You can bring whatever emotion you want, whenever you want.
+# | 
+# | It works for recording a video, teaching a class or getting ready for an interview.
+# | 
+# | When you're done, delete this and write your own script, or paste one you already have.
+# | 
+# | And if there's something you like, something that bugs you, or an idea to make it better, let us know. Your feedback means a lot to us. Write to hello@sigoteleprompter.com. All the best.
+# ---------------------------------------------
+
+ms	tipo	detalle
+19	renglones	0 6 12 13 19 25 30 34 39 43 50 56 62 66 71 78 84 91 96 98 104 110 116 121 128 134 139 145 151 155 160 165 169 175 179 180 185 189 194 200 207 213 218 224 230 235 240 242 247 252 258 264 271 277 284 289 295 301 305 310 317 321 325 327 333 338 342 347 353 358 363 368 375 380 387 388
+19	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+24	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+40	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+57	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+73	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+90	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+107	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+123	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+139	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+157	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+174	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+191	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+206	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+223	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+241	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+260	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+279	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+290	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+306	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+324	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+340	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+356	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+373	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+391	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+406	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+422	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+440	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+456	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+472	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+493	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+506	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+523	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+539	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+556	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+572	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+589	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+605	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+622	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+639	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+656	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+673	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+690	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+706	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+722	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+738	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+756	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+772	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+789	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+805	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+822	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+839	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+856	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+874	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+889	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+905	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+922	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+941	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+955	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+972	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+989	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1007	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1022	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1039	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1055	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1074	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1089	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1106	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1128	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1139	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1157	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1173	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1190	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1205	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1221	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1237	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1254	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1271	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1287	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1304	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1321	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1337	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1355	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1371	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1388	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1404	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1421	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1438	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1455	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1471	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1489	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1504	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1521	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1537	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1555	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1571	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1588	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1606	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1625	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1638	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1656	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1670	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1687	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1704	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1720	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1737	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1754	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1771	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1792	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1818	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1820	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1832	oido	inicio=1792 trozo=320 ruta=/data/user/0/com.sigoteleprompter.app/files/oido/1790526729862.pcm
+1833	llegada	parcial nativo=1829 audio=1812 leido=1828 procesado=1829 rms=0.0383 relevos=0
+1836	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1854	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1870	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1887	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1904	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1920	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1933	llegada	parcial nativo=1929 audio=1912 leido=1928 procesado=1929 rms=0.0238 relevos=0
+1936	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1955	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1970	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1986	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2007	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2020	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2036	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2053	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2071	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2087	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2103	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2119	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2138	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2153	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2169	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2187	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2203	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2220	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2236	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2254	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2269	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2286	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2303	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2314	llegada	parcial nativo=2312 audio=2012 leido=2101 procesado=2312 rms=0.0019 relevos=0
+2319	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2337	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2352	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2358	llegada	parcial nativo=2353 audio=2112 leido=2340 procesado=2353 rms=0.0045 relevos=0
+2369	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2377	llegada	parcial nativo=2375 audio=2212 leido=2374 procesado=2375 rms=0.0014 relevos=0
+2386	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2402	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2419	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2437	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2452	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2469	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2486	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2502	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2520	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2536	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2552	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2569	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2585	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2602	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2619	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2635	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2653	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2669	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2685	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2702	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2723	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2735	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2746	llegada	parcial nativo=2743 audio=2312 leido=2734 procesado=2743 rms=0.0857 relevos=0
+2752	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2769	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2771	llegada	parcial nativo=2769 audio=2412 leido=2758 procesado=2769 rms=0.0720 relevos=0
+2786	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2802	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2819	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2822	llegada	parcial nativo=2819 audio=2512 leido=2819 procesado=2819 rms=0.0519 relevos=0
+2835	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2852	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2869	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2877	llegada	parcial nativo=2874 audio=2612 leido=2849 procesado=2874 rms=0.0334 relevos=0
+2877	oyo	parcial: right
+2879	calce	NO CALZO: right
+2885	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2916	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2925	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2944	llegada	parcial nativo=2924 audio=2672 leido=2891 procesado=2924 rms=0.0669 relevos=0
+2944	oyo	parcial: right this
+2949	calce	NO CALZO: right this
+2950	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2953	llegada	parcial nativo=2944 audio=2712 leido=2928 procesado=2943 rms=0.0811 relevos=0
+2953	oyo	parcial: right
+2953	calce	NO CALZO: right
+2954	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2969	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+2994	llegada	parcial nativo=2980 audio=2732 leido=2944 procesado=2980 rms=0.0175 relevos=0
+2994	oyo	parcial: right this
+2996	calce	NO CALZO: right this
+2996	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3000	llegada	parcial nativo=2998 audio=2772 leido=2981 procesado=2998 rms=0.0093 relevos=0
+3000	oyo	parcial: right these
+3001	calce	NO CALZO: right these
+3004	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3019	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3031	llegada	parcial nativo=3025 audio=2832 leido=3007 procesado=3025 rms=0.0197 relevos=0
+3031	oyo	parcial: right this
+3031	calce	NO CALZO: right this
+3035	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3051	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3062	llegada	parcial nativo=3056 audio=2892 leido=3038 procesado=3056 rms=0.0480 relevos=0
+3062	oyo	parcial: right these
+3062	calce	NO CALZO: right these
+3068	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3084	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3101	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3118	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3135	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3154	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3169	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3180	llegada	parcial nativo=3167 audio=2952 leido=3087 procesado=3167 rms=0.0758 relevos=0
+3180	oyo	parcial: right this
+3180	calce	NO CALZO: right this
+3185	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3201	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3218	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3235	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3252	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3268	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3284	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3301	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3303	llegada	parcial nativo=3300 audio=3032 leido=3224 procesado=3299 rms=0.0968 relevos=0
+3303	oyo	parcial: right these athletes
+3304	calce	NO CALZO: right these athletes
+3318	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3332	llegada	parcial nativo=3330 audio=3072 leido=3301 procesado=3330 rms=0.0684 relevos=0
+3332	oyo	parcial: right these at
+3333	calce	NO CALZO: right these at
+3335	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3350	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3368	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3371	llegada	parcial nativo=3368 audio=3152 leido=3352 procesado=3368 rms=0.0454 relevos=0
+3371	oyo	parcial: right these satellites
+3372	calce	NO CALZO: right these satellites
+3385	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+3394	llegada	parcial nativo=3390 audio=3252 leido=3381 procesado=3390 rms=0.0279 relevos=0
+3395	oyo	parcial: right these satellites
+3395	calce	NO CALZO: right these satellites
+3398	llegada	parcial nativo=3397 audio=3272 leido=3391 procesado=3397 rms=0.0065 relevos=0
+3398	oyo	parcial: right this out loud
+3399	calce	token 4: right this out loud
+3410	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3418	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3434	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3452	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3468	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3485	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3502	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3518	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3534	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3551	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3556	llegada	parcial nativo=3550 audio=3372 leido=3409 procesado=3550 rms=0.0037 relevos=0
+3556	oyo	parcial: right this out loud
+3556	calce	token 4: right this out loud
+3585	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3589	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3603	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3617	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3636	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3651	cuadro	pos=0.00 calce=4 scroll=16 freno=sin-calce trabado=0
+3656	llegada	parcial nativo=3650 audio=3472 leido=3648 procesado=3650 rms=0.0105 relevos=0
+3656	oyo	parcial: right this out loud
+3656	calce	token 4: right this out loud
+3684	cuadro	pos=0.93 calce=4 scroll=16 freno=- trabado=0
+3711	cuadro	pos=2.79 calce=4 scroll=16 freno=- trabado=0
+3724	llegada	parcial nativo=3695 audio=3572 leido=3689 procesado=3694 rms=0.0311 relevos=0
+3724	oyo	parcial: right this out loud
+3724	calce	token 4: right this out loud
+3739	cuadro	pos=4.04 calce=4 scroll=16 freno=- trabado=0
+3747	llegada	parcial nativo=3718 audio=3672 leido=3712 procesado=3718 rms=0.0078 relevos=0
+3747	oyo	parcial: right this out loud
+3748	calce	token 4: right this out loud
+3757	cuadro	pos=4.06 calce=4 scroll=16 freno=- trabado=0
+3760	cuadro	pos=4.06 calce=4 scroll=16 freno=- trabado=0
+3767	cuadro	pos=4.06 calce=4 scroll=16 freno=- trabado=0
+3790	cuadro	pos=4.11 calce=4 scroll=16 freno=- trabado=0
+3800	cuadro	pos=4.13 calce=4 scroll=16 freno=- trabado=0
+3817	cuadro	pos=4.17 calce=4 scroll=16 freno=- trabado=0
+3836	cuadro	pos=4.22 calce=4 scroll=16 freno=- trabado=0
+3850	cuadro	pos=4.26 calce=4 scroll=16 freno=- trabado=0
+3867	cuadro	pos=4.30 calce=4 scroll=16 freno=- trabado=0
+3884	cuadro	pos=4.34 calce=4 scroll=16 freno=- trabado=0
+3903	cuadro	pos=4.39 calce=4 scroll=16 freno=- trabado=0
+3917	cuadro	pos=4.42 calce=4 scroll=16 freno=- trabado=0
+3934	cuadro	pos=4.47 calce=4 scroll=16 freno=- trabado=0
+3950	cuadro	pos=4.51 calce=4 scroll=16 freno=- trabado=0
+3968	cuadro	pos=4.55 calce=4 scroll=16 freno=- trabado=0
+3989	llegada	parcial nativo=3969 audio=3772 leido=3966 procesado=3969 rms=0.0282 relevos=0
+3990	oyo	parcial: right this out loud
+3990	calce	token 4: right this out loud
+3991	llegada	parcial nativo=3977 audio=3792 leido=3969 procesado=3977 rms=0.0117 relevos=0
+3991	oyo	parcial: right this out loud as
+3992	calce	token 5: right this out loud as
+3992	cuadro	pos=4.61 calce=5 scroll=16 freno=- trabado=0
+4014	cuadro	pos=4.78 calce=5 scroll=16 freno=- trabado=0
+4036	cuadro	pos=4.85 calce=5 scroll=16 freno=- trabado=0
+4047	cuadro	pos=4.88 calce=5 scroll=16 freno=- trabado=0
+4053	cuadro	pos=4.89 calce=5 scroll=16 freno=- trabado=0
+4075	llegada	parcial nativo=4062 audio=3892 leido=4058 procesado=4062 rms=0.0244 relevos=0
+4075	oyo	parcial: right this out loud as
+4077	calce	token 5: right this out loud as
+4078	cuadro	pos=4.97 calce=5 scroll=16 freno=- trabado=0
+4087	cuadro	pos=5.03 calce=5 scroll=16 freno=- trabado=0
+4099	cuadro	pos=5.06 calce=5 scroll=16 freno=- trabado=0
+4104	llegada	parcial nativo=4101 audio=3912 leido=4063 procesado=4101 rms=0.0378 relevos=0
+4105	oyo	parcial: right this out loud
+4105	calce	token 4: right this out loud
+4123	cuadro	pos=5.07 calce=5 scroll=16 freno=- trabado=0
+4136	cuadro	pos=5.08 calce=5 scroll=16 freno=- trabado=0
+4159	cuadro	pos=5.14 calce=5 scroll=16 freno=- trabado=0
+4167	cuadro	pos=5.16 calce=5 scroll=16 freno=- trabado=0
+4183	llegada	parcial nativo=4182 audio=3932 leido=4102 procesado=4182 rms=0.0486 relevos=0
+4183	oyo	parcial: right this out loud ass is
+4183	calce	token 6: right this out loud ass is
+4185	cuadro	pos=5.20 calce=6 scroll=24 freno=- trabado=1
+4208	cuadro	pos=6.06 calce=6 scroll=31 freno=- trabado=1
+4219	cuadro	pos=6.09 calce=6 scroll=33 freno=- trabado=1
+4225	llegada	parcial nativo=4223 audio=3992 leido=4210 procesado=4223 rms=0.0900 relevos=0
+4225	oyo	parcial: right this out loud
+4226	calce	token 4: right this out loud
+4238	cuadro	pos=6.11 calce=6 scroll=37 freno=- trabado=1
+4263	llegada	parcial nativo=4239 audio=4032 leido=4225 procesado=4239 rms=0.0867 relevos=0
+4263	oyo	parcial: right this out loud ass is
+4264	calce	token 6: right this out loud ass is
+4266	cuadro	pos=6.11 calce=6 scroll=41 freno=- trabado=1
+4301	cuadro	pos=6.11 calce=6 scroll=44 freno=- trabado=1
+4303	llegada	parcial nativo=4274 audio=4092 leido=4265 procesado=4274 rms=0.0545 relevos=0
+4303	oyo	parcial: right this out loud isis
+4303	calce	token 5: right this out loud isis
+4316	cuadro	pos=6.11 calce=6 scroll=45 freno=- trabado=1
+4324	cuadro	pos=6.11 calce=6 scroll=45 freno=- trabado=1
+4334	cuadro	pos=6.11 calce=6 scroll=46 freno=- trabado=1
+4346	llegada	parcial nativo=4336 audio=4172 leido=4295 procesado=4336 rms=0.0425 relevos=0
+4346	oyo	parcial: right this out loud ass as
+4346	calce	token 6: right this out loud ass as
+4357	cuadro	pos=6.11 calce=6 scroll=47 freno=- trabado=1
+4369	cuadro	pos=6.11 calce=6 scroll=47 freno=- trabado=1
+4395	cuadro	pos=6.12 calce=6 scroll=48 freno=- trabado=1
+4416	cuadro	pos=6.17 calce=6 scroll=48 freno=- trabado=1
+4435	cuadro	pos=6.22 calce=6 scroll=48 freno=- trabado=1
+4451	cuadro	pos=6.26 calce=6 scroll=48 freno=- trabado=1
+4462	llegada	parcial nativo=4459 audio=4272 leido=4426 procesado=4459 rms=0.0443 relevos=0
+4462	oyo	parcial: right this out loud ass as
+4462	calce	token 6: right this out loud ass as
+4493	cuadro	pos=6.29 calce=6 scroll=49 freno=- trabado=1
+4503	cuadro	pos=6.29 calce=6 scroll=49 freno=- trabado=1
+4510	cuadro	pos=6.29 calce=6 scroll=49 freno=- trabado=1
+4518	llegada	parcial nativo=4497 audio=4292 leido=4460 procesado=4497 rms=0.0192 relevos=0
+4518	oyo	parcial: right this out loud as a slow
+4519	calce	token 7: right this out loud as a slow
+4520	cuadro	pos=6.29 calce=7 scroll=49 freno=- trabado=1
+4571	llegada	parcial nativo=4546 audio=4352 leido=4530 procesado=4546 rms=0.0129 relevos=0
+4571	oyo	parcial: right this out loud ass is slowly
+4571	calce	token 7: right this out loud ass is slowly
+4571	cuadro	pos=6.72 calce=7 scroll=49 freno=- trabado=1
+4582	cuadro	pos=7.03 calce=7 scroll=49 freno=- trabado=1
+4598	cuadro	pos=7.07 calce=7 scroll=49 freno=- trabado=1
+4617	llegada	parcial nativo=4612 audio=4452 leido=4604 procesado=4612 rms=0.0630 relevos=0
+4617	oyo	parcial: right this out loud ass is slowly
+4618	calce	token 7: right this out loud ass is slowly
+4618	cuadro	pos=7.12 calce=7 scroll=49 freno=- trabado=1
+4634	cuadro	pos=7.12 calce=7 scroll=49 freno=- trabado=1
+4649	cuadro	pos=7.12 calce=7 scroll=49 freno=- trabado=1
+4668	cuadro	pos=7.13 calce=7 scroll=49 freno=- trabado=1
+4682	cuadro	pos=7.16 calce=7 scroll=49 freno=- trabado=1
+4703	llegada	parcial nativo=4688 audio=4552 leido=4688 procesado=4688 rms=0.0603 relevos=0
+4703	oyo	parcial: right this out loud ass is slowly
+4703	calce	token 7: right this out loud ass is slowly
+4704	cuadro	pos=7.21 calce=7 scroll=49 freno=- trabado=1
+4720	llegada	parcial nativo=4714 audio=4652 leido=4704 procesado=4714 rms=0.0552 relevos=0
+4720	oyo	parcial: right this out loud ass is slowly
+4720	calce	token 7: right this out loud ass is slowly
+4720	cuadro	pos=7.21 calce=7 scroll=49 freno=- trabado=1
+4733	cuadro	pos=7.21 calce=7 scroll=49 freno=- trabado=1
+4747	llegada	parcial nativo=4746 audio=4712 leido=4728 procesado=4746 rms=0.0054 relevos=0
+4747	oyo	parcial: right this out loud ass is slowly or
+4747	calce	token 8: right this out loud ass is slowly or
+4761	cuadro	pos=7.31 calce=8 scroll=49 freno=- trabado=1
+4769	cuadro	pos=7.33 calce=8 scroll=49 freno=- trabado=1
+4782	cuadro	pos=7.38 calce=8 scroll=49 freno=- trabado=1
+4800	cuadro	pos=7.44 calce=8 scroll=49 freno=- trabado=1
+4815	cuadro	pos=7.50 calce=8 scroll=49 freno=- trabado=1
+4843	cuadro	pos=7.60 calce=8 scroll=49 freno=- trabado=1
+4851	cuadro	pos=7.64 calce=8 scroll=49 freno=- trabado=1
+4859	llegada	parcial nativo=4850 audio=4812 leido=4830 procesado=4850 rms=0.0343 relevos=0
+4859	oyo	parcial: right this out loud ass is slowly or
+4859	calce	token 8: right this out loud ass is slowly or
+4869	cuadro	pos=8.03 calce=8 scroll=49 freno=- trabado=1
+4899	cuadro	pos=8.10 calce=8 scroll=49 freno=- trabado=1
+4900	cuadro	pos=8.10 calce=8 scroll=49 freno=- trabado=1
+4915	cuadro	pos=8.14 calce=8 scroll=49 freno=- trabado=1
+4933	llegada	parcial nativo=4930 audio=4912 leido=4928 procesado=4929 rms=0.0620 relevos=0
+4933	oyo	parcial: right this out loud ass is slowly or
+4934	calce	token 8: right this out loud ass is slowly or
+4935	cuadro	pos=8.19 calce=8 scroll=49 freno=- trabado=1
+4951	cuadro	pos=8.19 calce=8 scroll=49 freno=- trabado=1
+4965	cuadro	pos=8.19 calce=8 scroll=49 freno=- trabado=1
+4983	cuadro	pos=8.19 calce=8 scroll=49 freno=- trabado=1
+4998	cuadro	pos=8.19 calce=8 scroll=49 freno=- trabado=1
+5014	cuadro	pos=8.20 calce=8 scroll=49 freno=- trabado=1
+5032	cuadro	pos=8.25 calce=8 scroll=49 freno=- trabado=1
+5039	llegada	parcial nativo=5037 audio=4992 leido=5008 procesado=5037 rms=0.0397 relevos=0
+5039	oyo	parcial: right this out loud ass is slowly or ask
+5040	calce	NO CALZO: right this out loud ass is slowly or ask
+5046	llegada	parcial nativo=5044 audio=5012 leido=5037 procesado=5044 rms=0.0409 relevos=0
+5046	oyo	parcial: right this out loud ass is slowly or ask questions
+5046	calce	NO CALZO: right this out loud ass is slowly or ask questions
+5050	cuadro	pos=8.29 calce=8 scroll=49 freno=- trabado=1
+5065	cuadro	pos=8.33 calce=8 scroll=49 freno=- trabado=1
+5081	cuadro	pos=8.37 calce=8 scroll=49 freno=- trabado=1
+5086	llegada	parcial nativo=5080 audio=5052 leido=5068 procesado=5080 rms=0.0417 relevos=0
+5086	oyo	parcial: right this out loud ass is slowly or as
+5086	calce	NO CALZO: right this out loud ass is slowly or as
+5098	cuadro	pos=8.41 calce=8 scroll=49 freno=- trabado=1
+5115	cuadro	pos=8.45 calce=8 scroll=49 freno=- trabado=1
+5133	cuadro	pos=8.50 calce=8 scroll=49 freno=- trabado=1
+5149	cuadro	pos=8.54 calce=8 scroll=49 freno=- trabado=1
+5166	cuadro	pos=8.58 calce=8 scroll=49 freno=- trabado=1
+5185	cuadro	pos=8.63 calce=8 scroll=49 freno=- trabado=1
+5198	cuadro	pos=8.66 calce=8 scroll=49 freno=- trabado=1
+5222	cuadro	pos=8.72 calce=8 scroll=49 freno=- trabado=1
+5227	llegada	parcial nativo=5213 audio=5112 leido=5128 procesado=5213 rms=0.0417 relevos=0
+5227	oyo	parcial: right this out loud ass is slowly or as quickly
+5228	calce	token 9: right this out loud ass is slowly or as quickly
+5246	cuadro	pos=8.84 calce=9 scroll=49 freno=- trabado=1
+5249	cuadro	pos=8.85 calce=9 scroll=49 freno=- trabado=1
+5268	cuadro	pos=8.91 calce=9 scroll=49 freno=- trabado=1
+5274	llegada	parcial nativo=5266 audio=5212 leido=5266 procesado=5266 rms=0.0822 relevos=0
+5274	oyo	parcial: right this out loud ass is slowly or as quickly
+5275	calce	token 9: right this out loud ass is slowly or as quickly
+5285	cuadro	pos=9.03 calce=9 scroll=49 freno=- trabado=1
+5298	cuadro	pos=9.06 calce=9 scroll=49 freno=- trabado=1
+5314	cuadro	pos=9.10 calce=9 scroll=49 freno=- trabado=1
+5337	cuadro	pos=9.16 calce=9 scroll=49 freno=- trabado=1
+5354	cuadro	pos=9.20 calce=9 scroll=49 freno=- trabado=1
+5367	llegada	parcial nativo=5355 audio=5312 leido=5328 procesado=5355 rms=0.0866 relevos=0
+5369	oyo	parcial: right this out loud ass is slowly or as quickly
+5369	calce	token 9: right this out loud ass is slowly or as quickly
+5370	cuadro	pos=9.24 calce=9 scroll=49 freno=- trabado=1
+5397	cuadro	pos=9.24 calce=9 scroll=49 freno=- trabado=1
+5401	cuadro	pos=9.24 calce=9 scroll=49 freno=- trabado=1
+5415	cuadro	pos=9.24 calce=9 scroll=49 freno=- trabado=1
+5432	cuadro	pos=9.24 calce=9 scroll=49 freno=- trabado=1
+5441	llegada	parcial nativo=5433 audio=5412 leido=5428 procesado=5433 rms=0.0169 relevos=0
+5441	oyo	parcial: right this out loud ass is slowly or as quickly
+5441	calce	token 9: right this out loud ass is slowly or as quickly
+5450	cuadro	pos=9.24 calce=9 scroll=49 freno=- trabado=1
+5464	cuadro	pos=9.24 calce=9 scroll=49 freno=- trabado=1
+5480	cuadro	pos=9.24 calce=9 scroll=49 freno=- trabado=1
+5497	cuadro	pos=9.24 calce=9 scroll=49 freno=- trabado=1
+5517	cuadro	pos=9.24 calce=9 scroll=49 freno=- trabado=1
+5525	llegada	parcial nativo=5513 audio=5492 leido=5508 procesado=5513 rms=0.0541 relevos=0
+5525	oyo	parcial: right this out loud ass is slowly or as quickly as
+5525	calce	token 10: right this out loud ass is slowly or as quickly as
+5534	cuadro	pos=9.54 calce=10 scroll=49 freno=- trabado=1
+5547	cuadro	pos=9.59 calce=10 scroll=49 freno=- trabado=1
+5564	cuadro	pos=9.65 calce=10 scroll=49 freno=- trabado=1
+5580	cuadro	pos=9.70 calce=10 scroll=49 freno=- trabado=1
+5597	cuadro	pos=9.76 calce=10 scroll=49 freno=- trabado=1
+5615	cuadro	pos=9.82 calce=10 scroll=49 freno=- trabado=1
+5623	llegada	parcial nativo=5616 audio=5592 leido=5608 procesado=5616 rms=0.0781 relevos=0
+5624	oyo	parcial: right this out loud ass is slowly or as quickly as
+5624	calce	token 10: right this out loud ass is slowly or as quickly as
+5645	cuadro	pos=10.06 calce=10 scroll=49 freno=- trabado=1
+5650	cuadro	pos=10.07 calce=10 scroll=49 freno=- trabado=1
+5663	cuadro	pos=10.10 calce=10 scroll=49 freno=- trabado=1
+5681	cuadro	pos=10.15 calce=10 scroll=49 freno=- trabado=1
+5703	cuadro	pos=10.21 calce=10 scroll=49 freno=- trabado=1
+5713	llegada	parcial nativo=5711 audio=5692 leido=5710 procesado=5711 rms=0.0734 relevos=0
+5713	oyo	parcial: right this out loud ass is slowly or as quickly as
+5713	calce	token 10: right this out loud ass is slowly or as quickly as
+5722	cuadro	pos=10.24 calce=10 scroll=49 freno=- trabado=1
+5730	cuadro	pos=10.24 calce=10 scroll=49 freno=- trabado=1
+5747	cuadro	pos=10.24 calce=10 scroll=49 freno=- trabado=1
+5761	llegada	parcial nativo=5752 audio=5712 leido=5728 procesado=5752 rms=0.0222 relevos=0
+5761	oyo	parcial: right this out loud ass is slowly or as quickly as to
+5761	calce	token 11: right this out loud ass is slowly or as quickly as to
+5782	cuadro	pos=10.54 calce=11 scroll=49 freno=- trabado=1
+5785	cuadro	pos=10.55 calce=11 scroll=49 freno=- trabado=1
+5797	cuadro	pos=10.59 calce=11 scroll=49 freno=- trabado=1
+5813	cuadro	pos=10.66 calce=11 scroll=49 freno=- trabado=1
+5830	cuadro	pos=10.72 calce=11 scroll=49 freno=- trabado=1
+5845	llegada	parcial nativo=5829 audio=5812 leido=5828 procesado=5829 rms=0.0161 relevos=0
+5845	oyo	parcial: right this out loud ass is slowly or as quickly as to
+5846	calce	token 11: right this out loud ass is slowly or as quickly as to
+5859	cuadro	pos=11.04 calce=11 scroll=49 freno=- trabado=1
+5863	cuadro	pos=11.05 calce=11 scroll=49 freno=- trabado=1
+5880	cuadro	pos=11.09 calce=11 scroll=49 freno=- trabado=1
+5896	cuadro	pos=11.14 calce=11 scroll=49 freno=- trabado=1
+5915	cuadro	pos=11.19 calce=11 scroll=49 freno=- trabado=1
+5930	cuadro	pos=11.23 calce=11 scroll=49 freno=- trabado=1
+5946	cuadro	pos=11.28 calce=11 scroll=49 freno=- trabado=1
+5963	cuadro	pos=11.32 calce=11 scroll=49 freno=- trabado=1
+5977	llegada	parcial nativo=5972 audio=5912 leido=5966 procesado=5972 rms=0.0126 relevos=0
+5977	oyo	parcial: right this out loud ass is slowly or as quickly as to
+5977	calce	token 11: right this out loud ass is slowly or as quickly as to
+5987	cuadro	pos=11.36 calce=11 scroll=49 freno=- trabado=1
+5996	llegada	parcial nativo=5994 audio=5972 leido=5988 procesado=5994 rms=0.0031 relevos=0
+5996	oyo	parcial: right this out loud ass is slowly or as quickly as to like
+5996	calce	token 12: right this out loud ass is slowly or as quickly as to like
+5997	cuadro	pos=11.36 calce=12 scroll=53 freno=- trabado=2
+6013	cuadro	pos=11.57 calce=12 scroll=59 freno=- trabado=2
+6032	cuadro	pos=11.65 calce=12 scroll=65 freno=- trabado=2
+6046	cuadro	pos=11.70 calce=12 scroll=68 freno=- trabado=2
+6063	cuadro	pos=11.76 calce=12 scroll=72 freno=- trabado=2
+6082	cuadro	pos=11.83 calce=12 scroll=74 freno=- trabado=2
+6098	cuadro	pos=11.90 calce=12 scroll=76 freno=- trabado=2
+6113	llegada	parcial nativo=6109 audio=6072 leido=6102 procesado=6109 rms=0.0015 relevos=0
+6113	oyo	parcial: right this out loud ass is slowly or as quickly as to like
+6113	calce	token 12: right this out loud ass is slowly or as quickly as to like
+6117	cuadro	pos=11.96 calce=12 scroll=78 freno=- trabado=2
+6138	cuadro	pos=12.07 calce=12 scroll=79 freno=- trabado=2
+6146	cuadro	pos=12.09 calce=12 scroll=79 freno=- trabado=2
+6163	cuadro	pos=12.14 calce=12 scroll=80 freno=- trabado=2
+6180	cuadro	pos=12.19 calce=12 scroll=81 freno=- trabado=2
+6191	llegada	parcial nativo=6189 audio=6172 leido=6188 procesado=6189 rms=0.0017 relevos=0
+6191	oyo	parcial: right this out loud ass is slowly or as quickly as to like
+6192	calce	token 12: right this out loud ass is slowly or as quickly as to like
+6202	cuadro	pos=12.22 calce=12 scroll=81 freno=- trabado=2
+6213	cuadro	pos=12.22 calce=12 scroll=82 freno=- trabado=2
+6232	cuadro	pos=12.22 calce=12 scroll=82 freno=- trabado=2
+6247	cuadro	pos=12.22 calce=12 scroll=82 freno=- trabado=2
+6262	cuadro	pos=12.22 calce=12 scroll=82 freno=- trabado=2
+6280	cuadro	pos=12.25 calce=12 scroll=82 freno=- trabado=2
+6295	cuadro	pos=12.29 calce=12 scroll=83 freno=- trabado=2
+6300	llegada	parcial nativo=6294 audio=6272 leido=6288 procesado=6294 rms=0.0013 relevos=0
+6300	oyo	parcial: right this out loud ass is slowly or as quickly as to like
+6300	calce	token 12: right this out loud ass is slowly or as quickly as to like
+6312	cuadro	pos=12.31 calce=12 scroll=83 freno=- trabado=2
+6331	cuadro	pos=12.31 calce=12 scroll=94 freno=- trabado=3
+6347	cuadro	pos=12.31 calce=12 scroll=102 freno=- trabado=3
+6363	cuadro	pos=12.31 calce=12 scroll=108 freno=- trabado=3
+6379	cuadro	pos=12.31 calce=12 scroll=113 freno=- trabado=3
+6398	cuadro	pos=12.31 calce=12 scroll=118 freno=- trabado=3
+6402	llegada	parcial nativo=6397 audio=6372 leido=6389 procesado=6397 rms=0.0011 relevos=0
+6402	oyo	parcial: right this out loud ass is slowly or as quickly as to like
+6402	calce	token 12: right this out loud ass is slowly or as quickly as to like
+6428	cuadro	pos=12.31 calce=12 scroll=123 freno=- trabado=3
+6457	cuadro	pos=12.31 calce=12 scroll=126 freno=- trabado=3
+6463	cuadro	pos=12.31 calce=12 scroll=126 freno=- trabado=3
+6479	cuadro	pos=12.31 calce=12 scroll=127 freno=- trabado=3
+6493	llegada	parcial nativo=6489 audio=6472 leido=6487 procesado=6488 rms=0.0011 relevos=0
+6493	oyo	parcial: right this out loud ass is slowly or as quickly as to like
+6493	calce	token 12: right this out loud ass is slowly or as quickly as to like
+6503	cuadro	pos=12.31 calce=12 scroll=129 freno=- trabado=3
+6512	cuadro	pos=12.31 calce=12 scroll=129 freno=- trabado=3
+6535	cuadro	pos=12.31 calce=12 scroll=130 freno=- trabado=3
+6546	cuadro	pos=12.31 calce=12 scroll=130 freno=- trabado=3
+6561	cuadro	pos=12.31 calce=12 scroll=131 freno=- trabado=3
+6579	cuadro	pos=12.31 calce=12 scroll=131 freno=- trabado=3
+6596	cuadro	pos=12.31 calce=12 scroll=131 freno=- trabado=3
+6599	llegada	parcial nativo=6594 audio=6572 leido=6587 procesado=6594 rms=0.0015 relevos=0
+6599	oyo	parcial: right this out loud ass is slowly or as quickly as to like
+6600	calce	token 12: right this out loud ass is slowly or as quickly as to like
+6618	cuadro	pos=12.31 calce=12 scroll=131 freno=- trabado=3
+6635	cuadro	pos=12.31 calce=12 scroll=131 freno=- trabado=3
+6645	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6662	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6679	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6695	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6697	llegada	parcial nativo=6694 audio=6672 leido=6687 procesado=6694 rms=0.0013 relevos=0
+6697	oyo	parcial: right this out loud ass is slowly or as quickly as to like
+6698	calce	token 12: right this out loud ass is slowly or as quickly as to like
+6713	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6729	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6745	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6762	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6778	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6791	llegada	parcial nativo=6788 audio=6772 leido=6787 procesado=6788 rms=0.0013 relevos=0
+6791	oyo	parcial: right this out loud ass is slowly or as quickly as to like
+6791	calce	token 12: right this out loud ass is slowly or as quickly as to like
+6810	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6813	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6829	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6845	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6862	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6878	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6897	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+6910	llegada	FINAL nativo=6906 audio=6872 leido=6889 procesado=6906 rms=0.0026 relevos=0
+6911	palabras	FINAL: right@2182-2422 this@2422-2632 out@2632-2812 loud@2812-3352 as@3412-3677 is@3682-3769 slowly@3769-4342 or@4342-4552 as@4552-4672 quickly@4672-5152 as@5152-5364 to@5364-5482 like@5482-5962
+6912	oyo	FINAL: right this out loud as is slowly or as quickly as to like
+6913	calce	token 12: right this out loud as is slowly or as quickly as to like
+6915	cuadro	pos=12.34 calce=12 scroll=132 freno=- trabado=3
+6916	llegada	parcial nativo=6909 audio=6892 leido=6908 procesado=6909 rms=0.0017 relevos=0
+6929	cuadro	pos=12.34 calce=12 scroll=132 freno=- trabado=3
+6945	cuadro	pos=12.34 calce=12 scroll=132 freno=- trabado=3
+6961	cuadro	pos=12.34 calce=12 scroll=132 freno=- trabado=3
+6978	cuadro	pos=12.34 calce=12 scroll=132 freno=- trabado=3
+6995	cuadro	pos=12.34 calce=12 scroll=132 freno=- trabado=3
+7012	cuadro	pos=12.34 calce=12 scroll=132 freno=- trabado=3
+7017	llegada	parcial nativo=7015 audio=6992 leido=7010 procesado=7016 rms=0.0028 relevos=0
+7029	cuadro	pos=12.34 calce=12 scroll=132 freno=- trabado=3
+7045	cuadro	pos=12.36 calce=12 scroll=132 freno=- trabado=3
+7061	cuadro	pos=12.40 calce=12 scroll=132 freno=- trabado=3
+7078	cuadro	pos=12.45 calce=12 scroll=132 freno=- trabado=3
+7095	cuadro	pos=12.49 calce=12 scroll=132 freno=- trabado=3
+7114	cuadro	pos=12.55 calce=12 scroll=132 freno=- trabado=3
+7121	llegada	parcial nativo=7113 audio=7092 leido=7108 procesado=7113 rms=0.0017 relevos=0
+7128	cuadro	pos=12.58 calce=12 scroll=132 freno=- trabado=3
+7145	cuadro	pos=12.63 calce=12 scroll=132 freno=- trabado=3
+7162	cuadro	pos=12.68 calce=12 scroll=132 freno=- trabado=3
+7179	cuadro	pos=12.72 calce=12 scroll=132 freno=- trabado=3
+7195	cuadro	pos=12.77 calce=12 scroll=132 freno=- trabado=3
+7211	cuadro	pos=12.81 calce=12 scroll=132 freno=- trabado=3
+7214	llegada	parcial nativo=7209 audio=7192 leido=7208 procesado=7209 rms=0.0557 relevos=0
+7228	cuadro	pos=12.85 calce=12 scroll=132 freno=- trabado=3
+7245	cuadro	pos=12.90 calce=12 scroll=132 freno=- trabado=3
+7261	cuadro	pos=12.95 calce=12 scroll=132 freno=- trabado=3
+7277	cuadro	pos=12.99 calce=12 scroll=132 freno=- trabado=3
+7294	cuadro	pos=13.03 calce=12 scroll=132 freno=- trabado=3
+7312	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7318	llegada	parcial nativo=7316 audio=7292 leido=7308 procesado=7316 rms=0.1008 relevos=0
+7327	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7353	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7362	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7380	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7394	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7411	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7427	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7444	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7461	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7479	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7494	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7508	llegada	parcial nativo=7493 audio=7392 leido=7486 procesado=7493 rms=0.0677 relevos=0
+7514	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7527	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7545	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7561	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7575	llegada	parcial nativo=7567 audio=7492 leido=7567 procesado=7567 rms=0.0469 relevos=0
+7579	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7595	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7657	llegada	parcial nativo=7613 audio=7592 leido=7608 procesado=7613 rms=0.0038 relevos=0
+7657	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7662	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7677	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7700	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7710	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7727	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7733	llegada	parcial nativo=7730 audio=7692 leido=7721 procesado=7730 rms=0.0406 relevos=0
+7738	llegada	parcial nativo=7736 audio=7712 leido=7730 procesado=7736 rms=0.0846 relevos=0
+7738	oyo	parcial: now
+7738	calce	NO CALZO: now
+7743	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7760	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7778	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7793	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7811	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7827	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7844	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7849	llegada	parcial nativo=7847 audio=7812 leido=7829 procesado=7847 rms=0.0516 relevos=0
+7849	oyo	parcial: now
+7850	calce	NO CALZO: now
+7860	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7877	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7896	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7910	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7926	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7936	llegada	parcial nativo=7934 audio=7912 leido=7932 procesado=7934 rms=0.0190 relevos=0
+7936	oyo	parcial: now
+7936	calce	NO CALZO: now
+7943	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7959	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7979	cuadro	pos=13.08 calce=12 scroll=132 freno=- trabado=3
+7986	llegada	parcial nativo=7978 audio=7952 leido=7970 procesado=7978 rms=0.0761 relevos=0
+7986	oyo	parcial: now look
+7986	calce	token 14: now look
+7999	cuadro	pos=13.21 calce=14 scroll=132 freno=- trabado=3
+8010	cuadro	pos=13.25 calce=14 scroll=132 freno=- trabado=3
+8027	cuadro	pos=13.31 calce=14 scroll=132 freno=- trabado=3
+8043	cuadro	pos=13.37 calce=14 scroll=132 freno=- trabado=3
+8059	cuadro	pos=13.43 calce=14 scroll=132 freno=- trabado=3
+8076	cuadro	pos=13.50 calce=14 scroll=132 freno=- trabado=3
+8095	cuadro	pos=13.57 calce=14 scroll=132 freno=- trabado=3
+8109	cuadro	pos=13.62 calce=14 scroll=132 freno=- trabado=3
+8126	cuadro	pos=13.68 calce=14 scroll=132 freno=- trabado=3
+8143	cuadro	pos=13.74 calce=14 scroll=132 freno=- trabado=3
+8159	cuadro	pos=13.80 calce=14 scroll=132 freno=- trabado=3
+8176	cuadro	pos=13.86 calce=14 scroll=132 freno=- trabado=3
+8198	cuadro	pos=13.93 calce=14 scroll=132 freno=- trabado=3
+8210	cuadro	pos=13.97 calce=14 scroll=132 freno=- trabado=3
+8222	llegada	parcial nativo=8219 audio=8052 leido=8197 procesado=8219 rms=0.0455 relevos=0
+8222	oyo	parcial: now look
+8222	calce	token 14: now look
+8243	cuadro	pos=14.05 calce=14 scroll=132 freno=- trabado=3
+8262	cuadro	pos=14.10 calce=14 scroll=132 freno=- trabado=3
+8264	cuadro	pos=14.10 calce=14 scroll=132 freno=- trabado=3
+8291	llegada	parcial nativo=8261 audio=8152 leido=8261 procesado=8261 rms=0.0938 relevos=0
+8291	oyo	parcial: now look
+8292	calce	token 14: now look
+8293	llegada	parcial nativo=8287 audio=8192 leido=8282 procesado=8287 rms=0.0031 relevos=0
+8293	oyo	parcial: now look at
+8293	calce	token 15: now look at
+8294	cuadro	pos=14.17 calce=15 scroll=132 freno=- trabado=3
+8307	cuadro	pos=14.51 calce=15 scroll=132 freno=- trabado=3
+8311	cuadro	pos=14.52 calce=15 scroll=132 freno=- trabado=3
+8325	llegada	parcial nativo=8320 audio=8292 leido=8309 procesado=8320 rms=0.0991 relevos=0
+8325	oyo	parcial: now look at the
+8325	calce	token 16: now look at the
+8335	cuadro	pos=15.11 calce=16 scroll=132 freno=- trabado=3
+8345	cuadro	pos=15.15 calce=16 scroll=132 freno=- trabado=3
+8359	cuadro	pos=15.21 calce=16 scroll=132 freno=- trabado=3
+8376	cuadro	pos=15.27 calce=16 scroll=132 freno=- trabado=3
+8395	cuadro	pos=15.34 calce=16 scroll=132 freno=- trabado=3
+8411	cuadro	pos=15.39 calce=16 scroll=132 freno=- trabado=3
+8425	llegada	parcial nativo=8407 audio=8352 leido=8367 procesado=8407 rms=0.0451 relevos=0
+8425	oyo	parcial: now look at that
+8425	calce	token 16: now look at that
+8426	cuadro	pos=15.45 calce=16 scroll=132 freno=- trabado=3
+8445	cuadro	pos=16.05 calce=16 scroll=132 freno=- trabado=3
+8457	llegada	parcial nativo=8440 audio=8372 leido=8409 procesado=8440 rms=0.0066 relevos=0
+8457	oyo	parcial: now look at the
+8457	calce	token 16: now look at the
+8466	cuadro	pos=16.07 calce=16 scroll=132 freno=- trabado=3
+8478	cuadro	pos=16.07 calce=16 scroll=132 freno=- trabado=3
+8488	llegada	parcial nativo=8476 audio=8412 leido=8441 procesado=8476 rms=0.0101 relevos=0
+8488	oyo	parcial: now look at that
+8488	calce	token 16: now look at that
+8501	cuadro	pos=16.07 calce=16 scroll=132 freno=- trabado=3
+8510	cuadro	pos=16.07 calce=16 scroll=132 freno=- trabado=3
+8528	cuadro	pos=16.09 calce=16 scroll=132 freno=- trabado=3
+8535	llegada	parcial nativo=8528 audio=8512 leido=8529 procesado=8529 rms=0.0140 relevos=0
+8535	oyo	parcial: now look at that
+8535	calce	token 16: now look at that
+8546	cuadro	pos=16.10 calce=16 scroll=132 freno=- trabado=3
+8586	cuadro	pos=16.11 calce=16 scroll=132 freno=- trabado=3
+8597	llegada	parcial nativo=8581 audio=8532 leido=8549 procesado=8581 rms=0.0019 relevos=0
+8597	oyo	parcial: now look at the
+8597	calce	token 16: now look at the
+8597	cuadro	pos=16.14 calce=16 scroll=132 freno=- trabado=3
+8629	cuadro	pos=16.14 calce=16 scroll=132 freno=- trabado=3
+8642	cuadro	pos=16.14 calce=16 scroll=132 freno=- trabado=3
+8652	llegada	parcial nativo=8650 audio=8632 leido=8649 procesado=8650 rms=0.0047 relevos=0
+8652	oyo	parcial: now look at the
+8652	calce	token 16: now look at the
+8663	cuadro	pos=16.14 calce=16 scroll=132 freno=- trabado=3
+8676	cuadro	pos=16.14 calce=16 scroll=132 freno=- trabado=3
+8693	cuadro	pos=16.14 calce=16 scroll=132 freno=- trabado=3
+8709	cuadro	pos=16.14 calce=16 scroll=132 freno=- trabado=3
+8725	cuadro	pos=16.16 calce=16 scroll=132 freno=- trabado=3
+8742	cuadro	pos=16.20 calce=16 scroll=132 freno=- trabado=3
+8756	llegada	parcial nativo=8755 audio=8732 leido=8749 procesado=8755 rms=0.0023 relevos=0
+8756	oyo	parcial: now look at the text
+8756	calce	token 17: now look at the text
+8779	cuadro	pos=16.44 calce=17 scroll=132 freno=- trabado=3
+8786	cuadro	pos=16.46 calce=17 scroll=132 freno=- trabado=3
+8794	cuadro	pos=16.49 calce=17 scroll=132 freno=- trabado=3
+8809	cuadro	pos=16.54 calce=17 scroll=132 freno=- trabado=3
+8825	cuadro	pos=16.58 calce=17 scroll=132 freno=- trabado=3
+8841	cuadro	pos=16.63 calce=17 scroll=132 freno=- trabado=3
+8856	llegada	parcial nativo=8854 audio=8832 leido=8848 procesado=8854 rms=0.0021 relevos=0
+8856	oyo	parcial: now look at the text
+8856	calce	token 17: now look at the text
+8864	cuadro	pos=17.02 calce=17 scroll=132 freno=- trabado=3
+8876	cuadro	pos=17.04 calce=17 scroll=132 freno=- trabado=3
+8891	cuadro	pos=17.08 calce=17 scroll=132 freno=- trabado=3
+8909	cuadro	pos=17.11 calce=17 scroll=132 freno=- trabado=3
+8925	cuadro	pos=17.15 calce=17 scroll=132 freno=- trabado=3
+8941	cuadro	pos=17.18 calce=17 scroll=132 freno=- trabado=3
+8951	llegada	parcial nativo=8949 audio=8932 leido=8948 procesado=8949 rms=0.0094 relevos=0
+8951	oyo	parcial: now look at the text
+8952	calce	token 17: now look at the text
+8975	cuadro	pos=17.21 calce=17 scroll=132 freno=- trabado=3
+8984	cuadro	pos=17.21 calce=17 scroll=132 freno=- trabado=3
+8993	cuadro	pos=17.21 calce=17 scroll=132 freno=- trabado=3
+9008	cuadro	pos=17.21 calce=17 scroll=132 freno=- trabado=3
+9024	cuadro	pos=17.21 calce=17 scroll=132 freno=- trabado=3
+9041	cuadro	pos=17.21 calce=17 scroll=132 freno=- trabado=3
+9057	llegada	parcial nativo=9055 audio=9032 leido=9048 procesado=9055 rms=0.0462 relevos=0
+9057	oyo	parcial: now look at the text
+9057	calce	token 17: now look at the text
+9058	cuadro	pos=17.23 calce=17 scroll=132 freno=- trabado=3
+9085	cuadro	pos=17.23 calce=17 scroll=132 freno=- trabado=3
+9096	cuadro	pos=17.23 calce=17 scroll=132 freno=- trabado=3
+9110	cuadro	pos=17.23 calce=17 scroll=132 freno=- trabado=3
+9124	cuadro	pos=17.23 calce=17 scroll=132 freno=- trabado=3
+9141	cuadro	pos=17.23 calce=17 scroll=132 freno=- trabado=3
+9159	cuadro	pos=17.23 calce=17 scroll=132 freno=- trabado=3
+9174	llegada	parcial nativo=9170 audio=9132 leido=9148 procesado=9170 rms=0.0243 relevos=0
+9174	oyo	parcial: now look at the text
+9174	calce	token 17: now look at the text
+9175	cuadro	pos=17.25 calce=17 scroll=132 freno=- trabado=3
+9206	cuadro	pos=17.25 calce=17 scroll=132 freno=- trabado=3
+9213	cuadro	pos=17.25 calce=17 scroll=132 freno=- trabado=3
+9227	cuadro	pos=17.25 calce=17 scroll=132 freno=- trabado=3
+9242	cuadro	pos=17.25 calce=17 scroll=132 freno=- trabado=3
+9259	cuadro	pos=17.25 calce=17 scroll=132 freno=- trabado=3
+9275	cuadro	pos=17.25 calce=17 scroll=132 freno=- trabado=3
+9279	llegada	parcial nativo=9276 audio=9212 leido=9241 procesado=9276 rms=0.0316 relevos=0
+9279	oyo	parcial: now look at the text he
+9280	calce	token 18: now look at the text he
+9307	cuadro	pos=17.57 calce=18 scroll=132 freno=- trabado=3
+9312	cuadro	pos=17.59 calce=18 scroll=132 freno=- trabado=3
+9325	cuadro	pos=17.63 calce=18 scroll=132 freno=- trabado=3
+9341	cuadro	pos=17.68 calce=18 scroll=132 freno=- trabado=3
+9344	llegada	parcial nativo=9339 audio=9312 leido=9327 procesado=9339 rms=0.0975 relevos=0
+9344	oyo	parcial: now look at the text he
+9345	calce	token 18: now look at the text he
+9372	cuadro	pos=18.06 calce=18 scroll=132 freno=- trabado=3
+9383	cuadro	pos=18.09 calce=18 scroll=132 freno=- trabado=3
+9387	llegada	parcial nativo=9383 audio=9332 leido=9348 procesado=9383 rms=0.0954 relevos=0
+9387	oyo	parcial: now look at the text it
+9388	calce	token 18: now look at the text it
+9424	cuadro	pos=18.10 calce=18 scroll=132 freno=- trabado=3
+9427	cuadro	pos=18.10 calce=18 scroll=132 freno=- trabado=3
+9440	cuadro	pos=18.12 calce=18 scroll=132 freno=- trabado=3
+9460	llegada	parcial nativo=9454 audio=9432 leido=9448 procesado=9454 rms=0.1129 relevos=0
+9460	oyo	parcial: now look at the text it
+9461	calce	token 18: now look at the text it
+9462	cuadro	pos=18.17 calce=18 scroll=132 freno=- trabado=3
+9491	cuadro	pos=18.17 calce=18 scroll=132 freno=- trabado=3
+9499	cuadro	pos=18.17 calce=18 scroll=132 freno=- trabado=3
+9509	cuadro	pos=18.17 calce=18 scroll=132 freno=- trabado=3
+9524	cuadro	pos=18.17 calce=18 scroll=132 freno=- trabado=3
+9542	cuadro	pos=18.18 calce=18 scroll=132 freno=- trabado=3
+9558	cuadro	pos=18.22 calce=18 scroll=132 freno=- trabado=3
+9576	cuadro	pos=18.26 calce=18 scroll=132 freno=- trabado=3
+9581	llegada	parcial nativo=9572 audio=9532 leido=9570 procesado=9571 rms=0.0815 relevos=0
+9581	oyo	parcial: now look at the text it
+9581	calce	token 18: now look at the text it
+9591	cuadro	pos=18.27 calce=18 scroll=132 freno=- trabado=3
+9614	cuadro	pos=18.27 calce=18 scroll=132 freno=- trabado=3
+9624	cuadro	pos=18.27 calce=18 scroll=132 freno=- trabado=3
+9640	cuadro	pos=18.27 calce=18 scroll=132 freno=- trabado=3
+9657	cuadro	pos=18.27 calce=18 scroll=132 freno=- trabado=3
+9661	llegada	parcial nativo=9659 audio=9632 leido=9648 procesado=9659 rms=0.0330 relevos=0
+9661	oyo	parcial: now look at the text it moving
+9661	calce	token 19: now look at the text it moving
+9676	cuadro	pos=18.93 calce=19 scroll=140 freno=- trabado=4
+9690	cuadro	pos=18.98 calce=19 scroll=145 freno=- trabado=4
+9709	cuadro	pos=19.04 calce=19 scroll=150 freno=- trabado=4
+9723	cuadro	pos=19.08 calce=19 scroll=153 freno=- trabado=4
+9729	llegada	parcial nativo=9725 audio=9692 leido=9707 procesado=9725 rms=0.0040 relevos=0
+9729	oyo	parcial: now look at the text he to move
+9729	calce	token 20: now look at the text he to move
+9750	cuadro	pos=19.21 calce=20 scroll=157 freno=- trabado=4
+9757	cuadro	pos=19.24 calce=20 scroll=158 freno=- trabado=4
+9760	llegada	parcial nativo=9756 audio=9732 leido=9747 procesado=9755 rms=0.0465 relevos=0
+9760	oyo	parcial: now look at the text it moving
+9761	calce	token 19: now look at the text it moving
+9778	cuadro	pos=19.50 calce=20 scroll=160 freno=- trabado=4
+9790	cuadro	pos=19.54 calce=20 scroll=161 freno=- trabado=4
+9807	cuadro	pos=19.60 calce=20 scroll=162 freno=- trabado=4
+9824	cuadro	pos=19.66 calce=20 scroll=163 freno=- trabado=4
+9840	cuadro	pos=19.71 calce=20 scroll=164 freno=- trabado=4
+9857	cuadro	pos=19.77 calce=20 scroll=164 freno=- trabado=4
+9876	cuadro	pos=19.83 calce=20 scroll=165 freno=- trabado=4
+9886	llegada	parcial nativo=9884 audio=9832 leido=9881 procesado=9884 rms=0.0920 relevos=0
+9886	oyo	parcial: now look at the text it moving
+9886	calce	token 19: now look at the text it moving
+9898	cuadro	pos=20.03 calce=20 scroll=165 freno=- trabado=4
+9908	cuadro	pos=20.06 calce=20 scroll=165 freno=- trabado=4
+9923	cuadro	pos=20.09 calce=20 scroll=165 freno=- trabado=4
+9940	cuadro	pos=20.14 calce=20 scroll=165 freno=- trabado=4
+9957	cuadro	pos=20.18 calce=20 scroll=166 freno=- trabado=4
+9962	llegada	parcial nativo=9960 audio=9932 leido=9948 procesado=9960 rms=0.0526 relevos=0
+9962	oyo	parcial: now look at the text it moving
+9962	calce	token 19: now look at the text it moving
+9976	cuadro	pos=20.19 calce=20 scroll=166 freno=- trabado=4
+9989	cuadro	pos=20.19 calce=20 scroll=166 freno=- trabado=4
+10006	cuadro	pos=20.19 calce=20 scroll=166 freno=- trabado=4
+10023	cuadro	pos=20.19 calce=20 scroll=166 freno=- trabado=4
+10039	cuadro	pos=20.19 calce=20 scroll=166 freno=- trabado=4
+10056	cuadro	pos=20.23 calce=20 scroll=166 freno=- trabado=4
+10075	cuadro	pos=20.28 calce=20 scroll=166 freno=- trabado=4
+10081	llegada	parcial nativo=10077 audio=10032 leido=10048 procesado=10077 rms=0.0488 relevos=0
+10081	oyo	parcial: now look at the text it moving
+10083	calce	token 19: now look at the text it moving
+10099	cuadro	pos=20.30 calce=20 scroll=166 freno=- trabado=4
+10106	cuadro	pos=20.30 calce=20 scroll=166 freno=- trabado=4
+10122	cuadro	pos=20.30 calce=20 scroll=166 freno=- trabado=4
+10140	cuadro	pos=20.30 calce=20 scroll=166 freno=- trabado=4
+10156	llegada	parcial nativo=10149 audio=10112 leido=10142 procesado=10149 rms=0.0252 relevos=0
+10156	oyo	parcial: now look at the text it moving on
+10156	calce	token 20: now look at the text it moving on
+10165	cuadro	pos=20.30 calce=20 scroll=166 freno=- trabado=4
+10177	cuadro	pos=20.30 calce=20 scroll=166 freno=- trabado=4
+10190	cuadro	pos=20.30 calce=20 scroll=166 freno=- trabado=4
+10204	llegada	parcial nativo=10201 audio=10172 leido=10188 procesado=10201 rms=0.0031 relevos=0
+10204	oyo	parcial: now look at the text it moving on a
+10204	calce	token 21: now look at the text it moving on a
+10211	cuadro	pos=21.02 calce=21 scroll=166 freno=- trabado=4
+10222	cuadro	pos=21.05 calce=21 scroll=166 freno=- trabado=4
+10239	cuadro	pos=21.09 calce=21 scroll=166 freno=- trabado=4
+10257	cuadro	pos=21.14 calce=21 scroll=166 freno=- trabado=4
+10264	llegada	parcial nativo=10260 audio=10232 leido=10247 procesado=10260 rms=0.0017 relevos=0
+10264	oyo	parcial: now look at the text it moving on it
+10264	calce	token 21: now look at the text it moving on it
+10279	cuadro	pos=21.16 calce=21 scroll=166 freno=- trabado=4
+10292	cuadro	pos=21.16 calce=21 scroll=166 freno=- trabado=4
+10306	cuadro	pos=21.16 calce=21 scroll=166 freno=- trabado=4
+10323	cuadro	pos=21.16 calce=21 scroll=166 freno=- trabado=4
+10338	cuadro	pos=21.20 calce=21 scroll=166 freno=- trabado=4
+10355	cuadro	pos=21.25 calce=21 scroll=166 freno=- trabado=4
+10359	llegada	parcial nativo=10354 audio=10332 leido=10348 procesado=10354 rms=0.0868 relevos=0
+10359	oyo	parcial: now look at the text it moving on it
+10359	calce	token 21: now look at the text it moving on it
+10376	cuadro	pos=21.26 calce=21 scroll=166 freno=- trabado=4
+10390	cuadro	pos=21.26 calce=21 scroll=166 freno=- trabado=4
+10406	cuadro	pos=21.26 calce=21 scroll=166 freno=- trabado=4
+10422	cuadro	pos=21.26 calce=21 scroll=166 freno=- trabado=4
+10440	cuadro	pos=21.26 calce=21 scroll=166 freno=- trabado=4
+10451	llegada	parcial nativo=10449 audio=10432 leido=10448 procesado=10449 rms=0.0807 relevos=0
+10451	oyo	parcial: now look at the text it moving on it
+10451	calce	token 21: now look at the text it moving on it
+10459	cuadro	pos=21.26 calce=21 scroll=166 freno=- trabado=4
+10473	cuadro	pos=21.26 calce=21 scroll=166 freno=- trabado=4
+10488	cuadro	pos=21.26 calce=21 scroll=166 freno=- trabado=4
+10505	cuadro	pos=21.26 calce=21 scroll=166 freno=- trabado=4
+10522	cuadro	pos=21.26 calce=21 scroll=166 freno=- trabado=4
+10540	cuadro	pos=21.26 calce=21 scroll=166 freno=- trabado=4
+10555	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10557	llegada	parcial nativo=10554 audio=10532 leido=10548 procesado=10554 rms=0.0537 relevos=0
+10557	oyo	parcial: now look at the text it moving on it
+10557	calce	token 21: now look at the text it moving on it
+10574	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10588	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10606	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10622	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10638	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10657	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10662	llegada	parcial nativo=10657 audio=10632 leido=10648 procesado=10657 rms=0.0414 relevos=0
+10662	oyo	parcial: now look at the text it moving on it
+10662	calce	token 21: now look at the text it moving on it
+10678	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10688	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10705	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10721	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10739	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10753	llegada	parcial nativo=10750 audio=10732 leido=10749 procesado=10750 rms=0.0035 relevos=0
+10753	oyo	parcial: now look at the text it moving on it
+10753	calce	token 21: now look at the text it moving on it
+10772	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10774	cuadro	pos=21.28 calce=21 scroll=166 freno=- trabado=4
+10779	llegada	parcial nativo=10777 audio=10752 leido=10769 procesado=10777 rms=0.0030 relevos=0
+10779	oyo	parcial: now look at the text it moving on it's own
+10779	calce	token 22: now look at the text it moving on it's own
+10789	cuadro	pos=21.60 calce=22 scroll=166 freno=- trabado=4
+10805	cuadro	pos=21.66 calce=22 scroll=166 freno=- trabado=4
+10822	cuadro	pos=21.73 calce=22 scroll=166 freno=- trabado=4
+10839	cuadro	pos=21.78 calce=22 scroll=166 freno=- trabado=4
+10857	cuadro	pos=21.85 calce=22 scroll=166 freno=- trabado=4
+10872	cuadro	pos=21.90 calce=22 scroll=166 freno=- trabado=4
+10882	llegada	parcial nativo=10880 audio=10852 leido=10879 procesado=10880 rms=0.0023 relevos=0
+10882	oyo	parcial: now look at the text it moving on it's own
+10883	calce	token 22: now look at the text it moving on it's own
+10894	cuadro	pos=22.03 calce=22 scroll=166 freno=- trabado=4
+10905	cuadro	pos=22.06 calce=22 scroll=166 freno=- trabado=4
+10921	cuadro	pos=22.11 calce=22 scroll=166 freno=- trabado=4
+10938	cuadro	pos=22.15 calce=22 scroll=166 freno=- trabado=4
+10954	cuadro	pos=22.20 calce=22 scroll=166 freno=- trabado=4
+10972	cuadro	pos=22.25 calce=22 scroll=166 freno=- trabado=4
+10988	cuadro	pos=22.29 calce=22 scroll=166 freno=- trabado=4
+10995	llegada	parcial nativo=10989 audio=10952 leido=10983 procesado=10989 rms=0.0020 relevos=0
+10995	oyo	parcial: now look at the text it moving on it's own
+10995	calce	token 22: now look at the text it moving on it's own
+11008	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11021	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11038	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11054	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11072	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11084	llegada	parcial nativo=11076 audio=11052 leido=11070 procesado=11076 rms=0.0014 relevos=0
+11084	oyo	parcial: now look at the text it moving on it's own
+11084	calce	token 22: now look at the text it moving on it's own
+11098	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11105	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11120	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11138	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11155	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11171	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11173	llegada	parcial nativo=11169 audio=11152 leido=11167 procesado=11169 rms=0.0211 relevos=0
+11173	oyo	parcial: now look at the text it moving on it's own
+11173	calce	token 22: now look at the text it moving on it's own
+11187	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11205	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11220	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11238	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11255	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11272	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11277	llegada	parcial nativo=11275 audio=11252 leido=11268 procesado=11275 rms=0.0754 relevos=0
+11277	oyo	parcial: now look at the text it moving on it's own
+11277	calce	token 22: now look at the text it moving on it's own
+11287	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11304	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11320	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11338	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11354	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11370	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11384	llegada	parcial nativo=11379 audio=11352 leido=11368 procesado=11379 rms=0.0272 relevos=0
+11384	oyo	parcial: now look at the text it moving on it's own
+11384	calce	token 22: now look at the text it moving on it's own
+11406	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11410	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11420	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11438	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11455	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11470	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11473	llegada	parcial nativo=11469 audio=11452 leido=11468 procesado=11469 rms=0.0649 relevos=0
+11473	oyo	parcial: now look at the text it moving on it's own
+11473	calce	token 22: now look at the text it moving on it's own
+11487	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11505	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11520	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11539	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11555	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11571	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11585	llegada	parcial nativo=11583 audio=11552 leido=11568 procesado=11583 rms=0.0139 relevos=0
+11585	oyo	parcial: now look at the text it moving on it's own
+11586	calce	token 22: now look at the text it moving on it's own
+11605	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11607	cuadro	pos=22.31 calce=22 scroll=166 freno=- trabado=4
+11616	llegada	parcial nativo=11614 audio=11592 leido=11607 procesado=11614 rms=0.0060 relevos=0
+11616	oyo	parcial: now look at the text it moving on it's own at
+11616	calce	token 23: now look at the text it moving on it's own at
+11624	cuadro	pos=22.92 calce=23 scroll=166 freno=- trabado=4
+11637	cuadro	pos=22.97 calce=23 scroll=166 freno=- trabado=4
+11655	cuadro	pos=23.02 calce=23 scroll=166 freno=- trabado=4
+11671	cuadro	pos=23.07 calce=23 scroll=166 freno=- trabado=4
+11686	cuadro	pos=23.11 calce=23 scroll=166 freno=- trabado=4
+11703	cuadro	pos=23.16 calce=23 scroll=166 freno=- trabado=4
+11714	llegada	parcial nativo=11710 audio=11692 leido=11708 procesado=11710 rms=0.0610 relevos=0
+11714	oyo	parcial: now look at the text it moving on it's own at
+11715	calce	token 23: now look at the text it moving on it's own at
+11724	cuadro	pos=23.19 calce=23 scroll=166 freno=- trabado=4
+11739	cuadro	pos=23.19 calce=23 scroll=166 freno=- trabado=4
+11749	llegada	parcial nativo=11746 audio=11712 leido=11728 procesado=11746 rms=0.0524 relevos=0
+11749	oyo	parcial: now look at the text it moving on it's own at the
+11750	calce	token 24: now look at the text it moving on it's own at the
+11763	cuadro	pos=23.37 calce=24 scroll=166 freno=- trabado=4
+11771	cuadro	pos=23.40 calce=24 scroll=166 freno=- trabado=4
+11787	cuadro	pos=23.46 calce=24 scroll=166 freno=- trabado=4
+11804	cuadro	pos=23.52 calce=24 scroll=166 freno=- trabado=4
+11820	cuadro	pos=23.58 calce=24 scroll=166 freno=- trabado=4
+11830	llegada	parcial nativo=11828 audio=11812 leido=11827 procesado=11828 rms=0.0440 relevos=0
+11830	oyo	parcial: now look at the text it moving on it's own at the
+11830	calce	token 24: now look at the text it moving on it's own at the
+11843	cuadro	pos=24.03 calce=24 scroll=166 freno=- trabado=4
+11854	cuadro	pos=24.06 calce=24 scroll=166 freno=- trabado=4
+11870	cuadro	pos=24.10 calce=24 scroll=166 freno=- trabado=4
+11886	cuadro	pos=24.14 calce=24 scroll=166 freno=- trabado=4
+11903	cuadro	pos=24.18 calce=24 scroll=166 freno=- trabado=4
+11919	cuadro	pos=24.22 calce=24 scroll=166 freno=- trabado=4
+11935	llegada	parcial nativo=11934 audio=11912 leido=11928 procesado=11933 rms=0.0110 relevos=0
+11935	oyo	parcial: now look at the text it moving on it's own at the
+11936	calce	token 24: now look at the text it moving on it's own at the
+11936	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11954	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11970	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+11986	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+12003	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+12021	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+12037	cuadro	pos=24.26 calce=24 scroll=166 freno=- trabado=4
+12054	cuadro	pos=24.29 calce=24 scroll=166 freno=- trabado=4
+12078	cuadro	pos=24.36 calce=24 scroll=166 freno=- trabado=4
+12087	llegada	parcial nativo=12084 audio=12012 leido=12073 procesado=12084 rms=0.0466 relevos=0
+12087	oyo	parcial: now look at the text it moving on it's own at the base
+12088	calce	token 25: now look at the text it moving on it's own at the base
+12090	cuadro	pos=24.38 calce=25 scroll=171 freno=- trabado=5
+12116	cuadro	pos=24.95 calce=25 scroll=180 freno=- trabado=5
+12122	cuadro	pos=24.97 calce=25 scroll=181 freno=- trabado=5
+12131	llegada	parcial nativo=12128 audio=12072 leido=12093 procesado=12128 rms=0.0094 relevos=0
+12131	oyo	parcial: now look at the text it moving on it's own at the
+12131	calce	token 24: now look at the text it moving on it's own at the
+12146	cuadro	pos=25.04 calce=25 scroll=186 freno=- trabado=5
+12150	llegada	parcial nativo=12136 audio=12092 leido=12129 procesado=12136 rms=0.0018 relevos=0
+12150	oyo	parcial: now look at the text it moving on it's own at the base
+12151	calce	token 25: now look at the text it moving on it's own at the base
+12165	cuadro	pos=25.05 calce=25 scroll=189 freno=- trabado=5
+12174	cuadro	pos=25.06 calce=25 scroll=191 freno=- trabado=5
+12198	llegada	parcial nativo=12170 audio=12132 leido=12147 procesado=12169 rms=0.0012 relevos=0
+12198	oyo	parcial: now look at the text it moving on it's own at the base to
+12198	calce	token 26: now look at the text it moving on it's own at the base to
+12200	cuadro	pos=25.12 calce=26 scroll=193 freno=- trabado=5
+12227	llegada	parcial nativo=12195 audio=12152 leido=12170 procesado=12195 rms=0.0009 relevos=0
+12227	oyo	parcial: now look at the text it moving on it's own at the base your
+12227	calce	token 26: now look at the text it moving on it's own at the base your
+12228	cuadro	pos=26.08 calce=26 scroll=195 freno=- trabado=5
+12247	cuadro	pos=26.08 calce=26 scroll=196 freno=- trabado=5
+12252	cuadro	pos=26.08 calce=26 scroll=196 freno=- trabado=5
+12256	cuadro	pos=26.08 calce=26 scroll=196 freno=- trabado=5
+12271	cuadro	pos=26.11 calce=26 scroll=197 freno=- trabado=5
+12286	cuadro	pos=26.15 calce=26 scroll=197 freno=- trabado=5
+12305	cuadro	pos=26.20 calce=26 scroll=198 freno=- trabado=5
+12312	llegada	parcial nativo=12309 audio=12252 leido=12300 procesado=12309 rms=0.0545 relevos=0
+12312	oyo	parcial: now look at the text it moving on it's own at the base your
+12313	calce	token 26: now look at the text it moving on it's own at the base your
+12331	cuadro	pos=26.22 calce=26 scroll=198 freno=- trabado=5
+12340	llegada	parcial nativo=12327 audio=12272 leido=12310 procesado=12327 rms=0.0253 relevos=0
+12340	oyo	parcial: now look at the text it moving on it's own at the base
+12340	calce	token 25: now look at the text it moving on it's own at the base
+12351	cuadro	pos=26.22 calce=26 scroll=198 freno=- trabado=5
+12355	cuadro	pos=26.22 calce=26 scroll=198 freno=- trabado=5
+12362	llegada	parcial nativo=12360 audio=12332 leido=12349 procesado=12360 rms=0.0142 relevos=0
+12362	oyo	parcial: now look at the text it moving on it's own at the base your
+12362	calce	token 26: now look at the text it moving on it's own at the base your
+12374	cuadro	pos=26.22 calce=26 scroll=199 freno=- trabado=5
+12385	cuadro	pos=26.22 calce=26 scroll=199 freno=- trabado=5
+12403	cuadro	pos=26.22 calce=26 scroll=199 freno=- trabado=5
+12418	cuadro	pos=26.22 calce=26 scroll=199 freno=- trabado=5
+12436	cuadro	pos=26.22 calce=26 scroll=199 freno=- trabado=5
+12454	cuadro	pos=26.23 calce=26 scroll=199 freno=- trabado=5
+12480	llegada	parcial nativo=12459 audio=12432 leido=12449 procesado=12459 rms=0.0120 relevos=0
+12480	oyo	parcial: now look at the text it moving on it's own at the base to
+12480	calce	token 26: now look at the text it moving on it's own at the base to
+12480	cuadro	pos=26.30 calce=26 scroll=199 freno=- trabado=5
+12507	cuadro	pos=26.30 calce=26 scroll=199 freno=- trabado=5
+12509	cuadro	pos=26.30 calce=26 scroll=199 freno=- trabado=5
+12518	cuadro	pos=26.30 calce=26 scroll=199 freno=- trabado=5
+12536	cuadro	pos=26.30 calce=26 scroll=199 freno=- trabado=5
+12551	cuadro	pos=26.30 calce=26 scroll=199 freno=- trabado=5
+12555	llegada	parcial nativo=12552 audio=12492 leido=12508 procesado=12552 rms=0.0059 relevos=0
+12555	oyo	parcial: now look at the text it moving on it's own at the base to speak
+12555	calce	token 27: now look at the text it moving on it's own at the base to speak
+12569	cuadro	pos=26.65 calce=27 scroll=199 freno=- trabado=5
+12585	cuadro	pos=26.71 calce=27 scroll=199 freno=- trabado=5
+12603	cuadro	pos=26.77 calce=27 scroll=199 freno=- trabado=5
+12615	llegada	parcial nativo=12613 audio=12592 leido=12612 procesado=12613 rms=0.0026 relevos=0
+12615	oyo	parcial: now look at the text it moving on it's own at the base to speak
+12616	calce	token 27: now look at the text it moving on it's own at the base to speak
+12622	cuadro	pos=27.02 calce=27 scroll=199 freno=- trabado=5
+12635	cuadro	pos=27.05 calce=27 scroll=199 freno=- trabado=5
+12653	cuadro	pos=27.10 calce=27 scroll=199 freno=- trabado=5
+12669	cuadro	pos=27.14 calce=27 scroll=199 freno=- trabado=5
+12685	cuadro	pos=27.18 calce=27 scroll=199 freno=- trabado=5
+12702	cuadro	pos=27.23 calce=27 scroll=199 freno=- trabado=5
+12715	llegada	parcial nativo=12714 audio=12692 leido=12708 procesado=12714 rms=0.0013 relevos=0
+12715	oyo	parcial: now look at the text it moving on it's own at the base to speak
+12716	calce	token 27: now look at the text it moving on it's own at the base to speak
+12728	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12735	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12753	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12769	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12785	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12802	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12815	llegada	parcial nativo=12813 audio=12792 leido=12808 procesado=12813 rms=0.0581 relevos=0
+12815	oyo	parcial: now look at the text it moving on it's own at the base to speak
+12815	calce	token 27: now look at the text it moving on it's own at the base to speak
+12823	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12834	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12852	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12870	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12884	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12902	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12911	llegada	parcial nativo=12909 audio=12892 leido=12908 procesado=12909 rms=0.0498 relevos=0
+12911	oyo	parcial: now look at the text it moving on it's own at the base to speak
+12912	calce	token 27: now look at the text it moving on it's own at the base to speak
+12926	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12935	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12951	cuadro	pos=27.26 calce=27 scroll=199 freno=- trabado=5
+12955	llegada	parcial nativo=12953 audio=12912 leido=12928 procesado=12953 rms=0.0631 relevos=0
+12955	oyo	parcial: now look at the text it moving on it's own at the base to speak with
+12955	calce	token 28: now look at the text it moving on it's own at the base to speak with
+12968	cuadro	pos=28.03 calce=28 scroll=199 freno=- trabado=5
+12983	cuadro	pos=28.07 calce=28 scroll=199 freno=- trabado=5
+13002	cuadro	pos=28.12 calce=28 scroll=199 freno=- trabado=5
+13017	cuadro	pos=28.16 calce=28 scroll=199 freno=- trabado=5
+13031	llegada	parcial nativo=13029 audio=13012 leido=13028 procesado=13029 rms=0.0635 relevos=0
+13031	oyo	parcial: now look at the text it moving on it's own at the base to speak with
+13031	calce	token 28: now look at the text it moving on it's own at the base to speak with
+13041	cuadro	pos=28.20 calce=28 scroll=199 freno=- trabado=5
+13052	cuadro	pos=28.20 calce=28 scroll=199 freno=- trabado=5
+13068	cuadro	pos=28.20 calce=28 scroll=199 freno=- trabado=5
+13084	cuadro	pos=28.20 calce=28 scroll=199 freno=- trabado=5
+13101	cuadro	pos=28.20 calce=28 scroll=199 freno=- trabado=5
+13117	cuadro	pos=28.22 calce=28 scroll=199 freno=- trabado=5
+13135	cuadro	pos=28.27 calce=28 scroll=199 freno=- trabado=5
+13144	llegada	parcial nativo=13142 audio=13112 leido=13128 procesado=13142 rms=0.0584 relevos=0
+13144	oyo	parcial: now look at the text it moving on it's own at the base to speak with
+13144	calce	token 28: now look at the text it moving on it's own at the base to speak with
+13153	cuadro	pos=28.29 calce=28 scroll=199 freno=- trabado=5
+13168	cuadro	pos=28.29 calce=28 scroll=199 freno=- trabado=5
+13184	cuadro	pos=28.29 calce=28 scroll=199 freno=- trabado=5
+13187	llegada	parcial nativo=13183 audio=13152 leido=13168 procesado=13183 rms=0.0553 relevos=0
+13187	oyo	parcial: now look at the text it moving on it's own at the base to speak with a
+13188	calce	token 29: now look at the text it moving on it's own at the base to speak with a
+13201	cuadro	pos=29.04 calce=29 scroll=199 freno=- trabado=5
+13217	cuadro	pos=29.08 calce=29 scroll=199 freno=- trabado=5
+13234	cuadro	pos=29.12 calce=29 scroll=199 freno=- trabado=5
+13251	cuadro	pos=29.17 calce=29 scroll=199 freno=- trabado=5
+13258	llegada	parcial nativo=13251 audio=13212 leido=13227 procesado=13251 rms=0.0100 relevos=0
+13258	oyo	parcial: now look at the text it moving on it's own at the base to speak with that
+13259	calce	token 29: now look at the text it moving on it's own at the base to speak with that
+13277	cuadro	pos=29.19 calce=29 scroll=199 freno=- trabado=5
+13284	cuadro	pos=29.19 calce=29 scroll=199 freno=- trabado=5
+13302	cuadro	pos=29.19 calce=29 scroll=199 freno=- trabado=5
+13317	cuadro	pos=29.19 calce=29 scroll=199 freno=- trabado=5
+13321	llegada	parcial nativo=13317 audio=13272 leido=13289 procesado=13316 rms=0.0756 relevos=0
+13321	oyo	parcial: now look at the text it moving on it's own at the base to speak with a
+13322	calce	token 29: now look at the text it moving on it's own at the base to speak with a
+13335	cuadro	pos=29.19 calce=29 scroll=199 freno=- trabado=5
+13340	llegada	parcial nativo=13337 audio=13292 leido=13317 procesado=13337 rms=0.0886 relevos=0
+13340	oyo	parcial: now look at the text it moving on it's own at the base to speak with that
+13341	calce	token 29: now look at the text it moving on it's own at the base to speak with that
+13351	cuadro	pos=29.19 calce=29 scroll=199 freno=- trabado=5
+13368	cuadro	pos=29.19 calce=29 scroll=199 freno=- trabado=5
+13383	cuadro	pos=29.19 calce=29 scroll=199 freno=- trabado=5
+13401	cuadro	pos=29.19 calce=29 scroll=199 freno=- trabado=5
+13416	cuadro	pos=29.20 calce=29 scroll=199 freno=- trabado=5
+13434	cuadro	pos=29.25 calce=29 scroll=199 freno=- trabado=5
+13450	cuadro	pos=29.29 calce=29 scroll=199 freno=- trabado=5
+13469	cuadro	pos=29.34 calce=29 scroll=199 freno=- trabado=5
+13499	llegada	parcial nativo=13481 audio=13352 leido=13384 procesado=13481 rms=0.0998 relevos=0
+13499	oyo	parcial: now look at the text it moving on it's own at the base to speak with a good
+13500	calce	token 30: now look at the text it moving on it's own at the base to speak with a good
+13501	cuadro	pos=29.42 calce=30 scroll=211 freno=- trabado=6
+13534	cuadro	pos=29.71 calce=30 scroll=220 freno=- trabado=6
+13551	cuadro	pos=29.77 calce=30 scroll=223 freno=- trabado=6
+13555	cuadro	pos=29.78 calce=30 scroll=223 freno=- trabado=6
+13568	cuadro	pos=29.83 calce=30 scroll=225 freno=- trabado=6
+13583	cuadro	pos=29.88 calce=30 scroll=226 freno=- trabado=6
+13601	cuadro	pos=29.94 calce=30 scroll=228 freno=- trabado=6
+13616	cuadro	pos=29.99 calce=30 scroll=229 freno=- trabado=6
+13620	llegada	parcial nativo=13618 audio=13412 leido=13546 procesado=13618 rms=0.0545 relevos=0
+13620	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did
+13621	calce	token 30: now look at the text it moving on it's own at the base to speak with that did
+13640	cuadro	pos=30.05 calce=30 scroll=230 freno=- trabado=6
+13649	cuadro	pos=30.08 calce=30 scroll=230 freno=- trabado=6
+13661	llegada	parcial nativo=13659 audio=13472 leido=13638 procesado=13659 rms=0.0178 relevos=0
+13661	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that
+13662	calce	token 31: now look at the text it moving on it's own at the base to speak with that did that
+13685	cuadro	pos=31.07 calce=31 scroll=231 freno=- trabado=6
+13690	cuadro	pos=31.08 calce=31 scroll=232 freno=- trabado=6
+13695	llegada	parcial nativo=13691 audio=13572 leido=13680 procesado=13691 rms=0.0635 relevos=0
+13695	oyo	parcial: now look at the text it moving on it's own at the base to speak with that get
+13695	calce	token 30: now look at the text it moving on it's own at the base to speak with that get
+13702	cuadro	pos=31.10 calce=31 scroll=232 freno=- trabado=6
+13719	cuadro	pos=31.10 calce=31 scroll=232 freno=- trabado=6
+13729	llegada	parcial nativo=13716 audio=13592 leido=13693 procesado=13716 rms=0.0521 relevos=0
+13729	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that
+13729	calce	token 31: now look at the text it moving on it's own at the base to speak with that did that
+13737	cuadro	pos=31.10 calce=31 scroll=232 freno=- trabado=6
+13750	cuadro	pos=31.10 calce=31 scroll=232 freno=- trabado=6
+13768	cuadro	pos=31.11 calce=31 scroll=233 freno=- trabado=6
+13783	cuadro	pos=31.15 calce=31 scroll=233 freno=- trabado=6
+13786	llegada	parcial nativo=13784 audio=13652 leido=13741 procesado=13783 rms=0.0381 relevos=0
+13786	oyo	parcial: now look at the text it moving on it's own at the base to speak with that the
+13786	calce	token 30: now look at the text it moving on it's own at the base to speak with that the
+13800	cuadro	pos=31.16 calce=31 scroll=233 freno=- trabado=6
+13809	llegada	parcial nativo=13806 audio=13752 leido=13800 procesado=13806 rms=0.0221 relevos=0
+13809	oyo	parcial: now look at the text it moving on it's own at the base to speak with that the
+13809	calce	token 30: now look at the text it moving on it's own at the base to speak with that the
+13821	cuadro	pos=31.16 calce=31 scroll=233 freno=- trabado=6
+13833	cuadro	pos=31.16 calce=31 scroll=233 freno=- trabado=6
+13839	llegada	parcial nativo=13837 audio=13812 leido=13827 procesado=13837 rms=0.0940 relevos=0
+13839	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change
+13839	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change
+13851	cuadro	pos=31.16 calce=31 scroll=233 freno=- trabado=6
+13867	cuadro	pos=31.16 calce=31 scroll=233 freno=- trabado=6
+13884	cuadro	pos=31.21 calce=31 scroll=233 freno=- trabado=6
+13900	cuadro	pos=31.26 calce=31 scroll=233 freno=- trabado=6
+13916	cuadro	pos=31.30 calce=31 scroll=233 freno=- trabado=6
+13925	llegada	parcial nativo=13924 audio=13892 leido=13909 procesado=13924 rms=0.0661 relevos=0
+13925	oyo	parcial: now look at the text it moving on it's own at the base to speak with a good batching
+13925	calce	token 31: now look at the text it moving on it's own at the base to speak with a good batching
+13934	cuadro	pos=31.33 calce=31 scroll=233 freno=- trabado=6
+13950	cuadro	pos=31.33 calce=31 scroll=233 freno=- trabado=6
+13967	cuadro	pos=31.33 calce=31 scroll=233 freno=- trabado=6
+13971	llegada	parcial nativo=13966 audio=13932 leido=13948 procesado=13966 rms=0.0493 relevos=0
+13971	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that chin
+13971	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that chin
+13982	cuadro	pos=31.33 calce=31 scroll=233 freno=- trabado=6
+14000	cuadro	pos=31.33 calce=31 scroll=233 freno=- trabado=6
+14016	cuadro	pos=31.33 calce=31 scroll=233 freno=- trabado=6
+14033	cuadro	pos=31.33 calce=31 scroll=233 freno=- trabado=6
+14040	llegada	parcial nativo=14038 audio=14012 leido=14028 procesado=14038 rms=0.0141 relevos=0
+14040	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that chin and
+14040	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that chin and
+14049	cuadro	pos=31.35 calce=31 scroll=233 freno=- trabado=6
+14066	cuadro	pos=31.40 calce=31 scroll=233 freno=- trabado=6
+14082	cuadro	pos=31.45 calce=31 scroll=233 freno=- trabado=6
+14100	cuadro	pos=31.50 calce=31 scroll=233 freno=- trabado=6
+14116	cuadro	pos=31.54 calce=31 scroll=233 freno=- trabado=6
+14134	cuadro	pos=31.60 calce=31 scroll=233 freno=- trabado=6
+14149	cuadro	pos=31.64 calce=31 scroll=233 freno=- trabado=6
+14154	llegada	parcial nativo=14150 audio=14112 leido=14128 procesado=14150 rms=0.0324 relevos=0
+14154	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that chin and
+14154	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that chin and
+14166	cuadro	pos=31.68 calce=31 scroll=233 freno=- trabado=6
+14172	llegada	parcial nativo=14171 audio=14132 leido=14151 procesado=14171 rms=0.0300 relevos=0
+14172	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything
+14173	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything
+14182	cuadro	pos=31.73 calce=31 scroll=233 freno=- trabado=6
+14201	cuadro	pos=31.79 calce=31 scroll=233 freno=- trabado=6
+14216	cuadro	pos=31.83 calce=31 scroll=233 freno=- trabado=6
+14234	cuadro	pos=31.88 calce=31 scroll=233 freno=- trabado=6
+14250	cuadro	pos=31.92 calce=31 scroll=233 freno=- trabado=6
+14265	cuadro	pos=31.97 calce=31 scroll=233 freno=- trabado=6
+14281	cuadro	pos=32.01 calce=31 scroll=233 freno=- trabado=6
+14292	llegada	parcial nativo=14289 audio=14232 leido=14248 procesado=14289 rms=0.0297 relevos=0
+14292	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything
+14292	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything
+14300	cuadro	pos=32.06 calce=31 scroll=233 freno=- trabado=6
+14315	cuadro	pos=32.11 calce=31 scroll=233 freno=- trabado=6
+14333	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14348	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14353	llegada	parcial nativo=14349 audio=14332 leido=14348 procesado=14349 rms=0.0051 relevos=0
+14353	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything
+14353	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything
+14366	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14382	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14399	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14416	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14434	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14449	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14456	llegada	parcial nativo=14455 audio=14432 leido=14450 procesado=14455 rms=0.0013 relevos=0
+14456	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything
+14456	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything
+14465	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14482	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14499	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14516	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14533	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14548	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14558	llegada	parcial nativo=14556 audio=14532 leido=14549 procesado=14556 rms=0.0018 relevos=0
+14558	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything
+14559	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything
+14565	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14582	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14600	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14614	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14633	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14648	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14651	llegada	parcial nativo=14649 audio=14632 leido=14648 procesado=14649 rms=0.0016 relevos=0
+14651	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything
+14651	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything
+14666	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14682	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14698	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14716	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14733	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14748	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14756	llegada	parcial nativo=14754 audio=14732 leido=14748 procesado=14754 rms=0.0012 relevos=0
+14756	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything
+14756	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything
+14765	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14783	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14798	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14816	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14835	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14850	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14862	llegada	parcial nativo=14860 audio=14832 leido=14849 procesado=14860 rms=0.0046 relevos=0
+14862	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything
+14862	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything
+14866	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14882	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14898	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14915	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14936	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14949	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14953	llegada	parcial nativo=14951 audio=14932 leido=14949 procesado=14951 rms=0.0509 relevos=0
+14953	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything
+14953	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything
+14966	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14982	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+14997	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15015	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15033	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15049	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15061	llegada	parcial nativo=15058 audio=15032 leido=15049 procesado=15058 rms=0.0208 relevos=0
+15061	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything
+15062	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything
+15068	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15081	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15098	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15115	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15121	llegada	parcial nativo=15119 audio=15092 leido=15110 procesado=15119 rms=0.1095 relevos=0
+15121	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything that
+15121	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything that
+15133	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15149	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15165	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15171	llegada	parcial nativo=15170 audio=15132 leido=15149 procesado=15169 rms=0.1186 relevos=0
+15171	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the
+15172	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything the
+15181	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15198	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15214	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15232	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15247	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15254	llegada	parcial nativo=15252 audio=15232 leido=15250 procesado=15252 rms=0.0324 relevos=0
+15254	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the
+15254	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything the
+15268	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15281	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15298	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15314	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15330	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15348	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15360	llegada	parcial nativo=15358 audio=15332 leido=15352 procesado=15358 rms=0.0853 relevos=0
+15360	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the
+15360	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything the
+15365	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15382	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15397	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15413	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15434	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15449	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15462	llegada	parcial nativo=15460 audio=15432 leido=15449 procesado=15460 rms=0.0935 relevos=0
+15462	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the
+15463	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything the
+15465	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15480	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15496	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15514	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15533	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15545	llegada	parcial nativo=15543 audio=15512 leido=15529 procesado=15543 rms=0.0576 relevos=0
+15545	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the softly
+15545	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything the softly
+15546	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15564	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15580	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15596	cuadro	pos=32.14 calce=31 scroll=233 freno=- trabado=6
+15609	llegada	parcial nativo=15606 audio=15572 leido=15588 procesado=15605 rms=0.0270 relevos=0
+15609	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft
+15609	calce	token 33: now look at the text it moving on it's own at the base to speak with that did that change anything the soft
+15625	cuadro	pos=32.81 calce=33 scroll=233 freno=- trabado=6
+15631	cuadro	pos=32.83 calce=33 scroll=233 freno=- trabado=6
+15647	cuadro	pos=32.89 calce=33 scroll=233 freno=- trabado=6
+15665	cuadro	pos=32.95 calce=33 scroll=233 freno=- trabado=6
+15683	cuadro	pos=33.00 calce=33 scroll=233 freno=- trabado=6
+15697	cuadro	pos=33.04 calce=33 scroll=233 freno=- trabado=6
+15700	llegada	parcial nativo=15697 audio=15672 leido=15689 procesado=15697 rms=0.0432 relevos=0
+15700	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft
+15701	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything the soft
+15713	cuadro	pos=33.09 calce=33 scroll=233 freno=- trabado=6
+15730	cuadro	pos=33.14 calce=33 scroll=233 freno=- trabado=6
+15748	cuadro	pos=33.19 calce=33 scroll=233 freno=- trabado=6
+15762	cuadro	pos=33.23 calce=33 scroll=233 freno=- trabado=6
+15779	cuadro	pos=33.28 calce=33 scroll=233 freno=- trabado=6
+15792	llegada	parcial nativo=15790 audio=15772 leido=15788 procesado=15790 rms=0.0543 relevos=0
+15792	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft
+15792	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything the soft
+15797	cuadro	pos=33.33 calce=33 scroll=233 freno=- trabado=6
+15813	cuadro	pos=33.38 calce=33 scroll=233 freno=- trabado=6
+15831	cuadro	pos=33.43 calce=33 scroll=233 freno=- trabado=6
+15846	cuadro	pos=33.47 calce=33 scroll=233 freno=- trabado=6
+15864	cuadro	pos=33.53 calce=33 scroll=233 freno=- trabado=6
+15871	llegada	parcial nativo=15864 audio=15812 leido=15829 procesado=15863 rms=0.0473 relevos=0
+15871	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line
+15871	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line
+15878	cuadro	pos=33.57 calce=33 scroll=233 freno=- trabado=6
+15896	cuadro	pos=33.61 calce=33 scroll=233 freno=- trabado=6
+15912	cuadro	pos=33.66 calce=33 scroll=233 freno=- trabado=6
+15937	cuadro	pos=33.73 calce=33 scroll=233 freno=- trabado=6
+15942	llegada	parcial nativo=15937 audio=15912 leido=15929 procesado=15937 rms=0.0299 relevos=0
+15942	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line
+15942	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line
+15947	cuadro	pos=33.76 calce=33 scroll=233 freno=- trabado=6
+15963	cuadro	pos=33.80 calce=33 scroll=233 freno=- trabado=6
+15979	cuadro	pos=33.85 calce=33 scroll=233 freno=- trabado=6
+15996	cuadro	pos=33.90 calce=33 scroll=233 freno=- trabado=6
+16003	llegada	parcial nativo=15996 audio=15972 leido=15988 procesado=15996 rms=0.0081 relevos=0
+16003	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line on
+16004	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line on
+16013	cuadro	pos=33.94 calce=33 scroll=233 freno=- trabado=6
+16032	cuadro	pos=33.99 calce=33 scroll=233 freno=- trabado=6
+16047	cuadro	pos=34.02 calce=33 scroll=233 freno=- trabado=6
+16062	cuadro	pos=34.02 calce=33 scroll=233 freno=- trabado=6
+16079	cuadro	pos=34.02 calce=33 scroll=233 freno=- trabado=6
+16092	llegada	parcial nativo=16090 audio=16072 leido=16088 procesado=16090 rms=0.0359 relevos=0
+16092	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line on
+16092	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line on
+16096	cuadro	pos=34.02 calce=33 scroll=233 freno=- trabado=6
+16114	cuadro	pos=34.02 calce=33 scroll=233 freno=- trabado=6
+16129	cuadro	pos=34.02 calce=33 scroll=233 freno=- trabado=6
+16143	llegada	parcial nativo=16142 audio=16092 leido=16110 procesado=16141 rms=0.0149 relevos=0
+16143	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line
+16143	calce	token 34: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line
+16154	cuadro	pos=34.03 calce=34 scroll=243 freno=- trabado=7
+16162	cuadro	pos=34.04 calce=34 scroll=246 freno=- trabado=7
+16171	llegada	parcial nativo=16168 audio=16112 leido=16141 procesado=16168 rms=0.0090 relevos=0
+16171	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under
+16171	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under
+16178	cuadro	pos=34.08 calce=34 scroll=250 freno=- trabado=7
+16196	cuadro	pos=34.12 calce=34 scroll=254 freno=- trabado=7
+16212	cuadro	pos=34.16 calce=34 scroll=257 freno=- trabado=7
+16231	cuadro	pos=34.20 calce=34 scroll=259 freno=- trabado=7
+16240	llegada	parcial nativo=16239 audio=16212 leido=16231 procesado=16239 rms=0.0749 relevos=0
+16240	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under
+16240	calce	NO CALZO: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under
+16246	cuadro	pos=34.24 calce=34 scroll=261 freno=- trabado=7
+16259	llegada	parcial nativo=16257 audio=16232 leido=16247 procesado=16257 rms=0.0569 relevos=0
+16259	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the
+16260	calce	token 36: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the
+16278	cuadro	pos=34.49 calce=36 scroll=263 freno=- trabado=7
+16281	cuadro	pos=34.50 calce=36 scroll=263 freno=- trabado=7
+16295	cuadro	pos=34.55 calce=36 scroll=264 freno=- trabado=7
+16313	cuadro	pos=34.62 calce=36 scroll=265 freno=- trabado=7
+16330	cuadro	pos=34.69 calce=36 scroll=265 freno=- trabado=7
+16345	cuadro	pos=34.76 calce=36 scroll=265 freno=- trabado=7
+16358	llegada	parcial nativo=16356 audio=16332 leido=16348 procesado=16356 rms=0.0907 relevos=0
+16358	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the
+16359	calce	token 36: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the
+16374	cuadro	pos=35.48 calce=36 scroll=266 freno=- trabado=7
+16378	cuadro	pos=35.50 calce=36 scroll=266 freno=- trabado=7
+16394	cuadro	pos=35.56 calce=36 scroll=266 freno=- trabado=7
+16412	cuadro	pos=35.62 calce=36 scroll=266 freno=- trabado=7
+16430	cuadro	pos=35.68 calce=36 scroll=267 freno=- trabado=7
+16445	cuadro	pos=35.73 calce=36 scroll=267 freno=- trabado=7
+16462	cuadro	pos=35.78 calce=36 scroll=267 freno=- trabado=7
+16478	cuadro	pos=35.83 calce=36 scroll=267 freno=- trabado=7
+16486	llegada	parcial nativo=16477 audio=16432 leido=16476 procesado=16477 rms=0.0785 relevos=0
+16486	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the
+16486	calce	token 36: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the
+16508	cuadro	pos=35.97 calce=36 scroll=267 freno=- trabado=7
+16513	cuadro	pos=35.99 calce=36 scroll=267 freno=- trabado=7
+16528	cuadro	pos=36.02 calce=36 scroll=267 freno=- trabado=7
+16544	cuadro	pos=36.06 calce=36 scroll=267 freno=- trabado=7
+16561	cuadro	pos=36.10 calce=36 scroll=267 freno=- trabado=7
+16578	cuadro	pos=36.14 calce=36 scroll=267 freno=- trabado=7
+16594	cuadro	pos=36.18 calce=36 scroll=267 freno=- trabado=7
+16602	llegada	parcial nativo=16601 audio=16532 leido=16594 procesado=16601 rms=0.0392 relevos=0
+16602	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the
+16602	calce	token 36: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the
+16613	cuadro	pos=36.20 calce=36 scroll=267 freno=- trabado=7
+16628	cuadro	pos=36.20 calce=36 scroll=267 freno=- trabado=7
+16644	cuadro	pos=36.20 calce=36 scroll=267 freno=- trabado=7
+16658	llegada	parcial nativo=16657 audio=16632 leido=16648 procesado=16657 rms=0.0040 relevos=0
+16658	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the
+16659	calce	token 36: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the
+16668	cuadro	pos=36.20 calce=36 scroll=267 freno=- trabado=7
+16678	cuadro	pos=36.20 calce=36 scroll=267 freno=- trabado=7
+16694	cuadro	pos=36.20 calce=36 scroll=267 freno=- trabado=7
+16712	cuadro	pos=36.20 calce=36 scroll=267 freno=- trabado=7
+16727	cuadro	pos=36.20 calce=36 scroll=267 freno=- trabado=7
+16744	cuadro	pos=36.20 calce=36 scroll=267 freno=- trabado=7
+16750	llegada	parcial nativo=16748 audio=16732 leido=16747 procesado=16748 rms=0.0103 relevos=0
+16750	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the
+16750	calce	token 36: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the
+16761	cuadro	pos=36.21 calce=36 scroll=267 freno=- trabado=7
+16778	cuadro	pos=36.21 calce=36 scroll=267 freno=- trabado=7
+16795	cuadro	pos=36.21 calce=36 scroll=267 freno=- trabado=7
+16813	cuadro	pos=36.21 calce=36 scroll=267 freno=- trabado=7
+16828	cuadro	pos=36.21 calce=36 scroll=267 freno=- trabado=7
+16838	llegada	parcial nativo=16836 audio=16812 leido=16829 procesado=16836 rms=0.0248 relevos=0
+16838	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the wars
+16838	calce	token 37: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the wars
+16851	cuadro	pos=36.70 calce=37 scroll=267 freno=- trabado=7
+16861	cuadro	pos=36.73 calce=37 scroll=267 freno=- trabado=7
+16878	cuadro	pos=36.78 calce=37 scroll=267 freno=- trabado=7
+16894	cuadro	pos=36.83 calce=37 scroll=267 freno=- trabado=7
+16911	cuadro	pos=36.87 calce=37 scroll=267 freno=- trabado=7
+16923	llegada	parcial nativo=16922 audio=16892 leido=16909 procesado=16922 rms=0.0660 relevos=0
+16923	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's
+16923	calce	token 37: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's
+16934	cuadro	pos=37.02 calce=37 scroll=267 freno=- trabado=7
+16945	cuadro	pos=37.05 calce=37 scroll=267 freno=- trabado=7
+16960	cuadro	pos=37.08 calce=37 scroll=267 freno=- trabado=7
+16977	cuadro	pos=37.12 calce=37 scroll=267 freno=- trabado=7
+16994	cuadro	pos=37.16 calce=37 scroll=267 freno=- trabado=7
+17012	cuadro	pos=37.20 calce=37 scroll=267 freno=- trabado=7
+17028	cuadro	pos=37.24 calce=37 scroll=267 freno=- trabado=7
+17044	cuadro	pos=37.27 calce=37 scroll=267 freno=- trabado=7
+17061	cuadro	pos=37.31 calce=37 scroll=267 freno=- trabado=7
+17068	llegada	parcial nativo=17060 audio=16992 leido=17008 procesado=17060 rms=0.0745 relevos=0
+17068	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's
+17068	calce	token 37: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's
+17078	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17093	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17111	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17114	llegada	parcial nativo=17109 audio=17092 leido=17107 procesado=17109 rms=0.0198 relevos=0
+17114	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's
+17114	calce	token 37: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's
+17127	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17143	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17161	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17178	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17194	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17211	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17227	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17235	llegada	parcial nativo=17233 audio=17192 leido=17210 procesado=17233 rms=0.0371 relevos=0
+17235	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's
+17235	calce	token 37: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's
+17247	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17260	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17277	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17294	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17311	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17327	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17334	llegada	parcial nativo=17326 audio=17292 leido=17308 procesado=17326 rms=0.0520 relevos=0
+17334	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's
+17334	calce	token 37: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's
+17347	cuadro	pos=37.33 calce=37 scroll=267 freno=- trabado=7
+17356	llegada	parcial nativo=17354 audio=17312 leido=17328 procesado=17354 rms=0.0270 relevos=0
+17356	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shows
+17356	calce	token 38: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shows
+17363	cuadro	pos=37.86 calce=38 scroll=267 freno=- trabado=7
+17377	cuadro	pos=37.91 calce=38 scroll=267 freno=- trabado=7
+17382	llegada	parcial nativo=17378 audio=17352 leido=17368 procesado=17378 rms=0.0539 relevos=0
+17382	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves
+17382	calce	token 38: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves
+17396	cuadro	pos=38.03 calce=38 scroll=267 freno=- trabado=7
+17411	cuadro	pos=38.07 calce=38 scroll=267 freno=- trabado=7
+17427	cuadro	pos=38.11 calce=38 scroll=267 freno=- trabado=7
+17451	cuadro	pos=38.17 calce=38 scroll=267 freno=- trabado=7
+17460	cuadro	pos=38.19 calce=38 scroll=267 freno=- trabado=7
+17471	llegada	parcial nativo=17469 audio=17452 leido=17468 procesado=17469 rms=0.0609 relevos=0
+17471	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves
+17472	calce	token 38: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves
+17482	cuadro	pos=38.22 calce=38 scroll=267 freno=- trabado=7
+17494	cuadro	pos=38.22 calce=38 scroll=267 freno=- trabado=7
+17511	cuadro	pos=38.22 calce=38 scroll=267 freno=- trabado=7
+17523	llegada	parcial nativo=17520 audio=17492 leido=17509 procesado=17520 rms=0.0371 relevos=0
+17523	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to
+17523	calce	token 39: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to
+17530	cuadro	pos=38.48 calce=39 scroll=275 freno=- trabado=8
+17543	cuadro	pos=38.53 calce=39 scroll=279 freno=- trabado=8
+17560	cuadro	pos=38.60 calce=39 scroll=284 freno=- trabado=8
+17576	cuadro	pos=38.65 calce=39 scroll=287 freno=- trabado=8
+17593	cuadro	pos=38.71 calce=39 scroll=290 freno=- trabado=8
+17612	cuadro	pos=38.78 calce=39 scroll=292 freno=- trabado=8
+17625	llegada	parcial nativo=17623 audio=17592 leido=17608 procesado=17623 rms=0.0356 relevos=0
+17625	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to
+17625	calce	token 39: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to
+17640	cuadro	pos=39.04 calce=39 scroll=295 freno=- trabado=8
+17644	cuadro	pos=39.05 calce=39 scroll=295 freno=- trabado=8
+17660	cuadro	pos=39.09 calce=39 scroll=296 freno=- trabado=8
+17677	cuadro	pos=39.14 calce=39 scroll=297 freno=- trabado=8
+17694	cuadro	pos=39.18 calce=39 scroll=298 freno=- trabado=8
+17710	cuadro	pos=39.23 calce=39 scroll=298 freno=- trabado=8
+17713	llegada	parcial nativo=17710 audio=17692 leido=17708 procesado=17710 rms=0.0595 relevos=0
+17713	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to
+17713	calce	token 39: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to
+17726	cuadro	pos=39.23 calce=39 scroll=298 freno=- trabado=8
+17743	cuadro	pos=39.23 calce=39 scroll=299 freno=- trabado=8
+17760	cuadro	pos=39.23 calce=39 scroll=299 freno=- trabado=8
+17776	cuadro	pos=39.23 calce=39 scroll=299 freno=- trabado=8
+17793	cuadro	pos=39.23 calce=39 scroll=299 freno=- trabado=8
+17809	cuadro	pos=39.25 calce=39 scroll=300 freno=- trabado=8
+17814	llegada	parcial nativo=17810 audio=17772 leido=17788 procesado=17810 rms=0.0576 relevos=0
+17814	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to worry
+17814	calce	token 40: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to worry
+17822	llegada	parcial nativo=17818 audio=17792 leido=17810 procesado=17818 rms=0.0489 relevos=0
+17822	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you
+17822	calce	token 41: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you
+17831	cuadro	pos=40.40 calce=41 scroll=300 freno=- trabado=8
+17842	cuadro	pos=40.45 calce=41 scroll=300 freno=- trabado=8
+17859	cuadro	pos=40.54 calce=41 scroll=300 freno=- trabado=8
+17875	cuadro	pos=40.61 calce=41 scroll=300 freno=- trabado=8
+17893	cuadro	pos=40.68 calce=41 scroll=300 freno=- trabado=8
+17909	cuadro	pos=40.75 calce=41 scroll=300 freno=- trabado=8
+17918	llegada	parcial nativo=17916 audio=17892 leido=17908 procesado=17916 rms=0.0572 relevos=0
+17918	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you
+17918	calce	token 41: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you
+17926	cuadro	pos=41.02 calce=41 scroll=300 freno=- trabado=8
+17942	cuadro	pos=41.07 calce=41 scroll=300 freno=- trabado=8
+17958	cuadro	pos=41.12 calce=41 scroll=300 freno=- trabado=8
+17975	cuadro	pos=41.17 calce=41 scroll=300 freno=- trabado=8
+17995	cuadro	pos=41.23 calce=41 scroll=300 freno=- trabado=8
+18010	llegada	parcial nativo=18006 audio=17972 leido=17988 procesado=18005 rms=0.0386 relevos=0
+18010	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18010	calce	token 42: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18011	cuadro	pos=41.28 calce=42 scroll=300 freno=- trabado=8
+18025	cuadro	pos=41.59 calce=42 scroll=300 freno=- trabado=8
+18042	cuadro	pos=41.67 calce=42 scroll=300 freno=- trabado=8
+18058	cuadro	pos=41.74 calce=42 scroll=300 freno=- trabado=8
+18075	cuadro	pos=41.81 calce=42 scroll=300 freno=- trabado=8
+18093	cuadro	pos=41.89 calce=42 scroll=300 freno=- trabado=8
+18098	llegada	parcial nativo=18094 audio=18072 leido=18088 procesado=18094 rms=0.0232 relevos=0
+18098	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18098	calce	token 42: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18108	cuadro	pos=42.03 calce=42 scroll=300 freno=- trabado=8
+18126	cuadro	pos=42.09 calce=42 scroll=300 freno=- trabado=8
+18142	cuadro	pos=42.14 calce=42 scroll=300 freno=- trabado=8
+18158	cuadro	pos=42.20 calce=42 scroll=300 freno=- trabado=8
+18175	cuadro	pos=42.25 calce=42 scroll=300 freno=- trabado=8
+18192	llegada	parcial nativo=18190 audio=18172 leido=18189 procesado=18190 rms=0.0046 relevos=0
+18192	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18192	calce	token 42: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18192	cuadro	pos=42.30 calce=42 scroll=300 freno=- trabado=8
+18209	cuadro	pos=42.30 calce=42 scroll=300 freno=- trabado=8
+18225	cuadro	pos=42.30 calce=42 scroll=300 freno=- trabado=8
+18242	cuadro	pos=42.30 calce=42 scroll=300 freno=- trabado=8
+18259	cuadro	pos=42.30 calce=42 scroll=300 freno=- trabado=8
+18275	cuadro	pos=42.30 calce=42 scroll=300 freno=- trabado=8
+18292	cuadro	pos=42.33 calce=42 scroll=311 freno=- trabado=9
+18309	cuadro	pos=42.38 calce=42 scroll=319 freno=- trabado=9
+18322	llegada	parcial nativo=18320 audio=18272 leido=18288 procesado=18320 rms=0.0013 relevos=0
+18323	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18323	calce	token 42: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18338	cuadro	pos=42.43 calce=42 scroll=330 freno=- trabado=9
+18341	cuadro	pos=42.43 calce=42 scroll=331 freno=- trabado=9
+18359	cuadro	pos=42.43 calce=42 scroll=335 freno=- trabado=9
+18375	cuadro	pos=42.43 calce=42 scroll=338 freno=- trabado=9
+18392	cuadro	pos=42.43 calce=42 scroll=341 freno=- trabado=9
+18398	llegada	parcial nativo=18394 audio=18372 leido=18388 procesado=18394 rms=0.0010 relevos=0
+18398	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18398	calce	token 42: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18412	cuadro	pos=42.43 calce=42 scroll=343 freno=- trabado=9
+18425	cuadro	pos=42.43 calce=42 scroll=344 freno=- trabado=9
+18442	cuadro	pos=42.43 calce=42 scroll=345 freno=- trabado=9
+18459	cuadro	pos=42.43 calce=42 scroll=346 freno=- trabado=9
+18476	cuadro	pos=42.43 calce=42 scroll=347 freno=- trabado=9
+18491	llegada	parcial nativo=18489 audio=18472 leido=18488 procesado=18489 rms=0.0018 relevos=0
+18492	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18492	calce	token 42: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18493	cuadro	pos=42.43 calce=42 scroll=348 freno=- trabado=9
+18509	cuadro	pos=42.43 calce=42 scroll=348 freno=- trabado=9
+18524	cuadro	pos=42.43 calce=42 scroll=349 freno=- trabado=9
+18541	cuadro	pos=42.43 calce=42 scroll=349 freno=- trabado=9
+18558	cuadro	pos=42.43 calce=42 scroll=349 freno=- trabado=9
+18575	cuadro	pos=42.43 calce=42 scroll=349 freno=- trabado=9
+18593	cuadro	pos=42.43 calce=42 scroll=349 freno=- trabado=9
+18597	llegada	parcial nativo=18595 audio=18572 leido=18588 procesado=18595 rms=0.0014 relevos=0
+18597	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18597	calce	token 42: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18607	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18625	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18641	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18658	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18676	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18693	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18705	llegada	parcial nativo=18703 audio=18672 leido=18689 procesado=18703 rms=0.0014 relevos=0
+18705	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18706	calce	token 42: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18721	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18724	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18741	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18758	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18777	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18793	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18796	llegada	parcial nativo=18792 audio=18772 leido=18790 procesado=18792 rms=0.0014 relevos=0
+18796	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18797	calce	token 42: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18810	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18825	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18841	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18860	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18874	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18895	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18897	llegada	parcial nativo=18894 audio=18872 leido=18888 procesado=18894 rms=0.0012 relevos=0
+18897	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18897	calce	token 42: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+18909	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18925	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18941	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18958	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18976	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+18990	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19005	llegada	parcial nativo=19002 audio=18972 leido=18988 procesado=19002 rms=0.0009 relevos=0
+19005	oyo	parcial: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+19005	calce	token 42: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+19021	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19023	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19042	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19057	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19074	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19081	llegada	FINAL nativo=19079 audio=19052 leido=19069 procesado=19079 rms=0.0011 relevos=0
+19081	palabras	FINAL: now@7072-7522 look@7612-7882 at@7912-8032 the@8032-8122 text@8122-8662 it@8872-9142 moving@9172-9652 on@9682-9952 it's@9952-10162 own@10222-10672 at@11122-11362 the@11362-11482 base@11482-11872 to@11872-11992 speak@11992-12532 with@12652-12892 that@12892-13042 did@13042-13222 that@13222-13432 change@13432-13702 anything@13732-14332 the@14782-14932 soft@14932-15260 line@15260-15622 under@15652-15922 the@15982-16102 war's@16102-16582 shelves@16642-17092 to@17092-17272 where@17272-17542 you@17542-17782 are@17782-18142
+19081	oyo	FINAL: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+19082	calce	token 42: now look at the text it moving on it's own at the base to speak with that did that change anything the soft line under the war's shelves to where you are
+19090	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19094	llegada	parcial nativo=19090 audio=19072 leido=19088 procesado=19090 rms=0.0009 relevos=0
+19107	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19124	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19140	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19157	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19174	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19192	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19200	llegada	parcial nativo=19197 audio=19172 leido=19188 procesado=19197 rms=0.0007 relevos=0
+19209	cuadro	pos=42.43 calce=42 scroll=350 freno=- trabado=9
+19224	cuadro	pos=42.44 calce=42 scroll=350 freno=- trabado=9
+19242	cuadro	pos=42.50 calce=42 scroll=350 freno=- trabado=9
+19257	cuadro	pos=42.54 calce=42 scroll=350 freno=- trabado=9
+19276	cuadro	pos=42.60 calce=42 scroll=350 freno=- trabado=9
+19290	cuadro	pos=42.65 calce=42 scroll=350 freno=- trabado=9
+19298	llegada	parcial nativo=19296 audio=19272 leido=19290 procesado=19296 rms=0.0011 relevos=0
+19308	cuadro	pos=42.70 calce=42 scroll=350 freno=- trabado=9
+19324	cuadro	pos=42.75 calce=42 scroll=350 freno=- trabado=9
+19341	cuadro	pos=42.80 calce=42 scroll=350 freno=- trabado=9
+19357	cuadro	pos=42.86 calce=42 scroll=350 freno=- trabado=9
+19376	cuadro	pos=42.91 calce=42 scroll=350 freno=- trabado=9
+19391	cuadro	pos=42.96 calce=42 scroll=350 freno=- trabado=9
+19394	llegada	parcial nativo=19391 audio=19372 leido=19390 procesado=19391 rms=0.0016 relevos=0
+19409	cuadro	pos=43.02 calce=42 scroll=350 freno=- trabado=9
+19423	cuadro	pos=43.06 calce=42 scroll=350 freno=- trabado=9
+19440	cuadro	pos=43.11 calce=42 scroll=350 freno=- trabado=9
+19456	cuadro	pos=43.16 calce=42 scroll=350 freno=- trabado=9
+19476	cuadro	pos=43.22 calce=42 scroll=350 freno=- trabado=9
+19490	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19499	llegada	parcial nativo=19497 audio=19472 leido=19488 procesado=19497 rms=0.0017 relevos=0
+19506	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19523	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19540	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19556	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19573	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19590	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19603	llegada	parcial nativo=19601 audio=19572 leido=19588 procesado=19601 rms=0.0064 relevos=0
+19606	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19622	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19641	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19657	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19674	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19689	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19695	llegada	parcial nativo=19688 audio=19672 leido=19687 procesado=19688 rms=0.0256 relevos=0
+19706	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19724	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19740	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19755	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19774	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19791	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19805	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19820	llegada	parcial nativo=19818 audio=19772 leido=19789 procesado=19818 rms=0.0105 relevos=0
+19823	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19839	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19856	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19873	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19891	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19905	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19910	llegada	parcial nativo=19908 audio=19872 leido=19890 procesado=19908 rms=0.0506 relevos=0
+19922	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19939	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19941	llegada	parcial nativo=19938 audio=19892 leido=19908 procesado=19938 rms=0.0218 relevos=0
+19941	oyo	parcial: if
+19942	calce	NO CALZO: if
+19956	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19973	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+19988	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+20007	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+20022	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+20027	llegada	parcial nativo=20024 audio=19992 leido=20008 procesado=20024 rms=0.0130 relevos=0
+20027	oyo	parcial: if
+20027	calce	NO CALZO: if
+20039	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+20056	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+20073	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+20089	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+20101	llegada	parcial nativo=20099 audio=20052 leido=20069 procesado=20099 rms=0.2123 relevos=0
+20101	oyo	parcial: if you're
+20102	calce	NO CALZO: if you're
+20105	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+20123	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+20139	cuadro	pos=43.24 calce=42 scroll=350 freno=- trabado=9
+20145	llegada	parcial nativo=20143 audio=20072 leido=20100 procesado=20143 rms=0.0322 relevos=0
+20145	oyo	parcial: if you
+20145	calce	token 44: if you
+20158	cuadro	pos=44.03 calce=44 scroll=350 freno=- trabado=9
+20173	cuadro	pos=44.08 calce=44 scroll=350 freno=- trabado=9
+20189	cuadro	pos=44.12 calce=44 scroll=350 freno=- trabado=9
+20206	cuadro	pos=44.17 calce=44 scroll=350 freno=- trabado=9
+20216	llegada	parcial nativo=20214 audio=20132 leido=20170 procesado=20214 rms=0.0179 relevos=0
+20216	oyo	parcial: could just
+20216	calce	NO CALZO: could just
+20222	cuadro	pos=44.22 calce=44 scroll=350 freno=- trabado=9
+20240	cuadro	pos=44.27 calce=44 scroll=350 freno=- trabado=9
+20261	cuadro	pos=44.33 calce=44 scroll=350 freno=- trabado=9
+20282	llegada	parcial nativo=20267 audio=20172 leido=20218 procesado=20267 rms=0.0068 relevos=0
+20282	oyo	parcial: if you
+20282	calce	token 44: if you
+20283	cuadro	pos=44.39 calce=44 scroll=350 freno=- trabado=9
+20314	cuadro	pos=44.39 calce=44 scroll=350 freno=- trabado=9
+20316	llegada	parcial nativo=20309 audio=20272 leido=20308 procesado=20309 rms=0.0807 relevos=0
+20316	oyo	parcial: if you
+20317	calce	token 44: if you
+20343	cuadro	pos=44.39 calce=44 scroll=350 freno=- trabado=9
+20349	llegada	parcial nativo=20333 audio=20292 leido=20310 procesado=20333 rms=0.0144 relevos=0
+20349	oyo	parcial: if you stop
+20350	calce	token 45: if you stop
+20374	cuadro	pos=45.01 calce=45 scroll=350 freno=- trabado=9
+20385	cuadro	pos=45.05 calce=45 scroll=350 freno=- trabado=9
+20392	cuadro	pos=45.08 calce=45 scroll=350 freno=- trabado=9
+20416	llegada	parcial nativo=20410 audio=20392 leido=20408 procesado=20409 rms=0.0774 relevos=0
+20416	oyo	parcial: if you stop
+20416	calce	token 45: if you stop
+20416	cuadro	pos=45.15 calce=45 scroll=350 freno=- trabado=9
+20425	cuadro	pos=45.15 calce=45 scroll=350 freno=- trabado=9
+20437	cuadro	pos=45.15 calce=45 scroll=350 freno=- trabado=9
+20456	cuadro	pos=45.15 calce=45 scroll=350 freno=- trabado=9
+20462	llegada	parcial nativo=20457 audio=20432 leido=20448 procesado=20457 rms=0.0702 relevos=0
+20462	oyo	parcial: if you stop the
+20462	calce	token 46: if you stop the
+20471	cuadro	pos=45.18 calce=46 scroll=350 freno=- trabado=9
+20488	cuadro	pos=45.23 calce=46 scroll=350 freno=- trabado=9
+20504	cuadro	pos=45.29 calce=46 scroll=350 freno=- trabado=9
+20521	cuadro	pos=45.35 calce=46 scroll=350 freno=- trabado=9
+20538	cuadro	pos=45.42 calce=46 scroll=350 freno=- trabado=9
+20554	cuadro	pos=45.49 calce=46 scroll=350 freno=- trabado=9
+20557	llegada	parcial nativo=20555 audio=20532 leido=20548 procesado=20555 rms=0.0583 relevos=0
+20557	oyo	parcial: if you stop the
+20558	calce	token 46: if you stop the
+20571	cuadro	pos=45.88 calce=46 scroll=350 freno=- trabado=9
+20588	cuadro	pos=45.93 calce=46 scroll=350 freno=- trabado=9
+20605	cuadro	pos=45.98 calce=46 scroll=350 freno=- trabado=9
+20620	cuadro	pos=46.03 calce=46 scroll=350 freno=- trabado=9
+20638	cuadro	pos=46.08 calce=46 scroll=350 freno=- trabado=9
+20651	llegada	parcial nativo=20650 audio=20632 leido=20649 procesado=20650 rms=0.0289 relevos=0
+20651	oyo	parcial: if you stop the
+20652	calce	token 46: if you stop the
+20664	cuadro	pos=46.12 calce=46 scroll=350 freno=- trabado=9
+20672	cuadro	pos=46.12 calce=46 scroll=350 freno=- trabado=9
+20693	cuadro	pos=46.12 calce=46 scroll=350 freno=- trabado=9
+20704	cuadro	pos=46.14 calce=46 scroll=350 freno=- trabado=9
+20720	cuadro	pos=46.18 calce=46 scroll=350 freno=- trabado=9
+20737	cuadro	pos=46.22 calce=46 scroll=350 freno=- trabado=9
+20754	cuadro	pos=46.27 calce=46 scroll=350 freno=- trabado=9
+20762	llegada	parcial nativo=20754 audio=20732 leido=20749 procesado=20754 rms=0.0046 relevos=0
+20762	oyo	parcial: if you stop the
+20762	calce	token 46: if you stop the
+20774	cuadro	pos=46.29 calce=46 scroll=350 freno=- trabado=9
+20789	cuadro	pos=46.29 calce=46 scroll=350 freno=- trabado=9
+20801	llegada	parcial nativo=20799 audio=20772 leido=20788 procesado=20799 rms=0.0014 relevos=0
+20801	oyo	parcial: if you stop the thing
+20801	calce	token 47: if you stop the thing
+20824	cuadro	pos=46.72 calce=47 scroll=350 freno=- trabado=9
+20843	llegada	parcial nativo=20815 audio=20792 leido=20808 procesado=20815 rms=0.0007 relevos=0
+20843	oyo	parcial: if you stop the
+20844	calce	token 46: if you stop the
+20865	cuadro	pos=47.06 calce=47 scroll=350 freno=- trabado=9
+20870	cuadro	pos=47.07 calce=47 scroll=350 freno=- trabado=9
+20873	cuadro	pos=47.08 calce=47 scroll=350 freno=- trabado=9
+20888	cuadro	pos=47.11 calce=47 scroll=350 freno=- trabado=9
+20904	cuadro	pos=47.15 calce=47 scroll=350 freno=- trabado=9
+20921	cuadro	pos=47.19 calce=47 scroll=350 freno=- trabado=9
+20937	cuadro	pos=47.23 calce=47 scroll=350 freno=- trabado=9
+20946	llegada	parcial nativo=20944 audio=20892 leido=20908 procesado=20944 rms=0.0013 relevos=0
+20946	oyo	parcial: if you stop the
+20946	calce	token 46: if you stop the
+20955	llegada	parcial nativo=20952 audio=20912 leido=20946 procesado=20952 rms=0.0099 relevos=0
+20955	oyo	parcial: if you stop the think
+20955	calce	token 47: if you stop the think
+20955	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+20971	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+20987	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21004	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21020	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21037	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21050	llegada	parcial nativo=21048 audio=21012 leido=21028 procesado=21048 rms=0.0525 relevos=0
+21050	oyo	parcial: if you stop the think
+21050	calce	token 47: if you stop the think
+21062	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21071	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21088	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21104	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21120	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21131	llegada	parcial nativo=21129 audio=21112 leido=21128 procesado=21129 rms=0.0719 relevos=0
+21131	oyo	parcial: if you stop the think
+21132	calce	token 47: if you stop the think
+21145	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21153	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21171	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21188	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21204	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21220	cuadro	pos=47.26 calce=47 scroll=350 freno=- trabado=9
+21235	llegada	parcial nativo=21233 audio=21192 leido=21211 procesado=21233 rms=0.0184 relevos=0
+21235	oyo	parcial: if you stop the think that
+21235	calce	token 48: if you stop the think that
+21256	cuadro	pos=47.42 calce=48 scroll=350 freno=- trabado=9
+21264	cuadro	pos=47.44 calce=48 scroll=350 freno=- trabado=9
+21271	cuadro	pos=47.47 calce=48 scroll=350 freno=- trabado=9
+21287	cuadro	pos=47.53 calce=48 scroll=350 freno=- trabado=9
+21304	cuadro	pos=47.59 calce=48 scroll=350 freno=- trabado=9
+21316	llegada	parcial nativo=21313 audio=21292 leido=21311 procesado=21313 rms=0.0184 relevos=0
+21316	oyo	parcial: if you stop the think that
+21316	calce	token 48: if you stop the think that
+21344	cuadro	pos=48.07 calce=48 scroll=350 freno=- trabado=9
+21353	cuadro	pos=48.10 calce=48 scroll=350 freno=- trabado=9
+21360	cuadro	pos=48.11 calce=48 scroll=350 freno=- trabado=9
+21371	cuadro	pos=48.14 calce=48 scroll=350 freno=- trabado=9
+21387	cuadro	pos=48.18 calce=48 scroll=350 freno=- trabado=9
+21402	cuadro	pos=48.22 calce=48 scroll=350 freno=- trabado=9
+21413	llegada	parcial nativo=21410 audio=21372 leido=21387 procesado=21409 rms=0.0552 relevos=0
+21413	oyo	parcial: if you stop the think that they
+21413	calce	token 49: if you stop the think that they
+21420	cuadro	pos=49.02 calce=49 scroll=350 freno=- trabado=9
+21437	cuadro	pos=49.07 calce=49 scroll=350 freno=- trabado=9
+21453	cuadro	pos=49.11 calce=49 scroll=350 freno=- trabado=9
+21467	llegada	parcial nativo=21465 audio=21432 leido=21448 procesado=21465 rms=0.0642 relevos=0
+21467	oyo	parcial: if you stop the think that the
+21467	calce	token 49: if you stop the think that the
+21476	cuadro	pos=49.15 calce=49 scroll=350 freno=- trabado=9
+21486	cuadro	pos=49.15 calce=49 scroll=350 freno=- trabado=9
+21503	cuadro	pos=49.15 calce=49 scroll=350 freno=- trabado=9
+21520	cuadro	pos=49.15 calce=49 scroll=350 freno=- trabado=9
+21537	cuadro	pos=49.19 calce=49 scroll=350 freno=- trabado=9
+21554	cuadro	pos=49.24 calce=49 scroll=350 freno=- trabado=9
+21570	cuadro	pos=49.28 calce=49 scroll=350 freno=- trabado=9
+21574	llegada	parcial nativo=21571 audio=21492 leido=21508 procesado=21571 rms=0.0675 relevos=0
+21574	oyo	parcial: if you stop the think that
+21575	calce	token 48: if you stop the think that
+21597	cuadro	pos=49.29 calce=49 scroll=350 freno=- trabado=9
+21604	cuadro	pos=49.29 calce=49 scroll=350 freno=- trabado=9
+21613	llegada	parcial nativo=21611 audio=21512 leido=21572 procesado=21611 rms=0.0051 relevos=0
+21613	oyo	parcial: if you stop the think that the
+21614	calce	token 49: if you stop the think that the
+21625	cuadro	pos=49.29 calce=49 scroll=350 freno=- trabado=9
+21635	cuadro	pos=49.29 calce=49 scroll=350 freno=- trabado=9
+21653	cuadro	pos=49.29 calce=49 scroll=350 freno=- trabado=9
+21656	llegada	parcial nativo=21651 audio=21572 leido=21628 procesado=21651 rms=0.0180 relevos=0
+21656	oyo	parcial: if you stop the think that the exquisite
+21658	calce	token 50: if you stop the think that the exquisite
+21670	cuadro	pos=50.04 calce=50 scroll=357 freno=- trabado=10
+21680	llegada	parcial nativo=21679 audio=21632 leido=21669 procesado=21679 rms=0.0051 relevos=0
+21680	oyo	parcial: if you stop the think that
+21680	calce	token 48: if you stop the think that
+21688	cuadro	pos=50.07 calce=50 scroll=363 freno=- trabado=10
+21703	cuadro	pos=50.07 calce=50 scroll=367 freno=- trabado=10
+21710	llegada	parcial nativo=21700 audio=21672 leido=21687 procesado=21700 rms=0.0264 relevos=0
+21710	oyo	parcial: if you stop the think that takes away
+21712	calce	token 50: if you stop the think that takes away
+21720	cuadro	pos=50.08 calce=50 scroll=370 freno=- trabado=10
+21731	llegada	parcial nativo=21728 audio=21692 leido=21709 procesado=21728 rms=0.0702 relevos=0
+21731	oyo	parcial: if you stop the think that
+21731	calce	token 48: if you stop the think that
+21739	cuadro	pos=50.08 calce=50 scroll=373 freno=- trabado=10
+21753	cuadro	pos=50.08 calce=50 scroll=375 freno=- trabado=10
+21769	cuadro	pos=50.11 calce=50 scroll=377 freno=- trabado=10
+21786	cuadro	pos=50.16 calce=50 scroll=378 freno=- trabado=10
+21796	llegada	parcial nativo=21794 audio=21752 leido=21778 procesado=21794 rms=0.0722 relevos=0
+21796	oyo	parcial: if you stop the think that takes weight
+21796	calce	token 50: if you stop the think that takes weight
+21803	cuadro	pos=50.18 calce=50 scroll=379 freno=- trabado=10
+21819	cuadro	pos=50.18 calce=50 scroll=380 freno=- trabado=10
+21829	llegada	parcial nativo=21827 audio=21792 leido=21809 procesado=21827 rms=0.0437 relevos=0
+21829	oyo	parcial: if you stop the think that exploit
+21829	calce	token 49: if you stop the think that exploit
+21844	cuadro	pos=50.18 calce=50 scroll=381 freno=- trabado=10
+21847	llegada	parcial nativo=21845 audio=21812 leido=21830 procesado=21845 rms=0.0298 relevos=0
+21847	oyo	parcial: if you stop the think that decks wait
+21847	calce	token 50: if you stop the think that decks wait
+21855	cuadro	pos=50.18 calce=50 scroll=381 freno=- trabado=10
+21869	cuadro	pos=50.18 calce=50 scroll=382 freno=- trabado=10
+21885	cuadro	pos=50.18 calce=50 scroll=382 freno=- trabado=10
+21897	llegada	parcial nativo=21895 audio=21872 leido=21888 procesado=21895 rms=0.0434 relevos=0
+21897	oyo	parcial: if you stop the think that decks wait for
+21898	calce	token 51: if you stop the think that decks wait for
+21905	cuadro	pos=51.02 calce=51 scroll=382 freno=- trabado=10
+21919	cuadro	pos=51.06 calce=51 scroll=382 freno=- trabado=10
+21936	cuadro	pos=51.11 calce=51 scroll=382 freno=- trabado=10
+21953	cuadro	pos=51.16 calce=51 scroll=383 freno=- trabado=10
+21969	cuadro	pos=51.21 calce=51 scroll=383 freno=- trabado=10
+21985	cuadro	pos=51.26 calce=51 scroll=383 freno=- trabado=10
+22002	cuadro	pos=51.31 calce=51 scroll=383 freno=- trabado=10
+22010	llegada	parcial nativo=22005 audio=21972 leido=21999 procesado=22005 rms=0.0606 relevos=0
+22010	oyo	parcial: if you stop the think that decks wait for
+22010	calce	token 51: if you stop the think that decks wait for
+22018	cuadro	pos=51.33 calce=51 scroll=383 freno=- trabado=10
+22035	cuadro	pos=51.33 calce=51 scroll=383 freno=- trabado=10
+22054	cuadro	pos=51.33 calce=51 scroll=383 freno=- trabado=10
+22069	cuadro	pos=51.33 calce=51 scroll=383 freno=- trabado=10
+22085	cuadro	pos=51.33 calce=51 scroll=383 freno=- trabado=10
+22094	llegada	parcial nativo=22092 audio=22072 leido=22090 procesado=22092 rms=0.0176 relevos=0
+22094	oyo	parcial: if you stop the think that decks wait for
+22094	calce	token 51: if you stop the think that decks wait for
+22101	cuadro	pos=51.33 calce=51 scroll=383 freno=- trabado=10
+22118	cuadro	pos=51.33 calce=51 scroll=383 freno=- trabado=10
+22124	llegada	parcial nativo=22122 audio=22092 leido=22108 procesado=22122 rms=0.0017 relevos=0
+22124	oyo	parcial: if you stop the think that decks wait for you
+22124	calce	token 52: if you stop the think that decks wait for you
+22135	cuadro	pos=52.03 calce=52 scroll=383 freno=- trabado=10
+22152	cuadro	pos=52.09 calce=52 scroll=383 freno=- trabado=10
+22168	cuadro	pos=52.14 calce=52 scroll=383 freno=- trabado=10
+22187	cuadro	pos=52.21 calce=52 scroll=383 freno=- trabado=10
+22202	cuadro	pos=52.25 calce=52 scroll=383 freno=- trabado=10
+22219	cuadro	pos=52.31 calce=52 scroll=383 freno=- trabado=10
+22228	llegada	parcial nativo=22226 audio=22192 leido=22223 procesado=22226 rms=0.0015 relevos=0
+22228	oyo	parcial: if you stop the think that decks wait for you
+22228	calce	token 52: if you stop the think that decks wait for you
+22236	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22253	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22268	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22286	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22301	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22318	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22328	llegada	parcial nativo=22326 audio=22292 leido=22308 procesado=22326 rms=0.0017 relevos=0
+22328	oyo	parcial: if you stop the think that decks wait for you
+22328	calce	token 52: if you stop the think that decks wait for you
+22341	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22352	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22368	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22384	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22402	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22417	llegada	parcial nativo=22415 audio=22392 leido=22408 procesado=22415 rms=0.0014 relevos=0
+22417	oyo	parcial: if you stop the think that decks wait for you
+22418	calce	token 52: if you stop the think that decks wait for you
+22418	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22435	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22452	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22468	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22486	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22502	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22512	llegada	parcial nativo=22510 audio=22492 leido=22508 procesado=22510 rms=0.0013 relevos=0
+22512	oyo	parcial: if you stop the think that decks wait for you
+22513	calce	token 52: if you stop the think that decks wait for you
+22528	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22535	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22553	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22569	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22586	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22601	cuadro	pos=52.34 calce=52 scroll=383 freno=- trabado=10
+22618	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22620	llegada	parcial nativo=22618 audio=22592 leido=22610 procesado=22618 rms=0.0026 relevos=0
+22620	oyo	parcial: if you stop the think that decks wait for you
+22620	calce	token 52: if you stop the think that decks wait for you
+22638	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22654	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22670	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22684	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22702	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22718	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22723	llegada	parcial nativo=22721 audio=22692 leido=22711 procesado=22721 rms=0.0654 relevos=0
+22723	oyo	parcial: if you stop the think that decks wait for you
+22724	calce	token 52: if you stop the think that decks wait for you
+22738	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22752	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22769	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22784	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22801	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22814	llegada	parcial nativo=22810 audio=22792 leido=22809 procesado=22810 rms=0.0285 relevos=0
+22814	oyo	parcial: if you stop the think that decks wait for you
+22814	calce	token 52: if you stop the think that decks wait for you
+22827	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22835	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22851	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22869	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22885	cuadro	pos=52.35 calce=52 scroll=383 freno=- trabado=10
+22898	llegada	parcial nativo=22897 audio=22872 leido=22889 procesado=22896 rms=0.0210 relevos=0
+22898	oyo	parcial: if you stop the think that decks wait for you when
+22898	calce	token 53: if you stop the think that decks wait for you when
+22910	cuadro	pos=53.04 calce=53 scroll=383 freno=- trabado=10
+22917	cuadro	pos=53.06 calce=53 scroll=383 freno=- trabado=10
+22935	cuadro	pos=53.12 calce=53 scroll=383 freno=- trabado=10
+22951	cuadro	pos=53.17 calce=53 scroll=383 freno=- trabado=10
+22967	cuadro	pos=53.23 calce=53 scroll=383 freno=- trabado=10
+22984	cuadro	pos=53.28 calce=53 scroll=383 freno=- trabado=10
+22997	llegada	parcial nativo=22995 audio=22972 leido=22995 procesado=22995 rms=0.0066 relevos=0
+22997	oyo	parcial: if you stop the think that decks wait for you when
+22998	calce	token 53: if you stop the think that decks wait for you when
+23011	cuadro	pos=53.33 calce=53 scroll=383 freno=- trabado=10
+23015	llegada	parcial nativo=23014 audio=22992 leido=23008 procesado=23014 rms=0.0127 relevos=0
+23015	oyo	parcial: if you stop the think that decks wait for you when you
+23016	calce	token 54: if you stop the think that decks wait for you when you
+23023	cuadro	pos=53.63 calce=54 scroll=383 freno=- trabado=10
+23033	cuadro	pos=53.68 calce=54 scroll=383 freno=- trabado=10
+23051	cuadro	pos=53.75 calce=54 scroll=383 freno=- trabado=10
+23067	cuadro	pos=53.82 calce=54 scroll=383 freno=- trabado=10
+23083	cuadro	pos=53.89 calce=54 scroll=383 freno=- trabado=10
+23099	cuadro	pos=53.96 calce=54 scroll=383 freno=- trabado=10
+23109	llegada	parcial nativo=23108 audio=23092 leido=23107 procesado=23108 rms=0.0863 relevos=0
+23110	oyo	parcial: if you stop the think that decks wait for you when you
+23110	calce	token 54: if you stop the think that decks wait for you when you
+23117	cuadro	pos=54.02 calce=54 scroll=383 freno=- trabado=10
+23133	cuadro	pos=54.08 calce=54 scroll=383 freno=- trabado=10
+23153	cuadro	pos=54.15 calce=54 scroll=383 freno=- trabado=10
+23166	cuadro	pos=54.19 calce=54 scroll=383 freno=- trabado=10
+23184	cuadro	pos=54.25 calce=54 scroll=383 freno=- trabado=10
+23200	cuadro	pos=54.30 calce=54 scroll=383 freno=- trabado=10
+23217	cuadro	pos=54.36 calce=54 scroll=383 freno=- trabado=10
+23225	llegada	parcial nativo=23216 audio=23192 leido=23209 procesado=23216 rms=0.0834 relevos=0
+23225	oyo	parcial: if you stop the think that decks wait for you when you
+23225	calce	token 54: if you stop the think that decks wait for you when you
+23235	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23253	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23266	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23282	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23300	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23316	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23332	llegada	parcial nativo=23330 audio=23292 leido=23308 procesado=23330 rms=0.0184 relevos=0
+23332	oyo	parcial: if you stop the think that decks wait for you when you
+23333	calce	token 54: if you stop the think that decks wait for you when you
+23333	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23349	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23367	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23383	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23399	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23416	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23424	llegada	parcial nativo=23421 audio=23392 leido=23420 procesado=23421 rms=0.0602 relevos=0
+23424	oyo	parcial: if you stop the think that decks wait for you when you
+23425	calce	token 54: if you stop the think that decks wait for you when you
+23438	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23451	cuadro	pos=54.38 calce=54 scroll=383 freno=- trabado=10
+23457	llegada	parcial nativo=23455 audio=23432 leido=23448 procesado=23454 rms=0.1090 relevos=0
+23457	oyo	parcial: if you stop the think that decks wait for you when you start
+23458	calce	token 55: if you stop the think that decks wait for you when you start
+23467	cuadro	pos=55.03 calce=55 scroll=383 freno=- trabado=10
+23483	cuadro	pos=55.08 calce=55 scroll=383 freno=- trabado=10
+23499	cuadro	pos=55.13 calce=55 scroll=383 freno=- trabado=10
+23516	cuadro	pos=55.19 calce=55 scroll=383 freno=- trabado=10
+23533	cuadro	pos=55.25 calce=55 scroll=383 freno=- trabado=10
+23550	cuadro	pos=55.30 calce=55 scroll=383 freno=- trabado=10
+23558	llegada	parcial nativo=23556 audio=23532 leido=23548 procesado=23556 rms=0.0872 relevos=0
+23558	oyo	parcial: if you stop the think that decks wait for you when you start
+23559	calce	token 55: if you stop the think that decks wait for you when you start
+23567	cuadro	pos=55.33 calce=55 scroll=383 freno=- trabado=10
+23583	cuadro	pos=55.33 calce=55 scroll=383 freno=- trabado=10
+23599	cuadro	pos=55.33 calce=55 scroll=383 freno=- trabado=10
+23616	cuadro	pos=55.33 calce=55 scroll=383 freno=- trabado=10
+23632	cuadro	pos=55.33 calce=55 scroll=383 freno=- trabado=10
+23643	llegada	parcial nativo=23642 audio=23612 leido=23636 procesado=23642 rms=0.0418 relevos=0
+23643	oyo	parcial: if you stop the think that decks wait for you when you start talking
+23643	calce	token 56: if you stop the think that decks wait for you when you start talking
+23651	cuadro	pos=56.03 calce=56 scroll=391 freno=- trabado=11
+23666	cuadro	pos=56.07 calce=56 scroll=396 freno=- trabado=11
+23684	cuadro	pos=56.13 calce=56 scroll=401 freno=- trabado=11
+23699	cuadro	pos=56.18 calce=56 scroll=404 freno=- trabado=11
+23716	cuadro	pos=56.24 calce=56 scroll=407 freno=- trabado=11
+23733	cuadro	pos=56.29 calce=56 scroll=409 freno=- trabado=11
+23737	llegada	parcial nativo=23733 audio=23712 leido=23727 procesado=23733 rms=0.0410 relevos=0
+23737	oyo	parcial: if you stop the think that decks wait for you when you start talking
+23738	calce	token 56: if you stop the think that decks wait for you when you start talking
+23749	cuadro	pos=56.30 calce=56 scroll=411 freno=- trabado=11
+23765	cuadro	pos=56.30 calce=56 scroll=412 freno=- trabado=11
+23782	cuadro	pos=56.30 calce=56 scroll=413 freno=- trabado=11
+23798	cuadro	pos=56.30 calce=56 scroll=414 freno=- trabado=11
+23816	cuadro	pos=56.30 calce=56 scroll=415 freno=- trabado=11
+23832	llegada	parcial nativo=23829 audio=23812 leido=23828 procesado=23829 rms=0.0514 relevos=0
+23832	oyo	parcial: if you stop the think that decks wait for you when you start talking
+23832	calce	token 56: if you stop the think that decks wait for you when you start talking
+23833	cuadro	pos=56.30 calce=56 scroll=415 freno=- trabado=11
+23849	cuadro	pos=56.30 calce=56 scroll=415 freno=- trabado=11
+23865	cuadro	pos=56.30 calce=56 scroll=416 freno=- trabado=11
+23884	cuadro	pos=56.30 calce=56 scroll=416 freno=- trabado=11
+23899	cuadro	pos=56.30 calce=56 scroll=416 freno=- trabado=11
+23916	cuadro	pos=56.30 calce=56 scroll=416 freno=- trabado=11
+23933	cuadro	pos=56.33 calce=56 scroll=417 freno=- trabado=11
+23939	llegada	parcial nativo=23933 audio=23912 leido=23928 procesado=23933 rms=0.0626 relevos=0
+23939	oyo	parcial: if you stop the think that decks wait for you when you start talking
+23939	calce	token 56: if you stop the think that decks wait for you when you start talking
+23950	cuadro	pos=56.34 calce=56 scroll=417 freno=- trabado=11
+23966	cuadro	pos=56.34 calce=56 scroll=417 freno=- trabado=11
+23983	cuadro	pos=56.34 calce=56 scroll=417 freno=- trabado=11
+24010	llegada	parcial nativo=23997 audio=23972 leido=23988 procesado=23997 rms=0.0376 relevos=0
+24010	oyo	parcial: if you stop the think that decks wait for you when you start talking again
+24012	calce	token 57: if you stop the think that decks wait for you when you start talking again
+24012	cuadro	pos=56.35 calce=57 scroll=417 freno=- trabado=11
+24021	cuadro	pos=56.63 calce=57 scroll=417 freno=- trabado=11
+24032	cuadro	pos=56.68 calce=57 scroll=417 freno=- trabado=11
+24048	cuadro	pos=56.75 calce=57 scroll=417 freno=- trabado=11
+24065	cuadro	pos=56.82 calce=57 scroll=417 freno=- trabado=11
+24082	cuadro	pos=56.89 calce=57 scroll=417 freno=- trabado=11
+24099	cuadro	pos=56.95 calce=57 scroll=417 freno=- trabado=11
+24115	cuadro	pos=57.02 calce=57 scroll=417 freno=- trabado=11
+24132	cuadro	pos=57.09 calce=57 scroll=417 freno=- trabado=11
+24141	llegada	parcial nativo=24139 audio=24072 leido=24088 procesado=24139 rms=0.0333 relevos=0
+24141	oyo	parcial: if you stop the think that decks wait for you when you start talking again
+24142	calce	token 57: if you stop the think that decks wait for you when you start talking again
+24159	cuadro	pos=57.13 calce=57 scroll=417 freno=- trabado=11
+24177	cuadro	pos=57.13 calce=57 scroll=417 freno=- trabado=11
+24182	cuadro	pos=57.13 calce=57 scroll=417 freno=- trabado=11
+24194	llegada	parcial nativo=24191 audio=24172 leido=24190 procesado=24191 rms=0.0297 relevos=0
+24194	oyo	parcial: if you stop the think that decks wait for you when you start talking again
+24194	calce	token 57: if you stop the think that decks wait for you when you start talking again
+24203	cuadro	pos=57.17 calce=57 scroll=417 freno=- trabado=11
+24214	cuadro	pos=57.17 calce=57 scroll=417 freno=- trabado=11
+24232	cuadro	pos=57.17 calce=57 scroll=417 freno=- trabado=11
+24248	cuadro	pos=57.18 calce=57 scroll=417 freno=- trabado=11
+24264	cuadro	pos=57.23 calce=57 scroll=417 freno=- trabado=11
+24282	cuadro	pos=57.28 calce=57 scroll=417 freno=- trabado=11
+24298	llegada	parcial nativo=24295 audio=24272 leido=24287 procesado=24295 rms=0.0720 relevos=0
+24298	oyo	parcial: if you stop the think that decks wait for you when you start talking again
+24298	calce	token 57: if you stop the think that decks wait for you when you start talking again
+24299	cuadro	pos=57.33 calce=57 scroll=417 freno=- trabado=11
+24316	cuadro	pos=57.33 calce=57 scroll=417 freno=- trabado=11
+24332	cuadro	pos=57.33 calce=57 scroll=417 freno=- trabado=11
+24349	cuadro	pos=57.33 calce=57 scroll=417 freno=- trabado=11
+24365	cuadro	pos=57.33 calce=57 scroll=417 freno=- trabado=11
+24381	cuadro	pos=57.33 calce=57 scroll=417 freno=- trabado=11
+24395	llegada	parcial nativo=24393 audio=24372 leido=24387 procesado=24393 rms=0.0048 relevos=0
+24395	oyo	parcial: if you stop the think that decks wait for you when you start talking again
+24395	calce	token 57: if you stop the think that decks wait for you when you start talking again
+24402	cuadro	pos=57.33 calce=57 scroll=417 freno=- trabado=11
+24414	cuadro	pos=57.33 calce=57 scroll=417 freno=- trabado=11
+24432	cuadro	pos=57.33 calce=57 scroll=417 freno=- trabado=11
+24447	cuadro	pos=57.33 calce=57 scroll=417 freno=- trabado=11
+24464	cuadro	pos=57.33 calce=57 scroll=417 freno=- trabado=11
+24480	llegada	parcial nativo=24474 audio=24452 leido=24468 procesado=24474 rms=0.0796 relevos=0
+24480	oyo	parcial: if you stop the think that decks wait for you when you start talking again it
+24481	calce	token 58: if you stop the think that decks wait for you when you start talking again it
+24496	cuadro	pos=57.48 calce=58 scroll=417 freno=- trabado=11
+24498	cuadro	pos=57.49 calce=58 scroll=417 freno=- trabado=11
+24515	cuadro	pos=57.57 calce=58 scroll=417 freno=- trabado=11
+24533	cuadro	pos=57.64 calce=58 scroll=417 freno=- trabado=11
+24548	cuadro	pos=57.71 calce=58 scroll=417 freno=- trabado=11
+24564	cuadro	pos=57.78 calce=58 scroll=417 freno=- trabado=11
+24579	llegada	parcial nativo=24577 audio=24552 leido=24569 procesado=24577 rms=0.0458 relevos=0
+24579	oyo	parcial: if you stop the think that decks wait for you when you start talking again it
+24580	calce	token 58: if you stop the think that decks wait for you when you start talking again it
+24598	cuadro	pos=58.06 calce=58 scroll=417 freno=- trabado=11
+24600	cuadro	pos=58.07 calce=58 scroll=417 freno=- trabado=11
+24614	cuadro	pos=58.11 calce=58 scroll=417 freno=- trabado=11
+24632	cuadro	pos=58.16 calce=58 scroll=417 freno=- trabado=11
+24647	cuadro	pos=58.21 calce=58 scroll=417 freno=- trabado=11
+24664	cuadro	pos=58.27 calce=58 scroll=417 freno=- trabado=11
+24672	llegada	parcial nativo=24670 audio=24652 leido=24668 procesado=24670 rms=0.0166 relevos=0
+24672	oyo	parcial: if you stop the think that decks wait for you when you start talking again it
+24673	calce	token 58: if you stop the think that decks wait for you when you start talking again it
+24682	cuadro	pos=58.29 calce=58 scroll=417 freno=- trabado=11
+24697	cuadro	pos=58.29 calce=58 scroll=417 freno=- trabado=11
+24714	cuadro	pos=58.29 calce=58 scroll=417 freno=- trabado=11
+24730	cuadro	pos=58.29 calce=58 scroll=417 freno=- trabado=11
+24749	cuadro	pos=58.29 calce=58 scroll=417 freno=- trabado=11
+24764	cuadro	pos=58.29 calce=58 scroll=417 freno=- trabado=11
+24781	cuadro	pos=58.34 calce=58 scroll=417 freno=- trabado=11
+24798	cuadro	pos=58.39 calce=58 scroll=417 freno=- trabado=11
+24811	llegada	parcial nativo=24809 audio=24752 leido=24793 procesado=24809 rms=0.0662 relevos=0
+24811	oyo	parcial: if you stop the think that decks wait for you when you start talking again it
+24812	calce	token 58: if you stop the think that decks wait for you when you start talking again it
+24821	cuadro	pos=58.43 calce=58 scroll=417 freno=- trabado=11
+24825	llegada	parcial nativo=24824 audio=24792 leido=24810 procesado=24823 rms=0.0241 relevos=0
+24825	oyo	parcial: if you stop the think that decks wait for you when you start talking again it because
+24825	calce	token 59: if you stop the think that decks wait for you when you start talking again it because
+24833	cuadro	pos=58.94 calce=59 scroll=417 freno=- trabado=11
+24837	llegada	parcial nativo=24835 audio=24812 leido=24828 procesado=24835 rms=0.0065 relevos=0
+24837	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks
+24837	calce	token 59: if you stop the think that decks wait for you when you start talking again it picks
+24846	cuadro	pos=59.03 calce=59 scroll=417 freno=- trabado=11
+24864	cuadro	pos=59.08 calce=59 scroll=417 freno=- trabado=11
+24880	cuadro	pos=59.13 calce=59 scroll=417 freno=- trabado=11
+24897	cuadro	pos=59.18 calce=59 scroll=417 freno=- trabado=11
+24913	cuadro	pos=59.23 calce=59 scroll=417 freno=- trabado=11
+24931	cuadro	pos=59.28 calce=59 scroll=417 freno=- trabado=11
+24940	llegada	parcial nativo=24939 audio=24912 leido=24928 procesado=24939 rms=0.0058 relevos=0
+24940	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks
+24941	calce	token 59: if you stop the think that decks wait for you when you start talking again it picks
+24952	cuadro	pos=59.31 calce=59 scroll=417 freno=- trabado=11
+24958	llegada	parcial nativo=24955 audio=24932 leido=24947 procesado=24955 rms=0.0041 relevos=0
+24958	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up
+24958	calce	token 60: if you stop the think that decks wait for you when you start talking again it picks up
+24968	cuadro	pos=60.03 calce=60 scroll=417 freno=- trabado=11
+24979	cuadro	pos=60.06 calce=60 scroll=417 freno=- trabado=11
+24997	cuadro	pos=60.11 calce=60 scroll=417 freno=- trabado=11
+25013	cuadro	pos=60.16 calce=60 scroll=417 freno=- trabado=11
+25030	cuadro	pos=60.21 calce=60 scroll=417 freno=- trabado=11
+25047	cuadro	pos=60.26 calce=60 scroll=417 freno=- trabado=11
+25062	llegada	parcial nativo=25060 audio=25032 leido=25050 procesado=25060 rms=0.0524 relevos=0
+25062	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up
+25062	calce	token 60: if you stop the think that decks wait for you when you start talking again it picks up
+25075	cuadro	pos=60.30 calce=60 scroll=417 freno=- trabado=11
+25080	cuadro	pos=60.30 calce=60 scroll=417 freno=- trabado=11
+25096	cuadro	pos=60.30 calce=60 scroll=417 freno=- trabado=11
+25114	cuadro	pos=60.30 calce=60 scroll=417 freno=- trabado=11
+25131	cuadro	pos=60.30 calce=60 scroll=417 freno=- trabado=11
+25146	cuadro	pos=60.30 calce=60 scroll=417 freno=- trabado=11
+25154	llegada	parcial nativo=25150 audio=25132 leido=25149 procesado=25150 rms=0.0937 relevos=0
+25154	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up
+25154	calce	token 60: if you stop the think that decks wait for you when you start talking again it picks up
+25163	cuadro	pos=60.30 calce=60 scroll=417 freno=- trabado=11
+25180	cuadro	pos=60.30 calce=60 scroll=417 freno=- trabado=11
+25197	cuadro	pos=60.30 calce=60 scroll=417 freno=- trabado=11
+25213	cuadro	pos=60.30 calce=60 scroll=417 freno=- trabado=11
+25231	cuadro	pos=60.30 calce=60 scroll=417 freno=- trabado=11
+25247	cuadro	pos=60.30 calce=60 scroll=417 freno=- trabado=11
+25263	cuadro	pos=60.32 calce=60 scroll=417 freno=- trabado=11
+25269	llegada	parcial nativo=25262 audio=25232 leido=25248 procesado=25262 rms=0.0783 relevos=0
+25269	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up to
+25269	calce	token 61: if you stop the think that decks wait for you when you start talking again it picks up to
+25281	cuadro	pos=60.66 calce=61 scroll=417 freno=- trabado=11
+25296	cuadro	pos=60.72 calce=61 scroll=417 freno=- trabado=11
+25314	cuadro	pos=60.79 calce=61 scroll=417 freno=- trabado=11
+25324	llegada	parcial nativo=25322 audio=25292 leido=25309 procesado=25322 rms=0.0093 relevos=0
+25324	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up
+25325	calce	token 60: if you stop the think that decks wait for you when you start talking again it picks up
+25331	cuadro	pos=61.02 calce=61 scroll=417 freno=- trabado=11
+25347	cuadro	pos=61.07 calce=61 scroll=417 freno=- trabado=11
+25363	cuadro	pos=61.12 calce=61 scroll=417 freno=- trabado=11
+25379	cuadro	pos=61.17 calce=61 scroll=417 freno=- trabado=11
+25396	cuadro	pos=61.22 calce=61 scroll=417 freno=- trabado=11
+25415	cuadro	pos=61.28 calce=61 scroll=417 freno=- trabado=11
+25430	cuadro	pos=61.32 calce=61 scroll=417 freno=- trabado=11
+25446	cuadro	pos=61.37 calce=61 scroll=417 freno=- trabado=11
+25463	cuadro	pos=61.42 calce=61 scroll=417 freno=- trabado=11
+25474	llegada	parcial nativo=25471 audio=25392 leido=25408 procesado=25471 rms=0.0054 relevos=0
+25474	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up
+25475	calce	token 60: if you stop the think that decks wait for you when you start talking again it picks up
+25483	cuadro	pos=61.46 calce=61 scroll=417 freno=- trabado=11
+25485	llegada	parcial nativo=25483 audio=25452 leido=25478 procesado=25483 rms=0.0013 relevos=0
+25485	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right
+25486	calce	token 61: if you stop the think that decks wait for you when you start talking again it picks up right
+25496	cuadro	pos=61.46 calce=61 scroll=417 freno=- trabado=11
+25512	cuadro	pos=61.46 calce=61 scroll=417 freno=- trabado=11
+25529	cuadro	pos=61.46 calce=61 scroll=417 freno=- trabado=11
+25547	cuadro	pos=61.46 calce=61 scroll=417 freno=- trabado=11
+25563	cuadro	pos=61.46 calce=61 scroll=417 freno=- trabado=11
+25577	llegada	parcial nativo=25576 audio=25552 leido=25574 procesado=25576 rms=0.0840 relevos=0
+25577	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right
+25578	calce	token 61: if you stop the think that decks wait for you when you start talking again it picks up right
+25585	cuadro	pos=61.46 calce=61 scroll=417 freno=- trabado=11
+25596	cuadro	pos=61.46 calce=61 scroll=417 freno=- trabado=11
+25599	llegada	parcial nativo=25595 audio=25572 leido=25588 procesado=25595 rms=0.0520 relevos=0
+25599	oyo	parcial: if you stop the think that decks wait for you when you start talking again it except right
+25599	calce	token 60: if you stop the think that decks wait for you when you start talking again it except right
+25613	cuadro	pos=61.46 calce=61 scroll=424 freno=- trabado=12
+25630	cuadro	pos=61.46 calce=61 scroll=430 freno=- trabado=12
+25646	cuadro	pos=61.46 calce=61 scroll=434 freno=- trabado=12
+25661	llegada	parcial nativo=25659 audio=25632 leido=25648 procesado=25659 rms=0.0447 relevos=0
+25661	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where
+25661	calce	token 62: if you stop the think that decks wait for you when you start talking again it picks up right where
+25671	cuadro	pos=62.03 calce=62 scroll=439 freno=- trabado=12
+25679	cuadro	pos=62.05 calce=62 scroll=441 freno=- trabado=12
+25696	cuadro	pos=62.11 calce=62 scroll=443 freno=- trabado=12
+25714	cuadro	pos=62.16 calce=62 scroll=445 freno=- trabado=12
+25731	cuadro	pos=62.22 calce=62 scroll=446 freno=- trabado=12
+25746	cuadro	pos=62.26 calce=62 scroll=447 freno=- trabado=12
+25753	llegada	parcial nativo=25751 audio=25732 leido=25748 procesado=25751 rms=0.0427 relevos=0
+25753	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where
+25754	calce	token 62: if you stop the think that decks wait for you when you start talking again it picks up right where
+25763	cuadro	pos=62.29 calce=62 scroll=448 freno=- trabado=12
+25778	cuadro	pos=62.29 calce=62 scroll=449 freno=- trabado=12
+25795	cuadro	pos=62.29 calce=62 scroll=449 freno=- trabado=12
+25812	cuadro	pos=62.29 calce=62 scroll=449 freno=- trabado=12
+25829	cuadro	pos=62.29 calce=62 scroll=450 freno=- trabado=12
+25845	cuadro	pos=62.29 calce=62 scroll=450 freno=- trabado=12
+25862	cuadro	pos=62.34 calce=62 scroll=450 freno=- trabado=12
+25878	cuadro	pos=62.39 calce=62 scroll=450 freno=- trabado=12
+25884	llegada	parcial nativo=25881 audio=25832 leido=25848 procesado=25881 rms=0.0585 relevos=0
+25884	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you
+25885	calce	token 63: if you stop the think that decks wait for you when you start talking again it picks up right where you
+25899	cuadro	pos=63.05 calce=63 scroll=451 freno=- trabado=12
+25912	cuadro	pos=63.09 calce=63 scroll=451 freno=- trabado=12
+25929	cuadro	pos=63.14 calce=63 scroll=451 freno=- trabado=12
+25946	cuadro	pos=63.20 calce=63 scroll=451 freno=- trabado=12
+25959	llegada	parcial nativo=25957 audio=25932 leido=25949 procesado=25957 rms=0.0557 relevos=0
+25959	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you
+25960	calce	token 63: if you stop the think that decks wait for you when you start talking again it picks up right where you
+25968	cuadro	pos=63.24 calce=63 scroll=451 freno=- trabado=12
+25984	cuadro	pos=63.24 calce=63 scroll=451 freno=- trabado=12
+25995	cuadro	pos=63.24 calce=63 scroll=451 freno=- trabado=12
+26013	cuadro	pos=63.24 calce=63 scroll=451 freno=- trabado=12
+26034	cuadro	pos=63.24 calce=63 scroll=451 freno=- trabado=12
+26045	cuadro	pos=63.27 calce=63 scroll=451 freno=- trabado=12
+26051	llegada	parcial nativo=26050 audio=26032 leido=26049 procesado=26050 rms=0.0178 relevos=0
+26051	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you
+26052	calce	token 63: if you stop the think that decks wait for you when you start talking again it picks up right where you
+26061	cuadro	pos=63.29 calce=63 scroll=451 freno=- trabado=12
+26078	cuadro	pos=63.29 calce=63 scroll=451 freno=- trabado=12
+26095	cuadro	pos=63.29 calce=63 scroll=451 freno=- trabado=12
+26112	cuadro	pos=63.29 calce=63 scroll=451 freno=- trabado=12
+26128	cuadro	pos=63.29 calce=63 scroll=451 freno=- trabado=12
+26145	cuadro	pos=63.30 calce=63 scroll=451 freno=- trabado=12
+26161	cuadro	pos=63.35 calce=63 scroll=451 freno=- trabado=12
+26177	cuadro	pos=63.40 calce=63 scroll=451 freno=- trabado=12
+26182	llegada	parcial nativo=26180 audio=26132 leido=26148 procesado=26180 rms=0.0462 relevos=0
+26182	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you left
+26183	calce	token 64: if you stop the think that decks wait for you when you start talking again it picks up right where you left
+26195	cuadro	pos=64.04 calce=64 scroll=451 freno=- trabado=12
+26213	cuadro	pos=64.10 calce=64 scroll=451 freno=- trabado=12
+26228	cuadro	pos=64.15 calce=64 scroll=451 freno=- trabado=12
+26245	cuadro	pos=64.20 calce=64 scroll=451 freno=- trabado=12
+26259	llegada	parcial nativo=26257 audio=26232 leido=26250 procesado=26257 rms=0.1098 relevos=0
+26259	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you left
+26260	calce	token 64: if you stop the think that decks wait for you when you start talking again it picks up right where you left
+26267	cuadro	pos=64.25 calce=64 scroll=451 freno=- trabado=12
+26277	cuadro	pos=64.25 calce=64 scroll=451 freno=- trabado=12
+26294	cuadro	pos=64.25 calce=64 scroll=451 freno=- trabado=12
+26313	cuadro	pos=64.25 calce=64 scroll=451 freno=- trabado=12
+26328	cuadro	pos=64.25 calce=64 scroll=451 freno=- trabado=12
+26340	llegada	parcial nativo=26338 audio=26312 leido=26328 procesado=26338 rms=0.0276 relevos=0
+26340	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26340	calce	token 65: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26349	cuadro	pos=64.94 calce=65 scroll=451 freno=- trabado=12
+26361	cuadro	pos=65.00 calce=65 scroll=451 freno=- trabado=12
+26378	cuadro	pos=65.07 calce=65 scroll=451 freno=- trabado=12
+26397	cuadro	pos=65.14 calce=65 scroll=451 freno=- trabado=12
+26410	cuadro	pos=65.18 calce=65 scroll=451 freno=- trabado=12
+26427	cuadro	pos=65.24 calce=65 scroll=451 freno=- trabado=12
+26437	llegada	parcial nativo=26435 audio=26412 leido=26428 procesado=26435 rms=0.0031 relevos=0
+26437	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26437	calce	token 65: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26444	cuadro	pos=65.28 calce=65 scroll=451 freno=- trabado=12
+26460	cuadro	pos=65.28 calce=65 scroll=451 freno=- trabado=12
+26477	cuadro	pos=65.28 calce=65 scroll=451 freno=- trabado=12
+26495	cuadro	pos=65.28 calce=65 scroll=451 freno=- trabado=12
+26511	cuadro	pos=65.28 calce=65 scroll=451 freno=- trabado=12
+26527	cuadro	pos=65.30 calce=65 scroll=451 freno=- trabado=12
+26533	llegada	parcial nativo=26530 audio=26512 leido=26528 procesado=26530 rms=0.0026 relevos=0
+26533	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26534	calce	token 65: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26544	cuadro	pos=65.32 calce=65 scroll=451 freno=- trabado=12
+26560	cuadro	pos=65.32 calce=65 scroll=451 freno=- trabado=12
+26577	cuadro	pos=65.32 calce=65 scroll=451 freno=- trabado=12
+26594	cuadro	pos=65.32 calce=65 scroll=451 freno=- trabado=12
+26612	cuadro	pos=65.32 calce=65 scroll=451 freno=- trabado=12
+26628	cuadro	pos=65.32 calce=65 scroll=451 freno=- trabado=12
+26635	llegada	parcial nativo=26634 audio=26612 leido=26629 procesado=26634 rms=0.0016 relevos=0
+26635	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26635	calce	token 65: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26645	cuadro	pos=65.34 calce=65 scroll=462 freno=- trabado=13
+26660	cuadro	pos=65.34 calce=65 scroll=469 freno=- trabado=13
+26677	cuadro	pos=65.34 calce=65 scroll=476 freno=- trabado=13
+26695	cuadro	pos=65.34 calce=65 scroll=481 freno=- trabado=13
+26711	cuadro	pos=65.34 calce=65 scroll=485 freno=- trabado=13
+26728	cuadro	pos=65.34 calce=65 scroll=488 freno=- trabado=13
+26738	llegada	parcial nativo=26737 audio=26712 leido=26728 procesado=26737 rms=0.0015 relevos=0
+26738	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26739	calce	token 65: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26747	cuadro	pos=65.34 calce=65 scroll=491 freno=- trabado=13
+26760	cuadro	pos=65.34 calce=65 scroll=493 freno=- trabado=13
+26777	cuadro	pos=65.34 calce=65 scroll=494 freno=- trabado=13
+26800	cuadro	pos=65.34 calce=65 scroll=482 freno=- trabado=12
+26814	cuadro	pos=65.34 calce=65 scroll=477 freno=- trabado=12
+26828	cuadro	pos=65.34 calce=65 scroll=472 freno=- trabado=12
+26833	llegada	parcial nativo=26832 audio=26812 leido=26828 procesado=26832 rms=0.0020 relevos=0
+26833	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26834	calce	token 65: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26842	cuadro	pos=65.34 calce=65 scroll=468 freno=- trabado=12
+26860	cuadro	pos=65.34 calce=65 scroll=464 freno=- trabado=12
+26876	cuadro	pos=65.34 calce=65 scroll=462 freno=- trabado=12
+26907	cuadro	pos=65.34 calce=65 scroll=458 freno=- trabado=12
+26921	cuadro	pos=65.34 calce=65 scroll=457 freno=- trabado=12
+26926	cuadro	pos=65.34 calce=65 scroll=456 freno=- trabado=12
+26936	llegada	parcial nativo=26934 audio=26912 leido=26928 procesado=26934 rms=0.0013 relevos=0
+26936	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26936	calce	token 65: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+26945	cuadro	pos=65.34 calce=65 scroll=455 freno=- trabado=12
+26960	cuadro	pos=65.34 calce=65 scroll=454 freno=- trabado=12
+26977	cuadro	pos=65.34 calce=65 scroll=453 freno=- trabado=12
+26994	cuadro	pos=65.34 calce=65 scroll=453 freno=- trabado=12
+27011	cuadro	pos=65.34 calce=65 scroll=453 freno=- trabado=12
+27028	cuadro	pos=65.34 calce=65 scroll=452 freno=- trabado=12
+27038	llegada	parcial nativo=27036 audio=27012 leido=27028 procesado=27036 rms=0.0015 relevos=0
+27038	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+27039	calce	token 65: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+27048	cuadro	pos=65.34 calce=65 scroll=452 freno=- trabado=12
+27060	cuadro	pos=65.34 calce=65 scroll=452 freno=- trabado=12
+27077	cuadro	pos=65.34 calce=65 scroll=452 freno=- trabado=12
+27095	cuadro	pos=65.34 calce=65 scroll=451 freno=- trabado=12
+27113	cuadro	pos=65.34 calce=65 scroll=451 freno=- trabado=12
+27127	cuadro	pos=65.34 calce=65 scroll=451 freno=- trabado=12
+27133	llegada	parcial nativo=27130 audio=27112 leido=27128 procesado=27130 rms=0.0010 relevos=0
+27133	oyo	parcial: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+27133	calce	token 65: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+27146	cuadro	pos=65.34 calce=65 scroll=451 freno=- trabado=12
+27159	cuadro	pos=65.34 calce=65 scroll=451 freno=- trabado=12
+27176	cuadro	pos=65.34 calce=65 scroll=451 freno=- trabado=12
+27193	cuadro	pos=65.34 calce=65 scroll=451 freno=- trabado=12
+27196	llegada	FINAL nativo=27192 audio=27152 leido=27169 procesado=27192 rms=0.0009 relevos=0
+27196	palabras	FINAL: if@19612-19732 you@19732-19852 stop@19852-20152 the@20152-20272 think@20272-20722 that@20842-21022 decks@21022-21275 wait@21319-21592 for@21592-21772 you@21772-22102 when@22522-22732 you@22732-22822 start@22822-23272 talking@23302-23722 again@23722-24082 it@24142-24322 picks@24322-24682 up@24682-24892 right@24952-25342 where@25402-25642 you@25642-25792 left@25792-26062 off@26092-26482
+27196	oyo	FINAL: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+27197	calce	token 65: if you stop the think that decks wait for you when you start talking again it picks up right where you left off
+27198	llegada	parcial nativo=27194 audio=27172 leido=27193 procesado=27194 rms=0.0008 relevos=0
+27210	cuadro	pos=65.34 calce=65 scroll=451 freno=- trabado=12
+27227	cuadro	pos=65.34 calce=65 scroll=451 freno=- trabado=12
+27243	cuadro	pos=65.34 calce=65 scroll=451 freno=- trabado=12
+27260	cuadro	pos=65.34 calce=65 scroll=451 freno=- trabado=12
+27277	cuadro	pos=65.34 calce=65 scroll=451 freno=- trabado=12
+27295	cuadro	pos=65.34 calce=65 scroll=451 freno=- trabado=12
+27299	llegada	parcial nativo=27298 audio=27272 leido=27290 procesado=27298 rms=0.0011 relevos=0
+27312	cuadro	pos=65.36 calce=65 scroll=451 freno=- trabado=12
+27328	cuadro	pos=65.40 calce=65 scroll=451 freno=- trabado=12
+27342	cuadro	pos=65.45 calce=65 scroll=451 freno=- trabado=12
+27359	cuadro	pos=65.50 calce=65 scroll=451 freno=- trabado=12
+27375	cuadro	pos=65.55 calce=65 scroll=451 freno=- trabado=12
+27404	cuadro	pos=65.64 calce=65 scroll=451 freno=- trabado=12
+27406	llegada	parcial nativo=27398 audio=27372 leido=27390 procesado=27398 rms=0.0011 relevos=0
+27409	cuadro	pos=65.66 calce=65 scroll=451 freno=- trabado=12
+27426	cuadro	pos=65.71 calce=65 scroll=451 freno=- trabado=12
+27442	cuadro	pos=65.76 calce=65 scroll=451 freno=- trabado=12
+27459	cuadro	pos=65.81 calce=65 scroll=451 freno=- trabado=12
+27476	cuadro	pos=65.86 calce=65 scroll=451 freno=- trabado=12
+27490	llegada	parcial nativo=27488 audio=27472 leido=27487 procesado=27488 rms=0.0018 relevos=0
+27492	cuadro	pos=65.91 calce=65 scroll=451 freno=- trabado=12
+27510	cuadro	pos=65.97 calce=65 scroll=451 freno=- trabado=12
+27527	cuadro	pos=66.02 calce=65 scroll=451 freno=- trabado=12
+27542	cuadro	pos=66.06 calce=65 scroll=451 freno=- trabado=12
+27559	cuadro	pos=66.12 calce=65 scroll=451 freno=- trabado=12
+27580	cuadro	pos=66.18 calce=65 scroll=451 freno=- trabado=12
+27594	cuadro	pos=66.22 calce=65 scroll=451 freno=- trabado=12
+27609	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27626	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27642	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27659	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27679	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27694	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27710	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27720	llegada	parcial nativo=27714 audio=27572 leido=27709 procesado=27714 rms=0.0018 relevos=0
+27727	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27742	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27758	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27776	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27792	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27808	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27825	llegada	parcial nativo=27815 audio=27672 leido=27810 procesado=27815 rms=0.0013 relevos=0
+27827	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27842	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27859	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27875	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27892	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27909	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27913	llegada	parcial nativo=27911 audio=27772 leido=27911 procesado=27911 rms=0.0024 relevos=0
+27925	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27942	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27960	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27975	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+27993	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28008	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28020	llegada	parcial nativo=28014 audio=27872 leido=28009 procesado=28014 rms=0.0024 relevos=0
+28026	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28042	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28059	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28075	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28092	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28108	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28127	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28131	llegada	parcial nativo=28124 audio=27972 leido=28110 procesado=28124 rms=0.0024 relevos=0
+28141	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28159	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28175	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28192	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28208	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28213	llegada	parcial nativo=28210 audio=28072 leido=28210 procesado=28210 rms=0.0023 relevos=0
+28226	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28242	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28258	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28274	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28291	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28308	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28322	llegada	parcial nativo=28320 audio=28172 leido=28315 procesado=28320 rms=0.0021 relevos=0
+28324	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28341	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28359	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28374	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12
+28391	cuadro	pos=66.23 calce=65 scroll=451 freno=- trabado=12

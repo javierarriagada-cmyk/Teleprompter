@@ -1,0 +1,820 @@
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: f339eeda-a79a-46fa-97dc-8ffc35c70bdd
+# inicio del video (epoch ms): 1790555685897
+# motor de voz: nativo
+# letra: 24 px, sans
+# columna: completa, margen 5%
+# donde lees: arriba
+# idioma: en
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Hi. Read this out loud, as slowly or as quickly as you like.
+# | 
+# | Now look at the text. It's moving on its own, at the pace you speak, without you touching anything. The soft line under the words shows you where you are.
+# | 
+# | If you stop to think, the text waits for you. When you start talking again, it picks up right where you left off.
+# | 
+# | Anything you write in square brackets is a note just for you. It shows on the screen, but you don't need to read it out loud. [Like this one: breathe, and smile.]
+# | 
+# | Your script can also help you read better. Use bold for what you want to say with more force. Color words in amber, light blue or green to set apart ideas or shifts in tone. And use the yellow highlight for what you can't afford to miss. Just select the text in the editor and pick one.
+# | 
+# | With the Aa button you choose the text size, the typeface, the column width and the screen colors. Set it up however feels most comfortable.
+# | 
+# | When you want to record yourself, tap Record. The camera films while you read, and the text sits right under the lens, so your eyes go to the camera and not to the screen. You can see yourself full screen, behind the text, or in a small window. That way you know how you look, without giving up the comfort of reading.
+# | 
+# | When you're done, your video can have captions. They come from your script, in time with your voice. Pick the style you like best and save it to your gallery just as you see it.
+# | 
+# | Sigo is here to give you the comfort and the calm you need. We want all your focus to be where it belongs. You don't have to memorize anything. You don't have to rush to keep up with the text. You can bring whatever emotion you want, whenever you want.
+# | 
+# | It works for recording a video, teaching a class or getting ready for an interview.
+# | 
+# | When you're done, delete this and write your own script, or paste one you already have.
+# | 
+# | And if there's something you like, something that bugs you, or an idea to make it better, let us know. Your feedback means a lot to us. Write to hello@sigoteleprompter.com. All the best.
+# ---------------------------------------------
+
+ms	tipo	detalle
+11	renglones	0 6 12 13 19 25 30 34 39 43 50 56 62 66 71 78 84 91 96 98 104 110 116 121 128 134 139 145 151 155 160 165 169 175 179 180 185 189 194 200 207 213 218 224 230 235 240 242 247 252 258 264 271 277 284 289 295 301 305 310 317 321 325 327 333 338 342 347 353 358 363 368 375 380 387 388
+11	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+20	oido	inicio=-2719 trozo=320 ruta=/data/user/0/com.sigoteleprompter.app/files/oido/1790555683178.pcm
+20	llegada	parcial nativo=19 audio=1 leido=13 procesado=19 rms=0.0057 relevos=0
+21	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+39	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+55	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+76	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+89	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+106	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+122	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+148	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+156	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+171	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+187	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+204	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+222	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+241	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+254	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+271	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+288	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+304	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+322	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+338	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+358	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+371	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+387	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+405	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+421	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+441	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+454	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+471	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+487	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+505	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+521	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+538	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+554	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+572	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+588	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+604	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+622	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+629	llegada	parcial nativo=625 audio=101 leido=623 procesado=625 rms=0.0225 relevos=0
+637	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+655	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+671	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+689	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+708	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+720	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+737	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+754	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+770	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+788	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+803	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+815	llegada	parcial nativo=812 audio=201 leido=729 procesado=812 rms=0.1465 relevos=0
+820	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+837	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+841	llegada	parcial nativo=839 audio=301 leido=834 procesado=839 rms=0.0927 relevos=0
+853	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+869	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+888	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+905	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+919	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+928	llegada	parcial nativo=926 audio=401 leido=924 procesado=925 rms=0.0311 relevos=0
+937	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+953	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+969	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+986	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1002	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1019	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1036	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1052	llegada	parcial nativo=1049 audio=501 leido=1038 procesado=1049 rms=0.0184 relevos=0
+1053	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1069	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1086	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1103	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1120	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1137	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1154	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1172	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1176	llegada	parcial nativo=1166 audio=601 leido=1160 procesado=1166 rms=0.0057 relevos=0
+1186	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1202	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1220	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1231	llegada	parcial nativo=1226 audio=701 leido=1224 procesado=1226 rms=0.0039 relevos=0
+1236	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1252	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1271	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1280	llegada	parcial nativo=1277 audio=741 leido=1263 procesado=1277 rms=0.0032 relevos=0
+1280	oyo	parcial: i
+1280	calce	NO CALZO: i
+1286	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1321	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1323	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1351	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1352	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1369	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1380	llegada	parcial nativo=1379 audio=841 leido=1363 procesado=1379 rms=0.0047 relevos=0
+1380	oyo	parcial: i
+1380	calce	NO CALZO: i
+1386	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1402	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1421	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1435	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1452	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1466	llegada	parcial nativo=1464 audio=941 leido=1462 procesado=1464 rms=0.0393 relevos=0
+1466	oyo	parcial: i
+1466	calce	NO CALZO: i
+1471	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1486	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1502	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1525	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1535	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1551	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1570	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1584	llegada	parcial nativo=1577 audio=1041 leido=1562 procesado=1577 rms=0.0479 relevos=0
+1584	oyo	parcial: i
+1584	calce	NO CALZO: i
+1586	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1602	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1618	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1635	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1645	llegada	parcial nativo=1638 audio=1081 leido=1603 procesado=1638 rms=0.0211 relevos=0
+1645	oyo	parcial: i have
+1646	calce	NO CALZO: i have
+1652	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1673	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1686	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1702	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1710	llegada	parcial nativo=1708 audio=1129 leido=1672 procesado=1708 rms=0.0062 relevos=0
+1710	oyo	parcial: i heard
+1710	calce	NO CALZO: i heard
+1718	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1734	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1752	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1768	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1786	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1801	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1818	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1820	llegada	parcial nativo=1816 audio=1189 leido=1777 procesado=1816 rms=0.0034 relevos=1
+1820	oyo	parcial: i
+1820	calce	NO CALZO: i
+1843	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1851	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1869	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1885	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1901	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1918	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1934	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1951	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1969	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+1971	llegada	parcial nativo=1963 audio=1289 leido=1919 procesado=1963 rms=0.0038 relevos=1
+1971	oyo	parcial: i read
+1972	calce	token 1: i read
+1984	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2001	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2018	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2034	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2039	llegada	parcial nativo=2033 audio=1389 leido=2032 procesado=2033 rms=0.0105 relevos=1
+2039	oyo	parcial: i read
+2040	calce	token 1: i read
+2059	cuadro	pos=0.00 calce=1 scroll=16 freno=sin-calce trabado=0
+2064	llegada	parcial nativo=2062 audio=1489 leido=2053 procesado=2062 rms=0.0479 relevos=1
+2064	oyo	parcial: i read
+2064	calce	token 1: i read
+2073	cuadro	pos=0.22 calce=1 scroll=16 freno=- trabado=0
+2092	cuadro	pos=0.73 calce=1 scroll=16 freno=- trabado=0
+2101	cuadro	pos=0.76 calce=1 scroll=16 freno=- trabado=0
+2134	cuadro	pos=0.87 calce=1 scroll=16 freno=- trabado=0
+2156	cuadro	pos=0.93 calce=1 scroll=16 freno=- trabado=0
+2168	cuadro	pos=0.97 calce=1 scroll=16 freno=- trabado=0
+2184	cuadro	pos=1.02 calce=1 scroll=16 freno=- trabado=0
+2194	llegada	parcial nativo=2181 audio=1549 leido=2115 procesado=2181 rms=0.0382 relevos=1
+2194	oyo	parcial: i hurried
+2195	calce	NO CALZO: i hurried
+2200	cuadro	pos=1.07 calce=1 scroll=16 freno=- trabado=0
+2219	cuadro	pos=1.13 calce=1 scroll=16 freno=- trabado=0
+2235	cuadro	pos=1.17 calce=1 scroll=16 freno=- trabado=0
+2259	cuadro	pos=1.25 calce=1 scroll=16 freno=- trabado=0
+2274	cuadro	pos=1.29 calce=1 scroll=16 freno=- trabado=0
+2286	cuadro	pos=1.32 calce=1 scroll=16 freno=- trabado=0
+2299	llegada	parcial nativo=2291 audio=1589 leido=2188 procesado=2291 rms=0.0212 relevos=1
+2299	oyo	parcial: i read
+2299	calce	token 1: i read
+2322	cuadro	pos=1.36 calce=1 scroll=16 freno=- trabado=0
+2333	cuadro	pos=1.36 calce=1 scroll=16 freno=- trabado=0
+2357	cuadro	pos=1.36 calce=1 scroll=16 freno=- trabado=0
+2367	cuadro	pos=1.36 calce=1 scroll=16 freno=- trabado=0
+2388	llegada	parcial nativo=2378 audio=1669 leido=2354 procesado=2378 rms=0.0410 relevos=1
+2388	oyo	parcial: hi hurry hurry
+2388	calce	NO CALZO: hi hurry hurry
+2393	cuadro	pos=1.36 calce=1 scroll=16 freno=- trabado=0
+2401	cuadro	pos=1.36 calce=1 scroll=16 freno=- trabado=0
+2423	llegada	parcial nativo=2408 audio=1769 leido=2398 procesado=2408 rms=0.0418 relevos=1
+2423	oyo	parcial: hi harry reid
+2424	calce	NO CALZO: hi harry reid
+2431	cuadro	pos=1.36 calce=1 scroll=16 freno=- trabado=0
+2441	cuadro	pos=1.36 calce=1 scroll=16 freno=- trabado=0
+2457	cuadro	pos=1.40 calce=1 scroll=16 freno=- trabado=0
+2528	llegada	parcial nativo=2455 audio=1869 leido=2454 procesado=2455 rms=0.0199 relevos=1
+2528	oyo	parcial: hi harry reid
+2528	calce	NO CALZO: hi harry reid
+2529	llegada	parcial nativo=2512 audio=1909 leido=2494 procesado=2512 rms=0.0031 relevos=1
+2529	oyo	parcial: hi harry reid these
+2529	calce	NO CALZO: hi harry reid these
+2530	cuadro	pos=1.58 calce=1 scroll=16 freno=- trabado=0
+2540	cuadro	pos=1.60 calce=1 scroll=16 freno=- trabado=0
+2550	cuadro	pos=1.63 calce=1 scroll=16 freno=- trabado=0
+2567	cuadro	pos=1.67 calce=1 scroll=16 freno=- trabado=0
+2585	cuadro	pos=1.72 calce=1 scroll=16 freno=- trabado=0
+2593	llegada	parcial nativo=2590 audio=2009 leido=2583 procesado=2590 rms=0.0702 relevos=1
+2594	oyo	parcial: hi harry reid these
+2595	calce	NO CALZO: hi harry reid these
+2600	cuadro	pos=1.75 calce=1 scroll=16 freno=- trabado=0
+2617	cuadro	pos=1.79 calce=1 scroll=16 freno=- trabado=0
+2634	cuadro	pos=1.84 calce=1 scroll=16 freno=- trabado=0
+2654	cuadro	pos=1.89 calce=1 scroll=16 freno=- trabado=0
+2667	cuadro	pos=1.92 calce=1 scroll=16 freno=- trabado=0
+2689	llegada	parcial nativo=2681 audio=2109 leido=2681 procesado=2681 rms=0.0137 relevos=1
+2689	oyo	parcial: hi harry reid these
+2690	calce	NO CALZO: hi harry reid these
+2691	cuadro	pos=1.98 calce=1 scroll=16 freno=- trabado=0
+2703	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2728	llegada	parcial nativo=2710 audio=2209 leido=2703 procesado=2710 rms=0.0594 relevos=1
+2728	oyo	parcial: hi harry reid these
+2730	calce	NO CALZO: hi harry reid these
+2732	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2738	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2750	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2775	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2803	llegada	parcial nativo=2791 audio=2309 leido=2753 procesado=2791 rms=0.1343 relevos=1
+2803	oyo	parcial: hi harry reid these
+2803	calce	NO CALZO: hi harry reid these
+2807	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2825	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2834	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2856	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2871	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2892	llegada	parcial nativo=2878 audio=2389 leido=2862 procesado=2878 rms=0.1110 relevos=1
+2892	oyo	parcial: hi harry reid these at
+2893	calce	NO CALZO: hi harry reid these at
+2894	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2917	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2924	llegada	parcial nativo=2910 audio=2449 leido=2892 procesado=2910 rms=0.0638 relevos=1
+2924	oyo	parcial: hi harry reid these
+2925	calce	NO CALZO: hi harry reid these
+2933	llegada	parcial nativo=2929 audio=2549 leido=2923 procesado=2929 rms=0.0097 relevos=1
+2933	oyo	parcial: hi harry reid these
+2934	calce	NO CALZO: hi harry reid these
+2938	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2951	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2977	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2986	llegada	parcial nativo=2972 audio=2609 leido=2945 procesado=2972 rms=0.1210 relevos=1
+2987	oyo	parcial: hi harry reid these are
+2988	calce	NO CALZO: hi harry reid these are
+2988	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+2996	llegada	parcial nativo=2989 audio=2629 leido=2973 procesado=2989 rms=0.0820 relevos=1
+2996	oyo	parcial: hi harry reid these are loud
+2997	calce	NO CALZO: hi harry reid these are loud
+3001	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3016	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3033	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3049	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3076	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3083	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3100	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3116	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3130	llegada	parcial nativo=3128 audio=2729 leido=3090 procesado=3128 rms=0.0547 relevos=1
+3130	oyo	parcial: hi harry reid these are loud
+3131	calce	NO CALZO: hi harry reid these are loud
+3134	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3150	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3166	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3183	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3198	llegada	parcial nativo=3195 audio=2829 leido=3194 procesado=3195 rms=0.0157 relevos=1
+3198	oyo	parcial: hi harry reid these are loud
+3199	calce	NO CALZO: hi harry reid these are loud
+3200	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3216	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3232	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3252	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3267	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3283	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3299	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3315	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3335	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3349	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3354	llegada	parcial nativo=3351 audio=2909 leido=3346 procesado=3351 rms=0.0171 relevos=1
+3354	oyo	parcial: hi harry reid these are loud as
+3356	calce	NO CALZO: hi harry reid these are loud as
+3366	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3383	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3398	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3416	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3436	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3449	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3467	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3482	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3499	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3515	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3518	llegada	parcial nativo=3514 audio=3009 leido=3512 procesado=3514 rms=0.0174 relevos=1
+3518	oyo	parcial: hi harry reid these are loud as
+3519	calce	NO CALZO: hi harry reid these are loud as
+3531	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3552	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3565	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3581	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3598	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3610	llegada	parcial nativo=3607 audio=3089 leido=3583 procesado=3607 rms=0.0528 relevos=1
+3610	oyo	parcial: hi harry reid these are loud as his
+3611	calce	NO CALZO: hi harry reid these are loud as his
+3615	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3635	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3648	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3666	llegada	parcial nativo=3662 audio=3169 leido=3639 procesado=3662 rms=0.1628 relevos=1
+3666	oyo	parcial: hi harry reid these are loud as
+3666	calce	NO CALZO: hi harry reid these are loud as
+3667	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3682	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3700	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3715	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3731	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3748	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3767	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3782	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3795	llegada	parcial nativo=3792 audio=3229 leido=3751 procesado=3792 rms=0.1270 relevos=1
+3795	oyo	parcial: hi harry reid these are loud as his
+3796	calce	NO CALZO: hi harry reid these are loud as his
+3799	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3815	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3831	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3850	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3864	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3881	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3900	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3912	llegada	parcial nativo=3897 audio=3329 leido=3850 procesado=3897 rms=0.0797 relevos=1
+3912	oyo	parcial: hi harry reid these are loud as his
+3912	calce	NO CALZO: hi harry reid these are loud as his
+3917	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3936	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3949	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3966	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3982	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+3998	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4018	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4030	llegada	parcial nativo=4027 audio=3429 leido=4024 procesado=4027 rms=0.0959 relevos=1
+4030	oyo	parcial: hi harry reid these are loud as his
+4032	calce	NO CALZO: hi harry reid these are loud as his
+4033	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4048	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4069	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4081	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4098	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4114	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4131	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4136	llegada	parcial nativo=4133 audio=3469 leido=4076 procesado=4133 rms=0.1222 relevos=1
+4136	oyo	parcial: hi harry reid these are loud as slow
+4137	calce	NO CALZO: hi harry reid these are loud as slow
+4147	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4164	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4178	llegada	parcial nativo=4176 audio=3569 leido=4155 procesado=4176 rms=0.0423 relevos=1
+4178	oyo	parcial: hi harry reid these are loud as slow as
+4179	calce	NO CALZO: hi harry reid these are loud as slow as
+4182	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4198	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4214	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4230	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4246	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4259	llegada	parcial nativo=4257 audio=3669 leido=4256 procesado=4257 rms=0.0062 relevos=1
+4259	oyo	parcial: hi harry reid these are loud as slow as
+4259	calce	NO CALZO: hi harry reid these are loud as slow as
+4264	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4281	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4298	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4314	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4324	llegada	parcial nativo=4321 audio=3769 leido=4310 procesado=4321 rms=0.0540 relevos=1
+4324	oyo	parcial: hi harry reid these are loud as slow as
+4325	calce	NO CALZO: hi harry reid these are loud as slow as
+4331	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4348	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4366	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4380	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4402	llegada	parcial nativo=4395 audio=3869 leido=4365 procesado=4395 rms=0.0146 relevos=1
+4402	oyo	parcial: hi harry reid these are loud as slow as
+4402	calce	NO CALZO: hi harry reid these are loud as slow as
+4403	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4414	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4436	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4448	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4463	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4473	llegada	parcial nativo=4471 audio=3949 leido=4455 procesado=4471 rms=0.0300 relevos=1
+4473	oyo	parcial: hi harry reid these are loud as slow as we
+4473	calce	NO CALZO: hi harry reid these are loud as slow as we
+4480	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4497	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4514	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4531	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4547	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4552	llegada	parcial nativo=4549 audio=4009 leido=4516 procesado=4549 rms=0.0322 relevos=1
+4552	oyo	parcial: hi harry reid these are loud as slow as quickly
+4552	calce	NO CALZO: hi harry reid these are loud as slow as quickly
+4564	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4580	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4596	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4614	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4638	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4651	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4660	llegada	parcial nativo=4657 audio=4109 leido=4571 procesado=4657 rms=0.1454 relevos=1
+4660	oyo	parcial: hi harry reid these are loud as slow as quickly
+4661	calce	NO CALZO: hi harry reid these are loud as slow as quickly
+4665	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4680	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4696	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4713	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4734	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4746	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4749	llegada	parcial nativo=4747 audio=4209 leido=4742 procesado=4746 rms=0.1560 relevos=1
+4749	oyo	parcial: hi harry reid these are loud as slow as quickly
+4750	calce	NO CALZO: hi harry reid these are loud as slow as quickly
+4763	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4780	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4797	cuadro	pos=2.00 calce=1 scroll=16 freno=- trabado=0
+4810	llegada	parcial nativo=4805 audio=4309 leido=4791 procesado=4805 rms=0.0403 relevos=1
+4810	oyo	parcial: hi harry reid these are loud as slow as quickly
+4811	calce	NO CALZO: hi harry reid these are loud as slow as quickly
+4813	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4841	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4856	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4876	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4880	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4898	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4913	cuadro	pos=2.00 calce=1 scroll=16 freno=sin-calce trabado=0
+4916	llegada	parcial nativo=4910 audio=4369 leido=4885 procesado=4910 rms=0.0492 relevos=1
+4916	oyo	parcial: hi harry reid these are loud as slow as quickly as
+4917	calce	token 10: hi harry reid these are loud as slow as quickly as
+4937	cuadro	pos=3.06 calce=10 scroll=25 freno=- trabado=1
+4964	cuadro	pos=5.06 calce=10 scroll=33 freno=- trabado=1
+4984	cuadro	pos=5.22 calce=10 scroll=37 freno=- trabado=1
+5014	llegada	parcial nativo=4996 audio=4469 leido=4988 procesado=4996 rms=0.1068 relevos=1
+5014	oyo	parcial: hi harry reid these are loud as slow as quickly as you
+5016	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you
+5018	cuadro	pos=5.50 calce=10 scroll=42 freno=- trabado=1
+5032	cuadro	pos=5.61 calce=10 scroll=43 freno=- trabado=1
+5050	cuadro	pos=5.75 calce=10 scroll=44 freno=- trabado=1
+5064	cuadro	pos=5.86 calce=10 scroll=45 freno=- trabado=1
+5079	cuadro	pos=5.98 calce=10 scroll=46 freno=- trabado=1
+5110	cuadro	pos=6.23 calce=10 scroll=47 freno=- trabado=1
+5117	cuadro	pos=6.29 calce=10 scroll=47 freno=- trabado=1
+5122	llegada	parcial nativo=5120 audio=4569 leido=5117 procesado=5120 rms=0.0754 relevos=1
+5122	oyo	parcial: hi harry reid these are loud as slow as quickly as you
+5123	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you
+5130	cuadro	pos=6.39 calce=10 scroll=47 freno=- trabado=1
+5156	cuadro	pos=6.60 calce=10 scroll=48 freno=- trabado=1
+5164	cuadro	pos=6.66 calce=10 scroll=48 freno=- trabado=1
+5193	cuadro	pos=6.90 calce=10 scroll=48 freno=- trabado=1
+5204	cuadro	pos=6.98 calce=10 scroll=48 freno=- trabado=1
+5224	cuadro	pos=7.14 calce=10 scroll=49 freno=- trabado=1
+5243	cuadro	pos=7.29 calce=10 scroll=49 freno=- trabado=1
+5256	cuadro	pos=7.40 calce=10 scroll=49 freno=- trabado=1
+5276	llegada	parcial nativo=5260 audio=4649 leido=5240 procesado=5260 rms=0.0149 relevos=1
+5276	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5282	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5282	cuadro	pos=7.61 calce=10 scroll=49 freno=- trabado=1
+5296	cuadro	pos=7.72 calce=10 scroll=49 freno=- trabado=1
+5313	cuadro	pos=7.85 calce=10 scroll=49 freno=- trabado=1
+5331	cuadro	pos=7.99 calce=10 scroll=49 freno=- trabado=1
+5343	llegada	parcial nativo=5340 audio=4749 leido=5339 procesado=5340 rms=0.0097 relevos=1
+5343	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5343	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5350	cuadro	pos=8.15 calce=10 scroll=49 freno=- trabado=1
+5376	cuadro	pos=8.35 calce=10 scroll=49 freno=- trabado=1
+5390	cuadro	pos=8.46 calce=10 scroll=49 freno=- trabado=1
+5403	llegada	parcial nativo=5386 audio=4849 leido=5381 procesado=5386 rms=0.0130 relevos=1
+5403	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5403	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5404	cuadro	pos=8.56 calce=10 scroll=49 freno=- trabado=1
+5416	cuadro	pos=8.65 calce=10 scroll=49 freno=- trabado=1
+5431	cuadro	pos=8.75 calce=10 scroll=49 freno=- trabado=1
+5454	cuadro	pos=8.91 calce=10 scroll=49 freno=- trabado=1
+5472	llegada	parcial nativo=5462 audio=4949 leido=5455 procesado=5462 rms=0.0094 relevos=1
+5472	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5473	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5475	cuadro	pos=9.04 calce=10 scroll=49 freno=- trabado=1
+5486	cuadro	pos=9.12 calce=10 scroll=49 freno=- trabado=1
+5517	llegada	parcial nativo=5490 audio=5049 leido=5489 procesado=5490 rms=0.0115 relevos=1
+5517	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5517	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5518	cuadro	pos=9.32 calce=10 scroll=49 freno=- trabado=1
+5545	llegada	parcial nativo=5513 audio=5149 leido=5507 procesado=5512 rms=0.0216 relevos=1
+5545	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5545	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5551	llegada	parcial nativo=5531 audio=5249 leido=5526 procesado=5531 rms=0.0133 relevos=1
+5552	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5552	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5553	cuadro	pos=9.52 calce=10 scroll=49 freno=- trabado=1
+5565	llegada	parcial nativo=5550 audio=5349 leido=5549 procesado=5550 rms=0.0039 relevos=1
+5565	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5565	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5569	cuadro	pos=9.61 calce=10 scroll=49 freno=- trabado=1
+5584	llegada	parcial nativo=5575 audio=5449 leido=5566 procesado=5574 rms=0.0110 relevos=1
+5584	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5584	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5588	cuadro	pos=9.71 calce=10 scroll=49 freno=- trabado=1
+5598	cuadro	pos=9.76 calce=10 scroll=49 freno=- trabado=1
+5636	llegada	parcial nativo=5621 audio=5549 leido=5595 procesado=5621 rms=0.0493 relevos=1
+5636	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5636	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5639	cuadro	pos=9.96 calce=10 scroll=49 freno=- trabado=1
+5655	cuadro	pos=10.03 calce=10 scroll=49 freno=- trabado=1
+5666	cuadro	pos=10.08 calce=10 scroll=49 freno=- trabado=1
+5679	cuadro	pos=10.14 calce=10 scroll=49 freno=- trabado=1
+5697	llegada	parcial nativo=5680 audio=5649 leido=5679 procesado=5680 rms=0.1672 relevos=1
+5697	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5697	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5701	cuadro	pos=10.24 calce=10 scroll=49 freno=- trabado=1
+5714	cuadro	pos=10.29 calce=10 scroll=49 freno=- trabado=1
+5729	cuadro	pos=10.35 calce=10 scroll=49 freno=- trabado=1
+5751	cuadro	pos=10.44 calce=10 scroll=49 freno=- trabado=1
+5761	cuadro	pos=10.47 calce=10 scroll=49 freno=- trabado=1
+5771	llegada	parcial nativo=5768 audio=5749 leido=5762 procesado=5768 rms=0.1505 relevos=1
+5771	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5771	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5778	cuadro	pos=10.54 calce=10 scroll=49 freno=- trabado=1
+5794	cuadro	pos=10.60 calce=10 scroll=49 freno=- trabado=1
+5811	cuadro	pos=10.66 calce=10 scroll=49 freno=- trabado=1
+5828	cuadro	pos=10.71 calce=10 scroll=49 freno=- trabado=1
+5846	cuadro	pos=10.77 calce=10 scroll=49 freno=- trabado=1
+5862	cuadro	pos=10.82 calce=10 scroll=49 freno=- trabado=1
+5882	cuadro	pos=10.89 calce=10 scroll=49 freno=- trabado=1
+5912	cuadro	pos=10.98 calce=10 scroll=49 freno=- trabado=1
+5921	llegada	parcial nativo=5904 audio=5849 leido=5867 procesado=5904 rms=0.0580 relevos=1
+5921	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5921	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5922	cuadro	pos=11.00 calce=10 scroll=49 freno=- trabado=1
+5935	cuadro	pos=11.04 calce=10 scroll=49 freno=- trabado=1
+5947	cuadro	pos=11.07 calce=10 scroll=49 freno=- trabado=1
+5962	cuadro	pos=11.07 calce=10 scroll=49 freno=- trabado=1
+5970	llegada	parcial nativo=5965 audio=5949 leido=5963 procesado=5965 rms=0.0183 relevos=1
+5970	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+5970	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+5977	cuadro	pos=11.07 calce=10 scroll=49 freno=- trabado=1
+5994	cuadro	pos=11.07 calce=10 scroll=49 freno=- trabado=1
+6012	cuadro	pos=11.07 calce=10 scroll=49 freno=- trabado=1
+6029	cuadro	pos=11.07 calce=10 scroll=49 freno=- trabado=1
+6045	cuadro	pos=11.07 calce=10 scroll=49 freno=- trabado=1
+6061	cuadro	pos=11.07 calce=10 scroll=49 freno=- trabado=1
+6077	llegada	parcial nativo=6073 audio=6049 leido=6062 procesado=6072 rms=0.0514 relevos=1
+6077	oyo	parcial: hi harry reid these are loud as slow as quickly as you like
+6077	calce	NO CALZO: hi harry reid these are loud as slow as quickly as you like
+6078	cuadro	pos=11.07 calce=10 scroll=49 freno=- trabado=1
+6094	cuadro	pos=11.07 calce=10 scroll=49 freno=- trabado=1
+6111	cuadro	pos=11.07 calce=10 scroll=49 freno=- trabado=1
+6120	llegada	parcial nativo=6117 audio=6089 leido=6102 procesado=6117 rms=0.0429 relevos=1
+6120	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now
+6121	calce	token 13: hi harry reid these are loud as slow as quickly as you like now
+6147	cuadro	pos=12.18 calce=13 scroll=62 freno=- trabado=2
+6168	cuadro	pos=12.30 calce=13 scroll=81 freno=- trabado=3
+6179	cuadro	pos=12.37 calce=13 scroll=88 freno=- trabado=3
+6233	llegada	parcial nativo=6216 audio=6189 leido=6216 procesado=6216 rms=0.0192 relevos=1
+6233	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now
+6237	calce	token 13: hi harry reid these are loud as slow as quickly as you like now
+6239	cuadro	pos=12.63 calce=13 scroll=113 freno=- trabado=3
+6264	cuadro	pos=12.72 calce=13 scroll=119 freno=- trabado=3
+6270	cuadro	pos=12.75 calce=13 scroll=120 freno=- trabado=3
+6282	cuadro	pos=12.78 calce=13 scroll=122 freno=- trabado=3
+6297	cuadro	pos=12.83 calce=13 scroll=124 freno=- trabado=3
+6314	cuadro	pos=12.89 calce=13 scroll=126 freno=- trabado=3
+6325	llegada	parcial nativo=6317 audio=6289 leido=6302 procesado=6317 rms=0.1244 relevos=1
+6325	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now
+6327	calce	token 13: hi harry reid these are loud as slow as quickly as you like now
+6335	cuadro	pos=13.03 calce=13 scroll=127 freno=- trabado=3
+6353	cuadro	pos=13.07 calce=13 scroll=128 freno=- trabado=3
+6362	cuadro	pos=13.10 calce=13 scroll=129 freno=- trabado=3
+6382	cuadro	pos=13.15 calce=13 scroll=130 freno=- trabado=3
+6397	llegada	parcial nativo=6385 audio=6349 leido=6363 procesado=6385 rms=0.0490 relevos=1
+6397	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look
+6401	calce	token 14: hi harry reid these are loud as slow as quickly as you like now look
+6403	cuadro	pos=13.21 calce=14 scroll=130 freno=- trabado=3
+6427	cuadro	pos=13.98 calce=14 scroll=131 freno=- trabado=3
+6446	cuadro	pos=14.05 calce=14 scroll=131 freno=- trabado=3
+6463	cuadro	pos=14.11 calce=14 scroll=131 freno=- trabado=3
+6480	cuadro	pos=14.16 calce=14 scroll=131 freno=- trabado=3
+6510	cuadro	pos=14.25 calce=14 scroll=132 freno=- trabado=3
+6522	llegada	parcial nativo=6518 audio=6449 leido=6464 procesado=6518 rms=0.0616 relevos=1
+6522	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look
+6523	calce	token 14: hi harry reid these are loud as slow as quickly as you like now look
+6537	cuadro	pos=14.29 calce=14 scroll=132 freno=- trabado=3
+6547	llegada	parcial nativo=6536 audio=6469 leido=6520 procesado=6536 rms=0.0092 relevos=1
+6547	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at
+6547	calce	token 15: hi harry reid these are loud as slow as quickly as you like now look at
+6548	cuadro	pos=14.29 calce=15 scroll=132 freno=- trabado=3
+6562	cuadro	pos=14.68 calce=15 scroll=132 freno=- trabado=3
+6576	cuadro	pos=14.73 calce=15 scroll=132 freno=- trabado=3
+6593	cuadro	pos=14.79 calce=15 scroll=132 freno=- trabado=3
+6615	cuadro	pos=14.87 calce=15 scroll=132 freno=- trabado=3
+6626	llegada	parcial nativo=6623 audio=6569 leido=6596 procesado=6623 rms=0.0987 relevos=1
+6626	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the
+6629	calce	token 16: hi harry reid these are loud as slow as quickly as you like now look at the
+6630	cuadro	pos=14.92 calce=16 scroll=132 freno=- trabado=3
+6654	cuadro	pos=15.91 calce=16 scroll=132 freno=- trabado=3
+6660	cuadro	pos=15.94 calce=16 scroll=132 freno=- trabado=3
+6693	cuadro	pos=16.08 calce=16 scroll=132 freno=- trabado=3
+6707	llegada	parcial nativo=6689 audio=6629 leido=6659 procesado=6689 rms=0.0804 relevos=1
+6707	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at it
+6709	calce	token 16: hi harry reid these are loud as slow as quickly as you like now look at it
+6732	cuadro	pos=16.13 calce=16 scroll=132 freno=- trabado=3
+6740	llegada	parcial nativo=6716 audio=6649 leido=6691 procesado=6716 rms=0.0619 relevos=1
+6740	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the
+6743	calce	token 16: hi harry reid these are loud as slow as quickly as you like now look at the
+6755	cuadro	pos=16.13 calce=16 scroll=132 freno=- trabado=3
+6781	cuadro	pos=16.13 calce=16 scroll=132 freno=- trabado=3
+6785	cuadro	pos=16.13 calce=16 scroll=132 freno=- trabado=3
+6797	llegada	parcial nativo=6785 audio=6749 leido=6763 procesado=6785 rms=0.0241 relevos=1
+6797	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the
+6797	calce	token 16: hi harry reid these are loud as slow as quickly as you like now look at the
+6798	cuadro	pos=16.17 calce=16 scroll=132 freno=- trabado=3
+6839	cuadro	pos=16.17 calce=16 scroll=132 freno=- trabado=3
+6843	cuadro	pos=16.17 calce=16 scroll=132 freno=- trabado=3
+6860	cuadro	pos=16.19 calce=16 scroll=132 freno=- trabado=3
+6880	cuadro	pos=16.25 calce=16 scroll=132 freno=- trabado=3
+6888	llegada	parcial nativo=6880 audio=6849 leido=6875 procesado=6880 rms=0.0223 relevos=1
+6888	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the
+6895	calce	token 16: hi harry reid these are loud as slow as quickly as you like now look at the
+6897	cuadro	pos=16.27 calce=16 scroll=132 freno=- trabado=3
+6915	cuadro	pos=16.27 calce=16 scroll=132 freno=- trabado=3
+6935	cuadro	pos=16.27 calce=16 scroll=132 freno=- trabado=3
+6949	cuadro	pos=16.27 calce=16 scroll=132 freno=- trabado=3
+6975	cuadro	pos=16.27 calce=16 scroll=132 freno=- trabado=3
+6993	cuadro	pos=16.31 calce=16 scroll=132 freno=- trabado=3
+7014	cuadro	pos=16.38 calce=16 scroll=132 freno=- trabado=3
+7028	cuadro	pos=16.42 calce=16 scroll=132 freno=- trabado=3
+7041	llegada	parcial nativo=7038 audio=6949 leido=6999 procesado=7038 rms=0.0179 relevos=1
+7041	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the
+7045	calce	token 16: hi harry reid these are loud as slow as quickly as you like now look at the
+7046	cuadro	pos=16.46 calce=16 scroll=132 freno=- trabado=3
+7076	cuadro	pos=16.46 calce=16 scroll=132 freno=- trabado=3
+7082	cuadro	pos=16.46 calce=16 scroll=132 freno=- trabado=3
+7096	llegada	parcial nativo=7083 audio=7049 leido=7071 procesado=7082 rms=0.0097 relevos=1
+7096	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the
+7103	calce	token 16: hi harry reid these are loud as slow as quickly as you like now look at the
+7104	cuadro	pos=16.46 calce=16 scroll=132 freno=- trabado=3
+7119	cuadro	pos=16.46 calce=16 scroll=132 freno=- trabado=3
+7128	cuadro	pos=16.46 calce=16 scroll=132 freno=- trabado=3
+7153	llegada	parcial nativo=7135 audio=7109 leido=7123 procesado=7135 rms=0.0051 relevos=1
+7153	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the takes
+7154	calce	token 17: hi harry reid these are loud as slow as quickly as you like now look at the takes
+7154	cuadro	pos=16.46 calce=17 scroll=132 freno=- trabado=3
+7165	cuadro	pos=17.04 calce=17 scroll=132 freno=- trabado=3
+7177	cuadro	pos=17.08 calce=17 scroll=132 freno=- trabado=3
+7192	cuadro	pos=17.12 calce=17 scroll=132 freno=- trabado=3
+7208	cuadro	pos=17.17 calce=17 scroll=132 freno=- trabado=3
+7228	cuadro	pos=17.23 calce=17 scroll=132 freno=- trabado=3
+7237	llegada	parcial nativo=7224 audio=7209 leido=7223 procesado=7224 rms=0.0179 relevos=1
+7237	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the takes
+7239	calce	token 17: hi harry reid these are loud as slow as quickly as you like now look at the takes
+7271	cuadro	pos=17.26 calce=17 scroll=132 freno=- trabado=3
+7277	cuadro	pos=17.26 calce=17 scroll=132 freno=- trabado=3
+7282	cuadro	pos=17.26 calce=17 scroll=132 freno=- trabado=3
+7293	cuadro	pos=17.26 calce=17 scroll=132 freno=- trabado=3
+7309	cuadro	pos=17.26 calce=17 scroll=132 freno=- trabado=3
+7331	cuadro	pos=17.29 calce=17 scroll=132 freno=- trabado=3
+7338	llegada	parcial nativo=7329 audio=7309 leido=7322 procesado=7328 rms=0.0085 relevos=1
+7338	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the takes
+7339	calce	token 17: hi harry reid these are loud as slow as quickly as you like now look at the takes
+7344	cuadro	pos=17.31 calce=17 scroll=132 freno=- trabado=3
+7358	cuadro	pos=17.31 calce=17 scroll=132 freno=- trabado=3
+7375	cuadro	pos=17.31 calce=17 scroll=132 freno=- trabado=3
+7392	cuadro	pos=17.31 calce=17 scroll=132 freno=- trabado=3
+7409	cuadro	pos=17.31 calce=17 scroll=132 freno=- trabado=3
+7425	cuadro	pos=17.31 calce=17 scroll=132 freno=- trabado=3
+7441	cuadro	pos=17.31 calce=17 scroll=132 freno=- trabado=3
+7450	llegada	parcial nativo=7439 audio=7409 leido=7421 procesado=7439 rms=0.0076 relevos=1
+7450	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the takes
+7451	calce	token 17: hi harry reid these are loud as slow as quickly as you like now look at the takes
+7458	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7475	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7491	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7521	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7538	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7540	llegada	parcial nativo=7525 audio=7509 leido=7524 procesado=7525 rms=0.0326 relevos=1
+7540	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the takes
+7541	calce	token 17: hi harry reid these are loud as slow as quickly as you like now look at the takes
+7541	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7567	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7575	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7591	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7609	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7630	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7642	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7650	llegada	parcial nativo=7648 audio=7609 leido=7623 procesado=7648 rms=0.0231 relevos=1
+7650	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the takes
+7651	calce	token 17: hi harry reid these are loud as slow as quickly as you like now look at the takes
+7657	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7675	cuadro	pos=17.34 calce=17 scroll=132 freno=- trabado=3
+7678	llegada	parcial nativo=7675 audio=7649 leido=7661 procesado=7675 rms=0.0323 relevos=1
+7678	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the takes you
+7679	calce	token 18: hi harry reid these are loud as slow as quickly as you like now look at the takes you
+7695	cuadro	pos=18.04 calce=18 scroll=132 freno=- trabado=3
+7722	cuadro	pos=18.13 calce=18 scroll=132 freno=- trabado=3
+7730	cuadro	pos=18.16 calce=18 scroll=132 freno=- trabado=3
+7751	cuadro	pos=18.22 calce=18 scroll=132 freno=- trabado=3
+7761	cuadro	pos=18.25 calce=18 scroll=132 freno=- trabado=3
+7781	cuadro	pos=18.31 calce=18 scroll=132 freno=- trabado=3
+7810	cuadro	pos=18.39 calce=18 scroll=132 freno=- trabado=3
+7825	cuadro	pos=18.44 calce=18 scroll=132 freno=- trabado=3
+7846	llegada	parcial nativo=7833 audio=7729 leido=7769 procesado=7833 rms=0.0318 relevos=1
+7846	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the thanks to
+7849	calce	token 18: hi harry reid these are loud as slow as quickly as you like now look at the thanks to
+7870	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+7878	llegada	parcial nativo=7863 audio=7769 leido=7837 procesado=7862 rms=0.0200 relevos=1
+7878	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the takes you
+7879	calce	token 18: hi harry reid these are loud as slow as quickly as you like now look at the takes you
+7879	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+7898	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+7908	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+7921	llegada	parcial nativo=7919 audio=7789 leido=7862 procesado=7919 rms=0.0187 relevos=1
+7921	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the tax
+7922	calce	token 17: hi harry reid these are loud as slow as quickly as you like now look at the tax
+7927	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+7942	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+7957	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+7986	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+8002	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+8021	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+8038	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+8046	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+8058	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+8075	cuadro	pos=18.50 calce=18 scroll=132 freno=- trabado=3
+8135	cuadro	pos=18.64 calce=18 scroll=132 freno=- trabado=3
+8139	cuadro	pos=18.65 calce=18 scroll=132 freno=- trabado=3
+8141	cuadro	pos=18.66 calce=18 scroll=132 freno=- trabado=3
+8148	llegada	parcial nativo=8136 audio=7889 leido=8100 procesado=8135 rms=0.0313 relevos=1
+8148	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the thanks you for
+8153	calce	token 19: hi harry reid these are loud as slow as quickly as you like now look at the thanks you for
+8184	cuadro	pos=18.82 calce=19 scroll=132 freno=- trabado=3
+8186	cuadro	pos=18.82 calce=19 scroll=132 freno=- trabado=3
+8190	cuadro	pos=18.84 calce=19 scroll=132 freno=- trabado=3
+8208	cuadro	pos=18.91 calce=19 scroll=132 freno=- trabado=3
+8224	cuadro	pos=18.97 calce=19 scroll=132 freno=- trabado=3
+8241	cuadro	pos=19.02 calce=19 scroll=139 freno=- trabado=4
+8258	cuadro	pos=19.09 calce=19 scroll=145 freno=- trabado=4
+8266	llegada	parcial nativo=8263 audio=7909 leido=8136 procesado=8262 rms=0.0065 relevos=1
+8266	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the thanks to put
+8268	calce	token 19: hi harry reid these are loud as slow as quickly as you like now look at the thanks to put
+8291	cuadro	pos=19.11 calce=19 scroll=153 freno=- trabado=4
+8313	cuadro	pos=19.14 calce=19 scroll=156 freno=- trabado=4
+8328	cuadro	pos=19.18 calce=19 scroll=158 freno=- trabado=4
+8341	cuadro	pos=19.22 calce=19 scroll=160 freno=- trabado=4
+8358	cuadro	pos=19.27 calce=19 scroll=161 freno=- trabado=4
+8373	cuadro	pos=19.32 calce=19 scroll=162 freno=- trabado=4
+8392	cuadro	pos=19.38 calce=19 scroll=163 freno=- trabado=4
+8408	cuadro	pos=19.42 calce=19 scroll=164 freno=- trabado=4
+8423	cuadro	pos=19.47 calce=19 scroll=164 freno=- trabado=4
+8440	cuadro	pos=19.52 calce=19 scroll=164 freno=- trabado=4
+8458	cuadro	pos=19.57 calce=19 scroll=165 freno=- trabado=4
+8475	cuadro	pos=19.62 calce=19 scroll=165 freno=- trabado=4
+8495	cuadro	pos=19.68 calce=19 scroll=165 freno=- trabado=4
+8507	cuadro	pos=19.72 calce=19 scroll=165 freno=- trabado=4
+8523	cuadro	pos=19.77 calce=19 scroll=166 freno=- trabado=4
+8540	cuadro	pos=19.82 calce=19 scroll=166 freno=- trabado=4
+8557	cuadro	pos=19.87 calce=19 scroll=166 freno=- trabado=4
+8581	cuadro	pos=19.94 calce=19 scroll=166 freno=- trabado=4
+8650	llegada	parcial nativo=8634 audio=8009 leido=8467 procesado=8634 rms=0.0274 relevos=1
+8650	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the thanks to put
+8652	calce	token 19: hi harry reid these are loud as slow as quickly as you like now look at the thanks to put
+8653	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8683	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8685	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8707	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8708	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8722	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8753	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8776	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8789	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8815	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8846	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8882	llegada	parcial nativo=8852 audio=8089 leido=8753 procesado=8851 rms=0.0317 relevos=1
+8882	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the takes two hundred
+8885	calce	token 19: hi harry reid these are loud as slow as quickly as you like now look at the takes two hundred
+8886	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8919	llegada	parcial nativo=8882 audio=8129 leido=8857 procesado=8882 rms=0.0283 relevos=1
+8919	oyo	parcial: hi harry reid these are loud as slow as quickly as you like now look at the takes you would
+8923	calce	token 19: hi harry reid these are loud as slow as quickly as you like now look at the takes you would
+8924	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8942	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4
+8976	cuadro	pos=20.15 calce=19 scroll=166 freno=- trabado=4

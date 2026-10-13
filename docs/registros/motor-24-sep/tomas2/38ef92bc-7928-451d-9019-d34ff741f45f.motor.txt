@@ -1,0 +1,2303 @@
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: 38ef92bc-7928-451d-9019-d34ff741f45f
+# inicio del video (epoch ms): 1790256801894
+# motor de voz: nativo
+# letra: 24 px, serif
+# columna: angosta, margen 5%
+# donde lees: arriba
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana. No dice solo que a veces somos egoístas o crueles. Dice que hay un límite que nunca vamos a poder superar. Sin importar qué tan buena sea nuestra formación, o las leyes o las circunstancias, y este límite es el interés propio, y se expresa en las ganas de estatus, de aparentar o de engañarnos solos. Esta idea dice que somos así y ninguna reforma o método educativo o entorno familiar lo va a poder cambiar. Somos lo que somos. 
+# | Cuando alguien toma en serio esta idea, casi siempre da un paso más. Dice: si estamos llenos de sesgos, prejuicios y egoísmos, entonces estamos en general contaminados. Y si es asi, todo proyecto de mejora en la política, la ciencia o las instituciones es, en buena parte, un derroche de tiempo, de recursos. Este razonamiento, logico, es la explicación favorita de la desconfianza que vemos hoy hacia la política, aquí en Chile y en el mundo: si los políticos son así por naturaleza —y sobran los ejemplos—, ¿para qué confiar en reformas, instituciones, partidos? de todas formas parece que estamos condenados a repetir lo que somos en todo lo que hacemos. hablemos de un subsecretario o del tesorero del colegio.
+# | con la parte trágica, nuestra naturaleza, tiene evidencia a favor hasta ahogarnos, tenemos poco que hacer. Pero con la conclusión errónea que se saca de ella podemos hacer mucho. Nuestra motivación moral tiene un límite estable que no vamos a superar, pero eso no indica que estamos condenados a la ignorancia política y social para siempre. La naturaleza puede ser trágica. Pero la razón y el conocimiento no tienen por qué serlo.
+# | Platón nos dejo uno de los experimentos mentales más poderosos de toda la filosofía: el anillo de Giges, en La República. Glaucón, el hermano de platón, cuenta la historia de un pastor que encuentra un anillo mágico. Ese anillo lo vuelve invisible cuando quiere. Y en cuanto descubre ese poder, despues de algunas acciones, seduce a la reina, mata al rey y se queda con el trono. El anillo no lo convirtió en una mala persona, pero le quitó las consecuencias de ser una mala persona.
+# ---------------------------------------------
+
+ms	tipo	detalle
+12	renglones	0 4 7 10 13 17 21 25 30 34 37 41 44 48 51 55 60 65 68 71 75 79 83 87 90 94 97 102 106 110 113 116 119 121 126 130 135 139 142 146 148 150 153 156 158 162 166 172 176 179 182 185 186 187 190 193 196 200 204 207 211 214 218 220 224 226 229 233 235 240 242 244 246 250 254 258 261 264 267 271 274 279 282 286 291 293 295 299 303 307 310 314 318 321 324 327 329 333 336 339 343 349 354 358 362 366 369
+12	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+26	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+43	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+58	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+77	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+93	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+109	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+125	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+143	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+158	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+178	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+193	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+209	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+224	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+243	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+259	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+277	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+292	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+315	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+324	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+345	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+357	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+375	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+389	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+408	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+424	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+442	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+458	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+475	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+491	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+510	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+524	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+547	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+556	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+578	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+588	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+607	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+623	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+639	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+655	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+676	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+691	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+708	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+722	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+740	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+754	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+776	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+787	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+803	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+823	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+839	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+856	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+872	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+889	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+898	llegada	parcial nativo=896
+903	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+921	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+939	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+954	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+972	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+988	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1007	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1021	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1041	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1053	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1069	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1086	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1102	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1119	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1144	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1153	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1169	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1185	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1202	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1219	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1235	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1251	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1269	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1285	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1301	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1318	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1322	llegada	parcial nativo=1321
+1323	llegada	parcial nativo=1321
+1335	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1351	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1368	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1385	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1401	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1418	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1434	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1451	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1467	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1484	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1500	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1518	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1521	llegada	parcial nativo=1518
+1534	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1551	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1568	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1584	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1601	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1617	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1634	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1650	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1667	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1683	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1700	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1717	cuadro	pos=0.00 calce=0 scroll=0 freno=silencio trabado=0
+1729	llegada	parcial nativo=1727
+1729	oyo	parcial: hay una
+1730	calce	token 1: hay una
+1749	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1754	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1768	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1782	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1799	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1816	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1833	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1849	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1866	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1882	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1899	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1915	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1932	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1948	cuadro	pos=0.00 calce=1 scroll=0 freno=sin-calce trabado=0
+1956	llegada	parcial nativo=1954
+1956	oyo	parcial: hay una idea
+1957	calce	token 2: hay una idea
+1974	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+1981	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+1998	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2014	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2032	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2049	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2065	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2082	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2103	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2114	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2117	llegada	parcial nativo=2116
+2117	oyo	parcial: hay una y de
+2117	calce	NO CALZO: hay una y de
+2131	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2148	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2165	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2181	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2198	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2215	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2231	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2248	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2264	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2281	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2297	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2313	cuadro	pos=0.00 calce=2 scroll=0 freno=sin-calce trabado=0
+2315	llegada	parcial nativo=2313
+2315	oyo	parcial: hay una idea antigua
+2316	calce	token 3: hay una idea antigua
+2330	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2348	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2364	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2379	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2397	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2414	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2430	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2446	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2464	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2480	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2485	llegada	parcial nativo=2482
+2485	oyo	parcial: hay una idea antigua
+2486	calce	token 3: hay una idea antigua
+2496	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2512	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2529	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2546	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2562	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2580	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2596	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2613	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2628	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2644	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2663	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2679	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2695	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2711	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2728	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2730	llegada	parcial nativo=2729
+2730	oyo	parcial: hay una idea antigua
+2731	calce	token 3: hay una idea antigua
+2747	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2761	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2779	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2795	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2811	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2827	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2844	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2862	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2879	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2894	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2910	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2927	cuadro	pos=0.00 calce=3 scroll=0 freno=sin-calce trabado=0
+2930	llegada	parcial nativo=2929
+2930	oyo	parcial: hay una idea antigua que
+2931	calce	token 4: hay una idea antigua que
+2946	cuadro	pos=0.00 calce=4 scroll=0 freno=sin-calce trabado=0
+2961	cuadro	pos=0.00 calce=4 scroll=0 freno=sin-calce trabado=0
+2979	cuadro	pos=0.00 calce=4 scroll=0 freno=sin-calce trabado=0
+2993	cuadro	pos=0.00 calce=4 scroll=0 freno=sin-calce trabado=0
+3012	cuadro	pos=0.00 calce=4 scroll=0 freno=sin-calce trabado=0
+3026	cuadro	pos=0.00 calce=4 scroll=0 freno=sin-calce trabado=0
+3045	cuadro	pos=0.00 calce=4 scroll=0 freno=sin-calce trabado=0
+3060	cuadro	pos=0.00 calce=4 scroll=0 freno=sin-calce trabado=0
+3077	cuadro	pos=0.00 calce=4 scroll=0 freno=sin-calce trabado=0
+3094	cuadro	pos=0.00 calce=4 scroll=0 freno=sin-calce trabado=0
+3109	cuadro	pos=0.00 calce=4 scroll=0 freno=sin-calce trabado=0
+3129	cuadro	pos=0.00 calce=4 scroll=0 freno=sin-calce trabado=0
+3136	llegada	parcial nativo=3134
+3136	oyo	parcial: hay una idea antigua que podríamos
+3137	calce	token 5: hay una idea antigua que podríamos
+3148	cuadro	pos=0.04 calce=5 scroll=0 freno=- trabado=0
+3159	cuadro	pos=0.14 calce=5 scroll=0 freno=- trabado=0
+3175	cuadro	pos=0.18 calce=5 scroll=0 freno=- trabado=0
+3193	cuadro	pos=0.22 calce=5 scroll=0 freno=- trabado=0
+3209	cuadro	pos=0.27 calce=5 scroll=0 freno=- trabado=0
+3225	cuadro	pos=0.32 calce=5 scroll=0 freno=- trabado=0
+3244	cuadro	pos=0.38 calce=5 scroll=0 freno=- trabado=0
+3259	cuadro	pos=0.44 calce=5 scroll=0 freno=- trabado=0
+3276	cuadro	pos=0.51 calce=5 scroll=0 freno=- trabado=0
+3292	cuadro	pos=0.58 calce=5 scroll=0 freno=- trabado=0
+3308	cuadro	pos=0.65 calce=5 scroll=0 freno=- trabado=0
+3325	cuadro	pos=0.74 calce=5 scroll=0 freno=- trabado=0
+3342	cuadro	pos=0.83 calce=5 scroll=0 freno=- trabado=0
+3356	llegada	parcial nativo=3354
+3356	oyo	parcial: hay una idea antigua que podríamos llamar
+3357	calce	token 6: hay una idea antigua que podríamos llamar
+3358	cuadro	pos=0.92 calce=6 scroll=0 freno=- trabado=0
+3375	cuadro	pos=1.05 calce=6 scroll=0 freno=- trabado=0
+3391	cuadro	pos=1.16 calce=6 scroll=0 freno=- trabado=0
+3409	cuadro	pos=1.28 calce=6 scroll=0 freno=- trabado=0
+3424	cuadro	pos=1.39 calce=6 scroll=0 freno=- trabado=0
+3443	cuadro	pos=1.53 calce=6 scroll=0 freno=- trabado=0
+3458	cuadro	pos=1.65 calce=6 scroll=0 freno=- trabado=0
+3477	cuadro	pos=1.80 calce=6 scroll=0 freno=- trabado=0
+3491	cuadro	pos=1.91 calce=6 scroll=0 freno=- trabado=0
+3510	cuadro	pos=2.07 calce=6 scroll=0 freno=- trabado=0
+3519	llegada	parcial nativo=3518
+3520	oyo	parcial: hay una idea antigua que podríamos llamar
+3520	calce	token 6: hay una idea antigua que podríamos llamar
+3535	cuadro	pos=3.61 calce=6 scroll=0 freno=- trabado=0
+3545	cuadro	pos=3.69 calce=6 scroll=0 freno=- trabado=0
+3556	cuadro	pos=3.77 calce=6 scroll=0 freno=- trabado=0
+3575	cuadro	pos=3.90 calce=6 scroll=0 freno=- trabado=0
+3589	cuadro	pos=4.00 calce=6 scroll=0 freno=- trabado=0
+3611	cuadro	pos=4.15 calce=6 scroll=0 freno=- trabado=0
+3623	cuadro	pos=4.22 calce=6 scroll=0 freno=- trabado=0
+3642	cuadro	pos=4.34 calce=6 scroll=0 freno=- trabado=0
+3657	cuadro	pos=4.44 calce=6 scroll=0 freno=- trabado=0
+3677	cuadro	pos=4.56 calce=6 scroll=0 freno=- trabado=0
+3687	llegada	parcial nativo=3686
+3687	oyo	parcial: hay una idea antigua que podríamos llamar
+3688	calce	token 6: hay una idea antigua que podríamos llamar
+3692	cuadro	pos=5.08 calce=6 scroll=0 freno=- trabado=0
+3707	cuadro	pos=5.15 calce=6 scroll=0 freno=- trabado=0
+3723	cuadro	pos=5.22 calce=6 scroll=0 freno=- trabado=0
+3742	cuadro	pos=5.30 calce=6 scroll=0 freno=- trabado=0
+3755	cuadro	pos=5.36 calce=6 scroll=0 freno=- trabado=0
+3776	cuadro	pos=5.45 calce=6 scroll=0 freno=- trabado=0
+3790	cuadro	pos=5.50 calce=6 scroll=0 freno=- trabado=0
+3811	cuadro	pos=5.60 calce=6 scroll=0 freno=- trabado=0
+3826	cuadro	pos=5.65 calce=6 scroll=0 freno=- trabado=0
+3841	cuadro	pos=5.72 calce=6 scroll=0 freno=- trabado=0
+3859	cuadro	pos=5.79 calce=6 scroll=0 freno=- trabado=0
+3876	cuadro	pos=5.85 calce=6 scroll=0 freno=- trabado=0
+3888	cuadro	pos=5.90 calce=6 scroll=0 freno=- trabado=0
+3908	cuadro	pos=5.98 calce=6 scroll=0 freno=- trabado=0
+3909	llegada	parcial nativo=3907
+3909	oyo	parcial: hay una idea antigua que podríamos llamar
+3909	calce	token 6: hay una idea antigua que podríamos llamar
+3921	cuadro	pos=6.03 calce=6 scroll=0 freno=- trabado=1
+3941	cuadro	pos=6.09 calce=6 scroll=0 freno=- trabado=1
+3955	cuadro	pos=6.12 calce=6 scroll=0 freno=- trabado=1
+3973	cuadro	pos=6.17 calce=6 scroll=0 freno=- trabado=1
+3988	cuadro	pos=6.21 calce=6 scroll=0 freno=- trabado=1
+4007	cuadro	pos=6.26 calce=6 scroll=0 freno=- trabado=1
+4021	cuadro	pos=6.30 calce=6 scroll=0 freno=- trabado=1
+4042	cuadro	pos=6.35 calce=6 scroll=0 freno=- trabado=1
+4055	cuadro	pos=6.39 calce=6 scroll=0 freno=- trabado=1
+4073	cuadro	pos=6.44 calce=6 scroll=0 freno=- trabado=1
+4088	cuadro	pos=6.48 calce=6 scroll=0 freno=- trabado=1
+4105	cuadro	pos=6.53 calce=6 scroll=0 freno=- trabado=1
+4120	cuadro	pos=6.56 calce=6 scroll=0 freno=- trabado=1
+4138	cuadro	pos=6.61 calce=6 scroll=0 freno=- trabado=1
+4153	cuadro	pos=6.65 calce=6 scroll=0 freno=- trabado=1
+4172	cuadro	pos=6.70 calce=6 scroll=0 freno=- trabado=1
+4187	cuadro	pos=6.74 calce=6 scroll=0 freno=- trabado=1
+4198	llegada	parcial nativo=4196
+4198	oyo	parcial: hay una idea antigua que podríamos llamar la
+4199	calce	token 7: hay una idea antigua que podríamos llamar la
+4210	cuadro	pos=7.03 calce=7 scroll=0 freno=- trabado=1
+4220	cuadro	pos=7.06 calce=7 scroll=0 freno=- trabado=1
+4239	cuadro	pos=7.11 calce=7 scroll=0 freno=- trabado=1
+4253	cuadro	pos=7.14 calce=7 scroll=0 freno=- trabado=1
+4271	cuadro	pos=7.19 calce=7 scroll=0 freno=- trabado=1
+4286	cuadro	pos=7.23 calce=7 scroll=0 freno=- trabado=1
+4303	cuadro	pos=7.27 calce=7 scroll=0 freno=- trabado=1
+4320	cuadro	pos=7.32 calce=7 scroll=0 freno=- trabado=1
+4323	llegada	parcial nativo=4322
+4323	oyo	parcial: hay una idea antigua que podríamos llamar la
+4324	calce	token 7: hay una idea antigua que podríamos llamar la
+4338	cuadro	pos=7.33 calce=7 scroll=0 freno=- trabado=1
+4352	cuadro	pos=7.33 calce=7 scroll=0 freno=- trabado=1
+4372	cuadro	pos=7.33 calce=7 scroll=0 freno=- trabado=1
+4386	cuadro	pos=7.33 calce=7 scroll=0 freno=- trabado=1
+4406	cuadro	pos=7.33 calce=7 scroll=0 freno=- trabado=1
+4419	cuadro	pos=7.33 calce=7 scroll=0 freno=- trabado=1
+4439	cuadro	pos=7.33 calce=7 scroll=0 freno=- trabado=1
+4453	cuadro	pos=7.34 calce=7 scroll=0 freno=- trabado=1
+4472	cuadro	pos=7.39 calce=7 scroll=0 freno=- trabado=1
+4486	cuadro	pos=7.42 calce=7 scroll=0 freno=- trabado=1
+4503	cuadro	pos=7.47 calce=7 scroll=0 freno=- trabado=1
+4519	cuadro	pos=7.51 calce=7 scroll=0 freno=- trabado=1
+4523	llegada	parcial nativo=4519
+4523	oyo	parcial: hay una idea antigua que podríamos llamar la concepción
+4523	calce	token 8: hay una idea antigua que podríamos llamar la concepción
+4542	cuadro	pos=8.04 calce=8 scroll=0 freno=- trabado=1
+4551	cuadro	pos=8.07 calce=8 scroll=0 freno=- trabado=1
+4569	cuadro	pos=8.12 calce=8 scroll=0 freno=- trabado=1
+4585	cuadro	pos=8.16 calce=8 scroll=0 freno=- trabado=1
+4607	cuadro	pos=8.21 calce=8 scroll=0 freno=- trabado=1
+4618	cuadro	pos=8.24 calce=8 scroll=0 freno=- trabado=1
+4635	cuadro	pos=8.29 calce=8 scroll=0 freno=- trabado=1
+4651	cuadro	pos=8.33 calce=8 scroll=0 freno=- trabado=1
+4668	cuadro	pos=8.37 calce=8 scroll=0 freno=- trabado=1
+4684	cuadro	pos=8.41 calce=8 scroll=0 freno=- trabado=1
+4701	cuadro	pos=8.46 calce=8 scroll=0 freno=- trabado=1
+4718	cuadro	pos=8.50 calce=8 scroll=0 freno=- trabado=1
+4741	cuadro	pos=8.56 calce=8 scroll=0 freno=- trabado=1
+4751	cuadro	pos=8.59 calce=8 scroll=0 freno=- trabado=1
+4768	llegada	parcial nativo=4766
+4768	oyo	parcial: hay una idea antigua que podríamos llamar la concepción
+4770	calce	token 8: hay una idea antigua que podríamos llamar la concepción
+4771	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4784	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4800	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4817	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4834	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4850	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4867	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4883	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4889	llegada	parcial nativo=4887
+4889	oyo	parcial: hay una idea antigua que podríamos llamar la concepción
+4890	calce	token 8: hay una idea antigua que podríamos llamar la concepción
+4900	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4916	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4933	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4949	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4966	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4982	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+4999	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5016	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5033	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5050	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5066	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5083	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5099	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5116	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5118	llegada	parcial nativo=5116
+5118	oyo	parcial: hay una idea antigua que podríamos llamar la concepción
+5120	calce	token 8: hay una idea antigua que podríamos llamar la concepción
+5133	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5149	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5166	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5182	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5200	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5215	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5232	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5250	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5266	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5281	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5298	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5315	cuadro	pos=8.63 calce=8 scroll=0 freno=- trabado=1
+5323	llegada	parcial nativo=5322
+5324	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica
+5325	calce	token 9: hay una idea antigua que podríamos llamar la concepción trágica
+5343	cuadro	pos=9.05 calce=9 scroll=11 freno=- trabado=2
+5348	cuadro	pos=9.06 calce=9 scroll=13 freno=- trabado=2
+5365	cuadro	pos=9.10 calce=9 scroll=17 freno=- trabado=2
+5381	cuadro	pos=9.14 calce=9 scroll=21 freno=- trabado=2
+5398	cuadro	pos=9.18 calce=9 scroll=23 freno=- trabado=2
+5414	cuadro	pos=9.22 calce=9 scroll=25 freno=- trabado=2
+5431	cuadro	pos=9.26 calce=9 scroll=27 freno=- trabado=2
+5447	cuadro	pos=9.30 calce=9 scroll=28 freno=- trabado=2
+5463	cuadro	pos=9.34 calce=9 scroll=29 freno=- trabado=2
+5481	cuadro	pos=9.38 calce=9 scroll=30 freno=- trabado=2
+5497	cuadro	pos=9.42 calce=9 scroll=31 freno=- trabado=2
+5513	cuadro	pos=9.46 calce=9 scroll=31 freno=- trabado=2
+5530	cuadro	pos=9.50 calce=9 scroll=32 freno=- trabado=2
+5534	llegada	parcial nativo=5531
+5534	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la
+5538	calce	token 11: hay una idea antigua que podríamos llamar la concepción trágica de la
+5552	cuadro	pos=10.52 calce=11 scroll=32 freno=- trabado=2
+5563	cuadro	pos=10.57 calce=11 scroll=32 freno=- trabado=2
+5580	cuadro	pos=10.65 calce=11 scroll=33 freno=- trabado=2
+5597	cuadro	pos=10.72 calce=11 scroll=33 freno=- trabado=2
+5613	cuadro	pos=10.79 calce=11 scroll=33 freno=- trabado=2
+5629	cuadro	pos=10.85 calce=11 scroll=33 freno=- trabado=2
+5646	cuadro	pos=10.90 calce=11 scroll=33 freno=- trabado=2
+5664	cuadro	pos=10.96 calce=11 scroll=33 freno=- trabado=2
+5684	cuadro	pos=11.02 calce=11 scroll=33 freno=- trabado=2
+5696	cuadro	pos=11.06 calce=11 scroll=33 freno=- trabado=2
+5712	cuadro	pos=11.11 calce=11 scroll=33 freno=- trabado=2
+5729	cuadro	pos=11.16 calce=11 scroll=33 freno=- trabado=2
+5745	cuadro	pos=11.21 calce=11 scroll=33 freno=- trabado=2
+5749	llegada	parcial nativo=5746
+5749	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la
+5750	calce	token 11: hay una idea antigua que podríamos llamar la concepción trágica de la
+5762	cuadro	pos=11.23 calce=11 scroll=33 freno=- trabado=2
+5778	cuadro	pos=11.23 calce=11 scroll=33 freno=- trabado=2
+5795	cuadro	pos=11.23 calce=11 scroll=33 freno=- trabado=2
+5812	cuadro	pos=11.23 calce=11 scroll=33 freno=- trabado=2
+5829	cuadro	pos=11.23 calce=11 scroll=33 freno=- trabado=2
+5845	cuadro	pos=11.24 calce=11 scroll=33 freno=- trabado=2
+5862	cuadro	pos=11.28 calce=11 scroll=33 freno=- trabado=2
+5879	cuadro	pos=11.33 calce=11 scroll=33 freno=- trabado=2
+5895	cuadro	pos=11.36 calce=11 scroll=33 freno=- trabado=2
+5911	cuadro	pos=11.41 calce=11 scroll=33 freno=- trabado=2
+5924	llegada	parcial nativo=5923
+5924	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza
+5924	calce	token 12: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza
+5931	cuadro	pos=11.71 calce=12 scroll=33 freno=- trabado=2
+5945	cuadro	pos=11.76 calce=12 scroll=33 freno=- trabado=2
+5962	cuadro	pos=11.81 calce=12 scroll=33 freno=- trabado=2
+5978	cuadro	pos=11.86 calce=12 scroll=33 freno=- trabado=2
+5995	cuadro	pos=11.92 calce=12 scroll=33 freno=- trabado=2
+6011	cuadro	pos=11.97 calce=12 scroll=33 freno=- trabado=2
+6028	cuadro	pos=12.02 calce=12 scroll=41 freno=- trabado=3
+6045	cuadro	pos=12.07 calce=12 scroll=46 freno=- trabado=3
+6063	cuadro	pos=12.12 calce=12 scroll=51 freno=- trabado=3
+6080	cuadro	pos=12.17 calce=12 scroll=55 freno=- trabado=3
+6086	llegada	parcial nativo=6085
+6086	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza
+6087	calce	token 12: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza
+6094	cuadro	pos=12.19 calce=12 scroll=57 freno=- trabado=3
+6110	cuadro	pos=12.19 calce=12 scroll=59 freno=- trabado=3
+6127	cuadro	pos=12.19 calce=12 scroll=61 freno=- trabado=3
+6146	cuadro	pos=12.19 calce=12 scroll=62 freno=- trabado=3
+6160	cuadro	pos=12.19 calce=12 scroll=63 freno=- trabado=3
+6176	cuadro	pos=12.23 calce=12 scroll=64 freno=- trabado=3
+6194	cuadro	pos=12.28 calce=12 scroll=65 freno=- trabado=3
+6210	cuadro	pos=12.32 calce=12 scroll=65 freno=- trabado=3
+6227	cuadro	pos=12.36 calce=12 scroll=66 freno=- trabado=3
+6244	cuadro	pos=12.40 calce=12 scroll=66 freno=- trabado=3
+6262	cuadro	pos=12.45 calce=12 scroll=66 freno=- trabado=3
+6277	cuadro	pos=12.49 calce=12 scroll=67 freno=- trabado=3
+6294	cuadro	pos=12.53 calce=12 scroll=67 freno=- trabado=3
+6309	cuadro	pos=12.57 calce=12 scroll=67 freno=- trabado=3
+6326	cuadro	pos=12.61 calce=12 scroll=67 freno=- trabado=3
+6342	cuadro	pos=12.65 calce=12 scroll=67 freno=- trabado=3
+6345	llegada	parcial nativo=6343
+6345	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6345	calce	token 13: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6359	cuadro	pos=13.04 calce=13 scroll=67 freno=- trabado=3
+6375	cuadro	pos=13.08 calce=13 scroll=67 freno=- trabado=3
+6393	cuadro	pos=13.12 calce=13 scroll=67 freno=- trabado=3
+6409	cuadro	pos=13.16 calce=13 scroll=67 freno=- trabado=3
+6426	cuadro	pos=13.20 calce=13 scroll=67 freno=- trabado=3
+6442	cuadro	pos=13.24 calce=13 scroll=67 freno=- trabado=3
+6459	cuadro	pos=13.28 calce=13 scroll=67 freno=- trabado=3
+6476	cuadro	pos=13.33 calce=13 scroll=67 freno=- trabado=3
+6492	cuadro	pos=13.37 calce=13 scroll=67 freno=- trabado=3
+6512	cuadro	pos=13.42 calce=13 scroll=67 freno=- trabado=3
+6519	llegada	parcial nativo=6518
+6519	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6519	calce	token 13: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6526	cuadro	pos=13.43 calce=13 scroll=67 freno=- trabado=3
+6542	cuadro	pos=13.43 calce=13 scroll=67 freno=- trabado=3
+6558	cuadro	pos=13.43 calce=13 scroll=67 freno=- trabado=3
+6574	cuadro	pos=13.43 calce=13 scroll=67 freno=- trabado=3
+6592	cuadro	pos=13.43 calce=13 scroll=67 freno=- trabado=3
+6609	cuadro	pos=13.43 calce=13 scroll=67 freno=- trabado=3
+6624	cuadro	pos=13.43 calce=13 scroll=67 freno=- trabado=3
+6641	cuadro	pos=13.43 calce=13 scroll=67 freno=- trabado=3
+6658	cuadro	pos=13.43 calce=13 scroll=67 freno=- trabado=3
+6675	cuadro	pos=13.43 calce=13 scroll=67 freno=- trabado=3
+6692	cuadro	pos=13.43 calce=13 scroll=67 freno=- trabado=3
+6695	llegada	parcial nativo=6692
+6695	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6696	calce	token 13: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana
+6707	cuadro	pos=13.44 calce=13 scroll=67 freno=- trabado=3
+6724	cuadro	pos=13.44 calce=13 scroll=67 freno=- trabado=3
+6742	cuadro	pos=13.44 calce=13 scroll=67 freno=- trabado=3
+6757	cuadro	pos=13.44 calce=13 scroll=67 freno=- trabado=3
+6776	cuadro	pos=13.44 calce=13 scroll=67 freno=- trabado=3
+6791	cuadro	pos=13.44 calce=13 scroll=67 freno=- trabado=3
+6808	cuadro	pos=13.44 calce=13 scroll=67 freno=- trabado=3
+6824	cuadro	pos=13.44 calce=13 scroll=67 freno=- trabado=3
+6843	cuadro	pos=13.44 calce=13 scroll=67 freno=- trabado=3
+6856	cuadro	pos=13.44 calce=13 scroll=67 freno=- trabado=3
+6874	cuadro	pos=13.45 calce=13 scroll=67 freno=- trabado=3
+6889	cuadro	pos=13.48 calce=13 scroll=67 freno=- trabado=3
+6907	cuadro	pos=13.53 calce=13 scroll=67 freno=- trabado=3
+6922	llegada	parcial nativo=6920
+6922	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no
+6923	calce	token 14: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no
+6924	cuadro	pos=13.57 calce=14 scroll=67 freno=- trabado=3
+6940	cuadro	pos=13.86 calce=14 scroll=67 freno=- trabado=3
+6956	cuadro	pos=13.91 calce=14 scroll=67 freno=- trabado=3
+6974	cuadro	pos=13.96 calce=14 scroll=67 freno=- trabado=3
+6990	cuadro	pos=14.00 calce=14 scroll=67 freno=- trabado=3
+7008	cuadro	pos=14.06 calce=14 scroll=67 freno=- trabado=3
+7023	cuadro	pos=14.10 calce=14 scroll=67 freno=- trabado=3
+7042	cuadro	pos=14.15 calce=14 scroll=67 freno=- trabado=3
+7056	cuadro	pos=14.19 calce=14 scroll=67 freno=- trabado=3
+7074	cuadro	pos=14.24 calce=14 scroll=67 freno=- trabado=3
+7090	cuadro	pos=14.29 calce=14 scroll=67 freno=- trabado=3
+7105	cuadro	pos=14.33 calce=14 scroll=67 freno=- trabado=3
+7122	cuadro	pos=14.38 calce=14 scroll=67 freno=- trabado=3
+7130	llegada	parcial nativo=7129
+7130	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no
+7131	calce	token 14: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no
+7145	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7155	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7171	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7190	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7205	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7221	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7240	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7255	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7272	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7281	llegada	parcial nativo=7279
+7281	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no
+7282	calce	token 14: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no
+7292	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7306	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7321	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7339	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7354	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7372	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7388	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7408	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7420	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7438	cuadro	pos=14.40 calce=14 scroll=67 freno=- trabado=3
+7455	cuadro	pos=14.44 calce=14 scroll=67 freno=- trabado=3
+7473	cuadro	pos=14.48 calce=14 scroll=67 freno=- trabado=3
+7486	cuadro	pos=14.52 calce=14 scroll=67 freno=- trabado=3
+7503	cuadro	pos=14.56 calce=14 scroll=67 freno=- trabado=3
+7520	cuadro	pos=14.60 calce=14 scroll=67 freno=- trabado=3
+7537	cuadro	pos=14.64 calce=14 scroll=67 freno=- trabado=3
+7546	llegada	parcial nativo=7545
+7546	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice
+7549	calce	token 15: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice
+7558	cuadro	pos=15.03 calce=15 scroll=76 freno=- trabado=4
+7570	cuadro	pos=15.06 calce=15 scroll=80 freno=- trabado=4
+7586	cuadro	pos=15.10 calce=15 scroll=84 freno=- trabado=4
+7604	cuadro	pos=15.15 calce=15 scroll=88 freno=- trabado=4
+7619	cuadro	pos=15.19 calce=15 scroll=90 freno=- trabado=4
+7639	cuadro	pos=15.24 calce=15 scroll=93 freno=- trabado=4
+7653	cuadro	pos=15.27 calce=15 scroll=94 freno=- trabado=4
+7671	cuadro	pos=15.32 calce=15 scroll=96 freno=- trabado=4
+7686	cuadro	pos=15.36 calce=15 scroll=97 freno=- trabado=4
+7703	cuadro	pos=15.40 calce=15 scroll=97 freno=- trabado=4
+7720	cuadro	pos=15.44 calce=15 scroll=98 freno=- trabado=4
+7736	cuadro	pos=15.49 calce=15 scroll=98 freno=- trabado=4
+7739	llegada	parcial nativo=7737
+7740	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo
+7740	calce	token 16: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo
+7752	cuadro	pos=16.03 calce=16 scroll=99 freno=- trabado=4
+7772	cuadro	pos=16.09 calce=16 scroll=99 freno=- trabado=4
+7785	cuadro	pos=16.12 calce=16 scroll=99 freno=- trabado=4
+7803	cuadro	pos=16.17 calce=16 scroll=100 freno=- trabado=4
+7818	cuadro	pos=16.21 calce=16 scroll=100 freno=- trabado=4
+7837	cuadro	pos=16.26 calce=16 scroll=100 freno=- trabado=4
+7852	cuadro	pos=16.30 calce=16 scroll=100 freno=- trabado=4
+7871	cuadro	pos=16.35 calce=16 scroll=100 freno=- trabado=4
+7885	cuadro	pos=16.39 calce=16 scroll=100 freno=- trabado=4
+7902	cuadro	pos=16.43 calce=16 scroll=100 freno=- trabado=4
+7918	cuadro	pos=16.47 calce=16 scroll=100 freno=- trabado=4
+7939	cuadro	pos=16.53 calce=16 scroll=100 freno=- trabado=4
+7951	cuadro	pos=16.56 calce=16 scroll=100 freno=- trabado=4
+7960	llegada	parcial nativo=7959
+7960	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a
+7961	calce	token 18: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a
+7970	cuadro	pos=17.25 calce=18 scroll=100 freno=- trabado=4
+7984	cuadro	pos=17.32 calce=18 scroll=100 freno=- trabado=4
+8004	cuadro	pos=17.41 calce=18 scroll=100 freno=- trabado=4
+8017	cuadro	pos=17.47 calce=18 scroll=100 freno=- trabado=4
+8039	cuadro	pos=17.57 calce=18 scroll=100 freno=- trabado=4
+8051	cuadro	pos=17.62 calce=18 scroll=100 freno=- trabado=4
+8069	cuadro	pos=17.70 calce=18 scroll=100 freno=- trabado=4
+8084	cuadro	pos=17.76 calce=18 scroll=100 freno=- trabado=4
+8102	cuadro	pos=17.83 calce=18 scroll=100 freno=- trabado=4
+8117	cuadro	pos=17.89 calce=18 scroll=100 freno=- trabado=4
+8127	llegada	parcial nativo=8126
+8128	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces
+8129	calce	token 19: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces
+8143	cuadro	pos=18.13 calce=19 scroll=100 freno=- trabado=4
+8150	cuadro	pos=18.17 calce=19 scroll=100 freno=- trabado=4
+8174	cuadro	pos=18.29 calce=19 scroll=100 freno=- trabado=4
+8183	cuadro	pos=18.34 calce=19 scroll=100 freno=- trabado=4
+8203	cuadro	pos=18.43 calce=19 scroll=100 freno=- trabado=4
+8216	cuadro	pos=18.50 calce=19 scroll=100 freno=- trabado=4
+8233	cuadro	pos=18.58 calce=19 scroll=100 freno=- trabado=4
+8250	cuadro	pos=18.66 calce=19 scroll=100 freno=- trabado=4
+8272	cuadro	pos=18.76 calce=19 scroll=100 freno=- trabado=4
+8283	cuadro	pos=18.81 calce=19 scroll=100 freno=- trabado=4
+8301	llegada	parcial nativo=8297
+8301	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces
+8303	calce	token 19: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces
+8306	cuadro	pos=18.92 calce=19 scroll=100 freno=- trabado=4
+8315	cuadro	pos=19.04 calce=19 scroll=105 freno=- trabado=5
+8338	cuadro	pos=19.12 calce=19 scroll=113 freno=- trabado=5
+8349	cuadro	pos=19.15 calce=19 scroll=116 freno=- trabado=5
+8367	cuadro	pos=19.20 calce=19 scroll=120 freno=- trabado=5
+8382	cuadro	pos=19.25 calce=19 scroll=123 freno=- trabado=5
+8404	cuadro	pos=19.32 calce=19 scroll=126 freno=- trabado=5
+8416	cuadro	pos=19.35 calce=19 scroll=127 freno=- trabado=5
+8435	cuadro	pos=19.41 calce=19 scroll=129 freno=- trabado=5
+8448	cuadro	pos=19.46 calce=19 scroll=130 freno=- trabado=5
+8467	cuadro	pos=19.51 calce=19 scroll=131 freno=- trabado=5
+8482	cuadro	pos=19.56 calce=19 scroll=132 freno=- trabado=5
+8486	llegada	parcial nativo=8483
+8486	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces
+8487	calce	token 19: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces
+8499	cuadro	pos=19.57 calce=19 scroll=132 freno=- trabado=5
+8515	cuadro	pos=19.57 calce=19 scroll=133 freno=- trabado=5
+8532	cuadro	pos=19.57 calce=19 scroll=133 freno=- trabado=5
+8548	cuadro	pos=19.57 calce=19 scroll=133 freno=- trabado=5
+8565	cuadro	pos=19.57 calce=19 scroll=134 freno=- trabado=5
+8581	cuadro	pos=19.57 calce=19 scroll=134 freno=- trabado=5
+8599	cuadro	pos=19.57 calce=19 scroll=134 freno=- trabado=5
+8615	cuadro	pos=19.57 calce=19 scroll=134 freno=- trabado=5
+8631	cuadro	pos=19.57 calce=19 scroll=134 freno=- trabado=5
+8648	cuadro	pos=19.57 calce=19 scroll=134 freno=- trabado=5
+8666	cuadro	pos=19.57 calce=19 scroll=134 freno=- trabado=5
+8680	cuadro	pos=19.60 calce=19 scroll=134 freno=- trabado=5
+8698	cuadro	pos=19.65 calce=19 scroll=134 freno=- trabado=5
+8714	cuadro	pos=19.70 calce=19 scroll=134 freno=- trabado=5
+8730	cuadro	pos=19.75 calce=19 scroll=134 freno=- trabado=5
+8746	cuadro	pos=19.81 calce=19 scroll=134 freno=- trabado=5
+8763	cuadro	pos=19.86 calce=19 scroll=134 freno=- trabado=5
+8780	cuadro	pos=19.91 calce=19 scroll=134 freno=- trabado=5
+8783	llegada	parcial nativo=8781
+8783	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces
+8784	calce	token 19: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces
+8797	cuadro	pos=19.92 calce=19 scroll=134 freno=- trabado=5
+8814	cuadro	pos=19.92 calce=19 scroll=134 freno=- trabado=5
+8830	cuadro	pos=19.92 calce=19 scroll=134 freno=- trabado=5
+8846	cuadro	pos=19.92 calce=19 scroll=134 freno=- trabado=5
+8864	cuadro	pos=19.92 calce=19 scroll=134 freno=- trabado=5
+8880	cuadro	pos=19.92 calce=19 scroll=134 freno=- trabado=5
+8896	cuadro	pos=19.92 calce=19 scroll=134 freno=- trabado=5
+8913	cuadro	pos=19.92 calce=19 scroll=134 freno=- trabado=5
+8922	llegada	parcial nativo=8920
+8922	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos
+8923	calce	token 20: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos
+8931	cuadro	pos=20.03 calce=20 scroll=134 freno=- trabado=5
+8946	cuadro	pos=20.07 calce=20 scroll=134 freno=- trabado=5
+8963	cuadro	pos=20.12 calce=20 scroll=134 freno=- trabado=5
+8979	cuadro	pos=20.17 calce=20 scroll=134 freno=- trabado=5
+8996	cuadro	pos=20.22 calce=20 scroll=134 freno=- trabado=5
+9013	cuadro	pos=20.27 calce=20 scroll=134 freno=- trabado=5
+9029	cuadro	pos=20.32 calce=20 scroll=134 freno=- trabado=5
+9046	cuadro	pos=20.37 calce=20 scroll=134 freno=- trabado=5
+9063	cuadro	pos=20.42 calce=20 scroll=134 freno=- trabado=5
+9079	cuadro	pos=20.46 calce=20 scroll=134 freno=- trabado=5
+9095	cuadro	pos=20.51 calce=20 scroll=134 freno=- trabado=5
+9113	cuadro	pos=20.56 calce=20 scroll=134 freno=- trabado=5
+9128	cuadro	pos=20.61 calce=20 scroll=134 freno=- trabado=5
+9133	llegada	parcial nativo=9130
+9133	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos
+9135	calce	token 20: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos
+9145	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9162	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9178	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9195	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9211	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9228	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9244	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9262	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9278	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9294	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9315	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9327	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9333	llegada	parcial nativo=9330
+9333	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos
+9335	calce	token 20: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos
+9344	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9360	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9377	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9393	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9410	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9427	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9443	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9461	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9478	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9494	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9510	cuadro	pos=20.63 calce=20 scroll=134 freno=- trabado=5
+9513	llegada	parcial nativo=9510
+9513	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas
+9516	calce	token 21: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas
+9528	cuadro	pos=21.04 calce=21 scroll=134 freno=- trabado=5
+9543	cuadro	pos=21.09 calce=21 scroll=134 freno=- trabado=5
+9560	cuadro	pos=21.13 calce=21 scroll=134 freno=- trabado=5
+9576	cuadro	pos=21.18 calce=21 scroll=134 freno=- trabado=5
+9594	cuadro	pos=21.23 calce=21 scroll=134 freno=- trabado=5
+9610	cuadro	pos=21.28 calce=21 scroll=134 freno=- trabado=5
+9627	cuadro	pos=21.33 calce=21 scroll=134 freno=- trabado=5
+9643	cuadro	pos=21.37 calce=21 scroll=134 freno=- trabado=5
+9659	cuadro	pos=21.42 calce=21 scroll=134 freno=- trabado=5
+9676	cuadro	pos=21.47 calce=21 scroll=134 freno=- trabado=5
+9686	llegada	parcial nativo=9684
+9686	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas
+9686	calce	token 21: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas
+9692	cuadro	pos=21.50 calce=21 scroll=134 freno=- trabado=5
+9708	cuadro	pos=21.50 calce=21 scroll=134 freno=- trabado=5
+9726	cuadro	pos=21.50 calce=21 scroll=134 freno=- trabado=5
+9742	cuadro	pos=21.50 calce=21 scroll=134 freno=- trabado=5
+9759	cuadro	pos=21.50 calce=21 scroll=134 freno=- trabado=5
+9775	cuadro	pos=21.50 calce=21 scroll=134 freno=- trabado=5
+9793	cuadro	pos=21.50 calce=21 scroll=134 freno=- trabado=5
+9809	cuadro	pos=21.50 calce=21 scroll=134 freno=- trabado=5
+9825	cuadro	pos=21.50 calce=21 scroll=134 freno=- trabado=5
+9841	cuadro	pos=21.50 calce=21 scroll=134 freno=- trabado=5
+9858	cuadro	pos=21.50 calce=21 scroll=134 freno=- trabado=5
+9875	cuadro	pos=21.55 calce=21 scroll=134 freno=- trabado=5
+9891	cuadro	pos=21.59 calce=21 scroll=134 freno=- trabado=5
+9907	cuadro	pos=21.64 calce=21 scroll=134 freno=- trabado=5
+9921	llegada	parcial nativo=9919
+9921	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas
+9922	calce	token 21: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas
+9937	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+9942	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+9957	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+9974	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+9991	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+10007	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+10024	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+10041	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+10057	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+10074	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+10091	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+10107	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+10127	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+10139	cuadro	pos=21.68 calce=21 scroll=134 freno=- trabado=5
+10143	llegada	parcial nativo=10141
+10143	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o
+10143	calce	token 22: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o
+10156	cuadro	pos=21.86 calce=22 scroll=134 freno=- trabado=5
+10173	cuadro	pos=21.92 calce=22 scroll=134 freno=- trabado=5
+10190	cuadro	pos=21.97 calce=22 scroll=134 freno=- trabado=5
+10209	cuadro	pos=22.04 calce=22 scroll=134 freno=- trabado=5
+10223	cuadro	pos=22.08 calce=22 scroll=134 freno=- trabado=5
+10239	cuadro	pos=22.13 calce=22 scroll=134 freno=- trabado=5
+10256	cuadro	pos=22.19 calce=22 scroll=134 freno=- trabado=5
+10272	cuadro	pos=22.24 calce=22 scroll=134 freno=- trabado=5
+10291	cuadro	pos=22.30 calce=22 scroll=134 freno=- trabado=5
+10305	cuadro	pos=22.34 calce=22 scroll=134 freno=- trabado=5
+10323	cuadro	pos=22.40 calce=22 scroll=134 freno=- trabado=5
+10326	llegada	parcial nativo=10325
+10327	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+10328	calce	token 23: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+10340	cuadro	pos=23.04 calce=23 scroll=142 freno=- trabado=6
+10356	cuadro	pos=23.08 calce=23 scroll=147 freno=- trabado=6
+10373	cuadro	pos=23.13 calce=23 scroll=152 freno=- trabado=6
+10389	cuadro	pos=23.18 calce=23 scroll=155 freno=- trabado=6
+10408	cuadro	pos=23.23 calce=23 scroll=158 freno=- trabado=6
+10422	cuadro	pos=23.27 calce=23 scroll=160 freno=- trabado=6
+10438	cuadro	pos=23.32 calce=23 scroll=162 freno=- trabado=6
+10456	cuadro	pos=23.37 calce=23 scroll=163 freno=- trabado=6
+10473	cuadro	pos=23.42 calce=23 scroll=164 freno=- trabado=6
+10488	cuadro	pos=23.46 calce=23 scroll=165 freno=- trabado=6
+10506	cuadro	pos=23.51 calce=23 scroll=166 freno=- trabado=6
+10519	llegada	parcial nativo=10518
+10519	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+10519	calce	token 23: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+10523	cuadro	pos=23.55 calce=23 scroll=166 freno=- trabado=6
+10538	cuadro	pos=23.55 calce=23 scroll=167 freno=- trabado=6
+10554	cuadro	pos=23.55 calce=23 scroll=167 freno=- trabado=6
+10573	cuadro	pos=23.55 calce=23 scroll=167 freno=- trabado=6
+10588	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10605	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10620	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10638	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10656	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10672	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10687	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10695	llegada	parcial nativo=10693
+10695	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+10697	calce	token 23: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+10708	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10721	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10739	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10753	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10770	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10787	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10806	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10820	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10839	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10854	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10870	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10884	llegada	parcial nativo=10881
+10884	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+10886	calce	token 23: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+10886	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10904	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10920	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10941	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10953	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10970	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+10986	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+11004	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+11020	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+11038	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+11054	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+11070	cuadro	pos=23.55 calce=23 scroll=168 freno=- trabado=6
+11087	cuadro	pos=23.57 calce=23 scroll=168 freno=- trabado=6
+11103	cuadro	pos=23.62 calce=23 scroll=168 freno=- trabado=6
+11107	llegada	parcial nativo=11105
+11107	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+11109	calce	token 23: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+11119	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11138	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11152	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11170	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11185	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11203	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11219	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11238	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11251	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11270	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11286	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11302	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11318	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11323	llegada	parcial nativo=11322
+11323	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+11323	calce	token 23: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+11336	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11350	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11368	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11384	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11402	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11417	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11435	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11450	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11469	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11484	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11501	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11516	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11535	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11541	llegada	parcial nativo=11540
+11541	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+11543	calce	token 23: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles
+11551	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11571	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11584	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11602	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11616	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11634	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11650	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11668	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11683	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11701	cuadro	pos=23.63 calce=23 scroll=168 freno=- trabado=6
+11711	llegada	parcial nativo=11709
+11711	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay
+11712	calce	token 26: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay
+11723	cuadro	pos=24.25 calce=26 scroll=168 freno=- trabado=6
+11734	cuadro	pos=24.31 calce=26 scroll=168 freno=- trabado=6
+11748	cuadro	pos=24.40 calce=26 scroll=168 freno=- trabado=6
+11766	cuadro	pos=24.50 calce=26 scroll=168 freno=- trabado=6
+11781	cuadro	pos=24.58 calce=26 scroll=168 freno=- trabado=6
+11798	cuadro	pos=24.68 calce=26 scroll=168 freno=- trabado=6
+11816	cuadro	pos=24.77 calce=26 scroll=168 freno=- trabado=6
+11834	cuadro	pos=24.87 calce=26 scroll=168 freno=- trabado=6
+11848	cuadro	pos=24.94 calce=26 scroll=168 freno=- trabado=6
+11867	cuadro	pos=25.04 calce=26 scroll=168 freno=- trabado=6
+11885	cuadro	pos=25.13 calce=26 scroll=168 freno=- trabado=6
+11900	cuadro	pos=25.21 calce=26 scroll=168 freno=- trabado=6
+11914	cuadro	pos=25.28 calce=26 scroll=168 freno=- trabado=6
+11926	llegada	parcial nativo=11925
+11926	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un
+11926	calce	token 27: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un
+11931	cuadro	pos=25.76 calce=27 scroll=168 freno=- trabado=6
+11947	cuadro	pos=25.85 calce=27 scroll=168 freno=- trabado=6
+11968	cuadro	pos=25.95 calce=27 scroll=168 freno=- trabado=6
+11980	cuadro	pos=26.00 calce=27 scroll=168 freno=- trabado=6
+11999	cuadro	pos=26.09 calce=27 scroll=168 freno=- trabado=6
+12013	cuadro	pos=26.16 calce=27 scroll=168 freno=- trabado=6
+12035	cuadro	pos=26.25 calce=27 scroll=168 freno=- trabado=6
+12047	cuadro	pos=26.31 calce=27 scroll=168 freno=- trabado=6
+12067	cuadro	pos=26.40 calce=27 scroll=168 freno=- trabado=6
+12080	cuadro	pos=26.45 calce=27 scroll=168 freno=- trabado=6
+12083	llegada	parcial nativo=12082
+12084	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un
+12084	calce	token 27: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un
+12101	cuadro	pos=27.04 calce=27 scroll=177 freno=- trabado=7
+12113	cuadro	pos=27.08 calce=27 scroll=181 freno=- trabado=7
+12132	cuadro	pos=27.13 calce=27 scroll=186 freno=- trabado=7
+12146	cuadro	pos=27.16 calce=27 scroll=189 freno=- trabado=7
+12165	cuadro	pos=27.21 calce=27 scroll=192 freno=- trabado=7
+12179	cuadro	pos=27.25 calce=27 scroll=193 freno=- trabado=7
+12198	cuadro	pos=27.30 calce=27 scroll=195 freno=- trabado=7
+12213	cuadro	pos=27.33 calce=27 scroll=196 freno=- trabado=7
+12232	cuadro	pos=27.38 calce=27 scroll=198 freno=- trabado=7
+12246	cuadro	pos=27.42 calce=27 scroll=198 freno=- trabado=7
+12266	cuadro	pos=27.47 calce=27 scroll=199 freno=- trabado=7
+12280	cuadro	pos=27.51 calce=27 scroll=200 freno=- trabado=7
+12296	cuadro	pos=27.55 calce=27 scroll=200 freno=- trabado=7
+12312	cuadro	pos=27.59 calce=27 scroll=200 freno=- trabado=7
+12330	cuadro	pos=27.64 calce=27 scroll=200 freno=- trabado=7
+12345	cuadro	pos=27.68 calce=27 scroll=201 freno=- trabado=7
+12361	llegada	parcial nativo=12359
+12361	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un
+12363	calce	token 27: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un
+12365	cuadro	pos=27.72 calce=27 scroll=201 freno=- trabado=7
+12378	cuadro	pos=27.72 calce=27 scroll=201 freno=- trabado=7
+12396	cuadro	pos=27.72 calce=27 scroll=201 freno=- trabado=7
+12411	cuadro	pos=27.72 calce=27 scroll=201 freno=- trabado=7
+12428	cuadro	pos=27.72 calce=27 scroll=201 freno=- trabado=7
+12446	cuadro	pos=27.72 calce=27 scroll=201 freno=- trabado=7
+12463	cuadro	pos=27.72 calce=27 scroll=201 freno=- trabado=7
+12482	cuadro	pos=27.72 calce=27 scroll=201 freno=- trabado=7
+12496	llegada	parcial nativo=12494
+12496	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite
+12499	calce	token 28: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite
+12501	cuadro	pos=27.73 calce=28 scroll=201 freno=- trabado=7
+12511	cuadro	pos=28.04 calce=28 scroll=201 freno=- trabado=7
+12528	cuadro	pos=28.08 calce=28 scroll=201 freno=- trabado=7
+12544	cuadro	pos=28.12 calce=28 scroll=201 freno=- trabado=7
+12562	cuadro	pos=28.17 calce=28 scroll=201 freno=- trabado=7
+12577	cuadro	pos=28.20 calce=28 scroll=201 freno=- trabado=7
+12594	cuadro	pos=28.25 calce=28 scroll=201 freno=- trabado=7
+12610	cuadro	pos=28.29 calce=28 scroll=201 freno=- trabado=7
+12627	cuadro	pos=28.33 calce=28 scroll=201 freno=- trabado=7
+12644	cuadro	pos=28.37 calce=28 scroll=201 freno=- trabado=7
+12661	cuadro	pos=28.42 calce=28 scroll=201 freno=- trabado=7
+12677	cuadro	pos=28.46 calce=28 scroll=201 freno=- trabado=7
+12694	llegada	parcial nativo=12693
+12694	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite
+12695	calce	token 28: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite
+12697	cuadro	pos=28.50 calce=28 scroll=201 freno=- trabado=7
+12710	cuadro	pos=28.50 calce=28 scroll=201 freno=- trabado=7
+12726	cuadro	pos=28.50 calce=28 scroll=201 freno=- trabado=7
+12743	cuadro	pos=28.50 calce=28 scroll=201 freno=- trabado=7
+12760	cuadro	pos=28.50 calce=28 scroll=201 freno=- trabado=7
+12777	cuadro	pos=28.50 calce=28 scroll=201 freno=- trabado=7
+12793	cuadro	pos=28.50 calce=28 scroll=201 freno=- trabado=7
+12810	cuadro	pos=28.50 calce=28 scroll=201 freno=- trabado=7
+12827	cuadro	pos=28.50 calce=28 scroll=201 freno=- trabado=7
+12843	cuadro	pos=28.50 calce=28 scroll=201 freno=- trabado=7
+12859	cuadro	pos=28.50 calce=28 scroll=201 freno=- trabado=7
+12875	cuadro	pos=28.50 calce=28 scroll=201 freno=- trabado=7
+12893	cuadro	pos=28.50 calce=28 scroll=201 freno=- trabado=7
+12909	cuadro	pos=28.54 calce=28 scroll=201 freno=- trabado=7
+12921	llegada	parcial nativo=12920
+12921	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que
+12921	calce	token 29: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que
+12925	cuadro	pos=28.81 calce=29 scroll=201 freno=- trabado=7
+12942	cuadro	pos=28.86 calce=29 scroll=201 freno=- trabado=7
+12959	cuadro	pos=28.91 calce=29 scroll=201 freno=- trabado=7
+12975	cuadro	pos=28.95 calce=29 scroll=201 freno=- trabado=7
+12993	cuadro	pos=29.00 calce=29 scroll=201 freno=- trabado=7
+13009	cuadro	pos=29.05 calce=29 scroll=201 freno=- trabado=7
+13026	cuadro	pos=29.10 calce=29 scroll=201 freno=- trabado=7
+13042	cuadro	pos=29.15 calce=29 scroll=201 freno=- trabado=7
+13059	cuadro	pos=29.19 calce=29 scroll=201 freno=- trabado=7
+13076	cuadro	pos=29.24 calce=29 scroll=201 freno=- trabado=7
+13091	cuadro	pos=29.29 calce=29 scroll=201 freno=- trabado=7
+13108	cuadro	pos=29.33 calce=29 scroll=201 freno=- trabado=7
+13128	cuadro	pos=29.39 calce=29 scroll=201 freno=- trabado=7
+13141	cuadro	pos=29.43 calce=29 scroll=201 freno=- trabado=7
+13145	llegada	parcial nativo=13143
+13145	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca
+13145	calce	token 30: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca
+13158	cuadro	pos=29.63 calce=30 scroll=201 freno=- trabado=7
+13174	cuadro	pos=29.68 calce=30 scroll=201 freno=- trabado=7
+13191	cuadro	pos=29.74 calce=30 scroll=201 freno=- trabado=7
+13207	cuadro	pos=29.79 calce=30 scroll=201 freno=- trabado=7
+13225	cuadro	pos=29.85 calce=30 scroll=201 freno=- trabado=7
+13241	cuadro	pos=29.90 calce=30 scroll=201 freno=- trabado=7
+13258	cuadro	pos=29.95 calce=30 scroll=201 freno=- trabado=7
+13277	cuadro	pos=30.01 calce=30 scroll=201 freno=- trabado=7
+13284	llegada	parcial nativo=13282
+13284	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca
+13286	calce	token 30: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca
+13292	cuadro	pos=30.03 calce=30 scroll=201 freno=- trabado=7
+13307	cuadro	pos=30.06 calce=30 scroll=201 freno=- trabado=7
+13323	cuadro	pos=30.10 calce=30 scroll=201 freno=- trabado=7
+13340	cuadro	pos=30.14 calce=30 scroll=201 freno=- trabado=7
+13358	cuadro	pos=30.18 calce=30 scroll=201 freno=- trabado=7
+13374	cuadro	pos=30.22 calce=30 scroll=201 freno=- trabado=7
+13390	cuadro	pos=30.26 calce=30 scroll=201 freno=- trabado=7
+13407	cuadro	pos=30.31 calce=30 scroll=201 freno=- trabado=7
+13423	cuadro	pos=30.35 calce=30 scroll=201 freno=- trabado=7
+13439	cuadro	pos=30.39 calce=30 scroll=201 freno=- trabado=7
+13457	cuadro	pos=30.43 calce=30 scroll=201 freno=- trabado=7
+13473	cuadro	pos=30.47 calce=30 scroll=201 freno=- trabado=7
+13490	cuadro	pos=30.52 calce=30 scroll=201 freno=- trabado=7
+13506	cuadro	pos=30.56 calce=30 scroll=201 freno=- trabado=7
+13522	cuadro	pos=30.60 calce=30 scroll=201 freno=- trabado=7
+13544	cuadro	pos=30.65 calce=30 scroll=201 freno=- trabado=7
+13555	cuadro	pos=30.68 calce=30 scroll=201 freno=- trabado=7
+13557	llegada	parcial nativo=13556
+13557	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos
+13558	calce	token 31: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos
+13572	cuadro	pos=31.04 calce=31 scroll=201 freno=- trabado=7
+13589	cuadro	pos=31.08 calce=31 scroll=201 freno=- trabado=7
+13605	cuadro	pos=31.12 calce=31 scroll=201 freno=- trabado=7
+13622	cuadro	pos=31.17 calce=31 scroll=201 freno=- trabado=7
+13639	cuadro	pos=31.21 calce=31 scroll=201 freno=- trabado=7
+13656	cuadro	pos=31.25 calce=31 scroll=201 freno=- trabado=7
+13672	cuadro	pos=31.29 calce=31 scroll=201 freno=- trabado=7
+13689	cuadro	pos=31.34 calce=31 scroll=201 freno=- trabado=7
+13706	cuadro	pos=31.38 calce=31 scroll=201 freno=- trabado=7
+13725	cuadro	pos=31.43 calce=31 scroll=201 freno=- trabado=7
+13738	cuadro	pos=31.46 calce=31 scroll=201 freno=- trabado=7
+13748	llegada	parcial nativo=13747
+13748	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+13750	calce	token 33: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+13758	cuadro	pos=32.37 calce=33 scroll=210 freno=- trabado=8
+13771	cuadro	pos=32.44 calce=33 scroll=214 freno=- trabado=8
+13789	cuadro	pos=32.53 calce=33 scroll=219 freno=- trabado=8
+13805	cuadro	pos=32.61 calce=33 scroll=222 freno=- trabado=8
+13822	cuadro	pos=32.68 calce=33 scroll=225 freno=- trabado=8
+13838	cuadro	pos=32.74 calce=33 scroll=227 freno=- trabado=8
+13856	cuadro	pos=32.81 calce=33 scroll=229 freno=- trabado=8
+13873	cuadro	pos=32.87 calce=33 scroll=230 freno=- trabado=8
+13889	cuadro	pos=32.93 calce=33 scroll=231 freno=- trabado=8
+13905	cuadro	pos=32.99 calce=33 scroll=232 freno=- trabado=8
+13918	llegada	parcial nativo=13917
+13918	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+13918	calce	token 33: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder
+13921	cuadro	pos=33.05 calce=33 scroll=233 freno=- trabado=8
+13937	cuadro	pos=33.05 calce=33 scroll=233 freno=- trabado=8
+13953	cuadro	pos=33.10 calce=33 scroll=234 freno=- trabado=8
+13970	cuadro	pos=33.15 calce=33 scroll=234 freno=- trabado=8
+13987	cuadro	pos=33.19 calce=33 scroll=234 freno=- trabado=8
+14004	cuadro	pos=33.24 calce=33 scroll=235 freno=- trabado=8
+14020	cuadro	pos=33.29 calce=33 scroll=235 freno=- trabado=8
+14040	cuadro	pos=33.34 calce=33 scroll=235 freno=- trabado=8
+14054	cuadro	pos=33.38 calce=33 scroll=235 freno=- trabado=8
+14070	cuadro	pos=33.43 calce=33 scroll=235 freno=- trabado=8
+14087	cuadro	pos=33.48 calce=33 scroll=235 freno=- trabado=8
+14103	cuadro	pos=33.52 calce=33 scroll=235 freno=- trabado=8
+14120	cuadro	pos=33.57 calce=33 scroll=235 freno=- trabado=8
+14136	cuadro	pos=33.62 calce=33 scroll=235 freno=- trabado=8
+14143	llegada	parcial nativo=14141
+14143	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+14143	calce	token 34: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+14152	cuadro	pos=33.82 calce=34 scroll=235 freno=- trabado=8
+14169	cuadro	pos=33.88 calce=34 scroll=235 freno=- trabado=8
+14186	cuadro	pos=33.94 calce=34 scroll=235 freno=- trabado=8
+14202	cuadro	pos=33.99 calce=34 scroll=235 freno=- trabado=8
+14219	cuadro	pos=34.05 calce=34 scroll=235 freno=- trabado=8
+14236	cuadro	pos=34.11 calce=34 scroll=235 freno=- trabado=8
+14253	cuadro	pos=34.17 calce=34 scroll=235 freno=- trabado=8
+14269	cuadro	pos=34.22 calce=34 scroll=235 freno=- trabado=8
+14286	cuadro	pos=34.28 calce=34 scroll=235 freno=- trabado=8
+14304	cuadro	pos=34.34 calce=34 scroll=235 freno=- trabado=8
+14314	llegada	parcial nativo=14312
+14314	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+14315	calce	token 34: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+14323	cuadro	pos=34.37 calce=34 scroll=235 freno=- trabado=8
+14335	cuadro	pos=34.37 calce=34 scroll=235 freno=- trabado=8
+14352	cuadro	pos=34.37 calce=34 scroll=235 freno=- trabado=8
+14371	cuadro	pos=34.37 calce=34 scroll=235 freno=- trabado=8
+14385	cuadro	pos=34.37 calce=34 scroll=235 freno=- trabado=8
+14401	cuadro	pos=34.37 calce=34 scroll=235 freno=- trabado=8
+14419	cuadro	pos=34.37 calce=34 scroll=235 freno=- trabado=8
+14436	cuadro	pos=34.37 calce=34 scroll=235 freno=- trabado=8
+14452	cuadro	pos=34.41 calce=34 scroll=235 freno=- trabado=8
+14468	cuadro	pos=34.46 calce=34 scroll=235 freno=- trabado=8
+14484	cuadro	pos=34.51 calce=34 scroll=235 freno=- trabado=8
+14491	llegada	parcial nativo=14489
+14491	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+14493	calce	token 34: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+14505	cuadro	pos=34.53 calce=34 scroll=235 freno=- trabado=8
+14530	cuadro	pos=34.53 calce=34 scroll=235 freno=- trabado=8
+14538	cuadro	pos=34.53 calce=34 scroll=235 freno=- trabado=8
+14551	cuadro	pos=34.53 calce=34 scroll=235 freno=- trabado=8
+14571	cuadro	pos=34.53 calce=34 scroll=235 freno=- trabado=8
+14584	cuadro	pos=34.53 calce=34 scroll=235 freno=- trabado=8
+14601	cuadro	pos=34.53 calce=34 scroll=235 freno=- trabado=8
+14618	cuadro	pos=34.53 calce=34 scroll=235 freno=- trabado=8
+14635	cuadro	pos=34.53 calce=34 scroll=235 freno=- trabado=8
+14650	cuadro	pos=34.53 calce=34 scroll=235 freno=- trabado=8
+14667	cuadro	pos=34.53 calce=34 scroll=235 freno=- trabado=8
+14684	cuadro	pos=34.57 calce=34 scroll=235 freno=- trabado=8
+14702	cuadro	pos=34.62 calce=34 scroll=235 freno=- trabado=8
+14716	cuadro	pos=34.67 calce=34 scroll=235 freno=- trabado=8
+14733	cuadro	pos=34.72 calce=34 scroll=235 freno=- trabado=8
+14739	llegada	parcial nativo=14735
+14739	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+14740	calce	token 34: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar
+14750	cuadro	pos=34.73 calce=34 scroll=235 freno=- trabado=8
+14768	cuadro	pos=34.73 calce=34 scroll=235 freno=- trabado=8
+14782	cuadro	pos=34.73 calce=34 scroll=235 freno=- trabado=8
+14800	cuadro	pos=34.73 calce=34 scroll=235 freno=- trabado=8
+14816	cuadro	pos=34.73 calce=34 scroll=235 freno=- trabado=8
+14835	cuadro	pos=34.73 calce=34 scroll=235 freno=- trabado=8
+14849	cuadro	pos=34.73 calce=34 scroll=235 freno=- trabado=8
+14866	cuadro	pos=34.73 calce=34 scroll=235 freno=- trabado=8
+14883	cuadro	pos=34.73 calce=34 scroll=235 freno=- trabado=8
+14901	cuadro	pos=34.73 calce=34 scroll=235 freno=- trabado=8
+14916	cuadro	pos=34.73 calce=34 scroll=235 freno=- trabado=8
+14932	cuadro	pos=34.73 calce=34 scroll=235 freno=- trabado=8
+14942	llegada	parcial nativo=14940
+14942	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin
+14943	calce	token 35: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin
+14948	cuadro	pos=35.02 calce=35 scroll=235 freno=- trabado=8
+14967	cuadro	pos=35.07 calce=35 scroll=235 freno=- trabado=8
+14981	cuadro	pos=35.12 calce=35 scroll=235 freno=- trabado=8
+15000	cuadro	pos=35.17 calce=35 scroll=235 freno=- trabado=8
+15018	cuadro	pos=35.22 calce=35 scroll=235 freno=- trabado=8
+15034	cuadro	pos=35.27 calce=35 scroll=235 freno=- trabado=8
+15048	cuadro	pos=35.31 calce=35 scroll=235 freno=- trabado=8
+15067	cuadro	pos=35.36 calce=35 scroll=235 freno=- trabado=8
+15082	cuadro	pos=35.41 calce=35 scroll=235 freno=- trabado=8
+15102	cuadro	pos=35.47 calce=35 scroll=235 freno=- trabado=8
+15115	cuadro	pos=35.51 calce=35 scroll=235 freno=- trabado=8
+15132	cuadro	pos=35.56 calce=35 scroll=235 freno=- trabado=8
+15135	llegada	parcial nativo=15132
+15135	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin
+15136	calce	token 35: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin
+15148	cuadro	pos=35.57 calce=35 scroll=235 freno=- trabado=8
+15167	cuadro	pos=35.57 calce=35 scroll=235 freno=- trabado=8
+15181	cuadro	pos=35.57 calce=35 scroll=235 freno=- trabado=8
+15199	cuadro	pos=35.57 calce=35 scroll=235 freno=- trabado=8
+15214	cuadro	pos=35.57 calce=35 scroll=235 freno=- trabado=8
+15234	cuadro	pos=35.57 calce=35 scroll=235 freno=- trabado=8
+15247	cuadro	pos=35.57 calce=35 scroll=235 freno=- trabado=8
+15265	cuadro	pos=35.57 calce=35 scroll=235 freno=- trabado=8
+15284	cuadro	pos=35.57 calce=35 scroll=235 freno=- trabado=8
+15298	cuadro	pos=35.57 calce=35 scroll=235 freno=- trabado=8
+15314	cuadro	pos=35.57 calce=35 scroll=235 freno=- trabado=8
+15331	cuadro	pos=35.57 calce=35 scroll=235 freno=- trabado=8
+15339	llegada	parcial nativo=15338
+15339	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+15339	calce	token 36: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+15346	cuadro	pos=36.02 calce=36 scroll=242 freno=- trabado=9
+15367	cuadro	pos=36.08 calce=36 scroll=249 freno=- trabado=9
+15380	cuadro	pos=36.12 calce=36 scroll=252 freno=- trabado=9
+15399	cuadro	pos=36.17 calce=36 scroll=256 freno=- trabado=9
+15413	cuadro	pos=36.21 calce=36 scroll=258 freno=- trabado=9
+15431	cuadro	pos=36.27 calce=36 scroll=261 freno=- trabado=9
+15446	cuadro	pos=36.31 calce=36 scroll=262 freno=- trabado=9
+15464	cuadro	pos=36.36 calce=36 scroll=264 freno=- trabado=9
+15481	cuadro	pos=36.41 calce=36 scroll=265 freno=- trabado=9
+15499	cuadro	pos=36.46 calce=36 scroll=265 freno=- trabado=9
+15511	llegada	parcial nativo=15510
+15511	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+15512	calce	token 36: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+15512	cuadro	pos=36.50 calce=36 scroll=266 freno=- trabado=9
+15530	cuadro	pos=36.50 calce=36 scroll=266 freno=- trabado=9
+15546	cuadro	pos=36.50 calce=36 scroll=267 freno=- trabado=9
+15564	cuadro	pos=36.50 calce=36 scroll=267 freno=- trabado=9
+15578	cuadro	pos=36.50 calce=36 scroll=267 freno=- trabado=9
+15598	cuadro	pos=36.50 calce=36 scroll=268 freno=- trabado=9
+15612	cuadro	pos=36.50 calce=36 scroll=268 freno=- trabado=9
+15631	cuadro	pos=36.50 calce=36 scroll=268 freno=- trabado=9
+15645	cuadro	pos=36.50 calce=36 scroll=268 freno=- trabado=9
+15665	cuadro	pos=36.50 calce=36 scroll=268 freno=- trabado=9
+15679	cuadro	pos=36.50 calce=36 scroll=268 freno=- trabado=9
+15691	llegada	parcial nativo=15690
+15691	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+15692	calce	token 36: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar
+15705	cuadro	pos=36.52 calce=36 scroll=268 freno=- trabado=9
+15711	cuadro	pos=36.52 calce=36 scroll=268 freno=- trabado=9
+15731	cuadro	pos=36.52 calce=36 scroll=268 freno=- trabado=9
+15744	cuadro	pos=36.52 calce=36 scroll=268 freno=- trabado=9
+15765	cuadro	pos=36.52 calce=36 scroll=268 freno=- trabado=9
+15778	cuadro	pos=36.52 calce=36 scroll=268 freno=- trabado=9
+15796	cuadro	pos=36.52 calce=36 scroll=268 freno=- trabado=9
+15811	cuadro	pos=36.52 calce=36 scroll=268 freno=- trabado=9
+15832	cuadro	pos=36.52 calce=36 scroll=268 freno=- trabado=9
+15844	cuadro	pos=36.52 calce=36 scroll=268 freno=- trabado=9
+15863	cuadro	pos=36.52 calce=36 scroll=268 freno=- trabado=9
+15877	cuadro	pos=36.54 calce=36 scroll=268 freno=- trabado=9
+15899	cuadro	pos=36.60 calce=36 scroll=268 freno=- trabado=9
+15910	cuadro	pos=36.64 calce=36 scroll=268 freno=- trabado=9
+15928	cuadro	pos=36.69 calce=36 scroll=268 freno=- trabado=9
+15943	cuadro	pos=36.73 calce=36 scroll=268 freno=- trabado=9
+15955	llegada	parcial nativo=15954
+15956	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan
+15956	calce	token 38: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan
+15969	cuadro	pos=37.39 calce=38 scroll=268 freno=- trabado=9
+15977	cuadro	pos=37.43 calce=38 scroll=268 freno=- trabado=9
+15998	cuadro	pos=37.52 calce=38 scroll=268 freno=- trabado=9
+16010	cuadro	pos=37.58 calce=38 scroll=268 freno=- trabado=9
+16028	cuadro	pos=37.65 calce=38 scroll=268 freno=- trabado=9
+16043	cuadro	pos=37.71 calce=38 scroll=268 freno=- trabado=9
+16062	cuadro	pos=37.79 calce=38 scroll=268 freno=- trabado=9
+16076	cuadro	pos=37.84 calce=38 scroll=268 freno=- trabado=9
+16096	cuadro	pos=37.92 calce=38 scroll=268 freno=- trabado=9
+16109	cuadro	pos=37.97 calce=38 scroll=268 freno=- trabado=9
+16127	cuadro	pos=38.04 calce=38 scroll=268 freno=- trabado=9
+16142	cuadro	pos=38.10 calce=38 scroll=268 freno=- trabado=9
+16146	llegada	parcial nativo=16144
+16146	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buen
+16146	calce	token 39: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buen
+16163	cuadro	pos=38.39 calce=39 scroll=268 freno=- trabado=9
+16176	cuadro	pos=38.45 calce=39 scroll=268 freno=- trabado=9
+16192	cuadro	pos=38.52 calce=39 scroll=268 freno=- trabado=9
+16209	cuadro	pos=38.59 calce=39 scroll=268 freno=- trabado=9
+16230	cuadro	pos=38.68 calce=39 scroll=268 freno=- trabado=9
+16243	cuadro	pos=38.73 calce=39 scroll=268 freno=- trabado=9
+16260	cuadro	pos=38.80 calce=39 scroll=268 freno=- trabado=9
+16275	cuadro	pos=38.87 calce=39 scroll=268 freno=- trabado=9
+16292	cuadro	pos=38.94 calce=39 scroll=268 freno=- trabado=9
+16308	cuadro	pos=39.00 calce=39 scroll=275 freno=- trabado=10
+16328	cuadro	pos=39.08 calce=39 scroll=282 freno=- trabado=10
+16341	cuadro	pos=39.13 calce=39 scroll=285 freno=- trabado=10
+16358	cuadro	pos=39.20 calce=39 scroll=289 freno=- trabado=10
+16375	cuadro	pos=39.26 calce=39 scroll=292 freno=- trabado=10
+16391	cuadro	pos=39.33 calce=39 scroll=294 freno=- trabado=10
+16408	cuadro	pos=39.39 calce=39 scroll=296 freno=- trabado=10
+16421	llegada	parcial nativo=16419
+16421	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas
+16421	calce	token 39: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas
+16424	cuadro	pos=39.44 calce=39 scroll=297 freno=- trabado=10
+16441	cuadro	pos=39.44 calce=39 scroll=298 freno=- trabado=10
+16457	cuadro	pos=39.44 calce=39 scroll=299 freno=- trabado=10
+16474	cuadro	pos=39.44 calce=39 scroll=300 freno=- trabado=10
+16491	cuadro	pos=39.44 calce=39 scroll=300 freno=- trabado=10
+16508	cuadro	pos=39.44 calce=39 scroll=301 freno=- trabado=10
+16529	cuadro	pos=39.44 calce=39 scroll=301 freno=- trabado=10
+16541	cuadro	pos=39.44 calce=39 scroll=301 freno=- trabado=10
+16552	llegada	parcial nativo=16552
+16552	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas nuestra
+16552	calce	token 40: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas nuestra
+16557	cuadro	pos=40.01 calce=40 scroll=302 freno=- trabado=10
+16574	cuadro	pos=40.07 calce=40 scroll=302 freno=- trabado=10
+16590	cuadro	pos=40.11 calce=40 scroll=302 freno=- trabado=10
+16606	cuadro	pos=40.16 calce=40 scroll=302 freno=- trabado=10
+16624	cuadro	pos=40.21 calce=40 scroll=302 freno=- trabado=10
+16640	cuadro	pos=40.26 calce=40 scroll=302 freno=- trabado=10
+16656	cuadro	pos=40.31 calce=40 scroll=302 freno=- trabado=10
+16673	cuadro	pos=40.36 calce=40 scroll=302 freno=- trabado=10
+16690	cuadro	pos=40.41 calce=40 scroll=302 freno=- trabado=10
+16706	cuadro	pos=40.46 calce=40 scroll=302 freno=- trabado=10
+16723	cuadro	pos=40.51 calce=40 scroll=302 freno=- trabado=10
+16739	cuadro	pos=40.56 calce=40 scroll=302 freno=- trabado=10
+16756	cuadro	pos=40.61 calce=40 scroll=302 freno=- trabado=10
+16761	llegada	parcial nativo=16756
+16763	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas nuestra formación
+16764	calce	token 41: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas nuestra formación
+16772	cuadro	pos=41.03 calce=41 scroll=302 freno=- trabado=10
+16789	cuadro	pos=41.07 calce=41 scroll=302 freno=- trabado=10
+16806	cuadro	pos=41.12 calce=41 scroll=302 freno=- trabado=10
+16822	cuadro	pos=41.17 calce=41 scroll=302 freno=- trabado=10
+16839	cuadro	pos=41.22 calce=41 scroll=302 freno=- trabado=10
+16856	cuadro	pos=41.27 calce=41 scroll=302 freno=- trabado=10
+16872	cuadro	pos=41.31 calce=41 scroll=302 freno=- trabado=10
+16883	llegada	parcial nativo=16882
+16883	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas nuestra formación
+16883	calce	token 41: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas nuestra formación
+16889	cuadro	pos=41.35 calce=41 scroll=302 freno=- trabado=10
+16906	cuadro	pos=41.35 calce=41 scroll=302 freno=- trabado=10
+16922	cuadro	pos=41.35 calce=41 scroll=302 freno=- trabado=10
+16938	cuadro	pos=41.35 calce=41 scroll=302 freno=- trabado=10
+16956	cuadro	pos=41.35 calce=41 scroll=302 freno=- trabado=10
+16973	cuadro	pos=41.35 calce=41 scroll=302 freno=- trabado=10
+16989	cuadro	pos=41.35 calce=41 scroll=302 freno=- trabado=10
+17005	cuadro	pos=41.35 calce=41 scroll=302 freno=- trabado=10
+17022	cuadro	pos=41.40 calce=41 scroll=302 freno=- trabado=10
+17039	cuadro	pos=41.45 calce=41 scroll=302 freno=- trabado=10
+17055	cuadro	pos=41.49 calce=41 scroll=302 freno=- trabado=10
+17071	cuadro	pos=41.54 calce=41 scroll=302 freno=- trabado=10
+17088	cuadro	pos=41.59 calce=41 scroll=302 freno=- trabado=10
+17105	cuadro	pos=41.64 calce=41 scroll=302 freno=- trabado=10
+17120	cuadro	pos=41.68 calce=41 scroll=302 freno=- trabado=10
+17123	llegada	parcial nativo=17122
+17123	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas nuestra formación
+17123	calce	token 41: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas nuestra formación
+17137	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17154	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17171	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17187	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17204	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17221	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17238	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17254	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17271	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17287	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17304	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17320	llegada	parcial nativo=17318
+17320	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas nuestra formación
+17321	calce	token 41: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas nuestra formación
+17322	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17336	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17354	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17371	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17386	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17403	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17421	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17437	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17454	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17471	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17486	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17503	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17519	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17536	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17552	cuadro	pos=41.69 calce=41 scroll=302 freno=- trabado=10
+17569	cuadro	pos=41.72 calce=41 scroll=302 freno=- trabado=10
+17585	cuadro	pos=41.76 calce=41 scroll=302 freno=- trabado=10
+17588	llegada	parcial nativo=17587
+17588	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas nuestra formación por
+17589	calce	token 42: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buenas nuestra formación por
+17603	cuadro	pos=42.04 calce=42 scroll=302 freno=- trabado=10
+17619	cuadro	pos=42.09 calce=42 scroll=302 freno=- trabado=10
+17636	cuadro	pos=42.14 calce=42 scroll=302 freno=- trabado=10
+17652	cuadro	pos=42.18 calce=42 scroll=302 freno=- trabado=10
+17668	cuadro	pos=42.22 calce=42 scroll=302 freno=- trabado=10
+17685	cuadro	pos=42.27 calce=42 scroll=302 freno=- trabado=10
+17702	cuadro	pos=42.32 calce=42 scroll=302 freno=- trabado=10
+17718	cuadro	pos=42.36 calce=42 scroll=302 freno=- trabado=10
+17735	cuadro	pos=42.41 calce=42 scroll=302 freno=- trabado=10
+17739	llegada	parcial nativo=17736
+17739	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o la
+17740	calce	token 43: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o la
+17750	cuadro	pos=43.00 calce=43 scroll=309 freno=- trabado=11
+17768	cuadro	pos=43.06 calce=43 scroll=315 freno=- trabado=11
+17784	cuadro	pos=43.11 calce=43 scroll=320 freno=- trabado=11
+17801	cuadro	pos=43.16 calce=43 scroll=323 freno=- trabado=11
+17818	cuadro	pos=43.21 calce=43 scroll=326 freno=- trabado=11
+17836	cuadro	pos=43.27 calce=43 scroll=328 freno=- trabado=11
+17851	cuadro	pos=43.31 calce=43 scroll=330 freno=- trabado=11
+17868	cuadro	pos=43.36 calce=43 scroll=331 freno=- trabado=11
+17883	cuadro	pos=43.40 calce=43 scroll=332 freno=- trabado=11
+17901	cuadro	pos=43.46 calce=43 scroll=333 freno=- trabado=11
+17918	llegada	parcial nativo=17916
+17918	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o
+17918	calce	token 45: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o
+17919	cuadro	pos=43.51 calce=45 scroll=334 freno=- trabado=11
+17933	cuadro	pos=43.91 calce=45 scroll=334 freno=- trabado=11
+17951	cuadro	pos=44.01 calce=45 scroll=335 freno=- trabado=11
+17971	cuadro	pos=44.11 calce=45 scroll=335 freno=- trabado=11
+17984	cuadro	pos=44.18 calce=45 scroll=335 freno=- trabado=11
+18000	cuadro	pos=44.26 calce=45 scroll=336 freno=- trabado=11
+18018	cuadro	pos=44.36 calce=45 scroll=336 freno=- trabado=11
+18034	cuadro	pos=44.43 calce=45 scroll=336 freno=- trabado=11
+18050	cuadro	pos=44.51 calce=45 scroll=336 freno=- trabado=11
+18066	cuadro	pos=44.59 calce=45 scroll=336 freno=- trabado=11
+18083	cuadro	pos=44.67 calce=45 scroll=336 freno=- trabado=11
+18088	llegada	parcial nativo=18086
+18088	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o
+18088	calce	token 45: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o
+18100	cuadro	pos=45.03 calce=45 scroll=336 freno=- trabado=11
+18116	cuadro	pos=45.08 calce=45 scroll=336 freno=- trabado=11
+18133	cuadro	pos=45.13 calce=45 scroll=336 freno=- trabado=11
+18150	cuadro	pos=45.18 calce=45 scroll=336 freno=- trabado=11
+18167	cuadro	pos=45.24 calce=45 scroll=336 freno=- trabado=11
+18182	cuadro	pos=45.28 calce=45 scroll=336 freno=- trabado=11
+18199	cuadro	pos=45.33 calce=45 scroll=336 freno=- trabado=11
+18216	cuadro	pos=45.38 calce=45 scroll=336 freno=- trabado=11
+18233	cuadro	pos=45.43 calce=45 scroll=336 freno=- trabado=11
+18249	cuadro	pos=45.48 calce=45 scroll=336 freno=- trabado=11
+18266	cuadro	pos=45.53 calce=45 scroll=336 freno=- trabado=11
+18284	cuadro	pos=45.59 calce=45 scroll=336 freno=- trabado=11
+18299	cuadro	pos=45.63 calce=45 scroll=336 freno=- trabado=11
+18315	cuadro	pos=45.68 calce=45 scroll=336 freno=- trabado=11
+18332	cuadro	pos=45.73 calce=45 scroll=336 freno=- trabado=11
+18343	llegada	parcial nativo=18342
+18343	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+18344	calce	token 48: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+18347	cuadro	pos=47.81 calce=48 scroll=343 freno=- trabado=12
+18366	cuadro	pos=47.95 calce=48 scroll=349 freno=- trabado=12
+18382	cuadro	pos=48.07 calce=48 scroll=353 freno=- trabado=12
+18397	cuadro	pos=48.17 calce=48 scroll=356 freno=- trabado=12
+18416	cuadro	pos=48.24 calce=48 scroll=359 freno=- trabado=12
+18432	cuadro	pos=48.30 calce=48 scroll=362 freno=- trabado=12
+18447	cuadro	pos=48.35 calce=48 scroll=363 freno=- trabado=12
+18464	cuadro	pos=48.40 calce=48 scroll=364 freno=- trabado=12
+18482	cuadro	pos=48.46 calce=48 scroll=366 freno=- trabado=12
+18500	cuadro	pos=48.52 calce=48 scroll=366 freno=- trabado=12
+18514	cuadro	pos=48.57 calce=48 scroll=367 freno=- trabado=12
+18531	cuadro	pos=48.63 calce=48 scroll=367 freno=- trabado=12
+18540	llegada	parcial nativo=18538
+18540	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+18541	calce	token 48: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+18548	cuadro	pos=48.66 calce=48 scroll=368 freno=- trabado=12
+18565	cuadro	pos=48.66 calce=48 scroll=368 freno=- trabado=12
+18580	cuadro	pos=48.66 calce=48 scroll=368 freno=- trabado=12
+18597	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18614	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18632	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18647	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18666	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18680	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18701	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18717	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18729	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18733	llegada	parcial nativo=18730
+18733	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+18734	calce	token 48: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+18746	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18766	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18779	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18797	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18813	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18830	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18845	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18864	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18880	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18899	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18912	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18913	llegada	parcial nativo=18911
+18913	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+18914	calce	token 48: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+18930	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18946	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18968	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18979	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+18997	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+19012	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+19030	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+19047	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+19064	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+19079	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+19096	cuadro	pos=48.66 calce=48 scroll=369 freno=- trabado=12
+19113	cuadro	pos=48.67 calce=48 scroll=369 freno=- trabado=12
+19119	llegada	parcial nativo=19117
+19119	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+19121	calce	token 48: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+19132	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19145	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19163	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19178	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19194	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19211	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19229	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19244	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19264	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19278	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19294	llegada	parcial nativo=19289
+19294	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+19295	calce	token 48: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+19297	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19310	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19328	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19343	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19362	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19376	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19394	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19410	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19430	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19443	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19462	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19477	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19497	cuadro	pos=48.69 calce=48 scroll=369 freno=- trabado=12
+19509	cuadro	pos=48.72 calce=48 scroll=369 freno=- trabado=12
+19512	llegada	parcial nativo=19511
+19512	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+19514	calce	token 48: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias
+19526	cuadro	pos=48.73 calce=48 scroll=369 freno=- trabado=12
+19542	cuadro	pos=48.73 calce=48 scroll=369 freno=- trabado=12
+19561	cuadro	pos=48.73 calce=48 scroll=369 freno=- trabado=12
+19576	cuadro	pos=48.73 calce=48 scroll=369 freno=- trabado=12
+19594	cuadro	pos=48.73 calce=48 scroll=369 freno=- trabado=12
+19609	cuadro	pos=48.73 calce=48 scroll=369 freno=- trabado=12
+19627	cuadro	pos=48.73 calce=48 scroll=369 freno=- trabado=12
+19643	cuadro	pos=48.73 calce=48 scroll=369 freno=- trabado=12
+19661	cuadro	pos=48.73 calce=48 scroll=369 freno=- trabado=12
+19675	cuadro	pos=48.73 calce=48 scroll=369 freno=- trabado=12
+19696	cuadro	pos=48.73 calce=48 scroll=369 freno=- trabado=12
+19708	cuadro	pos=48.73 calce=48 scroll=369 freno=- trabado=12
+19712	llegada	parcial nativo=19710
+19712	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y
+19713	calce	token 49: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y
+19727	cuadro	pos=49.05 calce=49 scroll=369 freno=- trabado=12
+19742	cuadro	pos=49.09 calce=49 scroll=369 freno=- trabado=12
+19761	cuadro	pos=49.16 calce=49 scroll=369 freno=- trabado=12
+19774	cuadro	pos=49.20 calce=49 scroll=369 freno=- trabado=12
+19794	cuadro	pos=49.26 calce=49 scroll=369 freno=- trabado=12
+19808	cuadro	pos=49.30 calce=49 scroll=369 freno=- trabado=12
+19828	cuadro	pos=49.36 calce=49 scroll=369 freno=- trabado=12
+19841	cuadro	pos=49.41 calce=49 scroll=369 freno=- trabado=12
+19861	cuadro	pos=49.47 calce=49 scroll=369 freno=- trabado=12
+19874	cuadro	pos=49.51 calce=49 scroll=369 freno=- trabado=12
+19897	cuadro	pos=49.58 calce=49 scroll=369 freno=- trabado=12
+19907	cuadro	pos=49.61 calce=49 scroll=369 freno=- trabado=12
+19920	llegada	parcial nativo=19919
+19920	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y
+19920	calce	token 49: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y
+19924	cuadro	pos=49.66 calce=49 scroll=369 freno=- trabado=12
+19940	cuadro	pos=49.66 calce=49 scroll=369 freno=- trabado=12
+19959	cuadro	pos=49.66 calce=49 scroll=369 freno=- trabado=12
+19973	cuadro	pos=49.66 calce=49 scroll=369 freno=- trabado=12
+19994	cuadro	pos=49.66 calce=49 scroll=369 freno=- trabado=12
+20006	cuadro	pos=49.66 calce=49 scroll=369 freno=- trabado=12
+20025	cuadro	pos=49.66 calce=49 scroll=369 freno=- trabado=12
+20040	cuadro	pos=49.66 calce=49 scroll=369 freno=- trabado=12
+20057	cuadro	pos=49.66 calce=49 scroll=369 freno=- trabado=12
+20072	cuadro	pos=49.66 calce=49 scroll=369 freno=- trabado=12
+20090	cuadro	pos=49.66 calce=49 scroll=369 freno=- trabado=12
+20105	cuadro	pos=49.66 calce=49 scroll=369 freno=- trabado=12
+20122	cuadro	pos=49.66 calce=49 scroll=369 freno=- trabado=12
+20139	cuadro	pos=49.69 calce=49 scroll=369 freno=- trabado=12
+20157	cuadro	pos=49.74 calce=49 scroll=369 freno=- trabado=12
+20172	cuadro	pos=49.80 calce=49 scroll=369 freno=- trabado=12
+20190	cuadro	pos=49.85 calce=49 scroll=369 freno=- trabado=12
+20205	cuadro	pos=49.90 calce=49 scroll=369 freno=- trabado=12
+20208	llegada	parcial nativo=20206
+20208	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y este
+20208	calce	token 50: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y este
+20221	cuadro	pos=50.04 calce=50 scroll=377 freno=- trabado=13
+20239	cuadro	pos=50.10 calce=50 scroll=382 freno=- trabado=13
+20256	cuadro	pos=50.15 calce=50 scroll=387 freno=- trabado=13
+20272	cuadro	pos=50.20 calce=50 scroll=390 freno=- trabado=13
+20288	cuadro	pos=50.25 calce=50 scroll=393 freno=- trabado=13
+20305	cuadro	pos=50.30 calce=50 scroll=395 freno=- trabado=13
+20321	cuadro	pos=50.35 calce=50 scroll=397 freno=- trabado=13
+20338	cuadro	pos=50.41 calce=50 scroll=398 freno=- trabado=13
+20341	llegada	parcial nativo=20339
+20341	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y este límite
+20341	calce	token 51: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y este límite
+20354	cuadro	pos=51.04 calce=51 scroll=399 freno=- trabado=13
+20371	cuadro	pos=51.09 calce=51 scroll=400 freno=- trabado=13
+20388	cuadro	pos=51.15 calce=51 scroll=401 freno=- trabado=13
+20404	cuadro	pos=51.20 calce=51 scroll=401 freno=- trabado=13
+20422	cuadro	pos=51.26 calce=51 scroll=402 freno=- trabado=13
+20437	cuadro	pos=51.31 calce=51 scroll=402 freno=- trabado=13
+20457	cuadro	pos=51.37 calce=51 scroll=402 freno=- trabado=13
+20471	cuadro	pos=51.41 calce=51 scroll=403 freno=- trabado=13
+20487	cuadro	pos=51.46 calce=51 scroll=403 freno=- trabado=13
+20504	cuadro	pos=51.52 calce=51 scroll=403 freno=- trabado=13
+20508	llegada	parcial nativo=20505
+20508	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y este límite
+20509	calce	token 51: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y este límite
+20526	cuadro	pos=51.53 calce=51 scroll=403 freno=- trabado=13
+20537	cuadro	pos=51.53 calce=51 scroll=403 freno=- trabado=13
+20554	cuadro	pos=51.53 calce=51 scroll=403 freno=- trabado=13
+20570	cuadro	pos=51.53 calce=51 scroll=403 freno=- trabado=13
+20587	cuadro	pos=51.53 calce=51 scroll=403 freno=- trabado=13
+20604	cuadro	pos=51.53 calce=51 scroll=403 freno=- trabado=13
+20620	cuadro	pos=51.53 calce=51 scroll=403 freno=- trabado=13
+20638	cuadro	pos=51.53 calce=51 scroll=403 freno=- trabado=13
+20654	cuadro	pos=51.53 calce=51 scroll=403 freno=- trabado=13
+20669	cuadro	pos=51.53 calce=51 scroll=403 freno=- trabado=13
+20695	cuadro	pos=51.59 calce=51 scroll=403 freno=- trabado=13
+20702	cuadro	pos=51.61 calce=51 scroll=403 freno=- trabado=13
+20711	llegada	parcial nativo=20710
+20711	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y este límite
+20711	calce	token 51: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y este límite
+20719	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20736	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20752	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20769	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20785	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20802	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20819	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20836	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20853	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20869	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20886	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20902	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20907	llegada	parcial nativo=20904
+20907	oyo	parcial: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y este límite
+20907	calce	token 51: hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar qué tan buena sean transformación o las leyes o las circunstancias y este límite
+20918	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20934	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20951	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20968	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+20986	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+21002	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+21019	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+21035	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+21052	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+21069	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+21086	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+21101	cuadro	pos=51.64 calce=51 scroll=403 freno=- trabado=13
+21117	cuadro	pos=51.67 calce=51 scroll=403 freno=- trabado=13
+21135	cuadro	pos=51.72 calce=51 scroll=403 freno=- trabado=13
+21141	llegada	FINAL nativo=21137
+21141	palabras	FINAL: hay@292-472 una@472-622 y@622-682 de@682-802 antigua@815-1432 que@1582-1702 podríamos@1702-2092 llamar@2092-2542 la@2842-2992 concepción@2992-3532 trágica@3532-4192 de@4222-4372 la@4372-4492 naturaleza@4492-5002 humana@5002-5392 no@5812-5992 dice@5995-6262 solo@6278-6652 que@6652-6742 a@6742-6802 veces@6802-7252 somos@7402-7762 egoístas@7762-8482 o@8722-8842 crueles@8842-9412 dice@10072-10552 que@10582-10672 hay@10672-10762 un@10762-10882 límite@10882-11452 que@11812-11962 nunca@11962-12232 vamos@12232-12472 a@12472-12532 poder@12532-12772 superar@12772-13222 sin@13582-13822 importar@13822-14392 que@14452-14572 tan@14572-14722 buena@14722-14932 sea@14951-15112 nuestra@15118-15382 formación@15382-15982 o@16192-16282 las@16294-16431 leyes@16431-16822 o@16852-16942 las@16942-17091 circunstancias@17091-17842 y@18592-18712 este@18712-19012 límite@19012-19582
+21141	oyo	FINAL: hay una y de antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buena sea nuestra formación o las leyes o las circunstancias y este límite
+21142	calce	token 51: hay una y de antigua que podríamos llamar la concepción trágica de la naturaleza humana no dice solo que a veces somos egoístas o crueles dice que hay un límite que nunca vamos a poder superar sin importar que tan buena sea nuestra formación o las leyes o las circunstancias y este límite
+21151	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21167	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21185	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21200	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21218	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21234	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21251	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21267	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21284	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21300	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21316	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21333	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21350	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21362	llegada	parcial nativo=21356
+21362	oyo	parcial: es
+21363	calce	NO CALZO: es
+21365	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21383	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21399	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21418	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21434	cuadro	pos=51.74 calce=51 scroll=403 freno=- trabado=13
+21450	cuadro	pos=51.78 calce=51 scroll=403 freno=- trabado=13
+21466	cuadro	pos=51.82 calce=51 scroll=403 freno=- trabado=13
+21483	cuadro	pos=51.87 calce=51 scroll=403 freno=- trabado=13
+21500	cuadro	pos=51.91 calce=51 scroll=403 freno=- trabado=13
+21516	cuadro	pos=51.95 calce=51 scroll=403 freno=- trabado=13
+21533	cuadro	pos=51.99 calce=51 scroll=403 freno=- trabado=13
+21536	llegada	parcial nativo=21533
+21536	oyo	parcial: es el
+21536	calce	token 53: es el
+21549	cuadro	pos=52.81 calce=53 scroll=403 freno=- trabado=13
+21565	cuadro	pos=52.87 calce=53 scroll=403 freno=- trabado=13
+21582	cuadro	pos=52.93 calce=53 scroll=403 freno=- trabado=13
+21598	cuadro	pos=52.98 calce=53 scroll=403 freno=- trabado=13
+21615	cuadro	pos=53.03 calce=53 scroll=411 freno=- trabado=14
+21635	cuadro	pos=53.09 calce=53 scroll=417 freno=- trabado=14
+21650	cuadro	pos=53.13 calce=53 scroll=421 freno=- trabado=14
+21665	cuadro	pos=53.17 calce=53 scroll=424 freno=- trabado=14
+21682	cuadro	pos=53.22 calce=53 scroll=427 freno=- trabado=14
+21699	cuadro	pos=53.26 calce=53 scroll=429 freno=- trabado=14
+21704	llegada	parcial nativo=21701
+21704	oyo	parcial: es el
+21704	calce	token 53: es el
+21714	cuadro	pos=53.28 calce=53 scroll=430 freno=- trabado=14
+21731	cuadro	pos=53.28 calce=53 scroll=431 freno=- trabado=14
+21748	cuadro	pos=53.28 calce=53 scroll=433 freno=- trabado=14
+21767	cuadro	pos=53.28 calce=53 scroll=433 freno=- trabado=14
+21781	cuadro	pos=53.28 calce=53 scroll=434 freno=- trabado=14
+21797	cuadro	pos=53.28 calce=53 scroll=434 freno=- trabado=14
+21814	cuadro	pos=53.28 calce=53 scroll=435 freno=- trabado=14
+21834	cuadro	pos=53.31 calce=53 scroll=435 freno=- trabado=14
+21847	cuadro	pos=53.35 calce=53 scroll=435 freno=- trabado=14
+21864	cuadro	pos=53.39 calce=53 scroll=436 freno=- trabado=14
+21880	cuadro	pos=53.43 calce=53 scroll=436 freno=- trabado=14
+21897	cuadro	pos=53.47 calce=53 scroll=436 freno=- trabado=14
+21913	cuadro	pos=53.51 calce=53 scroll=436 freno=- trabado=14
+21930	cuadro	pos=53.55 calce=53 scroll=436 freno=- trabado=14
+21933	llegada	parcial nativo=21930
+21933	oyo	parcial: es el interés
+21933	calce	token 54: es el interés
+21947	cuadro	pos=53.85 calce=54 scroll=436 freno=- trabado=14
+21964	cuadro	pos=53.90 calce=54 scroll=436 freno=- trabado=14
+21980	cuadro	pos=53.94 calce=54 scroll=436 freno=- trabado=14
+21996	cuadro	pos=53.99 calce=54 scroll=436 freno=- trabado=14
+22013	cuadro	pos=54.03 calce=54 scroll=436 freno=- trabado=14
+22030	cuadro	pos=54.08 calce=54 scroll=436 freno=- trabado=14
+22046	cuadro	pos=54.12 calce=54 scroll=436 freno=- trabado=14
+22063	cuadro	pos=54.17 calce=54 scroll=436 freno=- trabado=14
+22080	cuadro	pos=54.21 calce=54 scroll=436 freno=- trabado=14
+22097	cuadro	pos=54.26 calce=54 scroll=436 freno=- trabado=14
+22112	cuadro	pos=54.30 calce=54 scroll=436 freno=- trabado=14
+22128	cuadro	pos=54.34 calce=54 scroll=436 freno=- trabado=14
+22133	llegada	parcial nativo=22132
+22133	oyo	parcial: es el interés
+22133	calce	token 54: es el interés
+22145	cuadro	pos=54.35 calce=54 scroll=436 freno=- trabado=14
+22164	cuadro	pos=54.35 calce=54 scroll=436 freno=- trabado=14
+22178	cuadro	pos=54.35 calce=54 scroll=436 freno=- trabado=14
+22195	cuadro	pos=54.35 calce=54 scroll=436 freno=- trabado=14
+22214	cuadro	pos=54.35 calce=54 scroll=436 freno=- trabado=14
+22230	cuadro	pos=54.35 calce=54 scroll=436 freno=- trabado=14
+22245	cuadro	pos=54.35 calce=54 scroll=436 freno=- trabado=14
+22261	cuadro	pos=54.35 calce=54 scroll=436 freno=- trabado=14
+22279	cuadro	pos=54.35 calce=54 scroll=436 freno=- trabado=14
+22296	cuadro	pos=54.39 calce=54 scroll=436 freno=- trabado=14
+22312	cuadro	pos=54.42 calce=54 scroll=436 freno=- trabado=14
+22328	cuadro	pos=54.46 calce=54 scroll=436 freno=- trabado=14
+22334	llegada	parcial nativo=22332
+22334	oyo	parcial: es el interés propio
+22334	calce	token 55: es el interés propio
+22344	cuadro	pos=55.02 calce=55 scroll=436 freno=- trabado=14
+22365	cuadro	pos=55.07 calce=55 scroll=436 freno=- trabado=14
+22378	cuadro	pos=55.10 calce=55 scroll=436 freno=- trabado=14
+22395	cuadro	pos=55.14 calce=55 scroll=436 freno=- trabado=14
+22411	cuadro	pos=55.18 calce=55 scroll=436 freno=- trabado=14
+22428	cuadro	pos=55.22 calce=55 scroll=436 freno=- trabado=14
+22444	cuadro	pos=55.26 calce=55 scroll=436 freno=- trabado=14
+22463	cuadro	pos=55.30 calce=55 scroll=436 freno=- trabado=14
+22476	cuadro	pos=55.33 calce=55 scroll=436 freno=- trabado=14
+22494	cuadro	pos=55.38 calce=55 scroll=436 freno=- trabado=14
+22509	llegada	parcial nativo=22507
+22510	oyo	parcial: es el interés propio
+22510	calce	token 55: es el interés propio
+22511	cuadro	pos=55.41 calce=55 scroll=436 freno=- trabado=14
+22526	cuadro	pos=55.41 calce=55 scroll=436 freno=- trabado=14
+22543	cuadro	pos=55.41 calce=55 scroll=436 freno=- trabado=14
+22563	cuadro	pos=55.41 calce=55 scroll=436 freno=- trabado=14
+22576	cuadro	pos=55.41 calce=55 scroll=436 freno=- trabado=14
+22594	cuadro	pos=55.41 calce=55 scroll=436 freno=- trabado=14
+22610	cuadro	pos=55.41 calce=55 scroll=436 freno=- trabado=14
+22628	cuadro	pos=55.41 calce=55 scroll=436 freno=- trabado=14
+22643	cuadro	pos=55.41 calce=55 scroll=436 freno=- trabado=14
+22663	cuadro	pos=55.41 calce=55 scroll=436 freno=- trabado=14
+22677	cuadro	pos=55.41 calce=55 scroll=436 freno=- trabado=14
+22697	cuadro	pos=55.44 calce=55 scroll=436 freno=- trabado=14
+22709	cuadro	pos=55.47 calce=55 scroll=436 freno=- trabado=14
+22726	cuadro	pos=55.51 calce=55 scroll=436 freno=- trabado=14
+22729	llegada	parcial nativo=22727
+22729	oyo	parcial: es el interés propio
+22730	calce	token 55: es el interés propio
+22742	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22761	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22775	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22793	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22810	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22826	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22841	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22859	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22876	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22889	llegada	parcial nativo=22886
+22889	oyo	parcial: es el interés propio
+22890	calce	token 55: es el interés propio
+22895	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22907	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22927	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22941	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22961	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22974	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+22991	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+23009	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+23027	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+23041	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+23060	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+23074	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+23091	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+23108	cuadro	pos=55.52 calce=55 scroll=436 freno=- trabado=14
+23119	llegada	parcial nativo=23117
+23119	oyo	parcial: es el interés propio y
+23119	calce	token 56: es el interés propio y
+23134	cuadro	pos=55.63 calce=56 scroll=436 freno=- trabado=14
+23140	cuadro	pos=55.65 calce=56 scroll=436 freno=- trabado=14
+23162	cuadro	pos=55.71 calce=56 scroll=436 freno=- trabado=14
+23173	cuadro	pos=55.74 calce=56 scroll=436 freno=- trabado=14
+23191	cuadro	pos=55.80 calce=56 scroll=436 freno=- trabado=14
+23206	cuadro	pos=55.84 calce=56 scroll=436 freno=- trabado=14
+23226	cuadro	pos=55.90 calce=56 scroll=436 freno=- trabado=14
+23240	cuadro	pos=55.94 calce=56 scroll=436 freno=- trabado=14
+23258	cuadro	pos=55.99 calce=56 scroll=436 freno=- trabado=14
+23273	cuadro	pos=56.03 calce=56 scroll=436 freno=- trabado=14
+23292	cuadro	pos=56.08 calce=56 scroll=436 freno=- trabado=14
+23306	cuadro	pos=56.12 calce=56 scroll=436 freno=- trabado=14
+23310	llegada	parcial nativo=23308
+23310	oyo	parcial: es el interés propio y
+23310	calce	token 56: es el interés propio y
+23323	cuadro	pos=56.13 calce=56 scroll=436 freno=- trabado=14
+23339	cuadro	pos=56.13 calce=56 scroll=436 freno=- trabado=14
+23363	cuadro	pos=56.13 calce=56 scroll=436 freno=- trabado=14
+23372	cuadro	pos=56.14 calce=56 scroll=436 freno=- trabado=14
+23391	cuadro	pos=56.19 calce=56 scroll=436 freno=- trabado=14
+23405	cuadro	pos=56.22 calce=56 scroll=436 freno=- trabado=14
+23427	cuadro	pos=56.27 calce=56 scroll=436 freno=- trabado=14
+23439	cuadro	pos=56.29 calce=56 scroll=436 freno=- trabado=14
+23458	cuadro	pos=56.34 calce=56 scroll=436 freno=- trabado=14
+23472	cuadro	pos=56.37 calce=56 scroll=436 freno=- trabado=14
+23491	cuadro	pos=56.41 calce=56 scroll=436 freno=- trabado=14
+23505	cuadro	pos=56.44 calce=56 scroll=436 freno=- trabado=14
+23524	cuadro	pos=56.49 calce=56 scroll=436 freno=- trabado=14
+23538	cuadro	pos=56.52 calce=56 scroll=436 freno=- trabado=14
+23558	cuadro	pos=56.56 calce=56 scroll=436 freno=- trabado=14
+23571	cuadro	pos=56.59 calce=56 scroll=436 freno=- trabado=14
+23575	llegada	parcial nativo=23572
+23575	oyo	parcial: es el interés propio y se
+23575	calce	token 57: es el interés propio y se
+23588	cuadro	pos=57.03 calce=57 scroll=444 freno=- trabado=15
+23605	cuadro	pos=57.07 calce=57 scroll=449 freno=- trabado=15
+23626	cuadro	pos=57.12 calce=57 scroll=455 freno=- trabado=15
+23637	cuadro	pos=57.15 calce=57 scroll=457 freno=- trabado=15
+23654	cuadro	pos=57.18 calce=57 scroll=460 freno=- trabado=15
+23675	cuadro	pos=57.23 calce=57 scroll=463 freno=- trabado=15
+23692	cuadro	pos=57.27 calce=57 scroll=464 freno=- trabado=15
+23704	cuadro	pos=57.30 calce=57 scroll=465 freno=- trabado=15
+23723	cuadro	pos=57.34 calce=57 scroll=467 freno=- trabado=15
+23731	llegada	parcial nativo=23730
+23731	oyo	parcial: es el interés propio y se expresa
+23731	calce	token 58: es el interés propio y se expresa
+23737	cuadro	pos=57.83 calce=58 scroll=467 freno=- trabado=15
+23754	cuadro	pos=57.89 calce=58 scroll=468 freno=- trabado=15
+23770	cuadro	pos=57.93 calce=58 scroll=468 freno=- trabado=15
+23788	cuadro	pos=57.98 calce=58 scroll=469 freno=- trabado=15
+23803	cuadro	pos=58.03 calce=58 scroll=469 freno=- trabado=15
+23821	cuadro	pos=58.07 calce=58 scroll=469 freno=- trabado=15
+23837	cuadro	pos=58.12 calce=58 scroll=470 freno=- trabado=15
+23855	cuadro	pos=58.17 calce=58 scroll=470 freno=- trabado=15
+23870	cuadro	pos=58.21 calce=58 scroll=470 freno=- trabado=15
+23887	cuadro	pos=58.25 calce=58 scroll=470 freno=- trabado=15
+23904	cuadro	pos=58.30 calce=58 scroll=470 freno=- trabado=15
+23920	cuadro	pos=58.34 calce=58 scroll=470 freno=- trabado=15
+23937	cuadro	pos=58.39 calce=58 scroll=470 freno=- trabado=15
+23940	llegada	parcial nativo=23937
+23940	oyo	parcial: es el interés propio y se expresa en la
+23941	calce	token 60: es el interés propio y se expresa en la
+23954	cuadro	pos=58.88 calce=60 scroll=470 freno=- trabado=15
+23969	cuadro	pos=58.96 calce=60 scroll=470 freno=- trabado=15
+23986	cuadro	pos=59.04 calce=60 scroll=470 freno=- trabado=15
+24002	cuadro	pos=59.11 calce=60 scroll=470 freno=- trabado=15
+24023	cuadro	pos=59.21 calce=60 scroll=470 freno=- trabado=15
+24036	cuadro	pos=59.27 calce=60 scroll=470 freno=- trabado=15
+24052	cuadro	pos=59.34 calce=60 scroll=470 freno=- trabado=15
+24069	cuadro	pos=59.41 calce=60 scroll=470 freno=- trabado=15
+24079	llegada	parcial nativo=24078
+24079	oyo	parcial: es el interés propio y se expresa en la
+24079	calce	token 60: es el interés propio y se expresa en la
+24085	cuadro	pos=60.02 calce=60 scroll=470 freno=- trabado=15
+24102	cuadro	pos=60.06 calce=60 scroll=470 freno=- trabado=15
+24118	cuadro	pos=60.11 calce=60 scroll=470 freno=- trabado=15
+24135	cuadro	pos=60.15 calce=60 scroll=470 freno=- trabado=15
+24151	cuadro	pos=60.19 calce=60 scroll=470 freno=- trabado=15
+24168	cuadro	pos=60.24 calce=60 scroll=470 freno=- trabado=15
+24184	cuadro	pos=60.28 calce=60 scroll=470 freno=- trabado=15
+24201	cuadro	pos=60.33 calce=60 scroll=470 freno=- trabado=15
+24218	cuadro	pos=60.37 calce=60 scroll=470 freno=- trabado=15
+24234	cuadro	pos=60.42 calce=60 scroll=470 freno=- trabado=15
+24251	cuadro	pos=60.46 calce=60 scroll=470 freno=- trabado=15
+24267	cuadro	pos=60.50 calce=60 scroll=470 freno=- trabado=15
+24284	cuadro	pos=60.55 calce=60 scroll=470 freno=- trabado=15
+24300	cuadro	pos=60.59 calce=60 scroll=470 freno=- trabado=15
+24318	cuadro	pos=60.64 calce=60 scroll=470 freno=- trabado=15
+24334	cuadro	pos=60.68 calce=60 scroll=470 freno=- trabado=15
+24343	llegada	parcial nativo=24342
+24343	oyo	parcial: es el interés propio y se expresa en la gana
+24343	calce	token 61: es el interés propio y se expresa en la gana
+24350	cuadro	pos=61.02 calce=61 scroll=470 freno=- trabado=15
+24367	cuadro	pos=61.07 calce=61 scroll=470 freno=- trabado=15
+24384	cuadro	pos=61.11 calce=61 scroll=470 freno=- trabado=15
+24400	cuadro	pos=61.16 calce=61 scroll=470 freno=- trabado=15
+24417	cuadro	pos=61.20 calce=61 scroll=470 freno=- trabado=15
+24434	cuadro	pos=61.25 calce=61 scroll=470 freno=- trabado=15
+24450	cuadro	pos=61.29 calce=61 scroll=470 freno=- trabado=15
+24467	cuadro	pos=61.34 calce=61 scroll=470 freno=- trabado=15
+24483	cuadro	pos=61.38 calce=61 scroll=470 freno=- trabado=15
+24500	cuadro	pos=61.43 calce=61 scroll=470 freno=- trabado=15
+24512	llegada	parcial nativo=24511
+24512	oyo	parcial: es el interés propio y se expresa en la gana
+24512	calce	token 61: es el interés propio y se expresa en la gana
+24517	cuadro	pos=61.46 calce=61 scroll=470 freno=- trabado=15
+24533	cuadro	pos=61.46 calce=61 scroll=470 freno=- trabado=15
+24549	cuadro	pos=61.46 calce=61 scroll=470 freno=- trabado=15
+24566	cuadro	pos=61.46 calce=61 scroll=470 freno=- trabado=15
+24583	cuadro	pos=61.46 calce=61 scroll=470 freno=- trabado=15
+24599	cuadro	pos=61.46 calce=61 scroll=470 freno=- trabado=15
+24616	cuadro	pos=61.46 calce=61 scroll=470 freno=- trabado=15
+24633	cuadro	pos=61.46 calce=61 scroll=470 freno=- trabado=15
+24649	cuadro	pos=61.46 calce=61 scroll=470 freno=- trabado=15
+24666	cuadro	pos=61.46 calce=61 scroll=470 freno=- trabado=15
+24683	cuadro	pos=61.46 calce=61 scroll=470 freno=- trabado=15
+24700	cuadro	pos=61.51 calce=61 scroll=470 freno=- trabado=15
+24716	cuadro	pos=61.55 calce=61 scroll=470 freno=- trabado=15
+24732	cuadro	pos=61.60 calce=61 scroll=470 freno=- trabado=15
+24738	llegada	parcial nativo=24736
+24738	oyo	parcial: es el interés propio y se expresa en la gana de
+24739	calce	token 62: es el interés propio y se expresa en la gana de
+24748	cuadro	pos=62.03 calce=62 scroll=478 freno=- trabado=16
+24766	cuadro	pos=62.08 calce=62 scroll=483 freno=- trabado=16
+24782	cuadro	pos=62.12 calce=62 scroll=488 freno=- trabado=16
+24799	cuadro	pos=62.17 calce=62 scroll=491 freno=- trabado=16
+24815	cuadro	pos=62.21 calce=62 scroll=494 freno=- trabado=16
+24831	cuadro	pos=62.26 calce=62 scroll=496 freno=- trabado=16
+24849	cuadro	pos=62.31 calce=62 scroll=498 freno=- trabado=16
+24865	cuadro	pos=62.35 calce=62 scroll=499 freno=- trabado=16
+24882	cuadro	pos=62.40 calce=62 scroll=500 freno=- trabado=16
+24898	cuadro	pos=62.44 calce=62 scroll=501 freno=- trabado=16
+24914	cuadro	pos=62.49 calce=62 scroll=502 freno=- trabado=16
+24931	cuadro	pos=62.53 calce=62 scroll=502 freno=- trabado=16
+24934	llegada	parcial nativo=24932
+24934	oyo	parcial: es el interés propio y se expresa en la gana de status dado
+24934	calce	token 64: es el interés propio y se expresa en la gana de status dado
+24948	cuadro	pos=63.04 calce=64 scroll=503 freno=- trabado=16
+24964	cuadro	pos=63.13 calce=64 scroll=503 freno=- trabado=16
+24981	cuadro	pos=63.21 calce=64 scroll=503 freno=- trabado=16
+24998	cuadro	pos=63.29 calce=64 scroll=504 freno=- trabado=16
+25015	cuadro	pos=63.37 calce=64 scroll=504 freno=- trabado=16
+25033	cuadro	pos=63.46 calce=64 scroll=504 freno=- trabado=16
+25048	cuadro	pos=63.53 calce=64 scroll=504 freno=- trabado=16
+25064	cuadro	pos=63.61 calce=64 scroll=504 freno=- trabado=16
+25081	cuadro	pos=63.68 calce=64 scroll=504 freno=- trabado=16
+25099	cuadro	pos=63.77 calce=64 scroll=504 freno=- trabado=16
+25114	cuadro	pos=63.83 calce=64 scroll=504 freno=- trabado=16
+25130	cuadro	pos=63.91 calce=64 scroll=504 freno=- trabado=16
+25146	cuadro	pos=63.98 calce=64 scroll=504 freno=- trabado=16
+25163	cuadro	pos=64.05 calce=64 scroll=504 freno=- trabado=16
+25170	llegada	parcial nativo=25169
+25170	oyo	parcial: es el interés propio y se expresa en la gana de estatus de
+25171	calce	token 64: es el interés propio y se expresa en la gana de estatus de
+25181	cuadro	pos=64.08 calce=64 scroll=504 freno=- trabado=16
+25196	cuadro	pos=64.08 calce=64 scroll=504 freno=- trabado=16
+25214	cuadro	pos=64.13 calce=64 scroll=504 freno=- trabado=16
+25230	cuadro	pos=64.18 calce=64 scroll=504 freno=- trabado=16
+25246	cuadro	pos=64.23 calce=64 scroll=504 freno=- trabado=16
+25262	cuadro	pos=64.27 calce=64 scroll=504 freno=- trabado=16
+25281	cuadro	pos=64.33 calce=64 scroll=504 freno=- trabado=16
+25284	llegada	parcial nativo=25282
+25284	oyo	parcial: es el interés propio y se expresa en la gana de estatus de
+25285	calce	token 64: es el interés propio y se expresa en la gana de estatus de
+25297	cuadro	pos=64.34 calce=64 scroll=504 freno=- trabado=16
+25313	cuadro	pos=64.34 calce=64 scroll=504 freno=- trabado=16
+25329	cuadro	pos=64.34 calce=64 scroll=504 freno=- trabado=16
+25346	cuadro	pos=64.34 calce=64 scroll=504 freno=- trabado=16
+25364	cuadro	pos=64.34 calce=64 scroll=504 freno=- trabado=16
+25380	cuadro	pos=64.34 calce=64 scroll=504 freno=- trabado=16
+25396	cuadro	pos=64.34 calce=64 scroll=504 freno=- trabado=16
+25413	cuadro	pos=64.38 calce=64 scroll=504 freno=- trabado=16
+25430	cuadro	pos=64.43 calce=64 scroll=504 freno=- trabado=16
+25446	cuadro	pos=64.48 calce=64 scroll=504 freno=- trabado=16
+25462	cuadro	pos=64.53 calce=64 scroll=504 freno=- trabado=16
+25479	cuadro	pos=64.58 calce=64 scroll=504 freno=- trabado=16
+25495	cuadro	pos=64.63 calce=64 scroll=504 freno=- trabado=16
+25511	cuadro	pos=64.68 calce=64 scroll=504 freno=- trabado=16
+25528	cuadro	pos=64.72 calce=64 scroll=504 freno=- trabado=16
+25535	llegada	parcial nativo=25533
+25535	oyo	parcial: es el interés propio y se expresa en la gana de estatus de aparentar
+25536	calce	token 65: es el interés propio y se expresa en la gana de estatus de aparentar
+25546	cuadro	pos=65.03 calce=65 scroll=504 freno=- trabado=16
+25561	cuadro	pos=65.08 calce=65 scroll=504 freno=- trabado=16
+25578	cuadro	pos=65.14 calce=65 scroll=504 freno=- trabado=16
+25594	cuadro	pos=65.19 calce=65 scroll=504 freno=- trabado=16
+25611	cuadro	pos=65.24 calce=65 scroll=504 freno=- trabado=16
+25629	cuadro	pos=65.30 calce=65 scroll=504 freno=- trabado=16
+25644	cuadro	pos=65.35 calce=65 scroll=504 freno=- trabado=16
+25661	cuadro	pos=65.40 calce=65 scroll=504 freno=- trabado=16
+25678	cuadro	pos=65.46 calce=65 scroll=504 freno=- trabado=16
+25695	cuadro	pos=65.51 calce=65 scroll=504 freno=- trabado=16
+25711	cuadro	pos=65.56 calce=65 scroll=504 freno=- trabado=16
+25727	cuadro	pos=65.61 calce=65 scroll=504 freno=- trabado=16
+25731	llegada	parcial nativo=25730
+25731	oyo	parcial: es el interés propio y se expresa en la gana de estatus de aparentar o
+25732	calce	token 66: es el interés propio y se expresa en la gana de estatus de aparentar o
+25743	cuadro	pos=66.04 calce=66 scroll=504 freno=- trabado=16
+25764	cuadro	pos=66.11 calce=66 scroll=504 freno=- trabado=16
+25777	cuadro	pos=66.15 calce=66 scroll=504 freno=- trabado=16
+25793	cuadro	pos=66.21 calce=66 scroll=504 freno=- trabado=16
+25810	cuadro	pos=66.27 calce=66 scroll=504 freno=- trabado=16
+25827	cuadro	pos=66.32 calce=66 scroll=504 freno=- trabado=16
+25843	cuadro	pos=66.38 calce=66 scroll=504 freno=- trabado=16
+25859	cuadro	pos=66.43 calce=66 scroll=504 freno=- trabado=16
+25877	cuadro	pos=66.49 calce=66 scroll=504 freno=- trabado=16
+25893	cuadro	pos=66.55 calce=66 scroll=504 freno=- trabado=16
+25910	cuadro	pos=66.60 calce=66 scroll=504 freno=- trabado=16
+25926	cuadro	pos=66.66 calce=66 scroll=504 freno=- trabado=16
+25943	cuadro	pos=66.72 calce=66 scroll=504 freno=- trabado=16
+25960	cuadro	pos=66.77 calce=66 scroll=504 freno=- trabado=16
+25965	llegada	parcial nativo=25962
+25965	oyo	parcial: es el interés propio y se expresa en la gana de estatus de aparentar o de
+25966	calce	token 67: es el interés propio y se expresa en la gana de estatus de aparentar o de
+25975	cuadro	pos=67.04 calce=67 scroll=511 freno=- trabado=17
+25993	cuadro	pos=67.10 calce=67 scroll=517 freno=- trabado=17
+26009	cuadro	pos=67.16 calce=67 scroll=521 freno=- trabado=17
+26027	cuadro	pos=67.22 calce=67 scroll=525 freno=- trabado=17
+26042	cuadro	pos=67.27 calce=67 scroll=527 freno=- trabado=17
+26062	cuadro	pos=67.34 calce=67 scroll=530 freno=- trabado=17
+26076	cuadro	pos=67.39 calce=67 scroll=531 freno=- trabado=17
+26096	cuadro	pos=67.46 calce=67 scroll=533 freno=- trabado=17
+26108	cuadro	pos=67.51 calce=67 scroll=533 freno=- trabado=17
+26125	cuadro	pos=67.56 calce=67 scroll=534 freno=- trabado=17
+26127	llegada	parcial nativo=26126
+26127	oyo	parcial: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos
+26127	calce	token 68: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos
+26142	cuadro	pos=67.77 calce=68 scroll=535 freno=- trabado=17
+26158	cuadro	pos=67.84 calce=68 scroll=535 freno=- trabado=17
+26175	cuadro	pos=67.92 calce=68 scroll=536 freno=- trabado=17
+26191	cuadro	pos=68.00 calce=68 scroll=536 freno=- trabado=17
+26208	cuadro	pos=68.07 calce=68 scroll=536 freno=- trabado=17
+26227	cuadro	pos=68.16 calce=68 scroll=537 freno=- trabado=17
+26241	cuadro	pos=68.22 calce=68 scroll=537 freno=- trabado=17
+26258	cuadro	pos=68.30 calce=68 scroll=537 freno=- trabado=17
+26275	cuadro	pos=68.37 calce=68 scroll=537 freno=- trabado=17
+26292	cuadro	pos=68.44 calce=68 scroll=537 freno=- trabado=17
+26307	cuadro	pos=68.51 calce=68 scroll=537 freno=- trabado=17
+26324	cuadro	pos=68.58 calce=68 scroll=537 freno=- trabado=17
+26336	llegada	parcial nativo=26335
+26336	oyo	parcial: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos
+26337	calce	token 68: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos
+26340	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26359	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26374	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26390	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26408	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26428	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26440	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26458	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26474	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26493	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26496	llegada	parcial nativo=26494
+26496	oyo	parcial: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos
+26496	calce	token 68: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos
+26506	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26526	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26540	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26557	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26572	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26591	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26607	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26624	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26639	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26658	cuadro	pos=68.64 calce=68 scroll=537 freno=- trabado=17
+26673	cuadro	pos=68.67 calce=68 scroll=537 freno=- trabado=17
+26690	cuadro	pos=68.73 calce=68 scroll=537 freno=- trabado=17
+26705	cuadro	pos=68.79 calce=68 scroll=537 freno=- trabado=17
+26722	cuadro	pos=68.85 calce=68 scroll=537 freno=- trabado=17
+26725	llegada	parcial nativo=26724
+26725	oyo	parcial: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos
+26726	calce	token 68: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos
+26739	cuadro	pos=68.86 calce=68 scroll=537 freno=- trabado=17
+26758	cuadro	pos=68.86 calce=68 scroll=537 freno=- trabado=17
+26772	cuadro	pos=68.86 calce=68 scroll=537 freno=- trabado=17
+26791	cuadro	pos=68.86 calce=68 scroll=537 freno=- trabado=17
+26806	cuadro	pos=68.86 calce=68 scroll=537 freno=- trabado=17
+26826	cuadro	pos=68.86 calce=68 scroll=537 freno=- trabado=17
+26838	cuadro	pos=68.86 calce=68 scroll=537 freno=- trabado=17
+26857	cuadro	pos=68.86 calce=68 scroll=537 freno=- trabado=17
+26872	cuadro	pos=68.86 calce=68 scroll=537 freno=- trabado=17
+26891	cuadro	pos=68.86 calce=68 scroll=537 freno=- trabado=17
+26904	cuadro	pos=68.86 calce=68 scroll=537 freno=- trabado=17
+26914	llegada	parcial nativo=26913
+26915	oyo	parcial: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos solos
+26915	calce	token 69: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos solos
+26925	cuadro	pos=69.04 calce=69 scroll=537 freno=- trabado=17
+26938	cuadro	pos=69.08 calce=69 scroll=537 freno=- trabado=17
+26957	cuadro	pos=69.15 calce=69 scroll=537 freno=- trabado=17
+26970	cuadro	pos=69.20 calce=69 scroll=537 freno=- trabado=17
+26990	cuadro	pos=69.27 calce=69 scroll=537 freno=- trabado=17
+27005	cuadro	pos=69.32 calce=69 scroll=537 freno=- trabado=17
+27027	cuadro	pos=69.40 calce=69 scroll=537 freno=- trabado=17
+27036	cuadro	pos=69.43 calce=69 scroll=537 freno=- trabado=17
+27055	cuadro	pos=69.50 calce=69 scroll=537 freno=- trabado=17
+27070	cuadro	pos=69.55 calce=69 scroll=537 freno=- trabado=17
+27088	cuadro	pos=69.61 calce=69 scroll=537 freno=- trabado=17
+27104	cuadro	pos=69.67 calce=69 scroll=537 freno=- trabado=17
+27115	llegada	parcial nativo=27114
+27115	oyo	parcial: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos solos
+27118	calce	token 69: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos solos
+27127	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27136	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27154	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27171	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27187	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27202	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27221	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27236	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27254	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27270	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27289	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27302	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27308	llegada	parcial nativo=27307
+27308	oyo	parcial: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos solos
+27308	calce	token 69: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos solos
+27322	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27335	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27360	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27368	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27390	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27406	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27423	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27436	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27453	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27469	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27492	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27501	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27503	llegada	parcial nativo=27502
+27503	oyo	parcial: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos solos
+27504	calce	token 69: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos solos
+27522	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27536	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27557	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27568	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27588	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27604	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27622	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27635	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27653	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27668	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27687	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27701	cuadro	pos=69.71 calce=69 scroll=537 freno=- trabado=17
+27705	llegada	parcial nativo=27703
+27705	oyo	parcial: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos solos
+27706	calce	token 69: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos solos
+27724	cuadro	pos=69.72 calce=69 scroll=537 freno=- trabado=17
+27735	cuadro	pos=69.72 calce=69 scroll=537 freno=- trabado=17
+27752	cuadro	pos=69.72 calce=69 scroll=537 freno=- trabado=17
+27767	cuadro	pos=69.72 calce=69 scroll=537 freno=- trabado=17
+27785	cuadro	pos=69.72 calce=69 scroll=537 freno=- trabado=17
+27802	cuadro	pos=69.72 calce=69 scroll=537 freno=- trabado=17
+27825	cuadro	pos=69.72 calce=69 scroll=537 freno=- trabado=17
+27834	cuadro	pos=69.72 calce=69 scroll=537 freno=- trabado=17
+27853	cuadro	pos=69.72 calce=69 scroll=537 freno=- trabado=17
+27866	cuadro	pos=69.72 calce=69 scroll=537 freno=- trabado=17
+27884	cuadro	pos=69.72 calce=69 scroll=537 freno=- trabado=17
+27901	cuadro	pos=69.72 calce=69 scroll=537 freno=- trabado=17
+27917	llegada	FINAL nativo=27914
+27917	palabras	FINAL: es@20122-20272 el@20272-20392 interés@20392-20872 propio@21022-21532 y@21982-22102 se@22102-22252 expresa@22252-22732 en@22762-22882 la@22882-22972 gana@22972-23212 de@23213-23332 estatus@23332-23812 de@23812-23902 aparentar@23902-24442 o@24502-24622 de@24622-24712 engañarnos@24712-25252 solos@25279-25792
+27917	oyo	FINAL: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos solos
+27920	calce	token 69: es el interés propio y se expresa en la gana de estatus de aparentar o de engañarnos solos
+27923	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+27933	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+27950	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+27965	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+27984	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+28000	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+28017	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+28034	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+28050	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+28066	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+28084	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+28098	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+28113	llegada	parcial nativo=28112
+28115	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+28132	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+28149	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+28165	cuadro	pos=69.75 calce=69 scroll=537 freno=- trabado=17
+28184	cuadro	pos=69.79 calce=69 scroll=537 freno=- trabado=17
+28201	cuadro	pos=69.84 calce=69 scroll=537 freno=- trabado=17
+28217	cuadro	pos=69.89 calce=69 scroll=537 freno=- trabado=17
+28231	cuadro	pos=69.94 calce=69 scroll=537 freno=- trabado=17
+28248	cuadro	pos=69.99 calce=69 scroll=537 freno=- trabado=17
+28264	cuadro	pos=70.03 calce=69 scroll=537 freno=- trabado=17
+28282	cuadro	pos=70.09 calce=69 scroll=537 freno=- trabado=17
+28298	cuadro	pos=70.13 calce=69 scroll=537 freno=- trabado=17
+28303	llegada	parcial nativo=28301
+28315	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28332	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28349	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28363	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28382	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28398	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28414	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28430	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28447	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28463	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28481	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28498	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28505	llegada	parcial nativo=28504
+28513	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28529	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28546	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28562	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28579	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28596	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28613	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28629	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28646	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28662	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28680	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28696	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28712	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28714	llegada	parcial nativo=28712
+28729	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28746	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28763	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28780	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28795	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28812	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28828	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28846	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28861	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28879	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28894	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28898	llegada	parcial nativo=28895
+28912	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28928	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28945	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28960	cuadro	pos=70.19 calce=69 scroll=537 freno=- trabado=17
+28988	cuadro	pos=70.19 calce=69 scroll=548 freno=- trabado=18
+28994	cuadro	pos=70.19 calce=69 scroll=550 freno=- trabado=18
+29011	cuadro	pos=70.19 calce=69 scroll=555 freno=- trabado=18
+29027	cuadro	pos=70.19 calce=69 scroll=558 freno=- trabado=18
+29044	cuadro	pos=70.19 calce=69 scroll=561 freno=- trabado=18
+29062	cuadro	pos=70.19 calce=69 scroll=563 freno=- trabado=18
+29077	cuadro	pos=70.19 calce=69 scroll=565 freno=- trabado=18
+29093	cuadro	pos=70.19 calce=69 scroll=566 freno=- trabado=18
+29102	llegada	parcial nativo=29099
+29110	cuadro	pos=70.19 calce=69 scroll=567 freno=- trabado=18
+29127	cuadro	pos=70.19 calce=69 scroll=568 freno=- trabado=18
+29144	cuadro	pos=70.19 calce=69 scroll=569 freno=- trabado=18
+29160	cuadro	pos=70.19 calce=69 scroll=569 freno=- trabado=18
+29177	cuadro	pos=70.19 calce=69 scroll=570 freno=- trabado=18
+29194	cuadro	pos=70.19 calce=69 scroll=570 freno=- trabado=18
+29209	cuadro	pos=70.19 calce=69 scroll=570 freno=- trabado=18
+29227	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29243	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29260	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29277	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29294	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29308	llegada	parcial nativo=29306
+29311	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29326	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29344	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29359	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29377	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29394	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29411	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29426	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29444	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29459	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29476	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29492	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29509	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29511	llegada	parcial nativo=29510
+29525	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29543	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29558	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29576	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29591	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29610	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29624	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29642	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29659	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29676	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29691	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29708	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29722	llegada	parcial nativo=29714
+29723	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29742	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29757	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29777	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29792	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29807	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29825	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29843	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29860	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29873	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29890	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29902	llegada	parcial nativo=29901
+29906	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29925	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29940	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29956	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29973	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+29991	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30006	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30022	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30042	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30057	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30072	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30089	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30092	llegada	parcial nativo=30090
+30105	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30123	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30142	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30155	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30176	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30189	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30205	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30224	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30239	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30258	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30274	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30292	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30304	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30308	llegada	parcial nativo=30307
+30322	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30340	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30359	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30372	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30389	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30405	cuadro	pos=70.19 calce=69 scroll=571 freno=- trabado=18
+30421	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30439	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30455	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30472	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30489	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30503	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30504	llegada	parcial nativo=30499
+30519	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30536	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30557	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30569	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30587	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30603	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30621	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30635	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30652	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30669	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30686	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30702	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30719	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30735	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30753	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30769	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30786	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30802	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30821	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30836	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30854	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30867	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30885	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30893	llegada	parcial nativo=30892
+30901	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30920	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30933	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30952	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30967	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+30987	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+31003	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18
+31018	cuadro	pos=70.19 calce=69 scroll=571 freno=sin-calce trabado=18

@@ -1,0 +1,2568 @@
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: 4c177f8a-4bf1-40b6-af68-0f93248e7967
+# inicio del video (epoch ms): 1790524599713
+# motor de voz: nativo
+# letra: 24 px, sans
+# columna: completa, margen 5%
+# donde lees: arriba
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Hi. Read this out loud, as slowly or as quickly as you like.
+# | 
+# | Now look at the text. It's moving on its own, at the pace you speak, without you touching anything. The soft line under the words shows you where you are.
+# | 
+# | If you stop to think, the text waits for you. When you start talking again, it picks up right where you left off.
+# | 
+# | Anything you write in square brackets is a note just for you. It shows on the screen, but you don't need to read it out loud. [Like this one: breathe, and smile.]
+# | 
+# | Your script can also help you read better. Use bold for what you want to say with more force. Color words in amber, light blue or green to set apart ideas or shifts in tone. And use the yellow highlight for what you can't afford to miss. Just select the text in the editor and pick one.
+# | 
+# | With the Aa button you choose the text size, the typeface, the column width and the screen colors. Set it up however feels most comfortable.
+# | 
+# | When you want to record yourself, tap Record. The camera films while you read, and the text sits right under the lens, so your eyes go to the camera and not to the screen. You can see yourself full screen, behind the text, or in a small window. That way you know how you look, without giving up the comfort of reading.
+# | 
+# | When you're done, your video can have captions. They come from your script, in time with your voice. Pick the style you like best and save it to your gallery just as you see it.
+# | 
+# | Sigo is here to give you the comfort and the calm you need. We want all your focus to be where it belongs. You don't have to memorize anything. You don't have to rush to keep up with the text. You can bring whatever emotion you want, whenever you want.
+# | 
+# | It works for recording a video, teaching a class or getting ready for an interview.
+# | 
+# | When you're done, delete this and write your own script, or paste one you already have.
+# | 
+# | And if there's something you like, something that bugs you, or an idea to make it better, let us know. Your feedback means a lot to us. Write to hello@sigoteleprompter.com. All the best.
+# ---------------------------------------------
+
+ms	tipo	detalle
+39	renglones	0 6 12 13 19 25 30 34 39 43 50 56 62 66 71 78 84 91 96 98 104 110 116 121 128 134 139 145 151 155 160 165 169 175 179 180 185 189 194 200 207 213 218 224 230 235 240 242 247 252 258 264 271 277 284 289 295 301 305 310 317 321 325 327 333 338 342 347 353 358 363 368 375 380 387 388
+39	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+46	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+53	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+73	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+81	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+99	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+116	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+131	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+148	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+165	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+181	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+198	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+216	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+232	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+248	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+264	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+280	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+298	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+315	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+331	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+349	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+366	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+382	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+399	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+418	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+428	oido	inicio=-40 trozo=320 ruta=/data/user/0/com.sigoteleprompter.app/files/oido/1790524599673.pcm
+428	llegada	parcial nativo=413 audio=80 leido=413 procesado=413 rms=0.0013 relevos=0
+431	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+447	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+466	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+482	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+498	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+513	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+533	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+547	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+565	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+582	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+599	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+614	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+630	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+647	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+664	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+681	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+697	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+714	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+730	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+748	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+763	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+781	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+798	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+813	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+832	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+846	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+863	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+881	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+897	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+914	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+930	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+946	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+964	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+983	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+996	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1014	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1030	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1048	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1063	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1080	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1096	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1113	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1130	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1145	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1147	llegada	parcial nativo=1145 audio=180 leido=718 procesado=1145 rms=0.0003 relevos=0
+1163	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1176	llegada	parcial nativo=1174 audio=280 leido=1170 procesado=1174 rms=0.0005 relevos=0
+1180	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1196	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1212	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1231	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1246	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1263	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1279	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1295	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1313	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1329	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1345	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1363	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1380	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1396	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1412	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1429	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1446	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1463	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1481	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1495	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1512	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1524	llegada	parcial nativo=1523 audio=380 leido=1520 procesado=1523 rms=0.0007 relevos=0
+1529	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1543	llegada	parcial nativo=1541 audio=480 leido=1537 procesado=1541 rms=0.0006 relevos=0
+1548	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1562	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1578	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1596	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1613	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1616	llegada	parcial nativo=1613 audio=580 leido=1607 procesado=1613 rms=0.0007 relevos=0
+1629	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1633	llegada	parcial nativo=1631 audio=680 leido=1631 procesado=1631 rms=0.0005 relevos=0
+1645	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1649	llegada	parcial nativo=1648 audio=780 leido=1644 procesado=1648 rms=0.0008 relevos=0
+1661	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1663	llegada	parcial nativo=1661 audio=880 leido=1657 procesado=1661 rms=0.0005 relevos=0
+1679	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1687	llegada	parcial nativo=1684 audio=980 leido=1684 procesado=1684 rms=0.0006 relevos=0
+1696	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1708	llegada	parcial nativo=1701 audio=1080 leido=1697 procesado=1701 rms=0.0006 relevos=0
+1712	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1725	llegada	parcial nativo=1723 audio=1180 leido=1718 procesado=1723 rms=0.0005 relevos=0
+1729	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1745	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1762	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1779	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1796	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1811	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1820	llegada	parcial nativo=1818 audio=1280 leido=1817 procesado=1818 rms=0.0005 relevos=0
+1829	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1847	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1863	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1878	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1897	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1911	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1928	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1932	llegada	parcial nativo=1929 audio=1380 leido=1919 procesado=1929 rms=0.0006 relevos=0
+1945	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1962	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1978	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+1995	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2015	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2027	llegada	parcial nativo=2026 audio=1480 leido=2018 procesado=2026 rms=0.0006 relevos=0
+2028	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2045	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2061	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2078	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2094	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2111	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2126	llegada	parcial nativo=2121 audio=1580 leido=2120 procesado=2121 rms=0.0006 relevos=0
+2128	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2145	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2161	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2178	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2195	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2212	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2229	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2245	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2257	llegada	parcial nativo=2254 audio=1667 leido=2253 procesado=2254 rms=0.0005 relevos=1
+2263	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2278	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2294	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2313	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2328	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2345	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2347	llegada	parcial nativo=2342 audio=1767 leido=2319 procesado=2342 rms=0.0005 relevos=1
+2362	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2378	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2394	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2411	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2413	llegada	parcial nativo=2410 audio=1867 leido=2390 procesado=2410 rms=0.0005 relevos=1
+2427	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2446	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2455	llegada	parcial nativo=2450 audio=1967 leido=2449 procesado=2450 rms=0.0006 relevos=1
+2460	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2469	llegada	parcial nativo=2468 audio=2067 leido=2464 procesado=2468 rms=0.0006 relevos=1
+2479	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2482	llegada	parcial nativo=2481 audio=2167 leido=2477 procesado=2481 rms=0.0006 relevos=1
+2494	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2502	llegada	parcial nativo=2494 audio=2267 leido=2493 procesado=2494 rms=0.0005 relevos=1
+2511	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2512	llegada	parcial nativo=2510 audio=2367 leido=2506 procesado=2510 rms=0.0005 relevos=1
+2527	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2531	llegada	parcial nativo=2527 audio=2467 leido=2523 procesado=2527 rms=0.0006 relevos=1
+2543	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2561	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2578	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2583	llegada	parcial nativo=2580 audio=2567 leido=2579 procesado=2580 rms=0.0006 relevos=1
+2593	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2611	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2627	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2644	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2661	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2677	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2690	llegada	parcial nativo=2686 audio=2667 leido=2678 procesado=2687 rms=0.0006 relevos=1
+2693	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2710	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2727	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2743	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2761	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2779	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2788	llegada	parcial nativo=2786 audio=2767 leido=2780 procesado=2786 rms=0.0006 relevos=1
+2793	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2810	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2826	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2846	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2863	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2876	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2880	llegada	parcial nativo=2878 audio=2867 leido=2878 procesado=2878 rms=0.0006 relevos=1
+2894	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2909	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2927	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2943	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2961	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2976	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+2991	llegada	parcial nativo=2988 audio=2967 leido=2978 procesado=2988 rms=0.0006 relevos=1
+2994	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3009	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3027	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3044	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3060	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3078	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3093	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3103	llegada	parcial nativo=3101 audio=3067 leido=3079 procesado=3101 rms=0.0005 relevos=1
+3110	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3126	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3147	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3159	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3176	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3192	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3197	llegada	parcial nativo=3193 audio=3167 leido=3191 procesado=3193 rms=0.0007 relevos=1
+3209	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3227	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3242	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3259	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3276	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3293	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3302	llegada	parcial nativo=3300 audio=3267 leido=3279 procesado=3300 rms=0.0007 relevos=1
+3309	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3327	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3344	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3359	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3376	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3393	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3396	llegada	parcial nativo=3392 audio=3367 leido=3378 procesado=3392 rms=0.0006 relevos=1
+3408	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3425	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3444	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3460	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3478	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3482	llegada	parcial nativo=3480 audio=3467 leido=3479 procesado=3480 rms=0.0004 relevos=1
+3492	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3509	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3525	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3543	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3559	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3575	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3586	llegada	parcial nativo=3584 audio=3567 leido=3577 procesado=3584 rms=0.0005 relevos=1
+3592	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3610	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3629	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3647	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3659	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3675	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3687	llegada	parcial nativo=3684 audio=3667 leido=3678 procesado=3683 rms=0.0006 relevos=1
+3691	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3712	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3725	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3744	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3760	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3775	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3786	llegada	parcial nativo=3780 audio=3767 leido=3779 procesado=3780 rms=0.0008 relevos=1
+3792	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3808	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3825	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3842	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3858	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3875	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3892	llegada	parcial nativo=3889 audio=3867 leido=3878 procesado=3889 rms=0.0072 relevos=1
+3892	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3910	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3929	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3943	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3959	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3977	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+3994	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4008	llegada	parcial nativo=4004 audio=3967 leido=3981 procesado=4004 rms=0.0098 relevos=1
+4008	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4025	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4047	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4058	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4076	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4091	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4095	llegada	parcial nativo=4089 audio=4067 leido=4087 procesado=4089 rms=0.0054 relevos=1
+4108	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4125	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4141	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4157	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4176	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4192	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4208	llegada	parcial nativo=4203 audio=4167 leido=4181 procesado=4203 rms=0.0088 relevos=1
+4209	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4224	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4243	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4257	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4274	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4289	llegada	parcial nativo=4286 audio=4267 leido=4277 procesado=4286 rms=0.0053 relevos=1
+4292	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4307	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4330	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4341	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4358	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4374	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4386	llegada	parcial nativo=4384 audio=4367 leido=4383 procesado=4384 rms=0.0203 relevos=1
+4390	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4407	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4423	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4441	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4457	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4474	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4491	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4507	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4524	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4541	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4557	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4568	llegada	parcial nativo=4564 audio=4467 leido=4477 procesado=4565 rms=0.1629 relevos=1
+4573	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4590	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4606	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4624	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4640	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4657	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4673	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4690	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4706	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4723	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4732	llegada	parcial nativo=4729 audio=4567 leido=4603 procesado=4729 rms=0.1807 relevos=1
+4741	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4756	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4774	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4784	llegada	parcial nativo=4782 audio=4667 leido=4781 procesado=4782 rms=0.1789 relevos=1
+4790	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4807	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4811	llegada	parcial nativo=4809 audio=4767 leido=4802 procesado=4809 rms=0.0844 relevos=1
+4824	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4841	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4857	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4873	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4890	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4902	llegada	parcial nativo=4899 audio=4867 leido=4878 procesado=4899 rms=0.0472 relevos=1
+4906	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4924	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4940	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4957	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4973	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+4982	llegada	parcial nativo=4979 audio=4967 leido=4978 procesado=4979 rms=0.0063 relevos=1
+4990	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+5006	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+5023	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+5039	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+5057	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+5074	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+5090	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+5095	llegada	parcial nativo=5093 audio=5067 leido=5079 procesado=5093 rms=0.0008 relevos=1
+5106	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+5123	cuadro	pos=0.00 calce=0 scroll=16 freno=silencio trabado=0
+5130	llegada	parcial nativo=5128 audio=5107 leido=5118 procesado=5128 rms=0.0005 relevos=1
+5130	oyo	parcial: hi
+5130	calce	NO CALZO: hi
+5140	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5159	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5173	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5191	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5206	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5221	llegada	parcial nativo=5219 audio=5207 leido=5218 procesado=5218 rms=0.0005 relevos=1
+5221	oyo	parcial: hi
+5221	calce	NO CALZO: hi
+5223	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5240	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5258	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5274	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5301	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5317	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5335	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5349	llegada	parcial nativo=5340 audio=5307 leido=5336 procesado=5340 rms=0.0005 relevos=1
+5349	oyo	parcial: hi
+5349	calce	NO CALZO: hi
+5350	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5374	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5394	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5406	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5423	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5436	llegada	parcial nativo=5434 audio=5407 leido=5418 procesado=5434 rms=0.0005 relevos=1
+5436	oyo	parcial: hi
+5436	calce	NO CALZO: hi
+5442	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5455	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5471	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5490	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5505	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5522	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5529	llegada	parcial nativo=5528 audio=5507 leido=5527 procesado=5528 rms=0.0004 relevos=1
+5529	oyo	parcial: hi
+5529	calce	NO CALZO: hi
+5540	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5555	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5572	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5588	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5607	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5611	llegada	FINAL nativo=5609 audio=5587 leido=5598 procesado=5609 rms=0.0005 relevos=1
+5611	palabras	FINAL: hi@4280-4910
+5611	oyo	FINAL: hi
+5611	calce	token 0: hi
+5625	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5632	llegada	parcial nativo=5630 audio=5607 leido=5617 procesado=5630 rms=0.0004 relevos=1
+5639	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5655	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5672	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5688	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5705	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5722	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5726	llegada	parcial nativo=5725 audio=5707 leido=5718 procesado=5725 rms=0.0005 relevos=1
+5739	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5764	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5772	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5789	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5805	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5822	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5827	llegada	parcial nativo=5820 audio=5807 leido=5819 procesado=5820 rms=0.0005 relevos=1
+5841	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5854	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5871	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5888	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5906	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5921	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5924	llegada	parcial nativo=5922 audio=5907 leido=5918 procesado=5922 rms=0.0005 relevos=1
+5938	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5954	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5971	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+5989	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6006	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6021	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6029	llegada	parcial nativo=6027 audio=6007 leido=6018 procesado=6027 rms=0.0005 relevos=1
+6037	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6054	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6071	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6088	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6105	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6125	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6128	llegada	parcial nativo=6124 audio=6107 leido=6118 procesado=6124 rms=0.0005 relevos=1
+6137	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6155	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6170	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6188	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6207	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6226	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6234	llegada	parcial nativo=6231 audio=6207 leido=6221 procesado=6231 rms=0.0005 relevos=1
+6239	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6256	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6279	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6293	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6303	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6321	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6329	llegada	parcial nativo=6328 audio=6307 leido=6318 procesado=6328 rms=0.0005 relevos=1
+6339	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6353	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6375	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6387	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6404	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6421	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6428	llegada	parcial nativo=6426 audio=6407 leido=6426 procesado=6426 rms=0.0007 relevos=1
+6440	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6454	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6473	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6490	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6504	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6520	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6524	llegada	parcial nativo=6522 audio=6507 leido=6518 procesado=6522 rms=0.0006 relevos=1
+6537	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6553	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6571	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6587	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6603	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6620	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6627	llegada	parcial nativo=6625 audio=6607 leido=6618 procesado=6625 rms=0.0005 relevos=1
+6636	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6654	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6670	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6688	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6703	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6721	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6724	llegada	parcial nativo=6720 audio=6707 leido=6719 procesado=6720 rms=0.0005 relevos=1
+6738	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6754	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6769	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6786	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6803	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6821	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6836	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6847	llegada	parcial nativo=6844 audio=6807 leido=6837 procesado=6844 rms=0.0010 relevos=1
+6853	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6870	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6886	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6903	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6921	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6931	llegada	parcial nativo=6929 audio=6907 leido=6920 procesado=6929 rms=0.0019 relevos=1
+6936	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6953	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6969	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+6991	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7002	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7021	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7025	llegada	parcial nativo=7021 audio=7007 leido=7019 procesado=7021 rms=0.0026 relevos=1
+7038	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7052	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7069	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7086	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7103	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7121	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7134	llegada	parcial nativo=7132 audio=7107 leido=7118 procesado=7132 rms=0.1070 relevos=1
+7136	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7154	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7169	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7186	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7202	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7219	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7226	llegada	parcial nativo=7224 audio=7207 leido=7218 procesado=7224 rms=0.1763 relevos=1
+7238	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7252	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7270	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7286	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7303	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7320	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7328	llegada	parcial nativo=7324 audio=7307 leido=7323 procesado=7324 rms=0.1162 relevos=1
+7337	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7355	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7370	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7391	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7403	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7423	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7438	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7447	llegada	parcial nativo=7445 audio=7407 leido=7438 procesado=7445 rms=0.0589 relevos=1
+7451	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7472	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7486	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7501	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7518	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7534	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7546	llegada	parcial nativo=7544 audio=7507 leido=7518 procesado=7544 rms=0.0604 relevos=1
+7552	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7568	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7586	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7593	llegada	parcial nativo=7591 audio=7567 leido=7581 procesado=7591 rms=0.0133 relevos=1
+7593	oyo	parcial: read
+7593	calce	NO CALZO: read
+7602	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7619	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7636	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7652	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7656	llegada	parcial nativo=7654 audio=7627 leido=7640 procesado=7654 rms=0.0319 relevos=1
+7656	oyo	parcial: rate this
+7656	calce	NO CALZO: rate this
+7668	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7686	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7702	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7719	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7734	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7742	llegada	parcial nativo=7739 audio=7727 leido=7739 procesado=7739 rms=0.1188 relevos=1
+7742	oyo	parcial: rate this
+7742	calce	NO CALZO: rate this
+7752	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7767	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7784	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7802	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7818	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7834	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7851	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7857	llegada	parcial nativo=7855 audio=7827 leido=7849 procesado=7855 rms=0.0786 relevos=1
+7857	oyo	parcial: rate this
+7857	calce	NO CALZO: rate this
+7867	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7884	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7902	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7907	llegada	parcial nativo=7903 audio=7867 leido=7881 procesado=7903 rms=0.0666 relevos=1
+7907	oyo	parcial: read this article
+7907	calce	NO CALZO: read this article
+7918	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7934	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7952	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7968	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+7987	llegada	parcial nativo=7980 audio=7967 leido=7978 procesado=7980 rms=0.1376 relevos=1
+7987	oyo	parcial: read this article
+7987	calce	NO CALZO: read this article
+7988	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8001	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8018	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8034	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8051	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8067	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8084	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8102	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8104	llegada	parcial nativo=8102 audio=8067 leido=8079 procesado=8102 rms=0.1510 relevos=1
+8104	oyo	parcial: read this article
+8104	calce	NO CALZO: read this article
+8118	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8134	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8151	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8167	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8184	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8191	llegada	parcial nativo=8188 audio=8127 leido=8154 procesado=8188 rms=0.1400 relevos=1
+8191	oyo	parcial: rate this at the
+8191	calce	NO CALZO: rate this at the
+8200	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8218	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8235	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8247	llegada	parcial nativo=8245 audio=8227 leido=8238 procesado=8245 rms=0.0864 relevos=1
+8247	oyo	parcial: rate this at the
+8247	calce	NO CALZO: rate this at the
+8250	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8267	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8284	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8301	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8320	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8334	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8352	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8357	llegada	parcial nativo=8351 audio=8327 leido=8350 procesado=8351 rms=0.0261 relevos=1
+8357	oyo	parcial: rate this at the
+8357	calce	NO CALZO: rate this at the
+8367	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8386	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8401	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8417	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8434	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8450	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8464	llegada	parcial nativo=8461 audio=8427 leido=8438 procesado=8461 rms=0.0925 relevos=1
+8464	oyo	parcial: rate this at
+8464	calce	NO CALZO: rate this at
+8469	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8485	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8501	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8517	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8534	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8550	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8567	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8586	llegada	parcial nativo=8582 audio=8487 leido=8570 procesado=8582 rms=0.0714 relevos=1
+8586	oyo	parcial: rate this at the loud
+8586	calce	NO CALZO: rate this at the loud
+8587	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8600	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8615	llegada	parcial nativo=8613 audio=8587 leido=8604 procesado=8613 rms=0.0797 relevos=1
+8615	oyo	parcial: rate this at the loud
+8616	calce	NO CALZO: rate this at the loud
+8616	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8633	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8651	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8666	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8684	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8692	llegada	parcial nativo=8690 audio=8667 leido=8679 procesado=8690 rms=0.0659 relevos=1
+8692	oyo	parcial: rate this at the loud as
+8692	calce	NO CALZO: rate this at the loud as
+8700	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8716	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8733	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8751	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8767	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8784	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8800	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8817	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8827	llegada	parcial nativo=8826 audio=8767 leido=8780 procesado=8826 rms=0.0220 relevos=1
+8827	oyo	parcial: rate this at the loud as
+8828	calce	NO CALZO: rate this at the loud as
+8832	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8850	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8866	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8886	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8899	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8916	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8932	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8949	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8955	llegada	parcial nativo=8952 audio=8867 leido=8952 procesado=8952 rms=0.1495 relevos=1
+8955	oyo	parcial: rate this at the loud as
+8956	calce	NO CALZO: rate this at the loud as
+8966	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8984	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+8999	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9016	llegada	parcial nativo=9013 audio=8967 leido=8999 procesado=9013 rms=0.1907 relevos=1
+9016	oyo	parcial: rate this at the loud as his
+9017	calce	NO CALZO: rate this at the loud as his
+9017	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9032	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9049	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9066	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9083	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9099	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9101	llegada	parcial nativo=9098 audio=9067 leido=9079 procesado=9098 rms=0.1006 relevos=1
+9101	oyo	parcial: rate this at the loud as his
+9101	calce	NO CALZO: rate this at the loud as his
+9114	llegada	parcial nativo=9112 audio=9087 leido=9098 procesado=9112 rms=0.0821 relevos=1
+9114	oyo	parcial: rate this at the loud as as
+9114	calce	NO CALZO: rate this at the loud as as
+9116	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9132	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9150	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9165	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9183	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9186	llegada	parcial nativo=9182 audio=9147 leido=9170 procesado=9182 rms=0.1018 relevos=1
+9186	oyo	parcial: rate this at the loud as is
+9187	calce	NO CALZO: rate this at the loud as is
+9200	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9216	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9234	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9250	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9265	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9284	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9301	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9315	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9333	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9350	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9353	llegada	parcial nativo=9348 audio=9247 leido=9265 procesado=9348 rms=0.0604 relevos=1
+9353	oyo	parcial: rate this at the loud as his
+9353	calce	NO CALZO: rate this at the loud as his
+9366	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9375	llegada	parcial nativo=9372 audio=9267 leido=9350 procesado=9372 rms=0.0071 relevos=1
+9375	oyo	parcial: rate this at the loud as is lola
+9376	calce	NO CALZO: rate this at the loud as is lola
+9382	cuadro	pos=0.00 calce=0 scroll=16 freno=sin-calce trabado=0
+9397	llegada	parcial nativo=9395 audio=9327 leido=9386 procesado=9395 rms=0.0114 relevos=1
+9397	oyo	parcial: rate this at the loud as slowly
+9397	calce	token 6: rate this at the loud as slowly
+9418	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9421	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9432	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9448	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9466	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9479	llegada	parcial nativo=9476 audio=9427 leido=9439 procesado=9476 rms=0.1206 relevos=1
+9479	oyo	parcial: rate this at the loud as slowly
+9481	calce	NO CALZO: rate this at the loud as slowly
+9484	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9499	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9518	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9532	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9549	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9552	llegada	parcial nativo=9549 audio=9527 leido=9548 procesado=9549 rms=0.0615 relevos=1
+9552	oyo	parcial: rate this at the loud as slowly
+9552	calce	NO CALZO: rate this at the loud as slowly
+9565	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9581	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9599	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9616	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9633	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9648	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9665	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9675	llegada	parcial nativo=9672 audio=9627 leido=9648 procesado=9672 rms=0.0213 relevos=1
+9675	oyo	parcial: rate this at the loud as slowly
+9675	calce	NO CALZO: rate this at the loud as slowly
+9682	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9699	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9714	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9733	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9751	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9764	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9784	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9801	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9814	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9833	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9849	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9865	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9873	llegada	parcial nativo=9864 audio=9727 leido=9802 procesado=9864 rms=0.0013 relevos=1
+9874	oyo	parcial: rate this at the loud as slowly or
+9874	calce	NO CALZO: rate this at the loud as slowly or
+9883	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9898	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9914	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9917	llegada	parcial nativo=9915 audio=9827 leido=9914 procesado=9915 rms=0.0006 relevos=1
+9917	oyo	parcial: rate this at the loud as slowly or
+9917	calce	NO CALZO: rate this at the loud as slowly or
+9930	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9948	cuadro	pos=0.00 calce=6 scroll=16 freno=sin-calce trabado=0
+9951	llegada	parcial nativo=9950 audio=9907 leido=9932 procesado=9950 rms=0.0006 relevos=1
+9951	oyo	parcial: rate this at the loud as slowly arse
+9951	calce	token 7: rate this at the loud as slowly arse
+9964	cuadro	pos=1.08 calce=7 scroll=23 freno=- trabado=1
+9982	cuadro	pos=3.01 calce=7 scroll=29 freno=- trabado=1
+9997	cuadro	pos=3.12 calce=7 scroll=33 freno=- trabado=1
+10018	cuadro	pos=3.27 calce=7 scroll=37 freno=- trabado=1
+10026	llegada	parcial nativo=10025 audio=10007 leido=10024 procesado=10025 rms=0.0779 relevos=1
+10026	oyo	parcial: rate this at the loud as slowly arse
+10026	calce	NO CALZO: rate this at the loud as slowly arse
+10031	cuadro	pos=3.37 calce=7 scroll=39 freno=- trabado=1
+10047	cuadro	pos=3.50 calce=7 scroll=41 freno=- trabado=1
+10065	cuadro	pos=3.63 calce=7 scroll=43 freno=- trabado=1
+10081	cuadro	pos=3.75 calce=7 scroll=44 freno=- trabado=1
+10097	cuadro	pos=3.87 calce=7 scroll=45 freno=- trabado=1
+10116	cuadro	pos=4.01 calce=7 scroll=46 freno=- trabado=1
+10142	cuadro	pos=4.20 calce=7 scroll=47 freno=- trabado=1
+10161	llegada	parcial nativo=10152 audio=10107 leido=10119 procesado=10152 rms=0.0218 relevos=1
+10161	oyo	parcial: rate this at the loud as slowly earth
+10161	calce	NO CALZO: rate this at the loud as slowly earth
+10162	cuadro	pos=4.36 calce=7 scroll=47 freno=- trabado=1
+10184	cuadro	pos=4.52 calce=7 scroll=48 freno=- trabado=1
+10197	cuadro	pos=4.62 calce=7 scroll=48 freno=- trabado=1
+10215	cuadro	pos=4.75 calce=7 scroll=48 freno=- trabado=1
+10239	cuadro	pos=4.93 calce=7 scroll=48 freno=- trabado=1
+10245	llegada	parcial nativo=10237 audio=10207 leido=10218 procesado=10237 rms=0.0039 relevos=1
+10245	oyo	parcial: rate this at the loud as slowly earth
+10245	calce	NO CALZO: rate this at the loud as slowly earth
+10251	cuadro	pos=5.02 calce=7 scroll=49 freno=- trabado=1
+10274	cuadro	pos=5.18 calce=7 scroll=49 freno=- trabado=1
+10308	llegada	parcial nativo=10288 audio=10267 leido=10281 procesado=10288 rms=0.0716 relevos=1
+10308	oyo	parcial: rate this at the loud as slowly earth as
+10308	calce	token 8: rate this at the loud as slowly earth as
+10308	llegada	parcial nativo=10306 audio=10287 leido=10298 procesado=10306 rms=0.0849 relevos=1
+10308	oyo	parcial: rate this at the loud as slowly earth
+10308	calce	NO CALZO: rate this at the loud as slowly earth
+10310	cuadro	pos=5.43 calce=8 scroll=49 freno=- trabado=1
+10328	cuadro	pos=6.14 calce=8 scroll=49 freno=- trabado=1
+10332	cuadro	pos=6.17 calce=8 scroll=49 freno=- trabado=1
+10347	cuadro	pos=6.26 calce=8 scroll=49 freno=- trabado=1
+10365	llegada	parcial nativo=10355 audio=10327 leido=10337 procesado=10355 rms=0.0950 relevos=1
+10365	oyo	parcial: rate this at the loud as slowly arse
+10365	calce	NO CALZO: rate this at the loud as slowly arse
+10365	cuadro	pos=6.38 calce=8 scroll=49 freno=- trabado=1
+10381	cuadro	pos=6.47 calce=8 scroll=49 freno=- trabado=1
+10397	cuadro	pos=6.56 calce=8 scroll=49 freno=- trabado=1
+10413	cuadro	pos=6.65 calce=8 scroll=49 freno=- trabado=1
+10433	llegada	parcial nativo=10426 audio=10407 leido=10418 procesado=10427 rms=0.0241 relevos=1
+10433	oyo	parcial: rate this at the loud as slowly arse ask
+10433	calce	NO CALZO: rate this at the loud as slowly arse ask
+10434	cuadro	pos=6.75 calce=8 scroll=49 freno=- trabado=1
+10447	cuadro	pos=6.82 calce=8 scroll=49 freno=- trabado=1
+10465	cuadro	pos=6.92 calce=8 scroll=49 freno=- trabado=1
+10483	cuadro	pos=7.00 calce=8 scroll=49 freno=- trabado=1
+10497	cuadro	pos=7.07 calce=8 scroll=49 freno=- trabado=1
+10518	cuadro	pos=7.17 calce=8 scroll=49 freno=- trabado=1
+10530	cuadro	pos=7.24 calce=8 scroll=49 freno=- trabado=1
+10535	llegada	parcial nativo=10530 audio=10507 leido=10518 procesado=10530 rms=0.1177 relevos=1
+10535	oyo	parcial: rate this at the loud as slowly arse asked
+10536	calce	NO CALZO: rate this at the loud as slowly arse asked
+10546	cuadro	pos=7.31 calce=8 scroll=49 freno=- trabado=1
+10564	cuadro	pos=7.40 calce=8 scroll=49 freno=- trabado=1
+10581	cuadro	pos=7.47 calce=8 scroll=49 freno=- trabado=1
+10597	cuadro	pos=7.55 calce=8 scroll=49 freno=- trabado=1
+10609	llegada	parcial nativo=10607 audio=10527 leido=10556 procesado=10607 rms=0.0709 relevos=1
+10610	oyo	parcial: rate this at the loud as slowly earth as we
+10610	calce	NO CALZO: rate this at the loud as slowly earth as we
+10614	cuadro	pos=7.62 calce=8 scroll=49 freno=- trabado=1
+10630	cuadro	pos=7.69 calce=8 scroll=49 freno=- trabado=1
+10639	llegada	parcial nativo=10637 audio=10567 leido=10610 procesado=10637 rms=0.0581 relevos=1
+10639	oyo	parcial: rate this at the loud as slowly earth as quickly
+10640	calce	NO CALZO: rate this at the loud as slowly earth as quickly
+10648	cuadro	pos=7.77 calce=8 scroll=49 freno=- trabado=1
+10664	cuadro	pos=7.84 calce=8 scroll=49 freno=- trabado=1
+10680	cuadro	pos=7.91 calce=8 scroll=49 freno=- trabado=1
+10697	cuadro	pos=7.98 calce=8 scroll=49 freno=- trabado=1
+10714	cuadro	pos=8.06 calce=8 scroll=49 freno=- trabado=1
+10722	llegada	parcial nativo=10716 audio=10667 leido=10714 procesado=10715 rms=0.1599 relevos=1
+10722	oyo	parcial: rate this at the loud as slowly earth as quickly
+10723	calce	NO CALZO: rate this at the loud as slowly earth as quickly
+10729	cuadro	pos=8.12 calce=8 scroll=49 freno=- trabado=1
+10747	cuadro	pos=8.19 calce=8 scroll=49 freno=- trabado=1
+10763	cuadro	pos=8.25 calce=8 scroll=49 freno=- trabado=1
+10781	cuadro	pos=8.32 calce=8 scroll=49 freno=- trabado=1
+10787	llegada	parcial nativo=10786 audio=10767 leido=10778 procesado=10786 rms=0.1633 relevos=1
+10787	oyo	parcial: rate this at the loud as slowly earth as quickly
+10788	calce	NO CALZO: rate this at the loud as slowly earth as quickly
+10797	cuadro	pos=8.37 calce=8 scroll=49 freno=- trabado=1
+10813	cuadro	pos=8.43 calce=8 scroll=49 freno=- trabado=1
+10829	cuadro	pos=8.49 calce=8 scroll=49 freno=- trabado=1
+10845	cuadro	pos=8.54 calce=8 scroll=49 freno=- trabado=1
+10862	cuadro	pos=8.60 calce=8 scroll=49 freno=- trabado=1
+10886	cuadro	pos=8.67 calce=8 scroll=49 freno=- trabado=1
+10896	cuadro	pos=8.70 calce=8 scroll=49 freno=- trabado=1
+10907	llegada	parcial nativo=10901 audio=10867 leido=10879 procesado=10901 rms=0.0436 relevos=1
+10907	oyo	parcial: rate this at the loud as slowly earth as quickly
+10908	calce	NO CALZO: rate this at the loud as slowly earth as quickly
+10912	cuadro	pos=8.75 calce=8 scroll=49 freno=- trabado=1
+10929	cuadro	pos=8.80 calce=8 scroll=49 freno=- trabado=1
+10945	llegada	parcial nativo=10944 audio=10927 leido=10936 procesado=10943 rms=0.0812 relevos=1
+10945	oyo	parcial: rate this at the loud as slowly earth as quickly as
+10946	calce	token 10: rate this at the loud as slowly earth as quickly as
+10947	cuadro	pos=8.85 calce=10 scroll=49 freno=- trabado=1
+10963	cuadro	pos=9.93 calce=10 scroll=49 freno=- trabado=1
+10980	cuadro	pos=10.00 calce=10 scroll=49 freno=- trabado=1
+11006	cuadro	pos=10.10 calce=10 scroll=49 freno=- trabado=1
+11015	cuadro	pos=10.13 calce=10 scroll=49 freno=- trabado=1
+11052	llegada	parcial nativo=11039 audio=11027 leido=11038 procesado=11039 rms=0.1007 relevos=1
+11052	oyo	parcial: rate this at the loud as slowly earth as quickly as
+11052	calce	token 10: rate this at the loud as slowly earth as quickly as
+11052	cuadro	pos=10.24 calce=10 scroll=49 freno=- trabado=1
+11063	cuadro	pos=10.24 calce=10 scroll=49 freno=- trabado=1
+11068	llegada	parcial nativo=11063 audio=11047 leido=11057 procesado=11063 rms=0.0712 relevos=1
+11068	oyo	parcial: rate this at the loud as slowly earth as quickly as you
+11068	calce	token 11: rate this at the loud as slowly earth as quickly as you
+11080	cuadro	pos=10.64 calce=11 scroll=49 freno=- trabado=1
+11095	cuadro	pos=10.70 calce=11 scroll=49 freno=- trabado=1
+11113	cuadro	pos=10.76 calce=11 scroll=49 freno=- trabado=1
+11128	cuadro	pos=10.81 calce=11 scroll=49 freno=- trabado=1
+11146	cuadro	pos=10.87 calce=11 scroll=49 freno=- trabado=1
+11163	cuadro	pos=10.93 calce=11 scroll=49 freno=- trabado=1
+11179	cuadro	pos=10.98 calce=11 scroll=49 freno=- trabado=1
+11199	llegada	parcial nativo=11196 audio=11147 leido=11195 procesado=11196 rms=0.0660 relevos=1
+11199	oyo	parcial: rate this at the loud as slowly earth as quickly as you
+11200	calce	token 11: rate this at the loud as slowly earth as quickly as you
+11201	cuadro	pos=11.05 calce=11 scroll=49 freno=- trabado=1
+11215	cuadro	pos=11.05 calce=11 scroll=49 freno=- trabado=1
+11229	cuadro	pos=11.08 calce=11 scroll=49 freno=- trabado=1
+11245	cuadro	pos=11.12 calce=11 scroll=49 freno=- trabado=1
+11256	llegada	parcial nativo=11249 audio=11227 leido=11238 procesado=11248 rms=0.0172 relevos=1
+11256	oyo	parcial: rate this at the loud as slowly earth as quickly as you like
+11256	calce	token 12: rate this at the loud as slowly earth as quickly as you like
+11271	cuadro	pos=11.33 calce=12 scroll=60 freno=- trabado=2
+11282	cuadro	pos=11.37 calce=12 scroll=63 freno=- trabado=2
+11295	cuadro	pos=11.43 calce=12 scroll=66 freno=- trabado=2
+11312	cuadro	pos=11.50 calce=12 scroll=70 freno=- trabado=2
+11335	cuadro	pos=11.60 calce=12 scroll=74 freno=- trabado=2
+11350	cuadro	pos=11.66 calce=12 scroll=75 freno=- trabado=2
+11362	cuadro	pos=11.71 calce=12 scroll=77 freno=- trabado=2
+11380	cuadro	pos=11.78 calce=12 scroll=78 freno=- trabado=2
+11396	cuadro	pos=11.84 calce=12 scroll=79 freno=- trabado=2
+11412	llegada	parcial nativo=11397 audio=11327 leido=11397 procesado=11397 rms=0.0060 relevos=1
+11412	oyo	parcial: rate this at the loud as slowly earth as quickly as you like
+11412	calce	token 12: rate this at the loud as slowly earth as quickly as you like
+11413	cuadro	pos=11.91 calce=12 scroll=80 freno=- trabado=2
+11437	cuadro	pos=12.07 calce=12 scroll=81 freno=- trabado=2
+11453	cuadro	pos=12.12 calce=12 scroll=81 freno=- trabado=2
+11464	llegada	parcial nativo=11461 audio=11427 leido=11456 procesado=11461 rms=0.0016 relevos=1
+11464	oyo	parcial: rate this at the loud as slowly earth as quickly as you like
+11464	calce	token 12: rate this at the loud as slowly earth as quickly as you like
+11465	cuadro	pos=12.15 calce=12 scroll=82 freno=- trabado=2
+11504	cuadro	pos=12.15 calce=12 scroll=82 freno=- trabado=2
+11512	cuadro	pos=12.15 calce=12 scroll=82 freno=- trabado=2
+11516	cuadro	pos=12.15 calce=12 scroll=82 freno=- trabado=2
+11529	cuadro	pos=12.18 calce=12 scroll=82 freno=- trabado=2
+11546	llegada	parcial nativo=11544 audio=11527 leido=11538 procesado=11544 rms=0.0010 relevos=1
+11546	oyo	parcial: rate this at the loud as slowly earth as quickly as you like
+11546	calce	token 12: rate this at the loud as slowly earth as quickly as you like
+11546	cuadro	pos=12.23 calce=12 scroll=83 freno=- trabado=2
+11562	cuadro	pos=12.23 calce=12 scroll=83 freno=- trabado=2
+11578	cuadro	pos=12.23 calce=12 scroll=83 freno=- trabado=2
+11594	cuadro	pos=12.23 calce=12 scroll=93 freno=- trabado=3
+11611	cuadro	pos=12.23 calce=12 scroll=101 freno=- trabado=3
+11628	cuadro	pos=12.23 calce=12 scroll=108 freno=- trabado=3
+11639	llegada	parcial nativo=11638 audio=11627 leido=11637 procesado=11638 rms=0.0012 relevos=1
+11639	oyo	parcial: rate this at the loud as slowly earth as quickly as you like
+11639	calce	token 12: rate this at the loud as slowly earth as quickly as you like
+11646	cuadro	pos=12.26 calce=12 scroll=113 freno=- trabado=3
+11662	cuadro	pos=12.26 calce=12 scroll=117 freno=- trabado=3
+11681	cuadro	pos=12.26 calce=12 scroll=121 freno=- trabado=3
+11695	cuadro	pos=12.26 calce=12 scroll=123 freno=- trabado=3
+11712	cuadro	pos=12.26 calce=12 scroll=125 freno=- trabado=3
+11727	cuadro	pos=12.26 calce=12 scroll=126 freno=- trabado=3
+11748	llegada	parcial nativo=11742 audio=11727 leido=11737 procesado=11742 rms=0.0008 relevos=1
+11748	oyo	parcial: rate this at the loud as slowly earth as quickly as you like
+11748	calce	token 12: rate this at the loud as slowly earth as quickly as you like
+11749	cuadro	pos=12.31 calce=12 scroll=128 freno=- trabado=3
+11770	cuadro	pos=12.31 calce=12 scroll=129 freno=- trabado=3
+11778	cuadro	pos=12.31 calce=12 scroll=129 freno=- trabado=3
+11794	cuadro	pos=12.31 calce=12 scroll=130 freno=- trabado=3
+11811	cuadro	pos=12.31 calce=12 scroll=130 freno=- trabado=3
+11827	cuadro	pos=12.31 calce=12 scroll=131 freno=- trabado=3
+11848	cuadro	pos=12.31 calce=12 scroll=131 freno=- trabado=3
+11852	llegada	parcial nativo=11847 audio=11827 leido=11838 procesado=11847 rms=0.0289 relevos=1
+11852	oyo	parcial: rate this at the loud as slowly earth as quickly as you like
+11852	calce	token 12: rate this at the loud as slowly earth as quickly as you like
+11873	cuadro	pos=12.31 calce=12 scroll=131 freno=- trabado=3
+11877	cuadro	pos=12.31 calce=12 scroll=131 freno=- trabado=3
+11894	cuadro	pos=12.31 calce=12 scroll=131 freno=- trabado=3
+11911	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+11927	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+11943	llegada	parcial nativo=11939 audio=11927 leido=11938 procesado=11939 rms=0.0682 relevos=1
+11943	oyo	parcial: rate this at the loud as slowly earth as quickly as you like
+11943	calce	token 12: rate this at the loud as slowly earth as quickly as you like
+11954	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+11961	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+11982	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+11994	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12013	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12032	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12044	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12047	llegada	parcial nativo=12043 audio=12027 leido=12037 procesado=12043 rms=0.0793 relevos=1
+12047	oyo	parcial: rate this at the loud as slowly earth as quickly as you like
+12047	calce	token 12: rate this at the loud as slowly earth as quickly as you like
+12063	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12080	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12094	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12111	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12129	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12147	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12155	llegada	parcial nativo=12154 audio=12127 leido=12148 procesado=12154 rms=0.0554 relevos=1
+12155	oyo	parcial: rate this at the loud as slowly earth as quickly as you like
+12156	calce	token 12: rate this at the loud as slowly earth as quickly as you like
+12171	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12177	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12194	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12211	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12228	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12243	llegada	parcial nativo=12241 audio=12227 leido=12238 procesado=12240 rms=0.0716 relevos=1
+12243	oyo	parcial: rate this at the loud as slowly earth as quickly as you like
+12243	calce	token 12: rate this at the loud as slowly earth as quickly as you like
+12244	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12264	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12277	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12293	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12312	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12327	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12343	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12351	llegada	parcial nativo=12349 audio=12327 leido=12343 procesado=12349 rms=0.0095 relevos=1
+12351	oyo	parcial: rate this at the loud as slowly earth as quickly as you like
+12352	calce	token 12: rate this at the loud as slowly earth as quickly as you like
+12368	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12377	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12397	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12418	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12426	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12445	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12459	cuadro	pos=12.31 calce=12 scroll=132 freno=- trabado=3
+12471	llegada	parcial nativo=12469 audio=12427 leido=12463 procesado=12469 rms=0.0009 relevos=1
+12471	oyo	parcial: rate this at the loud as slowly earth as quickly as you like
+12472	calce	token 12: rate this at the loud as slowly earth as quickly as you like
+12480	cuadro	pos=12.34 calce=12 scroll=132 freno=- trabado=3
+12493	cuadro	pos=12.34 calce=12 scroll=132 freno=- trabado=3
+12511	cuadro	pos=12.34 calce=12 scroll=132 freno=- trabado=3
+12526	llegada	parcial nativo=12525 audio=12507 leido=12518 procesado=12525 rms=0.0006 relevos=1
+12526	oyo	parcial: rate this at the loud as slowly earth as quickly as you like know
+12526	calce	token 13: rate this at the loud as slowly earth as quickly as you like know
+12526	cuadro	pos=12.34 calce=13 scroll=132 freno=- trabado=3
+12545	cuadro	pos=12.59 calce=13 scroll=132 freno=- trabado=3
+12560	cuadro	pos=12.64 calce=13 scroll=132 freno=- trabado=3
+12578	cuadro	pos=12.71 calce=13 scroll=132 freno=- trabado=3
+12592	cuadro	pos=12.76 calce=13 scroll=132 freno=- trabado=3
+12613	cuadro	pos=12.83 calce=13 scroll=132 freno=- trabado=3
+12626	cuadro	pos=12.88 calce=13 scroll=132 freno=- trabado=3
+12643	cuadro	pos=12.94 calce=13 scroll=132 freno=- trabado=3
+12647	llegada	parcial nativo=12644 audio=12607 leido=12618 procesado=12644 rms=0.0005 relevos=1
+12647	oyo	parcial: rate this at the loud as slowly earth as quickly as you like know
+12648	calce	token 13: rate this at the loud as slowly earth as quickly as you like know
+12663	cuadro	pos=13.04 calce=13 scroll=132 freno=- trabado=3
+12676	cuadro	pos=13.08 calce=13 scroll=132 freno=- trabado=3
+12692	cuadro	pos=13.12 calce=13 scroll=132 freno=- trabado=3
+12710	cuadro	pos=13.17 calce=13 scroll=132 freno=- trabado=3
+12727	llegada	parcial nativo=12725 audio=12707 leido=12724 procesado=12725 rms=0.0006 relevos=1
+12727	oyo	parcial: rate this at the loud as slowly earth as quickly as you like know
+12727	calce	token 13: rate this at the loud as slowly earth as quickly as you like know
+12729	cuadro	pos=13.21 calce=13 scroll=132 freno=- trabado=3
+12743	cuadro	pos=13.21 calce=13 scroll=132 freno=- trabado=3
+12761	cuadro	pos=13.21 calce=13 scroll=132 freno=- trabado=3
+12777	cuadro	pos=13.21 calce=13 scroll=132 freno=- trabado=3
+12793	cuadro	pos=13.21 calce=13 scroll=132 freno=- trabado=3
+12809	cuadro	pos=13.22 calce=13 scroll=132 freno=- trabado=3
+12826	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+12828	llegada	parcial nativo=12824 audio=12807 leido=12818 procesado=12824 rms=0.0006 relevos=1
+12828	oyo	parcial: rate this at the loud as slowly earth as quickly as you like know
+12828	calce	token 13: rate this at the loud as slowly earth as quickly as you like know
+12844	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+12859	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+12877	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+12894	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+12910	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+12925	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+12928	llegada	parcial nativo=12925 audio=12907 leido=12918 procesado=12925 rms=0.0006 relevos=1
+12928	oyo	parcial: rate this at the loud as slowly earth as quickly as you like know
+12928	calce	token 13: rate this at the loud as slowly earth as quickly as you like know
+12944	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+12960	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+12976	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+12993	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+13012	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+13023	llegada	parcial nativo=13018 audio=13007 leido=13018 procesado=13019 rms=0.0005 relevos=1
+13023	oyo	parcial: rate this at the loud as slowly earth as quickly as you like know
+13023	calce	token 13: rate this at the loud as slowly earth as quickly as you like know
+13038	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+13042	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+13060	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+13075	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+13093	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+13109	cuadro	pos=13.27 calce=13 scroll=132 freno=- trabado=3
+13129	cuadro	pos=13.28 calce=13 scroll=132 freno=- trabado=3
+13136	llegada	parcial nativo=13135 audio=13107 leido=13118 procesado=13135 rms=0.0005 relevos=1
+13136	oyo	parcial: rate this at the loud as slowly earth as quickly as you like know
+13137	calce	token 13: rate this at the loud as slowly earth as quickly as you like know
+13158	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13162	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13177	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13196	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13209	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13224	llegada	parcial nativo=13223 audio=13207 leido=13218 procesado=13223 rms=0.0005 relevos=1
+13224	oyo	parcial: rate this at the loud as slowly earth as quickly as you like know
+13225	calce	token 13: rate this at the loud as slowly earth as quickly as you like know
+13225	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13244	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13253	llegada	FINAL nativo=13251 audio=13227 leido=13239 procesado=13251 rms=0.0006 relevos=1
+13253	palabras	FINAL: rate@7010-7336 this@7336-7610 at@7610-7790 the@7790-7880 loud@7880-8300 as@8330-8545 you@8545-8630 slowly@8632-9260 earth@9320-9680 as@9890-10100 quickly@10100-10580 as@10580-10820 you@10820-10940 like@10940-11360 know@11750-12320
+13253	oyo	FINAL: rate this at the loud as you slowly earth as quickly as you like know
+13253	calce	token 13: rate this at the loud as you slowly earth as quickly as you like know
+13269	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13271	llegada	parcial nativo=13259 audio=13247 leido=13258 procesado=13259 rms=0.0005 relevos=1
+13275	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13292	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13309	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13325	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13343	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13358	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13369	llegada	parcial nativo=13367 audio=13347 leido=13359 procesado=13367 rms=0.0005 relevos=1
+13376	cuadro	pos=13.31 calce=13 scroll=132 freno=- trabado=3
+13392	cuadro	pos=13.33 calce=13 scroll=132 freno=- trabado=3
+13409	cuadro	pos=13.37 calce=13 scroll=132 freno=- trabado=3
+13424	cuadro	pos=13.41 calce=13 scroll=132 freno=- trabado=3
+13446	cuadro	pos=13.46 calce=13 scroll=132 freno=- trabado=3
+13460	cuadro	pos=13.49 calce=13 scroll=132 freno=- trabado=3
+13470	llegada	parcial nativo=13468 audio=13447 leido=13460 procesado=13468 rms=0.0005 relevos=1
+13480	cuadro	pos=13.54 calce=13 scroll=132 freno=- trabado=3
+13491	cuadro	pos=13.57 calce=13 scroll=132 freno=- trabado=3
+13509	cuadro	pos=13.61 calce=13 scroll=132 freno=- trabado=3
+13526	cuadro	pos=13.65 calce=13 scroll=132 freno=- trabado=3
+13544	cuadro	pos=13.69 calce=13 scroll=132 freno=- trabado=3
+13558	cuadro	pos=13.73 calce=13 scroll=132 freno=- trabado=3
+13561	llegada	parcial nativo=13558 audio=13547 leido=13557 procesado=13558 rms=0.0005 relevos=1
+13575	cuadro	pos=13.77 calce=13 scroll=132 freno=- trabado=3
+13591	cuadro	pos=13.81 calce=13 scroll=132 freno=- trabado=3
+13609	cuadro	pos=13.85 calce=13 scroll=132 freno=- trabado=3
+13630	cuadro	pos=13.90 calce=13 scroll=132 freno=- trabado=3
+13641	cuadro	pos=13.93 calce=13 scroll=132 freno=- trabado=3
+13659	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13670	llegada	parcial nativo=13668 audio=13647 leido=13659 procesado=13668 rms=0.0006 relevos=1
+13674	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13692	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13708	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13726	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13746	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13757	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13766	llegada	parcial nativo=13764 audio=13747 leido=13757 procesado=13764 rms=0.0004 relevos=1
+13777	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13791	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13808	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13825	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13844	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13857	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13861	llegada	parcial nativo=13859 audio=13847 leido=13858 procesado=13859 rms=0.0004 relevos=1
+13875	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13892	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13909	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13924	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13946	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13957	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13967	llegada	parcial nativo=13965 audio=13947 leido=13959 procesado=13965 rms=0.0006 relevos=1
+13974	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+13991	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14010	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14024	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14041	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14059	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14068	llegada	parcial nativo=14066 audio=14047 leido=14059 procesado=14065 rms=0.0005 relevos=1
+14076	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14091	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14115	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14124	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14144	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14158	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14164	llegada	parcial nativo=14159 audio=14147 leido=14158 procesado=14159 rms=0.0007 relevos=1
+14174	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14189	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14208	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14224	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14243	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14257	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14271	llegada	parcial nativo=14270 audio=14247 leido=14258 procesado=14270 rms=0.0005 relevos=1
+14275	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14290	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14308	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14324	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14343	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14356	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14374	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14386	llegada	parcial nativo=14384 audio=14347 leido=14358 procesado=14384 rms=0.0005 relevos=1
+14391	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14406	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14431	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14440	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14458	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14462	llegada	parcial nativo=14459 audio=14447 leido=14458 procesado=14459 rms=0.0005 relevos=1
+14473	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14492	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14509	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14522	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14542	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14557	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14572	llegada	parcial nativo=14570 audio=14547 leido=14560 procesado=14570 rms=0.0005 relevos=1
+14572	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14590	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14607	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14625	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14642	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14656	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14669	llegada	parcial nativo=14667 audio=14647 leido=14658 procesado=14667 rms=0.0005 relevos=1
+14675	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14690	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14707	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14725	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14741	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14756	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14767	llegada	parcial nativo=14765 audio=14747 leido=14765 procesado=14765 rms=0.0006 relevos=1
+14772	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14790	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14805	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14823	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14842	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14856	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14868	llegada	parcial nativo=14866 audio=14847 leido=14859 procesado=14866 rms=0.0007 relevos=1
+14872	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14890	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14909	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14927	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14939	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14957	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14972	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+14973	llegada	parcial nativo=14971 audio=14947 leido=14961 procesado=14971 rms=0.0005 relevos=1
+14989	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15007	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15029	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15038	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15057	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15063	llegada	parcial nativo=15060 audio=15047 leido=15060 procesado=15060 rms=0.0007 relevos=1
+15072	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15089	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15106	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15122	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15140	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15156	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15171	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15174	llegada	parcial nativo=15171 audio=15147 leido=15160 procesado=15171 rms=0.0111 relevos=1
+15190	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15207	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15224	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15239	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15257	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15271	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15281	llegada	parcial nativo=15273 audio=15247 leido=15258 procesado=15273 rms=0.0036 relevos=1
+15289	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15306	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15323	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15341	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15362	llegada	parcial nativo=15359 audio=15347 leido=15358 procesado=15359 rms=0.0602 relevos=1
+15378	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15388	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15406	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15425	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15439	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15456	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15472	llegada	parcial nativo=15469 audio=15447 leido=15459 procesado=15469 rms=0.0870 relevos=1
+15473	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15490	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15508	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15521	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15538	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15556	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15568	llegada	parcial nativo=15566 audio=15547 leido=15558 procesado=15566 rms=0.0389 relevos=1
+15571	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15588	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15604	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15621	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15637	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15654	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15661	llegada	parcial nativo=15659 audio=15647 leido=15658 procesado=15659 rms=0.1127 relevos=1
+15671	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15688	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15693	llegada	parcial nativo=15686 audio=15667 leido=15679 procesado=15686 rms=0.0162 relevos=1
+15693	oyo	parcial: look
+15693	calce	NO CALZO: look
+15708	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15720	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15738	cuadro	pos=13.95 calce=13 scroll=132 freno=- trabado=3
+15755	cuadro	pos=13.95 calce=13 scroll=132 freno=sin-calce trabado=3
+15774	cuadro	pos=13.95 calce=13 scroll=132 freno=sin-calce trabado=3
+15782	llegada	parcial nativo=15779 audio=15767 leido=15778 procesado=15779 rms=0.0401 relevos=1
+15782	oyo	parcial: look
+15782	calce	NO CALZO: look
+15787	cuadro	pos=13.95 calce=13 scroll=132 freno=sin-calce trabado=3
+15805	cuadro	pos=13.95 calce=13 scroll=132 freno=sin-calce trabado=3
+15827	cuadro	pos=13.95 calce=13 scroll=132 freno=sin-calce trabado=3
+15838	cuadro	pos=13.95 calce=13 scroll=132 freno=sin-calce trabado=3
+15856	cuadro	pos=13.95 calce=13 scroll=132 freno=sin-calce trabado=3
+15870	llegada	parcial nativo=15860 audio=15807 leido=15818 procesado=15859 rms=0.0055 relevos=1
+15870	oyo	parcial: look at
+15870	calce	token 15: look at
+15876	cuadro	pos=14.20 calce=15 scroll=132 freno=- trabado=3
+15887	cuadro	pos=14.68 calce=15 scroll=132 freno=- trabado=3
+15904	cuadro	pos=14.73 calce=15 scroll=132 freno=- trabado=3
+15921	cuadro	pos=14.77 calce=15 scroll=132 freno=- trabado=3
+15932	llegada	parcial nativo=15923 audio=15907 leido=15917 procesado=15923 rms=0.0713 relevos=1
+15932	oyo	parcial: look at
+15933	calce	token 15: look at
+15940	cuadro	pos=15.01 calce=15 scroll=132 freno=- trabado=3
+15953	cuadro	pos=15.04 calce=15 scroll=132 freno=- trabado=3
+15970	cuadro	pos=15.07 calce=15 scroll=132 freno=- trabado=3
+15987	llegada	parcial nativo=15984 audio=15967 leido=15977 procesado=15984 rms=0.0805 relevos=1
+15987	oyo	parcial: look at the
+15987	calce	token 16: look at the
+15997	cuadro	pos=15.15 calce=16 scroll=132 freno=- trabado=3
+16010	cuadro	pos=15.18 calce=16 scroll=132 freno=- trabado=3
+16020	cuadro	pos=15.20 calce=16 scroll=132 freno=- trabado=3
+16037	cuadro	pos=15.24 calce=16 scroll=132 freno=- trabado=3
+16053	cuadro	pos=15.29 calce=16 scroll=132 freno=- trabado=3
+16070	cuadro	pos=15.33 calce=16 scroll=132 freno=- trabado=3
+16080	llegada	parcial nativo=16079 audio=16067 leido=16078 procesado=16079 rms=0.0866 relevos=1
+16080	oyo	parcial: look at the
+16080	calce	token 16: look at the
+16093	cuadro	pos=15.64 calce=16 scroll=132 freno=- trabado=3
+16109	cuadro	pos=15.67 calce=16 scroll=132 freno=- trabado=3
+16120	cuadro	pos=15.70 calce=16 scroll=132 freno=- trabado=3
+16137	cuadro	pos=15.74 calce=16 scroll=132 freno=- trabado=3
+16162	cuadro	pos=15.79 calce=16 scroll=132 freno=- trabado=3
+16170	cuadro	pos=15.80 calce=16 scroll=132 freno=- trabado=3
+16187	cuadro	pos=15.84 calce=16 scroll=132 freno=- trabado=3
+16207	cuadro	pos=15.88 calce=16 scroll=132 freno=- trabado=3
+16214	llegada	parcial nativo=16206 audio=16167 leido=16197 procesado=16206 rms=0.0153 relevos=1
+16214	oyo	parcial: look at the
+16214	calce	token 16: look at the
+16222	cuadro	pos=16.01 calce=16 scroll=132 freno=- trabado=3
+16236	cuadro	pos=16.04 calce=16 scroll=132 freno=- trabado=3
+16253	cuadro	pos=16.06 calce=16 scroll=132 freno=- trabado=3
+16269	cuadro	pos=16.09 calce=16 scroll=132 freno=- trabado=3
+16289	cuadro	pos=16.12 calce=16 scroll=132 freno=- trabado=3
+16304	cuadro	pos=16.15 calce=16 scroll=132 freno=- trabado=3
+16317	llegada	parcial nativo=16316 audio=16267 leido=16278 procesado=16316 rms=0.0162 relevos=1
+16317	oyo	parcial: look at the
+16317	calce	token 16: look at the
+16327	cuadro	pos=16.17 calce=16 scroll=132 freno=- trabado=3
+16336	cuadro	pos=16.17 calce=16 scroll=132 freno=- trabado=3
+16352	llegada	parcial nativo=16350 audio=16327 leido=16338 procesado=16350 rms=0.0118 relevos=1
+16352	oyo	parcial: look at the deck
+16352	calce	token 17: look at the deck
+16366	cuadro	pos=16.54 calce=17 scroll=132 freno=- trabado=3
+16370	cuadro	pos=16.55 calce=17 scroll=132 freno=- trabado=3
+16388	cuadro	pos=16.59 calce=17 scroll=132 freno=- trabado=3
+16405	cuadro	pos=16.63 calce=17 scroll=132 freno=- trabado=3
+16422	cuadro	pos=16.67 calce=17 scroll=132 freno=- trabado=3
+16437	cuadro	pos=16.70 calce=17 scroll=132 freno=- trabado=3
+16454	cuadro	pos=16.74 calce=17 scroll=132 freno=- trabado=3
+16470	cuadro	pos=16.77 calce=17 scroll=132 freno=- trabado=3
+16478	llegada	parcial nativo=16469 audio=16407 leido=16441 procesado=16469 rms=0.0031 relevos=1
+16478	oyo	parcial: look at the decks
+16479	calce	token 17: look at the decks
+16490	cuadro	pos=16.81 calce=17 scroll=132 freno=- trabado=3
+16504	cuadro	pos=16.84 calce=17 scroll=132 freno=- trabado=3
+16520	cuadro	pos=16.87 calce=17 scroll=132 freno=- trabado=3
+16524	llegada	parcial nativo=16523 audio=16507 leido=16517 procesado=16523 rms=0.0018 relevos=1
+16524	oyo	parcial: look at the decks
+16524	calce	token 17: look at the decks
+16536	cuadro	pos=16.98 calce=17 scroll=132 freno=- trabado=3
+16553	cuadro	pos=17.01 calce=17 scroll=132 freno=- trabado=3
+16569	cuadro	pos=17.04 calce=17 scroll=132 freno=- trabado=3
+16585	cuadro	pos=17.07 calce=17 scroll=132 freno=- trabado=3
+16588	llegada	parcial nativo=16587 audio=16567 leido=16578 procesado=16587 rms=0.0008 relevos=1
+16588	oyo	parcial: look at the
+16589	calce	token 16: look at the
+16603	cuadro	pos=17.07 calce=17 scroll=132 freno=- trabado=3
+16608	llegada	parcial nativo=16606 audio=16587 leido=16599 procesado=16606 rms=0.0005 relevos=1
+16608	oyo	parcial: look at the text
+16608	calce	token 17: look at the text
+16619	cuadro	pos=17.07 calce=17 scroll=132 freno=- trabado=3
+16638	cuadro	pos=17.07 calce=17 scroll=132 freno=- trabado=3
+16652	cuadro	pos=17.07 calce=17 scroll=132 freno=- trabado=3
+16669	cuadro	pos=17.10 calce=17 scroll=132 freno=- trabado=3
+16686	cuadro	pos=17.13 calce=17 scroll=132 freno=- trabado=3
+16703	cuadro	pos=17.16 calce=17 scroll=132 freno=- trabado=3
+16719	cuadro	pos=17.18 calce=17 scroll=132 freno=- trabado=3
+16728	llegada	parcial nativo=16721 audio=16687 leido=16698 procesado=16721 rms=0.0925 relevos=1
+16728	oyo	parcial: look at the text
+16728	calce	token 17: look at the text
+16736	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16752	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16769	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16786	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16802	llegada	parcial nativo=16799 audio=16787 leido=16798 procesado=16799 rms=0.0184 relevos=1
+16802	oyo	parcial: look at the text
+16802	calce	token 17: look at the text
+16804	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16818	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16835	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16852	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16869	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16885	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16902	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16920	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16924	llegada	parcial nativo=16923 audio=16887 leido=16916 procesado=16922 rms=0.0391 relevos=1
+16924	oyo	parcial: look at the text
+16924	calce	token 17: look at the text
+16935	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16953	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16969	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+16986	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+17003	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+17010	llegada	parcial nativo=17009 audio=16987 leido=17000 procesado=17009 rms=0.0816 relevos=1
+17010	oyo	parcial: look at the text
+17010	calce	token 17: look at the text
+17019	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+17035	cuadro	pos=17.20 calce=17 scroll=132 freno=- trabado=3
+17049	llegada	parcial nativo=17047 audio=17007 leido=17018 procesado=17047 rms=0.0354 relevos=1
+17049	oyo	parcial: look at the text it
+17049	calce	token 18: look at the text it
+17054	cuadro	pos=17.38 calce=18 scroll=132 freno=- trabado=3
+17068	cuadro	pos=17.42 calce=18 scroll=132 freno=- trabado=3
+17084	cuadro	pos=17.46 calce=18 scroll=132 freno=- trabado=3
+17102	cuadro	pos=17.50 calce=18 scroll=132 freno=- trabado=3
+17121	cuadro	pos=17.54 calce=18 scroll=132 freno=- trabado=3
+17135	cuadro	pos=17.57 calce=18 scroll=132 freno=- trabado=3
+17152	cuadro	pos=17.61 calce=18 scroll=132 freno=- trabado=3
+17168	cuadro	pos=17.65 calce=18 scroll=132 freno=- trabado=3
+17185	cuadro	pos=17.69 calce=18 scroll=132 freno=- trabado=3
+17201	llegada	parcial nativo=17199 audio=17107 leido=17121 procesado=17199 rms=0.0804 relevos=1
+17201	oyo	parcial: look at the text it
+17201	calce	token 18: look at the text it
+17203	cuadro	pos=17.73 calce=18 scroll=132 freno=- trabado=3
+17216	llegada	parcial nativo=17207 audio=17127 leido=17200 procesado=17207 rms=0.0656 relevos=1
+17216	oyo	parcial: look at the text it's
+17216	calce	token 18: look at the text it's
+17216	llegada	parcial nativo=17212 audio=17167 leido=17207 procesado=17212 rms=0.0429 relevos=1
+17216	oyo	parcial: look at the text it's more
+17217	calce	token 19: look at the text it's more
+17225	cuadro	pos=18.71 calce=19 scroll=141 freno=- trabado=4
+17235	cuadro	pos=18.74 calce=19 scroll=144 freno=- trabado=4
+17251	cuadro	pos=18.78 calce=19 scroll=149 freno=- trabado=4
+17268	cuadro	pos=18.82 calce=19 scroll=153 freno=- trabado=4
+17282	llegada	parcial nativo=17278 audio=17227 leido=17270 procesado=17278 rms=0.0368 relevos=1
+17282	oyo	parcial: look at the text it
+17282	calce	token 18: look at the text it
+17290	cuadro	pos=18.97 calce=19 scroll=156 freno=- trabado=4
+17302	cuadro	pos=18.99 calce=19 scroll=158 freno=- trabado=4
+17318	cuadro	pos=19.02 calce=19 scroll=159 freno=- trabado=4
+17335	cuadro	pos=19.05 calce=19 scroll=161 freno=- trabado=4
+17345	llegada	parcial nativo=17341 audio=17287 leido=17296 procesado=17340 rms=0.0536 relevos=1
+17346	oyo	parcial: look at the text it's
+17346	calce	token 18: look at the text it's
+17359	cuadro	pos=19.07 calce=19 scroll=162 freno=- trabado=4
+17368	cuadro	pos=19.07 calce=19 scroll=163 freno=- trabado=4
+17378	llegada	parcial nativo=17376 audio=17347 leido=17358 procesado=17376 rms=0.0834 relevos=1
+17378	oyo	parcial: look at the text it's moving
+17378	calce	token 19: look at the text it's moving
+17385	cuadro	pos=19.07 calce=19 scroll=163 freno=- trabado=4
+17401	cuadro	pos=19.07 calce=19 scroll=164 freno=- trabado=4
+17419	cuadro	pos=19.07 calce=19 scroll=164 freno=- trabado=4
+17435	cuadro	pos=19.09 calce=19 scroll=165 freno=- trabado=4
+17452	cuadro	pos=19.12 calce=19 scroll=165 freno=- trabado=4
+17464	llegada	parcial nativo=17461 audio=17447 leido=17460 procesado=17461 rms=0.0724 relevos=1
+17464	oyo	parcial: look at the text it's moving
+17464	calce	token 19: look at the text it's moving
+17471	cuadro	pos=19.14 calce=19 scroll=165 freno=- trabado=4
+17485	cuadro	pos=19.14 calce=19 scroll=165 freno=- trabado=4
+17501	cuadro	pos=19.14 calce=19 scroll=166 freno=- trabado=4
+17519	cuadro	pos=19.14 calce=19 scroll=166 freno=- trabado=4
+17534	cuadro	pos=19.14 calce=19 scroll=166 freno=- trabado=4
+17551	cuadro	pos=19.14 calce=19 scroll=166 freno=- trabado=4
+17568	cuadro	pos=19.17 calce=19 scroll=166 freno=- trabado=4
+17585	cuadro	pos=19.20 calce=19 scroll=166 freno=- trabado=4
+17601	cuadro	pos=19.23 calce=19 scroll=166 freno=- trabado=4
+17619	cuadro	pos=19.26 calce=19 scroll=166 freno=- trabado=4
+17635	llegada	parcial nativo=17619 audio=17547 leido=17577 procesado=17619 rms=0.0987 relevos=1
+17635	oyo	parcial: look at the text it's moving
+17636	calce	token 19: look at the text it's moving
+17637	llegada	parcial nativo=17628 audio=17587 leido=17622 procesado=17628 rms=0.0116 relevos=1
+17637	oyo	parcial: look at the text it's moving on
+17637	calce	token 20: look at the text it's moving on
+17638	cuadro	pos=19.29 calce=20 scroll=166 freno=- trabado=4
+17651	cuadro	pos=19.82 calce=20 scroll=166 freno=- trabado=4
+17667	cuadro	pos=19.86 calce=20 scroll=166 freno=- trabado=4
+17684	cuadro	pos=19.91 calce=20 scroll=166 freno=- trabado=4
+17700	cuadro	pos=19.94 calce=20 scroll=166 freno=- trabado=4
+17710	llegada	parcial nativo=17709 audio=17687 leido=17708 procesado=17708 rms=0.0191 relevos=1
+17710	oyo	parcial: look at the text it's moving on
+17711	calce	token 20: look at the text it's moving on
+17719	cuadro	pos=20.02 calce=20 scroll=166 freno=- trabado=4
+17733	cuadro	pos=20.05 calce=20 scroll=166 freno=- trabado=4
+17750	cuadro	pos=20.08 calce=20 scroll=166 freno=- trabado=4
+17763	llegada	parcial nativo=17749 audio=17727 leido=17738 procesado=17749 rms=0.0019 relevos=1
+17763	oyo	parcial: look at the text it's moving on it
+17764	calce	token 21: look at the text it's moving on it
+17773	cuadro	pos=20.25 calce=21 scroll=166 freno=- trabado=4
+17783	cuadro	pos=20.28 calce=21 scroll=166 freno=- trabado=4
+17792	llegada	parcial nativo=17790 audio=17767 leido=17779 procesado=17790 rms=0.0414 relevos=1
+17792	oyo	parcial: look at the text it's moving on
+17792	calce	token 20: look at the text it's moving on
+17802	cuadro	pos=20.57 calce=21 scroll=166 freno=- trabado=4
+17818	cuadro	pos=20.62 calce=21 scroll=166 freno=- trabado=4
+17834	cuadro	pos=20.67 calce=21 scroll=166 freno=- trabado=4
+17850	cuadro	pos=20.72 calce=21 scroll=166 freno=- trabado=4
+17867	cuadro	pos=20.77 calce=21 scroll=166 freno=- trabado=4
+17883	cuadro	pos=20.83 calce=21 scroll=166 freno=- trabado=4
+17901	cuadro	pos=20.88 calce=21 scroll=166 freno=- trabado=4
+17907	llegada	parcial nativo=17904 audio=17867 leido=17901 procesado=17904 rms=0.0834 relevos=1
+17907	oyo	parcial: look at the text it's moving on
+17908	calce	token 20: look at the text it's moving on
+17917	cuadro	pos=21.02 calce=21 scroll=166 freno=- trabado=4
+17926	llegada	parcial nativo=17925 audio=17907 leido=17918 procesado=17925 rms=0.0800 relevos=1
+17926	oyo	parcial: look at the text it's moving on it's
+17926	calce	token 21: look at the text it's moving on it's
+17934	cuadro	pos=21.04 calce=21 scroll=166 freno=- trabado=4
+17950	cuadro	pos=21.06 calce=21 scroll=166 freno=- trabado=4
+17967	cuadro	pos=21.10 calce=21 scroll=166 freno=- trabado=4
+17971	llegada	parcial nativo=17969 audio=17947 leido=17958 procesado=17969 rms=0.0672 relevos=1
+17971	oyo	parcial: look at the text it's moving on it's own
+17971	calce	token 22: look at the text it's moving on it's own
+17986	cuadro	pos=22.04 calce=22 scroll=166 freno=- trabado=4
+18001	cuadro	pos=22.08 calce=22 scroll=166 freno=- trabado=4
+18017	cuadro	pos=22.12 calce=22 scroll=166 freno=- trabado=4
+18035	cuadro	pos=22.17 calce=22 scroll=166 freno=- trabado=4
+18050	cuadro	pos=22.21 calce=22 scroll=166 freno=- trabado=4
+18067	cuadro	pos=22.25 calce=22 scroll=166 freno=- trabado=4
+18082	llegada	parcial nativo=18079 audio=18047 leido=18078 procesado=18079 rms=0.0496 relevos=1
+18082	oyo	parcial: look at the text it's moving on it's own
+18083	calce	token 22: look at the text it's moving on it's own
+18084	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18101	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18117	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18133	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18150	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18165	llegada	parcial nativo=18164 audio=18147 leido=18158 procesado=18164 rms=0.0224 relevos=1
+18165	oyo	parcial: look at the text it's moving on it's own
+18166	calce	token 22: look at the text it's moving on it's own
+18166	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18184	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18200	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18217	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18233	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18251	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18266	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18269	llegada	parcial nativo=18266 audio=18247 leido=18258 procesado=18266 rms=0.0674 relevos=1
+18269	oyo	parcial: look at the text it's moving on it's own
+18270	calce	token 22: look at the text it's moving on it's own
+18282	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18300	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18316	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18333	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18350	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18360	llegada	parcial nativo=18358 audio=18347 leido=18358 procesado=18358 rms=0.0345 relevos=1
+18360	oyo	parcial: look at the text it's moving on it's own
+18360	calce	token 22: look at the text it's moving on it's own
+18366	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18383	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18401	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18416	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18434	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18450	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18467	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18471	llegada	parcial nativo=18470 audio=18447 leido=18460 procesado=18470 rms=0.0597 relevos=1
+18471	oyo	parcial: look at the text it's moving on it's own
+18472	calce	token 22: look at the text it's moving on it's own
+18483	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18499	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18516	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18533	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18550	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18566	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18582	cuadro	pos=22.30 calce=22 scroll=166 freno=- trabado=4
+18586	llegada	parcial nativo=18581 audio=18547 leido=18560 procesado=18581 rms=0.0687 relevos=1
+18586	oyo	parcial: look at the text it's moving on it's own of
+18587	calce	token 23: look at the text it's moving on it's own of
+18600	cuadro	pos=22.80 calce=23 scroll=166 freno=- trabado=4
+18620	cuadro	pos=22.87 calce=23 scroll=166 freno=- trabado=4
+18632	cuadro	pos=22.91 calce=23 scroll=166 freno=- trabado=4
+18649	cuadro	pos=22.97 calce=23 scroll=166 freno=- trabado=4
+18661	llegada	parcial nativo=18660 audio=18647 leido=18659 procesado=18660 rms=0.0705 relevos=1
+18661	oyo	parcial: look at the text it's moving on it's own of
+18661	calce	token 23: look at the text it's moving on it's own of
+18672	cuadro	pos=23.03 calce=23 scroll=166 freno=- trabado=4
+18685	cuadro	pos=23.07 calce=23 scroll=166 freno=- trabado=4
+18699	cuadro	pos=23.10 calce=23 scroll=166 freno=- trabado=4
+18705	llegada	parcial nativo=18702 audio=18667 leido=18680 procesado=18702 rms=0.0318 relevos=1
+18705	oyo	parcial: look at the text it's moving on it's own of the
+18705	calce	token 24: look at the text it's moving on it's own of the
+18718	cuadro	pos=24.04 calce=24 scroll=166 freno=- trabado=4
+18732	cuadro	pos=24.08 calce=24 scroll=166 freno=- trabado=4
+18749	cuadro	pos=24.13 calce=24 scroll=166 freno=- trabado=4
+18765	cuadro	pos=24.17 calce=24 scroll=166 freno=- trabado=4
+18782	llegada	parcial nativo=18779 audio=18767 leido=18778 procesado=18779 rms=0.0170 relevos=1
+18782	oyo	parcial: look at the text it's moving on it's own of the
+18782	calce	token 24: look at the text it's moving on it's own of the
+18782	cuadro	pos=24.22 calce=24 scroll=166 freno=- trabado=4
+18799	cuadro	pos=24.22 calce=24 scroll=166 freno=- trabado=4
+18816	cuadro	pos=24.22 calce=24 scroll=166 freno=- trabado=4
+18831	cuadro	pos=24.22 calce=24 scroll=166 freno=- trabado=4
+18848	cuadro	pos=24.22 calce=24 scroll=166 freno=- trabado=4
+18865	cuadro	pos=24.24 calce=24 scroll=166 freno=- trabado=4
+18882	cuadro	pos=24.29 calce=24 scroll=166 freno=- trabado=4
+18896	llegada	parcial nativo=18895 audio=18867 leido=18878 procesado=18895 rms=0.0345 relevos=1
+18896	oyo	parcial: look at the text it's moving on it's own of the
+18897	calce	token 24: look at the text it's moving on it's own of the
+18908	cuadro	pos=24.33 calce=24 scroll=166 freno=- trabado=4
+18915	cuadro	pos=24.33 calce=24 scroll=166 freno=- trabado=4
+18932	cuadro	pos=24.33 calce=24 scroll=166 freno=- trabado=4
+18949	cuadro	pos=24.33 calce=24 scroll=166 freno=- trabado=4
+18966	cuadro	pos=24.33 calce=24 scroll=166 freno=- trabado=4
+18982	cuadro	pos=24.33 calce=24 scroll=166 freno=- trabado=4
+18998	cuadro	pos=24.33 calce=24 scroll=166 freno=- trabado=4
+19010	llegada	parcial nativo=19009 audio=18967 leido=18980 procesado=19009 rms=0.0066 relevos=1
+19011	oyo	parcial: look at the text it's moving on it's own of the
+19011	calce	token 24: look at the text it's moving on it's own of the
+19026	cuadro	pos=24.33 calce=24 scroll=166 freno=- trabado=4
+19031	cuadro	pos=24.33 calce=24 scroll=166 freno=- trabado=4
+19048	cuadro	pos=24.33 calce=24 scroll=173 freno=- trabado=5
+19065	cuadro	pos=24.33 calce=24 scroll=179 freno=- trabado=5
+19075	llegada	parcial nativo=19073 audio=19027 leido=19038 procesado=19073 rms=0.0725 relevos=1
+19075	oyo	parcial: look at the text it's moving on it's own of the pages
+19076	calce	token 25: look at the text it's moving on it's own of the pages
+19082	cuadro	pos=24.78 calce=25 scroll=183 freno=- trabado=5
+19089	llegada	parcial nativo=19087 audio=19047 leido=19073 procesado=19087 rms=0.0643 relevos=1
+19089	oyo	parcial: look at the text it's moving on it's own of the basis
+19089	calce	token 25: look at the text it's moving on it's own of the basis
+19099	cuadro	pos=25.03 calce=25 scroll=187 freno=- trabado=5
+19115	cuadro	pos=25.08 calce=25 scroll=189 freno=- trabado=5
+19131	cuadro	pos=25.12 calce=25 scroll=191 freno=- trabado=5
+19148	cuadro	pos=25.17 calce=25 scroll=193 freno=- trabado=5
+19165	cuadro	pos=25.22 calce=25 scroll=194 freno=- trabado=5
+19174	llegada	parcial nativo=19172 audio=19147 leido=19158 procesado=19172 rms=0.0255 relevos=1
+19174	oyo	parcial: look at the text it's moving on it's own of the basis
+19175	calce	token 25: look at the text it's moving on it's own of the basis
+19186	cuadro	pos=25.25 calce=25 scroll=195 freno=- trabado=5
+19191	llegada	parcial nativo=19190 audio=19167 leido=19178 procesado=19190 rms=0.0248 relevos=1
+19191	oyo	parcial: look at the text it's moving on it's own of the beta
+19191	calce	token 25: look at the text it's moving on it's own of the beta
+19197	cuadro	pos=25.25 calce=25 scroll=196 freno=- trabado=5
+19215	cuadro	pos=25.25 calce=25 scroll=197 freno=- trabado=5
+19231	cuadro	pos=25.25 calce=25 scroll=197 freno=- trabado=5
+19250	cuadro	pos=25.25 calce=25 scroll=198 freno=- trabado=5
+19255	llegada	parcial nativo=19253 audio=19227 leido=19243 procesado=19253 rms=0.0181 relevos=1
+19255	oyo	parcial: look at the text it's moving on it's own of the page has
+19255	calce	token 26: look at the text it's moving on it's own of the page has
+19265	cuadro	pos=25.40 calce=26 scroll=198 freno=- trabado=5
+19282	cuadro	pos=25.48 calce=26 scroll=198 freno=- trabado=5
+19294	llegada	parcial nativo=19292 audio=19267 leido=19278 procesado=19292 rms=0.0027 relevos=1
+19294	oyo	parcial: look at the text it's moving on it's own of the beta
+19294	calce	token 25: look at the text it's moving on it's own of the beta
+19305	cuadro	pos=25.85 calce=26 scroll=198 freno=- trabado=5
+19314	cuadro	pos=25.88 calce=26 scroll=198 freno=- trabado=5
+19318	llegada	parcial nativo=19315 audio=19287 leido=19297 procesado=19315 rms=0.0012 relevos=1
+19318	oyo	parcial: look at the text it's moving on it's own of the pay to
+19319	calce	token 26: look at the text it's moving on it's own of the pay to
+19333	cuadro	pos=26.04 calce=26 scroll=199 freno=- trabado=5
+19348	cuadro	pos=26.09 calce=26 scroll=199 freno=- trabado=5
+19352	llegada	parcial nativo=19351 audio=19327 leido=19337 procesado=19351 rms=0.0012 relevos=1
+19352	oyo	parcial: look at the text it's moving on it's own of the pay to speak
+19352	calce	token 27: look at the text it's moving on it's own of the pay to speak
+19365	cuadro	pos=26.80 calce=27 scroll=199 freno=- trabado=5
+19382	cuadro	pos=26.87 calce=27 scroll=199 freno=- trabado=5
+19397	cuadro	pos=26.94 calce=27 scroll=199 freno=- trabado=5
+19414	cuadro	pos=27.00 calce=27 scroll=199 freno=- trabado=5
+19430	cuadro	pos=27.06 calce=27 scroll=199 freno=- trabado=5
+19441	llegada	parcial nativo=19439 audio=19427 leido=19438 procesado=19439 rms=0.0009 relevos=1
+19441	oyo	parcial: look at the text it's moving on it's own of the pay to speak
+19441	calce	token 27: look at the text it's moving on it's own of the pay to speak
+19448	cuadro	pos=27.09 calce=27 scroll=199 freno=- trabado=5
+19464	cuadro	pos=27.09 calce=27 scroll=199 freno=- trabado=5
+19482	cuadro	pos=27.13 calce=27 scroll=199 freno=- trabado=5
+19499	cuadro	pos=27.18 calce=27 scroll=199 freno=- trabado=5
+19514	cuadro	pos=27.22 calce=27 scroll=199 freno=- trabado=5
+19531	cuadro	pos=27.28 calce=27 scroll=199 freno=- trabado=5
+19545	llegada	parcial nativo=19544 audio=19527 leido=19538 procesado=19544 rms=0.0005 relevos=1
+19545	oyo	parcial: look at the text it's moving on it's own of the pay to speak
+19546	calce	token 27: look at the text it's moving on it's own of the pay to speak
+19552	cuadro	pos=27.32 calce=27 scroll=199 freno=- trabado=5
+19567	cuadro	pos=27.32 calce=27 scroll=199 freno=- trabado=5
+19587	cuadro	pos=27.32 calce=27 scroll=199 freno=- trabado=5
+19597	cuadro	pos=27.32 calce=27 scroll=199 freno=- trabado=5
+19613	cuadro	pos=27.32 calce=27 scroll=199 freno=- trabado=5
+19630	cuadro	pos=27.32 calce=27 scroll=199 freno=- trabado=5
+19647	cuadro	pos=27.32 calce=27 scroll=199 freno=- trabado=5
+19663	llegada	parcial nativo=19662 audio=19627 leido=19638 procesado=19662 rms=0.0007 relevos=1
+19663	oyo	parcial: look at the text it's moving on it's own of the pay to speak
+19664	calce	token 27: look at the text it's moving on it's own of the pay to speak
+19665	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19681	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19697	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19714	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19730	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19741	llegada	parcial nativo=19738 audio=19727 leido=19737 procesado=19738 rms=0.0006 relevos=1
+19742	oyo	parcial: look at the text it's moving on it's own of the pay to speak
+19742	calce	token 27: look at the text it's moving on it's own of the pay to speak
+19756	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19764	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19782	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19797	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19814	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19830	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19847	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19851	llegada	parcial nativo=19845 audio=19827 leido=19838 procesado=19845 rms=0.0005 relevos=1
+19851	oyo	parcial: look at the text it's moving on it's own of the pay to speak
+19851	calce	token 27: look at the text it's moving on it's own of the pay to speak
+19863	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19881	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19898	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19913	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19930	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19947	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19963	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19967	llegada	parcial nativo=19966 audio=19927 leido=19938 procesado=19966 rms=0.0005 relevos=1
+19967	oyo	parcial: look at the text it's moving on it's own of the pay to speak
+19967	calce	token 27: look at the text it's moving on it's own of the pay to speak
+19980	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+19998	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20013	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20030	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20042	llegada	parcial nativo=20040 audio=20027 leido=20039 procesado=20040 rms=0.0006 relevos=1
+20042	oyo	parcial: look at the text it's moving on it's own of the pay to speak
+20043	calce	token 27: look at the text it's moving on it's own of the pay to speak
+20055	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20064	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20081	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20096	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20115	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20130	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20146	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20151	llegada	parcial nativo=20147 audio=20127 leido=20138 procesado=20147 rms=0.0006 relevos=1
+20151	oyo	parcial: look at the text it's moving on it's own of the pay to speak
+20151	calce	token 27: look at the text it's moving on it's own of the pay to speak
+20165	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20182	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20199	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20213	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20217	llegada	FINAL nativo=20214 audio=20187 leido=20199 procesado=20214 rms=0.0004 relevos=1
+20217	palabras	FINAL: look@15260-15530 at@15530-15710 the@15710-15800 text@15800-16460 it's@16580-16790 moving@16820-17240 on@17270-17450 it's@17450-17660 own@17720-18140 of@18170-18320 the@18320-18440 pay@18440-18680 to@18712-18830 speak@18830-19280
+20217	oyo	FINAL: look at the text it's moving on it's own of the pay to speak
+20218	calce	token 27: look at the text it's moving on it's own of the pay to speak
+20231	llegada	parcial nativo=20219 audio=20207 leido=20218 procesado=20219 rms=0.0005 relevos=1
+20232	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20246	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20265	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20280	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20296	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20313	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20326	llegada	parcial nativo=20325 audio=20307 leido=20318 procesado=20325 rms=0.0006 relevos=1
+20329	cuadro	pos=27.36 calce=27 scroll=199 freno=- trabado=5
+20348	cuadro	pos=27.39 calce=27 scroll=199 freno=- trabado=5
+20363	cuadro	pos=27.43 calce=27 scroll=199 freno=- trabado=5
+20381	cuadro	pos=27.48 calce=27 scroll=199 freno=- trabado=5
+20397	cuadro	pos=27.53 calce=27 scroll=199 freno=- trabado=5
+20415	cuadro	pos=27.59 calce=27 scroll=199 freno=- trabado=5
+20429	llegada	parcial nativo=20427 audio=20407 leido=20419 procesado=20426 rms=0.0005 relevos=1
+20429	cuadro	pos=27.63 calce=27 scroll=199 freno=- trabado=5
+20446	cuadro	pos=27.68 calce=27 scroll=199 freno=- trabado=5
+20464	cuadro	pos=27.73 calce=27 scroll=199 freno=- trabado=5
+20482	cuadro	pos=27.78 calce=27 scroll=199 freno=- trabado=5
+20497	cuadro	pos=27.83 calce=27 scroll=199 freno=- trabado=5
+20513	cuadro	pos=27.87 calce=27 scroll=199 freno=- trabado=5
+20521	llegada	parcial nativo=20519 audio=20507 leido=20518 procesado=20519 rms=0.0004 relevos=1
+20530	cuadro	pos=27.93 calce=27 scroll=199 freno=- trabado=5
+20546	cuadro	pos=27.97 calce=27 scroll=199 freno=- trabado=5
+20564	cuadro	pos=28.03 calce=27 scroll=199 freno=- trabado=5
+20581	cuadro	pos=28.08 calce=27 scroll=199 freno=- trabado=5
+20595	cuadro	pos=28.12 calce=27 scroll=199 freno=- trabado=5
+20612	cuadro	pos=28.17 calce=27 scroll=199 freno=- trabado=5
+20626	llegada	parcial nativo=20625 audio=20607 leido=20618 procesado=20625 rms=0.0005 relevos=1
+20629	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20646	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20662	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20679	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20695	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20712	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20725	llegada	parcial nativo=20724 audio=20707 leido=20719 procesado=20724 rms=0.0005 relevos=1
+20729	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20745	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20763	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20779	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20795	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20812	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20820	llegada	parcial nativo=20818 audio=20807 leido=20817 procesado=20818 rms=0.0008 relevos=1
+20829	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20845	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20862	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20879	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20895	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20912	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20929	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20931	llegada	parcial nativo=20928 audio=20907 leido=20919 procesado=20928 rms=0.0007 relevos=1
+20945	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20962	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20980	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+20995	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21012	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21027	llegada	parcial nativo=21025 audio=21007 leido=21019 procesado=21025 rms=0.0025 relevos=1
+21028	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21045	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21063	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21078	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21096	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21111	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21125	llegada	parcial nativo=21121 audio=21107 leido=21120 procesado=21121 rms=0.0008 relevos=1
+21128	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21145	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21164	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21179	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21196	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21211	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21228	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21230	llegada	parcial nativo=21228 audio=21207 leido=21219 procesado=21228 rms=0.0007 relevos=1
+21247	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21261	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21279	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21295	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21312	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21328	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21332	llegada	parcial nativo=21330 audio=21307 leido=21320 procesado=21330 rms=0.0007 relevos=1
+21345	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21362	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21379	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21395	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21411	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21424	llegada	parcial nativo=21421 audio=21407 leido=21420 procesado=21421 rms=0.0006 relevos=1
+21429	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21445	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21463	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21479	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21494	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21511	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21527	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21529	llegada	parcial nativo=21527 audio=21507 leido=21519 procesado=21527 rms=0.0005 relevos=1
+21544	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21562	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21579	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21595	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21612	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21632	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21635	llegada	parcial nativo=21631 audio=21607 leido=21621 procesado=21631 rms=0.0005 relevos=1
+21647	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21662	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21679	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21695	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21719	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21726	llegada	parcial nativo=21721 audio=21707 leido=21719 procesado=21720 rms=0.0007 relevos=1
+21727	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21744	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21762	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21778	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21796	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21811	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21830	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21834	llegada	parcial nativo=21830 audio=21807 leido=21820 procesado=21830 rms=0.0007 relevos=1
+21844	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21862	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21878	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21894	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21911	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21931	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21934	llegada	parcial nativo=21928 audio=21907 leido=21919 procesado=21928 rms=0.0006 relevos=1
+21945	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21962	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21984	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+21993	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22017	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22030	llegada	parcial nativo=22023 audio=22007 leido=22023 procesado=22023 rms=0.0006 relevos=1
+22036	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22051	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22062	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22078	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22094	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22111	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22127	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22134	llegada	parcial nativo=22131 audio=22107 leido=22118 procesado=22131 rms=0.0315 relevos=1
+22143	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22161	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22178	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22194	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22210	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22227	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22238	llegada	parcial nativo=22234 audio=22207 leido=22219 procesado=22234 rms=0.2817 relevos=1
+22250	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22260	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22276	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22295	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22315	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22326	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22328	llegada	parcial nativo=22325 audio=22307 leido=22321 procesado=22325 rms=0.1367 relevos=1
+22344	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22360	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22381	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22392	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22411	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22429	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22448	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22461	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22479	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22495	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22511	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22526	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22528	llegada	parcial nativo=22523 audio=22407 leido=22513 procesado=22523 rms=0.1295 relevos=1
+22546	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22560	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22571	llegada	parcial nativo=22567 audio=22447 leido=22524 procesado=22568 rms=0.0137 relevos=1
+22571	oyo	parcial: with
+22571	calce	NO CALZO: with
+22576	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22591	llegada	parcial nativo=22590 audio=22467 leido=22569 procesado=22590 rms=0.0494 relevos=1
+22593	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22609	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22613	llegada	parcial nativo=22608 audio=22507 leido=22591 procesado=22608 rms=0.1873 relevos=1
+22613	oyo	parcial: without
+22613	calce	NO CALZO: without
+22623	llegada	parcial nativo=22621 audio=22527 leido=22608 procesado=22621 rms=0.0965 relevos=1
+22623	oyo	parcial: with a
+22624	calce	NO CALZO: with a
+22628	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22641	llegada	parcial nativo=22639 audio=22567 leido=22621 procesado=22638 rms=0.0405 relevos=1
+22642	oyo	parcial: without
+22642	calce	NO CALZO: without
+22643	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22659	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22677	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22687	llegada	parcial nativo=22686 audio=22647 leido=22678 procesado=22686 rms=0.0786 relevos=1
+22687	oyo	parcial: without the
+22687	calce	NO CALZO: without the
+22693	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22708	cuadro	pos=28.18 calce=27 scroll=199 freno=- trabado=5
+22725	cuadro	pos=28.18 calce=27 scroll=199 freno=sin-calce trabado=5
+22745	llegada	parcial nativo=22732 audio=22707 leido=22719 procesado=22732 rms=0.1521 relevos=1
+22745	oyo	parcial: without your
+22745	calce	token 29: without your
+22745	cuadro	pos=28.18 calce=29 scroll=199 freno=- trabado=5
+22759	cuadro	pos=28.24 calce=29 scroll=199 freno=- trabado=5
+22775	cuadro	pos=28.28 calce=29 scroll=199 freno=- trabado=5
+22792	cuadro	pos=28.32 calce=29 scroll=199 freno=- trabado=5
+22808	cuadro	pos=28.37 calce=29 scroll=199 freno=- trabado=5
+22825	cuadro	pos=28.42 calce=29 scroll=199 freno=- trabado=5
+22842	cuadro	pos=28.48 calce=29 scroll=199 freno=- trabado=5
+22857	llegada	parcial nativo=22855 audio=22807 leido=22823 procesado=22855 rms=0.1269 relevos=1
+22857	oyo	parcial: without your
+22857	calce	token 29: without your
+22870	cuadro	pos=28.95 calce=29 scroll=199 freno=- trabado=5
+22875	cuadro	pos=28.96 calce=29 scroll=199 freno=- trabado=5
+22892	cuadro	pos=29.01 calce=29 scroll=199 freno=- trabado=5
+22909	cuadro	pos=29.05 calce=29 scroll=199 freno=- trabado=5
+22924	cuadro	pos=29.09 calce=29 scroll=199 freno=- trabado=5
+22990	llegada	parcial nativo=22930 audio=22867 leido=22894 procesado=22930 rms=0.0367 relevos=1
+22990	oyo	parcial: without the
+22990	calce	NO CALZO: without the
+22991	llegada	parcial nativo=22973 audio=22947 leido=22960 procesado=22973 rms=0.0918 relevos=1
+22991	oyo	parcial: without your
+22991	calce	token 29: without your
+22992	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23017	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23018	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23025	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23041	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23059	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23075	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23087	llegada	parcial nativo=23079 audio=23047 leido=23059 procesado=23079 rms=0.0826 relevos=1
+23087	oyo	parcial: without your
+23088	calce	token 29: without your
+23108	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23116	llegada	parcial nativo=23096 audio=23067 leido=23078 procesado=23096 rms=0.0096 relevos=1
+23116	oyo	parcial: without the
+23116	calce	NO CALZO: without the
+23119	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23130	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23142	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23158	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23174	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23191	cuadro	pos=29.27 calce=29 scroll=199 freno=- trabado=5
+23204	llegada	parcial nativo=23190 audio=23167 leido=23177 procesado=23190 rms=0.1014 relevos=1
+23204	oyo	parcial: without you're touching
+23205	calce	NO CALZO: without you're touching
+23207	cuadro	pos=29.28 calce=29 scroll=199 freno=- trabado=5
+23224	cuadro	pos=29.32 calce=29 scroll=199 freno=- trabado=5
+23243	cuadro	pos=29.36 calce=29 scroll=199 freno=- trabado=5
+23257	cuadro	pos=29.39 calce=29 scroll=199 freno=- trabado=5
+23275	cuadro	pos=29.43 calce=29 scroll=199 freno=- trabado=5
+23291	cuadro	pos=29.47 calce=29 scroll=199 freno=- trabado=5
+23296	llegada	parcial nativo=23294 audio=23267 leido=23294 procesado=23294 rms=0.0875 relevos=1
+23296	oyo	parcial: without you're touching
+23296	calce	NO CALZO: without you're touching
+23307	cuadro	pos=29.51 calce=29 scroll=199 freno=- trabado=5
+23325	cuadro	pos=29.55 calce=29 scroll=199 freno=- trabado=5
+23342	cuadro	pos=29.59 calce=29 scroll=199 freno=- trabado=5
+23358	cuadro	pos=29.62 calce=29 scroll=199 freno=- trabado=5
+23375	cuadro	pos=29.66 calce=29 scroll=199 freno=- trabado=5
+23391	cuadro	pos=29.70 calce=29 scroll=199 freno=- trabado=5
+23407	llegada	parcial nativo=23404 audio=23367 leido=23392 procesado=23404 rms=0.0411 relevos=1
+23407	oyo	parcial: without you're touching
+23407	calce	NO CALZO: without you're touching
+23408	cuadro	pos=29.74 calce=29 scroll=199 freno=- trabado=5
+23426	cuadro	pos=29.78 calce=29 scroll=199 freno=- trabado=5
+23440	cuadro	pos=29.81 calce=29 scroll=199 freno=- trabado=5
+23457	cuadro	pos=29.85 calce=29 scroll=199 freno=- trabado=5
+23474	cuadro	pos=29.89 calce=29 scroll=199 freno=- trabado=5
+23483	llegada	parcial nativo=23481 audio=23427 leido=23455 procesado=23480 rms=0.0363 relevos=1
+23483	oyo	parcial: without you're touching anything
+23484	calce	NO CALZO: without you're touching anything
+23495	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23507	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23524	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23541	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23558	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23572	llegada	parcial nativo=23569 audio=23527 leido=23538 procesado=23569 rms=0.0380 relevos=1
+23572	oyo	parcial: without you're touching anything
+23573	calce	NO CALZO: without you're touching anything
+23574	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23591	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23607	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23624	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23640	llegada	parcial nativo=23638 audio=23627 leido=23638 procesado=23638 rms=0.0258 relevos=1
+23640	oyo	parcial: without you're touching anything
+23641	calce	NO CALZO: without you're touching anything
+23641	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23665	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23675	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23690	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23707	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23724	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23741	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23765	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23768	llegada	parcial nativo=23766 audio=23727 leido=23759 procesado=23766 rms=0.0041 relevos=1
+23768	oyo	parcial: without you're touching anything
+23769	calce	NO CALZO: without you're touching anything
+23773	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23791	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23807	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23823	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23840	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23847	llegada	parcial nativo=23846 audio=23827 leido=23838 procesado=23846 rms=0.0012 relevos=1
+23847	oyo	parcial: without you're touching anything
+23848	calce	NO CALZO: without you're touching anything
+23857	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23873	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23891	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23906	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23925	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23941	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23947	llegada	parcial nativo=23941 audio=23927 leido=23939 procesado=23940 rms=0.0016 relevos=1
+23947	oyo	parcial: without you're touching anything
+23948	calce	NO CALZO: without you're touching anything
+23957	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23974	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+23991	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24006	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24024	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24040	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24046	llegada	parcial nativo=24045 audio=24027 leido=24038 procesado=24045 rms=0.0009 relevos=1
+24046	oyo	parcial: without you're touching anything
+24046	calce	NO CALZO: without you're touching anything
+24058	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24074	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24089	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24106	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24124	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24140	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24150	llegada	parcial nativo=24148 audio=24127 leido=24138 procesado=24148 rms=0.0266 relevos=1
+24150	oyo	parcial: without you're touching anything
+24150	calce	NO CALZO: without you're touching anything
+24157	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24173	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24191	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24206	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24223	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24242	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24245	llegada	parcial nativo=24240 audio=24227 leido=24239 procesado=24240 rms=0.0689 relevos=1
+24245	oyo	parcial: without you're touching anything
+24245	calce	NO CALZO: without you're touching anything
+24258	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24272	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24289	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24307	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24324	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24339	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24350	llegada	parcial nativo=24348 audio=24327 leido=24338 procesado=24348 rms=0.0776 relevos=1
+24350	oyo	parcial: without you're touching anything
+24350	calce	NO CALZO: without you're touching anything
+24356	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24373	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24389	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24398	llegada	parcial nativo=24395 audio=24367 leido=24379 procesado=24395 rms=0.1186 relevos=1
+24398	oyo	parcial: without you're touching anything that
+24399	calce	NO CALZO: without you're touching anything that
+24406	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24422	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24440	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24455	cuadro	pos=29.92 calce=29 scroll=199 freno=- trabado=5
+24464	llegada	parcial nativo=24462 audio=24427 leido=24439 procesado=24462 rms=0.1109 relevos=1
+24465	oyo	parcial: without you're touching anything the
+24465	calce	token 32: without you're touching anything the
+24479	cuadro	pos=31.23 calce=32 scroll=209 freno=- trabado=6
+24490	cuadro	pos=31.29 calce=32 scroll=212 freno=- trabado=6
+24505	cuadro	pos=31.36 calce=32 scroll=216 freno=- trabado=6
+24523	cuadro	pos=31.44 calce=32 scroll=220 freno=- trabado=6
+24540	cuadro	pos=31.51 calce=32 scroll=223 freno=- trabado=6
+24546	llegada	parcial nativo=24539 audio=24527 leido=24537 procesado=24539 rms=0.0440 relevos=1
+24546	oyo	parcial: without you're touching anything the
+24547	calce	token 32: without you're touching anything the
+24557	cuadro	pos=31.78 calce=32 scroll=225 freno=- trabado=6
+24571	cuadro	pos=31.82 calce=32 scroll=227 freno=- trabado=6
+24590	cuadro	pos=31.87 calce=32 scroll=228 freno=- trabado=6
+24606	cuadro	pos=31.91 calce=32 scroll=229 freno=- trabado=6
+24622	cuadro	pos=31.96 calce=32 scroll=230 freno=- trabado=6
+24639	cuadro	pos=32.00 calce=32 scroll=231 freno=- trabado=6
+24651	llegada	parcial nativo=24650 audio=24627 leido=24638 procesado=24650 rms=0.0852 relevos=1
+24651	oyo	parcial: without you're touching anything the
+24652	calce	token 32: without you're touching anything the
+24664	cuadro	pos=32.03 calce=32 scroll=231 freno=- trabado=6
+24672	cuadro	pos=32.04 calce=32 scroll=231 freno=- trabado=6
+24688	cuadro	pos=32.08 calce=32 scroll=232 freno=- trabado=6
+24705	cuadro	pos=32.11 calce=32 scroll=232 freno=- trabado=6
+24722	cuadro	pos=32.15 calce=32 scroll=232 freno=- trabado=6
+24741	cuadro	pos=32.19 calce=32 scroll=232 freno=- trabado=6
+24755	cuadro	pos=32.22 calce=32 scroll=233 freno=- trabado=6
+24759	llegada	parcial nativo=24756 audio=24727 leido=24740 procesado=24756 rms=0.0902 relevos=1
+24759	oyo	parcial: without you're touching anything the
+24759	calce	token 32: without you're touching anything the
+24773	cuadro	pos=32.23 calce=32 scroll=233 freno=- trabado=6
+24788	cuadro	pos=32.23 calce=32 scroll=233 freno=- trabado=6
+24805	cuadro	pos=32.23 calce=32 scroll=233 freno=- trabado=6
+24822	cuadro	pos=32.23 calce=32 scroll=233 freno=- trabado=6
+24838	llegada	parcial nativo=24836 audio=24807 leido=24818 procesado=24836 rms=0.0622 relevos=1
+24838	oyo	parcial: without you're touching anything this awful
+24838	calce	NO CALZO: without you're touching anything this awful
+24838	cuadro	pos=32.23 calce=32 scroll=233 freno=- trabado=6
+24855	cuadro	pos=32.23 calce=32 scroll=233 freno=- trabado=6
+24872	cuadro	pos=32.24 calce=32 scroll=233 freno=- trabado=6
+24882	llegada	parcial nativo=24871 audio=24847 leido=24858 procesado=24871 rms=0.0386 relevos=1
+24882	oyo	parcial: without you're touching anything the soft
+24882	calce	token 33: without you're touching anything the soft
+24889	cuadro	pos=32.76 calce=33 scroll=233 freno=- trabado=6
+24905	cuadro	pos=32.81 calce=33 scroll=233 freno=- trabado=6
+24923	cuadro	pos=32.86 calce=33 scroll=233 freno=- trabado=6
+24938	cuadro	pos=32.90 calce=33 scroll=233 freno=- trabado=6
+24955	cuadro	pos=32.94 calce=33 scroll=233 freno=- trabado=6
+24962	llegada	parcial nativo=24960 audio=24947 leido=24959 procesado=24960 rms=0.0201 relevos=1
+24962	oyo	parcial: without you're touching anything the soft
+24962	calce	token 33: without you're touching anything the soft
+24973	cuadro	pos=33.02 calce=33 scroll=233 freno=- trabado=6
+24989	cuadro	pos=33.06 calce=33 scroll=233 freno=- trabado=6
+25005	cuadro	pos=33.09 calce=33 scroll=233 freno=- trabado=6
+25012	llegada	parcial nativo=25008 audio=24987 leido=24998 procesado=25008 rms=0.0614 relevos=1
+25012	oyo	parcial: without you're touching anything the softer line
+25013	calce	token 34: without you're touching anything the softer line
+25025	cuadro	pos=33.24 calce=34 scroll=242 freno=- trabado=7
+25039	cuadro	pos=33.28 calce=34 scroll=246 freno=- trabado=7
+25054	cuadro	pos=33.33 calce=34 scroll=250 freno=- trabado=7
+25071	cuadro	pos=33.38 calce=34 scroll=254 freno=- trabado=7
+25087	cuadro	pos=33.43 calce=34 scroll=257 freno=- trabado=7
+25104	cuadro	pos=33.49 calce=34 scroll=259 freno=- trabado=7
+25108	llegada	parcial nativo=25104 audio=25087 leido=25098 procesado=25104 rms=0.0631 relevos=1
+25108	oyo	parcial: without you're touching anything the softer line
+25108	calce	token 34: without you're touching anything the softer line
+25122	cuadro	pos=33.92 calce=34 scroll=261 freno=- trabado=7
+25138	cuadro	pos=33.96 calce=34 scroll=262 freno=- trabado=7
+25154	cuadro	pos=34.00 calce=34 scroll=263 freno=- trabado=7
+25171	cuadro	pos=34.04 calce=34 scroll=264 freno=- trabado=7
+25188	cuadro	pos=34.07 calce=34 scroll=265 freno=- trabado=7
+25200	llegada	parcial nativo=25198 audio=25187 leido=25197 procesado=25198 rms=0.0636 relevos=1
+25200	oyo	parcial: without you're touching anything the softer line
+25201	calce	token 34: without you're touching anything the softer line
+25221	cuadro	pos=34.10 calce=34 scroll=265 freno=- trabado=7
+25228	cuadro	pos=34.10 calce=34 scroll=266 freno=- trabado=7
+25238	cuadro	pos=34.10 calce=34 scroll=266 freno=- trabado=7
+25257	llegada	parcial nativo=25244 audio=25227 leido=25238 procesado=25244 rms=0.0330 relevos=1
+25257	oyo	parcial: without you're touching anything the softer line on
+25258	calce	token 35: without you're touching anything the softer line on
+25259	cuadro	pos=34.12 calce=35 scroll=266 freno=- trabado=7
+25283	cuadro	pos=34.26 calce=35 scroll=266 freno=- trabado=7
+25292	cuadro	pos=34.29 calce=35 scroll=266 freno=- trabado=7
+25307	llegada	parcial nativo=25287 audio=25267 leido=25278 procesado=25287 rms=0.0135 relevos=1
+25307	oyo	parcial: without you're touching anything the softer line
+25307	calce	token 34: without you're touching anything the softer line
+25328	cuadro	pos=34.65 calce=35 scroll=267 freno=- trabado=7
+25335	cuadro	pos=34.67 calce=35 scroll=267 freno=- trabado=7
+25344	cuadro	pos=34.69 calce=35 scroll=267 freno=- trabado=7
+25354	llegada	parcial nativo=25350 audio=25327 leido=25338 procesado=25350 rms=0.0566 relevos=1
+25354	oyo	parcial: without you're touching anything the softer line on
+25355	calce	token 35: without you're touching anything the softer line on
+25375	cuadro	pos=35.05 calce=35 scroll=267 freno=- trabado=7
+25379	cuadro	pos=35.05 calce=35 scroll=267 freno=- trabado=7
+25387	cuadro	pos=35.07 calce=35 scroll=267 freno=- trabado=7
+25399	llegada	parcial nativo=25386 audio=25347 leido=25358 procesado=25386 rms=0.0311 relevos=1
+25399	oyo	parcial: without you're touching anything the softer line under
+25400	calce	token 35: without you're touching anything the softer line under
+25418	cuadro	pos=35.10 calce=35 scroll=267 freno=- trabado=7
+25422	cuadro	pos=35.10 calce=35 scroll=267 freno=- trabado=7
+25438	cuadro	pos=35.10 calce=35 scroll=267 freno=- trabado=7
+25454	cuadro	pos=35.12 calce=35 scroll=267 freno=- trabado=7
+25467	llegada	parcial nativo=25465 audio=25447 leido=25456 procesado=25465 rms=0.0650 relevos=1
+25467	oyo	parcial: without you're touching anything the softer line under
+25468	calce	token 35: without you're touching anything the softer line under
+25474	cuadro	pos=35.15 calce=35 scroll=267 freno=- trabado=7
+25495	cuadro	pos=35.15 calce=35 scroll=267 freno=- trabado=7
+25505	cuadro	pos=35.15 calce=35 scroll=267 freno=- trabado=7
+25521	cuadro	pos=35.15 calce=35 scroll=267 freno=- trabado=7
+25537	cuadro	pos=35.15 calce=35 scroll=267 freno=- trabado=7
+25555	cuadro	pos=35.19 calce=35 scroll=267 freno=- trabado=7
+25570	cuadro	pos=35.23 calce=35 scroll=267 freno=- trabado=7
+25576	llegada	parcial nativo=25572 audio=25507 leido=25562 procesado=25572 rms=0.0758 relevos=1
+25576	oyo	parcial: without you're touching anything the softer line under the
+25576	calce	token 36: without you're touching anything the softer line under the
+25595	cuadro	pos=35.57 calce=36 scroll=267 freno=- trabado=7
+25604	cuadro	pos=35.60 calce=36 scroll=267 freno=- trabado=7
+25622	cuadro	pos=35.65 calce=36 scroll=267 freno=- trabado=7
+25625	llegada	parcial nativo=25621 audio=25607 leido=25618 procesado=25621 rms=0.0938 relevos=1
+25625	oyo	parcial: without you're touching anything the softer line under the
+25626	calce	token 36: without you're touching anything the softer line under the
+25647	cuadro	pos=36.05 calce=36 scroll=267 freno=- trabado=7
+25654	cuadro	pos=36.07 calce=36 scroll=267 freno=- trabado=7
+25670	cuadro	pos=36.10 calce=36 scroll=267 freno=- trabado=7
+25687	cuadro	pos=36.14 calce=36 scroll=267 freno=- trabado=7
+25703	cuadro	pos=36.18 calce=36 scroll=267 freno=- trabado=7
+25724	cuadro	pos=36.22 calce=36 scroll=267 freno=- trabado=7
+25733	llegada	parcial nativo=25728 audio=25707 leido=25721 procesado=25727 rms=0.0598 relevos=1
+25733	oyo	parcial: without you're touching anything the softer line under the
+25733	calce	token 36: without you're touching anything the softer line under the
+25742	cuadro	pos=36.24 calce=36 scroll=267 freno=- trabado=7
+25752	cuadro	pos=36.24 calce=36 scroll=267 freno=- trabado=7
+25770	cuadro	pos=36.24 calce=36 scroll=267 freno=- trabado=7
+25788	cuadro	pos=36.24 calce=36 scroll=267 freno=- trabado=7
+25803	cuadro	pos=36.24 calce=36 scroll=267 freno=- trabado=7
+25823	cuadro	pos=36.24 calce=36 scroll=267 freno=- trabado=7
+25839	cuadro	pos=36.24 calce=36 scroll=267 freno=- trabado=7
+25853	cuadro	pos=36.27 calce=36 scroll=267 freno=- trabado=7
+25859	llegada	parcial nativo=25855 audio=25807 leido=25848 procesado=25855 rms=0.0171 relevos=1
+25859	oyo	parcial: without you're touching anything the softer line under the
+25860	calce	token 36: without you're touching anything the softer line under the
+25870	cuadro	pos=36.29 calce=36 scroll=267 freno=- trabado=7
+25886	cuadro	pos=36.29 calce=36 scroll=267 freno=- trabado=7
+25903	cuadro	pos=36.29 calce=36 scroll=267 freno=- trabado=7
+25920	cuadro	pos=36.29 calce=36 scroll=267 freno=- trabado=7
+25925	llegada	parcial nativo=25919 audio=25907 leido=25918 procesado=25919 rms=0.0580 relevos=1
+25925	oyo	parcial: without you're touching anything the softer line under the
+25926	calce	token 36: without you're touching anything the softer line under the
+25943	cuadro	pos=36.29 calce=36 scroll=267 freno=- trabado=7
+25953	cuadro	pos=36.29 calce=36 scroll=267 freno=- trabado=7
+25970	cuadro	pos=36.29 calce=36 scroll=267 freno=- trabado=7
+25987	cuadro	pos=36.29 calce=36 scroll=267 freno=- trabado=7
+26004	cuadro	pos=36.29 calce=36 scroll=267 freno=- trabado=7
+26019	cuadro	pos=36.29 calce=36 scroll=267 freno=- trabado=7
+26037	cuadro	pos=36.29 calce=36 scroll=267 freno=- trabado=7
+26053	cuadro	pos=36.29 calce=36 scroll=267 freno=- trabado=7
+26056	llegada	parcial nativo=26054 audio=26007 leido=26038 procesado=26054 rms=0.0672 relevos=1
+26056	oyo	parcial: without you're touching anything the softer line under the war's
+26057	calce	token 37: without you're touching anything the softer line under the war's
+26070	cuadro	pos=36.66 calce=37 scroll=267 freno=- trabado=7
+26087	cuadro	pos=36.72 calce=37 scroll=267 freno=- trabado=7
+26102	cuadro	pos=36.77 calce=37 scroll=267 freno=- trabado=7
+26122	cuadro	pos=36.83 calce=37 scroll=267 freno=- trabado=7
+26136	cuadro	pos=36.87 calce=37 scroll=267 freno=- trabado=7
+26139	llegada	parcial nativo=26138 audio=26107 leido=26118 procesado=26138 rms=0.0542 relevos=1
+26139	oyo	parcial: without you're touching anything the softer line under the war's
+26139	calce	token 37: without you're touching anything the softer line under the war's
+26153	cuadro	pos=37.03 calce=37 scroll=267 freno=- trabado=7
+26170	cuadro	pos=37.08 calce=37 scroll=267 freno=- trabado=7
+26186	cuadro	pos=37.12 calce=37 scroll=267 freno=- trabado=7
+26203	cuadro	pos=37.16 calce=37 scroll=267 freno=- trabado=7
+26220	cuadro	pos=37.20 calce=37 scroll=267 freno=- trabado=7
+26225	llegada	parcial nativo=26219 audio=26207 leido=26217 procesado=26219 rms=0.0586 relevos=1
+26225	oyo	parcial: without you're touching anything the softer line under the war's
+26226	calce	token 37: without you're touching anything the softer line under the war's
+26237	cuadro	pos=37.22 calce=37 scroll=267 freno=- trabado=7
+26254	cuadro	pos=37.22 calce=37 scroll=267 freno=- trabado=7
+26269	cuadro	pos=37.22 calce=37 scroll=267 freno=- trabado=7
+26282	llegada	parcial nativo=26281 audio=26247 leido=26264 procesado=26281 rms=0.0276 relevos=1
+26282	oyo	parcial: without you're touching anything the softer line under the war's show
+26282	calce	token 38: without you're touching anything the softer line under the war's show
+26287	cuadro	pos=37.46 calce=38 scroll=267 freno=- trabado=7
+26303	cuadro	pos=37.52 calce=38 scroll=267 freno=- trabado=7
+26323	cuadro	pos=37.60 calce=38 scroll=267 freno=- trabado=7
+26335	cuadro	pos=37.64 calce=38 scroll=267 freno=- trabado=7
+26351	cuadro	pos=37.70 calce=38 scroll=267 freno=- trabado=7
+26367	llegada	parcial nativo=26365 audio=26347 leido=26358 procesado=26365 rms=0.0731 relevos=1
+26367	oyo	parcial: without you're touching anything the softer line under the war's show you
+26367	calce	token 39: without you're touching anything the softer line under the war's show you
+26374	cuadro	pos=38.59 calce=39 scroll=276 freno=- trabado=8
+26385	cuadro	pos=38.65 calce=39 scroll=280 freno=- trabado=8
+26403	cuadro	pos=38.73 calce=39 scroll=284 freno=- trabado=8
+26421	cuadro	pos=38.81 calce=39 scroll=288 freno=- trabado=8
+26435	cuadro	pos=38.86 calce=39 scroll=290 freno=- trabado=8
+26452	cuadro	pos=38.93 calce=39 scroll=292 freno=- trabado=8
+26460	llegada	parcial nativo=26458 audio=26447 leido=26457 procesado=26458 rms=0.0840 relevos=1
+26460	oyo	parcial: without you're touching anything the softer line under the war's show you
+26460	calce	token 39: without you're touching anything the softer line under the war's show you
+26470	cuadro	pos=39.03 calce=39 scroll=294 freno=- trabado=8
+26486	cuadro	pos=39.08 calce=39 scroll=295 freno=- trabado=8
+26503	cuadro	pos=39.13 calce=39 scroll=296 freno=- trabado=8
+26518	cuadro	pos=39.18 calce=39 scroll=297 freno=- trabado=8
+26535	cuadro	pos=39.23 calce=39 scroll=298 freno=- trabado=8
+26550	llegada	parcial nativo=26548 audio=26527 leido=26542 procesado=26548 rms=0.0804 relevos=1
+26550	oyo	parcial: without you're touching anything the softer line under the war's show you where
+26550	calce	token 40: without you're touching anything the softer line under the war's show you where
+26557	cuadro	pos=39.68 calce=40 scroll=298 freno=- trabado=8
+26569	cuadro	pos=39.73 calce=40 scroll=299 freno=- trabado=8
+26585	cuadro	pos=39.80 calce=40 scroll=299 freno=- trabado=8
+26603	cuadro	pos=39.87 calce=40 scroll=299 freno=- trabado=8
+26618	cuadro	pos=39.93 calce=40 scroll=299 freno=- trabado=8
+26636	cuadro	pos=40.00 calce=40 scroll=299 freno=- trabado=8
+26646	llegada	parcial nativo=26645 audio=26627 leido=26644 procesado=26645 rms=0.0799 relevos=1
+26646	oyo	parcial: without you're touching anything the softer line under the war's show you where
+26646	calce	token 40: without you're touching anything the softer line under the war's show you where
+26652	cuadro	pos=40.05 calce=40 scroll=300 freno=- trabado=8
+26668	cuadro	pos=40.07 calce=40 scroll=300 freno=- trabado=8
+26685	cuadro	pos=40.13 calce=40 scroll=300 freno=- trabado=8
+26702	cuadro	pos=40.18 calce=40 scroll=300 freno=- trabado=8
+26720	cuadro	pos=40.24 calce=40 scroll=300 freno=- trabado=8
+26736	cuadro	pos=40.30 calce=40 scroll=300 freno=- trabado=8
+26753	cuadro	pos=40.35 calce=40 scroll=300 freno=- trabado=8
+26768	cuadro	pos=40.40 calce=40 scroll=300 freno=- trabado=8
+26781	llegada	parcial nativo=26774 audio=26727 leido=26769 procesado=26774 rms=0.0839 relevos=1
+26781	oyo	parcial: without you're touching anything the softer line under the war's show you where you
+26781	calce	token 41: without you're touching anything the softer line under the war's show you where you
+26790	cuadro	pos=40.75 calce=41 scroll=300 freno=- trabado=8
+26802	cuadro	pos=40.80 calce=41 scroll=300 freno=- trabado=8
+26819	cuadro	pos=40.87 calce=41 scroll=300 freno=- trabado=8
+26835	cuadro	pos=40.94 calce=41 scroll=300 freno=- trabado=8
+26847	llegada	parcial nativo=26846 audio=26827 leido=26839 procesado=26846 rms=0.0558 relevos=1
+26847	oyo	parcial: without you're touching anything the softer line under the war's show you where you
+26847	calce	token 41: without you're touching anything the softer line under the war's show you where you
+26854	cuadro	pos=41.02 calce=41 scroll=300 freno=- trabado=8
+26865	llegada	parcial nativo=26863 audio=26847 leido=26858 procesado=26863 rms=0.0222 relevos=1
+26865	oyo	parcial: without you're touching anything the softer line under the war's show you where you are
+26865	calce	token 42: without you're touching anything the softer line under the war's show you where you are
+26871	cuadro	pos=41.93 calce=42 scroll=300 freno=- trabado=8
+26884	cuadro	pos=42.01 calce=42 scroll=300 freno=- trabado=8
+26902	cuadro	pos=42.09 calce=42 scroll=300 freno=- trabado=8
+26918	cuadro	pos=42.16 calce=42 scroll=300 freno=- trabado=8
+26934	cuadro	pos=42.22 calce=42 scroll=300 freno=- trabado=8
+26951	cuadro	pos=42.29 calce=42 scroll=300 freno=- trabado=8
+26966	llegada	parcial nativo=26965 audio=26947 leido=26958 procesado=26965 rms=0.0186 relevos=1
+26966	oyo	parcial: without you're touching anything the softer line under the war's show you where you are
+26967	calce	token 42: without you're touching anything the softer line under the war's show you where you are
+26974	cuadro	pos=42.34 calce=42 scroll=300 freno=- trabado=8
+26985	cuadro	pos=42.34 calce=42 scroll=300 freno=- trabado=8
+27001	cuadro	pos=42.34 calce=42 scroll=300 freno=- trabado=8
+27021	cuadro	pos=42.34 calce=42 scroll=300 freno=- trabado=8
+27034	cuadro	pos=42.34 calce=42 scroll=300 freno=- trabado=8
+27050	cuadro	pos=42.34 calce=42 scroll=300 freno=- trabado=8
+27060	llegada	parcial nativo=27059 audio=27047 leido=27058 procesado=27059 rms=0.0014 relevos=1
+27060	oyo	parcial: without you're touching anything the softer line under the war's show you where you are
+27060	calce	token 42: without you're touching anything the softer line under the war's show you where you are
+27068	cuadro	pos=42.35 calce=42 scroll=300 freno=- trabado=8
+27083	cuadro	pos=42.35 calce=42 scroll=300 freno=- trabado=8
+27102	cuadro	pos=42.35 calce=42 scroll=300 freno=- trabado=8
+27117	cuadro	pos=42.35 calce=42 scroll=310 freno=- trabado=9
+27134	cuadro	pos=42.35 calce=42 scroll=318 freno=- trabado=9
+27151	cuadro	pos=42.35 calce=42 scroll=325 freno=- trabado=9
+27167	cuadro	pos=42.39 calce=42 scroll=330 freno=- trabado=9
+27171	llegada	parcial nativo=27169 audio=27147 leido=27157 procesado=27169 rms=0.0007 relevos=1
+27171	oyo	parcial: without you're touching anything the softer line under the war's show you where you are
+27171	calce	token 42: without you're touching anything the softer line under the war's show you where you are
+27184	cuadro	pos=42.41 calce=42 scroll=335 freno=- trabado=9
+27201	cuadro	pos=42.41 calce=42 scroll=338 freno=- trabado=9
+27217	cuadro	pos=42.41 calce=42 scroll=340 freno=- trabado=9
+27234	cuadro	pos=42.41 calce=42 scroll=342 freno=- trabado=9
+27251	cuadro	pos=42.41 calce=42 scroll=344 freno=- trabado=9
+27268	cuadro	pos=42.41 calce=42 scroll=345 freno=- trabado=9
+27274	llegada	parcial nativo=27273 audio=27247 leido=27259 procesado=27273 rms=0.0005 relevos=1
+27274	oyo	parcial: without you're touching anything the softer line under the war's show you where you are
+27274	calce	token 42: without you're touching anything the softer line under the war's show you where you are
+27284	cuadro	pos=42.41 calce=42 scroll=346 freno=- trabado=9
+27301	cuadro	pos=42.41 calce=42 scroll=347 freno=- trabado=9
+27320	cuadro	pos=42.41 calce=42 scroll=348 freno=- trabado=9
+27334	cuadro	pos=42.41 calce=42 scroll=348 freno=- trabado=9
+27350	cuadro	pos=42.41 calce=42 scroll=349 freno=- trabado=9
+27360	llegada	parcial nativo=27359 audio=27347 leido=27358 procesado=27358 rms=0.0057 relevos=1
+27360	oyo	parcial: without you're touching anything the softer line under the war's show you where you are
+27361	calce	token 42: without you're touching anything the softer line under the war's show you where you are
+27375	cuadro	pos=42.41 calce=42 scroll=349 freno=- trabado=9
+27383	cuadro	pos=42.41 calce=42 scroll=349 freno=- trabado=9
+27401	cuadro	pos=42.41 calce=42 scroll=349 freno=- trabado=9
+27417	cuadro	pos=42.41 calce=42 scroll=349 freno=- trabado=9
+27434	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27451	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27465	llegada	parcial nativo=27463 audio=27447 leido=27458 procesado=27463 rms=0.0085 relevos=1
+27465	oyo	parcial: without you're touching anything the softer line under the war's show you where you are
+27465	calce	token 42: without you're touching anything the softer line under the war's show you where you are
+27478	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27485	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27502	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27516	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27534	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27551	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27567	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27570	llegada	parcial nativo=27567 audio=27547 leido=27558 procesado=27567 rms=0.0063 relevos=1
+27570	oyo	parcial: without you're touching anything the softer line under the war's show you where you are
+27571	calce	token 42: without you're touching anything the softer line under the war's show you where you are
+27584	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27601	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27617	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27634	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27650	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27663	llegada	parcial nativo=27660 audio=27647 leido=27658 procesado=27660 rms=0.0012 relevos=1
+27663	oyo	parcial: without you're touching anything the softer line under the war's show you where you are
+27663	calce	token 42: without you're touching anything the softer line under the war's show you where you are
+27672	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27685	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27700	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27720	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27735	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27750	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27767	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27770	llegada	parcial nativo=27765 audio=27747 leido=27758 procesado=27765 rms=0.0016 relevos=1
+27770	oyo	parcial: without you're touching anything the softer line under the war's show you where you are
+27770	calce	token 42: without you're touching anything the softer line under the war's show you where you are
+27783	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27802	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27821	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27833	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27851	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27868	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27869	llegada	parcial nativo=27868 audio=27847 leido=27859 procesado=27868 rms=0.0030 relevos=1
+27869	oyo	parcial: without you're touching anything the softer line under the war's show you where you are
+27870	calce	token 42: without you're touching anything the softer line under the war's show you where you are
+27885	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27900	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27916	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27934	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27939	llegada	FINAL nativo=27936 audio=27907 leido=27918 procesado=27936 rms=0.0025 relevos=1
+27939	palabras	FINAL: without@22070-22430 you're@22430-22550 touching@22554-23060 anything@23090-23720 the@24080-24200 softer@24200-24557 line@24557-24890 under@24950-25220 the@25220-25370 war's@25370-25728 show@25728-26060 you@26060-26210 where@26210-26450 you@26450-26630 are@26630-26990
+27939	oyo	FINAL: without you're touching anything the softer line under the war's show you where you are
+27940	calce	token 42: without you're touching anything the softer line under the war's show you where you are
+27955	llegada	parcial nativo=27945 audio=27927 leido=27938 procesado=27945 rms=0.0018 relevos=1
+27956	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27966	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+27983	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+28000	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+28016	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+28034	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+28049	cuadro	pos=42.41 calce=42 scroll=350 freno=- trabado=9
+28051	llegada	parcial nativo=28048 audio=28027 leido=28040 procesado=28048 rms=0.0016 relevos=1
+28068	cuadro	pos=42.44 calce=42 scroll=350 freno=- trabado=9
+28083	cuadro	pos=42.49 calce=42 scroll=350 freno=- trabado=9
+28104	cuadro	pos=42.56 calce=42 scroll=350 freno=- trabado=9
+28116	cuadro	pos=42.60 calce=42 scroll=350 freno=- trabado=9
+28134	cuadro	pos=42.66 calce=42 scroll=350 freno=- trabado=9
+28144	llegada	parcial nativo=28141 audio=28127 leido=28140 procesado=28141 rms=0.0007 relevos=1
+28150	cuadro	pos=42.71 calce=42 scroll=350 freno=- trabado=9
+28166	cuadro	pos=42.77 calce=42 scroll=350 freno=- trabado=9
+28183	cuadro	pos=42.83 calce=42 scroll=339 freno=- trabado=8
+28199	cuadro	pos=42.88 calce=42 scroll=331 freno=- trabado=8
+28215	cuadro	pos=42.94 calce=42 scroll=325 freno=- trabado=8
+28232	cuadro	pos=42.99 calce=42 scroll=319 freno=- trabado=8
+28249	cuadro	pos=43.05 calce=42 scroll=315 freno=- trabado=8
+28264	llegada	parcial nativo=28261 audio=28227 leido=28257 procesado=28261 rms=0.0009 relevos=1
+28267	cuadro	pos=43.11 calce=42 scroll=312 freno=- trabado=8
+28310	cuadro	pos=43.25 calce=42 scroll=306 freno=- trabado=8
+28319	cuadro	pos=43.29 calce=42 scroll=306 freno=- trabado=8
+28322	cuadro	pos=43.30 calce=42 scroll=305 freno=- trabado=8
+28332	cuadro	pos=43.33 calce=42 scroll=305 freno=- trabado=8
+28344	llegada	parcial nativo=28342 audio=28327 leido=28338 procesado=28342 rms=0.0007 relevos=1
+28348	cuadro	pos=43.36 calce=42 scroll=304 freno=- trabado=8
+28366	cuadro	pos=43.36 calce=42 scroll=303 freno=- trabado=8
+28382	cuadro	pos=43.36 calce=42 scroll=302 freno=- trabado=8
+28399	cuadro	pos=43.36 calce=42 scroll=302 freno=- trabado=8
+28415	cuadro	pos=43.36 calce=42 scroll=301 freno=- trabado=8
+28432	cuadro	pos=43.36 calce=42 scroll=301 freno=- trabado=8
+28442	llegada	parcial nativo=28439 audio=28427 leido=28438 procesado=28439 rms=0.0005 relevos=1
+28450	cuadro	pos=43.36 calce=42 scroll=301 freno=- trabado=8
+28466	cuadro	pos=43.36 calce=42 scroll=301 freno=- trabado=8
+28485	cuadro	pos=43.36 calce=42 scroll=301 freno=- trabado=8
+28498	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28517	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28532	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28544	llegada	parcial nativo=28543 audio=28527 leido=28537 procesado=28543 rms=0.0007 relevos=1
+28549	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28586	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28590	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28600	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28615	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28631	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28646	llegada	parcial nativo=28644 audio=28627 leido=28638 procesado=28644 rms=0.0006 relevos=1
+28649	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28665	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28682	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28699	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28715	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28731	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28741	llegada	parcial nativo=28738 audio=28727 leido=28738 procesado=28738 rms=0.0008 relevos=1
+28747	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28764	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28780	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28797	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28859	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28863	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28866	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28867	llegada	parcial nativo=28845 audio=28827 leido=28838 procesado=28845 rms=0.0014 relevos=1
+28882	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28899	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28916	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28933	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28947	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28962	llegada	parcial nativo=28947 audio=28927 leido=28938 procesado=28947 rms=0.0012 relevos=1
+28970	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28981	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+28999	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29015	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29047	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29066	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29082	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29100	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29114	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29131	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29148	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29162	llegada	parcial nativo=29160 audio=29027 leido=29160 procesado=29160 rms=0.0011 relevos=1
+29165	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29180	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29197	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29215	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29232	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29249	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29267	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29282	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29284	llegada	parcial nativo=29280 audio=29127 leido=29262 procesado=29280 rms=0.0011 relevos=1
+29299	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29315	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29331	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29348	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29367	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29373	llegada	parcial nativo=29371 audio=29227 leido=29362 procesado=29371 rms=0.0012 relevos=1
+29382	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29399	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29416	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29435	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29447	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29465	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29470	llegada	parcial nativo=29463 audio=29327 leido=29461 procesado=29462 rms=0.0011 relevos=1
+29482	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29498	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29516	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29531	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29548	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29565	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29577	llegada	parcial nativo=29575 audio=29427 leido=29561 procesado=29575 rms=0.0027 relevos=1
+29585	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29601	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29613	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29630	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29647	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29664	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29671	llegada	parcial nativo=29669 audio=29527 leido=29660 procesado=29669 rms=0.0014 relevos=1
+29680	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29697	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29713	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29729	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29748	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29762	llegada	parcial nativo=29760 audio=29627 leido=29760 procesado=29760 rms=0.0011 relevos=1
+29763	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29782	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29797	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29813	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8
+29830	cuadro	pos=43.36 calce=42 scroll=300 freno=- trabado=8

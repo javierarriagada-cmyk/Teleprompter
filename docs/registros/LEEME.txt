@@ -1,0 +1,13 @@
+REGISTROS DEL MOTOR DE VOZ -subidos el 13-10-2026 para el banco de medicion, tarea banco-motor-.
+
+Copias de los <id>.motor.txt guardados en el computador de Javier, en
+Desktop\teleprom\02-lecturas\. Solo los registros: sin audio ni video.
+
+  motor-24-sep/tomasN/   28 tomas en espanol del 24-09-2026, con el reconocedor nativo, letras y
+                         anchos distintos -Hola y otros guiones de prueba-.
+  ingles-27-sep/         13 tomas en ingles del 27 y 28-09-2026 -limpias, vivo-28-sep, vivo-440-.
+  tarea89/               las 5 de Larralde estan en la rama registros-tarea89.
+
+Cada registro trae el guion tal cual se leyo -cabecera "# |"-, las lineas 'oyo', 'calce',
+'palabras FINAL' -el tiempo de cada palabra en el audio-, 'renglones' y 'cuadro'.
+Medir una toma: node scripts/medir-toma.mjs <archivo>.

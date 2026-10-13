@@ -1,0 +1,19 @@
+# REGISTRO DEL MOTOR DE UNA TOMA
+# toma: ac69d57b-8d28-4baa-a6a1-70238a4287ef
+# inicio del video (epoch ms): 1790272589441
+# motor de voz: nativo
+# letra: 24 px, serif
+# columna: completa, margen 12%
+# donde lees: arriba
+# ---------- GUION, TAL CUAL SE LEYO ----------
+# | Hay una idea antigua que podríamos llamar la concepción trágica de la naturaleza humana. No dice solo que a veces somos egoístas o crueles. Dice que hay un límite que nunca vamos a poder superar. Sin importar qué tan buena sea nuestra formación, o las leyes o las circunstancias, y este límite es el interés propio, y se expresa en las ganas de estatus, de aparentar o de engañarnos solos. Esta idea dice que somos así y ninguna reforma o método educativo o entorno familiar lo va a poder cambiar. Somos lo que somos. 
+# | Cuando alguien toma en serio esta idea, casi siempre da un paso más. Dice: si estamos llenos de sesgos, prejuicios y egoísmos, entonces estamos en general contaminados. Y si es asi, todo proyecto de mejora en la política, la ciencia o las instituciones es, en buena parte, un derroche de tiempo, de recursos. Este razonamiento, logico, es la explicación favorita de la desconfianza que vemos hoy hacia la política, aquí en Chile y en el mundo: si los políticos son así por naturaleza —y sobran los ejemplos—, ¿para qué confiar en reformas, instituciones, partidos? de todas formas parece que estamos condenados a repetir lo que somos en todo lo que hacemos. hablemos de un subsecretario o del tesorero del colegio.
+# | con la parte trágica, nuestra naturaleza, tiene evidencia a favor hasta ahogarnos, tenemos poco que hacer. Pero con la conclusión errónea que se saca de ella podemos hacer mucho. Nuestra motivación moral tiene un límite estable que no vamos a superar, pero eso no indica que estamos condenados a la ignorancia política y social para siempre. La naturaleza puede ser trágica. Pero la razón y el conocimiento no tienen por qué serlo.
+# | Platón nos dejo uno de los experimentos mentales más poderosos de toda la filosofía: el anillo de Giges, en La República. Glaucón, el hermano de platón, cuenta la historia de un pastor que encuentra un anillo mágico. Ese anillo lo vuelve invisible cuando quiere. Y en cuanto descubre ese poder, despues de algunas acciones, seduce a la reina, mata al rey y se queda con el trono. El anillo no lo convirtió en una mala persona, pero le quitó las consecuencias de ser una mala persona.
+# ---------------------------------------------
+
+ms	tipo	detalle
+13	renglones	0 5 8 12 15 20 24 29 34 38 42 47 51 55 60 65 68 71 77 80 83 88 92 94 98 102 107 112 115 117 120 125 129 135 139 143 147 149 153 156 159 164 171 176 180 183 186 188 192 195 201 205 208 211 214 218 221 225 228 233 236 241 244 247 252 257 261 264 267 271 274 280 283 286 292 294 299 303 307 311 315 319 322 326 329 333 336 339 343 349 354 359 364 367
+13	cuadro	pos=89.97 calce=89 scroll=722 freno=- trabado=21
+18	oido	inicio=-38726 trozo=320 ruta=/data/user/0/com.teleprompter.app/files/oido/1790272589405.pcm
+18	llegada	parcial nativo=17 audio=-238 leido=16 procesado=17 rms=0.0003 relevos=1
