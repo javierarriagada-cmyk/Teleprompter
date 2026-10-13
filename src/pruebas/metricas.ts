@@ -1,6 +1,5 @@
 import { crearMotorDeAvance, MotorDeAvance } from '../lib/avance'
 import { crearSeguidor, tokenizarGuion } from '../lib/seguidor'
-import { Conduccion, procesarFinal, procesarParcial } from '../lib/conduccion'
 import { ResultadoSimulacion } from './lectorSimulado'
 
 export type Metricas = {
@@ -35,12 +34,6 @@ export function medir(
   const limitesDeLinea = Array.from(limitesMap.values()).sort((a, b) => a - b)
 
   const motor = motorCustom ?? crearMotorDeAvance(undefined, limitesDeLinea)
-  // EL ARNES CONDUCE COMO LA APLICACION -banco del motor, 13-10-2026-: los parciales y finales
-  // pasan por lib/conduccion.ts, el mismo camino que usan la pantalla y repetidor.ts -ventana de
-  // -10/+40 tokens, tope al renglon siguiente, falloCalce solo con frases de varias palabras-.
-  // Antes el arnes llamaba al seguidor y al motor a mano -ver los "Antes:" mas abajo- y medía un
-  // camino que en la aplicacion no ocurre.
-  const cond: Conduccion = { seguidor, motor, tokens, limitesDeLinea }
 
   if (eventos.length === 0 || verdad.length === 0) {
     return {
@@ -129,28 +122,24 @@ export function medir(
         }
       } else if (ev.tipo === 'parcial') {
         hayVozActual = true
-        // Igual que useSeguidor.ts:95. Si el arnes no conduce el motor como lo conduce
-        // la aplicacion, mide un camino que en la practica no ocurre.
-        if (procesarParcial(cond, ev.texto, ev.t) !== null) countTentativos++
-        // Antes:
-        // const pos = seguidor.avanzarTentativo(ev.texto)
-        // if (pos.movio) {
-        //   countTentativos++
-        //   motor.tentativo(pos.hastaToken, ev.t)
-        // } else {
-        //   motor.falloCalce(ev.t, true)
-        // }
+        const pos = seguidor.avanzarTentativo(ev.texto)
+        if (pos.movio) {
+          countTentativos++
+          motor.tentativo(pos.hastaToken, ev.t)
+        } else {
+          // Igual que useSeguidor.ts:95. Si el arnes no conduce el motor como lo conduce
+          // la aplicacion, mide un camino que en la practica no ocurre.
+          motor.falloCalce(ev.t, true)
+        }
       } else if (ev.tipo === 'final') {
         hayVozActual = true
-        if (procesarFinal(cond, ev.texto, ev.t) !== null) countConfirmaciones++
-        // Antes:
-        // const pos = seguidor.avanzar(ev.texto)
-        // if (pos.movio) {
-        //   countConfirmaciones++
-        //   motor.confirmar(pos.hastaToken, ev.t)
-        // } else {
-        //   motor.falloCalce(ev.t)
-        // }
+        const pos = seguidor.avanzar(ev.texto)
+        if (pos.movio) {
+          countConfirmaciones++
+          motor.confirmar(pos.hastaToken, ev.t)
+        } else {
+          motor.falloCalce(ev.t)
+        }
       }
       eventoIdx++
     }
