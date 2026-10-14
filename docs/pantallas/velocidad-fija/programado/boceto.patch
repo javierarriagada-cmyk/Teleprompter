@@ -1,0 +1,370 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index a277a16..ebe1ba3 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -10,6 +10,7 @@ import useLayout, { letraPorOmision } from './hooks/useLayout'
+ import type { EsquinaRecuadroH } from './components/RecuadroCamara'
+ import TeleprompterView, { VeloControles } from './components/TeleprompterView'
+ import BarraDeTiempo from './components/BarraDeTiempo'
++import { FilaLecturaFija, bocetoActivo, modoBoceto } from './components/BocetoVelocidad'
+ import { PanelCorpus } from './components/PanelCorpus'
+ // Tarea 87, paso 0 -03-10-2026-: el panel de mediciones de exportación, solo con HERRAMIENTAS.
+ import { PanelMediciones } from './components/PanelMediciones'
+@@ -2851,7 +2852,9 @@ export default function App({ motor, repoOverride }: AppProps) {
+   // lado -teléfono y tableta- una columna en el riel derecho: la pausa encima de Parar y el tacho
+   // debajo. Tres celdas fijas -56, 72, 56- con 32 entre ellas -.fila-toma, styles.css-: sin el tacho la
+   // tercera queda vacía y Parar no se corre del centro. En Leer no hay tacho.
+-  const filaDeLaToma = (
++  const filaDeLaToma = bocetoActivo() && !conCamara && modoBoceto() === 'fija' ? (
++    <FilaLecturaFija pausa={botonPausaLectura} horizontal={horizontal} />
++  ) : (
+     <div data-testid="fila-toma" className={`fila-toma${horizontal ? ' en-columna' : ''}`}>
+       {botonPausaLectura}
+       {botonPararLectura}
+diff --git a/src/components/BocetoVelocidad.tsx b/src/components/BocetoVelocidad.tsx
+new file mode 100644
+index 0000000..cfd6fad
+--- /dev/null
++++ b/src/components/BocetoVelocidad.tsx
+@@ -0,0 +1,199 @@
++// BOCETO -tarea 106 «Velocidad fija», paso 0-. SOLO PARA LAS LAMINAS: vive en un worktree aparte y
++// no va a main. Las piezas nuevas, armadas con los componentes y las clases de verdad -FilaAjuste,
++// MenuAdjuntoAjustes, ficha-listo, dock-voltear-circulo, dock-duracion-. El modo se fuerza con
++// localStorage boceto_vf_modo = 'voz' | 'fija' -por omision 'fija'- y la velocidad es 150.
++import React, { useEffect, useRef, useState } from 'react'
++import { createPortal } from 'react-dom'
++import { IconoMicrofono, IconoVelocimetro, IconoMas } from './IconosApp'
++import { FilaAjuste, MenuAdjuntoAjustes, CheckMenu } from './FilasAjustesLectura'
++import './boceto-velocidad.css'
++
++export type ModoLectura = 'voz' | 'fija'
++export const VELOCIDAD_BOCETO = 150
++export const VELOCIDADES = Array.from({ length: 15 }, (_, i) => 80 + i * 10)
++
++export function modoBoceto(): ModoLectura {
++  try { return localStorage.getItem('boceto_vf_modo') === 'voz' ? 'voz' : 'fija' } catch { return 'fija' }
++}
++export function bocetoActivo(): boolean {
++  try { return localStorage.getItem('boceto_vf') === '1' } catch { return false }
++}
++export function fichaAbajo(): boolean {
++  try { return localStorage.getItem('boceto_vf_ficha') === 'abajo' } catch { return false }
++}
++function menuAbiertoAlEntrar(cual: string): boolean {
++  try { return localStorage.getItem('boceto_vf_menu') === cual } catch { return false }
++}
++
++// El selector de Material 3 en dos mitades, con su linea de explicacion.
++export function SelectorModo() {
++  const [modo, setModo] = useState<ModoLectura>(modoBoceto())
++  return (
++    <div className="vf-selector-bloque">
++      <div className="vf-selector" role="radiogroup" aria-label="Modo de lectura">
++        {([['voz', <IconoMicrofono tamano={18} />, 'Con la voz'], ['fija', <IconoVelocimetro tamano={18} />, 'Velocidad fija']] as const).map(([v, ic, n]) => (
++          <button key={v} type="button" role="radio" aria-checked={modo === v}
++            className={`vf-selector-mitad${modo === v ? ' elegida' : ''}`} onClick={() => setModo(v)}>
++            {ic}<span>{n}</span>
++          </button>
++        ))}
++      </div>
++      <div className="vf-explicacion">
++        {modo === 'voz' ? 'El texto sigue tu voz.' : 'El texto sube solo, a la velocidad que elijas.'}
++      </div>
++      {modo === 'fija' && <TarjetaVelocidad />}
++    </div>
++  )
++}
++
++// Los menus van afuera del vidrio, en el lugar de los menus del dock -como los de PanelAjustes-.
++function afuera(n: React.ReactNode) {
++  const host = document.querySelector('.menus-dock') as HTMLElement | null
++  return createPortal(n, host ?? document.body)
++}
++
++function ListaVelocidades() {
++  const ref = useRef<HTMLDivElement>(null)
++  useEffect(() => {
++    const l = ref.current
++    const e = l?.querySelector('.elegida') as HTMLElement | null
++    if (l && e) l.scrollTop = e.offsetTop - l.clientHeight / 2 + e.offsetHeight / 2
++  }, [])
++  return (
++    <div ref={ref} className="lista-menu-adjunto vf-lista-velocidades">
++      {VELOCIDADES.map((v) => (
++        <button key={v} type="button" className={`fila-menu-adjunto${v === VELOCIDAD_BOCETO ? ' elegida' : ''}`}
++          role="menuitemradio" aria-checked={v === VELOCIDAD_BOCETO}>
++          <span className="fila-menu-adjunto-etiqueta">{v} palabras/min</span>
++          <CheckMenu visible={v === VELOCIDAD_BOCETO} />
++        </button>
++      ))}
++    </div>
++  )
++}
++
++function TarjetaVelocidad() {
++  const ancla = useRef<HTMLDivElement>(null)
++  const [abierto, setAbierto] = useState(menuAbiertoAlEntrar('velocidad'))
++  return (
++    <div className="tarjeta-seccion-ajustes vf-tarjeta-velocidad">
++      <div className="envoltorio-fila-con-menu" ref={ancla}>
++        <FilaAjuste testid="fila-velocidad" icono={<IconoVelocimetro tamano={22} />} nombre="Velocidad"
++          valor={`${VELOCIDAD_BOCETO} palabras/min`} onClick={() => setAbierto(!abierto)} />
++      </div>
++      {abierto && afuera(
++        <MenuAdjuntoAjustes anclaRef={ancla} onCerrar={() => setAbierto(false)} testid="dialogo-velocidad">
++          <ListaVelocidades />
++        </MenuAdjuntoAjustes>
++      )}
++    </div>
++  )
++}
++
++// El - y el + de la velocidad, con la regla de los topes: - apagado en 80, + apagado en 220.
++export function MenosMas({ velocidad = VELOCIDAD_BOCETO }: { velocidad?: number }) {
++  return (
++    <div className="vf-menos-mas">
++      <button type="button" className="vf-circulo-chico" disabled={velocidad <= 80} aria-label="Más lento">
++        <span className="vf-menos" aria-hidden="true" />
++      </button>
++      <span className="vf-menos-mas-valor">{velocidad} <span className="dock-rotulo-chico">palabras/min</span></span>
++      <button type="button" className="vf-circulo-chico" disabled={velocidad >= 220} aria-label="Más rápido">
++        <IconoMas tamano={18} />
++      </button>
++    </div>
++  )
++}
++
++// La ficha del modo, primera de la fila, con su menu adjunto.
++export function FichaModo({ compacta = false, abajo = false }: { compacta?: boolean; abajo?: boolean }) {
++  const modo = modoBoceto()
++  const ancla = useRef<HTMLDivElement>(null)
++  const [abierto, setAbierto] = useState(menuAbiertoAlEntrar('ficha'))
++  const nombre = modo === 'voz'
++    ? (compacta ? 'Voz' : 'Con la voz')
++    : (compacta ? String(VELOCIDAD_BOCETO) : abajo ? 'Velocidad fija' : `Velocidad fija · ${VELOCIDAD_BOCETO}`)
++  return (
++    <div ref={ancla} className={`vf-ficha-ancla${abajo ? ' vf-ficha-abajo' : ''}`}>
++      <button type="button" className={`ficha-listo${abierto ? ' abierta' : ''}`} data-testid="ficha-modo"
++        aria-expanded={abierto} onClick={() => setAbierto(!abierto)}>
++        {modo === 'voz' ? <IconoMicrofono tamano={16} /> : <IconoVelocimetro tamano={16} />}
++        <span>{nombre}</span>
++      </button>
++      {abajo && <span className="dock-rotulo-chico">{modo === 'fija' ? `${VELOCIDAD_BOCETO} palabras/min` : 'sigue tu voz'}</span>}
++      {abierto && afuera(
++        <MenuAdjuntoAjustes anclaRef={ancla} onCerrar={() => setAbierto(false)} testid="dialogo-modo">
++          <div className="lista-menu-adjunto">
++            {([['voz', <IconoMicrofono tamano={20} />, 'Con la voz'], ['fija', <IconoVelocimetro tamano={20} />, 'Velocidad fija']] as const).map(([v, ic, n]) => (
++              <button key={v} type="button" className={`fila-menu-adjunto${modo === v ? ' elegida' : ''}`}
++                role="menuitemradio" aria-checked={modo === v}>
++                <span className="vf-menu-icono">{ic}</span>
++                <span className="fila-menu-adjunto-etiqueta">{n}</span>
++                <CheckMenu visible={modo === v} />
++              </button>
++            ))}
++          </div>
++          {modo === 'fija' && <MenosMas />}
++        </MenuAdjuntoAjustes>
++      )}
++    </div>
++  )
++}
++
++// La fila de abajo al leer en Velocidad fija: - a la izquierda, la Pausa de hoy al centro con el + a
++// su derecha, y la velocidad donde hoy va la duracion.
++export function FilaLecturaFija({ pausa, horizontal = false }: { pausa: React.ReactNode; horizontal?: boolean }) {
++  // Solo boceto: sin linea bajo las palabras, y el renglon de arriba -el que se lee- en --color-texto
++  // al 100 % y el resto al 45 %.
++  useEffect(() => {
++    document.body.classList.add('vf-leyendo-fija')
++    const pintar = () => {
++      const fichas = Array.from(document.querySelectorAll('[data-testid="columna-texto"] [data-token]')) as HTMLElement[]
++      const visibles = fichas.filter((f) => f.getBoundingClientRect().top >= 0)
++      if (!visibles.length) return
++      const arriba = Math.min(...visibles.map((f) => f.getBoundingClientRect().top))
++      for (const f of fichas) {
++        const enLinea = Math.abs(f.getBoundingClientRect().top - arriba) < 4
++        f.style.color = 'var(--color-texto)'
++        f.style.opacity = enLinea ? '1' : '0.45'
++      }
++    }
++    pintar()
++    const id = window.setInterval(pintar, 300)
++    return () => { window.clearInterval(id); document.body.classList.remove('vf-leyendo-fija') }
++  }, [])
++  const menos = (
++    <button type="button" className="dock-voltear" aria-label="Más lento">
++      <span className="dock-voltear-circulo vf-circulo-48" aria-hidden="true"><span className="vf-menos" /></span>
++    </button>
++  )
++  const mas = (
++    <button type="button" className="dock-voltear" aria-label="Más rápido">
++      <span className="dock-voltear-circulo vf-circulo-48" aria-hidden="true"><IconoMas tamano={20} /></span>
++    </button>
++  )
++  const velocidad = (
++    <>
++      <span className="dock-duracion">{VELOCIDAD_BOCETO}</span>
++      <span className="dock-rotulo-chico">palabras/min</span>
++      <span className="dock-rotulo-chico">velocidad</span>
++    </>
++  )
++  if (horizontal) {
++    return (
++      <div className="vf-columna-lectura" onClick={(e) => e.stopPropagation()}>
++        {mas}
++        {pausa}
++        {menos}
++        <div className="dock-lugar-duracion vf-velocidad-columna">{velocidad}</div>
++      </div>
++    )
++  }
++  return (
++    <div className="dock-fila-abajo vf-fila-lectura" onClick={(e) => e.stopPropagation()}>
++      <div className="dock-lugar-voltear">{menos}</div>
++      <div className="vf-centro-lectura">{pausa}{mas}</div>
++      <div className="dock-lugar-duracion">{velocidad}</div>
++    </div>
++  )
++}
+diff --git a/src/components/DockListo.tsx b/src/components/DockListo.tsx
+index 83cd346..99f179e 100644
+--- a/src/components/DockListo.tsx
++++ b/src/components/DockListo.tsx
+@@ -12,6 +12,7 @@ import React, { useState } from 'react'
+ // import { CURVA_RESORTE, MS_CHICO, movimientoApagado } from './movimiento'
+ // Cuarta vuelta: el panel de Ajustes de la toma, sus filas y sus menús viven en PanelAjustes.tsx -un solo
+ // panel para toda la app-; el dock lo monta adentro.
++import { FichaModo, bocetoActivo, fichaAbajo } from './BocetoVelocidad'
+ import { IconoVoltear } from './IconosApp'
+ import type { AjustesLectura } from './FilasAjustesLectura'
+ import { PanelAjustes } from './PanelAjustes'
+@@ -171,6 +172,7 @@ export function DockListo({
+ 
+         <div className="dock-fila-abajo">
+           <div className="dock-lugar-voltear">
++            {bocetoActivo() && !conVoltear && fichaAbajo() && <FichaModo abajo />}
+             {conVoltear && (
+               <button
+                 type="button"
+diff --git a/src/components/FichasListo.tsx b/src/components/FichasListo.tsx
+index e199aa7..34ba341 100644
+--- a/src/components/FichasListo.tsx
++++ b/src/components/FichasListo.tsx
+@@ -11,6 +11,7 @@ import { PASOS_LETRA } from './estiloLectura'
+ import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from '../lib/brillo'
+ import { t, useTextos } from '../textos'
+ import { Interruptor } from './Interruptor'
++import { FichaModo, bocetoActivo, fichaAbajo } from './BocetoVelocidad'
+ import { movimientoApagado, MS_CHICO, CURVA_RESORTE } from './movimiento'
+ import type { EstadoModeloGestos } from '../lib/gestos'
+ 
+@@ -597,6 +598,15 @@ export function FichasListo({
+           -fichaLetra, fichaAnclaje, fichaCamara, fichaBrillo-. En el dock van en grupos con su rótulo. */}
+       {enDock ? (
+         <div className="carril-fichas carril-dock" ref={carrilRef}>
++          {bocetoActivo() && !conCamara && !fichaAbajo() && (
++            <>
++              <div className="grupo-fichas">
++                <span className="rotulo-grupo-fichas" aria-hidden="true">{'\u00a0'}</span>
++                <div className="grupo-fichas-fila"><FichaModo /></div>
++              </div>
++              <span className="filete-grupos-fichas" aria-hidden="true" />
++            </>
++          )}
+           <div className="grupo-fichas" role="group" aria-label={t('rotuloGrupoTexto')}>
+             <span className="rotulo-grupo-fichas" aria-hidden="true">{t('rotuloGrupoTexto')}</span>
+             <div className="grupo-fichas-fila">
+@@ -647,6 +657,7 @@ export function FichasListo({
+         </div>
+       ) : (
+       <div className="carril-fichas" ref={carrilRef}>
++        {bocetoActivo() && !conCamara && <FichaModo compacta />}
+         {fichaLetra}
+         {fichaAnclaje}
+         {fichaCamara}
+diff --git a/src/components/PanelAjustes.tsx b/src/components/PanelAjustes.tsx
+index 5cfc46b..0d2526d 100644
+--- a/src/components/PanelAjustes.tsx
++++ b/src/components/PanelAjustes.tsx
+@@ -11,6 +11,7 @@ import {
+   MenuLectura, esMenuLectura, useAnclasLectura
+ } from './FilasAjustesLectura'
+ import { hayCalidad } from './FichasListo'
++import { SelectorModo, bocetoActivo } from './BocetoVelocidad'
+ import { Interruptor } from './Interruptor'
+ import { PantallaLicencias } from './PantallaLicencias'
+ import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
+@@ -414,6 +415,7 @@ export function PanelAjustes({
+                 <IconoCerrar tamano={18} />
+               </button>
+             </div>
++            {bocetoActivo() && origen !== 'grabar' && <SelectorModo />}
+             {con('lectura') && <MuestraLectura ajustes={ajustesLectura} />}
+             <div className="dock-panel-cuerpo">
+               {con('lectura') && (
+diff --git a/src/components/TeleprompterView.tsx b/src/components/TeleprompterView.tsx
+index 2a85376..d4748e8 100644
+--- a/src/components/TeleprompterView.tsx
++++ b/src/components/TeleprompterView.tsx
+@@ -87,6 +87,7 @@ import { App as CapacitorApp } from '@capacitor/app'
+ import { aplicarBrillo, leerBrilloSistema, restaurarBrillo } from '../lib/brillo'
+ import { FichasListo, FichaMas, PanelFicha } from './FichasListo'
+ import { DockListo } from './DockListo'
++import { bocetoActivo, modoBoceto, VELOCIDAD_BOCETO } from './BocetoVelocidad'
+ import type { AjustesLectura } from './FilasAjustesLectura'
+ import { t, useTextos } from '../textos'
+ import type { EstadoModeloGestos } from '../lib/gestos'
+@@ -1996,7 +1997,9 @@ export default function TeleprompterView({
+               onVoltear={onVoltear}
+               // La misma condición del Voltear del panel de la cámara: la ficha Cámara está con la cámara.
+               conVoltear={conCamara}
+-              duracion={duracionDeLecturaReloj(contarPalabras(guionObj))}
++              duracion={bocetoActivo() && modoBoceto() === 'fija' && !conCamara
++                ? (() => { const s = Math.round(contarPalabras(guionObj) / VELOCIDAD_BOCETO * 60); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}` })()
++                : duracionDeLecturaReloj(contarPalabras(guionObj))}
+               // Como la pastilla que reemplaza en LISTO: la apaga Mostrar tiempo.
+               mostrarDuracion={mostrarTiempo}
+               preparandoVoz={preparandoVoz}
+diff --git a/src/components/boceto-velocidad.css b/src/components/boceto-velocidad.css
+new file mode 100644
+index 0000000..8710678
+--- /dev/null
++++ b/src/components/boceto-velocidad.css
+@@ -0,0 +1,37 @@
++/* BOCETO tarea 106, paso 0 -solo para las laminas, no va a main-. Solo tokens de styles.css. */
++.vf-selector-bloque { display: flex; flex-direction: column; gap: 8px; padding: 0 0 12px; }
++.vf-selector {
++  display: grid; grid-template-columns: 1fr 1fr; height: 48px; border-radius: 999px;
++  border: 1px solid var(--borde-tarjeta); overflow: hidden;
++}
++.vf-selector-mitad {
++  display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: none;
++  background: transparent; color: var(--color-texto); font-size: 14px; font-weight: 500;
++}
++.vf-selector-mitad + .vf-selector-mitad { border-left: 1px solid var(--borde-tarjeta); }
++.vf-selector-mitad.elegida { background: var(--color-acento); color: var(--color-texto-acento); }
++.vf-explicacion { font-size: 13px; color: var(--color-apagado); padding: 0 4px; }
++.vf-tarjeta-velocidad { margin: 4px 0 0; }
++.vf-lista-velocidades { position: relative; }
++.vf-lista-velocidades { max-height: 60vh; overflow-y: auto; }
++.vf-menu-icono { display: inline-flex; margin-right: 12px; color: var(--color-apagado); }
++.vf-ficha-ancla { display: inline-flex; }
++.vf-menos { display: block; width: 14px; height: 1.6px; border-radius: 1px; background: currentColor; }
++.vf-menos-mas {
++  display: flex; align-items: center; justify-content: space-between; gap: 8px;
++  padding: 8px 12px 6px; border-top: 1px solid var(--borde-tarjeta); margin-top: 6px;
++}
++.vf-menos-mas-valor { font-size: 16px; font-weight: 700; color: var(--color-texto); display: inline-flex; flex-direction: column; align-items: center; }
++.vf-circulo-chico {
++  width: 40px; height: 40px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
++  background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.10); color: var(--color-texto);
++}
++.vf-circulo-chico:disabled, .dock-voltear:disabled { opacity: 0.38; }
++.vf-circulo-48 { width: 48px; height: 48px; }
++.vf-fila-lectura { width: 100%; box-sizing: border-box; padding: 0 12px; pointer-events: auto; }
++.vf-leyendo-fija [data-testid="capa-destacado"] { display: none; }
++.vf-centro-lectura { position: relative; display: flex; align-items: center; }
++.vf-centro-lectura > .dock-voltear { position: absolute; left: calc(100% + 16px); top: 50%; transform: translateY(-50%); }
++.vf-columna-lectura { display: flex; flex-direction: column; align-items: center; gap: 12px; }
++.vf-velocidad-columna { min-width: 0; padding: 0; justify-self: auto; }
++.vf-ficha-abajo { flex-direction: column; align-items: center; gap: 4px; }

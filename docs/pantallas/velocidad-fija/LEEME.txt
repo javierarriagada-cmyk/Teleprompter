@@ -1,0 +1,23 @@
+Tarea 106 «Velocidad fija» — PASO 0: bocetos (sin código de producción)
+Fecha: 14-10-2026 (hora de Chile).
+
+Láminas ANTES | DESPUÉS
+  1-ajustes-velocidad-fija.png   Ajustes sobre Leer, con el selector, la fila Velocidad y su menú.
+  2-listo-ficha-modo.png         LISTO de Leer: la ficha del modo, sus dos estados y su menú, y la
+                                 propuesta porque en 412 no cabe.
+  3-leyendo-velocidad-fija.png   Leyendo en Velocidad fija con los controles a la vista.
+  4-de-lado.png                  De lado: LISTO, Más y leyendo.
+
+Cómo se sacaron
+  - ANTES: main 1b2ccc9 tal cual. DESPUÉS: main + programado/boceto.patch, en un worktree aparte que
+    no se sube. El parche arma lo nuevo con los componentes de verdad (PanelAjustes, DockListo,
+    FichasListo, FilaAjuste, MenuAdjuntoAjustes, ficha-listo, dock-voltear-circulo, dock-duracion) y
+    solo se enciende con localStorage boceto_vf = '1' (boceto_vf_modo = 'voz' | 'fija';
+    boceto_vf_ficha = 'abajo' para la propuesta; boceto_vf_menu = 'velocidad' | 'ficha' abre el menú).
+  - Chrome sin pantalla (puppeteer-core, fuera del repo), teléfono 412×915 CSS con DPR 2,625: cada
+    captura mide 1082×2402 y va al 42 % en la lámina. De lado, 915×412.
+  - Para volver a sacarlas: git apply programado/boceto.patch en un worktree de main, `npx vite` en
+    él (DESPUÉS) y en main (ANTES), node programado/cap.js <url> <salida> '<pasos>' y python3
+    programado/laminas.py.
+
+Los dos íconos nuevos (IconoMicrofono e IconoVelocimetro) sí están en src/components/IconosApp.tsx.
