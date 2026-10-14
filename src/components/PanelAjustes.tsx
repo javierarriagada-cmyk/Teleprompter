@@ -144,6 +144,7 @@ export function PanelAjustes({
   const secciones = seccionesDeAjustes(origen)
   const con = (s: SeccionAjustes) => secciones.includes(s)
   const idTitulo = useId()
+  const tituloRef = useRef<HTMLHeadingElement | null>(null)
   const [menu, setMenu] = useState<MenuPanel>(null)
   const [acerca, setAcerca] = useState(false)
   const [licencias, setLicencias] = useState(false)
@@ -171,6 +172,20 @@ export function PanelAjustes({
       setVersion(null)
     }
   }, [conAcerca])
+
+  // Guarda el elemento que tenía el foco al montarse y enfoca el título h2.
+  // Al desmontarse, restaura el foco al elemento guardado si sigue en el documento.
+  useEffect(() => {
+    const elPrevio = document.activeElement as HTMLElement | null
+    if (tituloRef.current) {
+      tituloRef.current.focus({ preventScroll: true })
+    }
+    return () => {
+      if (elPrevio && typeof elPrevio.focus === 'function' && document.body.contains(elPrevio)) {
+        elPrevio.focus({ preventScroll: true })
+      }
+    }
+  }, [])
 
   // El gesto de atras: menu abierto → Licencias → Acerca → (quien lo monta cierra el panel).
   useEffect(() => {
@@ -361,7 +376,7 @@ export function PanelAjustes({
               >
                 <IconoAtras tamano={18} />
               </button>
-              <h2 className="dock-panel-titulo" id={idTitulo}>{t('acercaDeSigo')}</h2>
+              <h2 ref={tituloRef} tabIndex={-1} className="dock-panel-titulo" id={idTitulo}>{t('acercaDeSigo')}</h2>
               <button
                 type="button"
                 className="dock-panel-cerrar"
@@ -405,7 +420,7 @@ export function PanelAjustes({
           <>
             <div className="dock-panel-cabeza">
               {/* Antes -hasta 2026-10-10, cuarta vuelta-: {t('tituloAjustesToma')} en todas. */}
-              <h2 className="dock-panel-titulo" id={idTitulo}>{t(tituloDeAjustes(origen))}</h2>
+              <h2 ref={tituloRef} tabIndex={-1} className="dock-panel-titulo" id={idTitulo}>{t(tituloDeAjustes(origen))}</h2>
               <button
                 type="button"
                 className="dock-panel-cerrar"
