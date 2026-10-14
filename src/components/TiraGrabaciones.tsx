@@ -147,7 +147,8 @@ export default function TiraGrabaciones({ grabaciones, onAbrir, onBorrar: _onBor
     <div data-testid="tira-grabaciones" style={{ marginTop: 'var(--aire-4)', marginBottom: 'var(--aire-3)' }}>
       {/* "Videos" y no "Tomas": hermano de "Guiones" en la portada, mismo
           escalon y mismo peso. */}
-      <div className="texto-titulo titulo-seccion" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-3)', fontWeight: 600 }}>{t('videos')}</div>
+      {/* Antes: <div className="texto-titulo titulo-seccion" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-3)', fontWeight: 600 }}>{t('videos')}</div> */}
+      <div role="heading" aria-level={2} className="texto-titulo titulo-seccion" style={{ color: 'var(--color-texto)', marginBottom: 'var(--aire-3)', fontWeight: 600 }}>{t('videos')}</div>
       {/* SIN VIDEOS, UNA LINEA -27-09-2026-. El titulo solo, sin nada debajo, se leia como algo
           roto o a medio cargar. Una auditoria proponia dibujo, titulo y dos lineas; Javier eligio
           una linea que diga donde van a quedar. */}

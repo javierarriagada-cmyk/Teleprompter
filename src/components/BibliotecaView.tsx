@@ -892,7 +892,8 @@ export default function BibliotecaView({
           de videos -ver el comentario del "+" al final de este archivo-. En Archivados no va:
           ahi no se crea nada. */}
       <div ref={refTituloGuiones} className="fila-titulo-seccion">
-        <div className="texto-titulo titulo-seccion" style={{ color: 'var(--color-texto)', fontWeight: 600 }}>
+        {/* Antes: <div className="texto-titulo titulo-seccion" style={{ color: 'var(--color-texto)', fontWeight: 600 }}> */}
+        <div role="heading" aria-level={2} className="texto-titulo titulo-seccion" style={{ color: 'var(--color-texto)', fontWeight: 600 }}>
           {mostrarArchivados ? t('archivados') : t('guiones')}
         </div>
         {mostrarBotonCrear && !mostrarArchivados && (

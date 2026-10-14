@@ -695,7 +695,8 @@ export default function EditorView({
                 <button
                   key={c.color}
                   type="button"
-                  className="btn-deformable"
+                  /* Antes: className="btn-deformable" */
+                  className="btn-deformable btn-color-seleccion"
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => aplicarFormatoEnSeleccion({ color: c.color })}
                   style={{
