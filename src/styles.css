@@ -1060,6 +1060,17 @@ textarea::placeholder {
   line-height: 1.3;
 }
 
+/* Area de toque de 48x48 para los botones de color del editor */
+.btn-color-seleccion {
+  position: relative;
+}
+.btn-color-seleccion::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: inherit;
+}
+
 /* El boton de destacado de la barra de formato: amarillo con letra negra,
    como el texto que deja. Los valores son DESTACADO -modelo.ts-. */
 .btn-destacado-barra {

@@ -1067,6 +1067,16 @@
   font-size: 18px;
   font-weight: 600;
   color: var(--color-texto);
+  outline: none;
+}
+
+.dock-panel-titulo:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.dock-panel-titulo:focus-visible {
+  outline: 2px solid var(--color-acento);
+  outline-offset: 2px;
 }
 .dock-panel-cerrar {
   position: relative;
