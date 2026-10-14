@@ -60,6 +60,8 @@ export default function BandaTomas({ tomas, onAbrirToma }: Props) {
               }}
             >
               {g.rutaMiniatura ? <img src={srcDeRuta(g.rutaMiniatura)} alt="" /> : null}
+              {/* Tanda 2, 15-10-2026: el velo de abajo de la tira de la portada -.velo-miniatura-, bajo la duracion. */}
+              <span className="velo-miniatura" aria-hidden="true" />
               <span className="marca-toma marca-toma-duracion">{duracion}</span>
               {g.incompleta && <span data-testid={`marca-incompleta-banda-${g.id}`} className="marca-toma marca-toma-incompleta">{t('incompleta')}</span>}
               {g.errorMudo && <span className="marca-toma marca-toma-sin-audio">{t('sinAudio')}</span>}

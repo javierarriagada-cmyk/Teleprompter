@@ -81,7 +81,7 @@ export function BarraLeerGrabar({
       )}
       <button
         ref={btnLeerRef}
-        className="btn-deformable"
+        className="btn-deformable btn-leer-barra"
         onClick={() => {
           const rect = btnLeerRef.current?.getBoundingClientRect()
           onEntrarLectura(rect)
@@ -98,8 +98,8 @@ export function BarraLeerGrabar({
           padding: 'var(--aire-3) var(--aire-4)',
           fontSize: 'var(--texto-titulo)',
           fontWeight: 600,
-          backgroundColor: 'var(--color-acento)',
-          color: 'var(--color-texto-acento)',
+          // Tanda 2, 15-10-2026: el fondo y la letra van en .btn-leer-barra -styles.css-, los de Leer de
+          // la portada. Antes: backgroundColor: 'var(--color-acento)', color: 'var(--color-texto-acento)',
           borderRadius: 'var(--redondeo-pildora)',
           cursor: 'pointer',
           // Sin borde: un contorno gris alrededor de un relleno crema no separa
