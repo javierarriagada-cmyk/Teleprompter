@@ -377,6 +377,11 @@
   box-shadow: var(--sombra-tarjeta);
   overflow: visible;
 }
+/* Dentro del panel de ajustes, la tarjeta no lleva el margen lateral de 16px de la pantalla vieja. */
+.dock-panel-cuerpo .tarjeta-seccion-ajustes {
+  margin: 0 0 10px;
+  padding: 2px 4px;
+}
 .tarjeta-seccion-ajustes .muestra-lectura-ajustes {
   /* Dentro de la card no hace falta el margen lateral de 16: la card ya lo aporta. */
   margin: 12px 12px 8px;
@@ -812,7 +817,8 @@
 .panel-ajustes-flotante::before {
   /* -cuarta vuelta- El panel flotante es siempre el panel abierto: también al 90 %. Antes el selector era
      solo .dock-listo.abierto::before. */
-  background: rgba(0, 0, 0, 0.9);
+  /* Antes: background: rgba(0, 0, 0, 0.9); */
+  background: color-mix(in srgb, var(--bg-panel) 94%, transparent);
 }
 /* EL PANEL FLOTANTE DE AJUSTES -cuarta vuelta, 10-10-2026-. Donde no hay dock, el mismo panel sube desde
    abajo, en el lugar del dock, y crece solo lo que pide su contenido hasta el mismo tope del dock abierto.
