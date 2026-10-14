@@ -111,15 +111,19 @@ const MANERAS: Array<{ nombre: string; deslizar: OpcionesBanco['deslizar'] }> = 
   { nombre: 'hoy', deslizar: 'hoy' },
   ...[250, 300, 350].map((ms) => ({ nombre: `resorte ${ms} (w=${omegaParaAsentar(ms).toFixed(4)})`, deslizar: { omega: omegaParaAsentar(ms) } }))
 ]
+// -14-10-2026-: mas la columna topes, cuantas veces actuo el tope del resorte.
+// Antes:
+// '| grupo | manera | tiron arranque max | tiron arranque med | salto max | vel px/s | ms quieto | ms mitad | solapes | pasada |',
+// '|---|---|---|---|---|---|---|---|---|---|'
 const comparacion: string[] = [
-  '| grupo | manera | tiron arranque max | tiron arranque med | salto max | vel px/s | ms quieto | ms mitad | solapes | pasada |',
-  '|---|---|---|---|---|---|---|---|---|---|'
+  '| grupo | manera | tiron arranque max | tiron arranque med | salto max | vel px/s | ms quieto | ms mitad | solapes | pasada | topes |',
+  '|---|---|---|---|---|---|---|---|---|---|---|'
 ]
 salida.comparacionResorte = []
 for (const g of GRUPOS) {
   for (const m of MANERAS) {
     const c = cifrasDe(juntarCrudos(tomasEn(g.carpeta).map((a) => medirTomaEnBanco(fs.readFileSync(a, 'utf8'), { deslizar: m.deslizar }).crudos)))
-    comparacion.push(`| ${g.nombre} | ${m.nombre} | ${f0(c.tironInicioMax)} | ${f0(c.tironInicioMedio)} | ${f0(c.tironMax)} | ${f0(c.velocidadMax)} | ${f0(c.msHastaQuieto)} | ${f0(c.msMitad)} | ${c.solapes} | ${f1(c.pasadaMax)} |`)
+    comparacion.push(`| ${g.nombre} | ${m.nombre} | ${f0(c.tironInicioMax)} | ${f0(c.tironInicioMedio)} | ${f0(c.tironMax)} | ${f0(c.velocidadMax)} | ${f0(c.msHastaQuieto)} | ${f0(c.msMitad)} | ${c.solapes} | ${f1(c.pasadaMax)} | ${c.topesResorte} |`)
     salida.comparacionResorte.push({ grupo: g.nombre, manera: m.nombre, cifras: c })
   }
 }

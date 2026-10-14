@@ -45,13 +45,25 @@ export function acercarScroll(actual: number, objetivo: number, dtCuadro: number
 // SI EL OBJETIVO CAMBIA A MEDIO CAMINO, la velocidad sigue: no se reinicia ni salta. Solo cambia
 // hacia donde tira el resorte.
 //
+// EL TOPE -14-10-2026, resorte-de-fabrica-: EL RESORTE NUNCA SE PASA, se mueva como se mueva el
+// objetivo. Si en un cuadro la posicion nueva quedaria del otro lado del objetivo -x cambia de signo-,
+// se queda justo en el objetivo con velocidad cero: la puerta llega al marco y ahi para.
+// Antes:
 // OJO: no se pasa MIENTRAS LA VELOCIDAD APUNTA HACIA EL OBJETIVO o es cero. Leyendo, el scroll solo
 // avanza y eso siempre se cumple. Si el objetivo saltara HACIA ATRAS con la velocidad todavia hacia
 // adelante, la puerta podria cruzar el marco antes de volver.
-export type EstadoResorte = { posicion: number; velocidad: number } // px y px/ms
+// -14-10-2026-: tope dice si en ese cuadro actuo el tope, para que el banco lo cuente.
+// Antes: export type EstadoResorte = { posicion: number; velocidad: number } // px y px/ms
+export type EstadoResorte = { posicion: number; velocidad: number; tope?: boolean } // px y px/ms
 
 // Bajo medio pixel de distancia y casi quieto -menos de 0,05 px/ms, menos de un pixel por cuadro-
 // se clava exacto en el objetivo y con velocidad cero, como el corte de acercarScroll.
+//
+// REVISADO -14-10-2026-: el corte salta a lo sumo medio pixel -|x| < 0,5-, nunca algo visible. No
+// deja cola: llegando desde quieto la velocidad a menos de medio pixel es siempre menor que w por la
+// distancia -0,012 px/ms con w de 250 ms-, bajo VELOCIDAD_QUIETO, asi que se clava en el primer
+// cuadro que entra al medio pixel. La «cola» de T158 no venia de aca: ver TeleprompterView, el
+// resorte arrancaba desde scrollTop 0 al montar la vista.
 export const VELOCIDAD_QUIETO = 0.05
 
 // La rapidez que asienta al 98% en `ms` milisegundos: (1 + u) e^(-u) = 0,02 da u = 5,834.
@@ -70,6 +82,8 @@ export function moverResorte(e: EstadoResorte, objetivo: number, dtCuadro: numbe
   const comun = (v + omega * x) * dtCuadro
   const x2 = (x + comun) * amort
   const v2 = (v - omega * comun) * amort
+  // EL TOPE: del otro lado del objetivo, o saliendo de el estando encima, no; se queda en el.
+  if (x2 * x < 0 || (x === 0 && x2 !== 0)) return { posicion: objetivo, velocidad: 0, tope: true }
   if (Math.abs(x2) < 0.5 && Math.abs(v2) < VELOCIDAD_QUIETO) return { posicion: objetivo, velocidad: 0 }
   return { posicion: objetivo + x2, velocidad: v2 }
 }
