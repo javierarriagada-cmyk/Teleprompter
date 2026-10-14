@@ -855,6 +855,9 @@ export default function BibliotecaView({
       <div style={{ position: 'relative', marginBottom: 'var(--aire-4)', ...animacionTituloStyle }}>
         <TarjetaLectura
           guionResumen={guionMasReciente}
+          onAbrir={() => {
+            if (guionMasReciente) onAbrir(guionMasReciente.id)
+          }}
           onLeer={(rect) => {
             if (guionMasReciente) {
               if (onLeerDirecto) onLeerDirecto(guionMasReciente.id, rect)

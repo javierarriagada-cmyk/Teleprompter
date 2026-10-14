@@ -41,6 +41,7 @@ interface BarraEditorVacioProps {
   cargandoArchivo: boolean
   // -tarea 105- Tras pegar con el botón: dispara la marca de idioma.
   onPegado?: () => void
+  mostrarAviso?: (msg: string, opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number }) => void
 }
 
 export function BarraEditorVacio({
@@ -49,7 +50,8 @@ export function BarraEditorVacio({
   editorRef,
   fileInputRef,
   cargandoArchivo,
-  onPegado
+  onPegado,
+  mostrarAviso
 }: BarraEditorVacioProps) {
   return (
     /* Barra fija abajo cuando numPalabras === 0: Pegar texto y Abrir archivo */
@@ -100,7 +102,15 @@ export function BarraEditorVacio({
           //   else e.commands.insertContent(texto)
           //   onPegado?.()
           // })
+          /* Antes:
           leerPortapapeles().then((texto) => {
+            pegarTextoEnEditor(editorRef.current, texto, onPegado)
+          }) */
+          leerPortapapeles().then((texto) => {
+            if (!texto) {
+              mostrarAviso?.(t('nadaCopiado'))
+              return
+            }
             pegarTextoEnEditor(editorRef.current, texto, onPegado)
           })
         }}

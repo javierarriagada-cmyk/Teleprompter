@@ -849,6 +849,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   // Los dos caminos de vuelta -el boton y el gesto de atras de Android- pasan por
   // aca. Arreglar uno solo deja el fantasma entrando por el otro.
   async function salirDelEditor() {
+    setSeleccionEditorAbierta(false)
     const g = guionActual
     if (guionSinEscribir(g)) {
       guionModificadoRef.current = false
@@ -1091,6 +1092,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   // del corpus: lo que su cerrarModalRef cerraría. Llega por el mismo registro -onRegistrarCerrarModal- y
   // decide si hay adónde volver: en la biblioteca, con algo de eso abierto, el atrás lo cierra.
   const [menuBibliotecaAbierto, setMenuBibliotecaAbierto] = useState<boolean>(false)
+  const [seleccionEditorAbierta, setSeleccionEditorAbierta] = useState<boolean>(false)
   // Tarea 102 PASO 2: menus / Acerca / Licencias dentro de Ajustes consumen atras primero.
   const cerrarDentroAjustesRef = useRef<(() => boolean) | null>(null)
 
@@ -2151,7 +2153,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   // la vista. Con esto se sabe si hay adónde volver y si el gesto se anima.
   const estadoAtras: EstadoAtras = {
     vista,
-    algoAbierto: mostrarDialogoMicrofono || mostrarDialogoCamara || menuBibliotecaAbierto || ajustesAbiertos
+    algoAbierto: mostrarDialogoMicrofono || mostrarDialogoCamara || menuBibliotecaAbierto || seleccionEditorAbierta || ajustesAbiertos
       || mostrarPanelCorpus || grabacionAbierta !== null,
     tomaAndando: estadoToma === 'leyendo' || isRecording || cuentaRegresiva !== null,
     movimientoApagado: movimientoApagado()
@@ -3122,6 +3124,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               setGuionActual(nuevoG)
             }}
             onVolverBiblioteca={() => { salirDelEditor() }}
+            mostrarAviso={mostrarAviso}
             onEntrarLectura={(rect) => handleEntrarLectura('editor', rect, false)}
             onEntrarGrabar={(rect) => handleEntrarLectura('editor', rect, true)}
             fontSize={fontSize}
@@ -3138,7 +3141,12 @@ export default function App({ motor, repoOverride }: AppProps) {
             tipoFuente={tipoFuente}
             setTipoFuente={setTipoFuente}
             onAbrirAjustes={() => handleAbrirAjustes('editor')}
-            onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }}
+            /* Antes:
+            onRegistrarCerrarModal={(fn) => { cerrarModalRef.current = fn }} */
+            onRegistrarCerrarModal={(fn, hayAbierto) => {
+              cerrarModalRef.current = fn
+              setSeleccionEditorAbierta(hayAbierto === true)
+            }}
             // LAS TOMAS DE ESTE GUION, de la más nueva a la más vieja -tarea 76, 28-09-2026-.
             // Salen de grabaciones, el mismo estado de la tira: al borrar la última desde el
             // reproductor, la lista se vuelve a leer y la banda se va sola. El reproductor se

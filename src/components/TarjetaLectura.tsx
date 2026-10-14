@@ -6,6 +6,7 @@ import { t, useTextos, tituloOInicio } from '../textos'
 
 interface TarjetaLecturaProps {
   guionResumen?: ResumenGuion
+  onAbrir?: () => void
   onLeer: (rect?: DOMRect) => void
   onGrabar?: (rect?: DOMRect) => void
   onCrearNuevo: () => void
@@ -13,6 +14,7 @@ interface TarjetaLecturaProps {
 
 export default function TarjetaLectura({
   guionResumen,
+  onAbrir,
   onLeer,
   onGrabar,
   onCrearNuevo
@@ -53,6 +55,20 @@ export default function TarjetaLectura({
     <div
       ref={cardRef}
       data-testid="tarjeta-lectura-portada"
+      role={hayGuion ? 'button' : undefined}
+      tabIndex={hayGuion ? 0 : undefined}
+      aria-label={hayGuion ? t('abrirEnEditor') : undefined}
+      onClick={() => {
+        if (hayGuion && onAbrir) {
+          onAbrir()
+        }
+      }}
+      onKeyDown={(e) => {
+        if (hayGuion && onAbrir && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault()
+          onAbrir()
+        }
+      }}
       className="tarjeta-lectura-borde-iluminado tarjeta-elevada"
       style={{
         backgroundColor: parejaColor.fondo,
@@ -68,7 +84,8 @@ export default function TarjetaLectura({
         justifyContent: 'space-between',
         boxSizing: 'border-box',
         overflow: 'hidden',
-        color: parejaColor.letra
+        color: parejaColor.letra,
+        cursor: hayGuion ? 'pointer' : 'default'
       }}
     >
       {/* EL RINCON DE ARRIBA A LA DERECHA NO ES NUESTRO, ES DEL SISTEMA.

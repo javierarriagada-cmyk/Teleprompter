@@ -270,5 +270,9 @@ export const en: Textos = {
   velocidadNivel: 'Speed, level {n} of 7',
   velocidadFijaNivel: 'Fixed speed, level {n} of 7',
   masLento: 'Slower',
-  masRapido: 'Faster'
+  masRapido: 'Faster',
+  // Arreglos chicos de uso -estudio 1-.
+  nadaCopiado: 'Nothing copied',
+  abrirEnEditor: 'Open in editor',
+  cerrarSeleccion: 'Close selection'
 }

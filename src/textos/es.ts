@@ -288,7 +288,11 @@ export const es = {
   velocidadNivel: 'Velocidad, nivel {n} de 7',
   velocidadFijaNivel: 'Velocidad fija, nivel {n} de 7',
   masLento: 'Más lento',
-  masRapido: 'Más rápido'
+  masRapido: 'Más rápido',
+  // Arreglos chicos de uso -estudio 1-.
+  nadaCopiado: 'No hay texto copiado',
+  abrirEnEditor: 'Abrir en el editor',
+  cerrarSeleccion: 'Cerrar selección'
 }
 
 export type ClaveTexto = keyof typeof es
