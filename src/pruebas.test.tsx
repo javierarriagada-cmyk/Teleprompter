@@ -1931,6 +1931,8 @@ describe('Pruebas TAREA 15 (T77-T80)', () => {
           ultimoCalce: 0,
           tUltimoCalceMs: 0
       }),
+      // -motor sin pastilla, 13-10-2026- la pastilla lee con leerEstado, sin avanzar el motor.
+      leerEstado: () => motorAvanceFalso.estadoEn(),
       irAToken: () => {},
       reiniciar: () => {}
     }

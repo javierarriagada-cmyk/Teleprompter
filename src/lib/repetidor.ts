@@ -120,6 +120,11 @@ export function leerCorpus(texto: string): Corpus {
 //     el cuadro siguiente vuelve a integrar ese tramo. Medido en las 28 tomas en espanol: sin esto
 //     la repeticion iba 0,4 palabras detras del telefono en TODAS; con esto, 0,0 a 0,2. Se asume la
 //     pastilla visible -"Mostrar tiempo"-: el registro no lo dice, y las cifras calzan con ella.
+//     -motor sin pastilla, 13-10-2026-: YA NO SE SIMULA. El defecto se arreglo -avance.ts: el reloj
+//     del motor no va para atras; BarraDeTiempo.tsx lee con leerEstado y no avanza el motor-, asi que
+//     la pastilla ya no cambia donde va el texto. Las tomas viejas se repiten con el motor de hoy: lo
+//     demas -reloj de los cuadros, idioma, inicio y arrastres- sigue como se grabo. El codigo de la
+//     pastilla queda abajo como "Antes:".
 //   - EL IDIOMA DEL SEGUIDOR, como useSeguidor: crearSeguidor(tokens, { idioma }). El registro no
 //     lo trae; se saca del guion con detectarIdioma.
 //   - DONDE EMPEZO DE VERDAD Y LOS ARRASTRES A MANO. Si el primer 'cuadro' no esta en 0 -la toma
@@ -128,7 +133,7 @@ export function leerCorpus(texto: string): Corpus {
 //     seguidor y el motor en el calce de ese cuadro con irAToken, como useSeguidor.irAToken.
 //     Los registros de antes de la tarea 89 no anotan esos movimientos; por eso se deducen.
 export type OpcionesRepeticion = { comoElTelefono?: boolean }
-export const MS_RELOJ_PASTILLA = 250
+// Antes: export const MS_RELOJ_PASTILLA = 250
 export const SALTO_A_MANO = 3
 
 export function repetirLectura(corpus: Corpus, opciones: OpcionesRepeticion = {}): ResultadoRepeticion {
@@ -179,16 +184,17 @@ export function repetirLectura(corpus: Corpus, opciones: OpcionesRepeticion = {}
   if (comoTelefono && cuadrosTel.length > 0) for (const c of cuadrosTel) pasos.push(c.ms)
   else for (let t = 0; t <= maxMs + stepMs; t += stepMs) pasos.push(t)
 
-  // La hora de la pastilla del tiempo -ver arriba-.
-  let horaPastilla = pasos.length > 0 ? pasos[0] : 0
-  let proximaPastilla = horaPastilla + MS_RELOJ_PASTILLA
-  const avanzarPastilla = (hasta: number) => {
-    while (proximaPastilla <= hasta) {
-      horaPastilla = proximaPastilla
-      motor.estadoEn(horaPastilla)
-      proximaPastilla += MS_RELOJ_PASTILLA
-    }
-  }
+  // -motor sin pastilla- la pastilla ya no se simula -ver arriba-. Antes:
+  // // La hora de la pastilla del tiempo -ver arriba-.
+  // let horaPastilla = pasos.length > 0 ? pasos[0] : 0
+  // let proximaPastilla = horaPastilla + MS_RELOJ_PASTILLA
+  // const avanzarPastilla = (hasta: number) => {
+  //   while (proximaPastilla <= hasta) {
+  //     horaPastilla = proximaPastilla
+  //     motor.estadoEn(horaPastilla)
+  //     proximaPastilla += MS_RELOJ_PASTILLA
+  //   }
+  // }
   const aMano = (token: number, tMs: number) => {
     seguidor.irAToken(token)
     motor.irAToken(token, tMs)
@@ -207,16 +213,16 @@ export function repetirLectura(corpus: Corpus, opciones: OpcionesRepeticion = {}
       const ev = eventosOyo[eventoIdx]
       // Antes: const res = ev.final ? procesarFinal(cond, ev.texto, t) : procesarParcial(cond, ev.texto, t)
       const tEv = comoTelefono ? ev.ms : t
-      if (comoTelefono) avanzarPastilla(tEv)
+      // Antes: if (comoTelefono) avanzarPastilla(tEv)
       const res = ev.final ? procesarFinal(cond, ev.texto, tEv) : procesarParcial(cond, ev.texto, tEv)
       if (res !== null) {
         ubicados++
         // El redibujo por setPosicion: la pastilla vuelve a preguntar con su hora atrasada.
-        if (comoTelefono) motor.estadoEn(horaPastilla)
+        // Antes: if (comoTelefono) motor.estadoEn(horaPastilla)
       }
       eventoIdx++
     }
-    if (comoTelefono) avanzarPastilla(t)
+    // Antes: if (comoTelefono) avanzarPastilla(t)
 
     const st = motor.estadoEn(t)
     // Antes: const dtSec = stepMs / 1000

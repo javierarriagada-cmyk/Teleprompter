@@ -52,6 +52,9 @@ export interface MotorDeAvance {
   falloCalce(tMs: number, esParcial?: boolean): void  // el seguidor no calzo
   voz(hayVoz: boolean, tMs: number): void       // del VAD o del motor
   estadoEn(tMs: number): EstadoAvance           // que mostrar AHORA
+  // -motor sin pastilla, 13-10-2026- el estado del ultimo cuadro, SIN avanzar el motor. Para quien
+  // solo mira -la pastilla del tiempo-: el unico que avanza el motor es el cuadro de la vista.
+  leerEstado(): EstadoAvance
   irAToken(token: number, tMs: number): void    // el usuario movio el texto a mano
   reiniciar(): void
 }
@@ -89,6 +92,9 @@ export function crearMotorDeAvance(
 
   let posicionMostrada = 0
   let tUltimaActualizacion = 0
+  // -motor sin pastilla- lo ultimo que devolvio estadoEn: estado, freno y si avanzaba. La posicion,
+  // el calce y el ritmo se leen siempre de las variables de arriba.
+  let ultimoEstado: Pick<EstadoAvance, 'avanzando' | 'estado' | 'motivoFreno'> = { avanzando: false, estado: 'DETENIDO', motivoFreno: 'silencio' }
   // LA VELOCIDAD ES ESTADO, NO UNA CUENTA DE CADA CUADRO. Esto es lo que le da inercia al
   // motor: sin esto la velocidad puede saltar de 0 a 3x entre dos cuadros, y eso es lo que
   // se ve como un tiron aunque la velocidad nunca pase del tope.
@@ -147,6 +153,18 @@ export function crearMotorDeAvance(
     }
   }
 
+  // -motor sin pastilla- el estado sin integrar tiempo: la posicion donde quedo, el calce y el ritmo
+  // de ahora, y el estado y el freno del ultimo cuadro.
+  function estadoSinAvanzar(): EstadoAvance {
+    return {
+      posicion: posicionMostrada,
+      ...ultimoEstado,
+      ppmEstimadas,
+      ultimoCalce: Math.max(ultimaConfirmada, anclaTentativa),
+      tUltimoCalceMs: tUltimoCalce
+    }
+  }
+
   return {
     confirmar(token: number, tMs: number) {
       hayVoz = true
@@ -200,6 +218,17 @@ export function crearMotorDeAvance(
       if (tUltimaActualizacion === 0) {
         tUltimaActualizacion = tMs
       }
+
+      // EL RELOJ DEL MOTOR NO VA PARA ATRAS -motor sin pastilla, 13-10-2026-.
+      //
+      // La pastilla del tiempo -BarraDeTiempo.tsx- llamaba aca con una hora que se refresca cada
+      // 250 ms y que, en cada redibujo por un calce, era MAS VIEJA que la del ultimo cuadro. El
+      // max(0, ...) de abajo no integraba nada, pero la linea siguiente dejaba tUltimaActualizacion
+      // en esa hora vieja, y el cuadro siguiente volvia a integrar el mismo tramo: el texto saltaba
+      // hasta el blanco con cada calce. Mostrar u ocultar la pastilla cambiaba donde iba el texto
+      // -medido en el banco del motor, PR #97: 0,4 palabras en todas las tomas en espanol-.
+      // Una hora anterior a la ultima no integra nada y no mueve el reloj: devuelve lo que hay.
+      if (tMs < tUltimaActualizacion) return estadoSinAvanzar()
 
       const dt = Math.max(0, tMs - tUltimaActualizacion)
       tUltimaActualizacion = tMs
@@ -416,6 +445,7 @@ export function crearMotorDeAvance(
       nuevaPos = Math.min(maxTokenGuion, Math.max(0, nuevaPos))
       posicionMostrada = nuevaPos
 
+      ultimoEstado = { avanzando: vActual > 0, estado, motivoFreno }
       return {
         posicion: posicionMostrada,
         avanzando: vActual > 0,
@@ -425,6 +455,10 @@ export function crearMotorDeAvance(
         ultimoCalce: refToken,
         tUltimoCalceMs: tUltimoCalce
       }
+    },
+
+    leerEstado(): EstadoAvance {
+      return estadoSinAvanzar()
     },
 
     irAToken(token: number, tMs: number) {

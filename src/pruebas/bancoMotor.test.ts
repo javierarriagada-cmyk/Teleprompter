@@ -24,7 +24,12 @@ describe('Banco del motor', () => {
     expect(cifras.cambiosDeRenglon).toBe(BASE.cambiosDeRenglon)
     // -correccion-: el banco reproduce al telefono: la posicion repetida y la grabada, cuadro por
     // cuadro, a menos de 0,3 palabras en promedio.
-    expect(Math.abs(cifras.difTelefono)).toBeLessThan(0.3)
+    // -motor sin pastilla, 13-10-2026-: la toma se grabo con el defecto de la pastilla del tiempo, que
+    // adelantaba el texto en cada calce; el motor de hoy ya no lo hace y queda unas 0,4 palabras detras
+    // de lo grabado. Lo demas -calces, reloj, inicio- se sigue reproduciendo.
+    // Antes: expect(Math.abs(cifras.difTelefono)).toBeLessThan(0.3)
+    expect(cifras.difTelefono).toBeLessThan(0)
+    expect(cifras.difTelefono).toBeGreaterThan(-0.5)
   })
 
   test('acercarScroll da lo mismo que la cuenta que tenia TeleprompterView', () => {
@@ -51,4 +56,6 @@ describe('Banco del motor', () => {
 // -13-10-2026, correccion-: el banco repite como el telefono -repetidor.ts, comoElTelefono-, y las
 // cifras de esta toma cambiaron.
 // Antes: const BASE = { atrasoMedio: 1.807013325474624, renglonVivo: 84.13597733711048, cambiosDeRenglon: 9 }
-const BASE = { atrasoMedio: 1.389296431740768, renglonVivo: 84.13597733711048, cambiosDeRenglon: 9 }
+// -motor sin pastilla, 13-10-2026-: sin el defecto de la pastilla, el motor va mas atras en esta toma.
+// Antes: const BASE = { atrasoMedio: 1.389296431740768, renglonVivo: 84.13597733711048, cambiosDeRenglon: 9 }
+const BASE = { atrasoMedio: 1.797571602340839, renglonVivo: 84.13597733711048, cambiosDeRenglon: 9 }

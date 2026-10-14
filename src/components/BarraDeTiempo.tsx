@@ -241,7 +241,11 @@ export default function BarraDeTiempo({
   if (enPausa && estadoAntesDePausaRef.current) {
     estado = estadoAntesDePausaRef.current
   } else {
-    estado = motorAvance.estadoEn(ahora)
+    // -motor sin pastilla, 13-10-2026- LA PASTILLA SOLO MIRA. estadoEn avanza el motor, y con la
+    // hora vieja de este refresco lo hacia integrar dos veces el mismo tramo: mostrar u ocultar la
+    // pastilla cambiaba donde iba el texto. El motor lo avanza solo el cuadro de TeleprompterView.
+    // Antes: estado = motorAvance.estadoEn(ahora)
+    estado = motorAvance.leerEstado()
     if (!enPausa) estadoAntesDePausaRef.current = estado
   }
 
