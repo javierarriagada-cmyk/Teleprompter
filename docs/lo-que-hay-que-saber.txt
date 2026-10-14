@@ -2,6 +2,18 @@ LO QUE HAY QUE SABER ANTES DE TOCAR SIGO
 Escrito el 25-09-2026 para las sesiones que trabajan en la nube, sin el computador de
 Javier. Es lo que la sesion local sabe de memoria y no esta en el codigo. AGENTS.md es el
 mapa del codigo; esto es el criterio. Lo pendiente vive en docs/decisiones-de-diseno.txt.
+PUESTO AL DIA EL 15-10-2026 contra main 1b2ccc9: secciones 4 y 5. La version del 25-09 esta
+entera en docs/archivo/lo-que-hay-que-saber-al-25-sep.txt.
+
+
+LO QUE ES HISTORIA Y LO QUE ES HOY -15-10-2026-. Un estudio de usabilidad describio pantallas
+que ya no existen porque leyo como vigente lo que es historia. Dos fuentes de historia:
+  - docs/archivo/: encargos, bocetos y planes viejos. Cuentan como se llego a cada decision,
+    no como es la app.
+  - Los comentarios «Antes:» del codigo: es el codigo que se reemplazo, guardado a proposito
+    con su razon. NO es lo que hace la app. Lo que hace es lo que esta fuera del comentario.
+  Como es la app hoy lo dicen el codigo de main, AGENTS.md y este documento. Ante una duda, manda
+  el codigo.
 
 
 REGLA A FUEGO -Javier, 05-10-2026-: LAS PRUEBAS SOLO CUBREN LOGICA QUE NO SE VE.
@@ -125,10 +137,17 @@ REGLA A FUEGO -Javier, 05-10-2026-: LAS PRUEBAS SOLO CUBREN LOGICA QUE NO SE VE.
   CADA CONTROL MUESTRA SU EFECTO en el momento y en el lugar donde se toca. Un ajuste
   que no cambia nada a la vista se lee como falso.
 
-  EL CAJON Aa ES EL ESTANDAR de todo menu de ajustes -EditorView.tsx, clases .cajon-aa,
-  .selector-aa, .fila-aa-par-: sale desde abajo, esquinas grandes, SIN velo, sin titulo
-  ni "Listo" ni nombres al lado. Cada control se DIBUJA; los nombres van en aria-label.
-  Controles a todo el ancho, un solo objeto por fila.
+  UN SOLO PANEL DE AJUSTES EN TODA LA APP -desde el 10-10-2026, src/components/PanelAjustes.tsx-.
+  Se abre en el lugar, de vidrio en los grises de la app, sin oscurecer lo de atras, y se cierra
+  con la X o tocando afuera. Cada puerta muestra sus secciones: la portada, Lectura, Pantalla,
+  Apariencia y Acerca de Sigo; el editor y Leer, Lectura y Pantalla; Grabar, Lectura, Video y
+  Pantalla. Va en dos envoltorios: el dock de LISTO -DockListo.tsx- y, donde no hay dock,
+  PanelAjustesFlotante. La pantalla completa de Ajustes ya no existe -se borro el 12-10-2026-.
+  Los menus se eligen pegados a la fila, no en pantallas nuevas.
+  Antes -hasta el 10-10-2026-: «EL CAJON Aa ES EL ESTANDAR de todo menu de ajustes
+  -EditorView.tsx, clases .cajon-aa, .selector-aa, .fila-aa-par-: sale desde abajo, esquinas
+  grandes, SIN velo, sin titulo ni "Listo" ni nombres al lado. Cada control se DIBUJA; los
+  nombres van en aria-label. Controles a todo el ancho, un solo objeto por fila.»
 
   LOS BOTONES FLOTANTES SON UN SOLO OBJETO EN CUATRO TAMAÑOS -corregido el 2026-10-04,
   tarea 83, parte B-: 32 esquina secundaria, 40 esquina principal, 56 acción secundaria
@@ -151,31 +170,50 @@ REGLA A FUEGO -Javier, 05-10-2026-: LAS PRUEBAS SOLO CUBREN LOGICA QUE NO SE VE.
 
 
 ==============================================================================
-5. DONDE ESTA TODO, AL 25-09-2026 -main 3010863-
+5. DONDE ESTA TODO, AL 15-10-2026 -main 1b2ccc9-
 ==============================================================================
 
-  HECHO Y EN MAIN, entre otras cosas:
-    - Seguimiento con el renglon vivo arriba del todo, destacado de 4-6 palabras,
-      reconocedor con trozos de 20 ms. Javier: "la mejor mejora hasta ahora".
-    - Subtitulos de la toma: tres estilos cerrados -amarillo, rojo, formal- y "sin",
-      quemados con Media3 -CapaDeSubtitulos.java, src/lib/subtitulos.ts,
-      SubtitulosVisor.tsx-. Una sola copia por toma: al guardar en la galeria se borra la
-      de Sigo; una toma guardada muestra solo Compartir y Borrar.
-    - Vibracion para todos los que tengan la respuesta tactil del telefono activada.
-    - Pagina provisoria en sitio/ -Firebase Hosting, proyecto sigoteleprompter-. La
-      definitiva tiene que estar "al nivel de la app".
+  EN GOOGLE PLAY, EN PRUEBA CERRADA. La version de Play -npm run play, .env.play- sale sin las
+  herramientas de prueba -src/lib/herramientas.ts, HERRAMIENTAS-: sin panel de diagnostico, sin
+  panel de corpus, sin medicion de cada lectura y sin guardar el audio que oyo Vosk. La voz se baja
+  de Play la primera vez -tarea 104-. La APK de prueba -npm run apk- lo trae todo; ahi el
+  diagnostico se abre tocando varias veces la marca de la portada -BibliotecaView.tsx-.
+  Tabletas Android: si, con la misma APK. Windows y Mac: en pausa.
 
-  LO QUE MAS PESA ANTES DE PUBLICAR -decisiones-de-diseno.txt, punto P1-:
-    - El panel de diagnostico se abre TOCANDO UNA VEZ el titulo del guion en la portada
-      -TarjetaLectura.tsx, onDiagClick-. Es herramienta nuestra: sacarla del alcance del
-      usuario.
-    - GUARDAR_AUDIO_DEL_OIDO=true en MotorNativo.ts y el correo provisorio
-      hola@ejemplo.com del guion Hola.
-    - Version de publicacion con R8, llave de firma fuera del repositorio.
+  COMO ES LA APP HOY, lo principal:
+    - Portada con la tarjeta del ultimo guion -TarjetaLectura.tsx- y la biblioteca; editor de
+      guiones -EditorView.tsx-.
+    - Dos puertas a la lectura: Leer y Grabar. Antes de empezar, el dock de LISTO
+      -DockListo.tsx, FichasListo.tsx-. Al leer, el texto sigue la voz.
+    - Ajustes: un solo panel, ver la seccion 4.
+    - Lectura en tres anchos: Angosto, Medio -alineado a la izquierda- y Ancho
+      -columnaLectura, estiloLectura.ts-; Angosto con piso con el telefono de pie.
+    - Subtitulos de la toma: tres estilos -amarillo, rojo, formal- y «sin», quemados con Media3
+      -CapaDeSubtitulos.java, src/lib/subtitulos.ts, SubtitulosVisor.tsx-. Una sola copia por toma.
+    - Atras predictivo de Android -lib/atrasPredictivo.ts, receptor unico en MainActivity.java- y
+      accesos directos del icono -lib/accesosDirectos.ts, AccesosDirectosPlugin.java-.
+    - Movimiento de Material 3 Expressive en Grabar, Play/Pausa y «Preparando la voz».
 
-  OTROS ABIERTOS: accesibilidad -docs/accesibilidad-robo-test-25-sep.txt-, el cambio de
-  parrafo en la lectura, M1 y B24 -en decisiones-de-diseno.txt-, otros idiomas -I1, en
-  espera-. Los iconos public/icon-192/512.png son negros de relleno.
+  EL MOTOR, AL 15-10-2026:
+    - La vara es npm run banco -seccion 3-: 46 tomas reales en docs/registros, reproduce el
+      telefono a -0,02 palabras.
+    - El cambio de renglon se desliza con un resorte sin rebote -lib/deslizar.ts, moverResorte-,
+      encendido de fabrica. La pastilla del tiempo solo lee el motor -leerEstado-, no lo mueve.
+    - Sigue sin indicador de «te perdi»: decision de Javier, no se reabre.
+
+  EN CURSO -no tocar desde otra tarea-:
+    - Velocidad fija, el segundo modo de lectura: rama velocidad-fija, PR #102.
+    - docs/estudios/ -ramas estudio-*-: estudios hechos por un agente, SIN VERIFICAR. Lo que
+      afirman se comprueba en el codigo antes de creerlo: el primero describia pantallas viejas.
+
+  ABIERTO: decisiones-de-diseno.txt -M1 f, numeros escritos en cifras; M1 g, una vara sacada del
+  audio-, la ventana flotante sobre otras apps -anotada, despues de Velocidad fija-, y lo de
+  produccion: manual en el sitio, Calificar y Compartir, Ayuda, monetizacion.
+
+  Antes -la seccion al 25-09-2026, main 3010863-: esta entera en
+  docs/archivo/lo-que-hay-que-saber-al-25-sep.txt. Lo que pesaba antes de publicar -el
+  diagnostico en el titulo de la portada, el audio del oido guardado, R8 y la llave de firma, los
+  iconos de relleno- quedo resuelto con la tarea 84 y la publicacion en Play.
 
   LOS GUIONES QUE HAY SON DE PRUEBA: no hay usuarios todavia. No volver tema la
   compatibilidad con lo guardado; si hace falta que un valor viejo no rompa, se resuelve

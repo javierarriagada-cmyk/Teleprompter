@@ -2,3 +2,16 @@ Aquí se encuentran los encargos y documentos viejos de Sigo, movidos el 28-09-2
 Los comentarios del código que citan "docs/tareaNN.txt" se refieren a estos archivos.
 Lo vigente permanece en docs/.
 Consulte el directorio docs/ para la documentación activa del proyecto.
+
+SEGUNDO TRASLADO, 15-10-2026. Un estudio de usabilidad describió pantallas que ya no existen:
+había leído como vigentes los encargos y bocetos viejos que seguían en docs/. Se movieron aquí,
+sin borrar nada:
+  docs/tarea77.txt ... docs/tarea91.txt   ->  docs/archivo/tarea77.txt ... tarea91.txt
+  docs/pantallas/tareaNN/                 ->  docs/archivo/pantallas/tareaNN/
+  docs/planes/                            ->  docs/archivo/planes/
+  docs/accesibilidad-robo-test-25-sep.txt ->  docs/archivo/accesibilidad-robo-test-25-sep.txt
+  docs/lo-que-hay-que-saber.txt al 25-09  ->  copia en docs/archivo/lo-que-hay-que-saber-al-25-sep.txt
+Los comentarios del código que citan esas rutas viejas se refieren a estos archivos.
+
+TODO LO DE ESTA CARPETA ES HISTORIA. Cuenta cómo se llegó a cada decisión, no cómo es la app hoy.
+Para saber cómo es hoy: el código de main, AGENTS.md y docs/lo-que-hay-que-saber.txt.

@@ -20,6 +20,11 @@ que hay que leer ANTES de proponer o cambiar nada:
 
 Con Javier: siempre en español, tuteo chileno. En pantalla: español neutro.
 
+**Lo que está en un comentario «Antes:» es historia, no lo que hace la app hoy.** Es el código
+que se reemplazó, guardado a propósito con su razón. Igual `docs/archivo/`: encargos, bocetos y
+planes viejos. Cómo es la app hoy lo dice el código de main fuera de esos comentarios -15-10-2026:
+un estudio describió pantallas que ya no existen por leerlos como vigentes-.
+
 ---
 
 ## Lo primero: no explores el repositorio entero
@@ -37,8 +42,12 @@ ni con el motor de voz.
     PRESENTACION   App.tsx, components/
     SEGUIMIENTO    lib/seguidor.ts, lib/avance.ts, lib/registro.ts, hooks/useSeguidor.ts
     MOTOR DE VOZ   motor/            <- interfaz MotorDeVoz y sus implementaciones
+    DISPOSITIVO    hooks/useWakeLock.ts, lib/camara.ts, los plugins de android/app/src/main/java
+    AUDIO          workers/, public/vad-processor.js, lib/remuestrear.ts  -solo el motor web-
+    Antes -hasta el 15-10-2026-:
     DISPOSITIVO    hooks/useWakeLock.ts, y lo que venga (camara, archivos)
     AUDIO          workers/, public/vad-processor.js, lib/segmentador.ts, lib/remuestrear.ts
+    -lib/segmentador.ts se borro con la limpieza del reconocedor web, commit d0f0cf6-.
 
 ## Mapa de archivos
 
@@ -48,9 +57,13 @@ ni con el motor de voz.
 | `src/lib/avance.ts` | DONDE DEBEN ESTAR LOS PIXELES AHORA. Continuo. Extrapola entre calces y frena. |
 | `src/lib/registro.ts` | que tramo se leyo y en que milisegundos. Materia prima de los subtitulos. |
 | `src/hooks/useSeguidor.ts` | **EL CABLEADO.** Une motor de voz, seguidor, avance y registro. |
-| `src/hooks/useASR.ts` | consume `MotorDeVoz`. No sabe nada de Whisper ni de Web Speech. |
-| `src/motor/` | `MotorDeVoz` y sus implementaciones: WebSpeech, WhisperLocal, Fake, Nativo. |
-| `src/lib/segmentador.ts` | corta el audio en frases usando el VAD. |
+| `src/hooks/useASR.ts` | consume `MotorDeVoz`. No sabe que reconocedor hay detras. |
+| `src/motor/` | `MotorDeVoz` y sus implementaciones: `MotorNativo` -Vosk compilado para Android, `VoskNativoPlugin.java`, el del telefono-, `MotorVosk` -Vosk en el navegador, `motorWeb.ts`, nunca dentro del APK- y `MotorFake` para las pruebas. `elegirMotor.ts` elige. |
+| `src/lib/conduccion.ts` | el camino unico de lo oido al seguidor y al avance; lo usan la app y el banco. |
+| `src/lib/deslizar.ts` | como se desliza la pantalla al cambiar de renglon: el resorte sin rebote, de fabrica. |
+| `src/components/TeleprompterView.tsx` | la pantalla de lectura; el lazo `animate()` pasa de palabras a renglones y pixeles. |
+| `src/components/PanelAjustes.tsx` | EL UNICO panel de Ajustes de la app, con las secciones de cada puerta. |
+| `scripts/banco-motor.ts` | `npm run banco`: repite las tomas de `docs/registros` por el camino de la app y mide el motor. |
 | `src/lib/remuestrear.ts` | pasa el audio a 16 kHz, que es lo unico que acepta el reconocedor. |
 | `public/vad-processor.js` | AudioWorklet. **JavaScript plano y autocontenido, a proposito.** |
 | `src/pruebas/lectorSimulado.ts` | genera una lectura sintetica con su verdad de referencia. |
@@ -60,12 +73,20 @@ ni con el motor de voz.
 | `src/lib/detectarIdioma.ts` | el idioma de cada GUION, detectado al escribir o pegar. |
 | `src/lib/atrasPredictivo.ts` | el atrás predictivo: si hay adónde volver, cuándo se anima, el plugin. Receptor único: `MainActivity.java`. |
 
+Antes -la tabla hasta el 15-10-2026-: «`src/hooks/useASR.ts` | consume `MotorDeVoz`. No sabe nada de
+Whisper ni de Web Speech.», «`src/motor/` | `MotorDeVoz` y sus implementaciones: WebSpeech,
+WhisperLocal, Fake, Nativo.» y «`src/lib/segmentador.ts` | corta el audio en frases usando el VAD.».
+WebSpeech, WhisperLocal y el segmentador se borraron con la limpieza del reconocedor web -commit
+d0f0cf6-.
+
 ## No tocar salvo que la tarea lo pida por su nombre
 
 - `public/vad-processor.js` — no se mueve, no se convierte a TypeScript, no se importa nada
   adentro. El ambito de un AudioWorklet no resuelve modulos. Ya costo una vuelta entera.
 - `src/motor/` — la interfaz `MotorDeVoz` es estable.
-- `src/workers/`, `src/lib/segmentador.ts`, `src/lib/remuestrear.ts`
+- `src/workers/`, `src/lib/remuestrear.ts`
+  Antes -hasta el 15-10-2026-: «`src/workers/`, `src/lib/segmentador.ts`, `src/lib/remuestrear.ts`»;
+  el segmentador ya no existe.
 - `vite.config.ts`, `tsconfig.json`, el manifest y los iconos
 - Las dependencias. No agregues ninguna: si te parece que hace falta, **pregunta**.
 
