@@ -80,8 +80,11 @@ describe('Tarea 88: las pausas en el sidecar y en la toma', () => {
     const registro = escritos.get('/grabaciones/t88.motor.txt')!
     expect(registro.match(/^# pausa desdeMs=\d+ hastaMs=\d+ origen=(boton|palma)$/gm)!.length).toBe(2)
     expect(registro).toMatch(/# letra: 40 px/)
-    // La miniatura sale del primer tramo que queda: 0..~5000 → a los 1000.
-    expect(estado.miniaturas).toEqual([1000])
+    // -15-10-2026- La miniatura va a los 3 s -MS_MINIATURA-, o al medio si el tramo dura menos de 6 s:
+    // 0..5000 → a los 2500. Antes:
+    // // La miniatura sale del primer tramo que queda: 0..~5000 → a los 1000.
+    // expect(estado.miniaturas).toEqual([1000])
+    expect(estado.miniaturas).toEqual([2500])
   })
   test('recuperarTomasPendientes cierra la pausa abierta', async () => {
     estado.duracionMs = 12_000
@@ -92,7 +95,9 @@ describe('Tarea 88: las pausas en el sidecar y en la toma', () => {
     const g = lista.find((x) => x.id === 'vieja')!
     expect(g.pausas).toEqual([{ desdeMs: 0, hastaMs: 3000, origen: 'boton' }, { desdeMs: 9000, hastaMs: 12_000, origen: 'boton' }])
     expect(JSON.parse(escritos.get('/grabaciones/vieja.json')!).pausas[1].hastaMs).toBe(12_000)
-    // La miniatura, del primer tramo que queda -3000..9000-: 4000.
-    expect(estado.miniaturas).toEqual([4000])
+    // -15-10-2026- Del primer tramo que queda -3000..9000-, a los 3 s de su comienzo: 6000. Antes:
+    // // La miniatura, del primer tramo que queda -3000..9000-: 4000.
+    // expect(estado.miniaturas).toEqual([4000])
+    expect(estado.miniaturas).toEqual([6000])
   })
 })

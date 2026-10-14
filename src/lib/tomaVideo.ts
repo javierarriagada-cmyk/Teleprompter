@@ -117,12 +117,29 @@ function cerrarAbiertas(pausas: PausaToma[] | undefined, duracionMs: number): Pa
 
 // La miniatura sale del primer tramo que queda: a 1 s de su comienzo, o en su medio si dura menos de
 // 2 s. Sin pausas, a 1 s como siempre.
+//
+// -15-10-2026, Javier- A LOS 3 S, NO AL 1. La foto grande del visor al terminar de grabar y la de la tira
+// salen de aqui, y al segundo 1 la persona recien parte: acomodandose, a medio gesto. Javier: «al
+// terminar de grabar aparece un frame pegado que usualmente no es muy estetico»; a los 3 s ya esta
+// lista o leyendo, mirando al lente. Lo mas barato que lo resuelve: se probo pensar una portada encima
+// y Javier no quiere sumar complejidad por esto. Si el tramo es corto, su medio, como antes.
+// La galeria del telefono elige su propia imagen: eso no lo decide Sigo.
+// Antes:
+// export function msDeMiniatura(pausas: PausaToma[] | undefined, duracionMs: number): number {
+//   if (!pausas || pausas.length === 0) return 1000
+//   const primero = tramosQueQuedan(tramosACortar(pausas, duracionMs), duracionMs)[0]
+//   if (!primero) return 1000
+//   const largo = primero.hastaMs - primero.desdeMs
+//   return Math.round(largo < 2000 ? primero.desdeMs + largo / 2 : primero.desdeMs + 1000)
+// }
+export const MS_MINIATURA = 3000
 export function msDeMiniatura(pausas: PausaToma[] | undefined, duracionMs: number): number {
-  if (!pausas || pausas.length === 0) return 1000
-  const primero = tramosQueQuedan(tramosACortar(pausas, duracionMs), duracionMs)[0]
-  if (!primero) return 1000
-  const largo = primero.hastaMs - primero.desdeMs
-  return Math.round(largo < 2000 ? primero.desdeMs + largo / 2 : primero.desdeMs + 1000)
+  const tramo = !pausas || pausas.length === 0
+    ? { desdeMs: 0, hastaMs: duracionMs }
+    : tramosQueQuedan(tramosACortar(pausas, duracionMs), duracionMs)[0]
+  if (!tramo || !(tramo.hastaMs > tramo.desdeMs)) return Math.min(MS_MINIATURA, Math.max(0, duracionMs / 2))
+  const largo = tramo.hastaMs - tramo.desdeMs
+  return Math.round(tramo.desdeMs + Math.min(MS_MINIATURA, largo / 2))
 }
 
 function detenerHeartbeat(): void {
