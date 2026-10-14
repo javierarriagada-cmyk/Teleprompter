@@ -35,5 +35,28 @@ describe('moverResorte', () => {
         expect(e.velocidad).toBe(0)
       }
     }
+
+    // -14-10-2026, resorte-de-fabrica-: con el TOPE, objetivos que avanzan Y RETROCEDEN -semilla fija,
+    // dt variados-. Nunca cruza el objetivo, y el corte de llegada mueve menos de medio pixel.
+    for (const omega of [omegaParaAsentar(250), omegaParaAsentar(350)]) {
+      for (let sec = 0; sec < 50; sec++) {
+        let e: EstadoResorte = { posicion: 0, velocidad: 0 }
+        let objetivo = 0
+        for (let paso = 0; paso < 400; paso++) {
+          if (azar() < 0.1) objetivo += (azar() < 0.35 ? -1 : 1) * (5 + azar() * 60)
+          const dt = 4 + azar() * 60
+          const x = e.posicion - objetivo
+          // lo que daria el resorte sin corte ni tope, para medir el corte
+          const xLibre = (x + (e.velocidad + omega * x) * dt) * Math.exp(-omega * dt)
+          e = moverResorte(e, objetivo, dt, omega)
+          const x2 = e.posicion - objetivo
+          // nunca del otro lado
+          expect(x2 * x).toBeGreaterThanOrEqual(0)
+          if (x === 0) expect(x2).toBe(0)
+          // el corte de llegada -no el tope- salta menos de medio pixel
+          if (x2 === 0 && !e.tope && x !== 0) expect(Math.abs(xLibre)).toBeLessThan(0.5)
+        }
+      }
+    }
   })
 })
