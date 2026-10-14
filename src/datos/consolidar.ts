@@ -14,6 +14,9 @@ function generarUuid(): string {
  * - Omite bloques sin nombre cuyo texto esté vacío.
  * - Si un bloque tiene nombre, conserva '[nombre]\n' al principio de su texto.
  * - Recorta espacios y saltos de línea al inicio y al final del texto resultante.
+ *   -espacios-del-usuario, 14-10-2026-: ya no los saltos de línea. Las líneas vacías que el usuario
+ *   escribió al principio o al final se quedan -«\n\nHola» vuelve a abrir con sus dos-. Se recortan
+ *   solo los espacios y tabulaciones de los bordes.
  * - Ajusta los índices de 'tramos' (negrita/color) para que no se desplacen.
  * - Si el guion ya tiene 1 solo bloque y su texto no cambia, retorna el guion intacto
  *   sin modificar su fecha de modificación.
@@ -84,8 +87,13 @@ export function consolidarGuion(guion: Guion): Guion {
   }
 
   // Recortar bordes (inicio y final)
-  const recortaInicio = textoAcumulado.length - textoAcumulado.trimStart().length
-  const textoLimpio = textoAcumulado.trim()
+  // -espacios-del-usuario- Sin tocar los saltos de línea: solo espacios y tabulaciones.
+  // Antes:
+  // const recortaInicio = textoAcumulado.length - textoAcumulado.trimStart().length
+  // const textoLimpio = textoAcumulado.trim()
+  const sinInicio = textoAcumulado.replace(/^[^\S\r\n]+/, '')
+  const recortaInicio = textoAcumulado.length - sinInicio.length
+  const textoLimpio = sinInicio.replace(/[^\S\r\n]+$/, '')
 
   const tramosAjustados: TramoFormato[] = []
   for (const tr of tramosAcumulados) {

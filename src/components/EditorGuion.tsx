@@ -15,7 +15,9 @@ import { familiaLectura, colorLetraEfectiva, columnaLectura, rellenoLecturaDePie
 import useLayout from '../hooks/useLayout'
 // Antes: import { SANGRIA_PRIMERA_LINEA_PX, ESPACIOS_EDITOR, primeraLineaConTexto } from '../lib/cortesDeRenglon'
 // -segunda vuelta- también el margen de las acotaciones, las ligaduras y juntar espacios.
-import { SANGRIA_PRIMERA_LINEA_PX, ESPACIOS_EDITOR, primeraLineaConTexto, MARGEN_ACOTACION_PX, LIGADURAS_TEXTO, juntarEspacios } from '../lib/cortesDeRenglon'
+// -espacios-del-usuario- lineasDeEspacio.
+// Antes: import { SANGRIA_PRIMERA_LINEA_PX, ESPACIOS_EDITOR, primeraLineaConTexto, MARGEN_ACOTACION_PX, LIGADURAS_TEXTO, juntarEspacios } from '../lib/cortesDeRenglon'
+import { SANGRIA_PRIMERA_LINEA_PX, ESPACIOS_EDITOR, primeraLineaConTexto, MARGEN_ACOTACION_PX, LIGADURAS_TEXTO, juntarEspacios, lineasDeEspacio } from '../lib/cortesDeRenglon'
 
 // EL EDITOR DEL GUION, CON FORMATO DE VERDAD. 24-09-2026.
 //
@@ -117,9 +119,21 @@ const PrimeraLinea = Extension.create({
               parrafos.push({ pos, tam: node.nodeSize, texto: node.textContent })
             })
             const i = primeraLineaConTexto(parrafos.map((p) => p.texto))
-            if (i < 0) return DecorationSet.empty
-            const p = parrafos[i]
-            return DecorationSet.create(state.doc, [Decoration.node(p.pos, p.pos + p.tam, { class: 'primera-linea-guion' })])
+            // -espacios-del-usuario, 14-10-2026- Mismo recorrido: los párrafos vacíos que ocupan un
+            // renglón -lineasDeEspacio, la misma cuenta que Leer- llevan la clase linea-de-espacio.
+            // Antes:
+            // if (i < 0) return DecorationSet.empty
+            // const p = parrafos[i]
+            // return DecorationSet.create(state.doc, [Decoration.node(p.pos, p.pos + p.tam, { class: 'primera-linea-guion' })])
+            const decos: Decoration[] = []
+            if (i >= 0) {
+              const p = parrafos[i]
+              decos.push(Decoration.node(p.pos, p.pos + p.tam, { class: 'primera-linea-guion' }))
+            }
+            lineasDeEspacio(parrafos.map((p) => p.texto)).forEach((esEspacio, j) => {
+              if (esEspacio) decos.push(Decoration.node(parrafos[j].pos, parrafos[j].pos + parrafos[j].tam, { class: 'linea-de-espacio' }))
+            })
+            return decos.length > 0 ? DecorationSet.create(state.doc, decos) : DecorationSet.empty
           }
         }
       })

@@ -86,8 +86,11 @@ describe('Pruebas TAREA 57: Sin bloques en el editor (T274)', () => {
     const consolidadoUnBloque = consolidarGuion(guionUnBloqueConSaltosPrevios)
     expect(consolidadoUnBloque.bloques.length).toBe(1)
 
-    // Empieza en la primera palabra ("INSERCIONES:"), las líneas en blanco de adentro siguen estando
-    const textoEsperadoUnBloque = 'INSERCIONES:\n\nPrimer párrafo.\n\nSegundo párrafo.'
+    // -espacios-del-usuario, 14-10-2026- Las líneas vacías que el usuario escribió al principio y al
+    // final se quedan: Javier, «eso no puede pasar por sobre la edición de un usuario». Antes:
+    // // Empieza en la primera palabra ("INSERCIONES:"), las líneas en blanco de adentro siguen estando
+    // const textoEsperadoUnBloque = 'INSERCIONES:\n\nPrimer párrafo.\n\nSegundo párrafo.'
+    const textoEsperadoUnBloque = '\n\nINSERCIONES:\n\nPrimer párrafo.\n\nSegundo párrafo.\n\n'
     expect(consolidadoUnBloque.bloques[0].texto).toBe(textoEsperadoUnBloque)
 
     // Si no cambia nada, modificado se mantiene intacto y se devuelve el mismo objeto

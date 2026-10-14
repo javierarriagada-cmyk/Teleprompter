@@ -6,7 +6,9 @@ import { Guion, contarPalabras, duracionDeLecturaReloj } from '../datos/modelo'
 import { agruparEnRenglones, indiceDeRenglon, Renglon, MedidaToken } from '../lib/renglones'
 // Antes: import { SANGRIA_PRIMERA_LINEA_PX, primeraLineaConTexto } from '../lib/cortesDeRenglon'
 // -segunda vuelta- también las ligaduras.
-import { SANGRIA_PRIMERA_LINEA_PX, primeraLineaConTexto, LIGADURAS_TEXTO } from '../lib/cortesDeRenglon'
+// -espacios-del-usuario- lineasDeEspacio.
+// Antes: import { SANGRIA_PRIMERA_LINEA_PX, primeraLineaConTexto, LIGADURAS_TEXTO } from '../lib/cortesDeRenglon'
+import { SANGRIA_PRIMERA_LINEA_PX, primeraLineaConTexto, LIGADURAS_TEXTO, lineasDeEspacio } from '../lib/cortesDeRenglon'
 import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
@@ -1913,6 +1915,8 @@ export default function TeleprompterView({
         >
           {guionObj.bloques.map((bloque, bIdx) => {
             const lineas = (bloque.texto || '').split(/\r?\n/)
+            // -espacios-del-usuario- Las líneas vacías que ocupan un renglón -lineasDeEspacio-.
+            const deEspacio = lineasDeEspacio(lineas)
             let charOffset = 0
 
             return (
@@ -1939,9 +1943,12 @@ export default function TeleprompterView({
                       data-block={bIdx}
                       data-line={lIdx}
                       // -ajustes de pantallas, 10-10-2026- textIndent: solo la primera línea del guion, de pie.
+                      // -espacios-del-usuario, 14-10-2026- La línea vacía que ocupa renglón mide un renglón de
+                      // lectura, sin márgenes. Las demás, como hoy. Antes: margin: `${MARGEN_RENGLON_LECTURA_PX}px 0`,
                       style={{
                         fontSize,
-                        margin: `${MARGEN_RENGLON_LECTURA_PX}px 0`,
+                        margin: deEspacio[lIdx] ? 0 : `${MARGEN_RENGLON_LECTURA_PX}px 0`,
+                        minHeight: deEspacio[lIdx] ? fontSize * INTERLINEADO_LECTURA : undefined,
                         lineHeight: INTERLINEADO_LECTURA,
                         textIndent: primeraLinea && primeraLinea.bloque === bIdx && primeraLinea.linea === lIdx
                           ? SANGRIA_PRIMERA_LINEA_PX
