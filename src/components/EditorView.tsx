@@ -5,7 +5,7 @@ import { consolidarGuion } from '../datos/consolidar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { hapticaSeleccion } from '../haptica'
 import { movimientoApagado, MS_DEDO, MS_CHICO, MS_PANTALLA, CURVA_ENTRA, CURVA_SALE, CURVA_RESORTE } from './movimiento'
-import { IconoEmpezar } from './IconosApp'
+import { IconoEmpezar, IconoCerrar } from './IconosApp'
 import { EditorCabecera } from './EditorCabecera'
 import { BarraEditorVacio, pegarTextoEnEditor } from './BarraEditorVacio'
 import { BarraLeerGrabar } from './BarraLeerGrabar'
@@ -56,7 +56,7 @@ interface EditorViewProps {
   // aplicacion. Vive en el menu de la portada, junto a idioma y vibracion.
   // -24-09-2026: la vibracion salio de ese menu; la decide el telefono.-
   onEntrarGrabar?: (rect?: DOMRect) => void
-  onRegistrarCerrarModal?: (fn: (() => boolean) | null) => void
+  onRegistrarCerrarModal?: (fn: (() => boolean) | null, hayAbierto?: boolean) => void
   // 28-09-2026, tarea 77: el Aa abre la pantalla de Ajustes de App, la misma de la portada y de
   // LISTO. Javier: "ya ni siquiera tenemos coherencia dentro de los ajustes de la app".
   onAbrirAjustes?: () => void
@@ -69,6 +69,7 @@ interface EditorViewProps {
   style?: React.CSSProperties
   onAnimationEnd?: (e: React.AnimationEvent) => void
   editorRef?: React.MutableRefObject<Editor | null>
+  mostrarAviso?: (msg: string, opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number }) => void
 }
 
 
@@ -124,7 +125,8 @@ export default function EditorView({
   'data-pantalla-direccion': dataPantallaDireccion,
   style,
   onAnimationEnd,
-  editorRef: editorRefExternal
+  editorRef: editorRefExternal,
+  mostrarAviso
 }: EditorViewProps) {
   useTextos()
   // 28-09-2026, tarea 77: el cajon Aa del editor -CajonAaEditor, mostrarModalAjustes, su Escape y
@@ -189,6 +191,28 @@ export default function EditorView({
       }
     }
   }, [])
+  useEffect(() => {
+    if (onRegistrarCerrarModal) {
+      if (hayTextoSeleccionado) {
+        onRegistrarCerrarModal(() => {
+          const ed = editorRef.current
+          if (ed) {
+            ed.commands.setTextSelection(ed.state.selection.to)
+          }
+          setHayTextoSeleccionado(false)
+          return true
+        }, true)
+      } else {
+        onRegistrarCerrarModal(null, false)
+      }
+    }
+    return () => {
+      if (onRegistrarCerrarModal) {
+        onRegistrarCerrarModal(null, false)
+      }
+    }
+  }, [hayTextoSeleccionado, onRegistrarCerrarModal])
+
   const [barraLeerVisible, setBarraLeerVisible] = useState(true)
   const ultimoScrollTopRef = useRef<number>(0)
   const timerScrollStopRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -614,6 +638,36 @@ export default function EditorView({
             <button
               type="button"
               className="btn-deformable"
+              data-testid="btn-cerrar-seleccion"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => {
+                const ed = editorRef.current
+                if (ed) {
+                  ed.commands.setTextSelection(ed.state.selection.to)
+                }
+                setHayTextoSeleccionado(false)
+              }}
+              style={{
+                width: 48,
+                height: 48,
+                padding: 0,
+                border: 'none',
+                backgroundColor: 'transparent',
+                color: 'var(--color-texto)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}
+              title={t('cerrarSeleccion')}
+              aria-label={t('cerrarSeleccion')}
+            >
+              <IconoCerrar tamano={22} />
+            </button>
+            <button
+              type="button"
+              className="btn-deformable"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => aplicarFormatoEnSeleccion({ negrita: true })}
               style={{
@@ -740,6 +794,7 @@ export default function EditorView({
           fileInputRef={fileInputRef}
           cargandoArchivo={cargandoArchivo}
           onPegado={() => queueMicrotask(() => intentarMarcaIdioma('pegar'))}
+          mostrarAviso={mostrarAviso}
         />
       )}
 
