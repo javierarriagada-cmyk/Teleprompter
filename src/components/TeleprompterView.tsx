@@ -673,8 +673,11 @@ export default function TeleprompterView({
   const renglonesAnotadosRef = useRef<number>(-1)
   const origenRef = useRef<number>(0)
   const scrollSuaveRef = useRef<number | null>(null)
-  // EL RESORTE -lib/deslizar.ts, 13-10-2026-, APAGADO salvo localStorage sigo_resorte = '1'. Se lee
-  // una vez al entrar a leer, no en cada cuadro. velocidadScrollRef es la otra mitad del estado del
+  // EL RESORTE -lib/deslizar.ts, 13-10-2026-, ENCENDIDO salvo localStorage sigo_resorte = '0'. Javier
+  // lo dejo encendido de fabrica el 14-10-2026 despues de dos lecturas en el Redmi: el tiron de
+  // arranque bajo de 412 a 125 px/s, termina en el mismo tiempo y sigue igual.
+  // Antes: EL RESORTE -lib/deslizar.ts, 13-10-2026-, APAGADO salvo localStorage sigo_resorte = '1'. Se lee
+  // Se lee una vez al entrar a leer, no en cada cuadro. velocidadScrollRef es la otra mitad del estado del
   // resorte -px/ms-; reiniciarResorteRef pide al lazo partir del scroll real con velocidad cero.
   const resorteRef = useRef(false)
   const velocidadScrollRef = useRef(0)
@@ -692,11 +695,19 @@ export default function TeleprompterView({
   // Al entrar a leer se lee el interruptor del resorte, una vez. Con movimiento reducido, como hoy.
   useEffect(() => {
     if (estadoToma !== 'leyendo') return
-    let encendido = false
+    // -14-10-2026-: encendido salvo '0'; si localStorage falla, encendido.
+    // Antes:
+    // let encendido = false
+    // try {
+    //   encendido = window.localStorage.getItem('sigo_resorte') === '1'
+    // } catch (e) {
+    //   encendido = false
+    // }
+    let encendido = true
     try {
-      encendido = window.localStorage.getItem('sigo_resorte') === '1'
+      encendido = window.localStorage.getItem('sigo_resorte') !== '0'
     } catch (e) {
-      encendido = false
+      encendido = true
     }
     resorteRef.current = encendido && !movimientoApagado()
     reiniciarResorteRef.current = true
@@ -1066,6 +1077,8 @@ export default function TeleprompterView({
       // algo mas de 200 ms. Regular, siempre igual, y sin parar en el medio.
       const dtCuadro = ultimoCuadroRef.current === null ? 16 : Math.min(100, tAhora - ultimoCuadroRef.current)
       ultimoCuadroRef.current = tAhora
+      // -14-10-2026-: el primer cuadro de la vista no tiene de donde venir: arranca en el objetivo.
+      const primerCuadro = scrollSuaveRef.current === null
       if (scrollSuaveRef.current === null) scrollSuaveRef.current = topObjetivo
       // -13-10-2026, banco del motor-: la misma cuenta, sacada a lib/deslizar.ts para que el banco
       // la simule sin copiarla.
@@ -1079,7 +1092,14 @@ export default function TeleprompterView({
       if (resorteRef.current && !modoManualRef.current) {
         if (reiniciarResorteRef.current) {
           reiniciarResorteRef.current = false
-          if (containerRef.current) scrollSuaveRef.current = containerRef.current.scrollTop
+          // -14-10-2026, resorte-de-fabrica-: LA CAUSA DE T158 Y T170. Al montar la vista el reinicio
+          // tomaba scrollTop -0, nadie lo habia escrito todavia- en vez del objetivo que la linea de
+          // arriba acababa de poner: el resorte subia desde el principio del guion durante 250 ms y
+          // la vista se leia a medio camino -T158: 50,5 y 50,75 de 168; T170: la base a medio
+          // camino del renglon 1, y 67,2 es justo el renglon 2, no una pasada-. acercarScroll no lo
+          // sufria porque no reinicia. En el primer cuadro se respeta el objetivo; despues, como antes.
+          // Antes: if (containerRef.current) scrollSuaveRef.current = containerRef.current.scrollTop
+          if (containerRef.current && !primerCuadro) scrollSuaveRef.current = containerRef.current.scrollTop
           velocidadScrollRef.current = 0
         }
         const r = moverResorte({ posicion: scrollSuaveRef.current, velocidad: velocidadScrollRef.current }, topObjetivo, dtCuadro)
