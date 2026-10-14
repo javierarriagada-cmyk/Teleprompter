@@ -864,8 +864,16 @@ textarea::placeholder {
    y queda la misma separación que en la lectura. El vacío donde está el cursor -is-empty, lo pone el
    Placeholder solo ahí- y el del editor vacío -is-editor-empty, el del texto de sugerencia- conservan su
    renglón, para que el cursor se vea al escribir. La lectura no se toca. */
-.editor-guion p:not(.is-empty):not(.is-editor-empty) > br.ProseMirror-trailingBreak:only-child {
+/* -espacios-del-usuario, 14-10-2026- La regla sigue para UNA línea vacía entre párrafos. La que ocupa
+   renglón -linea-de-espacio, EditorGuion.tsx con lineasDeEspacio- conserva su <br> y su renglón, sin
+   márgenes, como en Leer. Antes:
+   .editor-guion p:not(.is-empty):not(.is-editor-empty) > br.ProseMirror-trailingBreak:only-child { */
+.editor-guion p:not(.is-empty):not(.is-editor-empty):not(.linea-de-espacio) > br.ProseMirror-trailingBreak:only-child {
   display: none;
+}
+.editor-guion p.linea-de-espacio {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 .editor-guion p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);

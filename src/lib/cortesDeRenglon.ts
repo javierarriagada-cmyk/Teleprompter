@@ -36,6 +36,27 @@ export function primeraLineaConTexto(lineas: string[]): number {
   return lineas.findIndex((x) => x.trim() !== '')
 }
 
+// LOS ESPACIOS DEL USUARIO -espacios-del-usuario, 14-10-2026-. En el Redmi, un guion con 14 líneas
+// vacías seguidas se veía como un solo espacio de párrafo: cada línea vacía medía 0 y sus márgenes se
+// juntaban. Javier: «está bien que los párrafos no estén tan separados, pero eso no puede pasar por
+// sobre la edición de un usuario que quiere darle otro espacio». La regla, igual en el editor y en Leer:
+//   - un salto o UNA línea vacía entre dos párrafos: la separación compacta de hoy, sin cambios;
+//   - cada línea vacía SEGUIDA de más -la 2.ª, la 3.ª...-: ocupa un renglón de lectura;
+//   - las líneas vacías del principio y del final del guion: cada una ocupa un renglón.
+// Devuelve, por línea, true en las vacías que ocupan renglón. Una línea con solo espacios es vacía,
+// como en primeraLineaConTexto.
+export function lineasDeEspacio(lineas: string[]): boolean[] {
+  const vacia = lineas.map((x) => x.trim() === '')
+  const primera = vacia.indexOf(false)
+  const ultima = vacia.lastIndexOf(false)
+  return vacia.map((v, i) => {
+    if (!v) return false
+    if (primera < 0 || i < primera || i > ultima) return true
+    // Entre párrafos: la primera vacía de la tanda es la separación de hoy; las demás, renglones.
+    return vacia[i - 1] === true
+  })
+}
+
 // Cómo trata los espacios cada lado -la propiedad white-space de CSS-.
 //   normal        junta los espacios seguidos y el del final del renglón se cae. Es la lectura.
 //   pre-wrap      deja los espacios como se escribieron; el del final del renglón cuelga y no
