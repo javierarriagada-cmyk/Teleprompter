@@ -1166,13 +1166,20 @@
 .ficha-modo-lectura.abajo { flex-direction: column; align-items: center; gap: 4px; }
 .ficha-modo-lectura.enLinea { flex-direction: row; align-items: center; gap: 10px; }
 .raya-menos { display: block; width: 14px; height: 1.6px; border-radius: 1px; background: currentColor; }
-.control-velocidad { display: inline-flex; align-items: center; gap: 6px; height: 48px; padding: 0 4px; border-radius: 999px; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.10); color: var(--color-texto); flex: 0 0 auto; }
+/* -15-10-2026, estudio 2- EL VIDRIO SALE DEL COLOR DEL TEXTO, NO DEL BLANCO. Con blanco fijo, en el tema claro
+   -el panel de Ajustes en --bg-panel claro- o sobre un fondo de lectura claro, la capsula y los tramos vacios
+   de la barra no se veian: quedaban solo los llenos y la barra dejaba de decir cuantos niveles hay. currentColor
+   es var(--color-texto) en el control y la letra de la ficha en el dock: sobre oscuro da el mismo 7 % y 10 %
+   claro de antes; sobre claro, oscuro.
+   Antes: .control-velocidad { display: inline-flex; align-items: center; gap: 6px; height: 48px; padding: 0 4px; border-radius: 999px; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.10); color: var(--color-texto); flex: 0 0 auto; } */
+.control-velocidad { display: inline-flex; align-items: center; gap: 6px; height: 48px; padding: 0 4px; border-radius: 999px; background: color-mix(in srgb, currentColor 7%, transparent); border: 1px solid color-mix(in srgb, currentColor 10%, transparent); color: var(--color-texto); flex: 0 0 auto; }
 .control-velocidad.vertical { flex-direction: column; height: auto; width: 48px; padding: 4px 0; }
 .boton-nivel { width: 40px; height: 40px; border-radius: 999px; border: none; background: transparent; color: var(--color-texto); display: flex; align-items: center; justify-content: center; }
 .boton-nivel:disabled { opacity: 0.38; }
 .barra-nivel { display: inline-flex; gap: 3px; align-items: center; }
 .barra-nivel.vertical { flex-direction: column; }
-.tramo-nivel { width: 8px; height: 16px; border-radius: 2px; background: rgba(255, 255, 255, 0.10); }
+/* Antes: .tramo-nivel { width: 8px; height: 16px; border-radius: 2px; background: rgba(255, 255, 255, 0.10); } */
+.tramo-nivel { width: 8px; height: 16px; border-radius: 2px; background: color-mix(in srgb, currentColor 10%, transparent); }
 .barra-nivel.vertical .tramo-nivel { width: 16px; height: 8px; }
 .tramo-nivel.lleno { background: var(--color-acento); }
 .barra-nivel.chica { gap: 2px; }
