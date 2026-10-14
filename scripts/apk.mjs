@@ -89,6 +89,30 @@ correr('npx', ['vite', 'build', '--mode', 'android'], RAIZ)
 console.log('\n[2/3] Copiandolo adentro del proyecto Android...')
 correr('npx', ['cap', 'sync', 'android'], RAIZ)
 
+// EL NUMERO DE VERSION NUNCA QUEDA POR DEBAJO DEL INSTALADO -15-10-2026-. El numero es la cuenta de
+// commits -android/app/build.gradle, numeroDeVersion- y juntar ramas con squash la hace bajar: el Redmi
+// tenia la 678, el APK siguiente salio 676 y Android lo rechazo como «paquete no valido». Si hay un
+// telefono conectado con Sigo instalado, el APK sale con lo instalado + 1 cuando la cuenta no alcanza.
+// Sin telefono, la cuenta de siempre. Nunca hace fallar la construccion.
+try {
+  const adb = path.join(sdk, 'platform-tools', 'adb' + (win ? '.exe' : ''))
+  const cuenta = Number(execSync('git rev-list --count HEAD', { cwd: RAIZ }).toString().trim()) || 1
+  const telefonos = execSync(`"${adb}" devices`, { encoding: 'utf8' })
+    .split('\n').slice(1).map((l) => l.trim().split(/\s+/))
+    .filter((p) => p[1] === 'device' && !p[0].startsWith('emulator-')).map((p) => p[0])
+  let instalado = 0
+  for (const t of telefonos) {
+    const salida = execSync(`"${adb}" -s ${t} shell dumpsys package com.sigoteleprompter.app`, { encoding: 'utf8' })
+    const m = salida.match(/versionCode=(\d+)/)
+    if (m) instalado = Math.max(instalado, Number(m[1]))
+  }
+  const numero = Math.max(cuenta, instalado + 1)
+  if (numero !== cuenta) entorno.SIGO_VERSION_CODE = String(numero)
+  console.log(`\nNumero de version: ${numero} -cuenta de commits ${cuenta}, instalado en el telefono ${instalado || 'ninguno'}-`)
+} catch (e) {
+  console.log(`(no se pudo mirar la version instalada: ${e.message}; va la cuenta de commits)`)
+}
+
 console.log('\n[3/3] Compilando el APK...')
 // CON LA RUTA COMPLETA, NO "gradlew.bat" A SECAS. En Windows, cmd no busca en el
 // directorio actual, asi que con shell:true da "no se reconoce como un comando"

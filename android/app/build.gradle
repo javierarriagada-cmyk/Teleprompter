@@ -2,7 +2,16 @@ apply plugin: 'com.android.application'
 
 // La cantidad de commits del repositorio. Si git no esta -una copia sin historia- vale 1 y la
 // construccion sigue: el numero nunca hace fallar el APK.
+//
+// -15-10-2026- SIGO_VERSION_CODE, SI VIENE, MANDA. Juntar ramas con squash BAJA la cuenta: el Redmi
+// tenia instalada la 678, el APK siguiente de main salio 676 y Android lo rechazo como «paquete no
+// valido» -no instala un numero menor encima-; habia que desinstalar o inventar commits vacios.
+// scripts/apk.mjs -solo el APK de prueba- lo pone en lo instalado en el telefono + 1 cuando la cuenta
+// queda corta. La version para Play -scripts/play.mjs- no lo pone: sigue siendo la cuenta de commits.
+// Antes: la funcion empezaba directo en el try de abajo.
 def numeroDeVersion() {
+    def forzado = System.getenv('SIGO_VERSION_CODE')
+    if (forzado != null && forzado.trim().isInteger()) return forzado.trim().toInteger()
     try {
         def p = ['git', 'rev-list', '--count', 'HEAD'].execute(null, rootProject.projectDir.parentFile)
         def salida = p.text.trim()
