@@ -147,7 +147,9 @@
 .segmentado {
   display: flex;
   border: 1px solid var(--borde-tarjeta);
-  border-radius: 10px;
+  /* -modernidad 1, 14-10-2026- Cápsula, como .selector-modo: los botones segmentados de Material 3 van
+     con la esquina entera. overflow: hidden recorta la opción activa. Antes: border-radius: 10px; */
+  border-radius: var(--redondeo-pildora);
   overflow: hidden;
 }
 .segmentado-opcion {
@@ -274,22 +276,50 @@
 }
 /* Apagado, la perilla va en el gris del borde -como en el dibujo aprobado, 28-09-2026-: casi blanca
    competia con el interruptor encendido y no se leia cual estaba prendido. */
+/* LA PERILLA SE DESLIZA Y CRECE AL APRETAR -modernidad 1, 14-10-2026, Material 3: 16 apagada, 24
+   encendida, 28 apretada-. left: auto + right no se anima: la perilla va con left: 0 fijo y se mueve con
+   transform. El centro queda EXACTO donde estaba, dentro de la pista -48 x 28 por dentro del borde de 2-:
+   apagada x 12 -left 4 + 8-, encendida x 34 -48 - 2 - 12-, y 14 de alto. translateX = centro - ancho / 2.
+   Medido en Chrome antes y después: mismo centro y tamaño en los dos estados. */
 .interruptor-perilla {
   position: absolute;
   top: 50%;
-  left: 4px;
+  /* Antes: left: 4px; */
+  left: 0;
   width: 16px;
   height: 16px;
   border-radius: var(--redondeo-pildora);
   background: var(--color-borde);
-  transform: translateY(-50%);
+  /* Antes: transform: translateY(-50%); */
+  transform: translate(4px, -50%);
+  transition:
+    transform var(--ms-chico) var(--curva-normal),
+    width var(--ms-chico) var(--curva-normal),
+    height var(--ms-chico) var(--curva-normal),
+    background var(--ms-chico) var(--curva-normal);
 }
 .interruptor.encendido .interruptor-perilla {
+  /* Antes:
   left: auto;
-  right: 2px;
+  right: 2px; */
+  transform: translate(22px, -50%);
   width: 24px;
   height: 24px;
   background: var(--color-texto-acento);
+}
+/* Apretada: 28 x 28 con el mismo centro, apagada -12 - 14- y encendida -34 - 14-. */
+.interruptor:active:not(.deshabilitado) .interruptor-perilla {
+  width: 28px;
+  height: 28px;
+  transform: translate(-2px, -50%);
+}
+.interruptor.encendido:active:not(.deshabilitado) .interruptor-perilla {
+  transform: translate(20px, -50%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .interruptor-perilla {
+    transition: none;
+  }
 }
 /* -tarea 88- Deshabilitado: apagado a la vista y a media opacidad, como Material 3. */
 .interruptor.deshabilitado {
