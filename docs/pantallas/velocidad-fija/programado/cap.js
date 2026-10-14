@@ -3,7 +3,7 @@
 const puppeteer = require('/tmp/capvf/node_modules/puppeteer-core');
 const [,, base, salida, pasosJ = '[]', W = '412', H = '915'] = process.argv;
 (async () => {
-  const b = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--lang=es-CL', '--enable-gpu', '--ignore-gpu-blocklist'] });
+  const b = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--use-file-for-fake-video-capture=/tmp/capvf/cam.y4m', '--lang=es-CL', '--enable-gpu', '--ignore-gpu-blocklist'] });
   const p = await b.newPage();
   p.on('pageerror', e => console.log('PAGEERROR', e.message.slice(0, 200)));
   p.on('console', m => { if (m.type() === 'error') console.log('CONSOLE', m.text().slice(0, 200)) });
