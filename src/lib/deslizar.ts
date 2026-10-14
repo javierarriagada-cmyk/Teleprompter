@@ -23,3 +23,53 @@ export function acercarScroll(actual: number, objetivo: number, dtCuadro: number
   if (Math.abs(objetivo - nuevo) < 0.5) nuevo = objetivo
   return nuevo
 }
+
+// EL RESORTE SIN REBOTE -13-10-2026, resorte-sin-rebote-. Va al lado de acercarScroll, que no se toca.
+//
+// acercarScroll es un EMPUJON: en el primer cuadro del cambio de renglon recorre la tajada mas grande
+// de todo el camino -1 - e^(-16/70), un 20% del renglon- y de ahi va frenando. La velocidad salta de
+// cero a su maximo de un cuadro al siguiente, y eso es lo que el ojo lee como tiron. Nunca se pasa,
+// pero arranca de golpe.
+//
+// Esto es un CIERRAPUERTAS HIDRAULICO: la puerta arranca suave, toma velocidad, y frena hasta quedar
+// justo en el marco sin golpear ni rebotar. Es un resorte con amortiguacion critica -la justa para no
+// oscilar-: con estado -posicion y velocidad- en vez de solo la posicion. La velocidad crece desde
+// cero, asi que no hay tiron al empezar, y llega sin pasarse.
+//
+// La cuenta es la solucion EXACTA del resorte para un dt cualquiera -no un paso de Euler-, asi que
+// da lo mismo con cuadros de 8 o de 40 ms. Con x = posicion - objetivo y v = velocidad:
+//   x' = (x + (v + w x) dt) e^(-w dt)
+//   v' = (v - w (v + w x) dt) e^(-w dt)
+// w es la rapidez, en 1/ms. Asienta al 98% en unos 5,83 / w ms y llega a la mitad en 1,68 / w ms.
+//
+// SI EL OBJETIVO CAMBIA A MEDIO CAMINO, la velocidad sigue: no se reinicia ni salta. Solo cambia
+// hacia donde tira el resorte.
+//
+// OJO: no se pasa MIENTRAS LA VELOCIDAD APUNTA HACIA EL OBJETIVO o es cero. Leyendo, el scroll solo
+// avanza y eso siempre se cumple. Si el objetivo saltara HACIA ATRAS con la velocidad todavia hacia
+// adelante, la puerta podria cruzar el marco antes de volver.
+export type EstadoResorte = { posicion: number; velocidad: number } // px y px/ms
+
+// Bajo medio pixel de distancia y casi quieto -menos de 0,05 px/ms, menos de un pixel por cuadro-
+// se clava exacto en el objetivo y con velocidad cero, como el corte de acercarScroll.
+export const VELOCIDAD_QUIETO = 0.05
+
+// La rapidez que asienta al 98% en `ms` milisegundos: (1 + u) e^(-u) = 0,02 da u = 5,834.
+export function omegaParaAsentar(ms: number): number {
+  return 5.834 / ms
+}
+
+// El valor por omision: lo eligio el banco del motor -npm run banco, docs/mediciones/banco-motor/-.
+export const MS_RESORTE = 250
+export const OMEGA_RESORTE = omegaParaAsentar(MS_RESORTE)
+
+export function moverResorte(e: EstadoResorte, objetivo: number, dtCuadro: number, omega = OMEGA_RESORTE): EstadoResorte {
+  const x = e.posicion - objetivo
+  const v = e.velocidad
+  const amort = Math.exp(-omega * dtCuadro)
+  const comun = (v + omega * x) * dtCuadro
+  const x2 = (x + comun) * amort
+  const v2 = (v - omega * comun) * amort
+  if (Math.abs(x2) < 0.5 && Math.abs(v2) < VELOCIDAD_QUIETO) return { posicion: objetivo, velocidad: 0 }
+  return { posicion: objetivo + x2, velocidad: v2 }
+}
