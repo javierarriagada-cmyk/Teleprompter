@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="412" height="915" viewBox="0 0 412 915">
+<!-- generado por svg-de-pantalla.mjs desde http://127.0.0.1:5291/; fuentes no incrustadas: &quot;Times New Roman&quot; | &quot;Source Sans 3&quot;, system-ui, -apple-system, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif | &quot;Source Serif 4&quot;, serif -->
+<defs><filter id="sombra-0" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="1" stdDeviation="0" flood-color="#ffffff" flood-opacity="0.04"/></filter><clipPath id="recorte-1"><rect x="36" y="104" width="340" height="180.59" rx="24"/></clipPath><filter id="sombra-2" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="1" stdDeviation="0" flood-color="#ffffff" flood-opacity="0.04"/></filter><filter id="sombra-3" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="1" stdDeviation="0" flood-color="#ffffff" flood-opacity="0.04"/></filter><clipPath id="recorte-4"><rect x="36" y="352.59" width="340" height="71.58" rx="10"/></clipPath><filter id="sombra-5" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="1" stdDeviation="0" flood-color="#ffffff" flood-opacity="0.04"/></filter><clipPath id="recorte-6"><rect x="36" y="436.17" width="340" height="71.58" rx="10"/></clipPath><filter id="sombra-7" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="1" stdDeviation="0" flood-color="#ffffff" flood-opacity="0.04"/></filter><clipPath id="recorte-8"><rect x="36" y="519.75" width="340" height="71.58" rx="10"/></clipPath><clipPath id="recorte-9"><rect x="36" y="663.92" width="132" height="138.19" rx="10"/></clipPath><clipPath id="recorte-10"><rect x="180" y="663.92" width="132" height="138.19" rx="10"/></clipPath><clipPath id="recorte-11"><rect x="324" y="663.92" width="132" height="138.19" rx="10"/></clipPath><clipPath id="recorte-12"><rect x="36" y="663.92" width="340" height="146.19"/></clipPath></defs>
+<g id="pantalla">
+<rect id="fondo-pagina" x="0" y="0" width="412" height="915" fill="#151312"/>
+<g id="grupo-2-48-minholaleergrabarguionesh-3">
+<g id="grupo-2-48-minholaleergrabarguionesh-2">
+<g id="grupo-portada-cabeza">
+<svg width="54.98" height="28" viewBox="90 151.84 252 128.32" role="img" aria-label="Sigo" data-marca-portada="" fill="#000000" id="icono-sigo" x="36" y="46"><path d="M118.47 251.42L118.47 251.42Q109.86 251.42 102.25 249.44Q94.63 247.45 90 244.80L90 244.80L90.40 224.67L100.20 224.67L103.24 240.43Q106.29 241.76 109.60 242.55L109.60 242.55Q113.44 243.48 118.07 243.48L118.07 243.48Q124.43 243.48 128.53 241.69Q132.64 239.90 134.63 236.66Q136.61 233.41 136.61 229.44L136.61 229.44Q136.61 225.60 135.09 222.95Q133.57 220.30 130.32 218.25Q127.08 216.20 121.78 214.21L121.78 214.21L117.15 212.23Q109.60 209.18 103.77 205.54Q97.95 201.90 94.63 196.80Q91.32 191.70 91.32 184.15L91.32 184.15Q91.32 176.21 95.56 170.65Q99.80 165.08 107.08 162.17Q114.37 159.26 123.64 159.26L123.64 159.26Q131.71 159.26 138.07 161.11Q144.43 162.96 148.27 165.48L148.27 165.48L147.74 184.42L138.20 184.42L135.16 169.32Q134.63 169.06 134.23 168.92L134.23 168.92Q129.73 167.07 123.90 167.07L123.90 167.07Q118.87 167.07 115.29 168.73Q111.72 170.38 109.73 173.29Q107.74 176.21 107.74 180.05L107.74 180.05Q107.74 183.76 109.33 186.40Q110.92 189.05 114.17 191.10Q117.41 193.16 122.31 195.14L122.31 195.14L127.21 197.13Q135.42 200.44 141.25 204.15Q147.07 207.86 150.12 212.89Q153.17 217.92 153.17 225.20L153.17 225.20Q153.17 233.28 148.86 239.17Q144.56 245.07 136.81 248.24Q129.06 251.42 118.47 251.42ZM198.85 249.30L163.63 249.30L163.63 242.29L172.90 241.36Q172.90 240.96 173.03 240.43L173.03 240.43Q173.03 235.53 173.03 230.37L173.03 230.37L173.03 205.21Q173.03 201.23 172.90 197.13L172.90 197.13L162.83 196.47L162.83 190.11L185.61 182.83L189.85 183.49L189.71 200.84L189.71 230.37Q189.71 235.53 189.85 240.43L189.85 240.43Q189.85 240.96 189.85 241.49L189.85 241.49L198.85 242.29L198.85 249.30ZM180.97 171.44L180.97 171.44Q176.74 171.44 173.76 168.59Q170.78 165.75 170.78 161.64L170.78 161.64Q170.78 157.40 173.76 154.62Q176.74 151.84 180.97 151.84L180.97 151.84Q185.34 151.84 188.26 154.62Q191.17 157.40 191.17 161.64L191.17 161.64Q191.17 165.75 188.26 168.59Q185.34 171.44 180.97 171.44ZM235.93 280.16L235.93 280.16Q226.26 280.16 219.77 278.11Q213.29 276.05 210.04 272.48Q206.80 268.90 206.80 264.27L206.80 264.27Q206.80 260.43 208.92 257.51Q211.03 254.60 215.40 252.48L215.40 252.48Q218.32 251.16 222.29 249.97L222.29 249.97L222.29 248.38Q216.86 247.45 213.68 245.00Q210.50 242.55 210.50 237.78L210.50 237.78Q210.50 233.28 213.68 230.17Q216.86 227.06 222.69 224.54L222.69 224.54L222.69 223.48Q222.55 223.48 222.55 223.48L222.55 223.48Q216.46 220.83 213.09 215.93Q209.71 211.03 209.71 204.15L209.71 204.15Q209.71 197.53 213.09 192.50Q216.46 187.46 222.55 184.75Q228.65 182.03 236.86 182.03L236.86 182.03Q242.68 182.03 247.05 183.29Q251.42 184.55 254.47 186.80L254.47 186.80Q256.72 188.65 258.18 190.64L258.18 190.64L258.97 190.64L271.15 181.24L275.79 181.90L275.79 194.88L262.15 194.88Q262.81 196.07 263.21 197.39L263.21 197.39Q264.14 200.31 264.14 203.88L264.14 203.88Q264.14 210.64 260.83 215.60Q257.51 220.57 251.49 223.35Q245.46 226.13 236.99 226.13L236.99 226.13Q231.29 226.13 226.53 224.94L226.53 224.94Q225.73 225.73 225.20 226.53L225.20 226.53Q223.88 228.51 223.88 231.16L223.88 231.16Q223.88 234.21 226.06 235.86Q228.25 237.52 233.28 237.52L233.28 237.52L249.83 237.52Q258.18 237.52 263.54 239.84Q268.90 242.15 271.42 246.19Q273.93 250.23 273.93 255.53L273.93 255.53Q273.93 260.69 271.09 265.19Q268.24 269.70 263.14 273.07Q258.04 276.45 251.09 278.30Q244.14 280.16 235.93 280.16ZM225.60 251.42L225.60 251.42Q224.67 252.35 223.88 253.28L223.88 253.28Q222.42 255.13 221.63 257.18Q220.83 259.24 220.83 261.75L220.83 261.75Q220.83 264.93 222.69 267.45Q224.54 269.96 228.38 271.35Q232.22 272.74 238.45 272.74L238.45 272.74Q245.46 272.74 250.23 271.09Q255.00 269.43 257.45 266.65Q259.90 263.87 259.90 260.43L259.90 260.43Q259.90 256.46 257.12 254.01Q254.34 251.56 248.24 251.56L248.24 251.56L231.16 251.56Q228.65 251.56 226.53 251.42L226.53 251.42Q226.00 251.42 225.60 251.42ZM236.99 219.38L236.99 219.38Q240.70 219.38 243.35 217.52Q245.99 215.67 247.32 212.16Q248.64 208.65 248.64 203.88Q248.64 199.12 247.32 195.67Q245.99 192.23 243.41 190.44Q240.83 188.65 237.12 188.65L237.12 188.65Q233.55 188.65 230.90 190.51Q228.25 192.36 226.92 195.81Q225.60 199.25 225.60 204.02Q225.60 208.78 226.92 212.23Q228.25 215.67 230.77 217.52Q233.28 219.38 236.99 219.38Z" fill="#e7e1de"/><circle cx="313.53" cy="191.04" r="28.47" fill="#e11d2e"/></svg>
+<g id="btn-menu-superior-biblioteca">
+<rect id="fondo-btn-menu-superior-biblioteca" x="338" y="42" width="36" height="36" rx="18" fill="#1e1b19"/>
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e7e1de" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="icono-btn-menu-superior-biblioteca" x="345" y="49"><path d="M10.23 4.61L10.44 2.12L13.56 2.12L13.77 4.61A7.6 7.6 0 0 1 15.97 5.52L17.88 3.91L20.09 6.12L18.48 8.03A7.6 7.6 0 0 1 19.39 10.23L21.88 10.44L21.88 13.56L19.39 13.77A7.6 7.6 0 0 1 18.48 15.97L20.09 17.88L17.88 20.09L15.97 18.48A7.6 7.6 0 0 1 13.77 19.39L13.56 21.88L10.44 21.88L10.23 19.39A7.6 7.6 0 0 1 8.03 18.48L6.12 20.09L3.91 17.88L5.52 15.97A7.6 7.6 0 0 1 4.61 13.77L2.12 13.56L2.12 10.44L4.61 10.23A7.6 7.6 0 0 1 5.52 8.03L3.91 6.12L6.12 3.91L8.03 5.52A7.6 7.6 0 0 1 10.23 4.61Z"/><circle cx="12" cy="12" r="3"/></svg>
+</g>
+</g>
+<g id="grupo-2-48-minholaleergrabarguionesh">
+<g id="tarjeta-lectura-portada" clip-path="url(#recorte-1)">
+<rect id="caja-tarjeta-lectura-portada" x="36.5" y="104.5" width="339" height="179.59" rx="24" fill="#2d2927" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" filter="url(#sombra-0)"/>
+<g id="grupo-2-48-minholaleergrabar">
+<g id="time-code-tarjeta">
+<rect id="caja-time-code-tarjeta" x="57.5" y="125.5" width="84.92" height="23" rx="12" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" opacity="0.75"/>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e7e1de" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="icono-time-code-tarjeta" x="66" y="130"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+<text id="texto-2-48-min" x="84" y="141" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" letter-spacing="0.26" fill="#e7e1de" opacity="0.75">2:48 min</text>
+</g>
+<g id="titulo-tarjeta-lectura">
+<text id="texto-hola" x="57" y="193" font-family="'Source Serif 4', serif" font-size="36" font-weight="600" letter-spacing="-0.36" fill="#e7e1de">Hola</text>
+</g>
+<g id="grupo-leergrabar">
+<g id="btn-leer-tarjeta">
+<rect id="caja-btn-leer-tarjeta" x="57" y="212.59" width="144" height="51" rx="25.5" fill="#e7e1de"/>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="#151312" stroke="none" id="icono-btn-leer-tarjeta" x="100.11" y="230.09"><path d="M8 5v14l11-7z"/></svg>
+<text id="texto-leer" x="124.11" y="243.59" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#151312">Leer</text>
+</g>
+<g id="btn-grabar-tarjeta">
+<rect id="caja-btn-grabar-tarjeta" x="209.5" y="213.09" width="145" height="50" rx="25.5" fill="#411f20" stroke="#e11d2e" stroke-width="1"/>
+<rect id="caja-div" x="246.61" y="233.09" width="10" height="10" rx="5" fill="#e11d2e"/>
+<text id="texto-grabar" x="264.61" y="243.59" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#e7e1de">Grabar</text>
+</g>
+</g>
+</g>
+</g>
+<g id="grupo-guiones">
+<text id="texto-guiones" x="36" y="330.3" font-family="'Source Serif 4', serif" font-size="22" font-weight="600" fill="#e7e1de">Guiones</text>
+<g id="btn-crear-guion">
+<g id="grupo-span">
+<rect id="caja-span" x="340.5" y="305.09" width="35" height="35" rx="18" fill="#2d2927" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" filter="url(#sombra-2)"/>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e7e1de" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="icono-btn-crear-guion" x="348" y="312.59"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+</g>
+</g>
+</g>
+<g id="lista-guiones-biblioteca">
+<g id="grupo-hola-2-48-min-hoy-3" clip-path="url(#recorte-4)">
+<rect id="caja-hola-2-48-min-hoy" x="36.5" y="353.09" width="339" height="70.58" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" filter="url(#sombra-3)"/>
+<g id="fila-guion-bienvenida-1792005937524">
+<rect id="caja-fila-guion-bienvenida-1792005937524" x="37" y="353.59" width="338" height="69.58" rx="10" fill="#2d2927"/>
+<g id="grupo-hola-2-48-min-hoy-2">
+<g id="grupo-hola-2-48-min-hoy">
+<text id="texto-hola-2" x="57" y="383.59" font-family="'Source Serif 4', serif" font-size="18" font-weight="600" fill="#e7e1de">Hola</text>
+<text id="texto-2-48-min-hoy" x="57" y="405.98" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="#cac5c2">2:48 min · hoy</text>
+</g>
+<g transform="translate(346 388.38) matrix(0 -1 1 0 0 0) translate(-346 -388.38)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cac5c2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="icono-fila-guion-bienvenida-1792005937524" x="337" y="379.38"><path d="M6 9l6 6 6-6"/></svg></g>
+</g>
+</g>
+</g>
+<g id="grupo-presentacion-del-producto-2-48-3" clip-path="url(#recorte-6)">
+<rect id="caja-presentacion-del-producto-2-48" x="36.5" y="436.67" width="339" height="70.58" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" filter="url(#sombra-5)"/>
+<g id="fila-guion-muestra-1">
+<rect id="caja-fila-guion-muestra-1" x="37" y="437.17" width="338" height="69.58" rx="10" fill="#2d2927"/>
+<g id="grupo-presentacion-del-producto-2-48-2">
+<g id="grupo-presentacion-del-producto-2-48">
+<text id="texto-presentacion-del-producto" x="57" y="467.17" font-family="'Source Serif 4', serif" font-size="18" font-weight="600" fill="#e7e1de">Presentación del producto</text>
+<text id="texto-2-48-min-ayer" x="57" y="489.56" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="#cac5c2">2:48 min · ayer</text>
+</g>
+<g transform="translate(346 471.95) matrix(0 -1 1 0 0 0) translate(-346 -471.95)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cac5c2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="icono-fila-guion-muestra-1" x="337" y="462.95"><path d="M6 9l6 6 6-6"/></svg></g>
+</g>
+</g>
+</g>
+<g id="grupo-saludo-para-el-canal-2-48-min-3" clip-path="url(#recorte-8)">
+<rect id="caja-saludo-para-el-canal-2-48-min" x="36.5" y="520.25" width="339" height="70.58" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" filter="url(#sombra-7)"/>
+<g id="fila-guion-muestra-2">
+<rect id="caja-fila-guion-muestra-2" x="37" y="520.75" width="338" height="69.58" rx="10" fill="#2d2927"/>
+<g id="grupo-saludo-para-el-canal-2-48-min-2">
+<g id="grupo-saludo-para-el-canal-2-48-min">
+<text id="texto-saludo-para-el-canal" x="57" y="550.75" font-family="'Source Serif 4', serif" font-size="18" font-weight="600" fill="#e7e1de">Saludo para el canal</text>
+<text id="texto-2-48-min-hace-2-dias" x="57" y="573.14" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="#cac5c2">2:48 min · hace 2 días</text>
+</g>
+<g transform="translate(346 555.53) matrix(0 -1 1 0 0 0) translate(-346 -555.53)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cac5c2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="icono-fila-guion-muestra-2" x="337" y="546.53"><path d="M6 9l6 6 6-6"/></svg></g>
+</g>
+</g>
+</g>
+</g>
+<g id="tira-grabaciones">
+<text id="texto-videos" x="36" y="645.33" font-family="'Source Serif 4', serif" font-size="22" font-weight="600" fill="#e7e1de">Videos</text>
+<g id="grupo-0-42hola14-101-35hola14-100-18" clip-path="url(#recorte-12)">
+<g id="tarjeta-grabacion-toma-0">
+<g id="grupo-0-42hola14-10" clip-path="url(#recorte-9)">
+<rect id="caja-0-42hola14-10" x="36.5" y="664.42" width="131" height="137.19" rx="10" fill="#151312" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+<g id="grupo-0-42-2">
+<rect id="caja-0-42" x="37" y="664.92" width="130" height="88" fill="#221f1d"/>
+<rect id="caja-div-2" x="37" y="664.92" width="130" height="88" fill="#1a1a1a"/>
+<g id="grupo-play-miniatura">
+<rect id="caja-play-miniatura" x="85.5" y="692.42" width="35" height="35" rx="18" fill="#000000" fill-opacity="0.5" stroke="#ffffff" stroke-opacity="0.35" stroke-width="1"/>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff" stroke="none" id="icono-0-42hola14-10" x="95" y="701.92"><path d="M8 5v14l11-7z"/></svg>
+</g>
+<g id="grupo-0-42">
+<rect id="caja-0-42-2" x="131.86" y="729.92" width="29.14" height="17" rx="4" fill="#000000" fill-opacity="0.7"/>
+<text id="texto-0-42" x="136.86" y="741.92" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="400" fill="#ffffff">0:42</text>
+</g>
+</g>
+<g id="grupo-hola14-10">
+<text id="texto-hola-3" x="45" y="771.92" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#e7e1de">Hola</text>
+<text id="texto-14-10" x="45" y="789.92" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="#cac5c2">14/10</text>
+</g>
+</g>
+</g>
+<g id="tarjeta-grabacion-toma-1">
+<g id="grupo-1-35hola14-10" clip-path="url(#recorte-10)">
+<rect id="caja-1-35hola14-10" x="180.5" y="664.42" width="131" height="137.19" rx="10" fill="#151312" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+<g id="grupo-1-35-2">
+<rect id="caja-1-35" x="181" y="664.92" width="130" height="88" fill="#221f1d"/>
+<rect id="caja-div-3" x="181" y="664.92" width="130" height="88" fill="#1a1a1a"/>
+<g id="grupo-play-miniatura-2">
+<rect id="caja-play-miniatura-2" x="229.5" y="692.42" width="35" height="35" rx="18" fill="#000000" fill-opacity="0.5" stroke="#ffffff" stroke-opacity="0.35" stroke-width="1"/>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff" stroke="none" id="icono-1-35hola14-10" x="239" y="701.92"><path d="M8 5v14l11-7z"/></svg>
+</g>
+<g id="grupo-1-35">
+<rect id="caja-1-35-2" x="275.86" y="729.92" width="29.14" height="17" rx="4" fill="#000000" fill-opacity="0.7"/>
+<text id="texto-1-35" x="280.86" y="741.92" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="400" fill="#ffffff">1:35</text>
+</g>
+</g>
+<g id="grupo-hola14-10-2">
+<text id="texto-hola-4" x="189" y="771.92" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#e7e1de">Hola</text>
+<text id="texto-14-10-2" x="189" y="789.92" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="#cac5c2">14/10</text>
+</g>
+</g>
+</g>
+<g id="tarjeta-grabacion-toma-2">
+<g id="grupo-0-18hola14-10" clip-path="url(#recorte-11)">
+<rect id="caja-0-18hola14-10" x="324.5" y="664.42" width="131" height="137.19" rx="10" fill="#151312" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+<g id="grupo-0-18-2">
+<rect id="caja-0-18" x="325" y="664.92" width="130" height="88" fill="#221f1d"/>
+<rect id="caja-div-4" x="325" y="664.92" width="130" height="88" fill="#1a1a1a"/>
+<g id="grupo-play-miniatura-3">
+<rect id="caja-play-miniatura-3" x="373.5" y="692.42" width="35" height="35" rx="18" fill="#000000" fill-opacity="0.5" stroke="#ffffff" stroke-opacity="0.35" stroke-width="1"/>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff" stroke="none" id="icono-0-18hola14-10" x="383" y="701.92"><path d="M8 5v14l11-7z"/></svg>
+</g>
+<g id="grupo-0-18">
+<rect id="caja-0-18-2" x="419.86" y="729.92" width="29.14" height="17" rx="4" fill="#000000" fill-opacity="0.7"/>
+<text id="texto-0-18" x="424.86" y="741.92" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="400" fill="#ffffff">0:18</text>
+</g>
+</g>
+<g id="grupo-hola14-10-3">
+<text id="texto-hola-5" x="333" y="771.92" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#e7e1de">Hola</text>
+<text id="texto-14-10-3" x="333" y="789.92" font-family="'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="#cac5c2">14/10</text>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<rect id="caja-franja-hora" x="0" y="0" width="412" height="0" fill="#151312"/>
+</g>
+</g>
+</svg>
