@@ -70,8 +70,9 @@ export default function TarjetaLectura({
         }
       }}
       className="tarjeta-lectura-borde-iluminado tarjeta-elevada"
+      // -portada con luz, 15-10-2026- El fondo va en .portada .tarjeta-lectura-borde-iluminado -styles.css-:
+      // es un degradado con el canto en dos fondos. Antes: backgroundColor: parejaColor.fondo,
       style={{
-        backgroundColor: parejaColor.fondo,
         borderRadius: 'var(--redondeo-grande)',
         // Mas aire adentro -27-09-2026-, junto con la superficie gris: la tarjeta crece y la
         // portada deja de quedar apretada arriba.
@@ -176,8 +177,9 @@ export default function TarjetaLectura({
         {hayGuion && (
           <span
             data-testid="time-code-tarjeta"
+            // -portada con luz, 15-10-2026- la letra es --dato-texto, en .portada .duracion-tarjeta.
+            // Antes: style={{ color: parejaColor.letra }}
             className="duracion-tarjeta"
-            style={{ color: parejaColor.letra }}
           >
             <IconoReloj tamano={14} />
             {timecode}
@@ -229,12 +231,12 @@ export default function TarjetaLectura({
                 const rect = cardRef.current?.getBoundingClientRect()
                 onLeer(rect)
               }}
-              className="btn-deformable"
+              // -portada con luz, 15-10-2026- fondo y letra en .btn-leer-tarjeta -styles.css-.
+              // Antes: className="btn-deformable", backgroundColor: 'var(--color-acento)', color: 'var(--color-texto-acento)',
+              className="btn-deformable btn-leer-tarjeta"
               style={{
                 flex: 1,
                 padding: 'var(--aire-3) var(--aire-4)',
-                backgroundColor: 'var(--color-acento)',
-                color: 'var(--color-texto-acento)',
                 border: 'none',
                 borderRadius: 'var(--redondeo-pildora)',
                 fontSize: 'var(--texto-titulo)',

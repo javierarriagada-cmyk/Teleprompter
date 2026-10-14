@@ -1,0 +1,11 @@
+Portada con luz -tanda 1 de 2- (rama portada-con-luz). Fecha: 14-10-2026 (hora de Chile).
+
+  1-portada-oscuro.png   La portada en tema oscuro: luz de la marca, eco cálido, protagonista y superficies.
+  2-portada-claro.png    La misma, en tema claro.
+
+Cómo se sacaron
+  - Chrome sin pantalla (puppeteer-core, fuera del repo, en /tmp/capvf), teléfono 412×915 CSS con DPR 2,625:
+    cada captura mide 1082×2402. Web, no el teléfono: sin área segura ni WebView.
+  - `npx vite --port 5321 --host 127.0.0.1` en la raíz y node programado/cap.cjs <url> <oscuro|claro> <salida>.
+    El programa siembra en IndexedDB dos guiones -además del de bienvenida- y tres videos con miniaturas SVG.
+  - La luz de la marca aparece ya encendida: en la web no hay Entrada.tsx -solo en el teléfono-.
