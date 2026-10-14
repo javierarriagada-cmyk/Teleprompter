@@ -103,10 +103,14 @@
    hueco de la cámara, que un velo pintado encima sí taparía. */
 .layout-tab-v [data-testid="teleprompter-view-container"],
 .layout-tab-h [data-testid="teleprompter-view-container"] {
-  transition:
+  /* Antes: transition:
     --tab-texto-arriba 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
     --tab-reserva-abajo 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    --tab-fundido 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    --tab-fundido 280ms cubic-bezier(0.2, 0.8, 0.2, 1); */
+  transition:
+    --tab-texto-arriba var(--ms-panel) var(--curva-normal),
+    --tab-reserva-abajo var(--ms-panel) var(--curva-normal),
+    --tab-fundido var(--ms-panel) var(--curva-normal);
 }
 .layout-tab-v [data-testid="contenedor-lectura"],
 .layout-tab-h [data-testid="contenedor-lectura"] {
