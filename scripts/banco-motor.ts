@@ -11,7 +11,9 @@
 import fs from 'fs'
 import path from 'path'
 import { execSync } from 'child_process'
-import { medirTomaEnBanco, cifrasDe, juntarCrudos, CifrasBanco, CrudosToma } from '../src/pruebas/bancoMotor'
+// Antes: import { medirTomaEnBanco, cifrasDe, juntarCrudos, CifrasBanco, CrudosToma } from '../src/pruebas/bancoMotor'
+import { medirTomaEnBanco, cifrasDe, juntarCrudos, CifrasBanco, CrudosToma, OpcionesBanco } from '../src/pruebas/bancoMotor'
+import { omegaParaAsentar } from '../src/lib/deslizar'
 
 // LOS GRUPOS Y SUS CARPETAS. Larralde viene de la rama registros-tarea89, traido con
 // `git checkout origin/registros-tarea89 -- docs/registros/tarea89/`.
@@ -47,7 +49,11 @@ const COLUMNAS: Array<[string, (c: CifrasBanco) => string]> = [
   ['cambios', (c) => String(c.cambiosDeRenglon)],
   ['ms quieto', (c) => f0(c.msHastaQuieto)],
   ['vel px/s', (c) => f0(c.velocidadMax)],
-  ['tiron', (c) => f0(c.tironMax)],
+  // -resorte-: el tiron de arranque es la cifra principal; el de antes ahora se llama «salto max».
+  // Antes: ['tiron', (c) => f0(c.tironMax)],
+  ['tiron arranque', (c) => f0(c.tironInicioMax)],
+  ['salto max', (c) => f0(c.tironMax)],
+  ['ms mitad', (c) => f0(c.msMitad)],
   ['pasada', (c) => f1(c.pasadaMax)],
   ['solapes', (c) => String(c.solapes)],
   ['tiron motor', (c) => f1(c.tironMotor)],
@@ -99,9 +105,29 @@ for (const g of GRUPOS) {
   salida.grupos.push({ nombre: g.nombre, carpeta: g.carpeta, tomas, total })
 }
 
+// HOY CONTRA EL RESORTE -13-10-2026, resorte-sin-rebote-: el mismo banco deslizando de las cuatro
+// maneras, solo las cifras del deslizamiento. El resorte asienta al 98% en 250, 300 y 350 ms.
+const MANERAS: Array<{ nombre: string; deslizar: OpcionesBanco['deslizar'] }> = [
+  { nombre: 'hoy', deslizar: 'hoy' },
+  ...[250, 300, 350].map((ms) => ({ nombre: `resorte ${ms} (w=${omegaParaAsentar(ms).toFixed(4)})`, deslizar: { omega: omegaParaAsentar(ms) } }))
+]
+const comparacion: string[] = [
+  '| grupo | manera | tiron arranque max | tiron arranque med | salto max | vel px/s | ms quieto | ms mitad | solapes | pasada |',
+  '|---|---|---|---|---|---|---|---|---|---|'
+]
+salida.comparacionResorte = []
+for (const g of GRUPOS) {
+  for (const m of MANERAS) {
+    const c = cifrasDe(juntarCrudos(tomasEn(g.carpeta).map((a) => medirTomaEnBanco(fs.readFileSync(a, 'utf8'), { deslizar: m.deslizar }).crudos)))
+    comparacion.push(`| ${g.nombre} | ${m.nombre} | ${f0(c.tironInicioMax)} | ${f0(c.tironInicioMedio)} | ${f0(c.tironMax)} | ${f0(c.velocidadMax)} | ${f0(c.msHastaQuieto)} | ${f0(c.msMitad)} | ${c.solapes} | ${f1(c.pasadaMax)} |`)
+    salida.comparacionResorte.push({ grupo: g.nombre, manera: m.nombre, cifras: c })
+  }
+}
+
 console.log(`(${avisosSeguidor} finales que el seguidor no ubico, sin imprimir)`)
 console.log('\nPOR TOMA\n' + lineas.join('\n'))
 console.log('\nTOTALES POR GRUPO\n' + totales.join('\n'))
+console.log('\nHOY CONTRA EL RESORTE\n' + comparacion.join('\n'))
 const destino = `docs/mediciones/banco-motor/${fecha}-${commit}.json`
 fs.mkdirSync(path.dirname(destino), { recursive: true })
 fs.writeFileSync(destino, JSON.stringify(salida, null, 1) + '\n')

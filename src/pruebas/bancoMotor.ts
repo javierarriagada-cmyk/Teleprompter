@@ -40,7 +40,8 @@ import { leerCorpus, repetirLectura } from '../lib/repetidor'
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
 import { indiceDeRenglon, Renglon } from '../lib/renglones'
 import { palabrasDelDestacado } from '../lib/destacado'
-import { acercarScroll } from '../lib/deslizar'
+// Antes: import { acercarScroll } from '../lib/deslizar'
+import { acercarScroll, moverResorte } from '../lib/deslizar'
 import { avanzarTrabado, calcularScrollTop } from '../components/TeleprompterView'
 import { leerRegistro, medirContraLaVoz, percentil, CuadroRegistro } from './alinearToma.js'
 
@@ -62,7 +63,15 @@ export type CrudosToma = {
   tironesMotor: number[]    // -motor sin pastilla- salto de velocidad del motor entre cuadros, palabras/s
 }
 
-export type CambioRenglon = { ms: number; px: number; velMax: number; tiron: number; pasada: number }
+// -13-10-2026, resorte-sin-rebote-: mas el tiron de ARRANQUE -el salto de velocidad entre el ultimo
+// cuadro antes del cambio y el primero del cambio, la cifra principal- y cuanto tarda en ir por la
+// mitad -null si otro cambio lo corto antes-. `tiron` sigue siendo lo de antes: el salto mas grande
+// entre dos cuadros cualesquiera del cambio; en la tabla ahora se llama «salto max».
+// Antes: export type CambioRenglon = { ms: number; px: number; velMax: number; tiron: number; pasada: number }
+export type CambioRenglon = { ms: number; px: number; velMax: number; tiron: number; pasada: number; tironInicio: number; msMitad: number | null }
+
+// Como desliza el banco: 'hoy' -acercarScroll- o el resorte con su rapidez -lib/deslizar.ts-.
+export type OpcionesBanco = { deslizar?: 'hoy' | { omega: number } }
 
 export type CifrasBanco = {
   muestras: number
@@ -79,6 +88,9 @@ export type CifrasBanco = {
   msHastaQuietoMax: number
   velocidadMax: number     // px/s
   tironMax: number         // px/s de un cuadro al siguiente
+  tironInicioMax: number   // -resorte- px/s, del cuadro antes del cambio al primero del cambio
+  tironInicioMedio: number
+  msMitad: number          // -resorte- media, ms hasta ir por la mitad del cambio
   pasadaMax: number        // px
   solapes: number
   destacadoMedio: number
@@ -113,6 +125,9 @@ export function cifrasDe(c: CrudosToma, palabrasDestacado: number | null = null)
     msHastaQuietoMax: maximo(c.cambios.map((x) => x.ms)),
     velocidadMax: maximo(c.cambios.map((x) => x.velMax)),
     tironMax: maximo(c.cambios.map((x) => x.tiron)),
+    tironInicioMax: maximo(c.cambios.map((x) => x.tironInicio)),
+    tironInicioMedio: media(c.cambios.map((x) => x.tironInicio)),
+    msMitad: media(c.cambios.flatMap((x) => (x.msMitad === null ? [] : [x.msMitad]))),
     pasadaMax: maximo(c.cambios.map((x) => x.pasada)),
     solapes: c.solapes,
     destacadoMedio: media(c.adelantoDestacado),
@@ -144,7 +159,9 @@ export function juntarCrudos(lista: CrudosToma[]): CrudosToma {
 export type ResultadoToma = { cifras: CifrasBanco; crudos: CrudosToma; avisos: string[] }
 
 // Mide UNA toma a partir del texto de su .motor.txt.
-export function medirTomaEnBanco(texto: string): ResultadoToma {
+// Antes: export function medirTomaEnBanco(texto: string): ResultadoToma {
+export function medirTomaEnBanco(texto: string, opciones: OpcionesBanco = {}): ResultadoToma {
+  const deslizar = opciones.deslizar || 'hoy'
   const avisos: string[] = []
   const reg = leerRegistro(texto)
   // -13-10-2026, correccion-: se repite COMO EL TELEFONO -reloj de sus cuadros, la pastilla del
@@ -170,6 +187,10 @@ export function medirTomaEnBanco(texto: string): ResultadoToma {
   let scroll: number | null = null
   let objetivoPrevio: number | null = null
   let velPrevia = 0
+  // -resorte-: la velocidad del cuadro anterior SIN poner en cero al empezar un cambio -para el tiron
+  // de arranque, igual para hoy y para el resorte- y la velocidad del resorte, en px/ms.
+  let velCuadroAnterior = 0
+  let velResorte = 0
   let enCurso: (CambioRenglon & { desde: number; inicioMs: number; dir: number }) | null = null
   const cambios: CambioRenglon[] = []
   let solapes = 0
@@ -193,7 +214,15 @@ export function medirTomaEnBanco(texto: string): ResultadoToma {
       // scroll = scroll === null ? objetivo : acercarScroll(scroll, objetivo, MS_CUADRO_SIMULADO)
       // const vel = ((scroll - previo) * 1000) / MS_CUADRO_SIMULADO
       const dtCuadro = msPrevio === null ? MS_CUADRO_SIMULADO : Math.min(100, s.ms - msPrevio)
-      scroll = scroll === null ? objetivo : acercarScroll(scroll, objetivo, dtCuadro)
+      // -resorte-: o el resorte, con su velocidad guardada.
+      // Antes: scroll = scroll === null ? objetivo : acercarScroll(scroll, objetivo, dtCuadro)
+      if (scroll === null) scroll = objetivo
+      else if (deslizar === 'hoy') scroll = acercarScroll(scroll, objetivo, dtCuadro)
+      else {
+        const e = moverResorte({ posicion: scroll, velocidad: velResorte }, objetivo, dtCuadro, deslizar.omega)
+        scroll = e.posicion
+        velResorte = e.velocidad
+      }
       const vel = ((scroll - previo) * 1000) / Math.max(1, dtCuadro)
       // -correccion-: un arrastre a mano no es un deslizamiento del motor -en la vista el dedo mueve el
       // texto-: el scroll queda en su lugar y ese cambio no se cuenta.
@@ -202,22 +231,27 @@ export function medirTomaEnBanco(texto: string): ResultadoToma {
         enCurso = null
         objetivoPrevio = objetivo
         velPrevia = 0
+        velCuadroAnterior = 0
+        velResorte = 0
         cuadros.push({ ms: s.ms, pos: s.pos, trabado: idx })
         msPrevio = s.ms
         continue
       }
       if (objetivoPrevio !== null && objetivo !== objetivoPrevio) {
         if (enCurso) { solapes++; cambios.push(cerrar(enCurso, s.ms)) }
-        enCurso = { ms: 0, px: objetivo - previo, velMax: 0, tiron: 0, pasada: 0, desde: previo, inicioMs: s.ms - dtCuadro, dir: Math.sign(objetivo - previo) }
+        // Antes: enCurso = { ms: 0, px: objetivo - previo, velMax: 0, tiron: 0, pasada: 0, desde: previo, inicioMs: s.ms - dtCuadro, dir: Math.sign(objetivo - previo) }
+        enCurso = { ms: 0, px: objetivo - previo, velMax: 0, tiron: 0, pasada: 0, tironInicio: Math.abs(vel - velCuadroAnterior), msMitad: null, desde: previo, inicioMs: s.ms - dtCuadro, dir: Math.sign(objetivo - previo) }
         velPrevia = 0
       }
       if (enCurso) {
         enCurso.velMax = Math.max(enCurso.velMax, Math.abs(vel))
         enCurso.tiron = Math.max(enCurso.tiron, Math.abs(vel - velPrevia))
         enCurso.pasada = Math.max(enCurso.pasada, enCurso.dir * (scroll - objetivo))
+        if (enCurso.msMitad === null && Math.abs(objetivo - scroll) <= Math.abs(enCurso.px) / 2) enCurso.msMitad = s.ms - enCurso.inicioMs
         if (scroll === objetivo) { cambios.push(cerrar(enCurso, s.ms)); enCurso = null }
       }
       velPrevia = vel
+      velCuadroAnterior = vel
       objetivoPrevio = objetivo
     }
     cuadros.push({ ms: s.ms, pos: s.pos, trabado: idx })
@@ -265,5 +299,6 @@ export function medirTomaEnBanco(texto: string): ResultadoToma {
 }
 
 function cerrar(c: CambioRenglon & { inicioMs: number }, ms: number): CambioRenglon {
-  return { ms: ms - c.inicioMs, px: c.px, velMax: c.velMax, tiron: c.tiron, pasada: c.pasada }
+  // Antes: return { ms: ms - c.inicioMs, px: c.px, velMax: c.velMax, tiron: c.tiron, pasada: c.pasada }
+  return { ms: ms - c.inicioMs, px: c.px, velMax: c.velMax, tiron: c.tiron, pasada: c.pasada, tironInicio: c.tironInicio, msMitad: c.msMitad }
 }
