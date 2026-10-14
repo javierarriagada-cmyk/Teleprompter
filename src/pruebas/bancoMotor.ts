@@ -61,6 +61,7 @@ export type CrudosToma = {
   intervalos: number[]
   difTelefono: number[]     // posicion repetida menos la del telefono, en cada cuadro
   tironesMotor: number[]    // -motor sin pastilla- salto de velocidad del motor entre cuadros, palabras/s
+  topesResorte: number      // -14-10-2026- cuadros en que actuo el tope del resorte -lib/deslizar.ts-
 }
 
 // -13-10-2026, resorte-sin-rebote-: mas el tiron de ARRANQUE -el salto de velocidad entre el ultimo
@@ -102,6 +103,7 @@ export type CifrasBanco = {
   cuadrosSobre50: number
   difTelefono: number      // media de posicion repetida menos posicion del telefono, palabras
   tironMotor: number       // el salto de velocidad mas grande del motor, palabras/s
+  topesResorte: number
 }
 
 const media = (a: number[]) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : NaN)
@@ -138,7 +140,8 @@ export function cifrasDe(c: CrudosToma, palabrasDestacado: number | null = null)
     cuadroMax: maximo(c.intervalos),
     cuadrosSobre50: c.intervalos.filter((x) => x > 50).length,
     difTelefono: media(c.difTelefono),
-    tironMotor: maximo(c.tironesMotor)
+    tironMotor: maximo(c.tironesMotor),
+    topesResorte: c.topesResorte
   }
 }
 
@@ -152,7 +155,8 @@ export function juntarCrudos(lista: CrudosToma[]): CrudosToma {
     adelantoDestacado: lista.flatMap((c) => c.adelantoDestacado),
     intervalos: lista.flatMap((c) => c.intervalos),
     difTelefono: lista.flatMap((c) => c.difTelefono),
-    tironesMotor: lista.flatMap((c) => c.tironesMotor)
+    tironesMotor: lista.flatMap((c) => c.tironesMotor),
+    topesResorte: lista.reduce((s, c) => s + c.topesResorte, 0)
   }
 }
 
@@ -191,6 +195,7 @@ export function medirTomaEnBanco(texto: string, opciones: OpcionesBanco = {}): R
   // de arranque, igual para hoy y para el resorte- y la velocidad del resorte, en px/ms.
   let velCuadroAnterior = 0
   let velResorte = 0
+  let topesResorte = 0
   let enCurso: (CambioRenglon & { desde: number; inicioMs: number; dir: number }) | null = null
   const cambios: CambioRenglon[] = []
   let solapes = 0
@@ -222,6 +227,7 @@ export function medirTomaEnBanco(texto: string, opciones: OpcionesBanco = {}): R
         const e = moverResorte({ posicion: scroll, velocidad: velResorte }, objetivo, dtCuadro, deslizar.omega)
         scroll = e.posicion
         velResorte = e.velocidad
+        if (e.tope) topesResorte++
       }
       const vel = ((scroll - previo) * 1000) / Math.max(1, dtCuadro)
       // -correccion-: un arrastre a mano no es un deslizamiento del motor -en la vista el dedo mueve el
@@ -293,7 +299,8 @@ export function medirTomaEnBanco(texto: string, opciones: OpcionesBanco = {}): R
     adelantoDestacado,
     intervalos,
     difTelefono,
-    tironesMotor
+    tironesMotor,
+    topesResorte
   }
   return { cifras: cifrasDe(crudos, n), crudos, avisos }
 }
