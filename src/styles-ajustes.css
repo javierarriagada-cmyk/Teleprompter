@@ -55,7 +55,8 @@
      Con -8 arriba y abajo la ficha ocupa 32 en el flujo, como antes, y toca en 48. En tableta la
      ficha grande -60- usa el mismo margen y ocupa 44, como antes. */
   margin: -8px 0;
-  border-radius: 8px;
+  /* Antes: border-radius: 8px; */
+  border-radius: var(--forma-chica);
   border: 1px solid transparent;
   background: transparent;
   color: var(--color-texto);
@@ -71,7 +72,8 @@
   content: "";
   position: absolute;
   inset: 8px 0;
-  border-radius: 8px;
+  /* Antes: border-radius: 8px; */
+  border-radius: var(--forma-chica);
   border: 1px solid var(--borde-tarjeta);
   background: var(--bg-panel);
   box-shadow: var(--sombra-tarjeta);
@@ -115,7 +117,8 @@
   right: 16px;
   bottom: 52px;
   z-index: 13;
-  border-radius: 16px;
+  /* Antes: border-radius: 16px; */
+  border-radius: var(--forma-grande);
   padding: 16px;
   background: var(--bg-superficie);
   border: 1px solid var(--borde-tarjeta);
@@ -195,7 +198,8 @@
 .barra-pasos::-webkit-slider-runnable-track,
 .barra-brillo::-webkit-slider-runnable-track {
   height: 16px;
-  border-radius: 8px;
+  /* Antes: border-radius: 8px; */
+  border-radius: var(--forma-chica);
   background: linear-gradient(to right, var(--color-acento) var(--relleno, 50%), var(--bg-menu) var(--relleno, 50%));
 }
 .barra-pasos::-webkit-slider-thumb,
@@ -211,7 +215,8 @@
 .barra-pasos::-moz-range-track,
 .barra-brillo::-moz-range-track {
   height: 16px;
-  border-radius: 8px;
+  /* Antes: border-radius: 8px; */
+  border-radius: var(--forma-chica);
   background: linear-gradient(to right, var(--color-acento) var(--relleno, 50%), var(--bg-menu) var(--relleno, 50%));
 }
 .barra-pasos::-moz-range-thumb,
@@ -371,7 +376,8 @@
    de la card. Filas y muestra de lectura no cambian de tamaño: la card se adapta a ellas. */
 .tarjeta-seccion-ajustes {
   margin: 0 16px;
-  border-radius: 18px;
+  /* Antes: border-radius: 18px; */
+  border-radius: var(--forma-grande);
   background: var(--bg-superficie);
   border: 1px solid var(--borde-tarjeta);
   box-shadow: var(--sombra-tarjeta);
@@ -464,7 +470,8 @@
   z-index: 260;
   min-width: 220px;
   max-width: 280px;
-  border-radius: 14px;
+  /* Antes: border-radius: 14px; */
+  border-radius: var(--forma-grande);
   padding: 6px 0;
   background: var(--bg-menu);
   border: 1px solid var(--borde-tarjeta);
@@ -592,7 +599,8 @@
 .dialogo-ajustes {
   width: 100%;
   max-width: 480px;
-  border-radius: 28px;
+  /* Antes: border-radius: 28px; */
+  border-radius: var(--forma-extra-grande);
   padding: 24px;
   background: var(--bg-superficie);
 }
@@ -625,7 +633,8 @@
 .muestra-pareja {
   width: 36px;
   height: 36px;
-  border-radius: 8px;
+  /* Antes: border-radius: 8px; */
+  border-radius: var(--forma-chica);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -696,7 +705,8 @@
   z-index: 30;
   min-width: 220px;
   max-width: 280px;
-  border-radius: 14px;
+  /* Antes: border-radius: 14px; */
+  border-radius: var(--forma-grande);
   padding: 6px 0;
   background: var(--bg-menu);
   border: 1px solid var(--borde-tarjeta);
@@ -773,7 +783,8 @@
   flex-direction: column;
   gap: 12px;
   padding: 12px;
-  border-radius: 28px;
+  /* Antes: border-radius: 28px; */
+  border-radius: var(--forma-extra-grande);
   /* -ajustes de pantallas, tercera vuelta, 10-10-2026- El vidrio -fondo y desenfoque- pasa a una capa
      propia, .dock-listo::before, debajo del contenido. Antes, aquí:
        background: rgba(0, 0, 0, 0.62);

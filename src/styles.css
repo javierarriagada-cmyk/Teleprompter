@@ -1,6 +1,19 @@
 :root {
   color-scheme: dark light;
+  /* Espejo de src/components/movimiento.tsx (si cambia uno, cambia el otro) */
+  --ms-dedo: 100ms;
+  --ms-chico: 200ms;
+  --ms-panel: 300ms;
+  --ms-pantalla: 400ms;
+  --curva-entra: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --curva-sale: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --curva-normal: cubic-bezier(0.2, 0, 0, 1);
   --curva-resorte: cubic-bezier(.34, 1.3, .64, 1);
+
+  /* Escala de formas de Material 3 (https://m3.material.io/styles/shape/corner-radius-scale) */
+  --forma-chica: 8px;
+  --forma-grande: 16px;
+  --forma-extra-grande: 28px;
   --bg-suelo: #151312;
   --bg-fila: #1E1B19;
   --bg-superficie: #221F1D;
@@ -368,7 +381,8 @@ button.btn-deformable,
 .btn-deformable {
   border-radius: var(--redondeo-pildora);
   transform: scale(1) scaleY(1);
-  transition: border-radius 200ms cubic-bezier(.34, 1.3, .64, 1), transform 200ms cubic-bezier(.34, 1.3, .64, 1);
+  /* Antes: transition: border-radius 200ms cubic-bezier(.34, 1.3, .64, 1), transform 200ms cubic-bezier(.34, 1.3, .64, 1); */
+  transition: border-radius var(--ms-chico) var(--curva-resorte), transform var(--ms-chico) var(--curva-resorte);
 }
 
 button.btn-deformable:active,
@@ -973,7 +987,8 @@ textarea::placeholder {
   background: transparent;
   color: var(--color-texto);
   cursor: pointer;
-  transition: background-color 160ms ease, color 160ms ease;
+  /* Antes: transition: background-color 160ms ease, color 160ms ease; */
+  transition: background-color var(--ms-chico) var(--curva-normal), color var(--ms-chico) var(--curva-normal);
 }
 .selector-aa-opcion.activa {
   background-color: var(--color-acento);
@@ -993,7 +1008,8 @@ textarea::placeholder {
 /* El paso de una pareja de colores a otra se ve, no salta. */
 .hoja-editor,
 .hoja-editor > div {
-  transition: background-color 220ms ease, color 220ms ease;
+  /* Antes: transition: background-color 220ms ease, color 220ms ease; */
+  transition: background-color var(--ms-chico) var(--curva-normal), color var(--ms-chico) var(--curva-normal);
 }
 
 /* El Aa que abre el cajon: mas grande que un titulo -era 18 px- porque es el
@@ -1125,7 +1141,8 @@ textarea::placeholder {
   border: 2px solid transparent;
   background: transparent;
   cursor: pointer;
-  transition: border-color 160ms ease;
+  /* Antes: transition: border-color 160ms ease; */
+  transition: border-color var(--ms-chico) var(--curva-normal);
 }
 .pareja-aa.activa {
   border-color: var(--color-acento);
@@ -1489,6 +1506,10 @@ label.selector-aa-opcion {
    que se queda puesto convierte la caja en el contenedor de los position:
    fixed que haya adentro. */
 .portada-cuerpo {
+  /* -15-10-2026, revision de ritmo-y-esquinas- LOS 500 MS VAN CON LA ENTRADA, NO CON LA ESCALA. La portada
+     sube mientras el fondo de la entrada se apaga: MS_FONDO_SE_APAGA = 500, ease-out, en Entrada.tsx. Con
+     --ms-pantalla -400- la portada terminaba antes que el fondo. Se queda en 500 ease-out, igual que alla.
+     Probado y descartado el mismo dia: transition: opacity var(--ms-pantalla) var(--curva-entra), transform var(--ms-pantalla) var(--curva-entra); */
   transition: opacity 500ms ease-out, transform 500ms ease-out;
 }
 .entrada-en-curso .portada-cuerpo {
@@ -1496,6 +1517,8 @@ label.selector-aa-opcion {
   transform: translateY(10px);
 }
 .boton-portada {
+  /* -15-10-2026- 500 ms ease-out, con el fondo de la entrada -MS_FONDO_SE_APAGA, Entrada.tsx-, igual que
+     .portada-cuerpo. Probado y descartado el mismo dia: transition: opacity var(--ms-pantalla) var(--curva-entra); */
   transition: opacity 500ms ease-out;
 }
 .entrada-en-curso .boton-portada {
@@ -1926,13 +1949,15 @@ button.boton-subtitulos:disabled {
   color: var(--color-apagado);
 }
 .boton-subtitulos-flecha {
-  transition: transform 160ms ease;
+  /* Antes: transition: transform 160ms ease; */
+  transition: transform var(--ms-chico) var(--curva-normal);
 }
 .opciones-subtitulos {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--aire-2);
-  animation: subtitulosDespliega 180ms ease-out;
+  /* Antes: animation: subtitulosDespliega 180ms ease-out; */
+  animation: subtitulosDespliega var(--ms-chico) var(--curva-entra);
 }
 /* Se abre hacia abajo, desde el boton: un desplegable, no un cajon que sube. */
 @keyframes subtitulosDespliega {
@@ -2019,7 +2044,8 @@ button.boton-subtitulos.con-filtro {
   overflow-x: auto;
   scroll-snap-type: x proximity;
   scrollbar-width: none;
-  animation: subtitulosDespliega 180ms ease-out;
+  /* Antes: animation: subtitulosDespliega 180ms ease-out; */
+  animation: subtitulosDespliega var(--ms-chico) var(--curva-entra);
 }
 .tira-filtros::-webkit-scrollbar {
   display: none;
@@ -2056,7 +2082,8 @@ button.miniatura-filtro:disabled {
   /* Antes: background #000. En el teléfono, sin cuadro, las seis se leían negras. */
   background: var(--bg-superficie);
   box-shadow: 0 0 0 1px var(--borde-tarjeta);
-  transition: transform 140ms ease, outline-color 140ms ease;
+  /* Antes: transition: transform 140ms ease, outline-color 140ms ease; */
+  transition: transform var(--ms-dedo) var(--curva-normal), outline-color var(--ms-dedo) var(--curva-normal);
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
