@@ -14,6 +14,7 @@ describe('Estudio 3 - Arreglos de accesibilidad', () => {
       titulo: 'Test',
       creado: Date.now(),
       modificado: Date.now(),
+      idioma: 'es',
       bloques: [{ id: 'b-1', nombre: '', texto: 'Palabra seleccionada', tramos: [] }]
     }
 
@@ -51,12 +52,18 @@ describe('Estudio 3 - Arreglos de accesibilidad', () => {
       setFontSize: vi.fn(),
       columnaAngosta: false,
       setColumnaAngosta: vi.fn(),
+      marginPercent: 5,
+      setMarginPercent: vi.fn(),
       colorFondo: '#151312',
       setColorFondo: vi.fn(),
       colorLetra: '#E7E1DE',
       setColorLetra: vi.fn(),
       tipoFuente: 'sans' as const,
       setTipoFuente: vi.fn(),
+      mirror: false,
+      setMirror: vi.fn(),
+      mostrarTiempo: true,
+      setMostrarTiempo: vi.fn(),
       letraBase: 24
     }
 
