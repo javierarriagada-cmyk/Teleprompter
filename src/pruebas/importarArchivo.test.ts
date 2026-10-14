@@ -209,7 +209,8 @@ Bloque importado B.`
     })
 
     await waitFor(() => {
-      expect(document.body.textContent).toContain('Formato de archivo no soportado')
+      /* Antes: expect(document.body.textContent).toContain('Formato de archivo no soportado') */
+      expect(document.body.textContent).toContain('No se puede abrir')
     })
 
     // No debe haber llamado a onChangeGuion de nuevo

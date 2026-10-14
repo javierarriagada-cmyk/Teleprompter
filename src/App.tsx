@@ -1570,7 +1570,9 @@ export default function App({ motor, repoOverride }: AppProps) {
         setDescargaVoz({ estado: 'descargando', progreso: fraccion, error: null })
       })
     } catch (e: any) {
-      setDescargaVoz({ estado: 'error', progreso: 0, error: e?.message || String(e) })
+      const detalle = e?.message || String(e)
+      console.warn('[precarga]', detalle)
+      setDescargaVoz({ estado: 'error', progreso: 0, error: detalle })
       return
     } finally {
       bajandoVozRef.current = false
@@ -2801,7 +2803,8 @@ export default function App({ motor, repoOverride }: AppProps) {
                   // Parar, a 56 como la pausa -fila-toma, styles.css-. Antes, en una esquina de arriba:
                   //   className={`btn-deformable btn-flotante-40${tableta ? ' tab-boton-izq' : ''}`}
                   className="btn-deformable btn-flotante-56 fila-toma-tacho"
-                  aria-label={t('descartarToma')}
+                  // Antes: aria-label={t('descartarToma')}
+                  aria-label={confirmandoDescarte ? t('confirmarDescartar') : t('descartarToma')}
                   onClick={async (e) => {
                     e.stopPropagation()
                     // -tarea 88- Por la máquina: en pausa pide el "¿Seguro?", y confirmando borra. Durante
@@ -2843,8 +2846,8 @@ export default function App({ motor, repoOverride }: AppProps) {
                   }}
                 >
                   {/* -tarea 83, parte B- El ícono a 24, el de los botones de 56 -FAB de Material 3-.
-                      Antes: <IconoTacho tamano={20} />. */}
-                  {confirmandoDescarte ? t('seguro') : <IconoTacho tamano={24} />}
+                      Antes: {confirmandoDescarte ? t('seguro') : <IconoTacho tamano={24} />} */}
+                  {confirmandoDescarte ? t('confirmarDescartar') : <IconoTacho tamano={24} />}
                 </button>
   )
 

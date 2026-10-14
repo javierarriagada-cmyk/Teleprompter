@@ -55,7 +55,8 @@ export function IndicadorPrecarga({ estadoPrecarga, progresoPrecarga, errorPreca
       {estadoPrecarga === 'error' && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)', width: '100%', justifyContent: 'space-between' }}>
           <span>
-            ⚠️ {t('errorModelo', { detalle: errorPrecarga || t('desconocido') })}
+            {/* Antes: ⚠️ {t('errorModelo', { detalle: errorPrecarga || t('desconocido') })} */}
+            ⚠️ {t('errorModelo')}
           </span>
           <button
             onClick={reintentarPrecarga}
