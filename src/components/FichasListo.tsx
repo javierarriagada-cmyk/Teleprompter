@@ -11,6 +11,8 @@ import { PASOS_LETRA } from './estiloLectura'
 import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from '../lib/brillo'
 import { t, useTextos } from '../textos'
 import { Interruptor } from './Interruptor'
+// -tarea 106- De lado, la ficha del modo de lectura va primera en el riel.
+import { FichaModoLectura } from './ControlesVelocidad'
 import { movimientoApagado, MS_CHICO, CURVA_RESORTE } from './movimiento'
 import type { EstadoModeloGestos } from '../lib/gestos'
 
@@ -647,6 +649,8 @@ export function FichasListo({
         </div>
       ) : (
       <div className="carril-fichas" ref={carrilRef}>
+        {/* -tarea 106, lamina 4- De lado en Leer: la ficha del modo, compacta, primera en el riel. */}
+        {!conCamara && <FichaModoLectura variante="compacta" />}
         {fichaLetra}
         {fichaAnclaje}
         {fichaCamara}

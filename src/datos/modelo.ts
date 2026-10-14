@@ -274,8 +274,12 @@ export function segundosDeLectura(palabras: number, ppm: number = PALABRAS_POR_M
 
 // LA DURACIÓN DEL DOCK DE LISTO -ajustes de pantallas, 10-10-2026-: la misma estimación del editor,
 // en reloj y sin la unidad -«2:50» y debajo «dura aprox.»-. 45 s se ve «0:45».
-export function duracionDeLecturaReloj(palabras: number): string {
-  const segundos = segundosDeLectura(palabras)
+// -tarea 106, Velocidad fija- Con un ritmo opcional: el del nivel elegido. Sin el, lo de siempre.
+// Antes:
+// export function duracionDeLecturaReloj(palabras: number): string {
+//   const segundos = segundosDeLectura(palabras)
+export function duracionDeLecturaReloj(palabras: number, ppm: number = PALABRAS_POR_MINUTO): string {
+  const segundos = segundosDeLectura(palabras, ppm)
   return `${Math.floor(segundos / 60)}:${String(segundos % 60).padStart(2, '0')}`
 }
 

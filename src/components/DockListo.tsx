@@ -13,6 +13,8 @@ import React, { useState } from 'react'
 // Cuarta vuelta: el panel de Ajustes de la toma, sus filas y sus menús viven en PanelAjustes.tsx -un solo
 // panel para toda la app-; el dock lo monta adentro.
 import { IconoVoltear } from './IconosApp'
+// -tarea 106- La ficha del modo de lectura: Con la voz o Velocidad fija.
+import { FichaModoLectura } from './ControlesVelocidad'
 import type { AjustesLectura } from './FilasAjustesLectura'
 import { PanelAjustes } from './PanelAjustes'
 import { t, useTextos } from '../textos'
@@ -166,11 +168,20 @@ export function DockListo({
             animar={animar}
           />
         ) : (
-          fichas(() => setAbierto(true))
+          // -tarea 106, lamina 5- En Grabar la ficha del modo va en su propia linea arriba de las fichas:
+          // junto a Voltear no cabe.
+          // Antes: fichas(() => setAbierto(true))
+          <>
+            {conVoltear && <div className="linea-modo-lectura"><FichaModoLectura variante="enLinea" /></div>}
+            {fichas(() => setAbierto(true))}
+          </>
         )}
 
         <div className="dock-fila-abajo">
           <div className="dock-lugar-voltear">
+            {/* -tarea 106, lamina 4- En Leer, abajo a la izquierda: la ficha del modo con «sigue tu voz»
+                o la barra chica debajo. */}
+            {!conVoltear && <FichaModoLectura variante="abajo" />}
             {conVoltear && (
               <button
                 type="button"

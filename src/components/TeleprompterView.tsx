@@ -10,6 +10,9 @@ import { SANGRIA_PRIMERA_LINEA_PX, primeraLineaConTexto, LIGADURAS_TEXTO } from 
 import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
+// -tarea 106- Velocidad fija: su motor, la duracion con el nivel y el nivel elegido.
+import { esMotorFijo, ppmDeNivel } from '../lib/velocidadFija'
+import { useVelocidadFija } from '../hooks/useVelocidadFija'
 import { palabrasDelDestacado, segmentosDelDestacado, CajaPalabra } from '../lib/destacado'
 // -13-10-2026, resorte-sin-rebote-: tambien el resorte, detras del interruptor sigo_resorte.
 // Antes: import { acercarScroll } from '../lib/deslizar'
@@ -690,6 +693,9 @@ export default function TeleprompterView({
   // vista entera no se vuelve a dibujar en cada palabra. clave evita medir si nada cambio.
   const capsulasRef = useRef<Array<HTMLDivElement | null>>([null, null, null])
   const destacadoPrevRef = useRef<{ clave: string; renglones: Renglon[] | null }>({ clave: '', renglones: null })
+  // -tarea 106- La franja de foco de Velocidad fija: el ultimo renglon pintado.
+  const franjaPrevRef = useRef<{ clave: string; renglones: Renglon[] | null }>({ clave: '', renglones: null })
+  const velocidad = useVelocidadFija()
   const estadoTomaRef = useRef(estadoToma)
   estadoTomaRef.current = estadoToma
   // Al entrar a leer se lee el interruptor del resorte, una vez. Con movimiento reducido, como hoy.
@@ -1031,7 +1037,10 @@ export default function TeleprompterView({
       // demora medida del reconocedor -lib/compensacion.ts, con las cifras-. En el
       // arranque, en silencio y en DETENIDO no hay compensacion: queda el min de siempre.
       if (modoManualRef.current) compensacionRef.current = crearCompensacion()
-      const anclaRenglon = anclaCompensada(compensacionRef.current, {
+      // -tarea 106- Con Velocidad fija no hay reconocedor ni demora que compensar: el renglon es el
+      // de la posicion del motor fijo. Con la voz, la cuenta de siempre, sin tocar.
+      const fija = esMotorFijo(motorAvance)
+      const anclaRenglon = fija ? st.posicion : anclaCompensada(compensacionRef.current, {
         posicion: st.posicion,
         ultimoCalce: st.ultimoCalce,
         siguiendo: st.estado === 'SIGUIENDO' && st.motivoFreno === null,
@@ -1153,7 +1162,9 @@ export default function TeleprompterView({
         const leyendo = estadoTomaRef.current === 'leyendo'
         const n = palabrasDelDestacado(tokensRef.current.length / Math.max(1, renglones.length))
         const inicio = Math.max(0, Math.floor(st.posicion))
-        const alfa = !leyendo ? 0 : st.motivoFreno === 'sin-calce' ? 0.35 : 1
+        // -tarea 106- Con Velocidad fija no hay subrayado: guia la franja de foco, abajo.
+        // Antes: const alfa = !leyendo ? 0 : st.motivoFreno === 'sin-calce' ? 0.35 : 1
+        const alfa = !leyendo || fija ? 0 : st.motivoFreno === 'sin-calce' ? 0.35 : 1
         const clave = `${alfa}|${inicio}|${n}|${filaPx}`
         const previo = destacadoPrevRef.current
         if (cont && (clave !== previo.clave || previo.renglones !== renglones)) {
@@ -1227,6 +1238,30 @@ export default function TeleprompterView({
             c.style.borderRadius = `${grosor / 2}px`
             c.style.opacity = String(alfa)
           })
+        }
+      }
+
+      // LA FRANJA DE FOCO -tarea 106, solo Velocidad fija y leyendo-: el renglon de arriba -el trabado,
+      // donde se lee- al 100 %, el resto al 45 %. Se reescribe solo cuando cambia el renglon. Con la voz
+      // la clave queda vacia y no se toca ningun token: la pantalla es la de siempre.
+      {
+        const cont = containerRef.current
+        const enFranja = fija && estadoTomaRef.current === 'leyendo'
+        const idx = renglonTrabadoRef.current ?? idxAncla
+        const clave = enFranja ? `${idx}|${renglones.length}` : ''
+        const previo = franjaPrevRef.current
+        if (cont && (clave !== previo.clave || (enFranja && previo.renglones !== renglones))) {
+          const desde = enFranja ? renglones[idx]?.desdeToken ?? 0 : 0
+          const hasta = enFranja ? renglones[idx + 1]?.desdeToken ?? Infinity : 0
+          if (enFranja || previo.clave !== '') {
+            cont.querySelectorAll('[data-token]').forEach((nodo) => {
+              const el = nodo as HTMLElement
+              const i = Number(el.dataset.token)
+              el.style.opacity = !enFranja || (i >= desde && i < hasta) ? '' : '0.45'
+            })
+          }
+          previo.clave = clave
+          previo.renglones = renglones
         }
       }
 
@@ -1679,7 +1714,9 @@ export default function TeleprompterView({
           ventana y el velo debajo-, y el dueno lo vio dos veces: "nuevamente
           estan dos sombras sobre un texto". Una sola capa, como en la foto que
           trajo: el panel donde se lee y el resto del texto sobre la imagen. */}
-      {altoContenedor > 0 && !textoSobreImagen && (
+      {/* -tarea 106- Con Velocidad fija, leyendo, el velo no va: oscurece la franja de foco. Antes:
+          {altoContenedor > 0 && !textoSobreImagen && ( */}
+      {altoContenedor > 0 && !textoSobreImagen && !(esMotorFijo(motorAvance) && estadoToma === 'leyendo') && (
         <div
           data-testid="velo-lectura"
           style={{
@@ -1996,7 +2033,11 @@ export default function TeleprompterView({
               onVoltear={onVoltear}
               // La misma condición del Voltear del panel de la cámara: la ficha Cámara está con la cámara.
               conVoltear={conCamara}
-              duracion={duracionDeLecturaReloj(contarPalabras(guionObj))}
+              // -tarea 106- Con Velocidad fija, palabras ÷ palabras por minuto del nivel.
+              // Antes: duracion={duracionDeLecturaReloj(contarPalabras(guionObj))}
+              duracion={velocidad.modo === 'fija'
+                ? duracionDeLecturaReloj(contarPalabras(guionObj), ppmDeNivel(velocidad.nivel))
+                : duracionDeLecturaReloj(contarPalabras(guionObj))}
               // Como la pastilla que reemplaza en LISTO: la apaga Mostrar tiempo.
               mostrarDuracion={mostrarTiempo}
               preparandoVoz={preparandoVoz}
