@@ -82,7 +82,9 @@ describe('Tarea 82 - El teléfono de lado', () => {
     const der = screen.getByTestId('riel-derecho')
     expect(within(izq).getByTestId('btn-volver-listo')).toBeTruthy()
     const fichas = Array.from(izq.querySelectorAll('[data-testid^="ficha-"]')).map((el) => el.getAttribute('data-testid'))
-    expect(fichas).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-brillo'])
+    // -tarea 106- La ficha del modo de lectura va primera en el riel.
+    // Antes: expect(fichas).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-brillo'])
+    expect(fichas).toEqual(['ficha-modo-lectura', 'ficha-letra', 'ficha-anclaje', 'ficha-brillo'])
     expect(within(der).getByTestId('ficha-mas')).toBeTruthy()
     expect(within(izq).queryByTestId('ficha-mas')).toBeNull()
     expect(screen.getAllByTestId('ficha-mas')).toHaveLength(1)
@@ -103,7 +105,9 @@ describe('Tarea 82 - El teléfono de lado', () => {
     // Antes (2026-10-05): expect(fichas).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-calidad', 'ficha-subtitulos'])
     // -ajustes de pantallas, 10-10-2026- El orden de las fichas pasa a Texto -letra, anclaje- y Cámara
     // -cámara, brillo-. Antes: expect(fichas).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha'])
-    expect(fichas).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'])
+    // -tarea 106- En Grabar tambien va la ficha del modo de lectura, primera, antes de Aa.
+    // Antes: expect(fichas).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'])
+    expect(fichas).toEqual(['ficha-modo-lectura', 'ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'])
     // Antes (2026-10-05): expect(within(der).getByTestId('ficha-mas')).toBeTruthy()
     expect(within(der).queryByTestId('ficha-mas')).toBeNull()
     expect(within(izq).queryByTestId('ficha-mas')).toBeNull()

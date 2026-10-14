@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+// -tarea 106- useMemo para el motor de Velocidad fija.
+// Antes: import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Capacitor, registerPlugin } from '@capacitor/core'
 import { fijarEstiloDeLaApp } from './lib/barrasDelSistema'
 import { App as CapacitorApp } from '@capacitor/app'
@@ -10,6 +12,10 @@ import useLayout, { letraPorOmision } from './hooks/useLayout'
 import type { EsquinaRecuadroH } from './components/RecuadroCamara'
 import TeleprompterView, { VeloControles } from './components/TeleprompterView'
 import BarraDeTiempo from './components/BarraDeTiempo'
+// -tarea 106- Velocidad fija: el motor que no escucha, el modo elegido y el control al leer.
+import { crearMotorFijo } from './lib/velocidadFija'
+import { useVelocidadFija } from './hooks/useVelocidadFija'
+import { ControlVelocidadLectura } from './components/ControlesVelocidad'
 import { PanelCorpus } from './components/PanelCorpus'
 // Tarea 87, paso 0 -03-10-2026-: el panel de mediciones de exportación, solo con HERRAMIENTAS.
 import { PanelMediciones } from './components/PanelMediciones'
@@ -1150,10 +1156,37 @@ export default function App({ motor, repoOverride }: AppProps) {
     alRecibirParcial: seguidorParcial,
     alRecibirFinal: seguidorFinal,
     alNotificarVoz: seguidorVoz,
-    irAToken,
-    reiniciarEn,
-    motorAvance
+    // -tarea 106- Los dos se envuelven abajo para que el motor de Velocidad fija los siga.
+    // Antes: irAToken, reiniciarEn, motorAvance
+    irAToken: irATokenSeguidor,
+    reiniciarEn: reiniciarEnSeguidor,
+    motorAvance: motorDeLaVoz
   } = useSeguidor(guionParaSeguidor)
+
+  // VELOCIDAD FIJA -tarea 106-. Con «Con la voz» -lo de siempre- todo sigue con motorDeLaVoz y nada
+  // de esto interviene: motorAvance ES el motor de la voz. Con «Velocidad fija» la vista y la pastilla
+  // del tiempo reciben el motor fijo, que avanza solo al ritmo del nivel.
+  const velocidad = useVelocidadFija()
+  const fija = velocidad.modo === 'fija'
+  const motorFijo = useMemo(() => crearMotorFijo(totalTokens), [totalTokens])
+  useEffect(() => {
+    motorFijo.cambiarNivel(velocidad.nivel, performance.now())
+  }, [motorFijo, velocidad.nivel])
+  const motorAvance = fija ? motorFijo : motorDeLaVoz
+  // -correccion 1- Con Velocidad fija el token del arrastre trae fraccion -la inversa de pxDePosicion-:
+  // el seguidor recibe la palabra entera y el motor fijo la fraccion, para seguir sin salto. Con la
+  // voz el token ya es entero y floor no cambia nada.
+  function irAToken(token: number) {
+    // Antes: irATokenSeguidor(token)
+    irATokenSeguidor(Math.floor(token))
+    motorFijo.irAToken(token, performance.now())
+  }
+  // Volver a un punto en LISTO o al Parar: el motor fijo queda quieto ahí, como el de la voz.
+  function reiniciarEn(token: number) {
+    reiniciarEnSeguidor(token)
+    motorFijo.reiniciar()
+    motorFijo.irAToken(token, performance.now())
+  }
 
   // EL MOTOR ESCUCHA EN EL IDIOMA DEL GUION, NO EN EL DE LA APP -D2-. Hasta la tarea 75 se
   // armaba `${idioma}-${IDIOMA}`, que para el ingles daba 'en-EN', un codigo que no existe.
@@ -1407,7 +1440,9 @@ export default function App({ motor, repoOverride }: AppProps) {
     // Javier: "usualmente las personas cuando empieza la cuenta se concentran y guardan
     // silencio" -lo que se oiga en la cuenta no mueve nada que no se haya dicho-.
     // Va SIN await, como la grabacion de audio de arriba: si el motor tarda, la cuenta sigue.
-    start()
+    // -tarea 106- Con Velocidad fija no se escucha: el reconocedor no arranca.
+    // Antes: start()
+    if (!fija) start()
     setCuentaRegresiva(3)
 
     let c = 3
@@ -1422,6 +1457,8 @@ export default function App({ motor, repoOverride }: AppProps) {
         }
         setCuentaRegresiva(null)
         setTInicioLecturaMs(performance.now())
+        // -tarea 106- Con Velocidad fija el texto empieza a subir al terminar la cuenta.
+        if (fija) motorFijo.seguir(performance.now())
         // start() ya no va aca: arranca al empezar la cuenta -ver arriba, 28-09-2026-.
         // La grabacion de video empieza DESPUES de la cuenta, no al
         // entrar a lectura: si arranca antes, los primeros segundos
@@ -1489,7 +1526,11 @@ export default function App({ motor, repoOverride }: AppProps) {
     // CAMBIO Y MOTIVO (28-09-2026): si pedirMicrofono() devuelve false, NO se empieza -no se llama
     // setEstadoToma('leyendo') ni handleStart()-: se abre el dialogo explicativo y la pantalla
     // queda en LISTO. Motivo: sin microfono el texto no avanza y, con camara, la toma saldria muda.
-    const concedido = await pedirMicrofono()
+    // -tarea 106- Con Velocidad fija y sin cámara no se escucha nada: ni el permiso ni la voz. En
+    // Grabar el micrófono sigue haciendo falta para el sonido del video.
+    const sinOido = fija && !conCamara
+    // Antes: const concedido = await pedirMicrofono()
+    const concedido = sinOido ? true : await pedirMicrofono()
     if (!concedido) {
       setMostrarDialogoMicrofono(true)
       return
@@ -1505,6 +1546,19 @@ export default function App({ motor, repoOverride }: AppProps) {
     // no avanzaría y nadie sabría por qué. En la APK de prueba los dos modelos vienen dentro y
     // esto vuelve al instante, sin mostrar nada. Un segundo toque mientras baja no pide otra
     // descarga.
+    // -tarea 106- Velocidad fija no usa la voz del guion: no hace falta bajarla.
+    if (fija) {
+      setEstadoToma('leyendo')
+      setControlesVisibles(false)
+      try {
+        await handleStart()
+      } catch (e) {
+        console.warn('[App] la toma no pudo empezar:', e)
+        motorFijo.pausar(performance.now())
+        setEstadoToma('listo')
+      }
+      return
+    }
     if (bajandoVozRef.current) return
     bajandoVozRef.current = true
     const intento = ++intentoVozRef.current
@@ -2433,6 +2487,11 @@ export default function App({ motor, repoOverride }: AppProps) {
           mostrarAviso(t('pausa'))
           mostrarSimboloPausa()
         }
+        // -tarea 106- Con Velocidad fija la pausa es parar el texto.
+        if (fija) {
+          motorFijo.pausar(performance.now())
+          return Promise.resolve()
+        }
         return enFilaDeLaVoz(() => stop())
       case 'reanudar':
         if (pausaAbiertaDesdeRef.current !== null) {
@@ -2446,6 +2505,11 @@ export default function App({ motor, repoOverride }: AppProps) {
           setControlesVisibles(true)
           hapticaToqueMedio()
           mostrarAviso(t('grabando'))
+        }
+        // -tarea 106- Con Velocidad fija, seguir es que el texto vuelva a subir.
+        if (fija) {
+          motorFijo.seguir(performance.now())
+          return Promise.resolve()
         }
         return enFilaDeLaVoz(() => start())
       case 'empezarCuenta':
@@ -3169,15 +3233,34 @@ export default function App({ motor, repoOverride }: AppProps) {
                     <div className="tab-fondo" aria-hidden="true" />
                     {/* -tarea 83, parte B- La fila entera, centrada en el dock. Antes: {botonPararLectura} */}
                     {filaDeLaToma}
+                    {/* -tarea 106, 14-10-2026- Antes:
+                    {/* -tarea 106- Tableta de pie con Velocidad fija: el control parado NO cabe aquí. Medido
+                        en 820 x 1180: mide 195 px de alto y el dock 173; además cae debajo de la pastilla
+                        del tiempo, a la derecha. Acostado tampoco cabe entre la fila y la pastilla: hay
+                        128 px y pide 174. Queda para que Javier elija -ver el PR-; sin control por ahora. *\/}
+                    Javier eligió la opción (a): el control va afuera del dock, abajo. */}
                   </div>
+                  {/* -tarea 106, opción (a)- Tableta de pie con Velocidad fija: el control parado contra el
+                      borde derecho, apoyado arriba del dock, como en el teléfono de pie. */}
+                  {fija && (
+                    <div className="sobre-tab-dock">
+                      <ControlVelocidadLectura deLado={false} />
+                    </div>
+                  )}
                 </>
               ) : (
                 <>
               {/* -tarea 83, parte B- El riel izquierdo queda solo para salir, en Leer: el tacho pasó a la
                   fila. Antes: enRiel('izquierdo', (!conCamara || enPausa), …) con
                   {conCamara && enPausa && botonDescartarToma} adentro. */}
-              {enRiel('izquierdo', !conCamara, <>
+              {/* -tarea 106, lamina 3- Con Velocidad fija, de lado, el control parado va en el riel
+                  izquierdo -vacío al leer; en el derecho faltaban ~100 px-. Antes:
+                  {enRiel('izquierdo', !conCamara, <> */}
+              {enRiel('izquierdo', !conCamara || fija, <>
               {!conCamara && botonSalirLectura}
+              {horizontal && fija && (
+                <div className="riel-control-velocidad"><ControlVelocidadLectura deLado /></div>
+              )}
               </>)}
 
               {enRiel('derecho', true, <>
@@ -3201,6 +3284,9 @@ export default function App({ motor, repoOverride }: AppProps) {
                 {/* -tarea 83, parte B- La fila entera: de pie al centro, a la altura de siempre; de lado,
                     en columna al centro del riel derecho. Antes: {botonPararLectura} */}
                 {filaDeLaToma}
+                {/* -tarea 106, lamina 2- De pie con Velocidad fija: el control parado contra el borde
+                    derecho, a la altura de Pausa y Parar -acostado no cabe en la fila: faltan 54 px-. */}
+                {!horizontal && fija && <ControlVelocidadLectura deLado={false} />}
               </div>
               </>)}
                 </>
@@ -3282,6 +3368,13 @@ export default function App({ motor, repoOverride }: AppProps) {
               onVolverListo={handleVolverDesdeListo}
               onToggleControles={() => {
                 if (estadoToma !== 'leyendo') return
+                // -tarea 106- Con Velocidad fija tocar el texto pausa y sigue -con los controles a la
+                // vista al pausar-. Con la voz, lo de siempre: muestra u oculta los controles.
+                if (fija) {
+                  if (!enPausa) setControlesVisibles(true)
+                  void handleTogglePausa()
+                  return
+                }
                 setControlesVisibles((prev) => !prev)
               }}
               // -tarea 89, cuarta vuelta-: en LISTO mover el texto es elegir desde dónde parte la toma

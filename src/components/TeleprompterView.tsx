@@ -10,6 +10,11 @@ import { SANGRIA_PRIMERA_LINEA_PX, primeraLineaConTexto, LIGADURAS_TEXTO } from 
 import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
+// -tarea 106- Velocidad fija: su motor, la duracion con el nivel y el nivel elegido.
+// -correccion 1- Y las palabras a pixeles, parejo.
+// Antes: import { esMotorFijo, ppmDeNivel } from '../lib/velocidadFija'
+import { esMotorFijo, ppmDeNivel, pxDePosicion, posicionDePx, renglonDePx } from '../lib/velocidadFija'
+import { useVelocidadFija } from '../hooks/useVelocidadFija'
 import { palabrasDelDestacado, segmentosDelDestacado, CajaPalabra } from '../lib/destacado'
 // -13-10-2026, resorte-sin-rebote-: tambien el resorte, detras del interruptor sigo_resorte.
 // Antes: import { acercarScroll } from '../lib/deslizar'
@@ -690,6 +695,9 @@ export default function TeleprompterView({
   // vista entera no se vuelve a dibujar en cada palabra. clave evita medir si nada cambio.
   const capsulasRef = useRef<Array<HTMLDivElement | null>>([null, null, null])
   const destacadoPrevRef = useRef<{ clave: string; renglones: Renglon[] | null }>({ clave: '', renglones: null })
+  // -tarea 106- La franja de foco de Velocidad fija: el ultimo renglon pintado.
+  const franjaPrevRef = useRef<{ clave: string; renglones: Renglon[] | null }>({ clave: '', renglones: null })
+  const velocidad = useVelocidadFija()
   const estadoTomaRef = useRef(estadoToma)
   estadoTomaRef.current = estadoToma
   // Al entrar a leer se lee el interruptor del resorte, una vez. Con movimiento reducido, como hoy.
@@ -828,8 +836,13 @@ export default function TeleprompterView({
   // arrastre. Javier lo vio en su moto g86: tras Seguir el texto no lo acompañaba, y arrastrarlo
   // lo enderezaba. filaPx y topBanda van también aquí: tokenEnLaBanda los lee al soltar, y un
   // cambio de letra en medio de un arrastre tampoco puede borrar el temporizador.
-  const gestosRef = useRef({ onNavegacionManual, onModoManualChange, onToggleControles, filaPx, topBanda })
-  gestosRef.current = { onNavegacionManual, onModoManualChange, onToggleControles, filaPx, topBanda }
+  // -correccion 1- fija: al soltar el arrastre con Velocidad fija, la posicion sale de la inversa.
+  // Antes:
+  // const gestosRef = useRef({ onNavegacionManual, onModoManualChange, onToggleControles, filaPx, topBanda })
+  // gestosRef.current = { onNavegacionManual, onModoManualChange, onToggleControles, filaPx, topBanda }
+  const fijaGestos = esMotorFijo(motorAvance)
+  const gestosRef = useRef({ onNavegacionManual, onModoManualChange, onToggleControles, filaPx, topBanda, fija: fijaGestos })
+  gestosRef.current = { onNavegacionManual, onModoManualChange, onToggleControles, filaPx, topBanda, fija: fijaGestos }
 
   useEffect(() => {
     const el = containerRef.current
@@ -851,6 +864,9 @@ export default function TeleprompterView({
       const buscado = cont.scrollTop + topBanda + MARGEN_RENGLONES_ARRIBA * filaPx
 
       const renglones = renglonesRef.current
+      // -correccion 1- Con Velocidad fija el motor sigue desde donde quedo la pantalla, con fraccion:
+      // la inversa de pxDePosicion. Con la voz, el renglon mas cercano, como siempre.
+      if (gestosRef.current.fija && renglones.length > 0) return posicionDePx(buscado, renglones)
       if (renglones.length > 0) {
         let mejorToken = 0
         let mejorDist = Infinity
@@ -1031,7 +1047,10 @@ export default function TeleprompterView({
       // demora medida del reconocedor -lib/compensacion.ts, con las cifras-. En el
       // arranque, en silencio y en DETENIDO no hay compensacion: queda el min de siempre.
       if (modoManualRef.current) compensacionRef.current = crearCompensacion()
-      const anclaRenglon = anclaCompensada(compensacionRef.current, {
+      // -tarea 106- Con Velocidad fija no hay reconocedor ni demora que compensar: el renglon es el
+      // de la posicion del motor fijo. Con la voz, la cuenta de siempre, sin tocar.
+      const fija = esMotorFijo(motorAvance)
+      const anclaRenglon = fija ? st.posicion : anclaCompensada(compensacionRef.current, {
         posicion: st.posicion,
         ultimoCalce: st.ultimoCalce,
         siguiendo: st.estado === 'SIGUIENDO' && st.motivoFreno === null,
@@ -1060,11 +1079,21 @@ export default function TeleprompterView({
       // Con topBanda de referencia el vivo cae exactamente en topBanda + MARGEN renglones
       // del borde de arriba, que es lo que dice posicionEnPantalla. Y topBanda arriba es 0.
       void origen
-      const topObjetivo = calcularScrollTop(
-        renglonTrabado ? renglonTrabado.top : 0,
-        topBanda,
-        filaPx
-      )
+      // -correccion 1, Velocidad fija- El blanco sale de la posicion a pixeles constantes, no del
+      // renglon trabado: sube un poco cada cuadro. Con la voz, lo de siempre.
+      // Antes:
+      // const topObjetivo = calcularScrollTop(
+      //   renglonTrabado ? renglonTrabado.top : 0,
+      //   topBanda,
+      //   filaPx
+      // )
+      const topObjetivo = fija
+        ? calcularScrollTop(pxDePosicion(st.posicion, renglones), topBanda, filaPx)
+        : calcularScrollTop(
+          renglonTrabado ? renglonTrabado.top : 0,
+          topBanda,
+          filaPx
+        )
 
       // Y ESE CAMBIO SE DESLIZA, NO SALTA.
       //
@@ -1089,7 +1118,12 @@ export default function TeleprompterView({
       // -13-10-2026, resorte-sin-rebote-: con el interruptor, el resorte sin rebote. Sin el, igual
       // que siempre. Al reiniciar parte del scroll real y quieto: no salta ni arrastra velocidad vieja.
       // Antes: scrollSuaveRef.current = acercarScroll(scrollSuaveRef.current, topObjetivo, dtCuadro)
-      if (resorteRef.current && !modoManualRef.current) {
+      // -correccion 1- Con Velocidad fija el blanco ya avanza parejo: si queda a un renglon o menos se
+      // escribe tal cual, sin resorte -el resorte lo atrasaba y lo volvia escalones-. Un salto mayor
+      // -tocar un renglon, volver en LISTO, renglones rehechos por la letra o el giro- va con el resorte,
+      // como hoy. Con la voz, igual que siempre.
+      // Antes: if (resorteRef.current && !modoManualRef.current) {
+      if ((resorteRef.current || fija) && !modoManualRef.current) {
         if (reiniciarResorteRef.current) {
           reiniciarResorteRef.current = false
           // -14-10-2026, resorte-de-fabrica-: LA CAUSA DE T158 Y T170. Al montar la vista el reinicio
@@ -1102,9 +1136,18 @@ export default function TeleprompterView({
           if (containerRef.current && !primerCuadro) scrollSuaveRef.current = containerRef.current.scrollTop
           velocidadScrollRef.current = 0
         }
-        const r = moverResorte({ posicion: scrollSuaveRef.current, velocidad: velocidadScrollRef.current }, topObjetivo, dtCuadro)
-        scrollSuaveRef.current = r.posicion
-        velocidadScrollRef.current = r.velocidad
+        // Antes, sin el if de Velocidad fija:
+        // const r = moverResorte({ posicion: scrollSuaveRef.current, velocidad: velocidadScrollRef.current }, topObjetivo, dtCuadro)
+        // scrollSuaveRef.current = r.posicion
+        // velocidadScrollRef.current = r.velocidad
+        if (fija && Math.abs(topObjetivo - scrollSuaveRef.current) <= filaPx) {
+          scrollSuaveRef.current = topObjetivo
+          velocidadScrollRef.current = 0
+        } else {
+          const r = moverResorte({ posicion: scrollSuaveRef.current, velocidad: velocidadScrollRef.current }, topObjetivo, dtCuadro)
+          scrollSuaveRef.current = r.posicion
+          velocidadScrollRef.current = r.velocidad
+        }
       } else {
         scrollSuaveRef.current = acercarScroll(scrollSuaveRef.current, topObjetivo, dtCuadro)
       }
@@ -1153,7 +1196,9 @@ export default function TeleprompterView({
         const leyendo = estadoTomaRef.current === 'leyendo'
         const n = palabrasDelDestacado(tokensRef.current.length / Math.max(1, renglones.length))
         const inicio = Math.max(0, Math.floor(st.posicion))
-        const alfa = !leyendo ? 0 : st.motivoFreno === 'sin-calce' ? 0.35 : 1
+        // -tarea 106- Con Velocidad fija no hay subrayado: guia la franja de foco, abajo.
+        // Antes: const alfa = !leyendo ? 0 : st.motivoFreno === 'sin-calce' ? 0.35 : 1
+        const alfa = !leyendo || fija ? 0 : st.motivoFreno === 'sin-calce' ? 0.35 : 1
         const clave = `${alfa}|${inicio}|${n}|${filaPx}`
         const previo = destacadoPrevRef.current
         if (cont && (clave !== previo.clave || previo.renglones !== renglones)) {
@@ -1227,6 +1272,32 @@ export default function TeleprompterView({
             c.style.borderRadius = `${grosor / 2}px`
             c.style.opacity = String(alfa)
           })
+        }
+      }
+
+      // LA FRANJA DE FOCO -tarea 106, solo Velocidad fija y leyendo-: el renglon de arriba -el trabado,
+      // donde se lee- al 100 %, el resto al 45 %. Se reescribe solo cuando cambia el renglon. Con la voz
+      // la clave queda vacia y no se toca ningun token: la pantalla es la de siempre.
+      {
+        const cont = containerRef.current
+        const enFranja = fija && estadoTomaRef.current === 'leyendo'
+        // -correccion 1- El renglon encendido es el del pixel de la posicion, no el trabado de la voz.
+        // Antes: const idx = renglonTrabadoRef.current ?? idxAncla
+        const idx = enFranja ? renglonDePx(pxDePosicion(st.posicion, renglones), renglones) : (renglonTrabadoRef.current ?? idxAncla)
+        const clave = enFranja ? `${idx}|${renglones.length}` : ''
+        const previo = franjaPrevRef.current
+        if (cont && (clave !== previo.clave || (enFranja && previo.renglones !== renglones))) {
+          const desde = enFranja ? renglones[idx]?.desdeToken ?? 0 : 0
+          const hasta = enFranja ? renglones[idx + 1]?.desdeToken ?? Infinity : 0
+          if (enFranja || previo.clave !== '') {
+            cont.querySelectorAll('[data-token]').forEach((nodo) => {
+              const el = nodo as HTMLElement
+              const i = Number(el.dataset.token)
+              el.style.opacity = !enFranja || (i >= desde && i < hasta) ? '' : '0.45'
+            })
+          }
+          previo.clave = clave
+          previo.renglones = renglones
         }
       }
 
@@ -1679,6 +1750,9 @@ export default function TeleprompterView({
           ventana y el velo debajo-, y el dueno lo vio dos veces: "nuevamente
           estan dos sombras sobre un texto". Una sola capa, como en la foto que
           trajo: el panel donde se lee y el resto del texto sobre la imagen. */}
+      {/* -tarea 106- El velo vuelve con Velocidad fija, igual que hoy -decision de Javier, 14-10-2026-.
+          Se probo esconderlo leyendo con Velocidad fija, por si oscurecia de mas la franja de foco. Antes:
+          {altoContenedor > 0 && !textoSobreImagen && !(esMotorFijo(motorAvance) && estadoToma === 'leyendo') && ( */}
       {altoContenedor > 0 && !textoSobreImagen && (
         <div
           data-testid="velo-lectura"
@@ -1996,7 +2070,11 @@ export default function TeleprompterView({
               onVoltear={onVoltear}
               // La misma condición del Voltear del panel de la cámara: la ficha Cámara está con la cámara.
               conVoltear={conCamara}
-              duracion={duracionDeLecturaReloj(contarPalabras(guionObj))}
+              // -tarea 106- Con Velocidad fija, palabras ÷ palabras por minuto del nivel.
+              // Antes: duracion={duracionDeLecturaReloj(contarPalabras(guionObj))}
+              duracion={velocidad.modo === 'fija'
+                ? duracionDeLecturaReloj(contarPalabras(guionObj), ppmDeNivel(velocidad.nivel))
+                : duracionDeLecturaReloj(contarPalabras(guionObj))}
               // Como la pastilla que reemplaza en LISTO: la apaga Mostrar tiempo.
               mostrarDuracion={mostrarTiempo}
               preparandoVoz={preparandoVoz}

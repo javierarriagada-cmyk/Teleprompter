@@ -168,8 +168,12 @@ describe('Tarea 93: la flecha y la segunda fila de fichas en Grabar', () => {
       .querySelector('.carril-fichas:not(.segunda-fila-fichas)') as HTMLElement
     // -ajustes de pantallas- El orden pasa a Texto -letra, anclaje- y Cámara -cámara, brillo-. Antes:
     // ['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha']
+    // -tarea 106- La ficha del modo de lectura va primera, antes de Aa. Antes:
+    // expect(testidsDelCarril(primera)).toEqual([
+    //   'ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'
+    // ])
     expect(testidsDelCarril(primera)).toEqual([
-      'ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'
+      'ficha-modo-lectura', 'ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'
     ])
 
     fireEvent.click(flecha)

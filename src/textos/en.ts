@@ -256,5 +256,19 @@ export const en: Textos = {
   estabilizarExplicacion: 'Smooths hand shake. Crops the edges slightly.',
   // Shortcut labels -11-10-2026-.
   accesoGrabar: 'Record',
-  accesoGrabarTitulo: 'Record "{titulo}"'
+  accesoGrabarTitulo: 'Record "{titulo}"',
+  // Task 106 «Velocidad fija» -14-10-2026-: reading mode and the seven speed levels.
+  modoLectura: 'Reading mode',
+  modoConLaVoz: 'With your voice',
+  modoVelocidadFija: 'Fixed speed',
+  modoVozCorto: 'Voice',
+  explicacionModoVoz: 'The text follows your voice.',
+  explicacionModoFija: 'The text scrolls on its own, at the speed you choose.',
+  velocidad: 'Speed',
+  rotuloVelocidad: 'speed',
+  sigueTuVoz: 'follows your voice',
+  velocidadNivel: 'Speed, level {n} of 7',
+  velocidadFijaNivel: 'Fixed speed, level {n} of 7',
+  masLento: 'Slower',
+  masRapido: 'Faster'
 }

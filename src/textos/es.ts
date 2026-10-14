@@ -274,7 +274,21 @@ export const es = {
   estabilizarExplicacion: 'Corrige el temblor de la mano. Recorta un poco los bordes.',
   // Accesos directos del ícono -11-10-2026-.
   accesoGrabar: 'Grabar',
-  accesoGrabarTitulo: 'Grabar «{titulo}»'
+  accesoGrabarTitulo: 'Grabar «{titulo}»',
+  // Tarea 106 «Velocidad fija» -14-10-2026-: el modo de lectura y la velocidad en siete niveles.
+  modoLectura: 'Modo de lectura',
+  modoConLaVoz: 'Con la voz',
+  modoVelocidadFija: 'Velocidad fija',
+  modoVozCorto: 'Voz',
+  explicacionModoVoz: 'El texto sigue tu voz.',
+  explicacionModoFija: 'El texto sube solo, a la velocidad que elijas.',
+  velocidad: 'Velocidad',
+  rotuloVelocidad: 'velocidad',
+  sigueTuVoz: 'sigue tu voz',
+  velocidadNivel: 'Velocidad, nivel {n} de 7',
+  velocidadFijaNivel: 'Velocidad fija, nivel {n} de 7',
+  masLento: 'Más lento',
+  masRapido: 'Más rápido'
 }
 
 export type ClaveTexto = keyof typeof es

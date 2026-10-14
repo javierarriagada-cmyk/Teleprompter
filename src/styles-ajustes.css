@@ -1149,3 +1149,43 @@
 .dock-preparando-voz .dock-rotulo-chico {
   white-space: nowrap;
 }
+
+/* VELOCIDAD FIJA -tarea 106, 14-10-2026, boceto aprobado: docs/pantallas/velocidad-fija/-. Solo tokens de
+   styles.css y el vidrio de las fichas del dock -blanco 7 %, borde blanco 10 %-. Componentes en
+   ControlesVelocidad.tsx. */
+.selector-modo-bloque { display: flex; flex-direction: column; gap: 8px; padding: 0 0 12px; }
+.selector-modo { display: grid; grid-template-columns: 1fr 1fr; height: 48px; border-radius: 999px; border: 1px solid var(--borde-tarjeta); overflow: hidden; }
+.selector-modo-mitad { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: none; background: transparent; color: var(--color-texto); font-size: 14px; font-weight: 500; }
+.selector-modo-mitad + .selector-modo-mitad { border-left: 1px solid var(--borde-tarjeta); }
+.selector-modo-mitad.elegida { background: var(--color-acento); color: var(--color-texto-acento); }
+.selector-modo-explicacion { font-size: 13px; color: var(--color-apagado); padding: 0 4px; }
+.tarjeta-velocidad { margin: 4px 0 0; }
+.tarjeta-velocidad .fila-ajuste { padding-right: 8px; }
+.icono-menu-modo { display: inline-flex; margin-right: 12px; color: var(--color-apagado); }
+.ficha-modo-lectura { display: inline-flex; }
+.ficha-modo-lectura.abajo { flex-direction: column; align-items: center; gap: 4px; }
+.ficha-modo-lectura.enLinea { flex-direction: row; align-items: center; gap: 10px; }
+.raya-menos { display: block; width: 14px; height: 1.6px; border-radius: 1px; background: currentColor; }
+.control-velocidad { display: inline-flex; align-items: center; gap: 6px; height: 48px; padding: 0 4px; border-radius: 999px; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.10); color: var(--color-texto); flex: 0 0 auto; }
+.control-velocidad.vertical { flex-direction: column; height: auto; width: 48px; padding: 4px 0; }
+.boton-nivel { width: 40px; height: 40px; border-radius: 999px; border: none; background: transparent; color: var(--color-texto); display: flex; align-items: center; justify-content: center; }
+.boton-nivel:disabled { opacity: 0.38; }
+.barra-nivel { display: inline-flex; gap: 3px; align-items: center; }
+.barra-nivel.vertical { flex-direction: column; }
+.tramo-nivel { width: 8px; height: 16px; border-radius: 2px; background: rgba(255, 255, 255, 0.10); }
+.barra-nivel.vertical .tramo-nivel { width: 16px; height: 8px; }
+.tramo-nivel.lleno { background: var(--color-acento); }
+.barra-nivel.chica { gap: 2px; }
+.barra-nivel.chica .tramo-nivel { width: 4px; height: 8px; border-radius: 1px; }
+.rotulo-barra-nivel { display: inline-flex; height: 14px; align-items: center; }
+.menu-modo-velocidad { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 12px 6px; border-top: 1px solid var(--borde-tarjeta); margin-top: 6px; }
+.linea-modo-lectura { display: flex; align-items: center; gap: 8px; padding: 0 0 10px; }
+.dock-lugar-voltear:has(.ficha-modo-lectura) { gap: 8px; align-items: flex-start; }
+.control-velocidad-lectura { display: flex; flex-direction: column; align-items: center; gap: 4px; pointer-events: auto; }
+.control-velocidad-lectura.de-pie { position: fixed; right: 12px; bottom: calc(var(--circulo-desde-abajo, 40px) - 40px); }
+.riel-control-velocidad { position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%); display: flex; justify-content: center; z-index: 100; }
+/* La franja de foco de Velocidad fija la pinta TeleprompterView token por token -opacidad 0.45 fuera del
+   renglon de arriba-; no lleva estilos aqui. */
+/* -tarea 106, opción (a)- Tableta de pie: el control parado se apoya arriba del dock -var(--tab-dock),
+   styles-tableta.css-, contra el borde derecho. */
+.sobre-tab-dock .control-velocidad-lectura.de-pie { bottom: calc(var(--tab-dock, 172px) + env(safe-area-inset-bottom, 0px) + 12px); z-index: 100; }

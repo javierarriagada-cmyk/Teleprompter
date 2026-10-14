@@ -12,6 +12,8 @@ import {
 } from './FilasAjustesLectura'
 import { hayCalidad } from './FichasListo'
 import { Interruptor } from './Interruptor'
+// -tarea 106- El selector del modo de lectura y la fila Velocidad.
+import { SelectorModoLectura } from './ControlesVelocidad'
 import { PantallaLicencias } from './PantallaLicencias'
 import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
 import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
@@ -414,6 +416,9 @@ export function PanelAjustes({
                 <IconoCerrar tamano={18} />
               </button>
             </div>
+            {/* -tarea 106, lamina 1- Entre la cabecera y la muestra: Con la voz | Velocidad fija. En Grabar
+                el modo se elige en su ficha, arriba de las fichas. */}
+            {origen !== 'grabar' && <SelectorModoLectura />}
             {con('lectura') && <MuestraLectura ajustes={ajustesLectura} />}
             <div className="dock-panel-cuerpo">
               {con('lectura') && (

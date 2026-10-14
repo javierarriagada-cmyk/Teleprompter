@@ -510,6 +510,31 @@ export function IconoIdioma(props: PropsIcono) {
   )
 }
 
+// -14-10-2026, tarea 106 «Velocidad fija», paso 0-: el modo de lectura. Tomados de Material Symbols
+// -mic y speed- y redibujados con el trazo de la casa, 24x24 y 1.6, como el resto.
+
+/** Un microfono: leer con la voz. Material Symbols «mic». */
+export function IconoMicrofono(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <rect x="9" y="3" width="6" height="11" rx="3" />
+      <path d="M5.5 11a6.5 6.5 0 0 0 13 0" />
+      <path d="M12 17.5V21" />
+    </Trazo>
+  )
+}
+
+/** Un velocimetro: la velocidad fija. Material Symbols «speed». */
+export function IconoVelocimetro(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M4.2 18a9 9 0 1 1 15.6 0" />
+      <path d="M12 14.5l4.5-5" />
+      <circle cx="12" cy="14.5" r="1.4" />
+    </Trazo>
+  )
+}
+
 /** Una i en un circulo: la version. */
 export function IconoInfo(props: PropsIcono) {
   return (
