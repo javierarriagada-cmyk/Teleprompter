@@ -82,6 +82,33 @@
   /* La variante oscura para la pareja de fondo blanco -empezar-sobre-blanco- no va acá sino en
      cada tema: T241 -tarea50- cuida que :root no tenga colores del tema claro, y el ícono claro de
      Empezar es el suelo del tema claro. */
+  /* LA PORTADA CON LUZ -tanda 1 de 2, boceto aprobado en Penpot el 15-10-2026-. Una sola fuente de luz
+     -el punto rojo de «Sig●»- y tres alturas: FONDO con luz, SUPERFICIES -filas de guiones y videos- y
+     PROTAGONISTA -la tarjeta del ultimo guion-. Solo las usa la portada -.portada, BibliotecaView-; el
+     resto de la app sigue con --borde-tarjeta y --sombra-tarjeta hasta la tanda 2. */
+  --luz-marca: radial-gradient(circle 330px at 86px 50px, rgba(225, 29, 46, 0.20), transparent);
+  /* El color del eco; la forma -radial de 320px a 12px del borde derecho y 15px del de abajo- va en .portada-eco-calido. */
+  --eco-calido: rgba(194, 65, 12, 0.12);
+  /* 160deg y no 180 -agregado aprobado-: el canto de la protagonista. Las superficies siguen en 180. */
+  --prot-fondo: linear-gradient(180deg, #312B28, #262220);
+  --prot-canto: linear-gradient(160deg, rgba(255, 154, 107, 0.38), rgba(255, 154, 107, 0.10));
+  --prot-sombra: 0 16px 40px -8px rgba(0, 0, 0, 0.55);
+  --sup-fondo: #262220;
+  --sup-fondo-video: #1C1917;
+  --sup-canto: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.03));
+  --sup-sombra: 0 6px 16px -4px rgba(0, 0, 0, 0.45);
+  --dato-fondo: rgba(255, 154, 107, 0.12);
+  --dato-texto: #F3C2A4;
+  --leer-fondo: linear-gradient(180deg, #F4ECE7, #E2D6CF);
+  --leer-texto: #151312;
+  --crear-fondo: #E7E1DE;
+  --crear-icono: #151312;
+  --crear-sombra: 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+  --grabar-fondo: linear-gradient(180deg, #5E2023, #3E1A1C);
+  --grabar-texto: #E7E1DE;
+  --grabar-brillo: 0 4px 18px rgba(225, 29, 46, 0.28);
+  --ajustes-vidrio: rgba(255, 255, 255, 0.04);
+  --ajustes-borde: rgba(255, 255, 255, 0.08);
 }
 
 [data-tema="claro"] {
@@ -121,6 +148,29 @@
   --empezar-icono: #F3F1ED;
   --empezar-fondo-sobre-blanco: #1A1815;
   --empezar-icono-sobre-blanco: #F3F1ED;
+  /* LA PORTADA CON LUZ EN TEMA CLARO -tanda 1 de 2, 15-10-2026-. --sup-fondo y --sup-fondo-video van en
+     #FFFDFB y no en #FFFFFF -agregado aprobado-: el blanco puro se despegaba del suelo calido. */
+  --luz-marca: radial-gradient(circle 330px at 86px 50px, rgba(255, 154, 107, 0.22), transparent);
+  --eco-calido: rgba(244, 184, 140, 0.22);
+  --prot-fondo: linear-gradient(180deg, #FFFFFF, #FBF7F3);
+  --prot-canto: linear-gradient(160deg, rgba(232, 135, 90, 0.45), rgba(232, 135, 90, 0.12));
+  --prot-sombra: 0 16px 40px -10px rgba(122, 58, 26, 0.18);
+  --sup-fondo: #FFFDFB;
+  --sup-fondo-video: #FFFDFB;
+  --sup-canto: linear-gradient(180deg, rgba(26, 24, 21, 0.08), rgba(26, 24, 21, 0.05));
+  --sup-sombra: 0 6px 16px -6px rgba(26, 24, 21, 0.12);
+  --dato-fondo: rgba(255, 154, 107, 0.18);
+  --dato-texto: #A4471E;
+  --leer-fondo: linear-gradient(180deg, #2A2622, #1A1815);
+  --leer-texto: #F3F1ED;
+  --crear-fondo: #1A1815;
+  --crear-icono: #F3F1ED;
+  --crear-sombra: 0 4px 12px -2px rgba(26, 24, 21, 0.25);
+  --grabar-fondo: linear-gradient(180deg, #FFF1F1, #FDE3E4);
+  --grabar-texto: #1A1815;
+  --grabar-brillo: 0 4px 18px rgba(225, 29, 46, 0.20);
+  --ajustes-vidrio: rgba(255, 255, 255, 0.7);
+  --ajustes-borde: rgba(26, 24, 21, 0.08);
 }
 
 [data-tema="oscuro"] {
@@ -154,6 +204,30 @@
   /* La variante oscura, para cuando Empezar flota sobre la pareja de fondo blanco en vertical. */
   --empezar-fondo-sobre-blanco: #1A1815;
   --empezar-icono-sobre-blanco: #F3F1ED;
+  /* La portada con luz, los mismos valores de :root -el oscuro-. */
+  --luz-marca: radial-gradient(circle 330px at 86px 50px, rgba(225, 29, 46, 0.20), transparent);
+  /* El color del eco; la forma -radial de 320px a 12px del borde derecho y 15px del de abajo- va en .portada-eco-calido. */
+  --eco-calido: rgba(194, 65, 12, 0.12);
+  /* 160deg y no 180 -agregado aprobado-: el canto de la protagonista. Las superficies siguen en 180. */
+  --prot-fondo: linear-gradient(180deg, #312B28, #262220);
+  --prot-canto: linear-gradient(160deg, rgba(255, 154, 107, 0.38), rgba(255, 154, 107, 0.10));
+  --prot-sombra: 0 16px 40px -8px rgba(0, 0, 0, 0.55);
+  --sup-fondo: #262220;
+  --sup-fondo-video: #1C1917;
+  --sup-canto: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.03));
+  --sup-sombra: 0 6px 16px -4px rgba(0, 0, 0, 0.45);
+  --dato-fondo: rgba(255, 154, 107, 0.12);
+  --dato-texto: #F3C2A4;
+  --leer-fondo: linear-gradient(180deg, #F4ECE7, #E2D6CF);
+  --leer-texto: #151312;
+  --crear-fondo: #E7E1DE;
+  --crear-icono: #151312;
+  --crear-sombra: 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+  --grabar-fondo: linear-gradient(180deg, #5E2023, #3E1A1C);
+  --grabar-texto: #E7E1DE;
+  --grabar-brillo: 0 4px 18px rgba(225, 29, 46, 0.28);
+  --ajustes-vidrio: rgba(255, 255, 255, 0.04);
+  --ajustes-borde: rgba(255, 255, 255, 0.08);
 }
 
 body {
@@ -622,6 +696,14 @@ textarea::placeholder {
 /* Las miniaturas de la tira solo llevan el borde: la tira desplaza de lado y cortaria la sombra. */
 .borde-suave {
   border: 1px solid var(--borde-tarjeta);
+}
+/* El fondo de la tarjeta de video y el de la cara de la fila de guion pasan de en linea a clase
+   -portada con luz, 15-10-2026- para que .portada los pueda cambiar. Mismos valores. */
+.tarjeta-video {
+  background: var(--bg-suelo);
+}
+.fila-guion-cara {
+  background-color: var(--bg-panel);
 }
 
 /* EL PLAY SOBRE LA MINIATURA -28-09-2026-: dice "esto es un video" de un vistazo. */
@@ -2488,4 +2570,131 @@ button.btn-deformable.miniatura-banda:not(:active) {
   .marca-guia {
     animation: none !important;
   }
+}
+
+
+/* ============================================================================================
+   LA PORTADA CON LUZ -tanda 1 de 2, boceto aprobado en Penpot el 15-10-2026-. Todo acotado a
+   .portada -el contenedor de BibliotecaView-: .tarjeta-elevada, .borde-suave, .boton-portada y las
+   demas siguen iguales en el resto de la app hasta la tanda 2. La lectura no se toca.
+   El canto de 1px es un borde transparente con dos fondos -la caja en padding-box y el degradado
+   del canto en border-box-: border-image rompe el radio.
+   ============================================================================================ */
+.portada {
+  /* Contexto de apilado propio: las capas de luz -z-index -1- quedan detras del contenido de la
+     portada pero encima del suelo del body, sin tapar nada. */
+  isolation: isolate;
+}
+/* FONDO 1: la luz de la marca. Absoluta dentro de .portada, asi se desplaza con ella: nace del punto
+   de «Sig●» -86px, 50px- y si la marca sube al desplazar, la luz sube con ella.
+   Sale 16px arriba y a los lados: es la parte fija del marco de App.tsx -bordeMarco, 16px mas el area
+   segura-. Asi la capa llega al borde de la pantalla -sin el canto recto de la caja de .portada- y los
+   86px, 50px del boceto -medidos desde el borde de la pantalla de 412- caen sobre el punto de la marca.
+   Probado y descartado el 15-10-2026: inset: 0 -la luz se cortaba en recto a 16px del borde y su centro
+   quedaba 16px a la derecha y abajo del punto-. */
+.portada-luz-marca {
+  position: absolute;
+  inset: -16px -16px 0 -16px;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--luz-marca);
+  transform-origin: 86px 50px;
+  /* Se enciende UNA vez, al abrir la app, cuando la marca termina su viaje -Entrada.tsx quita
+     marca-viajando al cabo de MS_VIAJE_MARCA-. Al volver de otra pantalla la capa nace ya
+     encendida: no hay cambio de estado y no se repite. */
+  transition: opacity var(--ms-pantalla) var(--curva-entra), transform var(--ms-pantalla) var(--curva-entra);
+}
+.marca-viajando .portada-luz-marca {
+  opacity: 0;
+  transform: scale(0.85);
+  /* Apagada de golpe mientras la marca viaja: el encendido es solo de ida. */
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Con «quitar animaciones» Entrada.tsx no pone marca-viajando y la luz esta fija desde el
+     principio; esto es el respaldo. */
+  .portada-luz-marca { transition: none; }
+}
+/* FONDO 2: el eco calido, fijo abajo a la derecha de la pantalla. */
+.portada-eco-calido {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(circle 320px at calc(100% - 12px) calc(100% - 15px), var(--eco-calido), transparent);
+}
+
+/* PROTAGONISTA: la tarjeta del ultimo guion -TarjetaLectura.tsx-.
+   Antes: background-color var(--bg-panel) en linea, border 1px var(--borde-tarjeta) y
+   box-shadow var(--sombra-tarjeta) -.tarjeta-elevada-, border-top rgba(255, 255, 255, 0.06)
+   -.tarjeta-lectura-borde-iluminado-. */
+.portada .tarjeta-lectura-borde-iluminado.tarjeta-elevada {
+  border: 1px solid transparent;
+  background: var(--prot-fondo) padding-box, var(--prot-canto) border-box;
+  box-shadow: var(--prot-sombra);
+}
+/* Antes: border 1px var(--borde-tarjeta), opacity 0.75 y el color de la letra de la tarjeta. */
+.portada .duracion-tarjeta {
+  border: none;
+  background: var(--dato-fondo);
+  color: var(--dato-texto);
+  opacity: 1;
+}
+/* Leer. Antes: background-color var(--color-acento) y color var(--color-texto-acento), en linea. */
+.portada .btn-leer-tarjeta {
+  background: var(--leer-fondo);
+  color: var(--leer-texto);
+}
+/* Grabar se queda con su borde rojo -.btn-grabar-, el rojo sigue siendo solo de Grabar.
+   Antes: background-color color-mix(in srgb, var(--color-grabando) 16%, var(--bg-superficie)),
+   color var(--color-texto) y sin sombra -.btn-grabar-. */
+.portada .btn-grabar-tarjeta-rojo {
+  background: var(--grabar-fondo);
+  color: var(--grabar-texto);
+  box-shadow: var(--grabar-brillo);
+}
+
+/* SUPERFICIES: las filas de guiones -BibliotecaView, .tarjeta-elevada- y las tarjetas de video
+   -TiraGrabaciones, .borde-suave-. Antes: border 1px var(--borde-tarjeta) y, la fila,
+   box-shadow var(--sombra-tarjeta); fondo de la fila var(--bg-panel) y del video var(--bg-suelo), en linea. */
+.portada .fila-guion-caja.tarjeta-elevada {
+  border: 1px solid transparent;
+  background: var(--sup-fondo) padding-box, var(--sup-canto) border-box;
+  box-shadow: var(--sup-sombra);
+}
+.portada .fila-guion-caja .fila-guion-cara {
+  background-color: var(--sup-fondo);
+}
+.portada .tarjeta-video.borde-suave {
+  border: 1px solid transparent;
+  background: var(--sup-fondo-video) padding-box, var(--sup-canto) border-box;
+  box-shadow: var(--sup-sombra);
+}
+/* La tira desplaza de lado: el aire de abajo deja ver la sombra de las tarjetas de video. */
+
+/* Crear guion. Antes: background-color var(--bg-panel), border 1px var(--borde-tarjeta),
+   color var(--color-texto) y box-shadow var(--sombra-tarjeta). */
+.portada .boton-crear-guion > span {
+  background-color: var(--crear-fondo);
+  color: var(--crear-icono);
+  border: none;
+  box-shadow: var(--crear-sombra);
+}
+/* El engranaje de la portada. Antes: background-color var(--bg-fila), border 1px var(--borde-tarjeta). */
+.portada [data-testid="btn-menu-superior-biblioteca"]::before {
+  background-color: var(--ajustes-vidrio);
+  border: 1px solid var(--ajustes-borde);
+}
+
+/* EL VELO DE LA MINIATURA: el 45 % de abajo -no 40px fijos, sirve en telefono y tableta-, debajo de
+   la pastilla de duracion y encima de la foto, para que la duracion se lea sobre cualquier foto.
+   Igual en los dos temas. */
+.velo-miniatura {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 45%;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
+  pointer-events: none;
 }

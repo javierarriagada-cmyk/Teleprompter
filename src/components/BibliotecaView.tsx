@@ -324,7 +324,9 @@ function FilaGuion({
       // La caja se levanta del suelo -borde de un pelo y sombra, .tarjeta-elevada, 28-09-2026-. Va en
       // este envoltorio y no en la fila: el overflow hidden de aca recortaria la sombra de adentro.
       // Boceto 102: con el menu adjunto abierto hay que dejar overflow visible para que no lo recorte.
-      className="tarjeta-elevada"
+      // -portada con luz, 15-10-2026- fila-guion-caja: .portada le pone --sup-fondo, --sup-canto y --sup-sombra.
+      // Antes: className="tarjeta-elevada"
+      className="tarjeta-elevada fila-guion-caja"
       style={{
         position: 'relative',
         borderRadius: 'var(--redondeo)',
@@ -383,6 +385,8 @@ function FilaGuion({
       {/* Fila en primer plano */}
       <div
         data-testid={`fila-guion-${g.id}`}
+        // -portada con luz, 15-10-2026- el fondo de la cara, en clase: .fila-guion-cara -styles.css-.
+        className="fila-guion-cara"
         // UN BOTON PARA TALKBACK -28-09-2026-. La fila abre el guion, pero era un div suelto: en
         // el arbol de accesibilidad del moto g86 no aparecia como algo tocable. Con Enter o
         // espacio abre, como un boton.
@@ -421,7 +425,8 @@ function FilaGuion({
           // MAS COMPACTA -28-09-2026-: 20 px de aire arriba y abajo era un tercio mas alto que la
           // propuesta profesional que trajo Javier. Los lados se quedan en 20.
           padding: 'var(--aire-3) var(--aire-4)',
-          backgroundColor: 'var(--bg-panel)',
+          // -portada con luz, 15-10-2026- el fondo pasa a .fila-guion-cara -mismo var(--bg-panel)-.
+          // Antes: backgroundColor: 'var(--bg-panel)',
           borderRadius: 'var(--redondeo)',
           cursor: 'pointer',
           userSelect: 'none',
@@ -762,8 +767,14 @@ export default function BibliotecaView({
       data-pantalla-direccion={dataPantallaDireccion}
       aria-hidden={ariaHidden}
       onAnimationEnd={onAnimationEnd}
+      // -portada con luz, 15-10-2026- .portada: el contenedor al que se acotan las tres alturas -styles.css-.
+      className="portada"
       style={{ padding: 'var(--aire-4)', maxWidth: 800, margin: '0 auto', position: 'relative', minHeight: '80vh', ...style }}
     >
+      {/* EL FONDO CON LUZ: la luz de la marca -se desplaza con la portada- y el eco calido -fijo abajo a la
+          derecha-. Detras de todo, sin tocar nada -pointer-events none, .portada-luz-marca y .portada-eco-calido-. */}
+      <div className="portada-luz-marca" aria-hidden="true" />
+      <div className="portada-eco-calido" aria-hidden="true" />
       {/* LA PORTADA, DE ARRIBA A ABAJO: marca, tu guion, tus guiones, tus
           videos. 24-09-2026, el dueno: "siento que queda debajo de las otras en
           nivel ... subamos el nivel con todo".
