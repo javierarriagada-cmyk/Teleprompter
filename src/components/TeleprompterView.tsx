@@ -11,7 +11,9 @@ import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
 import { palabrasDelDestacado, segmentosDelDestacado, CajaPalabra } from '../lib/destacado'
-import { acercarScroll } from '../lib/deslizar'
+// -13-10-2026, resorte-sin-rebote-: tambien el resorte, detras del interruptor sigo_resorte.
+// Antes: import { acercarScroll } from '../lib/deslizar'
+import { acercarScroll, moverResorte } from '../lib/deslizar'
 import type { Layout } from '../hooks/useLayout'
 import {
   abrirMarcaSiCorresponde,
@@ -671,6 +673,12 @@ export default function TeleprompterView({
   const renglonesAnotadosRef = useRef<number>(-1)
   const origenRef = useRef<number>(0)
   const scrollSuaveRef = useRef<number | null>(null)
+  // EL RESORTE -lib/deslizar.ts, 13-10-2026-, APAGADO salvo localStorage sigo_resorte = '1'. Se lee
+  // una vez al entrar a leer, no en cada cuadro. velocidadScrollRef es la otra mitad del estado del
+  // resorte -px/ms-; reiniciarResorteRef pide al lazo partir del scroll real con velocidad cero.
+  const resorteRef = useRef(false)
+  const velocidadScrollRef = useRef(0)
+  const reiniciarResorteRef = useRef(true)
   const renglonTrabadoRef = useRef<number | null>(null)
   // La compensacion de la demora del reconocedor -lib/compensacion.ts-.
   const compensacionRef = useRef(crearCompensacion())
@@ -681,6 +689,19 @@ export default function TeleprompterView({
   const destacadoPrevRef = useRef<{ clave: string; renglones: Renglon[] | null }>({ clave: '', renglones: null })
   const estadoTomaRef = useRef(estadoToma)
   estadoTomaRef.current = estadoToma
+  // Al entrar a leer se lee el interruptor del resorte, una vez. Con movimiento reducido, como hoy.
+  useEffect(() => {
+    if (estadoToma !== 'leyendo') return
+    let encendido = false
+    try {
+      encendido = window.localStorage.getItem('sigo_resorte') === '1'
+    } catch (e) {
+      encendido = false
+    }
+    resorteRef.current = encendido && !movimientoApagado()
+    reiniciarResorteRef.current = true
+    velocidadScrollRef.current = 0
+  }, [estadoToma])
   // -tarea 89, 04-10-2026-: el diseño, para la línea 'pantalla' del registro. En una referencia
   // porque recalcularGeometria y el lazo no se rearman al girar el teléfono.
   const horizontalRef = useRef(horizontal)
@@ -861,6 +882,8 @@ export default function TeleprompterView({
     function entrarAModoManual() {
       if (modoManualRef.current) return
       modoManualRef.current = true
+      // El dedo mueve el texto: al volver, el resorte parte de donde quedo y quieto.
+      reiniciarResorteRef.current = true
       const { onModoManualChange } = gestosRef.current
       if (onModoManualChange) onModoManualChange(true)
     }
@@ -910,6 +933,7 @@ export default function TeleprompterView({
       finManualRef.current = window.setTimeout(() => {
         finManualRef.current = null
         modoManualRef.current = false
+        reiniciarResorteRef.current = true
         const { onModoManualChange, onNavegacionManual } = gestosRef.current
         if (onModoManualChange) onModoManualChange(false)
         if (onNavegacionManual) onNavegacionManual(tokenEnLaBanda())
@@ -1049,7 +1073,21 @@ export default function TeleprompterView({
       // const acercamiento = 1 - Math.exp(-dtCuadro / MS_DESLIZAR)
       // scrollSuaveRef.current += (topObjetivo - scrollSuaveRef.current) * acercamiento
       // if (Math.abs(topObjetivo - scrollSuaveRef.current) < 0.5) scrollSuaveRef.current = topObjetivo
-      scrollSuaveRef.current = acercarScroll(scrollSuaveRef.current, topObjetivo, dtCuadro)
+      // -13-10-2026, resorte-sin-rebote-: con el interruptor, el resorte sin rebote. Sin el, igual
+      // que siempre. Al reiniciar parte del scroll real y quieto: no salta ni arrastra velocidad vieja.
+      // Antes: scrollSuaveRef.current = acercarScroll(scrollSuaveRef.current, topObjetivo, dtCuadro)
+      if (resorteRef.current && !modoManualRef.current) {
+        if (reiniciarResorteRef.current) {
+          reiniciarResorteRef.current = false
+          if (containerRef.current) scrollSuaveRef.current = containerRef.current.scrollTop
+          velocidadScrollRef.current = 0
+        }
+        const r = moverResorte({ posicion: scrollSuaveRef.current, velocidad: velocidadScrollRef.current }, topObjetivo, dtCuadro)
+        scrollSuaveRef.current = r.posicion
+        velocidadScrollRef.current = r.velocidad
+      } else {
+        scrollSuaveRef.current = acercarScroll(scrollSuaveRef.current, topObjetivo, dtCuadro)
+      }
       const top = scrollSuaveRef.current
 
       if (diagnostico && containerRef.current) {
