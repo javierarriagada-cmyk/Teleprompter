@@ -1714,9 +1714,10 @@ export default function TeleprompterView({
           ventana y el velo debajo-, y el dueno lo vio dos veces: "nuevamente
           estan dos sombras sobre un texto". Una sola capa, como en la foto que
           trajo: el panel donde se lee y el resto del texto sobre la imagen. */}
-      {/* -tarea 106- Con Velocidad fija, leyendo, el velo no va: oscurece la franja de foco. Antes:
-          {altoContenedor > 0 && !textoSobreImagen && ( */}
-      {altoContenedor > 0 && !textoSobreImagen && !(esMotorFijo(motorAvance) && estadoToma === 'leyendo') && (
+      {/* -tarea 106- El velo vuelve con Velocidad fija, igual que hoy -decision de Javier, 14-10-2026-.
+          Se probo esconderlo leyendo con Velocidad fija, por si oscurecia de mas la franja de foco. Antes:
+          {altoContenedor > 0 && !textoSobreImagen && !(esMotorFijo(motorAvance) && estadoToma === 'leyendo') && ( */}
+      {altoContenedor > 0 && !textoSobreImagen && (
         <div
           data-testid="velo-lectura"
           style={{

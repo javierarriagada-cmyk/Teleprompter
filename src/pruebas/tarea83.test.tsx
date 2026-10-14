@@ -137,7 +137,9 @@ describe('Tarea 83 - La tableta: leer y grabar en vertical y de lado', () => {
     expect(within(barra).getByTestId('btn-volver-listo')).toBeTruthy()
     expect(within(barra).getByTestId('ficha-mas')).toBeTruthy()
     expect(screen.getAllByTestId('ficha-mas')).toHaveLength(1)
-    expect(fichasEn(dock)).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-brillo'])
+    // -tarea 106- La ficha del modo de lectura va primera.
+    // Antes: expect(fichasEn(dock)).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-brillo'])
+    expect(fichasEn(dock)).toEqual(['ficha-modo-lectura', 'ficha-letra', 'ficha-anclaje', 'ficha-brillo'])
     dock.querySelectorAll('[data-testid^="ficha-"]').forEach((f) => expect(f.className).toContain('grande'))
     const empezarBtn = within(dock).getByTestId('btn-empezar-toma') as HTMLElement
     expect(empezarBtn.style.width).toBe('72px')
@@ -161,7 +163,9 @@ describe('Tarea 83 - La tableta: leer y grabar en vertical y de lado', () => {
     // Antes (2026-10-05): expect(fichasEn(dock)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-calidad', 'ficha-subtitulos'])
     // -ajustes de pantallas, 10-10-2026- El orden de las fichas pasa a Texto -letra, anclaje- y Cámara
     // -cámara, brillo-. Antes: expect(fichasEn(dock)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha'])
-    expect(fichasEn(dock)).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'])
+    // -tarea 106- En Grabar tambien va la ficha del modo de lectura, primera, antes de Aa.
+    // Antes: expect(fichasEn(dock)).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'])
+    expect(fichasEn(dock)).toEqual(['ficha-modo-lectura', 'ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'])
     // Antes (2026-10-05): expect(within(screen.getByTestId('tab-barra')).getByTestId('ficha-mas')).toBeTruthy()
     expect(within(screen.getByTestId('tab-barra')).queryByTestId('ficha-mas')).toBeNull()
     expect(within(dock).queryByTestId('ficha-mas')).toBeNull()
@@ -224,7 +228,9 @@ describe('Tarea 83 - La tableta: leer y grabar en vertical y de lado', () => {
     // Antes (2026-10-05): expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-calidad', 'ficha-subtitulos'])
     // -ajustes de pantallas, 10-10-2026- El orden de las fichas pasa a Texto -letra, anclaje- y Cámara
     // -cámara, brillo-. Antes: expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha'])
-    expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'])
+    // -tarea 106- En Grabar tambien va la ficha del modo de lectura, primera, antes de Aa.
+    // Antes: expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'])
+    expect(fichasEn(izq)).toEqual(['ficha-modo-lectura', 'ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'])
     izq.querySelectorAll('[data-testid^="ficha-"]').forEach((f) => expect(f.className).toContain('grande ancha'))
     // Antes (2026-10-05): expect(within(der).getByTestId('ficha-mas')).toBeTruthy()
     expect(within(der).queryByTestId('ficha-mas')).toBeNull()
@@ -240,7 +246,9 @@ describe('Tarea 83 - La tableta: leer y grabar en vertical y de lado', () => {
   test('T83g 1180 x 820, Leer: tres fichas en el riel izquierdo.', async () => {
     fingirVentana(1180, 820)
     await abrir('leer')
-    expect(fichasEn(screen.getByTestId('riel-izquierdo'))).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-brillo'])
+    // -tarea 106- La ficha del modo de lectura va primera en el riel.
+    // Antes: expect(fichasEn(screen.getByTestId('riel-izquierdo'))).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-brillo'])
+    expect(fichasEn(screen.getByTestId('riel-izquierdo'))).toEqual(['ficha-modo-lectura', 'ficha-letra', 'ficha-anclaje', 'ficha-brillo'])
   })
 
   test.each([
@@ -282,7 +290,9 @@ describe('Tarea 83 - La tableta: leer y grabar en vertical y de lado', () => {
     // Antes (2026-10-05): expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-calidad', 'ficha-subtitulos'])
     // -ajustes de pantallas, 10-10-2026- El orden de las fichas pasa a Texto -letra, anclaje- y Cámara
     // -cámara, brillo-. Antes: expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-camara', 'ficha-anclaje', 'ficha-brillo', 'ficha-flecha'])
-    expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'])
+    // -tarea 106- En Grabar tambien va la ficha del modo de lectura, primera, antes de Aa.
+    // Antes: expect(fichasEn(izq)).toEqual(['ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'])
+    expect(fichasEn(izq)).toEqual(['ficha-modo-lectura', 'ficha-letra', 'ficha-anclaje', 'ficha-camara', 'ficha-brillo', 'ficha-flecha'])
     // Antes (2026-10-05): expect(within(screen.getByTestId('riel-derecho')).getByTestId('ficha-mas')).toBeTruthy()
     expect(within(screen.getByTestId('riel-derecho')).queryByTestId('ficha-mas')).toBeNull()
     expect(screen.getByTestId('ficha-letra').className).not.toContain('grande')

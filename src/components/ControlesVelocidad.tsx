@@ -97,7 +97,8 @@ export function SelectorModoLectura() {
 // chica debajo; en Grabar, en su propia linea arriba de las fichas -enLinea, el rotulo al lado-; de lado,
 // primera en el riel -compacta: el icono y la barra, o «Voz»-. Tocarla abre su menu adjunto: el modo y,
 // con Velocidad fija, el control.
-export function FichaModoLectura({ variante }: { variante: 'abajo' | 'enLinea' | 'compacta' }) {
+// tam: el tamano de las fichas vecinas -' grande' en la tableta-, como en FichasListo.
+export function FichaModoLectura({ variante, tam = '' }: { variante: 'abajo' | 'enLinea' | 'compacta'; tam?: string }) {
   useTextos()
   const { modo, nivel } = useVelocidadFija()
   const ancla = useRef<HTMLDivElement>(null)
@@ -132,7 +133,7 @@ export function FichaModoLectura({ variante }: { variante: 'abajo' | 'enLinea' |
   )
   return (
     <div ref={ancla} className={`ficha-modo-lectura ${variante}`}>
-      <button type="button" className={`ficha-listo${abierto ? ' abierta' : ''}`} data-testid="ficha-modo-lectura"
+      <button type="button" className={`ficha-listo${tam}${abierto ? ' abierta' : ''}`} data-testid="ficha-modo-lectura"
         aria-label={modo === 'voz' ? t('modoConLaVoz') : t('velocidadFijaNivel', { n: nivel })}
         aria-expanded={abierto}
         onClick={(e) => { e.stopPropagation(); setAbierto(!abierto) }}>

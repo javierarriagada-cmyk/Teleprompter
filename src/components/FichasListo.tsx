@@ -649,8 +649,10 @@ export function FichasListo({
         </div>
       ) : (
       <div className="carril-fichas" ref={carrilRef}>
-        {/* -tarea 106, lamina 4- De lado en Leer: la ficha del modo, compacta, primera en el riel. */}
-        {!conCamara && <FichaModoLectura variante="compacta" />}
+        {/* -tarea 106, lamina 4- De lado: la ficha del modo, compacta, primera en el riel, antes de Aa.
+            Tambien en Grabar -decision de Javier, 14-10-2026-, y con el tamano de las demas -tam-.
+            Antes: {!conCamara && <FichaModoLectura variante="compacta" />} */}
+        <FichaModoLectura variante="compacta" tam={tam} />
         {fichaLetra}
         {fichaAnclaje}
         {fichaCamara}

@@ -427,8 +427,13 @@ describe('Ajustes de pantallas, cuarta vuelta: un solo panel de Ajustes', () => 
     const grupos = Array.from(dock.querySelectorAll('.grupo-fichas')).map((g) => g.getAttribute('aria-label'))
     expect(grupos).toEqual([es.rotuloGrupoTexto, es.seccionPantalla])
     const ids = Array.from(dock.querySelectorAll('[data-testid]')).map((e) => e.getAttribute('data-testid'))
+    // -tarea 106- La ficha del modo de lectura va abajo a la izquierda, despues del engranaje en el orden
+    // del dock. Antes:
+    // expect(ids.filter((id) => id!.startsWith('ficha-') || id === 'btn-ajustes-toma')).toEqual([
+    //   'ficha-letra', 'ficha-anclaje', 'ficha-brillo', 'btn-ajustes-toma'
+    // ])
     expect(ids.filter((id) => id!.startsWith('ficha-') || id === 'btn-ajustes-toma')).toEqual([
-      'ficha-letra', 'ficha-anclaje', 'ficha-brillo', 'btn-ajustes-toma'
+      'ficha-letra', 'ficha-anclaje', 'ficha-brillo', 'btn-ajustes-toma', 'ficha-modo-lectura'
     ])
     // El engranaje reemplaza a Más, y no hay Voltear ni cámara.
     expect(screen.queryByTestId('ficha-mas')).toBeNull()

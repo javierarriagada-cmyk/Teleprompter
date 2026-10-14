@@ -3229,6 +3229,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                     <div className="tab-fondo" aria-hidden="true" />
                     {/* -tarea 83, parte B- La fila entera, centrada en el dock. Antes: {botonPararLectura} */}
                     {filaDeLaToma}
+                    {/* -tarea 106- Tableta de pie con Velocidad fija: el control parado NO cabe aquí. Medido
+                        en 820 x 1180: mide 195 px de alto y el dock 173; además cae debajo de la pastilla
+                        del tiempo, a la derecha. Acostado tampoco cabe entre la fila y la pastilla: hay
+                        128 px y pide 174. Queda para que Javier elija -ver el PR-; sin control por ahora. */}
                   </div>
                 </>
               ) : (
