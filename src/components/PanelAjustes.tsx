@@ -371,29 +371,32 @@ export function PanelAjustes({
               </button>
             </div>
             <div className="dock-panel-cuerpo" data-testid="pantalla-acerca-sigo">
-              <div className="fila-ajuste" data-testid="fila-version">
-                <span className="fila-ajuste-icono" aria-hidden="true"><IconoInfo tamano={22} /></span>
-                <div className="fila-ajuste-nombre">{t('version')}</div>
-                <span className="fila-ajuste-valor">{version ?? '—'}</span>
+              {/* Antes: las filas de Acerca de Sigo iban sueltas dentro de dock-panel-cuerpo */}
+              <div className="tarjeta-seccion-ajustes">
+                <div className="fila-ajuste" data-testid="fila-version">
+                  <span className="fila-ajuste-icono" aria-hidden="true"><IconoInfo tamano={22} /></span>
+                  <div className="fila-ajuste-nombre">{t('version')}</div>
+                  <span className="fila-ajuste-valor">{version ?? '—'}</span>
+                </div>
+                <FilaAjuste
+                  testid="fila-privacidad"
+                  icono={<IconoCandado tamano={22} />}
+                  nombre={t('privacidad')}
+                  onClick={() => abrirEnlace(enlacePrivacidad)}
+                />
+                <FilaAjuste
+                  testid="fila-soporte"
+                  icono={<IconoAyuda tamano={22} />}
+                  nombre={t('soporte')}
+                  onClick={() => abrirEnlace(enlaceSoporte)}
+                />
+                <FilaAjuste
+                  testid="fila-licencias"
+                  icono={<IconoDocumento tamano={22} />}
+                  nombre={t('licencias')}
+                  onClick={() => setLicencias(true)}
+                />
               </div>
-              <FilaAjuste
-                testid="fila-privacidad"
-                icono={<IconoCandado tamano={22} />}
-                nombre={t('privacidad')}
-                onClick={() => abrirEnlace(enlacePrivacidad)}
-              />
-              <FilaAjuste
-                testid="fila-soporte"
-                icono={<IconoAyuda tamano={22} />}
-                nombre={t('soporte')}
-                onClick={() => abrirEnlace(enlaceSoporte)}
-              />
-              <FilaAjuste
-                testid="fila-licencias"
-                icono={<IconoDocumento tamano={22} />}
-                nombre={t('licencias')}
-                onClick={() => setLicencias(true)}
-              />
             </div>
           </>
         ) : (
@@ -416,97 +419,112 @@ export function PanelAjustes({
               {con('lectura') && (
                 <>
                   <h3 className="dock-seccion">{t('seccionLectura')}</h3>
-                  <FilasLectura
-                    ajustes={ajustesLectura}
-                    anclas={anclasLectura}
-                    dialogo={menu}
-                    setDialogo={setMenu}
-                  />
+                  {/* Antes: FilasLectura iba suelto bajo h3.dock-seccion */}
+                  <div className="tarjeta-seccion-ajustes">
+                    <FilasLectura
+                      ajustes={ajustesLectura}
+                      anclas={anclasLectura}
+                      dialogo={menu}
+                      setDialogo={setMenu}
+                    />
+                  </div>
                 </>
               )}
               {con('video') && video && (
                 <>
                   <h3 className="dock-seccion">{t('seccionVideo')}</h3>
-                  {/* Calidad, con la misma condición de hoy -hayCalidad-. Sin ícono: Calidad no tiene uno en
-                      Sigo, y no se dibuja ninguno nuevo; el hueco del ícono queda para que alinee. */}
-                  {mostrarCalidad && (
-                    <div className="envoltorio-fila-con-menu" ref={anclaCalidad}>
+                  {/* Antes: las filas de la sección video iban sueltas bajo h3.dock-seccion */}
+                  <div className="tarjeta-seccion-ajustes">
+                    {/* Calidad, con la misma condición de hoy -hayCalidad-. Sin ícono: Calidad no tiene uno en
+                        Sigo, y no se dibuja ninguno nuevo; el hueco del ícono queda para que alinee. */}
+                    {mostrarCalidad && (
+                      <div className="envoltorio-fila-con-menu" ref={anclaCalidad}>
+                        <FilaAjuste
+                          testid="fila-calidad"
+                          icono={<span />}
+                          nombre={t('calidad')}
+                          valor={video.calidadVideo}
+                          onClick={() => alternarMenu('calidad')}
+                        />
+                      </div>
+                    )}
+                    <div className="envoltorio-fila-con-menu" ref={anclaSubtitulos}>
                       <FilaAjuste
-                        testid="fila-calidad"
-                        icono={<span />}
-                        nombre={t('calidad')}
-                        valor={video.calidadVideo}
-                        onClick={() => alternarMenu('calidad')}
+                        testid="fila-subtitulos"
+                        icono={<IconoSubtitulos tamano={22} />}
+                        nombre={t('subtitulos')}
+                        valor={t(CLAVE_SUBTITULO[estiloSub])}
+                        onClick={() => alternarMenu('subtitulos')}
                       />
                     </div>
-                  )}
-                  <div className="envoltorio-fila-con-menu" ref={anclaSubtitulos}>
                     <FilaAjuste
-                      testid="fila-subtitulos"
-                      icono={<IconoSubtitulos tamano={22} />}
-                      nombre={t('subtitulos')}
-                      valor={t(CLAVE_SUBTITULO[estiloSub])}
-                      onClick={() => alternarMenu('subtitulos')}
+                      testid="fila-estabilizar"
+                      icono={<span />}
+                      nombre={t('estabilizar')}
+                      explicacion={video.soportaEstabilizacion === false ? t('gestosNoDisponible') : t('estabilizarExplicacion')}
+                      extra={(
+                        <Interruptor
+                          encendido={video.soportaEstabilizacion === false ? false : (video.estabilizar !== false)}
+                          onCambiar={(v: boolean) => video.setEstabilizar?.(v)}
+                          etiqueta={t('estabilizar')}
+                          testid="switch-estabilizar"
+                          deshabilitado={video.soportaEstabilizacion === false}
+                        />
+                      )}
                     />
                   </div>
-                  <FilaAjuste
-                    testid="fila-estabilizar"
-                    icono={<span />}
-                    nombre={t('estabilizar')}
-                    explicacion={video.soportaEstabilizacion === false ? t('gestosNoDisponible') : t('estabilizarExplicacion')}
-                    extra={(
-                      <Interruptor
-                        encendido={video.soportaEstabilizacion === false ? false : (video.estabilizar !== false)}
-                        onCambiar={(v: boolean) => video.setEstabilizar?.(v)}
-                        etiqueta={t('estabilizar')}
-                        testid="switch-estabilizar"
-                        deshabilitado={video.soportaEstabilizacion === false}
-                      />
-                    )}
-                  />
                 </>
               )}
               {con('pantalla') && (
                 <>
                   <h3 className="dock-seccion">{t('seccionPantalla')}</h3>
-                  <FilasPantalla ajustes={ajustesLectura} />
+                  {/* Antes: FilasPantalla iba suelto bajo h3.dock-seccion */}
+                  <div className="tarjeta-seccion-ajustes">
+                    <FilasPantalla ajustes={ajustesLectura} />
+                  </div>
                 </>
               )}
               {con('apariencia') && (
                 <>
                   <h3 className="dock-seccion">{t('seccionApariencia')}</h3>
-                  <div className="envoltorio-fila-con-menu" ref={anclaTema}>
-                    <FilaAjuste
-                      testid="fila-tema"
-                      icono={<IconoTema tamano={22} />}
-                      nombre={t('tema')}
-                      valor={tema === 'claro' ? t('temaClaro') : t('temaOscuro')}
-                      onClick={() => alternarMenu('tema')}
-                    />
-                  </div>
-                  <div className="envoltorio-fila-con-menu" ref={anclaIdioma}>
-                    <FilaAjuste
-                      testid="fila-idioma"
-                      icono={<IconoIdioma tamano={22} />}
-                      nombre={t('idiomaDeLaApp')}
-                      valor={idioma === 'es' ? 'Español' : 'English'}
-                      onClick={() => alternarMenu('idioma')}
-                    />
+                  {/* Antes: las filas de apariencia iban sueltas bajo h3.dock-seccion */}
+                  <div className="tarjeta-seccion-ajustes">
+                    <div className="envoltorio-fila-con-menu" ref={anclaTema}>
+                      <FilaAjuste
+                        testid="fila-tema"
+                        icono={<IconoTema tamano={22} />}
+                        nombre={t('tema')}
+                        valor={tema === 'claro' ? t('temaClaro') : t('temaOscuro')}
+                        onClick={() => alternarMenu('tema')}
+                      />
+                    </div>
+                    <div className="envoltorio-fila-con-menu" ref={anclaIdioma}>
+                      <FilaAjuste
+                        testid="fila-idioma"
+                        icono={<IconoIdioma tamano={22} />}
+                        nombre={t('idiomaDeLaApp')}
+                        valor={idioma === 'es' ? 'Español' : 'English'}
+                        onClick={() => alternarMenu('idioma')}
+                      />
+                    </div>
                   </div>
                 </>
               )}
               {conAcerca && (
                 <>
                   <h3 className="dock-seccion">{t('seccionAcerca')}</h3>
-                  <FilaAjuste
-                    testid="fila-acerca-de-sigo"
-                    icono={<IconoInfo tamano={22} />}
-                    nombre={t('acercaDeSigo')}
-                    onClick={() => {
-                      setMenu(null)
-                      setAcerca(true)
-                    }}
-                  />
+                  {/* Antes: FilaAjuste acerca-de-sigo iba suelta bajo h3.dock-seccion */}
+                  <div className="tarjeta-seccion-ajustes">
+                    <FilaAjuste
+                      testid="fila-acerca-de-sigo"
+                      icono={<IconoInfo tamano={22} />}
+                      nombre={t('acercaDeSigo')}
+                      onClick={() => {
+                        setMenu(null)
+                        setAcerca(true)
+                      }}
+                    />
+                  </div>
                 </>
               )}
             </div>
