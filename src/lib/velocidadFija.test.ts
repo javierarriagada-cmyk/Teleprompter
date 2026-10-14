@@ -2,8 +2,9 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import {
   NIVELES_PPM, NIVEL_POR_OMISION, acotarNivel, ppmDeNivel, subirNivel, bajarNivel, segundosConNivel,
   crearMotorFijo, esMotorFijo, modoGuardado, nivelGuardado, fijarModo, fijarNivel, estadoVelocidad,
-  olvidarEstadoVelocidad
+  olvidarEstadoVelocidad, pxPorPalabra, pxDePosicion, posicionDePx, renglonDePx
 } from './velocidadFija'
+import type { Renglon } from './renglones'
 import { crearMotorDeAvance } from './avance'
 
 // Tarea 106 «Velocidad fija»: la logica sola, sin pantalla.
@@ -71,5 +72,47 @@ describe('Velocidad fija', () => {
     m.reiniciar()
     expect(m.estadoEn(10 ** 9 + 1).posicion).toBe(0)
     expect(m.corriendo()).toBe(false)
+  })
+
+  // Correccion 1: el texto sube a pixeles constantes, no a escalones por renglon.
+  const r = (top: number, desde: number, hasta: number): Renglon => ({ top, alto: 0, desdeToken: desde, hastaToken: hasta })
+  // Renglones de largo distinto: 3, 7, 5 y 2 palabras, 40 px cada uno.
+  const desparejos = [r(20, 0, 2), r(60, 3, 9), r(100, 10, 14), r(140, 15, 16)]
+
+  it('pxPorPalabra: un solo factor para todo el texto, con renglones de largo distinto', () => {
+    expect(pxPorPalabra(desparejos)).toBeCloseTo(120 / 15, 10)
+  })
+
+  it('pxDePosicion avanza los mismos pixeles en tiempos iguales', () => {
+    const m = crearMotorFijo(17, 4)
+    m.seguir(0)
+    const px = [0, 250, 500, 750, 1000, 1250].map((t) => pxDePosicion(m.estadoEn(t).posicion, desparejos))
+    const pasos = px.slice(1).map((v, i) => v - px[i])
+    pasos.forEach((p) => expect(p).toBeCloseTo(pasos[0], 9))
+    expect(pasos[0]).toBeGreaterThan(0)
+  })
+
+  it('ida y vuelta: posicionDePx(pxDePosicion(p)) = p', () => {
+    for (const p of [0, 0.37, 2.5, 9.99, 15]) expect(posicionDePx(pxDePosicion(p, desparejos), desparejos)).toBeCloseTo(p, 9)
+  })
+
+  it('con 0 o 1 renglon, sin NaN ni division por cero', () => {
+    expect(pxPorPalabra([])).toBe(0)
+    expect(pxDePosicion(5, [])).toBe(0)
+    expect(posicionDePx(100, [])).toBe(0)
+    expect(renglonDePx(100, [])).toBe(0)
+    const uno = [r(20, 0, 6)]
+    expect(pxPorPalabra(uno)).toBe(0)
+    expect(pxDePosicion(5, uno)).toBe(20)
+    expect(posicionDePx(100, uno)).toBe(0)
+    expect(renglonDePx(100, uno)).toBe(0)
+  })
+
+  it('la franja de foco en el borde exacto de un renglon ya es el renglon nuevo', () => {
+    expect(renglonDePx(59.999, desparejos)).toBe(0)
+    expect(renglonDePx(60, desparejos)).toBe(1)
+    expect(renglonDePx(140, desparejos)).toBe(3)
+    expect(renglonDePx(5, desparejos)).toBe(0)
+    expect(renglonDePx(9999, desparejos)).toBe(3)
   })
 })

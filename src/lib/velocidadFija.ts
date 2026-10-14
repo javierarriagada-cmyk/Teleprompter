@@ -11,6 +11,7 @@
 // dice «Velocidad, nivel N de 7».
 import type { EstadoAvance, MotorDeAvance } from './avance'
 import { segundosDeLectura } from '../datos/modelo'
+import type { Renglon } from './renglones'
 
 export type ModoLectura = 'voz' | 'fija'
 
@@ -166,4 +167,42 @@ export function crearMotorFijo(totalTokens: number, nivel: number = NIVEL_POR_OM
       return corre
     }
   }
+}
+
+// PALABRAS A PIXELES, PAREJO -correccion 1, 14-10-2026-. Medido en el telefono -.motor.txt, nivel 4-:
+// la posicion del motor fijo subia pareja, pero la pantalla seguia la cadena de la voz -renglon trabado,
+// blanco que cambia una vez por renglon- y quedaba quieta 2 a 3 s para despues saltar ~33 px en 250 ms.
+// Con Velocidad fija el texto sube a pixeles por segundo constantes: un solo factor para todo el
+// texto, del primer renglon al ultimo, sin escalones por renglon. Con la voz no se usa.
+export function pxPorPalabra(renglones: Renglon[]): number {
+  if (renglones.length < 2) return 0
+  const primero = renglones[0]
+  const ultimo = renglones[renglones.length - 1]
+  const palabras = ultimo.desdeToken - primero.desdeToken
+  return palabras > 0 ? (ultimo.top - primero.top) / palabras : 0
+}
+
+// El pixel de una posicion -en palabras, con fraccion-. Sin renglones, 0; con uno, su top.
+export function pxDePosicion(posicion: number, renglones: Renglon[]): number {
+  if (renglones.length === 0) return 0
+  const primero = renglones[0]
+  return primero.top + (posicion - primero.desdeToken) * pxPorPalabra(renglones)
+}
+
+// La inversa: la posicion -en palabras- de un pixel. Para soltar el arrastre donde quedo la pantalla.
+// Sin renglones, o con uno solo, 0 -o el primer token-: no hay con que dividir.
+export function posicionDePx(px: number, renglones: Renglon[]): number {
+  if (renglones.length === 0) return 0
+  const k = pxPorPalabra(renglones)
+  const primero = renglones[0]
+  if (k === 0) return primero.desdeToken
+  return primero.desdeToken + (px - primero.top) / k
+}
+
+// El renglon de un pixel, para la franja de foco: el i con renglones[i].top <= px < renglones[i+1].top.
+// Antes del primero, 0; despues del ultimo, el ultimo.
+export function renglonDePx(px: number, renglones: Renglon[]): number {
+  let i = 0
+  while (i + 1 < renglones.length && renglones[i + 1].top <= px) i++
+  return i
 }

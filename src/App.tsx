@@ -1173,8 +1173,12 @@ export default function App({ motor, repoOverride }: AppProps) {
     motorFijo.cambiarNivel(velocidad.nivel, performance.now())
   }, [motorFijo, velocidad.nivel])
   const motorAvance = fija ? motorFijo : motorDeLaVoz
+  // -correccion 1- Con Velocidad fija el token del arrastre trae fraccion -la inversa de pxDePosicion-:
+  // el seguidor recibe la palabra entera y el motor fijo la fraccion, para seguir sin salto. Con la
+  // voz el token ya es entero y floor no cambia nada.
   function irAToken(token: number) {
-    irATokenSeguidor(token)
+    // Antes: irATokenSeguidor(token)
+    irATokenSeguidor(Math.floor(token))
     motorFijo.irAToken(token, performance.now())
   }
   // Volver a un punto en LISTO o al Parar: el motor fijo queda quieto ahí, como el de la voz.
