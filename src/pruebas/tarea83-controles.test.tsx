@@ -195,9 +195,10 @@ describe('Tarea 83, parte B: los controles al leer y grabar, a través de <App>'
     expect(ordenDeLaFila()).toEqual(['btn-pausa-lectura', 'btn-parar-lectura', 'btn-descartar-toma'])
     const tacho = screen.getByTestId('btn-descartar-toma')
     expect(tacho.classList.contains('btn-flotante-56')).toBe(true)
-    // Su «¿Seguro?» de siempre sigue ahí, adaptado al 56: el primer toque pregunta, no descarta.
+    // Su «¿Descartar?» de siempre sigue ahí, adaptado al 56: el primer toque pregunta, no descarta.
+    /* Antes: expect(screen.getByTestId('btn-descartar-toma').textContent).toMatch(/¿Seguro\?/) */
     await act(async () => { fireEvent.click(tacho) })
-    expect(screen.getByTestId('btn-descartar-toma').textContent).toMatch(/¿Seguro\?/)
+    expect(screen.getByTestId('btn-descartar-toma').textContent).toMatch(/¿Descartar\?/)
   })
 
   test('EN LEER, LA MISMA FILA SIN TACHO NI EN PAUSA', async () => {

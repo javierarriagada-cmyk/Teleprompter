@@ -573,7 +573,8 @@ export default function EditorView({
             fontWeight: 'bold'
           }}
         >
-          {t('errorAbrirArchivo', { detalle: errorArchivo })}
+          {/* Antes: {t('errorAbrirArchivo', { detalle: errorArchivo })} */}
+          {errorArchivo}
         </div>
       )}
 

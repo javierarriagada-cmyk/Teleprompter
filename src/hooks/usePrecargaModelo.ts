@@ -44,7 +44,9 @@ export function usePrecargaModelo(engine: IdMotor = 'vosk'): {
       })
 
       const unsubError = motor.onError((err) => {
-        setError(err.message || String(err))
+        const detalle = err.message || String(err)
+        console.warn('[precarga]', detalle)
+        setError(detalle)
         setEstado('error')
       })
 
@@ -55,7 +57,9 @@ export function usePrecargaModelo(engine: IdMotor = 'vosk'): {
       setProgreso(1)
       setEstado('listo')
     } catch (err: any) {
-      setError(err?.message || 'Error al precargar el modelo')
+      const detalle = err?.message || 'Error al precargar el modelo'
+      console.warn('[precarga]', detalle)
+      setError(detalle)
       setEstado('error')
     }
   }, [engine])

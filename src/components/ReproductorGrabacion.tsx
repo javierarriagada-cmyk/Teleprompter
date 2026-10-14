@@ -814,7 +814,8 @@ export default function ReproductorGrabacion({
             className={guardada ? 'accion-toma con-nombre' : 'accion-toma'}
             data-testid="borrar-desde-reproductor"
             data-confirmando={confirmando ? 'si' : 'no'}
-            aria-label={confirmando ? t('seguro') : t('borrar')}
+            // Antes: aria-label={confirmando ? t('seguro') : t('borrar')}
+            aria-label={confirmando ? t('confirmarBorrar') : t('borrar')}
             title={t('borrar')}
             // -tarea 87, de lado- Desactivado mientras se guarda, como de pie. Antes sin disabled.
             disabled={guardando}
@@ -823,10 +824,10 @@ export default function ReproductorGrabacion({
             {...fila}
           >
             <IconoTacho tamano={26} strokeWidth={1.6} />
-            {/* -ajustes de pantallas- Dice «Borrar»; al primer toque, «¿Seguro?» en su lugar, como hoy. Antes:
-                {confirmando && <span data-rotulo="seguro" style={{ fontSize: ROTULO_MINIMO }}>{t('seguro')}</span>} */}
+            {/* -ajustes de pantallas- Dice «Borrar»; al primer toque, «¿Borrar?» en su lugar. Antes:
+                {confirmando ? <span data-rotulo="seguro" style={{ fontSize: ROTULO_MINIMO }}>{t('seguro')}</span> : ...} */}
             {confirmando
-              ? <span data-rotulo="seguro" style={{ fontSize: ROTULO_MINIMO }}>{t('seguro')}</span>
+              ? <span data-rotulo="seguro" style={{ fontSize: ROTULO_MINIMO }}>{t('confirmarBorrar')}</span>
               : <span data-rotulo="borrar" style={{ fontSize: ROTULO_MINIMO }}>{t('borrar')}</span>}
           </button>
         </>
@@ -1068,13 +1069,15 @@ export default function ReproductorGrabacion({
             className={guardada ? 'accion-toma con-nombre' : 'accion-toma'}
             data-testid="borrar-desde-reproductor"
             data-confirmando={confirmando ? 'si' : 'no'}
-            aria-label={confirmando ? t('seguro') : t('borrar')}
+            // Antes: aria-label={confirmando ? t('seguro') : t('borrar')}
+            aria-label={confirmando ? t('confirmarBorrar') : t('borrar')}
             title={t('borrar')}
             disabled={guardando}
             onClick={() => { if (confirmando) { onBorrar(grabacion.id) } else { setConfirmando(true) } }}
           >
             <IconoTacho tamano={26} strokeWidth={1.6} />
-            <span>{confirmando ? t('seguro') : t('borrar')}</span>
+            {/* Antes: <span>{confirmando ? t('seguro') : t('borrar')}</span> */}
+            <span>{confirmando ? t('confirmarBorrar') : t('borrar')}</span>
           </button>
         </div>
       </div>

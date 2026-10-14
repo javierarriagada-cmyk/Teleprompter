@@ -251,7 +251,8 @@ describe('Tarea 70 - El estado LISTO y LEYENDO del lienzo se hace como la foto, 
     fireEvent.click(btnTacho)
     expect(screen.getByTestId('teleprompter-view-container').getAttribute('data-estado-toma')).toBe('leyendo')
     expect(btnTacho.getAttribute('data-confirmando')).toBe('si')
-    expect(btnTacho.textContent).toContain('¿Seguro?')
+    /* Antes: expect(btnTacho.textContent).toContain('¿Seguro?') */
+    expect(btnTacho.textContent).toContain('¿Descartar?')
 
     // Segundo click
     fireEvent.click(btnTacho)
