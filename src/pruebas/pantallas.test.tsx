@@ -1402,7 +1402,10 @@ describe('Pruebas TAREA 43: El sistema operativo no puede meterse en la pantalla
       )
     }
 
-    // 1. Un guion que se abre con "\n\nHola" queda con "Hola" al montar
+    // -espacios-del-usuario, 14-10-2026- Ya no se limpian: las líneas vacías que el usuario escribió se
+    // quedan -regla 4, consolidarGuion-. Antes:
+    // // 1. Un guion que se abre con "\n\nHola" queda con "Hola" al montar
+    // 1. Un guion que se abre con "\n\nHola" se queda con sus dos líneas vacías al montar
     const guionConSaltosIniciales: Guion = {
       id: 'g-t275-abrir',
       titulo: 'Guion con saltos',
@@ -1414,7 +1417,8 @@ describe('Pruebas TAREA 43: El sistema operativo no puede meterse en la pantalla
 
     const { unmount } = render(<WrapperEditorT275 guionInicial={guionConSaltosIniciales} />)
 
-    expect(textoDelGuion()).toBe('Hola')
+    // Antes: expect(textoDelGuion()).toBe('Hola')
+    expect(textoDelGuion()).toBe('\n\nHola')
     unmount()
 
     // 2. Se monta el editor con "Hola" y se aprieta Enter al final. El guion tiene que quedar en "Hola\n", NO en "Hola"
