@@ -1186,3 +1186,6 @@
 .riel-control-velocidad { position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%); display: flex; justify-content: center; z-index: 100; }
 /* La franja de foco de Velocidad fija la pinta TeleprompterView token por token -opacidad 0.45 fuera del
    renglon de arriba-; no lleva estilos aqui. */
+/* -tarea 106, opción (a)- Tableta de pie: el control parado se apoya arriba del dock -var(--tab-dock),
+   styles-tableta.css-, contra el borde derecho. */
+.sobre-tab-dock .control-velocidad-lectura.de-pie { bottom: calc(var(--tab-dock, 172px) + env(safe-area-inset-bottom, 0px) + 12px); z-index: 100; }
