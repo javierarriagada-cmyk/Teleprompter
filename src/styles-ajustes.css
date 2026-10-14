@@ -74,9 +74,17 @@
   inset: 8px 0;
   /* Antes: border-radius: 8px; */
   border-radius: var(--forma-chica);
-  border: 1px solid var(--borde-tarjeta);
-  background: var(--bg-panel);
-  box-shadow: var(--sombra-tarjeta);
+  /* Tanda 2, 15-10-2026: la pastilla suma el canto --sup-canto, sin sombra -esta dentro de una pantalla,
+     como las tarjetas de seccion-. Va en el ::before, que es la pastilla visible. El color va como
+     gradiente de un tono: un color solo no puede ir en una capa que no sea la ultima. Antes:
+       border: 1px solid var(--borde-tarjeta);
+       background: var(--bg-panel);
+       box-shadow: var(--sombra-tarjeta); */
+  border: 1px solid transparent;
+  background-image: linear-gradient(var(--bg-panel), var(--bg-panel)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: none;
   pointer-events: none;
 }
 .ficha-listo > * {
@@ -998,8 +1006,13 @@
 }
 .dock-listo .ficha-listo::before {
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  /* Tanda 2, 15-10-2026: el canto --sup-canto, sin sombra, sobre el mismo relleno de vidrio. Antes:
+       background: rgba(255, 255, 255, 0.07);
+       border: 1px solid rgba(255, 255, 255, 0.10); */
+  background-image: linear-gradient(rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
   box-shadow: none;
 }
 .dock-listo .ficha-listo.abierta::before {

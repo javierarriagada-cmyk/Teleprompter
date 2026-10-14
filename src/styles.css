@@ -2684,7 +2684,12 @@ button.btn-deformable.miniatura-banda:not(:active) {
    box-shadow var(--sombra-tarjeta); fondo de la fila var(--bg-panel) y del video var(--bg-suelo), en linea. */
 .portada .fila-guion-caja.tarjeta-elevada {
   border: 1px solid transparent;
-  background: var(--sup-fondo) padding-box, var(--sup-canto) border-box;
+  /* Arreglo de la tanda 2, 15-10-2026: un color solo va solo en la ULTIMA capa de un fondo de varias; asi
+     escrita, la declaracion entera quedaba invalida y la caja salia sin fondo NI canto. El color va como
+     gradiente de un tono. Antes: background: var(--sup-fondo) padding-box, var(--sup-canto) border-box; */
+  background-image: linear-gradient(var(--sup-fondo), var(--sup-fondo)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
   box-shadow: var(--sup-sombra);
 }
 .portada .fila-guion-caja .fila-guion-cara {
@@ -2692,7 +2697,12 @@ button.btn-deformable.miniatura-banda:not(:active) {
 }
 .portada .tarjeta-video.borde-suave {
   border: 1px solid transparent;
-  background: var(--sup-fondo-video) padding-box, var(--sup-canto) border-box;
+  /* Arreglo de la tanda 2, 15-10-2026: un color solo va solo en la ULTIMA capa de un fondo de varias; asi
+     escrita, la declaracion entera quedaba invalida y la caja salia sin fondo NI canto. El color va como
+     gradiente de un tono. Antes: background: var(--sup-fondo-video) padding-box, var(--sup-canto) border-box; */
+  background-image: linear-gradient(var(--sup-fondo-video), var(--sup-fondo-video)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
   box-shadow: var(--sup-sombra);
 }
 /* La tira desplaza de lado: el aire de abajo deja ver la sombra de las tarjetas de video. */
