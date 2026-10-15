@@ -66,7 +66,8 @@ android {
         // 0.9.x mientras dure la prueba interna y la cerrada; sube a mano en cada version que se
         // manda -0.9.1, 0.9.2...-. La 1.0 queda para la publicacion de verdad. El versionCode, en
         // cambio, sigue subiendo solo: lo ve solo la consola. Antes: versionName "1.0".
-        versionName "0.9.0"
+        // -15-10-2026- 0.9.1: Velocidad fija, la app con luz, espacios del usuario y pulido. Antes: versionName "0.9.0"
+        versionName "0.9.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         // SOLO LOS PROCESADORES DE LOS TELEFONOS -24-09-2026-. Las bibliotecas nativas -Vosk,
         // la camara- venian para seis arquitecturas, y las x86 son solo de emuladores: 21 MB
@@ -111,6 +112,11 @@ android {
             // encoger, mientras se encuentra la regla que falta. La APK de prueba es debug y R8 no
             // la toca nunca.
             def conR8 = !project.hasProperty('sinR8')
+            // SIMBOLOS DE DEPURACION NATIVOS -15-10-2026-: Play advirtio en la subida del 07-10 que el AAB no
+            // los traia -Vosk y las demas bibliotecas .so-. Con la tabla de simbolos, los cierres que vengan de
+            // codigo nativo llegan a la consola con nombres de funcion y no solo direcciones. No cambia el
+            // tamano de lo que se instala: Play los guarda aparte.
+            ndk { debugSymbolLevel 'SYMBOL_TABLE' }
             minifyEnabled conR8
             shrinkResources conR8
             // Era 'proguard-android.txt', que trae -dontoptimize: pensado para cuando R8 estaba

@@ -1,7 +1,7 @@
-Prueba interna de Sigo.
+Prueba cerrada de Sigo, 0.9.1.
 <es-419>
-El texto sigue la voz. La pausa no queda en el video. Se graba de pie, de lado y en tableta.
+Nuevo: Velocidad fija, para leer a un ritmo que eliges, sin la voz. Con la voz, el texto sigue la voz como siempre. Más luz y profundidad en toda la app. El editor respeta los espacios que escribes. Mejoras de accesibilidad y pulido general, gracias a los comentarios de quienes prueban Sigo.
 </es-419>
 <en-US>
-The text follows your voice. A pause stays out of the video. Record portrait, landscape or on a tablet.
+New: Fixed speed, to read at a pace you choose, without your voice. With your voice on, the text follows your voice as always. More light and depth across the app. The editor keeps the spaces you type. Accessibility improvements and overall polish, thanks to feedback from our testers.
 </en-US>
