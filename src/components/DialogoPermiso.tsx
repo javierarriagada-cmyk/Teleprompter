@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { t } from '../textos'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
 
@@ -25,6 +25,20 @@ const TEXTOS = {
 export function DialogoPermiso({ tipo, onCerrar, onAbrirAjustes }: DialogoPermisoProps) {
   const refDialogo = useCerrarAfuera<HTMLDivElement>(true, onCerrar)
   const textos = TEXTOS[tipo]
+  // -pulido-1- Como PanelAjustes: al abrirse el foco va al título y al cerrarse vuelve a donde estaba,
+  // si sigue en el documento. Sin anillo al tocar, solo con :focus-visible -styles-ajustes.css-.
+  const tituloRef = useRef<HTMLHeadingElement>(null)
+  useEffect(() => {
+    const elPrevio = document.activeElement as HTMLElement | null
+    if (tituloRef.current) {
+      tituloRef.current.focus({ preventScroll: true })
+    }
+    return () => {
+      if (elPrevio && typeof elPrevio.focus === 'function' && document.body.contains(elPrevio)) {
+        elPrevio.focus({ preventScroll: true })
+      }
+    }
+  }, [])
 
   return (
     <div
@@ -42,7 +56,8 @@ export function DialogoPermiso({ tipo, onCerrar, onAbrirAjustes }: DialogoPermis
         aria-label={t(textos.titulo)}
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="dialogo-ajustes-titulo">{t(textos.titulo)}</h3>
+        {/* -pulido-1- Antes: <h3 className="dialogo-ajustes-titulo">{t(textos.titulo)}</h3> */}
+        <h3 ref={tituloRef} tabIndex={-1} className="dialogo-ajustes-titulo">{t(textos.titulo)}</h3>
         <p className="texto-dialogo">{t(textos.explicacion)}</p>
         <div className="botones-dialogo">
           <button

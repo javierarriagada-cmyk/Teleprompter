@@ -94,6 +94,7 @@ import { DialogoPermiso } from './components/DialogoPermiso'
 import { tituloDeBienvenida, bloqueDeBienvenida } from './app/bienvenida'
 import { GUION_VACIO, sanitizarColores, sanitizarEngine, cargarAjustesGuardados, ajustarFuenteValida } from './app/ajustesIniciales'
 import { useAviso } from './hooks/useAviso'
+import { pasoRachaGuardado } from './lib/rachaGuardado'
 import { AvisoBreve } from './components/AvisoBreve'
 import { IndicadorPrecarga } from './components/IndicadorPrecarga'
 import { PanelDiagnostico } from './components/PanelDiagnostico'
@@ -784,16 +785,24 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }, [cargado])
 
+  // -pulido-1- Si ya se avisó un guardado fallido y no ha salido bien ninguno desde entonces.
+  const rachaGuardadoAvisadaRef = useRef(false)
   // Auto-guardado debounced (500ms) al modificar guionActual
   useEffect(() => {
     if (!cargado || !guionActual) return
     const timer = setTimeout(async () => {
       try {
         await repoRef.current.guardar(guionActual)
+        // -pulido-1- Salió bien: se cierra la racha de fallos.
+        rachaGuardadoAvisadaRef.current = pasoRachaGuardado(rachaGuardadoAvisadaRef.current, true).avisado
         await cargarBiblioteca()
       } catch (e) {
         console.warn('[App] Error al guardar guion en repositorio:', e)
         setErrorRepositorio('Error al guardar cambios en el repositorio.')
+        // -pulido-1- Además se avisa, una sola vez por racha de fallos.
+        const paso = pasoRachaGuardado(rachaGuardadoAvisadaRef.current, false)
+        rachaGuardadoAvisadaRef.current = paso.avisado
+        if (paso.avisar) mostrarAviso(t('avisoGuardadoFallo'))
       }
     }, 500)
     return () => clearTimeout(timer)

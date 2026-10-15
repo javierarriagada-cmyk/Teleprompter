@@ -5,6 +5,7 @@ import React from 'react'
 import { t } from '../textos'
 import { EstadoPrecarga } from '../hooks/usePrecargaModelo'
 import { idiomaApp } from '../lib/idioma'
+import { IconoAdvertencia, IconoDescarga } from './IconosApp'
 
 interface IndicadorPrecargaProps {
   estadoPrecarga: EstadoPrecarga
@@ -17,10 +18,12 @@ interface IndicadorPrecargaProps {
 export function IndicadorPrecarga({ estadoPrecarga, progresoPrecarga, errorPrecarga, reintentarPrecarga, oculto }: IndicadorPrecargaProps) {
   return (
     /* Indicador de precarga de modelo Vosk */
+    // -pulido-1- El color va en una clase -T209-: el rojo del error es --color-grabando-texto, el que se
+    // lee como letra. Antes: color: estadoPrecarga === 'error' || estadoPrecarga === 'sin-conexion' ? 'var(--color-grabando)' : 'var(--color-texto)',
     <div
+      className={estadoPrecarga === 'error' || estadoPrecarga === 'sin-conexion' ? 'indicador-precarga con-error' : 'indicador-precarga'}
       style={{
         background: 'var(--bg-suelo)',
-        color: estadoPrecarga === 'error' || estadoPrecarga === 'sin-conexion' ? 'var(--color-grabando)' : 'var(--color-texto)',
         padding: 'var(--aire-2) var(--aire-3)',
         borderRadius: 'var(--redondeo)',
         marginBottom: 'var(--aire-4)',
@@ -33,7 +36,8 @@ export function IndicadorPrecarga({ estadoPrecarga, progresoPrecarga, errorPreca
     >
       {estadoPrecarga === 'descargando' && (
         <span>
-          ⏬ {t('descargandoModelo')} <strong>{Math.round(progresoPrecarga * 100)}%</strong>
+          {/* -pulido-1- Ícono de la casa en vez del emoji. Antes: ⏬ {t('descargandoModelo')} */}
+          <IconoDescarga tamano={16} className="icono-precarga" /> {t('descargandoModelo')} <strong>{Math.round(progresoPrecarga * 100)}%</strong>
         </span>
       )}
       {/* Sin internet para bajar la voz en inglés -tarea 84, D3-: qué pasa y que es una sola vez.
@@ -43,10 +47,13 @@ export function IndicadorPrecarga({ estadoPrecarga, progresoPrecarga, errorPreca
           texto es el de cualquier idioma, con el de la app. Antes: ⚠️ {t('vozSinConexion')} */}
       {estadoPrecarga === 'sin-conexion' && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)', width: '100%', justifyContent: 'space-between' }}>
-          <span data-testid="aviso-voz-sin-conexion">⚠️ {t('vozSinConexion', { idioma: t(idiomaApp() === 'en' ? 'idiomaEn' : 'idiomaEs') })}</span>
+          <span data-testid="aviso-voz-sin-conexion">{/* -pulido-1- Antes: ⚠️ */}<IconoAdvertencia tamano={16} className="icono-precarga" /> {t('vozSinConexion', { idioma: t(idiomaApp() === 'en' ? 'idiomaEn' : 'idiomaEs') })}</span>
+          {/* -pulido-1- Cápsula como .segmentado-opcion y 48 px de toque -.boton-reintentar-precarga-.
+              Antes: <button onClick={reintentarPrecarga} style={{ padding: 'var(--aire-1) var(--aire-2)', fontSize: 'var(--texto-meta)', cursor: 'pointer' }}> */}
           <button
+            type="button"
+            className="segmentado-opcion boton-reintentar-precarga"
             onClick={reintentarPrecarga}
-            style={{ padding: 'var(--aire-1) var(--aire-2)', fontSize: 'var(--texto-meta)', cursor: 'pointer' }}
           >
             {t('reintentar')}
           </button>
@@ -56,11 +63,15 @@ export function IndicadorPrecarga({ estadoPrecarga, progresoPrecarga, errorPreca
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)', width: '100%', justifyContent: 'space-between' }}>
           <span>
             {/* Antes: ⚠️ {t('errorModelo', { detalle: errorPrecarga || t('desconocido') })} */}
-            ⚠️ {t('errorModelo')}
+            {/* -pulido-1- Ícono de la casa en vez del emoji. Antes: ⚠️ {t('errorModelo')} */}
+            <IconoAdvertencia tamano={16} className="icono-precarga" /> {t('errorModelo')}
           </span>
+          {/* -pulido-1- Cápsula como .segmentado-opcion y 48 px de toque -.boton-reintentar-precarga-.
+              Antes: <button onClick={reintentarPrecarga} style={{ padding: 'var(--aire-1) var(--aire-2)', fontSize: 'var(--texto-meta)', cursor: 'pointer' }}> */}
           <button
+            type="button"
+            className="segmentado-opcion boton-reintentar-precarga"
             onClick={reintentarPrecarga}
-            style={{ padding: 'var(--aire-1) var(--aire-2)', fontSize: 'var(--texto-meta)', cursor: 'pointer' }}
           >
             {t('reintentar')}
           </button>

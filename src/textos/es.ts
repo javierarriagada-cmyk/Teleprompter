@@ -45,7 +45,8 @@ export const es = {
   sinGuiones: 'Sin guiones',
   escribePrimerGuion: 'Escribe tu primer guion',
   resumenSinGuiones: '0 guiones',
-  resumenUnGuion: '1 guión',
+  // -pulido-1- Sin tilde, como en el resto de la app. Antes: resumenUnGuion: '1 guión',
+  resumenUnGuion: '1 guion',
   resumenGuiones: '{n} guiones',
   resumenUnMinuto: '1 minuto de lectura',
   resumenMinutos: '{n} minutos de lectura',
@@ -101,6 +102,8 @@ export const es = {
   avisoTomasRecuperadas: 'Se recuperaron {n} tomas de una sesión interrumpida.',
   verla: 'Verla',
   guardado: 'Guardado',
+  // -pulido-1- El auto-guardado falló: se avisa una vez por racha de fallos -App.tsx-.
+  avisoGuardadoFallo: 'No se pudo guardar. Tus cambios siguen en pantalla.',
   guionBorrado: 'Guion borrado',
   deshacer: 'Deshacer',
   // -tarea 94, 05-10-2026- Selección de tomas. {n} es la cuenta.
@@ -157,10 +160,12 @@ export const es = {
   destacado: 'Destacado',
   acotacion: 'Acotación',
   botonAcotacion: '[...] Acotación',
-  placeholderGuion: 'Escribe el texto...\n\nEj: Hola, hoy te quiero contar cómo usar Sigo para grabar tus videos mirando a la cámara.',
+  // -pulido-1- Puntos suspensivos de un carácter. Antes: placeholderGuion: 'Escribe el texto...\n\nEj: …' -el resto igual-.
+  placeholderGuion: 'Escribe el texto…\n\nEj: Hola, hoy te quiero contar cómo usar Sigo para grabar tus videos mirando a la cámara.',
   pegarTexto: 'Pegar texto',
   abrirArchivo: 'Abrir archivo',
-  leyendoArchivo: 'Leyendo...',
+  // -pulido-1- Puntos suspensivos de un carácter. Antes: leyendoArchivo: 'Leyendo...',
+  leyendoArchivo: 'Leyendo…',
   tamanoLetra: 'Tamaño de letra',
   letraMenos: 'Disminuir letra panel',
   letraMas: 'Aumentar letra panel',
@@ -173,7 +178,8 @@ export const es = {
   pausa: 'Pausa',
   seguir: 'Seguir',
   parar: 'Parar',
-  guionSinBloques: 'Guión sin bloques',
+  // -pulido-1- Sin tilde. Antes: guionSinBloques: 'Guión sin bloques',
+  guionSinBloques: 'Guion sin bloques',
   grabando: 'Grabando',
   // -tarea 88, 04-10-2026- Control por gestos, en el panel de la cámara de LISTO.
   controlPorGestos: 'Control por gestos',

@@ -1129,7 +1129,8 @@ textarea::placeholder {
 .fila-editor-derecha {
   display: flex;
   align-items: center;
-  gap: var(--aire-4);
+  /* -pulido-1- El Aa y el idioma se tocaban con su vidrio: 8 px más. Antes: gap: var(--aire-4); */
+  gap: calc(var(--aire-4) + 8px);
 }
 .boton-idioma-guion {
   font-size: var(--texto-cuerpo);
@@ -1149,6 +1150,10 @@ textarea::placeholder {
 .btn-color-seleccion {
   position: relative;
 }
+/* -pulido-1- El texto del aviso de la voz -IndicadorPrecarga-: el color en clase, no en línea -T209-. */
+.indicador-precarga { color: var(--color-texto); }
+.indicador-precarga.con-error { color: var(--color-grabando-texto); }
+.icono-precarga { vertical-align: -3px; }
 .btn-color-seleccion::before {
   content: "";
   position: absolute;
@@ -2404,7 +2409,8 @@ button.btn-deformable.miniatura-banda:not(:active) {
   padding: 1px 5px;
   border-radius: 4px;
   color: #fff;
-  font-size: var(--texto-etiqueta);
+  /* -pulido-1- Solo aquí, sin tocar la variable. Antes: font-size: var(--texto-etiqueta); */
+  font-size: 12px;
   line-height: 1.3;
   white-space: nowrap;
 }
