@@ -83,6 +83,7 @@ describe('Los subtitulos en el visor de la toma', () => {
   // })
   test('CADA TOMA PARTE EN «NO»: lo elegido en una no pasa a la siguiente, ni lo guardado antes con Amarillo', async () => {
     // Lo que dejaba la versión anterior -o Ajustes y LISTO, que siguen escribiendo esta clave-.
+    // -tomas-largas, segunda vuelta- Ajustes y LISTO ya tampoco la escriben: queda solo lo de versiones anteriores.
     localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
     await abrirVisor()
     expect(screen.getByTestId('btn-subtitulos').textContent).toContain('No')

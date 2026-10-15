@@ -371,25 +371,27 @@ export const ESTILOS_SUBTITULO: Array<{ valor: EstiloSubtitulo; nombre: string }
   { valor: 'formal', nombre: 'Formal' }
 ]
 
-// Se recuerda la ultima eleccion: el que siempre los quiere no toca nada. Es
-// una comodidad de este telefono, no un dato: si se pierde, vuelve a "no".
-// -tomas-largas, 15-10-2026- El visor ya no la lee ni la escribe -cada toma parte en «No»-; la leen y
-// escriben solo la ficha de LISTO y el panel de Ajustes, que la muestran.
-const CLAVE_ESTILO = 'sigo_subtitulos_estilo'
-export function estiloSubtituloGuardado(): EstiloSubtitulo {
-  try {
-    const v = localStorage.getItem(CLAVE_ESTILO)
-    if (v && ESTILOS_SUBTITULO.some((e) => e.valor === v)) return v as EstiloSubtitulo
-  } catch (e) {
-  }
-  return 'no'
-}
-export function guardarEstiloSubtitulo(estilo: EstiloSubtitulo): void {
-  try {
-    localStorage.setItem(CLAVE_ESTILO, estilo)
-  } catch (e) {
-  }
-}
+// -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor y cada toma
+// parte en «No»: nadie lee ni escribe ya 'sigo_subtitulos_estilo'. Antes:
+// // Se recuerda la ultima eleccion: el que siempre los quiere no toca nada. Es
+// // una comodidad de este telefono, no un dato: si se pierde, vuelve a "no".
+// // -tomas-largas, 15-10-2026- El visor ya no la lee ni la escribe -cada toma parte en «No»-; la leen y
+// // escriben solo la ficha de LISTO y el panel de Ajustes, que la muestran.
+// const CLAVE_ESTILO = 'sigo_subtitulos_estilo'
+// export function estiloSubtituloGuardado(): EstiloSubtitulo {
+//   try {
+//     const v = localStorage.getItem(CLAVE_ESTILO)
+//     if (v && ESTILOS_SUBTITULO.some((e) => e.valor === v)) return v as EstiloSubtitulo
+//   } catch (e) {
+//   }
+//   return 'no'
+// }
+// export function guardarEstiloSubtitulo(estilo: EstiloSubtitulo): void {
+//   try {
+//     localStorage.setItem(CLAVE_ESTILO, estilo)
+//   } catch (e) {
+//   }
+// }
 
 // El subtitulo que corresponde a un instante del video, o null.
 export function subtituloEn(subtitulos: Subtitulo[], ms: number): Subtitulo | null {

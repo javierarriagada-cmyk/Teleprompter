@@ -3,7 +3,9 @@ import React, { useEffect, useId, useLayoutEffect, useRef, useState } from 'reac
 import { createPortal } from 'react-dom'
 import { App as CapacitorApp } from '@capacitor/app'
 import {
-  IconoAtras, IconoCerrar, IconoSubtitulos, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda,
+  // -tomas-largas- Sin la ficha/fila de Subtítulos, IconoSubtitulos ya no se usa aquí. Antes:
+  // IconoAtras, IconoCerrar, IconoSubtitulos, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda,
+  IconoAtras, IconoCerrar, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda,
   IconoDocumento
 } from './IconosApp'
 import {
@@ -15,7 +17,7 @@ import { Interruptor } from './Interruptor'
 // -tarea 106- El selector del modo de lectura y la fila Velocidad.
 import { SelectorModoLectura } from './ControlesVelocidad'
 import { PantallaLicencias } from './PantallaLicencias'
-import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
+// -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; Ajustes ya no los ofrece. Antes: import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
 import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
 import type { ClaveTexto } from '../textos'
 import { t, useTextos } from '../textos'
@@ -82,9 +84,10 @@ export function tituloDeAjustes(origen: OrigenAjustes): ClaveTexto {
 
 // Los nombres de los estilos, en el idioma de la app -los mismos de FichasListo y SubtitulosVisor-.
 // Antes -hasta 2026-10-10, cuarta vuelta-: vivían en DockListo.tsx, que ya no dibuja la sección Video.
-const CLAVE_SUBTITULO: Record<EstiloSubtitulo, ClaveTexto> = {
-  no: 'subtitulosNo', amarillo: 'subtitulosAmarillo', rojo: 'subtitulosRojo', formal: 'subtitulosFormal'
-}
+// -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; Ajustes ya no los muestra. Antes:
+// const CLAVE_SUBTITULO: Record<EstiloSubtitulo, ClaveTexto> = {
+//   no: 'subtitulosNo', amarillo: 'subtitulosAmarillo', rojo: 'subtitulosRojo', formal: 'subtitulosFormal'
+// }
 
 // Privacidad y soporte se abren en el navegador del telefono. @capacitor/app no tiene openUrl
 // -eso es de otro plugin-; en Android, Capacitor manda los enlaces externos al navegador del
@@ -150,14 +153,14 @@ export function PanelAjustes({
   const [licencias, setLicencias] = useState(false)
   const anclasLectura = useAnclasLectura()
   const anclaCalidad = useRef<HTMLDivElement>(null)
-  const anclaSubtitulos = useRef<HTMLDivElement>(null)
+  // -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; sin su fila en Ajustes. Antes: const anclaSubtitulos = useRef<HTMLDivElement>(null)
   const anclaTema = useRef<HTMLDivElement>(null)
   const anclaIdioma = useRef<HTMLDivElement>(null)
   // Los subtítulos: la MISMA clave que la ficha de hoy y el reproductor -sigo_subtitulos_estilo-.
   // -tomas-largas, 15-10-2026- OJO: el visor YA NO abre la toma con esta clave -cada toma parte en «No»,
   // decisión de Javier-. Aquí sigue siendo una preferencia que se muestra y se escribe, pero hoy no llega a
   // ninguna toma: queda a decisión de Javier quitarla o darle otro sentido.
-  const [estiloSub, setEstiloSub] = useState<EstiloSubtitulo>(estiloSubtituloGuardado)
+  // -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; Ajustes ya no los ofrece. Antes: const [estiloSub, setEstiloSub] = useState<EstiloSubtitulo>(estiloSubtituloGuardado)
   const mostrarCalidad = !!video && hayCalidad(video.conCamara, video.calidadesSoportadas)
   const conMovimiento = animar && !movimientoApagado()
 
@@ -229,7 +232,7 @@ export function PanelAjustes({
 
   const anclaActiva =
     menu === 'calidad' ? anclaCalidad
-    : menu === 'subtitulos' ? anclaSubtitulos
+    // -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; sin su menú. Antes: : menu === 'subtitulos' ? anclaSubtitulos
     : menu === 'tema' ? anclaTema
     : menu === 'idioma' ? anclaIdioma
     : null
@@ -277,6 +280,7 @@ export function PanelAjustes({
               )}
             </>
           )}
+          {/* -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; se quita su menú de Ajustes. Antes:
           {menu === 'subtitulos' && (
             <div className="lista-menu-adjunto">
               {ESTILOS_SUBTITULO.map((e) => (
@@ -298,6 +302,7 @@ export function PanelAjustes({
               ))}
             </div>
           )}
+          */}
           {menu === 'tema' && (
             <div className="lista-menu-adjunto">
               {([
@@ -471,6 +476,7 @@ export function PanelAjustes({
                         />
                       </div>
                     )}
+                    {/* -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; se quita la fila Subtítulos de Ajustes -sección Video-. Antes:
                     <div className="envoltorio-fila-con-menu" ref={anclaSubtitulos}>
                       <FilaAjuste
                         testid="fila-subtitulos"
@@ -480,6 +486,7 @@ export function PanelAjustes({
                         onClick={() => alternarMenu('subtitulos')}
                       />
                     </div>
+                    */}
                     <FilaAjuste
                       testid="fila-estabilizar"
                       icono={<span />}

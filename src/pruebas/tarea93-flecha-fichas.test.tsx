@@ -159,10 +159,14 @@ describe('Tarea 93: la flecha y la segunda fila de fichas en Grabar', () => {
     expect(flecha.getAttribute('aria-label')).toBe(es.menosOpciones)
     const ids = testidsDelCarril(segunda)
     expect(ids).toContain('ficha-calidad')
-    expect(ids).toContain('ficha-subtitulos')
+    // -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor: la segunda fila ya no tiene la ficha. Antes:
+    // expect(ids).toContain('ficha-subtitulos')
+    // expect(ids).toContain('ficha-ajustes')
+    // expect(ids.indexOf('ficha-calidad')).toBeLessThan(ids.indexOf('ficha-subtitulos'))
+    // expect(ids.indexOf('ficha-subtitulos')).toBeLessThan(ids.indexOf('ficha-ajustes'))
+    expect(ids).not.toContain('ficha-subtitulos')
     expect(ids).toContain('ficha-ajustes')
-    expect(ids.indexOf('ficha-calidad')).toBeLessThan(ids.indexOf('ficha-subtitulos'))
-    expect(ids.indexOf('ficha-subtitulos')).toBeLessThan(ids.indexOf('ficha-ajustes'))
+    expect(ids.indexOf('ficha-calidad')).toBeLessThan(ids.indexOf('ficha-ajustes'))
     // Calidad y Subtítulos ya no están en la primera fila.
     const primera = screen.getByTestId('fila-fichas-listo')
       .querySelector('.carril-fichas:not(.segunda-fila-fichas)') as HTMLElement
