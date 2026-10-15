@@ -1,7 +1,9 @@
 import { Capacitor, registerPlugin, PluginListenerHandle } from '@capacitor/core'
 import { EventoFinal, EventoParcial, MotorDeVoz, ResultadoVoz } from './MotorDeVoz'
-import { anotar, msDelRegistro, generacionDiagnostico } from '../lib/diagnostico'
+// Antes: import { anotar, msDelRegistro, generacionDiagnostico } from '../lib/diagnostico'
+import { anotar, msDelRegistro, generacionDiagnostico, ultimoCuadroAnotado } from '../lib/diagnostico'
 import { HERRAMIENTAS } from '../lib/herramientas'
+import { bancoLargoActivo, olvidarBancoLargo, leerPedidoBancoLargo, lineaDelMinuto, terminarBancoLargo, MedidaMinuto, PedidoBancoLargo } from '../lib/bancoLargo'
 
 // EL AUDIO QUE ESCUCHO VOSK, GUARDADO -24-09-2026-. Es el instrumento del plan del
 // motor: con el se afina el reconocedor en el PC contra lecturas reales. Quedan los
@@ -48,7 +50,11 @@ interface VoskNativoPlugin {
   disponible(): Promise<{ disponible: boolean }>
   // 'es' o 'en': el plugin carga assets/model-es o assets/model-en -docs/ingles.txt D3-.
   iniciar(opciones?: { idioma?: 'es' | 'en' }): Promise<void>
-  escuchar(opciones?: { guardarAudio?: boolean; fuente?: string; frecuenciaMic?: number }): Promise<{ inicioEpochMs?: number; rutaAudio?: string; muestrasPorTrozo?: number } | void>
+  // -motor-largo- bancoLargo, minutos y archivos: el banco largo, solo en la APK de prueba -lib/bancoLargo.ts-.
+  // Antes: escuchar(opciones?: { guardarAudio?: boolean; fuente?: string; frecuenciaMic?: number }): Promise<{ inicioEpochMs?: number; rutaAudio?: string; muestrasPorTrozo?: number } | void>
+  escuchar(opciones?: { guardarAudio?: boolean; fuente?: string; frecuenciaMic?: number; bancoLargo?: boolean; minutos?: number; archivos?: string[] }): Promise<{ inicioEpochMs?: number; rutaAudio?: string; muestrasPorTrozo?: number; bancoLargo?: string } | void>
+  pedidoBancoLargo(): Promise<{ pedido?: string }>
+  lineaBancoLargo(opciones: { nombre: string; linea: string }): Promise<void>
   detener(): Promise<void>
   abrirAjustesDeLaApp(): Promise<void>
   // Los pone Capacitor solo, por el @Permission del plugin -alias 'microfono'-.
@@ -63,6 +69,9 @@ interface VoskNativoPlugin {
     listener: (data: { mensaje: string }) => void
   ): Promise<PluginListenerHandle>
   addListener(eventName: 'silencio', listener: () => void): Promise<PluginListenerHandle>
+  // -motor-largo- Una medida por minuto de audio del banco largo, y su fin.
+  addListener(eventName: 'bancoLargo', listener: (data: MedidaMinuto) => void): Promise<PluginListenerHandle>
+  addListener(eventName: 'bancoLargoFin', listener: () => void): Promise<PluginListenerHandle>
   // El avance de la descarga del modelo desde Play, de 0 a 1 -tarea 84, D3-.
   addListener(eventName: 'progresoVoz', listener: (data: { idioma: string; progreso: number }) => void): Promise<PluginListenerHandle>
   // Resuelve cuando el modelo del idioma está en el teléfono; rechaza con code 'SIN_CONEXION' si
@@ -277,7 +286,30 @@ export class MotorNativo implements MotorDeVoz {
     // Si esto resulta ser un problema en una lectura larga, se vera midiendo.
     this.suscripciones.push(await Nativo.addListener('silencio', () => {}))
 
-    const r = await Nativo.escuchar({ guardarAudio: GUARDAR_AUDIO_DEL_OIDO })
+    // -motor-largo- EL BANCO LARGO, solo con HERRAMIENTAS: en la versión de Play la rama queda muerta y
+    // Rollup la saca. El mismo lazo con el audio de files/oido; nunca guarda audio -VoskNativoPlugin-.
+    const banco = HERRAMIENTAS ? bancoLargoActivo() : null
+    if (banco) {
+      const nombre = banco.pedido.nombre
+      this.suscripciones.push(
+        await Nativo.addListener('bancoLargo', (m) => {
+          const c = ultimoCuadroAnotado()
+          const linea = lineaDelMinuto(m, c ? { calce: c.calce, freno: c.freno, trabado: c.trabado, posicion: c.posicion } : null)
+          anotar({ tipo: 'banco-largo', linea })
+          void Nativo.lineaBancoLargo({ nombre, linea }).catch(() => {})
+        })
+      )
+      this.suscripciones.push(await Nativo.addListener('bancoLargoFin', () => terminarBancoLargo()))
+    }
+    // Antes: const r = await Nativo.escuchar({ guardarAudio: GUARDAR_AUDIO_DEL_OIDO })
+    const r = banco
+      ? await Nativo.escuchar({ bancoLargo: true, minutos: banco.pedido.minutos, archivos: banco.pedido.archivos })
+      : await Nativo.escuchar({ guardarAudio: GUARDAR_AUDIO_DEL_OIDO })
+    if (banco && r && r.bancoLargo) {
+      const cabecera = `# banco largo ${new Date().toISOString()} ${r.bancoLargo}`
+      anotar({ tipo: 'banco-largo', linea: cabecera })
+      void Nativo.lineaBancoLargo({ nombre: banco.pedido.nombre, linea: cabecera }).catch(() => {})
+    }
     this.oidoInfo = r && r.rutaAudio ? { ruta: r.rutaAudio, muestrasPorTrozo: r.muestrasPorTrozo ?? 0 } : null
     this.oidoAnotadoEn = -1
     // Date.now() y performance.now() avanzan juntos: la diferencia entre los dos
@@ -337,6 +369,8 @@ export class MotorNativo implements MotorDeVoz {
 
   async detener(): Promise<void> {
     this.ceroAudioPerf = null
+    // -motor-largo- Parar a mano también termina el banco: la toma siguiente vuelve al micrófono.
+    if (HERRAMIENTAS) olvidarBancoLargo()
     await Nativo.detener()
     for (const s of this.suscripciones) {
       await s.remove()
@@ -363,5 +397,17 @@ export class MotorNativo implements MotorDeVoz {
     return () => {
       this.listenersError = this.listenersError.filter((x) => x !== cb)
     }
+  }
+}
+
+// -motor-largo- El pedido del banco largo que dejó scripts/banco-largo.mjs, o null. Solo con HERRAMIENTAS
+// y en el teléfono; en la versión de Play no se llama nunca -y el plugin de release no tiene pedido-.
+export async function tomarPedidoBancoLargo(): Promise<PedidoBancoLargo | null> {
+  if (!HERRAMIENTAS || !Capacitor.isNativePlatform()) return null
+  try {
+    const r = await Nativo.pedidoBancoLargo()
+    return leerPedidoBancoLargo(r && r.pedido)
+  } catch {
+    return null
   }
 }

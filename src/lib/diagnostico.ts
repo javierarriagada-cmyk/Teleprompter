@@ -14,6 +14,7 @@
 // brinco con la posicion viniendo suave.
 //
 // Apagado por omision: no cuesta nada mientras no se enciende.
+import { crearVigiaDetencion } from './vigiaDetencion'
 
 export type EntradaDiagnostico =
   | { ms: number; tipo: 'oyo'; texto: string; final: boolean }
@@ -63,10 +64,20 @@ export type EntradaDiagnostico =
   // src/lib/registroVisorLado.ts, que además las guarda fuera de la toma -el registro de diagnóstico
   // solo está encendido mientras se graba-.
   | { ms: number; tipo: 'visor-lado'; evento: string; detalle: string }
+  // CUÁNDO Y POR QUÉ SE QUEDÓ QUIETO EL MOTOR -motor-largo, 15-10-2026-: más de 8 s sin que suba el
+  // calce mientras el lazo sigue entregando. La anota este mismo archivo -lib/vigiaDetencion.ts-.
+  | { ms: number; tipo: 'detenido'; motivo: string; quietoMs: number; calce: number; detalle: string }
+  // EL BANCO LARGO -motor-largo, solo en la APK de prueba-: una línea por minuto de audio, con la
+  // medida del lazo -VoskNativoPlugin, BancoLargo- y el calce y el estado del motor en ese momento.
+  | { ms: number; tipo: 'banco-largo'; linea: string }
 
 const MAX_ENTRADAS = 60000
 
 let activo = false
+// -motor-largo- El vigía de la detención -lib/vigiaDetencion.ts-, uno por encendido, y el último
+// 'cuadro': el calce y el estado del motor para la línea del banco largo.
+let vigia = crearVigiaDetencion()
+let ultimoCuadro: Extract<EntradaDiagnostico, { tipo: 'cuadro' }> | null = null
 let entradas: EntradaDiagnostico[] = []
 let t0 = 0
 // Cuenta cada vez que se enciende. Lo que se anota una sola vez por lectura -los
@@ -86,6 +97,8 @@ export function activarDiagnostico(valor: boolean) {
     t0 = performance.now()
     generacion++
     finUltimaPalabraPerf = null
+    vigia = crearVigiaDetencion()
+    ultimoCuadro = null
   }
 }
 
@@ -122,7 +135,17 @@ export function anotar(e: SinMs<EntradaDiagnostico>) {
   if (!activo) return
   if (entradas.length >= MAX_ENTRADAS) return
   const ms = Math.round((e.ms ?? performance.now()) - t0)
-  entradas.push({ ...e, ms } as EntradaDiagnostico)
+  // -motor-largo- Antes: entradas.push({ ...e, ms } as EntradaDiagnostico)
+  const entrada = { ...e, ms } as EntradaDiagnostico
+  entradas.push(entrada)
+  if (entrada.tipo === 'cuadro') ultimoCuadro = entrada
+  const detenido = vigia(entrada)
+  if (detenido && entradas.length < MAX_ENTRADAS) entradas.push(detenido)
+}
+
+// -motor-largo- El último 'cuadro' anotado: el calce y el estado del motor -freno, renglón trabado-.
+export function ultimoCuadroAnotado(): Extract<EntradaDiagnostico, { tipo: 'cuadro' }> | null {
+  return ultimoCuadro
 }
 
 // Para anotar un instante que no es "ahora" -el tiempo de una palabra en el audio-
@@ -162,6 +185,10 @@ export function comoTexto(): string {
       filas.push(`${e.ms}\tpantalla\t${e.diseno} ${e.ancho}x${e.alto}`)
     } else if (e.tipo === 'visor-lado') {
       filas.push(`${e.ms}\tvisor-lado\t${e.evento} ${e.detalle}`)
+    } else if (e.tipo === 'detenido') {
+      filas.push(`${e.ms}\tdetenido\t${e.motivo} quieto_ms=${e.quietoMs} calce=${e.calce} ${e.detalle}`)
+    } else if (e.tipo === 'banco-largo') {
+      filas.push(`${e.ms}\tbanco-largo\t${e.linea}`)
     } else {
       filas.push(
         `${e.ms}\tcuadro\tpos=${e.posicion.toFixed(2)} calce=${e.calce} scroll=${e.scroll} freno=${e.freno} trabado=${e.trabado}`
