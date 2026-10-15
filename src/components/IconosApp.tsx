@@ -546,6 +546,30 @@ export function IconoInfo(props: PropsIcono) {
   )
 }
 
+/** -pulido-1- Una flecha hacia abajo sobre una línea: algo se está bajando -la voz, IndicadorPrecarga-.
+ *  Reemplaza al emoji ⏬, con el trazo de la casa. */
+export function IconoDescarga(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M12 4v11" />
+      <path d="M7.5 10.5 12 15l4.5-4.5" />
+      <path d="M5 19.5h14" />
+    </Trazo>
+  )
+}
+
+/** -pulido-1- Un triángulo con un signo de exclamación: algo falló -IndicadorPrecarga-. Reemplaza al
+ *  emoji ⚠️; IconoInfo no sirve, su «i» dice «más información» y no «falló». */
+export function IconoAdvertencia(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <path d="M10.3 4.3 2.9 17.5A2 2 0 0 0 4.6 20.5h14.8a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z" />
+      <path d="M12 9.5v4.5" />
+      <path d="M12 17.2v.2" />
+    </Trazo>
+  )
+}
+
 /** Un candado: la privacidad. */
 export function IconoCandado(props: PropsIcono) {
   return (

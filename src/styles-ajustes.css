@@ -182,6 +182,16 @@
   gap: 6px;
   padding: 0 8px;
 }
+/* -pulido-1- Los Reintentar de IndicadorPrecarga: la opción del segmentado como cápsula suelta, con 48
+   de alto de toque. */
+.segmentado-opcion.boton-reintentar-precarga {
+  flex: 0 0 auto;
+  height: 48px;
+  padding: 0 16px;
+  border-radius: var(--redondeo-pildora);
+  background: color-mix(in srgb, currentColor 7%, transparent);
+  cursor: pointer;
+}
 .segmentado-opcion.activa {
   background: var(--color-acento);
   color: var(--color-texto-acento);
@@ -652,6 +662,11 @@
   background: var(--color-acento);
   color: var(--color-texto-acento);
 }
+/* -pulido-1- En el diálogo de permiso, en tema claro, el principal es el de Empezar. Oscuro igual. */
+[data-tema="claro"] .capa-dialogo-microfono .boton-dialogo.lleno {
+  background: var(--empezar-fondo);
+  color: var(--empezar-icono);
+}
 .dialogo-ajustes {
   width: 100%;
   max-width: 480px;
@@ -806,6 +821,10 @@
 }
 .fila-menu-adjunto-guion.peligro {
   color: var(--color-grabando-texto);
+}
+/* -pulido-1- En tema claro el rojo de letra es más oscuro, para que se lea sobre blanco. Oscuro igual. */
+[data-tema="claro"] .fila-menu-adjunto-guion.peligro {
+  color: #C62828;
 }
 
 /* -tarea 104, láminas b y c- El aviso de la voz que falta, donde se abren los paneles de las fichas; y
@@ -986,7 +1005,8 @@
 }
 .rotulo-grupo-fichas {
   padding-left: 4px;
-  font-size: 10px;
+  /* -pulido-1- Antes: font-size: 10px; */
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1158,11 +1178,15 @@
   outline: none;
 }
 
-.dock-panel-titulo:focus:not(:focus-visible) {
+/* -pulido-1- También el título del diálogo de permiso -DialogoPermiso-. Antes: .dock-panel-titulo:focus:not(:focus-visible) { */
+.dock-panel-titulo:focus:not(:focus-visible),
+.dialogo-ajustes-titulo:focus:not(:focus-visible) {
   outline: none;
 }
 
-.dock-panel-titulo:focus-visible {
+/* -pulido-1- Antes: .dock-panel-titulo:focus-visible { */
+.dock-panel-titulo:focus-visible,
+.dialogo-ajustes-titulo:focus-visible {
   outline: 2px solid var(--color-acento);
   outline-offset: 2px;
 }
@@ -1284,6 +1308,10 @@
 .control-velocidad { display: inline-flex; align-items: center; gap: 6px; height: 48px; padding: 0 4px; border-radius: 999px; background: color-mix(in srgb, currentColor 7%, transparent); border: 1px solid color-mix(in srgb, currentColor 10%, transparent); color: var(--color-texto); flex: 0 0 auto; }
 .control-velocidad.vertical { flex-direction: column; height: auto; width: 48px; padding: 4px 0; }
 .boton-nivel { width: 40px; height: 40px; border-radius: 999px; border: none; background: transparent; color: var(--color-texto); display: flex; align-items: center; justify-content: center; }
+/* -pulido-1- Se ve de 40 y se toca en 48: la misma técnica de .btn-color-seleccion -styles.css-, un ::before
+   invisible, con -4px porque aquí el salto es de 40 a 48 -allá, de 32 a 48, -8px-. */
+.boton-nivel { position: relative; }
+.boton-nivel::before { content: ""; position: absolute; inset: -4px; border-radius: inherit; }
 .boton-nivel:disabled { opacity: 0.38; }
 .barra-nivel { display: inline-flex; gap: 3px; align-items: center; }
 .barra-nivel.vertical { flex-direction: column; }

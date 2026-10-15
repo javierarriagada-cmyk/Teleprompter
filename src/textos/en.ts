@@ -91,6 +91,8 @@ export const en: Textos = {
   avisoTomasRecuperadas: '{n} takes from an interrupted session were recovered.',
   verla: 'View it',
   guardado: 'Saved',
+  // -pulido-1- Autosave failed: shown once per run of failures -App.tsx-.
+  avisoGuardadoFallo: 'Couldn’t save. Your changes are still on screen.',
   guionBorrado: 'Script deleted',
   deshacer: 'Undo',
   // -tarea 94, 05-10-2026- Take selection. {n} is the count.
@@ -146,10 +148,12 @@ export const en: Textos = {
   destacado: 'Highlight',
   acotacion: 'Note',
   botonAcotacion: '[...] Note',
-  placeholderGuion: 'Start writing...\n\nFor example: Hi, today I want to show you how to use Sigo to record your videos while looking at the camera.',
+  // -pulido-1- Single-character ellipsis. Antes: placeholderGuion: 'Start writing...\n\nFor example: …' -the rest unchanged-.
+  placeholderGuion: 'Start writing…\n\nFor example: Hi, today I want to show you how to use Sigo to record your videos while looking at the camera.',
   pegarTexto: 'Paste text',
   abrirArchivo: 'Open file',
-  leyendoArchivo: 'Opening...',
+  // -pulido-1- Single-character ellipsis. Antes: leyendoArchivo: 'Opening...',
+  leyendoArchivo: 'Opening…',
   tamanoLetra: 'Text size',
   letraMenos: 'Smaller text',
   letraMas: 'Larger text',
