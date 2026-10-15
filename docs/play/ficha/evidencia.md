@@ -10,6 +10,7 @@ cierto, se corrige la ficha.
 |---|---|
 | El texto sigue tu voz, en español y en inglés | `src/motor/MotorNativo.ts:46`, `:67` -asegurarVoz es/en- |
 | Si haces una pausa, espera | `src/lib/avance.ts:43`, `:300` -motivoFreno 'silencio'- |
+| Velocidad fija: si prefieres no usar la voz, el texto sube solo al ritmo que eliges -15-10-2026- | `src/lib/velocidadFija.ts` -ModoLectura 'fija', siete niveles NIVELES_PPM-; el nombre en la app: `src/textos/es.ts` modoVelocidadFija «Velocidad fija», `src/textos/en.ts` «Fixed speed» |
 | Una línea bajo lo que lees | el seguidor, `src/lib/seguidor.ts`; se ve en las capturas 1 a 4 |
 | ~~Español sin internet desde la instalación~~ -ya no es cierto desde la tarea 104- | ~~`android/model-es/build.gradle:18` -deliveryType 'install-time'-~~ |
 | ~~Inglés: el modelo se baja de Play una vez y después funciona sin internet~~ | ~~`android/model-en/build.gradle:18` -'on-demand'- y `src/textos/es.ts:202` -vozSinConexion-~~ |

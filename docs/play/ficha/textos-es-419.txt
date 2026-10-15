@@ -15,7 +15,7 @@ DESCRIPCIÓN BREVE (máximo 80) — 73 caracteres
 La A, elegida por Javier, sin "sin internet": eso ahora va al final de la completa.
 
 ==============================================================================
-DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2843 caracteres
+DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2900 caracteres
 ==============================================================================
 [[¿Se te olvida el guion justo cuando empiezas a grabar? Con Sigo lees en voz alta y el texto avanza contigo, a tu ritmo. Si haces una pausa, te espera.
 
@@ -29,7 +29,7 @@ ES PARA TI SI
 
 LO QUE CAMBIA CUANDO EL TEXTO TE SIGUE
 - Hablas a tu ritmo. Sigo escucha tu voz y marca con una línea lo que estás leyendo.
-- Si te detienes, el texto se detiene. No hay velocidades que ajustar.
+- Si te detienes, el texto se detiene.
 - Eliges si lees arriba, cerca de la cámara, o al medio de la pantalla.
 
 GRABA TU VIDEO AHÍ MISMO
@@ -51,6 +51,7 @@ A TU MANERA
 - Tamaño de letra, tipografía, ancho del texto y cinco combinaciones de colores de lectura.
 - Modo espejo, para usar con un vidrio de teleprompter.
 - Tema claro u oscuro. La app está en español y en inglés, y sigue tu voz en los dos idiomas.
+- ¿Prefieres no usar la voz? Con Velocidad fija el texto sube solo, al ritmo que eliges.
 
 CONFIANZA Y PRIVACIDAD
 - Sin cuenta ni registro.

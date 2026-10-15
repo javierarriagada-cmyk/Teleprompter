@@ -36,6 +36,16 @@ guiones, a mano · 8. Letra y colores, a tu manera. El recuadro, la portada y lo
 - Gráfico: el A, en ámbar -Javier lo dejó a criterio-. La bajada ya no dice "sin internet".
 - Las propuestas que no quedaron están en la historia del PR #60.
 
+## La puesta al día -Javier, 15-10-2026, la 0.9.1-
+
+- Capturas rehechas con la app de hoy -main a1ac592, JNA 5.18.1-: las mismas escenas, en el mismo
+  orden, con las mismas personas y titulares. Los controles de la lectura ahora se desvanecen solos a
+  los 2,5 s -MS_CONTROLES_A_LA_VISTA, src/hooks/useAparecer.ts-.
+- La descripción completa: "Si te detienes, el texto se detiene." sin "No hay velocidades que
+  ajustar", y A TU MANERA suma Velocidad fija al final. Lo mismo en en-US.
+
+Antes:
+
 ## La puesta al día -Javier, 05-10-2026-
 
 - La descripción completa suma la tableta, la pausa, los gestos, los seis filtros, las cinco

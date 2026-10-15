@@ -54,6 +54,10 @@ module.exports = {
     nombreNota: 'El que ya está en Play Console. Se queda igual -Javier, 29-09-2026-.',
     breve: 'Teleprompter que sigue tu voz: el texto avanza mientras lees en voz alta.',
     breveNota: 'La A, elegida por Javier, sin "sin internet": eso ahora va al final de la completa.',
+    // -15-10-2026, ficha 0.9.1- Con Velocidad fija -tarea 106, src/lib/velocidadFija.ts- sí hay una
+    // velocidad que elegir, así que se saca el "no hay velocidades" y A TU MANERA lo cuenta al final.
+    // Antes, en LO QUE CAMBIA CUANDO EL TEXTO TE SIGUE: "- Si te detienes, el texto se detiene. No hay velocidades que ajustar."
+    // Antes, A TU MANERA terminaba en "- Tema claro u oscuro. La app está en español y en inglés, y sigue tu voz en los dos idiomas."
     completa: `¿Se te olvida el guion justo cuando empiezas a grabar? Con Sigo lees en voz alta y el texto avanza contigo, a tu ritmo. Si haces una pausa, te espera.
 
 Mira a la cámara con calma. No tienes que aprenderte el texto de memoria ni repetir la toma porque perdiste el hilo.
@@ -66,7 +70,7 @@ ES PARA TI SI
 
 LO QUE CAMBIA CUANDO EL TEXTO TE SIGUE
 - Hablas a tu ritmo. Sigo escucha tu voz y marca con una línea lo que estás leyendo.
-- Si te detienes, el texto se detiene. No hay velocidades que ajustar.
+- Si te detienes, el texto se detiene.
 - Eliges si lees arriba, cerca de la cámara, o al medio de la pantalla.
 
 GRABA TU VIDEO AHÍ MISMO
@@ -88,6 +92,7 @@ A TU MANERA
 - Tamaño de letra, tipografía, ancho del texto y cinco combinaciones de colores de lectura.
 - Modo espejo, para usar con un vidrio de teleprompter.
 - Tema claro u oscuro. La app está en español y en inglés, y sigue tu voz en los dos idiomas.
+- ¿Prefieres no usar la voz? Con Velocidad fija el texto sube solo, al ritmo que eliges.
 
 CONFIANZA Y PRIVACIDAD
 - Sin cuenta ni registro.
@@ -106,6 +111,9 @@ Escribe tu guion, toca Leer o Grabar, y habla. Sigo te sigue.`
     nombreNota: 'El que fija docs/tarea86.txt. Se queda igual -Javier, 29-09-2026-.',
     breve: 'A teleprompter that follows your voice: the script moves as you read aloud.',
     breveNota: 'La A, elegida por Javier, sin cambios: nunca dijo "offline".',
+    // -15-10-2026, ficha 0.9.1- Lo mismo que en es-419, por Velocidad fija -Fixed speed-.
+    // Antes, en WHAT CHANGES WHEN THE SCRIPT FOLLOWS YOU: "- Stop, and the text stops. No scroll speed to set."
+    // Antes, YOUR WAY terminaba en "- Light or dark theme. The app is in English and Spanish, and follows your voice in both."
     completa: `Forget your lines the moment you hit record? With Sigo you read aloud and the script moves with you, at your pace. Pause, and it waits.
 
 Look at the camera and relax. No memorizing, and no redoing a take because you lost your place.
@@ -118,7 +126,7 @@ IT IS FOR YOU IF
 
 WHAT CHANGES WHEN THE SCRIPT FOLLOWS YOU
 - You speak at your own pace. Sigo listens and underlines the line you are reading.
-- Stop, and the text stops. No scroll speed to set.
+- Stop, and the text stops.
 - Read at the top, close to the camera, or in the middle of the screen.
 
 RECORD YOUR VIDEO RIGHT THERE
@@ -140,6 +148,7 @@ YOUR WAY
 - Font size, typeface, text width and five reading color combinations.
 - Mirror mode, for use with teleprompter glass.
 - Light or dark theme. The app is in English and Spanish, and follows your voice in both.
+- Prefer not to use your voice? With Fixed speed the script scrolls on its own, at the pace you choose.
 
 TRUST AND PRIVACY
 - No account, no sign-up.
