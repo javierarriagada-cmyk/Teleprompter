@@ -12,6 +12,8 @@ import useLayout, { letraPorOmision } from './hooks/useLayout'
 import type { EsquinaRecuadroH } from './components/RecuadroCamara'
 import TeleprompterView, { VeloControles } from './components/TeleprompterView'
 import BarraDeTiempo from './components/BarraDeTiempo'
+// -controles-que-se-desvanecen- Aparecer y desvanecerse.
+import { useAparecer } from './hooks/useAparecer'
 // -tarea 106- Velocidad fija: el motor que no escucha, el modo elegido y el control al leer.
 // -15-10-2026- y controlesSeVanSolos. Antes: import { crearMotorFijo } from './lib/velocidadFija'
 import { crearMotorFijo, controlesSeVanSolos } from './lib/velocidadFija'
@@ -99,7 +101,10 @@ import { PanelDiagnostico } from './components/PanelDiagnostico'
 import { HERRAMIENTAS } from './lib/herramientas'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
-const MS_CONTROLES_A_LA_VISTA = 4000
+// -controles-que-se-desvanecen, 14-10-2026- A los 2,5 s empiezan a irse -se desvanecen en MS_PANTALLA,
+// useAparecer-. Javier: «en vez que desaparezca a los 4 segundos, comience a desaparecer a los 2,5».
+// Antes: const MS_CONTROLES_A_LA_VISTA = 4000
+const MS_CONTROLES_A_LA_VISTA = 2500
 
 interface AppProps {
   motor?: MotorDeVoz
@@ -1085,6 +1090,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   const pausaAbiertaDesdeRef = useRef<number | null>(null)
   // El símbolo grande de pausa -solo cuando pausa un gesto-: a la vista, saliendo o nada.
   const [simboloPausa, setSimboloPausa] = useState<'visible' | 'saliendo' | null>(null)
+  // -controles-que-se-desvanecen- Los controles de la toma entran en MS_CHICO y se van en MS_PANTALLA:
+  // siguen montados mientras salen -useAparecer-.
+  const faseControles = useAparecer(estadoToma === 'leyendo' && controlesVisibles, MS_PANTALLA)
   const timerSimboloRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Referencia para la función que cierra el modal abierto si existe
@@ -2792,7 +2800,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                       left: horizontal ? 'calc(12px + env(safe-area-inset-left, 0px))' : 'calc(8px + env(safe-area-inset-left, 0px))'
                     }),
                     zIndex: 100,
-                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                    // -controles-que-se-desvanecen, corrección 1- Relleno backwards y no forwards, como PanelAjustes: terminada,
+                    // la animación no deja la opacidad congelada en 1 y la salida -opacity, styles.css- puede bajarla.
+                    // Antes: animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} backwards`
                   }}
                 >
                   <IconoAtras tamano={20} />
@@ -2849,7 +2860,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                     transition: movimientoApagado()
                       ? 'none'
                       : `width ${MS_CHICO}ms ${CURVA_ENTRA}, border-radius ${MS_CHICO}ms ${CURVA_RESORTE}, transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
-                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                    // -controles-que-se-desvanecen, corrección 1- Relleno backwards y no forwards, como PanelAjustes: terminada,
+                    // la animación no deja la opacidad congelada en 1 y la salida -opacity, styles.css- puede bajarla.
+                    // Antes: animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} backwards`
                   }}
                 >
                   {/* -tarea 83, parte B- El ícono a 24, el de los botones de 56 -FAB de Material 3-.
@@ -2884,7 +2898,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                   //     right: horizontal ? 'calc((var(--riel-der) - 40px) / 2 + …)' : 'calc(8px + …)' }),
                   //   con el comentario «29-09-2026, tarea 82: de lado, centrada en el riel derecho -(124 - 40) / 2-.»
                   zIndex: 100,
-                  animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                  // -controles-que-se-desvanecen, corrección 1- Relleno backwards y no forwards, como PanelAjustes: terminada,
+                  // la animación no deja la opacidad congelada en 1 y la salida -opacity, styles.css- puede bajarla.
+                  // Antes: animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                  animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} backwards`
                 }}
               >
                 {/* -tarea 83, parte B- A 24, el ícono del botón de 56. En pausa el mismo botón es
@@ -2911,7 +2928,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                   }}
                   style={{
                     pointerEvents: 'auto',
-                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                    // -controles-que-se-desvanecen, corrección 1- Relleno backwards y no forwards, como PanelAjustes: terminada,
+                    // la animación no deja la opacidad congelada en 1 y la salida -opacity, styles.css- puede bajarla.
+                    // Antes: animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} backwards`
                   }}
                 >
                   {/* 44 y no 26: IconoParar dibuja su cuadrado en 12 de las 24 unidades de la
@@ -3208,8 +3228,10 @@ export default function App({ motor, repoOverride }: AppProps) {
             ...(gestoEnLectura ? estiloAtras(gestoEnLectura) : {})
           } as React.CSSProperties}
         >
-          {estadoToma === 'leyendo' && controlesVisibles && (
-            <>
+          {/* -controles-que-se-desvanecen- Montados mientras faseControles no es null: también mientras se
+              van. Antes: {estadoToma === 'leyendo' && controlesVisibles && ( */}
+          {estadoToma === 'leyendo' && faseControles !== null && (
+            <div className={`controles-lectura${faseControles === 'entrando' ? ' entrando' : ''}${faseControles === 'saliendo' ? ' saliendo' : ''}`}>
               {/* El velo de abajo, el mismo de LISTO -VeloControles, TeleprompterView.tsx-. */}
               {/* 29-09-2026, tarea 82: de lado no va: los controles aparecen en los rieles,
                   nunca sobre el texto. */}
@@ -3309,7 +3331,8 @@ export default function App({ motor, repoOverride }: AppProps) {
               </>)}
                 </>
               )}
-            </>
+            {/* Antes: </> */}
+            </div>
           )}
 
           <div

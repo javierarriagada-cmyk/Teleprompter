@@ -1015,7 +1015,12 @@ describe('Pruebas TAREA 17 (T88-T93)', () => {
       expect(panel()).not.toBeNull()
 
       // Y sin tocar nada mas, se van otra vez.
+      // -controles-que-se-desvanecen, 14-10-2026- A los 2,5 s empiezan a irse y se desmontan al terminar
+      // la salida -MS_PANTALLA, useAparecer-: el reloj de la salida arranca en el efecto que sigue al
+      // primer avance, por eso un segundo avance. Antes:
+      // await act(async () => { await vi.advanceTimersByTimeAsync(4200) })
       await act(async () => { await vi.advanceTimersByTimeAsync(4200) })
+      await act(async () => { await vi.advanceTimersByTimeAsync(500) })
       expect(panel()).toBeNull()
     } finally {
       vi.useRealTimers()
