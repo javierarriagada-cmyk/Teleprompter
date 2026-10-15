@@ -4,7 +4,8 @@ import { srcDeRuta, formatearDuracionMs, nombreDeToma } from './TiraGrabaciones'
 import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo } from '../lib/archivosNativos'
 import { orientacionDeToma } from '../lib/orientacion'
 import { anotar87, medirBordesSeguros, anotarOrientacion } from '../lib/medicionesTarea87'
-import { subtitulosConCortes, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
+// -tomas-largas- Antes: import { subtitulosConCortes, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
+import { subtitulosConCortes, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
 import { CapaSubtitulos, SelectorSubtitulos } from './SubtitulosVisor'
 // EL FILTRO DE LA TOMA -tarea 96-. Ver lib/filtros.ts y SelectorFiltro.tsx.
 import { SelectorFiltro } from './SelectorFiltro'
@@ -103,7 +104,11 @@ export default function ReproductorGrabacion({
   // -tarea 87, subtítulos en horizontal- Se guarda el registro y los subtítulos se arman más abajo,
   // con la forma del cuadro -32 o 47 letras por renglón-. Antes: setSubtitulos(armarSubtitulos(registro)).
   const [registroMotor, setRegistroMotor] = React.useState<string | null>(null)
-  const [estilo, setEstilo] = React.useState<EstiloSubtitulo>(() => estiloSubtituloGuardado())
+  // -tomas-largas, 15-10-2026, decisión de Javier- EL MISMO CRITERIO QUE EL FILTRO: cada toma parte en
+  // «No». El estilo elegido aquí es solo de esta toma y no se recuerda: con el recordado, una toma sin
+  // nada elegido para ella se guardaba quemando subtítulos -recodificando, minutos en una toma larga-.
+  // Antes: const [estilo, setEstilo] = React.useState<EstiloSubtitulo>(() => estiloSubtituloGuardado())
+  const [estilo, setEstilo] = React.useState<EstiloSubtitulo>('no')
   // -tarea 96, 05-10-2026- EL FILTRO: se recuerda como el estilo de subtítulos -lib/filtros.ts,
   // filtroGuardado-. Se ve en el <video> al tiro y se quema al guardar con la misma matriz.
   // -tomas-largas, 15-10-2026, decisión de Javier- CADA TOMA PARTE EN NATURAL. El filtro elegido es solo
@@ -743,7 +748,7 @@ export default function ReproductorGrabacion({
         desactivado={guardando}
         onCambiar={(e) => {
           setEstilo(e)
-          guardarEstiloSubtitulo(e)
+          // -tomas-largas- Ya no se recuerda: es de esta toma. Antes: guardarEstiloSubtitulo(e)
         }}
         // -tarea 96- Abierto lo maneja el visor, para que abrir uno cierre la tira de filtros: los dos
         // paneles salen en el mismo lugar. Antes, de lado, sin abierto ni onAbrir.
@@ -962,7 +967,7 @@ export default function ReproductorGrabacion({
               estilo={estilo}
               onCambiar={(e) => {
                 setEstilo(e)
-                guardarEstiloSubtitulo(e)
+                // -tomas-largas- Ya no se recuerda: es de esta toma. Antes: guardarEstiloSubtitulo(e)
               }}
               abierto={panelAbierto}
               // -tarea 96- abrirSubtitulos cierra la tira de filtros. Antes: onAbrir={setPanelAbierto}.

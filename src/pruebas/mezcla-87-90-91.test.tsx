@@ -9,6 +9,7 @@
 //     la 91.
 // Mismo andamiaje que tarea90.test.tsx: matchMedia, el tamaño de la ventana y los bordes de Capacitor.
 import React from 'react'
+import { elegirEstiloEnVisor } from './ayudaEstiloVisor'
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest'
@@ -89,6 +90,8 @@ const toma = (extra: any = {}) => ({ ...grabacionNueva({ id: 't87m', tituloGuion
 async function abrir(extra: any = {}, props: any = {}) {
   const r = render(<ReproductorGrabacion grabacion={toma(extra)} onCerrar={() => {}} onBorrar={() => {}} onRepetir={() => {}} {...props} />)
   await esperar()
+  // -tomas-largas- La toma parte en «No»: se elige Amarillo en el visor, lo que antes traía lo recordado.
+  await elegirEstiloEnVisor('Amarillo')
   return r
 }
 const raiz = () => document.querySelector('[data-testid="reproductor-grabacion"]') as HTMLElement
@@ -99,7 +102,7 @@ beforeEach(() => {
   h.analisis = null
   h.analizadas = 0
   localStorage.clear()
-  localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
+  // -tomas-largas- Cada toma parte en «No»: el estilo se elige en el visor. Antes: localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
   oyentes.clear()
   limpiarRegistroOrientacion()
 })

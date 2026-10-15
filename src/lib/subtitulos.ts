@@ -373,6 +373,8 @@ export const ESTILOS_SUBTITULO: Array<{ valor: EstiloSubtitulo; nombre: string }
 
 // Se recuerda la ultima eleccion: el que siempre los quiere no toca nada. Es
 // una comodidad de este telefono, no un dato: si se pierde, vuelve a "no".
+// -tomas-largas, 15-10-2026- El visor ya no la lee ni la escribe -cada toma parte en «No»-; la leen y
+// escriben solo la ficha de LISTO y el panel de Ajustes, que la muestran.
 const CLAVE_ESTILO = 'sigo_subtitulos_estilo'
 export function estiloSubtituloGuardado(): EstiloSubtitulo {
   try {

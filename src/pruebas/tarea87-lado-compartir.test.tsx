@@ -5,6 +5,7 @@
 // columna de la 90 no cambia: el rótulo de 12 y el toque de 48.
 // Andamiaje de mezcla-87-90-91.test.tsx -de lado- y lo nativo de tarea87-compartir.test.tsx.
 import React from 'react'
+import { elegirEstiloEnVisor } from './ayudaEstiloVisor'
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest'
@@ -100,6 +101,8 @@ async function abrirDeLado(caso: '1' | '2') {
   else cargarVideo(1080, 1920)
   await esperar()
   expect(raiz().getAttribute('data-caso')).toBe(caso)
+  // -tomas-largas- La toma parte en «No»: se elige Amarillo en el visor.
+  await elegirEstiloEnVisor('Amarillo')
   return { onCambio, onGuardadoEnGaleria }
 }
 async function tocar(id: string) {
@@ -116,7 +119,7 @@ beforeEach(() => {
   m.soltar.length = 0
   m.avanzar = null
   localStorage.clear()
-  localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
+  // -tomas-largas- Cada toma parte en «No»: el estilo se elige en el visor. Antes: localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
 })
 afterEach(() => cleanup())
 

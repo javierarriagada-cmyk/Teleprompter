@@ -2,6 +2,7 @@
 // '../lib/archivosNativos' como en tarea87-compartir.test.tsx. La toma del corpus dura 66 s y tiene
 // una pausa por botón de 10 s a 20 s: queda un corte [10000, 20000] y la toma final dura 56 s.
 import React from 'react'
+import { elegirEstiloEnVisor } from './ayudaEstiloVisor'
 import { describe, expect, test, vi, beforeEach } from 'vitest'
 import { render, act, fireEvent, screen, cleanup } from '@testing-library/react'
 import fs from 'fs'
@@ -36,10 +37,14 @@ const toma = (extra: Partial<ResumenGrabacion> = {}) =>
     ...extra
   })
 
+// -tomas-largas- El estilo que la persona elige en el visor; null: lo deja en «No».
+let estiloAElegir: string | null = 'Amarillo'
 async function abrir(g: ResumenGrabacion) {
   const onCambio = vi.fn()
   render(<ReproductorGrabacion grabacion={g} onCerrar={() => {}} onBorrar={() => {}} onRepetir={() => {}} onCambio={onCambio} onGuardadoEnGaleria={() => {}} />)
   await act(async () => { await new Promise((r) => setTimeout(r, 20)) })
+  // -tomas-largas- La toma parte en «No»: se elige en el visor el estilo de la prueba.
+  if (estiloAElegir) await elegirEstiloEnVisor(estiloAElegir)
   return { onCambio }
 }
 
@@ -59,7 +64,8 @@ describe('Tarea 88: el visor de una toma con pausas', () => {
   beforeEach(() => {
     cleanup()
     localStorage.clear()
-    localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
+    // -tomas-largas- Cada toma parte en «No»: el estilo se elige en el visor. Antes: localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
+    estiloAElegir = 'Amarillo'
     m.llamadas.length = 0
   })
 
@@ -112,7 +118,8 @@ describe('Tarea 88: el visor de una toma con pausas', () => {
   })
 
   test('con estilo No y cortes también va por la receta, con los tramos y sin subtítulos', async () => {
-    localStorage.setItem('sigo_subtitulos_estilo', 'no')
+    // -tomas-largas- Cada toma parte en «No»: el estilo se elige en el visor. Antes: localStorage.setItem('sigo_subtitulos_estilo', 'no')
+    estiloAElegir = null
     await abrir(toma())
     await act(async () => {
       fireEvent.click(screen.getByTestId('guardar-galeria-desde-reproductor'))

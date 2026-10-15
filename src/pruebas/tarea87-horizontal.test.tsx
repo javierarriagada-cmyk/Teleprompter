@@ -5,6 +5,7 @@
 //       orientaciones. La vertical queda igual al píxel.
 // La posición a 1/6 no se toca. Las mismas cifras en Java -UbicacionSubtitulos-.
 import React from 'react'
+import { elegirEstiloEnVisor } from './ayudaEstiloVisor'
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest'
@@ -106,7 +107,7 @@ const esperar = (ms = 30) => act(async () => { await new Promise((r) => setTimeo
 beforeEach(() => {
   h.registro = REGISTRO
   localStorage.clear()
-  localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
+  // -tomas-largas- Cada toma parte en «No»: el estilo se elige en el visor. Antes: localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
   dePie()
 })
 afterEach(() => cleanup())
@@ -119,6 +120,8 @@ describe('El visor de pie con una toma horizontal', () => {
   test('la letra es la del lado corto de la imagen -alto / 18- y los renglones son los de 47', async () => {
     render(<ReproductorGrabacion grabacion={grabacionNueva({ id: 'h87', tituloGuion: 'Larralde', duracionMs: 60000, ruta: '/grabaciones/h87.mp4', orientacion: 'horizontal' })} onCerrar={() => {}} onBorrar={() => {}} onRepetir={() => {}} />)
     await esperar()
+    // -tomas-largas- La toma parte en «No»: se elige Amarillo en el visor.
+    await elegirEstiloEnVisor('Amarillo')
     cargarVideo(1920, 1080, 372, 209.25, largo.desdeMs + 10)
     await esperar()
     const capa = document.querySelector('[data-testid="capa-subtitulos"]') as HTMLElement
@@ -132,6 +135,8 @@ describe('El visor de pie con una toma horizontal', () => {
   test('GUARDIANA: con una toma vertical, la letra de antes -alto / 32- y los renglones de 32', async () => {
     render(<ReproductorGrabacion grabacion={grabacionNueva({ id: 'v87', tituloGuion: 'Larralde', duracionMs: 60000, ruta: '/grabaciones/v87.mp4', orientacion: 'vertical' })} onCerrar={() => {}} onBorrar={() => {}} onRepetir={() => {}} />)
     await esperar()
+    // -tomas-largas- La toma parte en «No»: se elige Amarillo en el visor.
+    await elegirEstiloEnVisor('Amarillo')
     const V = S.armarSubtitulos(REGISTRO, 'vertical')
     const s = V.find((x) => x.renglones.length === 2)!
     cargarVideo(1080, 1920, 307.125, 546, s.desdeMs + 10)

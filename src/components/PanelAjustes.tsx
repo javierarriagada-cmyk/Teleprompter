@@ -154,6 +154,9 @@ export function PanelAjustes({
   const anclaTema = useRef<HTMLDivElement>(null)
   const anclaIdioma = useRef<HTMLDivElement>(null)
   // Los subtítulos: la MISMA clave que la ficha de hoy y el reproductor -sigo_subtitulos_estilo-.
+  // -tomas-largas, 15-10-2026- OJO: el visor YA NO abre la toma con esta clave -cada toma parte en «No»,
+  // decisión de Javier-. Aquí sigue siendo una preferencia que se muestra y se escribe, pero hoy no llega a
+  // ninguna toma: queda a decisión de Javier quitarla o darle otro sentido.
   const [estiloSub, setEstiloSub] = useState<EstiloSubtitulo>(estiloSubtituloGuardado)
   const mostrarCalidad = !!video && hayCalidad(video.conCamara, video.calidadesSoportadas)
   const conMovimiento = animar && !movimientoApagado()

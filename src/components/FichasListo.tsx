@@ -226,6 +226,9 @@ export function FichasListo({
   // LOS SUBTITULOS, ANTES DE GRABAR -28-09-2026-. Javier: la seccion Video salio de Ajustes; los
   // subtitulos van en su ficha de Grabar. Es la MISMA clave que el reproductor -sigo_subtitulos_estilo-:
   // lo que se elige aca es con lo que abre la toma, y ahi se puede cambiar mirando el video.
+  // -tomas-largas, 15-10-2026- OJO: el visor YA NO abre la toma con esta clave -cada toma parte en «No»,
+  // decisión de Javier-. Aquí sigue siendo una preferencia que se muestra y se escribe, pero hoy no llega a
+  // ninguna toma: queda a decisión de Javier quitarla o darle otro sentido.
   const [estiloSub, setEstiloSub] = useState<EstiloSubtitulo>(estiloSubtituloGuardado)
   const valorBrillo = brillo ?? brilloSistema ?? 0.5
   const idxLetra = PASOS_LETRA.indexOf(fontSize)
