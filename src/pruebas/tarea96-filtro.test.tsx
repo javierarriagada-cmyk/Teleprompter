@@ -90,11 +90,14 @@ describe('Tarea 96: el filtro de la toma', () => {
     expect(nombres).not.toContain('exportarToma')
   })
 
-  test('el filtro elegido se recuerda en sigo_filtro y el video lo lleva con la matriz de B/N', async () => {
+  // -tomas-largas, 15-10-2026- Cada toma parte en Natural: el filtro ya no se recuerda.
+  // Antes: test('el filtro elegido se recuerda en sigo_filtro y el video lo lleva con la matriz de B/N', ...
+  //   expect(JSON.parse(localStorage.getItem('sigo_filtro')!)).toEqual({ version: 1, tono: 'bn' })
+  test('el filtro elegido NO se recuerda en sigo_filtro y el video lo lleva con la matriz de B/N', async () => {
     h.tomas.push(tomaDePrueba({ orientacion: 'vertical' }))
     await abrirTomaEnApp('008a7133')
     await elegirFiltro('bn')
-    expect(JSON.parse(localStorage.getItem('sigo_filtro')!)).toEqual({ version: 1, tono: 'bn' })
+    expect(localStorage.getItem('sigo_filtro')).toBeNull()
     const raiz = screen.getByTestId('reproductor-grabacion')
     const video = raiz.querySelector('[data-testid="video-grabacion"]') as HTMLVideoElement
     expect(video.style.filter).toBe('url(#filtro-sigo-bn)')

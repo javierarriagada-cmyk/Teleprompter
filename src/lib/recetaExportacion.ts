@@ -54,6 +54,21 @@ export function esCopia(r: RecetaExportacion): boolean {
   return sinSubtitulos && r.tramos === null && r.filtro === null
 }
 
+// POR DÓNDE SE GUARDA UNA TOMA -tomas-largas, 15-10-2026-. La decisión de guardarToma
+// -ReproductorGrabacion-, sacada aquí para probarla sin el visor: lo mismo que hacía en línea.
+//   'receta'      con pausas -tramos- o un filtro que no es Natural: exportarAGaleria, recodifica.
+//   'subtitulos'  con subtítulos y sin lo anterior: guardarEnGaleriaConSubtitulos, recodifica.
+//   'copia'       sin subtítulos, sin pausas y en Natural: guardarEnGaleria, los mismos bytes, NUNCA
+//                 Media3 Transformer. Una toma de 25 min sin nada que cambiarle tardaba 6,5 min en
+//                 guardarse porque el filtro recordado de otra toma la mandaba a recodificar.
+export type CaminoDeGuardado = 'receta' | 'subtitulos' | 'copia'
+export function caminoDeGuardado(o: { estilo: EstiloSubtitulo; subtitulos: Subtitulo[]; tramos?: TramoMs[] | null; filtro?: FiltroToma | null }): CaminoDeGuardado {
+  const conSubtitulos = o.estilo !== 'no' && Array.isArray(o.subtitulos) && o.subtitulos.length > 0
+  const conTramos = !!o.tramos && o.tramos.length > 0
+  if (conTramos || !esNeutro(o.filtro)) return 'receta'
+  return conSubtitulos ? 'subtitulos' : 'copia'
+}
+
 // null si sirve; si no, por qué no. Los tramos, si vienen, van ordenados y sin encimarse.
 export function validarReceta(r: RecetaExportacion): string | null {
   if (!r || r.version !== 1) return 'versión desconocida'
