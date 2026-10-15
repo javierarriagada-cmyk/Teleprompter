@@ -3,9 +3,11 @@ import type { FondoToma } from '../App'
 import { AnclajeZona } from './banda'
 import {
   IconoEngranaje, IconoVoltear, IconoImagenDetras, IconoImagenRecuadro,
-  IconoImagenOculta, IconoFranja, IconoSol, IconoSubtitulos, IconoChevron
+  // -tomas-largas- Sin la ficha/fila de Subtítulos, IconoSubtitulos ya no se usa aquí. Antes:
+  // IconoImagenOculta, IconoFranja, IconoSol, IconoSubtitulos, IconoChevron
+  IconoImagenOculta, IconoFranja, IconoSol, IconoChevron
 } from './IconosApp'
-import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
+// -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; LISTO ya no los ofrece. Antes: import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
 import type { ClaveTexto } from '../textos'
 import { PASOS_LETRA } from './estiloLectura'
 import { aplicarBrillo, leerBrilloSistema, restaurarBrillo, BRILLO_MINIMO } from '../lib/brillo'
@@ -55,9 +57,10 @@ export function hayCalidad(conCamara: boolean, calidadesSoportadas: string[]): b
 export type PanelFicha = 'letra' | 'camara' | 'anclaje' | 'brillo' | 'calidad' | 'subtitulos' | null
 
 // Los nombres de los estilos, en el idioma de la app -las claves de SubtitulosVisor.tsx-.
-const CLAVE_SUBTITULO: Record<EstiloSubtitulo, ClaveTexto> = {
-  no: 'subtitulosNo', amarillo: 'subtitulosAmarillo', rojo: 'subtitulosRojo', formal: 'subtitulosFormal'
-}
+// -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; LISTO ya no los muestra. Antes:
+// const CLAVE_SUBTITULO: Record<EstiloSubtitulo, ClaveTexto> = {
+//   no: 'subtitulosNo', amarillo: 'subtitulosAmarillo', rojo: 'subtitulosRojo', formal: 'subtitulosFormal'
+// }
 
 function etiquetaCamara(fondo: FondoToma): string {
   if (fondo === 'recuadro') return t('fichaCamaraRecuadro')
@@ -226,7 +229,10 @@ export function FichasListo({
   // LOS SUBTITULOS, ANTES DE GRABAR -28-09-2026-. Javier: la seccion Video salio de Ajustes; los
   // subtitulos van en su ficha de Grabar. Es la MISMA clave que el reproductor -sigo_subtitulos_estilo-:
   // lo que se elige aca es con lo que abre la toma, y ahi se puede cambiar mirando el video.
-  const [estiloSub, setEstiloSub] = useState<EstiloSubtitulo>(estiloSubtituloGuardado)
+  // -tomas-largas, 15-10-2026- OJO: el visor YA NO abre la toma con esta clave -cada toma parte en «No»,
+  // decisión de Javier-. Aquí sigue siendo una preferencia que se muestra y se escribe, pero hoy no llega a
+  // ninguna toma: queda a decisión de Javier quitarla o darle otro sentido.
+  // -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; LISTO ya no los ofrece. Antes: const [estiloSub, setEstiloSub] = useState<EstiloSubtitulo>(estiloSubtituloGuardado)
   const valorBrillo = brillo ?? brilloSistema ?? 0.5
   const idxLetra = PASOS_LETRA.indexOf(fontSize)
   const puedeMenos = idxLetra > 0 || (idxLetra < 0 && PASOS_LETRA.some((p) => p < fontSize))
@@ -464,6 +470,7 @@ export function FichasListo({
             </>
           )}
 
+          {/* -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; se quita su panel de LISTO. Antes:
           {panelAbierto === 'subtitulos' && (
             <>
               <div className="panel-ficha-cabeza">
@@ -489,6 +496,7 @@ export function FichasListo({
               </div>
             </>
           )}
+          */}
 
           {panelAbierto === 'anclaje' && (
             <>
@@ -735,6 +743,7 @@ export function FichasListo({
               <span>{calidadVideo}</span>
             </button>
           )}
+          {/* -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; se quita la ficha Subtítulos de la segunda fila de LISTO. Antes:
           <button
             type="button"
             className={`ficha-listo${tam}${panelAbierto === 'subtitulos' ? ' abierta' : ''}`}
@@ -746,6 +755,7 @@ export function FichasListo({
             <IconoSubtitulos tamano={16} />
             <span>{t(CLAVE_SUBTITULO[estiloSub])}</span>
           </button>
+          */}
           <FichaMas setPanelAbierto={setPanelAbierto} onAbrirAjustes={onAbrirAjustes} grande={grandes} ancha={anchas} comoAjustes />
         </div>
       )}

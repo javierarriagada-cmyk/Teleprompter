@@ -236,7 +236,8 @@ describe('Ajustes de pantallas: el dock de LISTO en Grabar', () => {
     fireEvent.click(screen.getByTestId('btn-ajustes-toma'))
     await screen.findByTestId('panel-ajustes-toma')
     expect(screen.queryByTestId('fila-calidad')).toBeNull()
-    expect(screen.getByTestId('fila-subtitulos')).toBeTruthy()
+    // -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor: Ajustes ya no tiene la fila. Antes: expect(screen.getByTestId('fila-subtitulos')).toBeTruthy()
+    expect(screen.queryByTestId('fila-subtitulos')).toBeNull()
   })
 
   // -SEGUNDA VUELTA, 10-10-2026- Una sola estimación. El guion lleva una nota entre corchetes: la nota

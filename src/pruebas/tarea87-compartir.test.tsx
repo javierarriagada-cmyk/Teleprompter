@@ -1,6 +1,7 @@
 // TAREA 87, PARTE E1 -04-10-2026-: "Guardar y compartir". <ReproductorGrabacion> solo, con
 // vi.mock de '../lib/archivosNativos' como en subtitulosVisor.test.tsx.
 import React from 'react'
+import { elegirEstiloEnVisor } from './ayudaEstiloVisor'
 import { describe, expect, test, vi, beforeEach } from 'vitest'
 import { render, act, fireEvent, screen, cleanup } from '@testing-library/react'
 import fs from 'fs'
@@ -46,11 +47,15 @@ import { es } from '../textos/es'
 const toma = (extra: Partial<ResumenGrabacion> = {}) =>
   grabacionNueva({ id: '008a7133', tituloGuion: 'Hola', duracionMs: 66000, ruta: '/grabaciones/008a7133.mp4', orientacion: 'vertical', ...extra })
 
+// -tomas-largas- El estilo que la persona elige en el visor; null: lo deja en «No».
+let estiloAElegir: string | null = 'Amarillo'
 async function abrir(g: ResumenGrabacion, props: Record<string, unknown> = {}) {
   const onCambio = vi.fn()
   const onGuardadoEnGaleria = vi.fn()
   render(<ReproductorGrabacion grabacion={g} onCerrar={() => {}} onBorrar={() => {}} onRepetir={() => {}} onCambio={onCambio} onGuardadoEnGaleria={onGuardadoEnGaleria} {...props} />)
   await act(async () => { await new Promise((r) => setTimeout(r, 20)) })
+  // -tomas-largas- La toma parte en «No»: se elige en el visor el estilo de la prueba.
+  if (estiloAElegir) await elegirEstiloEnVisor(estiloAElegir)
   return { onCambio, onGuardadoEnGaleria }
 }
 
@@ -65,7 +70,8 @@ describe('Tarea 87, E1: Guardar y compartir', () => {
   beforeEach(() => {
     cleanup()
     localStorage.clear()
-    localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
+    // -tomas-largas- Cada toma parte en «No»: el estilo se elige en el visor. Antes: localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
+    estiloAElegir = 'Amarillo'
     m.llamadas.length = 0
     m.guardadoOk = true
     m.compartirFalla = null
@@ -84,7 +90,8 @@ describe('Tarea 87, E1: Guardar y compartir', () => {
   })
 
   test('SIN SUBTÍTULOS TAMBIÉN: va la copia tal cual y después compartir', async () => {
-    localStorage.setItem('sigo_subtitulos_estilo', 'no')
+    // -tomas-largas- Cada toma parte en «No»: el estilo se elige en el visor. Antes: localStorage.setItem('sigo_subtitulos_estilo', 'no')
+    estiloAElegir = null
     await abrir(toma())
     await tocar('btn-compartir-nueva')
     expect(m.llamadas[0]).toEqual(['tal cual', '/grabaciones/008a7133.mp4'])
@@ -137,6 +144,8 @@ describe('Tarea 87, E1: Guardar y compartir', () => {
   })
 
   test('TOMA YA GUARDADA: no hay btn-compartir-nueva', async () => {
+    // -tomas-largas- Una toma ya guardada no ofrece Subtítulos: no hay estilo que elegir.
+    estiloAElegir = null
     await abrir(toma({ galeriaUri: 'content://media/9', ruta: 'content://media/9' }))
     expect(screen.queryByTestId('btn-compartir-nueva')).toBeNull()
     expect(screen.getByTestId('btn-compartir-toma')).not.toBeNull()

@@ -4,13 +4,16 @@ import { srcDeRuta, formatearDuracionMs, nombreDeToma } from './TiraGrabaciones'
 import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo } from '../lib/archivosNativos'
 import { orientacionDeToma } from '../lib/orientacion'
 import { anotar87, medirBordesSeguros, anotarOrientacion } from '../lib/medicionesTarea87'
-import { subtitulosConCortes, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
+// -tomas-largas- Antes: import { subtitulosConCortes, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
+import { subtitulosConCortes, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
 import { CapaSubtitulos, SelectorSubtitulos } from './SubtitulosVisor'
 // EL FILTRO DE LA TOMA -tarea 96-. Ver lib/filtros.ts y SelectorFiltro.tsx.
 import { SelectorFiltro } from './SelectorFiltro'
-import { filtroGuardado, guardarFiltro, filtroCss, esNeutro, FiltroToma, TonoFiltro } from '../lib/filtros'
+// -tomas-largas- Antes: import { filtroGuardado, guardarFiltro, filtroCss, esNeutro, FiltroToma, TonoFiltro } from '../lib/filtros'
+import { FILTRO_NATURAL, filtroCss, esNeutro, FiltroToma, TonoFiltro } from '../lib/filtros'
 import { cortesDe, aSalidaCercana, aArchivo, duracionFinal, duracionVisible, tramosQueQuedan } from '../lib/tramos'
-import { recetaDe, TramoMs } from '../lib/recetaExportacion'
+// -tomas-largas- Antes: import { recetaDe, TramoMs } from '../lib/recetaExportacion'
+import { recetaDe, caminoDeGuardado, TramoMs } from '../lib/recetaExportacion'
 import { t, useTextos } from '../textos'
 import { IconoGuardar, IconoCompartir, IconoRepetir, IconoCerrar, IconoTacho, IconoEmpezar, IconoPausa } from './IconosApp'
 // EL VISOR DE LADO -tarea 90-. Ver lib/visorDeLado.ts y styles-visor-de-lado.css.
@@ -101,15 +104,23 @@ export default function ReproductorGrabacion({
   // -tarea 87, subtítulos en horizontal- Se guarda el registro y los subtítulos se arman más abajo,
   // con la forma del cuadro -32 o 47 letras por renglón-. Antes: setSubtitulos(armarSubtitulos(registro)).
   const [registroMotor, setRegistroMotor] = React.useState<string | null>(null)
-  const [estilo, setEstilo] = React.useState<EstiloSubtitulo>(() => estiloSubtituloGuardado())
+  // -tomas-largas, 15-10-2026, decisión de Javier- EL MISMO CRITERIO QUE EL FILTRO: cada toma parte en
+  // «No». El estilo elegido aquí es solo de esta toma y no se recuerda: con el recordado, una toma sin
+  // nada elegido para ella se guardaba quemando subtítulos -recodificando, minutos en una toma larga-.
+  // Antes: const [estilo, setEstilo] = React.useState<EstiloSubtitulo>(() => estiloSubtituloGuardado())
+  const [estilo, setEstilo] = React.useState<EstiloSubtitulo>('no')
   // -tarea 96, 05-10-2026- EL FILTRO: se recuerda como el estilo de subtítulos -lib/filtros.ts,
   // filtroGuardado-. Se ve en el <video> al tiro y se quema al guardar con la misma matriz.
-  const [filtro, setFiltro] = React.useState<FiltroToma>(() => filtroGuardado())
+  // -tomas-largas, 15-10-2026, decisión de Javier- CADA TOMA PARTE EN NATURAL. El filtro elegido es solo
+  // de esta toma y no se recuerda: con el recordado, una toma sin nada que cambiarle se guardaba
+  // recodificando -6,5 min una de 25 min- sin que nadie lo hubiera elegido para ella.
+  // Antes: const [filtro, setFiltro] = React.useState<FiltroToma>(() => filtroGuardado())
+  const [filtro, setFiltro] = React.useState<FiltroToma>(() => ({ ...FILTRO_NATURAL }))
   const [filtroAbierto, setFiltroAbierto] = React.useState(false)
   const cambiarFiltro = (tono: TonoFiltro) => {
     const f: FiltroToma = { version: 1, tono }
     setFiltro(f)
-    guardarFiltro(f)
+    // -tomas-largas- Ya no se recuerda: es de esta toma. Antes: guardarFiltro(f)
   }
   React.useEffect(() => {
     let vigente = true
@@ -458,9 +469,12 @@ export default function ReproductorGrabacion({
       // -tarea 96- Con filtro, también la receta, con el filtro. Antes: tramos ? exportarAGaleria(...,
       // recetaDe({ estilo, subtitulos: ..., tramos }), ...).
       if (conFiltro) console.info('Sigo96', `guardar filtro=${filtro.tono} estilo=${estilo} subtitulos=${conSubtitulos ? subtitulos.length : 0} tramos=${tramos ? tramos.length : 0}`)
-      const res = tramos || conFiltro
+      // -tomas-largas- La decisión, en caminoDeGuardado -recetaExportacion.ts-, la misma de antes.
+      // Antes: const res = tramos || conFiltro ? await exportarAGaleria(...) : conSubtitulos ? ... : ...
+      const camino = caminoDeGuardado({ estilo, subtitulos, tramos, filtro })
+      const res = camino === 'receta'
         ? await exportarAGaleria(grabacion.ruta, recetaDe({ estilo, subtitulos: conSubtitulos ? subtitulos : [], tramos, filtro }), (pct) => setAvance(pct))
-        : conSubtitulos
+        : camino === 'subtitulos'
         ? await guardarEnGaleriaConSubtitulos(grabacion.ruta, subtitulos, estilo, (pct) => setAvance(pct))
         : await guardarEnGaleria(grabacion.ruta)
       if (res && res.ok && res.uri) {
@@ -734,7 +748,7 @@ export default function ReproductorGrabacion({
         desactivado={guardando}
         onCambiar={(e) => {
           setEstilo(e)
-          guardarEstiloSubtitulo(e)
+          // -tomas-largas- Ya no se recuerda: es de esta toma. Antes: guardarEstiloSubtitulo(e)
         }}
         // -tarea 96- Abierto lo maneja el visor, para que abrir uno cierre la tira de filtros: los dos
         // paneles salen en el mismo lugar. Antes, de lado, sin abierto ni onAbrir.
@@ -953,7 +967,7 @@ export default function ReproductorGrabacion({
               estilo={estilo}
               onCambiar={(e) => {
                 setEstilo(e)
-                guardarEstiloSubtitulo(e)
+                // -tomas-largas- Ya no se recuerda: es de esta toma. Antes: guardarEstiloSubtitulo(e)
               }}
               abierto={panelAbierto}
               // -tarea 96- abrirSubtitulos cierra la tira de filtros. Antes: onAbrir={setPanelAbierto}.

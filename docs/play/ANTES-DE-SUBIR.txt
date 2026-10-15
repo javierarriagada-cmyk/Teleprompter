@@ -1,0 +1,38 @@
+ANTES DE ARMAR EL AAB PARA GOOGLE -lista de lo aprendido; se lee ENTERA antes de cada subida-
+
+Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se escape. Fecha y caso al lado.
+
+1. LO QUE SE PUBLICA NO ES LO QUE SE PRUEBA. La APK de prueba no pasa por R8; el AAB sí. Antes de subir,
+   el paquete de Play -o un build release igual- se instala en el Redmi y se prueba funcionando: voz,
+   gestos -palma y V-, grabar, pausa, guardar, visor, subtítulos y filtro.
+   -15-10-2026: la 0.9.1 salió con los gestos rotos. R8 sacó piezas de MediaPipe: «gestos reconocedor
+   no arranca: ExceptionInInitializerError» en cada sesión del moto g86. La ficha los anuncia.-
+
+2. TODA BIBLIOTECA NATIVA CON SUS REGLAS DE R8, desde su fuente oficial: MediaPipe, Vosk y JNA, Media3,
+   CameraX. Una biblioteca nativa nueva suma su línea aquí y en el punto 1.
+
+3. LO QUE NO TIENE QUE VIAJAR: la bitácora del motor -.motor.txt-, los bancos, los paneles y las líneas
+   de medición. Se revisa que no estén en el paquete de Play.
+   -15-10-2026: la bitácora del motor se escribe en la 0.9.1 publicada, ~92 filas por segundo, en el
+   teléfono de cada persona, y nadie la puede leer.-
+
+4. PÁGINAS DE 16 KB: la prueba oficial completa sobre cada .so -developer.android.com/guide/practices/
+   page-sizes-: LOAD alineado a 2^14 Y RELRO con (VirtAddr + MemSiz) % 0x4000 == 0. PAGE_ALIGNMENT_16K del
+   paquete no alcanza.
+   -15-10-2026: Play avisó por libjnidispatch.so. JNA 5.13 tenía la alineación bien y el RELRO mal; se
+   subió a 5.18.1, la que pide Vosk.-
+
+5. UNA TOMA LARGA ANTES DE SUBIR: más de 25 minutos a 1080p -más de 2 GB-. El motor tiene que seguir
+   hasta el final, el visor tiene que reproducirla y guardarla sin filtro ni subtítulos tiene que copiar,
+   no recodificar.
+   -15-10-2026: en el g86 el motor se detuvo a los ~25 min, el visor no abrió una toma de 2,35 GB y el
+   guardado tardó 6,5 min recodificando por un filtro recordado de otra toma.-
+
+6. EN LA CONSOLA, ANTES DE SUBIR: mirar si la publicación administrada está encendida o apagada -cambia
+   cómo se sube la ficha: apagada, `npm run ficha -- subir --directo`-. La prueba cerrada: Activo, sus
+   testers y el mismo correo, antes y después. Nunca «Crear pista», «Pausar» ni tocar Verificadores.
+
+7. versionCode mayor que el último subido; notas de la versión en docs/play/notas-version.txt.
+
+Conocido y aceptado: la advertencia de símbolos de depuración por las .so de Vosk, que vienen sin
+símbolos. No bloquea.

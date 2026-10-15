@@ -171,7 +171,8 @@ describe('Letra y ancho, migrados a fichas y Ajustes', () => {
   // 28-09-2026: la seccion Video salio de Ajustes. Los subtitulos tienen su ficha en Grabar, con la
   // misma clave que el reproductor; en Leer no hay ficha porque no hay video. Y Ajustes ya no muestra
   // calidad ni subtitulos en ninguna puerta.
-  test('T77g Subtitulos: ficha en Grabar que guarda el estilo; no en Leer; fuera de Ajustes.', async () => {
+  // -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor. Antes: test('T77g Subtitulos: ficha en Grabar que guarda el estilo; no en Leer; fuera de Ajustes.', ...
+  test('T77g Subtitulos: ni en Grabar ni en Leer ni en Ajustes -se eligen solo en el visor-.', async () => {
     const sembrar = async () => {
       const r = new RepositorioMemoria()
       await r.guardar({ id: 'g-77', titulo: 'Guion ajustes', idioma: 'es', creado: Date.now(), modificado: Date.now(), archivado: false, bloques: [{ id: 'b1', nombre: '', texto: 'Texto para las fichas de listo' }] })
@@ -194,11 +195,17 @@ describe('Letra y ancho, migrados a fichas y Ajustes', () => {
     // expect(screen.queryByTestId('fila-subtitulos')).toBeNull()
     // expect(screen.queryByTestId('fila-calidad')).toBeNull()
     // unmount()
+    // -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor: ni Ajustes de Grabar ni la segunda fila de LISTO los ofrecen. Antes:
+    // fireEvent.click(await screen.findByTestId('btn-ajustes-toma'))
+    // fireEvent.click(await screen.findByTestId('fila-subtitulos'))
+    // fireEvent.click(screen.getByTestId('btn-subtitulo-formal'))
+    // expect(localStorage.getItem('sigo_subtitulos_estilo')).toBe('formal')
+    // expect(screen.getByTestId('fila-subtitulos').textContent).toContain('Formal')
     fireEvent.click(await screen.findByTestId('btn-ajustes-toma'))
-    fireEvent.click(await screen.findByTestId('fila-subtitulos'))
-    fireEvent.click(screen.getByTestId('btn-subtitulo-formal'))
-    expect(localStorage.getItem('sigo_subtitulos_estilo')).toBe('formal')
-    expect(screen.getByTestId('fila-subtitulos').textContent).toContain('Formal')
+    await screen.findByTestId('panel-ajustes-toma')
+    expect(screen.queryByTestId('fila-subtitulos')).toBeNull()
+    expect(screen.queryByTestId('ficha-subtitulos')).toBeNull()
+    expect(localStorage.getItem('sigo_subtitulos_estilo')).toBeNull()
     unmount()
     const portada = render(<App repoOverride={await sembrar()} motor={new MotorFake()} />)
     fireEvent.click(await screen.findByTestId('btn-menu-superior-biblioteca'))

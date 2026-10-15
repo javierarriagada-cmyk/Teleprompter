@@ -1,4 +1,5 @@
 import React from 'react'
+import { elegirEstiloEnVisor } from './ayudaEstiloVisor'
 import { describe, expect, test, vi, beforeEach } from 'vitest'
 import { render, act, fireEvent, screen } from '@testing-library/react'
 import fs from 'fs'
@@ -71,18 +72,36 @@ describe('Los subtitulos en el visor de la toma', () => {
     expect(screen.getByTestId('btn-subtitulos').textContent).toContain('Rojo')
   })
 
-  test('SE RECUERDA LA ULTIMA ELECCION: la toma siguiente ya la trae', async () => {
+  // -tomas-largas, 15-10-2026, decisión de Javier- Cada toma parte en «No»; lo elegido es solo de esa toma. Antes:
+  // test('SE RECUERDA LA ULTIMA ELECCION: la toma siguiente ya la trae', async () => {
+  //   await abrirVisor()
+  //   await act(async () => { fireEvent.click(screen.getByTestId('btn-subtitulos')) })
+  //   await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Formal' })) })
+  //   document.body.innerHTML = ''
+  //   await abrirVisor()
+  //   expect(screen.getByTestId('btn-subtitulos').textContent).toContain('Formal')
+  // })
+  test('CADA TOMA PARTE EN «NO»: lo elegido en una no pasa a la siguiente, ni lo guardado antes con Amarillo', async () => {
+    // Lo que dejaba la versión anterior -o Ajustes y LISTO, que siguen escribiendo esta clave-.
+    // -tomas-largas, segunda vuelta- Ajustes y LISTO ya tampoco la escriben: queda solo lo de versiones anteriores.
+    localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
     await abrirVisor()
-    await act(async () => { fireEvent.click(screen.getByTestId('btn-subtitulos')) })
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Formal' })) })
+    expect(screen.getByTestId('btn-subtitulos').textContent).toContain('No')
+    expect(screen.queryByTestId('capa-subtitulos')).toBeNull()
+    await elegirEstiloEnVisor('Formal')
+    expect(screen.getByTestId('btn-subtitulos').textContent).toContain('Formal')
+    // Elegir en el visor ya no se recuerda.
+    expect(localStorage.getItem('sigo_subtitulos_estilo')).toBe('amarillo')
     document.body.innerHTML = ''
     await abrirVisor()
-    expect(screen.getByTestId('btn-subtitulos').textContent).toContain('Formal')
+    expect(screen.getByTestId('btn-subtitulos').textContent).toContain('No')
+    expect(screen.getByTestId('btn-subtitulos').textContent).not.toContain('Formal')
   })
 
   test('SOBRE EL VIDEO se ve el subtitulo de ese instante, con la palabra en su estado; con "No", nada', async () => {
-    localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
+    // -tomas-largas- Cada toma parte en «No»: se elige en el visor. Antes: localStorage.setItem('sigo_subtitulos_estilo', 'amarillo')
     await abrirVisor()
+    await elegirEstiloEnVisor('Amarillo')
     // A los 8,3 s dice "No dice solo que a veces / somos egoistas o crueles" y
     // va por "veces": "somos" empieza a los 8,655 s.
     await act(async () => { darImagenAlVideo(8300) })
@@ -106,10 +125,11 @@ describe('Los subtitulos en el visor de la toma', () => {
   })
 
   test('SE GUARDA LO QUE SE VE: con un estilo elegido va la copia quemada, y la toma queda anotada como guardada con ese estilo', async () => {
-    localStorage.setItem('sigo_subtitulos_estilo', 'rojo')
+    // -tomas-largas- Cada toma parte en «No»: se elige en el visor. Antes: localStorage.setItem('sigo_subtitulos_estilo', 'rojo')
     const cambios: any[] = []
     render(<ReproductorGrabacion grabacion={toma} onCerrar={() => {}} onBorrar={() => {}} onCambio={(g) => cambios.push(g)} />)
     await act(async () => { await new Promise((r) => setTimeout(r, 20)) })
+    await elegirEstiloEnVisor('Rojo')
     await act(async () => { fireEvent.click(screen.getByTestId('guardar-galeria-desde-reproductor')) })
     expect(llamadas[0][0]).toBe('quemada')
     expect(llamadas[0][2]).toBeGreaterThan(20)

@@ -74,7 +74,9 @@ async function abrir(b, { idioma, pantalla, ajustes = {}, subtitulos = 'no' }) {
     localStorage.setItem('teleprompter_ajustes', JSON.stringify(aj))
     // El estilo de subtítulos que la app recuerda -src/lib/subtitulos.ts, CLAVE_ESTILO-: así
     // el visor abre con el Amarillo puesto, como lo vería quien ya lo eligió una vez.
-    localStorage.setItem('sigo_subtitulos_estilo', sub)
+    // -tomas-largas, 15-10-2026, decisión de Javier- La app ya no recuerda el estilo: cada toma parte en
+    // «No» y se elige en el visor. La escena visor lo elige allí, como la persona -elegirSubtitulos-.
+    // Antes: localStorage.setItem('sigo_subtitulos_estilo', sub)
   }, lang, { tema: 'oscuro', colorFondo: '#000000', colorLetra: '#FFFFFF', columnaAngosta: false, mostrarTiempo: true, anclajeZona: 'medio', fondoToma: 'detras', modoCamara: 'frontal', ladoCamara: 'frontal', calidadVideo: '1080p', ...ajustes }, subtitulos)
   p.on('pageerror', (e) => console.log('  error de la página:', e.message))
   await p.goto(`${BASE}?idioma=${idioma}`, { waitUntil: 'networkidle2' })
@@ -126,6 +128,17 @@ async function tocar(p) {
   await sleep(800)
 }
 
+// ELEGIR EL ESTILO DE SUBTÍTULOS EN EL VISOR -tomas-largas, 15-10-2026-. El botón Subtítulos abre las
+// opciones; cada una se llama por su nombre en el idioma de la app -src/textos, subtitulosAmarillo-.
+// Al elegir, las opciones se cierran solas -SubtitulosVisor.tsx-.
+const NOMBRE_SUBTITULO = { amarillo: { es: 'Amarillo', en: 'Yellow' } }
+async function elegirSubtitulos(p, idioma, estilo) {
+  await p.click('[data-testid="btn-subtitulos"]')
+  await p.waitForSelector('[data-testid="opciones-subtitulos"]')
+  await p.click(`[data-testid="opciones-subtitulos"] button[aria-label="${NOMBRE_SUBTITULO[estilo][idioma]}"]`)
+  await sleep(600)
+}
+
 const ESCENAS = {
   async leer(b, o) { const p = await abrir(b, o); await entrar(p, 'leer'); await leerHasta(p, o.idioma); return p },
   async 'grabar-detras'(b, o) {
@@ -172,6 +185,8 @@ const ESCENAS = {
     await p.click('[data-testid="tira-grabaciones"] button')
     await p.waitForSelector('[data-testid="video-grabacion"]')
     await sleep(1200)
+    // -tomas-largas, 15-10-2026- La toma parte en «No»: se elige Amarillo en el visor, como la persona.
+    await elegirSubtitulos(p, o.idioma, 'amarillo')
     await p.evaluate(() => new Promise((r) => { const v = document.querySelector('[data-testid="video-grabacion"]'); v.currentTime = 9.2; v.addEventListener('seeked', r, { once: true }) }))
     await sleep(800)
     return p
