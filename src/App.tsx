@@ -12,6 +12,8 @@ import useLayout, { letraPorOmision } from './hooks/useLayout'
 import type { EsquinaRecuadroH } from './components/RecuadroCamara'
 import TeleprompterView, { VeloControles } from './components/TeleprompterView'
 import BarraDeTiempo from './components/BarraDeTiempo'
+// -controles-que-se-desvanecen- Aparecer y desvanecerse.
+import { useAparecer } from './hooks/useAparecer'
 // -tarea 106- Velocidad fija: el motor que no escucha, el modo elegido y el control al leer.
 import { crearMotorFijo } from './lib/velocidadFija'
 import { useVelocidadFija } from './hooks/useVelocidadFija'
@@ -98,7 +100,9 @@ import { PanelDiagnostico } from './components/PanelDiagnostico'
 import { HERRAMIENTAS } from './lib/herramientas'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
-const MS_CONTROLES_A_LA_VISTA = 4000
+// -controles-que-se-desvanecen, 14-10-2026- Al cumplirse empiezan a irse -se desvanecen en
+// MS_PANTALLA, useAparecer-. Antes: const MS_CONTROLES_A_LA_VISTA = 4000
+const MS_CONTROLES_A_LA_VISTA = 3000
 
 interface AppProps {
   motor?: MotorDeVoz
@@ -1084,6 +1088,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   const pausaAbiertaDesdeRef = useRef<number | null>(null)
   // El símbolo grande de pausa -solo cuando pausa un gesto-: a la vista, saliendo o nada.
   const [simboloPausa, setSimboloPausa] = useState<'visible' | 'saliendo' | null>(null)
+  // -controles-que-se-desvanecen- Los controles de la toma entran en MS_CHICO y se van en MS_PANTALLA:
+  // siguen montados mientras salen -useAparecer-.
+  const faseControles = useAparecer(estadoToma === 'leyendo' && controlesVisibles, MS_PANTALLA)
   const timerSimboloRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Referencia para la función que cierra el modal abierto si existe
@@ -3201,8 +3208,10 @@ export default function App({ motor, repoOverride }: AppProps) {
             ...(gestoEnLectura ? estiloAtras(gestoEnLectura) : {})
           } as React.CSSProperties}
         >
-          {estadoToma === 'leyendo' && controlesVisibles && (
-            <>
+          {/* -controles-que-se-desvanecen- Montados mientras faseControles no es null: también mientras se
+              van. Antes: {estadoToma === 'leyendo' && controlesVisibles && ( */}
+          {estadoToma === 'leyendo' && faseControles !== null && (
+            <div className={`controles-lectura${faseControles === 'entrando' ? ' entrando' : ''}${faseControles === 'saliendo' ? ' saliendo' : ''}`}>
               {/* El velo de abajo, el mismo de LISTO -VeloControles, TeleprompterView.tsx-. */}
               {/* 29-09-2026, tarea 82: de lado no va: los controles aparecen en los rieles,
                   nunca sobre el texto. */}
@@ -3302,7 +3311,8 @@ export default function App({ motor, repoOverride }: AppProps) {
               </>)}
                 </>
               )}
-            </>
+            {/* Antes: </> */}
+            </div>
           )}
 
           <div
