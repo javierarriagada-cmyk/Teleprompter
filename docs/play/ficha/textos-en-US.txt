@@ -15,7 +15,7 @@ DESCRIPCIÓN BREVE (máximo 80) — 75 caracteres
 La A, elegida por Javier, sin cambios: nunca dijo "offline".
 
 ==============================================================================
-DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2812 caracteres
+DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2892 caracteres
 ==============================================================================
 [[Forget your lines the moment you hit record? With Sigo you read aloud and the script moves with you, at your pace. Pause, and it waits.
 
@@ -29,7 +29,7 @@ IT IS FOR YOU IF
 
 WHAT CHANGES WHEN THE SCRIPT FOLLOWS YOU
 - You speak at your own pace. Sigo listens and underlines the line you are reading.
-- Stop, and the text stops. No scroll speed to set.
+- Stop, and the text stops.
 - Read at the top, close to the camera, or in the middle of the screen.
 
 RECORD YOUR VIDEO RIGHT THERE
@@ -51,6 +51,7 @@ YOUR WAY
 - Font size, typeface, text width and five reading color combinations.
 - Mirror mode, for use with teleprompter glass.
 - Light or dark theme. The app is in English and Spanish, and follows your voice in both.
+- Prefer not to use your voice? With Fixed speed the script scrolls on its own, at the pace you choose.
 
 TRUST AND PRIVACY
 - No account, no sign-up.
