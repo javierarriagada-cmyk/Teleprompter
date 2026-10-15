@@ -1103,8 +1103,11 @@ textarea::placeholder {
    editor, asi que se lleva el mismo minimo que boton-aa-redondo. El ancho ya
    sobraba -no se toca-. */
 .boton-aa {
-  background: transparent;
-  border: none;
+  /* Boton de vidrio, como el engranaje de la portada -tanda 2, 15-10-2026-. Antes:
+     background: transparent; border: none; */
+  background: var(--ajustes-vidrio);
+  border: 1px solid var(--ajustes-borde);
+  border-radius: var(--redondeo-pildora);
   font-size: 24px;
   font-weight: 700;
   line-height: 1;
@@ -1178,10 +1181,22 @@ textarea::placeholder {
    no sepa color-mix. Lo usan la tarjeta de la portada y la barra del editor:
    es el mismo boton. */
 .btn-grabar {
-  background-color: var(--bg-superficie);
-  background-color: color-mix(in srgb, var(--color-grabando) 16%, var(--bg-superficie));
+  /* APP CON LUZ -tanda 2 de 2, 15-10-2026-: Grabar igual en toda la app -el de la portada-, con su
+     borde rojo de siempre. Antes:
+       background-color: var(--bg-superficie);
+       background-color: color-mix(in srgb, var(--color-grabando) 16%, var(--bg-superficie));
+       color: var(--color-texto);
+       y sin sombra. */
+  background: var(--grabar-fondo);
   border: 1px solid var(--color-grabando);
-  color: var(--color-texto);
+  color: var(--grabar-texto);
+  box-shadow: var(--grabar-brillo);
+}
+/* LEER DE LA BARRA DEL EDITOR -BarraLeerGrabar.tsx-, igual al de la portada -tanda 2-.
+   Antes: backgroundColor var(--color-acento) y color var(--color-texto-acento), en linea. */
+.btn-leer-barra {
+  background: var(--leer-fondo);
+  color: var(--leer-texto);
 }
 
 /* EL CAJON SIN PALABRAS -24-09-2026-: los selectores ocupan todo el ancho.
@@ -1764,6 +1779,8 @@ label.selector-aa-opcion {
 .visor-video {
   position: relative;
   background: #000;
+  /* Tanda 2, 15-10-2026: el visor flota como protagonista, sin canto brasa. Antes: sin sombra. */
+  box-shadow: var(--prot-sombra);
 }
 
 /* LOS CONTROLES PROPIOS DEL VISOR -28-09-2026-. Ver ReproductorGrabacion.tsx. El play grande
@@ -1868,8 +1885,10 @@ label.selector-aa-opcion {
   gap: var(--aire-1);
   min-height: 64px;
   padding: var(--aire-3) 0;
-  background: transparent;
-  border: none;
+  /* Boton de vidrio, como el engranaje de la portada -tanda 2, 15-10-2026-. Antes:
+     background: transparent; border: none; */
+  background: var(--ajustes-vidrio);
+  border: 1px solid var(--ajustes-borde);
   color: var(--color-texto);
   font-size: var(--texto-etiqueta);
   cursor: pointer;
@@ -2352,10 +2371,16 @@ button.miniatura-filtro:focus-visible .miniatura-filtro-marco {
   height: var(--alto-miniatura-banda);
   padding: 0;
   /* 28-09-2026: el mismo borde de un pelo que las miniaturas de la tira -.borde-suave-. */
-  border: 1px solid var(--borde-tarjeta);
+  /* Tanda 2, 15-10-2026: como las tarjetas de video de la portada, canto --sup-canto y --sup-sombra.
+     Antes: border: 1px solid var(--borde-tarjeta); background: var(--bg-panel); sin sombra. */
+  border: 1px solid transparent;
   border-radius: var(--redondeo);
   overflow: hidden;
-  background: var(--bg-panel);
+  /* El color va como gradiente de un tono: un color solo no puede ir en una capa que no sea la ultima. */
+  background-image: linear-gradient(var(--bg-panel), var(--bg-panel)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: var(--sup-sombra);
   cursor: pointer;
 }
 /* button.btn-deformable -píldora- le gana por especificidad: el mismo arreglo que
@@ -2659,7 +2684,12 @@ button.btn-deformable.miniatura-banda:not(:active) {
    box-shadow var(--sombra-tarjeta); fondo de la fila var(--bg-panel) y del video var(--bg-suelo), en linea. */
 .portada .fila-guion-caja.tarjeta-elevada {
   border: 1px solid transparent;
-  background: var(--sup-fondo) padding-box, var(--sup-canto) border-box;
+  /* Arreglo de la tanda 2, 15-10-2026: un color solo va solo en la ULTIMA capa de un fondo de varias; asi
+     escrita, la declaracion entera quedaba invalida y la caja salia sin fondo NI canto. El color va como
+     gradiente de un tono. Antes: background: var(--sup-fondo) padding-box, var(--sup-canto) border-box; */
+  background-image: linear-gradient(var(--sup-fondo), var(--sup-fondo)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
   box-shadow: var(--sup-sombra);
 }
 .portada .fila-guion-caja .fila-guion-cara {
@@ -2667,7 +2697,12 @@ button.btn-deformable.miniatura-banda:not(:active) {
 }
 .portada .tarjeta-video.borde-suave {
   border: 1px solid transparent;
-  background: var(--sup-fondo-video) padding-box, var(--sup-canto) border-box;
+  /* Arreglo de la tanda 2, 15-10-2026: un color solo va solo en la ULTIMA capa de un fondo de varias; asi
+     escrita, la declaracion entera quedaba invalida y la caja salia sin fondo NI canto. El color va como
+     gradiente de un tono. Antes: background: var(--sup-fondo-video) padding-box, var(--sup-canto) border-box; */
+  background-image: linear-gradient(var(--sup-fondo-video), var(--sup-fondo-video)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
   box-shadow: var(--sup-sombra);
 }
 /* La tira desplaza de lado: el aire de abajo deja ver la sombra de las tarjetas de video. */
@@ -2684,6 +2719,17 @@ button.btn-deformable.miniatura-banda:not(:active) {
 .portada [data-testid="btn-menu-superior-biblioteca"]::before {
   background-color: var(--ajustes-vidrio);
   border: 1px solid var(--ajustes-borde);
+}
+
+/* EL AVISO BREVE -AvisoBreve.tsx, tanda 2-: superficie que flota, con su fondo, el canto --sup-canto y
+   --sup-sombra. Antes, en linea: backgroundColor var(--bg-superficie) y border 1px solid var(--color-borde). */
+.aviso-breve {
+  border: 1px solid transparent;
+  /* El color va como gradiente de un tono: un color solo no puede ir en una capa que no sea la ultima. */
+  background-image: linear-gradient(var(--bg-superficie), var(--bg-superficie)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: var(--sup-sombra);
 }
 
 /* EL VELO DE LA MINIATURA: el 45 % de abajo -no 40px fijos, sirve en telefono y tableta-, debajo de

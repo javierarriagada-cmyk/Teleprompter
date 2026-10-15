@@ -1,0 +1,24 @@
+APP CON LUZ -tanda 2 de 2, 15-10-2026-. Capturas antes -main, ca7c2dd- y despues -rama app-con-luz-.
+Chrome sin cabeza, 412x915, escala 2,625, con programado/cap.cjs -el mismo de portada-con-luz, con 2
+guiones y 3 videos sembrados en IndexedDB-.
+
+  1-editor        el editor de «Lanzamiento de otoño»: Aa, banda de tomas, Leer y Grabar.
+  2-ajustes       el panel de Ajustes abierto desde el engranaje de la portada.
+  3-menu-pegado   el menu del guion al mantener -.menu-adjunto-guion-.
+  4-listo-panel   LISTO con el panel de la ficha Tamaño de letra abierto -.panel-ficha-.
+  5-visor         el visor de la toma, sobre la portada.
+  -- segunda vuelta, 15-10-2026 -- node cap.cjs ... extra / ... negar:
+  6-portada       la portada, despues del arreglo de los dos fondos -filas y tarjetas de video-.
+  7-listo-fichas  LISTO con sus fichas, sin panel -.ficha-listo con el canto-.
+  8-aviso-breve   el aviso «Guion borrado · Deshacer» -borrar un guion desde el menu pegado-.
+  9-dock-abierto  Grabar: el dock de LISTO abierto -Ajustes de la toma- con su Grabar abajo.
+  10-dialogo      el dialogo de permiso de la camara -real: con 'negar' la camara del navegador
+                  rechaza el permiso como el plugin en Android, cameraPermissionDenied-.
+  11-menu-ajustes el menu pegado de Ajustes -.menu-adjunto-ajustes, Tipografia-.
+  programado/cs.cjs imprime el estilo calculado de las filas, las tarjetas de video y la protagonista.
+
+Cada una en oscuro y en claro: antes/<n>-antes-<tema>.png y despues/<n>-despues-<tema>.png.
+LISTO es una pantalla de lectura y sale oscura en los dos temas.
+Antes -primera vuelta-: No se ven aca: el aviso breve, los dialogos, el dock de LISTO abierto con su
+Grabar y el menu pegado de Ajustes -.menu-adjunto-ajustes-. Desde la segunda vuelta estan todos.
+El video del visor no corre -no hay archivo-: se ve la foto. La camara es la falsa de Chrome -verde-.

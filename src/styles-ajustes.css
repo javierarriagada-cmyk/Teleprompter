@@ -74,8 +74,19 @@
   inset: 8px 0;
   /* Antes: border-radius: 8px; */
   border-radius: var(--forma-chica);
-  border: 1px solid var(--borde-tarjeta);
-  background: var(--bg-panel);
+  /* Tanda 2, 15-10-2026: la pastilla suma el canto --sup-canto, sin sombra -esta dentro de una pantalla,
+     como las tarjetas de seccion-. Va en el ::before, que es la pastilla visible. El color va como
+     gradiente de un tono: un color solo no puede ir en una capa que no sea la ultima. Antes:
+       border: 1px solid var(--borde-tarjeta);
+       background: var(--bg-panel);
+       box-shadow: var(--sombra-tarjeta); */
+  border: 1px solid transparent;
+  background-image: linear-gradient(var(--bg-panel), var(--bg-panel)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  /* -revision de la tanda 2, 15-10-2026- «Sin sombra» era no AGREGAR una: la que tenia se queda. Las fichas
+     van sobre la camara y la lectura, y la sombra las despega de cualquier imagen. Probado y descartado el
+     mismo dia: box-shadow: none; */
   box-shadow: var(--sombra-tarjeta);
   pointer-events: none;
 }
@@ -120,9 +131,14 @@
   /* Antes: border-radius: 16px; */
   border-radius: var(--forma-grande);
   padding: 16px;
-  background: var(--bg-superficie);
-  border: 1px solid var(--borde-tarjeta);
-  box-shadow: var(--sombra-tarjeta);
+  /* Tanda 2, 15-10-2026: flota, canto --sup-canto y --prot-sombra. Antes:
+     background: var(--bg-superficie); border: 1px solid var(--borde-tarjeta); box-shadow: var(--sombra-tarjeta); */
+  /* El color va como gradiente de un tono: un color solo no puede ir en una capa que no sea la ultima. */
+  background-image: linear-gradient(var(--bg-superficie), var(--bg-superficie)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+  box-shadow: var(--prot-sombra);
 }
 .panel-ficha-cabeza {
   display: flex;
@@ -408,9 +424,14 @@
   margin: 0 16px;
   /* Antes: border-radius: 18px; */
   border-radius: var(--forma-grande);
-  background: var(--bg-superficie);
-  border: 1px solid var(--borde-tarjeta);
-  box-shadow: var(--sombra-tarjeta);
+  /* Tanda 2, 15-10-2026: dentro de un panel, canto --sup-canto SIN sombra. Antes:
+     background: var(--bg-superficie); border: 1px solid var(--borde-tarjeta); box-shadow: var(--sombra-tarjeta); */
+  /* El color va como gradiente de un tono: un color solo no puede ir en una capa que no sea la ultima. */
+  background-image: linear-gradient(var(--bg-superficie), var(--bg-superficie)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+  box-shadow: none;
   overflow: visible;
 }
 /* Dentro del panel de ajustes, la tarjeta no lleva el margen lateral de 16px de la pantalla vieja. */
@@ -503,9 +524,14 @@
   /* Antes: border-radius: 14px; */
   border-radius: var(--forma-grande);
   padding: 6px 0;
-  background: var(--bg-menu);
-  border: 1px solid var(--borde-tarjeta);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  /* Tanda 2, 15-10-2026: canto --sup-canto y --sup-sombra. Antes:
+     background: var(--bg-menu); border: 1px solid var(--borde-tarjeta); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35); */
+  /* El color va como gradiente de un tono: un color solo no puede ir en una capa que no sea la ultima. */
+  background-image: linear-gradient(var(--bg-menu), var(--bg-menu)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+  box-shadow: var(--sup-sombra);
   /* Apertura corta: MS_CHICO + CURVA_RESORTE en TSX; sin animación si movimientoApagado(). */
   transform-origin: top right;
 }
@@ -632,7 +658,14 @@
   /* Antes: border-radius: 28px; */
   border-radius: var(--forma-extra-grande);
   padding: 24px;
-  background: var(--bg-superficie);
+  /* Tanda 2, 15-10-2026: flota, canto --sup-canto y --prot-sombra. Antes: background: var(--bg-superficie);
+     sin borde ni sombra. */
+  /* El color va como gradiente de un tono: un color solo no puede ir en una capa que no sea la ultima. */
+  background-image: linear-gradient(var(--bg-superficie), var(--bg-superficie)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+  box-shadow: var(--prot-sombra);
 }
 .dialogo-ajustes-titulo {
   font-family: "Source Serif 4", serif;
@@ -738,9 +771,14 @@
   /* Antes: border-radius: 14px; */
   border-radius: var(--forma-grande);
   padding: 6px 0;
-  background: var(--bg-menu);
-  border: 1px solid var(--borde-tarjeta);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  /* Tanda 2, 15-10-2026: canto --sup-canto y --sup-sombra. Antes:
+     background: var(--bg-menu); border: 1px solid var(--borde-tarjeta); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35); */
+  /* El color va como gradiente de un tono: un color solo no puede ir en una capa que no sea la ultima. */
+  background-image: linear-gradient(var(--bg-menu), var(--bg-menu)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+  box-shadow: var(--sup-sombra);
 }
 .menu-adjunto-guion-titulo {
   padding: 8px 14px 6px;
@@ -860,6 +898,19 @@
      solo .dock-listo.abierto::before. */
   /* Antes: background: rgba(0, 0, 0, 0.9); */
   background: color-mix(in srgb, var(--bg-panel) 94%, transparent);
+  /* Tanda 2, 15-10-2026: el canto de 1px --sup-canto va en esta capa y no en la caja: la caja no tiene
+     fondo propio y el ::before -inset -1px- tapa su borde. El vidrio sigue igual adentro. Antes: sin borde
+     propio -se veia el borde blanco al 12 % de la caja solo donde el vidrio no lo tapaba-. */
+  border: 1px solid transparent;
+  /* El color va como gradiente de un tono: un color solo no puede ir en una capa que no sea la ultima. */
+  background-image: linear-gradient(color-mix(in srgb, var(--bg-panel) 94%, transparent), color-mix(in srgb, var(--bg-panel) 94%, transparent)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+/* Tanda 2: flotan sobre otra pantalla, --prot-sombra en la caja. Antes: sin sombra. */
+.dock-listo.abierto,
+.panel-ajustes-flotante {
+  box-shadow: var(--prot-sombra);
 }
 /* EL PANEL FLOTANTE DE AJUSTES -cuarta vuelta, 10-10-2026-. Donde no hay dock, el mismo panel sube desde
    abajo, en el lugar del dock, y crece solo lo que pide su contenido hasta el mismo tope del dock abierto.
@@ -958,8 +1009,13 @@
 }
 .dock-listo .ficha-listo::before {
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  /* Tanda 2, 15-10-2026: el canto --sup-canto, sin sombra, sobre el mismo relleno de vidrio. Antes:
+       background: rgba(255, 255, 255, 0.07);
+       border: 1px solid rgba(255, 255, 255, 0.10); */
+  background-image: linear-gradient(rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
   box-shadow: none;
 }
 .dock-listo .ficha-listo.abierta::before {
@@ -1033,8 +1089,10 @@
   height: 72px;
   margin: -36px 0 0 -36px;
   border-radius: 999px;
-  box-shadow: 0 0 28px 6px rgba(225, 29, 46, 0.45);
-  box-shadow: 0 0 28px 6px color-mix(in srgb, var(--color-grabando) 45%, transparent);
+  /* Tanda 2, 15-10-2026: el brillo de Grabar es el de toda la app. Antes:
+       box-shadow: 0 0 28px 6px rgba(225, 29, 46, 0.45);
+       box-shadow: 0 0 28px 6px color-mix(in srgb, var(--color-grabando) 45%, transparent); */
+  box-shadow: var(--grabar-brillo);
   pointer-events: none;
 }
 /* -cuarta vuelta- En Leer el play de hoy va en el mismo lugar, sin el brillo rojo de Grabar. */

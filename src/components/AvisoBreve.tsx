@@ -31,6 +31,7 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
       {avisoInfo && (
         <div
           data-testid="aviso-flotante"
+          className="aviso-breve"
           style={{
             position: 'fixed',
             // SOBRE LA BARRA DE ANDROID Y CENTRADO -28-09-2026-. En el moto g86 el aviso quedaba
@@ -54,9 +55,9 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
             marginRight: 'auto',
             width: 'max-content',
             maxWidth: 'calc(100% - 2 * var(--aire-4))',
-            backgroundColor: 'var(--bg-superficie)',
+            // Tanda 2, 15-10-2026: fondo, canto y sombra en .aviso-breve -styles.css-. Antes:
+            // backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)',
             color: 'var(--color-texto)',
-            border: '1px solid var(--color-borde)',
             padding: 'var(--aire-2) var(--aire-3)',
             borderRadius: 'var(--redondeo-pildora)',
             fontSize: 'var(--texto-cuerpo)',
