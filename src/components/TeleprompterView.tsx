@@ -15,7 +15,8 @@ import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
 // -tarea 106- Velocidad fija: su motor, la duracion con el nivel y el nivel elegido.
 // -correccion 1- Y las palabras a pixeles, parejo.
 // Antes: import { esMotorFijo, ppmDeNivel } from '../lib/velocidadFija'
-import { esMotorFijo, ppmDeNivel, pxDePosicion, posicionDePx, renglonDePx } from '../lib/velocidadFija'
+// -15-10-2026- y tokensDeLaFranja. Antes: import { esMotorFijo, ppmDeNivel, pxDePosicion, posicionDePx, renglonDePx } from '../lib/velocidadFija'
+import { esMotorFijo, ppmDeNivel, pxDePosicion, posicionDePx, renglonDePx, tokensDeLaFranja } from '../lib/velocidadFija'
 import { useVelocidadFija } from '../hooks/useVelocidadFija'
 import { palabrasDelDestacado, segmentosDelDestacado, CajaPalabra } from '../lib/destacado'
 // -13-10-2026, resorte-sin-rebote-: tambien el resorte, detras del interruptor sigo_resorte.
@@ -1289,8 +1290,13 @@ export default function TeleprompterView({
         const clave = enFranja ? `${idx}|${renglones.length}` : ''
         const previo = franjaPrevRef.current
         if (cont && (clave !== previo.clave || (enFranja && previo.renglones !== renglones))) {
-          const desde = enFranja ? renglones[idx]?.desdeToken ?? 0 : 0
-          const hasta = enFranja ? renglones[idx + 1]?.desdeToken ?? Infinity : 0
+          // -15-10-2026- Dos renglones encendidos, el que se lee y el que viene -tokensDeLaFranja,
+          // lib/velocidadFija.ts-. Antes:
+          // const desde = enFranja ? renglones[idx]?.desdeToken ?? 0 : 0
+          // const hasta = enFranja ? renglones[idx + 1]?.desdeToken ?? Infinity : 0
+          const franja = enFranja ? tokensDeLaFranja(idx, renglones) : { desde: 0, hasta: 0 }
+          const desde = franja.desde
+          const hasta = franja.hasta
           if (enFranja || previo.clave !== '') {
             cont.querySelectorAll('[data-token]').forEach((nodo) => {
               const el = nodo as HTMLElement

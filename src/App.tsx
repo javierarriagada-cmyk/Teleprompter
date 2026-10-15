@@ -13,7 +13,8 @@ import type { EsquinaRecuadroH } from './components/RecuadroCamara'
 import TeleprompterView, { VeloControles } from './components/TeleprompterView'
 import BarraDeTiempo from './components/BarraDeTiempo'
 // -tarea 106- Velocidad fija: el motor que no escucha, el modo elegido y el control al leer.
-import { crearMotorFijo } from './lib/velocidadFija'
+// -15-10-2026- y controlesSeVanSolos. Antes: import { crearMotorFijo } from './lib/velocidadFija'
+import { crearMotorFijo, controlesSeVanSolos } from './lib/velocidadFija'
 import { useVelocidadFija } from './hooks/useVelocidadFija'
 import { ControlVelocidadLectura } from './components/ControlesVelocidad'
 import { PanelCorpus } from './components/PanelCorpus'
@@ -1324,7 +1325,12 @@ export default function App({ motor, repoOverride }: AppProps) {
   // olvidarse una vez para tenerlos en pantalla el resto de la toma, que es exactamente lo
   // que se quiso evitar al hacer que desaparecieran.
   useEffect(() => {
-    const leyendo = isRecording || cuentaRegresiva !== null
+    // -15-10-2026, Javier- CON VELOCIDAD FIJA LOS CONTROLES NO SE IBAN. La cuenta miraba solo a la voz
+    // -isRecording-, y en Velocidad fija la voz no escucha en Leer -y en Grabar solo para los subtitulos-:
+    // tras pausar con un toque y seguir con Play, los controles quedaban en pantalla toda la toma. Con
+    // Velocidad fija cuenta el texto andando, sin pausa. Con la voz, lo de siempre.
+    // Antes: const leyendo = isRecording || cuentaRegresiva !== null
+    const leyendo = controlesSeVanSolos({ escuchando: isRecording, cuentaRegresiva: cuentaRegresiva !== null, fija, leyendo: estadoToma === 'leyendo', enPausa })
     if (!leyendo || !controlesVisibles) return
 
     timerControlesRef.current = window.setTimeout(() => {
@@ -1338,7 +1344,8 @@ export default function App({ motor, repoOverride }: AppProps) {
         timerControlesRef.current = null
       }
     }
-  }, [controlesVisibles, isRecording, cuentaRegresiva])
+  // Antes: }, [controlesVisibles, isRecording, cuentaRegresiva])
+  }, [controlesVisibles, isRecording, cuentaRegresiva, fija, estadoToma, enPausa])
 
   // Mientras se esta leyendo, la version nueva espera. Recargar a alguien que esta leyendo a
   // camara le arruina la toma; la actualizacion se aplica sola en cuanto termina.

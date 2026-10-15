@@ -84,7 +84,13 @@ describe('Tarea 88: las pausas en el sidecar y en la toma', () => {
     // 0..5000 → a los 2500. Antes:
     // // La miniatura sale del primer tramo que queda: 0..~5000 → a los 1000.
     // expect(estado.miniaturas).toEqual([1000])
-    expect(estado.miniaturas).toEqual([2500])
+    // -15-10-2026, mas tarde- El tramo termina en cero + 5000, y cero se toma unos ms DESPUES de que arranca la
+    // toma: el tramo dura 5000 y pico, y su medio, 2500 y pico. Con la suite entera corriendo, el pico crecio
+    // y la prueba fallo una vez -con el 1000 de antes no pasaba: era el comienzo del tramo, que no se mueve-.
+    // Antes: expect(estado.miniaturas).toEqual([2500])
+    expect(estado.miniaturas.length).toBe(1)
+    expect(estado.miniaturas[0]).toBeGreaterThanOrEqual(2500)
+    expect(estado.miniaturas[0]).toBeLessThan(2600)
   })
   test('recuperarTomasPendientes cierra la pausa abierta', async () => {
     estado.duracionMs = 12_000

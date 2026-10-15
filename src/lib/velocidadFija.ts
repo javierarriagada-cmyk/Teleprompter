@@ -206,3 +206,27 @@ export function renglonDePx(px: number, renglones: Renglon[]): number {
   while (i + 1 < renglones.length && renglones[i + 1].top <= px) i++
   return i
 }
+
+// LA FRANJA DE FOCO ENCIENDE DOS RENGLONES -15-10-2026, Javier-. Con el texto subiendo parejo, el renglon
+// encendido es el que acaba de llegar a la altura de lectura, y se va enseguida: «se enciende pero como
+// esta en automatico se va pronto». Encendidos el que se lee y el que viene, el siguiente ya esta listo
+// cuando se termina el primero. Se probo pensar encender antes un solo renglon -medio renglon antes de
+// llegar-: dura menos en su sitio y el problema se repetia.
+export const RENGLONES_FRANJA = 2
+
+// Los tokens encendidos: desde el primero del renglon idx hasta antes del primero del renglon idx + n.
+// Al final del texto, hasta el ultimo -Infinity-.
+export function tokensDeLaFranja(idx: number, renglones: Renglon[], n: number = RENGLONES_FRANJA): { desde: number; hasta: number } {
+  return {
+    desde: renglones[idx]?.desdeToken ?? 0,
+    hasta: renglones[idx + n]?.desdeToken ?? Infinity
+  }
+}
+
+// LOS CONTROLES DE LA LECTURA SE VAN SOLOS -15-10-2026, Javier-: si cuenta la espera de 4 s de App.tsx
+// -MS_CONTROLES_A_LA_VISTA-. Con la voz, mientras el reconocedor escucha o corre la cuenta regresiva.
+// Con Velocidad fija la voz no escucha en Leer -y en Grabar solo para subtitulos-: cuenta el texto
+// andando, sin pausa. Antes solo miraba la voz, y con Velocidad fija los controles no se iban nunca.
+export function controlesSeVanSolos(e: { escuchando: boolean; cuentaRegresiva: boolean; fija: boolean; leyendo: boolean; enPausa: boolean }): boolean {
+  return e.escuchando || e.cuentaRegresiva || (e.fija && e.leyendo && !e.enPausa)
+}
