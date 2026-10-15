@@ -8,6 +8,10 @@ final, en la sección 9.
 
 ## 0. En corto
 
+> Nota 14-10-2026: la sección 11 resuelve la observación sobre la GPLv3 (no afecta al modelo
+> recomendado, que es Apache 2.0) y la retención del 25 % en Brasil (confirmada y aplicable a un
+> desarrollador en Chile; el orden no cambia, pero el precio en Brasil debe considerarla).
+
 - **El primero sigue siendo el portugués de Brasil, pero con una advertencia fuerte.** El único
   modelo que cumple las cinco condiciones es `vosk-model-small-pt-0.3` (Apache 2.0, 31 MB comprimido).
   Medido en el PC con el mismo audio público y la misma forma de alimentar a Vosk que usa la app,
@@ -582,3 +586,80 @@ La regla del inglés vale igual: "el texto se escribe, no se traduce" (`docs/ing
 - Detector de idioma y pérdida de letras: `detectarIdioma` y `normalizar` copiados tal cual a Python,
   pasados por las transcripciones de FLEURS dev de cada idioma.
 - Los scripts quedaron fuera del repositorio (en el computador de trabajo del agente, `/workspace/medir-idiomas/`).
+
+---
+
+## 11. Observación de Sigo Monetización: GPLv3 y la retención del 25 % en Brasil (14-10-2026)
+
+Observación: "Portugués de Brasil: el modelo grande de Vosk está bajo licencia GPLv3, lo que choca con
+vender una versión pagada. Además, Brasil retiene 25 % si no se cobra en reales."
+
+### 11.1 La licencia GPLv3: es cierta, pero no toca al modelo recomendado
+
+Vuelto a leer en la lista oficial https://alphacephei.com/vosk/models el 14-10-2026:
+
+| Modelo | Peso | Licencia según la lista | ¿Lo recomienda este documento? |
+| --- | --- | --- | --- |
+| `vosk-model-small-pt-0.3` | 31M | **Apache 2.0** | **Sí, es el recomendado** (secciones 0, 6.5 y 7.1) |
+| `vosk-model-pt-fb-v0.1.1-20220516_2113` ("Big model from FalaBrazil") | 1.6G | **GPLv3.0** | **No.** Ya estaba descartado en la sección 3 ("GPLv3 — no") y en la 6.3 |
+
+- La biblioteca Vosk (vosk-api) también es Apache 2.0: https://github.com/alphacep/vosk-api/blob/master/COPYING.
+- **La GPLv3 no cambia la recomendación**: el modelo GPLv3 no se usa, y además pesa 1,6 GB, lo que lo
+  descarta igual por la condición 5 y porque es un modelo para servidor.
+- Implicaciones si alguna vez se usara un modelo GPLv3. Esto no es una opinión legal: la GPLv3 pide
+  que quien distribuye una "obra cubierta" en forma no de fuente entregue también su "Corresponding
+  Source" bajo la misma licencia (sección 6 del texto oficial, https://www.gnu.org/licenses/gpl-3.0.html).
+  Además prohíbe imponer más restricciones a quienes la reciben (sección 10), y la FSF explica que
+  la GPL permite cobrar por distribuir copias (https://www.gnu.org/philosophy/selling.html). Sobre si
+  un modelo de pesos empaquetado dentro de una APK de pago forma una "obra cubierta" junto con la app,
+  no encontré una fuente con autoridad **[sin verificar: consultar a un abogado]**. Por eso el criterio
+  del encargo se mantiene: solo Apache 2.0, MIT, BSD o CC-BY.
+- Otras licencias copyleft o no comerciales citadas en este documento, todas descartadas: AGPL
+  (fr-linto, ar-linto, en-daanzu), CC-BY-NC-SA (fr-pguyot, nl-spraakherkenning, tl-ph), LGPL-3.0
+  (de-zamia, en-zamia) y la Moonshine Community License de los modelos Moonshine no streaming.
+
+### 11.2 La retención del 25 % en Brasil: es cierta y aplica a Javier
+
+Lo que dice Google, en sus páginas oficiales:
+
+- **Qué es:** impuestos brasileños retenidos en la fuente, no una comisión de Google. Son 25 % del
+  **precio al cliente**, que se desglosan en 15 % de IRRF (Imposto de Renda Retido na Fonte) y 10 % de
+  CIDE (Contribuição de Intervenção no Domínio Econômico). Google o sus procesadores de pago lo
+  descuentan de las ganancias del desarrollador —
+  https://support.google.com/product-documentation/answer/15152514?hl=en.
+- **A quién aplica:** a quien cumple las dos condiciones a la vez: recibe sus pagos de Google en una
+  **moneda distinta del real (BRL)** y vende apps o compras dentro de la app (suscripciones incluidas)
+  a clientes en Brasil, con cualquier medio de pago — misma página y
+  https://support.google.com/googleplay/android-developer/answer/9384608?hl=en.
+- **Lo que decide no es la moneda en que paga el cliente, sino la moneda en que Google le paga al
+  desarrollador.** Que el cliente brasileño pague en reales no lo evita. Según Google, "el único modo
+  de no pagar este impuesto es retirar la app de Brasil" —
+  https://support.google.com/googleplay/android-developer/answer/7161649?hl=en.
+- **Un desarrollador en Chile**, cobrando en pesos chilenos o en dólares, **queda dentro** del 25 %.
+- **Rebaja por convenio de doble tributación:** solo baja el IRRF, nunca el 10 % de CIDE, y exige un
+  certificado de residencia tributaria. Brasil y Chile tienen convenio (Decreto 4.852/2003,
+  modificado por el Protocolo de 2022 y promulgado por el Decreto 12.863/2026 —
+  https://www.gov.br/receitafederal/pt-br/acesso-a-informacao/legislacao/acordos-internacionais/acordos-para-evitar-a-dupla-tributacao/chile,
+  https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/decreto/d12863.htm). Pero **Chile no está en
+  la lista de países para los que Google acepta certificados** (leída el 14-10-2026: Argentina, Austria,
+  Bélgica, Finlandia, Francia, Israel, Japón, Corea, México, Singapur, Sudáfrica, España, Suiza, Turquía
+  y Emiratos Árabes Unidos). Hoy, entonces, se aplica el 25 % completo. Qué tasa fijaría el convenio
+  para este tipo de pago **[sin verificar]**.
+- **Hay que precisar la observación:** "si no se cobra en reales" debería decir "si Google no le paga
+  al desarrollador en reales". Cobrar en reales obligaría a tener una cuenta de pagos en BRL. Si un
+  desarrollador sin residencia en Brasil puede recibir pagos en BRL, y con qué requisitos (por ejemplo,
+  una empresa brasileña), **[sin verificar]**.
+- Ese 25 % se suma a la comisión de Google Play. Cómo se calculan juntos, por ejemplo si la comisión
+  se aplica antes o después del impuesto, **[sin verificar]**: la página dice solo "25 % del precio al
+  cliente".
+
+### 11.3 ¿Cambia el orden?
+
+**El orden técnico no cambia**: el modelo recomendado es Apache 2.0 y la retención no depende del
+idioma. Lo que sí cambia es **el valor del mercado brasileño**: por cada suscripción vendida en Brasil
+se pierde un 25 % del precio al cliente antes de la comisión de Play, cosa que no pasa en Italia,
+Alemania ni Francia (en estas páginas de Google no aparece una retención equivalente para esos países
+**[no revisado país por país]**). Brasil sigue siendo primero porque su tamaño (144 M de usuarios de
+YouTube contra 42–66 M) compensa con creces ese descuento, y porque hay un hablante nativo para medir.
+Se recomienda que la fijación de precios en Brasil considere el 25 % de retención. Y si las lecturas
+del portugués no alcanzan (sección 7), la retención es una razón más para pasar directo al italiano.
