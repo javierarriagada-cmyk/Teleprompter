@@ -125,6 +125,9 @@ export const es = {
   galeriaNoSeGuardo: 'No se pudo guardar en la galería',
   galeriaNoSeGuardoPorque: 'No se pudo guardar en la galería: {detalle}',
   noSeCompartio: 'No se pudo compartir',
+  // -tomas-grandes- La toma grande se abre con otra aplicación y no hay ninguna que abra video.
+  sinAppParaVideo: 'No hay una aplicación para ver el video',
+  noSeAbrioVideo: 'No se pudo abrir el video',
   guionImportado: 'Guion importado',
   descargandoModelo: 'Descargando modelo de voz para uso offline:',
   // Antes: errorModelo: 'Error descargando modelo de voz Vosk: {detalle}.',

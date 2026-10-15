@@ -114,6 +114,8 @@ export const en: Textos = {
   galeriaNoSeGuardo: 'Couldn’t save to your gallery',
   galeriaNoSeGuardoPorque: 'Couldn’t save to your gallery: {detalle}',
   noSeCompartio: 'Couldn’t share',
+  sinAppParaVideo: 'No app can play this video',
+  noSeAbrioVideo: 'Couldn’t open the video',
   guionImportado: 'Imported script',
   descargandoModelo: 'Downloading the voice model for offline use:',
   // Antes: errorModelo: 'Couldn’t download the Vosk voice model: {detalle}.',

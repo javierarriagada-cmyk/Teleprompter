@@ -1,7 +1,8 @@
 import React from 'react'
 import { ResumenGrabacion, ResumenGuion } from '../datos/modelo'
 import { srcDeRuta, formatearDuracionMs, nombreDeToma } from './TiraGrabaciones'
-import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo } from '../lib/archivosNativos'
+// -tomas-grandes- Antes: import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo } from '../lib/archivosNativos'
+import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo, seVeConReproductorDelSistema, abrirConReproductor } from '../lib/archivosNativos'
 import { orientacionDeToma } from '../lib/orientacion'
 import { anotar87, medirBordesSeguros, anotarOrientacion } from '../lib/medicionesTarea87'
 // -tomas-largas- Antes: import { subtitulosConCortes, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
@@ -294,6 +295,16 @@ export default function ReproductorGrabacion({
   }, [video])
   const alternarVideo = (e: React.MouseEvent) => {
     e.stopPropagation()
+    // -tomas-grandes, 15-10-2026- UNA TOMA DE MÁS DE 2.147.483.647 BYTES no se reproduce aquí: la
+    // WebView no lee pasado 2^31 -lib/archivosNativos.ts, TOPE_BYTES_WEBVIEW-. Reproducir la abre con el
+    // reproductor del sistema; al volver, el visor sigue igual -Guardar, Filtro, Subtítulos, Borrar-.
+    if (seVeConReproductorDelSistema(grabacion.bytes)) {
+      void abrirConReproductor(grabacion.ruta).then((r) => {
+        if (r === 'sin-aplicacion') onGuardadoEnGaleria?.(false, t('sinAppParaVideo'))
+        else if (r === 'error') onGuardadoEnGaleria?.(false, t('noSeAbrioVideo'))
+      })
+      return
+    }
     if (!video) return
     if (video.paused || video.ended) {
       video.play()?.catch?.(() => {
