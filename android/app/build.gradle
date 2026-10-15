@@ -250,8 +250,15 @@ dependencies {
     // alineado a 64 KB, así que no hace falta subirla por el requisito de páginas de 16 KB. Se vuelve a
     // mirar cuando se actualice Vosk: vosk-android 0.3.75 pide 5.18.1, pero el @aar se salta esa
     // dependencia transitiva.
+    // -15-10-2026- Se sube a 5.18.1, la que pide vosk-android 0.3.75. Play avisó al subir la 0.9.1: «Es
+    // posible que tu app falle en dispositivos de 16 KB… base/lib/arm64-v8a/libjnidispatch.so», compilada
+    // con un NDK anterior a r28. La alineación estaba bien; lo que faltaba son dos arreglos del registro
+    // de cambios de JNA: «Fix calls to jnidispatch on Android with 16KB page size», en 5.16.0 y 5.17.0.
+    // Sin ellos, en un teléfono de páginas de 16 KB las llamadas a Vosk pueden fallar. No 5.19.0: sube
+    // el mínimo de Android a 8.0 -issue 1730 de JNA-; a Sigo no le afecta -minSdk 29- pero no hace falta.
     implementation 'com.alphacephei:vosk-android:0.3.75@aar'
-    implementation 'net.java.dev.jna:jna:5.13.0@aar'
+    implementation 'net.java.dev.jna:jna:5.18.1@aar'
+    // Antes: implementation 'net.java.dev.jna:jna:5.13.0@aar'
 
     // SUBTITULOS QUEMADOS AL GUARDAR -24-09-2026-. Media3 Transformer, de Google:
     // vuelve a codificar la toma con el codificador de hardware y dibuja el
