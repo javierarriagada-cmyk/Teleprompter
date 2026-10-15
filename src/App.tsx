@@ -100,9 +100,10 @@ import { PanelDiagnostico } from './components/PanelDiagnostico'
 import { HERRAMIENTAS } from './lib/herramientas'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
-// -controles-que-se-desvanecen, 14-10-2026- Al cumplirse empiezan a irse -se desvanecen en
-// MS_PANTALLA, useAparecer-. Antes: const MS_CONTROLES_A_LA_VISTA = 4000
-const MS_CONTROLES_A_LA_VISTA = 3000
+// -controles-que-se-desvanecen, 14-10-2026- A los 2,5 s empiezan a irse -se desvanecen en MS_PANTALLA,
+// useAparecer-. Javier: «en vez que desaparezca a los 4 segundos, comience a desaparecer a los 2,5».
+// Antes: const MS_CONTROLES_A_LA_VISTA = 4000
+const MS_CONTROLES_A_LA_VISTA = 2500
 
 interface AppProps {
   motor?: MotorDeVoz

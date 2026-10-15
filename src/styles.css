@@ -2699,24 +2699,27 @@ button.btn-deformable.miniatura-banda:not(:active) {
   pointer-events: none;
 }
 
-/* LOS CONTROLES DE LA TOMA SE DESVANECEN -controles-que-se-desvanecen, 14-10-2026-. La envoltura no se
-   dibuja -display: contents-: los rieles, la barra y el dock siguen sin armar su propio apilamiento. La
-   opacidad va en cada hijo. Entran en --ms-chico con --curva-entra y se van en --ms-pantalla con
-   --curva-sale. Es una transición, no un keyframe: si vuelven mientras se van, suben desde donde estaban.
-   Mientras se van no reciben toques: el toque es de la pantalla, como si no estuvieran. */
+/* LOS CONTROLES DE LA TOMA SE DESVANECEN -controles-que-se-desvanecen, 14-10-2026-. A los 2,5 s
+   -MS_CONTROLES_A_LA_VISTA- empiezan a irse. La envoltura no se dibuja -display: contents-: los rieles, la
+   barra y el dock siguen sin armar su propio apilamiento en reposo. El desvanecido va en cada hijo con
+   filter: opacity(), no con opacity: los botones flotantes ya entran con panelControlesEntra -un keyframe
+   de opacity con forwards, App.tsx- y ese forwards le gana a cualquier opacity de la hoja. En reposo el
+   filtro es none -no se toca el vidrio de backdrop-filter de la barra y el dock-. Entran en --ms-chico
+   con --curva-entra y se van en --ms-pantalla con --curva-sale. Es una transición, no un keyframe: si
+   vuelven mientras se van, suben desde donde estaban. Mientras se van no reciben toques: el toque es de
+   la pantalla, como si no estuvieran. */
 .controles-lectura {
   display: contents;
 }
 .controles-lectura > * {
-  opacity: 1;
-  transition: opacity var(--ms-chico) var(--curva-entra);
+  transition: filter var(--ms-chico) var(--curva-entra);
 }
 .controles-lectura.entrando > * {
-  opacity: 0;
+  filter: opacity(0);
 }
 .controles-lectura.saliendo > * {
-  opacity: 0;
-  transition: opacity var(--ms-pantalla) var(--curva-sale);
+  filter: opacity(0);
+  transition: filter var(--ms-pantalla) var(--curva-sale);
 }
 .controles-lectura.saliendo,
 .controles-lectura.saliendo * {
