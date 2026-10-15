@@ -2699,7 +2699,9 @@ button.btn-deformable.miniatura-banda:not(:active) {
   pointer-events: none;
 }
 
-/* LOS CONTROLES DE LA TOMA SE DESVANECEN -controles-que-se-desvanecen, 14-10-2026-. A los 2,5 s
+/* Antes -corrección 1: filter: opacity() en los hijos directos apagaba el vidrio de la barra y el dock
+   mientras duraba, y la entrada .entrando se sumaba a panelControlesEntra-:
+/ * LOS CONTROLES DE LA TOMA SE DESVANECEN -controles-que-se-desvanecen, 14-10-2026-. A los 2,5 s
    -MS_CONTROLES_A_LA_VISTA- empiezan a irse. La envoltura no se dibuja -display: contents-: los rieles, la
    barra y el dock siguen sin armar su propio apilamiento en reposo. El desvanecido va en cada hijo con
    filter: opacity(), no con opacity: los botones flotantes ya entran con panelControlesEntra -un keyframe
@@ -2707,7 +2709,7 @@ button.btn-deformable.miniatura-banda:not(:active) {
    filtro es none -no se toca el vidrio de backdrop-filter de la barra y el dock-. Entran en --ms-chico
    con --curva-entra y se van en --ms-pantalla con --curva-sale. Es una transición, no un keyframe: si
    vuelven mientras se van, suben desde donde estaban. Mientras se van no reciben toques: el toque es de
-   la pantalla, como si no estuvieran. */
+   la pantalla, como si no estuvieran. * /
 .controles-lectura {
   display: contents;
 }
@@ -2727,6 +2729,47 @@ button.btn-deformable.miniatura-banda:not(:active) {
 }
 @media (prefers-reduced-motion: reduce) {
   .controles-lectura > * {
+    transition: none;
+  }
+}
+*/
+/* LOS CONTROLES DE LA TOMA SE DESVANECEN -controles-que-se-desvanecen, 14-10-2026; corrección 1-. A los
+   2,5 s -MS_CONTROLES_A_LA_VISTA- empiezan a irse: opacity a 0 en --ms-pantalla con --curva-sale, y se
+   desmontan al terminar -useAparecer-. La ENTRADA es solo panelControlesEntra -App.tsx, ahora con relleno
+   backwards: terminada no congela la opacidad-; no se le suma otra. Si vuelven mientras se van, la opacidad
+   sube por transición desde donde estaba, sin redisparar panelControlesEntra.
+   EL VIDRIO. Una opacity en un ANCESTRO de una pieza con backdrop-filter le apaga el vidrio mientras dura:
+   el ancestro pasa a ser la raíz del fondo y el desenfoque ya no ve lo de atrás. Por eso la opacidad no va
+   en los hijos directos sin más, sino en cada pieza más grande que no tiene vidrio adentro, y en las piezas
+   de vidrio mismas -su propia opacity no les apaga el vidrio-. El vidrio: los flotantes de 56 y 72, la
+   pastilla, el fondo de la barra y del dock de la tableta -tab-fondo- y el del riel -riel-fondo-. El de 40
+   lleva el vidrio en su ::before: se desvanecen su ::before y sus hijos, no el botón.
+   La envoltura no se dibuja -display: contents-: los rieles, la barra y el dock siguen sin armar su propio
+   apilamiento. Mientras se van no reciben toques: el toque es de la pantalla. */
+.controles-lectura {
+  display: contents;
+}
+.controles-lectura > :not(:has(.btn-flotante-40, .btn-flotante-56, .btn-flotante-72, .pastilla-tiempo, .tab-fondo, .riel-fondo)):not(.btn-flotante-40),
+.controles-lectura :has(.btn-flotante-40, .btn-flotante-56, .btn-flotante-72, .pastilla-tiempo, .tab-fondo, .riel-fondo) > :not(:has(.btn-flotante-40, .btn-flotante-56, .btn-flotante-72, .pastilla-tiempo, .tab-fondo, .riel-fondo)):not(.btn-flotante-40),
+.controles-lectura .btn-flotante-40 > *,
+.controles-lectura .btn-flotante-40::before {
+  opacity: 1;
+  transition: opacity var(--ms-chico) var(--curva-entra);
+}
+.controles-lectura.saliendo > :not(:has(.btn-flotante-40, .btn-flotante-56, .btn-flotante-72, .pastilla-tiempo, .tab-fondo, .riel-fondo)):not(.btn-flotante-40),
+.controles-lectura.saliendo :has(.btn-flotante-40, .btn-flotante-56, .btn-flotante-72, .pastilla-tiempo, .tab-fondo, .riel-fondo) > :not(:has(.btn-flotante-40, .btn-flotante-56, .btn-flotante-72, .pastilla-tiempo, .tab-fondo, .riel-fondo)):not(.btn-flotante-40),
+.controles-lectura.saliendo .btn-flotante-40 > *,
+.controles-lectura.saliendo .btn-flotante-40::before {
+  opacity: 0;
+  transition: opacity var(--ms-pantalla) var(--curva-sale);
+}
+.controles-lectura.saliendo,
+.controles-lectura.saliendo * {
+  pointer-events: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .controles-lectura *,
+  .controles-lectura .btn-flotante-40::before {
     transition: none;
   }
 }

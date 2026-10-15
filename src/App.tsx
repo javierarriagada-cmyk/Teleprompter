@@ -2793,7 +2793,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                       left: horizontal ? 'calc(12px + env(safe-area-inset-left, 0px))' : 'calc(8px + env(safe-area-inset-left, 0px))'
                     }),
                     zIndex: 100,
-                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                    // -controles-que-se-desvanecen, corrección 1- Relleno backwards y no forwards, como PanelAjustes: terminada,
+                    // la animación no deja la opacidad congelada en 1 y la salida -opacity, styles.css- puede bajarla.
+                    // Antes: animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} backwards`
                   }}
                 >
                   <IconoAtras tamano={20} />
@@ -2850,7 +2853,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                     transition: movimientoApagado()
                       ? 'none'
                       : `width ${MS_CHICO}ms ${CURVA_ENTRA}, border-radius ${MS_CHICO}ms ${CURVA_RESORTE}, transform ${MS_CHICO}ms ${CURVA_RESORTE}`,
-                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                    // -controles-que-se-desvanecen, corrección 1- Relleno backwards y no forwards, como PanelAjustes: terminada,
+                    // la animación no deja la opacidad congelada en 1 y la salida -opacity, styles.css- puede bajarla.
+                    // Antes: animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} backwards`
                   }}
                 >
                   {/* -tarea 83, parte B- El ícono a 24, el de los botones de 56 -FAB de Material 3-.
@@ -2885,7 +2891,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                   //     right: horizontal ? 'calc((var(--riel-der) - 40px) / 2 + …)' : 'calc(8px + …)' }),
                   //   con el comentario «29-09-2026, tarea 82: de lado, centrada en el riel derecho -(124 - 40) / 2-.»
                   zIndex: 100,
-                  animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                  // -controles-que-se-desvanecen, corrección 1- Relleno backwards y no forwards, como PanelAjustes: terminada,
+                  // la animación no deja la opacidad congelada en 1 y la salida -opacity, styles.css- puede bajarla.
+                  // Antes: animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                  animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} backwards`
                 }}
               >
                 {/* -tarea 83, parte B- A 24, el ícono del botón de 56. En pausa el mismo botón es
@@ -2912,7 +2921,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                   }}
                   style={{
                     pointerEvents: 'auto',
-                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                    // -controles-que-se-desvanecen, corrección 1- Relleno backwards y no forwards, como PanelAjustes: terminada,
+                    // la animación no deja la opacidad congelada en 1 y la salida -opacity, styles.css- puede bajarla.
+                    // Antes: animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
+                    animation: movimientoApagado() ? 'none' : `panelControlesEntra ${MS_CHICO}ms ${CURVA_ENTRA} backwards`
                   }}
                 >
                   {/* 44 y no 26: IconoParar dibuja su cuadrado en 12 de las 24 unidades de la
