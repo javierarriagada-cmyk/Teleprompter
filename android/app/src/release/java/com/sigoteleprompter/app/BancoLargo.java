@@ -28,7 +28,7 @@ final class BancoLargo {
         return "";
     }
 
-    int leer(short[] destino) {
+    int leer(short[] destino) throws IOException {
         return 0;
     }
 
@@ -46,5 +46,5 @@ final class BancoLargo {
         return null;
     }
 
-    static void anotarLinea(Context ctx, String nombre, String linea) {}
+    static void anotarLinea(Context ctx, String nombre, String linea) throws IOException {}
 }
