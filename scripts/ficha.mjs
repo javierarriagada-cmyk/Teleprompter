@@ -18,6 +18,11 @@ const FICHA = path.join(RAIZ, 'docs', 'play', 'ficha')
 const args = process.argv.slice(2)
 const simular = args.includes('--simular')
 const subir = args.includes('subir')
+// -15-10-2026- --directo: con la publicación administrada APAGADA, Google no acepta borradores -400
+// "Changes are sent for review automatically. The query parameter changesNotSentForReview must not be
+// set."-: el commit va sin esa marca, entra a revisión y se publica sola al aprobarse. Lo eligió Javier
+// para la ficha 0.9.1 -camino A-. Sin --directo, todo sigue como antes: borrador.
+const directo = args.includes('--directo')
 
 function listar(dir) {
   if (!fs.existsSync(dir)) return []
@@ -78,7 +83,10 @@ for (const idioma of ['es-419', 'en-US']) {
   console.log(`${idioma}: nombre «${t.nombre}», breve ${[...t.breve].length}, completa ${[...t.completa].length}`)
 }
 for (const im of hecho.imagenes) console.log(`${im.idioma} ${im.tipo} ${im.nombre} ${im.bytes} bytes`)
-console.log('El ícono no se toca. Al terminar queda en borrador: el envío a revisión lo hace Javier en la consola.')
+// Antes: console.log('El ícono no se toca. Al terminar queda en borrador: el envío a revisión lo hace Javier en la consola.')
+console.log(directo
+  ? 'El ícono no se toca. --directo: al terminar entra a revisión y se publica sola cuando Google la apruebe.'
+  : 'El ícono no se toca. Al terminar queda en borrador: el envío a revisión lo hace Javier en la consola.')
 if (simular) process.exit(0)
 
 const llave = leerLlave()
@@ -130,9 +138,11 @@ try {
       if (!sube.ok) throw new Error(await sube.text())
     }
   }
-  const fin = await fetch(`${base}/edits/${id}:commit?changesNotSentForReview=true`, { method: 'POST', headers: auth })
+  // Antes: const fin = await fetch(`${base}/edits/${id}:commit?changesNotSentForReview=true`, { method: 'POST', headers: auth })
+  const fin = await fetch(`${base}/edits/${id}:commit${directo ? '' : '?changesNotSentForReview=true'}`, { method: 'POST', headers: auth })
   if (!fin.ok) throw new Error(await fin.text())
-  console.log('Quedó en borrador. El envío a revisión lo hace Javier en la consola.')
+  // Antes: console.log('Quedó en borrador. El envío a revisión lo hace Javier en la consola.')
+  console.log(directo ? 'Enviada a revisión: se publica sola cuando Google la apruebe.' : 'Quedó en borrador. El envío a revisión lo hace Javier en la consola.')
 } catch (e) {
   await fetch(`${base}/edits/${id}`, { method: 'DELETE', headers: auth }).catch(() => {})
   console.error('Borré la edición. Google dijo: ' + e.message)
