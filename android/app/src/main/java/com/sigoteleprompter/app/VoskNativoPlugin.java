@@ -5,6 +5,7 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 
+import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.PermissionState;
 import com.getcapacitor.Plugin;
@@ -427,6 +428,31 @@ public class VoskNativoPlugin extends Plugin {
             // finales, y cuando aparecio, del texto de los parciales.
             reconocedor.setWords(true);
             int muestrasPorTrozo = Math.round(FRECUENCIA * SEGUNDOS_POR_TROZO);
+            // EL BANCO LARGO -motor-largo, 15-10-2026-, SOLO EN LA APK DE PRUEBA. Con bancoLargo el
+            // MISMO lazo -Oido- lee de los .pcm de files/oido a ritmo de tiempo real en vez del
+            // micrófono: ver BancoLargo -src/debug/java-. En la versión de Play BancoLargo.disponible()
+            // es false y se rechaza aquí, antes de tocar nada.
+            BancoLargo banco = null;
+            if (Boolean.TRUE.equals(call.getBoolean("bancoLargo", false))) {
+                if (!BancoLargo.disponible()) {
+                    reconocedor.close();
+                    call.reject("El banco largo va solo en la APK de prueba");
+                    return;
+                }
+                String[] nombres = null;
+                JSArray lista = call.getArray("archivos");
+                if (lista != null && lista.length() > 0) {
+                    nombres = new String[lista.length()];
+                    for (int i = 0; i < lista.length(); i++) nombres[i] = lista.getString(i);
+                }
+                try {
+                    banco = BancoLargo.abrir(getContext(), call.getInt("minutos", 35), nombres);
+                } catch (IOException e) {
+                    reconocedor.close();
+                    call.reject(e.getMessage(), "BANCO_SIN_AUDIO");
+                    return;
+                }
+            }
             // LA FUENTE Y LA FRECUENCIA DEL MICROFONO, ELEGIBLES -24-09-2026-. Medido:
             // sin camara el microfono entrega cada trozo 0,09 s despues de dicho; con
             // la camara grabando video con sonido, 0,50 a 0,77 s. La camara -CameraX-
@@ -438,7 +464,9 @@ public class VoskNativoPlugin extends Plugin {
             int factor = Math.max(1, Math.round(frecuenciaMic / FRECUENCIA));
             int minimo = AudioRecord.getMinBufferSize(
                 frecuenciaMic, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
-            AudioRecord grabadora = new AudioRecord(
+            // -motor-largo- Con el banco no se abre el micrófono: el audio sale de los archivos.
+            // Antes: AudioRecord grabadora = new AudioRecord(
+            AudioRecord grabadora = banco != null ? null : new AudioRecord(
                 fuenteDeAudio(fuente),
                 frecuenciaMic,
                 AudioFormat.CHANNEL_IN_MONO,
@@ -446,19 +474,24 @@ public class VoskNativoPlugin extends Plugin {
                 // Medio segundo de colchon: con trozos de 20 ms, cuatro trozos serian 80 ms, y
                 // cualquier tiron del telefono -la camara empezando a grabar- perderia audio.
                 Math.max(minimo, Math.round(FRECUENCIA * 0.5f) * factor * 2));
-            if (grabadora.getState() != AudioRecord.STATE_INITIALIZED) {
+            // Antes: if (grabadora.getState() != AudioRecord.STATE_INITIALIZED) {
+            if (grabadora != null && grabadora.getState() != AudioRecord.STATE_INITIALIZED) {
                 grabadora.release();
                 reconocedor.close();
                 call.reject("No se pudo abrir el microfono");
                 return;
             }
-            grabadora.startRecording();
+            // Antes: grabadora.startRecording();
+            if (grabadora != null) grabadora.startRecording();
             // El cero de esos tiempos es el arranque del audio: se anota el reloj
             // del telefono justo al abrir el microfono.
             long inicioEpochMs = System.currentTimeMillis();
             String rutaAudio = null;
             OutputStream salida = null;
-            if (Boolean.TRUE.equals(call.getBoolean("guardarAudio", false))) {
+            // -motor-largo- Con el banco NUNCA se guarda: guardar borra los audios más viejos de
+            // files/oido -AUDIOS_GUARDADOS-, y esos son justo los que el banco está leyendo.
+            // Antes: if (Boolean.TRUE.equals(call.getBoolean("guardarAudio", false))) {
+            if (banco == null && Boolean.TRUE.equals(call.getBoolean("guardarAudio", false))) {
                 File archivo = archivoDeAudio(inicioEpochMs);
                 if (archivo != null) {
                     salida = new BufferedOutputStream(new FileOutputStream(archivo), 64 * 1024);
@@ -467,6 +500,7 @@ public class VoskNativoPlugin extends Plugin {
             }
             oido = new Oido(grabadora, reconocedor, salida, muestrasPorTrozo, factor,
                 inicioEpochMs, fuenteDeAudio(fuente), frecuenciaMic);
+            oido.banco = banco;
             Thread hilo = new Thread(oido, "sigo-oido");
             oido.hilo = hilo;
             hilo.start();
@@ -476,9 +510,37 @@ public class VoskNativoPlugin extends Plugin {
             r.put("fuente", fuente);
             r.put("frecuenciaMic", frecuenciaMic);
             if (rutaAudio != null) r.put("rutaAudio", rutaAudio);
+            if (banco != null) r.put("bancoLargo", banco.resumen());
             call.resolve(r);
         } catch (Exception e) {
             call.reject("No se pudo abrir el microfono: " + e.getMessage());
+        }
+    }
+
+    /**
+     * -motor-largo- El pedido del banco largo que dejó scripts/banco-largo.mjs, o nada. Lo pregunta
+     * App al abrir, solo con HERRAMIENTAS. En la versión de Play BancoLargo.tomarPedido da null.
+     */
+    @PluginMethod
+    public void pedidoBancoLargo(PluginCall call) {
+        JSObject r = new JSObject();
+        String pedido = BancoLargo.tomarPedido(getContext());
+        if (pedido != null) r.put("pedido", pedido);
+        call.resolve(r);
+    }
+
+    /** -motor-largo- Una línea de la tabla del banco largo, a files/banco-largo/<nombre>.txt. */
+    @PluginMethod
+    public void lineaBancoLargo(PluginCall call) {
+        if (!BancoLargo.disponible()) {
+            call.reject("El banco largo va solo en la APK de prueba");
+            return;
+        }
+        try {
+            BancoLargo.anotarLinea(getContext(), call.getString("nombre", "tabla"), call.getString("linea", ""));
+            call.resolve();
+        } catch (IOException e) {
+            call.reject(e.getMessage());
         }
     }
 
@@ -574,6 +636,8 @@ public class VoskNativoPlugin extends Plugin {
         AudioRecord relevo = null;
         long relevoInicioEpochMs = 0;
         int relevos = 0;
+        // -motor-largo- El banco largo: si no es null, el audio sale de ahí y no del micrófono.
+        BancoLargo banco = null;
 
         Oido(AudioRecord grabadora, Recognizer reconocedor, OutputStream salida, int muestrasPorTrozo, int factor,
              long inicioEpochMs, int fuente, int frecuenciaMic) {
@@ -626,9 +690,21 @@ public class VoskNativoPlugin extends Plugin {
             int trozosSinEntregar = 0;
             double rmsMaximo = 0;
             long ultimoRelevoEpochMs = 0;
+            // -motor-largo- La medida del banco, por minuto de audio: cuánto tardó acceptWaveForm
+            // en total -nanosegundos- y en qué minuto va. Solo se usa con banco.
+            long nsVoskMinuto = 0;
+            long muestrasMinuto = 0;
+            int minuto = 0;
+            int relevosMinuto = 0;
             try {
                 while (escuchando) {
-                    int leidas = grabadora.read(crudo, 0, crudo.length);
+                    // -motor-largo- Del banco o del micrófono; lo demás del lazo es el mismo.
+                    // Antes: int leidas = grabadora.read(crudo, 0, crudo.length);
+                    int leidas = banco != null ? banco.leer(crudo) : grabadora.read(crudo, 0, crudo.length);
+                    if (banco != null && banco.terminado()) {
+                        notifyListeners("bancoLargoFin", new JSObject());
+                        break;
+                    }
                     long leido = System.currentTimeMillis();
                     if (leidas < 0) throw new IOException("error leyendo el microfono: " + leidas);
                     if (leidas == 0) continue;
@@ -670,9 +746,30 @@ public class VoskNativoPlugin extends Plugin {
                         }
                         salida.write(bytes, 0, n * 2);
                     }
+                    long antesVoskNs = banco != null ? System.nanoTime() : 0;
                     boolean cerro = reconocedor.acceptWaveForm(trozo, n);
+                    if (banco != null) {
+                        nsVoskMinuto += System.nanoTime() - antesVoskNs;
+                        muestrasMinuto += n;
+                    }
                     String json = cerro ? reconocedor.getResult() : reconocedor.getPartialResult();
                     long procesado = System.currentTimeMillis();
+                    // -motor-largo- Cada minuto de audio, una medida: ms de acceptWaveForm por segundo
+                    // de audio y el atraso acumulado contra el tiempo real -el mismo cálculo que la
+                    // retención del relevo, de abajo-.
+                    if (banco != null && muestras >= (long) (minuto + 1) * 60L * (long) FRECUENCIA) {
+                        minuto++;
+                        JSObject m = new JSObject();
+                        m.put("minuto", minuto);
+                        m.put("msVoskPorSegundo", nsVoskMinuto / 1e6 / (muestrasMinuto / (double) FRECUENCIA));
+                        m.put("atrasoMs", procesado - (inicioEpochMs + muestras * 1000L / (long) FRECUENCIA));
+                        m.put("relevos", relevosMinuto);
+                        m.put("temperatura", BancoLargo.temperatura());
+                        notifyListeners("bancoLargo", m);
+                        nsVoskMinuto = 0;
+                        muestrasMinuto = 0;
+                        relevosMinuto = 0;
+                    }
                     rmsMaximo = Math.max(rmsMaximo, rms);
                     trozosSinEntregar++;
                     if (cerro || !json.equals(ultimoParcial) || trozosSinEntregar >= TROZOS_POR_ENTREGA) {
@@ -698,7 +795,15 @@ public class VoskNativoPlugin extends Plugin {
                         if (trozosAtrasados >= TROZOS_PARA_RELEVO && leido - ultimoRelevoEpochMs > MS_ENTRE_RELEVOS) {
                             trozosAtrasados = 0;
                             ultimoRelevoEpochMs = leido;
-                            abrirRelevo();
+                            // -motor-largo- Con el banco no hay micrófono que relevar: se anota que
+                            // habría pasado y nada más -la medida no cambia-.
+                            // Antes: abrirRelevo();
+                            if (banco != null) {
+                                relevos++;
+                                relevosMinuto++;
+                            } else {
+                                abrirRelevo();
+                            }
                         }
                     }
                 }
@@ -711,6 +816,7 @@ public class VoskNativoPlugin extends Plugin {
                 d.put("mensaje", e.getMessage());
                 notifyListeners("error", d);
             } finally {
+                if (banco != null) banco.cerrar();
                 soltar(relevo);
                 soltar(grabadora);
                 reconocedor.close();

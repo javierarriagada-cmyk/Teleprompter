@@ -100,6 +100,7 @@ import { IndicadorPrecarga } from './components/IndicadorPrecarga'
 import { PanelDiagnostico } from './components/PanelDiagnostico'
 // Las herramientas de prueba no viajan a Play -tarea 84, src/lib/herramientas.ts-.
 import { HERRAMIENTAS } from './lib/herramientas'
+import { useBancoLargo } from './hooks/useBancoLargo'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
 // -controles-que-se-desvanecen, 14-10-2026- A los 2,5 s empiezan a irse -se desvanecen en MS_PANTALLA,
@@ -1838,6 +1839,20 @@ export default function App({ motor, repoOverride }: AppProps) {
       mostrarAviso(t(conCamara ? 'grabado' : 'lecturaTerminada'))
     }
   }
+
+  // -motor-largo- EL BANCO LARGO, solo con HERRAMIENTAS -hooks/useBancoLargo.ts-: con las mismas funciones
+  // que los botones de Grabar, Empezar y Parar.
+  useBancoLargo(cargado, {
+    guardarGuion: async (g) => {
+      await repoRef.current.guardar(g)
+      await cargarBiblioteca()
+    },
+    grabarDirecto: (id) => handleGrabarDirecto(id),
+    empezar: () => handleEmpezarDesdeListo(),
+    parar: () => handleStop(),
+    calidadVideo,
+    fijarCalidad: setCalidadVideo
+  })
 
   async function handleStop(): Promise<ResumenGrabacion | null> {
     cancelarCuentaRegresiva()
