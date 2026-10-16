@@ -13,7 +13,7 @@
 // mano=<s>:<token> mueve el texto a mano en ese segundo, como Javier. sin-parentesis quita ( y ).
 //
 // Uso: npx vite-node docs/mediciones/motor-parentesis/rastro.ts -- <registro> <desde s> <hasta s>
-//        [mano=345:291 ...] [sin-parentesis] [solo-finales]
+//        [mano=345:291 ...] [sin-parentesis] [solo-finales] [antes-de-B]
 import fs from 'fs'
 import { leerCorpus } from '../../../src/lib/repetidor'
 import { tokenizarGuion, crearSeguidor } from '../../../src/lib/seguidor'
@@ -35,9 +35,12 @@ const motor = crearMotorDeAvance(undefined, lineas, [...bm.values()].sort((a, b)
 const real = crearSeguidor(tokens, { idioma: detectarIdioma(c.guion) ?? undefined })
 // El seguidor, envuelto para seguir pos y posTentativa desde afuera.
 let pos = 0, posT = 0
+// En da8e1d0 -antes de B- pasar antes-de-B, para que el rastro no aplique esa regla.
+const B = !args.includes('antes-de-B')
 const seg = {
   ...real,
-  avanzar: (f: string, t?: number, p?: number, u?: number) => { const r = real.avanzar(f, t, p, u); if (r.movio) { pos = r.hastaToken; posT = r.hastaToken } return r },
+  // Desde el arreglo B, el final que no calza también devuelve posTentativa a pos -seguidor.ts, avanzar-.
+  avanzar: (f: string, t?: number, p?: number, u?: number) => { const r = real.avanzar(f, t, p, u); if (r.movio) { pos = r.hastaToken; posT = r.hastaToken } else if (B) posT = pos; return r },
   avanzarTentativo: (f: string, t?: number, p?: number, u?: number) => { const r = real.avanzarTentativo(f, t, p, u); if (r.movio) posT = Math.max(posT, r.hastaToken); return r },
   irAToken: (k: number) => { real.irAToken(k); pos = k; posT = k }
 }
@@ -54,10 +57,8 @@ for (const e of c.eventos) {
   const res = e.final ? procesarFinal(cond, e.texto, e.ms) : procesarParcial(cond, e.texto, e.ms)
   if (e.ms < a || e.ms > b || (soloFinales && !e.final)) continue
   const ref = Math.max(st.ultimoCalce, Math.floor(st.posicion))
-  const st2 = motor.estadoSinAvanzar ? null : null
   const desp = motor.estadoEn(e.ms)
   console.log(`${(e.ms / 1000).toFixed(2)} ${e.final ? 'FINAL  ' : 'parcial'} «${e.texto}»`)
   console.log(`   antes: motor pos ${st.posicion.toFixed(1)} ultimoCalce ${st.ultimoCalce} ppm ${st.ppmEstimadas.toFixed(0)} | ventana ${Math.max(0, ref - 10)}..${ref + 40} | seguidor pos ${antes.pos} posTentativa ${antes.posT} posPredicha ${posPredicha.toFixed(1)} basePos ${Math.round(posPredicha)}`)
   console.log(`   -> ${res ? `calce ${res.hastaToken} «${pal(res.hastaToken)}»` : 'nada'} | después: seguidor pos ${pos} posTentativa ${posT} | motor pos ${desp.posicion.toFixed(1)} ultimoCalce ${desp.ultimoCalce} freno ${desp.motivoFreno}`)
-  void st2
 }

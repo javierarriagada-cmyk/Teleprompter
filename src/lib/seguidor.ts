@@ -367,6 +367,10 @@ export function crearSeguidor(tokens: Token[], opciones: { idioma?: string } = {
 
       if (mejorPuntaje < MIN_COINCIDENCIA) {
         fallosSeguidos++
+        // -motor-parentesis, 15-10-2026-: lo mismo que el ancla del motor -avance.ts, falloCalce-: el
+        // final que no calza no confirma posTentativa, que vuelve a pos. Si no, posPredicha sigue
+        // saliendo del parcial: en la toma de 25 min, de 260 con Javier en 198, hasta 507 a los 343 s.
+        posTentativa = pos
         return obtenerPosicionRespuesta(false)
       }
 
