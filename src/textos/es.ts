@@ -76,6 +76,8 @@ export const es = {
   guardarEnGaleria: 'Guardar en galería',
   guardando: 'Guardando…',
   guardandoAvance: 'Guardando… {n}%',
+  // -parar-largo- Mientras se guarda la toma al tocar Parar.
+  guardandoToma: 'Guardando la toma…',
   repetirToma: 'Repetir toma',
   // Los controles propios del reproductor -28-09-2026-.
   reproducir: 'Reproducir',

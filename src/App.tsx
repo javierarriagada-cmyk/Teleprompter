@@ -62,6 +62,7 @@ import {
   recuperarTomasPendientes,
   quitarTomasSinVideo,
   tomaEnCurso,
+  guardandoToma,
   anotarFraseOida,
   borrarGrabacionEnDisco,
   abrirPausa,
@@ -159,6 +160,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   }, [])
   const [usandoMemoriaFallback, setUsandoMemoriaFallback] = useState<boolean>(false)
   const [errorRepositorio, setErrorRepositorio] = useState<string | null>(null)
+  // -parar-largo, 15-10-2026- Desde el primer toque de Parar hasta que se abre el visor: el botón queda
+  // desactivado y se lee «Guardando la toma…». Es solo lo que se ve; la guarda está en cortarTomaVideo.
+  const [guardandoTomaVisible, setGuardandoTomaVisible] = useState<boolean>(false)
 
   // En el teléfono la entrada se monta desde el primer render, con la marca quieta,
   // tapando la portada. El aviso del plugin (o el tope) solo suelta la animación.
@@ -1842,7 +1846,20 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }
 
-  async function handleStop(): Promise<ResumenGrabacion | null> {
+  // -parar-largo- undefined: el toque se ignoró porque la toma se está guardando -guardandoToma, la
+  // guarda única de cortarTomaVideo-. Quien llama no avisa nada. Antes: Promise<ResumenGrabacion | null>.
+  async function handleStop(): Promise<ResumenGrabacion | null | undefined> {
+    if (guardandoToma()) return undefined
+    const conToma = tomaEnCurso()
+    if (conToma) setGuardandoTomaVisible(true)
+    try {
+      return await handleStopUnaVez()
+    } finally {
+      if (conToma) setGuardandoTomaVisible(false)
+    }
+  }
+
+  async function handleStopUnaVez(): Promise<ResumenGrabacion | null> {
     cancelarCuentaRegresiva()
     setTInicioLecturaMs(null)
     // -tarea 88- Antes: setEnPausa(false).
@@ -2501,7 +2518,8 @@ export default function App({ motor, repoOverride }: AppProps) {
     hapticaToqueMedio()
     const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
     const resumen = await handleStop()
-    if (!resumen) avisarFinDeToma(duracionMs)
+    // Antes: if (!resumen) avisarFinDeToma(duracionMs)
+    if (resumen === null) avisarFinDeToma(duracionMs)
   }
 
   function ejecutarAccionPausa(a: AccionPausa, en: EntradaPausa): Promise<void> {
@@ -2802,7 +2820,8 @@ export default function App({ motor, repoOverride }: AppProps) {
                     hapticaToqueMedio()
                     const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
                     const resumen = await handleStop()
-                    if (!resumen) avisarFinDeToma(duracionMs)
+                    // Antes: if (!resumen) avisarFinDeToma(duracionMs)
+                    if (resumen === null) avisarFinDeToma(duracionMs)
                   }}
                   style={{
                     ...lugarEnLinea({
@@ -2926,6 +2945,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const botonPararLectura = (
                 <button
                   data-testid="btn-parar-lectura"
+                  disabled={guardandoTomaVisible}
                   data-duracion-entra={MS_CHICO}
                   data-duracion-sale={MS_PANTALLA}
                   type="button"
@@ -2936,7 +2956,8 @@ export default function App({ motor, repoOverride }: AppProps) {
                     hapticaToqueMedio()
                     const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
                     const resumen = await handleStop()
-                    if (!resumen) avisarFinDeToma(duracionMs)
+                    // Antes: if (!resumen) avisarFinDeToma(duracionMs)
+                    if (resumen === null) avisarFinDeToma(duracionMs)
                   }}
                   style={{
                     pointerEvents: 'auto',
@@ -3734,6 +3755,10 @@ export default function App({ motor, repoOverride }: AppProps) {
           desde LISTO, donde el indicador del flujo de la página queda tapado por la lectura. */}
       {/* -tarea 104- Arriba queda solo el error. El avance va en la pastilla del tiempo -lámina a- y la
           falta de conexión abajo -lámina b, avisoVoz-. Antes: {descargaVoz && ( */}
+      {/* -parar-largo- Se ve al tiro el toque de Parar mientras la toma se guarda. Usa la capa de .aviso-voz. */}
+      {guardandoTomaVisible && (
+        <div className="aviso-voz" data-testid="guardando-toma" role="status">{t('guardandoToma')}</div>
+      )}
       {descargaVoz && descargaVoz.estado === 'error' && (
         <div className="aviso-voz" data-testid="aviso-voz">
           <IndicadorPrecarga
