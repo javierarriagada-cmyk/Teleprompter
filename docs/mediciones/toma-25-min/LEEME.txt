@@ -1,0 +1,12 @@
+﻿TOMA DE 25 MIN EN EL REDMI -15-10-2026-: material para la investigación del motor que se detiene.
+
+audio.flac  El audio que oyó el reconocedor en el Redmi -files/oido/1792110656928.pcm, 16 kHz mono, 16 bit-,
+            en FLAC sin pérdida -20 MB contra 50 del .pcm-. Para volver al .pcm:
+            ffmpeg -i audio.flac -f s16le -ar 16000 -ac 1 audio.pcm
+            Es la grabación de la toma de 25:34 del moto g86 -15-10, versión de Play- sonando por el parlante
+            del g86, escuchada por el micrófono del Redmi mientras grababa con la voz, 1080p, cámara detrás.
+guion.txt   El guion tal cual se leyó, sacado del encabezado de la bitácora de esa toma -las líneas "# | "-.
+
+Lo que vio Javier: el motor se detuvo cerca del minuto 6:25 y cerca del 25, en el mismo lugar del texto
+que en el g86; las dos veces se destrabó moviendo el texto a mano; en pocas ocasiones se adelantó.
+La bitácora de la toma se perdió: un segundo toque de Parar la reinició -otro error, orden aparte-.
