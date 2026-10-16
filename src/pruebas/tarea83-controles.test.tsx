@@ -279,7 +279,9 @@ describe('Tarea 83, parte B: LS-M2, otra app toma la cámara o el micrófono', (
     expect(s).not.toBeNull()
     expect(s.estado).toBe('incompleta')
     // El video queda donde lo deja el corte de segundo plano -.mp4.part-, que es lo que se recupera.
-    expect(String(s.rutaMp4 || '')).toMatch(/\.mp4\.part$/)
+    // -parar-largo, 15-10-2026- Ya no se renombra a .part: queda donde la cámara lo dejó, con su ruta en el
+    // sidecar, y la recuperación la usa. Antes: expect(String(s.rutaMp4 || '')).toMatch(/\.mp4\.part$/)
+    expect(String(s.rutaMp4 || '')).toBe('file:///plugin/video_1.mp4')
   })
 
   test('SALE UN AVISO QUE DICE QUÉ PASÓ -en español-', async () => {
