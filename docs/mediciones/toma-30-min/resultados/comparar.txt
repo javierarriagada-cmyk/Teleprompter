@@ -1,0 +1,29 @@
+teléfono: 140 finales hasta 686.5 s; 50 con calce
+
+== la bitácora repetida -misma entrada que el teléfono-: 140 finales
+  mismo texto: 140/140 (100.0%) de los del teléfono; 140/140 (100.0%) de los repetidos
+  tiempo, repetido - teléfono: mediana 0.0 ms, p10 0.0, p90 0.0
+  mismo calce -o los dos sin calce-: 138/140 (98.6%); de los que calzaron en el teléfono: 48/50 (96.0%)
+  |posición del motor - teléfono| en esos finales: mediana 0.0, p90 0.0, máx 0.2 tokens
+    294.8 s «y me vieras por dentro seguro hallaría se y por el» calce tel 215 / pc null; pos tel 236.5 / pc 236.5
+    675.8 s «en» calce tel 679 / pc null; pos tel 630.5 / pc 630.5
+
+desfase audio - bitácora, auto: 2734 ms con 127 finales idénticos -el LEEME supone 2746-
+
+== la transcripción del PC -desfase 2734 ms-: 140 finales
+  mismo texto: 127/140 (90.7%) de los del teléfono; 127/140 (90.7%) de los repetidos
+  tiempo, repetido - teléfono: mediana 0.0 ms, p10 -30.0, p90 14.0
+  mismo calce -o los dos sin calce-: 123/127 (96.9%); de los que calzaron en el teléfono: 41/45 (91.1%)
+  |posición del motor - teléfono| en esos finales: mediana 0.0, p90 1.4, máx 29.0 tokens
+    82.1 s «en este tema un hombre» calce tel null / pc null; pos tel 20.7 / pc 34.3
+    87.1 s «le pide a otro o a otra» calce tel 59 / pc 59; pos tel 44.8 / pc 50.7
+    294.8 s «y me vieras por dentro seguro hallaría se y por el» calce tel 215 / pc null; pos tel 236.5 / pc 236.5
+    317.1 s «y después seguidamente viene la confesión» calce tel 243 / pc null; pos tel 248.6 / pc 222.0
+    319.0 s «el mismo» calce tel null / pc null; pos tel 248.6 / pc 222.0
+    331.8 s «existe algo ahí» calce tel null / pc null; pos tel 264.7 / pc 253.3
+    336.5 s «está dentro pero el dueño de casa» calce tel 273 / pc 273; pos tel 272.3 / pc 263.3
+    442.2 s «optimizar el comienzo» calce tel null / pc null; pos tel 375.6 / pc 386.8
+    450.3 s «bueno aquí ya se parte en dos» calce tel 397 / pc null; pos tel 380.6 / pc 386.8
+    461.9 s «hay algo que los empujando y le mantiene la países» calce tel null / pc null; pos tel 415.9 / pc 386.8
+    611.1 s «y el que anticipaba mal esta de gracia» calce tel 584 / pc 584; pos tel 584.1 / pc 572.7
+    675.8 s «en» calce tel 679 / pc null; pos tel 630.5 / pc 630.5
