@@ -14,8 +14,11 @@
          Con esto Android le entrega a MainActivity el avance del gesto mientras el dedo se desliza
          -su OnBackPressedCallback, el único receptor- y, cuando ese callback está inactivo -en la
          biblioteca sin nada abierto-, hace él mismo la animación de volver al inicio del teléfono. -->
+    <!-- networkSecurityConfig -medir-servidor-local, 16-10-2026-: permite http sin cifrar SOLO a
+         127.0.0.1, para el servidor local de medicion -ServidorLocal-. El resto, igual que antes. -->
     <application
         android:enableOnBackInvokedCallback="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:hasFragileUserData="true"
         android:localeConfig="@xml/locales_config"
         android:allowBackup="true"

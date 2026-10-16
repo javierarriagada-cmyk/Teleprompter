@@ -325,6 +325,8 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(AtrasPredictivoPlugin.class);
         // -accesos directos- El puente de los accesos directos del ícono -AccesosDirectosPlugin.java-.
         registerPlugin(AccesosDirectosPlugin.class);
+        // -medir-servidor-local, 16-10-2026- La medición del servidor en 127.0.0.1 -MedirServidorPlugin, ServidorLocal-.
+        registerPlugin(MedirServidorPlugin.class);
         super.onCreate(savedInstanceState);
         // -tomas-largas, 15-10-2026- El cliente de Capacitor con los rangos de video bien contestados: el
         // visor abre tomas de cualquier tamaño -ClienteWebDeTomas, RangoHttp-. Lo demás pasa igual.
