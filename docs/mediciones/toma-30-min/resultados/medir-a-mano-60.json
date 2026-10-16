@@ -1,0 +1,344 @@
+{
+ "sinParentesis": false,
+ "tokens": 2823,
+ "acotacion": 217,
+ "manos": [],
+ "detenciones": [
+  {
+   "desdeMs": 56112,
+   "hastaMs": 64352,
+   "aMano": false,
+   "tokMotor": 4,
+   "vozDesde": 2,
+   "vozHasta": 16,
+   "delante": 12,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 67040,
+   "hastaMs": 78880,
+   "aMano": false,
+   "tokMotor": 19,
+   "vozDesde": 20,
+   "vozHasta": 48,
+   "delante": 29,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 3,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 176672,
+   "hastaMs": 201264,
+   "aMano": false,
+   "tokMotor": 135,
+   "vozDesde": 135,
+   "vozHasta": 151,
+   "delante": 16,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 203648,
+   "hastaMs": 219040,
+   "aMano": false,
+   "tokMotor": 149,
+   "vozDesde": 151,
+   "vozHasta": 164,
+   "delante": 15,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "sin-calce",
+    "-"
+   ]
+  },
+  {
+   "desdeMs": 235920,
+   "hastaMs": 245824,
+   "aMano": false,
+   "tokMotor": 179,
+   "vozDesde": 179,
+   "vozHasta": 192,
+   "delante": 13,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 316208,
+   "hastaMs": 338304,
+   "aMano": false,
+   "tokMotor": 258,
+   "vozDesde": 240,
+   "vozHasta": 273,
+   "delante": 15,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "sin-calce",
+    "-"
+   ]
+  },
+  {
+   "desdeMs": 365472,
+   "hastaMs": 378416,
+   "aMano": false,
+   "tokMotor": 302,
+   "vozDesde": 303,
+   "vozHasta": 316,
+   "delante": 14,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 444080,
+   "hastaMs": 471072,
+   "aMano": false,
+   "tokMotor": 386,
+   "vozDesde": 378,
+   "vozHasta": 421,
+   "delante": 35,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 15,
+   "frenos": [
+    "sin-calce",
+    "-"
+   ]
+  },
+  {
+   "desdeMs": 580224,
+   "hastaMs": 602976,
+   "aMano": false,
+   "tokMotor": 556,
+   "vozDesde": 557,
+   "vozHasta": 572,
+   "delante": 16,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 661520,
+   "hastaMs": 695168,
+   "aMano": false,
+   "tokMotor": 630,
+   "vozDesde": 630,
+   "vozHasta": 642,
+   "delante": 12,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 12,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 790400,
+   "hastaMs": 813728,
+   "aMano": false,
+   "tokMotor": 740,
+   "vozDesde": 741,
+   "vozHasta": 761,
+   "delante": 21,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 843184,
+   "hastaMs": 883536,
+   "aMano": false,
+   "tokMotor": 782,
+   "vozDesde": 773,
+   "vozHasta": 804,
+   "delante": 22,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 9,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 891552,
+   "hastaMs": 907216,
+   "aMano": false,
+   "tokMotor": 812,
+   "vozDesde": 812,
+   "vozHasta": 826,
+   "delante": 14,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 982464,
+   "hastaMs": 1001040,
+   "aMano": false,
+   "tokMotor": 878,
+   "vozDesde": 862,
+   "vozHasta": 880,
+   "delante": 2,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 1044880,
+   "hastaMs": 1074384,
+   "aMano": false,
+   "tokMotor": 923,
+   "vozDesde": 923,
+   "vozHasta": 944,
+   "delante": 21,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 20,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 1249792,
+   "hastaMs": 1264048,
+   "aMano": false,
+   "tokMotor": 1124,
+   "vozDesde": 1107,
+   "vozHasta": 1125,
+   "delante": 1,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 1385920,
+   "hastaMs": 1396096,
+   "aMano": false,
+   "tokMotor": 1229,
+   "vozDesde": 1226,
+   "vozHasta": 1240,
+   "delante": 11,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 1441008,
+   "hastaMs": 1456848,
+   "aMano": false,
+   "tokMotor": 1295,
+   "vozDesde": 1295,
+   "vozHasta": 1311,
+   "delante": 16,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 1515424,
+   "hastaMs": 1524176,
+   "aMano": false,
+   "tokMotor": 1355,
+   "vozDesde": 1355,
+   "vozHasta": 1369,
+   "delante": 14,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 7,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  }
+ ],
+ "adelantos": [
+  {
+   "desdeMs": 266512,
+   "hastaMs": 319808,
+   "max": 21.53596859839675,
+   "tokMotor": 236,
+   "voz": 215
+  },
+  {
+   "desdeMs": 444112,
+   "hastaMs": 449408,
+   "max": 8.857433016761263,
+   "tokMotor": 386,
+   "voz": 378
+  },
+  {
+   "desdeMs": 842816,
+   "hastaMs": 850816,
+   "max": 9.790746712451892,
+   "tokMotor": 782,
+   "voz": 773
+  },
+  {
+   "desdeMs": 947600,
+   "hastaMs": 972416,
+   "max": 12.967518921285091,
+   "tokMotor": 868,
+   "voz": 856
+  },
+  {
+   "desdeMs": 976304,
+   "hastaMs": 997504,
+   "max": 16.5456271405252,
+   "tokMotor": 878,
+   "voz": 862
+  },
+  {
+   "desdeMs": 1248800,
+   "hastaMs": 1255600,
+   "max": 17.354975250334974,
+   "tokMotor": 1124,
+   "voz": 1107
+  },
+  {
+   "desdeMs": 1819600,
+   "hastaMs": 1830416,
+   "max": 15.698804117068448,
+   "tokMotor": 1872,
+   "voz": 1857
+  }
+ ]
+}

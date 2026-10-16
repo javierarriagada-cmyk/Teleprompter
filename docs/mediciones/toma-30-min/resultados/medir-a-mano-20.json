@@ -1,0 +1,368 @@
+{
+ "sinParentesis": false,
+ "tokens": 2823,
+ "acotacion": 217,
+ "manos": [
+  {
+   "ms": 196672,
+   "token": 149
+  },
+  {
+   "ms": 216672,
+   "token": 161
+  },
+  {
+   "ms": 336336,
+   "token": 268
+  },
+  {
+   "ms": 464224,
+   "token": 412
+  },
+  {
+   "ms": 600224,
+   "token": 568
+  },
+  {
+   "ms": 681216,
+   "token": 630
+  },
+  {
+   "ms": 810400,
+   "token": 756
+  },
+  {
+   "ms": 863392,
+   "token": 788
+  },
+  {
+   "ms": 1064816,
+   "token": 936
+  },
+  {
+   "ms": 1098496,
+   "token": 961
+  }
+ ],
+ "detenciones": [
+  {
+   "desdeMs": 56112,
+   "hastaMs": 64352,
+   "aMano": false,
+   "tokMotor": 4,
+   "vozDesde": 2,
+   "vozHasta": 16,
+   "delante": 12,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 67040,
+   "hastaMs": 78880,
+   "aMano": false,
+   "tokMotor": 19,
+   "vozDesde": 20,
+   "vozHasta": 48,
+   "delante": 29,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 3,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 176672,
+   "hastaMs": 196656,
+   "aMano": true,
+   "tokMotor": 135,
+   "vozDesde": 135,
+   "vozHasta": 149,
+   "delante": 14,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 196672,
+   "hastaMs": 216656,
+   "aMano": true,
+   "tokMotor": 149,
+   "vozDesde": 149,
+   "vozHasta": 161,
+   "delante": 12,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 236992,
+   "hastaMs": 245968,
+   "aMano": false,
+   "tokMotor": 179,
+   "vozDesde": 179,
+   "vozHasta": 192,
+   "delante": 13,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 316336,
+   "hastaMs": 336320,
+   "aMano": true,
+   "tokMotor": 258,
+   "vozDesde": 240,
+   "vozHasta": 268,
+   "delante": 10,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "sin-calce",
+    "-"
+   ]
+  },
+  {
+   "desdeMs": 365312,
+   "hastaMs": 378176,
+   "aMano": false,
+   "tokMotor": 301,
+   "vozDesde": 303,
+   "vozHasta": 316,
+   "delante": 15,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 444224,
+   "hastaMs": 464208,
+   "aMano": true,
+   "tokMotor": 386,
+   "vozDesde": 378,
+   "vozHasta": 412,
+   "delante": 26,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 15,
+   "frenos": [
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 790400,
+   "hastaMs": 810384,
+   "aMano": true,
+   "tokMotor": 740,
+   "vozDesde": 741,
+   "vozHasta": 756,
+   "delante": 16,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 843392,
+   "hastaMs": 863376,
+   "aMano": true,
+   "tokMotor": 782,
+   "vozDesde": 773,
+   "vozHasta": 788,
+   "delante": 6,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 9,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 891728,
+   "hastaMs": 907280,
+   "aMano": false,
+   "tokMotor": 812,
+   "vozDesde": 812,
+   "vozHasta": 826,
+   "delante": 14,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 982352,
+   "hastaMs": 1000944,
+   "aMano": false,
+   "tokMotor": 878,
+   "vozDesde": 862,
+   "vozHasta": 880,
+   "delante": 2,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 1044816,
+   "hastaMs": 1064800,
+   "aMano": true,
+   "tokMotor": 923,
+   "vozDesde": 923,
+   "vozHasta": 936,
+   "delante": 13,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 13,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 1078496,
+   "hastaMs": 1098480,
+   "aMano": true,
+   "tokMotor": 953,
+   "vozDesde": 948,
+   "vozHasta": 961,
+   "delante": 8,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 1249648,
+   "hastaMs": 1263840,
+   "aMano": false,
+   "tokMotor": 1123,
+   "vozDesde": 1107,
+   "vozHasta": 1125,
+   "delante": 2,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 1385488,
+   "hastaMs": 1395728,
+   "aMano": false,
+   "tokMotor": 1228,
+   "vozDesde": 1226,
+   "vozHasta": 1238,
+   "delante": 10,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 1441120,
+   "hastaMs": 1457008,
+   "aMano": false,
+   "tokMotor": 1295,
+   "vozDesde": 1295,
+   "vozHasta": 1311,
+   "delante": 16,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 0,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  },
+  {
+   "desdeMs": 1515472,
+   "hastaMs": 1524192,
+   "aMano": false,
+   "tokMotor": 1355,
+   "vozDesde": 1355,
+   "vozHasta": 1369,
+   "delante": 14,
+   "fueraDeVentana": false,
+   "acotacionesDichas": 7,
+   "frenos": [
+    "-",
+    "sin-calce"
+   ]
+  }
+ ],
+ "adelantos": [
+  {
+   "desdeMs": 266512,
+   "hastaMs": 319808,
+   "max": 21.53596859839675,
+   "tokMotor": 236,
+   "voz": 215
+  },
+  {
+   "desdeMs": 444112,
+   "hastaMs": 449408,
+   "max": 8.857433016761263,
+   "tokMotor": 386,
+   "voz": 378
+  },
+  {
+   "desdeMs": 842816,
+   "hastaMs": 850816,
+   "max": 9.790746712606733,
+   "tokMotor": 782,
+   "voz": 773
+  },
+  {
+   "desdeMs": 947600,
+   "hastaMs": 972416,
+   "max": 12.927963648874197,
+   "tokMotor": 868,
+   "voz": 856
+  },
+  {
+   "desdeMs": 976304,
+   "hastaMs": 997504,
+   "max": 16.54408189429944,
+   "tokMotor": 878,
+   "voz": 862
+  },
+  {
+   "desdeMs": 1248800,
+   "hastaMs": 1255600,
+   "max": 17.354975250332018,
+   "tokMotor": 1124,
+   "voz": 1107
+  },
+  {
+   "desdeMs": 1819600,
+   "hastaMs": 1830416,
+   "max": 15.698804117068448,
+   "tokMotor": 1872,
+   "voz": 1857
+  }
+ ]
+}

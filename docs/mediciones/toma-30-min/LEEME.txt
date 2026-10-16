@@ -1,0 +1,27 @@
+TOMA DE 30 MIN EN EL REDMI -16-10-2026, 09:13 a 09:44-: material para investigar el motor de main e62dec7
+-con #126: B con umbral 40, C y A-. Es la prueba de Javier con la APK 703 -main e62dec7, debug-.
+
+audio.wav   El audio que oyó el reconocedor -files/oido/1792152817201.pcm, 16 kHz mono 16 bit, 1830,5 s-,
+            con cabecera WAV y nada más: no hubo ffmpeg ni Python en la caja para pasarlo a FLAC.
+            Es la grabación de 25:34 del moto g86 sonando por su parlante, oída por el micrófono del Redmi
+            mientras grababa con la voz, 1080p, cámara de atrás; Javier además leyó en voz alta en algún
+            momento para que el texto lo alcanzara -cerca del 14:26-.
+guion.txt   El guion tal cual se leyó, sacado del encabezado de la bitácora -las líneas "# | "-. Es el mismo
+            poema de la toma de 25 min, con sus 14 acotaciones entre paréntesis.
+bitacora-telefono.motor.txt
+            La bitácora del motor de esa toma -8038ca25-, tal como la escribió el teléfono. SE CORTA A LOS
+            686,5 s -11:26- por el tope de 60000 filas: no cubre el resto de la toma.
+
+LOS RELOJES. La bitácora cuenta desde el inicio del video -epoch 1792152819947, su encabezado-. El nombre
+del .pcm es 1792152817201: si es el epoch de su primer byte, el audio empieza 2.746 ms antes que el video,
+o sea t_audio = t_bitácora + 2746 ms. Comprobarlo con los 'oyo' de la bitácora antes de usarlo.
+
+LO QUE VIO JAVIER -en el reloj de la toma-: cerca del 14:26 el texto se perdió y lo alcanzó leyendo él;
+cerca del 18:10 se detuvo y retomó solo con el audio. El resto, «claramente mejor que antes».
+
+LO QUE YA SE VE EN LA BITÁCORA -primeros 11:26-:
+- 294.816 ms: un final calzó en 215 con el motor en 236 -ventana 226..276-, se rechazó y el seguidor
+  volvió a 236. Es el lugar de la acotación 1, el de la primera detención de la toma de 25 min.
+- Desde 659.020 ms el motor queda quieto en 630,52 -freno sin-calce- hasta el final de la bitácora,
+  686.469 ms. Los finales de esos segundos son confusos -«filoso», «hacemos este», «en», «como»-, y
+  uno calzó en 679 con el motor en 630 -ventana 620..670-: se rechazó por ir 49 adelante.

@@ -1,0 +1,924 @@
+10.24 FINAL   «este tremendo poder este tremenda filósofo»
+   antes: motor pos 0.0 ultimoCalce 0 ppm 150 | ventana 0..40 | seguidor pos 0 posTentativa 0 posPredicha 0.0 basePos 0
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 0.0 ultimoCalce 0 freno sin-calce
+12.34 FINAL   «y este tema»
+   antes: motor pos 0.0 ultimoCalce 0 ppm 150 | ventana 0..40 | seguidor pos 0 posTentativa 0 posPredicha 0.0 basePos 0
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 0.0 ultimoCalce 0 freno sin-calce
+15.28 FINAL   «se llama y me dieron orden»
+   antes: motor pos 0.0 ultimoCalce 0 ppm 150 | ventana 0..40 | seguidor pos 0 posTentativa 0 posPredicha 0.0 basePos 0
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 0.0 ultimoCalce 0 freno sin-calce
+18.02 FINAL   «averigüe algo»
+   antes: motor pos 0.0 ultimoCalce 0 ppm 150 | ventana 0..40 | seguidor pos 0 posTentativa 0 posPredicha 0.0 basePos 0
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 0.0 ultimoCalce 0 freno sin-calce
+22.48 FINAL   «para intentar comprender el contexto»
+   antes: motor pos 0.0 ultimoCalce 0 ppm 150 | ventana 0..40 | seguidor pos 0 posTentativa 0 posPredicha 0.0 basePos 0
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 0.0 ultimoCalce 0 freno sin-calce
+25.70 FINAL   «y no lo conseguí»
+   antes: motor pos 0.0 ultimoCalce 0 ppm 150 | ventana 0..40 | seguidor pos 0 posTentativa 0 posPredicha 0.0 basePos 0
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 0.0 ultimoCalce 0 freno sin-calce
+29.26 FINAL   «baches van las vale»
+   antes: motor pos 0.0 ultimoCalce 0 ppm 150 | ventana 0..40 | seguidor pos 0 posTentativa 0 posPredicha 0.0 basePos 0
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 0.0 ultimoCalce 0 freno sin-calce
+35.26 FINAL   «esto encontrar la razón desde dónde viene»
+   antes: motor pos 0.0 ultimoCalce 0 ppm 150 | ventana 0..40 | seguidor pos 0 posTentativa 0 posPredicha 0.0 basePos 0
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 0.0 ultimoCalce 0 freno sin-calce
+38.32 FINAL   «toda su sabiduría»
+   antes: motor pos 0.0 ultimoCalce 0 ppm 150 | ventana 0..40 | seguidor pos 0 posTentativa 0 posPredicha 0.0 basePos 0
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 0.0 ultimoCalce 0 freno sin-calce
+41.74 FINAL   «y cuando investigó»
+   antes: motor pos 0.0 ultimoCalce 0 ppm 150 | ventana 0..40 | seguidor pos 0 posTentativa 0 posPredicha 0.0 basePos 0
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 0.0 ultimoCalce 0 freno sin-calce
+45.74 FINAL   «no se relaciona»
+   antes: motor pos 0.0 ultimoCalce 0 ppm 150 | ventana 0..40 | seguidor pos 0 posTentativa 0 posPredicha 0.0 basePos 0
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 0.0 ultimoCalce 0 freno sin-calce
+47.80 FINAL   «es»
+   antes: motor pos 0.0 ultimoCalce 0 ppm 150 | ventana 0..40 | seguidor pos 0 posTentativa 0 posPredicha 0.0 basePos 0
+   -> calce 0 «en» | después: seguidor pos 0 posTentativa 0 | motor pos 0.0 ultimoCalce 0 freno sin-calce
+52.76 FINAL   «de gallo de lejos»
+   antes: motor pos 0.0 ultimoCalce 0 ppm 150 | ventana 0..40 | seguidor pos 0 posTentativa 0 posPredicha 12.4 basePos 12
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 0.0 ultimoCalce 0 freno sin-calce
+56.98 FINAL   «este tema salió en enero de años sesenta y nueve»
+   antes: motor pos 5.0 ultimoCalce 4 ppm 150 | ventana 0..45 | seguidor pos 0 posTentativa 4 posPredicha 7.8 basePos 8
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 5.0 ultimoCalce 4 freno null
+60.22 FINAL   «en un disco llama hombre»
+   antes: motor pos 5.0 ultimoCalce 4 ppm 150 | ventana 0..45 | seguidor pos 0 posTentativa 0 posPredicha 11.9 basePos 12
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 5.0 ultimoCalce 4 freno sin-calce
+62.74 FINAL   «con doce canciones del disco»
+   antes: motor pos 5.0 ultimoCalce 4 ppm 150 | ventana 0..45 | seguidor pos 0 posTentativa 0 posPredicha 18.2 basePos 18
+   -> nada | después: seguidor pos 0 posTentativa 0 | motor pos 5.0 ultimoCalce 4 freno sin-calce
+68.18 FINAL   «tres de ellas me llamaron poderosamente la atención»
+   antes: motor pos 20.2 ultimoCalce 20 ppm 134 | ventana 10..60 | seguidor pos 0 posTentativa 20 posPredicha 20.1 basePos 20
+   -> calce 20 «atencion» | después: seguidor pos 20 posTentativa 20 | motor pos 20.2 ultimoCalce 20 freno null
+74.32 FINAL   «y la que vamos escuchad escuchad guiños párrafo analizarlo bobo»
+   antes: motor pos 20.7 ultimoCalce 20 ppm 109 | ventana 10..60 | seguidor pos 20 posTentativa 20 posPredicha 31.1 basePos 31
+   -> nada | después: seguidor pos 20 posTentativa 20 | motor pos 20.7 ultimoCalce 20 freno sin-calce
+77.30 FINAL   «es la más larga desastres»
+   antes: motor pos 20.7 ultimoCalce 20 ppm 109 | ventana 10..60 | seguidor pos 20 posTentativa 20 posPredicha 36.5 basePos 36
+   -> nada | después: seguidor pos 20 posTentativa 20 | motor pos 20.7 ultimoCalce 20 freno sin-calce
+80.00 FINAL   «y me vieras orden»
+   antes: motor pos 26.5 ultimoCalce 49 ppm 109 | ventana 39..89 | seguidor pos 20 posTentativa 49 posPredicha 51.4 basePos 51
+   -> nada | después: seguidor pos 20 posTentativa 20 | motor pos 26.5 ultimoCalce 49 freno null
+84.88 FINAL   «en este tema un hombre»
+   antes: motor pos 26.5 ultimoCalce 49 ppm 109 | ventana 39..89 | seguidor pos 20 posTentativa 20 posPredicha 31.2 basePos 31
+   -> nada | después: seguidor pos 20 posTentativa 20 | motor pos 26.5 ultimoCalce 49 freno sin-calce
+89.80 FINAL   «le pide a otro o a otra»
+   antes: motor pos 43.2 ultimoCalce 59 ppm 97 | ventana 49..99 | seguidor pos 20 posTentativa 59 posPredicha 59.1 basePos 59
+   -> calce 59 «otra» | después: seguidor pos 59 posTentativa 59 | motor pos 43.2 ultimoCalce 59 freno null
+98.02 FINAL   «lo mire no superficialmente la herbal de no hace nada no hace nada superficial»
+   antes: motor pos 55.2 ultimoCalce 59 ppm 86 | ventana 49..99 | seguidor pos 59 posTentativa 59 posPredicha 70.8 basePos 71
+   -> nada | después: seguidor pos 59 posTentativa 59 | motor pos 55.2 ultimoCalce 59 freno sin-calce
+103.06 FINAL   «de ida oliver don ni libia compañía»
+   antes: motor pos 55.2 ultimoCalce 59 ppm 86 | ventana 49..99 | seguidor pos 59 posTentativa 59 posPredicha 78.0 basePos 78
+   -> nada | después: seguidor pos 59 posTentativa 59 | motor pos 55.2 ultimoCalce 59 freno sin-calce
+106.78 FINAL   «y de que le mire la esencia»
+   antes: motor pos 63.8 ultimoCalce 64 ppm 86 | ventana 54..104 | seguidor pos 59 posTentativa 64 posPredicha 64.1 basePos 64
+   -> calce 64 «esencia» | después: seguidor pos 64 posTentativa 64 | motor pos 63.8 ultimoCalce 64 freno null
+111.16 FINAL   «le pide y le has esta solicitud»
+   antes: motor pos 67.5 ultimoCalce 67 ppm 74 | ventana 57..107 | seguidor pos 64 posTentativa 67 posPredicha 69.8 basePos 70
+   -> nada | después: seguidor pos 64 posTentativa 64 | motor pos 67.5 ultimoCalce 67 freno null
+118.88 FINAL   «mediante una respuesta me tienes que dar una respuesta me tienes que decir»
+   antes: motor pos 67.5 ultimoCalce 67 ppm 74 | ventana 57..107 | seguidor pos 64 posTentativa 64 posPredicha 76.3 basePos 76
+   -> nada | después: seguidor pos 64 posTentativa 64 | motor pos 67.5 ultimoCalce 67 freno sin-calce
+121.54 FINAL   «quiere que el otro le diga»
+   antes: motor pos 72.6 ultimoCalce 82 ppm 74 | ventana 72..122 | seguidor pos 64 posTentativa 82 posPredicha 82.1 basePos 82
+   -> calce 82 «diga» | después: seguidor pos 82 posTentativa 82 | motor pos 72.6 ultimoCalce 82 freno null
+126.14 FINAL   «por qué yo existo»
+   antes: motor pos 84.5 ultimoCalce 84 ppm 69 | ventana 74..124 | seguidor pos 82 posTentativa 84 posPredicha 87.3 basePos 87
+   -> nada | después: seguidor pos 82 posTentativa 82 | motor pos 84.5 ultimoCalce 84 freno sin-calce
+129.88 FINAL   «cuál es mi razón de ser»
+   antes: motor pos 89.7 ultimoCalce 91 ppm 69 | ventana 81..131 | seguidor pos 82 posTentativa 91 posPredicha 91.1 basePos 91
+   -> calce 91 «ser» | después: seguidor pos 91 posTentativa 91 | motor pos 89.7 ultimoCalce 91 freno null
+135.02 FINAL   «y eso les respuesta»
+   antes: motor pos 95.1 ultimoCalce 95 ppm 70 | ventana 85..135 | seguidor pos 91 posTentativa 95 posPredicha 95.0 basePos 95
+   -> calce 95 «una» | después: seguidor pos 95 posTentativa 95 | motor pos 95.1 ultimoCalce 95 freno null
+144.68 FINAL   «el no quiere escuchar otra opinión y no que es una respuesta y el mismo en conocimiento»
+   antes: motor pos 96.4 ultimoCalce 96 ppm 61 | ventana 86..136 | seguidor pos 95 posTentativa 96 posPredicha 101.6 basePos 102
+   -> nada | después: seguidor pos 95 posTentativa 95 | motor pos 96.4 ultimoCalce 96 freno sin-calce
+147.34 FINAL   «de que no se la puede dar»
+   antes: motor pos 96.4 ultimoCalce 96 ppm 61 | ventana 86..136 | seguidor pos 95 posTentativa 95 posPredicha 103.3 basePos 103
+   -> nada | después: seguidor pos 95 posTentativa 95 | motor pos 96.4 ultimoCalce 96 freno sin-calce
+151.78 FINAL   «es un pedido bastante extraño»
+   antes: motor pos 104.4 ultimoCalce 106 ppm 59 | ventana 96..146 | seguidor pos 95 posTentativa 106 posPredicha 106.1 basePos 106
+   -> calce 106 «extraño» | después: seguidor pos 106 posTentativa 106 | motor pos 104.4 ultimoCalce 106 freno null
+158.20 FINAL   «pero que en el ámbito de la filosofía ha sido»
+   antes: motor pos 116.8 ultimoCalce 116 ppm 120 | ventana 106..156 | seguidor pos 106 posTentativa 116 posPredicha 122.5 basePos 123
+   -> nada | después: seguidor pos 106 posTentativa 106 | motor pos 116.8 ultimoCalce 116 freno sin-calce
+163.18 FINAL   «una búsqueda incesante y en el fondo en distintos momentos»
+   antes: motor pos 120.8 ultimoCalce 120 ppm 120 | ventana 110..160 | seguidor pos 106 posTentativa 120 posPredicha 122.6 basePos 123
+   -> nada | después: seguidor pos 106 posTentativa 106 | motor pos 120.8 ultimoCalce 120 freno null
+167.30 FINAL   «y de distinta forma lo hacemos todo»
+   antes: motor pos 125.5 ultimoCalce 127 ppm 120 | ventana 117..167 | seguidor pos 106 posTentativa 127 posPredicha 127.2 basePos 127
+   -> calce 127 «todos» | después: seguidor pos 127 posTentativa 127 | motor pos 125.5 ultimoCalce 127 freno null
+173.08 FINAL   «y usualmente le pasamos»
+   antes: motor pos 125.5 ultimoCalce 127 ppm 120 | ventana 117..167 | seguidor pos 127 posTentativa 127 posPredicha 138.6 basePos 139
+   -> nada | después: seguidor pos 127 posTentativa 127 | motor pos 125.5 ultimoCalce 127 freno sin-calce
+175.06 FINAL   «la pelota»
+   antes: motor pos 125.5 ultimoCalce 127 ppm 120 | ventana 117..167 | seguidor pos 127 posTentativa 127 posPredicha 142.6 basePos 143
+   -> calce 135 «pelota» | después: seguidor pos 135 posTentativa 135 | motor pos 125.5 ultimoCalce 135 freno null
+177.46 FINAL   «esta pelota es agradable»
+   antes: motor pos 135.8 ultimoCalce 135 ppm 120 | ventana 125..175 | seguidor pos 135 posTentativa 135 posPredicha 139.8 basePos 140
+   -> nada | después: seguidor pos 135 posTentativa 135 | motor pos 135.8 ultimoCalce 135 freno null
+188.18 FINAL   «al otro al otro día nos quiere a los otros están cerca y les entregamos la responsabilidad»
+   antes: motor pos 135.8 ultimoCalce 135 ppm 120 | ventana 125..175 | seguidor pos 135 posTentativa 135 posPredicha 161.3 basePos 161
+   -> nada | después: seguidor pos 135 posTentativa 135 | motor pos 135.8 ultimoCalce 135 freno sin-calce
+190.28 FINAL   «logre aquello»
+   antes: motor pos 135.8 ultimoCalce 135 ppm 120 | ventana 125..175 | seguidor pos 135 posTentativa 135 posPredicha 165.6 basePos 166
+   -> nada | después: seguidor pos 135 posTentativa 135 | motor pos 135.8 ultimoCalce 135 freno sin-calce
+196.10 FINAL   «y para nosotros no es fácil contestar nos solo»
+   antes: motor pos 135.8 ultimoCalce 135 ppm 120 | ventana 125..175 | seguidor pos 135 posTentativa 135 posPredicha 175.0 basePos 175
+   -> nada | después: seguidor pos 135 posTentativa 135 | motor pos 135.8 ultimoCalce 135 freno sin-calce
+198.70 FINAL   «esa entrega»
+   antes: motor pos 135.8 ultimoCalce 135 ppm 120 | ventana 125..175 | seguidor pos 135 posTentativa 135 posPredicha 175.0 basePos 175
+   -> nada | después: seguidor pos 135 posTentativa 135 | motor pos 135.8 ultimoCalce 135 freno sin-calce
+202.34 FINAL   «a la a la pregunta por qué estoy aquí»
+   antes: motor pos 142.4 ultimoCalce 154 ppm 120 | ventana 144..194 | seguidor pos 135 posTentativa 154 posPredicha 156.6 basePos 157
+   -> nada | después: seguidor pos 135 posTentativa 135 | motor pos 142.4 ultimoCalce 154 freno null
+206.02 FINAL   «estoy haciendo»
+   antes: motor pos 142.4 ultimoCalce 154 ppm 120 | ventana 144..194 | seguidor pos 135 posTentativa 135 posPredicha 145.0 basePos 145
+   -> nada | después: seguidor pos 135 posTentativa 135 | motor pos 142.4 ultimoCalce 154 freno sin-calce
+208.66 FINAL   «para aquí éxito»
+   antes: motor pos 142.4 ultimoCalce 154 ppm 120 | ventana 144..194 | seguidor pos 135 posTentativa 135 posPredicha 150.3 basePos 150
+   -> nada | después: seguidor pos 135 posTentativa 135 | motor pos 142.4 ultimoCalce 154 freno sin-calce
+214.36 FINAL   «yo creo que se así porque existe la esperanza»
+   antes: motor pos 142.4 ultimoCalce 154 ppm 120 | ventana 144..194 | seguidor pos 135 posTentativa 135 posPredicha 161.7 basePos 162
+   -> nada | después: seguidor pos 135 posTentativa 135 | motor pos 142.4 ultimoCalce 154 freno sin-calce
+218.12 FINAL   «eh que le da fuera»
+   antes: motor pos 142.4 ultimoCalce 154 ppm 120 | ventana 144..194 | seguidor pos 135 posTentativa 135 posPredicha 169.3 basePos 169
+   -> nada | después: seguidor pos 135 posTentativa 135 | motor pos 142.4 ultimoCalce 154 freno sin-calce
+220.24 FINAL   «se vea mejor»
+   antes: motor pos 149.3 ultimoCalce 164 ppm 120 | ventana 154..204 | seguidor pos 135 posTentativa 164 posPredicha 164.1 basePos 164
+   -> calce 164 «mejor» | después: seguidor pos 164 posTentativa 164 | motor pos 149.3 ultimoCalce 164 freno null
+225.76 FINAL   «y la grande en la primera parte esta canción escribes ásperas»
+   antes: motor pos 164.2 ultimoCalce 164 ppm 120 | ventana 154..204 | seguidor pos 164 posTentativa 164 posPredicha 175.1 basePos 175
+   -> nada | después: seguidor pos 164 posTentativa 164 | motor pos 164.2 ultimoCalce 164 freno sin-calce
+228.10 FINAL   «y después»
+   antes: motor pos 164.2 ultimoCalce 164 ppm 120 | ventana 154..204 | seguidor pos 164 posTentativa 164 posPredicha 179.8 basePos 180
+   -> calce 170 «después» | después: seguidor pos 170 posTentativa 170 | motor pos 164.2 ultimoCalce 170 freno null
+230.80 FINAL   «la valdés arman»
+   antes: motor pos 170.8 ultimoCalce 170 ppm 120 | ventana 160..210 | seguidor pos 170 posTentativa 170 posPredicha 175.4 basePos 175
+   -> nada | después: seguidor pos 170 posTentativa 170 | motor pos 170.8 ultimoCalce 170 freno sin-calce
+236.62 FINAL   «la desarme era y lo hace sin ningún rencor»
+   antes: motor pos 179.2 ultimoCalce 179 ppm 108 | ventana 169..219 | seguidor pos 170 posTentativa 179 posPredicha 179.1 basePos 179
+   -> calce 179 «rencor» | después: seguidor pos 179 posTentativa 179 | motor pos 179.2 ultimoCalce 179 freno null
+240.10 FINAL   «es es un impacto porque nosotros»
+   antes: motor pos 179.6 ultimoCalce 179 ppm 94 | ventana 169..219 | seguidor pos 179 posTentativa 179 posPredicha 184.5 basePos 184
+   -> nada | después: seguidor pos 179 posTentativa 179 | motor pos 179.6 ultimoCalce 179 freno sin-calce
+243.68 FINAL   «frente a este tipo de vacío»
+   antes: motor pos 179.6 ultimoCalce 179 ppm 94 | ventana 169..219 | seguidor pos 179 posTentativa 179 posPredicha 190.1 basePos 190
+   -> nada | después: seguidor pos 179 posTentativa 179 | motor pos 179.6 ultimoCalce 179 freno sin-calce
+246.52 FINAL   «usualmente generamos el rencor»
+   antes: motor pos 183.2 ultimoCalce 192 ppm 94 | ventana 182..232 | seguidor pos 179 posTentativa 192 posPredicha 192.1 basePos 192
+   -> calce 192 «rencor» | después: seguidor pos 192 posTentativa 192 | motor pos 183.2 ultimoCalce 192 freno null
+249.64 FINAL   «y lo confronta mos en el otro»
+   antes: motor pos 194.6 ultimoCalce 194 ppm 94 | ventana 184..234 | seguidor pos 192 posTentativa 194 posPredicha 197.3 basePos 197
+   -> nada | después: seguidor pos 192 posTentativa 192 | motor pos 194.6 ultimoCalce 194 freno null
+255.34 FINAL   «y terminamos por decirle oye tú no me entiendes»
+   antes: motor pos 196.7 ultimoCalce 199 ppm 94 | ventana 189..239 | seguidor pos 192 posTentativa 199 posPredicha 199.8 basePos 200
+   -> nada | después: seguidor pos 192 posTentativa 192 | motor pos 196.7 ultimoCalce 199 freno null
+260.56 FINAL   «pero vamos despacio y vamos colocando»
+   antes: motor pos 204.2 ultimoCalce 204 ppm 94 | ventana 194..244 | seguidor pos 192 posTentativa 204 posPredicha 204.1 basePos 204
+   -> calce 204 «(me)» | después: seguidor pos 204 posTentativa 204 | motor pos 204.2 ultimoCalce 204 freno null
+263.00 FINAL   «vamos colocando»
+   antes: motor pos 204.6 ultimoCalce 204 ppm 92 | ventana 194..244 | seguidor pos 204 posTentativa 204 posPredicha 207.7 basePos 208
+   -> nada | después: seguidor pos 204 posTentativa 204 | motor pos 204.6 ultimoCalce 204 freno null
+264.98 FINAL   «esto»
+   antes: motor pos 204.6 ultimoCalce 204 ppm 92 | ventana 194..244 | seguidor pos 204 posTentativa 204 posPredicha 210.8 basePos 211
+   -> calce 219 «está» | después: seguidor pos 219 posTentativa 219 | motor pos 204.6 ultimoCalce 219 freno null
+266.86 FINAL   «extractos»
+   antes: motor pos 213.3 ultimoCalce 219 ppm 92 | ventana 209..259 | seguidor pos 219 posTentativa 219 posPredicha 221.9 basePos 222
+   -> nada | después: seguidor pos 219 posTentativa 219 | motor pos 213.3 ultimoCalce 219 freno null
+273.32 FINAL   «más han podido desordenado»
+   antes: motor pos 213.3 ultimoCalce 219 ppm 92 | ventana 209..259 | seguidor pos 219 posTentativa 219 posPredicha 231.8 basePos 232
+   -> nada | después: seguidor pos 219 posTentativa 219 | motor pos 213.3 ultimoCalce 219 freno sin-calce
+281.60 FINAL   «impactante la melodía la melodía»
+   antes: motor pos 213.3 ultimoCalce 219 ppm 92 | ventana 209..259 | seguidor pos 219 posTentativa 219 posPredicha 244.5 basePos 245
+   -> nada | después: seguidor pos 219 posTentativa 219 | motor pos 213.3 ultimoCalce 219 freno sin-calce
+286.66 FINAL   «chimenea rosa rosarios»
+   antes: motor pos 213.3 ultimoCalce 219 ppm 92 | ventana 209..259 | seguidor pos 219 posTentativa 219 posPredicha 252.3 basePos 252
+   -> nada | después: seguidor pos 219 posTentativa 219 | motor pos 213.3 ultimoCalce 219 freno sin-calce
+297.52 FINAL   «y me vieras por dentro seguro hallaría se y por ello no encuentro»
+   antes: motor pos 235.5 ultimoCalce 236 ppm 85 | ventana 226..276 | seguidor pos 219 posTentativa 236 posPredicha 241.2 basePos 241
+   -> nada | después: seguidor pos 236 posTentativa 236 | motor pos 235.5 ultimoCalce 236 freno sin-calce
+302.02 FINAL   «lo primero que me llama la atención es el orden»
+   antes: motor pos 235.5 ultimoCalce 236 ppm 85 | ventana 226..276 | seguidor pos 236 posTentativa 236 posPredicha 247.5 basePos 248
+   -> nada | después: seguidor pos 236 posTentativa 236 | motor pos 235.5 ultimoCalce 236 freno sin-calce
+315.52 FINAL   «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encuentras la encuentra la respuesta»
+   antes: motor pos 255.5 ultimoCalce 261 ppm 85 | ventana 251..301 | seguidor pos 236 posTentativa 261 posPredicha 263.7 basePos 264
+   -> nada | después: seguidor pos 261 posTentativa 261 | motor pos 255.5 ultimoCalce 261 freno null
+319.82 FINAL   «y después seguidamente viene la confesión»
+   antes: motor pos 259.1 ultimoCalce 261 ppm 85 | ventana 251..301 | seguidor pos 261 posTentativa 261 posPredicha 269.8 basePos 270
+   -> nada | después: seguidor pos 261 posTentativa 261 | motor pos 222.0 ultimoCalce 219 freno sin-calce
+321.76 FINAL   «el mismo»
+   antes: motor pos 222.0 ultimoCalce 219 ppm 85 | ventana 212..262 | seguidor pos 261 posTentativa 261 posPredicha 272.6 basePos 273
+   -> nada | después: seguidor pos 261 posTentativa 261 | motor pos 222.0 ultimoCalce 219 freno sin-calce
+327.50 FINAL   «no puede no dice que no y por porque»
+   antes: motor pos 222.0 ultimoCalce 219 ppm 85 | ventana 212..262 | seguidor pos 261 posTentativa 261 posPredicha 280.7 basePos 281
+   -> calce 255 «porqué» | después: seguidor pos 255 posTentativa 255 | motor pos 222.0 ultimoCalce 255 freno null
+332.24 FINAL   «dice que no lo cuenta la diferencia es»
+   antes: motor pos 244.6 ultimoCalce 264 ppm 103 | ventana 254..304 | seguidor pos 255 posTentativa 264 posPredicha 264.1 basePos 264
+   -> calce 263 «es» | después: seguidor pos 263 posTentativa 263 | motor pos 244.6 ultimoCalce 264 freno null
+334.52 FINAL   «existe algo ahí»
+   antes: motor pos 254.8 ultimoCalce 264 ppm 90 | ventana 254..304 | seguidor pos 263 posTentativa 263 posPredicha 266.4 basePos 266
+   -> nada | después: seguidor pos 263 posTentativa 263 | motor pos 254.8 ultimoCalce 264 freno null
+339.22 FINAL   «está dentro pero el dueño de casa»
+   antes: motor pos 262.5 ultimoCalce 273 ppm 90 | ventana 263..313 | seguidor pos 263 posTentativa 273 posPredicha 273.0 basePos 273
+   -> calce 273 «casa» | después: seguidor pos 273 posTentativa 273 | motor pos 262.5 ultimoCalce 273 freno null
+342.94 FINAL   «no da moda con el análisis»
+   antes: motor pos 275.7 ultimoCalce 275 ppm 105 | ventana 265..315 | seguidor pos 273 posTentativa 275 posPredicha 277.8 basePos 278
+   -> nada | después: seguidor pos 273 posTentativa 273 | motor pos 275.7 ultimoCalce 275 freno null
+345.68 FINAL   «viernes una una herramienta»
+   antes: motor pos 275.7 ultimoCalce 275 ppm 105 | ventana 265..315 | seguidor pos 273 posTentativa 273 posPredicha 280.6 basePos 281
+   -> nada | después: seguidor pos 273 posTentativa 273 | motor pos 275.7 ultimoCalce 275 freno sin-calce
+351.58 FINAL   «cierto jackie la vida»
+   antes: motor pos 275.7 ultimoCalce 275 ppm 105 | ventana 265..315 | seguidor pos 273 posTentativa 273 posPredicha 290.9 basePos 291
+   -> nada | después: seguidor pos 273 posTentativa 273 | motor pos 275.7 ultimoCalce 275 freno sin-calce
+356.92 FINAL   «de y somos el peor enemigo de nuestra propia vida»
+   antes: motor pos 290.6 ultimoCalce 291 ppm 109 | ventana 281..331 | seguidor pos 273 posTentativa 291 posPredicha 291.1 basePos 291
+   -> calce 291 «vida» | después: seguidor pos 291 posTentativa 291 | motor pos 290.6 ultimoCalce 291 freno null
+367.10 FINAL   «y por qué por falta de objetividad molestar demasiado cerca entonces estimamos cualquiera que quiera bobo»
+   antes: motor pos 302.9 ultimoCalce 302 ppm 136 | ventana 292..342 | seguidor pos 291 posTentativa 302 posPredicha 308.1 basePos 308
+   -> nada | después: seguidor pos 291 posTentativa 291 | motor pos 302.9 ultimoCalce 302 freno sin-calce
+370.64 FINAL   «va a poder ver con mayor facilidad»
+   antes: motor pos 302.9 ultimoCalce 302 ppm 136 | ventana 292..342 | seguidor pos 291 posTentativa 291 posPredicha 305.1 basePos 305
+   -> nada | después: seguidor pos 291 posTentativa 291 | motor pos 302.9 ultimoCalce 302 freno sin-calce
+372.80 FINAL   «gozan nuestras»
+   antes: motor pos 302.9 ultimoCalce 302 ppm 136 | ventana 292..342 | seguidor pos 291 posTentativa 291 posPredicha 310.0 basePos 310
+   -> nada | después: seguidor pos 291 posTentativa 291 | motor pos 302.9 ultimoCalce 302 freno sin-calce
+380.20 FINAL   «en nosotros mismos podemos estar negando hace veinte años es ello»
+   antes: motor pos 315.4 ultimoCalce 316 ppm 136 | ventana 306..356 | seguidor pos 291 posTentativa 316 posPredicha 320.6 basePos 321
+   -> nada | después: seguidor pos 291 posTentativa 291 | motor pos 315.4 ultimoCalce 316 freno null
+385.36 FINAL   «hay otra idea de sartre dando vuelta aquí»
+   antes: motor pos 324.2 ultimoCalce 324 ppm 136 | ventana 314..364 | seguidor pos 291 posTentativa 324 posPredicha 324.0 basePos 324
+   -> calce 324 «acá» | después: seguidor pos 324 posTentativa 324 | motor pos 324.2 ultimoCalce 324 freno null
+392.14 FINAL   «nosotros no somos una cosa terminada»
+   antes: motor pos 329.2 ultimoCalce 329 ppm 106 | ventana 319..369 | seguidor pos 324 posTentativa 329 posPredicha 329.1 basePos 329
+   -> calce 329 «terminada» | después: seguidor pos 329 posTentativa 329 | motor pos 329.2 ultimoCalce 329 freno null
+395.48 FINAL   «no terminamos en nosotros mismos»
+   antes: motor pos 329.7 ultimoCalce 329 ppm 106 | ventana 319..369 | seguidor pos 329 posTentativa 329 posPredicha 334.9 basePos 335
+   -> nada | después: seguidor pos 329 posTentativa 329 | motor pos 329.7 ultimoCalce 329 freno sin-calce
+400.22 FINAL   «somos también lo que otros»
+   antes: motor pos 334.2 ultimoCalce 334 ppm 106 | ventana 324..374 | seguidor pos 329 posTentativa 334 posPredicha 334.2 basePos 334
+   -> calce 334 «los» | después: seguidor pos 334 posTentativa 334 | motor pos 334.2 ultimoCalce 334 freno null
+404.08 FINAL   «hacen de nosotros con su mirada»
+   antes: motor pos 341.2 ultimoCalce 341 ppm 134 | ventana 331..381 | seguidor pos 334 posTentativa 341 posPredicha 341.0 basePos 341
+   -> calce 341 «mirada» | después: seguidor pos 341 posTentativa 341 | motor pos 341.2 ultimoCalce 341 freno null
+410.60 FINAL   «yo también soy lo que otros dice es soy»
+   antes: motor pos 348.2 ultimoCalce 348 ppm 104 | ventana 338..388 | seguidor pos 341 posTentativa 348 posPredicha 348.1 basePos 348
+   -> calce 348 «soy» | después: seguidor pos 348 posTentativa 348 | motor pos 348.2 ultimoCalce 348 freno null
+423.34 FINAL   «la al de no lo dice como una queja lo dice como quien y de ayuda para poder encontrar aquello por qué porque existe es cosa de uno»
+   antes: motor pos 365.6 ultimoCalce 367 ppm 103 | ventana 357..407 | seguidor pos 348 posTentativa 367 posPredicha 369.1 basePos 369
+   -> nada | después: seguidor pos 348 posTentativa 348 | motor pos 365.6 ultimoCalce 367 freno null
+425.90 FINAL   «sólo existen»
+   antes: motor pos 367.7 ultimoCalce 367 ppm 103 | ventana 357..407 | seguidor pos 348 posTentativa 348 posPredicha 354.5 basePos 354
+   -> calce 370 «existen» | después: seguidor pos 370 posTentativa 370 | motor pos 367.7 ultimoCalce 370 freno null
+429.74 FINAL   «cuando alguien más lo nombre»
+   antes: motor pos 375.2 ultimoCalce 375 ppm 107 | ventana 365..415 | seguidor pos 370 posTentativa 375 posPredicha 375.2 basePos 375
+   -> calce 375 «nombra» | después: seguidor pos 375 posTentativa 375 | motor pos 375.2 ultimoCalce 375 freno null
+441.38 FINAL   «mantienen vivo y se fue»
+   antes: motor pos 375.2 ultimoCalce 375 ppm 90 | ventana 365..415 | seguidor pos 375 posTentativa 375 posPredicha 392.5 basePos 392
+   -> calce 392 «(secas)» | después: seguidor pos 415 posTentativa 415 | motor pos 375.2 ultimoCalce 392 freno null
+444.76 FINAL   «optimizar el comienzo»
+   antes: motor pos 387.7 ultimoCalce 392 ppm 90 | ventana 382..432 | seguidor pos 415 posTentativa 415 posPredicha 420.1 basePos 420
+   -> nada | después: seguidor pos 415 posTentativa 415 | motor pos 387.7 ultimoCalce 392 freno sin-calce
+453.04 FINAL   «bueno aquí ya se parte en dos»
+   antes: motor pos 387.7 ultimoCalce 392 ppm 90 | ventana 382..432 | seguidor pos 415 posTentativa 415 posPredicha 432.5 basePos 432
+   -> nada | después: seguidor pos 415 posTentativa 415 | motor pos 387.7 ultimoCalce 392 freno sin-calce
+464.66 FINAL   «hay algo que los empujando y le mantiene la países con agua y mantiene a raíz de fresca lo mantiene vivo»
+   antes: motor pos 387.7 ultimoCalce 392 ppm 90 | ventana 382..432 | seguidor pos 415 posTentativa 415 posPredicha 449.9 basePos 450
+   -> nada | después: seguidor pos 415 posTentativa 415 | motor pos 387.7 ultimoCalce 392 freno sin-calce
+474.68 FINAL   «sin embargo cerebro ha convencido de que esas raíces están seca»
+   antes: motor pos 402.9 ultimoCalce 423 ppm 73 | ventana 413..463 | seguidor pos 415 posTentativa 423 posPredicha 423.1 basePos 423
+   -> calce 423 «secas» | después: seguidor pos 423 posTentativa 423 | motor pos 402.9 ultimoCalce 423 freno null
+479.20 FINAL   «y los dos aspectos eh estado polaridad la de»
+   antes: motor pos 429.0 ultimoCalce 431 ppm 145 | ventana 421..471 | seguidor pos 423 posTentativa 431 posPredicha 435.1 basePos 435
+   -> calce 432 «de» | después: seguidor pos 432 posTentativa 432 | motor pos 429.0 ultimoCalce 432 freno null
+483.26 FINAL   «han y convive en el mismo»
+   antes: motor pos 432.9 ultimoCalce 432 ppm 132 | ventana 422..472 | seguidor pos 432 posTentativa 432 posPredicha 440.9 basePos 441
+   -> nada | después: seguidor pos 432 posTentativa 432 | motor pos 432.9 ultimoCalce 432 freno sin-calce
+492.14 FINAL   «en esta parte termina de desarmar una idea que usualmente damos oreja»
+   antes: motor pos 438.7 ultimoCalce 438 ppm 112 | ventana 428..478 | seguidor pos 432 posTentativa 438 posPredicha 440.3 basePos 440
+   -> nada | después: seguidor pos 432 posTentativa 432 | motor pos 438.7 ultimoCalce 438 freno null
+496.84 FINAL   «uno sabe cómo está»
+   antes: motor pos 444.0 ultimoCalce 444 ppm 112 | ventana 434..484 | seguidor pos 432 posTentativa 444 posPredicha 444.1 basePos 444
+   -> calce 444 «está» | después: seguidor pos 444 posTentativa 444 | motor pos 444.0 ultimoCalce 444 freno null
+499.78 FINAL   «la de no dice»
+   antes: motor pos 444.7 ultimoCalce 444 ppm 112 | ventana 434..484 | seguidor pos 444 posTentativa 444 posPredicha 449.5 basePos 449
+   -> nada | después: seguidor pos 444 posTentativa 444 | motor pos 444.7 ultimoCalce 444 freno sin-calce
+502.30 FINAL   «y el diagnóstico»
+   antes: motor pos 444.7 ultimoCalce 444 ppm 112 | ventana 434..484 | seguidor pos 444 posTentativa 444 posPredicha 454.2 basePos 454
+   -> nada | después: seguidor pos 444 posTentativa 444 | motor pos 444.7 ultimoCalce 444 freno sin-calce
+506.56 FINAL   «y nosotros hacemos sobre nosotros mismos»
+   antes: motor pos 453.5 ultimoCalce 455 ppm 112 | ventana 445..495 | seguidor pos 444 posTentativa 455 posPredicha 455.1 basePos 455
+   -> calce 455 «mismos» | después: seguidor pos 455 posTentativa 455 | motor pos 453.5 ultimoCalce 455 freno null
+510.74 FINAL   «usualmente no es hacer»
+   antes: motor pos 455.6 ultimoCalce 455 ppm 90 | ventana 445..495 | seguidor pos 455 posTentativa 455 posPredicha 461.3 basePos 461
+   -> nada | después: seguidor pos 455 posTentativa 455 | motor pos 455.6 ultimoCalce 455 freno sin-calce
+520.00 FINAL   «a esto se suma la paradoja de existe la filosofía y también la sociología»
+   antes: motor pos 486.2 ultimoCalce 486 ppm 102 | ventana 476..526 | seguidor pos 455 posTentativa 486 posPredicha 486.0 basePos 486
+   -> nada | después: seguidor pos 455 posTentativa 455 | motor pos 486.2 ultimoCalce 486 freno null
+524.26 FINAL   «donde ya estamos más o menos validado»
+   antes: motor pos 486.7 ultimoCalce 486 ppm 102 | ventana 476..526 | seguidor pos 455 posTentativa 455 posPredicha 462.3 basePos 462
+   -> nada | después: seguidor pos 455 posTentativa 455 | motor pos 486.7 ultimoCalce 486 freno sin-calce
+527.68 FINAL   «nosotros no somos una isla»
+   antes: motor pos 493.7 ultimoCalce 494 ppm 102 | ventana 484..534 | seguidor pos 455 posTentativa 494 posPredicha 494.1 basePos 494
+   -> calce 494 «isla» | después: seguidor pos 494 posTentativa 494 | motor pos 493.7 ultimoCalce 494 freno null
+529.34 FINAL   «o definida»
+   antes: motor pos 494.6 ultimoCalce 494 ppm 83 | ventana 484..534 | seguidor pos 494 posTentativa 494 posPredicha 496.3 basePos 496
+   -> nada | después: seguidor pos 494 posTentativa 494 | motor pos 494.6 ultimoCalce 494 freno null
+539.36 FINAL   «no en gran medida somos lo que los otros piensan lo que los otros proyectan es somos»
+   antes: motor pos 513.0 ultimoCalce 512 ppm 152 | ventana 503..553 | seguidor pos 494 posTentativa 512 posPredicha 514.9 basePos 515
+   -> nada | después: seguidor pos 494 posTentativa 494 | motor pos 513.0 ultimoCalce 512 freno null
+545.30 FINAL   «no es menor en esta frase corta el la vale»
+   antes: motor pos 516.8 ultimoCalce 516 ppm 120 | ventana 506..556 | seguidor pos 494 posTentativa 516 posPredicha 520.7 basePos 521
+   -> nada | después: seguidor pos 494 posTentativa 494 | motor pos 516.8 ultimoCalce 516 freno null
+547.24 FINAL   «el de confíe del cerebro»
+   antes: motor pos 516.8 ultimoCalce 516 ppm 120 | ventana 506..556 | seguidor pos 494 posTentativa 494 posPredicha 502.6 basePos 503
+   -> nada | después: seguidor pos 494 posTentativa 494 | motor pos 516.8 ultimoCalce 516 freno sin-calce
+549.76 FINAL   «el cerebro»
+   antes: motor pos 516.8 ultimoCalce 516 ppm 120 | ventana 506..556 | seguidor pos 494 posTentativa 494 posPredicha 507.6 basePos 508
+   -> calce 517 «cerebro» | después: seguidor pos 517 posTentativa 517 | motor pos 516.8 ultimoCalce 517 freno null
+564.62 FINAL   «no es en ningún caso un juez imparcial tenemos que entender es un órgano ese libro durán y millones de años era un mundo ya no existe»
+   antes: motor pos 536.2 ultimoCalce 536 ppm 138 | ventana 526..576 | seguidor pos 517 posTentativa 536 posPredicha 536.0 basePos 536
+   -> nada | después: seguidor pos 517 posTentativa 517 | motor pos 536.2 ultimoCalce 536 freno null
+571.04 FINAL   «hará se preparó para enfrentar al animal que se acerca»
+   antes: motor pos 542.2 ultimoCalce 542 ppm 138 | ventana 532..582 | seguidor pos 517 posTentativa 542 posPredicha 542.2 basePos 542
+   -> calce 542 «acerca» | después: seguidor pos 542 posTentativa 542 | motor pos 542.2 ultimoCalce 542 freno null
+574.76 FINAL   «al invierno que no alcanza»
+   antes: motor pos 547.2 ultimoCalce 547 ppm 123 | ventana 537..587 | seguidor pos 542 posTentativa 547 posPredicha 547.0 basePos 547
+   -> calce 547 «alcanza» | después: seguidor pos 547 posTentativa 547 | motor pos 547.2 ultimoCalce 547 freno null
+579.98 FINAL   «o al grupo de treinta personas desde donde ser expulsado»
+   antes: motor pos 556.2 ultimoCalce 556 ppm 120 | ventana 546..596 | seguidor pos 547 posTentativa 556 posPredicha 556.2 basePos 556
+   -> calce 556 «expulsado» | después: seguidor pos 556 posTentativa 556 | motor pos 556.2 ultimoCalce 556 freno null
+582.20 FINAL   «y era una condena a muerte»
+   antes: motor pos 556.7 ultimoCalce 556 ppm 106 | ventana 546..596 | seguidor pos 556 posTentativa 556 posPredicha 559.9 basePos 560
+   -> nada | después: seguidor pos 556 posTentativa 556 | motor pos 556.7 ultimoCalce 556 freno null
+586.54 FINAL   «y de eso eran reminiscencias»
+   antes: motor pos 556.7 ultimoCalce 556 ppm 106 | ventana 546..596 | seguidor pos 556 posTentativa 556 posPredicha 567.6 basePos 568
+   -> nada | después: seguidor pos 556 posTentativa 556 | motor pos 556.7 ultimoCalce 556 freno sin-calce
+596.06 FINAL   «creo que esas reminiscencia han muy evidente por ejemplo cuando miramos el juego»
+   antes: motor pos 556.7 ultimoCalce 556 ppm 106 | ventana 546..596 | seguidor pos 556 posTentativa 556 posPredicha 584.3 basePos 584
+   -> nada | después: seguidor pos 556 posTentativa 556 | motor pos 556.7 ultimoCalce 556 freno sin-calce
+598.84 FINAL   «o cuando cuando miramos el mar»
+   antes: motor pos 556.7 ultimoCalce 556 ppm 106 | ventana 546..596 | seguidor pos 556 posTentativa 556 posPredicha 589.2 basePos 589
+   -> nada | después: seguidor pos 556 posTentativa 556 | motor pos 556.7 ultimoCalce 556 freno sin-calce
+603.76 FINAL   «pero en definitiva la tarea de cerebro»
+   antes: motor pos 561.6 ultimoCalce 572 ppm 106 | ventana 562..612 | seguidor pos 556 posTentativa 572 posPredicha 572.1 basePos 572
+   -> calce 572 «cerebro» | después: seguidor pos 572 posTentativa 572 | motor pos 561.6 ultimoCalce 572 freno null
+607.16 FINAL   «en general era»
+   antes: motor pos 572.7 ultimoCalce 572 ppm 106 | ventana 562..612 | seguidor pos 572 posTentativa 572 posPredicha 578.0 basePos 578
+   -> nada | después: seguidor pos 572 posTentativa 572 | motor pos 572.7 ultimoCalce 572 freno sin-calce
+609.78 FINAL   «anticipar la de gracia»
+   antes: motor pos 572.7 ultimoCalce 572 ppm 106 | ventana 562..612 | seguidor pos 572 posTentativa 572 posPredicha 582.6 basePos 583
+   -> nada | después: seguidor pos 572 posTentativa 572 | motor pos 572.7 ultimoCalce 572 freno sin-calce
+613.86 FINAL   «y el que anticipaba mal esta de gracia»
+   antes: motor pos 572.7 ultimoCalce 572 ppm 106 | ventana 562..612 | seguidor pos 572 posTentativa 572 posPredicha 589.8 basePos 590
+   -> calce 584 «nietos» | después: seguidor pos 584 posTentativa 584 | motor pos 572.7 ultimoCalce 584 freno null
+616.32 FINAL   «no dejaba nietos»
+   antes: motor pos 584.1 ultimoCalce 584 ppm 106 | ventana 574..624 | seguidor pos 584 posTentativa 584 posPredicha 584.1 basePos 584
+   -> calce 584 «nietos» | después: seguidor pos 584 posTentativa 584 | motor pos 584.1 ultimoCalce 584 freno null
+619.26 FINAL   «derechamente extinguida»
+   antes: motor pos 584.7 ultimoCalce 584 ppm 106 | ventana 574..624 | seguidor pos 584 posTentativa 584 posPredicha 589.2 basePos 589
+   -> nada | después: seguidor pos 584 posTentativa 584 | motor pos 584.7 ultimoCalce 584 freno sin-calce
+623.12 FINAL   «entonces esa barato acá dentro»
+   antes: motor pos 584.7 ultimoCalce 584 ppm 106 | ventana 574..624 | seguidor pos 584 posTentativa 584 posPredicha 596.0 basePos 596
+   -> nada | después: seguidor pos 584 posTentativa 584 | motor pos 584.7 ultimoCalce 584 freno sin-calce
+626.46 FINAL   «el aparato siguen pero»
+   antes: motor pos 590.1 ultimoCalce 590 ppm 106 | ventana 580..630 | seguidor pos 584 posTentativa 590 posPredicha 590.1 basePos 590
+   -> calce 590 «entero» | después: seguidor pos 590 posTentativa 590 | motor pos 590.1 ultimoCalce 590 freno null
+643.64 FINAL   «y lo que cambio fue fue todo lo demás fueron las circunstancias pero la evolución la baja en decenas de miles de años entonces nuestras circunstancias se dieron vuelta»
+   antes: motor pos 612.1 ultimoCalce 612 ppm 79 | ventana 602..652 | seguidor pos 590 posTentativa 612 posPredicha 612.1 basePos 612
+   -> calce 612 «en» | después: seguidor pos 612 posTentativa 612 | motor pos 612.1 ultimoCalce 612 freno null
+645.84 FINAL   «en dos siglo»
+   antes: motor pos 614.1 ultimoCalce 614 ppm 78 | ventana 604..654 | seguidor pos 612 posTentativa 614 posPredicha 614.1 basePos 614
+   -> calce 614 «siglos» | después: seguidor pos 614 posTentativa 614 | motor pos 614.1 ultimoCalce 614 freno null
+648.78 FINAL   «uso algunas en veinte años»
+   antes: motor pos 617.9 ultimoCalce 618 ppm 75 | ventana 608..658 | seguidor pos 614 posTentativa 618 posPredicha 618.1 basePos 618
+   -> calce 618 «años» | después: seguidor pos 618 posTentativa 618 | motor pos 617.9 ultimoCalce 618 freno null
+652.34 FINAL   «y eso en términos biológicos»
+   antes: motor pos 621.1 ultimoCalce 621 ppm 77 | ventana 611..661 | seguidor pos 618 posTentativa 621 posPredicha 621.1 basePos 621
+   -> calce 621 «biologicos» | después: seguidor pos 621 posTentativa 621 | motor pos 621.1 ultimoCalce 621 freno null
+656.58 FINAL   «como lo planteadas randy»
+   antes: motor pos 621.5 ultimoCalce 621 ppm 77 | ventana 611..661 | seguidor pos 621 posTentativa 621 posPredicha 626.5 basePos 626
+   -> nada | después: seguidor pos 621 posTentativa 621 | motor pos 621.5 ultimoCalce 621 freno sin-calce
+659.70 FINAL   «es un desajuste»
+   antes: motor pos 624.5 ultimoCalce 630 ppm 77 | ventana 620..670 | seguidor pos 621 posTentativa 630 posPredicha 630.0 basePos 630
+   -> calce 630 «desajuste» | después: seguidor pos 630 posTentativa 630 | motor pos 624.5 ultimoCalce 630 freno null
+662.24 FINAL   «es totalmente desahogo»
+   antes: motor pos 630.5 ultimoCalce 630 ppm 77 | ventana 620..670 | seguidor pos 630 posTentativa 630 posPredicha 633.3 basePos 633
+   -> nada | después: seguidor pos 630 posTentativa 630 | motor pos 630.5 ultimoCalce 630 freno sin-calce
+671.06 FINAL   «hacemos este»
+   antes: motor pos 630.5 ultimoCalce 630 ppm 77 | ventana 620..670 | seguidor pos 630 posTentativa 630 posPredicha 644.6 basePos 645
+   -> nada | después: seguidor pos 630 posTentativa 630 | motor pos 630.5 ultimoCalce 630 freno sin-calce
+672.68 FINAL   «filoso»
+   antes: motor pos 630.5 ultimoCalce 630 ppm 77 | ventana 620..670 | seguidor pos 630 posTentativa 630 posPredicha 646.7 basePos 647
+   -> nada | después: seguidor pos 630 posTentativa 630 | motor pos 630.5 ultimoCalce 630 freno sin-calce
+678.48 FINAL   «en»
+   antes: motor pos 630.5 ultimoCalce 630 ppm 77 | ventana 620..670 | seguidor pos 630 posTentativa 630 posPredicha 654.2 basePos 654
+   -> nada | después: seguidor pos 630 posTentativa 630 | motor pos 630.5 ultimoCalce 630 freno sin-calce
+683.48 FINAL   «como»
+   antes: motor pos 630.5 ultimoCalce 630 ppm 77 | ventana 620..670 | seguidor pos 630 posTentativa 630 posPredicha 660.7 basePos 661
+   -> nada | después: seguidor pos 630 posTentativa 630 | motor pos 630.5 ultimoCalce 630 freno sin-calce
+697.98 FINAL   «mitad y batir de las estilo desde ayer desde este mismo momento de de siempre»
+   antes: motor pos 642.0 ultimoCalce 645 ppm 77 | ventana 635..685 | seguidor pos 630 posTentativa 645 posPredicha 645.1 basePos 645
+   -> calce 645 «cuatro» | después: seguidor pos 645 posTentativa 645 | motor pos 642.0 ultimoCalce 645 freno null
+700.32 FINAL   «cuatro tiempos»
+   antes: motor pos 646.1 ultimoCalce 646 ppm 63 | ventana 636..686 | seguidor pos 645 posTentativa 646 posPredicha 646.0 basePos 646
+   -> calce 646 «tiempos» | después: seguidor pos 646 posTentativa 646 | motor pos 646.1 ultimoCalce 646 freno null
+704.48 FINAL   «la planteando cuatro tiempos»
+   antes: motor pos 646.4 ultimoCalce 646 ppm 56 | ventana 636..686 | seguidor pos 646 posTentativa 646 posPredicha 649.9 basePos 650
+   -> nada | después: seguidor pos 646 posTentativa 646 | motor pos 646.4 ultimoCalce 646 freno sin-calce
+708.08 FINAL   «para una sola herida»
+   antes: motor pos 649.7 ultimoCalce 650 ppm 56 | ventana 640..690 | seguidor pos 646 posTentativa 650 posPredicha 650.0 basePos 650
+   -> calce 650 «herida» | después: seguidor pos 650 posTentativa 650 | motor pos 649.7 ultimoCalce 650 freno null
+710.54 FINAL   «hace siglos»
+   antes: motor pos 651.5 ultimoCalce 652 ppm 49 | ventana 642..692 | seguidor pos 650 posTentativa 652 posPredicha 652.0 basePos 652
+   -> calce 652 «siglos» | después: seguidor pos 652 posTentativa 652 | motor pos 651.5 ultimoCalce 652 freno null
+712.82 FINAL   «ayer»
+   antes: motor pos 652.3 ultimoCalce 652 ppm 49 | ventana 642..692 | seguidor pos 652 posTentativa 652 posPredicha 653.9 basePos 654
+   -> calce 653 «ayer» | después: seguidor pos 653 posTentativa 653 | motor pos 652.3 ultimoCalce 653 freno null
+717.32 FINAL   «este mismo momento siempre»
+   antes: motor pos 657.1 ultimoCalce 657 ppm 46 | ventana 647..697 | seguidor pos 653 posTentativa 657 posPredicha 657.1 basePos 657
+   -> calce 657 «siempre» | después: seguidor pos 657 posTentativa 657 | motor pos 657.1 ultimoCalce 657 freno null
+722.34 FINAL   «una herida con fecha»
+   antes: motor pos 660.7 ultimoCalce 661 ppm 47 | ventana 651..701 | seguidor pos 657 posTentativa 661 posPredicha 661.0 basePos 661
+   -> calce 661 «fecha» | después: seguidor pos 661 posTentativa 661 | motor pos 660.7 ultimoCalce 661 freno null
+724.58 FINAL   «se puede tratar»
+   antes: motor pos 664.1 ultimoCalce 664 ppm 65 | ventana 654..704 | seguidor pos 661 posTentativa 664 posPredicha 664.1 basePos 664
+   -> calce 664 «tratar» | después: seguidor pos 664 posTentativa 664 | motor pos 664.1 ultimoCalce 664 freno null
+731.06 FINAL   «uno dice y uno puede contar me pasó tal cosa tal año»
+   antes: motor pos 671.5 ultimoCalce 671 ppm 80 | ventana 661..711 | seguidor pos 664 posTentativa 671 posPredicha 673.2 basePos 673
+   -> calce 672 «año» | después: seguidor pos 672 posTentativa 672 | motor pos 671.5 ultimoCalce 672 freno null
+732.80 FINAL   «al mes»
+   antes: motor pos 672.5 ultimoCalce 672 ppm 68 | ventana 662..712 | seguidor pos 672 posTentativa 672 posPredicha 674.0 basePos 674
+   -> nada | después: seguidor pos 672 posTentativa 672 | motor pos 672.5 ultimoCalce 672 freno null
+740.22 FINAL   «y a partir de ahí hay un antes y un después puede haber culpable»
+   antes: motor pos 686.2 ultimoCalce 686 ppm 118 | ventana 676..726 | seguidor pos 672 posTentativa 686 posPredicha 686.2 basePos 686
+   -> calce 686 «culpable» | después: seguidor pos 686 posTentativa 686 | motor pos 686.2 ultimoCalce 686 freno null
+743.90 FINAL   «en general un proceso»
+   antes: motor pos 686.6 ultimoCalce 686 ppm 97 | ventana 676..726 | seguidor pos 686 posTentativa 686 posPredicha 691.9 basePos 692
+   -> nada | después: seguidor pos 686 posTentativa 686 | motor pos 686.6 ultimoCalce 686 freno sin-calce
+749.10 FINAL   «entonces la randy le saca la fecha»
+   antes: motor pos 692.7 ultimoCalce 693 ppm 97 | ventana 683..733 | seguidor pos 686 posTentativa 693 posPredicha 695.6 basePos 696
+   -> calce 694 «fecha» | después: seguidor pos 694 posTentativa 694 | motor pos 692.7 ultimoCalce 694 freno null
+752.22 FINAL   «y alza cumple la fecha»
+   antes: motor pos 694.5 ultimoCalce 694 ppm 80 | ventana 684..734 | seguidor pos 694 posTentativa 694 posPredicha 698.1 basePos 698
+   -> nada | después: seguidor pos 694 posTentativa 694 | motor pos 694.5 ultimoCalce 694 freno sin-calce
+755.96 FINAL   «la convierte en otra cosa»
+   antes: motor pos 702.1 ultimoCalce 702 ppm 79 | ventana 692..742 | seguidor pos 694 posTentativa 702 posPredicha 702.1 basePos 702
+   -> calce 702 «cosa» | después: seguidor pos 702 posTentativa 702 | motor pos 702.1 ultimoCalce 702 freno null
+761.18 FINAL   «expedida deja de ser un episodio»
+   antes: motor pos 706.5 ultimoCalce 707 ppm 68 | ventana 697..747 | seguidor pos 702 posTentativa 707 posPredicha 707.1 basePos 707
+   -> calce 707 «episodio» | después: seguidor pos 707 posTentativa 707 | motor pos 706.5 ultimoCalce 707 freno null
+766.80 FINAL   «y pasase una condición de ser»
+   antes: motor pos 710.5 ultimoCalce 710 ppm 68 | ventana 700..750 | seguidor pos 707 posTentativa 710 posPredicha 715.4 basePos 715
+   -> nada | después: seguidor pos 707 posTentativa 707 | motor pos 710.5 ultimoCalce 710 freno sin-calce
+777.74 FINAL   «miren el orden en el que las one va de lo más lejano a lo más cercano»
+   antes: motor pos 729.2 ultimoCalce 729 ppm 145 | ventana 719..769 | seguidor pos 707 posTentativa 729 posPredicha 729.1 basePos 729
+   -> calce 729 «cercano» | después: seguidor pos 729 posTentativa 729 | motor pos 729.2 ultimoCalce 729 freno null
+786.12 FINAL   «y termina en el ahora y no está diciendo y»
+   antes: motor pos 739.1 ultimoCalce 738 ppm 165 | ventana 729..779 | seguidor pos 729 posTentativa 738 posPredicha 742.1 basePos 742
+   -> nada | después: seguidor pos 729 posTentativa 729 | motor pos 739.1 ultimoCalce 738 freno null
+792.24 FINAL   «para esta herida limita llevar y ido se partió alguna vez»
+   antes: motor pos 741.1 ultimoCalce 740 ppm 165 | ventana 731..781 | seguidor pos 729 posTentativa 740 posPredicha 746.4 basePos 746
+   -> nada | después: seguidor pos 729 posTentativa 729 | motor pos 741.1 ultimoCalce 740 freno null
+799.74 FINAL   «dice hice tapar y endo mientras habla mientras lo dice»
+   antes: motor pos 741.1 ultimoCalce 740 ppm 165 | ventana 731..781 | seguidor pos 729 posTentativa 729 posPredicha 756.0 basePos 756
+   -> nada | después: seguidor pos 729 posTentativa 729 | motor pos 741.1 ultimoCalce 740 freno sin-calce
+805.08 FINAL   «por eso cuando el del mina en siempre»
+   antes: motor pos 741.1 ultimoCalce 740 ppm 165 | ventana 731..781 | seguidor pos 729 posTentativa 729 posPredicha 769.0 basePos 769
+   -> nada | después: seguidor pos 729 posTentativa 729 | motor pos 741.1 ultimoCalce 740 freno sin-calce
+808.02 FINAL   «esta cerrando la serie»
+   antes: motor pos 741.1 ultimoCalce 740 ppm 165 | ventana 731..781 | seguidor pos 729 posTentativa 729 posPredicha 769.0 basePos 769
+   -> nada | después: seguidor pos 729 posTentativa 729 | motor pos 741.1 ultimoCalce 740 freno sin-calce
+811.04 FINAL   «la esta condenando»
+   antes: motor pos 741.1 ultimoCalce 740 ppm 165 | ventana 731..781 | seguidor pos 729 posTentativa 729 posPredicha 769.0 basePos 769
+   -> nada | después: seguidor pos 729 posTentativa 729 | motor pos 741.1 ultimoCalce 740 freno sin-calce
+828.72 FINAL   «no no nombra una duración nombra una herida que no ha encontrado y que no van contra la forma de poder sanar la forma esa de determinar»
+   antes: motor pos 773.8 ultimoCalce 773 ppm 119 | ventana 763..813 | seguidor pos 729 posTentativa 773 posPredicha 777.7 basePos 778
+   -> nada | después: seguidor pos 729 posTentativa 729 | motor pos 773.8 ultimoCalce 773 freno null
+831.30 FINAL   «am»
+   antes: motor pos 773.8 ultimoCalce 773 ppm 119 | ventana 763..813 | seguidor pos 729 posTentativa 729 posPredicha 738.8 basePos 739
+   -> nada | después: seguidor pos 773 posTentativa 773 | motor pos 773.8 ultimoCalce 773 freno sin-calce
+841.32 FINAL   «o»
+   antes: motor pos 773.8 ultimoCalce 773 ppm 119 | ventana 763..813 | seguidor pos 773 posTentativa 773 posPredicha 802.7 basePos 803
+   -> calce 782 «(niñez)» | después: seguidor pos 810 posTentativa 810 | motor pos 773.8 ultimoCalce 782 freno null
+855.60 FINAL   «la juventud mi niña mi vieja niña»
+   antes: motor pos 773.8 ultimoCalce 782 ppm 119 | ventana 772..822 | seguidor pos 810 posTentativa 810 posPredicha 838.2 basePos 838
+   -> nada | después: seguidor pos 810 posTentativa 810 | motor pos 773.8 ultimoCalce 782 freno sin-calce
+862.56 FINAL   «la estaba te tampoco tampoco está hablando de tres edades»
+   antes: motor pos 773.8 ultimoCalce 782 ppm 119 | ventana 772..822 | seguidor pos 810 posTentativa 810 posPredicha 850.0 basePos 850
+   -> nada | después: seguidor pos 810 posTentativa 810 | motor pos 773.8 ultimoCalce 782 freno sin-calce
+867.90 FINAL   «habla de una vida donde las edades»
+   antes: motor pos 773.8 ultimoCalce 782 ppm 119 | ventana 772..822 | seguidor pos 810 posTentativa 810 posPredicha 850.0 basePos 850
+   -> nada | después: seguidor pos 810 posTentativa 810 | motor pos 773.8 ultimoCalce 782 freno sin-calce
+874.04 FINAL   «dejaron de respetar el orden biológico el orden lógico»
+   antes: motor pos 773.8 ultimoCalce 782 ppm 119 | ventana 772..822 | seguidor pos 810 posTentativa 810 posPredicha 850.0 basePos 850
+   -> nada | después: seguidor pos 810 posTentativa 810 | motor pos 773.8 ultimoCalce 782 freno sin-calce
+879.92 FINAL   «han tan encuentra razón»
+   antes: motor pos 773.8 ultimoCalce 782 ppm 119 | ventana 772..822 | seguidor pos 810 posTentativa 810 posPredicha 850.0 basePos 850
+   -> nada | después: seguidor pos 810 posTentativa 810 | motor pos 773.8 ultimoCalce 782 freno sin-calce
+884.40 FINAL   «la vejez aparece como niña»
+   antes: motor pos 779.3 ultimoCalce 804 ppm 119 | ventana 794..844 | seguidor pos 810 posTentativa 810 posPredicha 810.1 basePos 810
+   -> calce 804 «niña» | después: seguidor pos 804 posTentativa 804 | motor pos 779.3 ultimoCalce 804 freno null
+886.88 FINAL   «porque conserva»
+   antes: motor pos 793.0 ultimoCalce 806 ppm 97 | ventana 796..846 | seguidor pos 804 posTentativa 806 posPredicha 806.0 basePos 806
+   -> calce 806 «conserva» | después: seguidor pos 806 posTentativa 806 | motor pos 793.0 ultimoCalce 806 freno null
+891.08 FINAL   «una fragilidad y no se fue»
+   antes: motor pos 809.9 ultimoCalce 812 ppm 94 | ventana 802..852 | seguidor pos 806 posTentativa 812 posPredicha 812.1 basePos 812
+   -> calce 812 «fue» | después: seguidor pos 812 posTentativa 812 | motor pos 809.9 ultimoCalce 812 freno null
+896.76 FINAL   «y también porque»
+   antes: motor pos 809.9 ultimoCalce 812 ppm 93 | ventana 802..852 | seguidor pos 812 posTentativa 812 posPredicha 820.8 basePos 821
+   -> nada | después: seguidor pos 812 posTentativa 812 | motor pos 809.9 ultimoCalce 812 freno sin-calce
+899.28 FINAL   «existen cansancio»
+   antes: motor pos 809.9 ultimoCalce 812 ppm 93 | ventana 802..852 | seguidor pos 812 posTentativa 812 posPredicha 824.8 basePos 825
+   -> nada | después: seguidor pos 812 posTentativa 812 | motor pos 809.9 ultimoCalce 812 freno sin-calce
+903.02 FINAL   «que es amparan»
+   antes: motor pos 809.9 ultimoCalce 812 ppm 93 | ventana 802..852 | seguidor pos 812 posTentativa 812 posPredicha 830.6 basePos 831
+   -> nada | después: seguidor pos 812 posTentativa 812 | motor pos 809.9 ultimoCalce 812 freno sin-calce
+908.82 FINAL   «mi de mí y cuando dice y mi hija niñez»
+   antes: motor pos 818.1 ultimoCalce 825 ppm 93 | ventana 815..865 | seguidor pos 812 posTentativa 825 posPredicha 828.2 basePos 828
+   -> nada | después: seguidor pos 812 posTentativa 812 | motor pos 818.1 ultimoCalce 825 freno null
+919.94 FINAL   «lo siento dos perspectivas primero la niñez vieja para quienes aprendieron demasiado temprano»
+   antes: motor pos 842.1 ultimoCalce 842 ppm 90 | ventana 832..882 | seguidor pos 812 posTentativa 842 posPredicha 842.0 basePos 842
+   -> calce 842 «temprano» | después: seguidor pos 842 posTentativa 842 | motor pos 842.1 ultimoCalce 842 freno null
+929.10 FINAL   «lo que le correspondía sabe eso de muy usual en el campo otra perspectiva es que los niños todavía»
+   antes: motor pos 855.2 ultimoCalce 855 ppm 100 | ventana 845..895 | seguidor pos 842 posTentativa 855 posPredicha 855.2 basePos 855
+   -> calce 855 «todavía» | después: seguidor pos 855 posTentativa 855 | motor pos 855.2 ultimoCalce 855 freno null
+947.70 FINAL   «está diciendo que se partió alguna vez dice que se batiendo mientras habla por eso siempre no cierra la serie la condena nombre no duración nombre una herida que no he encontrado todavía la forma de terminar»
+   antes: motor pos 864.4 ultimoCalce 877 ppm 82 | ventana 867..917 | seguidor pos 855 posTentativa 877 posPredicha 879.5 basePos 879
+   -> nada | después: seguidor pos 855 posTentativa 855 | motor pos 864.4 ultimoCalce 877 freno null
+964.88 FINAL   «no habla de tres edades habla de una vida donde las dejaron de respetar el orden la juventud aparece como niña porque conserva una fragilidad que no se fue la vejez como niña porque cansancio que también san para y mi vieja niñez»
+   antes: motor pos 864.4 ultimoCalce 877 ppm 82 | ventana 867..917 | seguidor pos 855 posTentativa 855 posPredicha 880.9 basePos 881
+   -> nada | después: seguidor pos 855 posTentativa 855 | motor pos 864.4 ultimoCalce 877 freno sin-calce
+970.88 FINAL   «están muy cerca del por qué»
+   antes: motor pos 864.4 ultimoCalce 877 ppm 82 | ventana 867..917 | seguidor pos 855 posTentativa 855 posPredicha 889.1 basePos 889
+   -> nada | después: seguidor pos 855 posTentativa 855 | motor pos 864.4 ultimoCalce 877 freno sin-calce
+974.46 FINAL   «y en la canción tenemos un adulto»
+   antes: motor pos 864.4 ultimoCalce 877 ppm 82 | ventana 867..917 | seguidor pos 855 posTentativa 855 posPredicha 894.0 basePos 894
+   -> nada | después: seguidor pos 855 posTentativa 855 | motor pos 864.4 ultimoCalce 877 freno sin-calce
+976.70 FINAL   «se pregunta»
+   antes: motor pos 867.5 ultimoCalce 877 ppm 82 | ventana 867..917 | seguidor pos 855 posTentativa 868 posPredicha 868.1 basePos 868
+   -> calce 868 «pregunta» | después: seguidor pos 868 posTentativa 868 | motor pos 867.5 ultimoCalce 877 freno null
+985.22 FINAL   «se pregunta así como un niño y como un niño que todavía no ha aprendido aceptar»
+   antes: motor pos 878.5 ultimoCalce 878 ppm 82 | ventana 868..918 | seguidor pos 868 posTentativa 878 posPredicha 879.6 basePos 880
+   -> nada | después: seguidor pos 868 posTentativa 868 | motor pos 878.5 ultimoCalce 878 freno null
+990.96 FINAL   «eh vieja para crear demasiado temprano lo que no le correspondía»
+   antes: motor pos 878.5 ultimoCalce 878 ppm 82 | ventana 868..918 | seguidor pos 868 posTentativa 868 posPredicha 877.4 basePos 877
+   -> nada | después: seguidor pos 868 posTentativa 868 | motor pos 878.5 ultimoCalce 878 freno sin-calce
+1003.40 FINAL   «y repetía crónica todavía tan cerca del por qué y aquí tenemos un adulto que se pregunta si como un niño que no ha aprendido del todo aceptan la respuesta que vienen dadas»
+   antes: motor pos 885.2 ultimoCalce 885 ppm 124 | ventana 875..925 | seguidor pos 878 posTentativa 885 posPredicha 885.1 basePos 885
+   -> calce 885 «dadas» | después: seguidor pos 885 posTentativa 885 | motor pos 885.2 ultimoCalce 885 freno null
+1008.56 FINAL   «la respuesta que vienen dadas de del mundo adulto»
+   antes: motor pos 889.2 ultimoCalce 889 ppm 124 | ventana 879..929 | seguidor pos 885 posTentativa 889 posPredicha 889.1 basePos 889
+   -> calce 889 «insisten» | después: seguidor pos 889 posTentativa 889 | motor pos 889.2 ultimoCalce 889 freno null
+1015.86 FINAL   «dos niños preguntar sin vergüenza dejar mal lo que para nosotros»
+   antes: motor pos 894.2 ultimoCalce 894 ppm 123 | ventana 884..934 | seguidor pos 889 posTentativa 894 posPredicha 894.2 basePos 894
+   -> calce 894 «nosotros» | después: seguidor pos 894 posTentativa 894 | motor pos 894.2 ultimoCalce 894 freno null
+1017.96 FINAL   «parece natural»
+   antes: motor pos 897.2 ultimoCalce 897 ppm 128 | ventana 887..937 | seguidor pos 894 posTentativa 897 posPredicha 897.1 basePos 897
+   -> calce 897 «natural» | después: seguidor pos 897 posTentativa 897 | motor pos 897.2 ultimoCalce 897 freno null
+1027.80 FINAL   «y después bueno después crecen y cuando crecemos no llenan de explicaciones y un día derechamente»
+   antes: motor pos 907.2 ultimoCalce 907 ppm 122 | ventana 897..947 | seguidor pos 897 posTentativa 907 posPredicha 907.2 basePos 907
+   -> calce 907 «dejamos» | después: seguidor pos 907 posTentativa 907 | motor pos 907.2 ultimoCalce 907 freno null
+1044.48 FINAL   «derechamente dejamos de preguntar y no dejaba de preguntar porque hallamos entendido más no que porque nos acostumbramos a vivir entre respuestas ajena»
+   antes: motor pos 923.0 ultimoCalce 923 ppm 105 | ventana 913..963 | seguidor pos 907 posTentativa 923 posPredicha 923.0 basePos 923
+   -> calce 923 «ajenas» | después: seguidor pos 923 posTentativa 923 | motor pos 923.0 ultimoCalce 923 freno null
+1051.86 FINAL   «la»
+   antes: motor pos 923.0 ultimoCalce 923 ppm 105 | ventana 913..963 | seguidor pos 923 posTentativa 923 posPredicha 935.9 basePos 936
+   -> calce 919 «a» | después: seguidor pos 919 posTentativa 919 | motor pos 923.0 ultimoCalce 923 freno null
+1053.42 FINAL   «el énfasis»
+   antes: motor pos 923.7 ultimoCalce 923 ppm 105 | ventana 913..963 | seguidor pos 919 posTentativa 919 posPredicha 921.7 basePos 922
+   -> nada | después: seguidor pos 919 posTentativa 919 | motor pos 923.7 ultimoCalce 923 freno null
+1063.08 FINAL   «tienes razón»
+   antes: motor pos 923.7 ultimoCalce 923 ppm 105 | ventana 913..963 | seguidor pos 919 posTentativa 919 posPredicha 938.7 basePos 939
+   -> nada | después: seguidor pos 919 posTentativa 919 | motor pos 923.7 ultimoCalce 923 freno sin-calce
+1073.96 FINAL   «ya»
+   antes: motor pos 923.7 ultimoCalce 923 ppm 105 | ventana 913..963 | seguidor pos 919 posTentativa 919 posPredicha 957.8 basePos 958
+   -> calce 943 «(verdad)» | después: seguidor pos 956 posTentativa 956 | motor pos 923.7 ultimoCalce 943 freno null
+1078.34 FINAL   «aquí está el corazón filosófico»
+   antes: motor pos 937.7 ultimoCalce 943 ppm 105 | ventana 933..983 | seguidor pos 956 posTentativa 956 posPredicha 963.7 basePos 964
+   -> nada | después: seguidor pos 956 posTentativa 956 | motor pos 937.7 ultimoCalce 943 freno sin-calce
+1081.62 FINAL   «y y este corazón filosófico del tema»
+   antes: motor pos 937.7 ultimoCalce 943 ppm 105 | ventana 933..983 | seguidor pos 956 posTentativa 956 posPredicha 969.4 basePos 969
+   -> nada | después: seguidor pos 956 posTentativa 956 | motor pos 937.7 ultimoCalce 943 freno sin-calce
+1084.40 FINAL   «realmente»
+   antes: motor pos 937.7 ultimoCalce 943 ppm 105 | ventana 933..983 | seguidor pos 956 posTentativa 956 posPredicha 974.3 basePos 974
+   -> calce 951 «realmente» | después: seguidor pos 951 posTentativa 951 | motor pos 937.7 ultimoCalce 951 freno null
+1088.00 FINAL   «es desconcertante»
+   antes: motor pos 950.9 ultimoCalce 951 ppm 105 | ventana 941..991 | seguidor pos 951 posTentativa 951 posPredicha 957.3 basePos 957
+   -> nada | después: seguidor pos 951 posTentativa 951 | motor pos 950.9 ultimoCalce 951 freno sin-calce
+1094.04 FINAL   «y es muy desconcertante por el nivel de profundidad»
+   antes: motor pos 950.9 ultimoCalce 951 ppm 105 | ventana 941..991 | seguidor pos 951 posTentativa 951 posPredicha 967.9 basePos 968
+   -> nada | después: seguidor pos 951 posTentativa 951 | motor pos 950.9 ultimoCalce 951 freno sin-calce
+1101.98 FINAL   «heidegger dice que somos arrojados al mundo»
+   antes: motor pos 964.2 ultimoCalce 964 ppm 108 | ventana 954..1004 | seguidor pos 951 posTentativa 964 posPredicha 964.1 basePos 964
+   -> calce 964 «mundo» | después: seguidor pos 964 posTentativa 964 | motor pos 964.2 ultimoCalce 964 freno null
+1112.58 FINAL   «nadie nos pidió permiso para nacer y sin embargo la vida como la vivimos en nuestra responsabilidad»
+   antes: motor pos 981.8 ultimoCalce 981 ppm 115 | ventana 971..1021 | seguidor pos 964 posTentativa 981 posPredicha 983.6 basePos 984
+   -> nada | después: seguidor pos 964 posTentativa 964 | motor pos 981.8 ultimoCalce 981 freno null
+1125.36 FINAL   «no existe eso dije bueno a mí a mí nadie me llamó a bodas y que ahora tienen que asumir la responsabilidad de liga estaca ustedes ahí coño yo me costo»
+   antes: motor pos 981.8 ultimoCalce 981 ppm 115 | ventana 971..1021 | seguidor pos 964 posTentativa 964 posPredicha 991.0 basePos 991
+   -> nada | después: seguidor pos 964 posTentativa 964 | motor pos 981.8 ultimoCalce 981 freno sin-calce
+1130.46 FINAL   «no deber dice está bien te lo pregunto»
+   antes: motor pos 981.8 ultimoCalce 981 ppm 115 | ventana 971..1021 | seguidor pos 964 posTentativa 964 posPredicha 1000.8 basePos 1001
+   -> nada | después: seguidor pos 964 posTentativa 964 | motor pos 981.8 ultimoCalce 981 freno sin-calce
+1134.24 FINAL   «pero eres responsable de tu vida»
+   antes: motor pos 981.8 ultimoCalce 981 ppm 115 | ventana 971..1021 | seguidor pos 964 posTentativa 964 posPredicha 1004.0 basePos 1004
+   -> nada | después: seguidor pos 964 posTentativa 964 | motor pos 981.8 ultimoCalce 981 freno sin-calce
+1136.88 FINAL   «aunque no se va por estas acá»
+   antes: motor pos 981.8 ultimoCalce 981 ppm 115 | ventana 971..1021 | seguidor pos 964 posTentativa 964 posPredicha 1004.0 basePos 1004
+   -> nada | después: seguidor pos 964 posTentativa 964 | motor pos 981.8 ultimoCalce 981 freno sin-calce
+1143.96 FINAL   «sartre por su lado lleva esto más lejos lo lleva hasta el final»
+   antes: motor pos 984.8 ultimoCalce 984 ppm 115 | ventana 974..1024 | seguidor pos 964 posTentativa 984 posPredicha 986.4 basePos 986
+   -> nada | después: seguidor pos 964 posTentativa 964 | motor pos 984.8 ultimoCalce 984 freno null
+1147.82 FINAL   «en una fórmula muy conocida y dice»
+   antes: motor pos 984.8 ultimoCalce 984 ppm 115 | ventana 974..1024 | seguidor pos 964 posTentativa 964 posPredicha 973.8 basePos 974
+   -> nada | después: seguidor pos 964 posTentativa 964 | motor pos 984.8 ultimoCalce 984 freno sin-calce
+1150.20 FINAL   «la existencia»
+   antes: motor pos 984.8 ultimoCalce 984 ppm 115 | ventana 974..1024 | seguidor pos 964 posTentativa 964 posPredicha 978.3 basePos 978
+   -> calce 991 «existencia» | después: seguidor pos 991 posTentativa 991 | motor pos 984.8 ultimoCalce 991 freno null
+1153.40 FINAL   «antes que la esencia»
+   antes: motor pos 995.2 ultimoCalce 995 ppm 118 | ventana 985..1035 | seguidor pos 991 posTentativa 995 posPredicha 995.2 basePos 995
+   -> calce 995 «esencia» | después: seguidor pos 995 posTentativa 995 | motor pos 995.2 ultimoCalce 995 freno null
+1155.72 FINAL   «no venimos»
+   antes: motor pos 997.1 ultimoCalce 997 ppm 86 | ventana 987..1037 | seguidor pos 995 posTentativa 997 posPredicha 997.1 basePos 997
+   -> calce 997 «venimos» | después: seguidor pos 997 posTentativa 997 | motor pos 997.1 ultimoCalce 997 freno null
+1159.34 FINAL   «vamos a vivir con un bar aquí»
+   antes: motor pos 1000.4 ultimoCalce 1000 ppm 76 | ventana 990..1040 | seguidor pos 997 posTentativa 1000 posPredicha 1001.7 basePos 1002
+   -> nada | después: seguidor pos 997 posTentativa 997 | motor pos 1000.4 ultimoCalce 1000 freno null
+1161.62 FINAL   «y ese para ti»
+   antes: motor pos 1003.7 ultimoCalce 1005 ppm 88 | ventana 995..1045 | seguidor pos 997 posTentativa 1005 posPredicha 1006.4 basePos 1006
+   -> nada | después: seguidor pos 997 posTentativa 997 | motor pos 1003.7 ultimoCalce 1005 freno null
+1167.38 FINAL   «lo vamos a tener que inventar lo vamos a tener que fabricar»
+   antes: motor pos 1005.6 ultimoCalce 1005 ppm 88 | ventana 995..1045 | seguidor pos 997 posTentativa 997 posPredicha 1006.8 basePos 1007
+   -> nada | después: seguidor pos 997 posTentativa 997 | motor pos 1005.6 ultimoCalce 1005 freno sin-calce
+1172.36 FINAL   «la ral de acepta la primera parte»
+   antes: motor pos 1011.6 ultimoCalce 1015 ppm 88 | ventana 1005..1055 | seguidor pos 997 posTentativa 1015 posPredicha 1015.1 basePos 1015
+   -> calce 1015 «parte» | después: seguidor pos 1015 posTentativa 1015 | motor pos 1011.6 ultimoCalce 1015 freno null
+1184.90 FINAL   «hero de una forma desconcertante se sale de la segunda entonces nos dice si la vida es un accidente»
+   antes: motor pos 1025.5 ultimoCalce 1025 ppm 86 | ventana 1015..1065 | seguidor pos 1015 posTentativa 1025 posPredicha 1026.5 basePos 1026
+   -> nada | después: seguidor pos 1015 posTentativa 1015 | motor pos 1025.5 ultimoCalce 1025 freno null
+1186.98 FINAL   «o puede serlo»
+   antes: motor pos 1025.6 ultimoCalce 1025 ppm 86 | ventana 1015..1065 | seguidor pos 1015 posTentativa 1015 posPredicha 1019.4 basePos 1019
+   -> calce 1028 «serlo» | después: seguidor pos 1028 posTentativa 1028 | motor pos 1025.6 ultimoCalce 1028 freno null
+1190.24 FINAL   «no estaba escrito»
+   antes: motor pos 1031.1 ultimoCalce 1031 ppm 86 | ventana 1021..1071 | seguidor pos 1028 posTentativa 1031 posPredicha 1031.1 basePos 1031
+   -> calce 1031 «escrito» | después: seguidor pos 1031 posTentativa 1031 | motor pos 1031.1 ultimoCalce 1031 freno null
+1192.74 FINAL   «yo podría»
+   antes: motor pos 1031.6 ultimoCalce 1031 ppm 86 | ventana 1021..1071 | seguidor pos 1031 posTentativa 1031 posPredicha 1034.6 basePos 1035
+   -> nada | después: seguidor pos 1031 posTentativa 1031 | motor pos 1031.6 ultimoCalce 1031 freno null
+1197.38 FINAL   «no haber nacido podría no haber existido»
+   antes: motor pos 1035.1 ultimoCalce 1035 ppm 86 | ventana 1025..1075 | seguidor pos 1031 posTentativa 1035 posPredicha 1035.1 basePos 1035
+   -> calce 1035 «existido» | después: seguidor pos 1035 posTentativa 1035 | motor pos 1035.1 ultimoCalce 1035 freno null
+1203.68 FINAL   «pero no hice que va inventarse una razón»
+   antes: motor pos 1043.1 ultimoCalce 1043 ppm 89 | ventana 1033..1083 | seguidor pos 1035 posTentativa 1043 posPredicha 1043.1 basePos 1043
+   -> calce 1043 «una» | después: seguidor pos 1043 posTentativa 1043 | motor pos 1043.1 ultimoCalce 1043 freno null
+1211.54 FINAL   «él dice que la tiene el hecho de haber nacido ya encierra una verdad»
+   antes: motor pos 1058.2 ultimoCalce 1058 ppm 126 | ventana 1048..1098 | seguidor pos 1043 posTentativa 1058 posPredicha 1058.1 basePos 1058
+   -> calce 1058 «verdad» | después: seguidor pos 1058 posTentativa 1058 | motor pos 1058.2 ultimoCalce 1058 freno null
+1219.26 FINAL   «eh el o no te el capacitado para descifrar la»
+   antes: motor pos 1064.7 ultimoCalce 1064 ppm 106 | ventana 1054..1104 | seguidor pos 1058 posTentativa 1064 posPredicha 1069.1 basePos 1069
+   -> nada | después: seguidor pos 1058 posTentativa 1058 | motor pos 1064.7 ultimoCalce 1064 freno sin-calce
+1224.90 FINAL   «es una posición tremendamente y cómoda»
+   antes: motor pos 1072.4 ultimoCalce 1072 ppm 84 | ventana 1062..1112 | seguidor pos 1058 posTentativa 1072 posPredicha 1072.8 basePos 1073
+   -> nada | después: seguidor pos 1058 posTentativa 1058 | motor pos 1072.4 ultimoCalce 1072 freno null
+1234.24 FINAL   «porque y mucho más cómoda y la de los otros los ojo porque eh eh inventa su sentido»
+   antes: motor pos 1084.0 ultimoCalce 1084 ppm 72 | ventana 1074..1124 | seguidor pos 1058 posTentativa 1084 posPredicha 1085.6 basePos 1086
+   -> calce 1084 «sentido» | después: seguidor pos 1084 posTentativa 1084 | motor pos 1084.0 ultimoCalce 1084 freno null
+1239.00 FINAL   «gobierna y manda sobre esas el tío»
+   antes: motor pos 1084.6 ultimoCalce 1084 ppm 85 | ventana 1074..1124 | seguidor pos 1084 posTentativa 1084 posPredicha 1090.8 basePos 1091
+   -> nada | después: seguidor pos 1084 posTentativa 1084 | motor pos 1084.6 ultimoCalce 1084 freno sin-calce
+1241.94 FINAL   «el que no tiene ninguno»
+   antes: motor pos 1091.9 ultimoCalce 1092 ppm 85 | ventana 1082..1132 | seguidor pos 1084 posTentativa 1092 posPredicha 1092.1 basePos 1092
+   -> calce 1092 «ninguno» | después: seguidor pos 1092 posTentativa 1092 | motor pos 1091.9 ultimoCalce 1092 freno null
+1247.14 FINAL   «al menos tiene que estar en paz por eso porque»
+   antes: motor pos 1102.2 ultimoCalce 1102 ppm 144 | ventana 1092..1142 | seguidor pos 1092 posTentativa 1102 posPredicha 1102.2 basePos 1102
+   -> calce 1102 «por» | después: seguidor pos 1102 posTentativa 1102 | motor pos 1102.2 ultimoCalce 1102 freno null
+1253.04 FINAL   «en el fondo también es una decisión como el ateo creyente»
+   antes: motor pos 1124.4 ultimoCalce 1123 ppm 203 | ventana 1114..1164 | seguidor pos 1102 posTentativa 1123 posPredicha 1141.6 basePos 1142
+   -> nada | después: seguidor pos 1102 posTentativa 1102 | motor pos 1124.4 ultimoCalce 1123 freno sin-calce
+1265.26 FINAL   «el fondo el ateo creyente son dos creyentes persona que son capaces de llegar a una verdad pero la ral de ida en el peor lugar»
+   antes: motor pos 1125.4 ultimoCalce 1124 ppm 203 | ventana 1115..1165 | seguidor pos 1102 posTentativa 1124 posPredicha 1129.2 basePos 1129
+   -> nada | después: seguidor pos 1102 posTentativa 1102 | motor pos 1125.4 ultimoCalce 1124 freno null
+1271.02 FINAL   «hay un sentido si y el mío es tuyo»
+   antes: motor pos 1130.9 ultimoCalce 1130 ppm 137 | ventana 1120..1170 | seguidor pos 1102 posTentativa 1130 posPredicha 1135.7 basePos 1136
+   -> nada | después: seguidor pos 1102 posTentativa 1102 | motor pos 1130.9 ultimoCalce 1130 freno sin-calce
+1276.96 FINAL   «pero no puede leer no está a su alcance»
+   antes: motor pos 1139.2 ultimoCalce 1139 ppm 109 | ventana 1129..1179 | seguidor pos 1102 posTentativa 1139 posPredicha 1139.0 basePos 1139
+   -> calce 1139 «alcance» | después: seguidor pos 1139 posTentativa 1139 | motor pos 1139.2 ultimoCalce 1139 freno null
+1299.30 FINAL   «cicatriza obtendrás las»
+   antes: motor pos 1139.2 ultimoCalce 1139 ppm 102 | ventana 1129..1179 | seguidor pos 1139 posTentativa 1139 posPredicha 1176.9 basePos 1177
+   -> nada | después: seguidor pos 1139 posTentativa 1139 | motor pos 1139.2 ultimoCalce 1139 freno sin-calce
+1310.64 FINAL   «yo mismo había un tronco partido que no cicatriza porque trámite desde hace siglos»
+   antes: motor pos 1156.2 ultimoCalce 1156 ppm 133 | ventana 1146..1196 | seguidor pos 1139 posTentativa 1156 posPredicha 1156.1 basePos 1156
+   -> calce 1156 «(siglos)» | después: seguidor pos 1156 posTentativa 1156 | motor pos 1156.2 ultimoCalce 1156 freno null
+1323.66 FINAL   «el trono o no sierra y no termina de entender pero no cierra la herida por una razón»
+   antes: motor pos 1173.2 ultimoCalce 1173 ppm 118 | ventana 1163..1213 | seguidor pos 1156 posTentativa 1173 posPredicha 1173.1 basePos 1173
+   -> calce 1173 «la» | después: seguidor pos 1173 posTentativa 1173 | motor pos 1173.2 ultimoCalce 1173 freno null
+1333.72 FINAL   «y la razón la dice la razón por la cual mi herida no sierra es porque estar transmitiendo»
+   antes: motor pos 1176.5 ultimoCalce 1176 ppm 74 | ventana 1166..1216 | seguidor pos 1173 posTentativa 1176 posPredicha 1184.5 basePos 1184
+   -> nada | después: seguidor pos 1173 posTentativa 1173 | motor pos 1176.5 ultimoCalce 1176 freno sin-calce
+1337.34 FINAL   «y la herida cicatrizar a»
+   antes: motor pos 1176.5 ultimoCalce 1176 ppm 74 | ventana 1166..1216 | seguidor pos 1173 posTentativa 1173 posPredicha 1186.0 basePos 1186
+   -> nada | después: seguidor pos 1173 posTentativa 1173 | motor pos 1176.5 ultimoCalce 1176 freno sin-calce
+1339.36 FINAL   «el cortaría el paz»
+   antes: motor pos 1178.5 ultimoCalce 1184 ppm 74 | ventana 1174..1224 | seguidor pos 1173 posTentativa 1184 posPredicha 1184.1 basePos 1184
+   -> nada | después: seguidor pos 1173 posTentativa 1173 | motor pos 1178.5 ultimoCalce 1184 freno null
+1348.98 FINAL   «herida y última día tengo mucha idea primaria ya se seco ya no sangra así que se cerró el vaso»
+   antes: motor pos 1184.5 ultimoCalce 1184 ppm 74 | ventana 1174..1224 | seguidor pos 1173 posTentativa 1173 posPredicha 1185.0 basePos 1185
+   -> nada | después: seguidor pos 1173 posTentativa 1173 | motor pos 1184.5 ultimoCalce 1184 freno sin-calce
+1356.30 FINAL   «me hace pensar en todo lo que nos dicen sobre en todo lo que se ceviche»
+   antes: motor pos 1199.3 ultimoCalce 1199 ppm 74 | ventana 1189..1239 | seguidor pos 1173 posTentativa 1199 posPredicha 1200.5 basePos 1201
+   -> nada | después: seguidor pos 1173 posTentativa 1173 | motor pos 1199.3 ultimoCalce 1199 freno null
+1363.72 FINAL   «sanar cerrar procesos dar vuelta la página superar»
+   antes: motor pos 1207.1 ultimoCalce 1207 ppm 90 | ventana 1197..1247 | seguidor pos 1173 posTentativa 1207 posPredicha 1207.1 basePos 1207
+   -> calce 1207 «superar» | después: seguidor pos 1207 posTentativa 1207 | motor pos 1207.1 ultimoCalce 1207 freno null
+1365.34 FINAL   «may»
+   antes: motor pos 1207.5 ultimoCalce 1207 ppm 75 | ventana 1197..1247 | seguidor pos 1207 posTentativa 1207 posPredicha 1209.0 basePos 1209
+   -> nada | después: seguidor pos 1207 posTentativa 1207 | motor pos 1207.5 ultimoCalce 1207 freno null
+1374.06 FINAL   «mal fitness mal excederá una herida abierta en general en el vocabulario»
+   antes: motor pos 1213.8 ultimoCalce 1214 ppm 72 | ventana 1204..1254 | seguidor pos 1207 posTentativa 1214 posPredicha 1215.4 basePos 1215
+   -> nada | después: seguidor pos 1207 posTentativa 1207 | motor pos 1213.8 ultimoCalce 1214 freno null
+1376.92 FINAL   «con el que nosotros vivimos»
+   antes: motor pos 1219.2 ultimoCalce 1219 ppm 99 | ventana 1209..1259 | seguidor pos 1207 posTentativa 1219 posPredicha 1219.2 basePos 1219
+   -> calce 1219 «es» | después: seguidor pos 1219 posTentativa 1219 | motor pos 1219.2 ultimoCalce 1219 freno null
+1380.22 FINAL   «en el fondo es una tarea pendiente»
+   antes: motor pos 1222.1 ultimoCalce 1222 ppm 89 | ventana 1212..1262 | seguidor pos 1219 posTentativa 1222 posPredicha 1222.0 basePos 1222
+   -> calce 1222 «pendiente» | después: seguidor pos 1222 posTentativa 1222 | motor pos 1222.1 ultimoCalce 1222 freno null
+1386.66 FINAL   «algo que no resolvimos es a todas luces»
+   antes: motor pos 1229.5 ultimoCalce 1229 ppm 78 | ventana 1219..1269 | seguidor pos 1222 posTentativa 1229 posPredicha 1231.0 basePos 1231
+   -> nada | después: seguidor pos 1222 posTentativa 1222 | motor pos 1229.5 ultimoCalce 1229 freno null
+1389.22 FINAL   «una falla nuestra»
+   antes: motor pos 1229.5 ultimoCalce 1229 ppm 78 | ventana 1219..1269 | seguidor pos 1222 posTentativa 1229 posPredicha 1229.0 basePos 1229
+   -> calce 1229 «nuestra» | después: seguidor pos 1229 posTentativa 1229 | motor pos 1229.5 ultimoCalce 1229 freno null
+1393.80 FINAL   «la balde y se lo contrario»
+   antes: motor pos 1229.5 ultimoCalce 1229 ppm 78 | ventana 1219..1269 | seguidor pos 1229 posTentativa 1229 posPredicha 1234.9 basePos 1235
+   -> nada | después: seguidor pos 1229 posTentativa 1229 | motor pos 1229.5 ultimoCalce 1229 freno sin-calce
+1401.58 FINAL   «lo dice sin levantar la voz la herida abierta ese conducto»
+   antes: motor pos 1245.2 ultimoCalce 1245 ppm 100 | ventana 1235..1285 | seguidor pos 1229 posTentativa 1245 posPredicha 1245.1 basePos 1245
+   -> calce 1245 «el» | después: seguidor pos 1245 posTentativa 1245 | motor pos 1245.2 ultimoCalce 1245 freno null
+1408.00 FINAL   «por ahí se transmite la sabia y cerrarla»
+   antes: motor pos 1253.1 ultimoCalce 1253 ppm 83 | ventana 1243..1293 | seguidor pos 1245 posTentativa 1253 posPredicha 1253.0 basePos 1253
+   -> calce 1253 «cerrarla» | después: seguidor pos 1253 posTentativa 1253 | motor pos 1253.1 ultimoCalce 1253 freno null
+1411.80 FINAL   «no sería sanar sería»
+   antes: motor pos 1257.1 ultimoCalce 1257 ppm 78 | ventana 1247..1297 | seguidor pos 1253 posTentativa 1257 posPredicha 1257.1 basePos 1257
+   -> calce 1257 «sería» | después: seguidor pos 1257 posTentativa 1257 | motor pos 1257.1 ultimoCalce 1257 freno null
+1414.12 FINAL   «de edad»
+   antes: motor pos 1259.6 ultimoCalce 1260 ppm 70 | ventana 1250..1300 | seguidor pos 1257 posTentativa 1260 posPredicha 1260.0 basePos 1260
+   -> nada | después: seguidor pos 1257 posTentativa 1257 | motor pos 1259.6 ultimoCalce 1260 freno null
+1417.90 FINAL   «hay algo muy duro en eso»
+   antes: motor pos 1263.5 ultimoCalce 1263 ppm 74 | ventana 1253..1303 | seguidor pos 1257 posTentativa 1263 posPredicha 1265.4 basePos 1265
+   -> nada | después: seguidor pos 1257 posTentativa 1257 | motor pos 1263.5 ultimoCalce 1263 freno null
+1426.68 FINAL   «un tronco par tido e trasmite más a transmitiendo su dolor»
+   antes: motor pos 1266.4 ultimoCalce 1276 ppm 74 | ventana 1266..1316 | seguidor pos 1257 posTentativa 1276 posPredicha 1276.0 basePos 1276
+   -> nada | después: seguidor pos 1257 posTentativa 1257 | motor pos 1266.4 ultimoCalce 1276 freno null
+1435.72 FINAL   «esta transmitiendo su vida a través de su dolor la grieta»
+   antes: motor pos 1287.1 ultimoCalce 1287 ppm 87 | ventana 1277..1327 | seguidor pos 1257 posTentativa 1287 posPredicha 1287.1 basePos 1287
+   -> calce 1287 «grieta» | después: seguidor pos 1287 posTentativa 1287 | motor pos 1287.1 ultimoCalce 1287 freno null
+1438.38 FINAL   «no es lo que entrega»
+   antes: motor pos 1292.2 ultimoCalce 1292 ppm 95 | ventana 1282..1332 | seguidor pos 1287 posTentativa 1292 posPredicha 1292.1 basePos 1292
+   -> calce 1292 «entrega» | después: seguidor pos 1292 posTentativa 1292 | motor pos 1292.2 ultimoCalce 1292 freno null
+1440.82 FINAL   «y es por donde van»
+   antes: motor pos 1295.3 ultimoCalce 1296 ppm 101 | ventana 1286..1336 | seguidor pos 1292 posTentativa 1296 posPredicha 1296.1 basePos 1296
+   -> calce 1296 «entrega» | después: seguidor pos 1296 posTentativa 1296 | motor pos 1295.3 ultimoCalce 1296 freno null
+1447.86 FINAL   «pienso que todo todo lo criado hijo»
+   antes: motor pos 1295.3 ultimoCalce 1296 ppm 100 | ventana 1286..1336 | seguidor pos 1296 posTentativa 1296 posPredicha 1307.7 basePos 1308
+   -> nada | después: seguidor pos 1296 posTentativa 1296 | motor pos 1295.3 ultimoCalce 1296 freno sin-calce
+1449.66 FINAL   «hijas»
+   antes: motor pos 1295.3 ultimoCalce 1296 ppm 100 | ventana 1286..1336 | seguidor pos 1296 posTentativa 1296 posPredicha 1310.7 basePos 1311
+   -> nada | después: seguidor pos 1296 posTentativa 1296 | motor pos 1295.3 ultimoCalce 1296 freno sin-calce
+1460.70 FINAL   «sabe muy bien esto pueden comprender muy bien esto sin haberlo pensado lo que uno le transmite a un hijo»
+   antes: motor pos 1316.0 ultimoCalce 1316 ppm 143 | ventana 1306..1356 | seguidor pos 1296 posTentativa 1316 posPredicha 1316.1 basePos 1316
+   -> calce 1316 «hijo» | después: seguidor pos 1316 posTentativa 1316 | motor pos 1316.0 ultimoCalce 1316 freno null
+1469.02 FINAL   «no sale de la artesana no viene de los aprendizajes felices de las vacaciones»
+   antes: motor pos 1334.0 ultimoCalce 1336 ppm 119 | ventana 1326..1376 | seguidor pos 1316 posTentativa 1336 posPredicha 1339.8 basePos 1340
+   -> nada | después: seguidor pos 1316 posTentativa 1316 | motor pos 1334.0 ultimoCalce 1336 freno null
+1483.20 FINAL   «viene de lo que aprendimos del dolor de las dificultades de las frustraciones el lo que no pudimos hablar de lo que no pudimos comprar»
+   antes: motor pos 1349.9 ultimoCalce 1349 ppm 128 | ventana 1339..1389 | seguidor pos 1316 posTentativa 1349 posPredicha 1356.6 basePos 1357
+   -> nada | después: seguidor pos 1316 posTentativa 1316 | motor pos 1349.9 ultimoCalce 1349 freno sin-calce
+1489.36 FINAL   «me queda un ocupase»
+   antes: motor pos 1349.9 ultimoCalce 1349 ppm 128 | ventana 1339..1389 | seguidor pos 1316 posTentativa 1316 posPredicha 1336.7 basePos 1337
+   -> nada | después: seguidor pos 1316 posTentativa 1316 | motor pos 1349.9 ultimoCalce 1349 freno sin-calce
+1491.22 FINAL   «am»
+   antes: motor pos 1349.9 ultimoCalce 1349 ppm 128 | ventana 1339..1389 | seguidor pos 1316 posTentativa 1316 posPredicha 1340.6 basePos 1341
+   -> nada | después: seguidor pos 1349 posTentativa 1349 | motor pos 1349.9 ultimoCalce 1349 freno sin-calce
+1501.26 FINAL   «coro»
+   antes: motor pos 1349.9 ultimoCalce 1349 ppm 128 | ventana 1339..1389 | seguidor pos 1349 posTentativa 1349 posPredicha 1389.0 basePos 1389
+   -> nada | después: seguidor pos 1349 posTentativa 1349 | motor pos 1349.9 ultimoCalce 1349 freno sin-calce
+1506.28 FINAL   «de comedor»
+   antes: motor pos 1349.9 ultimoCalce 1349 ppm 128 | ventana 1339..1389 | seguidor pos 1349 posTentativa 1349 posPredicha 1389.0 basePos 1389
+   -> nada | después: seguidor pos 1349 posTentativa 1349 | motor pos 1349.9 ultimoCalce 1349 freno sin-calce
+1514.46 FINAL   «una bofetadas pero no puede ser también una verdad»
+   antes: motor pos 1351.9 ultimoCalce 1355 ppm 122 | ventana 1345..1395 | seguidor pos 1349 posTentativa 1355 posPredicha 1355.0 basePos 1355
+   -> nada | después: seguidor pos 1349 posTentativa 1349 | motor pos 1351.9 ultimoCalce 1355 freno null
+1515.84 FINAL   «son mem»
+   antes: motor pos 1355.8 ultimoCalce 1355 ppm 122 | ventana 1345..1395 | seguidor pos 1349 posTentativa 1349 posPredicha 1351.8 basePos 1352
+   -> nada | después: seguidor pos 1349 posTentativa 1349 | motor pos 1355.8 ultimoCalce 1355 freno null
+1519.50 FINAL   «allí»
+   antes: motor pos 1355.8 ultimoCalce 1355 ppm 122 | ventana 1345..1395 | seguidor pos 1349 posTentativa 1349 posPredicha 1359.3 basePos 1359
+   -> nada | después: seguidor pos 1349 posTentativa 1349 | motor pos 1355.8 ultimoCalce 1355 freno sin-calce
+1522.32 FINAL   «se dio vuelta y poema»
+   antes: motor pos 1355.8 ultimoCalce 1355 ppm 122 | ventana 1345..1395 | seguidor pos 1349 posTentativa 1349 posPredicha 1365.0 basePos 1365
+   -> nada | después: seguidor pos 1349 posTentativa 1349 | motor pos 1355.8 ultimoCalce 1355 freno sin-calce
+1523.82 FINAL   «entero»
+   antes: motor pos 1355.8 ultimoCalce 1355 ppm 122 | ventana 1345..1395 | seguidor pos 1349 posTentativa 1349 posPredicha 1368.1 basePos 1368
+   -> calce 1369 «entero» | después: seguidor pos 1369 posTentativa 1369 | motor pos 1355.8 ultimoCalce 1369 freno null
+1530.18 FINAL   «el venía venía pidiendo y lo miraran por dentro»
+   antes: motor pos 1375.1 ultimoCalce 1376 ppm 122 | ventana 1366..1416 | seguidor pos 1369 posTentativa 1376 posPredicha 1376.1 basePos 1376
+   -> calce 1376 «dentro» | después: seguidor pos 1376 posTentativa 1376 | motor pos 1375.1 ultimoCalce 1376 freno null
+1532.92 FINAL   «y en una línea»
+   antes: motor pos 1380.2 ultimoCalce 1380 ppm 92 | ventana 1370..1420 | seguidor pos 1376 posTentativa 1380 posPredicha 1380.2 basePos 1380
+   -> calce 1380 «línea» | después: seguidor pos 1380 posTentativa 1380 | motor pos 1380.2 ultimoCalce 1380 freno null
+1534.92 FINAL   «retira el pedido»
+   antes: motor pos 1383.0 ultimoCalce 1383 ppm 86 | ventana 1373..1423 | seguidor pos 1380 posTentativa 1383 posPredicha 1383.1 basePos 1383
+   -> calce 1383 «pedido» | después: seguidor pos 1383 posTentativa 1383 | motor pos 1383.0 ultimoCalce 1383 freno null
+1539.90 FINAL   «no los de ira porque el otro se indiferente»
+   antes: motor pos 1389.7 ultimoCalce 1389 ppm 99 | ventana 1379..1429 | seguidor pos 1383 posTentativa 1389 posPredicha 1391.3 basePos 1391
+   -> calce 1391 «indiferente» | después: seguidor pos 1391 posTentativa 1391 | motor pos 1389.7 ultimoCalce 1391 freno null
+1543.02 FINAL   «si no»
+   antes: motor pos 1391.7 ultimoCalce 1391 ppm 107 | ventana 1381..1431 | seguidor pos 1391 posTentativa 1391 posPredicha 1396.6 basePos 1397
+   -> nada | después: seguidor pos 1391 posTentativa 1391 | motor pos 1391.7 ultimoCalce 1391 freno sin-calce
+1551.54 FINAL   «por qué porque no lo quiera suficiente lo retira por el otro»
+   antes: motor pos 1403.7 ultimoCalce 1403 ppm 107 | ventana 1393..1443 | seguidor pos 1391 posTentativa 1403 posPredicha 1405.3 basePos 1405
+   -> nada | después: seguidor pos 1391 posTentativa 1391 | motor pos 1403.7 ultimoCalce 1403 freno null
+1554.28 FINAL   «también es ajeno»
+   antes: motor pos 1403.7 ultimoCalce 1403 ppm 107 | ventana 1393..1443 | seguidor pos 1391 posTentativa 1391 posPredicha 1398.2 basePos 1398
+   -> nada | después: seguidor pos 1391 posTentativa 1391 | motor pos 1403.7 ultimoCalce 1403 freno sin-calce
+1574.28 FINAL   «emmanuel levitas se basó la vida explicando esto dice que el otro no es un pedazo de mi mundo no es un objeto más de lo que yo entiendo o puede entender»
+   antes: motor pos 1439.2 ultimoCalce 1439 ppm 139 | ventana 1429..1479 | seguidor pos 1391 posTentativa 1439 posPredicha 1439.2 basePos 1439
+   -> calce 1439 «entender» | después: seguidor pos 1439 posTentativa 1439 | motor pos 1439.2 ultimoCalce 1439 freno null
+1591.26 FINAL   «es alguien que me desborda y que la relación si es genuina van a ser del extrañamiento de lo que desconozco no de lo que pueda conocer o intuir él lo llama el y finito»
+   antes: motor pos 1474.2 ultimoCalce 1474 ppm 128 | ventana 1464..1514 | seguidor pos 1439 posTentativa 1474 posPredicha 1474.1 basePos 1474
+   -> calce 1474 «dice» | después: seguidor pos 1474 posTentativa 1474 | motor pos 1474.2 ultimoCalce 1474 freno null
+1600.86 FINAL   «y lo dice como un límite la ral de llega ahí pero llega por otro camino en menos palabras y de una forma mucho más profunda»
+   antes: motor pos 1490.8 ultimoCalce 1490 ppm 113 | ventana 1480..1530 | seguidor pos 1474 posTentativa 1490 posPredicha 1492.1 basePos 1492
+   -> nada | después: seguidor pos 1474 posTentativa 1474 | motor pos 1490.8 ultimoCalce 1490 freno null
+1605.42 FINAL   «no me puedes ver porque dentro tuyo»
+   antes: motor pos 1498.2 ultimoCalce 1498 ppm 107 | ventana 1488..1538 | seguidor pos 1474 posTentativa 1498 posPredicha 1498.1 basePos 1498
+   -> calce 1498 «porque» | después: seguidor pos 1498 posTentativa 1498 | motor pos 1498.2 ultimoCalce 1498 freno null
+1622.34 FINAL   «y por qué tú con tu esencia también tienes un del toro también tienes una verdad y está ocupado y de hecho tampoco lo conoces no me conozco yo que te voy a conocer a ti»
+   antes: motor pos 1523.3 ultimoCalce 1523 ppm 176 | ventana 1513..1563 | seguidor pos 1498 posTentativa 1523 posPredicha 1523.2 basePos 1523
+   -> calce 1523 «ti» | después: seguidor pos 1523 posTentativa 1523 | motor pos 1523.3 ultimoCalce 1523 freno null
+1632.46 FINAL   «por eso no podrás por shopper la tuya porque en tu cabe mierda escucha bien escuche escuche y lo que están diciendo lo que»
+   antes: motor pos 1549.1 ultimoCalce 1548 ppm 190 | ventana 1539..1589 | seguidor pos 1523 posTentativa 1548 posPredicha 1552.4 basePos 1552
+   -> nada | después: seguidor pos 1523 posTentativa 1523 | motor pos 1549.1 ultimoCalce 1548 freno null
+1652.46 FINAL   «lo que no está diciendo no dice que no lo entiendan nos dice que te solo no hay un retroceso en ninguna parte está describiendo una estructura no me entiendes es una queja y una queja se puede reparar pidiendo más esfuerzo»
+   antes: motor pos 1583.2 ultimoCalce 1583 ppm 104 | ventana 1573..1623 | seguidor pos 1523 posTentativa 1583 posPredicha 1583.2 basePos 1583
+   -> calce 1583 «esfuerzo» | después: seguidor pos 1583 posTentativa 1583 | motor pos 1583.2 ultimoCalce 1583 freno null
+1667.56 FINAL   «no cabe es otra cosa no es una queja es una medida y contra una medida no hay voluntad que sirva»
+   antes: motor pos 1600.2 ultimoCalce 1600 ppm 128 | ventana 1590..1640 | seguidor pos 1583 posTentativa 1600 posPredicha 1600.2 basePos 1600
+   -> calce 1600 «sirva» | después: seguidor pos 1600 posTentativa 1600 | motor pos 1600.2 ultimoCalce 1600 freno null
+1671.72 FINAL   «más triste pero también en más tranquilo»
+   antes: motor pos 1606.7 ultimoCalce 1606 ppm 103 | ventana 1596..1646 | seguidor pos 1600 posTentativa 1606 posPredicha 1607.7 basePos 1608
+   -> nada | después: seguidor pos 1600 posTentativa 1600 | motor pos 1606.7 ultimoCalce 1606 freno null
+1687.44 FINAL   «maturana lo dice con palabras de biólogo humberto maturana entre dos sistema vivos no existe la interacción instructiva yo no puedo determinar lo que pasa dentro de ti»
+   antes: motor pos 1634.2 ultimoCalce 1634 ppm 127 | ventana 1624..1674 | seguidor pos 1600 posTentativa 1634 posPredicha 1634.2 basePos 1634
+   -> calce 1634 «ti» | después: seguidor pos 1634 posTentativa 1634 | motor pos 1634.2 ultimoCalce 1634 freno null
+1695.96 FINAL   «y lo único que puedo hacer es gatillo algo que después lo decide y estructura no la mía»
+   antes: motor pos 1652.2 ultimoCalce 1652 ppm 130 | ventana 1642..1692 | seguidor pos 1634 posTentativa 1652 posPredicha 1652.1 basePos 1652
+   -> calce 1652 «mía» | después: seguidor pos 1652 posTentativa 1652 | motor pos 1652.2 ultimoCalce 1652 freno null
+1700.88 FINAL   «la auto voy exis como sabemos si algo está vivo está muerto»
+   antes: motor pos 1662.2 ultimoCalce 1662 ppm 141 | ventana 1652..1702 | seguidor pos 1652 posTentativa 1662 posPredicha 1662.0 basePos 1662
+   -> calce 1662 «esta» | después: seguidor pos 1662 posTentativa 1662 | motor pos 1662.2 ultimoCalce 1662 freno null
+1703.14 FINAL   «porque el organismo de está vivo»
+   antes: motor pos 1662.9 ultimoCalce 1662 ppm 141 | ventana 1652..1702 | seguidor pos 1662 posTentativa 1662 posPredicha 1667.3 basePos 1667
+   -> nada | después: seguidor pos 1662 posTentativa 1662 | motor pos 1662.9 ultimoCalce 1662 freno null
+1706.92 FINAL   «se sigue generando en forma autónoma»
+   antes: motor pos 1676.2 ultimoCalce 1676 ppm 141 | ventana 1666..1716 | seguidor pos 1662 posTentativa 1676 posPredicha 1676.1 basePos 1676
+   -> calce 1676 «autonoma» | después: seguidor pos 1676 posTentativa 1676 | motor pos 1676.2 ultimoCalce 1676 freno null
+1708.96 FINAL   «no dependiente»
+   antes: motor pos 1678.2 ultimoCalce 1678 ppm 98 | ventana 1668..1718 | seguidor pos 1676 posTentativa 1678 posPredicha 1678.0 basePos 1678
+   -> calce 1678 «dependiente» | después: seguidor pos 1678 posTentativa 1678 | motor pos 1678.2 ultimoCalce 1678 freno null
+1719.70 FINAL   «porque en tu corazón cabe mi corazón como alimento barato amor en cambio la verdad la verdad no se alimenta con verdad ajena»
+   antes: motor pos 1700.0 ultimoCalce 1699 ppm 144 | ventana 1689..1739 | seguidor pos 1678 posTentativa 1699 posPredicha 1703.6 basePos 1704
+   -> calce 1701 «(ajena)» | después: seguidor pos 1701 posTentativa 1701 | motor pos 1700.0 ultimoCalce 1701 freno null
+1727.88 FINAL   «separados cosa que hemos juntas y que que vivimos juntas y que confundimos nosotros siempre al amor»
+   antes: motor pos 1712.7 ultimoCalce 1712 ppm 104 | ventana 1702..1752 | seguidor pos 1701 posTentativa 1712 posPredicha 1714.2 basePos 1714
+   -> nada | después: seguidor pos 1701 posTentativa 1701 | motor pos 1712.7 ultimoCalce 1712 freno null
+1744.14 FINAL   «si lo puedo alimentar mi corazón entra el tuyo te doy mi tiempo mi cuerpo presencia compañía todo eso pasa de una persona a otra puede cuidar sostener acompañar»
+   antes: motor pos 1740.2 ultimoCalce 1740 ppm 119 | ventana 1730..1780 | seguidor pos 1701 posTentativa 1740 posPredicha 1740.1 basePos 1740
+   -> calce 1740 «acompañar» | después: seguidor pos 1740 posTentativa 1740 | motor pos 1740.2 ultimoCalce 1740 freno null
+1746.52 FINAL   «a tu verdad»
+   antes: motor pos 1743.1 ultimoCalce 1743 ppm 81 | ventana 1733..1783 | seguidor pos 1740 posTentativa 1743 posPredicha 1743.1 basePos 1743
+   -> calce 1743 «verdad» | después: seguidor pos 1743 posTentativa 1743 | motor pos 1743.1 ultimoCalce 1743 freno null
+1766.52 FINAL   «no porque amar no es absolver al otro ni convertirse en su explicación definitiva el otro puede darme alimento pero no puede vivir por mi puede reconocer mi vida pero no terminar de sabe»
+   antes: motor pos 1776.0 ultimoCalce 1776 ppm 109 | ventana 1766..1816 | seguidor pos 1743 posTentativa 1776 posPredicha 1776.0 basePos 1776
+   -> calce 1777 «saber» | después: seguidor pos 1777 posTentativa 1777 | motor pos 1776.0 ultimoCalce 1777 freno null
+1785.70 FINAL   «que significa puede ser más hábitat de mi mundo pero no puedo ocupar mi lugar dentro del esa distinción se lleva puesta la broma estaba arremetida me completa sin ti no soy nada encontré mi otra mitad»
+   antes: motor pos 1814.3 ultimoCalce 1814 ppm 187 | ventana 1804..1854 | seguidor pos 1777 posTentativa 1814 posPredicha 1814.2 basePos 1814
+   -> calce 1814 «mitad» | después: seguidor pos 1814 posTentativa 1814 | motor pos 1814.3 ultimoCalce 1814 freno null
+1793.76 FINAL   «la ral de no rebaja el amor los salva de es exigencia imposible»
+   antes: motor pos 1825.2 ultimoCalce 1825 ppm 96 | ventana 1815..1865 | seguidor pos 1814 posTentativa 1825 posPredicha 1825.2 basePos 1825
+   -> calce 1825 «imposible» | después: seguidor pos 1825 posTentativa 1825 | motor pos 1825.2 ultimoCalce 1825 freno null
+1797.84 FINAL   «lo que se puede dar ese rendimiento»
+   antes: motor pos 1832.2 ultimoCalce 1832 ppm 110 | ventana 1822..1872 | seguidor pos 1825 posTentativa 1832 posPredicha 1832.0 basePos 1832
+   -> calce 1832 «alimento» | después: seguidor pos 1832 posTentativa 1832 | motor pos 1832.2 ultimoCalce 1832 freno null
+1800.28 FINAL   «lo que nadie puede entrega»
+   antes: motor pos 1837.2 ultimoCalce 1837 ppm 106 | ventana 1827..1877 | seguidor pos 1832 posTentativa 1837 posPredicha 1837.1 basePos 1837
+   -> calce 1837 «entregar» | después: seguidor pos 1837 posTentativa 1837 | motor pos 1837.2 ultimoCalce 1837 freno null
+1812.52 FINAL   «es sustancial no sostenemos no nos constituimos por eso no habla de del desengaño ni desde la distancia»
+   antes: motor pos 1855.2 ultimoCalce 1855 ppm 121 | ventana 1845..1895 | seguidor pos 1837 posTentativa 1855 posPredicha 1855.2 basePos 1855
+   -> calce 1855 «distancia» | después: seguidor pos 1855 posTentativa 1855 | motor pos 1855.2 ultimoCalce 1855 freno null
+1823.88 FINAL   «esta midiendo y de esta constatando que dos corazones pueden caber uno en otro sin dejar de ser dos»
+   antes: motor pos 1872.2 ultimoCalce 1872 ppm 113 | ventana 1862..1912 | seguidor pos 1855 posTentativa 1872 posPredicha 1872.1 basePos 1872
+   -> calce 1872 «dos» | después: seguidor pos 1872 posTentativa 1872 | motor pos 1872.2 ultimoCalce 1872 freno null
