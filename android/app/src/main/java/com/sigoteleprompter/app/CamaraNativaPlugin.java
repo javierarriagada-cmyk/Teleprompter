@@ -960,6 +960,55 @@ public class CamaraNativaPlugin extends Plugin {
         call.resolve();
     }
 
+    // LA URI QUE OTRA APLICACION PUEDE LEER -tomas-grandes, 15-10-2026-. Una toma guardada ya es una
+    // content:// de la galeria y va tal cual, como en compartir. Una sin guardar es un archivo privado en
+    // files/grabaciones: va por el FileProvider del manifiesto -${applicationId}.fileprovider,
+    // res/xml/file_paths.xml, "grabaciones"-; el permiso de lectura lo da el Intent con
+    // FLAG_GRANT_READ_URI_PERMISSION. La ruta se lee con archivoDe, el mismo lugar de siempre.
+    private android.net.Uri uriParaOtraApp(String ruta) {
+        String r = ruta.trim();
+        if (r.startsWith("content:")) return android.net.Uri.parse(r);
+        return androidx.core.content.FileProvider.getUriForFile(
+            getContext(), getContext().getPackageName() + ".fileprovider", archivoDe(r));
+    }
+
+    // LAS TOMAS DE MAS DE 2.147.483.647 BYTES SE VEN CON EL REPRODUCTOR DEL SISTEMA -tomas-grandes,
+    // 15-10-2026-. Medido en el Redmi con una toma de 5,29 GB: ClienteWebDeTomas contesta bien los rangos
+    // -206, el tamaño real-, pero el reproductor de la WebView falla al leer desde el primer byte pasado
+    // 2^31 -PIPELINE_ERROR_READ en ffmpeg_demuxer-. Es un limite de la WebView; la galeria la reproduce.
+    // ACTION_VIEW de lectura, SIN createChooser: Android abre el reproductor que la persona usa -o le
+    // pregunta, como siempre-. No es compartir: compartir es ACTION_SEND con menu. De compartir se toma
+    // solo como pasa la uri y el permiso. Si no hay ninguna aplicacion que abra video, se rechaza con
+    // "sin aplicacion" -el visor lo avisa-; cualquier otro problema, con su mensaje.
+    @PluginMethod
+    public void abrirConReproductor(PluginCall call) {
+        String ruta = call.getString("ruta");
+        if (ruta == null || ruta.isEmpty()) {
+            call.reject("ruta requerida");
+            return;
+        }
+        android.net.Uri uri;
+        try {
+            uri = uriParaOtraApp(ruta);
+        } catch (Exception e) {
+            call.reject("sin uri: " + e.getMessage());
+            return;
+        }
+        android.content.Intent ver = new android.content.Intent(android.content.Intent.ACTION_VIEW);
+        ver.setDataAndType(uri, "video/mp4");
+        ver.addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
+            getActivity().startActivity(ver);
+        } catch (android.content.ActivityNotFoundException e) {
+            call.reject("sin aplicacion");
+            return;
+        } catch (Exception e) {
+            call.reject(String.valueOf(e.getMessage()));
+            return;
+        }
+        call.resolve();
+    }
+
     // SIN FILTRO DE EDAD, a proposito. Quien decide cual es el archivo de
     // una toma es emparejarMp4PorTiempo, contra la ventana del sidecar, y
     // eso es preciso: el nombre que pone Capgo lleva la marca de arranque

@@ -109,6 +109,28 @@ export async function compartirDeGaleria(uri: string): Promise<void> {
   await CamaraNativa.compartir({ uri })
 }
 
+// LAS TOMAS GRANDES -tomas-grandes, 15-10-2026-. El reproductor de la WebView no lee pasado el byte
+// 2^31 -medido en el Redmi con una toma de 5,29 GB: PIPELINE_ERROR_READ-, aunque ClienteWebDeTomas
+// conteste bien los rangos. Una toma de MÁS de 2.147.483.647 bytes se abre con el reproductor del
+// sistema; hasta ese tamaño, el <video> de siempre. El corte es por tamaño, no por duración: una
+// toma corta de mucha calidad puede pasarlo y una larga liviana, no.
+export const TOPE_BYTES_WEBVIEW = 2147483647
+export function seVeConReproductorDelSistema(bytes: number): boolean {
+  return Number.isFinite(bytes) && bytes > TOPE_BYTES_WEBVIEW
+}
+
+// Abre la toma con el reproductor del sistema. La ruta es la de la toma: content:// si está guardada
+// -la de la galería-, o el archivo privado de files/grabaciones -va por el FileProvider-. Devuelve
+// 'sin-aplicacion' si no hay ninguna que abra video, 'error' si falló otra cosa.
+export async function abrirConReproductor(ruta: string): Promise<'ok' | 'sin-aplicacion' | 'error'> {
+  try {
+    await CamaraNativa.abrirConReproductor({ ruta })
+    return 'ok'
+  } catch (e: any) {
+    return String(e?.message || e).includes('sin aplicacion') ? 'sin-aplicacion' : 'error'
+  }
+}
+
 // Guarda en la galeria una copia con los subtitulos quemados -Media3, en el
 // telefono-. alAvanzar recibe de 0 a 100 mientras se codifica.
 //

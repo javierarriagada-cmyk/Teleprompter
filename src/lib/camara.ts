@@ -26,6 +26,9 @@ export interface CamaraNativaPlugin {
   espacioLibre(): Promise<{ bytesLibres: number }>
   guardarEnGaleria(options: { ruta: string }): Promise<{ ok: boolean; uri?: string }>
   compartir(options: { uri: string }): Promise<void>
+  // -tomas-grandes, 15-10-2026- Abre la toma con el reproductor del sistema -ACTION_VIEW-. Rechaza con
+  // "sin aplicacion" si no hay ninguna que abra video. Un APK viejo no lo tiene: "not implemented".
+  abrirConReproductor(options: { ruta: string }): Promise<void>
   existeEnGaleria(options: { uri: string }): Promise<{ existe: boolean }>
   guardarConSubtitulos(options: { ruta: string; subtitulos: string; estilo: string }): Promise<{ ok: boolean; uri?: string }>
   // LA RECETA COMÚN -tarea 87, parte B, 04-10-2026-. La receta va como JSON -lib/recetaExportacion.ts-;
