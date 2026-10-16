@@ -1,6 +1,7 @@
 import React from 'react'
 import { ResumenGrabacion, ResumenGuion } from '../datos/modelo'
 import { srcDeRuta, formatearDuracionMs, nombreDeToma } from './TiraGrabaciones'
+import { MEDIR_SERVIDOR_LOCAL, direccionLocal, anotar, textoDeErrorDeVideo } from '../lib/medirServidor'
 // -tomas-grandes- Antes: import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo } from '../lib/archivosNativos'
 import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo, seVeConReproductorDelSistema, abrirConReproductor } from '../lib/archivosNativos'
 import { orientacionDeToma } from '../lib/orientacion'
@@ -102,6 +103,45 @@ export default function ReproductorGrabacion({
   // guardo a su lado -<id>.motor.txt-. Una toma sin registro -anterior al
   // registro, o de la version web- no ofrece el boton: no hay con que armarlos.
   const [video, setVideo] = React.useState<HTMLVideoElement | null>(null)
+  // -medir-servidor-local, 16-10-2026- LA FUENTE DEL <video>, SOLO EN ESTA RAMA: por el servidor de
+  // 127.0.0.1 -lib/medirServidor.ts-. Mientras no llega, o fuera del teléfono, la de siempre.
+  const [srcVideo, setSrcVideo] = React.useState(() => srcDeRuta(grabacion.ruta))
+  React.useEffect(() => {
+    let vigente = true
+    setSrcVideo(srcDeRuta(grabacion.ruta))
+    void direccionLocal(grabacion.ruta).then((url) => {
+      if (!vigente || !url) return
+      anotar(`visor carga ${grabacion.ruta} (${grabacion.bytes} bytes) por ${url.replace(/\/[0-9a-f]{32}\//, '/<clave>/')}`)
+      setSrcVideo(url)
+    })
+    return () => { vigente = false }
+  }, [grabacion.ruta, grabacion.bytes])
+  // -medir-servidor-local- Los error del <video> -código y mensaje- y currentTime cada 5 s mientras
+  // reproduce, a logcat -MEDIR-SERVIDOR-.
+  React.useEffect(() => {
+    if (!video || !MEDIR_SERVIDOR_LOCAL) return
+    let reloj: ReturnType<typeof setInterval> | null = null
+    const alError = () => anotar(textoDeErrorDeVideo(video.error, video.currentTime))
+    const alReproducir = () => {
+      if (reloj) clearInterval(reloj)
+      reloj = setInterval(() => anotar(`currentTime=${video.currentTime.toFixed(1)}`), 5000)
+    }
+    const alParar = () => { if (reloj) clearInterval(reloj); reloj = null; anotar(`pausa currentTime=${video.currentTime.toFixed(1)}`) }
+    const alSaltar = () => anotar(`salto a ${video.currentTime.toFixed(1)}`)
+    video.addEventListener('error', alError)
+    video.addEventListener('playing', alReproducir)
+    video.addEventListener('pause', alParar)
+    video.addEventListener('ended', alParar)
+    video.addEventListener('seeking', alSaltar)
+    return () => {
+      if (reloj) clearInterval(reloj)
+      video.removeEventListener('error', alError)
+      video.removeEventListener('playing', alReproducir)
+      video.removeEventListener('pause', alParar)
+      video.removeEventListener('ended', alParar)
+      video.removeEventListener('seeking', alSaltar)
+    }
+  }, [video])
   // -tarea 87, subtítulos en horizontal- Se guarda el registro y los subtítulos se arman más abajo,
   // con la forma del cuadro -32 o 47 letras por renglón-. Antes: setSubtitulos(armarSubtitulos(registro)).
   const [registroMotor, setRegistroMotor] = React.useState<string | null>(null)
@@ -298,7 +338,10 @@ export default function ReproductorGrabacion({
     // -tomas-grandes, 15-10-2026- UNA TOMA DE MÁS DE 2.147.483.647 BYTES no se reproduce aquí: la
     // WebView no lee pasado 2^31 -lib/archivosNativos.ts, TOPE_BYTES_WEBVIEW-. Reproducir la abre con el
     // reproductor del sistema; al volver, el visor sigue igual -Guardar, Filtro, Subtítulos, Borrar-.
-    if (seVeConReproductorDelSistema(grabacion.bytes)) {
+    // -medir-servidor-local, 16-10-2026- En esta rama el salto se apaga: todas las tomas van al <video>
+    // por el servidor local -lib/medirServidor.ts-.
+    // Antes: if (seVeConReproductorDelSistema(grabacion.bytes)) {
+    if (!MEDIR_SERVIDOR_LOCAL && seVeConReproductorDelSistema(grabacion.bytes)) {
       void abrirConReproductor(grabacion.ruta).then((r) => {
         if (r === 'sin-aplicacion') onGuardadoEnGaleria?.(false, t('sinAppParaVideo'))
         else if (r === 'error') onGuardadoEnGaleria?.(false, t('noSeAbrioVideo'))
@@ -716,7 +759,8 @@ export default function ReproductorGrabacion({
       <div className="visor-video" data-testid="visor-lado-video" onClick={alternarVideo} style={{ position: 'absolute', ...estilo }}>
         {/* -tarea 96- El filtro elegido, sobre el video y no sobre los subtítulos -van encima, como en el
             archivo-. Antes: sin style. */}
-        <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ filter: filtroVideo }} />
+        {/* -medir-servidor-local- Antes: src={srcDeRuta(grabacion.ruta)} */}
+        <video ref={setVideo} data-testid="video-grabacion" src={srcVideo} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ filter: filtroVideo }} />
         {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} cortes={cortes} />}
         {!reproduciendo && (
           <span className="play-visor" aria-hidden="true">
@@ -937,7 +981,8 @@ export default function ReproductorGrabacion({
           {/* -tarea 87, A4- El alto del video sale de usarAltoDelVideo; sin medir, el 70vh de antes.
               Antes: maxHeight: '70vh'. */}
           {/* -tarea 96- Con el filtro elegido -filtroVideo-, que no alcanza a los subtítulos. */}
-          <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ width: '100%', maxHeight: altoVideo ?? '70vh', background: '#000', display: 'block', filter: filtroVideo }} />
+          {/* -medir-servidor-local- Antes: src={srcDeRuta(grabacion.ruta)} */}
+          <video ref={setVideo} data-testid="video-grabacion" src={srcVideo} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ width: '100%', maxHeight: altoVideo ?? '70vh', background: '#000', display: 'block', filter: filtroVideo }} />
           {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} cortes={cortes} />}
           {!reproduciendo && (
             <span className="play-visor" aria-hidden="true">
