@@ -153,6 +153,17 @@ export function crearMotorDeAvance(
     }
   }
 
+  // EL ANCLA DE UN PARCIAL QUE NINGÚN FINAL CONFIRMA -motor-parentesis, 15-10-2026-. Si quedó más de
+  // correaPalabras -12- adelante de lo confirmado, se suelta: vuelve a ultimaConfirmada, y con ella
+  // ultimoCalce, la ventana de conduccion.ts y el tope de adelantoMaximo. Con menos no: entre un
+  // parcial y su final es normal que difieran unas palabras -en inglés, 6b354819, el final cerró 5
+  // detrás del parcial (161 → 156) y soltarla tiraba el texto 3 palabras atrás: tirón de 152,6
+  // palabras/s en el banco-. En la toma de 25 min el ancla sin confirmar estaba 62 adelante (260
+  // con 198 confirmado) y 45 (1361 con 1316). Ver docs/mediciones/motor-parentesis/EXPLICACION.txt.
+  function soltarAnclaSinConfirmar() {
+    if (anclaTentativa - ultimaConfirmada > params.correaPalabras) anclaTentativa = ultimaConfirmada
+  }
+
   // -motor sin pastilla- el estado sin integrar tiempo: la posicion donde quedo, el calce y el ritmo
   // de ahora, y el estado y el freno del ultimo cuadro.
   function estadoSinAvanzar(): EstadoAvance {
@@ -179,11 +190,9 @@ export function crearMotorDeAvance(
       registrarAvanceArranque(token, ultimaConfirmada)
 
       ultimaConfirmada = Math.max(ultimaConfirmada, token)
-      // EL PARCIAL QUE EL FINAL NO CONFIRMA NO QUEDA DE ANCLA -motor-parentesis, 15-10-2026-. El
-      // final es lo que el reconocedor da por dicho: si cerró en otro lado, el ancla de los parciales
-      // vuelve a lo confirmado. Ver docs/mediciones/motor-parentesis/EXPLICACION.txt y falloCalce.
-      // Antes: anclaTentativa = Math.max(anclaTentativa, token)
-      anclaTentativa = ultimaConfirmada
+      // -motor-parentesis- el final cerró en otro lado: ver soltarAnclaSinConfirmar.
+      anclaTentativa = Math.max(anclaTentativa, token)
+      soltarAnclaSinConfirmar()
       fallosFinalesSeguidos = 0
       tUltimoCalce = tMs
     },
@@ -210,12 +219,15 @@ export function crearMotorDeAvance(
       // 25 min un parcial con tres palabras solo parecidas llevó el ancla de 237 a 260 a los 283,8 s;
       // el final de 284,0 no calzó, el ancla se quedó en 260 y ultimoCalce -max(ultimaConfirmada,
       // anclaTentativa)- dejó la ventana de conduccion.ts en 251..301 con Javier leyendo en 218-239,
-      // hasta que movió el texto a mano 61 s después. Ahora el final que no calza devuelve el ancla
-      // a lo confirmado y la ventana se mide otra vez desde ahí.
+      // hasta que movió el texto a mano 61 s después. Ahora, desde el segundo final seguido sin calce
+      // -fallosParaFrenar, cuando el motor ya busca-, el ancla vuelve a lo confirmado si estaba más
+      // de una correa adelante -ver soltarAnclaSinConfirmar- y la ventana se mide otra vez desde ahí.
+      // Desde el primero, no: en Larralde de pie -tarea89, toma 3- los finales no calzan y los
+      // parciales llevan bien el texto hasta 31; soltar el ancla ahí lo devolvía a 3.
       // Antes: if (!esParcial) fallosFinalesSeguidos++
       if (!esParcial) {
         fallosFinalesSeguidos++
-        if (fallosFinalesSeguidos >= params.fallosParaFrenar) anclaTentativa = ultimaConfirmada
+        if (fallosFinalesSeguidos >= params.fallosParaFrenar) soltarAnclaSinConfirmar()
       }
       hayVoz = true
       tUltimaVozTrue = tMs
