@@ -92,7 +92,8 @@ import type { AjustesLectura } from './components/FilasAjustesLectura'
 import { DialogoMicrofono } from './components/DialogoMicrofono'
 import { DialogoPermiso } from './components/DialogoPermiso'
 import { tituloDeBienvenida, bloqueDeBienvenida } from './app/bienvenida'
-import { GUION_VACIO, sanitizarColores, sanitizarEngine, cargarAjustesGuardados, ajustarFuenteValida } from './app/ajustesIniciales'
+// -recuadro-arrastre- Antes: import { GUION_VACIO, sanitizarColores, sanitizarEngine, cargarAjustesGuardados, ajustarFuenteValida } from './app/ajustesIniciales'
+import { GUION_VACIO, sanitizarColores, sanitizarEngine, cargarAjustesGuardados, ajustarFuenteValida, corregirRecuadroEnCero } from './app/ajustesIniciales'
 import { useAviso } from './hooks/useAviso'
 import { pasoRachaGuardado } from './lib/rachaGuardado'
 import { AvisoBreve } from './components/AvisoBreve'
@@ -208,7 +209,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [cargado, setCargado] = useState<boolean>(false)
 
   // Ajustes persistentes
-  const ajustesPrevios = cargarAjustesGuardados() || {}
+  // -recuadro-arrastre, 15-10-2026- El recuadro guardado en 0,0 por el error de la 0.9.1 vuelve una sola
+  // vez a los de fábrica -corregirRecuadroEnCero-. Antes: const ajustesPrevios = cargarAjustesGuardados() || {}
+  const ajustesPrevios = corregirRecuadroEnCero(cargarAjustesGuardados() || {})
 
   // EL MOTOR POR OMISION LO DECIDE EL ENTORNO.
   //

@@ -50,6 +50,28 @@ export function cargarAjustesGuardados() {
   return null
 }
 
+// EL RECUADRO EN 0,0 SE CORRIGE UNA SOLA VEZ -recuadro-arrastre, 15-10-2026-. En la 0.9.1 arrastrar el
+// recuadro en LISTO terminaba guardando recuadroX 0 y recuadroY 0 -arriba a la izquierda, y de ahí no se
+// movía-: ver RecuadroCamara.tsx, «LA CAUSA DEL 0,0». Al abrir esta versión, si los dos están exactamente
+// en 0, vuelven a los de fábrica -0.64 y 0.52, los de App.tsx- y se guarda en teleprompter_ajustes. Pasa
+// UNA vez: la marca queda puesta, haya o no corrección, y quien después lleve el recuadro a esa esquina a
+// propósito no se lo cambia nadie.
+export const MARCA_RECUADRO_CORREGIDO = 'sigo_recuadro_cero_corregido'
+export const RECUADRO_DE_FABRICA = { x: 0.64, y: 0.52 }
+export function corregirRecuadroEnCero(ajustes: any): any {
+  try {
+    if (localStorage.getItem(MARCA_RECUADRO_CORREGIDO) === '1') return ajustes
+    localStorage.setItem(MARCA_RECUADRO_CORREGIDO, '1')
+    if (ajustes && ajustes.recuadroX === 0 && ajustes.recuadroY === 0) {
+      const corregidos = { ...ajustes, recuadroX: RECUADRO_DE_FABRICA.x, recuadroY: RECUADRO_DE_FABRICA.y }
+      localStorage.setItem('teleprompter_ajustes', JSON.stringify(corregidos))
+      return corregidos
+    }
+  } catch (e) {
+  }
+  return ajustes
+}
+
 export function ajustarFuenteValida(val: any): number {
   const num = Number(val)
   if (isNaN(num)) return 24

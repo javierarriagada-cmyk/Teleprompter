@@ -106,6 +106,8 @@ describe('Tarea 66 - dos puertas, un lienzo', () => {
   // Antes: expect(screen.getByTestId('contenedor-lectura').style.pointerEvents).toBe('none')
   // Ahora en LISTO contenedor-lectura tiene pointerEvents 'auto' para permitir desplazar el texto,
   // mientras que el recuadro captura los eventos a través de capa-recuadro-arrastre.
+  // -recuadro-arrastre, 15-10-2026- La capa se quitó: el recuadro recibe el dedo por su asa
+  // -RecuadroCamara.tsx, recuadro-camara-asa, zIndex 5-, que es suya. Antes: «a través de capa-recuadro-arrastre».
   test('en LISTO la capa de texto permite el desplazamiento; en LEYENDO se queda el gesto', async () => {
     await abrirGuionConTexto()
     fireEvent.click(await screen.findByTestId('btn-grabar-guion-fijo'))

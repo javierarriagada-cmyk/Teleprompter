@@ -86,16 +86,36 @@ describe('Pruebas solo de lógica - Desplazar texto en LISTO', () => {
     const recuadroEl = await screen.findByTestId('recuadro-camara')
     const contLectura = screen.getByTestId('contenedor-lectura')
 
-    const capaArrastre = screen.getByTestId('capa-recuadro-arrastre')
-    expect(capaArrastre).toBeDefined()
+    // -recuadro-arrastre, 15-10-2026- La capa que reenviaba el dedo se quitó: el dedo cae en el asa del
+    // recuadro, que es suya. Antes:
+    // const capaArrastre = screen.getByTestId('capa-recuadro-arrastre')
+    // expect(capaArrastre).toBeDefined()
+    //
+    // const initialScrollTop = contLectura.scrollTop
+    //
+    // fireEvent.pointerDown(capaArrastre, { clientX: 200, clientY: 200, pointerId: 1 })
+    // fireEvent.pointerMove(capaArrastre, { clientX: 250, clientY: 250, pointerId: 1 })
+    // fireEvent.pointerUp(capaArrastre, { clientX: 250, clientY: 250, pointerId: 1 })
+    //
+    // expect(contLectura.scrollTop).toBe(initialScrollTop)
+    expect(screen.queryByTestId('capa-recuadro-arrastre')).toBeNull()
+    const asa = screen.getByTestId('recuadro-camara-asa')
+    expect(asa.style.touchAction).toBe('none')
+    expect(Number(asa.style.zIndex)).toBeGreaterThan(Number(contLectura.style.zIndex || 1))
 
     const initialScrollTop = contLectura.scrollTop
+    const ajustes = () => JSON.parse(localStorage.getItem('teleprompter_ajustes') || '{}')
 
-    fireEvent.pointerDown(capaArrastre, { clientX: 200, clientY: 200, pointerId: 1 })
-    fireEvent.pointerMove(capaArrastre, { clientX: 250, clientY: 250, pointerId: 1 })
-    fireEvent.pointerUp(capaArrastre, { clientX: 250, clientY: 250, pointerId: 1 })
+    fireEvent.pointerDown(asa, { clientX: 200, clientY: 200, pointerId: 1 })
+    fireEvent.pointerMove(asa, { clientX: 220, clientY: 230, pointerId: 1 })
+    // El pointercancel de Chromium trae 0,0: no es el dedo y no se guarda como posición.
+    fireEvent.pointerCancel(asa, { clientX: 0, clientY: 0, pointerId: 1 })
 
     expect(contLectura.scrollTop).toBe(initialScrollTop)
+    // Lo que importa: el cancel no deja el recuadro en 0,0 -el error de la 0.9.1-.
+    expect(ajustes().recuadroX).toBeGreaterThanOrEqual(0.5)
+    expect(ajustes().recuadroY).toBeGreaterThanOrEqual(0.5)
+    expect(recuadroEl).toBeDefined()
   })
 
   test('después de desplazar, la toma parte desde el renglón de la banda', async () => {
