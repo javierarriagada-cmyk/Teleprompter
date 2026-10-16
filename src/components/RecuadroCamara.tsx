@@ -85,6 +85,19 @@ export function esquinaMasCercana(
   return `${lado}-${alto}` as EsquinaRecuadroH
 }
 
+// SOLO SE GUARDA UNA POSICIÓN VÁLIDA -recuadro-arrastre, 15-10-2026-. recuadroX y recuadroY son
+// fracciones de la pantalla: números finitos entre 0 y 1. Cualquier otra cosa -NaN, negativo, más de 1-
+// no se guarda: se avisa por consola y queda la posición de antes. guardar se llama solo si vale.
+export function aceptarPosicionRecuadro(x: number, y: number, guardar: (x: number, y: number) => void): boolean {
+  const vale = (v: number) => typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 1
+  if (!vale(x) || !vale(y)) {
+    console.warn('[Recuadro] posición no guardada: recuadroX y recuadroY tienen que ser fracciones finitas entre 0 y 1, llegó', x, y)
+    return false
+  }
+  guardar(x, y)
+  return true
+}
+
 export function RecuadroCamara({
   recuadroX,
   recuadroY,
@@ -101,6 +114,8 @@ export function RecuadroCamara({
   const [dragPos, setDragPos] = useState<{ x: number; y: number } | null>(null)
   const isDraggingRef = useRef(false)
   const dragStartRef = useRef<{ pointerX: number; pointerY: number; startX: number; startY: number } | null>(null)
+  // -recuadro-arrastre- El último punto del dedo que llegó con un pointermove: al cancelar se usa este.
+  const ultimoPunteroRef = useRef<{ x: number; y: number } | null>(null)
 
   const recalcularDimensiones = useCallback(() => {
     const el = containerRef.current
@@ -242,6 +257,7 @@ export function RecuadroCamara({
       startX: currentX,
       startY: currentY
     }
+    ultimoPunteroRef.current = null
     if (onArrastrandoChange) {
       onArrastrandoChange(true)
     }
@@ -249,6 +265,7 @@ export function RecuadroCamara({
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!arrastrable || !isDraggingRef.current || !dragStartRef.current) return
+    ultimoPunteroRef.current = { x: e.clientX, y: e.clientY }
     const dx = e.clientX - dragStartRef.current.pointerX
     const dy = e.clientY - dragStartRef.current.pointerY
     const rawX = dragStartRef.current.startX + dx
@@ -289,8 +306,20 @@ export function RecuadroCamara({
 
     isDraggingRef.current = false
 
-    const dx = e.clientX - dragStartRef.current.pointerX
-    const dy = e.clientY - dragStartRef.current.pointerY
+    // LA CAUSA DEL 0,0 -recuadro-arrastre, 15-10-2026-. Un pointercancel de Chromium trae clientX y
+    // clientY en 0: no es dónde está el dedo. Con la capa de TeleprompterView -capa-recuadro-arrastre, sin
+    // touch-action: none- el toque empezaba en la capa, la WebView lo tomaba como desplazamiento y
+    // cancelaba el puntero; con 0,0 el cálculo daba la posición de partida menos el punto del dedo,
+    // negativa, y el tope la dejaba en 0,0 y la guardaba. Al cancelar vale el último punto que llegó con
+    // un pointermove -o el de partida, si no se movió-. Antes:
+    // const dx = e.clientX - dragStartRef.current.pointerX
+    // const dy = e.clientY - dragStartRef.current.pointerY
+    const fin = e.type === 'pointercancel'
+      ? (ultimoPunteroRef.current ?? { x: dragStartRef.current.pointerX, y: dragStartRef.current.pointerY })
+      : { x: e.clientX, y: e.clientY }
+    ultimoPunteroRef.current = null
+    const dx = fin.x - dragStartRef.current.pointerX
+    const dy = fin.y - dragStartRef.current.pointerY
     const rawX = dragStartRef.current.startX + dx
     const rawY = dragStartRef.current.startY + dy
 
@@ -332,7 +361,37 @@ export function RecuadroCamara({
     }
   }
 
+  // EL ASA DEL RECUADRO -recuadro-arrastre, 15-10-2026-. El hueco va en zIndex 0, debajo del texto
+  // -zIndex 1-, porque su sombra pinta el fondo de toda la pantalla. Para que en LISTO el dedo que cae
+  // sobre el recuadro lo mueva a él y no al texto, encima va el asa: una caja transparente con la misma
+  // posición y medida, en zIndex 5, con los MISMOS manejadores y touch-action: none. El dedo llega
+  // directo, sin copias de eventos. Solo existe mientras se puede arrastrar.
+  const manejadores = {
+    onPointerDown: handlePointerDown,
+    onPointerMove: handlePointerMove,
+    onPointerUp: handlePointerUpOrCancel,
+    onPointerCancel: handlePointerUpOrCancel
+  }
   return (
+    <>
+    {arrastrable && dimensiones && (
+      <div
+        data-testid="recuadro-camara-asa"
+        {...manejadores}
+        style={{
+          position: 'absolute',
+          left: currentX,
+          top: currentY,
+          width: recuadroW,
+          height: recuadroH,
+          zIndex: 5,
+          touchAction: 'none',
+          cursor: 'grab',
+          background: 'transparent',
+          pointerEvents: 'auto'
+        }}
+      />
+    )}
     <div
       ref={containerRef}
       data-testid="recuadro-camara"
@@ -366,5 +425,6 @@ export function RecuadroCamara({
         pointerEvents: 'auto'
       }}
     />
+    </>
   )
 }
