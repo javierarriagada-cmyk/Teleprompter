@@ -264,42 +264,61 @@ export function crearSeguidor(tokens: Token[], opciones: { idioma?: string } = {
     return posActual
   }
 
+  // UNA ACOTACIÓN LEÍDA SE SIGUE COMO TEXTO -motor-parentesis, 15-10-2026-. El seguidor salta los
+  // tokens esAcotacion: lo que va entre paréntesis no se lee. Javier a veces lo lee, y entonces esas
+  // palabras se buscaban en el texto de después: en la toma de 25 min la (1.) calzó en su repetición
+  // 30 tokens más abajo y la (6.) llevó al seguidor al final de la acotación con el lector al
+  // principio -docs/mediciones/motor-parentesis/EXPLICACION.txt-. Ahora, si en el tramo de un offset
+  // hay acotación, ese offset se mira también SIN saltarla, y si así calza igual o mejor se sigue por
+  // dentro de ella. Donde no hay acotación en el tramo se mira solo como siempre: un guion sin
+  // paréntesis da lo mismo que antes.
+  function puntuarEn(frase: string[], offset: number, saltarAcotaciones: boolean) {
+    let coincidencias = 0
+    let evidencia = 0
+    let currTokenIdx = offset
+    let racha = 0
+    let rachaMaxima = 0
+
+    for (let i = 0; i < frase.length; i++) {
+      while (saltarAcotaciones && currTokenIdx < tokens.length && tokens[currTokenIdx].esAcotacion) {
+        currTokenIdx++
+      }
+
+      if (currTokenIdx < tokens.length) {
+        if (parecidas(frase[i], tokens[currTokenIdx].palabra)) {
+          coincidencias++
+          evidencia += pesoDe(tokens[currTokenIdx].palabra)
+          racha++
+          if (racha > rachaMaxima) rachaMaxima = racha
+        } else {
+          racha = 0
+        }
+        currTokenIdx++
+      }
+    }
+    return { coincidencias, evidencia, rachaMaxima }
+  }
+
+  function hayAcotacionEntre(desde: number, hasta: number): boolean {
+    for (let k = Math.max(0, desde); k <= Math.min(hasta, tokens.length - 1); k++) {
+      if (tokens[k].esAcotacion) return true
+    }
+    return false
+  }
+
   function buscarMejorOffset(
     frase: string[],
     desde: number,
     hasta: number,
     posPredicha: number,
     seguidasMinimo: number = PALABRAS_SEGUIDAS_MINIMO
-  ): { mejorOffset: number; mejorPuntaje: number } {
+  ): { mejorOffset: number; mejorPuntaje: number; dentroDeAcotacion: boolean } {
     let mejorOffset = -1
     let mejorPuntaje = -1
+    let dentroDeAcotacion = false
 
-    for (let offset = desde; offset <= hasta; offset++) {
-      let coincidencias = 0
-      let evidencia = 0
-      let currTokenIdx = offset
-      let racha = 0
-      let rachaMaxima = 0
-
-      for (let i = 0; i < frase.length; i++) {
-        while (currTokenIdx < tokens.length && tokens[currTokenIdx].esAcotacion) {
-          currTokenIdx++
-        }
-
-        if (currTokenIdx < tokens.length) {
-          if (parecidas(frase[i], tokens[currTokenIdx].palabra)) {
-            coincidencias++
-            evidencia += pesoDe(tokens[currTokenIdx].palabra)
-            racha++
-            if (racha > rachaMaxima) rachaMaxima = racha
-          } else {
-            racha = 0
-          }
-          currTokenIdx++
-        }
-      }
-
-      if (frase.length === 0) continue
+    function puntaje(offset: number, saltarAcotaciones: boolean): number {
+      const { coincidencias, evidencia, rachaMaxima } = puntuarEn(frase, offset, saltarAcotaciones)
 
       const suficientes = coincidencias >= Math.min(MIN_PALABRAS_COINCIDENTES, frase.length)
 
@@ -314,28 +333,74 @@ export function crearSeguidor(tokens: Token[], opciones: { idioma?: string } = {
 
       // 1. LA BUSQUEDA SE CENTRA EN DONDE DEBERIAS ESTAR (posPredicha)
       const tokenDist = Math.abs(posPredicha - offset)
-      puntaje = Math.max(0, puntaje - tokenDist * PENALIZACION_POR_TOKEN)
+      return Math.max(0, puntaje - tokenDist * PENALIZACION_POR_TOKEN)
+    }
 
-      if (puntaje > mejorPuntaje) {
-        mejorPuntaje = puntaje
+    for (let offset = desde; offset <= hasta; offset++) {
+      if (frase.length === 0) continue
+
+      let puntajeOffset = puntaje(offset, true)
+      let leida = false
+      if (hayAcotacionEntre(offset, offset + frase.length - 1)) {
+        const comoTexto = puntaje(offset, false)
+        // A igual puntaje gana leerla: las palabras que no calzaron no son prueba de que se la
+        // saltó, y saltándola el recorrido de candPos -abajo- pone la última palabra DESPUÉS de toda
+        // la acotación. En la toma, «... de la sus brazos» -por «de la frustración»- llevó así al
+        // seguidor de 1344 a 1362 sin haber oído nada de la (6.).
+        if (comoTexto >= puntajeOffset) {
+          puntajeOffset = comoTexto
+          leida = true
+        }
+      }
+
+      if (puntajeOffset > mejorPuntaje) {
+        mejorPuntaje = puntajeOffset
         mejorOffset = offset
-      } else if (Math.abs(puntaje - mejorPuntaje) < 1e-5 && mejorOffset >= 0) {
+        dentroDeAcotacion = leida
+      } else if (Math.abs(puntajeOffset - mejorPuntaje) < 1e-5 && mejorOffset >= 0) {
         if (Math.abs(offset - posPredicha) < Math.abs(mejorOffset - posPredicha)) {
-          mejorPuntaje = puntaje
+          mejorPuntaje = puntajeOffset
           mejorOffset = offset
+          dentroDeAcotacion = leida
         }
       }
     }
 
-    return { mejorOffset, mejorPuntaje }
+    return { mejorOffset, mejorPuntaje, dentroDeAcotacion }
   }
+  // Antes -el mismo cálculo, solo saltando acotaciones; el cuerpo pasó a puntuarEn y puntaje-:
+  // function buscarMejorOffset(frase, desde, hasta, posPredicha, seguidasMinimo = PALABRAS_SEGUIDAS_MINIMO) {
+  //   let mejorOffset = -1
+  //   let mejorPuntaje = -1
+  //   for (let offset = desde; offset <= hasta; offset++) {
+  //     let coincidencias = 0
+  //     let evidencia = 0
+  //     let currTokenIdx = offset
+  //     let racha = 0
+  //     let rachaMaxima = 0
+  //     for (let i = 0; i < frase.length; i++) {
+  //       while (currTokenIdx < tokens.length && tokens[currTokenIdx].esAcotacion) {
+  //         currTokenIdx++
+  //       }
+  //       ...lo de puntuarEn...
+  //     }
+  //     if (frase.length === 0) continue
+  //     ...lo de puntaje()...
+  //     if (puntaje > mejorPuntaje) { mejorPuntaje = puntaje; mejorOffset = offset }
+  //     else if (Math.abs(puntaje - mejorPuntaje) < 1e-5 && mejorOffset >= 0) {
+  //       if (Math.abs(offset - posPredicha) < Math.abs(mejorOffset - posPredicha)) { mejorPuntaje = puntaje; mejorOffset = offset }
+  //     }
+  //   }
+  //   return { mejorOffset, mejorPuntaje }
+  // }
 
   // Cuantas palabras de la frase son IDENTICAS al guion, puesta desde offset.
-  function exactasEn(frase: string[], offset: number): number {
+  function exactasEn(frase: string[], offset: number, saltarAcotaciones = true): number {
     let n = 0
     let idx = offset
     for (let i = 0; i < frase.length; i++) {
-      while (idx < tokens.length && tokens[idx].esAcotacion) idx++
+      // Antes: while (idx < tokens.length && tokens[idx].esAcotacion) idx++
+      while (saltarAcotaciones && idx < tokens.length && tokens[idx].esAcotacion) idx++
       if (idx >= tokens.length) break
       if (frase[i] === tokens[idx].palabra) n++
       idx++
@@ -370,7 +435,8 @@ export function crearSeguidor(tokens: Token[], opciones: { idioma?: string } = {
       const desde = Math.max(0, posMinima - (frase.length + VENTANA_ATRAS))
       const hasta = Math.min(tokens.length - 1, basePos + VENTANA_ADELANTE)
 
-      const { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta, posPredicha)
+      // Antes: const { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta, posPredicha)
+      const { mejorOffset, mejorPuntaje, dentroDeAcotacion } = buscarMejorOffset(frase, desde, hasta, posPredicha)
 
       if (mejorPuntaje < MIN_COINCIDENCIA) {
         fallosSeguidos++
@@ -383,7 +449,8 @@ export function crearSeguidor(tokens: Token[], opciones: { idioma?: string } = {
 
       let currIdx = mejorOffset
       for (let i = 0; i < frase.length; i++) {
-        while (currIdx < tokens.length && tokens[currIdx].esAcotacion) {
+        // Antes: while (currIdx < tokens.length && tokens[currIdx].esAcotacion) {
+        while (!dentroDeAcotacion && currIdx < tokens.length && tokens[currIdx].esAcotacion) {
           currIdx++
         }
         if (i < frase.length - 1 && currIdx < tokens.length) {
@@ -455,14 +522,17 @@ export function crearSeguidor(tokens: Token[], opciones: { idioma?: string } = {
       const desde = Math.max(0, posMinima - (frase.length + VENTANA_ATRAS))
       hasta = Math.max(desde, hasta)
 
-      let { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta, posPredicha)
+      // Antes: let { mejorOffset, mejorPuntaje } = buscarMejorOffset(frase, desde, hasta, posPredicha)
+      let { mejorOffset, mejorPuntaje, dentroDeAcotacion } = buscarMejorOffset(frase, desde, hasta, posPredicha)
 
       // Ver SALTO_PARCIAL_SIN_EXACTAS: lejos, solo con palabras identicas.
-      if (mejorPuntaje >= MIN_COINCIDENCIA && mejorOffset - base > SALTO_PARCIAL_SIN_EXACTAS && exactasEn(frase, mejorOffset) < PALABRAS_EXACTAS_PARA_SALTAR) {
+      // Antes: ... && exactasEn(frase, mejorOffset) < PALABRAS_EXACTAS_PARA_SALTAR) {
+      if (mejorPuntaje >= MIN_COINCIDENCIA && mejorOffset - base > SALTO_PARCIAL_SIN_EXACTAS && exactasEn(frase, mejorOffset, !dentroDeAcotacion) < PALABRAS_EXACTAS_PARA_SALTAR) {
         const cerca = Math.max(desde, Math.min(hasta, base + SALTO_PARCIAL_SIN_EXACTAS))
         const r = buscarMejorOffset(frase, desde, cerca, posPredicha)
         mejorOffset = r.mejorOffset
         mejorPuntaje = r.mejorPuntaje
+        dentroDeAcotacion = r.dentroDeAcotacion
       }
 
       if (mejorPuntaje < MIN_COINCIDENCIA) {
@@ -472,7 +542,8 @@ export function crearSeguidor(tokens: Token[], opciones: { idioma?: string } = {
 
       let currIdx = mejorOffset
       for (let i = 0; i < frase.length; i++) {
-        while (currIdx < tokens.length && tokens[currIdx].esAcotacion) {
+        // Antes: while (currIdx < tokens.length && tokens[currIdx].esAcotacion) {
+        while (!dentroDeAcotacion && currIdx < tokens.length && tokens[currIdx].esAcotacion) {
           currIdx++
         }
         if (i < frase.length - 1 && currIdx < tokens.length) {

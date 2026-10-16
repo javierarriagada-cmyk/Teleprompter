@@ -12,7 +12,7 @@ const GUION = [
   '(si me vieras por dentro sabrías lo que busco)',
   'el orden primero viene de la costumbre',
   'después el miedo pide permiso para quedarse',
-  'si me vieras por dentro sabrías lo que busco',
+  'si tú me vieras por dentro tú encuentras lo que busco',
   'y la tarde se cerró sobre nosotros'
 ].join('\n')
 
@@ -38,13 +38,14 @@ function leerHastaLaAcotacion(c: Conduccion): number {
 }
 
 describe('motor-parentesis B: el parcial que ningún final confirma no deja la ventana adelante', () => {
-  test('la acotación leída calza en su repetición como parcial; los finales que no calzan devuelven la ventana a lo confirmado y el final siguiente, detrás del parcial, calza', () => {
+  test('un parcial calza en la repetición, más abajo; los finales que no calzan devuelven la ventana a lo confirmado y el final siguiente, detrás del parcial, calza', () => {
     const c = conduccion()
     let t = leerHastaLaAcotacion(c)
     const patio = indice(c, 'patio')
     expect(c.motor.estadoEn(t).ultimoCalce).toBe(patio)
-    // Lee la acotación en voz alta: el seguidor no mira sus tokens y la calza en la línea 6.
-    const dicho = 'si me vieras por dentro sabrías lo que busco'.split(' ')
+    // Un parcial que se parece más a la repetición de la línea 6 que a la acotación -lo que el
+    // reconocedor entendió mal, como «no lo encuentra» por «yo no encuentro» en la toma- la calza allá.
+    const dicho = 'si tú me vieras por dentro tú encuentras'.split(' ')
     let adelante = 0
     for (let k = 2; k <= dicho.length; k++) {
       t += 250
@@ -63,5 +64,34 @@ describe('motor-parentesis B: el parcial que ningún final confirma no deja la v
     expect(r).not.toBeNull()
     expect(r!.hastaToken).toBe(indice(c, 'costumbre'))
     expect(c.motor.estadoEn(t).ultimoCalce).toBe(indice(c, 'costumbre'))
+  })
+})
+
+describe('motor-parentesis A: la acotación leída se sigue como texto', () => {
+  test('leer la acotación en voz alta y seguir deja al seguidor y al motor en el texto que sigue, no en la repetición', () => {
+    const c = conduccion()
+    let t = leerHastaLaAcotacion(c)
+    let maximo = 0
+    for (const f of ['si me vieras por dentro', 'sabrías lo que busco', 'el orden primero viene', 'de la costumbre']) {
+      const palabras = f.split(' ')
+      for (let k = 2; k <= palabras.length; k++) { t += 250; procesarParcial(c, palabras.slice(0, k).join(' '), t) }
+      t += 300
+      const r = procesarFinal(c, f, t)
+      expect(r).not.toBeNull()
+      for (let k = 0; k < 10; k++) { t += 50; maximo = Math.max(maximo, c.motor.estadoEn(t).ultimoCalce) }
+    }
+    const costumbre = indice(c, 'costumbre')
+    expect(c.seguidor.posicionToken()).toBe(costumbre)
+    expect(c.motor.estadoEn(t).ultimoCalce).toBe(costumbre)
+    // El motor nunca tomó la repetición de la línea 6 por calce.
+    expect(maximo).toBe(costumbre)
+  })
+
+  test('si la acotación no se lee, se salta como siempre', () => {
+    const c = conduccion()
+    let t = leerHastaLaAcotacion(c)
+    t += 300
+    expect(procesarFinal(c, 'el orden primero viene de la costumbre', t)).not.toBeNull()
+    expect(c.seguidor.posicionToken()).toBe(indice(c, 'costumbre'))
   })
 })
