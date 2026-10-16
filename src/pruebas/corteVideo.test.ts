@@ -58,7 +58,10 @@ describe('Corte de la toma sin la ruta del video', () => {
     expect(r).not.toBeNull()
     expect(r!.incompleta).toBe(true)
     expect(r!.bytes).toBe(96000000)
-    expect(movidos.some(([de]) => de.includes(`video_${estado.creadoAprox + 120}`))).toBe(true)
+    // -parar-largo- El video ya no se mueve: se queda donde la cámara lo dejó.
+    // Antes: expect(movidos.some(([de]) => de.includes(`video_${estado.creadoAprox + 120}`))).toBe(true)
+    expect(r!.ruta).toContain(`video_${estado.creadoAprox + 120}`)
+    expect(movidos).toEqual([])
   })
 
   test('C2 Si tampoco se encuentra, la toma queda incompleta -para que el arranque la reintente-, no "lista" con 0 bytes.', async () => {

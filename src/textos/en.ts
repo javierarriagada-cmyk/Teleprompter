@@ -66,6 +66,8 @@ export const en: Textos = {
   guardarEnGaleria: 'Save to gallery',
   guardando: 'Saving…',
   guardandoAvance: 'Saving… {n}%',
+  // -parar-largo- Mientras se guarda la toma al tocar Parar.
+  guardandoToma: 'Saving your take…',
   repetirToma: 'Retake',
   // Los controles propios del reproductor -28-09-2026-.
   reproducir: 'Play',

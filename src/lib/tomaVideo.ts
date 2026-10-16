@@ -20,6 +20,7 @@ import {
   juntos,
   leerTexto,
   listarDirectorio,
+  // -parar-largo- Ya no mueve el video al parar; solo devuelve a .mp4 un .part completo al recuperar.
   moverArchivo
 } from './archivosNativos'
 import type { AnalisisVideo } from './archivosNativos'
@@ -57,6 +58,19 @@ type SesionToma = {
 }
 
 let sesion: SesionToma | null = null
+
+// UN SOLO PARAR A LA VEZ -parar-largo, 15-10-2026-. En el Redmi de Javier -toma de 25:39, 3,89 GB- el
+// primer Parar cortó bien, pero el video se copiaba 14 s de Movies/CameraPreview a files/grabaciones sin
+// nada en pantalla; el segundo Parar entró aquí con la MISMA sesión, no vio grabación en curso, marcó
+// la toma incompleta, la renombró a .mp4.part y reinició la bitácora. Esta es LA guarda: todo camino
+// que corta una toma -Parar, la V, descartar, segundo plano, recurso perdido, desmontar- pasa por
+// cortarTomaVideo. Se toma antes del primer await y se suelta en finally: también si el guardado falla,
+// para que Parar no quede bloqueado.
+let corteEnCurso = false
+
+export function guardandoToma(): boolean {
+  return corteEnCurso
+}
 
 export function tomaEnCurso(): boolean {
   return sesion !== null
@@ -219,7 +233,33 @@ export async function cortarTomaVideo(opts?: {
   incompleta?: boolean
 }): Promise<ResumenGrabacion | null> {
   if (!sesion) return null
-  const s = sesion
+  // -parar-largo- Un corte a la vez: el segundo toque no hace nada.
+  if (corteEnCurso) return null
+  corteEnCurso = true
+  try {
+    return await cortarTomaVideoUnaVez(sesion, opts)
+  } finally {
+    corteEnCurso = false
+  }
+}
+
+// -parar-largo, punto 4- ¿Ya está el video completo de la toma en su lugar? Sin grabación en curso, un
+// .mp4 con bytes en la carpeta de la toma -o donde la cámara lo dejó, rutaPlugin/rutaMp4 del sidecar-
+// es un video terminado: no se renombra a .part ni se marca incompleta.
+async function videoYaCompleto(s: SesionToma): Promise<string | null> {
+  const candidatos = [juntos(s.dir, `${s.sidecar.id}.mp4`), s.sidecar.rutaMp4, s.sidecar.rutaPlugin]
+  for (const c of candidatos) {
+    if (!c || c.endsWith('.part')) continue
+    try {
+      if ((await bytesDe(c)) > 0) return c
+    } catch {}
+  }
+  return null
+}
+
+async function cortarTomaVideoUnaVez(s: SesionToma, opts?: {
+  incompleta?: boolean
+}): Promise<ResumenGrabacion | null> {
   detenerHeartbeat()
   s.sidecar.milisegundos = Math.max(s.sidecar.milisegundos, Date.now() - s.sidecar.creado)
 
@@ -229,7 +269,9 @@ export async function cortarTomaVideo(opts?: {
     rutaPlugin = await cortarGrabacionVideo()
     if (!rutaPlugin) motivoCorte = errorDelUltimoCorte() || 'sin ruta'
   } else {
-    motivoCorte = 'la grabacion ya no estaba en curso al cortar'
+    // Antes: motivoCorte = 'la grabacion ya no estaba en curso al cortar' -siempre-.
+    rutaPlugin = await videoYaCompleto(s)
+    if (!rutaPlugin) motivoCorte = 'la grabacion ya no estaba en curso al cortar'
   }
 
   // EL VIDEO QUE EL CORTE NO DEVOLVIO -24-09-2026-. El plugin de la camara rechaza
@@ -261,17 +303,27 @@ export async function cortarTomaVideo(opts?: {
   if (rutaPlugin) s.sidecar.rutaPlugin = rutaPlugin
 
   const incompleta = Boolean(opts?.incompleta) || motivoCorte !== null
-  let rutaFinal = juntos(s.dir, incompleta ? `${s.sidecar.id}.mp4.part` : `${s.sidecar.id}.mp4`)
 
-  const origen = rutaPlugin || s.sidecar.rutaPart
-  if (origen) {
-    try {
-      rutaFinal = await moverArchivo(origen, rutaFinal)
-    } catch (e) {
-      console.warn('[tomaVideo] no se pudo mover el mp4:', e)
-      rutaFinal = origen
-    }
-  }
+  // SIN COPIA AL PARAR -parar-largo, 15-10-2026-. La toma se queda donde la cámara la dejó:
+  // getExternalFilesDir(DIRECTORY_MOVIES)/CameraPreview -CameraXView.java del plugin, fijo, sin opción
+  // para cambiarlo-. Es almacenamiento propio de la app como files/: no es caché, el sistema no lo
+  // limpia por falta de espacio y solo se borra al desinstalar o con «Borrar almacenamiento». Mover a
+  // files/grabaciones cruzaba de almacenamiento: renameTo fallaba y Files.copy tardaba 14 s con
+  // 3,89 GB. El json, el jpg y el registro siguen en files/grabaciones; el visor, guardar, compartir,
+  // borrar y la miniatura ya abren cualquier ruta -archivoDe, convertFileSrc-, y la recuperación usa
+  // rutaPlugin/rutaMp4 del sidecar. Incompleta se dice en el sidecar, ya no en el nombre del archivo.
+  // Antes:
+  // let rutaFinal = juntos(s.dir, incompleta ? `${s.sidecar.id}.mp4.part` : `${s.sidecar.id}.mp4`)
+  // const origen = rutaPlugin || s.sidecar.rutaPart
+  // if (origen) {
+  //   try {
+  //     rutaFinal = await moverArchivo(origen, rutaFinal)
+  //   } catch (e) {
+  //     console.warn('[tomaVideo] no se pudo mover el mp4:', e)
+  //     rutaFinal = origen
+  //   }
+  // }
+  const rutaFinal = rutaPlugin || s.sidecar.rutaPart || juntos(s.dir, `${s.sidecar.id}.mp4.part`)
 
   let analisis = {
     duracionMs: s.sidecar.milisegundos,
@@ -356,7 +408,9 @@ export async function cortarTomaVideo(opts?: {
     pausas: s.sidecar.pausas
   })
 
-  sesion = null
+  // Antes: sesion = null. Solo si sigue siendo la misma -iniciar otra toma no puede pasar durante el
+  // corte, pero no se pisa otra sesión-.
+  if (sesion === s) sesion = null
   return resumen
 }
 
@@ -451,6 +505,19 @@ export async function recuperarTomasPendientes(
       try {
         analisis.bytes = await bytesDe(ruta)
       } catch {}
+    }
+
+    // EL .mp4.part COMPLETO VUELVE A .mp4 -parar-largo, 15-10-2026-. El segundo Parar renombraba a .part
+    // un video ya entero -toma 1a6ab5e1 del Redmi de Javier-, y con ese nombre el visor no lo abre
+    // -ClienteWebDeTomas.tipoDeVideo no conoce .part-. Si el análisis lo lee entero -duración y bytes-, se
+    // renombra a <id>.mp4 en la misma carpeta: renameTo, instantáneo, sin copia. La marca incompleta del
+    // sidecar se respeta: no se sabe si el corte fue el del error o uno de verdad.
+    if (ruta === juntos(dir, `${s.id}.mp4.part`) && analisis.duracionMs > 0 && analisis.bytes > 0) {
+      try {
+        ruta = await moverArchivo(ruta, juntos(dir, `${s.id}.mp4`))
+      } catch (e) {
+        console.warn('[tomaVideo] no se pudo devolver el .part a .mp4:', e)
+      }
     }
 
     // .part fantasma o rutaPlugin que stop nunca devolvio: 0 bytes.
