@@ -156,3 +156,28 @@ A (4800f1d, seguidor.ts buscarMejorOffset y el recorrido de candPos). Si el tram
 Costo medido: sin paréntesis, a-mano=20, 13 → 16 detenciones y 250 → 285 s. Las tres nuevas duran
   11-12 s; la de 4:43 es B: el parcial había llevado el ancla a 236, lo confirmado era 204 y el lector
   iba por 216; soltar el ancla dejó el motor en 207, detrás del lector, hasta el final siguiente.
+
+
+4. REVISIÓN DEL PR #126 -el costo de B sin paréntesis, a-mano=20-
+------------------------------------------------------------------
+
+Las tres detenciones nuevas sin paréntesis son las tres el ancla que B soltaba (rastro.ts ... sin-parentesis):
+
+  momento   ancla  confirmado  adelante  motor          voz        final que la soltó
+  4:48,50   236    204         32        225,6 → 207,0  ~216       «lo primero que me llama la atención es el orden»
+  6:11,66   316    291         25        316,9 → 294,0  317→329    «hay otra idea desastre dando vuelta aquí»
+  8:30,74   485    455         30        485,9 → 458,0  485→499    «eh donde ya estamos más o menos validado»
+
+En las tres el ancla del parcial estaba más cerca del lector que lo confirmado. Las dos detenciones
+reales iban 62 (260/198) y 45 (1361/1316) adelante; el final en inglés que cerraba atrás, 5; Larralde
+hasta 31. Variantes medidas (movidas a mano / s quieto / detenciones):
+
+  variante                        tal cual 60   sin par. 60   tal cual 20   sin par. 20
+  antes (da8e1d0)                 2/585/19      0/445/18      14/343/19     11/250/13
+  rama hasta 33e621a (tope 12)    0/445/19      0/446/19      11/285/16     11/285/16
+  (a) C + A, sin B                0/428/18      0/419/17      11/258/14     11/250/13
+  (b) B con tope VENTANA_ADELANTE 0/377/16      0/368/15      10/239/13     10/231/12
+
+Banco: (a) y (b) dejan Español y Larralde idénticos a da8e1d0; Inglés 2,1/6,9 → 2,0/6,7 (atraso medio/p90).
+Queda (b): 0 a mano tal cual a 60 y 12 detenciones sin paréntesis a 20 -13 antes, 16 con tope 12, 13 con (a)-.
+(a) también llega a 0 a mano: con A y C la detención 1 ya no se traba; pero (b) es mejor en las ocho cifras.

@@ -11,7 +11,8 @@ const GUION = [
   'y nadie quiso abrir la puerta del patio',
   '(si me vieras por dentro sabrías lo que busco)',
   'el orden primero viene de la costumbre',
-  'después el miedo pide permiso para quedarse',
+  // -revisión del PR #126- tres palabras más: el ancla se suelta solo si va más de 40 adelante.
+  'después el miedo pide permiso para quedarse un rato largo entre las cosas de siempre',
   'si tú me vieras por dentro tú encuentras lo que busco',
   'y la tarde se cerró sobre nosotros'
 ].join('\n')
@@ -27,11 +28,15 @@ function conduccion(): Conduccion {
 const indice = (c: Conduccion, palabra: string, desde = 0) => c.tokens.findIndex((t, i) => i >= desde && t.palabra === palabra)
 
 // Las dos primeras líneas, frase por frase, como finales; el motor corre entre una y otra.
-function leerHastaLaAcotacion(c: Conduccion): number {
+// -revisión del PR #126- con soloParciales, desde esa frase no hay finales: el ancla queda más de 40
+// adelante de lo confirmado, que es lo que suelta B.
+function leerHastaLaAcotacion(c: Conduccion, soloParciales = Infinity): number {
   let t = 0
-  for (const f of ['la casa estaba quieta', 'cuando llegamos tarde', 'y nadie quiso abrir', 'la puerta del patio']) {
+  const frases = ['la casa estaba quieta', 'cuando llegamos tarde', 'y nadie quiso abrir', 'la puerta del patio']
+  for (const [i, f] of frases.entries()) {
     for (let k = 1; k < f.split(' ').length; k++) { t += 300; procesarParcial(c, f.split(' ').slice(0, k + 1).join(' '), t) }
-    t += 300; procesarFinal(c, f, t)
+    // Antes: t += 300; procesarFinal(c, f, t)
+    if (i < soloParciales) { t += 300; procesarFinal(c, f, t) }
     for (let k = 0; k < 10; k++) { t += 50; c.motor.estadoEn(t) }
   }
   return t
@@ -40,9 +45,10 @@ function leerHastaLaAcotacion(c: Conduccion): number {
 describe('motor-parentesis B: el parcial que ningún final confirma no deja la ventana adelante', () => {
   test('un parcial calza en la repetición, más abajo; los finales que no calzan devuelven la ventana a lo confirmado y el final siguiente, detrás del parcial, calza', () => {
     const c = conduccion()
-    let t = leerHastaLaAcotacion(c)
-    const patio = indice(c, 'patio')
-    expect(c.motor.estadoEn(t).ultimoCalce).toBe(patio)
+    // Antes: let t = leerHastaLaAcotacion(c) y lo confirmado era patio.
+    let t = leerHastaLaAcotacion(c, 2)
+    const tarde = indice(c, 'tarde')
+    expect(c.motor.estadoEn(t).ultimoCalce).toBeGreaterThan(tarde)
     // Un parcial que se parece más a la repetición de la línea 6 que a la acotación -lo que el
     // reconocedor entendió mal, como «no lo encuentra» por «yo no encuentro» en la toma- la calza allá.
     const dicho = 'si tú me vieras por dentro tú encuentras'.split(' ')
@@ -57,13 +63,15 @@ describe('motor-parentesis B: el parcial que ningún final confirma no deja la v
     // Dos finales que no calzan en ningún lado: el ancla del parcial no se confirmó.
     t += 300; procesarFinal(c, 'y si yo hablara con vos de lo que nunca dije', t)
     t += 1500; procesarFinal(c, 'ruido sin nada que ver con nada', t)
-    expect(c.motor.estadoEn(t).ultimoCalce).toBe(patio)
+    expect(c.motor.estadoEn(t).ultimoCalce).toBe(tarde)
     // Y sigue leyendo: el final, detrás del parcial, calza y el motor lo confirma.
     t += 1500
     const r = procesarFinal(c, 'el orden primero viene de la costumbre', t)
     expect(r).not.toBeNull()
-    expect(r!.hastaToken).toBe(indice(c, 'costumbre'))
-    expect(c.motor.estadoEn(t).ultimoCalce).toBe(indice(c, 'costumbre'))
+    // Antes: hastaToken y ultimoCalce en costumbre. Desde tarde el motor avanza con el tope de renglón
+    // de conduccion.ts; el seguidor sí queda en costumbre.
+    expect(c.seguidor.posicionToken()).toBe(indice(c, 'costumbre'))
+    expect(c.motor.estadoEn(t).ultimoCalce).toBeGreaterThan(tarde)
   })
 })
 
