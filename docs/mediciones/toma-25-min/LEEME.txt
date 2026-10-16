@@ -10,3 +10,9 @@ guion.txt   El guion tal cual se leyó, sacado del encabezado de la bitácora de
 Lo que vio Javier: el motor se detuvo cerca del minuto 6:25 y cerca del 25, en el mismo lugar del texto
 que en el g86; las dos veces se destrabó moviendo el texto a mano; en pocas ocasiones se adelantó.
 La bitácora de la toma se perdió: un segundo toque de Parar la reinició -otro error, orden aparte-.
+
+-motor-investigacion, 15-10-2026- INFORME.txt: la investigación de las detenciones, con su respuesta y los
+números. herramientas/: transcribir.py -Vosk en la caja, como VoskNativoPlugin-, medir.ts -el motor de la
+app sobre esa transcripción, con y sin paréntesis- y detalle.ts -seguidor y motor final por final-.
+resultados/: las palabras con tiempo que dio Vosk y las cuatro corridas de medir.ts. Cómo repetir todo:
+INFORME.txt, punto 6.
