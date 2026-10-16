@@ -1,0 +1,183 @@
+LAS DOS DETENCIONES DE LA TOMA DE 25 MINUTOS, CON NÚMEROS -motor-parentesis, 15-10-2026-
+================================================================================================
+
+Toma: docs/mediciones/toma-25-min (rama motor-investigacion, PR #125; el material no se sube aquí).
+Base: main en da8e1d0. Las cifras salen de docs/mediciones/motor-parentesis/rastro.ts, que repite
+los 'oyo' del registro por conduccion.ts -procesarParcial y procesarFinal, los de la app- e imprime
+cada parcial y final con el motor antes y después, la ventana de conduccion.ts y lo que usó el
+seguidor: pos, posTentativa, posPredicha y basePos.
+
+  npx vite-node docs/mediciones/motor-parentesis/rastro.ts -- /tmp/toma25.motor.txt 276 346
+  npx vite-node docs/mediciones/motor-parentesis/rastro.ts -- /tmp/toma25.motor.txt 1395 1470 mano=345:291
+
+La cuenta de puntajes de buscarMejorOffset -seguidor.ts- se rehízo a mano con los mismos pesos:
+coincidencias/palabras + 0,02·evidencia - 0,005·|posPredicha - offset|, y hace falta 0,5.
+
+Guion: acotación (1.) = tokens 202-215 «si me vieras por dentro seguro hallarías el porqué que yo
+no encuentro»; justo después, en el texto, 229-236 repite «si tú me vieras por dentro tú
+encuentras». Acotación (6.) = 1345-1361 «pero no puede ser porque vos sos también una verdad desde
+el corazón de tu médula»; después viene 1362 «y», 1363 «aquí».
+
+
+1. PRIMERA DETENCIÓN -4:44, guion tal cual-
+-------------------------------------------
+
+Lo que llevó al motor de 198 a 260 fue un PARCIAL, no un final.
+
+Javier lee la acotación (1.) en voz alta. El seguidor no mira las acotaciones -buscarMejorOffset
+salta los tokens esAcotacion, seguidor.ts:278-, así que esas palabras se buscan en el texto que sigue,
+donde se repiten:
+
+  277,90 parcial «y me vieras por dentro»        seguidor pos 198, posTentativa 198, posPredicha 254,9 (base 255)
+         el seguidor calza 229-234 «me vieras por dentro» del texto: posTentativa 198 → 234.
+         El motor recibe 201 -tope de renglón de conduccion.ts:60-61-, luego 215 y 234 en los
+         parciales siguientes: ultimoCalce 198 → 201 → 215 → 234 → 235 → 236 → 237.
+  283,80 parcial «... seguro hay arias el por y yo no encuentro»
+         seguidor pos 198, posTentativa 237, posPredicha 250,9, base = max(251, 237) = 251
+         Va en recuperación -tres parciales sin calce: usa las 5 palabras pendientes, «por y yo no encuentro»-, y «yo no
+         encuentro» calza 258-260 «no lo encuentra» con tres palabras SOLO PARECIDAS -yo/no,
+         no/lo, encuentro/encuentra-. El salto es 260-251 = 9 en candPos, pero el control de
+         SALTO_PARCIAL_SIN_EXACTAS mira el offset, 256, a 5 de la base -no más de 5-: pasa con 0 idénticas (0,590).
+         posTentativa 237 → 260. motor.tentativo(260): anclaTentativa 237 → 260, y
+         actualizarVelocidad con ese salto sube las ppm de ~92 a 249.
+  284,00 FINAL «y me vieras por dentro seguro hay arias el por y y yo no encuentro»
+         ANTES: motor 239,8, ultimoCalce 260, ventana 250..300;
+                seguidor pos 198, posTentativa 260, posPredicha 260,8, basePos 261.
+         avanzar busca de min(198, 261) - (12+5) = 181 hasta 261+40 = 301. Mejor puntaje 0,207
+         -otra vez «no lo encuentra», en 249-; la acotación leída, 206, da 0,099 aunque no se
+         saltara. Nada pasa de 0,5: el final NO calza, no confirma 260 y tampoco lo deshace.
+
+Desde ahí el estado queda congelado y no hay salida:
+
+  - avance.ts:163 y :236: ultimoCalce = refToken = max(ultimaConfirmada, anclaTentativa) = 260.
+    El ancla del parcial no confirmado cuenta como calce y nunca baja: confirmar solo sube
+    (:181-182) y falloCalce no la toca. La ventana de conduccion.ts:40-43 y :82-85 queda en
+    ref = max(260, floor(posición del motor 261,7)) = 261 → 251..301 hasta la mano de 5:45.
+  - El seguidor tampoco suelta su parcial: posTentativa = 260 (seguidor.ts:474) y avanzar solo
+    la corrige cuando un final CALZA (:384-385). posPredicha = max(pos, posTentativa) +
+    ppm/60·(t - tUltimoCalce) = 260 + 249/60·(t - 283,8), con tUltimoCalce clavado en el
+    parcial de 283,8:
+
+      final 288,50  posPredicha 279,5   «lo primero que me llama la atención es el orden»
+      final 301,96  posPredicha 335,4   «primero está la certeza de que el otro lo va a encontrar si
+                                         tú me vieras por dentro ... la respuesta»
+      final 308,24  361,5 · 313,94 385,1 · 318,70 404,9 · 325,70 434,0 · 343,40 507,5
+
+    El de 301,96 es el texto, palabra por palabra, en 228-239: 8 coincidencias, 7 seguidas, 0,714
+    con la penalización desde 220. Desde 335,4 la penalización es (335-228)·0,005 = 0,53: queda
+    en 0,217 y no calza. Los demás, igual. Doce finales seguidos sin calce de 284 a 343 s.
+
+  - Por qué la devolución de conduccion.ts:52-55 y :94-97 no lo destrabó: SOLO corre cuando el
+    seguidor CALZA fuera de la ventana (pos.movio && !enVentana). Aquí ningún final calzó -todos
+    bajo 0,5-, así que irAToken(ref) no corrió ni una vez entre 284 y 345 s. Y aunque hubiese
+    corrido, ref = max(ultimoCalce, posición del motor) = 261: lo habría llevado ADELANTE, al
+    parcial no confirmado, no atrás donde lee Javier. Es lo que pasa en la segunda detención
+    -abajo, 1407,36 s-: la devolución empuja al seguidor a 1361-1362.
+
+  Resumen: un parcial con tres palabras solo parecidas llevó el ancla a 260 y las ppm a 249; el
+  final no lo confirmó pero tampoco lo deshizo; ventana y predicción quedaron atadas a 260 y la
+  predicción siguió corriendo a 4 tokens por segundo hasta que ningún calce correcto alcanzaba 0,5.
+
+
+2. SEGUNDA DETENCIÓN -23:27, seguidor y motor en 1361-1362-
+------------------------------------------------------------
+
+Es la misma mecánica, con la acotación (6.) en el medio, más el recorrido de la predicción.
+
+  1405,04 parcial «... del dolor en las dificultades en la sus brazos»
+         seguidor pos 1316, posTentativa 1342, posPredicha 1342,2; motor 1342,2, ultimoCalce 1342.
+         Javier lee 1336-1344 «aprendimos del dolor de las dificultades de la frustración»; «la
+         sus brazos» -por «la frustración»- se alinea y el recorrido de candPos (seguidor.ts:462-
+         470) salta los 17 tokens de la acotación antes de la última palabra: candPos 1362.
+         posTentativa 1342 → 1362; motor.tentativo(1361): ancla 1342 → 1361, ppm 104 → 193.
+  1407,36 parcial «... de lo que no pudimos»: calza fuera de ventana, y la devolución de
+         conduccion.ts:52-55 lleva al seguidor a ref = 1361, luego 1362: pos 1316 → 1362. La
+         devolución empujó al seguidor ADELANTE, a la marca del parcial no confirmado.
+  1411,76 FINAL «... lo que no pudimos pagar lo que no pudimos comprar» -no está en el guion-:
+         nada. Desde ahí: seguidor pos 1362, motor 1362,3, ultimoCalce 1361, ppm 193,
+         tUltimoCalce 1405,04, y posPredicha = 1362 + 3,2·(t - 1405):
+
+      final       posPredicha  lo que se oyó                      dónde está en el guion
+      1416,62     1399         «era un»
+      1439,92     1474         «la bofetada pero no puede ser»   acotación 1346-1349
+      1445,20     1491         «os una verdad el corazón de médula» acotación 1354-1361
+      1448,06     1500         «aquí»                             1363
+      1452,34     1514         «se dio vuelta y poema entero»     1364-1369
+      1458,70     1535         «... pidiendo y lo miraran por dentro» 1371-1376
+      1461,44     1543         «y en una línea»                   1377-1380
+      1463,48     1550         «retira el pedido»                 1381-1383
+      1468,42     1566         «no lo retira porque el otro sea indiferente» 1384-1391
+
+    «aquí» en 1363 vale 1 + evidencia, menos (1500-1363)·0,005 = 0,69: no llega a 0,5. «retira el
+    pedido» en 1381: menos (1550-1381)·0,005 = 0,85. Todos los finales correctos caen dentro del
+    rango de búsqueda -1362-17 .. base+40- y dentro de la ventana del motor -1352..1402-, pero
+    los mata la distancia a una predicción que corre sola desde un parcial de hace 40-60 s.
+
+  Sin paréntesis: el mismo parcial de 1405 no puede saltar 17 tokens -las palabras de la (6.)
+  son texto-; el motor queda en 1345, el seguidor en 1316-1345. «la bofetada pero no puede ser»
+  calza en 1349 (1439,92) y renueva tUltimoCalce; «aquí» llega con posPredicha 1366 y calza en
+  1363; después 1376, 1380, 1383, 1391. Con paréntesis, esos mismos finales no calzan por tres
+  cosas juntas:
+    a. el parcial no confirmado dejó ancla, posTentativa y ppm adelantadas -lo mismo que en la 1-;
+    b. la acotación leída en voz alta (1439,92 y 1445,20) no calza porque el seguidor no mira
+       esos tokens: esos dos finales habrían renovado tUltimoCalce y la predicción, como sin
+       paréntesis;
+    c. sin ningún calce, posPredicha sigue sumando ppm/60 por segundo desde tUltimoCalce, sin
+       tope, aunque el motor esté frenado 'sin-calce': a 193 ppm, 20 s ya restan 0,32.
+  a se arregla con B; b con A. c no es una causa aparte: solo aparece porque a dejó tUltimoCalce
+  y las ppm de un parcial que nadie confirmó; se mide con B y B+A antes de tocarlo.
+
+
+3. DESPUÉS DE MEDIR -lo que se arregló y por qué-
+--------------------------------------------------
+
+B (2f569f5 + 7755b95, avance.ts y seguidor.ts). Desde el segundo final seguido sin calce
+  -fallosParaFrenar-, o cuando un final confirma, el ancla del parcial vuelve a ultimaConfirmada si
+  iba más de correaPalabras (12) adelante; y el final que no calza devuelve posTentativa del seguidor
+  a pos. Desde el PRIMER final -primera versión- rompía tarea89 toma 3 (Larralde de pie: el motor de
+  31 a 3, ahí los finales no calzan y los parciales llevan bien). Sin el tope de 12 el banco en
+  inglés (6b354819) tenía un tirón de 152,6 palabras/s: finales que cierran 5 detrás del parcial.
+  Detención 1 con B: a 288,50 el ancla vuelve a 192, el motor a 195; el final de 301,96 calza en
+  239 y desde ahí calzan 255, 263, 273, 277, 291.
+
+C (6c898ff, seguidor.ts calcularPosPredicha) -la causa c de arriba, que resultó necesaria-. B solo
+  empeoraba el guion sin paréntesis -0 → 1 movida a mano, 445 → 527 s-: al soltar el ancla, posPredicha
+  seguía sumando ppm·dt desde un tUltimoCalce viejo (1345 + 2,5 tokens/s → 1432 a los 1439,92 s).
+  Ahora el avance por tiempo se topa en VENTANA_ADELANTE (40, sin cambiarla): más adelante tampoco se
+  busca.
+
+A (4800f1d, seguidor.ts buscarMejorOffset y el recorrido de candPos). Si el tramo de un offset tiene
+  acotación, se puntúa también sin saltarla y gana leerla con puntaje igual o mayor. El "igual" es
+  otra causa encontrada al medir: «... de la sus brazos» -por «de la frustración»- empataba en las
+  dos cuentas, y saltándola el recorrido de candPos ponía la última palabra después de los 17 tokens
+  de la (6.): 1344 → 1362. Con A, detención 2: 1349 «(ser)» a 1439,92, 1363, 1376, 1380, 1383, 1391
+  -lo mismo que sin paréntesis-.
+
+Costo medido: sin paréntesis, a-mano=20, 13 → 16 detenciones y 250 → 285 s. Las tres nuevas duran
+  11-12 s; la de 4:43 es B: el parcial había llevado el ancla a 236, lo confirmado era 204 y el lector
+  iba por 216; soltar el ancla dejó el motor en 207, detrás del lector, hasta el final siguiente.
+
+
+4. REVISIÓN DEL PR #126 -el costo de B sin paréntesis, a-mano=20-
+------------------------------------------------------------------
+
+Las tres detenciones nuevas sin paréntesis son las tres el ancla que B soltaba (rastro.ts ... sin-parentesis):
+
+  momento   ancla  confirmado  adelante  motor          voz        final que la soltó
+  4:48,50   236    204         32        225,6 → 207,0  ~216       «lo primero que me llama la atención es el orden»
+  6:11,66   316    291         25        316,9 → 294,0  317→329    «hay otra idea desastre dando vuelta aquí»
+  8:30,74   485    455         30        485,9 → 458,0  485→499    «eh donde ya estamos más o menos validado»
+
+En las tres el ancla del parcial estaba más cerca del lector que lo confirmado. Las dos detenciones
+reales iban 62 (260/198) y 45 (1361/1316) adelante; el final en inglés que cerraba atrás, 5; Larralde
+hasta 31. Variantes medidas (movidas a mano / s quieto / detenciones):
+
+  variante                        tal cual 60   sin par. 60   tal cual 20   sin par. 20
+  antes (da8e1d0)                 2/585/19      0/445/18      14/343/19     11/250/13
+  rama hasta 33e621a (tope 12)    0/445/19      0/446/19      11/285/16     11/285/16
+  (a) C + A, sin B                0/428/18      0/419/17      11/258/14     11/250/13
+  (b) B con tope VENTANA_ADELANTE 0/377/16      0/368/15      10/239/13     10/231/12
+
+Banco: (a) y (b) dejan Español y Larralde idénticos a da8e1d0; Inglés 2,1/6,9 → 2,0/6,7 (atraso medio/p90).
+Queda (b): 0 a mano tal cual a 60 y 12 detenciones sin paréntesis a 20 -13 antes, 16 con tope 12, 13 con (a)-.
+(a) también llega a 0 a mano: con A y C la detención 1 ya no se traba; pero (b) es mejor en las ocho cifras.
