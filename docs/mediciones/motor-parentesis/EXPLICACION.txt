@@ -126,3 +126,33 @@ Es la misma mecánica, con la acotación (6.) en el medio, más el recorrido de 
        tope, aunque el motor esté frenado 'sin-calce': a 193 ppm, 20 s ya restan 0,32.
   a se arregla con B; b con A. c no es una causa aparte: solo aparece porque a dejó tUltimoCalce
   y las ppm de un parcial que nadie confirmó; se mide con B y B+A antes de tocarlo.
+
+
+3. DESPUÉS DE MEDIR -lo que se arregló y por qué-
+--------------------------------------------------
+
+B (2f569f5 + 7755b95, avance.ts y seguidor.ts). Desde el segundo final seguido sin calce
+  -fallosParaFrenar-, o cuando un final confirma, el ancla del parcial vuelve a ultimaConfirmada si
+  iba más de correaPalabras (12) adelante; y el final que no calza devuelve posTentativa del seguidor
+  a pos. Desde el PRIMER final -primera versión- rompía tarea89 toma 3 (Larralde de pie: el motor de
+  31 a 3, ahí los finales no calzan y los parciales llevan bien). Sin el tope de 12 el banco en
+  inglés (6b354819) tenía un tirón de 152,6 palabras/s: finales que cierran 5 detrás del parcial.
+  Detención 1 con B: a 288,50 el ancla vuelve a 192, el motor a 195; el final de 301,96 calza en
+  239 y desde ahí calzan 255, 263, 273, 277, 291.
+
+C (6c898ff, seguidor.ts calcularPosPredicha) -la causa c de arriba, que resultó necesaria-. B solo
+  empeoraba el guion sin paréntesis -0 → 1 movida a mano, 445 → 527 s-: al soltar el ancla, posPredicha
+  seguía sumando ppm·dt desde un tUltimoCalce viejo (1345 + 2,5 tokens/s → 1432 a los 1439,92 s).
+  Ahora el avance por tiempo se topa en VENTANA_ADELANTE (40, sin cambiarla): más adelante tampoco se
+  busca.
+
+A (4800f1d, seguidor.ts buscarMejorOffset y el recorrido de candPos). Si el tramo de un offset tiene
+  acotación, se puntúa también sin saltarla y gana leerla con puntaje igual o mayor. El "igual" es
+  otra causa encontrada al medir: «... de la sus brazos» -por «de la frustración»- empataba en las
+  dos cuentas, y saltándola el recorrido de candPos ponía la última palabra después de los 17 tokens
+  de la (6.): 1344 → 1362. Con A, detención 2: 1349 «(ser)» a 1439,92, 1363, 1376, 1380, 1383, 1391
+  -lo mismo que sin paréntesis-.
+
+Costo medido: sin paréntesis, a-mano=20, 13 → 16 detenciones y 250 → 285 s. Las tres nuevas duran
+  11-12 s; la de 4:43 es B: el parcial había llevado el ancla a 236, lo confirmado era 204 y el lector
+  iba por 216; soltar el ancla dejó el motor en 207, detrás del lector, hasta el final siguiente.
