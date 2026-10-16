@@ -1,0 +1,70 @@
+guion tal cual: 2823 tokens, 217 en acotación; vara: 1140 palabras alineadas de 2055
+movidas a mano: 2 5:45→291, 24:27→1391
+posición final del motor: 1476.7 de 2823; voz al final: 1470
+voz por minuto: 0:0/0 1:22/20 2:96/94 3:146/128 4:196/191 5:237/261 6:310/304 7:375/375 8:441/439 9:524/524 10:585/578 11:630/630 12:677/672 13:743/743 14:779/773 15:835/827 16:909/907 17:955/932 18:994/987 19:1058/1058 20:1131/1130 21:1178/1176 22:1229/1229 23:1304/1296 24:1349/1362 25:1426/1426
+RESUMEN: 19 detenciones, 585 s quieto; 8 con acotación dicha (291 s); fuera de ventana: 0; movidas a mano: 2
+
+DETENCIONES
+- 0:00–0:50 (51 s): motor en 0 «en»; voz 0→17, 17 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno sin-calce,silencio,-
+    texto del guion entre motor y voz: «enero de 1969 sale un disco que se llama hombre doce canciones tres de ellas me llamaron»
+    Vosk oyó: «igual / intentar comprender el contexto / no no lo conseguí / me pasa es honrarle / en comprar la razón es de dónde viene / toda su sabiduría / cuando un testigo / como no se relaciona / el entonces / así es gallo de lejos / este tema salió en enero de años sesenta y nueve / en un disco es llama hombre / con doce canciones del disco»
+- 0:53–1:12 (19 s): motor en 20 «me llamaron mucho la atencion»; voz 20→56, 36 tokens delante -dentro de la ventana de 40-; acotación dicha: 3 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «habla en el más largo son cuatro minutos donde un hombre de treinta y un años (un) (hombre) (joven) recita un poema que se llama si me vieras por dentro un hombre le pide a otro»
+    Vosk oyó: «tres de ellas me llamaron poderosamente la atención / y la que vamos escuchad escuchad guía párrafo analizarlo un poco / es la más larga desastres / y debieras orden / en este tema un hombre»
+- 2:34–3:25 (51 s): motor en 128 «momentos lo hacemos todos al»; voz 127→164, 36 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «que nos quiere le pasamos la pelota le pasamos la pregunta y la responsabilidad sobre lo que no podemos contestarnos solos por que estoy aqui y tenemos la esperanza de que desde afuera se vea mejor»
+    Vosk oyó: «y usualmente le pasamos / la pelota está pelota es agradable / al otro al otro y quiere a los otros están ser a y les entregamos la responsabilidad / sobre aquello / y para nosotros no es fácil contestar nos solo / esa entrega / a la a la pregunta por qué estoy aquí / estoy así haciendo / para que existo / yo creo que se hace porque existe la esperanza / eh que desde fuera / se vea mejor»
+- 3:43–3:53 (10 s): motor en 179 «lo hace sin ningun rencor»; voz 179→194, 15 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «no como lo hacemos nosotros frente a estos vacios nosotros generamos el rencor y lo»
+    Vosk oyó: «es un impacto porque nosotros / frente a este tipo de vacío / usualmente generamos el rencor / y lo confronta mos en el otro»
+- 4:45–5:45 (60 s) hasta moverlo a mano: motor en 260 «dice que no lo encuentra»; voz 215→291, 31 tokens delante -dentro de la ventana de 40-; acotación dicha: 1 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «la diferencia es hay algo ahí está adentro pero el dueño de casa no da con el aqui existe la idea de que somos el peor testigo de nuestra propia vida»
+    Vosk oyó: «lo primero que me llama la atención es el orden / primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro un encuentras encuentras la respuesta / y después seguidamente viene la confesión de el mismo / no puede no dice que no tienen por qué / dice que no lo encuentra la diferencia es / existe algo ahí / está dentro pero el dueño de casa / no da no da con él / viernes un»
+- 5:52–6:15 (23 s): motor en 303 «intereses cualquiera que nos quiera»; voz 303→328, 25 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «un poco ve con facilidad cosas nuestras que podemos negar hace veinte años hay una idea de sartre dando vueltas acá no somos una cosa»
+    Vosk oyó: «y por qué por falta de objetividad por estar demasiado cerca de doce estimamos que cualquiera que quiera bobo / va a poder ver con mayor facilidad / goza nuestras / en nosotros mismos podemos estar negando hace veinte años es ello / hay otra idea desastre dando vuelta aquí»
+- 7:10–7:21 (10 s): motor en 386 «(mantiene) (mis) (raíces) (frescas) (aunque)»; voz 387→401, 15 tokens delante -dentro de la ventana de 40-; acotación dicha: 6 tokens; freno sin-calce,-
+    texto del guion entre motor y voz: «(mi) (cerebro) (piense) (que) (están) (secas) acá se parte en dos hay algo que lo»
+    Vosk oyó: «aunque mi ceremonias / bueno aquí ya se parte en dos»
+- 9:25–9:55 (30 s): motor en 556 «personas desde donde ser expulsado»; voz 556→576, 20 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «era morirse y quedan reminiscencias al mirar el fuego el mar pero la tarea del cerebro era anticipar la desgracia»
+    Vosk oyó: «o al grupo de treinta personas desde donde ser expulsado / era una condena a muerte / y de eso quedan reminiscencias / creo que esa reminiscencia están muy evidentes por ejemplo cuando miramos el juego / o cuando cuando miramos el mar / pero en definitiva la tarea del cerebro / en general era / anticipar la desgracia»
+- 11:17–11:47 (30 s): motor en 649 «cuatro tiempos para una sola»; voz 631→661, 12 tokens delante -dentro de la ventana de 40-; acotación dicha: 14 tokens; freno sin-calce,-
+    texto del guion entre motor y voz: «herida hace siglos ayer este mismo momento siempre una herida con fecha»
+    Vosk oyó: «mitad del siglo desde ayer mismo momento desde siempre / cuatro tiempos / la planteando cuatro tiempo / para una sola herida / hace siglos / ayer / este mismo momento siempre / una herida con fecha»
+- 12:58–13:20 (22 s): motor en 742 «que se partió alguna vez»; voz 742→761, 19 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «dice que se está partiendo mientras hablapor eso siempre no cierra la serie la condena no nombra una duración»
+    Vosk oyó: «cepal esta vida mi tallo batido el se partió alguna vez / dice hice tapar y endo mientras habla mientras lo dice / por eso cuando el termina en siempre / me está cerrando la serie / la esta condenando»
+- 13:28–14:10 (42 s): motor en 773 «todavía la forma de terminar»; voz 768→791, 18 tokens delante -dentro de la ventana de 40-; acotación dicha: 9 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «(mi) (niña) (juventud) (mi) (vejez) (niña) (mi) (vieja) (niñez) no habla de tres edades habla de una vida»
+    Vosk oyó: «no no nombra una duración nombra una herida que no ha encontrado y que no va a encontrar la forma de poder sanar la forma esa de determinar / hm / ni juventud mi niña mi vieja niña / ya estaba te tampoco tampoco está hablando de tres edades»
+- 14:37–14:53 (16 s): motor en 812 «fragilidad que no se fue»; voz 812→826, 14 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «la vejez como niña porque hay cansancios que también desamparan y mi vieja niñez»
+    Vosk oyó: «y también burke / existen cansancio / que desampara / mi mi y cuando dice y mi vieja niñez»
+- 16:12–16:43 (31 s): motor en 923 «a vivir entre respuestas ajenas»; voz 923→944, 21 tokens delante -dentro de la ventana de 40-; acotación dicha: 20 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «(5) (porque) (aunque) (mi) (existencia) (sea) (un) (accidente) (tengo) (razón) (de) (ser) (el) (hecho) (de) (haber) (nacido) (encierra) (una) (verdad) aqui»
+    Vosk oyó: «derechamente dejaba de preguntan y no dejaba de preguntar porque hallamos entendido más no que porque nos acostumbramos a vivir entre respuestas ajenas / una / énfasis / pedimos razón / ya»
+- 16:45–17:07 (23 s): motor en 931 «(mi) (existencia) (sea) (un) (accidente)»; voz 948→962, 31 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno sin-calce,-
+    texto del guion entre motor y voz: «(tengo) (razón) (de) (ser) (el) (hecho) (de) (haber) (nacido) (encierra) (una) (verdad) aqui está el corazón filosófico que es realmente desconcertante y desconcertante por la profundidad heidegger dice que somos arrojados»
+    Vosk oyó: «aquí está el corazón filosófico / y y este corazón filosófico del tema / realmente eh / es es con ser am / y es muy desconcertante por el nivel de profundidad / heidegger dice que somos arrojados al mundo»
+- 17:20–17:59 (39 s): motor en 981 «nuestra responsabilidad sartre lleva eso»; voz 977→992, 11 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «hasta el final con su fórmula más conocida la existencia antes»
+    Vosk oyó: «nadie nos pidió permiso para nacer y sin embargo la vida como la vivimos en nuestra responsabilidad / no existe eso es bueno mí a mí nadie me llamó a horas y que ahora tienen que asumir la responsabilidad de que destaca es obvio yo me comportó / no he de ver dice bien bien te lo pregunto / pero eres responsable / un vida o que no se vapor estas acá / sartre por su lado lleva esto más lejos lo y ha»
+- 19:38–19:52 (14 s): motor en 1123 «verdades larralde queda en el»; voz 1107→1125, 2 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «peor lugar»
+    Vosk oyó: «en el fondo también es una decisión como el ateo creyente / en el fondo la teoría creyente son dos creyentes persona que son capaces de llegar a una verdad pero la ral de edad en el peor lugar»
+- 20:04–20:42 (38 s): motor en 1138 «leerlo no esta a su»; voz 1139→1160, 22 tokens delante -dentro de la ventana de 40-; acotación dicha: 17 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «alcance (5) (yo) (mismo) (soy) (savia) (de) (un) (tronco) (partido) (que) (no) (cicatriza) (porque) (transmite) (desde) (hace) (siglos) el tronco no cierra»
+    Vosk oyó: «no está a su alcance / tomemos eso o parte de los congreso obtendrás / los / tuvimos un tronco partido que no cicatriza porque transmite desde hace siglos»
+- 22:49–23:05 (16 s): motor en 1296 «entrega es por donde entrega»; voz 1295→1311, 15 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «todo el que crió a un hijo sabe esto sin haberlo pensado lo que uno»
+    Vosk oyó: «pienso que el todo todo los bien criado hijo / hijas»
+- 23:27–24:27 (60 s) hasta moverlo a mano: motor en 1361 «(el) (corazón) (de) (tu) (médula)»; voz 1343→1391, 30 tokens delante -dentro de la ventana de 40-; acotación dicha: 17 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «y aqui se da vuelta el poema entero venía pidiendo que lo miraran por dentro y en una línea retira el pedido no lo retira porque el otro sea indiferente»
+    Vosk oyó: «viene de los de aprendimos del dolor en las dificultades el asociaciones de lo que no pudimos pagar lo que no pudimos comprar / era un / amo / otro / comedor / la bofetada pero no puede ser / os una verdad el corazón de médula / aquí / se dio vuelta y poema entero / el venía venía pidiendo y lo miraran por dentro / y en una línea / retira el pedido / no lo retira porque el otro sea indiferente»
+
+ADELANTOS (> 8 tokens delante de la voz)
+- 4:41–5:14: hasta 46.7 tokens; motor 261 «no lo encuentra la», voz 215 «(que) (yo) (no) (encuentro)»; acotación entre medio: 1
+- 11:12–11:20: hasta 18.3 tokens; motor 649 «tiempos para una sola», voz 631 «es un desajuste (mi)»; acotación entre medio: 14
+- 19:37–19:44: hasta 17.4 tokens; motor 1124 «queda en el peor», voz 1107 «tambien es una decision»; acotación entre medio: 0
+- 23:25–24:01: hasta 19.3 tokens; motor 1362 «(de) (tu) (médula) y», voz 1343 «las dificultades de la»; acotación entre medio: 17

@@ -1,0 +1,143 @@
+INFORME: EL MOTOR QUE SE DETIENE EN LA TOMA DE 25 MIN -motor-investigacion, 15-10-2026-
+Investigación sin arreglo: el motor NO se tocó. Material: audio.flac y guion.txt -ver LEEME.txt-.
+
+RESPUESTA CORTA
+¿Los paréntesis -acotaciones que Javier SÍ lee- detienen el motor? SÍ. Con el mismo audio y el mismo
+motor, el guion tal cual necesita 2 movidas a mano y el mismo guion sin paréntesis, 0. Las dos
+detenciones largas empiezan justo después de un paréntesis leído en voz alta: «(1. Si me vieras por
+dentro…)» y «(6. Pero no puede ser…)».
+
+Pero el mecanismo NO es el de la hipótesis -la voz se va más de 40 tokens adelante y queda fuera de la
+ventana-. Es al revés: al leer el paréntesis, el MOTOR SE ADELANTA y salta a una frase parecida que está
+DESPUÉS del paréntesis; la voz queda DETRÁS y ahí el seguidor y el motor ya no se encuentran.
+
+1. CÓMO SE MIDIÓ -REPRODUCIDO SIN TELÉFONO-
+- Vosk en la caja, con el modelo de la app -vosk-model-small-es-0.42 con --frames-per-chunk=3, como lo
+  deja scripts/bajar-modelo.mjs- y el lazo de VoskNativoPlugin.java -Oido.run-:
+  - trozos de 20 ms;
+  - final con getResult, parcial con getPartialResult;
+  - se entrega si cerró, si el parcial cambió o cada 5 trozos;
+  - setWords(true), sin gramática.
+  Herramienta: herramientas/transcribir.py. Salieron 13.410 entregas, de ellas 277 finales con 2.055
+  palabras, en 1.558 s de audio.
+- El texto que llega a JavaScript -"partial" y "text", MotorNativo.ts- entra al motor de la app con
+  repetirLectura -lib/repetidor.ts, conduccion.ts, seguidor.ts, avance.ts-. Es el mismo camino que
+  `npm run banco`, con el reloj de cuadros de 16 ms y el tiempo de cada 'oyo' en el reloj del audio.
+  Herramienta: herramientas/medir.ts.
+- LA VARA -dónde iba de verdad la voz-: las palabras de los finales alineadas contra los tokens del
+  seguidor, contando las acotaciones, con alinear de src/pruebas/alinearToma.js. Se alinearon 1.140 de
+  2.055 palabras: Javier comenta mucho fuera del guion. Se descartan los pares que saltan más de 50 tokens.
+- UNA DETENCIÓN: al menos 8 s en que la POSICIÓN del motor -lo que se ve- no avanza un token mientras
+  la voz avanza 12 o más. Como Javier, si dura a-mano segundos se mueve el texto a mano a donde va la voz.
+  Se probó con a-mano=60 -Javier esperó y movió solo dos veces- y con a-mano=20.
+- UN ADELANTO: el motor va más de 8 tokens delante de la voz.
+
+2. LO MEDIDO -resultados/medir-*.txt-
+
+  | guion | a mano a los | detenciones | s quieto | con acotación dicha | movidas a mano |
+  |---|---|---|---|---|---|
+  | tal cual | 60 s | 19 | 585 | 8 (291 s) | 2: a las 5:45 y 24:27 |
+  | SIN paréntesis | 60 s | 18 | 445 | 0 | 0 |
+  | tal cual | 20 s | 19 | 343 | 7 (127 s) | 14 |
+  | SIN paréntesis | 20 s | 13 | 250 | 0 | 11 |
+
+  Con a-mano=20 se mueve a mano en cualquier pausa de 20 s, también en las cortas que el motor resuelve
+  solo: por eso salen 14 y 11. La cifra que importa es la de 60 s.
+  Las detenciones de 8 a 20 s que hay en las dos versiones son pasajes donde Javier dice otra cosa que el
+  guion: el motor espera y retoma solo -freno sin-calce-. No hizo falta el dedo y no son de los paréntesis.
+
+  LAS DOS DETENCIONES LARGAS -guion tal cual, a-mano=60-:
+
+  | detención | motor quieto en | la voz va | Vosk oyó | qué pasó antes |
+  |---|---|---|---|---|
+  | 4:45 a 5:45, 60 s hasta mover a mano | token 260 «…dice que no lo encuentra» | de 215 a 291: hasta 46 tokens DETRÁS del motor, y después 31 delante | «y me vieras por dentro seguro hay arias el por y y yo no encuentro», después «lo primero que me llama la atención es el orden…» | Lectura de la acotación (1., tokens 202 a 215). Un parcial llevó al motor de 198 a 260: «no encuentro» calzó con «no lo encuentra», 46 tokens más adelante, fuera del paréntesis. El seguidor quedó en 198. |
+  | 23:27 a 24:27, 60 s hasta mover a mano | token 1361-1362, dentro de la acotación «(…el corazón de tu médula)» | de 1343 a 1391 | «…pero no puede ser / os una verdad el corazón de médula / aquí / se dio vuelta y poema entero / el venía pidiendo…» | El motor saltó de 1326 a 1361, el final del paréntesis (6., tokens 1345 a 1361), cuando la voz iba en 1343, antes del paréntesis. Ningún final volvió a calzar en 55 s. |
+
+  Los tiempos son del reloj del audio. Javier vio «cerca de 6:25 y cerca de 25» en el reloj de la toma;
+  los lugares del texto son los mismos: el primer paréntesis largo y el sexto.
+  El paréntesis 11 -«(11. Y sin embargo…», token 2.372- no se alcanzó en este audio: la voz llega a
+  ~1.470 tokens de 2.823.
+
+  ADELANTOS -guion tal cual, a-mano=60-:
+  - 4:41: 46,7 tokens; el paréntesis 1, el de arriba.
+  - 11:12: 18,3 tokens; 14 de acotación entre la voz y el motor.
+  - 19:37: 17,4 tokens; sin acotación.
+  - 23:25: 19,3 tokens; el paréntesis 6.
+  Sin paréntesis quedan 4 adelantos de 9,7 a 17,4 tokens, y el más grande -19:37- es el mismo de las dos
+  versiones: no viene de los paréntesis. Los «se adelantó un poco» de Javier son estos.
+
+3. POR QUÉ SE QUEDA QUIETO -herramientas/detalle.ts, cada final con el seguidor y el motor-
+- PRIMERA DETENCIÓN, 4:44. Tras el parcial que adelantó al motor, el MOTOR quedó en 260 y el SEGUIDOR
+  en 198: el final no confirmó el salto y el seguidor siguió en su posición.
+  - El seguidor busca hasta 40 tokens adelante -VENTANA_ADELANTE, seguidor.ts-, o sea hasta 238.
+  - El motor acepta calces desde 10 tokens atrás de él -conduccion.ts, posMin = ref - 10-, o sea desde 250.
+  - Entre 238 y 250 no hay nada en común: todo final da «nada», también cuando la voz ya pasó por 260
+    -«dice que no lo encuentra la diferencia es», 318,7 s-. El freno queda en sin-calce para siempre.
+  - Sin mover a mano, la repetición queda en 261 hasta el final de la toma.
+- SEGUNDA DETENCIÓN. Seguidor y motor quedan juntos en 1361-1362, el último token de la acotación, y
+  ningún final calza durante 55 s: «aquí», «se dio vuelta y poema entero», «el venía venía pidiendo y lo
+  miraran por dentro» -guion: «y aqui se da vuelta el poema entero venía pidiendo que lo miraran por
+  dentro»-.
+  - Con el MISMO audio y la misma movida a mano a los 5:45, sin paréntesis, esos finales calzan uno tras
+    otro: 1363, 1376, 1380, 1383, 1391.
+  - No se encontró dentro de seguidor.ts por qué un seguidor parado en un token de acotación no calza lo
+    que sigue. Queda abierto.
+- POR QUÉ EL PARÉNTESIS ADELANTA. Las palabras de una acotación no cuentan para calzar -esAcotacion,
+  seguidor.ts-. Al leerlas en voz alta, el seguidor busca esas palabras en el texto normal que viene
+  DESPUÉS. Este guion repite a propósito las líneas del poema fuera del paréntesis -«si me vieras por
+  dentro seguro hallarás el por que…»-, así que las encuentra allí, unos 30 a 50 tokens más adelante.
+
+4. OTRAS CAUSAS QUE SE MIRARON
+- Vosk ahogado: no. En la caja Vosk corre muy por encima del tiempo real, y en el Redmi el banco de 35 min
+  dio 410 a 490 ms por segundo de audio y un atraso máximo de 42 ms.
+- La ventana de 40 hacia adelante -la hipótesis-: en ninguna detención la voz quedó más de 40 tokens
+  delante del motor -«fuera de ventana: 0» en las cuatro corridas-. El problema es la ventana hacia
+  ATRÁS -10- frente a un motor adelantado.
+- Freno sin-calce: está en todas las detenciones, pero es el síntoma -no hay calce-, no la causa. En las
+  cortas suelta solo cuando vuelve a haber calce.
+- Un renglón trabado: no aparece. La posición queda quieta a mitad de renglón, no contra un límite de
+  línea.
+
+5. OPCIONES DE ARREGLO -no se hizo ninguna-
+A. LA ACOTACIÓN LEÍDA SE SIGUE. Si lo que se oye calza con el texto DE UNA ACOTACIÓN cercana, se sigue por
+   ella como si fuera texto; si no, se salta como hoy.
+   - Se toca seguidor.ts: calzar también contra los tokens esAcotacion de la ventana, con menos peso que
+     el texto normal.
+   - Costo medio: 1 a 2 días con banco. Hay que medir que no empeoren las tomas donde las acotaciones NO
+     se leen -Larralde, las de inglés-.
+   - Es lo que pide el caso: Javier lee unas acotaciones y otras no.
+B. EL MOTOR NO SE QUEDA ADELANTADO SIN CONFIRMAR. Si un parcial adelanta al motor y el final no lo
+   confirma, el motor vuelve a donde está el seguidor. O bien la ventana hacia atrás se abre mientras el
+   motor está adelantado y sin calce, por ejemplo hasta el seguidor.
+   - Se toca conduccion.ts y avance.ts -o solo conduccion.ts-.
+   - Costo bajo a medio: medio día a 1 día con banco.
+   - Arregla el bloqueo de 238/250 aunque el salto venga de otra cosa que un paréntesis, pero no evita
+     el salto adelante del principio.
+C. UN DESTRABE POR TIEMPO. Si el freno sin-calce dura más de N segundos con voz, por ejemplo 10, y llegan
+   finales que el seguidor ubicaría desde la posición del motor hacia atrás, se acepta el calce aunque
+   esté detrás de la ventana.
+   - Costo bajo: unas horas.
+   - Es un remiendo: no ataca la causa y puede llevar la pantalla para atrás.
+   Recomendación: A más B. B solo ya habría evitado la primera detención larga.
+
+6. CÓMO REPETIR LA MEDICIÓN
+- Python 3 con vosk, soundfile y numpy, en la caja: pip install --user vosk soundfile numpy. Es una
+  herramienta, no una dependencia del repositorio.
+- El modelo de la app: scripts/bajar-modelo.mjs, o vosk-model-small-es-0.42 con --frames-per-chunk=3
+  agregado en conf/model.conf.
+- python3 docs/mediciones/toma-25-min/herramientas/transcribir.py <modelo> docs/mediciones/toma-25-min/audio.flac docs/mediciones/toma-25-min/guion.txt /tmp/toma25.motor.txt docs/mediciones/toma-25-min/resultados/palabras.json
+  Tarda unos 3 min.
+- npx vite-node docs/mediciones/toma-25-min/herramientas/medir.ts -- /tmp/toma25.motor.txt docs/mediciones/toma-25-min/resultados/palabras.json [sin-parentesis] [a-mano=60] [salida.json]
+  Unos 2 min por corrida.
+- npx vite-node docs/mediciones/toma-25-min/herramientas/detalle.ts -- /tmp/toma25.motor.txt 270 350
+  Y con la movida a mano: npx vite-node docs/mediciones/toma-25-min/herramientas/detalle.ts -- /tmp/toma25.motor.txt 1405 1470 mano=345:291 [sin-parentesis]
+- vite-node viene con vitest: no hay dependencias npm nuevas. El registro de 3,8 MB no se sube porque
+  sale igual de audio.flac.
+
+7. LO QUE PUEDE SER DISTINTO EN EL TELÉFONO
+- Los 'oyo' entran en el milisegundo del fin del trozo de audio; en el teléfono llegan unas decenas de ms
+  después.
+- Vosk en la caja es la versión de Python -libvosk de escritorio-, no la del APK; el modelo y la
+  configuración son los mismos.
+- El relevo del micrófono no se simula: el audio ya es el que oyó el reconocedor.
+- La vara es aproximada en los pasajes en que Javier comenta fuera del guion.
