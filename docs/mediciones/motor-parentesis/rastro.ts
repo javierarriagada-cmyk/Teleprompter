@@ -13,10 +13,10 @@
 // mano=<s>:<token> mueve el texto a mano en ese segundo, como Javier. sin-parentesis quita ( y ).
 //
 // Uso: npx vite-node docs/mediciones/motor-parentesis/rastro.ts -- <registro> <desde s> <hasta s>
-//        [mano=345:291 ...] [sin-parentesis] [solo-finales] [antes-de-B]
+//        [mano=345:291 ...] [sin-parentesis] [solo-finales] [antes-de-B] [antes-de-C]
 import fs from 'fs'
 import { leerCorpus } from '../../../src/lib/repetidor'
-import { tokenizarGuion, crearSeguidor } from '../../../src/lib/seguidor'
+import { tokenizarGuion, crearSeguidor, VENTANA_ADELANTE } from '../../../src/lib/seguidor'
 import { crearMotorDeAvance } from '../../../src/lib/avance'
 import { procesarFinal, procesarParcial } from '../../../src/lib/conduccion'
 import { detectarIdioma } from '../../../src/lib/detectarIdioma'
@@ -37,6 +37,8 @@ const real = crearSeguidor(tokens, { idioma: detectarIdioma(c.guion) ?? undefine
 let pos = 0, posT = 0
 // En da8e1d0 -antes de B- pasar antes-de-B, para que el rastro no aplique esa regla.
 const B = !args.includes('antes-de-B')
+// Y antes del tope de la predicción -causa c- pasar antes-de-C.
+const C = !args.includes('antes-de-C')
 const seg = {
   ...real,
   // Desde el arreglo B, el final que no calza también devuelve posTentativa a pos -seguidor.ts, avanzar-.
@@ -52,7 +54,7 @@ for (const e of c.eventos) {
   while (manos.length && manos[0].ms <= e.ms) { const m = manos.shift()!; seg.irAToken(m.token); motor.irAToken(m.token, m.ms) }
   const st = motor.estadoEn(e.ms)
   const posActual = Math.max(pos, posT)
-  const posPredicha = st.tUltimoCalceMs > 0 && e.ms >= st.tUltimoCalceMs ? posActual + (st.ppmEstimadas / 60) * ((e.ms - st.tUltimoCalceMs) / 1000) : posActual
+  const posPredicha = st.tUltimoCalceMs > 0 && e.ms >= st.tUltimoCalceMs ? posActual + Math.min(C ? VENTANA_ADELANTE : Infinity, (st.ppmEstimadas / 60) * ((e.ms - st.tUltimoCalceMs) / 1000)) : posActual
   const antes = { pos, posT }
   const res = e.final ? procesarFinal(cond, e.texto, e.ms) : procesarParcial(cond, e.texto, e.ms)
   if (e.ms < a || e.ms > b || (soloFinales && !e.final)) continue

@@ -252,7 +252,14 @@ export function crearSeguidor(tokens: Token[], opciones: { idioma?: string } = {
     if (tMs !== undefined && ppmEstimadas !== undefined && tUltimoCalce !== undefined && tUltimoCalce > 0 && tMs >= tUltimoCalce) {
       const dtSeg = (tMs - tUltimoCalce) / 1000
       const velocidadTokensSeg = (ppmEstimadas / 60)
-      return posActual + velocidadTokensSeg * dtSeg
+      // LA PREDICCIÓN NO CORRE SOLA MÁS ALLÁ DE LA VENTANA -motor-parentesis, 15-10-2026-. Sin un
+      // calce, ppm·dt crecía sin tope: en la toma de 25 min, 1362 + 3,2 tokens/s desde 1405 s daba
+      // 1500 a los 1448 s, y "aquí" -1363- perdía 0,69 de puntaje por distancia: ningún final correcto
+      // llegaba a 0,5. Más de VENTANA_ADELANTE tokens adelante de lo oído no se busca de todos modos
+      // -hasta = basePos + VENTANA_ADELANTE parte de lo oído-; la predicción se queda ahí.
+      // Ver docs/mediciones/motor-parentesis/EXPLICACION.txt, punto 2, causa c.
+      // Antes: return posActual + velocidadTokensSeg * dtSeg
+      return posActual + Math.min(VENTANA_ADELANTE, velocidadTokensSeg * dtSeg)
     }
     return posActual
   }
