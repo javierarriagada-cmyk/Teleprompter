@@ -108,6 +108,11 @@ REGLA A FUEGO -Javier, 05-10-2026-: LAS PRUEBAS SOLO CUBREN LOGICA QUE NO SE VE.
   tomas -espanol, ingles y Larralde- con el motor de hoy y deja sus cifras en
   docs/mediciones/banco-motor/<fecha>-<commit>.json: atraso, renglon donde se lee,
   deslizamiento, destacado y cuadros. Medir antes y despues del cambio y comparar los dos.
+  -17-10-2026, banco-largo-: mas el grupo Largas -la toma de 25 min y la de 30 min, con lo que
+  transcribir.py saca de su audio, docs/registros/largas/LEEME.txt-. El <id>.motor.txt lo deja
+  solo la APK de prueba -en Play no se escribe-; con 'cuadro' solo cuando cambia y una fila
+  'cuadros' cada 5 s, una toma de 60 min queda entera. Los subtitulos salen de <id>.palabras.txt,
+  que va en todas las versiones. Antes: «y cada toma nueva deja su <id>.motor.txt».
 
   UN SOLO COMPORTAMIENTO QUE SE ADAPTA. Javier no quiere reglas distintas por
   combinacion. Tiene que quedar bien con cualquier letra, tamano, ancho de columna,

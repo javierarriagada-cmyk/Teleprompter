@@ -61,6 +61,10 @@ export function leerRegistro(texto) {
   let oido = null
   let primera = []    // cuando el parcial de la frase en curso llego a k+1 palabras
   let renglones = null
+  // -banco-largo, 17-10-2026- Las filas 'cuadros' de la bitácora nueva -cada 5 s, diagnostico.ts-: un
+  // registro viejo no las tiene y queda []. Los 'cuadro' de la nueva se leen igual: uno que no se
+  // escribió era igual al anterior, y aquí cada cuadro vale hasta el siguiente.
+  const tramosCuadros = [] // { ms, n, mediana, p95, max, sobre50 }
   for (const l of texto.split(/\r?\n/)) {
     if (l.startsWith('# | ')) { guion.push(l.slice(4)); continue }
     if (l.startsWith('# |')) { guion.push(l.slice(3)); continue }
@@ -95,9 +99,13 @@ export function leerRegistro(texto) {
       if (pos) cuadros.push({ ms, pos: Number(pos[1]), trabado: tr ? Number(tr[1]) : null })
     } else if (c[1] === 'renglones') {
       renglones = c[2].split(' ').map(Number)
+    } else if (c[1] === 'cuadros') {
+      const v = (k) => { const x = new RegExp(k + '=(\\d+)').exec(c[2]); return x ? Number(x[1]) : NaN }
+      tramosCuadros.push({ ms, n: v('n'), mediana: v('mediana'), p95: v('p95'), max: v('max'), sobre50: v('sobre50') })
     }
   }
-  return { guion, cab, oidas, cuadros, renglones, retrasos, cruces, capturas, procesos, oido }
+  // Antes: return { guion, cab, oidas, cuadros, renglones, retrasos, cruces, capturas, procesos, oido }
+  return { guion, cab, oidas, cuadros, renglones, retrasos, cruces, capturas, procesos, oido, tramosCuadros }
 }
 
 // Alineamiento de lo oido contra el guion: maximo de coincidencias en orden.
@@ -139,11 +147,26 @@ export function percentil(arr, p) {
 // es `cuadros`.
 //   reg      lo que devuelve leerRegistro
 //   cuadros  [{ ms, pos, trabado }] a medir -por omision, los grabados-
-export function medirContraLaVoz(reg, cuadros = reg.cuadros) {
+//   opciones.sinTelefono  -banco-largo, 17-10-2026- el registro no viene de un teléfono: lo armó
+//            transcribir.py con el audio de la toma -docs/registros/largas/LEEME.txt- y sus 'cuadro' van
+//            todos en pos=0. No hay calce grabado con que acotar la búsqueda, así que la vara es la de
+//            medir.ts de la toma de 25 min -rama motor-investigacion, docs/mediciones/toma-25-min/
+//            herramientas/medir.ts-: alinear sin cercanía, CONTANDO las acotaciones -Javier las lee-, y
+//            sin los pares que saltan más de SALTO_VARA tokens del anterior. No depende del motor que mide.
+export const SALTO_VARA = 50
+export function medirContraLaVoz(reg, cuadros = reg.cuadros, opciones = {}) {
   const { guion, oidas, renglones } = reg
   const tokens = tokensDelGuion(guion)
   const calceEn = (t) => { let v = 0; for (const x of reg.cuadros) { if (x.ms > t) break; v = x.pos } return v }
-  const pares = alinear(oidas, tokens, reg.cuadros.length ? calceEn : null)
+  // Antes: const pares = alinear(oidas, tokens, reg.cuadros.length ? calceEn : null)
+  let pares
+  if (opciones.sinTelefono) {
+    pares = []
+    for (const [io, it] of alinear(oidas, tokens.map((t) => ({ ...t, acot: false })), null)) {
+      const ult = pares.length ? pares[pares.length - 1][1] : 0
+      if (it > ult && it - ult <= SALTO_VARA) pares.push([io, it])
+    }
+  } else pares = alinear(oidas, tokens, reg.cuadros.length ? calceEn : null)
   const r = { tokens, pares, conocidos: [], atrasoPal: [], atrasoRen: [], muestras: [], primerMov: null, dichoAntes: null }
   if (pares.length < 5 || cuadros.length === 0) return r
 
