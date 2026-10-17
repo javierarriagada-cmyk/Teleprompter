@@ -1,4 +1,5 @@
 import React from 'react'
+import { Capacitor } from '@capacitor/core'
 import { ResumenGrabacion, ResumenGuion } from '../datos/modelo'
 import { srcDeRuta, formatearDuracionMs, nombreDeToma } from './TiraGrabaciones'
 // -tomas-grandes- Antes: import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo } from '../lib/archivosNativos'
@@ -105,6 +106,14 @@ export default function ReproductorGrabacion({
   // -visor-servidor- La toma se sirve por el servidor local, con identificador opaco.
   const [srcServidor, setSrcServidor] = React.useState<string | null>(null)
   const [avisoServidor, setAvisoServidor] = React.useState(false)
+  // -visor-servidor, arreglo 17-10-2026- App pasa onGuardadoEnGaleria como flecha nueva en cada
+  // render: con ella en las dependencias, cada render de App volvía a pedir la dirección y dejaba el
+  // <video> sin src un momento -la toma se recargaba-; y si el servidor fallaba, el aviso hacía
+  // renderizar App y se repetía sin fin -así se colgaban las pruebas y el CI del #131-. Ahora el
+  // aviso va por una ref y el efecto depende solo de la ruta. Si no hay servidor -versión web, APK
+  // viejo, pruebas-, la toma se ve como antes, con srcDeRuta, y el aviso sale una sola vez.
+  const avisoRef = React.useRef(onGuardadoEnGaleria)
+  avisoRef.current = onGuardadoEnGaleria
   React.useEffect(() => {
     let vivo = true
     setSrcServidor(null)
@@ -114,11 +123,14 @@ export default function ReproductorGrabacion({
     }).catch(() => {
       if (vivo) {
         setAvisoServidor(true)
-        onGuardadoEnGaleria?.(false, t('servidorNoArranco'))
+        setSrcServidor(srcDeRuta(grabacion.ruta))
+        // Antes: onGuardadoEnGaleria?.(false, t('servidorNoArranco'))
+        if (Capacitor.isNativePlatform()) avisoRef.current?.(false, t('servidorNoArranco'))
       }
     })
     return () => { vivo = false }
-  }, [grabacion.ruta, onGuardadoEnGaleria])
+  // Antes: }, [grabacion.ruta, onGuardadoEnGaleria])
+  }, [grabacion.ruta])
   // -tarea 87, subtítulos en horizontal- Se guarda el registro y los subtítulos se arman más abajo,
   // con la forma del cuadro -32 o 47 letras por renglón-. Antes: setSubtitulos(armarSubtitulos(registro)).
   const [registroMotor, setRegistroMotor] = React.useState<string | null>(null)
