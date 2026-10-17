@@ -14,6 +14,9 @@
 // brinco con la posicion viniendo suave.
 //
 // Apagado por omision: no cuesta nada mientras no se enciende.
+// -banco-largo, 17-10-2026- Y solo en la APK de prueba -HERRAMIENTAS-: en Play no se enciende.
+
+import { HERRAMIENTAS } from './herramientas'
 
 export type EntradaDiagnostico =
   | { ms: number; tipo: 'oyo'; texto: string; final: boolean }
@@ -63,8 +66,22 @@ export type EntradaDiagnostico =
   // src/lib/registroVisorLado.ts, que además las guarda fuera de la toma -el registro de diagnóstico
   // solo está encendido mientras se graba-.
   | { ms: number; tipo: 'visor-lado'; evento: string; detalle: string }
+  // LOS CUADROS DE CADA 5 S -banco-largo, 17-10-2026-. Desde que 'cuadro' se anota solo cuando cambia
+  // algo -ver anotar-, lo que el banco sacaba de cada cuadro va resumido aquí: cuántos cuadros se
+  // dibujaron en el tramo y, de los intervalos entre uno y el anterior, la mediana, el p95, el máximo
+  // y cuántos pasan de 50 ms. ms es el del último cuadro del tramo: el tramo va del 'cuadros' anterior
+  // -o del primer cuadro- hasta aquí.
+  | { ms: number; tipo: 'cuadros'; n: number; mediana: number; p95: number; max: number; sobre50: number }
 
-const MAX_ENTRADAS = 60000
+// -banco-largo, 17-10-2026- EL TOPE, PARA QUE UNA TOMA DE 60 MIN QUEDE ENTERA. Con 60000 la bitácora se
+// cortaba a los ~11 min -toma 8038ca25 del Redmi: 30:25 de video, bitácora hasta 686 s, 87 filas por
+// segundo, 58 de ellas 'cuadro'-. Con 'cuadro' solo cuando cambia, esa misma toma da 44 filas por
+// segundo -medido sobre su bitácora-; el peor caso, el texto moviéndose en todos los cuadros, vuelve a
+// unas 92. 60 min a 100 filas por segundo son 360000. Solo en la APK de prueba: en Play no se anota.
+// Antes: const MAX_ENTRADAS = 60000
+export const MAX_ENTRADAS = 360000
+// Cada cuánto va una fila 'cuadros'.
+export const MS_TRAMO_CUADROS = 5000
 
 let activo = false
 let entradas: EntradaDiagnostico[] = []
@@ -72,6 +89,8 @@ let t0 = 0
 // Cuenta cada vez que se enciende. Lo que se anota una sola vez por lectura -los
 // renglones- mira esto para volver a anotarse si el registro empezo despues.
 let generacion = 0
+// -banco-largo- Si llegó al tope, en qué ms: la bitácora lo dice en vez de cortarse callada.
+let cortadaEnMs: number | null = null
 
 // EL FIN DE LA ÚLTIMA PALABRA DEL ÚLTIMO FINAL -tarea 88, segunda vuelta, 04-10-2026-, en el reloj de
 // performance.now(). Lo lee el vigía de los gestos para cortar la pausa por palma donde terminó la voz
@@ -79,13 +98,118 @@ let generacion = 0
 // guarda nada más que este número.
 let finUltimaPalabraPerf: number | null = null
 
+// UNA FILA 'cuadro' SOLO CUANDO CAMBIA ALGO -banco-largo, 17-10-2026-. La vista anota un 'cuadro' en
+// cada cuadro que dibuja -TeleprompterView, animate()-, unos 58 por segundo, y casi todos eran iguales
+// al anterior: en la toma 8038ca25, 29813 de 40085. Se escribe solo si cambia lo que la fila dice -pos
+// con sus dos decimales, calce, scroll, freno, trabado-; un cuadro que no se escribió es igual al
+// último escrito. Lo que se pierde es la hora de cada cuadro: eso va resumido cada MS_TRAMO_CUADROS en
+// una fila 'cuadros'. Es puro -sin reloj ni estado global- para que lo usen el registro y las pruebas.
+export type ResumenCuadros = { n: number; mediana: number; p95: number; max: number; sobre50: number }
+export type CompactadorCuadros = {
+  // Un cuadro dibujado: si hay que escribir su fila y, si cerró un tramo, su resumen.
+  cuadro(ms: number, clave: string): { escribir: boolean; resumen: ResumenCuadros | null }
+  // El tramo que sigue abierto -null si no hubo cuadros desde el último resumen- y el ms de su último cuadro.
+  pendiente(): { ms: number; resumen: ResumenCuadros } | null
+}
+// El mismo percentil que el banco -percentil de src/pruebas/alinearToma.js-, sobre una lista ordenada.
+const enOrden = (orden: number[], p: number) => orden[Math.min(orden.length - 1, Math.floor((p / 100) * orden.length))]
+export function resumirIntervalos(n: number, intervalos: number[]): ResumenCuadros {
+  const orden = [...intervalos].sort((a, b) => a - b)
+  let max = 0
+  let sobre50 = 0
+  for (const x of orden) {
+    if (x > max) max = x
+    if (x > 50) sobre50++
+  }
+  return orden.length
+    ? { n, mediana: enOrden(orden, 50), p95: enOrden(orden, 95), max, sobre50 }
+    : { n, mediana: 0, p95: 0, max: 0, sobre50: 0 }
+}
+export function crearCompactadorCuadros(msTramo: number = MS_TRAMO_CUADROS): CompactadorCuadros {
+  let ultimaClave: string | null = null
+  let ultimoMs: number | null = null
+  let desdeMs: number | null = null
+  let n = 0
+  let intervalos: number[] = []
+  return {
+    cuadro(ms, clave) {
+      if (ultimoMs !== null) intervalos.push(ms - ultimoMs)
+      if (desdeMs === null) desdeMs = ms
+      ultimoMs = ms
+      n++
+      const escribir = clave !== ultimaClave
+      ultimaClave = clave
+      let resumen: ResumenCuadros | null = null
+      if (ms - desdeMs >= msTramo) {
+        resumen = resumirIntervalos(n, intervalos)
+        desdeMs = ms
+        n = 0
+        intervalos = []
+      }
+      return { escribir, resumen }
+    },
+    pendiente() {
+      if (n === 0 || ultimoMs === null) return null
+      return { ms: ultimoMs, resumen: resumirIntervalos(n, intervalos) }
+    }
+  }
+}
+// La fila 'cuadros' como va en la bitácora.
+export function filaCuadros(ms: number, r: ResumenCuadros): string {
+  return `${ms}\tcuadros\tn=${r.n} mediana=${r.mediana} p95=${r.p95} max=${r.max} sobre50=${r.sobre50}`
+}
+export function claveDeCuadro(e: { posicion: number; calce: number; scroll: number; freno: string; trabado: number }): string {
+  return `pos=${e.posicion.toFixed(2)} calce=${e.calce} scroll=${e.scroll} freno=${e.freno} trabado=${e.trabado}`
+}
+let compactador = crearCompactadorCuadros()
+
+// LAS PALABRAS DE LA TOMA -banco-largo, 17-10-2026-. Los subtítulos salen de las filas 'palabras FINAL'
+// -y de los 'calce' para lo dicho después de la última frase cerrada, subtitulos.ts-, y vivían solo en
+// la bitácora: con el tope se cortaban a los ~11 min, también en Play. Son de la toma, no de la
+// bitácora: se juntan aquí aparte, en todas las versiones, sin tope, desde abrirPalabrasDeToma hasta
+// cerrarPalabrasDeToma, y tomaVideo.ts las escribe junto al mp4 como <id>.palabras.txt. Con el mismo
+// reloj que el registro -t0-: abrirPalabrasDeToma lo pone, porque en Play activarDiagnostico ya no
+// corre. Del 'calce' se guarda solo el token -lo único que leen los subtítulos-, y el NO CALZO no va.
+type EntradaPalabras = Extract<EntradaDiagnostico, { tipo: 'palabras' }> | { ms: number; tipo: 'calce'; token: number }
+let palabrasAbiertas = false
+let palabrasToma: EntradaPalabras[] = []
+
+export function abrirPalabrasDeToma() {
+  t0 = performance.now()
+  palabrasAbiertas = true
+  palabrasToma = []
+}
+
+export function cerrarPalabrasDeToma() {
+  palabrasAbiertas = false
+}
+
+export function cantidadPalabrasDeToma(): number {
+  return palabrasToma.length
+}
+
+// En el formato de la bitácora, para que subtitulos.ts, leerCorpus y medir-toma.mjs lo lean igual.
+export function palabrasComoTexto(): string {
+  const filas: string[] = ['ms\ttipo\tdetalle']
+  for (const e of palabrasToma) {
+    if (e.tipo === 'palabras') filas.push(`${e.ms}\tpalabras\t${e.final ? 'FINAL' : 'parcial'}: ${e.palabras.map((p) => `${p.w}@${p.ini}-${p.fin}`).join(' ')}`)
+    else filas.push(`${e.ms}\tcalce\ttoken ${e.token}:`)
+  }
+  return filas.join('\n')
+}
+
+// -banco-largo- SOLO EN LA APK DE PRUEBA. En Play -HERRAMIENTAS en false- no se enciende: no se anota
+// nada y no se escribe el .motor.txt -tomaVideo.ts-. Las palabras de la toma van aparte, arriba.
+// Antes: activo = valor, con cualquier versión.
 export function activarDiagnostico(valor: boolean) {
-  activo = valor
-  if (valor) {
+  activo = valor && HERRAMIENTAS
+  if (activo) {
     entradas = []
     t0 = performance.now()
     generacion++
     finUltimaPalabraPerf = null
+    compactador = crearCompactadorCuadros()
+    cortadaEnMs = null
   }
 }
 
@@ -119,9 +243,26 @@ export function anotar(e: SinMs<EntradaDiagnostico>) {
     const fines = e.palabras.map((p) => p.fin).filter((f) => Number.isFinite(f))
     if (fines.length) finUltimaPalabraPerf = t0 + Math.max(...fines)
   }
-  if (!activo) return
-  if (entradas.length >= MAX_ENTRADAS) return
+  // -banco-largo- Las palabras de la toma, también antes de mirar si está activo: van en todas las versiones.
+  if (palabrasAbiertas) {
+    if (e.tipo === 'palabras' && e.final) palabrasToma.push({ ...e, ms: Math.round((e.ms ?? performance.now()) - t0) })
+    else if (e.tipo === 'calce' && e.token !== null) palabrasToma.push({ ms: Math.round((e.ms ?? performance.now()) - t0), tipo: 'calce', token: e.token })
+  }
+  // Antes: if (!activo) return. HERRAMIENTAS delante: en Play esta función termina aquí.
+  if (!HERRAMIENTAS || !activo) return
+  // Antes: if (entradas.length >= MAX_ENTRADAS) return -callado-.
+  if (entradas.length >= MAX_ENTRADAS) {
+    if (cortadaEnMs === null) cortadaEnMs = Math.round((e.ms ?? performance.now()) - t0)
+    return
+  }
   const ms = Math.round((e.ms ?? performance.now()) - t0)
+  // -banco-largo- El cuadro igual al anterior no se escribe; cada 5 s, la fila 'cuadros'.
+  if (e.tipo === 'cuadro') {
+    const r = compactador.cuadro(ms, claveDeCuadro(e))
+    if (r.escribir) entradas.push({ ...e, ms } as EntradaDiagnostico)
+    if (r.resumen) entradas.push({ ms, tipo: 'cuadros', ...r.resumen })
+    return
+  }
   entradas.push({ ...e, ms } as EntradaDiagnostico)
 }
 
@@ -139,7 +280,17 @@ export function cantidadEntradas(): number {
 // tambien abrir en una planilla.
 export function comoTexto(): string {
   const filas: string[] = ['ms\ttipo\tdetalle']
-  for (const e of entradas) {
+  // -banco-largo- El tramo de cuadros que sigue abierto va como una fila 'cuadros' más, en su lugar
+  // -tras la última entrada con ms hasta el de su último cuadro-, sin cerrarlo: anotar puede seguir.
+  const abierto = compactador.pendiente()
+  let lista: EntradaDiagnostico[] = entradas
+  if (abierto) {
+    let k = entradas.length
+    while (k > 0 && entradas[k - 1].ms > abierto.ms) k--
+    lista = [...entradas.slice(0, k), { ms: abierto.ms, tipo: 'cuadros', ...abierto.resumen }, ...entradas.slice(k)]
+  }
+  // Antes: for (const e of entradas) {
+  for (const e of lista) {
     if (e.tipo === 'oyo') {
       filas.push(`${e.ms}\toyo\t${e.final ? 'FINAL' : 'parcial'}: ${e.texto}`)
     } else if (e.tipo === 'calce') {
@@ -162,12 +313,16 @@ export function comoTexto(): string {
       filas.push(`${e.ms}\tpantalla\t${e.diseno} ${e.ancho}x${e.alto}`)
     } else if (e.tipo === 'visor-lado') {
       filas.push(`${e.ms}\tvisor-lado\t${e.evento} ${e.detalle}`)
+    } else if (e.tipo === 'cuadros') {
+      filas.push(filaCuadros(e.ms, e))
     } else {
       filas.push(
         `${e.ms}\tcuadro\tpos=${e.posicion.toFixed(2)} calce=${e.calce} scroll=${e.scroll} freno=${e.freno} trabado=${e.trabado}`
       )
     }
   }
+  // -banco-largo- Si llegó al tope, lo dice.
+  if (cortadaEnMs !== null) filas.push(`${cortadaEnMs}\ttope\tla bitácora llegó a ${MAX_ENTRADAS} filas: desde aquí no se anotó nada`)
   return filas.join('\n')
 }
 

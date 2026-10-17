@@ -1,4 +1,5 @@
 import { tokenizarGuion } from '../lib/seguidor'
+import { maximoDe } from '../lib/maximo'
 
 export type EventoLector =
   | { t: number; tipo: 'voz'; hayVoz: boolean }
@@ -178,7 +179,9 @@ export function simularLectura(o: OpcionesLectura): ResultadoSimulacion {
   }
 
   if (pausaCadaNPalabras === null) {
-    const maxTVal = Math.max(...eventos.map((e) => e.t), tActual)
+    // -banco-largo, 17-10-2026- Un recorrido -lib/maximo.ts-: los eventos crecen con la lectura simulada.
+    // Antes: const maxTVal = Math.max(...eventos.map((e) => e.t), tActual)
+    const maxTVal = Math.max(maximoDe(eventos.map((e) => e.t)), tActual)
     eventos.push({ t: maxTVal, tipo: 'voz', hayVoz: false })
   }
 
@@ -190,7 +193,8 @@ export function simularLectura(o: OpcionesLectura): ResultadoSimulacion {
   })
 
   // Muestrear la VERDAD cada 50 ms
-  const maxSimT = Math.max(...eventos.map((e) => e.t))
+  // -banco-largo- Lo mismo. Antes: const maxSimT = Math.max(...eventos.map((e) => e.t))
+  const maxSimT = maximoDe(eventos.map((e) => e.t))
   const verdad: PuntoVerdad[] = []
 
   function obtenerTokenVerdadEn(t: number): number {

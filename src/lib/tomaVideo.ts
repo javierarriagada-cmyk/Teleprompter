@@ -37,9 +37,14 @@ import {
 import { veredictoMudo } from './detectorMudo'
 import { tramosACortar, tramosQueQuedan, type PausaToma } from './tramos'
 import type { OrigenPausa } from './pausaToma'
-import { activarDiagnostico, diagnosticoActivo, comoTexto } from './diagnostico'
+// Antes: import { activarDiagnostico, diagnosticoActivo, comoTexto } from './diagnostico'
+import { activarDiagnostico, diagnosticoActivo, comoTexto, abrirPalabrasDeToma, cerrarPalabrasDeToma, palabrasComoTexto } from './diagnostico'
+import { HERRAMIENTAS } from './herramientas'
+import { nombrePalabras, nombreBitacora } from './archivosDeToma'
 
 const MS_HEARTBEAT = 2000
+
+// -banco-largo- Los nombres de las palabras y de la bitácora de cada toma: archivosDeToma.ts.
 
 type SesionToma = {
   sidecar: SidecarToma
@@ -218,7 +223,11 @@ export async function iniciarTomaVideo(opts: {
   // El cero del registro es el arranque del video: el milisegundo N del registro es,
   // con el error de lo que tarda la camara en empezar a escribir, el N del mp4.
   s.inicioVideoEpochMs = Date.now()
-  activarDiagnostico(true)
+  // -banco-largo- Las palabras de la toma, en todas las versiones; la bitácora, solo en la APK de prueba.
+  // abrirPalabrasDeToma pone el cero del reloj; activarDiagnostico lo vuelve a poner un instante después.
+  // Antes: activarDiagnostico(true)
+  abrirPalabrasDeToma()
+  if (HERRAMIENTAS) activarDiagnostico(true)
 
   s.heartbeat = setInterval(() => {
     if (!sesion) return
@@ -358,9 +367,29 @@ async function cortarTomaVideoUnaVez(s: SesionToma, opts?: {
     frasesOidas: s.sidecar.frasesOidas
   })
 
+  // -banco-largo- Las palabras de la toma, junto al mp4, en todas las versiones. La cabecera es la de la
+  // bitácora -el guion tal cual se leyó va ahí y los subtítulos lo necesitan-. Si no se puede escribir,
+  // la toma sigue igual y el visor busca en el .motor.txt.
+  cerrarPalabrasDeToma()
+  try {
+    const texto = [
+      '# PALABRAS DE UNA TOMA',
+      `# toma: ${s.sidecar.id}`,
+      `# inicio del video (epoch ms): ${s.inicioVideoEpochMs}`,
+      ...(s.sidecar.pausas || []).map((p) => `# pausa desdeMs=${p.desdeMs} hastaMs=${p.hastaMs} origen=${p.origen}`),
+      s.cabeceraMotor,
+      '',
+      palabrasComoTexto()
+    ].join('\n')
+    await escribirTexto(juntos(s.dir, nombrePalabras(s.sidecar.id)), texto)
+  } catch (e) {
+    console.warn('[tomaVideo] no se pudo escribir las palabras de la toma:', e)
+  }
+
   // El registro del motor, junto al mp4. Si no se puede escribir, la toma sigue
   // igual: es un instrumento, no parte de la toma.
-  try {
+  // -banco-largo- Solo en la APK de prueba. Antes: se escribía siempre.
+  if (HERRAMIENTAS) try {
     const texto = [
       '# REGISTRO DEL MOTOR DE UNA TOMA',
       `# toma: ${s.sidecar.id}`,
@@ -372,11 +401,13 @@ async function cortarTomaVideoUnaVez(s: SesionToma, opts?: {
       '',
       comoTexto()
     ].join('\n')
-    await escribirTexto(juntos(s.dir, `${s.sidecar.id}.motor.txt`), texto)
+    // Antes: await escribirTexto(juntos(s.dir, `${s.sidecar.id}.motor.txt`), texto)
+    await escribirTexto(juntos(s.dir, nombreBitacora(s.sidecar.id)), texto)
   } catch (e) {
     console.warn('[tomaVideo] no se pudo escribir el registro del motor:', e)
   }
-  activarDiagnostico(s.diagnosticoAntes)
+  // Antes: activarDiagnostico(s.diagnosticoAntes) -en Play activarDiagnostico ya no enciende nada-.
+  if (HERRAMIENTAS) activarDiagnostico(s.diagnosticoAntes)
 
   s.sidecar.bytes = analisis.bytes
   s.sidecar.milisegundos = analisis.duracionMs || s.sidecar.milisegundos
@@ -664,7 +695,10 @@ export async function borrarGrabacionEnDisco(g: ResumenGrabacion): Promise<void>
     await borrarArchivo(juntos(dir, `${g.id}.mp4.part`))
     await borrarArchivo(juntos(dir, `${g.id}.jpg`))
     // El registro del motor -24-09-2026-: se quedaba huerfano al borrar la toma.
-    await borrarArchivo(juntos(dir, `${g.id}.motor.txt`))
+    // Antes: await borrarArchivo(juntos(dir, `${g.id}.motor.txt`))
+    await borrarArchivo(juntos(dir, nombreBitacora(g.id)))
+    // -banco-largo- Y las palabras de la toma, igual.
+    await borrarArchivo(juntos(dir, nombrePalabras(g.id)))
   } catch {}
   if (g.ruta) {
     const base = g.ruta.replace(/\.mp4(\.part)?$/, '')

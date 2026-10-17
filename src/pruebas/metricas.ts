@@ -1,5 +1,6 @@
 import { crearMotorDeAvance, MotorDeAvance } from '../lib/avance'
 import { crearSeguidor, tokenizarGuion } from '../lib/seguidor'
+import { maximoDe } from '../lib/maximo'
 import { ResultadoSimulacion } from './lectorSimulado'
 
 export type Metricas = {
@@ -70,7 +71,9 @@ export function medir(
     return verdad[verdad.length - 1].token
   }
 
-  const maxT = Math.max(...eventos.map((e) => e.t))
+  // -banco-largo, 17-10-2026- Un recorrido -lib/maximo.ts-: los eventos crecen con la lectura simulada.
+  // Antes: const maxT = Math.max(...eventos.map((e) => e.t))
+  const maxT = maximoDe(eventos.map((e) => e.t))
   const stepMs = 50
 
   let finLecturaT = -1

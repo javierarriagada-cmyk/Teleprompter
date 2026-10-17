@@ -25,6 +25,7 @@ import {
   juntos
 } from '../lib/archivosNativos'
 import { armarSubtitulos } from '../lib/subtitulos'
+import { textoDeSubtitulos } from '../lib/archivosDeToma'
 import {
   ENSAYOS,
   Ensayo,
@@ -200,9 +201,11 @@ export function PanelMediciones({
     setOcupado(g.id)
     setAvance(0)
     try {
-      const dir = await directorioGrabaciones()
       // -tarea 87, subtítulos en horizontal- Con la forma de la toma, como el visor. Antes sin forma.
-      const subs = armarSubtitulos(await leerTexto(juntos(dir, `${g.id}.motor.txt`)), g.orientacion ?? 'vertical')
+      // -banco-largo- Del mismo lugar que el visor -textoDeSubtitulos-. Antes:
+      // const dir = await directorioGrabaciones()
+      // const subs = armarSubtitulos(await leerTexto(juntos(dir, `${g.id}.motor.txt`)), g.orientacion ?? 'vertical')
+      const subs = armarSubtitulos((await textoDeSubtitulos(g.id)) ?? '', g.orientacion ?? 'vertical')
       if (!subs.length) {
         setAviso('El registro de esa toma no da subtítulos: no hay qué quemar.')
         return
