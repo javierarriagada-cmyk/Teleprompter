@@ -130,6 +130,8 @@ export const es = {
   // -tomas-grandes- La toma grande se abre con otra aplicación y no hay ninguna que abra video.
   sinAppParaVideo: 'No hay una aplicación para ver el video',
   noSeAbrioVideo: 'No se pudo abrir el video',
+  // -visor-servidor- El servidor local no arrancó.
+  servidorNoArranco: 'No se pudo preparar el video',
   guionImportado: 'Guion importado',
   descargandoModelo: 'Descargando modelo de voz para uso offline:',
   // Antes: errorModelo: 'Error descargando modelo de voz Vosk: {detalle}.',

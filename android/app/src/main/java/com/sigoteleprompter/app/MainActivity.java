@@ -326,9 +326,9 @@ public class MainActivity extends BridgeActivity {
         // -accesos directos- El puente de los accesos directos del ícono -AccesosDirectosPlugin.java-.
         registerPlugin(AccesosDirectosPlugin.class);
         super.onCreate(savedInstanceState);
-        // -tomas-largas, 15-10-2026- El cliente de Capacitor con los rangos de video bien contestados: el
-        // visor abre tomas de cualquier tamaño -ClienteWebDeTomas, RangoHttp-. Lo demás pasa igual.
-        getBridge().setWebViewClient(new ClienteWebDeTomas(getBridge()));
+        // Antes -tomas-largas-: getBridge().setWebViewClient(new ClienteWebDeTomas(getBridge()));
+        // -visor-servidor- Ningún video pasa por convertFileSrc: todas las tomas van por el servidor
+        // local. El cliente vuelve a ser el de Capacitor. RangoHttp se queda: lo usa el servidor.
         // Antes: procesarIntentAccion(getIntent());
         procesarIntentAccion(savedInstanceState, getIntent());
 

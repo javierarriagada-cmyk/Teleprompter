@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- -medir-servidor-local, 16-10-2026- Solo 127.0.0.1 puede ir por http sin cifrar: el servidor local
+     de medicion -ServidorLocal-. Sin base-config: todo lo demas queda con lo de siempre de Android. -->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">127.0.0.1</domain>
+    </domain-config>
+</network-security-config>

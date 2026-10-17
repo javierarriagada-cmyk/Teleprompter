@@ -2,7 +2,7 @@ import React from 'react'
 import { ResumenGrabacion, ResumenGuion } from '../datos/modelo'
 import { srcDeRuta, formatearDuracionMs, nombreDeToma } from './TiraGrabaciones'
 // -tomas-grandes- Antes: import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo } from '../lib/archivosNativos'
-import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo, seVeConReproductorDelSistema, abrirConReproductor } from '../lib/archivosNativos'
+import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo, direccionDeToma } from '../lib/archivosNativos'
 import { orientacionDeToma } from '../lib/orientacion'
 import { anotar87, medirBordesSeguros, anotarOrientacion } from '../lib/medicionesTarea87'
 // -tomas-largas- Antes: import { subtitulosConCortes, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
@@ -102,6 +102,23 @@ export default function ReproductorGrabacion({
   // guardo a su lado -<id>.motor.txt-. Una toma sin registro -anterior al
   // registro, o de la version web- no ofrece el boton: no hay con que armarlos.
   const [video, setVideo] = React.useState<HTMLVideoElement | null>(null)
+  // -visor-servidor- La toma se sirve por el servidor local, con identificador opaco.
+  const [srcServidor, setSrcServidor] = React.useState<string | null>(null)
+  const [avisoServidor, setAvisoServidor] = React.useState(false)
+  React.useEffect(() => {
+    let vivo = true
+    setSrcServidor(null)
+    setAvisoServidor(false)
+    direccionDeToma(grabacion.ruta).then((url) => {
+      if (vivo) setSrcServidor(url)
+    }).catch(() => {
+      if (vivo) {
+        setAvisoServidor(true)
+        onGuardadoEnGaleria?.(false, t('servidorNoArranco'))
+      }
+    })
+    return () => { vivo = false }
+  }, [grabacion.ruta, onGuardadoEnGaleria])
   // -tarea 87, subtítulos en horizontal- Se guarda el registro y los subtítulos se arman más abajo,
   // con la forma del cuadro -32 o 47 letras por renglón-. Antes: setSubtitulos(armarSubtitulos(registro)).
   const [registroMotor, setRegistroMotor] = React.useState<string | null>(null)
@@ -295,16 +312,8 @@ export default function ReproductorGrabacion({
   }, [video])
   const alternarVideo = (e: React.MouseEvent) => {
     e.stopPropagation()
-    // -tomas-grandes, 15-10-2026- UNA TOMA DE MÁS DE 2.147.483.647 BYTES no se reproduce aquí: la
-    // WebView no lee pasado 2^31 -lib/archivosNativos.ts, TOPE_BYTES_WEBVIEW-. Reproducir la abre con el
-    // reproductor del sistema; al volver, el visor sigue igual -Guardar, Filtro, Subtítulos, Borrar-.
-    if (seVeConReproductorDelSistema(grabacion.bytes)) {
-      void abrirConReproductor(grabacion.ruta).then((r) => {
-        if (r === 'sin-aplicacion') onGuardadoEnGaleria?.(false, t('sinAppParaVideo'))
-        else if (r === 'error') onGuardadoEnGaleria?.(false, t('noSeAbrioVideo'))
-      })
-      return
-    }
+    // Antes -tomas-grandes-: if (seVeConReproductorDelSistema(grabacion.bytes)) { abrirConReproductor(...) }
+    // Todas las tomas van por el servidor local al <video>.
     if (!video) return
     if (video.paused || video.ended) {
       video.play()?.catch?.(() => {
@@ -716,7 +725,7 @@ export default function ReproductorGrabacion({
       <div className="visor-video" data-testid="visor-lado-video" onClick={alternarVideo} style={{ position: 'absolute', ...estilo }}>
         {/* -tarea 96- El filtro elegido, sobre el video y no sobre los subtítulos -van encima, como en el
             archivo-. Antes: sin style. */}
-        <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ filter: filtroVideo }} />
+        <video ref={setVideo} data-testid="video-grabacion" src={srcServidor || undefined} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ filter: filtroVideo }} />
         {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} cortes={cortes} />}
         {!reproduciendo && (
           <span className="play-visor" aria-hidden="true">
@@ -937,7 +946,7 @@ export default function ReproductorGrabacion({
           {/* -tarea 87, A4- El alto del video sale de usarAltoDelVideo; sin medir, el 70vh de antes.
               Antes: maxHeight: '70vh'. */}
           {/* -tarea 96- Con el filtro elegido -filtroVideo-, que no alcanza a los subtítulos. */}
-          <video ref={setVideo} data-testid="video-grabacion" src={srcDeRuta(grabacion.ruta)} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ width: '100%', maxHeight: altoVideo ?? '70vh', background: '#000', display: 'block', filter: filtroVideo }} />
+          <video ref={setVideo} data-testid="video-grabacion" src={srcServidor || undefined} playsInline poster={grabacion.rutaMiniatura ? srcDeRuta(grabacion.rutaMiniatura) : undefined} style={{ width: '100%', maxHeight: altoVideo ?? '70vh', background: '#000', display: 'block', filter: filtroVideo }} />
           {subtitulos.length > 0 && <CapaSubtitulos video={video} subtitulos={subtitulos} estilo={estiloVisible} cortes={cortes} />}
           {!reproduciendo && (
             <span className="play-visor" aria-hidden="true">
