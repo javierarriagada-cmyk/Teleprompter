@@ -6,6 +6,11 @@ TOMAS LARGAS PARA EL BANCO -banco-largo, 17-10-2026-: el grupo «Largas» de `np
   toma-30-min.motor.txt  la toma 8038ca25 del Redmi del 16-10-2026 -APK 703, main e62dec7, 30:25 de video,
                          1830,5 s de audio-. Audio: rama motor-toma-30-min, docs/mediciones/toma-30-min/
                          audio.wav.
+  toma-34-min.motor.txt  es la toma bf854a2a del Redmi del 17-10-2026 -APK 705, main 4cc21a8, 34:01 de video,
+                         leída con la voz de Javier-; sus palabras y sus 'oyo' son los del Vosk del teléfono,
+                         no los de transcribir.py; su reloj es el de la bitácora -cero al empezar el video-,
+                         no el del audio; sus renglones son los suyos, los del Redmi, no un supuesto;
+                         el audio está en la rama motor-toma-34-min.
 Los audios NO van en esta rama: viven en esas dos ramas. El guion es el mismo en las dos -el poema de
 Larralde con sus 14 acotaciones-.
 
