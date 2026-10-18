@@ -580,7 +580,9 @@ export default function BibliotecaView({
   const refVerTodos = useRef<HTMLButtonElement | null>(null)
   const recienPlegadaRef = useRef(false)
 
-  const guionMasReciente = guiones.length > 0 ? guiones[0] : undefined
+  // -guia-sigo- La tarjeta muestra el guion no archivado más reciente.
+  // Antes: const guionMasReciente = guiones.length > 0 ? guiones[0] : undefined
+  const guionMasReciente = guiones.find((g) => !g.archivado)
   // La tarjeta ya no muestra el texto del guion -TarjetaLectura.tsx, 24-09-2026-,
   // asi que ya no se lee el guion completo para dibujarla.
 

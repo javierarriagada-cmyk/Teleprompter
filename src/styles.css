@@ -2550,6 +2550,26 @@ button.btn-deformable.miniatura-banda:not(:active) {
   flex-shrink: 0;
   margin-top: 2px;
 }
+/* -guia-sigo- Mano animada. Variante A del prototipo: desplazamiento, 2 s, 3 veces.
+   Curvas de movimiento.tsx: CURVA_NORMAL. Se detiene al tocar y con movimiento reducido. */
+.mano-animada { color: var(--color-acento); }
+.mano-animada path { fill: currentColor; }
+.mano-recuadro { animation: manoArrastre 2s cubic-bezier(0.2, 0, 0, 1) 3; }
+.mano-palma { animation: manoPalma 2s cubic-bezier(0.2, 0, 0, 1) 3; }
+.mano-animada.quieta { animation: none; }
+@keyframes manoArrastre {
+  0%, 100% { transform: translate(0, 0); }
+  40% { transform: translate(-8px, 12px); }
+  60% { transform: translate(-8px, 12px); }
+}
+@keyframes manoPalma {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(10px); }
+  60% { transform: translateY(10px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mano-animada { animation: none !important; }
+}
 .marca-guia-texto {
   margin: 0;
   flex: 1;

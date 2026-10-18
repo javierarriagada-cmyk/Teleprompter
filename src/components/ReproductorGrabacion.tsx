@@ -864,6 +864,8 @@ export default function ReproductorGrabacion({
                 // -tarea 87, de lado- Desactivado mientras se guarda, como de pie. Antes sin disabled.
                 <button type="button" className="accion-toma" data-testid="btn-repetir-toma" aria-label={t('repetirToma')} title={t('repetirToma')} disabled={guardando} onClick={onRepetir} style={estiloFila} {...fila}>
                   <IconoRepetir tamano={26} />
+                  {/* -guia-sigo- Repetir con su nombre, de lado también. */}
+                  <span>{t('repetir')}</span>
                 </button>
               )}
             </>
@@ -1007,8 +1009,11 @@ export default function ReproductorGrabacion({
           />
           <span>{formatearSegundos(total)}</span>
         </div>
+        {subtitulos.length === 0 && !guardada && (
+          <p className="sin-subtitulos" data-testid="sin-subtitulos">{t('sinSubtitulos')}</p>
+        )}
         {subtitulos.length > 0 && !guardada && (
-          <div style={{ padding: 'var(--aire-3) var(--aire-3) 0' }}>
+          <div style={{ padding: 'var(--aire-3) var(--aire-3) 0' }} data-testid="ancla-subtitulos">
             {/* -tarea 87, A4- El visor sabe si el panel está abierto -esconde el nombre-. Mientras se
                 guarda, la ficha no se abre. */}
             <SelectorSubtitulos
@@ -1116,6 +1121,8 @@ export default function ReproductorGrabacion({
                   onClick={onRepetir}
                 >
                   <IconoRepetir tamano={26} />
+                  {/* -guia-sigo- Repetir con su nombre, como Guardar y Borrar en la misma fila. */}
+                  <span>{t('repetir')}</span>
                 </button>
               )}
             </>

@@ -2165,7 +2165,8 @@ export default function TeleprompterView({
           texto={marcaActiva === 'recuadro' ? t('marcaGuiaRecuadro') : t('marcaGuiaPalma')}
           idDescripcion={marcaActiva === 'recuadro' ? 'marca-guia-recuadro-desc' : 'marca-guia-palma-desc'}
           onCerrar={cerrarMarcaActiva}
-          conMano={marcaActiva === 'recuadro'}
+          conMano={marcaActiva === 'recuadro' || marcaActiva === 'palma'}
+          tipoMano={marcaActiva === 'palma' ? 'palma' : 'recuadro'}
           alinear={marcaActiva === 'recuadro' ? 'izquierda' : 'derecha'}
           testid={marcaActiva === 'recuadro' ? 'marca-guia-recuadro' : 'marca-guia-palma'}
         />

@@ -78,6 +78,8 @@ export const es = {
   guardandoAvance: 'Guardando… {n}%',
   // -parar-largo- Mientras se guarda la toma al tocar Parar.
   guardandoToma: 'Guardando la toma…',
+  repetir: 'Repetir',
+  masAcciones: 'Más acciones',
   repetirToma: 'Repetir toma',
   // Los controles propios del reproductor -28-09-2026-.
   reproducir: 'Reproducir',
@@ -107,6 +109,11 @@ export const es = {
   // -pulido-1- El auto-guardado falló: se avisa una vez por racha de fallos -App.tsx-.
   avisoGuardadoFallo: 'No se pudo guardar. Tus cambios siguen en pantalla.',
   guionBorrado: 'Guion borrado',
+  guionArchivado: 'Guion archivado',
+  sinSubtitulos: 'Esta toma no tiene subtítulos.',
+  seccionAyuda: 'Ayuda',
+  ayuda: 'Ayuda',
+  enviarComentarios: 'Enviar comentarios',
   deshacer: 'Deshacer',
   // -tarea 94, 05-10-2026- Selección de tomas. {n} es la cuenta.
   tomasSeleccionadas: '{n} seleccionadas',
@@ -277,6 +284,7 @@ export const es = {
   // Antes: 'Para seguir, baja la mano y vuelve a mostrar la palma: cuenta 3 segundos.'
   // Por qué cambió: explicaba solo seguir, no pausar ni dejar de hablar.
   marcaGuiaPalma: 'Para pausar, deja de hablar y muestra la palma. Para seguir, baja la mano y muéstrala de nuevo: cuenta 3 segundos.',
+  marcaGuiaSubtitulos: 'Elige aquí los subtítulos antes de guardar.',
   // Ajustes de pantallas -10-10-2026-: el dock de LISTO en Grabar, de pie en el teléfono. Los rótulos
   // de los grupos de fichas, Voltear de la fila de abajo, la duración y el panel de Ajustes de la toma.
   rotuloGrupoTexto: 'Texto',

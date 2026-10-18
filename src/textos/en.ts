@@ -68,6 +68,8 @@ export const en: Textos = {
   guardandoAvance: 'Saving… {n}%',
   // -parar-largo- Mientras se guarda la toma al tocar Parar.
   guardandoToma: 'Saving your take…',
+  repetir: 'Retake',
+  masAcciones: 'More actions',
   repetirToma: 'Retake',
   // Los controles propios del reproductor -28-09-2026-.
   reproducir: 'Play',
@@ -96,6 +98,11 @@ export const en: Textos = {
   // -pulido-1- Autosave failed: shown once per run of failures -App.tsx-.
   avisoGuardadoFallo: 'Couldn’t save. Your changes are still on screen.',
   guionBorrado: 'Script deleted',
+  guionArchivado: 'Script archived',
+  sinSubtitulos: 'This take has no captions.',
+  seccionAyuda: 'Help',
+  ayuda: 'Help',
+  enviarComentarios: 'Send feedback',
   deshacer: 'Undo',
   // -tarea 94, 05-10-2026- Take selection. {n} is the count.
   tomasSeleccionadas: '{n} selected',
@@ -255,6 +262,7 @@ export const en: Textos = {
   // Antes: 'To resume, lower your hand and show your palm again: it counts down 3 seconds.'
   // Why it changed: it only explained resume, not pause or stop talking.
   marcaGuiaPalma: 'To pause, stop talking and show your palm. To resume, lower your hand and show it again: it counts down 3 seconds.',
+  marcaGuiaSubtitulos: 'Choose captions here before you save.',
   // Ajustes de pantallas -10-10-2026-: el dock de LISTO en Grabar, de pie en el teléfono. Los rótulos
   // de los grupos de fichas, Voltear de la fila de abajo, la duración y el panel de Ajustes de la toma.
   rotuloGrupoTexto: 'Text',

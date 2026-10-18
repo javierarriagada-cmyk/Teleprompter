@@ -70,6 +70,9 @@ interface EditorViewProps {
   onAnimationEnd?: (e: React.AnimationEvent) => void
   editorRef?: React.MutableRefObject<Editor | null>
   mostrarAviso?: (msg: string, opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number }) => void
+  // -guia-sigo- Borrar y archivar desde el menú del editor.
+  onBorrar?: (id: string) => void
+  onArchivar?: (id: string, archivado: boolean) => void
 }
 
 
@@ -126,7 +129,9 @@ export default function EditorView({
   style,
   onAnimationEnd,
   editorRef: editorRefExternal,
-  mostrarAviso
+  mostrarAviso,
+  onBorrar,
+  onArchivar
 }: EditorViewProps) {
   useTextos()
   // 28-09-2026, tarea 77: el cajon Aa del editor -CajonAaEditor, mostrarModalAjustes, su Escape y
@@ -496,6 +501,8 @@ export default function EditorView({
         editorRef={editorRef}
         idiomaBtnRef={idiomaBtnRef}
         idiomaDescribedBy={marcaIdioma ? 'marca-guia-idioma-desc' : undefined}
+        onBorrar={onBorrar}
+        onArchivar={onArchivar}
       />
 
       {/* Titulo es el titulo: Display, editable, sin etiqueta ni recuadro.

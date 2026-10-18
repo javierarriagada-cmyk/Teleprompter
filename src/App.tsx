@@ -1015,12 +1015,21 @@ export default function App({ motor, repoOverride }: AppProps) {
     try {
       const g = await repoRef.current.abrir(id)
       if (g) {
+        const antes = g.archivado
         g.archivado = archivado
         await repoRef.current.guardar(g)
         if (guionActual && guionActual.id === id) {
           setGuionActual({ ...g })
         }
         await cargarBiblioteca()
+        // -guia-sigo- Aviso al archivar, como el borrado. Antes no avisaba.
+        if (archivado && !antes) {
+          mostrarAviso(t('guionArchivado'), {
+            accionTexto: t('deshacer'),
+            duracionMs: 5000,
+            alEjecutarAccion: () => { void handleArchivarGuion(id, false) }
+          })
+        }
       }
     } catch (e) {
       console.warn('[App] Error al archivar/desarchivar guion:', e)
@@ -1030,7 +1039,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   // ACCESOS DIRECTOS DEL ÍCONO -accesos-directos, 11-10-2026-.
   // Mantiene actualizado el acceso dinámico ("Grabar «título»") con el guion de la tarjeta
   // de la portada y procesa las acciones que llegan al tocar los accesos.
-  const guionesActivosAcceso = guionesResumen.filter((g) => !idsPendientesBorrado.includes(g.id))
+  // -guia-sigo- La tarjeta y el acceso «Grabar «título»» saltan los archivados.
+  // Antes: filter solo de idsPendientesBorrado.
+  const guionesActivosAcceso = guionesResumen.filter((g) => !idsPendientesBorrado.includes(g.id) && !g.archivado)
   const guionPortadaAcceso = guionesActivosAcceso.length > 0 ? guionesActivosAcceso[0] : null
 
   useEffect(() => {
@@ -3188,6 +3199,8 @@ export default function App({ motor, repoOverride }: AppProps) {
             }}
             onVolverBiblioteca={() => { salirDelEditor() }}
             mostrarAviso={mostrarAviso}
+            onBorrar={handleBorrarGuion}
+            onArchivar={handleArchivarGuion}
             onEntrarLectura={(rect) => handleEntrarLectura('editor', rect, false)}
             onEntrarGrabar={(rect) => handleEntrarLectura('editor', rect, true)}
             fontSize={fontSize}

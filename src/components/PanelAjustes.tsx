@@ -540,6 +540,26 @@ export function PanelAjustes({
                   </div>
                 </>
               )}
+              {/* -guia-sigo- Ayuda y comentarios, arriba de Acerca. */}
+              {conAcerca && (
+                <>
+                  <h3 className="dock-seccion">{t('seccionAyuda')}</h3>
+                  <div className="tarjeta-seccion-ajustes">
+                    <FilaAjuste
+                      testid="fila-ayuda"
+                      icono={<IconoAyuda tamano={22} />}
+                      nombre={t('ayuda')}
+                      onClick={() => abrirEnlace(idioma === 'es' ? 'https://sigoteleprompter.com/ayuda' : 'https://sigoteleprompter.com/en/help')}
+                    />
+                    <FilaAjuste
+                      testid="fila-comentarios"
+                      icono={<IconoAyuda tamano={22} />}
+                      nombre={t('enviarComentarios')}
+                      onClick={() => abrirEnlace('mailto:' + (idioma === 'es' ? 'hola@sigoteleprompter.com' : 'hello@sigoteleprompter.com'))}
+                    />
+                  </div>
+                </>
+              )}
               {conAcerca && (
                 <>
                   <h3 className="dock-seccion">{t('seccionAcerca')}</h3>
