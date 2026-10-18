@@ -67,7 +67,9 @@ android {
         // manda -0.9.1, 0.9.2...-. La 1.0 queda para la publicacion de verdad. El versionCode, en
         // cambio, sigue subiendo solo: lo ve solo la consola. Antes: versionName "1.0".
         // -15-10-2026- 0.9.1: Velocidad fija, la app con luz, espacios del usuario y pulido. Antes: versionName "0.9.0"
-        versionName "0.9.1"
+        // -18-10-2026- 0.9.2: gestos de vuelta en Play, Parar y visor en tomas largas, subtítulos sin corte, motor
+        // sin detenciones ni retrocesos, 14 Mbps, menú del guion y Ayuda. Antes: versionName "0.9.1"
+        versionName "0.9.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         // SOLO LOS PROCESADORES DE LOS TELEFONOS -24-09-2026-. Las bibliotecas nativas -Vosk,
         // la camara- venian para seis arquitecturas, y las x86 son solo de emuladores: 21 MB
