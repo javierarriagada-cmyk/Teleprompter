@@ -85,7 +85,7 @@ const hojas = (o, pre = '') => Object.entries(o).flatMap(([k, v]) => (v && typeo
 }
 
 const DOMINIO = 'https://sigoteleprompter.com'
-const PAGINAS = ['portada', 'privacidad', 'soporte']
+const PAGINAS = ['portada', 'privacidad', 'soporte', 'ayuda']
 // La ruta publica -/en/privacy- al archivo que la sirve con cleanUrls -en/privacy.html-. La
 // portada en ingles es en.html y no en/index.html: asi /en se sirve sin redirigir a /en/.
 const archivoDe = (ruta) => (ruta === '/' ? 'index.html' : `${ruta.slice(1)}.html`)
@@ -143,7 +143,7 @@ function selector(t, pagina, lugar) {
 function pie(t, pagina) {
   return `<footer class="pie">
   <ul>
-    <li><span><a href="${t.rutas.privacidad}">${t.pie.privacidad}</a></span><span><a href="${t.rutas.soporte}">${t.pie.soporte}</a></span></li>
+    <li><span><a href="${t.rutas.privacidad}">${t.pie.privacidad}</a></span><span><a href="${t.rutas.soporte}">${t.pie.soporte}</a></span><span><a href="${t.rutas.ayuda}">${t.pie.ayuda}</a></span></li>
     <li><span><a href="mailto:${t.correo}">${t.correo}</a></span><span>© Sigo</span></li>
   </ul>
   ${selector(t, pagina, 'pie')}
@@ -155,7 +155,8 @@ function pie(t, pagina) {
 function textos(html, t, donde) {
   const derivados = {
     'privacidad.lista': t.privacidad.puntos.map((x) => `<li>${x}</li>`).join('\n    '),
-    'soporte.lista': t.soporte.puntos.map((x) => `<li>${x}</li>`).join('\n    ')
+    'soporte.lista': t.soporte.puntos.map((x) => `<li>${x}</li>`).join('\n    '),
+    'ayuda.secciones': t.ayuda.secciones.map((s) => `<h2>${s.titulo}</h2>\n  ${s.parrafos.map((x) => `<p>${x}</p>`).join('\n  ')}\n  <p class="captura">${s.captura}</p>`).join('\n  ')
   }
   return html.replace(/\{\{([\w.]+)\}\}/g, (_, clave) => {
     if (clave in derivados) return derivados[clave]
