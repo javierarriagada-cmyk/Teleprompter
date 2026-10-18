@@ -14,11 +14,12 @@
 //
 // La lógica es pura para probarla sin montar la UI. MarcaGuia solo dibuja.
 
-export type IdMarcaGuia = 'idioma' | 'recuadro' | 'palma'
+export type IdMarcaGuia = 'idioma' | 'recuadro' | 'palma' | 'subtitulos'
 
 export const CLAVE_MARCA_IDIOMA = 'teleprompter_marca_idioma'
 export const CLAVE_MARCA_RECUADRO = 'teleprompter_marca_recuadro'
 export const CLAVE_MARCA_PALMA = 'teleprompter_marca_palma'
+export const CLAVE_MARCA_SUBTITULOS = 'teleprompter_marca_subtitulos'
 
 // Id del bloque molde del guion Hola -bienvenida.ts-. No es id de guion.
 export const ID_BLOQUE_HOLA = 'b-bienvenida-1'
@@ -26,7 +27,8 @@ export const ID_BLOQUE_HOLA = 'b-bienvenida-1'
 const CLAVES: Record<IdMarcaGuia, string> = {
   idioma: CLAVE_MARCA_IDIOMA,
   recuadro: CLAVE_MARCA_RECUADRO,
-  palma: CLAVE_MARCA_PALMA
+  palma: CLAVE_MARCA_PALMA,
+  subtitulos: CLAVE_MARCA_SUBTITULOS
 }
 
 // Mientras hay una marca a la vista, no sale otra. No se persiste.
@@ -92,6 +94,7 @@ export function reiniciarMarcasGuiaParaPruebas(): void {
     localStorage.removeItem(CLAVE_MARCA_IDIOMA)
     localStorage.removeItem(CLAVE_MARCA_RECUADRO)
     localStorage.removeItem(CLAVE_MARCA_PALMA)
+    localStorage.removeItem(CLAVE_MARCA_SUBTITULOS)
   } catch (e) {}
 }
 
@@ -189,6 +192,19 @@ export function debeMostrarMarcaPalma(opts: {
   if (opts.motivoSinGestos != null) return false
   if (opts.modeloBajando) return false
   if (opts.pidiendoGestos) return false
+  if (!condicionesComunesOk(opts)) return false
+  return true
+}
+
+
+// Subtítulos: primera vez que se abre una toma con subtítulos para elegir y sin guardar.
+export function debeMostrarMarcaSubtitulos(opts: {
+  yaVista: boolean
+  tieneSubtitulos: boolean
+  sinGuardar: boolean
+} & CondicionesComunes): boolean {
+  if (opts.yaVista) return false
+  if (!opts.tieneSubtitulos || !opts.sinGuardar) return false
   if (!condicionesComunesOk(opts)) return false
   return true
 }

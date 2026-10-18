@@ -4,8 +4,8 @@ import { createPortal } from 'react-dom'
 import { App as CapacitorApp } from '@capacitor/app'
 import {
   // -tomas-largas- Sin la ficha/fila de Subtítulos, IconoSubtitulos ya no se usa aquí. Antes:
-  // IconoAtras, IconoCerrar, IconoSubtitulos, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda,
-  IconoAtras, IconoCerrar, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda,
+  // IconoAtras, IconoCerrar, IconoSubtitulos, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda, IconoCorreo,
+  IconoAtras, IconoCerrar, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda, IconoCorreo,
   IconoDocumento
 } from './IconosApp'
 import {
@@ -537,6 +537,26 @@ export function PanelAjustes({
                         onClick={() => alternarMenu('idioma')}
                       />
                     </div>
+                  </div>
+                </>
+              )}
+              {/* -guia-sigo- Ayuda y comentarios, arriba de Acerca. */}
+              {conAcerca && (
+                <>
+                  <h3 className="dock-seccion">{t('seccionAyuda')}</h3>
+                  <div className="tarjeta-seccion-ajustes">
+                    <FilaAjuste
+                      testid="fila-ayuda"
+                      icono={<IconoAyuda tamano={22} />}
+                      nombre={t('ayuda')}
+                      onClick={() => abrirEnlace(idioma === 'es' ? 'https://sigoteleprompter.com/ayuda' : 'https://sigoteleprompter.com/en/help')}
+                    />
+                    <FilaAjuste
+                      testid="fila-comentarios"
+                      nombre={t('enviarComentarios')}
+                      icono={<IconoCorreo tamano={22} />}
+                      onClick={() => abrirEnlace('mailto:' + (idioma === 'es' ? 'hola@sigoteleprompter.com' : 'hello@sigoteleprompter.com'))}
+                    />
                   </div>
                 </>
               )}

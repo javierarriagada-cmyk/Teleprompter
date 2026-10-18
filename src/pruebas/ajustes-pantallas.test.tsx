@@ -370,7 +370,10 @@ describe('Ajustes de pantallas, cuarta vuelta: un solo panel de Ajustes', () => 
     const panel = await screen.findByTestId('panel-ajustes-toma')
     expect(panel.getAttribute('data-origen')).toBe('portada')
     expect(within(panel).getByText(es.tituloAjustes)).toBeTruthy()
-    expect(secciones()).toEqual([es.seccionLectura, es.seccionPantalla, es.seccionApariencia, es.seccionAcerca])
+    // -guia-sigo, 18-10-2026- Entra la sección Ayuda, arriba de Acerca de: decisión D8 del estudio de cómo
+    // enseña Sigo, aprobada por Javier. Antes:
+    // expect(secciones()).toEqual([es.seccionLectura, es.seccionPantalla, es.seccionApariencia, es.seccionAcerca])
+    expect(secciones()).toEqual([es.seccionLectura, es.seccionPantalla, es.seccionApariencia, es.seccionAyuda, es.seccionAcerca])
     expect(screen.getByTestId('fila-tema')).toBeTruthy()
     expect(screen.getByTestId('fila-idioma')).toBeTruthy()
     expect(screen.getByTestId('fila-acerca-de-sigo')).toBeTruthy()

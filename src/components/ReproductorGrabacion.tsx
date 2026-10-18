@@ -11,6 +11,8 @@ import { anotar87, medirBordesSeguros, anotarOrientacion } from '../lib/medicion
 // -tomas-largas- Antes: import { subtitulosConCortes, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
 import { subtitulosConCortes, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
 import { CapaSubtitulos, SelectorSubtitulos } from './SubtitulosVisor'
+import { MarcaGuia } from './MarcaGuia'
+import { debeMostrarMarcaSubtitulos, abrirMarcaSiCorresponde, marcarComoVista, marcaYaVista, registrarCierreAfuera } from '../lib/marcasGuia'
 // EL FILTRO DE LA TOMA -tarea 96-. Ver lib/filtros.ts y SelectorFiltro.tsx.
 import { SelectorFiltro } from './SelectorFiltro'
 // -tomas-largas- Antes: import { filtroGuardado, guardarFiltro, filtroCss, esNeutro, FiltroToma, TonoFiltro } from '../lib/filtros'
@@ -148,7 +150,13 @@ export default function ReproductorGrabacion({
   // recodificando -6,5 min una de 25 min- sin que nadie lo hubiera elegido para ella.
   // Antes: const [filtro, setFiltro] = React.useState<FiltroToma>(() => filtroGuardado())
   const [filtro, setFiltro] = React.useState<FiltroToma>(() => ({ ...FILTRO_NATURAL }))
+  // -guia-sigo, corrección- El efecto de la marca de subtítulos estaba aquí, antes de que existieran
+  // subtitulos y guardada: su lista de dependencias se evaluaba antes de declararlas y el visor se caía
+  // al abrirse -tsc TS2448 en el CI del PR 135-. Ahora va después del useMemo de subtitulos.
   const [filtroAbierto, setFiltroAbierto] = React.useState(false)
+  // -guia-sigo- Marca de subtítulos.
+  const [marcaSub, setMarcaSub] = React.useState(false)
+  const anclaSubRef = React.useRef<HTMLDivElement>(null)
   const cambiarFiltro = (tono: TonoFiltro) => {
     const f: FiltroToma = { version: 1, tono }
     setFiltro(f)
@@ -416,6 +424,18 @@ export default function ReproductorGrabacion({
       return []
     }
   }, [registroMotor, formaCuadro, cortes])
+  // -guia-sigo- La marca de subtítulos: la primera vez que hay subtítulos para elegir y la toma no se guardó.
+  React.useEffect(() => {
+    const puede = debeMostrarMarcaSubtitulos({
+      yaVista: marcaYaVista('subtitulos'),
+      tieneSubtitulos: subtitulos.length > 0,
+      sinGuardar: !guardada,
+      enLecturaOToma: false,
+      hayAvisoVoz: false,
+      hayDialogoPermiso: false
+    })
+    if (abrirMarcaSiCorresponde('subtitulos', puede)) setMarcaSub(true)
+  }, [subtitulos.length, guardada])
 
   // El panel de Subtítulos abierto esconde el nombre de la toma: el video gana ~52 dp -respuesta de
   // Claude del 04-10-.
@@ -864,6 +884,8 @@ export default function ReproductorGrabacion({
                 // -tarea 87, de lado- Desactivado mientras se guarda, como de pie. Antes sin disabled.
                 <button type="button" className="accion-toma" data-testid="btn-repetir-toma" aria-label={t('repetirToma')} title={t('repetirToma')} disabled={guardando} onClick={onRepetir} style={estiloFila} {...fila}>
                   <IconoRepetir tamano={26} />
+                  {/* -guia-sigo- Repetir con su nombre, de lado también. */}
+                  <span>{t('repetir')}</span>
                 </button>
               )}
             </>
@@ -1007,8 +1029,11 @@ export default function ReproductorGrabacion({
           />
           <span>{formatearSegundos(total)}</span>
         </div>
+        {subtitulos.length === 0 && !guardada && (
+          <p className="sin-subtitulos" data-testid="sin-subtitulos">{t('sinSubtitulos')}</p>
+        )}
         {subtitulos.length > 0 && !guardada && (
-          <div style={{ padding: 'var(--aire-3) var(--aire-3) 0' }}>
+          <div ref={anclaSubRef} style={{ padding: 'var(--aire-3) var(--aire-3) 0' }} data-testid="ancla-subtitulos">
             {/* -tarea 87, A4- El visor sabe si el panel está abierto -esconde el nombre-. Mientras se
                 guarda, la ficha no se abre. */}
             <SelectorSubtitulos
@@ -1019,7 +1044,7 @@ export default function ReproductorGrabacion({
               }}
               abierto={panelAbierto}
               // -tarea 96- abrirSubtitulos cierra la tira de filtros. Antes: onAbrir={setPanelAbierto}.
-              onAbrir={abrirSubtitulos}
+              onAbrir={(v) => { abrirSubtitulos(v); if (v) { marcarComoVista('subtitulos'); setMarcaSub(false) } }}
               desactivado={guardando}
             />
           </div>
@@ -1116,6 +1141,8 @@ export default function ReproductorGrabacion({
                   onClick={onRepetir}
                 >
                   <IconoRepetir tamano={26} />
+                  {/* -guia-sigo- Repetir con su nombre, como Guardar y Borrar en la misma fila. */}
+                  <span>{t('repetir')}</span>
                 </button>
               )}
             </>
@@ -1143,6 +1170,15 @@ export default function ReproductorGrabacion({
           </button>
         </div>
       </div>
+      {marcaSub && (
+        <MarcaGuia
+          anclaEl={anclaSubRef.current}
+          texto={t('marcaGuiaSubtitulos')}
+          idDescripcion="marca-guia-subtitulos-desc"
+          onCerrar={(motivo) => { if (motivo === 'entendido') marcarComoVista('subtitulos'); else registrarCierreAfuera('subtitulos'); setMarcaSub(false) }}
+          testid="marca-guia-subtitulos"
+        />
+      )}
     </div>
   )
 }

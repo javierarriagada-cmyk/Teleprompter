@@ -102,6 +102,7 @@ import { IndicadorPrecarga } from './components/IndicadorPrecarga'
 import { PanelDiagnostico } from './components/PanelDiagnostico'
 // Las herramientas de prueba no viajan a Play -tarea 84, src/lib/herramientas.ts-.
 import { HERRAMIENTAS } from './lib/herramientas'
+import { guionDeLaTarjeta, avisoAlArchivar } from './lib/portada'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
 // -controles-que-se-desvanecen, 14-10-2026- A los 2,5 s empiezan a irse -se desvanecen en MS_PANTALLA,
@@ -1015,12 +1016,22 @@ export default function App({ motor, repoOverride }: AppProps) {
     try {
       const g = await repoRef.current.abrir(id)
       if (g) {
+        const antes = g.archivado
         g.archivado = archivado
         await repoRef.current.guardar(g)
         if (guionActual && guionActual.id === id) {
           setGuionActual({ ...g })
         }
         await cargarBiblioteca()
+        // -guia-sigo- Aviso al archivar, como el borrado -lib/portada.ts, avisoAlArchivar-. Antes no avisaba.
+        const aviso = avisoAlArchivar(antes, archivado, () => { void handleArchivarGuion(id, false) })
+        if (aviso) {
+          mostrarAviso(t(aviso.texto), {
+            accionTexto: t(aviso.accionTexto),
+            duracionMs: aviso.duracionMs,
+            alEjecutarAccion: aviso.alEjecutarAccion
+          })
+        }
       }
     } catch (e) {
       console.warn('[App] Error al archivar/desarchivar guion:', e)
@@ -1030,8 +1041,13 @@ export default function App({ motor, repoOverride }: AppProps) {
   // ACCESOS DIRECTOS DEL ÍCONO -accesos-directos, 11-10-2026-.
   // Mantiene actualizado el acceso dinámico ("Grabar «título»") con el guion de la tarjeta
   // de la portada y procesa las acciones que llegan al tocar los accesos.
+  // -guia-sigo- La tarjeta y el acceso «Grabar «título»» saltan los archivados.
+  // Antes: filter solo de idsPendientesBorrado.
+  // -guia-sigo, corrección- Con la misma función de la tarjeta -lib/portada.ts-. Antes, en el PR 135:
+  // const guionesActivosAcceso = guionesResumen.filter((g) => !idsPendientesBorrado.includes(g.id) && !g.archivado)
+  // const guionPortadaAcceso = guionesActivosAcceso.length > 0 ? guionesActivosAcceso[0] : null
   const guionesActivosAcceso = guionesResumen.filter((g) => !idsPendientesBorrado.includes(g.id))
-  const guionPortadaAcceso = guionesActivosAcceso.length > 0 ? guionesActivosAcceso[0] : null
+  const guionPortadaAcceso = guionDeLaTarjeta(guionesActivosAcceso) ?? null
 
   useEffect(() => {
     if (!cargado) return
@@ -3188,6 +3204,8 @@ export default function App({ motor, repoOverride }: AppProps) {
             }}
             onVolverBiblioteca={() => { salirDelEditor() }}
             mostrarAviso={mostrarAviso}
+            onBorrar={handleBorrarGuion}
+            onArchivar={handleArchivarGuion}
             onEntrarLectura={(rect) => handleEntrarLectura('editor', rect, false)}
             onEntrarGrabar={(rect) => handleEntrarLectura('editor', rect, true)}
             fontSize={fontSize}

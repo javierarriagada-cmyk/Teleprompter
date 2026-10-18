@@ -18,6 +18,7 @@ export type MarcaGuiaProps = {
   onCerrar: (motivo: 'entendido' | 'afuera') => void
   // Mano de línea limpia solo en la marca del recuadro; si no queda refinada se omite.
   conMano?: boolean
+  tipoMano?: 'recuadro' | 'palma'
   alinear?: 'derecha' | 'izquierda'
   // data-testid de la burbuja.
   testid?: string
@@ -29,6 +30,7 @@ export function MarcaGuia({
   idDescripcion,
   onCerrar,
   conMano = false,
+  tipoMano,
   alinear = 'derecha',
   testid = 'marca-guia'
 }: MarcaGuiaProps) {
@@ -112,7 +114,7 @@ export function MarcaGuia({
       >
         <div className="marca-guia-flecha" aria-hidden="true" />
         <div className="marca-guia-cuerpo">
-          {conMano && <ManoArrastre className="marca-guia-mano" />}
+          {conMano && <ManoAnimada tipo={tipoMano ?? 'recuadro'} className="marca-guia-mano" />}
           <p id={idDescripcion} className="marca-guia-texto">
             {texto}
           </p>
@@ -131,35 +133,46 @@ export function MarcaGuia({
   )
 }
 
+// Antes -ManoArrastre, dibujo a mano con trazo 1.6-:
 // Mano de línea limpia al lado del texto del recuadro -peso de trazo tipo iconos Sigo, 1.6-.
 // Si no convence en dispositivo se puede omitir pasando conMano={false}.
-function ManoArrastre({ className }: { className?: string }) {
+// function ManoArrastre({ className }: { className?: string }) {
+//   return (
+//     <svg className={className} width={40} height={44} viewBox="0 0 40 44" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+//       {/* Palma */}
+//       <ellipse cx="22" cy="22" rx="9" ry="10" />
+//       {/* Dedos */}
+//       <path d="M16 20 V8" />
+//       <path d="M20 19 V5" />
+//       <path d="M24 19 V6" />
+//       <path d="M28 20 V10" />
+//       {/* Pulgar */}
+//       <path d="M14 24 L6 18" />
+//       {/* Flecha de arrastre hacia abajo-izquierda */}
+//       <path d="M14 34 L4 42" />
+//       <path d="M4 42 L12 41" />
+//       <path d="M4 42 L5 34" />
+//     </svg>
+//   )
+// }
+// -guia-sigo- Manos animadas de Material Symbols, Apache 2.0.
+// pan_tool: https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/pan_tool/default/24px.svg
+// front_hand: https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/front_hand/default/24px.svg
+function ManoAnimada({ tipo, className }: { tipo: 'recuadro' | 'palma'; className?: string }) {
+  const [quieta, setQuieta] = React.useState(false)
+  React.useEffect(() => {
+    const alTocar = () => setQuieta(true)
+    window.addEventListener('pointerdown', alTocar)
+    return () => window.removeEventListener('pointerdown', alTocar)
+  }, [])
+  const reducido = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  const clase = `mano-animada mano-${tipo}${quieta || reducido ? ' quieta' : ''}`
+  const path = tipo === 'recuadro'
+    ? 'M402-40q-30 0-56-13.5T303-92L48-465l24-23q19-19 45-22t47 12l116 81v-383q0-17 11.5-28.5T320-840q17 0 28.5 11.5T360-800v537L212-367l157 229q5 8 14 13t19 5h278q33 0 56.5-23.5T760-200v-560q0-17 11.5-28.5T800-800q17 0 28.5 11.5T840-760v560q0 66-47 113T680-40H402Zm38-440v-400q0-17 11.5-28.5T480-920q17 0 28.5 11.5T520-880v400h-80Zm160 0v-360q0-17 11.5-28.5T640-880q17 0 28.5 11.5T680-840v360h-80ZM486-300Z'
+    : 'M480-480v-400q0-17 11.5-28.5T520-920q17 0 28.5 11.5T560-880v400h-80Zm-160 0v-360q0-17 11.5-28.5T360-880q17 0 28.5 11.5T400-840v360h-80ZM500-40q-142 0-241-99t-99-241v-380q0-17 11.5-28.5T200-800q17 0 28.5 11.5T240-760v380q0 109 75.5 184.5T500-120q109 0 184.5-75.5T760-380v-140q-17 0-28.5 11.5T720-480v160H600q-33 0-56.5 23.5T520-240v40h-80v-40q0-66 47-113t113-47h40v-400q0-17 11.5-28.5T680-840q17 0 28.5 11.5T720-800v207q10-3 19.5-5t20.5-2h80v220q0 142-99 241T500-40Zm40-320Z'
   return (
-    <svg
-      className={className}
-      width={40}
-      height={44}
-      viewBox="0 0 40 44"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      {/* Palma */}
-      <ellipse cx="22" cy="22" rx="9" ry="10" />
-      {/* Dedos */}
-      <path d="M16 20 V8" />
-      <path d="M20 19 V5" />
-      <path d="M24 19 V6" />
-      <path d="M28 20 V10" />
-      {/* Pulgar */}
-      <path d="M14 24 L6 18" />
-      {/* Flecha de arrastre hacia abajo-izquierda */}
-      <path d="M14 34 L4 42" />
-      <path d="M4 42 L12 41" />
-      <path d="M4 42 L5 34" />
+    <svg className={`${className ?? ''} ${clase}`} width={40} height={44} viewBox="0 -960 960 960" aria-hidden="true">
+      <path d={path} />
     </svg>
   )
 }

@@ -256,16 +256,16 @@ Aa changes the text size. The typeface, the column width and the screen colors a
 
 When you want to record yourself, tap Record. The camera films while you read, and the text sits right under the lens, so your eyes go to the camera and not to the screen. You can see yourself full screen, behind the text, or in a small window. Record in portrait or landscape, whichever you need.
 
-If you need to stop for a moment, tap pause. Whatever happens during the pause stays out of the video: when you resume, the take carries on as if you never stopped.
+If you need to stop for a moment, tap the screen and then pause. Whatever happens during the pause stays out of the video: when you resume, the take carries on as if you never stopped.
 
 And if you're recording away from the phone, turn on Gesture control in the camera panel. Show your palm to pause or resume and, while paused, make a V sign to finish.
 
-When you're done, your video can have captions, which come from your script in time with your voice, and a filter to give it the look you want. What you see is what gets saved: save it to your gallery or share it right away.
+When you're done, your video can have captions, which come from your script in time with your voice, and a filter to give it the look you want. What you see is what gets saved: save it to your gallery or share it right away. Captions and the filter are chosen before you save.
 
 Sigo is here to give you the comfort and the calm you need. We want all your focus to be where it belongs. You don't have to memorize anything. You don't have to rush to keep up with the text. You can bring whatever emotion you want, whenever you want.
 
 It works for recording a video, teaching a class or getting ready for an interview.
 
-When you're done, delete this and write your own script, or paste one you already have.
+When you're done, tap + in your scripts to write your own or paste one you already have.
 
 And if there's something you like, something that bugs you, or an idea to make it better, let us know. Your feedback means a lot to us. Write to hello@sigoteleprompter.com. All the best.
