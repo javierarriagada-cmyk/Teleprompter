@@ -1,0 +1,39 @@
+TOMA DE 34 MIN EN EL REDMI -17-10-2026, 22:20 a 22:55-: material para investigar la suelta del ancla en main
+4cc21a8 -con #126: B con umbral 40, C y A-. Es la prueba de Javier con la APK 705 -main 4cc21a8, debug-: leyó
+con SU VOZ, no por parlante, el mismo guion de las tomas de 25 y 30 min, y no tocó la pantalla ni una vez.
+
+audio.wav   El audio que oyó el reconocedor -files/oido/1792286470635.pcm, 16 kHz mono 16 bit, 2047,5 s-, con
+            cabecera WAV y nada más: en la caja no hay ffmpeg ni Python para pasarlo a FLAC.
+guion.txt   El guion tal cual se leyó, sacado del encabezado de la bitácora -las líneas "# | "-. Igual byte por
+            byte a docs/mediciones/toma-30-min/guion.txt -rama motor-toma-30-min-: el poema de Larralde con sus
+            14 acotaciones entre paréntesis.
+bitacora-telefono.motor.txt
+            La bitácora del motor de la toma bf854a2a, tal como la escribió el teléfono. ENTERA: hasta los
+            2.043.507 ms, 87.445 filas -con el #130 el tope es 360000 y 'cuadro' se anota solo cuando cambia-.
+palabras-telefono.txt
+            El bf854a2a.palabras.txt de la toma -#130-, del que salen los subtítulos. Llega a los 2.029.689 ms.
+
+LOS RELOJES. La bitácora cuenta desde el inicio del video -epoch 1792286473349, su encabezado-. El .pcm se
+llama 1792286470635 y la fila 'oido' de la bitácora dice inicio=-2714: el audio empieza 2.714 ms antes que el
+video, o sea t_audio = t_bitácora + 2714 ms. Comprobarlo con los 'oyo' de la bitácora antes de usarlo.
+
+LO QUE VIO JAVIER -en el reloj de la toma-: pequeños adelantos cerca de 1:12, 2:35, 4:45, 19:45 -el más
+grande- y 26:51; ninguno lo obligó a tocar la pantalla.
+
+LO QUE YA SE VE EN LA BITÁCORA -su reloj-:
+- EL RETROCESO DE 19:32. Desde 1.150.000 ms los parciales llevan el ancla de 928 a 954 junto a la voz: la
+  acotación 5 -tokens 924 a 943, «(porque aunque mi existencia sea un accidente...»- y lo que sigue. La última
+  posición confirmada por un final es 909. Tres finales no calzan: 1.150.404 «queremos de ambos debajo aquí
+  este párrafo aunque inexistencia tenga razón de ser un accidente», 1.167.961 «el hecho de haber nacido
+  luciérnaga aquí aquí está corazón filosófico y el corazón filosófico...» y 1.172.703 «la pensadores que es
+  al medio en este tema». A los 1.172.718 ms, 15 ms después del tercero, la posición baja de 954,61 a 912
+  -calce=909-. Desde 1.180.572 los parciales calzan en 962-964 y la ventana los rechaza -FUERA, ref=912,
+  desde=902, hasta=952-. La posición vuelve a 953 a los 1.211.351 ms: 38,6 s atrás de la voz.
+- 1:04 a 1:18 -64.044 a ~78.000 ms-: un parcial que termina en «es una respuesta» calza en 96 -«eso es una
+  respuesta»- con la voz en 76, donde esa frase está la primera vez; el final siguiente calza en 82 y la
+  ventana lo rechaza -FUERA FINAL token=82 ref=96 desde=86-.
+- 4:40,5 -280.479 ms-: el parcial de dos palabras «que los» calza en 334 con la voz en ~310.
+- 26:44 -1.604.191 ms-: el parcial «no viene de lo que abre el» calza en 1337, la segunda vez que el guion
+  dice «viene de lo que aprendimos» -1324 y 1332-.
+- Se repiten lugares de la toma de 30 min: la acotación 1 -~215-, la de 630-642 y la acotación 5 -924-943,
+  donde el 16-10 el texto se detuvo cerca del 18:10-. Lo del 14:26 de ese día -voz 773 a 804- no se repitió.
