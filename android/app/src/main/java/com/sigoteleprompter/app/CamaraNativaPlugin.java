@@ -972,6 +972,29 @@ public class CamaraNativaPlugin extends Plugin {
             getContext(), getContext().getPackageName() + ".fileprovider", archivoDe(r));
     }
 
+    // LA DIRECCIÓN DE UNA TOMA EN EL SERVIDOR LOCAL -visor-servidor, 17-10-2026-.
+    // Anota la toma y devuelve una dirección con identificador opaco. La ruta no va en la
+    // dirección. Si el servidor no arranca, rechaza.
+    @PluginMethod
+    public void direccionDeToma(PluginCall call) {
+        String ruta = call.getString("ruta");
+        if (ruta == null || ruta.isEmpty()) {
+            call.reject("ruta requerida");
+            return;
+        }
+        try {
+            ServidorLocal s = ServidorLocal.obtener(getContext());
+            JSObject ret = new JSObject();
+            ret.put("url", s.anotar(ruta));
+            call.resolve(ret);
+        } catch (Exception e) {
+            call.reject("servidor: " + e.getMessage());
+        }
+    }
+
+    // Antes -tomas-grandes-: abrirConReproductor, ACTION_VIEW para tomas de más de 2^31.
+    // El visor ya no lo usa: todas las tomas van por el servidor local.
+
     // LAS TOMAS DE MAS DE 2.147.483.647 BYTES SE VEN CON EL REPRODUCTOR DEL SISTEMA -tomas-grandes,
     // 15-10-2026-. Medido en el Redmi con una toma de 5,29 GB: ClienteWebDeTomas contesta bien los rangos
     // -206, el tamaño real-, pero el reproductor de la WebView falla al leer desde el primer byte pasado

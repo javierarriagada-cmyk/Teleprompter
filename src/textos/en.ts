@@ -118,6 +118,7 @@ export const en: Textos = {
   noSeCompartio: 'Couldn’t share',
   sinAppParaVideo: 'No app can play this video',
   noSeAbrioVideo: 'Couldn’t open the video',
+  servidorNoArranco: 'Couldn’t prepare the video',
   guionImportado: 'Imported script',
   descargandoModelo: 'Downloading the voice model for offline use:',
   // Antes: errorModelo: 'Couldn’t download the Vosk voice model: {detalle}.',
