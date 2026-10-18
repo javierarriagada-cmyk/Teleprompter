@@ -165,7 +165,12 @@ function textos(html, t, donde) {
     // de la app deje de abrir una página inexistente. s.captura dice qué foto va en cada sección: queda
     // en los textos como la lista de lo que falta, pero no se muestra. Antes:
     // 'ayuda.secciones': t.ayuda.secciones.map((s) => `<h2>${s.titulo}</h2>\n  ${s.parrafos.map((x) => `<p>${x}</p>`).join('\n  ')}\n  <p class="captura">${s.captura}</p>`).join('\n  ')
-    'ayuda.secciones': t.ayuda.secciones.map((s) => `<h2>${s.titulo}</h2>\n  ${s.parrafos.map((x) => `<p>${x}</p>`).join('\n  ')}`).join('\n  ')
+    // -18-10-2026, más tarde- CON FOTO DONDE YA HAY -Javier: «saca las fotos»-: la sección con s.imagen la
+    // muestra debajo del texto, con s.alt; las demás siguen solo con texto y su s.captura dice qué foto falta.
+    // Las fotos salen del emulador y viven en sitio/fuente/capturas: abajo se copian a public/capturas.
+    // Antes: 'ayuda.secciones': t.ayuda.secciones.map((s) => `<h2>${s.titulo}</h2>\n  ${s.parrafos.map((x) => `<p>${x}</p>`).join('\n  ')}`).join('\n  ')
+    'ayuda.secciones': t.ayuda.secciones.map((s) => `<h2>${s.titulo}</h2>\n  ${s.parrafos.map((x) => `<p>${x}</p>`).join('\n  ')}` +
+      (s.imagen ? `\n  <figure class="captura"><img src="/capturas/${s.imagen}" alt="${s.alt}" width="540" height="1111" loading="lazy" decoding="async"></figure>` : '')).join('\n  ')
   }
   return html.replace(/\{\{([\w.]+)\}\}/g, (_, clave) => {
     if (clave in derivados) return derivados[clave]
@@ -278,11 +283,20 @@ for (const [idioma, t] of Object.entries(IDIOMAS)) {
 }
 
 // Lo que arma este script, y nada mas: lo que quede de un armado anterior se borra.
-const armados = new Set([...Object.keys(paginas).map((a) => a.split('/')[0]), 'sitio.js', 'fuentes', 'vendor', 'icono.png'])
+// -18-10-2026- Y las fotos del manual, en capturas. Antes: [..., 'sitio.js', 'fuentes', 'vendor', 'icono.png']
+const armados = new Set([...Object.keys(paginas).map((a) => a.split('/')[0]), 'sitio.js', 'fuentes', 'vendor', 'icono.png', 'capturas'])
 for (const viejo of fs.readdirSync(PUBLICO)) {
   if (armados.has(viejo)) continue
   fs.rmSync(path.join(PUBLICO, viejo), { recursive: true })
   console.log(`sitio/public/${viejo} borrado: ya no lo arma este script`)
+}
+
+// -18-10-2026- LAS FOTOS DEL MANUAL, tal cual desde sitio/fuente/capturas. La carpeta se rehace entera: una
+// foto que se saca de la fuente no queda servida.
+fs.rmSync(path.join(PUBLICO, 'capturas'), { recursive: true, force: true })
+fs.mkdirSync(path.join(PUBLICO, 'capturas'), { recursive: true })
+for (const foto of fs.readdirSync(path.join(FUENTE, 'capturas'))) {
+  fs.copyFileSync(path.join(FUENTE, 'capturas', foto), path.join(PUBLICO, 'capturas', foto))
 }
 
 for (const [archivo, html] of Object.entries(paginas)) {

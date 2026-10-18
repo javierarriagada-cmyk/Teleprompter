@@ -907,6 +907,8 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
 .texto p a, .texto .correo { color: var(--crema); }
 .texto .correo { display: inline-block; margin-top: 8px; font-family: var(--serif); font-size: clamp(22px, 6vw, 34px); text-decoration: none; border-bottom: 1px solid var(--filete); }
 .texto .correo:hover { border-color: var(--crema); }
+.texto .captura { margin: 20px 0 8px; }
+.texto .captura img { display: block; width: min(270px, 72%); height: auto; margin: 0 auto; border-radius: 22px; border: 1px solid var(--filete); }
 </style>
 </head>
 <body class="interior">
@@ -920,15 +922,20 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
   <p>Sigo sigue tu voz. Lees en voz alta y el texto avanza contigo. Si te detienes, te espera.</p>
   <h2>Leer y grabar</h2>
   <p>Abre un guion y toca Leer o Grabar. En la pantalla, toca el círculo para empezar. Cuenta 3 segundos y empieza.</p>
+  <figure class="captura"><img src="/capturas/leer-y-grabar.webp" alt="Grabar, antes de empezar: el guion, los controles y el círculo rojo" width="540" height="1111" loading="lazy" decoding="async"></figure>
   <h2>Pausar y parar</h2>
   <p>Al leer o grabar, Pausa y Parar están ocultos. Toca el texto y aparecen. Con la voz se ocultan solos a los pocos segundos.</p>
   <p>Lo que pasa durante la pausa no queda en el video. En pausa, el tacho descarta la toma. El gesto de atrás de Android detiene la toma y la guarda.</p>
+  <figure class="captura"><img src="/capturas/pausar-y-parar.webp" alt="Leyendo, con Pausa y Parar a la vista después de tocar el texto" width="540" height="1111" loading="lazy" decoding="async"></figure>
   <h2>Si el texto se adelanta</h2>
   <p>Si te saltas una parte, arrastra el texto con el dedo hasta donde vas. Sigue desde ahí. Antes de empezar, también se arrastra para elegir desde dónde parte.</p>
+  <figure class="captura"><img src="/capturas/si-el-texto-se-adelanta.webp" alt="El texto arrastrado con el dedo para empezar más adelante" width="540" height="1111" loading="lazy" decoding="async"></figure>
   <h2>Con la voz o con velocidad fija</h2>
-  <p>Antes de empezar, toca la ficha que dice Con la voz y elige Con la voz o Velocidad fija. Con la voz, el texto sigue lo que dices. Con Velocidad fija, sube solo, al ritmo que eliges.</p>
+  <p>Antes de empezar, toca la ficha que dice Con la voz y elige Con la voz o Velocidad fija. También se cambia en Ajustes. Con la voz, el texto sigue lo que dices. Con Velocidad fija, sube solo, al ritmo que eliges.</p>
+  <figure class="captura"><img src="/capturas/con-la-voz-o-velocidad-fija.webp" alt="La ficha del modo abierta, con Con la voz y Velocidad fija" width="540" height="1111" loading="lazy" decoding="async"></figure>
   <h2>La cámara</h2>
   <p>En Grabar puedes verte Detrás del texto, en un Recuadro, o con la cámara Oculta. El recuadro se arrastra. Voltear cambia de cámara. Calidad y Estabilizar están en el panel de Ajustes de la toma.</p>
+  <figure class="captura"><img src="/capturas/la-camara.webp" alt="El panel de la cámara, con Detrás, Recuadro y Oculta" width="540" height="1111" loading="lazy" decoding="async"></figure>
   <h2>Control por gestos</h2>
   <p>En el panel de la cámara, enciende Control por gestos. Solo funciona con la cámara frontal. La palma pausa o sigue. Para seguir, baja la mano y muéstrala de nuevo: cuenta 3 segundos. En pausa, la V termina la toma.</p>
   <h2>Subtítulos y filtro</h2>
@@ -937,12 +944,15 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
   <p>Guardar la deja en la galería, en Películas. Guardar y compartir abre el menú de compartir. Repetir vuelve a grabar. Borrar pide confirmación.</p>
   <h2>Tus guiones</h2>
   <p>Toca + para crear uno. Pega texto o abre un archivo .txt, .md o .docx. En el editor, selecciona texto para negrita, colores y destacado. Lo que escribes entre corchetes es una nota: se ve, pero no se lee. ES/EN es el idioma en que Sigo escucha.</p>
+  <figure class="captura"><img src="/capturas/tus-guiones.webp" alt="El editor con texto seleccionado y la barra de formato arriba" width="540" height="1111" loading="lazy" decoding="async"></figure>
   <h2>Borrar y archivar un guion</h2>
   <p>Desliza la fila, mantenla apretada, o usa el menú del editor. Al borrar sale Deshacer. Los archivados se ven en Archivados.</p>
+  <figure class="captura"><img src="/capturas/borrar-y-archivar.webp" alt="El menú de un guion, con Archivar y Borrar" width="540" height="1111" loading="lazy" decoding="async"></figure>
   <h2>Accesos directos</h2>
   <p>Mantén apretado el ícono de Sigo en el teléfono. Nuevo guion con lo copiado crea un guion y pega lo que haya. Grabar abre directo en Grabar el guion más reciente.</p>
   <h2>Ajustes</h2>
   <p>En Ajustes cambias la letra, la tipografía, el ancho, los colores, el espejo y mostrar tiempo. Desde la portada también cambias el tema y el idioma de la app.</p>
+  <figure class="captura"><img src="/capturas/ajustes.webp" alt="Ajustes desde la portada: lectura, pantalla y apariencia" width="540" height="1111" loading="lazy" decoding="async"></figure>
   <h2>Sin conexión</h2>
   <p>La voz de tu idioma y los gestos se bajan una vez. Después funcionan sin internet. Si no hay conexión la primera vez, Sigo lo avisa y ofrece reintentar.</p>
   <h2>Cómo escribirnos</h2>
