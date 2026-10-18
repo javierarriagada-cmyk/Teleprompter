@@ -1,0 +1,22 @@
+Parche para @capgo/camera-preview, para que la grabacion salga a 14 Mbps.
+
+El plugin no expone un bitrate. CameraX lo permite con
+Recorder.Builder.setTargetVideoEncodingBitRate.
+
+En android/src/main/java/.../CameraXView.java, donde se arma el Recorder:
+
+  Recorder recorder = new Recorder.Builder()
+      .setQualitySelector(...)
+      .build();
+
+agregar:
+
+      .setTargetVideoEncodingBitRate(14_000_000)
+
+antes del .build().
+
+La licencia del plugin es MPL-2.0: si se modifica y se distribuye el APK,
+hay que publicar los archivos modificados.
+
+Este cambio va junto con el de CamaraNativaPlugin.java, que deja la
+recodificacion en 14 Mbps.
