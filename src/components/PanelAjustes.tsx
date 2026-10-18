@@ -553,7 +553,6 @@ export function PanelAjustes({
                     />
                     <FilaAjuste
                       testid="fila-comentarios"
-                      icono={<IconoAyuda tamano={22} />}
                       nombre={t('enviarComentarios')}
                       icono={<IconoCorreo tamano={22} />}
                       onClick={() => abrirEnlace('mailto:' + (idioma === 'es' ? 'hola@sigoteleprompter.com' : 'hello@sigoteleprompter.com'))}

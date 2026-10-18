@@ -150,17 +150,9 @@ export default function ReproductorGrabacion({
   // recodificando -6,5 min una de 25 min- sin que nadie lo hubiera elegido para ella.
   // Antes: const [filtro, setFiltro] = React.useState<FiltroToma>(() => filtroGuardado())
   const [filtro, setFiltro] = React.useState<FiltroToma>(() => ({ ...FILTRO_NATURAL }))
-  React.useEffect(() => {
-    const puede = debeMostrarMarcaSubtitulos({
-      yaVista: marcaYaVista('subtitulos'),
-      tieneSubtitulos: subtitulos.length > 0,
-      sinGuardar: !guardada,
-      enLecturaOToma: false,
-      hayAvisoVoz: false,
-      hayDialogoPermiso: false
-    })
-    if (abrirMarcaSiCorresponde('subtitulos', puede)) setMarcaSub(true)
-  }, [subtitulos.length, guardada])
+  // -guia-sigo, corrección- El efecto de la marca de subtítulos estaba aquí, antes de que existieran
+  // subtitulos y guardada: su lista de dependencias se evaluaba antes de declararlas y el visor se caía
+  // al abrirse -tsc TS2448 en el CI del PR 135-. Ahora va después del useMemo de subtitulos.
   const [filtroAbierto, setFiltroAbierto] = React.useState(false)
   // -guia-sigo- Marca de subtítulos.
   const [marcaSub, setMarcaSub] = React.useState(false)
@@ -432,6 +424,18 @@ export default function ReproductorGrabacion({
       return []
     }
   }, [registroMotor, formaCuadro, cortes])
+  // -guia-sigo- La marca de subtítulos: la primera vez que hay subtítulos para elegir y la toma no se guardó.
+  React.useEffect(() => {
+    const puede = debeMostrarMarcaSubtitulos({
+      yaVista: marcaYaVista('subtitulos'),
+      tieneSubtitulos: subtitulos.length > 0,
+      sinGuardar: !guardada,
+      enLecturaOToma: false,
+      hayAvisoVoz: false,
+      hayDialogoPermiso: false
+    })
+    if (abrirMarcaSiCorresponde('subtitulos', puede)) setMarcaSub(true)
+  }, [subtitulos.length, guardada])
 
   // El panel de Subtítulos abierto esconde el nombre de la toma: el video gana ~52 dp -respuesta de
   // Claude del 04-10-.

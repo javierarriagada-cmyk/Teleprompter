@@ -14,6 +14,7 @@ import { ESCALA_AVISO, MS_MANTENER_APRETADO, programarMantener } from './mantene
 import { t, useTextos, tituloVisible, tituloOInicio, fechaCorta } from '../textos'
 import { entrarSeleccion, seleccionarTodas, trasAlternar } from '../lib/seleccionTomas'
 import { bordesSeguros, colocarMenu } from '../lib/bordesSeguros'
+import { guionDeLaTarjeta } from '../lib/portada'
 
 interface BibliotecaViewProps {
   guiones: ResumenGuion[]
@@ -582,7 +583,7 @@ export default function BibliotecaView({
 
   // -guia-sigo- La tarjeta muestra el guion no archivado más reciente.
   // Antes: const guionMasReciente = guiones.length > 0 ? guiones[0] : undefined
-  const guionMasReciente = guiones.find((g) => !g.archivado)
+  const guionMasReciente = guionDeLaTarjeta(guiones)
   // La tarjeta ya no muestra el texto del guion -TarjetaLectura.tsx, 24-09-2026-,
   // asi que ya no se lee el guion completo para dibujarla.
 
