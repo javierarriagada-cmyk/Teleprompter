@@ -35,15 +35,28 @@
 //                           dos cuadros, palabras/s, sin los arrastres a mano.
 //   cuadros                 intervalos entre lineas 'cuadro' del registro del telefono: mediana,
 //                           p95, max y cuantos pasan de 50 ms.
+//                           -banco-largo, 17-10-2026- En la bitácora nueva -'cuadro' solo cuando cambia,
+//                           diagnostico.ts- salen de sus filas 'cuadros' de cada 5 s: max y >50 son
+//                           exactos; la mediana y el p95 de la toma son los de los tramos, pesados por
+//                           cuántos cuadros tuvo cada uno -una aproximación: los intervalos sueltos ya
+//                           no están-. Un registro viejo se cuenta como siempre.
+//
+// TOMAS SIN TELEFONO -banco-largo-: con { sinTelefono: true } el registro es el que arma transcribir.py
+// con el audio de una toma -docs/registros/largas/-: no hay cuadros del telefono, la vara sale sin
+// ellos -medirContraLaVoz, sinTelefono- y las cifras del telefono -tel med, tel p90, dif tel y los
+// cuadros- quedan vacias.
 
-import { leerCorpus, repetirLectura } from '../lib/repetidor'
+// Antes: import { leerCorpus, repetirLectura } from '../lib/repetidor'
+import { leerCorpus, repetirLectura, cuadrosDelTelefono } from '../lib/repetidor'
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
 import { indiceDeRenglon, Renglon } from '../lib/renglones'
 import { palabrasDelDestacado } from '../lib/destacado'
 // Antes: import { acercarScroll } from '../lib/deslizar'
 import { acercarScroll, moverResorte } from '../lib/deslizar'
 import { avanzarTrabado, calcularScrollTop } from '../components/TeleprompterView'
-import { leerRegistro, medirContraLaVoz, percentil, CuadroRegistro } from './alinearToma.js'
+import { maximoDe } from '../lib/maximo'
+// Antes: import { leerRegistro, medirContraLaVoz, percentil, CuadroRegistro } from './alinearToma.js'
+import { leerRegistro, medirContraLaVoz, percentil, tokensDelGuion, CuadroRegistro, TramoCuadros } from './alinearToma.js'
 
 // El paso de repetirLectura: un cuadro de la simulacion.
 const MS_CUADRO_SIMULADO = 16
@@ -62,6 +75,7 @@ export type CrudosToma = {
   difTelefono: number[]     // posicion repetida menos la del telefono, en cada cuadro
   tironesMotor: number[]    // -motor sin pastilla- salto de velocidad del motor entre cuadros, palabras/s
   topesResorte: number      // -14-10-2026- cuadros en que actuo el tope del resorte -lib/deslizar.ts-
+  tramosCuadros: TramoCuadros[]   // -banco-largo- las filas 'cuadros' de la bitacora nueva; [] en una vieja
 }
 
 // -13-10-2026, resorte-sin-rebote-: mas el tiron de ARRANQUE -el salto de velocidad entre el ultimo
@@ -72,7 +86,9 @@ export type CrudosToma = {
 export type CambioRenglon = { ms: number; px: number; velMax: number; tiron: number; pasada: number; tironInicio: number; msMitad: number | null }
 
 // Como desliza el banco: 'hoy' -acercarScroll- o el resorte con su rapidez -lib/deslizar.ts-.
-export type OpcionesBanco = { deslizar?: 'hoy' | { omega: number } }
+// -banco-largo- sinTelefono: ver arriba, TOMAS SIN TELEFONO.
+// Antes: export type OpcionesBanco = { deslizar?: 'hoy' | { omega: number } }
+export type OpcionesBanco = { deslizar?: 'hoy' | { omega: number }; sinTelefono?: boolean }
 
 export type CifrasBanco = {
   muestras: number
@@ -107,7 +123,43 @@ export type CifrasBanco = {
 }
 
 const media = (a: number[]) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : NaN)
-const maximo = (a: number[]) => (a.length ? Math.max(...a) : NaN)
+// -banco-largo, 17-10-2026- Un recorrido -lib/maximo.ts-: con «...» Math.max revienta la pila con las
+// listas de una toma larga -los intervalos de 30 min a 60 cuadros por segundo son 110000-.
+// Antes: const maximo = (a: number[]) => (a.length ? Math.max(...a) : NaN)
+const maximo = (a: number[]) => (a.length ? maximoDe(a) : NaN)
+// -banco-largo- El percentil de alinearToma.js con pesos: el valor donde el peso acumulado pasa el
+// floor(p% del total), que con pesos de 1 es lo mismo que percentil.
+function percentilPesado(valores: Array<{ v: number; peso: number }>, p: number): number {
+  const total = valores.reduce((s, x) => s + x.peso, 0)
+  if (total === 0) return NaN
+  const orden = [...valores].sort((a, b) => a.v - b.v)
+  const k = Math.min(total - 1, Math.floor((p / 100) * total))
+  let acumulado = 0
+  for (const x of orden) {
+    acumulado += x.peso
+    if (acumulado > k) return x.v
+  }
+  return orden[orden.length - 1].v
+}
+// Las cuatro cifras de los cuadros: de los intervalos sueltos -registro viejo- y de los tramos -nuevo-.
+function cifrasDeCuadros(intervalos: number[], tramos: TramoCuadros[]) {
+  if (tramos.length === 0) {
+    // Lo de siempre, igual que antes.
+    return {
+      cuadroMediana: percentil(intervalos, 50),
+      cuadroP95: percentil(intervalos, 95),
+      cuadroMax: maximo(intervalos),
+      cuadrosSobre50: intervalos.filter((x) => x > 50).length
+    }
+  }
+  const sueltos = intervalos.map((v) => ({ v, peso: 1 }))
+  return {
+    cuadroMediana: percentilPesado([...sueltos, ...tramos.map((t) => ({ v: t.mediana, peso: t.n }))], 50),
+    cuadroP95: percentilPesado([...sueltos, ...tramos.map((t) => ({ v: t.p95, peso: t.n }))], 95),
+    cuadroMax: Math.max(intervalos.length ? maximo(intervalos) : -Infinity, maximo(tramos.map((t) => t.max))),
+    cuadrosSobre50: intervalos.filter((x) => x > 50).length + tramos.reduce((s, t) => s + t.sobre50, 0)
+  }
+}
 const pct = (n: number, d: number) => (d ? (100 * n) / d : NaN)
 
 export function cifrasDe(c: CrudosToma, palabrasDestacado: number | null = null): CifrasBanco {
@@ -135,10 +187,12 @@ export function cifrasDe(c: CrudosToma, palabrasDestacado: number | null = null)
     destacadoMedio: media(c.adelantoDestacado),
     destacadoMax: maximo(c.adelantoDestacado),
     palabrasDestacado,
-    cuadroMediana: percentil(c.intervalos, 50),
-    cuadroP95: percentil(c.intervalos, 95),
-    cuadroMax: maximo(c.intervalos),
-    cuadrosSobre50: c.intervalos.filter((x) => x > 50).length,
+    // -banco-largo- Con las filas 'cuadros' de la bitacora nueva, si las hay. Antes:
+    // cuadroMediana: percentil(c.intervalos, 50),
+    // cuadroP95: percentil(c.intervalos, 95),
+    // cuadroMax: maximo(c.intervalos),
+    // cuadrosSobre50: c.intervalos.filter((x) => x > 50).length,
+    ...cifrasDeCuadros(c.intervalos, c.tramosCuadros || []),
     difTelefono: media(c.difTelefono),
     tironMotor: maximo(c.tironesMotor),
     topesResorte: c.topesResorte
@@ -156,7 +210,8 @@ export function juntarCrudos(lista: CrudosToma[]): CrudosToma {
     intervalos: lista.flatMap((c) => c.intervalos),
     difTelefono: lista.flatMap((c) => c.difTelefono),
     tironesMotor: lista.flatMap((c) => c.tironesMotor),
-    topesResorte: lista.reduce((s, c) => s + c.topesResorte, 0)
+    topesResorte: lista.reduce((s, c) => s + c.topesResorte, 0),
+    tramosCuadros: lista.flatMap((c) => c.tramosCuadros || [])
   }
 }
 
@@ -171,12 +226,18 @@ export function medirTomaEnBanco(texto: string, opciones: OpcionesBanco = {}): R
   // -13-10-2026, correccion-: se repite COMO EL TELEFONO -reloj de sus cuadros, la pastilla del
   // tiempo, el idioma, donde empezo y los arrastres a mano; ver repetidor.ts-.
   // Antes: const rep = repetirLectura(leerCorpus(texto))
-  const rep = repetirLectura(leerCorpus(texto), { comoElTelefono: true })
+  // -banco-largo- El corpus, una vez: lo usa tambien la dif con el telefono. Antes:
+  // const rep = repetirLectura(leerCorpus(texto), { comoElTelefono: true })
+  const corpus = leerCorpus(texto)
+  const rep = repetirLectura(corpus, { comoElTelefono: true })
+  const sinTelefono = opciones.sinTelefono === true
 
   const letra = parseFloat(reg.cab.letra || '') || LETRA_POR_OMISION
   const filaPx = letra * INTERLINEADO
   const inicios = reg.renglones
-  const nTokens = medirContraLaVoz(reg, []).tokens.length
+  // -banco-largo- Lo mismo sin alinear: medirContraLaVoz alineaba toda la toma solo para contar los
+  // tokens, que son tokensDelGuion(guion). Antes: const nTokens = medirContraLaVoz(reg, []).tokens.length
+  const nTokens = tokensDelGuion(reg.guion).length
   const renglones: Renglon[] = (inicios || []).map((desde, k) => ({
     top: k * filaPx,
     alto: filaPx,
@@ -265,20 +326,35 @@ export function medirTomaEnBanco(texto: string, opciones: OpcionesBanco = {}): R
   }
   if (enCurso) cambios.push(cerrar(enCurso, rep.serie[rep.serie.length - 1].ms))
 
-  const repetida = medirContraLaVoz(reg, cuadros)
-  const telefono = medirContraLaVoz(reg)
+  // -banco-largo- Sin telefono, la vara sin sus cuadros, y no hay cifras del telefono. Antes:
+  // const repetida = medirContraLaVoz(reg, cuadros)
+  // const telefono = medirContraLaVoz(reg)
+  const repetida = medirContraLaVoz(reg, cuadros, { sinTelefono })
+  const telefono = sinTelefono ? { atrasoPal: [] as number[] } : medirContraLaVoz(reg)
   if (repetida.pares.length < 5) avisos.push('muy pocas palabras emparejadas con el guion')
 
   const n = renglones.length ? palabrasDelDestacado(nTokens / renglones.length) : null
   const adelantoDestacado = n === null ? [] : repetida.muestras.map((m) => Math.floor(m.pos) + n - 1 - m.tok)
 
+  // -banco-largo- La bitacora nueva trae los cuadros resumidos en sus filas 'cuadros': de sus 'cuadro'
+  // no salen intervalos. Sin telefono no hay cuadros que contar.
+  const formaNueva = reg.tramosCuadros.length > 0
   const intervalos: number[] = []
-  for (let i = 1; i < reg.cuadros.length; i++) intervalos.push(reg.cuadros[i].ms - reg.cuadros[i - 1].ms)
+  if (!sinTelefono && !formaNueva) for (let i = 1; i < reg.cuadros.length; i++) intervalos.push(reg.cuadros[i].ms - reg.cuadros[i - 1].ms)
 
   // Lo que reproduce el banco: la posicion repetida contra la del telefono, cuadro por cuadro.
+  // -banco-largo- En la bitacora nueva, contra los cuadros que repite el banco -cuadrosDelTelefono, con
+  // los que no se escribieron-. Sin telefono, nada.
   const difTelefono: number[] = []
-  const n2 = Math.min(cuadros.length, reg.cuadros.length)
-  if (cuadros.length === reg.cuadros.length) for (let i = 0; i < n2; i++) difTelefono.push(cuadros[i].pos - reg.cuadros[i].pos)
+  if (sinTelefono) {
+    // sin telefono no hay con que comparar
+  } else if (formaNueva) {
+    const tel = cuadrosDelTelefono(corpus.eventos)
+    if (cuadros.length === tel.length) for (let i = 0; i < tel.length; i++) difTelefono.push(cuadros[i].pos - tel[i].posicion)
+  } else {
+    const n2 = Math.min(cuadros.length, reg.cuadros.length)
+    if (cuadros.length === reg.cuadros.length) for (let i = 0; i < n2; i++) difTelefono.push(cuadros[i].pos - reg.cuadros[i].pos)
+  }
   // EL TIRON DEL MOTOR -motor sin pastilla, 13-10-2026-: la misma idea que cambioVelocidadMaximo de
   // repetidor.ts -el salto de velocidad mas grande entre dos cuadros- pero en palabras por segundo y
   // sin los cuadros de un arrastre a mano ni el siguiente: ese salto lo hace el dedo, no el motor.
@@ -300,9 +376,14 @@ export function medirTomaEnBanco(texto: string, opciones: OpcionesBanco = {}): R
     intervalos,
     difTelefono,
     tironesMotor,
-    topesResorte
+    topesResorte,
+    tramosCuadros: sinTelefono ? [] : reg.tramosCuadros
   }
-  return { cifras: cifrasDe(crudos, n), crudos, avisos }
+  // -banco-largo- Sin telefono no hay cuadros que contar: >50 vacio, no 0.
+  // Antes: return { cifras: cifrasDe(crudos, n), crudos, avisos }
+  const cifras = cifrasDe(crudos, n)
+  if (sinTelefono) cifras.cuadrosSobre50 = NaN
+  return { cifras, crudos, avisos }
 }
 
 function cerrar(c: CambioRenglon & { inicioMs: number }, ms: number): CambioRenglon {

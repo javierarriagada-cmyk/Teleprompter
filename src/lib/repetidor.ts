@@ -3,10 +3,14 @@ import { crearSeguidor } from './seguidor'
 import { crearMotorDeAvance } from './avance'
 import { Conduccion, procesarFinal, procesarParcial } from './conduccion'
 import { detectarIdioma } from './detectarIdioma'
+import { maximoDe } from './maximo'
 
 export type EventoCorpus =
   | { ms: number; tipo: 'oyo'; texto: string; final: boolean }
   | { ms: number; tipo: 'cuadro'; posicion: number; calce: number }
+  // -banco-largo, 17-10-2026- La fila 'cuadros' de la bitácora nueva: cuántos cuadros se dibujaron en
+  // el tramo que termina en ms -diagnostico.ts-. Los registros de antes no la tienen.
+  | { ms: number; tipo: 'cuadros'; n: number }
 
 export type Corpus = {
   guion: string          // el guion, reconstruido de la cabecera
@@ -95,6 +99,10 @@ export function leerCorpus(texto: string): Corpus {
             posicion: pos,
             calce
           })
+        } else if (tipo === 'cuadros') {
+          // -banco-largo- n=300 mediana=16 p95=18 max=34 sobre50=0
+          const n = detalle.match(/n=(\d+)/)
+          if (n) eventos.push({ ms, tipo: 'cuadros', n: parseInt(n[1], 10) })
         }
       }
     }
@@ -132,7 +140,57 @@ export function leerCorpus(texto: string): Corpus {
 //     un cuadro al siguiente -el motor no salta: eso es el texto movido con el dedo-, se pone el
 //     seguidor y el motor en el calce de ese cuadro con irAToken, como useSeguidor.irAToken.
 //     Los registros de antes de la tarea 89 no anotan esos movimientos; por eso se deducen.
+//   - LA BITÁCORA NUEVA -banco-largo, 17-10-2026-: un 'cuadro' solo cuando cambia y cada 5 s una fila
+//     'cuadros' con cuántos se dibujaron. Los que no se escribieron se vuelven a poner -cuadrosDelTelefono,
+//     abajo- con la posición del último escrito, que es la que tenían. Su hora no está: van repartidos
+//     parejos en su tramo. Un registro de antes, sin filas 'cuadros', queda tal cual.
 export type OpcionesRepeticion = { comoElTelefono?: boolean }
+
+type CuadroCorpus = Extract<EventoCorpus, { tipo: 'cuadro' }>
+
+// LOS CUADROS QUE DIBUJÓ EL TELÉFONO, también los que la bitácora nueva no escribió -ver arriba-. Por
+// cada fila 'cuadros' -n cuadros entre la fila anterior y su ms- se arma una grilla pareja de n horas en
+// el tramo -con el primer cuadro de la toma como comienzo del primero-; cada cuadro escrito toma el
+// lugar de la hora de la grilla más cercana y las que sobran son cuadros iguales al último escrito antes
+// de ellas. Sin filas 'cuadros' devuelve los 'cuadro' tal cual: los registros viejos no cambian.
+export function cuadrosDelTelefono(eventos: EventoCorpus[]): CuadroCorpus[] {
+  const escritos = eventos.filter((e): e is CuadroCorpus => e.tipo === 'cuadro')
+  const tramos = eventos.filter((e): e is Extract<EventoCorpus, { tipo: 'cuadros' }> => e.tipo === 'cuadros')
+  if (tramos.length === 0) return escritos
+  const salida: CuadroCorpus[] = []
+  let ultimo: CuadroCorpus | null = null
+  let k = 0
+  let desde: number | null = null
+  for (const tr of tramos) {
+    const delTramo: CuadroCorpus[] = []
+    while (k < escritos.length && escritos[k].ms <= tr.ms) delTramo.push(escritos[k++])
+    const n = Math.max(tr.n, delTramo.length)
+    const inicio = desde === null ? (delTramo.length ? delTramo[0].ms : tr.ms) : desde
+    const grilla: number[] = []
+    for (let j = 0; j < n; j++) {
+      // El primer tramo empieza CON su primer cuadro; los demás, después de la fila anterior.
+      grilla.push(desde === null ? (n === 1 ? tr.ms : inicio + ((tr.ms - inicio) * j) / (n - 1)) : inicio + ((tr.ms - inicio) * (j + 1)) / n)
+    }
+    const ocupado: Array<CuadroCorpus | null> = new Array(n).fill(null)
+    for (const c of delTramo) {
+      let mejor = -1
+      for (let j = 0; j < n; j++) if (ocupado[j] === null && (mejor < 0 || Math.abs(grilla[j] - c.ms) < Math.abs(grilla[mejor] - c.ms))) mejor = j
+      ocupado[mejor] = c
+    }
+    const lista = grilla.map((t, j) => ({ ms: ocupado[j] ? ocupado[j]!.ms : Math.round(t), c: ocupado[j] }))
+    lista.sort((a, b) => a.ms - b.ms || (a.c ? -1 : 0) - (b.c ? -1 : 0))
+    for (const x of lista) {
+      if (x.c) ultimo = x.c
+      if (x.c) salida.push(x.c)
+      else if (ultimo) salida.push({ ms: x.ms, tipo: 'cuadro', posicion: ultimo.posicion, calce: ultimo.calce })
+    }
+    desde = tr.ms
+  }
+  // Lo escrito después de la última fila 'cuadros' -no debería haber: la bitácora cierra el tramo abierto-.
+  while (k < escritos.length) salida.push(escritos[k++])
+  return salida
+}
+
 // Antes: export const MS_RELOJ_PASTILLA = 250
 export const SALTO_A_MANO = 3
 
@@ -157,7 +215,10 @@ export function repetirLectura(corpus: Corpus, opciones: OpcionesRepeticion = {}
   const cond: Conduccion = { seguidor, motor, tokens, limitesDeLinea }
 
   const eventosOyo = corpus.eventos.filter((e): e is Extract<EventoCorpus, { tipo: 'oyo' }> => e.tipo === 'oyo')
-  const maxMs = corpus.eventos.length > 0 ? Math.max(...corpus.eventos.map((e) => e.ms)) : 0
+  // -banco-largo, 17-10-2026- Un recorrido -lib/maximo.ts-: Math.max con «...» sobre todos los eventos
+  // revienta la pila con una toma larga -«Maximum call stack size exceeded», informe del #129-. Antes:
+  // const maxMs = corpus.eventos.length > 0 ? Math.max(...corpus.eventos.map((e) => e.ms)) : 0
+  const maxMs = corpus.eventos.length > 0 ? maximoDe(corpus.eventos.map((e) => e.ms)) : 0
 
   let ubicados = 0
   let totalOyo = eventosOyo.length
@@ -179,7 +240,9 @@ export function repetirLectura(corpus: Corpus, opciones: OpcionesRepeticion = {}
 
   // Los pasos del reloj: cada 16 ms, o -como el telefono- los 'cuadro' del registro.
   // Antes: for (let t = 0; t <= maxMs + stepMs; t += stepMs) {
-  const cuadrosTel = corpus.eventos.filter((e): e is Extract<EventoCorpus, { tipo: 'cuadro' }> => e.tipo === 'cuadro')
+  // -banco-largo- Con los cuadros que la bitácora nueva no escribió. Antes:
+  // const cuadrosTel = corpus.eventos.filter((e): e is Extract<EventoCorpus, { tipo: 'cuadro' }> => e.tipo === 'cuadro')
+  const cuadrosTel = cuadrosDelTelefono(corpus.eventos)
   const pasos: number[] = []
   if (comoTelefono && cuadrosTel.length > 0) for (const c of cuadrosTel) pasos.push(c.ms)
   else for (let t = 0; t <= maxMs + stepMs; t += stepMs) pasos.push(t)

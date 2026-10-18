@@ -1,0 +1,33 @@
+TOMAS LARGAS PARA EL BANCO -banco-largo, 17-10-2026-: el grupo «Largas» de `npm run banco`.
+
+  toma-25-min.motor.txt  la toma de 25:34 del 15-10-2026 -moto g86, su grabación sonando por el parlante
+                         y oída por el Redmi-. Audio: rama motor-investigacion,
+                         docs/mediciones/toma-25-min/audio.flac.
+  toma-30-min.motor.txt  la toma 8038ca25 del Redmi del 16-10-2026 -APK 703, main e62dec7, 30:25 de video,
+                         1830,5 s de audio-. Audio: rama motor-toma-30-min, docs/mediciones/toma-30-min/
+                         audio.wav.
+Los audios NO van en esta rama: viven en esas dos ramas. El guion es el mismo en las dos -el poema de
+Larralde con sus 14 acotaciones-.
+
+CÓMO SE ARMARON -en la caja, 17-10-2026-:
+  1. transcribir.py -rama motor-investigacion, docs/mediciones/toma-25-min/herramientas/- con el modelo de
+     la app, vosk-model-small-es-0.42 con --frames-per-chunk=3 en conf/model.conf:
+       python3 transcribir.py <modelo> audio.flac guion.txt toma-25-min.transcrita.motor.txt palabras.json
+     Para la de 30 min, lo mismo con audio.wav; solo cambia el rótulo «# toma:» de la cabecera.
+     Salió igual a lo de esas ramas: 13410 eventos, 277 finales y 2055 palabras en la de 25 min, 16540,
+     308 y 2624 en la de 30; los palabras.json, byte por byte iguales a los de sus resultados/.
+  2. node docs/registros/largas/armar.mjs <lo de transcribir.py> palabras.json <bitácora> <destino>, con la
+     bitácora del teléfono de la toma de 30 min -rama motor-toma-30-min, docs/mediciones/toma-30-min/
+     bitacora-telefono.motor.txt-. Agrega la fila 'palabras FINAL' de cada final y, de la bitácora, la
+     letra, la columna, el diseño y la fila 'renglones' de la pantalla. Nada más cambia.
+
+LO QUE HAY QUE SABER AL LEER SUS CIFRAS:
+  - NO VIENEN DE UN TELÉFONO. Los 'cuadro' son el reloj de 16 ms de transcribir.py, en pos=0: el banco las
+    mide con sinTelefono -src/pruebas/bancoMotor.ts- y deja vacías las cifras del teléfono -dif tel, tel
+    med, tel p90 y los cuadros-. Lo demás es el motor de hoy repitiendo lo que Vosk oyó del audio.
+  - LA VARA no puede acotarse con los cuadros del teléfono: es la de medir.ts de la toma de 25 min -alinear
+    sin cercanía, contando las acotaciones, que Javier lee, y sin los pares que saltan más de 50 tokens-.
+  - EL RELOJ es el del audio. En la de 30 min el audio empieza 2.746 ms antes que el video -su LEEME-:
+    sus milisegundos no son los de la bitácora del teléfono.
+  - LOS RENGLONES de las dos son los del Redmi en la toma de 30 min -letra 24, tel-v, 392x894-. Para la de
+    25 min es un supuesto, sin verificar: su bitácora se perdió y no se sabe con qué letra se leyó.

@@ -17,10 +17,19 @@ import { omegaParaAsentar } from '../src/lib/deslizar'
 
 // LOS GRUPOS Y SUS CARPETAS. Larralde viene de la rama registros-tarea89, traido con
 // `git checkout origin/registros-tarea89 -- docs/registros/tarea89/`.
-const GRUPOS: Array<{ nombre: string; carpeta: string }> = [
+// -banco-largo, 17-10-2026- LARGAS: la toma de 25 min y la de 30 min, con los registros que saca
+// transcribir.py de su audio -docs/registros/largas/LEEME.txt-. No vienen de un teléfono: se miden
+// sinTelefono -src/pruebas/bancoMotor.ts-. Antes:
+// const GRUPOS: Array<{ nombre: string; carpeta: string }> = [
+//   { nombre: 'Español', carpeta: 'docs/registros/motor-24-sep' },
+//   { nombre: 'Inglés', carpeta: 'docs/registros/ingles-27-sep' },
+//   { nombre: 'Larralde', carpeta: 'docs/registros/tarea89' }
+// ]
+const GRUPOS: Array<{ nombre: string; carpeta: string; sinTelefono?: boolean }> = [
   { nombre: 'Español', carpeta: 'docs/registros/motor-24-sep' },
   { nombre: 'Inglés', carpeta: 'docs/registros/ingles-27-sep' },
-  { nombre: 'Larralde', carpeta: 'docs/registros/tarea89' }
+  { nombre: 'Larralde', carpeta: 'docs/registros/tarea89' },
+  { nombre: 'Largas', carpeta: 'docs/registros/largas', sinTelefono: true }
 ]
 
 function tomasEn(carpeta: string): string[] {
@@ -62,7 +71,8 @@ const COLUMNAS: Array<[string, (c: CifrasBanco) => string]> = [
   ['cuadro med', (c) => f0(c.cuadroMediana)],
   ['p95', (c) => f0(c.cuadroP95)],
   ['max', (c) => f0(c.cuadroMax)],
-  ['>50', (c) => String(c.cuadrosSobre50)]
+  // -banco-largo- '-' si no hay cuadros del telefono -grupo Largas-. Antes: ['>50', (c) => String(c.cuadrosSobre50)]
+  ['>50', (c) => (Number.isFinite(c.cuadrosSobre50) ? String(c.cuadrosSobre50) : '-')]
 ]
 
 function fila(nombre: string, c: CifrasBanco): string {
@@ -93,7 +103,8 @@ for (const g of GRUPOS) {
   const crudos: CrudosToma[] = []
   const tomas: any[] = []
   for (const a of archivos) {
-    const r = medirTomaEnBanco(fs.readFileSync(a, 'utf8'))
+    // Antes: const r = medirTomaEnBanco(fs.readFileSync(a, 'utf8'))
+    const r = medirTomaEnBanco(fs.readFileSync(a, 'utf8'), { sinTelefono: g.sinTelefono })
     crudos.push(r.crudos)
     const corto = path.relative(g.carpeta, a).replace(/\.motor\.txt$/, '')
     tomas.push({ archivo: a, cifras: r.cifras, avisos: r.avisos })
@@ -101,6 +112,7 @@ for (const g of GRUPOS) {
     for (const av of r.avisos) console.warn(`  aviso ${a}: ${av}`)
   }
   const total = cifrasDe(juntarCrudos(crudos))
+  if (g.sinTelefono) total.cuadrosSobre50 = NaN
   totales.push(fila(`**${g.nombre}** (${archivos.length})`, total))
   salida.grupos.push({ nombre: g.nombre, carpeta: g.carpeta, tomas, total })
 }
@@ -122,7 +134,8 @@ const comparacion: string[] = [
 salida.comparacionResorte = []
 for (const g of GRUPOS) {
   for (const m of MANERAS) {
-    const c = cifrasDe(juntarCrudos(tomasEn(g.carpeta).map((a) => medirTomaEnBanco(fs.readFileSync(a, 'utf8'), { deslizar: m.deslizar }).crudos)))
+    // Antes: ...medirTomaEnBanco(fs.readFileSync(a, 'utf8'), { deslizar: m.deslizar }).crudos...
+    const c = cifrasDe(juntarCrudos(tomasEn(g.carpeta).map((a) => medirTomaEnBanco(fs.readFileSync(a, 'utf8'), { deslizar: m.deslizar, sinTelefono: g.sinTelefono }).crudos)))
     comparacion.push(`| ${g.nombre} | ${m.nombre} | ${f0(c.tironInicioMax)} | ${f0(c.tironInicioMedio)} | ${f0(c.tironMax)} | ${f0(c.velocidadMax)} | ${f0(c.msHastaQuieto)} | ${f0(c.msMitad)} | ${c.solapes} | ${f1(c.pasadaMax)} | ${c.topesResorte} |`)
     salida.comparacionResorte.push({ grupo: g.nombre, manera: m.nombre, cifras: c })
   }

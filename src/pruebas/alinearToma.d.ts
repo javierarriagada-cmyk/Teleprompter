@@ -14,7 +14,10 @@ export type Registro = {
   capturas: number[]
   procesos: number[]
   oido: string | null
+  // -banco-largo- Las filas 'cuadros' de la bitácora nueva; [] en un registro viejo.
+  tramosCuadros: TramoCuadros[]
 }
+export type TramoCuadros = { ms: number; n: number; mediana: number; p95: number; max: number; sobre50: number }
 export type MedicionContraLaVoz = {
   tokens: TokenGuion[]
   pares: Array<[number, number]>
@@ -34,4 +37,6 @@ export function tokensDelGuion(lineas: string[]): TokenGuion[]
 export function leerRegistro(texto: string): Registro
 export function alinear(oidas: PalabraOida[], tokens: TokenGuion[], calceEn: ((t: number) => number) | null): Array<[number, number]>
 export function percentil(arr: number[], p: number): number
-export function medirContraLaVoz(reg: Registro, cuadros?: CuadroRegistro[]): MedicionContraLaVoz
+// Antes: export function medirContraLaVoz(reg: Registro, cuadros?: CuadroRegistro[]): MedicionContraLaVoz
+export const SALTO_VARA: number
+export function medirContraLaVoz(reg: Registro, cuadros?: CuadroRegistro[], opciones?: { sinTelefono?: boolean }): MedicionContraLaVoz

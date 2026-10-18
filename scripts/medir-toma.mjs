@@ -87,4 +87,10 @@ for (const ruta of process.argv.slice(2)) {
     console.log('  reparto: ' + Object.keys(reparto).sort((a, b) => a - b).map((k) => `${k}: ${Math.round((100 * reparto[k]) / ventana.length)}%`).join('  '))
   } else console.log('sin renglones en el registro: solo se mide en palabras')
   if (primerMov) console.log(`arranque: la pantalla se movio a los ${primerMov.ms} ms, con ${dichoAntes === null ? '?' : dichoAntes + 1} palabras ya dichas`)
+  // -banco-largo, 17-10-2026- La bitacora nueva escribe 'cuadro' solo cuando cambia y resume los cuadros
+  // cada 5 s -filas 'cuadros'-: todo lo de arriba sale igual de las dos formas. Esto, solo en la nueva.
+  if (reg.tramosCuadros.length) {
+    const t = reg.tramosCuadros
+    console.log(`cuadros (bitacora nueva): ${t.reduce((s, x) => s + x.n, 0)} en ${t.length} tramos de 5 s | max ${t.reduce((m, x) => Math.max(m, x.max), 0)} ms | ${t.reduce((s, x) => s + x.sobre50, 0)} pasan de 50 ms`)
+  }
 }

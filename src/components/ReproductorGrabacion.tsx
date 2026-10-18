@@ -3,6 +3,7 @@ import { ResumenGrabacion, ResumenGuion } from '../datos/modelo'
 import { srcDeRuta, formatearDuracionMs, nombreDeToma } from './TiraGrabaciones'
 // -tomas-grandes- Antes: import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo } from '../lib/archivosNativos'
 import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo, seVeConReproductorDelSistema, abrirConReproductor } from '../lib/archivosNativos'
+import { textoDeSubtitulos } from '../lib/archivosDeToma'
 import { orientacionDeToma } from '../lib/orientacion'
 import { anotar87, medirBordesSeguros, anotarOrientacion } from '../lib/medicionesTarea87'
 // -tomas-largas- Antes: import { subtitulosConCortes, estiloSubtituloGuardado, guardarEstiloSubtitulo, EstiloSubtitulo, Subtitulo, FormaCuadro } from '../lib/subtitulos'
@@ -123,14 +124,18 @@ export default function ReproductorGrabacion({
     setFiltro(f)
     // -tomas-largas- Ya no se recuerda: es de esta toma. Antes: guardarFiltro(f)
   }
+  // -banco-largo, 17-10-2026- De <id>.palabras.txt, que no se corta y va en todas las versiones; una toma
+  // de antes, sin él, del .motor.txt como hasta hoy -textoDeSubtitulos, archivosDeToma.ts-. Antes:
+  //       const dir = await directorioGrabaciones()
+  //       const registro = await leerTexto(juntos(dir, `${grabacion.id}.motor.txt`))
+  //       if (vigente) setRegistroMotor(registro)
   React.useEffect(() => {
     let vigente = true
     setRegistroMotor(null)
     ;(async () => {
       try {
-        const dir = await directorioGrabaciones()
-        const registro = await leerTexto(juntos(dir, `${grabacion.id}.motor.txt`))
-        if (vigente) setRegistroMotor(registro)
+        const registro = await textoDeSubtitulos(grabacion.id)
+        if (vigente && registro !== null) setRegistroMotor(registro)
       } catch (e) {
         // sin registro no hay subtitulos, y la toma se ve igual
       }

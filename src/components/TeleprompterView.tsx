@@ -11,6 +11,7 @@ import { agruparEnRenglones, indiceDeRenglon, Renglon, MedidaToken } from '../li
 import { SANGRIA_PRIMERA_LINEA_PX, primeraLineaConTexto, LIGADURAS_TEXTO, lineasDeEspacio } from '../lib/cortesDeRenglon'
 import { renderFormattedLine } from './renglones'
 import { anotar, diagnosticoActivo, generacionDiagnostico } from '../lib/diagnostico'
+import { HERRAMIENTAS } from '../lib/herramientas'
 import { anclaCompensada, crearCompensacion } from '../lib/compensacion'
 // -tarea 106- Velocidad fija: su motor, la duracion con el nivel y el nivel elegido.
 // -correccion 1- Y las palabras a pixeles, parejo.
@@ -1179,7 +1180,9 @@ export default function TeleprompterView({
         anotar({ tipo: 'pantalla', diseno: disenoRef.current, ancho: containerRef.current?.clientWidth || 0, alto: containerRef.current?.clientHeight || 0 })
         renglonesAnotadosRef.current = generacionDiagnostico()
       }
-      anotar({
+      // -banco-largo, 17-10-2026- Solo en la APK de prueba: en Play la bitácora no existe y el cuadro no se
+      // arma. Antes: anotar({ ... }) en cada cuadro, en todas las versiones.
+      if (HERRAMIENTAS) anotar({
         tipo: 'cuadro',
         posicion: st.posicion,
         calce: st.ultimoCalce,
