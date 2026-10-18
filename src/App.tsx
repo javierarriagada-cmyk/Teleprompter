@@ -32,6 +32,7 @@ import BibliotecaView from './components/BibliotecaView'
 import EditorView from './components/EditorView'
 import CuentaRegresiva from './components/CuentaRegresiva'
 import { Entrada } from './components/Entrada'
+import { IndicadorCargaExpressive } from './components/DockListo'
 // -atrás predictivo, 11-10-2026- Suma CURVA_SALE: la pantalla que se va al confirmar el gesto. Antes:
 // import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
 import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENTRA, CURVA_SALE, CURVA_NORMAL, CURVA_RESORTE } from './components/movimiento'
@@ -3774,8 +3775,18 @@ export default function App({ motor, repoOverride }: AppProps) {
       {/* -tarea 104- Arriba queda solo el error. El avance va en la pastilla del tiempo -lámina a- y la
           falta de conexión abajo -lámina b, avisoVoz-. Antes: {descargaVoz && ( */}
       {/* -parar-largo- Se ve al tiro el toque de Parar mientras la toma se guarda. Usa la capa de .aviso-voz. */}
+      {/* -guardando, 18-10-2026- Javier, al tocar Parar: «muy pequeño y en un rincón». .aviso-voz es solo
+          una capa fija arriba, sin fondo ni letra propia, y el texto quedaba pelado en la esquina, sobre la
+          cámara. Ahora tiene su propio aviso al centro -.aviso-guardando-toma, styles.css-, con el
+          indicador de carga de «Preparando la voz». Antes:
+          <div className="aviso-voz" data-testid="guardando-toma" role="status">{t('guardandoToma')}</div> */}
       {guardandoTomaVisible && (
-        <div className="aviso-voz" data-testid="guardando-toma" role="status">{t('guardandoToma')}</div>
+        <div className="capa-guardando-toma">
+          <div className="aviso-guardando-toma" data-testid="guardando-toma" role="status">
+            <IndicadorCargaExpressive tamano={20} />
+            <span>{t('guardandoToma')}</span>
+          </div>
+        </div>
       )}
       {descargaVoz && descargaVoz.estado === 'error' && (
         <div className="aviso-voz" data-testid="aviso-voz">

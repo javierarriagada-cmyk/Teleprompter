@@ -481,13 +481,15 @@ public class CamaraNativaPlugin extends Plugin {
                     .build();
                 final androidx.media3.transformer.Transformer[] t = new androidx.media3.transformer.Transformer[1];
                 final boolean[] terminado = { false };
-                // 12 Mbps -24-09-2026-. Sin pedirlo, Media3 eligio 8,7 contra ~20 de la
+                // Antes: 12 Mbps -24-09-2026-. Sin pedirlo, Media3 eligio 8,7 contra ~20 de la
                 // camara. Es una segunda compresion y, desde que se guarda, la UNICA
                 // copia de la toma: 12 queda sobre lo que pide YouTube para 1080p
                 // -8- y deja margen para cuando Instagram o WhatsApp la vuelvan a
                 // comprimir. 30 minutos: unos 2,7 GB.
+                // 14 Mbps -18-10-2026-. La grabacion tambien se fija a 14, para que la toma
+                // nazca mas liviana y, si se recodifica, se quede en el mismo numero.
                 androidx.media3.transformer.DefaultEncoderFactory codificador = new androidx.media3.transformer.DefaultEncoderFactory.Builder(getContext())
-                    .setRequestedVideoEncoderSettings(new androidx.media3.transformer.VideoEncoderSettings.Builder().setBitrate(12_000_000).build())
+                    .setRequestedVideoEncoderSettings(new androidx.media3.transformer.VideoEncoderSettings.Builder().setBitrate(14_000_000).build())
                     .build();
                 t[0] = new androidx.media3.transformer.Transformer.Builder(getContext())
                     .setEncoderFactory(codificador)
@@ -666,9 +668,9 @@ public class CamaraNativaPlugin extends Plugin {
                     .build();
                 final androidx.media3.transformer.Transformer[] t = new androidx.media3.transformer.Transformer[1];
                 final boolean[] terminado = { false };
-                // 12 Mbps, como guardarConSubtitulos -ver allá por qué-.
+                // 14 Mbps, como guardarConSubtitulos -ver allá por qué-. -18-10-2026- Antes: 12 Mbps, como guardarConSubtitulos -ver allá por qué-.
                 androidx.media3.transformer.DefaultEncoderFactory codificador = new androidx.media3.transformer.DefaultEncoderFactory.Builder(getContext())
-                    .setRequestedVideoEncoderSettings(new androidx.media3.transformer.VideoEncoderSettings.Builder().setBitrate(12_000_000).build())
+                    .setRequestedVideoEncoderSettings(new androidx.media3.transformer.VideoEncoderSettings.Builder().setBitrate(14_000_000).build())
                     .build();
                 t[0] = new androidx.media3.transformer.Transformer.Builder(getContext())
                     .setEncoderFactory(codificador)

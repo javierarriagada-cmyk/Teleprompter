@@ -30,6 +30,7 @@ import path from 'node:path'
 import os from 'node:os'
 import { fileURLToPath } from 'node:url'
 import { revisarR8 } from './revisarR8.mjs'
+import { parcharCamara } from './parcharCamara.mjs'
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const ANDROID = path.join(RAIZ, 'android')
@@ -95,6 +96,9 @@ correr('npx', ['vite', 'build', '--mode', 'play'], RAIZ)
 
 console.log('\n[2/4] Copiandolo adentro del proyecto Android...')
 correr('npx', ['cap', 'sync', 'android'], RAIZ)
+
+// -18-10-2026- La grabación a 14 Mbps, igual que en la APK de prueba -scripts/parcharCamara.mjs-.
+parcharCamara()
 
 console.log('\n[3/4] Compilando el AAB...')
 const gradleArgs = ['bundleRelease', '-PparaPlay', '--no-daemon']

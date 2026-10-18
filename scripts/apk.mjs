@@ -30,6 +30,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import os from 'node:os'
 import { fileURLToPath } from 'node:url'
+import { parcharCamara } from './parcharCamara.mjs'
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const ANDROID = path.join(RAIZ, 'android')
@@ -88,6 +89,10 @@ correr('npx', ['vite', 'build', '--mode', 'android'], RAIZ)
 
 console.log('\n[2/3] Copiandolo adentro del proyecto Android...')
 correr('npx', ['cap', 'sync', 'android'], RAIZ)
+
+// -18-10-2026- La grabación a 14 Mbps: una línea en el plugin de la cámara, que vive en node_modules y cada
+// npm install trae limpio -scripts/parcharCamara.mjs-. Si no encuentra dónde ponerla, para aquí.
+parcharCamara()
 
 // EL NUMERO DE VERSION NUNCA QUEDA POR DEBAJO DEL INSTALADO -15-10-2026-. El numero es la cuenta de
 // commits -android/app/build.gradle, numeroDeVersion- y juntar ramas con squash la hace bajar: el Redmi
