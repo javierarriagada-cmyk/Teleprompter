@@ -930,7 +930,7 @@
     },
     {
       "nombre": "net.java.dev.jna:jna",
-      "version": "5.13.0",
+      "version": "5.18.1",
       "licencia": "Apache-2.0",
       "origen": "android",
       "fuente": "",

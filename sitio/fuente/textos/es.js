@@ -14,7 +14,7 @@ export default {
   locale: 'es_ES',
   // Donde vive cada pagina en este idioma. armar.mjs las escribe con cleanUrls: /privacidad
   // se sirve de privacidad.html.
-  rutas: { portada: '/', privacidad: '/privacidad', soporte: '/soporte' },
+  rutas: { portada: '/', privacidad: '/privacidad', soporte: '/soporte', ayuda: '/ayuda' },
 
   meta: {
     titulo: 'Sigo — Teleprompter de voz',
@@ -23,7 +23,9 @@ export default {
     privacidadTitulo: 'Privacidad — Sigo',
     privacidadDescripcion: 'Cómo trata Sigo tus guiones, tus tomas y tu voz: todo queda en tu teléfono.',
     soporteTitulo: 'Soporte — Sigo',
-    soporteDescripcion: 'Cómo avisar un problema con Sigo, el teleprompter que sigue tu voz.'
+    soporteDescripcion: 'Cómo avisar un problema con Sigo, el teleprompter que sigue tu voz.',
+    ayudaTitulo: 'Ayuda — Sigo',
+    ayudaDescripcion: 'Cómo se usa Sigo: leer, grabar, pausar, subtítulos y más.'
   },
 
   selector: { etiqueta: 'Idioma' },
@@ -70,7 +72,7 @@ export default {
 
   cierre: { frase: 'El teleprompter que sigue tu&nbsp;voz.', disponible: 'Pronto en Google Play.' },
 
-  pie: { privacidad: 'Privacidad', soporte: 'Soporte' },
+  pie: { privacidad: 'Privacidad', soporte: 'Soporte', ayuda: 'Ayuda' },
 
   // EL CORREO DE CONTACTO de cada idioma -Javier, 07-10-2026-: en espanol hola@, en ingles
   // hello@. Los dos reciben. Lo usan el pie, privacidad, soporte y la invitacion a probar.
@@ -104,6 +106,30 @@ export default {
     contacto: 'Si tienes una pregunta, escríbenos.'
   },
 
+
+  ayuda: {
+    titulo: 'Ayuda',
+    intro: 'Sigo sigue tu voz. Lees en voz alta y el texto avanza contigo. Si te detienes, te espera.',
+    escribirnos: 'Cómo escribirnos',
+    secciones: [
+      { titulo: 'Leer y grabar', parrafos: ['Abre un guion y toca Leer o Grabar. En la pantalla, toca el círculo para empezar. Cuenta 3 segundos y empieza.'], captura: '[CAPTURA: pantalla LISTO de Grabar, con el círculo rojo y la cuenta de 3]', imagen: 'leer-y-grabar.webp', alt: 'Grabar, antes de empezar: el guion, los controles y el círculo rojo' },
+      { titulo: 'Pausar y parar', parrafos: ['Al leer o grabar, Pausa y Parar están ocultos. Toca el texto y aparecen. Con la voz se ocultan solos a los pocos segundos.', 'Lo que pasa durante la pausa no queda en el video. En pausa, el tacho descarta la toma. El gesto de atrás de Android detiene la toma y la guarda.'], captura: '[CAPTURA: leyendo, con los controles a la vista después de tocar el texto]', imagen: 'pausar-y-parar.webp', alt: 'Leyendo, con Pausa y Parar a la vista después de tocar el texto' },
+      { titulo: 'Si el texto se adelanta', parrafos: ['Si te saltas una parte, arrastra el texto con el dedo hasta donde vas. Sigue desde ahí. Antes de empezar, también se arrastra para elegir desde dónde parte.'], captura: '[CAPTURA: LISTO, con el texto desplazado hacia abajo]', imagen: 'si-el-texto-se-adelanta.webp', alt: 'El texto arrastrado con el dedo para empezar más adelante' },
+      // -18-10-2026- El modo se elige sobre todo en la ficha de la pantalla de antes de empezar; Ajustes de la
+      // portada también lo trae -btn-modo-voz, btn-modo-fija-. Antes:
+      // { titulo: 'Con la voz o con velocidad fija', parrafos: ['En Ajustes, elige Con la voz o Velocidad fija. Con la voz, el texto sigue lo que dices. Con Velocidad fija, sube solo, al ritmo que eliges.'], captura: '[CAPTURA: panel de Ajustes, selector Con la voz / Velocidad fija]' },
+      { titulo: 'Con la voz o con velocidad fija', parrafos: ['Antes de empezar, toca la ficha que dice Con la voz y elige Con la voz o Velocidad fija. También se cambia en Ajustes. Con la voz, el texto sigue lo que dices. Con Velocidad fija, sube solo, al ritmo que eliges.'], captura: '[CAPTURA: LISTO, ficha del modo abierta con Con la voz / Velocidad fija]', imagen: 'con-la-voz-o-velocidad-fija.webp', alt: 'La ficha del modo abierta, con Con la voz y Velocidad fija' },
+      { titulo: 'La cámara', parrafos: ['En Grabar puedes verte Detrás del texto, en un Recuadro, o con la cámara Oculta. El recuadro se arrastra. Voltear cambia de cámara. Calidad y Estabilizar están en el panel de Ajustes de la toma.'], captura: '[CAPTURA: LISTO de Grabar, panel de cámara abierto con Detrás, Recuadro y Oculta]', imagen: 'la-camara.webp', alt: 'El panel de la cámara, con Detrás, Recuadro y Oculta' },
+      { titulo: 'Control por gestos', parrafos: ['En el panel de la cámara, enciende Control por gestos. Solo funciona con la cámara frontal. La palma pausa o sigue. Para seguir, baja la mano y muéstrala de nuevo: cuenta 3 segundos. En pausa, la V termina la toma.'], captura: '[CAPTURA: panel de cámara, fila Control por gestos encendida]' },
+      { titulo: 'Subtítulos y filtro', parrafos: ['Se eligen en el visor, al terminar la toma, antes de guardar. Cada toma parte sin subtítulos. Una vez guardada, ya no se pueden poner. Lo que ves es lo que se guarda.'], captura: '[CAPTURA: visor de una toma sin guardar, con Subtítulos y Filtro a la vista]' },
+      { titulo: 'Guardar y compartir', parrafos: ['Guardar la deja en la galería, en Películas. Guardar y compartir abre el menú de compartir. Repetir vuelve a grabar. Borrar pide confirmación.'], captura: '[CAPTURA: visor, fila con Guardar, Guardar y compartir, Repetir y Borrar]' },
+      { titulo: 'Tus guiones', parrafos: ['Toca + para crear uno. Pega texto o abre un archivo .txt, .md o .docx. En el editor, selecciona texto para negrita, colores y destacado. Lo que escribes entre corchetes es una nota: se ve, pero no se lee. ES/EN es el idioma en que Sigo escucha.'], captura: '[CAPTURA: editor con texto seleccionado y la barra de formato]', imagen: 'tus-guiones.webp', alt: 'El editor con texto seleccionado y la barra de formato arriba' },
+      { titulo: 'Borrar y archivar un guion', parrafos: ['Desliza la fila, mantenla apretada, o usa el menú del editor. Al borrar sale Deshacer. Los archivados se ven en Archivados.'], captura: '[CAPTURA: lista de guiones, menú de una fila con Archivar y Borrar]', imagen: 'borrar-y-archivar.webp', alt: 'El menú de un guion, con Archivar y Borrar' },
+      { titulo: 'Accesos directos', parrafos: ['Mantén apretado el ícono de Sigo en el teléfono. Nuevo guion con lo copiado crea un guion y pega lo que haya. Grabar abre directo en Grabar el guion más reciente.'], captura: '[CAPTURA: lanzador de Android, menú del ícono de Sigo con los dos accesos]' },
+      { titulo: 'Ajustes', parrafos: ['En Ajustes cambias la letra, la tipografía, el ancho, los colores, el espejo y mostrar tiempo. Desde la portada también cambias el tema y el idioma de la app.'], captura: '[CAPTURA: panel de Ajustes desde la portada, secciones Lectura y Apariencia]', imagen: 'ajustes.webp', alt: 'Ajustes desde la portada: lectura, pantalla y apariencia' },
+      { titulo: 'Sin conexión', parrafos: ['La voz de tu idioma y los gestos se bajan una vez. Después funcionan sin internet. Si no hay conexión la primera vez, Sigo lo avisa y ofrece reintentar.'] , captura: '[CAPTURA: aviso de sin conexión al intentar leer sin la voz bajada]' }
+    ]
+  },
   soporte: {
     titulo: 'Soporte',
     queEs: 'Sigo es un teleprompter que sigue tu voz: lees en voz alta y el texto avanza contigo. Hoy es para teléfonos Android.',

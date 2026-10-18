@@ -30,7 +30,9 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+// -18-10-2026- pathToFileURL: en Windows import() no acepta C:\... -ver abajo, los idiomas-.
+// Antes: import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { build, createServer } from 'vite'
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -74,7 +76,10 @@ function marca(id, { resplandor = true, etiqueta = true } = {}) {
 // copiadas a mano que se separen: una frase nueva va en los dos archivos, o el armado se para.
 const IDIOMAS = {}
 for (const idioma of ['es', 'en']) {
-  IDIOMAS[idioma] = (await import(path.join(FUENTE, 'textos', `${idioma}.js`))).default
+  // -18-10-2026- EN WINDOWS: import() con una ruta C:\... falla -«Only URLs with a scheme in: file,
+  // data, and node are supported»-; con la dirección file:// anda en los dos sistemas. El sitio no se
+  // podía armar en el PC de Javier. Antes: IDIOMAS[idioma] = (await import(path.join(FUENTE, 'textos', `${idioma}.js`))).default
+  IDIOMAS[idioma] = (await import(pathToFileURL(path.join(FUENTE, 'textos', `${idioma}.js`)).href)).default
 }
 const hojas = (o, pre = '') => Object.entries(o).flatMap(([k, v]) => (v && typeof v === 'object' && !Array.isArray(v) ? hojas(v, `${pre}${k}.`) : [`${pre}${k}`]))
 {
@@ -85,7 +90,7 @@ const hojas = (o, pre = '') => Object.entries(o).flatMap(([k, v]) => (v && typeo
 }
 
 const DOMINIO = 'https://sigoteleprompter.com'
-const PAGINAS = ['portada', 'privacidad', 'soporte']
+const PAGINAS = ['portada', 'privacidad', 'soporte', 'ayuda']
 // La ruta publica -/en/privacy- al archivo que la sirve con cleanUrls -en/privacy.html-. La
 // portada en ingles es en.html y no en/index.html: asi /en se sirve sin redirigir a /en/.
 const archivoDe = (ruta) => (ruta === '/' ? 'index.html' : `${ruta.slice(1)}.html`)
@@ -143,7 +148,7 @@ function selector(t, pagina, lugar) {
 function pie(t, pagina) {
   return `<footer class="pie">
   <ul>
-    <li><span><a href="${t.rutas.privacidad}">${t.pie.privacidad}</a></span><span><a href="${t.rutas.soporte}">${t.pie.soporte}</a></span></li>
+    <li><span><a href="${t.rutas.privacidad}">${t.pie.privacidad}</a></span><span><a href="${t.rutas.soporte}">${t.pie.soporte}</a></span><span><a href="${t.rutas.ayuda}">${t.pie.ayuda}</a></span></li>
     <li><span><a href="mailto:${t.correo}">${t.correo}</a></span><span>© Sigo</span></li>
   </ul>
   ${selector(t, pagina, 'pie')}
@@ -155,7 +160,17 @@ function pie(t, pagina) {
 function textos(html, t, donde) {
   const derivados = {
     'privacidad.lista': t.privacidad.puntos.map((x) => `<li>${x}</li>`).join('\n    '),
-    'soporte.lista': t.soporte.puntos.map((x) => `<li>${x}</li>`).join('\n    ')
+    'soporte.lista': t.soporte.puntos.map((x) => `<li>${x}</li>`).join('\n    '),
+    // -18-10-2026- LAS FOTOS VAN DESPUÉS -Javier-: el manual sale primero solo con texto, para que Ayuda
+    // de la app deje de abrir una página inexistente. s.captura dice qué foto va en cada sección: queda
+    // en los textos como la lista de lo que falta, pero no se muestra. Antes:
+    // 'ayuda.secciones': t.ayuda.secciones.map((s) => `<h2>${s.titulo}</h2>\n  ${s.parrafos.map((x) => `<p>${x}</p>`).join('\n  ')}\n  <p class="captura">${s.captura}</p>`).join('\n  ')
+    // -18-10-2026, más tarde- CON FOTO DONDE YA HAY -Javier: «saca las fotos»-: la sección con s.imagen la
+    // muestra debajo del texto, con s.alt; las demás siguen solo con texto y su s.captura dice qué foto falta.
+    // Las fotos salen del emulador y viven en sitio/fuente/capturas: abajo se copian a public/capturas.
+    // Antes: 'ayuda.secciones': t.ayuda.secciones.map((s) => `<h2>${s.titulo}</h2>\n  ${s.parrafos.map((x) => `<p>${x}</p>`).join('\n  ')}`).join('\n  ')
+    'ayuda.secciones': t.ayuda.secciones.map((s) => `<h2>${s.titulo}</h2>\n  ${s.parrafos.map((x) => `<p>${x}</p>`).join('\n  ')}` +
+      (s.imagen ? `\n  <figure class="captura"><img src="/capturas/${s.imagen}" alt="${s.alt}" width="540" height="1111" loading="lazy" decoding="async"></figure>` : '')).join('\n  ')
   }
   return html.replace(/\{\{([\w.]+)\}\}/g, (_, clave) => {
     if (clave in derivados) return derivados[clave]
@@ -207,7 +222,15 @@ const salida = (Array.isArray(empaquetado) ? empaquetado[0] : empaquetado).outpu
 // de sitio/fuente, y nunca lectura.js -que si usa la aplicacion, pero solo aca, al armar- ni
 // los textos -van en el HTML-. Si alguien agrega un import de src/ o de una biblioteca, se para.
 const modulos = Object.values(salida[0].modules || {}).length ? Object.keys(salida[0].modules) : salida[0].moduleIds
-const ajenos = (modulos || []).filter((m) => !m.startsWith(FUENTE + path.sep) || m.endsWith(`${path.sep}lectura.js`) || m.includes(`${path.sep}vendor${path.sep}`) || m.includes(`${path.sep}textos${path.sep}`))
+// -18-10-2026- EN WINDOWS el empaquetado nombra los módulos con / -C:/Users/...- y FUENTE viene con \:
+// no calzaba ninguno y todos salían como ajenos. Se comparan los dos con /, que en Linux no cambia nada.
+// Antes: const ajenos = (modulos || []).filter((m) => !m.startsWith(FUENTE + path.sep) || m.endsWith(`${path.sep}lectura.js`) || m.includes(`${path.sep}vendor${path.sep}`) || m.includes(`${path.sep}textos${path.sep}`))
+const conBarras = (p) => p.replace(/\\/g, '/')
+const fuenteConBarras = conBarras(FUENTE) + '/'
+const ajenos = (modulos || []).filter((m) => {
+  const b = conBarras(m)
+  return !b.startsWith(fuenteConBarras) || b.endsWith('/lectura.js') || b.includes('/vendor/') || b.includes('/textos/')
+})
 if (salida.length !== 1 || !modulos || !modulos.length || ajenos.length) {
   throw new Error(`El JavaScript de la pagina junta algo que no es de sitio/fuente: ${ajenos.join(', ') || '(sin lista de modulos)'}. A la pagina no viaja codigo de la aplicacion: lo que haga falta se calcula en lectura.js y va en el JSON.`)
 }
@@ -253,14 +276,27 @@ for (const [idioma, t] of Object.entries(IDIOMAS)) {
   }, `portada.html (${idioma})`)
   paginas[archivoDe(t.rutas.privacidad)] = llenar(textos(leer('sitio/fuente/privacidad.html'), t, 'privacidad.html'), { ...comunes('privacidad'), '<!--@marca-->': marcaInterior }, `privacidad.html (${idioma})`)
   paginas[archivoDe(t.rutas.soporte)] = llenar(textos(leer('sitio/fuente/soporte.html'), t, 'soporte.html'), { ...comunes('soporte'), '<!--@marca-->': marcaInterior }, `soporte.html (${idioma})`)
+  // -18-10-2026- LA PÁGINA DE AYUDA -#134-: el PR la sumó a PAGINAS, al pie y a los textos, pero no la
+  // escribía. Faltaba esta línea, y sitio/public quedaba sin ayuda.html ni en/help.html, mientras el
+  // botón Ayuda de la app -#135- ya llevaba a /ayuda y daba 404.
+  paginas[archivoDe(t.rutas.ayuda)] = llenar(textos(leer('sitio/fuente/ayuda.html'), t, 'ayuda.html'), { ...comunes('ayuda'), '<!--@marca-->': marcaInterior }, `ayuda.html (${idioma})`)
 }
 
 // Lo que arma este script, y nada mas: lo que quede de un armado anterior se borra.
-const armados = new Set([...Object.keys(paginas).map((a) => a.split('/')[0]), 'sitio.js', 'fuentes', 'vendor', 'icono.png'])
+// -18-10-2026- Y las fotos del manual, en capturas. Antes: [..., 'sitio.js', 'fuentes', 'vendor', 'icono.png']
+const armados = new Set([...Object.keys(paginas).map((a) => a.split('/')[0]), 'sitio.js', 'fuentes', 'vendor', 'icono.png', 'capturas'])
 for (const viejo of fs.readdirSync(PUBLICO)) {
   if (armados.has(viejo)) continue
   fs.rmSync(path.join(PUBLICO, viejo), { recursive: true })
   console.log(`sitio/public/${viejo} borrado: ya no lo arma este script`)
+}
+
+// -18-10-2026- LAS FOTOS DEL MANUAL, tal cual desde sitio/fuente/capturas. La carpeta se rehace entera: una
+// foto que se saca de la fuente no queda servida.
+fs.rmSync(path.join(PUBLICO, 'capturas'), { recursive: true, force: true })
+fs.mkdirSync(path.join(PUBLICO, 'capturas'), { recursive: true })
+for (const foto of fs.readdirSync(path.join(FUENTE, 'capturas'))) {
+  fs.copyFileSync(path.join(FUENTE, 'capturas', foto), path.join(PUBLICO, 'capturas', foto))
 }
 
 for (const [archivo, html] of Object.entries(paginas)) {
