@@ -9,7 +9,7 @@
 export default {
   idioma: 'en',
   locale: 'en_US',
-  rutas: { portada: '/en', privacidad: '/en/privacy', soporte: '/en/support' },
+  rutas: { portada: '/en', privacidad: '/en/privacy', soporte: '/en/support', ayuda: '/en/help' },
 
   meta: {
     titulo: 'Sigo — The teleprompter that follows your voice',
@@ -18,7 +18,9 @@ export default {
     privacidadTitulo: 'Privacy — Sigo',
     privacidadDescripcion: 'How Sigo handles your scripts, your takes and your voice: everything stays on your phone.',
     soporteTitulo: 'Support — Sigo',
-    soporteDescripcion: 'How to report a problem with Sigo, the teleprompter that follows your voice.'
+    soporteDescripcion: 'How to report a problem with Sigo, the teleprompter that follows your voice.',
+    ayudaTitulo: 'Help — Sigo',
+    ayudaDescripcion: 'How to use Sigo: read, record, pause, captions and more.'
   },
 
   selector: { etiqueta: 'Language' },
@@ -62,7 +64,7 @@ export default {
 
   cierre: { frase: 'The teleprompter that follows your&nbsp;voice.', disponible: 'Coming soon to Google Play.' },
 
-  pie: { privacidad: 'Privacy', soporte: 'Support' },
+  pie: { privacidad: 'Privacy', soporte: 'Support', ayuda: 'Help' },
 
   // EL CORREO DE CONTACTO en ingles -Javier, 07-10-2026-: hello@. Antes las paginas en ingles
   // decian hola@, el de espanol. Los dos reciben.
@@ -93,6 +95,29 @@ export default {
     contacto: 'Questions? Write to us.'
   },
 
+
+  ayuda: {
+    titulo: 'Help',
+    intro: 'Sigo follows your voice. You read out loud and the text keeps pace with you. Pause, and it waits.',
+    escribirnos: 'How to write to us',
+    secciones: [
+      { titulo: 'Read and record', parrafos: ['Open a script and tap Read or Record. On the screen, tap the circle to start. It counts down 3 seconds and begins.'], captura: '[CAPTURA: Grabar LISTO screen, with the red circle and the 3-second countdown]' },
+      { titulo: 'Pause and stop', parrafos: ['While reading or recording, Pause and Stop are hidden. Tap the text and they appear. With voice they hide on their own after a few seconds.', 'What happens during the pause stays out of the video. While paused, the trash icon discards the take. The Android back gesture stops the take and saves it.'], captura: '[CAPTURA: reading, with controls visible after tapping the text]' },
+      { titulo: 'If the text gets ahead', parrafos: ['If you skip a part, drag the text with your finger to where you are. Continue from there. Before starting, you can also drag to choose where it begins.'], captura: '[CAPTURA: LISTO, with the text scrolled down]' },
+      // -18-10-2026- The mode is chosen on the chip of the screen before starting, not in Settings. Before:
+      // { titulo: 'With voice or fixed speed', parrafos: ['In Settings, choose With voice or Fixed speed. With voice, the text follows what you say. With Fixed speed, it scrolls on its own, at the pace you choose.'], captura: '[CAPTURA: Settings panel, With voice / Fixed speed selector]' },
+      { titulo: 'With your voice or fixed speed', parrafos: ['Before you start, tap the chip that says With your voice and choose With your voice or Fixed speed. With your voice, the text follows what you say. With Fixed speed, it scrolls on its own, at the pace you choose.'], captura: '[CAPTURA: LISTO, mode chip open with With your voice / Fixed speed]' },
+      { titulo: 'The camera', parrafos: ['In Record you can see yourself Behind the text, in a Frame, or with the camera Hidden. The frame can be dragged. Flip switches cameras. Quality and Stabilize are in the take Settings panel.'], captura: '[CAPTURA: Grabar LISTO, camera panel open with Behind, Frame and Hidden]' },
+      { titulo: 'Gesture control', parrafos: ['In the camera panel, turn on Gesture control. It only works with the front camera. The palm pauses or resumes. To resume, lower your hand and show it again: it counts down 3 seconds. While paused, the V ends the take.'], captura: '[CAPTURA: camera panel, Gesture control row turned on]' },
+      { titulo: 'Captions and filter', parrafos: ['They are chosen in the viewer, when the take ends, before saving. Each take starts with no captions. Once saved, they cannot be added. What you see is what gets saved.'], captura: '[CAPTURA: viewer of an unsaved take, with Captions and Filter visible]' },
+      { titulo: 'Save and share', parrafos: ['Save puts it in the gallery, in Movies. Save and share opens the share menu. Repeat records again. Delete asks for confirmation.'], captura: '[CAPTURA: viewer, row with Save, Save and share, Repeat and Delete]' },
+      { titulo: 'Your scripts', parrafos: ['Tap + to create one. Paste text or open a .txt, .md or .docx file. In the editor, select text for bold, colors and highlight. What you write in brackets is a note: it shows, but it is not read. ES/EN is the language Sigo listens in.'], captura: '[CAPTURA: editor with text selected and the format bar]' },
+      { titulo: 'Delete and archive a script', parrafos: ['Swipe the row, hold it, or use the editor menu. Deleting shows Undo. Archived scripts are in Archived.'], captura: '[CAPTURA: script list, row menu with Archive and Delete]' },
+      { titulo: 'Shortcuts', parrafos: ['Hold the Sigo icon on your phone. New script with what was copied creates a script and pastes whatever is there. Record opens Record directly with the most recent script.'], captura: '[CAPTURA: Android launcher, Sigo icon menu with the two shortcuts]' },
+      { titulo: 'Settings', parrafos: ['In Settings you change the letter size, typeface, width, colors, mirror and show time. From the home screen you also change the theme and the app language.'], captura: '[CAPTURA: Settings panel from home, Reading and Appearance sections]' },
+      { titulo: 'Offline', parrafos: ['The voice for your language and the gestures download once. After that they work without internet. If there is no connection the first time, Sigo says so and offers to retry.'] , captura: '[CAPTURA: offline notice when trying to read without the voice downloaded]' }
+    ]
+  },
   soporte: {
     titulo: 'Support',
     queEs: 'Sigo is a teleprompter that follows your voice: you read out loud and the text keeps pace with you. Today it’s for Android phones.',
