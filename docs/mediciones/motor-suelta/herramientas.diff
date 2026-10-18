@@ -1,6 +1,6 @@
 diff -ru a/docs/mediciones/toma-25-min/herramientas/detalle.ts b/docs/mediciones/toma-25-min/herramientas/detalle.ts
 --- a/docs/mediciones/toma-25-min/herramientas/detalle.ts	2026-10-17 23:32:59.495267866 -0300
-+++ b/docs/mediciones/toma-25-min/herramientas/detalle.ts	2026-10-17 23:32:59.495267866 -0300
++++ b/docs/mediciones/toma-25-min/herramientas/detalle.ts	2026-10-17 23:38:18.439267866 -0300
 @@ -6,8 +6,14 @@
  // la detención es del seguidor -no encuentra- o de la ventana del motor -encuentra y se rechaza-.
  // mano=<s>:<token> mueve el texto a mano en ese segundo, como Javier -se pueden poner varios-.
@@ -29,14 +29,14 @@ diff -ru a/docs/mediciones/toma-25-min/herramientas/detalle.ts b/docs/mediciones
 +motor.tentativo = (t, ms) => { tentativo(t, ms); ancla = Math.max(ancla, t); fallos = 0 }
 +motor.falloCalce = (ms, p) => { falloCalce(ms, p); if (!p) fallos++ }
 +motor.irAToken = (t, ms) => { irAToken(t, ms); confirmado = ancla = Math.max(0, t); fallos = 0 }
-+// Si ultimoCalce quedó debajo del ancla de aquí, el motor la soltó: vuelve a lo confirmado.
++// Si ultimoCalce quedó debajo del ancla de aquí, el motor la soltó: el ancla es ahora ultimoCalce.
 +// El calce del seguidor y si conduccion.ts lo devolvió -irAToken tras un rechazo de la ventana-.
 +let calceSeguidor: number | null = null, devuelto = false
 +const { avanzar, avanzarTentativo, irAToken: segIrAToken } = seg
 +seg.avanzar = (...x) => { const r = avanzar(...x); calceSeguidor = r.movio ? r.hastaToken : null; return r }
 +seg.avanzarTentativo = (...x) => { const r = avanzarTentativo(...x); calceSeguidor = r.movio ? r.hastaToken : null; return r }
 +seg.irAToken = (t) => { devuelto = true; segIrAToken(t) }
-+const soltada = () => { const u = motor.leerEstado().ultimoCalce; if (u < Math.max(confirmado, ancla)) { ancla = confirmado; return true } return false }
++const soltada = () => { const u = motor.leerEstado().ultimoCalce; if (u < Math.max(confirmado, ancla)) { ancla = u; return true } return false }
  for (const e of c.eventos) {
    if (e.tipo !== 'oyo') continue
    while (manos.length && manos[0].ms <= e.ms) { const m = manos.shift()!; seg.irAToken(m.token); motor.irAToken(m.token, m.ms) }
@@ -58,7 +58,7 @@ diff -ru a/docs/mediciones/toma-25-min/herramientas/detalle.ts b/docs/mediciones
      console.log(`${(e.ms / 1000).toFixed(1)} FINAL «${e.texto}» -> ${res ? 'calce ' + res.hastaToken : 'nada'} | seguidor ${seg.posicionToken()} | motor pos ${st0.posicion.toFixed(1)}→${st.posicion.toFixed(1)} calce ${st.ultimoCalce} freno ${st.motivoFreno}`)
 diff -ru a/docs/mediciones/toma-25-min/herramientas/medir.ts b/docs/mediciones/toma-25-min/herramientas/medir.ts
 --- a/docs/mediciones/toma-25-min/herramientas/medir.ts	2026-10-17 23:32:59.491267866 -0300
-+++ b/docs/mediciones/toma-25-min/herramientas/medir.ts	2026-10-17 23:32:59.495267866 -0300
++++ b/docs/mediciones/toma-25-min/herramientas/medir.ts	2026-10-17 23:38:18.443267866 -0300
 @@ -15,7 +15,9 @@
  // mientras la voz avanza al menos TOKENS_DETENIDO tokens. Como Javier, si la detención dura
  // MS_A_MANO se mueve el texto a mano a donde va la voz -un cuadro con la posición nueva: repetirLectura
