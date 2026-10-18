@@ -3,6 +3,7 @@ import { Capacitor } from '@capacitor/core'
 import { ResumenGrabacion, ResumenGuion } from '../datos/modelo'
 import { srcDeRuta, formatearDuracionMs, nombreDeToma } from './TiraGrabaciones'
 // -tomas-grandes- Antes: import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo } from '../lib/archivosNativos'
+// -visor-servidor- Antes: import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo, seVeConReproductorDelSistema, abrirConReproductor } from '../lib/archivosNativos'
 import { guardarEnGaleria, guardarEnGaleriaConSubtitulos, exportarAGaleria, compartirDeGaleria, leerTexto, directorioGrabaciones, juntos, borrarArchivo, analizarVideo, direccionDeToma } from '../lib/archivosNativos'
 import { orientacionDeToma } from '../lib/orientacion'
 import { anotar87, medirBordesSeguros, anotarOrientacion } from '../lib/medicionesTarea87'
@@ -324,7 +325,17 @@ export default function ReproductorGrabacion({
   }, [video])
   const alternarVideo = (e: React.MouseEvent) => {
     e.stopPropagation()
-    // Antes -tomas-grandes-: if (seVeConReproductorDelSistema(grabacion.bytes)) { abrirConReproductor(...) }
+    // Antes: -tomas-grandes, 15-10-2026- UNA TOMA DE MÁS DE 2.147.483.647 BYTES no se reproduce aquí: la
+    // WebView no lee pasado 2^31 -lib/archivosNativos.ts, TOPE_BYTES_WEBVIEW-. Reproducir la abre con el
+    // reproductor del sistema; al volver, el visor sigue igual -Guardar, Filtro, Subtítulos, Borrar-.
+    // Antes:
+    // if (seVeConReproductorDelSistema(grabacion.bytes)) {
+    //   void abrirConReproductor(grabacion.ruta).then((r) => {
+    //     if (r === 'sin-aplicacion') onGuardadoEnGaleria?.(false, t('sinAppParaVideo'))
+    //     else if (r === 'error') onGuardadoEnGaleria?.(false, t('noSeAbrioVideo'))
+    //   })
+    //   return
+    // }
     // Todas las tomas van por el servidor local al <video>.
     if (!video) return
     if (video.paused || video.ended) {

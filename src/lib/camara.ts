@@ -26,7 +26,10 @@ export interface CamaraNativaPlugin {
   espacioLibre(): Promise<{ bytesLibres: number }>
   guardarEnGaleria(options: { ruta: string }): Promise<{ ok: boolean; uri?: string }>
   compartir(options: { uri: string }): Promise<void>
-  // Antes -tomas-grandes-: abrirConReproductor. El visor ya no lo usa.
+  // Antes: -tomas-grandes, 15-10-2026- Abre la toma con el reproductor del sistema -ACTION_VIEW-. Rechaza con
+  // "sin aplicacion" si no hay ninguna que abra video. Un APK viejo no lo tiene: "not implemented".
+  // Antes: abrirConReproductor(options: { ruta: string }): Promise<void>
+  // -visor-servidor- El visor ya no lo usa.
   // -visor-servidor- Anota la toma y devuelve su dirección en el servidor local.
   direccionDeToma(options: { ruta: string }): Promise<{ url: string }>
   existeEnGaleria(options: { uri: string }): Promise<{ existe: boolean }>
