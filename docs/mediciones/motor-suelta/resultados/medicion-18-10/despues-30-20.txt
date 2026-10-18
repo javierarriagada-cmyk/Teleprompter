@@ -1,0 +1,72 @@
+guion tal cual: 2823 tokens, 217 en acotación; vara: 1475 palabras alineadas de 2624
+movidas a mano: 9 3:16→149, 3:36→161, 7:44→412, 10:00→568, 11:21→630, 13:30→756, 14:23→788, 17:44→936, 18:18→961
+posición final del motor: 1872.7 de 2823; voz al final: 1857
+voz por minuto: 0:0/0 1:10/5 2:82/67 3:135/135 4:184/179 5:215/236 6:294/297 7:362/360 8:427/432 9:510/513 10:568/556 11:630/625 12:659/657 13:729/729 14:773/773 15:820/812 16:859/868 17:898/897 18:948/953 19:980/981 20:1039/1038 21:1117/1124 22:1168/1166 23:1222/1222 24:1295/1293 25:1344/1349 26:1412/1403 27:1518/1517 28:1623/1620 29:1736/1736 30:1837/1837
+RESUMEN: 18 detenciones, 277 s quieto; 5 con acotación dicha (81 s); fuera de ventana: 0; movidas a mano: 9; retrocesos: 0
+
+DETENCIONES
+- 0:56–1:04 (8 s): motor en 4 «en enero de 1969 sale»; voz 2→16, 12 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «un disco que se llama hombre doce canciones tres de ellas me»
+    Vosk oyó: «este tema salió en enero de años sesenta y nueve / en un disco llama hombre / con doce canciones del disco»
+- 1:07–1:18 (12 s): motor en 19 «ellas me llamaron mucho la»; voz 20→48, 29 tokens delante -dentro de la ventana de 40-; acotación dicha: 3 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «atencion habla en el más largo son cuatro minutos donde un hombre de treinta y un años (un) (hombre) (joven) recita un poema que se llama si me vieras»
+    Vosk oyó: «tres de ellas me llamaron poderosamente la atención / y la que vamos escuchad escuchad guiños párrafo analizarlo bobo / es la más larga desastres / y me vieras orden»
+- 2:56–3:16 (20 s) hasta moverlo a mano: motor en 135 «quiere le pasamos la pelota»; voz 135→149, 14 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «le pasamos la pregunta y la responsabilidad sobre lo que no podemos contestarnos solos»
+    Vosk oyó: «esta pelota es agradable / al otro al otro día nos quiere a los otros están cerca y les entregamos la responsabilidad / logre aquello / y para nosotros no es fácil contestar nos solo / esa entrega»
+- 3:16–3:36 (20 s) hasta moverlo a mano: motor en 149 «que no podemos contestarnos solos»; voz 149→161, 12 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno sin-calce
+    texto del guion entre motor y voz: «por que estoy aqui y tenemos la esperanza de que desde afuera»
+    Vosk oyó: «esa entrega / a la a la pregunta por qué estoy aquí / estoy haciendo / para aquí éxito / yo creo que se así porque existe la esperanza / eh que le da fuera»
+- 3:56–4:05 (9 s): motor en 179 «lo hace sin ningun rencor»; voz 179→192, 13 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «no como lo hacemos nosotros frente a estos vacios nosotros generamos el rencor»
+    Vosk oyó: «es es un impacto porque nosotros / frente a este tipo de vacío / usualmente generamos el rencor»
+- 5:16–5:27 (12 s): motor en 258 «un porqué dice que no»; voz 240→256, -2 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno sin-calce,-
+    texto del guion entre motor y voz: «»
+    Vosk oyó: «y después seguidamente viene la confesión / el mismo / no puede no dice que no y por porque»
+- 6:05–6:18 (13 s): motor en 302 «tener intereses cualquiera que nos»; voz 303→316, 14 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «quiera un poco ve con facilidad cosas nuestras que podemos negar hace veinte años»
+    Vosk oyó: «y por qué por falta de objetividad molestar demasiado cerca entonces estimamos cualquiera que quiera bobo / va a poder ver con mayor facilidad / gozan nuestras / en nosotros mismos podemos estar negando hace veinte años es ello»
+- 7:24–7:44 (20 s) hasta moverlo a mano: motor en 386 «(mantiene) (mis) (raíces) (frescas) (aunque)»; voz 378→412, 26 tokens delante -dentro de la ventana de 40-; acotación dicha: 15 tokens; freno sin-calce
+    texto del guion entre motor y voz: «(mi) (cerebro) (piense) (que) (están) (secas) acá se parte en dos hay algo que lo empuja y le mantiene las raíces con agua lo mantiene vivo»
+    Vosk oyó: «optimizar el comienzo / bueno aquí ya se parte en dos / hay algo que los empujando y le mantiene la países con agua y mantiene a raíz de fresca lo mantiene vivo»
+- 13:10–13:30 (20 s) hasta moverlo a mano: motor en 740 «está diciendo que se partió»; voz 741→756, 16 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «alguna vez dice que se está partiendo mientras hablapor eso siempre no cierra la serie la»
+    Vosk oyó: «para esta herida limita llevar y ido se partió alguna vez / dice hice tapar y endo mientras habla mientras lo dice / por eso cuando el del mina en siempre / esta cerrando la serie / la esta condenando»
+- 14:03–14:23 (20 s) hasta moverlo a mano: motor en 782 «(vejez) (niña) (mi) (vieja) (niñez)»; voz 773→788, 6 tokens delante -dentro de la ventana de 40-; acotación dicha: 9 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «no habla de tres edades habla»
+    Vosk oyó: «la juventud mi niña mi vieja niña / la estaba te tampoco tampoco está hablando de tres edades»
+- 14:51–15:07 (16 s): motor en 812 «fragilidad que no se fue»; voz 812→826, 14 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «la vejez como niña porque hay cansancios que también desamparan y mi vieja niñez»
+    Vosk oyó: «y también porque / existen cansancio / que es amparan / mi de mí y cuando dice y mi hija niñez»
+- 16:22–16:40 (19 s): motor en 878 «no ha aprendido del todo»; voz 862→880, 2 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «a aceptar»
+    Vosk oyó: «se pregunta así como un niño y como un niño que todavía no ha aprendido aceptar / eh vieja para crear demasiado temprano lo que no le correspondía / y repetía crónica todavía tan cerca del por qué y aquí tenemos un adulto que se pregunta si como un niño que no ha aprendido del todo aceptan la respuesta que vienen dadas»
+- 17:24–17:44 (20 s) hasta moverlo a mano: motor en 923 «a vivir entre respuestas ajenas»; voz 923→936, 13 tokens delante -dentro de la ventana de 40-; acotación dicha: 13 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «(5) (porque) (aunque) (mi) (existencia) (sea) (un) (accidente) (tengo) (razón) (de) (ser) (el)»
+    Vosk oyó: «la / el énfasis / tienes razón»
+- 17:58–18:18 (20 s) hasta moverlo a mano: motor en 953 «que es realmente desconcertante y»; voz 948→961, 8 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «desconcertante por la profundidad heidegger dice que somos»
+    Vosk oyó: «y y este corazón filosófico del tema / realmente / es desconcertante / y es muy desconcertante por el nivel de profundidad»
+- 20:49–21:03 (14 s): motor en 1123 «verdades larralde queda en el»; voz 1107→1125, 2 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «peor lugar»
+    Vosk oyó: «en el fondo también es una decisión como el ateo creyente / el fondo el ateo creyente son dos creyentes persona que son capaces de llegar a una verdad pero la ral de ida en el peor lugar»
+- 23:05–23:15 (10 s): motor en 1228 «que no resolvimos una falla»; voz 1226→1238, 10 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «nuestra larralde dice lo contrario y lo dice sin levantar»
+    Vosk oyó: «algo que no resolvimos es a todas luces / una falla nuestra / la balde y se lo contrario»
+- 24:01–24:17 (16 s): motor en 1295 «que entrega es por donde»; voz 1295→1311, 16 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «entrega todo el que crió a un hijo sabe esto sin haberlo pensado lo que uno»
+    Vosk oyó: «pienso que todo todo lo criado hijo / hijas»
+- 25:15–25:24 (9 s): motor en 1355 «(vos) (sos) (también) (una) (verdad)»; voz 1355→1369, 14 tokens delante -dentro de la ventana de 40-; acotación dicha: 7 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «(desde) (el) (corazón) (de) (tu) (médula) y aqui se da vuelta el poema entero»
+    Vosk oyó: «son mem / allí / se dio vuelta y poema / entero»
+
+ADELANTOS (> 8 tokens delante de la voz)
+- 4:26–5:24: hasta 21.5 tokens; motor 236 «por dentro tu encuentras», voz 215 «(que) (yo) (no) (encuentro)»; acotación entre medio: 1
+- 7:24–7:29: hasta 8.9 tokens; motor 386 «(mis) (raíces) (frescas) (aunque)», voz 378 «nombra (ese) (porqué) (que)»; acotación entre medio: 9
+- 14:02–14:10: hasta 9.8 tokens; motor 782 «(niña) (mi) (vieja) (niñez)», voz 773 «la forma de terminar»; acotación entre medio: 9
+- 15:47–16:12: hasta 12.9 tokens; motor 868 «adulto que se pregunta», voz 856 «los niños todavía están»; acotación entre medio: 0
+- 16:16–16:37: hasta 16.5 tokens; motor 878 «ha aprendido del todo», voz 862 «porqué y aqui tenemos»; acotación entre medio: 0
+- 20:48–20:55: hasta 17.4 tokens; motor 1124 «queda en el peor», voz 1107 «tambien es una decision»; acotación entre medio: 0
+- 30:19–30:30: hasta 15.7 tokens; motor 1872 «dejar de ser dos», voz 1857 «la distancia está midiendo»; acotación entre medio: 0
+
+RETROCESOS (la posición baja más de 10 palabras de un cuadro al siguiente)
