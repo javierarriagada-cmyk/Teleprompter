@@ -1,0 +1,244 @@
+MOTOR-SUELTA: LA SUELTA DEL ANCLA NO PUEDE TIRAR ATRÁS UN TEXTO QUE IBA JUNTO A LA VOZ -17-10-2026-
+======================================================================================================
+
+Rama motor-suelta desde origin/main 4cc21a8 -`git log --oneline -1 origin/main` antes de partir: 4cc21a8,
+la que pide la orden-. Relojes: "bitácora" = el de la bitácora del teléfono -el del video y el de Javier-;
+"audio" = el de audio.wav y del registro de transcribir.py. audio = bitácora + 2.714 ms -LEEME de la toma,
+fila 'oido' inicio=-2714-.
+
+MATERIAL, SIN SUBIR. La toma de 34 min viene de la rama motor-toma-34-min (008a4a2) y las herramientas de
+la #125, motor-investigacion (1d5572c):
+  git fetch origin
+  git checkout origin/motor-toma-34-min -- docs/mediciones/toma-34-min/
+  git checkout origin/motor-investigacion -- docs/mediciones/toma-25-min/herramientas/
+  git restore --staged docs/mediciones/toma-34-min/ docs/mediciones/toma-25-min/herramientas/
+Las dos carpetas van en .git/info/exclude: ningún commit de esta rama las trae.
+
+LAS HERRAMIENTAS NO SE DUPLICAN. medir.ts y detalle.ts viven en motor-investigacion (#125, abierta). El
+cambio que les hice -la columna «retrocesos» de medir.ts y la opción «rastro» de detalle.ts- va como
+parche sobre esas dos, en herramientas.diff, y no como copia: si esta rama trajera los dos archivos,
+cuando entre la #125 habría dos versiones del mismo archivo peleando en el mismo lugar. Para usarlas:
+  (después de traerlas) patch -p1 < docs/mediciones/motor-suelta/herramientas.diff
+puntaje.ts sí es nuevo -no existía nada que hiciera esa cuenta-: está aquí, en docs/mediciones/motor-suelta/.
+
+EL REGISTRO DE LA TOMA DE 34 MIN -el de transcribir.py, igual que las otras dos largas-:
+  python3 docs/mediciones/toma-25-min/herramientas/transcribir.py <vosk-model-small-es-0.42 con
+     --frames-per-chunk=3> docs/mediciones/toma-34-min/audio.wav docs/mediciones/toma-34-min/guion.txt \
+     toma-34-min.transcrita.motor.txt palabras34.json
+  -el entorno de la caja que ya armó las de 25 y 30: Python 3.13 con vosk, soundfile y numpy en
+   ~/.local; el modelo, el mismo directorio que usó banco-largo-. Da: eventos 15336, finales 381,
+  palabras 2419, audio 2047,452 s -lo mismo que dice el LEEME de la toma: 2047,5 s-. El rótulo
+  «# toma:» de la cabecera se cambia a toma-34-min a mano -transcribir.py escribe toma-25-min-.
+Medir.ts revienta la pila en las tomas largas -Math.max(...eventos), lo dijo el #129-: se corre con
+  node --stack-size=8000 node_modules/vite-node/vite-node.mjs docs/mediciones/toma-25-min/herramientas/medir.ts -- ...
+
+
+0. ¿LA REPETICIÓN REPRODUCE EL RETROCESO? SÍ.
+---------------------------------------------
+
+LOS RELOJES. De 377 finales de la bitácora, 317 salen con el mismo texto en la transcripción; la
+diferencia audio - bitácora de esos 317: mediana 2.687 ms, p10 2.492, p90 2.710. Es 2.714 menos lo que
+tarda el teléfono en entregar el final -unas decenas de ms, lo dice transcribir.py-: el desfase del
+LEEME se confirma.
+
+a) LA TRANSCRIPCIÓN DEL PC CON EL MOTOR DE 4cc21a8 -medir.ts sin movidas a mano, a-mano=100000,
+   resultados/comprobacion-34-min-sin-mano.txt-:
+     RETROCESOS: uno solo en toda la toma.
+     - 19:35 audio (1.175.424 ms): 954,59 → 912,00, 42,6 palabras atrás; calce 954 → 909; voz 957.
+   1.175.424 audio = 1.172.710 bitácora. En el teléfono: 1.172.718, 954,61 → 912, calce=909.
+   La vara dice que la voz iba en 957: el texto iba 2,4 palabras detrás de la voz cuando saltó atrás.
+   Vuelve a 953 a los 1.210.160 audio: 34,7 s -en el teléfono 38,6 s; ver abajo por qué 4 s menos-.
+b) LA MISMA BITÁCORA, con el motor de 4cc21a8 -sus 'oyo', sin los cuadros del teléfono, reloj de 16 ms-:
+     retroceso a los 1.172.704 ms: 954,51 → 912,00, calce 954 → 909; vuelve a 953 a los 1.211.392: 38,7 s.
+   El teléfono: 1.172.718, 954,61 → 912, vuelve a 953 a los 1.211.351 -38,6 s-.
+
+LOS TRES FINALES, en el PC:
+  bitácora 1.150.404 «queremos de ambos debajo aquí este párrafo aunque inexistencia tenga razón de ser
+           un accidente»   → PC 1.153.080 audio, el mismo texto;
+  bitácora 1.167.961 «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico ... y es
+           desconcertante por su profundidad» → PC 1.170.660 audio, el mismo texto;
+  bitácora 1.172.703 «la pensadores que es al medio en este tema» → PC 1.175.420 audio «ahora que es al
+           medio en este tema», y antes, a 1.172.160, un final de dos palabras «la vez» -con menos de
+           tres palabras no cuenta como fallo, conduccion.ts:107-.
+Ninguno calza en los dos. El tercero es otro texto en el PC, pero hace lo mismo: es el segundo final
+seguido sin calce y suelta el ancla 15 ms después -en el PC, 4 ms-.
+
+Diferencia: en el PC, al volver, el final de 1.205.840 audio «porque aunque dispensación accidente tengo
+razón de ser cierto» calza en 936; en el teléfono el mismo final dice «... hacienda tengo razón de ser
+cierto» y no calza. Por eso el PC vuelve en 34,7 s y el teléfono en 38,6.
+
+Conclusión: la repetición -PC y bitácora- da el mismo retroceso, en el mismo momento, con las mismas
+cifras. Se sigue.
+
+
+1. EL RETROCESO DE LOS 1.172.718 MS -bitácora-
+-----------------------------------------------
+(detalle.ts ... rastro sobre la bitácora: sus 'oyo' por conduccion.ts con el motor de 4cc21a8; reloj de
+la bitácora. En el PC sale lo mismo 2,7 s después -resultados/rastro-34-min-1145-1216.txt-. Tokens: 909
+«preguntar», 923 «ajenas», 924-943 la acotación 5 «(5. porque aunque mi existencia sea un accidente
+tengo razón de ser el hecho de haber nacido encierra una verdad)», 944-957 «aqui está el corazón
+filosófico que es realmente desconcertante y desconcertante por la profundidad», 958-971 «heidegger dice
+que somos arrojados al mundo nadie nos pidió permiso para nacer».)
+
+LO CONFIRMADO SE QUEDÓ EN 909 DURANTE 157 S. El último final que calzó es el de 1.015,469 «quieren de
+explicaciones y un día dejamos de pregunta» -909-. Desde ahí, ninguno:
+  1.025,148  final «en ningún caso dejamos de preguntar porque hayamos del dio algo...»: no calza; ancla 911.
+  1.027,941  parcial «si no porque nos acostumbramos» calza en 918 -7 después del ancla-; luego 919, 920, 922.
+  1.033,274  final «si no porque nos acostumbramos de por comodidad a vivir entre repuesta ajena»: no calza.
+  1.041 a 1.137  Javier habla fuera del guion -«continuamos con el prójimo», «par de ojos errante», «tibio»,
+             «vamos a poner la»...-: 14 finales sin calce; fallosFinalesSeguidos llega a 2 a los 1.041,2,
+             pero el ancla, 922, va solo 13 delante de 909 -menos de 40-: no se suelta. Texto en 922,7.
+  1.148,596  parcial de la acotación 5 «queremos de ambos debajo aquí este párrafo aunque inexistencia
+             tenga razón de ser» calza en 935 -A: dentro de la acotación-; luego 936, 937.
+
+POR QUÉ NO CALZÓ NINGUNO DE LOS TRES FINALES. avanzar mira las ÚLTIMAS 12 palabras del final
+-MAX_PALABRAS_FRASE- puestas una por token desde un offset, sin huecos, y pide 0,5 -MIN_COINCIDENCIA-.
+Mejor puntaje posible en 890..1000, sin la penalización por distancia -puntaje.ts, una cota de arriba-:
+  1.150.404 «...debajo aquí este párrafo aunque inexistencia tenga razón de ser un accidente»: 0,372 en 926
+            leyendo la acotación; 4 de 12 -tenga/tengo razón de ser-. Lo leído es la acotación 5 con las
+            palabras cambiadas de orden y mal oídas -«aunque mi existencia sea un accidente» → «aunque
+            inexistencia tenga ... un accidente»-: «un accidente» al final no está donde el guion lo pone.
+  1.167.961 «...de este tema es realmente desconcertante y es desconcertante por su profundidad»: 0,372 en
+            947; 4 de 12 -es realmente desconcertante y-. Javier dijo «de este tema» y «y es» de más: cada
+            palabra agregada corre las que siguen un token y dejan de coincidir.
+  1.172.703 «la pensadores que es al medio en este tema»: 0,000. No está en el guion: es un comentario.
+Los parciales sí calzan porque llegan cortos y crecen palabra a palabra: cada uno mira su propio final de
+frase y muchas veces las últimas tres o cuatro palabras están en orden -«... tenga razón de ser» en 935,
+«... corazón filosófico» en 945, «... de este» en 950-. El final, completo, ya no.
+
+LOS PARCIALES LLEVAN EL ANCLA CON LA VOZ, DE 935 A 954 -la vara pone la voz en 957 al soltarse-:
+  1.148,6 935 · 1.149,5 936 · 1.149,7 937 | final 1.150,404 | 1.152,9 940 · 1.153,2 941 · 1.154,3 942 ·
+  1.154,5 943 · 1.155,0 944 · 1.155,7 945 · 1.158,3 948 · 1.158,6 949 · 1.158,8 950 · 1.162,9 952 ·
+  1.165,9 954 | final 1.167,961 | parciales «la», «la pensadores que es al medio en este tema»: ninguno
+  calza | final 1.172,703.
+  El texto va con ellos: 922,7 a los 1.148,6; 931,0 en el primer final; 954,51 en el segundo.
+
+fallosFinalesSeguidos, ENTRE UNO Y OTRO -tentativo() lo vuelve a 0, avance.ts:222-:
+  venía en 5 de lo dicho fuera del guion; el parcial de 1.148,596 -935- lo vuelve a 0.
+  final 1.150.404 sin calce → 1. El parcial de 1.152,882 -940- → 0, y cada parcial hasta 954, otra vez 0.
+  final 1.167.961 sin calce → 1. Entre este y el tercero no calza ningún parcial -«la», «la pensadores»,
+     «la pensadores que es al medio en este tema»...: todos NO CALZO; un parcial sin calce llama a
+     falloCalce(t, true), que no cuenta-.
+  final 1.172.703 sin calce → 2 = fallosParaFrenar → soltarAnclaSinConfirmar.
+  O sea: el reinicio de tentativo() hizo lo suyo -el primer final no se sumó al segundo porque entre
+  ellos los parciales calzaron-; el segundo y el tercero quedaron seguidos porque entre ellos no calzó
+  nada. Con el reinicio o sin él, la suelta llegaba en el tercero.
+
+CUÁNTO VALÍAN AL SOLTARSE: ultimaConfirmada 909, anclaTentativa 954 -45 adelante, más que
+VENTANA_ADELANTE, 40-. anclaTentativa = 909. ultimoCalce = refToken = max(909, 909) = 909, y el tope de
+la correa -avance.ts:476, refToken + adelantoMaximo = 912- lleva el texto de 954,51 a 912 en el cuadro
+siguiente, a los 1.172.718. «Nunca hacia atrás» -avance.ts:464- va antes de ese tope: no lo ataja.
+
+POR QUÉ TARDÓ 38,6 S EN VOLVER. La ventana de conduccion.ts es ref = max(ultimoCalce, floor(posición))
+= max(909, 912) = 912: 902..952. Javier ya iba en 958 y más -«heidegger dice que somos arrojados al
+mundo nadie nos pidió permiso»-. Lo que oyó Vosk lo ubica bien y la ventana lo rechaza:
+  1.180,571-1.181,234  parciales «que somos arrojados (al mundo)»  calzan 962-964: FUERA (902..952)
+  1.182,429            final «que somos arrojados al mundo»       calza 964: FUERA -cuenta como fallo-
+  1.184,2-1.186,6      «nadie nos pidió permiso»                  966-968: FUERA, parciales y final
+  1.192,7-1.193,7      «nadie pidió permiso para la (se)»         969-971: FUERA
+Cada rechazo devuelve el seguidor a 912 -conduccion.ts:52-55 y :94-97-, así que la búsqueda siguiente
+vuelve a partir de ahí. Ningún calce dentro de 902..952 hasta que, a los 1.199,104, Vosk vuelve a oír la
+acotación -«porque aunque»: 926, dentro; Javier la leyó otra vez, sin verificar por qué-; de ahí 934, 935, y a los 1.204,6 «corazón filosófico que»
+949, 950, 951, 952; a los 1.211,28 un parcial calza 961 y el texto llega a 953 a los 1.211.351. Ni ese
+final ni el de 1.213,939 calzan: lo confirmado sigue en 909 todo el tramo. En el PC el final de 1.205,840
+audio sí calza -936, otro texto, «accidente» por «hacienda»- y vuelve en 34,7 s.
+
+RESUMEN, LAS CAUSAS:
+  a. Los finales no calzan: acotación leída con las palabras cambiadas y mal oídas, palabras dichas de
+     más y un comentario fuera del guion. Es el seguidor -12 palabras sin huecos- y no se toca aquí.
+  b. fallosFinalesSeguidos llegó a 2 con el segundo y el tercer final, sin un parcial con calce entre
+     ellos. El reinicio de tentativo() no falló: hizo lo que dice.
+  c. soltarAnclaSinConfirmar mide el ancla solo contra ultimaConfirmada, 909, de 157 s antes, aunque cada
+     vez que un final cerró sin calzar el habla siguiente calzó justo después del ancla: 911 → 918 a los
+     1.027,9 y 937 → 940 a los 1.152,9. Para la suelta, el ancla que iba con la voz y un parcial que se
+     adelantó solo son lo mismo: «más de 40 sobre ultimaConfirmada».
+  d. Al soltarla, el tope de la correa lleva el texto a lo confirmado + 3, y la ventana de 10 hacia atrás
+     y 40 hacia adelante, medida desde ahí, no alcanza la voz: 38,6 s.
+  El arreglo toca c -ver punto 3-.
+
+
+2. LA TOMA DE 30 MIN, REPETIDA POR EL BANCO: ¿EL MISMO MECANISMO? SÍ, LA MISMA SUELTA; OTRO PUNTO DE PARTIDA
+------------------------------------------------------------------------------------------------------------
+(docs/registros/largas/toma-30-min.motor.txt, reloj del audio; resultados/rastro-30-min-287-330.txt.
+Tokens: 202-215 la acotación 1 «(1. si me vieras por dentro seguro hallarías el porqué que yo no
+encuentro)», 216 «el orden primero está la certeza de que el otro lo va encontrar si tu me vieras por dentro
+tu encuentras la respuesta y después viene la confesión de que él no puede...» -229-236 repite «si tu me
+vieras por dentro tu encuentras», 243 «confesión»-.)
+
+medir.ts, columna nueva -a-mano 60 y 20, lo mismo-: «5:19 (319.824 ms): 259,18 → 222,00, 37,2 palabras
+atrás; calce 261 → 219; voz 243».
+
+  264,980  final «esto» -una palabra, calza en 219 «está» por parecida-: confirmado 219 -lo dijo el #129-.
+  291,1-293,8  Javier lee la acotación 1 y los parciales calzan su repetición: 233, 234, 235, 236.
+  297,520  final «y me vieras por dentro seguro hallaría se y por ello no encuentro» calza 215 -la
+           acotación, bien- y la ventana -226..276, ref 236- lo rechaza: FUERA, fallo 1.
+  302,020  final «lo primero que me llama la atención es el orden»: no calza, fallo 2. Ancla 236 - 219 = 17:
+           no se suelta.
+  305,6-313,6  «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro ...»
+           -tokens 218-236- calza 246, 248 y 261: el seguidor busca desde posTentativa 236 y lo pone en la
+           otra «de que él» -244-246- y más abajo. Fallos a 0.
+  315,520  final de esa frase: calza 240 -la voz va en 243-, y la ventana -251..301, ref 261- lo rechaza:
+           FUERA, fallo 1.
+  319,820  final «y después seguidamente viene la confesión» -239-243-: no calza, fallo 2. Ancla 261 -
+           219 = 42, más de 40: anclaTentativa = 219, y el texto, de 259,18 a 222 -219 + 3-.
+  Vuelve a 258 a los 338,05: 18,2 s.
+
+Es el mismo mecanismo: dos finales seguidos sin calce, ancla más de 40 sobre ultimaConfirmada, suelta a
+ultimaConfirmada y el tope de la correa tira el texto a lo confirmado + 3. Lo distinto es de dónde venía
+el ancla: aquí NO iba con la voz. Iba 18 delante -261 contra 243-, porque la acotación leída calzó en su
+repetición y la frase siguiente en otro «de que él»; lo confirmado -219- venía de un final de una sola
+palabra que calzó por parecido. Al soltarse, el texto pasó de 16 adelante de la voz a 21 detrás. Igual
+que en la de 34 min, el habla siguiente continuó el ancla de su final: tras el final de 302,02 -ancla
+236- el primer parcial calzó en 246, 10 más allá.
+
+Y LA DETENCIÓN DE 4:44 DE LA TOMA DE 25 MIN -ancla 260 con 198 confirmado-: con el motor de hoy
+-#126, A y C- esa suelta ya no ocurre en la toma de 25 min: detalle.ts ... rastro sobre la toma entera
+no encuentra ninguna suelta del ancla, ni con el guion tal cual ni sin paréntesis. Lo que la cubre es motorParentesis B
+-un parcial que calza solo en la repetición, más de 40 adelante, y dos finales que no calzan-.
+
+
+3. EL ARREGLO Y SU MEDICIÓN -18-10-2026, en el PC de Javier-
+-------------------------------------------------------------
+
+EL ARREGLO -56aadf1, causa c-: soltarAnclaSinConfirmar mide el ancla contra max(ultimaConfirmada,
+anclaAcompanada). anclaAcompanada es el ancla de un final -calzara o no- cuyo primer parcial siguiente
+calzó entre ella y una correa más adelante -correaPalabras, 12-. El porqué está en el comentario de
+avance.ts. VENTANA_ADELANTE, fallosParaFrenar y la ventana de conduccion.ts no cambian.
+
+CÓMO SE MIDIÓ. El bot se quedó sin cupo después del arreglo. La medición la hizo un agente en el PC de
+Javier, que no tiene Python: la toma de 34 min NO pasó por transcribir.py. Se repite desde la bitácora
+del teléfono sin sus 'cuadro' y 'cuadros' -con ellos, el repetidor toma los saltos del teléfono como
+arrastres con el dedo-, con un reloj de 16 ms en pos=0 como el de las largas, y la vara sale de sus filas
+'palabras FINAL'. Lo hace resultados/medicion-18-10/armar34.mjs: lee bitacora34.motor.txt a su lado y
+escribe palabras34.json y toma-34-min.repetir.motor.txt. Es la repetición b) del punto 0 y da el mismo
+retroceso: 1.172.704 ms, 954,51 → 912, de vuelta en 953 a los 1.211.392. ANTES es el avance.ts de
+4cc21a8 puesto sobre esta rama; DESPUÉS, el de 56aadf1. medir.ts lleva el parche herramientas.diff:
+  node --stack-size=8000 node_modules/vite-node/vite-node.mjs docs/mediciones/toma-25-min/herramientas/medir.ts \
+    -- <registro> <palabras.json> [sin-parentesis] a-mano=<60|20>
+con docs/registros/largas/toma-25-min.motor.txt y el palabras.json de motor-investigacion, toma-30-min.motor.txt
+y el de motor-toma-30-min, y los dos de armar34.mjs.
+
+MEDIR.TS -detenciones / s quieto / movidas a mano / retrocesos-:
+  toma               a-mano   ANTES                  DESPUÉS
+  25 tal cual          60     16 / 377 / 0 / 0       igual
+  25 tal cual          20     13 / 239 / 10 / 0      igual
+  25 sin paréntesis    60     15 / 368 / 0 / 0       igual
+  25 sin paréntesis    20     12 / 231 / 10 / 0      igual
+  30                   60     19 / 365 / 0 / 1       19 / 354 / 0 / 0
+  30                   20     18 / 285 / 10 / 1      18 / 277 / 9 / 0
+  34                   60     15 / 369 / 3 / 0       igual
+  34                   20     13 / 358 / 9 / 0       igual
+  34 sin movidas  -a-mano=100000-  14 / 462 / 0 / 1  15 / 489 / 0 / 0
+En la de 34, con a-mano 60 y 20 el retroceso no aparece ni antes: medir.ts mueve el texto a mano antes de
+los 19:32 -con 60, en 18:12 a 923-, en el tramo de ~100 s que Javier habló fuera del guion, y eso cambia la
+historia. Javier no tocó la pantalla en esa toma: para la 34 la fila que vale es la sin movidas.
+EL COSTO, en la de 34 sin movidas: una detención nueva, 19:53-20:20, 27 s, con el texto hasta 14,5 palabras
+delante de la vara -motor 971, voz 957-. En ese tramo la vara no es confiable: queda plana en 957 de
+19:26 a 20:08, porque los finales no calzan, y los parciales del teléfono ponen la voz en 962-964 a los
+19:40. Antes, en el mismo lugar, el texto iba 42 palabras ATRÁS durante 38,6 s.
+
+EL BANCO -npm run banco, ANTES y DESPUÉS, resultados/medicion-18-10/*-banco.*-:
+  Español -28 tomas-, Inglés -13- y Larralde -5-: IGUALES en todas las columnas.
+  Largas -las 2 de siempre-: atraso medio 2,06 → 1,90, p90 9,55 → 9,32. En la de 30: atraso 1,74 → 1,44,
+  p90 9,90 → 8,90, tirón del motor 2324 → 3,9; pantalla adelante 20,3 → 20,7 %.
+  La de 34 NO está en el banco: entrar a Largas pide transcribir.py. Queda pendiente.

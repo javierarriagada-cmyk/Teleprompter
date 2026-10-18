@@ -1,0 +1,57 @@
+guion tal cual: 2823 tokens, 217 en acotación; vara: 1434 palabras alineadas de 2419
+movidas a mano: 0 
+posición final del motor: 1855.6 de 2823; voz al final: 1855
+voz por minuto: 0:0/0 1:67/64 2:139/141 3:194/193 4:268/266 5:338/336 6:376/375 7:436/438 8:494/493 9:524/529 10:576/572 11:630/628 12:657/657 13:702/700 14:773/772 15:808/804 16:878/876 17:909/909 18:923/922 19:924/922 20:957/912 21:1018/1015 22:1084/1082 23:1137/1135 24:1140/1135 25:1191/1188 26:1267/1265 27:1337/1340 28:1344/1346 29:1426/1421 30:1521/1512 31:1583/1585 32:1665/1650 33:1780/1780 34:1855/1855
+RESUMEN: 14 detenciones, 469 s quieto; 4 con acotación dicha (323 s); fuera de ventana: 0; movidas a mano: 0; retrocesos: 1
+
+DETENCIONES
+- 1:09–1:21 (13 s): motor en 95 «ser y eso es una»; voz 82→99, 4 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno sin-calce,-
+    texto del guion entre motor y voz: «respuesta que él mismo»
+    Vosk oyó: «lo que le está viviendo es una respuesta quiere que el otro le diga / por qué / el existe / y eso es algo que él mismo no encuentra»
+- 4:22–4:41 (19 s): motor en 297 «estar demasiado cerca y por»; voz 297→310, 13 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «tener intereses cualquiera que nos quiera un poco ve con facilidad cosas nuestras»
+    Vosk oyó: «y por un lado cerca / y por otro lado / tenemos intereses / dos de asumimos que / cualquiera cualquier persona que lo quiera un poquito / babe con facilidad cosa nuestra»
+- 5:06–5:17 (12 s): motor en 347 «lo que otros dicen que»; voz 348→362, 15 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «soy larralde no lo dice como queja lo dice como quien pide ayuda para encontrarlo»
+    Vosk oyó: «soy lo que otros dicen que soy / la fondo no le está diciendo una queja / lo vi sí como que vive con que pide ayuda para poder encontrar»
+- 5:28–6:31 (62 s): motor en 375 «cuando alguien más las nombra»; voz 375→397, 22 tokens delante -dentro de la ventana de 40-; acotación dicha: 17 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «(ese) (porqué) (que) (me) (empuja) (y) (mantiene) (mis) (raíces) (frescas) (aunque) (mi) (cerebro) (piense) (que) (están) (secas) acá se parte en dos»
+    Vosk oyó: «hay cosas de uno que sólo existen cuando alguien más la nombre / embaucar la melodía / gloria / el aval hermoso / dolía hermoso la audio / increíble la baje de viejo / la belleza / es hermoso / si todavía / un buen café / okay continuar / cuando lleguen a la luna / por porque me empuje mantienen y de fresca / cerebro bien sigue tan seca / acá claramente josé la raíz de parte en dos»
+- 9:29–9:48 (19 s): motor en 552 «el grupo de treinta personas»; voz 552→565, 13 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «desde donde ser expulsado era morirse y quedan reminiscencias al mirar el fuego»
+    Vosk oyó: «desde cual el grupo guanajuato y días y / las expulsado / significado morirse / y eso eran reminiscencias / en dónde quedan reminiscencias por ejemplo al mirar el fuego / el mar»
+- 13:35–13:51 (16 s): motor en 750 «está partiendo mientras hablapor eso»; voz 748→764, 14 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «siempre no cierra la serie la condena no nombra una duración nombra una herida»
+    Vosk oyó: «entonces por esta razón cuando dice siempre / eh no está cerrando la serie / la esta condenando / no nombra una tu una duración nombró una herida»
+- 13:59–14:43 (44 s): motor en 772 «encontrado todavía la forma de»; voz 773→787, 15 tokens delante -dentro de la ventana de 40-; acotación dicha: 9 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «terminar (mi) (niña) (juventud) (mi) (vejez) (niña) (mi) (vieja) (niñez) no habla de tres edades»
+    Vosk oyó: «quién no ha encontrado nivel encontrado la forma de terminar / seguimos con el otro es extracto de al tema / viviesen / en este extracto / debo no habla de tres edades»
+- 17:15–19:11 (116 s): motor en 922 «acostumbramos a vivir entre respuestas»; voz 923→935, 13 tokens delante -dentro de la ventana de 40-; acotación dicha: 12 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «ajenas (5) (porque) (aunque) (mi) (existencia) (sea) (un) (accidente) (tengo) (razón) (de) (ser)»
+    Vosk oyó: «si no porque nos acostumbramos de por comodidad a vivir entre repuesta ajena / continuamos con el prójimo / par de ojos cerrados / me ocultarlo / con lentitud / con agrado / honra de / completo / tibio / poner la familia / vamos a poner la / no / rajoy / jaime / queremos de ambos debajo aquí este párrafo aunque inexistencia tenga razón de ser un accidente»
+- 23:00–24:40 (100 s): motor en 1135 «pero no puede leerlo no»; voz 1137→1160, 25 tokens delante -dentro de la ventana de 40-; acotación dicha: 17 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «esta a su alcance (5) (yo) (mismo) (soy) (savia) (de) (un) (tronco) (partido) (que) (no) (cicatriza) (porque) (transmite) (desde) (hace) (siglos) el tronco no cierra»
+    Vosk oyó: «da a mi alcance / continuamos / lo mismo luisa continuamos el tronco no sierra»
+- 26:48–27:02 (13 s): motor en 1340 «aprendimos del dolor de las»; voz 1326→1341, 1 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «dificultades»
+    Vosk oyó: «no viene de los gabriel vivo feliz la embarcación / viene de lo que digo»
+- 28:48–28:57 (9 s): motor en 1406 «que el otro también está»; voz 1407→1423, 17 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «lleno emmanuel lévinas se pasó la vida explicando esto dice que el otro no es un pedazo»
+    Vosk oyó: «un tipo de manuel medina / se basó buena vas de su vida / dando gay / el otro / no es un pedazo de mi mundo»
+- 29:27–29:38 (11 s): motor en 1466 «de lo que pueda conocer»; voz 1466→1482, 16 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «o intuir lo llama infinito y lo dice como límite larralde llega ahí por otro camino»
+    Vosk oyó: «vana se de extrañamiento de lo que yo desconozco del otro no de lo que pueda conocer hoy tuy / y él lo llama y finito / y lo hago online / la radio era el mismo pero llega por otro camino menos palabras más profunda»
+- 31:40–32:04 (24 s): motor en 1650 «lo decide tu estructura no»; voz 1652→1670, 20 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «la mía la autopoiesis como sabemos si algo esta vivo o esta muerto por que el organismo que esta vivo»
+    Vosk oyó: «algo que después lo va decidir tu estructura no la mía / continuó escuchando / aquí se para dos cosas que vivimos juntas y confundimos siempre / al amor / porque el organismo que está vivo»
+- 33:15–33:26 (11 s): motor en 1812 «no soy nada encontré mi»; voz 1811→1824, 12 tokens delante -dentro de la ventana de 40-; acotación dicha: 0 tokens; freno -,sin-calce
+    texto del guion entre motor y voz: «otra mitad larralde no rebaja el amor lo salva de esa exigencia»
+    Vosk oyó: «a mí / todas esas cosas / la ral de en ningún caso rebaja labor»
+
+ADELANTOS (> 8 tokens delante de la voz)
+- 1:08–1:19: hasta 14.6 tokens; motor 95 «y eso es una», voz 81 «que el otro le»; acotación entre medio: 0
+- 4:44–4:52: hasta 16.2 tokens; motor 328 «no somos una cosa», voz 312 «cosas nuestras que podemos»; acotación entre medio: 0
+- 26:48–26:50: hasta 14.5 tokens; motor 1340 «del dolor de las», voz 1326 «no viene de lo»; acotación entre medio: 0
+
+RETROCESOS (la posición baja más de 10 palabras de un cuadro al siguiente)
+- 19:35 (1175424 ms): 954.59 → 912.00, 42.6 palabras atrás; calce 954 → 909; voz 957

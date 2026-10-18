@@ -1,0 +1,356 @@
+290.620 parcial nada | confirmado 219 ancla 219 fallos 3 | pos 213.27 ultimoCalce 219→219 | «y»
+290.660 parcial nada | confirmado 219 ancla 219 fallos 3 | pos 213.27 ultimoCalce 219→219 | «y me»
+290.760 parcial nada | confirmado 219 ancla 219 fallos 3 | pos 213.27 ultimoCalce 219→219 | «y me»
+290.860 parcial nada | confirmado 219 ancla 219 fallos 3 | pos 213.27 ultimoCalce 219→219 | «y me»
+290.960 parcial nada | confirmado 219 ancla 219 fallos 3 | pos 213.27 ultimoCalce 219→219 | «y me vieras»
+291.060 parcial nada | confirmado 219 ancla 219 fallos 3 | pos 213.27 ultimoCalce 219→219 | «y me vieras»
+291.140 parcial calce 233 | confirmado 219 ancla 233 fallos 0 | pos 213.27 ultimoCalce 219→233 | «y me viera por»
+291.200 parcial nada | confirmado 219 ancla 233 fallos 0 | pos 213.30 ultimoCalce 233→233 | «y me vieras»
+291.300 parcial nada | confirmado 219 ancla 233 fallos 0 | pos 213.41 ultimoCalce 233→233 | «y me vieras»
+291.400 parcial nada | confirmado 219 ancla 233 fallos 0 | pos 213.59 ultimoCalce 233→233 | «y me vieras»
+291.460 parcial calce 234 | confirmado 219 ancla 234 fallos 0 | pos 213.73 ultimoCalce 233→234 | «y me viera por dentro»
+291.560 parcial calce 234 | confirmado 219 ancla 234 fallos 0 | pos 214.03 ultimoCalce 234→234 | «y me viera por dentro»
+291.660 parcial calce 234 | confirmado 219 ancla 234 fallos 0 | pos 214.39 ultimoCalce 234→234 | «y me viera por dentro»
+291.760 parcial calce 234 | confirmado 219 ancla 234 fallos 0 | pos 214.83 ultimoCalce 234→234 | «y me viera por dentro»
+291.860 parcial calce 234 | confirmado 219 ancla 234 fallos 0 | pos 215.29 ultimoCalce 234→234 | «y me viera por dentro»
+291.960 parcial calce 234 | confirmado 219 ancla 234 fallos 0 | pos 215.75 ultimoCalce 234→234 | «y me viera por dentro»
+292.060 parcial calce 234 | confirmado 219 ancla 234 fallos 0 | pos 216.21 ultimoCalce 234→234 | «y me viera por dentro»
+292.160 parcial calce 234 | confirmado 219 ancla 234 fallos 0 | pos 216.67 ultimoCalce 234→234 | «y me viera por dentro»
+292.260 parcial calce 234 | confirmado 219 ancla 234 fallos 0 | pos 217.14 ultimoCalce 234→234 | «y me viera por dentro»
+292.360 parcial calce 234 | confirmado 219 ancla 234 fallos 0 | pos 217.60 ultimoCalce 234→234 | «y me viera por dentro»
+292.460 parcial calce 234 | confirmado 219 ancla 234 fallos 0 | pos 218.06 ultimoCalce 234→234 | «y me viera por dentro»
+292.540 parcial calce 235 | confirmado 219 ancla 235 fallos 0 | pos 218.42 ultimoCalce 234→235 | «y me viera por dentro de»
+292.580 parcial calce 234 | confirmado 219 ancla 235 fallos 0 | pos 218.61 ultimoCalce 235→235 | «y me viera por dentro»
+292.640 parcial calce 235 | confirmado 219 ancla 235 fallos 0 | pos 218.89 ultimoCalce 235→235 | «y me viera por dentro de»
+292.740 parcial calce 235 | confirmado 219 ancla 235 fallos 0 | pos 219.35 ultimoCalce 235→235 | «y me viera por dentro de»
+292.840 parcial calce 234 | confirmado 219 ancla 235 fallos 0 | pos 219.81 ultimoCalce 235→235 | «y me viera por dentro»
+292.900 parcial calce 235 | confirmado 219 ancla 235 fallos 0 | pos 220.08 ultimoCalce 235→235 | «y me viera por dentro seguro»
+293.000 parcial calce 235 | confirmado 219 ancla 235 fallos 0 | pos 220.54 ultimoCalce 235→235 | «y me viera por dentro seguro»
+293.100 parcial calce 235 | confirmado 219 ancla 235 fallos 0 | pos 221.00 ultimoCalce 235→235 | «y me viera por dentro seguro»
+293.200 parcial calce 235 | confirmado 219 ancla 235 fallos 0 | pos 221.46 ultimoCalce 235→235 | «y me viera por dentro seguro»
+293.300 parcial calce 235 | confirmado 219 ancla 235 fallos 0 | pos 221.92 ultimoCalce 235→235 | «y me viera por dentro seguro»
+293.400 parcial calce 235 | confirmado 219 ancla 235 fallos 0 | pos 222.39 ultimoCalce 235→235 | «y me viera por dentro seguro»
+293.500 parcial calce 235 | confirmado 219 ancla 235 fallos 0 | pos 222.85 ultimoCalce 235→235 | «y me viera por dentro seguro»
+293.600 parcial calce 235 | confirmado 219 ancla 235 fallos 0 | pos 223.31 ultimoCalce 235→235 | «y me viera por dentro seguro»
+293.700 parcial calce 235 | confirmado 219 ancla 235 fallos 0 | pos 223.77 ultimoCalce 235→235 | «y me viera por dentro seguro»
+293.780 parcial calce 236 | confirmado 219 ancla 236 fallos 0 | pos 224.14 ultimoCalce 235→236 | «y me viera por dentro seguro hallaría»
+293.880 parcial calce 236 | confirmado 219 ancla 236 fallos 0 | pos 224.56 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría»
+293.980 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 224.98 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se»
+294.080 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 225.41 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se»
+294.180 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 225.83 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se»
+294.220 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 226.00 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por»
+294.320 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 226.43 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por»
+294.420 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 226.85 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por»
+294.520 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 227.28 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por»
+294.620 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 227.70 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por»
+294.680 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 227.96 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se por»
+294.700 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 228.04 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se por y»
+294.800 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 228.47 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se por y»
+294.900 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 228.89 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se por y»
+295.000 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 229.32 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se por y»
+295.100 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 229.74 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se por y»
+295.200 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 230.17 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se por y»
+295.300 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 230.59 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se por y»
+295.400 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 231.01 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se por y»
+295.500 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 231.44 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se por y»
+295.520 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 231.52 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por»
+295.600 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 231.86 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello»
+295.700 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 232.29 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello»
+295.720 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 232.37 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no»
+295.820 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 232.80 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no»
+295.920 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 233.22 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no»
+296.020 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 233.65 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no»
+296.120 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 234.06 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no»
+296.220 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 234.44 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no»
+296.260 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 234.58 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no pueden»
+296.320 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 234.78 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no»
+296.420 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 235.05 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no»
+296.480 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 235.19 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no encuentro»
+296.580 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 235.36 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no encuentro»
+296.680 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 235.47 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no encuentro»
+296.780 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 235.53 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no encuentro»
+296.880 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 235.53 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no encuentro»
+296.980 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 235.53 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no encuentro»
+297.080 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 235.53 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no encuentro»
+297.180 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 235.53 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no encuentro»
+297.280 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 235.53 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no encuentro»
+297.380 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 235.53 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no encuentro»
+297.480 parcial nada | confirmado 219 ancla 236 fallos 0 | pos 235.53 ultimoCalce 236→236 | «y me viera por dentro seguro hallaría se y por ello no encuentro»
+297.520 FINAL   FUERA 215 (ventana 226..276) | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «y me vieras por dentro seguro hallaría se y por ello no encuentro»
+298.840 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo»
+298.940 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo»
+299.000 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero»
+299.100 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero»
+299.200 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero»
+299.240 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que»
+299.340 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que»
+299.360 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me»
+299.460 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me»
+299.560 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me»
+299.620 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la»
+299.720 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la»
+299.820 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la»
+299.920 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la»
+300.020 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la»
+300.120 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la»
+300.200 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención»
+300.300 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención»
+300.380 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es»
+300.480 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es»
+300.580 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es»
+300.680 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es»
+300.700 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el»
+300.800 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el»
+300.900 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el»
+301.000 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el»
+301.040 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el orden»
+301.140 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el orden»
+301.240 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el orden»
+301.340 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el orden»
+301.440 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el orden»
+301.540 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el orden»
+301.640 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el orden»
+301.740 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el orden»
+301.840 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el orden»
+301.940 parcial nada | confirmado 219 ancla 236 fallos 1 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el orden»
+302.020 FINAL   nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «lo primero que me llama la atención es el orden»
+302.540 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero»
+302.640 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero»
+302.740 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero»
+302.840 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero»
+302.940 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero»
+303.020 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la»
+303.120 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la»
+303.160 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero»
+303.260 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la»
+303.360 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la»
+303.460 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la ser»
+303.560 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la ser»
+303.640 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero y al hacer»
+303.700 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la ser»
+303.760 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero y al hacer»
+303.800 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+303.900 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+304.000 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+304.100 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+304.200 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+304.300 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+304.400 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+304.500 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+304.600 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+304.700 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+304.800 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+304.900 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+305.000 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza de»
+305.020 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+305.120 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+305.220 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza»
+305.240 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza de que»
+305.340 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza de que»
+305.440 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza de que»
+305.540 parcial nada | confirmado 219 ancla 236 fallos 2 | pos 235.53 ultimoCalce 236→236 | «primero está la certeza de que»
+305.620 parcial calce 246 | confirmado 219 ancla 246 fallos 0 | pos 235.53 ultimoCalce 236→246 | «primero está la certeza de que el»
+305.720 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 235.59 ultimoCalce 246→246 | «primero está la certeza de que el otro»
+305.820 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 235.71 ultimoCalce 246→246 | «primero está la certeza de que el otro»
+305.920 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 235.89 ultimoCalce 246→246 | «primero está la certeza de que el otro»
+306.020 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 236.13 ultimoCalce 246→246 | «primero está la certeza de que el otro»
+306.120 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 236.43 ultimoCalce 246→246 | «primero está la certeza de que el otro»
+306.220 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 236.79 ultimoCalce 246→246 | «primero está la certeza de que el otro»
+306.320 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 237.21 ultimoCalce 246→246 | «primero está la certeza de que el otro»
+306.420 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 237.63 ultimoCalce 246→246 | «primero está la certeza de que el otro»
+306.520 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 238.06 ultimoCalce 246→246 | «primero está la certeza de que el otro»
+306.620 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 238.48 ultimoCalce 246→246 | «primero está la certeza de que el otro»
+306.720 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 238.91 ultimoCalce 246→246 | «primero está la certeza de que el otro»
+306.820 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 239.33 ultimoCalce 246→246 | «primero está la certeza de que el otro»
+306.920 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 239.76 ultimoCalce 246→246 | «primero está la certeza de que el otro»
+306.940 parcial nada | confirmado 219 ancla 246 fallos 0 | pos 239.84 ultimoCalce 246→246 | «primero está la certeza de que el otro lo»
+307.000 parcial calce 248 | confirmado 219 ancla 248 fallos 0 | pos 240.10 ultimoCalce 246→248 | «primero está la certeza de que el otro lugar»
+307.100 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 240.52 ultimoCalce 248→248 | «primero está la certeza de que el otro lugar»
+307.160 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 240.78 ultimoCalce 248→248 | «primero está la certeza de que el otro lo»
+307.180 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 240.86 ultimoCalce 248→248 | «primero está la certeza de que el otro lovaina»
+307.220 parcial calce 248 | confirmado 219 ancla 248 fallos 0 | pos 241.03 ultimoCalce 248→248 | «primero está la certeza de que el otro lo»
+307.300 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 241.37 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+307.400 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 241.79 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+307.500 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 242.22 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+307.600 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 242.64 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+307.700 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 243.07 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+307.800 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 243.49 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+307.900 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 243.92 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+308.000 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 244.34 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+308.100 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 244.77 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+308.200 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 245.19 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+308.300 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 245.62 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+308.400 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 246.04 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+308.500 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 246.42 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+308.600 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 246.76 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+308.700 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 247.07 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar»
+308.800 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 247.36 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si»
+308.900 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 247.61 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tu»
+309.000 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 247.84 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tu»
+309.100 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.05 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tu»
+309.160 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.17 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me»
+309.260 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.35 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me»
+309.280 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.38 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tu»
+309.380 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.54 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me»
+309.480 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me»
+309.520 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras»
+309.620 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras»
+309.720 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras»
+309.760 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me dieron»
+309.860 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me dieron»
+309.940 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me dieron órdenes»
+310.040 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me dieron órdenes»
+310.060 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro»
+310.160 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro»
+310.260 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro»
+310.360 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro»
+310.460 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro»
+310.560 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro»
+310.660 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro»
+310.760 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro»
+310.860 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro»
+310.960 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro»
+311.060 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro»
+311.160 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro»
+311.260 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro»
+311.360 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o»
+311.460 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o»
+311.560 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o»
+311.600 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o en»
+311.700 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o en»
+311.800 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o en»
+311.840 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro un enc…»
+311.940 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro un enc…»
+312.040 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro un enc…»
+312.140 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro un enc…»
+312.220 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o»
+312.320 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o»
+312.340 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+312.380 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+312.480 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+312.580 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+312.680 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+312.780 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+312.880 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+312.980 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+313.080 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+313.180 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+313.280 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+313.380 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+313.480 parcial nada | confirmado 219 ancla 248 fallos 0 | pos 248.57 ultimoCalce 248→248 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+313.580 parcial calce 261 | confirmado 219 ancla 261 fallos 0 | pos 248.57 ultimoCalce 248→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+313.640 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 248.59 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+313.740 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 248.68 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+313.780 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 248.73 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+313.880 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 248.91 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+313.980 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 249.15 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+314.080 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 249.45 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+314.180 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 249.81 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+314.280 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 250.23 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+314.380 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 250.66 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+314.440 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 250.91 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+314.540 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 251.34 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+314.640 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 251.76 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+314.740 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 252.19 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+314.840 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 252.61 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+314.940 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 253.04 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+315.040 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 253.46 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+315.140 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 253.89 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+315.240 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 254.31 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+315.340 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 254.74 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+315.440 parcial nada | confirmado 219 ancla 261 fallos 0 | pos 255.16 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+315.520 FINAL   FUERA 240 (ventana 251..301) | confirmado 219 ancla 261 fallos 1 | pos 255.50 ultimoCalce 261→261 | «primero está la certeza de que el otro lo va a encontrar si tú me vieras por dentro o encu…»
+316.060 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 257.79 ultimoCalce 261→261 | «y de»
+316.100 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 257.95 ultimoCalce 261→261 | «y»
+316.200 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 258.29 ultimoCalce 261→261 | «y»
+316.300 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 258.57 ultimoCalce 261→261 | «y»
+316.400 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 258.79 ultimoCalce 261→261 | «y»
+316.500 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 258.95 ultimoCalce 261→261 | «y»
+316.580 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.04 ultimoCalce 261→261 | «y después»
+316.680 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después»
+316.780 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después»
+316.880 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después»
+316.980 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después»
+317.080 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después»
+317.180 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después»
+317.200 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después ella»
+317.240 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguimos»
+317.300 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después»
+317.360 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguida»
+317.380 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente»
+317.480 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente»
+317.580 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente»
+317.680 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente»
+317.780 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente»
+317.880 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente»
+317.960 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene»
+318.060 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene»
+318.080 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la»
+318.180 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la»
+318.280 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la»
+318.380 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la»
+318.440 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+318.540 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+318.640 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+318.740 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+318.840 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+318.940 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+319.040 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+319.140 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+319.240 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+319.340 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+319.440 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+319.540 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+319.640 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+319.740 parcial nada | confirmado 219 ancla 261 fallos 1 | pos 259.10 ultimoCalce 261→261 | «y después seguidamente viene la confesión»
+319.820 FINAL   nada | confirmado 219 ancla 219 fallos 2 SOLTÓ EL ANCLA | pos 259.10 ultimoCalce 261→219 | «y después seguidamente viene la confesión»
+320.140 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «llegué»
+320.240 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «llegue el momento»
+320.320 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el»
+320.420 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el»
+320.440 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «miguel»
+320.480 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el»
+320.560 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el mismo»
+320.660 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el mismo»
+320.760 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el mismo»
+320.860 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el mismo»
+320.960 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el mismo»
+321.060 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el mismo»
+321.160 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el mismo»
+321.260 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el mismo»
+321.360 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el mismo»
+321.460 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el mismo»
+321.560 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el mismo»
+321.660 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el mismo»
+321.760 FINAL   nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «el mismo»
+322.060 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no»
+322.160 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no»
+322.260 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no»
+322.360 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no»
+322.460 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede»
+322.560 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede»
+322.660 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede»
+322.760 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede»
+322.860 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede»
+322.960 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede»
+323.060 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede»
+323.160 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede»
+323.260 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede»
+323.360 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede»
+323.460 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede»
+323.560 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede»
+323.660 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede»
+323.720 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no»
+323.820 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no»
+323.920 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no»
+324.020 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no»
+324.120 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no»
+324.140 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no dice»
+324.240 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no dice»
+324.340 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no dice»
+324.440 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no dice»
+324.540 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no dice»
+324.640 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no dice»
+324.740 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no dice»
+324.840 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no dice»
+324.940 parcial nada | confirmado 219 ancla 219 fallos 2 | pos 222.00 ultimoCalce 219→219 | «no puede no dice»
