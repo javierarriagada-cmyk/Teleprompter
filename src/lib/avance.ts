@@ -85,6 +85,13 @@ export function crearMotorDeAvance(
   let muestrasVelocidad: Array<{ tMs: number; token: number }> = []
   let ultimaConfirmada = 0
   let anclaTentativa = 0
+  // -motor-suelta, 17-10-2026- EL ANCLA QUE EL HABLA SIGUIENTE CONTINUÓ. Ver soltarAnclaSinConfirmar.
+  // anclaAlCerrar: el ancla cuando llegó el último final -calzara o no-; esperandoContinuacion: todavía
+  // no llegó un parcial con calce después de ese final; anclaAcompanada: la mayor ancla que un parcial
+  // del habla siguiente continuó -su primer calce cayó entre ella y una correa más adelante-.
+  let anclaAlCerrar = 0
+  let esperandoContinuacion = false
+  let anclaAcompanada = 0
 
   let fallosFinalesSeguidos = 0
   let tUltimoCalce = 0
@@ -167,9 +174,29 @@ export function crearMotorDeAvance(
   // en 216, 317-329 y 485-499: el ancla estaba más cerca del lector que lo confirmado. Las dos
   // detenciones reales iban 62 (260/198) y 45 (1361/1316) adelante. Más de 40 tampoco cabe en la
   // ventana del seguidor -hasta = basePos + VENTANA_ADELANTE-. Ver EXPLICACION.txt, punto 4.
+  //
+  // -motor-suelta, 17-10-2026- LO CONFIRMADO TAMBIÉN ES LO QUE EL HABLA SIGUIENTE CONTINUÓ. En la toma de
+  // 34 min -docs/mediciones/motor-suelta/INFORME.txt, punto 1- el último final que calzó fue 909, a los
+  // 1.015 s; después Javier leyó la acotación 5 y lo que sigue, los finales salieron mal oídos y ninguno
+  // calzó, y los parciales llevaron el ancla con la voz: 911, 922, 937, 954. A los 1.172,7 s, con el ancla
+  // en 954 y la voz en 957, el segundo final seguido sin calce la soltó a 909 -45 adelante, más de 40- y
+  // el texto saltó de 954,6 a 912: 42,6 palabras atrás, y 38,6 s para volver. Pero cada vez que un final
+  // cerró sin calzar, el primer parcial del habla siguiente calzó justo después del ancla: 911 → 918 y
+  // 937 → 940. Un parcial que se adelanta solo -la repetición de motorParentesis B, el «no lo encuentra»
+  // de 4:44 en la toma de 25 min- no tiene eso: lo que se dice después no lo continúa. Ahora la suelta se
+  // mide, y vuelve, desde lo confirmado por un final O por esa continuación -anclaAcompanada-.
+  // VENTANA_ADELANTE, fallosParaFrenar y la ventana de conduccion.ts no cambian.
   function soltarAnclaSinConfirmar() {
     // Antes: if (anclaTentativa - ultimaConfirmada > params.correaPalabras) anclaTentativa = ultimaConfirmada
-    if (anclaTentativa - ultimaConfirmada > VENTANA_ADELANTE) anclaTentativa = ultimaConfirmada
+    // Antes: if (anclaTentativa - ultimaConfirmada > VENTANA_ADELANTE) anclaTentativa = ultimaConfirmada
+    const confirmado = Math.max(ultimaConfirmada, anclaAcompanada)
+    if (anclaTentativa - confirmado > VENTANA_ADELANTE) anclaTentativa = confirmado
+  }
+
+  // -motor-suelta- el final cierra un habla: lo que diga el parcial siguiente dirá si continúa su ancla.
+  function cerrarHabla() {
+    anclaAlCerrar = anclaTentativa
+    esperandoContinuacion = true
   }
 
   // -motor sin pastilla- el estado sin integrar tiempo: la posicion donde quedo, el calce y el ritmo
@@ -203,6 +230,7 @@ export function crearMotorDeAvance(
       soltarAnclaSinConfirmar()
       fallosFinalesSeguidos = 0
       tUltimoCalce = tMs
+      cerrarHabla()
     },
 
     tentativo(token: number, tMs: number) {
@@ -212,6 +240,13 @@ export function crearMotorDeAvance(
         tUltimaActualizacion = tMs
       }
 
+      // -motor-suelta- el primer calce después de un final: si cae entre el ancla de ese final y una
+      // correa más adelante -correaPalabras, 12-, el habla siguiente la continuó. En la toma de 34 min
+      // fueron 7 (911 → 918) y 3 (937 → 940); en la de 30, 10 (236 → 246). Ver soltarAnclaSinConfirmar.
+      if (esperandoContinuacion) {
+        esperandoContinuacion = false
+        if (token >= anclaAlCerrar && token - anclaAlCerrar <= params.correaPalabras) anclaAcompanada = Math.max(anclaAcompanada, anclaAlCerrar)
+      }
       if (token > anclaTentativa) {
         actualizarVelocidad(token, tMs)
         anclaTentativa = token
@@ -233,9 +268,15 @@ export function crearMotorDeAvance(
       // Desde el primero, no: en Larralde de pie -tarea89, toma 3- los finales no calzan y los
       // parciales llevan bien el texto hasta 31; soltar el ancla ahí lo devolvía a 3.
       // Antes: if (!esParcial) fallosFinalesSeguidos++
+      // -motor-suelta- y cierra el habla -ver cerrarHabla-. Antes:
+      // if (!esParcial) {
+      //   fallosFinalesSeguidos++
+      //   if (fallosFinalesSeguidos >= params.fallosParaFrenar) soltarAnclaSinConfirmar()
+      // }
       if (!esParcial) {
         fallosFinalesSeguidos++
         if (fallosFinalesSeguidos >= params.fallosParaFrenar) soltarAnclaSinConfirmar()
+        cerrarHabla()
       }
       hayVoz = true
       tUltimaVozTrue = tMs
@@ -501,6 +542,10 @@ export function crearMotorDeAvance(
       vActual = 0
       ultimaConfirmada = destino
       anclaTentativa = destino
+      // -motor-suelta- lo que el habla continuó queda atrás del dedo.
+      anclaAcompanada = destino
+      anclaAlCerrar = destino
+      esperandoContinuacion = false
       fallosFinalesSeguidos = 0
       tUltimoCalce = tMs
       tUltimaActualizacion = 0
@@ -514,6 +559,10 @@ export function crearMotorDeAvance(
       muestrasVelocidad = []
       ultimaConfirmada = 0
       anclaTentativa = 0
+      // -motor-suelta-
+      anclaAcompanada = 0
+      anclaAlCerrar = 0
+      esperandoContinuacion = false
       fallosFinalesSeguidos = 0
       tUltimoCalce = 0
       hayVoz = false
