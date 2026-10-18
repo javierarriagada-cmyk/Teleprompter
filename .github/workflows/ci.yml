@@ -8,9 +8,19 @@ on:
     branches:
       - main
 
+# UNA CORRIDA POR RAMA Y CON TOPE DE TIEMPO -17-10-2026-. El repo es privado y Actions trae 2000
+# minutos al mes: en octubre iban ~1570 en 196 corridas. La corrida colgada del #131 duró 161 min
+# hasta que la cancelaron; sin tope, GitHub la deja hasta 6 h. Una normal dura ~9 min -8,5 son la
+# suite-, así que 15 alcanza con holgura. Y cada push de Grok dispara una: si sube dos seguidos, la
+# vieja se cancela y corre solo la última -motor-parentesis corrió 6 veces en una noche-.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
