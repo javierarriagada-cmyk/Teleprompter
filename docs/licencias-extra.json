@@ -19,5 +19,12 @@
     "licencia": "Apache-2.0",
     "fuente": "https://alphacephei.com/vosk/models",
     "nota": "Copyright 2020 Alpha Cephei Inc, segun el README del modelo. La pagina de modelos de Vosk declara vosk-model-small-en-us-0.15 Apache 2.0 (verificado el 2026-10-07)."
+  },
+  {
+    "nombre": "Material Symbols",
+    "version": "outlined",
+    "licencia": "Apache-2.0",
+    "fuente": "https://fonts.google.com/icons",
+    "nota": "pan_tool y front_hand, usados en las marcas de guía. Apache 2.0."
   }
 ]

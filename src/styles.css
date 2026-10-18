@@ -2546,6 +2546,11 @@ button.btn-deformable.miniatura-banda:not(:active) {
   align-items: flex-start;
   gap: 10px;
 }
+.sin-subtitulos {
+  margin: var(--aire-3) var(--aire-3) 0;
+  color: var(--color-apagado);
+  font-size: var(--texto-meta);
+}
 .marca-guia-mano {
   flex-shrink: 0;
   margin-top: 2px;

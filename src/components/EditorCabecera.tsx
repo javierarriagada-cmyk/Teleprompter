@@ -40,7 +40,7 @@ export function EditorCabecera({
   const [menuAbierto, setMenuAbierto] = useState(false)
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null)
   const refBtn = useRef<HTMLButtonElement>(null)
-  const refMenuEl = useRef<HTMLDivElement>(null)
+  const refMenuEl = useRef<HTMLDivElement | null>(null)
   const refMenu = useCerrarAfuera(menuAbierto, () => setMenuAbierto(false), [refMenuEl])
   React.useLayoutEffect(() => {
     if (!menuAbierto || !refBtn.current || !refMenuEl.current) return
@@ -143,7 +143,7 @@ export function EditorCabecera({
       </div>
       {menuAbierto && createPortal(
         <div
-          ref={(el) => { refMenuEl.current = el }}
+          ref={refMenu}
           data-testid="menu-editor-guion"
           className="menu-adjunto-guion"
           style={{ position: 'fixed', top: pos?.top ?? -9999, left: pos?.left ?? 0, right: 'auto' }}
@@ -153,7 +153,7 @@ export function EditorCabecera({
           <button
             type="button"
             className="fila-menu-adjunto-guion"
-            onClick={() => { onArchivar?.(guion.id, !guion.archivado); setMenuAbierto(false) }}
+            onClick={() => { onArchivar?.(guion.id, !guion.archivado); setMenuAbierto(false); if (!guion.archivado) onVolverBiblioteca() }}
           >
             <IconoArchivar tamano={22} />
             <span>{guion.archivado ? t('desarchivar') : t('archivar')}</span>

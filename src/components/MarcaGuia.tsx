@@ -134,8 +134,26 @@ export function MarcaGuia({
 }
 
 // Antes -ManoArrastre, dibujo a mano con trazo 1.6-:
+// Mano de línea limpia al lado del texto del recuadro -peso de trazo tipo iconos Sigo, 1.6-.
+// Si no convence en dispositivo se puede omitir pasando conMano={false}.
 // function ManoArrastre({ className }: { className?: string }) {
-//   return (<svg className={className} width={40} height={44} viewBox="0 0 40 44" fill="none" stroke="currentColor" strokeWidth="1.6" ... />)
+//   return (
+//     <svg className={className} width={40} height={44} viewBox="0 0 40 44" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+//       {/* Palma */}
+//       <ellipse cx="22" cy="22" rx="9" ry="10" />
+//       {/* Dedos */}
+//       <path d="M16 20 V8" />
+//       <path d="M20 19 V5" />
+//       <path d="M24 19 V6" />
+//       <path d="M28 20 V10" />
+//       {/* Pulgar */}
+//       <path d="M14 24 L6 18" />
+//       {/* Flecha de arrastre hacia abajo-izquierda */}
+//       <path d="M14 34 L4 42" />
+//       <path d="M4 42 L12 41" />
+//       <path d="M4 42 L5 34" />
+//     </svg>
+//   )
 // }
 // -guia-sigo- Manos animadas de Material Symbols, Apache 2.0.
 // pan_tool: https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/pan_tool/default/24px.svg

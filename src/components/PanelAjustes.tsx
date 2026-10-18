@@ -4,8 +4,8 @@ import { createPortal } from 'react-dom'
 import { App as CapacitorApp } from '@capacitor/app'
 import {
   // -tomas-largas- Sin la ficha/fila de Subtítulos, IconoSubtitulos ya no se usa aquí. Antes:
-  // IconoAtras, IconoCerrar, IconoSubtitulos, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda,
-  IconoAtras, IconoCerrar, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda,
+  // IconoAtras, IconoCerrar, IconoSubtitulos, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda, IconoCorreo,
+  IconoAtras, IconoCerrar, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda, IconoCorreo,
   IconoDocumento
 } from './IconosApp'
 import {
@@ -555,6 +555,7 @@ export function PanelAjustes({
                       testid="fila-comentarios"
                       icono={<IconoAyuda tamano={22} />}
                       nombre={t('enviarComentarios')}
+                      icono={<IconoCorreo tamano={22} />}
                       onClick={() => abrirEnlace('mailto:' + (idioma === 'es' ? 'hola@sigoteleprompter.com' : 'hello@sigoteleprompter.com'))}
                     />
                   </div>

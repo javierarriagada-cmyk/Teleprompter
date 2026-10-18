@@ -196,6 +196,19 @@ export function debeMostrarMarcaPalma(opts: {
   return true
 }
 
+
+// Subtítulos: primera vez que se abre una toma con subtítulos para elegir y sin guardar.
+export function debeMostrarMarcaSubtitulos(opts: {
+  yaVista: boolean
+  tieneSubtitulos: boolean
+  sinGuardar: boolean
+} & CondicionesComunes): boolean {
+  if (opts.yaVista) return false
+  if (!opts.tieneSubtitulos || !opts.sinGuardar) return false
+  if (!condicionesComunesOk(opts)) return false
+  return true
+}
+
 // Si puede salir: marca que hay una a la vista. NO la deja vista: eso solo con
 // Entendido o el control. Antes: marcarComoVista(id) al abrir; y el tope era de
 // sesión (no se liberaba con Entendido).

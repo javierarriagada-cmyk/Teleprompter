@@ -580,6 +580,16 @@ export function IconoCandado(props: PropsIcono) {
   )
 }
 
+/** Un sobre: enviar comentarios. Mismo trazo 1.6 que el resto. */
+export function IconoCorreo(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M3 7l9 6 9-6" />
+    </Trazo>
+  )
+}
+
 /** Un signo de pregunta en un circulo: el soporte. */
 export function IconoAyuda(props: PropsIcono) {
   return (
